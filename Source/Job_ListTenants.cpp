@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_ListTenants =
+JobClass xJobClass_ListTenants =
 {
   "Job_ListTenants"_Stz,  // name of the job class
   CN_JOB_LISTTENANTS,     // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_ListTenants =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_ListTenants_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_ListTenants_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_LoadBuffer_class;
   

@@ -20,9 +20,9 @@ extern PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_help(SePrompt* pPrompt)
 {
-  JobClass_s* pJobClass_s = nullptr;
+  JobClass* pJobClass_s = nullptr;
   
-  for (pJOBCLASSFUN pfJobClass = JobClass_s::pFirstFun(); pfJobClass; ) {
+  for (pJOBCLASSFUN pfJobClass = JobClass::pFirstFun(); pfJobClass; ) {
     
     pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
     

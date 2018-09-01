@@ -42,7 +42,7 @@ namespace JobsModel
   void vJob_SubTruncate_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_SubTruncate_show(Job* pJob);
   
-  JobClass_s* pJob_SubTruncate_class(pFUN** aaFun);
+  JobClass* pJob_SubTruncate_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_ListIdxColumns_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_ListIdxColumns_show(Job* pJob);
   
-  JobClass_s* pJob_ListIdxColumns_class(pFUN** aaFun);
+  JobClass* pJob_ListIdxColumns_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

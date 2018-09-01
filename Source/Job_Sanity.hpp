@@ -43,7 +43,7 @@ namespace JobsModel
   void vJob_Sanity_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Sanity_show(Job* pJob);
   
-  JobClass_s* pJob_Sanity_class(pFUN** aaFun);
+  JobClass* pJob_Sanity_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

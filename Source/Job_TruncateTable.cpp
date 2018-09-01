@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_TruncateTable =
+JobClass xJobClass_TruncateTable =
 {
   "Job_TruncateTable"_Stz,   // name of the job class
   CN_JOB_TRUNCATETABLE,      // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_TruncateTable =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_TruncateTable_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_TruncateTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_UseSchema_class;
   

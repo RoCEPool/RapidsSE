@@ -42,7 +42,7 @@ namespace JobsModel
   void vJob_TruncateTable_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_TruncateTable_show(Job* pJob);
   
-  JobClass_s* pJob_TruncateTable_class(pFUN** aaFun);
+  JobClass* pJob_TruncateTable_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

@@ -6,7 +6,7 @@
 
 #include "JobModel.h"
 
-JobClass_s xJobClass__Executed =
+JobClass xJobClass__Executed =
 {
   "Job__Executed"_Stz,     // name of the job class
   CN_JOB__EXECUTED,        // class enum
@@ -41,7 +41,7 @@ JobClass_s xJobClass__Executed =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob__Executed_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob__Executed_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_AnalyzeIndex_class;
   

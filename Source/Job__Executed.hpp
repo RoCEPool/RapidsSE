@@ -39,7 +39,7 @@ namespace JobsModel
   
   void vJob__Executed_delete(Interface::SEitf* pSEitf, Job* pJob);
   
-  JobClass_s* pJob__Executed_class(pFUN** aaFun);
+  JobClass* pJob__Executed_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

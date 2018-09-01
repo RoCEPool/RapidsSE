@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_DropTable =
+JobClass xJobClass_DropTable =
 {
   "Job_DropTable"_Stz,   // name of the job class
   CN_JOB_DROPTABLE,      // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_DropTable =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_DropTable_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_DropTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_DropTenant_class;
   

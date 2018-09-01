@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_ListIdxColumns =
+JobClass xJobClass_ListIdxColumns =
 {
   "Job_ListIdxColumns"_Stz,  // name of the job class
   CN_JOB_LISTIDXCOLUMNS,     // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_ListIdxColumns =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_ListIdxColumns_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_ListIdxColumns_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_ListIndexes_class;
   

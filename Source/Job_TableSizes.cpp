@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_TableSizes =
+JobClass xJobClass_TableSizes =
 {
   "Job_TableSizes"_Stz,  // name of the job class
   CN_JOB_TABLESIZES,     // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_TableSizes =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_TableSizes_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_TableSizes_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_TruncateTable_class;
   

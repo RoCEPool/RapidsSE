@@ -44,7 +44,7 @@ namespace JobsModel
   void vJob_SubFetch_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_SubFetch_show(Job* pJob);
   
-  JobClass_s* pJob_SubFetch_class(pFUN** aaFun);
+  JobClass* pJob_SubFetch_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

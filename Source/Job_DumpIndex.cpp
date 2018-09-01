@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_DumpIndex =
+JobClass xJobClass_DumpIndex =
 {
   "Job_DumpIndex"_Stz,   // name of the job class
   CN_JOB_DUMPINDEX,      // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_DumpIndex =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_DumpIndex_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_DumpIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_FetchRows_class;
   

@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_SubLoader =
+JobClass xJobClass_SubLoader =
 {
   "Job_SubLoader"_Stz,    // name of the job class
   CN_JOB_SUBLOADER,       // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_SubLoader =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_SubLoader_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_SubLoader_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SubTruncate_class;
   

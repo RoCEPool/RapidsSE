@@ -38,7 +38,7 @@ namespace JobsModel
   void vJob_Connector_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Connector_show(Job* pJob);
   
-  JobClass_s* pJob_Connector_class(pFUN** aaFun);
+  JobClass* pJob_Connector_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

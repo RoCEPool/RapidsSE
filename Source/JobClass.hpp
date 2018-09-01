@@ -7,7 +7,7 @@ namespace JobsModel
 {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  struct JobClass_s
+  struct JobClass
   {
     public:
       Stz* m_aName;     // name of the job class
@@ -59,14 +59,14 @@ namespace JobsModel
   
       static pJOBCLASSFUN pFirstFun(void);
   
-      static JobClass_s* pFindJobClass_s(eCN eClass);
-      static JobClass_s* pFindJobClass_s(Stz* aCommand1, Stz* aCommand2);
+      static JobClass* pFindJobClass_s(eCN eClass);
+      static JobClass* pFindJobClass_s(Stz* aCommand1, Stz* aCommand2);
       static void vTraceJobs_s(eCN eClass);
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  JobClass_s* _pJobClass_s(i8 iAddr);
-  JobClass_s* _pJobClass_s(void* aAddr);
+  JobClass* _pJobClass_s(i8 iAddr);
+  JobClass* _pJobClass_s(void* aAddr);
 }
 
 /*============================================================================*/

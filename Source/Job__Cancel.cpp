@@ -6,7 +6,7 @@
 
 #include "JobModel.h"
 
-JobClass_s xJobClass__Cancel =
+JobClass xJobClass__Cancel =
 {
   "Job__Cancel"_Stz,       // name of the job class
   CN_JOB__CANCEL,          // class enum
@@ -41,7 +41,7 @@ JobClass_s xJobClass__Cancel =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob__Cancel_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob__Cancel_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob__Cancelled_class;
   

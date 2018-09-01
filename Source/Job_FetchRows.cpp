@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_FetchRows =
+JobClass xJobClass_FetchRows =
 {
   "Job_FetchRows"_Stz,       // name of the job class
   CN_JOB_FETCHROWS,          // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_FetchRows =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_FetchRows_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_FetchRows_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Lf_class;
   

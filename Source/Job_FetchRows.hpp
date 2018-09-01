@@ -48,7 +48,7 @@ namespace JobsModel
   void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer);
   void vJob_FetchRows_show(Job* pJob);
   
-  JobClass_s* pJob_FetchRows_class(pFUN** aaFun);
+  JobClass* pJob_FetchRows_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

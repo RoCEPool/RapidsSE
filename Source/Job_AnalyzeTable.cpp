@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_AnalyzeTable =
+JobClass xJobClass_AnalyzeTable =
 {
   "Job_AnalyzeTable"_Stz,    // name of the job class
   CN_JOB_ANALYZETABLE,       // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_AnalyzeTable =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_AnalyzeTable_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_AnalyzeTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Answer_class;
   

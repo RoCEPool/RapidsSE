@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_ListTables_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_ListTables_show(Job* pJob);
   
-  JobClass_s* pJob_ListTables_class(pFUN** aaFun);
+  JobClass* pJob_ListTables_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_VisualizeIndex =
+JobClass xJobClass_VisualizeIndex =
 {
   "Job_VisualizeIndex"_Stz,   // name of the job class
   CN_JOB_VISUALIZEINDEX,      // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_VisualizeIndex =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_VisualizeIndex_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_VisualizeIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_WaitCluster_class;
   

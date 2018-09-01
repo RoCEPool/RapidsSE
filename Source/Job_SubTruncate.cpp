@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_SubTruncate =
+JobClass xJobClass_SubTruncate =
 {
   "Job_SubTruncate"_Stz,     // name of the job class
   CN_JOB_SUBTRUNCATE,        // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_SubTruncate =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_SubTruncate_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_SubTruncate_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_TableSizes_class;
   

@@ -9,7 +9,7 @@
 
 extern AttachMap*      gpAttachMap;
 
-JobClass_s xJobClass_Sanity =
+JobClass xJobClass_Sanity =
 {
   "Job_Sanity"_Stz,  // name of the job class
   CN_JOB_SANITY,     // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_Sanity =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_Sanity_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_Sanity_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_ShowCluster_class;
   

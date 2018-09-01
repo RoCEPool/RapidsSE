@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_UseSchema =
+JobClass xJobClass_UseSchema =
 {
   "Job_UseSchema"_Stz,   // name of the job class
   CN_JOB_USESCHEMA,      // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_UseSchema =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_UseSchema_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_UseSchema_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_VerifyIndex_class;
   

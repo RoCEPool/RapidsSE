@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
  
  */
 
-JobClass_s xJobClass_LoadTable =
+JobClass xJobClass_LoadTable =
 {
   "Job_LoadTable"_Stz,    // name of the job class
   CN_JOB_LOADTABLE,       // class enum
@@ -50,7 +50,7 @@ JobClass_s xJobClass_LoadTable =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_LoadTable_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_LoadTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Prompt_class;
   

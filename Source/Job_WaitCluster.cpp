@@ -9,7 +9,7 @@
 
 extern AttachMap*      gpAttachMap;
 
-JobClass_s xJobClass_WaitCluster =
+JobClass xJobClass_WaitCluster =
 {
   "Job_WaitCluster"_Stz,  // name of the job class
   CN_JOB_WAITCLUSTER,     // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_WaitCluster =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_WaitCluster_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_WaitCluster_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)nullptr;
   

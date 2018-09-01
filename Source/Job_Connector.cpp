@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_Connector =
+JobClass xJobClass_Connector =
 {
   "Job_Connector"_Stz,    // name of the job class
   CN_JOB_CONNECTOR,       // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_Connector =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_Connector_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_Connector_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CreateCatalog_class;
   

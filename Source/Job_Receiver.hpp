@@ -45,7 +45,7 @@ namespace JobsModel
   void vJob_Receiver_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_Receiver_show(Job* pJob);
   
-  JobClass_s* pJob_Receiver_class(pFUN** aaFun);
+  JobClass* pJob_Receiver_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

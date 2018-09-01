@@ -6,7 +6,7 @@
 namespace JobsModel
 {
   class JobClass_o;    // forward definition
-  struct JobClass_s; // forward definition
+  struct JobClass; // forward definition
 
   class Job;
   
@@ -82,7 +82,7 @@ namespace JobsModel
   {
   public:
     i8  m_iJobId;              // job id
-    JobClass_s* m_pJobClass_s; // job class
+    JobClass* m_pJobClass_s; // job class
     eSS  m_eSeed;              // task seed
     eJT  m_eJobTrace;          // job trace
   
@@ -136,9 +136,9 @@ bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch);
 
 typedef void* (*pFUN)(void*);
 
-//typedef pFUN (*pJOBCLASSFUN)(JobClass_s** );
+//typedef pFUN (*pJOBCLASSFUN)(JobClass** );
 
-typedef JobClass_s* (*pJOBCLASSFUN)(pFUN** );
+typedef JobClass* (*pJOBCLASSFUN)(pFUN** );
 
 /*============================================================================*/
 /* end                                                                        */

@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_SizeIndex =
+JobClass xJobClass_SizeIndex =
 {
   "Job_SizeIndex"_Stz,   // name of the job class
   CN_JOB_SIZEINDEX,      // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_SizeIndex =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_SizeIndex_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_SizeIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SizeTable_class;
   

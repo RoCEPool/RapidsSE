@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_Start =
+JobClass xJobClass_Start =
 {
   "Job_Start"_Stz,    // name of the job class
   CN_JOB_START,       // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_Start =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_Start_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_Start_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_StartCluster_class;
   

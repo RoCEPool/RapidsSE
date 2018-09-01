@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_VerifyIndex =
+JobClass xJobClass_VerifyIndex =
 {
   "Job_VerifyIndex"_Stz,      // name of the job class
   CN_JOB_VERIFYINDEX,         // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_VerifyIndex =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_VerifyIndex_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_VerifyIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_VisualizeIndex_class;
   

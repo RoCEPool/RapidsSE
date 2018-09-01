@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_Receiver =
+JobClass xJobClass_Receiver =
 {
   "Job_Receiver"_Stz,    // name of the job class
   CN_JOB_RECEIVER,       // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_Receiver =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_Receiver_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_Receiver_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Sanity_class;
   

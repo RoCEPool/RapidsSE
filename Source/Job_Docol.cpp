@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_Docol =
+JobClass xJobClass_Docol =
 {
   "Job_Docol"_Stz,   // name of the job class
   CN_JOB_DOCOL,      // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_Docol =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_Docol_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_Docol_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_DropCatalog_class;
   

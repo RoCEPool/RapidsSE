@@ -47,8 +47,8 @@ namespace JobsModel
   void vJob_CreateIndex_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_CreateIndex_show(Job* pJob);
   
-  JobClass_s* pJob_CreateIndex_class(pFUN** aaFun);
-  JobClass_s* pJob_CreateIndexUnique_class(pFUN** aaFun);
+  JobClass* pJob_CreateIndex_class(pFUN** aaFun);
+  JobClass* pJob_CreateIndexUnique_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

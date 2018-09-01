@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_CreateCatalog_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_CreateCatalog_show(Job* pJob);
   
-  JobClass_s* pJob_CreateCatalog_class(pFUN** aaFun);
+  JobClass* pJob_CreateCatalog_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

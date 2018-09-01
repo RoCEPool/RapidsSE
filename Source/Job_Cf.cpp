@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_Cf =
+JobClass xJobClass_Cf =
 {
   "Job_Cf"_Stz,        // name of the job class
   CN_JOB_CF,           // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_Cf =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_Cf_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_Cf_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CompactIndex_class;
   

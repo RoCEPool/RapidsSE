@@ -42,7 +42,7 @@ void Task::vJobClassFind(MP_Task mpTask)
   
   eCN eClass = (eCN)iJobClass;
   
-  JobClass_s* pJobClass = JobClass_s::pFindJobClass_s(eClass);
+  JobClass* pJobClass = JobClass::pFindJobClass_s(eClass);
   
   mpTask->m_pDataStack->vPushInt((i8)pJobClass);
 
@@ -50,7 +50,7 @@ void Task::vJobClassFind(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobClass.buffer@ -- get JobClass_s::m_bBuffer                                */
+/* jobClass.buffer@ -- get JobClass::m_bBuffer                                */
 /*----------------------------------------------------------------------------*/
 void Task::vJobClassBuffer(MP_Task mpTask)
 {
@@ -59,7 +59,7 @@ void Task::vJobClassBuffer(MP_Task mpTask)
   i8 iJobClass_p;
   if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.buffer@"_Stz);
-  JobClass_s* pJobClass = _pJobClass_s(iJobClass_p);
+  JobClass* pJobClass = _pJobClass_s(iJobClass_p);
   
   bool bBuffer = pJobClass->m_bBuffer;
   
@@ -78,7 +78,7 @@ void Task::vJobClassName(MP_Task mpTask)
   i8 iJobClass_p;
   if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.name"_Stz);
-  JobClass_s* pJobClass = _pJobClass_s(iJobClass_p);
+  JobClass* pJobClass = _pJobClass_s(iJobClass_p);
   
   s256 sName((Stz*)&pJobClass->m_aName);
   
@@ -97,7 +97,7 @@ void Task::vJobClassNew(MP_Task mpTask)
   i8 iJobClass_p;
   if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.new"_Stz);
-  JobClass_s* pJobClass = _pJobClass_s(iJobClass_p);
+  JobClass* pJobClass = _pJobClass_s(iJobClass_p);
 
   Object* pArgPtr;
   if ( ! mpTask->m_pDataStack->bPop(pArgPtr) )
@@ -121,7 +121,7 @@ void Task::vJobClassSeedRun(MP_Task mpTask)
   i8 iJobClass_p;
   if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedRun"_Stz);
-  JobClass_s* pJobClass = _pJobClass_s(iJobClass_p);
+  JobClass* pJobClass = _pJobClass_s(iJobClass_p);
   
   s256 sSeed((Stz*)pJobClass->m_aSeedRun);
   
@@ -140,7 +140,7 @@ void Task::vJobClassSeedReq(MP_Task mpTask)
   i8 iJobClass_p;
   if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedReq"_Stz);
-  JobClass_s* pJobClass = _pJobClass_s(iJobClass_p);
+  JobClass* pJobClass = _pJobClass_s(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedReq);
   
@@ -159,7 +159,7 @@ void Task::vJobClassSeedRcv(MP_Task mpTask)
   i8 iJobClass_p;
   if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedRcv"_Stz);
-  JobClass_s* pJobClass = _pJobClass_s(iJobClass_p);
+  JobClass* pJobClass = _pJobClass_s(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedRcv);
   
@@ -178,7 +178,7 @@ void Task::vJobClassSeedExe(MP_Task mpTask)
   i8 iJobClass_p;
   if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedExe"_Stz);
-  JobClass_s* pJobClass = _pJobClass_s(iJobClass_p);
+  JobClass* pJobClass = _pJobClass_s(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedExe);
   
@@ -197,7 +197,7 @@ void Task::vJobClassSeedEnd(MP_Task mpTask)
   i8 iJobClass_p;
   if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedEnd"_Stz);
-  JobClass_s* pJobClass = _pJobClass_s(iJobClass_p);
+  JobClass* pJobClass = _pJobClass_s(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedEnd);
   
@@ -216,7 +216,7 @@ void Task::vJobClassSeedCan(MP_Task mpTask)
   i8 iJobClass_p;
   if ( ! mpTask->m_pDataStack->bPop(iJobClass_p) )
     THROW_INVALID_DSTACK("jobClass.seedCan"_Stz);
-  JobClass_s* pJobClass = _pJobClass_s(iJobClass_p);
+  JobClass* pJobClass = _pJobClass_s(iJobClass_p);
   
   s256 sSeed((Stz*)&pJobClass->m_aSeedCan);
   

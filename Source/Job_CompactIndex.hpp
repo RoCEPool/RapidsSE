@@ -40,7 +40,7 @@ namespace JobsModel
   void vJob_CompactIndex_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_CompactIndex_show(Job* pJob);
   
-  JobClass_s* pJob_CompactIndex_class(pFUN** aaFun);
+  JobClass* pJob_CompactIndex_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

@@ -42,7 +42,7 @@ namespace JobsModel
   void vJob_AnalyzeTable_delete(Interface::SEitf* pSEitf, Job* pJob);
   void vJob_AnalyzeTable_show(Job* pJob);
   
-  JobClass_s* pJob_AnalyzeTable_class(pFUN** aaFun);
+  JobClass* pJob_AnalyzeTable_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

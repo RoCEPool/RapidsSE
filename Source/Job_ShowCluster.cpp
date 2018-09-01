@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_ShowCluster =
+JobClass xJobClass_ShowCluster =
 {
   "Job_ShowCluster"_Stz, // name of the job class
   CN_JOB_SHOWCLUSTER,    // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_ShowCluster =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_ShowCluster_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_ShowCluster_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SizeIndex_class;
   

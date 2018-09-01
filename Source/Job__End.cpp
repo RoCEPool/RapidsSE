@@ -6,7 +6,7 @@
 
 #include "JobModel.h"
 
-JobClass_s xJobClass__End =
+JobClass xJobClass__End =
 {
   "Job__End"_Stz,          // name of the job class
   CN_JOB__END,             // class enum
@@ -41,7 +41,7 @@ JobClass_s xJobClass__End =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob__End_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob__End_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob__Ended_class;
   

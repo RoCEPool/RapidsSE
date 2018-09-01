@@ -6,7 +6,7 @@
 
 #include "JobModel.h"
 
-JobClass_s xJobClass_Prompt =
+JobClass xJobClass_Prompt =
 {
   "Job_Prompt"_Stz,  // name of the job class
   CN_JOB_PROMPT,     // class enum
@@ -41,7 +41,7 @@ JobClass_s xJobClass_Prompt =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_Prompt_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_Prompt_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Pwf_class;
   

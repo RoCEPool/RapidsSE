@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_CreateTenant =
+JobClass xJobClass_CreateTenant =
 {
   "Job_CreateTenant"_Stz,    // name of the job class
   CN_JOB_CREATETENANT,       // class enum
@@ -44,7 +44,7 @@ JobClass_s xJobClass_CreateTenant =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_CreateTenant_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_CreateTenant_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Docol_class;
   

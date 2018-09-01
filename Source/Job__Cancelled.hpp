@@ -37,7 +37,7 @@ namespace JobsModel
   
   void vJob__Cancelled_delete(Interface::SEitf* pSEitf, Job* pJob);
   
-  JobClass_s* pJob__Cancelled_class(pFUN** aaFun);
+  JobClass* pJob__Cancelled_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

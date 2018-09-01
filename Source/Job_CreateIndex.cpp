@@ -9,7 +9,7 @@
 
 extern AttachMap* gpAttachMap;
 
-JobClass_s xJobClass_CreateIndex =
+JobClass xJobClass_CreateIndex =
 {
   "Job_CreateIndex"_Stz,   // name of the job class
   CN_JOB_CREATEINDEX,      // class enum
@@ -41,7 +41,7 @@ JobClass_s xJobClass_CreateIndex =
   { 0, 0, 0, 0 ,0, 0 }     // seeds spawned
 };
 
-JobClass_s xJobClass_CreateIndexUnique =
+JobClass xJobClass_CreateIndexUnique =
 {
   "Job_CreateIndex"_Stz,   // name of the job class
   CN_JOB_CREATEINDEX,      // class enum
@@ -76,7 +76,7 @@ JobClass_s xJobClass_CreateIndexUnique =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_CreateIndex_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_CreateIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CreateIndexUnique_class;
   
@@ -86,7 +86,7 @@ JobClass_s* JobsModel::pJob_CreateIndex_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass_s* JobsModel::pJob_CreateIndexUnique_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_CreateIndexUnique_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CreateSchema_class;
   
