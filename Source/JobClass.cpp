@@ -12,9 +12,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::_pJobClass(i8 iAddr)
 {
-  JobClass* pJobClass_s = reinterpret_cast<JobClass*>(iAddr);
+  JobClass* pJobClass = reinterpret_cast<JobClass*>(iAddr);
   
-  return pJobClass_s;
+  return pJobClass;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,9 +22,9 @@ JobClass* JobsModel::_pJobClass(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::_pJobClass(void* aAddr)
 {
-  JobClass* pJobClass_s = reinterpret_cast<JobClass*>(aAddr);
+  JobClass* pJobClass = reinterpret_cast<JobClass*>(aAddr);
   
-  return pJobClass_s;
+  return pJobClass;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ Job* JobClass::pNewJob(Job* pArg)
 {
   Job* pNewJob = (*m_fNew)(pArg);
   
-  pNewJob->m_pJobClass_s = this;
+  pNewJob->m_pJobClass = this;
   pNewJob->m_eJobTrace = m_eTrace;
   
   return pNewJob;
@@ -63,7 +63,7 @@ Job* JobClass::pPreJob(Interface::SEitf* pSEitf)
 {
   Job* pJob = (*m_fPre)(pSEitf);
   
-  pJob->m_pJobClass_s = this;
+  pJob->m_pJobClass = this;
   pJob->m_eJobTrace = m_eTrace;
   
   return pJob;
@@ -214,14 +214,14 @@ pJOBCLASSFUN JobClass::pFirstFun(void)
 /*----------------------------------------------------------------------------*/
 JobClass* JobClass::pFind(eCN eClass)
 {
-  JobClass* pJobClass_s = nullptr;
+  JobClass* pJobClass = nullptr;
   
   for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob__Begun_class; pfJobClass; ) {
     
-    pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
+    pJobClass = pfJobClass((pFUN**)&pfJobClass);
     
-    if (pJobClass_s->m_eClass == eClass)
-      return pJobClass_s;
+    if (pJobClass->m_eClass == eClass)
+      return pJobClass;
   }
   
   return nullptr;
@@ -234,26 +234,26 @@ JobClass* JobClass::pFind(Stz* aCommand1, Stz* aCommand2)
 {
   //vTrace("FindJob: %s %s\n"_Stz, aCommand1, aCommand2);
   
-  JobClass* pJobClass_s = nullptr;
+  JobClass* pJobClass = nullptr;
   
   for (pJOBCLASSFUN pfJobClass = (pJOBCLASSFUN)pJob__Begun_class; pfJobClass; ) {
     
-    pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
+    pJobClass = pfJobClass((pFUN**)&pfJobClass);
     
-    if ( ! pJobClass_s->m_aCommand1 ||
-        ! StrLib::bSame(pJobClass_s->m_aCommand1->aChar(),aCommand1->aChar()) )
+    if ( ! pJobClass->m_aCommand1 ||
+        ! StrLib::bSame(pJobClass->m_aCommand1->aChar(),aCommand1->aChar()) )
       continue;
     
     //if (aCommand2->iLength()) {
-    if (pJobClass_s->m_aCommand2) {
-      if ( ! StrLib::iLength(pJobClass_s->m_aCommand2->aChar()) )
+    if (pJobClass->m_aCommand2) {
+      if ( ! StrLib::iLength(pJobClass->m_aCommand2->aChar()) )
         continue;
-      if ( ! StrLib::bSame(pJobClass_s->m_aCommand2->aChar(),aCommand2->aChar()) )
+      if ( ! StrLib::bSame(pJobClass->m_aCommand2->aChar(),aCommand2->aChar()) )
         continue;
     }
     
-    if (pJobClass_s->m_bEnabled)
-      return pJobClass_s;
+    if (pJobClass->m_bEnabled)
+      return pJobClass;
     else
       return nullptr;
     
@@ -267,14 +267,14 @@ JobClass* JobClass::pFind(Stz* aCommand1, Stz* aCommand2)
 /*----------------------------------------------------------------------------*/
 void JobClass::vTraceJobs(eCN eClass)
 {
-  JobClass* pJobClass_s = nullptr;
+  JobClass* pJobClass = nullptr;
   
   for (pJOBCLASSFUN pfJobClass = pFirstFun(); pfJobClass; ) {
     
-    pJobClass_s = pfJobClass((pFUN**)&pfJobClass);
+    pJobClass = pfJobClass((pFUN**)&pfJobClass);
     
-    if (pJobClass_s->m_eClass == eClass)
-      pJobClass_s->vJobCat();
+    if (pJobClass->m_eClass == eClass)
+      pJobClass->vJobCat();
   }
 }
 

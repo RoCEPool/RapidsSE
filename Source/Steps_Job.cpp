@@ -539,7 +539,7 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
       break;
       
     default:
-      StrLib::vCopy(sExecute.aChar(),pJob->m_pJobClass_s->m_aSeedExe->aChar());
+      StrLib::vCopy(sExecute.aChar(),pJob->m_pJobClass->m_aSeedExe->aChar());
       //sExecute.vConcat("_exe"_Stz);
       break;
   }
@@ -918,7 +918,7 @@ void Task::vJobJobClass(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.jobClass"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iJobClass_p = (i8)pJob->m_pJobClass_s;
+  i8 iJobClass_p = (i8)pJob->m_pJobClass;
   
   mpTask->m_pDataStack->vPushInt(iJobClass_p);
   
@@ -1100,7 +1100,7 @@ void Task::vJobNewBegun(MP_Task mpTask)
   pJobBegun->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
-  pJobBegun->m_pJobClass_s = pJobClass__Begun;
+  pJobBegun->m_pJobClass = pJobClass__Begun;
   
   mpTask->m_pDataStack->vPushObject(pJobBegun);
   
@@ -1123,7 +1123,7 @@ void Task::vJobNewCancel(MP_Task mpTask)
   pJobCancel->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   JobClass* pJobClass__Cancel = JobClass::pFind(CN_JOB__CANCEL);
-  pJobCancel->m_pJobClass_s = pJobClass__Cancel;
+  pJobCancel->m_pJobClass = pJobClass__Cancel;
   
   mpTask->m_pDataStack->vPushObject(pJobCancel);
   
@@ -1146,7 +1146,7 @@ void Task::vJobNewCancelled(MP_Task mpTask)
   pJobCancelled->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   JobClass* pJobClass__Cancelled = JobClass::pFind(CN_JOB__CANCELLED);
-  pJobCancelled->m_pJobClass_s = pJobClass__Cancelled;
+  pJobCancelled->m_pJobClass = pJobClass__Cancelled;
   
   mpTask->m_pDataStack->vPushObject(pJobCancelled);
   
@@ -1169,7 +1169,7 @@ void Task::vJobNewEnd(MP_Task mpTask)
   pJobEnd->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   JobClass* pJobClass__End = JobClass::pFind(CN_JOB__END);
-  pJobEnd->m_pJobClass_s = pJobClass__End;
+  pJobEnd->m_pJobClass = pJobClass__End;
   
   mpTask->m_pDataStack->vPushObject(pJobEnd);
   
@@ -1192,7 +1192,7 @@ void Task::vJobNewEnded(MP_Task mpTask)
   pJobEnded->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
-  pJobEnded->m_pJobClass_s = pJobClass__Ended;
+  pJobEnded->m_pJobClass = pJobClass__Ended;
   
   mpTask->m_pDataStack->vPushObject(pJobEnded);
   
@@ -1215,7 +1215,7 @@ void Task::vJobNewExecute(MP_Task mpTask)
   pJobExecute->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   JobClass* pJobClass__Execute = JobClass::pFind(CN_JOB__EXECUTE);
-  pJobExecute->m_pJobClass_s = pJobClass__Execute;
+  pJobExecute->m_pJobClass = pJobClass__Execute;
   
   mpTask->m_pDataStack->vPushObject(pJobExecute);
   
@@ -1239,7 +1239,7 @@ void Task::vJobNewExecuted(MP_Task mpTask)
   pJobExecuted->m_iParticipantNode = gpAttachMap->m_pGrid->m_iThisNode;
   
   JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);
-  pJobExecuted->m_pJobClass_s = pJobClass__Executed;
+  pJobExecuted->m_pJobClass = pJobClass__Executed;
   
   mpTask->m_pDataStack->vPushObject(pJobExecuted);
   
@@ -1390,7 +1390,7 @@ void Task::vJobPostRecv(MP_Task mpTask)
   eCN eClass = pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);
   
-  pJob->m_pJobClass_s = pJobClass;
+  pJob->m_pJobClass = pJobClass;
 
   if (pJobClass->m_fRecv)
     (*pJobClass->m_fRecv)(pJob);
@@ -1410,7 +1410,7 @@ void Task::vJobPreSend(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.preSend"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  JobClass* pJobClass = pJob->m_pJobClass_s;
+  JobClass* pJobClass = pJob->m_pJobClass;
   
   if (pJobClass->m_fSend)
     (*pJobClass->m_fSend)(pJob);

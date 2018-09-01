@@ -63,7 +63,7 @@ CommandProcessor::CommandProcessor(void)
   m_pTokeniser->vNormal(true);
 
   
-  m_pJobClass_s = nullptr;
+  m_pJobClass = nullptr;
   m_pJob = nullptr;
   
   _checkInitialised_(CN_COMMANDPROCESSOR);
@@ -168,7 +168,7 @@ void CommandProcessor::vDeleteJob(SEitf* pSEitf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   // call the job delete function
-  m_pJobClass_s->vDeleteJob(pSEitf,m_pJob);
+  m_pJobClass->vDeleteJob(pSEitf,m_pJob);
   
   m_pJob = nullptr;
 }
@@ -183,9 +183,9 @@ bool CommandProcessor::bFindJobClass(void)
   Stz* aCommand1 = pTkn(0)->aText();
   Stz* aCommand2 = pTkn(1)->aText();
   
-  m_pJobClass_s = JobClass::pFind(aCommand1, aCommand2);
+  m_pJobClass = JobClass::pFind(aCommand1, aCommand2);
   
-  return m_pJobClass_s ? true : false;
+  return m_pJobClass ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -292,11 +292,11 @@ Job* CommandProcessor::pJob(void)
 /*----------------------------------------------------------------------------*/
 /* get job class                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* CommandProcessor::pJobClass_s(void)
+JobClass* CommandProcessor::pJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  return m_pJobClass_s;
+  return m_pJobClass;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,7 +307,7 @@ void CommandProcessor::vPostJob(SEitf* pSEitf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   // call the job post function
-  m_pJobClass_s->vPostJob(pSEitf,m_pJob);
+  m_pJobClass->vPostJob(pSEitf,m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -317,7 +317,7 @@ void CommandProcessor::vPreJob(SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  m_pJob = m_pJobClass_s->pPreJob(pSEitf);
+  m_pJob = m_pJobClass->pPreJob(pSEitf);
 }
 
 /*----------------------------------------------------------------------------*/
