@@ -15,6 +15,51 @@ extern pthread_key_t giTLS_ThreadKey;
 void*         mpRegion       = nullptr;
 bool          gbSHM          = false;
 
+
+/*----------------------------------------------------------------------------*/
+/* main entry                                                                 */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vMainEntry(void)
+{
+  //OpSys::vGetInfo();
+  // OpSys::vTraceInfo();
+  
+  vPrintWelcome();
+  
+  if (gxArguments.m_bVerbose)
+    vPrintSizes();
+  
+  vSetSignalHandlers();
+  
+  StorageEngine::vCheckAllAssumptions();
+  
+  vWriteRegionName();
+  
+  vChangeDirectory();
+  
+  vKillPrev();
+  
+  vOpenPool();
+  
+  if (gxArguments.m_bStart)
+    vSetGlobals();
+  
+  vCheckPort();
+  
+  //gpAttachMap->vPrintAttachMap();
+  
+  vRunCmdLine();
+  
+  vClosePool();
+  
+  vPrintExit();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
 /*----------------------------------------------------------------------------*/
@@ -71,18 +116,28 @@ void RapidsSE::vCallImmmediate(Task* pImmediateTask)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vCallPrompt(void)
 {
-  JobClass* pJobClass_Prompt = JobClass::pFind(CN_JOB_PROMPT);
+  SePrompt* pSePrompt = new SePrompt;
   
-  Job_Prompt* pJob_Prompt = static_cast<Job_Prompt*>(pJobClass_Prompt->pNewJob(nullptr));
+  pSePrompt->vPromptLoop();
   
-  pJob_Prompt->vSeed(SS_SEED_RUN);
-  
-  Task* pPromptTask = new Task(pJob_Prompt);
-
-  vCallImmmediate(pPromptTask);
-  
-  vDeleteImmmediate(&pPromptTask);
+  delete pSePrompt;
 }
+
+/*----------------------------------------------------------------------------*/
+//void RapidsSE::vCallPrompt(void)
+//{
+//  JobClass* pJobClass_Prompt = JobClass::pFind(CN_JOB_PROMPT);
+//
+//  Job_Prompt* pJob_Prompt = static_cast<Job_Prompt*>(pJobClass_Prompt->pNewJob(nullptr));
+//
+//  pJob_Prompt->vSeed(SS_SEED_RUN);
+//
+//  Task* pPromptTask = new Task(pJob_Prompt);
+//
+//  vCallImmmediate(pPromptTask);
+//
+//  vDeleteImmmediate(&pPromptTask);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* change current directory                                                   */
@@ -244,45 +299,6 @@ void RapidsSE::vKillPrev(void)
     
     Region::vUnlink(sRegionName);
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* main entry                                                                 */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vMainEntry(void)
-{
-  //OpSys::vGetInfo();
-  // OpSys::vTraceInfo();
-  
-  vPrintWelcome();
-  
-  if (gxArguments.m_bVerbose)
-    vPrintSizes();
-  
-  vSetSignalHandlers();
-  
-  StorageEngine::vCheckAllAssumptions();
-  
-  vWriteRegionName();
-  
-  vChangeDirectory();
-  
-  vKillPrev();
-  
-  vOpenPool();
-  
-  if (gxArguments.m_bStart)
-    vSetGlobals();
-  
-  vCheckPort();
-  
-  //gpAttachMap->vPrintAttachMap();
-  
-  vRunCmdLine();
-  
-  vClosePool();
-  
-  vPrintExit();
 }
 
 /*----------------------------------------------------------------------------*/

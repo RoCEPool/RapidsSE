@@ -110,7 +110,7 @@ void SePrompt::vPromptLoop(void)
     if (bExecuteFile())
       continue;
     
-    if (bFindJobClass()) {
+    if (! bFindJobClass()) {
       vTrace("Unknown command\n"_Stz);
       continue;
     }
@@ -270,6 +270,8 @@ void SePrompt::vPreJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  pCommandProcessor->vPreJob(m_pSEitf);
   
   m_pJob = pCommandProcessor->pJob();
 }
