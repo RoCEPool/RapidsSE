@@ -1585,7 +1585,8 @@ void Task::vRefindJobClass(void)
   eCN eClass = m_pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);
   m_pJob->m_pJobClass = pJobClass;
-  m_pJob->m_pJobClass->vJobCat();
+  
+  //m_pJob->m_pJobClass->vJobCat();
 }
 
 /*----------------------------------------------------------------------------*/

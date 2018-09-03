@@ -124,8 +124,14 @@ void SePrompt::vPromptLoop(void)
       continue;
     }
     
+    ASSERT(! m_pJob->m_pPromptTask);
+    
+    vLockMutex();
     vSpawnJob();
+    vWaitCond();
+
     vPostJob();
+    
     vDeleteJob();
 
   } // while
@@ -250,6 +256,18 @@ void SePrompt::vGetCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* lock mutex                                                                 */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vLockMutex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 rCode = pthread_mutex_lock(&m_pJob->m_xThreadMutex);
+  if (0 != rCode)
+    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* call post-job function                                                     */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vPostJob(void)
@@ -296,8 +314,6 @@ void SePrompt::vSpawnJob(void)
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
   pCommandProcessor->bSpawnJob(m_pSEitf);
-
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -323,6 +339,21 @@ Token* SePrompt::pTkn(i8 i_Token)
   
   return pTkn;
 }
+
+/*----------------------------------------------------------------------------*/
+/* wait condition variable                                                    */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vWaitCond(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // wait for condition
+  i8 rCode = pthread_cond_wait(&m_pJob->m_xThreadCond,
+                               &m_pJob->m_xThreadMutex);
+  if (0 != rCode)
+    vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+}
+
 
 
 /*----------------------------------------------------------------------------*/

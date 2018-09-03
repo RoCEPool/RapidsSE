@@ -49,11 +49,13 @@ namespace Prompt
     bool bExecuteFunction(void);
     bool bFindJobClass(void);
     void vGetCommand(void);
+    void vLockMutex(void);
     void vPostJob(void);
     void vPreJob(void);
     SEitf* pSEitf(void);
     void vSpawnJob(void);
     TokenVec* pTknVec(void);
+    void vWaitCond(void);
 
   private:
 
