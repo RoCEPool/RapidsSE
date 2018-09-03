@@ -520,8 +520,12 @@ void Thread::vTaskCall(void)
   m_npTask->vState(TS_EXECUTING);
   m_npTask->vThread(this);
   
-  if ( ! m_npTask->bSeeded() )
+  // TODO: shouldn't have to refind it everytime!!!
+  m_npTask->vRefindJobClass();
+  
+  if ( ! m_npTask->bSeeded() ) {
     m_npTask->vSeedJob();
+  }
   
   // add this task to the executing task queue
   gpAttachMap->m_pQueues->vAddToExecutingQueue(*m_npTask);

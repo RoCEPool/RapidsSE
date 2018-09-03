@@ -1575,6 +1575,20 @@ void Task::vQueue(eQR eQueue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set task queue                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vRefindJobClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  // find the job class on this node
+  eCN eClass = m_pJob->eClass();
+  JobClass* pJobClass = JobClass::pFind(eClass);
+  m_pJob->m_pJobClass = pJobClass;
+  m_pJob->m_pJobClass->vJobCat();
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset task                                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vReset(void)

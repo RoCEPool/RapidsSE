@@ -181,6 +181,7 @@ namespace Tasks
     void vPushStr(s48K& sStr);
     eQR  eQueue(void);
     void vQueue(eQR eQueue);
+    void vRefindJobClass(void);
     void vReset(void);
     void vRetry(void);
     bool bSeeded(void);
