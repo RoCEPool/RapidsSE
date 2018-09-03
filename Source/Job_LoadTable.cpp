@@ -119,6 +119,8 @@ Job_LoadTable::Job_LoadTable(Interface::SEitf* pSEitf)
   m_pLoader = nullptr;
   
   m_xFormatters.vReset(); // reset to defaults in attachmap 
+  m_iValidRows = 0;
+  m_iInvalidRows = 0;
   
   m_pTask = nullptr;
   

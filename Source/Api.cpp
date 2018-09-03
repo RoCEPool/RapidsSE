@@ -448,8 +448,8 @@ eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, void** ppValidRows, void** pp
     VALIDATE_REFPOINTER("b"_Stz, ppInvalidRows);
     
     Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
-    //*ppValidRows = pJob_LoadTable->m_iValidRows;
-    //*ppValppInvalidRowsidRows = pJob_LoadTable->m_iInvalidRows;
+    *ppValidRows = &pJob_LoadTable->m_iValidRows;
+    *ppInvalidRows = &pJob_LoadTable->m_iInvalidRows;
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -470,12 +470,11 @@ eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, void** ppValidRows, void** pp
 /*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
+eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
 {
   eEC eResult;
-  eEC eResponse;
   
-  Stz* aApiCall = "RapidsSE_GetLastError"_Stz;
+  Stz* aApiCall = "RapidsSE_GetErrorMessage"_Stz;
   
   try {
     // trace entry
@@ -1343,8 +1342,11 @@ eEC RapidsSE_ExecuteCommandPath(SEitf* pSEitf, Stz* aCommand,
   
   if (pJob->m_bHasError) {
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE)
+      if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
+        vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
+        pSEitf->m_sErrorMsg = aEC[pJob->m_xNode[i_Node].m_eErrorCode];
         return pJob->m_xNode[i_Node].m_eErrorCode;
+      }
     }
     ASSERT(0);
   }
