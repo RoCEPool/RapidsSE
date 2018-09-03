@@ -11,40 +11,15 @@
 #define TL_POOL   16
 
 // external SE API calls
-extern "C" eEC RapidsSE_AddIndexColumn(SEitf* pSEitf, Stz* pTableName, Stz* pIndexName, Stz* pColumnName, i8 iTraceLevel);
-extern "C" eEC RapidsSE_AddPartitionByColumn(SEitf* pSEitf, Stz* pTableName,Stz* pColumnName, i8 iTraceLevel);
-extern "C" eEC RapidsSE_AddTableColumn(SEitf* pSEitf, Stz* pTableName, Stz* pColumnName, Stz* pColumnType,
-                                       i8 iTraceLevel);
-extern "C" eEC RapidsSE_BeginFetch(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, Stz* pRange, i8 iTraceLevel);
 extern "C" eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel);
 extern "C" eEC RapidsSE_BeginInsertPartition(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel);
 extern "C" eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
-extern "C" eEC RapidsSE_CreateIndex(SEitf* seitf, Stz* catalog, Stz* pSchema, Stz* table, Stz* pIndex, bool bIsUnique, i8 iTraceLevel);
-extern "C" eEC RapidsSE_CreateTable(SEitf* seitf, Stz* catalog, Stz* pSchema, Stz* table, i8 iTraceLevel);
-extern "C" eEC RapidsSE_DropIndex(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, Stz* pIndex, i8 iTraceLevel);
-extern "C" eEC RapidsSE_DropTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel);
-extern "C" eEC RapidsSE_EndCreateIndex(SEitf* pSEitf, Stz* pTable, Stz* pIndexi8, i8 iTraceLevel);
-extern "C" eEC RapidsSE_EndCreateTable(SEitf* pSEitf, Stz* pTable, i8 iTraceLevel);
-extern "C" eEC RapidsSE_EndFetch(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndInsertPartition(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLevel);
 
-extern "C" eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel);
-//extern "C" eEC RapidsSE_FetchNextRow2(SEitf* pSEitf, void** ppRow, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,
-                                   Stz* pTable, void** ppColumns, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetColumnFromRow(SEitf* pSEitf, i8 iColumnNo, void** ppRow, void** ppValue, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetIndexes(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,
-                                   Stz* pTable, void** ppIndexes, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetIndexColumns(SEitf* pSEitf, Stz* pCatalog,  Stz* pSchema,
-                                        Stz* pTable, Stz* pIndex, void** ppColumns, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions, void** ppCount, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, Stz* pCatalog, void** ppSchema, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, void** ppTables, i8 iTraceLevel);
 extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 iTraceLevel);
 extern "C" i8  RapidsSE_HashIntegerNode(i8 iInt);
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
@@ -60,14 +35,12 @@ extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel);
 extern "C" eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, void** ppValidRows, void** ppInvalidRows, i8 iTraceLevel);
 extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);
-extern "C" eEC RapidsSE_TruncateTable(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel);
 
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf,TokenVec& xTokenVec, Stz** ppResponse);
 
 extern "C" eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJob, void** ppFetchBuffer, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetRowCount(SEitf* pSEitf, Job* pJob, void** ppRowCount, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetRow(SEitf* pSEitf, Job* pJob, i8 iRow, void** ppRow, i8 iTraceLevel);
-extern "C" eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand, bool bPostJob, void** ppJob, i8 iTraceLevel);
 extern "C" eEC RapidsSE_ExecuteCommandPath(SEitf* pSEitf, Stz* aCommand, Stz* sCatalogName, Stz* sSchemaName,
                                         bool bPostJob, void** ppJob, i8 iTraceLevel);
 Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob);
