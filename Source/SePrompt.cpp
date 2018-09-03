@@ -97,7 +97,38 @@ void SePrompt::vPromptLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  
+  while (bContinue()) {
+    
+    vGetCommand();
+    
+    if (bBlankLine())
+      continue;
+    
+    if (bExecuteFunction())
+      continue;
+    
+    if (bExecuteFile())
+      continue;
+    
+    if (bFindJobClass()) {
+      vTrace("Unknown command\n"_Stz);
+      continue;
+    }
+
+    vPreJob();
+    
+    if (m_pJob->m_bHasError) {
+      vTrace("job has error (maybe syntax error)\n"_Stz);
+      vPostJob();
+      vDeleteJob();
+      continue;
+    }
+    
+    vSpawnJob();
+    vPostJob();
+    vDeleteJob();
+
+  } // while
 }
 
 /*----------------------------------------------------------------------------*/
@@ -234,15 +265,13 @@ void SePrompt::vPostJob(void)
 /*----------------------------------------------------------------------------*/
 /* call pre-job function                                                     */
 /*----------------------------------------------------------------------------*/
-Job* SePrompt::pPreJob(void)
+void SePrompt::vPreJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
-  Job* pJob = pCommandProcessor->pJob();
-  
-  return pJob;
+  m_pJob = pCommandProcessor->pJob();
 }
 
 /*----------------------------------------------------------------------------*/

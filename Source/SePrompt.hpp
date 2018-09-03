@@ -50,7 +50,7 @@ namespace Prompt
     bool bFindJobClass(void);
     void vGetCommand(void);
     void vPostJob(void);
-    Job* pPreJob(void);
+    void vPreJob(void);
     SEitf* pSEitf(void);
     void vSpawnJob(void);
     TokenVec* pTknVec(void);
