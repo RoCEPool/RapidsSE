@@ -23,6 +23,8 @@ namespace Prompt
     bool   m_bContinue;  // continue processing commands?
     SEitf* m_pSEitf;     // interface into rapidsse
   
+    Job*   m_pJob;       // job
+  
     // must be last
     Footer m_xFooter;
   
@@ -36,14 +38,19 @@ namespace Prompt
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     // these are the prompt.xyz task primitives
-    bool bExecuteFunction(void);
-
-    // other
+    bool bBlankLine(void);
     CommandProcessor* pCommandProcessor(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
+    void vDeleteJob(void);
+    bool bExecuteFile(void);
+    bool bExecuteFunction(void);
+    bool bFindJobClass(void);
     void vGetCommand(void);
+    void vPostJob(void);
+    Job* pPreJob(void);
     SEitf* pSEitf(void);
+    void vSpawnJob(void);
     TokenVec* pTknVec(void);
 
   private:
