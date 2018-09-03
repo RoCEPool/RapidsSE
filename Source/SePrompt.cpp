@@ -53,8 +53,11 @@ SePrompt::SePrompt(void)
                                   "public"_Stz,
                                   iPartition,
                                   /*trace*/ 0);
+
   ASSERT(EC_NONE == eResult);
-   
+
+  m_pJob = nullptr;
+  
   _checkInitialised_(CN_SEPROMPT);
 }
 
@@ -84,8 +87,123 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Task Primitives ---------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set continue                                                               */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vPromptLoop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  while (bContinue()) {
+    
+    vGetCommand();
+    
+    if (bBlankLine())
+      continue;
+    
+    if (bExecuteFunction())
+      continue;
+    
+    if (bExecuteFile())
+      continue;
+    
+    if (! bFindJobClass()) {
+      vTrace("Unknown command\n"_Stz);
+      continue;
+    }
+
+    vPreJob();
+    
+    if (m_pJob->m_bHasError) {
+      vTrace("job has error (maybe syntax error)\n"_Stz);
+      vPostJob();
+      vDeleteJob();
+      continue;
+    }
+    
+    vSpawnJob();
+    vPostJob();
+    vDeleteJob();
+
+  } // while
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+
+/*----------------------------------------------------------------------------*/
+/* test for blank line                                                        */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bBlankLine(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  bool bBlankLine = pCommandProcessor->bBlankLine();
+
+  return bBlankLine;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command processor                                                      */
+/*----------------------------------------------------------------------------*/
+CommandProcessor* SePrompt::pCommandProcessor(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_pSEitf->m_pCommandProcessor;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get continue                                                               */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bContinue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set continue                                                               */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vContinue(bool bContinue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_bContinue = bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set continue                                                               */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDeleteJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  delete m_pJob;
+  m_pJob = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* potentially execute a file                                                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExecuteFile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  bool bExecuteFile = pCommandProcessor->bExecuteFile();
+  
+  return bExecuteFile;
+}
 
 /*----------------------------------------------------------------------------*/
 /* potentially execute a prompt function                                      */
@@ -105,39 +223,18 @@ bool SePrompt::bExecuteFunction(void)
   return true;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/* find job class                                                             */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get command processor                                                      */
-/*----------------------------------------------------------------------------*/
-CommandProcessor* SePrompt::pCommandProcessor(void)
+bool SePrompt::bFindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSEitf->m_pCommandProcessor;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get continue                                                                */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bContinue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
-  return m_bContinue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set continue                                                                */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vContinue(bool bContinue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  bool bFindJobClass = pCommandProcessor->bFindJobClass();
   
-  m_bContinue = bContinue;
+  return bFindJobClass;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,6 +250,33 @@ void SePrompt::vGetCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* call post-job function                                                     */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vPostJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  pCommandProcessor->vPostJob(m_pSEitf);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* call pre-job function                                                     */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vPreJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  pCommandProcessor->vPreJob(m_pSEitf);
+  
+  m_pJob = pCommandProcessor->pJob();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the seitf                                                              */
 /*----------------------------------------------------------------------------*/
 SEitf* SePrompt::pSEitf(void)
@@ -163,8 +287,18 @@ SEitf* SePrompt::pSEitf(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
+/* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
+void SePrompt::vSpawnJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  pCommandProcessor->bSpawnJob(m_pSEitf);
+
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* get token vector                                                           */
@@ -189,6 +323,7 @@ Token* SePrompt::pTkn(i8 i_Token)
   
   return pTkn;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
