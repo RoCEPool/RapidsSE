@@ -36,6 +36,8 @@ namespace Prompt
     ~SePrompt(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+  
+    void vPromptLoop(void);
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);

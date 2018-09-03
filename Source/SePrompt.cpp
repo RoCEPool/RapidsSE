@@ -90,8 +90,18 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* set continue                                                               */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vPromptLoop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
+  
+}
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
 
@@ -102,7 +112,11 @@ bool SePrompt::bBlankLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return false;
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  bool bBlankLine = pCommandProcessor->bBlankLine();
+
+  return bBlankLine;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +130,7 @@ CommandProcessor* SePrompt::pCommandProcessor(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get continue                                                                */
+/* get continue                                                               */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bContinue(void)
 {
@@ -126,7 +140,7 @@ bool SePrompt::bContinue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set continue                                                                */
+/* set continue                                                               */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vContinue(bool bContinue)
 {
@@ -136,7 +150,7 @@ void SePrompt::vContinue(bool bContinue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set continue                                                                */
+/* set continue                                                               */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vDeleteJob(void)
 {
@@ -147,13 +161,17 @@ void SePrompt::vDeleteJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* potentially execute a prompt function                                      */
+/* potentially execute a file                                                 */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bExecuteFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  return false;
+  
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  bool bExecuteFile = pCommandProcessor->bExecuteFile();
+  
+  return bExecuteFile;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +199,11 @@ bool SePrompt::bFindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return false;
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  bool bFindJobClass = pCommandProcessor->bFindJobClass();
+  
+  return bFindJobClass;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,6 +225,10 @@ void SePrompt::vPostJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  pCommandProcessor->vPostJob(m_pSEitf);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,7 +238,11 @@ Job* SePrompt::pPreJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return nullptr;
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  Job* pJob = pCommandProcessor->pJob();
+  
+  return pJob;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,6 +262,11 @@ void SePrompt::vSpawnJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  
+  pCommandProcessor->bSpawnJob(m_pSEitf);
+
+
 }
 
 /*----------------------------------------------------------------------------*/
