@@ -926,20 +926,20 @@ void SEitf::vLastBuffers(i8 nLastBuffers)
 /*----------------------------------------------------------------------------*/
 /* iterate entry buffers from the buffer queue                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bNextBuffer(void)
+bool SEitf::bNextBuffer(Job_FetchRows* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-    
+  
   // if we had an entry buffer delete it
   if (m_pFetchBuffer)
     delete m_pFetchBuffer;
   
-  if (m_ziLastBuffersScanned == m_ziLastBuffers)
+  if (m_ziLastBuffersScanned == pJob->m_nLastBuffers)
     return false;
   
   // pop an entryBuffer off the queue
   ValWrk xValWrk;
-  while (!m_pBufferQueue->bPop(&xValWrk)) {
+  while (!pJob->m_pBufferQueue->bPop(&xValWrk)) {
     PosixThread::vSleepMilli(1);
   }
   

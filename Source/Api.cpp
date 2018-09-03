@@ -1061,7 +1061,7 @@ eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLev
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppFetchBuffer, i8 iTraceLevel)
+eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJob, void** ppFetchBuffer, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -1080,7 +1080,7 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void** ppFetchBuffer, i8 iTraceLevel
     // validate the reference pointer
     VALIDATE_REFPOINTER("b"_Stz, ppFetchBuffer);
     
-    bool bNextBuffer = pSEitf->bNextBuffer();
+    bool bNextBuffer = pSEitf->bNextBuffer(_pJob_FetchRows(pJob));
     
     if (bNextBuffer) {
       *ppFetchBuffer = pSEitf->m_pFetchBuffer;
@@ -1148,6 +1148,49 @@ eEC RapidsSE_FetchNextRow(SEitf* pSEitf, void** ppRow, i8 iTraceLevel)
     
     // trace exit
     TRACE_EXIT("eb"_Stz);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch next buffer                                                          */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, void** ppValidRows, void** ppInvalidRows, i8 iTraceLevel)
+{
+  eEC eResult;
+  
+  Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
+  
+  try {
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    // clear the last error
+    CLEAR_LASTERROR();
+    
+    // validate the reference pointers
+    VALIDATE_REFPOINTER("b"_Stz, ppValidRows);
+    VALIDATE_REFPOINTER("b"_Stz, ppInvalidRows);
+    
+    Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
+    //*ppValidRows = pJob_LoadTable->m_iValidRows;
+    //*ppValppInvalidRowsidRows = pJob_LoadTable->m_iInvalidRows;
+    
+    // trace exit
+    TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
   }
