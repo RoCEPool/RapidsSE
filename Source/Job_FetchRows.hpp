@@ -14,7 +14,9 @@ namespace JobsModel
     Table*       m_pTable;              // table rows being fetched from
     Planner*     m_pPlanner;            // fetch planner
     Queue*       m_pBufferQueue;        // buffer queue where fetch buffers are pushed
+    FetchBuffer* m_pFetchBuffer;        // fetch buffer
     i8           m_nLastBuffers;        // expected last buffers
+    i8           m_nLastBuffersScanned; // last buffers scanned so far.
     Tasks::Task* m_pTask;               // task running this job
     
     // must be last

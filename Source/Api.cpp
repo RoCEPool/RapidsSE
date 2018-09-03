@@ -378,19 +378,38 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJob, void** ppFetchBuffer, i8
     // validate the reference pointer
     VALIDATE_REFPOINTER("b"_Stz, ppFetchBuffer);
     
-    bool bNextBuffer = pSEitf->bNextBuffer(_pJob_FetchRows(pJob));
+    Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
     
-    if (bNextBuffer) {
-      *ppFetchBuffer = pSEitf->m_pFetchBuffer;
-      //pSEitf->m_pResultBuffer->vShow();
-      //vTrace("Buffer %p Entries %lld\n"_Stz, pSEitf->m_pFetchBuffer,  pSEitf->m_pFetchBuffer->nFetchedRows());
-    }
-    else {
+    // if we had an entry buffer delete it
+    if (pJob_FetchRows->m_pFetchBuffer)
+      delete pJob_FetchRows->m_pFetchBuffer;
+    
+    if (pJob_FetchRows->m_nLastBuffersScanned == pJob_FetchRows->m_nLastBuffers) {
       *ppFetchBuffer = nullptr;
+      // trace exit
+      TRACE_EXIT("ea"_Stz);
+      return EC_NONE;
     }
+    
+    // pop an entryBuffer off the queue
+    ValWrk xValWrk;
+    while (!pJob_FetchRows->m_pBufferQueue->bPop(&xValWrk)) {
+      PosixThread::vSleepMilli(1);
+    }
+    
+    // get entry buffer
+    PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+    pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
+    
+    if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
+      pJob_FetchRows->m_nLastBuffersScanned++;
+      vTrace("m_nLastBuffersScanned: %lld %lld\n"_Stz, pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
+    }
+    
+    *ppFetchBuffer = pJob_FetchRows->m_pFetchBuffer;
     
     // trace exit
-    TRACE_EXIT("ea"_Stz);
+    TRACE_EXIT("eb"_Stz);
     
     return EC_NONE;
   }

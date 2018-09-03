@@ -111,9 +111,11 @@ Job_FetchRows::Job_FetchRows(Interface::SEitf* pSEitf)
     
   m_sWhere       = ""_Stz;
   m_pBufferQueue = new Queue;
+  m_pFetchBuffer = nullptr;
   m_pTable       = nullptr;
   m_pPlanner     = nullptr;
-  m_nLastBuffers = -1;
+  m_nLastBuffers = 0;
+  m_nLastBuffersScanned = 0;
  
   m_pTask        = nullptr;
   
