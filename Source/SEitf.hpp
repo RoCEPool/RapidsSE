@@ -23,7 +23,6 @@ namespace Interface
     
     Table*        m_pCurrentTable;
     Index*        m_pCurrentIndex;
-    Planner*      m_pPlanner;
     AccessPath*   m_pAccessPath;
   
     Tx*    m_pTx;
