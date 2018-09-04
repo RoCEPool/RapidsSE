@@ -64,7 +64,7 @@ common/ print nFetchPartitions /
      // didn't get a rowBuffer, this fetch partition has ended
      nFetchPartitions 1- toCommon nFetchPartitions
 
-     pSeitf seitf.fetchTaskEnded
+     //pSeitf seitf.fetchTaskEnded
 
      // have all the fetch tasks ended ?
      nFetchPartitions 0 == if

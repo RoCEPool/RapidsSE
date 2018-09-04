@@ -1143,21 +1143,14 @@ namespace Tasks
     
   
     // seitf
-    static void vSEitfAcksRemainingDec(MP_Task mpTask);
-    static void vSEitfAcksRemainingFetch(MP_Task mpTask);
-    static void vSEitfAcksRemainingStore(MP_Task mpTask);
     static void vSEitfCommandProcessor(MP_Task mpTask);
     static void vSEitfDicStack(MP_Task mpTask);
     static void vSEitfDisplayFetch(MP_Task mpTask);
     static void vSEitfDisplayStore(MP_Task mpTask);
     static void vSEitfDump(MP_Task mpTask);
-    static void vSEitfFetchTaskEnded(MP_Task mpTask);
-    static void vSEitfFieldDelimiterFetch(MP_Task mpTask);
     static void vSEitfIsExiting(MP_Task mpTask);
     static void vSEitfLastBuffersFetch(MP_Task mpTask);
     static void vSEitfLastBuffersStore(MP_Task mpTask);
-    static void vSEitfPartitionFetch(MP_Task mpTask);
-    static void vSEitfPartitionStore(MP_Task mpTask);
     static void vSEitfPid(MP_Task mpTask);
     static void vSEitfRowsInvalidStore(MP_Task mpTask);
     static void vSEitfRowsValidStore(MP_Task mpTask);

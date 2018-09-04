@@ -15,21 +15,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SEitf(void)
 {
-  vAddPrimitive("seitf.acksRemainingDec"_Stz, &vSEitfAcksRemainingDec, false);
-  vAddPrimitive("seitf.acksRemaining@"_Stz,   &vSEitfAcksRemainingFetch, false);
-  vAddPrimitive("seitf.acksRemaining!"_Stz,   &vSEitfAcksRemainingStore, false);
   vAddPrimitive("seitf.commandProcessor"_Stz, &vSEitfCommandProcessor, false);
   vAddPrimitive("seitf.dicStack"_Stz,         &vSEitfDicStack,         false);
   vAddPrimitive("seitf.display@"_Stz,         &vSEitfDisplayFetch,     false);
   vAddPrimitive("seitf.display!"_Stz,         &vSEitfDisplayStore,     false);
   vAddPrimitive("seitf.dump"_Stz,             &vSEitfDump,             false);
-  vAddPrimitive("seitf.fieldDelimiter@"_Stz,  &vSEitfFieldDelimiterFetch,   false);
-  vAddPrimitive("seitf.fetchTaskEnded"_Stz,   &vSEitfFetchTaskEnded,   false);
   vAddPrimitive("seitf.isExiting"_Stz,        &vSEitfIsExiting,        false);
   vAddPrimitive("seitf.lastBuffers@"_Stz,     &vSEitfLastBuffersFetch, false);
   vAddPrimitive("seitf.lastBuffers!"_Stz,     &vSEitfLastBuffersStore, false);
-  vAddPrimitive("seitf.partition@"_Stz,       &vSEitfPartitionFetch,   false);
-  vAddPrimitive("seitf.partition!"_Stz,       &vSEitfPartitionStore,   false);
   vAddPrimitive("seitf.pid"_Stz,              &vSEitfPid,              false);
   vAddPrimitive("seitf.rowsInvalid!"_Stz,     &vSEitfRowsInvalidStore, false);
   vAddPrimitive("seitf.rowsValid!"_Stz,       &vSEitfRowsValidStore,   false);
@@ -39,68 +32,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.tableDeref"_Stz,       &vSEitfTableDeref,       false);
   vAddPrimitive("seitf.tx@"_Stz,              &vSEitfTxFetch,          false);
   vAddPrimitive("seitf.tx!"_Stz,              &vSEitfTxStore,          false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.acksRemainingDec -- decrement acks remaining                         */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfAcksRemainingDec(MP_Task mpTask)
-{
-  ENTRY("vSEitfAcksRemainingDec"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.acksRemainingDec"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  pSEitf->vDecAcksRemaining();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.acksRemainingFetch -- fetch acks remaining                           */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfAcksRemainingFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfacksRemainingFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.acksRemaining@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  i8 iAcksRemaining = pSEitf->iGetAcksRemaining();
-  mpTask->m_pDataStack->vPushInt(iAcksRemaining);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.acksRemaining! -- store acks remaining                               */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfAcksRemainingStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfAcksRemainingStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.acksRemaining!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  i8 iAcksRemaining;
-  if ( ! mpTask->m_pDataStack->bPop(iAcksRemaining) )
-    THROW_INVALID_DSTACK("seitf.AcksRemaining!"_Stz);
-  
-  pSEitf->vSetAcksRemaining(iAcksRemaining);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,50 +134,6 @@ ENTRY("vSEitfDump"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitf.fetchTaskEnded -- fetch task has eneded                              */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfFetchTaskEnded(MP_Task mpTask)
-{
-  ENTRY("vSEitfFetchTaskEnded"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.fetchTaskEnded"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  --pSEitf->m_ziFetchTasks;
-  //vTrace("Fetch task ended %s %lld\n"_Stz,
-  //       pSEitf->m_pCurrentTable->aTableName(), *pSEitf->m_ziFetchTasks);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.fieldDelimiter@ -- get field delimiter                               */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfFieldDelimiterFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfFieldDelimiterFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.fieldDelimiter@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  s32 sFieldDelimiter;
-  Stz* s = (Stz*)(&pSEitf->m_xFormatters.m_cFieldDelimiter);
-  sFieldDelimiter = s;
-  
-  mpTask->m_pDataStack->vPushS32(sFieldDelimiter);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* seitf.isExiting -- is seitf exiting                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfIsExiting(MP_Task mpTask)
@@ -305,48 +192,6 @@ void Task::vSEitfLastBuffersStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.lastBuffers!"_Stz);
   
   pSEitf->vLastBuffers(nLastBuffers);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.partition@ -- fetch partition of SE interface                        */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfPartitionFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfPartitionFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.partition@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  mpTask->m_pDataStack->vPushInt(pSEitf->m_iPartition);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.partition! -- store partition of SE interface                        */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfPartitionStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfPartitionStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.partition!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("seitf.partition!"_Stz);
-  
-  pSEitf->m_iPartition = iPartition;
   
   EXIT();
 }
