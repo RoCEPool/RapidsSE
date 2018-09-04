@@ -386,6 +386,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* send the job to given node                                                 */
+/*----------------------------------------------------------------------------*/
+: job.forward ( i_Node pJob -- )
+
+  params| pJob |
+  params| i_Node |
+
+  // temp (to be removed)
+  exit
+
+  i_Node grid::node task::this task.sendNode!
+
+  pJob >socket
+;
+
+/*----------------------------------------------------------------------------*/
 /* copy dictionary path from job to datastack                                 */
 /*----------------------------------------------------------------------------*/
 : getPath ( pJob -- )
