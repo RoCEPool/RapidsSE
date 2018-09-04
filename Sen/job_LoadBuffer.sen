@@ -4,13 +4,16 @@
 
 " job_LoadBuffer.sen" .verbose
 
+////////////////////////////////////////////////////////////////////////////////
+//                               on kid node                                  //
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
-/* LoadBuffer kid                                                             */
+/* LoadBuffer load buffer into table                                          */
 /*----------------------------------------------------------------------------*/
-: LoadBuffer_kid ( pJob_LoadBuffer -- )
+: LoadBuffer.load ( pJob_LoadBuffer -- )
 
   params| pJob_LoadBuffer |
-  // job::this locals| pJob_LoadBuffer |
 
   0 locals| iLoadJobId      |
   0 locals| pJob_LoadTable  |
@@ -68,12 +71,52 @@
     pTask_LoadTable ack
   then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //delete_completed_job
 ;
 
 /*----------------------------------------------------------------------------*/
-/* LoadBuffer seed                                                            */
+/* seed on kid node                                                           */
+/*----------------------------------------------------------------------------*/
+: LoadBuffer_kid ( pJob_LoadBuffer -- )
+
+  <SEED_KID>
+
+  params| pJob_LoadBuffer |
+  //job::this locals| pJob_LoadBuffer |
+
+  pJob_LoadBuffer LoadBuffer.load
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //delete_completed_job
+
+  //<DONE_KID>
+;
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on loading node                                 //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* forward this load buffer job to kid node                                   */
+/*----------------------------------------------------------------------------*/
+: LoadBuffer.forward ( pJob_LoadBuffer -- )
+
+  params| pJob_LoadBuffer |
+  //job::this locals| pJob_LoadBuffer |
+
+  pJob_LoadBuffer job_loadBuffer.partition@ locals| i_Partition |
+  i_Partition grid::toNode locals| i_Node |
+  i_Partition i_Node "loadBuffer_run : Node %v Partition %v" fmt.print
+
+  i_Node grid::node task::this task.sendNode!
+
+  // send ... (tbd)
+
+  pJob_LoadBuffer LoadBuffer_kid
+;
+
+/*----------------------------------------------------------------------------*/
+/* seed on loading node                                                       */
 /*----------------------------------------------------------------------------*/
 : loadBuffer_run (  -- )
 
@@ -83,17 +126,7 @@
 
   "loadBuffer_run :" .
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  pJob_LoadBuffer job_loadBuffer.partition@ locals| i_Partition |
-  i_Partition grid::toNode locals| i_Node |
-  i_Partition i_Node "loadBuffer_run : Node %v Partition %v" fmt.print
-
-  i_Node grid::node task::this task.sendNode!
-
-  pJob_LoadBuffer LoadBuffer_kid
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pJob_LoadBuffer LoadBuffer.forward
 
   delete_completed_job
 
