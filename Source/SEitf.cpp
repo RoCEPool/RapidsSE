@@ -178,10 +178,6 @@ SEitf::SEitf(i8 iPartition)
   m_sResponse       = ""_Stz;
   m_pPlanner        = nullptr;
   m_pAccessPath     = nullptr;
-  m_pEntry          = nullptr;
-  m_pResultRow      = nullptr;
-  m_aRow            = nullptr;
-  m_ppRow           = nullptr;
   m_pCurrentTable   = nullptr;
   m_pCurrentIndex   = nullptr;
   m_pTx             = nullptr;

@@ -26,8 +26,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.display!"_Stz,         &vSEitfDisplayStore,     false);
   vAddPrimitive("seitf.dump"_Stz,             &vSEitfDump,             false);
   vAddPrimitive("seitf.fieldDelimiter@"_Stz,  &vSEitfFieldDelimiterFetch,   false);
-  vAddPrimitive("seitf.entry@"_Stz,           &vSEitfEntryFetch,       false);
-  vAddPrimitive("seitf.entry!"_Stz,           &vSEitfEntryStore,       false);
   vAddPrimitive("seitf.fetchTaskEnded"_Stz,   &vSEitfFetchTaskEnded,   false);
   vAddPrimitive("seitf.groupBy@"_Stz,         &vSEitfGroupByFetch,     false);
   vAddPrimitive("seitf.groupBy!"_Stz,         &vSEitfGroupByStore,     false);
@@ -253,51 +251,6 @@ ENTRY("vSEitfDump"_Stz);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   pSEitf->vContentDump();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.entry@ -- fetch entry from SE interface                              */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfEntryFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfEntryFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.entry@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  mpTask->m_pDataStack->vPushObject(pSEitf->m_pEntry);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.entry! -- store entry in SE interface                                */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfEntryStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfEntryStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.entry!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrEntry;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("seitf.entry!"_Stz);
-  
-  Entry* pEntry = _pEntry(pPtrEntry);
-  ASSERT(nullptr == pEntry || CN_ENTRY == pEntry->eClass());
-  
-  pSEitf->m_pEntry = pEntry;
   
   EXIT();
 }

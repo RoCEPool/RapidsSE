@@ -1153,8 +1153,6 @@ namespace Tasks
     static void vSEitfDisplayFetch(MP_Task mpTask);
     static void vSEitfDisplayStore(MP_Task mpTask);
     static void vSEitfDump(MP_Task mpTask);
-    static void vSEitfEntryFetch(MP_Task mpTask);
-    static void vSEitfEntryStore(MP_Task mpTask);
     static void vSEitfFetchTaskEnded(MP_Task mpTask);
     static void vSEitfFieldDelimiterFetch(MP_Task mpTask);
     static void vSEitfGroupByFetch(MP_Task mpTask);

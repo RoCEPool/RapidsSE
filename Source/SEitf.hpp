@@ -25,11 +25,6 @@ namespace Interface
     Index*        m_pCurrentIndex;
     Planner*      m_pPlanner;
     AccessPath*   m_pAccessPath;
-    
-    Entry*        m_pEntry;
-    WorkingRow*   m_pResultRow;
-    Row*          m_aRow;
-    Row**         m_ppRow;
   
     Tx*    m_pTx;
   
