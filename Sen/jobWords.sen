@@ -345,6 +345,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* send the job to given node                                                 */
+/*----------------------------------------------------------------------------*/
+: job.forward ( i_Node pJob -- )
+
+  params| pJob |
+  params| i_Node |
+
+  i_Node grid::node task::this task.sendNode!
+
+  task.send
+
+  pJob job.preSend
+
+  pJob >socket
+;
+
+/*----------------------------------------------------------------------------*/
 /* distribute the job to all the nodes                                        */
 /*----------------------------------------------------------------------------*/
 : job.distribute ( pJob -- )
@@ -369,36 +386,12 @@
   // send the job to each node in the grid
   grid::nodes 0 do
 
-    // set the send node
-    I grid::node task::this task.sendNode!
-
-    task.send
-
-    pJob job.preSend
-
-    // send job
-    pJob >socket
+    I pJob job.forward
 
   loop
 
   // wait for ack from deciding job__Ended
   ackWait
-;
-
-/*----------------------------------------------------------------------------*/
-/* send the job to given node                                                 */
-/*----------------------------------------------------------------------------*/
-: job.forward ( i_Node pJob -- )
-
-  params| pJob |
-  params| i_Node |
-
-  // temp (to be removed)
-  exit
-
-  i_Node grid::node task::this task.sendNode!
-
-  pJob >socket
 ;
 
 /*----------------------------------------------------------------------------*/
