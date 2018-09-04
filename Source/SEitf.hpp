@@ -16,7 +16,6 @@ namespace Interface
     
     DicStack m_xPathStack;      // dictionary stack
     
-    Queue* m_pBufferQueue;     // buffer queue
     s48K   m_sResponse;        // response
     
     eEC    m_eErrorCode;       //
@@ -80,9 +79,6 @@ namespace Interface
     ~SEitf(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
-    void   vBufferQueue(Queue* pBufferQueue);
-    Queue* pBufferQueue(void);
 
     void   vCurrentIndex(Index* pIndex);
     Index* pCurrentIndex(void);
@@ -168,7 +164,6 @@ namespace Interface
     bool bTxRollback(TokenVec& xTokenVec, i8 iReqNo);
   
     //--------------------------------------------------------------------------
-    void vEndFetch(void);
     bool bExtractDateFormat(Stz* dateFormat);
     
     //--------------------------------------------------------------------------

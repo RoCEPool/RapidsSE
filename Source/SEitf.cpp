@@ -173,7 +173,6 @@ SEitf::SEitf(i8 iPartition)
   m_iPartition  = iPartition;
   
   //m_xPathStack;
-  m_pBufferQueue    = nullptr;
   m_eErrorCode      = EC_NONE;
   m_sErrorMsg       = aEC[m_eErrorCode];
   m_sResponse       = ""_Stz;
@@ -236,26 +235,6 @@ SEitf::~SEitf(void)
     delete m_pRowOnce;
   
   delete m_pCommandProcessor;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get buffer queue                                                           */
-/*----------------------------------------------------------------------------*/
-Queue* SEitf::pBufferQueue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  return m_pBufferQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set buffer queue                                                           */
-/*----------------------------------------------------------------------------*/
-void SEitf::vBufferQueue(Queue* pBufferQueue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  m_pBufferQueue = pBufferQueue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -353,34 +332,6 @@ void SEitf::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pSEitf->m_iPartition,
          pSEitf->iSlot(),
          pSEitf->m_sResponse.aChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* end fetch                                                                  */
-/*----------------------------------------------------------------------------*/
-void SEitf::vEndFetch(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  // wait till all fetch tasks have ended
-  while (*m_ziFetchTasks != 0)
-    ;
-  
-  // reset the index
-  m_pCurrentIndex = nullptr;
-  
-  // delete the planner
-  delete m_pPlanner;
-  m_pPlanner = nullptr;
-  
-  delete m_pRowOnce;
-  m_pRowOnce = nullptr;
-  
-  // now delete the buffer queue from this seitf
-  m_pBufferQueue->vFinalize();
-  delete m_pBufferQueue;
-  m_pBufferQueue = nullptr;
-  
 }
 
 /*----------------------------------------------------------------------------*/
