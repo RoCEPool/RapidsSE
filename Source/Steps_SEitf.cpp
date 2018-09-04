@@ -20,8 +20,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.acksRemainingDec"_Stz, &vSEitfAcksRemainingDec, false);
   vAddPrimitive("seitf.acksRemaining@"_Stz,   &vSEitfAcksRemainingFetch, false);
   vAddPrimitive("seitf.acksRemaining!"_Stz,   &vSEitfAcksRemainingStore, false);
-  vAddPrimitive("seitf.bufferQueue@"_Stz,     &vSEitfBufferQueueFetch, false);
-  vAddPrimitive("seitf.bufferQueue!"_Stz,     &vSEitfBufferQueueStore, false);
   vAddPrimitive("seitf.commandProcessor"_Stz, &vSEitfCommandProcessor, false);
   vAddPrimitive("seitf.dicStack"_Stz,         &vSEitfDicStack,         false);
   vAddPrimitive("seitf.display@"_Stz,         &vSEitfDisplayFetch,     false);
@@ -158,52 +156,6 @@ void Task::vSEitfAcksRemainingStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.AcksRemaining!"_Stz);
   
   pSEitf->vSetAcksRemaining(iAcksRemaining);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.bufferQueue@ -- get SEitf buffer queue                               */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfBufferQueueFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfBufferQueueFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.bufferQueue@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  mpTask->m_pDataStack->vPushObject(pSEitf->pBufferQueue());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.bufferQueue! -- store SEitf buffer queue                             */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfBufferQueueStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfBufferQueueStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.bufferQueue!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrQueue;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrQueue) )
-    THROW_INVALID_DSTACK("seitf.bufferQueue!"_Stz);
-  
-  Queue* pQueue = _pQueue(pPtrQueue);
-  ASSERT(nullptr == pQueue || CN_QUEUE == pQueue->eClass());
-  
-  pSEitf->vBufferQueue(pQueue);
   
   EXIT();
 }

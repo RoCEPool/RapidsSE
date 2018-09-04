@@ -34,7 +34,7 @@ common/ print nFetchPartitions /
     // create the buffer queue in the seitf
     "selectTask.queue" queue::new to pBufferQueue
 
-    pBufferQueue pSeitf seitf.bufferQueue!
+    //pBufferQueue pSeitf seitf.bufferQueue!
 
     // set the no of fetch tasks in nFetchPartitions
     $$nPartitions toCommon nFetchPartitions
@@ -43,7 +43,7 @@ common/ print nFetchPartitions /
     // mark fetch as started
     1 to bFetchStarted
   else
-    pSeitf seitf.bufferQueue@ to pBufferQueue
+    //pSeitf seitf.bufferQueue@ to pBufferQueue
   then
 
   ( [ rowBuffer ] )

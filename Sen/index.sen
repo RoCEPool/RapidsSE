@@ -441,7 +441,7 @@ tp: keySelectIdx
 
   // set the queue in the seitf
   pSeitf if
-    pBufferQueue pSeitf seitf.bufferQueue!
+    //pBufferQueue pSeitf seitf.bufferQueue!
   then
 
   // create a selectTask to execute the key select on the index for the partition
@@ -505,7 +505,7 @@ tp: keySelectIdx
   while
 
     // attempt to pop buffer off the tasks buffer queue
-    pSeitf seitf.bufferQueue@ popBuffer to pIndexBuffer
+    //pSeitf seitf.bufferQueue@ popBuffer to pIndexBuffer
 
     // print the rows from the index buffer
     pIndex pIndexBuffer printRows nRowCount + to nRowCount
@@ -530,8 +530,8 @@ tp: keySelectIdx
   repeat
 
   // delete the buffer queue from the seitf
-  pSeitf seitf.bufferQueue@ queue.delete
-  0 pSeitf seitf.bufferQueue!
+  //pSeitf seitf.bufferQueue@ queue.delete
+  //0 pSeitf seitf.bufferQueue!
 
   args.metadata if
     nRowCount pSeitf seitf.rowsProcessed
@@ -599,7 +599,7 @@ tp: keySelectIdx
   //then
 
   // create the buffer queue in the seitf
-  "selectTask.queue" queue::new pSeitf seitf.bufferQueue!
+  //"selectTask.queue" queue::new pSeitf seitf.bufferQueue!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each slot

@@ -1148,8 +1148,6 @@ namespace Tasks
     static void vSEitfAcksRemainingDec(MP_Task mpTask);
     static void vSEitfAcksRemainingFetch(MP_Task mpTask);
     static void vSEitfAcksRemainingStore(MP_Task mpTask);
-    static void vSEitfBufferQueueFetch(MP_Task mpTask);
-    static void vSEitfBufferQueueStore(MP_Task mpTask);
     static void vSEitfCommandProcessor(MP_Task mpTask);
     static void vSEitfDicStack(MP_Task mpTask);
     static void vSEitfDisplayFetch(MP_Task mpTask);
