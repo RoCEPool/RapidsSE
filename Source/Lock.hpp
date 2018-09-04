@@ -26,15 +26,16 @@ namespace System
   /* 11 */ LK_LOAD_MAP,
   /* 12 */ LK_PARTITION,
   /* 13 */ LK_QUEUE,
-  /* 14 */ LK_STEP_ARRAY,
-  /* 15 */ LK_TASK,
-  /* 16 */ LK_TASK_QUEUE,
-  /* 17 */ LK_TASK_SET,
-  /* 18 */ LK_THREAD,
-  /* 19 */ LK_THREAD_VECTOR,
-  /* 20 */ LK_TX_SET,
-  /* 21 */ LK_UNKNOWN,
-  /* 22 */ LK_ENUMS
+  /* 14 */ LK_SOCKET,
+  /* 15 */ LK_STEP_ARRAY,
+  /* 16 */ LK_TASK,
+  /* 17 */ LK_TASK_QUEUE,
+  /* 18 */ LK_TASK_SET,
+  /* 19 */ LK_THREAD,
+  /* 20 */ LK_THREAD_VECTOR,
+  /* 21 */ LK_TX_SET,
+  /* 22 */ LK_UNKNOWN,
+  /* 23 */ LK_ENUMS
   };
   
   static Stz* aLK[]
@@ -53,15 +54,16 @@ namespace System
   /* 11 */ "LOAD_MAP"_Stz,
   /* 12 */ "PARTITION"_Stz,
   /* 13 */ "QUEUE"_Stz,
-  /* 14 */ "STEP_ARRAY"_Stz,
-  /* 15 */ "TASK"_Stz,
-  /* 16 */ "TASK_QUEUE"_Stz,
-  /* 17 */ "TASK_SET"_Stz,
-  /* 18 */ "THREAD"_Stz,
-  /* 19 */ "THREAD_VECTOR"_Stz,
-  /* 20 */ "TX_SET"_Stz,
-  /* 21 */ "UNKNOWN"_Stz,
-  /* 22 */ "ENUMS"_Stz
+  /* 14 */ "SOCKET"_Stz,
+  /* 15 */ "STEP_ARRAY"_Stz,
+  /* 16 */ "TASK"_Stz,
+  /* 17 */ "TASK_QUEUE"_Stz,
+  /* 18 */ "TASK_SET"_Stz,
+  /* 19 */ "THREAD"_Stz,
+  /* 20 */ "THREAD_VECTOR"_Stz,
+  /* 21 */ "TX_SET"_Stz,
+  /* 22 */ "UNKNOWN"_Stz,
+  /* 23 */ "ENUMS"_Stz
   };
 
   class Lock : public Object
