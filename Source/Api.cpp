@@ -1350,8 +1350,7 @@ eEC RapidsSE_ExecuteCommandPath(SEitf* pSEitf, Stz* aCommand,
     }
     ASSERT(0);
   }
-  else
-    return EC_NONE;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
