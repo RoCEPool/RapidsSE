@@ -49,50 +49,6 @@ void Task::vAddPrimitives_SEitf(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitf.accessPath@ -- fetch access path from SE interface                   */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfAccessPathFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfAccessPathFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.accessPath@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  mpTask->m_pDataStack->vPushObject(pSEitf->m_pAccessPath);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.accessPath! -- store access path in SE interface                     */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfAccessPathStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfAccessPathStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.accessPath!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrAccessPath;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrAccessPath) )
-    THROW_INVALID_DSTACK("seitf.accessPath!"_Stz);
-  
-  AccessPath* pAccessPath = _pAccessPath(pPtrAccessPath);
-  
-  pSEitf->m_pAccessPath = pAccessPath;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* seitf.acksRemainingDec -- decrement acks remaining                         */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfAcksRemainingDec(MP_Task mpTask)

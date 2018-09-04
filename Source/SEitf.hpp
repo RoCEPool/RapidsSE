@@ -23,7 +23,6 @@ namespace Interface
     
     Table*        m_pCurrentTable;
     Index*        m_pCurrentIndex;
-    AccessPath*   m_pAccessPath;
   
     Tx*    m_pTx;
   
