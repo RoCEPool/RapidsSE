@@ -1315,63 +1315,6 @@ bool SEitf::bFetchRows(TokenVec& xTokenVec, i8 iReqNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* load a table from file                                                     */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTable(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 3) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
-/* load a table from stream                                                   */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTableStream(TokenVec& xTokenVec, i8 iReqNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  if (xTokenVec.nTokens() != 3) {
-    vSetLastError(EC_INVALID_PARAMETERS);
-    return false;
-  }
-  
-  sRequest.vCopy("\""_Stz);
-  sRequest.vConcat(xTokenVec[2]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" \""_Stz);
-  sRequest.vConcat(xTokenVec[1]->aText());
-  sRequest.vConcat("\""_Stz);
-  
-  sRequest.vConcat(" "_Stz);
-  sRequest.vConcat(SeRequests[iReqNo].aRequest);
-  
-  return bAppendRequest(sRequest);
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* load a table from file distributed parallel across nodes                   */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDistParallelLoadTable(TokenVec& xTokenVec, i8 iReqNo)
