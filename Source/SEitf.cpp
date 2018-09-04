@@ -176,8 +176,6 @@ SEitf::SEitf(i8 iPartition)
   m_eErrorCode      = EC_NONE;
   m_sErrorMsg       = aEC[m_eErrorCode];
   m_sResponse       = ""_Stz;
-  m_pResultBuffer   = nullptr;
-  m_pFetchBuffer    = nullptr;
   m_pPlanner        = nullptr;
   m_pAccessPath     = nullptr;
   m_pEntry          = nullptr;

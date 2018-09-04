@@ -25,9 +25,6 @@ namespace Interface
     Index*        m_pCurrentIndex;
     Planner*      m_pPlanner;
     AccessPath*   m_pAccessPath;
-  
-    WorkingBuffer* m_pResultBuffer;
-    FetchBuffer*  m_pFetchBuffer;
     
     Entry*        m_pEntry;
     WorkingRow*   m_pResultRow;
