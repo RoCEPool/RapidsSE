@@ -194,7 +194,6 @@ SEitf::SEitf(i8 iPartition)
     
   for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
     m_pWorkingBuffer[i_Partition] = nullptr;
-    m_pGroupBy[i_Partition]       = nullptr;
   }
   
   m_pRowOnce = nullptr;
