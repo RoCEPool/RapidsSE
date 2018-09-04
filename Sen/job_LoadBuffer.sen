@@ -9,11 +9,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* LoadBuffer load buffer into table                                          */
+/* load buffer into table                                                     */
 /*----------------------------------------------------------------------------*/
 : LoadBuffer.load ( pJob_LoadBuffer -- )
 
   params| pJob_LoadBuffer |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   0 locals| iLoadJobId      |
   0 locals| pJob_LoadTable  |
@@ -28,7 +30,7 @@
   "LoadBuffer_kid :" .
   pJob_LoadBuffer job.show
 
-  // get the load table job (node)
+  // get the load table job (participant node)
   pJob_LoadBuffer job_loadBuffer.loadJobId@ to iLoadJobId
   iLoadJobId job::findParticipant to pJob_LoadTable
   pJob_LoadTable job_LoadTable.task@ to pTask_LoadTable
@@ -63,6 +65,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // ack the load table task if all buffers have been loaded
   bAllLoaded if
       pTask_LoadTable
       "All buffers loaded; Would ack task_LoadTable (node) %v"
@@ -76,12 +79,11 @@
 /*----------------------------------------------------------------------------*/
 /* seed on kid node                                                           */
 /*----------------------------------------------------------------------------*/
-: LoadBuffer_kid ( pJob_LoadBuffer -- )
+: LoadBuffer_kid ( -- )
 
   <SEED_KID>
 
-  params| pJob_LoadBuffer |
-  //job::this locals| pJob_LoadBuffer |
+  job::this locals| pJob_LoadBuffer |
 
   pJob_LoadBuffer LoadBuffer.load
 
@@ -102,17 +104,20 @@
 : LoadBuffer.forward ( pJob_LoadBuffer -- )
 
   params| pJob_LoadBuffer |
-  //job::this locals| pJob_LoadBuffer |
 
+  // which partition are we forwarding to?
   pJob_LoadBuffer job_loadBuffer.partition@ locals| i_Partition |
-  i_Partition grid::toNode locals| i_Node |
-  i_Partition i_Node "loadBuffer_run : Node %v Partition %v" fmt.print
 
-  i_Node grid::node task::this task.sendNode!
+  // convert i_Partition to i_ForwardNode
+  i_Partition grid::toNode locals| i_ForwardNode |
 
-  // send ... (tbd)
+  i_Partition i_ForwardNode "loadBuffer_run : Node %v Partition %v" fmt.print
 
-  pJob_LoadBuffer LoadBuffer_kid
+  // send this job to the forward node
+  //i_ForwardNode pJob_LoadBuffer job.forward
+
+  // temp
+  LoadBuffer_kid
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -126,6 +131,7 @@
 
   "loadBuffer_run :" .
 
+  // simply forward this job to kid node
   pJob_LoadBuffer LoadBuffer.forward
 
   delete_completed_job
