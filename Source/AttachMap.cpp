@@ -55,13 +55,13 @@ AttachMap::AttachMap(void)
   
   // craete the persistent heaps
   m_pCarryOver->m_pPersistentJumboHeap  =
-  new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
+    new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
   m_pCarryOver->m_pPersistentLargeHeap  =
-  new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
+    new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
   m_pCarryOver->m_pPersistentMediumHeap =
-  new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
+    new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
   m_pCarryOver->m_pPersistentSmallHeap  =
-  new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
+    new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
 
   _checkInitialised_(CN_ATTACHMAP);
   
@@ -170,7 +170,8 @@ void AttachMap::vPrintAttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed globals                                              */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
+void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
+                               i8 iJumboSize, i8 nSubLoaders)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
@@ -178,7 +179,6 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
     vTrace("[[mainThread]] Recording globals...\n"_Stz);
   
   m_iPid = Process::iGetPid();
-  
   m_xSince.vSet();
   m_xTime.vSet(&m_xSince);
   m_xTime.vUTC(m_sUTC);
@@ -186,9 +186,11 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   m_sRegionName = aRegionName;
   m_iRegionSize = iRegionSize;
   m_iJumboSize  = iJumboSize;
-  m_iEpoch      = 0;
+  m_nSubLoaders = nSubLoaders;
   
   m_pBufferPool = gpBufferPool;
+  
+  m_iEpoch      = 0;
   
   ASSERT(m_pTransientJumboHeap);
   ASSERT(m_pTransientMediumHeap);
@@ -203,7 +205,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize)
   // create the tx sets
   m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());
   
-  ASSERT(m_pGrid );
+  ASSERT(m_pGrid);
     
   ASSERT(m_pWord);
 

@@ -106,7 +106,8 @@ TablePtn::TablePtn(void)
   m_xLock.vInitLock(LK_PARTITION);
   m_iPartitionId = -1;
   
-  m_nBuffersLoadable = C_UNKNOWN;
+  m_nSubLoadersDone  = 0;
+  m_nBuffersLoadable = 0;
   m_nBuffersLoaded   = 0;
 
   m_pIndexTreeVec  = new IndexTreeVec;
@@ -131,7 +132,21 @@ TablePtn::~TablePtn(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* insert a row into this strand                                              */
+/* add number of loadable buffers                                             */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAddBuffersLoadable(i8 nBuffersLoadable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(C_UNKNOWN != nBuffersLoadable);
+  
+  m_nSubLoadersDone++;
+  
+  m_nBuffersLoadable += nBuffersLoadable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add index                                              */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAddIndex(IndexTree* pIndexTree)
 {
@@ -142,31 +157,23 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set number of loadable buffers                                             */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vBuffersLoadable(i8 nBuffersLoadable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(C_UNKNOWN == m_nBuffersLoadable);
-  
-  m_nBuffersLoadable = nBuffersLoadable;
-}
-
-/*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
 /*----------------------------------------------------------------------------*/
-bool TablePtn::bBuffersLoaded(void)
+bool TablePtn::bAllBuffersLoaded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   //ASSERT(C_UNKNOWN == m_nBuffersLoadable);
   
-  vTrace("m_nBuffersLoadable %lld m_nBuffersLoaded %lld\n"_Stz,
+  vTrace("m_nSubLoadersDone %lld gpAttachMap->m_nSubLoaders %lld\n"
+         "m_nBuffersLoadable %lld m_nBuffersLoaded %lld\n"_Stz,
+         m_nSubLoadersDone,
+         gpAttachMap->m_nSubLoaders,
          m_nBuffersLoadable,
          m_nBuffersLoaded);
-
-  if (m_nBuffersLoaded == m_nBuffersLoadable)
+  
+  if (m_nSubLoadersDone == gpAttachMap->m_nSubLoaders &&
+      m_nBuffersLoaded  == m_nBuffersLoadable)
     return true;
   else
     return false;
@@ -228,6 +235,16 @@ IndexTree* TablePtn::pHiddenIndexTree(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* increment buffers loaded so far                                            */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vIncBuffersLoaded(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  m_nBuffersLoaded++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get IndexTree                                                              */
 /*----------------------------------------------------------------------------*/
 IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
@@ -245,16 +262,6 @@ IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
   }
   
   return pIndexTree;
-}
-
-/*----------------------------------------------------------------------------*/
-/* increment buffers loaded so far                                            */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vIncBuffersLoaded(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_nBuffersLoaded++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,7 +345,8 @@ void TablePtn::vResetLoad(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_nBuffersLoadable = C_UNKNOWN;
+  m_nSubLoadersDone = 0;
+  m_nBuffersLoadable = 0;
   m_nBuffersLoaded = 0;
 }
 

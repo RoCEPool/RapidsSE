@@ -16,6 +16,7 @@ namespace DBobjects
     Lock  m_xLock;          // lock on the partition
     i8    m_iPartitionId;   // partition number
   
+    i8    m_nSubLoadersDone;   // number of subloeader which have completed
     i8    m_nBuffersLoadable;  // buffers to be loaded
     i8    m_nBuffersLoaded;    // buffers loaded so far
 
@@ -36,9 +37,9 @@ namespace DBobjects
     TablePtn(void);
     ~TablePtn(void);
   
+    void vAddBuffersLoadable(i8 nBuffersLoadable);
     void vAddIndex(IndexTree* pIndexTree);
-    void vBuffersLoadable(i8 nBuffersLoadable);
-    bool bBuffersLoaded(void);
+    bool bAllBuffersLoaded(void);
     void vDropRead(void);
     void vDropWrite();
     bool bGrabRead(void);

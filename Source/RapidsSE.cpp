@@ -691,7 +691,8 @@ void RapidsSE::vStartSystem(void)
   
   gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,
-                              gxArguments.m_iJumboSize);
+                              gxArguments.m_iJumboSize,
+                              gxArguments.m_nSubLoaders);
   
   // get the trace file
   Word* pTraceFileWord = gpAttachMap->m_xMainDic.pFindWord("trace_file"_Stz);

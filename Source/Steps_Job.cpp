@@ -941,26 +941,31 @@ void Task::vJobLoadBufferInsertRows(MP_Task mpTask)
   i8 iPartition = pJob_LoadBuffer->iPartition();
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
 
+  // get table, partition and working buffer
   Table* pTable = pJob_LoadBuffer->pTable();
-
+  TablePtn* pPartition = pTable->pPartition(iSlot);
   WorkingBuffer* pWorkingBuffer = pJob_LoadBuffer->m_pWorkingBuffer;
   
   i8 iTxId = 0;
   
+  // insert the working buffer
   pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
   
-  TablePtn* pPartition = pTable->pPartition(iSlot);
+  // we loaded an additional buffer
   pPartition->vIncBuffersLoaded();
   
+  // does this job have information about buffers loadable
+  // from the subloader?
   i8 nBuffersLoadable = pJob_LoadBuffer->nBuffersLoadable();
   if (C_UNKNOWN != nBuffersLoadable)
-    pPartition->vBuffersLoadable(nBuffersLoadable);
+    pPartition->vAddBuffersLoadable(nBuffersLoadable);
   
-  bool bBuffersLoaded = pPartition->bBuffersLoaded();
-  if (bBuffersLoaded)
+  // have all buffers been loaded?
+  bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();
+  if (bAllBuffersLoaded)
     vTrace("Buffers loaded\n"_Stz);
 
-  mpTask->m_pDataStack->vPushInt(bBuffersLoaded);
+  mpTask->m_pDataStack->vPushInt(bAllBuffersLoaded);
 
   EXIT();
 }

@@ -34,6 +34,7 @@ namespace StorageEngine
     s256          m_sRegionName;
     i8            m_iRegionSize;
     i8            m_iJumboSize;
+    i8            m_nSubLoaders;
         
     i8            m_iEpoch;
     
@@ -115,7 +116,8 @@ namespace StorageEngine
     
     void vGetGlobals(void);
     void vPrintAttachMap(void);
-    void vRecordGlobals(Stz* sRegionName, i8 iRegionSize, i8 iJumboSize);
+    void vRecordGlobals(Stz* sRegionName,
+                        i8 iRegionSize, i8 iJumboSize, i8 nSubLoaders);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
