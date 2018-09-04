@@ -170,10 +170,6 @@ namespace Interface
     //--------------------------------------------------------------------------
     void vEndFetch(void);
     bool bExtractDateFormat(Stz* dateFormat);
-    bool bNextBuffer(Job_FetchRows* pJob);
-    bool bNextRow(void);
-    bool bNextRow2(i8& nPartition);
-    void vPopBufferQueue(void);
     
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
