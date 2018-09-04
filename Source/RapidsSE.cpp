@@ -522,15 +522,15 @@ void RapidsSE::vRunCmdLine(void)
       vStartSystem();
       
       if (gxArguments.m_bPrompt)
-        vSpawnJobPrompt();
-        //vCallPrompt();
+        //vSpawnJobPrompt();
+        vCallPrompt();
       else
         vWaitStop();
     }
     
     else if (gxArguments.m_bPrompt)
-      vSpawnJobPrompt();
-      //vCallPrompt();
+      //vSpawnJobPrompt();
+      vCallPrompt();
     else if (gxArguments.m_bStatus)  vPrintStatus();
     else if (gxArguments.m_bStop)    vStopSystem();
     else if (gxArguments.m_bUnlink)  vUnlinkSystem();
