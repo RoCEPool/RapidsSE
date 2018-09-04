@@ -359,6 +359,10 @@
   pJob job.preSend
 
   pJob >socket
+
+  pJob job.hasWorkingBuffer if
+    pJob job.workingBuffer@ >socket
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
