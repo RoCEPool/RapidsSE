@@ -27,7 +27,6 @@ namespace Interface
   
     bool   m_bDisplay;
     
-    i8     m_iRowsProcessed;
     i8     m_iCurrentRequestId;
     i8     m_iNextRequestId;
     i8     m_iRowPartition;

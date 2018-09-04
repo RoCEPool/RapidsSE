@@ -34,7 +34,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.partition!"_Stz,       &vSEitfPartitionStore,   false);
   vAddPrimitive("seitf.pid"_Stz,              &vSEitfPid,              false);
   vAddPrimitive("seitf.rowsInvalid!"_Stz,     &vSEitfRowsInvalidStore, false);
-  vAddPrimitive("seitf.rowsProcessed"_Stz,    &vSEitfRowsProcessed,    false);
   vAddPrimitive("seitf.rowsValid!"_Stz,       &vSEitfRowsValidStore,   false);
   vAddPrimitive("seitf.slot@"_Stz,            &vSEitfSlotFetch,        false);
   vAddPrimitive("seitf.table@"_Stz,           &vSEitfTableFetch,       false);
@@ -445,29 +444,6 @@ void Task::vSEitfRowsInvalidStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.rowsInvalid!"_Stz);
   
   pSEitf->m_iRowsInvalid = iRowsInvalid;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.rowsProcessed -- store rows processed in SE interface                */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfRowsProcessed(MP_Task mpTask)
-{
-  ENTRY("vSEitfRowsProcessed"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.rowsProcessed"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  i8 iRowsProcessed;
-  if ( ! mpTask->m_pDataStack->bPop(iRowsProcessed) )
-    THROW_INVALID_DSTACK("seitf.rowsProcessed"_Stz);
-  
-  pSEitf->m_iRowsProcessed = iRowsProcessed;
   
   EXIT();
 }
