@@ -21,8 +21,7 @@ namespace Interface
     eEC    m_eErrorCode;       //
     s256   m_sErrorMsg;
     
-    Table*        m_pCurrentTable;
-    Index*        m_pCurrentIndex;
+    Table*   m_pCurrentTable;
   
     Tx*    m_pTx;
   
@@ -67,9 +66,6 @@ namespace Interface
     ~SEitf(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-
-    void   vCurrentIndex(Index* pIndex);
-    Index* pCurrentIndex(void);
     
     void   vCurrentTable(Table* pTable);
     Table* pCurrentTable(void);

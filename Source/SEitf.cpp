@@ -177,7 +177,6 @@ SEitf::SEitf(i8 iPartition)
   m_sErrorMsg       = aEC[m_eErrorCode];
   m_sResponse       = ""_Stz;
   m_pCurrentTable   = nullptr;
-  m_pCurrentIndex   = nullptr;
   m_pTx             = nullptr;
   m_bDisplay        = true;
   m_iRowsProcessed    = 0;
@@ -237,21 +236,6 @@ DicStack* SEitf::pPathStack(void)
   return &m_xPathStack;
 }
 
-/*----------------------------------------------------------------------------*/
-/* set the current index                                                      */
-/*----------------------------------------------------------------------------*/
-void SEitf::vCurrentIndex(Index* pIndex)
-{
-  m_pCurrentIndex = pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the current index                                                      */
-/*----------------------------------------------------------------------------*/
-Index* SEitf::pCurrentIndex(void)
-{
-  return m_pCurrentIndex;
-}
 
 /*----------------------------------------------------------------------------*/
 /* set the current table                                                      */

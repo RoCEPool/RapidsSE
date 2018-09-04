@@ -15,8 +15,6 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SEitf(void)
 {
-  vAddPrimitive("seitf.accessPath@"_Stz,      &vSEitfAccessPathFetch,  false);
-  vAddPrimitive("seitf.accessPath!"_Stz,      &vSEitfAccessPathStore,  false);
   vAddPrimitive("seitf.acksRemainingDec"_Stz, &vSEitfAcksRemainingDec, false);
   vAddPrimitive("seitf.acksRemaining@"_Stz,   &vSEitfAcksRemainingFetch, false);
   vAddPrimitive("seitf.acksRemaining!"_Stz,   &vSEitfAcksRemainingStore, false);
@@ -29,8 +27,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.fetchTaskEnded"_Stz,   &vSEitfFetchTaskEnded,   false);
   vAddPrimitive("seitf.groupBy@"_Stz,         &vSEitfGroupByFetch,     false);
   vAddPrimitive("seitf.groupBy!"_Stz,         &vSEitfGroupByStore,     false);
-  vAddPrimitive("seitf.index!"_Stz,           &vSEitfIndexStore,       false);
-  vAddPrimitive("seitf.index@"_Stz,           &vSEitfIndexFetch,       false);
   vAddPrimitive("seitf.isExiting"_Stz,        &vSEitfIsExiting,        false);
   vAddPrimitive("seitf.lastBuffers@"_Stz,     &vSEitfLastBuffersFetch, false);
   vAddPrimitive("seitf.lastBuffers!"_Stz,     &vSEitfLastBuffersStore, false);
@@ -302,52 +298,6 @@ void Task::vSEitfGroupByFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.partition!"_Stz);
   
   mpTask->m_pDataStack->vPushObject(pSEitf->m_pGroupBy[iSlot]);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.index@ -- fetch index from SEitf                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfIndexFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfIndexReturn"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.index@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  mpTask->m_pDataStack->vPushObject(pSEitf->pCurrentIndex());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.index! -- store index in SEitf                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfIndexStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfIndexStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.index!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrIndex;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("seitf.index!"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(pIndex == nullptr || CN_INDEX == pIndex->eClass());
-  
-  pSEitf->vCurrentIndex(pIndex);
   
   EXIT();
 }
