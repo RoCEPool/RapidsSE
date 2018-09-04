@@ -777,6 +777,7 @@ namespace Tasks
     static void vJobFindOriginator(MP_Task mpTask);
     static void vJobFindParticipant(MP_Task mpTask);
     static void vJobHasError(MP_Task mpTask);
+    static void vJobHasWorkingBuffer(MP_Task mpTask);
     static void vJobIdFetch(MP_Task mpTask);
     static void vJobIndexNameFetch(MP_Task mpTask);
     static void vJobIsPromptCommand(MP_Task mpTask);

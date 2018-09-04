@@ -50,6 +50,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job::findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job::findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
+  vAddPrimitive("job.hasWorkingBuffer"_Stz, &vJobHasError,         false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.indexName@"_Stz,       &vJobIndexNameFetch,   false);
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
@@ -851,6 +852,25 @@ void Task::vJobHasError(MP_Task mpTask)
   Job_Space* pJob = _pJob_Space(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_bHasError);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.hasWorkingBuffer -- return true if job has a working buffer            */
+/*----------------------------------------------------------------------------*/
+void Task::vJobHasWorkingBuffer(MP_Task mpTask)
+{
+  ENTRY("vJobHasWorkingBuffer"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.hasWorkingBuffer"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  i8 bHas = pJob->m_pWorkingBuffer ? true : false;
+  
+  mpTask->m_pDataStack->vPushInt(bHas);
   
   EXIT();
 }

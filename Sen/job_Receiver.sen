@@ -65,6 +65,7 @@
 : receiver_loop ( -- )
 
   0 locals| pJob |
+  0 locals| pWorkingBuffer |
 
   begin
 
@@ -75,6 +76,11 @@
     socketObject> drop to pJob
 
     pJob job.postRecv
+
+    pJob job.hasWorkingBuffer if
+     //socketObject> drop to pWorkingBuffer
+     //pWorkingBuffer pJob job.workingBuffer!
+    then
 
     pJob SEED_RCV job.spawn
 
