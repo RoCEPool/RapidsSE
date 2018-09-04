@@ -1159,8 +1159,6 @@ namespace Tasks
     static void vSEitfFieldDelimiterFetch(MP_Task mpTask);
     static void vSEitfGroupByFetch(MP_Task mpTask);
     static void vSEitfGroupByStore(MP_Task mpTask);
-    static void vSEitfIndexBufferFetch(MP_Task mpTask);
-    static void vSEitfIndexBufferStore(MP_Task mpTask);
     static void vSEitfIndexFetch(MP_Task mpTask);
     static void vSEitfIndexStore(MP_Task mpTask);
     static void vSEitfIsExiting(MP_Task mpTask);

@@ -31,8 +31,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.fetchTaskEnded"_Stz,   &vSEitfFetchTaskEnded,   false);
   vAddPrimitive("seitf.groupBy@"_Stz,         &vSEitfGroupByFetch,     false);
   vAddPrimitive("seitf.groupBy!"_Stz,         &vSEitfGroupByStore,     false);
-  vAddPrimitive("seitf.indexBuffer@"_Stz,     &vSEitfIndexBufferFetch, false);
-  vAddPrimitive("seitf.indexBuffer!"_Stz,     &vSEitfIndexBufferStore, false);
   vAddPrimitive("seitf.index!"_Stz,           &vSEitfIndexStore,       false);
   vAddPrimitive("seitf.index@"_Stz,           &vSEitfIndexFetch,       false);
   vAddPrimitive("seitf.isExiting"_Stz,        &vSEitfIsExiting,        false);
@@ -397,51 +395,6 @@ void Task::vSEitfGroupByFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("seitf.partition!"_Stz);
   
   mpTask->m_pDataStack->vPushObject(pSEitf->m_pGroupBy[iSlot]);
-  
-  EXIT();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* seitf.indexBuffer@ -- fetch index buffer from SE interface                 */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfIndexBufferFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfIndexBufferFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.indexBuffer@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  mpTask->m_pDataStack->vPushObject(pSEitf->m_pEntryBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.indexBuffer! -- store index buffer in SE interface                   */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfIndexBufferStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfIndexBufferStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.indexBuffer!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrEntryBuffer;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrEntryBuffer) )
-    THROW_INVALID_DSTACK("seitf.indexBuffer!"_Stz);
-  
-  EntryBuffer* pEntryBuffer = _pEntryBuffer(pPtrEntryBuffer);
-  
-  pSEitf->m_pEntryBuffer = pEntryBuffer;
   
   EXIT();
 }
