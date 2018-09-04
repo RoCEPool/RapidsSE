@@ -37,8 +37,6 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.partition@"_Stz,       &vSEitfPartitionFetch,   false);
   vAddPrimitive("seitf.partition!"_Stz,       &vSEitfPartitionStore,   false);
   vAddPrimitive("seitf.pid"_Stz,              &vSEitfPid,              false);
-  vAddPrimitive("seitf.planner@"_Stz,         &vSEitfPlannerFetch,     false);
-  vAddPrimitive("seitf.planner!"_Stz,         &vSEitfPlannerStore,     false);
   vAddPrimitive("seitf.rowsInvalid!"_Stz,     &vSEitfRowsInvalidStore, false);
   vAddPrimitive("seitf.rowsProcessed"_Stz,    &vSEitfRowsProcessed,    false);
   vAddPrimitive("seitf.rowsValid!"_Stz,       &vSEitfRowsValidStore,   false);
@@ -518,55 +516,6 @@ void Task::vSEitfPid(MP_Task mpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   mpTask->m_pDataStack->vPushInt(pSEitf->m_iPid);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.planner@ -- fetch planner from the SE interface                     */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfPlannerFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfPlannerFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.planner@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  mpTask->m_pDataStack->vPushObject(pSEitf->m_pPlanner);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.planner! -- store partition in the SE interface                      */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfPlannerStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfPlannerStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.planner!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrPlanner;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("seitf.partition!"_Stz);
-  
-  Planner* pPlanner = _pPlanner(pPtrPlanner);
-  ASSERT(CN_PLANNER == pPlanner->eClass());
-  
-  pSEitf->m_pPlanner = pPlanner;
-  
-  // if we have or phrases we'll need a RowOnce object
-  if (pPlanner->nPhrases() > 1)
-    pSEitf->vCreateRowOnce();
   
   EXIT();
 }

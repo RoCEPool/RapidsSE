@@ -1165,8 +1165,6 @@ namespace Tasks
     static void vSEitfPartitionFetch(MP_Task mpTask);
     static void vSEitfPartitionStore(MP_Task mpTask);
     static void vSEitfPid(MP_Task mpTask);
-    static void vSEitfPlannerFetch(MP_Task mpTask);
-    static void vSEitfPlannerStore(MP_Task mpTask);
     static void vSEitfRowsInvalidStore(MP_Task mpTask);
     static void vSEitfRowsProcessed(MP_Task mpTask);
     static void vSEitfRowsValidStore(MP_Task mpTask);
