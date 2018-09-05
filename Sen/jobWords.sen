@@ -361,7 +361,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* send the job to given participating node                                   */
+/* send job (to the node which is in task)                                    */
+/*----------------------------------------------------------------------------*/
+: job.send ( pJob -- )
+
+  params| pJob |
+
+  pJob job.preSend
+
+  socketLock
+
+    pJob >socket
+
+    pJob job.hasWorkingBuffer if
+      "job.send: Job has working buffer" .
+       pJob job.workingBuffer@ >socket
+    then
+
+  socketUnlock
+;
+
+/*----------------------------------------------------------------------------*/
+/* send job to given participating node                                       */
 /*----------------------------------------------------------------------------*/
 : job.forward ( i_Node pJob -- )
 
@@ -372,22 +393,11 @@
 
   task.send
 
-  pJob job.preSend
-
-  socketLock
-
-    pJob >socket
-
-    pJob job.hasWorkingBuffer if
-      "job.forward: Job has working buffer" .
-      pJob job.workingBuffer@ >socket
-    then
-
-  socketUnlock
+  pJob job.send
 ;
 
 /*----------------------------------------------------------------------------*/
-/* send the job back to originating node                                      */
+/* send job back to originating node                                          */
 /*----------------------------------------------------------------------------*/
 : job.reply ( i_Node pJob -- )
 
@@ -398,15 +408,11 @@
 
   task.send
 
-  pJob job.preSend
-
-  socketLock
-    pJob >socket
-  socketUnlock
+  pJob job.send
 ;
 
 /*----------------------------------------------------------------------------*/
-/* distribute the job to all the nodes                                        */
+/* distribute the job to all participating nodes                              */
 /*----------------------------------------------------------------------------*/
 : job.distribute ( pJob -- )
 
