@@ -783,7 +783,8 @@ namespace Tasks
     static void vJobIsPromptCommand(MP_Task mpTask);
     static void vJobJobClass(MP_Task mpTask);
     static void vJobLoadBufferInsertRows(MP_Task mpTask);
-    static void vJobLoadBufferLoadJobIdFetch(MP_Task mpTask);
+    static void vJobLoadBufferJobLoadTableIdFetch(MP_Task mpTask);
+    static void vJobLoadBufferJobLoadTableStore(MP_Task mpTask);
     static void vJobLoadBufferPartitionFetch(MP_Task mpTask);
     static void vJobLoadBufferTableStore(MP_Task mpTask);
     static void vJobLoadTableTaskFetch(MP_Task mpTask);
