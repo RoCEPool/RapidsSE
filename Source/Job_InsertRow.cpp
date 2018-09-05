@@ -9,26 +9,20 @@
 
 extern AttachMap* gpAttachMap;
 
-/* example:
- 
- ld lineitem "/tpch/lineitem.tbl" ;
- 
- */
-
 JobClass xJobClass_InsertRow =
 {
   "Job_InsertRow"_Stz,    // name of the job class
   CN_JOB_INSERTROW,       // class enum
-  JK_DIST2PC,             // job kind
-  "insert row"_Stz,       // comment about the job
+  JK_LOCAL,               // job kind
+  "insert into tableNm"_Stz, // comment about the job
   "insert"_Stz,           // the prompt command
-  "row"_Stz,              // the second word
+  "into"_Stz,             // the second word
   nullptr,                // the _run task seed
   "insertRow_req"_Stz,    // the _req task seed
-  "insertRow_beg"_Stz,    // the _rcv task seed
-  "insertRow_exe"_Stz,    // the _exe task seed
-  "insertRow_end"_Stz,    // the _end task seed
-  "insertRow_can"_Stz,    // the _can task seed
+  nullptr,                // the _rcv task seed
+  nullptr,                // the _exe task seed
+  nullptr,                // the _end task seed
+  nullptr,                // the _can task seed
   true,                   // check resources?
   false,                  // detached job?
   false,                  // buffer attached?
@@ -37,8 +31,8 @@ JobClass xJobClass_InsertRow =
   vJob_InsertRow_post,    // prompt post-process function
   pJob_InsertRow_new,     // job new function
   vJob_InsertRow_delete,  // job delete function
-  vJob_send,              // job pre-send function
-  vJob_recv,              // job post-receive function
+  nullptr,                // job pre-send function
+  nullptr,                // job post-receive function
   vJob_InsertRow_show,    // job show function
   true,                   // job is enabled
   "<help>"_Stz,           // help
@@ -52,7 +46,7 @@ JobClass xJobClass_InsertRow =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_InsertRow_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Prompt_class;
+  *pNextFun = (pFUN*)pJob_Lf_class;
   
   return &xJobClass_InsertRow;
 }
@@ -115,6 +109,16 @@ Job_InsertRow::Job_InsertRow(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   
+  m_pTable = nullptr;
+  
+  // set the enclosined_by to be a '
+  m_xFormatters.m_cEnclosedBy_Leading = '\'';
+  m_xFormatters.m_cEnclosedBy_Trailing = '\'';
+  
+  for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
+    m_pWorkingBuffer[i_Partition] = nullptr;
+  }
+  
   _checkInitialised_(CN_JOB_INSERTROW);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
@@ -149,7 +153,81 @@ void Job_InsertRow::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_InsertRow::bInsertRow(Stz* aRow, i8 iRowPartition, i8 iRowLength, eEC& eErrorCode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
+  
+  // check for working buffer
+  if (! m_pWorkingBuffer[iRowPartition]) {
+    m_pWorkingBuffer[iRowPartition] = new WorkingBuffer(m_pTable, iRowPartition);
+    
+    if (! m_pWorkingBuffer[iRowPartition]) {
+      vTrace("WorkingBuffer allocation failed\n"_Stz);
+      eErrorCode = EC_LOW_BUFFERS;
+      return false;
+    }
+  }
+  
+  // get tx id
+  i8 iDistTxId = -1;
+  
+  RowWrk xRowWrk;
+  
+  xRowWrk.vTxId(iDistTxId);
+  xRowWrk.vEmbedded((char*)aRow);
+  xRowWrk.vRowSize(iRowLength);
+  
+  // append row into working buffer
+  if (m_pWorkingBuffer[iRowPartition]->bAppendRow(xRowWrk)) {
+    return true;
+  }
+  
+  // buffer is full
+  return false;
+}
 
+/*----------------------------------------------------------------------------*/
+/* insert last rowbuffer into current table                                   */
+/*----------------------------------------------------------------------------*/
+eEC Job_InsertRow::eInsertLastBuffer(i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
+  
+  //vTrace("%p inserting entries from row buffer into table..%lld.\n"_Stz, this, iPartition);
+  
+  if (! m_pWorkingBuffer[iPartition]) {
+    m_pWorkingBuffer[iPartition] = new WorkingBuffer(m_pTable, iPartition);
+    if (! m_pWorkingBuffer[iPartition]) {
+      vTrace("EntryBuffer allocation failed\n"_Stz);
+      return EC_LOW_BUFFERS;
+    }
+  }
+  
+  //vTrace("inserting %p ..%lld.\n"_Stz, m_pWorkingBuffer[iPartition], iPartition);
+  
+  //m_pWorkingBuffer[iSlot]->vDump();
+  //vTrace("No of entries %lld %lld\n"_Stz, iPartition, m_pWorkingBuffer[iPartition]->nEntries());
+  
+  // mark this buffer as the last buffer
+  m_pWorkingBuffer[iPartition]->vIsLast(true);
+  
+  // now insert the entries from this temporary buffer into the table
+  //bool bResult = bInsertEntriesTable(m_pWorkingBuffer[iPartition],iPartition);
+  
+  // wait for response
+  //eEC eResult = eGetResponse();
+  //ASSERT(eResult == EC_NONE);
+  
+  // null the buffer
+  //m_pWorkingBuffer[iPartition] = nullptr;
+  
+  //vTrace("bInsertLastBuffer\n"_Stz);
+  
+  return EC_NONE;
+}
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
@@ -158,7 +236,7 @@ bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   
   ASSERT(pTokenVec->pGet(0)->bSame("insert"_Stz));
-  ASSERT(pTokenVec->pGet(1)->bSame("row"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("into"_Stz));
   
   // get no of tokens in token vector
   i8 nTokens = pTokenVec->nTokens();;
@@ -167,55 +245,10 @@ bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
   if (nTokens != 3)
     return nullptr;
   
-//  if (!m_pSEitf->pCurrentTable()) {
-//    m_pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
-//    return false;
-//  }
-  
-  Stz* pRow = pTokenVec->pGet(2)->aText();
-  bool bBlankLine = false;
-  s48K s;
-  i8 iRowLength;
-  
-  // format the record into row format
-  bool bValid = Row::bFormatRow(
-                                m_pSEitf->m_pCurrentTable->pColumnVec(),
-                                &m_pSEitf->m_xFormatters,
-                                pRow, StrLib::iSize(pRow->aChar()),
-                                s, iRowLength, bBlankLine,
-                                false /* allowNonPrintable */);
-  
-  if (! bValid) {
-    return false;
-  }
-  
-  // get the partition this row hashes to
-  //i8 iRowPartition = m_pSEitf->pCurrentTable()->iRowPartition(s);
-  
-  //bool bResult = m_pSEitf->bInsertRow(s, iRowLength, iRowPartition);
-  
-  
+  // get the table name
+  m_sObjectName = pTokenVec->pGet(2)->aText();
+
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get task                                                                   */
-/*----------------------------------------------------------------------------*/
-Tasks::Task* Job_InsertRow::pTask(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
-  
-  return m_pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set task                                                                   */
-/*----------------------------------------------------------------------------*/
-void Job_InsertRow::vTask(Tasks::Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
-  
-  m_pTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,12 +315,6 @@ void JobsModel::vJob_InsertRow_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
-  else {
-
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_InsertRow->m_xNode[i_Node].m_sResponse.aChar());
-    }
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,6 +334,7 @@ void JobsModel::vJob_InsertRow_delete(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJob);
   
+  vTrace("DELETING INSERTROW\n"_Stz);
   delete pJob_InsertRow;
 }
 

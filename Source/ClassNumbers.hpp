@@ -116,6 +116,7 @@ enum eCN : u2 // Class Number
     /*    */ CN_JOB_DROPTENANT,
     /*    */ CN_JOB_DUMPINDEX,
     /*    */ CN_JOB_FETCHROWS,
+    /*    */ CN_JOB_INSERTBUFFER,
     /*    */ CN_JOB_INSERTROW,
     /*    */ CN_JOB_LF,
     /*    */ CN_JOB_LISTCATALOGS,
@@ -365,6 +366,7 @@ enum eCN : u2 // Class Number
     /*    */ "JOB_DROPTENANT"_Stz,     // CN_JOB_DROPTENANT
     /*    */ "JOB_DUMPINDEX"_Stz,      // CN_JOB_DUMPINDEX
     /*    */ "JOB_FETCHROWS"_Stz,      // CN_JOB_FETCHROWS
+    /*    */ "JOB_INSERTBUFFER"_Stz,   // CN_JOB_INSERTBUFFER
     /*    */ "JOB_INSERTROW"_Stz,      // CN_JOB_INSERTROW
     /*    */ "JOB_LF"_Stz,             // CN_JOB_LF
     /*    */ "JOB_LISTCATALOGS"_Stz,   // CN_JOB_LISTCATALOGS

@@ -6,13 +6,13 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_InsertRow : public Job,
-                        public JobFileName
+  class Job_InsertRow : public Job
   {
   public:
+    Table*         m_pTable;                           // table pointer
+    Formatters     m_xFormatters;                      // record formatters
+    WorkingBuffer* m_pWorkingBuffer[C_SLOTS_PER_NODE]; // working buffers
     
-    Tasks::Task* m_pTask; // task running this job
-  
     // must be last
     Footer m_xFooter;
   
@@ -27,6 +27,8 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    bool bInsertRow(Stz* pRow, i8 iLength, i8 iRowLength, eEC& eErrorCode);
+    eEC eInsertLastBuffer(i8 iPartition);
     bool bPopulateJob(TokenVec* pTokenVec);
     Tasks::Task* pTask(void);
     void vTask(Tasks::Task* pTask);

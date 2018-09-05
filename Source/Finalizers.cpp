@@ -111,6 +111,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_DROPTENANT
   /*    */ &Finalize::vUndefined,         // CN_JOB_DUMPINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_FETCHROWS
+  /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROW
   /*    */ &Finalize::vUndefined,         // CN_JOB_LF
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTCATALOGS
