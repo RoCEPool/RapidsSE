@@ -25,13 +25,15 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the originator node as the send target node
-  iJobId job::originator@ grid::node task::this task.sendNode!
+  //iJobId job::originator@ grid::node task::this task.sendNode!
 
   // move this task through send state/queue
-  task.send
+  //task.send
 
   // send the ended job
-  pJob__Ended >socket
+  //pJob__Ended >socket
+
+  iJobId job::originator@ pJob__Ended job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
