@@ -107,10 +107,10 @@ TablePtn::TablePtn(void)
   m_iPartitionId = -1;
   
   m_nSubLoadersDone  = 0;
-  m_nBuffersLoadable = 0;
-  m_nBuffersLoaded   = 0;
+  m_nTotalBuffersLoadable = 0;
+  m_nTotalBuffersLoaded   = 0;
 
-  m_pIndexTreeVec  = new IndexTreeVec;
+  m_pIndexTreeVec = new IndexTreeVec;
   
   _checkInitialised_(CN_TABLEPTN);
   
@@ -132,21 +132,21 @@ TablePtn::~TablePtn(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add number of loadable buffers                                             */
+/* add no. of loadable buffers by a subloader into total for this partition   */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAddBuffersLoadable(i8 nBuffersLoadable)
+void TablePtn::vAddTotalBuffersLoadable(i8 nBuffersFromSomeSubLoader)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  ASSERT(C_UNKNOWN != nBuffersLoadable);
+  ASSERT(C_UNKNOWN != nBuffersFromSomeSubLoader);
   
   m_nSubLoadersDone++;
   
-  m_nBuffersLoadable += nBuffersLoadable;
+  m_nTotalBuffersLoadable += nBuffersFromSomeSubLoader;
 }
 
 /*----------------------------------------------------------------------------*/
-/* add index                                              */
+/* add index                                                                  */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vAddIndex(IndexTree* pIndexTree)
 {
@@ -168,14 +168,14 @@ bool TablePtn::bAllBuffersLoaded(void)
                          gpAttachMap->m_pGrid->m_nNodes;
   
   vTrace("m_nSubLoadersDone %lld nSubLoadersInGrid %lld\n"
-         "m_nBuffersLoadable %lld m_nBuffersLoaded %lld\n"_Stz,
+         "m_nTotalBuffersLoadable %lld m_nTotalBuffersLoaded %lld\n"_Stz,
          m_nSubLoadersDone,
          nSubLoadersInGrid,
-         m_nBuffersLoadable,
-         m_nBuffersLoaded);
+         m_nTotalBuffersLoadable,
+         m_nTotalBuffersLoaded);
   
-  if (m_nSubLoadersDone == nSubLoadersInGrid &&
-      m_nBuffersLoaded  == m_nBuffersLoadable)
+  if (m_nSubLoadersDone      == nSubLoadersInGrid &&
+      m_nTotalBuffersLoaded  == m_nTotalBuffersLoadable)
     return true;
   else
     return false;
@@ -239,11 +239,11 @@ IndexTree* TablePtn::pHiddenIndexTree(void)
 /*----------------------------------------------------------------------------*/
 /* increment buffers loaded so far                                            */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vIncBuffersLoaded(void)
+void TablePtn::vIncTotalBuffersLoaded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_nBuffersLoaded++;
+  m_nTotalBuffersLoaded++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -347,9 +347,9 @@ void TablePtn::vResetLoad(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_nSubLoadersDone = 0;
-  m_nBuffersLoadable = 0;
-  m_nBuffersLoaded = 0;
+  m_nSubLoadersDone       = 0;
+  m_nTotalBuffersLoadable = 0;
+  m_nTotalBuffersLoaded   = 0;
 }
 
 /*----------------------------------------------------------------------------*/

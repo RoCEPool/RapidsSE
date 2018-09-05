@@ -13,12 +13,13 @@ namespace DBobjects
   class TablePtn : public Object
   {
   private:
-    Lock  m_xLock;          // lock on the partition
-    i8    m_iPartitionId;   // partition number
+    Lock m_xLock; // lock on the partition
   
-    i8    m_nSubLoadersDone;   // number of subloeader which have completed
-    i8    m_nBuffersLoadable;  // buffers to be loaded
-    i8    m_nBuffersLoaded;    // buffers loaded so far
+    i8 m_iPartitionId; // partition number
+  
+    i8 m_nSubLoadersDone;        // number of subloeader which have completed
+    i8 m_nTotalBuffersLoadable;  // total no of buffers to be loaded
+    i8 m_nTotalBuffersLoaded;    // total no of buffers loaded so far
 
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
@@ -37,7 +38,7 @@ namespace DBobjects
     TablePtn(void);
     ~TablePtn(void);
   
-    void vAddBuffersLoadable(i8 nBuffersLoadable);
+    void vAddTotalBuffersLoadable(i8 nBuffersLoadable);
     void vAddIndex(IndexTree* pIndexTree);
     bool bAllBuffersLoaded(void);
     void vDropRead(void);
@@ -45,7 +46,7 @@ namespace DBobjects
     bool bGrabRead(void);
     bool bGrabWrite(void);
     IndexTree* pHiddenIndexTree(void);
-    void vIncBuffersLoaded(void);
+    void vIncTotalBuffersLoaded(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
     bool bIsLocked(void);

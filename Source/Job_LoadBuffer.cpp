@@ -109,7 +109,7 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
     
-  m_nBuffersLoadable = C_UNKNOWN;
+  m_nBuffersFromSubLoader = C_UNKNOWN;
   m_iLoadJobId = -1;
   m_iPartition = -1;
   m_pTable = nullptr;
@@ -155,21 +155,21 @@ void Job_LoadBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get number of buffers loadable                                             */
 /*----------------------------------------------------------------------------*/
-i8 Job_LoadBuffer::nBuffersLoadable(void)
+i8 Job_LoadBuffer::nBuffersFromSubLoader(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
-  return m_nBuffersLoadable;
+  return m_nBuffersFromSubLoader;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of buffers loadable                                             */
+/* get number of buffers from the subloader which are to loaded               */
 /*----------------------------------------------------------------------------*/
-void Job_LoadBuffer::vBuffersLoadable(i8 nBuffersLoadable)
+void Job_LoadBuffer::vBuffersFromSubLoader(i8 nBuffers)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
-  m_nBuffersLoadable = nBuffersLoadable;
+  m_nBuffersFromSubLoader = nBuffers;
 }
 
 /*----------------------------------------------------------------------------*/

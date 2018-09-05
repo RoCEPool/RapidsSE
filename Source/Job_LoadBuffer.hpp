@@ -9,11 +9,11 @@ namespace JobsModel
   class Job_LoadBuffer : public Job
   {
   private:
-    i8 m_iLoadJobId;        // the job id of the load table job
-    Table* m_pTable;        // which table
-    i8 m_iPartition;        // which partition buffer is to be loaded into
+    i8 m_iLoadJobId; // the job id of the load table job
+    Table* m_pTable; // which table
+    i8 m_iPartition; // which partition
   
-    i8 m_nBuffersLoadable;  // buffers to be loaded
+    i8 m_nBuffersFromSubLoader; // number of buffers to be loadeed from sub loader
 
     // must be last
     Footer m_xFooter;
@@ -29,8 +29,8 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
-    i8   nBuffersLoadable(void);
-    void vBuffersLoadable(i8 nBuffersLoadable);
+    i8   nBuffersFromSubLoader(void);
+    void vBuffersFromSubLoader(i8 nBuffers);
   
     i8   iLoadJobId(void);
     void vLoadJobId(i8 iLoadJobId);

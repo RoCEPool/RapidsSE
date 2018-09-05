@@ -587,7 +587,7 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   if (iFinal) {
     i8 nBuffersLoadable = pLoaderSub->nBuffersLoadable();
     ASSERT(C_UNKNOWN != nBuffersLoadable);
-    pJob_LoadBuffer->vBuffersLoadable(nBuffersLoadable);
+    pJob_LoadBuffer->vBuffersFromSubLoader(nBuffersLoadable);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
