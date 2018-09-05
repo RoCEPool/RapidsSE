@@ -273,7 +273,7 @@
 /*----------------------------------------------------------------------------*/
 : socketLock ( -- )
 
-  //task::this task.sendNode@ node.socket@ socket.grabWrite
+  task::this task.sendNode@ node.socket@ socket.grabWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -281,7 +281,7 @@
 /*----------------------------------------------------------------------------*/
 : socketUnlock ( -- )
 
-  //task::this task.sendNode@ node.socket@ socket.dropWrite
+  task::this task.sendNode@ node.socket@ socket.dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
