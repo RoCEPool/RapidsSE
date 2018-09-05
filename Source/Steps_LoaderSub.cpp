@@ -559,7 +559,7 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
   Job_SubLoader* pJob_SubLoader = pLoaderSub->pJob_SubLoader();
   Job_LoadTable* pJob_LoadTable = pJob_SubLoader->pJob_LoadTable();
   
-  i8 iLoadJobId = pJob_LoadTable->iJobId();
+  i8 iJobLoadTableId = pJob_LoadTable->iJobId();
   i8 iPartition = pLoaderSub->iPartition();
   WorkingBuffer* pWorkingBuffer = pLoaderSub->pWorkingBuffer();
   pLoaderSub->vWorkingBuffer(nullptr);
@@ -579,7 +579,7 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
 
   pJob_LoadBuffer->vSeed(SS_SEED_RUN);
   
-  pJob_LoadBuffer->vLoadJobId(iLoadJobId);
+  pJob_LoadBuffer->vJobLoadTableId(iJobLoadTableId);
   pJob_LoadBuffer->m_sObjectName = pJob_SubLoader->m_sObjectName;
   pJob_LoadBuffer->vPartition(iPartition);
   pJob_LoadBuffer->m_pWorkingBuffer = pWorkingBuffer;

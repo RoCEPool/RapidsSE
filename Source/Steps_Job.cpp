@@ -1002,8 +1002,8 @@ void Task::vJobLoadBufferLoadJobIdFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_LoadBuffer.loadJobId@"_Stz);
   Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJobPtr);
   
-  i8 iLoadJobId = pJob_LoadBuffer->iLoadJobId();
-  mpTask->m_pDataStack->vPushInt(iLoadJobId);
+  i8 iJobId = pJob_LoadBuffer->iJobLoadTableId();
+  mpTask->m_pDataStack->vPushInt(iJobId);
   
   EXIT();
 }

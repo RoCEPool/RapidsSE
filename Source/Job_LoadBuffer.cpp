@@ -109,9 +109,12 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
     
-  m_nBuffersFromSubLoader = C_UNKNOWN;
-  m_iLoadJobId = -1;
+  m_iJobLoadTableId = -1;
   m_iPartition = -1;
+  m_nBuffersFromSubLoader = C_UNKNOWN;
+
+  m_pJob_LoadTable = nullptr;
+  
   m_pTable = nullptr;
   
   _checkInitialised_(CN_JOB_LOADBUFFER);
@@ -173,23 +176,43 @@ void Job_LoadBuffer::vBuffersFromSubLoader(i8 nBuffers)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the job id of the load table job                                       */
+/* get the load table job                                                     */
 /*----------------------------------------------------------------------------*/
-i8 Job_LoadBuffer::iLoadJobId(void)
+Job_LoadTable* Job_LoadBuffer::pJobLoadTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
-  return m_iLoadJobId;
+  return m_pJob_LoadTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the load table job                                                     */
+/*----------------------------------------------------------------------------*/
+void Job_LoadBuffer::vJobLoadTable(Job_LoadTable* pJobLoadTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  m_pJob_LoadTable = pJobLoadTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the job id of the load table job                                       */
+/*----------------------------------------------------------------------------*/
+i8 Job_LoadBuffer::iJobLoadTableId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  return m_iJobLoadTableId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the job id of the load table job                                       */
 /*----------------------------------------------------------------------------*/
-void Job_LoadBuffer::vLoadJobId(i8 iLoadJobId)
+void Job_LoadBuffer::vJobLoadTableId(i8 iJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
-  m_iLoadJobId = iLoadJobId;
+  m_iJobLoadTableId = iJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,8 +264,8 @@ void Job_LoadBuffer::vShow(void)
   
   s48K sShow;
   
-  sShow.vSprint("LoadJobId %lld; Table %s; Partition %lld; Rows %lld\n"_Stz,
-                m_iLoadJobId,
+  sShow.vSprint("JobLoadTableId %lld; Table %s; Partition %lld; Rows %lld\n"_Stz,
+                m_iJobLoadTableId,
                 m_sObjectName.aStr(),
                 m_iPartition,
                 m_pWorkingBuffer->nWorkingRows());

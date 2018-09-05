@@ -5,15 +5,20 @@
 
 namespace JobsModel
 {
+  class Job_LoadTable;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_LoadBuffer : public Job
   {
   private:
-    i8 m_iLoadJobId; // the job id of the load table job
-    Table* m_pTable; // which table
-    i8 m_iPartition; // which partition
+    i8 m_iJobLoadTableId; // the job id of the load table job
   
+    i8 m_iPartition; // which partition
     i8 m_nBuffersFromSubLoader; // number of buffers to be loadeed from sub loader
+  
+    Job_LoadTable* m_pJob_LoadTable;
+  
+    Table* m_pTable; // which table
 
     // must be last
     Footer m_xFooter;
@@ -31,15 +36,19 @@ namespace JobsModel
   public:
     i8   nBuffersFromSubLoader(void);
     void vBuffersFromSubLoader(i8 nBuffers);
-  
-    i8   iLoadJobId(void);
-    void vLoadJobId(i8 iLoadJobId);
+
+    i8   iJobLoadTableId(void);
+    void vJobLoadTableId(i8 iJobId);
+
+    Job_LoadTable* pJobLoadTable(void);
+    void vJobLoadTable(Job_LoadTable* pJobLoadTable);
   
     i8   iPartition(void);
     void vPartition(i8 iPartition);
 
     Table* pTable(void);
     void vTable(Table* pTable);
+
   
     void vShow(void);
   
