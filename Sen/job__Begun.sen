@@ -4,6 +4,10 @@
 
 " job__Begun.sen" .verbose
 
+////////////////////////////////////////////////////////////////////////////////
+//                            on participating node                           //
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
 /* send Job__Begun back to originating node                                   */
 /*----------------------------------------------------------------------------*/
@@ -18,9 +22,6 @@
   // new a temporary Job__Executed
   iJobId job.newBegun to pJob__Begun
 
-  // set the originator node as the send target node
-  iJobId job::originator@ grid::node task::this task.sendNode!
-
   // get error if any
   grid::thisNode@ pJobParticipant job.error@ to error
 
@@ -30,15 +31,26 @@
     error pJob__Begun jobBegun.error!
   then
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // set the originator node as the send target node
+  iJobId job::originator@ grid::node task::this task.sendNode!
+
   // move this task through send state/queue
   task.send
 
   // send the begun job
   pJob__Begun >socket
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // delete Job__Executed
   pJob__Begun job.delete
 ;
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on originating node                             //
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* run received Job__Begun on originating node                                */

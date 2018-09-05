@@ -58,6 +58,8 @@ Socket::Socket(void)
   
   m_iSocketId = -1;
   m_bBlocking = true;
+  m_xLock.vInitLock(LK_SOCKET);
+  
   vAddrInit(&m_xServAddr,nullptr,0);
   
   _checkInitialised_(CN_SOCKET);
@@ -75,6 +77,7 @@ Socket::Socket(int iSocketId)
   
   m_iSocketId = iSocketId;
   m_bBlocking = true;
+  m_xLock.vInitLock(LK_SOCKET);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -331,6 +334,26 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
 
   SysCall.vSuccess();
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void Socket::vGrabWrite(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  m_xLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void Socket::vDropWrite(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  m_xLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

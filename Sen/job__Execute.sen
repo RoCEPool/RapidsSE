@@ -4,6 +4,10 @@
 
 " job__Execute.sen" .verbose
 
+////////////////////////////////////////////////////////////////////////////////
+//                            on originating node                             //
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
 /* distribute Job__Execute to all participants                                */
 /*----------------------------------------------------------------------------*/
@@ -23,6 +27,8 @@
   // create a new job__execute
   pJobOriginator job.id@ job.newExecute to pJob__Execute
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // send job__execute to all nodes
   grid::nodes 0
   do
@@ -35,6 +41,8 @@
     // send the execute job
     pJob__Execute >socket
   loop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // now delete the execute job
   pJob__Execute job.delete

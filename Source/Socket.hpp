@@ -10,6 +10,7 @@ namespace System
   public:
     int  m_iSocketId;
     bool m_bBlocking;
+    Lock m_xLock;
     
     struct sockaddr_in m_xServAddr;
     
@@ -38,6 +39,8 @@ namespace System
     
     bool bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall);
     bool bCreateServer(int iPort, SysCall& SysCall);
+    void vDropWrite(void);
+    void vGrabWrite(void);
     bool bRecvBuffer(int nBytes, SysCall& SysCall);
     bool bRecvBytes(i8 nBytes, void* pBuffer, SysCall& SysCall);
     bool bSendBytes(int nBytes, void* pBuffer, SysCall& SysCall);

@@ -4,6 +4,10 @@
 
 " job__Ended.sen" .verbose
 
+////////////////////////////////////////////////////////////////////////////////
+//                            on participating node                           //
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
 /* send Job__Ended back to originating node                                   */
 /*----------------------------------------------------------------------------*/
@@ -18,16 +22,26 @@
   // new a temporary Job__Ended
   iJobId job.newEnded to pJob__Ended
 
-  // send Job__Ended to originating node
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // set the originator node as the send target node
   iJobId job::originator@ grid::node task::this task.sendNode!
+
+  // move this task through send state/queue
   task.send
 
   // send the ended job
   pJob__Ended >socket
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // delete Job__Ended
   pJob__Ended job.delete
 ;
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on originating node                             //
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* run received Job__Ended on originating node                                */
