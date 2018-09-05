@@ -361,7 +361,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* send the job to given node                                                 */
+/* send the job to given participating node                                   */
 /*----------------------------------------------------------------------------*/
 : job.forward ( i_Node pJob -- )
 
@@ -376,18 +376,18 @@
 
   socketLock
 
-  pJob >socket
+    pJob >socket
 
-  pJob job.hasWorkingBuffer if
-    pJob job.workingBuffer@ >socket
-  then
+    pJob job.hasWorkingBuffer if
+      "job.forward: Job has working buffer" .
+      pJob job.workingBuffer@ >socket
+    then
 
   socketUnlock
-
 ;
 
 /*----------------------------------------------------------------------------*/
-/* send the job back to node                                                  */
+/* send the job back to originating node                                      */
 /*----------------------------------------------------------------------------*/
 : job.reply ( i_Node pJob -- )
 
@@ -400,7 +400,9 @@
 
   pJob job.preSend
 
-  pJob >socket
+  socketLock
+    pJob >socket
+  socketUnlock
 ;
 
 /*----------------------------------------------------------------------------*/

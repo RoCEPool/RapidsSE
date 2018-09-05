@@ -92,14 +92,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_LoadTable job on each node                                     */
 /*----------------------------------------------------------------------------*/
-: loadTable_exe ( pJob_LoadTable -- )
+: loadTable_exe ( -- )
 
   <SEED_EXE>
 
-  //params| pJob_LoadTable |
   job::this locals| pJob_LoadTable |
-
-  ">> loadTable_exe <<" .
 
   0 locals| pThisTask |
 
