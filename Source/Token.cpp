@@ -40,21 +40,6 @@ void Token::operator delete(void* pTokenAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump tokeniser                                                             */
-/*----------------------------------------------------------------------------*/
-void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  RASSERT(eClass == CN_TOKEN);
-  RASSERT(pObject->eClass() == CN_TOKEN);
-  
-  Token* pToken = reinterpret_cast<Token*>(pObject);
-  
-  vTrace("token %s %s\n"_Stz,
-         aTN[pToken->m_eToken],
-         pToken->m_sText.aChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Token::Token(void)
@@ -75,6 +60,21 @@ Token::Token(void)
 Token::~Token(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump tokeniser                                                             */
+/*----------------------------------------------------------------------------*/
+void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  RASSERT(eClass == CN_TOKEN);
+  RASSERT(pObject->eClass() == CN_TOKEN);
+  
+  Token* pToken = reinterpret_cast<Token*>(pObject);
+  
+  vTrace("token %s %s\n"_Stz,
+         aTN[pToken->m_eToken],
+         pToken->m_sText.aChar());
 }
 
 /*----------------------------------------------------------------------------*/

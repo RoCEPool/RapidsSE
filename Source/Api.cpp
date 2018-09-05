@@ -1385,8 +1385,7 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
                             &pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-  
-  TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_sResponse);
+
   
   i8 iRows = -1;
   i8 iToken = 0;
@@ -1433,6 +1432,10 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, Job* pJob, i8 iRow, void** ppRow, i8 iTraceLe
     iRows++;
   }
   *ppRow = pSEitf->m_sResponse.aChar();
+  
+  pTknVec->vSetAllTokens();
+  delete pTknVec;
+  
   return EC_NONE;
 }
 
