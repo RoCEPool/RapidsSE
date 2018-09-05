@@ -309,11 +309,11 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   
   if (eClass == CN_WORKINGBUFFER) {
     
-    WorkingBuffer* pWorkingBuffer = (WorkingBuffer*)new WorkingBuffer(nullptr, -1);
+    WorkingBuffer* pWorkingBuffer = new WorkingBuffer(nullptr, -1);
     
     MemLib::vCopy(pWorkingBuffer,pObject,sizeof(Object),CN_WORKINGBUFFER);
 
-    void* aBody = pAdd<void*>(pObject,sizeof(Object));
+    void* aBody = pAdd<void*>(pWorkingBuffer,sizeof(Object));
     i8 nRemainingBytes = giClassSize[CN_WORKINGBUFFER] - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(nRemainingBytes,aBody,xSysCall);
@@ -498,6 +498,10 @@ void Task::vSocketSendObject(MP_Task mpTask)
   
   vTrace("vSocketSendObject: send %p %lld %s %lld bytes\n"_Stz,
          pObject,eClass,aCN[eClass],nObjectSize);
+  
+  if (eClass == CN_WORKINGBUFFER)
+    int iDebug = 1;
+
 
   SysCall xSysCall;
   bool bResult = pSocket->bSendTo(nObjectSize, pObject, xSysCall);

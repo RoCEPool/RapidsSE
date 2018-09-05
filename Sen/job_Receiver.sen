@@ -78,8 +78,9 @@
     pJob job.postRecv
 
     pJob job.hasWorkingBuffer if
-     socket> drop to pWorkingBuffer
-     pWorkingBuffer pJob job.workingBuffer!
+      "receiver_loop: job has working buffer" .
+      socket> drop to pWorkingBuffer
+      pWorkingBuffer pJob job.workingBuffer!
     then
 
     pJob SEED_RCV job.spawn

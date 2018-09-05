@@ -50,7 +50,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job::findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job::findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
-  vAddPrimitive("job.hasWorkingBuffer"_Stz, &vJobHasError,         false);
+  vAddPrimitive("job.hasWorkingBuffer"_Stz, &vJobHasWorkingBuffer, false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.indexName@"_Stz,       &vJobIndexNameFetch,   false);
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
@@ -869,7 +869,10 @@ void Task::vJobHasWorkingBuffer(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.hasWorkingBuffer"_Stz);
   Job_Space* pJob = _pJob_Space(pJobPtr);
   
+  
   i8 bHas = pJob->m_pWorkingBuffer ? true : false;
+  if (pJob->m_pJobClass->m_eClass == CN_JOB_LOADBUFFER)
+    int iDebug = 1;
   
   mpTask->m_pDataStack->vPushInt(bHas);
   

@@ -93,9 +93,9 @@
   pJob_LoadBuffer LoadBuffer.load
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //delete_completed_job
+  delete_completed_job
 
-  //<DONE_KID>
+  <DONE_KID>
 ;
 
 
@@ -106,7 +106,7 @@
 /*----------------------------------------------------------------------------*/
 /* forward this load buffer job to kid node                                   */
 /*----------------------------------------------------------------------------*/
-: LoadBuffer.forward ( pJob_LoadBuffer -- )
+: loadBuffer.forward ( pJob_LoadBuffer -- )
 
   params| pJob_LoadBuffer |
 
@@ -116,13 +116,10 @@
   // convert i_Partition to i_ForwardNode
   i_Partition grid::toNode locals| i_ForwardNode |
 
-  i_Partition i_ForwardNode "loadBuffer_run : Node %v Partition %v" fmt.print
+  i_Partition i_ForwardNode "loadBuffer.forward : Node %v Partition %v" fmt.print
 
   // send this job to the forward node
-  //i_ForwardNode pJob_LoadBuffer job.forward
-
-  // temp
-  LoadBuffer_kid
+  i_ForwardNode pJob_LoadBuffer job.forward
 ;
 
 /*----------------------------------------------------------------------------*/
