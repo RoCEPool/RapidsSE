@@ -269,31 +269,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop lock on socket                                                        */
-/*----------------------------------------------------------------------------*/
-: socket.dropWrite ( pSocket -- )
-
-  params| pSocket |
-
-  pSocket Socket.dropWrite
-;
-
-/*----------------------------------------------------------------------------*/
-/* grab lock on socket                                                        */
-/*----------------------------------------------------------------------------*/
-: socket.grabWrite ( pSocket -- )
-
-  params| pSocket |
-
-  pSocket Socket.grabWrite
-;
-
-/*----------------------------------------------------------------------------*/
 /* grab lock on socket                                                        */
 /*----------------------------------------------------------------------------*/
 : socketLock ( -- )
 
-  task::this task.sendNode@ node.socket@ socket.grabWrite
+  //task::this task.sendNode@ node.socket@ socket.grabWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -301,7 +281,7 @@
 /*----------------------------------------------------------------------------*/
 : socketUnlock ( -- )
 
-  task::this task.sendNode@ node.socket@ socket.dropWrite
+  //task::this task.sendNode@ node.socket@ socket.dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -394,11 +374,16 @@
 
   pJob job.preSend
 
+  socketLock
+
   pJob >socket
 
   pJob job.hasWorkingBuffer if
     pJob job.workingBuffer@ >socket
   then
+
+  socketUnlock
+
 ;
 
 /*----------------------------------------------------------------------------*/

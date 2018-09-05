@@ -1193,6 +1193,8 @@ namespace Tasks
     static void vSocketAccept(MP_Task mpTask);
     static void vSocketClose(MP_Task mpTask);
     static void vSocketConnect(MP_Task mpTask);
+    static void vSocketDropWrite(MP_Task mpTask);
+    static void vSocketGrabWrite(MP_Task mpTask);
     static void vSocketListen(MP_Task mpTask);
     static void vSocketOpen(MP_Task mpTask);
     static void vSocketRecvObject(MP_Task mpTask);

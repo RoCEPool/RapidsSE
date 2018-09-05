@@ -21,6 +21,8 @@ void Task::vAddPrimitives_Socket(void)
   vAddPrimitive("socket.accept"_Stz,     &vSocketAccept,     false);
   vAddPrimitive("socket.close"_Stz,      &vSocketClose,      false);
   vAddPrimitive("socket.connect"_Stz,    &vSocketConnect,    false);
+  vAddPrimitive("socket.dropWrite"_Stz,  &vSocketDropWrite,  false);
+  vAddPrimitive("socket.grabWrite"_Stz,  &vSocketGrabWrite,  false);
   vAddPrimitive("socket.recvObject"_Stz, &vSocketRecvObject, false);
   vAddPrimitive("socket.recvValSet"_Stz, &vSocketRecvValSet, false);
   vAddPrimitive("socket.sendObject"_Stz, &vSocketSendObject, false);
@@ -146,6 +148,40 @@ void Task::vSocketConnect(MP_Task mpTask)
   // return the socket object
   Object* pPtrSocket = pSocket;
   mpTask->m_pDataStack->vPushObject(pPtrSocket);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* socket.dropWrite: drop socket write lock                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSocketDropWrite(MP_Task mpTask)
+{
+  ENTRY("vSocketDropWrite"_Stz);
+  
+  Object* pSocketPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
+    THROW_INVALID_DSTACK("socket.dropWrite"_Stz);
+  Socket* pSocket = _pSocket(pSocketPtr);
+  
+  pSocket->vDropWrite();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* socket.grabWrite: grab socket write lock                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSocketGrabWrite(MP_Task mpTask)
+{
+  ENTRY("vSocketGrabWrite"_Stz);
+  
+  Object* pSocketPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
+    THROW_INVALID_DSTACK("socket.grabWrite"_Stz);
+  Socket* pSocket = _pSocket(pSocketPtr);
+  
+  pSocket->vGrabWrite();
   
   EXIT();
 }
