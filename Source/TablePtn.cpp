@@ -163,16 +163,18 @@ bool TablePtn::bAllBuffersLoaded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  //ASSERT(C_UNKNOWN == m_nBuffersLoadable);
+  // compute the total number of subloaders in the grid
+  i8 nSubLoadersInGrid = gpAttachMap->m_nSubLoaders *
+                         gpAttachMap->m_pGrid->m_nNodes;
   
-  vTrace("m_nSubLoadersDone %lld gpAttachMap->m_nSubLoaders %lld\n"
+  vTrace("m_nSubLoadersDone %lld nSubLoadersInGrid %lld\n"
          "m_nBuffersLoadable %lld m_nBuffersLoaded %lld\n"_Stz,
          m_nSubLoadersDone,
-         gpAttachMap->m_nSubLoaders,
+         nSubLoadersInGrid,
          m_nBuffersLoadable,
          m_nBuffersLoaded);
   
-  if (m_nSubLoadersDone == gpAttachMap->m_nSubLoaders &&
+  if (m_nSubLoadersDone == nSubLoadersInGrid &&
       m_nBuffersLoaded  == m_nBuffersLoadable)
     return true;
   else

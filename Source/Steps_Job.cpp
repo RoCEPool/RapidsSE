@@ -971,11 +971,11 @@ void Task::vJobLoadBufferInsertRows(MP_Task mpTask)
   // insert the working buffer
   pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
   
-  // we loaded an additional buffer
+  // we loaded one additional buffer
   pPartition->vIncBuffersLoaded();
   
-  // does this job have information about buffers loadable
-  // from the subloader?
+  // does this job have information about the total number of buffers loadable
+  // from a subloader for this partition?
   i8 nBuffersLoadable = pJob_LoadBuffer->nBuffersLoadable();
   if (C_UNKNOWN != nBuffersLoadable)
     pPartition->vAddBuffersLoadable(nBuffersLoadable);
