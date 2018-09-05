@@ -366,6 +366,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* send the job back to node                                                  */
+/*----------------------------------------------------------------------------*/
+: job.reply ( i_Node pJob -- )
+
+  params| pJob |
+  params| i_Node |
+
+  i_Node grid::node task::this task.sendNode!
+
+  task.send
+
+  pJob job.preSend
+
+  pJob >socket
+;
+
+/*----------------------------------------------------------------------------*/
 /* distribute the job to all the nodes                                        */
 /*----------------------------------------------------------------------------*/
 : job.distribute ( pJob -- )
