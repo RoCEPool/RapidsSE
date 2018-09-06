@@ -62,8 +62,8 @@ enum eCN : u2 // Class Number
     /* 36 */ CN_ENTRY,
     /* 37 */ CN_ENTRYBUFFER,
     /* 38 */ CN_ENTRYVEC,
-    /*    */ CN_FETCHBUFFER,
     
+    /*    */ CN_FETCHBUFFER,
     /* 39 */ CN_FILE,
     /* 40 */ CN_FORMATTERS,
     /* 41 */ CN_FREEBUFFER,
@@ -162,7 +162,6 @@ enum eCN : u2 // Class Number
   
     /* 65 */ CN_LARGEPERSISTENT,
     /* 66 */ CN_LARGETRANSIENT,
-    
     /* 67 */ CN_LINEITEM,
     /* 68 */ CN_LOADCHUNK,
     /* 69 */ CN_LOADER,
@@ -178,7 +177,6 @@ enum eCN : u2 // Class Number
     /* 77 */ CN_OP,
 
     /* 78 */ CN_PARSER,
-
     /* 82 */ CN_PATHVEC,
     /* 83 */ CN_PERFORMANCEBUFFER,
     /* 84 */ CN_PERFORMANCEENTRY,
@@ -197,7 +195,6 @@ enum eCN : u2 // Class Number
   
     /* 97 */ CN_RBCURSOR,
     /*    */ CN_REGFRAME,
-    
     /*101 */ CN_RING,
     /*102 */ CN_ROARRAY,
     /*103 */ CN_ROWBUFFER,
@@ -207,9 +204,7 @@ enum eCN : u2 // Class Number
   
     /*107 */ CN_SCANBUFFER,
     /*108 */ CN_SCRATCH,
-
     /*110 */ CN_SEITF,
-
     /*113 */ CN_SELCURSOR,
     /*114 */ CN_SEMAPHORE,
     /*115 */ CN_SEPROMPT,
@@ -232,11 +227,8 @@ enum eCN : u2 // Class Number
     /*    */ CN_TABLEPTN,
     /*    */ CN_TABLEPTNVEC,
     /*131 */ CN_TASK,
-
     /*134 */ CN_TASKQUEUE,
-
     /*137 */ CN_THREAD,
-
     /*    */ CN_THREADVECTOR,
     /*141 */ CN_TIME,
     /*142 */ CN_TIMER,
@@ -427,8 +419,6 @@ enum eCN : u2 // Class Number
     /* 77 */ "OP"_Stz,                 // CN_OP
   
     /* 78 */ "PARSER"_Stz,             // CN_PARSER
-    /* 79 */ "PARTITION"_Stz,          // CN_PARTITION
-    /* 81 */ "PARTITIONVEC"_Stz,       // CN_PARTITIONVEC
     /* 82 */ "PATHVEC"_Stz,            // CN_PATHVEC
     /* 83 */ "PERFORMANCEBUFFER"_Stz,  // CN_PERFORMANCEBUFFER
     /* 84 */ "PERFORMANCEENTRY"_Stz,   // CN_PERFORMANCEENTRY
@@ -457,7 +447,6 @@ enum eCN : u2 // Class Number
     /*107 */ "SCANBUFFER"_Stz,         // CN_SCANBUFFER
     /*108 */ "SCRATCH"_Stz,            // CN_SCRATCH
     /*110 */ "SEITF"_Stz,              // CN_SEITF
-
     /*113 */ "SELCURSOR"_Stz,          // CN_SELCURSOR
     /*114 */ "SEMAPHORE"_Stz,          // CN_SEMAPHORE
     /*115 */ "SEPROMPT"_Stz,           // CN_SEPROMPT
@@ -477,12 +466,11 @@ enum eCN : u2 // Class Number
     /*129 */ "SYSCALL"_Stz,            // CN_SYSCALL
   
     /*130 */ "TABLE"_Stz,              // CN_TABLE
+    /*130 */ "TABLEPTN"_Stz,           // CN_TABLEPTN
+    /*130 */ "TABLEPTNVEC"_Stz,        // CN_TABLEPTNVEC
     /*131 */ "TASK"_Stz,               // CN_TASK
-
     /*134 */ "TASKQUEUE"_Stz,          // CN_TASKQUEUE
-
     /*137 */ "THREAD"_Stz,             // CN_THREAD
-
     /*    */ "THREADVECTOR"_Stz,       // CN_THREADVECTOR
     /*141 */ "TIME"_Stz,               // CN_TIME
     /*142 */ "TIMER"_Stz,              // CN_TIMER

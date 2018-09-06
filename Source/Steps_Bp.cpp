@@ -79,21 +79,50 @@ void Task::vBpEpochDump(MP_Task mpTask)
   ENTRY("vBpEpochDump"_Stz);
   
   BPA* pBPA = new BPA;
-  i8 iCountObjects[CN_ENUMS];
+  i8 iSnapshotObjects[CN_ENUMS];
   
   vTrace("\n"_Stz);
   vTrace("%sWords created since last epoch:\n"_Stz,aSingleTab());
   
   pBPA->vWordList(gpAttachMap->m_iEpoch);
-  pBPA->vObjectSnapshot(&iCountObjects[0]);
+  pBPA->vObjectSnapshot(&iSnapshotObjects[0]);
   
   vTrace("\n%sObjects created since last epoch:\n\n"_Stz,aSingleTab());
   
-  for (i8 iIndex =0 ; iIndex < CN_ENUMS; iIndex++) {
-    if (iCountObjects[iIndex] != giCountObjects[iIndex])
-      vTrace("%s  %12s %-6lld \n"_Stz, aSingleTab(), aCN[iIndex],
-             iCountObjects[iIndex] - giCountObjects[iIndex]);
+  for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
+    
+    eCN eClass = (eCN)i_Object;
+    
+    if (iSnapshotObjects[eClass] == giCountObjects[eClass])
+      continue;
+    
+    vTrace("%s  %12s (eCN %3lld) %-6lld \n"_Stz,
+           aSingleTab(),
+           aCN[eClass],
+           eClass,
+           iSnapshotObjects[eClass] - giCountObjects[eClass]
+           );
+    int iDebug = 1;
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* epochTake -- take an epoch                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vBpEpochTake(MP_Task mpTask)
+{
+  ENTRY("vBpEpochTake"_Stz);
+  
+  // increment the epoch
+  gpAttachMap->m_iEpoch++;
+  BPA* pBPA = new BPA;
+  
+  pBPA->vObjectSnapshot(&giCountObjects[0]);
+  
+  delete pBPA;
+  
   EXIT();
 }
 
@@ -128,22 +157,6 @@ void Task::vBpWriteBufferPool(MP_Task mpTask)
 
   delete pBPA;
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* epochTake -- take an epoch                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vBpEpochTake(MP_Task mpTask)
-{
-  ENTRY("vBpEpochTake"_Stz);
-  
-  // increment the epoch
-  gpAttachMap->m_iEpoch++;
-  BPA* pBPA = new BPA;
-  
-  pBPA->vObjectSnapshot(&giCountObjects[0]);
-
   EXIT();
 }
 

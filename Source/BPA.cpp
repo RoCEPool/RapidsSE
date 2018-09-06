@@ -391,6 +391,8 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
     pCountObjects[i_Index] = 0;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   bn nBuffer = 0;
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
   
@@ -399,36 +401,60 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
        nBuffer++) {
     
     Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
-    pCountObjects[pBuffer->eClass()]++;
+    
+    eCN eClass = pBuffer->eClass();
+    
+    if (CN_QUEUES == eClass)
+      int iDebug = 1;
+    
+    pCountObjects[eClass]++;
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   gpAttachMap->m_pTransientSmallHeap->vAnalyse(iCountObjects);
+  
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
     if (iCountObjects[eClass] == 0)
       continue;
     
+    if (CN_QUEUES == eClass)
+      int iDebug = 1;
+    
     pCountObjects[eClass] += iCountObjects[eClass];
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   gpAttachMap->m_pTransientMediumHeap->vAnalyse(iCountObjects);
+  
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
     if (iCountObjects[eClass] == 0)
       continue;
     
+    if (CN_QUEUES == eClass)
+      int iDebug = 1;
+
     pCountObjects[eClass] += iCountObjects[eClass];
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   gpAttachMap->m_pTransientLargeHeap->vAnalyse(iCountObjects);
+  
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
     
     if (iCountObjects[eClass] == 0)
       continue;
     
+    if (CN_QUEUES == eClass)
+      int iDebug = 1;
+
     pCountObjects[eClass] += iCountObjects[eClass];
   }
   

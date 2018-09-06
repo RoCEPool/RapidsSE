@@ -70,6 +70,9 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
     if (CN_FREECHUNK == eClass)
       continue;
     
+    if (CN_QUEUES == eClass)
+      int iDebug = 1;
+
     xCounts[eClass]++;
   }
 }
