@@ -63,6 +63,7 @@ TokenVec::TokenVec(void)
 TokenVec::~TokenVec(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+
 }
 
 /*----------------------------------------------------------------------------*/

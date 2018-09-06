@@ -83,6 +83,9 @@ Tokeniser::~Tokeniser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  m_xTokenVec.vSetAllTokens();
+  
+  ASSERT(C_TOKENS == m_xTokenVec.nItems());
   delete m_pParser;
 }
 
