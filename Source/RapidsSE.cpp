@@ -359,7 +359,7 @@ void RapidsSE::vOpenPool(void)
     return;
   }
   
-  if (gxArguments.m_bPrompt) {
+  if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
       vFatal("Error: RapidsSE instance %s was not started\n"_Stz,gxArguments.m_sRegionName.aChar());
       exit(EXIT_FAILURE);
@@ -534,6 +534,7 @@ void RapidsSE::vRunCmdLine(void)
     else if (gxArguments.m_bStatus)  vPrintStatus();
     else if (gxArguments.m_bStop)    vStopSystem();
     else if (gxArguments.m_bUnlink)  vUnlinkSystem();
+    else if (gxArguments.m_bScript)  { ASSERT(gpBufferPool); vCallPrompt(); }
     else {
       vError("Unknown command line argument\n"_Stz);
       vFatal("RapidsSE exits\n"_Stz);

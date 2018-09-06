@@ -833,8 +833,10 @@ void Parser::vReadLineStdin(void)
   if (gpAttachMap->m_bTracepoint)
     PosixThread::vSleepMilli(300);
   
-  vInfo("%s"_Stz,m_sPrompt.aChar());
-  fflush(stdin);
+  if ( ! gxArguments.m_bScript ) {
+    vInfo("%s"_Stz,m_sPrompt.aChar());
+    fflush(stdin);
+  }
   
   for (;;) {
     
