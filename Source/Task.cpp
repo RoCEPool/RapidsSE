@@ -100,6 +100,14 @@ Task::~Task(void)
   
   delete m_pTokeniser;
   
+  while (m_pLocalsFrame) {
+
+    RegFrame* pLocalsFrame = m_pLocalsFrame;
+    m_pLocalsFrame = m_pLocalsFrame->pNext();
+  
+    delete pLocalsFrame;
+  }
+  
   ASSERT(!m_pJob);
 }
 
