@@ -1,0 +1,212 @@
+/*============================================================================*/
+/* job_EndInsert.sen -- Job End Insert                                        */
+/*============================================================================*/
+
+" job_EndInsert.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* send working buffer to node                                                */
+/*----------------------------------------------------------------------------*/
+: EndInsert_sendBuffer ( pJob_InsertRow job_EndJobid iPartition -- )
+
+  params| iPartition nBuffersToBeInserted iJob_EndJobid pJob_InsertRow  |
+  1 locals| isFinal |
+
+  isFinal iPartition iJob_EndJobid pJob_InsertRow job_InsertRow.spawnInsertBuffer
+;
+
+/*----------------------------------------------------------------------------*/
+/* send last buffers to all partitions                                        */
+/*----------------------------------------------------------------------------*/
+: EndInsert_sendLast ( pJob_EndInsert -- )
+
+  params| pJob_EndInsert  |
+  0 0 0 locals| iInsertRowJobId pJob_InsertRow nBuffersToBeInserted |
+
+  // calculate total partitions in the cluster
+  grid::slots grid::nodes * locals| nTotalPartitions |
+
+  pJob_EndInsert job_EndInsert.insertRowJob@ to iInsertRowJobId
+  iInsertRowJobId "InsertRowJobId %v" fmt.print
+  iInsertRowJobId job::findOriginator to pJob_InsertRow
+  pJob_InsertRow .
+
+  // for all partitions
+  nTotalPartitions 0 do
+
+    I "LAST BUFFER for partition %v" fmt.print
+
+    // ensure there's a dangling buffer for partition I
+    I pJob_InsertRow job_InsertRow.danglingBuffer
+
+    // send last buffer to node
+    I pJob_EndInsert job.Id@ pJob_InsertRow EndInsert_sendBuffer
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* wait for ack only                                                          */
+/*----------------------------------------------------------------------------*/
+: EndInsert_waitOnly ( pJob_EndInsert --  )
+
+  grid::slots setAcks
+
+  "EndInsert_waitOnly waiting" .
+  ackWait
+  "EndInsert_waitOnly acked" .
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* Job_EndInsert request (on originating node)                                */
+/*----------------------------------------------------------------------------*/
+: endInsert_req (  -- <R> )
+
+  <SEED_REQ>
+
+  0 0 locals| pJob pTask |
+
+  tp: createTable
+
+  // get the task
+  task::this to pTask
+
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // distribute the job
+  pJob job.distribute
+
+  <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_EndInsert job on each node                                     */
+/*----------------------------------------------------------------------------*/
+: endInsert_exe ( Job_EndInsert -- )
+
+  <SEED_EXE>
+
+  //params| pJob_CreateTable |
+  job::this locals| pJob_EndInsert |
+
+  0 0 locals| pTable sTableNm |
+
+  tp: endInsert_exe
+
+  //----------------------------------------------------------------------------
+  // assert correct job
+  CN_JOB_ENDINSERT pJob_EndInsert object.assertClass
+
+  //----------------------------------------------------------------------------
+  // grad a lock ????
+
+  pJob_EndInsert job::originator@ locals| iOriginNode |
+  grid::thisNode@ locals| iThisNode |
+
+  iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
+
+  iThisNode iOriginNode == if
+    "endInsert is executing on this node" .
+    pJob_EndInsert EndInsert_sendLast
+  else
+    "endInsert is not executed on this node" .
+    EndInsert_waitOnly
+  then
+
+  //----------------------------------------------------------------------------
+  pJob_EndInsert job.notice
+
+  // delete_completed_job
+
+  pJob_EndInsert send_job__executed
+
+  nullptr task::this task.job!
+
+  <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_EndInsert job check resources                                  */
+/*----------------------------------------------------------------------------*/
+: endInsert.checkResources ( pJob_EndInsert -- )
+
+  params| pJob_EndInsert  |
+
+  tp: endInsert.checkResources
+  "checkResources received" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_EndInsert job release resources                                */
+/*----------------------------------------------------------------------------*/
+: endInsert.releaseResources ( pJob_EndInsert -- )
+
+  params| pJob_CreateTable  |
+
+  tp: endInsert.releaseResources
+  "releaseResources received" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: endInsert_beg ( -- )
+
+  <SEED_BEG>
+
+  job::this locals| pJob_EndInsert |
+
+  ">> endInsert_beg <<" .
+
+  // add this job to the participants list
+  pJob_EndInsert job.beginParticipant
+
+  // check resources
+  pJob_EndInsert endInsert.checkResources
+
+  // this job has begun
+  job::participantBegun
+
+  <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: endInsert_end ( -- )
+
+  <SEED_END>
+
+  job::this locals| pJob_EndInsert |
+
+  ">> endInsert_end <<" .
+
+  // release resources
+  pJob_EndInsert endInsert.releaseResources
+
+  job::participantEnded
+
+  <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: endInsert_can ( -- )
+
+  <SEED_CAN>
+
+  job::this locals| pJob_EndInsert |
+
+  pJob_EndInsert endInsert.releaseResources
+
+  job::participantCancelled
+
+  <DONE_CAN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

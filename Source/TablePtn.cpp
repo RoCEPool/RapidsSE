@@ -110,6 +110,9 @@ TablePtn::TablePtn(void)
   m_nTotalBuffersLoadable = 0;
   m_nTotalBuffersLoaded   = 0;
 
+  m_nBuffersToBeInserted = 0;
+  m_nBuffersInserted = 0;
+  
   m_pIndexTreeVec = new IndexTreeVec;
   
   _checkInitialised_(CN_TABLEPTN);
@@ -182,6 +185,44 @@ bool TablePtn::bAllBuffersLoaded(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* have all buffers been loaded?                                              */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vBuffersToBeInserted(i8 m_nBuffersToBeInserted)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  m_nBuffersToBeInserted = m_nBuffersToBeInserted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have all buffers been loaded?                                              */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vBuffersInserted(i8 m_nBuffersInserted)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  m_nBuffersInserted = m_nBuffersInserted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have all buffers been loaded?                                              */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::nBuffersToBeInserted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_nBuffersToBeInserted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have all buffers been loaded?                                              */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::nBuffersInserted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_nBuffersInserted;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop a read lock on the partition                                          */
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDropRead(void)
@@ -234,6 +275,16 @@ IndexTree* TablePtn::pHiddenIndexTree(void)
   pIndexTree = m_pIndexTreeVec->pGet(0);
   
   return pIndexTree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment buffers loaded so far                                            */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vIncBuffersInserted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  m_nBuffersInserted++;
 }
 
 /*----------------------------------------------------------------------------*/

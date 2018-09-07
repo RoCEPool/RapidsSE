@@ -760,6 +760,10 @@ namespace Tasks
     static void vJobDecAcksRemaining(MP_Task mpTask);
     static void vJobDelete(MP_Task mpTask);
     static void vJobDicPath(MP_Task mpTask);
+    
+    static void vJob_InsertRowDanglingBuffer(MP_Task mpTask);
+    static void vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask);
+    
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
@@ -780,6 +784,17 @@ namespace Tasks
     static void vJobHasWorkingBuffer(MP_Task mpTask);
     static void vJobIdFetch(MP_Task mpTask);
     static void vJobIndexNameFetch(MP_Task mpTask);
+    
+    static void vJob_EndInsertInsertRowJobIdFetch(MP_Task mpTask);
+    static void vJob_EndInsertTaskFetch(MP_Task mpTask);
+    
+    static void vJob_InsertBufferEndInsertJobIdFetch(MP_Task mpTask);
+    static void vJob_InsertBufferPartitionFetch(MP_Task mpTask);
+    static void vJob_InsertBufferInsertRows(MP_Task mpTask);
+    static void vJob_InsertBufferTableStore(MP_Task mpTask);
+    
+    static void vJobInsertRowTableStore(MP_Task mpTask);
+    
     static void vJobIsPromptCommand(MP_Task mpTask);
     static void vJobJobClass(MP_Task mpTask);
     static void vJobLoadBufferInsertRows(MP_Task mpTask);
@@ -837,7 +852,8 @@ namespace Tasks
     static void vJobTruncateTableTaskStore(MP_Task mpTask);
     static void vJobWorkingBufferFetch(MP_Task mpTask);
     static void vJobWorkingBufferStore(MP_Task mpTask);
-
+  
+    
     // jobClass
     static void vJobClassBuffer(MP_Task mpTask);
     static void vJobClassFind(MP_Task mpTask);

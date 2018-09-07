@@ -23,7 +23,7 @@ JobClass xJobClass_InsertBuffer =
   nullptr,                // the second word
   "insertBuffer_run"_Stz, // the _run task seed
   nullptr,                // the _req task seed
-  "insertRow_kid"_Stz,    // the _rcv task seed
+  "insertBuffer_kid"_Stz, // the _rcv task seed
   nullptr,                // the _exe task seed
   nullptr,                // the _end task seed
   nullptr,                // the _can task seed
@@ -113,9 +113,12 @@ Job_InsertBuffer::Job_InsertBuffer(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTBUFFER,_FOOTER_);
   
-  m_pTable         = nullptr;
-  m_pWorkingBuffer = nullptr;
-  m_pTask          = nullptr;
+  m_pTable          = nullptr;
+  m_pTask           = nullptr;
+  m_pWorkingBuffer  = nullptr;
+  m_iPartitionId    = -1;
+  m_iEndInsertJobId = -1;
+  m_nBuffersToBeInserted = C_UNKNOWN;
   
   _checkInitialised_(CN_JOB_INSERTROW);
   

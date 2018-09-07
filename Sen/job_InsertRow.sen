@@ -1,0 +1,106 @@
+/*============================================================================*/
+/* job_InsertRow.sen -- Job Insert Row                                        */
+/*============================================================================*/
+
+" jjob_InsertRow.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertRow request (on originating node)                                */
+/*----------------------------------------------------------------------------*/
+: InsertRow_req (  -- <R> )
+
+  <SEED_REQ>
+
+  0 locals| pThisTask |
+  0 0 0 locals| pJob_InsertRow sTableNm pTable |
+
+  tp: InsertRow_req
+
+  // get the task
+  task::this to pThisTask
+
+  // get the job from the task
+  pThisTask task.job@ to pJob_InsertRow
+  pJob_InsertRow pThisTask "InsertRow_req task: %v job_InsertRow %v" fmt.print
+
+  // distribute the job
+  //Job_InsertRow job.distribute
+
+  pJob_InsertRow job.objectName@ to sTableNm
+
+  // push table dictionary
+  pJob_InsertRow getPath dicStack.set
+  sTableNm pushTable assert
+  pathDump
+
+  sTableNm find execute locals| pTable |
+  pTable pJob_InsertRow job_insertRow.table!
+
+  // add job to originator jobs
+  pJob_InsertRow job.addOriginator
+
+  <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_LoadTable job check resources                                  */
+/*----------------------------------------------------------------------------*/
+: insertRow.checkResources ( pJob_InsertRow -- )
+
+  params| pJob_InsertRow  |
+
+  pJob_InsertRow job.objectName@ locals| sTableNm |
+
+  tp: insertRow.checkResources
+  "checkResources received" .
+
+  //----------------------------------------------------------------------------
+  // grad a ddl lock
+
+  ddlLock::grabWrite
+
+  //----------------------------------------------------------------------------
+  // path checks
+
+  // set dictionary stack
+  pJob_InsertRow getPath dicStack.set
+  pathDump
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> exit then
+  sTableNm "In table folder: %v" fmt.print
+
+  // push table dictionary
+  sTableNm pushTable assert
+  pathDump
+
+  // check it is a table
+  sTableNm checkIsTable not if pJob_InsertRow <ERROR_JOB> exit then
+  drop
+
+  // pop table dictionary
+  popTable
+  pathDump
+
+  //----------------------------------------------------------------------------
+  // check if we have enough buffers
+
+  checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> exit then
+
+  ddlLock::dropWrite
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_LoadTable job release resources                                */
+/*----------------------------------------------------------------------------*/
+: insertRow.releaseResources ( pJob_InsertRow -- )
+
+  params| pJob_InsertRow  |
+
+  tp: insertRow.releaseResources
+  "releaseResources received" .
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

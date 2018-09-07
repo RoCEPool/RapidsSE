@@ -115,8 +115,9 @@ Job_InsertRow::Job_InsertRow(Interface::SEitf* pSEitf)
   m_xFormatters.m_cEnclosedBy_Leading = '\'';
   m_xFormatters.m_cEnclosedBy_Trailing = '\'';
   
-  for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
+  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pWorkingBuffer[i_Partition] = nullptr;
+    m_nBuffersToBeInserted[i_Partition] = 0;
   }
   
   _checkInitialised_(CN_JOB_INSERTROW);
@@ -163,6 +164,7 @@ bool Job_InsertRow::bInsertRow(Stz* aRow, i8 iRowPartition, i8 iRowLength, eEC& 
   // check for working buffer
   if (! m_pWorkingBuffer[iRowPartition]) {
     m_pWorkingBuffer[iRowPartition] = new WorkingBuffer(m_pTable, iRowPartition);
+    m_nBuffersToBeInserted[iRowPartition]++;
     
     if (! m_pWorkingBuffer[iRowPartition]) {
       vTrace("WorkingBuffer allocation failed\n"_Stz);
@@ -212,7 +214,7 @@ eEC Job_InsertRow::eInsertLastBuffer(i8 iPartition)
   //vTrace("No of entries %lld %lld\n"_Stz, iPartition, m_pWorkingBuffer[iPartition]->nEntries());
   
   // mark this buffer as the last buffer
-  m_pWorkingBuffer[iPartition]->vIsLast(true);
+  //m_pWorkingBuffer[iPartition]->vIsLast(true);
   
   // now insert the entries from this temporary buffer into the table
   //bool bResult = bInsertEntriesTable(m_pWorkingBuffer[iPartition],iPartition);
@@ -249,6 +251,17 @@ bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
   m_sObjectName = pTokenVec->pGet(2)->aText();
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new working buffer                                                */
+/*----------------------------------------------------------------------------*/
+void Job_InsertRow::vNewWorkingBuffer(i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ENDINSERT,_FOOTER_);
+  
+  m_pWorkingBuffer[iPartition] = new WorkingBuffer(m_pTable, iPartition);
+  m_nBuffersToBeInserted[iPartition]++;
 }
 
 /*----------------------------------------------------------------------------*/

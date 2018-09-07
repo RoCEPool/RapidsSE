@@ -33,6 +33,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
   vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
   vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
+  
   vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
   vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
   vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,     false);
@@ -53,6 +54,19 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.hasWorkingBuffer"_Stz, &vJobHasWorkingBuffer, false);
   vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
   vAddPrimitive("job.indexName@"_Stz,       &vJobIndexNameFetch,   false);
+  
+  vAddPrimitive("job_insertBuffer.partition@"_Stz, &vJob_InsertBufferPartitionFetch, false);
+  vAddPrimitive("job_insertBuffer.endInsertJob@"_Stz, &vJob_InsertBufferEndInsertJobIdFetch, false);
+  vAddPrimitive("job_insertBuffer.InsertRows"_Stz, &vJob_InsertBufferInsertRows, false);
+  vAddPrimitive("job_insertBuffer.table!"_Stz, &vJob_InsertBufferTableStore, false);
+  
+  vAddPrimitive("job_insertRow.table!"_Stz, &vJobInsertRowTableStore, false);
+  vAddPrimitive("job_InsertRow.danglingBuffer"_Stz, &vJob_InsertRowDanglingBuffer, false);
+  vAddPrimitive("job_InsertRow.SpawnInsertBuffer"_Stz,&vJob_InsertRowSpawnInsertBuffer, false);
+  
+  vAddPrimitive("job_endInsert.insertRowJob@"_Stz, &vJob_EndInsertInsertRowJobIdFetch, false);
+  vAddPrimitive("job_endInsert.task@"_Stz, &vJob_EndInsertTaskFetch, false);
+  
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
   vAddPrimitive("job.jobClass"_Stz,         &vJobJobClass,         false);
   vAddPrimitive("job_loadBuffer.insertRows"_Stz,   &vJobLoadBufferInsertRows,       false);
@@ -468,6 +482,86 @@ void Task::vJobDicPath(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job_InsertRow.danglingBuffer--ensure there's a dangling buffer in partition */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_InsertRowDanglingBuffer(MP_Task mpTask)
+{
+  ENTRY("vJob_InsertRowDanglingBuffer"_Stz);
+  
+  Object* pPtrInsertRow;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrInsertRow) )
+    THROW_INVALID_DSTACK("job_InsertRow.danglingBuffer"_Stz);
+  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pPtrInsertRow);
+  
+  i8 iPartition;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iPartition) )
+    THROW_INVALID_DSTACK("job_InsertRow.danglingBuffer"_Stz);
+  
+  if ( ! pJob_InsertRow->m_pWorkingBuffer[iPartition] )
+    pJob_InsertRow->vNewWorkingBuffer(iPartition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertRow.spawnInsertBuffer -- spawn Job_InsertBuffer                  */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
+{
+  ENTRY("vJob_InsertRowSpawnInsertBuffer"_Stz);
+  
+  Object* pPtrInsertRow;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrInsertRow) )
+    THROW_INVALID_DSTACK("job_InsertRow.spawnInsertBuffer!"_Stz);
+  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pPtrInsertRow);
+  
+  i8 iJob_EndJobid;
+  if ( ! mpTask->m_pDataStack->bPop(iJob_EndJobid) )
+    THROW_INVALID_DSTACK("job_InsertRow.spawnInsertBuffer"_Stz);
+  
+  i8 iPartition;
+  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
+    THROW_INVALID_DSTACK("job_InsertRow.spawnInsertBuffer"_Stz);
+  
+  i8 iIsFinal;
+  if ( ! mpTask->m_pDataStack->bPop(iIsFinal) )
+    THROW_INVALID_DSTACK("job_InsertRow.spawnInsertBuffer"_Stz);
+  
+  WorkingBuffer* pWorkingBuffer = pJob_InsertRow->m_pWorkingBuffer[iPartition];
+  pJob_InsertRow->m_pWorkingBuffer[iPartition] = nullptr;
+  SEitf* pSEitf = pJob_InsertRow->m_pSEitf;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a load buffer job
+  
+  //! this needs to be optimised
+  JobClass* pJobClass_InsertBuffer = JobClass::pFind(CN_JOB_INSERTBUFFER);
+  
+  Job_InsertBuffer* pJob_InsertBuffer =
+  static_cast<Job_InsertBuffer*>(pJobClass_InsertBuffer->pPreJob(pSEitf));
+  
+  pJob_InsertBuffer->vSeed(SS_SEED_RUN);
+  
+  pJob_InsertBuffer->m_iEndInsertJobId = iJob_EndJobid;
+  pJob_InsertBuffer->m_sObjectName = pJob_InsertRow->m_sObjectName;
+  pJob_InsertBuffer->m_iPartitionId = iPartition;
+  pJob_InsertBuffer->m_pWorkingBuffer = pWorkingBuffer;
+  
+  if (iIsFinal) {
+    i8 nBuffersToBeInserted = pJob_InsertRow->m_nBuffersToBeInserted[iPartition];
+    ASSERT(C_UNKNOWN != nBuffersToBeInserted);
+    pJob_InsertBuffer->m_nBuffersToBeInserted = nBuffersToBeInserted;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the load buffer job
+  
+  RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_RUN,pSEitf);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.error@ -- fetch the job error for the node                             */
 /*----------------------------------------------------------------------------*/
 void Task::vJobErrorFetch(MP_Task mpTask)
@@ -804,9 +898,14 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   Job__Cancelled* pFindJob = new Job__Cancelled;
   pFindJob->m_iJobId = iJobId;
   
+  vTrace("---------------\n"_Stz);
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
   Job* pJob = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
+
+  
+  gpAttachMap->m_pOriginatingJobs->vContentDump();
+  vTrace("---------------\n"_Stz);
   
   delete pFindJob;
   ASSERT(pJob);
@@ -909,6 +1008,173 @@ void Task::vJobIndexNameFetch(MP_Task mpTask)
   Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
   
   mpTask->m_pDataStack->vPushS32(pJob->m_sIndexName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_EndInsert.InsertRowJob@ -- fetch insertRow jobid from job              */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_EndInsertInsertRowJobIdFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_EndInsertInsertRowJobIdFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_EndInsert.InsertRowJob@"_Stz);
+  Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJobPtr);
+  
+  i8 iInsertJobId = pJob_EndInsert->m_iInsertRowJobId;
+  mpTask->m_pDataStack->vPushInt(iInsertJobId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_EndInsert.task@ -- fetch task from job_endInsert                       */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_EndInsertTaskFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_EndInsertTaskFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_LoadTable.task@"_Stz);
+  Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJobPtr);
+  
+  Task* pTask = pJob_EndInsert->m_pTask;
+  mpTask->m_pDataStack->vPushObject(pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertRow.table! -- store table into job_insertRow                     */
+/*----------------------------------------------------------------------------*/
+void Task::vJobInsertRowTableStore(MP_Task mpTask)
+{
+  ENTRY("vJobInsertRowTableStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+  THROW_INVALID_DSTACK("job_InsertRow.table!"_Stz);
+  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
+  
+  Object* pTablePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+  THROW_INVALID_DSTACK("job_InsertRow.table!"_Stz);
+  Table* pTable = _pTable(pTablePtr);
+  
+  pJob_InsertRow->m_pTable = pTable;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertBuffer.insertRows -- insert rows from working buffer into table  */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
+{
+  ENTRY("vJobInsertBufferInsertRows"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_InsertBuffer.insertRows!"_Stz);
+  Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobPtr);
+  
+  // convert partition to node slot
+  i8 iPartition = 0; //pJob_InsertBuffer->iPartition();
+  i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
+  
+  // get table, partition and working buffer
+  Table* pTable = pJob_InsertBuffer->m_pTable;
+  TablePtn* pPartition = pTable->pPartition(iSlot);
+  WorkingBuffer* pWorkingBuffer = pJob_InsertBuffer->m_pWorkingBuffer;
+  
+  i8 iTxId = 0;
+  
+  // insert the working buffer
+  pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
+  
+  // we loaded one additional buffer from a subloader
+  pPartition->vIncTotalBuffersLoaded();
+  
+  // does this job have information about the number of buffers loadable
+  // from a subloader for this partition?
+  i8 nBuffersToBeInserted = pJob_InsertBuffer->m_nBuffersToBeInserted;
+  if (C_UNKNOWN != nBuffersToBeInserted)
+    pPartition->vBuffersToBeInserted(nBuffersToBeInserted);
+  
+  // have all buffers been loaded?
+  bool bAllBuffersInserted = false;
+  if (pPartition->nBuffersToBeInserted() == pPartition->nBuffersInserted()) {
+    vTrace("Buffers inserted for partition %lld\n"_Stz, iPartition);
+    bAllBuffersInserted = true;
+    
+    // reset these in tblPtn for next insert into table
+    pPartition->vBuffersToBeInserted(0);
+    pPartition->vBuffersInserted(0);
+  }
+  
+  mpTask->m_pDataStack->vPushInt(bAllBuffersInserted);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertBuffer.partition@ -- fetch partition no. from job_insertBuffer   */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_InsertBufferPartitionFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_InsertBufferPartitionFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_InsertBuffer.partition@"_Stz);
+  Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobPtr);
+  
+  i8 i_Partition = pJob_InsertBuffer->m_iPartitionId;
+  mpTask->m_pDataStack->vPushInt(i_Partition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertBuffer.endInsertJob@ -- fetch endInsert jobid from job           */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_InsertBufferEndInsertJobIdFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_InsertBufferEndInsertJobIdFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_InsertBuffer.endInsertJob@"_Stz);
+  Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobPtr);
+  
+  i8 iInsertJobId = pJob_InsertBuffer->m_iEndInsertJobId;
+  mpTask->m_pDataStack->vPushInt(iInsertJobId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertBuffer.table! -- store table into job_insertBuffer               */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_InsertBufferTableStore(MP_Task mpTask)
+{
+  ENTRY("vJob_InsertBufferTableStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_InsertBuffer.table!"_Stz);
+  Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobPtr);
+  
+  Object* pTablePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+    THROW_INVALID_DSTACK("job_InsertBuffer.table!"_Stz);
+  Table* pTable = _pTable(pTablePtr);
+  
+  pJob_InsertBuffer->m_pTable = pTable;
   
   EXIT();
 }

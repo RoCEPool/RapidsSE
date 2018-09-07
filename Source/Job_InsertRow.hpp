@@ -9,9 +9,10 @@ namespace JobsModel
   class Job_InsertRow : public Job
   {
   public:
-    Table*         m_pTable;                           // table pointer
-    Formatters     m_xFormatters;                      // record formatters
-    WorkingBuffer* m_pWorkingBuffer[C_SLOTS_PER_NODE]; // working buffers
+    Table*         m_pTable;                             // table pointer
+    Formatters     m_xFormatters;                        // record formatters
+    WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS];   // working buffers
+    i8             m_nBuffersToBeInserted[C_MAX_PARTITIONS]; // buffers insertable
     
     // must be last
     Footer m_xFooter;
@@ -29,6 +30,7 @@ namespace JobsModel
   public:
     bool bInsertRow(Stz* pRow, i8 iLength, i8 iRowLength, eEC& eErrorCode);
     eEC eInsertLastBuffer(i8 iPartition);
+    void vNewWorkingBuffer(i8 iParition);
     bool bPopulateJob(TokenVec* pTokenVec);
     Tasks::Task* pTask(void);
     void vTask(Tasks::Task* pTask);

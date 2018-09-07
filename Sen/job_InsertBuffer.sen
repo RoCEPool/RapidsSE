@@ -1,0 +1,125 @@
+/*============================================================================*/
+/* job_InsertBuffer.sen -- Insert Buffer Job                                  */
+/*============================================================================*/
+
+" job_InsertBuffer.sen" .verbose
+
+////////////////////////////////////////////////////////////////////////////////
+//                               on kid node                                  //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* load buffer into table                                                     */
+/*----------------------------------------------------------------------------*/
+: InsertBuffer.insert ( pJob_InsertBuffer -- )
+
+  params| pJob_InsertBuffer |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  0 locals| iInsertJobId    |
+  0 locals| pJob_EndInsert  |
+  0 locals| pTask_EndInsert |
+
+  0 locals| sTableNm    |
+  0 locals| i_Partition |
+  0 locals| bAllLoaded  |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "InsertBuffer.insert :" .
+  pJob_InsertBuffer job.show
+
+  // get table name
+  pJob_InsertBuffer job.objectName@ to sTableNm
+
+  // push table dictionary
+  pJob_InsertBuffer getPath dicStack.set
+  sTableNm pushTable assert
+  //pathDump
+
+  // use table name find and set target table
+  sTableNm find execute locals| pTable |
+  pTable pJob_InsertBuffer Job_InsertBuffer.table!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // grab write lock on table partition
+  pJob_InsertBuffer Job_InsertBuffer.partition@ to i_Partition
+  i_Partition pTable tablePtnGrabWrite
+
+  // now insert the buffer of rows
+  pJob_InsertBuffer job_InsertBuffer.insertRows to bAllLoaded
+
+  // drop write lock on table partition
+  i_Partition pTable tablePtnDropWrite
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // ack the load table task if all buffers have been loaded
+  bAllLoaded if
+
+    // get the end insert table job (participant node)
+    pJob_InsertBuffer job_insertBuffer.endInsertJob@ locals| iEndInsertJobId |
+    iEndInsertJobId job::findParticipant locals| pJob_EndInsert |
+    pJob_EndInsert job_EndInsert.task@ locals| pTask_EndInsert |
+
+    pTask_EndInsert pJob_EndInsert iEndInsertJobId
+    "EndInsertJobId %v job_EndInsert (node) %v task_EndInsert %v"
+    fmt.print
+
+      pTask_EndInsert
+      "All buffers inserted; Would ack task_EndInsert (node) %v"
+    fmt.print
+
+    pTask_EndInsert ack
+  then
+
+;
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on loading node                                 //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* forward this load buffer job to kid node                                   */
+/*----------------------------------------------------------------------------*/
+: InsertBuffer.forward ( pJob_InsertBuffer -- )
+
+  params| pJob_InsertBuffer |
+
+  // which partition are we forwarding to?
+  pJob_InsertBuffer job_insertBuffer.partition@ locals| i_Partition |
+
+  // convert i_Partition to i_ForwardNode
+  i_Partition grid::toNode locals| i_ForwardNode |
+
+  i_Partition i_ForwardNode "InsertBuffer.forward : Node %v Partition %v" fmt.print
+
+  // send this job to the forward node
+  i_ForwardNode pJob_InsertBuffer job.forward
+;
+
+/*----------------------------------------------------------------------------*/
+/* seed on inserting node                                                     */
+/*----------------------------------------------------------------------------*/
+: insertBuffer_run (  -- )
+
+  <SEED_RUN>
+
+  job::this locals| pJob_InsertBuffer  |
+
+  "insertBuffer_run :" .
+
+  // simply forward this job to kid node
+  pJob_InsertBuffer InsertBuffer.forward
+
+  delete_completed_job
+
+  <DONE_RUN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

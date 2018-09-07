@@ -21,6 +21,9 @@ namespace DBobjects
     i8 m_nTotalBuffersLoadable;  // total no of buffers to be loaded
     i8 m_nTotalBuffersLoaded;    // total no of buffers loaded so far
 
+    i8 m_nBuffersToBeInserted;   // buffers to be inserted
+    i8 m_nBuffersInserted;       // buffers inserted so far
+    
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
     // must be last
@@ -41,12 +44,17 @@ namespace DBobjects
     void vAddTotalBuffersLoadable(i8 nBuffersLoadable);
     void vAddIndex(IndexTree* pIndexTree);
     bool bAllBuffersLoaded(void);
+    void vBuffersToBeInserted(i8 m_nBuffersToBeInserted);
+    void vBuffersInserted(i8 m_nBuffersInserted);
+    i8   nBuffersToBeInserted(void);
+    i8   nBuffersInserted(void);
     void vDropRead(void);
     void vDropWrite();
     bool bGrabRead(void);
     bool bGrabWrite(void);
     IndexTree* pHiddenIndexTree(void);
     void vIncTotalBuffersLoaded(void);
+    void vIncBuffersInserted(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
     bool bIsLocked(void);

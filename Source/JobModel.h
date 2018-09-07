@@ -71,6 +71,8 @@ using namespace JobsModel;
 #include "Job_DropTenant.hpp"
 #include "Job_DumpIndex.hpp"
 
+#include "Job_EndInsert.hpp"
+
 #include "Job_FetchRows.hpp"
 
 #include "Job_InsertRow.hpp"

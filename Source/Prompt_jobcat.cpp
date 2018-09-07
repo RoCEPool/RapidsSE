@@ -40,6 +40,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJobs(CN_JOB_LF);
   nJobs++; JobClass::vTraceJobs(CN_JOB_PWF);
   
+  nJobs++; JobClass::vTraceJobs(CN_JOB_INSERTROW);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LISTTENANTS);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LISTCATALOGS);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LISTSCHEMAS);
@@ -52,6 +53,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJobs(CN_JOB_USESCHEMA);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SHOWCLUSTER);
   nJobs++; JobClass::vTraceJobs(CN_JOB_DUMPINDEX);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_ENDINSERT);
   nJobs++; JobClass::vTraceJobs(CN_JOB_VISUALIZEINDEX);
 
   // generic
@@ -77,6 +79,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJobs(CN_JOB_DROPSCHEMA);
   nJobs++; JobClass::vTraceJobs(CN_JOB_DROPTABLE);
   nJobs++; JobClass::vTraceJobs(CN_JOB_DROPTENANT);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_ENDINSERT);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LOADTABLE);
   nJobs++; JobClass::vTraceJobs(CN_JOB_FETCHROWS);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SIZEINDEX);
@@ -97,7 +100,8 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   
   // grankid
   nJobs++; JobClass::vTraceJobs(CN_JOB_LOADBUFFER);
-
+  nJobs++; JobClass::vTraceJobs(CN_JOB_INSERTBUFFER);
+  
   vTrace("\n"_Stz);
   
   if (nJobs != CN_JOB_WAITCLUSTER - CN_JOB__BEGUN + 1)
