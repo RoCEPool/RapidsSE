@@ -14,7 +14,7 @@
 extern "C" eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel);
 extern "C" eEC RapidsSE_BeginInsertPartition(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel);
 extern "C" eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
-extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel);
+extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJob, i8 iTraceLevel);
 extern "C" eEC RapidsSE_EndInsertPartition(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLevel);
 
@@ -22,7 +22,7 @@ extern "C" eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, void** ppError, i8 iTrace
 extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel);
 extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 iTraceLevel);
 extern "C" i8  RapidsSE_HashIntegerNode(i8 iInt);
-extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
+extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
                                  Stz* pRecordTerminator, Stz* pRecordEnds, Stz* pFieldDelimiter,

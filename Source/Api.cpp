@@ -170,7 +170,7 @@ eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* end insert                                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
+eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJob, i8 iTraceLevel)
 {
   eEC eResult;
   eEC eResponse;
@@ -187,50 +187,31 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, i8 iTraceLevel)
     
     // clear the last error
     CLEAR_LASTERROR();
+        
+    Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJob);
     
-    // validate we have a table
-    VALIDATE_TABLE("b"_Stz);
+    // create job_EndInsert
+    JobClass* pJobClass_EndInsert = JobClass::pFind(CN_JOB_ENDINSERT);
+    ASSERT(pJobClass_EndInsert)
+    Job_EndInsert* pJob_EndInsert =
+      static_cast<Job_EndInsert*>(pJobClass_EndInsert->pPreJob(pSEitf));
     
-    Grid* pGrid = gpAttachMap->m_pGrid;
+    // set insertRowJobId in the endInsert job
+    pJob_EndInsert->m_iInsertRowJobId = pJob_InsertRow->m_iJobId;
     
-    // before sending buffers set no of remaining acks to no of partitons
-    pSEitf->vSetAcksRemaining(pGrid->nSlots() * pGrid->nNodes());
-    //vTrace("Seitf:%p Setting acksRemaining : %lld\n"_Stz, pSEitf, *pSEitf->m_ziAcksRemaining);
+    // lock this job's mutex
+    i8 rCode = pthread_mutex_lock(&pJob_EndInsert->m_xThreadMutex);
+    if (0 != rCode)
+      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
     
-    for (i8 iPartition = 0; iPartition < pGrid->m_nPartitions; iPartition++) {
-      bool bResult = pSEitf->bInsertLastBuffer(iPartition);
-      
-      //vTrace("bInsertLastBuffer returned %lld %lld\n"_Stz, iPartition, bResult);
-      
-      // if rowBuffer request was appended to requestQ, then wait for resonse
-      if (bResult) {
-        CHECK_RESPONSE_RETURNTABLE("c"_Stz);
-      }
-      //vTrace("done for loop\n"_Stz);
-    }
+    // spawn the endInsert job
+    RapidsSE_bSpawnJob(pJob_EndInsert, SS_SEED_REQ, pSEitf);
     
-    // now wait till acks from all partitions have been received
-    //vTrace("Seitf:%p waiting for acksRemaing\n"_Stz, pSEitf);
-    
-    while (*pSEitf->m_ziAcksRemaining != 0) {
-      //vTrace("*pSEitf->m_ziAcksRemaining %lld ...\n"_Stz, *pSEitf->m_ziAcksRemaining);
-      ;
-    }
-    
-    eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
-    CHECK_RESULT("d"_Stz);
-    CHECK_RESPONSE("e"_Stz);
-    
-    // validate if no table
-    VALIDATE_NOTABLE("f"_Stz);
-    
-    eResult = eExecuteRequest(pSEitf, "txCmt"_Stz);
-    CHECK_RESULT("g"_Stz);
-    CHECK_RESPONSE("h"_Stz);
-    
-    eResult = eExecuteRequest(pSEitf, "txEnd"_Stz);
-    CHECK_RESULT("i"_Stz);
-    CHECK_RESPONSE("j"_Stz);
+    // wait for condition
+    rCode = pthread_cond_wait(&pJob_EndInsert->m_xThreadCond,
+                              &pJob_EndInsert->m_xThreadMutex);
+    if (0 != rCode)
+      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
     
     TRACE_EXIT("ea"_Stz);
     
@@ -628,7 +609,7 @@ i8 RapidsSE_HashIntegerNode(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
+eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
 {
 
   eEC eResult;
@@ -650,57 +631,79 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
     CLEAR_LASTERROR();
 
     // validate parameter
-    VALIDATE_PARAM("b"_Stz, pRow);
+    VALIDATE_PARAM("b"_Stz, sRow);
     
     // validate table
-    VALIDATE_TABLE("c"_Stz);
+    //VALIDATE_TABLE("c"_Stz);
+    
+    Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJob);
+    
+    i8 iRawDataLength = StrLib::iSize(sRow->aChar());
+    
+    if (iRawDataLength > C_16KB) {
+      eEC eErrorCode = EC_MAX_ROW_LENGTH;
+      TRACE_ERROR("d"_Stz, eErrorCode);
+      pSEitf->m_sErrorMsg =  aEC[eErrorCode];
+      return eErrorCode;
+    }
     
     s17KB s;
     i8 iRowLength;
     bool bBlankLine;
     
-    i8 iRawDataLength = StrLib::iSize(pRow->aChar());
-    
-    if (iRawDataLength > C_16KB) {
-      pSEitf->vSetLastError(EC_MAX_ROW_LENGTH);
-      TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
-      return pSEitf->m_eErrorCode;
-    }
-    
     // format the record into row format
-    bool bValid = Row::bFormatRow(pSEitf->m_pCurrentTable->pColumnVec(),
-                                  &pSEitf->m_xFormatters,
-                                  pRow, iRawDataLength,
+    bool bValid = Row::bFormatRow(pJob_InsertRow->m_pTable->pColumnVec(),
+                                  &pJob_InsertRow->m_xFormatters,
+                                  sRow, iRawDataLength,
                                   s, iRowLength, bBlankLine,
                                   true /* allowNonPrintable */);
     if (! bValid) {
-      pSEitf->vSetLastError(EC_INVALID_VALUE);
-      TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
-      return pSEitf->m_eErrorCode;
+      eEC eErrorCode = EC_INVALID_VALUE;
+      TRACE_ERROR("d"_Stz, eErrorCode);
+      pSEitf->m_sErrorMsg =  aEC[eErrorCode];
+      return eErrorCode;
     }
- 
+
     // get the partition this row hashes to
-    i8 iRowPartition = pSEitf->pCurrentTable()->iRowPartition(s);
+    i8 iRowPartition = pJob_InsertRow->m_pTable->iRowPartition(s);
     
-    //vTrace("%p(%lld) got row %s\n"_Stz,
-    //       pSEitf, pSEitf ? pSEitf->iPartition() : -1, pRow);
+    // insert the row in this partition's buffer
+    eEC eErrorCode;
     
-    
-    //RowData::vShow(s, pSEitf->m_pCurrentTable->pColumnVec());
-    TRACE_INSERT("e"_Stz, pRow);
-    
-    // insert the row in this partition
-    bool bResult = pSEitf->bInsertRow(s, iRowLength, iRowPartition);
-   
-    if (!bResult) {
-      pSEitf->vSetLastError(pSEitf->m_eErrorCode);
-      TRACE_ERROR("f"_Stz, pSEitf->m_eErrorCode);
-      return pSEitf->m_eErrorCode;
+    while (true) {
+      
+      // insert row into a working buffer in job InsertRow
+      bool bResult = pJob_InsertRow->bInsertRow(s, iRowPartition, iRowLength, eErrorCode);
+
+      // if inserted then done
+      if (bResult)
+        break;
+      
+      // was there an error ?
+      if ( eErrorCode != EC_NONE ) {
+        pSEitf->m_sErrorMsg =  aEC[eErrorCode];
+        TRACE_ERROR("f"_Stz, eErrorCode);
+        return eErrorCode;
+      }
+      
+      // buffer was full
+      // create InsertBuffer job
+      JobClass* pJobClass = JobClass::pFind(CN_JOB_INSERTBUFFER);
+      ASSERT(pJobClass);
+      Job* pJobInsertBuffer = pJobClass->pPreJob(pSEitf);
+      Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobInsertBuffer);
+      
+      // set table name in InsertBuffer
+      pJob_InsertBuffer->m_sObjectName = pJob_InsertRow->m_sObjectName;
+      
+      // move the working buffer from insertRow to insertBuffer
+      pJob_InsertBuffer->m_pWorkingBuffer = pJob_InsertRow->m_pWorkingBuffer[iRowPartition];
+      pJob_InsertRow->m_pWorkingBuffer[iRowPartition] = nullptr;
+      
+      //vLockMutex();
+      bResult = RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_REQ,pSEitf);
+      ASSERT(bResult);
     }
-    
-    
-    // validate table
-    VALIDATE_TABLE("f"_Stz);
 
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -1333,6 +1336,13 @@ eEC RapidsSE_ExecuteCommandPath(SEitf* pSEitf, Stz* aCommand,
                              Stz* sCatalogName, Stz* sSchemaName,
                              bool bPostJob, void** ppJob, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_ExecuteCommandPath"_Stz;
+  
+  // trace entry
+  TRACE_ENTRY_P0();
+  
+  vTrace("Executing command: %s\n"_Stz, aCommand);
+  
   // set the catalog and schema in the SEitf
   pSEitf->vInit(sCatalogName, sSchemaName);
   
@@ -1385,10 +1395,6 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
                             &pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-
-  
-  i8 iRows = -1;
-  i8 iToken = 0;
   
   if (bPostJob)
     pCommandProcessor->vPostJob(pSEitf);
@@ -1401,6 +1407,11 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetRowCount(SEitf* pSEitf, Job* pJob, void** ppRowCount, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_GetRowCount"_Stz;
+  
+  // trace entry
+  TRACE_ENTRY_P0();
+  
   vTrace("Job = %p\n"_Stz, pJob);
   *ppRowCount = &(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
   vTrace("RowCount = %lld\n"_Stz, (pJob)->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
@@ -1412,6 +1423,11 @@ eEC RapidsSE_GetRowCount(SEitf* pSEitf, Job* pJob, void** ppRowCount, i8 iTraceL
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetRow(SEitf* pSEitf, Job* pJob, i8 iRow, void** ppRow, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_GetRow"_Stz;
+  
+  // trace entry
+  TRACE_ENTRY_P0();
+  
   TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_sResponse);
   
   i8 iRows = -1;
