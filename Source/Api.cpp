@@ -11,6 +11,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* begin insert                                                               */
 /*----------------------------------------------------------------------------*/
+/*
 eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel)
 {
   eEC eResult;
@@ -66,10 +67,11 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* begin insert on SEitf partiton                                             */
 /*----------------------------------------------------------------------------*/
+/*
 eEC RapidsSE_BeginInsertPartition(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel)
 {
   eEC eResult;
@@ -125,10 +127,11 @@ eEC RapidsSE_BeginInsertPartition(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, St
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* check the library version against version passed                           */
 /*----------------------------------------------------------------------------*/
+/*
 eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 {
   eEC eResult;
@@ -166,10 +169,11 @@ eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* end insert                                                                 */
 /*----------------------------------------------------------------------------*/
+/*
 eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJob, i8 iTraceLevel)
 {
   eEC eResult;
@@ -228,10 +232,11 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJob, i8 iTraceLevel)
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* end insert on SEitf partition                                              */
 /*----------------------------------------------------------------------------*/
+/*
 eEC RapidsSE_EndInsertPartition(SEitf* pSEitf, i8 iTraceLevel)
 {
   eEC eResult;
@@ -285,10 +290,11 @@ eEC RapidsSE_EndInsertPartition(SEitf* pSEitf, i8 iTraceLevel)
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* export data from table into the file                                       */
 /*----------------------------------------------------------------------------*/
+/*
 eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLevel)
 {
   
@@ -336,7 +342,7 @@ eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLev
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
@@ -489,6 +495,7 @@ eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* return rapidsSE engine's version                                           */
 /*----------------------------------------------------------------------------*/
+/*
 eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
 {
   eEC eResult;
@@ -532,7 +539,7 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* hash the row to a partition                                                */
 /*----------------------------------------------------------------------------*/
@@ -822,6 +829,7 @@ eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* load data from file into the table                                         */
 /*----------------------------------------------------------------------------*/
+/*
 eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
                       Stz* pRecordTerminator, Stz* pRecordEnds, Stz* pFieldDelimiter,
                       Stz* pEnclosedByLeading, Stz* pEnclosedByTrailing,
@@ -925,7 +933,7 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
@@ -1139,148 +1147,6 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iP
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Execute a request                                                          */
-/*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec, Stz** ppResponse)
-{
-  bool bResult;
-  
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  // send request to se
-  bResult = bExecuteRequest(pSEitf, xTokenVec);
-  if (! bResult) {
-    *ppResponse = nullptr;
-    return bResult;
-  }
-  
-  if (xTokenVec.bDetachedRequest())
-    return true;
-  
-  // get response from se
-  eEC eResult = eGetResponse(pSEitf);
-  
-  // put response into caller
-  *ppResponse = pSEitf->m_sResponse;
-  
-  if (eResult == EC_NONE)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute command                                                            */
-/*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand)
-{
-  bool bResult;
-  
-  TokenVec xTokenVec;
-  
-  // execute command pCommand
-  //xTokenVec[0]->vCopy(aCommand);
-  //xTokenVec[1]->vReset();
-  
-  xTokenVec.vAddToken(aCommand);
-  xTokenVec[1]->vReset();
-  
-  bResult = pSEitf->bDecode(xTokenVec);
-  
-  xTokenVec.vSetAllTokens();
-  
-  return pSEitf->eGetLastError();
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute command                                                            */
-/*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter)
-{
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  bool bResult;
-  
-  TokenVec xTokenVec;
-  
-  xTokenVec.vAddToken(aCommand);
-  xTokenVec.vAddToken(aParameter);
-  xTokenVec[2]->vReset();
-  
-  bResult = pSEitf->bDecode(xTokenVec);
-  
-  xTokenVec.vSetAllTokens();
-  
-  return pSEitf->eGetLastError();
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute command                                                            */
-/*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
-                    Stz* aParameter2)
-{
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  bool bResult;
-  
-  TokenVec xTokenVec;
-  
-  xTokenVec.vAddToken(aCommand);
-  xTokenVec.vAddToken(aParameter1);
-  xTokenVec.vAddToken(aParameter2);
-  xTokenVec[3]->vReset();
-  
-  bResult = pSEitf->bDecode(xTokenVec);
-  
-  xTokenVec.vSetAllTokens();
-  
-  return pSEitf->eGetLastError();
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute command                                                           */
-/*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, Stz* aCommand, Stz* aParameter1,
-                    Stz* aParameter2, Stz* aParameter3)
-{
-  // clear the last error
-  pSEitf->vClearLastError();
-  
-  bool bResult;
-  TokenVec xTokenVec;
-  
-  xTokenVec.vAddToken(aCommand);
-  xTokenVec.vAddToken(aParameter1);
-  xTokenVec.vAddToken(aParameter2);
-  xTokenVec.vAddToken(aParameter3);
-  xTokenVec[4]->vReset();
-
-  bResult = pSEitf->bDecode(xTokenVec);
-  
-  xTokenVec.vSetAllTokens();
-  
-  return pSEitf->eGetLastError();
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute command                                                            */
-/*----------------------------------------------------------------------------*/
-bool bExecuteRequest(SEitf* pSEitf, TokenVec& xTokenVec)
-{
-  bool bResult;
-  
-  // execute command
-  bResult = pSEitf->bDecode(xTokenVec);
-  
-  return bResult;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* get response                                                               */
 /*----------------------------------------------------------------------------*/
 eEC eGetResponse(SEitf* pSEitf)
@@ -1332,11 +1198,11 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ExecuteCommandPath(SEitf* pSEitf, Stz* aCommand,
-                             Stz* sCatalogName, Stz* sSchemaName,
-                             bool bPostJob, void** ppJob, i8 iTraceLevel)
+eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
+                            Stz* sCatalogName, Stz* sSchemaName,
+                            bool bPostJob, void** ppJob, i8 iTraceLevel)
 {
-  Stz* aApiCall = "RapidsSE_ExecuteCommandPath"_Stz;
+  Stz* aApiCall = "RapidsSE_ExecuteCommand"_Stz;
   
   // trace entry
   TRACE_ENTRY_P0();
