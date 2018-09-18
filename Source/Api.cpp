@@ -131,11 +131,8 @@ eEC RapidsSE_BeginInsertPartition(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, St
 /*----------------------------------------------------------------------------*/
 /* check the library version against version passed                           */
 /*----------------------------------------------------------------------------*/
-/*
 eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 {
-  eEC eResult;
-  eEC eResponse;
   SEitf* pSEitf = nullptr;
   
   Stz* aApiCall = "RapidsSE_CheckLibraryVersion"_Stz;
@@ -169,7 +166,7 @@ eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-*/
+
 /*----------------------------------------------------------------------------*/
 /* end insert                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -543,6 +540,7 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* hash the row to a partition                                                */
 /*----------------------------------------------------------------------------*/
+/*
 eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 iTraceLevel)
 {
   eEC eResult;
@@ -592,10 +590,11 @@ eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 i
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* hash the integer value to a node                                           */
 /*----------------------------------------------------------------------------*/
+/*
 i8 RapidsSE_HashIntegerNode(i8 iInt)
 {
   // get no of nodes in the grid
@@ -612,7 +611,7 @@ i8 RapidsSE_HashIntegerNode(i8 iInt)
   
   return iNode;
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
@@ -1185,7 +1184,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
   // form the word to execute for the request
   pJob->vSeed(eSeed);
   
-
   Task* pNewTask = new Task(pJob);
   
   pNewTask->vSEitf(pSEitf);
@@ -1193,6 +1191,34 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
   Handlers::vSpawnedTaskHandler(pNewTask);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_EndCommand(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
+{
+  Stz* aApiCall = "RapidsSE_EndCommand"_Stz;
+  
+  // trace entry
+  TRACE_ENTRY_P0();
+  
+  // validate the job
+  VALIDATE_JOB("a"_Stz);
+  
+  Job* pJob = (Job*)(pJobPtr);
+  
+  // find the job class on this node
+  eCN eClass = pJob->eClass();
+  JobClass* pJobClass = JobClass::pFind(eClass);
+  
+  // delete the job
+  pJobClass->vDeleteJob(pSEitf,pJob);
+  
+  // null the job in the SEitf
+  pSEitf->m_pJob = nullptr;
+  
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1271,28 +1297,31 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowCount(SEitf* pSEitf, Job* pJob, void** ppRowCount, i8 iTraceLevel)
+eEC RapidsSE_GetRowCount(SEitf* pSEitf, void* pJobPtr, void** ppRowCount, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_GetRowCount"_Stz;
   
   // trace entry
   TRACE_ENTRY_P0();
   
-  vTrace("Job = %p\n"_Stz, pJob);
+  Job* pJob = (Job*)pJobPtr;
+  
   *ppRowCount = &(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
-  vTrace("RowCount = %lld\n"_Stz, (pJob)->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
   return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRow(SEitf* pSEitf, Job* pJob, i8 iRow, void** ppRow, i8 iTraceLevel)
+eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_GetRow"_Stz;
   
   // trace entry
   TRACE_ENTRY_P0();
+  
+  Job* pJob = (Job*)pJobPtr;
   
   TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_sResponse);
   

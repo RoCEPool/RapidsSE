@@ -10,6 +10,7 @@
 #define TL_INSERT 8
 #define TL_POOL   16
 
+extern "C" eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, void** ppError, i8 iTraceLevel);
 extern "C" eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SpawnPrompt(i8 iTraceLevel);
@@ -21,10 +22,11 @@ extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf,TokenVec& xTokenVec, Stz** ppResponse);
 
 extern "C" eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJob, void** ppFetchBuffer, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetRowCount(SEitf* pSEitf, Job* pJob, void** ppRowCount, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetRow(SEitf* pSEitf, Job* pJob, i8 iRow, void** ppRow, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetRowCount(SEitf* pSEitf, void* pJobPtr, void** ppRowCount, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand, Stz* sCatalogName, Stz* sSchemaName,
                                         bool bPostJob, void** ppJob, i8 iTraceLevel);
+extern "C" eEC RapidsSE_EndCommand(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel);
 Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob);
 
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
@@ -107,6 +109,18 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
     if ( (iTraceLevel & TL_EXIT) == TL_EXIT) \
       vTrace(">%s(%s): %p(%lld)\n"_Stz,  \
         aApiCall, aMarker, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
+  }
+
+/*----------------------------------------------------------------------------*/
+/* validate job                                                               */
+/*----------------------------------------------------------------------------*/
+#define VALIDATE_JOB(aMarker) \
+  {  \
+    if ( ! pJobPtr ) { \
+      TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
+      pSEitf->vSetLastError(EC_VALIDATION_FAILURE); \
+      return EC_VALIDATION_FAILURE; \
+    } \
   }
 
 /*----------------------------------------------------------------------------*/
