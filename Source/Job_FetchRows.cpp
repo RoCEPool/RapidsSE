@@ -130,6 +130,13 @@ Job_FetchRows::Job_FetchRows(Interface::SEitf* pSEitf)
 Job_FetchRows::~Job_FetchRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
+  
+  m_pBufferQueue->vFinalize();
+  delete m_pBufferQueue;
+  
+  ASSERT (! m_pFetchBuffer );
+  
+  delete m_pPlanner;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,6 +159,19 @@ void Job_FetchRows::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* delete last fetch buffer                                                   */
+/*----------------------------------------------------------------------------*/
+void Job_FetchRows::vDeleteBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
+  
+  if (m_pFetchBuffer) {
+    delete m_pFetchBuffer;
+    m_pFetchBuffer = nullptr;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
@@ -276,15 +296,6 @@ void JobsModel::vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob)
   }
     
   vTrace("success: %lld rows affected\n"_Stz, nRowsProcessed);
-  
-  // delete the planner
-  delete pJob_FetchRows->m_pPlanner;
-  pJob_FetchRows->m_pPlanner = nullptr;
-  
-  // delete the buffer queue
-  pJob_FetchRows->m_pBufferQueue->vFinalize();
-  delete pJob_FetchRows->m_pBufferQueue;
-  pJob_FetchRows->m_pBufferQueue = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

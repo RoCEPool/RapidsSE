@@ -343,13 +343,15 @@ eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLev
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJob, void** ppFetchBuffer, i8 iTraceLevel)
+eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJobPtr, void** ppFetchBuffer, i8 iTraceLevel)
 {
   eEC eResult;
   
   Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
   
   try {
+    vTrace("a\n"_Stz);
+           
     // trace entry
     TRACE_ENTRY_P0();
     
@@ -359,17 +361,21 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJob, void** ppFetchBuffer, i8
     // clear the last error
     CLEAR_LASTERROR();
     
-    // validate the reference pointer
-    VALIDATE_REFPOINTER("b"_Stz, ppFetchBuffer);
+    // Validate job
+    VALIDATE_JOB("b"_Stz);
     
-    Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
+    
+    // validate the reference pointer
+    VALIDATE_REFPOINTER("c"_Stz, ppFetchBuffer);
+    
+    Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
     
     // if we had an entry buffer delete it
-    if (pJob_FetchRows->m_pFetchBuffer)
-      delete pJob_FetchRows->m_pFetchBuffer;
+    pJob_FetchRows->vDeleteBuffer();
     
     if (pJob_FetchRows->m_nLastBuffersScanned == pJob_FetchRows->m_nLastBuffers) {
       *ppFetchBuffer = nullptr;
+  
       // trace exit
       TRACE_EXIT("ea"_Stz);
       return EC_NONE;
@@ -381,13 +387,16 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJob, void** ppFetchBuffer, i8
       PosixThread::vSleepMilli(1);
     }
     
+    ASSERT(pSEitf->m_pJob == pJob_FetchRows);
+    
     // get entry buffer
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
     pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
     
+    
     if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
       pJob_FetchRows->m_nLastBuffersScanned++;
-      vTrace("m_nLastBuffersScanned: %lld %lld\n"_Stz, pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
+      //vTrace("m_nLastBuffersScanned: %lld %lld\n"_Stz, pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
     }
     
     *ppFetchBuffer = pJob_FetchRows->m_pFetchBuffer;
@@ -415,7 +424,7 @@ eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, void** ppValidRows, void** pp
 {
   eEC eResult;
   
-  Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
+  Stz* aApiCall = "RapidsSE_LoadResult"_Stz;
   
   try {
     // trace entry
@@ -1121,7 +1130,8 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iP
   try {
     
      // trace entry
-    TRACE_ENTRY_P0();
+    TRACE_ENTRY_P2(sCatalogName, sSchemaName);
+    //TRACE_ENTRY_P2(sCatalogName, sSchemaName);
     
     // valide reference pointer
     VALIDATE_REFPOINTER("a"_Stz, ppSEitf);

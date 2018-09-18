@@ -38,7 +38,7 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
   {  \
     if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
       vTrace("<%s: %p(%lld)\n"_Stz,  \
-        aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1); \
+        aApiCall, pSEitf , pSEitf ? pSEitf->iPartition() : -1); \
   }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +58,8 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
 {  \
   if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s %s\n"_Stz,  \
-      aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2); \
+      aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, \
+        p1 ? p1 : "null"_Stz , p2 ? p2 : "null"_Stz); \
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,7 +69,8 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
 {  \
   if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s %s %s\n"_Stz,  \
-      aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, p1, p2, p3); \
+      aApiCall, pSEitf, pSEitf ? pSEitf->iPartition() : -1, \
+        p1 ? p1 : "null"_Stz, p2 ? p2 : "null"_Stz , p3 ? p3 : "null"_Stz); \
 }
 
 /*----------------------------------------------------------------------------*/
