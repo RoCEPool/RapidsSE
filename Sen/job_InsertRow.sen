@@ -31,7 +31,7 @@
   // push table dictionary
   pJob_InsertRow getPath dicStack.set
   sTableNm pushTable assert
-  pathDump
+  //pathDump
 
   sTableNm find execute locals| pTable |
   pTable pJob_InsertRow job_insertRow.table!
@@ -64,15 +64,15 @@
 
   // set dictionary stack
   pJob_InsertRow getPath dicStack.set
-  pathDump
+  //pathDump
 
   // there should be a table folder
   sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> exit then
-  sTableNm "In table folder: %v" fmt.print
+  //sTableNm "In table folder: %v" fmt.print
 
   // push table dictionary
   sTableNm pushTable assert
-  pathDump
+  //pathDump
 
   // check it is a table
   sTableNm checkIsTable not if pJob_InsertRow <ERROR_JOB> exit then
@@ -80,7 +80,7 @@
 
   // pop table dictionary
   popTable
-  pathDump
+  //pathDump
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers

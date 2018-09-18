@@ -27,8 +27,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "LoadBuffer_kid :" .
-  pJob_LoadBuffer job.show
+  //"LoadBuffer_kid :" .
+  //pJob_LoadBuffer job.show
 
   // get the load table job (participant node)
   pJob_LoadBuffer job_loadBuffer.jobLoadTableId@ to iLoadJobId
@@ -40,9 +40,9 @@
   // get the load table task
   pJob_LoadTable job_LoadTable.task@ to pTask_LoadTable
 
-    pTask_LoadTable pJob_LoadTable iLoadJobId
-    "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v"
-  fmt.print
+  //pTask_LoadTable pJob_LoadTable iLoadJobId
+  //  "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v"
+  //fmt.print
 
   // get table name
   pJob_LoadBuffer job.objectName@ to sTableNm

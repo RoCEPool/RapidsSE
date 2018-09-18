@@ -350,7 +350,6 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJobPtr, void** ppFetchBuffer,
   Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
   
   try {
-    vTrace("a\n"_Stz);
            
     // trace entry
     TRACE_ENTRY_P0();
@@ -1257,13 +1256,13 @@ eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
   // trace entry
   TRACE_ENTRY_P0();
   
-  vTrace("Executing command: %s\n"_Stz, aCommand);
+  //vTrace("Executing command: %s\n"_Stz, aCommand);
   
   // set the catalog and schema in the SEitf
   pSEitf->vInit(sCatalogName, sSchemaName);
   
   Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSEitf, bPostJob);
-  vTrace("pJob = %p\n"_Stz, pJob);
+  //vTrace("pJob = %p\n"_Stz, pJob);
   *ppJob = pJob;
   pSEitf->m_pJob = pJob;
   
@@ -1332,7 +1331,7 @@ eEC RapidsSE_GetRowCount(SEitf* pSEitf, void* pJobPtr, void** ppRowCount, i8 iTr
   Job* pJob = (Job*)pJobPtr;
   
   *ppRowCount = &(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
-  vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
   return EC_NONE;
 }
 
@@ -1363,7 +1362,7 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTra
       pSEitf->m_sResponse.vConcat(pTknVec->pGet(iToken++)->aText());
     }
     
-    vTrace("row found %s\n"_Stz, pSEitf->m_sResponse.aChar());
+    //vTrace("row found %s\n"_Stz, pSEitf->m_sResponse.aChar());
     ASSERT(pTknVec->pGet(iToken++)->aText()->bSame(")"_Stz));
     iRows++;
   }

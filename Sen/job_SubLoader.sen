@@ -88,11 +88,11 @@
   0 locals| pLoaderSub  |
 
   tp: SubLoader
-  "SubLoader running" .
+  //"SubLoader running" .
 
   // get the task
   task::this to pThisTask
-  pThisTask "subLoader_run task: %v" fmt.print
+  //pThisTask "subLoader_run task: %v" fmt.print
 
   // get the sub-loader job from the task
   pThisTask task.job@ to pJob_SubLoader

@@ -496,8 +496,8 @@ void Task::vSocketSendObject(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
   
-  vTrace("vSocketSendObject: send %p %lld %s %lld bytes\n"_Stz,
-         pObject,eClass,aCN[eClass],nObjectSize);
+  //vTrace("vSocketSendObject: send %p %lld %s %lld bytes\n"_Stz,
+  //       pObject,eClass,aCN[eClass],nObjectSize);
   
   if (eClass == CN_WORKINGBUFFER)
     int iDebug = 1;

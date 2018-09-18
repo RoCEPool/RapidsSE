@@ -12,7 +12,7 @@
   params| pJob_LoadTable |
   0 locals| pThisTask |
 
-  "Executing loader on this node" .
+  //"Executing loader on this node" .
 
   task::this to pThisTask
 
@@ -20,19 +20,19 @@
 
   // initialise table loader
   pJob_LoadTable job.objectName@ locals| sTableNm |
-  sTableNm "TableNm: %v" fmt.print
+  //sTableNm "TableNm: %v" fmt.print
 
   // push table dictionary
   pJob_LoadTable getPath dicStack.set
   sTableNm pushTable assert
-  pathDump
+  //pathDump
 
   sTableNm find execute locals| pTable |
   pTable pLoader loader.table!
 
   pLoader loader.chunkFile
 
-  pLoader loader.dumpMap
+  //pLoader loader.dumpMap
 
   // grab this task's lock
   pThisTask task.grabLock
@@ -81,7 +81,7 @@
 
   // get the job from the task
   pThisTask task.job@ to pJob_LoadTable
-  pJob_LoadTable pThisTask "LoadTable_req task: %v job_LoadTable %v" fmt.print
+  //pJob_LoadTable pThisTask "LoadTable_req task: %v job_LoadTable %v" fmt.print
 
   // distribute the job
   pJob_LoadTable job.distribute
@@ -149,15 +149,15 @@
 
   // set dictionary stack
   pJob_LoadTable getPath dicStack.set
-  pathDump
+  //pathDump
 
   // there should be a table folder
   sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> exit then
-  sTableNm "In table folder: %v" fmt.print
+  //sTableNm "In table folder: %v" fmt.print
 
   // push table dictionary
   sTableNm pushTable assert
-  pathDump
+  //pathDump
 
   // check it is a table
   sTableNm checkIsTable not if pJob_LoadTable <ERROR_JOB> exit then
@@ -165,7 +165,7 @@
 
   // pop table dictionary
   popTable
-  pathDump
+  //pathDump
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers

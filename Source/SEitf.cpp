@@ -523,7 +523,7 @@ void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  m_xPathStack.vContentDump();
+  //m_xPathStack.vContentDump();
   
   // first discard whatever is there on the DicStack
   for (i8 iCount = m_xPathStack.iCount(); iCount; iCount--)
