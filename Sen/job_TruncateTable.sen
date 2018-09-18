@@ -75,7 +75,7 @@
 
   grid::slots 0
   do
-    I "Creating Job_SubTruncate %v" fmt.print
+    //I "Creating Job_SubTruncate %v" fmt.print
     I pJob_TruncateTable job_truncateTable.spawnSub
   loop
 

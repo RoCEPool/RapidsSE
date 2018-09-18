@@ -148,7 +148,7 @@ void LoadChunk::vReadChunk(i8 iSeek, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
-  vTrace("vReadChunk: seek %lld bytes %lld\n"_Stz,iSeek,nBytes);
+  //vTrace("vReadChunk: seek %lld bytes %lld\n"_Stz,iSeek,nBytes);
 
   m_xFile.vSeek(iSeek);
   
