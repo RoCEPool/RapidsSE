@@ -1923,7 +1923,7 @@ void Task::vJobResponseFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.response@"_Stz);
   
-  mpTask->m_pDataStack->vPushS256(pJob->m_xNode[iNode].m_sResponse);
+  mpTask->m_pDataStack->vPushS4K(pJob->m_xNode[iNode].m_sResponse);
   
   EXIT();
 }
@@ -1944,7 +1944,7 @@ void Task::vJobResponseStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.response!"_Stz);
   
-  s256 sResponse;
+  s4K sResponse;
   if ( ! mpTask->m_pDataStack->bPop(sResponse) )
     THROW_INVALID_DSTACK("job.response!"_Stz);
   

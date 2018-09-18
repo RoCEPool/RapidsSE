@@ -13,7 +13,7 @@ namespace JobsModel
     bool   m_bHasError;      // has an error of one or more nodes
 
     struct {
-      s256 m_sResponse;      // response string
+      s4K  m_sResponse;      // response string
       i8   m_iRowsProcessed; // rows processed
       eEC  m_eErrorCode;     // error code
     } m_xNode[C_MAX_NODES];
