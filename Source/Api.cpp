@@ -1034,6 +1034,20 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
     // clear the last error
     CLEAR_LASTERROR();
     
+    Job* pJob = pSEitf->m_pJob;
+    
+    if (pJob) {
+      // find the job class on this node
+      eCN eClass = pJob->eClass();
+      JobClass* pJobClass = JobClass::pFind(eClass);
+      
+      // delete the job
+      pJobClass->vDeleteJob(pSEitf,pJob);
+      
+      // null the job in the SEitf
+      pSEitf->m_pJob = nullptr;
+    }
+    
     // delete the SEitf
     RapidsSE::vDeleteSEitf(pSEitf);
     
@@ -1241,6 +1255,7 @@ eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
   Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSEitf, bPostJob);
   vTrace("pJob = %p\n"_Stz, pJob);
   *ppJob = pJob;
+  pSEitf->m_pJob = pJob;
   
   if (pJob->m_bHasError) {
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {

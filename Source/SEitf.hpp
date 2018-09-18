@@ -16,6 +16,7 @@ namespace Interface
     
     DicStack m_xPathStack;      // dictionary stack
     
+    Job*   m_pJob;             // job seitf currently executing
     s48K   m_sResponse;        // response
     
     eEC    m_eErrorCode;       //
