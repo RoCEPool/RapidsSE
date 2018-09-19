@@ -9,7 +9,7 @@ namespace JobsModel
   class JobFileName
   {
   public:
-    s32  m_sFileName; // file name
+    s256  m_sFileName; // file name
   
   public:
     void* operator new(size_t);

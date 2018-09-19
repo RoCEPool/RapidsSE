@@ -74,6 +74,8 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job_loadBuffer.jobLoadTable!"_Stz,   &vJobLoadBufferJobLoadTableStore,   false);
   vAddPrimitive("job_loadBuffer.partition@"_Stz,   &vJobLoadBufferPartitionFetch,   false);
   vAddPrimitive("job_loadBuffer.table!"_Stz,   &vJobLoadBufferTableStore,   false);
+  vAddPrimitive("job_loadTable.addInvalidRows"_Stz,  &vJobLoadTableAddInvalidRows,   false);
+  vAddPrimitive("job_loadTable.addValidRows"_Stz,  &vJobLoadTableAddValidRows,   false);
   vAddPrimitive("job_loadTable.task@"_Stz,  &vJobLoadTableTaskFetch,   false);
   vAddPrimitive("job_loadTable.task!"_Stz,  &vJobLoadTableTaskStore,   false);
   vAddPrimitive("job.metadata!"_Stz,        &vJobMetadataStore,    false);
@@ -116,6 +118,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("Job_subFetch.phrase@"_Stz,  &vJobSubFetchPhraseFetch, false);
   vAddPrimitive("Job_subFetch.Planner@"_Stz,  &vJobSubFetchPlannerFetch, false);
   vAddPrimitive("Job_subFetch.slot@"_Stz,  &vJobSubFetchSlotFetch, false);
+  vAddPrimitive("Job_subLoader.jobLoadTable@"_Stz,  &vJobSubLoaderJobLoadTableFetch, false);
   vAddPrimitive("job_subTruncate.truncateJobId@"_Stz,&vJobSubTruncateTruncateJobIdFetch, false);
   vAddPrimitive("job_subTruncate.slot@"_Stz,&vJobSubTruncateSlotFetch, false);
   vAddPrimitive("job::this"_Stz,            &vJobThis,             false);
@@ -1340,6 +1343,48 @@ void Task::vJobLoadBufferTableStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job_loadTable.addInvalidRows -- add invalid rows to load table's invalid   */
+/*----------------------------------------------------------------------------*/
+void Task::vJobLoadTableAddInvalidRows(MP_Task mpTask)
+{
+  ENTRY("vJobLoadTableAddInvalidRows"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_loadTable.addInvalidRows"_Stz);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJobPtr);
+  
+  i8 iInvalidRows;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iInvalidRows) )
+    THROW_INVALID_DSTACK("job_loadTable.addInvalidRows"_Stz);
+  
+  pJob_LoadTable->m_ziInvalidRows.iAdd(iInvalidRows);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_loadTable.addValidRows -- add invalid rows to load table's valid rows  */
+/*----------------------------------------------------------------------------*/
+void Task::vJobLoadTableAddValidRows(MP_Task mpTask)
+{
+  ENTRY("vJobLoadTableAddValidRows"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_loadTable.addValidRows"_Stz);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJobPtr);
+  
+  i8 iValidRows;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iValidRows) )
+    THROW_INVALID_DSTACK("job_loadTable.addValidRows"_Stz);
+  
+  pJob_LoadTable->m_ziValidRows.iAdd(iValidRows);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job_LoadTable.task@ -- fetch task from job_loadTable                       */
 /*----------------------------------------------------------------------------*/
 void Task::vJobLoadTableTaskFetch(MP_Task mpTask)
@@ -2152,6 +2197,23 @@ void Task::vJobSubFetchSlotFetch(MP_Task mpTask)
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iSlot);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subLoader.jobLoadTable@ -- fetch the job load table                    */
+/*----------------------------------------------------------------------------*/
+void Task::vJobSubLoaderJobLoadTableFetch(MP_Task mpTask)
+{
+  ENTRY("vJobSubLoaderJobLoadTableFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subLoader.jobLoadTable@"_Stz);
+  Job_SubLoader* pJob = _pJob_SubLoader(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushObject(pJob->m_pJob_LoadTable);
   
   EXIT();
 }

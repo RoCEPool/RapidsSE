@@ -11,9 +11,9 @@ namespace JobsModel
   {
   public:
     Utilities::Loader* m_pLoader; // table loader
-    Formatters m_xFormatters; // record formatters
-    i8         m_iValidRows;
-    i8         m_iInvalidRows;
+    Formatters m_xFormatters;     // record formatters
+    Atomic     m_ziValidRows;     // valid rows loaded
+    Atomic     m_ziInvalidRows;   // invalid rows not loaded
     
     Tasks::Task* m_pTask; // task running this job
   

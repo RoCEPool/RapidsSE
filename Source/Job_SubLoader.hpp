@@ -8,7 +8,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_SubLoader : public Job
   {
-  private:
+  public:
     Job_LoadTable* m_pJob_LoadTable;
     Utilities::LoaderSub* m_pLoaderSub;
 

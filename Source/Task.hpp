@@ -802,6 +802,8 @@ namespace Tasks
     static void vJobLoadBufferJobLoadTableStore(MP_Task mpTask);
     static void vJobLoadBufferPartitionFetch(MP_Task mpTask);
     static void vJobLoadBufferTableStore(MP_Task mpTask);
+    static void vJobLoadTableAddInvalidRows(MP_Task mpTask);
+    static void vJobLoadTableAddValidRows(MP_Task mpTask);
     static void vJobLoadTableTaskFetch(MP_Task mpTask);
     static void vJobLoadTableTaskStore(MP_Task mpTask);
     static void vJobMetadataStore(MP_Task mpTask);
@@ -842,6 +844,7 @@ namespace Tasks
     static void vJobSubFetchPhraseFetch(MP_Task mpTask);
     static void vJobSubFetchPlannerFetch(MP_Task mpTask);
     static void vJobSubFetchSlotFetch(MP_Task mpTask);
+    static void vJobSubLoaderJobLoadTableFetch(MP_Task mpTask);
     static void vJobSubTruncateSlotFetch(MP_Task mpTask);
     static void vJobSubTruncateTruncateJobIdFetch(MP_Task mpTask);
     static void vJobThis(MP_Task mpTask);
