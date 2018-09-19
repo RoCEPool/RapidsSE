@@ -134,7 +134,9 @@ Job_FetchRows::~Job_FetchRows(void)
   m_pBufferQueue->vFinalize();
   delete m_pBufferQueue;
   
-  ASSERT (! m_pFetchBuffer );
+  // in case excepton , we may not have deleted buffer
+  if (m_pFetchBuffer)
+    delete m_pFetchBuffer;
   
   delete m_pPlanner;
 }
