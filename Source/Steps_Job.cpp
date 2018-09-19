@@ -76,6 +76,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job_loadBuffer.table!"_Stz,   &vJobLoadBufferTableStore,   false);
   vAddPrimitive("job_loadTable.addInvalidRows"_Stz,  &vJobLoadTableAddInvalidRows,   false);
   vAddPrimitive("job_loadTable.addValidRows"_Stz,  &vJobLoadTableAddValidRows,   false);
+   vAddPrimitive("job_loadTable.filePath@"_Stz,  &vJobLoadTableFilePathFetch,   false);
   vAddPrimitive("job_loadTable.task@"_Stz,  &vJobLoadTableTaskFetch,   false);
   vAddPrimitive("job_loadTable.task!"_Stz,  &vJobLoadTableTaskStore,   false);
   vAddPrimitive("job.metadata!"_Stz,        &vJobMetadataStore,    false);
@@ -1380,6 +1381,24 @@ void Task::vJobLoadTableAddValidRows(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_loadTable.addValidRows"_Stz);
   
   pJob_LoadTable->m_ziValidRows.iAdd(iValidRows);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_LoadTable.filePath@ -- fetch filePath from job_loadTable              */
+/*----------------------------------------------------------------------------*/
+void Task::vJobLoadTableFilePathFetch(MP_Task mpTask)
+{
+  ENTRY("vJobLoadTableFilePathFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_LoadTable.filePath@"_Stz);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJobPtr);
+  
+  s256 sFilePath = pJob_LoadTable->m_sFileName;
+  mpTask->m_pDataStack->vPushS256(sFilePath);
   
   EXIT();
 }

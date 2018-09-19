@@ -804,6 +804,7 @@ namespace Tasks
     static void vJobLoadBufferTableStore(MP_Task mpTask);
     static void vJobLoadTableAddInvalidRows(MP_Task mpTask);
     static void vJobLoadTableAddValidRows(MP_Task mpTask);
+    static void vJobLoadTableFilePathFetch(MP_Task mpTask);
     static void vJobLoadTableTaskFetch(MP_Task mpTask);
     static void vJobLoadTableTaskStore(MP_Task mpTask);
     static void vJobMetadataStore(MP_Task mpTask);

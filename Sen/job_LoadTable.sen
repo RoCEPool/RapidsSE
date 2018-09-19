@@ -140,6 +140,18 @@
   "checkResources received" .
 
   //----------------------------------------------------------------------------
+  // check if file exists
+  file::new locals| fp |
+  pJob_LoadTable job_LoadTable.filePath@ fp file.path!
+
+  OPEN_READ fp file.open ( t|f )
+  not if
+     fp file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable <ERROR_JOB> exit
+  then
+
+  fp file.close fp file.delete assert::stack_0
+
+  //----------------------------------------------------------------------------
   // grad a ddl lock
 
   ddlLock::grabWrite
