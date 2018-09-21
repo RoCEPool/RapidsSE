@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* send working buffer to node                                                */
 /*----------------------------------------------------------------------------*/
-: EndInsert_sendBuffer ( pJob_InsertRow job_EndJobid iPartition -- )
+: EndInsert_sendBuffer ( iPartition job_EndJobid pJob_InsertRow -- )
+  params| pJob_InsertRow iJob_EndJobid iPartition |
 
-  params| iPartition nBuffersToBeInserted iJob_EndJobid pJob_InsertRow  |
   1 locals| isFinal |
 
   isFinal iPartition iJob_EndJobid pJob_InsertRow job_InsertRow.spawnInsertBuffer
@@ -21,7 +21,9 @@
 : EndInsert_sendLast ( pJob_EndInsert -- )
 
   params| pJob_EndInsert  |
-  0 0 0 locals| iInsertRowJobId pJob_InsertRow nBuffersToBeInserted |
+  0 0 0 0 locals| pThisTask iInsertRowJobId pJob_InsertRow nBuffersToBeInserted |
+
+  task::this to pThisTask
 
   // calculate total partitions in the cluster
   grid::slots grid::nodes * locals| nTotalPartitions |
@@ -30,6 +32,11 @@
   iInsertRowJobId "InsertRowJobId %v" fmt.print
   iInsertRowJobId job::findOriginator to pJob_InsertRow
   pJob_InsertRow .
+
+  // grab this task's lock
+  pThisTask task.grabLock
+
+  nTotalPartitions setAcks
 
   // for all partitions
   nTotalPartitions 0 do
@@ -40,9 +47,17 @@
     I pJob_InsertRow job_InsertRow.danglingBuffer
 
     // send last buffer to node
+    i .
+    pJob_EndInsert .
+    pJob_EndInsert job.Id@ .
+    pJob_InsertRow .
     I pJob_EndInsert job.Id@ pJob_InsertRow EndInsert_sendBuffer
 
   loop
+
+  "EndInsert_sendLast ack waiting" .
+  ackWait
+  "EndInsert_sendLast acked" .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -98,6 +113,9 @@
   //----------------------------------------------------------------------------
   // assert correct job
   CN_JOB_ENDINSERT pJob_EndInsert object.assertClass
+
+  // set the task in the job
+  task::this pJob_EndInsert job_EndInsert.task!
 
   //----------------------------------------------------------------------------
   // grad a lock ????

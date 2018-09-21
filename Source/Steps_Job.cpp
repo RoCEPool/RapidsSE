@@ -66,6 +66,7 @@ void Task::vAddPrimitives_Job(void)
   
   vAddPrimitive("job_endInsert.insertRowJob@"_Stz, &vJob_EndInsertInsertRowJobIdFetch, false);
   vAddPrimitive("job_endInsert.task@"_Stz, &vJob_EndInsertTaskFetch, false);
+  vAddPrimitive("job_endInsert.task!"_Stz, &vJob_EndInsertTaskStore, false);
   
   vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
   vAddPrimitive("job.jobClass"_Stz,         &vJobJobClass,         false);
@@ -164,11 +165,12 @@ void Task::vJobAddOriginator(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.addOriginator"_Stz);
   Job* pJob = _pJob(pJobPtr);
-  
+           
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
-  gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
   i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
   pJob->m_iJobId = iJobId;
+  vTrace("adding job %p in originatingJobs %lld\n"_Stz,pJob, pJob->iJobId());
+  gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
   
   EXIT();
@@ -1043,11 +1045,33 @@ void Task::vJob_EndInsertTaskFetch(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_LoadTable.task@"_Stz);
+    THROW_INVALID_DSTACK("job_EndInsert.task@"_Stz);
   Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJobPtr);
   
   Task* pTask = pJob_EndInsert->m_pTask;
   mpTask->m_pDataStack->vPushObject(pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_EndInsert.task! -- store task from job_endInsert                       */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_EndInsertTaskStore(MP_Task mpTask)
+{
+  ENTRY("vJob_EndInsertTaskStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_LoadTable.task!"_Stz);
+  Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJobPtr);
+  
+  Object* pTaskPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskPtr) )
+    THROW_INVALID_DSTACK("job_LoadTable.task!"_Stz);
+  Task* pTask = _pTask(pTaskPtr);
+  
+  pJob_EndInsert->m_pTask = pTask;
   
   EXIT();
 }
@@ -1927,6 +1951,8 @@ void Task::vJobRemoveOriginator(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.id@"_Stz);
   Job* pJob = _pJob(pJobPtr);
+  
+  vTrace("removing job %p in originatingJobs %lld\n"_Stz,pJob, pJob->iJobId());
   
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
   gpAttachMap->m_pOriginatingJobs->vRemoveJob(pJob);

@@ -12,6 +12,8 @@
 
 extern "C" eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, void** ppError, i8 iTraceLevel);
+extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel);
+extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SpawnPrompt(i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);

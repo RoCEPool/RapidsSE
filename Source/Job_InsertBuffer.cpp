@@ -48,7 +48,7 @@ JobClass xJobClass_InsertBuffer =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::_pJob_InsertBuffer_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_InsertBuffer_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_InsertRow_class;
   
@@ -120,7 +120,7 @@ Job_InsertBuffer::Job_InsertBuffer(Interface::SEitf* pSEitf)
   m_iEndInsertJobId = -1;
   m_nBuffersToBeInserted = C_UNKNOWN;
   
-  _checkInitialised_(CN_JOB_INSERTROW);
+  _checkInitialised_(CN_JOB_INSERTBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTBUFFER,_FOOTER_);
 }

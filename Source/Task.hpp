@@ -787,6 +787,7 @@ namespace Tasks
     
     static void vJob_EndInsertInsertRowJobIdFetch(MP_Task mpTask);
     static void vJob_EndInsertTaskFetch(MP_Task mpTask);
+    static void vJob_EndInsertTaskStore(MP_Task mpTask);
     
     static void vJob_InsertBufferEndInsertJobIdFetch(MP_Task mpTask);
     static void vJob_InsertBufferPartitionFetch(MP_Task mpTask);
