@@ -128,7 +128,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the metadata string
   args.metadata if
-    pTable table.getColumnsAsString "(partition INTEGER,%v)" str.format pJob_FetchRows job.metadata!
+    pTable table.getColumnsAsString "(%v)" str.format pJob_FetchRows job.metadata!
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

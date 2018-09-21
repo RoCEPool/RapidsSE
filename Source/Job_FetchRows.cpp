@@ -315,14 +315,13 @@ void JobsModel::vJob_FetchRows_delete(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 void JobsModel::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer) {
   Row** ppRow = nullptr;
-  i8 nPartition = pFetchBuffer->nPartitionNo();
   s48K sRowString;
   
   ppRow = pFetchBuffer->pFirstRowPtr();
   while (ppRow) {
     Row* pRow = *ppRow;
     pRow->vAsBinaryStringVLQ(sRowString, pJob_FetchRows->m_pTable->pColumnVec());
-    vTrace("row: (%lld, %s)\n"_Stz, nPartition, sRowString.aChar());
+    vTrace("row: (%s)\n"_Stz, sRowString.aChar());
     ppRow = pFetchBuffer->pNextRowPtr(ppRow);
   }
 }
