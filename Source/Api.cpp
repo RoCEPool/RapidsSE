@@ -718,7 +718,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
       
       // buffer was full
       // create InsertBuffer job
-      vTrace("Creating InsertBuffer job\n"_Stz);
+      vTrace("Buffer full!!! Creating InsertBuffer job\n"_Stz);
       JobClass* pJobClass = JobClass::pFind(CN_JOB_INSERTBUFFER);
       ASSERT(pJobClass);
       Job* pJobInsertBuffer = pJobClass->pPreJob(pSEitf);
@@ -730,12 +730,13 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
       
       // move the working buffer from insertRow to insertBuffer
       //vTrace("Setting workingBuffer %p in InsertBuffer job\n"_Stz, pJob_InsertRow->m_pWorkingBuffer[iRowPartition]);
+      pJob_InsertBuffer->m_iPartitionId = iRowPartition;
       pJob_InsertBuffer->m_pWorkingBuffer = pJob_InsertRow->m_pWorkingBuffer[iRowPartition];
       pJob_InsertRow->m_pWorkingBuffer[iRowPartition] = nullptr;
       
       //vLockMutex();
       vTrace("Spawning InsertBuffer job\n"_Stz);
-      bResult = RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_REQ,pSEitf);
+      bResult = RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_RUN,pSEitf);
       ASSERT(bResult);
     }
 

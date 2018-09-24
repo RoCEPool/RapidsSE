@@ -1063,12 +1063,12 @@ void Task::vJob_EndInsertTaskStore(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_LoadTable.task!"_Stz);
+    THROW_INVALID_DSTACK("job_EndInsert.task!"_Stz);
   Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJobPtr);
   
   Object* pTaskPtr;
   if ( ! mpTask->m_pDataStack->bPop(pTaskPtr) )
-    THROW_INVALID_DSTACK("job_LoadTable.task!"_Stz);
+    THROW_INVALID_DSTACK("job_EndInsert.task!"_Stz);
   Task* pTask = _pTask(pTaskPtr);
   
   pJob_EndInsert->m_pTask = pTask;
@@ -1124,8 +1124,8 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
   // insert the working buffer
   pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
   
-  // we loaded one additional buffer from a subloader
-  pPartition->vIncTotalBuffersLoaded();
+  // we inserted one additional buffer
+  pPartition->vIncBuffersInserted();
   
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
@@ -1135,7 +1135,8 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
   
   // have all buffers been loaded?
   bool bAllBuffersInserted = false;
-  if (pPartition->nBuffersToBeInserted() == pPartition->nBuffersInserted()) {
+  if ( pPartition->nBuffersToBeInserted() &&
+      (pPartition->nBuffersToBeInserted() == pPartition->nBuffersInserted())) {
     vTrace("Buffers inserted for partition %lld\n"_Stz, iPartition);
     bAllBuffersInserted = true;
     

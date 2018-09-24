@@ -187,10 +187,10 @@ bool TablePtn::bAllBuffersLoaded(void)
 /*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vBuffersToBeInserted(i8 m_nBuffersToBeInserted)
+void TablePtn::vBuffersToBeInserted(i8 nBuffersToBeInserted)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  m_nBuffersToBeInserted = m_nBuffersToBeInserted;
+  m_nBuffersToBeInserted = nBuffersToBeInserted;
 }
 
 /*----------------------------------------------------------------------------*/
