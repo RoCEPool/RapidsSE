@@ -641,7 +641,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
   try {
     
     // trace entry
-    //TRACE_ENTRY_P0();
+    TRACE_ENTRY_P0();
     
     //TRACE_ROW();
     
@@ -692,7 +692,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
     // get the partition this row hashes to
     i8 iRowPartition = pJob_InsertRow->m_pTable->iRowPartition(s);
     
-    //vTrace("Row partition %lld\n"_Stz, iRowPartition);
+    vTrace("Row partition %lld\n"_Stz, iRowPartition);
     
     // insert the row in this partition's buffer
     eEC eErrorCode = EC_NONE;
@@ -1149,7 +1149,9 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iP
   
   try {
     
-     // trace entry
+    TRACE_ENTRY_P0();
+    
+    // trace entry
     TRACE_ENTRY_P2(sCatalogName, sSchemaName);
     //TRACE_ENTRY_P2(sCatalogName, sSchemaName);
     

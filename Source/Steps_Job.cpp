@@ -1111,7 +1111,7 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
   Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobPtr);
   
   // convert partition to node slot
-  i8 iPartition = 0; //pJob_InsertBuffer->iPartition();
+  i8 iPartition = pJob_InsertBuffer->m_iPartitionId;
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
   
   // get table, partition and working buffer
