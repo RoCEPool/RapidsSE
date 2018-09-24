@@ -196,10 +196,10 @@ void TablePtn::vBuffersToBeInserted(i8 nBuffersToBeInserted)
 /*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vBuffersInserted(i8 m_nBuffersInserted)
+void TablePtn::vBuffersInserted(i8 nBuffersInserted)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  m_nBuffersInserted = m_nBuffersInserted;
+  m_nBuffersInserted = nBuffersInserted;
 }
 
 /*----------------------------------------------------------------------------*/
