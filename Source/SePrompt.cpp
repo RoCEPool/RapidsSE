@@ -128,6 +128,12 @@ void SePrompt::vPromptLoop(void)
     
     vLockMutex();
     vSpawnJob();
+    
+    // sleep before executing wait so that system call to spawn
+    // other se nodes completes. Else it interferes with the wait
+    if (m_pJob->eClass() == CN_JOB_STARTCLUSTER)
+      PosixThread::vSleepSec(10);
+    
     vWaitCond();
 
     vPostJob();
@@ -347,15 +353,13 @@ Token* SePrompt::pTkn(i8 i_Token)
 void SePrompt::vWaitCond(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
+
   // wait for condition
   i8 rCode = pthread_cond_wait(&m_pJob->m_xThreadCond,
                                &m_pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
