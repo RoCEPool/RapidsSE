@@ -177,8 +177,15 @@ bool TablePtn::bAllBuffersLoaded(void)
          m_nTotalBuffersLoaded);
   
   if (m_nSubLoadersDone      == nSubLoadersInGrid &&
-      m_nTotalBuffersLoaded  == m_nTotalBuffersLoadable)
+      m_nTotalBuffersLoaded  == m_nTotalBuffersLoadable) {
+    
+    // reset for next load
+    m_nSubLoadersDone       = 0;
+    m_nTotalBuffersLoaded   = 0;
+    m_nTotalBuffersLoadable = 0;
+    
     return true;
+  }
   else
     return false;
 }
