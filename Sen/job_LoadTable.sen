@@ -12,7 +12,7 @@
   params| pJob_LoadTable |
   0 locals| pThisTask |
 
-  //"Executing loader on this node" .
+  "LoadTable_executeLoader: Executing loader on this node" .
 
   task::this to pThisTask
 
@@ -41,7 +41,7 @@
 
   args.subLoaders 0
   do
-    //I "Creating Job_SubLoader %v" fmt.print
+    I "Creating Job_SubLoader %v" fmt.print
     pLoader loader.spawnSubLoader
   loop
 
@@ -56,6 +56,11 @@
 /* wait for ack only                                                          */
 /*----------------------------------------------------------------------------*/
 : LoadTable_waitOnly ( pJob_LoadTable --  )
+
+  task::this locals| pThisTask |
+
+  // grab this task's lock
+  pThisTask task.grabLock
 
   grid::slots setAcks
 
@@ -107,7 +112,7 @@
   // store task into Job_LoadTable
   pThisTask pJob_LoadTable job_loadTable.task!
 
-  pJob_LoadTable job::originator@ locals| iOriginNode |
+  pJob_LoadTable job.id@ job::originator@ locals| iOriginNode |
   grid::thisNode@ locals| iThisNode |
 
   iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
