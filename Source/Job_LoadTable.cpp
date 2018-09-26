@@ -236,7 +236,12 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // - - - - - - - - - - - - - - - - - - - - -
     // C_FIELD_DELIMITER
     else if (pTokenVec->pGet(i_Token)->bSame(C_FIELD_DELIMITER)) {
-      m_xFormatters.m_cFieldDelimiter = *pTokenVec->pGet(++i_Token)->sText().aChar();
+      s32 sFieldDelimiter;
+      sFieldDelimiter = pTokenVec->pGet(++i_Token)->sText();
+      if (sFieldDelimiter.bSame("\\t"_Stz))
+        m_xFormatters.m_cFieldDelimiter = '\t';
+      else
+        m_xFormatters.m_cFieldDelimiter = *sFieldDelimiter.aChar();
       if (m_xFormatters.m_cFieldDelimiter == '0')
       m_xFormatters.m_cFieldDelimiter = '\0';
     }

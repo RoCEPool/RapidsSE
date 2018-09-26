@@ -172,7 +172,7 @@ void Task::vJobAddOriginator(MP_Task mpTask)
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
   i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
   pJob->m_iJobId = iJobId;
-  vTrace("adding job %p in originatingJobs %lld\n"_Stz,pJob, pJob->iJobId());
+  //vTrace("adding job %p in originatingJobs %lld\n"_Stz,pJob, pJob->iJobId());
   gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
   
