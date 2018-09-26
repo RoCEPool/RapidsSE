@@ -449,13 +449,10 @@
 /*----------------------------------------------------------------------------*/
 : getPath ( pJob -- )
 
-  0 0 locals| pDicPathJob pDicStackTask pJob |
+  0 locals| pDicPathJob pJob |
 
   // get job dic path
   pJob job.dicPath to pDicPathJob
-
-  // get task dic stack
-  task::this task.dicStack to pDicStackTask
 
   // copy the path from job dic path onto data stack
   pDicPathJob dicPath.depth 0 ?do

@@ -30,9 +30,14 @@
   // grab a ddl lock
   //ddlLock::grabWrite
 
+  // get truncate job
+  pJob_SubTruncate job_SubTruncate.truncateJobId@ to iTrucateJobId
+  iTrucateJobId job::findParticipant to pJob_TruncateTable
+  pJob_TruncateTable job_truncateTable.task@ to pTask_TruncateTable
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
-  pJob_SubTruncate getPath
+  // set dictionary stack from truncate (sub has no seitf)
+  pTask_TruncateTable task.job@ getPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,9 +63,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // notify the truncate job
-  pJob_SubTruncate job_SubTruncate.truncateJobId@ to iTrucateJobId
-  iTrucateJobId job::findParticipant to pJob_TruncateTable
-  pJob_TruncateTable job_truncateTable.task@ to pTask_TruncateTable
   pTask_TruncateTable ack
 
   // now delete the ended job

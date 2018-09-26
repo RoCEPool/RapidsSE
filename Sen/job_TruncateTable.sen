@@ -58,7 +58,7 @@
   pJob_TruncateTable getPath
   dicStack.set
 
-  // store task into Job_LoadTable
+  // store task into job_truncateTable
   pThisTask pJob_TruncateTable job_truncateTable.task!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
