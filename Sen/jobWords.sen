@@ -18,10 +18,10 @@
 
   params| pJob |
 
-    grid::thisNode@
-    pJob object.class@ class::name
-    "Participant Job %v Received Node %v "
-  fmt.print
+ //   grid::thisNode@
+ //   pJob object.class@ class::name
+ //   "Participant Job %v Received Node %v "
+ // fmt.print
 
   // set participant node in job
   grid::thisNode@ pJob job.participant!
@@ -118,10 +118,10 @@
 
   params| pJob |
 
-    pJob job.participant@
-    pJob job.Id@
-    pJob object.class@ class::name
-  "NOTICE: %v jobId %v executed on node %v" fmt.print
+ //   pJob job.participant@
+ //   pJob job.Id@
+ //   pJob object.class@ class::name
+ // "NOTICE: %v jobId %v executed on node %v" fmt.print
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -187,10 +187,10 @@
   nullptr task::this task.job!
 
   pJob job.isPromptCommand true == if
-    "Acking prompt task" .
+    //"Acking prompt task" .
     pJob job.promptTask@ ack
   else
-    "Signalling connector thread" .
+    //"Signalling connector thread" .
     pJob job.signalConnector
   then
 
@@ -240,14 +240,14 @@
   // null the job in the task
   nullptr task::this task.job!
 
-  errorCode error.msg "Setting error '%v' in job" str.format .
+  //errorCode error.msg "Setting error '%v' in job" str.format .
   errorCode grid::thisNode@ pJob job.error!
 
   pJob job.isPromptCommand true == if
-    "Acking prompt task" .
+    //"Acking prompt task" .
     pJob job.promptTask@ ack
   else
-    "Signalling connector thread" .
+    //"Signalling connector thread" .
     pJob job.signalConnector
   then
 
