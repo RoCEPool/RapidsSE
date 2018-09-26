@@ -2374,7 +2374,7 @@ void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
   JobClass* pJobClass_SubTruncate = JobClass::pFind(CN_JOB_SUBTRUNCATE);
   
   Job_SubTruncate* pJob_SubTruncate =
-    static_cast<Job_SubTruncate*>(pJobClass_SubTruncate->pPreJob(pSEitf));
+    static_cast<Job_SubTruncate*>(pJobClass_SubTruncate->pPreJob(nullptr));
   
   pJob_SubTruncate->vSeed(SS_SEED_RUN);
   
@@ -2384,7 +2384,8 @@ void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RapidsSE_bSpawnJob(pJob_SubTruncate,SS_SEED_RUN,pSEitf);
+  
+  RapidsSE_bSpawnJob(pJob_SubTruncate,SS_SEED_RUN,nullptr);
 
   EXIT();
 }
