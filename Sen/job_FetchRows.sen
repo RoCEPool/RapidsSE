@@ -37,12 +37,20 @@
 : spawnSub ( phrase planner Job_FetchRows -- )
 
   params| pJob_FetchRows pPlanner iPhrase |
+  pJob_FetchRows job_fetchRows.partition@ locals| iFetchPartition |
 
-  grid::slots 0
-  do
-    //I "Creating Job_SubFetch %v" fmt.print
-    I iPhrase pPlanner pJob_FetchRows job_fetchRows.spawnSub
-  loop
+  -1 iFetchPartition == if
+    // spawn a subFetch job for each partition
+    grid::slots 0
+    do
+      //I "Creating Job_SubFetch %v" fmt.print
+      I iPhrase pPlanner pJob_FetchRows job_fetchRows.spawnSub
+    loop
+  else
+    // spawn a sub fetch job for given partition
+    iFetchPartition grid::toSlot iPhrase pPlanner pJob_FetchRows job_fetchRows.spawnSub
+  then
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -51,6 +59,19 @@
 : checkFetchRows ( "<tableNm>" "<indexNm>" -- true | errorCode false )
 
   params| sTableNm |
+  0 0 locals| pJob_FetchRows iPartition |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  task::this task.job@ to pJob_FetchRows
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check partition if specified (should belong to this node)
+  pJob_FetchRows job_fetchRows.partition@ to iPartition
+  -1 iPartition != if
+    iPartition grid::partitions >= if EC_INVALID_PARTITION false exit then
+    iPartition grid::toNode grid::thisNode@ != if EC_INVALID_PARTITION false exit then
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
@@ -87,6 +108,7 @@
 
   0 0 0 locals| iPhrases sTableNm sWhere |
   0 0 0 0 locals| pJob_FetchRows pTask pPlanner pTable |
+  0 locals| iFetchPartition |
 
   tp: fetchRows
 
@@ -144,8 +166,15 @@
   pPlanner assert
   pPlanner planner.phrases@ to iPhrases
 
-  // set the no of last buffers to no phrases * slots in the job
-  iPhrases grid::slots * pJob_FetchRows job_fetchRows.lastBuffers!
+  pJob_FetchRows job_fetchRows.partition@ to iFetchPartition
+
+  -1 iFetchPartition == if
+     // set the no of last buffers to no phrases * slots in the job
+     iPhrases grid::slots * pJob_FetchRows job_fetchRows.lastBuffers!
+  else
+    // set the no of last buffers to no phrases in the job
+    iPhrases pJob_FetchRows job_fetchRows.lastBuffers!
+  then
 
   iPhrases 0
   do
