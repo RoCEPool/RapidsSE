@@ -43,11 +43,14 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("jobExecuted.response!"_Stz,&vJobExecutedResponseStore,false);
   vAddPrimitive("jobExecuted.rowsProcessed@"_Stz,&vJobExecutedRowsProcessedFetch,false);
   vAddPrimitive("jobExecuted.rowsProcessed!"_Stz,&vJobExecutedRowsProcessedStore,false);
+  
   vAddPrimitive("Job_fetchRows.lastBuffers!"_Stz, &vJobFetchRowsLastBuffersStore, false);
+  vAddPrimitive("Job_fetchRows.partition@"_Stz, &vJobFetchRowsPartitionFetch,   false);
   vAddPrimitive("Job_fetchRows.planner!"_Stz, &vJobFetchRowsPlannerStore,   false);
   vAddPrimitive("Job_fetchRows.spawnSub"_Stz, &vJobFetchRowsSpawnSub, false);
   vAddPrimitive("Job_fetchRows.table!"_Stz,   &vJobFetchRowsTableStore,   false);
   vAddPrimitive("Job_fetchRows.where@"_Stz, &vJobFetchRowsWhereFetch, false);
+  
   vAddPrimitive("job::findOriginator"_Stz,   &vJobFindOriginator,   false);
   vAddPrimitive("job::findParticipant"_Stz,  &vJobFindParticipant,  false);
   vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
@@ -783,6 +786,21 @@ void Task::vJobFetchRowsLastBuffersStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_fetchRows.lastBuffers"_Stz);
   
   pJob_FetchRows->m_nLastBuffers = nLastBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_fetchRows.partition@ -- fetch partition no from the job                */
+/*----------------------------------------------------------------------------*/
+void Task::vJobFetchRowsPartitionFetch(MP_Task mpTask)
+{
+  ENTRY("vJobFetchRowsPartitionFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_fetchRows.partition@"_Stz);
+  Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+
+  mpTask->m_pDataStack->vPushInt(pJob_FetchRows->m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/

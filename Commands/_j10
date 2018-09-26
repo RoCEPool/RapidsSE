@@ -9,18 +9,39 @@ create table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  VARCHAR(32) NOT NULL
 );
+create index idx on j10(j10_key);
 
 print "loading j10.tbl..." ;
 ld j10 "../JTEST/j10.csv" ;
 
-dumpidx j10 hidden;
+//dumpidx j10 hidden;
 
-dump j10;
+//dump j10;
+
+lspart;
+
+print "fethcing j10";
 
 fetch j10 ;
-antbl j10;
-dantbl j10;
+//antbl j10;
+//dantbl j10;
 
+
+
+print "fetching 0";
+fetch j10 0;
+print "fetching 1";
+fetch j10 1;
+print "fetching 2";
+fetch j10 2;
+print "fetching 3";
+fetch j10 3;
+print "fetching 4";
+fetch j10 4;
+print "fetching key 8";
+fetch j10 "j10_key 8 ==" 6;
+
+/*
 sz j10;
 tableSizes;
 
@@ -52,7 +73,7 @@ fetch j10;
 drop table j10;
 
 docol epochDump;
-/*
+
 
 vfyidx j10 hidden;
 

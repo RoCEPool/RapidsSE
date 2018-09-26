@@ -113,6 +113,7 @@ Job_FetchRows::Job_FetchRows(Interface::SEitf* pSEitf)
   m_pBufferQueue = new Queue;
   m_pFetchBuffer = nullptr;
   m_pTable       = nullptr;
+  m_iPartition   = -1;
   m_pPlanner     = nullptr;
   m_nLastBuffers = 0;
   m_nLastBuffersScanned = 0;
@@ -190,8 +191,8 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   iNumTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 2/3 tokens
-  if (iNumTokens != 2 && iNumTokens != 3)
+  // there should be 2/3/4 tokens
+  if (iNumTokens != 2 && iNumTokens != 3 && iNumTokens != 4)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -200,8 +201,17 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the where clause
-  if (iNumTokens == 3)
-    m_sWhere = pTokenVec->pGet(2)->aText();
+  if (iNumTokens >= 3) {
+    if (pTokenVec->pGet(2)->eToken() == TN_STRING)
+      m_sWhere = pTokenVec->pGet(2)->aText();
+    else
+      m_iPartition = pTokenVec->pGet(2)->iToI8();
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the partition no
+  if (iNumTokens == 4)
+    m_iPartition = pTokenVec->pGet(3)->iToI8();
   
   return true;
 }
