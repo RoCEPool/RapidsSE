@@ -380,7 +380,9 @@ bool Job_CreateTable::bExtractDecimal(TokenVec* pTokenVec, i8 iColumn, i8& iCurr
   iCurrentToken++;
 
   // extract scale and precison if specified
-  if (pTokenVec->pGet(iCurrentToken++)->bSame("("_Stz)) {
+  if (pTokenVec->pGet(iCurrentToken)->bSame("("_Stz)) {
+    
+    iCurrentToken++;
     
     // check if it was numeric
     if ( ! pTokenVec->pGet(iCurrentToken)->bIsNumeric() )
