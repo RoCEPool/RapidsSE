@@ -13,6 +13,7 @@ create table decTbl (
   tsp_col7  TIMESTAMP   NOT NULL,
   bol_col8  BOOLEAN     NOT NULL
 );
+success
 
 // create indexes
 create index dec_idx1 on decTbl (dec_col1);
