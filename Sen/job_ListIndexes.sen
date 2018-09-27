@@ -37,7 +37,7 @@
       // add word kind to ls string
       object@ word.name
 
-      "row: ( '%v',%v,%v )\n" str.format
+      "row: ('%v',%v,%v)\n" str.format
       str.cat
     then
 
@@ -103,7 +103,7 @@
   sTableNm checkIsTableR35 not if popTable pJob_ListIndexes <ERROR_REQUEST> exit then
 
   args.metadata if
-    "(indexNo INTEGER, name VARCHAR, type VARCHAR, scale INTEGER, precision INTEGER, isUnique BOOLEAN, isPrimaryKey BOOLEAN)"
+    "(name VARCHAR, isUnique BOOLEAN, isPrimaryKey BOOLEAN)"
        pJob_ListIndexes job.metadata!
   then
 
