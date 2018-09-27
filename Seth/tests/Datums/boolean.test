@@ -32,12 +32,12 @@ rows:
 // check columns of index
 lsidxcol bolTbl bol_idx1;
 rows:
-  ('bol_col1', 'BOOLEAN')
+  ('bol_col1', 'BOOLEAN', -1, -1, false, true)
 
 // check columns of index
 lsidxcol bolTbl bol_idx2;
 rows:
-  ('bol_col8', 'BOOLEAN')
+  ('bol_col8', 'BOOLEAN', -1, -1, true, false)
 
 ld bolTbl "../Seth/tests/Datums/boolean.csv" ;
 success
