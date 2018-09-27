@@ -26,7 +26,7 @@ JobClass xJobClass_LoadBuffer =
   false,                   // check resources?
   false,                   // detached job?
   true,                    // buffer attached?
-  JT_ALL,                  // job trace
+  JT_NONE,                 // job trace
   vJob_LoadBuffer_pre,     // prompt pre-process function
   nullptr,                 // prompt post-process function
   pJob_LoadBuffer_new,     // job new function
