@@ -6,13 +6,12 @@
 // the command below. If an error comes back then we simply log it as
 // a warning, but it isn't enough to cancel the test.
 pwf;
-
+success
 
 // Example of expecting a single row with a single column to be returned.
 pwf;
-rows: 
+rows:
   ('/tenants/boray/catalogs/rapidsse/schemas/public/tables/')
-
 
 // Example where we expect zero rows to be returned.
 lstbl;
@@ -49,7 +48,7 @@ rows:
 // Example of a row with multiple columns being expected.
 lsidxcol j10 keyIdx;
 rows:
-  ('key', 'INTEGER')
+  ('key', 'INTEGER', 19, 0, false, true)
 
 ld j10 "../Seth/tests/examples/j10.csv";
 success
@@ -58,10 +57,10 @@ success
 // Example of multiple rows with multiple columns expected to be returned.
 antbl j10;
 unordered rows:
-  ('NODE1', 0, *, *)
-  ('NODE1', 1, *, *)
-  ('NODE1', 2, *, *)
-  ('NODE1', 3, *, *)
+  (*, 0, *, *)
+  (*, 1, *, *)
+  (*, 2, *, *)
+  (*, 3, *, *)
 
 // Example of expecting an set of rows in a particular order.
 // Expected rows can be ordered or unordered. Unless explicitly specified,
@@ -69,24 +68,24 @@ unordered rows:
 // put - ordered rows: instead of rows:
 fetch j10;
 rows:
-  (*, 2, 'two')
-  (*, 3, 'three')
-  (*, 8, 'eight')
-  (*, 0, 'zero')
-  (*, 1, 'one')
-  (*, 4, 'four')
-  (*, 7, 'seven')
-  (*, 5, 'five')
-  (*, 6, 'six')
-  (*, 9, 'nine')
+  (2, 'two')
+  (3, 'three')
+  (8, 'eight')
+  (0, 'zero')
+  (1, 'one')
+  (4, 'four')
+  (7, 'seven')
+  (5, 'five')
+  (6, 'six')
+  (9, 'nine')
 
 // Example of expecting a failure.
 drop index j10.badIndex;
-failure: 'no such index'
+failure contains: 'no such index'
 
 // Example of expecting a failure and only matching the leading substring.
 drop index j10.badIndex;
-failure: 'no such'
+failure contains: 'no such'
 
 CLEANUP {
   -- Commands in the cleanup section always run, and do so at the end
