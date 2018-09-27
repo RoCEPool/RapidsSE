@@ -118,7 +118,7 @@ void SePrompt::vPromptLoop(void)
     vPreJob();
     
     if (m_pJob->m_bHasError) {
-      vTrace("job has error (maybe syntax error)\n"_Stz);
+      //vTrace("job has error (maybe syntax error)\n"_Stz);
       vPostJob();
       vDeleteJob();
       continue;

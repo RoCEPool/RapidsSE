@@ -928,7 +928,7 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   gpAttachMap->m_pOriginatingJobs->vDropLock();
 
   
-  gpAttachMap->m_pOriginatingJobs->vContentDump();
+  //gpAttachMap->m_pOriginatingJobs->vContentDump();
   //vTrace("---------------\n"_Stz);
   
   delete pFindJob;
@@ -1299,8 +1299,8 @@ void Task::vJobLoadBufferInsertRows(MP_Task mpTask)
   
   // have all buffers been loaded?
   bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();
-  if (bAllBuffersLoaded)
-    vTrace("Buffers loaded\n"_Stz);
+  //if (bAllBuffersLoaded)
+  //  vTrace("Buffers loaded\n"_Stz);
 
   mpTask->m_pDataStack->vPushInt(bAllBuffersLoaded);
 
