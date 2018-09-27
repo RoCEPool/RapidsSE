@@ -242,7 +242,7 @@ void JobsModel::vJob_ListIdxColumns_post(Interface::SEitf* pSEitf, Job* pJob)
     i8 iRowsProcessed = 0;
     
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_ListIdxColumns->m_xNode[i_Node].m_sResponse.aChar());
+      vTrace("%s"_Stz, pJob_ListIdxColumns->m_xNode[i_Node].m_sResponse.aChar());
       iRowsProcessed += pJob_ListIdxColumns->m_xNode[i_Node].m_iRowsProcessed;
     }
     vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);

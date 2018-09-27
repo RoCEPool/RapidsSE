@@ -231,7 +231,7 @@ void JobsModel::vJob_ListPartitions_post(Interface::SEitf* pSEitf, Job* pJob)
       vTrace("metadata: %s\n"_Stz, pJob_ListPartitions->m_sMetadata.aStr());
     }
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_ListPartitions->m_xNode[i_Node].m_sResponse.aChar());
+      vTrace("%s"_Stz, pJob_ListPartitions->m_xNode[i_Node].m_sResponse.aChar());
     }
     vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
   }

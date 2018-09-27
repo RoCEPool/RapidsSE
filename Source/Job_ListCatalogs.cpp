@@ -234,7 +234,7 @@ void JobsModel::vJob_ListCatalogs_post(Interface::SEitf* pSEitf, Job* pJob)
     i8 iRowsProcessed = 0;
     
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s\n"_Stz, pJob_ListCatalogs->m_xNode[i_Node].m_sResponse.aChar());
+      vTrace("%s"_Stz, pJob_ListCatalogs->m_xNode[i_Node].m_sResponse.aChar());
       iRowsProcessed += pJob_ListCatalogs->m_xNode[i_Node].m_iRowsProcessed;
     }
     if (gpAttachMap->m_bMetadata) {
