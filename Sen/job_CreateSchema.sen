@@ -117,7 +117,7 @@
   params| pJob_CreateSchema  |
 
   tp: createSchema.checkResources
-  "checkResources received" .
+  //"checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grad a ddl lock
@@ -149,7 +149,7 @@
   params| pJob_CreateSchema  |
 
   tp: createSchema.releaseResources
-  "releaseResources received" .
+  //"releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -107,7 +107,7 @@
   params| pJob_DropTenant  |
 
   tp: dropTenant.checkResources
-  "checkResources received" .
+  //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
   // grab a ddl lock
@@ -134,7 +134,7 @@
   params| pJob_DropTenant  |
 
   tp: dropTenant.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

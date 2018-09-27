@@ -101,7 +101,7 @@
   0 locals| sTableNm |
 
   tp: truncateTable.checkResources
-  "checkResources received" .
+  //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -144,7 +144,7 @@
   params| pJob_TruncateTable  |
 
   tp: truncateTable.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

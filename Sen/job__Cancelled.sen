@@ -92,7 +92,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "received Job_Cancelled from all nodes" .
+  //"received Job_Cancelled from all nodes" .
 
   // remove the job from the originator jobs
   pJob job.removeOriginator
@@ -100,7 +100,7 @@
   // notify the originating task
   pJob job.originatingTask@ ack
 
-  "All Done" .
+  //"All Done" .
 
   delete_completed_job
 

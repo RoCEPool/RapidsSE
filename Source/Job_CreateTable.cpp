@@ -210,7 +210,7 @@ bool Job_CreateTable::bPopulateJob(TokenVec* pTokenVec)
     m_xColumns[0].m_bIsPartitionKey = true;
   }
   
-  vShow();
+  //vShow();
   
   return true;
 }

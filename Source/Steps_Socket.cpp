@@ -295,8 +295,8 @@ void Task::vSocketRecvObject(MP_Task mpTask)
       return;
     }
 
-    vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-           pJob,eClass,aCN[eClass],nObjectSize);
+    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+    //       pJob,eClass,aCN[eClass],nObjectSize);
 
     mpTask->m_pDataStack->vPushObject(pJob);
     mpTask->m_pDataStack->vPushInt((i8)1);
@@ -323,8 +323,8 @@ void Task::vSocketRecvObject(MP_Task mpTask)
       return;
     }
 
-    vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-           pWorkingBuffer,eClass,aCN[eClass],nObjectSize);
+    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+    //       pWorkingBuffer,eClass,aCN[eClass],nObjectSize);
     
     mpTask->m_pDataStack->vPushObject(pWorkingBuffer);
     mpTask->m_pDataStack->vPushInt((i8)1);

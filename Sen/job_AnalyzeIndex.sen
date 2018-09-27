@@ -148,7 +148,7 @@
   params| pJob_AnalyzeIndex  |
 
   tp: analyzeIndex.checkResources
-  "checkResources received" .
+  //"checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -176,7 +176,7 @@
   params| pJob_AnalyzeIndex  |
 
   tp: analyzeIndex.releaseResources
-  "releaseResources received" .
+  //"releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

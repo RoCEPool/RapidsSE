@@ -12,7 +12,7 @@
   params| pJob_LoadTable |
   0 locals| pThisTask |
 
-  "LoadTable_executeLoader: Executing loader on this node" .
+  //"LoadTable_executeLoader: Executing loader on this node" .
 
   task::this to pThisTask
 
@@ -41,13 +41,13 @@
 
   args.subLoaders 0
   do
-    I "Creating Job_SubLoader %v" fmt.print
+    //I "Creating Job_SubLoader %v" fmt.print
     pLoader loader.spawnSubLoader
   loop
 
-  "LoadTable_executeLoader ack waiting" .
+  //"LoadTable_executeLoader ack waiting" .
   ackWait
-  "LoadTable_executeLoader acked" .
+  //"LoadTable_executeLoader acked" .
 
   pLoader loader.delete
 ;
@@ -142,7 +142,7 @@
   pJob_LoadTable job.objectName@ locals| sTableNm |
 
   tp: loadTable.checkResources
-  "checkResources received" .
+  //checkResources received" .
 
   //----------------------------------------------------------------------------
   // check if file exists
@@ -200,7 +200,7 @@
   params| pJob_LoadTable  |
 
   tp: loadTable.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

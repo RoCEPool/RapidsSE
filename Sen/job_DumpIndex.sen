@@ -113,7 +113,7 @@
   0 0 locals| sIndexNm sTableNm |
 
   tp: dumpIndex.checkResources
-  "checkResources received" .
+  //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -142,7 +142,7 @@
   params| pJob_DumpIndex  |
 
   tp: dumpIndex.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*============================================================================*/

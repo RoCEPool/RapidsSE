@@ -110,7 +110,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "received Job__Executed from all nodes" .
+  //"received Job__Executed from all nodes" .
 
   pJob Job__End::distribute
 

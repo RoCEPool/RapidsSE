@@ -147,7 +147,7 @@
   0 0 locals| sIndexNm sTableNm |
 
   tp: dropIndex.checkResources
-  "checkResources received" .
+  //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -198,7 +198,7 @@
   params| pJob_DropIndex  |
 
   tp: dropIndex.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

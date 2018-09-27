@@ -174,7 +174,7 @@
   params| pJob_CreateTable  |
 
   tp: createTable.checkResources
-  "checkResources received" .
+  //"checkResources received" .
 
   //----------------------------------------------------------------------------
   // grad a ddl lock
@@ -205,7 +205,7 @@
   params| pJob_CreateTable  |
 
   tp: createTable.releaseResources
-  "releaseResources received" .
+  //"releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

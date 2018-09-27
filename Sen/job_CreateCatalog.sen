@@ -120,7 +120,7 @@
   params| pJob_CreateCatalog  |
 
   tp: createCatalog.checkResources
-  "checkResources received" .
+  //"checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grad a ddl lock
@@ -152,7 +152,7 @@
   params| pJob_CreateCatalog  |
 
   tp: createCatalog.releaseResources
-  "releaseResources received" .
+  //"releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

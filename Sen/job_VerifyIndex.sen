@@ -145,7 +145,7 @@
   0 0 locals| sIndexNm sTableNm |
 
   tp: verifyIndex.checkResources
-  "checkResources received" .
+  //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -174,7 +174,7 @@
   params| pJob_VerifyIndex  |
 
   tp: verifyIndex.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

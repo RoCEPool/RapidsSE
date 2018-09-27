@@ -136,8 +136,8 @@
   0 0 locals| sIndexNm sTableNm |
 
   tp: compactIndex.checkResources
-  "checkResources received" .
-
+  //checkResources received" .
+//
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
   ddlLock::grabWrite
@@ -165,7 +165,7 @@
   params| pJob_CompactIndex  |
 
   tp: compactIndex.releaseResources
-  "releaseResources received" .
+  //"releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

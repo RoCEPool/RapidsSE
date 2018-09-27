@@ -131,7 +131,7 @@
   params| pJob_TableSizes  |
 
   tp: tableSizes.checkResources
-  "checkResources received" .
+  //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -157,7 +157,7 @@
   params| pJob_SizeTable  |
 
   tp: sizeTable.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

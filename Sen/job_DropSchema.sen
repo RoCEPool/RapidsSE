@@ -107,7 +107,7 @@
   params| pJob_DropSchema  |
 
   tp: dropSchema.checkResources
-  "checkResources received" .
+  //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
   // grab a ddl lock
@@ -134,7 +134,7 @@
   params| pJob_DropSchema  |
 
   tp: dropSchema.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

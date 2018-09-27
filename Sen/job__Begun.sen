@@ -27,7 +27,7 @@
 
   error EC_NONE != if
     // set error in executed job
-    error error.msg "Setting error '%v' in Job__Begun" str.format .
+    //error error.msg "Setting error '%v' in Job__Begun" str.format .
     error pJob__Begun jobBegun.error!
   then
 
@@ -107,7 +107,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "received job__begun from all nodes" .
+  //"received job__begun from all nodes" .
 
   // received job__begun from all nodes
   // this is the decider job.

@@ -133,7 +133,7 @@
   params| pJob_AnalyzeTable  |
 
   tp: analyzeTable.checkResources
-  "checkResources received" .
+  //"checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -160,7 +160,7 @@
   params| pJob_AnalyzeTable  |
 
   tp: analyzeTable.releaseResources
-  "releaseResources received" .
+  //"releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

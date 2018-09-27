@@ -168,7 +168,7 @@
   params| pJob_DropTable  |
 
   tp: dropTable.checkResources
-  "checkResources received" .
+  //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -195,7 +195,7 @@
   params| pJob_DropTable  |
 
   tp: dropTable.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

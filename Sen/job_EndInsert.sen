@@ -41,7 +41,7 @@
   // for all partitions
   nTotalPartitions 0 do
 
-    I "LAST BUFFER for partition %v" fmt.print
+    //I "LAST BUFFER for partition %v" fmt.print
 
     // ensure there's a dangling buffer for partition I
     I pJob_InsertRow job_InsertRow.danglingBuffer
@@ -55,9 +55,9 @@
 
   loop
 
-  "EndInsert_sendLast ack waiting" .
+  //"EndInsert_sendLast ack waiting" .
   ackWait
-  "EndInsert_sendLast acked" .
+  //"EndInsert_sendLast acked" .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -67,9 +67,9 @@
 
   grid::slots setAcks
 
-  "EndInsert_waitOnly waiting" .
+  //"EndInsert_waitOnly waiting" .
   ackWait
-  "EndInsert_waitOnly acked" .
+  //"EndInsert_waitOnly acked" .
 ;
 
 
@@ -153,7 +153,7 @@
   params| pJob_EndInsert  |
 
   tp: endInsert.checkResources
-  "checkResources received" .
+  //checkResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +164,7 @@
   params| pJob_CreateTable  |
 
   tp: endInsert.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

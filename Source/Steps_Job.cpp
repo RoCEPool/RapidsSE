@@ -922,14 +922,14 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   Job__Cancelled* pFindJob = new Job__Cancelled;
   pFindJob->m_iJobId = iJobId;
   
-  vTrace("---------------\n"_Stz);
+  //vTrace("---------------\n"_Stz);
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
   Job* pJob = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
 
   
   gpAttachMap->m_pOriginatingJobs->vContentDump();
-  vTrace("---------------\n"_Stz);
+  //vTrace("---------------\n"_Stz);
   
   delete pFindJob;
   ASSERT(pJob);
@@ -1971,7 +1971,7 @@ void Task::vJobRemoveOriginator(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.id@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  vTrace("removing job %p in originatingJobs %lld\n"_Stz,pJob, pJob->iJobId());
+  //vTrace("removing job %p in originatingJobs %lld\n"_Stz,pJob, pJob->iJobId());
   
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
   gpAttachMap->m_pOriginatingJobs->vRemoveJob(pJob);

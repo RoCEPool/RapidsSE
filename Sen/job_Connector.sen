@@ -34,7 +34,7 @@
   0 locals| pNode |
   0 locals| pSocket |
 
-  "connector_run" .
+  //"connector_run" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

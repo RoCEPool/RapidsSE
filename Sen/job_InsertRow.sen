@@ -52,7 +52,7 @@
   pJob_InsertRow job.objectName@ locals| sTableNm |
 
   tp: insertRow.checkResources
-  "checkResources received" .
+  //checkResources received" .
 
   //----------------------------------------------------------------------------
   // grad a ddl lock
@@ -98,7 +98,7 @@
   params| pJob_InsertRow  |
 
   tp: insertRow.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*============================================================================*/

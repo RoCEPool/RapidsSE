@@ -224,7 +224,7 @@
   0 0 locals| sTableNm sIndexNm |
 
   tp: createIndex.checkResources
-  "checkResources received" .
+  //"checkResources received" .
 
   //----------------------------------------------------------------------------
   // grad a ddl lock
@@ -254,7 +254,7 @@
   params| pJob_CreateIndex  |
 
   tp: createIndex.releaseResources
-  "releaseResources received" .
+  //"releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/

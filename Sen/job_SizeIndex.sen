@@ -145,7 +145,7 @@
   0 0 locals| sIndexNm sTableNm |
 
   tp: sizeIndex.checkResources
-  "checkResources received" .
+  //checkResources received" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -174,7 +174,7 @@
   params| pJob_SizeIndex  |
 
   tp: sizeIndex.releaseResources
-  "releaseResources received" .
+  //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/
