@@ -27,12 +27,12 @@ rows:
 // check columns of index
 lsidxcol IntTbl int_idx1;
 rows:
-  ('int_col1', 'INTEGER')
+  ('int_col1', 'INTEGER', 19, 0, false, true)
 
 // check columns of index
 lsidxcol IntTbl int_idx2;
 rows:
-  ('int_col4', 'INTEGER')
+  ('int_col4', 'INTEGER', 19, 0, true, false)
 
 ld IntTbl "../Seth/tests/Datums/integer.csv" ;
 success
@@ -52,12 +52,12 @@ success
 // fetch
 fetch intTbl "int_col1 13 =";
 rows:
- (*, 13,'one three',113,null)
+ (13,'one three',113,null)
 
 // fetch
 fetch intTbl "int_col1 14 =";
 rows:
-  (*, 14,'one four',114,null)
+  (14,'one four',114,null)
 
 
 CLEANUP {

@@ -28,12 +28,12 @@ rows:
 // check columns of index
 lsidxcol fltTbl flt_idx1;
 rows:
-('flt_col1', 'FLOAT')
+('flt_col1', 'FLOAT', 19, 0, false, true)
 
 // check columns of index
 lsidxcol fltTbl flt_idx2;
 rows:
-('flt_col6', 'FLOAT')
+('flt_col6', 'FLOAT', 19, 0, true, false)
 
 ld fltTbl "../Seth/tests/Datums/float.csv" ;
 success
@@ -51,7 +51,7 @@ dumpidx fltTbl flt_idx2;
 // fetch
 fetch fltTbl "flt_col1 1011.011 =";
 rows:
-  (*, 1011.01e0,'oneone',111,1,11.01,null)
+  (1011.01e0,'oneone',111,1,11.01,null)
 
 // drop the table
 drop table fltTbl;
