@@ -114,6 +114,10 @@
   pIndex pTable table.addIndex
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // mark index as unique
+  pJob_CreateIndex job_createIndex.isUnique@ pIndex index.isUnique!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the column vector of the index
   pJob_CreateIndex pIndex index.createColumnVecR35
 

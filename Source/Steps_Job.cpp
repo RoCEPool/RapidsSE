@@ -30,6 +30,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.columnIsPartKey"_Stz,  &vJobColumnIsPartKey,  false);
   vAddPrimitive("job.columnName@"_Stz,      &vJobColumnNameFetch,  false);
   vAddPrimitive("job.columnType@"_Stz,      &vJobColumnTypeFetch,  false);
+  vAddPrimitive("job_createIndex.isUnique@"_Stz, &vJobCreateIndexIsUniqueFetch,  false);
   vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
   vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
   vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
@@ -370,6 +371,23 @@ void Task::vJobColumnTypeFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.columnType@"_Stz);
   
   mpTask->m_pDataStack->vPushInt(pJob_CreateTable->m_xColumns[iColumnNo].m_eColumnType);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_createIndex.isUnique@ -- fetch column type from create table job       */
+/*----------------------------------------------------------------------------*/
+void Task::vJobCreateIndexIsUniqueFetch(MP_Task mpTask)
+{
+  ENTRY("vJobCreateIndexIsUniqueFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_createIndex.isUnique@"_Stz);
+  Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob_CreateIndex->m_bIsUnique);
   
   EXIT();
 }
