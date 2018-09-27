@@ -230,6 +230,9 @@ void JobsModel::vJob_CreateCatalog_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+  else {
+    vTrace("success: 0 rows affected\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

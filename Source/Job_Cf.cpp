@@ -220,9 +220,12 @@ void JobsModel::vJob_Cf_post(Interface::SEitf* pSEitf, Job* pJob)
 {
   Job_Cf* pJob_Cf = _pJob_Cf(pJob);
   
-  // Note: take care of errors / meta data ????
-  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    vTrace("%s\n"_Stz, pJob_Cf->m_xNode[i_Node].m_sResponse.aChar());
+  if ( pJob_Cf->m_bHasError ) {
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_Cf->m_xNode[i_Node].m_eErrorCode]);
+    }
+    
   }
 }
 

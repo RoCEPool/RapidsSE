@@ -240,9 +240,7 @@ void JobsModel::vJob_VerifyIndex_post(Interface::SEitf* pSEitf, Job* pJob)
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       vTrace("%s\n"_Stz, pJob_VerifyIndex->m_xNode[i_Node].m_sResponse.aChar());
     }
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
-    }
+    vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
   }
 }
 

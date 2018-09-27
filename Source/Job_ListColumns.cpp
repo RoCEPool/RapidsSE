@@ -241,9 +241,7 @@ void JobsModel::vJob_ListColumns_post(Interface::SEitf* pSEitf, Job* pJob)
       vTrace("%s\n"_Stz, pJob_ListColumns->m_xNode[i_Node].m_sResponse.aChar());
       iRowsProcessed += pJob_ListColumns->m_xNode[i_Node].m_iRowsProcessed;
     }
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-    }
+    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   }
 }
 

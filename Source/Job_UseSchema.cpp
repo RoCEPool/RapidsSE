@@ -232,6 +232,9 @@ void JobsModel::vJob_UseSchema_post(Interface::SEitf* pSEitf, Job* pJob)
       vTrace("ERROR (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob_UseSchema->m_xNode[i_Node].m_eErrorCode]);
     }
   }
+  else {
+    vTrace("success: 0 rows affected\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

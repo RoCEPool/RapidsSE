@@ -231,6 +231,9 @@ void JobsModel::vJob_CreateSchema_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+  else {
+    vTrace("success: 0 rows affected\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -244,9 +244,7 @@ void JobsModel::vJob_SizeIndex_post(Interface::SEitf* pSEitf, Job* pJob)
       vTrace("%s\n"_Stz, pJob_SizeIndex->m_xNode[i_Node].m_sResponse.aChar());
       iRowsProcessed += pJob_SizeIndex->m_xNode[i_Node].m_iRowsProcessed;
     }
-    if (gpAttachMap->m_bMetadata) {
-      vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
-    }
+    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   }
 }
 
