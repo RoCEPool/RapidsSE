@@ -34,17 +34,17 @@ rows:
 // check columns of index
 lsidxcol VchTbl vch_idx1;
 rows:
-  ('vch_col2', 'VARCHAR')
+  ('vch_col2', 'VARCHAR', 10, 0, false, false)
 
 // check columns of index
 lsidxcol VchTbl vch_idx2;
 rows:
-  ('vch_col3', 'VARCHAR')
+  ('vch_col3', 'VARCHAR', 32, 0, false, false)
 
 // check columns of index
 lsidxcol VchTbl vch_idx3;
 rows:
-  ('vch_col5', 'VARCHAR')
+  ('vch_col5', 'VARCHAR', 64000, 0, true, false)
 
 ld VchTbl "../Seth/tests/Datums/varchar.csv" enclosed_by_leading "'";
 success
@@ -55,21 +55,24 @@ rows: 101
 
 // dump index vch_idx1
 dumpidx vchTbl vch_idx1;
+success
 
 // dump index vch_idx2
 dumpidx vchTbl vch_idx2;
+success
 
 // dump index vch_idx3
 dumpidx vchTbl vch_idx3;
+success
 
 // fetch
 fetch vchTbl "vch_col2 'nine' =";
 rows:
-  (*,9,'nine','109',9,null)
+  (9,'nine','109',9,null)
 
 fetch vchTbl "vch_col2 'one zero' =";
 rows:
-  (*,10,'one zero','110',0,null)
+  (10,'one zero','110',0,null)
 
 // drop the table
 drop table VchTbl;
