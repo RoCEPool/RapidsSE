@@ -51,7 +51,7 @@
   // assert its the status job
   CN_JOB_STATUS pJob_Status object.assertClass
 
-  "GETTING STATUS on NODE " grid::thisNode@ >str str.cat .
+  //"GETTING STATUS on NODE " grid::thisNode@ >str str.cat .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the status of this node

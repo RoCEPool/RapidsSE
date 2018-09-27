@@ -51,7 +51,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
   task::this to pThisTask
-  pJob_TruncateTable pThisTask "truncateTable_exe task: %v Job_TruncateTable %v" fmt.print
+  //pJob_TruncateTable pThisTask "truncateTable_exe task: %v Job_TruncateTable %v" fmt.print
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
@@ -79,9 +79,9 @@
     I pJob_TruncateTable job_truncateTable.spawnSub
   loop
 
-  "truncateTable ack waiting" .
+  //"truncateTable ack waiting" .
   ackWait
-  "truncateTable acked" .
+  //"truncateTable acked" .
 
   pJob_TruncateTable job.notice
 

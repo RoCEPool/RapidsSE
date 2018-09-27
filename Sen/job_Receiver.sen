@@ -78,7 +78,7 @@
     pJob job.postRecv
 
     pJob job.hasWorkingBuffer if
-      "receiver_loop: job has working buffer" .
+      //"receiver_loop: job has working buffer" .
       socket> drop to pWorkingBuffer
       pWorkingBuffer pJob job.workingBuffer!
     then

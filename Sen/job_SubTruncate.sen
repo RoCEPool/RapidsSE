@@ -16,7 +16,7 @@
   0 0 0 locals| iTrucateJobId pJob_TruncateTable pTask_TruncateTable |
 
   tp: SubTruncate
-  "SubTruncate_run" .
+  //"SubTruncate_run" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

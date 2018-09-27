@@ -46,7 +46,7 @@
   // for all partitions
   nTotalPartitions 0 do
 
-    I "LAST BUFFER for partition %v" fmt.print
+    //I "LAST BUFFER for partition %v" fmt.print
 
     // set the partition we are using
     I pLoaderSub loaderSub.partition!
@@ -110,10 +110,10 @@
   pJobLoadTable_Participant job.id@ to iLoadTableJobId
 
   // now find the job_loadTable again in origintor
-iLoadTableJobId job::findOriginator to pJobLoadTable_Originator
+  iLoadTableJobId job::findOriginator to pJobLoadTable_Originator
 
   // get the valid/invalid rows loaded from subloader
-  pLoaderSub loaderSub.recordsValid .
+  //pLoaderSub loaderSub.recordsValid .
   pLoaderSub loaderSub.recordsValid pJobLoadTable_Originator job_loadTable.addValidRows
   pLoaderSub loaderSub.recordsInvalid pJobLoadTable_Originator job_loadTable.addInvalidRows
   pLoaderSub loaderSub.end

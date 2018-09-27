@@ -63,7 +63,7 @@
 
     // test for error
     pJob job.hasError if
-      "job has error (maybe syntax error)" .
+      //"job has error (maybe syntax error)" .
       pSEitf pCommandProcessor commandProcessor.postJob
       pSEitf pCommandProcessor commandProcessor.deleteJob
       ifAgain

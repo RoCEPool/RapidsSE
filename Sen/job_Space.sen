@@ -50,7 +50,7 @@
   CN_JOB_SPACE pJob_Space object.assertClass
 
   "GETTING SPACE on NODE " grid::thisNode@ >str str.cat .
-
+//
   "row: ('"
   grid::thisNodeName@ str.cat
   "', '" str.cat

@@ -51,7 +51,7 @@
 
   CN_JOB_SANITY pJob_Sanity object.assertClass
 
-  "GETTING SANITY on NODE " grid::thisNode@ >str str.cat .
+  //"GETTING SANITY on NODE " grid::thisNode@ >str str.cat .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the node size of originating node from the job

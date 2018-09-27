@@ -217,7 +217,7 @@
 
   job::this locals| pJob_CreateTable |
 
-  ">> createTable_beg <<" .
+  //">> createTable_beg <<" .
 
   // add this job to the participants list
   pJob_CreateTable job.beginParticipant
@@ -240,7 +240,7 @@
 
   job::this locals| pJob_CreateTable |
 
-  ">> createTable_end <<" .
+  //">> createTable_end <<" .
 
   // release resources
   pJob_CreateTable createTable.releaseResources

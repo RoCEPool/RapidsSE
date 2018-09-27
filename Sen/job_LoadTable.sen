@@ -107,7 +107,7 @@
 
   // get the task
   task::this to pThisTask
-  pJob_LoadTable pThisTask "LoadTable_exe task: %v job_LoadTable %v" fmt.print
+  //pJob_LoadTable pThisTask "LoadTable_exe task: %v job_LoadTable %v" fmt.print
 
   // store task into Job_LoadTable
   pThisTask pJob_LoadTable job_loadTable.task!
@@ -115,13 +115,13 @@
   pJob_LoadTable job.id@ job::originator@ locals| iOriginNode |
   grid::thisNode@ locals| iThisNode |
 
-  iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
+  //iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
 
   iThisNode iOriginNode == if
-    "Loader is executing on this node" .
+    //"Loader is executing on this node" .
     pJob_LoadTable LoadTable_executeLoader
   else
-    "Loader is not executed on this node" .
+    //"Loader is not executed on this node" .
     LoadTable_waitOnly
   then
 
@@ -212,7 +212,7 @@
 
   job::this locals| pJob_LoadTable |
 
-  ">> loadTable_beg <<" .
+  //">> loadTable_beg <<" .
 
   // add this job to the participants list
   pJob_LoadTable job.beginParticipant
@@ -235,7 +235,7 @@
 
   job::this locals| pJob_LoadTable |
 
-  ">> loadTable_end <<" .
+  //">> loadTable_end <<" .
 
   // release resources
   pJob_loadTable loadTable.releaseResources

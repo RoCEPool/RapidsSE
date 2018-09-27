@@ -72,9 +72,9 @@
 
   // ack the load table task if all buffers have been loaded
   bAllLoaded if
-      pTask_LoadTable
-      "All buffers loaded; Would ack task_LoadTable (node) %v"
-    fmt.print
+    //pTask_LoadTable
+    //"All buffers loaded; Would ack task_LoadTable (node) %v"
+    //fmt.print
 
     pTask_LoadTable ack
   then
@@ -116,7 +116,7 @@
   // convert i_Partition to i_ForwardNode
   i_Partition grid::toNode locals| i_ForwardNode |
 
-  i_Partition i_ForwardNode "loadBuffer.forward : Node %v Partition %v" fmt.print
+  //i_Partition i_ForwardNode "loadBuffer.forward : Node %v Partition %v" fmt.print
 
   // send this job to the forward node
   i_ForwardNode pJob_LoadBuffer job.forward
@@ -131,7 +131,7 @@
 
   job::this locals| pJob_LoadBuffer  |
 
-  "loadBuffer_run :" .
+  //"loadBuffer_run :" .
 
   // simply forward this job to kid node
   pJob_LoadBuffer LoadBuffer.forward
