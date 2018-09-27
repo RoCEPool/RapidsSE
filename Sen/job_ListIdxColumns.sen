@@ -28,8 +28,7 @@
     pColumn column.Length@
     pColumn column.type@
     pColumn column.name@
-    I
-    "row: ( %v,'%v',%v,%v,%v,%v,%v )\n" str.format
+    "row: ('%v','%v',%v,%v,%v,%v)\n" str.format
     str.cat
   loop
 
@@ -106,7 +105,7 @@
   then
 
   args.metadata if
-    "(columnNo INTEGER, columnName VARCHAR, columnType VARCHAR, columnLength INTEGER, columnScale INTEGER, isNull boolean, isPartitionKey boolean)"
+    "(columnName VARCHAR, columnType VARCHAR, columnLength INTEGER, columnScale INTEGER, isNull boolean, isPartitionKey boolean)"
         pJob_ListIdxColumns job.metadata!
   then
 

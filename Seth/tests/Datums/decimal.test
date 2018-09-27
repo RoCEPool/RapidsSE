@@ -31,12 +31,12 @@ rows:
 // check columns of index
 lsidxcol decTbl dec_idx1;
 rows:
-('dec_col1', 'DECIMAL')
+('dec_col1', 'DECIMAL', 10, 3, false, true)
 
 // check columns of index
 lsidxcol decTbl dec_idx2;
 rows:
-('dec_col6', 'DECIMAL')
+('dec_col6', 'DECIMAL',19, 0, true, false)
 
 ld decTbl "../Seth/tests/Datums/decimal.csv" ;
 success

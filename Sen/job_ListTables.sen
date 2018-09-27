@@ -24,6 +24,13 @@
   pTask task.job@ to pJob_ListTables
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set metadata string in the job
+  args.metadata if
+    "(tableName VARCHAR)"
+    pJob_ListTables job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_ListTables getPath
   dicStack.set

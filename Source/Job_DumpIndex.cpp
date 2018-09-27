@@ -233,6 +233,7 @@ void JobsModel::vJob_DumpIndex_post(Interface::SEitf* pSEitf, Job* pJob)
     }
     
   }
+  vTrace("success: 0 rows affected\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

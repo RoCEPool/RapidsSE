@@ -283,7 +283,11 @@ void JobsModel::vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob)
    
     return;
   }
-    
+  
+  if (gpAttachMap->m_bMetadata) {
+    vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.aStr());
+  }
+  
   while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
     
     // attempt to pop buffer off the buffer queue

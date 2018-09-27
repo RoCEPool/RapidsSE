@@ -229,6 +229,10 @@ void JobsModel::vJob_ListTables_post(Interface::SEitf* pSEitf, Job* pJob)
     
   }
   else {
+    if (gpAttachMap->m_bMetadata) {
+      vTrace("metadata: %s\n"_Stz, pJob_ListTables->m_sMetadata.aStr());
+    }
+    
     i8 iRowsProcessed = 0;
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       vTrace("%s"_Stz, pJob_ListTables->m_xNode[i_Node].m_sResponse.aChar());
