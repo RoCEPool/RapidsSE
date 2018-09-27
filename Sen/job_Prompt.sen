@@ -54,7 +54,7 @@
 
     // is this a know job class?
     pCommandProcessor commandProcessor.findJobClass not if
-      "Unknown command" .
+      "error: Unknown command" .
       ifAgain
     then
 

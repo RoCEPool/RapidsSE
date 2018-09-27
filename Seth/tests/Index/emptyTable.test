@@ -21,7 +21,7 @@ rows:
 // check columns of index
 lsidxcol createT1 keyIdx;
 rows:
-  ('key', 'INTEGER')
+  ('key', 'INTEGER', 19, 0, false, true)
 
 // sz of index
 szidx createT1 keyidx;

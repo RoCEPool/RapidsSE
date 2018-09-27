@@ -117,7 +117,7 @@
   sIndexNm find execute to pIndex
   pIndex index.space 0 swap number.magnitude to iSize
 
-  iSize grid::thisNodeName@ "row: ( %v %v )" str.format
+  iSize grid::thisNodeName@ "row: ('%v' %v)" str.format
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop indexes and table folder
