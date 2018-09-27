@@ -229,7 +229,7 @@ void JobsModel::vJob_DumpIndex_post(Interface::SEitf* pSEitf, Job* pJob)
   if ( pJob_DumpIndex->m_bHasError ) {
     
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld)%s\n"_Stz, i_Node, aEC[pJob_DumpIndex->m_xNode[i_Node].m_eErrorCode]);
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_DumpIndex->m_xNode[i_Node].m_eErrorCode]);
     }
     
   }

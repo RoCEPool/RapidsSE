@@ -4,35 +4,35 @@
 
 // (1) create an index (syntax error)
 create index on T1 (key);
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // (2) create an index (syntax error)
 create index idx T1 (key);
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // (3) create an index (syntax error)
 create index idx on (key);
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // (4) create an index (syntax error)
 create idx on T1 (key);
-failure: 'invalid command'
+failure contains: 'Unknown command'
 
 // (5) create an index (syntax error)
 create index idx on T1;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // (6) create an index (syntax error)
 create index idx on T1(;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // (7) create an index (syntax error)
 create index idx on T1();
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // (8) create an index (syntax error)
 create index idx on T1(key) junk;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // create a table
 create table T1 (
@@ -53,7 +53,7 @@ rows:
 // check columns of index
 lsidxcol T1 Idx;
 rows:
-  ('key', 'INTEGER')
+  ('key', 'INTEGER', 19, 0, false, true)
 
 // drop the index
 drop index T1.Idx;
@@ -65,7 +65,7 @@ rows: 0
 
 // create index where table does not exist
 create index Idx on noTable (key);
-failure: 'no such table'
+failure contains: 'no such table'
 
 pwf;
 rows:
@@ -77,7 +77,7 @@ rows: 0
 
 // create index where key does not exist
 create index Idx on T1 (noKey);
-failure: 'invalid column'
+failure contains: 'invalid index column'
 
 pwf;
 rows:
@@ -93,7 +93,7 @@ affected: 0
 
 // create same index again
 create index Idx1 on T1 (key);
-failure: 'index exists'
+failure contains: 'index exists'
 
 // check existence of index
 lsidx T1;
@@ -121,8 +121,8 @@ rows: 3
 // check columns of Idx3
 lsidxcol T1 Idx3;
 rows:
- ('key', 'INTEGER')
- ('name', 'VARCHAR')
+ ('key', 'INTEGER', 19, 0, false, true)
+ ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx4 on T1 (key, name);
@@ -139,8 +139,8 @@ rows:
 // check columns of Idx4
 lsidxcol T1 Idx4;
 rows:
- ('key', 'INTEGER')
- ('name', 'VARCHAR')
+  ('key', 'INTEGER', 19, 0, false, true)
+  ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx5 on T1 (key, name);
@@ -158,8 +158,8 @@ rows:
 // check columns of Idx5
 lsidxcol T1 Idx5;
 rows:
-('key', 'INTEGER')
-('name', 'VARCHAR')
+  ('key', 'INTEGER', 19, 0, false, true)
+  ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx6 on T1 (key, name);
@@ -178,8 +178,8 @@ rows:
 // check columns of Idx4
 lsidxcol T1 Idx6;
 rows:
-('key', 'INTEGER')
-('name', 'VARCHAR')
+  ('key', 'INTEGER', 19, 0, false, true)
+  ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx7 on T1 (key, name);
@@ -199,8 +199,8 @@ rows:
 // check columns of Idx7
 lsidxcol T1 Idx7;
 rows:
-('key', 'INTEGER')
-('name', 'VARCHAR')
+  ('key', 'INTEGER', 19, 0, false, true)
+  ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx8 on T1 (key, name);
@@ -221,8 +221,8 @@ rows:
 // check columns of Idx8
 lsidxcol T1 Idx8;
 rows:
-('key', 'INTEGER')
-('name', 'VARCHAR')
+  ('key', 'INTEGER', 19, 0, false, true)
+  ('name', 'VARCHAR', 32, 0, false, false)
 
 // create another index with two columns
 create index Idx9 on T1 (key, name);

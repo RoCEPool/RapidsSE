@@ -111,7 +111,7 @@ void SePrompt::vPromptLoop(void)
       continue;
     
     if (! bFindJobClass()) {
-      vTrace("Unknown command\n"_Stz);
+      vTrace("error: Unknown command\n"_Stz);
       continue;
     }
 

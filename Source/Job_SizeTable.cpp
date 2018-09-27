@@ -224,7 +224,7 @@ void JobsModel::vJob_SizeTable_post(Interface::SEitf* pSEitf, Job* pJob)
   if ( pJob_SizeTable->m_bHasError ) {
     
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld)%s\n"_Stz, i_Node, aEC[pJob_SizeTable->m_xNode[i_Node].m_eErrorCode]);
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SizeTable->m_xNode[i_Node].m_eErrorCode]);
     }
     
   }
