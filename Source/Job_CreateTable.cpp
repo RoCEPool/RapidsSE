@@ -116,8 +116,8 @@ Job_CreateTable::Job_CreateTable(Interface::SEitf* pSEitf)
     m_xColumns[i_Column].m_iColumnNo = -1;
     m_xColumns[i_Column].m_sColumnName = ""_Stz;
     m_xColumns[i_Column].m_eColumnType = CT_NONE;
-    m_xColumns[i_Column].m_iColumnLength = -1;
-    m_xColumns[i_Column].m_iColumnScale = -1;
+    m_xColumns[i_Column].m_iColumnLength = 0;
+    m_xColumns[i_Column].m_iColumnScale = 0;
     m_xColumns[i_Column].m_bIsNullable = true;
     m_xColumns[i_Column].m_bIsUnique = false;
     m_xColumns[i_Column].m_bIsPartitionKey = false;
