@@ -30,12 +30,12 @@ rows:
 // check columns of index
 lsidxcol tspTbl tsp_idx1;
 rows:
-('tsp_col1', 'TIMESTAMP')
+('tsp_col1', 'TIMESTAMP', 0, 0, false, true)
 
 // check columns of index
 lsidxcol tspTbl tsp_idx2;
 rows:
-('tsp_col7', 'TIMESTAMP')
+('tsp_col7', 'TIMESTAMP', 0, 0, true, false)
 
 ld tspTbl "../Seth/tests/Datums/timestamp.csv" ;
 success
@@ -46,9 +46,11 @@ rows: 101
 
 // dump index tsp_idx1
 dumpidx tspTbl tsp_idx1;
+success
 
 // dump index tsp_idx2
 dumpidx tspTbl tsp_idx2;
+success
 
 // fetch
 //
