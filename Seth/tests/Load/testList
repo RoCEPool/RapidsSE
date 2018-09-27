@@ -2,6 +2,7 @@ emptyString_rev6.test
 enclosedBy_rev6.test
 escape_rev6.test
 null_rev6.test
+part_curlyBraces.test
 rdp.test
 regressionData.test
 spaces_rev6.test
