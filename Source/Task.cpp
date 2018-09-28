@@ -881,6 +881,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_JobGeneric();
   vAddPrimitives_JobInsertRow();
   vAddPrimitives_JobLoadTable();
+  vAddPrimitives_JobReceiver();
   vAddPrimitives_JobStartCluster();
   vAddPrimitives_JobTruncateTable();
   

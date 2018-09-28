@@ -267,6 +267,7 @@ namespace Tasks
     void vAddPrimitives_JobGeneric();
     void vAddPrimitives_JobInsertRow();
     void vAddPrimitives_JobLoadTable();
+    void vAddPrimitives_JobReceiver();
     void vAddPrimitives_JobStartCluster();
     void vAddPrimitives_JobTruncateTable();
     
@@ -791,10 +792,6 @@ namespace Tasks
     static void vJobPromptTaskFetch(MP_Task mpTask);
     static void vJobRecv(MP_Task mpTask);
     static void vJobPartitionsFetch(MP_Task mpTask);
-    static void vJobReceiverConnNoFetch(MP_Task mpTask);
-    static void vJobReceiverConnNoStore(MP_Task mpTask);
-    static void vJobReceiverSocketFetch(MP_Task mpTask);
-    static void vJobReceiverSocketStore(MP_Task mpTask);
     static void vJobRegionSizeFetch(MP_Task mpTask);
     static void vJobRemoveOriginator(MP_Task mpTask);
     static void vJobRemoveParticipant(MP_Task mpTask);
@@ -880,6 +877,12 @@ namespace Tasks
     static void vJobLoadTableTaskFetch(MP_Task mpTask);
     static void vJobLoadTableTaskStore(MP_Task mpTask);
     static void vJobSubLoaderJobLoadTableFetch(MP_Task mpTask);
+    
+    // job receiver
+    static void vJobReceiverConnNoFetch(MP_Task mpTask);
+    static void vJobReceiverConnNoStore(MP_Task mpTask);
+    static void vJobReceiverSocketFetch(MP_Task mpTask);
+    static void vJobReceiverSocketStore(MP_Task mpTask);
     
     // Job startCluster
     static void vJobStartClusterSpawnNodesFetch(MP_Task mpTask);
