@@ -15,27 +15,28 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_JobGeneric(void)
 {
-  vAddPrimitive("jobBegun.error@"_Stz,      &vJobBegunErrorFetch,  false);
-  vAddPrimitive("jobBegun.error!"_Stz,      &vJobBegunErrorStore,  false);
+  vAddPrimitive("jobBegun.error@"_Stz,     &vJob__BegunErrorFetch,  false);
+  vAddPrimitive("jobBegun.error!"_Stz,     &vJob__BegunErrorStore,  false);
   
-  vAddPrimitive("jobCancelled.error@"_Stz,  &vJobCancelledErrorFetch, false);
-  vAddPrimitive("jobCancelled.error!"_Stz,  &vJobCancelledErrorStore, false);
+  vAddPrimitive("jobCancelled.error@"_Stz, &vJob__CancelledErrorFetch, false);
+  vAddPrimitive("jobCancelled.error!"_Stz, &vJob__CancelledErrorStore, false);
 
-  vAddPrimitive("jobExecuted.error@"_Stz,   &vJobExecutedErrorFetch,   false);
-  vAddPrimitive("jobExecuted.error!"_Stz,   &vJobExecutedErrorStore,   false);
-  vAddPrimitive("jobExecuted.response@"_Stz,&vJobExecutedResponseFetch,false);
-  vAddPrimitive("jobExecuted.response!"_Stz,&vJobExecutedResponseStore,false);
-  vAddPrimitive("jobExecuted.rowsProcessed@"_Stz,&vJobExecutedRowsProcessedFetch,false);
-  vAddPrimitive("jobExecuted.rowsProcessed!"_Stz,&vJobExecutedRowsProcessedStore,false);
+  vAddPrimitive("jobExecuted.error@"_Stz,    &vJob__ExecutedErrorFetch,   false);
+  vAddPrimitive("jobExecuted.error!"_Stz,    &vJob__ExecutedErrorStore,   false);
+  vAddPrimitive("jobExecuted.response@"_Stz, &vJob__ExecutedResponseFetch,false);
+  vAddPrimitive("jobExecuted.response!"_Stz, &vJob__ExecutedResponseStore,false);
+  
+  vAddPrimitive("jobExecuted.rowsProcessed@"_Stz,&vJob__ExecutedRowsProcessedFetch,false);
+  vAddPrimitive("jobExecuted.rowsProcessed!"_Stz,&vJob__ExecutedRowsProcessedStore,false);
   
 }
 
 /*----------------------------------------------------------------------------*/
 /* jobBegun.error@ -- fetch job error of participant from job__begun          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobBegunErrorFetch(MP_Task mpTask)
+void Task::vJob__BegunErrorFetch(MP_Task mpTask)
 {
-  ENTRY("vJobBegunErrorFetch"_Stz);
+  ENTRY("vJob__BegunErrorFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -51,9 +52,9 @@ void Task::vJobBegunErrorFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobBegun.error! -- store job error of participant in job__begun            */
 /*----------------------------------------------------------------------------*/
-void Task::vJobBegunErrorStore(MP_Task mpTask)
+void Task::vJob__BegunErrorStore(MP_Task mpTask)
 {
-  ENTRY("vJobBegunErrorStore"_Stz);
+  ENTRY("vJob__BegunErrorStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -72,9 +73,9 @@ void Task::vJobBegunErrorStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobCancelled.error@ -- fetch job error of participant from job__cancelled  */
 /*----------------------------------------------------------------------------*/
-void Task::vJobCancelledErrorFetch(MP_Task mpTask)
+void Task::vJob__CancelledErrorFetch(MP_Task mpTask)
 {
-  ENTRY("vJobCancelledErrorFetch"_Stz);
+  ENTRY("vJob__CancelledErrorFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -90,9 +91,9 @@ void Task::vJobCancelledErrorFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobCancelled.error! -- store job error of participant in job__cancelled    */
 /*----------------------------------------------------------------------------*/
-void Task::vJobCancelledErrorStore(MP_Task mpTask)
+void Task::vJob__CancelledErrorStore(MP_Task mpTask)
 {
-  ENTRY("vJobCancelledErrorStore"_Stz);
+  ENTRY("vJob__CancelledErrorStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -111,9 +112,9 @@ void Task::vJobCancelledErrorStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.error@ -- fetch job error of participant from job__executed    */
 /*----------------------------------------------------------------------------*/
-void Task::vJobExecutedErrorFetch(MP_Task mpTask)
+void Task::vJob__ExecutedErrorFetch(MP_Task mpTask)
 {
-  ENTRY("vJobExecutedErrorFetch"_Stz);
+  ENTRY("vJob__ExecutedErrorFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -129,9 +130,9 @@ void Task::vJobExecutedErrorFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.error! -- store job error of participant in job__executed      */
 /*----------------------------------------------------------------------------*/
-void Task::vJobExecutedErrorStore(MP_Task mpTask)
+void Task::vJob__ExecutedErrorStore(MP_Task mpTask)
 {
-  ENTRY("vJobParticipantErrorFetch"_Stz);
+  ENTRY("vJob__ExecutedErrorStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -150,9 +151,9 @@ void Task::vJobExecutedErrorStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.response@ -- fetch participant response from job__executed     */
 /*----------------------------------------------------------------------------*/
-void Task::vJobExecutedResponseFetch(MP_Task mpTask)
+void Task::vJob__ExecutedResponseFetch(MP_Task mpTask)
 {
-  ENTRY("vJobExecutedResponseFetch"_Stz);
+  ENTRY("vJob__ExecutedResponseFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -167,9 +168,9 @@ void Task::vJobExecutedResponseFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.response! -- store participant response in job__executed       */
 /*----------------------------------------------------------------------------*/
-void Task::vJobExecutedResponseStore(MP_Task mpTask)
+void Task::vJob__ExecutedResponseStore(MP_Task mpTask)
 {
-  ENTRY("vJobExecutedResponseStore"_Stz);
+  ENTRY("vJob__ExecutedResponseStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -188,9 +189,9 @@ void Task::vJobExecutedResponseStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.rowsProcessed! -- store rowsProcessed in job__executed         */
 /*----------------------------------------------------------------------------*/
-void Task::vJobExecutedRowsProcessedStore(MP_Task mpTask)
+void Task::vJob__ExecutedRowsProcessedStore(MP_Task mpTask)
 {
-  ENTRY("vJobExecutedRowsProcessedStore"_Stz);
+  ENTRY("vJob__ExecutedRowsProcessedStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -209,9 +210,9 @@ void Task::vJobExecutedRowsProcessedStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.rowsProcessed@ -- store rowsProcessed in job__executed         */
 /*----------------------------------------------------------------------------*/
-void Task::vJobExecutedRowsProcessedFetch(MP_Task mpTask)
+void Task::vJob__ExecutedRowsProcessedFetch(MP_Task mpTask)
 {
-  ENTRY("vJobExecutedRowsProcessedFetch"_Stz);
+  ENTRY("vJob__ExecutedRowsProcessedFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )

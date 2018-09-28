@@ -830,16 +830,16 @@ namespace Tasks
     static void vJobCreateIndexIsUniqueFetch(MP_Task mpTask);
     
     // job generic
-    static void vJobBegunErrorFetch(MP_Task mpTask);
-    static void vJobBegunErrorStore(MP_Task mpTask);
-    static void vJobCancelledErrorFetch(MP_Task mpTask);
-    static void vJobCancelledErrorStore(MP_Task mpTask);
-    static void vJobExecutedErrorFetch(MP_Task mpTask);
-    static void vJobExecutedErrorStore(MP_Task mpTask);
-    static void vJobExecutedResponseFetch(MP_Task mpTask);
-    static void vJobExecutedResponseStore(MP_Task mpTask);
-    static void vJobExecutedRowsProcessedFetch(MP_Task mpTask);
-    static void vJobExecutedRowsProcessedStore(MP_Task mpTask);
+    static void vJob__BegunErrorFetch(MP_Task mpTask);
+    static void vJob__BegunErrorStore(MP_Task mpTask);
+    static void vJob__CancelledErrorFetch(MP_Task mpTask);
+    static void vJob__CancelledErrorStore(MP_Task mpTask);
+    static void vJob__ExecutedErrorFetch(MP_Task mpTask);
+    static void vJob__ExecutedErrorStore(MP_Task mpTask);
+    static void vJob__ExecutedResponseFetch(MP_Task mpTask);
+    static void vJob__ExecutedResponseStore(MP_Task mpTask);
+    static void vJob__ExecutedRowsProcessedFetch(MP_Task mpTask);
+    static void vJob__ExecutedRowsProcessedStore(MP_Task mpTask);
     
     // job FetchRows
     static void vJob_FetchRowsLastBuffersStore(MP_Task mpTask);
