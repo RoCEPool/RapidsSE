@@ -874,8 +874,16 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Int();
   
   vAddPrimitives_Job();
+  vAddPrimitives_JobAnalyzeIndex();
   vAddPrimitives_JobClass();
-
+  vAddPrimitives_JobCreateIndex();
+  vAddPrimitives_JobFetchRows();
+  vAddPrimitives_JobGeneric();
+  vAddPrimitives_JobInsertRow();
+  vAddPrimitives_JobLoadTable();
+  vAddPrimitives_JobStartCluster();
+  vAddPrimitives_JobTruncateTable();
+  
   vAddPrimitives_Loader();
   vAddPrimitives_LoaderSub();
   vAddPrimitives_Locals();

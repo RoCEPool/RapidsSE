@@ -259,9 +259,17 @@ namespace Tasks
     void vAddPrimitives_Input(void);
     void vAddPrimitives_Int(void);
   
-    void vAddPrimitives_Job(void);
-    void vAddPrimitives_JobClass(void);
-  
+    void vAddPrimitives_Job();
+    void vAddPrimitives_JobAnalyzeIndex();
+    void vAddPrimitives_JobClass();
+    void vAddPrimitives_JobCreateIndex();
+    void vAddPrimitives_JobFetchRows();
+    void vAddPrimitives_JobGeneric();
+    void vAddPrimitives_JobInsertRow();
+    void vAddPrimitives_JobLoadTable();
+    void vAddPrimitives_JobStartCluster();
+    void vAddPrimitives_JobTruncateTable();
+    
     void vAddPrimitives_Loader(void);
     void vAddPrimitives_LoaderSub(void);
     void vAddPrimitives_Locals(void);
@@ -745,70 +753,25 @@ namespace Tasks
     static void vJobAddOriginator(MP_Task mpTask);
     static void vJobAddParticipant(MP_Task mpTask);
     static void vJobAncilliaryFetch(MP_Task mpTask);
-    static void vJobAnalyzeIndexIsDetailed(MP_Task mpTask);
-    static void vJobAnalyzeTableIsDetailed(MP_Task mpTask);
-    static void vJobBegunErrorFetch(MP_Task mpTask);
-    static void vJobBegunErrorStore(MP_Task mpTask);
-    static void vJobCancelledErrorFetch(MP_Task mpTask);
-    static void vJobCancelledErrorStore(MP_Task mpTask);
     static void vJobClass(MP_Task mpTask);
     static void vJobColumnCountFetch(MP_Task mpTask);
     static void vJobColumnNameFetch(MP_Task mpTask);
     static void vJobColumnIsPartKey(MP_Task mpTask);
     static void vJobColumnTypeFetch(MP_Task mpTask);
-    static void vJobCreateIndexIsUniqueFetch(MP_Task mpTask);
     static void vJobDecAcksRemaining(MP_Task mpTask);
     static void vJobDelete(MP_Task mpTask);
     static void vJobDicPath(MP_Task mpTask);
-    
-    static void vJob_InsertRowDanglingBuffer(MP_Task mpTask);
-    static void vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask);
-    
-    static void vJobErrorStore(MP_Task mpTask);
-    static void vJobErrorFetch(MP_Task mpTask);
-    static void vJobExecuteFetch(MP_Task mpTask);
-    static void vJobExecutedErrorFetch(MP_Task mpTask);
-    static void vJobExecutedErrorStore(MP_Task mpTask);
-    static void vJobExecutedResponseFetch(MP_Task mpTask);
-    static void vJobExecutedResponseStore(MP_Task mpTask);
-    static void vJobExecutedRowsProcessedFetch(MP_Task mpTask);
-    static void vJobExecutedRowsProcessedStore(MP_Task mpTask);
-    static void vJobFetchRowsLastBuffersStore(MP_Task mpTask);
-    static void vJobFetchRowsPartitionFetch(MP_Task mpTask);
-    static void vJobFetchRowsPlannerStore(MP_Task mpTask);
-    static void vJobFetchRowsSpawnSub(MP_Task mpTask);
-    static void vJobFetchRowsTableStore(MP_Task mpTask);
-    static void vJobFetchRowsWhereFetch(MP_Task mpTask);
     static void vJobFindOriginator(MP_Task mpTask);
     static void vJobFindParticipant(MP_Task mpTask);
     static void vJobHasError(MP_Task mpTask);
     static void vJobHasWorkingBuffer(MP_Task mpTask);
     static void vJobIdFetch(MP_Task mpTask);
     static void vJobIndexNameFetch(MP_Task mpTask);
-    
-    static void vJob_EndInsertInsertRowJobIdFetch(MP_Task mpTask);
-    static void vJob_EndInsertTaskFetch(MP_Task mpTask);
-    static void vJob_EndInsertTaskStore(MP_Task mpTask);
-    
-    static void vJob_InsertBufferEndInsertJobIdFetch(MP_Task mpTask);
-    static void vJob_InsertBufferPartitionFetch(MP_Task mpTask);
-    static void vJob_InsertBufferInsertRows(MP_Task mpTask);
-    static void vJob_InsertBufferTableStore(MP_Task mpTask);
-    
-    static void vJobInsertRowTableStore(MP_Task mpTask);
-    
+    static void vJobErrorStore(MP_Task mpTask);
+    static void vJobErrorFetch(MP_Task mpTask);
+    static void vJobExecuteFetch(MP_Task mpTask);
     static void vJobIsPromptCommand(MP_Task mpTask);
     static void vJobJobClass(MP_Task mpTask);
-    static void vJobLoadBufferInsertRows(MP_Task mpTask);
-    static void vJobLoadBufferJobLoadTableIdFetch(MP_Task mpTask);
-    static void vJobLoadBufferJobLoadTableStore(MP_Task mpTask);
-    static void vJobLoadBufferPartitionFetch(MP_Task mpTask);
-    static void vJobLoadBufferTableStore(MP_Task mpTask);
-    static void vJobLoadTableAddInvalidRows(MP_Task mpTask);
-    static void vJobLoadTableAddValidRows(MP_Task mpTask);
-    static void vJobLoadTableFilePathFetch(MP_Task mpTask);
-    static void vJobLoadTableTaskFetch(MP_Task mpTask);
-    static void vJobLoadTableTaskStore(MP_Task mpTask);
     static void vJobMetadataStore(MP_Task mpTask);
     static void vJobNewBegun(MP_Task mpTask);
     static void vJobNewCancel(MP_Task mpTask);
@@ -843,36 +806,90 @@ namespace Tasks
     static void vJobShow(MP_Task mpTask);
     static void vJobSignalConnector(MP_Task mpTask);
     static void vJobSpawn(MP_Task mpTask);
-    static void vJobStartClusterSpawnNodesFetch(MP_Task mpTask);
-    static void vJobSubFetchBufferQueueFetch(MP_Task mpTask);
-    static void vJobSubFetchPhraseFetch(MP_Task mpTask);
-    static void vJobSubFetchPlannerFetch(MP_Task mpTask);
-    static void vJobSubFetchSlotFetch(MP_Task mpTask);
-    static void vJobSubLoaderJobLoadTableFetch(MP_Task mpTask);
-    static void vJobSubTruncateSlotFetch(MP_Task mpTask);
-    static void vJobSubTruncateTruncateJobIdFetch(MP_Task mpTask);
     static void vJobThis(MP_Task mpTask);
     static void vJobTraceStore(MP_Task mpTask);
     static void vJobTraceFetch(MP_Task mpTask);
-    static void vJobTruncateTableSpawnSub(MP_Task mpTask);
-    static void vJobTruncateTableTaskFetch(MP_Task mpTask);
-    static void vJobTruncateTableTaskStore(MP_Task mpTask);
     static void vJobWorkingBufferFetch(MP_Task mpTask);
     static void vJobWorkingBufferStore(MP_Task mpTask);
-  
+    
+    // job analyzeIndex
+    static void vJobAnalyzeIndexIsDetailed(MP_Task mpTask);
+    static void vJobAnalyzeTableIsDetailed(MP_Task mpTask);
     
     // jobClass
     static void vJobClassBuffer(MP_Task mpTask);
     static void vJobClassFind(MP_Task mpTask);
     static void vJobClassName(MP_Task mpTask);
     static void vJobClassNew(MP_Task mpTask);
-
+    
     static void vJobClassSeedRun(MP_Task mpTask);
     static void vJobClassSeedReq(MP_Task mpTask);
     static void vJobClassSeedRcv(MP_Task mpTask);
     static void vJobClassSeedExe(MP_Task mpTask);
     static void vJobClassSeedEnd(MP_Task mpTask);
     static void vJobClassSeedCan(MP_Task mpTask);
+    
+    // job CreateIndex
+    static void vJobCreateIndexIsUniqueFetch(MP_Task mpTask);
+    
+    // job generic
+    static void vJobBegunErrorFetch(MP_Task mpTask);
+    static void vJobBegunErrorStore(MP_Task mpTask);
+    static void vJobCancelledErrorFetch(MP_Task mpTask);
+    static void vJobCancelledErrorStore(MP_Task mpTask);
+    static void vJobExecutedErrorFetch(MP_Task mpTask);
+    static void vJobExecutedErrorStore(MP_Task mpTask);
+    static void vJobExecutedResponseFetch(MP_Task mpTask);
+    static void vJobExecutedResponseStore(MP_Task mpTask);
+    static void vJobExecutedRowsProcessedFetch(MP_Task mpTask);
+    static void vJobExecutedRowsProcessedStore(MP_Task mpTask);
+    
+    // job FetchRows
+    static void vJob_FetchRowsLastBuffersStore(MP_Task mpTask);
+    static void vJob_FetchRowsPartitionFetch(MP_Task mpTask);
+    static void vJob_FetchRowsPlannerStore(MP_Task mpTask);
+    static void vJob_FetchRowsSpawnSub(MP_Task mpTask);
+    static void vJob_FetchRowsTableStore(MP_Task mpTask);
+    static void vJob_FetchRowsWhereFetch(MP_Task mpTask);
+    static void vJob_SubFetchBufferQueueFetch(MP_Task mpTask);
+    static void vJob_SubFetchPhraseFetch(MP_Task mpTask);
+    static void vJob_SubFetchPlannerFetch(MP_Task mpTask);
+    static void vJob_SubFetchSlotFetch(MP_Task mpTask);
+    
+    // job insertRow
+    static void vJob_EndInsertInsertRowJobIdFetch(MP_Task mpTask);
+    static void vJob_EndInsertTaskFetch(MP_Task mpTask);
+    static void vJob_EndInsertTaskStore(MP_Task mpTask);
+    static void vJob_InsertBufferEndInsertJobIdFetch(MP_Task mpTask);
+    static void vJob_InsertBufferInsertRows(MP_Task mpTask);
+    static void vJob_InsertBufferPartitionFetch(MP_Task mpTask);
+    static void vJob_InsertBufferTableStore(MP_Task mpTask);
+    static void vJob_InsertRowDanglingBuffer(MP_Task mpTask);
+    static void vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask);
+    static void vJob_InsertRowTableStore(MP_Task mpTask);
+    
+    // job LoadTable
+    static void vJobLoadBufferInsertRows(MP_Task mpTask);
+    static void vJobLoadBufferJobLoadTableIdFetch(MP_Task mpTask);
+    static void vJobLoadBufferJobLoadTableStore(MP_Task mpTask);
+    static void vJobLoadBufferPartitionFetch(MP_Task mpTask);
+    static void vJobLoadBufferTableStore(MP_Task mpTask);
+    static void vJobLoadTableAddInvalidRows(MP_Task mpTask);
+    static void vJobLoadTableAddValidRows(MP_Task mpTask);
+    static void vJobLoadTableFilePathFetch(MP_Task mpTask);
+    static void vJobLoadTableTaskFetch(MP_Task mpTask);
+    static void vJobLoadTableTaskStore(MP_Task mpTask);
+    static void vJobSubLoaderJobLoadTableFetch(MP_Task mpTask);
+    
+    // Job startCluster
+    static void vJobStartClusterSpawnNodesFetch(MP_Task mpTask);
+    
+    // Job truncate
+    static void vJobSubTruncateSlotFetch(MP_Task mpTask);
+    static void vJobSubTruncateTruncateJobIdFetch(MP_Task mpTask);
+    static void vJobTruncateTableSpawnSub(MP_Task mpTask);
+    static void vJobTruncateTableTaskFetch(MP_Task mpTask);
+    static void vJobTruncateTableTaskStore(MP_Task mpTask);
 
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);
