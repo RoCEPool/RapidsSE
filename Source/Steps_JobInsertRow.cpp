@@ -16,16 +16,16 @@ extern AttachMap* gpAttachMap;
 void Task::vAddPrimitives_JobInsertRow(void)
 {
   vAddPrimitive("job_endInsert.insertRowJob@"_Stz, &vJob_EndInsertInsertRowJobIdFetch, false);
-  vAddPrimitive("job_endInsert.task@"_Stz, &vJob_EndInsertTaskFetch, false);
-  vAddPrimitive("job_endInsert.task!"_Stz, &vJob_EndInsertTaskStore, false);
+  vAddPrimitive("job_endInsert.task@"_Stz,         &vJob_EndInsertTaskFetch,           false);
+  vAddPrimitive("job_endInsert.task!"_Stz,         &vJob_EndInsertTaskStore,           false);
 
   vAddPrimitive("job_insertBuffer.endInsertJob@"_Stz, &vJob_InsertBufferEndInsertJobIdFetch, false);
-  vAddPrimitive("job_insertBuffer.InsertRows"_Stz, &vJob_InsertBufferInsertRows, false);
-  vAddPrimitive("job_insertBuffer.partition@"_Stz, &vJob_InsertBufferPartitionFetch, false);
-  vAddPrimitive("job_insertBuffer.table!"_Stz, &vJob_InsertBufferTableStore, false);
+  vAddPrimitive("job_insertBuffer.InsertRows"_Stz,    &vJob_InsertBufferInsertRows,          false);
+  vAddPrimitive("job_insertBuffer.partition@"_Stz,    &vJob_InsertBufferPartitionFetch,      false);
+  vAddPrimitive("job_insertBuffer.table!"_Stz,        &vJob_InsertBufferTableStore,          false);
   
-  vAddPrimitive("job_insertRow.table!"_Stz, &vJob_InsertRowTableStore, false);
-  vAddPrimitive("job_InsertRow.danglingBuffer"_Stz, &vJob_InsertRowDanglingBuffer, false);
+  vAddPrimitive("job_insertRow.table!"_Stz,           &vJob_InsertRowTableStore,        false);
+  vAddPrimitive("job_InsertRow.danglingBuffer"_Stz,   &vJob_InsertRowDanglingBuffer,    false);
   vAddPrimitive("job_InsertRow.SpawnInsertBuffer"_Stz,&vJob_InsertRowSpawnInsertBuffer, false);
   
 }
