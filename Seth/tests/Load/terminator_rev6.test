@@ -22,7 +22,7 @@ rows: 1
 
 fetch T1;
 rows:
-  (*,300,'ABC')
+  (300,'ABC')
 
 // drop the table
 drop table T1;
