@@ -22,16 +22,16 @@ rows: 9
 
 fetch T1 ;
 rows:
-  (*, 1, null)
-  (*, 2, '''N''')
-  (*, 3, 'N not on its own')
-  (*, 4, '\N not on its own')
-  (*, 5, *)
-  (*, 6, 'Addr 1
+  (1, null)
+  (2, '''N''')
+  (3, 'N not on its own')
+  (4, '\N not on its own')
+  (5, *)
+  (6, 'Addr 1
 Addr 2')
-  (*, 7, 'Other chars AB')
-  (*, 8, 'Part 1, part 2')
-  (*, 9, 'Dave''s house')
+  (7, 'Other chars AB')
+  (8, 'Part 1, part 2')
+  (9, 'Dave''s house')
 
 // drop the table
 drop table T1;
@@ -57,16 +57,16 @@ rows: 9
 
 fetch T1 ;
 rows:
-  (*, 1, null)
-  (*, 2, null)
-  (*, 3, 'N not on its own')
-  (*, 4, '\N not on its own')
-  (*, 5, *)
-  (*, 6, 'Addr 1
+  (1, null)
+  (2, null)
+  (3, 'N not on its own')
+  (4, '\N not on its own')
+  (5, *)
+  (6, 'Addr 1
 Addr 2')
-  (*, 7, 'Other chars AB')
-  (*, 8, 'Part 1, part 2')
-  (*, 9, 'Dave''s house')
+  (7, 'Other chars AB')
+  (8, 'Part 1, part 2')
+  (9, 'Dave''s house')
 
 // drop the table
 drop table T1;
@@ -92,17 +92,17 @@ rows: 10
 
 fetch T1 ;
 rows:
-  (*, 1, null)
-  (*, 2, null)
-  (*, 3, 'N not on its own')
-  (*, 4, '\N not on its own')
-  (*, 5, *)
-  (*, 6, 'Addr 1
+  (1, null)
+  (2, null)
+  (3, 'N not on its own')
+  (4, '\N not on its own')
+  (5, *)
+  (6, 'Addr 1
 Addr 2')
-  (*, 7, 'Other chars AB')
-  (*, 8, 'Part 1, part 2')
-  (*, 9, 'Dave''s house')
-(*, 10, '{My home}')
+  (7, 'Other chars AB')
+  (8, 'Part 1, part 2')
+  (9, 'Dave''s house')
+  (10, '{My home}')
 
 // drop the table
 drop table T1;

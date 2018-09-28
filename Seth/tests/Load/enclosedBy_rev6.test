@@ -28,11 +28,11 @@ rows: 2
 
 fetch T1 "col_id 1 =";
 rows:
-  (*, 1,'''DAVE''s DATA''',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
+  (1,'''DAVE''s DATA''',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
 
 fetch T1 "col_id 7 =";
 rows:
-  (*, 7,'DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
+  (7,'DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
 
 // drop the table
 drop table T1;
@@ -65,11 +65,11 @@ rows: 2
 
 fetch T1 "col_id 1 =";
 rows:
-  (*, 1,'DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
+  (1,'DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
 
 fetch T1 "col_id 3 =";
 rows:
-  (*, 3,' DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
+  (3,' DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,' valid')
 
 // drop the table
 drop table T1;
@@ -102,27 +102,27 @@ rows: 6
 
 fetch T1 "col_id 1 =";
 rows:
-  (*, 1,'DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
+  (1,'DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 
 fetch T1 "col_id 2 =";
 rows:
-  (*,2,'WITH []',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
+  (2,'WITH []',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 
 fetch T1 "col_id 4 =";
 rows:
-  (*,4,' ''DAVE''s DATA''',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
+  (4,' ''DAVE''s DATA''',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 
 fetch T1 "col_id 10 =";
 rows:
-  (*,10,' DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
+  (10,' DAVE''s DATA',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 
 fetch T1 "col_id 12 =";
 rows:
-  (*,12,' DAVE''s DATA]',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
+  (12,' DAVE''s DATA]',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 
 fetch T1 "col_id 13 =";
 rows:
-(*, 13,' ''[DAVE''s DATA]',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
+ (13,' ''[DAVE''s DATA]',9,9,9,TIMESTAMP '2018-04-04 09:00:00',true,'valid')
 
 // drop the table
 drop table T1;
