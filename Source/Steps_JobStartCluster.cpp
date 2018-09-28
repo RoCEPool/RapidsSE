@@ -15,15 +15,15 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_JobStartCluster(void)
 {
-  vAddPrimitive("job_startCluster.spawnNodes@"_Stz, &vJobStartClusterSpawnNodesFetch, false);
+  vAddPrimitive("job_startCluster.spawnNodes@"_Stz, &vJob_StartClusterSpawnNodesFetch, false);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_startCluster.spawnNodes@ --fetch spawnNodes from job_startCluster      */
 /*----------------------------------------------------------------------------*/
-void Task::vJobStartClusterSpawnNodesFetch(MP_Task mpTask)
+void Task::vJob_StartClusterSpawnNodesFetch(MP_Task mpTask)
 {
-  ENTRY("vJobStartClusterSpawnNodesFetch"_Stz);
+  ENTRY("vJob_StartClusterSpawnNodesFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )

@@ -866,17 +866,17 @@ namespace Tasks
     static void vJob_InsertRowTableStore(MP_Task mpTask);
     
     // job LoadTable
-    static void vJobLoadBufferInsertRows(MP_Task mpTask);
-    static void vJobLoadBufferJobLoadTableIdFetch(MP_Task mpTask);
-    static void vJobLoadBufferJobLoadTableStore(MP_Task mpTask);
-    static void vJobLoadBufferPartitionFetch(MP_Task mpTask);
-    static void vJobLoadBufferTableStore(MP_Task mpTask);
-    static void vJobLoadTableAddInvalidRows(MP_Task mpTask);
-    static void vJobLoadTableAddValidRows(MP_Task mpTask);
-    static void vJobLoadTableFilePathFetch(MP_Task mpTask);
-    static void vJobLoadTableTaskFetch(MP_Task mpTask);
-    static void vJobLoadTableTaskStore(MP_Task mpTask);
-    static void vJobSubLoaderJobLoadTableFetch(MP_Task mpTask);
+    static void vJob_LoadBufferInsertRows(MP_Task mpTask);
+    static void vJob_LoadBufferJobLoadTableIdFetch(MP_Task mpTask);
+    static void vJob_LoadBufferJobLoadTableStore(MP_Task mpTask);
+    static void vJob_LoadBufferPartitionFetch(MP_Task mpTask);
+    static void vJob_LoadBufferTableStore(MP_Task mpTask);
+    static void vJob_LoadTableAddInvalidRows(MP_Task mpTask);
+    static void vJob_LoadTableAddValidRows(MP_Task mpTask);
+    static void vJob_LoadTableFilePathFetch(MP_Task mpTask);
+    static void vJob_LoadTableTaskFetch(MP_Task mpTask);
+    static void vJob_LoadTableTaskStore(MP_Task mpTask);
+    static void vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask);
     
     // job receiver
     static void vJob_ReceiverConnNoFetch(MP_Task mpTask);
@@ -885,7 +885,7 @@ namespace Tasks
     static void vJob_ReceiverSocketStore(MP_Task mpTask);
     
     // Job startCluster
-    static void vJobStartClusterSpawnNodesFetch(MP_Task mpTask);
+    static void vJob_StartClusterSpawnNodesFetch(MP_Task mpTask);
     
     // Job truncate
     static void vJobSubTruncateSlotFetch(MP_Task mpTask);

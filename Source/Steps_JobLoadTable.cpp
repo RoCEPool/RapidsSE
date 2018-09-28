@@ -15,25 +15,27 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_JobLoadTable(void)
 {
-  vAddPrimitive("job_loadBuffer.insertRows"_Stz,   &vJobLoadBufferInsertRows,       false);
-  vAddPrimitive("job_loadBuffer.jobLoadTableId@"_Stz, &vJobLoadBufferJobLoadTableIdFetch,   false);
-  vAddPrimitive("job_loadBuffer.jobLoadTable!"_Stz,   &vJobLoadBufferJobLoadTableStore,   false);
-  vAddPrimitive("job_loadBuffer.partition@"_Stz,   &vJobLoadBufferPartitionFetch,   false);
-  vAddPrimitive("job_loadBuffer.table!"_Stz,   &vJobLoadBufferTableStore,   false);
-  vAddPrimitive("job_loadTable.addInvalidRows"_Stz,  &vJobLoadTableAddInvalidRows,   false);
-  vAddPrimitive("job_loadTable.addValidRows"_Stz,  &vJobLoadTableAddValidRows,   false);
-  vAddPrimitive("job_loadTable.filePath@"_Stz,  &vJobLoadTableFilePathFetch,   false);
-  vAddPrimitive("job_loadTable.task@"_Stz,  &vJobLoadTableTaskFetch,   false);
-  vAddPrimitive("job_loadTable.task!"_Stz,  &vJobLoadTableTaskStore,   false);
-  vAddPrimitive("Job_subLoader.jobLoadTable@"_Stz,  &vJobSubLoaderJobLoadTableFetch, false);
+  vAddPrimitive("job_loadBuffer.insertRows"_Stz,      &vJob_LoadBufferInsertRows,          false);
+  vAddPrimitive("job_loadBuffer.jobLoadTableId@"_Stz, &vJob_LoadBufferJobLoadTableIdFetch, false);
+  vAddPrimitive("job_loadBuffer.jobLoadTable!"_Stz,   &vJob_LoadBufferJobLoadTableStore,   false);
+  vAddPrimitive("job_loadBuffer.partition@"_Stz,      &vJob_LoadBufferPartitionFetch,      false);
+  vAddPrimitive("job_loadBuffer.table!"_Stz,          &vJob_LoadBufferTableStore,          false);
+  
+  vAddPrimitive("job_loadTable.addInvalidRows"_Stz,&vJob_LoadTableAddInvalidRows,false);
+  vAddPrimitive("job_loadTable.addValidRows"_Stz,  &vJob_LoadTableAddValidRows,  false);
+  vAddPrimitive("job_loadTable.filePath@"_Stz,     &vJob_LoadTableFilePathFetch, false);
+  vAddPrimitive("job_loadTable.task@"_Stz,         &vJob_LoadTableTaskFetch,     false);
+  vAddPrimitive("job_loadTable.task!"_Stz,         &vJob_LoadTableTaskStore,     false);
+  
+  vAddPrimitive("Job_subLoader.jobLoadTable@"_Stz, &vJob_SubLoaderJobLoadTableFetch, false);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_LoadBuffer.insertRows -- insert rows from working buffer into table    */
 /*----------------------------------------------------------------------------*/
-void Task::vJobLoadBufferInsertRows(MP_Task mpTask)
+void Task::vJob_LoadBufferInsertRows(MP_Task mpTask)
 {
-  ENTRY("vJobLoadBufferInsertRows"_Stz);
+  ENTRY("vJob_LoadBufferInsertRows"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -76,9 +78,9 @@ void Task::vJobLoadBufferInsertRows(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadBuffer.jobLoadTableId@ -- fetch load table job id                  */
 /*----------------------------------------------------------------------------*/
-void Task::vJobLoadBufferJobLoadTableIdFetch(MP_Task mpTask)
+void Task::vJob_LoadBufferJobLoadTableIdFetch(MP_Task mpTask)
 {
-  ENTRY("vJobLoadBufferLoadJobIdFetch"_Stz);
+  ENTRY("vJob_LoadBufferLoadJobIdFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -94,9 +96,9 @@ void Task::vJobLoadBufferJobLoadTableIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadBuffer.jobLoadTable! -- store job_loadTable                        */
 /*----------------------------------------------------------------------------*/
-void Task::vJobLoadBufferJobLoadTableStore(MP_Task mpTask)
+void Task::vJob_LoadBufferJobLoadTableStore(MP_Task mpTask)
 {
-  ENTRY("vJobLoadBufferJobLoadTableStore"_Stz);
+  ENTRY("vJob_LoadBufferJobLoadTableStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -115,9 +117,9 @@ void Task::vJobLoadBufferJobLoadTableStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadBuffer.partition@ -- fetch partition no. from job_loadBuffer       */
 /*----------------------------------------------------------------------------*/
-void Task::vJobLoadBufferPartitionFetch(MP_Task mpTask)
+void Task::vJob_LoadBufferPartitionFetch(MP_Task mpTask)
 {
-  ENTRY("vJobLoadBufferPartitionFetch"_Stz);
+  ENTRY("vJob_LoadBufferPartitionFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -133,9 +135,9 @@ void Task::vJobLoadBufferPartitionFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadBuffer.table! -- store table into job_loadBuffer                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJobLoadBufferTableStore(MP_Task mpTask)
+void Task::vJob_LoadBufferTableStore(MP_Task mpTask)
 {
-  ENTRY("vJobLoadBufferTableStore"_Stz);
+  ENTRY("vJob_LoadBufferTableStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -155,9 +157,9 @@ void Task::vJobLoadBufferTableStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_loadTable.addInvalidRows -- add invalid rows to load table's invalid   */
 /*----------------------------------------------------------------------------*/
-void Task::vJobLoadTableAddInvalidRows(MP_Task mpTask)
+void Task::vJob_LoadTableAddInvalidRows(MP_Task mpTask)
 {
-  ENTRY("vJobLoadTableAddInvalidRows"_Stz);
+  ENTRY("vJob_LoadTableAddInvalidRows"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -176,9 +178,9 @@ void Task::vJobLoadTableAddInvalidRows(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_loadTable.addValidRows -- add invalid rows to load table's valid rows  */
 /*----------------------------------------------------------------------------*/
-void Task::vJobLoadTableAddValidRows(MP_Task mpTask)
+void Task::vJob_LoadTableAddValidRows(MP_Task mpTask)
 {
-  ENTRY("vJobLoadTableAddValidRows"_Stz);
+  ENTRY("vJob_LoadTableAddValidRows"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -197,9 +199,9 @@ void Task::vJobLoadTableAddValidRows(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadTable.filePath@ -- fetch filePath from job_loadTable              */
 /*----------------------------------------------------------------------------*/
-void Task::vJobLoadTableFilePathFetch(MP_Task mpTask)
+void Task::vJob_LoadTableFilePathFetch(MP_Task mpTask)
 {
-  ENTRY("vJobLoadTableFilePathFetch"_Stz);
+  ENTRY("vJob_LoadTableFilePathFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -215,9 +217,9 @@ void Task::vJobLoadTableFilePathFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadTable.task@ -- fetch task from job_loadTable                       */
 /*----------------------------------------------------------------------------*/
-void Task::vJobLoadTableTaskFetch(MP_Task mpTask)
+void Task::vJob_LoadTableTaskFetch(MP_Task mpTask)
 {
-  ENTRY("vJobLoadTableTaskFetch"_Stz);
+  ENTRY("vJob_LoadTableTaskFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -233,9 +235,9 @@ void Task::vJobLoadTableTaskFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadTable.task! -- store task into job_loadTable                       */
 /*----------------------------------------------------------------------------*/
-void Task::vJobLoadTableTaskStore(MP_Task mpTask)
+void Task::vJob_LoadTableTaskStore(MP_Task mpTask)
 {
-  ENTRY("vJobLoadTableTaskStore"_Stz);
+  ENTRY("vJob_LoadTableTaskStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -255,9 +257,9 @@ void Task::vJobLoadTableTaskStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.jobLoadTable@ -- fetch the job load table                    */
 /*----------------------------------------------------------------------------*/
-void Task::vJobSubLoaderJobLoadTableFetch(MP_Task mpTask)
+void Task::vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask)
 {
-  ENTRY("vJobSubLoaderJobLoadTableFetch"_Stz);
+  ENTRY("vJob_SubLoaderJobLoadTableFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
