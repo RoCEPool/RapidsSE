@@ -15,19 +15,19 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_JobReceiver(void)
 {
-  vAddPrimitive("job_receiver.connNo@"_Stz, &vJobReceiverConnNoFetch,   false);
-  vAddPrimitive("job_receiver.connNo!"_Stz, &vJobReceiverConnNoStore,   false);
-  vAddPrimitive("job_receiver.socket@"_Stz, &vJobReceiverSocketFetch,   false);
-  vAddPrimitive("job_receiver.socket!"_Stz, &vJobReceiverSocketStore,   false);
+  vAddPrimitive("job_receiver.connNo@"_Stz, &vJob_ReceiverConnNoFetch, false);
+  vAddPrimitive("job_receiver.connNo!"_Stz, &vJob_ReceiverConnNoStore, false);
+  vAddPrimitive("job_receiver.socket@"_Stz, &vJob_ReceiverSocketFetch, false);
+  vAddPrimitive("job_receiver.socket!"_Stz, &vJob_ReceiverSocketStore, false);
 
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_receiver.connNo@ -- fetch connNo from job_receiver                     */
 /*----------------------------------------------------------------------------*/
-void Task::vJobReceiverConnNoFetch(MP_Task mpTask)
+void Task::vJob_ReceiverConnNoFetch(MP_Task mpTask)
 {
-  ENTRY("vJobReceiverConnNoFetch"_Stz);
+  ENTRY("vJob_ReceiverConnNoFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -43,9 +43,9 @@ void Task::vJobReceiverConnNoFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.connNo! -- store connNo into job_receiver                     */
 /*----------------------------------------------------------------------------*/
-void Task::vJobReceiverConnNoStore(MP_Task mpTask)
+void Task::vJob_ReceiverConnNoStore(MP_Task mpTask)
 {
-  ENTRY("vJobReceiverConnNoStore"_Stz);
+  ENTRY("vJob_ReceiverConnNoStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -64,9 +64,9 @@ void Task::vJobReceiverConnNoStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.socket@ -- fetch socket from job_receiver                     */
 /*----------------------------------------------------------------------------*/
-void Task::vJobReceiverSocketFetch(MP_Task mpTask)
+void Task::vJob_ReceiverSocketFetch(MP_Task mpTask)
 {
-  ENTRY("vJobReceiverSocketFetch"_Stz);
+  ENTRY("vJob_ReceiverSocketFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -82,9 +82,9 @@ void Task::vJobReceiverSocketFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.socket! -- store socket into job_receiver                     */
 /*----------------------------------------------------------------------------*/
-void Task::vJobReceiverSocketStore(MP_Task mpTask)
+void Task::vJob_ReceiverSocketStore(MP_Task mpTask)
 {
-  ENTRY("vJobReceiverFetchStore"_Stz);
+  ENTRY("vJob_ReceiverSocketStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
