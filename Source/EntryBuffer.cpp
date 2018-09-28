@@ -3601,7 +3601,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   
   Entry* pPriorEntry;
   //i8 iSplitAtEntry = m_nItems/2;
-  i8 iSplitAtEntry = m_nItems * (iSplitRatio / 100);
+  i8 iSplitAtEntry = (m_nItems * iSplitRatio) / 100;
   Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry,&pPriorEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
