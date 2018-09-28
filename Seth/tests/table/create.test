@@ -15,7 +15,7 @@ success
 
 // (3) drop a non-existent table
 drop table T1 ;
-failure: 'no such table'
+failure contains: 'no such table'
 
 // (4) create table t1 again
 create table T1 (
@@ -29,7 +29,7 @@ create table T1 (
   key   INTEGER NOT NULL, 
   name  VARCHAR(32) NOT NULL
 );
-failure: 'table exists'
+failure contains: 'table exists'
 
 // (6) drop table t1
 drop table T1 ;
@@ -50,7 +50,7 @@ create table T1 (
   key   INTEGER NOT NULL 
   name  VARCHAR(32) NOT NULL
 );
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // (9) create table with all types
 create table T1 (
@@ -383,43 +383,43 @@ c148 boolean NOT NULL,
 c149 boolean NOT NULL,
 c150 boolean NOT NULL
 );
-failure: 'max 150 columns'
+failure contains: 'max 150 columns'
 
 // (11) create table with two columns that have same name
 create table T1 (
   c1   INTEGER NOT NULL, 
   c1   VARCHAR(32) NOT NULL
 );
-failure: 'duplicate column'
+failure contains: 'duplicate column'
 
 // (12) try create table t1 with no columns
 create table T1 (
 );
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // (13) try create table t1 with invalid table name
 create table T1$ (
   c1   INTEGER NOT NULL
 );
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // (14) try create table t1 with invalid column name
 create table T1 (
   c1$  INTEGER NOT NULL
 );
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // (15) try create table t1 with invalid column type
 create table T1 (
   c1  NOSUCHTYPE NOT NULL
 );
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 // (16) try create table t1 with invalid null
 create table T1 (
   c1  integer NOT NUKK
 );
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 CLEANUP {
 
