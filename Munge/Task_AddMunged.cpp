@@ -10563,7 +10563,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  pTask task.job@ to pJob\n"
     "\n"
     "  //\\\"spawnNodes...\\\" .\n"
-    "  spawnNodes\n"
+    "  pJob job_startCluster.spawnNodes@ true == if \\\"spawning nodes\\\" . spawnNodes then\n"
     "\n"
     "  //\\\"setStartNode...\\\" .\n"
     "  setStartNode\n"
