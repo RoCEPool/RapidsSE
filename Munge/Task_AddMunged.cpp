@@ -9226,6 +9226,58 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
+  // munge of job_Ping.sen
+  sDefinition =
+    "\""
+    "\\\"munged job_Ping.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* job_Ping.sen -- Job Ping                                                   */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" job_Ping.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* ping requests (on originating node)                                        */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": ping_req ( -- <R> )\n"
+    "\n"
+    "  <SEED_REQ>\n"
+    "\n"
+    "  0 0 0 locals| iCount pJob_Ping pTask |\n"
+    "\n"
+    "  tp: ping_req\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // get the task\n"
+    "  task::this to pTask\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // get the job from the task\n"
+    "  pTask task.job@ to pJob_Ping\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // set the metadata\n"
+    "  args.metadata if\n"
+    "    \\\"(string VARCHAR)\\\" pJob_Ping job.metadata!\n"
+    "  then\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // set response in job\n"
+    "  \\\"row: ('pong')\\\\n\\\" grid::thisNode@ pJob_Ping job.response!\n"
+    "  iCount grid::thisNode@ pJob_Ping job.rowsProcessed!\n"
+    "\n"
+    "  <DONE_REQ>\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT job_Ping.sen"_Stz
+  ;
+
+  vCompileConstant(sDefinition);
+
   // munge of job_Prompt.sen
   sDefinition =
     "\""
@@ -9749,6 +9801,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\\\"Job_LoadBuffer.sen\\\" include\n"
     "\\\"Job_LoadTable.sen\\\" include\n"
     "\n"
+    "\\\"Job_Ping.sen\\\" include\n"
     "\\\"Job_Prompt.sen\\\" include\n"
     "\\\"Job_Pwf.sen\\\" include\n"
     "\n"
