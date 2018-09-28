@@ -20,57 +20,57 @@ success
 
 -- check existence of partition key
 lspartcol createT1;
-failure: no such table
+failure contains: 'no such table'
 
 create table createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 -- check existence of partition key
 lspartcol createT1;
-failure: 'no such table'
+failure contains: 'no such table'
 
 create table createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 -- check existence of partition key
 lspartcol createT1;
-failure: 'no such table'
+failure contains: 'no such table'
 
 create table createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by (;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 create table createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by ();
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 create table createT1 (
   key   INTEGER NOT NULL,
   name  VARCHAR(32) NOT NULL
 ) partition by );
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 create table createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by key;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 create table createT1 (
 key   INTEGER NOT NULL,
 name  VARCHAR(32) NOT NULL
 ) partition by (xyz);
-failure: 'invalid column'
+failure contains: 'invalid command'
 
 create table createT1 (
 key   INTEGER NOT NULL,

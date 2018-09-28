@@ -23,7 +23,7 @@ rows:
 // check columns of index
 lsidxcol createT1 keyIdx;
 rows:
-  ('key','INTEGER')
+  ('key','INTEGER',19,0,false,true)
 
 // drop the index keyIdx;
 drop index createT1.keyIdx;
