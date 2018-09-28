@@ -16,18 +16,18 @@ p_comment VARCHAR(23)
 );
 success
 
-// load data into the table with default formatter settings
-escape connector se 'load part' with file='../Seth/tests/Load/part_curlyBraces.csv', enclosed_by='{}',  terminator='\n', node='node1';
-success
+create index idx on part (p_type);
 
 ld part "../Seth/tests/Load/part_curlyBraces.csv" enclosed_by_leading "{" enclosed_by_trailing "}" record_ends "\n";
-select * from part where p_type is null;
-rows: 10
+success
+
+fetch part;
+rows: 16
 
 CLEANUP {
   
-  //drop table part;
-  //mute
+  drop table part;
+  mute
 
   bye;
   mute
