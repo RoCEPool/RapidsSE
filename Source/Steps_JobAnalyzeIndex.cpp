@@ -15,16 +15,16 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_JobAnalyzeIndex(void)
 {
-  vAddPrimitive("jobAnalyzeIndex.isDetailed"_Stz, &vJobAnalyzeIndexIsDetailed, false);
-  vAddPrimitive("jobAnalyzeTable.isDetailed"_Stz, &vJobAnalyzeTableIsDetailed, false);
+  vAddPrimitive("jobAnalyzeIndex.isDetailed"_Stz, &vJob_AnalyzeIndexIsDetailed, false);
+  vAddPrimitive("jobAnalyzeTable.isDetailed"_Stz, &vJob_AnalyzeTableIsDetailed, false);
 }
 
 /*----------------------------------------------------------------------------*/
 /* jobAnalyzeIndex.isDetailed -- is it a detailed analysis of the index       */
 /*----------------------------------------------------------------------------*/
-void Task::vJobAnalyzeIndexIsDetailed(MP_Task mpTask)
+void Task::vJob_AnalyzeIndexIsDetailed(MP_Task mpTask)
 {
-  ENTRY("vJobAnalyzeIndexIsDetailed"_Stz);
+  ENTRY("vJob_AnalyzeIndexIsDetailed"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -41,9 +41,9 @@ void Task::vJobAnalyzeIndexIsDetailed(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobAnalyzeTable.isDetailed -- is it a detailed analysis of the index       */
 /*----------------------------------------------------------------------------*/
-void Task::vJobAnalyzeTableIsDetailed(MP_Task mpTask)
+void Task::vJob_AnalyzeTableIsDetailed(MP_Task mpTask)
 {
-  ENTRY("vJobAnalyzeTableIsDetailed"_Stz);
+  ENTRY("vJob_AnalyzeTableIsDetailed"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )

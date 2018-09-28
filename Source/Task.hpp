@@ -749,6 +749,19 @@ namespace Tasks
     static void vIntNotEqual(MP_Task mpTask);
     static void vIntSubtract(MP_Task mpTask);
     
+    // jobClass
+    static void vJobClassBuffer(MP_Task mpTask);
+    static void vJobClassFind(MP_Task mpTask);
+    static void vJobClassName(MP_Task mpTask);
+    static void vJobClassNew(MP_Task mpTask);
+    
+    static void vJobClassSeedRun(MP_Task mpTask);
+    static void vJobClassSeedReq(MP_Task mpTask);
+    static void vJobClassSeedRcv(MP_Task mpTask);
+    static void vJobClassSeedExe(MP_Task mpTask);
+    static void vJobClassSeedEnd(MP_Task mpTask);
+    static void vJobClassSeedCan(MP_Task mpTask);
+    
     // job
     static void vJobAcksRemaining(MP_Task mpTask);
     static void vJobAddOriginator(MP_Task mpTask);
@@ -810,24 +823,11 @@ namespace Tasks
     static void vJobWorkingBufferStore(MP_Task mpTask);
     
     // job analyzeIndex
-    static void vJobAnalyzeIndexIsDetailed(MP_Task mpTask);
-    static void vJobAnalyzeTableIsDetailed(MP_Task mpTask);
-    
-    // jobClass
-    static void vJobClassBuffer(MP_Task mpTask);
-    static void vJobClassFind(MP_Task mpTask);
-    static void vJobClassName(MP_Task mpTask);
-    static void vJobClassNew(MP_Task mpTask);
-    
-    static void vJobClassSeedRun(MP_Task mpTask);
-    static void vJobClassSeedReq(MP_Task mpTask);
-    static void vJobClassSeedRcv(MP_Task mpTask);
-    static void vJobClassSeedExe(MP_Task mpTask);
-    static void vJobClassSeedEnd(MP_Task mpTask);
-    static void vJobClassSeedCan(MP_Task mpTask);
+    static void vJob_AnalyzeIndexIsDetailed(MP_Task mpTask);
+    static void vJob_AnalyzeTableIsDetailed(MP_Task mpTask);
     
     // job CreateIndex
-    static void vJobCreateIndexIsUniqueFetch(MP_Task mpTask);
+    static void vJob_CreateIndexIsUniqueFetch(MP_Task mpTask);
     
     // job generic
     static void vJob__BegunErrorFetch(MP_Task mpTask);
@@ -888,11 +888,11 @@ namespace Tasks
     static void vJob_StartClusterSpawnNodesFetch(MP_Task mpTask);
     
     // Job truncate
-    static void vJobSubTruncateSlotFetch(MP_Task mpTask);
-    static void vJobSubTruncateTruncateJobIdFetch(MP_Task mpTask);
-    static void vJobTruncateTableSpawnSub(MP_Task mpTask);
-    static void vJobTruncateTableTaskFetch(MP_Task mpTask);
-    static void vJobTruncateTableTaskStore(MP_Task mpTask);
+    static void vJob_SubTruncateSlotFetch(MP_Task mpTask);
+    static void vJob_SubTruncateTruncateJobIdFetch(MP_Task mpTask);
+    static void vJob_TruncateTableSpawnSub(MP_Task mpTask);
+    static void vJob_TruncateTableTaskFetch(MP_Task mpTask);
+    static void vJob_TruncateTableTaskStore(MP_Task mpTask);
 
     // loader
     static void vLoaderAddRecordsInvalid(MP_Task mpTask);

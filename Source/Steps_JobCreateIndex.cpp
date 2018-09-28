@@ -15,15 +15,15 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_JobCreateIndex(void)
 {
-  vAddPrimitive("job_createIndex.isUnique@"_Stz, &vJobCreateIndexIsUniqueFetch,  false);
+  vAddPrimitive("job_createIndex.isUnique@"_Stz, &vJob_CreateIndexIsUniqueFetch,  false);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_createIndex.isUnique@ -- fetch column type from create table job       */
 /*----------------------------------------------------------------------------*/
-void Task::vJobCreateIndexIsUniqueFetch(MP_Task mpTask)
+void Task::vJob_CreateIndexIsUniqueFetch(MP_Task mpTask)
 {
-  ENTRY("vJobCreateIndexIsUniqueFetch"_Stz);
+  ENTRY("vJob_CreateIndexIsUniqueFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )

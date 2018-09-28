@@ -15,19 +15,20 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_JobTruncateTable(void)
 {
-  vAddPrimitive("job_subTruncate.truncateJobId@"_Stz,&vJobSubTruncateTruncateJobIdFetch, false);
-  vAddPrimitive("job_subTruncate.slot@"_Stz,&vJobSubTruncateSlotFetch, false);
-  vAddPrimitive("Job_truncateTable.spawnSub"_Stz, &vJobTruncateTableSpawnSub, false);
-  vAddPrimitive("Job_truncateTable.task@"_Stz, &vJobTruncateTableTaskFetch, false);
-  vAddPrimitive("Job_truncateTable.task!"_Stz, &vJobTruncateTableTaskStore, false);
+  vAddPrimitive("job_subTruncate.truncateJobId@"_Stz,&vJob_SubTruncateTruncateJobIdFetch, false);
+  vAddPrimitive("job_subTruncate.slot@"_Stz,         &vJob_SubTruncateSlotFetch,          false);
+  
+  vAddPrimitive("Job_truncateTable.spawnSub"_Stz, &vJob_TruncateTableSpawnSub,  false);
+  vAddPrimitive("Job_truncateTable.task@"_Stz,    &vJob_TruncateTableTaskFetch, false);
+  vAddPrimitive("Job_truncateTable.task!"_Stz,    &vJob_TruncateTableTaskStore, false);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_subTruncate.slot@ -- fetch the job slot                                */
 /*----------------------------------------------------------------------------*/
-void Task::vJobSubTruncateSlotFetch(MP_Task mpTask)
+void Task::vJob_SubTruncateSlotFetch(MP_Task mpTask)
 {
-  ENTRY("vJobSubTruncateSlotFetch"_Stz);
+  ENTRY("vJob_SubTruncateSlotFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -42,9 +43,9 @@ void Task::vJobSubTruncateSlotFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subTruncate.truncateJobId@ -- fetch the truncate job id                */
 /*----------------------------------------------------------------------------*/
-void Task::vJobSubTruncateTruncateJobIdFetch(MP_Task mpTask)
+void Task::vJob_SubTruncateTruncateJobIdFetch(MP_Task mpTask)
 {
-  ENTRY("vJobSubTruncateTruncateJobIdFetch"_Stz);
+  ENTRY("vJob_SubTruncateTruncateJobIdFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -59,9 +60,9 @@ void Task::vJobSubTruncateTruncateJobIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_truncateTable.spawnSub -- spawn sub truncate job                       */
 /*----------------------------------------------------------------------------*/
-void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
+void Task::vJob_TruncateTableSpawnSub(MP_Task mpTask)
 {
-  ENTRY("vJobTruncateTableSpawnSub"_Stz);
+  ENTRY("vJob_TruncateTableSpawnSub"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -97,9 +98,9 @@ void Task::vJobTruncateTableSpawnSub(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_truncateTable.task@ -- fetch task from job_truncateTable               */
 /*----------------------------------------------------------------------------*/
-void Task::vJobTruncateTableTaskFetch(MP_Task mpTask)
+void Task::vJob_TruncateTableTaskFetch(MP_Task mpTask)
 {
-  ENTRY("vJobTruncateTableTaskFetch"_Stz);
+  ENTRY("vJob_TruncateTableTaskFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
@@ -115,9 +116,9 @@ void Task::vJobTruncateTableTaskFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_truncateTable.task! -- store task in job_truncateTable                 */
 /*----------------------------------------------------------------------------*/
-void Task::vJobTruncateTableTaskStore(MP_Task mpTask)
+void Task::vJob_TruncateTableTaskStore(MP_Task mpTask)
 {
-  ENTRY("vJobTruncateTableTaskStore"_Stz);
+  ENTRY("vJob_TruncateTableTaskStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
