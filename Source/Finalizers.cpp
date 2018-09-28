@@ -126,6 +126,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTENANTS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_PING
   /*    */ &Finalize::vUndefined,         // CN_JOB_PROMPT
   /*    */ &Finalize::vUndefined,         // CN_JOB_PWF
   /*    */ &Finalize::vUndefined,         // CN_JOB_RECEIVER

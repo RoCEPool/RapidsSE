@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* job_Ping.sen -- Job Ping                                                   */
+/*============================================================================*/
+
+" job_Ping.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* ping requests (on originating node)                                        */
+/*----------------------------------------------------------------------------*/
+: ping_req ( -- <R> )
+
+  <SEED_REQ>
+
+  0 0 0 locals| iCount pJob_Ping pTask |
+
+  tp: ping_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_Ping
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the metadata
+  args.metadata if
+    "(string VARCHAR)" pJob_Ping job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set response in job
+  "row: ('pong')\n" grid::thisNode@ pJob_Ping job.response!
+  iCount grid::thisNode@ pJob_Ping job.rowsProcessed!
+
+  <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

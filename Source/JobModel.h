@@ -91,6 +91,7 @@ using namespace JobsModel;
 #include "Job_LoadBuffer.hpp"
 #include "Job_LoadTable.hpp"
 
+#include "Job_Ping.hpp"
 #include "Job_Prompt.hpp"
 #include "Job_Pwf.hpp"
 

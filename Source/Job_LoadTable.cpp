@@ -52,7 +52,7 @@ JobClass xJobClass_LoadTable =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_LoadTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Prompt_class;
+  *pNextFun = (pFUN*)pJob_Ping_class;
   
   return &xJobClass_LoadTable;
 }
