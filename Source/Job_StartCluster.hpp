@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_StartCluster_.hpp -- Cluster Start Job                                         */
+/* Job_StartCluster_.hpp -- Cluster Start Job                                 */
 /*============================================================================*/
 #pragma once
 
@@ -8,8 +8,10 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_StartCluster : public Job
   {
-  private:
+  public:
 
+    bool m_bSpawnNodes;   // spawn SE nodes
+    
     // must be last
     Footer m_xFooter;
   
@@ -24,7 +26,7 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
-
+    bool bPopulateJob(TokenVec* pTokenVec);
     void vShow(void);
     Footer* aFooter(void);
 

@@ -120,6 +120,7 @@ void Task::vAddPrimitives_Job(void)
   vAddPrimitive("job.show"_Stz,             &vJobShow,             false);
   vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
   vAddPrimitive("job.spawn"_Stz,            &vJobSpawn,            false);
+  vAddPrimitive("job_startCluster.spawnNodes@"_Stz, &vJobStartClusterSpawnNodesFetch, false);
   vAddPrimitive("Job_subFetch.bufferQueue@"_Stz, &vJobSubFetchBufferQueueFetch, false);
   vAddPrimitive("Job_subFetch.phrase@"_Stz,  &vJobSubFetchPhraseFetch, false);
   vAddPrimitive("Job_subFetch.Planner@"_Stz,  &vJobSubFetchPlannerFetch, false);
@@ -2210,6 +2211,23 @@ void Task::vJobSpawn(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   RapidsSE_bSpawnJob(pJob,(eSS)i_Seed,nullptr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_startCluster.spawnNodes@ --fetch spawnNodes from job_startCluster      */
+/*----------------------------------------------------------------------------*/
+void Task::vJobStartClusterSpawnNodesFetch(MP_Task mpTask)
+{
+  ENTRY("vJobStartClusterSpawnNodesFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_startCluster.spawnNodes@"_Stz);
+  Job_StartCluster* pJob_StartCluster = _pJob_StartCluster(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob_StartCluster->m_bSpawnNodes);
   
   EXIT();
 }

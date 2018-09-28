@@ -843,6 +843,7 @@ namespace Tasks
     static void vJobShow(MP_Task mpTask);
     static void vJobSignalConnector(MP_Task mpTask);
     static void vJobSpawn(MP_Task mpTask);
+    static void vJobStartClusterSpawnNodesFetch(MP_Task mpTask);
     static void vJobSubFetchBufferQueueFetch(MP_Task mpTask);
     static void vJobSubFetchPhraseFetch(MP_Task mpTask);
     static void vJobSubFetchPlannerFetch(MP_Task mpTask);

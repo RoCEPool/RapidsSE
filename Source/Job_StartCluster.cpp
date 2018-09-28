@@ -109,6 +109,9 @@ Job_StartCluster::Job_StartCluster(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTCLUSTER,_FOOTER_);
   
+  // default always spawn nodes
+  m_bSpawnNodes = true;
+  
   _checkInitialised_(CN_JOB_STARTCLUSTER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTCLUSTER,_FOOTER_);
@@ -143,6 +146,37 @@ void Job_StartCluster::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* populate the job                                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_StartCluster::bPopulateJob(TokenVec* pTokenVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTCLUSTER,_FOOTER_);
+  
+  i8 iNumTokens;
+  
+  ASSERT(pTokenVec->pGet(0)->bSame("startCluster"_Stz));
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get number of items in token
+  iNumTokens = pTokenVec->nItems();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 1 or 2 tokens
+  if (iNumTokens != 1 && iNumTokens != 2)
+    return false;
+  
+  // 4th token should be '.'
+  if (iNumTokens == 2) {
+    if (! pTokenVec->pGet(1)->bSame("true"_Stz) && ! pTokenVec->pGet(1)->bSame("false"_Stz))
+      return false;
+    
+    if (pTokenVec->pGet(1)->bSame("false"_Stz))
+      m_bSpawnNodes = false;
+  }
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
@@ -177,6 +211,15 @@ Job* JobsModel::pJob_StartCluster_pre(Interface::SEitf* pSEitf)
 {
   Job_StartCluster* pJob_StartCluster = new Job_StartCluster(pSEitf);
   
+  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  
+  bool bResult = pJob_StartCluster->bPopulateJob(pTokenVec);
+  
+  if ( !bResult) {
+    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_StartCluster->m_bHasError = true;
+    pJob_StartCluster->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+  }
   
   return pJob_StartCluster;
 }
