@@ -34,20 +34,6 @@ traceon
     loop
 ;
 
-str: strvar
-
-: strvar_blowup
-
-
-traceon
-
-  "a" strvar !
-  1000000 0 do
-    strvar @ "a" str.cat strvar !
-  loop
-
-;
-
 : rottest
 
   2 1 0 rot . . .
