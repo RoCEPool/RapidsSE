@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Op_fetch.sen -- table fetch (by-key) select operator                        */
+/* op_fetch.sen -- table fetch (by-key) select operator                        */
 /*============================================================================*/
 
-" Op_fetch.sen" .verbose
+" op_fetch.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* table fetch (by key) select                                                */

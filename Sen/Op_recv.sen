@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Op_recv.sen -- receive records from socket operator                         */
+/* op_recv.sen -- receive records from socket operator                         */
 /*============================================================================*/
 
-" Op_read.sen" .verbose
+" op_read.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* socket recv                                                                */

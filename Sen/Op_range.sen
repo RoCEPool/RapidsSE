@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Op_range.sen -- table range select operator                                 */
+/* op_range.sen -- table range select operator                                 */
 /*============================================================================*/
 
-" Op_range.sen" .verbose
+" op_range.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* frame-level variables for range                                            */
