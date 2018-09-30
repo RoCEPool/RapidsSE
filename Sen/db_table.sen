@@ -215,32 +215,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get and inc table reference and put into task.seitf.currentTable           */
-/*----------------------------------------------------------------------------*/
-: getTableRef ( "<tableNm>" -- <R> )
-
-  dup checkInTable not if false exit then
-
-  checkIsTable not if EC_NO_SUCH_TABLE false exit then
-
-  find execute ( table )
-
-  task::this task.seitf@ seitf.tableRef
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* dec and return table reference and clear task.seitf.currentTable           */
-/*----------------------------------------------------------------------------*/
-: returnTableRef ( )
-
-  task::this task.seitf@ seitf.tableDeref
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* any outstanding table references                                           */
 /*----------------------------------------------------------------------------*/
 : tableInUse ( "<tableNm>" -- <R> )
