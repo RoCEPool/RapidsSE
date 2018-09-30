@@ -59,60 +59,6 @@ traceon
 ;
 
 /*----------------------------------------------------------------------------*/
-/* globals testing                                                            */
-/*----------------------------------------------------------------------------*/
-: globalsTest
-
-  reg.push
-
-  2048 str.random 1 >valset
-
-  >reg0
-
-  reg0
-
-  valset>
-
-  . .
-
-  reg.pop
-;
-
-: globalsTest2
-
-//traceon
-
-  reg.push
-
-  // create a vector of the CN_ enums
-  // currently thats ( -- 91 .. 0 92 )
-  1 neg CN_ENUMS 1- ?do I 1 neg +loop CN_ENUMS
-
-  // show the stack
-  //stk
-
-  // convert to valset
-  >valset
-
-  // put into reg0
-  >reg0
-
-  // copy into reg1
-  reg0 >reg1
-
-  // copy back to stack
-  reg1 //dup drop
-
-  // expand valset into vector
-  valset>
-
-  // show the stack
-  stk
-
-  reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
 /* str.format testing                                                         */
 /*----------------------------------------------------------------------------*/
 : strFormatTest
