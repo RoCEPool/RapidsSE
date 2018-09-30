@@ -94,7 +94,6 @@ namespace Tasks
     Stack*   m_pAuxStack;    // auxiliary stack
     DicStack m_xPathStack;   // dictionary stack
     
-    RegFrame* m_pRegFrame;    // register frame chain
     RegFrame* m_pLocalsFrame; // local register frame chain
     RegFrame* m_pOpFrame;     // op frame chain
 

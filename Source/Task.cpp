@@ -135,7 +135,6 @@ void Task::vInit(void)
   m_pReturnStack = nullptr;
   m_pAuxStack    = nullptr;
   
-  m_pRegFrame    = nullptr;
   m_pLocalsFrame = nullptr;
   m_pOpFrame = nullptr;
   
