@@ -1,36 +1,35 @@
 /*============================================================================*/
-/* task.sen -- task related words                                             */
+/* task.sen -- task ipc primitives                                            */
 /*============================================================================*/
 
 " task.sen" .verbose
 
-/*----------------------------------------------------------------------------*/
-/* create a task using string from input stream as name                       */
-/*----------------------------------------------------------------------------*/
+: getState    ( -- ) task::this task.state@ ;
+: setState    ( -- ) task::this task.state! ;
 
-: task:
+: setAcks     ( -- ) task::this task.acks! ;
 
-  create
-  WT_OBJECT word.this word.type!
-  sizeof_task allot
-  word.this >body object.magic!
-  CN_TASK word.this >body object.class!
-  word.this >body task.init
-  true word.this >body object.wordbody!
-  does>
-;
+: ackWait     ( -- ) TS_WAITING_ACK task::this task.state! ;
+: isAckWaiting ( task -- ) task.state@ TS_WAITING_ACK == ;
+: ack         ( task -- ) task.ack ;
 
-: :task
+: grabMutex    ( task -- ) task.thread thread.mutexLock ;
+: waitSignal   ( -- ) task::this task.thread thread.condWait ;
+: dropMutex    ( task -- ) task.thread thread.mutexUnlock ;
+: isSignalWaiting ( task -- ) task.state@ TS_WAITING_SIGNAL == ;
+: signal       ( task -- ) task.thread thread.condSignal ;
 
-  >create
-  WT_OBJECT word.this word.type!
-  sizeof_task allot
-  word.this >body object.magic!
-  CN_TASK word.this >body object.class!
-  word.this >body task.init
-  true word.this >body object.wordbody!
-  word.this
-  does>
+: signalWait    ( -- )
+
+  TS_WAITING_SIGNAL setState
+
+tp: nowWaiting
+
+  waitSignal
+
+TS_EXECUTING setState
+
+  tp: nowRunning
 ;
 
 /*============================================================================*/
