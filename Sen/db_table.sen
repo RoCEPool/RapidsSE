@@ -1,0 +1,269 @@
+/*============================================================================*/
+/* db_table.sen -- table related words                                        */
+/*============================================================================*/
+
+" db_table.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* table is used as a kind of word to identify tables                         */
+/*----------------------------------------------------------------------------*/
+: table ;
+
+//: makeTables pathPush "tables" :dic tick folder swap execute dic.kind! pathDrop ;
+
+/*----------------------------------------------------------------------------*/
+/* make a tables folder under given named schema                              */
+/*----------------------------------------------------------------------------*/
+: makeTables ( "<schemaNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING TABLES FOR SCHEMA " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  find execute ( dic )
+  "tables"     ( dic "tables" )
+  swap         ( "tables" dic )
+  :folder      ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a tableNm folder under tables                                         */
+/*----------------------------------------------------------------------------*/
+: makeTableDic ( "<tableNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING TABLE DIC " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  0 pathPick
+  :folder      ( )
+;
+
+
+: isTable word.kind@ tick table eql ;
+
+/*----------------------------------------------------------------------------*/
+/* create a table using name from input stream (doesnt leave table on stk)    */
+/*----------------------------------------------------------------------------*/
+: table:
+
+  createPersistent
+  WT_OBJECT word.this word.type!
+  sizeof_table allot
+  word.this >body object.magic!
+  CN_TABLE word.this >body object.class!
+  word.this >body table.init
+  true word.this >body object.wordbody!
+  tick table word.this word.kind!
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a table using name on the stack (leaves table on stack)             */
+/*----------------------------------------------------------------------------*/
+: :table
+
+  >createPersistent
+  WT_OBJECT word.this word.type!
+  sizeof_table allot
+  word.this >body object.magic!
+  CN_TABLE word.this >body object.class!
+  word.this >body table.init
+  true word.this >body object.wordbody!
+  tick table word.this word.kind!
+  word.this
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if this task dic path ends in tables                                  */
+/*----------------------------------------------------------------------------*/
+: withinTables ( -- t|f )
+
+  0 pathPick dic.name "tables" str.equal
+;
+
+/*----------------------------------------------------------------------------*/
+/* assert top of task dictionary stack is tables                              */
+/*----------------------------------------------------------------------------*/
+: assertInTables ( -- t|f )
+
+  withinTables assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* check top of task dictionary stack is tables                               */
+/*----------------------------------------------------------------------------*/
+: checkInTables ( -- t|f )
+
+  withinTables if true exit then
+
+  EC_NOT_IN_TABLES false
+;
+
+/*----------------------------------------------------------------------------*/
+/* test if this task dic path is same name as argument                        */
+/*----------------------------------------------------------------------------*/
+: withinTable ( "<tableNm>" -- t|f )
+
+  assert::stack_1+
+  CN_STRVAL assert::class_0
+
+  // assert dictionary path
+  task::this task.dicStack dicStack.depth assert
+
+  0 pathPick dic.name str.equal
+;
+
+/*----------------------------------------------------------------------------*/
+/* check top of task dictionary stack is given table name                     */
+/*----------------------------------------------------------------------------*/
+: checkInTable ( "<tableNm>" -- t|f )
+
+  withinTable if true exit then
+
+  EC_NOT_IN_TABLE false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check given name is a table                                                */
+/*----------------------------------------------------------------------------*/
+: checkIsTable ( "<tableNm>" -- "<tableNm>" true | errorCode false )
+
+  dup ( "<tableNm>" "<tableNm>" )
+
+  find ( "<tableNm>" ^w:table )
+
+  dup ( "<tableNm>" ^w:table ^w:table )
+  not ( "<tableNm>" ^w:table bool )
+  if
+    drop ( "<tableNm>" )
+    drop ( )
+    EC_NO_SUCH_TABLE false ( errorCode false )
+  exit
+  then
+
+  dup ( "<tableNm>" ^w:table ^w:table )
+
+  word.kind@ ( "<tableNm>" ^w:table ^word )
+  tick table ( "<tableNm>" ^w:table ^word ^word )
+  eql ( "<tableNm>" ^w:table bool )
+  if
+    drop ( "<tableNm>" )
+    true ( "<tableNm>" true )
+    exit
+  then
+
+  drop ( "<tableNm>" )
+  drop ( )
+  EC_NOT_A_TABLE false ( errorCode false )
+;
+
+/*----------------------------------------------------------------------------*/
+/* check given name is a table                                                */
+/*----------------------------------------------------------------------------*/
+: checkIsTableR35 ( "<tableNm>" -- true | errorCode false )
+
+  find ( "<tableNm>" ^w:table )
+
+  dup ( "<tableNm>" ^w:table ^w:table )
+  not ( "<tableNm>" ^w:table bool )
+  if
+    drop ( "<tableNm>" )
+    drop ( )
+    EC_NO_SUCH_TABLE false ( errorCode false )
+    exit
+  then
+
+  dup ( "<tableNm>" ^w:table ^w:table )
+
+  word.kind@ ( "<tableNm>" ^w:table ^word )
+  tick table ( "<tableNm>" ^w:table ^word ^word )
+  eql ( "<tableNm>" ^w:table bool )
+  if
+    drop ( "<tableNm>" )
+    true ( "<tableNm>" true )
+    exit
+  then
+
+  drop ( "<tableNm>" )
+  drop ( )
+  EC_NOT_A_TABLE false ( errorCode false )
+;
+
+/*----------------------------------------------------------------------------*/
+/* check there is a table folder                                              */
+/*----------------------------------------------------------------------------*/
+: checkIsTableFolder  ( "<tableName>" -- )
+  findInCurrent not if EC_NO_SUCH_TABLE false exit then
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* find the table folder and push it onto task dictionary                     */
+/*----------------------------------------------------------------------------*/
+: pushTable ( "<tableName>" -- )
+  find execute pathPush
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop the table folder                                                       */
+/*----------------------------------------------------------------------------*/
+: popTable
+  pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* get and inc table reference and put into task.seitf.currentTable           */
+/*----------------------------------------------------------------------------*/
+: getTableRef ( "<tableNm>" -- <R> )
+
+  dup checkInTable not if false exit then
+
+  checkIsTable not if EC_NO_SUCH_TABLE false exit then
+
+  find execute ( table )
+
+  task::this task.seitf@ seitf.tableRef
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* dec and return table reference and clear task.seitf.currentTable           */
+/*----------------------------------------------------------------------------*/
+: returnTableRef ( )
+
+  task::this task.seitf@ seitf.tableDeref
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* any outstanding table references                                           */
+/*----------------------------------------------------------------------------*/
+: tableInUse ( "<tableNm>" -- <R> )
+
+  find execute
+
+  table.ref
+  if true else false then
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of table                                                          */
+/*----------------------------------------------------------------------------*/
+: sizeTable ( -- "<size>" )
+
+  "indexes" find execute pathPush
+  "hidden" "sizeIndex" find execute  >str
+  pathDrop
+
+;
+
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

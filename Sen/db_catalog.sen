@@ -1,0 +1,47 @@
+/*============================================================================*/
+/* db_catalog.sen -- catalog related words                                    */
+/*============================================================================*/
+
+" db_catalog.sen" .verbose
+
+: catalog ;
+
+: :catalog
+    :dic
+         //dup tick catalog swap word.kind!
+         dup tick catalog swap execute dic.kind!
+;
+
+: withinCatalogs
+    0 pathPick dic.name "catalogs" str.equal
+;
+
+: checkInCatalogs
+    withinCatalogs if true exit then
+    EC_NOT_IN_CATALOGS false
+;
+
+: checkIsCatalog ( word )
+    dup word.kind@ tick folder eql not if EC_NOT_A_FOLDER false exit then
+    dup execute dic.kind@ tick catalog eql if true exit then
+    EC_NOT_A_CATALOG false
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a catalogs folder under given named tenant                            */
+/*----------------------------------------------------------------------------*/
+: makeCatalogs ( "<tenantNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING CATALOGS FOR TENANT " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
+  then
+
+  find execute ( dic )
+  "catalogs"   ( dic "catalogs" )
+  swap         ( "catalogs" dic )
+  :folder      ( )
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

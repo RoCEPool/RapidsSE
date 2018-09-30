@@ -1,0 +1,47 @@
+/*============================================================================*/
+/* db_tenant.sen -- tenant related words                                      */
+/*============================================================================*/
+
+" db_tenant.sen" .verbose
+
+: tenant ;
+
+: :tenant
+    :dic
+         //dup tick tenant swap word.kind!
+         dup tick tenant swap execute dic.kind!
+;
+
+: withinTenants
+    0 pathPick dic.name "tenants" str.equal
+;
+
+: checkInTenants
+    withinTenants if true exit then
+    EC_NOT_IN_TENANTS false
+;
+/*
+: checkIsTenant ( word )
+
+    dup word.kind@ tick folder eql if true exit then
+    dup execute dic.kind@ tick tenant eql if true exit then
+    drop
+    EC_NOT_A_TENANT false
+;
+*/
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a tenant folder                                            */
+/*----------------------------------------------------------------------------*/
+: checkIsTenant ( word )
+
+  dup word.kind@ tick folder eql not if EC_NOT_A_FOLDER false exit then
+  dup execute dic.kind@ tick tenant eql if true exit then
+  EC_NOT_A_TENANT false
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

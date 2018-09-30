@@ -1,0 +1,40 @@
+/*============================================================================*/
+/* db_selCursor.sen -- select cursor                                          */
+/*============================================================================*/
+
+" db_selCursor.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create a selCursor using name from input stream                            */
+/*----------------------------------------------------------------------------*/
+: selCursor:
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_selCursor allot
+  word.this >body object.magic!
+  CN_SELCURSOR word.this >body object.class!
+  word.this >body selCursor.init
+  true word.this >body object.wordbody!
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a selCursor using name on the stack (leaves on stack)               */
+/*----------------------------------------------------------------------------*/
+: :selCursor
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_selCursor allot
+  word.this >body object.magic!
+  CN_SELCURSOR word.this >body object.class!
+  word.this >body selCursor.init
+  true word.this >body object.wordbody!
+  word.this
+  does>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

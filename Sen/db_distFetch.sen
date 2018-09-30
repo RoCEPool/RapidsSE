@@ -1,0 +1,60 @@
+/*============================================================================*/
+/* db_distFetch.sen -- distributed fetch from index                           */
+/*============================================================================*/
+
+" db_distFetch.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* distributed fetch                                                          */
+/*----------------------------------------------------------------------------*/
+/*
+: distFetchRowsIndex ( "<sWhere>" "<tableNm>" )
+
+  0 locals| dfetchPlan sTableNm sWhere |
+
+  sTableNm sWhere "distFetchRowsIndex %v %v" str.format .
+
+  // push catalog name
+  4 pathPick dic.name  ( "<catalogNm>" "<schemaNm>" )
+
+  // push schema name
+  2 pathPick dic.name  ( "<schemaNm>" "<schemaNm>" )
+
+  sTableNm sWhere ( "<schemaNm>" "<schemaNm>" "<tableNm>" "<sWhere>" )
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // prepare plan
+  "dfetchPlanner" find execute to dfetchPlan
+
+  dfetchPlan plan.show
+
+  // set this task as the executing task in the plan
+  task::this dfetchPlan plan.executingTask!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute (and compile) the plan
+  dfetchPlan "distributePlan" find execute
+
+  // this task to wait for 1 ack
+  1 setAcks
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute the plan
+  dfetchPlan "executePlan" find execute
+
+  //"PlanTest waiting for ack" .
+
+  // this task waits till ack'd by the responseOp
+  ackWait
+
+  //"PlanTest got ack" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reap the plan
+  //dexPlan reapPlan
+
+  true
+;
+*/
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

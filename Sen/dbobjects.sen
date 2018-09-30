@@ -4,21 +4,21 @@
 
 "-dbObjects.sen" .verbose
 
-"distFetch.sen" include
-"selCursor.sen" include
-"table.sen" include
-"partition.sen" include
-"index.sen" include
+"db_distFetch.sen" include
+"db_selCursor.sen" include
+"db_table.sen" include
+"db_partition.sen" include
+"db_index.sen" include
 
-"schema.sen" include
-"catalog.sen" include
-"tenant.sen" include
+"db_schema.sen" include
+"db_catalog.sen" include
+"db_tenant.sen" include
 
-"row.sen" include
-"rowBuffer.sen" include
-"plan.sen" include
+"db_row.sen" include
+"db_rowBuffer.sen" include
+"db_plan.sen" include
 
-"entryBuffer.sen" include
+"db_entryBuffer.sen" include
 
 /*============================================================================*/
 /* end                                                                        */
