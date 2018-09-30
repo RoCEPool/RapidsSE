@@ -4,8 +4,8 @@
 
 "-planners.sen" .verbose
 
-"dexPlanner.sen" include
-"dfetchPlanner.sen" include
+"planner_dex.sen" include
+"planner_dfetch.sen" include
 
 /*============================================================================*/
 /* end                                                                        */
