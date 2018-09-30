@@ -29,35 +29,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* first snapshot                                                             */
-/*----------------------------------------------------------------------------*/
-: snap0: immediate
-
-  tick reg.push compile,
-  tick bp::snapshot compile,
-
-  tick >valset compile,
-
-  tick >reg0 compile,
-;
-
-/*----------------------------------------------------------------------------*/
-/* second snapshot                                                            */
-/*----------------------------------------------------------------------------*/
-: snap1: immediate
-
-  tick bp::snapshot compile,
-
-  tick >valset compile,
-
-  tick >reg1 compile,
-  tick reg1 compile,
-  tick reg0 compile,
-  tick vector.diff compile,
-  tick reg.pop compile,
-;
-
-/*----------------------------------------------------------------------------*/
 /* add 1 to integer on stack                                                  */
 /*----------------------------------------------------------------------------*/
 : 1+ 1 + ;
