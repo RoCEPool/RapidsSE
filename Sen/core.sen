@@ -528,7 +528,6 @@ tp: g
 "core_object.sen" include
 "core_useful.sen" include
 "core_dicStack.sen" include
-"core_var.sen" include
 
 /*----------------------------------------------------------------------------*/
 /* named performance point                                                    */
