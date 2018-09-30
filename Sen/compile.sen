@@ -10,7 +10,6 @@
 
 "core.sen" include
 "common.sen" include
-"structures.sen" include
 "tasks.sen" include
 "threads.sen" include
 "gridModel.sen" include
