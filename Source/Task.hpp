@@ -299,7 +299,6 @@ namespace Tasks
     void vAddPrimitives_Queues(void);
   
     void vAddPrimitives_RbCursor(void);
-    void vAddPrimitives_Reg(void);
     void vAddPrimitives_Row(void);
     void vAddPrimitives_RowBuffer(void);
     void vAddPrimitives_RowCursor(void);
@@ -1096,45 +1095,7 @@ namespace Tasks
     static void vRbCursorRowBuffer(MP_Task mpTask);
     static void vRbCursorTableFetch(MP_Task mpTask);
     static void vRbCursorTableStore(MP_Task mpTask);
-    
-    // registers
-    static void vRegPop(MP_Task mpTask);
-    static void vRegPush(MP_Task mpTask);
-    static void vRegReg0(MP_Task mpTask);
-    static void vRegReg1(MP_Task mpTask);
-    static void vRegReg2(MP_Task mpTask);
-    static void vRegReg3(MP_Task mpTask);
-    static void vRegReg4(MP_Task mpTask);
-    static void vRegReg5(MP_Task mpTask);
-    static void vRegReg6(MP_Task mpTask);
-    static void vRegReg7(MP_Task mpTask);
-    static void vRegReg8(MP_Task mpTask);
-    static void vRegReg9(MP_Task mpTask);
-    static void vRegRegA(MP_Task mpTask);
-    static void vRegRegB(MP_Task mpTask);
-    static void vRegRegC(MP_Task mpTask);
-    static void vRegRegD(MP_Task mpTask);
-    static void vRegRegE(MP_Task mpTask);
-    static void vRegRegF(MP_Task mpTask);
-    static void vRegRegNth(MP_Task mpTask);
-    static void vRegToReg0(MP_Task mpTask);
-    static void vRegToReg1(MP_Task mpTask);
-    static void vRegToReg2(MP_Task mpTask);
-    static void vRegToReg3(MP_Task mpTask);
-    static void vRegToReg4(MP_Task mpTask);
-    static void vRegToReg5(MP_Task mpTask);
-    static void vRegToReg6(MP_Task mpTask);
-    static void vRegToReg7(MP_Task mpTask);
-    static void vRegToReg8(MP_Task mpTask);
-    static void vRegToReg9(MP_Task mpTask);
-    static void vRegToRegA(MP_Task mpTask);
-    static void vRegToRegB(MP_Task mpTask);
-    static void vRegToRegC(MP_Task mpTask);
-    static void vRegToRegD(MP_Task mpTask);
-    static void vRegToRegE(MP_Task mpTask);
-    static void vRegToRegF(MP_Task mpTask);
-    static void vRegToRegNth(MP_Task mpTask);
-    
+        
     // row
     static void vRowString(MP_Task mpTask);
     static void vRowEscapedString(MP_Task mpTask);
