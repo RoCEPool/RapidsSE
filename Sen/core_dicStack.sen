@@ -1,0 +1,340 @@
+/*============================================================================*/
+/* core_dicStack.sen -- dictionary stack related words                        */
+/*============================================================================*/
+
+" core_dicStack.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* drop top dictionary from path                                              */
+/*----------------------------------------------------------------------------*/
+: pathDrop ( -- )
+
+  // push the dic stack of this task
+  task::this task.dicStack
+
+  // drop the top dictionary
+  dicStack.drop
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump the path                                                              */
+/*----------------------------------------------------------------------------*/
+: pathDump ( -- )
+
+  // push the dic stack of this task
+  task::this task.dicStack
+
+  // dump the dic stack
+  dicStack.dump
+;
+
+/*----------------------------------------------------------------------------*/
+/* pick a dictionary from path                                                */
+/*----------------------------------------------------------------------------*/
+: pathPick ( i -- dic )
+
+  // push the dic stack of this task
+  task::this task.dicStack
+
+  // pick the dictionary from dic stack
+  dicStack.pick
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop top dictionary from path                                                */
+/*----------------------------------------------------------------------------*/
+: pathPop ( -- )
+
+  // push the dic stack of this task
+  task::this task.dicStack
+
+  // pop the top dictionary
+  dicStack.pop
+;
+
+/*----------------------------------------------------------------------------*/
+/* push a dictionary onto path                                                */
+/*----------------------------------------------------------------------------*/
+: pathPush ( dic -- )
+
+  // push the dic stack of this task
+  task::this task.dicStack
+
+  // push the dictionary onto dic stack
+  dicStack.push
+;
+
+/*----------------------------------------------------------------------------*/
+/* get dictionary path                                                        */
+/*----------------------------------------------------------------------------*/
+: pathGet ( -- ... #dics )
+
+  // this word puts the dictionary path onto the stack as a series of names
+  //   ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" 3 )
+  // note: it should not push "<main>"
+
+  pathDepth 0 ?do
+
+    // get dictionary[I]
+    I pathPick  ( dic )
+
+    // push dictionary name
+    dic.name ( ... dicNm )
+
+  loop
+
+  // push number of dictionary names
+  pathDepth ( ... #dics )
+;
+
+/*----------------------------------------------------------------------------*/
+/* set dictionary path                                                        */
+/*----------------------------------------------------------------------------*/
+: pathSet ( ... "<subFolder>" nFolders -- )
+
+  //dicPath.set
+;
+
+/*----------------------------------------------------------------------------*/
+/* list all words in the current dictionary                                   */
+/*----------------------------------------------------------------------------*/
+: words
+
+  0 pathPick dic.lastWord dup
+  iterate                        // iterate word cursor
+    object@ word.name .          // print the name of the word
+    object@ word.prev object!    // advance cursor backwards thru words
+  next
+;
+
+/*----------------------------------------------------------------------------*/
+/* list all words (long form) in the current dictionary                       */
+/*----------------------------------------------------------------------------*/
+: symbols
+
+  0 pathPick dic.lastWord
+  begin dup while
+    dup word.name .put " " .put dup word.kind@ word.name .put .\n
+    word.prev
+  repeat
+  drop
+;
+
+/*----------------------------------------------------------------------------*/
+/* get all words in the current dictionary as a single string                 */
+/*----------------------------------------------------------------------------*/
+: listContents ( job -- )
+
+  params| pJob |
+  0 locals| iCount |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  args.metadata if
+    "(name VARCHAR)" pJob job.metadata!
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form the row for each word
+  ""                               // initial contents string
+  0 pathPick dic.lastWord dup
+  iterate                          // setup iteration of words
+    1 iCount + to iCount
+    "row: ('" str.cat
+    object@ word.name str.cat      // add name of the word to contents string
+    "')\n" str.cat
+    object@ word.prev object!      // step backwards thru words
+  next
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set response in the job
+  grid::thisNode@ pJob job.response!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sent rows Processed in the job
+  iCount grid::thisNode@ pJob job.rowsProcessed!
+;
+
+/*----------------------------------------------------------------------------*/
+/* get all words in the current dictionary as a single string (indexes)       */
+/*----------------------------------------------------------------------------*/
+/*
+: listIndexesContents ( -- )
+
+  0 0 locals| iCount pIndexPtr |
+
+  args.metadata if
+    "(name VARCHAR, isUnique BOOLEAN, isPrimaryKey BOOLEAN)" metadata!
+    ""                              // initial contents string
+    0 pathPick dic.lastWord dup
+    iterate                         // setup iteration of words
+
+      // get the index ptr
+      object@ word.name findInCurrent execute to pIndexPtr
+
+      // skip hidden index
+      pIndexPtr index.isHidden@ not if
+
+        // increment count
+        1 iCount + to iCount
+
+        // index a primary key ?
+        pIndexPtr index.isPrimaryKey@
+        if "true" else "false" then
+
+        // index is unique ?
+        pIndexPtr index.isUnique@
+        if "true" else "false" then
+
+        // add word kind to ls string
+        object@ word.name
+
+        "row: ('%v',%v,%v)\n" str.format
+        str.cat
+      then
+      object@ word.prev object!       // step backwards thru words
+    next
+    iCount task::this task.seitf@ seitf.rowsProcessed
+
+  else
+    ""                              // initial contents string
+
+    0 pathPick dic.wordCount locals| iCountIndexes |
+    0 pathPick dic.lastWord dup
+    iterate                         // setup iteration of words
+
+      // get the index ptr
+      object@ word.name findInCurrent execute to pIndexPtr
+
+        // increment count
+        1 iCount + to iCount
+
+        // skip hidden index
+        pIndexPtr index.isHidden@ not if
+
+          object@ word.name               // add name of the word to contents string
+          str.cat
+
+          // index is unique ?
+          pIndexPtr index.isUnique@
+          if " unique" str.cat then
+
+          // index a primary key ?
+          pIndexPtr index.isPrimaryKey@
+          if " primary" str.cat then
+
+          iCount iCountIndexes 1 - == not if " , " str.cat then
+
+        then
+
+        object@ word.prev object!         // step backwards thru words
+      next
+  then
+
+;
+*/
+/*----------------------------------------------------------------------------*/
+/* forget all words in given dictionary                                       */
+/*----------------------------------------------------------------------------*/
+: forgetAll ( dic -- )
+
+  dup dic.lastWord not if drop exit then
+
+  dup pathPush
+
+  begin
+
+    dup dic.lastWord word.name :forget
+
+    dup dic.lastWord not until
+
+  pathDrop
+
+  drop
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a subdictionary under given dic                                     */
+/*----------------------------------------------------------------------------*/
+: :folder ( "<subDicNm>" dic -- )
+
+  pathPush :dic tick folder swap execute dic.kind! pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* clear task dictionary stack                                                */
+/*----------------------------------------------------------------------------*/
+: dicStack.clear
+
+  pathDepth 0 ?do
+    pathDrop
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop all dictionaries from given stack                                     */
+/*----------------------------------------------------------------------------*/
+: dicStack.dropAll ( dicStack -- )
+
+  locals| dicStack |
+
+  dicStack dicStack.depth 0 ?do
+    dicStack dicStack.drop
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* set task dictionary stack                                                  */
+/*----------------------------------------------------------------------------*/
+: dicStack.set ( ... #dics -- )
+
+  // this word puts the folder path on the stack into task dictionary stack
+  // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
+
+  tp: dicStack.set
+
+  dicStack.clear
+
+  dup not if drop exit then
+
+  0 do
+
+    dup "<main>" str.equal if
+      drop
+      dic.main
+      pathPush
+    else
+
+      dup "seitf" str.equal if
+        drop
+      else
+
+        dup "tenants" str.equal if
+          drop attachmap::tenants@ execute pathPush
+        else
+          find
+          execute
+          pathPush
+        then
+      then
+
+    then
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop top dictionary from path                                              */
+/*----------------------------------------------------------------------------*/
+: pathDropAll ( -- )
+
+  // push the dic stack of this task
+  task::this task.dicStack
+
+  // drop the top dictionary
+  dicStack.dropAll
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

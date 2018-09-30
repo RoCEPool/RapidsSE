@@ -553,11 +553,11 @@ tp: f
 tp: g
 ;
 
-"dic.sen" include
-"object.sen" include
-"useful.sen" include
-"dicStack.sen" include
-"var.sen" include
+"core_dic.sen" include
+"core_object.sen" include
+"core_useful.sen" include
+"core_dicStack.sen" include
+"core_var.sen" include
 
 /*----------------------------------------------------------------------------*/
 /* named performance point                                                    */
