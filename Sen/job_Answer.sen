@@ -4,8 +4,6 @@
 
 " job_Answer.sen" .verbose
 
-int: nTotalConnections
-
 /*----------------------------------------------------------------------------*/
 /* spawn the answer task                                                      */
 /*----------------------------------------------------------------------------*/
@@ -35,6 +33,8 @@ int: nTotalConnections
   0 locals| pAcceptedSocket |
   0 locals| pConnectorTask |
 
+  0 locals| nConns |
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the listening port of this node
@@ -46,9 +46,6 @@ int: nTotalConnections
 
   // now create a listening socket
   iPort socket::listen to pListeningSocket
-
-  // number of connections to be zero
-  0 nTotalConnections !
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -76,10 +73,10 @@ int: nTotalConnections
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // increment connection counter
-    nTotalConnections @ 1 + nTotalConnections !
+    nConns 1 + to nConns
 
       pAcceptedSocket
-      nTotalConnections @
+      nConns
     spawn_Receiver
 
     ddlLock::dropWrite
@@ -87,7 +84,7 @@ int: nTotalConnections
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // if first socket on non-start node then start the connector task
 
-    nTotalConnections @ 1 == if
+    nConns 1 == if
       grid::thisNode@ grid::StartNode@ != if
         spawn_Connector to pConnectorTask
       then
