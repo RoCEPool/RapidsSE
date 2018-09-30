@@ -1,0 +1,122 @@
+/*============================================================================*/
+/* test_jData.sen -- generate jTest data                                      */
+/*============================================================================*/
+
+" test_jData.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* generate ../jtest/j1000.csv                                                */
+/*----------------------------------------------------------------------------*/
+: jData1000
+
+  file::new >r
+
+  "../JTEST/j1000.csv" r0 file.path!
+
+  OPEN_WRITE r0 file.open not if "file not opened" . exit then
+
+  1000 0
+  do
+    I >str          r2 file.write
+    "|"             r2 file.write
+    I >DigitWords   r2 file.write
+    "|"             r2 file.write
+    I 100 % >str    r2 file.write
+    "|"             r2 file.write
+    I 10 % >str     r2 file.write
+    "\n"            r2 file.write
+  loop
+
+  r0 file.close
+
+  rdrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate ../jtest/j100.csv                                                 */
+/*----------------------------------------------------------------------------*/
+: jData100
+
+  file::new >r
+
+  "../JTEST/j100.csv" r0 file.path!
+
+  OPEN_WRITE r0 file.open not if "file not opened" . exit then
+
+  100 0
+  do
+    I >str          r2 file.write
+    "|"             r2 file.write
+    I >DigitWords   r2 file.write
+    "|"             r2 file.write
+    I 10 % >str     r2 file.write
+    "\n"            r2 file.write
+  loop
+
+  r0 file.close
+
+  rdrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate ../jtest/j10.csv                                                  */
+/*----------------------------------------------------------------------------*/
+: jData10
+
+  file::new >r
+
+  "../JTEST/j10.csv" r0 file.path!
+
+  OPEN_WRITE r0 file.open not if "file not opened" . exit then
+
+  10 0
+  do
+    I >str          r2 file.write
+    "|"             r2 file.write
+    I >DigitWords   r2 file.write
+    "\n"            r2 file.write
+  loop
+
+  r0 file.close
+
+  rdrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate ../jtest/j10.csv                                                  */
+/*----------------------------------------------------------------------------*/
+: jDataDupe
+
+  file::new locals| pFile |
+
+  "../JTEST/jDupe27.csv" pFile file.path!
+
+  OPEN_WRITE pFile file.open not if "file not opened" . exit then
+
+  27 0
+  do
+    I >str          pFile file.write
+    "|"             pFile file.write
+    I >DigitWords   pFile file.write
+    "|0"            pFile file.write
+    "\n"            pFile file.write
+  loop
+
+  pFile file.close
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate jdata                                                             */
+/*----------------------------------------------------------------------------*/
+: jData
+
+  jData1000
+  jData100
+  jData10
+
+  jDataDupe
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

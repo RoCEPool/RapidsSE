@@ -2,7 +2,7 @@
 /* job_InsertRow.sen -- Job Insert Row                                        */
 /*============================================================================*/
 
-" jjob_InsertRow.sen" .verbose
+" job_InsertRow.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* job_InsertRow request (on originating node)                                */

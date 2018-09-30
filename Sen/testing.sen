@@ -4,10 +4,10 @@
 
 "-testing.sen" .verbose
 
-"jData.sen" include
-"miscTesting.sen" include
-"unitTests.sen" include
-"1m.sen" include
+"test_jData.sen" include
+"test_misc.sen" include
+"test_unit.sen" include
+"test_1m.sen" include
 
 /*============================================================================*/
 /* end                                                                        */
