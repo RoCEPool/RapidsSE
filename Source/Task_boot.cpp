@@ -619,11 +619,11 @@ void Task::vAddConstants(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAddStep(Stz* aName, TaskStep pStep, bool bImmediate)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
   
-  m_pCompiler->m_pCurrentWord = pNewWord;
+  //m_pCompiler->m_pCurrentWord = pNewWord;
   
   pNewWord->vWordType(WT_PRIMITIVE);
   pNewWord->vEntryStep(pStep);

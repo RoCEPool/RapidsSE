@@ -197,7 +197,7 @@ namespace Tasks
     void vAddConstant(Stz* aName, Stz* aValue);
     void vAddConstants(void);
     void vAddMunged(MP_Task mpTask);
-    void vAddStep(Stz* aName, TaskStep pStep, bool bImmediate);
+    static void vAddStep(Stz* aName, TaskStep pStep, bool bImmediate);
     void vAddSteps(void);
     void vAddRoutines(void);
     Word* pCompileColon(StrVal& sDefinition);
