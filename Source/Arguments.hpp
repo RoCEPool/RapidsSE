@@ -10,7 +10,7 @@ namespace StorageEngine
   public:
   
     // configuration
-    s256  m_sCommands;     // commands dir
+    s256  m_sCommandsDir;  // commands dir
     i8    m_nJumboBuffers; // number of jumbo buffers
     s256  m_sNodeName;     // this node name
     void* m_aRegionAddr;   // use this address for region
