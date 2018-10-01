@@ -182,7 +182,7 @@ tp: executeDfetchPlan
   pSeitf >str "dfetch request tasks seitf : %v" str.format .
 
   //grid::partitions >str "setting nLastBuffers to %v" str.format .
-  grid::partitions pSeitf seitf.lastBuffers!
+  //grid::partitions pSeitf seitf.lastBuffers!
 
   //<< pSeitf "triggerRangeOp" thePlan plan.id@ "triggerRangeOp.task" >>jobQueue
 ;

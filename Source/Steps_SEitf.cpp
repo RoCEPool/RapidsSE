@@ -21,8 +21,6 @@ void Step::vAddSteps_SEitf(void)
   vAddStep("seitf.display!"_Stz,         &Task::vSEitfDisplayStore,     false);
   vAddStep("seitf.dump"_Stz,             &Task::vSEitfDump,             false);
   vAddStep("seitf.isExiting"_Stz,        &Task::vSEitfIsExiting,        false);
-  vAddStep("seitf.lastBuffers@"_Stz,     &Task::vSEitfLastBuffersFetch, false);
-  vAddStep("seitf.lastBuffers!"_Stz,     &Task::vSEitfLastBuffersStore, false);
   vAddStep("seitf.pid"_Stz,              &Task::vSEitfPid,              false);
   vAddStep("seitf.rowsInvalid!"_Stz,     &Task::vSEitfRowsInvalidStore, false);
   vAddStep("seitf.rowsValid!"_Stz,       &Task::vSEitfRowsValidStore,   false);
@@ -148,50 +146,6 @@ void Task::vSEitfIsExiting(MP_Task mpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   mpTask->m_pDataStack->vPushInt(pSEitf->m_bSeitfExiting);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.lastBuffers@ -- fetch the number of last buffers for a fetch         */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfLastBuffersFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfLastBuffersFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-  THROW_INVALID_DSTACK("seitf.indexBuffer@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  i8 nLastBuffers = pSEitf->nLastBuffers();
-  
-  mpTask->m_pDataStack->vPushInt(nLastBuffers);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.lastBuffers! -- store the number of last buffers for a fetch         */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfLastBuffersStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfLastBuffersStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.lastBuffers!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  i8 nLastBuffers;
-  if ( ! mpTask->m_pDataStack->bPop(nLastBuffers) )
-    THROW_INVALID_DSTACK("seitf.lastBuffers!"_Stz);
-  
-  pSEitf->vLastBuffers(nLastBuffers);
   
   EXIT();
 }

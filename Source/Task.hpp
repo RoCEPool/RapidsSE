@@ -1148,8 +1148,6 @@ namespace Tasks
     static void vSEitfDisplayStore(MP_Task mpTask);
     static void vSEitfDump(MP_Task mpTask);
     static void vSEitfIsExiting(MP_Task mpTask);
-    static void vSEitfLastBuffersFetch(MP_Task mpTask);
-    static void vSEitfLastBuffersStore(MP_Task mpTask);
     static void vSEitfPid(MP_Task mpTask);
     static void vSEitfRowsInvalidStore(MP_Task mpTask);
     static void vSEitfRowsValidStore(MP_Task mpTask);

@@ -32,10 +32,6 @@ namespace Interface
     i8     m_iNextRequestId;
     i8     m_iRowPartition;
   
-    i8     m_ziLastBuffers;     // number of last buffers for fetch
-    i8     m_ziLastBuffersScanned; // number of last buffers scanned
-    
-    Atomic m_ziFetchTasks;
     bool   m_bSeitfExiting;
 
     i8     m_iRowsInvalid;
@@ -72,8 +68,6 @@ namespace Interface
     
     i8     iPartition(void);
     i8     iSlot(void);
-    i8     nLastBuffers(void);
-    void   vLastBuffers(i8 nLastBuffer);
   
     DicStack* pPathStack(void);
   

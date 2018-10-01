@@ -183,12 +183,9 @@ SEitf::SEitf(i8 iPartition)
   m_iCurrentRequestId = 0;
   m_iNextRequestId    = -1;
   m_iRowPartition     = -1;
-  m_ziLastBuffers      = 0;
-  m_ziLastBuffersScanned = 0;
   m_iRowsInvalid         = 0;
   m_iRowsValid           = 0;
   
-  m_ziFetchTasks      = 0;
   m_bSeitfExiting     = false;
     
   for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
@@ -356,29 +353,6 @@ void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
   
   pCell = pTables->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of last buffers                                                 */
-/*----------------------------------------------------------------------------*/
-i8 SEitf::nLastBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  return m_ziLastBuffers;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set number of last buffers                                                 */
-/*----------------------------------------------------------------------------*/
-void SEitf::vLastBuffers(i8 nLastBuffers)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  m_ziLastBuffers = nLastBuffers;
-  
-  //vTrace("No of fetchTasks set to %lld\n"_Stz, nLastBuffers);
-  m_ziFetchTasks = m_ziLastBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
