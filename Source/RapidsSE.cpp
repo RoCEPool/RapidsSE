@@ -525,14 +525,12 @@ void RapidsSE::vRunCmdLine(void)
       vStartSystem();
       
       if (gxArguments.m_bPrompt)
-        //vSpawnJobPrompt();
         vCallPrompt();
       else
         vWaitStop();
     }
     
     else if (gxArguments.m_bPrompt)
-      //vSpawnJobPrompt();
       vCallPrompt();
     else if (gxArguments.m_bStatus)  vPrintStatus();
     else if (gxArguments.m_bStop)    vStopSystem();
@@ -591,26 +589,6 @@ void RapidsSE::vSignalHandler(int iSignal)
   
   Debugging::vStackDump();
   exit(1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* start a prompt                                                             */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vSpawnJobPrompt(void)
-{
-  ASSERT(gpBufferPool);
-  
-  gpAttachMap->vPrintStartupInfo();
-  
-  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
-  
-  i8 iTraceLevel = 0;
-  eEC eError = RapidsSE_SpawnPrompt(iTraceLevel);
-  ASSERT(EC_NONE == eError);
-  vTrace("RapidsSE_SpawnPrompt() called\n"_Stz);
-  
-  while (true)
-    PosixThread::vSleepSec(10000000);
 }
 
 /*----------------------------------------------------------------------------*/
