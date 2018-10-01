@@ -240,10 +240,10 @@ void Task::vSnapshot(MP_Task mpTask)
     iCountObjects[pBuffer->eClass()]++;
   }
   
-  gpAttachMap->m_xHeaps.m_pTransientSmall->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeaps.m_pTransientMedium->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeaps.m_pTransientLarge->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeaps.m_pTransientJumbo->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeaps.Transient.m_pSmall->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeaps.Transient.m_pMedium->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeaps.Transient.m_pLarge->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeaps.Transient.m_pJumbo->vAnalyse(iCountObjects);
 
   gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->vAnalyse(iCountObjects);
   gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->vAnalyse(iCountObjects);

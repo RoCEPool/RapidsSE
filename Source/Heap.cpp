@@ -160,19 +160,19 @@ Object* Heap::pAllocate(eCN eAllocClass, bool bPersistent)
       return pObject;
       
     case HT_TRANSIENT_SMALL:
-      pObject = gpAttachMap->m_xHeaps.m_pTransientSmall->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_xHeaps.Transient.m_pSmall->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_TRANSIENT_MEDIUM:
-      pObject = gpAttachMap->m_xHeaps.m_pTransientMedium->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_xHeaps.Transient.m_pMedium->pAllocObject(eAllocClass);
       return pObject;
 
     case HT_TRANSIENT_LARGE:
-      pObject = gpAttachMap->m_xHeaps.m_pTransientLarge->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_xHeaps.Transient.m_pLarge->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_TRANSIENT_JUMBO:
-      pObject = gpAttachMap->m_xHeaps.m_pTransientJumbo->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_xHeaps.Transient.m_pJumbo->pAllocObject(eAllocClass);
       return pObject;
       
     default:
@@ -287,7 +287,7 @@ void Heap::vValidateTables(void)
 void Heap::vSearchFree(void)
 {
   if (gbAddrAllocated) {
-    for (FreeChunk* pTestChunk = gpAttachMap->m_xHeaps.m_pTransientMedium->m_pFreeHead;
+    for (FreeChunk* pTestChunk = gpAttachMap->m_xHeaps.Transient.m_pMedium->m_pFreeHead;
          pTestChunk;
          pTestChunk = pTestChunk->pNextFree())
       if ((void*)pTestChunk >= (void*)0x204828fc0038 &&
@@ -343,35 +343,35 @@ void Heap::vFree(Object* pObject, bool bPersistent)
              eAllocClass,aCN[eAllocClass]);
       
     case HT_TRANSIENT_SMALL:
-      gpAttachMap->m_xHeaps.m_pTransientSmall->vFreeObject(pObject);
+      gpAttachMap->m_xHeaps.Transient.m_pSmall->vFreeObject(pObject);
       return;
       
     case HT_TRANSIENT_MEDIUM:
-      gpAttachMap->m_xHeaps.m_pTransientMedium->vFreeObject(pObject);
+      gpAttachMap->m_xHeaps.Transient.m_pMedium->vFreeObject(pObject);
       return;
       
     case HT_TRANSIENT_LARGE:
-      gpAttachMap->m_xHeaps.m_pTransientLarge->vFreeObject(pObject);
+      gpAttachMap->m_xHeaps.Transient.m_pLarge->vFreeObject(pObject);
       return;
       
     case HT_TRANSIENT_JUMBO:
-      gpAttachMap->m_xHeaps.m_pTransientJumbo->vFreeObject(pObject);
+      gpAttachMap->m_xHeaps.Transient.m_pJumbo->vFreeObject(pObject);
       return;
       
     case HT_PERSISTENT_SMALL:
-      gpAttachMap->m_xHeaps.m_pTransientSmall->vFreeObject(pObject);
+      gpAttachMap->m_xHeaps.Transient.m_pSmall->vFreeObject(pObject);
       return;
       
     case HT_PERSISTENT_MEDIUM:
-      gpAttachMap->m_xHeaps.m_pTransientMedium->vFreeObject(pObject);
+      gpAttachMap->m_xHeaps.Transient.m_pMedium->vFreeObject(pObject);
       return;
       
     case HT_PERSISTENT_LARGE:
-      gpAttachMap->m_xHeaps.m_pTransientLarge->vFreeObject(pObject);
+      gpAttachMap->m_xHeaps.Transient.m_pLarge->vFreeObject(pObject);
       return;
       
     case HT_PERSISTENT_JUMBO:
-      gpAttachMap->m_xHeaps.m_pTransientJumbo->vFreeObject(pObject);
+      gpAttachMap->m_xHeaps.Transient.m_pJumbo->vFreeObject(pObject);
       return;
       
     default:
@@ -388,7 +388,7 @@ void Heap::vFree_NonObject(Buffer* pBuffer)
 {
   pBuffer->vSetMagic();
 
-  gpAttachMap->m_xHeaps.m_pTransientLarge->vFreeObject(pBuffer);
+  gpAttachMap->m_xHeaps.Transient.m_pLarge->vFreeObject(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

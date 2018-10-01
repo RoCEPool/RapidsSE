@@ -10,11 +10,13 @@ namespace Pool
   class Heaps
   {
   public:
-    Heap*  m_pTransientJumbo;
-    Heap*  m_pTransientLarge;
-    Heap*  m_pTransientMedium;
-    Heap*  m_pTransientSmall;
-
+    struct {
+      Heap*  m_pJumbo;
+      Heap*  m_pLarge;
+      Heap*  m_pMedium;
+      Heap*  m_pSmall;
+    } Transient;
+  
   public:
     void vInit(void);
   };

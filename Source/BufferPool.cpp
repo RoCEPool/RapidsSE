@@ -123,27 +123,27 @@ Buffer* BufferPool::pAllocBuffer(void)
 
     vTrace("   Transitent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagSmall.aChar(),
-           gpAttachMap->m_xHeaps.m_pTransientSmall->iBufferCount(),
-           gpAttachMap->m_xHeaps.m_pTransientSmall->iAllocCount(),
-           gpAttachMap->m_xHeaps.m_pTransientSmall->iFreeCount());
+           gpAttachMap->m_xHeaps.Transient.m_pSmall->iBufferCount(),
+           gpAttachMap->m_xHeaps.Transient.m_pSmall->iAllocCount(),
+           gpAttachMap->m_xHeaps.Transient.m_pSmall->iFreeCount());
     
     vTrace("  Transitent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagMedium.aChar(),
-           gpAttachMap->m_xHeaps.m_pTransientMedium->iBufferCount(),
-           gpAttachMap->m_xHeaps.m_pTransientMedium->iAllocCount(),
-           gpAttachMap->m_xHeaps.m_pTransientMedium->iFreeCount());
+           gpAttachMap->m_xHeaps.Transient.m_pMedium->iBufferCount(),
+           gpAttachMap->m_xHeaps.Transient.m_pMedium->iAllocCount(),
+           gpAttachMap->m_xHeaps.Transient.m_pMedium->iFreeCount());
     
     vTrace("   Transitent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagLarge.aChar(),
-           gpAttachMap->m_xHeaps.m_pTransientLarge->iBufferCount(),
-           gpAttachMap->m_xHeaps.m_pTransientLarge->iAllocCount(),
-           gpAttachMap->m_xHeaps.m_pTransientLarge->iFreeCount());
+           gpAttachMap->m_xHeaps.Transient.m_pLarge->iBufferCount(),
+           gpAttachMap->m_xHeaps.Transient.m_pLarge->iAllocCount(),
+           gpAttachMap->m_xHeaps.Transient.m_pLarge->iFreeCount());
     
     vTrace("   Transitent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagJumbo.aChar(),
-           gpAttachMap->m_xHeaps.m_pTransientJumbo->iBufferCount(),
-           gpAttachMap->m_xHeaps.m_pTransientJumbo->iAllocCount(),
-           gpAttachMap->m_xHeaps.m_pTransientJumbo->iFreeCount());
+           gpAttachMap->m_xHeaps.Transient.m_pJumbo->iBufferCount(),
+           gpAttachMap->m_xHeaps.Transient.m_pJumbo->iAllocCount(),
+           gpAttachMap->m_xHeaps.Transient.m_pJumbo->iFreeCount());
     
     vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagSmall.aChar(),
