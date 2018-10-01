@@ -13,7 +13,10 @@ PromptNote mPromptNote_version (
   "version"_Stz,        // the prompt command
   nullptr,              // the second word
   bPrompt_version,      // prompt post-process function
-  true                  // enabled
+  true,                 // enabled
+
+  true,                 // visible
+  "fun help"_Stz        // help
 );
 
 /*----------------------------------------------------------------------------*/

@@ -9,8 +9,11 @@ PromptNote mPromptNote_print (
   "comment"_Stz,     // comment about the functopm
   "print"_Stz,       // the prompt command
   nullptr,           // the second word
-  bPrompt_print,        // prompt post-process function
-  true               // enabled
+  bPrompt_print,     // prompt post-process function
+  true,              // enabled
+
+  true,              // visible
+  "fun help"_Stz     // help
 );
 
 /*----------------------------------------------------------------------------*/
