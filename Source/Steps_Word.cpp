@@ -334,7 +334,7 @@ void Task::vDicWhich(MP_Task mpTask)
   // by incrementing m_nSubDic we are indicating to the ; word that
   // there is another temporary sub dic on the path stack
   // which needs to be discarded
-  mpTask->m_nSubDic++;
+  mpTask->m_pCompiler->m_nSubDic++;
   
   EXIT();
 }
@@ -615,7 +615,7 @@ void Task::vOpDic(MP_Task mpTask)
   
   mpTask->m_xPathStack.vPush(pOpDic);
   
-  mpTask->m_nSubDic++;
+  mpTask->m_pCompiler->m_nSubDic++;
   
   EXIT();
 }
@@ -631,7 +631,7 @@ void Task::vPlanDicTask(MP_Task mpTask)
   
   mpTask->m_xPathStack.vPush(pPlanDic);
   
-  mpTask->m_nSubDic++;
+  mpTask->m_pCompiler->m_nSubDic++;
   
   EXIT();
 }
@@ -791,7 +791,7 @@ void Task::vSemicolon(MP_Task mpTask)
   mpTask->m_pCompiler->m_bCompiling = false;
       
   // discard subDic use
-  for ( ; mpTask->m_nSubDic; mpTask->m_nSubDic--)
+  for ( ; mpTask->m_pCompiler->m_nSubDic; mpTask->m_pCompiler->m_nSubDic--)
     mpTask->m_xPathStack.vDiscard();
 
   mpTask->m_pCompiler->m_pCurrentWord = nullptr;
@@ -819,7 +819,7 @@ void Task::vSubDic(MP_Task mpTask)
   
   mpTask->m_xPathStack.vPush(pDic);
 
-  mpTask->m_nSubDic++;
+  mpTask->m_pCompiler->m_nSubDic++;
   
   EXIT();
 }

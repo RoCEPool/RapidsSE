@@ -116,7 +116,6 @@ namespace Tasks
     Cell* m_pResetIP;
     Cell* m_pBeginIP;
     Word* m_pWord;
-    i8    m_nSubDic;
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove

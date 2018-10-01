@@ -13,6 +13,7 @@ namespace Tasks
   
     bool  m_bCompiling;    // currently compiling a word?
     Word* m_pCurrentWord;  // current word being compiled
+    i8    m_nSubDic;       // number of sub dictionaries
     i8    m_nVariables;    // number of locals/params variables
 
     Tokeniser* m_pTokeniser; // input stream tokenizer
