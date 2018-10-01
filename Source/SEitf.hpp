@@ -10,29 +10,22 @@ namespace Interface
   class SEitf : public Object
   {
   public:
-    i8     m_iPid;             // process which created this seitf
-    i8     m_iPartition;       // which partition this seitf connects to
+    i8       m_iPid;             // process which created this seitf
+    i8       m_iPartition;       // which partition this seitf connects to
+    DicStack m_xPathStack;       // dictionary stack
+    Job*     m_pJob;             // job seitf currently executing
+    s48K     m_sResponse;        // response
+    Tx*      m_pTx;              // current transaction
+    bool     m_bSeitfExiting;    // is seitf exiting ?
+    RowOnce* m_pRowOnce;         // has row been seen before?
     
-    DicStack m_xPathStack;     // dictionary stack
-    Job*   m_pJob;             // job seitf currently executing
-    s48K   m_sResponse;        // response
+    PerformanceTrace* m_pPerformanceTrace;  // performance Trace
+    CommandProcessor* m_pCommandProcessor;  // command processor
+  
+    // these should go
+    bool       m_bDisplay;       // display on
+    Formatters m_xFormatters;    // record formatter
     
-    Table*   m_pCurrentTable;
-  
-    Tx*    m_pTx;
-  
-    bool   m_bDisplay;
-  
-    bool   m_bSeitfExiting;
-    
-    RowOnce* m_pRowOnce; // has row been seen before?
-  
-    Formatters m_xFormatters; // record formatters
-  
-    PerformanceTrace* m_pPerformanceTrace;
-  
-    CommandProcessor* m_pCommandProcessor;
-  
     // must be last
     Footer m_xFooter;
     
@@ -44,9 +37,6 @@ namespace Interface
     ~SEitf(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
-    void   vCurrentTable(Table* pTable);
-    Table* pCurrentTable(void);
     
     void   vContentDump(void);
     

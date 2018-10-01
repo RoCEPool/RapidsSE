@@ -168,28 +168,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
   }
 
 /*----------------------------------------------------------------------------*/
-/* validate table                                                             */
-/*----------------------------------------------------------------------------*/
-#define VALIDATE_TABLE(aMarker) \
-  {  \
-    if ( ! pSEitf->pCurrentTable() ) { \
-      TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-      return EC_VALIDATION_FAILURE; \
-    } \
-  }
-
-/*----------------------------------------------------------------------------*/
-/* validate no table                                                          */
-/*----------------------------------------------------------------------------*/
-#define VALIDATE_NOTABLE(aMarker) \
-  {  \
-    if ( pSEitf->pCurrentTable() ) { \
-      TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-      return EC_VALIDATION_FAILURE; \
-    } \
-  }
-
-/*----------------------------------------------------------------------------*/
 /* validate SEitf                                                             */
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_SEITF(aMarker) \

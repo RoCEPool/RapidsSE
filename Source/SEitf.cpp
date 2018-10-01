@@ -81,7 +81,6 @@ SEitf::SEitf(i8 iPartition)
   //m_xPathStack;
   m_sResponse       = ""_Stz;
   m_pJob            = nullptr;
-  m_pCurrentTable   = nullptr;
   m_pTx             = nullptr;
   m_bDisplay        = true;
   
@@ -121,23 +120,6 @@ DicStack* SEitf::pPathStack(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 
   return &m_xPathStack;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* set the current table                                                      */
-/*----------------------------------------------------------------------------*/
-void SEitf::vCurrentTable(Table* pTable)
-{
-  m_pCurrentTable = pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the current table                                                      */
-/*----------------------------------------------------------------------------*/
-Table* SEitf::pCurrentTable(void)
-{
-  return m_pCurrentTable;
 }
 
 /*----------------------------------------------------------------------------*/

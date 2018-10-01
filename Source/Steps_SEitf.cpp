@@ -23,9 +23,6 @@ void Step::vAddSteps_SEitf(void)
   vAddStep("seitf.isExiting"_Stz,        &Task::vSEitfIsExiting,        false);
   vAddStep("seitf.pid"_Stz,              &Task::vSEitfPid,              false);
   vAddStep("seitf.slot@"_Stz,            &Task::vSEitfSlotFetch,        false);
-  vAddStep("seitf.table@"_Stz,           &Task::vSEitfTableFetch,       false);
-  vAddStep("seitf.tableRef"_Stz,         &Task::vSEitfTableRef,         false);
-  vAddStep("seitf.tableDeref"_Stz,       &Task::vSEitfTableDeref,       false);
   vAddStep("seitf.tx@"_Stz,              &Task::vSEitfTxFetch,          false);
   vAddStep("seitf.tx!"_Stz,              &Task::vSEitfTxStore,          false);
 }
@@ -182,78 +179,6 @@ void Task::vSEitfSlotFetch(MP_Task mpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   mpTask->m_pDataStack->vPushInt(pSEitf->iSlot());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.table@ -- fetch table from SEitf                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfTableFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfTableFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.rsp!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  mpTask->m_pDataStack->vPushObject(pSEitf->pCurrentTable());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.tableDeref -- store table in SEitf and inc reference                 */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfTableDeref(MP_Task mpTask)
-{
-  ENTRY("vSEitfRspStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.tableDeref"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Table* pTable = pSEitf->pCurrentTable();
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  pTable->vRefDec();
-
-  pSEitf->vCurrentTable(nullptr);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.tableRef -- store table in SEitf and inc reference                   */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfTableRef(MP_Task mpTask)
-{
-  ENTRY("vSEitfTableRef"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.tableRef"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrTable;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("seitf.tableRef"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  pTable->vRefInc();
-  
-  pSEitf->vCurrentTable(pTable);
   
   EXIT();
 }
