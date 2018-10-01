@@ -48,10 +48,7 @@ AttachMap::AttachMap(void)
   m_pCarryOver = new CarryOver;
   
   // create the transient heaps
-  m_xHeaps.m_pTransientJumbo  = new Heap(CN_JUMBOTRANSIENT,  C_SIZE_JUMBO_OBJECT);
-  m_xHeaps.m_pTransientLarge  = new Heap(CN_LARGETRANSIENT,  C_SIZE_LARGE_OBJECT);
-  m_xHeaps.m_pTransientMedium = new Heap(CN_MEDIUMTRANSIENT, C_SIZE_MEDIUM_OBJECT);
-  m_xHeaps.m_pTransientSmall  = new Heap(CN_SMALLTRANSIENT,  C_SIZE_SMALL_OBJECT);
+  m_xHeaps.vInit();
   
   // create the persistent heaps
   m_pCarryOver->m_pPersistentJumboHeap  =
@@ -64,18 +61,6 @@ AttachMap::AttachMap(void)
     new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
 
   _checkInitialised_(CN_ATTACHMAP);
-  
-  m_xHeaps.m_pTransientJumbo->vFixedHeap(true);
-  
-  Buffer* pJumbo = nullptr;
-  while ( (pJumbo = gpBufferPool->pNextJumbo(pJumbo)) ) {
-    
-    pJumbo->vSetMagic();
-    pJumbo->vSetClass(CN_FREECHUNK);
-    
-    m_xHeaps.m_pTransientJumbo->vAddFree((FreeChunk*)pJumbo);
-  }
-
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }
