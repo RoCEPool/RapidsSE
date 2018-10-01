@@ -128,8 +128,6 @@ namespace Interface
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
     
-    bool bPopResponse(eEC& eResult, StrVal& sResponse);
-    
     //--------------------------------------------------------------------------
     void vClearLastError(void);
     eEC  eGetLastError(void);

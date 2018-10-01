@@ -1126,42 +1126,6 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop response from response queue                                           */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  ASSERT(0);
-  /*
-  bool b;
-  ValSet xValSet;
-  Stz* aCursor = nullptr;
-  
-  if (! m_pResponseQueue->bPop(&xValSet))
-    return false;
-  
-  Value* pValue;
-  
-  b = xValSet.bExtractValue(aCursor,pValue);
-  ASSERT(b);
-  eResult = (eEC)_pIntVal(pValue)->iInt();
-  
-  b = xValSet.bExtractValue(aCursor,pValue);
-  ASSERT(b);
-  *_pStrVal(&sResponse) = _pStrVal(pValue);
-  
-  b = xValSet.bExtractValue(aCursor,pValue);
-  ASSERT(! b);
-  
-  //  vTrace("sResponse: >>>\n%s\n<<<\n\n"_Stz,sResponse.aChar());
-  //  vTrace("\n---\n\n"_Stz,sResponse.aChar());
-  */
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
