@@ -67,9 +67,52 @@ Task::Task(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vInit();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  m_xLock.vInitLock(LK_TASK);
   
-  m_pJob = pJob;
+  m_pJob         = pJob;
+  
+  m_iQueueOrder  = C_UNKNOWN;
+  m_iPartition   = C_UNKNOWN;
+  
+  m_eState       = TS_NONE;
+  m_eQueue       = QR_NONE;
+  m_zAcks.vCheckInit();
+  m_pThread      = nullptr;
+  
+  m_pDataStack   = nullptr;
+  m_pReturnStack = nullptr;
+  m_pAuxStack    = nullptr;
+  
+  m_pLocalsFrame = nullptr;
+  m_pOpFrame     = nullptr;
+  
+  IP.m_pCell     = nullptr;
+  m_pEntryCell   = nullptr;
+  
+  m_pCompiler    = new Compiler;
+  
+  m_pResetIP     = nullptr;
+  m_pBeginIP     = nullptr;
+  m_pWord        = nullptr;
+  m_bCompiling   = false;
+  m_iTracing     = C_TRACE_NONE;
+  m_nVariables   = 0;
+  m_pCurrentWord = nullptr;
+  m_nSubDic      = 0;
+  
+  m_pSEitf       = nullptr;
+  
+  m_pSocket      = nullptr;
+  m_pPlan        = nullptr;
+  
+  m_iDdlLocked   = 0;
+  
+  m_pSendNode = nullptr;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
@@ -100,58 +143,6 @@ Task::~Task(void)
   }
   
   ASSERT(!m_pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vInit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
-  // basic state
-  m_xLock.vInitLock(LK_TASK);
-  
-  m_pJob         = nullptr;
-
-  m_iQueueOrder = C_UNKNOWN;
-  m_iPartition   = C_UNKNOWN;
-  
-  m_eState       = TS_NONE;
-  m_eQueue       = QR_NONE;
-  m_zAcks.vCheckInit();
-  m_pThread      = nullptr;
-  
-  m_pDataStack   = nullptr;
-  m_pReturnStack = nullptr;
-  m_pAuxStack    = nullptr;
-  
-  m_pLocalsFrame = nullptr;
-  m_pOpFrame = nullptr;
-  
-  IP.m_pCell     = nullptr;
-  m_pEntryCell   = nullptr;
-  
-  m_pCompiler    = new Compiler;
-  
-  m_pResetIP     = nullptr;
-  m_pBeginIP     = nullptr;
-  m_pWord        = nullptr;
-  m_bCompiling   = false;
-  m_iTracing     = C_TRACE_NONE;
-  m_nVariables   = 0;
-  m_pCurrentWord = nullptr;
-  m_nSubDic      = 0;
-  
-  m_pSEitf   = nullptr;
-
-  m_pSocket = nullptr;
-  m_pPlan    = nullptr;
-  
-  m_iDdlLocked = 0;
-  
-  
-  m_pSendNode = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
