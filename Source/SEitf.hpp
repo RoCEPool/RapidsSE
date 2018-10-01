@@ -75,37 +75,6 @@ namespace Interface
     void vCommitTx(void);
     void vEndTx(void);
     
-    bool bDecode(TokenVec& xTokenVec);
-    
-    bool bCheckpoint(TokenVec& xTokenVec, i8 iReqNo);
-    
-    bool bConnect(TokenVec& xTokenVec, i8 iReqNo);
-    bool bConnectCluster(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDisconnect(TokenVec& xTokenVec, i8 iReqNo);
-    
-    bool bGetAttachMap(TokenVec& xTokenVec, i8 iReqNo);
-    bool bSetAttachMap(TokenVec& xTokenVec, i8 iReqNo);
-    
-    bool bReload(TokenVec& xTokenVec, i8 iReqNo);
-    
-    bool bCopyTable(TokenVec& xTokenVec, i8 iReqNo);
-    bool bExportTable(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDistExportTable(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDistFetchRowsIndex(TokenVec& xTokenVec, i8 iReqNo);
-    bool bDistParallelLoadTable(TokenVec& xTokenVec, i8 iReqNo);
-    
-    bool bFetchRows(TokenVec& xTokenVec, i8 iReqNo);
-    bool bSpawnFetchRows(TokenVec& xTokenVec, i8 iReqNo);
-  
-    bool bGetTask(TokenVec& xTokenVec, i8 iReqNo);
-    bool bRetTask(TokenVec& xTokenVec, i8 iReqNo);
-
-    bool bInsertEntriesTable(WorkingBuffer* pWorkingBuffer, i8 iPartition);
-    bool bInsertEntriesTableSlot(WorkingBuffer* pWorkingBuffer, i8 iSlot);
-
-    bool bGetMonitor(TokenVec& xTokenVec, i8 iReqNo);
-    bool bSeitfCount(TokenVec& xTokenVec, i8 iReqNo);
-    
     bool bPing(TokenVec& xTokenVec, i8 iReqNo);
  
     bool bTxBegin(TokenVec& xTokenVec, i8 iReqNo);
