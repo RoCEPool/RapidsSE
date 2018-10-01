@@ -37,7 +37,7 @@
       // add word kind to ls string
       object@ word.name
 
-      "row: ('%v',%v,%v)\n" str.format
+      "row: ( '%v',%v,%v )\n" str.format
       str.cat
     then
 

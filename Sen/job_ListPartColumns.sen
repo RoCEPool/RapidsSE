@@ -25,7 +25,7 @@
   ""                             // initial ls string
   iPartitionCols 0 do
     I pSlots slots.columnName
-    "row: ('%v')\n" str.format
+    "row: ( '%v' )\n" str.format
     str.cat
   loop
 

@@ -31,7 +31,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set response in job
-  "row: ('pong')\n" grid::thisNode@ pJob_Ping job.response!
+  "row: ( 'pong' )\n" grid::thisNode@ pJob_Ping job.response!
   iCount grid::thisNode@ pJob_Ping job.rowsProcessed!
 
   <DONE_REQ>
