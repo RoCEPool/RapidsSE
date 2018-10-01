@@ -32,6 +32,7 @@ using namespace Tasks;
 
 #include "Socket.hpp"
 
+#include "Step.hpp"
 #include "Task.hpp"
 #include "TaskQueue.hpp"
 
