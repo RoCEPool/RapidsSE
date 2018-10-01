@@ -14,6 +14,9 @@ namespace Pool
     Heap*  m_pTransientLarge;
     Heap*  m_pTransientMedium;
     Heap*  m_pTransientSmall;
+
+  public:
+    void vInit(void);
   };
 }
 
