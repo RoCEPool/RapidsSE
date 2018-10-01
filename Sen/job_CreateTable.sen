@@ -62,7 +62,7 @@
   true pIndex index.isHidden!
 
   // now add a column to the hidden index
-  "integer" "hidden_column" pIndex index.createColumnVec
+  "integer" "hidden_column" pIndex index.createColumnVecHidden
 
   // step out of indexes
   pathDrop

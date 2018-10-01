@@ -24,8 +24,8 @@ void Task::vAddPrimitives_Index(void)
   vAddPrimitive("index.columnName"_Stz,      &vIndexColumnName,      false);
   vAddPrimitive("index.columnType"_Stz,      &vIndexColumnType,      false);
   vAddPrimitive("index.compact"_Stz,         &vIndexCompact,         false);
+  vAddPrimitive("index.createColumnVecHidden"_Stz, &vIndexCreateColumnVecHidden, false);
   vAddPrimitive("index.createColumnVec"_Stz, &vIndexCreateColumnVec, false);
-  vAddPrimitive("index.createColumnVecR35"_Stz, &vIndexCreateColumnVecR35, false);
   vAddPrimitive("index.dump"_Stz,            &vIndexDump,            false);
   vAddPrimitive("index.exactKey"_Stz,        &vIndexExactKey,        false);
   vAddPrimitive("index.init"_Stz,            &vIndexInit,            false);
@@ -244,11 +244,11 @@ void Task::vIndexCompact(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.createColumnVec -- create column vector from sub dictionary          */
+/* index.createColumnVecHidden -- create column vector for hidden index       */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexCreateColumnVec(MP_Task mpTask)
+void Task::vIndexCreateColumnVecHidden(MP_Task mpTask)
 {
-  ENTRY("vIndexCreateColumnVec"_Stz);
+  ENTRY("vIndexCreateColumnVecHidden"_Stz);
   
   Object* pPtrIndex;
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -270,21 +270,21 @@ void Task::vIndexCreateColumnVec(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* index.createColumnVecR35 -- create column vector from job_createIndex      */
+/* index.createColumnVecR -- create column vector from job_createIndex        */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexCreateColumnVecR35(MP_Task mpTask)
+void Task::vIndexCreateColumnVec(MP_Task mpTask)
 {
-  ENTRY("vIndexCreateColumnVecR35"_Stz);
+  ENTRY("vIndexCreateColumnVec"_Stz);
   
   Object* pPtrIndex;
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.createColumnVecR35"_Stz);
+    THROW_INVALID_DSTACK("index.createColumnVec"_Stz);
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
   Object* pPtrJob;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
-    THROW_INVALID_DSTACK("index.createColumnVecR35"_Stz);
+    THROW_INVALID_DSTACK("index.createColumnVec"_Stz);
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pPtrJob);
   ASSERT(CN_JOB_CREATEINDEX == pJob_CreateIndex->eClass());
   
