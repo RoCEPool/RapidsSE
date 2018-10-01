@@ -14,7 +14,6 @@ namespace Interface
     i8     m_iPartition;       // which partition this seitf connects to
     
     DicStack m_xPathStack;      // dictionary stack
-    
     Job*   m_pJob;             // job seitf currently executing
     s48K   m_sResponse;        // response
     
@@ -26,8 +25,6 @@ namespace Interface
     Tx*    m_pTx;
   
     bool   m_bDisplay;
-    
-    i8     m_iRowPartition;
   
     bool   m_bSeitfExiting;
     
