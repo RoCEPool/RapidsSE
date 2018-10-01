@@ -12,35 +12,35 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Astack(void)
+void Task::vAddSteps_Astack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("astack.class"_Stz,    &vAstackClass,      false);
-  vAddPrimitive("adepth"_Stz,          &vAstackDepth,      false);
-  vAddPrimitive("adrop"_Stz,           &vAstackDrop,       false);
-  vAddPrimitive("adup"_Stz,            &vAstackDup,        false);
-  vAddPrimitive("a@"_Stz,              &vAstackFetch,      false);
-  vAddPrimitive("anip"_Stz,            &vAstackNip,        false);
-  vAddPrimitive("apick"_Stz,           &vAstackPick,       false);
-  vAddPrimitive("areverse"_Stz,        &vAstackReverse,    false);
-  vAddPrimitive("astk"_Stz,            &vAstackStk,        false);
-  vAddPrimitive(">a"_Stz,              &vAstackToA,        false);
-  vAddPrimitive("a>"_Stz,              &vAstackToP,        false);
-  vAddPrimitive(">auxStack"_Stz,       &vAstackTransfer,   false);
-  vAddPrimitive("aswap"_Stz,           &vAstackSwap,       false);
-  vAddPrimitive("avalset>"_Stz,        &vAstackToValues,   false);
-  vAddPrimitive(">avalset"_Stz,        &vAstackToValSet,   false);
-  vAddPrimitive("a0"_Stz,              &vAstack0,          false);
-  vAddPrimitive("a1"_Stz,              &vAstack1,          false);
-  vAddPrimitive("a2"_Stz,              &vAstack2,          false);
-  vAddPrimitive("a3"_Stz,              &vAstack3,          false);
-  vAddPrimitive("a4"_Stz,              &vAstack4,          false);
-  vAddPrimitive("a5"_Stz,              &vAstack5,          false);
-  vAddPrimitive("a6"_Stz,              &vAstack6,          false);
-  vAddPrimitive("a7"_Stz,              &vAstack7,          false);
-  vAddPrimitive("a8"_Stz,              &vAstack8,          false);
-  vAddPrimitive("a9"_Stz,              &vAstack9,          false);
+  vAddStep("astack.class"_Stz,    &vAstackClass,      false);
+  vAddStep("adepth"_Stz,          &vAstackDepth,      false);
+  vAddStep("adrop"_Stz,           &vAstackDrop,       false);
+  vAddStep("adup"_Stz,            &vAstackDup,        false);
+  vAddStep("a@"_Stz,              &vAstackFetch,      false);
+  vAddStep("anip"_Stz,            &vAstackNip,        false);
+  vAddStep("apick"_Stz,           &vAstackPick,       false);
+  vAddStep("areverse"_Stz,        &vAstackReverse,    false);
+  vAddStep("astk"_Stz,            &vAstackStk,        false);
+  vAddStep(">a"_Stz,              &vAstackToA,        false);
+  vAddStep("a>"_Stz,              &vAstackToP,        false);
+  vAddStep(">auxStack"_Stz,       &vAstackTransfer,   false);
+  vAddStep("aswap"_Stz,           &vAstackSwap,       false);
+  vAddStep("avalset>"_Stz,        &vAstackToValues,   false);
+  vAddStep(">avalset"_Stz,        &vAstackToValSet,   false);
+  vAddStep("a0"_Stz,              &vAstack0,          false);
+  vAddStep("a1"_Stz,              &vAstack1,          false);
+  vAddStep("a2"_Stz,              &vAstack2,          false);
+  vAddStep("a3"_Stz,              &vAstack3,          false);
+  vAddStep("a4"_Stz,              &vAstack4,          false);
+  vAddStep("a5"_Stz,              &vAstack5,          false);
+  vAddStep("a6"_Stz,              &vAstack6,          false);
+  vAddStep("a7"_Stz,              &vAstack7,          false);
+  vAddStep("a8"_Stz,              &vAstack8,          false);
+  vAddStep("a9"_Stz,              &vAstack9,          false);
 }
 
 /*----------------------------------------------------------------------------*/

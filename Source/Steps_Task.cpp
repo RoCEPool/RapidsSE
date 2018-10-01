@@ -13,39 +13,39 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Task(void)
+void Task::vAddSteps_Task(void)
 {
-  vAddPrimitive("task.ack"_Stz,       &vTaskAck,           false);
-  vAddPrimitive("task.acks@"_Stz,     &vTaskAcksFetch,     false);
-  vAddPrimitive("task.acks!"_Stz,     &vTaskAcksStore,     false);
-  vAddPrimitive("task::breakPoint"_Stz, &vTaskBreakPoint,  false);
-  vAddPrimitive("task.delete"_Stz,    &vTaskDelete,        false);
-  vAddPrimitive("task.dicStack"_Stz,  &vTaskDicStack,      false);
-  vAddPrimitive("task.dump"_Stz,      &vTaskDump,          false);
-  vAddPrimitive("task.dropLock"_Stz,  &vTaskDropLock,      false);
-  vAddPrimitive("task.grabLock"_Stz,  &vTaskGrabLock,      false);
-  vAddPrimitive("task.job@"_Stz,      &vTaskJobFetch,      false);
-  vAddPrimitive("task.job!"_Stz,      &vTaskJobStore,      false);
-  vAddPrimitive("task.name@"_Stz,     &vTaskNameFetch,     false);
-  vAddPrimitive("task.partition@"_Stz,&vTaskPartitionFetch,false);
-  vAddPrimitive("task.partition!"_Stz,&vTaskPartitionStore,false);
-  vAddPrimitive("task.plan@"_Stz,     &vTaskPlanFetch,     false);
-  vAddPrimitive("task.plan!"_Stz,     &vTaskPlanStore,     false);
-  vAddPrimitive("task.seed"_Stz,      &vTaskSeed,          false);
-  vAddPrimitive("task.seitf@"_Stz,    &vTaskSeitfFetch,    false);
-  vAddPrimitive("task.seitf!"_Stz,    &vTaskSeitfStore,    false);
-  vAddPrimitive("task.sleep"_Stz,     &vTaskSleep,         false);
-  vAddPrimitive("task.send"_Stz,      &vTaskSend,          false);
-  vAddPrimitive("task.sendNode@"_Stz, &vTaskSendNodeFetch, false);
-  vAddPrimitive("task.sendNode!"_Stz, &vTaskSendNodeStore, false);
-  vAddPrimitive("task.socket@"_Stz,   &vTaskSocketFetch,   false);
-  vAddPrimitive("task.socket!"_Stz,   &vTaskSocketStore,   false);
-  vAddPrimitive("task.state@"_Stz,    &vTaskStateFetch,    false);
-  vAddPrimitive("task.state!"_Stz,    &vTaskStateStore,    false);
-  vAddPrimitive("task::this"_Stz,     &vTaskThis,          false);
-  vAddPrimitive("task.thread"_Stz,    &vTaskThread,        false);
-  vAddPrimitive("task.wait"_Stz,      &vTaskWait,          false);
-  vAddPrimitive("task.yield"_Stz,     &vTaskYield,         false);
+  vAddStep("task.ack"_Stz,       &vTaskAck,           false);
+  vAddStep("task.acks@"_Stz,     &vTaskAcksFetch,     false);
+  vAddStep("task.acks!"_Stz,     &vTaskAcksStore,     false);
+  vAddStep("task::breakPoint"_Stz, &vTaskBreakPoint,  false);
+  vAddStep("task.delete"_Stz,    &vTaskDelete,        false);
+  vAddStep("task.dicStack"_Stz,  &vTaskDicStack,      false);
+  vAddStep("task.dump"_Stz,      &vTaskDump,          false);
+  vAddStep("task.dropLock"_Stz,  &vTaskDropLock,      false);
+  vAddStep("task.grabLock"_Stz,  &vTaskGrabLock,      false);
+  vAddStep("task.job@"_Stz,      &vTaskJobFetch,      false);
+  vAddStep("task.job!"_Stz,      &vTaskJobStore,      false);
+  vAddStep("task.name@"_Stz,     &vTaskNameFetch,     false);
+  vAddStep("task.partition@"_Stz,&vTaskPartitionFetch,false);
+  vAddStep("task.partition!"_Stz,&vTaskPartitionStore,false);
+  vAddStep("task.plan@"_Stz,     &vTaskPlanFetch,     false);
+  vAddStep("task.plan!"_Stz,     &vTaskPlanStore,     false);
+  vAddStep("task.seed"_Stz,      &vTaskSeed,          false);
+  vAddStep("task.seitf@"_Stz,    &vTaskSeitfFetch,    false);
+  vAddStep("task.seitf!"_Stz,    &vTaskSeitfStore,    false);
+  vAddStep("task.sleep"_Stz,     &vTaskSleep,         false);
+  vAddStep("task.send"_Stz,      &vTaskSend,          false);
+  vAddStep("task.sendNode@"_Stz, &vTaskSendNodeFetch, false);
+  vAddStep("task.sendNode!"_Stz, &vTaskSendNodeStore, false);
+  vAddStep("task.socket@"_Stz,   &vTaskSocketFetch,   false);
+  vAddStep("task.socket!"_Stz,   &vTaskSocketStore,   false);
+  vAddStep("task.state@"_Stz,    &vTaskStateFetch,    false);
+  vAddStep("task.state!"_Stz,    &vTaskStateStore,    false);
+  vAddStep("task::this"_Stz,     &vTaskThis,          false);
+  vAddStep("task.thread"_Stz,    &vTaskThread,        false);
+  vAddStep("task.wait"_Stz,      &vTaskWait,          false);
+  vAddStep("task.yield"_Stz,     &vTaskYield,         false);
 }
 
 /*----------------------------------------------------------------------------*/

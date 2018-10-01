@@ -13,9 +13,9 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Comment(void)
+void Task::vAddSteps_Comment(void)
 {
-  vAddPrimitive("("_Stz,               &vComment,          true );
+  vAddStep("("_Stz,               &vComment,          true );
 }
 
 /*----------------------------------------------------------------------------*/

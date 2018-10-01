@@ -13,20 +13,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Input(void)
+void Task::vAddSteps_Input(void)
 {
-  vAddPrimitive("accept"_Stz,          &vInputAccept,      false);
-  vAddPrimitive("input.close"_Stz,     &vInputClose,       false);
-  vAddPrimitive("input.depth"_Stz,     &vInputDepth,       false);
-  vAddPrimitive("input.next"_Stz,      &vInputNext,        false);
-  vAddPrimitive("input.open"_Stz,      &vInputOpen,        false);
-  vAddPrimitive("input.pop"_Stz,       &vInputPop,         false);
-  vAddPrimitive("input.push"_Stz,      &vInputPush,        false);
-  vAddPrimitive("input.stdin"_Stz,     &vInputStdin,       false);
-  vAddPrimitive("input.text"_Stz,      &vInputText,        false);
-  vAddPrimitive("input.token"_Stz,     &vInputToken,       false);
-  vAddPrimitive("input.type"_Stz,      &vInputType,        false);
-  vAddPrimitive("token:"_Stz,          &vTokenColon,       false);
+  vAddStep("accept"_Stz,          &vInputAccept,      false);
+  vAddStep("input.close"_Stz,     &vInputClose,       false);
+  vAddStep("input.depth"_Stz,     &vInputDepth,       false);
+  vAddStep("input.next"_Stz,      &vInputNext,        false);
+  vAddStep("input.open"_Stz,      &vInputOpen,        false);
+  vAddStep("input.pop"_Stz,       &vInputPop,         false);
+  vAddStep("input.push"_Stz,      &vInputPush,        false);
+  vAddStep("input.stdin"_Stz,     &vInputStdin,       false);
+  vAddStep("input.text"_Stz,      &vInputText,        false);
+  vAddStep("input.token"_Stz,     &vInputToken,       false);
+  vAddStep("input.type"_Stz,      &vInputType,        false);
+  vAddStep("token:"_Stz,          &vTokenColon,       false);
 }
 
 /*----------------------------------------------------------------------------*/

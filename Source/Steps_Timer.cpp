@@ -13,19 +13,19 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Timer(void)
+void Task::vAddSteps_Timer(void)
 {
-  vAddPrimitive("timer.delete"_Stz,    &vTimerDelete,      false);
-  vAddPrimitive("timer.init"_Stz,      &vTimerInit,        false);
-  vAddPrimitive("timer.microsecs"_Stz, &vTimerMicrosecs,   false);
-  vAddPrimitive("timer.millisecs"_Stz, &vTimerMillisecs,   false);
-  vAddPrimitive("timer.nanosecs"_Stz,  &vTimerNanosecs,    false);
-  vAddPrimitive("timer::new"_Stz,       &vTimerNew,         false);
-  vAddPrimitive("timer.reset"_Stz,     &vTimerReset,       false);
-  vAddPrimitive("timer.secs"_Stz,      &vTimerSecs,        false);
-  vAddPrimitive("timer.start"_Stz,     &vTimerStart,       false);
-  vAddPrimitive("timer.ticks"_Stz,     &vTimerTicks,       false);
-  vAddPrimitive("timer.update"_Stz,    &vTimerUpdate,      false);
+  vAddStep("timer.delete"_Stz,    &vTimerDelete,      false);
+  vAddStep("timer.init"_Stz,      &vTimerInit,        false);
+  vAddStep("timer.microsecs"_Stz, &vTimerMicrosecs,   false);
+  vAddStep("timer.millisecs"_Stz, &vTimerMillisecs,   false);
+  vAddStep("timer.nanosecs"_Stz,  &vTimerNanosecs,    false);
+  vAddStep("timer::new"_Stz,       &vTimerNew,         false);
+  vAddStep("timer.reset"_Stz,     &vTimerReset,       false);
+  vAddStep("timer.secs"_Stz,      &vTimerSecs,        false);
+  vAddStep("timer.start"_Stz,     &vTimerStart,       false);
+  vAddStep("timer.ticks"_Stz,     &vTimerTicks,       false);
+  vAddStep("timer.update"_Stz,    &vTimerUpdate,      false);
 }
 
 /*----------------------------------------------------------------------------*/

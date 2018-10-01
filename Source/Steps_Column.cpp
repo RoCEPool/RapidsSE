@@ -11,14 +11,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Column(void)
+void Task::vAddSteps_Column(void)
 {
-  vAddPrimitive("column.isNullable@"_Stz,     &vColumnIsNullableFetch,   false);
-  vAddPrimitive("column.isPartitionKey@"_Stz, &vColumnIsPartitionKeyFetch, false);
-  vAddPrimitive("column.length@"_Stz,         &vColumnLengthFetch,       false);
-  vAddPrimitive("column.name@"_Stz,           &vColumnNameFetch,         false);
-  vAddPrimitive("column.scale@"_Stz,          &vColumnScaleFetch,        false);
-  vAddPrimitive("column.type@"_Stz,           &vColumnTypeFetch,         false);
+  vAddStep("column.isNullable@"_Stz,     &vColumnIsNullableFetch,   false);
+  vAddStep("column.isPartitionKey@"_Stz, &vColumnIsPartitionKeyFetch, false);
+  vAddStep("column.length@"_Stz,         &vColumnLengthFetch,       false);
+  vAddStep("column.name@"_Stz,           &vColumnNameFetch,         false);
+  vAddStep("column.scale@"_Stz,          &vColumnScaleFetch,        false);
+  vAddStep("column.type@"_Stz,           &vColumnTypeFetch,         false);
 }
 
 /*----------------------------------------------------------------------------*/

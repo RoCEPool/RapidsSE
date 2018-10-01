@@ -12,20 +12,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Thread(void)
+void Task::vAddSteps_Thread(void)
 {
-  vAddPrimitive("thread.bind"_Stz,            &vThreadBind,            false);
-  vAddPrimitive("thread.condSignal"_Stz,      &vThreadCondSignal,      false);
-  vAddPrimitive("thread.condWait"_Stz,        &vThreadCondWait,        false);
-  vAddPrimitive("thread.cpu"_Stz,             &vThreadCpu,             false);
-  vAddPrimitive("thread.dump"_Stz,            &vThreadDump,            false);
-  vAddPrimitive("thread.id"_Stz,              &vThreadId,              false);
-  vAddPrimitive("thread.mutexLock"_Stz,       &vThreadMutexLock,       false);
-  vAddPrimitive("thread.mutexUnlock"_Stz,     &vThreadMutexUnlock,     false);
-  vAddPrimitive("thread.sleep_s"_Stz,         &vThreadSleep_s,         false);
-  vAddPrimitive("thread.sleep_ms"_Stz,        &vThreadSleep_ms,        false);
-  vAddPrimitive("thread.sleep_us"_Stz,        &vThreadSleep_us,        false);
-  vAddPrimitive("thread.sleep_ns"_Stz,        &vThreadSleep_ns,        false);
+  vAddStep("thread.bind"_Stz,            &vThreadBind,            false);
+  vAddStep("thread.condSignal"_Stz,      &vThreadCondSignal,      false);
+  vAddStep("thread.condWait"_Stz,        &vThreadCondWait,        false);
+  vAddStep("thread.cpu"_Stz,             &vThreadCpu,             false);
+  vAddStep("thread.dump"_Stz,            &vThreadDump,            false);
+  vAddStep("thread.id"_Stz,              &vThreadId,              false);
+  vAddStep("thread.mutexLock"_Stz,       &vThreadMutexLock,       false);
+  vAddStep("thread.mutexUnlock"_Stz,     &vThreadMutexUnlock,     false);
+  vAddStep("thread.sleep_s"_Stz,         &vThreadSleep_s,         false);
+  vAddStep("thread.sleep_ms"_Stz,        &vThreadSleep_ms,        false);
+  vAddStep("thread.sleep_us"_Stz,        &vThreadSleep_us,        false);
+  vAddStep("thread.sleep_ns"_Stz,        &vThreadSleep_ns,        false);
 }
 
 /*----------------------------------------------------------------------------*/

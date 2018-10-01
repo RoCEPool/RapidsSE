@@ -13,29 +13,29 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Dstack(void)
+void Task::vAddSteps_Dstack(void)
 {
-  vAddPrimitive("stack.class"_Stz,     &vDstackClass,      false);
-  vAddPrimitive("depth"_Stz,           &vDstackDepth,      false);
-  vAddPrimitive("drop"_Stz,            &vDstackDrop,       false);
-  vAddPrimitive("2drop"_Stz,           &vDstackDropTwo,    false);
-  vAddPrimitive("dump"_Stz,            &vDstackDump,       false);
-  vAddPrimitive("dup"_Stz,             &vDstackDup,        false);
-  vAddPrimitive("?dup"_Stz,            &vDstackDupNonZero, false);
-  vAddPrimitive("nip"_Stz,             &vDstackNip,        false);
-  vAddPrimitive("over"_Stz,            &vDstackOver,       false);
-  vAddPrimitive("pick"_Stz,            &vDstackPick,       false);
-  vAddPrimitive("reverse"_Stz,         &vDstackReverse,    false);
-  vAddPrimitive("roll"_Stz,            &vDstackRoll,       false);
-  vAddPrimitive("-roll"_Stz,           &vDstackRollInv,    false);
-  vAddPrimitive("rot"_Stz,             &vDstackRot,        false);
-  vAddPrimitive("-rot"_Stz,            &vDstackRotInv,     false);
-  vAddPrimitive("stk"_Stz,             &vDstackStk,        false);
-  vAddPrimitive("swap"_Stz,            &vDstackSwap,       false);
-  vAddPrimitive("valset>"_Stz,         &vDstackToValues,   false);
-  vAddPrimitive(">valset"_Stz,         &vDstackToValSet,   false);
-  vAddPrimitive(">DStack"_Stz,         &vDstackTransfer,   false);
-  vAddPrimitive("tuck"_Stz,            &vDstackTuck,       false);
+  vAddStep("stack.class"_Stz,     &vDstackClass,      false);
+  vAddStep("depth"_Stz,           &vDstackDepth,      false);
+  vAddStep("drop"_Stz,            &vDstackDrop,       false);
+  vAddStep("2drop"_Stz,           &vDstackDropTwo,    false);
+  vAddStep("dump"_Stz,            &vDstackDump,       false);
+  vAddStep("dup"_Stz,             &vDstackDup,        false);
+  vAddStep("?dup"_Stz,            &vDstackDupNonZero, false);
+  vAddStep("nip"_Stz,             &vDstackNip,        false);
+  vAddStep("over"_Stz,            &vDstackOver,       false);
+  vAddStep("pick"_Stz,            &vDstackPick,       false);
+  vAddStep("reverse"_Stz,         &vDstackReverse,    false);
+  vAddStep("roll"_Stz,            &vDstackRoll,       false);
+  vAddStep("-roll"_Stz,           &vDstackRollInv,    false);
+  vAddStep("rot"_Stz,             &vDstackRot,        false);
+  vAddStep("-rot"_Stz,            &vDstackRotInv,     false);
+  vAddStep("stk"_Stz,             &vDstackStk,        false);
+  vAddStep("swap"_Stz,            &vDstackSwap,       false);
+  vAddStep("valset>"_Stz,         &vDstackToValues,   false);
+  vAddStep(">valset"_Stz,         &vDstackToValSet,   false);
+  vAddStep(">DStack"_Stz,         &vDstackTransfer,   false);
+  vAddStep("tuck"_Stz,            &vDstackTuck,       false);
   
 }
 

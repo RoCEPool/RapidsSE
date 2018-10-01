@@ -11,23 +11,23 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Accum(void)
+void Task::vAddSteps_Accum(void)
 {
-  vAddPrimitive("accum.delete"_Stz, &vAccumDelete, false);
-  vAddPrimitive("accum::new"_Stz,   &vAccumNew,    false);
+  vAddStep("accum.delete"_Stz, &vAccumDelete, false);
+  vAddStep("accum::new"_Stz,   &vAccumNew,    false);
 
-  vAddPrimitive("accum.accumBuffer@"_Stz, &vAccumAccumBuffer, false);
+  vAddStep("accum.accumBuffer@"_Stz, &vAccumAccumBuffer, false);
   
-  vAddPrimitive("accum.count@"_Stz, &vAccumCountFetch, false);
-  vAddPrimitive("accum.count!"_Stz, &vAccumCountStore, false);
-  vAddPrimitive("accum.group@"_Stz, &vAccumGroupFetch, false);
-  vAddPrimitive("accum.group!"_Stz, &vAccumGroupStore, false);
-  vAddPrimitive("accum.max@"_Stz,   &vAccumMaxFetch,   false);
-  vAddPrimitive("accum.max!"_Stz,   &vAccumMaxStore,   false);
-  vAddPrimitive("accum.min@"_Stz,   &vAccumMinFetch,   false);
-  vAddPrimitive("accum.min!"_Stz,   &vAccumMinStore,   false);
-  vAddPrimitive("accum.sum@"_Stz,   &vAccumSumFetch,   false);
-  vAddPrimitive("accum.sum!"_Stz,   &vAccumSumStore,   false);
+  vAddStep("accum.count@"_Stz, &vAccumCountFetch, false);
+  vAddStep("accum.count!"_Stz, &vAccumCountStore, false);
+  vAddStep("accum.group@"_Stz, &vAccumGroupFetch, false);
+  vAddStep("accum.group!"_Stz, &vAccumGroupStore, false);
+  vAddStep("accum.max@"_Stz,   &vAccumMaxFetch,   false);
+  vAddStep("accum.max!"_Stz,   &vAccumMaxStore,   false);
+  vAddStep("accum.min@"_Stz,   &vAccumMinFetch,   false);
+  vAddStep("accum.min!"_Stz,   &vAccumMinStore,   false);
+  vAddStep("accum.sum@"_Stz,   &vAccumSumFetch,   false);
+  vAddStep("accum.sum!"_Stz,   &vAccumSumStore,   false);
 }
 
 /*----------------------------------------------------------------------------*/

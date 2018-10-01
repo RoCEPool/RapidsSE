@@ -13,11 +13,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Class(void)
+void Task::vAddSteps_Class(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("class::name"_Stz,      &vClassName,    false);
+  vAddStep("class::name"_Stz,      &vClassName,    false);
 }
 
 /*----------------------------------------------------------------------------*/

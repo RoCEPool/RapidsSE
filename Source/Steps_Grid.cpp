@@ -14,22 +14,22 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Grid(void)
+void Task::vAddSteps_Grid(void)
 {
-  vAddPrimitive("grid::node"_Stz,         &vGridNode,              false);
-  vAddPrimitive("grid::nodes"_Stz,        &vGridNodes,             false);
-  vAddPrimitive("grid::partitions"_Stz,   &vGridPartitions,        false);
-  vAddPrimitive("grid::show"_Stz,         &vGridShow,              false);
-  vAddPrimitive("grid::slots"_Stz,        &vGridSlots,             false);
-  vAddPrimitive("grid::started!"_Stz,     &vGridStartedStore,      false);
-  vAddPrimitive("grid::started@"_Stz,     &vGridStartedFetch,      false);
-  vAddPrimitive("grid::StartNode!"_Stz,   &vGridStartNodeStore,    false);
-  vAddPrimitive("grid::StartNode@"_Stz,   &vGridStartNodeFetch,    false);
-  vAddPrimitive("grid::thisNode@"_Stz,    &vGridThisNodeFetch,     false);
-  vAddPrimitive("grid::thisNodeName@"_Stz,&vGridThisNodeNameFetch, false);
-  vAddPrimitive("grid::toNode"_Stz,       &vGridToNode,            false);
-  vAddPrimitive("grid::toPartition"_Stz,  &vGridToPartition,       false);
-  vAddPrimitive("grid::toSlot"_Stz,       &vGridToSlot,            false);
+  vAddStep("grid::node"_Stz,         &vGridNode,              false);
+  vAddStep("grid::nodes"_Stz,        &vGridNodes,             false);
+  vAddStep("grid::partitions"_Stz,   &vGridPartitions,        false);
+  vAddStep("grid::show"_Stz,         &vGridShow,              false);
+  vAddStep("grid::slots"_Stz,        &vGridSlots,             false);
+  vAddStep("grid::started!"_Stz,     &vGridStartedStore,      false);
+  vAddStep("grid::started@"_Stz,     &vGridStartedFetch,      false);
+  vAddStep("grid::StartNode!"_Stz,   &vGridStartNodeStore,    false);
+  vAddStep("grid::StartNode@"_Stz,   &vGridStartNodeFetch,    false);
+  vAddStep("grid::thisNode@"_Stz,    &vGridThisNodeFetch,     false);
+  vAddStep("grid::thisNodeName@"_Stz,&vGridThisNodeNameFetch, false);
+  vAddStep("grid::toNode"_Stz,       &vGridToNode,            false);
+  vAddStep("grid::toPartition"_Stz,  &vGridToPartition,       false);
+  vAddStep("grid::toSlot"_Stz,       &vGridToSlot,            false);
 }
 
 /*----------------------------------------------------------------------------*/

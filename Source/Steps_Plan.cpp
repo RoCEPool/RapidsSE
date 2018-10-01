@@ -13,24 +13,24 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Plan(void)
+void Task::vAddSteps_Plan(void)
 {
-  vAddPrimitive("plan.delete"_Stz,         &vPlanDelete,             false);
-  vAddPrimitive("plan.dic"_Stz,            &vPlanDic,                false);
-  vAddPrimitive("plan.executingTask@"_Stz, &vPlanExecutingTaskFetch, false);
-  vAddPrimitive("plan.executingTask!"_Stz, &vPlanExecutingTaskStore, false);
-  vAddPrimitive("plan.finished"_Stz,       &vPlanFinished,           false);
-  vAddPrimitive("plan.id@"_Stz,            &vPlanIdFetch,            false);
-  vAddPrimitive("plan.lambda+"_Stz,        &vPlanLambdaAppend,       false);
-  vAddPrimitive("plan.lambda@"_Stz,        &vPlanLambdaFetch,        false);
-  vAddPrimitive("plan.lambda!"_Stz,        &vPlanLambdaStore,        false);
-  vAddPrimitive("plan.name@"_Stz,          &vPlanNameFetch,          false);
-  vAddPrimitive("plan.name!"_Stz,          &vPlanNameStore,          false);
-  vAddPrimitive("plan::new"_Stz,           &vPlanNew,                false);
-  vAddPrimitive("plan.opFrame++"_Stz,      &vPlanOpFrameAdd,         false);
-  vAddPrimitive("plan.opFrame?"_Stz,       &vPlanOpFrameFind,        false);
-  vAddPrimitive("plan.opFrame0"_Stz,       &vPlanOpFrameTop,         false);
-  vAddPrimitive("plan.show"_Stz,           &vPlanShow,               false);
+  vAddStep("plan.delete"_Stz,         &vPlanDelete,             false);
+  vAddStep("plan.dic"_Stz,            &vPlanDic,                false);
+  vAddStep("plan.executingTask@"_Stz, &vPlanExecutingTaskFetch, false);
+  vAddStep("plan.executingTask!"_Stz, &vPlanExecutingTaskStore, false);
+  vAddStep("plan.finished"_Stz,       &vPlanFinished,           false);
+  vAddStep("plan.id@"_Stz,            &vPlanIdFetch,            false);
+  vAddStep("plan.lambda+"_Stz,        &vPlanLambdaAppend,       false);
+  vAddStep("plan.lambda@"_Stz,        &vPlanLambdaFetch,        false);
+  vAddStep("plan.lambda!"_Stz,        &vPlanLambdaStore,        false);
+  vAddStep("plan.name@"_Stz,          &vPlanNameFetch,          false);
+  vAddStep("plan.name!"_Stz,          &vPlanNameStore,          false);
+  vAddStep("plan::new"_Stz,           &vPlanNew,                false);
+  vAddStep("plan.opFrame++"_Stz,      &vPlanOpFrameAdd,         false);
+  vAddStep("plan.opFrame?"_Stz,       &vPlanOpFrameFind,        false);
+  vAddStep("plan.opFrame0"_Stz,       &vPlanOpFrameTop,         false);
+  vAddStep("plan.show"_Stz,           &vPlanShow,               false);
 }
 
 /*----------------------------------------------------------------------------*/

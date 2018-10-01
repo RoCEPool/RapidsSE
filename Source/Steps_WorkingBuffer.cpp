@@ -14,11 +14,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_WorkingBuffer(void)
+void Task::vAddSteps_WorkingBuffer(void)
 {
-  vAddPrimitive("workingBuffer.isLast@"_Stz,         &vWorkingBufferIsLastFetch, false);
-  vAddPrimitive("workingBuffer.isLast!"_Stz,         &vWorkingBufferIsLastStore, false);
-  vAddPrimitive("workingBuffer::toWorkingBuffer"_Stz, &vWorkingBufferToWorkingBuffer,false);
+  vAddStep("workingBuffer.isLast@"_Stz,         &vWorkingBufferIsLastFetch, false);
+  vAddStep("workingBuffer.isLast!"_Stz,         &vWorkingBufferIsLastStore, false);
+  vAddStep("workingBuffer::toWorkingBuffer"_Stz, &vWorkingBufferToWorkingBuffer,false);
 }
 
 /*----------------------------------------------------------------------------*/

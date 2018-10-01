@@ -13,14 +13,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Queue(void)
+void Task::vAddSteps_Queue(void)
 {
-  vAddPrimitive("queue.append"_Stz,    &vQueueAppend,      false);
-  vAddPrimitive("queue.delete"_Stz,    &vQueueDelete,      false);
-  vAddPrimitive("queue.dump"_Stz,      &vQueueDump,        false);
-  vAddPrimitive("queue.init"_Stz,      &vQueueInit,        false);
-  vAddPrimitive("queue::new"_Stz,      &vQueueNew,         false);
-  vAddPrimitive("queue.pop"_Stz,       &vQueuePop,         false);
+  vAddStep("queue.append"_Stz,    &vQueueAppend,      false);
+  vAddStep("queue.delete"_Stz,    &vQueueDelete,      false);
+  vAddStep("queue.dump"_Stz,      &vQueueDump,        false);
+  vAddStep("queue.init"_Stz,      &vQueueInit,        false);
+  vAddStep("queue::new"_Stz,      &vQueueNew,         false);
+  vAddStep("queue.pop"_Stz,       &vQueuePop,         false);
 }
 
 /*----------------------------------------------------------------------------*/

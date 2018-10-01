@@ -13,9 +13,9 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Semaphore(void)
+void Task::vAddSteps_Semaphore(void)
 {
-  vAddPrimitive("Semaphore.init"_Stz,    &vSemaphoreInit,        false);
+  vAddStep("Semaphore.init"_Stz,    &vSemaphoreInit,        false);
 }
 
 /*----------------------------------------------------------------------------*/

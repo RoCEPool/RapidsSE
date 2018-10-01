@@ -16,7 +16,7 @@ void Task::vAddBaseWords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitives();
+  vAddSteps();
   Step::vAddSteps();
   
   vAddConstants();
@@ -617,13 +617,13 @@ void Task::vAddConstants(void)
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitive(Stz* aName, TaskStep pStep, bool bImmediate)
+void Task::vAddStep(Stz* aName, TaskStep pStep, bool bImmediate)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
   
-  m_pCompiler->m_pCurrentWord = pNewWord;
+  //m_pCompiler->m_pCurrentWord = pNewWord;
   
   pNewWord->vWordType(WT_PRIMITIVE);
   pNewWord->vEntryStep(pStep);
@@ -633,134 +633,134 @@ void Task::vAddPrimitive(Stz* aName, TaskStep pStep, bool bImmediate)
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives(void)
+void Task::vAddSteps(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
-  vAddPrimitive("word"_Stz,            &vWord,             false);
+  vAddStep("word"_Stz,            &vWord,             false);
   gpAttachMap->m_pWord = gpAttachMap->m_xMainDic.pFindWord("word"_Stz);
 
-  vAddPrimitives_AccessPath();
-  vAddPrimitives_Accum();
-  vAddPrimitives_Address();
-  vAddPrimitives_Args();
-  vAddPrimitives_Assert();
-  vAddPrimitives_Astack();
-  vAddPrimitives_AttachMap();
+  //vAddSteps_AccessPath();
+  vAddSteps_Accum();
+  vAddSteps_Address();
+  vAddSteps_Args();
+  vAddSteps_Assert();
+  vAddSteps_Astack();
+  vAddSteps_AttachMap();
   
-  vAddPrimitives_Bp();
+  vAddSteps_Bp();
   
-  vAddPrimitives_Cast();
-  vAddPrimitives_Class();
-  vAddPrimitives_Column();
-  vAddPrimitives_CommandProcessor();
-  vAddPrimitives_Comment();
-  vAddPrimitives_Common();
-  vAddPrimitives_Cpu();
-  vAddPrimitives_Cursor();
+  vAddSteps_Cast();
+  vAddSteps_Class();
+  vAddSteps_Column();
+  vAddSteps_CommandProcessor();
+  vAddSteps_Comment();
+  vAddSteps_Common();
+  vAddSteps_Cpu();
+  vAddSteps_Cursor();
   
-  vAddPrimitives_DdlLock();
-  vAddPrimitives_Debug();
-  vAddPrimitives_Dic();
-  vAddPrimitives_DicLock();
-  vAddPrimitives_DicPath();
-  vAddPrimitives_DicStack();
-  vAddPrimitives_Dir();
-  vAddPrimitives_Docol();
-  vAddPrimitives_Dot();
-  vAddPrimitives_Dstack();
+  vAddSteps_DdlLock();
+  vAddSteps_Debug();
+  vAddSteps_Dic();
+  vAddSteps_DicLock();
+  vAddSteps_DicPath();
+  vAddSteps_DicStack();
+  vAddSteps_Dir();
+  vAddSteps_Docol();
+  vAddSteps_Dot();
+  vAddSteps_Dstack();
   
-  vAddPrimitives_Encode();
-  vAddPrimitives_Enter();
-  vAddPrimitives_EntryBuffer();
-  vAddPrimitives_Env();
-  vAddPrimitives_Error();
-  vAddPrimitives_Exit();
+  vAddSteps_Encode();
+  vAddSteps_Enter();
+  vAddSteps_EntryBuffer();
+  vAddSteps_Env();
+  vAddSteps_Error();
+  vAddSteps_Exit();
   
-  vAddPrimitives_File();
-  vAddPrimitives_Flow();
+  vAddSteps_File();
+  vAddSteps_Flow();
   
-  vAddPrimitives_Grid();
-  vAddPrimitives_GroupBy();
+  vAddSteps_Grid();
+  vAddSteps_GroupBy();
   
-  vAddPrimitives_Index();
-  vAddPrimitives_Input();
-  vAddPrimitives_Int();
+  vAddSteps_Index();
+  vAddSteps_Input();
+  vAddSteps_Int();
   
-  vAddPrimitives_Job();
-  vAddPrimitives_JobAnalyzeIndex();
-  vAddPrimitives_JobClass();
-  vAddPrimitives_JobCreateIndex();
-  vAddPrimitives_JobFetchRows();
-  vAddPrimitives_JobGeneric();
-  vAddPrimitives_JobInsertRow();
-  vAddPrimitives_JobLoadTable();
-  vAddPrimitives_JobReceiver();
-  vAddPrimitives_JobStartCluster();
-  vAddPrimitives_JobTruncateTable();
+  vAddSteps_Job();
+  vAddSteps_JobAnalyzeIndex();
+  vAddSteps_JobClass();
+  vAddSteps_JobCreateIndex();
+  vAddSteps_JobFetchRows();
+  vAddSteps_JobGeneric();
+  vAddSteps_JobInsertRow();
+  vAddSteps_JobLoadTable();
+  vAddSteps_JobReceiver();
+  vAddSteps_JobStartCluster();
+  vAddSteps_JobTruncateTable();
   
-  vAddPrimitives_Loader();
-  vAddPrimitives_LoaderSub();
-  vAddPrimitives_Locals();
-  vAddPrimitives_Lock();
-  vAddPrimitives_Locks();
-  vAddPrimitives_Logic();
+  vAddSteps_Loader();
+  vAddSteps_LoaderSub();
+  vAddSteps_Locals();
+  vAddSteps_Lock();
+  vAddSteps_Locks();
+  vAddSteps_Logic();
   
-  vAddPrimitives_Magnitude();
-  vAddPrimitives_Memory();
+  vAddSteps_Magnitude();
+  vAddSteps_Memory();
   
-  vAddPrimitives_Node();
+  vAddSteps_Node();
   
-  vAddPrimitives_Object();
-  vAddPrimitives_OpFrame();
+  vAddSteps_Object();
+  vAddSteps_OpFrame();
   
-  vAddPrimitives_Persistence();
-  vAddPrimitives_Plan();
-  vAddPrimitives_PlanList();
-  vAddPrimitives_Planner();
-  vAddPrimitives_Process();
-  vAddPrimitives_Prompt();
-  vAddPrimitives_Push();
+  vAddSteps_Persistence();
+  vAddSteps_Plan();
+  vAddSteps_PlanList();
+  vAddSteps_Planner();
+  vAddSteps_Process();
+  vAddSteps_Prompt();
+  vAddSteps_Push();
   
-  vAddPrimitives_Queue();
-  vAddPrimitives_Queues();
+  vAddSteps_Queue();
+  vAddSteps_Queues();
   
-  vAddPrimitives_RbCursor();
-  vAddPrimitives_Row();
-  vAddPrimitives_RowBuffer();
-  vAddPrimitives_RowCursor();
-  vAddPrimitives_Rstack();
+  vAddSteps_RbCursor();
+  vAddSteps_Row();
+  vAddSteps_RowBuffer();
+  vAddSteps_RowCursor();
+  vAddSteps_Rstack();
   
-  vAddPrimitives_SEitf();
-  vAddPrimitives_SelCursor();
-  vAddPrimitives_Semaphore();
-  vAddPrimitives_Shell();
-  vAddPrimitives_Slots();
-  vAddPrimitives_Socket();
-  vAddPrimitives_Steps();
-  vAddPrimitives_Str();
+  vAddSteps_SEitf();
+  vAddSteps_SelCursor();
+  vAddSteps_Semaphore();
+  vAddSteps_Shell();
+  vAddSteps_Slots();
+  vAddSteps_Socket();
+  vAddSteps_Steps();
+  vAddSteps_Str();
   
-  vAddPrimitives_Table();
-  vAddPrimitives_TablePartition();
-  vAddPrimitives_Task();
-  vAddPrimitives_Thread();
-  vAddPrimitives_Timer();
-  vAddPrimitives_To();
-  vAddPrimitives_Trace();
-  vAddPrimitives_Tx();
-  vAddPrimitives_TxSet();
+  vAddSteps_Table();
+  vAddSteps_TablePartition();
+  vAddSteps_Task();
+  vAddSteps_Thread();
+  vAddSteps_Timer();
+  vAddSteps_To();
+  vAddSteps_Trace();
+  vAddSteps_Tx();
+  vAddSteps_TxSet();
   
-  vAddPrimitives_Utility();
+  vAddSteps_Utility();
   
-  vAddPrimitives_Vector();
+  vAddSteps_Vector();
   
-  vAddPrimitives_Word();
-  vAddPrimitives_WorkingBuffer();
+  vAddSteps_Word();
+  vAddSteps_WorkingBuffer();
   
-  vAddPrimitives_Zero();
+  vAddSteps_Zero();
 }
 
 /*----------------------------------------------------------------------------*/

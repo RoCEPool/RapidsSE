@@ -13,20 +13,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Socket(void)
+void Task::vAddSteps_Socket(void)
 {
-  vAddPrimitive("socket::open"_Stz,      &vSocketOpen,       false);
-  vAddPrimitive("socket::listen"_Stz,    &vSocketListen,     false);
+  vAddStep("socket::open"_Stz,      &vSocketOpen,       false);
+  vAddStep("socket::listen"_Stz,    &vSocketListen,     false);
   
-  vAddPrimitive("socket.accept"_Stz,     &vSocketAccept,     false);
-  vAddPrimitive("socket.close"_Stz,      &vSocketClose,      false);
-  vAddPrimitive("socket.connect"_Stz,    &vSocketConnect,    false);
-  vAddPrimitive("socket.dropWrite"_Stz,  &vSocketDropWrite,  false);
-  vAddPrimitive("socket.grabWrite"_Stz,  &vSocketGrabWrite,  false);
-  vAddPrimitive("socket.recvObject"_Stz, &vSocketRecvObject, false);
-  vAddPrimitive("socket.recvValSet"_Stz, &vSocketRecvValSet, false);
-  vAddPrimitive("socket.sendObject"_Stz, &vSocketSendObject, false);
-  vAddPrimitive("socket.sendValSet"_Stz, &vSocketSendValSet, false);
+  vAddStep("socket.accept"_Stz,     &vSocketAccept,     false);
+  vAddStep("socket.close"_Stz,      &vSocketClose,      false);
+  vAddStep("socket.connect"_Stz,    &vSocketConnect,    false);
+  vAddStep("socket.dropWrite"_Stz,  &vSocketDropWrite,  false);
+  vAddStep("socket.grabWrite"_Stz,  &vSocketGrabWrite,  false);
+  vAddStep("socket.recvObject"_Stz, &vSocketRecvObject, false);
+  vAddStep("socket.recvValSet"_Stz, &vSocketRecvValSet, false);
+  vAddStep("socket.sendObject"_Stz, &vSocketSendObject, false);
+  vAddStep("socket.sendValSet"_Stz, &vSocketSendValSet, false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -16,28 +16,28 @@ i8 giCountObjects[CN_ENUMS];
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Bp(void)
+void Task::vAddSteps_Bp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("bp::analyze"_Stz,     &vBpAnalyze,        false);
-  vAddPrimitive("bp::dump"_Stz,        &vBpDump,           false);
-  vAddPrimitive("bp::freeBuffers"_Stz, &vFreeBuffers,      false);
-  vAddPrimitive("bp::freePercent"_Stz, &vFreePercent,      false);
-  vAddPrimitive("bp::freeSpace"_Stz,   &vFreeSpace,        false);
-  vAddPrimitive("bp::inUseSpace"_Stz,  &vInUseSpace,       false);
-  vAddPrimitive("bp::readBufferPool"_Stz,&vBpReadBufferPool,false);
-  vAddPrimitive("bp::snapshot"_Stz,    &vSnapshot,         false);
-  vAddPrimitive("bp::totalSpace"_Stz,  &vTotalSpace,       false);
-  vAddPrimitive("bp::writeBufferPool"_Stz,&vBpWriteBufferPool,false);
+  vAddStep("bp::analyze"_Stz,     &vBpAnalyze,        false);
+  vAddStep("bp::dump"_Stz,        &vBpDump,           false);
+  vAddStep("bp::freeBuffers"_Stz, &vFreeBuffers,      false);
+  vAddStep("bp::freePercent"_Stz, &vFreePercent,      false);
+  vAddStep("bp::freeSpace"_Stz,   &vFreeSpace,        false);
+  vAddStep("bp::inUseSpace"_Stz,  &vInUseSpace,       false);
+  vAddStep("bp::readBufferPool"_Stz,&vBpReadBufferPool,false);
+  vAddStep("bp::snapshot"_Stz,    &vSnapshot,         false);
+  vAddStep("bp::totalSpace"_Stz,  &vTotalSpace,       false);
+  vAddStep("bp::writeBufferPool"_Stz,&vBpWriteBufferPool,false);
 
-  vAddPrimitive("bpa"_Stz,             &vBpAnalyze,        false);
-  vAddPrimitive("bpd"_Stz,             &vBpDump,           false);
-  vAddPrimitive("bpr"_Stz,             &vBpReadBufferPool, false);
-  vAddPrimitive("bpw"_Stz,             &vBpWriteBufferPool,false);
+  vAddStep("bpa"_Stz,             &vBpAnalyze,        false);
+  vAddStep("bpd"_Stz,             &vBpDump,           false);
+  vAddStep("bpr"_Stz,             &vBpReadBufferPool, false);
+  vAddStep("bpw"_Stz,             &vBpWriteBufferPool,false);
  
-  vAddPrimitive("epochDump"_Stz,       &vBpEpochDump,      false);
-  vAddPrimitive("epochTake"_Stz,       &vBpEpochTake,      false);
+  vAddStep("epochDump"_Stz,       &vBpEpochDump,      false);
+  vAddStep("epochTake"_Stz,       &vBpEpochTake,      false);
 }
 
 /*----------------------------------------------------------------------------*/

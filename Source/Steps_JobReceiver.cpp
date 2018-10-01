@@ -13,12 +13,12 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_JobReceiver(void)
+void Task::vAddSteps_JobReceiver(void)
 {
-  vAddPrimitive("job_receiver.connNo@"_Stz, &vJob_ReceiverConnNoFetch, false);
-  vAddPrimitive("job_receiver.connNo!"_Stz, &vJob_ReceiverConnNoStore, false);
-  vAddPrimitive("job_receiver.socket@"_Stz, &vJob_ReceiverSocketFetch, false);
-  vAddPrimitive("job_receiver.socket!"_Stz, &vJob_ReceiverSocketStore, false);
+  vAddStep("job_receiver.connNo@"_Stz, &vJob_ReceiverConnNoFetch, false);
+  vAddStep("job_receiver.connNo!"_Stz, &vJob_ReceiverConnNoStore, false);
+  vAddStep("job_receiver.socket@"_Stz, &vJob_ReceiverSocketFetch, false);
+  vAddStep("job_receiver.socket!"_Stz, &vJob_ReceiverSocketStore, false);
 
 }
 

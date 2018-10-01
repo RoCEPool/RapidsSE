@@ -11,15 +11,15 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_GroupBy(void)
+void Task::vAddSteps_GroupBy(void)
 {
-  vAddPrimitive("groupBy.applyBuffer"_Stz,  &vGroupByApplyBuffer,  false);
-  vAddPrimitive("groupBy.applyEntry"_Stz,   &vGroupByApplyEntry,   false);
-  vAddPrimitive("groupBy.applyPartial"_Stz, &vGroupByApplyPartial, false);
-  vAddPrimitive("groupBy.delete"_Stz,       &vGroupByDelete,       false);
-  vAddPrimitive("groupBy.end"_Stz,          &vGroupByEnd,          false);
-  vAddPrimitive("groupBy::new"_Stz,         &vGroupByNew,          false);
-  vAddPrimitive("groupBy.start"_Stz,        &vGroupByStart,        false);
+  vAddStep("groupBy.applyBuffer"_Stz,  &vGroupByApplyBuffer,  false);
+  vAddStep("groupBy.applyEntry"_Stz,   &vGroupByApplyEntry,   false);
+  vAddStep("groupBy.applyPartial"_Stz, &vGroupByApplyPartial, false);
+  vAddStep("groupBy.delete"_Stz,       &vGroupByDelete,       false);
+  vAddStep("groupBy.end"_Stz,          &vGroupByEnd,          false);
+  vAddStep("groupBy::new"_Stz,         &vGroupByNew,          false);
+  vAddStep("groupBy.start"_Stz,        &vGroupByStart,        false);
 }
 
 /*----------------------------------------------------------------------------*/

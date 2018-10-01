@@ -13,12 +13,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Push(void)
+void Task::vAddSteps_Push(void)
 {
-  vAddPrimitive("i"_Stz,               &vPushI,            false);
-  vAddPrimitive("j"_Stz,               &vPushJ,            false);
-  vAddPrimitive("nullPtr"_Stz,         &vPushNullPtr,      false);
-  vAddPrimitive("pushValue"_Stz,       &vPushValue,        false);
+  vAddStep("i"_Stz,               &vPushI,            false);
+  vAddStep("j"_Stz,               &vPushJ,            false);
+  vAddStep("nullPtr"_Stz,         &vPushNullPtr,      false);
+  vAddStep("pushValue"_Stz,       &vPushValue,        false);
 }
 
 /*----------------------------------------------------------------------------*/

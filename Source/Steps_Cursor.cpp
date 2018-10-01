@@ -13,10 +13,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Cursor(void)
+void Task::vAddSteps_Cursor(void)
 {
-  vAddPrimitive("cursor@"_Stz,         &vCursorFetch,      false);
-  vAddPrimitive("cursor!"_Stz,         &vCursorStore,      false);
+  vAddStep("cursor@"_Stz,         &vCursorFetch,      false);
+  vAddStep("cursor!"_Stz,         &vCursorStore,      false);
 }
 
 /*----------------------------------------------------------------------------*/

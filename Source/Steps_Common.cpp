@@ -13,15 +13,15 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Common(void)
+void Task::vAddSteps_Common(void)
 {
-  vAddPrimitive("common.fetch"_Stz,    &vCommonFetch,      false);
-  vAddPrimitive("common.store"_Stz,    &vCommonStore,      false);
-  vAddPrimitive("common/"_Stz,         &vCommonSlash,      true);
-  vAddPrimitive("toCommon"_Stz,        &vCommonToCommon,   true);
+  vAddStep("common.fetch"_Stz,    &vCommonFetch,      false);
+  vAddStep("common.store"_Stz,    &vCommonStore,      false);
+  vAddStep("common/"_Stz,         &vCommonSlash,      true);
+  vAddStep("toCommon"_Stz,        &vCommonToCommon,   true);
 
-  vAddPrimitive("opFrame.drop"_Stz,    &vOpFrameDrop,      false);
-  vAddPrimitive("opFrame.push"_Stz,    &vOpFramePush,      false);
+  vAddStep("opFrame.drop"_Stz,    &vOpFrameDrop,      false);
+  vAddStep("opFrame.push"_Stz,    &vOpFramePush,      false);
 }
 
 /*----------------------------------------------------------------------------*/

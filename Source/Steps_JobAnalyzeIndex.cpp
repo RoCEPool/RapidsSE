@@ -13,10 +13,10 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_JobAnalyzeIndex(void)
+void Task::vAddSteps_JobAnalyzeIndex(void)
 {
-  vAddPrimitive("jobAnalyzeIndex.isDetailed"_Stz, &vJob_AnalyzeIndexIsDetailed, false);
-  vAddPrimitive("jobAnalyzeTable.isDetailed"_Stz, &vJob_AnalyzeTableIsDetailed, false);
+  vAddStep("jobAnalyzeIndex.isDetailed"_Stz, &vJob_AnalyzeIndexIsDetailed, false);
+  vAddStep("jobAnalyzeTable.isDetailed"_Stz, &vJob_AnalyzeTableIsDetailed, false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,21 +13,21 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_JobGeneric(void)
+void Task::vAddSteps_JobGeneric(void)
 {
-  vAddPrimitive("jobBegun.error@"_Stz,     &vJob__BegunErrorFetch,  false);
-  vAddPrimitive("jobBegun.error!"_Stz,     &vJob__BegunErrorStore,  false);
+  vAddStep("jobBegun.error@"_Stz,     &vJob__BegunErrorFetch,  false);
+  vAddStep("jobBegun.error!"_Stz,     &vJob__BegunErrorStore,  false);
   
-  vAddPrimitive("jobCancelled.error@"_Stz, &vJob__CancelledErrorFetch, false);
-  vAddPrimitive("jobCancelled.error!"_Stz, &vJob__CancelledErrorStore, false);
+  vAddStep("jobCancelled.error@"_Stz, &vJob__CancelledErrorFetch, false);
+  vAddStep("jobCancelled.error!"_Stz, &vJob__CancelledErrorStore, false);
 
-  vAddPrimitive("jobExecuted.error@"_Stz,    &vJob__ExecutedErrorFetch,   false);
-  vAddPrimitive("jobExecuted.error!"_Stz,    &vJob__ExecutedErrorStore,   false);
-  vAddPrimitive("jobExecuted.response@"_Stz, &vJob__ExecutedResponseFetch,false);
-  vAddPrimitive("jobExecuted.response!"_Stz, &vJob__ExecutedResponseStore,false);
+  vAddStep("jobExecuted.error@"_Stz,    &vJob__ExecutedErrorFetch,   false);
+  vAddStep("jobExecuted.error!"_Stz,    &vJob__ExecutedErrorStore,   false);
+  vAddStep("jobExecuted.response@"_Stz, &vJob__ExecutedResponseFetch,false);
+  vAddStep("jobExecuted.response!"_Stz, &vJob__ExecutedResponseStore,false);
   
-  vAddPrimitive("jobExecuted.rowsProcessed@"_Stz,&vJob__ExecutedRowsProcessedFetch,false);
-  vAddPrimitive("jobExecuted.rowsProcessed!"_Stz,&vJob__ExecutedRowsProcessedStore,false);
+  vAddStep("jobExecuted.rowsProcessed@"_Stz,&vJob__ExecutedRowsProcessedFetch,false);
+  vAddStep("jobExecuted.rowsProcessed!"_Stz,&vJob__ExecutedRowsProcessedStore,false);
   
 }
 

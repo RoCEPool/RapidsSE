@@ -13,18 +13,18 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_JobFetchRows(void)
+void Task::vAddSteps_JobFetchRows(void)
 {
-  vAddPrimitive("Job_fetchRows.lastBuffers!"_Stz, &vJob_FetchRowsLastBuffersStore, false);
-  vAddPrimitive("Job_fetchRows.partition@"_Stz, &vJob_FetchRowsPartitionFetch,   false);
-  vAddPrimitive("Job_fetchRows.planner!"_Stz, &vJob_FetchRowsPlannerStore,   false);
-  vAddPrimitive("Job_fetchRows.spawnSub"_Stz, &vJob_FetchRowsSpawnSub, false);
-  vAddPrimitive("Job_fetchRows.table!"_Stz,   &vJob_FetchRowsTableStore,   false);
-  vAddPrimitive("Job_fetchRows.where@"_Stz, &vJob_FetchRowsWhereFetch, false);
-  vAddPrimitive("Job_subFetch.bufferQueue@"_Stz, &vJob_SubFetchBufferQueueFetch, false);
-  vAddPrimitive("Job_subFetch.phrase@"_Stz,  &vJob_SubFetchPhraseFetch, false);
-  vAddPrimitive("Job_subFetch.Planner@"_Stz,  &vJob_SubFetchPlannerFetch, false);
-  vAddPrimitive("Job_subFetch.slot@"_Stz,  &vJob_SubFetchSlotFetch, false);
+  vAddStep("Job_fetchRows.lastBuffers!"_Stz, &vJob_FetchRowsLastBuffersStore, false);
+  vAddStep("Job_fetchRows.partition@"_Stz, &vJob_FetchRowsPartitionFetch,   false);
+  vAddStep("Job_fetchRows.planner!"_Stz, &vJob_FetchRowsPlannerStore,   false);
+  vAddStep("Job_fetchRows.spawnSub"_Stz, &vJob_FetchRowsSpawnSub, false);
+  vAddStep("Job_fetchRows.table!"_Stz,   &vJob_FetchRowsTableStore,   false);
+  vAddStep("Job_fetchRows.where@"_Stz, &vJob_FetchRowsWhereFetch, false);
+  vAddStep("Job_subFetch.bufferQueue@"_Stz, &vJob_SubFetchBufferQueueFetch, false);
+  vAddStep("Job_subFetch.phrase@"_Stz,  &vJob_SubFetchPhraseFetch, false);
+  vAddStep("Job_subFetch.Planner@"_Stz,  &vJob_SubFetchPlannerFetch, false);
+  vAddStep("Job_subFetch.slot@"_Stz,  &vJob_SubFetchSlotFetch, false);
 }
 
 /*----------------------------------------------------------------------------*/

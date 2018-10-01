@@ -11,37 +11,37 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Table(void)
+void Task::vAddSteps_Table(void)
 {
-  vAddPrimitive("table.addIndex"_Stz,           &vTableAddIndex,         false);
-  vAddPrimitive("table.analyze"_Stz,            &vTableAnalyze,          false);
-  vAddPrimitive("table.appendBuffer"_Stz,       &vTableAppendBuffer,     false);
-  vAddPrimitive("table.columnCount@"_Stz,       &vTableColumnCountFetch, false);
-  vAddPrimitive("table.column@"_Stz,            &vTableColumnFetch,      false);
-  vAddPrimitive("table.createColumnVec"_Stz,    &vTableCreateColumnVec, false);
-  vAddPrimitive("table.drop"_Stz,               &vTableDrop,             false);
-  vAddPrimitive("table.dump"_Stz,               &vTableDump,             false);
-  vAddPrimitive("table.getColumnsAsString"_Stz, &vTableGetColumnsAsString, false);
-  vAddPrimitive("table.getPtn"_Stz,             &vTableGetPtn,           false);
-  vAddPrimitive("table.getRef"_Stz,             &vTableGetRef,           false);
-  vAddPrimitive("table.hiddenIndex@"_Stz,       &vTableHiddenIndexFetch, false);
-  vAddPrimitive("table.hiddenIndex!"_Stz,       &vTableHiddenIndexStore, false);
-  vAddPrimitive("table.indexCount"_Stz,         &vTableIndexCount,       false);
-  vAddPrimitive("table.init"_Stz,               &vTableInit,             false);
-  vAddPrimitive("table.insert"_Stz,             &vTableInsert,           false);
-  vAddPrimitive("table.insertEntries"_Stz,      &vTableInsertEntries,    false);
-  vAddPrimitive("table.isValidIndexColumns"_Stz,&vTableIsValidIndexColumns, false);
-  vAddPrimitive("table.lazyBuildIndexes"_Stz,   &vTableLazyBuildIndexes, false);
-  vAddPrimitive("table.isLoading!"_Stz,         &vTableIsLoadingStore,   false);
-  vAddPrimitive("table.name"_Stz,               &vTableName,             false);
-  vAddPrimitive("table.ref"_Stz,                &vTableRef,              false);
-  vAddPrimitive("table.removeIndex"_Stz,        &vTableRemoveIndex,      false);
-  vAddPrimitive("table.retRef"_Stz,             &vTableRetRef,           false);
-  vAddPrimitive("table.showColumnVec"_Stz,      &vTableShowColumnVec,    false);
-  vAddPrimitive("table.slots"_Stz,              &vTableSlots,            false);
-  vAddPrimitive("table.subDic"_Stz,             &vTableSubDic,           false);
-  vAddPrimitive("table.subLoaders"_Stz,         &vTableSubLoaders,       false);
-  vAddPrimitive("table.truncate"_Stz,           &vTableTruncate,         false);
+  vAddStep("table.addIndex"_Stz,           &vTableAddIndex,         false);
+  vAddStep("table.analyze"_Stz,            &vTableAnalyze,          false);
+  vAddStep("table.appendBuffer"_Stz,       &vTableAppendBuffer,     false);
+  vAddStep("table.columnCount@"_Stz,       &vTableColumnCountFetch, false);
+  vAddStep("table.column@"_Stz,            &vTableColumnFetch,      false);
+  vAddStep("table.createColumnVec"_Stz,    &vTableCreateColumnVec, false);
+  vAddStep("table.drop"_Stz,               &vTableDrop,             false);
+  vAddStep("table.dump"_Stz,               &vTableDump,             false);
+  vAddStep("table.getColumnsAsString"_Stz, &vTableGetColumnsAsString, false);
+  vAddStep("table.getPtn"_Stz,             &vTableGetPtn,           false);
+  vAddStep("table.getRef"_Stz,             &vTableGetRef,           false);
+  vAddStep("table.hiddenIndex@"_Stz,       &vTableHiddenIndexFetch, false);
+  vAddStep("table.hiddenIndex!"_Stz,       &vTableHiddenIndexStore, false);
+  vAddStep("table.indexCount"_Stz,         &vTableIndexCount,       false);
+  vAddStep("table.init"_Stz,               &vTableInit,             false);
+  vAddStep("table.insert"_Stz,             &vTableInsert,           false);
+  vAddStep("table.insertEntries"_Stz,      &vTableInsertEntries,    false);
+  vAddStep("table.isValidIndexColumns"_Stz,&vTableIsValidIndexColumns, false);
+  vAddStep("table.lazyBuildIndexes"_Stz,   &vTableLazyBuildIndexes, false);
+  vAddStep("table.isLoading!"_Stz,         &vTableIsLoadingStore,   false);
+  vAddStep("table.name"_Stz,               &vTableName,             false);
+  vAddStep("table.ref"_Stz,                &vTableRef,              false);
+  vAddStep("table.removeIndex"_Stz,        &vTableRemoveIndex,      false);
+  vAddStep("table.retRef"_Stz,             &vTableRetRef,           false);
+  vAddStep("table.showColumnVec"_Stz,      &vTableShowColumnVec,    false);
+  vAddStep("table.slots"_Stz,              &vTableSlots,            false);
+  vAddStep("table.subDic"_Stz,             &vTableSubDic,           false);
+  vAddStep("table.subLoaders"_Stz,         &vTableSubLoaders,       false);
+  vAddStep("table.truncate"_Stz,           &vTableTruncate,         false);
 }
 
 /*----------------------------------------------------------------------------*/

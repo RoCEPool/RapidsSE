@@ -17,29 +17,29 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Dir(void)
+void Task::vAddSteps_Dir(void)
 {
-  vAddPrimitive("dir.changeCurrent"_Stz, &vDirChangeCurrent, false);
-  vAddPrimitive("dir.exists"_Stz,        &vDirExists,        false);
-  vAddPrimitive("dir.getCurrent"_Stz,    &vDirGetCurrent,    false);
-  vAddPrimitive("dir.make"_Stz,          &vDirMake,          false);
-  vAddPrimitive("dir.remove"_Stz,        &vDirRemove,        false);
+  vAddStep("dir.changeCurrent"_Stz, &vDirChangeCurrent, false);
+  vAddStep("dir.exists"_Stz,        &vDirExists,        false);
+  vAddStep("dir.getCurrent"_Stz,    &vDirGetCurrent,    false);
+  vAddStep("dir.make"_Stz,          &vDirMake,          false);
+  vAddStep("dir.remove"_Stz,        &vDirRemove,        false);
   
-  vAddPrimitive("dir.close"_Stz,       &vDirClose,         false);
-  vAddPrimitive("dir.delete"_Stz,      &vDirDelete,        false);
-  vAddPrimitive("dir.entryName"_Stz,   &vDirEntryName,     false);
-  vAddPrimitive("dir.entryType"_Stz,   &vDirEntryType,     false);
-  vAddPrimitive("dir.init"_Stz,        &vDirInit,          false);
-  vAddPrimitive("dir.isClosed"_Stz,    &vDirIsClosed,      false);
-  vAddPrimitive("dir.isOpen"_Stz,      &vDirIsOpen,        false);
-  vAddPrimitive("dir::new"_Stz,         &vDirNew,           false);
-  vAddPrimitive("dir.open"_Stz,        &vDirOpen,          false);
-  vAddPrimitive("dir.path@"_Stz,       &vDirPathGet,       false);
-  vAddPrimitive("dir.path!"_Stz,       &vDirPathSet,       false);
-  vAddPrimitive("dir.read"_Stz,        &vDirRead,          false);
-  vAddPrimitive("dir.rewind"_Stz,      &vDirRewind,        false);
-  vAddPrimitive("dir.seek"_Stz,        &vDirSeek,          false);
-  vAddPrimitive("dir.tell"_Stz,        &vDirTell,          false);
+  vAddStep("dir.close"_Stz,       &vDirClose,         false);
+  vAddStep("dir.delete"_Stz,      &vDirDelete,        false);
+  vAddStep("dir.entryName"_Stz,   &vDirEntryName,     false);
+  vAddStep("dir.entryType"_Stz,   &vDirEntryType,     false);
+  vAddStep("dir.init"_Stz,        &vDirInit,          false);
+  vAddStep("dir.isClosed"_Stz,    &vDirIsClosed,      false);
+  vAddStep("dir.isOpen"_Stz,      &vDirIsOpen,        false);
+  vAddStep("dir::new"_Stz,         &vDirNew,           false);
+  vAddStep("dir.open"_Stz,        &vDirOpen,          false);
+  vAddStep("dir.path@"_Stz,       &vDirPathGet,       false);
+  vAddStep("dir.path!"_Stz,       &vDirPathSet,       false);
+  vAddStep("dir.read"_Stz,        &vDirRead,          false);
+  vAddStep("dir.rewind"_Stz,      &vDirRewind,        false);
+  vAddStep("dir.seek"_Stz,        &vDirSeek,          false);
+  vAddStep("dir.tell"_Stz,        &vDirTell,          false);
 }
 
 /*----------------------------------------------------------------------------*/

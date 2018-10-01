@@ -13,11 +13,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Magnitude(void)
+void Task::vAddSteps_Magnitude(void)
 {
-  vAddPrimitive("toDigitName"_Stz,     &vToDigitName,   false);
-  vAddPrimitive("bytes.magnitude"_Stz, &vBytesMagnitude,   false);
-  vAddPrimitive("number.magnitude"_Stz, &vNumberMagnitude, false);
+  vAddStep("toDigitName"_Stz,     &vToDigitName,   false);
+  vAddStep("bytes.magnitude"_Stz, &vBytesMagnitude,   false);
+  vAddStep("number.magnitude"_Stz, &vNumberMagnitude, false);
 }
 
 /*----------------------------------------------------------------------------*/

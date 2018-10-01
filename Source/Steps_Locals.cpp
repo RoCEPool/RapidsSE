@@ -13,16 +13,16 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Locals(void)
+void Task::vAddSteps_Locals(void)
 {
-  vAddPrimitive("local.fetch"_Stz,     &vLocalFetch,       false);
-  vAddPrimitive("local.store"_Stz,     &vLocalStore,       false);
-  vAddPrimitive("locals|"_Stz,         &vLocalsBar,        true);
-  vAddPrimitive("locals.pop"_Stz,      &vLocalsPop,        false);
-  vAddPrimitive("locals.push"_Stz,     &vLocalsPush,       false);
-  vAddPrimitive("to"_Stz,              &vLocalsTo,         true);
+  vAddStep("local.fetch"_Stz,     &vLocalFetch,       false);
+  vAddStep("local.store"_Stz,     &vLocalStore,       false);
+  vAddStep("locals|"_Stz,         &vLocalsBar,        true);
+  vAddStep("locals.pop"_Stz,      &vLocalsPop,        false);
+  vAddStep("locals.push"_Stz,     &vLocalsPush,       false);
+  vAddStep("to"_Stz,              &vLocalsTo,         true);
   
-  vAddPrimitive("params|"_Stz,         &vLocalsBar,        true);
+  vAddStep("params|"_Stz,         &vLocalsBar,        true);
 }
 
 /*----------------------------------------------------------------------------*/

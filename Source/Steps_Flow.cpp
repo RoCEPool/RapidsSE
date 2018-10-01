@@ -13,19 +13,19 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Flow(void)
+void Task::vAddSteps_Flow(void)
 {
-  vAddPrimitive("begin_"_Stz,          &vFlowBegin_,       false);
-  vAddPrimitive("execute"_Stz,         &vFlowExecute,      false);
-  vAddPrimitive("hazard"_Stz,          &vFlowHazard,       false);
-  vAddPrimitive("jump"_Stz,            &vFlowJump,         false);
-  vAddPrimitive("jumpBegin_"_Stz,      &vFlowJumpBegin_,   false);
-  vAddPrimitive("jumpFalse"_Stz,       &vFlowJumpFalse,    false);
-  vAddPrimitive("jumpTrue"_Stz,        &vFlowJumpTrue,     false);
-  vAddPrimitive("nop"_Stz,             &vFlowNop,          false);
-  vAddPrimitive("retryPoint"_Stz,      &vFlowRetryPoint,   false);
-  vAddPrimitive("test"_Stz,            &vFlowTest,         false);
-  vAddPrimitive("throw"_Stz,           &vFlowThrow,        false);
+  vAddStep("begin_"_Stz,          &vFlowBegin_,       false);
+  vAddStep("execute"_Stz,         &vFlowExecute,      false);
+  vAddStep("hazard"_Stz,          &vFlowHazard,       false);
+  vAddStep("jump"_Stz,            &vFlowJump,         false);
+  vAddStep("jumpBegin_"_Stz,      &vFlowJumpBegin_,   false);
+  vAddStep("jumpFalse"_Stz,       &vFlowJumpFalse,    false);
+  vAddStep("jumpTrue"_Stz,        &vFlowJumpTrue,     false);
+  vAddStep("nop"_Stz,             &vFlowNop,          false);
+  vAddStep("retryPoint"_Stz,      &vFlowRetryPoint,   false);
+  vAddStep("test"_Stz,            &vFlowTest,         false);
+  vAddStep("throw"_Stz,           &vFlowThrow,        false);
 }
 
 /*----------------------------------------------------------------------------*/

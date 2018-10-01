@@ -14,22 +14,22 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_EntryBuffer(void)
+void Task::vAddSteps_EntryBuffer(void)
 {
-  vAddPrimitive("entryBuffer::create"_Stz,     &vEntryBufferCreate,      false);
-  vAddPrimitive("entryBuffer.delete"_Stz,      &vEntryBufferDelete,      false);
-  vAddPrimitive("entryBuffer.dump"_Stz,        &vEntryBufferDump,        false);
-  vAddPrimitive("entryBuffer.firstEntry"_Stz,  &vEntryBufferFirstEntry,  false);
-  vAddPrimitive("entryBuffer.index@"_Stz,      &vEntryBufferIndexFetch,  false);
-  vAddPrimitive("entryBuffer.index!"_Stz,      &vEntryBufferIndexStore,  false);
-  vAddPrimitive("entryBuffer.isLast@"_Stz,     &vEntryBufferIsLastFetch, false);
-  vAddPrimitive("entryBuffer.isLast!"_Stz,     &vEntryBufferIsLastStore, false);
-  vAddPrimitive("entryBuffer.iterate"_Stz,     &vEntryBufferIterate,     false);
-  vAddPrimitive("entryBuffer.nextEntry"_Stz,   &vEntryBufferNextEntry,   false);
-  vAddPrimitive("entryBuffer.nextBuffer"_Stz,  &vEntryBufferNextBuffer,  false);
-  vAddPrimitive("entryBuffer.partition@"_Stz,  &vEntryBufferPartitionFetch, false);
-  vAddPrimitive("entryBuffer.partition!"_Stz,  &vEntryBufferPartitionStore, false);
-  vAddPrimitive("entryBuffer::toEntryBuffer"_Stz,&vEntryBufferToEntryBuffer,false);
+  vAddStep("entryBuffer::create"_Stz,     &vEntryBufferCreate,      false);
+  vAddStep("entryBuffer.delete"_Stz,      &vEntryBufferDelete,      false);
+  vAddStep("entryBuffer.dump"_Stz,        &vEntryBufferDump,        false);
+  vAddStep("entryBuffer.firstEntry"_Stz,  &vEntryBufferFirstEntry,  false);
+  vAddStep("entryBuffer.index@"_Stz,      &vEntryBufferIndexFetch,  false);
+  vAddStep("entryBuffer.index!"_Stz,      &vEntryBufferIndexStore,  false);
+  vAddStep("entryBuffer.isLast@"_Stz,     &vEntryBufferIsLastFetch, false);
+  vAddStep("entryBuffer.isLast!"_Stz,     &vEntryBufferIsLastStore, false);
+  vAddStep("entryBuffer.iterate"_Stz,     &vEntryBufferIterate,     false);
+  vAddStep("entryBuffer.nextEntry"_Stz,   &vEntryBufferNextEntry,   false);
+  vAddStep("entryBuffer.nextBuffer"_Stz,  &vEntryBufferNextBuffer,  false);
+  vAddStep("entryBuffer.partition@"_Stz,  &vEntryBufferPartitionFetch, false);
+  vAddStep("entryBuffer.partition!"_Stz,  &vEntryBufferPartitionStore, false);
+  vAddStep("entryBuffer::toEntryBuffer"_Stz,&vEntryBufferToEntryBuffer,false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,50 +13,50 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Word(void)
+void Task::vAddSteps_Word(void)
 {
-  vAddPrimitive("allot"_Stz,           &vAllot,            false);
-  vAddPrimitive("cell"_Stz,            &vCell,             false);
-  vAddPrimitive(":"_Stz,               &vColon,            false);
-  vAddPrimitive(","_Stz,               &vComma,            false);
-  vAddPrimitive("compile,"_Stz,        &vCompileComma,     false);
-  vAddPrimitive("create"_Stz,          &vCreate,           false);
-  vAddPrimitive("createTenants"_Stz,   &vCreateTenants,    false);
-  vAddPrimitive(">create"_Stz,         &vCreateFrom,       false);
-  vAddPrimitive(">createInMain"_Stz,   &vCreateFromInMain, false);
-  vAddPrimitive(">createPersistent"_Stz, &vCreateFromPersistent, false);
-  vAddPrimitive("createPersistent"_Stz,&vCreatePersistent, false);
-  vAddPrimitive("dic?"_Stz,            &vDicWhich,         false);
-  vAddPrimitive("does>"_Stz,           &vDoes,             true );
-  vAddPrimitive("does_rt"_Stz,         &vDoes_RT,          false);
-  vAddPrimitive("find"_Stz,            &vFind,             false);
-  vAddPrimitive("findInCurrent"_Stz,   &vFindInCurrent,    false);
-  vAddPrimitive("forget"_Stz,          &vForget,           false);
-  vAddPrimitive("##:"_Stz,             &vHashHashColon,    true );
-  vAddPrimitive("indirect"_Stz,        &vIndirect,         true );
-  vAddPrimitive("immediate"_Stz,       &vImmediate,        true );
-  vAddPrimitive("locate"_Stz,          &vLocate,           false);
+  vAddStep("allot"_Stz,           &vAllot,            false);
+  vAddStep("cell"_Stz,            &vCell,             false);
+  vAddStep(":"_Stz,               &vColon,            false);
+  vAddStep(","_Stz,               &vComma,            false);
+  vAddStep("compile,"_Stz,        &vCompileComma,     false);
+  vAddStep("create"_Stz,          &vCreate,           false);
+  vAddStep("createTenants"_Stz,   &vCreateTenants,    false);
+  vAddStep(">create"_Stz,         &vCreateFrom,       false);
+  vAddStep(">createInMain"_Stz,   &vCreateFromInMain, false);
+  vAddStep(">createPersistent"_Stz, &vCreateFromPersistent, false);
+  vAddStep("createPersistent"_Stz,&vCreatePersistent, false);
+  vAddStep("dic?"_Stz,            &vDicWhich,         false);
+  vAddStep("does>"_Stz,           &vDoes,             true );
+  vAddStep("does_rt"_Stz,         &vDoes_RT,          false);
+  vAddStep("find"_Stz,            &vFind,             false);
+  vAddStep("findInCurrent"_Stz,   &vFindInCurrent,    false);
+  vAddStep("forget"_Stz,          &vForget,           false);
+  vAddStep("##:"_Stz,             &vHashHashColon,    true );
+  vAddStep("indirect"_Stz,        &vIndirect,         true );
+  vAddStep("immediate"_Stz,       &vImmediate,        true );
+  vAddStep("locate"_Stz,          &vLocate,           false);
 
-  vAddPrimitive("opDic"_Stz,           &vOpDic,            true );
-  vAddPrimitive("planDic"_Stz,         &vPlanDicTask,      true );
-  vAddPrimitive("postpone"_Stz,        &vPostpone,         true );
-  vAddPrimitive("see"_Stz,             &vSee,              false);
-  vAddPrimitive(";"_Stz,               &vSemicolon,        true );
-  vAddPrimitive("subDic"_Stz,          &vSubDic,           true );
-  vAddPrimitive("tick"_Stz,            &vTick,             true );
-  vAddPrimitive("word.dump"_Stz,       &vWordDump,         false);
-  vAddPrimitive("word.forget"_Stz,     &vWordForget,       false);
-  vAddPrimitive("word.immediate@"_Stz, &vWordImmediateGet, false);
-  vAddPrimitive("word.immediate!"_Stz, &vWordImmediateSet, false);
-  vAddPrimitive("word.isImmediate"_Stz,&vWordIsImmediate,  false);
-  vAddPrimitive("word.isPrimitive"_Stz,&vWordIsPrimitive,  false);
-  vAddPrimitive("word.kind@"_Stz,      &vWordKindGet,      false);
-  vAddPrimitive("word.kind!"_Stz,      &vWordKindSet,      false);
-  vAddPrimitive("word.name"_Stz,       &vWordName,         false);
-  vAddPrimitive("word.prev"_Stz,       &vWordPrev,         false);
-  vAddPrimitive("word.this"_Stz,       &vWordThis,         false);
-  vAddPrimitive("word.type@"_Stz,      &vWordTypeGet,      false);
-  vAddPrimitive("word.type!"_Stz,      &vWordTypeSet,      false);
+  vAddStep("opDic"_Stz,           &vOpDic,            true );
+  vAddStep("planDic"_Stz,         &vPlanDicTask,      true );
+  vAddStep("postpone"_Stz,        &vPostpone,         true );
+  vAddStep("see"_Stz,             &vSee,              false);
+  vAddStep(";"_Stz,               &vSemicolon,        true );
+  vAddStep("subDic"_Stz,          &vSubDic,           true );
+  vAddStep("tick"_Stz,            &vTick,             true );
+  vAddStep("word.dump"_Stz,       &vWordDump,         false);
+  vAddStep("word.forget"_Stz,     &vWordForget,       false);
+  vAddStep("word.immediate@"_Stz, &vWordImmediateGet, false);
+  vAddStep("word.immediate!"_Stz, &vWordImmediateSet, false);
+  vAddStep("word.isImmediate"_Stz,&vWordIsImmediate,  false);
+  vAddStep("word.isPrimitive"_Stz,&vWordIsPrimitive,  false);
+  vAddStep("word.kind@"_Stz,      &vWordKindGet,      false);
+  vAddStep("word.kind!"_Stz,      &vWordKindSet,      false);
+  vAddStep("word.name"_Stz,       &vWordName,         false);
+  vAddStep("word.prev"_Stz,       &vWordPrev,         false);
+  vAddStep("word.this"_Stz,       &vWordThis,         false);
+  vAddStep("word.type@"_Stz,      &vWordTypeGet,      false);
+  vAddStep("word.type!"_Stz,      &vWordTypeSet,      false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,28 +13,28 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Str(void)
+void Task::vAddSteps_Str(void)
 {
-  vAddPrimitive("s256.init"_Stz,    &vS256Init,      false);
+  vAddStep("s256.init"_Stz,    &vS256Init,      false);
   
-  vAddPrimitive("str::algebra"_Stz, &vStrAlgebra,    false);
-  vAddPrimitive("strAlgebra"_Stz,   &vStrAlgebra,    false);
+  vAddStep("str::algebra"_Stz, &vStrAlgebra,    false);
+  vAddStep("strAlgebra"_Stz,   &vStrAlgebra,    false);
   
-  vAddPrimitive("str.cat"_Stz,      &vStrCat,        false);
-  vAddPrimitive("str.clip"_Stz,     &vStrClip,       false);
-  vAddPrimitive("str.equal"_Stz,    &vStrEqual,      false);
-  vAddPrimitive("str.escape"_Stz,   &vStrEscape,     false);
-  vAddPrimitive("str.firstCsv"_Stz, &vStrFirstCsv,   false);
-  vAddPrimitive("str.format"_Stz,   &vStrFormat,     false);
-  vAddPrimitive("str.left"_Stz,     &vStrLeft,       false);
-  vAddPrimitive("str.length"_Stz,   &vStrLength,     false);
-  vAddPrimitive("str.pad"_Stz,      &vStrPad,        false);
-  vAddPrimitive("str.prepend"_Stz,  &vStrPrepend,    false);
-  vAddPrimitive("str.random"_Stz,   &vStrRandom,     false);
-  vAddPrimitive("str.replace"_Stz,  &vStrReplace,    false);
-  vAddPrimitive("str.right"_Stz,    &vStrRight,      false);
-  vAddPrimitive("str.sub"_Stz,      &vStrSub,        false);
-  vAddPrimitive("str.tailInt"_Stz,  &vStrTailInt,    false);
+  vAddStep("str.cat"_Stz,      &vStrCat,        false);
+  vAddStep("str.clip"_Stz,     &vStrClip,       false);
+  vAddStep("str.equal"_Stz,    &vStrEqual,      false);
+  vAddStep("str.escape"_Stz,   &vStrEscape,     false);
+  vAddStep("str.firstCsv"_Stz, &vStrFirstCsv,   false);
+  vAddStep("str.format"_Stz,   &vStrFormat,     false);
+  vAddStep("str.left"_Stz,     &vStrLeft,       false);
+  vAddStep("str.length"_Stz,   &vStrLength,     false);
+  vAddStep("str.pad"_Stz,      &vStrPad,        false);
+  vAddStep("str.prepend"_Stz,  &vStrPrepend,    false);
+  vAddStep("str.random"_Stz,   &vStrRandom,     false);
+  vAddStep("str.replace"_Stz,  &vStrReplace,    false);
+  vAddStep("str.right"_Stz,    &vStrRight,      false);
+  vAddStep("str.sub"_Stz,      &vStrSub,        false);
+  vAddStep("str.tailInt"_Stz,  &vStrTailInt,    false);
 }
 
 /*----------------------------------------------------------------------------*/

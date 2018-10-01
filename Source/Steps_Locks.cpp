@@ -13,10 +13,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Locks(void)
+void Task::vAddSteps_Locks(void)
 {
-  vAddPrimitive("locks::list"_Stz,  &vLocksList,  false);
-  vAddPrimitive("locks::reset"_Stz, &vLocksReset, false);
+  vAddStep("locks::list"_Stz,  &vLocksList,  false);
+  vAddStep("locks::reset"_Stz, &vLocksReset, false);
 }
 
 /*----------------------------------------------------------------------------*/
