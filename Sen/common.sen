@@ -4,7 +4,6 @@
 
 "-common.sen" .verbose
 
-"common_dir.sen" include
 "common_file.sen" include
 "common_lock.sen" include
 
