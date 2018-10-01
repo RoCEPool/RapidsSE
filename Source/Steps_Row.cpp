@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Row(void)
+void Step::vAddSteps_Row(void)
 {
   vAddStep("row.asString"_Stz,         &Task::vRowString,        false);
   vAddStep("row.asEscapedString"_Stz,  &Task::vRowEscapedString, false);

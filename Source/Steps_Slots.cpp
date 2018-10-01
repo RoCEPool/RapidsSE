@@ -11,7 +11,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Slots(void)
+void Step::vAddSteps_Slots(void)
 {
   vAddStep("slots.columnCount"_Stz,     &Task::vSlotsColumnCount,     false);
   vAddStep("slots.columnName"_Stz,      &Task::vSlotsColumnName,      false);

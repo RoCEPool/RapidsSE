@@ -12,7 +12,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Thread(void)
+void Step::vAddSteps_Thread(void)
 {
   vAddStep("thread.bind"_Stz,            &Task::vThreadBind,            false);
   vAddStep("thread.condSignal"_Stz,      &Task::vThreadCondSignal,      false);

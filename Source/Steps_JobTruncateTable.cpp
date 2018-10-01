@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_JobTruncateTable(void)
+void Step::vAddSteps_JobTruncateTable(void)
 {
   vAddStep("job_subTruncate.truncateJobId@"_Stz,&Task::vJob_SubTruncateTruncateJobIdFetch, false);
   vAddStep("job_subTruncate.slot@"_Stz,         &Task::vJob_SubTruncateSlotFetch,          false);

@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_SEitf(void)
+void Step::vAddSteps_SEitf(void)
 {
   vAddStep("seitf.commandProcessor"_Stz, &Task::vSEitfCommandProcessor, false);
   vAddStep("seitf.dicStack"_Stz,         &Task::vSEitfDicStack,         false);

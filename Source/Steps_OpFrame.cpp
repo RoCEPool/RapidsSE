@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_OpFrame(void)
+void Step::vAddSteps_OpFrame(void)
 {
   vAddStep("opFrame.dic"_Stz,       &Task::vOpFrameDic,       false);
   vAddStep("opFrame.name"_Stz,      &Task::vOpFrameName,      false);

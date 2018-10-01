@@ -16,10 +16,8 @@ i8 giCountObjects[CN_ENUMS];
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Bp(void)
+void Step::vAddSteps_Bp(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
   vAddStep("bp::analyze"_Stz,     &Task::vBpAnalyze,        false);
   vAddStep("bp::dump"_Stz,        &Task::vBpDump,           false);
   vAddStep("bp::freeBuffers"_Stz, &Task::vFreeBuffers,      false);

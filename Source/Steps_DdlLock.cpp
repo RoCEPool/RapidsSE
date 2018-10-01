@@ -17,7 +17,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_DdlLock(void)
+void Step::vAddSteps_DdlLock(void)
 {
   vAddStep("ddlLock::dropRead"_Stz, &Task::vDdlLockDropRead,  false);
   vAddStep("ddlLock::dropWrite"_Stz,&Task::vDdlLockDropWrite, false);

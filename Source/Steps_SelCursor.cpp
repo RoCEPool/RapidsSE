@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_SelCursor(void)
+void Step::vAddSteps_SelCursor(void)
 {
   vAddStep("selCursor.begin"_Stz,     &Task::vSelCursorBegin,      false);
   vAddStep("selCursor.delete"_Stz,    &Task::vSelCursorDelete,     false);

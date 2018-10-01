@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Index(void)
+void Step::vAddSteps_Index(void)
 {
   vAddStep("index.analyze"_Stz,         &Task::vIndexAnalyze,         false);
   vAddStep("index.buffer"_Stz,          &Task::vIndexBuffer,          false);

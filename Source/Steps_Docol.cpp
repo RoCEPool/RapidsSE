@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Docol(void)
+void Step::vAddSteps_Docol(void)
 {
   vAddStep("]"_Stz,                     &Task::vDocolCompiling,      false);
   vAddStep("["_Stz,                     &Task::vDocolInterpreting,   true );

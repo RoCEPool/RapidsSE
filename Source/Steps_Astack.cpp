@@ -12,10 +12,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Astack(void)
+void Step::vAddSteps_Astack(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
   vAddStep("astack.class"_Stz,    &Task::vAstackClass,      false);
   vAddStep("adepth"_Stz,          &Task::vAstackDepth,      false);
   vAddStep("adrop"_Stz,           &Task::vAstackDrop,       false);

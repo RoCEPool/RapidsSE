@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Dstack(void)
+void Step::vAddSteps_Dstack(void)
 {
   vAddStep("stack.class"_Stz,     &Task::vDstackClass,      false);
   vAddStep("depth"_Stz,           &Task::vDstackDepth,      false);

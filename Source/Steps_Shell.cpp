@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Shell(void)
+void Step::vAddSteps_Shell(void)
 {
   vAddStep("shell.execute"_Stz,  &Task::vShellExecute,  false);
 }

@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_JobGeneric(void)
+void Step::vAddSteps_JobGeneric(void)
 {
   vAddStep("jobBegun.error@"_Stz,     &Task::vJob__BegunErrorFetch,  false);
   vAddStep("jobBegun.error!"_Stz,     &Task::vJob__BegunErrorStore,  false);

@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Input(void)
+void Step::vAddSteps_Input(void)
 {
   vAddStep("accept"_Stz,          &Task::vInputAccept,      false);
   vAddStep("input.close"_Stz,     &Task::vInputClose,       false);

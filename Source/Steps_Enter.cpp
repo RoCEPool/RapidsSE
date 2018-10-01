@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Enter(void)
+void Step::vAddSteps_Enter(void)
 {
   vAddStep("enterObject"_Stz,     &Task::vEnterObject,      false);
   vAddStep("enterRoutine"_Stz,    &Task::vEnterRoutine,     false);

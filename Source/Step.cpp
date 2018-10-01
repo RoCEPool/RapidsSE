@@ -19,7 +19,6 @@ void Step::vAddSteps(void)
 {
   
   Step::vAddSteps_AccessPath();
-  /*
   Step::vAddSteps_Accum();
   Step::vAddSteps_Address();
   Step::vAddSteps_Args();
@@ -137,7 +136,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_WorkingBuffer();
   
   Step::vAddSteps_Zero();
-  */
 }
 
 /*============================================================================*/

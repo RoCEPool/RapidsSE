@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_JobClass(void)
+void Step::vAddSteps_JobClass(void)
 {
   vAddStep("jobClass::find"_Stz,   &Task::vJobClassFind,     false);
   

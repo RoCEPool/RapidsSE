@@ -13,7 +13,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Loader(void)
+void Step::vAddSteps_Loader(void)
 {
   vAddStep("loader.addRecordsInvalid"_Stz, &Task::vLoaderAddRecordsInvalid,false);
   vAddStep("loader.addRecordsValid"_Stz,   &Task::vLoaderAddRecordsValid, false);

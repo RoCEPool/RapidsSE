@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Word(void)
+void Step::vAddSteps_Word(void)
 {
   vAddStep("allot"_Stz,           &Task::vAllot,            false);
   vAddStep("cell"_Stz,            &Task::vCell,             false);

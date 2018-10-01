@@ -14,7 +14,7 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Planner(void)
+void Step::vAddSteps_Planner(void)
 {
   vAddStep("planner.choosePaths"_Stz,    &Task::vPlannerChoosePaths,    false);
   vAddStep("planner.chosenPath"_Stz,     &Task::vPlannerChosenPath,     false);

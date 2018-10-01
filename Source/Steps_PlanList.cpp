@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_PlanList(void)
+void Step::vAddSteps_PlanList(void)
 {
   vAddStep("planList::addPlan"_Stz,    &Task::vPlanListAddPlan,    false);
   vAddStep("planList::findPlan"_Stz,   &Task::vPlanListFindPlan,   false);

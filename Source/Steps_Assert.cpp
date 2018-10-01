@@ -12,10 +12,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Assert(void)
+void Step::vAddSteps_Assert(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
   vAddStep("assert"_Stz,           &Task::vAssert,            false);
   vAddStep("assert::class"_Stz,    &Task::vAssertClass,       false);
   vAddStep("assert::class_0"_Stz,  &Task::vAssertClass_0,     false);

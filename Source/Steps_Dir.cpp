@@ -17,7 +17,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Dir(void)
+void Step::vAddSteps_Dir(void)
 {
   vAddStep("dir.changeCurrent"_Stz, &Task::vDirChangeCurrent, false);
   vAddStep("dir.exists"_Stz,        &Task::vDirExists,        false);

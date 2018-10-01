@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Locals(void)
+void Step::vAddSteps_Locals(void)
 {
   vAddStep("local.fetch"_Stz,     &Task::vLocalFetch,       false);
   vAddStep("local.store"_Stz,     &Task::vLocalStore,       false);

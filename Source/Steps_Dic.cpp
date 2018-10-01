@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Dic(void)
+void Step::vAddSteps_Dic(void)
 {
   vAddStep("dic.frozen@"_Stz,     &Task::vDicFrozenGet,     false);
   vAddStep("dic.frozen!"_Stz,     &Task::vDicFrozenSet,     false);

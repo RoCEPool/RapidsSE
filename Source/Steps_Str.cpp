@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Str(void)
+void Step::vAddSteps_Str(void)
 {
   vAddStep("s256.init"_Stz,    &Task::vS256Init,      false);
   

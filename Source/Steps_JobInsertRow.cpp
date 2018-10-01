@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_JobInsertRow(void)
+void Step::vAddSteps_JobInsertRow(void)
 {
   vAddStep("job_endInsert.insertRowJob@"_Stz, &Task::vJob_EndInsertInsertRowJobIdFetch, false);
   vAddStep("job_endInsert.task@"_Stz,         &Task::vJob_EndInsertTaskFetch,           false);

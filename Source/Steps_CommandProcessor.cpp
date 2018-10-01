@@ -11,7 +11,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_CommandProcessor(void)
+void Step::vAddSteps_CommandProcessor(void)
 {
   vAddStep("commandProcessor.blankLine"_Stz,   &Task::vCommandProcessorBlankLine,  false);
   vAddStep("commandProcessor.deleteJob"_Stz,   &Task::vCommandProcessorDeleteJob,  false);

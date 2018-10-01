@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Encode(void)
+void Step::vAddSteps_Encode(void)
 {
   vAddStep("again"_Stz,               &Task::vEncodeAgain,         true );
   vAddStep("ahead"_Stz,               &Task::vEncodeAhead,         true );

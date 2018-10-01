@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_JobStartCluster(void)
+void Step::vAddSteps_JobStartCluster(void)
 {
   vAddStep("job_startCluster.spawnNodes@"_Stz, &Task::vJob_StartClusterSpawnNodesFetch, false);
 }

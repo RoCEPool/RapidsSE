@@ -14,7 +14,7 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Grid(void)
+void Step::vAddSteps_Grid(void)
 {
   vAddStep("grid::node"_Stz,         &Task::vGridNode,              false);
   vAddStep("grid::nodes"_Stz,        &Task::vGridNodes,             false);

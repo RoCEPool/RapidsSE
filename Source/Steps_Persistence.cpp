@@ -9,7 +9,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Persistence(void)
+void Step::vAddSteps_Persistence(void)
 {
   vAddStep("persistence::checkpoint"_Stz, &Task::vPersistenceCheckpoint,  false);
   vAddStep("persistence::reload"_Stz,     &Task::vPersistenceReload,      false);

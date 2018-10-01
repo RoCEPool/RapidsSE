@@ -11,7 +11,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_AttachMap(void)
+void Step::vAddSteps_AttachMap(void)
 {
   vAddStep("attachmap::attachmap@"_Stz,   &Task::vAttachMapFetch,         false);
   vAddStep("attachmap::attachmap!"_Stz,   &Task::vAttachMapStore,         false);

@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Memory(void)
+void Step::vAddSteps_Memory(void)
 {
   vAddStep("memory.byteDump"_Stz,   &Task::vMemoryByteDump,    false);
   vAddStep("memory::list"_Stz,       &Task::vMemoryList,        false);

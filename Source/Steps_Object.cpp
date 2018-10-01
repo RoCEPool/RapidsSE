@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Object(void)
+void Step::vAddSteps_Object(void)
 {
   vAddStep("object.class@"_Stz,     &Task::vObjectClassFetch, false);
   vAddStep("object.class!"_Stz,     &Task::vObjectClassStore, false);

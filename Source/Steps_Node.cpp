@@ -14,7 +14,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Node(void)
+void Step::vAddSteps_Node(void)
 {
   vAddStep("node.init"_Stz,       &Task::vNodeInit,         false);
   vAddStep("node.IP"_Stz,         &Task::vNodeIP,           false);

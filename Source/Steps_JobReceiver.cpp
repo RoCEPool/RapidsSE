@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_JobReceiver(void)
+void Step::vAddSteps_JobReceiver(void)
 {
   vAddStep("job_receiver.connNo@"_Stz, &Task::vJob_ReceiverConnNoFetch, false);
   vAddStep("job_receiver.connNo!"_Stz, &Task::vJob_ReceiverConnNoStore, false);

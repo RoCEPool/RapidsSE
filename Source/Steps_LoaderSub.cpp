@@ -13,7 +13,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_LoaderSub(void)
+void Step::vAddSteps_LoaderSub(void)
 {
   vAddStep("loaderSub.begin"_Stz,         &Task::vLoaderSubBegin,         false);
   vAddStep("loaderSub.danglingBuffer"_Stz,&Task::vLoaderSubDanglingBuffer,false);

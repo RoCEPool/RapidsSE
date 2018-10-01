@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Prompt(void)
+void Step::vAddSteps_Prompt(void)
 {
   vAddStep("prompt.continue"_Stz,         &Task::vPromptContinue,         false);
   vAddStep("prompt.executeFunction"_Stz,  &Task::vPromptExecuteFunction,  false);

@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Process(void)
+void Step::vAddSteps_Process(void)
 {
   vAddStep("process.getPid"_Stz,  &Task::vProcessGetPid,    false);
   vAddStep("process.quit"_Stz,    &Task::vProcessQuit,      false);

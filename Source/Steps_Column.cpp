@@ -11,7 +11,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Column(void)
+void Step::vAddSteps_Column(void)
 {
   vAddStep("column.isNullable@"_Stz,     &Task::vColumnIsNullableFetch,   false);
   vAddStep("column.isPartitionKey@"_Stz, &Task::vColumnIsPartitionKeyFetch, false);

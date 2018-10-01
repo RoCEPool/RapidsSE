@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Rstack(void)
+void Step::vAddSteps_Rstack(void)
 {
   vAddStep("cs-pick"_Stz,         &Task::vRstackCsPick,     false);
   vAddStep("cs-roll"_Stz,         &Task::vRstackCsRoll,     false);

@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Socket(void)
+void Step::vAddSteps_Socket(void)
 {
   vAddStep("socket::open"_Stz,      &Task::vSocketOpen,       false);
   vAddStep("socket::listen"_Stz,    &Task::vSocketListen,     false);

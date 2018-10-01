@@ -11,7 +11,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Accum(void)
+void Step::vAddSteps_Accum(void)
 {
   vAddStep("accum.delete"_Stz, &Task::vAccumDelete, false);
   vAddStep("accum::new"_Stz,   &Task::vAccumNew,    false);

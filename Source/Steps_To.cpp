@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_To(void)
+void Step::vAddSteps_To(void)
 {
   vAddStep(">binval"_Stz,     &Task::vToBinVal,     false);
   vAddStep(">body"_Stz,       &Task::vToBody,       false);

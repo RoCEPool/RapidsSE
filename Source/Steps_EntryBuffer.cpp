@@ -14,7 +14,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_EntryBuffer(void)
+void Step::vAddSteps_EntryBuffer(void)
 {
   vAddStep("entryBuffer::create"_Stz,     &Task::vEntryBufferCreate,      false);
   vAddStep("entryBuffer.delete"_Stz,      &Task::vEntryBufferDelete,      false);

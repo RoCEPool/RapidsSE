@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Queues(void)
+void Step::vAddSteps_Queues(void)
 {
   vAddStep("queues::QueuesExecutingLength"_Stz, &Task::vQueuesExecutingLength, false);
   vAddStep("queues::QueuesReadyLength"_Stz,     &Task::vQueuesReadyLength,     false);

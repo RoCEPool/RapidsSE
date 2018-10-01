@@ -14,7 +14,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_WorkingBuffer(void)
+void Step::vAddSteps_WorkingBuffer(void)
 {
   vAddStep("workingBuffer.isLast@"_Stz,         &Task::vWorkingBufferIsLastFetch, false);
   vAddStep("workingBuffer.isLast!"_Stz,         &Task::vWorkingBufferIsLastStore, false);

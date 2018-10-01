@@ -9,7 +9,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_TablePartition(void)
+void Step::vAddSteps_TablePartition(void)
 {
   vAddStep("tablePtn.dump"_Stz,             &Task::vTablePtnDump,            false);
   vAddStep("tablePtn.attemptGrabRead"_Stz , &Task::vTablePtnAttemptGrabRead, false);

@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_JobCreateIndex(void)
+void Step::vAddSteps_JobCreateIndex(void)
 {
   vAddStep("job_createIndex.isUnique@"_Stz, &Task::vJob_CreateIndexIsUniqueFetch,  false);
 }

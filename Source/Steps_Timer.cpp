@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Timer(void)
+void Step::vAddSteps_Timer(void)
 {
   vAddStep("timer.delete"_Stz,    &Task::vTimerDelete,      false);
   vAddStep("timer.init"_Stz,      &Task::vTimerInit,        false);

@@ -11,7 +11,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_GroupBy(void)
+void Step::vAddSteps_GroupBy(void)
 {
   vAddStep("groupBy.applyBuffer"_Stz,  &Task::vGroupByApplyBuffer,  false);
   vAddStep("groupBy.applyEntry"_Stz,   &Task::vGroupByApplyEntry,   false);

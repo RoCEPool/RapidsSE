@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_JobFetchRows(void)
+void Step::vAddSteps_JobFetchRows(void)
 {
   vAddStep("Job_fetchRows.lastBuffers!"_Stz, &Task::vJob_FetchRowsLastBuffersStore, false);
   vAddStep("Job_fetchRows.partition@"_Stz, &Task::vJob_FetchRowsPartitionFetch,   false);

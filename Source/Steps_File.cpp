@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_File(void)
+void Step::vAddSteps_File(void)
 {
   vAddStep("file.close"_Stz,      &Task::vFileClose,        false);
   vAddStep("file.delete"_Stz,     &Task::vFileDelete,       false);

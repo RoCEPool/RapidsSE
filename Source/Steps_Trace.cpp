@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Trace(void)
+void Step::vAddSteps_Trace(void)
 {
   vAddStep("traceOff"_Stz,         &Task::vTraceOff,         false);
   vAddStep("traceOn"_Stz,          &Task::vTraceOn,          false);

@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_Task(void)
+void Step::vAddSteps_Task(void)
 {
   vAddStep("task.ack"_Stz,       &Task::vTaskAck,           false);
   vAddStep("task.acks@"_Stz,     &Task::vTaskAcksFetch,     false);
