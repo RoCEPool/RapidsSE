@@ -20,7 +20,7 @@ extern "C" eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, void** ppError, i8 iTrace
 extern "C" eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetRowCount(SEitf* pSEitf, void* pJobPtr, void** ppRowCount, i8 iTraceLevel);
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel);
-extern "C" eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, void** ppValidRows, void** ppInvalidRows, i8 iTraceLevel);
+extern "C" eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, i8* pValidRows, i8* pInvalidRows, i8 iTraceLevel);
 extern "C" eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);
@@ -163,9 +163,9 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
 /*----------------------------------------------------------------------------*/
 /* validate reference pointer                                                 */
 /*----------------------------------------------------------------------------*/
-#define VALIDATE_REFPOINTER(aMarker, ppRefPointer) \
+#define VALIDATE_REFPOINTER(aMarker, pRefPointer) \
   { \
-    if ( ! ppRefPointer) { \
+    if ( ! pRefPointer) { \
       TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
       pSEitf->vSetLastError(EC_INVALID_PARAMETER); \
       return EC_INVALID_PARAMETER; \

@@ -28,14 +28,9 @@ namespace Interface
   
     bool   m_bDisplay;
     
-    i8     m_iCurrentRequestId;
-    i8     m_iNextRequestId;
     i8     m_iRowPartition;
   
     bool   m_bSeitfExiting;
-
-    i8     m_iRowsInvalid;
-    i8     m_iRowsValid;
     
     RowOnce* m_pRowOnce; // has row been seen before?
   

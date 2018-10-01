@@ -309,8 +309,8 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTra
   i8 iToken = 0;
   
   while (iRows != iRow) {
-    
     ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("row:"_Stz));
+    
     ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("("_Stz));
     
     pSEitf->m_sResponse.vCopy(""_Stz);
@@ -479,7 +479,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, void** ppValidRows, void** ppInvalidRows, i8 iTraceLevel)
+eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, i8* pValidRows, i8* pInvalidRows, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -496,17 +496,14 @@ eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, void** ppValidRows, void** pp
     CLEAR_LASTERROR();
     
     // validate the reference pointers
-    VALIDATE_REFPOINTER("b"_Stz, ppValidRows);
-    VALIDATE_REFPOINTER("b"_Stz, ppInvalidRows);
+    VALIDATE_REFPOINTER("b"_Stz, pValidRows);
+    VALIDATE_REFPOINTER("b"_Stz, pInvalidRows);
     
     Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
     vTrace("L %lld IN %lld\n"_Stz, *pJob_LoadTable->m_ziValidRows, *pJob_LoadTable->m_ziInvalidRows);
     
-    pSEitf->m_iRowsValid = *pJob_LoadTable->m_ziValidRows;
-    pSEitf->m_iRowsInvalid = *pJob_LoadTable->m_ziInvalidRows;
-    
-    *ppValidRows = &pSEitf->m_iRowsValid;
-    *ppInvalidRows = &pSEitf->m_iRowsInvalid;
+    *pValidRows = *pJob_LoadTable->m_ziValidRows;
+    *pInvalidRows = *pJob_LoadTable->m_ziInvalidRows;
     
     // trace exit
     TRACE_EXIT("ea"_Stz);

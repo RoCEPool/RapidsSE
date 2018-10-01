@@ -180,11 +180,7 @@ SEitf::SEitf(i8 iPartition)
   m_pCurrentTable   = nullptr;
   m_pTx             = nullptr;
   m_bDisplay        = true;
-  m_iCurrentRequestId = 0;
-  m_iNextRequestId    = -1;
   m_iRowPartition     = -1;
-  m_iRowsInvalid         = 0;
-  m_iRowsValid           = 0;
   
   m_bSeitfExiting     = false;
   

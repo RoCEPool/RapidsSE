@@ -22,8 +22,6 @@ void Step::vAddSteps_SEitf(void)
   vAddStep("seitf.dump"_Stz,             &Task::vSEitfDump,             false);
   vAddStep("seitf.isExiting"_Stz,        &Task::vSEitfIsExiting,        false);
   vAddStep("seitf.pid"_Stz,              &Task::vSEitfPid,              false);
-  vAddStep("seitf.rowsInvalid!"_Stz,     &Task::vSEitfRowsInvalidStore, false);
-  vAddStep("seitf.rowsValid!"_Stz,       &Task::vSEitfRowsValidStore,   false);
   vAddStep("seitf.slot@"_Stz,            &Task::vSEitfSlotFetch,        false);
   vAddStep("seitf.table@"_Stz,           &Task::vSEitfTableFetch,       false);
   vAddStep("seitf.tableRef"_Stz,         &Task::vSEitfTableRef,         false);
@@ -165,52 +163,6 @@ void Task::vSEitfPid(MP_Task mpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   mpTask->m_pDataStack->vPushInt(pSEitf->m_iPid);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.rowsInvalid! -- store rows invalid in SE interface                   */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfRowsInvalidStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfRowsInvalid"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.rowsInvalid!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  i8 iRowsInvalid;
-  if ( ! mpTask->m_pDataStack->bPop(iRowsInvalid) )
-    THROW_INVALID_DSTACK("seitf.rowsInvalid!"_Stz);
-  
-  pSEitf->m_iRowsInvalid = iRowsInvalid;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.rowsValid! -- store rows valid in SE interface                       */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfRowsValidStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfRowsVvalid"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.rowsValid!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  i8 iRowsValid;
-  if ( ! mpTask->m_pDataStack->bPop(iRowsValid) )
-    THROW_INVALID_DSTACK("seitf.rowsInvalid!"_Stz);
-  
-  pSEitf->m_iRowsValid = iRowsValid;
   
   EXIT();
 }
