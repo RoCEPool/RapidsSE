@@ -168,7 +168,6 @@ eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
         vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
-        pSEitf->m_sErrorMsg = aEC[pJob->m_xNode[i_Node].m_eErrorCode];
         return pJob->m_xNode[i_Node].m_eErrorCode;
       }
     }
@@ -256,7 +255,7 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJobPtr, void** ppFetchBuffer,
 /*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
+eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, int iErrorCode, void** ppError, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -273,6 +272,7 @@ eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
     VALIDATE_REFPOINTER("b"_Stz, ppError);
     
     // get the error message
+    pSEitf->m_sErrorMsg = aEC[(eEC)iErrorCode];
     *ppError = pSEitf->m_sErrorMsg.aChar();
     
     // trace exit

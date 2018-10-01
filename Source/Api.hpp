@@ -16,7 +16,7 @@ extern "C" eEC RapidsSE_EndCommand(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
 extern "C" eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand, Stz* sCatalogName, Stz* sSchemaName,
                                        bool bPostJob, void** ppJob, i8 iTraceLevel);
 extern "C" eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJob, void** ppFetchBuffer, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, void** ppError, i8 iTraceLevel);
+extern "C" eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, int iErrorCode, void** ppError, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
 extern "C" eEC RapidsSE_GetRowCount(SEitf* pSEitf, void* pJobPtr, void** ppRowCount, i8 iTraceLevel);
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel);
