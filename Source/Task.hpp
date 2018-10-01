@@ -676,7 +676,6 @@ namespace Tasks
   
     // index
     static void vIndexAnalyze(MP_Task mpTask);
-    static void vIndexBuffer(MP_Task mpTask);
     static void vIndexColumnFetch(MP_Task mpTask);
     static void vIndexColumnCountFetch(MP_Task mpTask);
     static void vIndexColumnName(MP_Task mpTask);

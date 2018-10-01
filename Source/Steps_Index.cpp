@@ -18,7 +18,6 @@ extern AttachMap*      gpAttachMap;
 void Step::vAddSteps_Index(void)
 {
   vAddStep("index.analyze"_Stz,         &Task::vIndexAnalyze,         false);
-  vAddStep("index.buffer"_Stz,          &Task::vIndexBuffer,          false);
   vAddStep("index.columnCount@"_Stz,    &Task::vIndexColumnCountFetch,false);
   vAddStep("index.column@"_Stz,         &Task::vIndexColumnFetch,     false);
   vAddStep("index.columnName"_Stz,      &Task::vIndexColumnName,      false);
@@ -79,51 +78,6 @@ void Task::vIndexAnalyze(MP_Task mpTask)
   i8 nRows;
   sAnalysis = (Stz*)pIndex->pTable()->pAnalyzeIndex(pIndex, iDetailed == 1 ? true : false, nRows);
   mpTask->m_pDataStack->vPushS48K(sAnalysis);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* index.buffer -- position at an index buffer                                */
-/*----------------------------------------------------------------------------*/
-void Task::vIndexBuffer(MP_Task mpTask)
-{
-  ENTRY("vIndexBuffer"_Stz);
-  
-  Object* pPtrIndex = nullptr;
-
-  i8 iPartition;
-  ValWrk xValWrk;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
-    THROW_INVALID_DSTACK("index.buffer"_Stz);
-  
-  Index* pIndex = _pIndex(pPtrIndex);
-  ASSERT(CN_INDEX == pIndex->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("index.buffer"_Stz);
-  
-  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
-    THROW_INVALID_DSTACK("index.buffer"_Stz);
-  
-  i8 iIndexNo = pIndex->iIndexNo();
-  Table* pTable = pIndex->pTable();
-  
-  TablePtn* pPartition = pTable->pPartition(iPartition);
-  IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
-  
-  KeyWrk xKeyWrk;
-  Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
-  xKeyWrk.vAddDatum(xValWrk,pColumn0,pFormatters);
-  //xKeyWrk.vShow();
-  
-  // position at a level 0 index buffer at key
-  EntryBuffer* pIndexBuffer = pIndexTree->pPositionLevel(xKeyWrk, 1, JC_AFTER, 0);
-  
-  // return the index buffer
-  mpTask->m_pDataStack->vPushObject(pIndexBuffer);
   
   EXIT();
 }
