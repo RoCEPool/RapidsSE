@@ -68,9 +68,6 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
     // validate the job
     VALIDATE_JOB("b"_Stz);
     
-    // clear the last error
-    CLEAR_LASTERROR();
-        
     Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
     
     //pJob_InsertRow->m_pWorkingBuffer[0]->vShow(true);
@@ -193,12 +190,8 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJobPtr, void** ppFetchBuffer,
     // validate the SEitf
     VALIDATE_SEITF("a"_Stz);
     
-    // clear the last error
-    CLEAR_LASTERROR();
-    
     // Validate job
     VALIDATE_JOB("b"_Stz);
-    
     
     // validate the reference pointer
     VALIDATE_REFPOINTER("c"_Stz, ppFetchBuffer);
@@ -272,8 +265,8 @@ eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, int iErrorCode, void** ppError, i8 i
     VALIDATE_REFPOINTER("b"_Stz, ppError);
     
     // get the error message
-    pSEitf->m_sErrorMsg = aEC[(eEC)iErrorCode];
-    *ppError = pSEitf->m_sErrorMsg.aChar();
+    pSEitf->m_sResponse = aEC[(eEC)iErrorCode];
+    *ppError = pSEitf->m_sResponse.aChar();
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -367,9 +360,6 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
     // validate the SEitf
     VALIDATE_SEITF("a"_Stz);
 
-    // clear the last error
-    CLEAR_LASTERROR();
-
     // validate parameter
     VALIDATE_PARAM("b"_Stz, sRow);
     
@@ -385,7 +375,6 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
     if (iRawDataLength > C_16KB) {
       eEC eErrorCode = EC_MAX_ROW_LENGTH;
       TRACE_ERROR("d"_Stz, eErrorCode);
-      pSEitf->m_sErrorMsg =  aEC[eErrorCode];
       return eErrorCode;
     }
     
@@ -402,7 +391,6 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
     if (! bValid) {
       eEC eErrorCode = EC_INVALID_VALUE;
       TRACE_ERROR("d"_Stz, eErrorCode);
-      pSEitf->m_sErrorMsg =  aEC[eErrorCode];
       return eErrorCode;
     }
 
@@ -429,8 +417,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
       
       // was there an error ?
       if ( eErrorCode != EC_NONE ) {
-        pSEitf->m_sErrorMsg =  aEC[eErrorCode];
-        vTrace("Inserting row into buffer got error %s\n"_Stz, pSEitf->m_sErrorMsg.aChar());
+        vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
         TRACE_ERROR("f"_Stz, eErrorCode);
         return eErrorCode;
       }
@@ -491,9 +478,6 @@ eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, i8* pValidRows, i8* pInvalidR
     
     // validate the SEitf
     VALIDATE_SEITF("a"_Stz);
-    
-    // clear the last error
-    CLEAR_LASTERROR();
     
     // validate the reference pointers
     VALIDATE_REFPOINTER("b"_Stz, pValidRows);
@@ -581,9 +565,6 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
     
     // validate the SEitf
     VALIDATE_SEITF("a"_Stz);
-    
-    // clear the last error
-    CLEAR_LASTERROR();
     
     Job* pJob = pSEitf->m_pJob;
     
@@ -794,11 +775,6 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
 {
-  
-  // clear the last error
-  if (pSEitf)
-    pSEitf->vClearLastError();
-  
   //----------------------------------------------------------------------------
   // Before appending request for se, ensure that se is running
   // get the se pid from the attachmap

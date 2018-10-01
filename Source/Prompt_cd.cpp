@@ -38,7 +38,6 @@ bool Prompt::bPrompt_cd(SePrompt* pPrompt)
   }
   
   if ( ! xDir.bChangeCurrent(sDir) ) {
-    //m_pSEitf->vSetLastError(EC_NO_SUCH_DIRECTORY);
     return false;
   }
   

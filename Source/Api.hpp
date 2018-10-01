@@ -118,7 +118,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
   {  \
     if ( ! pJobPtr ) { \
       TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-      pSEitf->vSetLastError(EC_VALIDATION_FAILURE); \
       return EC_VALIDATION_FAILURE; \
     } \
   }
@@ -130,7 +129,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
   {  \
     if ( ! pSEitf->pCurrentIndex() ) { \
       TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-      pSEitf->vSetLastError(EC_VALIDATION_FAILURE); \
       return EC_VALIDATION_FAILURE; \
     } \
   }
@@ -142,7 +140,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
   {  \
     if ( pSEitf->pCurrentIndex() ) { \
       TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-      pSEitf->vSetLastError(EC_VALIDATION_FAILURE); \
       return EC_VALIDATION_FAILURE; \
     } \
   }
@@ -155,7 +152,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
   {  \
     if ( ! pParameter ) { \
       TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
-      pSEitf->vSetLastError(EC_INVALID_PARAMETER); \
       return EC_INVALID_PARAMETER; \
      } \
   }
@@ -167,7 +163,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
   { \
     if ( ! pRefPointer) { \
       TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
-      pSEitf->vSetLastError(EC_INVALID_PARAMETER); \
       return EC_INVALID_PARAMETER; \
     } \
   }
@@ -179,7 +174,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
   {  \
     if ( ! pSEitf->pCurrentTable() ) { \
       TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-      pSEitf->vSetLastError(EC_VALIDATION_FAILURE); \
       return EC_VALIDATION_FAILURE; \
     } \
   }
@@ -191,7 +185,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
   {  \
     if ( pSEitf->pCurrentTable() ) { \
       TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-      pSEitf->vSetLastError(EC_VALIDATION_FAILURE); \
       return EC_VALIDATION_FAILURE; \
     } \
   }
@@ -218,16 +211,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
       return eResult; \
     } \
   }
-
-/*----------------------------------------------------------------------------*/
-/* clear last error                                                           */
-/*----------------------------------------------------------------------------*/
-#define CLEAR_LASTERROR()  pSEitf->vClearLastError();
-
-/*----------------------------------------------------------------------------*/
-/* clear last error                                                           */
-/*----------------------------------------------------------------------------*/
-#define SET_LASTERROR(eErrorCode)  pSEitf->vSetLastError(eErrorCode);
 
 /*----------------------------------------------------------------------------*/
 /* verify buffer pool boundaries                                              */

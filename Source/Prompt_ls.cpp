@@ -32,13 +32,11 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
   
   // get the current directory
   if (!xDir.bGetCurrent(sDir)) {
-    //m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
   // open the current directory
   if (!xDir.bOpen()) {
-    //m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   

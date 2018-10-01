@@ -140,7 +140,6 @@ bool CommandProcessor::bTokenCheck(i8 nTokens)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   if (pTkn(nTokens)->bHasText()) {
-    //m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   

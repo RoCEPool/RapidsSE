@@ -13,12 +13,9 @@ namespace Interface
     i8     m_iPid;             // process which created this seitf
     i8     m_iPartition;       // which partition this seitf connects to
     
-    DicStack m_xPathStack;      // dictionary stack
+    DicStack m_xPathStack;     // dictionary stack
     Job*   m_pJob;             // job seitf currently executing
     s48K   m_sResponse;        // response
-    
-    eEC    m_eErrorCode;       //
-    s256   m_sErrorMsg;
     
     Table*   m_pCurrentTable;
   
@@ -85,12 +82,6 @@ namespace Interface
   
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
-    
-    //--------------------------------------------------------------------------
-    void vClearLastError(void);
-    eEC  eGetLastError(void);
-    Stz* pGetLastError(void);
-    void vSetLastError(eEC eInterfaceError);
     
     Footer* aFooter(void);
   };

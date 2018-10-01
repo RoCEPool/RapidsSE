@@ -79,8 +79,6 @@ SEitf::SEitf(i8 iPartition)
   m_iPartition  = iPartition;
   
   //m_xPathStack;
-  m_eErrorCode      = EC_NONE;
-  m_sErrorMsg       = aEC[m_eErrorCode];
   m_sResponse       = ""_Stz;
   m_pJob            = nullptr;
   m_pCurrentTable   = nullptr;
@@ -382,51 +380,6 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get last error                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* SEitf::pGetLastError(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  return m_sErrorMsg;
-}
-
-/*----------------------------------------------------------------------------*/
-/* clear last error                                                           */
-/*----------------------------------------------------------------------------*/
-void SEitf::vClearLastError(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  m_eErrorCode = EC_NONE;
-  m_sErrorMsg = ""_Stz;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get last error                                                             */
-/*----------------------------------------------------------------------------*/
-eEC SEitf::eGetLastError(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
- 
-  return m_eErrorCode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set last error                                                             */
-/*----------------------------------------------------------------------------*/
-void SEitf::vSetLastError(eEC eError)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  ASSERT(eError >= EC_NONE);
-  ASSERT(eError <  EC_ENUMS);
-  
-  m_eErrorCode = eError;
-  m_sErrorMsg = aEC[m_eErrorCode];
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
