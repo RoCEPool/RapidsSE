@@ -537,11 +537,11 @@ void Task::vTaskSocketFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.socket! -- store socket on data stack into task                    */
+/* task.socket! -- store socket on data stack into task                       */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSocketStore(MP_Task mpTask)
 {
-  ENTRY("vTaskSocketStoreR35"_Stz);
+  ENTRY("vTaskSocketStore"_Stz);
   
   Object* pTaskObject;
   if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
@@ -596,7 +596,7 @@ ENTRY("vTaskStateStore"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(iState) )
     THROW_INVALID_DSTACK("task.state!"_Stz);
   
-  // an r35 task being set to waiting state must be locked
+  // a task being set to waiting state must be locked
   if (TS_WAITING_ACK == iState) {
     //RASSERT(pThatTask->bIsLocked());
   }
