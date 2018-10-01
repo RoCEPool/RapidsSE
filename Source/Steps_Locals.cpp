@@ -90,7 +90,7 @@ ENTRY("vLocalsBar"_Stz);
       break;
 
     // test for first use of locals|
-    if ( ! mpTask->m_nVariables ) {
+    if ( ! mpTask->m_pCompiler->m_nVariables ) {
       
       // create a locals dictionary
       pDic = new Dic;
@@ -107,10 +107,10 @@ ENTRY("vLocalsBar"_Stz);
     
     // set word as local variable
     pWordLocal->vWordType(WT_VARIABLE);
-    pWordLocal->vVariable(mpTask->m_nVariables);
+    pWordLocal->vVariable(mpTask->m_pCompiler->m_nVariables);
     
     // encode the word
-    xValWrk = mpTask->m_nVariables;
+    xValWrk = mpTask->m_pCompiler->m_nVariables;
     pWordLocal->vEncode("pushValue"_Stz,&xValWrk);
     pWordLocal->vEncode("local.fetch"_Stz);
     pWordLocal->vEncode("exit"_Stz);
@@ -119,7 +119,7 @@ ENTRY("vLocalsBar"_Stz);
     pCurrentWord->vEncode("pushValue"_Stz,&xValWrk);
     pCurrentWord->vEncode("local.store"_Stz);
     
-    mpTask->m_nVariables++;
+    mpTask->m_pCompiler->m_nVariables++;
   }
   
   EXIT();

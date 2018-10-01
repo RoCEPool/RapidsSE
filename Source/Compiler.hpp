@@ -12,7 +12,8 @@ namespace Tasks
   public:
   
    bool  m_bCompiling;
-  
+   i8    m_nVariables;     // number of locals/params variables
+
   Tokeniser* m_pTokeniser; // input stream tokenizer
 
     // must be last

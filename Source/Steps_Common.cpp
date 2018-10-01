@@ -93,7 +93,7 @@ ENTRY("vCommonSlash"_Stz);
     if (pWordDic) {
       // use that dictionary
       pSubDic = _pDic(pWordDic->aBodyArea());
-      mpTask->m_nVariables = pSubDic->nWords();
+      mpTask->m_pCompiler->m_nVariables = pSubDic->nWords();
     }
     else {
       // create a common dictionary      
@@ -102,7 +102,7 @@ ENTRY("vCommonSlash"_Stz);
       pWordDic->pAllot(sizeof(Dic));
       
       pSubDic = new((Dic*)pWordDic->aBodyArea()) Dic;
-      mpTask->m_nVariables = 0;
+      mpTask->m_pCompiler->m_nVariables = 0;
     }
     
     // get name of common variable
@@ -115,10 +115,10 @@ ENTRY("vCommonSlash"_Stz);
     
     // set word as variable
     pWordCommon->vWordType(WT_VARIABLE);
-    pWordCommon->vVariable(mpTask->m_nVariables);
+    pWordCommon->vVariable(mpTask->m_pCompiler->m_nVariables);
     
     // encode the word
-    xValWrk = mpTask->m_nVariables;
+    xValWrk = mpTask->m_pCompiler->m_nVariables;
     pWordCommon->vEncode("pushValue"_Stz,&xValWrk);
     pWordCommon->vEncode("common.fetch"_Stz);
     pWordCommon->vEncode("exit"_Stz);
@@ -126,7 +126,7 @@ ENTRY("vCommonSlash"_Stz);
     // accept /
     mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
-    mpTask->m_nVariables = 0;
+    mpTask->m_pCompiler->m_nVariables = 0;
 
 //  }
   

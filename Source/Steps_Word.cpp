@@ -774,10 +774,10 @@ void Task::vSemicolon(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  if (mpTask->m_nVariables) {
+  if (mpTask->m_pCompiler->m_nVariables) {
     
     // reset the number of local variables
-    mpTask->m_nVariables = 0;
+    mpTask->m_pCompiler->m_nVariables = 0;
     
     // pop top dictionary
     mpTask->m_xPathStack.vDiscard();
