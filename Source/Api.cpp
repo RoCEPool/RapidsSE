@@ -8,126 +8,7 @@
 extern BufferPool* gpBufferPool;
 extern AttachMap*  gpAttachMap;
 
-/*----------------------------------------------------------------------------*/
-/* begin insert                                                               */
-/*----------------------------------------------------------------------------*/
-/*
-eEC RapidsSE_BeginInsert(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel)
-{
-  eEC eResult;
-  eEC eResponse;
-  
-  Stz* aApiCall = "RapidsSE_BeginInsert"_Stz;
-  
-  try {
-    TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
-    
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
-    
-    // clear the last error
-    CLEAR_LASTERROR();
-  
-    // validate parameters
-    VALIDATE_PARAM("b"_Stz, pCatalog);
-    VALIDATE_PARAM("c"_Stz, pSchema);
-    VALIDATE_PARAM("d"_Stz, pTable);
-    
-    // set the enclosined_by to be a '
-    pSEitf->m_xFormatters.m_cEnclosedBy_Leading = '\'';
-    pSEitf->m_xFormatters.m_cEnclosedBy_Trailing = '\'';
-    
-    // change directory to tables
-    CF_TABLES("e"_Stz);
-    
-    // get a reference to the table
-    eResult = eExecuteRequest(pSEitf, "gettbl"_Stz, (Stz*)pTable);
-    CHECK_RESULT("f"_Stz);
-    CHECK_RESPONSE("g"_Stz);
-    
-    // validate we have a table
-    VALIDATE_TABLE("h"_Stz);
-    
-    // begin a tnx
-    eResult = eExecuteRequest(pSEitf, "txBeg"_Stz);
-    CHECK_RESULT("i"_Stz);
-    CHECK_RESPONSE("j"_Stz);
-    
-    TRACE_EXIT("ea"_Stz);
-    
-    return EC_NONE;
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
-}
-*/
-/*----------------------------------------------------------------------------*/
-/* begin insert on SEitf partiton                                             */
-/*----------------------------------------------------------------------------*/
-/*
-eEC RapidsSE_BeginInsertPartition(SEitf* pSEitf, Stz* pCatalog, Stz* pSchema, Stz* pTable, i8 iTraceLevel)
-{
-  eEC eResult;
-  eEC eResponse;
-  
-  Stz* aApiCall = "RapidsSE_BeginInsertPartition"_Stz;
-  
-  try {
-    TRACE_ENTRY_P3(pCatalog, pSchema, pTable);
-    
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
-    
-    // clear the last error
-    CLEAR_LASTERROR();
-    
-    // validate parameters
-    VALIDATE_PARAM("b"_Stz, pCatalog);
-    VALIDATE_PARAM("c"_Stz, pSchema);
-    VALIDATE_PARAM("d"_Stz, pTable);
-    
-    // change directory to tables
-    CF_TABLES("e"_Stz);
-    
-    // get a reference to the table
-    eResult = eExecuteRequest(pSEitf, "gettbl"_Stz, (Stz*)pTable);
-    CHECK_RESULT("f"_Stz);
-    CHECK_RESPONSE("g"_Stz);
-    
-    // validate we have a table
-    VALIDATE_TABLE("h"_Stz);
-    
-    // begin a tnx
-    bool bResult = pSEitf->bBeginTx();
-    
-    if (!bResult) {
-      pSEitf->vSetLastError(EC_TX_BEGIN_FAILED);
-      TRACE_ERROR("i",EC_TX_BEGIN_FAILED);
-      return EC_TX_BEGIN_FAILED;
-    }
-    
-    TRACE_EXIT("ea"_Stz);
-    
-    return EC_NONE;
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
-}
-*/
+
 /*----------------------------------------------------------------------------*/
 /* check the library version against version passed                           */
 /*----------------------------------------------------------------------------*/
@@ -234,115 +115,33 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end insert on SEitf partition                                              */
+/* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-/*
-eEC RapidsSE_EndInsertPartition(SEitf* pSEitf, i8 iTraceLevel)
+eEC RapidsSE_EndCommand(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
 {
-  eEC eResult;
-  eEC eResponse;
+  Stz* aApiCall = "RapidsSE_EndCommand"_Stz;
   
-  Stz* aApiCall = "RapidsSE_EndInsertPartition"_Stz;
+  // trace entry
+  TRACE_ENTRY_P0();
   
-  try {
-    
-    // trace entry
-    TRACE_ENTRY_P0();
-    
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
-    
-    // clear the last error
-    CLEAR_LASTERROR();
-    
-    // validate we have a table
-    VALIDATE_TABLE("b"_Stz);
-    
-    bool bResult = pSEitf->bInsertBuffer();
-    
-    // if rowBuffer request was appended to requestQ, then wait for resonse
-    if (bResult) {
-      CHECK_RESPONSE_RETURNTABLE("c"_Stz);
-    }
-    
-    eResult = eExecuteRequest(pSEitf, "rettbl"_Stz);
-    CHECK_RESULT("d"_Stz);
-    CHECK_RESPONSE("e"_Stz);
-    
-    // validate if no table
-    VALIDATE_NOTABLE("f"_Stz);
-    
-    pSEitf->vCommitTx();
-    pSEitf->vEndTx();
-    
-    TRACE_EXIT("ea"_Stz);
-    
-    return EC_NONE;
-    
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
+  // validate the job
+  VALIDATE_JOB("a"_Stz);
+  
+  Job* pJob = (Job*)(pJobPtr);
+  
+  // find the job class on this node
+  eCN eClass = pJob->eClass();
+  JobClass* pJobClass = JobClass::pFind(eClass);
+  
+  // delete the job
+  pJobClass->vDeleteJob(pSEitf,pJob);
+  
+  // null the job in the SEitf
+  pSEitf->m_pJob = nullptr;
+  
+  return EC_NONE;
 }
-*/
-/*----------------------------------------------------------------------------*/
-/* export data from table into the file                                       */
-/*----------------------------------------------------------------------------*/
-/*
-eEC RapidsSE_ExportData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath, i8 iTraceLevel)
-{
-  
-  eEC eResult;
-  eEC eResponse;
-  
-  Stz* aApiCall = "RapidsSE_ExportData"_Stz;
-  
-  try {
-    
-    // trace entry
-    TRACE_ENTRY_P2(pTable, pFilePath);
-    
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
-    
-    // clear the last error
-    CLEAR_LASTERROR();
-    
-    // validate parameters
-    VALIDATE_PARAM("b"_Stz, pTable);
-    VALIDATE_PARAM("c"_Stz, pFilePath);
-    
-    // add a column
-    eResult = eExecuteRequest(pSEitf, "dex"_Stz,
-                              pTable,
-                              pFilePath);
-    
-    CHECK_RESULT("d"_Stz);
-    CHECK_RESPONSE("e"_Stz);
-    
-    // trace exit
-    TRACE_EXIT("ea"_Stz);
-    
-    return EC_NONE;
-    
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
-}
-*/
+
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
@@ -1237,34 +1036,6 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
   Handlers::vSpawnedTaskHandler(pNewTask);
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute command                                                            */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndCommand(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
-{
-  Stz* aApiCall = "RapidsSE_EndCommand"_Stz;
-  
-  // trace entry
-  TRACE_ENTRY_P0();
-  
-  // validate the job
-  VALIDATE_JOB("a"_Stz);
-  
-  Job* pJob = (Job*)(pJobPtr);
-  
-  // find the job class on this node
-  eCN eClass = pJob->eClass();
-  JobClass* pJobClass = JobClass::pFind(eClass);
-  
-  // delete the job
-  pJobClass->vDeleteJob(pSEitf,pJob);
-  
-  // null the job in the SEitf
-  pSEitf->m_pJob = nullptr;
-  
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -97,6 +97,8 @@ void SePrompt::vPromptLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
+  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+  
   while (bContinue()) {
     
     vGetCommand();
