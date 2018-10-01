@@ -169,7 +169,6 @@ SEitf::SEitf(i8 iPartition)
   // pid
   m_iPid = Process::iGetPid();
 
-  m_iSlots = gpAttachMap->m_pGrid->nSlots();
   m_iPartition  = iPartition;
   
   //m_xPathStack;
@@ -271,11 +270,10 @@ void SEitf::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pObject);
   
-  vTrace("pid %lld %s partitions %lld partition %lld slot %lld"_Stz
+  vTrace("pid %lld %s partition %lld slot %lld"_Stz
          " response '%s'\n"_Stz,
          pSEitf->m_iPid,
          Process::bTestPid(pSEitf->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
-         pSEitf->m_iSlots,
          pSEitf->m_iPartition,
          pSEitf->iSlot(),
          pSEitf->m_sResponse.aChar());
