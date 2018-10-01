@@ -13,6 +13,9 @@ namespace Tasks
     Footer m_xFooter;
     
   public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
     Compiler(void);
     ~Compiler(void);
         

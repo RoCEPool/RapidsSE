@@ -78,6 +78,7 @@ Task::Task(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   vInit();
+  
   m_pJob = pJob;
   _checkInitialised_(CN_TASK);
   
@@ -98,6 +99,7 @@ Task::~Task(void)
   delete m_pReturnStack;
   delete m_pAuxStack;
   
+  delete m_pCompiler;
   delete m_pTokeniser;
   
   while (m_pLocalsFrame) {
@@ -140,6 +142,8 @@ void Task::vInit(void)
   
   IP.m_pCell     = nullptr;
   m_pEntryCell   = nullptr;
+  
+  m_pCompiler    = new Compiler;
   
   m_pResetIP     = nullptr;
   m_pBeginIP     = nullptr;

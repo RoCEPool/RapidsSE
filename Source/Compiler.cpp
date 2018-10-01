@@ -5,6 +5,28 @@
 #include "Tasks.h"
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* Compiler::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  Compiler* pCompiler = reinterpret_cast<Compiler*>(Heap::pAllocate(CN_COMPILER));
+  
+  return pCompiler;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void Compiler::operator delete(void* pCompilerAddress)
+{
+  Compiler* pCompiler = reinterpret_cast<Compiler*>(pCompilerAddress);
+  
+  Heap::vFree(pCompiler);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Compiler::Compiler(void)

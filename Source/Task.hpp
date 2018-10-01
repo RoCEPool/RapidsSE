@@ -108,6 +108,8 @@ namespace Tasks
     s256  m_sFile;
     s256  m_sException;
 
+    Compiler* m_pCompiler;  // word compiler
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // can these be removed ?
   
