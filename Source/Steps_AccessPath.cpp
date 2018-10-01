@@ -13,7 +13,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddSteps_AccessPath(void)
+void Step::vAddSteps_AccessPath(void)
 {
   vAddStep("accessPath.table@"_Stz,   &Task::vAccessPathTableFetch, false);
   vAddStep("accessPath.table!"_Stz,   &Task::vAccessPathTableStore, false);

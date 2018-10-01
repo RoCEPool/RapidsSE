@@ -5,13 +5,21 @@
 #include "Tasks.h"
 
 /*----------------------------------------------------------------------------*/
+/* add primitive word into main dictionary                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vAddStep(Stz* aName, TaskStep pStep, bool bImmediate)
+{
+  Task::vAddStep(aName,pStep,bImmediate);
+}
+
+/*----------------------------------------------------------------------------*/
 /* add step primitives                                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps(void)
 {
   
-  /*
   Step::vAddSteps_AccessPath();
+  /*
   Step::vAddSteps_Accum();
   Step::vAddSteps_Address();
   Step::vAddSteps_Args();

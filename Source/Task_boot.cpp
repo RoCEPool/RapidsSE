@@ -643,7 +643,7 @@ void Task::vAddSteps(void)
   vAddStep("word"_Stz,            &vWord,             false);
   gpAttachMap->m_pWord = gpAttachMap->m_xMainDic.pFindWord("word"_Stz);
 
-  vAddSteps_AccessPath();
+  //vAddSteps_AccessPath();
   vAddSteps_Accum();
   vAddSteps_Address();
   vAddSteps_Args();

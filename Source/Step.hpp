@@ -9,6 +9,8 @@ namespace Tasks
   {
   friend class Task;
  
+    static void vAddStep(Stz* aName, TaskStep pStep, bool bImmediate);
+
     static void vAddSteps(void);
 
     static void vAddSteps_AccessPath(void);
