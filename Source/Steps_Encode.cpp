@@ -13,22 +13,22 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Encode(void)
+void Task::vAddSteps_Encode(void)
 {
-  vAddPrimitive("again"_Stz,               &vEncodeAgain,         true );
-  vAddPrimitive("ahead"_Stz,               &vEncodeAhead,         true );
-  vAddPrimitive("encodeCallPrimitive"_Stz, &vEncodeCallPrimitive, false);
-  vAddPrimitive("encodeCallRoutine"_Stz,   &vEncodeCallRoutine,   false);
-  vAddPrimitive("continue"_Stz,            &vEncodeContinue,      true);
-  vAddPrimitive("here"_Stz,                &vEncodeHere,          false);
-  vAddPrimitive("if"_Stz,                  &vEncodeIf,            true );
-  vAddPrimitive("ifAgain"_Stz,             &vEncodeIfAgain,       true );
-  vAddPrimitive("loop"_Stz,                &vEncodeLoop,          true );
-  vAddPrimitive("+loop"_Stz,               &vEncodeLoopPlus,      true );
-  vAddPrimitive("next"_Stz,                &vEncodeNext,          true );
-  vAddPrimitive("encodePushValue"_Stz,     &vEncodePushValue,     false);
-  vAddPrimitive("then"_Stz,                &vEncodeThen,          true );
-  vAddPrimitive("until"_Stz,               &vEncodeUntil,         true );
+  vAddStep("again"_Stz,               &vEncodeAgain,         true );
+  vAddStep("ahead"_Stz,               &vEncodeAhead,         true );
+  vAddStep("encodeCallPrimitive"_Stz, &vEncodeCallPrimitive, false);
+  vAddStep("encodeCallRoutine"_Stz,   &vEncodeCallRoutine,   false);
+  vAddStep("continue"_Stz,            &vEncodeContinue,      true);
+  vAddStep("here"_Stz,                &vEncodeHere,          false);
+  vAddStep("if"_Stz,                  &vEncodeIf,            true );
+  vAddStep("ifAgain"_Stz,             &vEncodeIfAgain,       true );
+  vAddStep("loop"_Stz,                &vEncodeLoop,          true );
+  vAddStep("+loop"_Stz,               &vEncodeLoopPlus,      true );
+  vAddStep("next"_Stz,                &vEncodeNext,          true );
+  vAddStep("encodePushValue"_Stz,     &vEncodePushValue,     false);
+  vAddStep("then"_Stz,                &vEncodeThen,          true );
+  vAddStep("until"_Stz,               &vEncodeUntil,         true );
 }
 
 /*----------------------------------------------------------------------------*/

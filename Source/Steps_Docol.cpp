@@ -13,12 +13,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Docol(void)
+void Task::vAddSteps_Docol(void)
 {
-  vAddPrimitive("]"_Stz,                     &vDocolCompiling,      false);
-  vAddPrimitive("["_Stz,                     &vDocolInterpreting,   true );
-  vAddPrimitive("docol.isCompiling"_Stz,     &vDocolIsCompiling,    false);
-  vAddPrimitive("docol.isInterpreting"_Stz,  &vDocolIsInterpreting, false);
+  vAddStep("]"_Stz,                     &vDocolCompiling,      false);
+  vAddStep("["_Stz,                     &vDocolInterpreting,   true );
+  vAddStep("docol.isCompiling"_Stz,     &vDocolIsCompiling,    false);
+  vAddStep("docol.isInterpreting"_Stz,  &vDocolIsInterpreting, false);
 }
 
 /*----------------------------------------------------------------------------*/

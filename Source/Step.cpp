@@ -11,124 +11,124 @@ void Step::vAddSteps(void)
 {
   
   /*
-  Step::vAddPrimitives_AccessPath();
-  Step::vAddPrimitives_Accum();
-  Step::vAddPrimitives_Address();
-  Step::vAddPrimitives_Args();
-  Step::vAddPrimitives_Assert();
-  Step::vAddPrimitives_Astack();
-  Step::vAddPrimitives_AttachMap();
+  Step::vAddSteps_AccessPath();
+  Step::vAddSteps_Accum();
+  Step::vAddSteps_Address();
+  Step::vAddSteps_Args();
+  Step::vAddSteps_Assert();
+  Step::vAddSteps_Astack();
+  Step::vAddSteps_AttachMap();
   
-  Step::vAddPrimitives_Bp();
+  Step::vAddSteps_Bp();
   
-  Step::vAddPrimitives_Cast();
-  Step::vAddPrimitives_Class();
-  Step::vAddPrimitives_Column();
-  Step::vAddPrimitives_CommandProcessor();
-  Step::vAddPrimitives_Comment();
-  Step::vAddPrimitives_Common();
-  Step::vAddPrimitives_Cpu();
-  Step::vAddPrimitives_Cursor();
+  Step::vAddSteps_Cast();
+  Step::vAddSteps_Class();
+  Step::vAddSteps_Column();
+  Step::vAddSteps_CommandProcessor();
+  Step::vAddSteps_Comment();
+  Step::vAddSteps_Common();
+  Step::vAddSteps_Cpu();
+  Step::vAddSteps_Cursor();
   
-  Step::vAddPrimitives_DdlLock();
-  Step::vAddPrimitives_Debug();
-  Step::vAddPrimitives_Dic();
-  Step::vAddPrimitives_DicLock();
-  Step::vAddPrimitives_DicPath();
-  Step::vAddPrimitives_DicStack();
-  Step::vAddPrimitives_Dir();
-  Step::vAddPrimitives_Docol();
-  Step::vAddPrimitives_Dot();
-  Step::vAddPrimitives_Dstack();
+  Step::vAddSteps_DdlLock();
+  Step::vAddSteps_Debug();
+  Step::vAddSteps_Dic();
+  Step::vAddSteps_DicLock();
+  Step::vAddSteps_DicPath();
+  Step::vAddSteps_DicStack();
+  Step::vAddSteps_Dir();
+  Step::vAddSteps_Docol();
+  Step::vAddSteps_Dot();
+  Step::vAddSteps_Dstack();
   
-  Step::vAddPrimitives_Encode();
-  Step::vAddPrimitives_Enter();
-  Step::vAddPrimitives_EntryBuffer();
-  Step::vAddPrimitives_Env();
-  Step::vAddPrimitives_Error();
-  Step::vAddPrimitives_Exit();
+  Step::vAddSteps_Encode();
+  Step::vAddSteps_Enter();
+  Step::vAddSteps_EntryBuffer();
+  Step::vAddSteps_Env();
+  Step::vAddSteps_Error();
+  Step::vAddSteps_Exit();
   
-  Step::vAddPrimitives_File();
-  Step::vAddPrimitives_Flow();
+  Step::vAddSteps_File();
+  Step::vAddSteps_Flow();
   
-  Step::vAddPrimitives_Grid();
-  Step::vAddPrimitives_GroupBy();
+  Step::vAddSteps_Grid();
+  Step::vAddSteps_GroupBy();
   
-  Step::vAddPrimitives_Index();
-  Step::vAddPrimitives_Input();
-  Step::vAddPrimitives_Int();
+  Step::vAddSteps_Index();
+  Step::vAddSteps_Input();
+  Step::vAddSteps_Int();
   
-  Step::vAddPrimitives_Job();
-  Step::vAddPrimitives_JobAnalyzeIndex();
-  Step::vAddPrimitives_JobClass();
-  Step::vAddPrimitives_JobCreateIndex();
-  Step::vAddPrimitives_JobFetchRows();
-  Step::vAddPrimitives_JobGeneric();
-  Step::vAddPrimitives_JobInsertRow();
-  Step::vAddPrimitives_JobLoadTable();
-  Step::vAddPrimitives_JobReceiver();
-  Step::vAddPrimitives_JobStartCluster();
-  Step::vAddPrimitives_JobTruncateTable();
+  Step::vAddSteps_Job();
+  Step::vAddSteps_JobAnalyzeIndex();
+  Step::vAddSteps_JobClass();
+  Step::vAddSteps_JobCreateIndex();
+  Step::vAddSteps_JobFetchRows();
+  Step::vAddSteps_JobGeneric();
+  Step::vAddSteps_JobInsertRow();
+  Step::vAddSteps_JobLoadTable();
+  Step::vAddSteps_JobReceiver();
+  Step::vAddSteps_JobStartCluster();
+  Step::vAddSteps_JobTruncateTable();
   
-  Step::vAddPrimitives_Loader();
-  Step::vAddPrimitives_LoaderSub();
-  Step::vAddPrimitives_Locals();
-  Step::vAddPrimitives_Lock();
-  Step::vAddPrimitives_Locks();
-  Step::vAddPrimitives_Logic();
+  Step::vAddSteps_Loader();
+  Step::vAddSteps_LoaderSub();
+  Step::vAddSteps_Locals();
+  Step::vAddSteps_Lock();
+  Step::vAddSteps_Locks();
+  Step::vAddSteps_Logic();
   
-  Step::vAddPrimitives_Magnitude();
-  Step::vAddPrimitives_Memory();
+  Step::vAddSteps_Magnitude();
+  Step::vAddSteps_Memory();
   
-  Step::vAddPrimitives_Node();
+  Step::vAddSteps_Node();
   
-  Step::vAddPrimitives_Object();
-  Step::vAddPrimitives_OpFrame();
+  Step::vAddSteps_Object();
+  Step::vAddSteps_OpFrame();
   
-  Step::vAddPrimitives_Persistence();
-  Step::vAddPrimitives_Plan();
-  Step::vAddPrimitives_PlanList();
-  Step::vAddPrimitives_Planner();
-  Step::vAddPrimitives_Process();
-  Step::vAddPrimitives_Prompt();
-  Step::vAddPrimitives_Push();
+  Step::vAddSteps_Persistence();
+  Step::vAddSteps_Plan();
+  Step::vAddSteps_PlanList();
+  Step::vAddSteps_Planner();
+  Step::vAddSteps_Process();
+  Step::vAddSteps_Prompt();
+  Step::vAddSteps_Push();
   
-  Step::vAddPrimitives_Queue();
-  Step::vAddPrimitives_Queues();
+  Step::vAddSteps_Queue();
+  Step::vAddSteps_Queues();
   
-  Step::vAddPrimitives_RbCursor();
-  Step::vAddPrimitives_Row();
-  Step::vAddPrimitives_RowBuffer();
-  Step::vAddPrimitives_RowCursor();
-  Step::vAddPrimitives_Rstack();
+  Step::vAddSteps_RbCursor();
+  Step::vAddSteps_Row();
+  Step::vAddSteps_RowBuffer();
+  Step::vAddSteps_RowCursor();
+  Step::vAddSteps_Rstack();
   
-  Step::vAddPrimitives_SEitf();
-  Step::vAddPrimitives_SelCursor();
-  Step::vAddPrimitives_Semaphore();
-  Step::vAddPrimitives_Shell();
-  Step::vAddPrimitives_Slots();
-  Step::vAddPrimitives_Socket();
-  Step::vAddPrimitives_Steps();
-  Step::vAddPrimitives_Str();
+  Step::vAddSteps_SEitf();
+  Step::vAddSteps_SelCursor();
+  Step::vAddSteps_Semaphore();
+  Step::vAddSteps_Shell();
+  Step::vAddSteps_Slots();
+  Step::vAddSteps_Socket();
+  Step::vAddSteps_Steps();
+  Step::vAddSteps_Str();
   
-  Step::vAddPrimitives_Table();
-  Step::vAddPrimitives_TablePartition();
-  Step::vAddPrimitives_Task();
-  Step::vAddPrimitives_Thread();
-  Step::vAddPrimitives_Timer();
-  Step::vAddPrimitives_To();
-  Step::vAddPrimitives_Trace();
-  Step::vAddPrimitives_Tx();
-  Step::vAddPrimitives_TxSet();
+  Step::vAddSteps_Table();
+  Step::vAddSteps_TablePartition();
+  Step::vAddSteps_Task();
+  Step::vAddSteps_Thread();
+  Step::vAddSteps_Timer();
+  Step::vAddSteps_To();
+  Step::vAddSteps_Trace();
+  Step::vAddSteps_Tx();
+  Step::vAddSteps_TxSet();
   
-  Step::vAddPrimitives_Utility();
+  Step::vAddSteps_Utility();
   
-  Step::vAddPrimitives_Vector();
+  Step::vAddSteps_Vector();
   
-  Step::vAddPrimitives_Word();
-  Step::vAddPrimitives_WorkingBuffer();
+  Step::vAddSteps_Word();
+  Step::vAddSteps_WorkingBuffer();
   
-  Step::vAddPrimitives_Zero();
+  Step::vAddSteps_Zero();
   */
 }
 

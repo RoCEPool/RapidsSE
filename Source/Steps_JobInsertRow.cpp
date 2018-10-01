@@ -13,20 +13,20 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_JobInsertRow(void)
+void Task::vAddSteps_JobInsertRow(void)
 {
-  vAddPrimitive("job_endInsert.insertRowJob@"_Stz, &vJob_EndInsertInsertRowJobIdFetch, false);
-  vAddPrimitive("job_endInsert.task@"_Stz,         &vJob_EndInsertTaskFetch,           false);
-  vAddPrimitive("job_endInsert.task!"_Stz,         &vJob_EndInsertTaskStore,           false);
+  vAddStep("job_endInsert.insertRowJob@"_Stz, &vJob_EndInsertInsertRowJobIdFetch, false);
+  vAddStep("job_endInsert.task@"_Stz,         &vJob_EndInsertTaskFetch,           false);
+  vAddStep("job_endInsert.task!"_Stz,         &vJob_EndInsertTaskStore,           false);
 
-  vAddPrimitive("job_insertBuffer.endInsertJob@"_Stz, &vJob_InsertBufferEndInsertJobIdFetch, false);
-  vAddPrimitive("job_insertBuffer.InsertRows"_Stz,    &vJob_InsertBufferInsertRows,          false);
-  vAddPrimitive("job_insertBuffer.partition@"_Stz,    &vJob_InsertBufferPartitionFetch,      false);
-  vAddPrimitive("job_insertBuffer.table!"_Stz,        &vJob_InsertBufferTableStore,          false);
+  vAddStep("job_insertBuffer.endInsertJob@"_Stz, &vJob_InsertBufferEndInsertJobIdFetch, false);
+  vAddStep("job_insertBuffer.InsertRows"_Stz,    &vJob_InsertBufferInsertRows,          false);
+  vAddStep("job_insertBuffer.partition@"_Stz,    &vJob_InsertBufferPartitionFetch,      false);
+  vAddStep("job_insertBuffer.table!"_Stz,        &vJob_InsertBufferTableStore,          false);
   
-  vAddPrimitive("job_insertRow.table!"_Stz,           &vJob_InsertRowTableStore,        false);
-  vAddPrimitive("job_InsertRow.danglingBuffer"_Stz,   &vJob_InsertRowDanglingBuffer,    false);
-  vAddPrimitive("job_InsertRow.SpawnInsertBuffer"_Stz,&vJob_InsertRowSpawnInsertBuffer, false);
+  vAddStep("job_insertRow.table!"_Stz,           &vJob_InsertRowTableStore,        false);
+  vAddStep("job_InsertRow.danglingBuffer"_Stz,   &vJob_InsertRowDanglingBuffer,    false);
+  vAddStep("job_InsertRow.SpawnInsertBuffer"_Stz,&vJob_InsertRowSpawnInsertBuffer, false);
   
 }
 

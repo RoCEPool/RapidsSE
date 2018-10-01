@@ -197,8 +197,8 @@ namespace Tasks
     void vAddConstant(Stz* aName, Stz* aValue);
     void vAddConstants(void);
     void vAddMunged(MP_Task mpTask);
-    void vAddPrimitive(Stz* aName, TaskStep pStep, bool bImmediate);
-    void vAddPrimitives(void);
+    void vAddStep(Stz* aName, TaskStep pStep, bool bImmediate);
+    void vAddSteps(void);
     void vAddRoutines(void);
     Word* pCompileColon(StrVal& sDefinition);
     void  vCompileConstant(StrVal& sDefinition);
@@ -207,129 +207,129 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
 
-    void vAddPrimitives_AccessPath(void);
-    void vAddPrimitives_Accum(void);
-    void vAddPrimitives_Address(void);
-    void vAddPrimitives_Args(void);
-    void vAddPrimitives_Assert(void);
-    void vAddPrimitives_Astack(void);
-    void vAddPrimitives_AttachMap(void);
+    void vAddSteps_AccessPath(void);
+    void vAddSteps_Accum(void);
+    void vAddSteps_Address(void);
+    void vAddSteps_Args(void);
+    void vAddSteps_Assert(void);
+    void vAddSteps_Astack(void);
+    void vAddSteps_AttachMap(void);
   
-    void vAddPrimitives_Bp(void);
+    void vAddSteps_Bp(void);
   
-    void vAddPrimitives_Cast(void);
-    void vAddPrimitives_Class(void);
-    void vAddPrimitives_Column(void);
-    void vAddPrimitives_CommandProcessor(void);
-    void vAddPrimitives_Comment(void);
-    void vAddPrimitives_Common(void);
-    void vAddPrimitives_Cpu(void);
-    void vAddPrimitives_Cursor(void);
+    void vAddSteps_Cast(void);
+    void vAddSteps_Class(void);
+    void vAddSteps_Column(void);
+    void vAddSteps_CommandProcessor(void);
+    void vAddSteps_Comment(void);
+    void vAddSteps_Common(void);
+    void vAddSteps_Cpu(void);
+    void vAddSteps_Cursor(void);
   
-    void vAddPrimitives_DdlLock(void);
-    void vAddPrimitives_Debug(void);
-    void vAddPrimitives_Dic(void);
-    void vAddPrimitives_DicLock(void);
-    void vAddPrimitives_DicPath(void);
-    void vAddPrimitives_DicStack(void);
-    void vAddPrimitives_Dir(void);
-    void vAddPrimitives_Docol(void);
-    void vAddPrimitives_Dot(void);
-    void vAddPrimitives_Dstack(void);
+    void vAddSteps_DdlLock(void);
+    void vAddSteps_Debug(void);
+    void vAddSteps_Dic(void);
+    void vAddSteps_DicLock(void);
+    void vAddSteps_DicPath(void);
+    void vAddSteps_DicStack(void);
+    void vAddSteps_Dir(void);
+    void vAddSteps_Docol(void);
+    void vAddSteps_Dot(void);
+    void vAddSteps_Dstack(void);
   
-    void vAddPrimitives_Encode(void);
-    void vAddPrimitives_EntryBuffer(void);
-    void vAddPrimitives_Enter(void);
-    void vAddPrimitives_Env(void);
-    void vAddPrimitives_Error(void);
-    void vAddPrimitives_Exit(void);
+    void vAddSteps_Encode(void);
+    void vAddSteps_EntryBuffer(void);
+    void vAddSteps_Enter(void);
+    void vAddSteps_Env(void);
+    void vAddSteps_Error(void);
+    void vAddSteps_Exit(void);
   
-    void vAddPrimitives_FetchTest(void);
-    void vAddPrimitives_File(void);
-    void vAddPrimitives_Flow(void);
+    void vAddSteps_FetchTest(void);
+    void vAddSteps_File(void);
+    void vAddSteps_Flow(void);
   
-    void vAddPrimitives_Grid(void);
-    void vAddPrimitives_GroupBy(void);
+    void vAddSteps_Grid(void);
+    void vAddSteps_GroupBy(void);
   
-    void vAddPrimitives_Index(void);
-    void vAddPrimitives_Input(void);
-    void vAddPrimitives_Int(void);
+    void vAddSteps_Index(void);
+    void vAddSteps_Input(void);
+    void vAddSteps_Int(void);
   
-    void vAddPrimitives_Job();
-    void vAddPrimitives_JobAnalyzeIndex();
-    void vAddPrimitives_JobClass();
-    void vAddPrimitives_JobCreateIndex();
-    void vAddPrimitives_JobFetchRows();
-    void vAddPrimitives_JobGeneric();
-    void vAddPrimitives_JobInsertRow();
-    void vAddPrimitives_JobLoadTable();
-    void vAddPrimitives_JobReceiver();
-    void vAddPrimitives_JobStartCluster();
-    void vAddPrimitives_JobTruncateTable();
+    void vAddSteps_Job();
+    void vAddSteps_JobAnalyzeIndex();
+    void vAddSteps_JobClass();
+    void vAddSteps_JobCreateIndex();
+    void vAddSteps_JobFetchRows();
+    void vAddSteps_JobGeneric();
+    void vAddSteps_JobInsertRow();
+    void vAddSteps_JobLoadTable();
+    void vAddSteps_JobReceiver();
+    void vAddSteps_JobStartCluster();
+    void vAddSteps_JobTruncateTable();
     
-    void vAddPrimitives_Loader(void);
-    void vAddPrimitives_LoaderSub(void);
-    void vAddPrimitives_Locals(void);
-    void vAddPrimitives_Lock(void);
-    void vAddPrimitives_Locks(void);
-    void vAddPrimitives_Logic(void);
+    void vAddSteps_Loader(void);
+    void vAddSteps_LoaderSub(void);
+    void vAddSteps_Locals(void);
+    void vAddSteps_Lock(void);
+    void vAddSteps_Locks(void);
+    void vAddSteps_Logic(void);
   
-    void vAddPrimitives_Magnitude(void);
-    void vAddPrimitives_Memory(void);
+    void vAddSteps_Magnitude(void);
+    void vAddSteps_Memory(void);
   
-    void vAddPrimitives_Node(void);
+    void vAddSteps_Node(void);
   
-    void vAddPrimitives_Object(void);
-    void vAddPrimitives_OpFrame(void);
+    void vAddSteps_Object(void);
+    void vAddSteps_OpFrame(void);
   
-    void vAddPrimitives_PartitionScheduler(void);
-    void vAddPrimitives_Persistence(void);
-    void vAddPrimitives_Plan(void);
-    void vAddPrimitives_PlanList(void);
-    void vAddPrimitives_Planner(void);
-    void vAddPrimitives_Process(void);
-    void vAddPrimitives_Prompt(void);
-    void vAddPrimitives_Push(void);
+    void vAddSteps_PartitionScheduler(void);
+    void vAddSteps_Persistence(void);
+    void vAddSteps_Plan(void);
+    void vAddSteps_PlanList(void);
+    void vAddSteps_Planner(void);
+    void vAddSteps_Process(void);
+    void vAddSteps_Prompt(void);
+    void vAddSteps_Push(void);
   
-    void vAddPrimitives_Queue(void);
-    void vAddPrimitives_Queues(void);
+    void vAddSteps_Queue(void);
+    void vAddSteps_Queues(void);
   
-    void vAddPrimitives_RbCursor(void);
-    void vAddPrimitives_Row(void);
-    void vAddPrimitives_RowBuffer(void);
-    void vAddPrimitives_RowCursor(void);
-    void vAddPrimitives_Rstack(void);
+    void vAddSteps_RbCursor(void);
+    void vAddSteps_Row(void);
+    void vAddSteps_RowBuffer(void);
+    void vAddSteps_RowCursor(void);
+    void vAddSteps_Rstack(void);
   
-    void vAddPrimitives_Scheduler(void);
-    void vAddPrimitives_SEitf(void);
-    void vAddPrimitives_SelCursor(void);
-    void vAddPrimitives_Semaphore(void);
-    void vAddPrimitives_ServerScheduler(void);
-    void vAddPrimitives_Shell(void);
-    void vAddPrimitives_Slots(void);
-    void vAddPrimitives_Socket(void);
-    void vAddPrimitives_Steps(void);
-    void vAddPrimitives_Str(void);
+    void vAddSteps_Scheduler(void);
+    void vAddSteps_SEitf(void);
+    void vAddSteps_SelCursor(void);
+    void vAddSteps_Semaphore(void);
+    void vAddSteps_ServerScheduler(void);
+    void vAddSteps_Shell(void);
+    void vAddSteps_Slots(void);
+    void vAddSteps_Socket(void);
+    void vAddSteps_Steps(void);
+    void vAddSteps_Str(void);
   
-    void vAddPrimitives_Table(void);
-    void vAddPrimitives_TablePartition(void);
-    void vAddPrimitives_Task(void);
-    void vAddPrimitives_TaskCursor(void);
-    void vAddPrimitives_Thread(void);
-    void vAddPrimitives_Timer(void);
-    void vAddPrimitives_To(void);
-    void vAddPrimitives_Trace(void);
-    void vAddPrimitives_Tx(void);
-    void vAddPrimitives_TxSet(void);
+    void vAddSteps_Table(void);
+    void vAddSteps_TablePartition(void);
+    void vAddSteps_Task(void);
+    void vAddSteps_TaskCursor(void);
+    void vAddSteps_Thread(void);
+    void vAddSteps_Timer(void);
+    void vAddSteps_To(void);
+    void vAddSteps_Trace(void);
+    void vAddSteps_Tx(void);
+    void vAddSteps_TxSet(void);
   
-    void vAddPrimitives_Vector(void);
+    void vAddSteps_Vector(void);
   
-    void vAddPrimitives_Utility(void);
+    void vAddSteps_Utility(void);
   
-    void vAddPrimitives_Word(void);
-    void vAddPrimitives_WorkingBuffer(void);
+    void vAddSteps_Word(void);
+    void vAddSteps_WorkingBuffer(void);
   
-    void vAddPrimitives_Zero(void);
+    void vAddSteps_Zero(void);
 
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/

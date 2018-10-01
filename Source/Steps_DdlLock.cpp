@@ -17,13 +17,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_DdlLock(void)
+void Task::vAddSteps_DdlLock(void)
 {
-  vAddPrimitive("ddlLock::dropRead"_Stz, &vDdlLockDropRead,  false);
-  vAddPrimitive("ddlLock::dropWrite"_Stz,&vDdlLockDropWrite, false);
-  vAddPrimitive("ddlLock::grabRead"_Stz, &vDdlLockGrabRead,  false);
-  vAddPrimitive("ddlLock::grabWrite"_Stz,&vDdlLockGrabWrite, false);
-  vAddPrimitive("ddlLock::testDrop"_Stz, &vDdlLockTestDrop,  false);
+  vAddStep("ddlLock::dropRead"_Stz, &vDdlLockDropRead,  false);
+  vAddStep("ddlLock::dropWrite"_Stz,&vDdlLockDropWrite, false);
+  vAddStep("ddlLock::grabRead"_Stz, &vDdlLockGrabRead,  false);
+  vAddStep("ddlLock::grabWrite"_Stz,&vDdlLockGrabWrite, false);
+  vAddStep("ddlLock::testDrop"_Stz, &vDdlLockTestDrop,  false);
 }
 
 /*----------------------------------------------------------------------------*/

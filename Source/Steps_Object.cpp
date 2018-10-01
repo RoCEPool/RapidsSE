@@ -13,14 +13,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Object(void)
+void Task::vAddSteps_Object(void)
 {
-  vAddPrimitive("object.class@"_Stz,     &vObjectClassFetch, false);
-  vAddPrimitive("object.class!"_Stz,     &vObjectClassStore, false);
-  vAddPrimitive("object@"_Stz,           &vObjectFetch,      false);
-  vAddPrimitive("object.magic!"_Stz,     &vObjectMagicMark,  false);
-  vAddPrimitive("object!"_Stz,           &vObjectStore,      false);
-  vAddPrimitive("object.wordbody!"_Stz,  &vObjectWordBodySet,false);
+  vAddStep("object.class@"_Stz,     &vObjectClassFetch, false);
+  vAddStep("object.class!"_Stz,     &vObjectClassStore, false);
+  vAddStep("object@"_Stz,           &vObjectFetch,      false);
+  vAddStep("object.magic!"_Stz,     &vObjectMagicMark,  false);
+  vAddStep("object!"_Stz,           &vObjectStore,      false);
+  vAddStep("object.wordbody!"_Stz,  &vObjectWordBodySet,false);
 }
 
 /*----------------------------------------------------------------------------*/

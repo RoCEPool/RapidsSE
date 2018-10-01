@@ -11,11 +11,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_AttachMap(void)
+void Task::vAddSteps_AttachMap(void)
 {
-  vAddPrimitive("attachmap::attachmap@"_Stz,   &vAttachMapFetch,         false);
-  vAddPrimitive("attachmap::attachmap!"_Stz,   &vAttachMapStore,         false);
-  vAddPrimitive("attachmap::tenants@"_Stz,     &vAttachMapTenantsFetch,  false);
+  vAddStep("attachmap::attachmap@"_Stz,   &vAttachMapFetch,         false);
+  vAddStep("attachmap::attachmap!"_Stz,   &vAttachMapStore,         false);
+  vAddStep("attachmap::tenants@"_Stz,     &vAttachMapTenantsFetch,  false);
 }
 
 /*----------------------------------------------------------------------------*/

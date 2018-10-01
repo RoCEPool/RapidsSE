@@ -13,12 +13,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Memory(void)
+void Task::vAddSteps_Memory(void)
 {
-  vAddPrimitive("memory.byteDump"_Stz,   &vMemoryByteDump,    false);
-  vAddPrimitive("memory::list"_Stz,       &vMemoryList,        false);
-  vAddPrimitive("memory::reset"_Stz,      &vMemoryReset,       false);
-  vAddPrimitive("memory.wordDump"_Stz,   &vMemoryWordDump,    false);
+  vAddStep("memory.byteDump"_Stz,   &vMemoryByteDump,    false);
+  vAddStep("memory::list"_Stz,       &vMemoryList,        false);
+  vAddStep("memory::reset"_Stz,      &vMemoryReset,       false);
+  vAddStep("memory.wordDump"_Stz,   &vMemoryWordDump,    false);
 }
 
 /*----------------------------------------------------------------------------*/

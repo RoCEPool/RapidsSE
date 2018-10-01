@@ -13,18 +13,18 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_File(void)
+void Task::vAddSteps_File(void)
 {
-  vAddPrimitive("file.close"_Stz,      &vFileClose,        false);
-  vAddPrimitive("file.delete"_Stz,     &vFileDelete,       false);
-  vAddPrimitive("file.init"_Stz,       &vFileInit,         false);
-  vAddPrimitive("file::new"_Stz,        &vFileNew,          false);
-  vAddPrimitive("file.open"_Stz,       &vFileOpen,         false);
-  vAddPrimitive("file.path@"_Stz,      &vFilePathGet,      false);
-  vAddPrimitive("file.path!"_Stz,      &vFilePathSet,      false);
-  vAddPrimitive("file.read"_Stz,       &vFileRead,         false);
-  vAddPrimitive("file.readRecord"_Stz, &vFileReadRecord,   false);
-  vAddPrimitive("file.write"_Stz,      &vFileWrite,        false);
+  vAddStep("file.close"_Stz,      &vFileClose,        false);
+  vAddStep("file.delete"_Stz,     &vFileDelete,       false);
+  vAddStep("file.init"_Stz,       &vFileInit,         false);
+  vAddStep("file::new"_Stz,        &vFileNew,          false);
+  vAddStep("file.open"_Stz,       &vFileOpen,         false);
+  vAddStep("file.path@"_Stz,      &vFilePathGet,      false);
+  vAddStep("file.path!"_Stz,      &vFilePathSet,      false);
+  vAddStep("file.read"_Stz,       &vFileRead,         false);
+  vAddStep("file.readRecord"_Stz, &vFileReadRecord,   false);
+  vAddStep("file.write"_Stz,      &vFileWrite,        false);
 }
 
 /*----------------------------------------------------------------------------*/

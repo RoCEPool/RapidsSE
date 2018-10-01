@@ -13,9 +13,9 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Error(void)
+void Task::vAddSteps_Error(void)
 {
-  vAddPrimitive("error.msg"_Stz,       &vErrorMsg,         false);
+  vAddStep("error.msg"_Stz,       &vErrorMsg,         false);
 }
 
 /*----------------------------------------------------------------------------*/

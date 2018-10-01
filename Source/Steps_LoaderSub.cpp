@@ -13,33 +13,33 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_LoaderSub(void)
+void Task::vAddSteps_LoaderSub(void)
 {
-  vAddPrimitive("loaderSub.begin"_Stz,         &vLoaderSubBegin,         false);
-  vAddPrimitive("loaderSub.danglingBuffer"_Stz,&vLoaderSubDanglingBuffer,false);
-  vAddPrimitive("loaderSub.delete"_Stz,       &vLoaderSubDelete,        false);
-  vAddPrimitive("loaderSub.end"_Stz,          &vLoaderSubEnd,           false);
-  vAddPrimitive("loaderSub.fetchRecord"_Stz,  &vLoaderSubFetchRecord,   false);
-  vAddPrimitive("loaderSub.fetchRecordDist"_Stz,  &vLoaderSubFetchRecordDist, false);
-  vAddPrimitive("loaderSub.fieldDelimiter!"_Stz,  &vLoaderSubFieldDelimiterStore, false);
-  vAddPrimitive("loaderSub.hashPartition"_Stz,&vLoaderSubHashPartition, false);
-  vAddPrimitive("loaderSub.hashRecord"_Stz,   &vLoaderSubHashRecord,    false);
-  vAddPrimitive("loaderSub.init"_Stz,         &vLoaderSubInit,          false);
-  vAddPrimitive("loaderSub.loader@"_Stz,      &vLoaderSubLoaderFetch,   false);
-  vAddPrimitive("loaderSub.loader!"_Stz,      &vLoaderSubLoaderStore,   false);
-  vAddPrimitive("loaderSub.loadData"_Stz,     &vLoaderSubLoadData,      false);
-  vAddPrimitive("loaderSub.loadNodeData"_Stz, &vLoaderSubLoadNodeData,  false);
-  vAddPrimitive("loaderSub::new"_Stz,         &vLoaderSubNew,           false);
-  vAddPrimitive("loaderSub.newWorkingBuffer"_Stz, &vLoaderSubNewWorkingBuffer,false);
-  vAddPrimitive("loaderSub.partition@"_Stz,   &vLoaderSubPartitionFetch,false);
-  vAddPrimitive("loaderSub.partition!"_Stz,   &vLoaderSubPartitionStore,false);
-  vAddPrimitive("loaderSub.processRecords"_Stz,  &vLoaderSubProcessRecords, false);
-  vAddPrimitive("loaderSub.recordsInvalid"_Stz, &vLoaderSubRecordsInvalid, false);
-  vAddPrimitive("loaderSub.recordsValid"_Stz, &vLoaderSubRecordsValid,  false);
-  vAddPrimitive("loaderSub.spawnLoadBuffer"_Stz, &vLoaderSubSpawnLoadBuffer, false);
-  vAddPrimitive("loaderSub.workingBuffer@"_Stz, &vLoaderSubWorkingBufferFetch,false);
-  vAddPrimitive("loaderSub.workingBuffer!"_Stz, &vLoaderSubWorkingBufferStore,false);
-  vAddPrimitive("loaderSub.table"_Stz,        &vLoaderSubTable,         false);
+  vAddStep("loaderSub.begin"_Stz,         &vLoaderSubBegin,         false);
+  vAddStep("loaderSub.danglingBuffer"_Stz,&vLoaderSubDanglingBuffer,false);
+  vAddStep("loaderSub.delete"_Stz,       &vLoaderSubDelete,        false);
+  vAddStep("loaderSub.end"_Stz,          &vLoaderSubEnd,           false);
+  vAddStep("loaderSub.fetchRecord"_Stz,  &vLoaderSubFetchRecord,   false);
+  vAddStep("loaderSub.fetchRecordDist"_Stz,  &vLoaderSubFetchRecordDist, false);
+  vAddStep("loaderSub.fieldDelimiter!"_Stz,  &vLoaderSubFieldDelimiterStore, false);
+  vAddStep("loaderSub.hashPartition"_Stz,&vLoaderSubHashPartition, false);
+  vAddStep("loaderSub.hashRecord"_Stz,   &vLoaderSubHashRecord,    false);
+  vAddStep("loaderSub.init"_Stz,         &vLoaderSubInit,          false);
+  vAddStep("loaderSub.loader@"_Stz,      &vLoaderSubLoaderFetch,   false);
+  vAddStep("loaderSub.loader!"_Stz,      &vLoaderSubLoaderStore,   false);
+  vAddStep("loaderSub.loadData"_Stz,     &vLoaderSubLoadData,      false);
+  vAddStep("loaderSub.loadNodeData"_Stz, &vLoaderSubLoadNodeData,  false);
+  vAddStep("loaderSub::new"_Stz,         &vLoaderSubNew,           false);
+  vAddStep("loaderSub.newWorkingBuffer"_Stz, &vLoaderSubNewWorkingBuffer,false);
+  vAddStep("loaderSub.partition@"_Stz,   &vLoaderSubPartitionFetch,false);
+  vAddStep("loaderSub.partition!"_Stz,   &vLoaderSubPartitionStore,false);
+  vAddStep("loaderSub.processRecords"_Stz,  &vLoaderSubProcessRecords, false);
+  vAddStep("loaderSub.recordsInvalid"_Stz, &vLoaderSubRecordsInvalid, false);
+  vAddStep("loaderSub.recordsValid"_Stz, &vLoaderSubRecordsValid,  false);
+  vAddStep("loaderSub.spawnLoadBuffer"_Stz, &vLoaderSubSpawnLoadBuffer, false);
+  vAddStep("loaderSub.workingBuffer@"_Stz, &vLoaderSubWorkingBufferFetch,false);
+  vAddStep("loaderSub.workingBuffer!"_Stz, &vLoaderSubWorkingBufferStore,false);
+  vAddStep("loaderSub.table"_Stz,        &vLoaderSubTable,         false);
 }
 
 /*----------------------------------------------------------------------------*/

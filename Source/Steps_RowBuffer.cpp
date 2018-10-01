@@ -13,12 +13,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_RowBuffer(void)
+void Task::vAddSteps_RowBuffer(void)
 {
-  vAddPrimitive("rowBuffer.append"_Stz, &vRowBufferAppend, false);
-  vAddPrimitive("rowBuffer.appendRecord"_Stz, &vRowBufferAppendRecord, false);
-  vAddPrimitive("rowBuffer.dump"_Stz,   &vRowBufferDump,    false);
-  vAddPrimitive("rowBuffer::new"_Stz,    &vRowBufferNew,    false);
+  vAddStep("rowBuffer.append"_Stz, &vRowBufferAppend, false);
+  vAddStep("rowBuffer.appendRecord"_Stz, &vRowBufferAppendRecord, false);
+  vAddStep("rowBuffer.dump"_Stz,   &vRowBufferDump,    false);
+  vAddStep("rowBuffer::new"_Stz,    &vRowBufferNew,    false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,11 +13,11 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Args(void)
+void Task::vAddSteps_Args(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("args.print"_Stz,      &vArgsPrint,     false);
+  vAddStep("args.print"_Stz,      &vArgsPrint,     false);
 }
 
 /*----------------------------------------------------------------------------*/

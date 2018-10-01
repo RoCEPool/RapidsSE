@@ -13,10 +13,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_DicLock(void)
+void Task::vAddSteps_DicLock(void)
 {
-  vAddPrimitive("dicLock.dropWrite"_Stz,&vDicLockDropWrite, false);
-  vAddPrimitive("dicLock.grabWrite"_Stz,&vDicLockGrabWrite, false);
+  vAddStep("dicLock.dropWrite"_Stz,&vDicLockDropWrite, false);
+  vAddStep("dicLock.grabWrite"_Stz,&vDicLockGrabWrite, false);
 }
 
 /*----------------------------------------------------------------------------*/

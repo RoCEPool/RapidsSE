@@ -13,11 +13,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Process(void)
+void Task::vAddSteps_Process(void)
 {
-  vAddPrimitive("process.getPid"_Stz,  &vProcessGetPid,    false);
-  vAddPrimitive("process.quit"_Stz,    &vProcessQuit,      false);
-  vAddPrimitive("process.testPid"_Stz, &vProcessTestPid,   false);
+  vAddStep("process.getPid"_Stz,  &vProcessGetPid,    false);
+  vAddStep("process.quit"_Stz,    &vProcessQuit,      false);
+  vAddStep("process.testPid"_Stz, &vProcessTestPid,   false);
 }
 
 /*----------------------------------------------------------------------------*/

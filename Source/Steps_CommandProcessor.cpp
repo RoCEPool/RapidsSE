@@ -11,17 +11,17 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_CommandProcessor(void)
+void Task::vAddSteps_CommandProcessor(void)
 {
-  vAddPrimitive("commandProcessor.blankLine"_Stz,   &vCommandProcessorBlankLine,  false);
-  vAddPrimitive("commandProcessor.deleteJob"_Stz,   &vCommandProcessorDeleteJob,  false);
-  vAddPrimitive("commandProcessor.executeFile"_Stz, &vCommandProcessorExecuteFile,false);
-  vAddPrimitive("commandProcessor.findJobClass"_Stz,&vCommandProcessorFindJobClass,false);
-  vAddPrimitive("commandProcessor.getCommand"_Stz,  &vCommandProcessorGetCommand, false);
-  vAddPrimitive("commandProcessor.jobClass"_Stz,    &vCommandProcessorJobClass,   false);
-  vAddPrimitive("commandProcessor.postJob"_Stz,     &vCommandProcessorPostJob,    false);
-  vAddPrimitive("commandProcessor.preJob"_Stz,      &vCommandProcessorPreJob,     false);
-  vAddPrimitive("commandProcessor.spawnJob"_Stz,    &vCommandProcessorSpawnJob,   false);
+  vAddStep("commandProcessor.blankLine"_Stz,   &vCommandProcessorBlankLine,  false);
+  vAddStep("commandProcessor.deleteJob"_Stz,   &vCommandProcessorDeleteJob,  false);
+  vAddStep("commandProcessor.executeFile"_Stz, &vCommandProcessorExecuteFile,false);
+  vAddStep("commandProcessor.findJobClass"_Stz,&vCommandProcessorFindJobClass,false);
+  vAddStep("commandProcessor.getCommand"_Stz,  &vCommandProcessorGetCommand, false);
+  vAddStep("commandProcessor.jobClass"_Stz,    &vCommandProcessorJobClass,   false);
+  vAddStep("commandProcessor.postJob"_Stz,     &vCommandProcessorPostJob,    false);
+  vAddStep("commandProcessor.preJob"_Stz,      &vCommandProcessorPreJob,     false);
+  vAddStep("commandProcessor.spawnJob"_Stz,    &vCommandProcessorSpawnJob,   false);
 }
 
 /*----------------------------------------------------------------------------*/

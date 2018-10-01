@@ -13,20 +13,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_SelCursor(void)
+void Task::vAddSteps_SelCursor(void)
 {
-  vAddPrimitive("selCursor.begin"_Stz,     &vSelCursorBegin,      false);
-  vAddPrimitive("selCursor.delete"_Stz,    &vSelCursorDelete,     false);
-  vAddPrimitive("selCursor.end"_Stz,       &vSelCursorEnd,        false);
-  vAddPrimitive("selCursor.first"_Stz,     &vSelCursorFirst,      false);
-  vAddPrimitive("selCursor.get"_Stz,       &vSelCursorGet,        false);
-  vAddPrimitive("selCursor.hasRow"_Stz,    &vSelCursorHasRow,     false);
-  vAddPrimitive("selCursor.init"_Stz,      &vSelCursorInit,       false);
-  vAddPrimitive("selCursor::new"_Stz,      &vSelCursorNew,        false);
-  vAddPrimitive("selCursor.next"_Stz,      &vSelCursorNext,       false);
-  vAddPrimitive("selCursor.rowBuffer"_Stz, &vSelCursorRowBuffer,  false);
-  vAddPrimitive("selCursor.table@"_Stz,    &vSelCursorTableFetch, false);
-  vAddPrimitive("selCursor.table!"_Stz,    &vSelCursorTableStore, false);
+  vAddStep("selCursor.begin"_Stz,     &vSelCursorBegin,      false);
+  vAddStep("selCursor.delete"_Stz,    &vSelCursorDelete,     false);
+  vAddStep("selCursor.end"_Stz,       &vSelCursorEnd,        false);
+  vAddStep("selCursor.first"_Stz,     &vSelCursorFirst,      false);
+  vAddStep("selCursor.get"_Stz,       &vSelCursorGet,        false);
+  vAddStep("selCursor.hasRow"_Stz,    &vSelCursorHasRow,     false);
+  vAddStep("selCursor.init"_Stz,      &vSelCursorInit,       false);
+  vAddStep("selCursor::new"_Stz,      &vSelCursorNew,        false);
+  vAddStep("selCursor.next"_Stz,      &vSelCursorNext,       false);
+  vAddStep("selCursor.rowBuffer"_Stz, &vSelCursorRowBuffer,  false);
+  vAddStep("selCursor.table@"_Stz,    &vSelCursorTableFetch, false);
+  vAddStep("selCursor.table!"_Stz,    &vSelCursorTableStore, false);
 }
 
 /*----------------------------------------------------------------------------*/

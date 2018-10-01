@@ -13,14 +13,14 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_DicStack(void)
+void Task::vAddSteps_DicStack(void)
 {
-  vAddPrimitive("dicStack.depth"_Stz,    &vDicStackDepth,    false);
-  vAddPrimitive("dicStack.drop"_Stz,     &vDicStackDrop,     false);
-  vAddPrimitive("dicStack.dump"_Stz,     &vDicStackDump,     false);
-  vAddPrimitive("dicStack.pick"_Stz,     &vDicStackPick,     false);
-  vAddPrimitive("dicStack.pop"_Stz,      &vDicStackPop,      false);
-  vAddPrimitive("dicStack.push"_Stz,     &vDicStackPush,     false);
+  vAddStep("dicStack.depth"_Stz,    &vDicStackDepth,    false);
+  vAddStep("dicStack.drop"_Stz,     &vDicStackDrop,     false);
+  vAddStep("dicStack.dump"_Stz,     &vDicStackDump,     false);
+  vAddStep("dicStack.pick"_Stz,     &vDicStackPick,     false);
+  vAddStep("dicStack.pop"_Stz,      &vDicStackPop,      false);
+  vAddStep("dicStack.push"_Stz,     &vDicStackPush,     false);
 }
 
 /*----------------------------------------------------------------------------*/

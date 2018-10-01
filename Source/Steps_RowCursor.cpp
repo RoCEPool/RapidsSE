@@ -13,20 +13,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_RowCursor(void)
+void Task::vAddSteps_RowCursor(void)
 {
-  vAddPrimitive("rowCursor.begin"_Stz,        &vRowCursorBegin,           false);
-  vAddPrimitive("rowCursor.delete"_Stz,       &vRowCursorDelete,          false);
-  vAddPrimitive("rowCursor.end"_Stz,          &vRowCursorEnd,             false);
-  vAddPrimitive("rowCursor.entryBuffer@"_Stz, &vRowCursorEntryBufferFetch,false);
-  vAddPrimitive("rowCursor.entryBuffer!"_Stz, &vRowCursorEntryBufferStore,false);
-  vAddPrimitive("rowCursor.first"_Stz,        &vRowCursorFirst,           false);
-  vAddPrimitive("rowCursor.init"_Stz,         &vRowCursorInit,            false);
-  vAddPrimitive("rowCursor::new"_Stz,         &vRowCursorNew,             false);
-  vAddPrimitive("rowCursor.next"_Stz,         &vRowCursorNext,            false);
-  vAddPrimitive("rowCursor.row"_Stz,          &vRowCursorRow,             false);
-  vAddPrimitive("rowCursor.table@"_Stz,       &vRowCursorTableFetch,      false);
-  vAddPrimitive("rowCursor.table!"_Stz,       &vRowCursorTableStore,      false);
+  vAddStep("rowCursor.begin"_Stz,        &vRowCursorBegin,           false);
+  vAddStep("rowCursor.delete"_Stz,       &vRowCursorDelete,          false);
+  vAddStep("rowCursor.end"_Stz,          &vRowCursorEnd,             false);
+  vAddStep("rowCursor.entryBuffer@"_Stz, &vRowCursorEntryBufferFetch,false);
+  vAddStep("rowCursor.entryBuffer!"_Stz, &vRowCursorEntryBufferStore,false);
+  vAddStep("rowCursor.first"_Stz,        &vRowCursorFirst,           false);
+  vAddStep("rowCursor.init"_Stz,         &vRowCursorInit,            false);
+  vAddStep("rowCursor::new"_Stz,         &vRowCursorNew,             false);
+  vAddStep("rowCursor.next"_Stz,         &vRowCursorNext,            false);
+  vAddStep("rowCursor.row"_Stz,          &vRowCursorRow,             false);
+  vAddStep("rowCursor.table@"_Stz,       &vRowCursorTableFetch,      false);
+  vAddStep("rowCursor.table!"_Stz,       &vRowCursorTableStore,      false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,12 +11,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Slots(void)
+void Task::vAddSteps_Slots(void)
 {
-  vAddPrimitive("slots.columnCount"_Stz,     &vSlotsColumnCount,     false);
-  vAddPrimitive("slots.columnName"_Stz,      &vSlotsColumnName,      false);
-  vAddPrimitive("slots.createColumnVec"_Stz, &vSlotsCreateColumnVec, false);
-  vAddPrimitive("slots.subDic"_Stz,          &vSlotsSubDic,          false);
+  vAddStep("slots.columnCount"_Stz,     &vSlotsColumnCount,     false);
+  vAddStep("slots.columnName"_Stz,      &vSlotsColumnName,      false);
+  vAddStep("slots.createColumnVec"_Stz, &vSlotsCreateColumnVec, false);
+  vAddStep("slots.subDic"_Stz,          &vSlotsSubDic,          false);
 }
 
 /*----------------------------------------------------------------------------*/

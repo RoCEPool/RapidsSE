@@ -13,33 +13,33 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Rstack(void)
+void Task::vAddSteps_Rstack(void)
 {
-  vAddPrimitive("cs-pick"_Stz,         &vRstackCsPick,     false);
-  vAddPrimitive("cs-roll"_Stz,         &vRstackCsRoll,     false);
-  vAddPrimitive("rdepth"_Stz,          &vRstackDepth,      false);
-  vAddPrimitive("rdrop"_Stz,           &vRstackDrop,       false);
-  vAddPrimitive("r@"_Stz,              &vRstackFetch,      false);
-  vAddPrimitive("2r@"_Stz,             &vRstackFetchTwo,   false);
-  vAddPrimitive("rpick"_Stz,           &vRstackPick,       false);
-  vAddPrimitive("rreverse"_Stz,        &vRstackReverse,    false);
-  vAddPrimitive("rroll"_Stz,           &vRstackRoll,       false);
-  vAddPrimitive("-rroll"_Stz,          &vRstackRollInv,    false);
-//  vAddPrimitive("rstk"_Stz,            &vRstackStk,       false);
-  vAddPrimitive("rswap"_Stz,           &vRstackSwap,       false);
-  vAddPrimitive("r>"_Stz,              &vRstackToP,        false);
-  vAddPrimitive(">r"_Stz,              &vRstackToR,        false);
-  vAddPrimitive("2>r"_Stz,             &vRstackToRTwo,     false);
-  vAddPrimitive("r0"_Stz,              &vRstack0,          false);
-  vAddPrimitive("r1"_Stz,              &vRstack1,          false);
-  vAddPrimitive("r2"_Stz,              &vRstack2,          false);
-  vAddPrimitive("r3"_Stz,              &vRstack3,          false);
-  vAddPrimitive("r4"_Stz,              &vRstack4,          false);
-  vAddPrimitive("r5"_Stz,              &vRstack5,          false);
-  vAddPrimitive("r6"_Stz,              &vRstack6,          false);
-  vAddPrimitive("r7"_Stz,              &vRstack7,          false);
-  vAddPrimitive("r8"_Stz,              &vRstack8,          false);
-  vAddPrimitive("r9"_Stz,              &vRstack9,          false);
+  vAddStep("cs-pick"_Stz,         &vRstackCsPick,     false);
+  vAddStep("cs-roll"_Stz,         &vRstackCsRoll,     false);
+  vAddStep("rdepth"_Stz,          &vRstackDepth,      false);
+  vAddStep("rdrop"_Stz,           &vRstackDrop,       false);
+  vAddStep("r@"_Stz,              &vRstackFetch,      false);
+  vAddStep("2r@"_Stz,             &vRstackFetchTwo,   false);
+  vAddStep("rpick"_Stz,           &vRstackPick,       false);
+  vAddStep("rreverse"_Stz,        &vRstackReverse,    false);
+  vAddStep("rroll"_Stz,           &vRstackRoll,       false);
+  vAddStep("-rroll"_Stz,          &vRstackRollInv,    false);
+//  vAddStep("rstk"_Stz,            &vRstackStk,       false);
+  vAddStep("rswap"_Stz,           &vRstackSwap,       false);
+  vAddStep("r>"_Stz,              &vRstackToP,        false);
+  vAddStep(">r"_Stz,              &vRstackToR,        false);
+  vAddStep("2>r"_Stz,             &vRstackToRTwo,     false);
+  vAddStep("r0"_Stz,              &vRstack0,          false);
+  vAddStep("r1"_Stz,              &vRstack1,          false);
+  vAddStep("r2"_Stz,              &vRstack2,          false);
+  vAddStep("r3"_Stz,              &vRstack3,          false);
+  vAddStep("r4"_Stz,              &vRstack4,          false);
+  vAddStep("r5"_Stz,              &vRstack5,          false);
+  vAddStep("r6"_Stz,              &vRstack6,          false);
+  vAddStep("r7"_Stz,              &vRstack7,          false);
+  vAddStep("r8"_Stz,              &vRstack8,          false);
+  vAddStep("r9"_Stz,              &vRstack9,          false);
 }
 
 /*----------------------------------------------------------------------------*/

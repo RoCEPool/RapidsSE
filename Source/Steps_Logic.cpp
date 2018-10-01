@@ -13,11 +13,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Logic(void)
+void Task::vAddSteps_Logic(void)
 {
-  vAddPrimitive("and"_Stz,             &vLogicAnd,         false);
-  vAddPrimitive("not"_Stz,             &vLogicNot,         false);
-  vAddPrimitive("or"_Stz,              &vLogicOr,          false);
+  vAddStep("and"_Stz,             &vLogicAnd,         false);
+  vAddStep("not"_Stz,             &vLogicNot,         false);
+  vAddStep("or"_Stz,              &vLogicOr,          false);
 }
 
 /*----------------------------------------------------------------------------*/

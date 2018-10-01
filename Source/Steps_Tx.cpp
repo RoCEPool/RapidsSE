@@ -13,22 +13,22 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Tx(void)
+void Task::vAddSteps_Tx(void)
 {
-  vAddPrimitive("tx::begin"_Stz,      &vTxBegin,           false);
-  vAddPrimitive("tx.commit"_Stz,      &vTxCommit,          false);
-  vAddPrimitive("tx.counterDec"_Stz,  &vTxCounterDec,      false);
-  vAddPrimitive("tx.counter@"_Stz,    &vTxCounterFetch,    false);
-  vAddPrimitive("tx.counter!"_Stz,    &vTxCounterStore,    false);
-  vAddPrimitive("tx.distMember@"_Stz, &vTxDistMemberFetch, false);
-  vAddPrimitive("tx.distMember!"_Stz, &vTxDistMemberStore, false);
-  vAddPrimitive("tx.dump"_Stz,        &vTxDump,            false);
-  vAddPrimitive("tx::dumpAll"_Stz,    &vTxDumpAll,         false);
-  vAddPrimitive("tx.free"_Stz,        &vTxFree,            false);
-  vAddPrimitive("tx.id"_Stz,          &vTxId,              false);
-  vAddPrimitive("tx.prepare"_Stz,     &vTxPrepare,         false);
-  vAddPrimitive("tx.rollback"_Stz,    &vTxRollback,        false);
-  vAddPrimitive("tx::testDist"_Stz,   &vTxTestDist,        false);
+  vAddStep("tx::begin"_Stz,      &vTxBegin,           false);
+  vAddStep("tx.commit"_Stz,      &vTxCommit,          false);
+  vAddStep("tx.counterDec"_Stz,  &vTxCounterDec,      false);
+  vAddStep("tx.counter@"_Stz,    &vTxCounterFetch,    false);
+  vAddStep("tx.counter!"_Stz,    &vTxCounterStore,    false);
+  vAddStep("tx.distMember@"_Stz, &vTxDistMemberFetch, false);
+  vAddStep("tx.distMember!"_Stz, &vTxDistMemberStore, false);
+  vAddStep("tx.dump"_Stz,        &vTxDump,            false);
+  vAddStep("tx::dumpAll"_Stz,    &vTxDumpAll,         false);
+  vAddStep("tx.free"_Stz,        &vTxFree,            false);
+  vAddStep("tx.id"_Stz,          &vTxId,              false);
+  vAddStep("tx.prepare"_Stz,     &vTxPrepare,         false);
+  vAddStep("tx.rollback"_Stz,    &vTxRollback,        false);
+  vAddStep("tx::testDist"_Stz,   &vTxTestDist,        false);
 }
 
 /*----------------------------------------------------------------------------*/

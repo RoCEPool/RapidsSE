@@ -13,21 +13,21 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_JobLoadTable(void)
+void Task::vAddSteps_JobLoadTable(void)
 {
-  vAddPrimitive("job_loadBuffer.insertRows"_Stz,      &vJob_LoadBufferInsertRows,          false);
-  vAddPrimitive("job_loadBuffer.jobLoadTableId@"_Stz, &vJob_LoadBufferJobLoadTableIdFetch, false);
-  vAddPrimitive("job_loadBuffer.jobLoadTable!"_Stz,   &vJob_LoadBufferJobLoadTableStore,   false);
-  vAddPrimitive("job_loadBuffer.partition@"_Stz,      &vJob_LoadBufferPartitionFetch,      false);
-  vAddPrimitive("job_loadBuffer.table!"_Stz,          &vJob_LoadBufferTableStore,          false);
+  vAddStep("job_loadBuffer.insertRows"_Stz,      &vJob_LoadBufferInsertRows,          false);
+  vAddStep("job_loadBuffer.jobLoadTableId@"_Stz, &vJob_LoadBufferJobLoadTableIdFetch, false);
+  vAddStep("job_loadBuffer.jobLoadTable!"_Stz,   &vJob_LoadBufferJobLoadTableStore,   false);
+  vAddStep("job_loadBuffer.partition@"_Stz,      &vJob_LoadBufferPartitionFetch,      false);
+  vAddStep("job_loadBuffer.table!"_Stz,          &vJob_LoadBufferTableStore,          false);
   
-  vAddPrimitive("job_loadTable.addInvalidRows"_Stz,&vJob_LoadTableAddInvalidRows,false);
-  vAddPrimitive("job_loadTable.addValidRows"_Stz,  &vJob_LoadTableAddValidRows,  false);
-  vAddPrimitive("job_loadTable.filePath@"_Stz,     &vJob_LoadTableFilePathFetch, false);
-  vAddPrimitive("job_loadTable.task@"_Stz,         &vJob_LoadTableTaskFetch,     false);
-  vAddPrimitive("job_loadTable.task!"_Stz,         &vJob_LoadTableTaskStore,     false);
+  vAddStep("job_loadTable.addInvalidRows"_Stz,&vJob_LoadTableAddInvalidRows,false);
+  vAddStep("job_loadTable.addValidRows"_Stz,  &vJob_LoadTableAddValidRows,  false);
+  vAddStep("job_loadTable.filePath@"_Stz,     &vJob_LoadTableFilePathFetch, false);
+  vAddStep("job_loadTable.task@"_Stz,         &vJob_LoadTableTaskFetch,     false);
+  vAddStep("job_loadTable.task!"_Stz,         &vJob_LoadTableTaskStore,     false);
   
-  vAddPrimitive("Job_subLoader.jobLoadTable@"_Stz, &vJob_SubLoaderJobLoadTableFetch, false);
+  vAddStep("Job_subLoader.jobLoadTable@"_Stz, &vJob_SubLoaderJobLoadTableFetch, false);
 }
 
 /*----------------------------------------------------------------------------*/

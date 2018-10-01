@@ -13,9 +13,9 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Vector(void)
+void Task::vAddSteps_Vector(void)
 {
-  vAddPrimitive("vector.diff"_Stz,     &vVectorDifference,  false );
+  vAddStep("vector.diff"_Stz,     &vVectorDifference,  false );
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,70 +13,70 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Job(void)
+void Task::vAddSteps_Job(void)
 {
-  vAddPrimitive("job.acksRemaining!"_Stz,   &vJobAcksRemaining,    false);
-  vAddPrimitive("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
-  vAddPrimitive("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
-  vAddPrimitive("job.ancilliary@"_Stz,      &vJobAncilliaryFetch,  false);
-  vAddPrimitive("job.class"_Stz,            &vJobClass,            false);
-  vAddPrimitive("job.columnCount@"_Stz,     &vJobColumnCountFetch, false);
-  vAddPrimitive("job.columnIsPartKey"_Stz,  &vJobColumnIsPartKey,  false);
-  vAddPrimitive("job.columnName@"_Stz,      &vJobColumnNameFetch,  false);
-  vAddPrimitive("job.columnType@"_Stz,      &vJobColumnTypeFetch,  false);
-  vAddPrimitive("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
-  vAddPrimitive("job.delete"_Stz,           &vJobDelete,           false);
-  vAddPrimitive("job.dicPath"_Stz,          &vJobDicPath,          false);
+  vAddStep("job.acksRemaining!"_Stz,   &vJobAcksRemaining,    false);
+  vAddStep("job.addOriginator"_Stz,    &vJobAddOriginator,    false);
+  vAddStep("job.addParticipant"_Stz,   &vJobAddParticipant,   false);
+  vAddStep("job.ancilliary@"_Stz,      &vJobAncilliaryFetch,  false);
+  vAddStep("job.class"_Stz,            &vJobClass,            false);
+  vAddStep("job.columnCount@"_Stz,     &vJobColumnCountFetch, false);
+  vAddStep("job.columnIsPartKey"_Stz,  &vJobColumnIsPartKey,  false);
+  vAddStep("job.columnName@"_Stz,      &vJobColumnNameFetch,  false);
+  vAddStep("job.columnType@"_Stz,      &vJobColumnTypeFetch,  false);
+  vAddStep("job.decAcksRemaining"_Stz, &vJobDecAcksRemaining, false);
+  vAddStep("job.delete"_Stz,           &vJobDelete,           false);
+  vAddStep("job.dicPath"_Stz,          &vJobDicPath,          false);
   
-  vAddPrimitive("job.error!"_Stz,           &vJobErrorStore,       false);
-  vAddPrimitive("job.error@"_Stz,           &vJobErrorFetch,       false);
-  vAddPrimitive("job.execute@"_Stz,         &vJobExecuteFetch,     false);
+  vAddStep("job.error!"_Stz,           &vJobErrorStore,       false);
+  vAddStep("job.error@"_Stz,           &vJobErrorFetch,       false);
+  vAddStep("job.execute@"_Stz,         &vJobExecuteFetch,     false);
   
-  vAddPrimitive("job::findOriginator"_Stz,   &vJobFindOriginator,   false);
-  vAddPrimitive("job::findParticipant"_Stz,  &vJobFindParticipant,  false);
-  vAddPrimitive("job.hasError"_Stz,         &vJobHasError,         false);
-  vAddPrimitive("job.hasWorkingBuffer"_Stz, &vJobHasWorkingBuffer, false);
-  vAddPrimitive("job.id@"_Stz,              &vJobIdFetch,          false);
-  vAddPrimitive("job.indexName@"_Stz,       &vJobIndexNameFetch,   false);
+  vAddStep("job::findOriginator"_Stz,   &vJobFindOriginator,   false);
+  vAddStep("job::findParticipant"_Stz,  &vJobFindParticipant,  false);
+  vAddStep("job.hasError"_Stz,         &vJobHasError,         false);
+  vAddStep("job.hasWorkingBuffer"_Stz, &vJobHasWorkingBuffer, false);
+  vAddStep("job.id@"_Stz,              &vJobIdFetch,          false);
+  vAddStep("job.indexName@"_Stz,       &vJobIndexNameFetch,   false);
   
-  vAddPrimitive("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
-  vAddPrimitive("job.jobClass"_Stz,         &vJobJobClass,         false);
-  vAddPrimitive("job.metadata!"_Stz,        &vJobMetadataStore,    false);
-  vAddPrimitive("job.newBegun"_Stz,         &vJobNewBegun,         false);
-  vAddPrimitive("job.newCancel"_Stz,        &vJobNewCancel,        false);
-  vAddPrimitive("job.newCancelled"_Stz,     &vJobNewCancelled,     false);
-  vAddPrimitive("job.newEnd"_Stz,           &vJobNewEnd,           false);
-  vAddPrimitive("job.newEnded"_Stz,         &vJobNewEnded,         false);
-  vAddPrimitive("job.newExecute"_Stz,       &vJobNewExecute,       false);
-  vAddPrimitive("job.newExecuted"_Stz,      &vJobNewExecuted,      false);
-  vAddPrimitive("job.objectName@"_Stz,      &vJobObjectNameFetch,  false);
-  vAddPrimitive("job.originatingTask@"_Stz, &vJobOriginatingTaskFetch, false);
-  vAddPrimitive("job.originatingTask!"_Stz, &vJobOriginatingTaskStore, false);
-  vAddPrimitive("job::originator@"_Stz,     &vJobOriginatorFetch,  false);
-  vAddPrimitive("job.participant@"_Stz,     &vJobParticipantFetch, false);
-  vAddPrimitive("job.participant!"_Stz,     &vJobParticipantStore, false);
-  vAddPrimitive("job.partitions@"_Stz,      &vJobPartitionsFetch,  false);
-  vAddPrimitive("job.postRecv"_Stz,         &vJobPostRecv,         false);
-  vAddPrimitive("job.preSend"_Stz,          &vJobPreSend,          false);
-  vAddPrimitive("job.promptTask@"_Stz,      &vJobPromptTaskFetch,  false);
+  vAddStep("job.isPromptCommand"_Stz,  &vJobIsPromptCommand,  false);
+  vAddStep("job.jobClass"_Stz,         &vJobJobClass,         false);
+  vAddStep("job.metadata!"_Stz,        &vJobMetadataStore,    false);
+  vAddStep("job.newBegun"_Stz,         &vJobNewBegun,         false);
+  vAddStep("job.newCancel"_Stz,        &vJobNewCancel,        false);
+  vAddStep("job.newCancelled"_Stz,     &vJobNewCancelled,     false);
+  vAddStep("job.newEnd"_Stz,           &vJobNewEnd,           false);
+  vAddStep("job.newEnded"_Stz,         &vJobNewEnded,         false);
+  vAddStep("job.newExecute"_Stz,       &vJobNewExecute,       false);
+  vAddStep("job.newExecuted"_Stz,      &vJobNewExecuted,      false);
+  vAddStep("job.objectName@"_Stz,      &vJobObjectNameFetch,  false);
+  vAddStep("job.originatingTask@"_Stz, &vJobOriginatingTaskFetch, false);
+  vAddStep("job.originatingTask!"_Stz, &vJobOriginatingTaskStore, false);
+  vAddStep("job::originator@"_Stz,     &vJobOriginatorFetch,  false);
+  vAddStep("job.participant@"_Stz,     &vJobParticipantFetch, false);
+  vAddStep("job.participant!"_Stz,     &vJobParticipantStore, false);
+  vAddStep("job.partitions@"_Stz,      &vJobPartitionsFetch,  false);
+  vAddStep("job.postRecv"_Stz,         &vJobPostRecv,         false);
+  vAddStep("job.preSend"_Stz,          &vJobPreSend,          false);
+  vAddStep("job.promptTask@"_Stz,      &vJobPromptTaskFetch,  false);
   
-  vAddPrimitive("job.recv"_Stz,             &vJobRecv,             false);
-  vAddPrimitive("job.regionSize@"_Stz,      &vJobRegionSizeFetch,  false);
-  vAddPrimitive("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
-  vAddPrimitive("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
-  vAddPrimitive("job.response@"_Stz,        &vJobResponseFetch,    false);
-  vAddPrimitive("job.response!"_Stz,        &vJobResponseStore,    false);
-  vAddPrimitive("job.rowsProcessed@"_Stz,   &vJobRowsProcessedFetch, false);
-  vAddPrimitive("job.rowsProcessed!"_Stz,   &vJobRowsProcessedStore, false);
-  vAddPrimitive("job.send"_Stz,             &vJobRecv,             false);
-  vAddPrimitive("job.show"_Stz,             &vJobShow,             false);
-  vAddPrimitive("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
-  vAddPrimitive("job.spawn"_Stz,            &vJobSpawn,            false);
-  vAddPrimitive("job::this"_Stz,            &vJobThis,             false);
-  vAddPrimitive("job.trace!"_Stz,           &vJobTraceStore,       false);
-  vAddPrimitive("job.trace@"_Stz,           &vJobTraceFetch,       false);
-  vAddPrimitive("job.workingBuffer@"_Stz,   &vJobWorkingBufferFetch, false);
-  vAddPrimitive("job.workingBuffer!"_Stz,   &vJobWorkingBufferStore, false);
+  vAddStep("job.recv"_Stz,             &vJobRecv,             false);
+  vAddStep("job.regionSize@"_Stz,      &vJobRegionSizeFetch,  false);
+  vAddStep("job.removeOriginator"_Stz, &vJobRemoveOriginator, false);
+  vAddStep("job.removeParticipant"_Stz,&vJobRemoveParticipant,false);
+  vAddStep("job.response@"_Stz,        &vJobResponseFetch,    false);
+  vAddStep("job.response!"_Stz,        &vJobResponseStore,    false);
+  vAddStep("job.rowsProcessed@"_Stz,   &vJobRowsProcessedFetch, false);
+  vAddStep("job.rowsProcessed!"_Stz,   &vJobRowsProcessedStore, false);
+  vAddStep("job.send"_Stz,             &vJobRecv,             false);
+  vAddStep("job.show"_Stz,             &vJobShow,             false);
+  vAddStep("job.signalConnector"_Stz,  &vJobSignalConnector,  false);
+  vAddStep("job.spawn"_Stz,            &vJobSpawn,            false);
+  vAddStep("job::this"_Stz,            &vJobThis,             false);
+  vAddStep("job.trace!"_Stz,           &vJobTraceStore,       false);
+  vAddStep("job.trace@"_Stz,           &vJobTraceFetch,       false);
+  vAddStep("job.workingBuffer@"_Stz,   &vJobWorkingBufferFetch, false);
+  vAddStep("job.workingBuffer!"_Stz,   &vJobWorkingBufferStore, false);
 }
 
 /*----------------------------------------------------------------------------*/

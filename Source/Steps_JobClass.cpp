@@ -13,20 +13,20 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_JobClass(void)
+void Task::vAddSteps_JobClass(void)
 {
-  vAddPrimitive("jobClass::find"_Stz,   &vJobClassFind,     false);
+  vAddStep("jobClass::find"_Stz,   &vJobClassFind,     false);
   
-  vAddPrimitive("jobClass.buffer@"_Stz, &vJobClassBuffer,   false);
-  vAddPrimitive("jobClass.name"_Stz,    &vJobClassName,     false);
-  vAddPrimitive("jobClass.new"_Stz,     &vJobClassNew,      false);
+  vAddStep("jobClass.buffer@"_Stz, &vJobClassBuffer,   false);
+  vAddStep("jobClass.name"_Stz,    &vJobClassName,     false);
+  vAddStep("jobClass.new"_Stz,     &vJobClassNew,      false);
   
-  vAddPrimitive("jobClass.seedRun"_Stz, &vJobClassSeedRun,  false);
-  vAddPrimitive("jobClass.seedReq"_Stz, &vJobClassSeedReq,  false);
-  vAddPrimitive("jobClass.seedRcv"_Stz, &vJobClassSeedRcv,  false);
-  vAddPrimitive("jobClass.seedExe"_Stz, &vJobClassSeedExe,  false);
-  vAddPrimitive("jobClass.seedEnd"_Stz, &vJobClassSeedEnd,  false);
-  vAddPrimitive("jobClass.seedCan"_Stz, &vJobClassSeedCan,  false);
+  vAddStep("jobClass.seedRun"_Stz, &vJobClassSeedRun,  false);
+  vAddStep("jobClass.seedReq"_Stz, &vJobClassSeedReq,  false);
+  vAddStep("jobClass.seedRcv"_Stz, &vJobClassSeedRcv,  false);
+  vAddStep("jobClass.seedExe"_Stz, &vJobClassSeedExe,  false);
+  vAddStep("jobClass.seedEnd"_Stz, &vJobClassSeedEnd,  false);
+  vAddStep("jobClass.seedCan"_Stz, &vJobClassSeedCan,  false);
 }
 
 /*----------------------------------------------------------------------------*/

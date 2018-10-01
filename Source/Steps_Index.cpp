@@ -15,45 +15,45 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Index(void)
+void Task::vAddSteps_Index(void)
 {
-  vAddPrimitive("index.analyze"_Stz,         &vIndexAnalyze,         false);
-  vAddPrimitive("index.buffer"_Stz,          &vIndexBuffer,          false);
-  vAddPrimitive("index.columnCount@"_Stz,    &vIndexColumnCountFetch,false);
-  vAddPrimitive("index.column@"_Stz,         &vIndexColumnFetch,     false);
-  vAddPrimitive("index.columnName"_Stz,      &vIndexColumnName,      false);
-  vAddPrimitive("index.columnType"_Stz,      &vIndexColumnType,      false);
-  vAddPrimitive("index.compact"_Stz,         &vIndexCompact,         false);
-  vAddPrimitive("index.createColumnVecHidden"_Stz, &vIndexCreateColumnVecHidden, false);
-  vAddPrimitive("index.createColumnVec"_Stz, &vIndexCreateColumnVec, false);
-  vAddPrimitive("index.dump"_Stz,            &vIndexDump,            false);
-  vAddPrimitive("index.exactKey"_Stz,        &vIndexExactKey,        false);
-  vAddPrimitive("index.init"_Stz,            &vIndexInit,            false);
-  vAddPrimitive("index.isHidden@"_Stz,       &vIndexIsHiddenFetch,   false);
-  vAddPrimitive("index.isHidden!"_Stz,       &vIndexIsHiddenStore,   false);
-  vAddPrimitive("index.isPrimaryKey@"_Stz,   &vIndexIsPrimaryKeyFetch, false);
-  vAddPrimitive("index.isPrimaryKey!"_Stz,   &vIndexIsPrimaryKeyStore, false);
-  vAddPrimitive("index.isUnique@"_Stz,       &vIndexIsUniqueFetch,   false);
-  vAddPrimitive("index.isUnique!"_Stz,       &vIndexIsUniqueStore,   false);
-  vAddPrimitive("index.isValidUniqueIndex"_Stz,&vIndexIsValidUniqueIndex,false);
-  vAddPrimitive("index.lowerBound"_Stz,      &vIndexLowerBound,      false);
-  vAddPrimitive("index.name@"_Stz,           &vIndexNameFetch,       false);
-  vAddPrimitive("index.populate"_Stz,        &vIndexPopulate,        false);
-  vAddPrimitive("index.position"_Stz,        &vIndexPosition,        false);
-  vAddPrimitive("index.positionFirst"_Stz,   &vIndexPositionFirst,   false);
-  vAddPrimitive("index.range"_Stz,           &vIndexRange,           false);
-  vAddPrimitive("index.setSingleColumn"_Stz, &vIndexSetSingleColumn, false);
-  vAddPrimitive("index.showColumnVec"_Stz,   &vIndexShowColumnVec,   false);
-  vAddPrimitive("index.scan"_Stz,            &vIndexScan,            false);
-  vAddPrimitive("index.space"_Stz,           &vIndexSpace,           false);
-  vAddPrimitive("index.subDic"_Stz,          &vIndexSubDic,          false);
-  vAddPrimitive("index.table@"_Stz,          &vIndexTableFetch,      false);
-  vAddPrimitive("index.table!"_Stz,          &vIndexTableStore,      false);
-  vAddPrimitive("index.truncate"_Stz,        &vIndexTruncate,        false);
-  vAddPrimitive("index.upper"_Stz,           &vIndexUpper,           false);
-  vAddPrimitive("index.upperBound"_Stz,      &vIndexUpperBound,      false);
-  vAddPrimitive("index.verify"_Stz,          &vIndexVerify,          false);
-  vAddPrimitive("index.visualize"_Stz,       &vIndexVisualize,       false);
+  vAddStep("index.analyze"_Stz,         &vIndexAnalyze,         false);
+  vAddStep("index.buffer"_Stz,          &vIndexBuffer,          false);
+  vAddStep("index.columnCount@"_Stz,    &vIndexColumnCountFetch,false);
+  vAddStep("index.column@"_Stz,         &vIndexColumnFetch,     false);
+  vAddStep("index.columnName"_Stz,      &vIndexColumnName,      false);
+  vAddStep("index.columnType"_Stz,      &vIndexColumnType,      false);
+  vAddStep("index.compact"_Stz,         &vIndexCompact,         false);
+  vAddStep("index.createColumnVecHidden"_Stz, &vIndexCreateColumnVecHidden, false);
+  vAddStep("index.createColumnVec"_Stz, &vIndexCreateColumnVec, false);
+  vAddStep("index.dump"_Stz,            &vIndexDump,            false);
+  vAddStep("index.exactKey"_Stz,        &vIndexExactKey,        false);
+  vAddStep("index.init"_Stz,            &vIndexInit,            false);
+  vAddStep("index.isHidden@"_Stz,       &vIndexIsHiddenFetch,   false);
+  vAddStep("index.isHidden!"_Stz,       &vIndexIsHiddenStore,   false);
+  vAddStep("index.isPrimaryKey@"_Stz,   &vIndexIsPrimaryKeyFetch, false);
+  vAddStep("index.isPrimaryKey!"_Stz,   &vIndexIsPrimaryKeyStore, false);
+  vAddStep("index.isUnique@"_Stz,       &vIndexIsUniqueFetch,   false);
+  vAddStep("index.isUnique!"_Stz,       &vIndexIsUniqueStore,   false);
+  vAddStep("index.isValidUniqueIndex"_Stz,&vIndexIsValidUniqueIndex,false);
+  vAddStep("index.lowerBound"_Stz,      &vIndexLowerBound,      false);
+  vAddStep("index.name@"_Stz,           &vIndexNameFetch,       false);
+  vAddStep("index.populate"_Stz,        &vIndexPopulate,        false);
+  vAddStep("index.position"_Stz,        &vIndexPosition,        false);
+  vAddStep("index.positionFirst"_Stz,   &vIndexPositionFirst,   false);
+  vAddStep("index.range"_Stz,           &vIndexRange,           false);
+  vAddStep("index.setSingleColumn"_Stz, &vIndexSetSingleColumn, false);
+  vAddStep("index.showColumnVec"_Stz,   &vIndexShowColumnVec,   false);
+  vAddStep("index.scan"_Stz,            &vIndexScan,            false);
+  vAddStep("index.space"_Stz,           &vIndexSpace,           false);
+  vAddStep("index.subDic"_Stz,          &vIndexSubDic,          false);
+  vAddStep("index.table@"_Stz,          &vIndexTableFetch,      false);
+  vAddStep("index.table!"_Stz,          &vIndexTableStore,      false);
+  vAddStep("index.truncate"_Stz,        &vIndexTruncate,        false);
+  vAddStep("index.upper"_Stz,           &vIndexUpper,           false);
+  vAddStep("index.upperBound"_Stz,      &vIndexUpperBound,      false);
+  vAddStep("index.verify"_Stz,          &vIndexVerify,          false);
+  vAddStep("index.visualize"_Stz,       &vIndexVisualize,       false);
 }
 
 /*----------------------------------------------------------------------------*/

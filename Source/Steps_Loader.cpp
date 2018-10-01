@@ -13,25 +13,25 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Loader(void)
+void Task::vAddSteps_Loader(void)
 {
-  vAddPrimitive("loader.addRecordsInvalid"_Stz, &vLoaderAddRecordsInvalid,false);
-  vAddPrimitive("loader.addRecordsValid"_Stz,   &vLoaderAddRecordsValid, false);
-  vAddPrimitive("loader.chunkFile"_Stz,         &vLoaderChunkFile,       false);
-  vAddPrimitive("loader.delete"_Stz,            &vLoaderDelete,          false);
-  vAddPrimitive("loader.dumpMap"_Stz,           &vLoaderDumpMap,         false);
-  vAddPrimitive("loader.findChunk"_Stz,         &vLoaderFindChunk,       false);
-  vAddPrimitive("loader.init"_Stz,              &vLoaderInit,            false);
-  vAddPrimitive("loader::new"_Stz,              &vLoaderNew,             false);
-  vAddPrimitive("loader.newSub"_Stz,            &vLoaderNewSub,          false);
-  vAddPrimitive("loader.path!"_Stz,             &vLoaderPathStore,       false);
-  vAddPrimitive("loader.pathDistributed!"_Stz,  &vLoaderPathDistributedStore,false);
-  vAddPrimitive("loader.recordsInvalid@"_Stz,   &vLoaderRecordsInvalidFetch, false);
-  vAddPrimitive("loader.recordsValid@"_Stz,     &vLoaderRecordsValidFetch,   false);
-  vAddPrimitive("loader.seitf@"_Stz,            &vLoaderSEitfFetch,      false);
-  vAddPrimitive("loader.seitf!"_Stz,            &vLoaderSEitfStore,      false);
-  vAddPrimitive("loader.spawnSubLoader"_Stz,    &vLoaderSpawnSubLoader,  false);
-  vAddPrimitive("loader.table!"_Stz,            &vLoaderTableStore,      false);
+  vAddStep("loader.addRecordsInvalid"_Stz, &vLoaderAddRecordsInvalid,false);
+  vAddStep("loader.addRecordsValid"_Stz,   &vLoaderAddRecordsValid, false);
+  vAddStep("loader.chunkFile"_Stz,         &vLoaderChunkFile,       false);
+  vAddStep("loader.delete"_Stz,            &vLoaderDelete,          false);
+  vAddStep("loader.dumpMap"_Stz,           &vLoaderDumpMap,         false);
+  vAddStep("loader.findChunk"_Stz,         &vLoaderFindChunk,       false);
+  vAddStep("loader.init"_Stz,              &vLoaderInit,            false);
+  vAddStep("loader::new"_Stz,              &vLoaderNew,             false);
+  vAddStep("loader.newSub"_Stz,            &vLoaderNewSub,          false);
+  vAddStep("loader.path!"_Stz,             &vLoaderPathStore,       false);
+  vAddStep("loader.pathDistributed!"_Stz,  &vLoaderPathDistributedStore,false);
+  vAddStep("loader.recordsInvalid@"_Stz,   &vLoaderRecordsInvalidFetch, false);
+  vAddStep("loader.recordsValid@"_Stz,     &vLoaderRecordsValidFetch,   false);
+  vAddStep("loader.seitf@"_Stz,            &vLoaderSEitfFetch,      false);
+  vAddStep("loader.seitf!"_Stz,            &vLoaderSEitfStore,      false);
+  vAddStep("loader.spawnSubLoader"_Stz,    &vLoaderSpawnSubLoader,  false);
+  vAddStep("loader.table!"_Stz,            &vLoaderTableStore,      false);
 }
 
 /*----------------------------------------------------------------------------*/

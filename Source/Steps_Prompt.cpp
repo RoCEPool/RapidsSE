@@ -11,13 +11,13 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Prompt(void)
+void Task::vAddSteps_Prompt(void)
 {
-  vAddPrimitive("prompt.continue"_Stz,         &vPromptContinue,         false);
-  vAddPrimitive("prompt.executeFunction"_Stz,  &vPromptExecuteFunction,  false);
-  vAddPrimitive("prompt.getCommand"_Stz,       &vPromptGetCommand,       false);
-  vAddPrimitive("prompt::new"_Stz,             &vPromptNew,              false);
-  vAddPrimitive("prompt.SEitf"_Stz,            &vPromptSEitf,            false);
+  vAddStep("prompt.continue"_Stz,         &vPromptContinue,         false);
+  vAddStep("prompt.executeFunction"_Stz,  &vPromptExecuteFunction,  false);
+  vAddStep("prompt.getCommand"_Stz,       &vPromptGetCommand,       false);
+  vAddStep("prompt::new"_Stz,             &vPromptNew,              false);
+  vAddStep("prompt.SEitf"_Stz,            &vPromptSEitf,            false);
 }
 
 /*----------------------------------------------------------------------------*/

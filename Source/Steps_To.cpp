@@ -13,17 +13,17 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_To(void)
+void Task::vAddSteps_To(void)
 {
-  vAddPrimitive(">binval"_Stz,     &vToBinVal,     false);
-  vAddPrimitive(">body"_Stz,       &vToBody,       false);
-  vAddPrimitive(">digitName"_Stz,  &vToDigitName,  false);
-  vAddPrimitive(">int"_Stz,        &vToInt,        false);
-  vAddPrimitive(">object"_Stz,     &vToObject,     false);
-  vAddPrimitive(">ptr"_Stz,        &vToPtr,        false);
-  vAddPrimitive(">seitf"_Stz,      &vToSEitf,      false);
-  vAddPrimitive(">str"_Stz,        &vToStr,        false);
-  vAddPrimitive(">task"_Stz,       &vToTask,       false);
+  vAddStep(">binval"_Stz,     &vToBinVal,     false);
+  vAddStep(">body"_Stz,       &vToBody,       false);
+  vAddStep(">digitName"_Stz,  &vToDigitName,  false);
+  vAddStep(">int"_Stz,        &vToInt,        false);
+  vAddStep(">object"_Stz,     &vToObject,     false);
+  vAddStep(">ptr"_Stz,        &vToPtr,        false);
+  vAddStep(">seitf"_Stz,      &vToSEitf,      false);
+  vAddStep(">str"_Stz,        &vToStr,        false);
+  vAddStep(">task"_Stz,       &vToTask,       false);
 }
 
 /*----------------------------------------------------------------------------*/

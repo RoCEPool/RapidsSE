@@ -17,13 +17,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Address(void)
+void Task::vAddSteps_Address(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("eql"_Stz,             &vAddressEqual,     false);
-  vAddPrimitive("@"_Stz,               &vAddressFetch,     false);
-  vAddPrimitive("!"_Stz,               &vAddressStore,     false);
+  vAddStep("eql"_Stz,             &vAddressEqual,     false);
+  vAddStep("@"_Stz,               &vAddressFetch,     false);
+  vAddStep("!"_Stz,               &vAddressStore,     false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,22 +13,22 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Int(void)
+void Task::vAddSteps_Int(void)
 {
-  vAddPrimitive("+"_Stz,               &vIntAdd,           false);
-  vAddPrimitive("/"_Stz,               &vIntDivide,        false);
-  vAddPrimitive("=="_Stz,              &vIntEqual,         false);
-  vAddPrimitive(">"_Stz,               &vIntGreater,       false);
-  vAddPrimitive(">="_Stz,              &vIntGreaterEqual,  false);
-  vAddPrimitive("hash"_Stz,            &vIntHash,          false);
-  vAddPrimitive("ho16"_Stz,            &vIntHo16,          false);
-  vAddPrimitive("<"_Stz,               &vIntLess,          false);
-  vAddPrimitive("<="_Stz,              &vIntLessEqual,     false);
-  vAddPrimitive("%"_Stz,               &vIntModulo,        false);
-  vAddPrimitive("*"_Stz,               &vIntMultiply,      false);
-  vAddPrimitive("neg"_Stz,             &vIntNeg,           false);
-  vAddPrimitive("!="_Stz,              &vIntNotEqual,      false);
-  vAddPrimitive("-"_Stz,               &vIntSubtract,      false);
+  vAddStep("+"_Stz,               &vIntAdd,           false);
+  vAddStep("/"_Stz,               &vIntDivide,        false);
+  vAddStep("=="_Stz,              &vIntEqual,         false);
+  vAddStep(">"_Stz,               &vIntGreater,       false);
+  vAddStep(">="_Stz,              &vIntGreaterEqual,  false);
+  vAddStep("hash"_Stz,            &vIntHash,          false);
+  vAddStep("ho16"_Stz,            &vIntHo16,          false);
+  vAddStep("<"_Stz,               &vIntLess,          false);
+  vAddStep("<="_Stz,              &vIntLessEqual,     false);
+  vAddStep("%"_Stz,               &vIntModulo,        false);
+  vAddStep("*"_Stz,               &vIntMultiply,      false);
+  vAddStep("neg"_Stz,             &vIntNeg,           false);
+  vAddStep("!="_Stz,              &vIntNotEqual,      false);
+  vAddStep("-"_Stz,               &vIntSubtract,      false);
 }
 
 /*----------------------------------------------------------------------------*/

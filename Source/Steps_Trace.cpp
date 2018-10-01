@@ -13,15 +13,15 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Trace(void)
+void Task::vAddSteps_Trace(void)
 {
-  vAddPrimitive("traceOff"_Stz,         &vTraceOff,         false);
-  vAddPrimitive("traceOn"_Stz,          &vTraceOn,          false);
-  vAddPrimitive("tracePoint"_Stz,       &vTracePoint,       false);
-  vAddPrimitive("trace!"_Stz,           &vTraceSet,         false);
+  vAddStep("traceOff"_Stz,         &vTraceOff,         false);
+  vAddStep("traceOn"_Stz,          &vTraceOn,          false);
+  vAddStep("tracePoint"_Stz,       &vTracePoint,       false);
+  vAddStep("trace!"_Stz,           &vTraceSet,         false);
 
-  vAddPrimitive("performancePoint"_Stz, &vPerformancePoint, false);
-  vAddPrimitive("performancePrint"_Stz, &vPerformancePrint, false);
+  vAddStep("performancePoint"_Stz, &vPerformancePoint, false);
+  vAddStep("performancePrint"_Stz, &vPerformancePrint, false);
 }
 
 /*----------------------------------------------------------------------------*/

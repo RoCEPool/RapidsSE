@@ -9,14 +9,14 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_TablePartition(void)
+void Task::vAddSteps_TablePartition(void)
 {
-  vAddPrimitive("tablePtn.dump"_Stz,             &vTablePtnDump,            false);
-  vAddPrimitive("tablePtn.attemptGrabRead"_Stz , &vTablePtnAttemptGrabRead, false);
-  vAddPrimitive("tablePtn.attemptGrabWrite"_Stz, &vTablePtnAttemptGrabWrite,false);
-  vAddPrimitive("tablePtn.dropRead"_Stz,         &vTablePtnDropRead,        false);
-  vAddPrimitive("tablePtn.dropWrite"_Stz,        &vTablePtnDropWrite,       false);
-  vAddPrimitive("tablePtn.isLocked"_Stz,         &vTablePtnIsLocked,        false);
+  vAddStep("tablePtn.dump"_Stz,             &vTablePtnDump,            false);
+  vAddStep("tablePtn.attemptGrabRead"_Stz , &vTablePtnAttemptGrabRead, false);
+  vAddStep("tablePtn.attemptGrabWrite"_Stz, &vTablePtnAttemptGrabWrite,false);
+  vAddStep("tablePtn.dropRead"_Stz,         &vTablePtnDropRead,        false);
+  vAddStep("tablePtn.dropWrite"_Stz,        &vTablePtnDropWrite,       false);
+  vAddStep("tablePtn.isLocked"_Stz,         &vTablePtnIsLocked,        false);
 }
 
 /*----------------------------------------------------------------------------*/
