@@ -29,6 +29,7 @@ using namespace Prompt;
 #include "Prompt_help.hpp"
 #include "Prompt_jobcat.hpp"
 #include "Prompt_ls.hpp"
+#include "Prompt_opsys.hpp"
 #include "Prompt_print.hpp"
 #include "Prompt_pwd.hpp"
 #include "Prompt_question.hpp"
