@@ -48,12 +48,18 @@ AttachMap::AttachMap(void)
   m_pCarryOver = new CarryOver;
   
   // create the transient heaps
-  m_pTransientJumboHeap  = new Heap(CN_JUMBOTRANSIENT,  C_SIZE_JUMBO_OBJECT);
-  m_pTransientLargeHeap  = new Heap(CN_LARGETRANSIENT,  C_SIZE_LARGE_OBJECT);
-  m_pTransientMediumHeap = new Heap(CN_MEDIUMTRANSIENT, C_SIZE_MEDIUM_OBJECT);
-  m_pTransientSmallHeap  = new Heap(CN_SMALLTRANSIENT,  C_SIZE_SMALL_OBJECT);
+  m_xHeaps.m_pTransientJumbo  = new Heap(CN_JUMBOTRANSIENT,  C_SIZE_JUMBO_OBJECT);
+  m_xHeaps.m_pTransientLarge  = new Heap(CN_LARGETRANSIENT,  C_SIZE_LARGE_OBJECT);
+  m_xHeaps.m_pTransientMedium = new Heap(CN_MEDIUMTRANSIENT, C_SIZE_MEDIUM_OBJECT);
+  m_xHeaps.m_pTransientSmall  = new Heap(CN_SMALLTRANSIENT,  C_SIZE_SMALL_OBJECT);
+
+  m_pTransientJumboHeap  = m_xHeaps.m_pTransientJumbo;
+  m_pTransientLargeHeap  = m_xHeaps.m_pTransientLarge;
+  m_pTransientMediumHeap = m_xHeaps.m_pTransientMedium;
+  m_pTransientSmallHeap  = m_xHeaps.m_pTransientSmall;
+
   
-  // craete the persistent heaps
+  // create the persistent heaps
   m_pCarryOver->m_pPersistentJumboHeap  =
     new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
   m_pCarryOver->m_pPersistentLargeHeap  =

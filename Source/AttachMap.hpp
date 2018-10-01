@@ -42,6 +42,7 @@ namespace StorageEngine
   
     CarryOver*    m_pCarryOver;
   
+    Heaps         m_xHeaps;
     Heap*         m_pTransientJumboHeap;
     Heap*         m_pTransientMediumHeap;
     Heap*         m_pTransientLargeHeap;
@@ -54,7 +55,7 @@ namespace StorageEngine
     Word*         m_pWord;
     Word*         m_pTenants;
   
-    Plans::PlanList* m_pPlanList;
+    PlanList*     m_pPlanList;
     Atomic        m_ziThreads;
   
     Queues*       m_pQueues;
