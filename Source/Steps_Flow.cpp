@@ -219,7 +219,7 @@ void Task::vFlowRetryPoint(MP_Task mpTask)
 {
   ENTRY("vFlowRetryPoint"_Stz);
   
-  mpTask->m_pResetIP = mpTask->IP.m_pCell;
+  mpTask->m_pRetryIP = mpTask->IP.m_pCell;
   
   mpTask->m_pDataStack->vRetryPoint();
   
