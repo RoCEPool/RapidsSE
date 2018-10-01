@@ -109,7 +109,7 @@ void Task::vAddConstants(void)
                                                - gxArguments.m_iJumboSize);
   vAddConstant("args.reload"_Stz,            gxArguments.m_bReload);
   vAddConstant("args.restart"_Stz,           gxArguments.m_bRestart);
-  vAddConstant("args.sen"_Stz,               gxArguments.m_sSen);
+  vAddConstant("args.senDir"_Stz,            gxArguments.m_sSenDir);
   vAddConstant("args.slots"_Stz,             gxArguments.m_nSlots);
   vAddConstant("args.start"_Stz,             gxArguments.m_bStart);
   vAddConstant("args.status"_Stz,            gxArguments.m_bStatus);
@@ -891,7 +891,7 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": include-file"
   "  input.push"
-  "  args.sen str.prepend"
+  "  args.senDir str.prepend"
   "  input.open"
   "  docol"
   "  input.close"

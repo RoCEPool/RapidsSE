@@ -153,7 +153,7 @@ void RapidsSE::vChangeDirectory(void)
   // change working directory to commands dir
   Dir xDir;
   s256 sCurrent;
-  bool bResult = xDir.bChangeCurrent(gxArguments.m_sCommands);
+  bool bResult = xDir.bChangeCurrent(gxArguments.m_sCommandsDir);
   if (xDir.bGetCurrent(sCurrent) && gxArguments.m_bVerbose)
     vInfo("CURRENT WORKING DIRECTORY: %s\n"_Stz,sCurrent.aStr());
 }
