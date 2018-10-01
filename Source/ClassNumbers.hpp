@@ -52,6 +52,7 @@ enum eCN : u2 // Class Number
     /* 30 */ CN_CARRYOVER,
     /* 31 */ CN_COLUMN,
     /* 32 */ CN_COLUMNVEC,
+    /*    */ CN_COMPILER,
     /*    */ CN_COMMANDPROCESSOR,
   
     /* 33 */ CN_DIC,
@@ -296,6 +297,7 @@ enum eCN : u2 // Class Number
     /* 30 */ "CARRYOVER"_Stz,          // CN_CARRYOVER
     /* 31 */ "COLUMN"_Stz,             // CN_COLUMN
     /* 32 */ "COLUMNVEC"_Stz,          // CN_COLUMNVEC
+    /*    */ "COMPILER"_Stz,           // CN_COMPILER
     /*    */ "COMMANDPROCESSOR"_Stz,   // CN_COMMANDPROCESSOR
     
     /* 33 */ "DIC"_Stz,                // CN_DIC

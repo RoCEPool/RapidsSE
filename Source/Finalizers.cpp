@@ -48,6 +48,7 @@ pFINALIZE *gpFinalize[]
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
   /* 31 */ &Finalize::vUndefined,         // CN_COLUMN
   /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
+  /*    */ &Finalize::vUndefined,         // CN_COMPILER
   /*    */ &Finalize::vUndefined,         // CN_COMMANDPROCESSOR
   
   /* 33 */ &Dic::vFinalize,               // CN_DIC
