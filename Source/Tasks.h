@@ -25,6 +25,8 @@ using namespace Tasks;
 
 //-----------------------------------------------------------------------------
 
+#include "Compiler.hpp"
+
 #include "StepAccum.hpp"
 #include "StepArray.hpp"
 

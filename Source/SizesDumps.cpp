@@ -305,7 +305,7 @@ i8 giClassSize[]
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
-  /* 32 */ 0,          // CN_COMPILER
+  /* 32 */ sizeof(Compiler),           // CN_COMPILER
   /* 32 */ sizeof(CommandProcessor),   // CN_COMMANDPROCESSOR
   
   /* 33 */ sizeof(Dic),                // CN_DIC
