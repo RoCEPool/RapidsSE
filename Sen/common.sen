@@ -5,7 +5,6 @@
 "-common.sen" .verbose
 
 "common_file.sen" include
-"common_lock.sen" include
 
 "common_trace.sen" include
 
