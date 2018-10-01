@@ -38,8 +38,6 @@ namespace Interface
     Atomic m_ziFetchTasks;
     bool   m_bSeitfExiting;
 
-    Atomic m_ziAcksRemaining;
-
     i8     m_iRowsInvalid;
     i8     m_iRowsValid;
   
@@ -78,10 +76,6 @@ namespace Interface
     void   vLastBuffers(i8 nLastBuffer);
   
     DicStack* pPathStack(void);
-  
-    void   vSetAcksRemaining(i8 iAcksRemaining);
-    i8     iGetAcksRemaining(void);
-    void   vDecAcksRemaining(void);
   
     void   vCreateRowOnce(void);
     bool   bRowSeen(Id xRowId);

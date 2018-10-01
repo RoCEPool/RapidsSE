@@ -190,8 +190,6 @@ SEitf::SEitf(i8 iPartition)
   
   m_ziFetchTasks      = 0;
   m_bSeitfExiting     = false;
-
-  m_ziAcksRemaining = 0;
     
   for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
     m_pWorkingBuffer[i_Partition] = nullptr;
@@ -216,8 +214,6 @@ SEitf::SEitf(i8 iPartition)
 SEitf::~SEitf(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  RASSERT(*m_ziAcksRemaining == 0);
   
   if (m_pRowOnce)
     delete m_pRowOnce;
@@ -274,17 +270,6 @@ void SEitf::vCreateRowOnce(void)
   ASSERT(! m_pRowOnce);
   
   m_pRowOnce = new RowOnce;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dec acks remaining                                                         */
-/*----------------------------------------------------------------------------*/
-void SEitf::vDecAcksRemaining(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  --m_ziAcksRemaining;
-  //vTrace("acksRemaining %lld\n"_Stz, *m_ziAcksRemaining);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -502,18 +487,6 @@ bool SEitf::bExtractDateFormat(Stz* dateFormat)
     return false;
   */
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get acks remaining                                                         */
-/*----------------------------------------------------------------------------*/
-i8 SEitf::iGetAcksRemaining(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  i8 iAcksRemaining = *m_ziAcksRemaining;
-  
-  return iAcksRemaining;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -885,17 +858,6 @@ i8 SEitf::iSlot(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   return TablePtn::iPartitionToSlot(m_iPartition);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set acks remaining                                                         */
-/*----------------------------------------------------------------------------*/
-void SEitf::vSetAcksRemaining(i8 iAcksRemaining)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  RASSERT(*m_ziAcksRemaining == 0);
-  m_ziAcksRemaining = iAcksRemaining;
 }
 
 /*----------------------------------------------------------------------------*/
