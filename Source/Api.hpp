@@ -25,10 +25,9 @@ extern "C" eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTrac
 extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel);
 extern "C" bool RapidsSE_SEitfInvalid(int eError, i8 iTraceLevel);
 extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel);
+
 extern "C" eEC RapidsSE_SpawnPrompt(i8 iTraceLevel);
 
-
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf,TokenVec& xTokenVec, Stz** ppResponse);
 Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob);
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf);
 

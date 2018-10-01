@@ -143,6 +143,41 @@ eEC RapidsSE_EndCommand(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
+                            Stz* sCatalogName, Stz* sSchemaName,
+                            bool bPostJob, void** ppJob, i8 iTraceLevel)
+{
+  Stz* aApiCall = "RapidsSE_ExecuteCommand"_Stz;
+  
+  // trace entry
+  TRACE_ENTRY_P1(aCommand);
+  
+  //vTrace("Executing command: %s\n"_Stz, aCommand);
+  
+  // set the catalog and schema in the SEitf
+  pSEitf->vInit(sCatalogName, sSchemaName);
+  
+  Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSEitf, bPostJob);
+  //vTrace("pJob = %p\n"_Stz, pJob);
+  *ppJob = pJob;
+  pSEitf->m_pJob = pJob;
+  
+  if (pJob->m_bHasError) {
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
+        vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
+        pSEitf->m_sErrorMsg = aEC[pJob->m_xNode[i_Node].m_eErrorCode];
+        return pJob->m_xNode[i_Node].m_eErrorCode;
+      }
+    }
+    ASSERT(0);
+  }
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJobPtr, void** ppFetchBuffer, i8 iTraceLevel)
@@ -219,54 +254,6 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJobPtr, void** ppFetchBuffer,
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch next buffer                                                          */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, void** ppValidRows, void** ppInvalidRows, i8 iTraceLevel)
-{
-  eEC eResult;
-  
-  Stz* aApiCall = "RapidsSE_LoadResult"_Stz;
-  
-  try {
-    // trace entry
-    TRACE_ENTRY_P0();
-    
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
-    
-    // clear the last error
-    CLEAR_LASTERROR();
-    
-    // validate the reference pointers
-    VALIDATE_REFPOINTER("b"_Stz, ppValidRows);
-    VALIDATE_REFPOINTER("b"_Stz, ppInvalidRows);
-    
-    Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
-    vTrace("L %lld IN %lld\n"_Stz, *pJob_LoadTable->m_ziValidRows, *pJob_LoadTable->m_ziInvalidRows);
-    
-    pSEitf->m_iRowsValid = *pJob_LoadTable->m_ziValidRows;
-    pSEitf->m_iRowsInvalid = *pJob_LoadTable->m_ziInvalidRows;
-    
-    *ppValidRows = &pSEitf->m_iRowsValid;
-    *ppInvalidRows = &pSEitf->m_iRowsInvalid;
-    
-    // trace exit
-    TRACE_EXIT("ea"_Stz);
-    
-    return EC_NONE;
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
@@ -305,128 +292,61 @@ eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, void** ppError, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return rapidsSE engine's version                                           */
+/* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-/*
-eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion, i8 iTraceLevel)
+eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
 {
-  eEC eResult;
-  eEC eResponse;
+  Stz* aApiCall = "RapidsSE_GetRow"_Stz;
   
-  Stz* aApiCall = "RapidsSE_GetEngineVersion"_Stz;
+  // trace entry
+  TRACE_ENTRY_P0();
   
-  try {
-    // trace entry
-    TRACE_ENTRY_P0();
+  Job* pJob = (Job*)pJobPtr;
+  
+  TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_sResponse);
+  
+  i8 iRows = -1;
+  i8 iToken = 0;
+  
+  while (iRows != iRow) {
     
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
+    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("row:"_Stz));
+    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("("_Stz));
     
-    // clear the last error
-    CLEAR_LASTERROR();
+    pSEitf->m_sResponse.vCopy(""_Stz);
+    while ( ! pTknVec->pGet(iToken)->aText()->bSame(")"_Stz)) {
+      pSEitf->m_sResponse.vConcat(pTknVec->pGet(iToken++)->aText());
+    }
     
-    // valide reference pointer
-    VALIDATE_REFPOINTER("b"_Stz, ppVersion);
-    
-    // get the SE version
-    eResult = eExecuteRequest(pSEitf, "version"_Stz);
-    CHECK_RESULT("c"_Stz);
-    CHECK_RESPONSE("d"_Stz);
-    
-    // return SE version
-    *ppVersion = pSEitf->m_sResponse.aChar();
-    
-    TRACE_EXIT("ea"_Stz);
-    
-    return EC_NONE;
-    
+    //vTrace("row found %s\n"_Stz, pSEitf->m_sResponse.aChar());
+    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame(")"_Stz));
+    iRows++;
   }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
+  *ppRow = pSEitf->m_sResponse.aChar();
+  
+  pTknVec->vSetAllTokens();
+  delete pTknVec;
+  
+  return EC_NONE;
 }
-*/
+
 /*----------------------------------------------------------------------------*/
-/* hash the row to a partition                                                */
+/* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-/*
-eEC RapidsSE_HashRowPartition(SEitf* pSEitf, Stz* pRow, void** ppPartition, i8 iTraceLevel)
+eEC RapidsSE_GetRowCount(SEitf* pSEitf, void* pJobPtr, void** ppRowCount, i8 iTraceLevel)
 {
-  eEC eResult;
-  eEC eResponse;
+  Stz* aApiCall = "RapidsSE_GetRowCount"_Stz;
   
-  Stz* aApiCall = "RapidsSE_HashRowPartition"_Stz;
+  // trace entry
+  TRACE_ENTRY_P0();
   
-  try {
-    // trace entry
-    TRACE_ENTRY_P0();
-    
-    //TRACE_ROW();
-    
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
-    
-    // clear the last error
-    CLEAR_LASTERROR();
-
-    // valide reference pointer
-    VALIDATE_REFPOINTER("b"_Stz, ppPartition);
-
-    // validate parameters
-    VALIDATE_PARAM("c"_Stz, pRow);
-    
-    // validate table
-    VALIDATE_TABLE("d"_Stz);
-    pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow);
-
-    *ppPartition = &pSEitf->m_iRowPartition;
-    
-    //TRACE_RESULT(*ppPartition);
-    
-    // trace exit
-    TRACE_EXIT("ea"_Stz);
-
-    return EC_NONE;
-    
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
+  Job* pJob = (Job*)pJobPtr;
+  
+  *ppRowCount = &(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  return EC_NONE;
 }
-*/
-/*----------------------------------------------------------------------------*/
-/* hash the integer value to a node                                           */
-/*----------------------------------------------------------------------------*/
-/*
-i8 RapidsSE_HashIntegerNode(i8 iInt)
-{
-  // get no of nodes in the grid
-  i8 iNodes = gpAttachMap->m_pGrid->nNodes();
-  
-  // get the hash of the integer
-  i8 iHash = XXH32(&iInt,sizeof(i8),0);
-  
-  // calculate the partition this integer hashes to
-  i8 iPartition = iHash % (gpAttachMap->m_pGrid->m_nSlots * iNodes);
 
-  // now figure out the node this partition belongs to
-  i8 iNode = iPartition % iNodes;
-  
-  return iNode;
-}
-*/
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
@@ -557,198 +477,41 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert the given row into a table in SEitf partition                       */
+/* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRowPartition(SEitf* pSEitf, Stz* pRow, i8 iTraceLevel)
+eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, void** ppValidRows, void** ppInvalidRows, i8 iTraceLevel)
 {
-  
   eEC eResult;
-  eEC eResponse;
   
-  Stz* aApiCall = "RapidsSE_InsertRowPartition"_Stz;
+  Stz* aApiCall = "RapidsSE_LoadResult"_Stz;
   
   try {
-    
     // trace entry
     TRACE_ENTRY_P0();
     
-    //TRACE_ROW();
-    
     // validate the SEitf
     VALIDATE_SEITF("a"_Stz);
     
     // clear the last error
     CLEAR_LASTERROR();
     
-    // validate parameter
-    VALIDATE_PARAM("b"_Stz, pRow);
+    // validate the reference pointers
+    VALIDATE_REFPOINTER("b"_Stz, ppValidRows);
+    VALIDATE_REFPOINTER("b"_Stz, ppInvalidRows);
     
-    // validate table
-    VALIDATE_TABLE("c"_Stz);
+    Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
+    vTrace("L %lld IN %lld\n"_Stz, *pJob_LoadTable->m_ziValidRows, *pJob_LoadTable->m_ziInvalidRows);
     
-    s17KB sRecord;
-    i8 iRowLength;
-    bool bBlankLine;
+    pSEitf->m_iRowsValid = *pJob_LoadTable->m_ziValidRows;
+    pSEitf->m_iRowsInvalid = *pJob_LoadTable->m_ziInvalidRows;
     
-    i8 iRawDataLength = StrLib::iSize(pRow->aChar());
-    
-    if (iRawDataLength > C_16KB) {
-      pSEitf->vSetLastError(EC_MAX_ROW_LENGTH);
-      TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
-      return pSEitf->m_eErrorCode;
-    }
-
-    // format the record into row format
-    bool bValid = Row::bFormatRow(pSEitf->m_pCurrentTable->pColumnVec(),
-                                  &pSEitf->m_xFormatters,
-                                  pRow, iRawDataLength,
-                                  sRecord, iRowLength, bBlankLine,
-                                  true /* allowNonPrintable */);
-    if (! bValid) {
-      pSEitf->vSetLastError(EC_INVALID_VALUE);
-      TRACE_ERROR("d"_Stz, pSEitf->m_eErrorCode);
-      return pSEitf->m_eErrorCode;
-    }
-    
-    // get the partition this row hashes to
-    i8 iRowPartition = pSEitf->pCurrentTable()->iRowPartition(sRecord);
-    
-    //vTrace("%p(%lld) got row %s\n"_Stz,  
-    //       pSEitf, pSEitf ? pSEitf->iPartition() : -1, pRow);
-    
-    // is this row for this seitf partition ?
-    if (pSEitf->m_iPartition == iRowPartition) {
-      
-      //RowData::vShow(s, pSEitf->m_pCurrentTable->pColumnVec());
-      TRACE_INSERT("e"_Stz, pRow);
-      
-      // insert the row in this partition
-      bool bResult = pSEitf->bInsertRow(sRecord, iRowLength);
-      
-      if (!bResult) {
-        pSEitf->vSetLastError(pSEitf->m_eErrorCode);
-        TRACE_ERROR("f"_Stz, pSEitf->m_eErrorCode);
-        return pSEitf->m_eErrorCode;
-      }
-      
-    }
-    
-    // validate table
-    VALIDATE_TABLE("f"_Stz);
-    
-    // trace exit
-    TRACE_EXIT("ea"_Stz);
-    
-    return EC_NONE;
-    
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* load data from file into the table                                         */
-/*----------------------------------------------------------------------------*/
-/*
-eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
-                      Stz* pRecordTerminator, Stz* pRecordEnds, Stz* pFieldDelimiter,
-                      Stz* pEnclosedByLeading, Stz* pEnclosedByTrailing,
-                      Stz* pEscapeChar, Stz* pDateFormat,
-                      void** ppValidRows, void** ppInvalidRows, i8 iTraceLevel)
-{
-  
-  eEC eResult;
-  
-  Stz* aApiCall = "RapidsSE_LoadData"_Stz;
-  
-  try {
-    
-    // trace entry
-    TRACE_ENTRY_P2(pTable, pFilePath);
-    
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
-    
-    // clear the last error
-    CLEAR_LASTERROR();
-    
-    // validate parameters
-    VALIDATE_PARAM("b"_Stz, pTable);
-    VALIDATE_PARAM("c"_Stz, pFilePath);
-    
-//    vTrace("rt = %s\n"_Stz, pRecordTerminator->aChar());
-//    vTrace("re = %s\n"_Stz, pRecordEnds);
-//    vTrace("fs = %s\n"_Stz, pFieldSeparator->aChar());
-//    vTrace("ebl = %s\n"_Stz, pEnclosedByLeading->aChar());
-//    vTrace("ebt = %s\n"_Stz, pEnclosedByLeading->aChar());
-//    vTrace("ec = %s\n"_Stz, pEscapeChar->aChar());
-    
-    // set the formatters
-    pSEitf->m_xFormatters.m_cRecordTerminator = *(pRecordTerminator->aChar());
-    
-    // extract the record ends
-    if (pRecordEnds->iLength() > 0) {
-      if (pRecordEnds->bSame("\\n"_Stz)) {
-        pSEitf->m_xFormatters.m_eRecordEnds = RE_NL;
-      }
-      else if (pRecordEnds->bSame("\\r"_Stz)) {
-        pSEitf->m_xFormatters.m_eRecordEnds = RE_CR;
-      }
-      else if (pRecordEnds->bSame("\\r\\n"_Stz)) {
-        pSEitf->m_xFormatters.m_eRecordEnds = RE_CRNL;
-      }
-      else {
-        pSEitf->vSetLastError(EC_INVALID_COMMAND);
-        TRACE_ERROR("d",EC_INVALID_COMMAND);
-        return EC_INVALID_COMMAND;
-      }
-    }
-    
-    // field delimiter
-    pSEitf->m_xFormatters.m_cFieldDelimiter   = *(pFieldDelimiter->aChar());
-    
-    if (pFieldDelimiter->bEqual("\\t"_Stz))
-      pSEitf->m_xFormatters.m_cFieldDelimiter   = '\t';
-    
-    pSEitf->m_xFormatters.m_cEnclosedBy_Leading  = *(pEnclosedByLeading->aChar());
-    pSEitf->m_xFormatters.m_cEnclosedBy_Trailing = *(pEnclosedByTrailing->aChar());
-    
-    pSEitf->m_xFormatters.m_cEscapeChar          = *(pEscapeChar->aChar());
-    
-    // validate and extract the date format componenets
-    if ( pDateFormat->iLength() > 0) {
-
-      if ( ! pSEitf->bExtractDateFormat(pDateFormat) ) {
-        pSEitf->vSetLastError(EC_INVALID_COMMAND);
-        TRACE_ERROR("e",EC_INVALID_COMMAND);
-        return EC_INVALID_COMMAND;
-      }
-    }
-    
-    // add a column
-    eResult = eExecuteRequest(pSEitf, "ld"_Stz,
-                              pTable,
-                              pFilePath);
-    
-    CHECK_RESULT("f"_Stz);
-    CHECK_RESPONSE("g"_Stz);
-    
-    // return the vlaid/invalid rows
-    *ppInvalidRows = &pSEitf->m_iRowsInvalid;
     *ppValidRows = &pSEitf->m_iRowsValid;
+    *ppInvalidRows = &pSEitf->m_iRowsInvalid;
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
     
     return EC_NONE;
-    
   }
   catch (Error* pError) {
     RapidsSE::vErrorHandler(pError);
@@ -760,7 +523,7 @@ eEC RapidsSE_LoadData(SEitf* pSEitf, Stz* pTable, Stz* pFilePath,
     return EC_SE_UNKNOWN_ERROR;
   }
 }
-*/
+
 /*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
@@ -791,43 +554,6 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
-    
-    return EC_NONE;
-    
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* launch a prompt job                                                        */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_SpawnPrompt(i8 iTraceLevel)
-{
-  Stz*   aApiCall = "RapidsSE_SpawnPrompt"_Stz;
-  SEitf* pSEitf = nullptr;
-  s256   sRequest;
-
-  try {
-    
-    eEC eError = RapidsSE_SEitfNew((void**)&pSEitf, "rapidsse"_Stz, "public"_Stz, 0, 0);
-    ASSERT(EC_NONE == eError);
-    
-    JobClass* pJobClass_Prompt = JobClass::pFind(CN_JOB_PROMPT);
-    
-    Job_Prompt* pJob_Prompt = static_cast<Job_Prompt*>(pJobClass_Prompt->pNewJob(nullptr));
-    
-    pJob_Prompt->m_pSEitf = pSEitf;
-    
-    bool b = RapidsSE_bSpawnJob(pJob_Prompt,SS_SEED_RUN,pSEitf);
     
     return EC_NONE;
     
@@ -987,91 +713,45 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iP
 }
 
 /*----------------------------------------------------------------------------*/
+/* launch a prompt job                                                        */
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get response                                                               */
-/*----------------------------------------------------------------------------*/
-eEC eGetResponse(SEitf* pSEitf)
+eEC RapidsSE_SpawnPrompt(i8 iTraceLevel)
 {
-  // get response
-  eEC eError = pSEitf->eGetResponse();
-  //vTrace("rsp : %s %lld\n"_Stz, pSEitf->m_sResponse.aChar(), eError);
+  Stz*   aApiCall = "RapidsSE_SpawnPrompt"_Stz;
+  SEitf* pSEitf = nullptr;
+  s256   sRequest;
   
-  return eError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
-bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
-{
-  
-  // clear the last error
-  if (pSEitf)
-    pSEitf->vClearLastError();
-
-  //----------------------------------------------------------------------------
-  // Before appending request for se, ensure that se is running
-  // get the se pid from the attachmap
-  i8 iPid = gpAttachMap->m_iPid;
-  if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    if (pSEitf)
-      vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
-    vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
-    return false;
+  try {
+    
+    eEC eError = RapidsSE_SEitfNew((void**)&pSEitf, "rapidsse"_Stz, "public"_Stz, 0, 0);
+    ASSERT(EC_NONE == eError);
+    
+    JobClass* pJobClass_Prompt = JobClass::pFind(CN_JOB_PROMPT);
+    
+    Job_Prompt* pJob_Prompt = static_cast<Job_Prompt*>(pJobClass_Prompt->pNewJob(nullptr));
+    
+    pJob_Prompt->m_pSEitf = pSEitf;
+    
+    bool b = RapidsSE_bSpawnJob(pJob_Prompt,SS_SEED_RUN,pSEitf);
+    
+    return EC_NONE;
+    
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
   }
   
-  //----------------------------------------------------------------------------
-  
-  // form the word to execute for the request
-  pJob->vSeed(eSeed);
-  
-  Task* pNewTask = new Task(pJob);
-  
-  pNewTask->vSEitf(pSEitf);
-  
-  Handlers::vSpawnedTaskHandler(pNewTask);
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
-                            Stz* sCatalogName, Stz* sSchemaName,
-                            bool bPostJob, void** ppJob, i8 iTraceLevel)
-{
-  Stz* aApiCall = "RapidsSE_ExecuteCommand"_Stz;
-  
-  // trace entry
-  TRACE_ENTRY_P1(aCommand);
-  
-  //vTrace("Executing command: %s\n"_Stz, aCommand);
-  
-  // set the catalog and schema in the SEitf
-  pSEitf->vInit(sCatalogName, sSchemaName);
-  
-  Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSEitf, bPostJob);
-  //vTrace("pJob = %p\n"_Stz, pJob);
-  *ppJob = pJob;
-  pSEitf->m_pJob = pJob;
-  
-  if (pJob->m_bHasError) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
-        vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
-        pSEitf->m_sErrorMsg = aEC[pJob->m_xNode[i_Node].m_eErrorCode];
-        return pJob->m_xNode[i_Node].m_eErrorCode;
-      }
-    }
-    ASSERT(0);
-  }
-  return EC_NONE;
-}
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
@@ -1113,59 +793,39 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* execute command                                                            */
+/* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowCount(SEitf* pSEitf, void* pJobPtr, void** ppRowCount, i8 iTraceLevel)
+bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
 {
-  Stz* aApiCall = "RapidsSE_GetRowCount"_Stz;
   
-  // trace entry
-  TRACE_ENTRY_P0();
+  // clear the last error
+  if (pSEitf)
+    pSEitf->vClearLastError();
   
-  Job* pJob = (Job*)pJobPtr;
-  
-  *ppRowCount = &(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
-  //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* execute command                                                            */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
-{
-  Stz* aApiCall = "RapidsSE_GetRow"_Stz;
-  
-  // trace entry
-  TRACE_ENTRY_P0();
-  
-  Job* pJob = (Job*)pJobPtr;
-  
-  TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_sResponse);
-  
-  i8 iRows = -1;
-  i8 iToken = 0;
-  
-  while (iRows != iRow) {
-  
-    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("row:"_Stz));
-    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("("_Stz));
-    
-    pSEitf->m_sResponse.vCopy(""_Stz);
-    while ( ! pTknVec->pGet(iToken)->aText()->bSame(")"_Stz)) {
-      pSEitf->m_sResponse.vConcat(pTknVec->pGet(iToken++)->aText());
-    }
-    
-    //vTrace("row found %s\n"_Stz, pSEitf->m_sResponse.aChar());
-    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame(")"_Stz));
-    iRows++;
+  //----------------------------------------------------------------------------
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = gpAttachMap->m_iPid;
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    if (pSEitf)
+      vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    return false;
   }
-  *ppRow = pSEitf->m_sResponse.aChar();
   
-  pTknVec->vSetAllTokens();
-  delete pTknVec;
+  //----------------------------------------------------------------------------
   
-  return EC_NONE;
+  // form the word to execute for the request
+  pJob->vSeed(eSeed);
+  
+  Task* pNewTask = new Task(pJob);
+  
+  pNewTask->vSEitf(pSEitf);
+  
+  Handlers::vSpawnedTaskHandler(pNewTask);
+  
+  return true;
 }
 
 /*============================================================================*/
