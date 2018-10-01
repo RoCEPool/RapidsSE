@@ -72,17 +72,6 @@ namespace Interface
     void vCommitTx(void);
     void vEndTx(void);
     
-    bool bPing(TokenVec& xTokenVec, i8 iReqNo);
- 
-    bool bTxBegin(TokenVec& xTokenVec, i8 iReqNo);
-    bool bTxCommit(TokenVec& xTokenVec, i8 iReqNo);
-    bool bTxDumpAll(TokenVec& xTokenVec, i8 iReqNo);
-    bool bTxEnd(TokenVec& xTokenVec, i8 iReqNo);
-    bool bTxRollback(TokenVec& xTokenVec, i8 iReqNo);
-  
-    //--------------------------------------------------------------------------
-    bool bAppendRequest(StrVal& sRequest);
-    
     Footer* aFooter(void);
   };
   
