@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* job_Boot.sen -- compile the dictionary                                     */
+/*============================================================================*/
+
+"job_Boot.sen" .verbose
+
+"core.sen" include
+"common.sen" include
+"tasks.sen" include
+"gridModel.sen" include
+"dbObjects.sen" include
+"operators.sen" include
+"planners.sen" include
+"jobModel.sen" include
+"testing.sen" include
+
+// last
+"se.sen" include
+
+assert::stack_0
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

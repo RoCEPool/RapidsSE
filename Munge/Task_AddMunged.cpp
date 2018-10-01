@@ -153,15 +153,15 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of compile.sen
+  // munge of job_Boot.sen
   sDefinition =
     "\""
-    "\\\"munged compile.sen \\\" .verbose \n"
+    "\\\"munged job_Boot.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* compile.sen -- compile the dictionary                                      */\n"
+    "/* job_Boot.sen -- compile the dictionary                                      */\n"
     "/*============================================================================*/\n"
     "\n"
-    "\\\"compile.sen\\\" .verbose\n"
+    "\\\"job_Boot.sen\\\" .verbose\n"
     "\n"
     "//\n"
     "// step 1: compile all the words\n"
@@ -194,7 +194,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT compile.sen"_Stz
+  " CONSTANT job_Boot.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);

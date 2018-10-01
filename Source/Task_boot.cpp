@@ -933,18 +933,18 @@ void Task::vAddRoutines(void)
 #ifdef __APPLE__
   sDefinition =
   ": boot_run"
-  "   \"boot_run\" .verbose"
+  "  \"boot_run\" .verbose"
   "  args.munged if \"compiling munged dictionary...\" . then"
-  "  \"compile.sen\" include"
-  "   \"boot_run exit\" .verbose"
+  "  \"job_Boot.sen\" include"
+  "  \"boot_run exit\" .verbose"
   "  ::task_exit"
   "  ;"_Stz;
 #else
   sDefinition =
   ": boot_run"
-  "   \"boot_run\" .verbose"
-  "  \"compile.sen\" include"
-  "   \"boot_run exit\" .verbose"
+  "  \"boot_run\" .verbose"
+  "  \"job_Boot.sen\" include"
+  "  \"boot_run exit\" .verbose"
   "  ::task_exit"
   "  ;"_Stz;
 #endif
