@@ -187,10 +187,6 @@ SEitf::SEitf(i8 iPartition)
   m_iRowsValid           = 0;
   
   m_bSeitfExiting     = false;
-    
-  for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
-    m_pWorkingBuffer[i_Partition] = nullptr;
-  }
   
   m_pRowOnce = nullptr;
   

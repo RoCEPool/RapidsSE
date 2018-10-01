@@ -36,8 +36,6 @@ namespace Interface
 
     i8     m_iRowsInvalid;
     i8     m_iRowsValid;
-  
-    WorkingBuffer* m_pWorkingBuffer[C_SLOTS_PER_NODE]; // working row buffers
     
     RowOnce* m_pRowOnce; // has row been seen before?
   
