@@ -52,12 +52,6 @@ AttachMap::AttachMap(void)
   m_xHeaps.m_pTransientLarge  = new Heap(CN_LARGETRANSIENT,  C_SIZE_LARGE_OBJECT);
   m_xHeaps.m_pTransientMedium = new Heap(CN_MEDIUMTRANSIENT, C_SIZE_MEDIUM_OBJECT);
   m_xHeaps.m_pTransientSmall  = new Heap(CN_SMALLTRANSIENT,  C_SIZE_SMALL_OBJECT);
-
-  m_pTransientJumboHeap  = m_xHeaps.m_pTransientJumbo;
-  m_pTransientLargeHeap  = m_xHeaps.m_pTransientLarge;
-  m_pTransientMediumHeap = m_xHeaps.m_pTransientMedium;
-  m_pTransientSmallHeap  = m_xHeaps.m_pTransientSmall;
-
   
   // create the persistent heaps
   m_pCarryOver->m_pPersistentJumboHeap  =
@@ -71,7 +65,7 @@ AttachMap::AttachMap(void)
 
   _checkInitialised_(CN_ATTACHMAP);
   
-  m_pTransientJumboHeap->vFixedHeap(true);
+  m_xHeaps.m_pTransientJumbo->vFixedHeap(true);
   
   Buffer* pJumbo = nullptr;
   while ( (pJumbo = gpBufferPool->pNextJumbo(pJumbo)) ) {
@@ -79,7 +73,7 @@ AttachMap::AttachMap(void)
     pJumbo->vSetMagic();
     pJumbo->vSetClass(CN_FREECHUNK);
     
-    m_pTransientJumboHeap->vAddFree((FreeChunk*)pJumbo);
+    m_xHeaps.m_pTransientJumbo->vAddFree((FreeChunk*)pJumbo);
   }
 
   
@@ -129,10 +123,10 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("\n"_Stz);
   vInfo("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
-  vInfo("TransientJumboHeap : %p \n"_Stz, gpAttachMap->m_pTransientJumboHeap);
-  vInfo("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_pTransientMediumHeap);
-  vInfo("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_pTransientLargeHeap);
-  vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_pTransientSmallHeap);
+  vInfo("TransientJumboHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.m_pTransientJumbo);
+  vInfo("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeaps.m_pTransientMedium);
+  vInfo("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.m_pTransientLarge);
+  vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.m_pTransientSmall);
   
   vInfo("\n"_Stz);
   vInfo("Total Nodes      : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
@@ -198,10 +192,10 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
   
   m_iEpoch      = 0;
   
-  ASSERT(m_pTransientJumboHeap);
-  ASSERT(m_pTransientMediumHeap);
-  ASSERT(m_pTransientLargeHeap);
-  ASSERT(m_pTransientSmallHeap);
+  ASSERT(m_xHeaps.m_pTransientJumbo);
+  ASSERT(m_xHeaps.m_pTransientMedium);
+  ASSERT(m_xHeaps.m_pTransientLarge);
+  ASSERT(m_xHeaps.m_pTransientSmall);
   
   ASSERT(m_pCarryOver->m_pPersistentJumboHeap);
   ASSERT(m_pCarryOver->m_pPersistentMediumHeap);

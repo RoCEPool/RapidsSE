@@ -43,10 +43,6 @@ namespace StorageEngine
     CarryOver*    m_pCarryOver;
   
     Heaps         m_xHeaps;
-    Heap*         m_pTransientJumboHeap;
-    Heap*         m_pTransientMediumHeap;
-    Heap*         m_pTransientLargeHeap;
-    Heap*         m_pTransientSmallHeap;
   
     Dic           m_xMainDic;
     TxSet*        m_pTxSet;
