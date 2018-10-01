@@ -138,9 +138,6 @@ namespace Interface
     bool bTxRollback(TokenVec& xTokenVec, i8 iReqNo);
   
     //--------------------------------------------------------------------------
-    bool bExtractDateFormat(Stz* dateFormat);
-    
-    //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
 
     eEC  eGetResponse(void);
