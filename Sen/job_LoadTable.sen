@@ -169,6 +169,7 @@
   //pathDump
 
   // there should be a table folder
+
   sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> exit then
   //sTableNm "In table folder: %v" fmt.print
 
@@ -177,8 +178,7 @@
   //pathDump
 
   // check it is a table
-  sTableNm checkIsTable not if pJob_LoadTable <ERROR_JOB> exit then
-  drop
+  sTableNm checkIsTableR35 not if popTable pJob_LoadTable <ERROR_JOB> exit then
 
   // pop table dictionary
   popTable

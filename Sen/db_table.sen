@@ -128,40 +128,6 @@
 /*----------------------------------------------------------------------------*/
 /* check given name is a table                                                */
 /*----------------------------------------------------------------------------*/
-: checkIsTable ( "<tableNm>" -- "<tableNm>" true | errorCode false )
-
-  dup ( "<tableNm>" "<tableNm>" )
-
-  find ( "<tableNm>" ^w:table )
-
-  dup ( "<tableNm>" ^w:table ^w:table )
-  not ( "<tableNm>" ^w:table bool )
-  if
-    drop ( "<tableNm>" )
-    drop ( )
-    EC_NO_SUCH_TABLE false ( errorCode false )
-  exit
-  then
-
-  dup ( "<tableNm>" ^w:table ^w:table )
-
-  word.kind@ ( "<tableNm>" ^w:table ^word )
-  tick table ( "<tableNm>" ^w:table ^word ^word )
-  eql ( "<tableNm>" ^w:table bool )
-  if
-    drop ( "<tableNm>" )
-    true ( "<tableNm>" true )
-    exit
-  then
-
-  drop ( "<tableNm>" )
-  drop ( )
-  EC_NOT_A_TABLE false ( errorCode false )
-;
-
-/*----------------------------------------------------------------------------*/
-/* check given name is a table                                                */
-/*----------------------------------------------------------------------------*/
 : checkIsTableR35 ( "<tableNm>" -- true | errorCode false )
 
   find ( "<tableNm>" ^w:table )
