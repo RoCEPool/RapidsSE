@@ -15,23 +15,23 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_SEitf(void)
 {
-  vAddStep("seitf.commandProcessor"_Stz, &vSEitfCommandProcessor, false);
-  vAddStep("seitf.dicStack"_Stz,         &vSEitfDicStack,         false);
-  vAddStep("seitf.display@"_Stz,         &vSEitfDisplayFetch,     false);
-  vAddStep("seitf.display!"_Stz,         &vSEitfDisplayStore,     false);
-  vAddStep("seitf.dump"_Stz,             &vSEitfDump,             false);
-  vAddStep("seitf.isExiting"_Stz,        &vSEitfIsExiting,        false);
-  vAddStep("seitf.lastBuffers@"_Stz,     &vSEitfLastBuffersFetch, false);
-  vAddStep("seitf.lastBuffers!"_Stz,     &vSEitfLastBuffersStore, false);
-  vAddStep("seitf.pid"_Stz,              &vSEitfPid,              false);
-  vAddStep("seitf.rowsInvalid!"_Stz,     &vSEitfRowsInvalidStore, false);
-  vAddStep("seitf.rowsValid!"_Stz,       &vSEitfRowsValidStore,   false);
-  vAddStep("seitf.slot@"_Stz,            &vSEitfSlotFetch,        false);
-  vAddStep("seitf.table@"_Stz,           &vSEitfTableFetch,       false);
-  vAddStep("seitf.tableRef"_Stz,         &vSEitfTableRef,         false);
-  vAddStep("seitf.tableDeref"_Stz,       &vSEitfTableDeref,       false);
-  vAddStep("seitf.tx@"_Stz,              &vSEitfTxFetch,          false);
-  vAddStep("seitf.tx!"_Stz,              &vSEitfTxStore,          false);
+  vAddStep("seitf.commandProcessor"_Stz, &Task::vSEitfCommandProcessor, false);
+  vAddStep("seitf.dicStack"_Stz,         &Task::vSEitfDicStack,         false);
+  vAddStep("seitf.display@"_Stz,         &Task::vSEitfDisplayFetch,     false);
+  vAddStep("seitf.display!"_Stz,         &Task::vSEitfDisplayStore,     false);
+  vAddStep("seitf.dump"_Stz,             &Task::vSEitfDump,             false);
+  vAddStep("seitf.isExiting"_Stz,        &Task::vSEitfIsExiting,        false);
+  vAddStep("seitf.lastBuffers@"_Stz,     &Task::vSEitfLastBuffersFetch, false);
+  vAddStep("seitf.lastBuffers!"_Stz,     &Task::vSEitfLastBuffersStore, false);
+  vAddStep("seitf.pid"_Stz,              &Task::vSEitfPid,              false);
+  vAddStep("seitf.rowsInvalid!"_Stz,     &Task::vSEitfRowsInvalidStore, false);
+  vAddStep("seitf.rowsValid!"_Stz,       &Task::vSEitfRowsValidStore,   false);
+  vAddStep("seitf.slot@"_Stz,            &Task::vSEitfSlotFetch,        false);
+  vAddStep("seitf.table@"_Stz,           &Task::vSEitfTableFetch,       false);
+  vAddStep("seitf.tableRef"_Stz,         &Task::vSEitfTableRef,         false);
+  vAddStep("seitf.tableDeref"_Stz,       &Task::vSEitfTableDeref,       false);
+  vAddStep("seitf.tx@"_Stz,              &Task::vSEitfTxFetch,          false);
+  vAddStep("seitf.tx!"_Stz,              &Task::vSEitfTxStore,          false);
 }
 
 /*----------------------------------------------------------------------------*/

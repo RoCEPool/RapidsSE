@@ -15,20 +15,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Tx(void)
 {
-  vAddStep("tx::begin"_Stz,      &vTxBegin,           false);
-  vAddStep("tx.commit"_Stz,      &vTxCommit,          false);
-  vAddStep("tx.counterDec"_Stz,  &vTxCounterDec,      false);
-  vAddStep("tx.counter@"_Stz,    &vTxCounterFetch,    false);
-  vAddStep("tx.counter!"_Stz,    &vTxCounterStore,    false);
-  vAddStep("tx.distMember@"_Stz, &vTxDistMemberFetch, false);
-  vAddStep("tx.distMember!"_Stz, &vTxDistMemberStore, false);
-  vAddStep("tx.dump"_Stz,        &vTxDump,            false);
-  vAddStep("tx::dumpAll"_Stz,    &vTxDumpAll,         false);
-  vAddStep("tx.free"_Stz,        &vTxFree,            false);
-  vAddStep("tx.id"_Stz,          &vTxId,              false);
-  vAddStep("tx.prepare"_Stz,     &vTxPrepare,         false);
-  vAddStep("tx.rollback"_Stz,    &vTxRollback,        false);
-  vAddStep("tx::testDist"_Stz,   &vTxTestDist,        false);
+  vAddStep("tx::begin"_Stz,      &Task::vTxBegin,           false);
+  vAddStep("tx.commit"_Stz,      &Task::vTxCommit,          false);
+  vAddStep("tx.counterDec"_Stz,  &Task::vTxCounterDec,      false);
+  vAddStep("tx.counter@"_Stz,    &Task::vTxCounterFetch,    false);
+  vAddStep("tx.counter!"_Stz,    &Task::vTxCounterStore,    false);
+  vAddStep("tx.distMember@"_Stz, &Task::vTxDistMemberFetch, false);
+  vAddStep("tx.distMember!"_Stz, &Task::vTxDistMemberStore, false);
+  vAddStep("tx.dump"_Stz,        &Task::vTxDump,            false);
+  vAddStep("tx::dumpAll"_Stz,    &Task::vTxDumpAll,         false);
+  vAddStep("tx.free"_Stz,        &Task::vTxFree,            false);
+  vAddStep("tx.id"_Stz,          &Task::vTxId,              false);
+  vAddStep("tx.prepare"_Stz,     &Task::vTxPrepare,         false);
+  vAddStep("tx.rollback"_Stz,    &Task::vTxRollback,        false);
+  vAddStep("tx::testDist"_Stz,   &Task::vTxTestDist,        false);
 }
 
 /*----------------------------------------------------------------------------*/

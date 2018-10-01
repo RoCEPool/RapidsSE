@@ -13,12 +13,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Column(void)
 {
-  vAddStep("column.isNullable@"_Stz,     &vColumnIsNullableFetch,   false);
-  vAddStep("column.isPartitionKey@"_Stz, &vColumnIsPartitionKeyFetch, false);
-  vAddStep("column.length@"_Stz,         &vColumnLengthFetch,       false);
-  vAddStep("column.name@"_Stz,           &vColumnNameFetch,         false);
-  vAddStep("column.scale@"_Stz,          &vColumnScaleFetch,        false);
-  vAddStep("column.type@"_Stz,           &vColumnTypeFetch,         false);
+  vAddStep("column.isNullable@"_Stz,     &Task::vColumnIsNullableFetch,   false);
+  vAddStep("column.isPartitionKey@"_Stz, &Task::vColumnIsPartitionKeyFetch, false);
+  vAddStep("column.length@"_Stz,         &Task::vColumnLengthFetch,       false);
+  vAddStep("column.name@"_Stz,           &Task::vColumnNameFetch,         false);
+  vAddStep("column.scale@"_Stz,          &Task::vColumnScaleFetch,        false);
+  vAddStep("column.type@"_Stz,           &Task::vColumnTypeFetch,         false);
 }
 
 /*----------------------------------------------------------------------------*/

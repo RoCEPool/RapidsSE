@@ -15,9 +15,9 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Magnitude(void)
 {
-  vAddStep("toDigitName"_Stz,     &vToDigitName,   false);
-  vAddStep("bytes.magnitude"_Stz, &vBytesMagnitude,   false);
-  vAddStep("number.magnitude"_Stz, &vNumberMagnitude, false);
+  vAddStep("toDigitName"_Stz,     &Task::vToDigitName,   false);
+  vAddStep("bytes.magnitude"_Stz, &Task::vBytesMagnitude,   false);
+  vAddStep("number.magnitude"_Stz, &Task::vNumberMagnitude, false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -15,18 +15,18 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Input(void)
 {
-  vAddStep("accept"_Stz,          &vInputAccept,      false);
-  vAddStep("input.close"_Stz,     &vInputClose,       false);
-  vAddStep("input.depth"_Stz,     &vInputDepth,       false);
-  vAddStep("input.next"_Stz,      &vInputNext,        false);
-  vAddStep("input.open"_Stz,      &vInputOpen,        false);
-  vAddStep("input.pop"_Stz,       &vInputPop,         false);
-  vAddStep("input.push"_Stz,      &vInputPush,        false);
-  vAddStep("input.stdin"_Stz,     &vInputStdin,       false);
-  vAddStep("input.text"_Stz,      &vInputText,        false);
-  vAddStep("input.token"_Stz,     &vInputToken,       false);
-  vAddStep("input.type"_Stz,      &vInputType,        false);
-  vAddStep("token:"_Stz,          &vTokenColon,       false);
+  vAddStep("accept"_Stz,          &Task::vInputAccept,      false);
+  vAddStep("input.close"_Stz,     &Task::vInputClose,       false);
+  vAddStep("input.depth"_Stz,     &Task::vInputDepth,       false);
+  vAddStep("input.next"_Stz,      &Task::vInputNext,        false);
+  vAddStep("input.open"_Stz,      &Task::vInputOpen,        false);
+  vAddStep("input.pop"_Stz,       &Task::vInputPop,         false);
+  vAddStep("input.push"_Stz,      &Task::vInputPush,        false);
+  vAddStep("input.stdin"_Stz,     &Task::vInputStdin,       false);
+  vAddStep("input.text"_Stz,      &Task::vInputText,        false);
+  vAddStep("input.token"_Stz,     &Task::vInputToken,       false);
+  vAddStep("input.type"_Stz,      &Task::vInputType,        false);
+  vAddStep("token:"_Stz,          &Task::vTokenColon,       false);
 }
 
 /*----------------------------------------------------------------------------*/

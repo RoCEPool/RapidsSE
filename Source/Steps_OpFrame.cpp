@@ -15,8 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_OpFrame(void)
 {
-  vAddStep("opFrame.dic"_Stz,       &vOpFrameDic,       false);
-  vAddStep("opFrame.name"_Stz,      &vOpFrameName,      false);
+  vAddStep("opFrame.dic"_Stz,       &Task::vOpFrameDic,       false);
+  vAddStep("opFrame.name"_Stz,      &Task::vOpFrameName,      false);
 }
 
 /*----------------------------------------------------------------------------*/

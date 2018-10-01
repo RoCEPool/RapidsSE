@@ -15,13 +15,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Common(void)
 {
-  vAddStep("common.fetch"_Stz,    &vCommonFetch,      false);
-  vAddStep("common.store"_Stz,    &vCommonStore,      false);
-  vAddStep("common/"_Stz,         &vCommonSlash,      true);
-  vAddStep("toCommon"_Stz,        &vCommonToCommon,   true);
+  vAddStep("common.fetch"_Stz,    &Task::vCommonFetch,      false);
+  vAddStep("common.store"_Stz,    &Task::vCommonStore,      false);
+  vAddStep("common/"_Stz,         &Task::vCommonSlash,      true);
+  vAddStep("toCommon"_Stz,        &Task::vCommonToCommon,   true);
 
-  vAddStep("opFrame.drop"_Stz,    &vOpFrameDrop,      false);
-  vAddStep("opFrame.push"_Stz,    &vOpFramePush,      false);
+  vAddStep("opFrame.drop"_Stz,    &Task::vOpFrameDrop,      false);
+  vAddStep("opFrame.push"_Stz,    &Task::vOpFramePush,      false);
 }
 
 /*----------------------------------------------------------------------------*/

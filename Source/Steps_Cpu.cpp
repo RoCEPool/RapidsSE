@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Cpu(void)
 {
-  vAddStep("cpu.rdtscp"_Stz,      &vCpuRdtscp,        false);
+  vAddStep("cpu.rdtscp"_Stz,      &Task::vCpuRdtscp,        false);
 }
 
 /*----------------------------------------------------------------------------*/

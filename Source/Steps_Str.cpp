@@ -15,26 +15,26 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Str(void)
 {
-  vAddStep("s256.init"_Stz,    &vS256Init,      false);
+  vAddStep("s256.init"_Stz,    &Task::vS256Init,      false);
   
-  vAddStep("str::algebra"_Stz, &vStrAlgebra,    false);
-  vAddStep("strAlgebra"_Stz,   &vStrAlgebra,    false);
+  vAddStep("str::algebra"_Stz, &Task::vStrAlgebra,    false);
+  vAddStep("strAlgebra"_Stz,   &Task::vStrAlgebra,    false);
   
-  vAddStep("str.cat"_Stz,      &vStrCat,        false);
-  vAddStep("str.clip"_Stz,     &vStrClip,       false);
-  vAddStep("str.equal"_Stz,    &vStrEqual,      false);
-  vAddStep("str.escape"_Stz,   &vStrEscape,     false);
-  vAddStep("str.firstCsv"_Stz, &vStrFirstCsv,   false);
-  vAddStep("str.format"_Stz,   &vStrFormat,     false);
-  vAddStep("str.left"_Stz,     &vStrLeft,       false);
-  vAddStep("str.length"_Stz,   &vStrLength,     false);
-  vAddStep("str.pad"_Stz,      &vStrPad,        false);
-  vAddStep("str.prepend"_Stz,  &vStrPrepend,    false);
-  vAddStep("str.random"_Stz,   &vStrRandom,     false);
-  vAddStep("str.replace"_Stz,  &vStrReplace,    false);
-  vAddStep("str.right"_Stz,    &vStrRight,      false);
-  vAddStep("str.sub"_Stz,      &vStrSub,        false);
-  vAddStep("str.tailInt"_Stz,  &vStrTailInt,    false);
+  vAddStep("str.cat"_Stz,      &Task::vStrCat,        false);
+  vAddStep("str.clip"_Stz,     &Task::vStrClip,       false);
+  vAddStep("str.equal"_Stz,    &Task::vStrEqual,      false);
+  vAddStep("str.escape"_Stz,   &Task::vStrEscape,     false);
+  vAddStep("str.firstCsv"_Stz, &Task::vStrFirstCsv,   false);
+  vAddStep("str.format"_Stz,   &Task::vStrFormat,     false);
+  vAddStep("str.left"_Stz,     &Task::vStrLeft,       false);
+  vAddStep("str.length"_Stz,   &Task::vStrLength,     false);
+  vAddStep("str.pad"_Stz,      &Task::vStrPad,        false);
+  vAddStep("str.prepend"_Stz,  &Task::vStrPrepend,    false);
+  vAddStep("str.random"_Stz,   &Task::vStrRandom,     false);
+  vAddStep("str.replace"_Stz,  &Task::vStrReplace,    false);
+  vAddStep("str.right"_Stz,    &Task::vStrRight,      false);
+  vAddStep("str.sub"_Stz,      &Task::vStrSub,        false);
+  vAddStep("str.tailInt"_Stz,  &Task::vStrTailInt,    false);
 }
 
 /*----------------------------------------------------------------------------*/

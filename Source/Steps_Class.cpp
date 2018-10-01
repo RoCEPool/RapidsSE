@@ -17,7 +17,7 @@ void Task::vAddSteps_Class(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddStep("class::name"_Stz,      &vClassName,    false);
+  vAddStep("class::name"_Stz,      &Task::vClassName,    false);
 }
 
 /*----------------------------------------------------------------------------*/

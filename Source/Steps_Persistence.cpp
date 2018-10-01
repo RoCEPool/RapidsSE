@@ -11,8 +11,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Persistence(void)
 {
-  vAddStep("persistence::checkpoint"_Stz, &vPersistenceCheckpoint,  false);
-  vAddStep("persistence::reload"_Stz,     &vPersistenceReload,      false);
+  vAddStep("persistence::checkpoint"_Stz, &Task::vPersistenceCheckpoint,  false);
+  vAddStep("persistence::reload"_Stz,     &Task::vPersistenceReload,      false);
 }
 
 /*----------------------------------------------------------------------------*/

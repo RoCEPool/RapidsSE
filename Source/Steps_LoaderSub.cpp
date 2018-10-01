@@ -15,31 +15,31 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_LoaderSub(void)
 {
-  vAddStep("loaderSub.begin"_Stz,         &vLoaderSubBegin,         false);
-  vAddStep("loaderSub.danglingBuffer"_Stz,&vLoaderSubDanglingBuffer,false);
-  vAddStep("loaderSub.delete"_Stz,       &vLoaderSubDelete,        false);
-  vAddStep("loaderSub.end"_Stz,          &vLoaderSubEnd,           false);
-  vAddStep("loaderSub.fetchRecord"_Stz,  &vLoaderSubFetchRecord,   false);
-  vAddStep("loaderSub.fetchRecordDist"_Stz,  &vLoaderSubFetchRecordDist, false);
-  vAddStep("loaderSub.fieldDelimiter!"_Stz,  &vLoaderSubFieldDelimiterStore, false);
-  vAddStep("loaderSub.hashPartition"_Stz,&vLoaderSubHashPartition, false);
-  vAddStep("loaderSub.hashRecord"_Stz,   &vLoaderSubHashRecord,    false);
-  vAddStep("loaderSub.init"_Stz,         &vLoaderSubInit,          false);
-  vAddStep("loaderSub.loader@"_Stz,      &vLoaderSubLoaderFetch,   false);
-  vAddStep("loaderSub.loader!"_Stz,      &vLoaderSubLoaderStore,   false);
-  vAddStep("loaderSub.loadData"_Stz,     &vLoaderSubLoadData,      false);
-  vAddStep("loaderSub.loadNodeData"_Stz, &vLoaderSubLoadNodeData,  false);
-  vAddStep("loaderSub::new"_Stz,         &vLoaderSubNew,           false);
-  vAddStep("loaderSub.newWorkingBuffer"_Stz, &vLoaderSubNewWorkingBuffer,false);
-  vAddStep("loaderSub.partition@"_Stz,   &vLoaderSubPartitionFetch,false);
-  vAddStep("loaderSub.partition!"_Stz,   &vLoaderSubPartitionStore,false);
-  vAddStep("loaderSub.processRecords"_Stz,  &vLoaderSubProcessRecords, false);
-  vAddStep("loaderSub.recordsInvalid"_Stz, &vLoaderSubRecordsInvalid, false);
-  vAddStep("loaderSub.recordsValid"_Stz, &vLoaderSubRecordsValid,  false);
-  vAddStep("loaderSub.spawnLoadBuffer"_Stz, &vLoaderSubSpawnLoadBuffer, false);
-  vAddStep("loaderSub.workingBuffer@"_Stz, &vLoaderSubWorkingBufferFetch,false);
-  vAddStep("loaderSub.workingBuffer!"_Stz, &vLoaderSubWorkingBufferStore,false);
-  vAddStep("loaderSub.table"_Stz,        &vLoaderSubTable,         false);
+  vAddStep("loaderSub.begin"_Stz,         &Task::vLoaderSubBegin,         false);
+  vAddStep("loaderSub.danglingBuffer"_Stz,&Task::vLoaderSubDanglingBuffer,false);
+  vAddStep("loaderSub.delete"_Stz,       &Task::vLoaderSubDelete,        false);
+  vAddStep("loaderSub.end"_Stz,          &Task::vLoaderSubEnd,           false);
+  vAddStep("loaderSub.fetchRecord"_Stz,  &Task::vLoaderSubFetchRecord,   false);
+  vAddStep("loaderSub.fetchRecordDist"_Stz,  &Task::vLoaderSubFetchRecordDist, false);
+  vAddStep("loaderSub.fieldDelimiter!"_Stz,  &Task::vLoaderSubFieldDelimiterStore, false);
+  vAddStep("loaderSub.hashPartition"_Stz,&Task::vLoaderSubHashPartition, false);
+  vAddStep("loaderSub.hashRecord"_Stz,   &Task::vLoaderSubHashRecord,    false);
+  vAddStep("loaderSub.init"_Stz,         &Task::vLoaderSubInit,          false);
+  vAddStep("loaderSub.loader@"_Stz,      &Task::vLoaderSubLoaderFetch,   false);
+  vAddStep("loaderSub.loader!"_Stz,      &Task::vLoaderSubLoaderStore,   false);
+  vAddStep("loaderSub.loadData"_Stz,     &Task::vLoaderSubLoadData,      false);
+  vAddStep("loaderSub.loadNodeData"_Stz, &Task::vLoaderSubLoadNodeData,  false);
+  vAddStep("loaderSub::new"_Stz,         &Task::vLoaderSubNew,           false);
+  vAddStep("loaderSub.newWorkingBuffer"_Stz, &Task::vLoaderSubNewWorkingBuffer,false);
+  vAddStep("loaderSub.partition@"_Stz,   &Task::vLoaderSubPartitionFetch,false);
+  vAddStep("loaderSub.partition!"_Stz,   &Task::vLoaderSubPartitionStore,false);
+  vAddStep("loaderSub.processRecords"_Stz,  &Task::vLoaderSubProcessRecords, false);
+  vAddStep("loaderSub.recordsInvalid"_Stz, &Task::vLoaderSubRecordsInvalid, false);
+  vAddStep("loaderSub.recordsValid"_Stz, &Task::vLoaderSubRecordsValid,  false);
+  vAddStep("loaderSub.spawnLoadBuffer"_Stz, &Task::vLoaderSubSpawnLoadBuffer, false);
+  vAddStep("loaderSub.workingBuffer@"_Stz, &Task::vLoaderSubWorkingBufferFetch,false);
+  vAddStep("loaderSub.workingBuffer!"_Stz, &Task::vLoaderSubWorkingBufferStore,false);
+  vAddStep("loaderSub.table"_Stz,        &Task::vLoaderSubTable,         false);
 }
 
 /*----------------------------------------------------------------------------*/

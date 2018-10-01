@@ -15,18 +15,18 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_RowCursor(void)
 {
-  vAddStep("rowCursor.begin"_Stz,        &vRowCursorBegin,           false);
-  vAddStep("rowCursor.delete"_Stz,       &vRowCursorDelete,          false);
-  vAddStep("rowCursor.end"_Stz,          &vRowCursorEnd,             false);
-  vAddStep("rowCursor.entryBuffer@"_Stz, &vRowCursorEntryBufferFetch,false);
-  vAddStep("rowCursor.entryBuffer!"_Stz, &vRowCursorEntryBufferStore,false);
-  vAddStep("rowCursor.first"_Stz,        &vRowCursorFirst,           false);
-  vAddStep("rowCursor.init"_Stz,         &vRowCursorInit,            false);
-  vAddStep("rowCursor::new"_Stz,         &vRowCursorNew,             false);
-  vAddStep("rowCursor.next"_Stz,         &vRowCursorNext,            false);
-  vAddStep("rowCursor.row"_Stz,          &vRowCursorRow,             false);
-  vAddStep("rowCursor.table@"_Stz,       &vRowCursorTableFetch,      false);
-  vAddStep("rowCursor.table!"_Stz,       &vRowCursorTableStore,      false);
+  vAddStep("rowCursor.begin"_Stz,        &Task::vRowCursorBegin,           false);
+  vAddStep("rowCursor.delete"_Stz,       &Task::vRowCursorDelete,          false);
+  vAddStep("rowCursor.end"_Stz,          &Task::vRowCursorEnd,             false);
+  vAddStep("rowCursor.entryBuffer@"_Stz, &Task::vRowCursorEntryBufferFetch,false);
+  vAddStep("rowCursor.entryBuffer!"_Stz, &Task::vRowCursorEntryBufferStore,false);
+  vAddStep("rowCursor.first"_Stz,        &Task::vRowCursorFirst,           false);
+  vAddStep("rowCursor.init"_Stz,         &Task::vRowCursorInit,            false);
+  vAddStep("rowCursor::new"_Stz,         &Task::vRowCursorNew,             false);
+  vAddStep("rowCursor.next"_Stz,         &Task::vRowCursorNext,            false);
+  vAddStep("rowCursor.row"_Stz,          &Task::vRowCursorRow,             false);
+  vAddStep("rowCursor.table@"_Stz,       &Task::vRowCursorTableFetch,      false);
+  vAddStep("rowCursor.table!"_Stz,       &Task::vRowCursorTableStore,      false);
 }
 
 /*----------------------------------------------------------------------------*/

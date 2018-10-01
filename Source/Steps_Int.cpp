@@ -15,20 +15,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Int(void)
 {
-  vAddStep("+"_Stz,               &vIntAdd,           false);
-  vAddStep("/"_Stz,               &vIntDivide,        false);
-  vAddStep("=="_Stz,              &vIntEqual,         false);
-  vAddStep(">"_Stz,               &vIntGreater,       false);
-  vAddStep(">="_Stz,              &vIntGreaterEqual,  false);
-  vAddStep("hash"_Stz,            &vIntHash,          false);
-  vAddStep("ho16"_Stz,            &vIntHo16,          false);
-  vAddStep("<"_Stz,               &vIntLess,          false);
-  vAddStep("<="_Stz,              &vIntLessEqual,     false);
-  vAddStep("%"_Stz,               &vIntModulo,        false);
-  vAddStep("*"_Stz,               &vIntMultiply,      false);
-  vAddStep("neg"_Stz,             &vIntNeg,           false);
-  vAddStep("!="_Stz,              &vIntNotEqual,      false);
-  vAddStep("-"_Stz,               &vIntSubtract,      false);
+  vAddStep("+"_Stz,               &Task::vIntAdd,           false);
+  vAddStep("/"_Stz,               &Task::vIntDivide,        false);
+  vAddStep("=="_Stz,              &Task::vIntEqual,         false);
+  vAddStep(">"_Stz,               &Task::vIntGreater,       false);
+  vAddStep(">="_Stz,              &Task::vIntGreaterEqual,  false);
+  vAddStep("hash"_Stz,            &Task::vIntHash,          false);
+  vAddStep("ho16"_Stz,            &Task::vIntHo16,          false);
+  vAddStep("<"_Stz,               &Task::vIntLess,          false);
+  vAddStep("<="_Stz,              &Task::vIntLessEqual,     false);
+  vAddStep("%"_Stz,               &Task::vIntModulo,        false);
+  vAddStep("*"_Stz,               &Task::vIntMultiply,      false);
+  vAddStep("neg"_Stz,             &Task::vIntNeg,           false);
+  vAddStep("!="_Stz,              &Task::vIntNotEqual,      false);
+  vAddStep("-"_Stz,               &Task::vIntSubtract,      false);
 }
 
 /*----------------------------------------------------------------------------*/

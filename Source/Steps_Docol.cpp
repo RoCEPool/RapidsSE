@@ -15,10 +15,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Docol(void)
 {
-  vAddStep("]"_Stz,                     &vDocolCompiling,      false);
-  vAddStep("["_Stz,                     &vDocolInterpreting,   true );
-  vAddStep("docol.isCompiling"_Stz,     &vDocolIsCompiling,    false);
-  vAddStep("docol.isInterpreting"_Stz,  &vDocolIsInterpreting, false);
+  vAddStep("]"_Stz,                     &Task::vDocolCompiling,      false);
+  vAddStep("["_Stz,                     &Task::vDocolInterpreting,   true );
+  vAddStep("docol.isCompiling"_Stz,     &Task::vDocolIsCompiling,    false);
+  vAddStep("docol.isInterpreting"_Stz,  &Task::vDocolIsInterpreting, false);
 }
 
 /*----------------------------------------------------------------------------*/

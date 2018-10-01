@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Shell(void)
 {
-  vAddStep("shell.execute"_Stz,  &vShellExecute,  false);
+  vAddStep("shell.execute"_Stz,  &Task::vShellExecute,  false);
 }
 
 /*----------------------------------------------------------------------------*/

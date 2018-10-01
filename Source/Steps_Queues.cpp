@@ -15,11 +15,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Queues(void)
 {
-  vAddStep("queues::QueuesExecutingLength"_Stz, &vQueuesExecutingLength, false);
-  vAddStep("queues::QueuesReadyLength"_Stz,     &vQueuesReadyLength,     false);
-  vAddStep("queues::QueuesReadySlotLength"_Stz, &vQueuesReadySlotLength, false);
-  vAddStep("queues::QueuesSleepingLength"_Stz,  &vQueuesSleepingLength,  false);
-  vAddStep("queues::QueuesWaitingLength"_Stz,   &vQueuesWaitingLength,   false);
+  vAddStep("queues::QueuesExecutingLength"_Stz, &Task::vQueuesExecutingLength, false);
+  vAddStep("queues::QueuesReadyLength"_Stz,     &Task::vQueuesReadyLength,     false);
+  vAddStep("queues::QueuesReadySlotLength"_Stz, &Task::vQueuesReadySlotLength, false);
+  vAddStep("queues::QueuesSleepingLength"_Stz,  &Task::vQueuesSleepingLength,  false);
+  vAddStep("queues::QueuesWaitingLength"_Stz,   &Task::vQueuesWaitingLength,   false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Comment(void)
 {
-  vAddStep("("_Stz,               &vComment,          true );
+  vAddStep("("_Stz,               &Task::vComment,          true );
 }
 
 /*----------------------------------------------------------------------------*/

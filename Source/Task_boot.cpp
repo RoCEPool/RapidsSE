@@ -640,7 +640,7 @@ void Task::vAddSteps(void)
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
-  vAddStep("word"_Stz,            &vWord,             false);
+  vAddStep("word"_Stz,            &Task::vWord,             false);
   gpAttachMap->m_pWord = gpAttachMap->m_xMainDic.pFindWord("word"_Stz);
 
   //vAddSteps_AccessPath();

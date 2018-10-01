@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Vector(void)
 {
-  vAddStep("vector.diff"_Stz,     &vVectorDifference,  false );
+  vAddStep("vector.diff"_Stz,     &Task::vVectorDifference,  false );
 }
 
 /*----------------------------------------------------------------------------*/

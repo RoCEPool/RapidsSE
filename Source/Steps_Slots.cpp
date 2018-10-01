@@ -13,10 +13,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Slots(void)
 {
-  vAddStep("slots.columnCount"_Stz,     &vSlotsColumnCount,     false);
-  vAddStep("slots.columnName"_Stz,      &vSlotsColumnName,      false);
-  vAddStep("slots.createColumnVec"_Stz, &vSlotsCreateColumnVec, false);
-  vAddStep("slots.subDic"_Stz,          &vSlotsSubDic,          false);
+  vAddStep("slots.columnCount"_Stz,     &Task::vSlotsColumnCount,     false);
+  vAddStep("slots.columnName"_Stz,      &Task::vSlotsColumnName,      false);
+  vAddStep("slots.createColumnVec"_Stz, &Task::vSlotsCreateColumnVec, false);
+  vAddStep("slots.subDic"_Stz,          &Task::vSlotsSubDic,          false);
 }
 
 /*----------------------------------------------------------------------------*/

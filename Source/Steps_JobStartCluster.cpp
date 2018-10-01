@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_JobStartCluster(void)
 {
-  vAddStep("job_startCluster.spawnNodes@"_Stz, &vJob_StartClusterSpawnNodesFetch, false);
+  vAddStep("job_startCluster.spawnNodes@"_Stz, &Task::vJob_StartClusterSpawnNodesFetch, false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -15,9 +15,9 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Logic(void)
 {
-  vAddStep("and"_Stz,             &vLogicAnd,         false);
-  vAddStep("not"_Stz,             &vLogicNot,         false);
-  vAddStep("or"_Stz,              &vLogicOr,          false);
+  vAddStep("and"_Stz,             &Task::vLogicAnd,         false);
+  vAddStep("not"_Stz,             &Task::vLogicNot,         false);
+  vAddStep("or"_Stz,              &Task::vLogicOr,          false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -15,18 +15,18 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_JobInsertRow(void)
 {
-  vAddStep("job_endInsert.insertRowJob@"_Stz, &vJob_EndInsertInsertRowJobIdFetch, false);
-  vAddStep("job_endInsert.task@"_Stz,         &vJob_EndInsertTaskFetch,           false);
-  vAddStep("job_endInsert.task!"_Stz,         &vJob_EndInsertTaskStore,           false);
+  vAddStep("job_endInsert.insertRowJob@"_Stz, &Task::vJob_EndInsertInsertRowJobIdFetch, false);
+  vAddStep("job_endInsert.task@"_Stz,         &Task::vJob_EndInsertTaskFetch,           false);
+  vAddStep("job_endInsert.task!"_Stz,         &Task::vJob_EndInsertTaskStore,           false);
 
-  vAddStep("job_insertBuffer.endInsertJob@"_Stz, &vJob_InsertBufferEndInsertJobIdFetch, false);
-  vAddStep("job_insertBuffer.InsertRows"_Stz,    &vJob_InsertBufferInsertRows,          false);
-  vAddStep("job_insertBuffer.partition@"_Stz,    &vJob_InsertBufferPartitionFetch,      false);
-  vAddStep("job_insertBuffer.table!"_Stz,        &vJob_InsertBufferTableStore,          false);
+  vAddStep("job_insertBuffer.endInsertJob@"_Stz, &Task::vJob_InsertBufferEndInsertJobIdFetch, false);
+  vAddStep("job_insertBuffer.InsertRows"_Stz,    &Task::vJob_InsertBufferInsertRows,          false);
+  vAddStep("job_insertBuffer.partition@"_Stz,    &Task::vJob_InsertBufferPartitionFetch,      false);
+  vAddStep("job_insertBuffer.table!"_Stz,        &Task::vJob_InsertBufferTableStore,          false);
   
-  vAddStep("job_insertRow.table!"_Stz,           &vJob_InsertRowTableStore,        false);
-  vAddStep("job_InsertRow.danglingBuffer"_Stz,   &vJob_InsertRowDanglingBuffer,    false);
-  vAddStep("job_InsertRow.SpawnInsertBuffer"_Stz,&vJob_InsertRowSpawnInsertBuffer, false);
+  vAddStep("job_insertRow.table!"_Stz,           &Task::vJob_InsertRowTableStore,        false);
+  vAddStep("job_InsertRow.danglingBuffer"_Stz,   &Task::vJob_InsertRowDanglingBuffer,    false);
+  vAddStep("job_InsertRow.SpawnInsertBuffer"_Stz,&Task::vJob_InsertRowSpawnInsertBuffer, false);
   
 }
 

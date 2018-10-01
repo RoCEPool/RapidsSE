@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Env(void)
 {
-  vAddStep("env@"_Stz,            &vEnvGet,           false);
+  vAddStep("env@"_Stz,            &Task::vEnvGet,           false);
 }
 
 /*----------------------------------------------------------------------------*/

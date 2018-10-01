@@ -13,15 +13,15 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_CommandProcessor(void)
 {
-  vAddStep("commandProcessor.blankLine"_Stz,   &vCommandProcessorBlankLine,  false);
-  vAddStep("commandProcessor.deleteJob"_Stz,   &vCommandProcessorDeleteJob,  false);
-  vAddStep("commandProcessor.executeFile"_Stz, &vCommandProcessorExecuteFile,false);
-  vAddStep("commandProcessor.findJobClass"_Stz,&vCommandProcessorFindJobClass,false);
-  vAddStep("commandProcessor.getCommand"_Stz,  &vCommandProcessorGetCommand, false);
-  vAddStep("commandProcessor.jobClass"_Stz,    &vCommandProcessorJobClass,   false);
-  vAddStep("commandProcessor.postJob"_Stz,     &vCommandProcessorPostJob,    false);
-  vAddStep("commandProcessor.preJob"_Stz,      &vCommandProcessorPreJob,     false);
-  vAddStep("commandProcessor.spawnJob"_Stz,    &vCommandProcessorSpawnJob,   false);
+  vAddStep("commandProcessor.blankLine"_Stz,   &Task::vCommandProcessorBlankLine,  false);
+  vAddStep("commandProcessor.deleteJob"_Stz,   &Task::vCommandProcessorDeleteJob,  false);
+  vAddStep("commandProcessor.executeFile"_Stz, &Task::vCommandProcessorExecuteFile,false);
+  vAddStep("commandProcessor.findJobClass"_Stz,&Task::vCommandProcessorFindJobClass,false);
+  vAddStep("commandProcessor.getCommand"_Stz,  &Task::vCommandProcessorGetCommand, false);
+  vAddStep("commandProcessor.jobClass"_Stz,    &Task::vCommandProcessorJobClass,   false);
+  vAddStep("commandProcessor.postJob"_Stz,     &Task::vCommandProcessorPostJob,    false);
+  vAddStep("commandProcessor.preJob"_Stz,      &Task::vCommandProcessorPreJob,     false);
+  vAddStep("commandProcessor.spawnJob"_Stz,    &Task::vCommandProcessorSpawnJob,   false);
 }
 
 /*----------------------------------------------------------------------------*/

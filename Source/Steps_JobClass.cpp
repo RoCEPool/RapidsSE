@@ -15,18 +15,18 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_JobClass(void)
 {
-  vAddStep("jobClass::find"_Stz,   &vJobClassFind,     false);
+  vAddStep("jobClass::find"_Stz,   &Task::vJobClassFind,     false);
   
-  vAddStep("jobClass.buffer@"_Stz, &vJobClassBuffer,   false);
-  vAddStep("jobClass.name"_Stz,    &vJobClassName,     false);
-  vAddStep("jobClass.new"_Stz,     &vJobClassNew,      false);
+  vAddStep("jobClass.buffer@"_Stz, &Task::vJobClassBuffer,   false);
+  vAddStep("jobClass.name"_Stz,    &Task::vJobClassName,     false);
+  vAddStep("jobClass.new"_Stz,     &Task::vJobClassNew,      false);
   
-  vAddStep("jobClass.seedRun"_Stz, &vJobClassSeedRun,  false);
-  vAddStep("jobClass.seedReq"_Stz, &vJobClassSeedReq,  false);
-  vAddStep("jobClass.seedRcv"_Stz, &vJobClassSeedRcv,  false);
-  vAddStep("jobClass.seedExe"_Stz, &vJobClassSeedExe,  false);
-  vAddStep("jobClass.seedEnd"_Stz, &vJobClassSeedEnd,  false);
-  vAddStep("jobClass.seedCan"_Stz, &vJobClassSeedCan,  false);
+  vAddStep("jobClass.seedRun"_Stz, &Task::vJobClassSeedRun,  false);
+  vAddStep("jobClass.seedReq"_Stz, &Task::vJobClassSeedReq,  false);
+  vAddStep("jobClass.seedRcv"_Stz, &Task::vJobClassSeedRcv,  false);
+  vAddStep("jobClass.seedExe"_Stz, &Task::vJobClassSeedExe,  false);
+  vAddStep("jobClass.seedEnd"_Stz, &Task::vJobClassSeedEnd,  false);
+  vAddStep("jobClass.seedCan"_Stz, &Task::vJobClassSeedCan,  false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -21,9 +21,9 @@ void Task::vAddSteps_Address(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddStep("eql"_Stz,             &vAddressEqual,     false);
-  vAddStep("@"_Stz,               &vAddressFetch,     false);
-  vAddStep("!"_Stz,               &vAddressStore,     false);
+  vAddStep("eql"_Stz,             &Task::vAddressEqual,     false);
+  vAddStep("@"_Stz,               &Task::vAddressFetch,     false);
+  vAddStep("!"_Stz,               &Task::vAddressStore,     false);
 }
 
 /*----------------------------------------------------------------------------*/

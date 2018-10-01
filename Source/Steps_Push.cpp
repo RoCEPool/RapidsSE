@@ -15,10 +15,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Push(void)
 {
-  vAddStep("i"_Stz,               &vPushI,            false);
-  vAddStep("j"_Stz,               &vPushJ,            false);
-  vAddStep("nullPtr"_Stz,         &vPushNullPtr,      false);
-  vAddStep("pushValue"_Stz,       &vPushValue,        false);
+  vAddStep("i"_Stz,               &Task::vPushI,            false);
+  vAddStep("j"_Stz,               &Task::vPushJ,            false);
+  vAddStep("nullPtr"_Stz,         &Task::vPushNullPtr,      false);
+  vAddStep("pushValue"_Stz,       &Task::vPushValue,        false);
 }
 
 /*----------------------------------------------------------------------------*/

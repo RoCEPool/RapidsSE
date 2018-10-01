@@ -16,17 +16,17 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Node(void)
 {
-  vAddStep("node.init"_Stz,       &vNodeInit,         false);
-  vAddStep("node.IP"_Stz,         &vNodeIP,           false);
-  vAddStep("node.name"_Stz,       &vNodeName,         false);
-  vAddStep("node::new"_Stz,       &vNodeNew,          false);
-  vAddStep("node.no"_Stz,         &vNodeNo,           false);
-  vAddStep("node.partitions"_Stz, &vNodePartitions,   false);
-  vAddStep("node.port"_Stz,       &vNodePort,         false);
-  vAddStep("node.size"_Stz,       &vNodeSize,         false);
-  vAddStep("node.socket!"_Stz,    &vNodeSocketStore,  false);
-  vAddStep("node.socket@"_Stz,    &vNodeSocketFetch,  false);
-  vAddStep("node.status"_Stz,     &vNodeStatus,       false);
+  vAddStep("node.init"_Stz,       &Task::vNodeInit,         false);
+  vAddStep("node.IP"_Stz,         &Task::vNodeIP,           false);
+  vAddStep("node.name"_Stz,       &Task::vNodeName,         false);
+  vAddStep("node::new"_Stz,       &Task::vNodeNew,          false);
+  vAddStep("node.no"_Stz,         &Task::vNodeNo,           false);
+  vAddStep("node.partitions"_Stz, &Task::vNodePartitions,   false);
+  vAddStep("node.port"_Stz,       &Task::vNodePort,         false);
+  vAddStep("node.size"_Stz,       &Task::vNodeSize,         false);
+  vAddStep("node.socket!"_Stz,    &Task::vNodeSocketStore,  false);
+  vAddStep("node.socket@"_Stz,    &Task::vNodeSocketFetch,  false);
+  vAddStep("node.status"_Stz,     &Task::vNodeStatus,       false);
 }
 
 /*----------------------------------------------------------------------------*/

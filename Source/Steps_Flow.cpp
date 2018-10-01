@@ -15,17 +15,17 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Flow(void)
 {
-  vAddStep("begin_"_Stz,          &vFlowBegin_,       false);
-  vAddStep("execute"_Stz,         &vFlowExecute,      false);
-  vAddStep("hazard"_Stz,          &vFlowHazard,       false);
-  vAddStep("jump"_Stz,            &vFlowJump,         false);
-  vAddStep("jumpBegin_"_Stz,      &vFlowJumpBegin_,   false);
-  vAddStep("jumpFalse"_Stz,       &vFlowJumpFalse,    false);
-  vAddStep("jumpTrue"_Stz,        &vFlowJumpTrue,     false);
-  vAddStep("nop"_Stz,             &vFlowNop,          false);
-  vAddStep("retryPoint"_Stz,      &vFlowRetryPoint,   false);
-  vAddStep("test"_Stz,            &vFlowTest,         false);
-  vAddStep("throw"_Stz,           &vFlowThrow,        false);
+  vAddStep("begin_"_Stz,          &Task::vFlowBegin_,       false);
+  vAddStep("execute"_Stz,         &Task::vFlowExecute,      false);
+  vAddStep("hazard"_Stz,          &Task::vFlowHazard,       false);
+  vAddStep("jump"_Stz,            &Task::vFlowJump,         false);
+  vAddStep("jumpBegin_"_Stz,      &Task::vFlowJumpBegin_,   false);
+  vAddStep("jumpFalse"_Stz,       &Task::vFlowJumpFalse,    false);
+  vAddStep("jumpTrue"_Stz,        &Task::vFlowJumpTrue,     false);
+  vAddStep("nop"_Stz,             &Task::vFlowNop,          false);
+  vAddStep("retryPoint"_Stz,      &Task::vFlowRetryPoint,   false);
+  vAddStep("test"_Stz,            &Task::vFlowTest,         false);
+  vAddStep("throw"_Stz,           &Task::vFlowThrow,        false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,13 +13,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_GroupBy(void)
 {
-  vAddStep("groupBy.applyBuffer"_Stz,  &vGroupByApplyBuffer,  false);
-  vAddStep("groupBy.applyEntry"_Stz,   &vGroupByApplyEntry,   false);
-  vAddStep("groupBy.applyPartial"_Stz, &vGroupByApplyPartial, false);
-  vAddStep("groupBy.delete"_Stz,       &vGroupByDelete,       false);
-  vAddStep("groupBy.end"_Stz,          &vGroupByEnd,          false);
-  vAddStep("groupBy::new"_Stz,         &vGroupByNew,          false);
-  vAddStep("groupBy.start"_Stz,        &vGroupByStart,        false);
+  vAddStep("groupBy.applyBuffer"_Stz,  &Task::vGroupByApplyBuffer,  false);
+  vAddStep("groupBy.applyEntry"_Stz,   &Task::vGroupByApplyEntry,   false);
+  vAddStep("groupBy.applyPartial"_Stz, &Task::vGroupByApplyPartial, false);
+  vAddStep("groupBy.delete"_Stz,       &Task::vGroupByDelete,       false);
+  vAddStep("groupBy.end"_Stz,          &Task::vGroupByEnd,          false);
+  vAddStep("groupBy::new"_Stz,         &Task::vGroupByNew,          false);
+  vAddStep("groupBy.start"_Stz,        &Task::vGroupByStart,        false);
 }
 
 /*----------------------------------------------------------------------------*/

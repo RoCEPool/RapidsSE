@@ -15,20 +15,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Encode(void)
 {
-  vAddStep("again"_Stz,               &vEncodeAgain,         true );
-  vAddStep("ahead"_Stz,               &vEncodeAhead,         true );
-  vAddStep("encodeCallPrimitive"_Stz, &vEncodeCallPrimitive, false);
-  vAddStep("encodeCallRoutine"_Stz,   &vEncodeCallRoutine,   false);
-  vAddStep("continue"_Stz,            &vEncodeContinue,      true);
-  vAddStep("here"_Stz,                &vEncodeHere,          false);
-  vAddStep("if"_Stz,                  &vEncodeIf,            true );
-  vAddStep("ifAgain"_Stz,             &vEncodeIfAgain,       true );
-  vAddStep("loop"_Stz,                &vEncodeLoop,          true );
-  vAddStep("+loop"_Stz,               &vEncodeLoopPlus,      true );
-  vAddStep("next"_Stz,                &vEncodeNext,          true );
-  vAddStep("encodePushValue"_Stz,     &vEncodePushValue,     false);
-  vAddStep("then"_Stz,                &vEncodeThen,          true );
-  vAddStep("until"_Stz,               &vEncodeUntil,         true );
+  vAddStep("again"_Stz,               &Task::vEncodeAgain,         true );
+  vAddStep("ahead"_Stz,               &Task::vEncodeAhead,         true );
+  vAddStep("encodeCallPrimitive"_Stz, &Task::vEncodeCallPrimitive, false);
+  vAddStep("encodeCallRoutine"_Stz,   &Task::vEncodeCallRoutine,   false);
+  vAddStep("continue"_Stz,            &Task::vEncodeContinue,      true);
+  vAddStep("here"_Stz,                &Task::vEncodeHere,          false);
+  vAddStep("if"_Stz,                  &Task::vEncodeIf,            true );
+  vAddStep("ifAgain"_Stz,             &Task::vEncodeIfAgain,       true );
+  vAddStep("loop"_Stz,                &Task::vEncodeLoop,          true );
+  vAddStep("+loop"_Stz,               &Task::vEncodeLoopPlus,      true );
+  vAddStep("next"_Stz,                &Task::vEncodeNext,          true );
+  vAddStep("encodePushValue"_Stz,     &Task::vEncodePushValue,     false);
+  vAddStep("then"_Stz,                &Task::vEncodeThen,          true );
+  vAddStep("until"_Stz,               &Task::vEncodeUntil,         true );
 }
 
 /*----------------------------------------------------------------------------*/

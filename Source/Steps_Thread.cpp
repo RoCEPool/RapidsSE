@@ -14,18 +14,18 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Thread(void)
 {
-  vAddStep("thread.bind"_Stz,            &vThreadBind,            false);
-  vAddStep("thread.condSignal"_Stz,      &vThreadCondSignal,      false);
-  vAddStep("thread.condWait"_Stz,        &vThreadCondWait,        false);
-  vAddStep("thread.cpu"_Stz,             &vThreadCpu,             false);
-  vAddStep("thread.dump"_Stz,            &vThreadDump,            false);
-  vAddStep("thread.id"_Stz,              &vThreadId,              false);
-  vAddStep("thread.mutexLock"_Stz,       &vThreadMutexLock,       false);
-  vAddStep("thread.mutexUnlock"_Stz,     &vThreadMutexUnlock,     false);
-  vAddStep("thread.sleep_s"_Stz,         &vThreadSleep_s,         false);
-  vAddStep("thread.sleep_ms"_Stz,        &vThreadSleep_ms,        false);
-  vAddStep("thread.sleep_us"_Stz,        &vThreadSleep_us,        false);
-  vAddStep("thread.sleep_ns"_Stz,        &vThreadSleep_ns,        false);
+  vAddStep("thread.bind"_Stz,            &Task::vThreadBind,            false);
+  vAddStep("thread.condSignal"_Stz,      &Task::vThreadCondSignal,      false);
+  vAddStep("thread.condWait"_Stz,        &Task::vThreadCondWait,        false);
+  vAddStep("thread.cpu"_Stz,             &Task::vThreadCpu,             false);
+  vAddStep("thread.dump"_Stz,            &Task::vThreadDump,            false);
+  vAddStep("thread.id"_Stz,              &Task::vThreadId,              false);
+  vAddStep("thread.mutexLock"_Stz,       &Task::vThreadMutexLock,       false);
+  vAddStep("thread.mutexUnlock"_Stz,     &Task::vThreadMutexUnlock,     false);
+  vAddStep("thread.sleep_s"_Stz,         &Task::vThreadSleep_s,         false);
+  vAddStep("thread.sleep_ms"_Stz,        &Task::vThreadSleep_ms,        false);
+  vAddStep("thread.sleep_us"_Stz,        &Task::vThreadSleep_us,        false);
+  vAddStep("thread.sleep_ns"_Stz,        &Task::vThreadSleep_ns,        false);
 }
 
 /*----------------------------------------------------------------------------*/

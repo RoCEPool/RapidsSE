@@ -15,12 +15,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Object(void)
 {
-  vAddStep("object.class@"_Stz,     &vObjectClassFetch, false);
-  vAddStep("object.class!"_Stz,     &vObjectClassStore, false);
-  vAddStep("object@"_Stz,           &vObjectFetch,      false);
-  vAddStep("object.magic!"_Stz,     &vObjectMagicMark,  false);
-  vAddStep("object!"_Stz,           &vObjectStore,      false);
-  vAddStep("object.wordbody!"_Stz,  &vObjectWordBodySet,false);
+  vAddStep("object.class@"_Stz,     &Task::vObjectClassFetch, false);
+  vAddStep("object.class!"_Stz,     &Task::vObjectClassStore, false);
+  vAddStep("object@"_Stz,           &Task::vObjectFetch,      false);
+  vAddStep("object.magic!"_Stz,     &Task::vObjectMagicMark,  false);
+  vAddStep("object!"_Stz,           &Task::vObjectStore,      false);
+  vAddStep("object.wordbody!"_Stz,  &Task::vObjectWordBodySet,false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -15,13 +15,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Trace(void)
 {
-  vAddStep("traceOff"_Stz,         &vTraceOff,         false);
-  vAddStep("traceOn"_Stz,          &vTraceOn,          false);
-  vAddStep("tracePoint"_Stz,       &vTracePoint,       false);
-  vAddStep("trace!"_Stz,           &vTraceSet,         false);
+  vAddStep("traceOff"_Stz,         &Task::vTraceOff,         false);
+  vAddStep("traceOn"_Stz,          &Task::vTraceOn,          false);
+  vAddStep("tracePoint"_Stz,       &Task::vTracePoint,       false);
+  vAddStep("trace!"_Stz,           &Task::vTraceSet,         false);
 
-  vAddStep("performancePoint"_Stz, &vPerformancePoint, false);
-  vAddStep("performancePrint"_Stz, &vPerformancePrint, false);
+  vAddStep("performancePoint"_Stz, &Task::vPerformancePoint, false);
+  vAddStep("performancePrint"_Stz, &Task::vPerformancePrint, false);
 }
 
 /*----------------------------------------------------------------------------*/

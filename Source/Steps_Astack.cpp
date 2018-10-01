@@ -16,31 +16,31 @@ void Task::vAddSteps_Astack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddStep("astack.class"_Stz,    &vAstackClass,      false);
-  vAddStep("adepth"_Stz,          &vAstackDepth,      false);
-  vAddStep("adrop"_Stz,           &vAstackDrop,       false);
-  vAddStep("adup"_Stz,            &vAstackDup,        false);
-  vAddStep("a@"_Stz,              &vAstackFetch,      false);
-  vAddStep("anip"_Stz,            &vAstackNip,        false);
-  vAddStep("apick"_Stz,           &vAstackPick,       false);
-  vAddStep("areverse"_Stz,        &vAstackReverse,    false);
-  vAddStep("astk"_Stz,            &vAstackStk,        false);
-  vAddStep(">a"_Stz,              &vAstackToA,        false);
-  vAddStep("a>"_Stz,              &vAstackToP,        false);
-  vAddStep(">auxStack"_Stz,       &vAstackTransfer,   false);
-  vAddStep("aswap"_Stz,           &vAstackSwap,       false);
-  vAddStep("avalset>"_Stz,        &vAstackToValues,   false);
-  vAddStep(">avalset"_Stz,        &vAstackToValSet,   false);
-  vAddStep("a0"_Stz,              &vAstack0,          false);
-  vAddStep("a1"_Stz,              &vAstack1,          false);
-  vAddStep("a2"_Stz,              &vAstack2,          false);
-  vAddStep("a3"_Stz,              &vAstack3,          false);
-  vAddStep("a4"_Stz,              &vAstack4,          false);
-  vAddStep("a5"_Stz,              &vAstack5,          false);
-  vAddStep("a6"_Stz,              &vAstack6,          false);
-  vAddStep("a7"_Stz,              &vAstack7,          false);
-  vAddStep("a8"_Stz,              &vAstack8,          false);
-  vAddStep("a9"_Stz,              &vAstack9,          false);
+  vAddStep("astack.class"_Stz,    &Task::vAstackClass,      false);
+  vAddStep("adepth"_Stz,          &Task::vAstackDepth,      false);
+  vAddStep("adrop"_Stz,           &Task::vAstackDrop,       false);
+  vAddStep("adup"_Stz,            &Task::vAstackDup,        false);
+  vAddStep("a@"_Stz,              &Task::vAstackFetch,      false);
+  vAddStep("anip"_Stz,            &Task::vAstackNip,        false);
+  vAddStep("apick"_Stz,           &Task::vAstackPick,       false);
+  vAddStep("areverse"_Stz,        &Task::vAstackReverse,    false);
+  vAddStep("astk"_Stz,            &Task::vAstackStk,        false);
+  vAddStep(">a"_Stz,              &Task::vAstackToA,        false);
+  vAddStep("a>"_Stz,              &Task::vAstackToP,        false);
+  vAddStep(">auxStack"_Stz,       &Task::vAstackTransfer,   false);
+  vAddStep("aswap"_Stz,           &Task::vAstackSwap,       false);
+  vAddStep("avalset>"_Stz,        &Task::vAstackToValues,   false);
+  vAddStep(">avalset"_Stz,        &Task::vAstackToValSet,   false);
+  vAddStep("a0"_Stz,              &Task::vAstack0,          false);
+  vAddStep("a1"_Stz,              &Task::vAstack1,          false);
+  vAddStep("a2"_Stz,              &Task::vAstack2,          false);
+  vAddStep("a3"_Stz,              &Task::vAstack3,          false);
+  vAddStep("a4"_Stz,              &Task::vAstack4,          false);
+  vAddStep("a5"_Stz,              &Task::vAstack5,          false);
+  vAddStep("a6"_Stz,              &Task::vAstack6,          false);
+  vAddStep("a7"_Stz,              &Task::vAstack7,          false);
+  vAddStep("a8"_Stz,              &Task::vAstack8,          false);
+  vAddStep("a9"_Stz,              &Task::vAstack9,          false);
 }
 
 /*----------------------------------------------------------------------------*/

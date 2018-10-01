@@ -15,23 +15,23 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Loader(void)
 {
-  vAddStep("loader.addRecordsInvalid"_Stz, &vLoaderAddRecordsInvalid,false);
-  vAddStep("loader.addRecordsValid"_Stz,   &vLoaderAddRecordsValid, false);
-  vAddStep("loader.chunkFile"_Stz,         &vLoaderChunkFile,       false);
-  vAddStep("loader.delete"_Stz,            &vLoaderDelete,          false);
-  vAddStep("loader.dumpMap"_Stz,           &vLoaderDumpMap,         false);
-  vAddStep("loader.findChunk"_Stz,         &vLoaderFindChunk,       false);
-  vAddStep("loader.init"_Stz,              &vLoaderInit,            false);
-  vAddStep("loader::new"_Stz,              &vLoaderNew,             false);
-  vAddStep("loader.newSub"_Stz,            &vLoaderNewSub,          false);
-  vAddStep("loader.path!"_Stz,             &vLoaderPathStore,       false);
-  vAddStep("loader.pathDistributed!"_Stz,  &vLoaderPathDistributedStore,false);
-  vAddStep("loader.recordsInvalid@"_Stz,   &vLoaderRecordsInvalidFetch, false);
-  vAddStep("loader.recordsValid@"_Stz,     &vLoaderRecordsValidFetch,   false);
-  vAddStep("loader.seitf@"_Stz,            &vLoaderSEitfFetch,      false);
-  vAddStep("loader.seitf!"_Stz,            &vLoaderSEitfStore,      false);
-  vAddStep("loader.spawnSubLoader"_Stz,    &vLoaderSpawnSubLoader,  false);
-  vAddStep("loader.table!"_Stz,            &vLoaderTableStore,      false);
+  vAddStep("loader.addRecordsInvalid"_Stz, &Task::vLoaderAddRecordsInvalid,false);
+  vAddStep("loader.addRecordsValid"_Stz,   &Task::vLoaderAddRecordsValid, false);
+  vAddStep("loader.chunkFile"_Stz,         &Task::vLoaderChunkFile,       false);
+  vAddStep("loader.delete"_Stz,            &Task::vLoaderDelete,          false);
+  vAddStep("loader.dumpMap"_Stz,           &Task::vLoaderDumpMap,         false);
+  vAddStep("loader.findChunk"_Stz,         &Task::vLoaderFindChunk,       false);
+  vAddStep("loader.init"_Stz,              &Task::vLoaderInit,            false);
+  vAddStep("loader::new"_Stz,              &Task::vLoaderNew,             false);
+  vAddStep("loader.newSub"_Stz,            &Task::vLoaderNewSub,          false);
+  vAddStep("loader.path!"_Stz,             &Task::vLoaderPathStore,       false);
+  vAddStep("loader.pathDistributed!"_Stz,  &Task::vLoaderPathDistributedStore,false);
+  vAddStep("loader.recordsInvalid@"_Stz,   &Task::vLoaderRecordsInvalidFetch, false);
+  vAddStep("loader.recordsValid@"_Stz,     &Task::vLoaderRecordsValidFetch,   false);
+  vAddStep("loader.seitf@"_Stz,            &Task::vLoaderSEitfFetch,      false);
+  vAddStep("loader.seitf!"_Stz,            &Task::vLoaderSEitfStore,      false);
+  vAddStep("loader.spawnSubLoader"_Stz,    &Task::vLoaderSpawnSubLoader,  false);
+  vAddStep("loader.table!"_Stz,            &Task::vLoaderTableStore,      false);
 }
 
 /*----------------------------------------------------------------------------*/

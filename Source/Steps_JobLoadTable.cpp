@@ -15,19 +15,19 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_JobLoadTable(void)
 {
-  vAddStep("job_loadBuffer.insertRows"_Stz,      &vJob_LoadBufferInsertRows,          false);
-  vAddStep("job_loadBuffer.jobLoadTableId@"_Stz, &vJob_LoadBufferJobLoadTableIdFetch, false);
-  vAddStep("job_loadBuffer.jobLoadTable!"_Stz,   &vJob_LoadBufferJobLoadTableStore,   false);
-  vAddStep("job_loadBuffer.partition@"_Stz,      &vJob_LoadBufferPartitionFetch,      false);
-  vAddStep("job_loadBuffer.table!"_Stz,          &vJob_LoadBufferTableStore,          false);
+  vAddStep("job_loadBuffer.insertRows"_Stz,      &Task::vJob_LoadBufferInsertRows,          false);
+  vAddStep("job_loadBuffer.jobLoadTableId@"_Stz, &Task::vJob_LoadBufferJobLoadTableIdFetch, false);
+  vAddStep("job_loadBuffer.jobLoadTable!"_Stz,   &Task::vJob_LoadBufferJobLoadTableStore,   false);
+  vAddStep("job_loadBuffer.partition@"_Stz,      &Task::vJob_LoadBufferPartitionFetch,      false);
+  vAddStep("job_loadBuffer.table!"_Stz,          &Task::vJob_LoadBufferTableStore,          false);
   
-  vAddStep("job_loadTable.addInvalidRows"_Stz,&vJob_LoadTableAddInvalidRows,false);
-  vAddStep("job_loadTable.addValidRows"_Stz,  &vJob_LoadTableAddValidRows,  false);
-  vAddStep("job_loadTable.filePath@"_Stz,     &vJob_LoadTableFilePathFetch, false);
-  vAddStep("job_loadTable.task@"_Stz,         &vJob_LoadTableTaskFetch,     false);
-  vAddStep("job_loadTable.task!"_Stz,         &vJob_LoadTableTaskStore,     false);
+  vAddStep("job_loadTable.addInvalidRows"_Stz,&Task::vJob_LoadTableAddInvalidRows,false);
+  vAddStep("job_loadTable.addValidRows"_Stz,  &Task::vJob_LoadTableAddValidRows,  false);
+  vAddStep("job_loadTable.filePath@"_Stz,     &Task::vJob_LoadTableFilePathFetch, false);
+  vAddStep("job_loadTable.task@"_Stz,         &Task::vJob_LoadTableTaskFetch,     false);
+  vAddStep("job_loadTable.task!"_Stz,         &Task::vJob_LoadTableTaskStore,     false);
   
-  vAddStep("Job_subLoader.jobLoadTable@"_Stz, &vJob_SubLoaderJobLoadTableFetch, false);
+  vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Task::vJob_SubLoaderJobLoadTableFetch, false);
 }
 
 /*----------------------------------------------------------------------------*/

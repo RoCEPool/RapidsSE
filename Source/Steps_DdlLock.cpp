@@ -19,11 +19,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_DdlLock(void)
 {
-  vAddStep("ddlLock::dropRead"_Stz, &vDdlLockDropRead,  false);
-  vAddStep("ddlLock::dropWrite"_Stz,&vDdlLockDropWrite, false);
-  vAddStep("ddlLock::grabRead"_Stz, &vDdlLockGrabRead,  false);
-  vAddStep("ddlLock::grabWrite"_Stz,&vDdlLockGrabWrite, false);
-  vAddStep("ddlLock::testDrop"_Stz, &vDdlLockTestDrop,  false);
+  vAddStep("ddlLock::dropRead"_Stz, &Task::vDdlLockDropRead,  false);
+  vAddStep("ddlLock::dropWrite"_Stz,&Task::vDdlLockDropWrite, false);
+  vAddStep("ddlLock::grabRead"_Stz, &Task::vDdlLockGrabRead,  false);
+  vAddStep("ddlLock::grabWrite"_Stz,&Task::vDdlLockGrabWrite, false);
+  vAddStep("ddlLock::testDrop"_Stz, &Task::vDdlLockTestDrop,  false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_Utility(void)
 {
-  vAddStep("utility::prefetch"_Stz, &vUtilityPrefetch,  false );
+  vAddStep("utility::prefetch"_Stz, &Task::vUtilityPrefetch,  false );
 }
 
 /*----------------------------------------------------------------------------*/

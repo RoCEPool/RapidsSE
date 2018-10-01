@@ -15,8 +15,8 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_JobAnalyzeIndex(void)
 {
-  vAddStep("jobAnalyzeIndex.isDetailed"_Stz, &vJob_AnalyzeIndexIsDetailed, false);
-  vAddStep("jobAnalyzeTable.isDetailed"_Stz, &vJob_AnalyzeTableIsDetailed, false);
+  vAddStep("jobAnalyzeIndex.isDetailed"_Stz, &Task::vJob_AnalyzeIndexIsDetailed, false);
+  vAddStep("jobAnalyzeTable.isDetailed"_Stz, &Task::vJob_AnalyzeTableIsDetailed, false);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -15,17 +15,17 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Task::vAddSteps_RbCursor(void)
 {
-  vAddStep("rbCursor.begin"_Stz,     &vRbCursorBegin,      false);
-  vAddStep("rbCursor.delete"_Stz,    &vRbCursorDelete,     false);
-  vAddStep("rbCursor.end"_Stz,       &vRbCursorEnd,        false);
-  vAddStep("rbCursor.first"_Stz,     &vRbCursorFirst,      false);
-  vAddStep("rbCursor.get"_Stz,       &vRbCursorGet,        false);
-  vAddStep("rbCursor.init"_Stz,      &vRbCursorInit,       false);
-  vAddStep("rbCursor::new"_Stz,       &vRbCursorNew,        false);
-  vAddStep("rbCursor.next"_Stz,      &vRbCursorNext,       false);
-  vAddStep("rbCursor.rowBuffer"_Stz, &vRbCursorRowBuffer,  false);
-  vAddStep("rbCursor.table@"_Stz,    &vRbCursorTableFetch, false);
-  vAddStep("rbCursor.table!"_Stz,    &vRbCursorTableStore, false);
+  vAddStep("rbCursor.begin"_Stz,     &Task::vRbCursorBegin,      false);
+  vAddStep("rbCursor.delete"_Stz,    &Task::vRbCursorDelete,     false);
+  vAddStep("rbCursor.end"_Stz,       &Task::vRbCursorEnd,        false);
+  vAddStep("rbCursor.first"_Stz,     &Task::vRbCursorFirst,      false);
+  vAddStep("rbCursor.get"_Stz,       &Task::vRbCursorGet,        false);
+  vAddStep("rbCursor.init"_Stz,      &Task::vRbCursorInit,       false);
+  vAddStep("rbCursor::new"_Stz,       &Task::vRbCursorNew,        false);
+  vAddStep("rbCursor.next"_Stz,      &Task::vRbCursorNext,       false);
+  vAddStep("rbCursor.rowBuffer"_Stz, &Task::vRbCursorRowBuffer,  false);
+  vAddStep("rbCursor.table@"_Stz,    &Task::vRbCursorTableFetch, false);
+  vAddStep("rbCursor.table!"_Stz,    &Task::vRbCursorTableStore, false);
 }
 
 /*----------------------------------------------------------------------------*/
