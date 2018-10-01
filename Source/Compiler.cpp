@@ -34,6 +34,11 @@ Compiler::Compiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
+  m_pTokeniser = new Tokeniser;
+  m_pTokeniser->vPush();
+  s32 sString(""_Stz);
+  m_pTokeniser->vUseString(sString);
+
   _checkInitialised_(CN_COMPILER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
@@ -45,6 +50,8 @@ Compiler::Compiler(void)
 Compiler::~Compiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
+  
+  delete m_pTokeniser;
 }
 
 /*----------------------------------------------------------------------------*/

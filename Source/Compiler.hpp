@@ -7,8 +7,12 @@ namespace Tasks
 {
   class Compiler : public Object
   {
+  friend class Task;
+  
   public:
   
+    Tokeniser* m_pTokeniser; // input stream tokenizer
+
     // must be last
     Footer m_xFooter;
     
