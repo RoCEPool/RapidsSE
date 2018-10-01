@@ -17,6 +17,7 @@ void Task::vAddBaseWords(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   vAddPrimitives();
+  Step::vAddSteps();
   
   vAddConstants();
   
