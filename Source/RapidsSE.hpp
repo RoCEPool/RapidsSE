@@ -41,7 +41,6 @@ namespace StorageEngine
     static bool bRunUtilities(int argc, Stz* argv[]);
     static void vSetGlobals(void);
     static void vSignalHandler(int iSignal);
-    static void vSpawnJobPrompt(void);
     static void vSpawnJobStart(void);
     static void vStartSystem(void);
     static void vStopSystem(void);
