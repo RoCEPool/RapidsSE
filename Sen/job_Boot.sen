@@ -1,12 +1,8 @@
 /*============================================================================*/
-/* compile.sen -- compile the dictionary                                      */
+/* job_Boot.sen -- compile the dictionary                                     */
 /*============================================================================*/
 
-"compile.sen" .verbose
-
-//
-// step 1: compile all the words
-//
+"job_Boot.sen" .verbose
 
 "core.sen" include
 "common.sen" include
@@ -20,14 +16,6 @@
 
 // last
 "se.sen" include
-
-assert::stack_0
-
-//
-// step 2: runs some basic tests
-//
-
-//ut
 
 assert::stack_0
 

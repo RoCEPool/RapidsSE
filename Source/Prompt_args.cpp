@@ -11,7 +11,10 @@ PromptNote mPromptNote_args (
   "args"_Stz,        // the prompt command
   nullptr,           // the second word
   bPrompt_args,      // prompt post-process function
-  true               // enabled
+  true,              // enabled
+
+  true,               // visible
+  "fun help"_Stz      // help
 );
 
 extern Arguments gxArguments;

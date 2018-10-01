@@ -10,7 +10,10 @@ PromptNote mPromptNote_sleep (
   "sleep"_Stz,        // the prompt command
   nullptr,            // the second word
   bPrompt_sleep,      // prompt post-process function
-  true                // enabled
+  true,               // enabled
+
+  true,               // visible
+  "fun help"_Stz      // help
 );
 
 /*----------------------------------------------------------------------------*/

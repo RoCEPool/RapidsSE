@@ -15,10 +15,12 @@ namespace Prompt
                Stz* aComment,
                Stz* aCommand1,
                Stz* aCommand2,
-            
                bool (*fPrompt)(SePrompt* pPrompt),
+               bool bEnabled,
                
-               bool bEnabled = false);
+               bool bVisible,
+               Stz* aHelp
+              );
   };
 }
 

@@ -9,8 +9,11 @@ PromptNote mPromptNote_bye (
   "comment"_Stz,     // comment about the functopm
   "bye"_Stz,         // the prompt command
   nullptr,           // the second word
-  bPrompt_bye,      // prompt post-process function
-  true               // enabled
+  bPrompt_bye,       // prompt post-process function
+  true,              // enabled
+
+  true,              // visible
+  "fun help"_Stz     // help
 );
 
 /*----------------------------------------------------------------------------*/

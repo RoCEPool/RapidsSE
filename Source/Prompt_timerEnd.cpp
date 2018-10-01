@@ -10,7 +10,10 @@ PromptNote mPromptNote_timerEnd (
   "timerEnd"_Stz,        // the prompt command
   nullptr,               // the second word
   bPrompt_timerEnd,      // prompt post-process function
-  true                   // enabled
+  true,                  // enabled
+
+  true,                  // visible
+  "fun help"_Stz         // help
 );
 
 extern Timer gxPromptTimer;  // the timer

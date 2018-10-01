@@ -10,7 +10,10 @@ PromptNote mPromptNote_cd (
   "cd"_Stz,          // the prompt command
   nullptr,           // the second word
   bPrompt_cd,        // prompt post-process function
-  true               // enabled
+  true,              // enabled
+
+  true,              // visible
+  "fun help"_Stz     // help
 );
 
 /*----------------------------------------------------------------------------*/

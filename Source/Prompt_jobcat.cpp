@@ -10,7 +10,10 @@ PromptNote mPromptNote_jobcat (
   "jobcat"_Stz,        // the prompt command
   nullptr,             // the second word
   bPrompt_jobcat,      // prompt post-process function
-  true                 // enabled
+  true,                // enabled
+
+  true,                // visible
+  "fun help"_Stz       // help
 );
 
 extern PromptCatalog gxPromptCatalog;
