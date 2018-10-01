@@ -11,12 +11,19 @@ namespace Pool
   {
   public:
     struct {
-      Heap*  m_pJumbo;
-      Heap*  m_pLarge;
-      Heap*  m_pMedium;
-      Heap*  m_pSmall;
+      Heap* m_pJumbo;
+      Heap* m_pLarge;
+      Heap* m_pMedium;
+      Heap* m_pSmall;
     } Transient;
   
+    struct {
+      Heap* m_pJumbo;
+      Heap* m_pMedium;
+      Heap* m_pLarge;
+      Heap* m_pSmall;
+    } Persistent;
+
   public:
     void vInit(void);
   };
