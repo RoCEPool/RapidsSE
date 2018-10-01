@@ -142,22 +142,13 @@ namespace Tasks
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vAdjustNext(i8 iBytes);
-    void vAddConstant(Stz* aName, i8 iVal);
-    void vAddConstant(Stz* aName, Stz* aValue);
-    void vAddConstants(void);
-    void vAddMunged(MP_Task mpTask);
-    void vAddPrimitive(Stz* aName, TaskStep pStep, bool bImmediate);
-    void vAddRoutines(void);
     Object* pArgObject(void);
-    Word* pCompileColon(StrVal& sDefinition);
-    void  vCompileConstant(StrVal& sDefinition);
     static void vDebug(void);
     void vContentDump(void);
     bool bDecAck(i8& iRemaining);
     void vDropLock(void);
     void vException(StrVal& sFile, StrVal& eException);
     void vGrabLock(void);
-    void vAddBaseWords(void);
     bool bIsLocked(void);
     bool bIsNonPartitioned(void);
     bool bIsPartitioned(void);
@@ -204,12 +195,24 @@ namespace Tasks
     i8   iWakeupTime(void);
     void vWakeupTask(void);
     eQR  eWhichQueue(void);
-  
+
+    /*------------------------------------------------------------------------*/
+
+    void vAddBaseWords(void);
+    void vAddConstant(Stz* aName, i8 iVal);
+    void vAddConstant(Stz* aName, Stz* aValue);
+    void vAddConstants(void);
+    void vAddMunged(MP_Task mpTask);
+    void vAddPrimitive(Stz* aName, TaskStep pStep, bool bImmediate);
+    void vAddPrimitives(void);
+    void vAddRoutines(void);
+    Word* pCompileColon(StrVal& sDefinition);
+    void  vCompileConstant(StrVal& sDefinition);
+
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
 
-    void vAddPrimitives(void);
     void vAddPrimitives_AccessPath(void);
     void vAddPrimitives_Accum(void);
     void vAddPrimitives_Address(void);
