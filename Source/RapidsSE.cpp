@@ -31,6 +31,9 @@ void RapidsSE::vMainEntry(void)
   
   vSetSignalHandlers();
   
+  // init the tls keys
+  TlsKeys::vInit();
+  
   StorageEngine::vCheckAllAssumptions();
   
   vWriteRegionName();
@@ -642,9 +645,6 @@ void RapidsSE::vStartSystem(void)
     vInfo("\n*\n* System Init\n*\n"_Stz);
   
   ASSERT( ! gpAttachMap->m_xMainDic.bHasWords() );
-  
-  // init the tls keys
-  TlsKeys::vInit();
   
   new StepArray;
   
