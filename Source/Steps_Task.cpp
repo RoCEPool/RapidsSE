@@ -24,7 +24,6 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.dump"_Stz,      &vTaskDump,          false);
   vAddPrimitive("task.dropLock"_Stz,  &vTaskDropLock,      false);
   vAddPrimitive("task.grabLock"_Stz,  &vTaskGrabLock,      false);
-  vAddPrimitive("task.init"_Stz,      &vTaskInit,          false);
   vAddPrimitive("task.job@"_Stz,      &vTaskJobFetch,      false);
   vAddPrimitive("task.job!"_Stz,      &vTaskJobStore,      false);
   vAddPrimitive("task.name@"_Stz,     &vTaskNameFetch,     false);
@@ -205,27 +204,6 @@ void Task::vTaskGrabLock(MP_Task mpTask)
   Task* pThatTask = _pTask(pObject);
   
   pThatTask->vGrabLock();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.init -- init of task on data stack                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskInit(MP_Task mpTask)
-{
-ENTRY("vTaskInit"_Stz);
-  
-  Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("task.init"_Stz);
-  
-  Task* pThatTask = _pTask(pPtrTask);
-  ASSERT(CN_TASK == pThatTask->eClass());
-  
-  new(pThatTask) Task(nullptr);
-  
-  Word* pWordThread = Word::pToWord(pThatTask);
   
   EXIT();
 }

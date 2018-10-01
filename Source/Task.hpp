@@ -134,7 +134,6 @@ namespace Tasks
 
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Task* pTask);
     void  operator delete(void*);
     
     Task(Job* pJob);
@@ -1286,7 +1285,6 @@ namespace Tasks
     static void vTaskDropLock(MP_Task mpTask);
     static void vTaskDump(MP_Task mpTask);
     static void vTaskGrabLock(MP_Task mpTask);
-    static void vTaskInit(MP_Task mpTask);
     static void vTaskJobFetch(MP_Task mpTask);
     static void vTaskJobStore(MP_Task mpTask);
     static void vTaskNameFetch(MP_Task mpTask);
