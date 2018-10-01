@@ -90,7 +90,6 @@ Task::~Task(void)
   delete m_pAuxStack;
   
   delete m_pCompiler;
-  delete m_pTokeniser;
   
   while (m_pLocalsFrame) {
 
@@ -143,11 +142,6 @@ void Task::vInit(void)
   m_nVariables   = 0;
   m_pCurrentWord = nullptr;
   m_nSubDic      = 0;
-  
-  m_pTokeniser = new Tokeniser;
-  m_pTokeniser->vPush();
-  s32 sString(""_Stz);
-  m_pTokeniser->vUseString(sString);
   
   m_pSEitf   = nullptr;
 
@@ -541,7 +535,7 @@ void Task::vReset(void)
   IP.m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
-  m_pTokeniser->sToken() = ""_Stz;
+  m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
   
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
@@ -557,7 +551,7 @@ void Task::vRetry(void)
   IP.m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
-  m_pTokeniser->sToken() = ""_Stz;
+  m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
   
   m_pDataStack->vRetry();
   m_pReturnStack->vRetry();

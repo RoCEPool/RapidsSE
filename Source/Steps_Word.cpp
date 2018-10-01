@@ -106,8 +106,8 @@ void Task::vColon(MP_Task mpTask)
   
   mpTask->m_bCompiling = true;
   
-  mpTask->m_pTokeniser->vNextToken();
-  sName = mpTask->m_pTokeniser->sToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
+  sName = mpTask->m_pCompiler->m_pTokeniser->sToken();
   
   Dic* pDic;
   if (mpTask->m_xPathStack.iCount())
@@ -171,7 +171,7 @@ void Task::vCreate(MP_Task mpTask)
 {
 ENTRY("vCreate"_Stz);
   
-  mpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
   Dic* pDic;
   if (mpTask->m_xPathStack.iCount())
@@ -179,9 +179,9 @@ ENTRY("vCreate"_Stz);
   else
     pDic = &gpAttachMap->m_xMainDic;
   
-  //vTrace(": %s\n"_Stz,mpTask->m_pTokeniser->sToken().aChar());
+  //vTrace(": %s\n"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
 
-  Word* pNewWord = new(pDic) Word(mpTask->m_pTokeniser->sToken());
+  Word* pNewWord = new(pDic) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   mpTask->m_pCurrentWord = pNewWord;
   
@@ -195,7 +195,7 @@ void Task::vCreatePersistent(MP_Task mpTask)
 {
   ENTRY("vCreate"_Stz);
   
-  mpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
   Dic* pDic;
   if (mpTask->m_xPathStack.iCount())
@@ -203,9 +203,9 @@ void Task::vCreatePersistent(MP_Task mpTask)
   else
     pDic = &gpAttachMap->m_xMainDic;
   
-  //vTrace(": %s\n"_Stz,mpTask->m_pTokeniser->sToken().aChar());
+  //vTrace(": %s\n"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
   
-  Word* pNewWord = new(pDic,true) Word(mpTask->m_pTokeniser->sToken());
+  Word* pNewWord = new(pDic,true) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   mpTask->m_pCurrentWord = pNewWord;
   
@@ -290,7 +290,7 @@ void Task::vCreateTenants(MP_Task mpTask)
 {
   ENTRY("vCreateTenant"_Stz);
   
-  mpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
 //  Dic* pDic;
 //  if (mpTask->m_xPathStack.iCount())
@@ -298,9 +298,9 @@ void Task::vCreateTenants(MP_Task mpTask)
 //  else
 //    pDic = &gpAttachMap->m_xMainDic;
   
-  //vTrace(": %s\n"_Stz,mpTask->m_pTokeniser->sToken().aChar());
+  //vTrace(": %s\n"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
   
-  Word* pNewWord = new(nullptr) Word(mpTask->m_pTokeniser->sToken());
+  Word* pNewWord = new(nullptr) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   mpTask->m_pCurrentWord = pNewWord;
   
@@ -422,14 +422,14 @@ void Task::vForget(MP_Task mpTask)
 {
 ENTRY("vForget"_Stz);
   
-  mpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
-  Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
+  Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No such word: %s"_Stz,mpTask->m_pTokeniser->sToken().aChar());
+    THROW("No such word: %s"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
   
-  Word* pRemovedWord = mpTask->m_xPathStack.pRemoveWord(mpTask->m_pTokeniser->sToken());
+  Word* pRemovedWord = mpTask->m_xPathStack.pRemoveWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   ASSERT(pRemovedWord);
   
   delete pRemovedWord;
@@ -453,8 +453,8 @@ void Task::vHashHashColon(MP_Task mpTask)
   
   // get the name of the symbolic argument
   s32 sSymbolicArg;
-  mpTask->m_pTokeniser->vNextToken();
-  sSymbolicArg = mpTask->m_pTokeniser->sToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
+  sSymbolicArg = mpTask->m_pCompiler->m_pTokeniser->sToken();
   
   // encode what to execute at runtime
   
@@ -588,8 +588,8 @@ void Task::vOpDic(MP_Task mpTask)
 
   s32 sNameOpFrame;
   
-  mpTask->m_pTokeniser->vNextToken();
-  sNameOpFrame = mpTask->m_pTokeniser->sToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
+  sNameOpFrame = mpTask->m_pCompiler->m_pTokeniser->sToken();
   
   RegFrame* pOpFrame = mpTask->m_pPlan->pRegFrameFind(sNameOpFrame);
   //if ( ! pOpFrame )
@@ -646,12 +646,12 @@ void Task::vPostpone(MP_Task mpTask)
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
   // get name of word to be called
-  mpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
   // find the word in dic stack
-  Word* pCalledWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
+  Word* pCalledWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   if ( ! pCalledWord )
-    THROW("No word: %s "_Stz,mpTask->m_pTokeniser->sToken().aChar());
+    THROW("No word: %s "_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
   
   if (pCalledWord->bImmediate()) {
     
@@ -687,11 +687,11 @@ void Task::vSee(MP_Task mpTask)
   
   s48K sWorkspace;
   
-  mpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
-  Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
+  Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   if ( ! pWord ) {
-    vTrace("See: %s unknown\n"_Stz,mpTask->m_pTokeniser->sToken().aChar());
+    vTrace("See: %s unknown\n"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
     return;
   }
   
@@ -806,10 +806,10 @@ void Task::vSubDic(MP_Task mpTask)
 {
   ENTRY("vSubDic"_Stz);
   
-  mpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
   s32 sNameSubDic;
-  sNameSubDic = mpTask->m_pTokeniser->sToken();
+  sNameSubDic = mpTask->m_pCompiler->m_pTokeniser->sToken();
   
   Word* pWordSubDic = mpTask->m_xPathStack.pFindWord(sNameSubDic);
   if ( ! pWordSubDic )
@@ -831,7 +831,7 @@ void Task::vTick(MP_Task mpTask)
 {
   ENTRY("vTick"_Stz);
   
-  mpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
   //  if ( ! bExtracted ) {
   //    mpTask->m_sException.vSprint("No name: ' ");
@@ -839,10 +839,10 @@ void Task::vTick(MP_Task mpTask)
   //    throw (i8)__LINE__;
   //  }
   
-  Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
+  Word* pWord = mpTask->m_xPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No word: %s "_Stz,mpTask->m_pTokeniser->sToken().aChar());
+    THROW("No word: %s "_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
   
   if (mpTask->m_bCompiling) {
     Word* pCurrentWord = mpTask->m_pCurrentWord;

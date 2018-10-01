@@ -334,7 +334,7 @@ bool CommandProcessor::bSpawnJob(SEitf* pSEitf)
   pTknVec()->vSetTokens();
   
   //! make this part of verbose??
-  //m_pCommandProcessor->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
+  //m_pCommandProcessor->m_pCompiler->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
   bool bResult = RapidsSE_bSpawnJob(m_pJob,SS_SEED_REQ,pSEitf);
   

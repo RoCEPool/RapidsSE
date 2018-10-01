@@ -26,8 +26,8 @@ void Task::vComment(MP_Task mpTask)
   ENTRY("vComment"_Stz);
   
   for (;;) {
-    mpTask->m_pTokeniser->vNextToken();
-    if (mpTask->m_pTokeniser->sToken().bEqual(")"_Stz))
+    mpTask->m_pCompiler->m_pTokeniser->vNextToken();
+    if (mpTask->m_pCompiler->m_pTokeniser->sToken().bEqual(")"_Stz))
       break;
   }
   

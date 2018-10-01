@@ -85,8 +85,8 @@ ENTRY("vCommonSlash"_Stz);
 //  for (;;) {
     
     // get name of common dictionary
-    mpTask->m_pTokeniser->vNextToken();
-    sDicName = mpTask->m_pTokeniser->sToken();
+    mpTask->m_pCompiler->m_pTokeniser->vNextToken();
+    sDicName = mpTask->m_pCompiler->m_pTokeniser->sToken();
     
     // test for that dictionary
     Word* pWordDic = mpTask->m_xPathStack.pFindWord(sDicName);
@@ -106,8 +106,8 @@ ENTRY("vCommonSlash"_Stz);
     }
     
     // get name of common variable
-    mpTask->m_pTokeniser->vNextToken();
-    sVarName = mpTask->m_pTokeniser->sToken();
+    mpTask->m_pCompiler->m_pTokeniser->vNextToken();
+    sVarName = mpTask->m_pCompiler->m_pTokeniser->sToken();
     
     // create new word for common in current dictionary
     Word* pWordCommon = new(pSubDic) Word(sVarName);
@@ -124,7 +124,7 @@ ENTRY("vCommonSlash"_Stz);
     pWordCommon->vEncode("exit"_Stz);
     
     // accept /
-    mpTask->m_pTokeniser->vNextToken();
+    mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
     mpTask->m_nVariables = 0;
 
@@ -143,9 +143,9 @@ ENTRY("vCommonToCommon"_Stz);
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
   // get name of common
-  mpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
 
-  Word* pWordCommon = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
+  Word* pWordCommon = mpTask->m_xPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   ASSERT(pWordCommon);
  
   ValWrk xValWrk;

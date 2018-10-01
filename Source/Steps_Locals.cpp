@@ -83,10 +83,10 @@ ENTRY("vLocalsBar"_Stz);
   for (;;) {
     
     // get name of local
-    mpTask->m_pTokeniser->vNextToken();
+    mpTask->m_pCompiler->m_pTokeniser->vNextToken();
     
     // end of locals declaration?
-    if (mpTask->m_pTokeniser->sToken().bEqual("|"_Stz))
+    if (mpTask->m_pCompiler->m_pTokeniser->sToken().bEqual("|"_Stz))
       break;
 
     // test for first use of locals|
@@ -102,7 +102,7 @@ ENTRY("vLocalsBar"_Stz);
     }
     
     // create new word for local in current dictionary
-    Word* pWordLocal = new(pDic) Word(mpTask->m_pTokeniser->sToken());
+    Word* pWordLocal = new(pDic) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
     // ** do not set as current word **
     
     // set word as local variable
@@ -172,9 +172,9 @@ ENTRY("vLocalsTo"_Stz);
   Word* pCurrentWord = mpTask->m_pCurrentWord;
   
   // get name of local
-  mpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
 
-  Word* pWordVariable = mpTask->m_xPathStack.pFindWord(mpTask->m_pTokeniser->sToken());
+  Word* pWordVariable = mpTask->m_xPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   ASSERT(pWordVariable);
  
   ValWrk xValWrk;

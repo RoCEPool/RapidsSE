@@ -963,14 +963,14 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   Word* pCalledWord;
   ValWrk xValWrk;
   
-  m_pTokeniser->vUseString(sDefinition);
+  m_pCompiler->m_pTokeniser->vUseString(sDefinition);
   
   // get :
-  m_pTokeniser->vNextToken();
+  m_pCompiler->m_pTokeniser->vNextToken();
   //vTrace("CompileColon: %s\n"_Stz,m_sToken.aChar());
   
   // get name of word
-  m_pTokeniser->vNextToken();
+  m_pCompiler->m_pTokeniser->vNextToken();
   //vTrace("CompileColon: %s\n"_Stz,m_sToken.aChar());
   
   Dic* pDic;
@@ -979,29 +979,29 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   else
     pDic = &gpAttachMap->m_xMainDic;
 
-  pNewWord = new(pDic) Word(m_pTokeniser->sToken());
+  pNewWord = new(pDic) Word(m_pCompiler->m_pTokeniser->sToken());
   
   m_pCurrentWord = pNewWord;
 
-  m_pTokeniser->vNextToken();
+  m_pCompiler->m_pTokeniser->vNextToken();
   
-  while (TN_NONE != m_pTokeniser->eToken()) {
+  while (TN_NONE != m_pCompiler->m_pTokeniser->eToken()) {
     
     //vTrace("CompileColon: %s\n"_Stz,m_sToken.aChar());
     
-//  if (StrLib::bEqualTo(";",m_pTokeniser->sToken().aChar()))
-    if (m_pTokeniser->sToken().bEqual(";"_Stz))
+//  if (StrLib::bEqualTo(";",m_pCompiler->m_pTokeniser->sToken().aChar()))
+    if (m_pCompiler->m_pTokeniser->sToken().bEqual(";"_Stz))
       break;
     
-    switch (m_pTokeniser->eToken()) {
+    switch (m_pCompiler->m_pTokeniser->eToken()) {
         
       case TN_INTEGER:
-        xValWrk = m_pTokeniser->sToken().iToI8();
+        xValWrk = m_pCompiler->m_pTokeniser->sToken().iToI8();
         pNewWord->vEncode("pushValue"_Stz,&xValWrk);
         break;
         
       case TN_NAME:
-        pCalledWord = m_xPathStack.pFindWord(m_pTokeniser->sToken());
+        pCalledWord = m_xPathStack.pFindWord(m_pCompiler->m_pTokeniser->sToken());
         if (WT_PRIMITIVE == pCalledWord->eWordType()) {
           pStep = pCalledWord->pEntryStep();
           if (pCalledWord->bImmediate())
@@ -1020,23 +1020,23 @@ Word* Task::pCompileColon(StrVal& sDefinition)
         break;
         
       case TN_STRING: {
-        xValWrk = m_pTokeniser->sToken();
+        xValWrk = m_pCompiler->m_pTokeniser->sToken();
         pNewWord->vEncode("pushValue"_Stz,&xValWrk);
         break;
       }
         
       default:
-        THROW("Invalid m_eToken %lld"_Stz,m_pTokeniser->eToken());
+        THROW("Invalid m_eToken %lld"_Stz,m_pCompiler->m_pTokeniser->eToken());
     }
     
-    m_pTokeniser->vNextToken();
+    m_pCompiler->m_pTokeniser->vNextToken();
   }
   
   pNewWord->vEncode("exit"_Stz);
   
 
   // reset scanning
-  m_pTokeniser->vUseEnd();
+  m_pCompiler->m_pTokeniser->vUseEnd();
   
   return pNewWord;
 }
@@ -1050,30 +1050,30 @@ void Task::vCompileConstant(StrVal& sDefinition)
   
   s48K sConstantValue;
   
-  m_pTokeniser->vUseString(sDefinition);
+  m_pCompiler->m_pTokeniser->vUseString(sDefinition);
   
   // get string
-  m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().aChar());
-  sConstantValue = (Stz*)m_pTokeniser->sToken().aChar();
+  m_pCompiler->m_pTokeniser->vNextToken();
+  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().aChar());
+  sConstantValue = (Stz*)m_pCompiler->m_pTokeniser->sToken().aChar();
   
   // get CONSTANT
-  m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().aChar());
+  m_pCompiler->m_pTokeniser->vNextToken();
+  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().aChar());
   
   // get name of word
-  m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n"_Stz,m_pTokeniser->sToken().aChar());
+  m_pCompiler->m_pTokeniser->vNextToken();
+  //vTrace("CompileConstant: %s\n"_Stz,m_pCompiler->m_pTokeniser->sToken().aChar());
 
-  Stz* aName = (Stz*)m_pTokeniser->sToken().aChar();
+  Stz* aName = (Stz*)m_pCompiler->m_pTokeniser->sToken().aChar();
 
   //vTrace("CompileConstant: %s %s\n"_Stz,aName,sConstantValue.aChar());
   
   vAddConstant(aName,(Stz*)sConstantValue.aChar());
   
-  m_pTokeniser->vNextToken();
+  m_pCompiler->m_pTokeniser->vNextToken();
   
-  m_pTokeniser->vUseEnd();
+  m_pCompiler->m_pTokeniser->vUseEnd();
 }
 
 /*============================================================================*/

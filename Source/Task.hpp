@@ -124,7 +124,6 @@ namespace Tasks
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove
   
-    Tokeniser* m_pTokeniser; // input stream tokenizer
     Interface::SEitf* m_pSEitf; // the seitf for this task
     Plan*   m_pPlan;            // the plan associated with task
 

@@ -59,7 +59,7 @@ void Task::vInputClose(MP_Task mpTask)
 {
 ENTRY("vInputClose"_Stz);
   
-  mpTask->m_pTokeniser->vUseEnd();
+  mpTask->m_pCompiler->m_pTokeniser->vUseEnd();
   
   EXIT();
 }
@@ -71,7 +71,7 @@ void Task::vInputDepth(MP_Task mpTask)
 {
 ENTRY("vInputDepth"_Stz);
   
-  i8 iDepth = mpTask->m_pTokeniser->iDepth();
+  i8 iDepth = mpTask->m_pCompiler->m_pTokeniser->iDepth();
   
   mpTask->m_pDataStack->vPushInt(iDepth);
   
@@ -89,9 +89,9 @@ ENTRY("vInputNext"_Stz);
     ASSERT(mpTask->m_iTracing);
   }
   
-  char* aToken = mpTask->m_pTokeniser->sToken().aChar();
+  char* aToken = mpTask->m_pCompiler->m_pTokeniser->sToken().aChar();
   
-  eTN eToken = mpTask->m_pTokeniser->eNextToken(aToken);
+  eTN eToken = mpTask->m_pCompiler->m_pTokeniser->eNextToken(aToken);
   
   EXIT();
 }
@@ -108,7 +108,7 @@ ENTRY("vInputOpen"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(sFilePath) )
     THROW_INVALID_DSTACK("input.open"_Stz);
   
-  bool bOpened = mpTask->m_pTokeniser->bUseFile(sFilePath);
+  bool bOpened = mpTask->m_pCompiler->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
     THROW("No such file: %s"_Stz,sFilePath.aChar());
@@ -123,7 +123,7 @@ void Task::vInputPop(MP_Task mpTask)
 {
 ENTRY("vInputPop"_Stz);
   
-  bool bPopped = mpTask->m_pTokeniser->bPop();
+  bool bPopped = mpTask->m_pCompiler->m_pTokeniser->bPop();
   ASSERT(bPopped);
   
   EXIT();
@@ -136,7 +136,7 @@ void Task::vInputPush(MP_Task mpTask)
 {
 ENTRY("vInputPush"_Stz);
   
-  mpTask->m_pTokeniser->vPush();
+  mpTask->m_pCompiler->m_pTokeniser->vPush();
   
   EXIT();
 }
@@ -148,7 +148,7 @@ void Task::vInputStdin(MP_Task mpTask)
 {
 ENTRY("vInputStdin"_Stz);
   
-  mpTask->m_pTokeniser->vUseStdin();
+  mpTask->m_pCompiler->m_pTokeniser->vUseStdin();
   
   EXIT();
 }
@@ -169,7 +169,7 @@ ENTRY("vInputText"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(sInput) )
     THROW_INVALID_DSTACK("input.text"_Stz);
     
-  mpTask->m_pTokeniser->vUseString(sInput);
+  mpTask->m_pCompiler->m_pTokeniser->vUseString(sInput);
   
   EXIT();
 }
@@ -181,7 +181,7 @@ void Task::vInputToken(MP_Task mpTask)
 {
 ENTRY("vInputToken"_Stz);
   
-  mpTask->m_pDataStack->vPushS48K(mpTask->m_pTokeniser->sToken());
+  mpTask->m_pDataStack->vPushS48K(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   EXIT();
 }
@@ -193,7 +193,7 @@ void Task::vInputType(MP_Task mpTask)
 {
 ENTRY("vInputType"_Stz);
   
-  eTN eTokenType = mpTask->m_pTokeniser->eToken();
+  eTN eTokenType = mpTask->m_pCompiler->m_pTokeniser->eToken();
   
   mpTask->m_pDataStack->vPushInt(eTokenType);
   
@@ -207,9 +207,9 @@ void Task::vTokenColon(MP_Task mpTask)
 {
   ENTRY("vTokenColon"_Stz);
   
-  mpTask->m_pTokeniser->vNextToken();
+  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
-  mpTask->m_pDataStack->vPushS48K(mpTask->m_pTokeniser->sToken());
+  mpTask->m_pDataStack->vPushS48K(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   EXIT();
 }
