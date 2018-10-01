@@ -127,7 +127,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTableR35 not if popTable pJob_TruncateTable <ERROR_JOB> exit then
+  sTableNm checkIsTable not if popTable pJob_TruncateTable <ERROR_JOB> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary

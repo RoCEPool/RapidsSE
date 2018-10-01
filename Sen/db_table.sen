@@ -128,7 +128,7 @@
 /*----------------------------------------------------------------------------*/
 /* check given name is a table                                                */
 /*----------------------------------------------------------------------------*/
-: checkIsTableR35 ( "<tableNm>" -- true | errorCode false )
+: checkIsTable ( "<tableNm>" -- true | errorCode false )
 
   find ( "<tableNm>" ^w:table )
 

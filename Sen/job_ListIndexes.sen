@@ -100,7 +100,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTableR35 not if popTable pJob_ListIndexes <ERROR_REQUEST> exit then
+  sTableNm checkIsTable not if popTable pJob_ListIndexes <ERROR_REQUEST> exit then
 
   args.metadata if
     "(name VARCHAR, isUnique BOOLEAN, isPrimaryKey BOOLEAN)"

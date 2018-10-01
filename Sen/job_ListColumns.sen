@@ -91,7 +91,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTableR35 not if popTable pJob_ListColumns <ERROR_REQUEST> exit then
+  sTableNm checkIsTable not if popTable pJob_ListColumns <ERROR_REQUEST> exit then
 
   args.metadata if
     "(columnNo INTEGER, columnName VARCHAR, columnType VARCHAR, columnLength INTEGER, columnScale INTEGER, isNull boolean, isPartitionKey boolean)"

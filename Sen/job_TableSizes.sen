@@ -85,7 +85,7 @@
     sTableNm pushTable assert
 
     // check it is a table
-    sTableNm checkIsTableR35 not if drop pJob_TableSizes <ERROR_JOB> exit then
+    sTableNm checkIsTable not if drop pJob_TableSizes <ERROR_JOB> exit then
 
     // push indexes folder
     pushIndexes assert

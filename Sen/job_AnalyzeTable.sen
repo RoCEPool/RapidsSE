@@ -20,7 +20,7 @@
   // push table folder
   sTableNm pushTable assert
 
-  sTableNm checkIsTableR35 not if popTable false exit then
+  sTableNm checkIsTable not if popTable false exit then
 
   // pop table folder
   popTable

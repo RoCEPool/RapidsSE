@@ -75,7 +75,7 @@
   //pathDump
 
   // check it is a table
-  sTableNm checkIsTableR35 not if popTable pJob_InsertRow <ERROR_JOB> exit then
+  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> exit then
   drop
 
   // pop table dictionary

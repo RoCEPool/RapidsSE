@@ -87,7 +87,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTableR35 not if popTable pJob_ListIdxColumns <ERROR_REQUEST> exit then
+  sTableNm checkIsTable not if popTable pJob_ListIdxColumns <ERROR_REQUEST> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder
