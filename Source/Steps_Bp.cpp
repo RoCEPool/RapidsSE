@@ -245,10 +245,10 @@ void Task::vSnapshot(MP_Task mpTask)
   gpAttachMap->m_xHeaps.Transient.m_pLarge->vAnalyse(iCountObjects);
   gpAttachMap->m_xHeaps.Transient.m_pJumbo->vAnalyse(iCountObjects);
 
-  gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->vAnalyse(iCountObjects);
-  gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->vAnalyse(iCountObjects);
-  gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->vAnalyse(iCountObjects);
-  gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeaps.Persistent.m_pSmall->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeaps.Persistent.m_pMedium->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeaps.Persistent.m_pLarge->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeaps.Persistent.m_pJumbo->vAnalyse(iCountObjects);
   
   for (i8 index = 0; index < CN_ENUMS; index++)
     mpTask->m_pDataStack->vPushInt(iCountObjects[index]);

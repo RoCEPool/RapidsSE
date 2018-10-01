@@ -51,13 +51,13 @@ AttachMap::AttachMap(void)
   m_xHeaps.vInit();
   
   // create the persistent heaps
-  m_pCarryOver->m_pPersistentJumboHeap  =
+  m_xHeaps.Persistent.m_pJumbo  =
     new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
-  m_pCarryOver->m_pPersistentLargeHeap  =
+  m_xHeaps.Persistent.m_pLarge  =
     new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
-  m_pCarryOver->m_pPersistentMediumHeap =
+  m_xHeaps.Persistent.m_pMedium =
     new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
-  m_pCarryOver->m_pPersistentSmallHeap  =
+  m_xHeaps.Persistent.m_pSmall  =
     new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
 
   _checkInitialised_(CN_ATTACHMAP);
@@ -182,10 +182,10 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
   ASSERT(m_xHeaps.Transient.m_pLarge);
   ASSERT(m_xHeaps.Transient.m_pSmall);
   
-  ASSERT(m_pCarryOver->m_pPersistentJumboHeap);
-  ASSERT(m_pCarryOver->m_pPersistentMediumHeap);
-  ASSERT(m_pCarryOver->m_pPersistentLargeHeap);
-  ASSERT(m_pCarryOver->m_pPersistentSmallHeap);
+  ASSERT(m_xHeaps.Persistent.m_pJumbo);
+  ASSERT(m_xHeaps.Persistent.m_pMedium);
+  ASSERT(m_xHeaps.Persistent.m_pLarge);
+  ASSERT(m_xHeaps.Persistent.m_pSmall);
   
   // create the tx sets
   m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());

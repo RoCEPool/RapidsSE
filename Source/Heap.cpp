@@ -144,19 +144,19 @@ Object* Heap::pAllocate(eCN eAllocClass, bool bPersistent)
              eAllocClass,aCN[eAllocClass]);
     
     case HT_PERSISTENT_SMALL:
-      pObject = gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_xHeaps.Persistent.m_pSmall->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_PERSISTENT_MEDIUM:
-      pObject = gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_xHeaps.Persistent.m_pMedium->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_PERSISTENT_LARGE:
-      pObject = gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_xHeaps.Persistent.m_pLarge->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_PERSISTENT_JUMBO:
-      pObject = gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap->pAllocObject(eAllocClass);
+      pObject = gpAttachMap->m_xHeaps.Persistent.m_pJumbo->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_TRANSIENT_SMALL:

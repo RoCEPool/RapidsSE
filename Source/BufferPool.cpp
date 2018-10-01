@@ -147,27 +147,27 @@ Buffer* BufferPool::pAllocBuffer(void)
     
     vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagSmall.aChar(),
-           gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->iBufferCount(),
-           gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->iAllocCount(),
-           gpAttachMap->m_pCarryOver->m_pPersistentSmallHeap->iFreeCount());
+           gpAttachMap->m_xHeaps.Persistent.m_pSmall->iBufferCount(),
+           gpAttachMap->m_xHeaps.Persistent.m_pSmall->iAllocCount(),
+           gpAttachMap->m_xHeaps.Persistent.m_pSmall->iFreeCount());
     
     vTrace("  Persistent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagMedium.aChar(),
-           gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->iBufferCount(),
-           gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->iAllocCount(),
-           gpAttachMap->m_pCarryOver->m_pPersistentMediumHeap->iFreeCount());
+           gpAttachMap->m_xHeaps.Persistent.m_pMedium->iBufferCount(),
+           gpAttachMap->m_xHeaps.Persistent.m_pMedium->iAllocCount(),
+           gpAttachMap->m_xHeaps.Persistent.m_pMedium->iFreeCount());
     
     vTrace("   Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagJumbo.aChar(),
-           gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->iBufferCount(),
-           gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->iAllocCount(),
-           gpAttachMap->m_pCarryOver->m_pPersistentLargeHeap->iFreeCount());
+           gpAttachMap->m_xHeaps.Persistent.m_pLarge->iBufferCount(),
+           gpAttachMap->m_xHeaps.Persistent.m_pLarge->iAllocCount(),
+           gpAttachMap->m_xHeaps.Persistent.m_pLarge->iFreeCount());
     
     vTrace("   Persistent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagJumbo.aChar(),
-           gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap->iBufferCount(),
-           gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap->iAllocCount(),
-           gpAttachMap->m_pCarryOver->m_pPersistentJumboHeap->iFreeCount());
+           gpAttachMap->m_xHeaps.Persistent.m_pJumbo->iBufferCount(),
+           gpAttachMap->m_xHeaps.Persistent.m_pJumbo->iAllocCount(),
+           gpAttachMap->m_xHeaps.Persistent.m_pJumbo->iFreeCount());
   }
   //vVerifyPool();
   
