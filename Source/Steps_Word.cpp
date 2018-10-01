@@ -104,7 +104,7 @@ void Task::vColon(MP_Task mpTask)
   
   s32 sName;
   
-  mpTask->m_bCompiling = true;
+  mpTask->m_pCompiler->m_bCompiling = true;
   
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   sName = mpTask->m_pCompiler->m_pTokeniser->sToken();
@@ -788,7 +788,7 @@ void Task::vSemicolon(MP_Task mpTask)
   
   pCurrentWord->vEncode("exit"_Stz);
   
-  mpTask->m_bCompiling = false;
+  mpTask->m_pCompiler->m_bCompiling = false;
       
   // discard subDic use
   for ( ; mpTask->m_nSubDic; mpTask->m_nSubDic--)
@@ -844,7 +844,7 @@ void Task::vTick(MP_Task mpTask)
   if ( ! pWord )
     THROW("No word: %s "_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
   
-  if (mpTask->m_bCompiling) {
+  if (mpTask->m_pCompiler->m_bCompiling) {
     Word* pCurrentWord = mpTask->m_pCurrentWord;
     pCurrentWord->vEncode("pushValue"_Stz,pWord);
   }

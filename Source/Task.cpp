@@ -96,7 +96,6 @@ Task::Task(Job* pJob)
   m_pResetIP     = nullptr;
   m_pBeginIP     = nullptr;
   m_pWord        = nullptr;
-  m_bCompiling   = false;
   m_iTracing     = C_TRACE_NONE;
   m_nVariables   = 0;
   m_pCurrentWord = nullptr;
@@ -109,7 +108,7 @@ Task::Task(Job* pJob)
   
   m_iDdlLocked   = 0;
   
-  m_pSendNode = nullptr;
+  m_pSendNode    = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -11,7 +11,9 @@ namespace Tasks
   
   public:
   
-    Tokeniser* m_pTokeniser; // input stream tokenizer
+   bool  m_bCompiling;
+  
+  Tokeniser* m_pTokeniser; // input stream tokenizer
 
     // must be last
     Footer m_xFooter;

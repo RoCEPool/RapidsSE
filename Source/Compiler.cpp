@@ -34,6 +34,8 @@ Compiler::Compiler(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   
+  m_bCompiling = false;
+  
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();
   s32 sString(""_Stz);

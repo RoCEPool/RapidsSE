@@ -28,7 +28,7 @@ void Task::vDocolCompiling(MP_Task mpTask)
 {
   ENTRY("vDocolCompiling"_Stz);
   
-  mpTask->m_bCompiling = true;
+  mpTask->m_pCompiler->m_bCompiling = true;
   
   EXIT();
 }
@@ -40,7 +40,7 @@ void Task::vDocolInterpreting(MP_Task mpTask)
 {
   ENTRY("vDocolInterpreting"_Stz);
   
-  mpTask->m_bCompiling = false;
+  mpTask->m_pCompiler->m_bCompiling = false;
   
   EXIT();
 }
@@ -52,7 +52,7 @@ void Task::vDocolIsCompiling(MP_Task mpTask)
 {
   ENTRY("vDocolIsCompiling"_Stz);
   
-  i8 iIsCompiling = mpTask->m_bCompiling ? 1 : 0;
+  i8 iIsCompiling = mpTask->m_pCompiler->m_bCompiling ? 1 : 0;
   
   mpTask->m_pDataStack->vPushInt(iIsCompiling);
   
@@ -66,7 +66,7 @@ void Task::vDocolIsInterpreting(MP_Task mpTask)
 {
   ENTRY("vDocolIsInterpreting"_Stz);
   
-  i8 iIsInterpreting = mpTask->m_bCompiling ? 0 : 1;
+  i8 iIsInterpreting = mpTask->m_pCompiler->m_bCompiling ? 0 : 1;
   
   mpTask->m_pDataStack->vPushInt(iIsInterpreting);
   
