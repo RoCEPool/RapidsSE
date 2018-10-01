@@ -110,7 +110,6 @@ namespace Structures
     void   vPokeValWrk(i8 iNthValue, ValWrk& xValWrk);
     void   vRetry(void);
     void   vRetryPoint(void);
-    void   vReset(void);
     i8     iValues(void);
     
     Value* pTopValue(void);

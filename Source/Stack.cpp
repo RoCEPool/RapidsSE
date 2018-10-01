@@ -1100,20 +1100,6 @@ void Stack::vPokeValWrk(i8 iNthValue, ValWrk& xValWrk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset stack                                                                */
-/*----------------------------------------------------------------------------*/
-void Stack::vReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  m_pTop    = pStackBase();
-  m_iValues = 0;
-  
-  m_pRetryTop    = pStackBase();
-  m_iRetryValues = 0;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set stack back to retry point                                              */
 /*----------------------------------------------------------------------------*/
 void Stack::vRetry(void)

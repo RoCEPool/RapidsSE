@@ -113,10 +113,10 @@ namespace Tasks
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // can these be removed ?
   
-    Cell* m_pResetIP;
     Cell* m_pBeginIP;
+    Cell* m_pResetIP;
     Word* m_pWord;
-  
+ 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove
   
@@ -167,7 +167,6 @@ namespace Tasks
     eQR  eQueue(void);
     void vQueue(eQR eQueue);
     void vRefindJobClass(void);
-    void vReset(void);
     void vRetry(void);
     bool bSeeded(void);
     void vSeedJob(void);

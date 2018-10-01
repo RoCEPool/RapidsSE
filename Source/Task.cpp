@@ -515,18 +515,18 @@ void Task::vRefindJobClass(void)
 /*----------------------------------------------------------------------------*/
 /* reset task                                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  IP.m_pCell    = m_pResetIP;
-  m_pBeginIP = nullptr;
-  
-  m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
-  
-  m_pDataStack->vReset();
-  m_pReturnStack->vReset();
-}
+//void Task::vReset(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+//  
+//  IP.m_pCell    = m_pResetIP;
+//  m_pBeginIP = nullptr;
+//  
+//  m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
+//  
+//  m_pDataStack->vReset();
+//  m_pReturnStack->vReset();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* rertry after exception                                                     */
