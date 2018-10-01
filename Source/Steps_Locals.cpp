@@ -74,7 +74,7 @@ void Task::vLocalsBar(MP_Task mpTask)
 {
 ENTRY("vLocalsBar"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   Dic* pDic = mpTask->m_xPathStack.pPick(0);
 
@@ -169,7 +169,7 @@ void Task::vLocalsTo(MP_Task mpTask)
 {
 ENTRY("vLocalsTo"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // get name of local
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();

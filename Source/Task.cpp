@@ -97,7 +97,6 @@ Task::Task(Job* pJob)
   m_pBeginIP     = nullptr;
   m_pWord        = nullptr;
   m_iTracing     = C_TRACE_NONE;
-  m_pCurrentWord = nullptr;
   m_nSubDic      = 0;
   
   m_pSEitf       = nullptr;

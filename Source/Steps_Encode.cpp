@@ -38,7 +38,7 @@ void Task::vEncodeAgain(MP_Task mpTask)
 {
   ENTRY("vAgain"_Stz); // ( dest -- / -- )
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // cstack: pop known backward address
   Cell* pKnownDestination;
@@ -58,7 +58,7 @@ void Task::vEncodeAhead(MP_Task mpTask)
 {
   ENTRY("vAhead"_Stz);// ( -- orig / -- )
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // append : jump to unknown forward address
   pCurrentWord->vEncode("jump"_Stz);
@@ -82,7 +82,7 @@ void Task::vEncodeCallPrimitive(MP_Task mpTask)
     THROW_INVALID_DSTACK("vEncodeCallPrimitive"_Stz);
   Word* pCalledWord = _pWord(pWordObject);
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
   
@@ -104,7 +104,7 @@ void Task::vEncodeCallRoutine(MP_Task mpTask)
   
   Word* pCalledWord = _pWord(pWordObject);
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   TaskStep* ppCalledEntryStep;
   ppCalledEntryStep = pCalledWord->ppEntryStep();
@@ -121,7 +121,7 @@ void Task::vEncodeContinue(MP_Task mpTask)
 {
   ENTRY("vContinue"_Stz); // ( -- orig / flag -- )
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // cstack: pop known backward address
   Cell* pKnownBackward;
@@ -144,7 +144,7 @@ void Task::vEncodeHere(MP_Task mpTask)
 {
   ENTRY("vFlowHere"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   Cell* pLastCell = pCurrentWord->pLastCell();
   
@@ -161,7 +161,7 @@ void Task::vEncodeIf(MP_Task mpTask)
 {
   ENTRY("vIf"_Stz); // ( -- orig / flag -- )
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // append : jumpFalse to unknown forward address
   pCurrentWord->vEncode("jumpFalse"_Stz);
@@ -180,7 +180,7 @@ void Task::vEncodeIfAgain(MP_Task mpTask)
 {
   ENTRY("vIfAgain"_Stz); // ( dest -- / -- )
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // cstack: pop known if address
   Cell* pIfDestination;
@@ -211,7 +211,7 @@ void Task::vEncodeLoop(MP_Task mpTask)
 {
   ENTRY("vLoop"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // increment index:
   pCurrentWord->vEncode("r>"_Stz);
@@ -259,7 +259,7 @@ void Task::vEncodeLoopPlus(MP_Task mpTask)
 {
   ENTRY("vLoopPlus"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // increment index:
   pCurrentWord->vEncode("r>"_Stz);
@@ -307,7 +307,7 @@ void Task::vEncodeNext(MP_Task mpTask)
 {
   ENTRY("vLoop"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   Cell* pDoLimitTest = nullptr;
   // cstack: pop destination address of backward jump
@@ -336,7 +336,7 @@ void Task::vEncodePushValue(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xValA) )
     THROW_INVALID_DSTACK("encodePushValue"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   pCurrentWord->vEncode("pushValue"_Stz,&xValA);
   
@@ -350,7 +350,7 @@ void Task::vEncodeThen(MP_Task mpTask)
 {
   ENTRY("vThen"_Stz);  // ( orig -- / -- )
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // cstack: pop unknown forward address
   Cell* pUnknownOrigin;
@@ -370,7 +370,7 @@ void Task::vEncodeUntil(MP_Task mpTask)
 {
   ENTRY("vUntil"_Stz); // ( dest -- / flag -- )
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // cstack: pop known backward address
   Cell* pKnownDestination;

@@ -13,6 +13,7 @@ namespace Tasks
   
    bool  m_bCompiling;
    i8    m_nVariables;     // number of locals/params variables
+   Word* m_pCurrentWord;
 
   Tokeniser* m_pTokeniser; // input stream tokenizer
 

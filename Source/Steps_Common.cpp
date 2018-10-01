@@ -140,7 +140,7 @@ void Task::vCommonToCommon(MP_Task mpTask)
 {
 ENTRY("vCommonToCommon"_Stz);
   
-  Word* pCurrentWord = mpTask->m_pCurrentWord;
+  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   // get name of common
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();

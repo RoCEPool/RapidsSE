@@ -622,7 +622,7 @@ void Task::vAddPrimitive(Stz* aName, TaskStep pStep, bool bImmediate)
   
   Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
   
-  m_pCurrentWord = pNewWord;
+  m_pCompiler->m_pCurrentWord = pNewWord;
   
   pNewWord->vWordType(WT_PRIMITIVE);
   pNewWord->vEntryStep(pStep);
@@ -981,7 +981,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
 
   pNewWord = new(pDic) Word(m_pCompiler->m_pTokeniser->sToken());
   
-  m_pCurrentWord = pNewWord;
+  m_pCompiler->m_pCurrentWord = pNewWord;
 
   m_pCompiler->m_pTokeniser->vNextToken();
   
