@@ -1126,30 +1126,6 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop response from response queue (response is from pointer in seitf(shm))  */
-/*----------------------------------------------------------------------------*/
-eEC SEitf::eGetResponse(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  ASSERT(0);
-  /*
-  while (! bPopResponse(m_eErrorCode, m_sResponse))
-    ;
-  
-  vSetLastError(m_eErrorCode);
-  
-  // generate a random number and send it back
-  do {
-    m_iNextRequestId = Random::iRandom(0,99999);
-  } while (m_iNextRequestId == m_iCurrentRequestId);
-
-  //vTrace("NextRequest %lld\n"_Stz, m_iNextRequestId);
-  */
-  return m_eErrorCode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop response from response queue                                           */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)

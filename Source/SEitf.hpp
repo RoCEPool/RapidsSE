@@ -127,8 +127,6 @@ namespace Interface
   
     //--------------------------------------------------------------------------
     bool bAppendRequest(StrVal& sRequest);
-
-    eEC  eGetResponse(void);
     
     bool bPopResponse(eEC& eResult, StrVal& sResponse);
     

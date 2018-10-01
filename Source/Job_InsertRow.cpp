@@ -208,26 +208,6 @@ eEC Job_InsertRow::eInsertLastBuffer(i8 iPartition)
     }
   }
   
-  //vTrace("inserting %p ..%lld.\n"_Stz, m_pWorkingBuffer[iPartition], iPartition);
-  
-  //m_pWorkingBuffer[iSlot]->vDump();
-  //vTrace("No of entries %lld %lld\n"_Stz, iPartition, m_pWorkingBuffer[iPartition]->nEntries());
-  
-  // mark this buffer as the last buffer
-  //m_pWorkingBuffer[iPartition]->vIsLast(true);
-  
-  // now insert the entries from this temporary buffer into the table
-  //bool bResult = bInsertEntriesTable(m_pWorkingBuffer[iPartition],iPartition);
-  
-  // wait for response
-  //eEC eResult = eGetResponse();
-  //ASSERT(eResult == EC_NONE);
-  
-  // null the buffer
-  //m_pWorkingBuffer[iPartition] = nullptr;
-  
-  //vTrace("bInsertLastBuffer\n"_Stz);
-  
   return EC_NONE;
 }
 /*----------------------------------------------------------------------------*/
