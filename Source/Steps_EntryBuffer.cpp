@@ -460,33 +460,6 @@ void Task::vEntryBufferToEntryBuffer(MP_Task mpTask)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/*    PRIVATE                                                                 */
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* insert a row into an entry buffer                                          */
-/*----------------------------------------------------------------------------*/
-//bool Task::bInsertRow(EntryBuffer* pEntryBuffer, Entry* pEntry, SEitf* pSEitf)
-//{
-//
-//  Entry* pRow;
-//
-//  Id xId = pEntry->xId();
-//
-//  if (pSEitf && pSEitf->bRowSeen(xId)) {
-//    // row already inserted
-//    return true;
-//  }
-//
-//  if (pEntryBuffer->bInsertRow(pEntry, &pRow)) {
-//    ASSERT( ! pRow->nOffsets() );
-//    return true;
-//  }
-//  else
-//    return false;
-//}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

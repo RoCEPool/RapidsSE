@@ -17,12 +17,12 @@ namespace Interface
     s48K     m_sResponse;        // response
     Tx*      m_pTx;              // current transaction
     bool     m_bSeitfExiting;    // is seitf exiting ?
-    RowOnce* m_pRowOnce;         // has row been seen before?
     
     PerformanceTrace* m_pPerformanceTrace;  // performance Trace
     CommandProcessor* m_pCommandProcessor;  // command processor
   
     // these should go
+    RowOnce*   m_pRowOnce;       // has row been seen before?
     bool       m_bDisplay;       // display on
     Formatters m_xFormatters;    // record formatter
     
@@ -38,30 +38,29 @@ namespace Interface
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    void   vContentDump(void);
-    
-    void   vInit(Stz* pCatalogName, Stz* pSchemaName);
-    
-    i8     iPartition(void);
-    i8     iSlot(void);
-  
+    bool      bBeginTx(void);
+    void      vCommitTx(void);
+    void      vContentDump(void);
+    void      vEndTx(void);
+    void      vInit(Stz* pCatalogName, Stz* pSchemaName);
+    i8        iPartition(void);
     DicStack* pPathStack(void);
+    
+    PerformanceTrace* pPerformanceTrace(void);
+    void vPerformanceTrace(PerformanceTrace* pPerformanceTrace);
+    
+    i8        iSlot(void);
+    Tx*       pTx(void);
+    void      vTx(Tx* pTx);
   
+    
+    
+    //--------------------------------------------------------------------------
+    // to be deleted
     void   vCreateRowOnce(void);
     bool   bRowSeen(Id xRowId);
-   
-    Tx*    pTx(void);
-    void   vTx(Tx* pTx);
-  
-    PerformanceTrace* pPerformanceTrace(void);
-    void   vPerformanceTrace(PerformanceTrace* pPerformanceTrace);
-  
     //--------------------------------------------------------------------------
-    
-    bool bBeginTx(void);
-    void vCommitTx(void);
-    void vEndTx(void);
-    
+  
     Footer* aFooter(void);
   };
   
