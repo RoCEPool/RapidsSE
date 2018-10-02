@@ -7,20 +7,20 @@
 /*----------------------------------------------------------------------------*/
 /* send working buffer to node                                                */
 /*----------------------------------------------------------------------------*/
-: SubLoader_sendBuffer ( bFinal pLoaderSub -- )
+: SubLoader_sendBuffer ( bFinal pSubLoader -- )
 
-  params| pLoaderSub  |
+  params| pSubLoader  |
   params| bFinal  |
 
-  bFinal pLoaderSub loaderSub.spawnLoadBuffer
+  bFinal pSubLoader loaderSub.spawnLoadBuffer
 ;
 
 /*----------------------------------------------------------------------------*/
 /* send working buffer to node                                                */
 /*----------------------------------------------------------------------------*/
-: SubLoader_sendBuffer2 ( bFinal pLoaderSub -- )
+: SubLoader_sendBuffer2 ( bFinal pSubLoader -- )
 
-  params| pLoaderSub  |
+  params| pSubLoader  |
   params| bFinal  |
 
   0 locals| pJobClass_LoadBuffer |
@@ -36,9 +36,9 @@
 /*----------------------------------------------------------------------------*/
 /* send last buffers to all partitions                                        */
 /*----------------------------------------------------------------------------*/
-: SubLoader_sendLast ( pLoaderSub -- )
+: SubLoader_sendLast ( pSubLoader -- )
 
-  params| pLoaderSub  |
+  params| pSubLoader  |
 
   // calculate total partitions in the cluster
   grid::slots grid::nodes * locals| nTotalPartitions |
@@ -49,13 +49,13 @@
     //I "LAST BUFFER for partition %v" fmt.print
 
     // set the partition we are using
-    I pLoaderSub loaderSub.partition!
+    I pSubLoader loaderSub.partition!
 
     // ensure there's a dangling buffer for partition I
-    pLoaderSub loaderSub.danglingBuffer
+    pSubLoader loaderSub.danglingBuffer
 
     // send last buffer to node
-    true pLoaderSub SubLoader_sendBuffer
+    true pSubLoader SubLoader_sendBuffer
 
   loop
 ;
@@ -63,17 +63,17 @@
 /*----------------------------------------------------------------------------*/
 /* read records from file, create working buffers, send to node               */
 /*----------------------------------------------------------------------------*/
-: SubLoader_process ( pLoaderSub -- )
+: SubLoader_process ( pSubLoader -- )
 
-  params| pLoaderSub |
+  params| pSubLoader |
 
-  begin pLoaderSub loaderSub.processRecords while
+  begin pSubLoader loaderSub.processRecords while
 
-    false pLoaderSub SubLoader_sendBuffer
+    false pSubLoader SubLoader_sendBuffer
 
   repeat
 
-  pLoaderSub SubLoader_sendLast
+  pSubLoader SubLoader_sendLast
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +86,7 @@
   0 locals| pThisTask |
   0 locals| pJob_SubLoader |
   0 0 locals| pJobLoadTable_Originator pJobLoadTable_Participant |
-  0 0 locals| pLoaderSub iLoadTableJobId |
+  0 0 locals| pSubLoader iLoadTableJobId |
 
   tp: SubLoader
   //"SubLoader running" .
@@ -99,11 +99,11 @@
   pThisTask task.job@ to pJob_SubLoader
 
   // get the loaderSub object from the sub-loader job
-  pJob_SubLoader job.ancilliary@ to pLoaderSub
+  pJob_SubLoader job.ancilliary@ to pSubLoader
 
-  pLoaderSub loaderSub.begin
+  pSubLoader loaderSub.begin
 
-  pLoaderSub SubLoader_process
+  pSubLoader SubLoader_process
 
   // get the job_loader from subLoader
   pJob_SubLoader job_subLoader.jobLoadTable@ to pJobLoadTable_Participant
@@ -113,10 +113,10 @@
   iLoadTableJobId job::findOriginator to pJobLoadTable_Originator
 
   // get the valid/invalid rows loaded from subloader
-  //pLoaderSub loaderSub.recordsValid .
-  pLoaderSub loaderSub.recordsValid pJobLoadTable_Originator job_loadTable.addValidRows
-  pLoaderSub loaderSub.recordsInvalid pJobLoadTable_Originator job_loadTable.addInvalidRows
-  pLoaderSub loaderSub.end
+  //pSubLoader loaderSub.recordsValid .
+  pSubLoader loaderSub.recordsValid pJobLoadTable_Originator job_loadTable.addValidRows
+  pSubLoader loaderSub.recordsInvalid pJobLoadTable_Originator job_loadTable.addInvalidRows
+  pSubLoader loaderSub.end
 
   // now delete the ended job
   pJob_SubLoader job.delete

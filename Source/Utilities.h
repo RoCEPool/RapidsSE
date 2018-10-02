@@ -19,7 +19,7 @@ using namespace Utilities;
 #include "LoadChunk.hpp"
 #include "LoadMap.hpp"
 #include "Loader.hpp"
-#include "LoaderSub.hpp"
+#include "SubLoader.hpp"
 
 #include "PerformanceEntry.hpp"
 #include "PerformanceBuffer.hpp"

@@ -54,7 +54,7 @@ LoadChunk::~LoadChunk(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump LoaderSub                                                             */
+/* dump SubLoader                                                             */
 /*----------------------------------------------------------------------------*/
 void LoadChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {

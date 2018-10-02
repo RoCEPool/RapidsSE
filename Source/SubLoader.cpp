@@ -1,0 +1,578 @@
+/*============================================================================*/
+/* SubLoader.cpp -- Subordinate Parallel Table Loader                         */
+/*============================================================================*/
+
+#include "Utilities.h"
+
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+SubLoader* Utilities::_pLoaderSub(void* aAddr)
+{
+  SubLoader* pSubLoader = reinterpret_cast<SubLoader*>(aAddr);
+  
+  RASSERT( !pSubLoader || CN_SUBLOADER == pSubLoader->eClass() );
+  
+  return pSubLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new operator                                                               */
+/*----------------------------------------------------------------------------*/
+void* SubLoader::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  void* pObject = HeapMem::pAllocate(CN_SUBLOADER);
+ 
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new operator                                                               */
+/*----------------------------------------------------------------------------*/
+void* SubLoader::operator new(size_t iSize, SubLoader* pSubLoader)
+{
+  RASSERT(iSize);
+  
+  return pSubLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete operator                                                            */
+/*----------------------------------------------------------------------------*/
+void SubLoader::operator delete(void* pLoaderAddress)
+{
+  SubLoader* pLoader = reinterpret_cast<SubLoader*>(pLoaderAddress);
+  
+  HeapMem::vFree(pLoader);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+SubLoader::SubLoader(Job_SubLoader* pJob_SubLoader, Loader* pLoader)
+: Object(CN_SUBLOADER)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+
+  m_pJob_SubLoader = pJob_SubLoader;
+  m_pLoader  = pLoader;
+  m_pLoadChunk  = new LoadChunk;
+
+  m_pTable   = pLoader->pTable();
+  m_pLoadMap = nullptr;
+  //m_aRecord
+  m_iLength  = 0;
+  m_iPartition  = 0;
+  m_bMoreChunks = false;
+  m_iValidRecords = 0;
+  m_iInvalidRecords = 0;
+  
+  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
+    m_pWorkingBuffer[i_Partition]   = nullptr;
+    m_nBuffersLoadable[i_Partition] = 0;
+  }
+  
+  _checkInitialised_(CN_SUBLOADER);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+SubLoader::~SubLoader(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  if (m_pLoadChunk)
+    delete m_pLoadChunk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump SubLoader                                                             */
+/*----------------------------------------------------------------------------*/
+void SubLoader::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  RASSERT(eClass == CN_SUBLOADER);
+  RASSERT(pObject->eClass() == CN_SUBLOADER);
+  
+  SubLoader* pLoader = reinterpret_cast<SubLoader*>(pObject);
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* begin loading                                                              */
+/*----------------------------------------------------------------------------*/
+void SubLoader::vBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  s256 sPath;
+  sPath = m_pLoader->pJob_LoadTable()->m_sFileName;
+  
+  // open the chunked file
+  m_pLoadChunk->vOpenFile(sPath);
+  
+  // read first chunk
+  m_bMoreChunks = bReadChunk();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get buffers loadable for implicit partition                                */
+/*----------------------------------------------------------------------------*/
+i8 SubLoader::nBuffersLoadable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  return m_nBuffersLoadable[m_iPartition];
+}
+
+/*----------------------------------------------------------------------------*/
+/* end loading                                                                */
+/*----------------------------------------------------------------------------*/
+void SubLoader::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  //for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
+  //  ASSERT(! m_pWorkingBuffer[i_Partition]);
+  //}
+  
+  // close the file being loaded
+  m_pLoadChunk->vCloseFile();
+
+}
+/*----------------------------------------------------------------------------*/
+void SubLoader::vEnd_Original(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  // append any dangling buffers
+  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
+    ASSERT(! m_pWorkingBuffer[i_Partition]);
+  }
+  
+  // close the file being loaded
+  m_pLoadChunk->vCloseFile();
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch next record from buffer, read next chunk if necessary                */
+/*----------------------------------------------------------------------------*/
+bool SubLoader::bFetchRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  Stz* aRawData;
+  i8 iLength;
+  bool bValid = false;
+  bool bBlankLine;
+  
+  Job_LoadTable* pJob_LoadTable = m_pLoader->pJob_LoadTable();
+  Formatters* pFormatters = &pJob_LoadTable->m_xFormatters;
+  Table* pTable = m_pLoader->pTable();
+  
+  if (! m_bMoreChunks)
+    return false;
+  
+  while (true) {
+    
+    // fetch next record from current chunk
+    aRawData = m_pLoadChunk->aNextRecord(iLength,pFormatters);
+    
+    if (! aRawData) {
+      // read next chunk
+      m_bMoreChunks = bReadChunk();
+      if (! m_bMoreChunks)
+        return false;
+      continue;
+    }
+    
+    if (iLength > C_16KB) {
+      m_iInvalidRecords++;
+      vWarn("Skipping row %.20s... - record in file > 16KB\n"_Stz,
+            aRawData);
+      return false;
+    }
+
+    // format the raw data into a row
+    bValid = Row::bFormatRow(pTable->pColumnVec(),
+                             pFormatters,
+                             aRawData, iLength,
+                             m_aRecord.aStr(), m_iLength,
+                             bBlankLine,
+                             false /* allowNonPrintable */);
+    if (bValid) {
+      m_iValidRecords++;
+      return bValid;
+    }
+    
+    if ( ! bBlankLine )
+      m_iInvalidRecords++;
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch next record from buffer, read next chunk if necessary                */
+/*----------------------------------------------------------------------------*/
+bool SubLoader::bFetchRecordDist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  Stz* aRawData;
+  i8 iLength;
+  bool bValid = false;
+  bool bBlankLine;
+  
+  if (! m_bMoreChunks)
+    return false;
+  
+  while (true) {
+    
+    // fetch next record from current chunk
+    aRawData = m_pLoadChunk->aNextRecord(iLength,&m_xFormatters);
+    
+    if (! aRawData) {
+      // read next chunk
+      m_bMoreChunks = bReadChunk();
+      if (! m_bMoreChunks)
+        return false;
+      continue;
+    }
+    
+    if (iLength > C_16KB) {
+      m_iInvalidRecords++;
+      vWarn("Skipping row %.20s... - record in file > 16KB\n"_Stz,
+            aRawData);
+      return false;
+    }
+
+    // format the raw data into a row
+    bValid = Row::bFormatRow(m_pTable->pColumnVec(),
+                             &m_xFormatters,
+                             aRawData, iLength,
+                             m_aRecord.aStr(), m_iLength,
+                             bBlankLine,
+                             false /* allowNonPrintable */);
+    if (bValid) {
+      m_iValidRecords++;
+      return bValid;
+    }
+    
+    if ( ! bBlankLine )
+      m_iInvalidRecords++;
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash the first field of record                                             */
+/*----------------------------------------------------------------------------*/
+void SubLoader::vHashRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  Table* pTable = m_pLoader->pTable();
+  
+  m_iPartition = pTable->iRowPartition(m_aRecord);
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert row into working buffer                                             */
+/*----------------------------------------------------------------------------*/
+bool SubLoader::bInsertRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  // check for working buffer
+  if (! m_pWorkingBuffer[m_iPartition]) {
+    
+    // create a new working buffer for this partition
+    vNewWorkingBuffer();
+    
+    if (! m_pWorkingBuffer[m_iPartition]) {
+      vTrace("EntryBuffer allocation failed\n"_Stz);
+      return false;
+    }
+  }
+  
+  // get working buffer
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
+  
+  // get the tx id
+  //SEitf* pSEitf = m_pLoader->pSEitf();
+  //Tx* pTx = pSEitf->pTx();
+  //i8 iDistTxId = pTx->iDistTxId();
+  i8 iDistTxId = 0;
+
+  RowWrk xRowWrk;
+  
+  xRowWrk.vTxId(iDistTxId);
+  xRowWrk.vEmbedded(m_aRecord.aChar());
+  xRowWrk.vRowSize(m_iLength);
+  
+  // insert row into working buffer
+  bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
+  
+  //pEntryBuffer->vShow();
+  
+  return bAppended;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert row into working buffer                                             */
+/*----------------------------------------------------------------------------*/
+bool SubLoader::bInsertRowDist(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  // check for working buffer
+  if (! m_pWorkingBuffer[m_iPartition]) {
+    
+    // create a new working buffer for this partition
+    vNewWorkingBuffer();
+    
+    if (! m_pWorkingBuffer[m_iPartition]) {
+      vTrace("EntryBuffer allocation failed\n"_Stz);
+      return false;
+    }
+  }
+  
+  // get working buffer
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
+  
+  // get the tx id
+  i8 iDistTxId = 0;
+  
+  RowWrk xRowWrk;
+  
+  xRowWrk.vTxId(iDistTxId);
+  xRowWrk.vEmbedded(m_aRecord.aChar());
+  xRowWrk.vRowSize(m_iLength);
+  
+  // insert row into working buffer
+  bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
+  
+  //pEntryBuffer->vShow();
+  
+  return bAppended;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of invalid records fetched                                          */
+/*----------------------------------------------------------------------------*/
+i8 SubLoader::iInvalidRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  return m_iInvalidRecords;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get loader                                                                 */
+/*----------------------------------------------------------------------------*/
+Job_SubLoader* SubLoader::pJob_SubLoader(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  return m_pJob_SubLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get loader                                                                 */
+/*----------------------------------------------------------------------------*/
+Loader* SubLoader::pLoader(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  return m_pLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set loader                                                                 */
+/*----------------------------------------------------------------------------*/
+void SubLoader::vLoader(Loader* pLoader)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+
+  m_pLoader = pLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new working buffer                                                */
+/*----------------------------------------------------------------------------*/
+void SubLoader::vNewWorkingBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  m_pWorkingBuffer[m_iPartition] = new WorkingBuffer(m_pTable, m_iPartition);
+  m_nBuffersLoadable[m_iPartition]++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get partition number                                                       */
+/*----------------------------------------------------------------------------*/
+i8 SubLoader::iPartition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  return m_iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set partition number                                                       */
+/*----------------------------------------------------------------------------*/
+void SubLoader::vPartition(i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  m_iPartition = iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* read next chunk from file                                                  */
+/*----------------------------------------------------------------------------*/
+bool SubLoader::bReadChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  i8 iSeek;
+  i8 nBytes;
+  i8 iChunk;
+  i8 nChunks;
+  
+  LoadMap* pLoadMap = m_pLoader->pLoadMap();
+
+
+  // get information about next chunk
+  for (;;) {
+    
+    bool bMapLoaded = pLoadMap->bDone();
+    
+    bool bMoreChunks = pLoadMap->bNextChunk(iSeek,nBytes,iChunk,nChunks);
+    
+    if (bMapLoaded && ! bMoreChunks)
+      return false;
+    
+    if (bMoreChunks)
+      break;
+    
+    //vTrace("Waiting for map\n"_Stz);
+  }
+  
+  if (gpAttachMap->m_bProgress) {
+    if (0 == iChunk % 100) {
+      vInfo("read chunk %lld of %lld        \r"_Stz,iChunk,nChunks);
+      fflush(stdout);
+    }
+  }
+  
+  // read the chunk
+  m_pLoadChunk->vReadChunk(iSeek,nBytes);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set formatter                                                              */
+/*----------------------------------------------------------------------------*/
+void SubLoader::vSetDistFormatter(char cFieldDelimiter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  m_xFormatters.m_cFieldDelimiter = cFieldDelimiter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get workingBuffer                                                          */
+/*----------------------------------------------------------------------------*/
+WorkingBuffer* SubLoader::pWorkingBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
+
+  //m_pRowBuffer[m_iPartition] = nullptr;
+  
+  return pWorkingBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set workingBuffer                                                          */
+/*----------------------------------------------------------------------------*/
+void SubLoader::vWorkingBuffer(WorkingBuffer* pWorkingBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  m_pWorkingBuffer[m_iPartition] = pWorkingBuffer;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* SubLoader::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of valid records fetched                                            */
+/*----------------------------------------------------------------------------*/
+i8 SubLoader::iValidRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  return m_iValidRecords;
+}
+
+/*----------------------------------------------------------------------------*/
+/* discard working buffer (TEMPORARY)                                         */
+/*----------------------------------------------------------------------------*/
+void SubLoader::vDiscardBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+
+  // increment the number of buffers
+  m_nBuffersLoadable[m_iPartition]++;
+
+  // discard the buffer
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
+  m_pWorkingBuffer[m_iPartition] = nullptr;
+  
+  delete pWorkingBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* SubLoader::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER);
+  
+  return &m_xFooter;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

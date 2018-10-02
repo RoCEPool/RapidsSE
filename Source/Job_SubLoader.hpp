@@ -10,7 +10,7 @@ namespace JobsModel
   {
   public:
     Job_LoadTable* m_pJob_LoadTable;
-    Utilities::LoaderSub* m_pLoaderSub;
+    Utilities::SubLoader* m_pLoaderSub;
 
     // must be last
     Footer m_xFooter;
@@ -28,7 +28,7 @@ namespace JobsModel
   public:
     Job_LoadTable* pJob_LoadTable(void);
     void vJob_LoadTable(Job_LoadTable* pJob_LoadTable);
-    void vLoaderSub(Utilities::LoaderSub* pLoaderSub);
+    void vLoaderSub(Utilities::SubLoader* pSubLoader);
 
     void vShow(void);
     Footer* aFooter(void);
