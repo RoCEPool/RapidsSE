@@ -19,7 +19,6 @@ void Step::vAddSteps_Loader(void)
   vAddStep("loader.delete"_Stz,            &Task::vLoaderDelete,          false);
   vAddStep("loader.dumpMap"_Stz,           &Task::vLoaderDumpMap,         false);
   vAddStep("loader.findChunk"_Stz,         &Task::vLoaderFindChunk,       false);
-  vAddStep("loader.init"_Stz,              &Task::vLoaderInit,            false);
   vAddStep("loader::new"_Stz,              &Task::vLoaderNew,             false);
   vAddStep("loader.newSub"_Stz,            &Task::vLoaderNewSub,          false);
   vAddStep("loader.path!"_Stz,             &Task::vLoaderPathStore,       false);
@@ -109,25 +108,6 @@ void Task::vLoaderFindChunk(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushInt(bFoundChunk);
  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.init -- init a table loader                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderInit(MP_Task mpTask)
-{
-  ENTRY("vLoaderInit"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.init"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  new(pLoader) Loader(nullptr);
-  
   EXIT();
 }
 
