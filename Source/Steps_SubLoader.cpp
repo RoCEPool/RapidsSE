@@ -13,7 +13,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_LoaderSub(void)
+void Step::vAddSteps_SubLoader(void)
 {
   vAddStep("subLoader.begin"_Stz,            &Task::vSubLoaderBegin,             false);
   vAddStep("subLoader.danglingBuffer"_Stz,   &Task::vSubLoaderDanglingBuffer,    false);
@@ -34,10 +34,10 @@ void Task::vSubLoaderBegin(MP_Task mpTask)
 {
   ENTRY("vSubLoaderBegin"_Stz);
   
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+  Object* pPtrSubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
     THROW_INVALID_DSTACK("subLoader.begin"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
+  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
   ASSERT(CN_SUBLOADER == pSubLoader->eClass());
   
@@ -53,10 +53,10 @@ void Task::vSubLoaderDanglingBuffer(MP_Task mpTask)
 {
   ENTRY("vSubLoaderDanglingBuffer"_Stz);
   
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+  Object* pPtrSubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
     THROW_INVALID_DSTACK("subLoader.delete"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
+  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
   if ( ! pSubLoader->pWorkingBuffer() )
     pSubLoader->vNewWorkingBuffer();
@@ -71,10 +71,10 @@ void Task::vSubLoaderDelete(MP_Task mpTask)
 {
   ENTRY("vSubLoaderDelete"_Stz);
   
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+  Object* pPtrSubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
     THROW_INVALID_DSTACK("subLoader.delete"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
+  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
   ASSERT(CN_SUBLOADER == pSubLoader->eClass());
   
@@ -90,10 +90,10 @@ void Task::vSubLoaderEnd(MP_Task mpTask)
 {
   ENTRY("vSubLoaderEnd"_Stz);
   
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+  Object* pPtrSubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
     THROW_INVALID_DSTACK("subLoader.end"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
+  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
   ASSERT(CN_SUBLOADER == pSubLoader->eClass());
   
@@ -111,10 +111,10 @@ void Task::vSubLoaderPartitionFetch(MP_Task mpTask)
 {
   ENTRY("vSubLoaderPartitionFetch"_Stz);
   
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+  Object* pPtrSubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
     THROW_INVALID_DSTACK("subLoader.partition@"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
+  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
   i8 iPartition = pSubLoader->iPartition();
   
@@ -130,10 +130,10 @@ void Task::vSubLoaderPartitionStore(MP_Task mpTask)
 {
   ENTRY("vSubLoaderPartitionStore"_Stz);
   
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+  Object* pPtrSubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
     THROW_INVALID_DSTACK("subLoader.partition!"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
+  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
   i8 iPartition;
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
@@ -145,37 +145,20 @@ void Task::vSubLoaderPartitionStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* subLoader.processRecords -- read & process records till buffer full or eof  */
+/* subLoader.processRecords -- read & process records till buffer full or eof */
 /*----------------------------------------------------------------------------*/
 void Task::vSubLoaderProcessRecords(MP_Task mpTask)
 {
   ENTRY("vSubLoaderProcessRecords"_Stz);
   
-  Object* pPtrLoaderSub;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoaderSub) )
+  Object* pPtrSubLoaderSub;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoaderSub) )
     THROW_INVALID_DSTACK("subLoader.processRecords"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoaderSub);
+  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoaderSub);
   
-  while (pSubLoader->bFetchRecord()) {
-    
-    // hash the record to get m_iPartition
-    pSubLoader->vHashRecord();
+  bool bTargetBufferFull = pSubLoader->bProcessRecords();
   
-    // attempt to add record into a buffer
-    bool bInserted = pSubLoader->bInsertRow();
-  
-    // check if buffer was full
-    if ( ! bInserted) {
-      
-      // buffer was full
-      // return to loaderSub to append buffer to the table/partition
-      mpTask->m_pDataStack->vPushInt(true);
-      return;
-    }
-  
-  }
-
-  mpTask->m_pDataStack->vPushInt(false);
+  mpTask->m_pDataStack->vPushInt(bTargetBufferFull);
   
   EXIT();
 }
@@ -187,10 +170,10 @@ void Task::vSubLoaderRecordsInvalid(MP_Task mpTask)
 {
   ENTRY("vSubLoaderRecordsInvalid"_Stz);
   
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+  Object* pPtrSubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
     THROW_INVALID_DSTACK("subLoader.recordsInvalid"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
+  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
   mpTask->m_pDataStack->vPushInt(pSubLoader->iInvalidRecords());
   
@@ -204,10 +187,10 @@ void Task::vSubLoaderRecordsValid(MP_Task mpTask)
 {
   ENTRY("vSubLoaderRecordsValid"_Stz);
   
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+  Object* pPtrSubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
     THROW_INVALID_DSTACK("subLoader.recordsValid"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
+  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
   mpTask->m_pDataStack->vPushInt(pSubLoader->iValidRecords());
   
@@ -221,10 +204,10 @@ void Task::vSubLoaderSpawnLoadBuffer(MP_Task mpTask)
 {
   ENTRY("vSubLoaderSpawnLoadBuffer"_Stz);
   
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
+  Object* pPtrSubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
     THROW_INVALID_DSTACK("subLoader.spawnLoadBuffer"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
+  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
   i8 iFinal;
   if ( ! mpTask->m_pDataStack->bPop(iFinal) )

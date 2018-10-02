@@ -77,7 +77,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobTruncateTable();
   
   Step::vAddSteps_Loader();
-  Step::vAddSteps_LoaderSub();
+  Step::vAddSteps_SubLoader();
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
   Step::vAddSteps_Locks();

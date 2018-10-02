@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SubLoader.cpp -- Subordinate Parallel Table LoadTable                         */
+/* SubLoader.cpp -- Subordinate Parallel Table LoadTable                      */
 /*============================================================================*/
 
 #include "Utilities.h"
@@ -390,6 +390,33 @@ Job_SubLoader* SubLoader::pJob_SubLoader(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
   return m_pJob_SubLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* process records                                                            */
+/*----------------------------------------------------------------------------*/
+bool SubLoader::bProcessRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+  
+  while (bFetchRecord()) {
+    
+    // hash the record to get m_iPartition
+    vHashRecord();
+    
+    // attempt to add record into a buffer
+    bool bInserted = bInsertRow();
+    
+    // check if target buffer was full
+    if (! bInserted) {
+      // buffer was full
+      // return to loaderSub to append buffer to the table/partition
+      return true;
+    }
+    
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
