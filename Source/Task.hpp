@@ -887,12 +887,12 @@ namespace Tasks
     static void vJob_TruncateTableTaskStore(MP_Task mpTask);
 
     // loader
-    static void vLoaderChunkFile(MP_Task mpTask);
-    static void vLoaderDelete(MP_Task mpTask);
-    static void vLoaderDumpMap(MP_Task mpTask);
-    static void vLoaderNew(MP_Task mpTask);
-    static void vLoaderSpawnSubLoader(MP_Task mpTask);
-    static void vLoaderTableStore(MP_Task mpTask);
+    static void vLoadTableChunkFile(MP_Task mpTask);
+    static void vLoadTableDelete(MP_Task mpTask);
+    static void vLoadTableDumpMap(MP_Task mpTask);
+    static void vLoadTableNew(MP_Task mpTask);
+    static void vLoadTableSpawnSubLoader(MP_Task mpTask);
+    static void vLoadTableTableStore(MP_Task mpTask);
     
     // loader sub
     static void vLoaderSubBegin(MP_Task mpTask);
