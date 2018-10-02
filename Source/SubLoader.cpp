@@ -153,19 +153,6 @@ void SubLoader::vEnd(void)
   m_pLoadChunk->vCloseFile();
 
 }
-/*----------------------------------------------------------------------------*/
-void SubLoader::vEnd_Original(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  // append any dangling buffers
-  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
-    ASSERT(! m_pWorkingBuffer[i_Partition]);
-  }
-  
-  // close the file being loaded
-  m_pLoadChunk->vCloseFile();
-}
 
 /*----------------------------------------------------------------------------*/
 /* fetch next record from buffer, read next chunk if necessary                */
@@ -226,60 +213,6 @@ bool SubLoader::bFetchRecord(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch next record from buffer, read next chunk if necessary                */
-/*----------------------------------------------------------------------------*/
-bool SubLoader::bFetchRecordDist(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  Stz* aRawData;
-  i8 iLength;
-  bool bValid = false;
-  bool bBlankLine;
-  
-  if (! m_bMoreChunks)
-    return false;
-  
-  while (true) {
-    
-    // fetch next record from current chunk
-    aRawData = m_pLoadChunk->aNextRecord(iLength,&m_xFormatters);
-    
-    if (! aRawData) {
-      // read next chunk
-      m_bMoreChunks = bReadChunk();
-      if (! m_bMoreChunks)
-        return false;
-      continue;
-    }
-    
-    if (iLength > C_16KB) {
-      m_iInvalidRecords++;
-      vWarn("Skipping row %.20s... - record in file > 16KB\n"_Stz,
-            aRawData);
-      return false;
-    }
-
-    // format the raw data into a row
-    bValid = Row::bFormatRow(m_pTable->pColumnVec(),
-                             &m_xFormatters,
-                             aRawData, iLength,
-                             m_aRecord.aStr(), m_iLength,
-                             bBlankLine,
-                             false /* allowNonPrintable */);
-    if (bValid) {
-      m_iValidRecords++;
-      return bValid;
-    }
-    
-    if ( ! bBlankLine )
-      m_iInvalidRecords++;
-  }
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* hash the first field of record                                             */
 /*----------------------------------------------------------------------------*/
 void SubLoader::vHashRecord(void)
@@ -319,45 +252,6 @@ bool SubLoader::bInsertRow(void)
   //i8 iDistTxId = pTx->iDistTxId();
   i8 iDistTxId = 0;
 
-  RowWrk xRowWrk;
-  
-  xRowWrk.vTxId(iDistTxId);
-  xRowWrk.vEmbedded(m_aRecord.aChar());
-  xRowWrk.vRowSize(m_iLength);
-  
-  // insert row into working buffer
-  bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
-  
-  //pEntryBuffer->vShow();
-  
-  return bAppended;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert row into working buffer                                             */
-/*----------------------------------------------------------------------------*/
-bool SubLoader::bInsertRowDist(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  // check for working buffer
-  if (! m_pWorkingBuffer[m_iPartition]) {
-    
-    // create a new working buffer for this partition
-    vNewWorkingBuffer();
-    
-    if (! m_pWorkingBuffer[m_iPartition]) {
-      vTrace("EntryBuffer allocation failed\n"_Stz);
-      return false;
-    }
-  }
-  
-  // get working buffer
-  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
-  
-  // get the tx id
-  i8 iDistTxId = 0;
-  
   RowWrk xRowWrk;
   
   xRowWrk.vTxId(iDistTxId);

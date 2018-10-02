@@ -45,12 +45,9 @@ namespace Utilities
     void vBegin(void);
     i8   nBuffersLoadable(void);
     void vEnd(void);
-    void vEnd_Original(void);
     bool bFetchRecord(void);
-    bool bFetchRecordDist(void);
     void vHashRecord(void);
     bool bInsertRow(void);
-    bool bInsertRowDist(void);
     i8   iInvalidRecords(void);
     Job_SubLoader* pJob_SubLoader(void);
     void vNewWorkingBuffer(void);
