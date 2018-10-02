@@ -341,7 +341,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
   // form the key
   KeyWrk xKeyWrk;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
   xKeyWrk.vAddDatum(xValWrk,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
@@ -686,7 +686,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   //----------------------------------------------------------------------------
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
   xKeyWrkLower.vAddDatum(xValWrk,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
@@ -858,7 +858,7 @@ void Task::vIndexPosition(MP_Task mpTask)
   
   KeyWrk xKeyWrk;
   Column* pColumn = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
   xKeyWrk.vAddDatum(xValWrk, pColumn, pFormatters);
   //xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
 
@@ -985,7 +985,7 @@ void Task::vIndexRange(MP_Task mpTask)
   
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
   xKeyWrkLower.vAddDatum(xValWrkLwr,pColumn0,pFormatters);
   //xKeyWrkLower.vShow();
   
@@ -1240,7 +1240,7 @@ void Task::vIndexRange(MP_Task mpTask)
   // make the lower key
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
   xKeyWrkLower.vAddDatum(xValWrkLwr,pColumn0,pFormatters);
   //xKeyWrkLower.vShow();
   
@@ -1657,7 +1657,7 @@ void Task::vIndexUpper(MP_Task mpTask)
   // assuming non-complex key
   //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   KeyWrk xKeyWrk;
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
   xKeyWrk.vAddDatum(xValWrk, pIndex->pIdxColVec()->pGet(0),pFormatters);
   
   eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
@@ -1746,7 +1746,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   
   KeyWrk xKeyWrkUpper;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
   xKeyWrkUpper.vAddDatum(xValWrk,pColumn0,pFormatters);
   //xKeyWrkUpper.vShow();
   
@@ -1953,7 +1953,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   // get the entryBuffer looking for the key
   KeyWrk xKeyWrk;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &mpTask->m_pSEitf->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
   xKeyWrk.vAddDatum(xValWrk,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
