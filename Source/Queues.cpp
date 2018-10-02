@@ -89,6 +89,38 @@ Queues::~Queues(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Statis ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* threads report                                                             */
+/*----------------------------------------------------------------------------*/
+void Queues::vThreadsReport()
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  pQueues->m_pThreadVector->vGrabLock();
+
+  i8 nThreads = pQueues->m_pThreadVector->nItems();
+  for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
+    
+    Thread* pThread = pQueues->m_pThreadVector->pGet(i_Thread);
+    
+    vTrace("  Thread %2lld %p %7s os id %lld posix id %lld rr : last %2lld start %2lld\n"_Stz,
+           pThread->m_iThreadNo,
+           pThread,
+           aTC[pThread->m_eThreadState],
+           pThread->m_pPosixThread->m_iOpSysThreadId,
+           pThread->m_pPosixThread->m_iPosixThreadId,
+           pThread->m_iLastRRqueue,
+           pThread->m_iStartRRqueue
+           );
+  }
+  
+  pQueues->m_pThreadVector->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

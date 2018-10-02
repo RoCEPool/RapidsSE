@@ -58,6 +58,8 @@ namespace Threads
     Queues(void);
     ~Queues(void);
   
+    static void vThreadsReport(void);
+  
     void vAddThread(Thread* pThread);
     
     void vAddToExecutingQueue(Task* pTask);

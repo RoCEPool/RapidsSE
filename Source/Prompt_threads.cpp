@@ -25,7 +25,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_threads(SePrompt* pPrompt)
 {  
-  vTrace("  not implemented yet\n"_Stz);
+  Queues::vThreadsReport();
   
   return true;
 }
