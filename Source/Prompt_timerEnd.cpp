@@ -9,7 +9,7 @@ PromptNote mPromptNote_timerEnd (
   "comment"_Stz,         // comment about the functopm
   "timerEnd"_Stz,        // the prompt command
   nullptr,               // the second word
-  bPrompt_timerEnd,      // prompt post-process function
+  bPrompt_timerEnd,      // prompt function
   true,                  // enabled
 
   true,                  // visible

@@ -9,7 +9,7 @@ PromptNote mPromptNote_displayOn (
   "comment"_Stz,           // comment about the functopm
   "displayOn"_Stz,         // the prompt command
   nullptr,                 // the second word
-  bPrompt_displayOn,       // prompt post-process function
+  bPrompt_displayOn,       // prompt function
   true,                    // enabled
 
   true,                    // visible

@@ -10,7 +10,7 @@ PromptNote mPromptNote_args (
   "comment"_Stz,     // comment about the functopm
   "args"_Stz,        // the prompt command
   nullptr,           // the second word
-  bPrompt_args,      // prompt post-process function
+  bPrompt_args,      // prompt function
   true,              // enabled
 
   true,               // visible

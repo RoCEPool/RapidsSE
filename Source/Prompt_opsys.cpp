@@ -9,7 +9,7 @@ PromptNote mPromptNote_opsys (
   "comment"_Stz,      // comment about the functopm
   "opsys"_Stz,        // the prompt command
   nullptr,            // the second word
-  bPrompt_opsys,      // prompt post-process function
+  bPrompt_opsys,      // prompt function
   true,               // enabled
 
   true,               // visible

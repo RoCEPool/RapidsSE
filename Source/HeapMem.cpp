@@ -213,53 +213,109 @@ void HeapMem::vReport(void)
   s32 sMagLarge;  Magnitudes::vMagnitude(C_SIZE_LARGE_OBJECT, sMagLarge);
   s32 sMagJumbo;  Magnitudes::vMagnitude(C_SIZE_JUMBO_OBJECT, sMagJumbo);
   
-  vTrace("  Transitent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("  Transient  Small  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagSmall.aChar(),
          gpAttachMap->m_xHeapMem.Transient.m_pSmall->iBufferCount(),
          gpAttachMap->m_xHeapMem.Transient.m_pSmall->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount());
+         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount(),
+         
+         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iAllocCount() *
+         C_SIZE_SMALL_OBJECT
+         +
+         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount()  *
+         C_SIZE_SMALL_OBJECT
+         );
   
-  vTrace(" Transitent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("             Medium (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagMedium.aChar(),
          gpAttachMap->m_xHeapMem.Transient.m_pMedium->iBufferCount(),
          gpAttachMap->m_xHeapMem.Transient.m_pMedium->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount());
+         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount(),
+         
+         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iAllocCount() *
+         C_SIZE_MEDIUM_OBJECT
+         +
+         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount()  *
+         C_SIZE_MEDIUM_OBJECT
+         );
   
-  vTrace("  Transitent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("             Large  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagLarge.aChar(),
          gpAttachMap->m_xHeapMem.Transient.m_pLarge->iBufferCount(),
          gpAttachMap->m_xHeapMem.Transient.m_pLarge->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount());
+         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount(),
+         
+         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iAllocCount() *
+         C_SIZE_LARGE_OBJECT
+         +
+         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount()  *
+         C_SIZE_LARGE_OBJECT
+         );
   
-  vTrace("  Transitent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("             Jumbo  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagJumbo.aChar(),
          gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iBufferCount(),
          gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iFreeCount());
+         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iFreeCount(),
+         
+         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iAllocCount() *
+         C_SIZE_JUMBO_OBJECT
+         +
+         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iFreeCount()  *
+         C_SIZE_JUMBO_OBJECT
+         );
   
-  vTrace("  Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("  Persistent Small  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagSmall.aChar(),
          gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iBufferCount(),
          gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iFreeCount());
+         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iFreeCount(),
+
+         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iAllocCount() *
+         C_SIZE_SMALL_OBJECT
+         +
+         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iFreeCount()  *
+         C_SIZE_SMALL_OBJECT
+         );
   
-  vTrace(" Persistent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("             Medium (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagMedium.aChar(),
          gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iBufferCount(),
          gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iFreeCount());
+         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iFreeCount(),
+         
+         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iAllocCount() *
+         C_SIZE_MEDIUM_OBJECT
+         +
+         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iFreeCount()  *
+         C_SIZE_MEDIUM_OBJECT
+         );
   
-  vTrace("  Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-         sMagJumbo.aChar(),
+  vTrace("             Large  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
+         sMagLarge.aChar(),
          gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iBufferCount(),
          gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iFreeCount());
+         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iFreeCount(),
+         
+         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iAllocCount() *
+         C_SIZE_LARGE_OBJECT
+         +
+         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iFreeCount()  *
+         C_SIZE_LARGE_OBJECT
+         );
   
-  vTrace("  Persistent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+  vTrace("             Jumbo  (%6s) buffers %-6lld alloc %-6lld free %-6lld (sum=%lld)\n"_Stz,
          sMagJumbo.aChar(),
          gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iBufferCount(),
          gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iAllocCount(),
-         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iFreeCount());
+         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iFreeCount(),
+         
+         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iAllocCount() *
+         C_SIZE_JUMBO_OBJECT
+         +
+         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iFreeCount()  *
+         C_SIZE_JUMBO_OBJECT
+         );
 }
 
 /*----------------------------------------------------------------------------*/

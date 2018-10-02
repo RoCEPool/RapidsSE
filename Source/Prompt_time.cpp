@@ -9,7 +9,7 @@ PromptNote mPromptNote_time (
   "comment"_Stz,     // comment about the functopm
   "time"_Stz,        // the prompt command
   nullptr,           // the second word
-  bPrompt_time,      // prompt post-process function
+  bPrompt_time,      // prompt function
   true,              // enabled
 
   true,              // visible

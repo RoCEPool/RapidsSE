@@ -12,7 +12,7 @@ PromptNote mPromptNote_version (
   "comment"_Stz,        // comment about the functopm
   "version"_Stz,        // the prompt command
   nullptr,              // the second word
-  bPrompt_version,      // prompt post-process function
+  bPrompt_version,      // prompt function
   true,                 // enabled
 
   true,                 // visible

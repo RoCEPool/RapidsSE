@@ -9,7 +9,7 @@ PromptNote mPromptNote_sleep (
   "comment"_Stz,      // comment about the functopm
   "sleep"_Stz,        // the prompt command
   nullptr,            // the second word
-  bPrompt_sleep,      // prompt post-process function
+  bPrompt_sleep,      // prompt function
   true,               // enabled
 
   true,               // visible

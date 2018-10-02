@@ -9,7 +9,7 @@ PromptNote mPromptNote_timerStart (
   "comment"_Stz,           // comment about the functopm
   "timerStart"_Stz,        // the prompt command
   nullptr,                 // the second word
-  bPrompt_timerStart,      // prompt post-process function
+  bPrompt_timerStart,      // prompt function
   true,                    // enabled
 
   true,                    // visible

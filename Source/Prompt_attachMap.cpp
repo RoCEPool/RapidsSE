@@ -12,7 +12,7 @@ PromptNote mPromptNote_attachMap (
   "comment"_Stz,          // comment about the functopm
   "attachMap"_Stz,        // the prompt command
   nullptr,                // the second word
-  bPrompt_attachMap,      // prompt post-process function
+  bPrompt_attachMap,      // prompt function
   true,                   // enabled
 
   true,                   // visible

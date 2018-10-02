@@ -9,7 +9,7 @@ PromptNote mPromptNote_jobcat (
   "comment"_Stz,       // comment about the functopm
   "jobcat"_Stz,        // the prompt command
   nullptr,             // the second word
-  bPrompt_jobcat,      // prompt post-process function
+  bPrompt_jobcat,      // prompt function
   true,                // enabled
 
   true,                // visible

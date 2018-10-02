@@ -9,7 +9,7 @@ PromptNote mPromptNote_cd (
   "comment"_Stz,     // comment about the functopm
   "cd"_Stz,          // the prompt command
   nullptr,           // the second word
-  bPrompt_cd,        // prompt post-process function
+  bPrompt_cd,        // prompt function
   true,              // enabled
 
   true,              // visible

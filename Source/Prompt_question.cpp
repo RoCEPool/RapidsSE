@@ -9,7 +9,7 @@ PromptNote mPromptNote_question (
   "comment"_Stz,         // comment about the functopm
   "?"_Stz,               // the prompt command
   nullptr,               // the second word
-  bPrompt_question,      // prompt post-process function
+  bPrompt_question,      // prompt function
   true,                  // enabled
 
   true,                  // visible

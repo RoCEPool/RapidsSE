@@ -9,7 +9,7 @@ PromptNote mPromptNote_pwd (
   "comment"_Stz,      // comment about the functopm
   "pwd"_Stz,          // the prompt command
   nullptr,            // the second word
-  bPrompt_pwd,        // prompt post-process function
+  bPrompt_pwd,        // prompt function
   true,               // enabled
 
   true,               // visible
