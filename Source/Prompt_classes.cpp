@@ -10,7 +10,7 @@ PromptNote mPromptNote_classes (
   "comment"_Stz,        // comment about the functopm
   "classes"_Stz,        // the prompt command
   nullptr,              // the second word
-  bPrompt_threads,      // prompt function
+  bPrompt_classes,      // prompt function
   true,                 // enabled
 
   true,                 // visible
@@ -25,7 +25,28 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_classes(SePrompt* pPrompt)
 {  
-  vTrace("  not implemented yet\n"_Stz);
+  char cGroup = '~';
+  
+  for (i8 i_Class = 0; i_Class <= CN_ENUMS; i_Class++) {
+
+    char cFirst = *aCN[i_Class]->aChar();
+
+    if ('~' == cGroup) {
+      if ('A' == cFirst)
+        vTrace("\n"_Stz);
+    }
+    else  {
+      if (cGroup != cFirst)
+        vTrace("\n"_Stz);
+    }
+    
+    vTrace("    /* %3lld */ CN_%s,\n"_Stz,i_Class,aCN[i_Class]);
+    
+    if ('~' != cGroup)
+      cGroup = cFirst;
+    else if ('A' == cFirst)
+      cGroup = cFirst;
+  }
   
   return true;
 }
