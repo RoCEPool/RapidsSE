@@ -88,8 +88,6 @@ SEitf::SEitf(i8 iPartition)
   
   m_pRowOnce = nullptr;
   
-  //m_xFormatters
-  
   m_pPerformanceTrace = nullptr;
   
   m_pCommandProcessor = new CommandProcessor;

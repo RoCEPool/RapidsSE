@@ -24,7 +24,7 @@ namespace Interface
     // these should go
     RowOnce*   m_pRowOnce;       // has row been seen before?
     bool       m_bDisplay;       // display on
-    Formatters m_xFormatters;    // record formatter
+
     
     // must be last
     Footer m_xFooter;
@@ -52,8 +52,6 @@ namespace Interface
     i8        iSlot(void);
     Tx*       pTx(void);
     void      vTx(Tx* pTx);
-  
-    
     
     //--------------------------------------------------------------------------
     // to be deleted

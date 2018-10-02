@@ -198,9 +198,6 @@ bool LoaderSub::bFetchRecord(void)
   bool bValid = false;
   bool bBlankLine;
   
-  //Interface::SEitf* pSEitf = m_pLoader->pSEitf();
-  //Formatters* pFormatters = &pSEitf->m_xFormatters;
-  
   Job_LoadTable* pJob_LoadTable = m_pLoader->pJob_LoadTable();
   Formatters* pFormatters = &pJob_LoadTable->m_xFormatters;
   Table* pTable = m_pLoader->pTable();
