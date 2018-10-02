@@ -20,16 +20,12 @@ void Step::vAddSteps_LoaderSub(void)
   vAddStep("subLoader.delete"_Stz,           &Task::vSubLoaderDelete,            false);
   vAddStep("subLoader.end"_Stz,              &Task::vSubLoaderEnd,               false);
   vAddStep("subLoader.fetchRecord"_Stz,      &Task::vSubLoaderFetchRecord,       false);
-  vAddStep("subLoader.fetchRecordDist"_Stz,  &Task::vSubLoaderFetchRecordDist,   false);
   vAddStep("subLoader.fieldDelimiter!"_Stz,  &Task::vSubLoaderFieldDelimiterStore, false);
   vAddStep("subLoader.hashPartition"_Stz,    &Task::vSubLoaderHashPartition,     false);
   vAddStep("subLoader.hashRecord"_Stz,       &Task::vSubLoaderHashRecord,        false);
   vAddStep("subLoader.init"_Stz,             &Task::vSubLoaderInit,              false);
-  vAddStep("subLoader.loader@"_Stz,          &Task::vSubLoaderLoaderFetch,       false);
-  vAddStep("subLoader.loader!"_Stz,          &Task::vSubLoaderLoaderStore,       false);
   vAddStep("subLoader.loadData"_Stz,         &Task::vSubLoaderLoadData,          false);
   vAddStep("subLoader.loadNodeData"_Stz,     &Task::vSubLoaderLoadNodeData,      false);
-  vAddStep("loaderSub::new"_Stz,             &Task::vSubLoaderNew,               false);
   vAddStep("subLoader.newWorkingBuffer"_Stz, &Task::vSubLoaderNewWorkingBuffer,  false);
   vAddStep("subLoader.partition@"_Stz,       &Task::vSubLoaderPartitionFetch,    false);
   vAddStep("subLoader.partition!"_Stz,       &Task::vSubLoaderPartitionStore,    false);
@@ -39,7 +35,6 @@ void Step::vAddSteps_LoaderSub(void)
   vAddStep("subLoader.spawnLoadBuffer"_Stz,  &Task::vSubLoaderSpawnLoadBuffer,   false);
   vAddStep("subLoader.workingBuffer@"_Stz,   &Task::vSubLoaderWorkingBufferFetch,false);
   vAddStep("subLoader.workingBuffer!"_Stz,   &Task::vSubLoaderWorkingBufferStore,false);
-  vAddStep("subLoader.table"_Stz,            &Task::vSubLoaderTable,             false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,31 +127,6 @@ void Task::vSubLoaderFetchRecord(MP_Task mpTask)
   SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
   
   bool bFetched = pSubLoader->bFetchRecord();
-  
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
-  //pSubLoader->vTruncateRecord(13);
-  
-  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
-  mpTask->m_pDataStack->vPushInt(bFetched);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.fetchRecordDist -- fetch next record from file being loaded      */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderFetchRecordDist(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderFetchRecord"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("subLoader.fetchRecord"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
-  
-  bool bFetched = pSubLoader->bFetchRecordDist();
   
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
@@ -333,64 +303,6 @@ void Task::vSubLoaderLoadNodeData(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* subLoader.loader@ -- fetch loader                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderLoaderFetch(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderLoaderFetch"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("subLoader.partition@"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
-  
-  LoadTable* pLoadTable = pSubLoader->pLoadTable();
-  
-  mpTask->m_pDataStack->vPushObject(pLoadTable);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.loader! -- store loader                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderLoaderStore(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderLoaderStore"_Stz);
-  
-  Object* pPtrLoaderSub;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoaderSub) )
-    THROW_INVALID_DSTACK("subLoader.loader!"_Stz);
-  
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoaderSub);
-  ASSERT(CN_SUBLOADER == pSubLoader->eClass());
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loadTable.openfile"_Stz);
-  
-  LoadTable* pLoadTable = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADTABLE == pLoadTable->eClass());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loaderSub::new -- new a table loader subordinate                            */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderNew(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderNew"_Stz);
-  
-  SubLoader* pSubLoader = new SubLoader(nullptr,nullptr);
-  ASSERT(CN_SUBLOADER == pSubLoader->eClass());
-  
-  mpTask->m_pDataStack->vPushObject(pSubLoader);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* subLoader.newWorkingBuffer --create new working buffer for given partition */
 /*----------------------------------------------------------------------------*/
 void Task::vSubLoaderNewWorkingBuffer(MP_Task mpTask)
@@ -514,25 +426,6 @@ void Task::vSubLoaderRecordsValid(MP_Task mpTask)
   SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
   
   mpTask->m_pDataStack->vPushInt(pSubLoader->iValidRecords());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.table -- get table being loaded                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderTable(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderTable"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("subLoader.table"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
-  
-  Table* pTable = pSubLoader->pTable();
-  
-  mpTask->m_pDataStack->vPushObject(pTable);
   
   EXIT();
 }

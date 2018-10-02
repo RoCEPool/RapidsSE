@@ -777,7 +777,6 @@ namespace Tasks
     static void vSubLoaderDelete(MP_Task mpTask);
     static void vSubLoaderEnd(MP_Task mpTask);
     static void vSubLoaderFetchRecord(MP_Task mpTask);
-    static void vSubLoaderFetchRecordDist(MP_Task mpTask);
     static void vSubLoaderFieldDelimiterStore(MP_Task mpTask);
     static void vSubLoaderHashPartition(MP_Task mpTask);
     static void vSubLoaderHashRecord(MP_Task mpTask);
@@ -785,9 +784,6 @@ namespace Tasks
     static void vSubLoaderInsertRow(MP_Task mpTask);
     static void vSubLoaderLoadData(MP_Task mpTask);
     static void vSubLoaderLoadNodeData(MP_Task mpTask);
-    static void vSubLoaderLoaderFetch(MP_Task mpTask);
-    static void vSubLoaderLoaderStore(MP_Task mpTask);
-    static void vSubLoaderNew(MP_Task mpTask);
     static void vSubLoaderNewWorkingBuffer(MP_Task mpTask);
     static void vSubLoaderPartitionFetch(MP_Task mpTask);
     static void vSubLoaderPartitionStore(MP_Task mpTask);
@@ -795,7 +791,6 @@ namespace Tasks
     static void vSubLoaderRecordsInvalid(MP_Task mpTask);
     static void vSubLoaderRecordsValid(MP_Task mpTask);
     static void vSubLoaderSpawnLoadBuffer(MP_Task mpTask);
-    static void vSubLoaderTable(MP_Task mpTask);
     static void vSubLoaderWorkingBufferFetch(MP_Task mpTask);
     static void vSubLoaderWorkingBufferStore(MP_Task mpTask);
     
