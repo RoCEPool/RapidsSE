@@ -20,7 +20,6 @@ void Step::vAddSteps_Loader(void)
   vAddStep("loader.dumpMap"_Stz,           &Task::vLoaderDumpMap,         false);
   vAddStep("loader.findChunk"_Stz,         &Task::vLoaderFindChunk,       false);
   vAddStep("loader::new"_Stz,              &Task::vLoaderNew,             false);
-  vAddStep("loader.newSub"_Stz,            &Task::vLoaderNewSub,          false);
   vAddStep("loader.seitf@"_Stz,            &Task::vLoaderSEitfFetch,      false);
   vAddStep("loader.seitf!"_Stz,            &Task::vLoaderSEitfStore,      false);
   vAddStep("loader.spawnSubLoader"_Stz,    &Task::vLoaderSpawnSubLoader,  false);
@@ -125,30 +124,6 @@ void Task::vLoaderNew(MP_Task mpTask)
   pJob_LoadTable->m_pLoader = pLoader;
 
   mpTask->m_pDataStack->vPushObject(pLoader);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.newSub -- new a loader sub                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderNewSub(MP_Task mpTask)
-{
-  ENTRY("vLoaderNewSub"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.newSub"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  LoaderSub* pLoaderSub = new LoaderSub(nullptr,pLoader);
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
-  
-  pLoaderSub->vLoader(pLoader);
-  
-  mpTask->m_pDataStack->vPushObject(pLoaderSub);
   
   EXIT();
 }
