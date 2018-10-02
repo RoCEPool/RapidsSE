@@ -12,7 +12,7 @@
   params| pSubLoader  |
   params| bFinal  |
 
-  bFinal pSubLoader loaderSub.spawnLoadBuffer
+  bFinal pSubLoader subLoader.spawnLoadBuffer
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -49,10 +49,10 @@
     //I "LAST BUFFER for partition %v" fmt.print
 
     // set the partition we are using
-    I pSubLoader loaderSub.partition!
+    I pSubLoader subLoader.partition!
 
     // ensure there's a dangling buffer for partition I
-    pSubLoader loaderSub.danglingBuffer
+    pSubLoader subLoader.danglingBuffer
 
     // send last buffer to node
     true pSubLoader SubLoader_sendBuffer
@@ -67,7 +67,7 @@
 
   params| pSubLoader |
 
-  begin pSubLoader loaderSub.processRecords while
+  begin pSubLoader subLoader.processRecords while
 
     false pSubLoader SubLoader_sendBuffer
 
@@ -101,7 +101,7 @@
   // get the loaderSub object from the sub-loader job
   pJob_SubLoader job.ancilliary@ to pSubLoader
 
-  pSubLoader loaderSub.begin
+  pSubLoader subLoader.begin
 
   pSubLoader SubLoader_process
 
@@ -113,10 +113,10 @@
   iLoadTableJobId job::findOriginator to pJobLoadTable_Originator
 
   // get the valid/invalid rows loaded from subloader
-  //pSubLoader loaderSub.recordsValid .
-  pSubLoader loaderSub.recordsValid pJobLoadTable_Originator job_loadTable.addValidRows
-  pSubLoader loaderSub.recordsInvalid pJobLoadTable_Originator job_loadTable.addInvalidRows
-  pSubLoader loaderSub.end
+  //pSubLoader subLoader.recordsValid .
+  pSubLoader subLoader.recordsValid pJobLoadTable_Originator job_loadTable.addValidRows
+  pSubLoader subLoader.recordsInvalid pJobLoadTable_Originator job_loadTable.addInvalidRows
+  pSubLoader subLoader.end
 
   // now delete the ended job
   pJob_SubLoader job.delete
