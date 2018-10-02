@@ -133,7 +133,7 @@ void Task::vLoadTableSpawnSubLoader(MP_Task mpTask)
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
   
   SubLoader* pSubLoader = new SubLoader(pJob_SubLoader,pLoadTable);
-  pJob_SubLoader->vLoaderSub(pSubLoader);
+  pJob_SubLoader->vSubLoader(pSubLoader);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

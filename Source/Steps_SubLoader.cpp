@@ -15,39 +15,39 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LoaderSub(void)
 {
-  vAddStep("loaderSub.begin"_Stz,         &Task::vLoaderSubBegin,         false);
-  vAddStep("loaderSub.danglingBuffer"_Stz,&Task::vLoaderSubDanglingBuffer,false);
-  vAddStep("loaderSub.delete"_Stz,       &Task::vLoaderSubDelete,        false);
-  vAddStep("loaderSub.end"_Stz,          &Task::vLoaderSubEnd,           false);
-  vAddStep("loaderSub.fetchRecord"_Stz,  &Task::vLoaderSubFetchRecord,   false);
-  vAddStep("loaderSub.fetchRecordDist"_Stz,  &Task::vLoaderSubFetchRecordDist, false);
-  vAddStep("loaderSub.fieldDelimiter!"_Stz,  &Task::vLoaderSubFieldDelimiterStore, false);
-  vAddStep("loaderSub.hashPartition"_Stz,&Task::vLoaderSubHashPartition, false);
-  vAddStep("loaderSub.hashRecord"_Stz,   &Task::vLoaderSubHashRecord,    false);
-  vAddStep("loaderSub.init"_Stz,         &Task::vLoaderSubInit,          false);
-  vAddStep("loaderSub.loader@"_Stz,      &Task::vLoaderSubLoaderFetch,   false);
-  vAddStep("loaderSub.loader!"_Stz,      &Task::vLoaderSubLoaderStore,   false);
-  vAddStep("loaderSub.loadData"_Stz,     &Task::vLoaderSubLoadData,      false);
-  vAddStep("loaderSub.loadNodeData"_Stz, &Task::vLoaderSubLoadNodeData,  false);
-  vAddStep("loaderSub::new"_Stz,         &Task::vLoaderSubNew,           false);
-  vAddStep("loaderSub.newWorkingBuffer"_Stz, &Task::vLoaderSubNewWorkingBuffer,false);
-  vAddStep("loaderSub.partition@"_Stz,   &Task::vLoaderSubPartitionFetch,false);
-  vAddStep("loaderSub.partition!"_Stz,   &Task::vLoaderSubPartitionStore,false);
-  vAddStep("loaderSub.processRecords"_Stz,  &Task::vLoaderSubProcessRecords, false);
-  vAddStep("loaderSub.recordsInvalid"_Stz, &Task::vLoaderSubRecordsInvalid, false);
-  vAddStep("loaderSub.recordsValid"_Stz, &Task::vLoaderSubRecordsValid,  false);
-  vAddStep("loaderSub.spawnLoadBuffer"_Stz, &Task::vLoaderSubSpawnLoadBuffer, false);
-  vAddStep("loaderSub.workingBuffer@"_Stz, &Task::vLoaderSubWorkingBufferFetch,false);
-  vAddStep("loaderSub.workingBuffer!"_Stz, &Task::vLoaderSubWorkingBufferStore,false);
-  vAddStep("loaderSub.table"_Stz,        &Task::vLoaderSubTable,         false);
+  vAddStep("loaderSub.begin"_Stz,            &Task::vSubLoaderBegin,             false);
+  vAddStep("loaderSub.danglingBuffer"_Stz,   &Task::vSubLoaderDanglingBuffer,    false);
+  vAddStep("loaderSub.delete"_Stz,           &Task::vSubLoaderDelete,            false);
+  vAddStep("loaderSub.end"_Stz,              &Task::vSubLoaderEnd,               false);
+  vAddStep("loaderSub.fetchRecord"_Stz,      &Task::vSubLoaderFetchRecord,       false);
+  vAddStep("loaderSub.fetchRecordDist"_Stz,  &Task::vSubLoaderFetchRecordDist,   false);
+  vAddStep("loaderSub.fieldDelimiter!"_Stz,  &Task::vSubLoaderFieldDelimiterStore, false);
+  vAddStep("loaderSub.hashPartition"_Stz,    &Task::vSubLoaderHashPartition,     false);
+  vAddStep("loaderSub.hashRecord"_Stz,       &Task::vSubLoaderHashRecord,        false);
+  vAddStep("loaderSub.init"_Stz,             &Task::vSubLoaderInit,              false);
+  vAddStep("loaderSub.loader@"_Stz,          &Task::vSubLoaderLoaderFetch,       false);
+  vAddStep("loaderSub.loader!"_Stz,          &Task::vSubLoaderLoaderStore,       false);
+  vAddStep("loaderSub.loadData"_Stz,         &Task::vSubLoaderLoadData,          false);
+  vAddStep("loaderSub.loadNodeData"_Stz,     &Task::vSubLoaderLoadNodeData,      false);
+  vAddStep("loaderSub::new"_Stz,             &Task::vSubLoaderNew,               false);
+  vAddStep("loaderSub.newWorkingBuffer"_Stz, &Task::vSubLoaderNewWorkingBuffer,  false);
+  vAddStep("loaderSub.partition@"_Stz,       &Task::vSubLoaderPartitionFetch,    false);
+  vAddStep("loaderSub.partition!"_Stz,       &Task::vSubLoaderPartitionStore,    false);
+  vAddStep("loaderSub.processRecords"_Stz,   &Task::vSubLoaderProcessRecords,    false);
+  vAddStep("loaderSub.recordsInvalid"_Stz,   &Task::vSubLoaderRecordsInvalid,    false);
+  vAddStep("loaderSub.recordsValid"_Stz,     &Task::vSubLoaderRecordsValid,      false);
+  vAddStep("loaderSub.spawnLoadBuffer"_Stz,  &Task::vSubLoaderSpawnLoadBuffer,   false);
+  vAddStep("loaderSub.workingBuffer@"_Stz,   &Task::vSubLoaderWorkingBufferFetch,false);
+  vAddStep("loaderSub.workingBuffer!"_Stz,   &Task::vSubLoaderWorkingBufferStore,false);
+  vAddStep("loaderSub.table"_Stz,            &Task::vSubLoaderTable,             false);
 }
 
 /*----------------------------------------------------------------------------*/
 /* loaderSub.begin -- begin loading                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubBegin(MP_Task mpTask)
+void Task::vSubLoaderBegin(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubBegin"_Stz);
+  ENTRY("vSubLoaderBegin"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -64,9 +64,9 @@ void Task::vLoaderSubBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.dangingBuffer -- ensure there's a dangling buffer for partition  */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubDanglingBuffer(MP_Task mpTask)
+void Task::vSubLoaderDanglingBuffer(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubDanglingBuffer"_Stz);
+  ENTRY("vSubLoaderDanglingBuffer"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -82,9 +82,9 @@ void Task::vLoaderSubDanglingBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.delete -- delete a table loader                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubDelete(MP_Task mpTask)
+void Task::vSubLoaderDelete(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubDelete"_Stz);
+  ENTRY("vSubLoaderDelete"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -101,9 +101,9 @@ void Task::vLoaderSubDelete(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.end -- end loading                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubEnd(MP_Task mpTask)
+void Task::vSubLoaderEnd(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubEnd"_Stz);
+  ENTRY("vSubLoaderEnd"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -122,9 +122,9 @@ void Task::vLoaderSubEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.fetchRecord -- fetch next record from file being loaded          */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubFetchRecord(MP_Task mpTask)
+void Task::vSubLoaderFetchRecord(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubFetchRecord"_Stz);
+  ENTRY("vSubLoaderFetchRecord"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -147,9 +147,9 @@ void Task::vLoaderSubFetchRecord(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.fetchRecordDist -- fetch next record from file being loaded      */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubFetchRecordDist(MP_Task mpTask)
+void Task::vSubLoaderFetchRecordDist(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubFetchRecord"_Stz);
+  ENTRY("vSubLoaderFetchRecord"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -172,9 +172,9 @@ void Task::vLoaderSubFetchRecordDist(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.fieldDelimiter! -- store field delimiter in sub loader           */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubFieldDelimiterStore(MP_Task mpTask)
+void Task::vSubLoaderFieldDelimiterStore(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubFieldDelimiterStore"_Stz);
+  ENTRY("vSubLoaderFieldDelimiterStore"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -193,9 +193,9 @@ void Task::vLoaderSubFieldDelimiterStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.hashRecord -- hash record being loaded                           */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubHashRecord(MP_Task mpTask)
+void Task::vSubLoaderHashRecord(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubHashRecord"_Stz);
+  ENTRY("vSubLoaderHashRecord"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -210,9 +210,9 @@ void Task::vLoaderSubHashRecord(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.hashPartition -- hash partition & get node where partition lives */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubHashPartition(MP_Task mpTask)
+void Task::vSubLoaderHashPartition(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubHashRecord"_Stz);
+  ENTRY("vSubLoaderHashRecord"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -232,7 +232,7 @@ void Task::vLoaderSubHashPartition(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.init -- init a table loader                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubInit(MP_Task mpTask)
+void Task::vSubLoaderInit(MP_Task mpTask)
 {
   ENTRY("vLoaderInit"_Stz);
   
@@ -249,9 +249,9 @@ void Task::vLoaderSubInit(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.loadData -- load data                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubLoadData(MP_Task mpTask)
+void Task::vSubLoaderLoadData(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubLoadData"_Stz);
+  ENTRY("vSubLoaderLoadData"_Stz);
   
   Object* pPtrLoaderSub;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoaderSub) )
@@ -286,9 +286,9 @@ void Task::vLoaderSubLoadData(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.loadNodeData -- load node data                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubLoadNodeData(MP_Task mpTask)
+void Task::vSubLoaderLoadNodeData(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubLoadNodeData"_Stz);
+  ENTRY("vSubLoaderLoadNodeData"_Stz);
   
   Object* pPtrLoaderSub;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoaderSub) )
@@ -335,9 +335,9 @@ void Task::vLoaderSubLoadNodeData(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.loader@ -- fetch loader                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubLoaderFetch(MP_Task mpTask)
+void Task::vSubLoaderLoaderFetch(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubLoaderFetch"_Stz);
+  ENTRY("vSubLoaderLoaderFetch"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -354,9 +354,9 @@ void Task::vLoaderSubLoaderFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.loader! -- store loader                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubLoaderStore(MP_Task mpTask)
+void Task::vSubLoaderLoaderStore(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubLoaderStore"_Stz);
+  ENTRY("vSubLoaderLoaderStore"_Stz);
   
   Object* pPtrLoaderSub;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoaderSub) )
@@ -378,9 +378,9 @@ void Task::vLoaderSubLoaderStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub::new -- new a table loader subordinate                            */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubNew(MP_Task mpTask)
+void Task::vSubLoaderNew(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubNew"_Stz);
+  ENTRY("vSubLoaderNew"_Stz);
   
   SubLoader* pSubLoader = new SubLoader(nullptr,nullptr);
   ASSERT(CN_SUBLOADER == pSubLoader->eClass());
@@ -393,9 +393,9 @@ void Task::vLoaderSubNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.newWorkingBuffer --create new working buffer for given partition */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubNewWorkingBuffer(MP_Task mpTask)
+void Task::vSubLoaderNewWorkingBuffer(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubNewWorkingBuffer"_Stz);
+  ENTRY("vSubLoaderNewWorkingBuffer"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -411,9 +411,9 @@ void Task::vLoaderSubNewWorkingBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.partition@ -- get partition number derived from hash of record   */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubPartitionFetch(MP_Task mpTask)
+void Task::vSubLoaderPartitionFetch(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubPartitionFetch"_Stz);
+  ENTRY("vSubLoaderPartitionFetch"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -430,9 +430,9 @@ void Task::vLoaderSubPartitionFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.partition! -- store partition number                             */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubPartitionStore(MP_Task mpTask)
+void Task::vSubLoaderPartitionStore(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubPartitionStore"_Stz);
+  ENTRY("vSubLoaderPartitionStore"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -451,9 +451,9 @@ void Task::vLoaderSubPartitionStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.processRecords -- read & process records till buffer full or eof  */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubProcessRecords(MP_Task mpTask)
+void Task::vSubLoaderProcessRecords(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubProcessRecords"_Stz);
+  ENTRY("vSubLoaderProcessRecords"_Stz);
   
   Object* pPtrLoaderSub;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoaderSub) )
@@ -487,9 +487,9 @@ void Task::vLoaderSubProcessRecords(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.recordsInvalid -- return no of invalid records fetched by sub    */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubRecordsInvalid(MP_Task mpTask)
+void Task::vSubLoaderRecordsInvalid(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubRecordsInvalid"_Stz);
+  ENTRY("vSubLoaderRecordsInvalid"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -504,9 +504,9 @@ void Task::vLoaderSubRecordsInvalid(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.recordsValid -- return no of valid records fetched by sub        */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubRecordsValid(MP_Task mpTask)
+void Task::vSubLoaderRecordsValid(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubRecordsValid"_Stz);
+  ENTRY("vSubLoaderRecordsValid"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -521,9 +521,9 @@ void Task::vLoaderSubRecordsValid(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.table -- get table being loaded                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubTable(MP_Task mpTask)
+void Task::vSubLoaderTable(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubTable"_Stz);
+  ENTRY("vSubLoaderTable"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -540,9 +540,9 @@ void Task::vLoaderSubTable(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.spawnLoadBuffer -- spawn Job_LoadBuffer                          */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
+void Task::vSubLoaderSpawnLoadBuffer(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubSpawnLoadBuffer"_Stz);
+  ENTRY("vSubLoaderSpawnLoadBuffer"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -601,9 +601,9 @@ void Task::vLoaderSubSpawnLoadBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.workingBuffer@ -- get working buffer of given partition          */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubWorkingBufferFetch(MP_Task mpTask)
+void Task::vSubLoaderWorkingBufferFetch(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubWorkingBufferFetch"_Stz);
+  ENTRY("vSubLoaderWorkingBufferFetch"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -620,9 +620,9 @@ void Task::vLoaderSubWorkingBufferFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loaderSub.workingBuffer! -- store working buffer                           */
 /*----------------------------------------------------------------------------*/
-void Task::vLoaderSubWorkingBufferStore(MP_Task mpTask)
+void Task::vSubLoaderWorkingBufferStore(MP_Task mpTask)
 {
-  ENTRY("vLoaderSubWorkingBufferStore"_Stz);
+  ENTRY("vSubLoaderWorkingBufferStore"_Stz);
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )

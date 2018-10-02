@@ -28,7 +28,7 @@ namespace JobsModel
   public:
     Job_LoadTable* pJob_LoadTable(void);
     void vJob_LoadTable(Job_LoadTable* pJob_LoadTable);
-    void vLoaderSub(Utilities::SubLoader* pSubLoader);
+    void vSubLoader(Utilities::SubLoader* pSubLoader);
 
     void vShow(void);
     Footer* aFooter(void);

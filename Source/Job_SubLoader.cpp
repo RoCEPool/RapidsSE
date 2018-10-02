@@ -170,7 +170,7 @@ void Job_SubLoader::vJob_LoadTable(Job_LoadTable* pJob_LoadTable)
 /*----------------------------------------------------------------------------*/
 /* set loadersub                                                              */
 /*----------------------------------------------------------------------------*/
-void Job_SubLoader::vLoaderSub(SubLoader* pSubLoader)
+void Job_SubLoader::vSubLoader(SubLoader* pSubLoader)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
