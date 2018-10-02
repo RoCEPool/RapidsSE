@@ -19,7 +19,6 @@
   sFileNm pFile file.path!
   OPEN_WRITE pFile file.open not if "file not opened" . exit then
 
-
   nRecs 0
   do
     //I I "%v,String%v" str.format .
@@ -27,6 +26,8 @@
   loop
 
   pFile file.close
+
+  pFile file.delete
 ;
 
 /*----------------------------------------------------------------------------*/

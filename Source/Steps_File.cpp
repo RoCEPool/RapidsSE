@@ -18,7 +18,7 @@ void Step::vAddSteps_File(void)
   vAddStep("file.close"_Stz,      &Task::vFileClose,        false);
   vAddStep("file.delete"_Stz,     &Task::vFileDelete,       false);
   vAddStep("file.init"_Stz,       &Task::vFileInit,         false);
-  vAddStep("file::new"_Stz,        &Task::vFileNew,          false);
+  vAddStep("file::new"_Stz,       &Task::vFileNew,          false);
   vAddStep("file.open"_Stz,       &Task::vFileOpen,         false);
   vAddStep("file.path@"_Stz,      &Task::vFilePathGet,      false);
   vAddStep("file.path!"_Stz,      &Task::vFilePathSet,      false);
@@ -61,7 +61,6 @@ ENTRY("vFileDelete"_Stz);
   File* pFile = _pFile(pPtrFile);
 
   delete pFile;
-  
   
   EXIT();
 }
