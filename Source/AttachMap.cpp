@@ -48,16 +48,16 @@ AttachMap::AttachMap(void)
   m_pCarryOver = new CarryOver;
   
   // create the transient heaps
-  m_xHeaps.vInit();
+  m_xHeapMem.vInit();
   
   // create the persistent heaps
-  m_xHeaps.Persistent.m_pJumbo  =
+  m_xHeapMem.Persistent.m_pJumbo  =
     new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
-  m_xHeaps.Persistent.m_pLarge  =
+  m_xHeapMem.Persistent.m_pLarge  =
     new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
-  m_xHeaps.Persistent.m_pMedium =
+  m_xHeapMem.Persistent.m_pMedium =
     new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
-  m_xHeaps.Persistent.m_pSmall  =
+  m_xHeapMem.Persistent.m_pSmall  =
     new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
 
   _checkInitialised_(CN_ATTACHMAP);
@@ -108,10 +108,10 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("\n"_Stz);
   vInfo("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
-  vInfo("TransientJumboHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pJumbo);
-  vInfo("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pMedium);
-  vInfo("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pLarge);
-  vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pSmall);
+  vInfo("TransientJumboHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pJumbo);
+  vInfo("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pMedium);
+  vInfo("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pLarge);
+  vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeapMem.Transient.m_pSmall);
   
   vInfo("\n"_Stz);
   vInfo("Total Nodes      : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
@@ -177,15 +177,15 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
   
   m_iEpoch      = 0;
   
-  ASSERT(m_xHeaps.Transient.m_pJumbo);
-  ASSERT(m_xHeaps.Transient.m_pMedium);
-  ASSERT(m_xHeaps.Transient.m_pLarge);
-  ASSERT(m_xHeaps.Transient.m_pSmall);
+  ASSERT(m_xHeapMem.Transient.m_pJumbo);
+  ASSERT(m_xHeapMem.Transient.m_pMedium);
+  ASSERT(m_xHeapMem.Transient.m_pLarge);
+  ASSERT(m_xHeapMem.Transient.m_pSmall);
   
-  ASSERT(m_xHeaps.Persistent.m_pJumbo);
-  ASSERT(m_xHeaps.Persistent.m_pMedium);
-  ASSERT(m_xHeaps.Persistent.m_pLarge);
-  ASSERT(m_xHeaps.Persistent.m_pSmall);
+  ASSERT(m_xHeapMem.Persistent.m_pJumbo);
+  ASSERT(m_xHeapMem.Persistent.m_pMedium);
+  ASSERT(m_xHeapMem.Persistent.m_pLarge);
+  ASSERT(m_xHeapMem.Persistent.m_pSmall);
   
   // create the tx sets
   m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());

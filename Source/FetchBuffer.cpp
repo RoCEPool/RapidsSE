@@ -24,7 +24,7 @@ FetchBuffer* DBobjects::_pFetchBuffer(void* aAddr)
 void* FetchBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = (Buffer*)Heaps::pAllocate(CN_FETCHBUFFER);
+  Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_FETCHBUFFER);
   
   return pBuffer;
 }
@@ -46,7 +46,7 @@ void FetchBuffer::operator delete(void* pBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
   
-  Heaps::vFree_NonObject(pBuffer);
+  HeapMem::vFree_NonObject(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

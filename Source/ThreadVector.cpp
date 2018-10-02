@@ -23,7 +23,7 @@ void* ThreadVector::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_THREADVECTOR);
+  void* pObject = HeapMem::pAllocate(CN_THREADVECTOR);
   
   return pObject;
 }
@@ -35,7 +35,7 @@ void ThreadVector::operator delete(void* pAddr)
 {
   ThreadVector* pThreadVector = reinterpret_cast<ThreadVector*>(pAddr);
   
-  Heaps::vFree(pThreadVector);
+  HeapMem::vFree(pThreadVector);
 }
 
 /*----------------------------------------------------------------------------*/

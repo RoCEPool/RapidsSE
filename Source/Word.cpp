@@ -29,7 +29,7 @@ void* Word::operator new(size_t iSize, Dic* pDic)
 {
   RASSERT(iSize);
 
-  Word* pWord = (Word*)(Heaps::pAllocate(CN_WORD));
+  Word* pWord = (Word*)(HeapMem::pAllocate(CN_WORD));
   
   pWord->m_bPersistent = false;
   pWord->m_pDic = pDic;
@@ -45,7 +45,7 @@ void* Word::operator new(size_t iSize, Dic* pDic, bool bPersistent)
   RASSERT(iSize);
   RASSERT(bPersistent || ! bPersistent);
   
-  Word* pWord = (Word*)(Heaps::pAllocate(CN_WORD,bPersistent));
+  Word* pWord = (Word*)(HeapMem::pAllocate(CN_WORD,bPersistent));
   
   pWord->m_bPersistent = bPersistent;
   pWord->m_pDic = pDic;
@@ -60,7 +60,7 @@ void Word::operator delete(void* pWordAddress)
 {
   Word* pWord = reinterpret_cast<Word*>(pWordAddress);
  
-  Heaps::vFree(pWord,pWord->m_bPersistent);
+  HeapMem::vFree(pWord,pWord->m_bPersistent);
 }
 
 /*----------------------------------------------------------------------------*/

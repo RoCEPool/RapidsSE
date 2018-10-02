@@ -26,7 +26,7 @@ Socket* System::_pSocket(void* aAddr)
 void* Socket::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  void* pSocket = Heaps::pAllocate(CN_SOCKET);
+  void* pSocket = HeapMem::pAllocate(CN_SOCKET);
   
   return pSocket;
 }

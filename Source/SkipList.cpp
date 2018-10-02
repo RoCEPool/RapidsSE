@@ -27,7 +27,7 @@ void* SkipList::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_SKIPLIST);
+  void* pObject = HeapMem::pAllocate(CN_SKIPLIST);
  
   return pObject;
 }
@@ -49,7 +49,7 @@ void SkipList::operator delete(void* pSkipListAddress)
 {
   SkipList* pSkipList = reinterpret_cast<SkipList*>(pSkipListAddress);
   
-  Heaps::vFree(pSkipList);
+  HeapMem::vFree(pSkipList);
 }
 
 /*----------------------------------------------------------------------------*/

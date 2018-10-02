@@ -27,7 +27,7 @@ void* LoadMap::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  Object* pObject = Heaps::pAllocate(CN_LOADMAP);
+  Object* pObject = HeapMem::pAllocate(CN_LOADMAP);
   
   return pObject;
 }
@@ -39,7 +39,7 @@ void LoadMap::operator delete(void* pLoadMapAddress)
 {
   Object* pObject = static_cast<Object*>(pLoadMapAddress);
   
-  Heaps::vFree(pObject);
+  HeapMem::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

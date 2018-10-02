@@ -76,7 +76,7 @@ void* Job_FetchRows::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_FetchRows* pJob_FetchRows =
-    static_cast<Job_FetchRows*>(Heaps::pAllocate(CN_JOB_FETCHROWS));
+    static_cast<Job_FetchRows*>(HeapMem::pAllocate(CN_JOB_FETCHROWS));
   
   return pJob_FetchRows;
 }
@@ -98,7 +98,7 @@ void Job_FetchRows::operator delete(void* aAddress)
 {
   Job_FetchRows* pJob_FetchRows = static_cast<Job_FetchRows*>(aAddress);
   
-  Heaps::vFree(pJob_FetchRows);
+  HeapMem::vFree(pJob_FetchRows);
 }
 
 /*----------------------------------------------------------------------------*/

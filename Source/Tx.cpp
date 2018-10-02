@@ -26,7 +26,7 @@ void* Tx::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_TXSET);
+  void* pObject = HeapMem::pAllocate(CN_TXSET);
 
   return pObject;
 }
@@ -47,7 +47,7 @@ void Tx::operator delete(void* pTxAddress)
 {
   Tx* pTx = reinterpret_cast<Tx*>(pTxAddress);
   
-  Heaps::vFree(pTx);
+  HeapMem::vFree(pTx);
 }
 
 /*----------------------------------------------------------------------------*/

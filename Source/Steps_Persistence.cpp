@@ -30,7 +30,7 @@ void Task::vPersistenceCheckpoint(MP_Task mpTask)
 
   BPA* pBPA = new BPA;
   
-  pBPA->vWritePersistentHeaps(sFilePath);
+  pBPA->vWritePersistentHeapMem(sFilePath);
   
   delete pBPA;
   

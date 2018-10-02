@@ -30,7 +30,7 @@ Queues* Threads::_pQueues(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Queues::operator new(size_t iSize)
 {
-  void* pObject = Heaps::pAllocate(CN_QUEUES);
+  void* pObject = HeapMem::pAllocate(CN_QUEUES);
   
   return pObject;
 }

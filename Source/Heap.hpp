@@ -35,7 +35,7 @@ namespace Pool
   
   class Heap : public Buffer
   {
-  friend class Heaps;
+  friend class HeapMem;
   
   private:
     i8          m_iObjectSize;   // size of each object (e.g. 1KB or 16KB)

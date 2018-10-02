@@ -25,7 +25,7 @@ void* Scratch::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_SCRATCH);
+  void* pObject = HeapMem::pAllocate(CN_SCRATCH);
   
   return pObject;
 }
@@ -48,7 +48,7 @@ void Scratch::operator delete(void* aAddress)
   
   Object* pObject = reinterpret_cast<Object*>(aAddress);
   
-  Heaps::vFree(pObject);
+  HeapMem::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

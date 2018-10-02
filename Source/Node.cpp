@@ -23,7 +23,7 @@ void* Node::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pObject = Heaps::pAllocate(CN_NODE);
+  void* pObject = HeapMem::pAllocate(CN_NODE);
   
   return pObject;
 }
@@ -44,7 +44,7 @@ void Node::operator delete(void* pNodeAddress)
 {
   Object* pObject = reinterpret_cast<Node*>(pNodeAddress);
   
-  Heaps::vFree(pObject);
+  HeapMem::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

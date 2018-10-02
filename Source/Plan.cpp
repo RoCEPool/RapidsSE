@@ -39,7 +39,7 @@ void* Plan::operator new(size_t iSize)
   RASSERT(iSize);
   ASSERT(gpAttachMap->m_pPlanList);
   
-  Plan* pPlan = reinterpret_cast<Plan*>(Heaps::pAllocate(CN_PLAN));
+  Plan* pPlan = reinterpret_cast<Plan*>(HeapMem::pAllocate(CN_PLAN));
   
   return pPlan;
 }
@@ -62,7 +62,7 @@ void Plan::operator delete(void* pPlanAddress)
 {
   Plan* pPlan = reinterpret_cast<Plan*>(pPlanAddress);
   
-  Heaps::vFree(pPlan);
+  HeapMem::vFree(pPlan);
 }
 
 /*----------------------------------------------------------------------------*/

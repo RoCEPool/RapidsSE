@@ -44,7 +44,7 @@ void* Task::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Task* pTask = reinterpret_cast<Task*>(Heaps::pAllocate(CN_TASK));
+  Task* pTask = reinterpret_cast<Task*>(HeapMem::pAllocate(CN_TASK));
   
   return pTask;
 }
@@ -56,7 +56,7 @@ void Task::operator delete(void* pTaskAddress)
 {
   Task* pTask = reinterpret_cast<Task*>(pTaskAddress);
   
-  Heaps::vFree(pTask);
+  HeapMem::vFree(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -27,7 +27,7 @@ void* Predicate::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_PREDICATE);
+  void* pObject = HeapMem::pAllocate(CN_PREDICATE);
   
   return pObject;
 }
@@ -39,7 +39,7 @@ void Predicate::operator delete(void* pDataAddress)
 {
   AccessPath* pAccessPath = reinterpret_cast<AccessPath*>(pDataAddress);
   
-  Heaps::vFree(pAccessPath);
+  HeapMem::vFree(pAccessPath);
 }
 
 /*----------------------------------------------------------------------------*/

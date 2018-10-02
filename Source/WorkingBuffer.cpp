@@ -24,7 +24,7 @@ WorkingBuffer* DBobjects::_pWorkingBuffer(void* aAddr)
 void* WorkingBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = (Buffer*)Heaps::pAllocate(CN_WORKINGBUFFER);
+  Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_WORKINGBUFFER);
   
   return pBuffer;
 }
@@ -46,7 +46,7 @@ void WorkingBuffer::operator delete(void* pBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
   
-  Heaps::vFree_NonObject(pBuffer);
+  HeapMem::vFree_NonObject(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

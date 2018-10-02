@@ -76,7 +76,7 @@ void* Job_SubLoader::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_SubLoader* pJob_SubLoader =
-    static_cast<Job_SubLoader*>(Heaps::pAllocate(CN_JOB_SUBLOADER));
+    static_cast<Job_SubLoader*>(HeapMem::pAllocate(CN_JOB_SUBLOADER));
   
   return pJob_SubLoader;
 }
@@ -98,7 +98,7 @@ void Job_SubLoader::operator delete(void* aAddress)
 {
   Job_SubLoader* pJob_SubLoader = static_cast<Job_SubLoader*>(aAddress);
   
-  Heaps::vFree(pJob_SubLoader);
+  HeapMem::vFree(pJob_SubLoader);
 }
 
 /*----------------------------------------------------------------------------*/

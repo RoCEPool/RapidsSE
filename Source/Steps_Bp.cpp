@@ -151,7 +151,7 @@ void Task::vBpWriteBufferPool(MP_Task mpTask)
   
   //pBPA->vWriteBuffers("/tmp/buffers.dmp"_Stz);
 
-  pBPA->vWritePersistentHeaps("/tmp/persistentHeaps.dmp"_Stz);
+  pBPA->vWritePersistentHeapMem("/tmp/persistentHeapMem.dmp"_Stz);
 
   delete pBPA;
   
@@ -240,15 +240,15 @@ void Task::vSnapshot(MP_Task mpTask)
     iCountObjects[pBuffer->eClass()]++;
   }
   
-  gpAttachMap->m_xHeaps.Transient.m_pSmall->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeaps.Transient.m_pMedium->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeaps.Transient.m_pLarge->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeaps.Transient.m_pJumbo->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Transient.m_pSmall->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Transient.m_pMedium->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Transient.m_pLarge->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Transient.m_pJumbo->vAnalyse(iCountObjects);
 
-  gpAttachMap->m_xHeaps.Persistent.m_pSmall->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeaps.Persistent.m_pMedium->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeaps.Persistent.m_pLarge->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeaps.Persistent.m_pJumbo->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Persistent.m_pSmall->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Persistent.m_pMedium->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Persistent.m_pLarge->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->vAnalyse(iCountObjects);
   
   for (i8 index = 0; index < CN_ENUMS; index++)
     mpTask->m_pDataStack->vPushInt(iCountObjects[index]);

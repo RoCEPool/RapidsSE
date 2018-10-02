@@ -23,7 +23,7 @@ void* RowOnce::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pObject = Heaps::pAllocate(CN_ROWONCE);
+  void* pObject = HeapMem::pAllocate(CN_ROWONCE);
   
   return pObject;
 }
@@ -35,7 +35,7 @@ void RowOnce::operator delete(void* pRowOnceAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pRowOnceAddress);
   
-  Heaps::vFree(pObject);
+  HeapMem::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

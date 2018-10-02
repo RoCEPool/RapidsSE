@@ -67,7 +67,7 @@ void* TxSet::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_TXSET);
+  void* pObject = HeapMem::pAllocate(CN_TXSET);
   
   return pObject;
 }

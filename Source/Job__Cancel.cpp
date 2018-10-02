@@ -73,7 +73,7 @@ void* Job__Cancel::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job__Cancel* pJob__Cancel =
-    static_cast<Job__Cancel*>(Heaps::pAllocate(CN_JOB__CANCEL));
+    static_cast<Job__Cancel*>(HeapMem::pAllocate(CN_JOB__CANCEL));
   
   return pJob__Cancel;
 }
@@ -95,7 +95,7 @@ void Job__Cancel::operator delete(void* aAddress)
 {
   Job__Cancel* pJob__Cancel = static_cast<Job__Cancel*>(aAddress);
   
-  Heaps::vFree(pJob__Cancel);
+  HeapMem::vFree(pJob__Cancel);
 }
 
 /*----------------------------------------------------------------------------*/

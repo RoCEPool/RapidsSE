@@ -42,7 +42,7 @@ namespace StorageEngine
   
     CarryOver*    m_pCarryOver;
   
-    Heaps         m_xHeaps;
+    HeapMem         m_xHeapMem;
   
     Dic           m_xMainDic;
     TxSet*        m_pTxSet;

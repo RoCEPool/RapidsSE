@@ -27,7 +27,7 @@ void* Arg::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_ARG);
+  void* pObject = HeapMem::pAllocate(CN_ARG);
   
   return pObject;
 }
@@ -39,7 +39,7 @@ void Arg::operator delete(void* pDataAddress)
 {
   AccessPath* pAccessPath = reinterpret_cast<AccessPath*>(pDataAddress);
   
-  Heaps::vFree(pAccessPath);
+  HeapMem::vFree(pAccessPath);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -31,7 +31,7 @@ void* Grid::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_GRID);
+  void* pObject = HeapMem::pAllocate(CN_GRID);
   
   return pObject;
 }

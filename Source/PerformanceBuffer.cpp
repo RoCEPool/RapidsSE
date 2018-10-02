@@ -30,7 +30,7 @@ PerformanceBuffer* DBobjects::_pPerformanceBuffer(void* aAddr)
 void* PerformanceBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = (Buffer*)Heaps::pAllocate(CN_PERFORMANCEBUFFER);
+  Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_PERFORMANCEBUFFER);
   
   return pBuffer;
 }
@@ -42,7 +42,7 @@ void PerformanceBuffer::operator delete(void* pBufferAddress)
 {
   Buffer* pBuffer = reinterpret_cast<Buffer*>(pBufferAddress);
   
-  Heaps::vFree(pBuffer);
+  HeapMem::vFree(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

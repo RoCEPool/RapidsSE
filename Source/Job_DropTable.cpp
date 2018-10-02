@@ -76,7 +76,7 @@ void* Job_DropTable::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_DropTable* pJob_DropTable =
-    static_cast<Job_DropTable*>(Heaps::pAllocate(CN_JOB_DROPTABLE));
+    static_cast<Job_DropTable*>(HeapMem::pAllocate(CN_JOB_DROPTABLE));
   
   return pJob_DropTable;
 }
@@ -98,7 +98,7 @@ void Job_DropTable::operator delete(void* aAddress)
 {
   Job_DropTable* pJob_DropTable = static_cast<Job_DropTable*>(aAddress);
   
-  Heaps::vFree(pJob_DropTable);
+  HeapMem::vFree(pJob_DropTable);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -10,7 +10,7 @@
 void* SlabAllocator::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = (Buffer*)Heaps::pAllocate(CN_SLABALLOCATOR);
+  Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_SLABALLOCATOR);
   
   return pBuffer;
 }
@@ -22,7 +22,7 @@ void SlabAllocator::operator delete(void* pRowBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pRowBufferAddress);
   
-  Heaps::vFree(pBuffer);
+  HeapMem::vFree(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -47,7 +47,7 @@ ENTRY("vTimeDelete"_Stz);
   
   delete pTimer;
   
-  Heaps::vFree(pTimerObject);
+  HeapMem::vFree(pTimerObject);
   
   EXIT();
 }
@@ -141,7 +141,7 @@ void Task::vTimerNew(MP_Task mpTask)
 {
 ENTRY("vTimerNew"_Stz);
 
-  Timer* pTimer = _pTimer(Heaps::pAllocate(CN_TIMER));
+  Timer* pTimer = _pTimer(HeapMem::pAllocate(CN_TIMER));
 
   new(pTimer) Timer;
  

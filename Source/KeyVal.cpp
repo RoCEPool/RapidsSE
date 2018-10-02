@@ -27,7 +27,7 @@ void* KeyVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  KeyVal* pKeyVal = reinterpret_cast<KeyVal*>(Heaps::pAllocate(CN_KEYVAL));
+  KeyVal* pKeyVal = reinterpret_cast<KeyVal*>(HeapMem::pAllocate(CN_KEYVAL));
   
   return pKeyVal;
 }
@@ -39,7 +39,7 @@ void KeyVal::operator delete(void* pKeyValAddress)
 {
   KeyVal* pKeyVal = reinterpret_cast<KeyVal*>(pKeyValAddress);
   
-  Heaps::vFree(pKeyVal);
+  HeapMem::vFree(pKeyVal);
 }
 
 /*----------------------------------------------------------------------------*/

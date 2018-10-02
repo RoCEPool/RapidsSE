@@ -76,7 +76,7 @@ void* Job_Sanity::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_Sanity* pJob_Sanity =
-    static_cast<Job_Sanity*>(Heaps::pAllocate(CN_JOB_SANITY));
+    static_cast<Job_Sanity*>(HeapMem::pAllocate(CN_JOB_SANITY));
   
   return pJob_Sanity;
 }
@@ -98,7 +98,7 @@ void Job_Sanity::operator delete(void* aAddress)
 {
   Job_Sanity* pJob_Status = static_cast<Job_Sanity*>(aAddress);
   
-  Heaps::vFree(pJob_Status);
+  HeapMem::vFree(pJob_Status);
 }
 
 /*----------------------------------------------------------------------------*/

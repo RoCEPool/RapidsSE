@@ -10,7 +10,7 @@
 void* LoadChunk::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  LoadChunk* pLoadChunk = (LoadChunk*)Heaps::pAllocate(CN_LOADCHUNK);
+  LoadChunk* pLoadChunk = (LoadChunk*)HeapMem::pAllocate(CN_LOADCHUNK);
   
   return pPoolCheck<void*>(pLoadChunk);
 }
@@ -22,7 +22,7 @@ void LoadChunk::operator delete(void* pLoadChunkAddress)
 {
   LoadChunk* pLoadChunk = static_cast<LoadChunk*>(pLoadChunkAddress);
   
-  Heaps::vFree(pLoadChunk);
+  HeapMem::vFree(pLoadChunk);
 }
 
 /*----------------------------------------------------------------------------*/

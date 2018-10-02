@@ -76,7 +76,7 @@ void* Job_DropIndex::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_DropIndex* pJob_DropIndex =
-    static_cast<Job_DropIndex*>(Heaps::pAllocate(CN_JOB_DROPINDEX));
+    static_cast<Job_DropIndex*>(HeapMem::pAllocate(CN_JOB_DROPINDEX));
   
   return pJob_DropIndex;
 }
@@ -98,7 +98,7 @@ void Job_DropIndex::operator delete(void* aAddress)
 {
   Job_DropIndex* pJob_DropIndex = static_cast<Job_DropIndex*>(aAddress);
   
-  Heaps::vFree(pJob_DropIndex);
+  HeapMem::vFree(pJob_DropIndex);
 }
 
 /*----------------------------------------------------------------------------*/

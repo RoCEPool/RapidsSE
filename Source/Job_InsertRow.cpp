@@ -76,7 +76,7 @@ void* Job_InsertRow::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_InsertRow* pJob_LoadTable =
-    static_cast<Job_InsertRow*>(Heaps::pAllocate(CN_JOB_INSERTROW));
+    static_cast<Job_InsertRow*>(HeapMem::pAllocate(CN_JOB_INSERTROW));
   
   return pJob_LoadTable;
 }
@@ -98,7 +98,7 @@ void Job_InsertRow::operator delete(void* aAddress)
 {
   Job_InsertRow* pJob_InsertRow = static_cast<Job_InsertRow*>(aAddress);
   
-  Heaps::vFree(pJob_InsertRow);
+  HeapMem::vFree(pJob_InsertRow);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -159,7 +159,7 @@ Object* BinVal::pNewObject(void)
   //BinVal* pBinVal = reinterpret_cast<BinVal*>(this);
   
   i8 iSize = this->nSize();
-  Object* pObject = Heaps::pAllocate(eObjectClass());
+  Object* pObject = HeapMem::pAllocate(eObjectClass());
   MemLib::vCopy(pObject, pData(), iSize, CN_BINVAL);
   
   return pObject;

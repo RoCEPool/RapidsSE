@@ -76,7 +76,7 @@ void* Job_CreateTenant::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_CreateTenant* pJob_CreateTenant =
-    static_cast<Job_CreateTenant*>(Heaps::pAllocate(CN_JOB_CREATETENANT));
+    static_cast<Job_CreateTenant*>(HeapMem::pAllocate(CN_JOB_CREATETENANT));
   
   return pJob_CreateTenant;
 }
@@ -98,7 +98,7 @@ void Job_CreateTenant::operator delete(void* aAddress)
 {
   Job_CreateTenant* pJob_CreateTenant = static_cast<Job_CreateTenant*>(aAddress);
   
-  Heaps::vFree(pJob_CreateTenant);
+  HeapMem::vFree(pJob_CreateTenant);
 }
 
 /*----------------------------------------------------------------------------*/

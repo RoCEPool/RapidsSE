@@ -11,7 +11,7 @@ void* BitArray::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_BITARRAY);
+  void* pObject = HeapMem::pAllocate(CN_BITARRAY);
   
   return pObject;
 }
@@ -23,7 +23,7 @@ void BitArray::operator delete(void* pAddress)
 {
   BitArray* pBitArray = reinterpret_cast<BitArray*>(pAddress);
   
-  Heaps::vFree(pBitArray);
+  HeapMem::vFree(pBitArray);
 }
 
 /*----------------------------------------------------------------------------*/

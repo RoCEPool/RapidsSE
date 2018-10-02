@@ -79,7 +79,7 @@ i8 TablePtn::iSlotToPartition(i8 iSlot)
 void* TablePtn::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  void* pObject = Heaps::pAllocate(CN_TABLEPTN);
+  void* pObject = HeapMem::pAllocate(CN_TABLEPTN);
   
   return pObject;
 }
@@ -92,7 +92,7 @@ void TablePtn::operator delete(void* pBufferAddress)
   RASSERT(pBufferAddress);
   Object* pObject = reinterpret_cast<Object*>(pBufferAddress);
   
-  Heaps::vFree(pObject);
+  HeapMem::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

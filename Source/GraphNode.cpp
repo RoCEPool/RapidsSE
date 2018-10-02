@@ -23,7 +23,7 @@ void* GraphNode::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_GRAPHNODE);
+  void* pObject = HeapMem::pAllocate(CN_GRAPHNODE);
   
   return pObject;
 }
@@ -45,7 +45,7 @@ void GraphNode::operator delete(void* pGraphNodeAddress)
 {
   GraphNode* pGraphNode = reinterpret_cast<GraphNode*>(pGraphNodeAddress);
   
-  Heaps::vFree(pGraphNode);
+  HeapMem::vFree(pGraphNode);
 }
 
 /*----------------------------------------------------------------------------*/

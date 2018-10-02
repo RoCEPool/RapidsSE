@@ -76,7 +76,7 @@ void* Job_ListIndexes::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_ListIndexes* pJob_ListIndexes =
-    static_cast<Job_ListIndexes*>(Heaps::pAllocate(CN_JOB_LISTINDEXES));
+    static_cast<Job_ListIndexes*>(HeapMem::pAllocate(CN_JOB_LISTINDEXES));
   
   return pJob_ListIndexes;
 }
@@ -98,7 +98,7 @@ void Job_ListIndexes::operator delete(void* aAddress)
 {
   Job_ListIndexes* pJob_ListIndexes = static_cast<Job_ListIndexes*>(aAddress);
   
-  Heaps::vFree(pJob_ListIndexes);
+  HeapMem::vFree(pJob_ListIndexes);
 }
 
 /*----------------------------------------------------------------------------*/

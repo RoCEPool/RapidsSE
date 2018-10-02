@@ -31,7 +31,7 @@ void* Semaphore::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pSemaphore = Heaps::pAllocate(CN_SEMAPHORE);
+  void* pSemaphore = HeapMem::pAllocate(CN_SEMAPHORE);
   
   return pSemaphore;
 }
@@ -52,7 +52,7 @@ void Semaphore::operator delete(void* pSemaphoreAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pSemaphoreAddress);
   
-  Heaps::vFree(pObject);
+  HeapMem::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -50,7 +50,7 @@ void* SEitf::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Object* pObject = Heaps::pAllocate(CN_SEITF);
+  Object* pObject = HeapMem::pAllocate(CN_SEITF);
   
   return pObject;
 }
@@ -62,7 +62,7 @@ void SEitf::operator delete(void* pSEinterfaceAddress)
 {
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pSEinterfaceAddress);
   
-  Heaps::vFree(pSEitf);
+  HeapMem::vFree(pSEitf);
 }
 
 /*----------------------------------------------------------------------------*/

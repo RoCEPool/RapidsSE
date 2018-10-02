@@ -36,7 +36,7 @@ namespace Pool
     void vWriteBuffers(Stz* sFilePath);
 
     void vWriteHeap(Heap* pHeap, File* pFile);
-    void vWritePersistentHeaps(Stz* sFilePath);
+    void vWritePersistentHeapMem(Stz* sFilePath);
   
     Footer* aFooter(void);
   };

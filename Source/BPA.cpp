@@ -281,7 +281,7 @@ void BPA::vObjectSummary(void)
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
-  gpAttachMap->m_xHeaps.Transient.m_pSmall->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Transient.m_pSmall->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
   vTrace("  Transient SmallHeap Object Summary:\n"_Stz);
@@ -294,7 +294,7 @@ void BPA::vObjectSummary(void)
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
-  gpAttachMap->m_xHeaps.Transient.m_pMedium->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Transient.m_pMedium->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
   vTrace("  Transient MediumHeap Object Summary:\n"_Stz);
@@ -307,7 +307,7 @@ void BPA::vObjectSummary(void)
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
-  gpAttachMap->m_xHeaps.Transient.m_pLarge->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Transient.m_pLarge->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
   vTrace("  Transient LargeHeap Object Summary:\n"_Stz);
@@ -324,7 +324,7 @@ void BPA::vObjectSummary(void)
 //  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
 //    iCountObjects[i_Index] = 0;
 //
-//  gpAttachMap->m_xHeaps.Transient.m_pJumbo->vAnalyse(iCountObjects);
+//  gpAttachMap->m_xHeapMem.Transient.m_pJumbo->vAnalyse(iCountObjects);
 //
 //  vTrace("\n"_Stz);
 //  vTrace("  Transient JumboHeap Object s:\n"_Stz);
@@ -337,7 +337,7 @@ void BPA::vObjectSummary(void)
 //    vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
 //  }
   
-  gpAttachMap->m_xHeaps.Persistent.m_pSmall->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Persistent.m_pSmall->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
   vTrace("  Persistent SmallHeap Object Summary:\n"_Stz);
@@ -350,7 +350,7 @@ void BPA::vObjectSummary(void)
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
-  gpAttachMap->m_xHeaps.Persistent.m_pMedium->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Persistent.m_pMedium->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
   vTrace("  Persistent MediumHeap Object Summary:\n"_Stz);
@@ -363,7 +363,7 @@ void BPA::vObjectSummary(void)
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
   
-  gpAttachMap->m_xHeaps.Persistent.m_pLarge->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Persistent.m_pLarge->vAnalyse(iCountObjects);
   
   vTrace("\n"_Stz);
   vTrace("  Persistent LargeHeap Object Summary:\n"_Stz);
@@ -412,7 +412,7 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  gpAttachMap->m_xHeaps.Transient.m_pSmall->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Transient.m_pSmall->vAnalyse(iCountObjects);
   
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
@@ -428,7 +428,7 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  gpAttachMap->m_xHeaps.Transient.m_pMedium->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Transient.m_pMedium->vAnalyse(iCountObjects);
   
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
@@ -444,7 +444,7 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  gpAttachMap->m_xHeaps.Transient.m_pLarge->vAnalyse(iCountObjects);
+  gpAttachMap->m_xHeapMem.Transient.m_pLarge->vAnalyse(iCountObjects);
   
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
     eCN eClass = (eCN)i_Index;
@@ -515,12 +515,12 @@ void BPA::vPoolDump(void)
 /*----------------------------------------------------------------------------*/
 i8 BPA::iPoolFree(void)
 {
-  i8 iTransientSmall   = gpAttachMap->m_xHeaps.Transient.m_pSmall->iFreeCount() * C_SIZE_SMALL_OBJECT;
-  i8 iTransientMedium  = gpAttachMap->m_xHeaps.Transient.m_pMedium->iFreeCount() * C_SIZE_MEDIUM_OBJECT;
-  i8 iTransientLarge   = gpAttachMap->m_xHeaps.Transient.m_pLarge->iFreeCount() * C_SIZE_LARGE_OBJECT;
-  i8 iPersistentSmall  = gpAttachMap->m_xHeaps.Persistent.m_pSmall->iFreeCount() * C_SIZE_SMALL_OBJECT;
-  i8 iPersistentMedium = gpAttachMap->m_xHeaps.Persistent.m_pMedium->iFreeCount() * C_SIZE_MEDIUM_OBJECT;
-  i8 iPersistentLarge  = gpAttachMap->m_xHeaps.Persistent.m_pLarge->iFreeCount() * C_SIZE_LARGE_OBJECT;
+  i8 iTransientSmall   = gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount() * C_SIZE_SMALL_OBJECT;
+  i8 iTransientMedium  = gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount() * C_SIZE_MEDIUM_OBJECT;
+  i8 iTransientLarge   = gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount() * C_SIZE_LARGE_OBJECT;
+  i8 iPersistentSmall  = gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iFreeCount() * C_SIZE_SMALL_OBJECT;
+  i8 iPersistentMedium = gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iFreeCount() * C_SIZE_MEDIUM_OBJECT;
+  i8 iPersistentLarge  = gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iFreeCount() * C_SIZE_LARGE_OBJECT;
 
   i8 iTotalFree =
     iTransientSmall + iTransientMedium + iTransientLarge +
@@ -583,51 +583,51 @@ void BPA::vRegionSummary()
   
   vTrace("   Transitent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.aChar(),
-         gpAttachMap->m_xHeaps.Transient.m_pSmall->iBufferCount(),
-         gpAttachMap->m_xHeaps.Transient.m_pSmall->iAllocCount(),
-         gpAttachMap->m_xHeaps.Transient.m_pSmall->iFreeCount());
+         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount());
   
   vTrace("  Transitent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.aChar(),
-         gpAttachMap->m_xHeaps.Transient.m_pMedium->iBufferCount(),
-         gpAttachMap->m_xHeaps.Transient.m_pMedium->iAllocCount(),
-         gpAttachMap->m_xHeaps.Transient.m_pMedium->iFreeCount());
+         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount());
   
   vTrace("   Transitent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagLarge.aChar(),
-         gpAttachMap->m_xHeaps.Transient.m_pLarge->iBufferCount(),
-         gpAttachMap->m_xHeaps.Transient.m_pLarge->iAllocCount(),
-         gpAttachMap->m_xHeaps.Transient.m_pLarge->iFreeCount());
+         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount());
   
   vTrace("   Transitent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagJumbo.aChar(),
-         gpAttachMap->m_xHeaps.Transient.m_pJumbo->iBufferCount(),
-         gpAttachMap->m_xHeaps.Transient.m_pJumbo->iAllocCount(),
-         gpAttachMap->m_xHeaps.Transient.m_pJumbo->iFreeCount());
+         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iFreeCount());
   
   vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.aChar(),
-         gpAttachMap->m_xHeaps.Persistent.m_pSmall->iBufferCount(),
-         gpAttachMap->m_xHeaps.Persistent.m_pSmall->iAllocCount(),
-         gpAttachMap->m_xHeaps.Persistent.m_pSmall->iFreeCount());
+         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iFreeCount());
   
   vTrace("  Persistent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagMedium.aChar(),
-         gpAttachMap->m_xHeaps.Persistent.m_pMedium->iBufferCount(),
-         gpAttachMap->m_xHeaps.Persistent.m_pMedium->iAllocCount(),
-         gpAttachMap->m_xHeaps.Persistent.m_pMedium->iFreeCount());
+         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iFreeCount());
   
   vTrace("   Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagJumbo.aChar(),
-         gpAttachMap->m_xHeaps.Persistent.m_pLarge->iBufferCount(),
-         gpAttachMap->m_xHeaps.Persistent.m_pLarge->iAllocCount(),
-         gpAttachMap->m_xHeaps.Persistent.m_pLarge->iFreeCount());
+         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iFreeCount());
   
   vTrace("   Persistent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagJumbo.aChar(),
-         gpAttachMap->m_xHeaps.Persistent.m_pJumbo->iBufferCount(),
-         gpAttachMap->m_xHeaps.Persistent.m_pJumbo->iAllocCount(),
-         gpAttachMap->m_xHeaps.Persistent.m_pJumbo->iFreeCount());
+         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iFreeCount());
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
@@ -754,7 +754,7 @@ void BPA::vWriteHeap(Heap* pHeap, File* pFile)
 /*----------------------------------------------------------------------------*/
 /* write all the heaps to given file                                          */
 /*----------------------------------------------------------------------------*/
-void BPA::vWritePersistentHeaps(Stz* sFilePath)
+void BPA::vWritePersistentHeapMem(Stz* sFilePath)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
@@ -762,13 +762,13 @@ void BPA::vWritePersistentHeaps(Stz* sFilePath)
   pFile->bOpen(sFilePath, C_OPEN_WRITE);
   
   vTrace("Writing persistent small heap\n"_Stz);
-  vWriteHeap(gpAttachMap->m_xHeaps.Persistent.m_pSmall,pFile);
+  vWriteHeap(gpAttachMap->m_xHeapMem.Persistent.m_pSmall,pFile);
   
   vTrace("Writing persistent medium heap\n"_Stz);
-  vWriteHeap(gpAttachMap->m_xHeaps.Persistent.m_pMedium,pFile);
+  vWriteHeap(gpAttachMap->m_xHeapMem.Persistent.m_pMedium,pFile);
   
   vTrace("Writing persistent large heap\n"_Stz);
-  vWriteHeap(gpAttachMap->m_xHeaps.Persistent.m_pLarge,pFile);
+  vWriteHeap(gpAttachMap->m_xHeapMem.Persistent.m_pLarge,pFile);
 
   pFile->vClose();
   delete pFile;

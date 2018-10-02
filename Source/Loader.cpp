@@ -25,7 +25,7 @@ void* Loader::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_LOADER);
+  void* pObject = HeapMem::pAllocate(CN_LOADER);
   
   return pObject;
 }
@@ -46,7 +46,7 @@ void Loader::operator delete(void* pLoaderAddress)
 {
   Loader* pLoader = reinterpret_cast<Loader*>(pLoaderAddress);
   
-  Heaps::vFree(pLoader);
+  HeapMem::vFree(pLoader);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -23,7 +23,7 @@ void* PredicateVec::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heaps::pAllocate(CN_PREDICATEVEC);
+  void* pObject = HeapMem::pAllocate(CN_PREDICATEVEC);
   
   return pObject;
 }
@@ -35,7 +35,7 @@ void PredicateVec::operator delete(void* pAddr)
 {
   PredicateVec* pPredicateVec = reinterpret_cast<PredicateVec*>(pAddr);
   
-  Heaps::vFree(pPredicateVec);
+  HeapMem::vFree(pPredicateVec);
 }
 
 /*----------------------------------------------------------------------------*/

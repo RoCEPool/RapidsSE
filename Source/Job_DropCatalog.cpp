@@ -76,7 +76,7 @@ void* Job_DropCatalog::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_DropCatalog* pJob_DropSchema =
-    static_cast<Job_DropCatalog*>(Heaps::pAllocate(CN_JOB_DROPCATALOG));
+    static_cast<Job_DropCatalog*>(HeapMem::pAllocate(CN_JOB_DROPCATALOG));
   
   return pJob_DropSchema;
 }
@@ -98,7 +98,7 @@ void Job_DropCatalog::operator delete(void* aAddress)
 {
   Job_DropCatalog* pJob_DropCatalog = static_cast<Job_DropCatalog*>(aAddress);
   
-  Heaps::vFree(pJob_DropCatalog);
+  HeapMem::vFree(pJob_DropCatalog);
 }
 
 /*----------------------------------------------------------------------------*/

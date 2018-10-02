@@ -76,7 +76,7 @@ void* Job_Ping::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_Ping* pJob_Ping =
-    static_cast<Job_Ping*>(Heaps::pAllocate(CN_JOB_PING));
+    static_cast<Job_Ping*>(HeapMem::pAllocate(CN_JOB_PING));
   
   return pJob_Ping;
 }
@@ -98,7 +98,7 @@ void Job_Ping::operator delete(void* aAddress)
 {
   Job_Ping* pJob_Lf = static_cast<Job_Ping*>(aAddress);
   
-  Heaps::vFree(pJob_Lf);
+  HeapMem::vFree(pJob_Lf);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -76,7 +76,7 @@ void* Job_TruncateTable::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_TruncateTable* pJob_TruncateTable =
-    static_cast<Job_TruncateTable*>(Heaps::pAllocate(CN_JOB_TRUNCATETABLE));
+    static_cast<Job_TruncateTable*>(HeapMem::pAllocate(CN_JOB_TRUNCATETABLE));
   
   return pJob_TruncateTable;
 }
@@ -98,7 +98,7 @@ void Job_TruncateTable::operator delete(void* aAddress)
 {
   Job_TruncateTable* pJob_TruncateTable = static_cast<Job_TruncateTable*>(aAddress);
   
-  Heaps::vFree(pJob_TruncateTable);
+  HeapMem::vFree(pJob_TruncateTable);
 }
 
 /*----------------------------------------------------------------------------*/

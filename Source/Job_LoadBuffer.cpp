@@ -76,7 +76,7 @@ void* Job_LoadBuffer::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_LoadBuffer* pJob_LoadBuffer =
-    static_cast<Job_LoadBuffer*>(Heaps::pAllocate(CN_JOB_LOADBUFFER));
+    static_cast<Job_LoadBuffer*>(HeapMem::pAllocate(CN_JOB_LOADBUFFER));
   
   return pJob_LoadBuffer;
 }
@@ -98,7 +98,7 @@ void Job_LoadBuffer::operator delete(void* aAddress)
 {
   Job_LoadBuffer* pJob_LoadBuffer = static_cast<Job_LoadBuffer*>(aAddress);
   
-  Heaps::vFree(pJob_LoadBuffer);
+  HeapMem::vFree(pJob_LoadBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

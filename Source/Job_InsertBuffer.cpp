@@ -80,7 +80,7 @@ void* Job_InsertBuffer::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_InsertBuffer* pJob_InsertBuffer =
-    static_cast<Job_InsertBuffer*>(Heaps::pAllocate(CN_JOB_INSERTBUFFER));
+    static_cast<Job_InsertBuffer*>(HeapMem::pAllocate(CN_JOB_INSERTBUFFER));
   
   return pJob_InsertBuffer;
 }
@@ -102,7 +102,7 @@ void Job_InsertBuffer::operator delete(void* aAddress)
 {
   Job_InsertBuffer* pJob_InsertBuffer = static_cast<Job_InsertBuffer*>(aAddress);
   
-  Heaps::vFree(pJob_InsertBuffer);
+  HeapMem::vFree(pJob_InsertBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -12,7 +12,7 @@ void Pool::vCheckAssumptions(void)
   ASSERT(sizeof(Object) + sizeof(bn)*2 + sizeof(void*) == sizeof(Buffer));
   ASSERT(sizeof(Buffer) + sizeof(void*)*2              == sizeof(HeapBuffer));
   
-  Heaps::vValidateTables();
+  HeapMem::vValidateEnums();
   
 #ifdef _DEBUG
   vTrace("C_SIZE_POOL_BUFFER %llx\n"_Stz,C_SIZE_POOL_BUFFER);
