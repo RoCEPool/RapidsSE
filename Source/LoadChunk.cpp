@@ -111,7 +111,7 @@ Stz* LoadChunk::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
   //  m_aNextRecord++;
   //*m_aNextRecord = '\0';
   
-  Loader::vAdvanceRecordEnd((char**)&m_aNextRecord, pFormatters);
+  LoadTable::vAdvanceRecordEnd((char**)&m_aNextRecord, pFormatters);
 
   // compute the number of bytes
   iRecordBytes = m_aNextRecord - pRecord;

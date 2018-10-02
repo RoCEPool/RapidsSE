@@ -34,13 +34,13 @@ void Task::vLoaderChunkFile(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loader.chunkFile"_Stz);
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  LoadTable* pLoadTable = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADTABLE == pLoadTable->eClass());
   
   bool bFoundChunk = false;
   
   do {
-    bFoundChunk = pLoader->bFindChunk();
+    bFoundChunk = pLoadTable->bFindChunk();
   } while (bFoundChunk);
     
   EXIT();
@@ -57,10 +57,10 @@ void Task::vLoaderDelete(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loader.delete"_Stz);
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  LoadTable* pLoadTable = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADTABLE == pLoadTable->eClass());
   
-  delete pLoader;
+  delete pLoadTable;
   
   EXIT();
 }
@@ -76,10 +76,10 @@ void Task::vLoaderDumpMap(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loader.dumpMap"_Stz);
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  LoadTable* pLoadTable = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADTABLE == pLoadTable->eClass());
   
-  pLoader->vDumpMap();
+  pLoadTable->vDumpMap();
   
   EXIT();
 }
@@ -96,10 +96,10 @@ void Task::vLoaderNew(MP_Task mpTask)
     THROW_INVALID_DSTACK("loader::new"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
-  Loader* pLoader = new Loader(pJob_LoadTable);
-  pJob_LoadTable->m_pLoader = pLoader;
+  LoadTable* pLoadTable = new LoadTable(pJob_LoadTable);
+  pJob_LoadTable->m_pLoadTable = pLoadTable;
 
-  mpTask->m_pDataStack->vPushObject(pLoader);
+  mpTask->m_pDataStack->vPushObject(pLoadTable);
   
   EXIT();
 }
@@ -114,11 +114,11 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loader.spawnSubLoader"_Stz);
-  Loader* pLoader = _pLoader(pPtrLoader);
+  LoadTable* pLoadTable = _pLoader(pPtrLoader);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Job_LoadTable* pJob_LoadTable = pLoader->pJob_LoadTable();
+  Job_LoadTable* pJob_LoadTable = pLoadTable->pJob_LoadTable();
   SEitf* pSEitf = pJob_LoadTable->m_pSEitf;
     
   //! this needs to be optimised
@@ -132,7 +132,7 @@ void Task::vLoaderSpawnSubLoader(MP_Task mpTask)
   pJob_SubLoader->m_sObjectName = pJob_LoadTable->m_sObjectName;
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
   
-  SubLoader* pSubLoader = new SubLoader(pJob_SubLoader,pLoader);
+  SubLoader* pSubLoader = new SubLoader(pJob_SubLoader,pLoadTable);
   pJob_SubLoader->vLoaderSub(pSubLoader);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -154,14 +154,14 @@ void Task::vLoaderTableStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,pPtrTable) )
     THROW_INVALID_DSTACK("loader.tableStore"_Stz);
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  LoadTable* pLoadTable = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADTABLE == pLoadTable->eClass());
   
   Table* pTable = _pTable(pPtrTable);
   
   ASSERT(CN_TABLE == pTable->eClass());
   
-  pLoader->vTable(pTable);
+  pLoadTable->vTable(pTable);
   
   EXIT();
 }

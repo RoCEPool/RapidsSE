@@ -116,7 +116,7 @@ Job_LoadTable::Job_LoadTable(Interface::SEitf* pSEitf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
   //m_sFileName = ""_Stz;
-  m_pLoader = nullptr;
+  m_pLoadTable = nullptr;
   
   m_xFormatters.vReset(); // reset to defaults in attachmap 
   m_ziValidRows = 0;

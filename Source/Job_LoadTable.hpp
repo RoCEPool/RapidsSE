@@ -10,7 +10,7 @@ namespace JobsModel
                         public JobFileName
   {
   public:
-    Utilities::Loader* m_pLoader; // table loader
+    Utilities::LoadTable* m_pLoadTable; // table loader
     Formatters m_xFormatters;     // record formatters
     Atomic     m_ziValidRows;     // valid rows loaded
     Atomic     m_ziInvalidRows;   // invalid rows not loaded

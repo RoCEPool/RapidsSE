@@ -20,7 +20,7 @@ namespace Interface
 //-----------------------------------------------------------------------------
 namespace Utilities
 {
-  class Loader;
+  class LoadTable;
   class SubLoader;
 }
 

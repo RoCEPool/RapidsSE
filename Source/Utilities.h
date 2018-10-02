@@ -18,7 +18,7 @@ using namespace Utilities;
 
 #include "LoadChunk.hpp"
 #include "LoadMap.hpp"
-#include "Loader.hpp"
+#include "LoadTable.hpp"
 #include "SubLoader.hpp"
 
 #include "PerformanceEntry.hpp"

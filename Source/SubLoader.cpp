@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SubLoader.cpp -- Subordinate Parallel Table Loader                         */
+/* SubLoader.cpp -- Subordinate Parallel Table LoadTable                         */
 /*============================================================================*/
 
 #include "Utilities.h"
@@ -47,24 +47,24 @@ void* SubLoader::operator new(size_t iSize, SubLoader* pSubLoader)
 /*----------------------------------------------------------------------------*/
 void SubLoader::operator delete(void* pLoaderAddress)
 {
-  SubLoader* pLoader = reinterpret_cast<SubLoader*>(pLoaderAddress);
+  SubLoader* pLoadTable = reinterpret_cast<SubLoader*>(pLoaderAddress);
   
-  HeapMem::vFree(pLoader);
+  HeapMem::vFree(pLoadTable);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SubLoader::SubLoader(Job_SubLoader* pJob_SubLoader, Loader* pLoader)
+SubLoader::SubLoader(Job_SubLoader* pJob_SubLoader, LoadTable* pLoadTable)
 : Object(CN_SUBLOADER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
 
   m_pJob_SubLoader = pJob_SubLoader;
-  m_pLoader  = pLoader;
+  m_pLoadTable  = pLoadTable;
   m_pLoadChunk  = new LoadChunk;
 
-  m_pTable   = pLoader->pTable();
+  m_pTable   = pLoadTable->pTable();
   m_pLoadMap = nullptr;
   //m_aRecord
   m_iLength  = 0;
@@ -102,7 +102,7 @@ void SubLoader::vDump(eCN eClass, Object* pObject, Stz* aTab)
   RASSERT(eClass == CN_SUBLOADER);
   RASSERT(pObject->eClass() == CN_SUBLOADER);
   
-  SubLoader* pLoader = reinterpret_cast<SubLoader*>(pObject);
+  SubLoader* pLoadTable = reinterpret_cast<SubLoader*>(pObject);
   
   vTrace("\n"_Stz);
 }
@@ -119,7 +119,7 @@ void SubLoader::vBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
   s256 sPath;
-  sPath = m_pLoader->pJob_LoadTable()->m_sFileName;
+  sPath = m_pLoadTable->pJob_LoadTable()->m_sFileName;
   
   // open the chunked file
   m_pLoadChunk->vOpenFile(sPath);
@@ -179,9 +179,9 @@ bool SubLoader::bFetchRecord(void)
   bool bValid = false;
   bool bBlankLine;
   
-  Job_LoadTable* pJob_LoadTable = m_pLoader->pJob_LoadTable();
+  Job_LoadTable* pJob_LoadTable = m_pLoadTable->pJob_LoadTable();
   Formatters* pFormatters = &pJob_LoadTable->m_xFormatters;
-  Table* pTable = m_pLoader->pTable();
+  Table* pTable = m_pLoadTable->pTable();
   
   if (! m_bMoreChunks)
     return false;
@@ -286,7 +286,7 @@ void SubLoader::vHashRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  Table* pTable = m_pLoader->pTable();
+  Table* pTable = m_pLoadTable->pTable();
   
   m_iPartition = pTable->iRowPartition(m_aRecord);
 }
@@ -314,7 +314,7 @@ bool SubLoader::bInsertRow(void)
   WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
   
   // get the tx id
-  //SEitf* pSEitf = m_pLoader->pSEitf();
+  //SEitf* pSEitf = m_pLoadTable->pSEitf();
   //Tx* pTx = pSEitf->pTx();
   //i8 iDistTxId = pTx->iDistTxId();
   i8 iDistTxId = 0;
@@ -395,21 +395,21 @@ Job_SubLoader* SubLoader::pJob_SubLoader(void)
 /*----------------------------------------------------------------------------*/
 /* get loader                                                                 */
 /*----------------------------------------------------------------------------*/
-Loader* SubLoader::pLoader(void)
+LoadTable* SubLoader::pLoadTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  return m_pLoader;
+  return m_pLoadTable;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set loader                                                                 */
 /*----------------------------------------------------------------------------*/
-void SubLoader::vLoader(Loader* pLoader)
+void SubLoader::vLoader(LoadTable* pLoadTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
 
-  m_pLoader = pLoader;
+  m_pLoadTable = pLoadTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -455,7 +455,7 @@ bool SubLoader::bReadChunk(void)
   i8 iChunk;
   i8 nChunks;
   
-  LoadMap* pLoadMap = m_pLoader->pLoadMap();
+  LoadMap* pLoadMap = m_pLoadTable->pLoadMap();
 
 
   // get information about next chunk

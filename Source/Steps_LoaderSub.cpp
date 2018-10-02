@@ -344,9 +344,9 @@ void Task::vLoaderSubLoaderFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("loaderSub.partition@"_Stz);
   SubLoader* pSubLoader = _pLoaderSub(pPtrLoader);
   
-  Loader* pLoader = pSubLoader->pLoader();
+  LoadTable* pLoadTable = pSubLoader->pLoadTable();
   
-  mpTask->m_pDataStack->vPushObject(pLoader);
+  mpTask->m_pDataStack->vPushObject(pLoadTable);
   
   EXIT();
 }
@@ -369,8 +369,8 @@ void Task::vLoaderSubLoaderStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loader.openfile"_Stz);
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  LoadTable* pLoadTable = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADTABLE == pLoadTable->eClass());
   
   EXIT();
 }

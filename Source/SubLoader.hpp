@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SubLoader.hpp -- Subordinate Parallel Table Loader                         */
+/* SubLoader.hpp -- Subordinate Parallel Table LoadTable                      */
 /*============================================================================*/
 #pragma once
 
@@ -9,18 +9,20 @@ namespace Utilities
   {
   private:
     Job_SubLoader* m_pJob_SubLoader; // job
-    Loader*  m_pLoader;    // loader parent
-    LoadChunk* m_pLoadChunk;  // chunk loading buffer
-    LoadMap* m_pLoadMap;   // load map
+  
+    LoadTable* m_pLoadTable; // loader parent
+    LoadChunk* m_pLoadChunk; // chunk loading buffer
+    LoadMap*   m_pLoadMap;   // load map
 
     Table*   m_pTable;     // table being loaded
     s48K     m_aRecord;    // formatted row
     i8       m_iLength;    // length of record
     i8       m_iPartition; // partition of record
+  
     i8       m_iValidRecords;   // valid records
     i8       m_iInvalidRecords; // invalid records
     
-    bool       m_bMoreChunks; // continue while there are more chunks
+    bool     m_bMoreChunks; // continue while there are more chunks
   
     WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
     i8 m_nBuffersLoadable[C_MAX_PARTITIONS]; // how many buffers are loadable
@@ -35,7 +37,7 @@ namespace Utilities
     void* operator new(size_t, SubLoader* pSubLoader);
     void  operator delete(void* pLoaderAddress);
  
-    SubLoader(Job_SubLoader* pJob_SubLoader, Loader* pLoader);
+    SubLoader(Job_SubLoader* pJob_SubLoader, LoadTable* pLoadTable);
     ~SubLoader(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -51,8 +53,8 @@ namespace Utilities
     bool bInsertRowDist(void);
     i8   iInvalidRecords(void);
     Job_SubLoader* pJob_SubLoader(void);
-    Loader* pLoader(void);
-    void vLoader(Loader* pLoader);
+    LoadTable* pLoadTable(void);
+    void vLoader(LoadTable* pLoadTable);
     void vNewWorkingBuffer(void);
     i8   iPartition(void);
     void vPartition(i8 iPartition);

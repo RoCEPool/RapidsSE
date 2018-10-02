@@ -16,7 +16,7 @@
 
   task::this to pThisTask
 
-  pJob_LoadTable loader::new locals| pLoader |
+  pJob_LoadTable loader::new locals| pLoadTable |
 
   // initialise table loader
   pJob_LoadTable job.objectName@ locals| sTableNm |
@@ -28,11 +28,11 @@
   //pathDump
 
   sTableNm find execute locals| pTable |
-  pTable pLoader loader.table!
+  pTable pLoadTable loader.table!
 
-  pLoader loader.chunkFile
+  pLoadTable loader.chunkFile
 
-  //pLoader loader.dumpMap
+  //pLoadTable loader.dumpMap
 
   // grab this task's lock
   pThisTask task.grabLock
@@ -42,14 +42,14 @@
   args.subLoaders 0
   do
     //I "Creating Job_SubLoader %v" fmt.print
-    pLoader loader.spawnSubLoader
+    pLoadTable loader.spawnSubLoader
   loop
 
   //"LoadTable_executeLoader ack waiting" .
   ackWait
   //"LoadTable_executeLoader acked" .
 
-  pLoader loader.delete
+  pLoadTable loader.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -118,10 +118,10 @@
   //iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
 
   iThisNode iOriginNode == if
-    //"Loader is executing on this node" .
+    //"LoadTable is executing on this node" .
     pJob_LoadTable LoadTable_executeLoader
   else
-    //"Loader is not executed on this node" .
+    //"LoadTable is not executed on this node" .
     LoadTable_waitOnly
   then
 
