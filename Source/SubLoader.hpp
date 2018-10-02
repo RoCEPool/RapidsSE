@@ -53,21 +53,14 @@ namespace Utilities
     bool bInsertRowDist(void);
     i8   iInvalidRecords(void);
     Job_SubLoader* pJob_SubLoader(void);
-    LoadTable* pLoadTable(void);
-    void vLoader(LoadTable* pLoadTable);
     void vNewWorkingBuffer(void);
     i8   iPartition(void);
     void vPartition(i8 iPartition);
     bool bReadChunk(void);
-    void vSetDistFormatter(char cFieldSeparator);
-    WorkingBuffer* pWorkingBuffer(void);
-    void vWorkingBuffer(WorkingBuffer* pWorkingBuffer);
     Table* pTable(void);
     i8   iValidRecords(void);
-  
-    //void vTruncateRecord(i8 iField);
-  
-    void vDiscardBuffer(void);
+    WorkingBuffer* pWorkingBuffer(void);
+    void vWorkingBuffer(WorkingBuffer* pWorkingBuffer);
   
     Footer* aFooter(void);
   };

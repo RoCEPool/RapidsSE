@@ -393,26 +393,6 @@ Job_SubLoader* SubLoader::pJob_SubLoader(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get loader                                                                 */
-/*----------------------------------------------------------------------------*/
-LoadTable* SubLoader::pLoadTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  return m_pLoadTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set loader                                                                 */
-/*----------------------------------------------------------------------------*/
-void SubLoader::vLoader(LoadTable* pLoadTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-
-  m_pLoadTable = pLoadTable;
-}
-
-/*----------------------------------------------------------------------------*/
 /* create a new working buffer                                                */
 /*----------------------------------------------------------------------------*/
 void SubLoader::vNewWorkingBuffer(void)
@@ -488,16 +468,6 @@ bool SubLoader::bReadChunk(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set formatter                                                              */
-/*----------------------------------------------------------------------------*/
-void SubLoader::vSetDistFormatter(char cFieldDelimiter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  m_xFormatters.m_cFieldDelimiter = cFieldDelimiter;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get workingBuffer                                                          */
 /*----------------------------------------------------------------------------*/
 WorkingBuffer* SubLoader::pWorkingBuffer(void)
@@ -540,23 +510,6 @@ i8 SubLoader::iValidRecords(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
   return m_iValidRecords;
-}
-
-/*----------------------------------------------------------------------------*/
-/* discard working buffer (TEMPORARY)                                         */
-/*----------------------------------------------------------------------------*/
-void SubLoader::vDiscardBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-
-  // increment the number of buffers
-  m_nBuffersLoadable[m_iPartition]++;
-
-  // discard the buffer
-  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
-  m_pWorkingBuffer[m_iPartition] = nullptr;
-  
-  delete pWorkingBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
