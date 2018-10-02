@@ -4,6 +4,8 @@
 
 startCluster;
 
+config;
+
 // create table t
 _t
 
@@ -44,9 +46,11 @@ _t
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print "t1M.csv..." ;
+//print "t1M.csv..." ;
 ld t "/rapids/t/t1M.csv" ;
+displayOff;
 fetch t;
+displayOn;
 tr t;
 
 /*============================================================================*/
