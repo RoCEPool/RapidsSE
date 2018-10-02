@@ -505,6 +505,14 @@ void RapidsSE::vPrintWelcome(void)
           Process::iGetPid()
           );
   
+  if (gxArguments.m_bVerbose) {
+#ifdef MUNGE
+    vTrace("  Compiled with MUNGE\n\n"_Stz);
+#else
+    vTrace("  Not compiled with MUNGE\n\n"_Stz);
+#endif
+  }
+  
   // print startup information
   if (gxArguments.m_bWelcome && gxArguments.m_bStart)
     gxArguments.vPrintStartupInfo();
