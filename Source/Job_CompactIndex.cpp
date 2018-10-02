@@ -76,7 +76,7 @@ void* Job_CompactIndex::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_CompactIndex* pJob_CompactIndex =
-    static_cast<Job_CompactIndex*>(Heap::pAllocate(CN_JOB_COMPACTINDEX));
+    static_cast<Job_CompactIndex*>(Heaps::pAllocate(CN_JOB_COMPACTINDEX));
   
   return pJob_CompactIndex;
 }
@@ -98,7 +98,7 @@ void Job_CompactIndex::operator delete(void* aAddress)
 {
   Job_CompactIndex* pJob_CompactIndex = static_cast<Job_CompactIndex*>(aAddress);
   
-  Heap::vFree(pJob_CompactIndex);
+  Heaps::vFree(pJob_CompactIndex);
 }
 
 /*----------------------------------------------------------------------------*/

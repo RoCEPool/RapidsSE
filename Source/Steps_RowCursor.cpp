@@ -69,7 +69,7 @@ ENTRY("vRowCursorDelete"_Stz);
   Object* pObject = reinterpret_cast<Object*>(pRowCursor);
   delete pRowCursor;
   
-  //Heap::vFree(pObject);
+  //Heaps::vFree(pObject);
   
   EXIT();
 }

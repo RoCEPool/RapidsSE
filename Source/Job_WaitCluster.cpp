@@ -76,7 +76,7 @@ void* Job_WaitCluster::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_WaitCluster* pJob_WaitCluster =
-    static_cast<Job_WaitCluster*>(Heap::pAllocate(CN_JOB_WAITCLUSTER));
+    static_cast<Job_WaitCluster*>(Heaps::pAllocate(CN_JOB_WAITCLUSTER));
   
   return pJob_WaitCluster;
 }
@@ -98,7 +98,7 @@ void Job_WaitCluster::operator delete(void* aAddress)
 {
   Job_WaitCluster* pJob_Status = static_cast<Job_WaitCluster*>(aAddress);
   
-  Heap::vFree(pJob_Status);
+  Heaps::vFree(pJob_Status);
 }
 
 /*----------------------------------------------------------------------------*/

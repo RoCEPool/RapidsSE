@@ -281,7 +281,7 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WAITCLUSTER) {
         
     //! temp. to be fixed
-    Job* pJob = static_cast<Job*>(Heap::pAllocate(CN_JOB_CREATETABLE));
+    Job* pJob = static_cast<Job*>(Heaps::pAllocate(CN_JOB_CREATETABLE));
 
     MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
     

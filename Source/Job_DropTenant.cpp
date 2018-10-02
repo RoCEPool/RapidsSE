@@ -76,7 +76,7 @@ void* Job_DropTenant::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_DropTenant* pJob_DropTenant =
-    static_cast<Job_DropTenant*>(Heap::pAllocate(CN_JOB_DROPTENANT));
+    static_cast<Job_DropTenant*>(Heaps::pAllocate(CN_JOB_DROPTENANT));
   
   return pJob_DropTenant;
 }
@@ -98,7 +98,7 @@ void Job_DropTenant::operator delete(void* aAddress)
 {
   Job_DropTenant* pJob_DropTenant = static_cast<Job_DropTenant*>(aAddress);
   
-  Heap::vFree(pJob_DropTenant);
+  Heaps::vFree(pJob_DropTenant);
 }
 
 /*----------------------------------------------------------------------------*/

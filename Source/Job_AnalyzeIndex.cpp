@@ -76,7 +76,7 @@ void* Job_AnalyzeIndex::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_AnalyzeIndex* pJob_AnalyzeIndex =
-    static_cast<Job_AnalyzeIndex*>(Heap::pAllocate(CN_JOB_ANALYZEINDEX));
+    static_cast<Job_AnalyzeIndex*>(Heaps::pAllocate(CN_JOB_ANALYZEINDEX));
   
   return pJob_AnalyzeIndex;
 }
@@ -98,7 +98,7 @@ void Job_AnalyzeIndex::operator delete(void* aAddress)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = static_cast<Job_AnalyzeIndex*>(aAddress);
   
-  Heap::vFree(pJob_AnalyzeIndex);
+  Heaps::vFree(pJob_AnalyzeIndex);
 }
 
 /*----------------------------------------------------------------------------*/

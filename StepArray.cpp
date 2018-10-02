@@ -15,7 +15,7 @@ void* StepArray::operator new(size_t iSize)
   RASSERT(iSize);
   RASSERT(! gpAttachMap->m_pStepArray);
   
-  gpAttachMap->m_pStepArray = (StepArray*)Heap::pAllocate(CN_STEPARRAY);
+  gpAttachMap->m_pStepArray = (StepArray*)Heaps::pAllocate(CN_STEPARRAY);
   
   return gpAttachMap->m_pStepArray;
 }

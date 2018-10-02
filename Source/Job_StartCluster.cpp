@@ -76,7 +76,7 @@ void* Job_StartCluster::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_StartCluster* pJob_StartCluster =
-  static_cast<Job_StartCluster*>(Heap::pAllocate(CN_JOB_STARTCLUSTER));
+  static_cast<Job_StartCluster*>(Heaps::pAllocate(CN_JOB_STARTCLUSTER));
   
   return pJob_StartCluster;
 }
@@ -98,7 +98,7 @@ void Job_StartCluster::operator delete(void* aAddress)
 {
   Job_StartCluster* pJob_StartCluster = static_cast<Job_StartCluster*>(aAddress);
   
-  Heap::vFree(pJob_StartCluster);
+  Heaps::vFree(pJob_StartCluster);
 }
 
 /*----------------------------------------------------------------------------*/

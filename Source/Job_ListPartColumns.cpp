@@ -76,7 +76,7 @@ void* Job_ListPartColumns::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_ListPartColumns* pJob_ListPartColumns =
-    static_cast<Job_ListPartColumns*>(Heap::pAllocate(CN_JOB_LISTPARTCOLUMNS));
+    static_cast<Job_ListPartColumns*>(Heaps::pAllocate(CN_JOB_LISTPARTCOLUMNS));
   
   return pJob_ListPartColumns;
 }
@@ -98,7 +98,7 @@ void Job_ListPartColumns::operator delete(void* aAddress)
 {
   Job_ListPartColumns* pJob_ListPartColumns = static_cast<Job_ListPartColumns*>(aAddress);
   
-  Heap::vFree(pJob_ListPartColumns);
+  Heaps::vFree(pJob_ListPartColumns);
 }
 
 /*----------------------------------------------------------------------------*/

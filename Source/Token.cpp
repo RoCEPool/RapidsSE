@@ -23,7 +23,7 @@ void* Token::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pToken = Heap::pAllocate(CN_TOKEN);
+  void* pToken = Heaps::pAllocate(CN_TOKEN);
   
   return pToken;
 }
@@ -36,7 +36,7 @@ void Token::operator delete(void* pTokenAddress)
   RASSERT(pTokenAddress);
   Token* pToken = _pToken(pTokenAddress);
   
-  Heap::vFree(pToken);
+  Heaps::vFree(pToken);
 }
 
 /*----------------------------------------------------------------------------*/

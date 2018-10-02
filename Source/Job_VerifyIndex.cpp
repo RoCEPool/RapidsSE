@@ -76,7 +76,7 @@ void* Job_VerifyIndex::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_VerifyIndex* pJob_VerifyIndex =
-    static_cast<Job_VerifyIndex*>(Heap::pAllocate(CN_JOB_VERIFYINDEX));
+    static_cast<Job_VerifyIndex*>(Heaps::pAllocate(CN_JOB_VERIFYINDEX));
   
   return pJob_VerifyIndex;
 }
@@ -98,7 +98,7 @@ void Job_VerifyIndex::operator delete(void* aAddress)
 {
   Job_VerifyIndex* pJob_VerifyIndex = static_cast<Job_VerifyIndex*>(aAddress);
   
-  Heap::vFree(pJob_VerifyIndex);
+  Heaps::vFree(pJob_VerifyIndex);
 }
 
 /*----------------------------------------------------------------------------*/

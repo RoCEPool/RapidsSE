@@ -76,7 +76,7 @@ void* Job_Docol::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_Docol* pJob_Docol =
-    static_cast<Job_Docol*>(Heap::pAllocate(CN_JOB_DOCOL));
+    static_cast<Job_Docol*>(Heaps::pAllocate(CN_JOB_DOCOL));
   
   return pJob_Docol;
 }
@@ -98,7 +98,7 @@ void Job_Docol::operator delete(void* aAddress)
 {
   Job_Docol* pJob_Docol = static_cast<Job_Docol*>(aAddress);
   
-  Heap::vFree(pJob_Docol);
+  Heaps::vFree(pJob_Docol);
 }
 
 /*----------------------------------------------------------------------------*/

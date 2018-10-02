@@ -70,7 +70,7 @@ void* Array<ARRAY_CN, ITEM, MAX_ITEMS>::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heap::pAllocate(ARRAY_CN);
+  void* pObject = Heaps::pAllocate(ARRAY_CN);
   
   return pObject;
 }
@@ -85,7 +85,7 @@ void Array<ARRAY_CN, ITEM, MAX_ITEMS>::operator delete(void* pArrayAddress)
   //reinterpret_cast<Array<ARRAY_CN, ITEM, MAX_ITEMS>*>(pVecAddress);
     _pArray<ARRAY_CN, ITEM, MAX_ITEMS>(pArrayAddress);
   
-  Heap::vFree(pArray);
+  Heaps::vFree(pArray);
 }
 
 /*----------------------------------------------------------------------------*/

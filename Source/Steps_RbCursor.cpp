@@ -68,7 +68,7 @@ ENTRY("vRbCursorDelete"_Stz);
   Object* pObject = reinterpret_cast<Object*>(pRbCursor);
   delete pRbCursor;
   
-  //Heap::vFree(pObject);                              //! THIS SEEMS WRONG -- RAY
+  //Heaps::vFree(pObject);                              //! THIS SEEMS WRONG -- RAY
   
   EXIT();
 }

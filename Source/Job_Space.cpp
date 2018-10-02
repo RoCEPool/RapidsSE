@@ -76,7 +76,7 @@ void* Job_Space::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_Space* pJob_Space =
-    static_cast<Job_Space*>(Heap::pAllocate(CN_JOB_SPACE));
+    static_cast<Job_Space*>(Heaps::pAllocate(CN_JOB_SPACE));
   
   return pJob_Space;
 }
@@ -98,7 +98,7 @@ void Job_Space::operator delete(void* aAddress)
 {
   Job_Space* pJob_Space = static_cast<Job_Space*>(aAddress);
   
-  Heap::vFree(pJob_Space);
+  Heaps::vFree(pJob_Space);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -28,7 +28,7 @@ void* Column::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heap::pAllocate(CN_COLUMN);
+  void* pObject = Heaps::pAllocate(CN_COLUMN);
   
   return pObject;
 }
@@ -40,7 +40,7 @@ void Column::operator delete(void* pDataAddress)
 {
   Column* pColumn = reinterpret_cast<Column*>(pDataAddress);
   
-  Heap::vFree(pColumn);
+  Heaps::vFree(pColumn);
 }
 
 /*----------------------------------------------------------------------------*/

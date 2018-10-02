@@ -34,7 +34,7 @@ void* Parser::operator new(size_t iSize, bool bMalloc)
   if (bMalloc)
     pParser = reinterpret_cast<Parser*>(malloc(sizeof(Parser)));
   else
-    pParser = reinterpret_cast<Parser*>(Heap::pAllocate(CN_PARSER));
+    pParser = reinterpret_cast<Parser*>(Heaps::pAllocate(CN_PARSER));
   
   pParser->m_bMalloc = bMalloc;
   
@@ -51,7 +51,7 @@ void Parser::operator delete(void* pParserAddress)
   if (pParser->m_bMalloc)
     free(pParser);
   else
-    Heap::vFree(pParser);
+    Heaps::vFree(pParser);
 }
 
 /*----------------------------------------------------------------------------*/

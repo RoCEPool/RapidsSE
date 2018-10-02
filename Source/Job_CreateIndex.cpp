@@ -118,7 +118,7 @@ void* Job_CreateIndex::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_CreateIndex* pJob_CreateIndex =
-    static_cast<Job_CreateIndex*>(Heap::pAllocate(CN_JOB_CREATEINDEX));
+    static_cast<Job_CreateIndex*>(Heaps::pAllocate(CN_JOB_CREATEINDEX));
   
   return pJob_CreateIndex;
 }
@@ -140,7 +140,7 @@ void Job_CreateIndex::operator delete(void* aAddress)
 {
   Job_CreateIndex* pJob_CreateIndex = static_cast<Job_CreateIndex*>(aAddress);
   
-  Heap::vFree(pJob_CreateIndex);
+  Heaps::vFree(pJob_CreateIndex);
 }
 
 /*----------------------------------------------------------------------------*/

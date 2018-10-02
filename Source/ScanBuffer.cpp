@@ -11,7 +11,7 @@ void* ScanBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  ScanBuffer* pScanBuffer = (ScanBuffer*)Heap::pAllocate(CN_SCANBUFFER);
+  ScanBuffer* pScanBuffer = (ScanBuffer*)Heaps::pAllocate(CN_SCANBUFFER);
   
   return pPoolCheck<void*>(pScanBuffer);
 }
@@ -23,7 +23,7 @@ void ScanBuffer::operator delete(void* pScanBufferAddress)
 {
   ScanBuffer* pScanBuffer = static_cast<ScanBuffer*>(pScanBufferAddress);
   
-  Heap::vFree(pScanBuffer);
+  Heaps::vFree(pScanBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

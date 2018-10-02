@@ -31,7 +31,7 @@ void* PosixThread::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pPosixThread = Heap::pAllocate(CN_POSIXTHREAD);
+  void* pPosixThread = Heaps::pAllocate(CN_POSIXTHREAD);
   
   return pPosixThread;
 }
@@ -43,7 +43,7 @@ void PosixThread::operator delete(void* pPosixThreadAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pPosixThreadAddress);
   
-  Heap::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

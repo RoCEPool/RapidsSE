@@ -76,7 +76,7 @@ void* Job_Status::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_Status* pJob_Status =
-    static_cast<Job_Status*>(Heap::pAllocate(CN_JOB_STATUS));
+    static_cast<Job_Status*>(Heaps::pAllocate(CN_JOB_STATUS));
   
   return pJob_Status;
 }
@@ -98,7 +98,7 @@ void Job_Status::operator delete(void* aAddress)
 {
   Job_Status* pJob_Status = static_cast<Job_Status*>(aAddress);
   
-  Heap::vFree(pJob_Status);
+  Heaps::vFree(pJob_Status);
 }
 
 /*----------------------------------------------------------------------------*/

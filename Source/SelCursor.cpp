@@ -23,7 +23,7 @@ void* SelCursor::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pObject = Heap::pAllocate(CN_SELCURSOR);
+  void* pObject = Heaps::pAllocate(CN_SELCURSOR);
   
   return pObject;
 }
@@ -44,7 +44,7 @@ void SelCursor::operator delete(void* pSelCursorAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pSelCursorAddress);
   
-  Heap::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

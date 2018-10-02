@@ -23,7 +23,7 @@ void* RbCursor::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pObject = Heap::pAllocate(CN_RBCURSOR);
+  void* pObject = Heaps::pAllocate(CN_RBCURSOR);
   
   return pObject;
 }
@@ -44,7 +44,7 @@ void RbCursor::operator delete(void* pRbCursorAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pRbCursorAddress);
   
-  Heap::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

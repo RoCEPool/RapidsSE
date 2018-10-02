@@ -26,7 +26,7 @@ void* PlanList::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pObject = Heap::pAllocate(CN_PLANLIST);
+  void* pObject = Heaps::pAllocate(CN_PLANLIST);
   
   return pObject;
 }
@@ -47,7 +47,7 @@ void PlanList::operator delete(void* pPlanListAddress)
 {
   PlanList* pPlanList = reinterpret_cast<PlanList*>(pPlanListAddress);
   
-  Heap::vFree(pPlanList);
+  Heaps::vFree(pPlanList);
 }
 
 /*----------------------------------------------------------------------------*/

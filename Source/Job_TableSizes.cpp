@@ -76,7 +76,7 @@ void* Job_TableSizes::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_TableSizes* pJob_TableSizes =
-    static_cast<Job_TableSizes*>(Heap::pAllocate(CN_JOB_TABLESIZES));
+    static_cast<Job_TableSizes*>(Heaps::pAllocate(CN_JOB_TABLESIZES));
   
   return pJob_TableSizes;
 }
@@ -98,7 +98,7 @@ void Job_TableSizes::operator delete(void* aAddress)
 {
   Job_TableSizes* pJob_TableSizes = static_cast<Job_TableSizes*>(aAddress);
   
-  Heap::vFree(pJob_TableSizes);
+  Heaps::vFree(pJob_TableSizes);
 }
 
 /*----------------------------------------------------------------------------*/

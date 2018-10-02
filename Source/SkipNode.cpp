@@ -33,7 +33,7 @@ void* SkipNode::operator new(size_t iSize, i8 iLevel, SlabAllocator* pSlabAlloca
     pSkipNode = (SkipNode*)pSlabAllocator->aAllotBytes(nBytes);
   }
   else {
-    pSkipNode = (SkipNode*)Heap::pAllocate(CN_SKIPNODE);
+    pSkipNode = (SkipNode*)Heaps::pAllocate(CN_SKIPNODE);
   }
   
   pSkipNode->m_nRight = iLevel;
@@ -48,7 +48,7 @@ void SkipNode::operator delete(void* pSkipNodeAddress)
 {
   SkipNode* pSkipNode = reinterpret_cast<SkipNode*>(pSkipNodeAddress);
   
-  Heap::vFree(pSkipNode);
+  Heaps::vFree(pSkipNode);
 }
 
 /*----------------------------------------------------------------------------*/

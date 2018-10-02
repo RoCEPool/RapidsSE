@@ -23,7 +23,7 @@ void* Dic::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Dic* pDic = (Dic*)(Heap::pAllocate(CN_DIC));
+  Dic* pDic = (Dic*)(Heaps::pAllocate(CN_DIC));
   
   return pDic;
 }
@@ -47,7 +47,7 @@ void Dic::operator delete(void* pDicAddress)
   
   Dic* pDic = reinterpret_cast<Dic*>(pDicAddress);
   
-  Heap::vFree(pDic);
+  Heaps::vFree(pDic);
 }
 
 /*----------------------------------------------------------------------------*/

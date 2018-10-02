@@ -11,7 +11,7 @@ void* Compiler::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Compiler* pCompiler = reinterpret_cast<Compiler*>(Heap::pAllocate(CN_COMPILER));
+  Compiler* pCompiler = reinterpret_cast<Compiler*>(Heaps::pAllocate(CN_COMPILER));
   
   return pCompiler;
 }
@@ -23,7 +23,7 @@ void Compiler::operator delete(void* pCompilerAddress)
 {
   Compiler* pCompiler = reinterpret_cast<Compiler*>(pCompilerAddress);
   
-  Heap::vFree(pCompiler);
+  Heaps::vFree(pCompiler);
 }
 
 /*----------------------------------------------------------------------------*/

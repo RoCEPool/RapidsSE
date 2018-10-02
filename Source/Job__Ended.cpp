@@ -73,7 +73,7 @@ void* Job__Ended::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job__Ended* pJob__Ended =
-    static_cast<Job__Ended*>(Heap::pAllocate(CN_JOB__ENDED));
+    static_cast<Job__Ended*>(Heaps::pAllocate(CN_JOB__ENDED));
   
   return pJob__Ended;
 }
@@ -95,7 +95,7 @@ void Job__Ended::operator delete(void* aAddress)
 {
   Job__Ended* pJob__Ended = static_cast<Job__Ended*>(aAddress);
   
-  Heap::vFree(pJob__Ended);
+  Heaps::vFree(pJob__Ended);
 }
 
 /*----------------------------------------------------------------------------*/

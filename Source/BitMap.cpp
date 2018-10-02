@@ -11,7 +11,7 @@ void* BitMap::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  BitMap* pBitMap = (BitMap*)Heap::pAllocate(CN_BITMAP);
+  BitMap* pBitMap = (BitMap*)Heaps::pAllocate(CN_BITMAP);
   
   return pPoolCheck<void*>(pBitMap);
 }
@@ -23,7 +23,7 @@ void BitMap::operator delete(void* pAddress)
 {
   BitMap* pBitMap = static_cast<BitMap*>(pAddress);
   
-  Heap::vFree(pBitMap);
+  Heaps::vFree(pBitMap);
 }
 
 /*----------------------------------------------------------------------------*/

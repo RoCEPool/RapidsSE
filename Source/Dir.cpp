@@ -27,7 +27,7 @@ void* Dir::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pDir = Heap::pAllocate(CN_DIR);
+  void* pDir = Heaps::pAllocate(CN_DIR);
   
   return pDir;
 }
@@ -48,7 +48,7 @@ void Dir::operator delete(void* pDirAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pDirAddress);
   
-  Heap::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

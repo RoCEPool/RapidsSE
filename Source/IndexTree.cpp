@@ -67,7 +67,7 @@ void* IndexTree::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heap::pAllocate(CN_INDEXTREE);
+  void* pObject = Heaps::pAllocate(CN_INDEXTREE);
   
   return pObject;
 }
@@ -80,7 +80,7 @@ void IndexTree::operator delete(void* pDataAddress)
   RASSERT(pDataAddress);
   IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pDataAddress);
   
-  Heap::vFree(pIndexTree);
+  Heaps::vFree(pIndexTree);
 }
 
 /*----------------------------------------------------------------------------*/

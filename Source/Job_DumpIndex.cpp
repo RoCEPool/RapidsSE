@@ -76,7 +76,7 @@ void* Job_DumpIndex::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_DumpIndex* pJob_DumpIndex =
-    static_cast<Job_DumpIndex*>(Heap::pAllocate(CN_JOB_DUMPINDEX));
+    static_cast<Job_DumpIndex*>(Heaps::pAllocate(CN_JOB_DUMPINDEX));
   
   return pJob_DumpIndex;
 }
@@ -98,7 +98,7 @@ void Job_DumpIndex::operator delete(void* aAddress)
 {
   Job_DumpIndex* pJob_DumpIndex = static_cast<Job_DumpIndex*>(aAddress);
   
-  Heap::vFree(pJob_DumpIndex);
+  Heaps::vFree(pJob_DumpIndex);
 }
 
 /*----------------------------------------------------------------------------*/

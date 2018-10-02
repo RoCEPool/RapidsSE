@@ -38,7 +38,7 @@ void PerformanceEntry::operator delete(void* pAddress)
 {
   PerformanceEntry* pPerformanceTrace = reinterpret_cast<PerformanceEntry*>(pAddress);
   
-  Heap::vFree(pPerformanceTrace);
+  Heaps::vFree(pPerformanceTrace);
 }
 
 /*----------------------------------------------------------------------------*/

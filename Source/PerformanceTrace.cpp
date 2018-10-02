@@ -27,7 +27,7 @@ void* PerformanceTrace::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heap::pAllocate(CN_PERFORMANCETRACE);
+  void* pObject = Heaps::pAllocate(CN_PERFORMANCETRACE);
   
   return pObject;
 }
@@ -40,7 +40,7 @@ void PerformanceTrace::operator delete(void* pAddress)
   PerformanceTrace* pPerformanceTrace =
     reinterpret_cast<PerformanceTrace*>(pAddress);
   
-  Heap::vFree(pPerformanceTrace);
+  Heaps::vFree(pPerformanceTrace);
 }
 
 /*----------------------------------------------------------------------------*/

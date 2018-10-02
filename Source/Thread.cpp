@@ -34,7 +34,7 @@ Thread* Threads::_pThread(void* aAddr)
 void* Thread::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  void* pObject = Heap::pAllocate(CN_THREAD);
+  void* pObject = Heaps::pAllocate(CN_THREAD);
   
   return pObject;
 }

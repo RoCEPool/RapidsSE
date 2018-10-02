@@ -76,7 +76,7 @@ void* Job_Receiver::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_Receiver* pJob_Receiver =
-    static_cast<Job_Receiver*>(Heap::pAllocate(CN_JOB_RECEIVER));
+    static_cast<Job_Receiver*>(Heaps::pAllocate(CN_JOB_RECEIVER));
   
   return pJob_Receiver;
 }
@@ -98,7 +98,7 @@ void Job_Receiver::operator delete(void* aAddress)
 {
   Job_Receiver* pJob_Receiver = static_cast<Job_Receiver*>(aAddress);
   
-  Heap::vFree(pJob_Receiver);
+  Heaps::vFree(pJob_Receiver);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -82,7 +82,7 @@ void* Job_EndInsert::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_EndInsert* pJob_EndInsert =
-    static_cast<Job_EndInsert*>(Heap::pAllocate(CN_JOB_ENDINSERT));
+    static_cast<Job_EndInsert*>(Heaps::pAllocate(CN_JOB_ENDINSERT));
   
   return pJob_EndInsert;
 }
@@ -104,7 +104,7 @@ void Job_EndInsert::operator delete(void* aAddress)
 {
   Job_EndInsert* pJob_EndInsert = static_cast<Job_EndInsert*>(aAddress);
   
-  Heap::vFree(pJob_EndInsert);
+  Heaps::vFree(pJob_EndInsert);
 }
 
 /*----------------------------------------------------------------------------*/

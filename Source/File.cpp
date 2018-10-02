@@ -55,7 +55,7 @@ void* File::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pObject = Heap::pAllocate(CN_FILE);
+  void* pObject = Heaps::pAllocate(CN_FILE);
   
   return pObject;
 }
@@ -76,7 +76,7 @@ void File::operator delete(void* pFileAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pFileAddress);
   
-  Heap::vFree(pObject);
+  Heaps::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

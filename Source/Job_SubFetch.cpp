@@ -76,7 +76,7 @@ void* Job_SubFetch::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_SubFetch* pJob_SubFetch =
-    static_cast<Job_SubFetch*>(Heap::pAllocate(CN_JOB_SUBFETCH));
+    static_cast<Job_SubFetch*>(Heaps::pAllocate(CN_JOB_SUBFETCH));
   
   return pJob_SubFetch;
 }
@@ -98,7 +98,7 @@ void Job_SubFetch::operator delete(void* aAddress)
 {
   Job_SubFetch* pJob_SubFetch = static_cast<Job_SubFetch*>(aAddress);
   
-  Heap::vFree(pJob_SubFetch);
+  Heaps::vFree(pJob_SubFetch);
 }
 
 /*----------------------------------------------------------------------------*/

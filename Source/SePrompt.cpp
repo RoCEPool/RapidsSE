@@ -22,7 +22,7 @@ PromptCatalog gxPromptCatalog;
 void* SePrompt::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  SePrompt* pSePrompt = (SePrompt*)Heap::pAllocate(CN_SEPROMPT);
+  SePrompt* pSePrompt = (SePrompt*)Heaps::pAllocate(CN_SEPROMPT);
   
   return pPoolCheck<void*>(pSePrompt);
 }
@@ -34,7 +34,7 @@ void SePrompt::operator delete(void* pSePromptAddress)
 {
   SePrompt* pSePrompt = static_cast<SePrompt*>(pSePromptAddress);
   
-  Heap::vFree(pSePrompt);
+  Heaps::vFree(pSePrompt);
 }
 
 /*----------------------------------------------------------------------------*/

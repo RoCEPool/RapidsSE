@@ -23,7 +23,7 @@ void* Queue::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pObject = Heap::pAllocate(CN_QUEUE);
+  void* pObject = Heaps::pAllocate(CN_QUEUE);
   
   return pObject;
 }
@@ -44,7 +44,7 @@ void Queue::operator delete(void* pQueueAddress)
 {
   Queue* pQueue = reinterpret_cast<Queue*>(pQueueAddress);
   
-  Heap::vFree(pQueue);
+  Heaps::vFree(pQueue);
 }
 
 /*----------------------------------------------------------------------------*/

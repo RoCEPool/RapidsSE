@@ -25,7 +25,7 @@ void* TaskQueue::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pObject = Heap::pAllocate(CN_TASKQUEUE);
+  void* pObject = Heaps::pAllocate(CN_TASKQUEUE);
   
   return pObject;
 }
@@ -46,7 +46,7 @@ void TaskQueue::operator delete(void* pTaskQueueAddress)
 {
   TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(pTaskQueueAddress);
   
-  Heap::vFree(pTaskQueue);
+  Heaps::vFree(pTaskQueue);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -57,9 +57,6 @@ namespace Pool
     ~Heap(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static Object* pAllocate(eCN eClass, bool bPersistent=false);
-    static void vFree(Object* pObject, bool bPersistent=false);
-    static void vFree_NonObject(Buffer* pBuffer);
 
     static void vValidateTables(void);
     static void vSearchFree(void);

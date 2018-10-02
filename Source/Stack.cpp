@@ -25,7 +25,7 @@ void* Stack::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pStack = Heap::pAllocate(CN_STACK);
+  void* pStack = Heaps::pAllocate(CN_STACK);
   
   return pStack;
 }
@@ -38,7 +38,7 @@ void Stack::operator delete(void* pBufferAddress)
   RASSERT(pBufferAddress);
   Stack* pStack = _pStack(pBufferAddress);
   
-  Heap::vFree(pStack);
+  Heaps::vFree(pStack);
 }
 
 /*----------------------------------------------------------------------------*/

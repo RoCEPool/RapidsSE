@@ -39,7 +39,7 @@ void* EntryBuffer::operator new(size_t iSize)
   RASSERT(iSize);
   
   EntryBuffer* pEntryBuffer =
-    static_cast<EntryBuffer*>(Heap::pAllocate(CN_ENTRYBUFFER));
+    static_cast<EntryBuffer*>(Heaps::pAllocate(CN_ENTRYBUFFER));
   
   return pEntryBuffer;
 }
@@ -61,7 +61,7 @@ void EntryBuffer::operator delete(void* aAddress)
 {
   EntryBuffer* pEntryBuffer = static_cast<EntryBuffer*>(aAddress);
   
-  Heap::vFree(pEntryBuffer);
+  Heaps::vFree(pEntryBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

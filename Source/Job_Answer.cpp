@@ -76,7 +76,7 @@ void* Job_Answer::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_Answer* pJob_Answer =
-    static_cast<Job_Answer*>(Heap::pAllocate(CN_JOB_ANSWER));
+    static_cast<Job_Answer*>(Heaps::pAllocate(CN_JOB_ANSWER));
   
   return pJob_Answer;
 }
@@ -98,7 +98,7 @@ void Job_Answer::operator delete(void* aAddress)
 {
   Job_Answer* pJob_Answer = static_cast<Job_Answer*>(aAddress);
   
-  Heap::vFree(pJob_Answer);
+  Heaps::vFree(pJob_Answer);
 }
 
 /*----------------------------------------------------------------------------*/

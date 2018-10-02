@@ -27,7 +27,7 @@ void* Planner::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heap::pAllocate(CN_PLANNER);
+  void* pObject = Heaps::pAllocate(CN_PLANNER);
   
   return pObject;
 }
@@ -39,7 +39,7 @@ void Planner::operator delete(void* aAddr)
 {
   Planner* pPlanner = reinterpret_cast<Planner*>(aAddr);
   
-  Heap::vFree(pPlanner);
+  Heaps::vFree(pPlanner);
 }
 
 /*----------------------------------------------------------------------------*/

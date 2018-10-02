@@ -76,7 +76,7 @@ void* Job_ShowCluster::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_ShowCluster* pJob_ShowCluster =
-    static_cast<Job_ShowCluster*>(Heap::pAllocate(CN_JOB_SHOWCLUSTER));
+    static_cast<Job_ShowCluster*>(Heaps::pAllocate(CN_JOB_SHOWCLUSTER));
   
   return pJob_ShowCluster;
 }
@@ -98,7 +98,7 @@ void Job_ShowCluster::operator delete(void* aAddress)
 {
   Job_ShowCluster* pJob_ShowCluster = static_cast<Job_ShowCluster*>(aAddress);
   
-  Heap::vFree(pJob_ShowCluster);
+  Heaps::vFree(pJob_ShowCluster);
 }
 
 /*----------------------------------------------------------------------------*/

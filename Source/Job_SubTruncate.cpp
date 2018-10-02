@@ -76,7 +76,7 @@ void* Job_SubTruncate::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_SubTruncate* pJob_SubTruncate =
-    static_cast<Job_SubTruncate*>(Heap::pAllocate(CN_JOB_SUBTRUNCATE));
+    static_cast<Job_SubTruncate*>(Heaps::pAllocate(CN_JOB_SUBTRUNCATE));
   
   return pJob_SubTruncate;
 }
@@ -98,7 +98,7 @@ void Job_SubTruncate::operator delete(void* aAddress)
 {
   Job_SubTruncate* pJob_SubTruncate = static_cast<Job_SubTruncate*>(aAddress);
   
-  Heap::vFree(pJob_SubTruncate);
+  Heaps::vFree(pJob_SubTruncate);
 }
 
 /*----------------------------------------------------------------------------*/

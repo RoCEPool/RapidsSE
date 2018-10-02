@@ -27,7 +27,7 @@ void* LoaderSub::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heap::pAllocate(CN_LOADERSUB);
+  void* pObject = Heaps::pAllocate(CN_LOADERSUB);
  
   return pObject;
 }
@@ -49,7 +49,7 @@ void LoaderSub::operator delete(void* pLoaderAddress)
 {
   LoaderSub* pLoader = reinterpret_cast<LoaderSub*>(pLoaderAddress);
   
-  Heap::vFree(pLoader);
+  Heaps::vFree(pLoader);
 }
 
 /*----------------------------------------------------------------------------*/

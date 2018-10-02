@@ -76,7 +76,7 @@ void* Job_ListTables::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_ListTables* pJob_ListTables =
-    static_cast<Job_ListTables*>(Heap::pAllocate(CN_JOB_LISTTABLES));
+    static_cast<Job_ListTables*>(Heaps::pAllocate(CN_JOB_LISTTABLES));
   
   return pJob_ListTables;
 }
@@ -98,7 +98,7 @@ void Job_ListTables::operator delete(void* aAddress)
 {
   Job_ListTables* pJob_ListTables = static_cast<Job_ListTables*>(aAddress);
   
-  Heap::vFree(pJob_ListTables);
+  Heaps::vFree(pJob_ListTables);
 }
 
 /*----------------------------------------------------------------------------*/

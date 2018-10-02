@@ -73,7 +73,7 @@ void* Job_Prompt::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_Prompt* pJob_Prompt =
-    static_cast<Job_Prompt*>(Heap::pAllocate(CN_JOB_PROMPT));
+    static_cast<Job_Prompt*>(Heaps::pAllocate(CN_JOB_PROMPT));
   
   return pJob_Prompt;
 }
@@ -95,7 +95,7 @@ void Job_Prompt::operator delete(void* aAddress)
 {
   Job_Prompt* pJob_Prompt = static_cast<Job_Prompt*>(aAddress);
   
-  Heap::vFree(pJob_Prompt);
+  Heaps::vFree(pJob_Prompt);
 }
 
 /*----------------------------------------------------------------------------*/

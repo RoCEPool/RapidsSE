@@ -76,7 +76,7 @@ void* Job_CreateCatalog::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_CreateCatalog* pJob_CreateCatalog =
-    static_cast<Job_CreateCatalog*>(Heap::pAllocate(CN_JOB_CREATECATALOG));
+    static_cast<Job_CreateCatalog*>(Heaps::pAllocate(CN_JOB_CREATECATALOG));
   
   return pJob_CreateCatalog;
 }
@@ -98,7 +98,7 @@ void Job_CreateCatalog::operator delete(void* aAddress)
 {
   Job_CreateCatalog* pJob_CreateCatalog = static_cast<Job_CreateCatalog*>(aAddress);
   
-  Heap::vFree(pJob_CreateCatalog);
+  Heaps::vFree(pJob_CreateCatalog);
 }
 
 /*----------------------------------------------------------------------------*/

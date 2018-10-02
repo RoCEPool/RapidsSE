@@ -27,7 +27,7 @@ void* CommandProcessor::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Object* pObject = Heap::pAllocate(CN_COMMANDPROCESSOR);
+  Object* pObject = Heaps::pAllocate(CN_COMMANDPROCESSOR);
   
   return pObject;
 }
@@ -39,7 +39,7 @@ void CommandProcessor::operator delete(void* aAddr)
 {
   CommandProcessor* pCommandProcessor = reinterpret_cast<CommandProcessor*>(aAddr);
   
-  Heap::vFree(pCommandProcessor);
+  Heaps::vFree(pCommandProcessor);
 }
 
 /*----------------------------------------------------------------------------*/

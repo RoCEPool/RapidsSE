@@ -76,7 +76,7 @@ void* Job_VisualizeIndex::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_VisualizeIndex* pJob_VisualizeIndex =
-    static_cast<Job_VisualizeIndex*>(Heap::pAllocate(CN_JOB_VISUALIZEINDEX));
+    static_cast<Job_VisualizeIndex*>(Heaps::pAllocate(CN_JOB_VISUALIZEINDEX));
   
   return pJob_VisualizeIndex;
 }
@@ -98,7 +98,7 @@ void Job_VisualizeIndex::operator delete(void* aAddress)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = static_cast<Job_VisualizeIndex*>(aAddress);
   
-  Heap::vFree(pJob_VisualizeIndex);
+  Heaps::vFree(pJob_VisualizeIndex);
 }
 
 /*----------------------------------------------------------------------------*/

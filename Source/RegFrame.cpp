@@ -23,7 +23,7 @@ void* RegFrame::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pRegFrame = Heap::pAllocate(CN_REGFRAME);
+  void* pRegFrame = Heaps::pAllocate(CN_REGFRAME);
   
   return pRegFrame;
 }
@@ -35,7 +35,7 @@ void RegFrame::operator delete(void* pRegFrameAddress)
 {
   RegFrame* pRegFrame = _pRegFrame(pRegFrameAddress);
   
-  Heap::vFree(pRegFrame);
+  Heaps::vFree(pRegFrame);
 }
 
 /*----------------------------------------------------------------------------*/

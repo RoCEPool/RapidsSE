@@ -26,7 +26,7 @@ ValSet* Values::_pValSet(void* aAddr)
 void* ValSet::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  ValSet* pValSet = reinterpret_cast<ValSet*>(Heap::pAllocate(CN_VALSET));
+  ValSet* pValSet = reinterpret_cast<ValSet*>(Heaps::pAllocate(CN_VALSET));
   
   return pValSet;
 }
@@ -38,7 +38,7 @@ void ValSet::operator delete(void* pValSetAddress)
 {
   ValSet* pValSet = reinterpret_cast<ValSet*>(pValSetAddress);
   
-  Heap::vFree(pValSet);
+  Heaps::vFree(pValSet);
 }
 
 /*----------------------------------------------------------------------------*/

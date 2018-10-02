@@ -69,7 +69,7 @@ ENTRY("vSelCursorDelete"_Stz);
   Object* pObject = reinterpret_cast<Object*>(pSelCursor);
   delete pSelCursor;
   
-  Heap::vFree(pObject);
+  Heaps::vFree(pObject);
   
   EXIT();
 }

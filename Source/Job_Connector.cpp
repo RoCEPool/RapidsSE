@@ -76,7 +76,7 @@ void* Job_Connector::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_Connector* pJob_Connector =
-    static_cast<Job_Connector*>(Heap::pAllocate(CN_JOB_CONNECTOR));
+    static_cast<Job_Connector*>(Heaps::pAllocate(CN_JOB_CONNECTOR));
   
   return pJob_Connector;
 }
@@ -98,7 +98,7 @@ void Job_Connector::operator delete(void* aAddress)
 {
   Job_Connector* pJob_Connector = static_cast<Job_Connector*>(aAddress);
   
-  Heap::vFree(pJob_Connector);
+  Heaps::vFree(pJob_Connector);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -76,7 +76,7 @@ void* Job_Pwf::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_Pwf* pJob_Pwf =
-    static_cast<Job_Pwf*>(Heap::pAllocate(CN_JOB_PWF));
+    static_cast<Job_Pwf*>(Heaps::pAllocate(CN_JOB_PWF));
   
   return pJob_Pwf;
 }
@@ -98,7 +98,7 @@ void Job_Pwf::operator delete(void* aAddress)
 {
   Job_Pwf* pJob_Pwf = static_cast<Job_Pwf*>(aAddress);
   
-  Heap::vFree(pJob_Pwf);
+  Heaps::vFree(pJob_Pwf);
 }
 
 /*----------------------------------------------------------------------------*/

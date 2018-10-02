@@ -27,7 +27,7 @@ void* Tokeniser::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pTokeniser = Heap::pAllocate(CN_TOKENISER);
+  void* pTokeniser = Heaps::pAllocate(CN_TOKENISER);
   
   return pTokeniser;
 }
@@ -40,7 +40,7 @@ void Tokeniser::operator delete(void* pTokeniserAddress)
   RASSERT(pTokeniserAddress);
   Tokeniser* pTokeniser = _pTokeniser(pTokeniserAddress);
   
-  Heap::vFree(pTokeniser);
+  Heaps::vFree(pTokeniser);
 }
 
 /*----------------------------------------------------------------------------*/

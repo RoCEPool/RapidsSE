@@ -23,7 +23,7 @@ void* TokenVec::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heap::pAllocate(CN_TOKENVEC);
+  void* pObject = Heaps::pAllocate(CN_TOKENVEC);
   
   return pObject;
 }
@@ -35,7 +35,7 @@ void TokenVec::operator delete(void* pAddr)
 {
   TokenVec* pTokenVec = reinterpret_cast<TokenVec*>(pAddr);
   
-  Heap::vFree(pTokenVec);
+  Heaps::vFree(pTokenVec);
 }
 
 /*----------------------------------------------------------------------------*/

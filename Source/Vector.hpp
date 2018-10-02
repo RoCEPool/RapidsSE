@@ -70,7 +70,7 @@ void* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = Heap::pAllocate(VEC_CN);
+  void* pObject = Heaps::pAllocate(VEC_CN);
   
   return pObject;
 }
@@ -84,7 +84,7 @@ void Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator delete(void* pVectorAdd
   Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>* pVector =
     _pVector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>(pVectorAddress);
   
-  Heap::vFree(pVector);
+  Heaps::vFree(pVector);
 }
 
 /*----------------------------------------------------------------------------*/

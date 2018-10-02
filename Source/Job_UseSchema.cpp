@@ -76,7 +76,7 @@ void* Job_UseSchema::operator new(size_t iSize)
   RASSERT(iSize);
   
   Job_UseSchema* pJob_ListCatalogs =
-    static_cast<Job_UseSchema*>(Heap::pAllocate(CN_JOB_USESCHEMA));
+    static_cast<Job_UseSchema*>(Heaps::pAllocate(CN_JOB_USESCHEMA));
   
   return pJob_ListCatalogs;
 }
@@ -98,7 +98,7 @@ void Job_UseSchema::operator delete(void* aAddress)
 {
   Job_UseSchema* pJob_UseSchema = static_cast<Job_UseSchema*>(aAddress);
   
-  Heap::vFree(pJob_UseSchema);
+  Heaps::vFree(pJob_UseSchema);
 }
 
 /*----------------------------------------------------------------------------*/
