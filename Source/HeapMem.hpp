@@ -31,6 +31,7 @@ namespace Pool
     static void vFree(Object* pObject, bool bPersistent=false);
     static void vFree_NonObject(Buffer* pBuffer);
   
+    static void vReport(void);
     static void vSearchFree(void);
     static void vValidateEnums(void);
   };
