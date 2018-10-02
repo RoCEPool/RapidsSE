@@ -24,7 +24,7 @@ void Step::vAddSteps_Loader(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loadTable.chunkFile -- chunk the file                                         */
+/* loadTable.chunkFile -- chunk the file                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableChunkFile(MP_Task mpTask)
 {
@@ -47,7 +47,7 @@ void Task::vLoadTableChunkFile(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loadTable.delete -- delete a table loader                                     */
+/* loadTable.delete -- delete a table loader                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableDelete(MP_Task mpTask)
 {
@@ -66,7 +66,7 @@ void Task::vLoadTableDelete(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loadTable.dumpMap -- dump the load map                                        */
+/* loadTable.dumpMap -- dump the load map                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableDumpMap(MP_Task mpTask)
 {
@@ -85,7 +85,7 @@ void Task::vLoadTableDumpMap(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loadTable::new -- new a table loader                                           */
+/* loadTable::new -- new a table loader                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableNew(MP_Task mpTask)
 {
@@ -105,7 +105,7 @@ void Task::vLoadTableNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loadTable.spawnSubLoader -- spawn a new subloader                             */
+/* loadTable.spawnSubLoader -- spawn a new subloader                          */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableSpawnSubLoader(MP_Task mpTask)
 {
@@ -143,7 +143,7 @@ void Task::vLoadTableSpawnSubLoader(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loadTable.table! -- store table into loader                                   */
+/* loadTable.table! -- store table into loader                                */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableTableStore(MP_Task mpTask)
 {
