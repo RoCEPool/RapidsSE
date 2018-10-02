@@ -19,7 +19,7 @@ namespace StorageEngine
     i8    m_iRegionSize;   // size of region in bytes
     s256  m_sSenDir;       // sen dir
     i8    m_nSlots;        // partitions per node
-  
+    
     // node configuration
     i8    m_nNodes;
     struct {
@@ -28,7 +28,10 @@ namespace StorageEngine
       i8   m_iPortNo;      // port number
     } m_xNodes[C_MAX_NODES];
   
+    s256 m_sCommand;    // command to run
+    
     // commands
+    bool m_bCommand;    // run command
     bool m_bHelp;       // display help
     bool m_bPrompt;     // run the se> prompt
     bool m_bScript;     // run in scripting mode (like prompt but no prompt)

@@ -194,7 +194,12 @@ void CommandProcessor::vGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  vGetCommandInput();
+  if (gxArguments.m_bCommand) {
+    vGetCommandArgument();
+    return;
+  }
+  else
+    vGetCommandInput();
     
   // if empty line just return
   if ( ! pTkn(0)->bHasText() )
@@ -223,6 +228,8 @@ void CommandProcessor::vGetCommand(void)
 void CommandProcessor::vGetCommandArgument(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  m_pTokeniser->vUseString(gxArguments.m_sCommand);
   
   pTknVec()->vReset();
   

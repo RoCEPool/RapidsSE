@@ -316,7 +316,7 @@ void Parser::vResetParser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  ASSERT(! m_xFile.bIsOpen());
+  //ASSERT(! m_xFile.bIsOpen());
   
   // reset input sources
   m_eSource   = IS_NONE;

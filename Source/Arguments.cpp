@@ -47,7 +47,10 @@ Arguments::Arguments(void)
   // node configuration
   m_nNodes = 0;
   
+  m_sCommand    = ""_Stz;
+  
   // commands
+  m_bCommand    = false;
   m_bHelp   = false;
   m_bPrompt = false;
   m_bScript = false;
@@ -135,6 +138,15 @@ bool Arguments::bParse(int argc, Stz* argv[])
   i8 iNode = 0;
   
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--command"_Stz)) {
+      m_sCommand = (Stz*)argv[++i_Arg];
+      m_bCommand = true;
+      m_bPrompt  = true;
+      m_bWelcome = false;
+      continue;
+    }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--commands"_Stz)) {

@@ -102,7 +102,7 @@ void SePrompt::vPromptLoop(void)
   while (bContinue()) {
     
     vGetCommand();
-    
+       
     if (bBlankLine())
       continue;
     
@@ -144,6 +144,9 @@ void SePrompt::vPromptLoop(void)
     
     vDeleteJob();
 
+    if (gxArguments.m_bCommand)
+      break;
+    
   } // while
 }
 
