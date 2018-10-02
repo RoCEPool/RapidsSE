@@ -15,13 +15,12 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Loader(void)
 {
-  vAddStep("loader.chunkFile"_Stz,         &Task::vLoaderChunkFile,       false);
-  vAddStep("loader.delete"_Stz,            &Task::vLoaderDelete,          false);
-  vAddStep("loader.dumpMap"_Stz,           &Task::vLoaderDumpMap,         false);
-  vAddStep("loader.findChunk"_Stz,         &Task::vLoaderFindChunk,       false);
-  vAddStep("loader::new"_Stz,              &Task::vLoaderNew,             false);
-  vAddStep("loader.spawnSubLoader"_Stz,    &Task::vLoaderSpawnSubLoader,  false);
-  vAddStep("loader.table!"_Stz,            &Task::vLoaderTableStore,      false);
+  vAddStep("loader.chunkFile"_Stz,      &Task::vLoaderChunkFile,      false);
+  vAddStep("loader.delete"_Stz,         &Task::vLoaderDelete,         false);
+  vAddStep("loader.dumpMap"_Stz,        &Task::vLoaderDumpMap,        false);
+  vAddStep("loader::new"_Stz,           &Task::vLoaderNew,            false);
+  vAddStep("loader.spawnSubLoader"_Stz, &Task::vLoaderSpawnSubLoader, false);
+  vAddStep("loader.table!"_Stz,         &Task::vLoaderTableStore,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,27 +81,6 @@ void Task::vLoaderDumpMap(MP_Task mpTask)
   
   pLoader->vDumpMap();
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.findChunk -- find next chunk                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderFindChunk(MP_Task mpTask)
-{
-  ENTRY("vLoaderFindChunk"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.findChunk"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  bool bFoundChunk  = pLoader->bFindChunk();
-  
-  mpTask->m_pDataStack->vPushInt(bFoundChunk);
- 
   EXIT();
 }
 

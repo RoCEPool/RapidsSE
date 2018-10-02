@@ -890,7 +890,6 @@ namespace Tasks
     static void vLoaderChunkFile(MP_Task mpTask);
     static void vLoaderDelete(MP_Task mpTask);
     static void vLoaderDumpMap(MP_Task mpTask);
-    static void vLoaderFindChunk(MP_Task mpTask);
     static void vLoaderNew(MP_Task mpTask);
     static void vLoaderSpawnSubLoader(MP_Task mpTask);
     static void vLoaderTableStore(MP_Task mpTask);
