@@ -3,6 +3,11 @@
 /*============================================================================*/
 
 #include "Pool.h"
+#include "StorageEngine.h"
+
+extern AttachMap*  gpAttachMap;
+
+extern eHT geWhichHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* initialise the various heaps                                               */
@@ -33,6 +38,162 @@ void Heaps::vInit(void)
   Persistent.m_pMedium = new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
   Persistent.m_pSmall  = new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* allocate an object from a heap                                             */
+/*----------------------------------------------------------------------------*/
+Object* Heaps::pAllocate(eCN eAllocClass, bool bPersistent)
+{
+  eHT eHeap = geWhichHeap[eAllocClass];
+  
+  Object* pObject;
+  
+  if (bPersistent) {
+    switch(eHeap) {
+      case HT_TRANSIENT_SMALL:  eHeap = HT_PERSISTENT_SMALL;  break;
+      case HT_TRANSIENT_MEDIUM: eHeap = HT_PERSISTENT_MEDIUM; break;
+      case HT_TRANSIENT_LARGE:  eHeap = HT_PERSISTENT_LARGE;  break;
+      case HT_TRANSIENT_JUMBO:  eHeap = HT_PERSISTENT_JUMBO;  break;
+      default: break;
+    }
+  }
+  
+  switch(eHeap) {
+    case HT_INVALID:
+      vFatal("Heap::pAllocate: Invalid heap allocation: class %lld %s\n"_Stz,
+             eAllocClass,aCN[eAllocClass]);
+      
+    case HT_PERSISTENT_SMALL:
+      pObject = gpAttachMap->m_xHeaps.Persistent.m_pSmall->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_PERSISTENT_MEDIUM:
+      pObject = gpAttachMap->m_xHeaps.Persistent.m_pMedium->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_PERSISTENT_LARGE:
+      pObject = gpAttachMap->m_xHeaps.Persistent.m_pLarge->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_PERSISTENT_JUMBO:
+      pObject = gpAttachMap->m_xHeaps.Persistent.m_pJumbo->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_TRANSIENT_SMALL:
+      pObject = gpAttachMap->m_xHeaps.Transient.m_pSmall->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_TRANSIENT_MEDIUM:
+      pObject = gpAttachMap->m_xHeaps.Transient.m_pMedium->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_TRANSIENT_LARGE:
+      pObject = gpAttachMap->m_xHeaps.Transient.m_pLarge->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_TRANSIENT_JUMBO:
+      pObject = gpAttachMap->m_xHeaps.Transient.m_pJumbo->pAllocObject(eAllocClass);
+      return pObject;
+      
+    default:
+      vFatal("Heap::pAllocate: Invalid heap allocation: eHeap %lld\n"_Stz,
+             eHeap);
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an object back to heap                                                */
+/*----------------------------------------------------------------------------*/
+void Heaps::vFree(Object* pObject, bool bPersistent)
+{
+  eCN eAllocClass = pObject->eClass();
+  
+  if (gpBufferPool->bDontFree()) {
+    
+    if (CN_ENTRYBUFFER != eAllocClass) {
+      pObject->vSetClass(CN_FREEDNOT);
+      return;
+    }
+    
+    if ( ! gpBufferPool->bFreeRB() ) {
+      pObject->vSetClass(CN_FREEDNOT);
+      return;
+    }
+  }
+  
+  // should not be freeing objects that are part of a word body
+  ASSERT(!pObject->bWordBody());
+  
+  eHT eHeap = geWhichHeap[eAllocClass];
+  
+  if (bPersistent) {
+    switch(eHeap) {
+      case HT_TRANSIENT_SMALL:  eHeap = HT_PERSISTENT_SMALL;  break;
+      case HT_TRANSIENT_MEDIUM: eHeap = HT_PERSISTENT_MEDIUM; break;
+      case HT_TRANSIENT_LARGE:  eHeap = HT_PERSISTENT_LARGE;  break;
+      case HT_TRANSIENT_JUMBO:  eHeap = HT_PERSISTENT_JUMBO;  break;
+      default: break;
+    }
+  }
+  
+  switch(eHeap) {
+    case HT_INVALID:
+      MemLib::vWordDump(pObject,256,0);
+      vFatal("Heap::vFree: Invalid heap free: class %lld %s\n"_Stz,
+             eAllocClass,aCN[eAllocClass]);
+      
+    case HT_TRANSIENT_SMALL:
+      gpAttachMap->m_xHeaps.Transient.m_pSmall->vFreeObject(pObject);
+      return;
+      
+    case HT_TRANSIENT_MEDIUM:
+      gpAttachMap->m_xHeaps.Transient.m_pMedium->vFreeObject(pObject);
+      return;
+      
+    case HT_TRANSIENT_LARGE:
+      gpAttachMap->m_xHeaps.Transient.m_pLarge->vFreeObject(pObject);
+      return;
+      
+    case HT_TRANSIENT_JUMBO:
+      gpAttachMap->m_xHeaps.Transient.m_pJumbo->vFreeObject(pObject);
+      return;
+      
+    case HT_PERSISTENT_SMALL:
+      gpAttachMap->m_xHeaps.Transient.m_pSmall->vFreeObject(pObject);
+      return;
+      
+    case HT_PERSISTENT_MEDIUM:
+      gpAttachMap->m_xHeaps.Transient.m_pMedium->vFreeObject(pObject);
+      return;
+      
+    case HT_PERSISTENT_LARGE:
+      gpAttachMap->m_xHeaps.Transient.m_pLarge->vFreeObject(pObject);
+      return;
+      
+    case HT_PERSISTENT_JUMBO:
+      gpAttachMap->m_xHeaps.Transient.m_pJumbo->vFreeObject(pObject);
+      return;
+      
+    default:
+      vFatal("Heap::vFree: Invalid heap free: eHeap %lld\n"_Stz,
+             eHeap);
+      
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* free a non-object buffer                                                   */
+/*----------------------------------------------------------------------------*/
+void Heaps::vFree_NonObject(Buffer* pBuffer)
+{
+  pBuffer->vSetMagic();
+  
+  gpAttachMap->m_xHeaps.Transient.m_pLarge->vFreeObject(pBuffer);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
