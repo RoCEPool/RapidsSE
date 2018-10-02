@@ -16,7 +16,7 @@
 
   task::this to pThisTask
 
-  pJob_LoadTable loader::new locals| pLoadTable |
+  pJob_LoadTable loadTable::new locals| pLoadTable |
 
   // initialise table loader
   pJob_LoadTable job.objectName@ locals| sTableNm |
@@ -28,11 +28,11 @@
   //pathDump
 
   sTableNm find execute locals| pTable |
-  pTable pLoadTable loader.table!
+  pTable pLoadTable loadTable.table!
 
-  pLoadTable loader.chunkFile
+  pLoadTable loadTable.chunkFile
 
-  //pLoadTable loader.dumpMap
+  //pLoadTable loadTable.dumpMap
 
   // grab this task's lock
   pThisTask task.grabLock
@@ -42,14 +42,14 @@
   args.subLoaders 0
   do
     //I "Creating Job_SubLoader %v" fmt.print
-    pLoadTable loader.spawnSubLoader
+    pLoadTable loadTable.spawnSubLoader
   loop
 
   //"LoadTable_executeLoader ack waiting" .
   ackWait
   //"LoadTable_executeLoader acked" .
 
-  pLoadTable loader.delete
+  pLoadTable loadTable.delete
 ;
 
 /*----------------------------------------------------------------------------*/

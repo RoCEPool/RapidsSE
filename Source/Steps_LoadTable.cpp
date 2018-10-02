@@ -15,16 +15,16 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Loader(void)
 {
-  vAddStep("loader.chunkFile"_Stz,      &Task::vLoadTableChunkFile,      false);
-  vAddStep("loader.delete"_Stz,         &Task::vLoadTableDelete,         false);
-  vAddStep("loader.dumpMap"_Stz,        &Task::vLoadTableDumpMap,        false);
-  vAddStep("loader::new"_Stz,           &Task::vLoadTableNew,            false);
-  vAddStep("loader.spawnSubLoader"_Stz, &Task::vLoadTableSpawnSubLoader, false);
-  vAddStep("loader.table!"_Stz,         &Task::vLoadTableTableStore,     false);
+  vAddStep("loadTable.chunkFile"_Stz,      &Task::vLoadTableChunkFile,      false);
+  vAddStep("loadTable.delete"_Stz,         &Task::vLoadTableDelete,         false);
+  vAddStep("loadTable.dumpMap"_Stz,        &Task::vLoadTableDumpMap,        false);
+  vAddStep("loadTable::new"_Stz,           &Task::vLoadTableNew,            false);
+  vAddStep("loadTable.spawnSubLoader"_Stz, &Task::vLoadTableSpawnSubLoader, false);
+  vAddStep("loadTable.table!"_Stz,         &Task::vLoadTableTableStore,     false);
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.chunkFile -- chunk the file                                         */
+/* loadTable.chunkFile -- chunk the file                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableChunkFile(MP_Task mpTask)
 {
@@ -32,7 +32,7 @@ void Task::vLoadTableChunkFile(MP_Task mpTask)
   
   Object* pPtrLoadTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoadTable) )
-    THROW_INVALID_DSTACK("loader.chunkFile"_Stz);
+    THROW_INVALID_DSTACK("loadTable.chunkFile"_Stz);
   
   LoadTable* pLoadTable = _pLoader(pPtrLoadTable);
   ASSERT(CN_LOADTABLE == pLoadTable->eClass());
@@ -47,7 +47,7 @@ void Task::vLoadTableChunkFile(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.delete -- delete a table loader                                     */
+/* loadTable.delete -- delete a table loader                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableDelete(MP_Task mpTask)
 {
@@ -55,7 +55,7 @@ void Task::vLoadTableDelete(MP_Task mpTask)
   
   Object* pPtrLoadTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoadTable) )
-    THROW_INVALID_DSTACK("loader.delete"_Stz);
+    THROW_INVALID_DSTACK("loadTable.delete"_Stz);
   
   LoadTable* pLoadTable = _pLoader(pPtrLoadTable);
   ASSERT(CN_LOADTABLE == pLoadTable->eClass());
@@ -66,7 +66,7 @@ void Task::vLoadTableDelete(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.dumpMap -- dump the load map                                        */
+/* loadTable.dumpMap -- dump the load map                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableDumpMap(MP_Task mpTask)
 {
@@ -74,7 +74,7 @@ void Task::vLoadTableDumpMap(MP_Task mpTask)
   
   Object* pPtrLoadTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoadTable) )
-    THROW_INVALID_DSTACK("loader.dumpMap"_Stz);
+    THROW_INVALID_DSTACK("loadTable.dumpMap"_Stz);
   
   LoadTable* pLoadTable = _pLoader(pPtrLoadTable);
   ASSERT(CN_LOADTABLE == pLoadTable->eClass());
@@ -85,7 +85,7 @@ void Task::vLoadTableDumpMap(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader::new -- new a table loader                                           */
+/* loadTable::new -- new a table loader                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableNew(MP_Task mpTask)
 {
@@ -93,7 +93,7 @@ void Task::vLoadTableNew(MP_Task mpTask)
   
   Object* pPtrJob_LoadTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    THROW_INVALID_DSTACK("loader::new"_Stz);
+    THROW_INVALID_DSTACK("loadTable::new"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
   LoadTable* pLoadTable = new LoadTable(pJob_LoadTable);
@@ -105,7 +105,7 @@ void Task::vLoadTableNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.spawnSubLoader -- spawn a new subloader                             */
+/* loadTable.spawnSubLoader -- spawn a new subloader                             */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableSpawnSubLoader(MP_Task mpTask)
 {
@@ -113,7 +113,7 @@ void Task::vLoadTableSpawnSubLoader(MP_Task mpTask)
   
   Object* pPtrLoadTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoadTable) )
-    THROW_INVALID_DSTACK("loader.spawnSubLoader"_Stz);
+    THROW_INVALID_DSTACK("loadTable.spawnSubLoader"_Stz);
   LoadTable* pLoadTable = _pLoader(pPtrLoadTable);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -143,7 +143,7 @@ void Task::vLoadTableSpawnSubLoader(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.table! -- store table into loader                                   */
+/* loadTable.table! -- store table into loader                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vLoadTableTableStore(MP_Task mpTask)
 {
@@ -152,7 +152,7 @@ void Task::vLoadTableTableStore(MP_Task mpTask)
   Object* pPtrTable;
   Object* pPtrLoadTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoadTable,pPtrTable) )
-    THROW_INVALID_DSTACK("loader.tableStore"_Stz);
+    THROW_INVALID_DSTACK("loadTable.tableStore"_Stz);
   
   LoadTable* pLoadTable = _pLoader(pPtrLoadTable);
   ASSERT(CN_LOADTABLE == pLoadTable->eClass());

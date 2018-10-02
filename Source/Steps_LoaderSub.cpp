@@ -367,7 +367,7 @@ void Task::vLoaderSubLoaderStore(MP_Task mpTask)
   
   Object* pPtrLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.openfile"_Stz);
+    THROW_INVALID_DSTACK("loadTable.openfile"_Stz);
   
   LoadTable* pLoadTable = _pLoader(pPtrLoader);
   ASSERT(CN_LOADTABLE == pLoadTable->eClass());
