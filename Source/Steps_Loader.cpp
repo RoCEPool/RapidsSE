@@ -21,8 +21,6 @@ void Step::vAddSteps_Loader(void)
   vAddStep("loader.findChunk"_Stz,         &Task::vLoaderFindChunk,       false);
   vAddStep("loader::new"_Stz,              &Task::vLoaderNew,             false);
   vAddStep("loader.newSub"_Stz,            &Task::vLoaderNewSub,          false);
-  vAddStep("loader.path!"_Stz,             &Task::vLoaderPathStore,       false);
-  vAddStep("loader.pathDistributed!"_Stz,  &Task::vLoaderPathDistributedStore,false);
   vAddStep("loader.seitf@"_Stz,            &Task::vLoaderSEitfFetch,      false);
   vAddStep("loader.seitf!"_Stz,            &Task::vLoaderSEitfStore,      false);
   vAddStep("loader.spawnSubLoader"_Stz,    &Task::vLoaderSpawnSubLoader,  false);
@@ -152,55 +150,6 @@ void Task::vLoaderNewSub(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushObject(pLoaderSub);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.path! -- store file path into loader                                */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderPathStore(MP_Task mpTask)
-{
-  ENTRY("vLoaderPathStore"_Stz);
-  
-  ValWrk xWspPath;
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
-    THROW_INVALID_DSTACK("loader.path!"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  s256 sPath;
-  sPath = _pStrVal(xWspPath.pNestedValueSelf());
-  
-  pLoader->vPath(sPath);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.pathDistributed! -- store file path into loader                     */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderPathDistributedStore(MP_Task mpTask)
-{
-  ENTRY("vLoaderPathStore"_Stz);
-  
-  ValWrk xWspPath;
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,xWspPath) )
-    THROW_INVALID_DSTACK("loader.pathDistributed!"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  s256 sPath;
-  sPath = _pStrVal(xWspPath.pNestedValueSelf());
-  
-  s256 sNewPath;
-  sprintf(sNewPath.aChar(), "%s_%lld", sPath.aChar(),gpAttachMap->m_pGrid->iThisNode());
-  pLoader->vPath(sNewPath);
-  vTrace("LOADER opening file %s\n"_Stz, sNewPath.aChar());
-
   EXIT();
 }
 

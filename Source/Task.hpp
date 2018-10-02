@@ -893,8 +893,6 @@ namespace Tasks
     static void vLoaderFindChunk(MP_Task mpTask);
     static void vLoaderNew(MP_Task mpTask);
     static void vLoaderNewSub(MP_Task mpTask);
-    static void vLoaderPathStore(MP_Task mpTask);
-    static void vLoaderPathDistributedStore(MP_Task mpTask);
     static void vLoaderSEitfFetch(MP_Task mpTask);
     static void vLoaderSEitfStore(MP_Task mpTask);
     static void vLoaderSpawnSubLoader(MP_Task mpTask);

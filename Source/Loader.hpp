@@ -19,7 +19,6 @@ namespace Utilities
     LoadMap*  m_pLoadMap;     // load map
   
     Interface::SEitf* m_pSEitf; // SE interface
-    s256       m_sPath;        // file being loaded
   
     // must be last
     Footer m_xFooter;
@@ -39,8 +38,6 @@ namespace Utilities
     bool     bFindChunk(void);
     Job_LoadTable* pJob_LoadTable(void);
     LoadMap* pLoadMap(void);
-    StrVal&  sPath(void);
-    void     vPath(StrVal& sPath);
     Interface::SEitf* pSEitf(void);
     void     vSEitf(Interface::SEitf* pSEitf);
     Table*   pTable(void);

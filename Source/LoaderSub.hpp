@@ -41,7 +41,6 @@ namespace Utilities
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vBegin(void);
-    void vBegin_Original(void);
     i8   nBuffersLoadable(void);
     void vEnd(void);
     void vEnd_Original(void);

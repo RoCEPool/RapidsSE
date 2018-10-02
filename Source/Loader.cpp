@@ -63,7 +63,6 @@ Loader::Loader(Job_LoadTable* pJob_LoadTable)
   m_pLoadMap->vFilePath(m_pJob_LoadTable->m_sFileName);
   
   m_pSEitf   = nullptr;
-  m_sPath    = "<none>"_Stz;
   m_pTable   = nullptr;
 
   _checkInitialised_(CN_LOADER);
@@ -154,28 +153,6 @@ LoadMap* Loader::pLoadMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
   return m_pLoadMap;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get path                                                                   */
-/*----------------------------------------------------------------------------*/
-StrVal& Loader::sPath(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-
-  return m_sPath;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set path                                                                   */
-/*----------------------------------------------------------------------------*/
-void Loader::vPath(StrVal& sPath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  m_sPath = sPath;
-    
-  m_pLoadMap->vFilePath(sPath);
 }
 
 /*----------------------------------------------------------------------------*/
