@@ -13,7 +13,7 @@ extern eHT geWhichHeap[];
 
 extern BufferPool* gpBufferPool;
 
-bool gbAddrAllocated = false;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -117,120 +117,6 @@ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 //    vTrace("%s    %s %lld \n"_Stz, aTab, aCN[eClass], iCountObjects[eClass]);
 //  }
 //  vTrace("\n"_Stz);  
-}
-
-/*----------------------------------------------------------------------------*/
-/* validate tables                                                            */
-/*----------------------------------------------------------------------------*/
-void Heap::vValidateTables(void)
-{
-  // note: using i8 for iClassNo instead of eCN because you cannot
-  //       increment (++) an enum
-  
-  for (i8 iClassNo = CN_NONE; iClassNo < CN_ENUMS; iClassNo++) {
-    
-    eCN eClassNo = (eCN)iClassNo;
-    
-    eHT eHeap = geWhichHeap[eClassNo];
-    i8  iSize = giClassSize[eHeap];
-    
-    switch(eHeap) {
-      case HT_INVALID:
-        break;
-        
-      case HT_TRANSIENT_SMALL:
-        if (iSize >= C_SIZE_SMALL_OBJECT)
-          vFatal("Heap::vValidateTables: transient small class %lld %s is too big\n"_Stz,
-                 eClassNo,aCN[eClassNo]);
-        //if (!iSize)
-        //  vWarn("Heap::vValidateTables: small class %lld %lls has 0 size\n"_Stz,
-        //         eClassNo,aCN[eClassNo]);
-        break;
-        
-      case HT_TRANSIENT_MEDIUM:
-        if (iSize >= C_SIZE_MEDIUM_OBJECT)
-          vFatal("Heap::vValidateTables: transient medium class %lld %s is too big\n"_Stz,
-                 eClassNo,aCN[eClassNo]);
-        //if (!iSize)
-        // vWarn("Heap::vValidateTables: medium class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
-        break;
-        
-      case HT_TRANSIENT_LARGE:
-        if (iSize >= C_SIZE_LARGE_OBJECT)
-          vFatal("Heap::vValidateTables: transient large class %lld %s is too big\n"_Stz,
-                 eClassNo,aCN[eClassNo]);
-        //if (!iSize)
-        // vWarn("Heap::vValidateTables: large class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
-        break;
-        
-      case HT_TRANSIENT_JUMBO:
-        if (iSize >= C_SIZE_JUMBO_OBJECT)
-          vFatal("Heap::vValidateTables: transient jumbo class %lld %s is too big\n"_Stz,
-                 eClassNo,aCN[eClassNo]);
-        //if (!iSize)
-        //  vWarn("Heap::vValidateTables: jumbo class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
-        break;
-        
-      case HT_PERSISTENT_SMALL:
-        if (iSize >= C_SIZE_SMALL_OBJECT)
-          vFatal("Heap::vValidateTables: persistent small class %lld %s is too big\n"_Stz,
-                 eClassNo,aCN[eClassNo]);
-        //if (!iSize)
-        //  vWarn("Heap::vValidateTables: small class %lld %lls has 0 size\n"_Stz,
-        //         eClassNo,aCN[eClassNo]);
-        break;
-        
-      case HT_PERSISTENT_MEDIUM:
-        if (iSize >= C_SIZE_MEDIUM_OBJECT)
-          vFatal("Heap::vValidateTables: persistent medium class %lld %s is too big\n"_Stz,
-                 eClassNo,aCN[eClassNo]);
-        //if (!iSize)
-        // vWarn("Heap::vValidateTables: medium class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
-        break;
-        
-      case HT_PERSISTENT_LARGE:
-        if (iSize >= C_SIZE_LARGE_OBJECT)
-          vFatal("Heap::vValidateTables: persistent large class %lld %s is too big\n"_Stz,
-                 eClassNo,aCN[eClassNo]);
-        //if (!iSize)
-        // vWarn("Heap::vValidateTables: large class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
-        break;
-        
-      case HT_PERSISTENT_JUMBO:
-        if (iSize >= C_SIZE_JUMBO_OBJECT)
-          vFatal("Heap::vValidateTables: persistent jumbo class %lld %s is too big\n"_Stz,
-                 eClassNo,aCN[eClassNo]);
-        //if (!iSize)
-        //  vWarn("Heap::vValidateTables: jumbo class %lld %lls has 0 size\n"_Stz,
-        //        eClassNo,aCN[eClassNo]);
-        break;
-        
-      default:
-        vFatal("Heap::vValidateTables: Invalid which heap: eHeap %lld\n"_Stz,
-               eHeap);
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* search free list                                                           */
-/*----------------------------------------------------------------------------*/
-void Heap::vSearchFree(void)
-{
-  if (gbAddrAllocated) {
-    for (FreeChunk* pTestChunk = gpAttachMap->m_xHeaps.Transient.m_pMedium->m_pFreeHead;
-         pTestChunk;
-         pTestChunk = pTestChunk->pNextFree())
-      if ((void*)pTestChunk >= (void*)0x204828fc0038 &&
-          (void*)pTestChunk < (void*)0x204828fcfd30)
-        int iDebug = true;
-  }
-  
 }
 
 

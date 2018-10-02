@@ -35,6 +35,8 @@ namespace Pool
   
   class Heap : public Buffer
   {
+  friend class Heaps;
+  
   private:
     i8          m_iObjectSize;   // size of each object (e.g. 1KB or 16KB)
     Lock        m_zLock;         // lock over all segments and free chain
@@ -57,9 +59,6 @@ namespace Pool
     ~Heap(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-
-    static void vValidateTables(void);
-    static void vSearchFree(void);
   
     void    vAddFree(FreeChunk* pFreeChunk);
     i8      iAllocCount(void);
