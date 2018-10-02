@@ -15,8 +15,8 @@ void Pool::vCheckAssumptions(void)
   HeapMem::vValidateEnums();
   
 #ifdef _DEBUG
-  vTrace("C_SIZE_POOL_BUFFER %llx\n"_Stz,C_SIZE_POOL_BUFFER);
-  vTrace("C_OBJECT_TO_BUFFER_MASK %llx\n"_Stz,C_OBJECT_TO_BUFFER_MASK);
+  vTrace("C_SIZE_POOL_BUFFER 0x%llx\n"_Stz,C_SIZE_POOL_BUFFER);
+  vTrace("C_OBJECT_TO_BUFFER_MASK 0x%llx\n"_Stz,C_OBJECT_TO_BUFFER_MASK);
 #endif
 }
 

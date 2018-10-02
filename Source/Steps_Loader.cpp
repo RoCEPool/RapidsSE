@@ -15,8 +15,6 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Loader(void)
 {
-  vAddStep("loader.addRecordsInvalid"_Stz, &Task::vLoaderAddRecordsInvalid,false);
-  vAddStep("loader.addRecordsValid"_Stz,   &Task::vLoaderAddRecordsValid, false);
   vAddStep("loader.chunkFile"_Stz,         &Task::vLoaderChunkFile,       false);
   vAddStep("loader.delete"_Stz,            &Task::vLoaderDelete,          false);
   vAddStep("loader.dumpMap"_Stz,           &Task::vLoaderDumpMap,         false);
@@ -26,56 +24,10 @@ void Step::vAddSteps_Loader(void)
   vAddStep("loader.newSub"_Stz,            &Task::vLoaderNewSub,          false);
   vAddStep("loader.path!"_Stz,             &Task::vLoaderPathStore,       false);
   vAddStep("loader.pathDistributed!"_Stz,  &Task::vLoaderPathDistributedStore,false);
-  vAddStep("loader.recordsInvalid@"_Stz,   &Task::vLoaderRecordsInvalidFetch, false);
-  vAddStep("loader.recordsValid@"_Stz,     &Task::vLoaderRecordsValidFetch,   false);
   vAddStep("loader.seitf@"_Stz,            &Task::vLoaderSEitfFetch,      false);
   vAddStep("loader.seitf!"_Stz,            &Task::vLoaderSEitfStore,      false);
   vAddStep("loader.spawnSubLoader"_Stz,    &Task::vLoaderSpawnSubLoader,  false);
   vAddStep("loader.table!"_Stz,            &Task::vLoaderTableStore,      false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.addRecordsInvalid -- add recordsInvalid                             */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderAddRecordsInvalid(MP_Task mpTask)
-{
-  ENTRY("vLoaderAddRecordsInvalid"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.addRecordsInvalid"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  i8 iInvalidRecords;
-  mpTask->m_pDataStack->bPopAsInt(iInvalidRecords);
-  
-  pLoader->vAddInvalidRecords(iInvalidRecords);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.addRecordsValid -- add recordsValid                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderAddRecordsValid(MP_Task mpTask)
-{
-  ENTRY("vLoaderAddRecordsInvalid"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.addRecordsInvalid"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  i8 iValidRecords;
-  mpTask->m_pDataStack->bPopAsInt(iValidRecords);
-  
-  pLoader->vAddValidRecords(iValidRecords);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,44 +221,6 @@ void Task::vLoaderPathDistributedStore(MP_Task mpTask)
   pLoader->vPath(sNewPath);
   vTrace("LOADER opening file %s\n"_Stz, sNewPath.aChar());
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.recordsInvalid@ -- fetch recordsInvalid                             */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderRecordsInvalidFetch(MP_Task mpTask)
-{
-  ENTRY("vLoaderRecordsInvalidFetch"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.recordsInvalid@"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  mpTask->m_pDataStack->vPushInt(pLoader->iInvalidRecords());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.recordsValid@ -- fetch recordsValid                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderRecordsValidFetch(MP_Task mpTask)
-{
-  ENTRY("vLoaderRecordsValidFetch"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.recordsValid@"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  mpTask->m_pDataStack->vPushInt(pLoader->iValidRecords());
-  
   EXIT();
 }
 

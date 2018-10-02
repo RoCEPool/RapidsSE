@@ -887,8 +887,6 @@ namespace Tasks
     static void vJob_TruncateTableTaskStore(MP_Task mpTask);
 
     // loader
-    static void vLoaderAddRecordsInvalid(MP_Task mpTask);
-    static void vLoaderAddRecordsValid(MP_Task mpTask);
     static void vLoaderChunkFile(MP_Task mpTask);
     static void vLoaderDelete(MP_Task mpTask);
     static void vLoaderDumpMap(MP_Task mpTask);
@@ -898,8 +896,6 @@ namespace Tasks
     static void vLoaderNewSub(MP_Task mpTask);
     static void vLoaderPathStore(MP_Task mpTask);
     static void vLoaderPathDistributedStore(MP_Task mpTask);
-    static void vLoaderRecordsInvalidFetch(MP_Task mpTask);
-    static void vLoaderRecordsValidFetch(MP_Task mpTask);
     static void vLoaderSEitfFetch(MP_Task mpTask);
     static void vLoaderSEitfStore(MP_Task mpTask);
     static void vLoaderSpawnSubLoader(MP_Task mpTask);

@@ -17,8 +17,6 @@ namespace Utilities
   
     Table*    m_pTable;       // table being load
     LoadMap*  m_pLoadMap;     // load map
-    Atomic    m_ziInvalidRecords;
-    Atomic    m_ziValidRecords;
   
     Interface::SEitf* m_pSEitf; // SE interface
     s256       m_sPath;        // file being loaded
@@ -37,11 +35,8 @@ namespace Utilities
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
 
-    void     vAddInvalidRecords(i8 iInvalidRecords);
-    void     vAddValidRecords(i8 iValidRecords);
     void     vDumpMap(void);
     bool     bFindChunk(void);
-    i8       iInvalidRecords(void);
     Job_LoadTable* pJob_LoadTable(void);
     LoadMap* pLoadMap(void);
     StrVal&  sPath(void);
@@ -51,7 +46,6 @@ namespace Utilities
     Table*   pTable(void);
     void     vTable(Table* pTable);
     void     vTidyUp(void);
-    i8       iValidRecords(void);
     
     Footer* aFooter(void);
   
