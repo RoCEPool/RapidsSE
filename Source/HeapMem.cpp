@@ -46,6 +46,8 @@ void HeapMem::vInit(void)
 /*----------------------------------------------------------------------------*/
 Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
 {
+  HeapMem* pHeapMem = &gpAttachMap->m_xHeapMem;
+  
   eHT eHeap = geWhichHeap[eAllocClass];
   
   Object* pObject;
@@ -66,35 +68,35 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
              eAllocClass,aCN[eAllocClass]);
       
     case HT_PERSISTENT_SMALL:
-      pObject = gpAttachMap->m_xHeapMem.Persistent.m_pSmall->pAllocObject(eAllocClass);
+      pObject = pHeapMem->Persistent.m_pSmall->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_PERSISTENT_MEDIUM:
-      pObject = gpAttachMap->m_xHeapMem.Persistent.m_pMedium->pAllocObject(eAllocClass);
+      pObject = pHeapMem->Persistent.m_pMedium->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_PERSISTENT_LARGE:
-      pObject = gpAttachMap->m_xHeapMem.Persistent.m_pLarge->pAllocObject(eAllocClass);
+      pObject = pHeapMem->Persistent.m_pLarge->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_PERSISTENT_JUMBO:
-      pObject = gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->pAllocObject(eAllocClass);
+      pObject = pHeapMem->Persistent.m_pJumbo->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_TRANSIENT_SMALL:
-      pObject = gpAttachMap->m_xHeapMem.Transient.m_pSmall->pAllocObject(eAllocClass);
+      pObject = pHeapMem->Transient.m_pSmall->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_TRANSIENT_MEDIUM:
-      pObject = gpAttachMap->m_xHeapMem.Transient.m_pMedium->pAllocObject(eAllocClass);
+      pObject = pHeapMem->Transient.m_pMedium->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_TRANSIENT_LARGE:
-      pObject = gpAttachMap->m_xHeapMem.Transient.m_pLarge->pAllocObject(eAllocClass);
+      pObject = pHeapMem->Transient.m_pLarge->pAllocObject(eAllocClass);
       return pObject;
       
     case HT_TRANSIENT_JUMBO:
-      pObject = gpAttachMap->m_xHeapMem.Transient.m_pJumbo->pAllocObject(eAllocClass);
+      pObject = pHeapMem->Transient.m_pJumbo->pAllocObject(eAllocClass);
       return pObject;
       
     default:
@@ -110,6 +112,8 @@ Object* HeapMem::pAllocate(eCN eAllocClass, bool bPersistent)
 /*----------------------------------------------------------------------------*/
 void HeapMem::vFree(Object* pObject, bool bPersistent)
 {
+  HeapMem* pHeapMem = &gpAttachMap->m_xHeapMem;
+  
   eCN eAllocClass = pObject->eClass();
   
   if (gpBufferPool->bDontFree()) {
@@ -147,35 +151,35 @@ void HeapMem::vFree(Object* pObject, bool bPersistent)
              eAllocClass,aCN[eAllocClass]);
       
     case HT_TRANSIENT_SMALL:
-      gpAttachMap->m_xHeapMem.Transient.m_pSmall->vFreeObject(pObject);
+      pHeapMem->Transient.m_pSmall->vFreeObject(pObject);
       return;
       
     case HT_TRANSIENT_MEDIUM:
-      gpAttachMap->m_xHeapMem.Transient.m_pMedium->vFreeObject(pObject);
+      pHeapMem->Transient.m_pMedium->vFreeObject(pObject);
       return;
       
     case HT_TRANSIENT_LARGE:
-      gpAttachMap->m_xHeapMem.Transient.m_pLarge->vFreeObject(pObject);
+      pHeapMem->Transient.m_pLarge->vFreeObject(pObject);
       return;
       
     case HT_TRANSIENT_JUMBO:
-      gpAttachMap->m_xHeapMem.Transient.m_pJumbo->vFreeObject(pObject);
+      pHeapMem->Transient.m_pJumbo->vFreeObject(pObject);
       return;
       
     case HT_PERSISTENT_SMALL:
-      gpAttachMap->m_xHeapMem.Transient.m_pSmall->vFreeObject(pObject);
+      pHeapMem->Transient.m_pSmall->vFreeObject(pObject);
       return;
       
     case HT_PERSISTENT_MEDIUM:
-      gpAttachMap->m_xHeapMem.Transient.m_pMedium->vFreeObject(pObject);
+      pHeapMem->Transient.m_pMedium->vFreeObject(pObject);
       return;
       
     case HT_PERSISTENT_LARGE:
-      gpAttachMap->m_xHeapMem.Transient.m_pLarge->vFreeObject(pObject);
+      pHeapMem->Transient.m_pLarge->vFreeObject(pObject);
       return;
       
     case HT_PERSISTENT_JUMBO:
-      gpAttachMap->m_xHeapMem.Transient.m_pJumbo->vFreeObject(pObject);
+      pHeapMem->Transient.m_pJumbo->vFreeObject(pObject);
       return;
       
     default:
