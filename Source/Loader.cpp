@@ -62,7 +62,6 @@ Loader::Loader(Job_LoadTable* pJob_LoadTable)
   m_pLoadMap = new LoadMap;
   m_pLoadMap->vFilePath(m_pJob_LoadTable->m_sFileName);
   
-  m_pSEitf   = nullptr;
   m_pTable   = nullptr;
 
   _checkInitialised_(CN_LOADER);
@@ -153,26 +152,6 @@ LoadMap* Loader::pLoadMap(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
   return m_pLoadMap;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get SEitf                                                                  */
-/*----------------------------------------------------------------------------*/
-Interface::SEitf* Loader::pSEitf(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  return m_pSEitf;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set SEitf                                                                  */
-/*----------------------------------------------------------------------------*/
-void Loader::vSEitf(Interface::SEitf* pSEitf)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  m_pSEitf = pSEitf;
 }
 
 /*----------------------------------------------------------------------------*/

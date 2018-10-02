@@ -18,8 +18,6 @@ namespace Utilities
     Table*    m_pTable;       // table being load
     LoadMap*  m_pLoadMap;     // load map
   
-    Interface::SEitf* m_pSEitf; // SE interface
-  
     // must be last
     Footer m_xFooter;
     
@@ -38,8 +36,6 @@ namespace Utilities
     bool     bFindChunk(void);
     Job_LoadTable* pJob_LoadTable(void);
     LoadMap* pLoadMap(void);
-    Interface::SEitf* pSEitf(void);
-    void     vSEitf(Interface::SEitf* pSEitf);
     Table*   pTable(void);
     void     vTable(Table* pTable);
     void     vTidyUp(void);

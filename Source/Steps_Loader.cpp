@@ -20,8 +20,6 @@ void Step::vAddSteps_Loader(void)
   vAddStep("loader.dumpMap"_Stz,           &Task::vLoaderDumpMap,         false);
   vAddStep("loader.findChunk"_Stz,         &Task::vLoaderFindChunk,       false);
   vAddStep("loader::new"_Stz,              &Task::vLoaderNew,             false);
-  vAddStep("loader.seitf@"_Stz,            &Task::vLoaderSEitfFetch,      false);
-  vAddStep("loader.seitf!"_Stz,            &Task::vLoaderSEitfStore,      false);
   vAddStep("loader.spawnSubLoader"_Stz,    &Task::vLoaderSpawnSubLoader,  false);
   vAddStep("loader.table!"_Stz,            &Task::vLoaderTableStore,      false);
 }
@@ -124,46 +122,6 @@ void Task::vLoaderNew(MP_Task mpTask)
   pJob_LoadTable->m_pLoader = pLoader;
 
   mpTask->m_pDataStack->vPushObject(pLoader);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.seitf@ -- fetch seitf from loader                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSEitfFetch(MP_Task mpTask)
-{
-  ENTRY("vLoaderSEitfFetch"_Stz);
-  
-  Object* pPtrLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.seitf@"_Stz);
-  Loader* pLoader = _pLoader(pPtrLoader);
-  
-  SEitf* pSEitf = pLoader->pSEitf();
-  
-  mpTask->m_pDataStack->vPushObject(pSEitf);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.seitf! -- store seitf into loader                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSEitfStore(MP_Task mpTask)
-{
-  ENTRY("vLoaderSEitfStore"_Stz);
-  
-  Object* pPtrLoader;
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoader,pPtrSEitf) )
-    THROW_INVALID_DSTACK("loader.seitf!"_Stz);
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  
-  pLoader->vSEitf(pSEitf);
   
   EXIT();
 }
