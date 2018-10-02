@@ -23,6 +23,7 @@ using namespace Prompt;
 
 #include "Prompt_args.hpp"
 #include "Prompt_attachMap.hpp"
+#include "Prompt_bp.hpp"
 #include "Prompt_bye.hpp"
 #include "Prompt_cd.hpp"
 #include "Prompt_displayOff.hpp"

@@ -38,6 +38,8 @@ namespace Pool
     BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
                bool bTouch, bool bDontFree, bool bFreeRB);
     ~BufferPool(void);
+  
+    static void vReport(void);
     
     Buffer* pAllocBuffer(void);
     Buffer* pAllocAttachMapBuffer(void);

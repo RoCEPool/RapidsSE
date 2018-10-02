@@ -77,6 +77,34 @@ BufferPool::~BufferPool(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* report on shm region                                                       */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vReport(void)
+{
+  // get magnitudes of the various buffer pools
+  s32 sRegionSize;
+  Magnitudes::vMagnitude(gpAttachMap->m_iRegionSize, sRegionSize);
+  
+  i8  iSum = C_SIZE_POOL_BUFFER
+             +
+             gpBufferPool->m_iAllocCount * C_SIZE_POOL_BUFFER
+             +
+             gpBufferPool->m_iFreeCount  * C_SIZE_POOL_BUFFER;
+
+  s32 sSum;
+  Magnitudes::vMagnitude(iSum, sSum);
+
+  vTrace("  BP %p size %s buffers %lld alloc %lld free %lld (sum=%s)\n"_Stz,
+         gpBufferPool,
+         sRegionSize.aChar(),
+         gpBufferPool->m_nBuffers,
+         gpBufferPool->m_iAllocCount,
+         gpBufferPool->m_iFreeCount,
+         sSum.aChar()
+         );
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate the attachMap buffer from free chain in pool                      */
 /*----------------------------------------------------------------------------*/
 Buffer* BufferPool::pAllocAttachMapBuffer(void)
