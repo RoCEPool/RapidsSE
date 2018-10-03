@@ -16,8 +16,6 @@
 
   task::this to pThisTask
 
-  pJob_LoadTable loadTable::new locals| pLoadTable |
-
   // initialise table loader
   pJob_LoadTable job.objectName@ locals| sTableNm |
   //sTableNm "TableNm: %v" fmt.print
@@ -28,11 +26,9 @@
   //pathDump
 
   sTableNm find execute locals| pTable |
-  pTable pLoadTable loadTable.table!
+  pTable pJob_LoadTable Job_LoadTable.table!
 
-  pLoadTable loadTable.chunkFile
-
-  //pLoadTable loadTable.dumpMap
+  pJob_LoadTable Job_LoadTable.chunkFile
 
   // grab this task's lock
   pThisTask task.grabLock
@@ -48,8 +44,6 @@
   //"LoadTable_executeLoader ack waiting" .
   ackWait
   //"LoadTable_executeLoader acked" .
-
-  pLoadTable loadTable.delete
 ;
 
 /*----------------------------------------------------------------------------*/
