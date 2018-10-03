@@ -11,9 +11,7 @@ namespace Utilities
     Job_SubLoader* m_pJob_SubLoader; // job
   
     LoadChunk* m_pLoadChunk; // chunk loading buffer
-    LoadMap*   m_pLoadMap;   // load map
 
-    Table*   m_pTable;     // table being loaded
     s48K     m_aRecord;    // formatted row
     i8       m_iLength;    // length of record
     i8       m_iPartition; // partition of record

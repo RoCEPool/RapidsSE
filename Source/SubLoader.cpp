@@ -63,8 +63,6 @@ SubLoader::SubLoader(Job_SubLoader* pJob_SubLoader)
   m_pJob_SubLoader = pJob_SubLoader;
   m_pLoadChunk  = new LoadChunk;
 
-  m_pTable   = m_pJob_SubLoader->m_pJob_LoadTable->m_pTable;
-  m_pLoadMap = nullptr;
   //m_aRecord
   m_iLength  = 0;
   m_iPartition  = 0;
@@ -307,7 +305,7 @@ void SubLoader::vNewWorkingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  m_pWorkingBuffer[m_iPartition] = new WorkingBuffer(m_pTable, m_iPartition);
+  m_pWorkingBuffer[m_iPartition] = new WorkingBuffer(m_pJob_SubLoader->m_pJob_LoadTable->m_pTable, m_iPartition);
   m_nBuffersLoadable[m_iPartition]++;
 }
 
@@ -406,7 +404,7 @@ Table* SubLoader::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  return m_pTable;
+  return m_pJob_SubLoader->m_pJob_LoadTable->m_pTable;
 }
 
 /*----------------------------------------------------------------------------*/
