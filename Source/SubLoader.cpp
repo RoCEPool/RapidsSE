@@ -65,7 +65,6 @@ SubLoader::SubLoader(Job_SubLoader* pJob_SubLoader)
   //m_aRecord
   m_iLength  = 0;
   m_iPartition  = 0;
-  m_bMoreChunks = false;
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pWorkingBuffer[i_Partition]   = nullptr;
@@ -117,7 +116,7 @@ void SubLoader::vBegin(void)
   m_pJob_SubLoader->m_pLoadChunk->vOpenFile(sPath);
   
   // read first chunk
-  m_bMoreChunks = bReadChunk();
+  m_pJob_SubLoader->m_bMoreChunks = bReadChunk();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -162,7 +161,7 @@ bool SubLoader::bFetchRecord(void)
   Formatters* pFormatters = &pJob_LoadTable->m_xFormatters;
   Table* pTable = pJob_LoadTable->m_pTable;
   
-  if (! m_bMoreChunks)
+  if (! m_pJob_SubLoader->m_bMoreChunks)
     return false;
   
   while (true) {
@@ -172,8 +171,8 @@ bool SubLoader::bFetchRecord(void)
     
     if (! aRawData) {
       // read next chunk
-      m_bMoreChunks = bReadChunk();
-      if (! m_bMoreChunks)
+      m_pJob_SubLoader->m_bMoreChunks = bReadChunk();
+      if (! m_pJob_SubLoader->m_bMoreChunks)
         return false;
       continue;
     }

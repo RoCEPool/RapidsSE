@@ -14,8 +14,6 @@ namespace Utilities
     i8       m_iLength;    // length of record
     i8       m_iPartition; // partition of record
   
-    bool     m_bMoreChunks; // continue while there are more chunks
-  
     WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
     i8 m_nBuffersLoadable[C_MAX_PARTITIONS]; // how many buffers are loadable
 

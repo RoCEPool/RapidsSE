@@ -13,8 +13,8 @@ namespace JobsModel
     Utilities::SubLoader* m_pLoaderSub;
 
     Utilities::LoadChunk* m_pLoadChunk; // chunk loading buffer
+    bool m_bMoreChunks; // continue while there are more chunks
   
-
     i8       m_iValidRecords;   // valid records
     i8       m_iInvalidRecords; // invalid records
   

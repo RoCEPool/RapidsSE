@@ -113,7 +113,7 @@ Job_SubLoader::Job_SubLoader(Interface::SEitf* pSEitf)
   m_pLoaderSub = nullptr;
   
   m_pLoadChunk  = new LoadChunk;
-
+  m_bMoreChunks = false;
   
   m_iValidRecords = 0;
   m_iInvalidRecords = 0;
