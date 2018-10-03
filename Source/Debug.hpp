@@ -28,6 +28,7 @@ namespace Debugging
     #define ASSERT(condition) \
     { \
       if ( !(condition) ) { \
+        printf("ASSERT\n"); \
         Debugging::vAssertTrap(); \
         THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) \
                                     ? (Stz*) #condition : ""_Stz)); \
@@ -40,6 +41,7 @@ namespace Debugging
   #define RASSERT(condition) \
   { \
     if ( !(condition) ) { \
+      printf("RASSERT\n"); \
       Debugging::vAssertTrap(); \
       THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) \
                                   ? (Stz*) #condition : ""_Stz)); \
