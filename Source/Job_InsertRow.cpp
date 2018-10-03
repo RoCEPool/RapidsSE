@@ -2,7 +2,7 @@
 /* Job_InsertRow.cpp -- Insert Row Job                                        */
 /*============================================================================*/
 
-// Job Short: LoadTable
+// Job Short: InsertRow
 
 #include "JobModel.h"
 #include "StorageEngine.h"
