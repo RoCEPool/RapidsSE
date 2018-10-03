@@ -505,10 +505,10 @@ bool Semaphore::bMutexLock(void)
   
   PosixThread* pCallingThread =
     static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
-  RASSERT(pCallingThread);
+  //(pCallingThread);
   
   // the calling thread cannot already have the mutex
-  RASSERT(pCallingThread != m_pLockingThread);
+  //RASSERT(pCallingThread != m_pLockingThread);
   
   // DO NOT TOUCH m_bLocked or m_pLockingThread
   
@@ -540,10 +540,10 @@ void Semaphore::vMutexLock(void)
   
   PosixThread* pCallingThread =
     static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
-  RASSERT(pCallingThread);
+  //RASSERT(pCallingThread);
   
   // the calling thread cannot already have the mutex
-  RASSERT(pCallingThread != m_pLockingThread);
+  //RASSERT(pCallingThread != m_pLockingThread);
   
   // DO NOT TOUCH m_bLocked or m_pLockingThread
   
@@ -571,12 +571,12 @@ void Semaphore::vMutexUnlock(void)
   
   PosixThread* pCallingThread =
     static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
-  RASSERT(pCallingThread);
+  //RASSERT(pCallingThread);
   
   // the mutex should be locked by the calling thread
   RASSERT(m_bLocked);
   RASSERT(m_pLockingThread);
-  RASSERT(pCallingThread == m_pLockingThread);
+  //RASSERT(pCallingThread == m_pLockingThread);
   RASSERT(bMutexIsLocked());
   
   //vTrace("MutexUnlock %p\n"_Stz,this);
