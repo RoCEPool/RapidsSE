@@ -5,6 +5,7 @@
 
 namespace Utilities
 {
+  class LoadChunk;
   class LoadMap;
 }
 

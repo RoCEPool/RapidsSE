@@ -112,6 +112,9 @@ Job_SubLoader::Job_SubLoader(Interface::SEitf* pSEitf)
   m_pJob_LoadTable = nullptr;
   m_pLoaderSub = nullptr;
   
+  m_pLoadChunk  = new LoadChunk;
+
+  
   m_iValidRecords = 0;
   m_iInvalidRecords = 0;
 
@@ -126,6 +129,9 @@ Job_SubLoader::Job_SubLoader(Interface::SEitf* pSEitf)
 Job_SubLoader::~Job_SubLoader(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+  
+  if (m_pLoadChunk)
+    delete m_pLoadChunk;
 }
 
 

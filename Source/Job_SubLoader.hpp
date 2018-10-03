@@ -12,6 +12,9 @@ namespace JobsModel
     Job_LoadTable* m_pJob_LoadTable;
     Utilities::SubLoader* m_pLoaderSub;
 
+    Utilities::LoadChunk* m_pLoadChunk; // chunk loading buffer
+  
+
     i8       m_iValidRecords;   // valid records
     i8       m_iInvalidRecords; // invalid records
   
