@@ -70,31 +70,6 @@ LoadTable::LoadTable(Job_LoadTable* pJob_LoadTable)
 LoadTable::~LoadTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADTABLE,_FOOTER_);
-  
-  vTidyUp();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump LoadTable                                                                */
-/*----------------------------------------------------------------------------*/
-void LoadTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  RASSERT(eClass == CN_LOADTABLE);
-  RASSERT(pObject->eClass() == CN_LOADTABLE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get loap map                                                               */
-/*----------------------------------------------------------------------------*/
-void LoadTable::vFinalize(eCN eClass, Object* pObject)
-{
-  ASSERT(eClass == CN_LOADTABLE);
-  ASSERT(pObject->eClass() == CN_LOADTABLE);
-  
-  LoadTable* pLoadTable = reinterpret_cast<LoadTable*>(pObject);
-  ASSERT(pLoadTable->bWordBody());
-  
-  pLoadTable->vTidyUp();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,17 +126,6 @@ void LoadTable::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADTABLE,_FOOTER_);
 
   m_pJob_LoadTable->m_pTable = pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* tidyup                                                                     */
-/*----------------------------------------------------------------------------*/
-void LoadTable::vTidyUp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADTABLE,_FOOTER_);
-  
-  //delete m_pJob_LoadTable->m_pLoadMap;
-
 }
 
 /*----------------------------------------------------------------------------*/

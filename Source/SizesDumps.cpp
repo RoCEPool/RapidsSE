@@ -169,7 +169,7 @@ pDUMPFUN *gpDump[]
   
   /* 67 */ &LoadChunk::vDump,       // CN_LINEITEM
   /* 68 */ &LoadChunk::vDump,       // CN_LOADCHUNK
-  /* 69 */ &LoadTable::vDump,          // CN_LOADTABLE
+  /* 69 */ &Dump::vDummy,           // CN_LOADTABLE
   /* 70 */ &SubLoader::vDump,       // CN_SUBLOADER
   /* 71 */ &LoadMap::vDump,         // CN_LOADMAP
   /* 72 */ &Dump::vInvalid,         // CN_LOCK

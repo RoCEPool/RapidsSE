@@ -26,16 +26,12 @@ namespace Utilities
     LoadTable(Job_LoadTable* pJob_LoadTable);
     ~LoadTable(void);
     
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vFinalize(eCN eClass, Object* pObject);
-
     bool     bFindChunk(void);
     Job_LoadTable* pJob_LoadTable(void);
     LoadMap* pLoadMap(void);
     Table*   pTable(void);
     void     vTable(Table* pTable);
-    void     vTidyUp(void);
-    
+  
     Footer* aFooter(void);
   
   };
