@@ -388,26 +388,6 @@ void SubLoader::vWorkingBuffer(WorkingBuffer* pWorkingBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get table                                                                  */
-/*----------------------------------------------------------------------------*/
-Table* SubLoader::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  return m_pJob_SubLoader->m_pJob_LoadTable->m_pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of valid records fetched                                            */
-/*----------------------------------------------------------------------------*/
-i8 SubLoader::iValidRecords(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  return m_pJob_SubLoader->m_iValidRecords;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

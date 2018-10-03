@@ -36,8 +36,6 @@ namespace Utilities
     void vPartition(i8 iPartition);
     bool bProcessRecords(void);
     bool bReadChunk(void);
-    Table* pTable(void);
-    i8   iValidRecords(void);
     WorkingBuffer* pWorkingBuffer(void);
     void vWorkingBuffer(WorkingBuffer* pWorkingBuffer);
   
