@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_job.cpp - job step group                                             */
+/* Steps_JobTruncateTable.cpp - job_truncateTable step group                  */
 /*============================================================================*/
 
 #include "StorageEngine.h"

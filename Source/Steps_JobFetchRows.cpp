@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_job.cpp - job step group                                             */
+/* Steps_JobFetchRows.cpp - jobFetchRows step group                           */
 /*============================================================================*/
 
 #include "StorageEngine.h"
@@ -16,15 +16,16 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_JobFetchRows(void)
 {
   vAddStep("Job_fetchRows.lastBuffers!"_Stz, &Task::vJob_FetchRowsLastBuffersStore, false);
-  vAddStep("Job_fetchRows.partition@"_Stz, &Task::vJob_FetchRowsPartitionFetch,   false);
-  vAddStep("Job_fetchRows.planner!"_Stz, &Task::vJob_FetchRowsPlannerStore,   false);
-  vAddStep("Job_fetchRows.spawnSub"_Stz, &Task::vJob_FetchRowsSpawnSub, false);
-  vAddStep("Job_fetchRows.table!"_Stz,   &Task::vJob_FetchRowsTableStore,   false);
-  vAddStep("Job_fetchRows.where@"_Stz, &Task::vJob_FetchRowsWhereFetch, false);
-  vAddStep("Job_subFetch.bufferQueue@"_Stz, &Task::vJob_SubFetchBufferQueueFetch, false);
-  vAddStep("Job_subFetch.phrase@"_Stz,  &Task::vJob_SubFetchPhraseFetch, false);
-  vAddStep("Job_subFetch.Planner@"_Stz,  &Task::vJob_SubFetchPlannerFetch, false);
-  vAddStep("Job_subFetch.slot@"_Stz,  &Task::vJob_SubFetchSlotFetch, false);
+  vAddStep("Job_fetchRows.partition@"_Stz,   &Task::vJob_FetchRowsPartitionFetch,   false);
+  vAddStep("Job_fetchRows.planner!"_Stz,     &Task::vJob_FetchRowsPlannerStore,   false);
+  vAddStep("Job_fetchRows.spawnSub"_Stz,     &Task::vJob_FetchRowsSpawnSub, false);
+  vAddStep("Job_fetchRows.table!"_Stz,       &Task::vJob_FetchRowsTableStore,   false);
+  vAddStep("Job_fetchRows.where@"_Stz,       &Task::vJob_FetchRowsWhereFetch, false);
+  
+  vAddStep("Job_subFetch.bufferQueue@"_Stz,  &Task::vJob_SubFetchBufferQueueFetch, false);
+  vAddStep("Job_subFetch.phrase@"_Stz,       &Task::vJob_SubFetchPhraseFetch, false);
+  vAddStep("Job_subFetch.Planner@"_Stz,      &Task::vJob_SubFetchPlannerFetch, false);
+  vAddStep("Job_subFetch.slot@"_Stz,         &Task::vJob_SubFetchSlotFetch, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,6 +45,8 @@ void Task::vJob_FetchRowsLastBuffersStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_fetchRows.lastBuffers"_Stz);
   
   pJob_FetchRows->m_nLastBuffers = nLastBuffers;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,6 +62,8 @@ void Task::vJob_FetchRowsPartitionFetch(MP_Task mpTask)
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
 
   mpTask->m_pDataStack->vPushInt(pJob_FetchRows->m_iPartition);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,6 +84,8 @@ void Task::vJob_FetchRowsPlannerStore(MP_Task mpTask)
   Planner* pPlanner = _pPlanner(pPlannerPtr);
   
   pJob_FetchRows->m_pPlanner = pPlanner;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,6 +156,8 @@ void Task::vJob_FetchRowsTableStore(MP_Task mpTask)
   Table* pTable = _pTable(pTablePtr);
   
   pJob_FetchRows->m_pTable = pTable;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,6 +173,8 @@ void Task::vJob_FetchRowsWhereFetch(MP_Task mpTask)
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
   
   mpTask->m_pDataStack->vPushS256(pJob_FetchRows->m_sWhere);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

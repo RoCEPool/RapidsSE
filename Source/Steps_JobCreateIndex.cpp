@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_job.cpp - job step group                                             */
+/* Steps_JobCreateIndex.cpp - jobCreateIndex step group                       */
 /*============================================================================*/
 
 #include "StorageEngine.h"
