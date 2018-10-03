@@ -34,7 +34,6 @@ namespace Utilities
     LoadMap* pLoadMap(void);
     Table*   pTable(void);
     void     vTable(Table* pTable);
-    void     vTidyUp(void);
     
     Footer* aFooter(void);
   
