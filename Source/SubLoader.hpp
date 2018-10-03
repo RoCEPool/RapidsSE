@@ -24,13 +24,10 @@ namespace Utilities
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    void vBegin(void);
-    void vEnd(void);
     bool bFetchRecord(void);
     bool bInsertRow(void);
     Job_SubLoader* pJob_SubLoader(void);
     bool bProcessRecords(void);
-    bool bReadChunk(void);
   
     Footer* aFooter(void);
   };

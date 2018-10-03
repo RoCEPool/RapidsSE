@@ -36,7 +36,7 @@ void Task::vSubLoaderBegin(MP_Task mpTask)
   
   ASSERT(CN_SUBLOADER == pSubLoader->eClass());
   
-  pSubLoader->vBegin();
+  pSubLoader->pJob_SubLoader()->vBegin();
   
   EXIT();
 }
@@ -97,7 +97,7 @@ void Task::vSubLoaderEnd(MP_Task mpTask)
   
   ASSERT(CN_SUBLOADER == pSubLoader->eClass());
   
-  pSubLoader->vEnd();
+  pSubLoader->pJob_SubLoader()->vEnd();
   
   delete pSubLoader;
   

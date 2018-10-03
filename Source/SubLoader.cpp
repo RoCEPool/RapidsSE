@@ -93,38 +93,6 @@ void SubLoader::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* begin loading                                                              */
-/*----------------------------------------------------------------------------*/
-void SubLoader::vBegin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  s256 sPath;
-  sPath = m_pJob_SubLoader->pJob_LoadTable()->m_sFileName;
-  
-  // open the chunked file
-  m_pJob_SubLoader->m_pLoadChunk->vOpenFile(sPath);
-  
-  // read first chunk
-  m_pJob_SubLoader->m_bMoreChunks = bReadChunk();
-}
-
-/*----------------------------------------------------------------------------*/
-/* end loading                                                                */
-/*----------------------------------------------------------------------------*/
-void SubLoader::vEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  //for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
-  //  ASSERT(! m_pWorkingBuffer[i_Partition]);
-  //}
-  
-  // close the file being loaded
-  m_pJob_SubLoader->m_pLoadChunk->vCloseFile();
-
-}
 
 /*----------------------------------------------------------------------------*/
 /* fetch next record from buffer, read next chunk if necessary                */
@@ -152,7 +120,7 @@ bool SubLoader::bFetchRecord(void)
     
     if (! aRawData) {
       // read next chunk
-      m_pJob_SubLoader->m_bMoreChunks = bReadChunk();
+      m_pJob_SubLoader->m_bMoreChunks = m_pJob_SubLoader->bReadChunk();
       if (! m_pJob_SubLoader->m_bMoreChunks)
         return false;
       continue;
@@ -183,18 +151,6 @@ bool SubLoader::bFetchRecord(void)
   
   return false;
 }
-
-/*----------------------------------------------------------------------------*/
-/* hash the first field of record                                             */
-/*----------------------------------------------------------------------------*/
-//void SubLoader::vHashRecord(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-//
-//  Table* pTable = m_pJob_SubLoader->m_pJob_LoadTable->m_pTable;
-//
-//  m_pJob_SubLoader->m_iPartition = pTable->iRowPartition(m_pJob_SubLoader->m_aRecord);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
@@ -273,49 +229,6 @@ bool SubLoader::bProcessRecords(void)
   }
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* read next chunk from file                                                  */
-/*----------------------------------------------------------------------------*/
-bool SubLoader::bReadChunk(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  i8 iSeek;
-  i8 nBytes;
-  i8 iChunk;
-  i8 nChunks;
-  
-  LoadMap* pLoadMap = m_pJob_SubLoader->m_pJob_LoadTable->m_pLoadMap;
-
-  // get information about next chunk
-  for (;;) {
-    
-    bool bMapLoaded = pLoadMap->bDone();
-    
-    bool bMoreChunks = pLoadMap->bNextChunk(iSeek,nBytes,iChunk,nChunks);
-    
-    if (bMapLoaded && ! bMoreChunks)
-      return false;
-    
-    if (bMoreChunks)
-      break;
-    
-    //vTrace("Waiting for map\n"_Stz);
-  }
-  
-  if (gpAttachMap->m_bProgress) {
-    if (0 == iChunk % 100) {
-      vInfo("read chunk %lld of %lld        \r"_Stz,iChunk,nChunks);
-      fflush(stdout);
-    }
-  }
-  
-  // read the chunk
-  m_pJob_SubLoader->m_pLoadChunk->vReadChunk(iSeek,nBytes);
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
