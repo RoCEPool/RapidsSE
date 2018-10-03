@@ -742,6 +742,7 @@ namespace Tasks
     static void vJob_LoadBufferJobLoadTableIdFetch(MP_Task mpTask);
     static void vJob_LoadBufferJobLoadTableStore(MP_Task mpTask);
     static void vJob_LoadBufferPartitionFetch(MP_Task mpTask);
+    static void vJob_LoadBufferSpawn(MP_Task mpTask);
     static void vJob_LoadBufferTableStore(MP_Task mpTask);
   
     // job LoadTable
@@ -1074,7 +1075,6 @@ namespace Tasks
     static void vSubLoaderProcessRecords(MP_Task mpTask);
     static void vSubLoaderRecordsInvalid(MP_Task mpTask);
     static void vSubLoaderRecordsValid(MP_Task mpTask);
-    static void vSubLoaderSpawnLoadBuffer(MP_Task mpTask);
   
     // table
     static void vTableAddIndex(MP_Task mpTask);

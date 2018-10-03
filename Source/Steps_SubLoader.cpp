@@ -24,8 +24,6 @@ void Step::vAddSteps_SubLoader(void)
   vAddStep("subLoader.processRecords"_Stz,   &Task::vSubLoaderProcessRecords,    false);
   vAddStep("subLoader.recordsInvalid"_Stz,   &Task::vSubLoaderRecordsInvalid,    false);
   vAddStep("subLoader.recordsValid"_Stz,     &Task::vSubLoaderRecordsValid,      false);
-  
-  vAddStep("subLoader.spawnLoadBuffer"_Stz,  &Task::vSubLoaderSpawnLoadBuffer,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,74 +193,6 @@ void Task::vSubLoaderRecordsValid(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushInt(pSubLoader->iValidRecords());
   
-  EXIT();
-}
-
-
-
-
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.spawnLoadBuffer -- spawn Job_LoadBuffer                          */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderSpawnLoadBuffer(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderSpawnLoadBuffer"_Stz);
-  
-  Object* pPtrSubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
-    THROW_INVALID_DSTACK("subLoader.spawnLoadBuffer"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
-  
-  i8 iFinal;
-  if ( ! mpTask->m_pDataStack->bPop(iFinal) )
-    THROW_INVALID_DSTACK("subLoader.spawnLoadBuffer"_Stz);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get info
-  
-  Job_SubLoader* pJob_SubLoader = pSubLoader->pJob_SubLoader();
-  Job_LoadTable* pJob_LoadTable = pJob_SubLoader->pJob_LoadTable();
-  
-  i8 iJobLoadTableId = pJob_LoadTable->iJobId();
-  i8 iPartition = pSubLoader->iPartition();
-  WorkingBuffer* pWorkingBuffer = pSubLoader->pWorkingBuffer();
-  pSubLoader->vWorkingBuffer(nullptr);
-  SEitf* pSEitf = pJob_SubLoader->m_pSEitf;
-  
-  //ASSERT( (  pWorkingBuffer->bIsLast() && 0 == pWorkingBuffer->nWorkingRows()) ||
-  //        ( !pWorkingBuffer->bIsLast() && pWorkingBuffer->nWorkingRows()));
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a load buffer job
-  
-  //! this needs to be optimised
-  JobClass* pJobClass_LoadBuffer = JobClass::pFind(CN_JOB_LOADBUFFER);
-  
-  Job_LoadBuffer* pJob_LoadBuffer =
-    static_cast<Job_LoadBuffer*>(pJobClass_LoadBuffer->pPreJob(pSEitf));
-
-  pJob_LoadBuffer->vSeed(SS_SEED_RUN);
-  
-  pJob_LoadBuffer->vJobLoadTableId(iJobLoadTableId);
-  pJob_LoadBuffer->m_sObjectName = pJob_SubLoader->m_sObjectName;
-  pJob_LoadBuffer->vPartition(iPartition);
-  pJob_LoadBuffer->m_pWorkingBuffer = pWorkingBuffer;
-  
-  if (iFinal) {
-    i8 nBuffersLoadable = pSubLoader->nBuffersLoadable();
-    ASSERT(C_UNKNOWN != nBuffersLoadable);
-    pJob_LoadBuffer->vBuffersFromSubLoader(nBuffersLoadable);
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the load buffer job
-  
-  RapidsSE_bSpawnJob(pJob_LoadBuffer,SS_SEED_RUN,pSEitf);
-
   EXIT();
 }
 

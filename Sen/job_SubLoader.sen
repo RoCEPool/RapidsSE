@@ -12,7 +12,7 @@
   params| pSubLoader  |
   params| bFinal  |
 
-  bFinal pSubLoader subLoader.spawnLoadBuffer
+bFinal pSubLoader job_loadBuffer::spawn
 ;
 
 /*----------------------------------------------------------------------------*/
