@@ -20,6 +20,8 @@ void Step::vAddSteps_JobSubLoader(void)
   
   vAddStep("Job_subLoader.partition@"_Stz,    &Task::vJob_SubLoaderPartitionFetch,    false);
   vAddStep("Job_subLoader.partition!"_Stz,    &Task::vJob_SubLoaderPartitionStore,    false);
+  vAddStep("Job_subLoader.recordsInvalid"_Stz,&Task::vJob_SubLoaderRecordsInvalid,    false);
+  vAddStep("Job_subLoader.recordsValid"_Stz,  &Task::vJob_SubLoaderRecordsValid,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,6 +115,40 @@ void Task::vJob_SubLoaderPartitionStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subLoader.partition!"_Stz);
   
   pJob_SubLoader->m_iPartition = iPartition;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* subLoader.recordsInvalid -- return no of invalid records fetched by sub    */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_SubLoaderRecordsInvalid(MP_Task mpTask)
+{
+  ENTRY("vJob_SubLoaderRecordsInvalid"_Stz);
+  
+  Object* pPtrJob_SubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
+    THROW_INVALID_DSTACK("job_subLoader.recordsInvalid"_Stz);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  
+  mpTask->m_pDataStack->vPushInt(pJob_SubLoader->m_iInvalidRecords);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* subLoader.recordsValid -- return no of valid records fetched by sub        */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_SubLoaderRecordsValid(MP_Task mpTask)
+{
+  ENTRY("vJob_SubLoaderRecordsValid"_Stz);
+  
+  Object* pPtrJob_SubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
+    THROW_INVALID_DSTACK("job_subLoader.recordsValid"_Stz);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  
+  mpTask->m_pDataStack->vPushInt(pJob_SubLoader->m_iValidRecords);
   
   EXIT();
 }

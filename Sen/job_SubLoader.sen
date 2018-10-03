@@ -116,8 +116,9 @@ bFinal pSubLoader job_loadBuffer::spawn
 
   // get the valid/invalid rows loaded from subloader
   //pSubLoader subLoader.recordsValid .
-  pSubLoader subLoader.recordsValid pJobLoadTable_Originator job_loadTable.addValidRows
-  pSubLoader subLoader.recordsInvalid pJobLoadTable_Originator job_loadTable.addInvalidRows
+  pJob_SubLoader job_subLoader.recordsValid   pJobLoadTable_Originator job_loadTable.addValidRows
+  pJob_SubLoader job_subLoader.recordsInvalid pJobLoadTable_Originator job_loadTable.addInvalidRows
+
   pSubLoader subLoader.end
 
   // now delete the ended job

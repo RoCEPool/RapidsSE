@@ -20,8 +20,6 @@ void Step::vAddSteps_SubLoader(void)
   vAddStep("subLoader.delete"_Stz,           &Task::vSubLoaderDelete,            false);
   vAddStep("subLoader.end"_Stz,              &Task::vSubLoaderEnd,               false);
   vAddStep("subLoader.processRecords"_Stz,   &Task::vSubLoaderProcessRecords,    false);
-  vAddStep("subLoader.recordsInvalid"_Stz,   &Task::vSubLoaderRecordsInvalid,    false);
-  vAddStep("subLoader.recordsValid"_Stz,     &Task::vSubLoaderRecordsValid,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,40 +114,6 @@ void Task::vSubLoaderProcessRecords(MP_Task mpTask)
   bool bTargetBufferFull = pSubLoader->bProcessRecords();
   
   mpTask->m_pDataStack->vPushInt(bTargetBufferFull);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.recordsInvalid -- return no of invalid records fetched by sub    */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderRecordsInvalid(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderRecordsInvalid"_Stz);
-  
-  Object* pPtrSubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
-    THROW_INVALID_DSTACK("subLoader.recordsInvalid"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
-  
-  mpTask->m_pDataStack->vPushInt(pSubLoader->pJob_SubLoader()->m_iInvalidRecords);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.recordsValid -- return no of valid records fetched by sub        */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderRecordsValid(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderRecordsValid"_Stz);
-  
-  Object* pPtrSubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
-    THROW_INVALID_DSTACK("subLoader.recordsValid"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
-  
-  mpTask->m_pDataStack->vPushInt(pSubLoader->pJob_SubLoader()->m_iValidRecords);
   
   EXIT();
 }
