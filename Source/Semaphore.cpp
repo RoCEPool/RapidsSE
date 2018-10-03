@@ -374,12 +374,12 @@ void Semaphore::vCondSignal(void)
   
   PosixThread* pCallingThread =
     static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
-  RASSERT(pCallingThread);
+  //RASSERT(pCallingThread);
   
   // the mutex should be locked by the calling thread
   ASSERT(m_bLocked);
   RASSERT(m_pLockingThread);
-  RASSERT(pCallingThread == m_pLockingThread);
+  //RASSERT(pCallingThread == m_pLockingThread);
   ASSERT(bMutexIsLocked());
   
   i8 rCode = pthread_cond_signal(&m_xCond);
@@ -407,12 +407,12 @@ void Semaphore::vCondWait_Mutex(void)
   
   PosixThread* pCallingThread =
     static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
-  RASSERT(pCallingThread);
+  //RASSERT(pCallingThread);
   
   // the mutex should be locked by the calling thread
   ASSERT(m_bLocked);
   RASSERT(m_pLockingThread);
-  RASSERT(pCallingThread == m_pLockingThread);
+  //RASSERT(pCallingThread == m_pLockingThread);
   ASSERT(bMutexIsLocked());
   
   // clear this threads tracking of the mutex
@@ -441,12 +441,12 @@ void Semaphore::vCondTimedWait(i8 iMicroSeconds)
   
   PosixThread* pCallingThread =
     static_cast<PosixThread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
-  RASSERT(pCallingThread);
+  //RASSERT(pCallingThread);
   
   // the mutex should be locked by the calling thread
   RASSERT(m_bLocked);
   RASSERT(m_pLockingThread);
-  RASSERT(pCallingThread == m_pLockingThread);
+  //RASSERT(pCallingThread == m_pLockingThread);
   RASSERT(bMutexIsLocked());
 
   Since xSince;
