@@ -42,7 +42,7 @@
   args.subLoaders 0
   do
     //I "Creating Job_SubLoader %v" fmt.print
-    pLoadTable job_subLoader::spawn
+    pJob_LoadTable job_subLoader::spawn
   loop
 
   //"LoadTable_executeLoader ack waiting" .
