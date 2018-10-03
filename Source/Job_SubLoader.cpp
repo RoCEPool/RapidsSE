@@ -196,6 +196,22 @@ void Job_SubLoader::vSubLoader(SubLoader* pSubLoader)
   m_pAncillary = m_pLoaderSub;
 }
 
+
+
+/*----------------------------------------------------------------------------*/
+/* hash the first field of record                                             */
+/*----------------------------------------------------------------------------*/
+void Job_SubLoader::vHashRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+
+  Table* pTable = m_pJob_LoadTable->m_pTable;
+
+  m_iPartition = pTable->iRowPartition(m_aRecord);
+}
+
+
+
 /*----------------------------------------------------------------------------*/
 /* create a new working buffer                                                */
 /*----------------------------------------------------------------------------*/

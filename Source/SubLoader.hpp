@@ -27,7 +27,6 @@ namespace Utilities
     void vBegin(void);
     void vEnd(void);
     bool bFetchRecord(void);
-    void vHashRecord(void);
     bool bInsertRow(void);
     Job_SubLoader* pJob_SubLoader(void);
     bool bProcessRecords(void);

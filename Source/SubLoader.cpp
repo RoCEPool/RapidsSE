@@ -187,14 +187,14 @@ bool SubLoader::bFetchRecord(void)
 /*----------------------------------------------------------------------------*/
 /* hash the first field of record                                             */
 /*----------------------------------------------------------------------------*/
-void SubLoader::vHashRecord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  Table* pTable = m_pJob_SubLoader->m_pJob_LoadTable->m_pTable;
-  
-  m_pJob_SubLoader->m_iPartition = pTable->iRowPartition(m_pJob_SubLoader->m_aRecord);
-}
+//void SubLoader::vHashRecord(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
+//
+//  Table* pTable = m_pJob_SubLoader->m_pJob_LoadTable->m_pTable;
+//
+//  m_pJob_SubLoader->m_iPartition = pTable->iRowPartition(m_pJob_SubLoader->m_aRecord);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
@@ -258,7 +258,7 @@ bool SubLoader::bProcessRecords(void)
   while (bFetchRecord()) {
     
     // hash the record to get m_iPartition
-    vHashRecord();
+    m_pJob_SubLoader->vHashRecord();
     
     // attempt to add record into a buffer
     bool bInserted = bInsertRow();
