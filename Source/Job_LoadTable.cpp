@@ -162,6 +162,18 @@ void Job_LoadTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* dump the load map                                                          */
+/*----------------------------------------------------------------------------*/
+void Job_LoadTable::vDumpMap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  vTrace("Load Map for: %s:\n"_Stz,m_sFileName.aStr());
+  
+  m_pLoadMap->vDumpMap();
+}
+
+/*----------------------------------------------------------------------------*/
 /* find next chunk in file being loaded                                       */
 /*----------------------------------------------------------------------------*/
 bool Job_LoadTable::bFindChunk(void)

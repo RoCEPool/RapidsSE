@@ -18,6 +18,7 @@ void Step::vAddSteps_JobLoadTable(void)
   vAddStep("job_loadTable.addInvalidRows"_Stz,&Task::vJob_LoadTableAddInvalidRows,false);
   vAddStep("job_loadTable.addValidRows"_Stz,  &Task::vJob_LoadTableAddValidRows,  false);
   vAddStep("job_loadTable.chunkFile"_Stz,     &Task::vJob_LoadTableChunkFile,     false);
+  vAddStep("job_loadTable.dumpMap"_Stz,       &Task::vJob_LoadTableDumpMap,       false);
   vAddStep("job_loadTable.filePath@"_Stz,     &Task::vJob_LoadTableFilePathFetch, false);
   vAddStep("job_loadTable.table!"_Stz,        &Task::vJob_LoadTableTableStore,    false);
   vAddStep("job_loadTable.task@"_Stz,         &Task::vJob_LoadTableTaskFetch,     false);
@@ -88,7 +89,24 @@ void Task::vJob_LoadTableChunkFile(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_LoadTable.filePath@ -- fetch filePath from job_loadTable              */
+/* loadTable.dumpMap -- dump the load map                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_LoadTableDumpMap(MP_Task mpTask)
+{
+  ENTRY("vJob_LoaderDUmpMap"_Stz);
+  
+  Object* pPtrJob_LoadTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
+    THROW_INVALID_DSTACK("job_loadTable.addValidRows"_Stz);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
+
+  pJob_LoadTable->vDumpMap();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_LoadTable.filePath@ -- fetch filePath from job_loadTable               */
 /*----------------------------------------------------------------------------*/
 void Task::vJob_LoadTableFilePathFetch(MP_Task mpTask)
 {
