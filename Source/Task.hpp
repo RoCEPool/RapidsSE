@@ -761,9 +761,6 @@ namespace Tasks
     static void vJob_ReceiverSocketFetch(MP_Task mpTask);
     static void vJob_ReceiverSocketStore(MP_Task mpTask);
     
-    // Job startCluster
-    static void vJob_StartClusterSpawnNodesFetch(MP_Task mpTask);
-    
     // Job subLoader
     static void vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask);
     static void vJob_SubLoaderSpawn(MP_Task mpTask);

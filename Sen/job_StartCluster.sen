@@ -90,7 +90,7 @@
   pTask task.job@ to pJob
 
   //"spawnNodes..." .
-  pJob job_startCluster.spawnNodes@ true == if "spawning nodes" . spawnNodes then
+  spawnNodes
 
   //"setStartNode..." .
   setStartNode

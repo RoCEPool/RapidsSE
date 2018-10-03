@@ -72,7 +72,7 @@ pDUMPFUN *gpDump[]
   /* 44 */ &Dump::vDummy,           // CN_FREEENTRY
   
   /* 45 */ &Graph::vDump,           // CN_GRAPH
-  /* 46 */ &GraphCursor::vDump,     // CN_GRAPH
+  /* 46 */ &GraphCursor::vDump,     // CN_GRAPHCURSOR
   /* 47 */ &GraphNode::vDump,       // CN_GRAPHNODE
   /* 48 */ &Grid::vDump,            // CN_GRID
   /* 49 */ &Dump::vDummy,           // CN_GROUPBY
@@ -101,8 +101,9 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_ANSWER
   /*    */ &Dump::vDummy,           // CN_JOB_BOOT
   /*    */ &Dump::vDummy,           // CN_JOB_CF
-  /*    */ &Dump::vDummy,           // CN_JOB_COMPACT
   /*    */ &Dump::vDummy,           // CN_JOB_COMPACTINDEX
+  /*    */ &Dump::vDummy,           // CN_JOB_CONNECTCLUSTER
+  /*    */ &Dump::vDummy,           // CN_JOB_CONNECTOR
   /*    */ &Dump::vDummy,           // CN_JOB_CREATECATALOG
   /*    */ &Dump::vDummy,           // CN_JOB_CREATEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_CREATESCHEMA
@@ -356,6 +357,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Boot),           // CN_JOB_BOOT
   /*    */ sizeof(Job_Cf),             // CN_JOB_CF
   /*    */ sizeof(Job_CompactIndex),   // CN_JOB_COMPACTINDEX
+  /*    */ sizeof(Job_ConnectCluster), // CN_JOB_CONNECTCLUSTER
   /*    */ sizeof(Job_Connector),      // CN_JOB_CONNECTOR
   /*    */ sizeof(Job_CreateCatalog),  // CN_JOB_CREATECATALOG
   /*    */ sizeof(Job_CreateIndex),    // CN_JOB_CREATEINDEX
@@ -609,6 +611,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_BOOT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_COMPACTINDEX
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CONNECTOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATECATALOG
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_CREATEINDEX

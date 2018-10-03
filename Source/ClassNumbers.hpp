@@ -101,6 +101,7 @@ enum eCN : u2 // Class Number
     /*  73 */ CN_JOB_BOOT,
     /*  74 */ CN_JOB_CF,
     /*  75 */ CN_JOB_COMPACTINDEX,
+    /*     */ CN_JOB_CONNECTCLUSTER,
     /*  76 */ CN_JOB_CONNECTOR,
     /*  77 */ CN_JOB_CREATECATALOG,
     /*  78 */ CN_JOB_CREATEINDEX,
@@ -343,6 +344,7 @@ static Stz* aCN[]
     /*  73 */ "JOB_BOOT"_Stz,            // CN_JOB_BOOT
     /*  74 */ "JOB_CF"_Stz,              // CN_JOB_CF
     /*  75 */ "JOB_COMPACTINDEX"_Stz,    // CN_JOB_COMPACTINDEX
+    /*     */ "JOB_CONNECTCLUSTER"_Stz,  // CN_JOB_CONNECTCLUSTER
     /*  76 */ "JOB_CONNECTOR"_Stz,       // CN_JOB_CONNECTOR
     /*  77 */ "JOB_CREATECATALOG"_Stz,   // CN_JOB_CREATECATALOG
     /*  78 */ "JOB_CREATEINDEX"_Stz,     // CN_JOB_CREATEINDEX
