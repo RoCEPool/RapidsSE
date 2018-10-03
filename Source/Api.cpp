@@ -151,23 +151,38 @@ eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
   // trace entry
   TRACE_ENTRY_P1(aCommand);
   
-  //vTrace("Executing command: %s\n"_Stz, aCommand);
+  if (pSEitf)
+    vTrace("SEitf: %p\n"_Stz, pSEitf);
+  
+  if (sCatalogName)
+    vTrace("Catalog: %s\n"_Stz, sCatalogName);
+  
+  if (sSchemaName)
+    vTrace("Schema: %s\n"_Stz, sSchemaName);
+  
+  vTrace("bPostJob: %lld\n"_Stz, bPostJob);
+  vTrace("ppJob: %p\n"_Stz, ppJob);
+  
   
   // set the catalog and schema in the SEitf
+  vTrace("Intializing SEITF\n"_Stz);
   pSEitf->vInit(sCatalogName, sSchemaName);
   
+  vTrace("Invoking RapidsSE_pExecuteCommand\n"_Stz);
   Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSEitf, bPostJob);
   //vTrace("pJob = %p\n"_Stz, pJob);
   *ppJob = pJob;
   pSEitf->m_pJob = pJob;
   
   if (pJob->m_bHasError) {
+    vTrace("Got an error\n"_Stz);
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
         vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
         return pJob->m_xNode[i_Node].m_eErrorCode;
       }
     }
+    vTrace("Hit ASSERT\n"_Stz);
     ASSERT(0);
   }
   return EC_NONE;
@@ -691,43 +706,6 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iP
 }
 
 /*----------------------------------------------------------------------------*/
-/* launch a prompt job                                                        */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_SpawnPrompt(i8 iTraceLevel)
-{
-  Stz*   aApiCall = "RapidsSE_SpawnPrompt"_Stz;
-  SEitf* pSEitf = nullptr;
-  s256   sRequest;
-  
-  try {
-    
-    eEC eError = RapidsSE_SEitfNew((void**)&pSEitf, "rapidsse"_Stz, "public"_Stz, 0, 0);
-    ASSERT(EC_NONE == eError);
-    
-    JobClass* pJobClass_Prompt = JobClass::pFind(CN_JOB_PROMPT);
-    
-    Job_Prompt* pJob_Prompt = static_cast<Job_Prompt*>(pJobClass_Prompt->pNewJob(nullptr));
-    
-    pJob_Prompt->m_pSEitf = pSEitf;
-    
-    bool b = RapidsSE_bSpawnJob(pJob_Prompt,SS_SEED_RUN,pSEitf);
-    
-    return EC_NONE;
-    
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -738,24 +716,33 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
 {
   CommandProcessor* pCommandProcessor = pSEitf->m_pCommandProcessor;
   
+  vTrace("Tokenizing command\n"_Stz);
   pCommandProcessor->vTokenise(aCommand);
   
+  vTrace("Looking for jobClass\n"_Stz);
   bool bFound = pCommandProcessor->bFindJobClass();
-  if (! bFound)
+  if (! bFound) {
+    vTrace("No jobClass\n"_Stz);
     return nullptr;
+  }
   
+  vTrace("Executing pre\n"_Stz);
   pCommandProcessor->vPreJob(pSEitf);
   
   Job* pJob = pCommandProcessor->pJob();
-  if (!pJob)
+  if (!pJob) {
+    vTrace("No job\n"_Stz);
     return nullptr;
+  }
   
   // lock this job's mutex
+  vTrace("Getting mutex lock\n"_Stz);
   i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 
   // spawn the job
+  vTrace("Spawning job\n"_Stz);
   RapidsSE_bSpawnJob(pJob, SS_SEED_REQ, pSEitf);
   
   // wait for condition
@@ -763,6 +750,8 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
                             &pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+  
+  vTrace("Returned from job\n"_Stz);
   
   if (bPostJob)
     pCommandProcessor->vPostJob(pSEitf);
