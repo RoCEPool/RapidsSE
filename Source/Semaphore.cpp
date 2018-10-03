@@ -378,7 +378,7 @@ void Semaphore::vCondSignal(void)
   
   // the mutex should be locked by the calling thread
   ASSERT(m_bLocked);
-  RASSERT(m_pLockingThread);
+  //RASSERT(m_pLockingThread);
   //RASSERT(pCallingThread == m_pLockingThread);
   ASSERT(bMutexIsLocked());
   
@@ -411,7 +411,7 @@ void Semaphore::vCondWait_Mutex(void)
   
   // the mutex should be locked by the calling thread
   ASSERT(m_bLocked);
-  RASSERT(m_pLockingThread);
+  //RASSERT(m_pLockingThread);
   //RASSERT(pCallingThread == m_pLockingThread);
   ASSERT(bMutexIsLocked());
   
@@ -423,7 +423,7 @@ void Semaphore::vCondWait_Mutex(void)
   
   if (0 == rCode) {
     RASSERT(! m_bLocked);
-    RASSERT(! m_pLockingThread);
+    //RASSERT(! m_pLockingThread);
     m_pLockingThread = pCallingThread;
     m_bLocked = true;
     return;
@@ -445,7 +445,7 @@ void Semaphore::vCondTimedWait(i8 iMicroSeconds)
   
   // the mutex should be locked by the calling thread
   RASSERT(m_bLocked);
-  RASSERT(m_pLockingThread);
+  //RASSERT(m_pLockingThread);
   //RASSERT(pCallingThread == m_pLockingThread);
   RASSERT(bMutexIsLocked());
 
@@ -468,7 +468,7 @@ void Semaphore::vCondTimedWait(i8 iMicroSeconds)
   
   if (0 == rCode || ETIMEDOUT == rCode) {
     RASSERT(! m_bLocked);
-    RASSERT(! m_pLockingThread);
+    //RASSERT(! m_pLockingThread);
     m_pLockingThread = pCallingThread;
     m_bLocked = true;
     return;
@@ -517,7 +517,7 @@ bool Semaphore::bMutexLock(void)
   
   if (0 == rCode) {
     RASSERT(! m_bLocked);
-    RASSERT(! m_pLockingThread);
+    //RASSERT(! m_pLockingThread);
     m_pLockingThread = pCallingThread;
     m_bLocked = true;
     return true;
@@ -553,7 +553,7 @@ void Semaphore::vMutexLock(void)
   
   if (0 == rCode) {
     RASSERT(! m_bLocked);
-    RASSERT(! m_pLockingThread);
+    //RASSERT(! m_pLockingThread);
     m_pLockingThread = pCallingThread;
     m_bLocked = true;
     return;
@@ -575,7 +575,7 @@ void Semaphore::vMutexUnlock(void)
   
   // the mutex should be locked by the calling thread
   RASSERT(m_bLocked);
-  RASSERT(m_pLockingThread);
+  //RASSERT(m_pLockingThread);
   //RASSERT(pCallingThread == m_pLockingThread);
   RASSERT(bMutexIsLocked());
   
