@@ -333,31 +333,6 @@ bool SubLoader::bReadChunk(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get workingBuffer                                                          */
-/*----------------------------------------------------------------------------*/
-WorkingBuffer* SubLoader::pWorkingBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  WorkingBuffer* pWorkingBuffer = m_pJob_SubLoader->m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition];
-
-  //m_pRowBuffer[m_iPartition] = nullptr;
-  
-  return pWorkingBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set workingBuffer                                                          */
-/*----------------------------------------------------------------------------*/
-void SubLoader::vWorkingBuffer(WorkingBuffer* pWorkingBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  m_pJob_SubLoader->m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition] = pWorkingBuffer;
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

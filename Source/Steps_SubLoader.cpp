@@ -53,7 +53,12 @@ void Task::vSubLoaderDanglingBuffer(MP_Task mpTask)
     THROW_INVALID_DSTACK("subLoader.delete"_Stz);
   SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
-  if ( ! pSubLoader->pWorkingBuffer() )
+  //if ( ! pSubLoader->pWorkingBuffer() )
+  //  pSubLoader->vNewWorkingBuffer();
+  
+  Job_SubLoader* pJob_SubLoader = pSubLoader->pJob_SubLoader();
+  
+  if ( ! pJob_SubLoader->m_pWorkingBuffer[pJob_SubLoader->m_iPartition] )
     pSubLoader->vNewWorkingBuffer();
 
   EXIT();

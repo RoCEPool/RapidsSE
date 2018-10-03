@@ -33,8 +33,6 @@ namespace Utilities
     void vNewWorkingBuffer(void);
     bool bProcessRecords(void);
     bool bReadChunk(void);
-    WorkingBuffer* pWorkingBuffer(void);
-    void vWorkingBuffer(WorkingBuffer* pWorkingBuffer);
   
     Footer* aFooter(void);
   };

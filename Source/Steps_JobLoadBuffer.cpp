@@ -150,8 +150,9 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
   
   i8 iJobLoadTableId = pJob_LoadTable->iJobId();
   i8 iPartition = pJob_SubLoader->m_iPartition;
-  WorkingBuffer* pWorkingBuffer = pSubLoader->pWorkingBuffer();
-  pSubLoader->vWorkingBuffer(nullptr);
+  WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];
+  pJob_SubLoader->m_pWorkingBuffer[iPartition] = nullptr;
+  
   SEitf* pSEitf = pJob_SubLoader->m_pSEitf;
   
   //ASSERT( (  pWorkingBuffer->bIsLast() && 0 == pWorkingBuffer->nWorkingRows()) ||
