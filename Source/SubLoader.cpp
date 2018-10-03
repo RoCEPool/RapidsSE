@@ -61,7 +61,6 @@ SubLoader::SubLoader(Job_SubLoader* pJob_SubLoader, LoadTable* pLoadTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
 
   m_pJob_SubLoader = pJob_SubLoader;
-  m_pLoadTable  = pLoadTable;
   m_pLoadChunk  = new LoadChunk;
 
   m_pTable   = m_pJob_SubLoader->m_pJob_LoadTable->m_pTable;
@@ -119,7 +118,7 @@ void SubLoader::vBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
   s256 sPath;
-  sPath = m_pLoadTable->pJob_LoadTable()->m_sFileName;
+  sPath = m_pJob_SubLoader->pJob_LoadTable()->m_sFileName;
   
   // open the chunked file
   m_pLoadChunk->vOpenFile(sPath);
@@ -166,7 +165,7 @@ bool SubLoader::bFetchRecord(void)
   bool bValid = false;
   bool bBlankLine;
   
-  Job_LoadTable* pJob_LoadTable = m_pLoadTable->pJob_LoadTable();
+  Job_LoadTable* pJob_LoadTable = m_pJob_SubLoader->pJob_LoadTable();
   Formatters* pFormatters = &pJob_LoadTable->m_xFormatters;
   Table* pTable = pJob_LoadTable->m_pTable;
   
