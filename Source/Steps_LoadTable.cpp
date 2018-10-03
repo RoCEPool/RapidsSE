@@ -39,7 +39,7 @@ void Task::vLoadTableChunkFile(MP_Task mpTask)
   bool bFoundChunk = false;
   
   do {
-    bFoundChunk = pLoadTable->bFindChunk();
+    bFoundChunk = pLoadTable->pJob_LoadTable()->bFindChunk();
   } while (bFoundChunk);
     
   EXIT();

@@ -77,18 +77,6 @@ LoadTable::~LoadTable(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* find next chunk in file being loaded                                       */
-/*----------------------------------------------------------------------------*/
-bool LoadTable::bFindChunk(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADTABLE,_FOOTER_);
-  
-  bool b = m_pJob_LoadTable->bFindChunk();
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get job_loadTable                                                          */
 /*----------------------------------------------------------------------------*/
 Job_LoadTable* LoadTable::pJob_LoadTable(void)

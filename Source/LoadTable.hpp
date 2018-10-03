@@ -26,7 +26,6 @@ namespace Utilities
     LoadTable(Job_LoadTable* pJob_LoadTable);
     ~LoadTable(void);
   
-    bool     bFindChunk(void);
     Job_LoadTable* pJob_LoadTable(void);
   
     Footer* aFooter(void);
