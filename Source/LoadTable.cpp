@@ -73,27 +73,6 @@ LoadTable::~LoadTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump LoadTable                                                             */
-/*----------------------------------------------------------------------------*/
-void LoadTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  RASSERT(eClass == CN_LOADTABLE);
-  RASSERT(pObject->eClass() == CN_LOADTABLE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get loap map                                                               */
-/*----------------------------------------------------------------------------*/
-void LoadTable::vFinalize(eCN eClass, Object* pObject)
-{
-  ASSERT(eClass == CN_LOADTABLE);
-  ASSERT(pObject->eClass() == CN_LOADTABLE);
-  
-  LoadTable* pLoadTable = reinterpret_cast<LoadTable*>(pObject);
-  ASSERT(pLoadTable->bWordBody());
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
