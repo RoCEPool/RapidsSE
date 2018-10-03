@@ -37,6 +37,8 @@ namespace Utilities
   private:
     void  vReset(void);
   
+    static void vAdvanceRecordEnd(char** aSrc, Formatters* pFormatters);
+  
     Footer* aFooter(void);
   };
 }

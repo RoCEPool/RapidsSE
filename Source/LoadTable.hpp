@@ -42,8 +42,6 @@ namespace Utilities
     
     Footer* aFooter(void);
   
-    static void vAdvanceRecordEnd(char** aSrc, Formatters* pFormatters);
-  
   };
   
   LoadTable* _pLoader(void* aAddr);
