@@ -14,7 +14,7 @@ namespace Utilities
   {
   private:
     Job_LoadTable* m_pJob_LoadTable; // job
-    
+  
     // must be last
     Footer m_xFooter;
     
@@ -29,7 +29,6 @@ namespace Utilities
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
 
-    void     vDumpMap(void);
     bool     bFindChunk(void);
     Job_LoadTable* pJob_LoadTable(void);
     LoadMap* pLoadMap(void);

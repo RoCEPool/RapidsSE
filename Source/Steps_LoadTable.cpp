@@ -78,7 +78,7 @@ void Task::vLoadTableDumpMap(MP_Task mpTask)
   LoadTable* pLoadTable = _pLoader(pPtrLoadTable);
   ASSERT(CN_LOADTABLE == pLoadTable->eClass());
   
-  pLoadTable->vDumpMap();
+  pLoadTable->pJob_LoadTable()->vDumpMap();
   
   EXIT();
 }

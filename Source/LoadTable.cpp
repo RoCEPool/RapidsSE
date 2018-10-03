@@ -102,18 +102,6 @@ void LoadTable::vFinalize(eCN eClass, Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump the load map                                                          */
-/*----------------------------------------------------------------------------*/
-void LoadTable::vDumpMap(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADTABLE,_FOOTER_);
-  
-  vTrace("Load Map for: %s:\n"_Stz,m_pJob_LoadTable->m_sFileName.aStr());
-  
-  m_pJob_LoadTable->vDumpMap();
-}
-
-/*----------------------------------------------------------------------------*/
 /* find next chunk in file being loaded                                       */
 /*----------------------------------------------------------------------------*/
 bool LoadTable::bFindChunk(void)
