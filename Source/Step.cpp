@@ -75,6 +75,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobLoadTable();
   Step::vAddSteps_JobReceiver();
   Step::vAddSteps_JobStartCluster();
+  Step::vAddSteps_JobSubLoader();
   Step::vAddSteps_JobTruncateTable();
   
   Step::vAddSteps_Loader();

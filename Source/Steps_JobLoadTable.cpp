@@ -20,8 +20,6 @@ void Step::vAddSteps_JobLoadTable(void)
   vAddStep("job_loadTable.filePath@"_Stz,     &Task::vJob_LoadTableFilePathFetch, false);
   vAddStep("job_loadTable.task@"_Stz,         &Task::vJob_LoadTableTaskFetch,     false);
   vAddStep("job_loadTable.task!"_Stz,         &Task::vJob_LoadTableTaskStore,     false);
-  
-  vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Task::vJob_SubLoaderJobLoadTableFetch, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,25 +121,6 @@ void Task::vJob_LoadTableTaskStore(MP_Task mpTask)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* job_subLoader.jobLoadTable@ -- fetch the job load table                    */
-/*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask)
-{
-  ENTRY("vJob_SubLoaderJobLoadTableFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_subLoader.jobLoadTable@"_Stz);
-  Job_SubLoader* pJob = _pJob_SubLoader(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushObject(pJob->m_pJob_LoadTable);
-  
-  EXIT();
-}
-
-
 
 /*============================================================================*/
 /* end                                                                        */
