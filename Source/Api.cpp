@@ -330,7 +330,7 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTra
     iRows++;
   }
   *ppRow = pSEitf->m_sResponse.aChar();
-  
+  vTrace("Returning row %s\n"_Stz, pSEitf->m_sResponse.aChar());
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
