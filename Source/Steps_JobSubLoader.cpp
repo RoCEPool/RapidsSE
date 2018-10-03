@@ -15,11 +15,13 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobSubLoader(void)
 {
+  vAddStep("Job_subLoader::spawn"_Stz,        &Task::vJob_SubLoaderSpawn, false);
+  
   vAddStep("job_subLoader.begin"_Stz,         &Task::vJob_SubLoaderBegin,             false);
+  vAddStep("subLoader.danglingBuffer"_Stz,   &Task::vSubLoaderDanglingBuffer,    false);
   vAddStep("job_subLoader.end"_Stz,           &Task::vJob_SubLoaderEnd,               false);
   
   vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Task::vJob_SubLoaderJobLoadTableFetch, false);
-  vAddStep("Job_subLoader::spawn"_Stz,        &Task::vJob_SubLoaderSpawn, false);
   
   vAddStep("Job_subLoader.partition@"_Stz,    &Task::vJob_SubLoaderPartitionFetch,    false);
   vAddStep("Job_subLoader.partition!"_Stz,    &Task::vJob_SubLoaderPartitionStore,    false);
@@ -41,6 +43,29 @@ void Task::vJob_SubLoaderBegin(MP_Task mpTask)
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
 
   pJob_SubLoader->vBegin();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* subLoader.dangingBuffer -- ensure there's a dangling buffer for partition  */
+/*----------------------------------------------------------------------------*/
+void Task::vSubLoaderDanglingBuffer(MP_Task mpTask)
+{
+  ENTRY("vSubLoaderDanglingBuffer"_Stz);
+  
+  Object* pPtrSubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
+    THROW_INVALID_DSTACK("subLoader.delete"_Stz);
+  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
+  
+  //if ( ! pSubLoader->pWorkingBuffer() )
+  //  pSubLoader->vNewWorkingBuffer();
+  
+  Job_SubLoader* pJob_SubLoader = pSubLoader->pJob_SubLoader();
+  
+  if ( ! pJob_SubLoader->m_pWorkingBuffer[pJob_SubLoader->m_iPartition] )
+    pJob_SubLoader->vNewWorkingBuffer();
   
   EXIT();
 }
