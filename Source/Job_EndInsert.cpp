@@ -2,7 +2,7 @@
 /* Job_EndInsert.cpp -- Insert Row Job                                        */
 /*============================================================================*/
 
-// Job Short: LoadTable
+// Job Short: EndInsert
 
 #include "JobModel.h"
 #include "StorageEngine.h"

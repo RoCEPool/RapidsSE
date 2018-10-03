@@ -10,7 +10,6 @@ namespace Utilities
   private:
     Job_SubLoader* m_pJob_SubLoader; // job
   
-    LoadTable* m_pLoadTable; // loader parent
     LoadChunk* m_pLoadChunk; // chunk loading buffer
     LoadMap*   m_pLoadMap;   // load map
 
