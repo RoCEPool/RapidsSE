@@ -356,8 +356,7 @@ bool SubLoader::bReadChunk(void)
   i8 iChunk;
   i8 nChunks;
   
-  LoadMap* pLoadMap = m_pLoadTable->pLoadMap();
-
+  LoadMap* pLoadMap = m_pJob_SubLoader->m_pJob_LoadTable->m_pLoadMap;
 
   // get information about next chunk
   for (;;) {

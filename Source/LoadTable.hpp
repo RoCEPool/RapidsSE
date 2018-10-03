@@ -28,7 +28,6 @@ namespace Utilities
   
     bool     bFindChunk(void);
     Job_LoadTable* pJob_LoadTable(void);
-    LoadMap* pLoadMap(void);
   
     Footer* aFooter(void);
   };
