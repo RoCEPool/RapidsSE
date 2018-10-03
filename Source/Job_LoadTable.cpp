@@ -137,6 +137,8 @@ Job_LoadTable::Job_LoadTable(Interface::SEitf* pSEitf)
 Job_LoadTable::~Job_LoadTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  delete m_pLoadMap;
 }
 
 
@@ -179,6 +181,11 @@ void Job_LoadTable::vDumpMap(void)
 bool Job_LoadTable::bFindChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  if (! m_pLoadMap) {
+    m_pLoadMap = new LoadMap;
+    m_pLoadMap->vFilePath(m_sFileName);
+  }
   
   bool b = m_pLoadMap->bFindChunk();
   

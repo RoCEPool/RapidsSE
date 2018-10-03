@@ -59,11 +59,6 @@ LoadTable::LoadTable(Job_LoadTable* pJob_LoadTable)
   
   m_pJob_LoadTable = pJob_LoadTable;
   
-  m_pLoadMap = new LoadMap;
-  m_pLoadMap->vFilePath(m_pJob_LoadTable->m_sFileName);
-  
-  m_pTable   = nullptr;
-
   _checkInitialised_(CN_LOADTABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADTABLE,_FOOTER_);
@@ -86,10 +81,6 @@ void LoadTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   RASSERT(eClass == CN_LOADTABLE);
   RASSERT(pObject->eClass() == CN_LOADTABLE);
-  
-  LoadTable* pLoadTable = reinterpret_cast<LoadTable*>(pObject);
-  
-  vTrace("table %s\n"_Stz,pLoadTable->m_pTable->aTableName());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,7 +110,7 @@ void LoadTable::vDumpMap(void)
   
   vTrace("Load Map for: %s:\n"_Stz,m_pJob_LoadTable->m_sFileName.aStr());
   
-  m_pLoadMap->vDumpMap();
+  m_pJob_LoadTable->vDumpMap();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +120,7 @@ bool LoadTable::bFindChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADTABLE,_FOOTER_);
   
-  bool b = m_pLoadMap->bFindChunk();
+  bool b = m_pJob_LoadTable->bFindChunk();
   
   return b;
 }
@@ -151,7 +142,7 @@ LoadMap* LoadTable::pLoadMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADTABLE,_FOOTER_);
   
-  return m_pLoadMap;
+  return m_pJob_LoadTable->m_pLoadMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,7 +152,7 @@ Table* LoadTable::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADTABLE,_FOOTER_);
 
-  return m_pTable;
+  return m_pJob_LoadTable->m_pTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,7 +162,7 @@ void LoadTable::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADTABLE,_FOOTER_);
 
-  m_pTable = pTable;
+  m_pJob_LoadTable->m_pTable = pTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +172,7 @@ void LoadTable::vTidyUp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADTABLE,_FOOTER_);
   
-  delete m_pLoadMap;
+  //delete m_pJob_LoadTable->m_pLoadMap;
 
 }
 

@@ -14,10 +14,7 @@ namespace Utilities
   {
   private:
     Job_LoadTable* m_pJob_LoadTable; // job
-  
-    Table*    m_pTable;       // table being load
-    LoadMap*  m_pLoadMap;     // load map
-  
+    
     // must be last
     Footer m_xFooter;
     
