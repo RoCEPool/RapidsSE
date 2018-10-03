@@ -23,6 +23,7 @@ void Step::vAddSteps_JobSubLoader(void)
   
   vAddStep("Job_subLoader.partition@"_Stz,    &Task::vJob_SubLoaderPartitionFetch,    false);
   vAddStep("Job_subLoader.partition!"_Stz,    &Task::vJob_SubLoaderPartitionStore,    false);
+  vAddStep("Job_subLoader.processRecords"_Stz,&Task::vJob_SubLoaderProcessRecords,    false);
   vAddStep("Job_subLoader.recordsInvalid"_Stz,&Task::vJob_SubLoaderRecordsInvalid,    false);
   vAddStep("Job_subLoader.recordsValid"_Stz,  &Task::vJob_SubLoaderRecordsValid,      false);
 }
@@ -152,6 +153,25 @@ void Task::vJob_SubLoaderPartitionStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subLoader.partition!"_Stz);
   
   pJob_SubLoader->m_iPartition = iPartition;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subLoader.processRecords -- read & process rows till buffer full / eof */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_SubLoaderProcessRecords(MP_Task mpTask)
+{
+  ENTRY("vJob_SubLoaderProcessRecords"_Stz);
+  
+  Object* pPtrJob_SubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
+    THROW_INVALID_DSTACK("job_subLoader.processRecords"_Stz);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  
+  bool bTargetBufferFull = pJob_SubLoader->bProcessRecords();
+  
+  mpTask->m_pDataStack->vPushInt(bTargetBufferFull);
   
   EXIT();
 }

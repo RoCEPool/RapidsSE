@@ -17,7 +17,6 @@ void Step::vAddSteps_SubLoader(void)
 {
   vAddStep("subLoader.danglingBuffer"_Stz,   &Task::vSubLoaderDanglingBuffer,    false);
   vAddStep("subLoader.delete"_Stz,           &Task::vSubLoaderDelete,            false);
-  vAddStep("subLoader.processRecords"_Stz,   &Task::vSubLoaderProcessRecords,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,26 +57,6 @@ void Task::vSubLoaderDelete(MP_Task mpTask)
   ASSERT(CN_SUBLOADER == pSubLoader->eClass());
   
   delete pSubLoader;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.processRecords -- read & process records till buffer full or eof */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderProcessRecords(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderProcessRecords"_Stz);
-  
-  Object* pPtrSubLoaderSub;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoaderSub) )
-    THROW_INVALID_DSTACK("subLoader.processRecords"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoaderSub);
-  
-  Job_SubLoader* pJob_SubLoader = pSubLoader->pJob_SubLoader();
-  bool bTargetBufferFull = pJob_SubLoader->bProcessRecords();
-  
-  mpTask->m_pDataStack->vPushInt(bTargetBufferFull);
   
   EXIT();
 }

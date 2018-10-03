@@ -12,7 +12,7 @@
   params| pSubLoader  |
   params| bFinal  |
 
-bFinal pSubLoader job_loadBuffer::spawn
+  bFinal pSubLoader job_loadBuffer::spawn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +69,7 @@ bFinal pSubLoader job_loadBuffer::spawn
   params| pJob_SubLoader |
   params| pSubLoader |
 
-  begin pSubLoader subLoader.processRecords while
+  begin pJob_SubLoader job_subLoader.processRecords while
 
     false pSubLoader SubLoader_sendBuffer
 
