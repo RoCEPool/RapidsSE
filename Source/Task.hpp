@@ -768,7 +768,6 @@ namespace Tasks
     static void vLoadTableDelete(MP_Task mpTask);
     static void vLoadTableDumpMap(MP_Task mpTask);
     static void vLoadTableNew(MP_Task mpTask);
-    static void vLoadTableSpawnSubLoader(MP_Task mpTask);
     static void vLoadTableTableStore(MP_Task mpTask);
     
     // loader sub
@@ -781,6 +780,7 @@ namespace Tasks
     static void vSubLoaderProcessRecords(MP_Task mpTask);
     static void vSubLoaderRecordsInvalid(MP_Task mpTask);
     static void vSubLoaderRecordsValid(MP_Task mpTask);
+    static void vSubLoaderSpawn(MP_Task mpTask);
     static void vSubLoaderSpawnLoadBuffer(MP_Task mpTask);
     
     // locals

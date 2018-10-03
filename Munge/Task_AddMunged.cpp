@@ -4183,7 +4183,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  args.subLoaders 0\n"
     "  do\n"
     "    //I \\\"Creating Job_SubLoader %v\\\" fmt.print\n"
-    "    pLoadTable loadTable.spawnSubLoader\n"
+    "    pLoadTable subLoader::spawn\n"
     "  loop\n"
     "\n"
     "  //\\\"LoadTable_executeLoader ack waiting\\\" .\n"
