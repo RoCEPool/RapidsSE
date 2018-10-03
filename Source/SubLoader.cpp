@@ -153,48 +153,6 @@ bool SubLoader::bFetchRecord(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert row into working buffer                                             */
-/*----------------------------------------------------------------------------*/
-bool SubLoader::bInsertRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  // check for working buffer
-  if (! m_pJob_SubLoader->m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition]) {
-    
-    // create a new working buffer for this partition
-    m_pJob_SubLoader->vNewWorkingBuffer();
-    
-    if (! m_pJob_SubLoader->m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition]) {
-      vTrace("EntryBuffer allocation failed\n"_Stz);
-      return false;
-    }
-  }
-  
-  // get working buffer
-  WorkingBuffer* pWorkingBuffer = m_pJob_SubLoader->m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition];
-  
-  // get the tx id
-  //SEitf* pSEitf = m_pLoadTable->pSEitf();
-  //Tx* pTx = pSEitf->pTx();
-  //i8 iDistTxId = pTx->iDistTxId();
-  i8 iDistTxId = 0;
-
-  RowWrk xRowWrk;
-  
-  xRowWrk.vTxId(iDistTxId);
-  xRowWrk.vEmbedded(m_pJob_SubLoader->m_aRecord.aChar());
-  xRowWrk.vRowSize(m_pJob_SubLoader->m_iLength);
-  
-  // insert row into working buffer
-  bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
-  
-  //pEntryBuffer->vShow();
-  
-  return bAppended;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get loader                                                                 */
 /*----------------------------------------------------------------------------*/
 Job_SubLoader* SubLoader::pJob_SubLoader(void)
@@ -217,7 +175,7 @@ bool SubLoader::bProcessRecords(void)
     m_pJob_SubLoader->vHashRecord();
     
     // attempt to add record into a buffer
-    bool bInserted = bInsertRow();
+    bool bInserted = m_pJob_SubLoader->bInsertRow();
     
     // check if target buffer was full
     if (! bInserted) {

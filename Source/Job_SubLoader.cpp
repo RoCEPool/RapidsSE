@@ -243,7 +243,47 @@ void Job_SubLoader::vHashRecord(void)
   m_iPartition = pTable->iRowPartition(m_aRecord);
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* insert row into working buffer                                             */
+/*----------------------------------------------------------------------------*/
+bool Job_SubLoader::bInsertRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+  
+  // check for working buffer
+  if (! m_pWorkingBuffer[m_iPartition]) {
+    
+    // create a new working buffer for this partition
+    vNewWorkingBuffer();
+    
+    if (! m_pWorkingBuffer[m_iPartition]) {
+      vTrace("EntryBuffer allocation failed\n"_Stz);
+      return false;
+    }
+  }
+  
+  // get working buffer
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
+  
+  // get the tx id
+  //SEitf* pSEitf = m_pLoadTable->pSEitf();
+  //Tx* pTx = pSEitf->pTx();
+  //i8 iDistTxId = pTx->iDistTxId();
+  i8 iDistTxId = 0;
+  
+  RowWrk xRowWrk;
+  
+  xRowWrk.vTxId(iDistTxId);
+  xRowWrk.vEmbedded(m_aRecord.aChar());
+  xRowWrk.vRowSize(m_iLength);
+  
+  // insert row into working buffer
+  bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
+  
+  //pEntryBuffer->vShow();
+  
+  return bAppended;
+}
 
 /*----------------------------------------------------------------------------*/
 /* create a new working buffer                                                */

@@ -25,7 +25,6 @@ namespace Utilities
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     bool bFetchRecord(void);
-    bool bInsertRow(void);
     Job_SubLoader* pJob_SubLoader(void);
     bool bProcessRecords(void);
   
