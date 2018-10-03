@@ -18,6 +18,7 @@ void Step::vAddSteps_JobLoadTable(void)
   vAddStep("job_loadTable.addInvalidRows"_Stz,&Task::vJob_LoadTableAddInvalidRows,false);
   vAddStep("job_loadTable.addValidRows"_Stz,  &Task::vJob_LoadTableAddValidRows,  false);
   vAddStep("job_loadTable.filePath@"_Stz,     &Task::vJob_LoadTableFilePathFetch, false);
+  vAddStep("job_loadTable.table!"_Stz,        &Task::vJob_LoadTableTableStore,    false);
   vAddStep("job_loadTable.task@"_Stz,         &Task::vJob_LoadTableTaskFetch,     false);
   vAddStep("job_loadTable.task!"_Stz,         &Task::vJob_LoadTableTaskStore,     false);
 }
@@ -78,6 +79,27 @@ void Task::vJob_LoadTableFilePathFetch(MP_Task mpTask)
   
   s256 sFilePath = pJob_LoadTable->m_sFileName;
   mpTask->m_pDataStack->vPushS256(sFilePath);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loadTable.table! -- store table into loader                                */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_LoadTableTableStore(MP_Task mpTask)
+{
+  ENTRY("vJob_LoaderTableStore"_Stz);
+  
+  Object* pPtrTable;
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr,pPtrTable) )
+    THROW_INVALID_DSTACK("loadTable.tableStore"_Stz);
+  
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJobPtr);
+  
+  Table* pTable = _pTable(pPtrTable);
+  
+  pJob_LoadTable->vTable(pTable);
   
   EXIT();
 }

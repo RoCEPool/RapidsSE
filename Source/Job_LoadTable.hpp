@@ -41,6 +41,10 @@ namespace JobsModel
 
   public:
     bool bPopulateJob(TokenVec* pTokenVec);
+  
+    Table*   pTable(void);
+    void     vTable(Table* pTable);
+
     Tasks::Task* pTask(void);
     void vTask(Tasks::Task* pTask);
 

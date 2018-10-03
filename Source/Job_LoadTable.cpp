@@ -309,6 +309,26 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* Job_LoadTable::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table                                                                  */
+/*----------------------------------------------------------------------------*/
+void Job_LoadTable::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
 Tasks::Task* Job_LoadTable::pTask(void)
