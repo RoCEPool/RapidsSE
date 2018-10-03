@@ -15,8 +15,12 @@ namespace JobsModel
     Utilities::LoadChunk* m_pLoadChunk; // chunk loading buffer
     bool m_bMoreChunks; // continue while there are more chunks
   
-    i8       m_iValidRecords;   // valid records
-    i8       m_iInvalidRecords; // invalid records
+    s48K m_aRecord;    // formatted row
+    i8   m_iLength;    // length of record
+    i8   m_iPartition; // partition of record
+  
+    i8   m_iValidRecords;   // valid records
+    i8   m_iInvalidRecords; // invalid records
   
     Formatters  m_xFormatters;
   

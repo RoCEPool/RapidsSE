@@ -62,10 +62,6 @@ SubLoader::SubLoader(Job_SubLoader* pJob_SubLoader)
 
   m_pJob_SubLoader = pJob_SubLoader;
 
-  //m_aRecord
-  m_iLength  = 0;
-  m_iPartition  = 0;
-  
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pWorkingBuffer[i_Partition]   = nullptr;
     m_nBuffersLoadable[i_Partition] = 0;
@@ -126,7 +122,7 @@ i8 SubLoader::nBuffersLoadable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  return m_nBuffersLoadable[m_iPartition];
+  return m_nBuffersLoadable[m_pJob_SubLoader->m_iPartition];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -188,7 +184,7 @@ bool SubLoader::bFetchRecord(void)
     bValid = Row::bFormatRow(pTable->pColumnVec(),
                              pFormatters,
                              aRawData, iLength,
-                             m_aRecord.aStr(), m_iLength,
+                             m_pJob_SubLoader->m_aRecord.aStr(), m_pJob_SubLoader->m_iLength,
                              bBlankLine,
                              false /* allowNonPrintable */);
     if (bValid) {
@@ -212,7 +208,7 @@ void SubLoader::vHashRecord(void)
   
   Table* pTable = m_pJob_SubLoader->m_pJob_LoadTable->m_pTable;
   
-  m_iPartition = pTable->iRowPartition(m_aRecord);
+  m_pJob_SubLoader->m_iPartition = pTable->iRowPartition(m_pJob_SubLoader->m_aRecord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,19 +219,19 @@ bool SubLoader::bInsertRow(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
   // check for working buffer
-  if (! m_pWorkingBuffer[m_iPartition]) {
+  if (! m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition]) {
     
     // create a new working buffer for this partition
     vNewWorkingBuffer();
     
-    if (! m_pWorkingBuffer[m_iPartition]) {
+    if (! m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
       return false;
     }
   }
   
   // get working buffer
-  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition];
   
   // get the tx id
   //SEitf* pSEitf = m_pLoadTable->pSEitf();
@@ -246,8 +242,8 @@ bool SubLoader::bInsertRow(void)
   RowWrk xRowWrk;
   
   xRowWrk.vTxId(iDistTxId);
-  xRowWrk.vEmbedded(m_aRecord.aChar());
-  xRowWrk.vRowSize(m_iLength);
+  xRowWrk.vEmbedded(m_pJob_SubLoader->m_aRecord.aChar());
+  xRowWrk.vRowSize(m_pJob_SubLoader->m_iLength);
   
   // insert row into working buffer
   bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
@@ -301,8 +297,10 @@ void SubLoader::vNewWorkingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  m_pWorkingBuffer[m_iPartition] = new WorkingBuffer(m_pJob_SubLoader->m_pJob_LoadTable->m_pTable, m_iPartition);
-  m_nBuffersLoadable[m_iPartition]++;
+  m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition] =
+  new WorkingBuffer(m_pJob_SubLoader->m_pJob_LoadTable->m_pTable,
+                    m_pJob_SubLoader->m_iPartition);
+  m_nBuffersLoadable[m_pJob_SubLoader->m_iPartition]++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -312,7 +310,7 @@ i8 SubLoader::iPartition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  return m_iPartition;
+  return m_pJob_SubLoader->m_iPartition;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -322,7 +320,7 @@ void SubLoader::vPartition(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  m_iPartition = iPartition;
+  m_pJob_SubLoader->m_iPartition = iPartition;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -375,7 +373,7 @@ WorkingBuffer* SubLoader::pWorkingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition];
 
   //m_pRowBuffer[m_iPartition] = nullptr;
   
@@ -389,7 +387,7 @@ void SubLoader::vWorkingBuffer(WorkingBuffer* pWorkingBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  m_pWorkingBuffer[m_iPartition] = pWorkingBuffer;
+  m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition] = pWorkingBuffer;
   
 }
 
