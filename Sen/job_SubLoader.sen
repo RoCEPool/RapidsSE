@@ -103,7 +103,7 @@ bFinal pSubLoader job_loadBuffer::spawn
   // get the loaderSub object from the sub-loader job
   pJob_SubLoader job.ancilliary@ to pSubLoader
 
-  pSubLoader subLoader.begin
+  pJob_SubLoader job_subLoader.begin
 
   pSubLoader pJob_SubLoader SubLoader_process
 
@@ -119,7 +119,7 @@ bFinal pSubLoader job_loadBuffer::spawn
   pJob_SubLoader job_subLoader.recordsValid   pJobLoadTable_Originator job_loadTable.addValidRows
   pJob_SubLoader job_subLoader.recordsInvalid pJobLoadTable_Originator job_loadTable.addInvalidRows
 
-  pSubLoader subLoader.end
+  pJob_SubLoader job_subLoader.end
 
   // now delete the ended job
   pJob_SubLoader job.delete

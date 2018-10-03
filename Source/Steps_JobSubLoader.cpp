@@ -15,6 +15,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobSubLoader(void)
 {
+  vAddStep("job_subLoader.begin"_Stz,         &Task::vJob_SubLoaderBegin,             false);
+  vAddStep("job_subLoader.end"_Stz,           &Task::vJob_SubLoaderEnd,               false);
+  
   vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Task::vJob_SubLoaderJobLoadTableFetch, false);
   vAddStep("Job_subLoader::spawn"_Stz,        &Task::vJob_SubLoaderSpawn, false);
   
@@ -22,6 +25,40 @@ void Step::vAddSteps_JobSubLoader(void)
   vAddStep("Job_subLoader.partition!"_Stz,    &Task::vJob_SubLoaderPartitionStore,    false);
   vAddStep("Job_subLoader.recordsInvalid"_Stz,&Task::vJob_SubLoaderRecordsInvalid,    false);
   vAddStep("Job_subLoader.recordsValid"_Stz,  &Task::vJob_SubLoaderRecordsValid,      false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* subLoader.begin -- begin loading                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_SubLoaderBegin(MP_Task mpTask)
+{
+  ENTRY("vSubLoaderBegin"_Stz);
+  
+  Object* pPtrJob_SubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
+    THROW_INVALID_DSTACK("job_subLoader.begin"_Stz);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+
+  pJob_SubLoader->vBegin();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* subLoader.end -- end loading                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_SubLoaderEnd(MP_Task mpTask)
+{
+  ENTRY("vSubLoaderEnd"_Stz);
+  
+  Object* pPtrJob_SubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
+    THROW_INVALID_DSTACK("subLoader.end"_Stz);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  
+  pJob_SubLoader->vEnd();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

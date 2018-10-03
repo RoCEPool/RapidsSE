@@ -15,30 +15,9 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SubLoader(void)
 {
-  vAddStep("subLoader.begin"_Stz,            &Task::vSubLoaderBegin,             false);
   vAddStep("subLoader.danglingBuffer"_Stz,   &Task::vSubLoaderDanglingBuffer,    false);
   vAddStep("subLoader.delete"_Stz,           &Task::vSubLoaderDelete,            false);
-  vAddStep("subLoader.end"_Stz,              &Task::vSubLoaderEnd,               false);
   vAddStep("subLoader.processRecords"_Stz,   &Task::vSubLoaderProcessRecords,    false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.begin -- begin loading                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderBegin(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderBegin"_Stz);
-  
-  Object* pPtrSubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
-    THROW_INVALID_DSTACK("subLoader.begin"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
-  
-  ASSERT(CN_SUBLOADER == pSubLoader->eClass());
-  
-  pSubLoader->pJob_SubLoader()->vBegin();
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,27 +56,6 @@ void Task::vSubLoaderDelete(MP_Task mpTask)
   SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
   ASSERT(CN_SUBLOADER == pSubLoader->eClass());
-  
-  delete pSubLoader;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.end -- end loading                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderEnd(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderEnd"_Stz);
-  
-  Object* pPtrSubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
-    THROW_INVALID_DSTACK("subLoader.end"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
-  
-  ASSERT(CN_SUBLOADER == pSubLoader->eClass());
-  
-  pSubLoader->pJob_SubLoader()->vEnd();
   
   delete pSubLoader;
   

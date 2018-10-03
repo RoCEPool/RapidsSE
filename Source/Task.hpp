@@ -762,6 +762,8 @@ namespace Tasks
     static void vJob_ReceiverSocketStore(MP_Task mpTask);
     
     // Job subLoader
+    static void vJob_SubLoaderBegin(MP_Task mpTask);
+    static void vJob_SubLoaderEnd(MP_Task mpTask);
     static void vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask);
     static void vJob_SubLoaderSpawn(MP_Task mpTask);
   
@@ -1071,10 +1073,8 @@ namespace Tasks
     static void vS256Init(MP_Task mpTask);
     
     // sub loader
-    static void vSubLoaderBegin(MP_Task mpTask);
     static void vSubLoaderDanglingBuffer(MP_Task mpTask);
     static void vSubLoaderDelete(MP_Task mpTask);
-    static void vSubLoaderEnd(MP_Task mpTask);
     static void vSubLoaderProcessRecords(MP_Task mpTask);
   
     // table
