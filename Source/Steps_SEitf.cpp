@@ -17,8 +17,6 @@ void Step::vAddSteps_SEitf(void)
 {
   vAddStep("seitf.commandProcessor"_Stz, &Task::vSEitfCommandProcessor, false);
   vAddStep("seitf.dicStack"_Stz,         &Task::vSEitfDicStack,         false);
-  vAddStep("seitf.display@"_Stz,         &Task::vSEitfDisplayFetch,     false);
-  vAddStep("seitf.display!"_Stz,         &Task::vSEitfDisplayStore,     false);
   vAddStep("seitf.dump"_Stz,             &Task::vSEitfDump,             false);
   vAddStep("seitf.isExiting"_Stz,        &Task::vSEitfIsExiting,        false);
   vAddStep("seitf.pid"_Stz,              &Task::vSEitfPid,              false);
@@ -61,48 +59,6 @@ void Task::vSEitfDicStack(MP_Task mpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   mpTask->m_pDataStack->vPushObject(pSEitf->pPathStack());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.display@ -- get display from the SE interface                        */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfDisplayFetch(MP_Task mpTask)
-{
-  ENTRY("vSEitfDisplayFetch"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.display@"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  mpTask->m_pDataStack->vPushInt(pSEitf->m_bDisplay ? 1 : 0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.display! -- set display in the SE interface                          */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfDisplayStore(MP_Task mpTask)
-{
-  ENTRY("vSEitfDisplayStore"_Stz);
-  
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("seitf.display!"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  i8 iDisplay;
-  if ( ! mpTask->m_pDataStack->bPop(iDisplay) )
-    THROW_INVALID_DSTACK("seitf.displayOff"_Stz);
-  
-  pSEitf->m_bDisplay = iDisplay == 1 ? true : false;
   
   EXIT();
 }

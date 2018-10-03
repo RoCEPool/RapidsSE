@@ -23,7 +23,6 @@ namespace Interface
   
     // these should go
     RowOnce*   m_pRowOnce;       // has row been seen before?
-    bool       m_bDisplay;       // display on
 
     
     // must be last

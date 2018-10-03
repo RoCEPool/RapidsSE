@@ -13,6 +13,7 @@ namespace JobsModel
     s256         m_sWhere;              // where clause string for the fetch
     Table*       m_pTable;              // table rows being fetched from
     i8           m_iPartition;          // partition this fetch task to fetch from
+    bool         m_bDisplay;            // display on
     Planner*     m_pPlanner;            // fetch planner
     Queue*       m_pBufferQueue;        // buffer queue where fetch buffers are pushed
     FetchBuffer* m_pFetchBuffer;        // fetch buffer

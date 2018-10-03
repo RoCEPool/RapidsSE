@@ -110,13 +110,15 @@ Job_FetchRows::Job_FetchRows(Interface::SEitf* pSEitf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
     
   m_sWhere       = ""_Stz;
-  m_pBufferQueue = new Queue;
-  m_pFetchBuffer = nullptr;
   m_pTable       = nullptr;
   m_iPartition   = -1;
+  m_bDisplay     = true;
   m_pPlanner     = nullptr;
+  m_pBufferQueue = new Queue;
+  m_pFetchBuffer = nullptr;
   m_nLastBuffers = 0;
   m_nLastBuffersScanned = 0;
+
  
   m_pTask        = nullptr;
   
@@ -191,8 +193,8 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   iNumTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 2/3/4 tokens
-  if (iNumTokens != 2 && iNumTokens != 3 && iNumTokens != 4)
+  // there should be 2 to 5 tokens
+  if (iNumTokens < 2 || iNumTokens > 5)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - -
@@ -200,18 +202,104 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   m_sObjectName = pTokenVec->pGet(1)->aText();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // set the where clause
-  if (iNumTokens >= 3) {
-    if (pTokenVec->pGet(2)->eToken() == TN_STRING)
+  // 2 tokens
+  //fetch j10;
+  if (iNumTokens == 2)
+    return true;
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // 3 tokens
+  //fetch j10 "where";
+  //fetch j10 1;
+  //fetch j10 displayOff;
+  if (iNumTokens == 3) {
+    if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
       m_sWhere = pTokenVec->pGet(2)->aText();
-    else
+      return true;
+    }
+    
+    if (pTokenVec->pGet(2)->eToken() == TN_INTEGER) {
       m_iPartition = pTokenVec->pGet(2)->iToI8();
+      return true;
+    }
+    
+    if (pTokenVec->pGet(2)->eToken() == TN_NAME) {
+    
+      if ( ! pTokenVec->pGet(2)->aText()->bSame("displayOff"_Stz) )
+        return false;
+    
+      // set display off
+      m_bDisplay = false;
+      return true;
+    }
+    
+    return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // set the partition no
-  if (iNumTokens == 4)
-    m_iPartition = pTokenVec->pGet(3)->iToI8();
+  // 4 tokens
+  //fetch j10 "where" 1;
+  //fetch j10 1 displayOff;
+  if (iNumTokens == 4) {
+    if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
+      
+      m_sWhere = pTokenVec->pGet(2)->aText();
+      
+      if (pTokenVec->pGet(3)->eToken() != TN_INTEGER)
+        return false;
+      
+      m_iPartition = pTokenVec->pGet(3)->iToI8();
+      return true;
+    }
+    
+    if (pTokenVec->pGet(2)->eToken() == TN_INTEGER) {
+      
+      m_iPartition = pTokenVec->pGet(2)->iToI8();
+      
+      if (pTokenVec->pGet(3)->eToken() != TN_NAME)
+        return false;
+      
+      if ( ! pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz) )
+        return false;
+      
+      // set display off
+      m_bDisplay = false;
+      return true;
+    }
+    
+    return false;
+    
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // 5 tokens
+  //fetch j10 "where" 1 displayOff;
+  if (iNumTokens == 5) {
+    
+    // get where
+    if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
+      m_sWhere = pTokenVec->pGet(2)->aText();
+    }
+    else
+      return false;
+    
+    // get partition
+    if (pTokenVec->pGet(3)->eToken() == TN_INTEGER) {
+      m_iPartition = pTokenVec->pGet(3)->iToI8();
+    }
+    else
+      return false;
+    
+    // get displayOff
+    if (pTokenVec->pGet(4)->eToken() == TN_NAME) {
+      if ( pTokenVec->pGet(4)->aText()->bSame("displayOff"_Stz) ) {
+        // set display off
+        m_bDisplay = false;
+        return true;
+      }
+    }
+    return false;
+  }
   
   return true;
 }
@@ -298,7 +386,7 @@ void JobsModel::vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob)
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
     pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
     
-    if (pSEitf->m_bDisplay) {
+    if (pJob_FetchRows->m_bDisplay) {
       vIterateBuffer(pJob_FetchRows, pFetchBuffer);      
     }
     
