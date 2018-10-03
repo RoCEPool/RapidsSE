@@ -36,8 +36,9 @@ bFinal pSubLoader job_loadBuffer::spawn
 /*----------------------------------------------------------------------------*/
 /* send last buffers to all partitions                                        */
 /*----------------------------------------------------------------------------*/
-: SubLoader_sendLast ( pSubLoader -- )
+: SubLoader_sendLast (  pSubLoader pJob_SubLoader -- )
 
+  params| pJob_SubLoader |
   params| pSubLoader  |
 
   // calculate total partitions in the cluster
@@ -49,7 +50,7 @@ bFinal pSubLoader job_loadBuffer::spawn
     //I "LAST BUFFER for partition %v" fmt.print
 
     // set the partition we are using
-    I pSubLoader subLoader.partition!
+    I pJob_SubLoader job_subLoader.partition!
 
     // ensure there's a dangling buffer for partition I
     pSubLoader subLoader.danglingBuffer
@@ -63,8 +64,9 @@ bFinal pSubLoader job_loadBuffer::spawn
 /*----------------------------------------------------------------------------*/
 /* read records from file, create working buffers, send to node               */
 /*----------------------------------------------------------------------------*/
-: SubLoader_process ( pSubLoader -- )
+: SubLoader_process (  pSubLoader pJob_SubLoader -- )
 
+  params| pJob_SubLoader |
   params| pSubLoader |
 
   begin pSubLoader subLoader.processRecords while
@@ -73,7 +75,7 @@ bFinal pSubLoader job_loadBuffer::spawn
 
   repeat
 
-  pSubLoader SubLoader_sendLast
+  pSubLoader pJob_SubLoader SubLoader_sendLast
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -103,7 +105,7 @@ bFinal pSubLoader job_loadBuffer::spawn
 
   pSubLoader subLoader.begin
 
-  pSubLoader SubLoader_process
+  pSubLoader pJob_SubLoader SubLoader_process
 
   // get the job_loader from subLoader
   pJob_SubLoader job_subLoader.jobLoadTable@ to pJobLoadTable_Participant

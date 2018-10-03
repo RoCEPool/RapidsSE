@@ -19,8 +19,6 @@ void Step::vAddSteps_SubLoader(void)
   vAddStep("subLoader.danglingBuffer"_Stz,   &Task::vSubLoaderDanglingBuffer,    false);
   vAddStep("subLoader.delete"_Stz,           &Task::vSubLoaderDelete,            false);
   vAddStep("subLoader.end"_Stz,              &Task::vSubLoaderEnd,               false);
-  vAddStep("subLoader.partition@"_Stz,       &Task::vSubLoaderPartitionFetch,    false);
-  vAddStep("subLoader.partition!"_Stz,       &Task::vSubLoaderPartitionStore,    false);
   vAddStep("subLoader.processRecords"_Stz,   &Task::vSubLoaderProcessRecords,    false);
   vAddStep("subLoader.recordsInvalid"_Stz,   &Task::vSubLoaderRecordsInvalid,    false);
   vAddStep("subLoader.recordsValid"_Stz,     &Task::vSubLoaderRecordsValid,      false);
@@ -99,46 +97,6 @@ void Task::vSubLoaderEnd(MP_Task mpTask)
   pSubLoader->vEnd();
   
   delete pSubLoader;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.partition@ -- get partition number derived from hash of record   */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderPartitionFetch(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderPartitionFetch"_Stz);
-  
-  Object* pPtrSubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
-    THROW_INVALID_DSTACK("subLoader.partition@"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
-  
-  i8 iPartition = pSubLoader->iPartition();
-  
-  mpTask->m_pDataStack->vPushInt(iPartition);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.partition! -- store partition number                             */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderPartitionStore(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderPartitionStore"_Stz);
-  
-  Object* pPtrSubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
-    THROW_INVALID_DSTACK("subLoader.partition!"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
-  
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("subLoader.partition!"_Stz);
-
-  pSubLoader->vPartition(iPartition);
   
   EXIT();
 }

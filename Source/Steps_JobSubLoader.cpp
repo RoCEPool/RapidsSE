@@ -17,6 +17,9 @@ void Step::vAddSteps_JobSubLoader(void)
 {
   vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Task::vJob_SubLoaderJobLoadTableFetch, false);
   vAddStep("Job_subLoader::spawn"_Stz,        &Task::vJob_SubLoaderSpawn, false);
+  
+  vAddStep("Job_subLoader.partition@"_Stz,    &Task::vJob_SubLoaderPartitionFetch,    false);
+  vAddStep("Job_subLoader.partition!"_Stz,    &Task::vJob_SubLoaderPartitionStore,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,6 +77,45 @@ void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* job_subLoader.partition@ -- get partition no derived from hash of record   */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_SubLoaderPartitionFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_SubLoaderPartitionFetch"_Stz);
+  
+  Object* pPtrJob_SubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
+    THROW_INVALID_DSTACK("job_subLoader.partition@"_Stz);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  
+  i8 iPartition = pJob_SubLoader->m_iPartition;
+  
+  mpTask->m_pDataStack->vPushInt(iPartition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subLoader.partition! -- store partition number                         */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_SubLoaderPartitionStore(MP_Task mpTask)
+{
+  ENTRY("vJob_SubLoaderPartitionStore"_Stz);
+  
+  Object* pPtrJob_SubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
+    THROW_INVALID_DSTACK("job_subLoader.partition!"_Stz);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  
+  i8 iPartition;
+  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
+    THROW_INVALID_DSTACK("job_subLoader.partition!"_Stz);
+  
+  pJob_SubLoader->m_iPartition = iPartition;
+  
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -764,6 +764,9 @@ namespace Tasks
     // Job subLoader
     static void vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask);
     static void vJob_SubLoaderSpawn(MP_Task mpTask);
+  
+    static void vJob_SubLoaderPartitionFetch(MP_Task mpTask);
+    static void vJob_SubLoaderPartitionStore(MP_Task mpTask);
 
     // Job subTruncate
     static void vJob_SubTruncateSlotFetch(MP_Task mpTask);
@@ -1070,8 +1073,6 @@ namespace Tasks
     static void vSubLoaderDanglingBuffer(MP_Task mpTask);
     static void vSubLoaderDelete(MP_Task mpTask);
     static void vSubLoaderEnd(MP_Task mpTask);
-    static void vSubLoaderPartitionFetch(MP_Task mpTask);
-    static void vSubLoaderPartitionStore(MP_Task mpTask);
     static void vSubLoaderProcessRecords(MP_Task mpTask);
     static void vSubLoaderRecordsInvalid(MP_Task mpTask);
     static void vSubLoaderRecordsValid(MP_Task mpTask);
