@@ -165,7 +165,7 @@ pFINALIZE *gpFinalize[]
   
   /* 67 */ &Finalize::vUndefined,         // CN_LINEITEM
   /* 68 */ &Finalize::vUndefined,         // CN_LOADCHUNK
-  /* 69 */ &Finalize::vUndefined,         // CN_LOADTABLE
+
   /* 70 */ &Finalize::vUndefined,         // CN_SUBLOADER
   /* 71 */ &Finalize::vUndefined,         // CN_LOADMAP
   /* 72 */ &Finalize::vUndefined,         // CN_LOCK

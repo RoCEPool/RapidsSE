@@ -278,7 +278,6 @@ void Task::vAddConstants(void)
   /* 31 */ vAddConstant("CN_KEYWRK"_Stz,       CN_KEYWRK);
   
   /* 32 */ vAddConstant("CN_LOADCHUNK"_Stz,    CN_LOADCHUNK);
-  /* 33 */ vAddConstant("CN_LOADTABLE"_Stz,       CN_LOADTABLE);
   /* 34 */ vAddConstant("CN_SUBLOADER"_Stz,    CN_SUBLOADER);
   /* 35 */ vAddConstant("CN_LOADMAP"_Stz,      CN_LOADMAP);
   /* 36 */ vAddConstant("CN_LOCK"_Stz,         CN_LOCK);
@@ -509,7 +508,7 @@ void Task::vAddConstants(void)
   /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER"_Stz,   sizeof(HeapBuffer));
   /*    */ vAddConstant("SIZEOF_INDEX"_Stz,        sizeof(Index));
   /* 21 */ //vAddConstant("SIZEOF_INDEXDEFN"_Stz,    sizeof(IndexDefn));
-  /* 22 */ vAddConstant("SIZEOF_LOADER"_Stz,       sizeof(LoadTable));
+
   /* 23 */ vAddConstant("SIZEOF_LOADERSUB"_Stz,    sizeof(SubLoader));
   /* 24 */ vAddConstant("SIZEOF_LOCK"_Stz,         sizeof(Lock));
   /* 25 */ vAddConstant("SIZEOF_MEDIUMHEAP"_Stz,   sizeof(Heap));

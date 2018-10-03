@@ -165,7 +165,6 @@ enum eCN : u2 // Class Number
   /* 135 */ CN_LARGETRANSIENT,
   /* 136 */ CN_LINEITEM,
   /* 137 */ CN_LOADCHUNK,
-  /* 138 */ CN_LOADTABLE,
   
   /* 139 */ CN_SUBLOADER,
   
@@ -410,7 +409,6 @@ static Stz* aCN[]
   /* 135 */ "LARGETRANSIENT"_Stz,      // CN_LARGETRANSIENT
   /* 136 */ "LINEITEM"_Stz,            // CN_LINEITEM
   /* 137 */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
-  /* 138 */ "LOADTABLE"_Stz,           // CN_LOADTABLE
   
   /* 139 */ "SUBLOADER"_Stz,           // CN_SUBLOADER
   
