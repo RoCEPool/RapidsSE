@@ -12,6 +12,7 @@ create table j10 (
 create index idx on j10(j10_key);
 
 print "loading j10.tbl..." ;
+ld j1 "../JTEST/j10.csv" ;
 ld j10 "../JTEST/j10.csv" ;
 
 //dumpidx j10 hidden;
@@ -28,18 +29,31 @@ fetch j10 ;
 
 
 
-print "fetching 0";
+print "fetching j10 0";
 fetch j10 0;
-print "fetching 1";
+print "fetching j10 1";
 fetch j10 1;
-print "fetching 2";
+print "fetching j10 2";
 fetch j10 2;
-print "fetching 3";
+print "fetching j10 3";
 fetch j10 3;
-print "fetching 4";
+print "fetching j10 4";
 fetch j10 4;
-print "fetching key 8";
-fetch j10 "j10_key 8 ==" 6;
+
+print "fetch j10 where";
+fetch j10 "j10_key 8 ==";
+
+print "fetching j10 where partition";
+fetch j10 "j10_key 8 ==" 0;
+
+print "fetching j10 displayOff";
+fetch j10 displayOff;
+
+print "fetching j10 partition displayOff";
+fetch j10 0 displayOff;
+
+print "fetching j10 where partition displayOff";
+fetch j10 "j10_key 8 ==" 0 displayOff;
 
 /*
 sz j10;

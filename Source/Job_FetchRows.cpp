@@ -112,7 +112,7 @@ Job_FetchRows::Job_FetchRows(Interface::SEitf* pSEitf)
   m_sWhere       = ""_Stz;
   m_pTable       = nullptr;
   m_iPartition   = -1;
-  m_bDisplayOn   = true;
+  m_bDisplay     = true;
   m_pPlanner     = nullptr;
   m_pBufferQueue = new Queue;
   m_pFetchBuffer = nullptr;
@@ -229,7 +229,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
         return false;
     
       // set display off
-      m_bDisplayOn = false;
+      m_bDisplay = false;
       return true;
     }
     
@@ -263,7 +263,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
         return false;
       
       // set display off
-      m_bDisplayOn = false;
+      m_bDisplay = false;
       return true;
     }
     
@@ -294,7 +294,7 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
     if (pTokenVec->pGet(4)->eToken() == TN_NAME) {
       if ( pTokenVec->pGet(4)->aText()->bSame("displayOff"_Stz) ) {
         // set display off
-        m_bDisplayOn = false;
+        m_bDisplay = false;
         return true;
       }
     }
@@ -386,7 +386,7 @@ void JobsModel::vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob)
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
     pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
     
-    if (pJob_FetchRows->m_bDisplayOn) {
+    if (pJob_FetchRows->m_bDisplay) {
       vIterateBuffer(pJob_FetchRows, pFetchBuffer);      
     }
     
