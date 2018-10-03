@@ -26,7 +26,7 @@ bool Prompt::bPrompt_displayOn(SePrompt* pPrompt)
   ASSERT((*pTokenVec)[0]->bSame("displayOn"_Stz));
   
   SEitf* pSEitf = pPrompt->pSEitf();
-  pSEitf->m_bDisplay = true;
+  //pSEitf->m_bDisplay = true;
   
   return true;
 }

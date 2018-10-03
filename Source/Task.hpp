@@ -990,8 +990,6 @@ namespace Tasks
     // seitf
     static void vSEitfCommandProcessor(MP_Task mpTask);
     static void vSEitfDicStack(MP_Task mpTask);
-    static void vSEitfDisplayFetch(MP_Task mpTask);
-    static void vSEitfDisplayStore(MP_Task mpTask);
     static void vSEitfDump(MP_Task mpTask);
     static void vSEitfIsExiting(MP_Task mpTask);
     static void vSEitfPid(MP_Task mpTask);

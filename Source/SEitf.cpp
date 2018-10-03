@@ -82,7 +82,6 @@ SEitf::SEitf(i8 iPartition)
   m_sResponse       = ""_Stz;
   m_pJob            = nullptr;
   m_pTx             = nullptr;
-  m_bDisplay        = true;
   
   m_bSeitfExiting     = false;
   
