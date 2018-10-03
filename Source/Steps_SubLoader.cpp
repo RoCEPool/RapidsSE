@@ -174,7 +174,7 @@ void Task::vSubLoaderRecordsInvalid(MP_Task mpTask)
     THROW_INVALID_DSTACK("subLoader.recordsInvalid"_Stz);
   SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
-  mpTask->m_pDataStack->vPushInt(pSubLoader->iInvalidRecords());
+  mpTask->m_pDataStack->vPushInt(pSubLoader->pJob_SubLoader()->m_iInvalidRecords);
   
   EXIT();
 }
@@ -191,7 +191,7 @@ void Task::vSubLoaderRecordsValid(MP_Task mpTask)
     THROW_INVALID_DSTACK("subLoader.recordsValid"_Stz);
   SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
   
-  mpTask->m_pDataStack->vPushInt(pSubLoader->iValidRecords());
+  mpTask->m_pDataStack->vPushInt(pSubLoader->pJob_SubLoader()->m_iValidRecords);
   
   EXIT();
 }

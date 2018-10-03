@@ -12,6 +12,10 @@ namespace JobsModel
     Job_LoadTable* m_pJob_LoadTable;
     Utilities::SubLoader* m_pLoaderSub;
 
+    i8       m_iValidRecords;   // valid records
+    i8       m_iInvalidRecords; // invalid records
+  
+
     // must be last
     Footer m_xFooter;
   

@@ -18,9 +18,6 @@ namespace Utilities
     i8       m_iLength;    // length of record
     i8       m_iPartition; // partition of record
   
-    i8       m_iValidRecords;   // valid records
-    i8       m_iInvalidRecords; // invalid records
-    
     bool     m_bMoreChunks; // continue while there are more chunks
   
     WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
@@ -47,7 +44,6 @@ namespace Utilities
     bool bFetchRecord(void);
     void vHashRecord(void);
     bool bInsertRow(void);
-    i8   iInvalidRecords(void);
     Job_SubLoader* pJob_SubLoader(void);
     void vNewWorkingBuffer(void);
     i8   iPartition(void);

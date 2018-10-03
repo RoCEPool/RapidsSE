@@ -69,8 +69,6 @@ SubLoader::SubLoader(Job_SubLoader* pJob_SubLoader)
   m_iLength  = 0;
   m_iPartition  = 0;
   m_bMoreChunks = false;
-  m_iValidRecords = 0;
-  m_iInvalidRecords = 0;
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pWorkingBuffer[i_Partition]   = nullptr;
@@ -186,7 +184,7 @@ bool SubLoader::bFetchRecord(void)
     }
     
     if (iLength > C_16KB) {
-      m_iInvalidRecords++;
+      m_pJob_SubLoader->m_iInvalidRecords++;
       vWarn("Skipping row %.20s... - record in file > 16KB\n"_Stz,
             aRawData);
       return false;
@@ -200,12 +198,12 @@ bool SubLoader::bFetchRecord(void)
                              bBlankLine,
                              false /* allowNonPrintable */);
     if (bValid) {
-      m_iValidRecords++;
+      m_pJob_SubLoader->m_iValidRecords++;
       return bValid;
     }
     
     if ( ! bBlankLine )
-      m_iInvalidRecords++;
+      m_pJob_SubLoader->m_iInvalidRecords++;
   }
   
   return false;
@@ -263,16 +261,6 @@ bool SubLoader::bInsertRow(void)
   //pEntryBuffer->vShow();
   
   return bAppended;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of invalid records fetched                                          */
-/*----------------------------------------------------------------------------*/
-i8 SubLoader::iInvalidRecords(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  return m_iInvalidRecords;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -428,7 +416,7 @@ i8 SubLoader::iValidRecords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  return m_iValidRecords;
+  return m_pJob_SubLoader->m_iValidRecords;
 }
 
 /*----------------------------------------------------------------------------*/
