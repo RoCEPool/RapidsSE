@@ -9,8 +9,6 @@ namespace JobsModel
   class Job_StartCluster : public Job
   {
   public:
-
-    bool m_bSpawnNodes;   // spawn SE nodes
     
     // must be last
     Footer m_xFooter;

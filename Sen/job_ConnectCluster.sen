@@ -1,0 +1,177 @@
+/*============================================================================*/
+/* job_ConnectCluster.sen -- Job Connect Cluster                              */
+/*============================================================================*/
+
+" job_ConnectCluster.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: node.isConnected ( pNode -- t|f )
+
+  params| pNode |
+
+  pNode node.socket@ if
+    true
+  else
+    false
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: grid::connected ( -- t|f )
+
+  grid::nodes 0
+  do
+    I grid::node node.isConnected not if
+      I "Node no %v not connected" fmt.print
+      unloop
+      false
+      exit
+    then
+  loop
+
+  "All nodes connected" .
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: grid::wait ( -- )
+
+  begin
+    grid::connected not
+  while
+    100 thread.sleep_ms
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: gridTest
+
+  grid::nodes 0
+  do
+    I grid::node node.isConnected
+    I "gridTest: node no %v connected %v " fmt.print
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: gridWait
+
+  grid::wait
+;
+
+/*----------------------------------------------------------------------------*/
+/* request to connect the cluster (on originating node)                       */
+/*----------------------------------------------------------------------------*/
+: connectCluster_req ( -- <R> )
+
+  <SEED_REQ>
+
+  0 0 locals| pJob pTask |
+
+  tp: space_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  //"setStartNode..." .
+  setStartNode
+
+  //"spawn_Connector..." .
+  spawn_Connector
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait till all nodes connected
+  grid::wait
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pJob job.distribute
+
+  <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute job_ConnectCluster (on participating node)                         */
+/*----------------------------------------------------------------------------*/
+: connectCluster_exe ( -- )
+
+  <SEED_EXE>
+
+  //params| pJob_ConnectCluster |
+  job::this locals| pJob_ConnectCluster |
+
+  pJob_ConnectCluster job.notice
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait till all nodes connected
+  grid::wait
+
+  pJob_ConnectCluster send_job__executed
+
+  nullptr task::this task.job!
+
+  <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: connectCluster_beg ( -- )
+
+  <SEED_BEG>
+
+  job::this locals| pJob_status |
+
+  pJob_status job.beginParticipant
+
+  job::participantBegun
+
+  <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: connectCluster_end ( -- )
+
+  <SEED_END>
+
+  job::this locals| pJob_status |
+
+  job::participantEnded
+
+  <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: connectCluster_can ( -- )
+
+  <SEED_CAN>
+
+  job::this locals| pJob_status |
+
+  <DONE_CAN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

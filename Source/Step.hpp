@@ -71,7 +71,6 @@ namespace Tasks
     static void vAddSteps_JobLoadBuffer();
     static void vAddSteps_JobLoadTable();
     static void vAddSteps_JobReceiver();
-    static void vAddSteps_JobStartCluster();
     static void vAddSteps_JobSubLoader();
     static void vAddSteps_JobTruncateTable();
   

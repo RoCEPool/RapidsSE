@@ -56,6 +56,7 @@ using namespace JobsModel;
 
 #include "Job_Cf.hpp"
 #include "Job_CompactIndex.hpp"
+#include "Job_ConnectCluster.hpp"
 #include "Job_Connector.hpp"
 #include "Job_CreateCatalog.hpp"
 #include "Job_CreateIndex.hpp"

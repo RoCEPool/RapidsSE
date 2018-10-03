@@ -33,6 +33,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
 
   // system
   nJobs++; JobClass::vTraceJobs(CN_JOB_START);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_CONNECTCLUSTER);
   nJobs++; JobClass::vTraceJobs(CN_JOB_CONNECTOR);
   nJobs++; JobClass::vTraceJobs(CN_JOB_ANSWER);
   nJobs++; JobClass::vTraceJobs(CN_JOB_RECEIVER);

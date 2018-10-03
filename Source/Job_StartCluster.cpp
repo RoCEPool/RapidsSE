@@ -109,9 +109,6 @@ Job_StartCluster::Job_StartCluster(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTCLUSTER,_FOOTER_);
   
-  // default always spawn nodes
-  m_bSpawnNodes = true;
-  
   _checkInitialised_(CN_JOB_STARTCLUSTER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTCLUSTER,_FOOTER_);
@@ -135,7 +132,7 @@ Job_StartCluster::~Job_StartCluster(void)
 /*----------------------------------------------------------------------------*/
 void Job_StartCluster::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_DOCOL == eClass);
+  RASSERT(CN_JOB_STARTCLUSTER == eClass);
   RASSERT(pObject->eClass() == CN_JOB_STARTCLUSTER);
   
   Job_StartCluster* pJob_StartCluster = _pJob_StartCluster(pObject);
@@ -162,18 +159,9 @@ bool Job_StartCluster::bPopulateJob(TokenVec* pTokenVec)
   iNumTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 1 or 2 tokens
-  if (iNumTokens != 1 && iNumTokens != 2)
+  // there should be 1 token
+  if (iNumTokens != 1)
     return false;
-  
-  // 4th token should be '.'
-  if (iNumTokens == 2) {
-    if (! pTokenVec->pGet(1)->bSame("true"_Stz) && ! pTokenVec->pGet(1)->bSame("false"_Stz))
-      return false;
-    
-    if (pTokenVec->pGet(1)->bSame("false"_Stz))
-      m_bSpawnNodes = false;
-  }
   
   return true;
 }
