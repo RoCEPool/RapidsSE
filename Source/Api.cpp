@@ -144,7 +144,7 @@ eEC RapidsSE_EndCommand(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
                             Stz* sCatalogName, Stz* sSchemaName,
-                            bool bPostJob, void** ppJob, i8 iTraceLevel)
+                            void** ppJob, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_ExecuteCommand"_Stz;
   
@@ -159,8 +159,7 @@ eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
   
   if (sSchemaName)
     vTrace("Schema: %s\n"_Stz, sSchemaName);
-  
-  vTrace("bPostJob: %lld\n"_Stz, bPostJob);
+
   vTrace("ppJob: %p\n"_Stz, ppJob);
   
   
@@ -169,7 +168,7 @@ eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
   pSEitf->vInit(sCatalogName, sSchemaName);
   
   vTrace("Invoking RapidsSE_pExecuteCommand\n"_Stz);
-  Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSEitf, bPostJob);
+  Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSEitf, false);
   //vTrace("pJob = %p\n"_Stz, pJob);
   *ppJob = pJob;
   pSEitf->m_pJob = pJob;
