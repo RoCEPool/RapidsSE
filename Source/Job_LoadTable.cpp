@@ -162,6 +162,18 @@ void Job_LoadTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* find next chunk in file being loaded                                       */
+/*----------------------------------------------------------------------------*/
+bool Job_LoadTable::bFindChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  bool b = m_pLoadMap->bFindChunk();
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
 bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)

@@ -748,6 +748,7 @@ namespace Tasks
     // job LoadTable
     static void vJob_LoadTableAddInvalidRows(MP_Task mpTask);
     static void vJob_LoadTableAddValidRows(MP_Task mpTask);
+    static void vJob_LoadTableChunkFile(MP_Task mpTask);
     static void vJob_LoadTableFilePathFetch(MP_Task mpTask);
     static void vJob_LoadTableTableStore(MP_Task mpTask);
     static void vJob_LoadTableTaskFetch(MP_Task mpTask);
