@@ -43,14 +43,13 @@ void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
 {
   ENTRY("vJob_SubLoaderSpawn"_Stz);
   
-  Object* pPtrLoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoadTable) )
+  Object* pPtrJob_LoadTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
     THROW_INVALID_DSTACK("subLoader::spawn"_Stz);
-  LoadTable* pLoadTable = _pLoader(pPtrLoadTable);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Job_LoadTable* pJob_LoadTable = pLoadTable->pJob_LoadTable();
   SEitf* pSEitf = pJob_LoadTable->m_pSEitf;
   
   //! this needs to be optimised
@@ -64,7 +63,7 @@ void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
   pJob_SubLoader->m_sObjectName = pJob_LoadTable->m_sObjectName;
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
   
-  SubLoader* pSubLoader = new SubLoader(pJob_SubLoader,pLoadTable);
+  SubLoader* pSubLoader = new SubLoader(pJob_SubLoader);
   pJob_SubLoader->vSubLoader(pSubLoader);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

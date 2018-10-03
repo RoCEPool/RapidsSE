@@ -36,7 +36,7 @@ namespace Utilities
     void* operator new(size_t, SubLoader* pSubLoader);
     void  operator delete(void* pLoaderAddress);
  
-    SubLoader(Job_SubLoader* pJob_SubLoader, LoadTable* pLoadTable);
+    SubLoader(Job_SubLoader* pJob_SubLoader);
     ~SubLoader(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
