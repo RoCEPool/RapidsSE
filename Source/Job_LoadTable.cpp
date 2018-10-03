@@ -117,9 +117,11 @@ Job_LoadTable::Job_LoadTable(Interface::SEitf* pSEitf)
   
   //m_sFileName = ""_Stz;
   m_pLoadTable = nullptr;
+  m_xFormatters.vReset(); // reset to defaults in attachmap
   
-  m_xFormatters.vReset(); // reset to defaults in attachmap 
-  m_ziValidRows = 0;
+  m_pTable        = nullptr;
+  m_pLoadMap      = nullptr;
+  m_ziValidRows   = 0;
   m_ziInvalidRows = 0;
   
   m_pTask = nullptr;
