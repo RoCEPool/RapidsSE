@@ -32,8 +32,6 @@ namespace Utilities
     bool bInsertRow(void);
     Job_SubLoader* pJob_SubLoader(void);
     void vNewWorkingBuffer(void);
-    i8   iPartition(void);
-    void vPartition(i8 iPartition);
     bool bProcessRecords(void);
     bool bReadChunk(void);
     WorkingBuffer* pWorkingBuffer(void);

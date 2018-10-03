@@ -300,26 +300,6 @@ void SubLoader::vNewWorkingBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition number                                                       */
-/*----------------------------------------------------------------------------*/
-i8 SubLoader::iPartition(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  return m_pJob_SubLoader->m_iPartition;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition number                                                       */
-/*----------------------------------------------------------------------------*/
-void SubLoader::vPartition(i8 iPartition)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  m_pJob_SubLoader->m_iPartition = iPartition;
-}
-
-/*----------------------------------------------------------------------------*/
 /* read next chunk from file                                                  */
 /*----------------------------------------------------------------------------*/
 bool SubLoader::bReadChunk(void)
