@@ -10,8 +10,6 @@ namespace Utilities
   private:
     Job_SubLoader* m_pJob_SubLoader; // job
   
-    WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
-    i8 m_nBuffersLoadable[C_MAX_PARTITIONS]; // how many buffers are loadable
 
     // must be last
     Footer m_xFooter;

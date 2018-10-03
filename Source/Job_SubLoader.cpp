@@ -110,18 +110,23 @@ Job_SubLoader::Job_SubLoader(Interface::SEitf* pSEitf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
   m_pJob_LoadTable = nullptr;
-  m_pLoaderSub = nullptr;
+  m_pLoaderSub     = nullptr;
   
   m_pLoadChunk  = new LoadChunk;
   m_bMoreChunks = false;
   
   //m_aRecord
-  m_iLength  = 0;
+  m_iLength     = 0;
   m_iPartition  = 0;
   
-  m_iValidRecords = 0;
+  m_iValidRecords   = 0;
   m_iInvalidRecords = 0;
 
+  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
+    m_pWorkingBuffer[i_Partition]   = nullptr;
+    m_nBuffersLoadable[i_Partition] = 0;
+  }
+  
   _checkInitialised_(CN_JOB_SUBLOADER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
