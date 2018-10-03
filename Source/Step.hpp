@@ -68,6 +68,7 @@ namespace Tasks
     static void vAddSteps_JobFetchRows();
     static void vAddSteps_JobGeneric();
     static void vAddSteps_JobInsertRow();
+    static void vAddSteps_JobLoadBuffer();
     static void vAddSteps_JobLoadTable();
     static void vAddSteps_JobReceiver();
     static void vAddSteps_JobStartCluster();

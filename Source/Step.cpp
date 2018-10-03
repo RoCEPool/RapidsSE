@@ -71,6 +71,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobFetchRows();
   Step::vAddSteps_JobGeneric();
   Step::vAddSteps_JobInsertRow();
+  Step::vAddSteps_JobLoadBuffer();
   Step::vAddSteps_JobLoadTable();
   Step::vAddSteps_JobReceiver();
   Step::vAddSteps_JobStartCluster();
