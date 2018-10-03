@@ -25,7 +25,6 @@ namespace Utilities
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vBegin(void);
-    i8   nBuffersLoadable(void);
     void vEnd(void);
     bool bFetchRecord(void);
     void vHashRecord(void);

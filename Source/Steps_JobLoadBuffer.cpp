@@ -174,7 +174,8 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
   pJob_LoadBuffer->m_pWorkingBuffer = pWorkingBuffer;
   
   if (iFinal) {
-    i8 nBuffersLoadable = pSubLoader->nBuffersLoadable();
+    i8 nBuffersLoadable = pJob_SubLoader->m_nBuffersLoadable[iPartition];
+    
     ASSERT(C_UNKNOWN != nBuffersLoadable);
     pJob_LoadBuffer->vBuffersFromSubLoader(nBuffersLoadable);
   }

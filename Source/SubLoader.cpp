@@ -111,16 +111,6 @@ void SubLoader::vBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get buffers loadable for implicit partition                                */
-/*----------------------------------------------------------------------------*/
-i8 SubLoader::nBuffersLoadable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  return m_pJob_SubLoader->m_nBuffersLoadable[m_pJob_SubLoader->m_iPartition];
-}
-
-/*----------------------------------------------------------------------------*/
 /* end loading                                                                */
 /*----------------------------------------------------------------------------*/
 void SubLoader::vEnd(void)
