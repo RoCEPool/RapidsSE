@@ -46,9 +46,11 @@ namespace JobsModel
     void vBegin(void);
     void vEnd(void);
   
+    bool bFetchRecord(void);
     void vHashRecord(void);
     bool bInsertRow(void);
-   void vNewWorkingBuffer(void);
+    void vNewWorkingBuffer(void);
+    bool bProcessRecords(void);
     bool bReadChunk(void);
   
     void vShow(void);

@@ -116,7 +116,8 @@ void Task::vSubLoaderProcessRecords(MP_Task mpTask)
     THROW_INVALID_DSTACK("subLoader.processRecords"_Stz);
   SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoaderSub);
   
-  bool bTargetBufferFull = pSubLoader->bProcessRecords();
+  Job_SubLoader* pJob_SubLoader = pSubLoader->pJob_SubLoader();
+  bool bTargetBufferFull = pJob_SubLoader->bProcessRecords();
   
   mpTask->m_pDataStack->vPushInt(bTargetBufferFull);
   

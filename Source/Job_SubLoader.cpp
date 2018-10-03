@@ -230,6 +230,62 @@ void Job_SubLoader::vEnd(void)
   m_pLoadChunk->vCloseFile();
 }
 
+/*----------------------------------------------------------------------------*/
+/* fetch next record from buffer, read next chunk if necessary                */
+/*----------------------------------------------------------------------------*/
+bool Job_SubLoader::bFetchRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+  
+  Stz* aRawData;
+  i8 iLength;
+  bool bValid = false;
+  bool bBlankLine;
+  
+  Formatters* pFormatters = &m_pJob_LoadTable->m_xFormatters;
+  Table* pTable = m_pJob_LoadTable->m_pTable;
+  
+  if (! m_bMoreChunks)
+    return false;
+  
+  while (true) {
+    
+    // fetch next record from current chunk
+    aRawData = m_pLoadChunk->aNextRecord(iLength,pFormatters);
+    
+    if (! aRawData) {
+      // read next chunk
+      m_bMoreChunks = bReadChunk();
+      if (! m_bMoreChunks)
+        return false;
+      continue;
+    }
+    
+    if (iLength > C_16KB) {
+      m_iInvalidRecords++;
+      vWarn("Skipping row %.20s... - record in file > 16KB\n"_Stz,
+            aRawData);
+      return false;
+    }
+    
+    // format the raw data into a row
+    bValid = Row::bFormatRow(pTable->pColumnVec(),
+                             pFormatters,
+                             aRawData, iLength,
+                             m_aRecord.aStr(), m_iLength,
+                             bBlankLine,
+                             false /* allowNonPrintable */);
+    if (bValid) {
+      m_iValidRecords++;
+      return bValid;
+    }
+    
+    if ( ! bBlankLine )
+      m_iInvalidRecords++;
+  }
+  
+  return false;
+}
 
 /*----------------------------------------------------------------------------*/
 /* hash the first field of record                                             */
@@ -296,6 +352,33 @@ void Job_SubLoader::vNewWorkingBuffer(void)
     new WorkingBuffer(m_pJob_LoadTable->m_pTable,m_iPartition);
 
   m_nBuffersLoadable[m_iPartition]++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* process records                                                            */
+/*----------------------------------------------------------------------------*/
+bool Job_SubLoader::bProcessRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+  
+  while (bFetchRecord()) {
+    
+    // hash the record to get m_iPartition
+    vHashRecord();
+    
+    // attempt to add record into a buffer
+    bool bInserted = bInsertRow();
+    
+    // check if target buffer was full
+    if (! bInserted) {
+      // buffer was full
+      // return to loaderSub to append buffer to the table/partition
+      return true;
+    }
+    
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
