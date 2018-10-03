@@ -762,7 +762,8 @@ namespace Tasks
     
     // Job subLoader
     static void vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask);
-  
+    static void vJob_SubLoaderSpawn(MP_Task mpTask);
+
     // Job subTruncate
     static void vJob_SubTruncateSlotFetch(MP_Task mpTask);
     static void vJob_SubTruncateTruncateJobIdFetch(MP_Task mpTask);
@@ -772,6 +773,9 @@ namespace Tasks
     static void vJob_TruncateTableTaskFetch(MP_Task mpTask);
     static void vJob_TruncateTableTaskStore(MP_Task mpTask);
 
+    // load buffer
+    static void vLoadBufferSpawn(MP_Task mpTask);
+  
     // load table
     static void vLoadTableChunkFile(MP_Task mpTask);
     static void vLoadTableDelete(MP_Task mpTask);
@@ -1072,7 +1076,6 @@ namespace Tasks
     static void vSubLoaderProcessRecords(MP_Task mpTask);
     static void vSubLoaderRecordsInvalid(MP_Task mpTask);
     static void vSubLoaderRecordsValid(MP_Task mpTask);
-    static void vSubLoaderSpawn(MP_Task mpTask);
     static void vSubLoaderSpawnLoadBuffer(MP_Task mpTask);
   
     // table

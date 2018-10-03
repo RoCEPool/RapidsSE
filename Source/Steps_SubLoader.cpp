@@ -25,8 +25,6 @@ void Step::vAddSteps_SubLoader(void)
   vAddStep("subLoader.recordsInvalid"_Stz,   &Task::vSubLoaderRecordsInvalid,    false);
   vAddStep("subLoader.recordsValid"_Stz,     &Task::vSubLoaderRecordsValid,      false);
   
-  vAddStep("subLoader::spawn"_Stz,           &Task::vSubLoaderSpawn,             false);
-  
   vAddStep("subLoader.spawnLoadBuffer"_Stz,  &Task::vSubLoaderSpawnLoadBuffer,   false);
 }
 
@@ -201,45 +199,6 @@ void Task::vSubLoaderRecordsValid(MP_Task mpTask)
 }
 
 
-
-
-/*----------------------------------------------------------------------------*/
-/* subLoader::spawn -- spawn a new subloader                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vSubLoaderSpawn(MP_Task mpTask)
-{
-  ENTRY("vSubLoaderSpawn"_Stz);
-  
-  Object* pPtrLoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrLoadTable) )
-    THROW_INVALID_DSTACK("subLoader::spawn"_Stz);
-  LoadTable* pLoadTable = _pLoader(pPtrLoadTable);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Job_LoadTable* pJob_LoadTable = pLoadTable->pJob_LoadTable();
-  SEitf* pSEitf = pJob_LoadTable->m_pSEitf;
-  
-  //! this needs to be optimised
-  JobClass* pJobClass_SubLoader = JobClass::pFind(CN_JOB_SUBLOADER);
-  
-  Job_SubLoader* pJob_SubLoader =
-  static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(pSEitf));
-  
-  pJob_SubLoader->vSeed(SS_SEED_RUN);
-  
-  pJob_SubLoader->m_sObjectName = pJob_LoadTable->m_sObjectName;
-  pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
-  
-  SubLoader* pSubLoader = new SubLoader(pJob_SubLoader,pLoadTable);
-  pJob_SubLoader->vSubLoader(pSubLoader);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  RapidsSE_bSpawnJob(pJob_SubLoader,SS_SEED_RUN,pSEitf);
-  
-  EXIT();
-}
 
 
 
