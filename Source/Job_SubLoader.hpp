@@ -21,9 +21,7 @@ namespace JobsModel
   
     i8   m_iValidRecords;   // valid records
     i8   m_iInvalidRecords; // invalid records
-  
-    Formatters  m_xFormatters;
-  
+    
     // must be last
     Footer m_xFooter;
   
