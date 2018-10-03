@@ -25,15 +25,12 @@ namespace Utilities
  
     LoadTable(Job_LoadTable* pJob_LoadTable);
     ~LoadTable(void);
-    
+  
     bool     bFindChunk(void);
     Job_LoadTable* pJob_LoadTable(void);
     LoadMap* pLoadMap(void);
-    Table*   pTable(void);
-    void     vTable(Table* pTable);
   
     Footer* aFooter(void);
-  
   };
   
   LoadTable* _pLoader(void* aAddr);

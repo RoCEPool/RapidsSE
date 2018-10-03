@@ -64,7 +64,7 @@ SubLoader::SubLoader(Job_SubLoader* pJob_SubLoader, LoadTable* pLoadTable)
   m_pLoadTable  = pLoadTable;
   m_pLoadChunk  = new LoadChunk;
 
-  m_pTable   = pLoadTable->pTable();
+  m_pTable   = m_pJob_SubLoader->m_pJob_LoadTable->m_pTable;
   m_pLoadMap = nullptr;
   //m_aRecord
   m_iLength  = 0;
@@ -168,7 +168,7 @@ bool SubLoader::bFetchRecord(void)
   
   Job_LoadTable* pJob_LoadTable = m_pLoadTable->pJob_LoadTable();
   Formatters* pFormatters = &pJob_LoadTable->m_xFormatters;
-  Table* pTable = m_pLoadTable->pTable();
+  Table* pTable = pJob_LoadTable->m_pTable;
   
   if (! m_bMoreChunks)
     return false;
@@ -219,7 +219,7 @@ void SubLoader::vHashRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
   
-  Table* pTable = m_pLoadTable->pTable();
+  Table* pTable = m_pJob_SubLoader->m_pJob_LoadTable->m_pTable;
   
   m_iPartition = pTable->iRowPartition(m_aRecord);
 }

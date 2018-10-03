@@ -122,7 +122,7 @@ void Task::vLoadTableTableStore(MP_Task mpTask)
   
   ASSERT(CN_TABLE == pTable->eClass());
   
-  pLoadTable->vTable(pTable);
+  pLoadTable->pJob_LoadTable()->m_pTable = pTable;
   
   EXIT();
 }
