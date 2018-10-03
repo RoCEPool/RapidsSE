@@ -28,8 +28,6 @@ using namespace Prompt;
 #include "Prompt_cd.hpp"
 #include "Prompt_classes.hpp"
 #include "Prompt_config.hpp"
-#include "Prompt_displayOff.hpp"
-#include "Prompt_displayOn.hpp"
 #include "Prompt_heapMem.hpp"
 #include "Prompt_help.hpp"
 #include "Prompt_jobcat.hpp"
