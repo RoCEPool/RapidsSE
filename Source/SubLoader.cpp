@@ -207,7 +207,7 @@ bool SubLoader::bInsertRow(void)
   if (! m_pJob_SubLoader->m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition]) {
     
     // create a new working buffer for this partition
-    vNewWorkingBuffer();
+    m_pJob_SubLoader->vNewWorkingBuffer();
     
     if (! m_pJob_SubLoader->m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
@@ -273,20 +273,6 @@ bool SubLoader::bProcessRecords(void)
   }
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new working buffer                                                */
-/*----------------------------------------------------------------------------*/
-void SubLoader::vNewWorkingBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
-  
-  m_pJob_SubLoader->m_pWorkingBuffer[m_pJob_SubLoader->m_iPartition] =
-  new WorkingBuffer(m_pJob_SubLoader->m_pJob_LoadTable->m_pTable,
-                    m_pJob_SubLoader->m_iPartition);
-  
-  m_pJob_SubLoader->m_nBuffersLoadable[m_pJob_SubLoader->m_iPartition]++;
 }
 
 /*----------------------------------------------------------------------------*/

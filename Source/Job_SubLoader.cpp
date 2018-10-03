@@ -197,6 +197,24 @@ void Job_SubLoader::vSubLoader(SubLoader* pSubLoader)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create a new working buffer                                                */
+/*----------------------------------------------------------------------------*/
+void Job_SubLoader::vNewWorkingBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+
+  m_pWorkingBuffer[m_iPartition] =
+    new WorkingBuffer(m_pJob_LoadTable->m_pTable,m_iPartition);
+
+  m_nBuffersLoadable[m_iPartition]++;
+}
+
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_SubLoader::vShow(void)

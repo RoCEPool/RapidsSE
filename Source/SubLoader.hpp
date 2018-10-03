@@ -30,7 +30,6 @@ namespace Utilities
     void vHashRecord(void);
     bool bInsertRow(void);
     Job_SubLoader* pJob_SubLoader(void);
-    void vNewWorkingBuffer(void);
     bool bProcessRecords(void);
     bool bReadChunk(void);
   

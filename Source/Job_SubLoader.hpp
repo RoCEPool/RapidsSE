@@ -43,6 +43,8 @@ namespace JobsModel
     void vJob_LoadTable(Job_LoadTable* pJob_LoadTable);
     void vSubLoader(Utilities::SubLoader* pSubLoader);
 
+    void vNewWorkingBuffer(void);
+
     void vShow(void);
     Footer* aFooter(void);
 

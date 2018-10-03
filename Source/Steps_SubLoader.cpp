@@ -59,7 +59,7 @@ void Task::vSubLoaderDanglingBuffer(MP_Task mpTask)
   Job_SubLoader* pJob_SubLoader = pSubLoader->pJob_SubLoader();
   
   if ( ! pJob_SubLoader->m_pWorkingBuffer[pJob_SubLoader->m_iPartition] )
-    pSubLoader->vNewWorkingBuffer();
+    pJob_SubLoader->vNewWorkingBuffer();
 
   EXIT();
 }
