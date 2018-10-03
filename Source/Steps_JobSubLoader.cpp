@@ -64,7 +64,7 @@ void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
   pJob_SubLoader->m_sObjectName = pJob_LoadTable->m_sObjectName;
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
   
-  SubLoader* pSubLoader = new SubLoader(pJob_SubLoader,pLoadTable);
+  SubLoader* pSubLoader = new SubLoader(pJob_SubLoader);
   pJob_SubLoader->vSubLoader(pSubLoader);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -55,7 +55,7 @@ void SubLoader::operator delete(void* pLoaderAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SubLoader::SubLoader(Job_SubLoader* pJob_SubLoader, LoadTable* pLoadTable)
+SubLoader::SubLoader(Job_SubLoader* pJob_SubLoader)
 : Object(CN_SUBLOADER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SUBLOADER,_FOOTER_);
