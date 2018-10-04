@@ -29,9 +29,9 @@ common/ print nFetchPartitions /
   // has fetch just started ?
   bFetchStarted not if
 
-    pSession >str "Appending buffers to bufferQueue of seitf %v" str.format .
+    pSession >str "Appending buffers to bufferQueue of session %v" str.format .
 
-    // create the buffer queue in the seitf
+    // create the buffer queue in the session
     "selectTask.queue" queue::new to pBufferQueue
 
     //pBufferQueue pSession session.bufferQueue!
@@ -57,7 +57,7 @@ common/ print nFetchPartitions /
         pIndexBuffer entryBuffer.isLast!
      then
 
-     //pSession >str "appending rowBuffer to seitf %v queue" str.format .
+     //pSession >str "appending rowBuffer to session %v queue" str.format .
      pIndexBuffer pBufferQueue queue.append
 
   else

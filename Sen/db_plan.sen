@@ -179,7 +179,7 @@ tp: executeDfetchPlan
   //"triggerOp.task" find execute >jobQueue
 
   task::this task.session@ to pSession
-  pSession >str "dfetch request tasks seitf : %v" str.format .
+  pSession >str "dfetch request tasks session : %v" str.format .
 
   //grid::partitions >str "setting nLastBuffers to %v" str.format .
   //grid::partitions pSession session.lastBuffers!

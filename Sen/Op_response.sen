@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* respond                                                                    */
 /*----------------------------------------------------------------------------*/
-: respondSEitf ( pSession profile plan -- )
+: respondSession ( pSession profile plan -- )
 
   // record the plan and profile
   0 locals| pTask thePlan profile pSession |
@@ -52,8 +52,8 @@
     planList::findPlan ( pSession profile plan true )
     assert ( pSession profile plan )
 
-    // respond to seitf
-    respondSEitf ( )
+    // respond to session
+    respondSession ( )
 
   again
 ;
