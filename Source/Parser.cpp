@@ -833,8 +833,13 @@ void Parser::vReadLineStdin(void)
   if (gpAttachMap->m_bTracepoint)
     PosixThread::vSleepMilli(300);
   
+  i8 iFreeBuffers = gpBufferPool->iFreeCount();
+  
   if ( ! gxArguments.m_bScript ) {
-    vInfo("%s"_Stz,m_sPrompt.aChar());
+    vInfo("%s%s> "_Stz,
+          m_sPrompt.aChar(),
+          iFreeBuffers < C_LOW_BUFFERS ? " *LOWMEM* " : ""
+          );
     fflush(stdin);
   }
   
