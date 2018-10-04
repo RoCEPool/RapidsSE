@@ -104,8 +104,8 @@ void Job_DropTenant::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropTenant::Job_DropTenant(Interface::SEitf* pSEitf)
-: Job(CN_JOB_DROPTENANT, pSEitf)
+Job_DropTenant::Job_DropTenant(Interface::Session* pSession)
+: Job(CN_JOB_DROPTENANT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
     
@@ -201,11 +201,11 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropTenant_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_DropTenant_pre(Interface::Session* pSession)
 {
-  Job_DropTenant* pJob_DropTenant = new Job_DropTenant(pSEitf);
+  Job_DropTenant* pJob_DropTenant = new Job_DropTenant(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_DropTenant->bPopulateJob(pTokenVec);
   
@@ -221,7 +221,7 @@ Job* JobsModel::pJob_DropTenant_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropTenant_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_DropTenant_post(Interface::Session* pSession, Job* pJob)
 {
   Job_DropTenant* pJob_DropTenant = _pJob_DropTenant(pJob);
   
@@ -240,7 +240,7 @@ void JobsModel::vJob_DropTenant_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropTenant_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_DropTenant_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_DropTenant* pJob_DropTenant = _pJob_DropTenant(pJob);
   

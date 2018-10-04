@@ -18,7 +18,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Status(Interface::SEitf* pSEitf);
+    Job_Status(Interface::Session* pSession);
     ~Job_Status(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,9 +35,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Status* _pJob_Status(void* aAddr);
   
-  Job* pJob_Status_pre(Interface::SEitf* pSEitf);
-  void vJob_Status_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_Status_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_Status_pre(Interface::Session* pSession);
+  void vJob_Status_post(Interface::Session* pSession, Job* pJob);
+  void vJob_Status_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Status_show(Job* pJob);
   
   JobClass* pJob_Status_class(pFUN** aaFun);

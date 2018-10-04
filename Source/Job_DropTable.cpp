@@ -104,8 +104,8 @@ void Job_DropTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropTable::Job_DropTable(Interface::SEitf* pSEitf)
-: Job(CN_JOB_DROPTABLE, pSEitf)
+Job_DropTable::Job_DropTable(Interface::Session* pSession)
+: Job(CN_JOB_DROPTABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE,_FOOTER_);
     
@@ -198,11 +198,11 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropTable_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_DropTable_pre(Interface::Session* pSession)
 {
-  Job_DropTable* pJob_DropTable = new Job_DropTable(pSEitf);
+  Job_DropTable* pJob_DropTable = new Job_DropTable(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_DropTable->bPopulateJob(pTokenVec);
   
@@ -218,7 +218,7 @@ Job* JobsModel::pJob_DropTable_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropTable_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_DropTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_DropTable* pJob_DropTable = _pJob_DropTable(pJob);
   
@@ -237,7 +237,7 @@ void JobsModel::vJob_DropTable_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropTable_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_DropTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_DropTable* pJob_DropTable = _pJob_DropTable(pJob);
   

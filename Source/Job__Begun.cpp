@@ -172,7 +172,7 @@ Footer* Job__Begun::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob__Begun_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob__Begun_delete(Interface::Session* pSession, Job* pJob)
 {
   Job__Begun* pJob__Begun = _pJob__Begun(pJob);
   

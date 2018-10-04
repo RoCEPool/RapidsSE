@@ -103,7 +103,7 @@ namespace JobsModel
 
   public:
     Job(eCN eClassNo);
-    Job(eCN eClassNo, Interface::SEitf* pSEitf);
+    Job(eCN eClassNo, Interface::Session* pSession);
     ~Job(void);
     
     static i8 iOriginatorNode(i8 iJobId);

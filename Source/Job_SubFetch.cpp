@@ -104,8 +104,8 @@ void Job_SubFetch::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubFetch::Job_SubFetch(Interface::SEitf* pSEitf)
-: Job(CN_JOB_SUBFETCH, pSEitf)
+Job_SubFetch::Job_SubFetch(Interface::Session* pSession)
+: Job(CN_JOB_SUBFETCH, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH,_FOOTER_);
     
@@ -178,9 +178,9 @@ Footer* Job_SubFetch::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_SubFetch_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_SubFetch_pre(Interface::Session* pSession)
 {
-  Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSEitf);
+  Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSession);
   
   return pJob_SubFetch;
 }
@@ -188,7 +188,7 @@ Job* JobsModel::pJob_SubFetch_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubFetch_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_SubFetch_post(Interface::Session* pSession, Job* pJob)
 {
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pJob);
   
@@ -204,7 +204,7 @@ void JobsModel::vJob_SubFetch_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubFetch_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_SubFetch_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pJob);
   

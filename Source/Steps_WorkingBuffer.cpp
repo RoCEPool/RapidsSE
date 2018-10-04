@@ -85,12 +85,12 @@ void Task::vWorkingBufferToWorkingBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* append a row to a working buffer                                           */
 /*----------------------------------------------------------------------------*/
-bool Task::bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, SEitf* pSEitf)
+bool Task::bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, Session* pSession)
 {
   
   Id xId = pEntry->xId();
   
-  if (pSEitf && pSEitf->bRowSeen(xId)) {
+  if (pSession && pSession->bRowSeen(xId)) {
     // row already inserted
     //vTrace("Row already inserted %p \n"_Stz, pEntry);
     return true;
@@ -108,12 +108,12 @@ bool Task::bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, SEitf* pSEit
 /*----------------------------------------------------------------------------*/
 /* append a row to a working buffer                                           */
 /*----------------------------------------------------------------------------*/
-bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, SEitf* pSEitf)
+bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, Session* pSession)
 {
   
   Id xId = pEntry->xId();
   
-  if (pSEitf && pSEitf->bRowSeen(xId)) {
+  if (pSession && pSession->bRowSeen(xId)) {
     // row already inserted
     //vTrace("Row already inserted %p \n"_Stz, pEntry);
     return true;

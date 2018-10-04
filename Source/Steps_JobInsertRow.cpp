@@ -247,7 +247,7 @@ void Task::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
   
   WorkingBuffer* pWorkingBuffer = pJob_InsertRow->m_pWorkingBuffer[iPartition];
   pJob_InsertRow->m_pWorkingBuffer[iPartition] = nullptr;
-  SEitf* pSEitf = pJob_InsertRow->m_pSEitf;
+  Session* pSession = pJob_InsertRow->m_pSession;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a load buffer job
@@ -256,7 +256,7 @@ void Task::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
   JobClass* pJobClass_InsertBuffer = JobClass::pFind(CN_JOB_INSERTBUFFER);
   
   Job_InsertBuffer* pJob_InsertBuffer =
-  static_cast<Job_InsertBuffer*>(pJobClass_InsertBuffer->pPreJob(pSEitf));
+  static_cast<Job_InsertBuffer*>(pJobClass_InsertBuffer->pPreJob(pSession));
   
   pJob_InsertBuffer->vSeed(SS_SEED_RUN);
   
@@ -274,7 +274,7 @@ void Task::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the load buffer job
   
-  RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_RUN,pSEitf);
+  RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_RUN,pSession);
   
   EXIT();
 }

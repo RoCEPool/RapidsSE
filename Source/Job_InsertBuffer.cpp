@@ -108,8 +108,8 @@ void Job_InsertBuffer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InsertBuffer::Job_InsertBuffer(Interface::SEitf* pSEitf)
-: Job(CN_JOB_INSERTBUFFER, pSEitf)
+Job_InsertBuffer::Job_InsertBuffer(Interface::Session* pSession)
+: Job(CN_JOB_INSERTBUFFER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTBUFFER,_FOOTER_);
   
@@ -188,9 +188,9 @@ Footer* Job_InsertBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_InsertBuffer_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_InsertBuffer_pre(Interface::Session* pSession)
 {
-  Job_InsertBuffer* pJob_InsertBuffer = new Job_InsertBuffer(pSEitf);
+  Job_InsertBuffer* pJob_InsertBuffer = new Job_InsertBuffer(pSession);
   
   return pJob_InsertBuffer;
 }
@@ -208,7 +208,7 @@ Job* JobsModel::pJob_InsertBuffer_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_InsertBuffer_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_InsertBuffer_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJob);
   

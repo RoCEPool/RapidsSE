@@ -48,7 +48,7 @@ SePrompt::SePrompt(void)
   i8 iPartition = 0;
   m_bContinue = true;
 
-  eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,
+  eEC eResult = RapidsSE_SessionNew((void**)&m_pSession,
                                   "rapidsse"_Stz,
                                   "public"_Stz,
                                   iPartition,
@@ -68,7 +68,7 @@ SePrompt::~SePrompt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  RapidsSE_SEitfDelete(m_pSEitf, /*trace*/ 0);
+  RapidsSE_SessionDelete(m_pSession, /*trace*/ 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,9 +81,9 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(pObject);
   
-  vTrace("SePrompt %p seitf %p \n"_Stz,
+  vTrace("SePrompt %p session %p \n"_Stz,
          pSePrompt,
-         pSePrompt->m_pSEitf);
+         pSePrompt->m_pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,7 +176,7 @@ CommandProcessor* SePrompt::pCommandProcessor(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSEitf->m_pCommandProcessor;
+  return m_pSession->m_pCommandProcessor;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,7 +208,7 @@ void SePrompt::vDeleteJob(void)
 
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
-  pCommandProcessor->vDeleteJob(m_pSEitf);
+  pCommandProcessor->vDeleteJob(m_pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -290,7 +290,7 @@ void SePrompt::vPostJob(void)
 
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
-  pCommandProcessor->vPostJob(m_pSEitf);
+  pCommandProcessor->vPostJob(m_pSession);
 
 }
 
@@ -303,19 +303,19 @@ void SePrompt::vPreJob(void)
   
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
-  pCommandProcessor->vPreJob(m_pSEitf);
+  pCommandProcessor->vPreJob(m_pSession);
   
   m_pJob = pCommandProcessor->pJob();
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the seitf                                                              */
+/* get the rapidsse session                                                   */
 /*----------------------------------------------------------------------------*/
-SEitf* SePrompt::pSEitf(void)
+Session* SePrompt::pSession(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSEitf;
+  return m_pSession;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -327,7 +327,7 @@ void SePrompt::vSpawnJob(void)
   
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
-  pCommandProcessor->bSpawnJob(m_pSEitf);
+  pCommandProcessor->bSpawnJob(m_pSession);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -337,7 +337,7 @@ TokenVec* SePrompt::pTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSEitf->m_pCommandProcessor->pTknVec();
+  return m_pSession->m_pCommandProcessor->pTknVec();
 }
 
 /*----------------------------------------------------------------------------*/

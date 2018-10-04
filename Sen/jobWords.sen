@@ -470,7 +470,7 @@
   0 0 locals| pDicStackSEitf pDicStackTask |
 
   // get seitf dic stack
-  task::this task.seitf@ seitf.dicStack to pDicStackSEitf
+  task::this task.session@ session.dicStack to pDicStackSEitf
 
   // get task dic stack
   task::this task.dicStack to pDicStackTask

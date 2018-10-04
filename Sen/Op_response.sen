@@ -7,10 +7,10 @@
 /*----------------------------------------------------------------------------*/
 /* respond                                                                    */
 /*----------------------------------------------------------------------------*/
-: respondSEitf ( pSeitf profile plan -- )
+: respondSEitf ( pSession profile plan -- )
 
   // record the plan and profile
-  0 locals| pTask thePlan profile pSeitf |
+  0 locals| pTask thePlan profile pSession |
 
   // get the executing task
   thePlan plan.executingTask@ to pTask
@@ -21,7 +21,7 @@
   //"DONE" .
 
   // << profile plan >> -->> nextOp
-  //<< pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+  //<< pSession $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
 
   opFrame.drop
 
@@ -49,8 +49,8 @@
     drop ( profile planId )
 
     // find plan using planId
-    planList::findPlan ( pSeitf profile plan true )
-    assert ( pSeitf profile plan )
+    planList::findPlan ( pSession profile plan true )
+    assert ( pSession profile plan )
 
     // respond to seitf
     respondSEitf ( )

@@ -104,8 +104,8 @@ void Job_ShowCluster::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ShowCluster::Job_ShowCluster(Interface::SEitf* pSEitf)
-: Job(CN_JOB_SHOWCLUSTER, pSEitf)
+Job_ShowCluster::Job_ShowCluster(Interface::Session* pSession)
+: Job(CN_JOB_SHOWCLUSTER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SHOWCLUSTER,_FOOTER_);
   
@@ -197,9 +197,9 @@ Footer* Job_ShowCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ShowCluster_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_ShowCluster_pre(Interface::Session* pSession)
 {
-  Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(pSEitf);
+  Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(pSession);
   
   return pJob_ShowCluster;
 }
@@ -207,7 +207,7 @@ Job* JobsModel::pJob_ShowCluster_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ShowCluster_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_ShowCluster_post(Interface::Session* pSession, Job* pJob)
 {
   //Job_ShowCluster* pJob_ShowCluster = _pJob_ShowCluster(pJob);
   
@@ -216,7 +216,7 @@ void JobsModel::vJob_ShowCluster_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ShowCluster_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_ShowCluster_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_ShowCluster* pJob_ShowCluster = _pJob_ShowCluster(pJob);
   

@@ -11,13 +11,13 @@ namespace JobsModel
   public:
     DicPath m_xDicPath; // dictionary path
   
-    Interface::SEitf* m_pSEitf;
+    Interface::Session* m_pSession;
   
   public:
     void* operator new(size_t);
   
     JobDicPath(void);
-    JobDicPath(Interface::SEitf* pSEitf);
+    JobDicPath(Interface::Session* pSession);
    ~JobDicPath(void);
   };
 }

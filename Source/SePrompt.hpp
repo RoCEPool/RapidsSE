@@ -20,8 +20,8 @@ namespace Prompt
   class SePrompt : public Object
   {
   private:
-    bool   m_bContinue;  // continue processing commands?
-    SEitf* m_pSEitf;     // interface into rapidsse
+    bool     m_bContinue;  // continue processing commands?
+    Session* m_pSession;   // rapidsse session
   
     Job*   m_pJob;       // job
   
@@ -52,7 +52,7 @@ namespace Prompt
     void vLockMutex(void);
     void vPostJob(void);
     void vPreJob(void);
-    SEitf* pSEitf(void);
+    Session* pSession(void);
     void vSpawnJob(void);
     TokenVec* pTknVec(void);
     void vWaitCond(void);

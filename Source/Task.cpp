@@ -98,7 +98,7 @@ Task::Task(Job* pJob)
   m_pWord        = nullptr;
   m_iTracing     = C_TRACE_NONE;
   
-  m_pSEitf       = nullptr;
+  m_pSession       = nullptr;
   
   m_pSocket      = nullptr;
   m_pPlan        = nullptr;
@@ -566,23 +566,23 @@ GridModel::Node* Task::pSendNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get SEitf                                                                  */
+/* get session                                                                */
 /*----------------------------------------------------------------------------*/
-Interface::SEitf* Task::pSEitf(void)
+Interface::Session* Task::pSession(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_pSEitf;
+  return m_pSession;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set SEitf                                                                  */
+/* set session                                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vSEitf(Interface::SEitf* pSEitf)
+void Task::vSession(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pSEitf = pSEitf;
+  m_pSession = pSession;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -799,16 +799,16 @@ i8 Task::iPartition(void)
 /*----------------------------------------------------------------------------*/
 void Task::vPerformancePoint(Stz* aWordName, Stz* aPointNote)
 {
-  if ( ! m_pSEitf ) {
-    vWarn("No SEitf for Performance Point: %s %s\n"_Stz,aWordName,aPointNote);
+  if ( ! m_pSession ) {
+    vWarn("No session for Performance Point: %s %s\n"_Stz,aWordName,aPointNote);
     return;
   }
   
-  PerformanceTrace* pPerformanceTrace = m_pSEitf->pPerformanceTrace();
+  PerformanceTrace* pPerformanceTrace = m_pSession->pPerformanceTrace();
   
   if ( ! pPerformanceTrace ) {
     pPerformanceTrace = new PerformanceTrace;
-    m_pSEitf->vPerformanceTrace(pPerformanceTrace);
+    m_pSession->vPerformanceTrace(pPerformanceTrace);
   }
   
   pPerformanceTrace->vAdd(aWordName,aPointNote);
@@ -819,7 +819,7 @@ void Task::vPerformancePoint(Stz* aWordName, Stz* aPointNote)
 /*----------------------------------------------------------------------------*/
 void Task::vPerformancePrint(void)
 {
-  PerformanceTrace* pPerformanceTrace = m_pSEitf->pPerformanceTrace();
+  PerformanceTrace* pPerformanceTrace = m_pSession->pPerformanceTrace();
   if ( ! pPerformanceTrace )
     return;
   

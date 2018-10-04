@@ -104,8 +104,8 @@ void Job_Cf::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Cf::Job_Cf(Interface::SEitf* pSEitf)
-: Job(CN_JOB_CF, pSEitf)
+Job_Cf::Job_Cf(Interface::Session* pSession)
+: Job(CN_JOB_CF, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CF,_FOOTER_);
   
@@ -196,11 +196,11 @@ Footer* Job_Cf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Cf_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_Cf_pre(Interface::Session* pSession)
 {
-  Job_Cf* pJob_Cf = new Job_Cf(pSEitf);
+  Job_Cf* pJob_Cf = new Job_Cf(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_Cf->bPopulateJob(pTokenVec);
   
@@ -216,7 +216,7 @@ Job* JobsModel::pJob_Cf_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Cf_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Cf_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Cf* pJob_Cf = _pJob_Cf(pJob);
   
@@ -232,7 +232,7 @@ void JobsModel::vJob_Cf_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* delete job function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Cf_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Cf_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Cf* pJob_Cf = _pJob_Cf(pJob);
   

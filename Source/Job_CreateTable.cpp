@@ -104,8 +104,8 @@ void Job_CreateTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateTable::Job_CreateTable(Interface::SEitf* pSEitf)
-: Job(CN_JOB_CREATETABLE, pSEitf)
+Job_CreateTable::Job_CreateTable(Interface::Session* pSession)
+: Job(CN_JOB_CREATETABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
@@ -342,7 +342,7 @@ bool Job_CreateTable::bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
     //      pJob->m_xColumns[iColumn].m_sPrimaryKey = m_xTokenVec[iCurrentToken++]->aText();
     //
     //      if (!m_xTokenVec2[iCurrentToken]->bSame("key"_Stz)) {
-    //        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    //        m_pSession->vSetLastError(EC_INVALID_COMMAND);
     //        return false;
     //      }
     //    }
@@ -603,11 +603,11 @@ Footer* Job_CreateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateTable_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_CreateTable_pre(Interface::Session* pSession)
 {
-  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSEitf);
+  Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
 
   bool bResult = pJob_CreateTable->bPopulateJob(pTokenVec);
   
@@ -622,7 +622,7 @@ Job* JobsModel::pJob_CreateTable_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateTable_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_CreateTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
   
@@ -651,7 +651,7 @@ Job* JobsModel::pJob_CreateTable_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateTable_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_CreateTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
   

@@ -15,7 +15,7 @@ common/ print nFetchPartitions /
 : printRb subDic print
 
   // record the plan and profile
-  0 0 locals| pIndexBuffer pBufferQueue bFetchStarted thePlan profile pSeitf |
+  0 0 locals| pIndexBuffer pBufferQueue bFetchStarted thePlan profile pSession |
 
   "tenants" 1 dicStack.set
 
@@ -29,12 +29,12 @@ common/ print nFetchPartitions /
   // has fetch just started ?
   bFetchStarted not if
 
-    pSeitf >str "Appending buffers to bufferQueue of seitf %v" str.format .
+    pSession >str "Appending buffers to bufferQueue of seitf %v" str.format .
 
     // create the buffer queue in the seitf
     "selectTask.queue" queue::new to pBufferQueue
 
-    //pBufferQueue pSeitf seitf.bufferQueue!
+    //pBufferQueue pSession session.bufferQueue!
 
     // set the no of fetch tasks in nFetchPartitions
     $$nPartitions toCommon nFetchPartitions
@@ -43,7 +43,7 @@ common/ print nFetchPartitions /
     // mark fetch as started
     1 to bFetchStarted
   else
-    //pSeitf seitf.bufferQueue@ to pBufferQueue
+    //pSession session.bufferQueue@ to pBufferQueue
   then
 
   ( [ rowBuffer ] )
@@ -57,20 +57,20 @@ common/ print nFetchPartitions /
         pIndexBuffer entryBuffer.isLast!
      then
 
-     //pSeitf >str "appending rowBuffer to seitf %v queue" str.format .
+     //pSession >str "appending rowBuffer to seitf %v queue" str.format .
      pIndexBuffer pBufferQueue queue.append
 
   else
      // didn't get a rowBuffer, this fetch partition has ended
      nFetchPartitions 1- toCommon nFetchPartitions
 
-     //pSeitf seitf.fetchTaskEnded
+     //pSession session.fetchTaskEnded
 
      // have all the fetch tasks ended ?
      nFetchPartitions 0 == if
 
        // << $$nextProfile thePlan >> -->> $$nextOp
-       //<< pSeitf $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
+       //<< pSession $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
 
        // mark fetch as not started so next fetch can execute
        0 to bFetchStarted
@@ -112,7 +112,7 @@ common/ print nFetchPartitions /
     assert ( profile plan )
 
     // print row buffer rows
-    bFetchStarted ( pSeitf profile plan bFetchStarted )
+    bFetchStarted ( pSession profile plan bFetchStarted )
     printRb ( bFetchStarted )
 
     // set fetch started

@@ -104,8 +104,8 @@ void Job_ListPartitions::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListPartitions::Job_ListPartitions(Interface::SEitf* pSEitf)
-: Job(CN_JOB_LISTPARTITIONS, pSEitf)
+Job_ListPartitions::Job_ListPartitions(Interface::Session* pSession)
+: Job(CN_JOB_LISTPARTITIONS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTITIONS,_FOOTER_);
   
@@ -197,11 +197,11 @@ Footer* Job_ListPartitions::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ListPartitions_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_ListPartitions_pre(Interface::Session* pSession)
 {
-  Job_ListPartitions* pJob_ListPartitions = new Job_ListPartitions(pSEitf);
+  Job_ListPartitions* pJob_ListPartitions = new Job_ListPartitions(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_ListPartitions->bPopulateJob(pTokenVec);
   
@@ -217,7 +217,7 @@ Job* JobsModel::pJob_ListPartitions_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListPartitions_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_ListPartitions_post(Interface::Session* pSession, Job* pJob)
 {
   Job_ListPartitions* pJob_ListPartitions = _pJob_ListPartitions(pJob);
   
@@ -240,7 +240,7 @@ void JobsModel::vJob_ListPartitions_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListPartitions_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_ListPartitions_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_ListPartitions* pJob_ListPartitions = _pJob_ListPartitions(pJob);
   

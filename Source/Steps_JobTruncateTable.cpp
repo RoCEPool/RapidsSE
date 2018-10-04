@@ -73,7 +73,7 @@ void Task::vJob_TruncateTableSpawnSub(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_truncateTable.spawnSub"_Stz);
   
-  SEitf* pSEitf = pJob_TruncateTable->m_pSEitf;
+  Session* pSession = pJob_TruncateTable->m_pSession;
   i8 iTruncateJobId = pJob_TruncateTable->m_iJobId;
   
   JobClass* pJobClass_SubTruncate = JobClass::pFind(CN_JOB_SUBTRUNCATE);

@@ -18,7 +18,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Ping(Interface::SEitf* pSEitf);
+    Job_Ping(Interface::Session* pSession);
     ~Job_Ping(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,9 +35,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Ping* _pJob_Ping(void* aAddr);
   
-  Job* pJob_Ping_pre(Interface::SEitf* pSEitf);
-  void vJob_Ping_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_Ping_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_Ping_pre(Interface::Session* pSession);
+  void vJob_Ping_post(Interface::Session* pSession, Job* pJob);
+  void vJob_Ping_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Ping_show(Job* pJob);
   
   JobClass* pJob_Ping_class(pFUN** aaFun);

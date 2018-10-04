@@ -7,7 +7,7 @@ extern pthread_key_t  giTLS_TaskKey;
 
 namespace Interface
 {
-  class SEitf;
+  class Session;
 }
 
 namespace GridModel
@@ -120,8 +120,8 @@ namespace Tasks
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove
   
-    Interface::SEitf* m_pSEitf; // the seitf for this task
-    Plan*   m_pPlan;            // the plan associated with task
+    Interface::Session* m_pSession; // the session for this task
+    Plan*   m_pPlan;                // the plan associated with task
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // always last
@@ -171,8 +171,8 @@ namespace Tasks
     bool bSeeded(void);
     void vSeedJob(void);
     GridModel::Node* pSendNode(void);
-    Interface::SEitf* pSEitf(void);
-    void vSEitf(Interface::SEitf* pSEitf);
+    Interface::Session* pSession(void);
+    void vSession(Interface::Session* pSession);
     void vSleep(i8 iMicroSeconds);
     i8   iSlot(void);
     void vSprint(s48K& sFormat, s48K& sString);
@@ -913,7 +913,7 @@ namespace Tasks
     static void vPromptExecuteFunction(MP_Task mpTask);
     static void vPromptGetCommand(MP_Task mpTask);
     static void vPromptNew(MP_Task mpTask);
-    static void vPromptSEitf(MP_Task mpTask);
+    static void vPromptSession(MP_Task mpTask);
 
     // push
     static void vPushI(MP_Task mpTask);
@@ -1001,15 +1001,15 @@ namespace Tasks
     static void vRstack9(MP_Task mpTask);
     
   
-    // seitf
-    static void vSEitfCommandProcessor(MP_Task mpTask);
-    static void vSEitfDicStack(MP_Task mpTask);
-    static void vSEitfDump(MP_Task mpTask);
-    static void vSEitfIsExiting(MP_Task mpTask);
-    static void vSEitfPid(MP_Task mpTask);
-    static void vSEitfSlotFetch(MP_Task mpTask);
-    static void vSEitfTxFetch(MP_Task mpTask);
-    static void vSEitfTxStore(MP_Task mpTask);
+    // session
+    static void vSessionCommandProcessor(MP_Task mpTask);
+    static void vSessionDicStack(MP_Task mpTask);
+    static void vSessionDump(MP_Task mpTask);
+    static void vSessionIsExiting(MP_Task mpTask);
+    static void vSessionPid(MP_Task mpTask);
+    static void vSessionSlotFetch(MP_Task mpTask);
+    static void vSessionTxFetch(MP_Task mpTask);
+    static void vSessionTxStore(MP_Task mpTask);
   
     // selCursor
     static void vSelCursorBegin(MP_Task mpTask);
@@ -1139,8 +1139,8 @@ namespace Tasks
     static void vTaskPlanFetch(MP_Task mpTask);
     static void vTaskPlanStore(MP_Task mpTask);
     static void vTaskSeed(MP_Task mpTask);
-    static void vTaskSeitfFetch(MP_Task mpTask);
-    static void vTaskSeitfStore(MP_Task mpTask);
+    static void vTaskSessionFetch(MP_Task mpTask);
+    static void vTaskSessionStore(MP_Task mpTask);
     static void vTaskSend(MP_Task mpTask);
     static void vTaskSendNodeFetch(MP_Task mpTask);
     static void vTaskSendNodeStore(MP_Task mpTask);
@@ -1186,7 +1186,6 @@ namespace Tasks
     static void vToInt(MP_Task mpTask);
     static void vToObject(MP_Task mpTask);
     static void vToPtr(MP_Task mpTask);
-    static void vToSEitf(MP_Task mpTask);
     static void vToStr(MP_Task mpTask);
     static void vToTask(MP_Task mpTask);
     
@@ -1310,9 +1309,9 @@ namespace Tasks
     static void vZeroGreater(MP_Task mpTask);
     
   private:
-    static bool   bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
-    static bool   bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
-    //static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::SEitf* pSEitf);
+    static bool   bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, Interface::Session* pSession);
+    static bool   bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, Interface::Session* pSession);
+    //static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::Session* pSession);
     
     /*------------------------------------------------------------------------*/
     

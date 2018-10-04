@@ -298,7 +298,7 @@ void Task::vPlannerParseWhere(MP_Task mpTask)
 //  else
 //    nLastBuffers = gxArguments.m_nSlots;
 //  
-//  mpTask->m_pSEitf->vLastBuffers(nLastBuffers);
+//  mpTask->m_pSession->vLastBuffers(nLastBuffers);
   
   EXIT();
 }

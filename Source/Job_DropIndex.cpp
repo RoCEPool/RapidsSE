@@ -104,8 +104,8 @@ void Job_DropIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_DropIndex::Job_DropIndex(Interface::SEitf* pSEitf)
-: Job(CN_JOB_DROPINDEX, pSEitf)
+Job_DropIndex::Job_DropIndex(Interface::Session* pSession)
+: Job(CN_JOB_DROPINDEX, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPINDEX,_FOOTER_);
     
@@ -210,11 +210,11 @@ Footer* Job_DropIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropIndex_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_DropIndex_pre(Interface::Session* pSession)
 {
-  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(pSEitf);
+  Job_DropIndex* pJob_DropIndex = new Job_DropIndex(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_DropIndex->bPopulateJob(pTokenVec);
   
@@ -230,7 +230,7 @@ Job* JobsModel::pJob_DropIndex_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropIndex_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_DropIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pJob);
   
@@ -249,7 +249,7 @@ void JobsModel::vJob_DropIndex_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_DropIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pJob);
   

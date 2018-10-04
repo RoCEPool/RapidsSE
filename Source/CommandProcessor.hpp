@@ -37,16 +37,16 @@ namespace Interface
     bool bTokenCheck(i8 nTokens);
 
     bool bBlankLine(void);
-    void vDeleteJob(SEitf* pSEitf);
+    void vDeleteJob(Session* pSession);
     bool bFindJobClass(void);
     void vGetCommand(void);
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
     Job* pJob(void);
     JobClass* pJobClass(void);
-    void vPostJob(SEitf* pSEitf);
-    void vPreJob(SEitf* pSEitf);
-    bool bSpawnJob(SEitf* pSEitf);
+    void vPostJob(Session* pSession);
+    void vPreJob(Session* pSession);
+    bool bSpawnJob(Session* pSession);
     bool bTestFile(Stz* aPath);
 
     Token* pTkn(i8 i_Token);

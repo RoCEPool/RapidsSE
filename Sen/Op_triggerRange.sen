@@ -26,10 +26,10 @@ common/ triggerRange rbCrs /
 /*----------------------------------------------------------------------------*/
 /* triggerPlan_distributed                                                    */
 /*----------------------------------------------------------------------------*/
-: triggerRangePlan_distributed subDic triggerRange ( pSeitf profile plan -- )
+: triggerRangePlan_distributed subDic triggerRange ( pSession profile plan -- )
 
   // record the plan and profile
-  0 locals| pTablePtr thePlan profile pSeitf |
+  0 locals| pTablePtr thePlan profile pSession |
 
   //thePlan plan.id@ "Triggering plan: %v" str.format .
 
@@ -37,7 +37,7 @@ common/ triggerRange rbCrs /
   grid::partitions 0 do
 
     // << profile plan >> -->> nextOp
-    //<< pSeitf I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
+    //<< pSession I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
     //<< I "rangeOp#%v" str.format thePlan plan.id@ "rangeOp.task" >>jobQueue
   loop
 ;
@@ -58,8 +58,8 @@ common/ triggerRange rbCrs /
     valset> ( nextOp profile planId nValues )
     drop ( nextOp profile planId )
     // find plan using planId
-    planList::findPlan ( pSeitf profile plan true )
-    assert ( pSeitf profile plan )
+    planList::findPlan ( pSession profile plan true )
+    assert ( pSession profile plan )
 
     // trigger the plan
     triggerRangePlan_distributed ( )

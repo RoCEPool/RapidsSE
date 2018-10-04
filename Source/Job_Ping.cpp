@@ -104,8 +104,8 @@ void Job_Ping::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Ping::Job_Ping(Interface::SEitf* pSEitf)
-: Job(CN_JOB_PING, pSEitf)
+Job_Ping::Job_Ping(Interface::Session* pSession)
+: Job(CN_JOB_PING, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PING,_FOOTER_);
   
@@ -197,11 +197,11 @@ Footer* Job_Ping::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Ping_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_Ping_pre(Interface::Session* pSession)
 {
-  Job_Ping* pJob_Ping = new Job_Ping(pSEitf);
+  Job_Ping* pJob_Ping = new Job_Ping(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_Ping->bPopulateJob(pTokenVec);
   
@@ -217,7 +217,7 @@ Job* JobsModel::pJob_Ping_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Ping_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Ping_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Ping* pJob_Ping = _pJob_Ping(pJob);
   
@@ -240,7 +240,7 @@ void JobsModel::vJob_Ping_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Ping_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Ping_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Ping* pJob_Ping = _pJob_Ping(pJob);
   

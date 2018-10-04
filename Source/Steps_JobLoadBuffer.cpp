@@ -152,7 +152,7 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
   WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];
   pJob_SubLoader->m_pWorkingBuffer[iPartition] = nullptr;
   
-  SEitf* pSEitf = pJob_SubLoader->m_pSEitf;
+  Session* pSession = pJob_SubLoader->m_pSession;
   
   //ASSERT( (  pWorkingBuffer->bIsLast() && 0 == pWorkingBuffer->nWorkingRows()) ||
   //        ( !pWorkingBuffer->bIsLast() && pWorkingBuffer->nWorkingRows()));
@@ -164,7 +164,7 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
   JobClass* pJobClass_LoadBuffer = JobClass::pFind(CN_JOB_LOADBUFFER);
   
   Job_LoadBuffer* pJob_LoadBuffer =
-  static_cast<Job_LoadBuffer*>(pJobClass_LoadBuffer->pPreJob(pSEitf));
+  static_cast<Job_LoadBuffer*>(pJobClass_LoadBuffer->pPreJob(pSession));
   
   pJob_LoadBuffer->vSeed(SS_SEED_RUN);
   
@@ -183,7 +183,7 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the load buffer job
   
-  RapidsSE_bSpawnJob(pJob_LoadBuffer,SS_SEED_RUN,pSEitf);
+  RapidsSE_bSpawnJob(pJob_LoadBuffer,SS_SEED_RUN,pSession);
   
   EXIT();
 }

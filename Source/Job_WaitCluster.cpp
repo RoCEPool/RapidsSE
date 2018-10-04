@@ -104,8 +104,8 @@ void Job_WaitCluster::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_WaitCluster::Job_WaitCluster(Interface::SEitf* pSEitf)
-: Job(CN_JOB_WAITCLUSTER, pSEitf)
+Job_WaitCluster::Job_WaitCluster(Interface::Session* pSession)
+: Job(CN_JOB_WAITCLUSTER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WAITCLUSTER,_FOOTER_);
     
@@ -196,9 +196,9 @@ Footer* Job_WaitCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_WaitCluster_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_WaitCluster_pre(Interface::Session* pSession)
 {
-  Job_WaitCluster* pJob_WaitCluster = new Job_WaitCluster(pSEitf);
+  Job_WaitCluster* pJob_WaitCluster = new Job_WaitCluster(pSession);
   
   return pJob_WaitCluster;
 }
@@ -206,14 +206,14 @@ Job* JobsModel::pJob_WaitCluster_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_WaitCluster_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_WaitCluster_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_WaitCluster_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_WaitCluster_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_WaitCluster* pJob_WaitCluster = _pJob_WaitCluster(pJob);
   

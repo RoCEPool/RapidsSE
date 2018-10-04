@@ -104,8 +104,8 @@ void Job_CompactIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CompactIndex::Job_CompactIndex(Interface::SEitf* pSEitf)
-: Job(CN_JOB_COMPACTINDEX, pSEitf)
+Job_CompactIndex::Job_CompactIndex(Interface::Session* pSession)
+: Job(CN_JOB_COMPACTINDEX, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COMPACTINDEX,_FOOTER_);
     
@@ -202,11 +202,11 @@ Footer* Job_CompactIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CompactIndex_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_CompactIndex_pre(Interface::Session* pSession)
 {
-  Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(pSEitf);
+  Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_CompactIndex->bPopulateJob(pTokenVec);
   
@@ -222,7 +222,7 @@ Job* JobsModel::pJob_CompactIndex_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CompactIndex_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_CompactIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CompactIndex* pJob_CompactIndex = _pJob_CompactIndex(pJob);
   
@@ -241,7 +241,7 @@ void JobsModel::vJob_CompactIndex_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CompactIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_CompactIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CompactIndex* pJob_CompactIndex = _pJob_CompactIndex(pJob);
   

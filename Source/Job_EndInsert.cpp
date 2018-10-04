@@ -110,8 +110,8 @@ void Job_EndInsert::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_EndInsert::Job_EndInsert(Interface::SEitf* pSEitf)
-: Job(CN_JOB_ENDINSERT, pSEitf)
+Job_EndInsert::Job_EndInsert(Interface::Session* pSession)
+: Job(CN_JOB_ENDINSERT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ENDINSERT,_FOOTER_);
   
@@ -186,11 +186,11 @@ Footer* Job_EndInsert::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_EndInsert_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_EndInsert_pre(Interface::Session* pSession)
 {
-  Job_EndInsert* pJob_EndInsert = new Job_EndInsert(pSEitf);
+  Job_EndInsert* pJob_EndInsert = new Job_EndInsert(pSession);
   
-//  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+//  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
 //
 //  bool bResult = pJob_EndInsert->bPopulateJob(pTokenVec);
 //
@@ -206,7 +206,7 @@ Job* JobsModel::pJob_EndInsert_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_EndInsert_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_EndInsert_post(Interface::Session* pSession, Job* pJob)
 {
   Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJob);
   
@@ -232,7 +232,7 @@ Job* JobsModel::pJob_EndInsert_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_EndInsert_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_EndInsert_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJob);
   

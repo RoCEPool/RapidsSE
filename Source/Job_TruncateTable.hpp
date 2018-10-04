@@ -20,7 +20,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_TruncateTable(Interface::SEitf* pSEitf);
+    Job_TruncateTable(Interface::Session* pSession);
     ~Job_TruncateTable(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -37,9 +37,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_TruncateTable* _pJob_TruncateTable(void* aAddr);
   
-  Job* pJob_TruncateTable_pre(Interface::SEitf* pSEitf);
-  void vJob_TruncateTable_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_TruncateTable_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_TruncateTable_pre(Interface::Session* pSession);
+  void vJob_TruncateTable_post(Interface::Session* pSession, Job* pJob);
+  void vJob_TruncateTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_TruncateTable_show(Job* pJob);
   
   JobClass* pJob_TruncateTable_class(pFUN** aaFun);

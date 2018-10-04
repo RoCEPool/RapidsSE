@@ -101,8 +101,8 @@ void Job_Prompt::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Prompt::Job_Prompt(Interface::SEitf* pSEitf)
-: Job(CN_JOB_PROMPT, pSEitf)
+Job_Prompt::Job_Prompt(Interface::Session* pSession)
+: Job(CN_JOB_PROMPT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PROMPT,_FOOTER_);
     
@@ -176,7 +176,7 @@ Job* JobsModel::pJob_Prompt_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Prompt_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Prompt_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Prompt* pJob_Prompt = _pJob_Prompt(pJob);
   

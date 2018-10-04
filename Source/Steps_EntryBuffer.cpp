@@ -188,7 +188,7 @@ void Task::vEntryBufferIndexStore(MP_Task mpTask)
 //  Entry* pOldEntry = _pEntry(pPtrOldEntry);
 //  ASSERT(CN_ENTRY == pOldEntry->eClass());
 //
-//  bool bInserted = bInsertRow(pIndexBuffer, pOldEntry, mpTask->m_pSEitf);
+//  bool bInserted = bInsertRow(pIndexBuffer, pOldEntry, mpTask->m_pSession);
 //  if (bInserted)
 //    mpTask->m_pDataStack->vPushInt(1);
 //  else

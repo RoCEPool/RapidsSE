@@ -228,11 +228,11 @@ void RapidsSE::vDeleteImmmediate(Task** ppTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete an seitf instance                                                   */
+/* delete an se session                                                       */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vDeleteSEitf(SEitf* pSEitf)
+void RapidsSE::vDeleteSession(Session* pSession)
 {
-  delete pSEitf;
+  delete pSession;
 }
 
 /*----------------------------------------------------------------------------*/

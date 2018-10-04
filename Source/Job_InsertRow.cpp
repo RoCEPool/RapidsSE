@@ -104,8 +104,8 @@ void Job_InsertRow::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InsertRow::Job_InsertRow(Interface::SEitf* pSEitf)
-: Job(CN_JOB_INSERTROW, pSEitf)
+Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
+: Job(CN_JOB_INSERTROW, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   
@@ -277,11 +277,11 @@ Footer* Job_InsertRow::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_InsertRow_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_InsertRow_pre(Interface::Session* pSession)
 {
-  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSEitf);
+  Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_InsertRow->bPopulateJob(pTokenVec);
   
@@ -297,7 +297,7 @@ Job* JobsModel::pJob_InsertRow_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_InsertRow_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_InsertRow_post(Interface::Session* pSession, Job* pJob)
 {
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJob);
   
@@ -323,7 +323,7 @@ Job* JobsModel::pJob_InsertRow_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_InsertRow_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_InsertRow_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJob);
   

@@ -27,7 +27,7 @@ namespace StorageEngine
     static void vClosePool(void);
     static void vCreateAttachMap(void);
     static void vDeleteImmmediate(Task** ppTask);
-    static void vDeleteSEitf(SEitf* pSEitf);
+    static void vDeleteSession(Session* pSession);
     static void vErrorHandler(Error* pError);
     static void vKillPrev(void);
     static void vMainEntry(void);

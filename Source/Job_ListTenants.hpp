@@ -18,7 +18,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_ListTenants(Interface::SEitf* pSEitf);
+    Job_ListTenants(Interface::Session* pSession);
     ~Job_ListTenants(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,9 +35,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_ListTenants* _pJob_ListTenants(void* aAddr);
   
-  Job* pJob_ListTenants_pre(Interface::SEitf* pSEitf);
-  void vJob_ListTenants_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_ListTenants_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_ListTenants_pre(Interface::Session* pSession);
+  void vJob_ListTenants_post(Interface::Session* pSession, Job* pJob);
+  void vJob_ListTenants_delete(Interface::Session* pSession, Job* pJob);
   void vJob_ListTenants_show(Job* pJob);
   
   JobClass* pJob_ListTenants_class(pFUN** aaFun);

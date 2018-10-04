@@ -32,8 +32,8 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.plan@"_Stz,     &Task::vTaskPlanFetch,     false);
   vAddStep("task.plan!"_Stz,     &Task::vTaskPlanStore,     false);
   vAddStep("task.seed"_Stz,      &Task::vTaskSeed,          false);
-  vAddStep("task.seitf@"_Stz,    &Task::vTaskSeitfFetch,    false);
-  vAddStep("task.seitf!"_Stz,    &Task::vTaskSeitfStore,    false);
+  vAddStep("task.session@"_Stz,  &Task::vTaskSessionFetch,  false);
+  vAddStep("task.session!"_Stz,  &Task::vTaskSessionStore,  false);
   vAddStep("task.sleep"_Stz,     &Task::vTaskSleep,         false);
   vAddStep("task.send"_Stz,      &Task::vTaskSend,          false);
   vAddStep("task.sendNode@"_Stz, &Task::vTaskSendNodeFetch, false);
@@ -399,18 +399,18 @@ ENTRY("vTaskSeed"_Stz);
 /*----------------------------------------------------------------------------*/
 /* task.seitf@ -- fetch SEitf of task on data stack                           */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSeitfFetch(MP_Task mpTask)
+void Task::vTaskSessionFetch(MP_Task mpTask)
 {
-  ENTRY("vTaskSeitfFetch"_Stz);
+  ENTRY("vTaskSessionFetch"_Stz);
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("task.seitf@"_Stz);
   Task* pThatTask = _pTask(pObject);
   
-  SEitf* pSEitf = pThatTask->m_pSEitf;
+  Session* pSession = pThatTask->m_pSession;
   
-  Object* pPtrSEitf= pSEitf;
+  Object* pPtrSEitf= pSession;
   
   mpTask->m_pDataStack->vPushObject(pPtrSEitf);
   
@@ -420,9 +420,9 @@ void Task::vTaskSeitfFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* task.seitf! -- store SEitf on data stack into task on data stack           */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskSeitfStore(MP_Task mpTask)
+void Task::vTaskSessionStore(MP_Task mpTask)
 {
-  ENTRY("vTaskSeitfStore"_Stz);
+  ENTRY("vTaskSessionStore"_Stz);
   
   Object* pTaskObject;
   if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
@@ -434,10 +434,10 @@ void Task::vTaskSeitfStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("task.seitf!"_Stz);
   
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
+  Session* pSession = _pSession(pPtrSEitf);
+  ASSERT(! pSession || CN_SESSION == pSession->eClass());
   
-  pThatTask->m_pSEitf = pSEitf;
+  pThatTask->m_pSession = pSession;
   
   EXIT();
 }

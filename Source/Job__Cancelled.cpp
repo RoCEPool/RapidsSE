@@ -172,7 +172,7 @@ Footer* Job__Cancelled::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob__Cancelled_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob__Cancelled_delete(Interface::Session* pSession, Job* pJob)
 {
   Job__Cancelled* pJob__Cancelled = _pJob__Cancelled(pJob);
   

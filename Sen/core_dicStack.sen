@@ -193,7 +193,7 @@
       then
       object@ word.prev object!       // step backwards thru words
     next
-    iCount task::this task.seitf@ seitf.rowsProcessed
+    iCount task::this task.seitf@ session.rowsProcessed
 
   else
     ""                              // initial contents string

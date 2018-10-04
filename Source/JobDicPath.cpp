@@ -26,20 +26,20 @@ void* JobDicPath::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 JobDicPath::JobDicPath(void)
 {
-  m_pSEitf = nullptr;
+  m_pSession = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobDicPath::JobDicPath(Interface::SEitf* pSEitf)
+JobDicPath::JobDicPath(Interface::Session* pSession)
 {
-  m_pSEitf = pSEitf;
+  m_pSession = pSession;
   
-  if (pSEitf) {
-    m_xDicPath.m_iDicDepth = pSEitf->m_xPathStack.iCount();
+  if (pSession) {
+    m_xDicPath.m_iDicDepth = pSession->m_xPathStack.iCount();
     for (i8 i_DicStack = 0; i_DicStack < m_xDicPath.m_iDicDepth; i_DicStack++)
-      m_xDicPath.m_sDicPath[i_DicStack] = pSEitf->m_xPathStack.pPick(i_DicStack)->sName();
+      m_xDicPath.m_sDicPath[i_DicStack] = pSession->m_xPathStack.pPick(i_DicStack)->sName();
   }
 }
 

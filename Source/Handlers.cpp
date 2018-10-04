@@ -47,7 +47,7 @@ void Handlers::vAckTaskHandler(Task* pTaskBeingAcked, Task* pTaskAcking)
 void Handlers::vSpawnedTaskHandler(Task* pTask)
 {
   //
-  // this handler is called from SEitf::bSpawnJob()
+  // this handler is called from session::bSpawnJob()
   // we want to run given task. task should be ready to run
   //
     

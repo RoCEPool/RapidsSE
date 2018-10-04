@@ -37,7 +37,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job__Executed* _pJob__Executed(void* aAddr);
   
-  void vJob__Executed_delete(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob__Executed_delete(Interface::Session* pSession, Job* pJob);
   
   JobClass* pJob__Executed_class(pFUN** aaFun);
 }

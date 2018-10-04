@@ -104,8 +104,8 @@ void Job_ConnectCluster::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ConnectCluster::Job_ConnectCluster(Interface::SEitf* pSEitf)
-: Job(CN_JOB_CONNECTCLUSTER, pSEitf)
+Job_ConnectCluster::Job_ConnectCluster(Interface::Session* pSession)
+: Job(CN_JOB_CONNECTCLUSTER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CONNECTCLUSTER,_FOOTER_);
   
@@ -195,11 +195,11 @@ Footer* Job_ConnectCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ConnectCluster_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_ConnectCluster_pre(Interface::Session* pSession)
 {
-  Job_ConnectCluster* pJob_ConnectCluster = new Job_ConnectCluster(pSEitf);
+  Job_ConnectCluster* pJob_ConnectCluster = new Job_ConnectCluster(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_ConnectCluster->bPopulateJob(pTokenVec);
   
@@ -215,14 +215,14 @@ Job* JobsModel::pJob_ConnectCluster_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ConnectCluster_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_ConnectCluster_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ConnectCluster_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_ConnectCluster_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_ConnectCluster* pJob_ConnectCluster = _pJob_ConnectCluster(pJob);
   

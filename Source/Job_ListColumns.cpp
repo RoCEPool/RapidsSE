@@ -104,8 +104,8 @@ void Job_ListColumns::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_ListColumns::Job_ListColumns(Interface::SEitf* pSEitf)
-: Job(CN_JOB_LISTCOLUMNS, pSEitf)
+Job_ListColumns::Job_ListColumns(Interface::Session* pSession)
+: Job(CN_JOB_LISTCOLUMNS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCOLUMNS,_FOOTER_);
   
@@ -201,11 +201,11 @@ Footer* Job_ListColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ListColumns_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_ListColumns_pre(Interface::Session* pSession)
 {
-  Job_ListColumns* pJob_ListColumns = new Job_ListColumns(pSEitf);
+  Job_ListColumns* pJob_ListColumns = new Job_ListColumns(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_ListColumns->bPopulateJob(pTokenVec);
   
@@ -221,7 +221,7 @@ Job* JobsModel::pJob_ListColumns_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListColumns_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
 {
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJob);
   
@@ -248,7 +248,7 @@ void JobsModel::vJob_ListColumns_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListColumns_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_ListColumns_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJob);
   

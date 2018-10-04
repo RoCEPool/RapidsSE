@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Interface::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(SEitf)     < C_SIZE_MEDIUM_OBJECT);
+  ASSERT(sizeof(Session)     < C_SIZE_MEDIUM_OBJECT);
 }
 
 /*============================================================================*/

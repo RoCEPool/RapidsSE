@@ -275,7 +275,7 @@ void Task::vJobDelete(MP_Task mpTask)
   JobClass* pJobClass = JobClass::pFind(eClass);
   
   // call the job delete function
-  pJobClass->vDeleteJob(nullptr, pJob);  // come back to this, remove seitf as parameter to delete
+  pJobClass->vDeleteJob(nullptr, pJob);  // come back to this, remove session as parameter to delete
   
   EXIT();
 }
@@ -954,7 +954,7 @@ void Task::vJobRecv(MP_Task mpTask)
   JobClass* pJobClass = JobClass::pFind(eClass);
   
   // call the job post-receive function
-  pJobClass->vRecvJob(pJob);  // come back to this, remove seitf as parameter to delete
+  pJobClass->vRecvJob(pJob);  // come back to this, remove session as parameter to delete
   
   EXIT();
 }
@@ -1125,7 +1125,7 @@ void Task::vJobSend(MP_Task mpTask)
   JobClass* pJobClass = JobClass::pFind(eClass);
   
   // call the job pre-send function
-  pJobClass->vSendJob(pJob);  // come back to this, remove seitf as parameter to delete
+  pJobClass->vSendJob(pJob);  // come back to this, remove session as parameter to delete
   
   EXIT();
 }

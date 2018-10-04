@@ -19,7 +19,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_DropSchema(Interface::SEitf* pSEitf);
+    Job_DropSchema(Interface::Session* pSession);
     ~Job_DropSchema(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,9 +35,9 @@ namespace JobsModel
   
   Job_DropSchema* _pJob_DropSchema(void* aAddr);
   
-  Job* pJob_DropSchema_pre(Interface::SEitf* pSEitf);
-  void vJob_DropSchema_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_DropSchema_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_DropSchema_pre(Interface::Session* pSession);
+  void vJob_DropSchema_post(Interface::Session* pSession, Job* pJob);
+  void vJob_DropSchema_delete(Interface::Session* pSession, Job* pJob);
   void vJob_DropSchema_show(Job* pJob);
   
   JobClass* pJob_DropSchema_class(pFUN** aaFun);

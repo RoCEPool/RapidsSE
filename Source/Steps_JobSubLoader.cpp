@@ -116,13 +116,13 @@ void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  SEitf* pSEitf = pJob_LoadTable->m_pSEitf;
+  Session* pSession = pJob_LoadTable->m_pSession;
   
   //! this needs to be optimised
   JobClass* pJobClass_SubLoader = JobClass::pFind(CN_JOB_SUBLOADER);
   
   Job_SubLoader* pJob_SubLoader =
-  static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(pSEitf));
+  static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(pSession));
   
   pJob_SubLoader->vSeed(SS_SEED_RUN);
   
@@ -132,7 +132,7 @@ void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RapidsSE_bSpawnJob(pJob_SubLoader,SS_SEED_RUN,pSEitf);
+  RapidsSE_bSpawnJob(pJob_SubLoader,SS_SEED_RUN,pSession);
   
   EXIT();
 }

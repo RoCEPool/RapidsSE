@@ -170,7 +170,7 @@ Footer* Job__End::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob__End_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob__End_delete(Interface::Session* pSession, Job* pJob)
 {
   Job__End* pJob__End = _pJob__End(pJob);
   

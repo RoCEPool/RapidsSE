@@ -18,7 +18,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_Pwf(Interface::SEitf* pSEitf);
+    Job_Pwf(Interface::Session* pSession);
     ~Job_Pwf(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,9 +35,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_Pwf* _pJob_Pwf(void* aAddr);
   
-  Job* pJob_Pwf_pre(Interface::SEitf* pSEitf);
-  void vJob_Pwf_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_Pwf_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_Pwf_pre(Interface::Session* pSession);
+  void vJob_Pwf_post(Interface::Session* pSession, Job* pJob);
+  void vJob_Pwf_delete(Interface::Session* pSession, Job* pJob);
   void vJob_Pwf_show(Job* pJob);
   
   JobClass* pJob_Pwf_class(pFUN** aaFun);

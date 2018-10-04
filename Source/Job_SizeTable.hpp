@@ -18,7 +18,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SizeTable(Interface::SEitf* pSEitf);
+    Job_SizeTable(Interface::Session* pSession);
     ~Job_SizeTable(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,9 +35,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SizeTable* _pJob_SizeTable(void* aAddr);
   
-  Job* pJob_SizeTable_pre(Interface::SEitf* pSEitf);
-  void vJob_SizeTable_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_SizeTable_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_SizeTable_pre(Interface::Session* pSession);
+  void vJob_SizeTable_post(Interface::Session* pSession, Job* pJob);
+  void vJob_SizeTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SizeTable_show(Job* pJob);
   
   JobClass* pJob_SizeTable_class(pFUN** aaFun);

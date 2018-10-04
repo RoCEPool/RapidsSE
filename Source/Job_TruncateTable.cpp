@@ -104,8 +104,8 @@ void Job_TruncateTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_TruncateTable::Job_TruncateTable(Interface::SEitf* pSEitf)
-: Job(CN_JOB_TRUNCATETABLE, pSEitf)
+Job_TruncateTable::Job_TruncateTable(Interface::Session* pSession)
+: Job(CN_JOB_TRUNCATETABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
     
@@ -200,11 +200,11 @@ Footer* Job_TruncateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_TruncateTable_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_TruncateTable_pre(Interface::Session* pSession)
 {
-  Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(pSEitf);
+  Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_TruncateTable->bPopulateJob(pTokenVec);
   
@@ -220,7 +220,7 @@ Job* JobsModel::pJob_TruncateTable_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_TruncateTable_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_TruncateTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJob);
   
@@ -239,7 +239,7 @@ void JobsModel::vJob_TruncateTable_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_TruncateTable_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_TruncateTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJob);
   

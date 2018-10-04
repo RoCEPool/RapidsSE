@@ -204,7 +204,7 @@ enum eCN : u2 // Class Number
   
   /* 169 */ CN_SCANBUFFER,
   /* 170 */ CN_SCRATCH,
-  /* 171 */ CN_SEITF,
+  /* 171 */ CN_SESSION,
   /* 172 */ CN_SELCURSOR,
   /* 173 */ CN_SEMAPHORE,
   /* 174 */ CN_SEPROMPT,
@@ -446,7 +446,7 @@ static Stz* aCN[]
   
   /* 169 */ "SCANBUFFER"_Stz,          // CN_SCANBUFFER
   /* 170 */ "SCRATCH"_Stz,             // CN_SCRATCH
-  /* 171 */ "SEITF"_Stz,               // CN_SEITF
+  /* 171 */ "SEITF"_Stz,               // CN_SESSION
   /* 172 */ "SELCURSOR"_Stz,           // CN_SELCURSOR
   /* 173 */ "SEMAPHORE"_Stz,           // CN_SEMAPHORE
   /* 174 */ "SEPROMPT"_Stz,            // CN_SEPROMPT

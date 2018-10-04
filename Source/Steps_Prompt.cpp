@@ -17,7 +17,7 @@ void Step::vAddSteps_Prompt(void)
   vAddStep("prompt.executeFunction"_Stz,  &Task::vPromptExecuteFunction,  false);
   vAddStep("prompt.getCommand"_Stz,       &Task::vPromptGetCommand,       false);
   vAddStep("prompt::new"_Stz,             &Task::vPromptNew,              false);
-  vAddStep("prompt.SEitf"_Stz,            &Task::vPromptSEitf,            false);
+  vAddStep("prompt.session"_Stz,          &Task::vPromptSession,          false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,20 +92,20 @@ void Task::vPromptNew(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt.SEitf -- get se interface                                           */
+/* prompt.session -- get se session                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vPromptSEitf(MP_Task mpTask)
+void Task::vPromptSession(MP_Task mpTask)
 {
-  ENTRY("vPromptSEitf"_Stz);
+  ENTRY("vPromptSession"_Stz);
   
   Object* pSePromptObject;
   if ( ! mpTask->m_pDataStack->bPop(pSePromptObject) )
-    THROW_INVALID_DSTACK("prompt.SEitf"_Stz);
+    THROW_INVALID_DSTACK("prompt.session"_Stz);
   SePrompt* pSePrompt = _pSePrompt(pSePromptObject);
   
-  SEitf* pSEitf = pSePrompt->pSEitf();
+  Session* pSession = pSePrompt->pSession();
   
-  mpTask->m_pDataStack->vPushObject(pSEitf);
+  mpTask->m_pDataStack->vPushObject(pSession);
   
   EXIT();
 }

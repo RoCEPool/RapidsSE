@@ -107,7 +107,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RowCursor();
   Step::vAddSteps_Rstack();
   
-  Step::vAddSteps_SEitf();
+  Step::vAddSteps_Session();
   Step::vAddSteps_SelCursor();
   Step::vAddSteps_Semaphore();
   Step::vAddSteps_Shell();

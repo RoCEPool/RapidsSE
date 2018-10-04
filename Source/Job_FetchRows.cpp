@@ -104,8 +104,8 @@ void Job_FetchRows::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_FetchRows::Job_FetchRows(Interface::SEitf* pSEitf)
-: Job(CN_JOB_FETCHROWS, pSEitf)
+Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
+: Job(CN_JOB_FETCHROWS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
     
@@ -333,11 +333,11 @@ Footer* Job_FetchRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_FetchRows_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_FetchRows_pre(Interface::Session* pSession)
 {
-  Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSEitf);
+  Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_FetchRows->bPopulateJob(pTokenVec);
   
@@ -353,7 +353,7 @@ Job* JobsModel::pJob_FetchRows_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   
@@ -405,7 +405,7 @@ void JobsModel::vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_FetchRows_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   

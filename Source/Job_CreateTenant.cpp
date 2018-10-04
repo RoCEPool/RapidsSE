@@ -104,8 +104,8 @@ void Job_CreateTenant::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateTenant::Job_CreateTenant(Interface::SEitf* pSEitf)
-: Job(CN_JOB_CREATETENANT, pSEitf)
+Job_CreateTenant::Job_CreateTenant(Interface::Session* pSession)
+: Job(CN_JOB_CREATETENANT, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETENANT,_FOOTER_);
     
@@ -199,11 +199,11 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateTenant_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_CreateTenant_pre(Interface::Session* pSession)
 {
-  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSEitf);
+  Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_CreateTenant->bPopulateJob(pTokenVec);
   
@@ -219,7 +219,7 @@ Job* JobsModel::pJob_CreateTenant_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateTenant_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_CreateTenant_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
   
@@ -238,7 +238,7 @@ void JobsModel::vJob_CreateTenant_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateTenant_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_CreateTenant_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
   

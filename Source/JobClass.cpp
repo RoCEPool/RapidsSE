@@ -43,25 +43,25 @@ Job* JobClass::pNewJob(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* delete the job by running the delete-function                              */
 /*----------------------------------------------------------------------------*/
-void JobClass::vDeleteJob(Interface::SEitf* pSEitf, Job* pJob)
+void JobClass::vDeleteJob(Interface::Session* pSession, Job* pJob)
 {
-  (*m_fDelete)(pSEitf, pJob);
+  (*m_fDelete)(pSession, pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* end the job by running the post-function                                   */
 /*----------------------------------------------------------------------------*/
-void JobClass::vPostJob(Interface::SEitf* pSEitf, Job* pJob)
+void JobClass::vPostJob(Interface::Session* pSession, Job* pJob)
 {
-  (*m_fPost)(pSEitf, pJob);
+  (*m_fPost)(pSession, pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* create a new job by running the pre-function                                */
 /*----------------------------------------------------------------------------*/
-Job* JobClass::pPreJob(Interface::SEitf* pSEitf)
+Job* JobClass::pPreJob(Interface::Session* pSession)
 {
-  Job* pJob = (*m_fPre)(pSEitf);
+  Job* pJob = (*m_fPre)(pSession);
   
   pJob->m_pJobClass = this;
   pJob->m_eJobTrace = m_eTrace;

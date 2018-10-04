@@ -21,7 +21,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_SubTruncate(Interface::SEitf* pSEitf);
+    Job_SubTruncate(Interface::Session* pSession);
     ~Job_SubTruncate(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -37,9 +37,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_SubTruncate* _pJob_SubTruncate(void* aAddr);
   
-  Job* pJob_SubTruncate_pre(Interface::SEitf* pSEitf);
-  void vJob_SubTruncate_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_SubTruncate_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_SubTruncate_pre(Interface::Session* pSession);
+  void vJob_SubTruncate_post(Interface::Session* pSession, Job* pJob);
+  void vJob_SubTruncate_delete(Interface::Session* pSession, Job* pJob);
   void vJob_SubTruncate_show(Job* pJob);
   
   JobClass* pJob_SubTruncate_class(pFUN** aaFun);

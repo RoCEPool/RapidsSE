@@ -104,8 +104,8 @@ void Job_AnalyzeTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_AnalyzeTable::Job_AnalyzeTable(Interface::SEitf* pSEitf)
-: Job(CN_JOB_ANALYZETABLE, pSEitf)
+Job_AnalyzeTable::Job_AnalyzeTable(Interface::Session* pSession)
+: Job(CN_JOB_ANALYZETABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZETABLE,_FOOTER_);
     
@@ -202,11 +202,11 @@ Footer* Job_AnalyzeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_AnalyzeTable_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_AnalyzeTable_pre(Interface::Session* pSession)
 {
-  Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSEitf);
+  Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_AnalyzeTable->bPopulateJob(pTokenVec);
   
@@ -222,7 +222,7 @@ Job* JobsModel::pJob_AnalyzeTable_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_AnalyzeTable_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_AnalyzeTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pJob);
   
@@ -252,7 +252,7 @@ void JobsModel::vJob_AnalyzeTable_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_AnalyzeTable_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_AnalyzeTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pJob);
   

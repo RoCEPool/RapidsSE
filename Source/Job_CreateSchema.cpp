@@ -104,8 +104,8 @@ void Job_CreateSchema::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateSchema::Job_CreateSchema(Interface::SEitf* pSEitf)
-: Job(CN_JOB_CREATESCHEMA, pSEitf)
+Job_CreateSchema::Job_CreateSchema(Interface::Session* pSession)
+: Job(CN_JOB_CREATESCHEMA, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATESCHEMA,_FOOTER_);
     
@@ -200,11 +200,11 @@ Footer* Job_CreateSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateSchema_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_CreateSchema_pre(Interface::Session* pSession)
 {
-  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(pSEitf);
+  Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_CreateSchema->bPopulateJob(pTokenVec);
   
@@ -220,7 +220,7 @@ Job* JobsModel::pJob_CreateSchema_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateSchema_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_CreateSchema_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pJob);
   
@@ -239,7 +239,7 @@ void JobsModel::vJob_CreateSchema_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateSchema_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_CreateSchema_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pJob);
   

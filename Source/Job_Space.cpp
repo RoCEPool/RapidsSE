@@ -104,8 +104,8 @@ void Job_Space::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Space::Job_Space(Interface::SEitf* pSEitf)
-: Job(CN_JOB_SPACE, pSEitf)
+Job_Space::Job_Space(Interface::Session* pSession)
+: Job(CN_JOB_SPACE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SPACE,_FOOTER_);
   
@@ -196,11 +196,11 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Space_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_Space_pre(Interface::Session* pSession)
 {
-  Job_Space* pJob_Space = new Job_Space(pSEitf);
+  Job_Space* pJob_Space = new Job_Space(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_Space->bPopulateJob(pTokenVec);
   
@@ -216,7 +216,7 @@ Job* JobsModel::pJob_Space_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Space_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Space_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Space* pJob_Space = _pJob_Space(pJob);
 
@@ -243,7 +243,7 @@ void JobsModel::vJob_Space_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Space_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Space_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Space* pJob_Space = _pJob_Space(pJob);
   

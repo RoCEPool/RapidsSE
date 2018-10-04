@@ -104,8 +104,8 @@ void Job_StartCluster::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_StartCluster::Job_StartCluster(Interface::SEitf* pSEitf)
-: Job(CN_JOB_STARTCLUSTER, pSEitf)
+Job_StartCluster::Job_StartCluster(Interface::Session* pSession)
+: Job(CN_JOB_STARTCLUSTER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STARTCLUSTER,_FOOTER_);
   
@@ -195,11 +195,11 @@ Footer* Job_StartCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_StartCluster_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_StartCluster_pre(Interface::Session* pSession)
 {
-  Job_StartCluster* pJob_StartCluster = new Job_StartCluster(pSEitf);
+  Job_StartCluster* pJob_StartCluster = new Job_StartCluster(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_StartCluster->bPopulateJob(pTokenVec);
   
@@ -215,14 +215,14 @@ Job* JobsModel::pJob_StartCluster_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_StartCluster_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_StartCluster_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_StartCluster_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_StartCluster_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_StartCluster* pJob_StartCluster = _pJob_StartCluster(pJob);
   

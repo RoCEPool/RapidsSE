@@ -104,8 +104,8 @@ void Job_SizeTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SizeTable::Job_SizeTable(Interface::SEitf* pSEitf)
-: Job(CN_JOB_SIZETABLE, pSEitf)
+Job_SizeTable::Job_SizeTable(Interface::Session* pSession)
+: Job(CN_JOB_SIZETABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SIZETABLE,_FOOTER_);
     
@@ -197,11 +197,11 @@ Footer* Job_SizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_SizeTable_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_SizeTable_pre(Interface::Session* pSession)
 {
-  Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSEitf);
+  Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_SizeTable->bPopulateJob(pTokenVec);
   
@@ -217,7 +217,7 @@ Job* JobsModel::pJob_SizeTable_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SizeTable_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_SizeTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_SizeTable* pJob_SizeTable = _pJob_SizeTable(pJob);
   
@@ -246,7 +246,7 @@ void JobsModel::vJob_SizeTable_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SizeTable_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_SizeTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SizeTable* pJob_SizeTable = _pJob_SizeTable(pJob);
   

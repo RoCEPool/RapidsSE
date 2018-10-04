@@ -29,7 +29,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_FetchRows(Interface::SEitf* pSEitf);
+    Job_FetchRows(Interface::Session* pSession);
     ~Job_FetchRows(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -47,9 +47,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_FetchRows* _pJob_FetchRows(void* aAddr);
   
-  Job* pJob_FetchRows_pre(Interface::SEitf* pSEitf);
-  void vJob_FetchRows_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_FetchRows_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_FetchRows_pre(Interface::Session* pSession);
+  void vJob_FetchRows_post(Interface::Session* pSession, Job* pJob);
+  void vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob);
   void vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer);
   void vJob_FetchRows_show(Job* pJob);
   

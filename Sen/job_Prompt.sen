@@ -12,15 +12,15 @@
   <SEED_RUN>
 
   0 locals| pPrompt |
-  0 locals| pSEitf |
+  0 locals| pSession |
   0 locals| pCommandProcessor |
   0 locals| eCommand |
   0 locals| pJob |
 
   prompt::new to pPrompt
 
-  pPrompt prompt.SEitf to pSEitf
-  pSEitf seitf.commandProcessor to pCommandProcessor
+  pPrompt prompt.SEitf to pSession
+  pSession session.commandProcessor to pCommandProcessor
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin pPrompt prompt.continue while
@@ -59,13 +59,13 @@
     then
 
     // create the job for the command
-    pSEitf pCommandProcessor commandProcessor.preJob to pJob
+    pSession pCommandProcessor commandProcessor.preJob to pJob
 
     // test for error
     pJob job.hasError if
       //"job has error (maybe syntax error)" .
-      pSEitf pCommandProcessor commandProcessor.postJob
-      pSEitf pCommandProcessor commandProcessor.deleteJob
+      pSession pCommandProcessor commandProcessor.postJob
+      pSession pCommandProcessor commandProcessor.deleteJob
       ifAgain
     then
 
@@ -79,15 +79,15 @@
     1 setAcks
 
     // spawn the job
-    pSEitf pCommandProcessor commandProcessor.spawnJob
+    pSession pCommandProcessor commandProcessor.spawnJob
 
     // wait for ack from job
     "prompt waiting for ack" .
     ackWait
 
     // post process and delete the job
-    pSEitf pCommandProcessor commandProcessor.postJob
-    pSEitf pCommandProcessor commandProcessor.deleteJob
+    pSession pCommandProcessor commandProcessor.postJob
+    pSession pCommandProcessor commandProcessor.deleteJob
 
   repeat
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

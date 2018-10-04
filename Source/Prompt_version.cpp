@@ -29,7 +29,7 @@ bool Prompt::bPrompt_version(SePrompt* pPrompt)
   args.metadata if
     "(version VARCHAR)" metadata!
     "')" version "row: ('" "%v%v%v\n" str.format
-    1 task::this task.seitf@ seitf.rowsProcessed
+    1 task::this task.session@ session.rowsProcessed
     else
       version
       then

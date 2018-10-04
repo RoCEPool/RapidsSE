@@ -57,13 +57,13 @@ void Task::vCommandProcessorDeleteJob(MP_Task mpTask)
   CommandProcessor*
   pCommandProcessor = _pCommandProcessor(pCommandProcessorObj);
   
-  Object* pSEitfObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
+  Object* pSessionObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSessionObject) )
     THROW_INVALID_DSTACK("commandProcessor.deleteJob"_Stz);
-  SEitf*
-  pSEitf = _pSEitf(pSEitfObject);
+  Session*
+  pSession = _pSession(pSessionObject);
   
-  pCommandProcessor->vDeleteJob(pSEitf);
+  pCommandProcessor->vDeleteJob(pSession);
   
   EXIT();
 }
@@ -159,13 +159,13 @@ void Task::vCommandProcessorPostJob(MP_Task mpTask)
   CommandProcessor*
   pCommandProcessor = _pCommandProcessor(pCommandProcessorObj);
   
-  Object* pSEitfObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
+  Object* pSessionObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSessionObject) )
     THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
-  SEitf*
-  pSEitf = _pSEitf(pSEitfObject);
+  Session*
+  pSession = _pSession(pSessionObject);
   
-  pCommandProcessor->vPostJob(pSEitf);
+  pCommandProcessor->vPostJob(pSession);
   
   EXIT();
 }
@@ -183,12 +183,12 @@ void Task::vCommandProcessorPreJob(MP_Task mpTask)
   CommandProcessor*
   pCommandProcessor = _pCommandProcessor(pCommandProcessorObj);
   
-  Object* pSEitfObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
+  Object* pSessionObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSessionObject) )
     THROW_INVALID_DSTACK("commandProcessor.postJob"_Stz);
-  SEitf* pSEitf = _pSEitf(pSEitfObject);
+  Session* pSession = _pSession(pSessionObject);
   
-  pCommandProcessor->vPreJob(pSEitf);
+  pCommandProcessor->vPreJob(pSession);
   
   Job* pJob = pCommandProcessor->pJob();
   
@@ -212,13 +212,13 @@ void Task::vCommandProcessorSpawnJob(MP_Task mpTask)
   CommandProcessor*
   pCommandProcessor = _pCommandProcessor(pCommandProcessorObj);
   
-  Object* pSEitfObject;
-  if ( ! mpTask->m_pDataStack->bPop(pSEitfObject) )
+  Object* pSessionObject;
+  if ( ! mpTask->m_pDataStack->bPop(pSessionObject) )
     THROW_INVALID_DSTACK("commandProcessor.spawnJob"_Stz);
-  SEitf*
-  pSEitf = _pSEitf(pSEitfObject);
+  Session*
+  pSession = _pSession(pSessionObject);
   
-  pCommandProcessor->bSpawnJob(pSEitf);
+  pCommandProcessor->bSpawnJob(pSession);
   
   EXIT();
 }

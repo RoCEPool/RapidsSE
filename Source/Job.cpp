@@ -59,8 +59,8 @@ Job::Job(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job::Job(eCN eClassNo, SEitf* pSEitf)
-: Object(eClassNo), JobDicPath(pSEitf)
+Job::Job(eCN eClassNo, Session* pSession)
+: Object(eClassNo), JobDicPath(pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   

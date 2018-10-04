@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SEitf.cpp - se interface                                                   */
+/* Session.cpp - se session                                                   */
 /*============================================================================*/
 
 #include "Interface.h"
@@ -9,48 +9,48 @@ extern AttachMap* gpAttachMap;
 
 struct ReqTable {
   Stz* aCommand;
-  bool (SEitf::*aFunc)(TokenVec& xTokenVec, i8 iReqNo);
+  bool (Session::*aFunc)(TokenVec& xTokenVec, i8 iReqNo);
   Stz* aRequest;
 };
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SEitf* Interface::_pSEitf(void* aAddr)
+Session* Interface::_pSession(void* aAddr)
 {
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(aAddr);
+  Session* pSession = reinterpret_cast<Session*>(aAddr);
   
-  if (pSEitf && CN_SEITF != pSEitf->eClass())
-    vTrace("INVALID SEITF %p %s\n"_Stz, pSEitf, aCN[pSEitf->eClass()]);
+  if (pSession && CN_SESSION != pSession->eClass())
+    vTrace("INVALID SESSION %p %s\n"_Stz, pSession, aCN[pSession->eClass()]);
   
-  RASSERT( !pSEitf || CN_SEITF == pSEitf->eClass() );
+  RASSERT( !pSession || CN_SESSION == pSession->eClass() );
   
-  return pSEitf;
+  return pSession;
 }
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SEitf* Interface::_pSEitf(i8 iAddr)
+Session* Interface::_pSession(i8 iAddr)
 {
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(iAddr);
+  Session* pSession = reinterpret_cast<Session*>(iAddr);
   
-  if (pSEitf && CN_SEITF != pSEitf->eClass())
-    vTrace("INVALID SEITF %p %s\n"_Stz, pSEitf, aCN[pSEitf->eClass()]);
+  if (pSession && CN_SESSION != pSession->eClass())
+    vTrace("INVALID SESSION %p %s\n"_Stz, pSession, aCN[pSession->eClass()]);
   
-  RASSERT( !pSEitf || CN_SEITF == pSEitf->eClass() );
+  RASSERT( !pSession || CN_SESSION == pSession->eClass() );
   
-  return pSEitf;
+  return pSession;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* SEitf::operator new(size_t iSize)
+void* Session::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Object* pObject = HeapMem::pAllocate(CN_SEITF);
+  Object* pObject = HeapMem::pAllocate(CN_SESSION);
   
   return pObject;
 }
@@ -58,20 +58,20 @@ void* SEitf::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void SEitf::operator delete(void* pSEinterfaceAddress)
+void Session::operator delete(void* pSEinterfaceAddress)
 {
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(pSEinterfaceAddress);
+  Session* pSession = reinterpret_cast<Session*>(pSEinterfaceAddress);
   
-  HeapMem::vFree(pSEitf);
+  HeapMem::vFree(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SEitf::SEitf(i8 iPartition)
-: Object(CN_SEITF)
+Session::Session(i8 iPartition)
+: Object(CN_SESSION)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   // pid
   m_iPid = Process::iGetPid();
@@ -83,7 +83,7 @@ SEitf::SEitf(i8 iPartition)
   m_pJob            = nullptr;
   m_pTx             = nullptr;
   
-  m_bSeitfExiting     = false;
+  m_bSessionExiting     = false;
   
   m_pRowOnce = nullptr;
   
@@ -91,17 +91,17 @@ SEitf::SEitf(i8 iPartition)
   
   m_pCommandProcessor = new CommandProcessor;
 
-  _checkInitialised_(CN_SEITF);
+  _checkInitialised_(CN_SESSION);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SEitf::~SEitf(void)
+Session::~Session(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   if (m_pRowOnce)
     delete m_pRowOnce;
@@ -112,9 +112,9 @@ SEitf::~SEitf(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void SEitf::vContentDump(void)
+void Session::vContentDump(void)
 {
-  vTrace("SEitf %p: pid %lld (%s)\n"_Stz,
+  vTrace("Session %p: pid %lld (%s)\n"_Stz,
          this,
          m_iPid,
          Process::bTestPid(m_iPid) ? "exists"_Stz : "non-existant"_Stz
@@ -124,9 +124,9 @@ void SEitf::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* begin a tx                                                                 */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bBeginTx()
+bool Session::bBeginTx()
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   m_pTx = new Tx;
   
@@ -136,9 +136,9 @@ bool SEitf::bBeginTx()
 /*----------------------------------------------------------------------------*/
 /* commit a tx                                                                */
 /*----------------------------------------------------------------------------*/
-void SEitf::vCommitTx()
+void Session::vCommitTx()
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   m_pTx->vPhase(TP_COMMITTED);
 }
@@ -146,9 +146,9 @@ void SEitf::vCommitTx()
 /*----------------------------------------------------------------------------*/
 /* end a tx                                                                   */
 /*----------------------------------------------------------------------------*/
-void SEitf::vEndTx()
+void Session::vEndTx()
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   delete m_pTx;
   
@@ -156,30 +156,30 @@ void SEitf::vEndTx()
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump seitf                                                                 */
+/* dump session                                                               */
 /*----------------------------------------------------------------------------*/
-void SEitf::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_SEITF);
-  RASSERT(pObject->eClass() == CN_SEITF);
+  RASSERT(eClass == CN_SESSION);
+  RASSERT(pObject->eClass() == CN_SESSION);
   
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(pObject);
+  Session* pSession = reinterpret_cast<Session*>(pObject);
   
   vTrace("pid %lld %s partition %lld slot %lld"_Stz
          " response '%s'\n"_Stz,
-         pSEitf->m_iPid,
-         Process::bTestPid(pSEitf->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
-         pSEitf->m_iPartition,
-         pSEitf->iSlot(),
-         pSEitf->m_sResponse.aChar());
+         pSession->m_iPid,
+         Process::bTestPid(pSession->m_iPid) ? "exists"_Stz : "non-existant"_Stz,
+         pSession->m_iPartition,
+         pSession->iSlot(),
+         pSession->m_sResponse.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialise this seitf                                                      */
+/* initialise this session                                                      */
 /*----------------------------------------------------------------------------*/
-void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
+void Session::vInit(Stz* pCatalogName, Stz* pSchemaName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   //m_xPathStack.vContentDump();
   
@@ -243,9 +243,9 @@ void SEitf::vInit(Stz* pCatalogName, Stz* pSchemaName)
 /*----------------------------------------------------------------------------*/
 /* which partition                                                            */
 /*----------------------------------------------------------------------------*/
-i8 SEitf::iPartition(void)
+i8 Session::iPartition(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return m_iPartition;
 }
@@ -253,9 +253,9 @@ i8 SEitf::iPartition(void)
 /*----------------------------------------------------------------------------*/
 /* get path stack                                                             */
 /*----------------------------------------------------------------------------*/
-DicStack* SEitf::pPathStack(void)
+DicStack* Session::pPathStack(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return &m_xPathStack;
 }
@@ -263,9 +263,9 @@ DicStack* SEitf::pPathStack(void)
 /*----------------------------------------------------------------------------*/
 /* get performance trace                                                      */
 /*----------------------------------------------------------------------------*/
-PerformanceTrace* SEitf::pPerformanceTrace(void)
+PerformanceTrace* Session::pPerformanceTrace(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return m_pPerformanceTrace;
 }
@@ -273,9 +273,9 @@ PerformanceTrace* SEitf::pPerformanceTrace(void)
 /*----------------------------------------------------------------------------*/
 /* set performance trace                                                      */
 /*----------------------------------------------------------------------------*/
-void SEitf::vPerformanceTrace(PerformanceTrace* pPerformanceTrace)
+void Session::vPerformanceTrace(PerformanceTrace* pPerformanceTrace)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   m_pPerformanceTrace = pPerformanceTrace;
 }
@@ -283,9 +283,9 @@ void SEitf::vPerformanceTrace(PerformanceTrace* pPerformanceTrace)
 /*----------------------------------------------------------------------------*/
 /* which slot                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 SEitf::iSlot(void)
+i8 Session::iSlot(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return TablePtn::iPartitionToSlot(m_iPartition);
 }
@@ -293,9 +293,9 @@ i8 SEitf::iSlot(void)
 /*----------------------------------------------------------------------------*/
 /* get tx                                                                     */
 /*----------------------------------------------------------------------------*/
-Tx* SEitf::pTx(void)
+Tx* Session::pTx(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return m_pTx;
 }
@@ -303,9 +303,9 @@ Tx* SEitf::pTx(void)
 /*----------------------------------------------------------------------------*/
 /* set tx                                                                     */
 /*----------------------------------------------------------------------------*/
-void SEitf::vTx(Tx* pTx)
+void Session::vTx(Tx* pTx)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   m_pTx = pTx;
 }
@@ -316,9 +316,9 @@ void SEitf::vTx(Tx* pTx)
 /*----------------------------------------------------------------------------*/
 /* create row once object                                                     */
 /*----------------------------------------------------------------------------*/
-void SEitf::vCreateRowOnce(void)
+void Session::vCreateRowOnce(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   ASSERT(! m_pRowOnce);
   
@@ -327,9 +327,9 @@ void SEitf::vCreateRowOnce(void)
 /*----------------------------------------------------------------------------*/
 /* test if row has been seen so far                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bRowSeen(Id xRowId)
+bool Session::bRowSeen(Id xRowId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   if (! m_pRowOnce)
     return false;
@@ -350,9 +350,9 @@ bool SEitf::bRowSeen(Id xRowId)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SEitf::aFooter(void)
+Footer* Session::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION);
   
   return &m_xFooter;
 }

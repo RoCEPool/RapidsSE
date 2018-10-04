@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SEitf.hpp - se interface                                                   */
+/* Session.hpp - se session                                                   */
 /*============================================================================*/
 #pragma once
 
@@ -7,16 +7,16 @@
 
 namespace Interface
 {
-  class SEitf : public Object
+  class Session : public Object
   {
   public:
-    i8       m_iPid;             // process which created this seitf
-    i8       m_iPartition;       // which partition this seitf connects to
+    i8       m_iPid;             // process wh ich created this session
+    i8       m_iPartition;       // which partition this session connects to
     DicStack m_xPathStack;       // dictionary stack
-    Job*     m_pJob;             // job seitf currently executing
+    Job*     m_pJob;             // job session currently executing
     s48K     m_sResponse;        // response
     Tx*      m_pTx;              // current transaction
-    bool     m_bSeitfExiting;    // is seitf exiting ?
+    bool     m_bSessionExiting;  // is session exiting ?
     
     PerformanceTrace* m_pPerformanceTrace;  // performance Trace
     CommandProcessor* m_pCommandProcessor;  // command processor
@@ -32,8 +32,8 @@ namespace Interface
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SEitf(i8 iPartition);
-    ~SEitf(void);
+    Session(i8 iPartition);
+    ~Session(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
@@ -61,8 +61,8 @@ namespace Interface
     Footer* aFooter(void);
   };
   
-  SEitf* _pSEitf(void* aAddr);
-  SEitf* _pSEitf(i8 iAddr);
+  Session* _pSession(void* aAddr);
+  Session* _pSession(i8 iAddr);
 }
 
 /*============================================================================*/

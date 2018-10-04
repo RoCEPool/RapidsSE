@@ -104,8 +104,8 @@ void Job_VerifyIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_VerifyIndex::Job_VerifyIndex(Interface::SEitf* pSEitf)
-: Job(CN_JOB_VERIFYINDEX, pSEitf)
+Job_VerifyIndex::Job_VerifyIndex(Interface::Session* pSession)
+: Job(CN_JOB_VERIFYINDEX, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX,_FOOTER_);
     
@@ -202,11 +202,11 @@ Footer* Job_VerifyIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_VerifyIndex_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_VerifyIndex_pre(Interface::Session* pSession)
 {
-  Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSEitf);
+  Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_VerifyIndex->bPopulateJob(pTokenVec);
   
@@ -222,7 +222,7 @@ Job* JobsModel::pJob_VerifyIndex_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_VerifyIndex_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_VerifyIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pJob);
   
@@ -247,7 +247,7 @@ void JobsModel::vJob_VerifyIndex_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_VerifyIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_VerifyIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pJob);
   

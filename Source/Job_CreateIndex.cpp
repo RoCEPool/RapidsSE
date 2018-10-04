@@ -146,8 +146,8 @@ void Job_CreateIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_CreateIndex::Job_CreateIndex(Interface::SEitf* pSEitf)
-: Job(CN_JOB_CREATEINDEX, pSEitf)
+Job_CreateIndex::Job_CreateIndex(Interface::Session* pSession)
+: Job(CN_JOB_CREATEINDEX, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
   
@@ -341,11 +341,11 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateIndex_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_CreateIndex_pre(Interface::Session* pSession)
 {
-  Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(pSEitf);
+  Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_CreateIndex->bPopulateJob(pTokenVec);
   
@@ -360,7 +360,7 @@ Job* JobsModel::pJob_CreateIndex_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateIndex_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_CreateIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJob);
   
@@ -379,7 +379,7 @@ void JobsModel::vJob_CreateIndex_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_CreateIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJob);
   

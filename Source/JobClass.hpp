@@ -27,10 +27,10 @@ namespace JobsModel
       bool m_bBuffer;    // buffer attached?
       eJT  m_eTrace;     // job trace?
   
-      Job* (*m_fPre)(Interface::SEitf* pSEitf);
-      void (*m_fPost)(Interface::SEitf* pSEitf, Job* pJob);
+      Job* (*m_fPre)(Interface::Session* pSession);
+      void (*m_fPost)(Interface::Session* pSession, Job* pJob);
       Job* (*m_fNew)(Job* pArg);
-      void (*m_fDelete)(Interface::SEitf* pSEitf, Job* pJob);
+      void (*m_fDelete)(Interface::Session* pSession, Job* pJob);
       void (*m_fSend)(Job* pJob);
       void (*m_fRecv)(Job* pJob);
       void (*m_fShow)(Job* pJob);
@@ -44,9 +44,9 @@ namespace JobsModel
   
     public:
       Job* pNewJob(Job* pJob);
-      void vDeleteJob(Interface::SEitf* pSEitf, Job* pJob);
-      void vPostJob(Interface::SEitf* pSEitf, Job* pJob);
-      Job* pPreJob(Interface::SEitf* pSEitf);
+      void vDeleteJob(Interface::Session* pSession, Job* pJob);
+      void vPostJob(Interface::Session* pSession, Job* pJob);
+      Job* pPreJob(Interface::Session* pSession);
       Stz* sSeed(eSS eSeed);
       void vSendJob(Job* pJob);
       void vRecvJob(Job* pJob);

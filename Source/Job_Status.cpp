@@ -104,8 +104,8 @@ void Job_Status::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Status::Job_Status(Interface::SEitf* pSEitf)
-: Job(CN_JOB_STATUS, pSEitf)
+Job_Status::Job_Status(Interface::Session* pSession)
+: Job(CN_JOB_STATUS, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
     
@@ -195,11 +195,11 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Status_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_Status_pre(Interface::Session* pSession)
 {
-  Job_Status* pJob_Status = new Job_Status(pSEitf);
+  Job_Status* pJob_Status = new Job_Status(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_Status->bPopulateJob(pTokenVec);
   
@@ -215,7 +215,7 @@ Job* JobsModel::pJob_Status_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Status_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Status_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Status* pJob_Status = _pJob_Status(pJob);
   
@@ -239,7 +239,7 @@ void JobsModel::vJob_Status_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Status_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Status_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Status* pJob_Status = _pJob_Status(pJob);
   

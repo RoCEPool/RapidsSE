@@ -104,8 +104,8 @@ void Job_VisualizeIndex::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_VisualizeIndex::Job_VisualizeIndex(Interface::SEitf* pSEitf)
-: Job(CN_JOB_VISUALIZEINDEX, pSEitf)
+Job_VisualizeIndex::Job_VisualizeIndex(Interface::Session* pSession)
+: Job(CN_JOB_VISUALIZEINDEX, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);
     
@@ -202,11 +202,11 @@ Footer* Job_VisualizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_VisualizeIndex_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_VisualizeIndex_pre(Interface::Session* pSession)
 {
-  Job_VisualizeIndex* pJob_VisualizeIndex = new Job_VisualizeIndex(pSEitf);
+  Job_VisualizeIndex* pJob_VisualizeIndex = new Job_VisualizeIndex(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_VisualizeIndex->bPopulateJob(pTokenVec);
   
@@ -222,7 +222,7 @@ Job* JobsModel::pJob_VisualizeIndex_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_VisualizeIndex_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_VisualizeIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pJob);
   
@@ -238,7 +238,7 @@ void JobsModel::vJob_VisualizeIndex_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_VisualizeIndex_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_VisualizeIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pJob);
   

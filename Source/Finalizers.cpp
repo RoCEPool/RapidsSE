@@ -207,7 +207,7 @@ pFINALIZE *gpFinalize[]
   /*107 */ &Finalize::vUndefined,         // CN_SCANBUFFER
   /*108 */ &Finalize::vUndefined,         // CN_SCRATCH
 
-  /*110 */ &Finalize::vUndefined,         // CN_SEITF
+  /*110 */ &Finalize::vUndefined,         // CN_SESSION
 
   /*113 */ &SelCursor::vFinalize,         // CN_SELCURSOR
   /*114 */ &Finalize::vUndefined,         // CN_SEMAPHORE

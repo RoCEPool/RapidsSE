@@ -104,8 +104,8 @@ void Job_Docol::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Docol::Job_Docol(Interface::SEitf* pSEitf)
-: Job(CN_JOB_DOCOL, pSEitf)
+Job_Docol::Job_Docol(Interface::Session* pSession)
+: Job(CN_JOB_DOCOL, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DOCOL,_FOOTER_);
   
@@ -200,11 +200,11 @@ Footer* Job_Docol::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Docol_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_Docol_pre(Interface::Session* pSession)
 {
-  Job_Docol* pJob_Docol = new Job_Docol(pSEitf);
+  Job_Docol* pJob_Docol = new Job_Docol(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_Docol->bPopulateJob(pTokenVec);
   
@@ -220,7 +220,7 @@ Job* JobsModel::pJob_Docol_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Docol_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Docol_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Docol* pJob_Docol = _pJob_Docol(pJob);
   
@@ -233,7 +233,7 @@ void JobsModel::vJob_Docol_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Docol_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Docol_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Docol* pJob_Docol = _pJob_Docol(pJob);
   

@@ -14,7 +14,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 {
-  SEitf* pSEitf = nullptr;
+  Session* pSession = nullptr;
   
   Stz* aApiCall = "RapidsSE_CheckLibraryVersion"_Stz;
   
@@ -51,7 +51,7 @@ eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* end insert                                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
+eEC RapidsSE_EndInsert(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -62,8 +62,8 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
     // trace entry
     TRACE_ENTRY_P0();
     
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
     
     // validate the job
     VALIDATE_JOB("b"_Stz);
@@ -76,7 +76,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
     JobClass* pJobClass_EndInsert = JobClass::pFind(CN_JOB_ENDINSERT);
     ASSERT(pJobClass_EndInsert)
     Job_EndInsert* pJob_EndInsert =
-      static_cast<Job_EndInsert*>(pJobClass_EndInsert->pPreJob(pSEitf));
+      static_cast<Job_EndInsert*>(pJobClass_EndInsert->pPreJob(pSession));
     
     // set insertRowJobId in the endInsert job
     pJob_EndInsert->m_iInsertRowJobId = pJob_InsertRow->m_iJobId;
@@ -87,7 +87,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
       vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
     
     // spawn the endInsert job
-    RapidsSE_bSpawnJob(pJob_EndInsert, SS_SEED_REQ, pSEitf);
+    RapidsSE_bSpawnJob(pJob_EndInsert, SS_SEED_REQ, pSession);
     
     // wait for condition
     rCode = pthread_cond_wait(&pJob_EndInsert->m_xThreadCond,
@@ -114,7 +114,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndCommand(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
+eEC RapidsSE_EndCommand(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_EndCommand"_Stz;
   
@@ -131,10 +131,10 @@ eEC RapidsSE_EndCommand(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
   JobClass* pJobClass = JobClass::pFind(eClass);
   
   // delete the job
-  pJobClass->vDeleteJob(pSEitf,pJob);
+  pJobClass->vDeleteJob(pSession,pJob);
   
-  // null the job in the SEitf
-  pSEitf->m_pJob = nullptr;
+  // null the job in the session
+  pSession->m_pJob = nullptr;
   
   return EC_NONE;
 }
@@ -142,7 +142,7 @@ eEC RapidsSE_EndCommand(SEitf* pSEitf, void* pJobPtr, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
+eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
                             Stz* sCatalogName, Stz* sSchemaName,
                             void** ppJob, i8 iTraceLevel)
 {
@@ -151,13 +151,13 @@ eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
   // trace entry
   TRACE_ENTRY_P1(aCommand);
   
-  // set the catalog and schema in the SEitf
-  pSEitf->vInit(sCatalogName, sSchemaName);
+  // set the catalog and schema in the session
+  pSession->vInit(sCatalogName, sSchemaName);
   
-  Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSEitf, false);
+  Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSession, false);
   //vTrace("pJob = %p\n"_Stz, pJob);
   *ppJob = pJob;
-  pSEitf->m_pJob = pJob;
+  pSession->m_pJob = pJob;
   
   if (pJob->m_bHasError) {
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
@@ -174,7 +174,7 @@ eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJobPtr, void** ppFetchBuffer, i8 iTraceLevel)
+eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuffer, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -185,8 +185,8 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJobPtr, void** ppFetchBuffer,
     // trace entry
     TRACE_ENTRY_P0();
     
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
     
     // Validate job
     VALIDATE_JOB("b"_Stz);
@@ -213,7 +213,7 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJobPtr, void** ppFetchBuffer,
       PosixThread::vSleepMilli(1);
     }
     
-    ASSERT(pSEitf->m_pJob == pJob_FetchRows);
+    ASSERT(pSession->m_pJob == pJob_FetchRows);
     
     // get entry buffer
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
@@ -246,7 +246,7 @@ eEC RapidsSE_FetchNextBuffer(SEitf* pSEitf, void* pJobPtr, void** ppFetchBuffer,
 /*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, int iErrorCode, void** ppError, i8 iTraceLevel)
+eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -256,15 +256,15 @@ eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, int iErrorCode, void** ppError, i8 i
     // trace entry
     TRACE_ENTRY_P0();
     
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
     
     // validate the reference pointer
     VALIDATE_REFPOINTER("b"_Stz, ppError);
     
     // get the error message
-    pSEitf->m_sResponse = aEC[(eEC)iErrorCode];
-    *ppError = pSEitf->m_sResponse.aChar();
+    pSession->m_sResponse = aEC[(eEC)iErrorCode];
+    *ppError = pSession->m_sResponse.aChar();
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -285,7 +285,7 @@ eEC RapidsSE_GetErrorMessage(SEitf* pSEitf, int iErrorCode, void** ppError, i8 i
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
+eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_GetRow"_Stz;
   
@@ -316,13 +316,13 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTra
     iRows++;
   }
   
-  pSEitf->m_sResponse.vCopy(""_Stz);
+  pSession->m_sResponse.vCopy(""_Stz);
   while ( ! pTknVec->pGet(iToken)->aText()->bSame(")"_Stz)) {
-    pSEitf->m_sResponse.vConcat(pTknVec->pGet(iToken++)->aText());
+    pSession->m_sResponse.vConcat(pTknVec->pGet(iToken++)->aText());
   }
   
-  *ppRow = pSEitf->m_sResponse.aChar();
-  //vTrace("Returning row %s\n"_Stz, pSEitf->m_sResponse.aChar());
+  *ppRow = pSession->m_sResponse.aChar();
+  //vTrace("Returning row %s\n"_Stz, pSession->m_sResponse.aChar());
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
@@ -332,7 +332,7 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTra
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowCount(SEitf* pSEitf, void* pJobPtr, void** ppRowCount, i8 iTraceLevel)
+eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, void** ppRowCount, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_GetRowCount"_Stz;
   
@@ -349,7 +349,7 @@ eEC RapidsSE_GetRowCount(SEitf* pSEitf, void* pJobPtr, void** ppRowCount, i8 iTr
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
+eEC RapidsSE_InsertRow(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel)
 {
 
   eEC eResult;
@@ -363,8 +363,8 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
     
     //TRACE_ROW();
     
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
 
     // validate parameter
     VALIDATE_PARAM("b"_Stz, sRow);
@@ -433,7 +433,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
       vTrace("Buffer full!!! Creating InsertBuffer job\n"_Stz);
       JobClass* pJobClass = JobClass::pFind(CN_JOB_INSERTBUFFER);
       ASSERT(pJobClass);
-      Job* pJobInsertBuffer = pJobClass->pPreJob(pSEitf);
+      Job* pJobInsertBuffer = pJobClass->pPreJob(pSession);
       Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobInsertBuffer);
       
       // set table name in InsertBuffer
@@ -448,7 +448,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
       
       //vLockMutex();
       vTrace("Spawning InsertBuffer job\n"_Stz);
-      bResult = RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_RUN,pSEitf);
+      bResult = RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_RUN,pSession);
       ASSERT(bResult);
     }
 
@@ -472,7 +472,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, void* pJob, Stz* sRow, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, i8* pValidRows, i8* pInvalidRows, i8 iTraceLevel)
+eEC RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInvalidRows, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -482,8 +482,8 @@ eEC RapidsSE_LoadResult(SEitf* pSEitf, void* pJob, i8* pValidRows, i8* pInvalidR
     // trace entry
     TRACE_ENTRY_P0();
     
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
     
     // validate the reference pointers
     VALIDATE_REFPOINTER("b"_Stz, pValidRows);
@@ -518,7 +518,7 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
 {
   
   Stz* aApiCall = "RapidsSE_PoolOpen"_Stz;
-  SEitf* pSEitf = nullptr;
+  Session* pSession = nullptr;
   
   try {
     // trace entry
@@ -558,21 +558,21 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete an seitf instance                                                   */
+/* delete an se session                                                       */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
+eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
 {
   eEC eResult;
-  Stz* aApiCall = "RapidsSE_SEitfDelete"_Stz;
+  Stz* aApiCall = "RapidsSE_SessionDelete"_Stz;
   
   try {
     // trace entry
     TRACE_ENTRY_P0();
     
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
     
-    Job* pJob = pSEitf->m_pJob;
+    Job* pJob = pSession->m_pJob;
     
     if (pJob) {
       // find the job class on this node
@@ -580,17 +580,17 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
       JobClass* pJobClass = JobClass::pFind(eClass);
       
       // delete the job
-      pJobClass->vDeleteJob(pSEitf,pJob);
+      pJobClass->vDeleteJob(pSession,pJob);
       
-      // null the job in the SEitf
-      pSEitf->m_pJob = nullptr;
+      // null the job in the session
+      pSession->m_pJob = nullptr;
     }
     
-    // delete the SEitf
-    RapidsSE::vDeleteSEitf(pSEitf);
+    // delete the session
+    RapidsSE::vDeleteSession(pSession);
     
-    // set SEitf to nullptr so trace knows not to look at it
-    pSEitf = nullptr;
+    // set session to nullptr so trace knows not to look at it
+    pSession = nullptr;
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -610,13 +610,13 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is the error an EC_INVALID_INTERFACE ?                                     */
+/* is the error an EC_INVALID_SessionE ?                                     */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
+bool RapidsSE_SessionInvalid(int iError, i8 iTraceLevel)
 {
   
-  Stz* aApiCall = "RapidsSE_SEitfInvalid"_Stz;
-  SEitf* pSEitf = nullptr;
+  Stz* aApiCall = "RapidsSE_SessionInvalid"_Stz;
+  Session* pSession = nullptr;
   
   try {
     // trace entry
@@ -648,13 +648,13 @@ bool RapidsSE_SEitfInvalid(int iError, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new seitf instance                                                */
+/* create a new se session                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel)
+eEC RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel)
 {
   eEC eResult;
-  Stz* aApiCall = "RapidsSE_SEitfNew"_Stz;
-  SEitf* pSEitf = nullptr;
+  Stz* aApiCall = "RapidsSE_SessionNew"_Stz;
+  Session* pSession = nullptr;
   
   try {
     
@@ -665,19 +665,19 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iP
     //TRACE_ENTRY_P2(sCatalogName, sSchemaName);
     
     // valide reference pointer
-    VALIDATE_REFPOINTER("a"_Stz, ppSEitf);
+    VALIDATE_REFPOINTER("a"_Stz, ppSession);
     
     VALIDATE_POOL();
     
-    SEitf* pSEitf = new SEitf(iPartition);
+    Session* pSession = new Session(iPartition);
     
-    pSEitf->vInit(sCatalogName, sSchemaName);
+    pSession->vInit(sCatalogName, sSchemaName);
     
-    // validate the SEitf just created
-    VALIDATE_SEITF("b"_Stz);
+    // validate the session just created
+    VALIDATE_SESSION("b"_Stz);
     
-    // return the newly created SEitf
-    *ppSEitf = pSEitf;
+    // return the newly created session
+    *ppSession = pSession;
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -699,21 +699,21 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iP
 /*----------------------------------------------------------------------------*/
 /* reset the SE interface                                                     */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ResetInterface(SEitf* pSEitf, i8 iTraceLevel)
+eEC RapidsSE_ResetSession(Session* pSession, i8 iTraceLevel)
 {
   eEC eResult;
-  Stz* aApiCall = "RapidsSE_ResetInterface"_Stz;
+  Stz* aApiCall = "RapidsSE_ResetSession"_Stz;
 
   try {
     
     TRACE_ENTRY_P0();
     
-    // validate the SEitf
-    VALIDATE_SEITF("a"_Stz);
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
     
     VALIDATE_POOL();
     
-    pSEitf->m_sResponse.vCopy(""_Stz);
+    pSession->m_sResponse.vCopy(""_Stz);
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
@@ -739,9 +739,9 @@ eEC RapidsSE_ResetInterface(SEitf* pSEitf, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
+Job* RapidsSE_pExecuteCommand(Stz* aCommand, Session* pSession, bool bPostJob)
 {
-  CommandProcessor* pCommandProcessor = pSEitf->m_pCommandProcessor;
+  CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
   vTrace("Tokenizing command\n"_Stz);
   pCommandProcessor->vTokenise(aCommand);
@@ -754,7 +754,7 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
   }
   
   vTrace("Executing pre\n"_Stz);
-  pCommandProcessor->vPreJob(pSEitf);
+  pCommandProcessor->vPreJob(pSession);
   
   Job* pJob = pCommandProcessor->pJob();
   if (!pJob) {
@@ -770,7 +770,7 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
 
   // spawn the job
   vTrace("Spawning job\n"_Stz);
-  RapidsSE_bSpawnJob(pJob, SS_SEED_REQ, pSEitf);
+  RapidsSE_bSpawnJob(pJob, SS_SEED_REQ, pSession);
   
   // wait for condition
   rCode = pthread_cond_wait(&pJob->m_xThreadCond,
@@ -781,7 +781,7 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
   vTrace("Returned from job\n"_Stz);
   
   if (bPostJob)
-    pCommandProcessor->vPostJob(pSEitf);
+    pCommandProcessor->vPostJob(pSession);
   
   return pJob;
 }
@@ -789,7 +789,7 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, SEitf* pSEitf, bool bPostJob)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
+bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession)
 {
   //----------------------------------------------------------------------------
   // Before appending request for se, ensure that se is running
@@ -797,7 +797,7 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
   i8 iPid = gpAttachMap->m_iPid;
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
-    if (pSEitf)
+    if (pSession)
       vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
     vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
     return false;
@@ -810,7 +810,7 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, SEitf* pSEitf)
   
   Task* pNewTask = new Task(pJob);
   
-  pNewTask->vSEitf(pSEitf);
+  pNewTask->vSession(pSession);
   
   Handlers::vSpawnedTaskHandler(pNewTask);
   

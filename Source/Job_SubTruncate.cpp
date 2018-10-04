@@ -104,8 +104,8 @@ void Job_SubTruncate::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_SubTruncate::Job_SubTruncate(Interface::SEitf* pSEitf)
-: Job(CN_JOB_SUBTRUNCATE, pSEitf)
+Job_SubTruncate::Job_SubTruncate(Interface::Session* pSession)
+: Job(CN_JOB_SUBTRUNCATE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);
     
@@ -175,9 +175,9 @@ Footer* Job_SubTruncate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_SubTruncate_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_SubTruncate_pre(Interface::Session* pSession)
 {
-  Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSEitf);
+  Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSession);
   
   return pJob_SubTruncate;
 }
@@ -185,7 +185,7 @@ Job* JobsModel::pJob_SubTruncate_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubTruncate_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_SubTruncate_post(Interface::Session* pSession, Job* pJob)
 {
   Job_SubTruncate* pJob_SubTruncate = _pJob_SubTruncate(pJob);
   
@@ -201,7 +201,7 @@ void JobsModel::vJob_SubTruncate_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubTruncate_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_SubTruncate_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SubTruncate* pJob_SubTruncate = _pJob_SubTruncate(pJob);
   

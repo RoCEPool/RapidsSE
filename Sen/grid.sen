@@ -117,7 +117,7 @@ tp: printResult
         then
         str.cat
     loop
-    results seitf seitf.rowsProcessed
+    results seitf session.rowsProcessed
     true
   else
 
@@ -135,7 +135,7 @@ tp: printResult
 
     loop
     // returning error
-    0 seitf seitf.rowsProcessed
+    0 seitf session.rowsProcessed
 
   then
 ;

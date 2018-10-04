@@ -151,7 +151,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* get index pointer and put into task.seitf.currentIndex                     */
+/* get index pointer and put into task.session.currentIndex                     */
 /*----------------------------------------------------------------------------*/
 /*
 : getIndex ( "<indexNm>" "<tableNm>" -- <R> )
@@ -169,7 +169,7 @@
   // get index ptr
   sIndexNm findInCurrent execute
 
-  task::this task.seitf@ seitf.index!
+  task::this task.seitf@ session.index!
 
   // pop indexes folder
   popIndexes
@@ -181,12 +181,12 @@
 ;
 */
 /*----------------------------------------------------------------------------*/
-/* clear task.seitf.currentIndex                                              */
+/* clear task.session.currentIndex                                              */
 /*----------------------------------------------------------------------------*/
 /*
 : returnIndex ( )
 
-  nullptr task::this task.seitf@ seitf.index!
+  nullptr task::this task.seitf@ session.index!
 
   true
 ;

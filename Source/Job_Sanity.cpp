@@ -104,8 +104,8 @@ void Job_Sanity::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Sanity::Job_Sanity(Interface::SEitf* pSEitf)
-: Job(CN_JOB_SANITY, pSEitf)
+Job_Sanity::Job_Sanity(Interface::Session* pSession)
+: Job(CN_JOB_SANITY, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
       
@@ -199,11 +199,11 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Sanity_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_Sanity_pre(Interface::Session* pSession)
 {
-  Job_Sanity* pJob_Sanity = new Job_Sanity(pSEitf);
+  Job_Sanity* pJob_Sanity = new Job_Sanity(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_Sanity->bPopulateJob(pTokenVec);
   
@@ -219,7 +219,7 @@ Job* JobsModel::pJob_Sanity_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Sanity_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Sanity_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
   
@@ -246,7 +246,7 @@ void JobsModel::vJob_Sanity_post(Interface::SEitf* pSEitf, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Sanity_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Sanity_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
   

@@ -21,7 +21,6 @@ void Step::vAddSteps_To(void)
   vAddStep(">int"_Stz,        &Task::vToInt,        false);
   vAddStep(">object"_Stz,     &Task::vToObject,     false);
   vAddStep(">ptr"_Stz,        &Task::vToPtr,        false);
-  vAddStep(">seitf"_Stz,      &Task::vToSEitf,      false);
   vAddStep(">str"_Stz,        &Task::vToStr,        false);
   vAddStep(">task"_Stz,       &Task::vToTask,       false);
 }
@@ -112,28 +111,6 @@ void Task::vToPtr(MP_Task mpTask)
   Object* pPtr = (Object*)iPtr;
   
   mpTask->m_pDataStack->vPushObject(pPtr);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >seitf -- convert int to seitf ptr                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vToSEitf(MP_Task mpTask)
-{
-  ENTRY("vToSEitf"_Stz);
-  
-  i8 iVal;
-  
-  if ( ! mpTask->m_pDataStack->bPop(iVal) )
-    THROW_INVALID_DSTACK(">seitf"_Stz);
-  
-  SEitf* pSEitf = _pSEitf(iVal);
-  RASSERT(pSEitf->eClass() == CN_SEITF);
-  
-  Object* pPtrSEitf = pSEitf;
-  
-  mpTask->m_pDataStack->vPushObject(pPtrSEitf);
   
   EXIT();
 }

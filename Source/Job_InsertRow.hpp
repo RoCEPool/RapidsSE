@@ -22,7 +22,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_InsertRow(Interface::SEitf* pSEitf);
+    Job_InsertRow(Interface::Session* pSession);
     ~Job_InsertRow(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -48,10 +48,10 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_InsertRow* _pJob_InsertRow(void* aAddr);
   
-  Job* pJob_InsertRow_pre(Interface::SEitf* pSEitf);
-  void vJob_InsertRow_post(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_InsertRow_pre(Interface::Session* pSession);
+  void vJob_InsertRow_post(Interface::Session* pSession, Job* pJob);
   Job* pJob_InsertRow_new(Job* pArg);
-  void vJob_InsertRow_delete(Interface::SEitf* pSEitf, Job* pJob);
+  void vJob_InsertRow_delete(Interface::Session* pSession, Job* pJob);
   void vJob_InsertRow_show(Job* pJob);
   
   JobClass* pJob_InsertRow_class(pFUN** aaFun);

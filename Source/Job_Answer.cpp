@@ -104,8 +104,8 @@ void Job_Answer::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_Answer::Job_Answer(Interface::SEitf* pSEitf)
-: Job(CN_JOB_ANSWER, pSEitf)
+Job_Answer::Job_Answer(Interface::Session* pSession)
+: Job(CN_JOB_ANSWER, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANSWER,_FOOTER_);
     
@@ -183,7 +183,7 @@ Job* JobsModel::pJob_Answer_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Answer_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_Answer_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Answer* pJob_Answer = _pJob_Answer(pJob);
   

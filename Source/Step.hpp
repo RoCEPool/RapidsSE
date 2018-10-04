@@ -106,7 +106,7 @@ namespace Tasks
     static void vAddSteps_Rstack(void);
   
     static void vAddSteps_Scheduler(void);
-    static void vAddSteps_SEitf(void);
+    static void vAddSteps_Session(void);
     static void vAddSteps_SelCursor(void);
     static void vAddSteps_Semaphore(void);
     static void vAddSteps_ServerScheduler(void);

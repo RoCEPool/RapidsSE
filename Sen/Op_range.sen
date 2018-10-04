@@ -12,9 +12,9 @@ common/ range rbCrs /
 /*----------------------------------------------------------------------------*/
 /* send rows from buffers from teh buffer queue of the seitf                  */
 /*----------------------------------------------------------------------------*/
-: sendQueueBuffers ( pBufferQueue nLastBuffers pSeitf sProfile planId sNextOp )
+: sendQueueBuffers ( pBufferQueue nLastBuffers pSession sProfile planId sNextOp )
 
-  0 0 0 locals| bIsLast nRowCount pIndexBuffer sNextOp planId sProfile pSeitf nLastBuffers pBufferQueue |
+  0 0 0 locals| bIsLast nRowCount pIndexBuffer sNextOp planId sProfile pSession nLastBuffers pBufferQueue |
 
   //"sendingBuffers ..." .
 
@@ -36,11 +36,11 @@ common/ range rbCrs /
         0 nLastBuffers == if
           // send the index buffer to next printOp indicating last buffer
           
-          //<<   1 pIndexBuffer true pSeitf sNextOp planId sProfile >>jobQueue
+          //<<   1 pIndexBuffer true pSession sNextOp planId sProfile >>jobQueue
           false
         else
           // send the index buffer to next printOp
-          //<<   0 pIndexBuffer true pSeitf sNextOp planId sProfile >>jobQueue
+          //<<   0 pIndexBuffer true pSession sNextOp planId sProfile >>jobQueue
           true
         then
     else
@@ -51,7 +51,7 @@ common/ range rbCrs /
 
   repeat
 
-  //<<  false pSeitf sNextOp planId sProfile >>jobQueue
+  //<<  false pSession sNextOp planId sProfile >>jobQueue
 
   // delete the buffer queue
   pBufferQueue queue.delete
@@ -61,12 +61,12 @@ common/ range rbCrs /
 /*----------------------------------------------------------------------------*/
 /* range select for a partition of a table                                    */
 /*----------------------------------------------------------------------------*/
-: rangePartition subDic range ( pSeitf profile plan -- )
+: rangePartition subDic range ( pSession profile plan -- )
 
 tp: rangePartition
 
   // record the plan, profile and the seitf
-  locals| thePlan profile pSeitf |
+  locals| thePlan profile pSession |
   0 0 0 0 locals| nLastBuffers pTable pBufferQueue pPlanner |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -137,7 +137,7 @@ tp: rangePartition
   pPlanner assert
 
   // set the no of last buffers to no of phrases in plan
-  //pPlanner planner.phrases@ pSeitf seitf.lastBuffers!
+  //pPlanner planner.phrases@ pSession session.lastBuffers!
 
   // create the buffer queue in the seitf
   "rangeTask.queue" queue::new to pBufferQueue
@@ -154,11 +154,11 @@ tp: rangePartition
 
   ddlLock::dropRead
 
-  pBufferQueue nLastBuffers pSeitf $$nextOp thePlan plan.Id@ $$nextProfile
+  pBufferQueue nLastBuffers pSession $$nextOp thePlan plan.Id@ $$nextProfile
   sendQueueBuffers
 
   // << false plan >> -->> nextOp
-  //<< false pSeitf $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
+  //<< false pSession $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
 
   // [1] discard opFrame (and dictionary)
   opFrame.drop
@@ -184,8 +184,8 @@ tp: rangePartition
   drop ( profile planId )
 
   // find plan using planId
-  planList::findPlan ( pSeitf profile plan true )
-  assert ( pSeitf profile plan )
+  planList::findPlan ( pSession profile plan true )
+  assert ( pSession profile plan )
 
   // scan the table partition and pipe to write
   rangePartition ( )

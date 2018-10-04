@@ -5,7 +5,7 @@
 
 namespace Interface
 {
-  class SEitf;
+  class Session;
 }
 
 namespace Plans

@@ -18,7 +18,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_DropTable(Interface::SEitf* pSEitf);
+    Job_DropTable(Interface::Session* pSession);
     ~Job_DropTable(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,9 +35,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_DropTable* _pJob_DropTable(void* aAddr);
   
-  Job* pJob_DropTable_pre(Interface::SEitf* pSEitf);
-  void vJob_DropTable_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_DropTable_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_DropTable_pre(Interface::Session* pSession);
+  void vJob_DropTable_post(Interface::Session* pSession, Job* pJob);
+  void vJob_DropTable_delete(Interface::Session* pSession, Job* pJob);
   void vJob_DropTable_show(Job* pJob);
   
   JobClass* pJob_DropTable_class(pFUN** aaFun);

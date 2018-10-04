@@ -110,8 +110,8 @@ void Job_LoadTable::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_LoadTable::Job_LoadTable(Interface::SEitf* pSEitf)
-: Job(CN_JOB_LOADTABLE, pSEitf)
+Job_LoadTable::Job_LoadTable(Interface::Session* pSession)
+: Job(CN_JOB_LOADTABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
@@ -606,11 +606,11 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_LoadTable_pre(Interface::SEitf* pSEitf)
+Job* JobsModel::pJob_LoadTable_pre(Interface::Session* pSession)
 {
-  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSEitf);
+  Job_LoadTable* pJob_LoadTable = new Job_LoadTable(pSession);
   
-  TokenVec* pTokenVec = pSEitf->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
   bool bResult = pJob_LoadTable->bPopulateJob(pTokenVec);
   
@@ -626,7 +626,7 @@ Job* JobsModel::pJob_LoadTable_pre(Interface::SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_LoadTable_post(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_LoadTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
   
@@ -660,7 +660,7 @@ Job* JobsModel::pJob_LoadTable_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_LoadTable_delete(Interface::SEitf* pSEitf, Job* pJob)
+void JobsModel::vJob_LoadTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
   

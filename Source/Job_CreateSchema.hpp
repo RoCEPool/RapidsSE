@@ -18,7 +18,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_CreateSchema(Interface::SEitf* pSEitf);
+    Job_CreateSchema(Interface::Session* pSession);
     ~Job_CreateSchema(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,9 +35,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_CreateSchema* _pJob_CreateSchema(void* aAddr);
   
-  Job* pJob_CreateSchema_pre(Interface::SEitf* pSEitf);
-  void vJob_CreateSchema_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_CreateSchema_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_CreateSchema_pre(Interface::Session* pSession);
+  void vJob_CreateSchema_post(Interface::Session* pSession, Job* pJob);
+  void vJob_CreateSchema_delete(Interface::Session* pSession, Job* pJob);
   void vJob_CreateSchema_show(Job* pJob);
   
   JobClass* pJob_CreateSchema_class(pFUN** aaFun);

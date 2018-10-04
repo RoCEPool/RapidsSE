@@ -162,12 +162,12 @@ bool CommandProcessor::bBlankLine(void)
 /*----------------------------------------------------------------------------*/
 /* delete a job                                                               */
 /*----------------------------------------------------------------------------*/
-void CommandProcessor::vDeleteJob(SEitf* pSEitf)
+void CommandProcessor::vDeleteJob(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   // call the job delete function
-  m_pJobClass->vDeleteJob(pSEitf,m_pJob);
+  m_pJobClass->vDeleteJob(pSession,m_pJob);
   
   m_pJob = nullptr;
 }
@@ -308,28 +308,28 @@ JobClass* CommandProcessor::pJobClass(void)
 /*----------------------------------------------------------------------------*/
 /* end a job                                                                  */
 /*----------------------------------------------------------------------------*/
-void CommandProcessor::vPostJob(SEitf* pSEitf)
+void CommandProcessor::vPostJob(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   // call the job post function
-  m_pJobClass->vPostJob(pSEitf,m_pJob);
+  m_pJobClass->vPostJob(pSession,m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
 /* potentially execute a job                                                  */
 /*----------------------------------------------------------------------------*/
-void CommandProcessor::vPreJob(SEitf* pSEitf)
+void CommandProcessor::vPreJob(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  m_pJob = m_pJobClass->pPreJob(pSEitf);
+  m_pJob = m_pJobClass->pPreJob(pSession);
 }
 
 /*----------------------------------------------------------------------------*/
 /* spawn job in SE                                                            */
 /*----------------------------------------------------------------------------*/
-bool CommandProcessor::bSpawnJob(SEitf* pSEitf)
+bool CommandProcessor::bSpawnJob(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
@@ -342,7 +342,7 @@ bool CommandProcessor::bSpawnJob(SEitf* pSEitf)
   //! make this part of verbose??
   //m_pCommandProcessor->m_pCompiler->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = RapidsSE_bSpawnJob(m_pJob,SS_SEED_REQ,pSEitf);
+  bool bResult = RapidsSE_bSpawnJob(m_pJob,SS_SEED_REQ,pSession);
   
   if (pTknVec()->bDetachedRequest())
     return bResult;

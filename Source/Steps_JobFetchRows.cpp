@@ -114,13 +114,13 @@ void Task::vJob_FetchRowsSpawnSub(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_fetchRows.spawnSub"_Stz);
   
-  SEitf* pSEitf = pJob_FetchRows->m_pSEitf;
+  Session* pSession = pJob_FetchRows->m_pSession;
   i8 iFetchRowsJobId = pJob_FetchRows->m_iJobId;
   
   JobClass* pJobClass_SubFetch = JobClass::pFind(CN_JOB_SUBFETCH);
   
   Job_SubFetch* pJob_SubFetch =
-  static_cast<Job_SubFetch*>(pJobClass_SubFetch->pPreJob(pSEitf));
+  static_cast<Job_SubFetch*>(pJobClass_SubFetch->pPreJob(pSession));
   
   pJob_SubFetch->vSeed(SS_SEED_RUN);
   
@@ -133,7 +133,7 @@ void Task::vJob_FetchRowsSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RapidsSE_bSpawnJob(pJob_SubFetch,SS_SEED_RUN,pSEitf);
+  RapidsSE_bSpawnJob(pJob_SubFetch,SS_SEED_RUN,pSession);
 
   EXIT();
 }

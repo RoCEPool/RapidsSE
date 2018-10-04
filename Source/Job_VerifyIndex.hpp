@@ -18,7 +18,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_VerifyIndex(Interface::SEitf* pSEitf);
+    Job_VerifyIndex(Interface::Session* pSession);
     ~Job_VerifyIndex(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -35,9 +35,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_VerifyIndex* _pJob_VerifyIndex(void* aAddr);
   
-  Job* pJob_VerifyIndex_pre(Interface::SEitf* pSEitf);
-  void vJob_VerifyIndex_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_VerifyIndex_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_VerifyIndex_pre(Interface::Session* pSession);
+  void vJob_VerifyIndex_post(Interface::Session* pSession, Job* pJob);
+  void vJob_VerifyIndex_delete(Interface::Session* pSession, Job* pJob);
   void vJob_VerifyIndex_show(Job* pJob);
   
   JobClass* pJob_VerifyIndex_class(pFUN** aaFun);

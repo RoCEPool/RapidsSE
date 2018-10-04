@@ -305,7 +305,7 @@ void Task::vAddConstants(void)
   /* 54 */ vAddConstant("CN_SCANBUFFER"_Stz,   CN_SCANBUFFER);
   /* 55 */ vAddConstant("CN_SCRATCH"_Stz,      CN_SCRATCH);
 
-  /* 57 */ vAddConstant("CN_SEITF"_Stz,        CN_SEITF);
+  /* 57 */ vAddConstant("CN_SESSION"_Stz,        CN_SESSION);
 
   /*    */ vAddConstant("CN_SELCURSOR"_Stz,    CN_SELCURSOR);
   /* 60 */ vAddConstant("CN_SEMAPHORE"_Stz,    CN_SEMAPHORE);
@@ -524,7 +524,7 @@ void Task::vAddConstants(void)
 
   /* 41 */ vAddConstant("SIZEOF_SCANBUFFER"_Stz,   sizeof(ScanBuffer));
 
-  /* 43 */ vAddConstant("SIZEOF_SEITF"_Stz,        sizeof(SEitf));
+  /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));
 
   /*    */ vAddConstant("SIZEOF_SELCURSOR"_Stz,    sizeof(SelCursor));
   /*    */ vAddConstant("SIZEOF_SEMAPHORE"_Stz,    sizeof(Semaphore));

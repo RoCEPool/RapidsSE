@@ -20,7 +20,7 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_AnalyzeIndex(Interface::SEitf* pSEitf);
+    Job_AnalyzeIndex(Interface::Session* pSession);
     ~Job_AnalyzeIndex(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -37,9 +37,9 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job_AnalyzeIndex* _pJob_AnalyzeIndex(void* aAddr);
   
-  Job* pJob_AnalyzeIndex_pre(Interface::SEitf* pSEitf);
-  void vJob_AnalyzeIndex_post(Interface::SEitf* pSEitf, Job* pJob);
-  void vJob_AnalyzeIndex_delete(Interface::SEitf* pSEitf, Job* pJob);
+  Job* pJob_AnalyzeIndex_pre(Interface::Session* pSession);
+  void vJob_AnalyzeIndex_post(Interface::Session* pSession, Job* pJob);
+  void vJob_AnalyzeIndex_delete(Interface::Session* pSession, Job* pJob);
   void vJob_AnalyzeIndex_show(Job* pJob);
   
   JobClass* pJob_AnalyzeIndex_class(pFUN** aaFun);
