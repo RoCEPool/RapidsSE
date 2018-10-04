@@ -24,14 +24,14 @@ rows: 5
 //rows: 5
 
 
-fetch T1 "jA 4 >= c ddd >= and";
+fetch T1 "jA 4 >= jC ddd >= and";
 rows:
-  (*,4,14,'ddd',' mood')
-  (*,5,15,'eee',' boat')
+  (4,14,'ddd',' mood')
+  (5,15,'eee',' boat')
 
-fetch T1 "jA 4 = c ddd = and";
+fetch T1 "jA 4 == jC ddd == and";
 rows:
-  (*,4,14,'ddd',' mood')
+  (4,14,'ddd',' mood')
 
 CLEANUP {
 

@@ -35,7 +35,7 @@ rows:
 
 lsidxcol foo fooIdx;
 rows:
-  ('col0', 'INTEGER')
+  ('col0', 'INTEGER', 19, 0, true, true)
 
 
 
@@ -53,7 +53,7 @@ lstbl;
 rows: 0
 
 lsidx foo;
-failure: 'no such table'
+failure contains: 'no such table'
 
 
 -- Close connections c1 and c2

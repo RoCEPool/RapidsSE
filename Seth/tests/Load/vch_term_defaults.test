@@ -23,76 +23,76 @@ rows: 18
 
 fetch vch "vch_testno 501 ==";
 rows:
- (*, 501, 'quick brown fox', *)
+ ( 501, 'quick brown fox', *)
 
 fetch vch "vch_testno 502 =";
 rows:
-  (*, 502, 'quick, brown fox', *)
+  ( 502, 'quick, brown fox', *)
 
 fetch vch "vch_testno 503 =";
 rows:
-  (*, 503, 'quick brown fox''s', *)
+  ( 503, 'quick brown fox''s', *)
 
 fetch vch "vch_testno 504 =";
 rows:
-  (*, 504, 'quick brown fox''s', *)
+  ( 504, 'quick brown fox''s', *)
 
 fetch vch "vch_testno 505 =";
 rows:
-  (*, 505, 'quick brow\n foxs', *)
+  ( 505, 'quick brow\n foxs', *)
 
 fetch vch "vch_testno 506 =";
 rows:
-  (*, 506, 'quick brown fox
+  ( 506, 'quick brown fox
 s', *)
 
 fetch vch "vch_testno 507 =";
 rows:
-  (*, 507, 'quick brown fox', *)
+  ( 507, 'quick brown fox', *)
 
 fetch vch "vch_testno 508 =";
 rows:
-  (*, 508, 'quick brown fox', *)
+  ( 508, 'quick brown fox', *)
 
 fetch vch "vch_testno 509 =";
 rows:
-  (*, 509, '', *)
+  ( 509, '', *)
 
 fetch vch "vch_testno 510 =";
 rows:
-  (*, 510, null, *)
+  ( 510, null, *)
 
 fetch vch "vch_testno 511 =";
 rows:
-  (*, 511, null, *)
+  ( 511, null, *)
 
 fetch vch "vch_testno 512 =";
 rows:
-(*, 512, 'quick ;brown fox', *)
+( 512, 'quick ;brown fox', *)
 
 fetch vch "vch_testno 513 =";
 rows:
-  (*, 513, '   quick brown fox   ', *)
+  ( 513, '   quick brown fox   ', *)
 
 fetch vch "vch_testno 514 =";
 rows:
-  (*, 514, 'quick brown fox''s', *)
+  ( 514, 'quick brown fox''s', *)
 
 fetch vch "vch_testno 515 =";
 rows:
-  (*, 515, null, *)
+  ( 515, null, *)
 
 fetch vch "vch_testno 516 =";
 rows:
-  (*, 516, null, *)
+  ( 516, null, *)
 
 fetch vch "vch_testno 517 =";
 rows:
-  (*, 517, null, *)
+  ( 517, null, *)
 
 fetch vch "vch_testno 518 =";
 rows:
-  (*, 518, 'quick brown fox
+  ( 518, 'quick brown fox
 s', *)
 
 drop table vch;

@@ -23,72 +23,72 @@ success
 
 fetch vch "vch_testno 601 =";
 rows:
-  (*, 601, '''quick brown fox''', *)
+  ( 601, '''quick brown fox''', *)
 
 fetch vch "vch_testno 602 =";
 rows:
-  (*, 602, '''quick brown fox\''', *)
+  ( 602, '''quick brown fox\''', *)
 
 fetch vch "vch_testno 603 =";
 rows:
-  (*, 603, '''quick brown fox''''s''', *)
+  ( 603, '''quick brown fox''''s''', *)
 
 fetch vch "vch_testno 604 =";
 rows:
-  (*, 604, '''quick brow\\n foxs''', *)
+  ( 604, '''quick brow\\n foxs''', *)
 
 fetch vch "vch_testno 605 =";
 rows:
-  (*, 605, '''quick brown fox
+  ( 605, '''quick brown fox
 s''', *);
 
 fetch vch "vch_testno 606 =";
 rows:
-(*, 606, '''quick brown fox''', *);
+( 606, '''quick brown fox''', *);
 
 fetch vch "vch_testno 607 =";
 rows:
-  (*, 607, '   ''quick brown fox''   ', *)
+  ( 607, '   ''quick brown fox''   ', *)
 
 fetch vch "vch_testno 608 =";
 rows:
-  (*, 608, '''''', *)
+  ( 608, '''''', *)
 
 fetch vch "vch_testno 609 =";
 rows:
-  (*, 609, '''null''', *)
+  ( 609, '''null''', *)
 
 fetch vch "vch_testno 610 =";
 rows:
-  (*, 610, '''\N''', *)
+  ( 610, '''\N''', *)
 
 fetch vch "vch_testno 611 =";
 rows:
-  (*, 611, 'quick brown fox', *)
+  ( 611, 'quick brown fox', *)
 
 fetch vch "vch_testno 612 =";
 rows:
-  (*, 612, '   quick brown fox   ', *)
+  ( 612, '   quick brown fox   ', *)
 
 fetch vch "vch_testno 613 =";
 rows:
-  (*, 613, 'quick brown fox''s''', *)
+  ( 613, 'quick brown fox''s''', *)
 
 fetch vch "vch_testno 614 =";
 rows:
-  (*, 614, null, *)
+  ( 614, null, *)
 
 fetch vch "vch_testno 615 =";
 rows:
-  (*, 615, null, *)
+  ( 615, null, *)
 
 fetch vch "vch_testno 616 =";
 rows:
-  (*, 616, '\N', *)
+  ( 616, '\N', *)
 
 fetch vch "vch_testno 617 =";
 rows:
-  (*, 617, 'quick brown fox\ns', *)
+  ( 617, 'quick brown fox\ns', *)
 
 drop table vch;
 success;

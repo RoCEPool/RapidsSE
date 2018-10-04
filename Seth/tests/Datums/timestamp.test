@@ -55,7 +55,7 @@ success
 // fetch
 //
 //rows:
-//  (*,'1904-01-01 00:00:00',four,104,4,4.004,1004.004,null)
+//  ('1904-01-01 00:00:00',four,104,4,4.004,1004.004,null)
 
 // drop the table
 //drop table tspTbl;

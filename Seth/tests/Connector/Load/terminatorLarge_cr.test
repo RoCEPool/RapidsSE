@@ -22,7 +22,7 @@ success
 // fetch
 select * from terminator_cr where c1 = 1;
 rows:
-  (*, 1, 'This is terminatoed by <CR>');
+  ( 1, 'This is terminatoed by <CR>');
 
 // fetch
 select * from terminator_cr ;

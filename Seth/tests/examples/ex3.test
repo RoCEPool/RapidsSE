@@ -26,7 +26,7 @@ CREATE 2 THREADS {
 
   lsidxcol foo fooIdx;
   rows:
-    ('col0', 'INTEGER')
+    ('col0', 'INTEGER', 19, 0, true, true)
 
   -- Synchronizing here tells the main thread that we are done verifying the table.
   SYNCHRONIZE;
