@@ -74,7 +74,6 @@ namespace Tasks
     static void vAddSteps_JobSubLoader();
     static void vAddSteps_JobTruncateTable();
   
-    static void vAddSteps_SubLoader(void);
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);
     static void vAddSteps_Locks(void);

@@ -67,8 +67,9 @@
 
   0 locals| pThisTask |
   0 locals| pJob_SubLoader |
-  0 0 locals| pJobLoadTable_Originator pJobLoadTable_Participant |
-  0 0 locals| pSubLoader iLoadTableJobId |
+  0 locals| pJobLoadTable_Originator |
+  0 locals| pJobLoadTable_Participant |
+  0 locals| iLoadTableJobId |
 
   tp: SubLoader
   //"SubLoader running" .
@@ -79,9 +80,6 @@
 
   // get the sub-loader job from the task
   pThisTask task.job@ to pJob_SubLoader
-
-  // get the loaderSub object from the sub-loader job
-  pJob_SubLoader job.ancilliary@ to pSubLoader
 
   pJob_SubLoader job_subLoader.begin
 
@@ -95,7 +93,6 @@
   iLoadTableJobId job::findOriginator to pJobLoadTable_Originator
 
   // get the valid/invalid rows loaded from subloader
-  //pSubLoader subLoader.recordsValid .
   pJob_SubLoader job_subLoader.recordsValid   pJobLoadTable_Originator job_loadTable.addValidRows
   pJob_SubLoader job_subLoader.recordsInvalid pJobLoadTable_Originator job_loadTable.addInvalidRows
 
