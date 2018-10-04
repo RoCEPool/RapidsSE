@@ -133,10 +133,10 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
 {
   ENTRY("vJob_LoadBufferSpawn"_Stz);
   
-  Object* pPtrSubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSubLoader) )
+  Object* pPtrJob_SubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
     THROW_INVALID_DSTACK("job_loadBuffer::spawn"_Stz);
-  SubLoader* pSubLoader = _pLoaderSub(pPtrSubLoader);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
   i8 iFinal;
   if ( ! mpTask->m_pDataStack->bPop(iFinal) )
@@ -145,7 +145,6 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get info
   
-  Job_SubLoader* pJob_SubLoader = pSubLoader->pJob_SubLoader();
   Job_LoadTable* pJob_LoadTable = pJob_SubLoader->pJob_LoadTable();
   
   i8 iJobLoadTableId = pJob_LoadTable->iJobId();

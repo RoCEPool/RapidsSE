@@ -7,30 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* send working buffer to node                                                */
 /*----------------------------------------------------------------------------*/
-: SubLoader_sendBuffer ( bFinal pSubLoader -- )
+: SubLoader_sendBuffer ( bFinal pSubLoader pJob_SubLoader -- )
 
+  params| pJob_SubLoader |
   params| pSubLoader  |
   params| bFinal  |
 
-  bFinal pSubLoader job_loadBuffer::spawn
-;
-
-/*----------------------------------------------------------------------------*/
-/* send working buffer to node                                                */
-/*----------------------------------------------------------------------------*/
-: SubLoader_sendBuffer2 ( bFinal pSubLoader -- )
-
-  params| pSubLoader  |
-  params| bFinal  |
-
-  0 locals| pJobClass_LoadBuffer |
-  0 locals| pJob_LoadBuffer |
-
-  CN_JOB_LOADBUFFER jobClass::find to pJobClass_LoadBuffer
-
-  nullptr pJobClass_LoadBuffer jobClass.new to pJob_LoadBuffer
-
-  pJob_LoadBuffer SEED_RUN job.spawn
+  bFinal pJob_SubLoader job_loadBuffer::spawn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +39,7 @@
     pSubLoader subLoader.danglingBuffer
 
     // send last buffer to node
-    true pSubLoader SubLoader_sendBuffer
+    true pSubLoader pJob_SubLoader SubLoader_sendBuffer
 
   loop
 ;
@@ -71,7 +54,7 @@
 
   begin pJob_SubLoader job_subLoader.processRecords while
 
-    false pSubLoader SubLoader_sendBuffer
+    false pSubLoader pJob_SubLoader SubLoader_sendBuffer
 
   repeat
 
