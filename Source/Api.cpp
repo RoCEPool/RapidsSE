@@ -162,7 +162,6 @@ eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
 
   vTrace("ppJob: %p\n"_Stz, ppJob);
   
-  
   // set the catalog and schema in the SEitf
   vTrace("Intializing SEITF\n"_Stz);
   pSEitf->vInit(sCatalogName, sSchemaName);
@@ -312,23 +311,31 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTra
   
   TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_sResponse);
   
-  i8 iRows = -1;
+  pTknVec->vDumpTokens("tokens"_Stz, pTknVec->iCountTokens());
+  i8 iRows = 0;
   i8 iToken = 0;
   
-  while (iRows != iRow) {
+  while (true) {
     ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("row:"_Stz));
     
     ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("("_Stz));
     
-    pSEitf->m_sResponse.vCopy(""_Stz);
-    while ( ! pTknVec->pGet(iToken)->aText()->bSame(")"_Stz)) {
-      pSEitf->m_sResponse.vConcat(pTknVec->pGet(iToken++)->aText());
-    }
+    if (iRows == iRow)
+      break;
     
-    //vTrace("row found %s\n"_Stz, pSEitf->m_sResponse.aChar());
+    while ( ! pTknVec->pGet(iToken)->aText()->bSame(")"_Stz)) {
+     iToken++;
+    }
+  
     ASSERT(pTknVec->pGet(iToken++)->aText()->bSame(")"_Stz));
     iRows++;
   }
+  
+  pSEitf->m_sResponse.vCopy(""_Stz);
+  while ( ! pTknVec->pGet(iToken)->aText()->bSame(")"_Stz)) {
+    pSEitf->m_sResponse.vConcat(pTknVec->pGet(iToken++)->aText());
+  }
+  
   *ppRow = pSEitf->m_sResponse.aChar();
   vTrace("Returning row %s\n"_Stz, pSEitf->m_sResponse.aChar());
   pTknVec->vSetAllTokens();
@@ -690,6 +697,42 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, Stz* sCatalogName, Stz* sSchemaName, i8 iP
     // trace exit
     TRACE_EXIT("ea"_Stz);
 
+    return EC_NONE;
+    
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the SE interface                                                     */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_ResetInterface(SEitf* pSEitf, i8 iTraceLevel)
+{
+  eEC eResult;
+  Stz* aApiCall = "RapidsSE_ResetInterface"_Stz;
+
+  try {
+    
+    TRACE_ENTRY_P0();
+    
+    // validate the SEitf
+    VALIDATE_SEITF("a"_Stz);
+    
+    VALIDATE_POOL();
+    
+    pSEitf->m_sResponse.vCopy(""_Stz);
+    
+    // trace exit
+    TRACE_EXIT("ea"_Stz);
+    
     return EC_NONE;
     
   }

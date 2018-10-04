@@ -38,7 +38,7 @@
   checkInCatalogs not if pJob_ListCatalogs <ERROR_REQUEST> exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // list tables folder contents
+  // list catalogs folder contents
   pJob_ListCatalogs listContents
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

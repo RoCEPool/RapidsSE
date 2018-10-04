@@ -132,9 +132,9 @@ void TokenVec::vDetachedRequest(bool bDetachedRequest)
 /*----------------------------------------------------------------------------*/
 void TokenVec::vDumpTokens(Stz* pTitle, i8 nTokens)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
-  vTrace("%s"_Stz,pTitle);
+  vTrace("%s\n"_Stz,pTitle);
   
   for (i8 i_Token = 0; i_Token < nTokens; i_Token++) {
     
@@ -143,7 +143,7 @@ void TokenVec::vDumpTokens(Stz* pTitle, i8 nTokens)
     if (! pToken->aText())
       break;
     
-    vTrace("%s "_Stz, pToken->aText());
+    vTrace("%s\n"_Stz, pToken->aText());
   }
   vTrace("\n"_Stz);
 }
