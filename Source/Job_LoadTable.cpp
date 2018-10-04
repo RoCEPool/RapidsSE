@@ -115,15 +115,15 @@ Job_LoadTable::Job_LoadTable(Interface::SEitf* pSEitf)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
-  //m_sFileName = ""_Stz;
+  m_pTable        = nullptr;
   m_xFormatters.vReset(); // reset to defaults in attachmap
   
-  m_pTable        = nullptr;
   m_pLoadMap      = nullptr;
+  
   m_ziValidRows   = 0;
   m_ziInvalidRows = 0;
   
-  m_pTask = nullptr;
+  m_pThisTask     = nullptr;
   
   _checkInitialised_(CN_JOB_LOADTABLE);
   
@@ -361,21 +361,21 @@ void Job_LoadTable::vTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
-Tasks::Task* Job_LoadTable::pTask(void)
+Tasks::Task* Job_LoadTable::pThisTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
-  return m_pTask;
+  return m_pThisTask;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set task                                                                   */
 /*----------------------------------------------------------------------------*/
-void Job_LoadTable::vTask(Tasks::Task* pTask)
+void Job_LoadTable::vThisTask(Tasks::Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
-  m_pTask = pTask;
+  m_pThisTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,6 +403,7 @@ Footer* Job_LoadTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* extract the date separator                                                 */
 /*----------------------------------------------------------------------------*/

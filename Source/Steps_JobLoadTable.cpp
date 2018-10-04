@@ -156,7 +156,7 @@ void Task::vJob_LoadTableTaskFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_LoadTable.task@"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
-  Task* pTask = pJob_LoadTable->pTask();
+  Task* pTask = pJob_LoadTable->pThisTask();
   mpTask->m_pDataStack->vPushObject(pTask);
   
   EXIT();
@@ -179,7 +179,7 @@ void Task::vJob_LoadTableTaskStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_LoadBuffer.table@"_Stz);
   Task* pTask = _pTask(pTaskPtr);
   
-  pJob_LoadTable->vTask(pTask);
+  pJob_LoadTable->vThisTask(pTask);
   
   EXIT();
 }
