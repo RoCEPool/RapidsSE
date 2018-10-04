@@ -463,14 +463,14 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* set dictionary path of this task back into seitf                           */
+/* set dictionary path of this task back into session                         */
 /*----------------------------------------------------------------------------*/
 : savePath ( -- )
 
-  0 0 locals| pDicStackSEitf pDicStackTask |
+  0 0 locals| pDicStackSession pDicStackTask |
 
-  // get seitf dic stack
-  task::this task.session@ session.dicStack to pDicStackSEitf
+  // get session dic stack
+  task::this task.session@ session.dicStack to pDicStackSession
 
   // get task dic stack
   task::this task.dicStack to pDicStackTask
@@ -480,12 +480,12 @@
     I pDicStackTask dicStack.pick
   loop
 
-  // clear seitf dic stack
-  pDicStackSEitf dicStack.dropAll
+  // clear session dic stack
+  pDicStackSession dicStack.dropAll
 
-  // copy the path from data stack onto seitf dic stack
+  // copy the path from data stack onto session dic stack
   pDicStackTask dicStack.depth 0 ?do
-    pDicStackSEitf dicStack.push
+    pDicStackSession dicStack.push
   loop
 ;
 

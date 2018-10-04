@@ -226,7 +226,7 @@
       pathPush
     else
 
-      dup "seitf" str.equal if
+      dup "session" str.equal if
         drop
       else
 

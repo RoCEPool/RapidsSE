@@ -10,7 +10,7 @@
 common/ range rbCrs /
 
 /*----------------------------------------------------------------------------*/
-/* send rows from buffers from teh buffer queue of the seitf                  */
+/* send rows from buffers from teh buffer queue of the session                */
 /*----------------------------------------------------------------------------*/
 : sendQueueBuffers ( pBufferQueue nLastBuffers pSession sProfile planId sNextOp )
 
@@ -65,7 +65,7 @@ common/ range rbCrs /
 
 tp: rangePartition
 
-  // record the plan, profile and the seitf
+  // record the plan, profile and the session
   locals| thePlan profile pSession |
   0 0 0 0 locals| nLastBuffers pTable pBufferQueue pPlanner |
 
@@ -139,7 +139,7 @@ tp: rangePartition
   // set the no of last buffers to no of phrases in plan
   //pPlanner planner.phrases@ pSession session.lastBuffers!
 
-  // create the buffer queue in the seitf
+  // create the buffer queue in the session
   "rangeTask.queue" queue::new to pBufferQueue
 
   0 0 locals| iSlot bGroupBy |
