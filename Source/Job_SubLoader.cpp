@@ -250,7 +250,7 @@ bool Job_SubLoader::bFetchRecord(void)
     
     if (iLength > C_MAX_RECORD) {
       m_iInvalidRecords++;
-      vWarn("Skipping row %.20s... - record in file > %lld\n"_Stz,
+      vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
             aRawData,
             C_MAX_RECORD);
       return false;
@@ -361,6 +361,9 @@ bool Job_SubLoader::bProcessRecords(void)
     if (! bInserted) {
       // buffer was full
       // return to loaderSub to append buffer to the table/partition
+      
+      m_pLoadChunk->vPushBack();
+      
       return true;
     }
     

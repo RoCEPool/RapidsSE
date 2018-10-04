@@ -5,6 +5,10 @@
 #include "Loader.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* LoadChunk::operator new(size_t iSize)
@@ -34,7 +38,7 @@ LoadChunk::LoadChunk(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 
   m_xWsp.vFill(0xEF,CN_LOADCHUNK);
-  
+    
   vReset();
   
   ASSERT(! m_aEndChunk);
@@ -67,7 +71,7 @@ void LoadChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -89,6 +93,11 @@ Stz* LoadChunk::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
   
   ASSERT(m_aEndChunk);
   ASSERT(m_aNextRecord);
+  
+  if (m_bHaveRecord) {
+    m_aNextRecord = pAdd<Stz*>(m_aNextRecord,- (m_iRecordBytes + 1));
+    m_bHaveRecord = false;
+  }
   
   //
   // At this point, m_aNextRecord is the address of the next record
@@ -114,7 +123,8 @@ Stz* LoadChunk::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
   vAdvanceRecordEnd((char**)&m_aNextRecord, pFormatters);
 
   // compute the number of bytes
-  iRecordBytes = m_aNextRecord - pRecord;
+  m_iRecordBytes = m_aNextRecord - pRecord;
+  iRecordBytes = m_iRecordBytes;
   
   // advance to beginning of next record for next time
   m_aNextRecord++;
@@ -142,6 +152,16 @@ void LoadChunk::vOpenFile(s256& sPath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push record back into sequence                                             */
+/*----------------------------------------------------------------------------*/
+void LoadChunk::vPushBack(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
+  
+  m_bHaveRecord = true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* read given chunk                                                           */
 /*----------------------------------------------------------------------------*/
 void LoadChunk::vReadChunk(i8 iSeek, i8 nBytes)
@@ -164,7 +184,7 @@ void LoadChunk::vReadChunk(i8 iSeek, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -240,8 +260,10 @@ void LoadChunk::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
-  m_aEndChunk   = nullptr;
-  m_aNextRecord = nullptr;
+  m_aEndChunk    = nullptr;
+  m_aNextRecord  = nullptr;
+  m_iRecordBytes = 0;
+  m_bHaveRecord  = false;
 }
 
 /*----------------------------------------------------------------------------*/

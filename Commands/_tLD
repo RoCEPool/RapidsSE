@@ -50,17 +50,17 @@ _t
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print "t100K.csv..." ;
-ld t "/rapids/t/t100K.csv" ;
-fetch t;
-antbl t;
+//print "t100K.csv..." ;
+//ld t "/rapids/t/t100K.csv" ;
+//fetch t;
+//antbl t;
 //dumpidx t hidden;
-tr t;
+//tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//print "t1M.csv..." ;
-//ld t "/rapids/t/t1M.csv" ;
-//fetch t;
+print "t1M.csv..." ;
+ld t "/rapids/t/t1M.csv" ;
+fetch t;
 //antbl t;
 //dumpidx t hidden;
 //tr t;
