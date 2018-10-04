@@ -18,10 +18,9 @@
 /*----------------------------------------------------------------------------*/
 /* send last buffers to all partitions                                        */
 /*----------------------------------------------------------------------------*/
-: SubLoader_sendLast (  pSubLoader pJob_SubLoader -- )
+: SubLoader_sendLast (  pJob_SubLoader -- )
 
   params| pJob_SubLoader |
-  params| pSubLoader  |
 
   // calculate total partitions in the cluster
   grid::slots grid::nodes * locals| nTotalPartitions |
@@ -46,10 +45,9 @@
 /*----------------------------------------------------------------------------*/
 /* read records from file, create working buffers, send to node               */
 /*----------------------------------------------------------------------------*/
-: SubLoader_process (  pSubLoader pJob_SubLoader -- )
+: SubLoader_process ( pJob_SubLoader -- )
 
   params| pJob_SubLoader |
-  params| pSubLoader |
 
   begin pJob_SubLoader job_subLoader.processRecords while
 
@@ -57,7 +55,7 @@
 
   repeat
 
-  pSubLoader pJob_SubLoader SubLoader_sendLast
+  pJob_SubLoader SubLoader_sendLast
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +85,7 @@
 
   pJob_SubLoader job_subLoader.begin
 
-  pSubLoader pJob_SubLoader SubLoader_process
+  pJob_SubLoader SubLoader_process
 
   // get the job_loader from subLoader
   pJob_SubLoader job_subLoader.jobLoadTable@ to pJobLoadTable_Participant
