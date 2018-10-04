@@ -103,11 +103,11 @@
       iSlot pTable tablePtnGrabRead  //! partitionLock
       iPhrase pPlanner Planner.highKey@
       iPhrase pPlanner Planner.lowKey@
-      iPhrase
-      pPlanner
-      pBufferQueue
-      iSlot
-      pIndex index.range
+      //iPhrase
+      //pPlanner
+      //pBufferQueue
+      //iSlot
+      pJob_SubFetch pIndex index.range
       iSlot pTable tablePtnDropRead
     endof
 

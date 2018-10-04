@@ -930,14 +930,11 @@ void Task::vIndexRange(MP_Task mpTask)
   ENTRY("vIndexRange"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Object* pPtrQueue = nullptr;
-  Object* pPtrPlanner = nullptr;
   
   ValWrk xValWrkLwr;
   ValWrk xValWrkUpr;
   ValWrk xValWrk;
-  
-  i8 iPartition;
+
   Session* pSession = mpTask->m_pSession;
   
   i8 i_Phrase;
@@ -947,7 +944,7 @@ void Task::vIndexRange(MP_Task mpTask)
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
-  
+  /*
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("index.range"_Stz);
   
@@ -965,6 +962,14 @@ void Task::vIndexRange(MP_Task mpTask)
   
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
     THROW_INVALID_DSTACK("index.range"_Stz);
+  */
+  
+  Object* pPtrJob;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+    THROW_INVALID_DSTACK("index.exactKey"_Stz);
+  
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
+  ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the lower key
   if ( ! mpTask->m_pDataStack->bPop(xValWrkLwr) )
@@ -989,14 +994,18 @@ void Task::vIndexRange(MP_Task mpTask)
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
+  i8 iSlot = pJob_SubFetch->m_iSlot;
+  i8 iPhrase = pJob_SubFetch->m_iPhrase;
+  Planner* pPlanner = pJob_SubFetch->m_pPlanner;
+  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
-  TablePtn* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iSlot);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   //----------------------------------------------------------------------------
   // create a working buffer for the results
   
-  pFetchBuffer = new FetchBuffer(pTable, iPartition);
+  pFetchBuffer = new FetchBuffer(pTable, iSlot);
   
   //----------------------------------------------------------------------------
   // make the lower key
@@ -1141,7 +1150,7 @@ void Task::vIndexRange(MP_Task mpTask)
         pQueue->bAppend(xValWrk.pNestedValue());
 
         // create another result buffer for the results
-        pFetchBuffer = new FetchBuffer(pTable, iPartition);
+        pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
         bool bResult = bAppendRow(pFetchBuffer, pDataRowEntry, pSession);
