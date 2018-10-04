@@ -10,9 +10,8 @@ namespace JobsModel
   {
   public:
     Job_LoadTable* m_pJob_LoadTable;
-    Utilities::SubLoader* m_pLoaderSub;
 
-    Utilities::LoadChunk* m_pLoadChunk; // chunk loading buffer
+    LoadChunk* m_pLoadChunk; // chunk loading buffer
     bool m_bMoreChunks; // continue while there are more chunks
   
     s48K m_aRecord;    // formatted row

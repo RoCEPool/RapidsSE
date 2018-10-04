@@ -110,7 +110,6 @@ Job_SubLoader::Job_SubLoader(Interface::SEitf* pSEitf)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
   m_pJob_LoadTable = nullptr;
-  m_pLoaderSub     = nullptr;
   
   m_pLoadChunk  = new LoadChunk;
   m_bMoreChunks = false;

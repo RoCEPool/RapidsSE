@@ -18,13 +18,6 @@ namespace Interface
 }
 
 //-----------------------------------------------------------------------------
-namespace Utilities
-{
-  class LoadTable;
-  class SubLoader;
-}
-
-//-----------------------------------------------------------------------------
 namespace JobsModel
 {
   void vCheckAssumptions(void);

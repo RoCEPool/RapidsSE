@@ -3,12 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace Utilities
-{
-  class LoadChunk;
-  class LoadMap;
-}
-
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -16,11 +10,10 @@ namespace JobsModel
                         public JobFileName
   {
   public:
-    Utilities::LoadTable* m_pLoadTable; // table loader
     Formatters m_xFormatters;           // record formatters
   
     Table* m_pTable;                    // table being load
-    Utilities:: LoadMap*  m_pLoadMap;   // load map
+    LoadMap*  m_pLoadMap;   // load map
 
     Atomic m_ziValidRows;               // valid rows loaded
     Atomic m_ziInvalidRows;             // invalid rows not loaded

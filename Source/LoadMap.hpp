@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Utilities
+namespace Loader
 {
   class LoadMap : public Object
   {
@@ -50,7 +50,7 @@ namespace Utilities
     Footer* aFooter(void);
   };
   
-  LoadMap* _pSeekMap(void* aAddr);
+  LoadMap* _pLoadMap(void* aAddr);
 }
 
 /*============================================================================*/
