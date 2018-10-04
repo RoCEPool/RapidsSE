@@ -150,7 +150,15 @@ void Task::vAddConstants(void)
   vAddConstant("C_SLOTS_PER_NODE"_Stz,    C_SLOTS_PER_NODE);
   vAddConstant("C_MAX_NODES"_Stz,         C_MAX_NODES);
   vAddConstant("C_MAX_PARTITIONS"_Stz,    C_MAX_PARTITIONS);
-  
+
+  vAddConstant("C_LOADCHUNK_LENGTH"_Stz,  C_LOADCHUNK_LENGTH);
+  vAddConstant("C_LOW_BUFFERS"_Stz,       C_LOW_BUFFERS);
+  vAddConstant("C_MAX_PRECISION_BCD"_Stz, C_MAX_PRECISION_BCD);
+  vAddConstant("C_MAX_COLUMNS"_Stz,       C_MAX_COLUMNS);
+  vAddConstant("C_MAX_RECORD"_Stz,        C_MAX_RECORD);
+  vAddConstant("C_PATH_MAX"_Stz,          C_PATH_MAX);
+  vAddConstant("C_SIZE_POOL_BUFFER"_Stz,  C_SIZE_POOL_BUFFER);
+
   // AM_ : attach map numbers
   /*  0 */ vAddConstant("AM_NONE"_Stz,         AM_NONE);
   /*  1 */ vAddConstant("AM_INDEXENTRIES"_Stz, AM_INDEXENTRIES);
