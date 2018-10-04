@@ -151,36 +151,21 @@ eEC RapidsSE_ExecuteCommand(SEitf* pSEitf, Stz* aCommand,
   // trace entry
   TRACE_ENTRY_P1(aCommand);
   
-  if (pSEitf)
-    vTrace("SEitf: %p\n"_Stz, pSEitf);
-  
-  if (sCatalogName)
-    vTrace("Catalog: %s\n"_Stz, sCatalogName);
-  
-  if (sSchemaName)
-    vTrace("Schema: %s\n"_Stz, sSchemaName);
-
-  vTrace("ppJob: %p\n"_Stz, ppJob);
-  
   // set the catalog and schema in the SEitf
-  vTrace("Intializing SEITF\n"_Stz);
   pSEitf->vInit(sCatalogName, sSchemaName);
   
-  vTrace("Invoking RapidsSE_pExecuteCommand\n"_Stz);
   Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSEitf, false);
   //vTrace("pJob = %p\n"_Stz, pJob);
   *ppJob = pJob;
   pSEitf->m_pJob = pJob;
   
   if (pJob->m_bHasError) {
-    vTrace("Got an error\n"_Stz);
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
         vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
         return pJob->m_xNode[i_Node].m_eErrorCode;
       }
     }
-    vTrace("Hit ASSERT\n"_Stz);
     ASSERT(0);
   }
   return EC_NONE;
@@ -311,7 +296,7 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTra
   
   TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_sResponse);
   
-  pTknVec->vDumpTokens("tokens"_Stz, pTknVec->iCountTokens());
+  //pTknVec->vDumpTokens("tokens"_Stz, pTknVec->iCountTokens());
   i8 iRows = 0;
   i8 iToken = 0;
   
@@ -337,7 +322,7 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTra
   }
   
   *ppRow = pSEitf->m_sResponse.aChar();
-  vTrace("Returning row %s\n"_Stz, pSEitf->m_sResponse.aChar());
+  //vTrace("Returning row %s\n"_Stz, pSEitf->m_sResponse.aChar());
   pTknVec->vSetAllTokens();
   delete pTknVec;
   
