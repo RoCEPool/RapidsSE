@@ -45,6 +45,10 @@ void Task::vJob_LoadBufferInsertRows(MP_Task mpTask)
   TablePtn* pPartition = pTable->pPartition(iSlot);
   WorkingBuffer* pWorkingBuffer = pJob_LoadBuffer->m_pWorkingBuffer;
   
+  vTrace("Job_LoadBuffer %lld %s\n"_Stz,
+         pWorkingBuffer->nWorkingRows(),
+         pWorkingBuffer->bIsLast() ? "IsLast" : "");
+  
   i8 iTxId = 0;
   
   // insert the working buffer

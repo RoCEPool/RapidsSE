@@ -18,17 +18,54 @@ void Step::vAddSteps_JobSubLoader(void)
   vAddStep("Job_subLoader::spawn"_Stz,        &Task::vJob_SubLoaderSpawn, false);
   
   vAddStep("job_subLoader.begin"_Stz,         &Task::vJob_SubLoaderBegin,             false);
-  vAddStep("job_subLoader.danglingBuffer"_Stz,&Task::vJob_SubLoaderDanglingBuffer,     false);
+  vAddStep("job_subLoader.danglingBuffer"_Stz,&Task::vJob_SubLoaderDanglingBuffer,    false);
   vAddStep("job_subLoader.end"_Stz,           &Task::vJob_SubLoaderEnd,               false);
-  
   vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Task::vJob_SubLoaderJobLoadTableFetch, false);
-  
   vAddStep("Job_subLoader.partition@"_Stz,    &Task::vJob_SubLoaderPartitionFetch,    false);
   vAddStep("Job_subLoader.partition!"_Stz,    &Task::vJob_SubLoaderPartitionStore,    false);
   vAddStep("Job_subLoader.processRecords"_Stz,&Task::vJob_SubLoaderProcessRecords,    false);
   vAddStep("Job_subLoader.recordsInvalid"_Stz,&Task::vJob_SubLoaderRecordsInvalid,    false);
   vAddStep("Job_subLoader.recordsValid"_Stz,  &Task::vJob_SubLoaderRecordsValid,      false);
 }
+
+/*----------------------------------------------------------------------------*/
+/* job_subLoader::spawn -- spawn a new subloader                              */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
+{
+  ENTRY("vJob_SubLoaderSpawn"_Stz);
+  
+  Object* pPtrJob_LoadTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
+    THROW_INVALID_DSTACK("job_subLoader::spawn"_Stz);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Session* pSession = pJob_LoadTable->m_pSession;
+  
+  //! this needs to be optimised
+  JobClass* pJobClass_SubLoader = JobClass::pFind(CN_JOB_SUBLOADER);
+  
+  Job_SubLoader* pJob_SubLoader =
+  static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(pSession));
+  
+  pJob_SubLoader->vSeed(SS_SEED_RUN);
+  
+  pJob_SubLoader->m_sObjectName = pJob_LoadTable->m_sObjectName;
+  pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  RapidsSE_bSpawnJob(pJob_SubLoader,SS_SEED_RUN,pSession);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.begin -- begin loading                                       */
@@ -101,42 +138,6 @@ void Task::vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* job_subLoader::spawn -- spawn a new subloader                              */
-/*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
-{
-  ENTRY("vJob_SubLoaderSpawn"_Stz);
-  
-  Object* pPtrJob_LoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    THROW_INVALID_DSTACK("job_subLoader::spawn"_Stz);
-  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  Session* pSession = pJob_LoadTable->m_pSession;
-  
-  //! this needs to be optimised
-  JobClass* pJobClass_SubLoader = JobClass::pFind(CN_JOB_SUBLOADER);
-  
-  Job_SubLoader* pJob_SubLoader =
-  static_cast<Job_SubLoader*>(pJobClass_SubLoader->pPreJob(pSession));
-  
-  pJob_SubLoader->vSeed(SS_SEED_RUN);
-  
-  pJob_SubLoader->m_sObjectName = pJob_LoadTable->m_sObjectName;
-  pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  RapidsSE_bSpawnJob(pJob_SubLoader,SS_SEED_RUN,pSession);
-  
-  EXIT();
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.partition@ -- get partition no derived from hash of record   */
