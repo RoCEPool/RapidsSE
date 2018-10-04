@@ -621,37 +621,19 @@ void Task::vIndexLowerBound(MP_Task mpTask)
 {
   ENTRY("vIndexLowerBound"_Stz);
   
-  Object* pPtrIndex = nullptr;
-  
-  ValWrk xValWrk;
-  i8 iPartition;
   Session* pSession = mpTask->m_pSession;
+  Object* pPtrIndex = nullptr;
   FetchBuffer* pFetchBuffer;
   
+  ValWrk xValWrk;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get members from subFetch
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
     THROW_INVALID_DSTACK("index.lowerBound"_Stz);
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
-  /*
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrQueue) )
-    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
-  
-  Queue* pQueue = _pQueue(pPtrQueue);
-  ASSERT(CN_QUEUE == pPtrQueue->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
-    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
-  
-  Planner* pPlanner = _pPlanner(pPtrPlanner);
-  ASSERT(CN_PLANNER == pPlanner->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
-    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
-  */
   
   Object* pPtrJob;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
@@ -664,41 +646,45 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("index.lowerBound"_Stz);
   
-  EntryBuffer* pLowerEntryBuffer;
-  Entry* pLowerEntry = nullptr;
-  eRO eLowerRelnOp;
-  i8 iIndexNo = pIndex->iIndexNo();
-  Table* pTable = pIndex->pTable();
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get members from subFetch
   i8 iSlot = pJob_SubFetch->m_iSlot;
   i8 iPhrase = pJob_SubFetch->m_iPhrase;
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
+  EntryBuffer* pLowerEntryBuffer;
+  Entry* pLowerEntry = nullptr;
+  eRO eLowerRelnOp;
+  i8 iIndexNo = pIndex->iIndexNo();
+  Table* pTable = pIndex->pTable();
   TablePtn* pPartition = pTable->pPartition(iSlot);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a result buffer for the results
   pFetchBuffer = new FetchBuffer(pTable, iSlot);
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_xFormatters;
   xKeyWrkLower.vAddDatum(xValWrk,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
   pLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
   if (pLowerEntryBuffer) {
     // position in the index buffer at the lower key
     pLowerEntry = pLowerEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // loop till we get an entry
   while ( ! pLowerEntry) {
     if (pLowerEntryBuffer && pLowerEntryBuffer->pNextBuffer()) {
@@ -713,34 +699,36 @@ void Task::vIndexLowerBound(MP_Task mpTask)
       break;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get a lower entry ?
   if ( ! pLowerEntry) {
     goto LastBuffer;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries
   while (pLowerEntry) {
     
     // get the dataRow from the hidden index
     Entry* pDataRowEntry = pLowerEntry->pDataEntry();
     
-    // insert row from entry in resultBuffer
+    // insert row from entry in fetchBuffer
     if ( ! bAppendRow(pFetchBuffer, pDataRowEntry, pSession)) {
       
-      // buffer must be full
+      // Buffer is Full;
       // put this tempEntryBuffer in session bufferQueue
       xValWrk = (Object*)pFetchBuffer;
       pQueue->bAppend(xValWrk.pNestedValue());
       
-      // create another result buffer for the results
+      // create another fetchBuffer for the results
       pFetchBuffer = new FetchBuffer(pTable, iSlot);
       
-      // insert row from entry in temporary buffer
+      // insert row from entry in fetchBuffer
       bool bResult = bAppendRow(pFetchBuffer, pDataRowEntry, pSession);
       RASSERT(bResult);
     }
     
-    //--------------------------------------------------------------------------
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     // move to next entry in the buffer
     pLowerEntry = pLowerEntryBuffer->pNextEntry(pLowerEntry, 0);
     
@@ -752,6 +740,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
         pLowerEntry = pLowerEntryBuffer->pFirstEntry();
     }
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if session exiting
     if (pSession->m_bSessionExiting)
       pLowerEntry = nullptr;
@@ -759,10 +748,11 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   
 LastBuffer:
   
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark this buffer as the last buffer
   pFetchBuffer->vIsLast(true);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
   xValWrk = (Object*)pFetchBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
