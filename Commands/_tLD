@@ -34,9 +34,9 @@ _t
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//print "t1K.csv..." ;
-//ld t "/rapids/t/t1K.csv" ;
-//fetch t;
+print "t1K.csv..." ;
+ld t "/rapids/t/t1K.csv" ;
+fetch t;
 //antbl t;
 //dumpidx t hidden;
 //tr t;
@@ -58,9 +58,9 @@ _t
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print "t1M.csv..." ;
-ld t "/rapids/t/t1M.csv" ;
-fetch t;
+//print "t1M.csv..." ;
+//ld t "/rapids/t/t1M.csv" ;
+//fetch t;
 //antbl t;
 //dumpidx t hidden;
 //tr t;

@@ -90,7 +90,12 @@
 
   job::this locals| pJob_LoadBuffer |
 
-  pJob_LoadBuffer LoadBuffer.load
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check there is enough buffers and load
+
+  // checkEnoughBuffers if
+    pJob_LoadBuffer LoadBuffer.load
+  //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   delete_completed_job
