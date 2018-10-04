@@ -18,7 +18,7 @@ using namespace Interface;
 //-----------------------------------------------------------------------------
 
 #include "CommandProcessor.hpp"
-#include "SEitf.hpp"
+#include "Session.hpp"
 #include "Api.hpp"
 
 /*============================================================================*/
