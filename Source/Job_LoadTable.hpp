@@ -10,15 +10,15 @@ namespace JobsModel
                         public JobFileName
   {
   public:
-    Formatters m_xFormatters;           // record formatters
+    Table*     m_pTable;       // table being load
+    Formatters m_xFormatters;  // record formatters
   
-    Table* m_pTable;                    // table being load
-    LoadMap*  m_pLoadMap;   // load map
+    LoadMap*   m_pLoadMap;     // load map
 
-    Atomic m_ziValidRows;               // valid rows loaded
-    Atomic m_ziInvalidRows;             // invalid rows not loaded
+    Atomic m_ziValidRows;      // valid rows loaded
+    Atomic m_ziInvalidRows;    // invalid rows not loaded
     
-    Tasks::Task* m_pTask; // task running this job
+    Tasks::Task* m_pThisTask;  // task running this job
   
     // must be last
     Footer m_xFooter;
@@ -38,11 +38,11 @@ namespace JobsModel
     bool bFindChunk(void);
     bool bPopulateJob(TokenVec* pTokenVec);
   
-    Table*   pTable(void);
-    void     vTable(Table* pTable);
+    Table* pTable(void);
+    void   vTable(Table* pTable);
 
-    Tasks::Task* pTask(void);
-    void vTask(Tasks::Task* pTask);
+    Tasks::Task* pThisTask(void);
+    void vThisTask(Tasks::Task* pTask);
 
     void vShow(void);
     
