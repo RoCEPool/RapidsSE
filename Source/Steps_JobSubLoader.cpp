@@ -31,7 +31,7 @@ void Step::vAddSteps_JobSubLoader(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* subLoader.begin -- begin loading                                           */
+/* job_subLoader.begin -- begin loading                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vJob_SubLoaderBegin(MP_Task mpTask)
 {
@@ -69,7 +69,7 @@ void Task::vJob_SubLoaderDanglingBuffer(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* subLoader.end -- end loading                                               */
+/* job_subLoader.end -- end loading                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vJob_SubLoaderEnd(MP_Task mpTask)
 {
@@ -103,7 +103,7 @@ void Task::vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* subLoader::spawn -- spawn a new subloader                                  */
+/* job_subLoader::spawn -- spawn a new subloader                              */
 /*----------------------------------------------------------------------------*/
 void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
 {
@@ -111,7 +111,7 @@ void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
   
   Object* pPtrJob_LoadTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    THROW_INVALID_DSTACK("subLoader::spawn"_Stz);
+    THROW_INVALID_DSTACK("job_subLoader::spawn"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -129,8 +129,6 @@ void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
   pJob_SubLoader->m_sObjectName = pJob_LoadTable->m_sObjectName;
   pJob_SubLoader->vJob_LoadTable(pJob_LoadTable);
   
-  SubLoader* pSubLoader = new SubLoader(pJob_SubLoader);
-  pJob_SubLoader->vSubLoader(pSubLoader);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
