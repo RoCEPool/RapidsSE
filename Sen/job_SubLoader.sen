@@ -7,10 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* send working buffer to node                                                */
 /*----------------------------------------------------------------------------*/
-: SubLoader_sendBuffer ( bFinal pSubLoader pJob_SubLoader -- )
+: SubLoader_sendBuffer ( bFinal pJob_SubLoader -- )
 
   params| pJob_SubLoader |
-  params| pSubLoader  |
   params| bFinal  |
 
   bFinal pJob_SubLoader job_loadBuffer::spawn
@@ -36,10 +35,10 @@
     I pJob_SubLoader job_subLoader.partition!
 
     // ensure there's a dangling buffer for partition I
-    pSubLoader subLoader.danglingBuffer
+    pJob_SubLoader job_subLoader.danglingBuffer
 
     // send last buffer to node
-    true pSubLoader pJob_SubLoader SubLoader_sendBuffer
+    true pJob_SubLoader SubLoader_sendBuffer
 
   loop
 ;
@@ -54,7 +53,7 @@
 
   begin pJob_SubLoader job_subLoader.processRecords while
 
-    false pSubLoader pJob_SubLoader SubLoader_sendBuffer
+    false pJob_SubLoader SubLoader_sendBuffer
 
   repeat
 
