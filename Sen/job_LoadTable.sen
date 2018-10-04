@@ -77,14 +77,14 @@
 
   job::this locals| pJob_LoadTable |
 
-  // distribute the job
+  // add job to originator list and distribute
   pJob_LoadTable job.distribute
 
   <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_LoadTable job on each node                                     */
+/* execute Job_LoadTable job (on each participating node)                     */
 /*----------------------------------------------------------------------------*/
 : loadTable_exe ( -- )
 
@@ -92,25 +92,18 @@
 
   job::this locals| pJob_LoadTable |
 
-  0 locals| pThisTask |
-
-  // get the task
-  task::this to pThisTask
-  //pJob_LoadTable pThisTask "LoadTable_exe task: %v job_LoadTable %v" fmt.print
+  0 locals| iOriginNode |
+  0 locals| iThisNode   |
 
   // store task into Job_LoadTable
-  pThisTask pJob_LoadTable job_loadTable.task!
+  task::this pJob_LoadTable job_loadTable.task!
 
-  pJob_LoadTable job.id@ job::originator@ locals| iOriginNode |
-  grid::thisNode@ locals| iThisNode |
-
-  //iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
+  pJob_LoadTable job.id@ job::originator@ to iOriginNode
+  grid::thisNode@ to iThisNode
 
   iThisNode iOriginNode == if
-    //"LoadTable is executing on this node" .
     pJob_LoadTable LoadTable_executeLoad
   else
-    //"LoadTable is not executed on this node" .
     LoadTable_waitOnly
   then
 
@@ -122,7 +115,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_LoadTable job check resources                                  */
+/* check resources (on participating nodes)                                   */
 /*----------------------------------------------------------------------------*/
 : loadTable.checkResources ( pJob_LoadTable -- )
 
@@ -130,11 +123,9 @@
 
   pJob_LoadTable job.objectName@ locals| sTableNm |
 
-  tp: loadTable.checkResources
-  //checkResources received" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check if file exists (SHOULDN"T THIS BE ONLY ON ORIGINATING NODE?)
 
-  //----------------------------------------------------------------------------
-  // check if file exists
   file::new locals| fp |
   pJob_LoadTable job_LoadTable.filePath@ fp file.path!
 
@@ -145,12 +136,12 @@
 
   fp file.close fp file.delete assert::stack_0
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grad a ddl lock
 
   ddlLock::grabWrite
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // path checks
 
   // set dictionary stack
@@ -158,7 +149,6 @@
   //pathDump
 
   // there should be a table folder
-
   sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> exit then
   //sTableNm "In table folder: %v" fmt.print
 
@@ -173,7 +163,7 @@
   popTable
   //pathDump
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
 
   checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> exit then
@@ -182,18 +172,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_LoadTable job release resources                                */
+/* release resources (on participating nodes)                                 */
 /*----------------------------------------------------------------------------*/
 : loadTable.releaseResources ( pJob_LoadTable -- )
 
   params| pJob_LoadTable  |
-
-  tp: loadTable.releaseResources
-  //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/
-/* begin job                                                                  */
+/* begin job (on participating nodes)                                         */
 /*----------------------------------------------------------------------------*/
 : loadTable_beg ( -- )
 
@@ -201,22 +188,17 @@
 
   job::this locals| pJob_LoadTable |
 
-  //">> loadTable_beg <<" .
-
-  // add this job to the participants list
   pJob_LoadTable job.beginParticipant
 
-  // check resources
   pJob_LoadTable loadTable.checkResources
 
-  // this job has begun
   job::participantBegun
 
   <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* end job                                                                    */
+/* end job (on participating nodes)                                           */
 /*----------------------------------------------------------------------------*/
 : loadTable_end ( -- )
 
@@ -224,9 +206,6 @@
 
   job::this locals| pJob_LoadTable |
 
-  //">> loadTable_end <<" .
-
-  // release resources
   pJob_loadTable loadTable.releaseResources
 
   job::participantEnded
@@ -235,7 +214,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* cancel job                                                                 */
+/* cancel job (on participating nodes)                                         */
 /*----------------------------------------------------------------------------*/
 : loadTable_can ( -- )
 
