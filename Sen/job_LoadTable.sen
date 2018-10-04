@@ -4,64 +4,69 @@
 
 " job_LoadTable.sen" .verbose
 
+////////////////////////////////////////////////////////////////////////////////
+//                            on participating node                           //
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
-/* execute loader on this node                                                */
+/* execute load table on this participant node (same as originator)           */
 /*----------------------------------------------------------------------------*/
-: LoadTable_executeLoader ( pJob_LoadTable --  )
+: LoadTable_executeLoad ( pJob_LoadTable --  )
 
   params| pJob_LoadTable |
-  0 locals| pThisTask |
 
-  //"LoadTable_executeLoader: Executing loader on this node" .
+  0 locals| sTableNm  |
+  0 locals| pTable    |
 
-  task::this to pThisTask
+  //"LoadTable_executeLoad: Executing loader on this node" .
 
-  // initialise table loader
-  pJob_LoadTable job.objectName@ locals| sTableNm |
-  //sTableNm "TableNm: %v" fmt.print
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // initialise
 
-  // push table dictionary
+  // set path
   pJob_LoadTable getPath dicStack.set
-  sTableNm pushTable assert
-  //pathDump
 
-  sTableNm find execute locals| pTable |
+  // set table dictionary
+  pJob_LoadTable job.objectName@ to sTableNm
+  sTableNm pushTable assert
+
+  // get table
+  sTableNm find execute to pTable
   pTable pJob_LoadTable Job_LoadTable.table!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // chunk the file being loaded
 
   pJob_LoadTable Job_LoadTable.chunkFile
 
-  // grab this task's lock
-  pThisTask task.grabLock
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn and wait for sub-loaders
+
+  task::this task.grabLock
 
   grid::slots setAcks
 
   args.subLoaders 0
   do
-    //I "Creating Job_SubLoader %v" fmt.print
     pJob_LoadTable job_subLoader::spawn
   loop
 
-  //"LoadTable_executeLoader ack waiting" .
   ackWait
-  //"LoadTable_executeLoader acked" .
 ;
 
 /*----------------------------------------------------------------------------*/
-/* wait for ack only                                                          */
+/* this table load job waits for an ack only                                  */
 /*----------------------------------------------------------------------------*/
 : LoadTable_waitOnly ( pJob_LoadTable --  )
 
-  task::this locals| pThisTask |
-
-  // grab this task's lock
-  pThisTask task.grabLock
-
+  task::this task.grabLock
   grid::slots setAcks
-
-  "LoadTable_waitOnly waiting" .
   ackWait
-  "LoadTable_waitOnly acked" .
 ;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* Job_LoadTable request (on originating node)                                */
@@ -70,17 +75,7 @@
 
   <SEED_REQ>
 
-  0 locals| pThisTask |
-  0 locals| pJob_LoadTable  |
-
-  tp: loadTable_req
-
-  // get the task
-  task::this to pThisTask
-
-  // get the job from the task
-  pThisTask task.job@ to pJob_LoadTable
-  //pJob_LoadTable pThisTask "LoadTable_req task: %v job_LoadTable %v" fmt.print
+  job::this locals| pJob_LoadTable |
 
   // distribute the job
   pJob_LoadTable job.distribute
@@ -113,7 +108,7 @@
 
   iThisNode iOriginNode == if
     //"LoadTable is executing on this node" .
-    pJob_LoadTable LoadTable_executeLoader
+    pJob_LoadTable LoadTable_executeLoad
   else
     //"LoadTable is not executed on this node" .
     LoadTable_waitOnly
