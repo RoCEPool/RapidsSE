@@ -15,14 +15,14 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobLoadTable(void)
 {
-  vAddStep("job_loadTable.addInvalidRows"_Stz,&Task::vJob_LoadTableAddInvalidRows,false);
-  vAddStep("job_loadTable.addValidRows"_Stz,  &Task::vJob_LoadTableAddValidRows,  false);
-  vAddStep("job_loadTable.chunkFile"_Stz,     &Task::vJob_LoadTableChunkFile,     false);
-  vAddStep("job_loadTable.dumpMap"_Stz,       &Task::vJob_LoadTableDumpMap,       false);
-  vAddStep("job_loadTable.filePath@"_Stz,     &Task::vJob_LoadTableFilePathFetch, false);
-  vAddStep("job_loadTable.table!"_Stz,        &Task::vJob_LoadTableTableStore,    false);
-  vAddStep("job_loadTable.task@"_Stz,         &Task::vJob_LoadTableTaskFetch,     false);
-  vAddStep("job_loadTable.task!"_Stz,         &Task::vJob_LoadTableTaskStore,     false);
+  vAddStep("job_loadTable.addInvalidRows"_Stz,&Task::vJob_LoadTableAddInvalidRows);
+  vAddStep("job_loadTable.addValidRows"_Stz,  &Task::vJob_LoadTableAddValidRows);
+  vAddStep("job_loadTable.chunkFile"_Stz,     &Task::vJob_LoadTableChunkFile);
+  vAddStep("job_loadTable.dumpMap"_Stz,       &Task::vJob_LoadTableDumpMap);
+  vAddStep("job_loadTable.filePath@"_Stz,     &Task::vJob_LoadTableFilePathFetch);
+  vAddStep("job_loadTable.table!"_Stz,        &Task::vJob_LoadTableTableStore);
+  vAddStep("job_loadTable.task@"_Stz,         &Task::vJob_LoadTableTaskFetch);
+  vAddStep("job_loadTable.task!"_Stz,         &Task::vJob_LoadTableTaskStore);
 }
 
 /*----------------------------------------------------------------------------*/

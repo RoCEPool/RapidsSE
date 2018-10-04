@@ -15,18 +15,18 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SelCursor(void)
 {
-  vAddStep("selCursor.begin"_Stz,     &Task::vSelCursorBegin,      false);
-  vAddStep("selCursor.delete"_Stz,    &Task::vSelCursorDelete,     false);
-  vAddStep("selCursor.end"_Stz,       &Task::vSelCursorEnd,        false);
-  vAddStep("selCursor.first"_Stz,     &Task::vSelCursorFirst,      false);
-  vAddStep("selCursor.get"_Stz,       &Task::vSelCursorGet,        false);
-  vAddStep("selCursor.hasRow"_Stz,    &Task::vSelCursorHasRow,     false);
-  vAddStep("selCursor.init"_Stz,      &Task::vSelCursorInit,       false);
-  vAddStep("selCursor::new"_Stz,      &Task::vSelCursorNew,        false);
-  vAddStep("selCursor.next"_Stz,      &Task::vSelCursorNext,       false);
-  vAddStep("selCursor.rowBuffer"_Stz, &Task::vSelCursorRowBuffer,  false);
-  vAddStep("selCursor.table@"_Stz,    &Task::vSelCursorTableFetch, false);
-  vAddStep("selCursor.table!"_Stz,    &Task::vSelCursorTableStore, false);
+  vAddStep("selCursor.begin"_Stz,     &Task::vSelCursorBegin);
+  vAddStep("selCursor.delete"_Stz,    &Task::vSelCursorDelete);
+  vAddStep("selCursor.end"_Stz,       &Task::vSelCursorEnd);
+  vAddStep("selCursor.first"_Stz,     &Task::vSelCursorFirst);
+  vAddStep("selCursor.get"_Stz,       &Task::vSelCursorGet);
+  vAddStep("selCursor.hasRow"_Stz,    &Task::vSelCursorHasRow);
+  vAddStep("selCursor.init"_Stz,      &Task::vSelCursorInit);
+  vAddStep("selCursor::new"_Stz,      &Task::vSelCursorNew);
+  vAddStep("selCursor.next"_Stz,      &Task::vSelCursorNext);
+  vAddStep("selCursor.rowBuffer"_Stz, &Task::vSelCursorRowBuffer);
+  vAddStep("selCursor.table@"_Stz,    &Task::vSelCursorTableFetch);
+  vAddStep("selCursor.table!"_Stz,    &Task::vSelCursorTableStore);
 }
 
 /*----------------------------------------------------------------------------*/

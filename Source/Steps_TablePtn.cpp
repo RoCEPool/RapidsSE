@@ -11,12 +11,12 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_TablePartition(void)
 {
-  vAddStep("tablePtn.dump"_Stz,             &Task::vTablePtnDump,            false);
-  vAddStep("tablePtn.attemptGrabRead"_Stz , &Task::vTablePtnAttemptGrabRead, false);
-  vAddStep("tablePtn.attemptGrabWrite"_Stz, &Task::vTablePtnAttemptGrabWrite,false);
-  vAddStep("tablePtn.dropRead"_Stz,         &Task::vTablePtnDropRead,        false);
-  vAddStep("tablePtn.dropWrite"_Stz,        &Task::vTablePtnDropWrite,       false);
-  vAddStep("tablePtn.isLocked"_Stz,         &Task::vTablePtnIsLocked,        false);
+  vAddStep("tablePtn.dump"_Stz,             &Task::vTablePtnDump);
+  vAddStep("tablePtn.attemptGrabRead"_Stz , &Task::vTablePtnAttemptGrabRead);
+  vAddStep("tablePtn.attemptGrabWrite"_Stz, &Task::vTablePtnAttemptGrabWrite);
+  vAddStep("tablePtn.dropRead"_Stz,         &Task::vTablePtnDropRead);
+  vAddStep("tablePtn.dropWrite"_Stz,        &Task::vTablePtnDropWrite);
+  vAddStep("tablePtn.isLocked"_Stz,         &Task::vTablePtnIsLocked);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -15,19 +15,19 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobGeneric(void)
 {
-  vAddStep("jobBegun.error@"_Stz,     &Task::vJob__BegunErrorFetch,  false);
-  vAddStep("jobBegun.error!"_Stz,     &Task::vJob__BegunErrorStore,  false);
+  vAddStep("jobBegun.error@"_Stz,     &Task::vJob__BegunErrorFetch);
+  vAddStep("jobBegun.error!"_Stz,     &Task::vJob__BegunErrorStore);
   
-  vAddStep("jobCancelled.error@"_Stz, &Task::vJob__CancelledErrorFetch, false);
-  vAddStep("jobCancelled.error!"_Stz, &Task::vJob__CancelledErrorStore, false);
+  vAddStep("jobCancelled.error@"_Stz, &Task::vJob__CancelledErrorFetch);
+  vAddStep("jobCancelled.error!"_Stz, &Task::vJob__CancelledErrorStore);
 
-  vAddStep("jobExecuted.error@"_Stz,    &Task::vJob__ExecutedErrorFetch,   false);
-  vAddStep("jobExecuted.error!"_Stz,    &Task::vJob__ExecutedErrorStore,   false);
-  vAddStep("jobExecuted.response@"_Stz, &Task::vJob__ExecutedResponseFetch,false);
-  vAddStep("jobExecuted.response!"_Stz, &Task::vJob__ExecutedResponseStore,false);
+  vAddStep("jobExecuted.error@"_Stz,    &Task::vJob__ExecutedErrorFetch);
+  vAddStep("jobExecuted.error!"_Stz,    &Task::vJob__ExecutedErrorStore);
+  vAddStep("jobExecuted.response@"_Stz, &Task::vJob__ExecutedResponseFetch);
+  vAddStep("jobExecuted.response!"_Stz, &Task::vJob__ExecutedResponseStore);
   
-  vAddStep("jobExecuted.rowsProcessed@"_Stz,&Task::vJob__ExecutedRowsProcessedFetch,false);
-  vAddStep("jobExecuted.rowsProcessed!"_Stz,&Task::vJob__ExecutedRowsProcessedStore,false);
+  vAddStep("jobExecuted.rowsProcessed@"_Stz,&Task::vJob__ExecutedRowsProcessedFetch);
+  vAddStep("jobExecuted.rowsProcessed!"_Stz,&Task::vJob__ExecutedRowsProcessedStore);
   
 }
 

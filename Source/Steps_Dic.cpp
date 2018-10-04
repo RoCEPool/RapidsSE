@@ -15,16 +15,16 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dic(void)
 {
-  vAddStep("dic.frozen@"_Stz,     &Task::vDicFrozenGet,     false);
-  vAddStep("dic.frozen!"_Stz,     &Task::vDicFrozenSet,     false);
-  vAddStep("dic.init"_Stz,        &Task::vDicInit,          false);
-  vAddStep("dic.kind@"_Stz,       &Task::vDicKindGet,       false);
-  vAddStep("dic.kind!"_Stz,       &Task::vDicKindSet,       false);
-  vAddStep("dic.lastWord"_Stz,    &Task::vDicLastWord,      false);
-  vAddStep("dic.main"_Stz,        &Task::vDicMain,          false);
-  vAddStep("dic.name"_Stz,        &Task::vDicName,          false);
-  vAddStep("dic.ref"_Stz,         &Task::vDicRef,           false);
-  vAddStep("dic.wordCount"_Stz,   &Task::vDicWordCount,     false);
+  vAddStep("dic.frozen@"_Stz,     &Task::vDicFrozenGet);
+  vAddStep("dic.frozen!"_Stz,     &Task::vDicFrozenSet);
+  vAddStep("dic.init"_Stz,        &Task::vDicInit);
+  vAddStep("dic.kind@"_Stz,       &Task::vDicKindGet);
+  vAddStep("dic.kind!"_Stz,       &Task::vDicKindSet);
+  vAddStep("dic.lastWord"_Stz,    &Task::vDicLastWord);
+  vAddStep("dic.main"_Stz,        &Task::vDicMain);
+  vAddStep("dic.name"_Stz,        &Task::vDicName);
+  vAddStep("dic.ref"_Stz,         &Task::vDicRef);
+  vAddStep("dic.wordCount"_Stz,   &Task::vDicWordCount);
 }
 
 /*----------------------------------------------------------------------------*/

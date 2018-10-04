@@ -15,12 +15,12 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobTruncateTable(void)
 {
-  vAddStep("job_subTruncate.truncateJobId@"_Stz,&Task::vJob_SubTruncateTruncateJobIdFetch, false);
-  vAddStep("job_subTruncate.slot@"_Stz,         &Task::vJob_SubTruncateSlotFetch,          false);
+  vAddStep("job_subTruncate.truncateJobId@"_Stz,&Task::vJob_SubTruncateTruncateJobIdFetch);
+  vAddStep("job_subTruncate.slot@"_Stz,         &Task::vJob_SubTruncateSlotFetch);
   
-  vAddStep("Job_truncateTable.spawnSub"_Stz, &Task::vJob_TruncateTableSpawnSub,  false);
-  vAddStep("Job_truncateTable.task@"_Stz,    &Task::vJob_TruncateTableTaskFetch, false);
-  vAddStep("Job_truncateTable.task!"_Stz,    &Task::vJob_TruncateTableTaskStore, false);
+  vAddStep("Job_truncateTable.spawnSub"_Stz, &Task::vJob_TruncateTableSpawnSub);
+  vAddStep("Job_truncateTable.task@"_Stz,    &Task::vJob_TruncateTableTaskFetch);
+  vAddStep("Job_truncateTable.task!"_Stz,    &Task::vJob_TruncateTableTaskStore);
 }
 
 /*----------------------------------------------------------------------------*/

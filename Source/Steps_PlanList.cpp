@@ -15,10 +15,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PlanList(void)
 {
-  vAddStep("planList::addPlan"_Stz,    &Task::vPlanListAddPlan,    false);
-  vAddStep("planList::findPlan"_Stz,   &Task::vPlanListFindPlan,   false);
-  vAddStep("planList::removePlan"_Stz, &Task::vPlanListRemovePlan, false);
-  vAddStep("planList::show"_Stz,       &Task::vPlanListShow,       false);
+  vAddStep("planList::addPlan"_Stz,    &Task::vPlanListAddPlan);
+  vAddStep("planList::findPlan"_Stz,   &Task::vPlanListFindPlan);
+  vAddStep("planList::removePlan"_Stz, &Task::vPlanListRemovePlan);
+  vAddStep("planList::show"_Stz,       &Task::vPlanListShow);
 }
 
 /*----------------------------------------------------------------------------*/

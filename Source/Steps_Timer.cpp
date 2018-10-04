@@ -15,17 +15,17 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Timer(void)
 {
-  vAddStep("timer.delete"_Stz,    &Task::vTimerDelete,      false);
-  vAddStep("timer.init"_Stz,      &Task::vTimerInit,        false);
-  vAddStep("timer.microsecs"_Stz, &Task::vTimerMicrosecs,   false);
-  vAddStep("timer.millisecs"_Stz, &Task::vTimerMillisecs,   false);
-  vAddStep("timer.nanosecs"_Stz,  &Task::vTimerNanosecs,    false);
-  vAddStep("timer::new"_Stz,       &Task::vTimerNew,         false);
-  vAddStep("timer.reset"_Stz,     &Task::vTimerReset,       false);
-  vAddStep("timer.secs"_Stz,      &Task::vTimerSecs,        false);
-  vAddStep("timer.start"_Stz,     &Task::vTimerStart,       false);
-  vAddStep("timer.ticks"_Stz,     &Task::vTimerTicks,       false);
-  vAddStep("timer.update"_Stz,    &Task::vTimerUpdate,      false);
+  vAddStep("timer.delete"_Stz,    &Task::vTimerDelete);
+  vAddStep("timer.init"_Stz,      &Task::vTimerInit);
+  vAddStep("timer.microsecs"_Stz, &Task::vTimerMicrosecs);
+  vAddStep("timer.millisecs"_Stz, &Task::vTimerMillisecs);
+  vAddStep("timer.nanosecs"_Stz,  &Task::vTimerNanosecs);
+  vAddStep("timer::new"_Stz,       &Task::vTimerNew);
+  vAddStep("timer.reset"_Stz,     &Task::vTimerReset);
+  vAddStep("timer.secs"_Stz,      &Task::vTimerSecs);
+  vAddStep("timer.start"_Stz,     &Task::vTimerStart);
+  vAddStep("timer.ticks"_Stz,     &Task::vTimerTicks);
+  vAddStep("timer.update"_Stz,    &Task::vTimerUpdate);
 }
 
 /*----------------------------------------------------------------------------*/

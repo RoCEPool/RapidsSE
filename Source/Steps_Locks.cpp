@@ -15,8 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Locks(void)
 {
-  vAddStep("locks::list"_Stz,  &Task::vLocksList,  false);
-  vAddStep("locks::reset"_Stz, &Task::vLocksReset, false);
+  vAddStep("locks::list"_Stz,  &Task::vLocksList);
+  vAddStep("locks::reset"_Stz, &Task::vLocksReset);
 }
 
 /*----------------------------------------------------------------------------*/

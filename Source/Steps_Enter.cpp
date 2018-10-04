@@ -15,8 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Enter(void)
 {
-  vAddStep("enterObject"_Stz,     &Task::vEnterObject,      false);
-  vAddStep("enterRoutine"_Stz,    &Task::vEnterRoutine,     false);
+  vAddStep("enterObject"_Stz,     &Task::vEnterObject);
+  vAddStep("enterRoutine"_Stz,    &Task::vEnterRoutine);
 }
 
 /*----------------------------------------------------------------------------*/

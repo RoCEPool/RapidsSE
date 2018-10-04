@@ -16,23 +16,23 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Planner(void)
 {
-  vAddStep("planner.choosePaths"_Stz,    &Task::vPlannerChoosePaths,    false);
-  vAddStep("planner.chosenPath"_Stz,     &Task::vPlannerChosenPath,     false);
-  vAddStep("planner.delete"_Stz,         &Task::vPlannerDelete,         false);
-  vAddStep("planner.fetchTechnique@"_Stz,&Task::vPlannerFetchTechniqueFetch, false);
-  vAddStep("planner.genPaths"_Stz,       &Task::vPlannerGenPaths,       false);
-  vAddStep("planner.highkey@"_Stz,       &Task::vPlannerHighKeyFetch,   false);
-  vAddStep("planner.indexNm@"_Stz,       &Task::vPlannerIndexNmFetch,   false);
-  vAddStep("planner.key@"_Stz,           &Task::vPlannerKeyFetch,       false);
-  vAddStep("planner.lowkey@"_Stz,        &Task::vPlannerLowKeyFetch,    false);
-  vAddStep("planner.matchPaths"_Stz,     &Task::vPlannerMatchPaths,     false);
-  vAddStep("planner.phrases@"_Stz,       &Task::vPlannerPhrasesFetch,   false);
-  vAddStep("planner::new"_Stz,           &Task::vPlannerNew,            false);
-  vAddStep("planner.parseWhere"_Stz,     &Task::vPlannerParseWhere,     false);
-  vAddStep("planner.scorePaths"_Stz,     &Task::vPlannerScorePaths,     false);
-  vAddStep("planner.showPaths"_Stz,      &Task::vPlannerShowPaths,      false);
-  vAddStep("planner.table@"_Stz,         &Task::vPlannerTableFetch,     false);
-  vAddStep("planner.table!"_Stz,         &Task::vPlannerTableStore,     false);
+  vAddStep("planner.choosePaths"_Stz,    &Task::vPlannerChoosePaths);
+  vAddStep("planner.chosenPath"_Stz,     &Task::vPlannerChosenPath);
+  vAddStep("planner.delete"_Stz,         &Task::vPlannerDelete);
+  vAddStep("planner.fetchTechnique@"_Stz,&Task::vPlannerFetchTechniqueFetch);
+  vAddStep("planner.genPaths"_Stz,       &Task::vPlannerGenPaths);
+  vAddStep("planner.highkey@"_Stz,       &Task::vPlannerHighKeyFetch);
+  vAddStep("planner.indexNm@"_Stz,       &Task::vPlannerIndexNmFetch);
+  vAddStep("planner.key@"_Stz,           &Task::vPlannerKeyFetch);
+  vAddStep("planner.lowkey@"_Stz,        &Task::vPlannerLowKeyFetch);
+  vAddStep("planner.matchPaths"_Stz,     &Task::vPlannerMatchPaths);
+  vAddStep("planner.phrases@"_Stz,       &Task::vPlannerPhrasesFetch);
+  vAddStep("planner::new"_Stz,           &Task::vPlannerNew);
+  vAddStep("planner.parseWhere"_Stz,     &Task::vPlannerParseWhere);
+  vAddStep("planner.scorePaths"_Stz,     &Task::vPlannerScorePaths);
+  vAddStep("planner.showPaths"_Stz,      &Task::vPlannerShowPaths);
+  vAddStep("planner.table@"_Stz,         &Task::vPlannerTableFetch);
+  vAddStep("planner.table!"_Stz,         &Task::vPlannerTableStore);
 }
 
 /*----------------------------------------------------------------------------*/

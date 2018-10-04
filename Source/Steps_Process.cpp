@@ -15,9 +15,9 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Process(void)
 {
-  vAddStep("process.getPid"_Stz,  &Task::vProcessGetPid,    false);
-  vAddStep("process.quit"_Stz,    &Task::vProcessQuit,      false);
-  vAddStep("process.testPid"_Stz, &Task::vProcessTestPid,   false);
+  vAddStep("process.getPid"_Stz,  &Task::vProcessGetPid);
+  vAddStep("process.quit"_Stz,    &Task::vProcessQuit);
+  vAddStep("process.testPid"_Stz, &Task::vProcessTestPid);
 }
 
 /*----------------------------------------------------------------------------*/

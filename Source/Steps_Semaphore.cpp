@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Semaphore(void)
 {
-  vAddStep("Semaphore.init"_Stz,    &Task::vSemaphoreInit,        false);
+  vAddStep("Semaphore.init"_Stz,    &Task::vSemaphoreInit);
 }
 
 /*----------------------------------------------------------------------------*/

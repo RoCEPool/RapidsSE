@@ -15,8 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AccessPath(void)
 {
-  vAddStep("accessPath.table@"_Stz,   &Task::vAccessPathTableFetch, false);
-  vAddStep("accessPath.table!"_Stz,   &Task::vAccessPathTableStore, false);
+  vAddStep("accessPath.table@"_Stz,   &Task::vAccessPathTableFetch);
+  vAddStep("accessPath.table!"_Stz,   &Task::vAccessPathTableStore);
 }
 
 /*----------------------------------------------------------------------------*/

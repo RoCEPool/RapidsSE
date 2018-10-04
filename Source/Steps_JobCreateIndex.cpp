@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobCreateIndex(void)
 {
-  vAddStep("job_createIndex.isUnique@"_Stz, &Task::vJob_CreateIndexIsUniqueFetch,  false);
+  vAddStep("job_createIndex.isUnique@"_Stz, &Task::vJob_CreateIndexIsUniqueFetch);
 }
 
 /*----------------------------------------------------------------------------*/

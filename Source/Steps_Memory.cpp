@@ -15,10 +15,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Memory(void)
 {
-  vAddStep("memory.byteDump"_Stz,   &Task::vMemoryByteDump,    false);
-  vAddStep("memory::list"_Stz,       &Task::vMemoryList,        false);
-  vAddStep("memory::reset"_Stz,      &Task::vMemoryReset,       false);
-  vAddStep("memory.wordDump"_Stz,   &Task::vMemoryWordDump,    false);
+  vAddStep("memory.byteDump"_Stz,   &Task::vMemoryByteDump);
+  vAddStep("memory::list"_Stz,       &Task::vMemoryList);
+  vAddStep("memory::reset"_Stz,      &Task::vMemoryReset);
+  vAddStep("memory.wordDump"_Stz,   &Task::vMemoryWordDump);
 }
 
 /*----------------------------------------------------------------------------*/

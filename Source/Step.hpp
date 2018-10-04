@@ -9,7 +9,7 @@ namespace Tasks
   {
   friend class Task;
  
-    static void vAddStep(Stz* aName, TaskStep pStep, bool bImmediate);
+    static void vAddStep(Stz* aName, TaskStep pStep, bool bImmediate=false);
 
     static void vAddSteps(void);
 

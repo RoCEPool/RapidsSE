@@ -15,37 +15,37 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Task(void)
 {
-  vAddStep("task.ack"_Stz,       &Task::vTaskAck,           false);
-  vAddStep("task.acks@"_Stz,     &Task::vTaskAcksFetch,     false);
-  vAddStep("task.acks!"_Stz,     &Task::vTaskAcksStore,     false);
-  vAddStep("task::breakPoint"_Stz, &Task::vTaskBreakPoint,  false);
-  vAddStep("task.delete"_Stz,    &Task::vTaskDelete,        false);
-  vAddStep("task.dicStack"_Stz,  &Task::vTaskDicStack,      false);
-  vAddStep("task.dump"_Stz,      &Task::vTaskDump,          false);
-  vAddStep("task.dropLock"_Stz,  &Task::vTaskDropLock,      false);
-  vAddStep("task.grabLock"_Stz,  &Task::vTaskGrabLock,      false);
-  vAddStep("task.job@"_Stz,      &Task::vTaskJobFetch,      false);
-  vAddStep("task.job!"_Stz,      &Task::vTaskJobStore,      false);
-  vAddStep("task.name@"_Stz,     &Task::vTaskNameFetch,     false);
-  vAddStep("task.partition@"_Stz,&Task::vTaskPartitionFetch,false);
-  vAddStep("task.partition!"_Stz,&Task::vTaskPartitionStore,false);
-  vAddStep("task.plan@"_Stz,     &Task::vTaskPlanFetch,     false);
-  vAddStep("task.plan!"_Stz,     &Task::vTaskPlanStore,     false);
-  vAddStep("task.seed"_Stz,      &Task::vTaskSeed,          false);
-  vAddStep("task.session@"_Stz,  &Task::vTaskSessionFetch,  false);
-  vAddStep("task.session!"_Stz,  &Task::vTaskSessionStore,  false);
-  vAddStep("task.sleep"_Stz,     &Task::vTaskSleep,         false);
-  vAddStep("task.send"_Stz,      &Task::vTaskSend,          false);
-  vAddStep("task.sendNode@"_Stz, &Task::vTaskSendNodeFetch, false);
-  vAddStep("task.sendNode!"_Stz, &Task::vTaskSendNodeStore, false);
-  vAddStep("task.socket@"_Stz,   &Task::vTaskSocketFetch,   false);
-  vAddStep("task.socket!"_Stz,   &Task::vTaskSocketStore,   false);
-  vAddStep("task.state@"_Stz,    &Task::vTaskStateFetch,    false);
-  vAddStep("task.state!"_Stz,    &Task::vTaskStateStore,    false);
-  vAddStep("task::this"_Stz,     &Task::vTaskThis,          false);
-  vAddStep("task.thread"_Stz,    &Task::vTaskThread,        false);
-  vAddStep("task.wait"_Stz,      &Task::vTaskWait,          false);
-  vAddStep("task.yield"_Stz,     &Task::vTaskYield,         false);
+  vAddStep("task.ack"_Stz,       &Task::vTaskAck);
+  vAddStep("task.acks@"_Stz,     &Task::vTaskAcksFetch);
+  vAddStep("task.acks!"_Stz,     &Task::vTaskAcksStore);
+  vAddStep("task::breakPoint"_Stz, &Task::vTaskBreakPoint);
+  vAddStep("task.delete"_Stz,    &Task::vTaskDelete);
+  vAddStep("task.dicStack"_Stz,  &Task::vTaskDicStack);
+  vAddStep("task.dump"_Stz,      &Task::vTaskDump);
+  vAddStep("task.dropLock"_Stz,  &Task::vTaskDropLock);
+  vAddStep("task.grabLock"_Stz,  &Task::vTaskGrabLock);
+  vAddStep("task.job@"_Stz,      &Task::vTaskJobFetch);
+  vAddStep("task.job!"_Stz,      &Task::vTaskJobStore);
+  vAddStep("task.name@"_Stz,     &Task::vTaskNameFetch);
+  vAddStep("task.partition@"_Stz,&Task::vTaskPartitionFetch);
+  vAddStep("task.partition!"_Stz,&Task::vTaskPartitionStore);
+  vAddStep("task.plan@"_Stz,     &Task::vTaskPlanFetch);
+  vAddStep("task.plan!"_Stz,     &Task::vTaskPlanStore);
+  vAddStep("task.seed"_Stz,      &Task::vTaskSeed);
+  vAddStep("task.session@"_Stz,  &Task::vTaskSessionFetch);
+  vAddStep("task.session!"_Stz,  &Task::vTaskSessionStore);
+  vAddStep("task.sleep"_Stz,     &Task::vTaskSleep);
+  vAddStep("task.send"_Stz,      &Task::vTaskSend);
+  vAddStep("task.sendNode@"_Stz, &Task::vTaskSendNodeFetch);
+  vAddStep("task.sendNode!"_Stz, &Task::vTaskSendNodeStore);
+  vAddStep("task.socket@"_Stz,   &Task::vTaskSocketFetch);
+  vAddStep("task.socket!"_Stz,   &Task::vTaskSocketStore);
+  vAddStep("task.state@"_Stz,    &Task::vTaskStateFetch);
+  vAddStep("task.state!"_Stz,    &Task::vTaskStateStore);
+  vAddStep("task::this"_Stz,     &Task::vTaskThis);
+  vAddStep("task.thread"_Stz,    &Task::vTaskThread);
+  vAddStep("task.wait"_Stz,      &Task::vTaskWait);
+  vAddStep("task.yield"_Stz,     &Task::vTaskYield);
 }
 
 /*----------------------------------------------------------------------------*/

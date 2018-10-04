@@ -15,10 +15,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dot(void)
 {
-  vAddStep("."_Stz,            &Task::vDot,              false);
-  vAddStep(".put"_Stz,         &Task::vDotPut,           false);
-  vAddStep(".\\n"_Stz,         &Task::vDotNewline,       false);
-  vAddStep(".verbose"_Stz,     &Task::vDotVerbose,       false);
+  vAddStep("."_Stz,            &Task::vDot);
+  vAddStep(".put"_Stz,         &Task::vDotPut);
+  vAddStep(".\\n"_Stz,         &Task::vDotNewline);
+  vAddStep(".verbose"_Stz,     &Task::vDotVerbose);
 }
 
 /*----------------------------------------------------------------------------*/

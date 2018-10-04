@@ -15,20 +15,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Tx(void)
 {
-  vAddStep("tx::begin"_Stz,      &Task::vTxBegin,           false);
-  vAddStep("tx.commit"_Stz,      &Task::vTxCommit,          false);
-  vAddStep("tx.counterDec"_Stz,  &Task::vTxCounterDec,      false);
-  vAddStep("tx.counter@"_Stz,    &Task::vTxCounterFetch,    false);
-  vAddStep("tx.counter!"_Stz,    &Task::vTxCounterStore,    false);
-  vAddStep("tx.distMember@"_Stz, &Task::vTxDistMemberFetch, false);
-  vAddStep("tx.distMember!"_Stz, &Task::vTxDistMemberStore, false);
-  vAddStep("tx.dump"_Stz,        &Task::vTxDump,            false);
-  vAddStep("tx::dumpAll"_Stz,    &Task::vTxDumpAll,         false);
-  vAddStep("tx.free"_Stz,        &Task::vTxFree,            false);
-  vAddStep("tx.id"_Stz,          &Task::vTxId,              false);
-  vAddStep("tx.prepare"_Stz,     &Task::vTxPrepare,         false);
-  vAddStep("tx.rollback"_Stz,    &Task::vTxRollback,        false);
-  vAddStep("tx::testDist"_Stz,   &Task::vTxTestDist,        false);
+  vAddStep("tx::begin"_Stz,      &Task::vTxBegin);
+  vAddStep("tx.commit"_Stz,      &Task::vTxCommit);
+  vAddStep("tx.counterDec"_Stz,  &Task::vTxCounterDec);
+  vAddStep("tx.counter@"_Stz,    &Task::vTxCounterFetch);
+  vAddStep("tx.counter!"_Stz,    &Task::vTxCounterStore);
+  vAddStep("tx.distMember@"_Stz, &Task::vTxDistMemberFetch);
+  vAddStep("tx.distMember!"_Stz, &Task::vTxDistMemberStore);
+  vAddStep("tx.dump"_Stz,        &Task::vTxDump);
+  vAddStep("tx::dumpAll"_Stz,    &Task::vTxDumpAll);
+  vAddStep("tx.free"_Stz,        &Task::vTxFree);
+  vAddStep("tx.id"_Stz,          &Task::vTxId);
+  vAddStep("tx.prepare"_Stz,     &Task::vTxPrepare);
+  vAddStep("tx.rollback"_Stz,    &Task::vTxRollback);
+  vAddStep("tx::testDist"_Stz,   &Task::vTxTestDist);
 }
 
 /*----------------------------------------------------------------------------*/

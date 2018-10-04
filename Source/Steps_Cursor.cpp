@@ -15,8 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Cursor(void)
 {
-  vAddStep("cursor@"_Stz,         &Task::vCursorFetch,      false);
-  vAddStep("cursor!"_Stz,         &Task::vCursorStore,      false);
+  vAddStep("cursor@"_Stz,         &Task::vCursorFetch);
+  vAddStep("cursor!"_Stz,         &Task::vCursorStore);
 }
 
 /*----------------------------------------------------------------------------*/

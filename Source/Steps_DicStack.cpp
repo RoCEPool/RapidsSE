@@ -15,12 +15,12 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_DicStack(void)
 {
-  vAddStep("dicStack.depth"_Stz,    &Task::vDicStackDepth,    false);
-  vAddStep("dicStack.drop"_Stz,     &Task::vDicStackDrop,     false);
-  vAddStep("dicStack.dump"_Stz,     &Task::vDicStackDump,     false);
-  vAddStep("dicStack.pick"_Stz,     &Task::vDicStackPick,     false);
-  vAddStep("dicStack.pop"_Stz,      &Task::vDicStackPop,      false);
-  vAddStep("dicStack.push"_Stz,     &Task::vDicStackPush,     false);
+  vAddStep("dicStack.depth"_Stz,    &Task::vDicStackDepth);
+  vAddStep("dicStack.drop"_Stz,     &Task::vDicStackDrop);
+  vAddStep("dicStack.dump"_Stz,     &Task::vDicStackDump);
+  vAddStep("dicStack.pick"_Stz,     &Task::vDicStackPick);
+  vAddStep("dicStack.pop"_Stz,      &Task::vDicStackPop);
+  vAddStep("dicStack.push"_Stz,     &Task::vDicStackPush);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -16,9 +16,9 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_WorkingBuffer(void)
 {
-  vAddStep("workingBuffer.isLast@"_Stz,         &Task::vWorkingBufferIsLastFetch, false);
-  vAddStep("workingBuffer.isLast!"_Stz,         &Task::vWorkingBufferIsLastStore, false);
-  vAddStep("workingBuffer::toWorkingBuffer"_Stz, &Task::vWorkingBufferToWorkingBuffer,false);
+  vAddStep("workingBuffer.isLast@"_Stz,         &Task::vWorkingBufferIsLastFetch);
+  vAddStep("workingBuffer.isLast!"_Stz,         &Task::vWorkingBufferIsLastStore);
+  vAddStep("workingBuffer::toWorkingBuffer"_Stz, &Task::vWorkingBufferToWorkingBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

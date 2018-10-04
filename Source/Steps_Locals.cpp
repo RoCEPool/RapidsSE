@@ -15,11 +15,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Locals(void)
 {
-  vAddStep("local.fetch"_Stz,     &Task::vLocalFetch,       false);
-  vAddStep("local.store"_Stz,     &Task::vLocalStore,       false);
+  vAddStep("local.fetch"_Stz,     &Task::vLocalFetch);
+  vAddStep("local.store"_Stz,     &Task::vLocalStore);
   vAddStep("locals|"_Stz,         &Task::vLocalsBar,        true);
-  vAddStep("locals.pop"_Stz,      &Task::vLocalsPop,        false);
-  vAddStep("locals.push"_Stz,     &Task::vLocalsPush,       false);
+  vAddStep("locals.pop"_Stz,      &Task::vLocalsPop);
+  vAddStep("locals.push"_Stz,     &Task::vLocalsPush);
   vAddStep("to"_Stz,              &Task::vLocalsTo,         true);
   
   vAddStep("params|"_Stz,         &Task::vLocalsBar,        true);

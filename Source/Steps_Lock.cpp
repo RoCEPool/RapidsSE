@@ -15,11 +15,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Lock(void)
 {
-  vAddStep("lock.dropRead"_Stz,   &Task::vLockDropRead,     false);
-  vAddStep("lock.dropWrite"_Stz,  &Task::vLockDropWrite,    false);
-  vAddStep("lock.grabRead"_Stz,   &Task::vLockGrabRead,     false);
-  vAddStep("lock.grabWrite"_Stz,  &Task::vLockGrabWrite,    false);
-  vAddStep("lock.init"_Stz,       &Task::vLockInit,         false);
+  vAddStep("lock.dropRead"_Stz,   &Task::vLockDropRead);
+  vAddStep("lock.dropWrite"_Stz,  &Task::vLockDropWrite);
+  vAddStep("lock.grabRead"_Stz,   &Task::vLockGrabRead);
+  vAddStep("lock.grabWrite"_Stz,  &Task::vLockGrabWrite);
+  vAddStep("lock.init"_Stz,       &Task::vLockInit);
 }
 
 /*----------------------------------------------------------------------------*/

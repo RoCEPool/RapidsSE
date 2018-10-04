@@ -13,9 +13,9 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AttachMap(void)
 {
-  vAddStep("attachmap::attachmap@"_Stz,   &Task::vAttachMapFetch,         false);
-  vAddStep("attachmap::attachmap!"_Stz,   &Task::vAttachMapStore,         false);
-  vAddStep("attachmap::tenants@"_Stz,     &Task::vAttachMapTenantsFetch,  false);
+  vAddStep("attachmap::attachmap@"_Stz,   &Task::vAttachMapFetch);
+  vAddStep("attachmap::attachmap!"_Stz,   &Task::vAttachMapStore);
+  vAddStep("attachmap::tenants@"_Stz,     &Task::vAttachMapTenantsFetch);
 }
 
 /*----------------------------------------------------------------------------*/

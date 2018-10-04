@@ -15,8 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Row(void)
 {
-  vAddStep("row.asString"_Stz,         &Task::vRowString,        false);
-  vAddStep("row.asEscapedString"_Stz,  &Task::vRowEscapedString, false);
+  vAddStep("row.asString"_Stz,         &Task::vRowString);
+  vAddStep("row.asEscapedString"_Stz,  &Task::vRowEscapedString);
 }
 
 /*----------------------------------------------------------------------------*/

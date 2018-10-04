@@ -15,18 +15,18 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RowCursor(void)
 {
-  vAddStep("rowCursor.begin"_Stz,        &Task::vRowCursorBegin,           false);
-  vAddStep("rowCursor.delete"_Stz,       &Task::vRowCursorDelete,          false);
-  vAddStep("rowCursor.end"_Stz,          &Task::vRowCursorEnd,             false);
-  vAddStep("rowCursor.entryBuffer@"_Stz, &Task::vRowCursorEntryBufferFetch,false);
-  vAddStep("rowCursor.entryBuffer!"_Stz, &Task::vRowCursorEntryBufferStore,false);
-  vAddStep("rowCursor.first"_Stz,        &Task::vRowCursorFirst,           false);
-  vAddStep("rowCursor.init"_Stz,         &Task::vRowCursorInit,            false);
-  vAddStep("rowCursor::new"_Stz,         &Task::vRowCursorNew,             false);
-  vAddStep("rowCursor.next"_Stz,         &Task::vRowCursorNext,            false);
-  vAddStep("rowCursor.row"_Stz,          &Task::vRowCursorRow,             false);
-  vAddStep("rowCursor.table@"_Stz,       &Task::vRowCursorTableFetch,      false);
-  vAddStep("rowCursor.table!"_Stz,       &Task::vRowCursorTableStore,      false);
+  vAddStep("rowCursor.begin"_Stz,        &Task::vRowCursorBegin);
+  vAddStep("rowCursor.delete"_Stz,       &Task::vRowCursorDelete);
+  vAddStep("rowCursor.end"_Stz,          &Task::vRowCursorEnd);
+  vAddStep("rowCursor.entryBuffer@"_Stz, &Task::vRowCursorEntryBufferFetch);
+  vAddStep("rowCursor.entryBuffer!"_Stz, &Task::vRowCursorEntryBufferStore);
+  vAddStep("rowCursor.first"_Stz,        &Task::vRowCursorFirst);
+  vAddStep("rowCursor.init"_Stz,         &Task::vRowCursorInit);
+  vAddStep("rowCursor::new"_Stz,         &Task::vRowCursorNew);
+  vAddStep("rowCursor.next"_Stz,         &Task::vRowCursorNext);
+  vAddStep("rowCursor.row"_Stz,          &Task::vRowCursorRow);
+  vAddStep("rowCursor.table@"_Stz,       &Task::vRowCursorTableFetch);
+  vAddStep("rowCursor.table!"_Stz,       &Task::vRowCursorTableStore);
 }
 
 /*----------------------------------------------------------------------------*/

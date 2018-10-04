@@ -18,24 +18,24 @@ i8 giCountObjects[CN_ENUMS];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Bp(void)
 {
-  vAddStep("bp::analyze"_Stz,     &Task::vBpAnalyze,        false);
-  vAddStep("bp::dump"_Stz,        &Task::vBpDump,           false);
-  vAddStep("bp::freeBuffers"_Stz, &Task::vFreeBuffers,      false);
-  vAddStep("bp::freePercent"_Stz, &Task::vFreePercent,      false);
-  vAddStep("bp::freeSpace"_Stz,   &Task::vFreeSpace,        false);
-  vAddStep("bp::inUseSpace"_Stz,  &Task::vInUseSpace,       false);
-  vAddStep("bp::readBufferPool"_Stz,&Task::vBpReadBufferPool,false);
-  vAddStep("bp::snapshot"_Stz,    &Task::vSnapshot,         false);
-  vAddStep("bp::totalSpace"_Stz,  &Task::vTotalSpace,       false);
-  vAddStep("bp::writeBufferPool"_Stz,&Task::vBpWriteBufferPool,false);
+  vAddStep("bp::analyze"_Stz,     &Task::vBpAnalyze);
+  vAddStep("bp::dump"_Stz,        &Task::vBpDump);
+  vAddStep("bp::freeBuffers"_Stz, &Task::vFreeBuffers);
+  vAddStep("bp::freePercent"_Stz, &Task::vFreePercent);
+  vAddStep("bp::freeSpace"_Stz,   &Task::vFreeSpace);
+  vAddStep("bp::inUseSpace"_Stz,  &Task::vInUseSpace);
+  vAddStep("bp::readBufferPool"_Stz,&Task::vBpReadBufferPool);
+  vAddStep("bp::snapshot"_Stz,    &Task::vSnapshot);
+  vAddStep("bp::totalSpace"_Stz,  &Task::vTotalSpace);
+  vAddStep("bp::writeBufferPool"_Stz,&Task::vBpWriteBufferPool);
 
-  vAddStep("bpa"_Stz,             &Task::vBpAnalyze,        false);
-  vAddStep("bpd"_Stz,             &Task::vBpDump,           false);
-  vAddStep("bpr"_Stz,             &Task::vBpReadBufferPool, false);
-  vAddStep("bpw"_Stz,             &Task::vBpWriteBufferPool,false);
+  vAddStep("bpa"_Stz,             &Task::vBpAnalyze);
+  vAddStep("bpd"_Stz,             &Task::vBpDump);
+  vAddStep("bpr"_Stz,             &Task::vBpReadBufferPool);
+  vAddStep("bpw"_Stz,             &Task::vBpWriteBufferPool);
  
-  vAddStep("epochDump"_Stz,       &Task::vBpEpochDump,      false);
-  vAddStep("epochTake"_Stz,       &Task::vBpEpochTake,      false);
+  vAddStep("epochDump"_Stz,       &Task::vBpEpochDump);
+  vAddStep("epochTake"_Stz,       &Task::vBpEpochTake);
 }
 
 /*----------------------------------------------------------------------------*/

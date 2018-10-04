@@ -15,12 +15,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Queue(void)
 {
-  vAddStep("queue.append"_Stz,    &Task::vQueueAppend,      false);
-  vAddStep("queue.delete"_Stz,    &Task::vQueueDelete,      false);
-  vAddStep("queue.dump"_Stz,      &Task::vQueueDump,        false);
-  vAddStep("queue.init"_Stz,      &Task::vQueueInit,        false);
-  vAddStep("queue::new"_Stz,      &Task::vQueueNew,         false);
-  vAddStep("queue.pop"_Stz,       &Task::vQueuePop,         false);
+  vAddStep("queue.append"_Stz,    &Task::vQueueAppend);
+  vAddStep("queue.delete"_Stz,    &Task::vQueueDelete);
+  vAddStep("queue.dump"_Stz,      &Task::vQueueDump);
+  vAddStep("queue.init"_Stz,      &Task::vQueueInit);
+  vAddStep("queue::new"_Stz,      &Task::vQueueNew);
+  vAddStep("queue.pop"_Stz,       &Task::vQueuePop);
 }
 
 /*----------------------------------------------------------------------------*/

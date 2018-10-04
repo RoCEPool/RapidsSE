@@ -15,12 +15,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Zero(void)
 {
-  vAddStep("0<"_Stz,              &Task::vZeroLess,         false);
-  vAddStep("0<="_Stz,             &Task::vZeroLessEqual,    false);
-  vAddStep("0=="_Stz,             &Task::vZeroEqual,        false);
-  vAddStep("0!="_Stz,             &Task::vZeroNotEqual,     false);
-  vAddStep("0>="_Stz,             &Task::vZeroGreaterEqual, false);
-  vAddStep("0>"_Stz,              &Task::vZeroGreater,      false);
+  vAddStep("0<"_Stz,              &Task::vZeroLess);
+  vAddStep("0<="_Stz,             &Task::vZeroLessEqual);
+  vAddStep("0=="_Stz,             &Task::vZeroEqual);
+  vAddStep("0!="_Stz,             &Task::vZeroNotEqual);
+  vAddStep("0>="_Stz,             &Task::vZeroGreaterEqual);
+  vAddStep("0>"_Stz,              &Task::vZeroGreater);
 }
 
 /*----------------------------------------------------------------------------*/

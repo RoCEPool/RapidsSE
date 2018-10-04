@@ -15,7 +15,7 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Args(void)
 {
-  vAddStep("args.print"_Stz,      &Task::vArgsPrint,     false);
+  vAddStep("args.print"_Stz,      &Task::vArgsPrint);
 }
 
 /*----------------------------------------------------------------------------*/

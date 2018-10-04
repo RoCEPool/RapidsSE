@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Class(void)
 {
-  vAddStep("class::name"_Stz,      &Task::vClassName,    false);
+  vAddStep("class::name"_Stz,      &Task::vClassName);
 }
 
 /*----------------------------------------------------------------------------*/

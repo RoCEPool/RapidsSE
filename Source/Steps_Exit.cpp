@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Exit(void)
 {
-  vAddStep("exit"_Stz,            &Task::vExit,             false);
+  vAddStep("exit"_Stz,            &Task::vExit);
 }
 
 /*----------------------------------------------------------------------------*/

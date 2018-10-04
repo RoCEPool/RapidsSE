@@ -15,14 +15,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_To(void)
 {
-  vAddStep(">binval"_Stz,     &Task::vToBinVal,     false);
-  vAddStep(">body"_Stz,       &Task::vToBody,       false);
-  vAddStep(">digitName"_Stz,  &Task::vToDigitName,  false);
-  vAddStep(">int"_Stz,        &Task::vToInt,        false);
-  vAddStep(">object"_Stz,     &Task::vToObject,     false);
-  vAddStep(">ptr"_Stz,        &Task::vToPtr,        false);
-  vAddStep(">str"_Stz,        &Task::vToStr,        false);
-  vAddStep(">task"_Stz,       &Task::vToTask,       false);
+  vAddStep(">binval"_Stz,     &Task::vToBinVal);
+  vAddStep(">body"_Stz,       &Task::vToBody);
+  vAddStep(">digitName"_Stz,  &Task::vToDigitName);
+  vAddStep(">int"_Stz,        &Task::vToInt);
+  vAddStep(">object"_Stz,     &Task::vToObject);
+  vAddStep(">ptr"_Stz,        &Task::vToPtr);
+  vAddStep(">str"_Stz,        &Task::vToStr);
+  vAddStep(">task"_Stz,       &Task::vToTask);
 }
 
 /*----------------------------------------------------------------------------*/

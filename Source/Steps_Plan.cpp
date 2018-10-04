@@ -15,22 +15,22 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Plan(void)
 {
-  vAddStep("plan.delete"_Stz,         &Task::vPlanDelete,             false);
-  vAddStep("plan.dic"_Stz,            &Task::vPlanDic,                false);
-  vAddStep("plan.executingTask@"_Stz, &Task::vPlanExecutingTaskFetch, false);
-  vAddStep("plan.executingTask!"_Stz, &Task::vPlanExecutingTaskStore, false);
-  vAddStep("plan.finished"_Stz,       &Task::vPlanFinished,           false);
-  vAddStep("plan.id@"_Stz,            &Task::vPlanIdFetch,            false);
-  vAddStep("plan.lambda+"_Stz,        &Task::vPlanLambdaAppend,       false);
-  vAddStep("plan.lambda@"_Stz,        &Task::vPlanLambdaFetch,        false);
-  vAddStep("plan.lambda!"_Stz,        &Task::vPlanLambdaStore,        false);
-  vAddStep("plan.name@"_Stz,          &Task::vPlanNameFetch,          false);
-  vAddStep("plan.name!"_Stz,          &Task::vPlanNameStore,          false);
-  vAddStep("plan::new"_Stz,           &Task::vPlanNew,                false);
-  vAddStep("plan.opFrame++"_Stz,      &Task::vPlanOpFrameAdd,         false);
-  vAddStep("plan.opFrame?"_Stz,       &Task::vPlanOpFrameFind,        false);
-  vAddStep("plan.opFrame0"_Stz,       &Task::vPlanOpFrameTop,         false);
-  vAddStep("plan.show"_Stz,           &Task::vPlanShow,               false);
+  vAddStep("plan.delete"_Stz,         &Task::vPlanDelete);
+  vAddStep("plan.dic"_Stz,            &Task::vPlanDic);
+  vAddStep("plan.executingTask@"_Stz, &Task::vPlanExecutingTaskFetch);
+  vAddStep("plan.executingTask!"_Stz, &Task::vPlanExecutingTaskStore);
+  vAddStep("plan.finished"_Stz,       &Task::vPlanFinished);
+  vAddStep("plan.id@"_Stz,            &Task::vPlanIdFetch);
+  vAddStep("plan.lambda+"_Stz,        &Task::vPlanLambdaAppend);
+  vAddStep("plan.lambda@"_Stz,        &Task::vPlanLambdaFetch);
+  vAddStep("plan.lambda!"_Stz,        &Task::vPlanLambdaStore);
+  vAddStep("plan.name@"_Stz,          &Task::vPlanNameFetch);
+  vAddStep("plan.name!"_Stz,          &Task::vPlanNameStore);
+  vAddStep("plan::new"_Stz,           &Task::vPlanNew);
+  vAddStep("plan.opFrame++"_Stz,      &Task::vPlanOpFrameAdd);
+  vAddStep("plan.opFrame?"_Stz,       &Task::vPlanOpFrameFind);
+  vAddStep("plan.opFrame0"_Stz,       &Task::vPlanOpFrameTop);
+  vAddStep("plan.show"_Stz,           &Task::vPlanShow);
 }
 
 /*----------------------------------------------------------------------------*/

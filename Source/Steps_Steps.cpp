@@ -15,8 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Steps(void)
 {
-  vAddStep("steps::list"_Stz,  &Task::vStepsList,  false);
-  vAddStep("steps::reset"_Stz, &Task::vStepsReset, false);
+  vAddStep("steps::list"_Stz,  &Task::vStepsList);
+  vAddStep("steps::reset"_Stz, &Task::vStepsReset);
 }
 
 /*----------------------------------------------------------------------------*/

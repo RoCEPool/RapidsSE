@@ -13,11 +13,11 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Prompt(void)
 {
-  vAddStep("prompt.continue"_Stz,         &Task::vPromptContinue,         false);
-  vAddStep("prompt.executeFunction"_Stz,  &Task::vPromptExecuteFunction,  false);
-  vAddStep("prompt.getCommand"_Stz,       &Task::vPromptGetCommand,       false);
-  vAddStep("prompt::new"_Stz,             &Task::vPromptNew,              false);
-  vAddStep("prompt.session"_Stz,          &Task::vPromptSession,          false);
+  vAddStep("prompt.continue"_Stz,         &Task::vPromptContinue);
+  vAddStep("prompt.executeFunction"_Stz,  &Task::vPromptExecuteFunction);
+  vAddStep("prompt.getCommand"_Stz,       &Task::vPromptGetCommand);
+  vAddStep("prompt::new"_Stz,             &Task::vPromptNew);
+  vAddStep("prompt.session"_Stz,          &Task::vPromptSession);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -15,18 +15,18 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Socket(void)
 {
-  vAddStep("socket::open"_Stz,      &Task::vSocketOpen,       false);
-  vAddStep("socket::listen"_Stz,    &Task::vSocketListen,     false);
+  vAddStep("socket::open"_Stz,      &Task::vSocketOpen);
+  vAddStep("socket::listen"_Stz,    &Task::vSocketListen);
   
-  vAddStep("socket.accept"_Stz,     &Task::vSocketAccept,     false);
-  vAddStep("socket.close"_Stz,      &Task::vSocketClose,      false);
-  vAddStep("socket.connect"_Stz,    &Task::vSocketConnect,    false);
-  vAddStep("socket.dropWrite"_Stz,  &Task::vSocketDropWrite,  false);
-  vAddStep("socket.grabWrite"_Stz,  &Task::vSocketGrabWrite,  false);
-  vAddStep("socket.recvObject"_Stz, &Task::vSocketRecvObject, false);
-  vAddStep("socket.recvValSet"_Stz, &Task::vSocketRecvValSet, false);
-  vAddStep("socket.sendObject"_Stz, &Task::vSocketSendObject, false);
-  vAddStep("socket.sendValSet"_Stz, &Task::vSocketSendValSet, false);
+  vAddStep("socket.accept"_Stz,     &Task::vSocketAccept);
+  vAddStep("socket.close"_Stz,      &Task::vSocketClose);
+  vAddStep("socket.connect"_Stz,    &Task::vSocketConnect);
+  vAddStep("socket.dropWrite"_Stz,  &Task::vSocketDropWrite);
+  vAddStep("socket.grabWrite"_Stz,  &Task::vSocketGrabWrite);
+  vAddStep("socket.recvObject"_Stz, &Task::vSocketRecvObject);
+  vAddStep("socket.recvValSet"_Stz, &Task::vSocketRecvValSet);
+  vAddStep("socket.sendObject"_Stz, &Task::vSocketSendObject);
+  vAddStep("socket.sendValSet"_Stz, &Task::vSocketSendValSet);
 }
 
 /*----------------------------------------------------------------------------*/

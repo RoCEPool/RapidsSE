@@ -16,20 +16,20 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Grid(void)
 {
-  vAddStep("grid::node"_Stz,         &Task::vGridNode,              false);
-  vAddStep("grid::nodes"_Stz,        &Task::vGridNodes,             false);
-  vAddStep("grid::partitions"_Stz,   &Task::vGridPartitions,        false);
-  vAddStep("grid::show"_Stz,         &Task::vGridShow,              false);
-  vAddStep("grid::slots"_Stz,        &Task::vGridSlots,             false);
-  vAddStep("grid::started!"_Stz,     &Task::vGridStartedStore,      false);
-  vAddStep("grid::started@"_Stz,     &Task::vGridStartedFetch,      false);
-  vAddStep("grid::StartNode!"_Stz,   &Task::vGridStartNodeStore,    false);
-  vAddStep("grid::StartNode@"_Stz,   &Task::vGridStartNodeFetch,    false);
-  vAddStep("grid::thisNode@"_Stz,    &Task::vGridThisNodeFetch,     false);
-  vAddStep("grid::thisNodeName@"_Stz,&Task::vGridThisNodeNameFetch, false);
-  vAddStep("grid::toNode"_Stz,       &Task::vGridToNode,            false);
-  vAddStep("grid::toPartition"_Stz,  &Task::vGridToPartition,       false);
-  vAddStep("grid::toSlot"_Stz,       &Task::vGridToSlot,            false);
+  vAddStep("grid::node"_Stz,         &Task::vGridNode);
+  vAddStep("grid::nodes"_Stz,        &Task::vGridNodes);
+  vAddStep("grid::partitions"_Stz,   &Task::vGridPartitions);
+  vAddStep("grid::show"_Stz,         &Task::vGridShow);
+  vAddStep("grid::slots"_Stz,        &Task::vGridSlots);
+  vAddStep("grid::started!"_Stz,     &Task::vGridStartedStore);
+  vAddStep("grid::started@"_Stz,     &Task::vGridStartedFetch);
+  vAddStep("grid::StartNode!"_Stz,   &Task::vGridStartNodeStore);
+  vAddStep("grid::StartNode@"_Stz,   &Task::vGridStartNodeFetch);
+  vAddStep("grid::thisNode@"_Stz,    &Task::vGridThisNodeFetch);
+  vAddStep("grid::thisNodeName@"_Stz,&Task::vGridThisNodeNameFetch);
+  vAddStep("grid::toNode"_Stz,       &Task::vGridToNode);
+  vAddStep("grid::toPartition"_Stz,  &Task::vGridToPartition);
+  vAddStep("grid::toSlot"_Stz,       &Task::vGridToSlot);
 }
 
 /*----------------------------------------------------------------------------*/

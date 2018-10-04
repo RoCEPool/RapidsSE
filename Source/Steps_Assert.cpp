@@ -14,23 +14,23 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Assert(void)
 {
-  vAddStep("assert"_Stz,           &Task::vAssert,            false);
-  vAddStep("assert::class"_Stz,    &Task::vAssertClass,       false);
-  vAddStep("assert::class_0"_Stz,  &Task::vAssertClass_0,     false);
-  vAddStep("assert::class_1"_Stz,  &Task::vAssertClass_1,     false);
-  vAddStep("assert::class_2"_Stz,  &Task::vAssertClass_2,     false);
-  vAddStep("assert::class_3"_Stz,  &Task::vAssertClass_3,     false);
-  vAddStep("assert::class_4"_Stz,  &Task::vAssertClass_4,     false);
-  vAddStep("assert::stack_0"_Stz,  &Task::vAssertStack_0,     false);
-  vAddStep("assert::stack_0+"_Stz, &Task::vAssertStack_0more, false);
-  vAddStep("assert::stack_1"_Stz,  &Task::vAssertStack_1,     false);
-  vAddStep("assert::stack_1+"_Stz, &Task::vAssertStack_1more, false);
-  vAddStep("assert::stack_2"_Stz,  &Task::vAssertStack_2,     false);
-  vAddStep("assert::stack_2+"_Stz, &Task::vAssertStack_2more, false);
-  vAddStep("assert::stack_3"_Stz,  &Task::vAssertStack_3,     false);
-  vAddStep("assert::stack_3+"_Stz, &Task::vAssertStack_3more, false);
-  vAddStep("assert::stack_4"_Stz,  &Task::vAssertStack_4,     false);
-  vAddStep("assert::stack_5+"_Stz, &Task::vAssertStack_4more, false);
+  vAddStep("assert"_Stz,           &Task::vAssert);
+  vAddStep("assert::class"_Stz,    &Task::vAssertClass);
+  vAddStep("assert::class_0"_Stz,  &Task::vAssertClass_0);
+  vAddStep("assert::class_1"_Stz,  &Task::vAssertClass_1);
+  vAddStep("assert::class_2"_Stz,  &Task::vAssertClass_2);
+  vAddStep("assert::class_3"_Stz,  &Task::vAssertClass_3);
+  vAddStep("assert::class_4"_Stz,  &Task::vAssertClass_4);
+  vAddStep("assert::stack_0"_Stz,  &Task::vAssertStack_0);
+  vAddStep("assert::stack_0+"_Stz, &Task::vAssertStack_0more);
+  vAddStep("assert::stack_1"_Stz,  &Task::vAssertStack_1);
+  vAddStep("assert::stack_1+"_Stz, &Task::vAssertStack_1more);
+  vAddStep("assert::stack_2"_Stz,  &Task::vAssertStack_2);
+  vAddStep("assert::stack_2+"_Stz, &Task::vAssertStack_2more);
+  vAddStep("assert::stack_3"_Stz,  &Task::vAssertStack_3);
+  vAddStep("assert::stack_3+"_Stz, &Task::vAssertStack_3more);
+  vAddStep("assert::stack_4"_Stz,  &Task::vAssertStack_4);
+  vAddStep("assert::stack_5+"_Stz, &Task::vAssertStack_4more);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,21 +13,21 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Accum(void)
 {
-  vAddStep("accum.delete"_Stz, &Task::vAccumDelete, false);
-  vAddStep("accum::new"_Stz,   &Task::vAccumNew,    false);
+  vAddStep("accum.delete"_Stz, &Task::vAccumDelete);
+  vAddStep("accum::new"_Stz,   &Task::vAccumNew);
 
-  vAddStep("accum.accumBuffer@"_Stz, &Task::vAccumAccumBuffer, false);
+  vAddStep("accum.accumBuffer@"_Stz, &Task::vAccumAccumBuffer);
   
-  vAddStep("accum.count@"_Stz, &Task::vAccumCountFetch, false);
-  vAddStep("accum.count!"_Stz, &Task::vAccumCountStore, false);
-  vAddStep("accum.group@"_Stz, &Task::vAccumGroupFetch, false);
-  vAddStep("accum.group!"_Stz, &Task::vAccumGroupStore, false);
-  vAddStep("accum.max@"_Stz,   &Task::vAccumMaxFetch,   false);
-  vAddStep("accum.max!"_Stz,   &Task::vAccumMaxStore,   false);
-  vAddStep("accum.min@"_Stz,   &Task::vAccumMinFetch,   false);
-  vAddStep("accum.min!"_Stz,   &Task::vAccumMinStore,   false);
-  vAddStep("accum.sum@"_Stz,   &Task::vAccumSumFetch,   false);
-  vAddStep("accum.sum!"_Stz,   &Task::vAccumSumStore,   false);
+  vAddStep("accum.count@"_Stz, &Task::vAccumCountFetch);
+  vAddStep("accum.count!"_Stz, &Task::vAccumCountStore);
+  vAddStep("accum.group@"_Stz, &Task::vAccumGroupFetch);
+  vAddStep("accum.group!"_Stz, &Task::vAccumGroupStore);
+  vAddStep("accum.max@"_Stz,   &Task::vAccumMaxFetch);
+  vAddStep("accum.max!"_Stz,   &Task::vAccumMaxStore);
+  vAddStep("accum.min@"_Stz,   &Task::vAccumMinFetch);
+  vAddStep("accum.min!"_Stz,   &Task::vAccumMinStore);
+  vAddStep("accum.sum@"_Stz,   &Task::vAccumSumFetch);
+  vAddStep("accum.sum!"_Stz,   &Task::vAccumSumStore);
 }
 
 /*----------------------------------------------------------------------------*/

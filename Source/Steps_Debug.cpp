@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Debug(void)
 {
-  vAddStep("debug::trap"_Stz,      &Task::vDebugTrap,        false);
+  vAddStep("debug::trap"_Stz,      &Task::vDebugTrap);
 }
 
 /*----------------------------------------------------------------------------*/

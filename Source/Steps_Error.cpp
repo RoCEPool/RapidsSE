@@ -15,7 +15,7 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Error(void)
 {
-  vAddStep("error.msg"_Stz,       &Task::vErrorMsg,         false);
+  vAddStep("error.msg"_Stz,       &Task::vErrorMsg);
 }
 
 /*----------------------------------------------------------------------------*/

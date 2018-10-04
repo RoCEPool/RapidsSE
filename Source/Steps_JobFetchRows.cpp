@@ -15,17 +15,17 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobFetchRows(void)
 {
-  vAddStep("Job_fetchRows.lastBuffers!"_Stz, &Task::vJob_FetchRowsLastBuffersStore, false);
-  vAddStep("Job_fetchRows.partition@"_Stz,   &Task::vJob_FetchRowsPartitionFetch,   false);
-  vAddStep("Job_fetchRows.planner!"_Stz,     &Task::vJob_FetchRowsPlannerStore,   false);
-  vAddStep("Job_fetchRows.spawnSub"_Stz,     &Task::vJob_FetchRowsSpawnSub, false);
-  vAddStep("Job_fetchRows.table!"_Stz,       &Task::vJob_FetchRowsTableStore,   false);
-  vAddStep("Job_fetchRows.where@"_Stz,       &Task::vJob_FetchRowsWhereFetch, false);
+  vAddStep("Job_fetchRows.lastBuffers!"_Stz, &Task::vJob_FetchRowsLastBuffersStore);
+  vAddStep("Job_fetchRows.partition@"_Stz,   &Task::vJob_FetchRowsPartitionFetch);
+  vAddStep("Job_fetchRows.planner!"_Stz,     &Task::vJob_FetchRowsPlannerStore);
+  vAddStep("Job_fetchRows.spawnSub"_Stz,     &Task::vJob_FetchRowsSpawnSub);
+  vAddStep("Job_fetchRows.table!"_Stz,       &Task::vJob_FetchRowsTableStore);
+  vAddStep("Job_fetchRows.where@"_Stz,       &Task::vJob_FetchRowsWhereFetch);
   
-  vAddStep("Job_subFetch.bufferQueue@"_Stz,  &Task::vJob_SubFetchBufferQueueFetch, false);
-  vAddStep("Job_subFetch.phrase@"_Stz,       &Task::vJob_SubFetchPhraseFetch, false);
-  vAddStep("Job_subFetch.Planner@"_Stz,      &Task::vJob_SubFetchPlannerFetch, false);
-  vAddStep("Job_subFetch.slot@"_Stz,         &Task::vJob_SubFetchSlotFetch, false);
+  vAddStep("Job_subFetch.bufferQueue@"_Stz,  &Task::vJob_SubFetchBufferQueueFetch);
+  vAddStep("Job_subFetch.phrase@"_Stz,       &Task::vJob_SubFetchPhraseFetch);
+  vAddStep("Job_subFetch.Planner@"_Stz,      &Task::vJob_SubFetchPlannerFetch);
+  vAddStep("Job_subFetch.slot@"_Stz,         &Task::vJob_SubFetchSlotFetch);
 }
 
 /*----------------------------------------------------------------------------*/

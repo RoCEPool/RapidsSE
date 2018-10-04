@@ -15,14 +15,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Session(void)
 {
-  vAddStep("session.commandProcessor"_Stz, &Task::vSessionCommandProcessor, false);
-  vAddStep("session.dicStack"_Stz,         &Task::vSessionDicStack,         false);
-  vAddStep("session.dump"_Stz,             &Task::vSessionDump,             false);
-  vAddStep("session.isExiting"_Stz,        &Task::vSessionIsExiting,        false);
-  vAddStep("session.pid"_Stz,              &Task::vSessionPid,              false);
-  vAddStep("session.slot@"_Stz,            &Task::vSessionSlotFetch,        false);
-  vAddStep("session.tx@"_Stz,              &Task::vSessionTxFetch,          false);
-  vAddStep("session.tx!"_Stz,              &Task::vSessionTxStore,          false);
+  vAddStep("session.commandProcessor"_Stz, &Task::vSessionCommandProcessor);
+  vAddStep("session.dicStack"_Stz,         &Task::vSessionDicStack);
+  vAddStep("session.dump"_Stz,             &Task::vSessionDump);
+  vAddStep("session.isExiting"_Stz,        &Task::vSessionIsExiting);
+  vAddStep("session.pid"_Stz,              &Task::vSessionPid);
+  vAddStep("session.slot@"_Stz,            &Task::vSessionSlotFetch);
+  vAddStep("session.tx@"_Stz,              &Task::vSessionTxFetch);
+  vAddStep("session.tx!"_Stz,              &Task::vSessionTxStore);
 }
 
 /*----------------------------------------------------------------------------*/

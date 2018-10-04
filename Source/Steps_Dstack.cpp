@@ -15,27 +15,27 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dstack(void)
 {
-  vAddStep("stack.class"_Stz,     &Task::vDstackClass,      false);
-  vAddStep("depth"_Stz,           &Task::vDstackDepth,      false);
-  vAddStep("drop"_Stz,            &Task::vDstackDrop,       false);
-  vAddStep("2drop"_Stz,           &Task::vDstackDropTwo,    false);
-  vAddStep("dump"_Stz,            &Task::vDstackDump,       false);
-  vAddStep("dup"_Stz,             &Task::vDstackDup,        false);
-  vAddStep("?dup"_Stz,            &Task::vDstackDupNonZero, false);
-  vAddStep("nip"_Stz,             &Task::vDstackNip,        false);
-  vAddStep("over"_Stz,            &Task::vDstackOver,       false);
-  vAddStep("pick"_Stz,            &Task::vDstackPick,       false);
-  vAddStep("reverse"_Stz,         &Task::vDstackReverse,    false);
-  vAddStep("roll"_Stz,            &Task::vDstackRoll,       false);
-  vAddStep("-roll"_Stz,           &Task::vDstackRollInv,    false);
-  vAddStep("rot"_Stz,             &Task::vDstackRot,        false);
-  vAddStep("-rot"_Stz,            &Task::vDstackRotInv,     false);
-  vAddStep("stk"_Stz,             &Task::vDstackStk,        false);
-  vAddStep("swap"_Stz,            &Task::vDstackSwap,       false);
-  vAddStep("valset>"_Stz,         &Task::vDstackToValues,   false);
-  vAddStep(">valset"_Stz,         &Task::vDstackToValSet,   false);
-  vAddStep(">DStack"_Stz,         &Task::vDstackTransfer,   false);
-  vAddStep("tuck"_Stz,            &Task::vDstackTuck,       false);
+  vAddStep("stack.class"_Stz,     &Task::vDstackClass);
+  vAddStep("depth"_Stz,           &Task::vDstackDepth);
+  vAddStep("drop"_Stz,            &Task::vDstackDrop);
+  vAddStep("2drop"_Stz,           &Task::vDstackDropTwo);
+  vAddStep("dump"_Stz,            &Task::vDstackDump);
+  vAddStep("dup"_Stz,             &Task::vDstackDup);
+  vAddStep("?dup"_Stz,            &Task::vDstackDupNonZero);
+  vAddStep("nip"_Stz,             &Task::vDstackNip);
+  vAddStep("over"_Stz,            &Task::vDstackOver);
+  vAddStep("pick"_Stz,            &Task::vDstackPick);
+  vAddStep("reverse"_Stz,         &Task::vDstackReverse);
+  vAddStep("roll"_Stz,            &Task::vDstackRoll);
+  vAddStep("-roll"_Stz,           &Task::vDstackRollInv);
+  vAddStep("rot"_Stz,             &Task::vDstackRot);
+  vAddStep("-rot"_Stz,            &Task::vDstackRotInv);
+  vAddStep("stk"_Stz,             &Task::vDstackStk);
+  vAddStep("swap"_Stz,            &Task::vDstackSwap);
+  vAddStep("valset>"_Stz,         &Task::vDstackToValues);
+  vAddStep(">valset"_Stz,         &Task::vDstackToValSet);
+  vAddStep(">DStack"_Stz,         &Task::vDstackTransfer);
+  vAddStep("tuck"_Stz,            &Task::vDstackTuck);
   
 }
 

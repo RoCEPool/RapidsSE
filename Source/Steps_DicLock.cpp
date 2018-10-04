@@ -15,8 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_DicLock(void)
 {
-  vAddStep("dicLock.dropWrite"_Stz,&Task::vDicLockDropWrite, false);
-  vAddStep("dicLock.grabWrite"_Stz,&Task::vDicLockGrabWrite, false);
+  vAddStep("dicLock.dropWrite"_Stz,&Task::vDicLockDropWrite);
+  vAddStep("dicLock.grabWrite"_Stz,&Task::vDicLockGrabWrite);
 }
 
 /*----------------------------------------------------------------------------*/

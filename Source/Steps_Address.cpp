@@ -19,9 +19,9 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Address(void)
 {
-  vAddStep("eql"_Stz,             &Task::vAddressEqual,     false);
-  vAddStep("@"_Stz,               &Task::vAddressFetch,     false);
-  vAddStep("!"_Stz,               &Task::vAddressStore,     false);
+  vAddStep("eql"_Stz,             &Task::vAddressEqual);
+  vAddStep("@"_Stz,               &Task::vAddressFetch);
+  vAddStep("!"_Stz,               &Task::vAddressStore);
 }
 
 /*----------------------------------------------------------------------------*/

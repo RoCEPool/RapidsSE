@@ -15,9 +15,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_DicPath(void)
 {
-  vAddStep("dicPath.depth"_Stz,    &Task::vDicPathDepth,    false);
-  vAddStep("dicPath.dump"_Stz,     &Task::vDicPathDump,     false);
-  vAddStep("dicPath.pick"_Stz,     &Task::vDicPathPick,     false);
+  vAddStep("dicPath.depth"_Stz,    &Task::vDicPathDepth);
+  vAddStep("dicPath.dump"_Stz,     &Task::vDicPathDump);
+  vAddStep("dicPath.pick"_Stz,     &Task::vDicPathPick);
 }
 
 /*----------------------------------------------------------------------------*/

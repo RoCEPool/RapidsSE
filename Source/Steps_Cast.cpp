@@ -15,8 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Cast(void)
 {
-  vAddStep("(int)"_Stz,           &Task::vCastInt,          false);
-  vAddStep("(ptr)"_Stz,           &Task::vCastPtr,          false);
+  vAddStep("(int)"_Stz,           &Task::vCastInt);
+  vAddStep("(ptr)"_Stz,           &Task::vCastPtr);
 }
 
 /*----------------------------------------------------------------------------*/

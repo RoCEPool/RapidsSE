@@ -15,20 +15,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Int(void)
 {
-  vAddStep("+"_Stz,               &Task::vIntAdd,           false);
-  vAddStep("/"_Stz,               &Task::vIntDivide,        false);
-  vAddStep("=="_Stz,              &Task::vIntEqual,         false);
-  vAddStep(">"_Stz,               &Task::vIntGreater,       false);
-  vAddStep(">="_Stz,              &Task::vIntGreaterEqual,  false);
-  vAddStep("hash"_Stz,            &Task::vIntHash,          false);
-  vAddStep("ho16"_Stz,            &Task::vIntHo16,          false);
-  vAddStep("<"_Stz,               &Task::vIntLess,          false);
-  vAddStep("<="_Stz,              &Task::vIntLessEqual,     false);
-  vAddStep("%"_Stz,               &Task::vIntModulo,        false);
-  vAddStep("*"_Stz,               &Task::vIntMultiply,      false);
-  vAddStep("neg"_Stz,             &Task::vIntNeg,           false);
-  vAddStep("!="_Stz,              &Task::vIntNotEqual,      false);
-  vAddStep("-"_Stz,               &Task::vIntSubtract,      false);
+  vAddStep("+"_Stz,               &Task::vIntAdd);
+  vAddStep("/"_Stz,               &Task::vIntDivide);
+  vAddStep("=="_Stz,              &Task::vIntEqual);
+  vAddStep(">"_Stz,               &Task::vIntGreater);
+  vAddStep(">="_Stz,              &Task::vIntGreaterEqual);
+  vAddStep("hash"_Stz,            &Task::vIntHash);
+  vAddStep("ho16"_Stz,            &Task::vIntHo16);
+  vAddStep("<"_Stz,               &Task::vIntLess);
+  vAddStep("<="_Stz,              &Task::vIntLessEqual);
+  vAddStep("%"_Stz,               &Task::vIntModulo);
+  vAddStep("*"_Stz,               &Task::vIntMultiply);
+  vAddStep("neg"_Stz,             &Task::vIntNeg);
+  vAddStep("!="_Stz,              &Task::vIntNotEqual);
+  vAddStep("-"_Stz,               &Task::vIntSubtract);
 }
 
 /*----------------------------------------------------------------------------*/

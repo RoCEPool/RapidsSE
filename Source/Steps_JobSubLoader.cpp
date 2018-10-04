@@ -15,17 +15,17 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobSubLoader(void)
 {
-  vAddStep("Job_subLoader::spawn"_Stz,        &Task::vJob_SubLoaderSpawn, false);
+  vAddStep("Job_subLoader::spawn"_Stz,        &Task::vJob_SubLoaderSpawn);
   
-  vAddStep("job_subLoader.begin"_Stz,         &Task::vJob_SubLoaderBegin,             false);
-  vAddStep("job_subLoader.danglingBuffer"_Stz,&Task::vJob_SubLoaderDanglingBuffer,    false);
-  vAddStep("job_subLoader.end"_Stz,           &Task::vJob_SubLoaderEnd,               false);
-  vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Task::vJob_SubLoaderJobLoadTableFetch, false);
-  vAddStep("Job_subLoader.partition@"_Stz,    &Task::vJob_SubLoaderPartitionFetch,    false);
-  vAddStep("Job_subLoader.partition!"_Stz,    &Task::vJob_SubLoaderPartitionStore,    false);
-  vAddStep("Job_subLoader.processRecords"_Stz,&Task::vJob_SubLoaderProcessRecords,    false);
-  vAddStep("Job_subLoader.recordsInvalid"_Stz,&Task::vJob_SubLoaderRecordsInvalid,    false);
-  vAddStep("Job_subLoader.recordsValid"_Stz,  &Task::vJob_SubLoaderRecordsValid,      false);
+  vAddStep("job_subLoader.begin"_Stz,         &Task::vJob_SubLoaderBegin);
+  vAddStep("job_subLoader.danglingBuffer"_Stz,&Task::vJob_SubLoaderDanglingBuffer);
+  vAddStep("job_subLoader.end"_Stz,           &Task::vJob_SubLoaderEnd);
+  vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Task::vJob_SubLoaderJobLoadTableFetch);
+  vAddStep("Job_subLoader.partition@"_Stz,    &Task::vJob_SubLoaderPartitionFetch);
+  vAddStep("Job_subLoader.partition!"_Stz,    &Task::vJob_SubLoaderPartitionStore);
+  vAddStep("Job_subLoader.processRecords"_Stz,&Task::vJob_SubLoaderProcessRecords);
+  vAddStep("Job_subLoader.recordsInvalid"_Stz,&Task::vJob_SubLoaderRecordsInvalid);
+  vAddStep("Job_subLoader.recordsValid"_Stz,  &Task::vJob_SubLoaderRecordsValid);
 }
 
 /*----------------------------------------------------------------------------*/

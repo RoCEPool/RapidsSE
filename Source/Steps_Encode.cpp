@@ -17,16 +17,16 @@ void Step::vAddSteps_Encode(void)
 {
   vAddStep("again"_Stz,               &Task::vEncodeAgain,         true );
   vAddStep("ahead"_Stz,               &Task::vEncodeAhead,         true );
-  vAddStep("encodeCallPrimitive"_Stz, &Task::vEncodeCallPrimitive, false);
-  vAddStep("encodeCallRoutine"_Stz,   &Task::vEncodeCallRoutine,   false);
+  vAddStep("encodeCallPrimitive"_Stz, &Task::vEncodeCallPrimitive);
+  vAddStep("encodeCallRoutine"_Stz,   &Task::vEncodeCallRoutine);
   vAddStep("continue"_Stz,            &Task::vEncodeContinue,      true);
-  vAddStep("here"_Stz,                &Task::vEncodeHere,          false);
+  vAddStep("here"_Stz,                &Task::vEncodeHere);
   vAddStep("if"_Stz,                  &Task::vEncodeIf,            true );
   vAddStep("ifAgain"_Stz,             &Task::vEncodeIfAgain,       true );
   vAddStep("loop"_Stz,                &Task::vEncodeLoop,          true );
   vAddStep("+loop"_Stz,               &Task::vEncodeLoopPlus,      true );
   vAddStep("next"_Stz,                &Task::vEncodeNext,          true );
-  vAddStep("encodePushValue"_Stz,     &Task::vEncodePushValue,     false);
+  vAddStep("encodePushValue"_Stz,     &Task::vEncodePushValue);
   vAddStep("then"_Stz,                &Task::vEncodeThen,          true );
   vAddStep("until"_Stz,               &Task::vEncodeUntil,         true );
 }

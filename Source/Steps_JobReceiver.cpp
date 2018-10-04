@@ -15,10 +15,10 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobReceiver(void)
 {
-  vAddStep("job_receiver.connNo@"_Stz, &Task::vJob_ReceiverConnNoFetch, false);
-  vAddStep("job_receiver.connNo!"_Stz, &Task::vJob_ReceiverConnNoStore, false);
-  vAddStep("job_receiver.socket@"_Stz, &Task::vJob_ReceiverSocketFetch, false);
-  vAddStep("job_receiver.socket!"_Stz, &Task::vJob_ReceiverSocketStore, false);
+  vAddStep("job_receiver.connNo@"_Stz, &Task::vJob_ReceiverConnNoFetch);
+  vAddStep("job_receiver.connNo!"_Stz, &Task::vJob_ReceiverConnNoStore);
+  vAddStep("job_receiver.socket@"_Stz, &Task::vJob_ReceiverSocketFetch);
+  vAddStep("job_receiver.socket!"_Stz, &Task::vJob_ReceiverSocketStore);
 
 }
 
