@@ -83,11 +83,11 @@
       // now get excat key rows from index
       iSlot pTable tablePtnGrabRead  //! partitionLock
       iPhrase pPlanner Planner.highKey@
-      iPhrase
-      pPlanner
-      pBufferQueue
-      iSlot
-      pIndex index.upperBound
+      //iPhrase
+      //pPlanner
+      //pBufferQueue
+      //iSlot
+      pJob_SubFetch pIndex index.upperBound
       iSlot pTable tablePtnDropRead
     endof
 
