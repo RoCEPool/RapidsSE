@@ -26,17 +26,17 @@ void Step::vAddSteps_Session(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.commandProcessor -- get SEitf command processor                      */
+/* session.commandProcessor -- get session command processor                  */
 /*----------------------------------------------------------------------------*/
 void Task::vSessionCommandProcessor(MP_Task mpTask)
 {
   ENTRY("vSessionDicStack"_Stz);
   
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+  Object* pPtrSession;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.dicStack"_Stz);
   
-  Session* pSession = _pSession(pPtrSEitf);
+  Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
   mpTask->m_pDataStack->vPushObject(pSession->m_pCommandProcessor);
@@ -45,7 +45,7 @@ void Task::vSessionCommandProcessor(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.dicStack -- get SEitf dic stack                                    */
+/* session.dicStack -- get session dic stack                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vSessionDicStack(MP_Task mpTask)
 {
@@ -64,7 +64,7 @@ void Task::vSessionDicStack(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.dump -- dump of SE interface                                         */
+/* session.dump -- dump of SE interface                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vSessionDump(MP_Task mpTask)
 {
@@ -83,17 +83,17 @@ ENTRY("vSessionDump"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.isExiting -- is seitf exiting                                        */
+/* session.isExiting -- is session exiting                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vSessionIsExiting(MP_Task mpTask)
 {
   ENTRY("vSessionIsExiting"_Stz);
   
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+  Object* pPtrSession;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.isExiting"_Stz);
   
-  Session* pSession = _pSession(pPtrSEitf);
+  Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
   mpTask->m_pDataStack->vPushInt(pSession->m_bSessionExiting);
@@ -102,17 +102,17 @@ void Task::vSessionIsExiting(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.pid -- get pid of SE interface                                       */
+/* session.pid -- get pid of SE session                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vSessionPid(MP_Task mpTask)
 {
   ENTRY("vSessionPid"_Stz);
   
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+  Object* pPtrSession;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.pid"_Stz);
   
-  Session* pSession = _pSession(pPtrSEitf);
+  Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
   mpTask->m_pDataStack->vPushInt(pSession->m_iPid);
@@ -121,17 +121,17 @@ void Task::vSessionPid(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.slot@ -- fetch slot of SE interface                                  */
+/* session.slot@ -- fetch slot of SE session                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vSessionSlotFetch(MP_Task mpTask)
 {
   ENTRY("vSessionSlotFetch"_Stz);
   
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+  Object* pPtrSession;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.slot@"_Stz);
   
-  Session* pSession = _pSession(pPtrSEitf);
+  Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
   mpTask->m_pDataStack->vPushInt(pSession->iSlot());
@@ -140,16 +140,16 @@ void Task::vSessionSlotFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.tx@ -- fetch tx of SE interface                                      */
+/* session.tx@ -- fetch tx of SE session                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vSessionTxFetch(MP_Task mpTask)
 {
   ENTRY("vSessionTxFetch"_Stz);
   
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+  Object* pPtrSession;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.tx@"_Stz);
-  Session* pSession = _pSession(pPtrSEitf);
+  Session* pSession = _pSession(pPtrSession);
   
   Tx* pTx = pSession->pTx();
   
@@ -159,16 +159,16 @@ void Task::vSessionTxFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* session.tx! -- store tx of SE interface                                      */
+/* session.tx! -- store tx of SE session                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vSessionTxStore(MP_Task mpTask)
 {
   ENTRY("vSessionTxStore"_Stz);
   
-  Object* pPtrSEitf;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
+  Object* pPtrSession;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
     THROW_INVALID_DSTACK("session.tx!"_Stz);
-  Session* pSession = _pSession(pPtrSEitf);
+  Session* pSession = _pSession(pPtrSession);
   
   Object* pPtrTx;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTx) )

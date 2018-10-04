@@ -207,11 +207,10 @@ pFINALIZE *gpFinalize[]
   /*107 */ &Finalize::vUndefined,         // CN_SCANBUFFER
   /*108 */ &Finalize::vUndefined,         // CN_SCRATCH
 
-  /*110 */ &Finalize::vUndefined,         // CN_SESSION
-
   /*113 */ &SelCursor::vFinalize,         // CN_SELCURSOR
   /*114 */ &Finalize::vUndefined,         // CN_SEMAPHORE
   /*115 */ &Finalize::vUndefined,         // CN_SEPROMPT
+  /*    */ &Finalize::vUndefined,         // CN_SESSION
   /*116 */ &Finalize::vUndefined,         // CN_SINCE
   /*117 */ &Finalize::vUndefined,         // CN_SKIPCURSOR
   /*118 */ &Finalize::vUndefined,         // CN_SKIPLIST

@@ -1296,7 +1296,7 @@ void Task::vIndexRange(MP_Task mpTask)
       if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSession)) {
         
         // buffer must be full
-        // put this tempEntryBuffer in seitf bufferQueue
+        // put this tempEntryBuffer in session bufferQueue
         xValWrk = (Object*)pWorkingBuffer;
         pQueue->bAppend(xValWrk.pNestedValue());
         
@@ -1320,7 +1320,7 @@ void Task::vIndexRange(MP_Task mpTask)
       }
       else {
         // there is an entry
-        // check if seitf exiting
+        // check if session exiting
         if (pSession->m_bSessionExiting)
           pEntry = nullptr;
       }
@@ -1328,7 +1328,7 @@ void Task::vIndexRange(MP_Task mpTask)
     else {
       pEntry = nullptr;
     }
-    // check if seitf exiting
+    // check if session exiting
     if (pSession->m_bSessionExiting)
       pEntry = nullptr;
   }
@@ -1338,7 +1338,7 @@ LastBuffer:
   // mark this buffer as the last buffer
   pWorkingBuffer->vIsLast(true);
   
-  // put the buffer in the seitf bufferQueue
+  // put the buffer in the session bufferQueue
   xValWrk = (Object*)pWorkingBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
@@ -1393,7 +1393,7 @@ void Task::vIndexScan(MP_Task mpTask)
     // mark this buffer as the last buffer
     pFetchBuffer->vIsLast(true);
     
-    // put the buffer in the seitf bufferQueue
+    // put the buffer in the session bufferQueue
     xValWrk = (Object*)pFetchBuffer;
     pQueue->bAppend(xValWrk.pNestedValue());
 
@@ -1419,7 +1419,7 @@ void Task::vIndexScan(MP_Task mpTask)
       //pWorkingBuffer->vShow();
       
       // buffer must be full
-      // put this tempEntryBuffer in seitf bufferQueue
+      // put this tempEntryBuffer in session bufferQueue
       xValWrk = (Object*)pFetchBuffer;
       pQueue->bAppend(xValWrk.pNestedValue());
       
@@ -1444,7 +1444,7 @@ void Task::vIndexScan(MP_Task mpTask)
         pEntry = pEntryBuffer->pFirstEntry();
     }
     
-    // check if seitf exiting
+    // check if session exiting
     if (pSession->m_bSessionExiting)
       pEntry = nullptr;
   }
@@ -1454,7 +1454,7 @@ void Task::vIndexScan(MP_Task mpTask)
 
   //pWorkingBuffer->vShow();
   
-  // put the buffer in the seitf bufferQueue
+  // put the buffer in the session bufferQueue
   xValWrk = (Object*)pFetchBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
@@ -1845,7 +1845,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       if ( ! bAppendRow(pFetchBuffer, pDataRowEntry, pSession)) {
         
         // buffer must be full
-        // put this tempEntryBuffer in seitf bufferQueue
+        // put this tempEntryBuffer in session bufferQueue
         xValWrk = (Object*)pFetchBuffer;
         pQueue->bAppend(xValWrk.pNestedValue());
         
@@ -1874,7 +1874,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       pEntry = nullptr;
     }
     
-    // check if seitf exiting
+    // check if session exiting
     if (pSession->m_bSessionExiting)
       pEntry = nullptr;
   }
@@ -1887,7 +1887,7 @@ LastBuffer:
   pFetchBuffer->vIsLast(true);
   
   //---------------------------------------------------------------------------
-  // put the buffer in the seitf bufferQueue
+  // put the buffer in the session bufferQueue
   
   xValWrk = (Object*)pFetchBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
@@ -1985,7 +1985,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSession)) {
         
         // buffer must be full
-        // put this tempEntryBuffer in seitf bufferQueue
+        // put this tempEntryBuffer in session bufferQueue
         xValWrk = (Object*)pWorkingBuffer;
         pQueue->bAppend(xValWrk.pNestedValue());
         
@@ -2012,7 +2012,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       pEntry = nullptr;
     }
     
-    // check if seitf exiting
+    // check if session exiting
     if (pSession->m_bSessionExiting)
       pEntry = nullptr;
   }
@@ -2021,7 +2021,7 @@ LastBuffer:
   // mark this buffer as the last buffer
   pWorkingBuffer->vIsLast(true);
   
-  // put the buffer in the seitf bufferQueue
+  // put the buffer in the session bufferQueue
   xValWrk = (Object*)pWorkingBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
