@@ -119,7 +119,8 @@
 
       // now scan the index
       iSlot pTable tablePtnGrabRead  //! partitionLock
-      pBufferQueue iSlot pIndex index.scan
+      //pBufferQueue iSlot
+      pJob_SubFetch pIndex index.scan
       iSlot pTable tablePtnDropRead
     endof
 
