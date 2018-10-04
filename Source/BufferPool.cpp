@@ -149,25 +149,25 @@ Buffer* BufferPool::pAllocBuffer(void)
     vWarn("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
           nAllocs, m_nBuffers, m_iAllocCount, *m_nFreeHead, m_iFreeCount);
 
-    vTrace("   Transitent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+    vTrace("   Transient SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagSmall.aChar(),
            gpAttachMap->m_xHeapMem.Transient.m_pSmall->iBufferCount(),
            gpAttachMap->m_xHeapMem.Transient.m_pSmall->iAllocCount(),
            gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount());
     
-    vTrace("  Transitent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+    vTrace("  Transient MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagMedium.aChar(),
            gpAttachMap->m_xHeapMem.Transient.m_pMedium->iBufferCount(),
            gpAttachMap->m_xHeapMem.Transient.m_pMedium->iAllocCount(),
            gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount());
     
-    vTrace("   Transitent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+    vTrace("   Transient LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagLarge.aChar(),
            gpAttachMap->m_xHeapMem.Transient.m_pLarge->iBufferCount(),
            gpAttachMap->m_xHeapMem.Transient.m_pLarge->iAllocCount(),
            gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount());
     
-    vTrace("   Transitent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+    vTrace("   Transient JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
            sMagJumbo.aChar(),
            gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iBufferCount(),
            gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iAllocCount(),
