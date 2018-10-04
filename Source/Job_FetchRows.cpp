@@ -118,7 +118,7 @@ Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
   m_pFetchBuffer = nullptr;
   m_nLastBuffers = 0;
   m_nLastBuffersScanned = 0;
-
+  m_pRowOnce     = nullptr;
  
   m_pTask        = nullptr;
   
@@ -166,6 +166,18 @@ void Job_FetchRows::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* create row once object                                                     */
+/*----------------------------------------------------------------------------*/
+void Job_FetchRows::vCreateRowOnce(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
+  
+  ASSERT(! m_pRowOnce);
+  
+  m_pRowOnce = new RowOnce;
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete last fetch buffer                                                   */
 /*----------------------------------------------------------------------------*/
 void Job_FetchRows::vDeleteBuffer(void)
@@ -175,6 +187,11 @@ void Job_FetchRows::vDeleteBuffer(void)
   if (m_pFetchBuffer) {
     delete m_pFetchBuffer;
     m_pFetchBuffer = nullptr;
+  }
+  
+  if (m_pRowOnce) {
+    delete m_pRowOnce;
+    m_pRowOnce = nullptr;
   }
 }
 
@@ -302,6 +319,21 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   }
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if row has been seen so far                                           */
+/*----------------------------------------------------------------------------*/
+bool Job_FetchRows::bRowSeen(Id xRowId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
+  
+  if (! m_pRowOnce)
+    return false;
+  
+  bool bSeen = m_pRowOnce->bRowSeen(xRowId);
+  
+  return bSeen;
 }
 
 /*----------------------------------------------------------------------------*/

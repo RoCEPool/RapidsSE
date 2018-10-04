@@ -85,6 +85,10 @@ void Task::vJob_FetchRowsPlannerStore(MP_Task mpTask)
   
   pJob_FetchRows->m_pPlanner = pPlanner;
   
+  // if we have or phrases we'll need a RowOnce object
+  if (pPlanner->nPhrases() > 1)
+    pJob_FetchRows->vCreateRowOnce();
+  
   EXIT();
 }
 
@@ -115,7 +119,6 @@ void Task::vJob_FetchRowsSpawnSub(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_fetchRows.spawnSub"_Stz);
   
   Session* pSession = pJob_FetchRows->m_pSession;
-  i8 iFetchRowsJobId = pJob_FetchRows->m_iJobId;
   
   JobClass* pJobClass_SubFetch = JobClass::pFind(CN_JOB_SUBFETCH);
   
@@ -124,7 +127,7 @@ void Task::vJob_FetchRowsSpawnSub(MP_Task mpTask)
   
   pJob_SubFetch->vSeed(SS_SEED_RUN);
   
-  pJob_SubFetch->m_iFetchJobId = iFetchRowsJobId;
+  pJob_SubFetch->m_pJobFetchRows = pJob_FetchRows;
   pJob_SubFetch->m_sObjectName = pJob_FetchRows->m_sObjectName;
   pJob_SubFetch->m_pPlanner = pPlanner;
   pJob_SubFetch->m_iPhrase = iPhrase;

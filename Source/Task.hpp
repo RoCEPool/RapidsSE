@@ -1309,8 +1309,8 @@ namespace Tasks
     static void vZeroGreater(MP_Task mpTask);
     
   private:
-    static bool   bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, Interface::Session* pSession);
-    static bool   bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, Interface::Session* pSession);
+    static bool   bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, Job_FetchRows* pJob_FetchRows);
+    static bool   bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, Job_FetchRows* pJob_FetchRows);
     //static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::Session* pSession);
     
     /*------------------------------------------------------------------------*/

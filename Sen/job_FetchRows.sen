@@ -162,6 +162,8 @@
   sWhere pTable generatePlan to pPlanner
   pPlanner pJob_FetchRows job_fetchRows.planner!
 
+  //pPlanner planner.showPaths
+
   // assert we have a plan
   pPlanner assert
   pPlanner planner.phrases@ to iPhrases

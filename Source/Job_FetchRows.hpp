@@ -19,6 +19,7 @@ namespace JobsModel
     FetchBuffer* m_pFetchBuffer;        // fetch buffer
     i8           m_nLastBuffers;        // expected last buffers
     i8           m_nLastBuffersScanned; // last buffers scanned so far.
+    RowOnce*     m_pRowOnce;            // has row been seen before?
     Tasks::Task* m_pTask;               // task running this job
     
     // must be last
@@ -35,8 +36,10 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    void vCreateRowOnce(void);
     void vDeleteBuffer(void);
     bool bPopulateJob(TokenVec* pTokenVec);
+    bool bRowSeen(Id xRowId);
     void vShow(void);
     
   public:

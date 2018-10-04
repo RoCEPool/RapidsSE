@@ -9,11 +9,11 @@ namespace JobsModel
   class Job_SubFetch : public Job
   {
   public:
-    i8       m_iFetchJobId;  // job id of the fetch job that spawned this sub fetch
-    Queue*   m_pBufferQueue; // buffer queue into which to push fetch buffers
-    Planner* m_pPlanner;     // planner
-    i8       m_iSlot;        // slot this sub truncate truncates
-    i8       m_iPhrase;      // phrase this sub fetch is working on
+    Job_FetchRows* m_pJobFetchRows;  // job id of the fetch job that spawned this sub fetch
+    Queue*         m_pBufferQueue;   // buffer queue into which to push fetch buffers
+    Planner*       m_pPlanner;       // planner
+    i8             m_iSlot;          // slot this sub truncate truncates
+    i8             m_iPhrase;        // phrase this sub fetch is working on
     
     // must be last
     Footer m_xFooter;
