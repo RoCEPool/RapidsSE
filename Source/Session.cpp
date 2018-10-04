@@ -85,8 +85,6 @@ Session::Session(i8 iPartition)
   
   m_bSessionExiting     = false;
   
-  m_pRowOnce = nullptr;
-  
   m_pPerformanceTrace = nullptr;
   
   m_pCommandProcessor = new CommandProcessor;
@@ -102,9 +100,6 @@ Session::Session(i8 iPartition)
 Session::~Session(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  if (m_pRowOnce)
-    delete m_pRowOnce;
   
   delete m_pCommandProcessor;
 }
@@ -313,31 +308,6 @@ void Session::vTx(Tx* pTx)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/* create row once object                                                     */
-/*----------------------------------------------------------------------------*/
-void Session::vCreateRowOnce(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  ASSERT(! m_pRowOnce);
-  
-  m_pRowOnce = new RowOnce;
-}
-/*----------------------------------------------------------------------------*/
-/* test if row has been seen so far                                           */
-/*----------------------------------------------------------------------------*/
-bool Session::bRowSeen(Id xRowId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  if (! m_pRowOnce)
-    return false;
-  
-  bool bSeen = m_pRowOnce->bRowSeen(xRowId);
-  
-  return bSeen;
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

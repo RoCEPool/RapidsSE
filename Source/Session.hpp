@@ -20,11 +20,7 @@ namespace Interface
     
     PerformanceTrace* m_pPerformanceTrace;  // performance Trace
     CommandProcessor* m_pCommandProcessor;  // command processor
-  
-    // these should go
-    RowOnce*   m_pRowOnce;       // has row been seen before?
 
-    
     // must be last
     Footer m_xFooter;
     
@@ -51,12 +47,6 @@ namespace Interface
     i8        iSlot(void);
     Tx*       pTx(void);
     void      vTx(Tx* pTx);
-    
-    //--------------------------------------------------------------------------
-    // to be deleted
-    void   vCreateRowOnce(void);
-    bool   bRowSeen(Id xRowId);
-    //--------------------------------------------------------------------------
   
     Footer* aFooter(void);
   };
