@@ -160,7 +160,7 @@ tp: >>jobQueue_otherNode
   //<< "triggerOp" thePlan >>
   //"triggerOp.task" find execute >jobQueue
 
-  task::this task.seitf@ to pSession
+  task::this task.session@ to pSession
   //<< pSession "triggerScanOp" thePlan plan.id@ "triggerScanOp.task" >>jobQueue
 ;
 
@@ -178,7 +178,7 @@ tp: executeDfetchPlan
   //<< "triggerOp" thePlan >>
   //"triggerOp.task" find execute >jobQueue
 
-  task::this task.seitf@ to pSession
+  task::this task.session@ to pSession
   pSession >str "dfetch request tasks seitf : %v" str.format .
 
   //grid::partitions >str "setting nLastBuffers to %v" str.format .

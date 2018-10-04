@@ -19,7 +19,7 @@
 
   prompt::new to pPrompt
 
-  pPrompt prompt.SEitf to pSession
+  pPrompt prompt.session to pSession
   pSession session.commandProcessor to pCommandProcessor
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

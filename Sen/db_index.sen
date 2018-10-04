@@ -151,47 +151,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* get index pointer and put into task.session.currentIndex                     */
-/*----------------------------------------------------------------------------*/
-/*
-: getIndex ( "<indexNm>" "<tableNm>" -- <R> )
-
-  locals| sTableNm sIndexNm |
-
-  assertInTables
-
-  // push table folder
-  sTableNm pushTable assert
-
-  // push indexes folder
-  pushIndexes assert
-
-  // get index ptr
-  sIndexNm findInCurrent execute
-
-  task::this task.seitf@ session.index!
-
-  // pop indexes folder
-  popIndexes
-
-  // pop table folder
-  popTable
-
-  true
-;
-*/
-/*----------------------------------------------------------------------------*/
-/* clear task.session.currentIndex                                              */
-/*----------------------------------------------------------------------------*/
-/*
-: returnIndex ( )
-
-  nullptr task::this task.seitf@ session.index!
-
-  true
-;
-*/
-/*----------------------------------------------------------------------------*/
 /* make_index (invoked from makeIndex)                                        */
 /*----------------------------------------------------------------------------*/
 : make_index ( "<tableNm>" "<indexNm>" -- )
