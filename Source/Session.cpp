@@ -170,9 +170,9 @@ void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialise this session                                                      */
+/* initialise this session                                                    */
 /*----------------------------------------------------------------------------*/
-void Session::vInit(Stz* pCatalogName, Stz* pSchemaName)
+eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
@@ -204,11 +204,13 @@ void Session::vInit(Stz* pCatalogName, Stz* pSchemaName)
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
 
   if ( ! pCatalogName)
-    return;
+    return EC_NONE;
   
   // /tenants/boray/catalogs/rapidsse
   Word* pCatalog = m_xPathStack.pFindInCurrent(pCatalogName);
-  ASSERT(pCatalog);
+  if ( ! pCatalog)
+    return EC_NO_SUCH_CATALOG;
+  
   pCell = pCatalog->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
@@ -219,11 +221,13 @@ void Session::vInit(Stz* pCatalogName, Stz* pSchemaName)
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   if ( ! pSchemaName )
-    return;
+    return EC_NONE;
   
   // /tenants/boray/catalogs/rapidsse/schemas/public
   Word* pSchema = m_xPathStack.pFindInCurrent(pSchemaName);
-  ASSERT(pSchema);
+  if ( ! pSchema)
+    return EC_NO_SUCH_SCHEMA;
+  
   pCell = pSchema->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
 
@@ -233,6 +237,8 @@ void Session::vInit(Stz* pCatalogName, Stz* pSchemaName)
   
   pCell = pTables->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+  
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

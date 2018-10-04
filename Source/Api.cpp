@@ -152,7 +152,12 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
   TRACE_ENTRY_P1(aCommand);
   
   // set the catalog and schema in the session
-  pSession->vInit(sCatalogName, sSchemaName);
+  eEC eError = pSession->eInit(sCatalogName, sSchemaName);
+  
+  if (eError != EC_NONE) {
+    TRACE_EXIT("ea"_Stz);
+    return eError;
+  }
   
   Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSession, false);
   //vTrace("pJob = %p\n"_Stz, pJob);
@@ -168,6 +173,8 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
     }
     ASSERT(0);
   }
+  
+  TRACE_EXIT("eb"_Stz);
   return EC_NONE;
 }
 
@@ -671,7 +678,12 @@ eEC RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i
     
     Session* pSession = new Session(iPartition);
     
-    pSession->vInit(sCatalogName, sSchemaName);
+    eEC eError = pSession->eInit(sCatalogName, sSchemaName);
+    
+    if (eError != EC_NONE) {
+      TRACE_EXIT("ea"_Stz);
+      return eError;
+    }
     
     // validate the session just created
     VALIDATE_SESSION("b"_Stz);
@@ -680,7 +692,7 @@ eEC RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i
     *ppSession = pSession;
     
     // trace exit
-    TRACE_EXIT("ea"_Stz);
+    TRACE_EXIT("eb"_Stz);
 
     return EC_NONE;
     

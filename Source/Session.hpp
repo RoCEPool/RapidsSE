@@ -37,7 +37,7 @@ namespace Interface
     void      vCommitTx(void);
     void      vContentDump(void);
     void      vEndTx(void);
-    void      vInit(Stz* pCatalogName, Stz* pSchemaName);
+    eEC       eInit(Stz* pCatalogName, Stz* pSchemaName);
     i8        iPartition(void);
     DicStack* pPathStack(void);
     
