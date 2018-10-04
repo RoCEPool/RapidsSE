@@ -260,11 +260,12 @@
 : checkEnoughBuffers
 
   // return true if enough buffers, others return error code
-  bp::freeBuffers checkEnoughBuffers >
+  bp::freeBuffers C_LOW_BUFFERS >
   if
     true exit
   else
-    EC_LOW_BUFFERS false
+    // EC_LOW_BUFFERS
+    false
   then
 ;
 
