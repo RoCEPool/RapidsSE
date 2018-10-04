@@ -5,6 +5,8 @@
 
 namespace JobsModel
 {
+  static const i8 C_MAX_RECORD = C_16KB;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_SubLoader : public Job
   {

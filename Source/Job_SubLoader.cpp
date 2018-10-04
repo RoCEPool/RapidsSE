@@ -248,10 +248,11 @@ bool Job_SubLoader::bFetchRecord(void)
       continue;
     }
     
-    if (iLength > C_16KB) {
+    if (iLength > C_MAX_RECORD) {
       m_iInvalidRecords++;
-      vWarn("Skipping row %.20s... - record in file > 16KB\n"_Stz,
-            aRawData);
+      vWarn("Skipping row %.20s... - record in file > %lld\n"_Stz,
+            aRawData,
+            C_MAX_RECORD);
       return false;
     }
     
