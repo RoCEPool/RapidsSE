@@ -94,6 +94,19 @@ void Buffer::vBufferNo(bn nBufferNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of data area in buffer                                         */
+/*----------------------------------------------------------------------------*/
+void* Buffer::aDataArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  // last byte in buffer
+  void* aDataArea = pAdd<void*>((char*)this,sizeof(Buffer));
+  
+  return aDataArea;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get address of last usable byte in buffer                                  */
 /*----------------------------------------------------------------------------*/
 Stz* Buffer::aLastUsableByte(void)

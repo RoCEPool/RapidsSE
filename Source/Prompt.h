@@ -29,6 +29,7 @@ using namespace Prompt;
 #include "Prompt_classes.hpp"
 #include "Prompt_config.hpp"
 #include "Prompt_constants.hpp"
+#include "Prompt_giveMem.hpp"
 #include "Prompt_heapMem.hpp"
 #include "Prompt_help.hpp"
 #include "Prompt_jobcat.hpp"

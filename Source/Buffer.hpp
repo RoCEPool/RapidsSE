@@ -24,6 +24,7 @@ namespace Pool
   
     bn    nBufferNo(void);
     void  vBufferNo(bn nBufferNo);
+    void* aDataArea(void);
     Stz*  aLastUsableByte(void);
     bn    nOverflowBuffer(void);
     void  vOverflowBuffer(bn nOverflowBuffer);
