@@ -136,6 +136,9 @@ eEC RapidsSE_EndCommand(Session* pSession, void* pJobPtr, i8 iTraceLevel)
   // null the job in the session
   pSession->m_pJob = nullptr;
   
+  // mark session as exiting (any fetches still running will stop)
+  pSession->m_bSessionExiting = true;
+  
   return EC_NONE;
 }
 

@@ -10,22 +10,22 @@
 #define TL_INSERT 8
 #define TL_POOL   16
 
-extern "C" eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
-extern "C" eEC RapidsSE_EndInsert(Session* pSession, void* pJobPtr, i8 iTraceLevel);
-extern "C" eEC RapidsSE_EndCommand(Session* pSession, void* pJobPtr, i8 iTraceLevel);
-extern "C" eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand, Stz* sCatalogName, Stz* sSchemaName,
-                                       void** ppJob, i8 iTraceLevel);
-extern "C" eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJob, void** ppFetchBuffer, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
-extern "C" eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, void** ppRowCount, i8 iTraceLevel);
-extern "C" eEC RapidsSE_InsertRow(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel);
-extern "C" eEC RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInvalidRows, i8 iTraceLevel);
-extern "C" eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
-extern "C" eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_EndInsert(Session* pSession, void* pJobPtr, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_EndCommand(Session* pSession, void* pJobPtr, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand, Stz* sCatalogName, Stz* sSchemaName,
+                                        void** ppJob, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_FetchNextBuffer(Session* pSession, void* pJob, void** ppFetchBuffer, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, void** ppRowCount, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_InsertRow(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInvalidRows, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel);
 extern "C" bool RapidsSE_SessionInvalid(int eError, i8 iTraceLevel);
-extern "C" eEC RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel);
-extern "C" eEC RapidsSE_ResetSession(Session* pSession, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_ResetSession(Session* pSession, i8 iTraceLevel);
 
 Job* RapidsSE_pExecuteCommand(Stz* aCommand, Session* pSession, bool bPostJob);
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession);
