@@ -286,12 +286,9 @@ void Task::vIndexExactKey(MP_Task mpTask)
   ENTRY("vIndexExactKey"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Object* pPtrQueue = nullptr;
-  Object* pPtrPlanner = nullptr;
   Entry* pEntry = nullptr;
   
   ValWrk xValWrk;
-  i8 iPartition;
   Session* pSession = mpTask->m_pSession;
   FetchBuffer* pFetchBuffer;
 
@@ -302,7 +299,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
-  
+ /*
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("index.exactKey"_Stz);
   
@@ -320,6 +317,14 @@ void Task::vIndexExactKey(MP_Task mpTask)
   
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
     THROW_INVALID_DSTACK("index.exactKey"_Stz);
+  */
+  
+  Object* pPtrJob;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+    THROW_INVALID_DSTACK("index.exactKey"_Stz);
+  
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
+  ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
@@ -327,12 +332,16 @@ void Task::vIndexExactKey(MP_Task mpTask)
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
+  i8 iSlot = pJob_SubFetch->m_iSlot;
+  i8 iPhrase = pJob_SubFetch->m_iPhrase;
+  Planner* pPlanner = pJob_SubFetch->m_pPlanner;
+  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
-  TablePtn* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iSlot);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   // create a result buffer for the results
-  pFetchBuffer = new FetchBuffer(pTable, iPartition);
+  pFetchBuffer = new FetchBuffer(pTable, iSlot);
   
   // position in the first index buffer
   //EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
@@ -391,7 +400,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
         pQueue->bAppend(xValWrk.pNestedValue());
         
         // create another result buffer for the results
-        pFetchBuffer = new FetchBuffer(pTable, iPartition);
+        pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
         bool bResult = bAppendRow(pFetchBuffer, pDataRowEntry, pSession);
@@ -631,8 +640,6 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   ENTRY("vIndexLowerBound"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Object* pPtrQueue = nullptr;
-  Object* pPtrPlanner = nullptr;
   
   ValWrk xValWrk;
   i8 iPartition;
@@ -646,7 +653,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
-  
+  /*
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("index.lowerBound"_Stz);
   
@@ -664,6 +671,14 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
     THROW_INVALID_DSTACK("index.lowerBound"_Stz);
+  */
+  
+  Object* pPtrJob;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+    THROW_INVALID_DSTACK("index.lowerBound"_Stz);
+  
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
+  ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
@@ -672,16 +687,19 @@ void Task::vIndexLowerBound(MP_Task mpTask)
   EntryBuffer* pLowerEntryBuffer;
   Entry* pLowerEntry = nullptr;
   eRO eLowerRelnOp;
-  
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
+  i8 iSlot = pJob_SubFetch->m_iSlot;
+  i8 iPhrase = pJob_SubFetch->m_iPhrase;
+  Planner* pPlanner = pJob_SubFetch->m_pPlanner;
+  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
-  TablePtn* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iSlot);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   //----------------------------------------------------------------------------
   // create a result buffer for the results
-  pFetchBuffer = new FetchBuffer(pTable, iPartition);
+  pFetchBuffer = new FetchBuffer(pTable, iSlot);
   
   //----------------------------------------------------------------------------
   KeyWrk xKeyWrkLower;
@@ -735,7 +753,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
       pQueue->bAppend(xValWrk.pNestedValue());
       
       // create another result buffer for the results
-      pFetchBuffer = new FetchBuffer(pTable, iPartition);
+      pFetchBuffer = new FetchBuffer(pTable, iSlot);
       
       // insert row from entry in temporary buffer
       bool bResult = bAppendRow(pFetchBuffer, pDataRowEntry, pSession);
@@ -912,14 +930,11 @@ void Task::vIndexRange(MP_Task mpTask)
   ENTRY("vIndexRange"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Object* pPtrQueue = nullptr;
-  Object* pPtrPlanner = nullptr;
   
   ValWrk xValWrkLwr;
   ValWrk xValWrkUpr;
   ValWrk xValWrk;
-  
-  i8 iPartition;
+
   Session* pSession = mpTask->m_pSession;
   
   i8 i_Phrase;
@@ -929,7 +944,7 @@ void Task::vIndexRange(MP_Task mpTask)
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
-  
+  /*
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("index.range"_Stz);
   
@@ -947,6 +962,14 @@ void Task::vIndexRange(MP_Task mpTask)
   
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
     THROW_INVALID_DSTACK("index.range"_Stz);
+  */
+  
+  Object* pPtrJob;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+    THROW_INVALID_DSTACK("index.exactKey"_Stz);
+  
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
+  ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the lower key
   if ( ! mpTask->m_pDataStack->bPop(xValWrkLwr) )
@@ -971,14 +994,18 @@ void Task::vIndexRange(MP_Task mpTask)
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
+  i8 iSlot = pJob_SubFetch->m_iSlot;
+  i8 iPhrase = pJob_SubFetch->m_iPhrase;
+  Planner* pPlanner = pJob_SubFetch->m_pPlanner;
+  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
-  TablePtn* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iSlot);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   //----------------------------------------------------------------------------
   // create a working buffer for the results
   
-  pFetchBuffer = new FetchBuffer(pTable, iPartition);
+  pFetchBuffer = new FetchBuffer(pTable, iSlot);
   
   //----------------------------------------------------------------------------
   // make the lower key
@@ -1123,7 +1150,7 @@ void Task::vIndexRange(MP_Task mpTask)
         pQueue->bAppend(xValWrk.pNestedValue());
 
         // create another result buffer for the results
-        pFetchBuffer = new FetchBuffer(pTable, iPartition);
+        pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
         bool bResult = bAppendRow(pFetchBuffer, pDataRowEntry, pSession);
@@ -1296,7 +1323,7 @@ void Task::vIndexRange(MP_Task mpTask)
       if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSession)) {
         
         // buffer must be full
-        // put this tempEntryBuffer in seitf bufferQueue
+        // put this tempEntryBuffer in session bufferQueue
         xValWrk = (Object*)pWorkingBuffer;
         pQueue->bAppend(xValWrk.pNestedValue());
         
@@ -1320,7 +1347,7 @@ void Task::vIndexRange(MP_Task mpTask)
       }
       else {
         // there is an entry
-        // check if seitf exiting
+        // check if session exiting
         if (pSession->m_bSessionExiting)
           pEntry = nullptr;
       }
@@ -1328,7 +1355,7 @@ void Task::vIndexRange(MP_Task mpTask)
     else {
       pEntry = nullptr;
     }
-    // check if seitf exiting
+    // check if session exiting
     if (pSession->m_bSessionExiting)
       pEntry = nullptr;
   }
@@ -1338,7 +1365,7 @@ LastBuffer:
   // mark this buffer as the last buffer
   pWorkingBuffer->vIsLast(true);
   
-  // put the buffer in the seitf bufferQueue
+  // put the buffer in the session bufferQueue
   xValWrk = (Object*)pWorkingBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
@@ -1356,7 +1383,6 @@ void Task::vIndexScan(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Object* pPtrQueue = nullptr;
   ValWrk xValWrk;
-  i8 iPartition;
   Session* pSession = mpTask->m_pSession;
   
   FetchBuffer* pFetchBuffer;
@@ -1366,7 +1392,7 @@ void Task::vIndexScan(MP_Task mpTask)
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
-  
+  /*
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("index.scan"_Stz);
   
@@ -1375,15 +1401,27 @@ void Task::vIndexScan(MP_Task mpTask)
   
   Queue* pQueue = _pQueue(pPtrQueue);
   ASSERT(CN_QUEUE == pPtrQueue->eClass());
+  */
+  
+  Object* pPtrJob;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+    THROW_INVALID_DSTACK("index.exactKey"_Stz);
+  
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
+  ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
+  i8 iSlot = pJob_SubFetch->m_iSlot;
+  i8 iPhrase = pJob_SubFetch->m_iPhrase;
+  Planner* pPlanner = pJob_SubFetch->m_pPlanner;
+  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
-  TablePtn* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iSlot);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   // create a result buffer for the results
-  pFetchBuffer = new FetchBuffer(pTable, iPartition);
+  pFetchBuffer = new FetchBuffer(pTable, iSlot);
     
   // position in the first index buffer
   EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
@@ -1393,7 +1431,7 @@ void Task::vIndexScan(MP_Task mpTask)
     // mark this buffer as the last buffer
     pFetchBuffer->vIsLast(true);
     
-    // put the buffer in the seitf bufferQueue
+    // put the buffer in the session bufferQueue
     xValWrk = (Object*)pFetchBuffer;
     pQueue->bAppend(xValWrk.pNestedValue());
 
@@ -1419,12 +1457,12 @@ void Task::vIndexScan(MP_Task mpTask)
       //pWorkingBuffer->vShow();
       
       // buffer must be full
-      // put this tempEntryBuffer in seitf bufferQueue
+      // put this tempEntryBuffer in session bufferQueue
       xValWrk = (Object*)pFetchBuffer;
       pQueue->bAppend(xValWrk.pNestedValue());
       
       // create another result buffer for the results
-      pFetchBuffer = new FetchBuffer(pTable, iPartition);
+      pFetchBuffer = new FetchBuffer(pTable, iSlot);
       
       // insert row from entry in temporary buffer
       bool bResult = pFetchBuffer->bAppendRow(aRow);
@@ -1444,7 +1482,7 @@ void Task::vIndexScan(MP_Task mpTask)
         pEntry = pEntryBuffer->pFirstEntry();
     }
     
-    // check if seitf exiting
+    // check if session exiting
     if (pSession->m_bSessionExiting)
       pEntry = nullptr;
   }
@@ -1454,7 +1492,7 @@ void Task::vIndexScan(MP_Task mpTask)
 
   //pWorkingBuffer->vShow();
   
-  // put the buffer in the seitf bufferQueue
+  // put the buffer in the session bufferQueue
   xValWrk = (Object*)pFetchBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   
@@ -1680,11 +1718,8 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   ENTRY("vIndexUpperBound"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Object* pPtrQueue = nullptr;
-  Object* pPtrPlanner = nullptr;
   
   ValWrk xValWrk;
-  i8 iPartition;
   Session* pSession = mpTask->m_pSession;
   
   i8 i_Phrase;
@@ -1694,7 +1729,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
-  
+  /*
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("index.upperBound"_Stz);
   
@@ -1712,6 +1747,14 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   
   if ( ! mpTask->m_pDataStack->bPop(i_Phrase) )
     THROW_INVALID_DSTACK("index.upperBound"_Stz);
+  */
+  
+  Object* pPtrJob;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob) )
+    THROW_INVALID_DSTACK("index.exactKey"_Stz);
+  
+  Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pPtrJob);
+  ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
@@ -1731,15 +1774,19 @@ void Task::vIndexUpperBound(MP_Task mpTask)
   
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
+  i8 iSlot = pJob_SubFetch->m_iSlot;
+  i8 iPhrase = pJob_SubFetch->m_iPhrase;
+  Planner* pPlanner = pJob_SubFetch->m_pPlanner;
+  Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   IdxColVec* pIdxColVec = pIndex->pIdxColVec();
   
-  TablePtn* pPartition = pTable->pPartition(iPartition);
+  TablePtn* pPartition = pTable->pPartition(iSlot);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
   //----------------------------------------------------------------------------
   // create a result buffer for the results
   
-  pFetchBuffer = new FetchBuffer(pTable, iPartition);
+  pFetchBuffer = new FetchBuffer(pTable, iSlot);
   
   //----------------------------------------------------------------------------
   // make the upper key
@@ -1845,12 +1892,12 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       if ( ! bAppendRow(pFetchBuffer, pDataRowEntry, pSession)) {
         
         // buffer must be full
-        // put this tempEntryBuffer in seitf bufferQueue
+        // put this tempEntryBuffer in session bufferQueue
         xValWrk = (Object*)pFetchBuffer;
         pQueue->bAppend(xValWrk.pNestedValue());
         
         // create another result buffer for the results
-        pFetchBuffer = new FetchBuffer(pTable, iPartition);
+        pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
         bool bResult = bAppendRow(pFetchBuffer, pDataRowEntry, pSession);
@@ -1874,7 +1921,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       pEntry = nullptr;
     }
     
-    // check if seitf exiting
+    // check if session exiting
     if (pSession->m_bSessionExiting)
       pEntry = nullptr;
   }
@@ -1887,7 +1934,7 @@ LastBuffer:
   pFetchBuffer->vIsLast(true);
   
   //---------------------------------------------------------------------------
-  // put the buffer in the seitf bufferQueue
+  // put the buffer in the session bufferQueue
   
   xValWrk = (Object*)pFetchBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
@@ -1985,7 +2032,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       if ( ! bAppendRow(pWorkingBuffer, pDataRowEntry, pSession)) {
         
         // buffer must be full
-        // put this tempEntryBuffer in seitf bufferQueue
+        // put this tempEntryBuffer in session bufferQueue
         xValWrk = (Object*)pWorkingBuffer;
         pQueue->bAppend(xValWrk.pNestedValue());
         
@@ -2012,7 +2059,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       pEntry = nullptr;
     }
     
-    // check if seitf exiting
+    // check if session exiting
     if (pSession->m_bSessionExiting)
       pEntry = nullptr;
   }
@@ -2021,7 +2068,7 @@ LastBuffer:
   // mark this buffer as the last buffer
   pWorkingBuffer->vIsLast(true);
   
-  // put the buffer in the seitf bufferQueue
+  // put the buffer in the session bufferQueue
   xValWrk = (Object*)pWorkingBuffer;
   pQueue->bAppend(xValWrk.pNestedValue());
   

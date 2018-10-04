@@ -397,7 +397,7 @@ ENTRY("vTaskSeed"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.seitf@ -- fetch SEitf of task on data stack                           */
+/* task.session@ -- fetch session of task on data stack                       */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSessionFetch(MP_Task mpTask)
 {
@@ -405,20 +405,18 @@ void Task::vTaskSessionFetch(MP_Task mpTask)
   
   Object* pObject;
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("task.seitf@"_Stz);
+    THROW_INVALID_DSTACK("task.session@"_Stz);
   Task* pThatTask = _pTask(pObject);
   
   Session* pSession = pThatTask->m_pSession;
   
-  Object* pPtrSEitf= pSession;
-  
-  mpTask->m_pDataStack->vPushObject(pPtrSEitf);
+  mpTask->m_pDataStack->vPushObject(pSession);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.seitf! -- store SEitf on data stack into task on data stack           */
+/* task.session! -- store session on data stack into task on data stack       */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSessionStore(MP_Task mpTask)
 {
@@ -426,15 +424,15 @@ void Task::vTaskSessionStore(MP_Task mpTask)
   
   Object* pTaskObject;
   if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.seitf!"_Stz);
+    THROW_INVALID_DSTACK("task.session!"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
-  Object* pPtrSEitf;
+  Object* pPtrSession;
   
-  if ( ! mpTask->m_pDataStack->bPop(pPtrSEitf) )
-    THROW_INVALID_DSTACK("task.seitf!"_Stz);
+  if ( ! mpTask->m_pDataStack->bPop(pPtrSession) )
+    THROW_INVALID_DSTACK("task.session!"_Stz);
   
-  Session* pSession = _pSession(pPtrSEitf);
+  Session* pSession = _pSession(pPtrSession);
   ASSERT(! pSession || CN_SESSION == pSession->eClass());
   
   pThatTask->m_pSession = pSession;

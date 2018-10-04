@@ -101,7 +101,7 @@ void Task::vTableAnalyze(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.insertEntries -- insert entries from buffer into table (from seitf)  */
+/* table.insertEntries -- insert entries from buffer into table (from session)*/
 /*----------------------------------------------------------------------------*/
 void Task::vTableInsertEntries(MP_Task mpTask)
 {
