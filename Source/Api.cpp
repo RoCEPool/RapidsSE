@@ -316,9 +316,9 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTra
   i8 iToken = 0;
   
   while (true) {
-    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("row:"_Stz));
+    RASSERT(pTknVec->pGet(iToken++)->aText()->bSame("row:"_Stz));
     
-    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame("("_Stz));
+    RASSERT(pTknVec->pGet(iToken++)->aText()->bSame("("_Stz));
     
     if (iRows == iRow)
       break;
@@ -327,7 +327,7 @@ eEC RapidsSE_GetRow(SEitf* pSEitf, void* pJobPtr, i8 iRow, void** ppRow, i8 iTra
      iToken++;
     }
   
-    ASSERT(pTknVec->pGet(iToken++)->aText()->bSame(")"_Stz));
+    RASSERT(pTknVec->pGet(iToken++)->aText()->bSame(")"_Stz));
     iRows++;
   }
   
