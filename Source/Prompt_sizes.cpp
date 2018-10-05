@@ -1,0 +1,59 @@
+/*============================================================================*/
+/* Prompt_sizes.cpp -- sizes report                                           */
+/*============================================================================*/
+
+#include "Prompt.h"
+#include "StorageEngine.h"
+
+PromptNote mPromptNote_sizes (
+  "Prompt_sizes"_Stz,   // name of the prompt function
+  "comment"_Stz,        // comment about the functopm
+  "sizes"_Stz,          // the prompt command
+  nullptr,              // the second word
+  bPrompt_sizes,        // prompt function
+  true,                 // enabled
+
+  true,                 // visible
+  "fun help"_Stz        // help
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
+{
+  vTrace("  sizeof(Object) = %lu; \n"_Stz, sizeof(Object));
+  vTrace("  sizeof(Footer) = %lu; \n"_Stz, sizeof(Footer));
+
+  vTrace("\n"_Stz);
+  vTrace("  sizeof(Buffer) = %lu; \n"_Stz, sizeof(Buffer));
+  
+  vTrace("\n"_Stz);
+  vTrace("  sizeof(BinVal) = %lu; \n"_Stz, sizeof(BinVal));
+  vTrace("  sizeof(BolVal) = %lu; \n"_Stz, sizeof(BolVal));
+  vTrace("  sizeof(DteVal) = %lu; \n"_Stz, sizeof(DteVal));
+  vTrace("  sizeof(FltVal) = %lu; \n"_Stz, sizeof(FltVal));
+  vTrace("  sizeof(IntVal) = %lu; \n"_Stz, sizeof(IntVal));
+  vTrace("  sizeof(IvlVal) = %lu; \n"_Stz, sizeof(IvlVal));
+  vTrace("  sizeof(ObjVal) = %lu; \n"_Stz, sizeof(ObjVal));
+  vTrace("  sizeof(PtrVal) = %lu; \n"_Stz, sizeof(PtrVal));
+  vTrace("  sizeof(StrVal) = %lu; \n"_Stz, sizeof(StrVal));
+  vTrace("  sizeof(TmeVal) = %lu; \n"_Stz, sizeof(TmeVal));
+  vTrace("  sizeof(TspVal) = %lu; \n"_Stz, sizeof(TspVal));
+  vTrace("\n"_Stz);
+  
+  vTrace("  sizeof(s32)    = %lu; \n"_Stz,  sizeof(s32));
+  vTrace("  sizeof(s256)   = %lu; \n"_Stz,  sizeof(s256));
+  vTrace("  sizeof(s4K)    = %lu; \n"_Stz,  sizeof(s4K));
+  vTrace("  sizeof(s16KB)  = %lu; \n"_Stz,  sizeof(s16KB));
+  vTrace("  sizeof(s17KB)  = %lu; \n"_Stz,  sizeof(s17KB));
+  vTrace("  sizeof(s48K)   = %lu; \n"_Stz,  sizeof(s48K));
+  vTrace("  sizeof(s1M)    = %lu; \n"_Stz,  sizeof(s1M));
+
+  vTrace("\n"_Stz);
+  return true;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
