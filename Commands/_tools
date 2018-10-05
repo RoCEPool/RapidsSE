@@ -8,6 +8,7 @@ bp;         // show buffer pool
 classes;    // generate classes list
 config;     // show node information
 constants;  // show important constants
+hashdefs;   // show #def's
 heapMem;    // information about the heap
 jobcat;     // show the job cataloig
 locks;      // locks report
