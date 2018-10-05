@@ -37,7 +37,8 @@ namespace StorageEngine
     i8            m_nSubLoaders;
         
     i8            m_iEpoch;
-    
+    bool          m_bBootError;
+  
     BufferPool*   m_pBufferPool;
   
     CarryOver*    m_pCarryOver;

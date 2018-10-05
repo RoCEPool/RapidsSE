@@ -590,7 +590,6 @@ namespace Tasks
     static void vIndexVisualize(MP_Task mpTask);
 
     // input
-    static void vInputAccept(MP_Task mpTask);
     static void vInputClose(MP_Task mpTask);
     static void vInputDepth(MP_Task mpTask);
     static void vInputNext(MP_Task mpTask);
@@ -601,7 +600,8 @@ namespace Tasks
     static void vInputText(MP_Task mpTask);
     static void vInputToken(MP_Task mpTask);
     static void vInputType(MP_Task mpTask);
-    
+    static void vInputUnknown(MP_Task mpTask);
+
     // int
     static void vIntAdd(MP_Task mpTask);
     static void vIntDivide(MP_Task mpTask);

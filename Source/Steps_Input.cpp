@@ -15,7 +15,6 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Input(void)
 {
-  vAddStep("accept"_Stz,          &Task::vInputAccept);
   vAddStep("input.close"_Stz,     &Task::vInputClose);
   vAddStep("input.depth"_Stz,     &Task::vInputDepth);
   vAddStep("input.next"_Stz,      &Task::vInputNext);
@@ -26,30 +25,9 @@ void Step::vAddSteps_Input(void)
   vAddStep("input.text"_Stz,      &Task::vInputText);
   vAddStep("input.token"_Stz,     &Task::vInputToken);
   vAddStep("input.type"_Stz,      &Task::vInputType);
-  vAddStep("token:"_Stz,          &Task::vTokenColon);
-}
+  vAddStep("input.unknown"_Stz,   &Task::vInputUnknown);
 
-/*----------------------------------------------------------------------------*/
-/* accept -- accept input string and push on stack                            */
-/*----------------------------------------------------------------------------*/
-void Task::vInputAccept(MP_Task mpTask)
-{
-  ENTRY("vInputAccept"_Stz);
-  
-  ValWrk xWsp;
-  xWsp.vSetClass(CN_STRVAL);
-  
-  char* y = _pStrVal(&xWsp)->aChar();
-  
-  while ( '\n' != (*y++ = getc(stdin)) ) ;
-  
-  *--y = '\0';
-  
-  _pStrVal(&xWsp)->vAreaSize();
-  
-  mpTask->m_pDataStack->vPushValWrk(xWsp);
-  
-  EXIT();
+  vAddStep("token:"_Stz,          &Task::vTokenColon);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,6 +174,18 @@ ENTRY("vInputType"_Stz);
   eTN eTokenType = mpTask->m_pCompiler->m_pTokeniser->eToken();
   
   mpTask->m_pDataStack->vPushInt(eTokenType);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* input.unknown -- unknown current token                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vInputUnknown(MP_Task mpTask)
+{
+  ENTRY("vInputUnknown"_Stz);
+  
+  gpAttachMap->m_bBootError = true;
   
   EXIT();
 }

@@ -836,9 +836,10 @@ void Parser::vReadLineStdin(void)
   i8 iFreeBuffers = gpBufferPool->iFreeCount();
   
   if ( ! gxArguments.m_bScript ) {
-    vInfo("%s%s> "_Stz,
+    vInfo("%s%s%s> "_Stz,
           m_sPrompt.aChar(),
-          iFreeBuffers < C_LOW_BUFFERS ? " *LOWMEM* " : ""
+          gpAttachMap->m_bBootError    ? " *BOOTERROR* " : "",
+          iFreeBuffers < C_LOW_BUFFERS ? " *LOWMEM* "    : ""
           );
     fflush(stdin);
   }
