@@ -35,10 +35,9 @@ success
 fetch jCdt;
 rows: 16
 
-// check with Ray
 // this will be a scan because no index with leading col is jB
-//fetch jCdt "jB 24 =";
-//rows: 16
+fetch jCdt "jB 24 =";
+rows: 16
 
 //------------------------------------------------------------------------------
 // EXACT KEYS
