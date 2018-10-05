@@ -4,7 +4,7 @@
 
 // Job Short: Prompt
 
-#include "JobModel.h"
+#include "JobsModel.h"
 
 JobClass xJobClass_Prompt =
 {

@@ -28,12 +28,15 @@ void StorageEngine::vCheckAllAssumptions(void)
   Transactions::vCheckAssumptions();
   Dictionaries::vCheckAssumptions();
   DBobjects::vCheckAssumptions();
+  Loader::vCheckAssumptions();
   Plans::vCheckAssumptions();
+  JobsModel::vCheckAssumptions();
+  MockEE::vCheckAssumptions();
+  Utilities::vCheckAssumptions();
   Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
   GridModel::vCheckAssumptions();
   Interface::vCheckAssumptions();
-  GridModel::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
 }
 

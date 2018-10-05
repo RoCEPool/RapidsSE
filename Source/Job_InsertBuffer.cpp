@@ -2,7 +2,7 @@
 /* Job_InsertBuffer.cpp -- Insert Row Job                                        */
 /*============================================================================*/
 
-#include "JobModel.h"
+#include "JobsModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
