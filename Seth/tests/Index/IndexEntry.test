@@ -15,14 +15,14 @@ INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
 /*
-setAttachMap AM_INDEXENTRIES 5;
+indexEntries 5;
 affected: 0
 
 LOG 'Entries per buffer: 5';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 6;
+indexEntries 6;
 affected: 0
 
 LOG 'Entries per buffer: 6';
@@ -30,364 +30,364 @@ INCLUDE 'supplierLoop.test';
 
 */
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 7;
+indexEntries 7;
 affected: 0
 
 LOG 'Entries per buffer: 7';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 8;
+indexEntries 8;
 affected: 0
 
 LOG 'Entries per buffer: 8';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 9;
+indexEntries 9;
 affected: 0
 
 LOG 'Entries per buffer: 9';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 10;
+indexEntries 10;
 affected: 0
 
 LOG 'Entries per buffer: 10';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 11;
+indexEntries 11;
 affected: 0
 
 LOG 'Entries per buffer: 11';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 12;
+indexEntries 12;
 affected: 0
 
 LOG 'Entries per buffer: 12';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 13;
+indexEntries 13;
 affected: 0
 
 LOG 'Entries per buffer: 13';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 14;
+indexEntries 14;
 affected: 0
 
 LOG 'Entries per buffer: 14';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 15;
+indexEntries 15;
 affected: 0
 
 LOG 'Entries per buffer: 15';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 16;
+indexEntries 16;
 affected: 0
 
 LOG 'Entries per buffer: 16';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 17;
+indexEntries 17;
 affected: 0
 
 LOG 'Entries per buffer: 17';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 18;
+indexEntries 18;
 affected: 0
 
 LOG 'Entries per buffer: 18';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 19;
+indexEntries 19;
 affected: 0
 
 LOG 'Entries per buffer: 19';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 20;
+indexEntries 20;
 affected: 0
 
 LOG 'Entries per buffer: 20';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 21;
+indexEntries 21;
 affected: 0
 
 LOG 'Entries per buffer: 21';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 22;
+indexEntries 22;
 affected: 0
 
 LOG 'Entries per buffer: 22';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 23;
+indexEntries 23;
 affected: 0
 
 LOG 'Entries per buffer: 23';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 24;
+indexEntries 24;
 affected: 0
 
 LOG 'Entries per buffer: 24';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 25;
+indexEntries 25;
 affected: 0
 
 LOG 'Entries per buffer: 25';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 26;
+indexEntries 26;
 affected: 0
 
 LOG 'Entries per buffer: 26';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 27;
+indexEntries 27;
 affected: 0
 
 LOG 'Entries per buffer: 27';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 28;
+indexEntries 28;
 affected: 0
 
 LOG 'Entries per buffer: 28';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 29;
+indexEntries 29;
 affected: 0
 
 LOG 'Entries per buffer: 20';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 30;
+indexEntries 30;
 affected: 0
 
 LOG 'Entries per buffer: 30';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 31;
+indexEntries 31;
 affected: 0
 
 LOG 'Entries per buffer: 31';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 32;
+indexEntries 32;
 affected: 0
 
 LOG 'Entries per buffer: 32';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 33;
+indexEntries 33;
 affected: 0
 
 LOG 'Entries per buffer: 33';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 34;
+indexEntries 34;
 affected: 0
 
 LOG 'Entries per buffer: 34';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 35;
+indexEntries 35;
 affected: 0
 
 LOG 'Entries per buffer: 35';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 36;
+indexEntries 36;
 affected: 0
 
 LOG 'Entries per buffer: 36';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 37;
+indexEntries 37;
 affected: 0
 
 LOG 'Entries per buffer: 37';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 38;
+indexEntries 38;
 affected: 0
 
 LOG 'Entries per buffer: 38';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 39;
+indexEntries 39;
 affected: 0
 
 LOG 'Entries per buffer: 39';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 40;
+indexEntries 40;
 affected: 0
 
 LOG 'Entries per buffer: 40';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 41;
+indexEntries 41;
 affected: 0
 
 LOG 'Entries per buffer: 41';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 42;
+indexEntries 42;
 affected: 0
 
 LOG 'Entries per buffer: 42';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 43;
+indexEntries 43;
 affected: 0
 
 LOG 'Entries per buffer: 43';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 44;
+indexEntries 44;
 affected: 0
 
 LOG 'Entries per buffer: 44';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 45;
+indexEntries 45;
 affected: 0
 
 LOG 'Entries per buffer: 45';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 46;
+indexEntries 46;
 affected: 0
 
 LOG 'Entries per buffer: 46';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 47;
+indexEntries 47;
 affected: 0
 
 LOG 'Entries per buffer: 47';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 48;
+indexEntries 48;
 affected: 0
 
 LOG 'Entries per buffer: 48';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 49;
+indexEntries 49;
 affected: 0
 
 LOG 'Entries per buffer: 49';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 50;
+indexEntries 50;
 affected: 0
 
 LOG 'Entries per buffer: 50';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 100;
+indexEntries 100;
 affected: 0
 
 LOG 'Entries per buffer: 100';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 200;
+indexEntries 200;
 affected: 0
 
 LOG 'Entries per buffer: 200';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 300;
+indexEntries 300;
 affected: 0
 
 LOG 'Entries per buffer: 300';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 400;
+indexEntries 400;
 affected: 0
 
 LOG 'Entries per buffer: 400';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 500;
+indexEntries 500;
 affected: 0
 
 LOG 'Entries per buffer: 500';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 1000;
+indexEntries 1000;
 affected: 0
 
 LOG 'Entries per buffer: 1000';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 2000;
+indexEntries 2000;
 affected: 0
 
 LOG 'Entries per buffer: 2000';
 INCLUDE 'supplierLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 0;
+indexEntries 0;
 affected: 0
 
 LOG 'Entries per buffer: default';

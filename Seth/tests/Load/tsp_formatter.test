@@ -16,43 +16,43 @@ success
 // load data into the table with incorrect formatters
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD.MM" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "XX-DD-MM" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YY-DD-MM" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYY-DD-MM" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-XX-MM" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DX-MM" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-XM" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY-DD-MX" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "YYYY/DD-MM" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM-YYYD" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-MM-YYYD" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "MM-DD/YYYYY" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 ld tsp "../Seth/tests/Load/tsp_YYYY-DD-MM.csv" DATE_FORMAT "DD-MM/YYYYY" ;
-failure: 'invalid command'
+failure contains: 'invalid command'
 
 //------------------------------------------------------------------------------
 // load data into the table with inserts (default formatter)

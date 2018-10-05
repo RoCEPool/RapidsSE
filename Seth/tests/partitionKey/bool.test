@@ -26,10 +26,10 @@ success
 // analyze table
 antbl boolTable;
 rows:
- (*,*,0)
- (*,*,5)
- (*,*,0)
- (*,*,5)
+ ('NODE0',*,*,0)
+ ('NODE0',*,*,5)
+ ('NODE0',*,*,0)
+ ('NODE0',*,*,5)
 
 // drop the table
 drop table boolTable;

@@ -21,7 +21,7 @@ rows:
 // check columns of index
 lsidxcol T1 idx;
 rows:
-  ('col0', 'INTEGER')
+  ('col0', 'INTEGER', 19, 0, false, true)
 
 // (3) now load some data into the table
 ld T1 "../Seth/tests/Insert/insert.csv" ;
