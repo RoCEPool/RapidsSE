@@ -228,9 +228,23 @@ tp: printResult
   // return true if enough buffers, others return error code
   bp::freeBuffers C_LOW_BUFFERS >
   if
-    true exit
+    true
   else
-    // EC_LOW_BUFFERS
+     EC_LOW_BUFFERS
+    false
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test system has enough buffers                                             */
+/*----------------------------------------------------------------------------*/
+: testEnoughBuffers
+
+  // return true if enough buffers, others return error code
+  bp::freeBuffers C_LOW_BUFFERS >
+  if
+    true
+  else
     false
   then
 ;

@@ -257,15 +257,24 @@ bool Job_FetchRows::bPopulateJob(TokenVec* pTokenVec)
   // 4 tokens
   //fetch j10 "where" 1;
   //fetch j10 1 displayOff;
+  //fetch j10 "where" displayOff;
   if (iNumTokens == 4) {
     if (pTokenVec->pGet(2)->eToken() == TN_STRING) {
       
       m_sWhere = pTokenVec->pGet(2)->aText();
       
-      if (pTokenVec->pGet(3)->eToken() != TN_INTEGER)
+      if (pTokenVec->pGet(3)->eToken() == TN_INTEGER) {
+        m_iPartition = pTokenVec->pGet(3)->iToI8();
+        return true;
+      }
+      
+      if (pTokenVec->pGet(3)->eToken() != TN_NAME)
         return false;
       
-      m_iPartition = pTokenVec->pGet(3)->iToI8();
+      if ( ! pTokenVec->pGet(3)->aText()->bSame("displayOff"_Stz) )
+        return false;
+      
+      m_bDisplay = false;
       return true;
     }
     

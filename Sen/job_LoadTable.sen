@@ -166,7 +166,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
 
-  checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> exit then
+  testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> exit then
 
   ddlLock::dropWrite
 ;
