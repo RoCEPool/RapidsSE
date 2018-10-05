@@ -25,7 +25,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_locks(SePrompt* pPrompt)
 {
-  vTrace("  not implemented yet\n"_Stz);
+  gpAttachMap->m_xLocks.vReport();
   
   return true;
 }

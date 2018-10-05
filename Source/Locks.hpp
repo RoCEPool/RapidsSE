@@ -19,6 +19,7 @@ namespace System
     Atomic m_zWriteCollisions[LK_ENUMS]; // number of write collisions
   
     void vList(File& xFile);
+    void vReport(void);
     void vReset(void);
   };
 }
