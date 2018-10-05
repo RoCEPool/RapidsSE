@@ -30,6 +30,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   DBobjects::vCheckAssumptions();
   Loader::vCheckAssumptions();
   Plans::vCheckAssumptions();
+  JobsModel::vCheckAssumptions();
   MockEE::vCheckAssumptions();
   Utilities::vCheckAssumptions();
   Tasks::vCheckAssumptions();
