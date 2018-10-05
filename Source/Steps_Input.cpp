@@ -185,6 +185,12 @@ void Task::vInputUnknown(MP_Task mpTask)
 {
   ENTRY("vInputUnknown"_Stz);
   
+  vTrace("\n"_Stz);
+  vTrace("Unknown token: %s\n"_Stz,
+         mpTask->m_pCompiler->m_pTokeniser->sToken().aChar()
+         );
+  vTrace("\n"_Stz);
+
   gpAttachMap->m_bBootError = true;
   
   EXIT();

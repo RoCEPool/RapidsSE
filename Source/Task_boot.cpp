@@ -727,8 +727,8 @@ void Task::vAddRoutines(void)
   "    input.token find"
   "    dup not if"                // we have an unknown word
   "      drop"
-  "      \"unknown\" ."
-  "      input.token ."
+//"      \"unknown\" ."
+//"      input.token ."
   "      input.unknown"
 //"      dic.isCompiled not if process.quit then "
   "      jumpBegin_"
