@@ -682,7 +682,6 @@ rows: 0
 drop index supplier.idx;
 success
 
-/*
 //------------------------------------------------------------------------------
 // create an index on nationkey
 create index idx on supplier (S_NATIONKEY);
@@ -749,7 +748,6 @@ rows: 0
 // drop the index idx;
 drop index supplier.idx;
 success
-*/
 
 // now drop the table
 drop table supplier;

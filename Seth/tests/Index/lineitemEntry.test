@@ -14,21 +14,21 @@ LOG 'Entries per buffer: default';
 INCLUDE 'lineitemLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 2000;
+indexEntries 2000;
 affected: 0
 
 LOG 'Entries per buffer: 2000';
 INCLUDE 'lineitemLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 3000;
+indexEntries 3000;
 affected: 0
 
 LOG 'Entries per buffer: 3000';
 INCLUDE 'lineitemLoop.test';
 
 //------------------------------------------------------------------------------
-setAttachMap AM_INDEXENTRIES 0;
+indexEntries 0;
 affected: 0
 
 LOG 'Entries per buffer: default';
