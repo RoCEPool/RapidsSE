@@ -16,8 +16,10 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_WorkingBuffer(void)
 {
-  vAddStep("workingBuffer.isLast@"_Stz,         &Task::vWorkingBufferIsLastFetch);
-  vAddStep("workingBuffer.isLast!"_Stz,         &Task::vWorkingBufferIsLastStore);
+  vAddStep("workingBuffer.isLast@"_Stz,          &Task::vWorkingBufferIsLastFetch);
+  vAddStep("workingBuffer.isLast!"_Stz,          &Task::vWorkingBufferIsLastStore);
+  vAddStep("workingBuffer.rows"_Stz,             &Task::vWorkingBufferRows);
+  vAddStep("workingBuffer.show"_Stz,             &Task::vWorkingBufferShow);
   vAddStep("workingBuffer::toWorkingBuffer"_Stz, &Task::vWorkingBufferToWorkingBuffer);
 }
 
@@ -55,6 +57,44 @@ void Task::vWorkingBufferIsLastStore(MP_Task mpTask)
   WorkingBuffer* pWorkingBuffer = _pWorkingBuffer(pPtrWorkingBuffer);
   
   pWorkingBuffer->vIsLast(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* workingBuffer.rows -- get number of rows in working buffer                 */
+/*----------------------------------------------------------------------------*/
+void Task::vWorkingBufferRows(MP_Task mpTask)
+{
+  ENTRY("vWorkingBufferShow"_Stz);
+  
+  Object* pPtrWorkingBuffer;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrWorkingBuffer) )
+    THROW_INVALID_DSTACK("workingBuffer.isLast@"_Stz);
+  
+  WorkingBuffer* pWorkingBuffer = _pWorkingBuffer(pPtrWorkingBuffer);
+ 
+  mpTask->m_pDataStack->vPushInt(pWorkingBuffer->nWorkingRows());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* workingBuffer.show -- show info about a working buffer                     */
+/*----------------------------------------------------------------------------*/
+void Task::vWorkingBufferShow(MP_Task mpTask)
+{
+  ENTRY("vWorkingBufferShow"_Stz);
+  
+  Object* pPtrWorkingBuffer;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrWorkingBuffer) )
+    THROW_INVALID_DSTACK("workingBuffer.isLast@"_Stz);
+  
+  WorkingBuffer* pWorkingBuffer = _pWorkingBuffer(pPtrWorkingBuffer);
+
+  pWorkingBuffer->vShow();
   
   EXIT();
 }

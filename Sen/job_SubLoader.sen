@@ -25,6 +25,11 @@
   // calculate total partitions in the cluster
   grid::slots grid::nodes * locals| nTotalPartitions |
 
+  nTotalPartitions 0 do
+    I pJob_SubLoader job_subLoader.workingBuffer dup
+    if workingBuffer.show else drop then
+  loop
+
   // for all partitions
   nTotalPartitions 0 do
 

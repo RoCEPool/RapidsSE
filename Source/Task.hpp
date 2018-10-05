@@ -773,6 +773,7 @@ namespace Tasks
     static void vJob_SubLoaderProcessRecords(MP_Task mpTask);
     static void vJob_SubLoaderRecordsInvalid(MP_Task mpTask);
     static void vJob_SubLoaderRecordsValid(MP_Task mpTask);
+    static void vJob_SubLoaderWorkingBuffer(MP_Task mpTask);
 
     // Job subTruncate
     static void vJob_SubTruncateSlotFetch(MP_Task mpTask);
@@ -1298,6 +1299,8 @@ namespace Tasks
     // working buffer
     static void vWorkingBufferIsLastFetch(MP_Task mpTask);
     static void vWorkingBufferIsLastStore(MP_Task mpTask);
+    static void vWorkingBufferRows(MP_Task mpTask);
+    static void vWorkingBufferShow(MP_Task mpTask);
     static void vWorkingBufferToWorkingBuffer(MP_Task mpTask);
     
     // zero

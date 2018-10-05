@@ -233,6 +233,21 @@ void WorkingBuffer::vRestore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show working buffer information                                            */
+/*----------------------------------------------------------------------------*/
+void WorkingBuffer::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
+
+  vTrace("WorkingBuffer %p Partition %lld Rows %lld IsLast %lld Table %s\n"_Stz,
+         this,
+         m_iPartition,
+         m_nWorkingRows,
+         m_bIsLast,
+         m_pTable->aTableName());
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of result rows in this buffer                                   */
 /*----------------------------------------------------------------------------*/
 i8 WorkingBuffer::nWorkingRows(void)

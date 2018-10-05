@@ -26,6 +26,8 @@ void Step::vAddSteps_JobSubLoader(void)
   vAddStep("Job_subLoader.processRecords"_Stz,&Task::vJob_SubLoaderProcessRecords);
   vAddStep("Job_subLoader.recordsInvalid"_Stz,&Task::vJob_SubLoaderRecordsInvalid);
   vAddStep("Job_subLoader.recordsValid"_Stz,  &Task::vJob_SubLoaderRecordsValid);
+
+  vAddStep("Job_subLoader.workingBuffer"_Stz, &Task::vJob_SubLoaderWorkingBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,6 +230,29 @@ void Task::vJob_SubLoaderRecordsValid(MP_Task mpTask)
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
   mpTask->m_pDataStack->vPushInt(pJob_SubLoader->m_iValidRecords);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* subLoader.workingBuffer -- get a working buffer                            */
+/*----------------------------------------------------------------------------*/
+void Task::vJob_SubLoaderWorkingBuffer(MP_Task mpTask)
+{
+  ENTRY("vJob_SubLoaderWorkingBuffer"_Stz);
+  
+  Object* pPtrJob_SubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
+    THROW_INVALID_DSTACK("job_subLoader.workingBuffer"_Stz);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  
+  i8 iPartition;
+  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
+    THROW_INVALID_DSTACK("job_subLoader.workingBuffer"_Stz);
+
+  WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];
+  
+  mpTask->m_pDataStack->vPushObject(pWorkingBuffer);
   
   EXIT();
 }

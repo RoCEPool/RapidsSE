@@ -39,6 +39,7 @@ namespace DBobjects
     WorkingRow* pNextRow(WorkingRow* pCurrentItem);
     i8          nPartitionNo(void);
     void        vRestore(void);
+    void        vShow(void);
     i8          nWorkingRows(void);
     void        vShow(bool bCompressed);
     i8          nUsedBytes(void);
