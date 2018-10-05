@@ -93,7 +93,7 @@ bool CommandProcessor::bExecuteFile(void)
     return false;
   
   bool b = bRunFile();
-  ASSERT(b);
+  //ASSERT(b);
   
   return true;
 }
@@ -105,8 +105,9 @@ bool CommandProcessor::bRunFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  if ( ! bTokenCheck(1) )
-    return false;
+//  if ( ! bTokenCheck(1) )
+//    if (! pTkn(1)->bSame(";"_Stz))
+//      return false;
   
   vPushFile(pTkn(0)->aText());
   m_pTokeniser->vLineMode(true);
