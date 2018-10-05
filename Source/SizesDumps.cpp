@@ -272,19 +272,19 @@ i8 giClassSize[]
   
   /*  1 */ 0,                          // CN_BCDVAL
   /*  2 */ sizeof(BinVal),             // CN_BINVAL
-  /*  3 */ 0,                          // CN_BOLVAL
-  /*  4 */ 0,                          // CN_DTEVAL
+  /*  3 */ sizeof(BolVal),             // CN_BOLVAL
+  /*  4 */ sizeof(DteVal),             // CN_DTEVAL
   /*  5 */ 0,                          // CN_ENTWRK
-  /*  6 */ 0,                          // CN_FLTVAL
+  /*  6 */ sizeof(FltVal),             // CN_FLTVAL
   /*  7 */ sizeof(IntVal),             // CN_INTVAL
   /*  8 */ sizeof(PtrVal),             // CN_IPVAL
-  /*  9 */ 0,                          // CN_IVLVAL
+  /*  9 */ sizeof(IvlVal),             // CN_IVLVAL
   /* 10 */ sizeof(ObjVal),             // CN_OBJVAL
   /* 11 */ sizeof(PtrVal),             // CN_PTRVAL
   /* 12 */ sizeof(StrVal),             // CN_STRVAL
   /* 13 */ sizeof(s32),                // CN_STRVAR
-  /* 14 */ 0,                          // CN_TMEVAL
-  /* 15 */ 0,                          // CN_TSPVAL
+  /* 14 */ sizeof(TmeVal),             // CN_TMEVAL
+  /* 15 */ sizeof(TspVal),             // CN_TSPVAL
   /* 16 */ sizeof(ValReg),             // CN_VALREG
   /* 17 */ sizeof(ValSet),             // CN_VALSET
   /* 18 */ sizeof(ValWrk),             // CN_VALWRK
