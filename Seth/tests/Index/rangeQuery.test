@@ -315,8 +315,8 @@ rows:
 CLEANUP {
   
   // drop the table
-  //drop table T1;
-  //mute
+  drop table T1;
+  mute
   
   bye;
   mute
