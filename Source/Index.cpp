@@ -178,7 +178,7 @@ void Index::vCreateColumnVec(JobsModel::Job_CreateIndex* pJob)
     }
     RASSERT(bFound);
     
-    m_pIdxColVec->vInsert(pColumn);
+    m_pIdxColVec->vAdd(pColumn);
   }
 }
 
