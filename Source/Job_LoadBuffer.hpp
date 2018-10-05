@@ -10,7 +10,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_LoadBuffer : public Job
   {
-  private:
+  public:
     i8 m_iJobLoadTableId; // the job id of the load table job
   
     i8 m_iPartition; // which partition
@@ -20,6 +20,8 @@ namespace JobsModel
   
     Table* m_pTable; // which table
 
+    bool   m_bEndOfBuffers; // no more buffers
+  
     // must be last
     Footer m_xFooter;
   

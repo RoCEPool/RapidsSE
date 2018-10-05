@@ -116,6 +116,7 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::Session* pSession)
   m_pJob_LoadTable = nullptr;
   
   m_pTable = nullptr;
+  m_bEndOfBuffers = false;
   
   _checkInitialised_(CN_JOB_LOADBUFFER);
   
