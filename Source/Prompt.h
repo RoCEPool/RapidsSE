@@ -41,6 +41,7 @@ using namespace Prompt;
 #include "Prompt_pwd.hpp"
 #include "Prompt_question.hpp"
 #include "Prompt_se.hpp"
+#include "Prompt_sizes.hpp"
 #include "Prompt_sleep.hpp"
 #include "Prompt_takeMem.hpp"
 #include "Prompt_threads.hpp"

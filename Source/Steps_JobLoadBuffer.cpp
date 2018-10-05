@@ -182,6 +182,8 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
     
     ASSERT(C_UNKNOWN != nBuffersLoadable);
     pJob_LoadBuffer->vBuffersFromSubLoader(nBuffersLoadable);
+    
+    pJob_LoadBuffer->m_bEndOfBuffers = true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
