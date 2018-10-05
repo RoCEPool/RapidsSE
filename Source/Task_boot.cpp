@@ -88,6 +88,7 @@ void Task::vAddConstants(void)
   
   // Arguments
   vAddConstant("args.config"_Stz,            gxArguments.m_bConfig);
+  vAddConstant("args.developer"_Stz,         gxArguments.m_bDeveloper);
   vAddConstant("args.dontFree"_Stz,          gxArguments.m_bDontFree);
   vAddConstant("args.freeRB"_Stz,            gxArguments.m_bFreeRB);
   vAddConstant("args.help"_Stz,              gxArguments.m_bHelp);

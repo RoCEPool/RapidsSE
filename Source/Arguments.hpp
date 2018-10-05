@@ -42,6 +42,7 @@ namespace StorageEngine
 
     // options
     bool m_bConfig;     // print configuration information
+    bool m_bDeveloper;  // user is a developer
     bool m_bDontFree;   // dont actually free objects back to heap
     i8   m_nEntries;    // no of entries per buffer
     bool m_bFreeRB;     // but free RowBuffers back to heap

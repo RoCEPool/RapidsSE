@@ -61,6 +61,7 @@ Arguments::Arguments(void)
 
   // options
   m_bConfig     = true;
+  m_bDeveloper  = true;
   m_bDontFree   = false;
   m_nEntries    = 0;
   m_bFreeRB     = false;
@@ -482,6 +483,11 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     if (argv[i_Arg]->bSame("--entries"_Stz)) {
       m_nEntries = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    if (argv[i_Arg]->bSame("--developer"_Stz)) {
+      m_bDeveloper = true;
       continue;
     }
     
