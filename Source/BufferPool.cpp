@@ -666,7 +666,8 @@ Footer* BufferPool::aFooter(void)
 /*----------------------------------------------------------------------------*/
 void Base::vCheckAddress(void *aAddress)
 {
-  gpBufferPool->vCheckAddress(aAddress);
+  if (gpBufferPool)
+    gpBufferPool->vCheckAddress(aAddress);
 }
 /*============================================================================*/
 /* end                                                                        */

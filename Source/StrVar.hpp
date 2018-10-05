@@ -45,6 +45,12 @@ StrVar<SIZE>::StrVar(void)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
+//#ifdef _DEBUG
+//  if (SIZE > C_4KB) {
+//    Base::vCheckAddress(this);
+//  }
+//#endif
+  
   _checkInitialisedSize_(SIZE);
 }
 
@@ -57,6 +63,12 @@ StrVar<SIZE>::StrVar(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
   
+//#ifdef _DEBUG
+//  if (SIZE > C_4KB) {
+//    Base::vCheckAddress(this);
+//  }
+//#endif
+ 
   StrVal::vCopy(aArg);
   
   _checkInitialisedSize_(SIZE);
@@ -70,6 +82,12 @@ StrVar<SIZE>::StrVar(StrVar* pThis)
 : StrVal(CN_STRVAR,SIZE)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
+  
+//#ifdef _DEBUG
+//  if (SIZE > C_4KB) {
+//    Base::vCheckAddress(this);
+//  }
+//#endif
   
   _checkInitialisedSize_(SIZE);
 }
