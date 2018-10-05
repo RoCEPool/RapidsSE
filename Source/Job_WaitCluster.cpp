@@ -5,7 +5,7 @@
 // Job Short: WaitCluster
 
 #include "StorageEngine.h"
-#include "JobModel.h"
+#include "JobsModel.h"
 
 extern AttachMap*      gpAttachMap;
 

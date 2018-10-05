@@ -4,7 +4,7 @@
 
 // Job Short: TruncateTable
 
-#include "JobModel.h"
+#include "JobsModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

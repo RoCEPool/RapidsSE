@@ -1,0 +1,122 @@
+/*============================================================================*/
+/* JobsModel.h -- Jobs Model namespace                                        */
+/*============================================================================*/
+#pragma once
+
+#include "Plans.h"
+
+//-----------------------------------------------------------------------------
+namespace Prompt
+{
+  class SePrompt;
+}
+
+//-----------------------------------------------------------------------------
+namespace Interface
+{
+  class Session;
+}
+
+//-----------------------------------------------------------------------------
+namespace JobsModel
+{
+  void vCheckAssumptions(void);
+}
+
+using namespace JobsModel;
+
+//-----------------------------------------------------------------------------
+
+#include "JobDicPath.hpp"
+#include "JobFileName.hpp"
+#include "JobObjectName.hpp"
+#include "JobResult.hpp"
+#include "Job.hpp"
+
+#include "Job__Begun.hpp"
+#include "Job__Cancel.hpp"
+#include "Job__Cancelled.hpp"
+#include "Job__End.hpp"
+#include "Job__Ended.hpp"
+#include "Job__Execute.hpp"
+#include "Job__Executed.hpp"
+
+#include "Job_AnalyzeTable.hpp"
+#include "Job_AnalyzeIndex.hpp"
+#include "Job_Answer.hpp"
+
+#include "Job_Boot.hpp"
+
+#include "Job_Cf.hpp"
+#include "Job_CompactIndex.hpp"
+#include "Job_ConnectCluster.hpp"
+#include "Job_Connector.hpp"
+#include "Job_CreateCatalog.hpp"
+#include "Job_CreateIndex.hpp"
+#include "Job_CreateSchema.hpp"
+#include "Job_CreateTable.hpp"
+#include "Job_CreateTenant.hpp"
+
+#include "Job_Docol.hpp"
+#include "Job_DropCatalog.hpp"
+#include "Job_DropIndex.hpp"
+#include "Job_DropSchema.hpp"
+#include "Job_DropTable.hpp"
+#include "Job_DropTenant.hpp"
+#include "Job_DumpIndex.hpp"
+
+#include "Job_EndInsert.hpp"
+
+#include "Job_FetchRows.hpp"
+
+#include "Job_InsertRow.hpp"
+#include "Job_InsertBuffer.hpp"
+
+#include "Job_Lf.hpp"
+#include "Job_ListColumns.hpp"
+#include "Job_ListCatalogs.hpp"
+#include "Job_ListIdxColumns.hpp"
+#include "Job_ListIndexes.hpp"
+#include "Job_ListPartColumns.hpp"
+#include "Job_ListPartitions.hpp"
+#include "Job_ListSchemas.hpp"
+#include "Job_ListTables.hpp"
+#include "Job_ListTenants.hpp"
+#include "Job_LoadBuffer.hpp"
+#include "Job_LoadTable.hpp"
+
+#include "Job_Ping.hpp"
+#include "Job_Prompt.hpp"
+#include "Job_Pwf.hpp"
+
+#include "Job_Receiver.hpp"
+
+#include "Job_Sanity.hpp"
+#include "Job_SizeIndex.hpp"
+#include "Job_SizeTable.hpp"
+#include "Job_Space.hpp"
+#include "Job_ShowCluster.hpp"
+#include "Job_Start.hpp"
+#include "Job_StartCluster.hpp"
+#include "Job_Status.hpp"
+#include "Job_SubFetch.hpp"
+#include "Job_SubLoader.hpp"
+#include "Job_SubTruncate.hpp"
+
+#include "Job_TableSizes.hpp"
+#include "Job_TruncateTable.hpp"
+
+#include "Job_UseSchema.hpp"
+
+#include "Job_VerifyIndex.hpp"
+#include "Job_VisualizeIndex.hpp"
+
+#include "Job_WaitCluster.hpp"
+
+#include "Jobs.hpp"
+
+#include "JobClass.hpp"
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
