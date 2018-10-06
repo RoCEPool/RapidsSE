@@ -45,8 +45,9 @@ void Task::vJob_LoadBufferInsertRows(MP_Task mpTask)
   TablePtn* pPartition = pTable->pPartition(iSlot);
   WorkingBuffer* pWorkingBuffer = pJob_LoadBuffer->m_pWorkingBuffer;
   
-  vTrace("Job_LoadBuffer %lld %s\n"_Stz,
+  vTrace("Job_LoadBuffer %lld %lld %s\n"_Stz,
          pWorkingBuffer->nWorkingRows(),
+         pJob_LoadBuffer->m_nRows,
          pWorkingBuffer->bIsLast() ? "IsLast" : "");
   
   i8 iTxId = 0;
@@ -168,7 +169,7 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
   JobClass* pJobClass_LoadBuffer = JobClass::pFind(CN_JOB_LOADBUFFER);
   
   Job_LoadBuffer* pJob_LoadBuffer =
-  static_cast<Job_LoadBuffer*>(pJobClass_LoadBuffer->pPreJob(pSession));
+    static_cast<Job_LoadBuffer*>(pJobClass_LoadBuffer->pPreJob(pSession));
   
   pJob_LoadBuffer->vSeed(SS_SEED_RUN);
   
@@ -176,6 +177,7 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
   pJob_LoadBuffer->m_sObjectName = pJob_SubLoader->m_sObjectName;
   pJob_LoadBuffer->vPartition(iPartition);
   pJob_LoadBuffer->m_pWorkingBuffer = pWorkingBuffer;
+  pJob_LoadBuffer->m_nRows = pWorkingBuffer->nWorkingRows();
   
   if (iFinal) {
     i8 nBuffersLoadable = pJob_SubLoader->m_nBuffersLoadable[iPartition];

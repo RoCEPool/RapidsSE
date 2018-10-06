@@ -144,9 +144,10 @@ void JobClass::vJobCat(void)
   s32 sSeedCan(m_aSeedCan ? m_aSeedCan : "-"_Stz);
   sSeedCan.vConcat(m_bSeedsSpawned[SS_SEED_CAN] ? "+"_Stz : " "_Stz);
   
-  vTrace("%20s %20s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+  vTrace("%20s %10lld %20s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          aCN[m_eClass],
+         giClassSize[m_eClass],
          m_aName,
          sFunctions.aStr(),
          aJK[m_eKind],
@@ -169,9 +170,10 @@ void JobClass::vJobCat(void)
 /*----------------------------------------------------------------------------*/
 void JobClass::vJobCatHeader(void)
 {
-  vTrace("%20s %20s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
+  vTrace("%20s %10s %20s %10s %10s %20s : %10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
          "eClass"_Stz,
+         "SizeOf"_Stz,
          "Job Name"_Stz,
          "Functions"_Stz,
          "Kind"_Stz,
@@ -189,10 +191,10 @@ void JobClass::vJobCatHeader(void)
   s32 sBar10 = "----------"_Stz;
   s32 sBar20 = "--------------------"_Stz;
   
-  vTrace("%20s %20s %10s %10s %20s : "
+  vTrace("%20s %10s %20s %10s %10s %20s : "
          "%10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
-         sBar20.aStr(),sBar20.aStr(),sBar10.aStr(),
+         sBar20.aStr(),sBar10.aStr(),sBar20.aStr(),sBar10.aStr(),
          sBar10.aStr(),sBar20.aStr(),sBar10.aStr(),
          
          sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),

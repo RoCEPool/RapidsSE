@@ -20,8 +20,10 @@ namespace JobsModel
   
     Table* m_pTable; // which table
 
-    bool   m_bEndOfBuffers; // no more buffers
-  
+    bool   m_bEndOfBuffers; // no more buffers  WON'T WORK RAY
+
+    i8     m_nRows; // how many rows in working buffer
+
     // must be last
     Footer m_xFooter;
   

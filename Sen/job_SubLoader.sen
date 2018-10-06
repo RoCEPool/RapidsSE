@@ -25,6 +25,7 @@
   // calculate total partitions in the cluster
   grid::slots grid::nodes * locals| nTotalPartitions |
 
+  // examine the state of the working buffer set
   nTotalPartitions 0 do
     I pJob_SubLoader job_subLoader.workingBuffer dup
     if workingBuffer.show else drop then
