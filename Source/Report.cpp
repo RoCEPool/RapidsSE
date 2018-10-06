@@ -4,9 +4,10 @@
 
 #include "Debugging.h"
 
-#include "System.h"
+#include "StorageEngine.h"
 
 extern File* gpTraceFile;
+extern BufferPool* gpBufferPool;
 
 char gaReportBuffer[C_1MB] = {'\0'};
   
@@ -53,12 +54,18 @@ void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
   //if (StrLib::bContains(gaReportBuffer,"serverThread"))
   //  i8 iDebug = 1;
 
+  bool bLowMem = gpBufferPool ? gpBufferPool->bLowMemory() : false;
+  
   // print to file
-  fprintf(stdout,"%s%s","",gaReportBuffer);
+  fprintf(stdout,"%s%s",
+          bLowMem ? "LOW-MEMORY! " : "",
+          gaReportBuffer);
   fflush(stdout);
   
   if (gpTraceFile) {
-    gpTraceFile->vPrint("%s%s"_Stz,"",gaReportBuffer);
+    gpTraceFile->vPrint("%s%s"_Stz,
+                        bLowMem ? "LOW-MEMORY! " : "",
+                        gaReportBuffer);
     gpTraceFile->vFlush();
   }
 }
@@ -160,7 +167,6 @@ void Debugging::vDumpAscii(Stz* aText, i8 nBytes)
   }
   vInfo("<<<\n"_Stz);
 }
-
 
 /*===========================================================================*/
 /* end of file                                                               */

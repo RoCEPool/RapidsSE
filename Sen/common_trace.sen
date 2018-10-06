@@ -17,8 +17,13 @@ file: trace_file
 
   "/tmp/se_trace.txt" trace_file file.path!
   open_read_write_create trace_file file.open
-  if " ** trace file opened" .verbose else " ** trace file not opened" . then
-
+  if
+    " ** trace file opened" .verbose
+    trace_file file.path@ .
+  else
+    " ** trace file not opened" .
+    trace_file file.path@ .
+  then
 ;
 
 open_trace
