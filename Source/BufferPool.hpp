@@ -59,6 +59,7 @@ namespace Pool
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);
     void vInitialise(bool bTouch);
+    bool bLowMemory(void);
     Buffer* pNextJumbo(Buffer* pPrev);
     void vPoolDump(void);
     Buffer* pToBuffer(bn nBuffer);

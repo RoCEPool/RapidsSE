@@ -833,13 +833,13 @@ void Parser::vReadLineStdin(void)
   if (gpAttachMap->m_bTracepoint)
     PosixThread::vSleepMilli(300);
   
-  i8 iFreeBuffers = gpBufferPool->iFreeCount();
+  bool bLowMem = gpBufferPool->bLowMemory();
   
   if ( ! gxArguments.m_bScript ) {
     vInfo("%s%s%s> "_Stz,
           m_sPrompt.aChar(),
-          gpAttachMap->m_bBootError    ? " *BOOTERROR* " : "",
-          iFreeBuffers < C_LOW_BUFFERS ? " *LOWMEM* "    : ""
+          gpAttachMap->m_bBootError  ? " *BOOTERROR* " : "",
+          bLowMem                    ? " *LOWMEM* "    : ""
           );
     fflush(stdin);
   }

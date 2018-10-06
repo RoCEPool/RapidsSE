@@ -54,14 +54,15 @@ void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
   //  i8 iDebug = 1;
 
   // print to file
-  fprintf(stdout,"%s",gaReportBuffer);
+  fprintf(stdout,"%s%s","",gaReportBuffer);
   fflush(stdout);
   
   if (gpTraceFile) {
-    gpTraceFile->vPrint("%s"_Stz,gaReportBuffer);
+    gpTraceFile->vPrint("%s%s"_Stz,"",gaReportBuffer);
     gpTraceFile->vFlush();
   }
 }
+
 /*---------------------------------------------------------------------------*/
 /* report a trace message                                                    */
 /*---------------------------------------------------------------------------*/
