@@ -118,7 +118,8 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::Session* pSession)
   m_pTable = nullptr;
   m_bEndOfBuffers = false;
   m_nRows = 0;
-  
+  m_bLowMem = false;
+
   _checkInitialised_(CN_JOB_LOADBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);

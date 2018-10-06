@@ -22,7 +22,9 @@ namespace JobsModel
 
     bool   m_bEndOfBuffers; // no more buffers  WON'T WORK RAY
 
-    i8     m_nRows; // how many rows in working buffer
+    i8     m_nRows; // how many rows in working buffer  WON"T WORK RAY
+
+    bool   m_bLowMem; // was received under low memory conditions
 
     // must be last
     Footer m_xFooter;
