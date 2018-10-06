@@ -94,9 +94,11 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("RegionName : %s \n"_Stz,     gpAttachMap->m_sRegionName.aStr());
   vInfo("RegionSize : %lld \n"_Stz,   gpAttachMap->m_iRegionSize);
   vInfo("JumboSize  : %lld \n"_Stz,   gpAttachMap->m_iJumboSize);
-  
+  vInfo("SubLoaders : %lld \n"_Stz,   gpAttachMap->m_nSubLoaders);
+
   vInfo("\n"_Stz);
   vInfo("Epoch          : %lld \n"_Stz, gpAttachMap->m_iEpoch);
+  vInfo("BootError      : %lld \n"_Stz, gpAttachMap->m_bBootError);
   vInfo("IndexEntries   : %lld \n"_Stz, gpAttachMap->m_nIndexEntries);
   vInfo("IndexLevels    : %lld \n"_Stz, gpAttachMap->m_nIndexLevels);
   vInfo("IndexOffsets   : %lld \n"_Stz, gpAttachMap->m_nIndexOffsets);
