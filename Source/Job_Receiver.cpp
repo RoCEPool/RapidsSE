@@ -109,8 +109,10 @@ Job_Receiver::Job_Receiver(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
     
-  m_iConnNo = -1;
-  m_pSocket = nullptr;
+  m_iConnNo  = -1;
+  m_pSocket  = nullptr;
+  
+  m_aLowBuff = malloc(C_SIZE_POOL_BUFFER);
 
   _checkInitialised_(CN_JOB_RECEIVER);
   
@@ -123,8 +125,9 @@ Job_Receiver::Job_Receiver(Interface::Session* pSession)
 Job_Receiver::~Job_Receiver(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
+  
+  free(m_aLowBuff);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Static Functions --------------------------------------------------------*/

@@ -9,8 +9,10 @@ namespace JobsModel
   class Job_Receiver : public Job
   {
   private:
-    i8 m_iConnNo;
-    Socket* m_pSocket;
+    i8      m_iConnNo;  // which logical connection
+    Socket* m_pSocket;  // socket
+  
+    void*   m_aLowBuff; // low memory read area
   
     // must be last
     Footer m_xFooter;
