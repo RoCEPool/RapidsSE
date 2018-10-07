@@ -8,10 +8,12 @@ namespace System
   class Socket : public Object
   {
   public:
-    int  m_iSocketId;
-    bool m_bBlocking;
-    Lock m_xLock;
-    
+    int   m_iSocketId;
+    bool  m_bBlocking;
+    Lock  m_xLock;
+  
+    void* m_aLowBuff; // low memory read area
+
     struct sockaddr_in m_xServAddr;
     
     // must be last

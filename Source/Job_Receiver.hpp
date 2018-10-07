@@ -12,9 +12,7 @@ namespace JobsModel
     i8      m_iConnNo;  // which logical connection
     Socket* m_pSocket;  // socket
   
-    void*   m_aLowBuff; // low memory read area
-  
-    // must be last
+     // must be last
     Footer m_xFooter;
   
   public:
