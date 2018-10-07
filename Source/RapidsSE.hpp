@@ -34,7 +34,6 @@ namespace StorageEngine
     static void vOpenPool(void);
     static bool bOpenPool(StrVal& sPoolName);
     static void vPrintExit(void);
-    static void vPrintSizes(void);
     static void vPrintStatus(void);
     static void vPrintWelcome(void);
     static void vRunCmdLine(void);

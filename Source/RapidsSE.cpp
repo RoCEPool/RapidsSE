@@ -25,10 +25,7 @@ void RapidsSE::vMainEntry(void)
   // OpSys::vTraceInfo();
   
   vPrintWelcome();
-  
-  if (gxArguments.m_bVerbose)
-    vPrintSizes();
-  
+    
   vSetSignalHandlers();
   
   // init the tls keys
@@ -406,18 +403,6 @@ void RapidsSE::vPrintExit(void)
 {
   if (gxArguments.m_bVerbose)
     vInfo("RapidsSE exits\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print size of things                                                       */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vPrintSizes(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Sizes\n*\n"_Stz);
-  
-  assert(sizeof(Object) == 8);
-  
 }
 
 /*----------------------------------------------------------------------------*/
