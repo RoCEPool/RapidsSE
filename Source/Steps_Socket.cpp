@@ -6,7 +6,8 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
-extern AttachMap*      gpAttachMap;
+extern AttachMap*  gpAttachMap;
+extern BufferPool* gpBufferPool;
 
 // socket: /////////////////////////////////////////////////////////////////////
 
@@ -246,6 +247,18 @@ void Task::vSocketOpen(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSocketRecvObject(MP_Task mpTask)
 {
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+  // test for low memory condition
+  
+  bool bLowMem = gpBufferPool->bLowMemory();
+  if (bLowMem) {
+    vSocketRecvObject_LowMem(mpTask);
+    return;
+  }
+  
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+
+  
   ENTRY("vSocketRecvObject"_Stz);
   
   Object* pSocketPtr;
@@ -323,6 +336,106 @@ void Task::vSocketRecvObject(MP_Task mpTask)
       return;
     }
 
+    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+    //       pWorkingBuffer,eClass,aCN[eClass],nObjectSize);
+    
+    mpTask->m_pDataStack->vPushObject(pWorkingBuffer);
+    mpTask->m_pDataStack->vPushInt((i8)1);
+    EXIT();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // unknown object
+  
+  vTrace("socket.recvObject: unknown object; class %lld\n"_Stz,eClass);
+  mpTask->m_pDataStack->vPushInt((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* socket.recvObject_LowMem: recv object from a socket (under low mem cond)   */
+/*----------------------------------------------------------------------------*/
+void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
+{
+  ENTRY("vSocketRecvObject_LowMem"_Stz);
+  
+  Object* pSocketPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
+    THROW_INVALID_DSTACK("socket.recvObject"_Stz);
+  Socket* pSocket = _pSocket(pSocketPtr);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receiver the object header
+  
+  char xObjectHeader[sizeof(Object)+C_1K];
+  i8 nObjectBytes = sizeof(Object);
+  SysCall xSysCall;
+  
+  bool bResult = pSocket->bRecvBytes(nObjectBytes,xObjectHeader, xSysCall);
+  if (! bResult) {
+    mpTask->m_pDataStack->vPushInt((i8)0);
+    EXIT();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the details about the received object
+  
+  Object* pObject = reinterpret_cast<Object*>(&xObjectHeader);
+  eCN eClass = pObject->eClass();
+  i8 nObjectSize = giClassSize[eClass];
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive rest of job
+  
+  if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WAITCLUSTER) {
+    
+    //! temp. to be fixed
+    Job* pJob = static_cast<Job*>(HeapMem::pAllocate(CN_JOB_CREATETABLE));
+    
+    MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
+    
+    void* aBody = pAdd<void*>(pJob,sizeof(Object));
+    i8 nRemainingBytes = giClassSize[eClass] - sizeof(Object);
+    
+    bResult = pSocket->bRecvBytes(nRemainingBytes,aBody,xSysCall);
+    if (! bResult) {
+      mpTask->m_pDataStack->vPushInt((i8)0);
+      EXIT();
+      return;
+    }
+    
+    //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
+    //       pJob,eClass,aCN[eClass],nObjectSize);
+    
+    mpTask->m_pDataStack->vPushObject(pJob);
+    mpTask->m_pDataStack->vPushInt((i8)1);
+    EXIT();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // receive rest of working buffer
+  
+  if (eClass == CN_WORKINGBUFFER) {
+    
+    WorkingBuffer* pWorkingBuffer = new WorkingBuffer(nullptr, -1);
+    
+    MemLib::vCopy(pWorkingBuffer,pObject,sizeof(Object),CN_WORKINGBUFFER);
+    
+    void* aBody = pAdd<void*>(pWorkingBuffer,sizeof(Object));
+    i8 nRemainingBytes = giClassSize[CN_WORKINGBUFFER] - sizeof(Object);
+    
+    bResult = pSocket->bRecvBytes(nRemainingBytes,aBody,xSysCall);
+    if (! bResult) {
+      mpTask->m_pDataStack->vPushInt((i8)0);
+      EXIT();
+      return;
+    }
+    
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pWorkingBuffer,eClass,aCN[eClass],nObjectSize);
     

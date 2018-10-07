@@ -1047,6 +1047,7 @@ namespace Tasks
     static void vSocketListen(MP_Task mpTask);
     static void vSocketOpen(MP_Task mpTask);
     static void vSocketRecvObject(MP_Task mpTask);
+    static void vSocketRecvObject_LowMem(MP_Task mpTask);
     static void vSocketRecvValSet(MP_Task mpTask);
     static void vSocketSendValSet(MP_Task mpTask);
     static void vSocketSendObject(MP_Task mpTask);
