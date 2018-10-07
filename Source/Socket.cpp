@@ -730,7 +730,7 @@ bool Socket::bSendTo(void* pBuffer, i8 nBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* receive a message via a UDP socket                                         */
 /*----------------------------------------------------------------------------*/
-bool Socket::bRecvFrom(int nBytes, void* pBuffer, i8* pRecv, SysCall& SysCall)
+bool Socket::bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
