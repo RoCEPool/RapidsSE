@@ -361,6 +361,8 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
 {
   ENTRY("vSocketRecvObject_LowMem"_Stz);
   
+  i8 nFreeBuffer = gpBufferPool->iFreeCount();
+  
   bool bDiscardWorkingBuffer = false;
   
   Object* pSocketPtr;
@@ -413,7 +415,7 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
 
     bDiscardWorkingBuffer = pJob_LoadBuffer->m_pWorkingBuffer ? true : false;
     
-    if (pJob_LoadBuffer->m_nBuffersFromSubLoader) {
+    if (-1 != pJob_LoadBuffer->m_nBuffersFromSubLoader) {
       
       pJob_LoadBuffer->m_bLowMem = true;
       
