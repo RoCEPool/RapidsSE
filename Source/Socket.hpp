@@ -55,7 +55,7 @@ namespace System
     bool bBind(int iPort, SysCall& SysCall);
     bool bBind(Stz* aAddr, int iPort, SysCall& SysCall);
     bool bServer(Stz* sAddr, int iPort, SysCall& SysCall);
-    bool bSendTo(i8 nBytes, void* pBuffer, SysCall& SysCall);
+    bool bSendTo(void* pBuffer, i8 nBytes, SysCall& SysCall);
     bool bRecvFrom(int nBytes, void* pBuffer, i8* pRecv, SysCall& SysCall);
 
     Footer* aFooter(void);

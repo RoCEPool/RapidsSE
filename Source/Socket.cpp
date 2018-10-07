@@ -682,7 +682,7 @@ bool Socket::bServer(Stz* sAddr, int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* send a message via a UDP socket                                            */
 /*----------------------------------------------------------------------------*/
-bool Socket::bSendTo(i8 nBytes, void* pBuffer, SysCall& SysCall)
+bool Socket::bSendTo(void* pBuffer, i8 nBytes, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   

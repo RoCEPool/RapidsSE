@@ -670,7 +670,7 @@ void Task::vSocketSendObject(MP_Task mpTask)
 
 
   SysCall xSysCall;
-  bool bResult = pSocket->bSendTo(nObjectSize, pObject, xSysCall);
+  bool bResult = pSocket->bSendTo(pObject, nObjectSize, xSysCall);
 
   mpTask->m_pDataStack->vPushInt((i8)bResult);
 
@@ -704,7 +704,7 @@ void Task::vSocketSendValSet(MP_Task mpTask)
   if (iBytes == 0)
   vTrace("xValset of size 0 being sent\n"_Stz);
   
-  bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
+  bResult = pSocket->bSendTo(&iBytes, sizeof(iBytes), xSysCall);
   
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
@@ -716,7 +716,7 @@ void Task::vSocketSendValSet(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now send the actual value set
-  bResult = pSocket->bSendTo(iBytes, &xValSet, xSysCall);
+  bResult = pSocket->bSendTo(&xValSet, iBytes, xSysCall);
   
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
@@ -740,7 +740,7 @@ void Task::vSocketSendValSet(MP_Task mpTask)
     // send entryBuffer size
     i8 iBytes = pEntryBuffer->nUsedBytes();
     //vTrace("sending %lld bytes\n"_Stz, iBytes);
-    bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
+    bResult = pSocket->bSendTo(&iBytes, sizeof(iBytes), xSysCall);
     
     if ( ! bResult ) {
       
@@ -753,7 +753,7 @@ void Task::vSocketSendValSet(MP_Task mpTask)
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // send entryBuffer itself
-    bResult = pSocket->bSendTo(iBytes, pEntryBuffer->aDataArea(), xSysCall);
+    bResult = pSocket->bSendTo(pEntryBuffer->aDataArea(), iBytes, xSysCall);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // test send result
@@ -782,7 +782,7 @@ void Task::vSocketSendValSet(MP_Task mpTask)
     i8 iBytes = pWorkingBuffer->nUsedBytes();
     //vTrace("sending %lld bytes\n"_Stz, iBytes);
     
-    bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
+    bResult = pSocket->bSendTo(&iBytes, sizeof(iBytes), xSysCall);
     
     if ( ! bResult ) {
       
@@ -799,7 +799,7 @@ void Task::vSocketSendValSet(MP_Task mpTask)
     if (iBytes) {
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       // send entryBuffer itself
-      bResult = pSocket->bSendTo(iBytes, pWorkingBuffer->aDataArea(), xSysCall);
+      bResult = pSocket->bSendTo(pWorkingBuffer->aDataArea(), iBytes, xSysCall);
       
       // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
       // test send result
