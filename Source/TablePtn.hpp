@@ -21,6 +21,8 @@ namespace DBobjects
     i8 m_nTotalBuffersLoadable;  // total no of buffers to be loaded
     i8 m_nTotalBuffersLoaded;    // total no of buffers loaded so far
 
+    bool m_bLowMemLoad;          // was low memory detected during this load
+  
     i8 m_nBuffersToBeInserted;   // buffers to be inserted
     i8 m_nBuffersInserted;       // buffers inserted so far
     

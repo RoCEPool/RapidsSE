@@ -109,6 +109,7 @@ TablePtn::TablePtn(void)
   m_nSubLoadersDone  = 0;
   m_nTotalBuffersLoadable = 0;
   m_nTotalBuffersLoaded   = 0;
+  m_bLowMemLoad = false;
 
   m_nBuffersToBeInserted = 0;
   m_nBuffersInserted = 0;
@@ -185,7 +186,8 @@ bool TablePtn::bAllBuffersLoaded(void)
     m_nSubLoadersDone       = 0;
     m_nTotalBuffersLoaded   = 0;
     m_nTotalBuffersLoadable = 0;
-    
+    m_bLowMemLoad = false;
+
     return true;
   }
   else
@@ -409,6 +411,8 @@ void TablePtn::vResetLoad(void)
   m_nSubLoadersDone       = 0;
   m_nTotalBuffersLoadable = 0;
   m_nTotalBuffersLoaded   = 0;
+  m_bLowMemLoad = false;
+
 }
 
 /*----------------------------------------------------------------------------*/
