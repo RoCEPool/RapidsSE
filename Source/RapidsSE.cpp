@@ -416,43 +416,6 @@ void RapidsSE::vPrintSizes(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Sizes\n*\n"_Stz);
   
-  /*
-   vInfo(
-   "sizeof(eCN) %lu; sizeof(bool) %lu; \n"_Stz
-   "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"_Stz
-   "sizeof(s32) %lu; sizeof(s256) %lu; \n"_Stz
-   "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWrk) %lu \n"_Stz
-   "\n"_Stz,
-   sizeof(eCN),sizeof(bool),
-   sizeof(Object),sizeof(StrVal),
-   sizeof(s32),sizeof(s256),
-   sizeof(Value),sizeof(IntVal),sizeof(ValWrk)
-   );
-   */
-  /*
-   vTrace("sizeof(short) %lld\n"_Stz,(i8)sizeof(short));
-   vTrace("sizeof(int) %lld\n"_Stz,(i8)sizeof(int));
-   vTrace("sizeof(long) %lld\n"_Stz,(i8)sizeof(long));
-   vTrace("sizeof(long long) %lld\n"_Stz,(i8)sizeof(long long));
-   
-   vTrace("sizeof(i1) %lld\n"_Stz,(i8)sizeof(i1));
-   vTrace("sizeof(i2) %lld\n"_Stz,(i8)sizeof(i2));
-   vTrace("sizeof(i3) %lld\n"_Stz,(i8)sizeof(i3));
-   vTrace("sizeof(i4) %lld\n"_Stz,(i8)sizeof(i4));
-   vTrace("sizeof(i8) %lld\n"_Stz,(i8)sizeof(i8));
-   
-   vTrace("sizeof(Object) %lld\n"_Stz,(i8)sizeof(Object));
-   vTrace("sizeof(Object2) %lld\n"_Stz,(i8)sizeof(Object2));
-   vTrace("sizeof(eCN) %lld\n"_Stz,(i8)sizeof(eCN));
-   
-   vTrace("sizeof(Item) %lld\n"_Stz,(i8)sizeof(Item));
-   vTrace("sizeof(Entry) %lld\n"_Stz,(i8)sizeof(Entry));
-   
-   vTrace("alignof(i3) %lld\n"_Stz,(i8)alignof(i3));
-   vTrace("alignof(Entry) %lld\n"_Stz,(i8)alignof(Entry));
-   */
-  
-  vInfo("sizeof(Object) %lu; \n"_Stz, sizeof(Object));
   assert(sizeof(Object) == 8);
   
 }
