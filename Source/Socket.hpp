@@ -45,7 +45,7 @@ namespace System
     void vGrabWrite(void);
     bool bRecvBuffer(int nBytes, SysCall& SysCall);
     bool bRecvBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);
-    bool bSendBytes(int nBytes, void* pBuffer, SysCall& SysCall);
+    bool bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);
     bool bSetNonBlocking(SysCall& SysCall);
     bool bTestForData(SysCall& SysCall);
     bool bWriteVch(Stz* pVch, SysCall& SysCall);

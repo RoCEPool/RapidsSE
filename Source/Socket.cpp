@@ -410,7 +410,7 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* write n bytes to this socket from given buffer                             */
 /*----------------------------------------------------------------------------*/
-bool Socket::bSendBytes(int nBytes, void* pBuffer, SysCall& SysCall)
+bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
