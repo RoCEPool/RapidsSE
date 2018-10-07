@@ -361,11 +361,15 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
 {
   ENTRY("vSocketRecvObject_LowMem"_Stz);
   
+  bool bDiscardWorkingBuffer = false;
+  
   Object* pSocketPtr;
   if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
     THROW_INVALID_DSTACK("socket.recvObject"_Stz);
   Socket* pSocket = _pSocket(pSocketPtr);
   
+  void* aLowBuff = pSocket->m_aLowBuff;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receiver the object header
   
@@ -388,12 +392,55 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
   i8 nObjectSize = giClassSize[eClass];
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // handle the specific case of job_loadBuffer
+  // handle the specific case of job_loadBuffer under low memory condition
   
   if (CN_JOB_LOADBUFFER == eClass) {
 
+    MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
+    
+    void* aLowBody = pAdd<void*>(aLowBuff,sizeof(Object));
+    i8 nRemainingBytes = sizeof(Job_LoadBuffer) - sizeof(Object);
+    
+    bResult = pSocket->bRecvBytes(nRemainingBytes,aLowBody,xSysCall);
+    if (! bResult) {
+      mpTask->m_pDataStack->vPushInt((i8)0);
+      EXIT();
+      return;
+    }
+    
+    Job_LoadBuffer* pJob_LoadBuffer =
+      static_cast<Job_LoadBuffer*>(aLowBuff);
+
+    bDiscardWorkingBuffer = pJob_LoadBuffer->m_pWorkingBuffer ? true : false;
+    
+    if (pJob_LoadBuffer->m_nBuffersFromSubLoader) {
+      
+      pJob_LoadBuffer->m_bLowMem = true;
+      
+      Job* pJob = static_cast<Job*>(HeapMem::pAllocate(CN_JOB_LOADBUFFER));
+      MemLib::vCopy(pJob,pJob_LoadBuffer,sizeof(Job_LoadBuffer),CN_JOB_LOADBUFFER);
+
+      pJob_LoadBuffer = static_cast<Job_LoadBuffer*>(pJob);
+      pJob_LoadBuffer->m_pWorkingBuffer = nullptr;
+    }
+    else {
+      pJob_LoadBuffer = nullptr;
+    }
+
+    if (bDiscardWorkingBuffer) {
+
+      bResult = pSocket->bRecvBytes(sizeof(WorkingBuffer),aLowBuff,xSysCall);
+
+    }
+    
+    mpTask->m_pDataStack->vPushObject(pJob_LoadBuffer);
+    mpTask->m_pDataStack->vPushInt((i8)1);
+    EXIT();
+    return;
+
   }
 
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of job
   
