@@ -365,7 +365,7 @@ void Socket::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 /* recv n bytes from this socket into given buffer                            */
 /*----------------------------------------------------------------------------*/
-bool Socket::bRecvBytes(i8 nBytes, void* pWS, SysCall& SysCall)
+bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   

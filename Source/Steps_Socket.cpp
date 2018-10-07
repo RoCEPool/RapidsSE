@@ -273,7 +273,7 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   i8 nObjectBytes = sizeof(Object);
   SysCall xSysCall;
 
-  bool bResult = pSocket->bRecvBytes(nObjectBytes,xObjectHeader, xSysCall);
+  bool bResult = pSocket->bRecvBytes(xObjectHeader,nObjectBytes, xSysCall);
   if (! bResult) {
     mpTask->m_pDataStack->vPushInt((i8)0);
     EXIT();
@@ -301,7 +301,7 @@ void Task::vSocketRecvObject(MP_Task mpTask)
     void* aBody = pAdd<void*>(pJob,sizeof(Object));
     i8 nRemainingBytes = giClassSize[eClass] - sizeof(Object);
 
-    bResult = pSocket->bRecvBytes(nRemainingBytes,aBody,xSysCall);
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,xSysCall);
     if (! bResult) {
       mpTask->m_pDataStack->vPushInt((i8)0);
       EXIT();
@@ -329,7 +329,7 @@ void Task::vSocketRecvObject(MP_Task mpTask)
     void* aBody = pAdd<void*>(pWorkingBuffer,sizeof(Object));
     i8 nRemainingBytes = giClassSize[CN_WORKINGBUFFER] - sizeof(Object);
     
-    bResult = pSocket->bRecvBytes(nRemainingBytes,aBody,xSysCall);
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,xSysCall);
     if (! bResult) {
       mpTask->m_pDataStack->vPushInt((i8)0);
       EXIT();
@@ -377,7 +377,7 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
   i8 nObjectBytes = sizeof(Object);
   SysCall xSysCall;
   
-  bool bResult = pSocket->bRecvBytes(nObjectBytes,xObjectHeader, xSysCall);
+  bool bResult = pSocket->bRecvBytes(xObjectHeader,nObjectBytes, xSysCall);
   if (! bResult) {
     mpTask->m_pDataStack->vPushInt((i8)0);
     EXIT();
@@ -401,7 +401,7 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
     void* aLowBody = pAdd<void*>(aLowBuff,sizeof(Object));
     i8 nRemainingBytes = sizeof(Job_LoadBuffer) - sizeof(Object);
     
-    bResult = pSocket->bRecvBytes(nRemainingBytes,aLowBody,xSysCall);
+    bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,xSysCall);
     if (! bResult) {
       mpTask->m_pDataStack->vPushInt((i8)0);
       EXIT();
@@ -429,7 +429,7 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
 
     if (bDiscardWorkingBuffer) {
 
-      bResult = pSocket->bRecvBytes(sizeof(WorkingBuffer),aLowBuff,xSysCall);
+      bResult = pSocket->bRecvBytes(aLowBuff,sizeof(WorkingBuffer),xSysCall);
 
     }
     
@@ -454,7 +454,7 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
     void* aBody = pAdd<void*>(pJob,sizeof(Object));
     i8 nRemainingBytes = giClassSize[eClass] - sizeof(Object);
     
-    bResult = pSocket->bRecvBytes(nRemainingBytes,aBody,xSysCall);
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,xSysCall);
     if (! bResult) {
       mpTask->m_pDataStack->vPushInt((i8)0);
       EXIT();
@@ -482,7 +482,7 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
     void* aBody = pAdd<void*>(pWorkingBuffer,sizeof(Object));
     i8 nRemainingBytes = giClassSize[CN_WORKINGBUFFER] - sizeof(Object);
     
-    bResult = pSocket->bRecvBytes(nRemainingBytes,aBody,xSysCall);
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,xSysCall);
     if (! bResult) {
       mpTask->m_pDataStack->vPushInt((i8)0);
       EXIT();
@@ -535,7 +535,7 @@ void Task::vSocketRecvValSet(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the size of valset
-  bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+  bool bResult = pSocket->bRecvBytes(reinterpret_cast<void*>(&iBytes), sizeof(iBytes), xSysCall);
   
   if ( ! bResult )
     THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
@@ -546,7 +546,7 @@ void Task::vSocketRecvValSet(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive the valset
-  bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
+  bResult = pSocket->bRecvBytes(reinterpret_cast<void*>(&xValSet), iBytes, xSysCall);
   
   if ( ! bResult )
     THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
@@ -559,7 +559,7 @@ void Task::vSocketRecvValSet(MP_Task mpTask)
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // receive entryBuffer size
-    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+    bResult = pSocket->bRecvBytes(reinterpret_cast<void*>(&iBytes), sizeof(iBytes), xSysCall);
     
     if ( ! bResult )
       THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
@@ -574,7 +574,7 @@ void Task::vSocketRecvValSet(MP_Task mpTask)
     pEntryBuffer->aAllotSpace(iBytes);
     
     //vTrace("Recvd EntryBuffer: %p\n"_Stz,pEntryBuffer);
-    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pEntryBuffer->aDataArea()), xSysCall);
+    bResult = pSocket->bRecvBytes(reinterpret_cast<void*>(pEntryBuffer->aDataArea()), iBytes, xSysCall);
     
     if ( ! bResult )
       THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
@@ -609,7 +609,7 @@ void Task::vSocketRecvValSet(MP_Task mpTask)
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // receive workingBuffer size
-    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+    bResult = pSocket->bRecvBytes(reinterpret_cast<void*>(&iBytes), sizeof(iBytes), xSysCall);
     
     if ( ! bResult )
       THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
@@ -622,7 +622,7 @@ void Task::vSocketRecvValSet(MP_Task mpTask)
       pWorkingBuffer->pAllotSpace(iBytes);
       
       //vTrace("Recvd EntryBuffer: %p\n"_Stz,pEntryBuffer);
-      bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pWorkingBuffer->aDataArea()), xSysCall);
+      bResult = pSocket->bRecvBytes(reinterpret_cast<void*>(pWorkingBuffer->aDataArea()), iBytes, xSysCall);
       
       if ( ! bResult )
         THROW("Unable to recvFrom socket: Errno %d!"_Stz, xSysCall.iError());
