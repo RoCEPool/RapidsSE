@@ -500,10 +500,12 @@ eEC RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInva
     VALIDATE_REFPOINTER("b"_Stz, pInvalidRows);
     
     Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
-    vTrace("L %lld IN %lld\n"_Stz, *pJob_LoadTable->m_ziValidRows, *pJob_LoadTable->m_ziInvalidRows);
+    vTrace("L %lld IN %lld\n"_Stz,
+           pJob_LoadTable->m_iValidRows,
+           pJob_LoadTable->m_iInvalidRows);
     
-    *pValidRows = *pJob_LoadTable->m_ziValidRows;
-    *pInvalidRows = *pJob_LoadTable->m_ziInvalidRows;
+    *pValidRows   = pJob_LoadTable->m_iValidRows;
+    *pInvalidRows = pJob_LoadTable->m_iInvalidRows;
     
     // trace exit
     TRACE_EXIT("ea"_Stz);

@@ -23,8 +23,20 @@ Buffer* gpTakenBuffers = nullptr;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_takeMem(SePrompt* pPrompt)
 {
+  i8 nSpare = 0;
+
+  TokenVec* pTokenVec = pPrompt->pTknVec();
+
+  i8 iNumTokens = pTokenVec->nItems();
+  if (2 == iNumTokens) {
+    if (pTokenVec->pGet(1)->eToken() != TN_INTEGER)
+      return false;
+    
+    // get the no of indexEntries to set
+    nSpare = pTokenVec->pGet(1)->iToI8();
+  }
   
-  while (gpBufferPool->iFreeCount() >= C_LOW_BUFFERS) {
+  while (gpBufferPool->iFreeCount() >= C_LOW_BUFFERS + nSpare) {
 
     Buffer* p2ndBuffer  = gpTakenBuffers;
     gpTakenBuffers = gpBufferPool->pAllocBuffer();

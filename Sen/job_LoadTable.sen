@@ -124,6 +124,11 @@
   pJob_LoadTable job.objectName@ locals| sTableNm |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check for sufficient memory
+
+  checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if file exists (SHOULDN"T THIS BE ONLY ON ORIGINATING NODE?)
 
   file::new locals| fp |

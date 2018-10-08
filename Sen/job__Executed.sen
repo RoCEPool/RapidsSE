@@ -30,7 +30,17 @@
     grid::thisNode@  pJobParticipant job.response@ pJob__Executed jobExecuted.response!
 
     // get the no of rows processed from participant job and set it in executed job
-    grid::thisNode@  pJobParticipant job.rowsProcessed@ pJob__Executed jobExecuted.rowsProcessed!
+    grid::thisNode@
+      pJobParticipant job.rowsProcessed@
+      pJob__Executed  jobExecuted.rowsProcessed!
+
+    grid::thisNode@
+      pJobParticipant job.rowsInvalid@
+      pJob__Executed  jobExecuted.rowsInvalid!
+
+    grid::thisNode@
+      pJobParticipant job.rowsSkipped@
+      pJob__Executed  jobExecuted.rowsSkipped!
   else
      // set error in executed job
      error pJob__Executed jobExecuted.error!

@@ -15,8 +15,8 @@ namespace JobsModel
   
     LoadMap*   m_pLoadMap;     // load map
 
-    Atomic m_ziValidRows;      // valid rows loaded
-    Atomic m_ziInvalidRows;    // invalid rows not loaded
+    i8         m_iValidRows;      // valid rows loaded
+    i8         m_iInvalidRows;    // invalid rows not loaded
     
     Tasks::Task* m_pThisTask;  // task running this job
   

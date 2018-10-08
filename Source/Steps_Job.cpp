@@ -66,8 +66,12 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.removeParticipant"_Stz,&Task::vJobRemoveParticipant);
   vAddStep("job.response@"_Stz,        &Task::vJobResponseFetch);
   vAddStep("job.response!"_Stz,        &Task::vJobResponseStore);
+  vAddStep("job.rowsInvalid@"_Stz,     &Task::vJobRowsInvalidFetch);
+  vAddStep("job.rowsInvalid!"_Stz,     &Task::vJobRowsInvalidStore);
   vAddStep("job.rowsProcessed@"_Stz,   &Task::vJobRowsProcessedFetch);
   vAddStep("job.rowsProcessed!"_Stz,   &Task::vJobRowsProcessedStore);
+  vAddStep("job.rowsSkipped@"_Stz,     &Task::vJobRowsSkippedFetch);
+  vAddStep("job.rowsSkipped!"_Stz,     &Task::vJobRowsSkippedStore);
   vAddStep("job.send"_Stz,             &Task::vJobRecv);
   vAddStep("job.show"_Stz,             &Task::vJobShow);
   vAddStep("job.signalConnector"_Stz,  &Task::vJobSignalConnector);
@@ -1063,6 +1067,52 @@ void Task::vJobResponseStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.rowsInvalid@ -- fetch the rows invalid by the job from a node          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRowsInvalidFetch(MP_Task mpTask)
+{
+  ENTRY("vJobRowsInvalidFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.rowsInvalid@"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  i8 iNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
+    THROW_INVALID_DSTACK("job.rowsInvalid@"_Stz);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_xNode[iNode].m_iRowsInvalid);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.rowsInvalid! -- store the rows invalid by the job from a node          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRowsInvalidStore(MP_Task mpTask)
+{
+  ENTRY("vJobRowsInvalidStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  i8 iNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
+    THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
+  
+  i8 iRowsProcessed;
+  if ( ! mpTask->m_pDataStack->bPop(iRowsProcessed) )
+    THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
+  
+  pJob->m_xNode[iNode].m_iRowsInvalid = iRowsProcessed;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.rowsProcessed@ -- fetch the rows processed by the job from a node      */
 /*----------------------------------------------------------------------------*/
 void Task::vJobRowsProcessedFetch(MP_Task mpTask)
@@ -1104,6 +1154,52 @@ void Task::vJobRowsProcessedStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
   
   pJob->m_xNode[iNode].m_iRowsProcessed = iRowsProcessed;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.rowsSkipped@ -- fetch the rows skipped by the job from a node          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRowsSkippedFetch(MP_Task mpTask)
+{
+  ENTRY("vJobRowsSkippedFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.rowsSkipped@"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  i8 iNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
+    THROW_INVALID_DSTACK("job.rowsSkipped@"_Stz);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_xNode[iNode].m_iRowsSkipped);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.rowsSkipped! -- store the rows skipped by the job from a node          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobRowsSkippedStore(MP_Task mpTask)
+{
+  ENTRY("vJobRowsSkippedStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.rowsSkipped!"_Stz);
+  Job_Space* pJob = _pJob_Space(pJobPtr);
+  
+  i8 iNode;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
+    THROW_INVALID_DSTACK("job.rowsSkipped!"_Stz);
+  
+  i8 iRowsSkipped;
+  if ( ! mpTask->m_pDataStack->bPop(iRowsSkipped) )
+    THROW_INVALID_DSTACK("job.rowsSkipped!"_Stz);
+  
+  pJob->m_xNode[iNode].m_iRowsSkipped = iRowsSkipped;
   
   EXIT();
 }

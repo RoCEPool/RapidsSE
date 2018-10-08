@@ -26,9 +26,12 @@ void Step::vAddSteps_JobGeneric(void)
   vAddStep("jobExecuted.response@"_Stz, &Task::vJob__ExecutedResponseFetch);
   vAddStep("jobExecuted.response!"_Stz, &Task::vJob__ExecutedResponseStore);
   
+  vAddStep("jobExecuted.rowsInvalid@"_Stz,  &Task::vJob__ExecutedRowsInvalidFetch);
+  vAddStep("jobExecuted.rowsInvalid!"_Stz,  &Task::vJob__ExecutedRowsInvalidStore);
   vAddStep("jobExecuted.rowsProcessed@"_Stz,&Task::vJob__ExecutedRowsProcessedFetch);
   vAddStep("jobExecuted.rowsProcessed!"_Stz,&Task::vJob__ExecutedRowsProcessedStore);
-  
+  vAddStep("jobExecuted.rowsSkipped@"_Stz,  &Task::vJob__ExecutedRowsSkippedFetch);
+  vAddStep("jobExecuted.rowsSkipped!"_Stz,  &Task::vJob__ExecutedRowsSkippedStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,6 +190,61 @@ void Task::vJob__ExecutedResponseStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* jobExecuted.rowsInvalid@ -- fetch rowsInvalid in job__executed             */
+/*----------------------------------------------------------------------------*/
+void Task::vJob__ExecutedRowsInvalidFetch(MP_Task mpTask)
+{
+  ENTRY("vJob__ExecutedRowsInvalidFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobExecuted.rowsProcessed@"_Stz);
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob__Executed->m_iRowsInvalid);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobExecuted.rowsInvalid! -- store rowsInvalid in job__executed             */
+/*----------------------------------------------------------------------------*/
+void Task::vJob__ExecutedRowsInvalidStore(MP_Task mpTask)
+{
+  ENTRY("vJob__ExecutedRowsInvalidStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobExecuted.rowsInvalid!"_Stz);
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
+  
+  i8 iRowsInvalid;
+  if ( ! mpTask->m_pDataStack->bPop(iRowsInvalid) )
+    THROW_INVALID_DSTACK("jobExecuted.rowsInvalid!"_Stz);
+  
+  pJob__Executed->m_iRowsInvalid = iRowsInvalid;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobExecuted.rowsProcessed@ -- store rowsProcessed in job__executed         */
+/*----------------------------------------------------------------------------*/
+void Task::vJob__ExecutedRowsProcessedFetch(MP_Task mpTask)
+{
+  ENTRY("vJob__ExecutedRowsProcessedFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobExecuted.rowsProcessed@"_Stz);
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob__Executed->m_iRowsProcessed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* jobExecuted.rowsProcessed! -- store rowsProcessed in job__executed         */
 /*----------------------------------------------------------------------------*/
 void Task::vJob__ExecutedRowsProcessedStore(MP_Task mpTask)
@@ -208,18 +266,39 @@ void Task::vJob__ExecutedRowsProcessedStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobExecuted.rowsProcessed@ -- store rowsProcessed in job__executed         */
+/* jobExecuted.rowsSkipped@ -- fetch rowsSkipped in job__executed             */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__ExecutedRowsProcessedFetch(MP_Task mpTask)
+void Task::vJob__ExecutedRowsSkippedFetch(MP_Task mpTask)
 {
-  ENTRY("vJob__ExecutedRowsProcessedFetch"_Stz);
+  ENTRY("vJob__ExecutedRowsSkippedFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobExecuted.rowsProcessed@"_Stz);
+    THROW_INVALID_DSTACK("jobExecuted.rowsSkipped@"_Stz);
   Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob__Executed->m_iRowsProcessed);
+  mpTask->m_pDataStack->vPushInt(pJob__Executed->m_iRowsSkipped);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobExecuted.rowsSkipped! -- store rowsSkipped in job__executed             */
+/*----------------------------------------------------------------------------*/
+void Task::vJob__ExecutedRowsSkippedStore(MP_Task mpTask)
+{
+  ENTRY("vJob__ExecutedRowsSkippedStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("jobExecuted.rowsSkipped!"_Stz);
+  Job__Executed* pJob__Executed = _pJob__Executed(pJobPtr);
+  
+  i8 iRowsSkipped;
+  if ( ! mpTask->m_pDataStack->bPop(iRowsSkipped) )
+    THROW_INVALID_DSTACK("jobExecuted.rowsSkipped!"_Stz);
+  
+  pJob__Executed->m_iRowsSkipped = iRowsSkipped;
   
   EXIT();
 }
