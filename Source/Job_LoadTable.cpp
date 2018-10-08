@@ -120,9 +120,9 @@ Job_LoadTable::Job_LoadTable(Interface::Session* pSession)
   
   m_pLoadMap      = nullptr;
   
-  m_ziValidRows   = 0;
-  m_ziInvalidRows = 0;
-  
+  m_iValidRows    = 0;
+  m_iInvalidRows  = 0;
+
   m_pThisTask     = nullptr;
   
   _checkInitialised_(CN_JOB_LOADTABLE);
@@ -639,11 +639,18 @@ void JobsModel::vJob_LoadTable_post(Interface::Session* pSession, Job* pJob)
   }
   else {
     i8 iRowsProcessed = 0;
+    i8 iRowsInvalid   = 0;
+    i8 iRowsSkipped   = 0;
+
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      
       vTrace("%s"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
       iRowsProcessed += pJob_LoadTable->m_xNode[i_Node].m_iRowsProcessed;
+      iRowsInvalid   += pJob_LoadTable->m_xNode[i_Node].m_iRowsInvalid;
+      iRowsSkipped   += pJob_LoadTable->m_xNode[i_Node].m_iRowsSkipped;
     }
-    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
+    vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+           iRowsProcessed,iRowsInvalid,iRowsSkipped);
   }
 }
 

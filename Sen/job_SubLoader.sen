@@ -99,8 +99,8 @@
   iLoadTableJobId job::findOriginator to pJobLoadTable_Originator
 
   // get the valid/invalid rows loaded from subloader
-  pJob_SubLoader job_subLoader.recordsValid   pJobLoadTable_Originator job_loadTable.addValidRows
-  pJob_SubLoader job_subLoader.recordsInvalid pJobLoadTable_Originator job_loadTable.addInvalidRows
+  //pJob_SubLoader job_subLoader.recordsValid   pJobLoadTable_Originator job_loadTable.addValidRows
+  //pJob_SubLoader job_subLoader.recordsInvalid pJobLoadTable_Originator job_loadTable.addInvalidRows
 
   pJob_SubLoader job_subLoader.end
 
