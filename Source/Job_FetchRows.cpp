@@ -440,7 +440,7 @@ void JobsModel::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
     pFetchBuffer = nullptr;
   }
     
-  vTrace("success: %lld rows affected\n"_Stz, nRowsProcessed);
+  vTrace("success: %lld rows fetched\n"_Stz, nRowsProcessed);
 }
 
 /*----------------------------------------------------------------------------*/
