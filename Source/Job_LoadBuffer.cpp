@@ -154,6 +154,55 @@ void Job_LoadBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get partition being loaded                                                 */
+/*----------------------------------------------------------------------------*/
+Job_LoadBuffer* Job_LoadBuffer::pNewJobLoadBuffer(Job_SubLoader* pJob_SubLoader, bool bFinal)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get info
+
+  Job_LoadTable* pJob_LoadTable = pJob_SubLoader->pJob_LoadTable();
+
+  i8 iJobLoadTableId = pJob_LoadTable->iJobId();
+  i8 iPartition = pJob_SubLoader->m_iPartition;
+  WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];
+  pJob_SubLoader->m_pWorkingBuffer[iPartition] = nullptr;
+
+  Session* pSession = pJob_SubLoader->m_pSession;
+
+  //ASSERT( (  pWorkingBuffer->bIsLast() && 0 == pWorkingBuffer->nWorkingRows()) ||
+  //        ( !pWorkingBuffer->bIsLast() && pWorkingBuffer->nWorkingRows()));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a load buffer job
+
+  //! this needs to be optimised
+  JobClass* pJobClass_LoadBuffer = JobClass::pFind(CN_JOB_LOADBUFFER);
+
+  Job_LoadBuffer* pJob_LoadBuffer =
+  static_cast<Job_LoadBuffer*>(pJobClass_LoadBuffer->pPreJob(pSession));
+
+  pJob_LoadBuffer->vSeed(SS_SEED_RUN);
+
+  pJob_LoadBuffer->vJobLoadTableId(iJobLoadTableId);
+  pJob_LoadBuffer->m_sObjectName = pJob_SubLoader->m_sObjectName;
+  pJob_LoadBuffer->vPartition(iPartition);
+  pJob_LoadBuffer->m_pWorkingBuffer = pWorkingBuffer;
+  pJob_LoadBuffer->m_nRows = pWorkingBuffer->nWorkingRows();
+
+  if (bFinal) {
+    i8 nBuffersLoadable = pJob_SubLoader->m_nBuffersLoadable[iPartition];
+    
+    ASSERT(C_UNKNOWN != nBuffersLoadable);
+    pJob_LoadBuffer->vBuffersFromSubLoader(nBuffersLoadable);
+    
+    pJob_LoadBuffer->m_bEndOfBuffers = true;
+  }
+
+  return pJob_LoadBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

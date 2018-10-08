@@ -6,7 +6,8 @@
 namespace JobsModel
 {
   class Job_LoadTable;
-  
+  class Job_SubLoader;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_LoadBuffer : public Job
   {
@@ -38,6 +39,7 @@ namespace JobsModel
     ~Job_LoadBuffer(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static Job_LoadBuffer* pNewJobLoadBuffer(Job_SubLoader* pJob_SubLoader, bool bFinal);
 
   public:
     i8   nBuffersFromSubLoader(void);
@@ -51,6 +53,7 @@ namespace JobsModel
     Job_LoadTable* pJobLoadTable(void);
     void vJobLoadTable(Job_LoadTable* pJobLoadTable);
   
+
     i8   iPartition(void);
     void vPartition(i8 iPartition);
 

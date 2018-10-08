@@ -36,41 +36,6 @@ void Task::vJob_LoadBufferInsertRows(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_LoadBuffer.insertRows!"_Stz);
   Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJobPtr);
   
-  /*
-  // convert partition to node slot
-  i8 iPartition = pJob_LoadBuffer->iPartition();
-  i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
-
-  // get table, partition and working buffer
-  Table* pTable = pJob_LoadBuffer->pTable();
-  TablePtn* pPartition = pTable->pPartition(iSlot);
-  WorkingBuffer* pWorkingBuffer = pJob_LoadBuffer->m_pWorkingBuffer;
-  
-  vTrace("Job_LoadBuffer %lld %lld %s\n"_Stz,
-         pWorkingBuffer->nWorkingRows(),
-         pJob_LoadBuffer->m_nRows,
-         pWorkingBuffer->bIsLast() ? "IsLast" : "");
-  
-  i8 iTxId = 0;
-  
-  // insert the working buffer
-  pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
-  
-  // we loaded one additional buffer from a subloader
-  pPartition->vIncTotalBuffersLoaded();
-  
-  // does this job have information about the number of buffers loadable
-  // from a subloader for this partition?
-  i8 nBuffersFromSubLoader = pJob_LoadBuffer->nBuffersFromSubLoader();
-  if (C_UNKNOWN != nBuffersFromSubLoader)
-    pPartition->vAddTotalBuffersLoadable(nBuffersFromSubLoader);
-  
-  // have all buffers been loaded?
-  bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();
-  //if (bAllBuffersLoaded)
-  //  vTrace("Buffers loaded\n"_Stz);
-  */
-
   bool bAllBuffersLoaded = pJob_LoadBuffer->bInsertRows();
 
   mpTask->m_pDataStack->vPushInt(bAllBuffersLoaded);
@@ -151,6 +116,11 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iFinal) )
     THROW_INVALID_DSTACK("job_loadBuffer::spawn"_Stz);
   
+  bool bFinal = iFinal ? true : false;
+ 
+  Session* pSession = pJob_SubLoader->m_pSession;
+
+  /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get info
   
@@ -161,7 +131,6 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
   WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];
   pJob_SubLoader->m_pWorkingBuffer[iPartition] = nullptr;
   
-  Session* pSession = pJob_SubLoader->m_pSession;
   
   //ASSERT( (  pWorkingBuffer->bIsLast() && 0 == pWorkingBuffer->nWorkingRows()) ||
   //        ( !pWorkingBuffer->bIsLast() && pWorkingBuffer->nWorkingRows()));
@@ -191,7 +160,11 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
     
     pJob_LoadBuffer->m_bEndOfBuffers = true;
   }
-  
+  */
+
+  Job_LoadBuffer* pJob_LoadBuffer =
+   Job_LoadBuffer::pNewJobLoadBuffer(pJob_SubLoader,bFinal);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the load buffer job
   
