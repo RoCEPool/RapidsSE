@@ -93,13 +93,11 @@
   job::this locals| pJob_LoadTable |
 
   0 locals| iOriginNode |
-  0 locals| iThisNode   |
 
   // store task into Job_LoadTable
   task::this pJob_LoadTable job_loadTable.task!
 
   pJob_LoadTable job.id@ job::originator@ to iOriginNode
-  grid::thisNode@ to iThisNode
 
   iOriginNode isOriginNode if
     pJob_LoadTable LoadTable_executeLoad
@@ -121,6 +119,9 @@
 
   params| pJob_LoadTable  |
 
+  0 locals| fp |
+  0 locals| iOriginNode |
+
   pJob_LoadTable job.objectName@ locals| sTableNm |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -131,15 +132,22 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if file exists (SHOULDN"T THIS BE ONLY ON ORIGINATING NODE?)
 
-  file::new locals| fp |
-  pJob_LoadTable job_LoadTable.filePath@ fp file.path!
+  pJob_LoadTable job.id@ job::originator@ to iOriginNode
 
-  OPEN_READ fp file.open ( t|f )
-  not if
-     fp file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable <ERROR_JOB> exit
+  iOriginNode isOriginNode if
+
+    file::new to fp
+
+    pJob_LoadTable job_LoadTable.filePath@ fp file.path!
+
+    OPEN_READ fp file.open ( t|f )
+    not if
+       fp file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable <ERROR_JOB> exit
+    then
+
+    fp file.close fp file.delete assert::stack_0
+
   then
-
-  fp file.close fp file.delete assert::stack_0
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grad a ddl lock
