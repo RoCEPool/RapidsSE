@@ -1051,7 +1051,8 @@ void IndexTree::vTruncate(void)
   if (m_pRootBuffer)
     m_pRootBuffer->vTruncate();
   
-  m_pRootBuffer = nullptr;
+  m_pRootBuffer    = nullptr;
+  m_pCurrentBuffer = nullptr;
   
   m_zLock.vDropWrite();
 }
