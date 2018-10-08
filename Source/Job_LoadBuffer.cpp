@@ -277,8 +277,9 @@ bool Job_LoadBuffer::bInsertRows(void)
   // we loaded one additional buffer from a subloader
   pPartition->vIncTotalBuffersLoaded();
   
-  // add the numner of rows into invalid rows
-  pJob_LoadTable->m_xNode[0].m_iRowsProcessed += m_nRows;
+  // add the number of rows into rows processed
+  i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
+  pJob_LoadTable->m_xNode[iThisNode].m_iRowsProcessed += m_nRows;
   
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
@@ -327,9 +328,12 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   // get table, partition and working buffer
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
   
-  // add the numner of rows into invalid rows
-  //pJob_LoadTable->m_ziInvalidRows.iAdd(m_nRows);
-  
+  // add the number of rows into rows processed
+  i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
+  pJob_LoadTable->m_xNode[iThisNode].m_iRowsProcessed += m_nRows;
+  vTrace("m_iRowsProcessed %lld m_nRows %lld\n"_Stz,
+         pJob_LoadTable->m_xNode[iThisNode].m_iRowsProcessed, m_nRows);
+
   // we loaded one additional buffer from a subloader
   pPartition->vIncTotalBuffersLoaded();
   

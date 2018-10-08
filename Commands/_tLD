@@ -59,7 +59,7 @@ _t
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print "t1M.csv..." ;
-//takemem 5;
+takemem 5;
 ld t "/rapids/t/t1M.csv" ;
 fetch t displayOff;
 //antbl t;
