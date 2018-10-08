@@ -162,9 +162,11 @@ void Job_CreateTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* populate table                                                             */
 /*----------------------------------------------------------------------------*/
-bool Job_CreateTable::bPopulateJob(TokenVec* pTokenVec)
+eEC Job_CreateTable::ePopulateJob(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
+  
+  eEC eError;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // assert we got a create table
@@ -179,7 +181,7 @@ bool Job_CreateTable::bPopulateJob(TokenVec* pTokenVec)
   // some validations
   bool bValid = bValidateCreateTable(pTokenVec);
   if ( ! bValid ) {
-    return false;
+    return EC_INVALID_COMMAND;
   }
   
   // set the table name
@@ -189,20 +191,22 @@ bool Job_CreateTable::bPopulateJob(TokenVec* pTokenVec)
   i8 iCurrentToken = 4;
   
   // add columns to the table
-  if ( ! bAddTableColumns(pTokenVec, iCurrentToken) ) {
-    return false;
+  eError = eAddTableColumns(pTokenVec, iCurrentToken);
+    
+  if (eError != EC_NONE) {
+    return eError;
   }
   
   // current token should be at ')'
   if ( ! pTokenVec->pGet(iCurrentToken++)->bSame(")"_Stz)) {
-    return false;
+    return EC_INVALID_COMMAND;
   }
   
   // check if we have a partition by clause
   if ( iCurrentToken < iNumTokens && pTokenVec->pGet(iCurrentToken++)->bSame("partition"_Stz)) {
     
     if ( ! bPartitionTable(pTokenVec, iCurrentToken) )
-      return false;
+      return EC_INVALID_COMMAND;
   }
   else {
     // no partition by clause
@@ -212,7 +216,7 @@ bool Job_CreateTable::bPopulateJob(TokenVec* pTokenVec)
   
   //vShow();
   
-  return true;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -248,7 +252,7 @@ void Job_CreateTable::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* add columns of the table to the job                                        */
 /*----------------------------------------------------------------------------*/
-bool Job_CreateTable::bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
+eEC Job_CreateTable::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
   
@@ -259,11 +263,11 @@ bool Job_CreateTable::bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
   while ( ! pTokenVec->pGet(iCurrentToken)->bSame(")"_Stz)) {
     
     if (iCurrentToken != i_StartToken && ! pTokenVec->pGet(iCurrentToken++)->bSame(","_Stz)) {
-      return false;
+      return EC_INVALID_COMMAND;
     }
     
     if (iColumn >= C_MAX_COLUMNS) {
-      return false;
+      return EC_MAX_COLUMNS;
     }
     
     // set column number
@@ -273,25 +277,31 @@ bool Job_CreateTable::bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
     Token* pTkn = pTokenVec->pGet(iCurrentToken++);
     m_xColumns[iColumn].m_sColumnName = pTkn->aText();
     
+    // check if column name already added
+    for (i8 i_Column = 0; i_Column < iColumn; i_Column++) {
+      if (m_xColumns[i_Column].m_sColumnName.bSame(m_xColumns[iColumn].m_sColumnName))
+        return EC_DUPLICATE_COLUMN;
+    }
+    
     if (pTokenVec->pGet(iCurrentToken)->bSame("varchar"_Stz) ||
         pTokenVec->pGet(iCurrentToken)->bSame("varbinary"_Stz) ||
         pTokenVec->pGet(iCurrentToken)->bSame("char"_Stz)) {
       
       // extract varchar
       if ( ! bExtractVarchar(pTokenVec, iColumn, iCurrentToken) )
-        return false;
+        return EC_INVALID_COMMAND;
     }
     else if (pTokenVec->pGet(iCurrentToken)->bSame("float"_Stz)) {
       
       // extract float
       if ( ! bExtractFloat(pTokenVec, iColumn, iCurrentToken) )
-        return false;
+        return EC_INVALID_COMMAND;
     }
     else if (pTokenVec->pGet(iCurrentToken)->bSame("decimal"_Stz)) {
       
       // extract decimal
       if ( ! bExtractDecimal(pTokenVec, iColumn, iCurrentToken) )
-        return false;
+        return EC_INVALID_COMMAND;
     }
     else if (pTokenVec->pGet(iCurrentToken)->bSame("integer"_Stz)) {
       m_xColumns[iColumn].m_eColumnType = CT_INTEGER;
@@ -325,14 +335,14 @@ bool Job_CreateTable::bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
       iCurrentToken++;
     }
     else {
-     return false;
+     return EC_INVALID_COMMAND;
     }
     
     // check for NOT NULL
     if (pTokenVec->pGet(iCurrentToken)->bSame("not"_Stz)) {
       iCurrentToken++;
       if (!pTokenVec->pGet(iCurrentToken++)->bSame("null"_Stz)) {
-        return false;
+        return EC_INVALID_COMMAND;
       }
       m_xColumns[iColumn].m_bIsNullable = false;
     }
@@ -361,7 +371,7 @@ bool Job_CreateTable::bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
   // set no of columns in the job
   m_iColumns = iColumn;
   
-  return true;
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -610,12 +620,12 @@ Job* JobsModel::pJob_CreateTable_pre(Interface::Session* pSession)
   
   TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
 
-  bool bResult = pJob_CreateTable->bPopulateJob(pTokenVec);
+  eEC eError = pJob_CreateTable->ePopulateJob(pTokenVec);
   
-  if ( !bResult) {
+  if ( eError != EC_NONE ) {
     i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
     pJob_CreateTable->m_bHasError = true;
-    pJob_CreateTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_CreateTable->m_xNode[iNode].m_eErrorCode = eError;
   }
   return pJob_CreateTable;
 }

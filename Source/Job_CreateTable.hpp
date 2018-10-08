@@ -41,11 +41,11 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
-    bool bPopulateJob(TokenVec* pTokenVec);
+    eEC ePopulateJob(TokenVec* pTokenVec);
     void vShow(void);
   
   private:
-    bool bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken);
+    eEC  eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken);
     bool bExtractDecimal(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken);
     bool bExtractFloat(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken);
     bool bExtractVarchar(TokenVec* pTokenVec, i8 iColumn, i8& iCurrentToken);
