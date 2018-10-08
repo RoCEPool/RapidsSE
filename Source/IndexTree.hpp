@@ -23,7 +23,7 @@ namespace DBobjects
     Index*       m_pIndex;         // which index
     i8           m_iPartitionNo;   // which partition no
     TablePtn*    m_pPartition;     // which partition                     UNUSED
-    EntryBuffer* m_pRoot;          // the root buffer
+    EntryBuffer* m_pRootBuffer;    // the root buffer
     EntryBuffer* m_pCurrentBuffer; // current buffer for insert hidden index
   
     // must be last

@@ -95,7 +95,7 @@ IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
   m_pIndex = pIndex;
   m_iPartitionNo = iPartitionNo;
   m_pPartition   = nullptr;
-  m_pRoot = nullptr;
+  m_pRootBuffer  = nullptr;
   m_pCurrentBuffer = nullptr;
   
   _checkInitialised_(CN_INDEXTREE);
@@ -669,7 +669,7 @@ void IndexTree::vDump(bool bSameLevel)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
   if (bSameLevel) {
-    EntryBuffer* pEntryBuffer = m_pRoot;
+    EntryBuffer* pEntryBuffer = m_pRootBuffer;
     
     while (pEntryBuffer) {
       pEntryBuffer->vShow();
@@ -678,8 +678,8 @@ void IndexTree::vDump(bool bSameLevel)
   }
   else {
     // start with the root
-    if (m_pRoot)
-      m_pRoot->vDump();
+    if (m_pRootBuffer)
+      m_pRootBuffer->vDump();
   }
 }
 
@@ -690,7 +690,7 @@ EntryBuffer* IndexTree::pFirstL1Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  EntryBuffer* pEntryBuffer = m_pRoot;
+  EntryBuffer* pEntryBuffer = m_pRootBuffer;
   
   if ( ! pEntryBuffer )
     return nullptr;
@@ -721,7 +721,7 @@ EntryBuffer* IndexTree::pFirstL0Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  EntryBuffer* pEntryBuffer = m_pRoot;
+  EntryBuffer* pEntryBuffer = m_pRootBuffer;
   
   if ( ! pEntryBuffer )
     return nullptr;
@@ -760,8 +760,8 @@ i8 IndexTree::nEntryBuffers(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   i8 nBufferCount = 0;
-  if (m_pRoot)
-    m_pRoot->vBufferCount(nBufferCount);
+  if (m_pRootBuffer)
+    m_pRootBuffer->vBufferCount(nBufferCount);
   
   return nBufferCount;
 }
@@ -778,9 +778,9 @@ void IndexTree::vAppendBuffer(EntryBuffer* pEntryBuffer)
   
   m_zLock.vGrabWrite();
   
-  if (m_pRoot == nullptr) {
+  if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
-    m_pRoot = pEntryBuffer;
+    m_pRootBuffer = pEntryBuffer;
   }
   else {
     pEntryBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
@@ -813,12 +813,12 @@ void IndexTree::vAppendEntriesFromBuffer(i8 iTxId,
   
   WorkingRow* pRow;
 
-  if (m_pRoot == nullptr) {
+  if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
-    m_pRoot = new EntryBuffer();
-    m_pRoot->vIndex(m_pIndex);
-    m_pRoot->vPartitionNo(m_iPartitionNo);
-    m_pCurrentBuffer = m_pRoot;
+    m_pRootBuffer = new EntryBuffer();
+    m_pRootBuffer->vIndex(m_pIndex);
+    m_pRootBuffer->vPartitionNo(m_iPartitionNo);
+    m_pCurrentBuffer = m_pRootBuffer;
   }
   
   for ( pRow = pWorkingBuffer->pFirstRow() ; pRow;
@@ -880,10 +880,10 @@ void IndexTree::vAppendEntriesFromBuffer(i8 iTxId,
 //
 //  //m_pCurrentBuffer = pAppendL0Entry(m_pCurrentBuffer,xKeyWrk,xId);
 //
-//  if ( ! m_pRoot ) {
-//    m_pRoot = new EntryBuffer;
-//    m_pRoot->vIndex(m_pIndex);
-//    m_pRoot->vPartitionNo(m_iPartitionNo);
+//  if ( ! m_pRootBuffer ) {
+//    m_pRootBuffer = new EntryBuffer;
+//    m_pRootBuffer->vIndex(m_pIndex);
+//    m_pRootBuffer->vPartitionNo(m_iPartitionNo);
 //  }
 //
 //  //vTrace("\nInserting key: "_Stz);
@@ -891,9 +891,9 @@ void IndexTree::vAppendEntriesFromBuffer(i8 iTxId,
 //
 //  Entry* pKeyEntry =
 //    EntryBuffer::pInsertKeyTree(xKeyWrk,
-//                                &m_pRoot);
+//                                &m_pRootBuffer);
 //
-//  //m_pRoot->vShowTree(true);
+//  //m_pRootBuffer->vShowTree(true);
 //
 //  m_zLock.vDropWrite();
 //}
@@ -943,21 +943,21 @@ bool IndexTree::bInsertEntry(Entry* pRow)
   
   //if (2947 == nInserts) {
   //  xKeyWrk.vShow(m_pIndex->pIdxColVec());
-  //  m_pRoot->vShowTree();
+  //  m_pRootBuffer->vShowTree();
   //  int iDebug = 1;
   //}
   
-  if ( ! m_pRoot ) {
-    m_pRoot = new EntryBuffer;
-    m_pRoot->vIndex(m_pIndex);
-    m_pRoot->vPartitionNo(m_iPartitionNo);
+  if ( ! m_pRootBuffer ) {
+    m_pRootBuffer = new EntryBuffer;
+    m_pRootBuffer->vIndex(m_pIndex);
+    m_pRootBuffer->vPartitionNo(m_iPartitionNo);
   }
   
-  //bool bInserted = bInsertEntry(m_pRoot, xKeyWrk, pRow->xId(), 0);
+  //bool bInserted = bInsertEntry(m_pRootBuffer, xKeyWrk, pRow->xId(), 0);
   
   Entry* pKeyEntry =
     EntryBuffer::pInsertKeyTree(xKeyWrk,
-                                &m_pRoot);
+                                &m_pRootBuffer);
   ASSERT(pKeyEntry);
   
   m_zLock.vDropWrite();
@@ -979,7 +979,7 @@ void IndexTree::vLazyBuild(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  m_pRoot->vLazyBuild();
+  m_pRootBuffer->vLazyBuild();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1013,8 +1013,8 @@ EntryBuffer* IndexTree::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  if (m_pRoot)
-    return m_pRoot->pPositionLevel(xKeyWrk.aKey(),nKeyCols,eJuxtaCompare,iLevel);
+  if (m_pRootBuffer)
+    return m_pRootBuffer->pPositionLevel(xKeyWrk.aKey(),nKeyCols,eJuxtaCompare,iLevel);
   else
     return nullptr;
 }
@@ -1026,7 +1026,7 @@ EntryBuffer* IndexTree::pRoot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  return m_pRoot;
+  return m_pRootBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1048,10 +1048,10 @@ void IndexTree::vTruncate(void)
   
   m_zLock.vGrabWrite();
   
-  if (m_pRoot)
-    m_pRoot->vTruncate();
+  if (m_pRootBuffer)
+    m_pRootBuffer->vTruncate();
   
-  m_pRoot = nullptr;
+  m_pRootBuffer = nullptr;
   
   m_zLock.vDropWrite();
 }
@@ -1063,7 +1063,7 @@ bool IndexTree::bVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  return m_pRoot->bVerify();
+  return m_pRootBuffer->bVerify();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1073,7 +1073,7 @@ bool IndexTree::bVerifyIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  bool bValid = m_pRoot->bVerify();
+  bool bValid = m_pRootBuffer->bVerify();
   
   return bValid;
 }
@@ -1123,7 +1123,7 @@ void IndexTree::vVisualize(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   // start with the root buffer
-  EntryBuffer* pEntryBuffer = m_pRoot;
+  EntryBuffer* pEntryBuffer = m_pRootBuffer;
   
   if ( ! pEntryBuffer)
     return;
