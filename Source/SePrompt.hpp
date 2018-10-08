@@ -22,8 +22,9 @@ namespace Prompt
   private:
     bool     m_bContinue;  // continue processing commands?
     Session* m_pSession;   // rapidsse session
-  
-    Job*   m_pJob;       // job
+    Timer    m_xTimer;     // the timer
+
+    Job*   m_pJob;         // job
   
     // must be last
     Footer m_xFooter;

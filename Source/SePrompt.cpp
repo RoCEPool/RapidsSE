@@ -46,6 +46,7 @@ SePrompt::SePrompt(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iPartition = 0;
+  
   m_bContinue = true;
 
   eEC eResult = RapidsSE_SessionNew((void**)&m_pSession,
@@ -57,6 +58,8 @@ SePrompt::SePrompt(void)
   ASSERT(EC_NONE == eResult);
 
   m_pJob = nullptr;
+
+  // m_xTimer
   
   _checkInitialised_(CN_SEPROMPT);
 }
