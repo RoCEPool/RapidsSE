@@ -36,6 +36,7 @@ void Task::vJob_LoadBufferInsertRows(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_LoadBuffer.insertRows!"_Stz);
   Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJobPtr);
   
+  /*
   // convert partition to node slot
   i8 iPartition = pJob_LoadBuffer->iPartition();
   i8 iSlot = TablePtn::iPartitionToSlot(iPartition);
@@ -68,6 +69,9 @@ void Task::vJob_LoadBufferInsertRows(MP_Task mpTask)
   bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();
   //if (bAllBuffersLoaded)
   //  vTrace("Buffers loaded\n"_Stz);
+  */
+
+  bool bAllBuffersLoaded = pJob_LoadBuffer->bInsertRows();
 
   mpTask->m_pDataStack->vPushInt(bAllBuffersLoaded);
 

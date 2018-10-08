@@ -178,6 +178,45 @@ void Job_LoadBuffer::vBuffersFromSubLoader(i8 nBuffers)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert rows from working buffer into table                                 */
+/*----------------------------------------------------------------------------*/
+bool Job_LoadBuffer::bInsertRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+ 
+  // convert partition to node slot
+  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartition);
+  
+  // get table, partition and working buffer
+  TablePtn* pPartition = m_pTable->pPartition(iSlot);
+  
+  vTrace("Job_LoadBuffer %lld %lld %s\n"_Stz,
+         m_pWorkingBuffer->nWorkingRows(),
+         m_nRows,
+         m_pWorkingBuffer->bIsLast() ? "IsLast" : "");
+  
+  i8 iTxId = 0;
+  
+  // insert the working buffer
+  m_pTable->vInsertEntries(iTxId, iSlot, m_pWorkingBuffer);
+  
+  // we loaded one additional buffer from a subloader
+  pPartition->vIncTotalBuffersLoaded();
+  
+  // does this job have information about the number of buffers loadable
+  // from a subloader for this partition?
+  if (C_UNKNOWN != m_nBuffersFromSubLoader)
+    pPartition->vAddTotalBuffersLoadable(m_nBuffersFromSubLoader);
+  
+  // have all buffers been loaded?
+  bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();
+  //if (bAllBuffersLoaded)
+  //  vTrace("Buffers loaded\n"_Stz);
+  
+  return bAllBuffersLoaded;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the load table job                                                     */
 /*----------------------------------------------------------------------------*/
 Job_LoadTable* Job_LoadBuffer::pJobLoadTable(void)
