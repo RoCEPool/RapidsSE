@@ -279,7 +279,7 @@ bool Job_LoadBuffer::bInsertRows(void)
   
   // add the number of rows into rows processed
   i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
-  pJob_LoadTable->m_xNode[iThisNode].m_iRowsProcessed += m_nRows;
+  pJob_LoadTable->m_xNode[iThisNode].m_ziRowsProcessed += m_nRows;
   
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
@@ -330,9 +330,9 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   
   // add the number of rows into rows skipped
   i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
-  pJob_LoadTable->m_xNode[iThisNode].m_iRowsSkipped += m_nRows;
+  pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped += m_nRows;
   vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
-         pJob_LoadTable->m_xNode[iThisNode].m_iRowsSkipped, m_nRows);
+         pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped, m_nRows);
 
   // we loaded one additional buffer from a subloader
   pPartition->vIncTotalBuffersLoaded();

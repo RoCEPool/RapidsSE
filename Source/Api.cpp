@@ -351,7 +351,7 @@ eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, void** ppRowCount, i8
   
   Job* pJob = (Job*)pJobPtr;
   
-  *ppRowCount = &(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  *ppRowCount = &(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_ziRowsProcessed);
   //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
   return EC_NONE;
 }
@@ -369,8 +369,8 @@ eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, void** ppR
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
   Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_sResponse.aChar());
   ColumnVec* pColumnVec = pTable->pColumnVec();
-  pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed =  pColumnVec->nItems() - 1;
-  *ppRowCount = &(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_ziRowsProcessed =  pColumnVec->nItems() - 1;
+  *ppRowCount = &(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_ziRowsProcessed);
   
   //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
   return EC_NONE;

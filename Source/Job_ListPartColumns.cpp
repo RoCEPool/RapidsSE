@@ -239,7 +239,7 @@ void JobsModel::vJob_ListPartColumns_post(Interface::Session* pSession, Job* pJo
     
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       vTrace("%s"_Stz, pJob_ListPartColumns->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += pJob_ListPartColumns->m_xNode[i_Node].m_iRowsProcessed;
+      iRowsProcessed += pJob_ListPartColumns->m_xNode[i_Node].m_ziRowsProcessed;
     }
     vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   }

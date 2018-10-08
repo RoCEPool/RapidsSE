@@ -15,20 +15,20 @@ ld t "/rapids/t/t0.csv" ;
 fetch t;
 //antbl t;
 //dumpidx t hidden;
-tr t;
+//tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//print "t1.csv..." ;
-//ld t "/rapids/t/t1.csv" ;
-//fetch t;
+print "t1.csv..." ;
+ld t "/rapids/t/t1.csv" ;
+fetch t;
 //antbl t;
 //dumpidx t hidden;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//print "t10.csv..." ;
-//ld t "/rapids/t/t10.csv" ;
-//fetch t;
+print "t10.csv..." ;
+ld t "/rapids/t/t10.csv" ;
+fetch t;
 //antbl t;
 //dumpidx t hidden;
 //tr t;

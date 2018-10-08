@@ -9,15 +9,15 @@ namespace JobsModel
   class JobResult
   {
   public:
-    s4K    m_sMetadata;      // meta data of job
-    bool   m_bHasError;      // has an error of one or more nodes
+    s4K    m_sMetadata;       // meta data of job
+    bool   m_bHasError;       // has an error of one or more nodes
 
     struct {
-      s4K  m_sResponse;      // response string
-      i8   m_iRowsProcessed; // rows processed              //! SHOULD BE ATOMIC
-      i8   m_iRowsInvalid;   // invalid rows detected
-      i8   m_iRowsSkipped;   // rows skipped
-      eEC  m_eErrorCode;     // error code
+      s4K  m_sResponse;       // response string
+      i8   m_ziRowsProcessed; // rows processed              //! SHOULD BE ATOMIC
+      i8   m_ziRowsInvalid;   // invalid rows detected
+      i8   m_ziRowsSkipped;   // rows skipped
+      eEC  m_eErrorCode;      // error code
     } m_xNode[C_MAX_NODES];
   
   public:

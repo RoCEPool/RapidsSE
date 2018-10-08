@@ -1082,7 +1082,7 @@ void Task::vJobRowsInvalidFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.rowsInvalid@"_Stz);
   
-  i8 iRowsInvalid = pJob->m_xNode[iNode].m_iRowsInvalid;
+  i8 iRowsInvalid = pJob->m_xNode[iNode].m_ziRowsInvalid;
   mpTask->m_pDataStack->vPushInt(iRowsInvalid);
   
   EXIT();
@@ -1108,7 +1108,7 @@ void Task::vJobRowsInvalidStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iRowsInvalid) )
     THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
   
-  pJob->m_xNode[iNode].m_iRowsInvalid = iRowsInvalid;
+  pJob->m_xNode[iNode].m_ziRowsInvalid = iRowsInvalid;
   
   EXIT();
 }
@@ -1129,7 +1129,7 @@ void Task::vJobRowsProcessedFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.rowsProcessed@"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(pJob->m_xNode[iNode].m_iRowsProcessed);
+  mpTask->m_pDataStack->vPushInt(pJob->m_xNode[iNode].m_ziRowsProcessed);
   
   EXIT();
 }
@@ -1154,7 +1154,7 @@ void Task::vJobRowsProcessedStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iRowsProcessed) )
     THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
   
-  pJob->m_xNode[iNode].m_iRowsProcessed = iRowsProcessed;
+  pJob->m_xNode[iNode].m_ziRowsProcessed = iRowsProcessed;
   
   EXIT();
 }
@@ -1175,7 +1175,7 @@ void Task::vJobRowsSkippedFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.rowsSkipped@"_Stz);
  
-  i8 iRowsSkipped = pJob->m_xNode[iNode].m_iRowsSkipped;
+  i8 iRowsSkipped = pJob->m_xNode[iNode].m_ziRowsSkipped;
 
   mpTask->m_pDataStack->vPushInt(iRowsSkipped);
   
@@ -1202,7 +1202,7 @@ void Task::vJobRowsSkippedStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iRowsSkipped) )
     THROW_INVALID_DSTACK("job.rowsSkipped!"_Stz);
   
-  pJob->m_xNode[iNode].m_iRowsSkipped = iRowsSkipped;
+  pJob->m_xNode[iNode].m_ziRowsSkipped = iRowsSkipped;
   
   EXIT();
 }
