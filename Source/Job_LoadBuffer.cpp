@@ -242,7 +242,22 @@ bool Job_LoadBuffer::bInsertRows(void)
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the load table job
   
+  Job__Cancelled* pFindJob = new Job__Cancelled;
+  pFindJob->m_iJobId = m_iJobLoadTableId;
+  
+  gpAttachMap->m_pParticipatingJobs->vGrabLock();
+  Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+  gpAttachMap->m_pParticipatingJobs->vDropLock();
+  
+  delete pFindJob;
+  
+  Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // convert partition to node slot
   i8 iSlot = TablePtn::iPartitionToSlot(m_iPartition);
   
@@ -261,6 +276,9 @@ bool Job_LoadBuffer::bInsertRows(void)
   
   // we loaded one additional buffer from a subloader
   pPartition->vIncTotalBuffersLoaded();
+  
+  // add the numner of rows into invalid rows
+  pJob_LoadTable->m_xNode[0].m_iRowsProcessed += m_nRows;
   
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
@@ -298,9 +316,10 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   
   delete pFindJob;
 
+  Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
 
   // convert partition to node slot
   i8 iSlot = TablePtn::iPartitionToSlot(m_iPartition);
@@ -309,7 +328,7 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
   
   // add the numner of rows into invalid rows
-  pJob_LoadTable->m_ziInvalidRows.iAdd(m_nRows);
+  //pJob_LoadTable->m_ziInvalidRows.iAdd(m_nRows);
   
   // we loaded one additional buffer from a subloader
   pPartition->vIncTotalBuffersLoaded();
