@@ -253,7 +253,7 @@ void JobsModel::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
       );
       
     }
-    iRowsProcessed = iColumns;
+    iRowsProcessed = iColumns - 1;
     vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   }
 }
