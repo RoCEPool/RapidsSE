@@ -262,7 +262,7 @@ bool Job_CreateTable::bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
       return false;
     }
     
-    if (iColumn == 150) {
+    if (iColumn >= C_MAX_COLUMNS) {
       return false;
     }
     
@@ -270,7 +270,8 @@ bool Job_CreateTable::bAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
     m_xColumns[iColumn].m_iColumnNo = iColumn;
     
     // set column name
-    m_xColumns[iColumn].m_sColumnName= pTokenVec->pGet(iCurrentToken++)->aText();
+    Token* pTkn = pTokenVec->pGet(iCurrentToken++);
+    m_xColumns[iColumn].m_sColumnName = pTkn->aText();
     
     if (pTokenVec->pGet(iCurrentToken)->bSame("varchar"_Stz) ||
         pTokenVec->pGet(iCurrentToken)->bSame("varbinary"_Stz) ||

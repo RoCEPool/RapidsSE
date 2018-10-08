@@ -10,7 +10,7 @@ namespace JobsModel
 
   class Job;
   
-  static const i8 C_MAX_COLUMNS = 128;
+  static const i8 C_MAX_COLUMNS = 150;
   
   enum eJK // job kind
   {
