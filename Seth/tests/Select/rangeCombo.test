@@ -20,9 +20,11 @@ success
 fetch T1;
 rows: 5
 
-//fetch T1 "jA 2 <=" ;
-//rows: 5
+fetch T1 "jA 2 <=" ;
+rows: 2
 
+fetch T1 "jC 2 <=" ;
+rows: 5
 
 fetch T1 "jA 4 >= jC ddd >= and";
 rows:

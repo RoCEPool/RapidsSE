@@ -25,8 +25,8 @@ rows: 10
 
 CLEANUP {
   
-  //drop table part;
-  //mute
+  drop table part;
+  mute
 
   bye;
   mute
