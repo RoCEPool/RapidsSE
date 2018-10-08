@@ -10,49 +10,49 @@ config;
 _t
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print "t0.csv..." ;
-ld t "/rapids/t/t0.csv" ;
-fetch t displayOff;
+//print "t0.csv..." ;
+//ld t "/rapids/t/t0.csv" ;
+//fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print "t1.csv..." ;
-ld t "/rapids/t/t1.csv" ;
-fetch t displayOff;
+//print "t1.csv..." ;
+//ld t "/rapids/t/t1.csv" ;
+//fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print "t10.csv..." ;
-ld t "/rapids/t/t10.csv" ;
-fetch t displayOff;
+//print "t10.csv..." ;
+//ld t "/rapids/t/t10.csv" ;
+//fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print "t100.csv..." ;
-ld t "/rapids/t/t100.csv" ;
-fetch t displayOff;
+//print "t100.csv..." ;
+//ld t "/rapids/t/t100.csv" ;
+//fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print "t1K.csv..." ;
-ld t "/rapids/t/t1K.csv" ;
-fetch t displayOff;
+//print "t1K.csv..." ;
+//ld t "/rapids/t/t1K.csv" ;
+//fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print "t10K.csv..." ;
-ld t "/rapids/t/t10K.csv" ;
-fetch t displayOff;
+//print "t10K.csv..." ;
+//ld t "/rapids/t/t10K.csv" ;
+//fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
 //tr t;
@@ -66,10 +66,10 @@ fetch t displayOff;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print "t1M.csv..." ;
+//print "t1M.csv..." ;
 //takemem;
-ld t "/rapids/t/t1M.csv" ;
-fetch t displayOff;
+//ld t "/rapids/t/t1M.csv" ;
+//fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
 //tr t;

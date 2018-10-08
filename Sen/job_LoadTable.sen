@@ -101,7 +101,7 @@
   pJob_LoadTable job.id@ job::originator@ to iOriginNode
   grid::thisNode@ to iThisNode
 
-  iThisNode iOriginNode == if
+  iOriginNode isOriginNode if
     pJob_LoadTable LoadTable_executeLoad
   else
     LoadTable_waitOnly

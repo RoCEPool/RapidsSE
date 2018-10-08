@@ -386,6 +386,24 @@ tp: printResult
   loop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* test if this node is given originating node                                */
+/*----------------------------------------------------------------------------*/
+: isOriginNode ( iOriginNode -- true|false )
+
+  params| iOriginNode |
+
+  0 locals| iThisNode  |
+
+  grid::thisNode@ to iThisNode
+
+  iThisNode iOriginNode == if
+    true
+  else
+    false
+  then
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
