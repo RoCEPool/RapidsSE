@@ -644,7 +644,7 @@ void JobsModel::vJob_LoadTable_post(Interface::Session* pSession, Job* pJob)
 
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       
-      vTrace("%s"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
+      //vTrace("%s"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
       iRowsProcessed += pJob_LoadTable->m_xNode[i_Node].m_iRowsProcessed;
       iRowsInvalid   += pJob_LoadTable->m_xNode[i_Node].m_iRowsInvalid;
       iRowsSkipped   += pJob_LoadTable->m_xNode[i_Node].m_iRowsSkipped;
