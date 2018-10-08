@@ -33,6 +33,7 @@ namespace Parsing
     Token* pFindToken(Stz* aText, i8& i_Token);
     i8   nTokens(void);
     void vIncTokens(void);
+    void vPrint(void);
     void vReset(void);
     void vSetAllTokens(void);
     void vSetTokens(void);

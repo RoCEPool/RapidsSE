@@ -23,8 +23,9 @@ namespace Prompt
     bool     m_bContinue;  // continue processing commands?
     Session* m_pSession;   // rapidsse session
     Timer    m_xTimer;     // the timer
+    bool     m_bTimed;     // command is being times
 
-    Job*   m_pJob;         // job
+    Job*     m_pJob;       // job
   
     // must be last
     Footer m_xFooter;
@@ -42,9 +43,11 @@ namespace Prompt
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
+    void vCheckTimed(void);
     CommandProcessor* pCommandProcessor(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
+    void vCutToken(i8 i_Tkn);
     void vDeleteJob(void);
     bool bExecuteFile(void);
     bool bExecuteFunction(void);

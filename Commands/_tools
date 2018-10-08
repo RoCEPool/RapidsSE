@@ -8,6 +8,7 @@ bp;           // show buffer pool
 classes;      // generate classes list
 config;       // show node information
 constants;    // show important constants
+date;         // show current date and time
 hashdefs;     // show #def's
 heapMem;      // information about the heap
 indexEntries; // set index entries
@@ -18,7 +19,6 @@ numbers;      // show important numbers
 opsys;        // show infor about operating system
 sizes;        // show sizes of important objects
 threads;      // show information about constants
-time;         // show current time
 version       // show SE version
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

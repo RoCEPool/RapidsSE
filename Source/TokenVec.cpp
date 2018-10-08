@@ -163,6 +163,7 @@ i8 TokenVec::iFindToken(Stz* aLookFor)
   
   return -1;
 }
+
 /*----------------------------------------------------------------------------*/
 /* find token given text                                                      */
 /*----------------------------------------------------------------------------*/
@@ -197,6 +198,17 @@ void TokenVec::vIncTokens(void)
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
   m_nItems++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print this token vector                                                    */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vPrint(void)
+{
+  _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  for (i8 i_Token = 0; i_Token < nItems(); i_Token++)
+    vTrace("  %s\n"_Stz,m_pItem[i_Token]->aText());
 }
 
 /*----------------------------------------------------------------------------*/

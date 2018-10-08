@@ -61,6 +61,8 @@ SePrompt::SePrompt(void)
 
   // m_xTimer
   
+  m_bTimed = false;
+  
   _checkInitialised_(CN_SEPROMPT);
 }
 
@@ -108,6 +110,8 @@ void SePrompt::vPromptLoop(void)
        
     if (bBlankLine())
       continue;
+    
+    vCheckTimed();
     
     if (bExecuteFunction())
       continue;
@@ -173,6 +177,21 @@ bool SePrompt::bBlankLine(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check for timed function                                                   */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCheckTimed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Token* pTkn0 = pTkn(0);
+  
+  if (pTkn0->bSame("time"_Stz)) {
+    m_bTimed = true;
+    vCutToken(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get command processor                                                      */
 /*----------------------------------------------------------------------------*/
 CommandProcessor* SePrompt::pCommandProcessor(void)
@@ -200,6 +219,18 @@ void SePrompt::vContinue(bool bContinue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   m_bContinue = bContinue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut a token from token vector                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCutToken(i8 i_Tkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  TokenVec* pTknVec = m_pSession->m_pCommandProcessor->pTknVec();
+  
+  pTknVec->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
