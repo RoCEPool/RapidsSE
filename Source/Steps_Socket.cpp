@@ -398,6 +398,8 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
   
   if (CN_JOB_LOADBUFFER == eClass) {
 
+    vTrace("Received Job_LoadBuffer under low mem\n"_Stz);
+    
     MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
     
     void* aLowBody = pAdd<void*>(aLowBuff,sizeof(Object));
@@ -427,12 +429,13 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
     }
     else {
       pJob_LoadBuffer = nullptr;
+      vTrace("Discarded Job_LoadBuffer under low mem\n"_Stz);
     }
 
     if (bDiscardWorkingBuffer) {
 
       bResult = pSocket->bRecvBytes(aLowBuff,sizeof(WorkingBuffer),xSysCall);
-
+      vTrace("Discarded WorkingBuffer under low mem\n"_Stz);
     }
     
     mpTask->m_pDataStack->vPushObject(pJob_LoadBuffer);

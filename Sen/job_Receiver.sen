@@ -75,6 +75,10 @@
 
     socket> drop to pJob
 
+    pJob not if
+      ifAgain
+    then
+
     pJob job.postRecv
 
     pJob job.hasWorkingBuffer if
