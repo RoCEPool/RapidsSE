@@ -279,7 +279,6 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_VERIFYINDEX"_Stz,    CN_JOB_VERIFYINDEX);
   /*    */ vAddConstant("CN_JOB_VISUALIZEINDEX"_Stz, CN_JOB_VISUALIZEINDEX);
   /*    */ vAddConstant("CN_JOB_WAITCLUSTER"_Stz,    CN_JOB_WAITCLUSTER);
-
   
   /*    */ vAddConstant("CN_JUMBOPERSISTENT"_Stz, CN_JUMBOPERSISTENT);
   /*    */ vAddConstant("CN_JUMBOTRANSIENT"_Stz,  CN_JUMBOTRANSIENT);
@@ -307,15 +306,12 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_RBCURSOR"_Stz,     CN_RBCURSOR);
   /* 47 */ vAddConstant("CN_REGFRAME"_Stz,     CN_REGFRAME);
   /* 48 */ vAddConstant("CN_RING"_Stz,         CN_RING);
-
   /* 50 */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);
   /* 51 */ vAddConstant("CN_ROWCURSOR"_Stz,    CN_ROWCURSOR);
   
   /* 54 */ vAddConstant("CN_SCANBUFFER"_Stz,   CN_SCANBUFFER);
   /* 55 */ vAddConstant("CN_SCRATCH"_Stz,      CN_SCRATCH);
-
   /* 57 */ vAddConstant("CN_SESSION"_Stz,        CN_SESSION);
-
   /*    */ vAddConstant("CN_SELCURSOR"_Stz,    CN_SELCURSOR);
   /* 60 */ vAddConstant("CN_SEMAPHORE"_Stz,    CN_SEMAPHORE);
   /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
@@ -331,13 +327,11 @@ void Task::vAddConstants(void)
   /* 68 */ vAddConstant("CN_STEPACCUM"_Stz,    CN_STEPACCUM);
   /* 69 */ vAddConstant("CN_STEPARRAY"_Stz,    CN_STEPARRAY);
   /* 70 */ vAddConstant("CN_SYSCALL"_Stz,      CN_SYSCALL);
-  
+
   /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);
   /* 72 */ vAddConstant("CN_TASK"_Stz,         CN_TASK);
-
   /*    */ vAddConstant("CN_TASKQUEUE"_Stz,    CN_TASKQUEUE);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
-
   /* 79 */ vAddConstant("CN_TIME"_Stz,         CN_TIME);
   /* 80 */ vAddConstant("CN_TIMER"_Stz,        CN_TIMER);
   /* 81 */ vAddConstant("CN_TOKENISER"_Stz,    CN_TOKENISER);
@@ -352,7 +346,20 @@ void Task::vAddConstants(void)
   /* 92 */ vAddConstant("CN_ZJUMBO_"_Stz,      CN_ZJUMBO_);
   
   /* 93 */ vAddConstant("CN_ENUMS"_Stz,        CN_ENUMS);
-  
+ 
+  // CT_ : columne type
+  /*  1 */ vAddConstant("CT_BOOLEAN"_Stz,   CT_BOOLEAN);
+  /*  1 */ vAddConstant("CT_CHAR"_Stz,      CT_CHAR);
+  /*  1 */ vAddConstant("CT_DATE"_Stz,      CT_DATE);
+  /*  1 */ vAddConstant("CT_DECIMAL"_Stz,   CT_DECIMAL);
+  /*  1 */ vAddConstant("CT_FLOAT"_Stz,     CT_FLOAT);
+  /*  1 */ vAddConstant("CT_INTEGER"_Stz,   CT_INTEGER);
+  /*  1 */ vAddConstant("CT_INTERVAL"_Stz,  CT_INTERVAL);
+  /*  1 */ vAddConstant("CT_TIME"_Stz,      CT_TIME);
+  /*  1 */ vAddConstant("CT_TIMESTAMP"_Stz, CT_TIMESTAMP);
+  /*  1 */ vAddConstant("CT_VARBINARY"_Stz, CT_VARBINARY);
+  /*  1 */ vAddConstant("CT_VARCHAR"_Stz,   CT_VARCHAR);
+
   // DE_ : directory entry type -- n.b. the DT_FIFO etc are from dirent.h
   /*  1 */ vAddConstant("DE_FIFO"_Stz, DT_FIFO);
   /*  2 */ vAddConstant("DE_CHR"_Stz,  DT_CHR);
