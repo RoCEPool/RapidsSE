@@ -61,11 +61,12 @@ ld terminator "../Seth/tests/Load/terminator.csv"  field_delimiter "|";
 success
 
 fetch terminator;
-rows: 0
+rows: 11
 
 // fetch
-fetch terminator;
-rows: 0
+fetch terminator "pcol1 0 =";
+rows:
+(0,217,260,'grey',timestamp '2015-10-31 00:00:00',73.44,5.34,8,-152,81,'lll')
 
 // drop table terminator;
 drop table terminator;
