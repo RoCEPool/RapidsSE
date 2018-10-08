@@ -1,0 +1,61 @@
+/*============================================================================*/
+/* test_gGen.sen -- generate gGen files                                       */
+/*============================================================================*/
+
+" test_gGen.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* generate g definitions                                                     */
+/*----------------------------------------------------------------------------*/
+: gCol ( eColumn -- sColType )
+
+  params| eColumn |
+
+  eColumn case
+
+    CT_BOOLEAN   of "boolean"   endof
+    CT_CHAR      of "char"      endof
+    CT_DATE      of "date"      endof
+    CT_DECIMAL   of "decimal"   endof
+    CT_FLOAT     of "float"     endof
+    CT_INTEGER   of "integer"   endof
+    CT_INTERVAL  of "interval"  endof
+    CT_TIME      of "time"      endof
+    CT_TIMESTAMP of "timestamp" endof
+    CT_VARCHAR   of "varchar"   endof
+
+  endcase
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate g definitions                                                     */
+/*----------------------------------------------------------------------------*/
+: gRecurse ( iDepth -- )
+
+  params| iDepth |
+
+  iDepth .
+
+  iDepth if
+    iDepth 1 - to iDepth
+    iDepth gRecurse
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate g definitions                                                     */
+/*----------------------------------------------------------------------------*/
+: gGen
+
+  9 gRecurse
+
+  CT_ENUMS CT_BOOLEAN
+  do
+    I .
+    I gCol .
+  loop
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
