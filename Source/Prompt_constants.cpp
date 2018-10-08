@@ -29,8 +29,11 @@ bool Prompt::bPrompt_constants(SePrompt* pPrompt)
   vTrace("  C_LOW_BUFFERS       = %lld\n"_Stz,C_LOW_BUFFERS);
   vTrace("  C_MAX_PRECISION_BCD = %lld\n"_Stz,C_MAX_PRECISION_BCD);
   vTrace("  C_MAX_COLUMNS       = %lld\n"_Stz,C_MAX_COLUMNS);
+  vTrace("  C_MAX_NODES         = %lld\n"_Stz,C_MAX_NODES);
+  vTrace("  C_MAX_PARTITIONS    = %lld\n"_Stz,C_MAX_PARTITIONS);
   vTrace("  C_MAX_RECORD        = %lld\n"_Stz,C_MAX_RECORD);
   vTrace("  C_PATH_MAX          = %lld\n"_Stz,C_PATH_MAX);
+  vTrace("  C_SLOTS_PER_NODE    = %lld\n"_Stz,C_SLOTS_PER_NODE);
   vTrace("  C_STACK_LENGTH      = %lld\n"_Stz,C_STACK_LENGTH);
   vTrace("\n"_Stz);
 
