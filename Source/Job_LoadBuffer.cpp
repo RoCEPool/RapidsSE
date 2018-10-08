@@ -328,11 +328,11 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   // get table, partition and working buffer
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
   
-  // add the number of rows into rows processed
+  // add the number of rows into rows skipped
   i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
-  pJob_LoadTable->m_xNode[iThisNode].m_iRowsProcessed += m_nRows;
-  vTrace("m_iRowsProcessed %lld m_nRows %lld\n"_Stz,
-         pJob_LoadTable->m_xNode[iThisNode].m_iRowsProcessed, m_nRows);
+  pJob_LoadTable->m_xNode[iThisNode].m_iRowsSkipped += m_nRows;
+  vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
+         pJob_LoadTable->m_xNode[iThisNode].m_iRowsSkipped, m_nRows);
 
   // we loaded one additional buffer from a subloader
   pPartition->vIncTotalBuffersLoaded();

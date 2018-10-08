@@ -97,7 +97,14 @@
     pJob__Executed jobExecuted.response@ iParticipantNode pJob job.response!
 
     // get the rows processed from job__executed and set in pJob
-    pJob__Executed jobExecuted.rowsProcessed@ iParticipantNode pJob job.rowsProcessed!
+    pJob__Executed jobExecuted.rowsProcessed@
+      iParticipantNode pJob job.rowsProcessed!
+
+    pJob__Executed jobExecuted.rowsInvalid@
+      iParticipantNode pJob job.rowsInvalid!
+
+    pJob__Executed jobExecuted.rowsSkipped@
+      iParticipantNode pJob job.rowsSkipped!
 
   else
 

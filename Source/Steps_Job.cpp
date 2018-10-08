@@ -1082,7 +1082,8 @@ void Task::vJobRowsInvalidFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.rowsInvalid@"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(pJob->m_xNode[iNode].m_iRowsInvalid);
+  i8 iRowsInvalid = pJob->m_xNode[iNode].m_iRowsInvalid;
+  mpTask->m_pDataStack->vPushInt(iRowsInvalid);
   
   EXIT();
 }
@@ -1103,11 +1104,11 @@ void Task::vJobRowsInvalidStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
   
-  i8 iRowsProcessed;
-  if ( ! mpTask->m_pDataStack->bPop(iRowsProcessed) )
+  i8 iRowsInvalid;
+  if ( ! mpTask->m_pDataStack->bPop(iRowsInvalid) )
     THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
   
-  pJob->m_xNode[iNode].m_iRowsInvalid = iRowsProcessed;
+  pJob->m_xNode[iNode].m_iRowsInvalid = iRowsInvalid;
   
   EXIT();
 }
@@ -1173,8 +1174,10 @@ void Task::vJobRowsSkippedFetch(MP_Task mpTask)
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.rowsSkipped@"_Stz);
-  
-  mpTask->m_pDataStack->vPushInt(pJob->m_xNode[iNode].m_iRowsSkipped);
+ 
+  i8 iRowsSkipped = pJob->m_xNode[iNode].m_iRowsSkipped;
+
+  mpTask->m_pDataStack->vPushInt(iRowsSkipped);
   
   EXIT();
 }
