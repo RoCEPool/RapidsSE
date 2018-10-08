@@ -197,7 +197,7 @@ void vTest4(void)
 void vTest5(void)
 {
 #define nINTS (C_1MB * 8)
-  i8* aArray = (i8*)malloc(8 * nINTS);
+  i8* aArray = (i8*)MemLib::aMallocBlock(8 * nINTS);
   
   for (i8 i_Int = 0; i_Int < nINTS; i_Int++)
     aArray[i_Int] = i_Int;

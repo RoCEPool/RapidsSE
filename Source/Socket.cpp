@@ -60,7 +60,7 @@ Socket::Socket(void)
   m_bBlocking = true;
   m_xLock.vInitLock(LK_SOCKET);
   
-  m_aLowBuff = malloc(C_SIZE_POOL_BUFFER);
+  m_aLowBuff = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   
   vAddrInit(&m_xServAddr,nullptr,0);
   
@@ -81,7 +81,7 @@ Socket::Socket(int iSocketId)
   m_bBlocking = true;
   m_xLock.vInitLock(LK_SOCKET);
   
-  m_aLowBuff = malloc(C_SIZE_POOL_BUFFER);
+  m_aLowBuff = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,7 +95,7 @@ Socket::~Socket()
     vWarn("Socket %d not closed!\n"_Stz, m_iSocketId);
   }
   
-  free(m_aLowBuff);
+  MemLib::vFreeBlock(m_aLowBuff);
 }
 
 /*----------------------------------------------------------------------------*/

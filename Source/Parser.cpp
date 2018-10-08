@@ -32,7 +32,7 @@ void* Parser::operator new(size_t iSize, bool bMalloc)
   Parser* pParser;
   
   if (bMalloc)
-    pParser = reinterpret_cast<Parser*>(malloc(sizeof(Parser)));
+    pParser = reinterpret_cast<Parser*>(MemLib::aMallocBlock(sizeof(Parser)));
   else
     pParser = reinterpret_cast<Parser*>(HeapMem::pAllocate(CN_PARSER));
   
@@ -49,7 +49,7 @@ void Parser::operator delete(void* pParserAddress)
   Parser* pParser = reinterpret_cast<Parser*>(pParserAddress);
   
   if (pParser->m_bMalloc)
-    free(pParser);
+    MemLib::vFreeBlock(pParser);
   else
     HeapMem::vFree(pParser);
 }

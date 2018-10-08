@@ -36,7 +36,7 @@ void Prefetch::vTest(void)
   Timer xTimer;
   
   vTrace("Allocating %lld chunk\n"_Stz,iSize);
-  i8* aWord = (i8*)malloc(iSize);
+  i8* aWord = (i8*)MemLib::aMallocBlock(iSize);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fill all words
@@ -158,7 +158,7 @@ void Prefetch::vTest(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   vTrace("Freeing chunk\n"_Stz);
-  //free(aWord);
+  //MemLib::vFreeBlock(aWord);
 }
 
 /*============================================================================*/
