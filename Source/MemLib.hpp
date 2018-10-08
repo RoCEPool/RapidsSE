@@ -36,8 +36,10 @@ namespace Base
     static void  vCheckInitialised(void* aAddress, eCN eClass);
     static void  vCheckInitialised(void* aAddress, i8 nBytes);
     static void  vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
+    static void  vFreeBlock(void* aBlock);
     static i8    iGetTotalMemory(void);
     static void  vHexDump(void *aAddress, i8 iSize);
+    static void* aMallocBlock(i8 nBytes);
     static void  vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
     static void  vScribble(void* aAddress, i8 nBytes, eCN eClassNo);
     static void  vSet(void* pDst, char bByte, i8 iTimes, eCN eClassNo);

@@ -80,7 +80,15 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy from src to dst                                                       */
+/* free a block of memory                                                     */
+/*----------------------------------------------------------------------------*/
+void MemLib::vFreeBlock(void* aBlock)
+{
+  free(aBlock);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total amount if memory on the machine                                  */
 /*----------------------------------------------------------------------------*/
 i8 MemLib::iGetTotalMemory(void)
 {
@@ -170,6 +178,16 @@ void MemLib::vHexDump(void *aAddress, i8 iBytes)
     vTrace("\n"_Stz);
   }
   vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a block of memory                                                 */
+/*----------------------------------------------------------------------------*/
+void* MemLib::aMallocBlock(i8 nBytes)
+{
+  void* aBlock = (void*)malloc(nBytes);
+  
+  return aBlock;
 }
 
 /*----------------------------------------------------------------------------*/
