@@ -19,11 +19,13 @@
   sFileNm pFile file.path!
   OPEN_WRITE pFile file.open not if "file not opened" . exit then
 
-  nRecs 0
-  do
-    //I I "%v,String%v" str.format .
-    I I "%v,String%v\n" str.format pFile file.write
-  loop
+  nRecs 0 > if
+    nRecs 0
+    do
+      //I I "%v,String%v" str.format .
+      I I "%v,String%v\n" str.format pFile file.write
+    loop
+  then
 
   pFile file.close
 
@@ -35,6 +37,7 @@
 /*----------------------------------------------------------------------------*/
 : tData
 
+  "/rapids/t/t0.csv"    0      tDataFile
   "/rapids/t/t1.csv"    1      tDataFile
   "/rapids/t/t10.csv"   10     tDataFile
   "/rapids/t/t100.csv"  100    tDataFile
