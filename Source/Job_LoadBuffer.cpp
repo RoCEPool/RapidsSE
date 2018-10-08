@@ -332,7 +332,8 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
   pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped += m_nRows;
   vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
-         pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped, m_nRows);
+         *pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped,
+         m_nRows);
 
   // we loaded one additional buffer from a subloader
   pPartition->vIncTotalBuffersLoaded();

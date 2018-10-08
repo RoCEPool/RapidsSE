@@ -1082,7 +1082,7 @@ void Task::vJobRowsInvalidFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.rowsInvalid@"_Stz);
   
-  i8 iRowsInvalid = pJob->m_xNode[iNode].m_ziRowsInvalid;
+  i8 iRowsInvalid = *pJob->m_xNode[iNode].m_ziRowsInvalid;
   mpTask->m_pDataStack->vPushInt(iRowsInvalid);
   
   EXIT();
@@ -1175,7 +1175,7 @@ void Task::vJobRowsSkippedFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.rowsSkipped@"_Stz);
  
-  i8 iRowsSkipped = pJob->m_xNode[iNode].m_ziRowsSkipped;
+  i8 iRowsSkipped = *pJob->m_xNode[iNode].m_ziRowsSkipped;
 
   mpTask->m_pDataStack->vPushInt(iRowsSkipped);
   
