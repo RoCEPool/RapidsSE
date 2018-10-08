@@ -679,8 +679,12 @@ namespace Tasks
     static void vJobRemoveParticipant(MP_Task mpTask);
     static void vJobResponseStore(MP_Task mpTask);
     static void vJobResponseFetch(MP_Task mpTask);
+    static void vJobRowsInvalidFetch(MP_Task mpTask);
+    static void vJobRowsInvalidStore(MP_Task mpTask);
     static void vJobRowsProcessedFetch(MP_Task mpTask);
     static void vJobRowsProcessedStore(MP_Task mpTask);
+    static void vJobRowsSkippedFetch(MP_Task mpTask);
+    static void vJobRowsSkippedStore(MP_Task mpTask);
     static void vJobSend(MP_Task mpTask);
     static void vJobShow(MP_Task mpTask);
     static void vJobSignalConnector(MP_Task mpTask);
