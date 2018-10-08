@@ -14,7 +14,9 @@ namespace JobsModel
 
     struct {
       s4K  m_sResponse;      // response string
-      i8   m_iRowsProcessed; // rows processed
+      i8   m_iRowsProcessed; // rows processed              //! SHOULD BE ATOMIC
+      i8   m_iRowsInvalid;   // invalid rows detected
+      i8   m_iRowsSkipped;   // rows skipped
       eEC  m_eErrorCode;     // error code
     } m_xNode[C_MAX_NODES];
   
