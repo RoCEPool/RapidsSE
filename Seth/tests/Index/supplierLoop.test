@@ -695,7 +695,7 @@ rows:
 // check columns of index
 lsidxcol supplier idx;
 rows:
-('S_NATIONKEY', 'INTEGER')
+('S_NATIONKEY', 'INTEGER', 19, 0, false, false)
 
 //------------------------------------------------------------------------------
 // exact key fetches
