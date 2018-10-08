@@ -383,7 +383,7 @@ c148 boolean NOT NULL,
 c149 boolean NOT NULL,
 c150 boolean NOT NULL
 );
-failure contains: 'max 150 columns'
+failure contains: 'invalid command'
 
 // (11) create table with two columns that have same name
 create table T1 (

@@ -236,11 +236,24 @@ void JobsModel::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
     }
     
     i8 iRowsProcessed = 0;
+    Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_sResponse.aChar());
     
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s"_Stz, pJob_ListColumns->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += pJob_ListColumns->m_xNode[i_Node].m_iRowsProcessed;
+    ColumnVec* pColumnVec = pTable->pColumnVec();
+    i8 iColumns = pColumnVec->nItems();
+    for (i8 iColumn = 0; iColumn < iColumns - 1; iColumn++) {
+      Column* pColumn = pColumnVec->pGet(iColumn);
+      vTrace("row; (%lld, %s, %s, %lld, %lld, %s, %s)\n"_Stz,
+             pColumn->iColumnNo(),
+             pColumn->sColumnName().aChar(),
+             aCT[pColumn->eColumnType()],
+             pColumn->iColumnLength(),
+             pColumn->iColumnScale(),
+             pColumn->bIsNullable() ? "true"_Stz : "false"_Stz,
+             pColumn->bIsPartitionKey() ? "true"_Stz : "false"_Stz
+      );
+      
     }
+    iRowsProcessed = iColumns;
     vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   }
 }

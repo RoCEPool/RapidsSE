@@ -16,7 +16,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table
   sTableNm find execute to pTable
-
+/*
   pTable table.columnCount@ to iColumns
 
   // skip the hidden column
@@ -43,6 +43,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sent rows Processed in the job
   iColumns grid::thisNode@ pJob_ListColumns job.rowsProcessed!
+ */
+
+ pTable >str grid::thisNode@ pJob_ListColumns job.response!
+
 ;
 
 /*----------------------------------------------------------------------------*/
