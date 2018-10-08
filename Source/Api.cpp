@@ -357,6 +357,59 @@ eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, void** ppRowCount, i8
 }
 
 /*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, void** ppRowCount, i8 iTraceLevel)
+{
+  Stz* aApiCall = "RapidsSE_GetRowCountTableColumn"_Stz;
+  
+  // trace entry
+  TRACE_ENTRY_P0();
+  
+  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+  Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_sResponse.aChar());
+  ColumnVec* pColumnVec = pTable->pColumnVec();
+  pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed =  pColumnVec->nItems() - 1;
+  *ppRowCount = &(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  
+  //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
+{
+  Stz* aApiCall = "RapidsSE_GetRowTableColumn"_Stz;
+  
+  // trace entry
+  TRACE_ENTRY_P0();
+  
+  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+  
+  Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_sResponse.aChar());
+  ColumnVec* pColumnVec = pTable->pColumnVec();
+  
+  Column* pColumn = pColumnVec->pGet(iRow);
+  
+  sprintf(pSession->m_sResponse.aChar(),"%lld,%s,%s,%lld,%lld,%s,%s",
+           pColumn->iColumnNo(),
+           pColumn->sColumnName().aChar(),
+           aCT[pColumn->eColumnType()]->aChar(),
+           pColumn->iColumnLength(),
+           pColumn->iColumnScale(),
+           pColumn->bIsNullable() ? "true" : "false",
+           pColumn->bIsPartitionKey() ? "true": "false"
+  );
+    
+  
+  *ppRow = pSession->m_sResponse.aChar();
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_InsertRow(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel)
