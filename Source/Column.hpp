@@ -17,9 +17,8 @@ namespace DBobjects
     /*  7 */ CT_INTERVAL,
     /*  8 */ CT_TIME,
     /*  9 */ CT_TIMESTAMP,
-    /* 10 */ CT_VARBINARY,
-    /* 11 */ CT_VARCHAR,
-    /* 12 */ CT_ENUMS
+    /* 10 */ CT_VARCHAR,
+    /* 11 */ CT_ENUMS
   };
 
   static Stz* aCT[]

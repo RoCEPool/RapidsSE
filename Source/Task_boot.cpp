@@ -348,17 +348,18 @@ void Task::vAddConstants(void)
   /* 93 */ vAddConstant("CN_ENUMS"_Stz,        CN_ENUMS);
  
   // CT_ : columne type
+  /*  0 */ vAddConstant("CT_NONE"_Stz,      CT_NONE);
   /*  1 */ vAddConstant("CT_BOOLEAN"_Stz,   CT_BOOLEAN);
-  /*  1 */ vAddConstant("CT_CHAR"_Stz,      CT_CHAR);
-  /*  1 */ vAddConstant("CT_DATE"_Stz,      CT_DATE);
-  /*  1 */ vAddConstant("CT_DECIMAL"_Stz,   CT_DECIMAL);
-  /*  1 */ vAddConstant("CT_FLOAT"_Stz,     CT_FLOAT);
-  /*  1 */ vAddConstant("CT_INTEGER"_Stz,   CT_INTEGER);
-  /*  1 */ vAddConstant("CT_INTERVAL"_Stz,  CT_INTERVAL);
-  /*  1 */ vAddConstant("CT_TIME"_Stz,      CT_TIME);
-  /*  1 */ vAddConstant("CT_TIMESTAMP"_Stz, CT_TIMESTAMP);
-  /*  1 */ vAddConstant("CT_VARBINARY"_Stz, CT_VARBINARY);
-  /*  1 */ vAddConstant("CT_VARCHAR"_Stz,   CT_VARCHAR);
+  /*  2 */ vAddConstant("CT_CHAR"_Stz,      CT_CHAR);
+  /*  3 */ vAddConstant("CT_DATE"_Stz,      CT_DATE);
+  /*  4 */ vAddConstant("CT_DECIMAL"_Stz,   CT_DECIMAL);
+  /*  5 */ vAddConstant("CT_FLOAT"_Stz,     CT_FLOAT);
+  /*  6 */ vAddConstant("CT_INTEGER"_Stz,   CT_INTEGER);
+  /*  7 */ vAddConstant("CT_INTERVAL"_Stz,  CT_INTERVAL);
+  /*  8 */ vAddConstant("CT_TIME"_Stz,      CT_TIME);
+  /*  9 */ vAddConstant("CT_TIMESTAMP"_Stz, CT_TIMESTAMP);
+  /* 10 */ vAddConstant("CT_VARCHAR"_Stz,   CT_VARCHAR);
+  /* 11 */ vAddConstant("CT_ENUMS"_Stz,     CT_ENUMS);
 
   // DE_ : directory entry type -- n.b. the DT_FIFO etc are from dirent.h
   /*  1 */ vAddConstant("DE_FIFO"_Stz, DT_FIFO);
