@@ -108,6 +108,8 @@ Job__Executed::Job__Executed(void)
   
   m_sResponse      = ""_Stz;
   m_iRowsProcessed = 0;
+  m_iRowsInvalid   = 0;
+  m_iRowsSkipped   = 0;
   m_eErrorCode     = EC_NONE;
   
   _checkInitialised_(CN_JOB__EXECUTED);
