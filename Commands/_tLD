@@ -23,7 +23,7 @@ ld t "/rapids/t/t1.csv" ;
 fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
-tr t;
+//tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print "t10.csv..." ;
@@ -39,7 +39,7 @@ ld t "/rapids/t/t100.csv" ;
 fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
-tr t;
+//tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print "t1K.csv..." ;
@@ -47,7 +47,7 @@ ld t "/rapids/t/t1K.csv" ;
 fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
-tr t;
+//tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print "t10K.csv..." ;
@@ -55,7 +55,7 @@ ld t "/rapids/t/t10K.csv" ;
 fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
-tr t;
+//tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print "t100K.csv..." ;
@@ -63,7 +63,7 @@ ld t "/rapids/t/t100K.csv" ;
 fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
-tr t;
+//tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print "t1M.csv..." ;
@@ -72,7 +72,7 @@ ld t "/rapids/t/t1M.csv" ;
 fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
-tr t;
+//tr t;
 
 /*============================================================================*/
 /* end                                                                        */
