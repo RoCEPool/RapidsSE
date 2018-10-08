@@ -232,7 +232,17 @@ void Job_LoadBuffer::vBuffersFromSubLoader(i8 nBuffers)
 bool Job_LoadBuffer::bInsertRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
- 
+  
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+  
+  if (! m_pWorkingBuffer) {
+    bool bAllBuffersLoaded = bInsertRows_LowMem();
+    return bAllBuffersLoaded;
+  }
+  
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+
+  
   // convert partition to node slot
   i8 iSlot = TablePtn::iPartitionToSlot(m_iPartition);
   
@@ -248,6 +258,39 @@ bool Job_LoadBuffer::bInsertRows(void)
   
   // insert the working buffer
   m_pTable->vInsertEntries(iTxId, iSlot, m_pWorkingBuffer);
+  
+  // we loaded one additional buffer from a subloader
+  pPartition->vIncTotalBuffersLoaded();
+  
+  // does this job have information about the number of buffers loadable
+  // from a subloader for this partition?
+  if (C_UNKNOWN != m_nBuffersFromSubLoader)
+    pPartition->vAddTotalBuffersLoadable(m_nBuffersFromSubLoader);
+  
+  // have all buffers been loaded?
+  bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();
+  //if (bAllBuffersLoaded)
+  //  vTrace("Buffers loaded\n"_Stz);
+  
+  return bAllBuffersLoaded;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert rows while under low memory condition                               */
+/*----------------------------------------------------------------------------*/
+bool Job_LoadBuffer::bInsertRows_LowMem(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  vTrace("Job_LoadBuffer (LowMem) \n"_Stz);
+
+  // convert partition to node slot
+  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartition);
+  
+  // get table, partition and working buffer
+  TablePtn* pPartition = m_pTable->pPartition(iSlot);
   
   // we loaded one additional buffer from a subloader
   pPartition->vIncTotalBuffersLoaded();

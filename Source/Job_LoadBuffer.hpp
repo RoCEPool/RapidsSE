@@ -46,6 +46,7 @@ namespace JobsModel
     void vBuffersFromSubLoader(i8 nBuffers);
   
     bool bInsertRows(void);
+    bool bInsertRows_LowMem(void);
 
     i8   iJobLoadTableId(void);
     void vJobLoadTableId(i8 iJobId);
