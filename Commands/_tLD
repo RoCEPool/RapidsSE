@@ -10,6 +10,14 @@ config;
 _t
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+print "t0.csv..." ;
+ld t "/rapids/t/t0.csv" ;
+fetch t;
+//antbl t;
+//dumpidx t hidden;
+tr t;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //print "t1.csv..." ;
 //ld t "/rapids/t/t1.csv" ;
 //fetch t;
@@ -58,10 +66,10 @@ _t
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-print "t1M.csv..." ;
+//print "t1M.csv..." ;
 //takemem;
-ld t "/rapids/t/t1M.csv" ;
-fetch t displayOff;
+//ld t "/rapids/t/t1M.csv" ;
+//fetch t displayOff;
 //antbl t;
 //dumpidx t hidden;
 //tr t;
