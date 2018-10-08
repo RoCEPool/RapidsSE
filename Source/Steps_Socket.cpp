@@ -416,20 +416,22 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
       static_cast<Job_LoadBuffer*>(aLowBuff);
 
     bDiscardWorkingBuffer = pJob_LoadBuffer->m_pWorkingBuffer ? true : false;
+
+    pJob_LoadBuffer->m_bLowMem = true;
+    
+    Job* pJob = static_cast<Job*>(HeapMem::pAllocate(CN_JOB_LOADBUFFER));
+    MemLib::vCopy(pJob,pJob_LoadBuffer,sizeof(Job_LoadBuffer),CN_JOB_LOADBUFFER);
+    
+    pJob_LoadBuffer = static_cast<Job_LoadBuffer*>(pJob);
     
     if (-1 != pJob_LoadBuffer->m_nBuffersFromSubLoader) {
       
-      pJob_LoadBuffer->m_bLowMem = true;
-      
-      Job* pJob = static_cast<Job*>(HeapMem::pAllocate(CN_JOB_LOADBUFFER));
-      MemLib::vCopy(pJob,pJob_LoadBuffer,sizeof(Job_LoadBuffer),CN_JOB_LOADBUFFER);
-
-      pJob_LoadBuffer = static_cast<Job_LoadBuffer*>(pJob);
       pJob_LoadBuffer->m_pWorkingBuffer = nullptr;
     }
     else {
-      pJob_LoadBuffer = nullptr;
-      vTrace("Discarded Job_LoadBuffer under low mem\n"_Stz);
+      //pJob_LoadBuffer = nullptr;
+      //vTrace("Discarded Job_LoadBuffer under low mem\n"_Stz);
+      pJob_LoadBuffer->m_pWorkingBuffer = nullptr;
     }
 
     if (bDiscardWorkingBuffer) {

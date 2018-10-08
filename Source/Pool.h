@@ -25,7 +25,7 @@ static const i8 C_SIZE_MEDIUM_OBJECT    = C_64KB;
 static const i8 C_SIZE_LARGE_OBJECT     = C_SIZE_POOL_BUFFER - (C_1KB * 4);
 static const i8 C_SIZE_JUMBO_OBJECT     = C_SIZE_POOL_BUFFER * C_JUMBO_RATIO;
 
-static const i8 C_LOW_BUFFERS           = 1024; //128;
+static const i8 C_LOW_BUFFERS           = 128;
 
 #include "bn.hpp"
 #include "Buffer.hpp"

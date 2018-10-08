@@ -24,7 +24,7 @@ Buffer* gpTakenBuffers = nullptr;
 bool Prompt::bPrompt_takeMem(SePrompt* pPrompt)
 {
   
-  while (gpBufferPool->iFreeCount() >= C_LOW_BUFFERS + 5) {
+  while (gpBufferPool->iFreeCount() >= C_LOW_BUFFERS) {
 
     Buffer* p2ndBuffer  = gpTakenBuffers;
     gpTakenBuffers = gpBufferPool->pAllocBuffer();
