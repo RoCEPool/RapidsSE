@@ -82,8 +82,8 @@ Session::Session(i8 iPartition)
   m_sResponse       = ""_Stz;
   m_pJob            = nullptr;
   m_pTx             = nullptr;
-  
-  m_bSessionExiting     = false;
+  m_bSessionExiting = false;
+  m_pJobStack       = new Stack;
   
   m_pPerformanceTrace = nullptr;
   
@@ -102,6 +102,9 @@ Session::~Session(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   delete m_pCommandProcessor;
+  
+  RASSERT(0 == m_pJobStack->iValues());
+  delete m_pJobStack;
 }
 
 /*----------------------------------------------------------------------------*/

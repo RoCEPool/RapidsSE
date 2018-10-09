@@ -17,6 +17,7 @@ namespace Interface
     s48K     m_sResponse;        // response
     Tx*      m_pTx;              // current transaction
     bool     m_bSessionExiting;  // is session exiting ?
+    Stack*   m_pJobStack;        // stack of jobs
     
     PerformanceTrace* m_pPerformanceTrace;  // performance Trace
     CommandProcessor* m_pCommandProcessor;  // command processor
