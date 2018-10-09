@@ -328,37 +328,37 @@ success
 
 // tests row limits
 create table limitRow (col0 VARCHAR(20000));
-success;
+success
 
-ld limitRow "../Seth/tests/Load/largeRow1.tbl";
-success;
+//ld limitRow "../Seth/tests/Load/largeRow1.tbl";
+//success
 
-fetch limitRow;
-rows: 0;
+//fetch limitRow;
+//rows: 0
 
 ld limitRow "../Seth/tests/Load/largeRow2.tbl";
-success;
+success
 
 fetch limitRow;
-rows: 0;
+rows: 0
 
 ld limitRow "../Seth/tests/Load/largeRow3.tbl";
 
 fetch limitRow;
-rows: 0;
+rows: 0
 
 ld limitRow "../Seth/tests/Load/15KRow.tbl";
 
 fetch limitRow;
-rows: 1;
+rows: 1
 
 ld limitRow "../Seth/tests/Load/16KRow.tbl";
 
 fetch limitRow;
-rows: 2;
+rows: 2
 
 drop table limitRow;
-success;
+success
 
 CLEANUP {
   
@@ -424,6 +424,9 @@ CLEANUP {
   
   drop table returns;
   mute
+
+  drop table limitRow;
+  mute;
 
   bye;
   mute
