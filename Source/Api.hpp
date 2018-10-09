@@ -31,7 +31,6 @@ extern "C" eEC  RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTra
 extern "C" eEC  RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel);
 extern "C" bool RapidsSE_SessionInvalid(int eError, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_ResetSession(Session* pSession, i8 iTraceLevel);
 
 Job* RapidsSE_pExecuteCommand(Stz* aCommand, Session* pSession, bool bPostJob);
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession);

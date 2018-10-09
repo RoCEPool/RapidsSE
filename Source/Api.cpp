@@ -103,8 +103,7 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     
     TRACE_EXIT("ea"_Stz);
     
-    return eResult;
-    
+    return EC_NONE;
   }
   catch (Error* pError) {
     RapidsSE::vErrorHandler(pError);
@@ -123,10 +122,15 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_EndJobs"_Stz;
+  eEC eResult;
   
   // trace entry
   TRACE_ENTRY_P0();
   
+  // validate the session
+  VALIDATE_SESSION("a"_Stz);
+  
+  // delete the jobs from teh sessions jobStack
   vDeleteJobs(pSession);
   
   // mark session as exiting (any fetches still running will stop)
@@ -143,9 +147,13 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
                             void** ppJob, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_ExecuteCommand"_Stz;
+  eEC eResult;
   
   // trace entry
   TRACE_ENTRY_P1(aCommand);
+  
+  // validate the session
+  VALIDATE_SESSION("a"_Stz);
   
   // set the catalog and schema in the session
   eEC eError = pSession->eInit(sCatalogName, sSchemaName);
@@ -155,23 +163,28 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
     return eError;
   }
   
+  // execute the command
   Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSession, false);
-
-  *ppJob = pJob;
   
-  pSession->m_pJobStack->vPushObject(pJob);
-  
+  // check if job had an error
   if (pJob->m_bHasError) {
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
-        vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
+        //vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
+        TRACE_EXIT("eb"_Stz);
         return pJob->m_xNode[i_Node].m_eErrorCode;
       }
     }
     ASSERT(0);
   }
   
-  TRACE_EXIT("eb"_Stz);
+  // return job in ppJob
+  *ppJob = pJob;
+  
+  // push the job on the sessions job stack
+  pSession->m_pJobStack->vPushObject(pJob);
+  
+  TRACE_EXIT("ec"_Stz);
   return EC_NONE;
 }
 
@@ -180,9 +193,8 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuffer, i8 iTraceLevel)
 {
-  eEC eResult;
-  
   Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
+  eEC eResult;
   
   try {
            
@@ -203,6 +215,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
     // if we had an entry buffer delete it
     pJob_FetchRows->vDeleteBuffer();
     
+    // are we done ?
     if (pJob_FetchRows->m_nLastBuffersScanned == pJob_FetchRows->m_nLastBuffers) {
       *ppFetchBuffer = nullptr;
   
@@ -223,12 +236,13 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
     pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
     
-    
+    // is it a last buffer ?
     if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
       pJob_FetchRows->m_nLastBuffersScanned++;
       //vTrace("m_nLastBuffersScanned: %lld %lld\n"_Stz, pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
     }
     
+    // return the fetched buffer
     *ppFetchBuffer = pJob_FetchRows->m_pFetchBuffer;
     
     // trace exit
@@ -299,17 +313,18 @@ eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 
 
   // validate session
   VALIDATE_SESSION("a"_Stz);
-
+  
   // get the jobptr
   Job* pJob = (Job*)pJobPtr;
   
   // validate the job
   VALIDATE_JOB("b"_Stz);
  
+  // validate the reference pointer
+  VALIDATE_REFPOINTER("c"_Stz, ppRow);
+  
   // tokenize the response
   TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_sResponse);
- 
-  //pTknVec->vDumpTokens("tokens"_Stz, pTknVec->iCountTokens());
   
   i8 iRows = 0;
   i8 iToken = 0;
@@ -335,11 +350,16 @@ eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 
     pSession->m_sResponse.vConcat(pTknVec->pGet(iToken++)->aText());
   }
   
+  // return the row
   *ppRow = pSession->m_sResponse.aChar();
   //vTrace("Returning row %s\n"_Stz, pSession->m_sResponse.aChar());
   
+  // delete the token vector
   pTknVec->vSetAllTokens();
   delete pTknVec;
+  
+  // trace exit
+  TRACE_EXIT("ea"_Stz);
   
   return EC_NONE;
 }
@@ -350,14 +370,28 @@ eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 
 eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_GetRowCount"_Stz;
+  eEC eResult;
   
   // trace entry
   TRACE_ENTRY_P0();
   
+  // validate session
+  VALIDATE_SESSION("a"_Stz);
+  
   Job* pJob = (Job*)pJobPtr;
   
+  // validate the job
+  VALIDATE_JOB("b"_Stz);
+  
+  // validate the pointer
+  VALIDATE_PARAM("c"_Stz, pRowCount);
+  
   *pRowCount = *(pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_ziRowsProcessed);
-  vTrace("RowCount = %lld\n"_Stz, *pRowCount);
+  //vTrace("RowCount = %lld\n"_Stz, *pRowCount);
+  
+  // trace exit
+  TRACE_EXIT("ea"_Stz);
+  
   return EC_NONE;
 }
 
@@ -367,9 +401,19 @@ eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTr
 eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_GetRowCountTableColumn"_Stz;
+  eEC eResult;
   
   // trace entry
   TRACE_ENTRY_P0();
+  
+  // validate session
+  VALIDATE_SESSION("a"_Stz);
+  
+  // validate the job
+  VALIDATE_JOB("b"_Stz);
+  
+  // validate the pointer
+  VALIDATE_PARAM("c"_Stz, pRowCount);
   
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
   Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_sResponse.aChar());
@@ -378,6 +422,10 @@ eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCo
   *pRowCount = *(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_ziRowsProcessed);
   
   //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  
+  // trace exit
+  TRACE_EXIT("ea"_Stz);
+  
   return EC_NONE;
 }
 
@@ -387,9 +435,19 @@ eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCo
 eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_GetRowTableColumn"_Stz;
+  eEC eResult;
   
   // trace entry
   TRACE_ENTRY_P0();
+  
+  // validate session
+  VALIDATE_SESSION("a"_Stz);
+  
+  // validate the job
+  VALIDATE_JOB("b"_Stz);
+  
+  // validate the reference pointer
+  VALIDATE_REFPOINTER("c"_Stz, ppRow);
   
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
   
@@ -411,13 +469,16 @@ eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void**
   
   *ppRow = pSession->m_sResponse.aChar();
   
+  // trace exit
+  TRACE_EXIT("ea"_Stz);
+  
   return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRow(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel)
+eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLevel)
 {
 
   eEC eResult;
@@ -437,10 +498,13 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel)
     // validate parameter
     VALIDATE_PARAM("b"_Stz, sRow);
     
+    // validate the job
+    VALIDATE_JOB("b"_Stz);
+    
     // validate table
     //VALIDATE_TABLE("c"_Stz);
     
-    Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJob);
+    Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
  
     i8 iRawDataLength = StrLib::iSize(sRow->aChar());
     
@@ -521,8 +585,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel)
     }
 
     // trace exit
-    //TRACE_EXIT("ea"_Stz);
-
+    TRACE_EXIT("ea"_Stz);
     return EC_NONE;
     
   }
@@ -540,7 +603,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInvalidRows, i8 iTraceLevel)
+eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pInvalidRows, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -553,14 +616,17 @@ eEC RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInva
     // validate the session
     VALIDATE_SESSION("a"_Stz);
     
+    // validate the job
+    VALIDATE_JOB("b"_Stz);
+    
     // validate the reference pointers
     VALIDATE_REFPOINTER("b"_Stz, pValidRows);
     VALIDATE_REFPOINTER("b"_Stz, pInvalidRows);
     
-    Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJob);
-    vTrace("L %lld IN %lld\n"_Stz,
-           pJob_LoadTable->m_iValidRows,
-           pJob_LoadTable->m_iInvalidRows);
+    Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJobPtr);
+//    vTrace("L %lld IN %lld\n"_Stz,
+//           pJob_LoadTable->m_iValidRows,
+//           pJob_LoadTable->m_iInvalidRows);
     
     *pValidRows   = pJob_LoadTable->m_iValidRows;
     *pInvalidRows = pJob_LoadTable->m_iInvalidRows;
@@ -642,23 +708,8 @@ eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
     // validate the session
     VALIDATE_SESSION("a"_Stz);
     
-    Stack* pJobStack = pSession->m_pJobStack;
-    Object* pJobObject;
-    
-    while (pJobStack->bPop(pJobObject)) {
-      
-      Job* pJobPtr = (Job*)pJobObject;
-      
-      // validate the job
-      VALIDATE_JOB("a"_Stz);
-      
-      // find the job class on this node
-      eCN eClass = pJobPtr->eClass();
-      JobClass* pJobClass = JobClass::pFind(eClass);
-      
-      // delete the job
-      pJobClass->vDeleteJob(pSession,pJobPtr);
-    }
+    // delete jobs from teh job stack of the session
+    vDeleteJobs(pSession);
     
     // delete the session
     RapidsSE::vDeleteSession(pSession);
@@ -776,42 +827,6 @@ eEC RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset the SE interface                                                     */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_ResetSession(Session* pSession, i8 iTraceLevel)
-{
-  eEC eResult;
-  Stz* aApiCall = "RapidsSE_ResetSession"_Stz;
-
-  try {
-    
-    TRACE_ENTRY_P0();
-    
-    // validate the session
-    VALIDATE_SESSION("a"_Stz);
-    
-    VALIDATE_POOL();
-    
-    pSession->m_sResponse.vCopy(""_Stz);
-    
-    // trace exit
-    TRACE_EXIT("ea"_Stz);
-    
-    return EC_NONE;
-    
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -822,33 +837,26 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, Session* pSession, bool bPostJob)
 {
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
-  vTrace("Tokenizing command\n"_Stz);
   pCommandProcessor->vTokenise(aCommand);
   
-  vTrace("Looking for jobClass\n"_Stz);
   bool bFound = pCommandProcessor->bFindJobClass();
   if (! bFound) {
-    vTrace("No jobClass\n"_Stz);
     return nullptr;
   }
   
-  vTrace("Executing pre\n"_Stz);
   pCommandProcessor->vPreJob(pSession);
   
   Job* pJob = pCommandProcessor->pJob();
   if (!pJob) {
-    vTrace("No job\n"_Stz);
     return nullptr;
   }
   
   // lock this job's mutex
-  vTrace("Getting mutex lock\n"_Stz);
   i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 
   // spawn the job
-  vTrace("Spawning job\n"_Stz);
   RapidsSE_bSpawnJob(pJob, SS_SEED_REQ, pSession);
   
   // wait for condition
@@ -856,8 +864,6 @@ Job* RapidsSE_pExecuteCommand(Stz* aCommand, Session* pSession, bool bPostJob)
                             &pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-  
-  vTrace("Returned job %p\n"_Stz, pJob);
   
   if (bPostJob)
     pCommandProcessor->vPostJob(pSession);
