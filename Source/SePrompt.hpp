@@ -56,6 +56,7 @@ namespace Prompt
     void vLockMutex(void);
     void vPostJob(void);
     void vPreJob(void);
+    void vReportTime(void);
     Session* pSession(void);
     void vSpawnJob(void);
     TokenVec* pTknVec(void);

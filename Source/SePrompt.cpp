@@ -106,6 +106,8 @@ void SePrompt::vPromptLoop(void)
   
   while (bContinue()) {
     
+    vReportTime();
+    
     vGetCommand();
        
     if (bBlankLine())
@@ -185,10 +187,13 @@ void SePrompt::vCheckTimed(void)
   
   Token* pTkn0 = pTkn(0);
   
-  if (pTkn0->bSame("time"_Stz)) {
-    m_bTimed = true;
-    vCutToken(0);
-  }
+  if (! pTkn0->bSame("time"_Stz))
+    return;
+  
+  m_bTimed = true;
+  vCutToken(0);
+
+  m_xTimer.vStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,7 +235,11 @@ void SePrompt::vCutToken(i8 i_Tkn)
   
   TokenVec* pTknVec = m_pSession->m_pCommandProcessor->pTknVec();
   
-  pTknVec->vPrint();
+  //pTknVec->vPrint();
+  
+  pTknVec->vCutToken(i_Tkn);
+
+  //pTknVec->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -340,6 +349,21 @@ void SePrompt::vPreJob(void)
   pCommandProcessor->vPreJob(m_pSession);
   
   m_pJob = pCommandProcessor->pJob();
+}
+
+/*----------------------------------------------------------------------------*/
+/* report time taken by last command                                          */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vReportTime(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (! m_bTimed)
+    return;
+  
+  m_xTimer.vUpdate();
+  
+  vTrace("time %lldms\n"_Stz,m_xTimer.iMilliseconds());
 }
 
 /*----------------------------------------------------------------------------*/

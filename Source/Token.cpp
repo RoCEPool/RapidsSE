@@ -171,6 +171,7 @@ void Token::vCopy(Token* pGivenToken)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
+  m_eToken = pGivenToken->m_eToken;
   m_sText.vCopy(pGivenToken->aText());
 }
 

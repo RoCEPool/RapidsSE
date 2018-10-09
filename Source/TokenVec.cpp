@@ -108,6 +108,26 @@ i8 TokenVec::iCountTokens(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* cut a token from token vector                                              */
+/*----------------------------------------------------------------------------*/
+void TokenVec::vCutToken(i8 i_Tkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENVEC,_FOOTER_);
+  
+  i8 nTkns = nItems();
+  
+  for (i8 i_Token = i_Tkn; i_Token < nTkns - 1; i_Token++) {
+    
+    Token* pTknA = m_pItem[i_Tkn];
+    Token* pTknB = m_pItem[i_Tkn + 1];
+    
+    pTknA->vCopy(pTknB);
+  }
+  
+  m_nItems--;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get detached request                                                       */
 /*----------------------------------------------------------------------------*/
 bool TokenVec::bDetachedRequest(void)
