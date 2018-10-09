@@ -90,7 +90,7 @@ void Task::vWorkingBufferShow(MP_Task mpTask)
   Object* pPtrWorkingBuffer;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrWorkingBuffer) )
-    THROW_INVALID_DSTACK("workingBuffer.isLast@"_Stz);
+    THROW_INVALID_DSTACK("workingBuffer.show"_Stz);
   
   WorkingBuffer* pWorkingBuffer = _pWorkingBuffer(pPtrWorkingBuffer);
 
