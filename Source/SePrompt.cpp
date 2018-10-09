@@ -364,6 +364,8 @@ void SePrompt::vReportTime(void)
   m_xTimer.vUpdate();
   
   vTrace("time %lldms\n"_Stz,m_xTimer.iMilliseconds());
+  
+  m_bTimed = false;
 }
 
 /*----------------------------------------------------------------------------*/

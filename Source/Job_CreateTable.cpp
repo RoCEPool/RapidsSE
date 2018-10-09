@@ -348,11 +348,11 @@ eEC Job_CreateTable::eAddTableColumns(TokenVec* pTokenVec, i8& iCurrentToken)
     }
     
     // check for PRIMARY KEY
-    //    if (m_xTokenVec2[iCurrentToken]->bSame("primary"_Stz)) {
+    //    if (m_xTokenVec[iCurrentToken]->bSame("primary"_Stz)) {
     //
     //      pJob->m_xColumns[iColumn].m_sPrimaryKey = m_xTokenVec[iCurrentToken++]->aText();
     //
-    //      if (!m_xTokenVec2[iCurrentToken]->bSame("key"_Stz)) {
+    //      if (!m_xTokenVec[iCurrentToken]->bSame("key"_Stz)) {
     //        m_pSession->vSetLastError(EC_INVALID_COMMAND);
     //        return false;
     //      }

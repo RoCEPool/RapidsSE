@@ -13,9 +13,7 @@ namespace Interface
     Tokeniser* m_pTokeniser; // input stream tokeniser
     JobClass*  m_pJobClass;  // job class
     Job*       m_pJob;       // job
-  
-    TokenVec   m_xTokenVec2; // another token vector TO BE DELETED
-  
+    
     // must be last
     Footer m_xFooter;
 
