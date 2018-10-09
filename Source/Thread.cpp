@@ -103,23 +103,18 @@ Thread::~Thread(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* thread entry point (R3.5 model)                                            */
+/* thread entry point                                                         */
 /*----------------------------------------------------------------------------*/
 void* Thread::pEntryPoint(void* pArg)
 {
-  //
-  // this is the entry point for the new thread model
-  //
-  
-  
   Thread* pThread = static_cast<Thread*>(pArg);
   
   pThread->vThreadState(TC_IDLE);
   
   gpAttachMap->m_pQueues->vAddThread(pThread);
   
-  //if (gpAttachMap->m_bVerbose)
-    vTrace("\nThread::vEntryPoint %p %lld\n"_Stz,
+  if (gpAttachMap->m_bVerbose)
+    vTrace("Thread::vEntryPoint %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
   try {

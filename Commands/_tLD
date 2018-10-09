@@ -30,7 +30,7 @@ create index t_idx0 on t (t_int);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 print "t10.csv..." ;
 ld t "/rapids/t/t10.csv" ;
-fetch t "t_int < 5";
+fetch t "t_int 5 <";
 //antbl t;
 //dumpidx t hidden;
 //tr t;
