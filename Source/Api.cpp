@@ -603,7 +603,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pInvalidRows, i8 iTraceLevel)
+eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows, i8 iTraceLevel)
 {
   eEC eResult;
   
@@ -642,6 +642,7 @@ eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pI
     
     *pValidRows   = iRowsProcessed;
     *pInvalidRows = iRowsInvalid;
+    *pSkippedRows = iRowsSkipped;
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
