@@ -476,6 +476,10 @@ void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAc
       
       TokenVec* pPhraseTknVec = m_pPhraseTknVec[i_Phrase];
       
+      // unable to find a matching column
+      if ( pPhraseTknVec->nTokens() < 3 )
+        return;
+
       // get next columnNm token from where clause
       pColNmTkn_Where = pPhraseTknVec->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
       
