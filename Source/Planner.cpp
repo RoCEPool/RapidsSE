@@ -474,19 +474,20 @@ void Planner::vMatchPredicates(i8 i_Phrase, PredicateVec* mpPathPredVec, eAT eAc
     // search where clause to find predicate with column name and suitable op
     for (i8 i_ColumnTkn_Where = -1;;) {
       
+      TokenVec* pPhraseTknVec = m_pPhraseTknVec[i_Phrase];
+      
       // get next columnNm token from where clause
-      pColNmTkn_Where =
-        m_pPhraseTknVec[i_Phrase]->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
+      pColNmTkn_Where = pPhraseTknVec->pFindToken(sColumnNm_Path,i_ColumnTkn_Where);
       
       // unable to find a matching column
       if ( ! pColNmTkn_Where )
         return;
       
       // get the associated literal token
-      mpLitTkn_Where = m_pPhraseTknVec[i_Phrase]->pGet(i_ColumnTkn_Where+1);
+      mpLitTkn_Where = pPhraseTknVec->pGet(i_ColumnTkn_Where+1);
       
       // get the associated op token
-      mpOpTkn_Where = m_pPhraseTknVec[i_Phrase]->pGet(i_ColumnTkn_Where+2);
+      mpOpTkn_Where = pPhraseTknVec->pGet(i_ColumnTkn_Where+2);
       sOpDatum_Where = mpOpTkn_Where->aText();
       eRelOp_Where = Op::eDecode(sOpDatum_Where.aStr());
       
