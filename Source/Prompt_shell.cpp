@@ -23,16 +23,11 @@ extern PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_shell(SePrompt* pPrompt)
 {
-  /*
   TokenVec* pTknVec = pPrompt->pTknVec();
   
   s4K sCommand;
   
   i8 nTokens = pTknVec->nTokens();
-  
-  // silently ignore: se ;
-  if (1 == nTokens)
-    return true;
   
   // concat all the tokens together
   for (i8 i_Token = 1; i_Token < nTokens; i_Token++) {
@@ -56,9 +51,9 @@ bool Prompt::bPrompt_shell(SePrompt* pPrompt)
         break;
 
       case TN_STRING:
-        sCommand.vConcat("\""_Stz);
+        //sCommand.vConcat("\""_Stz);
         sCommand.vConcat(pToken->aText());
-        sCommand.vConcat("\""_Stz);
+        //sCommand.vConcat("\""_Stz);
         break;
         
       default:
@@ -71,21 +66,13 @@ bool Prompt::bPrompt_shell(SePrompt* pPrompt)
   // concat a terminating semicolon (needed??)
   sCommand.vConcat(";"_Stz);
 
-  vTrace("SE:: %s\n"_Stz,sCommand.aStr());
+  vTrace("Shell:: %s\n"_Stz,sCommand.aStr());
   
-  // call se to execute command
-  Job* pJob = RapidsSE_pExecuteCommand(sCommand.aStr(),pPrompt->pSession(),true);
+  SysCall xSysCall;
   
-  if (pJob) {
-    delete pJob;
-    return true;
-  }
-  else {
-    return false;
-  }
-   */
+  i8 iExitStatus = Shell::iExecute(sCommand.aStr(),xSysCall);
   
-  return true;
+  return iExitStatus ? true : false;
 }
 
 /*============================================================================*/
