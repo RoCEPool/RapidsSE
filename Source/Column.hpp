@@ -33,9 +33,8 @@ namespace DBobjects
     /*  7 */ "INTERVAL"_Stz,
     /*  8 */ "TIME"_Stz,
     /*  9 */ "TIMESTAMP"_Stz,
-    /* 10 */ "VARBINARY"_Stz,
-    /* 11 */ "VARCHAR"_Stz,
-    /* 12 */ "ENUMS"_Stz
+    /* 10 */ "VARCHAR"_Stz,
+    /* 11 */ "ENUMS"_Stz
   };
 
   class Column : public Object
