@@ -180,7 +180,8 @@ bool TablePtn::bAllBuffersLoaded(void)
   if (m_nSubLoadersDone      == nSubLoadersInGrid &&
       m_nTotalBuffersLoaded  == m_nTotalBuffersLoadable) {
  
-    vTrace("All buffers have been loaded: %lld\n"_Stz,m_nTotalBuffersLoaded);
+    if (gpAttachMap->m_bVerbose)
+      vTrace("All buffers have been loaded: %lld\n"_Stz,m_nTotalBuffersLoaded);
 
     // reset for next load
     m_nSubLoadersDone       = 0;
