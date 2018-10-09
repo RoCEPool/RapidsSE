@@ -47,15 +47,21 @@ bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("  Task+Stacks    = %lu; \n"_Stz, sizeof(Stack) + 3 * sizeof(Stack));
   vTrace("\n"_Stz);
   
-  vTrace("  sizeof(s32)    = %lu; \n"_Stz,  sizeof(s32));
-  vTrace("  sizeof(s256)   = %lu; \n"_Stz,  sizeof(s256));
-  vTrace("  sizeof(s4K)    = %lu; \n"_Stz,  sizeof(s4K));
-  vTrace("  sizeof(s16KB)  = %lu; \n"_Stz,  sizeof(s16KB));
-  vTrace("  sizeof(s17KB)  = %lu; \n"_Stz,  sizeof(s17KB));
-  vTrace("  sizeof(s48K)   = %lu; \n"_Stz,  sizeof(s48K));
-  vTrace("  sizeof(s1M)    = %lu; \n"_Stz,  sizeof(s1M));
-
+  vTrace("  sizeof(s32)    = %lu; \n"_Stz, sizeof(s32));
+  vTrace("  sizeof(s256)   = %lu; \n"_Stz, sizeof(s256));
+  vTrace("  sizeof(s4K)    = %lu; \n"_Stz, sizeof(s4K));
+  vTrace("  sizeof(s16KB)  = %lu; \n"_Stz, sizeof(s16KB));
+  vTrace("  sizeof(s17KB)  = %lu; \n"_Stz, sizeof(s17KB));
+  vTrace("  sizeof(s48K)   = %lu; \n"_Stz, sizeof(s48K));
+  vTrace("  sizeof(s1M)    = %lu; \n"_Stz, sizeof(s1M));
   vTrace("\n"_Stz);
+  
+  vTrace("  sizeof(JobDicPath)    = %lu; \n"_Stz, sizeof(JobDicPath));
+  vTrace("  sizeof(JobFileName)   = %lu; \n"_Stz, sizeof(JobFileName));
+  vTrace("  sizeof(JobResult)     = %lu; \n"_Stz, sizeof(JobResult));
+  vTrace("  sizeof(JobObjectName) = %lu; \n"_Stz, sizeof(JobObjectName));
+  vTrace("\n"_Stz);
+
   return true;
 }
 
