@@ -60,6 +60,7 @@ namespace Prompt
     Session* pSession(void);
     void vSpawnJob(void);
     TokenVec* pTknVec(void);
+    void vUnknownCommand(void);
     void vWaitCond(void);
 
   private:

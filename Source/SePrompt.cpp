@@ -122,7 +122,7 @@ void SePrompt::vPromptLoop(void)
       continue;
     
     if (! bFindJobClass()) {
-      vTrace("error: Unknown command\n"_Stz);
+      vUnknownCommand();
       continue;
     }
 
@@ -412,6 +412,19 @@ Token* SePrompt::pTkn(i8 i_Token)
   Token* pTkn = (*pTknVec)[i_Token];
   
   return pTkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* unknown command                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vUnknownCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  Token* pTkn = pTknVec()->pGet(0);
+  
+  vTrace("error: Unknown command '%s'\n"_Stz,
+         pTkn->aText());
 }
 
 /*----------------------------------------------------------------------------*/
