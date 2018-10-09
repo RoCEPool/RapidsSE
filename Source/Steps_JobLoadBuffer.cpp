@@ -15,13 +15,13 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobLoadBuffer(void)
 {
+  vAddStep("job_loadBuffer::spawn"_Stz,          &Task::vJob_LoadBufferSpawn);
+  
   vAddStep("job_loadBuffer.insertRows"_Stz,      &Task::vJob_LoadBufferInsertRows);
   vAddStep("job_loadBuffer.jobLoadTableId@"_Stz, &Task::vJob_LoadBufferJobLoadTableIdFetch);
   vAddStep("job_loadBuffer.jobLoadTable!"_Stz,   &Task::vJob_LoadBufferJobLoadTableStore);
   vAddStep("job_loadBuffer.partition@"_Stz,      &Task::vJob_LoadBufferPartitionFetch);
   vAddStep("job_loadBuffer.table!"_Stz,          &Task::vJob_LoadBufferTableStore);
-  
-  vAddStep("job_loadBuffer::spawn"_Stz,          &Task::vJob_LoadBufferSpawn);
 }
 
 /*----------------------------------------------------------------------------*/

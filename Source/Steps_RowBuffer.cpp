@@ -15,10 +15,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RowBuffer(void)
 {
+  vAddStep("rowBuffer::new"_Stz,    &Task::vRowBufferNew);
+  
   vAddStep("rowBuffer.append"_Stz, &Task::vRowBufferAppend);
   vAddStep("rowBuffer.appendRecord"_Stz, &Task::vRowBufferAppendRecord);
   vAddStep("rowBuffer.dump"_Stz,   &Task::vRowBufferDump);
-  vAddStep("rowBuffer::new"_Stz,    &Task::vRowBufferNew);
 }
 
 /*----------------------------------------------------------------------------*/

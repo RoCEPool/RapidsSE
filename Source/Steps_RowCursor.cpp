@@ -15,6 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RowCursor(void)
 {
+  vAddStep("rowCursor::new"_Stz,         &Task::vRowCursorNew);
+  
   vAddStep("rowCursor.begin"_Stz,        &Task::vRowCursorBegin);
   vAddStep("rowCursor.delete"_Stz,       &Task::vRowCursorDelete);
   vAddStep("rowCursor.end"_Stz,          &Task::vRowCursorEnd);
@@ -22,7 +24,6 @@ void Step::vAddSteps_RowCursor(void)
   vAddStep("rowCursor.entryBuffer!"_Stz, &Task::vRowCursorEntryBufferStore);
   vAddStep("rowCursor.first"_Stz,        &Task::vRowCursorFirst);
   vAddStep("rowCursor.init"_Stz,         &Task::vRowCursorInit);
-  vAddStep("rowCursor::new"_Stz,         &Task::vRowCursorNew);
   vAddStep("rowCursor.next"_Stz,         &Task::vRowCursorNext);
   vAddStep("rowCursor.row"_Stz,          &Task::vRowCursorRow);
   vAddStep("rowCursor.table@"_Stz,       &Task::vRowCursorTableFetch);

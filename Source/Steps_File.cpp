@@ -15,10 +15,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_File(void)
 {
+  vAddStep("file::new"_Stz,       &Task::vFileNew);
+  
   vAddStep("file.close"_Stz,      &Task::vFileClose);
   vAddStep("file.delete"_Stz,     &Task::vFileDelete);
   vAddStep("file.init"_Stz,       &Task::vFileInit);
-  vAddStep("file::new"_Stz,       &Task::vFileNew);
   vAddStep("file.open"_Stz,       &Task::vFileOpen);
   vAddStep("file.path@"_Stz,      &Task::vFilePathGet);
   vAddStep("file.path!"_Stz,      &Task::vFilePathSet);

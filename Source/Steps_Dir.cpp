@@ -19,6 +19,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dir(void)
 {
+  vAddStep("dir::new"_Stz,         &Task::vDirNew);
+  
   vAddStep("dir.changeCurrent"_Stz, &Task::vDirChangeCurrent);
   vAddStep("dir.exists"_Stz,        &Task::vDirExists);
   vAddStep("dir.getCurrent"_Stz,    &Task::vDirGetCurrent);
@@ -32,7 +34,6 @@ void Step::vAddSteps_Dir(void)
   vAddStep("dir.init"_Stz,        &Task::vDirInit);
   vAddStep("dir.isClosed"_Stz,    &Task::vDirIsClosed);
   vAddStep("dir.isOpen"_Stz,      &Task::vDirIsOpen);
-  vAddStep("dir::new"_Stz,         &Task::vDirNew);
   vAddStep("dir.open"_Stz,        &Task::vDirOpen);
   vAddStep("dir.path@"_Stz,       &Task::vDirPathGet);
   vAddStep("dir.path!"_Stz,       &Task::vDirPathSet);

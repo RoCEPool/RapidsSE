@@ -15,12 +15,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Timer(void)
 {
+  vAddStep("timer::new"_Stz,       &Task::vTimerNew);
+  
   vAddStep("timer.delete"_Stz,    &Task::vTimerDelete);
   vAddStep("timer.init"_Stz,      &Task::vTimerInit);
   vAddStep("timer.microsecs"_Stz, &Task::vTimerMicrosecs);
   vAddStep("timer.millisecs"_Stz, &Task::vTimerMillisecs);
   vAddStep("timer.nanosecs"_Stz,  &Task::vTimerNanosecs);
-  vAddStep("timer::new"_Stz,       &Task::vTimerNew);
   vAddStep("timer.reset"_Stz,     &Task::vTimerReset);
   vAddStep("timer.secs"_Stz,      &Task::vTimerSecs);
   vAddStep("timer.start"_Stz,     &Task::vTimerStart);

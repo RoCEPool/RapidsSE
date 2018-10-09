@@ -16,6 +16,8 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Planner(void)
 {
+  vAddStep("planner::new"_Stz,           &Task::vPlannerNew);
+  
   vAddStep("planner.choosePaths"_Stz,    &Task::vPlannerChoosePaths);
   vAddStep("planner.chosenPath"_Stz,     &Task::vPlannerChosenPath);
   vAddStep("planner.delete"_Stz,         &Task::vPlannerDelete);
@@ -27,7 +29,6 @@ void Step::vAddSteps_Planner(void)
   vAddStep("planner.lowkey@"_Stz,        &Task::vPlannerLowKeyFetch);
   vAddStep("planner.matchPaths"_Stz,     &Task::vPlannerMatchPaths);
   vAddStep("planner.phrases@"_Stz,       &Task::vPlannerPhrasesFetch);
-  vAddStep("planner::new"_Stz,           &Task::vPlannerNew);
   vAddStep("planner.parseWhere"_Stz,     &Task::vPlannerParseWhere);
   vAddStep("planner.scorePaths"_Stz,     &Task::vPlannerScorePaths);
   vAddStep("planner.showPaths"_Stz,      &Task::vPlannerShowPaths);

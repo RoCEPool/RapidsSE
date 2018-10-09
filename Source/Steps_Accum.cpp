@@ -13,13 +13,12 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Accum(void)
 {
-  vAddStep("accum.delete"_Stz, &Task::vAccumDelete);
   vAddStep("accum::new"_Stz,   &Task::vAccumNew);
 
-  vAddStep("accum.accumBuffer@"_Stz, &Task::vAccumAccumBuffer);
-  
+  vAddStep("accum.accumBuffer@"_Stz, &Task::vAccumAccumBuffer);  
   vAddStep("accum.count@"_Stz, &Task::vAccumCountFetch);
   vAddStep("accum.count!"_Stz, &Task::vAccumCountStore);
+  vAddStep("accum.delete"_Stz, &Task::vAccumDelete);
   vAddStep("accum.group@"_Stz, &Task::vAccumGroupFetch);
   vAddStep("accum.group!"_Stz, &Task::vAccumGroupStore);
   vAddStep("accum.max@"_Stz,   &Task::vAccumMaxFetch);

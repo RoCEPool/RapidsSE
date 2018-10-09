@@ -15,6 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Plan(void)
 {
+  vAddStep("plan::new"_Stz,           &Task::vPlanNew);
+  
   vAddStep("plan.delete"_Stz,         &Task::vPlanDelete);
   vAddStep("plan.dic"_Stz,            &Task::vPlanDic);
   vAddStep("plan.executingTask@"_Stz, &Task::vPlanExecutingTaskFetch);
@@ -26,7 +28,6 @@ void Step::vAddSteps_Plan(void)
   vAddStep("plan.lambda!"_Stz,        &Task::vPlanLambdaStore);
   vAddStep("plan.name@"_Stz,          &Task::vPlanNameFetch);
   vAddStep("plan.name!"_Stz,          &Task::vPlanNameStore);
-  vAddStep("plan::new"_Stz,           &Task::vPlanNew);
   vAddStep("plan.opFrame++"_Stz,      &Task::vPlanOpFrameAdd);
   vAddStep("plan.opFrame?"_Stz,       &Task::vPlanOpFrameFind);
   vAddStep("plan.opFrame0"_Stz,       &Task::vPlanOpFrameTop);

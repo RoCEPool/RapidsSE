@@ -16,10 +16,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Node(void)
 {
+  vAddStep("node::new"_Stz,       &Task::vNodeNew);
+  
   vAddStep("node.init"_Stz,       &Task::vNodeInit);
   vAddStep("node.IP"_Stz,         &Task::vNodeIP);
   vAddStep("node.name"_Stz,       &Task::vNodeName);
-  vAddStep("node::new"_Stz,       &Task::vNodeNew);
   vAddStep("node.no"_Stz,         &Task::vNodeNo);
   vAddStep("node.partitions"_Stz, &Task::vNodePartitions);
   vAddStep("node.port"_Stz,       &Task::vNodePort);
