@@ -239,7 +239,7 @@ void SePrompt::vCutToken(i8 i_Tkn)
   
   pTknVec->vCutToken(i_Tkn);
 
-  pTknVec->vPrint();
+  //pTknVec->vPrint();
 }
 
 /*----------------------------------------------------------------------------*/
