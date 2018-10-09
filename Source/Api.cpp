@@ -628,8 +628,20 @@ eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pI
 //           pJob_LoadTable->m_iValidRows,
 //           pJob_LoadTable->m_iInvalidRows);
     
-    *pValidRows   = pJob_LoadTable->m_iValidRows;
-    *pInvalidRows = pJob_LoadTable->m_iInvalidRows;
+    i8 iRowsProcessed = 0;
+    i8 iRowsInvalid   = 0;
+    i8 iRowsSkipped   = 0;
+    
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      
+      //vTrace("%s"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
+      iRowsProcessed += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsProcessed;
+      iRowsInvalid   += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsInvalid;
+      iRowsSkipped   += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsSkipped;
+    }
+    
+    *pValidRows   = iRowsProcessed;
+    *pInvalidRows = iRowsInvalid;
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
