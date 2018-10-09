@@ -49,13 +49,13 @@ eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end insert                                                                 */
+/* end insert and all session jobs                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndInsert(Session* pSession, void* pJobPtr, i8 iTraceLevel)
+eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 {
   eEC eResult;
   
-  Stz* aApiCall = "RapidsSE_EndInsert"_Stz;
+  Stz* aApiCall = "RapidsSE_EndInsertJobs"_Stz;
   
   try {
     
@@ -78,6 +78,9 @@ eEC RapidsSE_EndInsert(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     Job_EndInsert* pJob_EndInsert =
       static_cast<Job_EndInsert*>(pJobClass_EndInsert->pPreJob(pSession));
     
+    // push the endInsert job on the stack
+    pSession->m_pJobStack->vPushObject(pJob_EndInsert);
+    
     // set insertRowJobId in the endInsert job
     pJob_EndInsert->m_iInsertRowJobId = pJob_InsertRow->m_iJobId;
     
@@ -95,9 +98,12 @@ eEC RapidsSE_EndInsert(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     if (0 != rCode)
       vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
     
+    // delete all jobs in the ssession
+    vDeleteJobs(pSession);
+    
     TRACE_EXIT("ea"_Stz);
     
-    return EC_NONE;
+    return eResult;
     
   }
   catch (Error* pError) {
@@ -116,28 +122,12 @@ eEC RapidsSE_EndInsert(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
 {
-  Stz* aApiCall = "RapidsSE_EndCommand"_Stz;
+  Stz* aApiCall = "RapidsSE_EndJobs"_Stz;
   
   // trace entry
   TRACE_ENTRY_P0();
   
-  Stack* pJobStack = pSession->m_pJobStack;
-  Object* pJobObject;
-  
-  while (pJobStack->bPop(pJobObject)) {
-  
-    Job* pJobPtr = (Job*)pJobObject;
-    
-    // validate the job
-    VALIDATE_JOB("a"_Stz);
-    
-    // find the job class on this node
-    eCN eClass = pJobPtr->eClass();
-    JobClass* pJobClass = JobClass::pFind(eClass);
-    
-    // delete the job
-    pJobClass->vDeleteJob(pSession,pJobPtr);
-  }
+  vDeleteJobs(pSession);
   
   // mark session as exiting (any fetches still running will stop)
   pSession->m_bSessionExiting = true;
@@ -227,7 +217,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
       PosixThread::vSleepMilli(1);
     }
     
-    ASSERT(pSession->m_pJob == pJob_FetchRows);
+    //ASSERT(pSession->m_pJob == pJob_FetchRows);
     
     // get entry buffer
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
@@ -904,6 +894,27 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession)
   Handlers::vSpawnedTaskHandler(pNewTask);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete jobs                                                                */
+/*----------------------------------------------------------------------------*/
+void vDeleteJobs(Session* pSession)
+{
+  Stack* pJobStack = pSession->m_pJobStack;
+  Object* pJobObject;
+
+  while (pJobStack->bPop(pJobObject)) {
+    
+    Job* pJobPtr = (Job*)pJobObject;
+    
+    // find the job class on this node
+    eCN eClass = pJobPtr->eClass();
+    JobClass* pJobClass = JobClass::pFind(eClass);
+    
+    // delete the job
+    pJobClass->vDeleteJob(pSession,pJobPtr);
+  }
 }
 
 /*============================================================================*/

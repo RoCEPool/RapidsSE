@@ -210,6 +210,7 @@ eEC Job_InsertRow::eInsertLastBuffer(i8 iPartition)
   
   return EC_NONE;
 }
+
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
@@ -238,7 +239,7 @@ bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 void Job_InsertRow::vNewWorkingBuffer(i8 iPartition)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ENDINSERT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   
   m_pWorkingBuffer[iPartition] = new WorkingBuffer(m_pTable, iPartition);
   m_nBuffersToBeInserted[iPartition]++;

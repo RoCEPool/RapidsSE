@@ -132,6 +132,9 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
   // insert the working buffer
   pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
   
+  // delete the workingBuffer
+  delete pWorkingBuffer;
+  
   // we inserted one additional buffer
   pPartition->vIncBuffersInserted();
   

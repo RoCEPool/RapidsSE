@@ -12,7 +12,7 @@
 
 extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
 
-extern "C" eEC  RapidsSE_EndInsert(Session* pSession, void* pJobPtr, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand, Stz* sCatalogName, Stz* sSchemaName,
                                         void** ppJob, i8 iTraceLevel);
@@ -35,6 +35,8 @@ extern "C" eEC  RapidsSE_ResetSession(Session* pSession, i8 iTraceLevel);
 
 Job* RapidsSE_pExecuteCommand(Stz* aCommand, Session* pSession, bool bPostJob);
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession);
+
+void vDeleteJobs(Session* pSession);
 
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
