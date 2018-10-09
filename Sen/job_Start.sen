@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : start_sockets ( -- )
 
-  "start_sockets" .
+  "start_sockets" .verbose
 
   spawn_Answer
 ;
@@ -24,7 +24,7 @@
   task::this           locals| pThisTask |
   pThisTask task.job@  locals| pThisJob  |
 
-  "start_run" .
+  "start_run" .verbose
 
   snooze start_sockets
 
