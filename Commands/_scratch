@@ -2,37 +2,37 @@
 /* _scratch -- scratch test                                                   */
 /*============================================================================*/
 
-create table tableA (
-  col1   INTEGER NOT NULL,
-  col2   INTEGER NOT NULL
+startCluster;
+
+create table supplier (
+S_SUPPKEY       INTEGER NOT NULL,
+S_NAME          VARCHAR(25) NOT NULL,
+S_ADDRESS       VARCHAR(40) NOT NULL,
+S_NATIONKEY     INTEGER NOT NULL,
+S_PHONE         VARCHAR(15) NOT NULL,
+S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-create table tableB (
-  col1   INTEGER NOT NULL,
-  col2   INTEGER NOT NULL
-);
+indexEntries 7;
+create index idx on supplier (S_NATIONKEY);
 
-create table tableC (
-  col1   INTEGER NOT NULL,
-  col2   INTEGER NOT NULL
-);
+ld supplier "/tpch/supplier.tbl";
 
-create table tableD (
-  col1   INTEGER NOT NULL,
-  col2   INTEGER NOT NULL
-);
+//------------------------------------------------------------------------------
+// exact key fetches
 
-print "p35 tableA";
-p35 "tableA" &;
+print "s_nationkey 10 ==";
+fetch supplier "s_nationkey 10 ==" displayOff;
+//rows: 393
 
-print "p35 tableB";
-p35 "tableB" &;
+print "s_nationkey 40 ==";
+fetch supplier "s_nationkey 40 ==" displayOff;
+//rows:  0
 
-print "p35 tableC";
-p35 "tableC" &;
-
-print "p35 tableD";
-p35 "tableD" &;
+print "s_nationkey 22 ==";
+fetch supplier "s_nationkey 22 ==" displayOff;
+//rows: 401
 
 // table1 "colb1 'BLUE' = colb1 'blue' = OR 'BLACK' colb1 = OR";
 /*
