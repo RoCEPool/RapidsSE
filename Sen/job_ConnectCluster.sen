@@ -26,14 +26,16 @@
   grid::nodes 0
   do
     I grid::node node.isConnected not if
-      I "Node no %v not connected" fmt.print
+      args.verbose if
+        I "Node no %v not connected" fmt.print
+      then
       unloop
       false
       exit
     then
   loop
 
-  "All nodes connected" .
+  "All nodes connected" .verbose
 
   true
 ;

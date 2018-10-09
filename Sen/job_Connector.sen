@@ -77,7 +77,7 @@
   true grid::started!
 
   // print started message
-  grid::thisNodeName@ "Node %v : SE cluster started" fmt.print
+  //grid::thisNodeName@ "Node %v : SE cluster started" fmt.print
 
   assertStackDepthZero
 
