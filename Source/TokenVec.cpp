@@ -116,10 +116,10 @@ void TokenVec::vCutToken(i8 i_Tkn)
   
   i8 nTkns = nItems();
   
-  for (i8 i_Token = i_Tkn; i_Token < nTkns - 1; i_Token++) {
+  for (i8 i_Token = i_Tkn; i_Token < nTkns ; i_Token++) {
     
-    Token* pTknA = m_pItem[i_Tkn];
-    Token* pTknB = m_pItem[i_Tkn + 1];
+    Token* pTknA = m_pItem[i_Token];
+    Token* pTknB = m_pItem[i_Token + 1];
     
     pTknA->vCopy(pTknB);
   }
