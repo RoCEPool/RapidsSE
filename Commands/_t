@@ -2,6 +2,8 @@
 /* _t -- create table t                                                       */
 /*============================================================================*/
 
+startCluster;
+
 create table t
 (
   t_int  INTEGER NOT NULL,
