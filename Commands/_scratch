@@ -14,10 +14,12 @@ S_ACCTBAL       DECIMAL(15,2) NOT NULL,
 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-indexEntries 7;
+indexEntries 100;
 create index idx on supplier (S_NATIONKEY);
 
 ld supplier "/tpch/supplier.tbl";
+
+dumpidx supplier idx ;
 
 //------------------------------------------------------------------------------
 // exact key fetches

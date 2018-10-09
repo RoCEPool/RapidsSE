@@ -9,6 +9,7 @@
 "test_unit.sen" include
 "test_tData.sen" include
 "test_gGen.sen" include
+"test_dData.sen" include
 "test_1m.sen" include
 
 /*============================================================================*/

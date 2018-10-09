@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* test_dData.sen -- generate d test data                                     */
+/*============================================================================*/
+
+" test_dData.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* generate a d data file                                                     */
+/*----------------------------------------------------------------------------*/
+: dDataFile
+
+  params| nRecs |
+  params| sFileNm |
+
+  nRecs sFileNm "File: %v nRecs %v" fmt.print
+
+  file::new locals| pFile |
+
+  sFileNm pFile file.path!
+  OPEN_WRITE pFile file.open not if "file not opened" . exit then
+
+  nRecs 0 > if
+    nRecs 0
+    do
+      //I 0 "%v,String%v" str.format .
+      I 0 "%v,String%v\n" str.format pFile file.write
+    loop
+  then
+
+  pFile file.close
+
+  pFile file.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* generate the t data files                                                  */
+/*----------------------------------------------------------------------------*/
+: dData
+
+  "/rapids/d/d.csv" 100 dDataFile
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
