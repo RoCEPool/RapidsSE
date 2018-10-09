@@ -264,10 +264,11 @@ bool Job_LoadBuffer::bInsertRows(void)
   // get table, partition and working buffer
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
   
-  vTrace("Job_LoadBuffer %lld %lld %s\n"_Stz,
-         m_pWorkingBuffer->nWorkingRows(),
-         m_nRows,
-         m_pWorkingBuffer->bIsLast() ? "IsLast" : "");
+  if (gpAttachMap->m_bVerbose)
+    vTrace("Job_LoadBuffer %lld %lld %s\n"_Stz,
+           m_pWorkingBuffer->nWorkingRows(),
+           m_nRows,
+           m_pWorkingBuffer->bIsLast() ? "IsLast" : "");
   
   i8 iTxId = 0;
   
@@ -303,7 +304,8 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vTrace("Job_LoadBuffer (LowMem) \n"_Stz);
+  if (gpAttachMap->m_bVerbose)
+    vTrace("Job_LoadBuffer (LowMem) \n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the load table job
@@ -331,9 +333,11 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   // add the number of rows into rows skipped
   i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
   pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped += m_nRows;
-  vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
-         *pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped,
-         m_nRows);
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
+           *pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped,
+           m_nRows);
 
   // we loaded one additional buffer from a subloader
   pPartition->vIncTotalBuffersLoaded();
