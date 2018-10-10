@@ -248,9 +248,11 @@ bool Job_SubLoader::bFetchRecord(void)
     
     if (iLength > C_MAX_RECORD) {
       m_xNode[i_Node].m_ziRowsInvalid.iInc();
-      vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
-            aRawData,
-            C_MAX_RECORD);
+      if ( ! gpAttachMap->m_bMetadata ) {
+        vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
+              aRawData,
+              C_MAX_RECORD);
+      }
       return false;
     }
     
