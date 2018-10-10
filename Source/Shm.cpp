@@ -148,13 +148,13 @@ void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb,
 {
   SysCall.vClear();
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm::pMap A\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Shm::pMap A\n"_Stz);
   
   int iProt = PROT_READ | PROT_WRITE;
 
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm::pMap B\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Shm::pMap B\n"_Stz);
   
 #ifdef __APPLE__
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE | MAP_ANONYMOUS)
@@ -168,8 +168,8 @@ void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb,
   
   size_t x;
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm::pMap C\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Shm::pMap C\n"_Stz);
   
   void* pRegion = mmap(aAddress, // starting address
                        iBytes,   // length of the region
@@ -185,8 +185,8 @@ void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb,
     return nullptr;
   }
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm::pMap D\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Shm::pMap D\n"_Stz);
   
   SysCall.vSuccess();
   

@@ -222,8 +222,8 @@ void* Region::pOpen(StrVal& sRegionName, int& iFD)
   SysCall xSysCall;
   bool bResult;
   
-  if (gxArguments.m_bVerbose)
-    vInfo("Region::pOpen %s\n"_Stz,sRegionName.aChar());
+  //if (gxArguments.m_bVerbose)
+  //  vInfo("Region::pOpen %s\n"_Stz,sRegionName.aChar());
   
   // open shm region
   bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
