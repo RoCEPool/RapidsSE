@@ -16,7 +16,6 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_JobLoadTable(void)
 {
   vAddStep("job_loadTable.addInvalidRows"_Stz,&Task::vJob_LoadTableAddInvalidRows);
-  vAddStep("job_loadTable.addValidRows"_Stz,  &Task::vJob_LoadTableAddValidRows);
   vAddStep("job_loadTable.chunkFile"_Stz,     &Task::vJob_LoadTableChunkFile);
   vAddStep("job_loadTable.dumpMap"_Stz,       &Task::vJob_LoadTableDumpMap);
   vAddStep("job_loadTable.filePath@"_Stz,     &Task::vJob_LoadTableFilePathFetch);
@@ -42,27 +41,6 @@ void Task::vJob_LoadTableAddInvalidRows(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_loadTable.addInvalidRows"_Stz);
   
   pJob_LoadTable->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_ziRowsInvalid += iInvalidRows;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_loadTable.addValidRows -- add invalid rows to load table's valid rows  */
-/*----------------------------------------------------------------------------*/
-void Task::vJob_LoadTableAddValidRows(MP_Task mpTask)
-{
-  ENTRY("vJob_LoadTableAddValidRows"_Stz);
-  
-  Object* pPtrJob_LoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    THROW_INVALID_DSTACK("job_loadTable.addValidRows"_Stz);
-  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
-  
-  i8 iValidRows;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iValidRows) )
-    THROW_INVALID_DSTACK("job_loadTable.addValidRows"_Stz);
-  
-  pJob_LoadTable->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_ziRowsProcessed += iValidRows;
   
   EXIT();
 }
