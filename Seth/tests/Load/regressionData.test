@@ -426,7 +426,7 @@ CLEANUP {
   mute
 
   drop table limitRow;
-  mute;
+  mute
 
   bye;
   mute
