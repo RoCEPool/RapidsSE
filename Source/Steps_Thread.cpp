@@ -18,6 +18,8 @@ void Step::vAddSteps_Thread(void)
   vAddStep("thread.condSignal"_Stz,      &Task::vThreadCondSignal);
   vAddStep("thread.condWait"_Stz,        &Task::vThreadCondWait);
   vAddStep("thread.cpu"_Stz,             &Task::vThreadCpu);
+  vAddStep("thread.dedicated@"_Stz,      &Task::vThreadDedicatedFetch);
+  vAddStep("thread.dedicated!"_Stz,      &Task::vThreadDedicatedStore);
   vAddStep("thread.dump"_Stz,            &Task::vThreadDump);
   vAddStep("thread.id"_Stz,              &Task::vThreadId);
   vAddStep("thread.mutexLock"_Stz,       &Task::vThreadMutexLock);
@@ -108,6 +110,44 @@ ENTRY("vThreadCpu"_Stz);
   Thread* pThread = static_cast<Thread*>(pObject);
   
   mpTask->m_pDataStack->vPushInt(pThread->iCpu());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.dedicated@ -- fetch m_eDedicated                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadDedicatedFetch(MP_Task mpTask)
+{
+  ENTRY("vThreadDedicatedFetch"_Stz);
+  
+  Object* pThreadObject;
+  if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
+    THROW_INVALID_DSTACK("thread.dedicated@"_Stz);
+  Thread* pThread = _pThread(pThreadObject);
+  
+  mpTask->m_pDataStack->vPushInt(pThread->m_eDedicated);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.dedicated! -- store m_eDedicated                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadDedicatedStore(MP_Task mpTask)
+{
+  ENTRY("vThreadDedicatedStore"_Stz);
+  
+  Object* pThreadObject;
+  if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
+    THROW_INVALID_DSTACK("thread.dedicated!"_Stz);
+  Thread* pThread = _pThread(pThreadObject);
+  
+  i8 iDedicated;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iDedicated) )
+    THROW_INVALID_DSTACK("thread.dedicated!"_Stz);
+
+  pThread->m_eDedicated = (eCN)iDedicated;
   
   EXIT();
 }

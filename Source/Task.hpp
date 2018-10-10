@@ -1168,6 +1168,8 @@ namespace Tasks
     static void vThreadCondSignal(MP_Task mpTask);
     static void vThreadCondWait(MP_Task mpTask);
     static void vThreadCpu(MP_Task mpTask);
+    static void vThreadDedicatedFetch(MP_Task mpTask);
+    static void vThreadDedicatedStore(MP_Task mpTask);
     static void vThreadDump(MP_Task mpTask);
     static void vThreadId(MP_Task mpTask);
     static void vThreadMutexLock(MP_Task mpTask);

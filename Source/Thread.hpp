@@ -80,7 +80,8 @@ namespace Threads
     i8           m_iLastRRqueue; // last round robin queue this thread
                                  // had popped a task
   
-    i8           m_iStartRRqueue;// last RR queue we started with
+    i8           m_iStartRRqueue; // last RR queue we started with
+    eCN          m_eDedicated;    // thread is dedicated to a job?
 
     // must be last
     Footer m_xFooter;

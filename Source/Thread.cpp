@@ -82,6 +82,8 @@ Thread::Thread(void)
   m_iLastRRqueue  = QR_SLEEPING_QUEUE - 1;
   m_iStartRRqueue = QR_NONE;
   
+  m_eDedicated = CN_NONE;
+  
   _checkInitialised_(CN_THREAD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
