@@ -212,7 +212,8 @@ void Task::vJob_SubLoaderRecordsInvalid(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subLoader.recordsInvalid"_Stz);
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
-  mpTask->m_pDataStack->vPushInt(pJob_SubLoader->m_iInvalidRecords);
+  i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
+  mpTask->m_pDataStack->vPushInt(*(pJob_SubLoader->m_xNode[i_Node].m_ziRowsInvalid));
   
   EXIT();
 }
@@ -229,7 +230,7 @@ void Task::vJob_SubLoaderRecordsValid(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subLoader.recordsValid"_Stz);
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
-  mpTask->m_pDataStack->vPushInt(pJob_SubLoader->m_iValidRecords);
+  //mpTask->m_pDataStack->vPushInt(pJob_SubLoader->m_iValidRecords);
   
   EXIT();
 }

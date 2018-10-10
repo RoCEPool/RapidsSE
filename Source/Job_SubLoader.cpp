@@ -117,9 +117,6 @@ Job_SubLoader::Job_SubLoader(Interface::Session* pSession)
   //m_aRecord
   m_iLength     = 0;
   m_iPartition  = 0;
-  
-  m_iValidRecords   = 0;
-  m_iInvalidRecords = 0;
 
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pWorkingBuffer[i_Partition]   = nullptr;
@@ -228,6 +225,7 @@ bool Job_SubLoader::bFetchRecord(void)
   i8 iLength;
   bool bValid = false;
   bool bBlankLine;
+  i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
   
   Formatters* pFormatters = &m_pJob_LoadTable->m_xFormatters;
   Table* pTable = m_pJob_LoadTable->m_pTable;
@@ -249,7 +247,7 @@ bool Job_SubLoader::bFetchRecord(void)
     }
     
     if (iLength > C_MAX_RECORD) {
-      m_iInvalidRecords++;
+      m_xNode[i_Node].m_ziRowsInvalid.iInc();
       vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
             aRawData,
             C_MAX_RECORD);
@@ -264,12 +262,12 @@ bool Job_SubLoader::bFetchRecord(void)
                              bBlankLine,
                              false /* allowNonPrintable */);
     if (bValid) {
-      m_iValidRecords++;
+      //m_xNode[i_Node].m_ziRowsValid.iInc();
       return bValid;
     }
     
     if ( ! bBlankLine )
-      m_iInvalidRecords++;
+      m_xNode[i_Node].m_ziRowsInvalid.iInc();
   }
   
   return false;

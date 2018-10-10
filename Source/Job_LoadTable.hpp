@@ -14,9 +14,6 @@ namespace JobsModel
     Formatters m_xFormatters;  // record formatters
   
     LoadMap*   m_pLoadMap;     // load map
-
-    i8         m_iValidRows;      // valid rows loaded
-    i8         m_iInvalidRows;    // invalid rows not loaded
     
     Tasks::Task* m_pThisTask;  // task running this job
   

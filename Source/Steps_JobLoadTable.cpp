@@ -41,7 +41,7 @@ void Task::vJob_LoadTableAddInvalidRows(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iInvalidRows) )
     THROW_INVALID_DSTACK("job_loadTable.addInvalidRows"_Stz);
   
-  pJob_LoadTable->m_iInvalidRows += iInvalidRows;
+  pJob_LoadTable->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_ziRowsInvalid += iInvalidRows;
   
   EXIT();
 }
@@ -62,7 +62,7 @@ void Task::vJob_LoadTableAddValidRows(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iValidRows) )
     THROW_INVALID_DSTACK("job_loadTable.addValidRows"_Stz);
   
-  pJob_LoadTable->m_iValidRows += iValidRows;
+  pJob_LoadTable->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_ziRowsProcessed += iValidRows;
   
   EXIT();
 }

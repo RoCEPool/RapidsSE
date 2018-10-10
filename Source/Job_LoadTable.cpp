@@ -120,9 +120,6 @@ Job_LoadTable::Job_LoadTable(Interface::Session* pSession)
   
   m_pLoadMap      = nullptr;
   
-  m_iValidRows    = 0;
-  m_iInvalidRows  = 0;
-
   m_pThisTask     = nullptr;
   
   _checkInitialised_(CN_JOB_LOADTABLE);
