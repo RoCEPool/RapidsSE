@@ -14,6 +14,7 @@ rows:
   ('RAPIDS', 'SYSTEM', 'COLUMNS',         false)
   ('RAPIDS', 'SYSTEM', 'INDEXES',         false)
   ('RAPIDS', 'SYSTEM', 'CATALOGS',        false)
+  ('RAPIDS', 'SYSTEM', 'QUERY_STATS',     false)
 
 CLEANUP {
 
