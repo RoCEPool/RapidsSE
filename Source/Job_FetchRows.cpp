@@ -142,6 +142,11 @@ Job_FetchRows::~Job_FetchRows(void)
     delete m_pFetchBuffer;
   
   delete m_pPlanner;
+  
+  if (m_pRowOnce) {
+    delete m_pRowOnce;
+    m_pRowOnce = nullptr;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -172,7 +177,7 @@ void Job_FetchRows::vCreateRowOnce(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
   
-  ASSERT(! m_pRowOnce);
+  RASSERT(! m_pRowOnce);
   
   m_pRowOnce = new RowOnce;
 }
@@ -189,10 +194,10 @@ void Job_FetchRows::vDeleteBuffer(void)
     m_pFetchBuffer = nullptr;
   }
   
-  if (m_pRowOnce) {
-    delete m_pRowOnce;
-    m_pRowOnce = nullptr;
-  }
+//  if (m_pRowOnce) {
+//    delete m_pRowOnce;
+//    m_pRowOnce = nullptr;
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
