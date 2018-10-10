@@ -1,1 +1,10 @@
-tpchQueriesMac.test
+customerInsSelMac.test
+lineitemInsSelMac.test
+nationInsSelMac.test
+partSuppInsSelMac.test
+ordersInsSelMac.test
+partInsSelMac.test
+regionInsSelMac.test
+supplierInsSelMac.test
+//tpchLoadMac.test
+//tpchQueriesMac.test

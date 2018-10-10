@@ -31,7 +31,20 @@ success
 select * from region2;
 rows: 5
 
+drop table region1;
+success
+
+drop table region2;
+success
+
 CLEANUP {
+
+  drop table region1;
+  mute
+
+  drop table region2;
+  mute
+
   bye;
   mute
 }

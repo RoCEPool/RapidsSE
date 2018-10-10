@@ -1,0 +1,22 @@
+//----------------------------------------------------------------------------//
+// create table with INTEGER column tests
+//----------------------------------------------------------------------------//
+
+Loop 50 {
+// create a table , no size in varchar
+create table T1 (
+  name    varchar,
+  id      integer
+);
+success
+
+// drop table
+drop table T1;
+success
+
+}
+
+CLEANUP {
+  drop table T1;
+  mute
+}

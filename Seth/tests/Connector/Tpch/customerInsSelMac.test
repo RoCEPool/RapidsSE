@@ -1,0 +1,56 @@
+--------------------------------------------------------------------------------
+-- tpch insert-select tests (SF1)
+-------------------------------------------------------------------------------
+
+create table customer1 (
+C_CUSTKEY       INTEGER NOT NULL,
+C_NAME          VARCHAR(25) NOT NULL,
+C_ADDRESS       VARCHAR(40) NOT NULL,
+C_NATIONKEY     INTEGER NOT NULL,
+C_PHONE         VARCHAR(15) NOT NULL,
+C_ACCTBAL       DECIMAL(15,2) NOT NULL,
+C_MKTSEGMENT    VARCHAR(10) NOT NULL,
+C_COMMENT       VARCHAR(117) NOT NULL
+);
+success
+
+ESCAPE CONNECTOR se 'load customer1' with file='/tpch/customer.tbl' , terminator = ',\n', node = 'Node1' ;
+failure contains: 'Success'
+
+create table customer2 (
+C_CUSTKEY       INTEGER NOT NULL,
+C_NAME          VARCHAR(25) NOT NULL,
+C_ADDRESS       VARCHAR(40) NOT NULL,
+C_NATIONKEY     INTEGER NOT NULL,
+C_PHONE         VARCHAR(15) NOT NULL,
+C_ACCTBAL       DECIMAL(15,2) NOT NULL,
+C_MKTSEGMENT    VARCHAR(10) NOT NULL,
+C_COMMENT       VARCHAR(117) NOT NULL
+);
+success
+
+insert into customer2 select * from customer1;
+success
+
+select * from customer2;
+rows: 150000
+
+drop table customer1;
+success
+
+drop table customer2;
+success
+
+CLEANUP {
+  
+  drop table customer2;
+  mute
+  
+  drop table customer1;
+  mute
+  
+  bye;
+  mute
+}
+
+
