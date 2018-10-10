@@ -633,13 +633,13 @@ void RapidsSE::vStartSystem(void)
   Word* pTraceFileWord = gpAttachMap->m_xMainDic.pFindWord("trace_file"_Stz);
   gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
   
-  if (gpAttachMap->m_bVerbose)
-    vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
+  //if (gpAttachMap->m_bVerbose)
+  //  vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
   
-  // spawn v3.5 general threads
+  // spawn general threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nThreads; iThreads++) {
     Thread* pThread = new Thread;
-    pThread->vSpawn_Thread();
+    pThread->vSpawnThread();
   }
   
   while (*gpAttachMap->m_ziThreads != gxArguments.m_nThreads)

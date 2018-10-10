@@ -114,7 +114,7 @@ void* Thread::pEntryPoint(void* pArg)
   gpAttachMap->m_pQueues->vAddThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
-    vTrace("Thread::vEntryPoint %p %lld\n"_Stz,
+    vTrace("Thread::pEntryPoint %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
   try {
@@ -141,7 +141,7 @@ void* Thread::pEntryPoint(void* pArg)
   }
   
   if (gpAttachMap->m_bVerbose)
-    vTrace("Thread::vEntryPoint %p %lld exiting\n"_Stz,
+    vTrace("Thread::pEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
   gpAttachMap->m_pQueues->vRemoveThread(pThread);
@@ -449,12 +449,11 @@ void Thread::vRRstart(void)
 /*----------------------------------------------------------------------------*/
 /* spawn the os/posix thread associated with this thread                      */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawn_Thread(void)
+void Thread::vSpawnThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool bResult = m_pPosixThread->bSpawnThread(Thread::pEntryPoint,this);
-  
   
   ASSERT(bResult);
 }

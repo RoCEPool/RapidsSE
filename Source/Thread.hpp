@@ -112,7 +112,7 @@ namespace Threads
     void vReExecuteTask(Task* pTask);
     bool bRRnext(void);
     void vRRstart(void);
-    void vSpawn_Thread(void);
+    void vSpawnThread(void);
     void vTask(Task* pTask);
     i8   iThreadNo(void);
     eTC  eThreadState(void);
