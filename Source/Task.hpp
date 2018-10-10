@@ -780,7 +780,6 @@ namespace Tasks
     static void vJob_SubLoaderPartitionStore(MP_Task mpTask);
     static void vJob_SubLoaderProcessRecords(MP_Task mpTask);
     static void vJob_SubLoaderRecordsInvalid(MP_Task mpTask);
-    static void vJob_SubLoaderRecordsValid(MP_Task mpTask);
     static void vJob_SubLoaderWorkingBuffer(MP_Task mpTask);
 
     // Job subTruncate
