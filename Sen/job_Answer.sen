@@ -40,9 +40,9 @@
   // get the listening port of this node
   grid::thisNode@ grid::node node.port to iPort
 
-  args.verbose if
-    iPort "Waiting for connections on port %v" fmt.print
-  then
+  //args.verbose if
+  //  iPort "Waiting for connections on port %v" fmt.print
+  //then
 
   // now create a listening socket
   iPort socket::listen to pListeningSocket
