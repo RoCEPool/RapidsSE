@@ -1,5 +1,6 @@
 emptyString_rev6.test
 enclosedBy_rev6.test
+enclosedByBraces.test
 escape_rev6.test
 null_rev6.test
 part_curlyBraces.test
