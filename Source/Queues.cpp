@@ -106,14 +106,16 @@ void Queues::vThreadsReport()
     
     Thread* pThread = pQueues->m_pThreadVector->pGet(i_Thread);
     
-    vTrace("  Thread %2lld %p %7s os id %lld posix id %lld rr : last %2lld start %2lld\n"_Stz,
+    vTrace("  Thread %2lld %p %7s os id %lld posix id %lld rr : last %2lld start %2lld %s\n"_Stz,
            pThread->m_iThreadNo,
            pThread,
            aTC[pThread->m_eThreadState],
            pThread->m_pPosixThread->m_iOpSysThreadId,
            pThread->m_pPosixThread->m_iPosixThreadId,
            pThread->m_iLastRRqueue,
-           pThread->m_iStartRRqueue
+           pThread->m_iStartRRqueue,
+           
+           pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : ""
            );
   }
   

@@ -333,14 +333,10 @@ void Thread::vLastRRqueue(i8 iLastRRqueue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread loop (RDP R3.5 model)                                               */
+/* thread loop                                                                */
 /*----------------------------------------------------------------------------*/
 void Thread::vLoop(void)
-{
-  //
-  // this is the thread loop for the new thread model
-  //
-  
+{ 
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   Queues* pQueues = gpAttachMap->m_pQueues;

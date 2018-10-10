@@ -36,6 +36,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  CN_JOB_RECEIVER task::this task.thread thread.dedicated!
+
   // get the task
   task::this to pThisTask
 

@@ -35,6 +35,8 @@
 
   0 locals| nConns |
 
+  CN_JOB_ANSWER task::this task.thread thread.dedicated!
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get the listening port of this node
