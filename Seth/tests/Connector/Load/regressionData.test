@@ -334,35 +334,36 @@ rows: 21
 create table limitRow (col0 VARCHAR(20000));
 success;
 
-ESCAPE CONNECTOR se 'load T1' with file='../Seth/Tests/Load/largeRow1.tbl', node='node0';
+//ESCAPE CONNECTOR se 'load limitRow' with file='../Seth/Tests/Load/largeRow1.tbl', node='node1';
+//failure
+
+//select count(*) from limitRow;
+//rows: 0
+
+ESCAPE CONNECTOR se 'load limitRow' with file='../Seth/Tests/Load/largeRow2.tbl', node='node1';
 failure
 
 select count(*) from limitRow;
 rows: 0
 
-ESCAPE CONNECTOR se 'load T1' with file='../Seth/Tests/Load/largeRow2.tbl', node='node0';
+ESCAPE CONNECTOR se 'load limitRow' with file='../Seth/Tests/Load/largeRow3.tbl', node='node1';
 failure
 
 select count(*) from limitRow;
 rows: 0
 
-ESCAPE CONNECTOR se 'load T1' with file='../Seth/Tests/Load/largeRow3.tbl', node='node0';
-failure
-
-select count(*) from limitRow;
-rows: 0
-
-ESCAPE CONNECTOR se 'load T1' with file='../Seth/Tests/Load/15KRow.tbl', node='node0';
+ESCAPE CONNECTOR se 'load limitRow' with file='../Seth/Tests/Load/15KRow.tbl', node='node1';
 failure
 
 select count(*) from limitRow;
 rows: 1
 
-ESCAPE CONNECTOR se 'load T1' with file='/Users/alkayamarti/rapidsSE/rapidsse/Seth/Tests/Load/16KRow.tbl', node='node0';
+ESCAPE CONNECTOR se 'load limitRow' with file='/Users/alkayamarti/rapidsSE/rapidsse/Seth/Tests/Load/16KRow.tbl', node='node1';
 failure
 
-select count(*) from limitRow;
+select * from limitRow;
 rows: 2
+
 
 CLEANUP {
 
@@ -427,6 +428,9 @@ CLEANUP {
   mute
   
   drop table returns;
+  mute
+
+  drop table limitRow;
   mute
 
   bye;
