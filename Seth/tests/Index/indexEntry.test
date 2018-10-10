@@ -32,13 +32,13 @@ fetch TABLE9 "cole9 -5.0 > cole9 5.0 < and";
 rows: 12
 
 // now drop the table
-//drop table table9;
-//success
+drop table table9;
+success
 
 CLEANUP {
 
-  //drop table table9;
-  //mute
+  drop table table9;
+  mute
 
   bye;
   mute
