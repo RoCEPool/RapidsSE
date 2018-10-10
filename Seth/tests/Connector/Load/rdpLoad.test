@@ -43,7 +43,7 @@ escape connector se 'load' with  file='../JTEST/rdp.csv', node='node1';
 failure contains: 'No table name'
 
 // load data into the table with invalid table
-escape connector se 'load rdp2' with file='../JTEST/rdpX.csv', node='node1';
+escape connector se 'load rdp2' with file='../JTEST/rdp.csv', node='node1';
 failure contains: 'no such table'
 
 
