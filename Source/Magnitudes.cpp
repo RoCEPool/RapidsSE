@@ -5,37 +5,6 @@
 #include "System.h"
 
 /*----------------------------------------------------------------------------*/
-/* convert bytes to its magnitude equivalent                                  */
-/*----------------------------------------------------------------------------*/
-void Magnitudes::vMagnitude(i8 iValue, Stz* psBuf)
-{
-       if (iValue < C_1KB) psBuf->vSprint("%lldB"_Stz, iValue);
-  else if (iValue < C_1MB) psBuf->vSprint("%lldKB"_Stz,iValue/C_1KB);
-  else if (iValue < C_1GB) psBuf->vSprint("%lldMB"_Stz,iValue/C_1MB);
-  else if (iValue < C_1TB) psBuf->vSprint("%lldGB"_Stz,iValue/C_1GB);
-  else if (iValue < C_1PB) psBuf->vSprint("%lldTB"_Stz,iValue/C_1TB);
-  else                     psBuf->vSprint("%lldPB"_Stz,iValue/C_1PB);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert bytes to its magnitude equivalent upto n decimals                  */
-/*----------------------------------------------------------------------------*/
-void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, Stz* psBuf)
-{
-  //ASSERT(iDecimals > 0);
-  
-  d8 dValue = (d8)iValue;
-  int iDecimalPoints = (int)iDecimals;
-  
-       if (iValue < C_1KB) psBuf->vSprint("%.*fB"_Stz,  iDecimalPoints, dValue);
-  else if (iValue < C_1MB) psBuf->vSprint("%.*fKB"_Stz, iDecimalPoints, dValue/C_1KB);
-  else if (iValue < C_1GB) psBuf->vSprint("%.*fMB"_Stz, iDecimalPoints, dValue/C_1MB);
-  else if (iValue < C_1TB) psBuf->vSprint("%.*fGB"_Stz, iDecimalPoints, dValue/C_1GB);
-  else if (iValue < C_1PB) psBuf->vSprint("%.*fTB"_Stz, iDecimalPoints, dValue/C_1TB);
-  else                     psBuf->vSprint("%.*fPB"_Stz, iDecimalPoints, dValue/C_1PB);
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert magnitude to equivalent bytes                                      */
 /*----------------------------------------------------------------------------*/
 bool Magnitudes::bBytes(Stz* psBuf, i8& iBytes)
@@ -97,14 +66,61 @@ bool Magnitudes::bBytes(Stz* psBuf, i8& iBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert bytes to its magnitude equivalent                                  */
+/*----------------------------------------------------------------------------*/
+void Magnitudes::vHz(i8 iValue, Stz* psBuf)
+{
+  d8 dValue = (d8)iValue;
+  int iDecimalPoints = 2;
+
+       if (iValue < C_1K) psBuf->vSprint("%.*fhz"_Stz, iDecimalPoints,dValue);
+  else if (iValue < C_1M) psBuf->vSprint("%.*fKhz"_Stz,iDecimalPoints,dValue/C_1K);
+  else if (iValue < C_1G) psBuf->vSprint("%.*fMhz"_Stz,iDecimalPoints,dValue/C_1M);
+  else if (iValue < C_1T) psBuf->vSprint("%.*fGhz"_Stz,iDecimalPoints,dValue/C_1G);
+  else if (iValue < C_1Q) psBuf->vSprint("%.*fThz"_Stz,iDecimalPoints,dValue/C_1T);
+  else                    psBuf->vSprint("%.*fPhz"_Stz,iDecimalPoints,dValue/C_1Q);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert bytes to its magnitude equivalent                                  */
+/*----------------------------------------------------------------------------*/
+void Magnitudes::vMagnitude(i8 iValue, Stz* psBuf)
+{
+       if (iValue < C_1KB) psBuf->vSprint("%lldB"_Stz, iValue);
+  else if (iValue < C_1MB) psBuf->vSprint("%lldKB"_Stz,iValue/C_1KB);
+  else if (iValue < C_1GB) psBuf->vSprint("%lldMB"_Stz,iValue/C_1MB);
+  else if (iValue < C_1TB) psBuf->vSprint("%lldGB"_Stz,iValue/C_1GB);
+  else if (iValue < C_1PB) psBuf->vSprint("%lldTB"_Stz,iValue/C_1TB);
+  else                     psBuf->vSprint("%lldPB"_Stz,iValue/C_1PB);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert bytes to its magnitude equivalent upto n decimals                  */
+/*----------------------------------------------------------------------------*/
+void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, Stz* psBuf)
+{
+  //ASSERT(iDecimals > 0);
+  
+  d8 dValue = (d8)iValue;
+  int iDecimalPoints = (int)iDecimals;
+  
+       if (iValue < C_1KB) psBuf->vSprint("%.*fB"_Stz,  iDecimalPoints, dValue);
+  else if (iValue < C_1MB) psBuf->vSprint("%.*fKB"_Stz, iDecimalPoints, dValue/C_1KB);
+  else if (iValue < C_1GB) psBuf->vSprint("%.*fMB"_Stz, iDecimalPoints, dValue/C_1MB);
+  else if (iValue < C_1TB) psBuf->vSprint("%.*fGB"_Stz, iDecimalPoints, dValue/C_1GB);
+  else if (iValue < C_1PB) psBuf->vSprint("%.*fTB"_Stz, iDecimalPoints, dValue/C_1TB);
+  else                     psBuf->vSprint("%.*fPB"_Stz, iDecimalPoints, dValue/C_1PB);
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert timer nanoseconds to its magnitude equivalent (ns, us, ms, s)      */
 /*----------------------------------------------------------------------------*/
 void Magnitudes::vTimeMag(i8 iNanosecs, Stz* psBuf)
 {
        if (iNanosecs < C_1K) psBuf->vSprint("%lldns"_Stz,iNanosecs);
   else if (iNanosecs < C_1M) psBuf->vSprint("%lldus"_Stz,iNanosecs/C_1K);
-  else if (iNanosecs < C_1B) psBuf->vSprint("%lldms"_Stz,iNanosecs/C_1M);
-  else                       psBuf->vSprint("%llds"_Stz, iNanosecs/C_1B);
+  else if (iNanosecs < C_1G) psBuf->vSprint("%lldms"_Stz,iNanosecs/C_1M);
+  else                       psBuf->vSprint("%llds"_Stz, iNanosecs/C_1G);
 }
 
 /*============================================================================*/

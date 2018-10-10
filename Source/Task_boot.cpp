@@ -141,7 +141,7 @@ void Task::vAddConstants(void)
   vAddConstant("C_10K"_Stz,   10 * C_1K);
   vAddConstant("C_100K"_Stz,  100 * C_1K);
   vAddConstant("C_1M"_Stz,    C_1M);
-  vAddConstant("C_1B"_Stz,    C_1B);
+  vAddConstant("C_1G"_Stz,    C_1G);
   
   vAddConstant("C_4KB"_Stz,   C_4KB);
   vAddConstant("C_16KB"_Stz,  C_16KB);

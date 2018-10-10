@@ -34,6 +34,7 @@ using namespace Prompt;
 #include "Prompt_hashDefs.hpp"
 #include "Prompt_heapMem.hpp"
 #include "Prompt_help.hpp"
+#include "Prompt_hw.hpp"
 #include "Prompt_indexEntries.hpp"
 #include "Prompt_jobcat.hpp"
 #include "Prompt_locks.hpp"
