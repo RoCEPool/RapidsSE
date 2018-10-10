@@ -23,7 +23,8 @@ namespace Prompt
     bool     m_bContinue;  // continue processing commands?
     Session* m_pSession;   // rapidsse session
     Timer    m_xTimer;     // the timer
-    bool     m_bTimed;     // command is being times
+    bool     m_bTimed;     // command is being timed
+    bool     m_bTraced;    // command is being traced
 
     Job*     m_pJob;       // job
   
@@ -44,6 +45,7 @@ namespace Prompt
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
     void vCheckTimed(void);
+    void vCheckTraced(void);
     CommandProcessor* pCommandProcessor(void);
     bool bContinue(void);
     void vContinue(bool bContinue);

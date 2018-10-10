@@ -61,7 +61,8 @@ SePrompt::SePrompt(void)
 
   // m_xTimer
   
-  m_bTimed = false;
+  m_bTimed  = false;
+  m_bTraced = false;
   
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -114,7 +115,8 @@ void SePrompt::vPromptLoop(void)
       continue;
     
     vCheckTimed();
-    
+    vCheckTraced();
+
     if (bExecuteFunction())
       continue;
     
@@ -194,6 +196,24 @@ void SePrompt::vCheckTimed(void)
   vCutToken(0);
 
   m_xTimer.vStart();
+}
+
+/*----------------------------------------------------------------------------*/
+/* check for trace                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCheckTraced(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_bTraced = false;
+  
+  Token* pTkn0 = pTkn(0);
+  
+  if (! pTkn0->bSame("trace"_Stz))
+    return;
+  
+  m_bTraced = true;
+  vCutToken(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -349,6 +369,9 @@ void SePrompt::vPreJob(void)
   pCommandProcessor->vPreJob(m_pSession);
   
   m_pJob = pCommandProcessor->pJob();
+  
+  if (m_bTraced)
+    m_pJob->m_eJobTrace = JT_ALL;
 }
 
 /*----------------------------------------------------------------------------*/
