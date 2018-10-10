@@ -106,8 +106,8 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
            sSize.aChar(),
            iRegionSize);
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Region::vCreate A\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Region::vCreate A\n"_Stz);
   
   // open a new shm region
   bool bResult = Shm::bCreate(sRegionName,
@@ -116,8 +116,8 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
                               bRestart,
                               xSysCall);
 
-  if (gxArguments.m_bVerbose)
-    vTrace("Region::vCreate B\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Region::vCreate B\n"_Stz);
   
   if ( ! bResult ) {
     vTrace("RapidsSE::vCreate: failed to create region %s\n"_Stz,
@@ -133,8 +133,8 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
                        false,
                        xSysCall);
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Region::vCreate C; mpRegion=%p\n"_Stz,mpRegion);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Region::vCreate C; mpRegion=%p\n"_Stz,mpRegion);
   
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vCreate failed to map!\n"_Stz);
@@ -142,8 +142,8 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
     NEVER_REACH;
   }
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Region::vCreate D\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Region::vCreate D\n"_Stz);
   
   //vInfo("sleeping... \n"_Stz);
   //PosixThread::vSleepMilli(180000);
@@ -151,8 +151,8 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   gpBufferPool = new(mpRegion) BufferPool(sRegionName, iRegionSize,
                                           iJumboTook, bTouch, bDontFree, bFreeRB);
 
-  if (gxArguments.m_bVerbose)
-    vTrace("Region::vCreate E\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Region::vCreate E\n"_Stz);
   
   if (gxArguments.m_bVerbose)
     vTrace("Shm mapped at %p\n"_Stz,mpRegion);
@@ -172,10 +172,11 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
       Shm::bClose(iFD,xSysCall);
       exit(EXIT_FAILURE);
     }
+    
+    if (gxArguments.m_bVerbose)
+      vTrace("Shm pages locked in memory\n"_Stz);
   }
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm pages locked in memory\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

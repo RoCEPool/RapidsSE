@@ -64,8 +64,8 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   
   xSysCall.vClear();
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm::bCreate A\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Shm::bCreate A\n"_Stz);
   
   // unlink the shm region (in case created earlier; this needs work)
   if (bRecreate)
@@ -73,14 +73,14 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   
   // we ignore the error
 
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm::bCreate B\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Shm::bCreate B\n"_Stz);
   
   // open shared memory region and get a fd
   iFD = shm_open(sRegionName.aChar(), O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm::bCreate C\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Shm::bCreate C\n"_Stz);
   
   if (iFD == -1) {
     xSysCall.vError(errno);
@@ -88,20 +88,21 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
     return false;
   }
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm::bCreate D\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Shm::bCreate D\n"_Stz);
   
   ++gzShmOpenCount;
 
   // fill with 0's
   rCode = ftruncate(iFD, iSize);
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm::bCreate E\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Shm::bCreate E\n"_Stz);
   
   if (rCode == -1) {
-    if (gxArguments.m_bVerbose)
-      vTrace("Shm::bCreate F\n"_Stz);
+    
+    //if (gxArguments.m_bVerbose)
+    //  vTrace("Shm::bCreate F\n"_Stz);
    
     xSysCall.vError(errno);
     vTrace("Shm::bCreate: ftruncate() error; errno=%d %s\n"_Stz,errno,strerror(errno));
@@ -117,8 +118,9 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
     return false;
   }
   
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm::bCreate G\n"_Stz);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("Shm::bCreate G\n"_Stz);
+  
   return true;
 }
 
