@@ -64,6 +64,9 @@ Job::Job(eCN eClassNo, Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  //vTrace("%s: CREATING JOB %p %s\n"_Stz,
+  //       gpAttachMap->m_pGrid->pThisNode()->aNodeName(), this, aCN[eClass()]);
+  
   vInit();
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -75,6 +78,9 @@ Job::Job(eCN eClassNo, Session* pSession)
 Job::~Job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+  
+  //vTrace("%s: DELETING JOB %p %s\n"_Stz,
+  //       gpAttachMap->m_pGrid->pThisNode()->aNodeName(), this, aCN[eClass()]);
   
   pthread_mutex_destroy(&m_xThreadMutex);
   pthread_mutexattr_destroy(&m_xThreadMutexAttr);
