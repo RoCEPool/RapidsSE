@@ -219,6 +219,7 @@ void Jobs::vDump(eCN eClass, Object* pObject, Stz* aTab)
   RASSERT(pObject->eClass() == CN_JOBS);
   
   Jobs* pJobs = reinterpret_cast<Jobs*>(pObject);
+  vSkipListDump(pJobs->m_pJobsSkipList);
   
   vTrace("\n"_Stz);
 }
