@@ -38,6 +38,7 @@ namespace StorageEngine
     static void vPrintWelcome(void);
     static void vRunCmdLine(void);
     static bool bRunUtilities(int argc, Stz* argv[]);
+    static void vSanityCheck(void);
     static void vSetGlobals(void);
     static void vSignalHandler(int iSignal);
     static void vSpawnJobStart(void);

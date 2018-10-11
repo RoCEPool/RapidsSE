@@ -82,6 +82,8 @@ namespace StorageEngine
     
     void vPrintHelp(void);
   
+    void vSanityCheck(void);
+
     void vScribble(void);
   
     void vPrint(void);

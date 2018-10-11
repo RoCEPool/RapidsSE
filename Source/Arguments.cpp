@@ -4,8 +4,6 @@
 
 #include "StorageEngine.h"
 
-void* C_ADDR_POOL = (void*)0x204800000000;
-i8 C_MEMORY_PERCENT = 95;
 
 extern bool gbSHM;
 
@@ -33,7 +31,7 @@ Arguments::Arguments(void)
   m_sCommandsDir  = "../../Commands"_Stz;
 #endif
   m_sNodeName     = "node"_Stz;
-  m_aRegionAddr   = C_ADDR_POOL;
+  m_aRegionAddr   = (void*)C_ADDR_POOL;
   m_sRegionName   = ""_Stz;
   m_sRegionPrefix = "/SE"_Stz;
   m_iRegionSize   = (4 * 1_GB) + m_iJumboSize;
@@ -279,6 +277,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     if (argv[i_Arg]->bSame("--size"_Stz)) {
+      
       bool bResult = Magnitudes::bBytes((Stz*)argv[++i_Arg], m_iRegionSize);
       if (!bResult) {
         vError("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
@@ -293,6 +292,19 @@ bool Arguments::bParse(int argc, Stz* argv[])
         vError("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
                C_MEMORY_PERCENT,
                sMag.aChar());
+        return false;
+      }
+      
+      s32 sMinSize;
+      Magnitudes::vMagnitude(C_MIN_REGION, sMinSize);
+      
+      s32 sSize;
+      Magnitudes::vMagnitude(m_iRegionSize, sSize);
+      
+      if (m_iRegionSize < C_MIN_REGION) {
+        vError("Insufficient region size: %s. At least %s is required\n"_Stz,
+               sSize.aStr(),
+               sMinSize.aStr());
         return false;
       }
 
@@ -622,6 +634,35 @@ void Arguments::vPrintHelp(void)
   vInfo("--size <i>               (size in bytes of shm region)\n"_Stz);
 
   vInfo("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* check arguments                                                            */
+/*----------------------------------------------------------------------------*/
+void Arguments::vSanityCheck(void)
+{
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+  
+  if (m_nNodes > C_MAX_NODES) {
+    vTrace("Too many nodes: %lld. Max of %lld\n"_Stz,m_nNodes,C_MAX_NODES);
+    exit(EXIT_FAILURE);
+  }
+  
+  i8 iRequiredThreads =
+    1               // 1 thread for socket answer
+    + m_nNodes      // n threads for socket receiver
+    + m_nSubLoaders // a threaad per subloader
+    + 1             // a thread for table loader
+    + 1             // 1 for the pot
+  ;
+  
+  if (m_nThreads < iRequiredThreads) {
+    vTrace("Insufficient threads: %lld. At least %lld threads required\n"_Stz,
+           m_nThreads,
+           iRequiredThreads);
+    exit(EXIT_FAILURE);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

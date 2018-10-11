@@ -25,13 +25,15 @@ void RapidsSE::vMainEntry(void)
   // OpSys::vTraceInfo();
   
   vPrintWelcome();
-    
+  
   vSetSignalHandlers();
   
   // init the tls keys
   TlsKeys::vInit();
   
   StorageEngine::vCheckAllAssumptions();
+
+  vSanityCheck();
   
   vWriteRegionName();
   
@@ -517,6 +519,14 @@ bool RapidsSE::bRunUtilities(int argc, Stz* argv[])
   }
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* startup sanity checking                                                    */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vSanityCheck(void)
+{
+  gxArguments.vSanityCheck();
 }
 
 /*----------------------------------------------------------------------------*/
