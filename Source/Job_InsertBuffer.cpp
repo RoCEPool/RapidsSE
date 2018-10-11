@@ -30,7 +30,7 @@ JobClass xJobClass_InsertBuffer =
   false,                  // check resources?
   false,                  // detached job?
   true,                   // buffer attached?
-  JT_ALL,                 // job trace
+  JT_NONE,                // job trace
   pJob_InsertBuffer_pre,  // prompt pre-process function
   nullptr,                // prompt post-process function
   pJob_InsertBuffer_new,   // job new function
@@ -101,7 +101,7 @@ void* Job_InsertBuffer::operator new(size_t iSize, void* aAddress)
 void Job_InsertBuffer::operator delete(void* aAddress)
 {
   Job_InsertBuffer* pJob_InsertBuffer = static_cast<Job_InsertBuffer*>(aAddress);
-  
+  //vTrace("DELETING INSERTBUFFER\n"_Stz);
   HeapMem::vFree(pJob_InsertBuffer);
 }
 
@@ -212,7 +212,7 @@ void JobsModel::vJob_InsertBuffer_delete(Interface::Session* pSession, Job* pJob
 {
   Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJob);
   
-  vTrace("DELETING INSERTBUFFER\n"_Stz);
+  //vTrace("DELETING INSERTBUFFER\n"_Stz);
   delete pJob_InsertBuffer;
 }
 

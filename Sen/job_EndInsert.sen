@@ -29,9 +29,9 @@
   grid::slots grid::nodes * locals| nTotalPartitions |
 
   pJob_EndInsert job_EndInsert.insertRowJob@ to iInsertRowJobId
-  iInsertRowJobId "InsertRowJobId %v" fmt.print
+  //iInsertRowJobId "InsertRowJobId %v" fmt.print
   iInsertRowJobId job::findOriginator to pJob_InsertRow
-  pJob_InsertRow .
+  //pJob_InsertRow .
 
   // grab this task's lock
   pThisTask task.grabLock
@@ -47,10 +47,6 @@
     I pJob_InsertRow job_InsertRow.danglingBuffer
 
     // send last buffer to node
-    i .
-    pJob_EndInsert .
-    pJob_EndInsert job.Id@ .
-    pJob_InsertRow .
     I pJob_EndInsert job.Id@ pJob_InsertRow EndInsert_sendBuffer
 
   loop
@@ -123,13 +119,13 @@
   pJob_EndInsert job::originator@ locals| iOriginNode |
   grid::thisNode@ locals| iThisNode |
 
-  iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
+  //iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
 
   iThisNode iOriginNode == if
-    "endInsert is executing on this node" .
+    //"endInsert is executing on this node" .
     pJob_EndInsert EndInsert_sendLast
   else
-    "endInsert is not executed on this node" .
+    //"endInsert is not executed on this node" .
     EndInsert_waitOnly
   then
 
@@ -176,7 +172,7 @@
 
   job::this locals| pJob_EndInsert |
 
-  ">> endInsert_beg <<" .
+  ">> endInsert_beg <<" .verbose
 
   // add this job to the participants list
   pJob_EndInsert job.beginParticipant
@@ -199,7 +195,7 @@
 
   job::this locals| pJob_EndInsert |
 
-  ">> endInsert_end <<" .
+  ">> endInsert_end <<" .verbose
 
   // release resources
   pJob_EndInsert endInsert.releaseResources

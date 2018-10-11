@@ -537,7 +537,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
     // get the partition this row hashes to
     i8 iRowPartition = pJob_InsertRow->m_pTable->iRowPartition(s);
     
-    vTrace("Row partition %lld\n"_Stz, iRowPartition);
+    //vTrace("Row partition %lld\n"_Stz, iRowPartition);
     
     // insert the row in this partition's buffer
     eEC eErrorCode = EC_NONE;
@@ -562,7 +562,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       
       // buffer was full
       // create InsertBuffer job
-      vTrace("Buffer full!!! Creating InsertBuffer job\n"_Stz);
+      //vTrace("Buffer full!!! Creating InsertBuffer job\n"_Stz);
       JobClass* pJobClass = JobClass::pFind(CN_JOB_INSERTBUFFER);
       ASSERT(pJobClass);
       Job* pJobInsertBuffer = pJobClass->pPreJob(pSession);
@@ -579,7 +579,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       pJob_InsertRow->m_pWorkingBuffer[iRowPartition] = nullptr;
       
       //vLockMutex();
-      vTrace("Spawning InsertBuffer job\n"_Stz);
+      //vTrace("Spawning InsertBuffer job\n"_Stz);
       bResult = RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_RUN,pSession);
       ASSERT(bResult);
     }
@@ -932,6 +932,7 @@ void vDeleteJobs(Session* pSession)
     JobClass* pJobClass = JobClass::pFind(eClass);
     
     // delete the job
+    //vTrace("API deleting job %p jobId %lld %s\n"_Stz, pJobPtr, pJobPtr->m_iJobId, aCN[eClass]);
     pJobClass->vDeleteJob(pSession,pJobPtr);
   }
 }

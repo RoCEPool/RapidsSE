@@ -236,7 +236,7 @@ void JobsModel::vJob_EndInsert_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJob);
   
-  vTrace("DELETING ENDINSERT\n"_Stz);
+  //vTrace("DELETING ENDINSERT\n"_Stz);
   delete pJob_EndInsert;
 }
 

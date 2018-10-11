@@ -27,7 +27,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "InsertBuffer.insert :" .
+  "InsertBuffer.insert :" .verbose
   pJob_InsertBuffer job.show
 
   // get table name
@@ -64,13 +64,13 @@
     iEndInsertJobId job::findParticipant locals| pJob_EndInsert |
     pJob_EndInsert job_EndInsert.task@ locals| pTask_EndInsert |
 
-    pTask_EndInsert pJob_EndInsert iEndInsertJobId
-    "EndInsertJobId %v job_EndInsert (node) %v task_EndInsert %v"
-    fmt.print
+    //pTask_EndInsert pJob_EndInsert iEndInsertJobId
+    //"EndInsertJobId %v job_EndInsert (node) %v task_EndInsert %v"
+    //fmt.print
 
-      pTask_EndInsert
-      "All buffers inserted; Would ack task_EndInsert (node) %v"
-    fmt.print
+      //pTask_EndInsert
+      //"All buffers inserted; Would ack task_EndInsert (node) %v"
+    //fmt.print
 
     pTask_EndInsert ack
   then
@@ -111,7 +111,7 @@
   // convert i_Partition to i_ForwardNode
   i_Partition grid::toNode locals| i_ForwardNode |
 
-  i_Partition i_ForwardNode "InsertBuffer.forward : Node %v Partition %v" fmt.print
+  //i_Partition i_ForwardNode "InsertBuffer.forward : Node %v Partition %v" fmt.print
 
   // send this job to the forward node
   i_ForwardNode pJob_InsertBuffer job.forward
@@ -126,7 +126,7 @@
 
   job::this locals| pJob_InsertBuffer  |
 
-  "insertBuffer_run :" .
+  "insertBuffer_run :" .verbose
 
   // simply forward this job to kid node
   pJob_InsertBuffer InsertBuffer.forward

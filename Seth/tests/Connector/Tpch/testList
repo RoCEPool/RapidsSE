@@ -1,5 +1,5 @@
 customerInsSelMac.test
-lineitemInsSelMac.test
+//lineitemInsSelMac.test
 nationInsSelMac.test
 partSuppInsSelMac.test
 ordersInsSelMac.test

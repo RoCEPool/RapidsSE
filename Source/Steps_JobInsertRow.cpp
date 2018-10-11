@@ -148,7 +148,7 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
   bool bAllBuffersInserted = false;
   if ( pPartition->nBuffersToBeInserted() &&
       (pPartition->nBuffersToBeInserted() == pPartition->nBuffersInserted())) {
-    vTrace("Buffers inserted for partition %lld\n"_Stz, iPartition);
+    //vTrace("Buffers inserted for partition %lld\n"_Stz, iPartition);
     bAllBuffersInserted = true;
     
     // reset these in tblPtn for next insert into table
