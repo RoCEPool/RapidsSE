@@ -73,7 +73,7 @@ Arguments::Arguments(void)
   m_bRestart    = true;
   m_nSubLoaders = 4;
   m_iThisNode   = -1;
-  m_nThreads    = 6;
+  m_nThreads    = 24;
   m_bTouch      = false;
   m_bTracepoint = false;
   m_bTracing    = false;
@@ -192,6 +192,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
       }
       continue;
     }
+    
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--partitionsPerNode"_Stz)) {
