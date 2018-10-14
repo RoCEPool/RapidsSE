@@ -79,8 +79,11 @@ Job::~Job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  //vTrace("%s: DELETING JOB %p %s\n"_Stz,
-  //       gpAttachMap->m_pGrid->pThisNode()->aNodeName(), this, aCN[eClass()]);
+  vTrace("%s: DELETING JOB %p %s id %lld\n"_Stz,
+         gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
+         this,
+         aCN[eClass()],
+         m_iJobId);
   
   pthread_mutex_destroy(&m_xThreadMutex);
   pthread_mutexattr_destroy(&m_xThreadMutexAttr);

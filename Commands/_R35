@@ -130,6 +130,7 @@ print "=====================================================================";
 print "creating table j10 when not in tables ...";
 print "=====================================================================";
 cf ..;
+sleep 3;
 create table j10 (
 j10_key   INTEGER NOT NULL,
 j10_name  VARCHAR(32) NOT NULL

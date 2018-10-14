@@ -223,10 +223,10 @@ void Jobs::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Jobs* pJobs = reinterpret_cast<Jobs*>(pObject);
   //vSkipListDump(pJobs->m_pJobsSkipList);
   SkipList* pSkipList = pJobs->m_pJobsSkipList;
-  vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
+  //vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
   i8 iLevel = pSkipList->m_iHeight;
   do {
-    vTrace("LEVEL %lld\n"_Stz, iLevel);
+    //vTrace("LEVEL %lld\n"_Stz, iLevel);
     
     SkipNode* pNode = pSkipList->pFirst(iLevel);
     while (pNode) {
@@ -237,9 +237,8 @@ void Jobs::vDump(eCN eClass, Object* pObject, Stz* aTab)
       pNode = pSkipList->pNext(pNode, iLevel);
     }
   } while (--iLevel >= 0);
-  vTrace("============================\n"_Stz);
-  vTrace("\n"_Stz);
   
+  vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
 }
 
