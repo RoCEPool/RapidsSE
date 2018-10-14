@@ -82,6 +82,7 @@ void Jobs::vAddJob(Job* pJob)
   
   ASSERT(bIsLocked());
   
+  //vTrace("inserting job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
   m_pJobsSkipList->bInsert(pJob);
 }
 
@@ -187,6 +188,7 @@ void Jobs::vRemoveJob(Job* pJob)
   
   ASSERT(m_xLock.bIsLocked());
   
+  //vTrace("removing job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
   bRemoved = m_pJobsSkipList->bRemove(pJob);
 }
 
@@ -219,7 +221,24 @@ void Jobs::vDump(eCN eClass, Object* pObject, Stz* aTab)
   RASSERT(pObject->eClass() == CN_JOBS);
   
   Jobs* pJobs = reinterpret_cast<Jobs*>(pObject);
-  vSkipListDump(pJobs->m_pJobsSkipList);
+  //vSkipListDump(pJobs->m_pJobsSkipList);
+  SkipList* pSkipList = pJobs->m_pJobsSkipList;
+  vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
+  i8 iLevel = pSkipList->m_iHeight;
+  do {
+    vTrace("LEVEL %lld\n"_Stz, iLevel);
+    
+    SkipNode* pNode = pSkipList->pFirst(iLevel);
+    while (pNode) {
+      i8 i = (i8)pNode->m_pObject;
+      Job* pJob = (Job*)(pNode->m_pObject);
+      vTrace("Node %p : %p %s %lld (L%lld)\n"_Stz,pNode,pJob, aCN[pJob->eClass()],pJob->m_iJobId, pNode->m_nRight);
+             
+      pNode = pSkipList->pNext(pNode, iLevel);
+    }
+  } while (--iLevel >= 0);
+  vTrace("============================\n"_Stz);
+  vTrace("\n"_Stz);
   
   vTrace("\n"_Stz);
 }

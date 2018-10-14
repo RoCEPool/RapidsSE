@@ -113,6 +113,7 @@ TablePtn::TablePtn(void)
 
   m_nBuffersToBeInserted = 0;
   m_nBuffersInserted = 0;
+  m_iEndInsertJobId = -1;
   
   m_pIndexTreeVec = new IndexTreeVec;
   
@@ -253,6 +254,26 @@ void TablePtn::vDropWrite(void)
   
   ASSERT(m_xLock.bIsLocked());
   m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set endInsert jobid                                                        */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vEndInsertJobId(i8 iJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  m_iEndInsertJobId = iJobId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get endInsert jobid                                                        */
+/*----------------------------------------------------------------------------*/
+i8 TablePtn::iEndInsertJobId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  return m_iEndInsertJobId;
 }
 
 /*----------------------------------------------------------------------------*/

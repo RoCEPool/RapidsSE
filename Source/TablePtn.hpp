@@ -25,6 +25,7 @@ namespace DBobjects
   
     i8 m_nBuffersToBeInserted;   // buffers to be inserted
     i8 m_nBuffersInserted;       // buffers inserted so far
+    i8 m_iEndInsertJobId;        // end insert jobid
     
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
@@ -52,6 +53,8 @@ namespace DBobjects
     i8   nBuffersInserted(void);
     void vDropRead(void);
     void vDropWrite();
+    void vEndInsertJobId(i8 iJobId);
+    i8   iEndInsertJobId(void);
     bool bGrabRead(void);
     bool bGrabWrite(void);
     IndexTree* pHiddenIndexTree(void);

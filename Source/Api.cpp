@@ -82,7 +82,7 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     pSession->m_pJobStack->vPushObject(pJob_EndInsert);
     
     // set insertRowJobId in the endInsert job
-    pJob_EndInsert->m_iInsertRowJobId = pJob_InsertRow->m_iJobId;
+    pJob_EndInsert->m_pJobInsertRow = pJob_InsertRow;
     
     // lock this job's mutex
     i8 rCode = pthread_mutex_lock(&pJob_EndInsert->m_xThreadMutex);

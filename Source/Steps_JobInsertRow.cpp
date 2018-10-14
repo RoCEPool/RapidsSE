@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobInsertRow(void)
 {
-  vAddStep("job_endInsert.insertRowJob@"_Stz, &Task::vJob_EndInsertInsertRowJobIdFetch);
+  vAddStep("job_endInsert.insertRowJob@"_Stz, &Task::vJob_EndInsertInsertRowJobFetch);
   vAddStep("job_endInsert.task@"_Stz,         &Task::vJob_EndInsertTaskFetch);
   vAddStep("job_endInsert.task!"_Stz,         &Task::vJob_EndInsertTaskStore);
 
@@ -33,17 +33,16 @@ void Step::vAddSteps_JobInsertRow(void)
 /*----------------------------------------------------------------------------*/
 /* job_EndInsert.InsertRowJob@ -- fetch insertRow jobid from job              */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_EndInsertInsertRowJobIdFetch(MP_Task mpTask)
+void Task::vJob_EndInsertInsertRowJobFetch(MP_Task mpTask)
 {
-  ENTRY("vJob_EndInsertInsertRowJobIdFetch"_Stz);
+  ENTRY("vJob_EndInsertInsertRowJobFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job_EndInsert.InsertRowJob@"_Stz);
   Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJobPtr);
   
-  i8 iInsertJobId = pJob_EndInsert->m_iInsertRowJobId;
-  mpTask->m_pDataStack->vPushInt(iInsertJobId);
+  mpTask->m_pDataStack->vPushObject(pJob_EndInsert->m_pJobInsertRow);
   
   EXIT();
 }
@@ -141,19 +140,23 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
   i8 nBuffersToBeInserted = pJob_InsertBuffer->m_nBuffersToBeInserted;
-  if (C_UNKNOWN != nBuffersToBeInserted)
+  if (C_UNKNOWN != nBuffersToBeInserted) {
     pPartition->vBuffersToBeInserted(nBuffersToBeInserted);
+    pPartition->vEndInsertJobId(pJob_InsertBuffer->m_iEndInsertJobId);
+  }
   
   // have all buffers been loaded?
   bool bAllBuffersInserted = false;
   if ( pPartition->nBuffersToBeInserted() &&
       (pPartition->nBuffersToBeInserted() == pPartition->nBuffersInserted())) {
-    //vTrace("Buffers inserted for partition %lld\n"_Stz, iPartition);
+    vTrace("Buffers inserted for partition %lld %lld\n"_Stz, iPartition, pPartition->nBuffersToBeInserted(), pPartition->iEndInsertJobId());
+    pJob_InsertBuffer->m_iEndInsertJobId = pPartition->iEndInsertJobId();
     bAllBuffersInserted = true;
     
     // reset these in tblPtn for next insert into table
     pPartition->vBuffersToBeInserted(0);
     pPartition->vBuffersInserted(0);
+    pPartition->vEndInsertJobId(-1);
   }
   
   mpTask->m_pDataStack->vPushInt(bAllBuffersInserted);

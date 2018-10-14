@@ -28,9 +28,7 @@
   // calculate total partitions in the cluster
   grid::slots grid::nodes * locals| nTotalPartitions |
 
-  pJob_EndInsert job_EndInsert.insertRowJob@ to iInsertRowJobId
-  //iInsertRowJobId "InsertRowJobId %v" fmt.print
-  iInsertRowJobId job::findOriginator to pJob_InsertRow
+  pJob_EndInsert job_EndInsert.insertRowJob@ to pJob_InsertRow
   //pJob_InsertRow .
 
   // grab this task's lock
@@ -120,7 +118,7 @@
   grid::thisNode@ locals| iThisNode |
 
   //iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
-
+  
   iThisNode iOriginNode == if
     //"endInsert is executing on this node" .
     pJob_EndInsert EndInsert_sendLast

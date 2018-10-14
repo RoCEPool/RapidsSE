@@ -5,12 +5,14 @@
 
 namespace JobsModel
 {
+  class Job_InsertRow;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_EndInsert : public Job
   {
   public:
-    i8             m_iInsertRowJobId;                  // insert row job
-    Tasks::Task*   m_pTask;                            // task running this job
+    Job_InsertRow* m_pJobInsertRow;                  // insert row job
+    Tasks::Task*   m_pTask;                          // task running this job
     
     // must be last
     Footer m_xFooter;

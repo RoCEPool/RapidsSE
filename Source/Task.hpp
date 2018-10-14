@@ -732,7 +732,7 @@ namespace Tasks
     static void vJob_SubFetchSlotFetch(MP_Task mpTask);
     
     // job insertRow
-    static void vJob_EndInsertInsertRowJobIdFetch(MP_Task mpTask);
+    static void vJob_EndInsertInsertRowJobFetch(MP_Task mpTask);
     static void vJob_EndInsertTaskFetch(MP_Task mpTask);
     static void vJob_EndInsertTaskStore(MP_Task mpTask);
   

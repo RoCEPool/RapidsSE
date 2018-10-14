@@ -37,7 +37,7 @@
   pTable pJob_InsertRow job_insertRow.table!
 
   // add job to originator jobs
-  pJob_InsertRow job.addOriginator
+  //pJob_InsertRow job.addOriginator
 
   <DONE_REQ>
 ;

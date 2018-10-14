@@ -433,7 +433,7 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   }
   
   delete pFindJob;
-  ASSERT(pJob);
+  RASSERT(pJob);
   mpTask->m_pDataStack->vPushObject(pJob);
   
   EXIT();
@@ -457,8 +457,17 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
   
-  delete pFindJob;
+  if ( ! pJob ) {
+    vTrace("---------------\n"_Stz);
+    gpAttachMap->m_pParticipatingJobs->vContentDump();
+    gpAttachMap->m_pParticipatingJobs->vGrabLock();
+    Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+    gpAttachMap->m_pParticipatingJobs->vDropLock();
+    vTrace("---------------\n"_Stz);
+  }
   
+  delete pFindJob;
+  RASSERT(pJob);
   mpTask->m_pDataStack->vPushObject(pJob);
   
   EXIT();
