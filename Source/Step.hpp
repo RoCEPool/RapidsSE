@@ -93,7 +93,6 @@ namespace Tasks
     static void vAddSteps_PlanList(void);
     static void vAddSteps_Planner(void);
     static void vAddSteps_Process(void);
-    static void vAddSteps_Prompt(void);
     static void vAddSteps_Push(void);
   
     static void vAddSteps_Queue(void);

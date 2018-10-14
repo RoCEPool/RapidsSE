@@ -936,11 +936,6 @@ void Task::vTaskLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (m_pJob && m_pJob->eClass() == CN_JOB_PROMPT) {
-    int iDebug = 1;
-    //m_iTracing = 1;
-  }
-
   if (! m_pDataStack )
     vNewStacks();
   

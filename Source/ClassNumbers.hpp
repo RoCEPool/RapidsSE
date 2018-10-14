@@ -132,7 +132,6 @@ enum eCN : u2 // Class Number
   /* 104 */ CN_JOB_LOADBUFFER,
   /* 105 */ CN_JOB_LOADTABLE,
   /* 106 */ CN_JOB_PING,
-  /* 107 */ CN_JOB_PROMPT,
   /* 108 */ CN_JOB_PWF,
   /* 109 */ CN_JOB_RECEIVER,
   /* 110 */ CN_JOB_SANITY,
@@ -374,7 +373,6 @@ static Stz* aCN[]
   /* 104 */ "JOB_LOADBUFFER"_Stz,      // CN_JOB_LOADBUFFER
   /* 105 */ "JOB_LOADTABLE"_Stz,       // CN_JOB_LOADTABLE
   /* 106 */ "JOB_PING"_Stz,            // CN_JOB_PING
-  /* 107 */ "JOB_PROMPT"_Stz,          // CN_JOB_PROMPT
   /* 108 */ "JOB_PWF"_Stz,             // CN_JOB_PWF
   /* 109 */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER
   /* 110 */ "JOB_SANITY"_Stz,          // CN_JOB_SANITY

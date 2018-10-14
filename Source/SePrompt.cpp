@@ -97,12 +97,13 @@ void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set continue                                                               */
+/* the prompt loop                                                            */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vPromptLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
+  // we need to set the thread key to non-zero
   PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
   
   while (bContinue()) {

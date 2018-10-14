@@ -29,7 +29,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   
   // thread
   nJobs++; JobClass::vTraceJobs(CN_JOB_BOOT);
-  nJobs++; JobClass::vTraceJobs(CN_JOB_PROMPT);
 
   // system
   nJobs++; JobClass::vTraceJobs(CN_JOB_START);

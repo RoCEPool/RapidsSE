@@ -260,7 +260,6 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_LOADBUFFER"_Stz,     CN_JOB_LOADBUFFER);
   /*    */ vAddConstant("CN_JOB_LOADTABLE"_Stz,      CN_JOB_LOADTABLE);
   /*    */ vAddConstant("CN_JOB_PING"_Stz,           CN_JOB_PING);
-  /*    */ vAddConstant("CN_JOB_PROMPT"_Stz,         CN_JOB_PROMPT);
   /*    */ vAddConstant("CN_JOB_PWF"_Stz,            CN_JOB_PWF);
   /*    */ vAddConstant("CN_JOB_RECEIVER"_Stz,       CN_JOB_RECEIVER);
   /*    */ vAddConstant("CN_JOB_SANITY"_Stz,         CN_JOB_SANITY);

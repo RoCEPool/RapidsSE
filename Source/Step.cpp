@@ -95,7 +95,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PlanList();
   Step::vAddSteps_Planner();
   Step::vAddSteps_Process();
-  Step::vAddSteps_Prompt();
   Step::vAddSteps_Push();
   
   Step::vAddSteps_Queue();

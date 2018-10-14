@@ -46,7 +46,7 @@ JobClass xJobClass_Ping =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_Ping_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Prompt_class;
+  *pNextFun = (pFUN*)pJob_Pwf_class;
   
   return &xJobClass_Ping;
 }
