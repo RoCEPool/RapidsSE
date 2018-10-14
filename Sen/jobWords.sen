@@ -72,6 +72,8 @@
 
   pJobParticipant "Job__Cancelled::send" find execute
 
+  pJobParticipant job.Id@ pJobParticipant "job::participantCancelled %v %v" fmt.print
+
   // remove the job from the participant jobs
   pJobParticipant job.removeParticipant
 
@@ -98,6 +100,9 @@
 
   // now delete the ended job
   nullptr pThisTask task.job!
+
+  pThisJob job.id@ pThisJob "delete_completed_job %v %v" fmt.print
+
   pThisJob job.delete
 ;
 

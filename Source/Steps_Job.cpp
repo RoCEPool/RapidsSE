@@ -15,6 +15,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
+  vAddStep("job::findOriginator"_Stz,  &Task::vJobFindOriginator);
+  vAddStep("job::findParticipant"_Stz, &Task::vJobFindParticipant);
+  
   vAddStep("job.acksRemaining!"_Stz,   &Task::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Task::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Task::vJobAddParticipant);
@@ -32,8 +35,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.error@"_Stz,           &Task::vJobErrorFetch);
   vAddStep("job.execute@"_Stz,         &Task::vJobExecuteFetch);
   
-  vAddStep("job::findOriginator"_Stz,   &Task::vJobFindOriginator);
-  vAddStep("job::findParticipant"_Stz,  &Task::vJobFindParticipant);
   vAddStep("job.hasError"_Stz,         &Task::vJobHasError);
   vAddStep("job.hasWorkingBuffer"_Stz, &Task::vJobHasWorkingBuffer);
   vAddStep("job.id@"_Stz,              &Task::vJobIdFetch);
@@ -459,10 +460,10 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   pFindJob->m_iJobId = iJobId;
   
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
-  Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
   
-  if ( true || ! pJob ) {
+  if ( true || ! pJobFound ) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("Looking for JobId %lld in participant\n"_Stz,iJobId);
     vTrace("------------------------------------\n"_Stz);
@@ -473,8 +474,9 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   }
   
   delete pFindJob;
-  RASSERT(pJob);
-  mpTask->m_pDataStack->vPushObject(pJob);
+  
+  RASSERT(pJobFound);
+  mpTask->m_pDataStack->vPushObject(pJobFound);
   
   EXIT();
 }
