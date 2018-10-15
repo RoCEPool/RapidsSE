@@ -70,11 +70,7 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 #ifdef _DEBUG
   vTrace("  _DEBUG\n"_Stz);
 #endif
-  
-#ifdef _OLD_RELEASE
-  vTrace("  _OLD_RELEASE\n"_Stz);
-#endif
-  
+    
 #ifdef _VLQ
   vTrace("  _VLQ\n"_Stz);
 #endif

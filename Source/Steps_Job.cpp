@@ -40,7 +40,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.id@"_Stz,              &Task::vJobIdFetch);
   vAddStep("job.indexName@"_Stz,       &Task::vJobIndexNameFetch);
   
-  vAddStep("job.isPromptCommand"_Stz,  &Task::vJobIsPromptCommand);
   vAddStep("job.jobClass"_Stz,         &Task::vJobJobClass);
   vAddStep("job.metadata!"_Stz,        &Task::vJobMetadataStore);
   vAddStep("job.newBegun"_Stz,         &Task::vJobNewBegun);
@@ -561,23 +560,6 @@ void Task::vJobIndexNameFetch(MP_Task mpTask)
   Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
   
   mpTask->m_pDataStack->vPushS32(pJob->m_sIndexName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.isPromptCpmmand -- is this job a prompt command job ?                 */
-/*----------------------------------------------------------------------------*/
-void Task::vJobIsPromptCommand(MP_Task mpTask)
-{
-  ENTRY("vJobIdFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.isPromptCommand"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushInt(pJob->m_pPromptTask ? true : false);
   
   EXIT();
 }
