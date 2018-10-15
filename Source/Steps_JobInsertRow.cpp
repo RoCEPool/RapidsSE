@@ -149,7 +149,7 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
   bool bAllBuffersInserted = false;
   if ( pPartition->nBuffersToBeInserted() &&
       (pPartition->nBuffersToBeInserted() == pPartition->nBuffersInserted())) {
-    vTrace("Buffers inserted for partition %lld %lld\n"_Stz, iPartition, pPartition->nBuffersToBeInserted(), pPartition->iEndInsertJobId());
+    //vTrace("Buffers inserted for partition %lld %lld\n"_Stz, iPartition, pPartition->nBuffersToBeInserted(), pPartition->iEndInsertJobId());
     pJob_InsertBuffer->m_iEndInsertJobId = pPartition->iEndInsertJobId();
     bAllBuffersInserted = true;
     
