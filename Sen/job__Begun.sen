@@ -79,7 +79,7 @@
   0 0 0 0 locals| iAcksRemaining error pJobParticipant iParticipantNode |
 
   // get participant node that executed the job
-  iJobId job::findParticipant to pJobParticipant
+  pJob__Begun iJobId job::findParticipant to pJobParticipant
   pJob__Begun job.participant@ to iParticipantNode
 
   // find the job in the originator jobs

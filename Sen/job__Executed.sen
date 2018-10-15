@@ -82,7 +82,7 @@
   0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
 
   // get participant node that executed the job
-  iJobId job::findParticipant to pJobParticipant
+  pJob__Executed iJobId job::findParticipant to pJobParticipant
   pJob__Executed job.participant@ to iParticipantNode
 
   // find the job in the originator jobs

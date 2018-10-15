@@ -32,7 +32,7 @@
 
   // get the load table job (participant node)
   pJob_LoadBuffer job_loadBuffer.jobLoadTableId@ to iLoadJobId
-  iLoadJobId job::findParticipant to pJob_LoadTable
+  pJob_LoadBuffer iLoadJobId job::findParticipant to pJob_LoadTable
 
   // store the load table job in this load buffer job
   pJob_LoadTable pJob_LoadBuffer job_loadBuffer.jobLoadTable!

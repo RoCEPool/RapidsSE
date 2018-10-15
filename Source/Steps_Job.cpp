@@ -425,8 +425,9 @@ void Task::vJobFindOriginator(MP_Task mpTask)
     vTrace("------------------------------------\n"_Stz);
     vTrace("Looking for JobId %lld in originator\n"_Stz,iJobId);
     vTrace("------------------------------------\n"_Stz);
-    gpAttachMap->m_pOriginatingJobs->vContentDump();
+    
     gpAttachMap->m_pOriginatingJobs->vGrabLock();
+    gpAttachMap->m_pOriginatingJobs->vContentDump();
     Job* pJob = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
     gpAttachMap->m_pOriginatingJobs->vDropLock();
   }
@@ -450,6 +451,12 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
     THROW_INVALID_DSTACK("job::findPartcipant"_Stz);
   
+  Object* pJobObject;
+  if ( ! mpTask->m_pDataStack->bPop(pJobObject) )
+    THROW_INVALID_DSTACK("job::findPartcipant"_Stz);
+  
+  Job* pCallingJob = _pJob(pJobObject);
+  
   Job__Find* pFindJob = new Job__Find;
   pFindJob->m_iJobId = iJobId;
   pFindJob->m_bFindingJob = true;
@@ -460,10 +467,11 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   
   if ( JOB_TRACE || ! pJobFound ) {
     vTrace("------------------------------------\n"_Stz);
-    vTrace("Looking for JobId %lld in participant\n"_Stz,iJobId);
+    vTrace("%s Looking for JobId %lld in participant\n"_Stz, aCN[pCallingJob->eClass()],iJobId);
     vTrace("------------------------------------\n"_Stz);
-    gpAttachMap->m_pParticipatingJobs->vContentDump();
+    
     gpAttachMap->m_pParticipatingJobs->vGrabLock();
+    gpAttachMap->m_pParticipatingJobs->vContentDump();
     Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
     gpAttachMap->m_pParticipatingJobs->vDropLock();
   }

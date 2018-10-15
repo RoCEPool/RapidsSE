@@ -61,7 +61,7 @@
 
     // get the end insert table job (participant node)
     pJob_InsertBuffer job_insertBuffer.endInsertJob@ locals| iEndInsertJobId |
-    iEndInsertJobId job::findParticipant locals| pJob_EndInsert |
+    pJob_InsertBuffer iEndInsertJobId job::findParticipant locals| pJob_EndInsert |
     pJob_EndInsert job_EndInsert.task@ locals| pTask_EndInsert |
 
     //pTask_EndInsert pJob_EndInsert iEndInsertJobId
