@@ -55,6 +55,7 @@
   pJobParticipant "Job__Ended::send" find execute
 
   // remove the job from the participant jobs
+  pJobParticipant job.Id@ pJobParticipant "job::participantEnded %v %v" fmt.print
   pJobParticipant job.removeParticipant
 
   // delete the job
