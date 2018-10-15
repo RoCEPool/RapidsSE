@@ -1,3 +1,4 @@
+createRegrSchema.test
 columnTest.test
 createDropLoop.test
 createTableIfNotExists.test
