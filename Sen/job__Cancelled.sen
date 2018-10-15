@@ -65,6 +65,7 @@
 
   0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
 
+  ": Job__Cancelled_rcv" .
   // get participant node that executed the job
   iJobId job::findParticipant to pJobParticipant
   pJob__Cancelled job.participant@ to iParticipantNode
