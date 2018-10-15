@@ -54,12 +54,19 @@
 : SubLoader_process ( pJob_SubLoader -- )
 
   params| pJob_SubLoader |
+  0 locals| pJobLoadTable_Participant |
 
   begin pJob_SubLoader job_subLoader.processRecords while
 
     false pJob_SubLoader SubLoader_sendBuffer
 
   repeat
+
+  // get the job_loader from subLoader
+  pJob_SubLoader job_subLoader.jobLoadTable@ to pJobLoadTable_Participant
+
+  // get the valid/invalid rows loaded from subloader
+  pJob_SubLoader job_subLoader.recordsInvalid pJobLoadTable_Participant job_loadTable.addInvalidRows
 
   pJob_SubLoader SubLoader_sendLast
 ;
@@ -73,9 +80,6 @@
 
   0 locals| pThisTask |
   0 locals| pJob_SubLoader |
-  0 locals| pJobLoadTable_Originator |
-  0 locals| pJobLoadTable_Participant |
-  0 locals| iLoadTableJobId |
 
   tp: SubLoader
   //"SubLoader running" .
@@ -90,16 +94,6 @@
   pJob_SubLoader job_subLoader.begin
 
   pJob_SubLoader SubLoader_process
-
-  // get the job_loader from subLoader
-  pJob_SubLoader job_subLoader.jobLoadTable@ to pJobLoadTable_Participant
-  pJobLoadTable_Participant job.id@ to iLoadTableJobId
-
-  // now find the job_loadTable again in origintor
-  iLoadTableJobId job::findOriginator to pJobLoadTable_Originator
-
-  // get the valid/invalid rows loaded from subloader
-  pJob_SubLoader job_subLoader.recordsInvalid pJobLoadTable_Participant job_loadTable.addInvalidRows
 
   pJob_SubLoader job_subLoader.end
 
