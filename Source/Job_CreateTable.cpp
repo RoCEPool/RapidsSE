@@ -39,15 +39,15 @@ JobClass xJobClass_CreateTable =
   true,
   "create table <tableName> ( <columnList> )"_Stz,
   
-  "create table supplier ("
-  "  S_SUPPKEY       INTEGER NOT NULL,"
-  "  S_NAME          VARCHAR(25) NOT NULL,"
-  "  S_ADDRESS       VARCHAR(40) NOT NULL,"
-  "  S_NATIONKEY     INTEGER NOT NULL,"
-  "  S_PHONE         CHAR(15) NOT NULL,"
-  "  S_ACCTBAL       DECIMAL(15,2) NOT NULL,"
-  "  S_COMMENT       VARCHAR(101) NOT NULL"
-  "  );"_Stz,
+  "create table supplier (\n"
+  "  S_SUPPKEY   INTEGER NOT NULL,\n"
+  "  S_NAME      VARCHAR(25) NOT NULL,\n"
+  "  S_ADDRESS   VARCHAR(40) NOT NULL,\n"
+  "  S_NATIONKEY INTEGER NOT NULL,\n"
+  "  S_PHONE     CHAR(15) NOT NULL,\n"
+  "  S_ACCTBAL   DECIMAL(15,2) NOT NULL,\n"
+  "  S_COMMENT   VARCHAR(101) NOT NULL\n"
+  ");"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

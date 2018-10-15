@@ -7,6 +7,9 @@ namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   bool bPrompt_help(SePrompt* pPrompt);
+  
+  bool bPrompt_helpJob(SePrompt* pPrompt);
+  bool bPrompt_helpJobs(SePrompt* pPrompt);
 }
 
 /*============================================================================*/

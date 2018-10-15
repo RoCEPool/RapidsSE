@@ -38,7 +38,7 @@ JobClass xJobClass_AnalyzeIndex =
   // help and example
   true,
   "anidx <tableNm> <indexNm> [0/1]"_Stz,
-  "<example>"_Stz,
+  "anidx SUPPLIER idx1 0;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

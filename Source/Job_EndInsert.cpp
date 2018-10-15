@@ -42,9 +42,9 @@ JobClass xJobClass_EndInsert =
   vJob_EndInsert_show,    // job show function
   
   // help and example
-  true,
-  "end insert"_Stz,
-  "end insert;"_Stz,
+  false,
+  "<none>"_Stz,
+  "<none>"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
