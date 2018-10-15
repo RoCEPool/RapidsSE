@@ -118,14 +118,17 @@ void Task::vJobAddOriginator(MP_Task mpTask)
   i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
   pJob->m_iJobId = iJobId;
 
-  vTrace("Added job %p %s id %lld partNode %lld into originator\n"_Stz,
-         pJob,
-         aCN[pJob->eClass()],
-         pJob->iJobId(),
-         pJob->iParticipantNode());
-  
   gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
+
+#ifdef JOB_TRACE
+  if ( JOB_TRACE )
+    vTrace("Added job %p %s id %lld partNode %lld into originator\n"_Stz,
+           pJob,
+           aCN[pJob->eClass()],
+           pJob->iJobId(),
+           pJob->iParticipantNode());
+#endif
   
   EXIT();
 }
@@ -146,12 +149,15 @@ void Task::vJobAddParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vAddJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
   
+#ifdef JOB_TRACE
+  if ( JOB_TRACE )
   vTrace("Added job %p %s id %lld partNode %lld into participant\n"_Stz,
          pJob,
          aCN[pJob->eClass()],
          pJob->iJobId(),
          pJob->iParticipantNode());
-
+#endif
+  
   EXIT();
 }
 
@@ -434,7 +440,7 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
   
-  if ( ! pJobFound ) {
+  if (  JOB_TRACE || ! pJobFound ) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("Looking for JobId %lld in originator\n"_Stz,iJobId);
     vTrace("------------------------------------\n"_Stz);
@@ -471,7 +477,7 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
   
-  if ( true || ! pJobFound ) {
+  if ( JOB_TRACE || ! pJobFound ) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("Looking for JobId %lld in participant\n"_Stz,iJobId);
     vTrace("------------------------------------\n"_Stz);
@@ -975,7 +981,10 @@ void Task::vJobRemoveOriginator(MP_Task mpTask)
   gpAttachMap->m_pOriginatingJobs->vRemoveJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
   
-  vTrace("removed job %p id %lld from originator\n"_Stz,pJob, pJob->iJobId());
+#ifdef JOB_TRACE
+  if ( JOB_TRACE )
+    vTrace("removed job %p id %lld from originator\n"_Stz,pJob, pJob->iJobId());
+#endif
   
   EXIT();
 }
@@ -996,7 +1005,11 @@ void Task::vJobRemoveParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vRemoveJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
  
-  vTrace("removed job %p id %lld from participant\n"_Stz,pJob, pJob->iJobId());
+#ifdef JOB_TRACE
+  if ( JOB_TRACE )
+    vTrace("removed job %p id %lld from participant\n"_Stz,pJob, pJob->iJobId());
+#endif
+
   EXIT();
 }
 

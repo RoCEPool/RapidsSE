@@ -70,7 +70,7 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 #ifdef _DEBUG
   vTrace("  _DEBUG\n"_Stz);
 #endif
-    
+  
 #ifdef _VLQ
   vTrace("  _VLQ\n"_Stz);
 #endif
@@ -93,6 +93,10 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   
 #ifdef IT_COPYLEFTV3
   vTrace("  IT_COPYLEFTV3\n"_Stz);
+#endif
+  
+#ifdef JOB_TRACE
+  vTrace("  JOB_TRACE %lld\n"_Stz,(i8)JOB_TRACE);
 #endif
   
 #ifdef JUMP_FALSE

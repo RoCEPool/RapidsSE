@@ -68,7 +68,7 @@
 
   0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
 
-  ": Job__Cancelled_rcv" .
+  // ": Job__Cancelled_rcv" .
 
   // find the job in the originator jobs
   iJobId job::findOriginator to pJob

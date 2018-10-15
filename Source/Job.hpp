@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#define JOB_TRACE false
+
 namespace JobsModel
 {
   class JobClass_o;    // forward definition

@@ -78,8 +78,9 @@ Job::Job(eCN eClassNo, Session* pSession)
 Job::~Job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if ( ! m_bFindingJob ) {
+
+#ifdef JOB_TRACE
+  if ( JOB_TRACE && ! m_bFindingJob ) {
     vTrace("~Job: Deleted Job %p %s id %lld partNode %lld (node: %s)\n"_Stz,
            this,
            aCN[eClass()],
@@ -91,6 +92,7 @@ Job::~Job(void)
     if (CN_JOB__CANCELLED == eClass())
       int iDebug = 1;
   }
+#endif
   
   pthread_mutex_destroy(&m_xThreadMutex);
   pthread_mutexattr_destroy(&m_xThreadMutexAttr);
