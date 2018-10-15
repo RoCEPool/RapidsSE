@@ -64,7 +64,6 @@ Semaphore::Semaphore()
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
   m_bLocked = false;
-  m_pLockingThread = nullptr;
 
   // initialise attribute to mutex
   MemLib::vZero(&m_xMutexAttr,sizeof(m_xMutexAttr),CN_SEMAPHORE);
@@ -181,7 +180,6 @@ void Semaphore::vCondWait_Mutex(void)
   ASSERT(bMutexIsLocked());
   
   // clear this threads tracking of the mutex
-  m_pLockingThread = nullptr;
   m_bLocked = false;
   
   i8 rCode = pthread_cond_wait(&m_xCond,&m_xMutex);
@@ -189,7 +187,6 @@ void Semaphore::vCondWait_Mutex(void)
   if (0 == rCode) {
     RASSERT(! m_bLocked);
     //RASSERT(! m_pLockingThread);
-    m_pLockingThread = pCallingThread;
     m_bLocked = true;
     return;
   }
@@ -225,7 +222,6 @@ void Semaphore::vCondTimedWait(i8 iMicroSeconds)
   xTimeSpec.tv_nsec = xSince.m_iMicroseconds * 1000;
   
   // clear this threads tracking of the mutex
-  m_pLockingThread = nullptr;
   m_bLocked = false;
   
   // this is a time limited blocking call
@@ -234,7 +230,6 @@ void Semaphore::vCondTimedWait(i8 iMicroSeconds)
   if (0 == rCode || ETIMEDOUT == rCode) {
     RASSERT(! m_bLocked);
     //RASSERT(! m_pLockingThread);
-    m_pLockingThread = pCallingThread;
     m_bLocked = true;
     return;
   }
@@ -283,7 +278,6 @@ bool Semaphore::bMutexLock(void)
   if (0 == rCode) {
     RASSERT(! m_bLocked);
     //RASSERT(! m_pLockingThread);
-    m_pLockingThread = pCallingThread;
     m_bLocked = true;
     return true;
   }
@@ -319,7 +313,6 @@ void Semaphore::vMutexLock(void)
   if (0 == rCode) {
     RASSERT(! m_bLocked);
     //RASSERT(! m_pLockingThread);
-    m_pLockingThread = pCallingThread;
     m_bLocked = true;
     return;
   }
@@ -347,7 +340,6 @@ void Semaphore::vMutexUnlock(void)
   //vTrace("MutexUnlock %p\n"_Stz,this);
   
   // clear this threads tracking of the mutex
-  m_pLockingThread = nullptr;
   m_bLocked = false;
   
   i8 rCode = pthread_mutex_unlock(&m_xMutex);
