@@ -670,7 +670,6 @@ namespace Tasks
     static void vJobParticipantStore(MP_Task mpTask);
     static void vJobPostRecv(MP_Task mpTask);
     static void vJobPreSend(MP_Task mpTask);
-    static void vJobPromptTaskFetch(MP_Task mpTask);
     static void vJobRecv(MP_Task mpTask);
     static void vJobPartitionsFetch(MP_Task mpTask);
     static void vJobRegionSizeFetch(MP_Task mpTask);

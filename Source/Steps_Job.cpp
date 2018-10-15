@@ -57,9 +57,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.participant!"_Stz,     &Task::vJobParticipantStore);
   vAddStep("job.partitions@"_Stz,      &Task::vJobPartitionsFetch);
   vAddStep("job.postRecv"_Stz,         &Task::vJobPostRecv);
-  vAddStep("job.preSend"_Stz,          &Task::vJobPreSend);
-  vAddStep("job.promptTask@"_Stz,      &Task::vJobPromptTaskFetch);
-  
+  vAddStep("job.preSend"_Stz,          &Task::vJobPreSend);  
   vAddStep("job.recv"_Stz,             &Task::vJobRecv);
   vAddStep("job.regionSize@"_Stz,      &Task::vJobRegionSizeFetch);
   vAddStep("job.removeOriginator"_Stz, &Task::vJobRemoveOriginator);
@@ -934,23 +932,6 @@ void Task::vJobPreSend(MP_Task mpTask)
   
   if (pJobClass->m_fSend)
     (*pJobClass->m_fSend)(pJob);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.promptTask@ -- fetch the prompt task from the job                      */
-/*----------------------------------------------------------------------------*/
-void Task::vJobPromptTaskFetch(MP_Task mpTask)
-{
-  ENTRY("vJobPromptTaskFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.promptTask@"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushObject(pJob->m_pPromptTask);
   
   EXIT();
 }
