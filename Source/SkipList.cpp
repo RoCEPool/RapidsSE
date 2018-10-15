@@ -228,7 +228,7 @@ SkipNode* SkipList::pFirst(i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* insert object into list                                                    */
 /*----------------------------------------------------------------------------*/
-bool SkipList::bInsert(void* pObjectInsert)
+bool SkipList::bInsert(void* aObjectInsert)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
@@ -236,8 +236,11 @@ bool SkipList::bInsert(void* pObjectInsert)
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
   
   // get a positioned prior vector
-  SkipNode* pNode = pPosition(pObjectInsert,bEqualTo,aPriorVec);
-  ASSERT(pNode); // logic check
+  SkipNode* pNode = pPosition(aObjectInsert,bEqualTo,aPriorVec);
+  RASSERT(pNode); // logic check
+  
+  Object* pObjectInsert = (Object*)aObjectInsert;
+  RASSERT( ! pNode->m_pObject || ((Object*)pNode->m_pObject)->eClass() == pObjectInsert->eClass() );
   
   // do not insert duplicates into a list of unique keys
   if (bEqualTo && m_bUniqueKey)

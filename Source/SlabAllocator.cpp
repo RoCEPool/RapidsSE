@@ -71,6 +71,8 @@ char* SlabAllocator::aAllotBytes(i8 nBytes)
   
   Slab* pNewFirstSlab = new Slab;
   pNewFirstSlab->vNextSlab(m_pFirstSlab);
+  RASSERT(pNewFirstSlab);
+  
   m_pFirstSlab = pNewFirstSlab;
   
   aBytes = m_pFirstSlab->aAllotBytes(nBytes);
