@@ -40,6 +40,7 @@ using namespace JobsModel;
 #include "Job__Ended.hpp"
 #include "Job__Execute.hpp"
 #include "Job__Executed.hpp"
+#include "Job__Find.hpp"
 
 #include "Job_AnalyzeTable.hpp"
 #include "Job_AnalyzeIndex.hpp"
