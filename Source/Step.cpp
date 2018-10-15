@@ -30,7 +30,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Cast();
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
-  Step::vAddSteps_CommandProcessor();
   Step::vAddSteps_Comment();
   Step::vAddSteps_Common();
   Step::vAddSteps_Cpu();

@@ -26,7 +26,6 @@ namespace Tasks
     static void vAddSteps_Cast(void);
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
-    static void vAddSteps_CommandProcessor(void);
     static void vAddSteps_Comment(void);
     static void vAddSteps_Common(void);
     static void vAddSteps_Cpu(void);
