@@ -21,7 +21,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.acksRemaining!"_Stz,   &Task::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Task::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Task::vJobAddParticipant);
-  vAddStep("job.ancilliary@"_Stz,      &Task::vJobAncilliaryFetch);
   vAddStep("job.class"_Stz,            &Task::vJobClass);
   vAddStep("job.columnCount@"_Stz,     &Task::vJobColumnCountFetch);
   vAddStep("job.columnIsPartKey"_Stz,  &Task::vJobColumnIsPartKey);
@@ -157,24 +156,6 @@ void Task::vJobAddParticipant(MP_Task mpTask)
          pJob->iJobId(),
          pJob->iParticipantNode());
 #endif
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.Ancilliary@ -- fetch ancilliary object from job                        */
-/*----------------------------------------------------------------------------*/
-void Task::vJobAncilliaryFetch(MP_Task mpTask)
-{
-  ENTRY("vJobAncilliaryFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("jobBegun.error@"_Stz);
-  
-  Job* pJob = _pJob(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushObject(pJob->m_pAncillary);
   
   EXIT();
 }

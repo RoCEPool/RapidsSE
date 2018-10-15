@@ -635,7 +635,6 @@ namespace Tasks
     static void vJobAcksRemaining(MP_Task mpTask);
     static void vJobAddOriginator(MP_Task mpTask);
     static void vJobAddParticipant(MP_Task mpTask);
-    static void vJobAncilliaryFetch(MP_Task mpTask);
     static void vJobClass(MP_Task mpTask);
     static void vJobColumnCountFetch(MP_Task mpTask);
     static void vJobColumnNameFetch(MP_Task mpTask);

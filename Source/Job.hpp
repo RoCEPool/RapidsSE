@@ -91,9 +91,7 @@ namespace JobsModel
     i8  m_iParticipantNode;    // participant node no
     Atomic m_ziAcksRemaining;  // acks remaining
     Tasks::Task* m_pOriginatingTask;  // originating task of the request
-  
-    Object* m_pAncillary;      // ancilliary object
-  
+    
     WorkingBuffer* m_pWorkingBuffer; // working buffer
 
     bool m_bFindingJob; // temp. to be fixed
