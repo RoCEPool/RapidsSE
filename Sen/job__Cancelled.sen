@@ -41,7 +41,10 @@
   // send the cancelled job
   //pJob__Cancelled >socket
 
-  iJobId job::originator@ pJob__Cancelled job.reply
+  iJobId job::originator@ locals| iOriginator |
+  //iOriginator pJob__Cancelled jobCancelled.cancelOriginator!
+
+  iOriginator pJob__Cancelled job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -66,9 +69,6 @@
   0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
 
   ": Job__Cancelled_rcv" .
-  // get participant node that executed the job
-  iJobId job::findParticipant to pJobParticipant
-  pJob__Cancelled job.participant@ to iParticipantNode
 
   // find the job in the originator jobs
   iJobId job::findOriginator to pJob
@@ -76,8 +76,11 @@
   // get the error code from job__executed
   pJob__Cancelled jobCancelled.error@ to error
 
+  // get the node which originated the cancel
+  iJobId job::originator@ locals| iOriginatorNode |
+
   // set the error code in pJob
-  error iParticipantNode pJob job.error!
+  error iOriginatorNode pJob job.error!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
