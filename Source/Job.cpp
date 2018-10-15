@@ -79,11 +79,18 @@ Job::~Job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("%s: DELETING JOB %p %s id %lld\n"_Stz,
-         gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
-         this,
-         aCN[eClass()],
-         m_iJobId);
+  if ( ! m_bFindingJob ) {
+    vTrace("~Job: Deleted Job %p %s id %lld partNode %lld (node: %s)\n"_Stz,
+           this,
+           aCN[eClass()],
+           m_iJobId,
+           m_iParticipantNode,
+           gpAttachMap->m_pGrid->pThisNode()->aNodeName()
+          );
+    
+    if (CN_JOB__CANCELLED == eClass())
+      int iDebug = 1;
+  }
   
   pthread_mutex_destroy(&m_xThreadMutex);
   pthread_mutexattr_destroy(&m_xThreadMutexAttr);
@@ -107,6 +114,7 @@ void Job::vInit(void)
   m_pPromptTask = nullptr;
   m_pAncillary = nullptr;
   m_pWorkingBuffer = nullptr;
+  m_bFindingJob = false;
   
   // initialise attribute to mutex
   MemLib::vZero(&m_xThreadMutexAttr,sizeof(m_xThreadMutexAttr),CN_SEMAPHORE);

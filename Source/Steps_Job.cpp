@@ -121,7 +121,11 @@ void Task::vJobAddOriginator(MP_Task mpTask)
   i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
   pJob->m_iJobId = iJobId;
 
-  vTrace("added job %p %s id %lld into originator\n"_Stz,pJob, aCN[pJob->eClass()], pJob->iJobId());
+  vTrace("Added job %p %s id %lld partNode %lld into originator\n"_Stz,
+         pJob,
+         aCN[pJob->eClass()],
+         pJob->iJobId(),
+         pJob->iParticipantNode());
   
   gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
@@ -145,7 +149,11 @@ void Task::vJobAddParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vAddJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
   
-  vTrace("added job %p %s id %lld into participant\n"_Stz,pJob, aCN[pJob->eClass()], pJob->iJobId());
+  vTrace("Added job %p %s id %lld partNode %lld into participant\n"_Stz,
+         pJob,
+         aCN[pJob->eClass()],
+         pJob->iJobId(),
+         pJob->iParticipantNode());
 
   EXIT();
 }
@@ -423,12 +431,13 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   
   Job__Cancelled* pFindJob = new Job__Cancelled;
   pFindJob->m_iJobId = iJobId;
+  pFindJob->m_bFindingJob = true;
   
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
-  Job* pJob = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
+  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
   
-  if ( ! pJob ) {
+  if ( ! pJobFound ) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("Looking for JobId %lld in originator\n"_Stz,iJobId);
     vTrace("------------------------------------\n"_Stz);
@@ -439,8 +448,9 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   }
   
   delete pFindJob;
-  RASSERT(pJob);
-  mpTask->m_pDataStack->vPushObject(pJob);
+  
+  RASSERT(pJobFound);
+  mpTask->m_pDataStack->vPushObject(pJobFound);
   
   EXIT();
 }
@@ -458,7 +468,8 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   
   Job__Cancelled* pFindJob = new Job__Cancelled;
   pFindJob->m_iJobId = iJobId;
-  
+  pFindJob->m_bFindingJob = true;
+
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
   Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();

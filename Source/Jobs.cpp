@@ -234,7 +234,12 @@ void Jobs::vDump(eCN eClass, Object* pObject, Stz* aTab)
     while (pNode) {
       i8 i = (i8)pNode->m_pObject;
       Job* pJob = (Job*)(pNode->m_pObject);
-      vTrace("Node %p : %p %s %lld (L%lld)\n"_Stz,pNode,pJob, aCN[pJob->eClass()],pJob->m_iJobId, pNode->m_nRight);
+      vTrace("Job %p %s id %lld partNode %lld (L%lld)\n"_Stz,
+             pJob,
+             aCN[pJob->eClass()],
+             pJob->m_iJobId,
+             pJob->m_iParticipantNode,
+             pNode->m_nRight);
              
       pNode = pSkipList->pNext(pNode, iLevel);
     }
