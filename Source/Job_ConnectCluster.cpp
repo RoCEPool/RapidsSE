@@ -34,9 +34,11 @@ JobClass xJobClass_ConnectCluster =
   vJob_send,                 // job pre-send function
   vJob_recv,                 // job post-receive function
   vJob_ConnectCluster_show,  // job status function
-  true,                      // job is enabled
-  "<help>"_Stz,              // help
-  "<example>"_Stz,           // example
+  
+  // help and example
+  true,
+  "connectCluster"_Stz,
+  "connectCluster;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

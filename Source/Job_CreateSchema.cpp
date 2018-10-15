@@ -34,9 +34,11 @@ JobClass xJobClass_CreateSchema =
   vJob_send,                // job pre-send function
   vJob_recv,                // job post-receive function
   vJob_CreateSchema_show,   // job show function
-  true,                     // job is enabled
-  "<help>"_Stz,             // help
-  "<example>"_Stz,          // example
+  
+  // help and example
+  true,
+  "create schema <schemaName>"_Stz,
+  "create schema tpchSchema;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

@@ -14,7 +14,7 @@ JobClass xJobClass_ListColumns =
   "Job_ListColumns"_Stz,  // name of the job class
   CN_JOB_LISTCOLUMNS,     // class enum
   JK_LOCAL,               // job kind
-  "list table columns"_Stz,     // comment about the job
+  "list table columns"_Stz, // comment about the job
   "lscol"_Stz,            // the prompt command
   nullptr,                // the second word
   nullptr,                // the _run task seed
@@ -34,9 +34,11 @@ JobClass xJobClass_ListColumns =
   nullptr,                // job pre-send function
   nullptr,                // job post-receive function
   vJob_ListColumns_show,  // job show function
-  true,                   // job is enabled
-  "<help>"_Stz,           // help
-  "<example>"_Stz,        // example
+  
+  // help and example
+  true,
+  "lscol <tableName>"_Stz,
+  "lscol SUPPLIER;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

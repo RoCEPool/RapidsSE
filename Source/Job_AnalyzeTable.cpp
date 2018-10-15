@@ -34,9 +34,11 @@ JobClass xJobClass_AnalyzeTable =
   vJob_send,                 // job pre-send function
   vJob_recv,                 // job post-receive function
   vJob_AnalyzeTable_show,    // job show function
-  true,                      // job is enabled
-  "antbl tableNm [0/1]"_Stz, // help
-  "<example>"_Stz,           // example
+  
+  // help and example
+  true,
+  "antbl <tableNm> [0/1]"_Stz,
+  "<example>"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

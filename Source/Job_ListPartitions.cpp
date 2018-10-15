@@ -34,9 +34,11 @@ JobClass xJobClass_ListPartitions =
   nullptr,                 // job pre-send function
   nullptr,                 // job post-receive function
   vJob_ListPartitions_show,// job show function
-  true,                    // job is enabled
-  "<help>"_Stz,            // help
-  "<example>"_Stz,         // example
+  
+  // help and example
+  true,
+  "lspart"_Stz,
+  "lspart;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

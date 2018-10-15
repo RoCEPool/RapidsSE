@@ -34,9 +34,11 @@ JobClass xJobClass_AnalyzeIndex =
   vJob_send,                 // job pre-send function
   vJob_recv,                 // job post-receive function
   vJob_AnalyzeIndex_show,    // job show function
-  true,                      // job is enabled
-  "anidx tableNm indexNm [0/1]"_Stz,              // help
-  "<example>"_Stz,           // example
+  
+  // help and example
+  true,
+  "anidx <tableNm> <indexNm> [0/1]"_Stz,
+  "<example>"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

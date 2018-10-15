@@ -34,9 +34,11 @@ JobClass xJobClass_SubFetch =
   nullptr,                   // job pre-send function
   nullptr,                   // job post-receive function
   vJob_SubFetch_show,        // job show function
-  false,                     // job is enabled
-  "<help>"_Stz,              // help
-  "<example>"_Stz,           // example
+  
+  // help and example
+  false,
+  "<none>"_Stz,
+  "<none>"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

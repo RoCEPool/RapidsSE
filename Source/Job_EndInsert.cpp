@@ -40,9 +40,11 @@ JobClass xJobClass_EndInsert =
   nullptr,                // job pre-send function
   nullptr,                // job post-receive function
   vJob_EndInsert_show,    // job show function
-  true,                   // job is enabled
-  "<help>"_Stz,           // help
-  "<example>"_Stz,        // example
+  
+  // help and example
+  true,
+  "end insert"_Stz,
+  "end insert;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

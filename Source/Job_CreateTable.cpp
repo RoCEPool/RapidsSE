@@ -34,9 +34,20 @@ JobClass xJobClass_CreateTable =
   vJob_send,              // job pre-send function
   vJob_recv,              // job post-receive function
   vJob_CreateTable_show,  // job show function
-  true,                   // job is enabled
-  "<help>"_Stz,           // help
-  "<example>"_Stz,        // example
+  
+  // help
+  true,
+  "create table <tableName> ( <columnList> )"_Stz,
+  
+  "create table supplier ("
+  "  S_SUPPKEY       INTEGER NOT NULL,"
+  "  S_NAME          VARCHAR(25) NOT NULL,"
+  "  S_ADDRESS       VARCHAR(40) NOT NULL,"
+  "  S_NATIONKEY     INTEGER NOT NULL,"
+  "  S_PHONE         CHAR(15) NOT NULL,"
+  "  S_ACCTBAL       DECIMAL(15,2) NOT NULL,"
+  "  S_COMMENT       VARCHAR(101) NOT NULL"
+  "  );"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

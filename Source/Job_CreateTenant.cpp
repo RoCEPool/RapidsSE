@@ -34,9 +34,11 @@ JobClass xJobClass_CreateTenant =
   vJob_send,                 // job pre-send function
   vJob_recv,                 // job post-receive function
   vJob_CreateTenant_show,    // job show function
-  true,                      // job is enabled
-  "<help>"_Stz,              // help
-  "<example>"_Stz,           // example
+  
+  // help and example
+  true,
+  "create tenant <tenantName>"_Stz,
+  "create tenant boray;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

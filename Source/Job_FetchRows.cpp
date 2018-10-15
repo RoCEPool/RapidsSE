@@ -34,9 +34,11 @@ JobClass xJobClass_FetchRows =
   vJob_send,                 // job pre-send function
   vJob_recv,                 // job post-receive function
   vJob_FetchRows_show,       // job show function
-  true,                      // job is enabled
-  "fetch <tableNm> <where>"_Stz,// help
-  "<example>"_Stz,           // example
+  
+  // help and example
+  true,
+  "fetch <tableName> [\"<where>\"]"_Stz,
+  "fetch supplier \"S_SUPPKEY 22 ==\";"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

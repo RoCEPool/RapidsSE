@@ -34,9 +34,11 @@ JobClass xJobClass_UseSchema =
   nullptr,               // job pre-send function
   nullptr,               // job post-receive function
   vJob_UseSchema_show,   // job show function
-  true,                  // job is enabled
-  "<help>"_Stz,          // help
-  "<example>"_Stz,       // example
+  
+  // help and example
+  true,
+  "use schema <schemaName>"_Stz,
+  "use schema tpchSchema;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

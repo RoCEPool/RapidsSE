@@ -34,9 +34,11 @@ JobClass xJobClass_VisualizeIndex =
   nullptr,                    // job pre-send function
   nullptr,                    // job post-receive function
   vJob_VisualizeIndex_show,   // job show function
-  true,                       // job is enabled
-  "<help>"_Stz,               // help
-  "<example>"_Stz,            // example
+  
+  // help and example
+  true,
+  "visidx <tableName> <indexName>"_Stz,
+  "visidx SUPPLIER idx1"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

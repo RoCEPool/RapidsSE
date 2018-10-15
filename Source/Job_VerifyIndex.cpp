@@ -34,9 +34,11 @@ JobClass xJobClass_VerifyIndex =
   vJob_send,                  // job pre-send function
   vJob_recv,                  // job post-receive function
   vJob_VerifyIndex_show,      // job show function
-  true,                       // job is enabled
-  "<help>"_Stz,               // help
-  "<example>"_Stz,            // example
+  
+  // help and example
+  true,
+  "vfyidx <tableName> <indexName>"_Stz,
+  "vfyidx SUPPPLIER idx1;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

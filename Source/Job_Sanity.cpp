@@ -34,9 +34,11 @@ JobClass xJobClass_Sanity =
   vJob_send,         // job pre-send function
   vJob_recv,         // job post-receive function
   vJob_Sanity_show,  // job show function
-  true,              // job is enabled
-  "<help>"_Stz,      // help
-  "<example>"_Stz,   // example
+  
+  // help and example
+  true,
+  "sanity"_Stz,
+  "sanity;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

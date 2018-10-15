@@ -34,9 +34,11 @@ JobClass xJobClass_Docol =
   nullptr,           // job pre-send function
   nullptr,           // job post-receive function
   vJob_Docol_show,   // job show function
-  true,              // job is enabled
-  "<help>"_Stz,      // help
-  "<example>"_Stz,   // example
+  
+  // help and example
+  true,
+  "<help>"_Stz,
+  "<example>"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

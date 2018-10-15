@@ -34,9 +34,11 @@ JobClass xJobClass_Cf =
   nullptr,             // job pre-send function
   nullptr,             // job post-receive function
   vJob_Cf_show,        // job show function
-  true,                // job is enabled
-  "<help>"_Stz,        // help
-  "<example>"_Stz,     // example
+  
+  // help and example
+  true,
+  "cf [<folderNm>|..]"_Stz,
+  "cf tables;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

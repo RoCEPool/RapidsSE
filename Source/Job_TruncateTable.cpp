@@ -34,9 +34,11 @@ JobClass xJobClass_TruncateTable =
   vJob_send,                 // job pre-send function
   vJob_recv,                 // job post-receive function
   vJob_TruncateTable_show,   // job show function
-  true,                      // job is enabled
-  "tr <tableNm>"_Stz,        // help
-  "<example>"_Stz,           // example
+  
+  // help and example
+  true,
+  "tr <tableName>"_Stz,
+  "tr SUPPLIER;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

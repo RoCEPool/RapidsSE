@@ -34,9 +34,11 @@ JobClass xJobClass_DumpIndex =
   nullptr,               // job pre-send function
   nullptr,               // job post-receive function
   vJob_DumpIndex_show,   // job show function
-  true,                  // job is enabled
-  "<help>"_Stz,          // help
-  "<example>"_Stz,       // example
+  
+  // help and example
+  true,
+  "dumpidx <tableName> <indexName>"_Stz,
+  "dumpidx supplier idx1;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

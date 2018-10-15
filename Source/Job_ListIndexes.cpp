@@ -14,7 +14,7 @@ JobClass xJobClass_ListIndexes =
   "Job_ListIndexes"_Stz,  // name of the job class
   CN_JOB_LISTINDEXES,     // class enum
   JK_LOCAL,               // job kind
-  "list table indexes"_Stz,     // comment about the job
+  "list table indexes"_Stz, // comment about the job
   "lsidx"_Stz,            // the prompt command
   nullptr,                // the second word
   nullptr,                // the _run task seed
@@ -34,9 +34,11 @@ JobClass xJobClass_ListIndexes =
   nullptr,                // job pre-send function
   nullptr,                // job post-receive function
   vJob_ListIndexes_show,  // job show function
-  true,                   // job is enabled
-  "<help>"_Stz,           // help
-  "<example>"_Stz,        // example
+  
+  // help and example
+  true,
+  "lsidx <tableName>"_Stz,
+  "lsidx supplier;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

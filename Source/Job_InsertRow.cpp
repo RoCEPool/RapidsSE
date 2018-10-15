@@ -34,9 +34,11 @@ JobClass xJobClass_InsertRow =
   nullptr,                // job pre-send function
   nullptr,                // job post-receive function
   vJob_InsertRow_show,    // job show function
-  true,                   // job is enabled
-  "<help>"_Stz,           // help
-  "<example>"_Stz,        // example
+  
+  // help and example
+  true,
+  "insert row \"<values>\""_Stz,
+  "insert row \"1,abcdef\";"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

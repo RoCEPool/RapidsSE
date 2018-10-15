@@ -34,9 +34,11 @@ JobClass xJobClass_CreateIndex =
   vJob_send,               // job pre-send function
   vJob_recv,               // job post-receive function
   vJob_CreateIndex_show,   // job show function
-  true,                    // job is enabled
-  "<help>"_Stz,            // help
-  "<example>"_Stz,         // example
+  
+  // help and example
+  true,
+  "create index <indexNm> on <tableNamem> ( <columnList> )"_Stz,
+  "create index idx1 on supplier (S_SUPPKEY);"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
@@ -66,9 +68,11 @@ JobClass xJobClass_CreateIndexUnique =
   vJob_send,               // job pre-send function
   vJob_recv,               // job post-receive function
   vJob_CreateIndex_show,   // job show function
-  true,                    // job is enabled
-  "<help>"_Stz,            // help
-  "<example>"_Stz,         // example
+  
+  // help
+  true,
+  "create unique index <indexNamem> on <tableNaem> ( <columnList> )"_Stz,
+  "create unique index idx1 on supplier (S_SUPPKEY);"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

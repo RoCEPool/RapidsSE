@@ -34,9 +34,11 @@ JobClass xJobClass_ListPartColumns =
   nullptr,                          // job pre-send function
   nullptr,                          // job post-receive function
   vJob_ListPartColumns_show,        // job show function
-  true,                             // job is enabled
-  "<help>"_Stz,                     // help
-  "<example>"_Stz,                  // example
+  
+  // help and example
+  true,
+  "lspartcol <tableName>"_Stz,
+  "lspartcol SUPPLIER;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

@@ -40,9 +40,11 @@ JobClass xJobClass_LoadTable =
   vJob_send,              // job pre-send function
   vJob_recv,              // job post-receive function
   vJob_LoadTable_show,    // job show function
-  true,                   // job is enabled
-  "<help>"_Stz,           // help
-  "<example>"_Stz,        // example
+  
+  // help and example
+  true,
+  "ld <tableName> \"<fileName>\""_Stz,
+  "ld supplier \"/tpch/supplier.tbl\" ;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

@@ -34,9 +34,11 @@ JobClass xJobClass_TableSizes =
   vJob_send,             // job pre-send function
   vJob_recv,             // job pre-receive function
   vJob_TableSizes_show,  // job show function
-  true,                  // job is enabled
-  "<help>"_Stz,          // help
-  "<example>"_Stz,       // example
+  
+  // help and example
+  true,
+  "tableSizes"_Stz,
+  "tableSizes;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };

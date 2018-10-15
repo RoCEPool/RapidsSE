@@ -34,9 +34,10 @@ JobClass xJobClass_LoadBuffer =
   vJob_send,               // job pre-send function
   vJob_recv,               // job post-receive function
   vJob_LoadBuffer_show,    // job show function
-  false,                   // job is not prompt enabled
-  "<help>"_Stz,            // help
-  "<example>"_Stz,         // example
+  
+  false,
+  "<none>"_Stz,
+  "<none>"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
