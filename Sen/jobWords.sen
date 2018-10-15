@@ -192,13 +192,8 @@
   // null the job in the task
   nullptr task::this task.job!
 
-  pJob job.isPromptCommand true == if
-    //"Acking prompt task" .
-    pJob job.promptTask@ ack
-  else
-    //"Signalling connector thread" .
-    pJob job.signalConnector
-  then
+  //"Signalling connector thread" .
+  pJob job.signalConnector
 
   ::task_exit
 ;
@@ -249,13 +244,8 @@
   //errorCode error.msg "Setting error '%v' in job" str.format .
   errorCode grid::thisNode@ pJob job.error!
 
-  pJob job.isPromptCommand true == if
-    //"Acking prompt task" .
-    pJob job.promptTask@ ack
-  else
-    //"Signalling connector thread" .
-    pJob job.signalConnector
-  then
+  //"Signalling connector thread" .
+  pJob job.signalConnector
 
   ::task_exit
 ;

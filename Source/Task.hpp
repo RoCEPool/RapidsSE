@@ -653,7 +653,6 @@ namespace Tasks
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);
-    static void vJobIsPromptCommand(MP_Task mpTask);
     static void vJobJobClass(MP_Task mpTask);
     static void vJobMetadataStore(MP_Task mpTask);
     static void vJobNewBegun(MP_Task mpTask);
