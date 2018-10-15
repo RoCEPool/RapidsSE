@@ -413,7 +413,7 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
     THROW_INVALID_DSTACK("job::findOriginator"_Stz);
   
-  Job__Cancelled* pFindJob = new Job__Cancelled;
+  Job__Find* pFindJob = new Job__Find;
   pFindJob->m_iJobId = iJobId;
   pFindJob->m_bFindingJob = true;
   
@@ -450,7 +450,7 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
     THROW_INVALID_DSTACK("job::findPartcipant"_Stz);
   
-  Job__Cancelled* pFindJob = new Job__Cancelled;
+  Job__Find* pFindJob = new Job__Find;
   pFindJob->m_iJobId = iJobId;
   pFindJob->m_bFindingJob = true;
 

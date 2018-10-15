@@ -109,7 +109,8 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   vTrace("\n"_Stz);
   
   if (nJobs != CN_JOB_WAITCLUSTER - CN_JOB__BEGUN + 1)
-    vTrace("\nWarning: Missing Jobs\n\n"_Stz);
+    vTrace("\nWarning: Missing Jobs (%lld v. %lld\n\n"_Stz,
+           nJobs, CN_JOB_WAITCLUSTER - CN_JOB__BEGUN + 1);
   
   return true;
 }

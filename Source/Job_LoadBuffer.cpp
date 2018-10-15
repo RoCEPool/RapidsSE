@@ -245,7 +245,7 @@ bool Job_LoadBuffer::bInsertRows(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the load table job
   
-  Job__Cancelled* pFindJob = new Job__Cancelled;
+  Job__Find* pFindJob = new Job__Find;
   pFindJob->m_iJobId = m_iJobLoadTableId;
   
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
@@ -310,7 +310,7 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the load table job
   
-  Job__Cancelled* pFindJob = new Job__Cancelled;
+  Job__Find* pFindJob = new Job__Find;
   pFindJob->m_iJobId = m_iJobLoadTableId;
   
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
