@@ -405,7 +405,7 @@ void CommandProcessor::vTokenise(Stz* aCommand)
   m_pTokeniser->vUseString(sCommand);
   
   vGetCommand();
-  
+  m_pTokeniser->bPop();
 }
 
 /*----------------------------------------------------------------------------*/
