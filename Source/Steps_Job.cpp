@@ -57,7 +57,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.participant!"_Stz,     &Task::vJobParticipantStore);
   vAddStep("job.partitions@"_Stz,      &Task::vJobPartitionsFetch);
   vAddStep("job.postRecv"_Stz,         &Task::vJobPostRecv);
-  vAddStep("job.preSend"_Stz,          &Task::vJobPreSend);  
+  vAddStep("job.preSend"_Stz,          &Task::vJobPreSend);
   vAddStep("job.recv"_Stz,             &Task::vJobRecv);
   vAddStep("job.regionSize@"_Stz,      &Task::vJobRegionSizeFetch);
   vAddStep("job.removeOriginator"_Stz, &Task::vJobRemoveOriginator);
@@ -1259,10 +1259,7 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.signalConnector"_Stz);
   Job* pJob = _pJob(pJobPtr);
-  
-  // there should not be a prompt task
-  ASSERT( ! pJob->m_pPromptTask);
-  
+    
   i8 rCode = pthread_cond_signal(&pJob->m_xThreadCond);
   
   if (0 != rCode) {

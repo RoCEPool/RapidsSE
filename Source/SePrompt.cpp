@@ -137,9 +137,7 @@ void SePrompt::vPromptLoop(void)
       vDeleteJob();
       continue;
     }
-    
-    ASSERT(! m_pJob->m_pPromptTask);
-    
+        
     vLockMutex();
     vSpawnJob();
     

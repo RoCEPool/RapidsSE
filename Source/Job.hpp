@@ -94,8 +94,6 @@ namespace JobsModel
   
     WorkingBuffer* m_pWorkingBuffer; // working buffer
 
-    Tasks::Task* m_pPromptTask;  // prompt task
-  
     bool m_bFindingJob; // temp. to be fixed
     
     pthread_mutex_t     m_xThreadMutex;     // connector thread mutex variable
