@@ -29,7 +29,7 @@ JobClass xJobClass_AnalyzeIndex =
   JT_NONE,                   // job trace
   pJob_AnalyzeIndex_pre,     // prompt pre-process function
   vJob_AnalyzeIndex_post,    // prompt post-process function
-  nullptr,                   // job new function
+  pJob_AnalyzeIndex_new,     // job new function
   vJob_AnalyzeIndex_delete,  // job delete function
   vJob_send,                 // job pre-send function
   vJob_recv,                 // job post-receive function
@@ -254,6 +254,16 @@ void JobsModel::vJob_AnalyzeIndex_post(Interface::Session* pSession, Job* pJob)
       vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* job new function                                                           */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::pJob_AnalyzeIndex_new(Job* pArg)
+{
+  Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(nullptr);
+  
+  return pJob_AnalyzeIndex;
 }
 
 /*----------------------------------------------------------------------------*/
