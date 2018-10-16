@@ -52,10 +52,14 @@ ApiState::ApiState(void)
   
   for (i8 i_State = 0; i_State < C_MAX_SESSIONS; i_State++) {
     
-    xState[i_State].m_pSession = nullptr;
+    xState[i_State].m_pSession  = nullptr;
     
+    xState[i_State].m_eApiCall  = AC_NONE;
+    xState[i_State].m_eJobClass = CN_NONE;
+    xState[i_State].m_bRunning  = false;
+    xState[i_State].m_xTimer.vInit();
+
     xState[i_State].m_iNextFree = i_State + 1;
-    
   }
   xState[C_MAX_SESSIONS - 1].m_iNextFree = -1;
   
@@ -104,6 +108,13 @@ void ApiState::vFreeState(i8 i_State)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
+  xState[i_State].m_pSession = nullptr;
+  
+  xState[i_State].m_eApiCall  = AC_NONE;
+  xState[i_State].m_eJobClass = CN_NONE;
+  xState[i_State].m_bRunning  = false;
+  xState[i_State].m_xTimer.vReset();
+
   xState[i_State].m_iNextFree = m_iFirstFree;
 
   m_iFirstFree = i_State;
@@ -117,14 +128,30 @@ void ApiState::vDump(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
   vTrace("ApiState %p:\n"_Stz,this);
-  
 
   for (i8 i_State = 0; i_State < C_MAX_SESSIONS; i_State++) {
-    vTrace("  %lld: session %p nextfree %lld\n"_Stz,
-           i_State,
-           xState[i_State].m_pSession,
-           xState[i_State].m_iNextFree);
+    
+    if (xState[i_State].m_pSession) {
+      
+      if (xState[i_State].m_bRunning)
+        xState[i_State].m_xTimer.vUpdate();
+
+      vTrace("  %lld: session %p, call %s, job %s, %srunnning, time %lldms\n"_Stz,
+             i_State,
+             xState[i_State].m_pSession,
+             aAC[xState[i_State].m_eApiCall],
+             aCN[xState[i_State].m_eJobClass],
+             xState[i_State].m_bRunning ? "" : "not ",
+             xState[i_State].m_xTimer.iMilliseconds()
+             );
+    }
+    else {
+      vTrace("  %lld: nextfree %lld\n"_Stz,
+             i_State,
+             xState[i_State].m_iNextFree);
+    }
   }
+    
 
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
 }

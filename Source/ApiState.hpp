@@ -10,9 +10,13 @@ namespace StorageEngine
   public:
   
     struct {
-      
       Session* m_pSession;
       
+      eAC      m_eApiCall;   // current / last api call
+      eCN      m_eJobClass;  // current job
+      bool     m_bRunning;   // call still running
+      Timer    m_xTimer;     // call timer
+
       i8       m_iNextFree;
       
     } xState[C_MAX_SESSIONS];
