@@ -79,14 +79,14 @@
   job::this locals| pJob__Executed |
   pJob__Executed job.id@ locals| iJobId |
 
-  0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
-
-  // get participant node that executed the job
-  pJob__Executed iJobId job::findParticipant to pJobParticipant
-  pJob__Executed job.participant@ to iParticipantNode
+  0 locals| pJobOriginator  |
+  0 0 0 0 locals| iParticipantNode error iAcksRemaining |
 
   // find the job in the originator jobs
-  iJobId job::findOriginator to pJob
+  iJobId job::findOriginator to pJobOriginator
+
+  // get the participant nodewhere Job__Executed started
+  pJob__Executed job.participant@ to iParticipantNode
 
   // get the error code from job__executed
   pJob__Executed jobExecuted.error@ to error
@@ -94,29 +94,29 @@
   error EC_NONE == if
 
     // get the response string from job__executed and set in pJob
-    pJob__Executed jobExecuted.response@ iParticipantNode pJob job.response!
+    pJob__Executed jobExecuted.response@ iParticipantNode pJobOriginator job.response!
 
     // get the rows processed from job__executed and set in pJob
     pJob__Executed jobExecuted.rowsProcessed@
-      iParticipantNode pJob job.rowsProcessed!
+      iParticipantNode pJobOriginator job.rowsProcessed!
 
     pJob__Executed jobExecuted.rowsInvalid@
-      iParticipantNode pJob job.rowsInvalid!
+      iParticipantNode pJobOriginator job.rowsInvalid!
 
     pJob__Executed jobExecuted.rowsSkipped@
-      iParticipantNode pJob job.rowsSkipped!
+      iParticipantNode pJobOriginator job.rowsSkipped!
 
   else
 
     // set the error code in pJob
-    error iParticipantNode pJob job.error!
+    error iParticipantNode pJobOriginator job.error!
 
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining
-  pJob job.decAcksRemaining to iAcksRemaining
+  pJobOriginator job.decAcksRemaining to iAcksRemaining
 
   // if there are acks remaining just exit
   iAcksRemaining 0 != if
@@ -129,7 +129,7 @@
 
   //"received Job__Executed from all nodes" .
 
-  pJob Job__End::distribute
+  pJobOriginator Job__End::distribute
 
   delete_completed_job
 

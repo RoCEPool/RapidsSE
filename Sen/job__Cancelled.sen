@@ -66,26 +66,27 @@
   job::this locals| pJob__Cancelled |
   pJob__Cancelled job.id@ locals| iJobId |
 
-  0 0 0 0 0 locals| pJobParticipant iParticipantNode error pJob iAcksRemaining |
+  0 locals| pJobOriginator |
+  0 0 0 0 locals| iAcksRemaining error iParticipantNode |
 
   // ": Job__Cancelled_rcv" .
 
   // find the job in the originator jobs
-  iJobId job::findOriginator to pJob
+  iJobId job::findOriginator to pJobOriginator
 
   // get the error code from job__executed
   pJob__Cancelled jobCancelled.error@ to error
 
-  // get the node which originated the cancel
-  iJobId job::originator@ locals| iOriginatorNode |
+  // get the participant nodewhere job__begun started
+  pJob__Cancelled job.participant@ to iParticipantNode
 
   // set the error code in pJob
-  error iOriginatorNode pJob job.error!
+  error iParticipantNode pJobOriginator job.error!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining
-  pJob job.decAcksRemaining to iAcksRemaining
+  pJobOriginator job.decAcksRemaining to iAcksRemaining
 
   // if there are acks remaining just exit
   iAcksRemaining 0 != if
@@ -99,10 +100,10 @@
   //"received Job_Cancelled from all nodes" .
 
   // remove the job from the originator jobs
-  pJob job.removeOriginator
+  pJobOriginator job.removeOriginator
 
   // notify the originating task
-  pJob job.originatingTask@ ack
+  pJobOriginator job.originatingTask@ ack
 
   //"All Done" .
 

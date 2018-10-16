@@ -55,7 +55,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* run received Job__Begun on originating node                                */
+/* run received Job__Begun from partcipating node on originating node         */
 /*----------------------------------------------------------------------------*/
 : Job__Begun_rcv ( -- )
 
@@ -76,14 +76,13 @@
   pJob__Begun job.id@ locals| iJobId |
 
   0 locals| pJobOriginator  |
-  0 0 0 0 locals| iAcksRemaining error pJobParticipant iParticipantNode |
-
-  // get participant node that executed the job
-  pJob__Begun iJobId job::findParticipant to pJobParticipant
-  pJob__Begun job.participant@ to iParticipantNode
+  0 0 0 0 locals| iAcksRemaining error iParticipantNode |
 
   // find the job in the originator jobs
   iJobId job::findOriginator to pJobOriginator
+
+  // get the participant nodewhere job__begun started
+  pJob__Begun job.participant@ to iParticipantNode
 
   // get the error code from job__executed
   pJob__Begun jobBegun.error@ to error

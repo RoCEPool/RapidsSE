@@ -407,7 +407,7 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vJobFindOriginator(MP_Task mpTask)
 {
-  ENTRY("vJobFindOriginatort"_Stz);
+  ENTRY("vJobFindOriginator"_Stz);
   
   i8 iJobId;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
