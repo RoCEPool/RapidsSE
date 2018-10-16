@@ -78,7 +78,7 @@ extern "C" eEC  RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel);
 extern "C" bool RapidsSE_SessionInvalid(int eError, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel);
 
-Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob);
+Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool bFromPrompt);
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession);
 
 void vDeleteJobs(Session* pSession);
