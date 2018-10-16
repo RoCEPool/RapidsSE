@@ -1,0 +1,124 @@
+
+  // Source file: ../qa/queries/functions/lower/rlower1.sql
+  // Result file: ../qa/queries/functions/lower/results/lower1.res
+ select lower('MARY had A little LAMB') from table1 limit 1;
+ordered rows:
+  ('mary had a little lamb')
+
+
+  // Source file: ../qa/queries/functions/lower/rlower2.sql
+  // Result file: ../qa/queries/functions/lower/results/lower2.res
+ select colb1, lower(colb1) from table1 where colb1 = 'WHITE';
+ordered rows:
+  ('WHITE', 'white')
+  ('WHITE', 'white')
+  ('WHITE', 'white')
+  ('WHITE', 'white')
+  ('WHITE', 'white')
+  ('WHITE', 'white')
+
+
+  // Source file: ../qa/queries/functions/lower/rlower3.sql
+  // Result file: ../qa/queries/functions/lower/results/lower3.res
+ select colb1, lower(colb1) from table1 where colb1 = 'orange';
+ordered rows:
+  ('orange', 'orange')
+  ('orange', 'orange')
+  ('orange', 'orange')
+  ('orange', 'orange')
+  ('orange', 'orange')
+
+
+  // Source file: ../qa/queries/functions/lower/rlower4.sql
+  // Result file: ../qa/queries/functions/lower/results/lower4.res
+ select colb1, lower(left(colb1,3)) from table1 where colb1 = 'BLACK';
+ordered rows:
+  ('BLACK', 'bla')
+  ('BLACK', 'bla')
+  ('BLACK', 'bla')
+  ('BLACK', 'bla')
+  ('BLACK', 'bla')
+  ('BLACK', 'bla')
+  ('BLACK', 'bla')
+  ('BLACK', 'bla')
+
+
+  // Source file: ../qa/queries/functions/lower/rlower5.sql
+  // Result file: ../qa/queries/functions/lower/results/lower5.res
+ select colb1, lower(right(colb1,3)) from table1 where colb1 = 'maroon';
+ordered rows:
+  ('maroon', 'oon')
+  ('maroon', 'oon')
+  ('maroon', 'oon')
+  ('maroon', 'oon')
+  ('maroon', 'oon')
+
+
+  // Source file: ../qa/queries/functions/lower/rlower6.sql
+  // Result file: ../qa/queries/functions/lower/results/lower6.res
+ select colb1, lower(substring(colb1,3,3)) from table1 where colb1 = 'PINK';
+ordered rows:
+  ('PINK', 'nk')
+  ('PINK', 'nk')
+  ('PINK', 'nk')
+  ('PINK', 'nk')
+  ('PINK', 'nk')
+  ('PINK', 'nk')
+
+
+  // Source file: ../qa/queries/functions/lower/rlower7.sql
+  // Result file: ../qa/queries/functions/lower/results/lower7.res
+ select colb1, ucolvc, pcol1 from table1 where lower(colb1) = 'black' order by colb1, pcol1 desc;
+ordered rows:
+  ('BLACK', 'ttt', 97)
+  ('BLACK', 'ccc', 92)
+  ('BLACK', 'xxx', 88)
+  ('BLACK', 'mmm', 79)
+  ('BLACK', 'fff', 77)
+  ('BLACK', 'eee', 71)
+  ('BLACK', 'mmm', 59)
+  ('BLACK', 'bbb', 30)
+  ('black', 'iii', 85)
+  ('black', 'bbb', 62)
+  ('black', 'mmm', 4)
+
+
+  // Source file: ../qa/queries/functions/lower/rlower8.sql
+  // Result file: ../qa/queries/functions/lower/results/lower8.res
+ select colb1, ucolvc, pcol1 from table1 where lower(colb1) = 'green' or lower(colb1) = 'peach' order by colb1, pcol1 desc;
+ordered rows:
+  ('GREEN', 'yyy', 98)
+  ('GREEN', 'aaa', 64)
+  ('GREEN', 'jjj', 45)
+  ('GREEN', 'kkk', 41)
+  ('GREEN', 'ccc', 33)
+  ('GREEN', 'hhh', 26)
+  ('green', 'sss', 46)
+  ('green', 'ttt', 16)
+  ('green', 'yyy', 7)
+  ('green', 'qqq', 3)
+  ('green', 'uuu', 2)
+  ('peach', 'www', 60)
+  ('peach', 'ooo', 12)
+
+
+  // Source file: ../qa/queries/functions/lower/rlower9.sql
+  // Result file: ../qa/queries/functions/lower/results/lower9.res
+ select lowCase, regCase from (select lower(colb1) as lowCase, colb1 as regCase from table1 where pcol1 < 15) as outQry order by regCase desc;
+ordered rows:
+  ('red', 'red')
+  ('peach', 'peach')
+  ('grey', 'grey')
+  ('green', 'green')
+  ('green', 'green')
+  ('green', 'green')
+  ('black', 'black')
+  ('aqua', 'aqua')
+  ('aqua', 'aqua')
+  ('white', 'WHITE')
+  ('teal', 'TEAL')
+  ('teal', 'TEAL')
+  ('purple', 'PURPLE')
+  ('pink', 'PINK')
+  ('pink', 'PINK')
+
