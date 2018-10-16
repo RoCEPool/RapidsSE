@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _R35se -- R35 requests via RapidsSE_pExecuteCommand()                      */
+/* _R35se -- R35 requests via RapidsSE_pExecCmdStr()                      */
 /*============================================================================*/
 
 se docol epochTake;

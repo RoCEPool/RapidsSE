@@ -164,7 +164,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
   }
   
   // execute the command
-  Job* pJob = RapidsSE_pExecuteCommand(aCommand, pSession, false);
+  Job* pJob = RapidsSE_pExecCmdStr(aCommand, pSession, false);
   
   // check if job had an error
   if (pJob->m_bHasError) {
@@ -846,7 +846,7 @@ eEC RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-Job* RapidsSE_pExecuteCommand(Stz* aCommand, Session* pSession, bool bPostJob)
+Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob)
 {
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
