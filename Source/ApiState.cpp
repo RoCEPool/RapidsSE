@@ -79,6 +79,34 @@ ApiState::~ApiState(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* allocate an api state entry                                                */
+/*----------------------------------------------------------------------------*/
+i8 ApiState::iAllocState(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+
+  RASSERT(-1 != m_iFirstFree);
+  
+  i8 i_State = m_iFirstFree;
+  
+  m_iFirstFree = xState[m_iFirstFree].m_iNextFree;
+  
+  return i_State;
+}
+
+/*----------------------------------------------------------------------------*/
+/* feee an api state entry                                                    */
+/*----------------------------------------------------------------------------*/
+void ApiState::vFreeState(i8 i_State)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  xState[i_State].m_iNextFree = m_iFirstFree;
+
+  m_iFirstFree = i_State;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void ApiState::vDump(void)

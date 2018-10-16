@@ -29,6 +29,9 @@ namespace StorageEngine
     ApiState(void);
     ~ApiState(void);
   
+    i8   iAllocState(void);
+    void vFreeState(i8 i_State);
+
     void vDump(void);
   
     Footer* aFooter(void);
