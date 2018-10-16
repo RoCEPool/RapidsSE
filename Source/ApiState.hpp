@@ -9,6 +9,16 @@ namespace StorageEngine
   {
   public:
   
+    struct {
+      
+      Session* m_pSession;
+      
+      i8       m_iNextFree;
+      
+    } xState[C_MAX_SESSIONS];
+  
+    i8 m_iFirstFree;
+  
     Footer m_xFooter;
     
    public:
@@ -18,6 +28,8 @@ namespace StorageEngine
     
     ApiState(void);
     ~ApiState(void);
+  
+    void vDump(void);
   
     Footer* aFooter(void);
   };
