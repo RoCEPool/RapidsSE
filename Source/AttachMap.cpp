@@ -189,6 +189,8 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
   ASSERT(m_xHeapMem.Persistent.m_pLarge);
   ASSERT(m_xHeapMem.Persistent.m_pSmall);
   
+  m_pApiState = new ApiState;
+  
   // create the tx sets
   m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());
   

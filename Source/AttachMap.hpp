@@ -48,6 +48,7 @@ namespace StorageEngine
     Dic           m_xMainDic;
     TxSet*        m_pTxSet;
     Grid*         m_pGrid;
+    ApiState*     m_pApiState;
     
     Word*         m_pWord;
     Word*         m_pTenants;
