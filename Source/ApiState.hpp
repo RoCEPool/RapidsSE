@@ -29,7 +29,7 @@ namespace StorageEngine
     ApiState(void);
     ~ApiState(void);
   
-    i8   iAllocState(void);
+    i8   iAllocState(Session* pSession);
     void vFreeState(i8 i_State);
 
     void vDump(void);

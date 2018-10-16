@@ -84,7 +84,7 @@ Session::Session(i8 iPartition)
   m_pTx             = nullptr;
   m_bSessionExiting = false;
   m_pJobStack       = new Stack;
-  m_iApiState       = -1;
+  m_iApiState       = gpAttachMap->m_pApiState->iAllocState(this);
   
   m_pPerformanceTrace = nullptr;
   
@@ -103,8 +103,11 @@ Session::~Session(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   delete m_pCommandProcessor;
+
+  gpAttachMap->m_pApiState->vFreeState(m_iApiState);
   
   RASSERT(0 == m_pJobStack->iValues());
+  
   delete m_pJobStack;
 }
 

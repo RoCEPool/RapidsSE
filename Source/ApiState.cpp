@@ -81,7 +81,7 @@ ApiState::~ApiState(void)
 /*----------------------------------------------------------------------------*/
 /* allocate an api state entry                                                */
 /*----------------------------------------------------------------------------*/
-i8 ApiState::iAllocState(void)
+i8 ApiState::iAllocState(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
 
@@ -89,8 +89,11 @@ i8 ApiState::iAllocState(void)
   
   i8 i_State = m_iFirstFree;
   
-  m_iFirstFree = xState[m_iFirstFree].m_iNextFree;
+  m_iFirstFree = xState[i_State].m_iNextFree;
   
+  xState[i_State].m_iNextFree = -1;
+  xState[i_State].m_pSession  = pSession;
+
   return i_State;
 }
 
