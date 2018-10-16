@@ -29,14 +29,14 @@ bool Prompt::bPrompt_indexEntries(SePrompt* pPrompt)
   ASSERT((*pTokenVec)[0]->bSame("indexEntries"_Stz));
   
   // get number of items in token vector
-  i8 iNumTokens = pTokenVec->nItems();
+  i8 nTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 1/2 tokens
-  if (iNumTokens != 1 && iNumTokens != 2)
+  if (nTokens != 1 && nTokens != 2)
     return false;
   
-  if (iNumTokens == 1) {
+  if (nTokens == 1) {
     vTrace("IndexEntries: %lld\n"_Stz, gpAttachMap->m_nIndexEntries);
     vTrace("success: 1 rows affected\n"_Stz);
     return true;

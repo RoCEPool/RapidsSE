@@ -21,6 +21,7 @@ using namespace Prompt;
 #include "PromptCatalog.hpp"
 #include "PromptNote.hpp"
 
+#include "Prompt_apiState.hpp"
 #include "Prompt_args.hpp"
 #include "Prompt_attachMap.hpp"
 #include "Prompt_bp.hpp"
