@@ -10,6 +10,50 @@
 #define TL_INSERT 8
 #define TL_POOL   16
 
+enum eAC // api call kind
+{
+  /*  0 */ AC_NONE=0,
+  
+  /*  1 */ AC_CheckLibraryVersion,
+  /*  2 */ AC_EndInsertJobs,
+  /*  3 */ AC_EndJobs,
+  /*  4 */ AC_ExecuteCommand,
+  /*  5 */ AC_FetchNextBuffer,
+  /*  6 */ AC_GetErrorMessage,
+  /*  7 */ AC_GetRow,
+  /*  8 */ AC_GetRowCount,
+  /*  9 */ AC_GetRowTableColumn,
+  /* 10 */ AC_GetRowCountTableColumn,
+  /* 11 */ AC_InsertRow,
+  /* 12 */ AC_LoadResult,
+  /* 13 */ AC_PoolOpen,
+  /* 14 */ AC_SessionDelete,
+  /* 15 */ AC_SessionInvalid,
+  /* 16 */ AC_SessionNew
+};
+
+static Stz* aAC[]
+{
+  /*  0 */ "NONE"_Stz,
+
+  /*  1 */ "RapidsSE_CheckLibraryVersion"_Stz,
+  /*  2 */ "RapidsSE_EndInsertJobs"_Stz,
+  /*  3 */ "RapidsSE_EndJobs"_Stz,
+  /*  4 */ "RapidsSE_ExecuteCommand"_Stz,
+  /*  5 */ "RapidsSE_FetchNextBuffer"_Stz,
+  /*  6 */ "RapidsSE_GetErrorMessage"_Stz,
+  /*  7 */ "RapidsSE_GetRow"_Stz,
+  /*  8 */ "RapidsSE_GetRowCount"_Stz,
+  /*  9 */ "RapidsSE_GetRowTableColumn"_Stz,
+  /* 10 */ "RapidsSE_GetRowCountTableColumn"_Stz,
+  /* 11 */ "RapidsSE_InsertRow"_Stz,
+  /* 12 */ "RapidsSE_LoadResult"_Stz,
+  /* 13 */ "RapidsSE_PoolOpen"_Stz,
+  /* 14 */ "RapidsSE_SessionDelete"_Stz,
+  /* 15 */ "RapidsSE_SessionInvalid"_Stz,
+  /* 16 */ "RapidsSE_SessionNew"_Stz
+};
+
 extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
 
 extern "C" eEC  RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel);
