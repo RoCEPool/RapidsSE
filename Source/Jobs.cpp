@@ -52,7 +52,7 @@ Jobs::Jobs(cmpFun fCompare)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
-  m_xLock.vInitLock(LK_TASK_QUEUE);
+  m_xLock.vInitLock(LK_JOBS);
   m_iNextJobId = gpAttachMap->m_pGrid->iThisNode() << 48;
   m_pJobsSkipList = new SkipList(true, fCompare);
   
