@@ -12,7 +12,7 @@ namespace Interface
   class Session : public Object
   {
   public:
-    i8       m_iPid;             // process wh ich created this session
+    i8       m_iPid;             // process which created this session
     i8       m_iPartition;       // which partition this session connects to
     DicStack m_xPathStack;       // dictionary stack
     Job*     m_pJob;             // job session currently executing
@@ -20,6 +20,7 @@ namespace Interface
     Tx*      m_pTx;              // current transaction
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
+    i8       m_iApiState;        // api state entry
     
     PerformanceTrace* m_pPerformanceTrace;  // performance Trace
     CommandProcessor* m_pCommandProcessor;  // command processor

@@ -84,6 +84,7 @@ Session::Session(i8 iPartition)
   m_pTx             = nullptr;
   m_bSessionExiting = false;
   m_pJobStack       = new Stack;
+  m_iApiState       = -1;
   
   m_pPerformanceTrace = nullptr;
   
