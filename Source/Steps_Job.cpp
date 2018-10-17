@@ -271,6 +271,8 @@ void Task::vJobDelete(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.delete"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
+  //vTrace("Deleting job %p\n"_Stz, pJob);
+  
   // find the job in the catalog
   eCN eClass = pJob->eClass();
   JobClass* pJobClass = JobClass::pFind(eClass);
@@ -294,9 +296,9 @@ void Task::vJobDecAcksRemaining(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.decAcksRemaining"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  --pJob->m_ziAcksRemaining;
+  i8 iAcksRemaining = --pJob->m_ziAcksRemaining;
   
-  mpTask->m_pDataStack->vPushInt(*pJob->m_ziAcksRemaining);
+  mpTask->m_pDataStack->vPushInt(iAcksRemaining);
   
   EXIT();
 }
@@ -970,15 +972,15 @@ void Task::vJobRemoveOriginator(MP_Task mpTask)
   bool bRemove = gpAttachMap->m_pOriginatingJobs->bRemoveJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
   
-  if ( JOB_TRACE || ! bRemove ) {
+  if ( JOB_TRACE && ! bRemove ) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("%s Failed to Remove JobId %lld from originator\n"_Stz, aCN[pJob->eClass()],pJob->m_iJobId);
     vTrace("------------------------------------\n"_Stz);
     
-    gpAttachMap->m_pParticipatingJobs->vGrabLock();
-    gpAttachMap->m_pParticipatingJobs->vContentDump();
-    bRemove = gpAttachMap->m_pParticipatingJobs->bRemoveJob(pJob);
-    gpAttachMap->m_pParticipatingJobs->vDropLock();
+    gpAttachMap->m_pOriginatingJobs->vGrabLock();
+    gpAttachMap->m_pOriginatingJobs->vContentDump();
+    bRemove = gpAttachMap->m_pOriginatingJobs->bRemoveJob(pJob);
+    gpAttachMap->m_pOriginatingJobs->vDropLock();
   }
   
 #ifdef JOB_TRACE
@@ -1002,9 +1004,20 @@ void Task::vJobRemoveParticipant(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
-  gpAttachMap->m_pParticipatingJobs->bRemoveJob(pJob);
+  bool bRemove = gpAttachMap->m_pParticipatingJobs->bRemoveJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
  
+  if ( JOB_TRACE && ! bRemove ) {
+    vTrace("------------------------------------\n"_Stz);
+    vTrace("%s Failed to Remove JobId %lld from participant\n"_Stz, aCN[pJob->eClass()],pJob->m_iJobId);
+    vTrace("------------------------------------\n"_Stz);
+    
+    gpAttachMap->m_pParticipatingJobs->vGrabLock();
+    gpAttachMap->m_pParticipatingJobs->vContentDump();
+    bRemove = gpAttachMap->m_pParticipatingJobs->bRemoveJob(pJob);
+    gpAttachMap->m_pParticipatingJobs->vDropLock();
+  }
+  
 #ifdef JOB_TRACE
   if ( JOB_TRACE )
     vTrace("removed job %p id %lld from participant\n"_Stz,pJob, pJob->iJobId());

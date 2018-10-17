@@ -294,7 +294,7 @@ bool SkipList::bRemove(void* pObjectRemove)
   ASSERT(pNodePrev); // logic check
   
   if ( ! bEqualTo ) {
-    vTrace("SkipList::bRemove: failed to match"_Stz);
+    vTrace("SkipList::bRemove: failed to match\n"_Stz);
     return false;
   }
   
