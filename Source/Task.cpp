@@ -146,6 +146,21 @@ Task::~Task(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* decrement ack and return if caller is decider                              */
+/*----------------------------------------------------------------------------*/
+bool Task::bAckAndDecide(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  i8 iRemaining = m_xAcksRemaining.iDec();
+  
+  if (iRemaining)
+    return false;
+  else
+    return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* adjust next pointer                                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vAdjustNext(i8 iBytes)
@@ -204,21 +219,6 @@ void Task::vContentDump(void)
          aJobName(),
          aTS[m_eState]->aChar()
          );
-}
-
-/*----------------------------------------------------------------------------*/
-/* decrement ack and return if caller is decider                              */
-/*----------------------------------------------------------------------------*/
-bool Task::bDecAck(i8& iRemaining)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  iRemaining = m_xAcksRemaining.iDec();
-
-  if (iRemaining)
-    return false;
-  else
-    return true;
 }
 
 /*----------------------------------------------------------------------------*/

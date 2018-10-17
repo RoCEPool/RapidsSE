@@ -136,11 +136,11 @@ namespace Tasks
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
+    bool bAckAndDecide(void);
     void vAdjustNext(i8 iBytes);
     Object* pArgObject(void);
     static void vDebug(void);
     void vContentDump(void);
-    bool bDecAck(i8& iRemaining);
     void vDropLock(void);
     void vException(StrVal& sFile, StrVal& eException);
     void vGrabLock(void);
