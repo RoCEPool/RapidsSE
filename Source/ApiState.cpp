@@ -121,6 +121,7 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   
   xState[i_State].m_bRunning = true;
   xState[i_State].m_eApiCall = eApiCall;
+  xState[i_State].m_eJobClass = CN_NONE;
   
   xState[i_State].m_xTimer.vStart();
   
@@ -137,8 +138,7 @@ void ApiState::vApiError(Session* pSession, eEC eError)
   xState[i_State].m_bRunning = false;
   xState[i_State].m_eError   = eError;
   
-  if (xState[i_State].m_bRunning)
-    xState[i_State].m_xTimer.vUpdate();
+  xState[i_State].m_xTimer.vUpdate();
 
   pSession->m_nApiErrors++;
 }
@@ -163,9 +163,12 @@ void ApiState::vApiReturn(Session* pSession)
   i8 i_State = pSession->m_iApiState;
   
   xState[i_State].m_bRunning = false;
-  
-  if (xState[i_State].m_bRunning)
-    xState[i_State].m_xTimer.vUpdate();
+  xState[i_State].m_xTimer.vUpdate();
+//  if (xState[i_State].m_eApiCall == AC_FetchNextBuffer)
+//    vTrace("Timer start: %lld; Timer update: %lld Time: %lldus\n"_Stz,
+//           xState[i_State].m_xTimer.iStart(),
+//           xState[i_State].m_xTimer.iUpdate(),
+//           xState[i_State].m_xTimer.iMicroseconds());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,14 +222,14 @@ void ApiState::vDump(void)
       if (xState[i_State].m_bRunning)
         xState[i_State].m_xTimer.vUpdate();
 
-      vTrace("  %lld: session %p, call %s, job %s, error %s, %s, time %lldms\n"_Stz,
+      vTrace("  %lld: session %p, call %s, job %s, error %s, %s, time %lldus\n"_Stz,
              i_State,
              xState[i_State].m_pSession,
              aAC[xState[i_State].m_eApiCall],
              aCN[xState[i_State].m_eJobClass],
              aEC[xState[i_State].m_eError],
              xState[i_State].m_bRunning ? "running" : "completed",
-             xState[i_State].m_xTimer.iMilliseconds()
+             xState[i_State].m_xTimer.iMicroseconds()
              );
       vTrace("     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
              pSession->m_nApiCalls,
