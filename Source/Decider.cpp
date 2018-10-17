@@ -73,6 +73,16 @@ i8 Decider::iDec()
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current number of acks remaining **FOR PRINING ONLY**                  */
+/*----------------------------------------------------------------------------*/
+i8 Decider::iPrintOnlyValue()
+{
+  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
+  
+  return m_iInt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* assignment                                                                 */
 /*----------------------------------------------------------------------------*/
 void Decider::operator =(i8 iInt)
@@ -80,16 +90,6 @@ void Decider::operator =(i8 iInt)
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
   
   m_iInt = iInt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dereference / get value                                                    */
-/*----------------------------------------------------------------------------*/
-i8 Decider::operator *(void)
-{
-  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
-  
-  return m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/

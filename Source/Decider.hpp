@@ -22,10 +22,11 @@ namespace System
     
     void vCheckInit(void);
     
-    i8   iDec(void);      // decrement
-    
+    i8   iDec(void);
+
+    i8   iPrintOnlyValue(void);
+
     void operator =(i8 iInt); // assignment
-    i8 operator *(void);  // dereference
     i8 operator --(void); // decrement (prefix form)
 
     Footer* aFooter(void);

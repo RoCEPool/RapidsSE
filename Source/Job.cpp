@@ -284,7 +284,7 @@ void Job::vReport(void)
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
          m_iJobId,
-         *m_xAcksRemaining);
+         m_xAcksRemaining.iPrintOnlyValue());
 }
 
 /*----------------------------------------------------------------------------*/

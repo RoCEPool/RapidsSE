@@ -763,12 +763,13 @@ void Task::vTracePoint(Stz* aMark)
   i8 iAuxValues    = m_pAuxStack->iValues();
   i8 iDataValues   = m_pDataStack->iValues();
   i8 iReturnValues = m_pReturnStack->iValues();
+  
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
-         
+        
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
          gpAttachMap->m_pGrid->iThisNode(),
          aJobName(),
-         *m_xAcksRemaining,
+         m_xAcksRemaining.iPrintOnlyValue(),
          
          sRoutine.aChar(),
          aMark,

@@ -77,7 +77,7 @@ void Task::vTaskAcksFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.acks@"_Stz);
   Task* pGivenTask = _pTask(pPtrTask);
   
-  mpTask->m_pDataStack->vPushInt(*pGivenTask->m_xAcksRemaining);
+  mpTask->m_pDataStack->vPushInt(pGivenTask->m_xAcksRemaining.iPrintOnlyValue());
   
   EXIT();
 }
@@ -98,7 +98,7 @@ void Task::vTaskAcksStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(nAcksRequired) )
     THROW_INVALID_DSTACK("task.acks!"_Stz);
   
-  ASSERT(0 == *pGivenTask->m_xAcksRemaining);
+  ASSERT(0 == pGivenTask->m_xAcksRemaining.iPrintOnlyValue());
 
   RASSERT(pGivenTask->bIsLocked());
   
