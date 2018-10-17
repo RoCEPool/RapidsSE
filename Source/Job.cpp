@@ -57,6 +57,17 @@ Job* JobsModel::_pJob(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is given class a valid job?                                                */
+/*----------------------------------------------------------------------------*/
+bool JobsModel::_bIsValidJob(Base::eCN eClass)
+{
+  if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WAITCLUSTER)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::_pJob(i8 iAddr)

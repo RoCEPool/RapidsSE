@@ -130,6 +130,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job* _pJob(void* aAddr);
   Job* _pJob(i8 iAddr);
+  bool _bIsValidJob(eCN eClass);
 
   void vJob_recv(Job* pJob);
   void vJob_send(Job* pJob);
