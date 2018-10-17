@@ -833,11 +833,13 @@ eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
     // delete jobs from teh job stack of the session
     vDeleteJobs(pSession);
     
+    vApiReturn(pSession);                                          // API RETURN
+    
     // delete the session
     RapidsSE::vDeleteSession(pSession);
     
     // set session to nullptr so trace knows not to look at it
-    vApiReturn(pSession);                                          // API RETURN
+    
     pSession = nullptr;
     
     // trace exit
