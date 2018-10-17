@@ -34,6 +34,9 @@ namespace StorageEngine
     ~ApiState(void);
   
     i8   iAllocState(Session* pSession);
+    void vApiCall(Session* pSession, eAC eApiCall);
+    void vApiJob(Session* pSession, eCN eJobClass);
+    void vApiReturn(Session* pSession);
     void vFreeState(i8 i_State);
 
     void vDump(void);
