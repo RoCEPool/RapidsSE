@@ -61,30 +61,6 @@ void Decider::vCheckInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* atomically add                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Decider::iAdd(i8 iValue)
-{
-  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
-  
-  i8 i = Synch::uAtomicAdd(&m_iInt, iValue);
-  
-  return i;
-}
-
-/*----------------------------------------------------------------------------*/
-/* atomically inc                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Decider::iInc()
-{
-  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
-
-  i8 i = Synch::uAtomicInc(&m_iInt);
-  
-  return i;
-}
-
-/*----------------------------------------------------------------------------*/
 /* atomically dec                                                             */
 /*----------------------------------------------------------------------------*/
 i8 Decider::iDec()
@@ -117,18 +93,6 @@ i8 Decider::operator *(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* atomically inc (prefix form)                                               */
-/*----------------------------------------------------------------------------*/
-i8 Decider::operator ++(void)
-{
-  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
-  
-  i8 i = Synch::uAtomicInc(&m_iInt);
-  
-  return i;
-}
-
-/*----------------------------------------------------------------------------*/
 /* atomically dec (prefix form)                                               */
 /*----------------------------------------------------------------------------*/
 i8 Decider::operator --(void)
@@ -137,30 +101,6 @@ i8 Decider::operator --(void)
   
   i8 i = Synch::uAtomicDec(&m_iInt);
 
-  return i;
-}
-
-/*----------------------------------------------------------------------------*/
-/* atomically add                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Decider::operator +=(i8 iValue)
-{
-  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
-  
-  i8 i = Synch::uAtomicAdd(&m_iInt, iValue);
-
-  return i;
-}
-
-/*----------------------------------------------------------------------------*/
-/* atomically subtract                                                        */
-/*----------------------------------------------------------------------------*/
-i8 Decider::operator -=(i8 iValue)
-{
-  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
-  
-  i8 i = Synch::uAtomicAdd(&m_iInt, ( - iValue) );  // nb the minus sign
-  
   return i;
 }
 
