@@ -71,6 +71,8 @@ bool Decider::bDecAndDecide(void)
   
   bool bAmDecider = iNewValueWas ? false : true;
   
+  ASSERT( (! bAmDecider) || (bAmDecider && 0 == m_nAcksRemaining) );
+  
   return bAmDecider;
 }
 
@@ -90,6 +92,9 @@ i8 Decider::iPrintOnlyValue(void)
 void Decider::operator =(i8 nAcksRemaining)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
+  
+  ASSERT(0 == m_nAcksRemaining);
+  ASSERT(nAcksRemaining > 0);
   
   m_nAcksRemaining = nAcksRemaining;
 }

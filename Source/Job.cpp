@@ -140,7 +140,7 @@ void Job::vInit(void)
   m_eSeed    = SS_ENUMS;
   m_eJobTrace   = JT_NONE;
   m_iParticipantNode  = -1;
-  m_xAcksRemaining   = 0;
+  m_xAcksRemaining.vCheckInit();
   m_pOriginatingTask  = nullptr;
   m_pWorkingBuffer = nullptr;
   m_bFindingJob = false;
