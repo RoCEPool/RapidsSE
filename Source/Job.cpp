@@ -19,6 +19,11 @@ bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
   Job* pInsertEntry = _pJob(pObjectInsert);
   Job* pScanEntry   = _pJob(pObjectScan);
   
+  eCN eClassScanEntry = pScanEntry->eClass();
+  
+  RASSERT(eClassScanEntry >= CN_JOB__BEGUN &&
+          eClassScanEntry <= CN_JOB_WAITCLUSTER);
+  
   if ( ! pObjectScan )
     return false;
   

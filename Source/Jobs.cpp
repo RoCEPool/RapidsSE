@@ -180,7 +180,7 @@ Job* Jobs::pPopJob(void)
 /*----------------------------------------------------------------------------*/
 /* remove a job from jobs skip list                                           */
 /*----------------------------------------------------------------------------*/
-void Jobs::vRemoveJob(Job* pJob)
+bool Jobs::bRemoveJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
@@ -190,6 +190,8 @@ void Jobs::vRemoveJob(Job* pJob)
   
   //vTrace("removing job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
   bRemoved = m_pJobsSkipList->bRemove(pJob);
+  
+  return bRemoved;
 }
 
 /*----------------------------------------------------------------------------*/
