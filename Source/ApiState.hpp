@@ -17,7 +17,8 @@ namespace StorageEngine
       Session* m_pSession;
       
       eAC      m_eApiCall;   // current / last api call
-      eCN      m_eJobClass;  // current job
+      eCN      m_eJobClass;  // current / lost job
+      eEC      m_eError;     // last error code
       bool     m_bRunning;   // call still running
       Timer    m_xTimer;     // call timer
 
@@ -37,6 +38,7 @@ namespace StorageEngine
   
     i8   iAllocState(Session* pSession);
     void vApiCall(Session* pSession, eAC eApiCall);
+    void vApiError(Session* pSession, eEC eError);
     void vApiJob(Session* pSession, eCN eJobClass);
     void vApiReturn(Session* pSession);
     void vFreeState(i8 i_State);

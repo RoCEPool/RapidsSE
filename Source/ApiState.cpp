@@ -60,6 +60,7 @@ ApiState::ApiState(void)
     
     xState[i_State].m_eApiCall  = AC_NONE;
     xState[i_State].m_eJobClass = CN_NONE;
+    xState[i_State].m_eError    = EC_NONE;
     xState[i_State].m_bRunning  = false;
     xState[i_State].m_xTimer.vInit();
 
@@ -120,7 +121,21 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   
   xState[i_State].m_bRunning = true;
   xState[i_State].m_eApiCall = eApiCall;
+  
   xState[i_State].m_xTimer.vStart();
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark error return of an api                                                */
+/*----------------------------------------------------------------------------*/
+void ApiState::vApiError(Session* pSession, eEC eError)
+{
+  i8 i_State = pSession->m_iApiState;
+  
+  xState[i_State].m_bRunning = false;
+  xState[i_State].m_eError   = eError;
+  
+  xState[i_State].m_xTimer.vUpdate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,6 +156,7 @@ void ApiState::vApiReturn(Session* pSession)
   i8 i_State = pSession->m_iApiState;
   
   xState[i_State].m_bRunning = false;
+  
   xState[i_State].m_xTimer.vUpdate();
 }
 
@@ -157,7 +173,9 @@ void ApiState::vFreeState(i8 i_State)
   
   xState[i_State].m_eApiCall  = AC_NONE;
   xState[i_State].m_eJobClass = CN_NONE;
+  xState[i_State].m_eError    = EC_NONE;
   xState[i_State].m_bRunning  = false;
+  
   xState[i_State].m_xTimer.vReset();
 
   xState[i_State].m_iNextFree = m_iFirstFree;

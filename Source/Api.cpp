@@ -994,6 +994,14 @@ void vApiCall(Session* pSession, eAC eApiCall)
 }
 
 /*----------------------------------------------------------------------------*/
+/* mark error of an api                                                       */
+/*----------------------------------------------------------------------------*/
+void vApiError(Session* pSession, eEC eError)
+{
+  gpAttachMap->m_pApiState->vApiError(pSession,eError);
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark job of an api                                                         */
 /*----------------------------------------------------------------------------*/
 void vApiJob(Session* pSession, eCN eJobClass)
