@@ -96,7 +96,7 @@ void Task::vJobAcksRemaining(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iAcksRemaing) )
     THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
   
-  pJob->m_ziAcksRemaining = iAcksRemaing;
+  pJob->m_xAcksRemaining = iAcksRemaing;
   
   EXIT();
 }
@@ -296,7 +296,7 @@ void Task::vJobDecAcksRemaining(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.decAcksRemaining"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iAcksRemaining = --pJob->m_ziAcksRemaining;
+  i8 iAcksRemaining = --pJob->m_xAcksRemaining;
   
   mpTask->m_pDataStack->vPushInt(iAcksRemaining);
   

@@ -35,17 +35,7 @@ void Task::vDot(MP_Task mpTask)
     THROW_INVALID_DSTACK("."_Stz);
   
   ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
-  /*
-  vTrace("[N%lld:%8s\\%lld %-11s] %s\n"_Stz,
-         
-         gpAttachMap->m_pGrid->iNode(),
-         mpTask->m_sName.aChar(),
-         *mpTask->m_zAcks,
-         mpTask->m_sComment.aChar(),
-         
-         sWorkspace.aChar()
-         );
-  */
+
   vTrace("[%s %s] %s\n"_Stz,
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
          mpTask->m_pJob ? (Stz*)mpTask->aJobName() : "<no job>"_Stz,

@@ -66,7 +66,7 @@ void Task::vTaskAck(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.acks@ -- push current value of given tasks m_zAcks                    */
+/* task.acks@ -- push current value of given tasks m_xAcksRemaining           */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskAcksFetch(MP_Task mpTask)
 {
@@ -77,13 +77,13 @@ void Task::vTaskAcksFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.acks@"_Stz);
   Task* pGivenTask = _pTask(pPtrTask);
   
-  mpTask->m_pDataStack->vPushInt(*pGivenTask->m_zAcks);
+  mpTask->m_pDataStack->vPushInt(*pGivenTask->m_xAcksRemaining);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.acks! -- store value into given tasks m_zAcks                         */
+/* task.acks! -- store value into given tasks m_xAcksRemaining                */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskAcksStore(MP_Task mpTask)
 {
@@ -98,11 +98,11 @@ void Task::vTaskAcksStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(nAcksRequired) )
     THROW_INVALID_DSTACK("task.acks!"_Stz);
   
-  ASSERT(0 == *pGivenTask->m_zAcks);
+  ASSERT(0 == *pGivenTask->m_xAcksRemaining);
 
   RASSERT(pGivenTask->bIsLocked());
   
-  pGivenTask->m_zAcks = nAcksRequired;
+  pGivenTask->m_xAcksRemaining = nAcksRequired;
 
   EXIT();
 }

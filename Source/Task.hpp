@@ -79,7 +79,7 @@ namespace Tasks
     eQR     m_eQueue;       // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
     Lock    m_xLock;        // lock for this task
-    Decider m_zAcks;        // number of acks still waiting for
+    Decider m_xAcksRemaining;        // number of acks still waiting for
     Since   m_xWakeupTime;  // wakeup time
 
     i8      m_iPartition;   // which partition if a partition task

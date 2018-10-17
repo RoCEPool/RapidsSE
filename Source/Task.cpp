@@ -78,7 +78,7 @@ Task::Task(Job* pJob)
   
   m_eState       = TS_NONE;
   m_eQueue       = QR_NONE;
-  m_zAcks.vCheckInit();
+  m_xAcksRemaining.vCheckInit();
   m_pThread      = nullptr;
   
   m_pDataStack   = nullptr;
@@ -213,7 +213,7 @@ bool Task::bDecAck(i8& iRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  iRemaining = --m_zAcks;
+  iRemaining = --m_xAcksRemaining;
 
   if (iRemaining)
     return false;
@@ -768,7 +768,7 @@ void Task::vTracePoint(Stz* aMark)
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
          gpAttachMap->m_pGrid->iThisNode(),
          aJobName(),
-         *m_zAcks,
+         *m_xAcksRemaining,
          
          sRoutine.aChar(),
          aMark,

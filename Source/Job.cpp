@@ -140,7 +140,7 @@ void Job::vInit(void)
   m_eSeed    = SS_ENUMS;
   m_eJobTrace   = JT_NONE;
   m_iParticipantNode  = -1;
-  m_ziAcksRemaining   = 0;
+  m_xAcksRemaining   = 0;
   m_pOriginatingTask  = nullptr;
   m_pWorkingBuffer = nullptr;
   m_bFindingJob = false;
@@ -284,7 +284,7 @@ void Job::vReport(void)
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
          m_iJobId,
-         *m_ziAcksRemaining);
+         *m_xAcksRemaining);
 }
 
 /*----------------------------------------------------------------------------*/

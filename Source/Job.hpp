@@ -89,7 +89,7 @@ namespace JobsModel
     eJT  m_eJobTrace;          // job trace
   
     i8  m_iParticipantNode;    // participant node no
-    Decider m_ziAcksRemaining;  // acks remaining
+    Decider m_xAcksRemaining;  // acks remaining
     Tasks::Task* m_pOriginatingTask;  // originating task of the request
     
     WorkingBuffer* m_pWorkingBuffer; // working buffer
