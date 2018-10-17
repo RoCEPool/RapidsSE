@@ -203,11 +203,12 @@ void ApiState::vDump(void)
       if (xState[i_State].m_bRunning)
         xState[i_State].m_xTimer.vUpdate();
 
-      vTrace("  %lld: session %p, call %s, job %s, %s, time %lldms\n"_Stz,
+      vTrace("  %lld: session %p, call %s, job %s, error %s, %s, time %lldms\n"_Stz,
              i_State,
              xState[i_State].m_pSession,
              aAC[xState[i_State].m_eApiCall],
              aCN[xState[i_State].m_eJobClass],
+             aEC[xState[i_State].m_eError],
              xState[i_State].m_bRunning ? "running" : "completed",
              xState[i_State].m_xTimer.iMilliseconds()
              );
