@@ -172,6 +172,7 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
     vApiReturn(pSession);                                          // API RETURN
     return nullptr;
   }
+  vApiJob(pSession,pJob->eClass());                                   // API JOB
   
   // lock this job's mutex
   i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
