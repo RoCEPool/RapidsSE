@@ -967,8 +967,19 @@ void Task::vJobRemoveOriginator(MP_Task mpTask)
   
   
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
-  gpAttachMap->m_pOriginatingJobs->vRemoveJob(pJob);
+  bool bRemove = gpAttachMap->m_pOriginatingJobs->bRemoveJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
+  
+  if ( JOB_TRACE || ! bRemove ) {
+    vTrace("------------------------------------\n"_Stz);
+    vTrace("%s Failed to Remove JobId %lld from originator\n"_Stz, aCN[pJob->eClass()],pJob->m_iJobId);
+    vTrace("------------------------------------\n"_Stz);
+    
+    gpAttachMap->m_pParticipatingJobs->vGrabLock();
+    gpAttachMap->m_pParticipatingJobs->vContentDump();
+    bRemove = gpAttachMap->m_pParticipatingJobs->bRemoveJob(pJob);
+    gpAttachMap->m_pParticipatingJobs->vDropLock();
+  }
   
 #ifdef JOB_TRACE
   if ( JOB_TRACE )
@@ -991,7 +1002,7 @@ void Task::vJobRemoveParticipant(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
-  gpAttachMap->m_pParticipatingJobs->vRemoveJob(pJob);
+  gpAttachMap->m_pParticipatingJobs->bRemoveJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
  
 #ifdef JOB_TRACE

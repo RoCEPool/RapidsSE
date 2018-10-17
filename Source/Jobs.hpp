@@ -32,7 +32,7 @@ namespace JobsModel
     bool   bIsLocked(void);
     i8     iNextJobId(void);
     Job*   pPopJob(void);
-    void   vRemoveJob(Job* pJob);
+    bool   bRemoveJob(Job* pJob);
     i8     nJobs(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
