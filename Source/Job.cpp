@@ -45,6 +45,14 @@ Job* JobsModel::_pJob(void* aAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(aAddr);
   
+  if( pJob &&
+     !(pJob->eClass() >= CN_JOB__BEGUN && pJob->eClass() <= CN_JOB_WAITCLUSTER) ) {
+    i8 iDebug = 1;
+  }
+  
+  RASSERT( !pJob ||
+          (pJob->eClass() >= CN_JOB__BEGUN && pJob->eClass() <= CN_JOB_WAITCLUSTER) );
+  
   return pJob;
 }
 
@@ -54,6 +62,12 @@ Job* JobsModel::_pJob(void* aAddr)
 Job* JobsModel::_pJob(i8 iAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(iAddr);
+  if( pJob &&
+     !(pJob->eClass() >= CN_JOB__BEGUN && pJob->eClass() <= CN_JOB_WAITCLUSTER) ) {
+    i8 iDebug = 1;
+  }
+  RASSERT( !pJob ||
+          (pJob->eClass() >= CN_JOB__BEGUN && pJob->eClass() <= CN_JOB_WAITCLUSTER) );
   
   return pJob;
 }
