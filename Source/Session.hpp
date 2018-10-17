@@ -52,6 +52,8 @@ namespace Interface
     
     PerformanceTrace* pPerformanceTrace(void);
     void vPerformanceTrace(PerformanceTrace* pPerformanceTrace);
+  
+    void      vReport(void);
     
     i8        iSlot(void);
     Tx*       pTx(void);

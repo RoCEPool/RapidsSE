@@ -24,14 +24,33 @@ PromptNote mPromptNote_ssn (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_ssn(SePrompt* pPrompt)
 {
-  Token* pArg = nullptr;
-  
+  Token* pArg0 = nullptr;
+  Token* pArg1 = nullptr;
+
   TokenVec* pTokenVec = pPrompt->pTknVec();
   i8 nTokens = pTokenVec->nItems();
 
-  if (nTokens == 2)
-    pArg = pTokenVec->pGet(1);
+  if (nTokens != 3)
+    return false;
+
+  pArg0 = pTokenVec->pGet(1);
+  pArg1 = pTokenVec->pGet(2);
+
+  s32 sNumber;
+  sNumber.vConcat(pArg1->aText());
+  vTrace("Session: %s\n"_Stz,sNumber.aStr());
+
+  i8 iNumber = sNumber.iToI8();
+  
+  Session* pSession = _pSession(iNumber);
+  
+  if (! pSession) {
+    vTrace("Not a session\n"_Stz);
+    return false;
+  }
     
+  pSession->vReport();
+  
   return true;
 }
 

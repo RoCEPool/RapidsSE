@@ -20,8 +20,10 @@ Session* Interface::_pSession(void* aAddr)
 {
   Session* pSession = reinterpret_cast<Session*>(aAddr);
   
-  if (pSession && CN_SESSION != pSession->eClass())
+  if (pSession && CN_SESSION != pSession->eClass()) {
     vTrace("INVALID SESSION %p %s\n"_Stz, pSession, aCN[pSession->eClass()]);
+    return nullptr;
+  }
   
   RASSERT( !pSession || CN_SESSION == pSession->eClass() );
   
@@ -291,6 +293,18 @@ void Session::vPerformanceTrace(PerformanceTrace* pPerformanceTrace)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   m_pPerformanceTrace = pPerformanceTrace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* report this session                                                        */
+/*----------------------------------------------------------------------------*/
+void Session::vReport(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  vTrace("Session %llx job %llx\n"_Stz,
+         this,
+         m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
