@@ -123,6 +123,8 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   xState[i_State].m_eApiCall = eApiCall;
   
   xState[i_State].m_xTimer.vStart();
+  
+  pSession->m_nApiCalls++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,6 +138,8 @@ void ApiState::vApiError(Session* pSession, eEC eError)
   xState[i_State].m_eError   = eError;
   
   xState[i_State].m_xTimer.vUpdate();
+
+  pSession->m_nApiErrors++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -146,6 +150,8 @@ void ApiState::vApiJob(Session* pSession, eCN eJobClass)
   i8 i_State = pSession->m_iApiState;
   
   xState[i_State].m_eJobClass = eJobClass;
+  
+  pSession->m_nJobNew++;
 }
 
 /*----------------------------------------------------------------------------*/
