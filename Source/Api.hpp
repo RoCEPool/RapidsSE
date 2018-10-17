@@ -78,6 +78,7 @@ extern "C" eEC  RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sS
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession);
 
 void vApiCall(Session* pSession, eAC eApiCall);
+void vApiError(Session* pSession, eEC eError);
 void vApiJob(Session* pSession, eCN eJobClass);
 void vApiReturn(Session* pSession);
 void vDeleteJobs(Session* pSession);
