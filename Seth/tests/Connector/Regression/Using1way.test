@@ -2,7 +2,7 @@
   // Source file: ../qa/queries/Using1way/rusing10.sql
   // Result file: ../qa/queries/Using1way/results/using10.res
  select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1 limit 10 offset 10;
-ordered rows:
+rows:
   (612.5899999999999, 'aqua')
   (1153.48, 'black')
   (1765.6100000000001, 'blue')
@@ -18,7 +18,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing11.sql
   // Result file: ../qa/queries/Using1way/results/using11.res
  select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1 limit 10;
-ordered rows:
+rows:
   (3807.270000000001, 'BLACK')
   (862.75, 'BLUE')
   (3039.25, 'GREEN')
@@ -34,7 +34,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing12.sql
   // Result file: ../qa/queries/Using1way/results/using12.res
  select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1;
-ordered rows:
+rows:
   (3807.27, 'BLACK')
   (862.75, 'BLUE')
   (3039.25, 'GREEN')
@@ -68,7 +68,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing13.sql
   // Result file: ../qa/queries/Using1way/results/using13.res
  select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by SumOf;
-ordered rows:
+rows:
   (164.98, 'red')
   (285.34, 'RED')
   (367.2, 'grey')
@@ -102,7 +102,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing14.sql
   // Result file: ../qa/queries/Using1way/results/using14.res
  select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from table1 a join table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by SumOf;
-ordered rows:
+rows:
   (48.09, 'vvv', 'vvv')
   (199.12, 'jjj', 'jjj')
   (262.5, 'zzz', 'zzz')
@@ -133,7 +133,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing15.sql
   // Result file: ../qa/queries/Using1way/results/using15.res
  select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from table1 a join table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by a.ucolvc limit 10;
-ordered rows:
+rows:
   (1157.9399999999998, 'aaa', 'aaa')
   (1357.18, 'bbb', 'bbb')
   (1055.3, 'ccc', 'ccc')
@@ -149,7 +149,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing16.sql
   // Result file: ../qa/queries/Using1way/results/using16.res
  select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from table1 a join table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by a.ucolvc limit 10 offset 10;
-ordered rows:
+rows:
   (3017.25, 'kkk', 'kkk')
   (1190.3999999999999, 'lll', 'lll')
   (2124.66, 'mmm', 'mmm')
@@ -165,28 +165,28 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing17.sql
   // Result file: ../qa/queries/Using1way/results/using17.res
  select sum(cold1) as SumOf from table1 a join table2 b using (ucol) where a.ucol between 27 and 53;
-ordered rows:
+rows:
   (NULL)
 
 
   // Source file: ../qa/queries/Using1way/rusing18.sql
   // Result file: ../qa/queries/Using1way/results/using18.res
 select sum(cold1) as SumOf from table1 a join table9 b using (ucolvc) where cold9 >= 0;
-ordered rows:
+rows:
   (118963.78)
 
 
   // Source file: ../qa/queries/Using1way/rusing19.sql
   // Result file: ../qa/queries/Using1way/results/using19.res
  select sum(cole1) as SumOf from table1 a join table9 b using (ucol) where b.cole9 <= 0;
-ordered rows:
+rows:
   (1777.190000000000)
 
 
   // Source file: ../qa/queries/Using1way/rusing1.sql
   // Result file: ../qa/queries/Using1way/results/using1.res
  select a.colb1, a.ucol, b.colb2, b.ucol from table1 a join table2 b using (ucol) order by a.ucol, b.colb2;
-ordered rows:
+rows:
   ('RED', 93, 'green', 93)
   ('purple', 140, 'yellow', 140)
   ('black', 158, 'white', 158)
@@ -205,21 +205,21 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing20.sql
   // Result file: ../qa/queries/Using1way/results/using20.res
  select count(*) from table1 join table9 using (ucolvc);
-ordered rows:
+rows:
   (1905)
 
 
   // Source file: ../qa/queries/Using1way/rusing21.sql
   // Result file: ../qa/queries/Using1way/results/using21.res
  select sum(cold1), avg(cola2) from table1 a join table2 b using (ucolvc);
-ordered rows:
+rows:
   (50771.259999999995, 258)
 
 
   // Source file: ../qa/queries/Using1way/rusing22.sql
   // Result file: ../qa/queries/Using1way/results/using22.res
  select sum(cold1), avg(cola2), colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1;
-ordered rows:
+rows:
   (3807.270000000001, 268, 'BLACK')
   (862.75, 290, 'BLUE')
   (3039.25, 292, 'GREEN')
@@ -253,7 +253,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing23.sql
   // Result file: ../qa/queries/Using1way/results/using23.res
  select sum(cold1), avg(cola2) as AvgNum, colb1, colb2 from table1 a join table2 b using (ucolvc) where a.ucolvc in ('aaa','eee') group by colb1, colb2 order by colb1, colb2;
-ordered rows:
+rows:
   (209.23, 218, 'BLACK', 'PURPLE')
   (418.46, 198, 'BLACK', 'TEAL')
   (209.23, 345, 'BLACK', 'blue')
@@ -283,7 +283,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing24.sql
   // Result file: ../qa/queries/Using1way/results/using24.res
  select colb1, colb2, colc1, scol2 from table1 join table2 using (ucol) where colb1 = 'purple';
-ordered rows:
+rows:
   ('purple', 'pink', TIMESTAMP '2015-12-04 00:00:00.0', 131)
   ('purple', 'yellow', TIMESTAMP '2015-01-10 00:00:00.0', 110)
 
@@ -291,7 +291,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing25.sql
   // Result file: ../qa/queries/Using1way/results/using25.res
  select colb1, colb2, colc1, scol2 from table1 join table2 using (ucol) where colc1 > timestamp '2015-08-02 12:00:00' order by colb1, colb2, scol2;
-ordered rows:
+rows:
   ('RED', 'green', TIMESTAMP '2015-11-13 00:00:00.0', 163)
   ('green', 'YELLOW', TIMESTAMP '2015-10-21 00:00:00.0', 130)
   ('maroon', 'GREEN', TIMESTAMP '2015-09-02 00:00:00.0', 244)
@@ -302,7 +302,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing26.sql
   // Result file: ../qa/queries/Using1way/results/using26.res
 select colb1, colb2, colc1, scol2 from table1 a join table2 b using (ucol) where b.ucol > 45 order by b.ucol, colb1, colb2;
-ordered rows:
+rows:
   ('RED', 'green', TIMESTAMP '2015-11-13 00:00:00.0', 163)
   ('purple', 'yellow', TIMESTAMP '2015-01-10 00:00:00.0', 110)
   ('black', 'white', TIMESTAMP '2015-06-06 00:00:00.0', 95)
@@ -321,7 +321,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing27.sql
   // Result file: ../qa/queries/Using1way/results/using27.res
  select colb1, colb2, colc1, scol2 from table1 a join table2 b using (ucol) where b.ucol > 45 and a.ucolvc = 'eee' order by b.ucol,scol2;
-ordered rows:
+rows:
   ('indigo', 'pink', TIMESTAMP '2015-05-14 00:00:00.0', 80)
   ('indigo', 'peach', TIMESTAMP '2015-05-14 00:00:00.0', 100)
   ('indigo', 'gold', TIMESTAMP '2015-05-14 00:00:00.0', 168)
@@ -330,7 +330,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing28.sql
   // Result file: ../qa/queries/Using1way/results/using28.res
  select a.colb1, b.colb2, a.colc1,b.scol2 from table1 a left outer join table2 b using (ucol) where a.ucolvc = 'ttt' order by a.ucolvc, colb1;
-ordered rows:
+rows:
   ('WHITE', NULL, TIMESTAMP '2015-11-26 00:00:00.0', NULL)
   ('green', NULL, TIMESTAMP '2015-01-19 00:00:00.0', NULL)
   ('PURPLE', NULL, TIMESTAMP '2015-01-29 00:00:00.0', NULL)
@@ -341,7 +341,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing29.sql
   // Result file: ../qa/queries/Using1way/results/using29.res
  select colb1, colb2, colc1, scol2 from table1 a right outer join table2 b using (ucol) order by colb1, colb2, scol2;
-ordered rows:
+rows:
   (NULL, 'BLACK', NULL, 0)
   (NULL, 'BLUE', NULL, 194)
   (NULL, 'GREEN', NULL, 30)
@@ -447,7 +447,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing2.sql
   // Result file: ../qa/queries/Using1way/results/using2.res
  select a.ucolvc, a.colb1, a.ucol, b.colb2, b.ucol from table1 a join table2 b using (ucolvc) where a.ucolvc = 'aaa' order by a.ucolvc, colb1, a.ucol, b.colb2;
-ordered rows:
+rows:
   ('aaa', 'GREEN', 662, 'gold', 180)
   ('aaa', 'GREEN', 662, 'green', 999)
   ('aaa', 'GREEN', 662, 'teal', 477)
@@ -462,35 +462,35 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing30.sql
   // Result file: ../qa/queries/Using1way/results/using30.res
  select sum(a.ucol) from table1 a left outer join table2 b using(ucol);
-ordered rows:
+rows:
   (49570)
 
 
   // Source file: ../qa/queries/Using1way/rusing31.sql
   // Result file: ../qa/queries/Using1way/results/using31.res
  select sum(b.ucol) from table1 a join table2 b using(ucol);
-ordered rows:
+rows:
   (5847)
 
 
   // Source file: ../qa/queries/Using1way/rusing32.sql
   // Result file: ../qa/queries/Using1way/results/using32.res
  select sum(b.ucol) from table1 a right outer join table2 b using(ucol);
-ordered rows:
+rows:
   (53766)
 
 
   // Source file: ../qa/queries/Using1way/rusing33.sql
   // Result file: ../qa/queries/Using1way/results/using33.res
  select sum(a.ucol) from table1 a left outer join table2 b using(ucol) where a.ucol > 45;
-ordered rows:
+rows:
   (49447)
 
 
   // Source file: ../qa/queries/Using1way/rusing34.sql
   // Result file: ../qa/queries/Using1way/results/using34.res
  select a.colb1, b.colb5, a.ucolvc, b.ucolvc from table1 a join table5 b using (ucol, ucolvc) order by a.ucol, a.ucolvc;
-ordered rows:
+rows:
   ('black', 'PURPLE', 'bbb', 'bbb')
   ('violet', 'PINK', 'fff', 'fff')
   ('tan', 'red', 'qqq', 'qqq')
@@ -499,14 +499,14 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing35.sql
   // Result file: ../qa/queries/Using1way/results/using35.res
  select a.colb1, b.colb5, a.ucolvc, b.ucolvc from table1 a join table5 b using (ucol, ucolvc) where a.ucolvc = 'bbb' order by b.ucol,b.ucolvc;
-ordered rows:
+rows:
   ('black', 'PURPLE', 'bbb', 'bbb')
 
 
   // Source file: ../qa/queries/Using1way/rusing3.sql
   // Result file: ../qa/queries/Using1way/results/using3.res
  select a.colb1, a.ucol, b.colb2, b.ucol from table1 a join table2 b using (ucolvc) where a.colb1 like 'gr%' and b.colb2 like 'gr%' order by a.ucolvc;
-ordered rows:
+rows:
   ('green', 976, 'green', 151)
   ('green', 932, 'green', 105)
   ('green', 521, 'grey', 652)
@@ -516,14 +516,14 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing4.sql
   // Result file: ../qa/queries/Using1way/results/using4.res
  select count(distinct a.ucolvc) from table1 a join table2 b using (ucolvc);
-ordered rows:
+rows:
   (25)
 
 
   // Source file: ../qa/queries/Using1way/rusing5.sql
   // Result file: ../qa/queries/Using1way/results/using5.res
  select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1;
-ordered rows:
+rows:
   (2, 'RED')
   (2, 'red')
   (4, 'pink')
@@ -557,7 +557,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing6.sql
   // Result file: ../qa/queries/Using1way/results/using6.res
  select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10;
-ordered rows:
+rows:
   (2, 'RED')
   (2, 'red')
   (4, 'pink')
@@ -573,7 +573,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing7.sql
   // Result file: ../qa/queries/Using1way/results/using7.res
  select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10;
-ordered rows:
+rows:
   (2, 'RED')
   (2, 'red')
   (4, 'pink')
@@ -589,7 +589,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing8.sql
   // Result file: ../qa/queries/Using1way/results/using8.res
  select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10 offset 10;
-ordered rows:
+rows:
   (11, 'black')
   (11, 'purple')
   (12, 'aqua')
@@ -605,7 +605,7 @@ ordered rows:
   // Source file: ../qa/queries/Using1way/rusing9.sql
   // Result file: ../qa/queries/Using1way/results/using9.res
  select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by SumOf, colb1 limit 10 offset 10;
-ordered rows:
+rows:
   (1157.2800000000002, 'brown')
   (1216.58, 'PURPLE')
   (1688.68, 'yellow')

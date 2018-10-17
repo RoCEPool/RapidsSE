@@ -2,14 +2,14 @@
   // Source file: ../qa/queries/functions/upper/rupper1.sql
   // Result file: ../qa/queries/functions/upper/results/upper1.res
  select upper('mary had a little lamb') from table1 limit 1;
-ordered rows:
+rows:
   ('MARY HAD A LITTLE LAMB')
 
 
   // Source file: ../qa/queries/functions/upper/rupper2.sql
   // Result file: ../qa/queries/functions/upper/results/upper2.res
  select colb1, upper(colb1) from table1 where colb1 = 'green';
-ordered rows:
+rows:
   ('green', 'GREEN')
   ('green', 'GREEN')
   ('green', 'GREEN')
@@ -20,7 +20,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/upper/rupper3.sql
   // Result file: ../qa/queries/functions/upper/results/upper3.res
  select colb1, upper(colb1) from table1 where colb1 = 'GREEN';
-ordered rows:
+rows:
   ('GREEN', 'GREEN')
   ('GREEN', 'GREEN')
   ('GREEN', 'GREEN')
@@ -32,7 +32,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/upper/rupper4.sql
   // Result file: ../qa/queries/functions/upper/results/upper4.res
  select colb1, upper(left(colb1,3)) from table1 where colb1 = 'black';
-ordered rows:
+rows:
   ('black', 'BLA')
   ('black', 'BLA')
   ('black', 'BLA')
@@ -41,7 +41,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/upper/rupper5.sql
   // Result file: ../qa/queries/functions/upper/results/upper5.res
  select colb1, upper(right(colb1,3)) from table1 where colb1 = 'black';
-ordered rows:
+rows:
   ('black', 'ACK')
   ('black', 'ACK')
   ('black', 'ACK')
@@ -50,7 +50,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/upper/rupper6.sql
   // Result file: ../qa/queries/functions/upper/results/upper6.res
  select colb1, upper(substring(colb1,3,3)) from table1 where colb1 = 'maroon';
-ordered rows:
+rows:
   ('maroon', 'ROO')
   ('maroon', 'ROO')
   ('maroon', 'ROO')
@@ -61,7 +61,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/upper/rupper7.sql
   // Result file: ../qa/queries/functions/upper/results/upper7.res
  select colb1, ucolvc, pcol1 from table1 where upper(colb1) = 'BLACK' order by colb1 desc, pcol1;
-ordered rows:
+rows:
   ('black', 'mmm', 4)
   ('black', 'bbb', 62)
   ('black', 'iii', 85)
@@ -78,7 +78,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/upper/rupper8.sql
   // Result file: ../qa/queries/functions/upper/results/upper8.res
  select colb1, ucolvc, pcol1 from table1 where upper(colb1) = 'VIOLET' or upper(colb1) = 'YELLOW' order by colb1 desc, ucolvc, pcol1;
-ordered rows:
+rows:
   ('yellow', 'nnn', 19)
   ('violet', 'ddd', 37)
   ('violet', 'fff', 17)
@@ -93,7 +93,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/upper/rupper9.sql
   // Result file: ../qa/queries/functions/upper/results/upper9.res
  select upCase, regCase from (select upper(colb1) as upCase, colb1 as regCase from table1 where pcol1 < 15) as outQry order by regCase desc;
-ordered rows:
+rows:
   ('RED', 'red')
   ('PEACH', 'peach')
   ('GREY', 'grey')

@@ -2,7 +2,7 @@
   // Source file: ../qa/queries/functions/concat/rconcat10.sql
   // Result file: ../qa/queries/functions/concat/results/concat10.res
  select colb1, cola1, concat(colb1,'//',cola1) from table1 where pcol1 between 68 and 77 order by colb1, pcol1;
-ordered rows:
+rows:
   ('BLACK', 396, 'BLACK//396')
   ('BLACK', 485, 'BLACK//485')
   ('BLUE', 353, 'BLUE//353')
@@ -18,7 +18,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat11.sql
   // Result file: ../qa/queries/functions/concat/results/concat11.res
  select cola1, cold1, concat(cola1,'--',cold1) from table1 where colb1 in ('indigo','gold','violet') order by pcol1 desc;
-ordered rows:
+rows:
   (295, 239.23, '295--239.23')
   (102, 167.42, '102--167.42')
   (155, 47.59, '155--47.59')
@@ -35,7 +35,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat12.sql
   // Result file: ../qa/queries/functions/concat/results/concat12.res
  select cold1, cole1, concat(cold1,'  -  ',cole1) from table1 where pcol1 between 47 and 55 order by pcol1;
-ordered rows:
+rows:
   (108.41, NULL, '108.41  -')
   (176.08, 48.970000000000, '176.08  -  48.97')
   (61.57, 120.400000000000, '61.57  -  120.4')
@@ -50,7 +50,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat13.sql
   // Result file: ../qa/queries/functions/concat/results/concat13.res
  select ucolvc, concat(ucolvc,' - ',ucolvc,' / ',ucolvc) from table9 where colb9 in ('purple','PURPLE') order by pcol9 desc;
-ordered rows:
+rows:
   ('ccc', 'ccc - ccc / ccc')
   ('fff', 'fff - fff / fff')
   ('sss', 'sss - sss / sss')
@@ -83,7 +83,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat14.sql
   // Result file: ../qa/queries/functions/concat/results/concat14.res
  select colc1, concat(extract(month from colc1),'/',extract(year from colc1)) from table1 where extract(month from colc1) in (5,7,9) order by pcol1 desc;
-ordered rows:
+rows:
   (TIMESTAMP '2015-05-03 00:00:00.0', '5/2015')
   (TIMESTAMP '2015-07-16 00:00:00.0', '7/2015')
   (TIMESTAMP '2015-07-30 00:00:00.0', '7/2015')
@@ -118,7 +118,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat15.sql
   // Result file: ../qa/queries/functions/concat/results/concat15.res
  select concat(upper(left(colb1,2)),' / ',lower(right(colb1,2)),' / ',upper(substring(colb1,3,2))), colb1 from table1 where colb1 in ('purple','violet') order by pcol1;
-ordered rows:
+rows:
   ('VI / et / OL', 'violet')
   ('VI / et / OL', 'violet')
   ('VI / et / OL', 'violet')
@@ -131,14 +131,14 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat1.sql
   // Result file: ../qa/queries/functions/concat/results/concat1.res
  select concat( 'Mister', ' Rodgers') from table1 where pcol1 < 1;
-ordered rows:
+rows:
   ('Mister Rodgers')
 
 
   // Source file: ../qa/queries/functions/concat/rconcat2.sql
   // Result file: ../qa/queries/functions/concat/results/concat2.res
  select colb1, ucolvc, concat( colb1, '/', ucolvc ) from table1 where pcol1 < 15 order by colb1, ucolvc;
-ordered rows:
+rows:
   ('PINK', 'qqq', 'PINK/qqq')
   ('PINK', 'uuu', 'PINK/uuu')
   ('PURPLE', 'www', 'PURPLE/www')
@@ -159,7 +159,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat3.sql
   // Result file: ../qa/queries/functions/concat/results/concat3.res
  select concat(colb1,'/',colb1,'*',colb1,'-',colb1,'==',ucolvc) from table1 where pcol1 < 10 order by pcol1;
-ordered rows:
+rows:
   ('grey/grey*grey-grey==lll')
   ('PINK/PINK*PINK-PINK==qqq')
   ('green/green*green-green==uuu')
@@ -175,14 +175,14 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat4.sql
   // Result file: ../qa/queries/functions/concat/results/concat4.res
  select concat('Hello',null,'there') from table1 where pcol1 < 1;
-ordered rows:
+rows:
   ('Hellothere')
 
 
   // Source file: ../qa/queries/functions/concat/rconcat5.sql
   // Result file: ../qa/queries/functions/concat/results/concat5.res
  select pcol9, colb9, concat(colb9,' -- ',ucolvc) from table9 where pcol9 > 235 and pcol9 < 245 order by colb9, pcol9;
-ordered rows:
+rows:
   (239, NULL, '-- mmm')
   (243, NULL, '-- iii')
   (236, 'ORANGE', 'ORANGE -- yyy')
@@ -197,7 +197,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat6.sql
   // Result file: ../qa/queries/functions/concat/results/concat6.res
  select concat(colb1,'--',colb2), colb1, colb2 from table1 join table2 on pcol1 = pcol2 where colb1 in ('green','blue','PINK','PURPLE') order by colb1, colb2 desc;
-ordered rows:
+rows:
   ('PINK--yellow', 'PINK', 'yellow')
   ('PINK--purple', 'PINK', 'purple')
   ('PINK--peach', 'PINK', 'peach')
@@ -221,7 +221,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat7.sql
   // Result file: ../qa/queries/functions/concat/results/concat7.res
  select concat(colb1,'--',colb2), colb1, colb2 from table1 /*HASH*/ join table2 on pcol1 = pcol2 where colb1 in ('green','blue','PINK','PURPLE') order by colb1, colb2 desc;
-ordered rows:
+rows:
   ('PINK--yellow', 'PINK', 'yellow')
   ('PINK--purple', 'PINK', 'purple')
   ('PINK--peach', 'PINK', 'peach')
@@ -245,7 +245,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat8.sql
   // Result file: ../qa/queries/functions/concat/results/concat8.res
  select a.ucolvc, concat(colb1,'--',colb9) as ConcatRes, colb1, colb9 from table1 a join table9 b using (ucolvc) where pcol9 between 220 and 245 and a.ucolvc in ('iii','hhh','ttt','eee') order by a.ucolvc desc, pcol1;
-ordered rows:
+rows:
   ('ttt', 'green--', 'green', NULL)
   ('ttt', 'green--yellow', 'green', 'yellow')
   ('ttt', 'WHITE--yellow', 'WHITE', 'yellow')
@@ -287,7 +287,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/concat/rconcat9.sql
   // Result file: ../qa/queries/functions/concat/results/concat9.res
  select a.ucolvc, concat(colb1,'--',colb9) as ConcatRes, colb1, colb9 from table1 a /*+HASH*/ join table9 b using (ucolvc) where pcol9 between 220 and 245 and a.ucolvc in ('iii','hhh','ttt','eee') order by a.ucolvc desc, pcol9, pcol1;
-ordered rows:
+rows:
   ('ttt', 'green--', 'green', NULL)
   ('ttt', 'WHITE--', 'WHITE', NULL)
   ('ttt', 'PURPLE--', 'PURPLE', NULL)

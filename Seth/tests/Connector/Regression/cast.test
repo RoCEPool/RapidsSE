@@ -2,7 +2,7 @@
   // Source file: ../qa/queries/cast/rcast10.sql
   // Result file: ../qa/queries/cast/results/cast10.res
  select cast(colf9 as float) as fl1, cast(colf9 as decimal) as dc1, cast(colf9 as decimal(5,2)) as exp1, cast(colf9 as varchar) as str1 from table9 where ucolvc between 'qqq' and 'rrr' and colb9 like 'bl%' order by pcol9, ucolvc;
-ordered rows:
+rows:
   (-3.0, -3, -3.00, -3)
   (-3.0, -3, -3.00, -3)
   (NULL, NULL, NULL, NULL)
@@ -12,7 +12,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast11.sql
   // Result file: ../qa/queries/cast/results/cast11.res
  select cast(cole1 as integer), cast(cole9 as integer) from table1 join table9 using(ucol) where colb9 in ('orange','violet') order by cola1, colb9;
-ordered rows:
+rows:
   (88, 59)
   (136, -81)
   (96, 27)
@@ -26,7 +26,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast12.sql
   // Result file: ../qa/queries/cast/results/cast12.res
  select cast(cole1 as float) * 0.001, cast(cole1 as float) * 2.2 from table1 where colb1 in ('violet','teal') order by cola1, colb1;
-ordered rows:
+rows:
   (0.027739999999999997, 61.028)
   (0.08564000000000001, 188.40800000000002)
   (0.12415999999999999, 273.152)
@@ -40,7 +40,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast13.sql
   // Result file: ../qa/queries/cast/results/cast13.res
  select cast(cole1 as decimal), cast(cole9 as decimal), cast(cole4 as decimal) from table1, table9, table4 where table1.ucol = table9.ucol and table1.ucol=table4.ucol order by pcol1, pcol9, pcol4;
-ordered rows:
+rows:
   (89, 59, 132)
   (140, -102, 109)
   (65, 30, 17)
@@ -70,7 +70,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast14.sql
   // Result file: ../qa/queries/cast/results/cast14.res
  select pcol1, cast(cole1 as varchar) as Raw, substring(cast(cole1 as varchar),1,10) as TenSubstr from table1 order by pcol1 limit 10 offset 20;
-ordered rows:
+rows:
   (20, 22.240000000000, 22.24)
   (21, 12.660000000000, 12.66)
   (22, 40.430000000000, 40.43)
@@ -86,7 +86,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast15.sql
   // Result file: ../qa/queries/cast/results/cast15.res
  select pcol1, cast(cold1 as integer) as Raw, cast(cold1 as integer) * 5 as Mult, colb1 from table1 where colb1 in ('indigo','aqua') order by pcol1;
-ordered rows:
+rows:
   (8, 127, 635, 'aqua')
   (14, 22, 110, 'aqua')
   (24, 185, 925, 'indigo')
@@ -99,7 +99,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast16.sql
   // Result file: ../qa/queries/cast/results/cast16.res
  select pcol1, cast(cold1 as decimal), cast(cold1 as decimal) * 0.002, colb1 from table1 where colb1 in ('aqua','teal','violet') order by pcol1, colb1;
-ordered rows:
+rows:
   (8, 128, 0.256, 'aqua')
   (14, 22, 0.044, 'aqua')
   (17, 151, 0.302, 'violet')
@@ -116,7 +116,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast17.sql
   // Result file: ../qa/queries/cast/results/cast17.res
  select pcol1, cast(cold1 as decimal) as Raw, cast(cold1 as decimal(5,2)) as WDec, cast(cold1 as decimal(5,2)) * 2.5, colb1 from table1 where colb1 in ('violet','orange','purple') order by pcol1, colb1;
-ordered rows:
+rows:
   (17, 151, 151.18, 377.950, 'violet')
   (25, 112, 112.36, 280.900, 'orange')
   (27, 93, 93.12, 232.800, 'orange')
@@ -134,7 +134,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast18.sql
   // Result file: ../qa/queries/cast/results/cast18.res
  select pcol9, cast(cold9 as float), cast(cold9 as decimal), cast(cold9 as float) * cast(cold9 as decimal) from table9 where colb9 in ('yellow','PINK') order by pcol9, colb9;
-ordered rows:
+rows:
   (4, -105.01, -105, 11026.050000000001)
   (5, -12.02, -12, 144.24)
   (22, 100.36, 100, 10036.0)
@@ -173,7 +173,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast19.sql
   // Result file: ../qa/queries/cast/results/rcast19.res
  select pcol9, cast(cold9 as varchar), substring(cast(cold9 as varchar),1,5), left(cast(cold9 as varchar),5) from table9 where colb9 like 'YELL%' order by pcol9, colb9;
-ordered rows:
+rows:
   (47, 77.87, 77.87, 77.87)
   (60, 246.98, 246.9, 246.9)
   (75, 52.04, 52.04, 52.04)
@@ -198,7 +198,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast1.sql
   // Result file: ../qa/queries/cast/results/rcast1.res
  select cast(colc1 as varchar), cast(cold1 as integer), cast(cole1 as integer), cast('11.54' as decimal) from table1 where cast(extract(month from colc1) as varchar) = '10' order by colc1, cold1, cole1;
-ordered rows:
+rows:
   (TIMESTAMP '2015-10-02 07:00:00.0', 239, 8, 11.54)
   (TIMESTAMP '2015-10-05 07:00:00.0', 108, 135, 11.54)
   (TIMESTAMP '2015-10-11 07:00:00.0', 189, 65, 11.54)
@@ -214,7 +214,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast21.sql
   // Result file: ../qa/queries/cast/results/rcast21.res
  select colc1, cast(colc1 as varchar), substring(cast(colc1 as varchar),1,10) + ' DATE' from table1 where colb1 in ('PINK','PURPLE') order by pcol1, colb1;
-ordered rows:
+rows:
   (TIMESTAMP '2015-01-16 08:00:00.0', TIMESTAMP '2015-01-16 08:00:00.0', '2015-01-16 DATE')
   (TIMESTAMP '2015-01-30 08:00:00.0', TIMESTAMP '2015-01-30 08:00:00.0', '2015-01-30 DATE')
   (TIMESTAMP '2015-10-11 07:00:00.0', TIMESTAMP '2015-10-11 07:00:00.0', '2015-10-11 DATE')
@@ -230,7 +230,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast22.sql
   // Result file: ../qa/queries/cast/results/cast22.res
  select pcol1, cast(colc1 as timestamp), pcol7, cast(colc7 as timestamp) from table1 join table7 on pcol1 = pcol7 where colb1 like 'bl%' order by pcol1, pcol7;
-ordered rows:
+rows:
   (4, TIMESTAMP '2015-01-07 00:00:00.0', 4, TIMESTAMP '2015-10-17 00:00:00.0')
   (18, TIMESTAMP '2015-09-07 00:00:00.0', 18, TIMESTAMP '2015-06-30 00:00:00.0')
   (56, TIMESTAMP '2015-11-05 00:00:00.0', 56, TIMESTAMP '2015-11-27 00:00:00.0')
@@ -242,7 +242,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast23.sql
   // Result file: ../qa/queries/cast/results/cast23.res
 select pcol1, case when cast(substring(cast(colc1 as varchar),6,2) as integer) < 10 then right(substring(cast(colc1 as varchar),6,2),1) + '/2015' when cast(substring(cast(colc1 as varchar),6,2) as integer) >= 10 then substring(cast(colc1 as varchar),6,2) +'/2015' else 'null' end from table1 where colb1 in ('GREEN','green') order by pcol1;
-ordered rows:
+rows:
   (2, '7/2015')
   (3, '2/2015')
   (7, '2/2015')
@@ -259,7 +259,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast24.sql
   // Result file: ../qa/queries/cast/results/cast24.res
  select cast(cole1 as decimal(10,4)), cast(cole9 as decimal(10,3)), cast(cole4 as decimal(10,2)) from table1, table9, table4 where table1.ucol = table9.ucol and table1.ucol=table4.ucol order by pcol1, pcol9, pcol4;
-ordered rows:
+rows:
   (88.8600, 59.120, 131.82)
   (139.8500, -102.110, 108.73)
   (65.3200, 30.490, 17.00)
@@ -289,7 +289,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast2.sql
   // Result file: ../qa/queries/cast/results/cast2.res
  select colb1, cast((avg(cold1) - -1.5) as decimal(10,7)) from table1 where colb1 in ('gold','GOLD','PINK','pink','purple','PURPLE','orange','ORANGE') group by colb1 order by colb1;
-ordered rows:
+rows:
   ('ORANGE', 141.4350000)
   ('PINK', 117.5800000)
   ('PURPLE', 117.5625000)
@@ -302,7 +302,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast3.sql
   // Result file: ../qa/queries/cast/results/cast3.res
  select a.colb1, b.colb9, cast((avg(a.cola1 + b.colg9 + a.cole1 + b.cole9) / 4) as decimal(10,7)) as OverAvg from table1 a join table9 b on pcol1 = pcol9 where lower(a.colb1) like '%ee%' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
-ordered rows:
+rows:
   ('GREEN', 'PURPLE', 21.1775000)
   ('GREEN', 'black', 76.8900000)
   ('GREEN', 'blue', 31.9750000)
@@ -318,7 +318,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast4.sql
   // Result file: ../qa/queries/cast/results/cast4.res
  select cast(colf9 as integer) as Tiny2Int, colb9 from table9 where cast(colf9 as integer) between -15 and 15 order by colb9, Tiny2Int limit 10;
-ordered rows:
+rows:
   (-15, NULL)
   (-9, NULL)
   (-2, NULL)
@@ -334,7 +334,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast5.sql
   // Result file: ../qa/queries/cast/results/cast5.res
  select cast(colg9 as integer) as SmToInt, ucolvc from table9 where ucolvc = 'ddd' order by SmToInt;
-ordered rows:
+rows:
   (-166, 'ddd')
   (-136, 'ddd')
   (-122, 'ddd')
@@ -361,7 +361,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast6.sql
   // Result file: ../qa/queries/cast/results/cast6.res
  select cast(ucol as integer) / cast(colf9 as integer) as Int2Int, ucolvc from table9 where colf9 <> 0 and ucolvc = 'qqq' order by Int2Int;
-ordered rows:
+rows:
   (-156, 'qqq')
   (-129, 'qqq')
   (-83, 'qqq')
@@ -388,7 +388,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast7.sql
   // Result file: ../qa/queries/cast/results/cast7.res
  select cast( cast(pcol9 as float) / cast(ucol as float) as integer) as Fl2Int, ucolvc from table9 where ucolvc in ('eee','jjj','nnn') and ucol > 480 order by Fl2Int, ucolvc;
-ordered rows:
+rows:
   (0, 'eee')
   (0, 'eee')
   (0, 'eee')
@@ -422,7 +422,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast8.sql
   // Result file: ../qa/queries/cast/results/cast8.res
  select cast(pcol9 as float) as fl1, cast(scol9 as decimal) as dc1, cast(tcol9 as decimal(5,2)) as exp1, cast(ucol as varchar) as str1 from table9 where ucolvc between 'qqq' and 'rrr' and colb9 like 'bl%' order by pcol9, ucolvc;
-ordered rows:
+rows:
   (1.0, 86.000000000000, 30.000000000000, 183)
   (46.0, 191.000000000000, 300.000000000000, 518)
   (111.0, 292.000000000000, 173.000000000000, 950)
@@ -432,7 +432,7 @@ ordered rows:
   // Source file: ../qa/queries/cast/rcast9.sql
   // Result file: ../qa/queries/cast/results/cast9.res
  select cast(colg9 as float) as fl1, cast(colg9 as decimal) as dc1, cast(colg9 as decimal(5,2)) as exp1, cast(colg9 as varchar) as str1 from table9 where ucolvc between 'qqq' and 'rrr' and colb9 like 'bl%' order by pcol9, ucolvc;
-ordered rows:
+rows:
   (33.0, 33, 33.00, 33)
   (-2.0, -2, -2.00, -2)
   (-115.0, -115, -115.00, -115)

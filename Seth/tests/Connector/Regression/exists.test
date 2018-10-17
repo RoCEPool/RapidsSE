@@ -2,7 +2,7 @@
   // Source file: ../qa/queries/exists/rexists10.sql
   // Result file: ../qa/queries/exists/results/exists10.res
  select colc1, cold1 from table1 where cold1 < 40.5 and exists ( select cola2 from table2 where cola2 < 750 ) order by colc1, cold1;
-ordered rows:
+rows:
   (TIMESTAMP '2015-01-04 00:00:00.0', 40.36)
   (TIMESTAMP '2015-03-07 00:00:00.0', 21.2)
   (TIMESTAMP '2015-03-27 00:00:00.0', 22.23)
@@ -27,7 +27,7 @@ affected: 0
   // Source file: ../qa/queries/exists/rexists13.sql
   // Result file: ../qa/queries/exists/results/exists13.res
  select colc1, cold1 from table1 where cold1 < 17.3 and exists ( select cold9 from table9 where cold9 > 220.6 and cold9 < 232.9 ) order by colc1, cold1;
-ordered rows:
+rows:
   (TIMESTAMP '2015-10-13 00:00:00.0', 14.0)
   (TIMESTAMP '2015-10-28 00:00:00.0', 16.93)
 
@@ -41,7 +41,7 @@ affected: 0
   // Source file: ../qa/queries/exists/rexists15.sql
   // Result file: ../qa/queries/exists/results/exists15.res
  select colc1, cold1 from table1 where cold1 < 40.5 and exists ( select colf7 from table7 where pcol7 /colf7 < pcol7 and pcol7 < 50 ) order by colc1, cold1;
-ordered rows:
+rows:
   (TIMESTAMP '2015-01-04 00:00:00.0', 40.36)
   (TIMESTAMP '2015-03-07 00:00:00.0', 21.2)
   (TIMESTAMP '2015-03-27 00:00:00.0', 22.23)
@@ -54,7 +54,7 @@ ordered rows:
   // Source file: ../qa/queries/exists/rexists16.sql
   // Result file: ../qa/queries/exists/results/exists16.res
  select exists ( select cola1 from table1 where cola1 = 45 ), colb1 from table1 order by colb1 limit 5;
-ordered rows:
+rows:
   (true, 'BLACK')
   (true, 'BLACK')
   (true, 'BLACK')
@@ -65,7 +65,7 @@ ordered rows:
   // Source file: ../qa/queries/exists/rexists17.sql
   // Result file: ../qa/queries/exists/results/exists17.res
  select exists ( select cola1 from table1 where cola1 = 45 ), colb1 from table1 where exists( select cola1 from table1 where cola1 < 10000) order by colb1 limit 5 offset 50;
-ordered rows:
+rows:
   (true, 'black')
   (true, 'blue')
   (true, 'blue')
@@ -76,7 +76,7 @@ ordered rows:
   // Source file: ../qa/queries/exists/rexists2.sql
   // Result file: ../qa/queries/exists/results/exists2.res
  select cola1, colb1 from table1 where colb1 like 'bl%' and exists (select cola2 from table2 where pcol2 > 1 and pcol2 < 3) order by pcol1;
-ordered rows:
+rows:
   (124, 'black')
   (82, 'blue')
   (336, 'blue')
@@ -88,7 +88,7 @@ ordered rows:
   // Source file: ../qa/queries/exists/rexists3.sql
   // Result file: ../qa/queries/exists/results/exists3.res
  select cola1, colb1 from table1 where colb1 like 'bl%' and exists ( select colb2 from table2 where colb2 like 'gree%') order by cola1, colb1;
-ordered rows:
+rows:
   (5, 'black')
   (82, 'blue')
   (124, 'black')
@@ -100,7 +100,7 @@ ordered rows:
   // Source file: ../qa/queries/exists/rexists4.sql
   // Result file: ../qa/queries/exists/results/exists4.res
  select cola1, colb1 from table1 where colb1 like '%in%' and exists ( select cold7 from table7 where cold7 > 11.0 and cold7 < 12.5) order by cola1, colb1;
-ordered rows:
+rows:
   (73, 'indigo')
   (93, 'indigo')
   (155, 'indigo')
@@ -111,7 +111,7 @@ ordered rows:
   // Source file: ../qa/queries/exists/rexists5.sql
   // Result file: ../qa/queries/exists/results/exists5.res
  select cola1, colb1 from table1 where colb1 like '%in%' and exists ( select cold7 from table7 where cold7 > 11.0 and cold7 < 11.4) order by cola1, colb1;
-ordered rows:
+rows:
   (73, 'indigo')
   (93, 'indigo')
   (155, 'indigo')
@@ -122,7 +122,7 @@ ordered rows:
   // Source file: ../qa/queries/exists/rexists6.sql
   // Result file: ../qa/queries/exists/results/exists6.res
  select cola1, colb1 from table1 where colb1 = 'green' and exists ( select colc2 from table2 where colc2 > timestamp '2015-11-01 00:00:00') order by cola1, colb1;
-ordered rows:
+rows:
   (109, 'green')
   (222, 'green')
   (231, 'green')
@@ -133,7 +133,7 @@ ordered rows:
   // Source file: ../qa/queries/exists/rexists7.sql
   // Result file: ../qa/queries/exists/results/exists7.res
  select cola1, colb1 from table1 where cola1 between 12 and 57 and exists ( select cole1 from table1 where cole1 between 11.56 and 28.97) order by cola1, colb1;
-ordered rows:
+rows:
   (26, 'peach')
   (35, 'GREEN')
   (44, 'BLACK')
@@ -146,7 +146,7 @@ ordered rows:
   // Source file: ../qa/queries/exists/rexists8.sql
   // Result file: ../qa/queries/exists/results/exists8.res
  select cola1, colb1 from table1 where cola1 between 12 and 45 and exists ( select cole1 from table1 where cole1 between 117.20 and 118.53) order by cola1, colb1;
-ordered rows:
+rows:
   (26, 'peach')
   (35, 'GREEN')
   (44, 'BLACK')
@@ -156,7 +156,7 @@ ordered rows:
   // Source file: ../qa/queries/exists/rexists9.sql
   // Result file: ../qa/queries/exists/results/exists9.res
  select cola1, colb1 from table1 where cola1 > 400 and cola1 < 415 and exists ( select colf9 from table9 where colf9 = 8) order by cola1, colb1;
-ordered rows:
+rows:
   (402, 'TEAL')
   (402, 'teal')
   (411, 'WHITE')

@@ -2,21 +2,21 @@
   // Source file: ../qa/queries/functions/char/rchar1.sql
   // Result file: ../qa/queries/functions/char/results/char1.res
  select 'a', char(32) || '- ', char(33) || '-!', char(35) || '-#', char(36) || '-$' from table1 where pcol1 < 1;
-ordered rows:
+rows:
   ('a', '-', '!-!', '#-#', '$-$')
 
 
   // Source file: ../qa/queries/functions/char/rchar2.sql
   // Result file: ../qa/queries/functions/char/results/char2.res
  select char(49) || '/1', char(50) || '/2', char(51) || '/3', char(52) || '/4', char(53) || '/5', char(54) || '/6', char(55) || '/7', char(56) || '/8', char(57) || '/9' from table1 where pcol1 < 1;
-ordered rows:
+rows:
   ('1/1', '2/2', '3/3', '4/4', '5/5', '6/6', '7/7', '8/8', '9/9')
 
 
   // Source file: ../qa/queries/functions/char/rchar3.sql
   // Result file: ../qa/queries/functions/char/results/char3.res
  select concat(colb1,char(45),colb1), concat(ucolvc,char(61),ucolvc), concat(ucolvc,char(62),char(62),substring(ucolvc,3,1)) from table1 where pcol1 < 10 order by pcol1;
-ordered rows:
+rows:
   ('grey-grey', 'lll=lll', 'lll>>l')
   ('PINK-PINK', 'qqq=qqq', 'qqq>>q')
   ('green-green', 'uuu=uuu', 'uuu>>u')
@@ -32,7 +32,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/char/rchar4.sql
   // Result file: ../qa/queries/functions/char/results/char4.res
  select char(123) || substring(colb1,2,2) || char(126) || substring(colb9,2,2) || char(125) from table1 join table9 on colb1 = colb9 where table9.ucolvc in ('uuu','ooo','iii','eee','aaa') and table1.ucolvc in ('aaa','eee') order by pcol1, pcol9;
-ordered rows:
+rows:
   ('{nd~nd}')
   ('{nd~nd}')
   ('{nd~nd}')
@@ -58,7 +58,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/char/rchar5.sql
   // Result file: ../qa/queries/functions/char/results/char5.res
  select cast(char(54) as integer) * cola1 from table1 where pcol1 < 10 order by pcol1 desc;
-ordered rows:
+rows:
   (1344)
   (444)
   (1332)

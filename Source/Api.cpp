@@ -794,7 +794,7 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
     // trace exit
     TRACE_EXIT("ea"_Stz);
     
-    vApiReturn(pSession);                                          // API RETURN
+    //vApiReturn(pSession);                                          // API RETURN
     return EC_NONE;
     
   }
@@ -802,12 +802,12 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
     RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     eEC eError = pError->eErrorCode();
-    vApiError(pSession,eError);                                     // API ERROR
+    //vApiError(pSession,eError);                                     // API ERROR
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    //vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
     return EC_SE_UNKNOWN_ERROR;
   }
 
@@ -837,24 +837,23 @@ eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
     RapidsSE::vDeleteSession(pSession);
     
     // set session to nullptr so trace knows not to look at it
+    vApiReturn(pSession);                                          // API RETURN
     pSession = nullptr;
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
-
-    vApiReturn(pSession);                                          // API RETURN
     return EC_NONE;
   }
   catch (Error* pError) {
     RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
     eEC eError = pError->eErrorCode();
-    vApiError(pSession,eError);                                     // API ERROR
+    //vApiError(pSession,eError);                                     // API ERROR
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    //vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
     return EC_SE_UNKNOWN_ERROR;
   }
 
