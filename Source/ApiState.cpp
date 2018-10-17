@@ -106,6 +106,11 @@ i8 ApiState::iAllocState(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiCall(Session* pSession, eAC eApiCall)
 {
+  i8 i_State = pSession->m_iApiState;
+  
+  xState[i_State].m_bRunning = true;
+  xState[i_State].m_eApiCall = eApiCall;
+  xState[i_State].m_xTimer.vStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,6 +118,9 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiJob(Session* pSession, eCN eJobClass)
 {
+  i8 i_State = pSession->m_iApiState;
+  
+  xState[i_State].m_eJobClass = eJobClass;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,6 +128,10 @@ void ApiState::vApiJob(Session* pSession, eCN eJobClass)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiReturn(Session* pSession)
 {
+  i8 i_State = pSession->m_iApiState;
+  
+  xState[i_State].m_bRunning = false;
+  xState[i_State].m_xTimer.vUpdate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,12 +169,12 @@ void ApiState::vDump(void)
       if (xState[i_State].m_bRunning)
         xState[i_State].m_xTimer.vUpdate();
 
-      vTrace("  %lld: session %p, call %s, job %s, %srunnning, time %lldms\n"_Stz,
+      vTrace("  %lld: session %p, call %s, job %s, %s, time %lldms\n"_Stz,
              i_State,
              xState[i_State].m_pSession,
              aAC[xState[i_State].m_eApiCall],
              aCN[xState[i_State].m_eJobClass],
-             xState[i_State].m_bRunning ? "" : "not ",
+             xState[i_State].m_bRunning ? "running" : "completed",
              xState[i_State].m_xTimer.iMilliseconds()
              );
     }
