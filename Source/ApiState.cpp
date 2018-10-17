@@ -175,8 +175,14 @@ void ApiState::vFreeState(i8 i_State)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  m_xLock.vGrabWrite();
+  if (xState[i_State].m_pSession->m_nJobNew != xState[i_State].m_pSession->m_nJobDelete) {
+    vTrace("**************************************************\n"_Stz);
+    vTrace("Session being deleted has not deleted all its jobs\n"_Stz);
+    vDump();
+    vTrace("**************************************************\n"_Stz);
+  }
   
+  m_xLock.vGrabWrite();
   xState[i_State].m_pSession = nullptr;
   
   xState[i_State].m_eApiCall  = AC_NONE;

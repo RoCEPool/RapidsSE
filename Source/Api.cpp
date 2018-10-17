@@ -1042,6 +1042,7 @@ void vDeleteJobs(Session* pSession)
     // delete the job
     //vTrace("API deleting job %p jobId %lld %s\n"_Stz, pJobPtr, pJobPtr->m_iJobId, aCN[eClass]);
     pJobClass->vDeleteJob(pSession,pJobPtr);
+    pSession->m_nJobDelete++;
   }
 }
 
