@@ -291,7 +291,7 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of job
   
-  if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WAITCLUSTER) {
+  if ( _bIsValidJob(eClass) ) {
         
     //! temp. to be fixed
     Job* pJob = static_cast<Job*>(HeapMem::pAllocate(eClass));
@@ -451,7 +451,7 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of job
   
-  if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WAITCLUSTER) {
+  if ( _bIsValidJob(eClass) ) {
     
     //! temp. to be fixed
     Job* pJob = static_cast<Job*>(HeapMem::pAllocate(eClass));

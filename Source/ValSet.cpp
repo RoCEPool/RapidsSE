@@ -161,9 +161,8 @@ bool ValSet::bExtractValue(Stz*& pCursor, Value*& pValue)
   // test for binary value
   if (CN_BINVAL == pValue->eClass()) {
     Object* pObjectVal = _pBinVal(pValue)->pNewObject();
-    ASSERT( pObjectVal->eClass() == CN_PLAN ||
-            (CN_JOB__BEGUN <= pObjectVal->eClass() &&
-             CN_JOBS       > pObjectVal->eClass())
+    ASSERT( (pObjectVal->eClass() == CN_PLAN) ||
+            (_bIsValidJob(pObjectVal->eClass()))
            );
     
     if (pObjectVal->eClass() == CN_PLAN) {

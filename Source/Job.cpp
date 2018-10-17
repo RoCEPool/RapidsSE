@@ -21,8 +21,7 @@ bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
   
   eCN eClassScanEntry = pScanEntry->eClass();
   
-  RASSERT(eClassScanEntry >= CN_JOB__BEGUN &&
-          eClassScanEntry <= CN_JOB_WAITCLUSTER);
+  RASSERT(_bIsValidJob(eClassScanEntry));
   
   if ( ! pObjectScan )
     return false;
@@ -45,13 +44,10 @@ Job* JobsModel::_pJob(void* aAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(aAddr);
   
-  if( pJob &&
-     !(pJob->eClass() >= CN_JOB__BEGUN && pJob->eClass() <= CN_JOB_WAITCLUSTER) ) {
-    i8 iDebug = 1;
-  }
+//  if ( pJob && ! _bIsValidJob(pJob->eClass() )
+//    i8 iDebug = 1;
   
-  RASSERT( !pJob ||
-          (pJob->eClass() >= CN_JOB__BEGUN && pJob->eClass() <= CN_JOB_WAITCLUSTER) );
+  RASSERT( ! pJob || _bIsValidJob(pJob->eClass()) );
   
   return pJob;
 }
@@ -73,13 +69,12 @@ bool JobsModel::_bIsValidJob(Base::eCN eClass)
 Job* JobsModel::_pJob(i8 iAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(iAddr);
-  if( pJob &&
-     !(pJob->eClass() >= CN_JOB__BEGUN && pJob->eClass() <= CN_JOB_WAITCLUSTER) ) {
-    i8 iDebug = 1;
-  }
-  RASSERT( !pJob ||
-          (pJob->eClass() >= CN_JOB__BEGUN && pJob->eClass() <= CN_JOB_WAITCLUSTER) );
-  
+
+  //  if ( pJob && ! _bIsValidJob(pJob->eClass() )
+  //    i8 iDebug = 1;
+
+  RASSERT( ! pJob || _bIsValidJob(pJob->eClass()) );
+
   return pJob;
 }
 

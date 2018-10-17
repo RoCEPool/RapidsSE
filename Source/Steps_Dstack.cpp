@@ -493,8 +493,7 @@ void Task::vDstackToValSet(MP_Task mpTask)
       if (eObjectClass == CN_PLAN)
         xValWrk.vAssignBinary(pObject);
       
-      if (eObjectClass >= CN_JOB__BEGUN &&
-          eObjectClass  < CN_JOBS)
+      if ( _bIsValidJob(eObjectClass) )
         xValWrk.vAssignBinary(pObject);
     }
     
