@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* Prompt_plist.cpp -- participant list report                                */
+/*============================================================================*/
+
+#include "Prompt.h"
+#include "StorageEngine.h"
+
+PromptNote mPromptNote_plist (
+  "Prompt_plist"_Stz,   // name of the prompt function
+  "comment"_Stz,        // comment about the functopm
+  "plist"_Stz,          // the prompt command
+  nullptr,              // the second word
+  bPrompt_plist,        // prompt function
+  true,                 // enabled
+
+  true,                 // visible
+  "fun help"_Stz        // help
+);
+
+extern Arguments   gxArguments;
+extern AttachMap*  gpAttachMap;
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool Prompt::bPrompt_plist(SePrompt* pPrompt)
+{
+  vTrace("------------------------------------\n"_Stz);
+  vTrace("Participant List\n"_Stz);
+  vTrace("------------------------------------\n"_Stz);
+  
+  gpAttachMap->m_pParticipatingJobs->vGrabLock();
+  gpAttachMap->m_pParticipatingJobs->vContentDump();
+  gpAttachMap->m_pParticipatingJobs->vDropLock();
+
+  return true;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

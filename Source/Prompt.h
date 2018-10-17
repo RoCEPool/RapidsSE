@@ -44,6 +44,7 @@ using namespace Prompt;
 #include "Prompt_numbers.hpp"
 #include "Prompt_olist.hpp"
 #include "Prompt_opsys.hpp"
+#include "Prompt_plist.hpp"
 #include "Prompt_print.hpp"
 #include "Prompt_pwd.hpp"
 #include "Prompt_question.hpp"
