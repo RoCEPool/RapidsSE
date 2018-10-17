@@ -200,6 +200,8 @@ void ApiState::vDump(void)
     
     if (xState[i_State].m_pSession) {
       
+      Session* pSession = xState[i_State].m_pSession;
+      
       if (xState[i_State].m_bRunning)
         xState[i_State].m_xTimer.vUpdate();
 
@@ -212,6 +214,11 @@ void ApiState::vDump(void)
              xState[i_State].m_bRunning ? "running" : "completed",
              xState[i_State].m_xTimer.iMilliseconds()
              );
+      vTrace("     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
+             pSession->m_nApiCalls,
+             pSession->m_nApiErrors,
+             pSession->m_nJobNew,
+             pSession->m_nJobDelete);
     }
     else {
       vTrace("  %lld: nextfree %lld\n"_Stz,
