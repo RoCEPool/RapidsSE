@@ -49,6 +49,16 @@ Job* JobsModel::_pJob(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Job* JobsModel::_pJob(i8 iAddr)
+{
+  Job* pJob = reinterpret_cast<Job*>(iAddr);
+  
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job::Job(eCN eClassNo)
@@ -248,6 +258,19 @@ void Job::vJobTrace(eJT eJobTrace)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eJobTrace = eJobTrace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* report this job                                                            */
+/*----------------------------------------------------------------------------*/
+void Job::vReport(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+  
+  vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
+         this,
+         m_iJobId,
+         *m_ziAcksRemaining);
 }
 
 /*----------------------------------------------------------------------------*/

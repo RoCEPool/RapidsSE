@@ -22,7 +22,7 @@ Session* Interface::_pSession(void* aAddr)
   
   if (pSession && CN_SESSION != pSession->eClass()) {
     vTrace("INVALID SESSION %p %s\n"_Stz, pSession, aCN[pSession->eClass()]);
-    return nullptr;
+    //return nullptr;
   }
   
   RASSERT( !pSession || CN_SESSION == pSession->eClass() );
@@ -37,8 +37,10 @@ Session* Interface::_pSession(i8 iAddr)
 {
   Session* pSession = reinterpret_cast<Session*>(iAddr);
   
-  if (pSession && CN_SESSION != pSession->eClass())
+  if (pSession && CN_SESSION != pSession->eClass()) {
     vTrace("INVALID SESSION %p %s\n"_Stz, pSession, aCN[pSession->eClass()]);
+    return nullptr;
+  }
   
   RASSERT( !pSession || CN_SESSION == pSession->eClass() );
   
