@@ -23,6 +23,7 @@ using namespace System;
 #endif
 
 #include "Atomic.hpp"
+#include "Decider.hpp"
 #include "Dir.hpp"
 #include "Env.hpp"
 #include "File.hpp"

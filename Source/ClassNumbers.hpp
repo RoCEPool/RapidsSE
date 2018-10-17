@@ -55,6 +55,7 @@ enum eCN : u2 // Class Number
   /*  33 */ CN_COMPILER,
   /*  34 */ CN_COMMANDPROCESSOR,
   
+  /*     */ CN_DECIDER,
   /*  35 */ CN_DIC,
   /*  36 */ CN_DICPATH,
   /*  37 */ CN_DICSTACK,
@@ -298,6 +299,7 @@ static Stz* aCN[]
   /*  33 */ "COMPILER"_Stz,            // CN_COMPILER
   /*  34 */ "COMMANDPROCESSOR"_Stz,    // CN_COMMANDPROCESSOR
   
+  /*     */ "DECIDER"_Stz,             // CN_DECIDER
   /*  35 */ "DIC"_Stz,                 // CN_DIC
   /*  36 */ "DICPATH"_Stz,             // CN_DICPATH
   /*  37 */ "DICSTACK"_Stz,            // CN_DICSTACK
