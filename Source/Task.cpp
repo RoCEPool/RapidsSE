@@ -152,12 +152,9 @@ bool Task::bAckAndDecide(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iRemaining = m_xAcksRemaining.iDec();
+  bool bAmDecider = m_xAcksRemaining.bDecAndDecide();
   
-  if (iRemaining)
-    return false;
-  else
-    return true;
+  return bAmDecider;
 }
 
 /*----------------------------------------------------------------------------*/

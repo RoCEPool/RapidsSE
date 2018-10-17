@@ -23,7 +23,7 @@ namespace System
     void operator =(i8 nAcksRemaining);
   
     void vCheckInit(void);
-    i8   iDec(void);
+    bool bDecAndDecide(void);
     i8   iPrintOnlyValue(void);
 
     Footer* aFooter(void);

@@ -63,19 +63,21 @@ void Decider::vCheckInit(void)
 /*----------------------------------------------------------------------------*/
 /* atomically dec                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Decider::iDec()
+bool Decider::bDecAndDecide(void)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
 
-  i8 i = Synch::uAtomicDec(&m_nAcksRemaining);
+  i8 iNewValueWas = Synch::uAtomicDec(&m_nAcksRemaining);
   
-  return i;
+  bool bAmDecider = iNewValueWas ? false : true;
+  
+  return bAmDecider;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get current number of acks remaining **FOR PRINING ONLY**                  */
 /*----------------------------------------------------------------------------*/
-i8 Decider::iPrintOnlyValue()
+i8 Decider::iPrintOnlyValue(void)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
   
