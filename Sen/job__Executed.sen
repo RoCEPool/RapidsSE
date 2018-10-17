@@ -80,7 +80,7 @@
   pJob__Executed job.id@ locals| iJobId |
 
   0 locals| pJobOriginator  |
-  0 0 0 0 locals| iParticipantNode error iAcksRemaining |
+  0 0 0 0 locals| iParticipantNode error bAmDecider |
 
   // find the job in the originator jobs
   iJobId job::findOriginator to pJobOriginator
@@ -116,16 +116,17 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining
-  pJobOriginator job.decAcksRemaining to iAcksRemaining
+  pJobOriginator job.decAcksRemaining to bAmDecider
 
   // if there are acks remaining just exit
-  iAcksRemaining 0 != if
+  bAmDecider not if
     delete_completed_job
     <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // this job is the decider
 
   //"received Job__Executed from all nodes" .
 

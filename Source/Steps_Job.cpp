@@ -297,8 +297,10 @@ void Task::vJobDecAcksRemaining(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iAcksRemaining = pJob->m_xAcksRemaining.iDec();
+
+  i8 bDecider = iAcksRemaining ? false : true;
   
-  mpTask->m_pDataStack->vPushInt(iAcksRemaining);
+  mpTask->m_pDataStack->vPushInt(bDecider);
   
   EXIT();
 }

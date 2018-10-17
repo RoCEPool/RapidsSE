@@ -55,7 +55,7 @@
   job::this locals| pJob__Ended |
   pJob__Ended job.id@ locals| iJobId |
 
-  0 0 locals| pJob iAcksRemaining |
+  0 0 locals| pJob bAmDecider |
 
   // find the job in the originator jobs
   iJobId job::findOriginator to pJob
@@ -63,16 +63,17 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // decrement the acks remaining
-  pJob job.decAcksRemaining to iAcksRemaining
+  pJob job.decAcksRemaining to bAmDecider
 
   // if there are acks remaining just exit
-  iAcksRemaining 0 != if
+  bAmDecider not if
     delete_completed_job
     <DONE_RCV>
     exit                                                         // *EARLY EXIT*
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // this job is the decider
 
   //"received Job__Ended from all nodes" .
 
