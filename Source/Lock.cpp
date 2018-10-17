@@ -53,11 +53,11 @@ Lock::Lock(void)
   
   m_eLockKind = LK_NONE;
 
-  m_zReadGrabs.vCheckInit();
-  m_zReadCollisions.vCheckInit();
+  m_ziReadGrabs.vCheckInit();
+  m_ziReadCollisions.vCheckInit();
   
-  m_zWriteGrabs.vCheckInit();
-  m_zWriteCollisions.vCheckInit();
+  m_ziWriteGrabs.vCheckInit();
+  m_ziWriteCollisions.vCheckInit();
   
   _checkInitialised_(CN_LOCK);
   
@@ -111,8 +111,8 @@ bool Lock::bGrabRead(void)
   
   ASSERT(m_eLockKind);
   
-  ++m_zReadGrabs;
-  ++gpAttachMap->m_xLocks.m_zReadGrabs[m_eLockKind];
+  ++m_ziReadGrabs;
+  ++gpAttachMap->m_xLocks.m_ziReadGrabs[m_eLockKind];
   
   i8 rCode = Synch::iLockGrabRead(&m_uLockWord);
   if (rCode) {
@@ -120,8 +120,8 @@ bool Lock::bGrabRead(void)
     return true;
   }
   
-  ++m_zReadCollisions;
-  ++gpAttachMap->m_xLocks.m_zReadCollisions[m_eLockKind];
+  ++m_ziReadCollisions;
+  ++gpAttachMap->m_xLocks.m_ziReadCollisions[m_eLockKind];
   
   return false;
 }
@@ -135,8 +135,8 @@ void Lock::vGrabRead(void)
   
   ASSERT(m_eLockKind);
   
-  ++m_zReadGrabs;
-  ++gpAttachMap->m_xLocks.m_zReadGrabs[m_eLockKind];
+  ++m_ziReadGrabs;
+  ++gpAttachMap->m_xLocks.m_ziReadGrabs[m_eLockKind];
   
   i8 rCode = Synch::iLockGrabRead(&m_uLockWord);
   if (rCode) {
@@ -144,8 +144,8 @@ void Lock::vGrabRead(void)
     return;
   }
   
-  ++m_zReadCollisions;
-  ++gpAttachMap->m_xLocks.m_zReadCollisions[m_eLockKind];
+  ++m_ziReadCollisions;
+  ++gpAttachMap->m_xLocks.m_ziReadCollisions[m_eLockKind];
   
   Timer xTimer;
   xTimer.vStart();
@@ -204,7 +204,7 @@ i8 Lock::iReadGrabs(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return *m_zReadGrabs;
+  return *m_ziReadGrabs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +214,7 @@ i8 Lock::iReadCollisions(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return *m_zReadCollisions;
+  return *m_ziReadCollisions;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,8 +229,8 @@ bool Lock::bGrabWrite(void)
   
   ASSERT(m_eLockKind);
 
-  ++m_zWriteGrabs;
-  ++gpAttachMap->m_xLocks.m_zWriteGrabs[m_eLockKind];
+  ++m_ziWriteGrabs;
+  ++gpAttachMap->m_xLocks.m_ziWriteGrabs[m_eLockKind];
 
   i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
   if (rCode) {
@@ -238,8 +238,8 @@ bool Lock::bGrabWrite(void)
     return true;
   }
   
-  ++m_zWriteCollisions;
-  ++gpAttachMap->m_xLocks.m_zWriteCollisions[m_eLockKind];
+  ++m_ziWriteCollisions;
+  ++gpAttachMap->m_xLocks.m_ziWriteCollisions[m_eLockKind];
   
   return false;
 }
@@ -257,8 +257,8 @@ void Lock::vGrabWrite(void)
 //         this,
 //         m_aName ? m_aName : "<noName>"_Stz);
 
-  ++m_zWriteGrabs;
-  ++gpAttachMap->m_xLocks.m_zWriteGrabs[m_eLockKind];
+  ++m_ziWriteGrabs;
+  ++gpAttachMap->m_xLocks.m_ziWriteGrabs[m_eLockKind];
   
   i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
   if (rCode) {
@@ -266,8 +266,8 @@ void Lock::vGrabWrite(void)
     return;
   }
   
-  ++m_zWriteCollisions;
-  ++gpAttachMap->m_xLocks.m_zWriteCollisions[m_eLockKind];
+  ++m_ziWriteCollisions;
+  ++gpAttachMap->m_xLocks.m_ziWriteCollisions[m_eLockKind];
   
   Timer xTimer;
   xTimer.vStart();
@@ -328,7 +328,7 @@ i8 Lock::iWriteGrabs(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return *m_zWriteGrabs;
+  return *m_ziWriteGrabs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,7 +338,7 @@ i8 Lock::iWriteCollisions(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return *m_zWriteCollisions;
+  return *m_ziWriteCollisions;
 }
 
 /*----------------------------------------------------------------------------*/

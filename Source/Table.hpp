@@ -29,8 +29,8 @@ namespace DBobjects
     eTT    m_eTableType;   // table type
     Dic    m_xSubDic;      // sub dictionary for this table
     Slots  m_xSlots;       // slots
-    Atomic m_zIndexNo;     // index no
-    Atomic m_zRefCount;    // reference count
+    Atomic m_ziIndexNo;    // index no
+    Atomic m_ziRefCount;    // reference count
     Index* m_pHiddenIndex; // hidden index
     
     IdxVec*    m_pIdxVec;    // index vector

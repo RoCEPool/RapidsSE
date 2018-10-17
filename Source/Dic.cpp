@@ -61,7 +61,7 @@ Dic::Dic(void)
   m_sName    = "<no-name>"_Stz;
   m_pDicKind = nullptr;
   m_bFrozen  = false;
-  m_zRefCount.vCheckInit();
+  m_ziRefCount.vCheckInit();
 
   m_xLock.vInitLock(LK_DIC);
   
@@ -311,7 +311,7 @@ void Dic::vRefDec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  u8 iRef = --m_zRefCount;
+  u8 iRef = --m_ziRefCount;
   
   //vTrace("DIC: %s --ref : %lld\n"_Stz,m_sName.s(),iRef);
 }
@@ -323,7 +323,7 @@ void Dic::vRefInc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  u8 iRef = ++m_zRefCount;
+  u8 iRef = ++m_ziRefCount;
   
   //vTrace("DIC: %s ++ref : %lld\n"_Stz,m_sName.s(),iRef);
 }
@@ -335,7 +335,7 @@ bool Dic::bRefOut(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  u8 iRef = *m_zRefCount;
+  u8 iRef = *m_ziRefCount;
   
   return iRef ? true : false;
 }

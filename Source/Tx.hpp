@@ -39,7 +39,7 @@ namespace Transactions
     i8     m_iLocalTxId; // local transaction id
     i8     m_iDistTxId;  // distributed transaction id
     eTP    m_ePhase;     // phase (executing, committing, ...)
-    Atomic m_zCounter;   // general counter
+    Atomic m_ziCounter;   // general counter
 
     struct {
       bool m_bDistMember; // true if part of distributed tx

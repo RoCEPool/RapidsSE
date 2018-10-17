@@ -77,11 +77,11 @@ namespace System
   
     eLK    m_eLockKind;        // lock kind
   
-    Atomic m_zReadGrabs;       // number of read grabs
-    Atomic m_zReadCollisions;  // number of read collisions
+    Atomic m_ziReadGrabs;       // number of read grabs
+    Atomic m_ziReadCollisions;  // number of read collisions
     
-    Atomic m_zWriteGrabs;      // number of write grabs
-    Atomic m_zWriteCollisions; // number of write collisions
+    Atomic m_ziWriteGrabs;      // number of write grabs
+    Atomic m_ziWriteCollisions; // number of write collisions
     
     // must be last
     Footer m_xFooter;

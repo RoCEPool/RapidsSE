@@ -71,8 +71,8 @@ Table::Table(void)
 
   m_xSlots.vTable(this);
   
-  m_zIndexNo.vCheckInit();
-  m_zRefCount.vCheckInit();
+  m_ziIndexNo.vCheckInit();
+  m_ziRefCount.vCheckInit();
   m_pHiddenIndex = nullptr;
   
   m_pIdxVec = new IdxVec;
@@ -159,7 +159,7 @@ void Table::vAddIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   // set the index no in the index
-  pIndex->vIndexNo(++m_zIndexNo);
+  pIndex->vIndexNo(++m_ziIndexNo);
   
   // add index to table
   m_pIdxVec->vAdd(pIndex);
@@ -614,7 +614,7 @@ void Table::vRefDec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  --m_zRefCount;
+  --m_ziRefCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -624,7 +624,7 @@ void Table::vRefInc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  ++m_zRefCount;
+  ++m_ziRefCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -634,7 +634,7 @@ bool Table::bRefOut(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  u8 iRef = *m_zRefCount;
+  u8 iRef = *m_ziRefCount;
   
   return iRef ? true : false;
 }

@@ -15,11 +15,11 @@ void Locks::vList(File& xFile)
     xFile.vPrint("%lld, %s, %lld, %lld, %lld, %lld, %lld\n"_Stz,
                  i_Lock,
                  aLK[i_Lock],
-                 *m_zWorkUnits[i_Lock],
-                 *m_zReadGrabs[i_Lock],
-                 *m_zReadCollisions[i_Lock],
-                 *m_zWriteGrabs[i_Lock],
-                 *m_zWriteCollisions[i_Lock]
+                 *m_ziWorkUnits[i_Lock],
+                 *m_ziReadGrabs[i_Lock],
+                 *m_ziReadCollisions[i_Lock],
+                 *m_ziWriteGrabs[i_Lock],
+                 *m_ziWriteCollisions[i_Lock]
                  );
                  
 }
@@ -38,11 +38,11 @@ void Locks::vReport(void)
            i_Lock,
            aLK[i_Lock],
            
-           *m_zReadGrabs[i_Lock],
-           *m_zReadCollisions[i_Lock],
+           *m_ziReadGrabs[i_Lock],
+           *m_ziReadCollisions[i_Lock],
            
-           *m_zWriteGrabs[i_Lock],
-           *m_zWriteCollisions[i_Lock]
+           *m_ziWriteGrabs[i_Lock],
+           *m_ziWriteCollisions[i_Lock]
            );
 
   }
@@ -54,11 +54,11 @@ void Locks::vReport(void)
 void Locks::vReset(void)
 {
   for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++) {
-    m_zWorkUnits[i_Lock] = 0;
-    m_zReadGrabs[i_Lock] = 0;
-    m_zReadCollisions[i_Lock] = 0;
-    m_zWriteGrabs[i_Lock] = 0;
-    m_zWriteCollisions[i_Lock] = 0;
+    m_ziWorkUnits[i_Lock] = 0;
+    m_ziReadGrabs[i_Lock] = 0;
+    m_ziReadCollisions[i_Lock] = 0;
+    m_ziWriteGrabs[i_Lock] = 0;
+    m_ziWriteCollisions[i_Lock] = 0;
   }
 }
 

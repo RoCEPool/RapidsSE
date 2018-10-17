@@ -10,13 +10,13 @@ namespace System
   class Locks
   {
   public:
-    Atomic m_zWorkUnits[LK_ENUMS];       // number of work units (optional)
+    Atomic m_ziWorkUnits[LK_ENUMS];       // number of work units (optional)
   
-    Atomic m_zReadGrabs[LK_ENUMS];       // number of read grabs
-    Atomic m_zReadCollisions[LK_ENUMS];  // number of read collisions
+    Atomic m_ziReadGrabs[LK_ENUMS];       // number of read grabs
+    Atomic m_ziReadCollisions[LK_ENUMS];  // number of read collisions
     
-    Atomic m_zWriteGrabs[LK_ENUMS];      // number of write grabs
-    Atomic m_zWriteCollisions[LK_ENUMS]; // number of write collisions
+    Atomic m_ziWriteGrabs[LK_ENUMS];      // number of write grabs
+    Atomic m_ziWriteCollisions[LK_ENUMS]; // number of write collisions
   
     void vList(File& xFile);
     void vReport(void);

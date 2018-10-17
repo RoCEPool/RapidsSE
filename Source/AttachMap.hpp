@@ -81,7 +81,7 @@ namespace StorageEngine
     
     BitMap*       m_pBitMap;
     
-    Atomic        m_zPlanId;
+    Atomic        m_ziPlanId;
     
     Formatters    m_xFormatters; // record formatters
   
