@@ -31,7 +31,7 @@ void Decider::operator delete(void* pDeciderAddress)
 Decider::Decider(void)
 : Object(CN_DECIDER)
 {
-  m_iInt = 0;
+  m_nAcksRemaining = 0;
   
   _checkInitialised_(CN_DECIDER);
   
@@ -57,7 +57,7 @@ void Decider::vCheckInit(void)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
   
-  ASSERT(0 == m_iInt); // logic check
+  ASSERT(0 == m_nAcksRemaining); // logic check
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,7 +67,7 @@ i8 Decider::iDec()
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
 
-  i8 i = Synch::uAtomicDec(&m_iInt);
+  i8 i = Synch::uAtomicDec(&m_nAcksRemaining);
   
   return i;
 }
@@ -79,29 +79,17 @@ i8 Decider::iPrintOnlyValue()
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
   
-  return m_iInt;
+  return m_nAcksRemaining;
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment                                                                 */
 /*----------------------------------------------------------------------------*/
-void Decider::operator =(i8 iInt)
+void Decider::operator =(i8 nAcksRemaining)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
   
-  m_iInt = iInt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* atomically dec (prefix form)                                               */
-/*----------------------------------------------------------------------------*/
-i8 Decider::operator --(void)
-{
-  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
-  
-  i8 i = Synch::uAtomicDec(&m_iInt);
-
-  return i;
+  m_nAcksRemaining = nAcksRemaining;
 }
 
 /*----------------------------------------------------------------------------*/

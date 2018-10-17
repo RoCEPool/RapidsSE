@@ -213,7 +213,7 @@ bool Task::bDecAck(i8& iRemaining)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  iRemaining = --m_xAcksRemaining;
+  iRemaining = m_xAcksRemaining.iDec();
 
   if (iRemaining)
     return false;

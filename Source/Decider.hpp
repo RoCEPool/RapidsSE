@@ -8,7 +8,7 @@ namespace System
   class Decider : public Object
   {
   private:
-    i8 m_iInt;
+    i8 m_nAcksRemaining;
     
     // must be last
     Footer m_xFooter;
@@ -20,14 +20,11 @@ namespace System
     Decider(void);
     ~Decider(void);
     
+    void operator =(i8 nAcksRemaining);
+  
     void vCheckInit(void);
-    
     i8   iDec(void);
-
     i8   iPrintOnlyValue(void);
-
-    void operator =(i8 iInt); // assignment
-    i8 operator --(void); // decrement (prefix form)
 
     Footer* aFooter(void);
   };
