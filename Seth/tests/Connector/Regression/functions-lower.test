@@ -2,14 +2,14 @@
   // Source file: ../qa/queries/functions/lower/rlower1.sql
   // Result file: ../qa/queries/functions/lower/results/lower1.res
  select lower('MARY had A little LAMB') from table1 limit 1;
-ordered rows:
+rows:
   ('mary had a little lamb')
 
 
   // Source file: ../qa/queries/functions/lower/rlower2.sql
   // Result file: ../qa/queries/functions/lower/results/lower2.res
  select colb1, lower(colb1) from table1 where colb1 = 'WHITE';
-ordered rows:
+rows:
   ('WHITE', 'white')
   ('WHITE', 'white')
   ('WHITE', 'white')
@@ -21,7 +21,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/lower/rlower3.sql
   // Result file: ../qa/queries/functions/lower/results/lower3.res
  select colb1, lower(colb1) from table1 where colb1 = 'orange';
-ordered rows:
+rows:
   ('orange', 'orange')
   ('orange', 'orange')
   ('orange', 'orange')
@@ -32,7 +32,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/lower/rlower4.sql
   // Result file: ../qa/queries/functions/lower/results/lower4.res
  select colb1, lower(left(colb1,3)) from table1 where colb1 = 'BLACK';
-ordered rows:
+rows:
   ('BLACK', 'bla')
   ('BLACK', 'bla')
   ('BLACK', 'bla')
@@ -46,7 +46,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/lower/rlower5.sql
   // Result file: ../qa/queries/functions/lower/results/lower5.res
  select colb1, lower(right(colb1,3)) from table1 where colb1 = 'maroon';
-ordered rows:
+rows:
   ('maroon', 'oon')
   ('maroon', 'oon')
   ('maroon', 'oon')
@@ -57,7 +57,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/lower/rlower6.sql
   // Result file: ../qa/queries/functions/lower/results/lower6.res
  select colb1, lower(substring(colb1,3,3)) from table1 where colb1 = 'PINK';
-ordered rows:
+rows:
   ('PINK', 'nk')
   ('PINK', 'nk')
   ('PINK', 'nk')
@@ -69,7 +69,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/lower/rlower7.sql
   // Result file: ../qa/queries/functions/lower/results/lower7.res
  select colb1, ucolvc, pcol1 from table1 where lower(colb1) = 'black' order by colb1, pcol1 desc;
-ordered rows:
+rows:
   ('BLACK', 'ttt', 97)
   ('BLACK', 'ccc', 92)
   ('BLACK', 'xxx', 88)
@@ -86,7 +86,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/lower/rlower8.sql
   // Result file: ../qa/queries/functions/lower/results/lower8.res
  select colb1, ucolvc, pcol1 from table1 where lower(colb1) = 'green' or lower(colb1) = 'peach' order by colb1, pcol1 desc;
-ordered rows:
+rows:
   ('GREEN', 'yyy', 98)
   ('GREEN', 'aaa', 64)
   ('GREEN', 'jjj', 45)
@@ -105,7 +105,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/lower/rlower9.sql
   // Result file: ../qa/queries/functions/lower/results/lower9.res
  select lowCase, regCase from (select lower(colb1) as lowCase, colb1 as regCase from table1 where pcol1 < 15) as outQry order by regCase desc;
-ordered rows:
+rows:
   ('red', 'red')
   ('peach', 'peach')
   ('grey', 'grey')

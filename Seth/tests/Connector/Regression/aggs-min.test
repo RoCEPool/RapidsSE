@@ -2,14 +2,14 @@
   // Source file: ../qa/queries/aggs/min/rmin1.sql
   // Result file: ../qa/queries/aggs/min/results/min1.res
  select min(cola1) from table1;
-ordered rows:
+rows:
   (2)
 
 
   // Source file: ../qa/queries/aggs/min/rmin2.sql
   // Result file: ../qa/queries/aggs/min/results/min2.res
  select upper(colb1), min(cola1) from table1 group by upper(colb1) order by upper(colb1);
-ordered rows:
+rows:
   ('AQUA', 46)
   ('BLACK', 5)
   ('BLUE', 82)
@@ -34,98 +34,98 @@ ordered rows:
   // Source file: ../qa/queries/aggs/min/rmin3.sql
   // Result file: ../qa/queries/aggs/min/results/min3.res
  select min(cola1), max(cola1) from table1;
-ordered rows:
+rows:
   (2, 493)
 
 
   // Source file: ../qa/queries/aggs/min/rmin4.sql
   // Result file: ../qa/queries/aggs/min/results/min4.res
  select min(cold9) from table9;
-ordered rows:
+rows:
   (-249.08)
 
 
   // Source file: ../qa/queries/aggs/min/rmin5.sql
   // Result file: ../qa/queries/aggs/min/results/min5.res
  select  min(cola1) + min(cold1) from table1;
-ordered rows:
+rows:
   (16.0)
 
 
   // Source file: ../qa/queries/aggs/min/rmin6.sql
   // Result file: ../qa/queries/aggs/min/results/min6.res
  select min(cole9) from table9;
-ordered rows:
+rows:
   (-148.19)
 
 
   // Source file: ../qa/queries/aggs/min/rmin7.sql
   // Result file: ../qa/queries/aggs/min/results/min7.res
  select min(colf9) from table9;
-ordered rows:
+rows:
   (-15)
 
 
   // Source file: ../qa/queries/aggs/min/rmin8.sql
   // Result file: ../qa/queries/aggs/min/results/min8.res
  select min(colf9) + -1 from table9;
-ordered rows:
+rows:
   (-16)
 
 
   // Source file: ../qa/queries/aggs/min/rmin9.sql
   // Result file: ../qa/queries/aggs/min/results/min9.res
  select min(colg9) from table9;
-ordered rows:
+rows:
   (-175)
 
 
   // Source file: ../qa/queries/aggs/min/rmin10.sql
   // Result file: ../qa/queries/aggs/min/results/min10.res
  select min(colg1) + min(colf1) + min(cola1) from table1;
-ordered rows:
+rows:
   (-167)
 
 
   // Source file: ../qa/queries/aggs/min/rmin11.sql
   // Result file: ../qa/queries/aggs/min/results/min11.res
  select min(cola1) + min(cold1) + min(cole1) from table1;
-ordered rows:
+rows:
   (21.34)
 
 
   // Source file: ../qa/queries/aggs/min/rmin12.sql
   // Result file: ../qa/queries/aggs/min/results/min12.res
  select min(cold9) + min(cole9) from table9;
-ordered rows:
+rows:
   (-397.27)
 
 
   // Source file: ../qa/queries/aggs/min/rmin13.sql
   // Result file: ../qa/queries/aggs/min/results/min13.res
  select min(cola1 + colf1 + colg1) from table1 where colb1 = 'black';
-ordered rows:
+rows:
   (-40)
 
 
   // Source file: ../qa/queries/aggs/min/rmin14.sql
   // Result file: ../qa/queries/aggs/min/results/min14.res
  select min(colb1) + min(ucolvc) from table1;
-ordered rows:
+rows:
   ('BLACKaaa')
 
 
   // Source file: ../qa/queries/aggs/min/rmin15.sql
   // Result file: ../qa/queries/aggs/min/results/min15.res
  select min(cold1) + min(cold9) from table1 join table9 using (ucol);
-ordered rows:
+rows:
   (-225.22)
 
 
   // Source file: ../qa/queries/aggs/min/rmin16.sql
   // Result file: ../qa/queries/aggs/min/results/min16.res
  select min(a.cola1), a.colb1, min(b.cold9), b.colb9 from table1 a join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
-ordered rows:
+rows:
   (396, 'BLACK', -223.05, 'GREEN')
   (349, 'BLACK', -215.84, 'ORANGE')
   (418, 'BLACK', -143.43, 'WHITE')
@@ -140,7 +140,7 @@ ordered rows:
   // Source file: ../qa/queries/aggs/min/rmin17.sql
   // Result file: ../qa/queries/aggs/min/results/min17.res
  select min(a.cola1), a.colb1, min(b.cold9), b.colb9 from table1 a /*+HASH*/ join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
-ordered rows:
+rows:
   (396, 'BLACK', -223.05, 'GREEN')
   (349, 'BLACK', -215.84, 'ORANGE')
   (418, 'BLACK', -143.43, 'WHITE')
@@ -155,14 +155,14 @@ ordered rows:
   // Source file: ../qa/queries/aggs/min/rmin18.sql
   // Result file: ../qa/queries/aggs/min/results/min18.res
  select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX;
-ordered rows:
+rows:
   (-249.08, -148.190000000000, -15)
 
 
   // Source file: ../qa/queries/aggs/min/rmin19.sql
   // Result file: ../qa/queries/aggs/min/results/min19.res
  select min(colb1), ucolvc from table1 where ucolvc < 'ggg' group by ucolvc order by ucolvc;
-ordered rows:
+rows:
   ('GREEN', 'aaa')
   ('BLACK', 'bbb')
   ('BLACK', 'ccc')
@@ -174,21 +174,21 @@ ordered rows:
   // Source file: ../qa/queries/aggs/min/rmin20.sql
   // Result file: ../qa/queries/aggs/min/results/min20.res
  select min(ucolvc), min(colb1) from table1;
-ordered rows:
+rows:
   ('aaa', 'BLACK')
 
 
   // Source file: ../qa/queries/aggs/min/rmin21.sql
   // Result file: ../qa/queries/aggs/min/results/min21.res
  select min(cold9), sum(cold9), avg(cold9), max(cold9) from table9;
-ordered rows:
+rows:
   (-249.08, 4420.53, 8.96659229208925, 248.45)
 
 
   // Source file: ../qa/queries/aggs/min/rmin22.sql
   // Result file: ../qa/queries/aggs/min/results/min22.res
  select min(colb1) + 1.56 from table1;
-ordered rows:
+rows:
   ('BLACK1.56')
 
 
@@ -201,14 +201,14 @@ affected: 0
   // Source file: ../qa/queries/aggs/min/rmin24.sql
   // Result file: ../qa/queries/aggs/min/results/min24.res
  select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX where x < 0 or Y > 0;
-ordered rows:
+rows:
   (-249.08, -148.190000000000, -15)
 
 
   // Source file: ../qa/queries/aggs/min/rmin25.sql
   // Result file: ../qa/queries/aggs/min/results/min25.res
  select x*-1, y*-1, z*-1, color from (select min(cold9) as x, min(cole9) as y, min(colf9) as z, colb9 as color from table9 group by colb9) as TbX where x*-1 between 100 and 225 order by color desc;
-ordered rows:
+rows:
   (205.19, 53.480000000000, 10, 'violet')
   (186.92, -13.770000000000, 13, 'teal')
   (200.61, 108.140000000000, 15, 'tan')
@@ -227,7 +227,7 @@ ordered rows:
   // Source file: ../qa/queries/aggs/min/rmin26.sql
   // Result file: ../qa/queries/aggs/min/results/min26.res
  select min(colb1) from table1;
-ordered rows:
+rows:
   ('BLACK')
 
 

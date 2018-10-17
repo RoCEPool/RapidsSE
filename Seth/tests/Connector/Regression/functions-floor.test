@@ -2,7 +2,7 @@
   // Source file: ../qa/queries/functions/floor/rfloor1.sql
   // Result file: ../qa/queries/functions/floor/results/floor1.res
  select pcol9, cole9, floor(cole9), floor(cole9) + 2.5 from table9 order by pcol9 limit 25;
-ordered rows:
+rows:
   (0, -17.12, -18, -15.5)
   (1, 56.26, 56, 58.5)
   (2, -145.19, -146, -143.5)
@@ -33,7 +33,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor2.sql
   // Result file: ../qa/queries/functions/floor/results/floor2.res
  select pcol9, cole9, floor(cole9) from table9 where cole9 < -140 order by pcol9;
-ordered rows:
+rows:
   (2, -145.190000000000, -146)
   (5, -140.700000000000, -141)
   (17, -146.900000000000, -147)
@@ -57,7 +57,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor3.sql
   // Result file: ../qa/queries/functions/floor/results/floor3.res
  select pcol9, cold9, floor(cold9) from table9 where cold9 < -220.00 order by pcol9;
-ordered rows:
+rows:
   (18, -231.66, -232.0)
   (61, -240.87, -241.0)
   (71, -223.05, -224.0)
@@ -87,7 +87,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor4.sql
   // Result file: ../qa/queries/functions/floor/results/floor4.res
  select pcol9, colg9, floor(colg9) from table9 where colg9 < -150 order by pcol9;
-ordered rows:
+rows:
   (15, -152, -152)
   (49, -166, -166)
   (64, -170, -170)
@@ -126,7 +126,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor5.sql
   // Result file: ../qa/queries/functions/floor/results/floor5.res
  select colb9, colf9, floor(colf9) from table9 where colf9 < -13 order by colb9;
-ordered rows:
+rows:
   (NULL, -15, -15)
   ('ORANGE', -15, -15)
   ('PINK', -15, -15)
@@ -158,7 +158,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor6.sql
   // Result file: ../qa/queries/functions/floor/results/floor6.res
  select colb9, cold9, floor(cold9) + 0.35 from table9 where cold9 > -5.0 and cold9 < 5.0 order by pcol9;
-ordered rows:
+rows:
   ('green', 3.7, 3.35)
   ('peach', 0.41, 0.35)
   ('tan', -4.73, -4.65)
@@ -170,7 +170,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor7.sql
   // Result file: ../qa/queries/functions/floor/results/floor7.res
  select colb9, cold9, floor(cold9 + 0.35) from table9 where cold9 > -5.0 and cold9 < 5.0 order by pcol9;
-ordered rows:
+rows:
   ('green', 3.7, 4.0)
   ('peach', 0.41, 0.0)
   ('tan', -4.73, -5.0)
@@ -182,7 +182,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor8.sql
   // Result file: ../qa/queries/functions/floor/results/floor8.res
  select pcol9, colb9, cole9, ceiling(cole9) * 1.25 from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
-ordered rows:
+rows:
   (13, 'BLUE', -4.500000000000, -5.000000000000)
   (36, 'black', 2.540000000000, 3.750000000000)
   (61, 'aqua', -0.370000000000, 0.000000000000)
@@ -200,7 +200,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor9.sql
   // Result file: ../qa/queries/functions/floor/results/floor9.res
  select colb9, cole9, floor(cole9 * 1.25) from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
-ordered rows:
+rows:
   ('BLUE', -4.500000000000, -6.000000000000)
   ('black', 2.540000000000, 3.000000000000)
   ('aqua', -0.370000000000, -1.000000000000)
@@ -218,7 +218,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor10.sql
   // Result file: ../qa/queries/functions/floor/results/floor10.res
  select colb9, cole9, floor(cole9 - 1.25) from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
-ordered rows:
+rows:
   ('BLUE', -4.500000000000, -6.000000000000)
   ('black', 2.540000000000, 1.000000000000)
   ('aqua', -0.370000000000, -2.000000000000)
@@ -236,7 +236,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor11.sql
   // Result file: ../qa/queries/functions/floor/results/floor11.res
 DQS:select colb9, cole9, floor(cole9), floor(cole9) - 1.25 from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
-ordered rows:
+rows:
   ('BLUE', -4.500000000000, -5.000000000000, -6.250000000000)
   ('black', 2.540000000000, 2.000000000000, 0.750000000000)
   ('aqua', -0.370000000000, -1.000000000000, -2.250000000000)
@@ -254,7 +254,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor12.sql
   // Result file: ../qa/queries/functions/floor/results/floor12.res
  select colb9, cole9, floor(cole9), floor(cole9) + 1.25 from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
-ordered rows:
+rows:
   ('BLUE', -4.500000000000, -5.000000000000, -3.750000000000)
   ('black', 2.540000000000, 2.000000000000, 3.250000000000)
   ('aqua', -0.370000000000, -1.000000000000, 0.250000000000)
@@ -272,7 +272,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor13.sql
   // Result file: ../qa/queries/functions/floor/results/floor13.res
  select colb9, cole9, floor(cole9), floor(cole9) + -1.25 from table9 where cole9 > -5.0 and cole9 < 5.0 order by pcol9;
-ordered rows:
+rows:
   ('BLUE', -4.500000000000, -5.000000000000, -6.250000000000)
   ('black', 2.540000000000, 2.000000000000, 0.750000000000)
   ('aqua', -0.370000000000, -1.000000000000, -2.250000000000)
@@ -290,7 +290,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor14.sql
   // Result file: ../qa/queries/functions/floor/results/floor14.res
  select pcol9, colb9, cold9, floor(cold9) from table9 where floor(cold9) > -11 and floor(cold9) < 15 order by pcol9;
-ordered rows:
+rows:
   (33, 'gold', 5.31, 5.0)
   (91, 'green', 3.7, 3.0)
   (96, 'red', -5.51, -6.0)
@@ -321,7 +321,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor15.sql
   // Result file: ../qa/queries/functions/floor/results/floor15.res
  select pcol9, colb9, cold9, floor(cold9) / -3.12 from table9 where floor(cold9) / -3.12 < -75.5 order by colb9, pcol9;
-ordered rows:
+rows:
   (239, NULL, 245.26, -78.52564102564102)
   (181, 'BLUE', 238.29, -76.28205128205128)
   (284, 'ORANGE', 238.79, -76.28205128205128)
@@ -345,7 +345,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor16.sql
   // Result file: ../qa/queries/functions/floor/results/floor16.res
  select colb9, floor(cold9), ucolvc from table9 where cole9 > 15 and cole9 < 20 order by pcol9;
-ordered rows:
+rows:
   ('PURPLE', -130.0, 'kkk')
   ('grey', NULL, 'nnn')
   ('black', -98.0, 'uuu')
@@ -360,7 +360,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor17.sql
   // Result file: ../qa/queries/functions/floor/results/floor17.res
  select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from table1 a join table9 b on a.pcol1 = b.pcol9 where floor(b.cole9) > 75 order by pcol1;
-ordered rows:
+rows:
   (3, 3, 'green', 'green', 126.740000000000)
   (7, 7, 'green', 'gold', 103.340000000000)
   (9, 9, 'red', 'tan', 113.990000000000)
@@ -389,7 +389,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor18.sql
   // Result file: ../qa/queries/functions/floor/results/floor18.res
  select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9, floor(b.cole9) from table1 a join table9 b on a.pcol1 = b.pcol9 where floor(b.cole9) - -75 < -70 order by pcol1;
-ordered rows:
+rows:
   (2, 2, 'green', 'maroon', -145.190000000000, -146)
   (17, 17, 'violet', 'blue', -146.900000000000, -147)
   (33, 33, 'GREEN', 'gold', -146.140000000000, -147)
@@ -398,7 +398,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor19.sql
   // Result file: ../qa/queries/functions/floor/results/floor19.res
  select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from table1 a join table9 b on a.pcol1 = b.pcol9 where floor(b.cole9) - -.5 < -145 order by pcol1;
-ordered rows:
+rows:
   (2, 2, 'green', 'maroon', -145.190000000000)
   (17, 17, 'violet', 'blue', -146.900000000000)
   (33, 33, 'GREEN', 'gold', -146.140000000000)
@@ -407,7 +407,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor20.sql
   // Result file: ../qa/queries/functions/floor/results/floor20.res
  select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from table1 a join table9 b on a.pcol1 = b.pcol9 where floor(b.cole9 - -.5) < -145 order by pcol1;
-ordered rows:
+rows:
   (17, 17, 'violet', 'blue', -146.900000000000)
   (33, 33, 'GREEN', 'gold', -146.140000000000)
 
@@ -415,7 +415,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor21.sql
   // Result file: ../qa/queries/functions/floor/results/floor21.res
  select a.pcol1, b.pcol9, a.colb1, b.colb9, b.cole9 from table1 a join table9 b on a.pcol1 = b.pcol9 where floor(b.cole9) + a.cole1 < -100 order by pcol1;
-ordered rows:
+rows:
   (17, 17, 'violet', 'blue', -146.900000000000)
   (20, 20, 'PINK', 'aqua', -143.170000000000)
   (76, 76, 'ORANGE', 'red', -136.880000000000)
@@ -425,7 +425,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor22.sql
   // Result file: ../qa/queries/functions/floor/results/floor22.res
  select a.pcol1, b.pcol9, b.cole9, a.cole1, b.cole9 + a.cole1 from table1 a join table9 b on a.pcol1 = b.pcol9 where floor(b.cole9 + a.cole1) > 220 order by pcol1;
-ordered rows:
+rows:
   (12, 12, 119.570000000000, 135.410000000000, 254.980000000000)
   (24, 24, 129.350000000000, 94.490000000000, 223.840000000000)
   (75, 75, 108.760000000000, 135.810000000000, 244.570000000000)
@@ -437,7 +437,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor23.sql
   // Result file: ../qa/queries/functions/floor/results/floor23.res
  select a.pcol1, b.pcol9, b.cole9, a.cole1, b.cole9 / a.cole1 from table1 a join table9 b on a.pcol1 = b.pcol9 where floor(b.cole9 / a.cole1) < -1 order by pcol1;
-ordered rows:
+rows:
   (0, 0, -17.120000000000, 5.340000000000, -3.205992509363)
   (2, 2, -145.190000000000, 128.910000000000, -1.126289659452)
   (5, 5, -140.700000000000, 117.290000000000, -1.199590757950)
@@ -465,7 +465,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor24.sql
   // Result file: ../qa/queries/functions/floor/results/floor24.res
  select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 from table1 a join table9 b on a.ucolvc = b.ucolvc join table4 c on a.ucolvc = c.ucolvc where floor(b.cole9 / a.cole1) * c.cole4 < -3500 order by pcol1, pcol9 limit 10;
-ordered rows:
+rows:
   (0, 33, 403, -146.140000000000, 5.340000000000, -3778.293707865048060000000000)
   (0, 33, 420, -146.140000000000, 5.340000000000, -3994.493333333205960000000000)
   (0, 33, 197, -146.140000000000, 5.340000000000, -3455.909962546706280000000000)
@@ -481,7 +481,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor25.sql
   // Result file: ../qa/queries/functions/floor/results/floor25.res
  select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 as TotVal from table1 a /*+HASH*/ join table9 b on a.ucolvc = b.ucolvc join table4 c on a.ucolvc = c.ucolvc where floor(b.cole9 / a.cole1) * c.cole4 < -3500 order by floor(TotVal) desc;
-ordered rows:
+rows:
   (80, 272, 240, -148.190000000000, 6.360000000000, -3446.815518867805440000000000)
   (0, 33, 197, -146.140000000000, 5.340000000000, -3455.909962546706280000000000)
   (0, 84, 403, -134.670000000000, 5.340000000000, -3481.749101123525700000000000)
@@ -497,7 +497,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor26.sql
   // Result file: ../qa/queries/functions/floor/results/floor26.res
  select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 as TotVal from table1 a /*+HASH*/ join table9 b on a.ucolvc = b.ucolvc /*+HASH*/ join table4 c on a.ucolvc = c.ucolvc where floor(b.cole9 / a.cole1) * c.cole4 < -3500 order by floor(TotVal) desc;
-ordered rows:
+rows:
   (80, 272, 240, -148.190000000000, 6.360000000000, -3446.815518867805440000000000)
   (0, 33, 197, -146.140000000000, 5.340000000000, -3455.909962546706280000000000)
   (0, 84, 403, -134.670000000000, 5.340000000000, -3481.749101123525700000000000)
@@ -513,7 +513,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor27.sql
   // Result file: ../qa/queries/functions/floor/results/floor27.res
  select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 as TotVal from table1 a /*+HASH*/ join table9 b on a.ucolvc = b.ucolvc /*+HASH*/ join table4 c on a.ucolvc = c.ucolvc where floor(b.cole9 / a.cole1) * c.cole4 < -3500 order by floor(TotVal) desc;
-ordered rows:
+rows:
   (80, 272, 240, -148.190000000000, 6.360000000000, -3446.815518867805440000000000)
   (0, 33, 197, -146.140000000000, 5.340000000000, -3455.909962546706280000000000)
   (0, 84, 403, -134.670000000000, 5.340000000000, -3481.749101123525700000000000)
@@ -529,7 +529,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor28.sql
   // Result file: ../qa/queries/functions/floor/results/floor28.res
  select a.ucolvc, b.ucolvc, a.cold1, b.cold9, floor(a.cold1 + b.cold9) from table1 a join table9 b using(ucolvc) where a.ucolvc = 'zzz' and cold1 > 60.1 order by a.ucolvc, b.cold9;
-ordered rows:
+rows:
   ('zzz', 'zzz', 65.27, NULL, NULL)
   ('zzz', 'zzz', 65.27, NULL, NULL)
   ('zzz', 'zzz', 65.27, -232.64, -168.0)
@@ -553,7 +553,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor29.sql
   // Result file: ../qa/queries/functions/floor/results/floor29.res
  select a.ucolvc, b.ucolvc, a.cold1, b.cold9, floor(a.cold1 + b.cold9) from table1 a join table9 b using(ucolvc) where a.ucolvc = 'zzz' and cold9 is null order by a.ucolvc, b.cold9, a.cold1;
-ordered rows:
+rows:
   ('zzz', 'zzz', 22.23, NULL, NULL)
   ('zzz', 'zzz', 22.23, NULL, NULL)
   ('zzz', 'zzz', 65.27, NULL, NULL)
@@ -563,7 +563,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor30.sql
   // Result file: ../qa/queries/functions/floor/results/floor30.res
  select a.ucolvc, b.ucolvc, a.cold1, b.cold9, floor(null + b.cold9) from table1 a join table9 b using(ucolvc) where a.ucolvc = 'zzz' order by a.ucolvc, a.cold1, b.cold9;
-ordered rows:
+rows:
   ('zzz', 'zzz', 22.23, NULL, NULL)
   ('zzz', 'zzz', 22.23, NULL, NULL)
   ('zzz', 'zzz', 22.23, -232.64, NULL)
@@ -605,7 +605,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor31.sql
   // Result file: ../qa/queries/functions/floor/results/floor31.res
  select colf9, ucolvc from (select a.colf9, b.ucolvc from table9 a join table1 b using(ucol) where floor(cole9 / cole1 ) > 1) as a order by ucolvc limit 5;
-ordered rows:
+rows:
   (15, 'bbb')
   (-7, 'ggg')
   (-7, 'mmm')
@@ -616,7 +616,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor32.sql
   // Result file: ../qa/queries/functions/floor/results/floor32.res
  select a.colf9, a.ucolvc, floor(b.cole9 / a.colf9), b.pcol9 from (select a.colf9, b.ucolvc from table9 a join table1 b using(ucol) where floor(cole9 / cole1 ) > 7) as a join table9 as b using(ucolvc) order by b.pcol9;
-ordered rows:
+rows:
   (15, 'bbb', 4, 11)
   (15, 'bbb', 0, 19)
   (15, 'bbb', 2, 89)
@@ -648,7 +648,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor33.sql
   // Result file: ../qa/queries/functions/floor/results/floor33.res
  select a.colf9, a.ucolvc, floor(b.cole9 / a.colf9), b.pcol9 from (select a.colf9, b.ucolvc from table9 a join table1 b using(ucol) where floor(cole9 / cole1 ) > 13) as a join table9 as b using(ucolvc) order by b.pcol9;
-ordered rows:
+rows:
   (15, 'bbb', 4, 11)
   (15, 'bbb', 0, 19)
   (15, 'bbb', 2, 89)
@@ -680,7 +680,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/floor/rfloor34.sql
   // Result file: ../qa/queries/functions/floor/results/floor34.res
  select sum(floor(cole9)), ucolvc from table9 group by ucolvc order by ucolvc;
-ordered rows:
+rows:
   (522, 'aaa')
   (-80, 'bbb')
   (166, 'ccc')

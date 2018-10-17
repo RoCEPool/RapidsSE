@@ -2,7 +2,7 @@
   // Source file: ../qa/queries/functions/right/rright10.sql
   // Result file: ../qa/queries/functions/right/results/right10.res
  select right(concat(colb1,ucolvc),7) as TwoCols from table1 where pcol1 < 20 order by TwoCols;
-ordered rows:
+rows:
   ('HITEhhh')
   ('LLOWxxx')
   ('PINKqqq')
@@ -28,7 +28,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/right/rright11.sql
   // Result file: ../qa/queries/functions/right/results/right11.res
  select right(x,2), ucol from (select  right(ucolvc,3) as x, ucol from table4 where right(colb4,3) = 'lue') as a order by ucol;
-ordered rows:
+rows:
   ('qq', 28)
   ('cc', 46)
   ('ee', 71)
@@ -51,7 +51,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/right/rright12.sql
   // Result file: ../qa/queries/functions/right/results/right12.res
  select right(colb9,4), pcol9, colb9 from table9 where pcol9 > 219 and pcol9 < 245 order by colb9, pcol9;
-ordered rows:
+rows:
   (NULL, 220, NULL)
   (NULL, 239, NULL)
   (NULL, 243, NULL)
@@ -82,7 +82,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/right/rright13.sql
   // Result file: ../qa/queries/functions/right/results/right13.res
  select right(substring(colb9,1,5),3), colb9 from table9 where pcol9 > 219 and pcol9 < 245 order by colb9, pcol9;
-ordered rows:
+rows:
   (NULL, NULL)
   (NULL, NULL)
   (NULL, NULL)
@@ -113,14 +113,14 @@ ordered rows:
   // Source file: ../qa/queries/functions/right/rright1.sql
   // Result file: ../qa/queries/functions/right/results/right1.res
  select right('Today is Wednesday, May 27th', 7) from table1 limit 1;
-ordered rows:
+rows:
   ('ay 27th')
 
 
   // Source file: ../qa/queries/functions/right/rright2.sql
   // Result file: ../qa/queries/functions/right/results/right2.res
  select right(colb1,4) from table1 where ucolvc = 'bbb' order by pcol1;
-ordered rows:
+rows:
   ('aqua')
   ('ange')
   ('rown')
@@ -131,7 +131,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/right/rright3.sql
   // Result file: ../qa/queries/functions/right/results/right3.res
  select right(a.colb1,3), right(b.ucolvc,2) from table1 a join table4 b using (ucolvc) where pcol1 < 7 and pcol4 > 450 order by a.colb1, b.ucolvc;
-ordered rows:
+rows:
   ('INK', 'qq')
   ('INK', 'uu')
   ('INK', 'uu')
@@ -150,7 +150,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/right/rright4.sql
   // Result file: ../qa/queries/functions/right/results/right4.res
  select colb1, ucolvc from table1 where right(colb1,3) = 'ack' OR right(colb1,3) = 'ACK' order by colb1, ucolvc;
-ordered rows:
+rows:
   ('BLACK', 'bbb')
   ('BLACK', 'ccc')
   ('BLACK', 'eee')
@@ -167,7 +167,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/right/rright5.sql
   // Result file: ../qa/queries/functions/right/results/right5.res
  select a.colb1, a.ucolvc, b.colb5, b.ucolvc, c.colb3 from table1 a join table5 b on pcol1 = pcol5 join table3 c on pcol1 = pcol3 where right(a.colb1,3) = right(c.colb3,3) order by a.colb1, b.ucolvc, colb5, a.ucolvc, colb3;
-ordered rows:
+rows:
   ('BLUE', 'nnn', 'pink', 'qqq', 'BLUE')
   ('PINK', 'ppp', 'pink', 'ddd', 'PINK')
   ('PINK', 'kkk', 'aqua', 'xxx', 'PINK')
@@ -186,7 +186,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/right/rright6.sql
   // Result file: ../qa/queries/functions/right/results/right6.res
  select a.colb1, a.ucolvc, b.colb5, b.ucolvc, c.colb3 from table1 a join table5 b on pcol1 = pcol5 join table3 c on pcol1 = pcol3 where right(a.colb1,3) < right(c.colb3,2) and pcol1 < 5 order by a.colb1, c.colb3;
-ordered rows:
+rows:
   ('PINK', 'qqq', 'YELLOW', 'rrr', 'BLUE')
   ('PINK', 'qqq', 'YELLOW', 'rrr', 'WHITE')
   ('PINK', 'qqq', 'YELLOW', 'rrr', 'YELLOW')
@@ -208,7 +208,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/right/rright7.sql
   // Result file: ../qa/queries/functions/right/results/right7.res
  select colb1, right(colb1,3.4) from table1 where colb1 = 'green';
-ordered rows:
+rows:
   ('green', 'een')
   ('green', 'een')
   ('green', 'een')
@@ -219,7 +219,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/right/rright8.sql
   // Result file: ../qa/queries/functions/right/results/right8.res
  select right(colb1,0.34), colb1 from table1 where ucolvc = 'aaa' order by pcol1, colb1;
-ordered rows:
+rows:
   ('', 'maroon')
   ('', 'orange')
   ('', 'GREEN')
@@ -228,7 +228,7 @@ ordered rows:
   // Source file: ../qa/queries/functions/right/rright9.sql
   // Result file: ../qa/queries/functions/right/results/right9.res
  select x, ucol from (select  right(ucolvc,3) as x, ucol from table4 where right(colb4,3) = 'een') as a order by ucol;
-ordered rows:
+rows:
   ('ggg', 51)
   ('uuu', 63)
   ('iii', 139)

@@ -2,7 +2,7 @@
   // Source file: ../qa/queries/intervals/rinterval-1.sql
   // Result file: ../qa/queries/intervals/results/interval-1.res
  select colc1 from table1 where colc1 < timestamp '2018-06-01 00:00:00' - interval '3' year and colb1 like 'gr%';
-ordered rows:
+rows:
   (TIMESTAMP '2015-01-19 00:00:00.0')
   (TIMESTAMP '2015-02-12 00:00:00.0')
   (TIMESTAMP '2015-02-01 00:00:00.0')
@@ -11,7 +11,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-2.sql
   // Result file: ../qa/queries/intervals/results/interval-2.res
  select pcol1, colb1 from table1 where colc1 between timestamp '2014-02-10 00:00:00' + interval '1' year and timestamp '2014-03-20 00:00:00' + interval '1' year order by pcol1;
-ordered rows:
+rows:
   (3, 'green')
   (25, 'orange')
   (52, 'tan')
@@ -26,7 +26,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-3.sql
   // Result file: ../qa/queries/intervals/results/interval-3.res
  select colc1 + interval '1-2' year to month as FutDate from table1 where colb1 like 'bl%' order by FutDate;
-ordered rows:
+rows:
   (TIMESTAMP '2016-03-07 00:00:00.0')
   (TIMESTAMP '2016-05-07 00:00:00.0')
   (TIMESTAMP '2016-08-06 00:00:00.0')
@@ -38,7 +38,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-4.sql
   // Result file: ../qa/queries/intervals/results/interval-4.res
  select pcol1, colb1, colc1 + interval '999' year(3) from table1 where colc1 <= timestamp '2018-06-20 00:00:00' - interval '3' year and colb1 like '%in%' order by pcol1;
-ordered rows:
+rows:
   (24, 'indigo', TIMESTAMP '3014-05-14 00:00:00.0')
   (55, 'pink', TIMESTAMP '3014-03-19 00:00:00.0')
   (84, 'indigo', TIMESTAMP '3014-03-26 00:00:00.0')
@@ -48,7 +48,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-5.sql
   // Result file: ../qa/queries/intervals/results/interval-5.res
  select pcol1, colc1 from table1 where colc1 > (select colc7 - interval '3' month from table7) order by colc1;
-ordered rows:
+rows:
   (76, TIMESTAMP '2015-10-02 00:00:00.0')
   (79, TIMESTAMP '2015-10-05 00:00:00.0')
   (11, TIMESTAMP '2015-10-11 00:00:00.0')
@@ -78,7 +78,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-6.sql
   // Result file: ../qa/queries/intervals/results/interval-6.res
  select pcol1, colc1 from table1 join table7 on pcol1 = pcol7 and colc1 = colc7 + interval '5' day order by pcol1;
-ordered rows:
+rows:
   (29, TIMESTAMP '2015-07-19 00:00:00.0')
   (99, TIMESTAMP '2015-05-03 00:00:00.0')
 
@@ -86,7 +86,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-7.sql
   // Result file: ../qa/queries/intervals/results/interval-7.res
  select l_shipdate + interval '5-3' year to month as FutDate from lineitem where l_shipdate + interval '5-3' year to month = (select colc1 from table1) order by l_linenumber;
-ordered rows:
+rows:
   (TIMESTAMP '2015-12-30 00:00:00.0')
   (TIMESTAMP '2015-12-30 00:00:00.0')
   (TIMESTAMP '2015-12-30 00:00:00.0')
@@ -95,7 +95,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-8.sql
   // Result file: ../qa/queries/intervals/results/interval-8.res
  select pcol1, colc1, case when colc1 + interval '3-4' year to month > timestamp '2018-10-01 00:00:00' then colc1 +interval '3-10' year to month when colc1 - interval '3' year < timestamp '2012-02-01 00:00:00' then colc1 end from table1 order by pcol1 limit 10;
-ordered rows:
+rows:
   (0, TIMESTAMP '2015-10-31 00:00:00.0', TIMESTAMP '2019-08-31 00:00:00.0')
   (1, TIMESTAMP '2015-01-16 00:00:00.0', TIMESTAMP '2015-01-16 00:00:00.0')
   (2, TIMESTAMP '2015-07-26 00:00:00.0', TIMESTAMP '2019-05-26 00:00:00.0')
@@ -123,7 +123,7 @@ failure: 'Syntax error near 'week''
   // Source file: ../qa/queries/intervals/rinterval-11.sql
   // Result file: ../qa/queries/intervals/results/interval-11.res
  select colc1 as OrigHour, colc1 + interval '2' hour as "Extra2Hour" from table1 where cole1 between 5.0 and 8.80 order by pcol1;
-ordered rows:
+rows:
   (TIMESTAMP '2015-10-31 00:00:00.0', TIMESTAMP '2015-10-31 02:00:00.0')
   (TIMESTAMP '2015-02-12 00:00:00.0', TIMESTAMP '2015-02-12 02:00:00.0')
   (TIMESTAMP '2015-06-06 00:00:00.0', TIMESTAMP '2015-06-06 02:00:00.0')
@@ -133,7 +133,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-12.sql
   // Result file: ../qa/queries/intervals/results/interval-12.res
  select colc1 OrigDate, colc1 - interval '101-1' year(3) to month NewDate from table1 where ucolvc like 'uu%' order by pcol1;
-ordered rows:
+rows:
   (TIMESTAMP '2015-07-26 00:00:00.0', TIMESTAMP '1914-06-26 00:00:00.0')
   (TIMESTAMP '2015-01-30 00:00:00.0', TIMESTAMP '1913-12-30 00:00:00.0')
   (TIMESTAMP '2015-07-08 00:00:00.0', TIMESTAMP '1914-06-08 00:00:00.0')
@@ -144,7 +144,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-13.sql
   // Result file: ../qa/queries/intervals/results/interval-13.res
  select colc7, colc7 + interval '240' month(3) TwentyYears, pcol7 from table7 where colb7 like 'ye%' order by pcol7;
-ordered rows:
+rows:
   (TIMESTAMP '2015-01-01 00:00:00.0', TIMESTAMP '2035-01-01 00:00:00.0', 7)
   (TIMESTAMP '2015-06-10 00:00:00.0', TIMESTAMP '2035-06-10 00:00:00.0', 27)
   (TIMESTAMP '2015-06-06 00:00:00.0', TIMESTAMP '2035-06-06 00:00:00.0', 39)
@@ -168,7 +168,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-14.sql
   // Result file: ../qa/queries/intervals/results/interval-14.res
  select colc1 as OrigDate, colc1 - interval '86500' second(5) as NewDate from table1 where ucolvc like 'qq%' order by NewDate;
-ordered rows:
+rows:
   (TIMESTAMP '2015-01-13 00:00:00.0', TIMESTAMP '2015-01-11 23:58:20.0')
   (TIMESTAMP '2015-01-16 00:00:00.0', TIMESTAMP '2015-01-14 23:58:20.0')
   (TIMESTAMP '2015-02-12 00:00:00.0', TIMESTAMP '2015-02-10 23:58:20.0')
@@ -181,7 +181,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-15.sql
   // Result file: ../qa/queries/intervals/results/interval-15.res
  select extract(quarter from colc1), pcol1, colc1, case when extract(quarter from colc1) = 1 then colc1 + interval '120' minute(3) when extract(quarter from colc1) = 2 then colc1 - interval '360' minute(3) when extract(quarter from colc1) = 3 then colc1 + interval '23' hour when extract(quarter from colc1) = 4 then colc1 - interval '360' hour(3) end as NewDate from table1 where colb1 like 'bl%' order by NewDate;
-ordered rows:
+rows:
   (1, 4, TIMESTAMP '2015-01-07 00:00:00.0', TIMESTAMP '2015-01-07 02:00:00.0')
   (1, 85, TIMESTAMP '2015-03-07 00:00:00.0', TIMESTAMP '2015-03-07 02:00:00.0')
   (2, 62, TIMESTAMP '2015-06-06 00:00:00.0', TIMESTAMP '2015-06-05 18:00:00.0')
@@ -193,7 +193,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-16.sql
   // Result file: ../qa/queries/intervals/results/interval-16.res
  select colc1, colc7 from table1 a, table7 b where a.pcol1 = b.pcol7 and b.colc7 - interval '36' hour < a.colc1 + interval '42' hour and (a.colb1 like 'gr%' or colb1 like 'bl%');
-ordered rows:
+rows:
   (TIMESTAMP '2015-10-31 00:00:00.0', TIMESTAMP '2015-03-09 00:00:00.0')
   (TIMESTAMP '2015-06-06 00:00:00.0', TIMESTAMP '2015-05-24 00:00:00.0')
   (TIMESTAMP '2015-09-07 00:00:00.0', TIMESTAMP '2015-06-30 00:00:00.0')
@@ -205,7 +205,7 @@ ordered rows:
   // Source file: ../qa/queries/intervals/rinterval-17.sql
   // Result file: ../qa/queries/intervals/results/interval-17.res
  select (colc1 + interval '18' month) - colc7 from table1, table7 where pcol1=pcol7 order by pcol1 limit 10;
-ordered rows:
+rows:
   ('PT18792H')
   ('PT9192H')
   ('PT10584H')
