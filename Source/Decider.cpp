@@ -67,10 +67,11 @@ bool Decider::bDecAndDecide(void)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
 
+  ASSERT(m_nAcksRemaining > 0);
   i8 iNewValueWas = Synch::uAtomicDec(&m_nAcksRemaining);
+  ASSERT(iNewValueWas >= 0);
   
   bool bIsDecider = iNewValueWas ? false : true;
-  
   ASSERT( (! bIsDecider) || (bIsDecider && 0 == m_nAcksRemaining) );
   
   return bIsDecider;
