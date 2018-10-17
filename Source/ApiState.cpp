@@ -137,7 +137,8 @@ void ApiState::vApiError(Session* pSession, eEC eError)
   xState[i_State].m_bRunning = false;
   xState[i_State].m_eError   = eError;
   
-  xState[i_State].m_xTimer.vUpdate();
+  if (xState[i_State].m_bRunning)
+    xState[i_State].m_xTimer.vUpdate();
 
   pSession->m_nApiErrors++;
 }
@@ -163,7 +164,8 @@ void ApiState::vApiReturn(Session* pSession)
   
   xState[i_State].m_bRunning = false;
   
-  xState[i_State].m_xTimer.vUpdate();
+  if (xState[i_State].m_bRunning)
+    xState[i_State].m_xTimer.vUpdate();
 }
 
 /*----------------------------------------------------------------------------*/
