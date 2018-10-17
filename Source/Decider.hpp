@@ -19,12 +19,11 @@ namespace System
     
     Decider(void);
     ~Decider(void);
-    
-    void operator =(i8 nAcksRemaining);
   
     void vCheckInit(void);
     bool bDecAndDecide(void);
     i8   iPrintOnlyValue(void);
+    void vSetRemaining(i8 nAcksRemaining);
 
     Footer* aFooter(void);
   };

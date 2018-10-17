@@ -51,7 +51,7 @@ Decider::~Decider(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* check lock initialization                                                  */
+/* check initialization                                                       */
 /*----------------------------------------------------------------------------*/
 void Decider::vCheckInit(void)
 {
@@ -61,7 +61,7 @@ void Decider::vCheckInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* atomically dec                                                             */
+/* atomically dec acks remaining and test if caller is decider                */
 /*----------------------------------------------------------------------------*/
 bool Decider::bDecAndDecide(void)
 {
@@ -69,11 +69,11 @@ bool Decider::bDecAndDecide(void)
 
   i8 iNewValueWas = Synch::uAtomicDec(&m_nAcksRemaining);
   
-  bool bAmDecider = iNewValueWas ? false : true;
+  bool bIsDecider = iNewValueWas ? false : true;
   
-  ASSERT( (! bAmDecider) || (bAmDecider && 0 == m_nAcksRemaining) );
+  ASSERT( (! bIsDecider) || (bIsDecider && 0 == m_nAcksRemaining) );
   
-  return bAmDecider;
+  return bIsDecider;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,9 +87,9 @@ i8 Decider::iPrintOnlyValue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assignment                                                                 */
+/* set the number of acks remaining                                           */
 /*----------------------------------------------------------------------------*/
-void Decider::operator =(i8 nAcksRemaining)
+void Decider::vSetRemaining(i8 nAcksRemaining)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
   

@@ -84,7 +84,7 @@ void Task::vTaskAcksStore(MP_Task mpTask)
 
   RASSERT(pGivenTask->bIsLocked());
   
-  pGivenTask->m_xAcksRemaining = nAcksRequired;
+  pGivenTask->m_xAcksRemaining.vSetRemaining(nAcksRequired);
 
   EXIT();
 }

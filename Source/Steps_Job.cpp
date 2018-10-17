@@ -92,11 +92,11 @@ void Task::vJobAcksRemaining(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  i8 iAcksRemaing;
-  if ( ! mpTask->m_pDataStack->bPop(iAcksRemaing) )
+  i8 nAcksRemaining;
+  if ( ! mpTask->m_pDataStack->bPop(nAcksRemaining) )
     THROW_INVALID_DSTACK("job.acksRemaining!"_Stz);
   
-  pJob->m_xAcksRemaining = iAcksRemaing;
+  pJob->m_xAcksRemaining.vSetRemaining(nAcksRemaining);
   
   EXIT();
 }
