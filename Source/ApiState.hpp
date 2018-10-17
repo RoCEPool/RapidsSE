@@ -9,6 +9,10 @@ namespace StorageEngine
   {
   public:
   
+    Lock m_xLock;
+    i8   m_nSessionsSoFar;
+    i8   m_iFirstFree;
+  
     struct {
       Session* m_pSession;
       
@@ -20,8 +24,6 @@ namespace StorageEngine
       i8       m_iNextFree;
       
     } xState[C_MAX_SESSIONS];
-  
-    i8 m_iFirstFree;
   
     Footer m_xFooter;
     
