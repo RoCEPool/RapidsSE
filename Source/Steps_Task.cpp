@@ -16,7 +16,6 @@ extern AttachMap*      gpAttachMap;
 void Step::vAddSteps_Task(void)
 {
   vAddStep("task.ack"_Stz,       &Task::vTaskAck);
-  vAddStep("task.acks@"_Stz,     &Task::vTaskAcksFetch);
   vAddStep("task.acks!"_Stz,     &Task::vTaskAcksStore);
   vAddStep("task::breakPoint"_Stz, &Task::vTaskBreakPoint);
   vAddStep("task.delete"_Stz,    &Task::vTaskDelete);
@@ -62,23 +61,6 @@ void Task::vTaskAck(MP_Task mpTask)
   
   Handlers::vAckTaskHandler(pTaskBeingAcked,*mpTask);
       
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.acks@ -- push current value of given tasks m_xAcksRemaining           */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskAcksFetch(MP_Task mpTask)
-{
-  ENTRY("vTaskAcksFetch"_Stz);
-  
-  Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("task.acks@"_Stz);
-  Task* pGivenTask = _pTask(pPtrTask);
-  
-  mpTask->m_pDataStack->vPushInt(pGivenTask->m_xAcksRemaining.iPrintOnlyValue());
-  
   EXIT();
 }
 
