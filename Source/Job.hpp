@@ -115,6 +115,8 @@ namespace JobsModel
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
+    void vReport(void);
+
     eJT  eJobTrace(void);
     void vJobTrace(eJT eJobTrace);
   
@@ -127,7 +129,8 @@ namespace JobsModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Job* _pJob(void* aAddr);
-  
+  Job* _pJob(i8 iAddr);
+
   void vJob_recv(Job* pJob);
   void vJob_send(Job* pJob);
 }
