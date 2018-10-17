@@ -112,12 +112,13 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
   catch (Error* pError) {
     RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
-    vApiReturn(pSession);                                           // API ERROR
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiReturn(pSession);                                           // API ERROR
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -129,7 +130,7 @@ eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_EndJobs);                                     // API CALL
   
- Stz* aApiCall = "RapidsSE_EndJobs"_Stz;
+  Stz* aApiCall = "RapidsSE_EndJobs"_Stz;
   eEC eResult;
   
   // trace entry
@@ -153,7 +154,7 @@ eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool bFromPrompt)
 {
-  vApiCall(pSession,AC_ExecCmdStr);                                   // API CALL
+  vApiCall(pSession,AC_ExecCmdStr);                                  // API CALL
   
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
@@ -218,7 +219,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
   
   if (eError != EC_NONE) {
     TRACE_EXIT("ea"_Stz);
-    vApiReturn(pSession);                                           // API ERROR
+    vApiError(pSession,eError);      // API ERROR
     return eError;
   }
   
@@ -231,7 +232,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
       if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
         //vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
         TRACE_EXIT("eb"_Stz);
-        vApiReturn(pSession);                                       // API ERROR
+        vApiError(pSession,eError);      // API ERROR
         return pJob->m_xNode[i_Node].m_eErrorCode;
       }
     }
@@ -319,12 +320,13 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
   catch (Error* pError) {
     RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
-    vApiReturn(pSession);                                           // API ERROR
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiReturn(pSession);                                           // API ERROR
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                                     // API ERROR
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -363,12 +365,13 @@ eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, 
   catch (Error* pError) {
     RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
-    vApiReturn(pSession);                                           // API ERROR
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiReturn(pSession);                                           // API ERROR
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -617,7 +620,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
     if (! bValid) {
       eEC eErrorCode = EC_INVALID_VALUE;
       TRACE_ERROR("d"_Stz, eErrorCode);
-      vApiReturn(pSession);                                         // API ERROR
+      vApiError(pSession,eErrorCode);                               // API ERROR
       return eErrorCode;
     }
 
@@ -646,7 +649,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       if ( eErrorCode != EC_NONE ) {
         vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
         TRACE_ERROR("f"_Stz, eErrorCode);
-        vApiReturn(pSession);                                       // API ERROR
+        vApiError(pSession,eErrorCode);                             // API ERROR
         return eErrorCode;
       }
       
@@ -683,12 +686,13 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
   catch (Error* pError) {
     RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
-    vApiReturn(pSession);                                           // API ERROR
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiReturn(pSession);                                           // API ERROR
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -748,12 +752,13 @@ eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pI
   catch (Error* pError) {
     RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
-    vApiReturn(pSession);                                           // API ERROR
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiReturn(pSession);                                           // API ERROR
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -796,12 +801,13 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
   catch (Error* pError) {
     RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
-    vApiReturn(pSession);                                           // API ERROR
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiReturn(pSession);                                           // API ERROR
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
     return EC_SE_UNKNOWN_ERROR;
   }
 
@@ -842,12 +848,13 @@ eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
   catch (Error* pError) {
     RapidsSE::vErrorHandler(pError);
     TRACE_ERROR("!", pError->eErrorCode());
-    vApiReturn(pSession);                                           // API ERROR
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiReturn(pSession);                                           // API ERROR
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
     return EC_SE_UNKNOWN_ERROR;
   }
 
