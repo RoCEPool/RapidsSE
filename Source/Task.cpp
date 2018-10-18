@@ -138,7 +138,8 @@ Task::~Task(void)
     delete pLocalsFrame;
   }
   
-  ASSERT(!m_pJob);
+  RASSERT(! m_pJob);
+  RASSERT(! m_iDdlLocked);
 }
 
 /*----------------------------------------------------------------------------*/
