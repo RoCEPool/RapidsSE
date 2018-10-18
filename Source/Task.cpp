@@ -143,6 +143,71 @@ Task::~Task(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task loop                                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskLoop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (! m_pDataStack )
+    vNewStacks();
+  
+  while (TS_EXECUTING == m_eState) {
+    
+    TaskStep pTaskStep = *IP.m_pCell->m_ppEntryStep;
+    
+    m_pEntryCell = IP.m_pCell->m_ppEntryStep + 1;
+    
+    //vTrace("pTaskStep %p\n"_Stz,pTaskStep);
+    
+    IP.m_pCell++;
+    
+    try {
+      (pTaskStep)(this);
+    }
+    
+    catch (i8 iException) {
+      char wFileName[256];
+      
+      const char* ps;
+      
+      ps = StrLib::sLast(m_sFile.aChar());
+      StrLib::bBackward(&ps,m_sFile.aChar(),'/');
+      bool bBackSlash = StrLib::bBackward(&ps,m_sFile.aChar(),'/');
+      if (bBackSlash) {
+        StrLib::vCopy(wFileName,ps+1);
+      }
+      else {
+        StrLib::vCopy(wFileName, m_sFile.aChar());
+      }
+      vError("[%s] %s : line %lld in %s\n"_Stz,
+             aJobName(),
+             m_sException.aChar(),
+             iException,
+             wFileName);
+      vRetry();
+    }
+    
+    catch (Error* pError) {
+      char wFileName[256];
+      
+      const char* ps;
+      
+      ps = StrLib::sLast(pError->aFileName()->aChar());
+      StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
+      StrLib::vCopy(wFileName,ps+1);
+      vError("[%s] %s: line %lld in %s\n"_Stz,
+             aJobName(),
+             pError->aErrorMsg(),
+             pError->iLineNo(),
+             wFileName);
+      vRetry();
+    }
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -927,71 +992,6 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* task loop                                                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskLoop(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (! m_pDataStack )
-    vNewStacks();
-  
-  while (TS_EXECUTING == m_eState) {
-    
-    TaskStep pTaskStep = *IP.m_pCell->m_ppEntryStep;
-    
-    m_pEntryCell = IP.m_pCell->m_ppEntryStep + 1;
-    
-    //vTrace("pTaskStep %p\n"_Stz,pTaskStep);
-    
-    IP.m_pCell++;
-    
-    try {
-      (pTaskStep)(this);
-    }
-    
-    catch (i8 iException) {
-      char wFileName[256];
-      
-      const char* ps;
-      
-      ps = StrLib::sLast(m_sFile.aChar());
-      StrLib::bBackward(&ps,m_sFile.aChar(),'/');
-      bool bBackSlash = StrLib::bBackward(&ps,m_sFile.aChar(),'/');
-      if (bBackSlash) {
-        StrLib::vCopy(wFileName,ps+1);
-      }
-      else {
-        StrLib::vCopy(wFileName, m_sFile.aChar());
-      }
-      vError("[%s] %s : line %lld in %s\n"_Stz,
-             aJobName(),
-             m_sException.aChar(),
-             iException,
-             wFileName);
-      vRetry();
-    }
-    
-    catch (Error* pError) {
-      char wFileName[256];
-      
-      const char* ps;
-      
-      ps = StrLib::sLast(pError->aFileName()->aChar());
-      StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
-      StrLib::vCopy(wFileName,ps+1);
-      vError("[%s] %s: line %lld in %s\n"_Stz,
-             aJobName(),
-             pError->aErrorMsg(),
-             pError->iLineNo(),
-             wFileName);
-      vRetry();
-    }
-    
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

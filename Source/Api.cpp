@@ -326,7 +326,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                                     // API ERROR
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
     return EC_SE_UNKNOWN_ERROR;
   }
 }

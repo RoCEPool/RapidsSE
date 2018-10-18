@@ -168,6 +168,52 @@ Thread* Thread::pThisTLSThread(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* thread loop                                                                */
+/*----------------------------------------------------------------------------*/
+void Thread::vLoop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  
+  PosixThread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
+  
+  // sleep infinite
+  //m_pPosixThread->vSleepSec(100000000);
+  
+  
+  vMutexLock();
+  
+  //if (++gpAttachMap->m_ziThreads == gxArguments.m_nThreads)
+  //  RapidsSE::vSpawnJobStart();
+  
+  ++gpAttachMap->m_ziThreads;
+  
+  for (;;) {
+    
+    // get next task
+    if (! *m_npTask && ! bQueuePeek()) {
+      vHandlerWait();
+      
+      if ( ! *m_npTask)
+        continue;
+    }
+    
+    // will have a task
+    ASSERT(*m_npTask);
+    
+    // call the task
+    vTaskCall();
+    
+    // handle thread level event
+    Handlers::vThreadLoopHandler(&m_npTask);
+  }
+  
+  NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bind the os/posix thread to a cpu                                          */
 /*----------------------------------------------------------------------------*/
 void Thread::vBind(i8 iCpu)
@@ -330,52 +376,6 @@ void Thread::vLastRRqueue(i8 iLastRRqueue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_iLastRRqueue = iLastRRqueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* thread loop                                                                */
-/*----------------------------------------------------------------------------*/
-void Thread::vLoop(void)
-{ 
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
-  PosixThread::vTlsSet(giTLS_ThreadKey,this);
-  ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
-  
-  // sleep infinite
-  //m_pPosixThread->vSleepSec(100000000);
-  
-  
-  vMutexLock();
-
-  //if (++gpAttachMap->m_ziThreads == gxArguments.m_nThreads)
-  //  RapidsSE::vSpawnJobStart();
-  
-  ++gpAttachMap->m_ziThreads;
-
-  for (;;) {
-   
-    // get next task
-    if (! *m_npTask && ! bQueuePeek()) {
-      vHandlerWait();
-      
-      if ( ! *m_npTask)
-        continue;
-    }
-   
-    // will have a task
-    ASSERT(*m_npTask);
-
-    // call the task
-    vTaskCall();
-   
-    // handle thread level event
-    Handlers::vThreadLoopHandler(&m_npTask);
-  }
-  
-  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

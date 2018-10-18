@@ -174,6 +174,9 @@ void Job::vInit(void)
   // initialize the mutex
   MemLib::vZero(&m_xThreadCond,sizeof(m_xThreadCond),CN_SEMAPHORE);
   pthread_cond_init(&m_xThreadCond, &m_xThreadCondAttr);
+  
+  
+  m_pExecutingTask = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

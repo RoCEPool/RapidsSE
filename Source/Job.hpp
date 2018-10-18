@@ -100,6 +100,8 @@ namespace JobsModel
     pthread_mutexattr_t m_xThreadMutexAttr; // connector thread mutex shared attribute
     pthread_cond_t      m_xThreadCond;      // connector thread condition variable
     pthread_condattr_t  m_xThreadCondAttr;  // connector thread condition shared attribute
+  
+    Tasks::Task* m_pExecutingTask; // task executing the system
 
   public:
     Job(eCN eClassNo);
