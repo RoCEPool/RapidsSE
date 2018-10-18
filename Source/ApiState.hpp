@@ -21,6 +21,7 @@ namespace StorageEngine
       eEC      m_eError;     // last error code
       bool     m_bRunning;   // call still running
       Timer    m_xTimer;     // call timer
+      i8       m_iTotalMicroSecs; // total time in us
 
       i8       m_iNextFree;
       

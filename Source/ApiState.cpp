@@ -63,6 +63,7 @@ ApiState::ApiState(void)
     xState[i_State].m_eError    = EC_NONE;
     xState[i_State].m_bRunning  = false;
     xState[i_State].m_xTimer.vInit();
+    xState[i_State].m_iTotalMicroSecs = 0;
 
     xState[i_State].m_iNextFree = i_State + 1;
   }
@@ -139,6 +140,8 @@ void ApiState::vApiError(Session* pSession, eEC eError)
   xState[i_State].m_eError   = eError;
   
   xState[i_State].m_xTimer.vUpdate();
+  
+  xState[i_State].m_iTotalMicroSecs += xState[i_State].m_xTimer.iMicroseconds();
 
   pSession->m_nApiErrors++;
 }
@@ -164,6 +167,8 @@ void ApiState::vApiReturn(Session* pSession)
   
   xState[i_State].m_bRunning = false;
   xState[i_State].m_xTimer.vUpdate();
+  xState[i_State].m_iTotalMicroSecs += xState[i_State].m_xTimer.iMicroseconds();
+
 //  if (xState[i_State].m_eApiCall == AC_FetchNextBuffer)
 //    vTrace("Timer start: %lld; Timer update: %lld Time: %lldus\n"_Stz,
 //           xState[i_State].m_xTimer.iStart(),
@@ -194,6 +199,7 @@ void ApiState::vFreeState(i8 i_State)
   xState[i_State].m_bRunning  = false;
   
   xState[i_State].m_xTimer.vReset();
+  xState[i_State].m_iTotalMicroSecs = 0;
 
   xState[i_State].m_iNextFree = m_iFirstFree;
 
@@ -222,15 +228,16 @@ void ApiState::vDump(void)
       if (xState[i_State].m_bRunning)
         xState[i_State].m_xTimer.vUpdate();
 
-      vTrace("  %lld: session %p, call %s, job %s, error %s, %s, time %lldus\n"_Stz,
+      vTrace("  %lld: session %p, call %s, job %s, error %s, %s, time %lldus total %lldus\n"_Stz,
              i_State,
              xState[i_State].m_pSession,
              aAC[xState[i_State].m_eApiCall],
              aCN[xState[i_State].m_eJobClass],
              aEC[xState[i_State].m_eError],
              xState[i_State].m_bRunning ? "running" : "completed",
-             xState[i_State].m_xTimer.iMicroseconds()
-             );
+             xState[i_State].m_xTimer.iMicroseconds(),
+             xState[i_State].m_iTotalMicroSecs
+            );
       vTrace("     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
              pSession->m_nApiCalls,
              pSession->m_nApiErrors,
