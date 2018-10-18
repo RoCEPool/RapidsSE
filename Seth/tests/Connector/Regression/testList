@@ -1,16 +1,16 @@
-Aggregate.test
+schemaCreate.test
 aggs-avg.test
+aggs-count.test
+aggs-max.test
+aggs-min.test
+aggs-sum.test
+schemaDrop.test
 /*
 AndOrNot.test
 PartKey1way.test
 PartKey2way.test
 Stage9.test
 Using1way.test
-aggs-avg.test
-aggs-count.test
-aggs-max.test
-aggs-min.test
-aggs-sum.test
 alias.test
 between.test
 case.test
@@ -41,3 +41,4 @@ intervals.test
 isnull.test
 like.test
 */
+

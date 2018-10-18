@@ -7,7 +7,7 @@
 
 namespace Interface
 {
-  static const i8 C_MAX_SESSIONS = 8;
+  static const i8 C_MAX_SESSIONS = 16;
   
   class Session : public Object
   {

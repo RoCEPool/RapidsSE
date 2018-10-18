@@ -59,6 +59,10 @@
 /*----------------------------------------------------------------------------*/
 : EndInsert_waitOnly ( pJob_EndInsert --  )
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab this task's lock
+  task::this task.grabLock
+
   grid::slots setAcks
 
   //"EndInsert_waitOnly waiting" .
