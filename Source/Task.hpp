@@ -1378,6 +1378,7 @@ namespace Tasks
     #ifdef __ENTRY_EXIT
         
       #define ENTRY(aStepNm) \
+        ASSERT(mpTask->m_pJob->m_pExecutingTask == *mpTask) \
         static StepAccum* pStepAccum = nullptr; \
         if (! pStepAccum) { \
           gpAttachMap->m_pStepArray->vGrabWrite(); \

@@ -204,7 +204,7 @@ void RapidsSE::vDeleteImmmediate(Task** ppTask)
   *ppTask = nullptr;
 
   Job* pJob = pTask->pJob();
-  pTask->vJob(nullptr);
+//  pTask->vJob(nullptr);
   delete pJob;
   
   delete pTask;
