@@ -96,7 +96,7 @@ namespace System
     void vInitLock(eLK eLockKind);
   
     bool bIsLocked(void);
-    
+    u8   uLockWord(void);
     bool bGrabRead(void);
     void vGrabRead(void);
     void vCheckRead(void);

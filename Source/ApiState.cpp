@@ -4,6 +4,8 @@
 
 #include "StorageEngine.h"
 
+extern AttachMap* gpAttachMap;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -264,7 +266,8 @@ void ApiState::vDump(void)
   }
   
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
-  
+  vTrace("  DdlLock %llx\n"_Stz,gpAttachMap->m_xDdlLock.uLockWord());
+
   m_xLock.vDropRead();
 }
 
