@@ -98,7 +98,7 @@ Task::Task(Job* pJob)
   m_pWord        = nullptr;
   m_iTracing     = C_TRACE_NONE;
   
-  m_pSession       = nullptr;
+  m_pSession     = nullptr;
   
   m_pSocket      = nullptr;
   m_pPlan        = nullptr;
@@ -108,7 +108,12 @@ Task::Task(Job* pJob)
   m_pSendNode    = nullptr;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the executing task in job
   
+  m_pJob->m_pExecutingTask = this;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
