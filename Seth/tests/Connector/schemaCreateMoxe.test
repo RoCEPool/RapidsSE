@@ -1,13 +1,6 @@
-/*----------------------------------------------------------------------------*/
-/* regressionData -- Regression data load tests                               */
-/*----------------------------------------------------------------------------*/
-
-//------------------------------------------------------------------------------
-// Logging a message
-LOG 'Creating regression tables ';
-
-// create the tables
-create table TABLE1 (
+drop connector moxe;
+create connector moxe type moxe;
+create table MOXE.TABLE1 (
   pcol1   INTEGER NOT NULL,
   tcol1   INTEGER NOT NULL,
   cola1   INTEGER,
@@ -20,9 +13,8 @@ create table TABLE1 (
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );
-success
 
-create table TABLE2 (
+create table MOXE.TABLE2 (
   pcol2   INTEGER NOT NULL,
   scol2   INTEGER NOT NULL,
   cola2   INTEGER,
@@ -31,9 +23,8 @@ create table TABLE2 (
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );
-success
 
-create table TABLE3 (
+create table MOXE.TABLE3 (
   pcol3   INTEGER NOT NULL,
   scol3   INTEGER NOT NULL,
   tcol3   INTEGER NOT NULL,
@@ -45,9 +36,8 @@ create table TABLE3 (
   colb3   VARCHAR(25),
   colc3   TIMESTAMP
 );
-success
 
-create table TABLE4 (
+create table MOXE.TABLE4 (
   pcol4   INTEGER NOT NULL,
   scol4   INTEGER NOT NULL,
   ucol    INTEGER,
@@ -57,9 +47,8 @@ create table TABLE4 (
   colc4   TIMESTAMP,
   cole4   DECIMAL(15, 2)
 );
-success
 
-create table TABLE5 (
+create table MOXE.TABLE5 (
   pcol5   INTEGER NOT NULL,
   tcol5   INTEGER NOT NULL,
   cola5   INTEGER,
@@ -68,9 +57,8 @@ create table TABLE5 (
   colb5   VARCHAR(10),
   colc5   TIMESTAMP
 );
-success
 
-create table TABLE6 (
+create table MOXE.TABLE6 (
   pcol6   INTEGER NOT NULL,
   scol6   INTEGER NOT NULL,
   tcol6   INTEGER NOT NULL,
@@ -78,9 +66,8 @@ create table TABLE6 (
   ucolvc  VARCHAR(5),
   cola6   INTEGER
 );
-success
 
-create table TABLE7 (
+create table MOXE.TABLE7 (
   pcol7   INTEGER NOT NULL,
   scol7   INTEGER NOT NULL,
   cola7   INTEGER,
@@ -90,9 +77,8 @@ create table TABLE7 (
   cole7   DECIMAL(15, 2),
   colf7   INTEGER
 );
-success
 
-create table TABLE8 (
+create table MOXE.TABLE8 (
   pcol8   INTEGER NOT NULL,
   tcol8   INTEGER NOT NULL,
   cola8   INTEGER,
@@ -102,9 +88,8 @@ create table TABLE8 (
   colh8   INTEGER,
   coli8   VARCHAR(5)
 );
-success
 
-create table TABLE9 (
+create table MOXE.TABLE9 (
   pcol9   INTEGER NOT NULL,
   scol9   INTEGER NOT NULL,
   tcol9   INTEGER NOT NULL,
@@ -116,9 +101,8 @@ create table TABLE9 (
   ucol    INTEGER,
   ucolvc  VARCHAR(5)
 );
-success
 
-create table CUSTOMERH (
+create table MOXE.CUSTOMERH (
   c_custkey INTEGER NOT NULL,
   c_name VARCHAR(25),
   c_address VARCHAR(40),
@@ -128,9 +112,8 @@ create table CUSTOMERH (
   c_mktsegment VARCHAR(10),
   c_comment VARCHAR(117)
 );
-success
 
-create table ORDERS (
+create table MOXE.ORDERS (
   o_orderkey INTEGER NOT NULL,
   o_custkey INTEGER NOT NULL,
   o_orderstatus VARCHAR(1),
@@ -143,9 +126,8 @@ create table ORDERS (
   o_estcost INTEGER,
   o_comment VARCHAR(79)
 );
-success
 
-create table LINEITEM (
+create table MOXE.LINEITEM (
   l_orderkey INTEGER NOT NULL,
   l_partkey INTEGER NOT NULL,
   l_suppkey INTEGER NOT NULL,
@@ -163,9 +145,8 @@ create table LINEITEM (
   l_shipmode VARCHAR(10),
   l_comment VARCHAR(44)
 );
-success
 
-create table PART (
+create table MOXE.PART (
   p_partkey INTEGER NOT NULL,
   p_name VARCHAR(55),
   p_mfgr VARCHAR(25),
@@ -176,9 +157,8 @@ create table PART (
   p_retailprice FLOAT,
   p_comment VARCHAR(23)
 );
-success
 
-create table SUPPLIER (
+create table MOXE.SUPPLIER (
   s_suppkey INTEGER NOT NULL,
   s_name VARCHAR(25),
   s_address VARCHAR(40),
@@ -187,33 +167,29 @@ create table SUPPLIER (
   s_acctbal FLOAT,
   s_comment VARCHAR(101)
 );
-success
 
-create table PARTSUPP (
+create table MOXE.PARTSUPP (
   ps_partkey INTEGER NOT NULL,
   ps_suppkey INTEGER NOT NULL,
   ps_availqty INTEGER,
   ps_supplycost DECIMAL(15, 2),
   ps_comment VARCHAR(199)
 );
-success
 
-create table NATION (
+create table MOXE.NATION (
   n_nationkey INTEGER NOT NULL,
   n_name VARCHAR(25),
   n_regionkey INTEGER NOT NULL,
   n_comment VARCHAR(152)
 );
-success
 
-create table REGION (
+create table MOXE.REGION (
   r_regionkey INTEGER NOT NULL,
   r_name VARCHAR(25),
   r_comment VARCHAR(152)
 );
-success
 
-create table SHIPPING (
+create table MOXE.SHIPPING (
   sh_shipkey INTEGER NOT NULL,
   sh_shipmode VARCHAR(10),
   sh_shipdate TIMESTAMP,
@@ -223,9 +199,8 @@ create table SHIPPING (
   sh_estcost INTEGER,
   sh_container VARCHAR(10)
 );
-success
 
-create table SHIPADDRESS (
+create table MOXE.SHIPADDRESS (
   sa_orderkey INTEGER NOT NULL,
   sa_shipline INTEGER NOT NULL,
   sa_address VARCHAR(75),
@@ -237,9 +212,8 @@ create table SHIPADDRESS (
   sa_partial VARCHAR(1),
   sa_comments VARCHAR(80)
 );
-success
 
-create table MANUFACTURER (
+create table MOXE.MANUFACTURER (
   m_orderkey INTEGER NOT NULL,
   m_partkey INTEGER NOT NULL,
   m_mfgkey INTEGER NOT NULL,
@@ -249,9 +223,8 @@ create table MANUFACTURER (
   m_specialorders VARCHAR(1),
   m_comments VARCHAR(50)
 );
-success
 
-create table RETURNS (
+create table MOXE.RETURNS (
   l_orderkey INTEGER NOT NULL,
   l_linenumber INTEGER NOT NULL,
   m_mfgkey INTEGER NOT NULL,
@@ -264,78 +237,4 @@ create table RETURNS (
   r_returndate TIMESTAMP,
   r_comments VARCHAR(75)
 );
-success
 
-//------------------------------------------------------------------------------
-// Logging a message
-LOG 'Loading regression data ';
-
-// load data into the tables
-ESCAPE CONNECTOR se 'load TABLE1' with file='../Seth/tests/Load/tbl1data.csv' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load TABLE2' with file='../Seth/tests/Load/tbl2data.csv' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load TABLE3' with file='../Seth/tests/Load/tbl3data.csv' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load TABLE4' with file='../Seth/tests/Load/tbl4data.csv' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load TABLE5' with file='../Seth/tests/Load/tbl5data.csv' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load TABLE6' with file='../Seth/tests/Load/tbl6data.csv' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load TABLE7' with file='../Seth/tests/Load/tbl7data.csv' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load TABLE8' with file='../Seth/tests/Load/tbl8data.csv' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load TABLE9' with file='../Seth/tests/Load/tbl9data.csv' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load ORDERS' with file='../Seth/tests/Load/orders.csv', record_terminator='\r\n' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load LINEITEM' with file='../Seth/tests/Load/lineitem.csv', record_terminator='\r\n' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load CUSTOMERH' with file='../Seth/tests/Load/customer.csv', record_terminator='\r\n' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load PARTSUPP' with file='../Seth/tests/Load/partsupp.csv', record_terminator='\r\n' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load PART' with file='../Seth/tests/Load/part.csv', record_terminator='\r\n' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load SHIPPING' with file='../Seth/tests/Load/shipping.csv', record_terminator='\r\n' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load SHIPADDRESS' with file='../Seth/tests/Load/shipaddr.csv', record_terminator='\r\n' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load SUPPLIER' with file='../Seth/tests/Load/supplier.csv', record_terminator='\r\n' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load MANUFACTURER' with file='../Seth/tests/Load/manufacturer.csv', record_terminator='\r\n', node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load NATION' with file='../Seth/tests/Load/nation.csv', record_terminator='\r\n', node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load REGION' with file='../Seth/tests/Load/region.csv', record_terminator='\r\n' , node = 'Node1' ;
-failure
-
-ESCAPE CONNECTOR se 'load RETURNS' with file='../Seth/tests/Load/returns.csv', record_terminator='\r\n', node = 'Node1' ;
-failure
-
-
-
-/*----------------------------------------------------------------------------*/
-/* end                                                                        */
-/*----------------------------------------------------------------------------*/
