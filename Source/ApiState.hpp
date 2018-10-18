@@ -5,7 +5,7 @@
 
 namespace StorageEngine
 {
-  struct ApiElement {
+  struct SessionState {
     
     Session* m_pSession;
     
@@ -27,19 +27,7 @@ namespace StorageEngine
     i8   m_nSessionsSoFar;
     i8   m_iFirstFree;
   
-    struct {
-      Session* m_pSession;
-      
-      eAC      m_eApiCall;   // current / last api call
-      eCN      m_eJobClass;  // current / lost job
-      eEC      m_eError;     // last error code
-      bool     m_bRunning;   // call still running
-      Timer    m_xTimer;     // call timer
-      i8       m_iTotalMicroSecs; // total time in us
-
-      i8       m_iNextFree;
-      
-    } xState[C_MAX_SESSIONS];
+    SessionState m_xSessionState[C_MAX_SESSIONS];
   
     Footer m_xFooter;
     

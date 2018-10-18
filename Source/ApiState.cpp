@@ -54,20 +54,22 @@ ApiState::ApiState(void)
   m_nSessionsSoFar = 0;
   m_iFirstFree = 0;
 
-  for (i8 i_State = 0; i_State < C_MAX_SESSIONS; i_State++) {
+  for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
-    xState[i_State].m_pSession  = nullptr;
+    SessionState* aState = &m_xSessionState[i_Session];
     
-    xState[i_State].m_eApiCall  = AC_NONE;
-    xState[i_State].m_eJobClass = CN_NONE;
-    xState[i_State].m_eError    = EC_NONE;
-    xState[i_State].m_bRunning  = false;
-    xState[i_State].m_xTimer.vInit();
-    xState[i_State].m_iTotalMicroSecs = 0;
+    aState->m_pSession  = nullptr;
+    
+    aState->m_eApiCall  = AC_NONE;
+    aState->m_eJobClass = CN_NONE;
+    aState->m_eError    = EC_NONE;
+    aState->m_bRunning  = false;
+    aState->m_xTimer.vInit();
+    aState->m_iTotalMicroSecs = 0;
 
-    xState[i_State].m_iNextFree = i_State + 1;
+    aState->m_iNextFree = i_Session + 1;
   }
-  xState[C_MAX_SESSIONS - 1].m_iNextFree = -1;
+  m_xSessionState[C_MAX_SESSIONS - 1].m_iNextFree = -1;
   
   m_iFirstFree = 0;
 
@@ -99,18 +101,19 @@ i8 ApiState::iAllocState(Session* pSession)
   
   RASSERT(-1 != m_iFirstFree);
   
-  i8 i_State = m_iFirstFree;
+  i8 i_Session = m_iFirstFree;
+  SessionState* aState = &m_xSessionState[i_Session];
+
+  m_iFirstFree = aState->m_iNextFree;
   
-  m_iFirstFree = xState[i_State].m_iNextFree;
-  
-  xState[i_State].m_iNextFree = -1;
-  xState[i_State].m_pSession  = pSession;
+  aState->m_iNextFree = -1;
+  aState->m_pSession  = pSession;
 
   m_nSessionsSoFar++;
   
   m_xLock.vDropWrite();
 
-  return i_State;
+  return i_Session;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,13 +121,15 @@ i8 ApiState::iAllocState(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiCall(Session* pSession, eAC eApiCall)
 {
-  i8 i_State = pSession->m_iApiState;
+  i8 i_Session = pSession->m_iApiState;
   
-  xState[i_State].m_bRunning = true;
-  xState[i_State].m_eApiCall = eApiCall;
-  xState[i_State].m_eJobClass = CN_NONE;
+  SessionState* aState = &m_xSessionState[i_Session];
+
+  aState->m_bRunning = true;
+  aState->m_eApiCall = eApiCall;
+  aState->m_eJobClass = CN_NONE;
   
-  xState[i_State].m_xTimer.vStart();
+  aState->m_xTimer.vStart();
   
   pSession->m_nApiCalls++;
 }
@@ -134,14 +139,15 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiError(Session* pSession, eEC eError)
 {
-  i8 i_State = pSession->m_iApiState;
+  i8 i_Session = pSession->m_iApiState;
+  SessionState* aState = &m_xSessionState[i_Session];
+
+  aState->m_bRunning = false;
+  aState->m_eError   = eError;
   
-  xState[i_State].m_bRunning = false;
-  xState[i_State].m_eError   = eError;
+  aState->m_xTimer.vUpdate();
   
-  xState[i_State].m_xTimer.vUpdate();
-  
-  xState[i_State].m_iTotalMicroSecs += xState[i_State].m_xTimer.iMicroseconds();
+  aState->m_iTotalMicroSecs += aState->m_xTimer.iMicroseconds();
 
   pSession->m_nApiErrors++;
 }
@@ -151,9 +157,10 @@ void ApiState::vApiError(Session* pSession, eEC eError)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiJob(Session* pSession, eCN eJobClass)
 {
-  i8 i_State = pSession->m_iApiState;
-  
-  xState[i_State].m_eJobClass = eJobClass;
+  i8 i_Session = pSession->m_iApiState;
+  SessionState* aState = &m_xSessionState[i_Session];
+
+  aState->m_eJobClass = eJobClass;
   
   pSession->m_nJobNew++;
 }
@@ -163,27 +170,30 @@ void ApiState::vApiJob(Session* pSession, eCN eJobClass)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiReturn(Session* pSession)
 {
-  i8 i_State = pSession->m_iApiState;
-  
-  xState[i_State].m_bRunning = false;
-  xState[i_State].m_xTimer.vUpdate();
-  xState[i_State].m_iTotalMicroSecs += xState[i_State].m_xTimer.iMicroseconds();
+  i8 i_Session = pSession->m_iApiState;
+  SessionState* aState = &m_xSessionState[i_Session];
 
-//  if (xState[i_State].m_eApiCall == AC_FetchNextBuffer)
+  aState->m_bRunning = false;
+  aState->m_xTimer.vUpdate();
+  aState->m_iTotalMicroSecs += aState->m_xTimer.iMicroseconds();
+
+//  if (xState[i_Session].m_eApiCall == AC_FetchNextBuffer)
 //    vTrace("Timer start: %lld; Timer update: %lld Time: %lldus\n"_Stz,
-//           xState[i_State].m_xTimer.iStart(),
-//           xState[i_State].m_xTimer.iUpdate(),
-//           xState[i_State].m_xTimer.iMicroseconds());
+//           aState->m_xTimer.iStart(),
+//           aState->m_xTimer.iUpdate(),
+//           aState->m_xTimer.iMicroseconds());
 }
 
 /*----------------------------------------------------------------------------*/
 /* feee an api state entry                                                    */
 /*----------------------------------------------------------------------------*/
-void ApiState::vFreeState(i8 i_State)
+void ApiState::vFreeState(i8 i_Session)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  if (xState[i_State].m_pSession->m_nJobNew != xState[i_State].m_pSession->m_nJobDelete) {
+  SessionState* aState = &m_xSessionState[i_Session];
+
+  if (aState->m_pSession->m_nJobNew != aState->m_pSession->m_nJobDelete) {
     vTrace("**************************************************\n"_Stz);
     vTrace("Session being deleted has not deleted all its jobs\n"_Stz);
     vDump();
@@ -191,19 +201,19 @@ void ApiState::vFreeState(i8 i_State)
   }
   
   m_xLock.vGrabWrite();
-  xState[i_State].m_pSession = nullptr;
+  aState->m_pSession = nullptr;
   
-  xState[i_State].m_eApiCall  = AC_NONE;
-  xState[i_State].m_eJobClass = CN_NONE;
-  xState[i_State].m_eError    = EC_NONE;
-  xState[i_State].m_bRunning  = false;
+  aState->m_eApiCall  = AC_NONE;
+  aState->m_eJobClass = CN_NONE;
+  aState->m_eError    = EC_NONE;
+  aState->m_bRunning  = false;
   
-  xState[i_State].m_xTimer.vReset();
-  xState[i_State].m_iTotalMicroSecs = 0;
+  aState->m_xTimer.vReset();
+  aState->m_iTotalMicroSecs = 0;
 
-  xState[i_State].m_iNextFree = m_iFirstFree;
+  aState->m_iNextFree = m_iFirstFree;
 
-  m_iFirstFree = i_State;
+  m_iFirstFree = i_Session;
   
   m_xLock.vDropWrite();
 }
@@ -219,24 +229,26 @@ void ApiState::vDump(void)
 
   vTrace("ApiState %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
 
-  for (i8 i_State = 0; i_State < C_MAX_SESSIONS; i_State++) {
+  for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
-    if (xState[i_State].m_pSession) {
+    SessionState* aState = &m_xSessionState[i_Session];
+    
+    if (aState->m_pSession) {
       
-      Session* pSession = xState[i_State].m_pSession;
+      Session* pSession = aState->m_pSession;
       
-      if (xState[i_State].m_bRunning)
-        xState[i_State].m_xTimer.vUpdate();
+      if (aState->m_bRunning)
+        aState->m_xTimer.vUpdate();
 
       vTrace("  %lld: session %p, call %s, job %s, error %s, %s, time %lldus total %lldus\n"_Stz,
-             i_State,
-             xState[i_State].m_pSession,
-             aAC[xState[i_State].m_eApiCall],
-             aCN[xState[i_State].m_eJobClass],
-             aEC[xState[i_State].m_eError],
-             xState[i_State].m_bRunning ? "running" : "completed",
-             xState[i_State].m_xTimer.iMicroseconds(),
-             xState[i_State].m_iTotalMicroSecs
+             i_Session,
+             pSession,
+             aAC[aState->m_eApiCall],
+             aCN[aState->m_eJobClass],
+             aEC[aState->m_eError],
+             aState->m_bRunning ? "running" : "completed",
+             aState->m_xTimer.iMicroseconds(),
+             aState->m_iTotalMicroSecs
             );
       vTrace("     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
              pSession->m_nApiCalls,
@@ -246,8 +258,8 @@ void ApiState::vDump(void)
     }
     else {
       vTrace("  %lld: nextfree %lld\n"_Stz,
-             i_State,
-             xState[i_State].m_iNextFree);
+             i_Session,
+             aState->m_iNextFree);
     }
   }
   
