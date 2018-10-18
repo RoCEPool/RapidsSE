@@ -106,11 +106,11 @@
 
   <SEED_REQ>
 
+  100 apiState::setPosition
+
   0 0 0 locals| iPhrases sTableNm sWhere |
   0 0 0 0 locals| pJob_FetchRows pTask pPlanner pTable |
   0 locals| iFetchPartition |
-
-  100 apiState::setPosition
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
