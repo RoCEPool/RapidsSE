@@ -66,6 +66,7 @@ ApiState::ApiState(void)
     aState->m_eJobClass = CN_NONE;
     aState->m_eError    = EC_NONE;
     aState->m_bRunning  = false;
+    aState->m_iPosition = 0;
     aState->m_xTimer.vInit();
     aState->m_iTotalMicroSecs = 0;
 
@@ -128,6 +129,7 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   SessionState* aState = &m_xSessionState[i_Session];
 
   aState->m_bRunning = true;
+  aState->m_iPosition = 0;
   aState->m_eApiCall = eApiCall;
   aState->m_eJobClass = CN_NONE;
   
@@ -209,7 +211,8 @@ void ApiState::vFreeState(i8 i_Session)
   aState->m_eJobClass = CN_NONE;
   aState->m_eError    = EC_NONE;
   aState->m_bRunning  = false;
-  
+  aState->m_iPosition = 0;
+
   aState->m_xTimer.vReset();
   aState->m_iTotalMicroSecs = 0;
 
@@ -242,13 +245,14 @@ void ApiState::vDump(void)
       if (aState->m_bRunning)
         aState->m_xTimer.vUpdate();
 
-      vTrace("  %lld: session %p, call %s, job %s, error %s, %s, time %lldus total %lldus\n"_Stz,
+      vTrace("  %lld: session %p, call %s, job %s, error %s, %s, pos %lld, time %lldus total %lldus\n"_Stz,
              i_Session,
              pSession,
              aAC[aState->m_eApiCall],
              aCN[aState->m_eJobClass],
              aEC[aState->m_eError],
              aState->m_bRunning ? "running" : "completed",
+             aState->m_iPosition,
              aState->m_xTimer.iMicroseconds(),
              aState->m_iTotalMicroSecs
             );

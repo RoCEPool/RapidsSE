@@ -13,6 +13,7 @@ namespace StorageEngine
     eCN      m_eJobClass;  // current / lost job
     eEC      m_eError;     // last error code
     bool     m_bRunning;   // call still running
+    i8       m_iPosition;  // last reported position
     Timer    m_xTimer;     // call timer
     i8       m_iTotalMicroSecs; // total time in us
     
