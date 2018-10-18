@@ -5,6 +5,20 @@
 
 namespace StorageEngine
 {
+  struct ApiElement {
+    
+    Session* m_pSession;
+    
+    eAC      m_eApiCall;   // current / last api call
+    eCN      m_eJobClass;  // current / lost job
+    eEC      m_eError;     // last error code
+    bool     m_bRunning;   // call still running
+    Timer    m_xTimer;     // call timer
+    i8       m_iTotalMicroSecs; // total time in us
+    
+    i8       m_iNextFree;
+  };
+  
   class ApiState : public Object
   {
   public:
