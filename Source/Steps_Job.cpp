@@ -935,6 +935,8 @@ void Task::vJobPostRecv(MP_Task mpTask)
   
   pJob->m_pJobClass = pJobClass;
 
+  ASSERT(pJobClass->m_fRecv == vJob_recv);
+  
   if (pJobClass->m_fRecv)
     (*pJobClass->m_fRecv)(pJob);
 
