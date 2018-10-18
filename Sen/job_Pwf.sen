@@ -11,6 +11,8 @@
 
   <SEED_REQ>
 
+  100 apiState::setPosition
+
   0 0 0 0 locals| pJob_Pwf pTask |
 
   tp: cf_req
@@ -53,6 +55,8 @@
 
   grid::thisNode@ pJob_Pwf job.response!
   1 grid::thisNode@ pJob_Pwf job.rowsProcessed!
+
+  900 apiState::setPosition
 
   <DONE_REQ>
 ;

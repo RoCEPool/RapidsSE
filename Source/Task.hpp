@@ -237,6 +237,9 @@ namespace Tasks
     static void vAddressFetch(MP_Task mpTask);
     static void vAddressStore(MP_Task mpTask);
     
+    // apiState
+    static void vApiStateSetPosition(MP_Task mpTask);
+  
     // args
     static void vArgsPrint(MP_Task mpTask);
 

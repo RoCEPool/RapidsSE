@@ -15,6 +15,8 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
+  vAddStep("apiState::setPosition"_Stz,&Task::vApiStateSetPosition);
+  
   vAddStep("job::findOriginator"_Stz,  &Task::vJobFindOriginator);
   vAddStep("job::findParticipant"_Stz, &Task::vJobFindParticipant);
   
@@ -79,6 +81,32 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.workingBuffer@"_Stz,   &Task::vJobWorkingBufferFetch);
   vAddStep("job.workingBuffer!"_Stz,   &Task::vJobWorkingBufferStore);
 }
+
+/*----------------------------------------------------------------------------*/
+/* apiState::setPosition -- set last reported position                        */
+/*----------------------------------------------------------------------------*/
+void Task::vApiStateSetPosition(MP_Task mpTask)
+{
+  ENTRY("vApiStateSetPosition"_Stz);
+  
+  i8 iPosition;
+  if ( ! mpTask->m_pDataStack->bPop(iPosition) )
+    THROW_INVALID_DSTACK("apiState::setPosition"_Stz);
+  
+  Session* pSession = mpTask->m_pSession;
+  
+  gpAttachMap->m_pApiState->vSetPosition(pSession,iPosition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* job.acksRemaining! -- set acks remaining for this job                      */

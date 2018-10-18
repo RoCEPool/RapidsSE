@@ -46,6 +46,7 @@ namespace StorageEngine
     void vApiJob(Session* pSession, eCN eJobClass);
     void vApiReturn(Session* pSession);
     void vFreeState(i8 i_State);
+    void vSetPosition(Session* pSession, i8 iPosition);
 
     void vDump(void);
   

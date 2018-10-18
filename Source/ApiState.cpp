@@ -224,6 +224,18 @@ void ApiState::vFreeState(i8 i_Session)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set last position                                                          */
+/*----------------------------------------------------------------------------*/
+void ApiState::vSetPosition(Session* pSession, i8 iPosition)
+{
+  i8 i_Session = pSession->m_iApiState;
+  SessionState* aState = &m_xSessionState[i_Session];
+  
+  aState->m_iPosition = iPosition;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void ApiState::vDump(void)

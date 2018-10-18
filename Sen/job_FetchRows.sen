@@ -110,7 +110,7 @@
   0 0 0 0 locals| pJob_FetchRows pTask pPlanner pTable |
   0 locals| iFetchPartition |
 
-  tp: fetchRows
+  100 apiState::setPosition
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
@@ -131,7 +131,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
+  200 apiState::setPosition
   ddlLock::grabRead
+  300 apiState::setPosition
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table name
@@ -157,12 +159,16 @@
   // get the where clause from the job
   pJob_FetchRows job_fetchRows.where@ to sWhere
 
+  400 apiState::setPosition
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the plan for the fetch
   sWhere pTable generatePlan to pPlanner
   pPlanner pJob_FetchRows job_fetchRows.planner!
 
   //pPlanner planner.showPaths
+
+  500 apiState::setPosition
 
   // assert we have a plan
   pPlanner assert
@@ -178,6 +184,8 @@
     iPhrases pJob_FetchRows job_fetchRows.lastBuffers!
   then
 
+  600 apiState::setPosition
+
   iPhrases 0
   do
     I pPlanner pJob_FetchRows spawnSub
@@ -186,6 +194,8 @@
   popTable
 
   pJob_FetchRows job.notice
+
+  900 apiState::setPosition
 
   <DONE_REQ>
 ;
