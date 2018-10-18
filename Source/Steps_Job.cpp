@@ -1322,6 +1322,8 @@ void Task::vJobSignalConnector(MP_Task mpTask)
     vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
   }
   
+  gpAttachMap->m_pApiState->vSetSignalled(mpTask->m_pSession);
+  
   EXIT();
 }
 

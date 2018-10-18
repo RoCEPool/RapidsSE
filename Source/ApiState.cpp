@@ -60,13 +60,14 @@ ApiState::ApiState(void)
     
     SessionState* aState = &m_xSessionState[i_Session];
     
-    aState->m_pSession  = nullptr;
+    aState->m_pSession   = nullptr;
     
-    aState->m_eApiCall  = AC_NONE;
-    aState->m_eJobClass = CN_NONE;
-    aState->m_eError    = EC_NONE;
-    aState->m_bRunning  = false;
-    aState->m_iPosition = 0;
+    aState->m_eApiCall   = AC_NONE;
+    aState->m_eJobClass  = CN_NONE;
+    aState->m_eError     = EC_NONE;
+    aState->m_bRunning   = false;
+    aState->m_bSignalled = false;
+    aState->m_iPosition  = 0;
     aState->m_xTimer.vInit();
     aState->m_iTotalMicroSecs = 0;
 
@@ -207,11 +208,12 @@ void ApiState::vFreeState(i8 i_Session)
   m_xLock.vGrabWrite();
   aState->m_pSession = nullptr;
   
-  aState->m_eApiCall  = AC_NONE;
-  aState->m_eJobClass = CN_NONE;
-  aState->m_eError    = EC_NONE;
-  aState->m_bRunning  = false;
-  aState->m_iPosition = 0;
+  aState->m_eApiCall   = AC_NONE;
+  aState->m_eJobClass  = CN_NONE;
+  aState->m_eError     = EC_NONE;
+  aState->m_bRunning   = false;
+  aState->m_bSignalled = false;
+  aState->m_iPosition  = 0;
 
   aState->m_xTimer.vReset();
   aState->m_iTotalMicroSecs = 0;
@@ -232,7 +234,17 @@ void ApiState::vSetPosition(Session* pSession, i8 iPosition)
   SessionState* aState = &m_xSessionState[i_Session];
   
   aState->m_iPosition = iPosition;
+}
 
+/*----------------------------------------------------------------------------*/
+/* set signalled                                                              */
+/*----------------------------------------------------------------------------*/
+void ApiState::vSetSignalled(Session* pSession)
+{
+  i8 i_Session = pSession->m_iApiState;
+  SessionState* aState = &m_xSessionState[i_Session];
+  
+  aState->m_bSignalled = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,13 +269,14 @@ void ApiState::vDump(void)
       if (aState->m_bRunning)
         aState->m_xTimer.vUpdate();
 
-      vTrace("  %lld: session %p, call %s, job %s, error %s, %s, pos %lld, time %lldus total %lldus\n"_Stz,
+      vTrace("  %lld: session %p, call %s, job %s, error %s, %s, %s, pos %lld, time %lldus total %lldus\n"_Stz,
              i_Session,
              pSession,
              aAC[aState->m_eApiCall],
              aCN[aState->m_eJobClass],
              aEC[aState->m_eError],
              aState->m_bRunning ? "running" : "completed",
+             aState->m_bSignalled ? "signalled" : "not signalled",
              aState->m_iPosition,
              aState->m_xTimer.iMicroseconds(),
              aState->m_iTotalMicroSecs

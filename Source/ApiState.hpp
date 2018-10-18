@@ -13,6 +13,7 @@ namespace StorageEngine
     eCN      m_eJobClass;  // current / lost job
     eEC      m_eError;     // last error code
     bool     m_bRunning;   // call still running
+    bool     m_bSignalled; // calling thread has been signalled?
     i8       m_iPosition;  // last reported position
     Timer    m_xTimer;     // call timer
     i8       m_iTotalMicroSecs; // total time in us
@@ -47,6 +48,7 @@ namespace StorageEngine
     void vApiReturn(Session* pSession);
     void vFreeState(i8 i_State);
     void vSetPosition(Session* pSession, i8 iPosition);
+    void vSetSignalled(Session* pSession);
 
     void vDump(void);
   
