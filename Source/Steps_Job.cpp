@@ -7,6 +7,7 @@
 #include "SePrompt.hpp"
 
 extern AttachMap* gpAttachMap;
+extern Arguments  gxArguments;
 
 // job: ////////////////////////////////////////////////////////////////////////
 
@@ -1311,28 +1312,34 @@ void Task::vJobSignalConnector(MP_Task mpTask)
 {
   ENTRY("vJobSignalConnector"_Stz);
   
+  i8 rCode;
+  
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.signalConnector"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lock & unlock this job's mutex to ensure the connectorhas entered wait
-  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
-  if (0 != rCode)
-    vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-
+  // lock & unlock this job's mutex to ensure the connector has entered wait
+  if (! gxArguments.m_nDummyThreads) {
+    rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
+    if (0 != rCode)
+      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+  }
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  gpAttachMap->m_pApiState->vSetSignalled(mpTask->m_pSession);
+  
   rCode = pthread_cond_signal(&pJob->m_xThreadCond);
   if (0 != rCode)
     vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
-
-  gpAttachMap->m_pApiState->vSetSignalled(mpTask->m_pSession);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
-  if (0 != rCode)
-    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+  if (! gxArguments.m_nDummyThreads) {
+    rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
+    if (0 != rCode)
+      vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+  }
 
   
   EXIT();

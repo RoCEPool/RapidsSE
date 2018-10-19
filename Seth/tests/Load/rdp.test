@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // create the table
-Loop 100 {
+Loop 1000 {
 create table RDP (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
@@ -763,6 +763,11 @@ rows:
 //rows:
 // ( 3000,'test 3000', false,true, -9223372036854775807,9223372036854775807, -1.797693e+308,1.797693e+308, -9223372036854775807,9223372036854775807, TIMESTAMP '0001-01-01 00:00:00',TIMESTAMP '4000-01-01 12:59:59', 'quick brown fox','quick brown fox')
 */
+
+
+drop table rdp;
+mute
+
 }
 CLEANUP {
   
