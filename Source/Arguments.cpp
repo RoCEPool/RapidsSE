@@ -74,6 +74,8 @@ Arguments::Arguments(void)
   m_nSubLoaders = 4;
   m_iThisNode   = -1;
   m_nThreads    = 24;
+  m_nDummyThreads = 0;
+  m_nDummySleep = 10;
   m_bTouch      = false;
   m_bTracepoint = false;
   m_bTracing    = false;
@@ -215,6 +217,18 @@ bool Arguments::bParse(int argc, Stz* argv[])
         return false;
       }
       
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--dummyThreads"_Stz)) {
+      m_nDummyThreads = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--dummySleep"_Stz)) {
+      m_nDummySleep = argv[++i_Arg]->iToI8();
       continue;
     }
     
@@ -602,7 +616,12 @@ void Arguments::vPrintStartupInfo(void)
   
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_nSlots);
   vTrace("  --threads %lld\n"_Stz,m_nThreads);
-
+  
+  if (m_nDummyThreads) {
+    vTrace("  --dummyThreads %lld\n"_Stz,m_nDummyThreads);
+    vTrace("  --dummySleep %lld\n"_Stz,m_nDummySleep);
+  }
+  
 #ifdef _DEBUG
   vTrace("  --commands %s\n"_Stz,m_sCommandsDir.aChar());
   vTrace("  --sen %s\n"_Stz,m_sSenDir.aChar());

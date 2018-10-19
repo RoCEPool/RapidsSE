@@ -95,7 +95,8 @@ namespace Threads
     ~Thread(void);
   
     static void* pEntryPoint(void* pArg);
-  
+    static void* pEntryPointDummy(void* pArg);
+
     static Thread* pThisTLSThread(void);
   
     void vBind(i8 iCpu);
@@ -114,6 +115,7 @@ namespace Threads
     bool bRRnext(void);
     void vRRstart(void);
     void vSpawnThread(void);
+    void vSpawnDummyThread(void);
     void vTask(Task* pTask);
     i8   iThreadNo(void);
     eTC  eThreadState(void);
