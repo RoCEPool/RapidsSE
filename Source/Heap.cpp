@@ -423,6 +423,11 @@ void Heap::vPushFree(FreeChunk* pFreeChunk)
   
   pFreeChunk->vSetClass(CN_FREECHUNK);
   pFreeChunk->vNextFree(m_pFreeHead);
+  
+//  i8 nBytes = m_iObjectSize - sizeof(FreeChunk);
+//  void* aAddress = pAdd<void*>(pFreeChunk,sizeof(FreeChunk));
+//  MemLib::vScribble(aAddress,nBytes,CN_FREECHUNK);
+  
   m_pFreeHead = pFreeChunk;
   
   m_iFreeCount++;

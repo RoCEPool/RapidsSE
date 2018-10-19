@@ -82,12 +82,12 @@ void FreeChunk::vNextFree(FreeChunk* pNextFree)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* FreeChunk::aFooter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return &m_xFooter;
-}
+//Footer* FreeChunk::aFooter(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_);
+//  
+//  return &m_xFooter;
+//}
 
 /*============================================================================*/
 /* end                                                                        */

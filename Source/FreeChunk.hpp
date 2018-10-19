@@ -11,7 +11,7 @@ namespace Pool
     FreeChunk* m_pNextFree;  // next free chunk in chain
     
     // must be last
-    Footer m_xFooter;
+    //Footer m_xFooter;
     
   public:
     void* operator new(size_t, FreeChunk* pFreeChunk);
@@ -24,7 +24,7 @@ namespace Pool
     FreeChunk* pNextFree(void);
     void       vNextFree(FreeChunk* pNextFree);
     
-    Footer* aFooter(void);
+    //Footer* aFooter(void);
   };
 }
 
