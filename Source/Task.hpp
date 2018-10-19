@@ -1377,7 +1377,7 @@ namespace Tasks
         
     #ifdef __ENTRY_EXIT
     
- //ASSERT(! mpTask->m_pJob || mpTask->m_pJob->m_pExecutingTask == *mpTask) \
+ //ASSERT(! mpTask->m_pJob || mpTask->m_pJob->m_pExecutingTask == *mpTask) 
     
       #define ENTRY(aStepNm) \
         static StepAccum* pStepAccum = nullptr; \
