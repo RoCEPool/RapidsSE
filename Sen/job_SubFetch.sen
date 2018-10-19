@@ -151,13 +151,13 @@
   // execute fetch depending on the fetchTechnique in the planner
   pJob_SubFetch fetchRows
 
-  // now delete the ended job
-  pJob_SubFetch job.delete
+  ddlLock::testDrop
 
   // null the job in the task
   nullptr pTask task.job!
 
-  ddlLock::testDrop
+  // now delete the ended job
+  pJob_SubFetch job.delete
 
   <DONE_RUN>
 ;

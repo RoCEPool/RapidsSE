@@ -226,7 +226,7 @@ void Task::vTaskJobStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.job!"_Stz);
   Job* pJob = _pJob(pJobObject);
   
-  //pThatTask->m_pJob = pJob;
+  pThatTask->m_pJob = pJob;
   
   EXIT();
 }

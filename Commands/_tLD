@@ -21,6 +21,7 @@ create index t_idx0 on t (t_int);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //print "t1.csv..." ;
+//sleep 10;
 //ld t "/rapids/t/t1.csv" ;
 //fetch t displayOff;
 //antbl t;

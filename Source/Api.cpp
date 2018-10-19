@@ -189,6 +189,8 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   if (0 != rCode)
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
   
+  RASSERT( _bIsValidJob(pJob->eClass()) );
+  
   if (bPostJob)
     pCommandProcessor->vPostJob(pSession);
   
