@@ -636,6 +636,12 @@ void RapidsSE::vStartSystem(void)
     pThread->vSpawnThread();
   }
   
+  // spawn dummy threads
+  for (i8 iThreads = 0; iThreads < gxArguments.m_nDummyThreads; iThreads++) {
+    Thread* pThread = new Thread;
+    pThread->vSpawnDummyThread();
+  }
+
   while (*gpAttachMap->m_ziThreads != gxArguments.m_nThreads)
     PosixThread::vSleepMilli(10);
   

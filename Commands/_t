@@ -2,7 +2,7 @@
 /* _t -- create table t                                                       */
 /*============================================================================*/
 
-startCluster;
+// startCluster;
 
 create table t
 (

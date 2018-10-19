@@ -57,6 +57,8 @@ namespace StorageEngine
     i8   m_nSubLoaders; // number of subloaders
     i8   m_iThisNode;   // this node no in the m_xNode list              //! FIX
     i8   m_nThreads;    // number of general threads
+    i8   m_nDummyThreads; // number of dummy threads
+    i8   m_nDummySleep; // sleep period for dummy threads
     bool m_bTouch;      // touch all shm pages during region create
     bool m_bTracepoint; // print tracepoint
     bool m_bTracing;    // tracing

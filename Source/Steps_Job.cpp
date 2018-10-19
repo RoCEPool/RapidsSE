@@ -1327,12 +1327,13 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   if (0 != rCode)
     vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
 
+  gpAttachMap->m_pApiState->vSetSignalled(mpTask->m_pSession);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 
-  gpAttachMap->m_pApiState->vSetSignalled(mpTask->m_pSession);
   
   EXIT();
 }

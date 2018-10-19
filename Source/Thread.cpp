@@ -154,6 +154,27 @@ void* Thread::pEntryPoint(void* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dummy thread entry point                                                   */
+/*----------------------------------------------------------------------------*/
+void* Thread::pEntryPointDummy(void* pArg)
+{
+  Thread* pThread = static_cast<Thread*>(pArg);
+  
+  pThread->vThreadState(TC_IDLE);
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("Thread::pDummyEntryPoint %p %lld\n"_Stz,
+           pThread,pThread->iThreadNo());
+  
+  while (true)
+    PosixThread::vSleepMicro(gxArguments.m_nDummySleep);
+  
+  //delete pThread;
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get this thread                                                            */
 /*----------------------------------------------------------------------------*/
 Thread* Thread::pThisTLSThread(void)
@@ -452,6 +473,18 @@ void Thread::vSpawnThread(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool bResult = m_pPosixThread->bSpawnThread(Thread::pEntryPoint,this);
+  
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn a dummy thread                                                       */
+/*----------------------------------------------------------------------------*/
+void Thread::vSpawnDummyThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::pEntryPointDummy,this);
   
   ASSERT(bResult);
 }
