@@ -143,10 +143,10 @@ void SePrompt::vPromptLoop(void)
     
     // sleep before executing wait so that system call to spawn
     // other se nodes completes. Else it interferes with the wait
-    if (m_pJob->eClass() == CN_JOB_STARTCLUSTER) {
-      // loop till the se nodes have been spawned i.e till start node is set
-      while (gpAttachMap->m_pGrid->m_iStartNode == -1);
-    }
+//    if (m_pJob->eClass() == CN_JOB_STARTCLUSTER) {
+//      // loop till the se nodes have been spawned i.e till start node is set
+//      while (gpAttachMap->m_pGrid->m_iStartNode == -1);
+//    }
     
     vWaitCond();
 

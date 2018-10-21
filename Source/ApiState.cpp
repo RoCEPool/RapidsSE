@@ -63,6 +63,7 @@ ApiState::ApiState(void)
     aState->m_pSession   = nullptr;
     
     aState->m_eApiCall   = AC_NONE;
+    aState->m_iLocation  = 0;
     aState->m_eJobClass  = CN_NONE;
     aState->m_eError     = EC_NONE;
     aState->m_bRunning   = false;
@@ -129,10 +130,13 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   
   SessionState* aState = &m_xSessionState[i_Session];
 
-  aState->m_bRunning = true;
-  aState->m_iPosition = 0;
-  aState->m_eApiCall = eApiCall;
-  aState->m_eJobClass = CN_NONE;
+  aState->m_eApiCall   = eApiCall;
+  aState->m_iLocation  = 0;
+  aState->m_eJobClass  = CN_NONE;
+  aState->m_eError     = EC_NONE;
+  aState->m_bRunning   = true;
+  aState->m_bSignalled = false;
+  aState->m_iPosition  = 0;
   
   aState->m_xTimer.vStart();
   
@@ -209,6 +213,7 @@ void ApiState::vFreeState(i8 i_Session)
   aState->m_pSession = nullptr;
   
   aState->m_eApiCall   = AC_NONE;
+  aState->m_iLocation  = 0;
   aState->m_eJobClass  = CN_NONE;
   aState->m_eError     = EC_NONE;
   aState->m_bRunning   = false;
@@ -223,6 +228,17 @@ void ApiState::vFreeState(i8 i_Session)
   m_iFirstFree = i_Session;
   
   m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set last location                                                          */
+/*----------------------------------------------------------------------------*/
+void ApiState::vSetLocation(Session* pSession, i8 iLocation)
+{
+  i8 i_Session = pSession->m_iApiState;
+  SessionState* aState = &m_xSessionState[i_Session];
+  
+  aState->m_iLocation = iLocation;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -269,10 +285,11 @@ void ApiState::vDump(void)
       if (aState->m_bRunning)
         aState->m_xTimer.vUpdate();
 
-      vTrace("  %lld: session %p, call %s, job %s, error %s, %s, %s, pos %lld, time %lldus total %lldus\n"_Stz,
+      vTrace("  %lld: session %p, call %s, loc %lld, job %s, error %s, %s, %s, pos %lld, time %lldus total %lldus\n"_Stz,
              i_Session,
              pSession,
              aAC[aState->m_eApiCall],
+             aState->m_iLocation,
              aCN[aState->m_eJobClass],
              aEC[aState->m_eError],
              aState->m_bRunning ? "running" : "completed",
@@ -287,11 +304,11 @@ void ApiState::vDump(void)
              pSession->m_nJobNew,
              pSession->m_nJobDelete);
     }
-    else {
-      vTrace("  %lld: nextfree %lld\n"_Stz,
-             i_Session,
-             aState->m_iNextFree);
-    }
+//    else {
+//      vTrace("  %lld: nextfree %lld\n"_Stz,
+//             i_Session,
+//             aState->m_iNextFree);
+//    }
   }
   
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);

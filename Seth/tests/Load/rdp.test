@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // create the table
-Loop 1000 {
+Loop 1000000 {
 create table RDP (
 
 rdp_testno   INTEGER       NOT NULL, // col 0

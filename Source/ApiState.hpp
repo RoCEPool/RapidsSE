@@ -10,11 +10,12 @@ namespace StorageEngine
     Session* m_pSession;
     
     eAC      m_eApiCall;   // current / last api call
+    i8       m_iLocation;  // last reported location in api call
     eCN      m_eJobClass;  // current / lost job
     eEC      m_eError;     // last error code
     bool     m_bRunning;   // call still running
     bool     m_bSignalled; // calling thread has been signalled?
-    i8       m_iPosition;  // last reported position
+    i8       m_iPosition;  // last reported position in SEN
     Timer    m_xTimer;     // call timer
     i8       m_iTotalMicroSecs; // total time in us
     
@@ -47,6 +48,7 @@ namespace StorageEngine
     void vApiJob(Session* pSession, eCN eJobClass);
     void vApiReturn(Session* pSession);
     void vFreeState(i8 i_State);
+    void vSetLocation(Session* pSession, i8 iLocation);
     void vSetPosition(Session* pSession, i8 iPosition);
     void vSetSignalled(Session* pSession);
 
