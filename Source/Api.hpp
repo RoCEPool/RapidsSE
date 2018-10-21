@@ -80,6 +80,7 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession);
 void vApiCall(Session* pSession, eAC eApiCall);
 void vApiError(Session* pSession, eEC eError);
 void vApiJob(Session* pSession, eCN eJobClass);
+void vApiLocation(Session* pSession, i8 iLocation);
 void vApiReturn(Session* pSession);
 void vDeleteJobs(Session* pSession);
 
