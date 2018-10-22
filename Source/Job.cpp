@@ -5,6 +5,8 @@
 #include "JobsModel.h"
 #include "StorageEngine.h"
 
+Atomic gzJobSeq;
+
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
@@ -142,6 +144,8 @@ Job::~Job(void)
 void Job::vInit(void)
 {
   m_iJobId   = -1;
+  m_iJobSeq  = ++gzJobSeq;
+  
   m_pJobClass = nullptr;
   m_eSeed    = SS_ENUMS;
   m_eJobTrace   = JT_NONE;

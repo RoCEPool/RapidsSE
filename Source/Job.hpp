@@ -84,6 +84,8 @@ namespace JobsModel
   {
   public:
     i8  m_iJobId;              // job id
+    i8  m_iJobSeq;             // sequence number
+  
     JobClass* m_pJobClass;     // job class
     eSS  m_eSeed;              // task seed
     eJT  m_eJobTrace;          // job trace
