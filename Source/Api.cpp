@@ -107,6 +107,7 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     TRACE_EXIT("ea"_Stz);
     
     vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,900);
     return EC_NONE;
   }
   catch (Error* pError) {
@@ -129,6 +130,7 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_EndJobs);                                     // API CALL
+  vApiLocation(pSession,100);
   
   Stz* aApiCall = "RapidsSE_EndJobs"_Stz;
   eEC eResult;
@@ -146,6 +148,7 @@ eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
   pSession->m_bSessionExiting = true;
   
   vApiReturn(pSession);                                            // API RETURN
+  vApiLocation(pSession,900);
   return EC_NONE;
 }
 
@@ -155,7 +158,8 @@ eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
 Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool bFromPrompt)
 {
   vApiCall(pSession,AC_ExecCmdStr);                                  // API CALL
-  
+  vApiLocation(pSession,100);
+
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
   pCommandProcessor->vTokenise(aCommand);
@@ -163,6 +167,7 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   bool bFound = pCommandProcessor->bFindJobClass();
   if (! bFound) {
     vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,910);
     return nullptr;
   }
   
@@ -171,6 +176,7 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   Job* pJob = pCommandProcessor->pJob();
   if (!pJob) {
     vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,920);
     return nullptr;
   }
   vApiJob(pSession,pJob->eClass());                                   // API JOB
@@ -195,6 +201,7 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
     pCommandProcessor->vPostJob(pSession);
   
   vApiReturn(pSession);                                            // API RETURN
+  vApiLocation(pSession,900);
   return pJob;
 }
 
@@ -206,7 +213,8 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
                             void** ppJob, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_ExecuteCommand);                              // API CALL
-  
+  vApiLocation(pSession,100);
+
   Stz* aApiCall = "RapidsSE_ExecuteCommand"_Stz;
   eEC eResult;
   
@@ -221,7 +229,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
   
   if (eError != EC_NONE) {
     TRACE_EXIT("ea"_Stz);
-    vApiError(pSession,eError);      // API ERROR
+    vApiError(pSession,eError);                                     // API ERROR
     return eError;
   }
   
@@ -234,7 +242,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
       if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
         //vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
         TRACE_EXIT("eb"_Stz);
-        vApiError(pSession,eError);      // API ERROR
+        vApiError(pSession,eError);                                 // API ERROR
         return pJob->m_xNode[i_Node].m_eErrorCode;
       }
     }
@@ -250,6 +258,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
   TRACE_EXIT("ec"_Stz);
   
   vApiReturn(pSession);                                            // API RETURN
+  vApiLocation(pSession,900);
   return EC_NONE;
 }
 
@@ -259,7 +268,8 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
 eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuffer, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_FetchNextBuffer);                             // API CALL
-  
+  vApiLocation(pSession,100);
+
   Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
   eEC eResult;
   
@@ -289,6 +299,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
       // trace exit
       TRACE_EXIT("ea"_Stz);
       vApiReturn(pSession);                                        // API RETURN
+      vApiLocation(pSession,910);
       return EC_NONE;
     }
     
@@ -317,6 +328,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
     TRACE_EXIT("eb"_Stz);
     
     vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,900);
     return EC_NONE;
   }
   catch (Error* pError) {
@@ -339,7 +351,8 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
 eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_GetErrorMessage);                             // API CALL
-  
+  vApiLocation(pSession,100);
+
   eEC eResult;
   
   Stz* aApiCall = "RapidsSE_GetErrorMessage"_Stz;
@@ -362,6 +375,7 @@ eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, 
     TRACE_EXIT("ea"_Stz);
     
     vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,900);
     return EC_NONE;
   }
   catch (Error* pError) {
@@ -384,7 +398,8 @@ eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, 
 eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_GetRow);                                      // API CALL
-  
+  vApiLocation(pSession,100);
+
   Stz* aApiCall = "RapidsSE_GetRow"_Stz;
   eEC eResult;
   
@@ -442,6 +457,7 @@ eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 
   TRACE_EXIT("ea"_Stz);
   
   vApiReturn(pSession);                                            // API RETURN
+  vApiLocation(pSession,900);
   return EC_NONE;
 }
 
@@ -451,7 +467,8 @@ eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 
 eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_GetRowCount);                                 // API CALL
-  
+  vApiLocation(pSession,100);
+
   Stz* aApiCall = "RapidsSE_GetRowCount"_Stz;
   eEC eResult;
   
@@ -476,6 +493,7 @@ eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTr
   TRACE_EXIT("ea"_Stz);
   
   vApiReturn(pSession);                                            // API RETURN
+  vApiLocation(pSession,900);
   return EC_NONE;
 }
 
@@ -485,7 +503,8 @@ eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTr
 eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_GetRowCountTableColumn);                      // API CALL
-  
+  vApiLocation(pSession,100);
+
   Stz* aApiCall = "RapidsSE_GetRowCountTableColumn"_Stz;
   eEC eResult;
   
@@ -513,6 +532,7 @@ eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCo
   TRACE_EXIT("ea"_Stz);
   
   vApiReturn(pSession);                                            // API RETURN
+  vApiLocation(pSession,900);
   return EC_NONE;
 }
 
@@ -522,7 +542,8 @@ eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCo
 eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_GetRowTableColumn);                           // API CALL
-  
+  vApiLocation(pSession,100);
+
   Stz* aApiCall = "RapidsSE_GetRowTableColumn"_Stz;
   eEC eResult;
   
@@ -562,6 +583,7 @@ eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void**
   TRACE_EXIT("ea"_Stz);
   
   vApiReturn(pSession);                                            // API RETURN
+  vApiLocation(pSession,900);
   return EC_NONE;
 }
 
@@ -571,7 +593,8 @@ eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void**
 eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_InsertRow);                                   // API CALL
-  
+  vApiLocation(pSession,100);
+
 
   eEC eResult;
   
@@ -606,6 +629,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       eEC eErrorCode = EC_MAX_ROW_LENGTH;
       TRACE_ERROR("d"_Stz, eErrorCode);
       vApiReturn(pSession);                                        // API RETURN
+      vApiLocation(pSession,910);
       return eErrorCode;
     }
     
@@ -682,6 +706,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
     // trace exit
     TRACE_EXIT("ea"_Stz);
     vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,900);
     return EC_NONE;
     
   }
@@ -705,7 +730,8 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
 eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_LoadResult);                                  // API CALL
-  
+  vApiLocation(pSession,100);
+
   eEC eResult;
   
   Stz* aApiCall = "RapidsSE_LoadResult"_Stz;
@@ -749,6 +775,7 @@ eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pI
     TRACE_EXIT("ea"_Stz);
     
     vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,900);
     return EC_NONE;
   }
   catch (Error* pError) {
@@ -821,7 +848,8 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
 eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_SessionDelete);                               // API CALL
-  
+  vApiLocation(pSession,100);
+
   eEC eResult;
   Stz* aApiCall = "RapidsSE_SessionDelete"_Stz;
   
@@ -836,7 +864,8 @@ eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
     vDeleteJobs(pSession);
     
     vApiReturn(pSession);                                          // API RETURN
-    
+    vApiLocation(pSession,900);
+
     // delete the session
     RapidsSE::vDeleteSession(pSession);
     
@@ -1017,6 +1046,14 @@ void vApiError(Session* pSession, eEC eError)
 void vApiJob(Session* pSession, eCN eJobClass)
 {
   gpAttachMap->m_pApiState->vApiJob(pSession,eJobClass);
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark location of an api                                                    */
+/*----------------------------------------------------------------------------*/
+void vApiLocation(Session* pSession, i8 iLocation)
+{
+  gpAttachMap->m_pApiState->vSetLocation(pSession,iLocation);
 }
 
 /*----------------------------------------------------------------------------*/
