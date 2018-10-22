@@ -165,7 +165,11 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
 
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
+  vApiLocation(pSession,101);
+  
   pCommandProcessor->vTokenise(aCommand);
+  
+  vApiLocation(pSession,102);
   
   bool bFound = pCommandProcessor->bFindJobClass();
   if (! bFound) {
@@ -174,7 +178,11 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
     return nullptr;
   }
   
+  vApiLocation(pSession,103);
+  
   pCommandProcessor->vPreJob(pSession);
+  
+  vApiLocation(pSession,104);
   
   Job* pJob = pCommandProcessor->pJob();
   if (!pJob) {
@@ -183,14 +191,19 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
     return nullptr;
   }
   vApiJob(pSession,pJob->eClass());                                   // API JOB
+  vApiLocation(pSession,105);
   
   // lock this job's mutex
   i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
   
+  vApiLocation(pSession,106);
+  
   // spawn the job
   RapidsSE_bSpawnJob(pJob, SS_SEED_REQ, pSession);
+  
+  vApiLocation(pSession,107);
   
   // wait for condition
   rCode = pthread_cond_wait(&pJob->m_xThreadCond,
@@ -199,11 +212,15 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
     vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
   
   RASSERT( _bIsValidJob(pJob->eClass()) );
+  vApiLocation(pSession,108);
   
   if (bPostJob)
     pCommandProcessor->vPostJob(pSession);
   
-  vApiReturn(pSession);                                            // API RETURN
+  vApiLocation(pSession,109);
+  
+  vApiReturn(pSession);
+  // API RETURN
   vApiLocation(pSession,900);
   return pJob;
 }
