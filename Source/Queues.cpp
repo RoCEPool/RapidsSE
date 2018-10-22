@@ -106,9 +106,13 @@ void Queues::vThreadsReport()
     
     Thread* pThread = pQueues->m_pThreadVector->pGet(i_Thread);
     
-    vTrace("  Thread %2lld %p %7s os id %lld posix id %lld rr : last %2lld start %2lld %s\n"_Stz,
+    vTrace("  Thread %2lld %p base %llx size %lld %7s os id %lld posix id %llx rr : last %2lld start %2lld %s\n"_Stz,
            pThread->m_iThreadNo,
            pThread,
+           
+           pThread->m_aStackBase,
+           pThread->m_iStackSize,
+           
            aTC[pThread->m_eThreadState],
            pThread->m_pPosixThread->m_iOpSysThreadId,
            pThread->m_pPosixThread->m_iPosixThreadId,

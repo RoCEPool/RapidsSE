@@ -69,6 +69,9 @@ namespace Threads
 
   public:
     i8           m_iThreadNo;    // our thread no
+    void*        m_aStackBase;   // stack base address
+    i8           m_iStackSize;   // stack size
+  
     Lock         m_xLock;        // thread lock
     eTC          m_eThreadState; // thread state
     PosixThread* m_pPosixThread; // its posix structure
@@ -94,8 +97,8 @@ namespace Threads
     Thread(void);
     ~Thread(void);
   
-    static void* pEntryPoint(void* pArg);
-    static void* pEntryPointDummy(void* pArg);
+    static void* aEntryPoint(void* pArg);
+    static void* aEntryPointDummy(void* pArg);
 
     static Thread* pThisTLSThread(void);
   

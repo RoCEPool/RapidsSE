@@ -70,6 +70,9 @@ Thread::Thread(void)
   static Atomic zThreadNo;
   
   m_iThreadNo    = ++zThreadNo;
+  m_aStackBase   = nullptr;
+  m_iStackSize   = 0;
+  
   m_xLock.vInitLock(LK_THREAD);
   m_eThreadState = TC_NONE;
   m_pPosixThread = new PosixThread;
@@ -107,16 +110,19 @@ Thread::~Thread(void)
 /*----------------------------------------------------------------------------*/
 /* thread entry point                                                         */
 /*----------------------------------------------------------------------------*/
-void* Thread::pEntryPoint(void* pArg)
+void* Thread::aEntryPoint(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
+  pThread->m_aStackBase = PosixThread::aStackBase();
+  pThread->m_iStackSize = PosixThread::iStackSize();
+
   pThread->vThreadState(TC_IDLE);
   
   gpAttachMap->m_pQueues->vAddThread(pThread);
   
   if (gpAttachMap->m_bVerbose)
-    vTrace("Thread::pEntryPoint %p %lld\n"_Stz,
+    vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
   try {
@@ -143,7 +149,7 @@ void* Thread::pEntryPoint(void* pArg)
   }
   
   if (gpAttachMap->m_bVerbose)
-    vTrace("Thread::pEntryPoint %p %lld exiting\n"_Stz,
+    vTrace("Thread::aEntryPoint %p %lld exiting\n"_Stz,
            pThread,pThread->iThreadNo());
   
   gpAttachMap->m_pQueues->vRemoveThread(pThread);
@@ -156,7 +162,7 @@ void* Thread::pEntryPoint(void* pArg)
 /*----------------------------------------------------------------------------*/
 /* dummy thread entry point                                                   */
 /*----------------------------------------------------------------------------*/
-void* Thread::pEntryPointDummy(void* pArg)
+void* Thread::aEntryPointDummy(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
@@ -472,7 +478,7 @@ void Thread::vSpawnThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPosixThread->bSpawnThread(Thread::pEntryPoint,this);
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::aEntryPoint,this);
   
   ASSERT(bResult);
 }
@@ -484,7 +490,7 @@ void Thread::vSpawnDummyThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPosixThread->bSpawnThread(Thread::pEntryPointDummy,this);
+  bool bResult = m_pPosixThread->bSpawnThread(Thread::aEntryPointDummy,this);
   
   ASSERT(bResult);
 }
