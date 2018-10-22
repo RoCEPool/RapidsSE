@@ -37,6 +37,9 @@ namespace System
     static void  vSleepMilli(i8 nMilliSeconds);
     static void  vSleepNano(i8 nNanoSeconds);
     static void  vSleepSec(i8 nSeconds);
+    static void* aStackBase(void);
+    static void* aStackPointer(void);
+    static i8    iStackSize(void);
     static bool  bTlsCreate(pthread_key_t* pTlsKey);
     static void* pTlsGet(pthread_key_t iTlsKey);
     static void  vTlsSet(pthread_key_t iTlsKey, void* pArg);

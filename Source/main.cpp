@@ -11,6 +11,11 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+  printf("Stack base %llx size %lld pointer %llx\n",
+         PosixThread::aStackBase(),
+         PosixThread::iStackSize(),
+         PosixThread::aStackPointer());
+  
   // parse the command line arguments
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )
     exit(EXIT_FAILURE);

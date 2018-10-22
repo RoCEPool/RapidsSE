@@ -381,6 +381,40 @@ void PosixThread::vSleepSec(i8 nSeconds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get stack base address                                                     */
+/*----------------------------------------------------------------------------*/
+void* PosixThread::aStackBase(void)
+{
+  pthread_t tThread = pthread_self();
+  
+  void* aAddress = pthread_get_stackaddr_np(tThread);
+
+  return aAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current stack pointer                                                  */
+/*----------------------------------------------------------------------------*/
+void* PosixThread::aStackPointer(void)
+{
+  void* aPointer = &aPointer;
+  
+  return aPointer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stack size                                                             */
+/*----------------------------------------------------------------------------*/
+i8 PosixThread::iStackSize(void)
+{
+  pthread_t tThread = pthread_self();
+  
+  i8 iSize = pthread_get_stacksize_np(tThread);
+  
+  return iSize;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a tls slot                                                          */
 /*----------------------------------------------------------------------------*/
 bool PosixThread::bTlsCreate(pthread_key_t* pTlsKey)
