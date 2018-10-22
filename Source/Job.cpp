@@ -151,6 +151,8 @@ void Job::vInit(void)
   m_pWorkingBuffer = nullptr;
   m_bFindingJob = false;
   
+  m_iState = 0;
+  
   // initialise attribute to mutex
   MemLib::vZero(&m_xThreadMutexAttr,sizeof(m_xThreadMutexAttr),CN_SEMAPHORE);
   i8 iResult = pthread_mutexattr_init(&m_xThreadMutexAttr);

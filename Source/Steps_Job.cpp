@@ -1328,6 +1328,10 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   //}
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // 
+  pJob->m_iState = 2;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   gpAttachMap->m_pApiState->vSetSignalled(mpTask->m_pSession);
   
   rCode = pthread_cond_signal(&pJob->m_xThreadCond);

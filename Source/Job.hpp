@@ -95,6 +95,8 @@ namespace JobsModel
     WorkingBuffer* m_pWorkingBuffer; // working buffer
 
     bool m_bFindingJob; // temp. to be fixed
+  
+    i8 m_iState; // cond wait state
     
     pthread_mutex_t     m_xThreadMutex;     // connector thread mutex variable
     pthread_mutexattr_t m_xThreadMutexAttr; // connector thread mutex shared attribute
