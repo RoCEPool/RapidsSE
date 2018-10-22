@@ -210,9 +210,11 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   vApiLocation(pSession,108);
   
   // wait for condition & state
+  i8 iLocation = 10000;
   do {
     rCode = pthread_cond_wait(&pJob->m_xThreadCond,
                               &pJob->m_xThreadMutex);
+    vApiLocation(pSession,iLocation++);
     if (0 != rCode)
       vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
   } while (pJob->m_iState != 2);
@@ -254,60 +256,76 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
   Stz* aApiCall = "RapidsSE_ExecuteCommand"_Stz;
   eEC eResult;
   
-  // trace entry
-  TRACE_ENTRY_P1(aCommand);
+  try {
+    // trace entry
+    TRACE_ENTRY_P1(aCommand);
 
-  vApiLocation(pSession,200);
+    vApiLocation(pSession,200);
 
-  // validate the session
-  VALIDATE_SESSION("a"_Stz);
-  
-  // set the catalog and schema in the session
-  eEC eError = pSession->eInit(sCatalogName, sSchemaName);
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
+    
+    // set the catalog and schema in the session
+    eEC eError = pSession->eInit(sCatalogName, sSchemaName);
 
-  if (eError != EC_NONE) {
-    TRACE_EXIT("ea"_Stz);
-    vApiError(pSession,eError);                                     // API ERROR
-    vApiLocation(pSession,811);
-    return eError;
-  }
-  
-  // execute the command
-  vApiLocation(pSession,210);
-  Job* pJob = RapidsSE_pExecCmdStr(aCommand, pSession, false, false);
-  vApiLocation(pSession,220);
-
-  // check if job had an error
-  if (pJob->m_bHasError) {
-    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
-        //vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
-        TRACE_EXIT("eb"_Stz);
-        vApiError(pSession,eError);                                 // API ERROR
-        vApiLocation(pSession,812);
-        return pJob->m_xNode[i_Node].m_eErrorCode;
-      }
+    if (eError != EC_NONE) {
+      TRACE_EXIT("ea"_Stz);
+      vApiError(pSession,eError);                                     // API ERROR
+      vApiLocation(pSession,811);
+      return eError;
     }
-    ASSERT(0);
+    
+    // execute the command
+    vApiLocation(pSession,210);
+    Job* pJob = RapidsSE_pExecCmdStr(aCommand, pSession, false, false);
+    vApiLocation(pSession,220);
+
+    // check if job had an error
+    if (pJob->m_bHasError) {
+      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+        if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
+          //vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
+          TRACE_EXIT("eb"_Stz);
+          vApiError(pSession,eError);                                 // API ERROR
+          vApiLocation(pSession,812);
+          return pJob->m_xNode[i_Node].m_eErrorCode;
+        }
+      }
+      ASSERT(0);
+    }
+    
+    vApiLocation(pSession,230);
+
+    // return job in ppJob
+    *ppJob = pJob;
+    
+    vApiLocation(pSession,240);
+
+    // push the job on the sessions job stack
+    pSession->m_pJobStack->vPushObject(pJob);
+    
+    TRACE_EXIT("ec"_Stz);
+
+    vApiLocation(pSession,250);
+
+    vApiReturn(pSession);                                            // API RETURN
+    vApiLocation(pSession,900);
+    return EC_NONE;
   }
-  
-  vApiLocation(pSession,230);
-
-  // return job in ppJob
-  *ppJob = pJob;
-  
-  vApiLocation(pSession,240);
-
-  // push the job on the sessions job stack
-  pSession->m_pJobStack->vPushObject(pJob);
-  
-  TRACE_EXIT("ec"_Stz);
-
-  vApiLocation(pSession,250);
-
-  vApiReturn(pSession);                                            // API RETURN
-  vApiLocation(pSession,900);
-  return EC_NONE;
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,801);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    vApiLocation(pSession,802);
+    return EC_SE_UNKNOWN_ERROR;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
