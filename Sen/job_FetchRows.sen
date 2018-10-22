@@ -188,8 +188,12 @@
 
   iPhrases 0
   do
+    700 apiState::setPosition
     I pPlanner pJob_FetchRows spawnSub
+    750 apiState::setPosition
   loop
+
+  800 apiState::setPosition
 
   popTable
 
