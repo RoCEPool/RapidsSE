@@ -217,14 +217,14 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
       vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
   } while (pJob->m_iState != 2);
 
-  //vApiLocation(pSession,109);
+  vApiLocation(pSession,109);
 
   // unlock this job's mutex
   rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 
-  //vApiLocation(pSession,110);
+  vApiLocation(pSession,110);
 
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
