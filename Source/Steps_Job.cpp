@@ -1321,11 +1321,11 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock & unlock this job's mutex to ensure the connector has entered wait
-  if (! gxArguments.m_nDummyThreads) {
+  //if (! gxArguments.m_nDummyThreads) {
     rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
     if (0 != rCode)
       vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-  }
+  //}
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   gpAttachMap->m_pApiState->vSetSignalled(mpTask->m_pSession);
@@ -1335,11 +1335,11 @@ void Task::vJobSignalConnector(MP_Task mpTask)
     vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (! gxArguments.m_nDummyThreads) {
+  //if (! gxArguments.m_nDummyThreads) {
     rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
     if (0 != rCode)
       vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
-  }
+  //}
 
   
   EXIT();
