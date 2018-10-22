@@ -165,11 +165,11 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
 
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
-  vApiLocation(pSession,101);
+  //vApiLocation(pSession,101);
   
   pCommandProcessor->vTokenise(aCommand);
   
-  vApiLocation(pSession,102);
+  //vApiLocation(pSession,102);
   
   bool bFound = pCommandProcessor->bFindJobClass();
   if (! bFound) {
@@ -178,11 +178,11 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
     return nullptr;
   }
   
-  vApiLocation(pSession,103);
+  //vApiLocation(pSession,103);
   
   pCommandProcessor->vPreJob(pSession);
   
-  vApiLocation(pSession,104);
+  //vApiLocation(pSession,104);
   
   Job* pJob = pCommandProcessor->pJob();
   if (!pJob) {
@@ -191,18 +191,18 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
     return nullptr;
   }
   vApiJob(pSession,pJob->eClass());                                   // API JOB
-  vApiLocation(pSession,105);
+  //vApiLocation(pSession,105);
   
   // lock this job's mutex
   i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
-  vApiLocation(pSession,106);
+  //vApiLocation(pSession,106);
   
   pJob->m_iState = 1;
   
-  vApiLocation(pSession,107);
+  //vApiLocation(pSession,107);
   
   // spawn the job
   RapidsSE_bSpawnJob(pJob, SS_SEED_REQ, pSession);
@@ -210,30 +210,30 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   vApiLocation(pSession,108);
   
   // wait for condition & state
-  do {
+  //do {
     rCode = pthread_cond_wait(&pJob->m_xThreadCond,
                               &pJob->m_xThreadMutex);
     if (0 != rCode)
       vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-  } while (pJob->m_iState != 2);
+  //} while (pJob->m_iState != 2);
 
-  vApiLocation(pSession,109);
+  //vApiLocation(pSession,109);
 
   // unlock this job's mutex
-  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
-  if (0 != rCode)
-    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+//  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
+//  if (0 != rCode)
+//    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 
-  vApiLocation(pSession,110);
+  //vApiLocation(pSession,110);
 
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
-  vApiLocation(pSession,111);
+  //vApiLocation(pSession,111);
   
   if (bPostJob)
     pCommandProcessor->vPostJob(pSession);
   
-  vApiLocation(pSession,112);
+  //vApiLocation(pSession,112);
   
   vApiReturn(pSession);
   // API RETURN
