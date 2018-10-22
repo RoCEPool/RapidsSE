@@ -271,7 +271,7 @@ success
 LOG 'Loading regression data ';
 
 // load data into the tables
-ESCAPE CONNECTOR se 'load TABLE1' with file=‘/home/alka/master/rapidsse/Seth/tests/Load/tbl1data.csv' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load TABLE1' with file='/home/alka/master/rapidsse/Seth/tests/Load/tbl1data.csv' , node = 'Node1' ;
 failure
 
 ESCAPE CONNECTOR se 'load TABLE2' with file='/home/alka/master/rapidsse/Seth/tests/Load/tbl2data.csv' , node = 'Node1' ;
