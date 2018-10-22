@@ -55,6 +55,7 @@ eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 {
   vApiCall(pSession,AC_EndInsertJobs);                               // API CALL
+  vApiLocation(pSession,100);
 
   eEC eResult;
   
@@ -115,12 +116,14 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     TRACE_ERROR("!", pError->eErrorCode());
     eEC eError = pError->eErrorCode();
     vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,800);
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
-    return EC_SE_UNKNOWN_ERROR;
+    vApiLocation(pSession,801);
+   return EC_SE_UNKNOWN_ERROR;
   }
 }
 
@@ -230,6 +233,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
   if (eError != EC_NONE) {
     TRACE_EXIT("ea"_Stz);
     vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,811);
     return eError;
   }
   
@@ -243,6 +247,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
         //vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
         TRACE_EXIT("eb"_Stz);
         vApiError(pSession,eError);                                 // API ERROR
+        vApiLocation(pSession,812);
         return pJob->m_xNode[i_Node].m_eErrorCode;
       }
     }
@@ -336,11 +341,13 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
     TRACE_ERROR("!", pError->eErrorCode());
     eEC eError = pError->eErrorCode();
     vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,801);
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    vApiLocation(pSession,802);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -383,11 +390,13 @@ eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, 
     TRACE_ERROR("!", pError->eErrorCode());
     eEC eError = pError->eErrorCode();
     vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,801);
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    vApiLocation(pSession,802);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -647,6 +656,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       eEC eErrorCode = EC_INVALID_VALUE;
       TRACE_ERROR("d"_Stz, eErrorCode);
       vApiError(pSession,eErrorCode);                               // API ERROR
+      vApiLocation(pSession,811);
       return eErrorCode;
     }
 
@@ -676,6 +686,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
         vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
         TRACE_ERROR("f"_Stz, eErrorCode);
         vApiError(pSession,eErrorCode);                             // API ERROR
+        vApiLocation(pSession,812);
         return eErrorCode;
       }
       
@@ -715,11 +726,13 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
     TRACE_ERROR("!", pError->eErrorCode());
     eEC eError = pError->eErrorCode();
     vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,800);
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    vApiLocation(pSession,801);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
@@ -783,11 +796,13 @@ eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pI
     TRACE_ERROR("!", pError->eErrorCode());
     eEC eError = pError->eErrorCode();
     vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,800);
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    vApiLocation(pSession,801);
     return EC_SE_UNKNOWN_ERROR;
   }
 }
