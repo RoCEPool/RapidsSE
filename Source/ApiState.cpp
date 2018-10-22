@@ -288,7 +288,9 @@ void ApiState::vDump(void)
       if (aState->m_bRunning)
         aState->m_xTimer.vUpdate();
 
-      vTrace("  %lld: session %p, call %s, base %llx, loc %lld, job %s, error %s, %s, %s, pos %lld, time %lldus total %lldus\n"_Stz,
+      vTrace("  %lld: session %p, call %s, base %llx, loc %lld, job %s\n"
+             "     error %s, %s, %s, pos %lld, time %lldus total %lldus\n"
+             "     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
              i_Session,
              pSession,
              aAC[aState->m_eApiCall],
@@ -300,9 +302,7 @@ void ApiState::vDump(void)
              aState->m_bSignalled ? "signalled" : "not signalled",
              aState->m_iPosition,
              aState->m_xTimer.iMicroseconds(),
-             aState->m_iTotalMicroSecs
-            );
-      vTrace("     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
+             aState->m_iTotalMicroSecs,
              pSession->m_nApiCalls,
              pSession->m_nApiErrors,
              pSession->m_nJobNew,
