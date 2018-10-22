@@ -210,19 +210,19 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   vApiLocation(pSession,108);
   
   // wait for condition & state
-  //do {
+  do {
     rCode = pthread_cond_wait(&pJob->m_xThreadCond,
                               &pJob->m_xThreadMutex);
     if (0 != rCode)
       vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-  //} while (pJob->m_iState != 2);
+  } while (pJob->m_iState != 2);
 
   //vApiLocation(pSession,109);
 
   // unlock this job's mutex
-//  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
-//  if (0 != rCode)
-//    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
+  if (0 != rCode)
+    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 
   //vApiLocation(pSession,110);
 
