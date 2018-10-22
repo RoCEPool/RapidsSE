@@ -52,7 +52,7 @@ namespace StorageEngine
     void vFreeState(i8 i_State);
     void vSetLocation(Session* pSession, i8 iLocation);
     void vSetPosition(Session* pSession, i8 iPosition);
-    void vSetSignalled(Session* pSession);
+    void vSetSignalled(Job* pJob);
 
     void vDump(void);
   

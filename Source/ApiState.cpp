@@ -260,9 +260,12 @@ void ApiState::vSetPosition(Session* pSession, i8 iPosition)
 /*----------------------------------------------------------------------------*/
 /* set signalled                                                              */
 /*----------------------------------------------------------------------------*/
-void ApiState::vSetSignalled(Session* pSession)
+void ApiState::vSetSignalled(Job* pJob)
 {
+  Session* pSession = pJob->m_pSession;
+  
   i8 i_Session = pSession->m_iApiState;
+  
   SessionState* aState = &m_xSessionState[i_Session];
   
   aState->m_bSignalled = true;

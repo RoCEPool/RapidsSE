@@ -1333,7 +1333,7 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   RASSERT( _bIsValidJob(pJob->eClass()) );
-  gpAttachMap->m_pApiState->vSetSignalled(mpTask->m_pSession);
+  gpAttachMap->m_pApiState->vSetSignalled(pJob);
   RASSERT( _bIsValidJob(pJob->eClass()) );
   
   rCode = pthread_cond_signal(&pJob->m_xThreadCond);
