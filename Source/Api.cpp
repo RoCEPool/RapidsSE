@@ -190,7 +190,7 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
     vApiLocation(pSession,920);
     return nullptr;
   }
-  vApiJob(pSession,pJob->eClass());                                   // API JOB
+  vApiJob(pSession,pJob);                                             // API JOB
   //vApiLocation(pSession,105);
   
   // lock this job's mutex
@@ -1120,9 +1120,9 @@ void vApiError(Session* pSession, eEC eError)
 /*----------------------------------------------------------------------------*/
 /* mark job of an api                                                         */
 /*----------------------------------------------------------------------------*/
-void vApiJob(Session* pSession, eCN eJobClass)
+void vApiJob(Session* pSession, Job* pJob)
 {
-  gpAttachMap->m_pApiState->vApiJob(pSession,eJobClass);
+  gpAttachMap->m_pApiState->vApiJob(pSession,pJob);
 }
 
 /*----------------------------------------------------------------------------*/

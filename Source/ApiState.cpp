@@ -66,6 +66,7 @@ ApiState::ApiState(void)
     aState->m_aStackBase = nullptr;
     aState->m_iLocation  = 0;
     aState->m_eJobClass  = CN_NONE;
+    aState->m_iJobSeq    = 0;
     aState->m_eError     = EC_NONE;
     aState->m_bRunning   = false;
     aState->m_bSignalled = false;
@@ -166,13 +167,14 @@ void ApiState::vApiError(Session* pSession, eEC eError)
 /*----------------------------------------------------------------------------*/
 /* mark job of an api                                                         */
 /*----------------------------------------------------------------------------*/
-void ApiState::vApiJob(Session* pSession, eCN eJobClass)
+void ApiState::vApiJob(Session* pSession, Job* pJob)
 {
   i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
 
-  aState->m_eJobClass = eJobClass;
-  
+  aState->m_eJobClass = pJob->eClass();
+  aState->m_iJobSeq   = pJob->m_iJobSeq;
+
   pSession->m_nJobNew++;
 }
 
@@ -288,7 +290,7 @@ void ApiState::vDump(void)
       if (aState->m_bRunning)
         aState->m_xTimer.vUpdate();
 
-      vTrace("  %lld: session %p, call %s, base %llx, loc %lld, job %s\n"
+      vTrace("  %lld: session %p, call %s, base %llx, loc %lld, job %s %lld\n"
              "     error %s, %s, %s, pos %lld, time %lldus total %lldus\n"
              "     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
              i_Session,
@@ -297,6 +299,7 @@ void ApiState::vDump(void)
              aState->m_aStackBase,
              aState->m_iLocation,
              aCN[aState->m_eJobClass],
+             aState->m_iJobSeq,
              aEC[aState->m_eError],
              aState->m_bRunning ? "running" : "completed",
              aState->m_bSignalled ? "signalled" : "not signalled",
