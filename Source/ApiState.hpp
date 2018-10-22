@@ -10,6 +10,7 @@ namespace StorageEngine
     Session* m_pSession;
     
     eAC      m_eApiCall;   // current / last api call
+    void*    m_aStackBase; // stack base of thread which made api call
     i8       m_iLocation;  // last reported location in api call
     eCN      m_eJobClass;  // current / lost job
     eEC      m_eError;     // last error code
