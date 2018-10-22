@@ -212,6 +212,7 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   // wait for condition & state
   i8 iLocation = 10000;
   do {
+    RASSERT( _bIsValidJob(pJob->eClass()) );
     rCode = pthread_cond_wait(&pJob->m_xThreadCond,
                               &pJob->m_xThreadMutex);
     vApiLocation(pSession,iLocation++);

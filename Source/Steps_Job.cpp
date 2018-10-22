@@ -1324,7 +1324,7 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   //if (! gxArguments.m_nDummyThreads) {
     rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
     if (0 != rCode)
-      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+      vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   //}
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1332,7 +1332,9 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   pJob->m_iState = 2;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  RASSERT( _bIsValidJob(pJob->eClass()) );
   gpAttachMap->m_pApiState->vSetSignalled(mpTask->m_pSession);
+  RASSERT( _bIsValidJob(pJob->eClass()) );
   
   rCode = pthread_cond_signal(&pJob->m_xThreadCond);
   if (0 != rCode)
