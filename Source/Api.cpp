@@ -223,13 +223,15 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
   
   // trace entry
   TRACE_ENTRY_P1(aCommand);
-  
+
+  vApiLocation(pSession,200);
+
   // validate the session
   VALIDATE_SESSION("a"_Stz);
   
   // set the catalog and schema in the session
   eEC eError = pSession->eInit(sCatalogName, sSchemaName);
-  
+
   if (eError != EC_NONE) {
     TRACE_EXIT("ea"_Stz);
     vApiError(pSession,eError);                                     // API ERROR
@@ -238,8 +240,10 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
   }
   
   // execute the command
+  vApiLocation(pSession,210);
   Job* pJob = RapidsSE_pExecCmdStr(aCommand, pSession, false, false);
-  
+  vApiLocation(pSession,220);
+
   // check if job had an error
   if (pJob->m_bHasError) {
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
@@ -254,14 +258,20 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
     ASSERT(0);
   }
   
+  vApiLocation(pSession,230);
+
   // return job in ppJob
   *ppJob = pJob;
   
+  vApiLocation(pSession,240);
+
   // push the job on the sessions job stack
   pSession->m_pJobStack->vPushObject(pJob);
   
   TRACE_EXIT("ec"_Stz);
-  
+
+  vApiLocation(pSession,250);
+
   vApiReturn(pSession);                                            // API RETURN
   vApiLocation(pSession,900);
   return EC_NONE;
