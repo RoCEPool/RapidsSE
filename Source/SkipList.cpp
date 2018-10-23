@@ -401,7 +401,9 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aP
     
     while (SkipNode* pNextNode = pCurrentNode->m_pRight[iCurrentLevel]) {
       
-      vTrace("pNextNode:%p\n"_Stz,pNextNode);
+      vTrace("pNextNode:%p n"_Stz,pNextNode);
+      vTrace("pNextNode:%s n"_Stz,aCN[pNextNode->eClass()]);
+      vTrace("Object:%p\n"_Stz,pNextNode->m_pObject);
       
       // compare the inserting object with next object
       bool bGreaterEqual = m_fCompare(pObjectInsert, pNextNode->m_pObject, bEqualTo);

@@ -1024,16 +1024,22 @@ bool bTaskCompareQueueOrder(void* pObjectInsert, void* pObjectScan, bool& bMatch
   Task* pInsertEntry = _pTask(pObjectInsert);
   Task* pScanEntry   = _pTask(pObjectScan);
   
+  vTrace("bTaskCompareQueueOrder1\n"_Stz);
+  
   RASSERT(pScanEntry->eClass() == CN_TASK);
   RASSERT(pInsertEntry->eClass() == CN_TASK);
   
-  if ( ! pObjectScan )
+  if ( ! pObjectScan ) {
+    vTrace("bTaskCompareQueueOrder2\n"_Stz);
     return false;
+  }
   
   if (pInsertEntry->iQueueOrder() == pScanEntry->iQueueOrder())
     bMatch = true;
   else
     bMatch = false;
+  
+  vTrace("bTaskCompareQueueOrder3\n"_Stz);
   
   if (pInsertEntry->iQueueOrder() > pScanEntry->iQueueOrder())
     return true;
