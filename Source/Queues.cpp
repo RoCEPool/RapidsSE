@@ -250,13 +250,10 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   RASSERT( ! pTask->bIsPartitioned());
   
-  vApiLocation(pTask->pSession(),12013);
   pTask->vQueue(QR_READY_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
   
-  vApiLocation(pTask->pSession(),12014);
   m_pReadyQueue->vAddTask(pTask);
-  vApiLocation(pTask->pSession(),12015);
   //vTrace("vAddToReadyQueue_NL: ReadyQ %lld\n"_Stz, m_pReadyQueue->nTasks());
 }
 
@@ -275,14 +272,11 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   
   // get slot no of the task
   i8 iSlot = TablePtn::iPartitionToSlot(pTask->iPartition());
-  vApiLocation(pTask->pSession(),12016);
   
   pTask->vQueue((eQR)iSlot);
   pTask->vQueueOrder(++m_ziQueueOrder);
-  vApiLocation(pTask->pSession(),12017);
   
   m_pReadySlotQueues[iSlot]->vAddTask(pTask);
-  vApiLocation(pTask->pSession(),12018);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -920,25 +914,16 @@ void Queues::vScheduleReadyTask(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   
   Thread* pIdleThread = pGrabIdleThread();
-  vApiLocation(pTask->pSession(),12006);
   
   if (pIdleThread) {
-    vApiLocation(pTask->pSession(),12007);
-    RASSERT(pIdleThread->bMutexIsLocked());
+    ASSERT(pIdleThread->bMutexIsLocked());
     pIdleThread->vExecuteTask(pTask);
-    vApiLocation(pTask->pSession(),12008);
   }
   else {
-    if (pTask->bIsNonPartitioned()) {
-      vApiLocation(pTask->pSession(),12009);
+    if (pTask->bIsNonPartitioned())
       vAddToReadyQueue(pTask);
-      vApiLocation(pTask->pSession(),12010);
-    }
-    else {
-      vApiLocation(pTask->pSession(),12011);
+    else
       vAddToReadySlotQueue(pTask);
-      vApiLocation(pTask->pSession(),12012);
-    }
   }
 }
 
@@ -1008,7 +993,6 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
   RASSERT(QR_NONE == pTask->eQueue());
   
   pTask->vState(TS_READY);
-  vApiLocation(pTask->pSession(),12005);
   
   eQR eQueue = pTask->eWhichQueue();
   RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlots);

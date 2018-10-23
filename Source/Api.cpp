@@ -94,8 +94,7 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
       vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
     
     // spawn the endInsert job
-    bool bResult = RapidsSE_bSpawnJob(pJob_EndInsert, SS_SEED_REQ, pSession);
-    RASSERT(bResult);
+    RapidsSE_bSpawnJob(pJob_EndInsert, SS_SEED_REQ, pSession);
     
     // wait for condition
     rCode = pthread_cond_wait(&pJob_EndInsert->m_xThreadCond,
@@ -1109,21 +1108,18 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession)
     vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
     return false;
   }
-  vApiLocation(pSession,12000);
+  
   //----------------------------------------------------------------------------
   
   // form the word to execute for the request
   pJob->vSeed(eSeed);
-  vApiLocation(pSession,12001);
   
   Task* pNewTask = new Task(pJob);
-  vApiLocation(pSession,12002);
   
   pNewTask->vSession(pSession);
-  vApiLocation(pSession,12003);
   
   Handlers::vSpawnedTaskHandler(pNewTask);
-  vApiLocation(pSession,12004);
+  
   return true;
 }
 
