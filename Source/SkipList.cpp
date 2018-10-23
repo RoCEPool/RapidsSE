@@ -387,7 +387,7 @@ SkipNode* SkipList::pNth(i8 iNth)
 #define goDownLevel(iLevel) iLevel--;
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aPriorVec)
 {
-  //vTrace("Adding %lld\n"_Stz,(i8)pObjectInsert);
+  vTrace("Adding %p\n"_Stz,pObjectInsert);
   bEqualTo = false;
   // start from head at known highest level
   SkipNode* pCurrentNode = m_pHead;
@@ -406,16 +406,16 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aP
       
       if (bGreaterEqual) {
         // pObjectInsert is >= pObjectNext
-        //vTrace("  %lld after %lld (level %lld)\n"_Stz,
-        //      (i8)pObjectInsert,(i8)pNextNode->m_pObject,iCurrentLevel);
+        vTrace("  %p after %p (level %lld)\n"_Stz,
+              pObjectInsert,pNextNode->m_pObject,iCurrentLevel);
         
         // go right one node
         goRightNode(iCurrentLevel,pCurrentNode);
       }
       else {
         // pObjectInsert is < pObjectNext or pObjectNext is null
-        //vTrace("  %lld before %lld (level %lld)\n"_Stz,
-        //       (i8)pObjectInsert,(i8)pNextNode->m_pObject,iCurrentLevel);
+        vTrace("  %p before %p (level %lld)\n"_Stz,
+               pObjectInsert,pNextNode->m_pObject,iCurrentLevel);
         
         break;
       }
@@ -427,6 +427,8 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aP
     // first record current node as a revision point
     if (aPriorVec)
       aPriorVec[iCurrentLevel] = pCurrentNode;
+    
+    vTrace("going down 1 level\n"_Stz);
     
     // now go down one level
     goDownLevel(iCurrentLevel);

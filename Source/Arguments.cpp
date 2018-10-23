@@ -73,7 +73,7 @@ Arguments::Arguments(void)
   m_bRestart    = true;
   m_nSubLoaders = 4;
   m_iThisNode   = -1;
-  m_nThreads    = 24;
+  m_nThreads    = 12;
   m_nDummyThreads = 0;
   m_nDummySleep = 10;
   m_bTouch      = false;
