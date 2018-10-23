@@ -303,6 +303,13 @@ void ApiState::vDump(void)
       
       if (aState->m_bRunning)
         aState->m_xTimer.vUpdate();
+      
+      i8 nBytes;
+      
+      if (aState->m_aStackBase >= aState->m_aStackPtr)
+        nBytes = nSub(aState->m_aStackBase,aState->m_aStackPtr);
+      else
+        nBytes = nSub(aState->m_aStackPtr,aState->m_aStackBase);
 
       vTrace("  %lld: session %p, call %s, base %llx, ptr %llx (%lldB), loc %lld, job %s seq %lld\n"
              "     error %s, %s, %s, pos %lld, time %lldus total %lldus\n"
@@ -312,7 +319,7 @@ void ApiState::vDump(void)
              aAC[aState->m_eApiCall],
              aState->m_aStackBase,
              aState->m_aStackPtr,
-             nSub(aState->m_aStackBase,aState->m_aStackPtr),
+             nBytes,
 
              aState->m_iLocation,
              aCN[aState->m_eJobClass],
