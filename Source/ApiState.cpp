@@ -245,6 +245,9 @@ void ApiState::vFreeState(i8 i_Session)
 /*----------------------------------------------------------------------------*/
 void ApiState::vSetLocation(Session* pSession, i8 iLocation)
 {
+  if ( ! pSession )
+    return;
+  
   i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
   
