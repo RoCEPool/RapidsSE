@@ -157,6 +157,7 @@ Task* TaskQueue::pPopTask(void)
   SkipNode* pNode = m_pTaskSkipList->pFirst(0);
   if (pNode) {
     pTask = _pTask(pNode->m_pObject);
+    RASSERT(pTask);
     bRemoved = m_pTaskSkipList->bRemove(pTask);
     RASSERT(bRemoved);
   }

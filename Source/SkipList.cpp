@@ -302,7 +302,7 @@ bool SkipList::bRemove(void* pObjectRemove)
   SkipNode* aPrior;
   
   SkipNode* pNodePrev = pPosition(pObjectRemove,bEqualTo,aPriorVec);
-  ASSERT(pNodePrev); // logic check
+  RASSERT(pNodePrev); // logic check
   
   if ( ! bEqualTo ) {
     vTrace("SkipList::bRemove: failed to match\n"_Stz);
@@ -311,7 +311,7 @@ bool SkipList::bRemove(void* pObjectRemove)
   
   // get node to be removed
   SkipNode* pNodeRemove = pNodePrev->m_pRight[0];
-  ASSERT(pObjectRemove == pNodeRemove->m_pObject); // logic check
+  RASSERT(pObjectRemove == pNodeRemove->m_pObject); // logic check
   
   // cut out the node being removed
   for (i8 i_Level = 0;
