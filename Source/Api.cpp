@@ -1109,26 +1109,52 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession)
     vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
     return false;
   }
-  if (pJob->eClass() == CN_JOB_FETCHROWS)
-    vApiLocation(pSession,12000);
+  vApiLocation(pSession,12000);
   //----------------------------------------------------------------------------
   
   // form the word to execute for the request
   pJob->vSeed(eSeed);
-  if (pJob->eClass() == CN_JOB_FETCHROWS)
-    vApiLocation(pSession,12001);
+  vApiLocation(pSession,12001);
   
   Task* pNewTask = new Task(pJob);
-  if (pJob->eClass() == CN_JOB_FETCHROWS)
-    vApiLocation(pSession,12002);
+  vApiLocation(pSession,12002);
   
   pNewTask->vSession(pSession);
-  if (pJob->eClass() == CN_JOB_FETCHROWS)
-    vApiLocation(pSession,12003);
+  vApiLocation(pSession,12003);
   
   Handlers::vSpawnedTaskHandler(pNewTask);
-  if (pJob->eClass() == CN_JOB_FETCHROWS)
-    vApiLocation(pSession,12004);
+  vApiLocation(pSession,12004);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
+bool RapidsSE_bSpawnJob2(Job* pJob, eSS eSeed, Session* pSession)
+{
+  //----------------------------------------------------------------------------
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = gpAttachMap->m_iPid;
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    if (pSession)
+      vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    return false;
+  }
+  
+  //----------------------------------------------------------------------------
+  
+  // form the word to execute for the request
+  pJob->vSeed(eSeed);
+  
+  Task* pNewTask = new Task(pJob);
+  
+  pNewTask->vSession(pSession);
+  
+  Handlers::vSpawnedTaskHandler(pNewTask);
+
   return true;
 }
 
