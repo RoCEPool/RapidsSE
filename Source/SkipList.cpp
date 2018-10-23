@@ -234,33 +234,33 @@ bool SkipList::bInsert(void* aObjectInsert)
 
   bool bEqualTo;
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
-  vTrace("bInsert:position1\n"_Stz);
+  //RJH vTrace("bInsert:position1\n"_Stz);
   
   // get a positioned prior vector
   SkipNode* pNode = pPosition(aObjectInsert,bEqualTo,aPriorVec);
   RASSERT(pNode); // logic check
-  vTrace("bInsert:position2\n"_Stz);
+  //RJH vTrace("bInsert:position2\n"_Stz);
   
   Object* pObjectInsert = (Object*)aObjectInsert;
   RASSERT( ! pNode->m_pObject || ((Object*)pNode->m_pObject)->eClass() == pObjectInsert->eClass() );
-  vTrace("bInsert:position3\n"_Stz);
+  //RJH vTrace("bInsert:position3\n"_Stz);
   
   // do not insert duplicates into a list of unique keys
   if (bEqualTo && m_bUniqueKey) {
-    vTrace("bInsert:position4\n"_Stz);
+    //RJH vTrace("bInsert:position4\n"_Stz);
     return false;
   }
   
-  vTrace("bInsert:position5\n"_Stz);
+  //RJH vTrace("bInsert:position5\n"_Stz);
   // choose a random level for the new node
   i8 iNodeLevel = iRandomLevel();
   if (iNodeLevel > m_iHeight) {
     iNodeLevel = ++m_iHeight;
     aPriorVec[iNodeLevel] = m_pHead;
-    vTrace("bInsert:position6\n"_Stz);
+    //RJH vTrace("bInsert:position6\n"_Stz);
 	}
   
-  vTrace("bInsert:position7\n"_Stz);
+  //RJH vTrace("bInsert:position7\n"_Stz);
   // create new node with inserted object
   SkipNode* pNodeInsert = new(iNodeLevel,m_pSlabAllocator) SkipNode(pObjectInsert);
   RASSERT(pNodeInsert);
@@ -269,12 +269,12 @@ bool SkipList::bInsert(void* aObjectInsert)
   do {
     pNodeInsert->m_pRight[iNodeLevel] = aPriorVec[iNodeLevel]->m_pRight[iNodeLevel];
     aPriorVec[iNodeLevel]->m_pRight[iNodeLevel] = pNodeInsert;
-    vTrace("bInsert:position8\n"_Stz);
+    //RJH vTrace("bInsert:position8\n"_Stz);
 	} while (--iNodeLevel >= 0);
   
   // one more object in the list
   m_nObjects++;
-  vTrace("bInsert:position9\n"_Stz);
+  //RJH vTrace("bInsert:position9\n"_Stz);
   
   // succesful insert
   return true;
@@ -387,7 +387,7 @@ SkipNode* SkipList::pNth(i8 iNth)
 #define goDownLevel(iLevel) iLevel--;
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aPriorVec)
 {
-  vTrace("Adding %p head:%p\n"_Stz,pObjectInsert, m_pHead);
+  //RJH vTrace("Adding %p head:%p\n"_Stz,pObjectInsert, m_pHead);
   bEqualTo = false;
   // start from head at known highest level
   SkipNode* pCurrentNode = m_pHead;
@@ -401,25 +401,25 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aP
     
     while (SkipNode* pNextNode = pCurrentNode->m_pRight[iCurrentLevel]) {
       
-      vTrace("pNextNode:%p n"_Stz,pNextNode);
-      vTrace("pNextNode:%s n"_Stz,aCN[pNextNode->eClass()]);
-      vTrace("Object:%p\n"_Stz,pNextNode->m_pObject);
+      //RJH vTrace("pNextNode:%p n"_Stz,pNextNode);
+      //RJH vTrace("pNextNode:%s n"_Stz,aCN[pNextNode->eClass()]);
+      //RJH vTrace("Object:%p\n"_Stz,pNextNode->m_pObject);
       
       // compare the inserting object with next object
       bool bGreaterEqual = m_fCompare(pObjectInsert, pNextNode->m_pObject, bEqualTo);
       
       if (bGreaterEqual) {
         // pObjectInsert is >= pObjectNext
-        vTrace("  %p after %p (level %lld)\n"_Stz,
-              pObjectInsert,pNextNode->m_pObject,iCurrentLevel);
+        //RJH vTrace("  %p after %p (level %lld)\n"_Stz,
+        //RJH        pObjectInsert,pNextNode->m_pObject,iCurrentLevel);
         
         // go right one node
         goRightNode(iCurrentLevel,pCurrentNode);
       }
       else {
         // pObjectInsert is < pObjectNext or pObjectNext is null
-        vTrace("  %p before %p (level %lld)\n"_Stz,
-               pObjectInsert,pNextNode->m_pObject,iCurrentLevel);
+        //RJH vTrace("  %p before %p (level %lld)\n"_Stz,
+        //RJH        pObjectInsert,pNextNode->m_pObject,iCurrentLevel);
         
         break;
       }
@@ -432,7 +432,7 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aP
     if (aPriorVec)
       aPriorVec[iCurrentLevel] = pCurrentNode;
     
-    vTrace("going down 1 level\n"_Stz);
+    //RJH vTrace("going down 1 level\n"_Stz);
     
     // now go down one level
     goDownLevel(iCurrentLevel);

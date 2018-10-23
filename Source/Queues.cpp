@@ -449,9 +449,9 @@ Task* Queues::pInspectReadyQueue(Thread* pCallingThread)
   }
   
   // pop task off the general queue
-  vTrace("m_pReadyQueue pPopTask\n"_Stz);
+  //RJH vTrace("m_pReadyQueue pPopTask\n"_Stz);
   pPoppedTask = m_pReadyQueue->pPopTask();
-  vTrace("m_pReadyQueue pPopTask %p\n"_Stz, pPoppedTask);
+  //RJH vTrace("m_pReadyQueue pPopTask %p\n"_Stz, pPoppedTask);
   
   // drop the lock
   m_pReadyQueue->vDropLock();

@@ -25,6 +25,7 @@ namespace Prompt
     Timer    m_xTimer;     // the timer
     bool     m_bTimed;     // command is being timed
     bool     m_bTraced;    // command is being traced
+    bool     m_bNoWait;    // dont wait for command
 
     Job*     m_pJob;       // job
   
@@ -46,6 +47,7 @@ namespace Prompt
     bool bBlankLine(void);
     void vCheckTimed(void);
     void vCheckTraced(void);
+    void vCheckNoWait(void);
     CommandProcessor* pCommandProcessor(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
@@ -56,12 +58,14 @@ namespace Prompt
     bool bFindJobClass(void);
     void vGetCommand(void);
     void vLockMutex(void);
+    bool bNoWait(void);
     void vPostJob(void);
     void vPreJob(void);
     void vReportTime(void);
     Session* pSession(void);
     void vSpawnJob(void);
     TokenVec* pTknVec(void);
+    void vUnlockMutex(void);
     void vUnknownCommand(void);
     void vWaitCond(void);
 

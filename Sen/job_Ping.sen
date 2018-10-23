@@ -16,6 +16,10 @@
   tp: ping_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  3600 thread.sleep_s
+  "ping wakes" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
   task::this to pTask
 

@@ -63,7 +63,8 @@ SePrompt::SePrompt(void)
   
   m_bTimed  = false;
   m_bTraced = false;
-  
+  m_bNoWait = false;
+
   _checkInitialised_(CN_SEPROMPT);
 }
 
@@ -117,6 +118,7 @@ void SePrompt::vPromptLoop(void)
     
     vCheckTimed();
     vCheckTraced();
+    vCheckNoWait();
 
     if (bExecuteFunction())
       continue;
@@ -139,6 +141,7 @@ void SePrompt::vPromptLoop(void)
     }
         
     vLockMutex();
+    
     vSpawnJob();
     
     // sleep before executing wait so that system call to spawn
@@ -147,6 +150,11 @@ void SePrompt::vPromptLoop(void)
 //      // loop till the se nodes have been spawned i.e till start node is set
 //      while (gpAttachMap->m_pGrid->m_iStartNode == -1);
 //    }
+    
+    if (bNoWait()) {
+      vUnlockMutex();
+      continue;
+    }
     
     vWaitCond();
 
@@ -212,6 +220,24 @@ void SePrompt::vCheckTraced(void)
     return;
   
   m_bTraced = true;
+  vCutToken(0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* check for nowait                                                           */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCheckNoWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_bTraced = false;
+  
+  Token* pTkn0 = pTkn(0);
+  
+  if (! pTkn0->bSame("nowait"_Stz))
+    return;
+  
+  m_bNoWait = true;
   vCutToken(0);
 }
 
@@ -344,6 +370,19 @@ void SePrompt::vLockMutex(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* no wait                                                                    */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bNoWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  if (! m_bNoWait)
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* call post-job function                                                     */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vPostJob(void)
@@ -353,7 +392,6 @@ void SePrompt::vPostJob(void)
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
   pCommandProcessor->vPostJob(m_pSession);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -447,6 +485,18 @@ void SePrompt::vUnknownCommand(void)
   
   vTrace("error: Unknown command '%s'\n"_Stz,
          pTkn->aText());
+}
+
+/*----------------------------------------------------------------------------*/
+/* unlock mutex                                                               */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vUnlockMutex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 rCode = pthread_mutex_unlock(&m_pJob->m_xThreadMutex);
+  if (0 != rCode)
+    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/

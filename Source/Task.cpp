@@ -1024,13 +1024,13 @@ bool bTaskCompareQueueOrder(void* pObjectInsert, void* pObjectScan, bool& bMatch
   Task* pInsertEntry = _pTask(pObjectInsert);
   Task* pScanEntry   = _pTask(pObjectScan);
   
-  vTrace("bTaskCompareQueueOrder1\n"_Stz);
+  //RJH vTrace("bTaskCompareQueueOrder1\n"_Stz);
   
   RASSERT(pScanEntry->eClass() == CN_TASK);
   RASSERT(pInsertEntry->eClass() == CN_TASK);
   
   if ( ! pObjectScan ) {
-    vTrace("bTaskCompareQueueOrder2\n"_Stz);
+    //RJH vTrace("bTaskCompareQueueOrder2\n"_Stz);
     return false;
   }
   
@@ -1039,7 +1039,7 @@ bool bTaskCompareQueueOrder(void* pObjectInsert, void* pObjectScan, bool& bMatch
   else
     bMatch = false;
   
-  vTrace("bTaskCompareQueueOrder3\n"_Stz);
+  //RJH vTrace("bTaskCompareQueueOrder3\n"_Stz);
   
   if (pInsertEntry->iQueueOrder() > pScanEntry->iQueueOrder())
     return true;
