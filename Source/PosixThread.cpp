@@ -385,10 +385,32 @@ void PosixThread::vSleepSec(i8 nSeconds)
 /*----------------------------------------------------------------------------*/
 void* PosixThread::aStackBase(void)
 {
+  void* aAddress;
+  
   pthread_t tThread = pthread_self();
   
-  void* aAddress = pthread_get_stackaddr_np(tThread);
-
+#ifdef __APPLE__
+  
+  aAddress = pthread_get_stackaddr_np(tThread);
+  
+#elif __LINUX__
+  
+  size_t iStackSize;
+  pthread_attr_t attr;
+  
+  i8 rCode = pthread_getattr_np(tThread, &attr);
+  if (0 != rCode)
+    vWarn("pthread_getattr_np() error; rCode=%lld\n"_Stz,rCode);
+  
+  i8 rCode = pthread_attr_getstack(&attr,
+                            &aAddress, &iStackSize);
+  if (0 != rCode)
+    vWarn("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
+  
+#else
+  RASSERT(0);
+#endif
+  
   return aAddress;
 }
 
@@ -408,10 +430,31 @@ void* PosixThread::aStackPointer(void)
 i8 PosixThread::iStackSize(void)
 {
   pthread_t tThread = pthread_self();
+  i8 iStackSize;
   
-  i8 iSize = pthread_get_stacksize_np(tThread);
+#ifdef __APPLE__
   
-  return iSize;
+  iStackSize = pthread_get_stacksize_np(tThread);
+  
+#elif __LINUX__
+  
+  pthread_attr_t attr;
+  void* aAddress;
+  
+  i8 rCode = pthread_getattr_np(tThread, &attr);
+  if (0 != rCode)
+    vWarn("pthread_getattr_np() error; rCode=%lld\n"_Stz,rCode);
+  
+  i8 rCode = pthread_attr_getstack(&attr,
+                                   &aAddress, &iStackSize);
+  if (0 != rCode)
+    vWarn("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
+  
+#else
+  RASSERT(0);
+#endif
+  
+  return iStackSize;
 }
 
 /*----------------------------------------------------------------------------*/
