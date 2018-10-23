@@ -676,12 +676,12 @@ void Arguments::vSanityCheck(void)
     + 1             // 1 for the pot
   ;
   
-  if (m_nThreads < iRequiredThreads) {
-    vTrace("Insufficient threads: %lld. At least %lld threads required\n"_Stz,
-           m_nThreads,
-           iRequiredThreads);
-    exit(EXIT_FAILURE);
-  }
+//RJH  if (m_nThreads < iRequiredThreads) {
+//RJH    vTrace("Insufficient threads: %lld. At least %lld threads required\n"_Stz,
+//RJH           m_nThreads,
+//RJH           iRequiredThreads);
+//RJH    exit(EXIT_FAILURE);
+//RJH  }
   
 }
 
