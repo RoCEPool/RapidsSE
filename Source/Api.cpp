@@ -91,7 +91,7 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     // lock this job's mutex
     i8 rCode = pthread_mutex_lock(&pJob_EndInsert->m_xThreadMutex);
     if (0 != rCode)
-      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+      vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
     
     // spawn the endInsert job
     RapidsSE_bSpawnJob(pJob_EndInsert, SS_SEED_REQ, pSession);
@@ -193,7 +193,11 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   vApiJob(pSession,pJob);                                             // API JOB
   //vApiLocation(pSession,105);
   
+  i8 iJobSeq = pJob->m_iJobSeq;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock this job's mutex
+  
   i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
@@ -208,19 +212,40 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   RapidsSE_bSpawnJob(pJob, SS_SEED_REQ, pSession);
   
   vApiLocation(pSession,108);
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for condition & state
+  
   i8 iLocation = 10000;
   do {
+    
     RASSERT( _bIsValidJob(pJob->eClass()) );
+    RASSERT( iJobSeq == pJob->m_iJobSeq );
+    
+//    vTrace("ThreadCond:\n"_Stz);
+//    MemLib::vHexDump(&pJob->m_xThreadCond,  sizeof(pthread_cond_t));
+//
+//    vTrace("ThreadMutex:\n"_Stz);
+//    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
+
     rCode = pthread_cond_wait(&pJob->m_xThreadCond,
                               &pJob->m_xThreadMutex);
+
+    RASSERT( _bIsValidJob(pJob->eClass()) );
+    RASSERT( iJobSeq == pJob->m_iJobSeq );
+
     vApiLocation(pSession,iLocation++);
     if (0 != rCode)
       vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+
   } while (pJob->m_iState != 2);
 
+  RASSERT( _bIsValidJob(pJob->eClass()) );
+  RASSERT( iJobSeq == pJob->m_iJobSeq );
+
   vApiLocation(pSession,109);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // unlock this job's mutex
   rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
@@ -230,7 +255,8 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   vApiLocation(pSession,110);
 
   RASSERT( _bIsValidJob(pJob->eClass()) );
-  
+  RASSERT( iJobSeq == pJob->m_iJobSeq );
+
   //vApiLocation(pSession,111);
   
   if (bPostJob)
