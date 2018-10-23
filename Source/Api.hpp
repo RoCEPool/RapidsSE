@@ -76,7 +76,6 @@ extern "C" bool RapidsSE_SessionInvalid(int eError, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel);
 
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession);
-bool RapidsSE_bSpawnJob2(Job* pJob, eSS eSeed, Session* pSession);
 
 void vApiCall(Session* pSession, eAC eApiCall);
 void vApiError(Session* pSession, eEC eError);
