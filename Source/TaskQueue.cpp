@@ -149,6 +149,8 @@ Task* TaskQueue::pPopTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
+  vTrace("pPopTask\n"_Stz);
+  
   bool bRemoved;
   Task* pTask = nullptr;
   
