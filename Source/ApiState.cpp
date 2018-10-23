@@ -64,6 +64,7 @@ ApiState::ApiState(void)
     
     aState->m_eApiCall   = AC_NONE;
     aState->m_aStackBase = nullptr;
+    aState->m_aStackPtr  = nullptr;
     aState->m_iLocation  = 0;
     aState->m_eJobClass  = CN_NONE;
     aState->m_iJobSeq    = 0;
@@ -134,6 +135,7 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
 
   aState->m_eApiCall   = eApiCall;
   aState->m_aStackBase = PosixThread::aStackBase();
+  aState->m_aStackPtr  = PosixThread::aStackPointer();
   aState->m_iLocation  = 0;
   aState->m_eJobClass  = CN_NONE;
   aState->m_eError     = EC_NONE;
@@ -220,6 +222,7 @@ void ApiState::vFreeState(i8 i_Session)
   
   aState->m_eApiCall   = AC_NONE;
   aState->m_aStackBase = nullptr;
+  aState->m_aStackPtr  = nullptr;
   aState->m_iLocation  = 0;
   aState->m_eJobClass  = CN_NONE;
   aState->m_eError     = EC_NONE;
@@ -301,13 +304,16 @@ void ApiState::vDump(void)
       if (aState->m_bRunning)
         aState->m_xTimer.vUpdate();
 
-      vTrace("  %lld: session %p, call %s, base %llx, loc %lld, job %s %lld\n"
+      vTrace("  %lld: session %p, call %s, base %llx, ptr %llx (%lldB), loc %lld, job %s seq %lld\n"
              "     error %s, %s, %s, pos %lld, time %lldus total %lldus\n"
              "     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
              i_Session,
              pSession,
              aAC[aState->m_eApiCall],
              aState->m_aStackBase,
+             aState->m_aStackPtr,
+             nSub(aState->m_aStackBase,aState->m_aStackPtr),
+
              aState->m_iLocation,
              aCN[aState->m_eJobClass],
              aState->m_iJobSeq,

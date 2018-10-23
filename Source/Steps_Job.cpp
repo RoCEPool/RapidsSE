@@ -1335,11 +1335,14 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   RASSERT( _bIsValidJob(pJob->eClass()) );
   gpAttachMap->m_pApiState->vSetSignalled(pJob);
   RASSERT( _bIsValidJob(pJob->eClass()) );
-  
+
+  // trash the cond variable
+  //MemLib::vSet(&pJob->m_xThreadCond, 0xEB, sizeof(pthread_cond_t),CN_SEMAPHORE);
+
   rCode = pthread_cond_signal(&pJob->m_xThreadCond);
   if (0 != rCode)
     vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
-  
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //if (! gxArguments.m_nDummyThreads) {
     rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);

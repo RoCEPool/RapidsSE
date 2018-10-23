@@ -11,6 +11,8 @@ namespace StorageEngine
     
     eAC      m_eApiCall;   // current / last api call
     void*    m_aStackBase; // stack base of thread which made api call
+    void*    m_aStackPtr;  // stack addr of thread which made api call
+
     i8       m_iLocation;  // last reported location in api call
     eCN      m_eJobClass;  // current / last job
     i8       m_iJobSeq;    // job seq
