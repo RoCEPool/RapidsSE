@@ -165,11 +165,11 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
 
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
-  //vApiLocation(pSession,101);
+  vApiLocation(pSession,101);
   
   pCommandProcessor->vTokenise(aCommand);
   
-  //vApiLocation(pSession,102);
+  vApiLocation(pSession,102);
   
   bool bFound = pCommandProcessor->bFindJobClass();
   if (! bFound) {
@@ -178,11 +178,11 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
     return nullptr;
   }
   
-  //vApiLocation(pSession,103);
+  vApiLocation(pSession,103);
   
   pCommandProcessor->vPreJob(pSession);
   
-  //vApiLocation(pSession,104);
+  vApiLocation(pSession,104);
   
   Job* pJob = pCommandProcessor->pJob();
   if (!pJob) {
@@ -191,7 +191,7 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
     return nullptr;
   }
   vApiJob(pSession,pJob);                                             // API JOB
-  //vApiLocation(pSession,105);
+  vApiLocation(pSession,105);
   
   i8 iJobSeq = pJob->m_iJobSeq;
   
@@ -202,7 +202,7 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   if (0 != rCode)
     vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
-  //vApiLocation(pSession,106);
+  vApiLocation(pSession,106);
   
   pJob->m_iState = 1;
   
