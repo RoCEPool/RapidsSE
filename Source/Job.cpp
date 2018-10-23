@@ -158,12 +158,13 @@ void Job::vInit(void)
   
   m_iState = 0;
   
-  // initialise attribute to mutex
+  
+  // initialise mutex attribute
   MemLib::vZero(&m_xThreadMutexAttr,sizeof(m_xThreadMutexAttr),CN_SEMAPHORE);
   i8 iResult = pthread_mutexattr_init(&m_xThreadMutexAttr);
   ASSERT( ! iResult);
   
-  // set attribute to be shared
+  // set mutex attribute to be shared
   iResult = pthread_mutexattr_setpshared(&m_xThreadMutexAttr,PTHREAD_PROCESS_SHARED);
   ASSERT( ! iResult);
   
@@ -171,14 +172,15 @@ void Job::vInit(void)
   MemLib::vZero(&m_xThreadMutex,sizeof(m_xThreadMutex),CN_SEMAPHORE);
   pthread_mutex_init(&m_xThreadMutex, &m_xThreadMutexAttr);
   
-  // initialise attribute to condition
+  
+  // initialise condition attribute
   MemLib::vZero(&m_xThreadCondAttr,sizeof(m_xThreadCondAttr),CN_SEMAPHORE);
   pthread_condattr_init(&m_xThreadCondAttr);
   
-  // set attribute to be shared
+  // set condition attribute to be shared
   pthread_condattr_setpshared(&m_xThreadCondAttr, PTHREAD_PROCESS_SHARED);
   
-  // initialize the mutex
+  // initialize the condition variable
   MemLib::vZero(&m_xThreadCond,sizeof(m_xThreadCond),CN_SEMAPHORE);
   pthread_cond_init(&m_xThreadCond, &m_xThreadCondAttr);
   
