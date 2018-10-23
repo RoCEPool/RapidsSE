@@ -387,7 +387,7 @@ SkipNode* SkipList::pNth(i8 iNth)
 #define goDownLevel(iLevel) iLevel--;
 SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aPriorVec)
 {
-  vTrace("Adding %p\n"_Stz,pObjectInsert);
+  vTrace("Adding %p head:%p\n"_Stz,pObjectInsert, m_pHead);
   bEqualTo = false;
   // start from head at known highest level
   SkipNode* pCurrentNode = m_pHead;
@@ -400,6 +400,8 @@ SkipNode* SkipList::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** aP
     //   ObjectInsert < ObjectNext at current level
     
     while (SkipNode* pNextNode = pCurrentNode->m_pRight[iCurrentLevel]) {
+      
+      vTrace("pNextNode:%p\n"_Stz,pNextNode);
       
       // compare the inserting object with next object
       bool bGreaterEqual = m_fCompare(pObjectInsert, pNextNode->m_pObject, bEqualTo);
