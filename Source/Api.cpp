@@ -1128,6 +1128,37 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
+bool RapidsSE_bSpawnJob2(Job* pJob, eSS eSeed, Session* pSession)
+{
+  //----------------------------------------------------------------------------
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = gpAttachMap->m_iPid;
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    if (pSession)
+      vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    return false;
+  }
+  
+  //----------------------------------------------------------------------------
+  
+  // form the word to execute for the request
+  pJob->vSeed(eSeed);
+  
+  Task* pNewTask = new Task(pJob);
+  
+  pNewTask->vSession(pSession);
+  
+  Handlers::vSpawnedTaskHandler(pNewTask);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
