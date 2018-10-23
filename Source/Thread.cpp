@@ -295,7 +295,8 @@ void Thread::vExecuteTask(Task* pTask)
   pTask->vState(TS_EXECUTING);
   
   // thread should be idle
-  RASSERT(TC_IDLE == m_eThreadState);
+  //RASSERT(TC_IDLE == m_eThreadState);
+  RASSERT(TC_RUNNING == m_eThreadState);
   
   // thread should have no task
   RASSERT(! *m_npTask);
@@ -303,7 +304,7 @@ void Thread::vExecuteTask(Task* pTask)
   // set task to be executed
   m_npTask = pTask;
   
-  m_eThreadState = TC_RUNNING;
+  //m_eThreadState = TC_RUNNING;
   
   // signal the thread
   vSignalThread();

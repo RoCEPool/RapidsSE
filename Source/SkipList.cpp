@@ -234,36 +234,47 @@ bool SkipList::bInsert(void* aObjectInsert)
 
   bool bEqualTo;
   SkipNode* aPriorVec[C_SKIPLIST_LEVELS];
+  vTrace("bInsert:position1\n"_Stz);
   
   // get a positioned prior vector
   SkipNode* pNode = pPosition(aObjectInsert,bEqualTo,aPriorVec);
   RASSERT(pNode); // logic check
+  vTrace("bInsert:position2\n"_Stz);
   
   Object* pObjectInsert = (Object*)aObjectInsert;
   RASSERT( ! pNode->m_pObject || ((Object*)pNode->m_pObject)->eClass() == pObjectInsert->eClass() );
+  vTrace("bInsert:position3\n"_Stz);
   
   // do not insert duplicates into a list of unique keys
-  if (bEqualTo && m_bUniqueKey)
+  if (bEqualTo && m_bUniqueKey) {
+    vTrace("bInsert:position4\n"_Stz);
     return false;
+  }
   
+  vTrace("bInsert:position5\n"_Stz);
   // choose a random level for the new node
   i8 iNodeLevel = iRandomLevel();
   if (iNodeLevel > m_iHeight) {
     iNodeLevel = ++m_iHeight;
     aPriorVec[iNodeLevel] = m_pHead;
+    vTrace("bInsert:position6\n"_Stz);
 	}
   
+  vTrace("bInsert:position7\n"_Stz);
   // create new node with inserted object
   SkipNode* pNodeInsert = new(iNodeLevel,m_pSlabAllocator) SkipNode(pObjectInsert);
- 
+  RASSERT(pNodeInsert);
+  
   // put new node into the list according the prior vector for random level
   do {
     pNodeInsert->m_pRight[iNodeLevel] = aPriorVec[iNodeLevel]->m_pRight[iNodeLevel];
     aPriorVec[iNodeLevel]->m_pRight[iNodeLevel] = pNodeInsert;
+    vTrace("bInsert:position8\n"_Stz);
 	} while (--iNodeLevel >= 0);
   
   // one more object in the list
   m_nObjects++;
+  vTrace("bInsert:position9\n"_Stz);
   
   // succesful insert
   return true;

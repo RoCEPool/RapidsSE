@@ -417,6 +417,7 @@ Thread* Queues::pGrabIdleThread(void)
     ASSERT(pThread->bMutexIsLocked());
     
     if (pThread->bIsIdle()) {
+      pThread->m_eThreadState = TC_RUNNING;
       m_pThreadVector->vDropLock();
       return pThread;
     }
