@@ -5,7 +5,6 @@
 #include "Tasks.h"
 #include "Threads.h"
 
-
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -58,7 +57,7 @@ TaskList::TaskList(cmpFun fCompare)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
   m_xLock.vInitLock(LK_TASK_QUEUE);
-  m_pTaskSkipList = new SkipList(true, fCompare);
+  //m_pTaskSkipList = new SkipList(true, fCompare);
   
   m_pListTasks = new ListNL_t<Task>;
   
@@ -84,8 +83,10 @@ void TaskList::vAddTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  ASSERT(m_pTaskSkipList->eClass() == CN_SKIPLIST);
-  m_pTaskSkipList->bInsert(pTask);
+  //ASSERT(m_pTaskSkipList->eClass() == CN_SKIPLIST);
+  //m_pTaskSkipList->bInsert(pTask);
+  
+  m_pListTasks->vAppend(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,12 +138,13 @@ Task* TaskList::pPeekTask(void)
   
   Task* pTask = nullptr;
   
-   ASSERT(m_xLock.bIsLocked());
+  ASSERT(m_xLock.bIsLocked());
   
-  SkipNode* pNode = m_pTaskSkipList->pFirst(0);
-  if (pNode)
-    pTask = _pTask(pNode->m_pObject);
+  //SkipNode* pNode = m_pTaskSkipList->pFirst(0);
+  //if (pNode)
+  //  pTask = _pTask(pNode->m_pObject);
   
+  pTask = m_pListTasks->pHead();
   
   return pTask;
 }
@@ -156,34 +158,22 @@ Task* TaskList::pPopTask(void)
   
   //RJH vTrace("pPopTask\n"_Stz);
   
-  bool bRemoved;
+  //bool bRemoved;
   Task* pTask = nullptr;
   
   ASSERT(m_xLock.bIsLocked());
   
-  SkipNode* pNode = m_pTaskSkipList->pFirst(0);
-  if (pNode) {
-    pTask = _pTask(pNode->m_pObject);
-    RASSERT(pTask);
-    bRemoved = m_pTaskSkipList->bRemove(pTask);
-    RASSERT(bRemoved);
-  }
+//  SkipNode* pNode = m_pTaskSkipList->pFirst(0);
+//  if (pNode) {
+//    pTask = _pTask(pNode->m_pObject);
+//    RASSERT(pTask);
+//    bRemoved = m_pTaskSkipList->bRemove(pTask);
+//    RASSERT(bRemoved);
+//  }
 
+  pTask = m_pListTasks->pPop();
+  
   return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove a task from queue                                                   */
-/*----------------------------------------------------------------------------*/
-void TaskList::vRemoveTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
-  
-  bool bRemoved;
-  
-  ASSERT(m_xLock.bIsLocked());
-  
-  bRemoved = m_pTaskSkipList->bRemove(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,8 +183,9 @@ i8 TaskList::nTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
 
-  i8 nTasks = m_pTaskSkipList->nObjects();
-  
+  //i8 nTasks = m_pTaskSkipList->nObjects();
+  i8 nTasks = m_pListTasks->nObjects();
+
   return nTasks;
 }
 
@@ -214,6 +205,7 @@ void TaskList::vDump(eCN eClass, Object* pObject, Stz* aTab)
   RASSERT(eClass == CN_TASKLIST);
   RASSERT(pObject->eClass() == CN_TASKLIST);
   
+  /*
   TaskList* pTaskQueue = reinterpret_cast<TaskList*>(pObject);
   
   SkipList* pSkipList = pTaskQueue->m_pTaskSkipList;
@@ -242,6 +234,8 @@ void TaskList::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("\n"_Stz);
   //pTaskQueue->List_t<Task>::vContentDump("TaskList::"_Stz, aTab);
+   */
+  
 }
 
 /*----------------------------------------------------------------------------*/

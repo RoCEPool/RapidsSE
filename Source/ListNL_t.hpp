@@ -23,8 +23,8 @@ namespace Structures
     ListNL_t(void);
     
     void    vAppend(OBJECT* pNode);
-    i8      iCount(void);
     OBJECT* pHead(void);
+    i8      nObjects(void);
     OBJECT* pPop(void);
     void    vPush(OBJECT* pNode);
     void    vRemove(OBJECT* pNode);
@@ -106,17 +106,6 @@ void ListNL_t<OBJECT>::vAppend(OBJECT* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump each object in list                                                   */
-/*----------------------------------------------------------------------------*/
-template <class OBJECT>
-i8 ListNL_t<OBJECT>::iCount(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
-  
- return m_nCount;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get head object in list                                                    */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
@@ -125,6 +114,17 @@ OBJECT* ListNL_t<OBJECT>::pHead(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
   
   return m_pHead;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of objects in list                                              */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+i8 ListNL_t<OBJECT>::nObjects(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  
+  return m_nCount;
 }
 
 /*----------------------------------------------------------------------------*/
