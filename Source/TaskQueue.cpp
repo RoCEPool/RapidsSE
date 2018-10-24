@@ -233,10 +233,6 @@ void TaskQueue::vDump(eCN eClass, Object* pObject, Stz* aTab)
     }
   } while (--iLevel >= 0);
   
-  vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
-  
-  vTrace("\n"_Stz);
   //pTaskQueue->List_t<Task>::vContentDump("TaskQueue::"_Stz, aTab);
 }
 

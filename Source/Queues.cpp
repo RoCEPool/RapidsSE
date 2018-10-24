@@ -346,10 +346,15 @@ void Queues::vDumpExecutingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  vTrace("------------------------------------\n"_Stz);
   vTrace("ExecutingQueue: %p\n"_Stz, m_pExecutingQueue);
+  vTrace("------------------------------------\n"_Stz);
   m_pExecutingQueue->vGrabLock();
   m_pExecutingQueue->vContentDump();
   m_pExecutingQueue->vDropLock();
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -359,10 +364,15 @@ void Queues::vDumpReadyQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  vTrace("------------------------------------\n"_Stz);
   vTrace("ReadyQueue: %p\n"_Stz, m_pReadyList);
+  vTrace("------------------------------------\n"_Stz);
   m_pReadyList->vGrabLock();
   m_pReadyList->vContentDump();
   m_pReadyList->vDropLock();
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -373,10 +383,15 @@ void Queues::vDumpReadySendQueues(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++ ) {
+    vTrace("------------------------------------\n"_Stz);
     vTrace("ReadySendQueue: %p\n"_Stz, m_pReadySendQueues[i_Node]);
+    vTrace("------------------------------------\n"_Stz);
     m_pReadySendQueues[i_Node]->vGrabLock();
     m_pReadySendQueues[i_Node]->vContentDump();
     m_pReadySendQueues[i_Node]->vDropLock();
+    vTrace("====================================\n"_Stz);
+    vTrace("\n"_Stz);
+    vTrace("\n"_Stz);
   }
 }
 
@@ -388,10 +403,15 @@ void Queues::vDumpReadySlotQueues(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++ ) {
+    vTrace("------------------------------------\n"_Stz);
     vTrace("ReadySlotQueue: %p\n"_Stz, m_pReadySlotQueues[i_Slot]);
+    vTrace("------------------------------------\n"_Stz);
     m_pReadySlotQueues[i_Slot]->vGrabLock();
     m_pReadySlotQueues[i_Slot]->vContentDump();
     m_pReadySlotQueues[i_Slot]->vDropLock();
+    vTrace("====================================\n"_Stz);
+    vTrace("\n"_Stz);
+    vTrace("\n"_Stz);
   }
 }
 
@@ -402,10 +422,15 @@ void Queues::vDumpSleepingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  vTrace("------------------------------------\n"_Stz);
   vTrace("SleepingQueue: %p\n"_Stz, m_pSleepingQueue);
+  vTrace("------------------------------------\n"_Stz);
   m_pSleepingQueue->vGrabLock();
   m_pSleepingQueue->vContentDump();
   m_pSleepingQueue->vDropLock();
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -415,10 +440,15 @@ void Queues::vDumpWaitingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
+  vTrace("------------------------------------\n"_Stz);
   vTrace("WaitingQueue: %p\n"_Stz, m_pWaitingQueue);
+  vTrace("------------------------------------\n"_Stz);
   m_pWaitingQueue->vGrabLock();
   m_pWaitingQueue->vContentDump();
   m_pWaitingQueue->vDropLock();
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

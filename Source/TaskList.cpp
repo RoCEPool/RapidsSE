@@ -194,7 +194,22 @@ i8 TaskList::nTasks(void)
 /*----------------------------------------------------------------------------*/
 void TaskList::vContentDump(void)
 {
-  vDump(CN_TASKLIST, this, aSingleTab());
+  //vDump(CN_TASKLIST, this, aSingleTab());
+  
+  // list is locked
+  ASSERT(m_xLock.bIsLocked());
+
+  vTrace("ITEMS %lld\n"_Stz,m_pListTasks->nObjects());
+  
+  for (Task* pTask = m_pListTasks->pHead(); pTask; pTask = pTask->pNextNode()) {
+    
+    vTrace("Task %p %s id %lld\n"_Stz,
+           pTask,
+           aCN[pTask->eClass()],
+           pTask->iQueueOrder()
+           );
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -236,6 +251,13 @@ void TaskList::vDump(eCN eClass, Object* pObject, Stz* aTab)
   //pTaskQueue->List_t<Task>::vContentDump("TaskList::"_Stz, aTab);
    */
   
+  
+  
+  
+  
+
+  vTrace("====================================\n"_Stz);
+  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
