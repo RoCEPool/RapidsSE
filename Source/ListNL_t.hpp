@@ -6,7 +6,7 @@
 namespace Structures
 {
   template <class OBJECT> 
-  class ListNL_t
+  class ListNL_t : public Object
   {
   protected:
     i8      m_nCount;  // number of objects
@@ -67,12 +67,17 @@ void ListNL_t<OBJECT>::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
 ListNL_t<OBJECT>::ListNL_t(void)
+: Object(CN_LIST)
 {
-  m_nCount = 0;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  
+ m_nCount = 0;
   m_pHead  = nullptr;
   m_pTail  = nullptr;
   
   _checkInitialisedSize_(sizeof(ListNL_t<OBJECT>));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,6 +86,8 @@ ListNL_t<OBJECT>::ListNL_t(void)
 template <class OBJECT>
 void ListNL_t<OBJECT>::vAppend(OBJECT* pNode)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  
   ASSERT(NULL == pNode->pPrevNode());
   ASSERT(NULL == pNode->pNextNode());
   
@@ -104,7 +111,9 @@ void ListNL_t<OBJECT>::vAppend(OBJECT* pNode)
 template <class OBJECT>
 i8 ListNL_t<OBJECT>::iCount(void)
 {
-  return m_nCount;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  
+ return m_nCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,6 +122,8 @@ i8 ListNL_t<OBJECT>::iCount(void)
 template <class OBJECT>
 OBJECT* ListNL_t<OBJECT>::pHead(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  
   return m_pHead;
 }
 
@@ -122,6 +133,8 @@ OBJECT* ListNL_t<OBJECT>::pHead(void)
 template <class OBJECT>
 OBJECT* ListNL_t<OBJECT>::pPop(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  
   if ( ! m_pHead ) {
     ASSERT( ! m_nCount );
     return nullptr;
@@ -157,6 +170,8 @@ OBJECT* ListNL_t<OBJECT>::pPop(void)
 template <class OBJECT>
 void ListNL_t<OBJECT>::vPush(OBJECT* pNode)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  
   ASSERT(NULL == pNode->pPrevNode());
   ASSERT(NULL == pNode->pNextNode());
   
@@ -208,6 +223,8 @@ void ListNL_t<OBJECT>::vRemove(OBJECT* pNode)
 template <class OBJECT>
 OBJECT* ListNL_t<OBJECT>::pTail(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  
   return m_pTail;
 }
 
@@ -221,6 +238,8 @@ OBJECT* ListNL_t<OBJECT>::pTail(void)
 template <class OBJECT>
 Footer* ListNL_t<OBJECT>::aFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST);
+  
   return &m_xFooter;
 }
 
