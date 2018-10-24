@@ -69,9 +69,6 @@ success
 drop table returns;
 success
 
-drop table limitRow;
-success
-
 Cleanup {
 
 drop table table1;
@@ -135,73 +132,6 @@ drop table region;
 mute
 
 drop table returns;
-mute
-
-Cleanup {
-drop table table1;
-mute
-
-drop table table2;
-mute
-
-drop table table3;
-mute
-
-drop table table4;
-mute
-
-drop table table5;
-mute
-
-drop table table6;
-mute
-
-drop table table7;
-mute
-
-drop table table8;
-mute
-
-drop table table9;
-mute
-
-drop table orders;
-mute
-
-drop table lineitem;
-mute
-
-drop table customerh;
-mute
-
-drop table partsupp;
-mute
-
-drop table part;
-mute
-
-drop table shipping;
-mute
-
-drop table shipaddress;
-mute
-
-drop table supplier;
-mute
-
-drop table manufacturer;
-mute
-
-drop table nation;
-mute
-
-drop table region;
-mute
-
-drop table returns;
-mute
-
-drop table limitRow;
 mute
 
 bye;
