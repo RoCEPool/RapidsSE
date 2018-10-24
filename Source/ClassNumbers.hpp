@@ -412,7 +412,6 @@ static Stz* aCN[]
   /* 135 */ "LARGETRANSIENT"_Stz,      // CN_LARGETRANSIENT
   /* 136 */ "LINEITEM"_Stz,            // CN_LINEITEM
   /* 137 */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
-    
   /* 140 */ "LOADMAP"_Stz,             // CN_LOADMAP
   /* 141 */ "LOCK"_Stz,                // CN_LOCK
   

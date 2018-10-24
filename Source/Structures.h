@@ -23,6 +23,7 @@ using namespace Structures;
 #include "ListCursor_t.hpp"
 #include "ListNode_t.hpp"
 #include "List_t.hpp"
+#include "ListNL_t.hpp"
 
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"

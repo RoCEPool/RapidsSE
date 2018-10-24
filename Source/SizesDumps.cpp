@@ -487,7 +487,7 @@ i8 giClassSize[]
   /*    */ sizeof(TablePtn),           // CN_TABLEPTN
   /*    */ sizeof(TablePtnVec),        // CN_TABLEPTNVEC
   /*131 */ sizeof(Task),               // CN_TASK
-  /*    */ 0,                          // CN_TASKLIST
+  /*    */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
   /*137 */ sizeof(Thread),             // CN_THREAD
   /*    */ sizeof(ThreadVector),       // CN_THREADVECTOR

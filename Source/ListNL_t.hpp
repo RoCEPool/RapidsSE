@@ -1,0 +1,229 @@
+/*============================================================================*/
+/* ListNL_t.hpp -- Template for Non-Locking List                              */
+/*============================================================================*/
+#pragma once
+
+namespace Structures
+{
+  template <class OBJECT> 
+  class ListNL_t
+  {
+  protected:
+    i8      m_nCount;  // number of objects
+    OBJECT* m_pHead;   // head node
+    OBJECT* m_pTail;   // tail node
+
+    // must be last
+    Footer m_xFooter;
+    
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+
+    ListNL_t(void);
+    
+    void    vAppend(OBJECT* pNode);
+    i8      iCount(void);
+    OBJECT* pHead(void);
+    OBJECT* pPop(void);
+    void    vPush(OBJECT* pNode);
+    void    vRemove(OBJECT* pNode);
+    OBJECT* pTail(void);
+    
+    Footer* aFooter(void);
+  };
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+using namespace Structures;
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void* ListNL_t<OBJECT>::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  
+  void* pObject = HeapMem::pAllocate(CN_TASKLIST);
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void ListNL_t<OBJECT>::operator delete(void* aAddress)
+{
+  ListNL_t<OBJECT>* pList = reinterpret_cast<ListNL_t<OBJECT>*>(aAddress);
+  
+  HeapMem::vFree(pList);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+ListNL_t<OBJECT>::ListNL_t(void)
+{
+  m_nCount = 0;
+  m_pHead  = nullptr;
+  m_pTail  = nullptr;
+  
+  _checkInitialisedSize_(sizeof(ListNL_t<OBJECT>));
+}
+
+/*----------------------------------------------------------------------------*/
+/* append object to end of list                                               */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void ListNL_t<OBJECT>::vAppend(OBJECT* pNode)
+{
+  ASSERT(NULL == pNode->pPrevNode());
+  ASSERT(NULL == pNode->pNextNode());
+  
+  if (m_pTail)
+    m_pTail->vNextNode(pNode);
+  
+  pNode->vPrevNode(m_pTail);
+  pNode->vNextNode(nullptr);
+  
+  m_pTail = pNode;
+  
+  if (! m_pHead)
+    m_pHead = pNode;
+  
+  m_nCount++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump each object in list                                                   */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+i8 ListNL_t<OBJECT>::iCount(void)
+{
+  return m_nCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get head object in list                                                    */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+OBJECT* ListNL_t<OBJECT>::pHead(void)
+{
+  return m_pHead;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop object from head of list                                               */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+OBJECT* ListNL_t<OBJECT>::pPop(void)
+{
+  if ( ! m_pHead ) {
+    ASSERT( ! m_nCount );
+    return nullptr;
+  }
+
+  OBJECT* pNode = m_pHead;
+
+  m_pHead = m_pHead->pNextNode();
+  if (m_pHead)
+    m_pHead->vPrevNode(nullptr);
+  else
+    m_pTail = nullptr;
+  
+  m_nCount--;
+  if (m_nCount) {
+    ASSERT(m_pHead);
+    ASSERT(m_pTail);
+  }
+  else {
+    ASSERT( ! m_pHead );
+    ASSERT( ! m_pTail )
+  }
+  
+  pNode->vPrevNode(nullptr);
+  pNode->vNextNode(nullptr);
+  
+  return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push object on top of list                                                 */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void ListNL_t<OBJECT>::vPush(OBJECT* pNode)
+{
+  ASSERT(NULL == pNode->pPrevNode());
+  ASSERT(NULL == pNode->pNextNode());
+  
+  pNode->vPrevNode(nullptr);
+  pNode->vNextNode(m_pHead);
+  
+  if (m_pHead)
+    m_pHead->vPrev(pNode);
+  else
+    m_pTail = pNode;
+  
+  m_pHead = pNode;
+  
+  m_nCount++;
+  ASSERT(m_pHead);
+  ASSERT(m_pTail)
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove object from head of list                                            */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void ListNL_t<OBJECT>::vRemove(OBJECT* pNode)
+{
+  OBJECT* pPrev = pNode->pPrevNode();
+  OBJECT* pNext = pNode->pNextNode();
+
+  if (pPrev)
+    pPrev->vNextNode(pNext);
+
+  if (pNext)
+    pNext->vPrevNode(pPrev);
+  
+  if (pNode == m_pHead)
+    m_pHead = pNext;
+  
+  if (pNode == m_pTail)
+    m_pTail = pPrev;
+  
+  m_nCount--;
+  
+  pNode->vPrevNode(nullptr);
+  pNode->vNextNode(nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last object in list                                                    */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+OBJECT* ListNL_t<OBJECT>::pTail(void)
+{
+  return m_pTail;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+Footer* ListNL_t<OBJECT>::aFooter(void)
+{
+  return &m_xFooter;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
