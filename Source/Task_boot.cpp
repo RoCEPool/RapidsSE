@@ -330,6 +330,7 @@ void Task::vAddConstants(void)
 
   /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);
   /* 72 */ vAddConstant("CN_TASK"_Stz,         CN_TASK);
+  /*    */ vAddConstant("CN_TASKLIST"_Stz,     CN_TASKLIST);
   /*    */ vAddConstant("CN_TASKQUEUE"_Stz,    CN_TASKQUEUE);
   /* 76 */ vAddConstant("CN_THREAD"_Stz,       CN_THREAD);
   /* 79 */ vAddConstant("CN_TIME"_Stz,         CN_TIME);

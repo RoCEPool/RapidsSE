@@ -232,11 +232,9 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTN
   /*    */ &Finalize::vUndefined,         // CN_TABLEPTNVEC
   /*131 */ &Finalize::vUndefined,         // CN_TASK
-
-  /*134 */ &Finalize::vUndefined,         // CN_TASKQUEUE
-
+  /*134 */ &Finalize::vUndefined,         // CN_TASKLIST
+  /*    */ &Finalize::vUndefined,         // CN_TASKQUEUE
   /*137 */ &Finalize::vUndefined,         // CN_THREAD
-
   /*    */ &Finalize::vUndefined,         // CN_THREADVECTOR
   /*141 */ &Finalize::vUndefined,         // CN_TIME
   /*142 */ &Finalize::vUndefined,         // CN_TIMER

@@ -229,6 +229,7 @@ enum eCN : u2 // Class Number
   /* 190 */ CN_TABLEPTN,
   /* 191 */ CN_TABLEPTNVEC,
   /* 192 */ CN_TASK,
+  /*     */ CN_TASKLIST,
   /* 193 */ CN_TASKQUEUE,
   /* 194 */ CN_THREAD,
   /* 195 */ CN_THREADVECTOR,
@@ -473,6 +474,7 @@ static Stz* aCN[]
   /* 190 */ "TABLEPTN"_Stz,            // CN_TABLEPTN
   /* 191 */ "TABLEPTNVEC"_Stz,         // CN_TABLEPTNVEC
   /* 192 */ "TASK"_Stz,                // CN_TASK
+  /*     */ "TASKLIST"_Stz,            // CN_TASKLIST
   /* 193 */ "TASKQUEUE"_Stz,           // CN_TASKQUEUE
   /* 194 */ "THREAD"_Stz,              // CN_THREAD
   /* 195 */ "THREADVECTOR"_Stz,        // CN_THREADVECTOR

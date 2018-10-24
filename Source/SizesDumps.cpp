@@ -234,11 +234,9 @@ pDUMPFUN *gpDump[]
   /*    */ &TablePtn::vDump,        // CN_TABLEPTN
   /*    */ &Dump::vDummy,           // CN_TABLEPTNVEC
   /*131 */ &Task::vDump,            // CN_TASK
-
+  /*    */ &Dump::vUndefined,       // CN_TASKLIST
   /*134 */ &Dump::vUndefined,       // CN_TASKQUEUE
-
   /*137 */ &Dump::vUndefined,       // CN_THREAD
-
   /*    */ &Dump::vUndefined,       // CN_THREADVECTOR
   /*141 */ &Dump::vUndefined,       // CN_TIME
   /*142 */ &Dump::vInvalid,         // CN_TIMER
@@ -489,11 +487,9 @@ i8 giClassSize[]
   /*    */ sizeof(TablePtn),           // CN_TABLEPTN
   /*    */ sizeof(TablePtnVec),        // CN_TABLEPTNVEC
   /*131 */ sizeof(Task),               // CN_TASK
-
+  /*    */ 0,                          // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
-
   /*137 */ sizeof(Thread),             // CN_THREAD
-
   /*    */ sizeof(ThreadVector),       // CN_THREADVECTOR
   /*141 */ sizeof(Time),               // CN_TIME
   /*142 */ sizeof(Timer),              // CN_TIMER
@@ -744,11 +740,9 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_TABLEPTN
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_TABLEPTNVEC
   /*131 */ HT_TRANSIENT_MEDIUM,  // CN_TASK
-
+  /*    */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
   /*134 */ HT_TRANSIENT_SMALL,   // CN_TASKQUEUE
-
   /*137 */ HT_TRANSIENT_SMALL,   // CN_THREAD
-
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_THREADVECTOR
   /*141 */ HT_INVALID,           // CN_TIME
   /*142 */ HT_TRANSIENT_SMALL,   // CN_TIMER
