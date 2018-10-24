@@ -25,7 +25,7 @@ namespace Threads
     TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
     // QR_SLEEPING_QUEUE           // (ordered by wakeup time)
   
-    TaskQueue* m_pReadyQueue;      // set of queued tasks ready to be executed
+    //TaskQueue* m_pReadyQueue;      // set of queued tasks ready to be executed
     TaskList*  m_pReadyList;       // 
     // QR_READY_QUEUE              // (ordered by arrival)
   
