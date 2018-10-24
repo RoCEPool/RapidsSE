@@ -34,6 +34,7 @@ using namespace Tasks;
 
 #include "Step.hpp"
 #include "Task.hpp"
+#include "TaskList.hpp"
 #include "TaskQueue.hpp"
 
 /*============================================================================*/
