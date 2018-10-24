@@ -252,9 +252,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   
   pTask->vQueue(QR_READY_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
-  
   m_pReadyQueue->vAddTask(pTask);
-  //vTrace("vAddToReadyQueue_NL: ReadyQ %lld\n"_Stz, m_pReadyQueue->nTasks());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,6 +336,88 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
   
   // drop task lock
   pTask->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to ready queue                                                    */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpExecutingQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vTrace("ExecutingQueue: %p\n"_Stz, m_pReadyQueue);
+  m_pExecutingQueue->vGrabLock();
+  m_pExecutingQueue->vContentDump();
+  m_pExecutingQueue->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to ready queue                                                    */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpReadyQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vTrace("ReadyQueue: %p\n"_Stz, m_pReadyQueue);
+  m_pReadyQueue->vGrabLock();
+  m_pReadyQueue->vContentDump();
+  m_pReadyQueue->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to ready queue                                                    */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpReadySendQueues(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++ ) {
+    vTrace("ReadySendQueue: %p\n"_Stz, m_pReadySendQueues[i_Node]);
+    m_pReadySendQueues[i_Node]->vGrabLock();
+    m_pReadySendQueues[i_Node]->vContentDump();
+    m_pReadySendQueues[i_Node]->vDropLock();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to ready queue                                                    */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpReadySlotQueues(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++ ) {
+    vTrace("ReadySlotQueue: %p\n"_Stz, m_pReadySlotQueues[i_Slot]);
+    m_pReadySlotQueues[i_Slot]->vGrabLock();
+    m_pReadySlotQueues[i_Slot]->vContentDump();
+    m_pReadySlotQueues[i_Slot]->vDropLock();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to ready queue                                                    */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpSleepingQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vTrace("SleepingQueue: %p\n"_Stz, m_pReadyQueue);
+  m_pSleepingQueue->vGrabLock();
+  m_pSleepingQueue->vContentDump();
+  m_pSleepingQueue->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* add task to ready queue                                                    */
+/*----------------------------------------------------------------------------*/
+void Queues::vDumpWaitingQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  vTrace("WaitingQueue: %p\n"_Stz, m_pReadyQueue);
+  m_pWaitingQueue->vGrabLock();
+  m_pWaitingQueue->vContentDump();
+  m_pWaitingQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -917,7 +997,7 @@ void Queues::vScheduleReadyTask(Task* pTask)
   RASSERT(TS_READY == pTask->eState());
   
   Thread* pIdleThread = pGrabIdleThread();
-  
+
   if (pIdleThread) {
     ASSERT(pIdleThread->bMutexIsLocked());
     pIdleThread->vExecuteTask(pTask);

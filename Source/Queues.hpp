@@ -7,7 +7,7 @@ namespace Threads
 {
   class Queues : public Object
   {
-  private:
+  public:
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads
@@ -76,6 +76,13 @@ namespace Threads
     void vAddToSleepingQueue_NL(Task* pTask);
     void vAddToWaitingQueue_NL(Task* pTask);
   
+    void vDumpExecutingQueue(void);
+    void vDumpReadyQueue(void);
+    void vDumpReadySendQueues(void);
+    void vDumpReadySlotQueues(void);
+    void vDumpSleepingQueue(void);
+    void vDumpWaitingQueue(void);
+    
     i8   nExecutingQueueTasks(void);
     i8   nReadyQueueTasks(void);
     i8   nReadySlotQueueTasks(i8 iSlot);

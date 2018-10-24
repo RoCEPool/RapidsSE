@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* bPrompt_taskQueues.cpp -- taskQueues report                                */
+/*============================================================================*/
+
+#include "Prompt.h"
+#include "StorageEngine.h"
+
+PromptNote mPromptNote_taskQueues (
+  "bPrompt_taskQueues"_Stz, // name of the prompt function
+  "comment"_Stz,        // comment about the functopm
+  "taskQueues"_Stz,     // the prompt command
+  nullptr,              // the second word
+  bPrompt_taskQueues,   // prompt function
+  true,                 // enabled
+
+  true,                 // visible
+  "fun help"_Stz        // help
+);
+
+extern Arguments   gxArguments;
+extern AttachMap*  gpAttachMap;
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool Prompt::bPrompt_taskQueues(SePrompt* pPrompt)
+{
+  Queues* pQueues = gpAttachMap->m_pQueues;
+  pQueues->vDumpExecutingQueue();
+  pQueues->vDumpReadyQueue();
+  pQueues->vDumpReadySendQueues();
+  pQueues->vDumpReadySlotQueues();
+  pQueues->vDumpSleepingQueue();
+  pQueues->vDumpWaitingQueue();
+  
+  return true;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
