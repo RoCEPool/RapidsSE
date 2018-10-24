@@ -107,6 +107,8 @@ namespace JobsModel
     pthread_condattr_t  m_xThreadCondAttr;  // connector thread condition shared attribute
   
     Tasks::Task* m_pExecutingTask; // task executing the system
+  
+    bool m_bNoWait; // no wait
 
   public:
     Job(eCN eClassNo);

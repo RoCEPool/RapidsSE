@@ -445,6 +445,9 @@ void SePrompt::vSpawnJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  if (m_bNoWait)
+    m_pJob->m_bNoWait = true;
+  
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
   pCommandProcessor->bSpawnJob(m_pSession);

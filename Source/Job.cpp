@@ -186,6 +186,8 @@ void Job::vInit(void)
   
   
   m_pExecutingTask = nullptr;
+  
+  m_bNoWait = false;
 }
 
 /*----------------------------------------------------------------------------*/

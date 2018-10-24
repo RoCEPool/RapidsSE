@@ -1318,6 +1318,13 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.signalConnector"_Stz);
   Job* pJob = _pJob(pJobPtr);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (pJob->m_bNoWait) {
+    EXIT();
+    return;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock & unlock this job's mutex to ensure the connector has entered wait
