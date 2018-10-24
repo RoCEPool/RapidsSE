@@ -60,6 +60,8 @@ TaskList::TaskList(cmpFun fCompare)
   m_xLock.vInitLock(LK_TASK_QUEUE);
   m_pTaskSkipList = new SkipList(true, fCompare);
   
+  m_pListTasks = new ListNL_t<Task>;
+  
   _checkInitialised_(CN_TASKLIST);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
@@ -71,6 +73,8 @@ TaskList::TaskList(cmpFun fCompare)
 TaskList::~TaskList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  
+  delete m_pListTasks;
 }
 
 /*----------------------------------------------------------------------------*/

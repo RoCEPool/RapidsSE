@@ -13,9 +13,10 @@ namespace Tasks
   class TaskList : public Object
   {
   private:
-    Lock         m_xLock;
-    SkipList*    m_pTaskSkipList;
-    
+    Lock            m_xLock;
+    SkipList*       m_pTaskSkipList;
+    ListNL_t<Task>* m_pListTasks;
+  
     // must be last
     Footer m_xFooter;
     
