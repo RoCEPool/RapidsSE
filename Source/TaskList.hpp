@@ -14,7 +14,7 @@ namespace Tasks
   {
   private:
     Lock            m_xLock;
-    SkipList*       m_pTaskSkipList;
+    //SkipList*       m_pTaskSkipList;
     ListNL_t<Task>* m_pListTasks;
   
     // must be last
@@ -25,7 +25,7 @@ namespace Tasks
     void* operator new(size_t, TaskList* pTaskQueue);
     void  operator delete(void*);
     
-    TaskList(cmpFun fCompare);
+    TaskList(void);
     ~TaskList(void);
     
     void   vAddTask(Task* pTask);

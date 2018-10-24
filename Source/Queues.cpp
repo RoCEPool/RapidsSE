@@ -55,11 +55,12 @@ Queues::Queues(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   m_pThreadVector  = new ThreadVector;
-  m_ziQueueOrder  = 0;
+  m_ziQueueOrder   = 0;
   
   m_pSleepingQueue = new TaskQueue(bTaskCompareWakeupTime);
   
   m_pReadyQueue    = new TaskQueue(bTaskCompareQueueOrder);
+  m_pReadyList     = new TaskList;
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_pReadySlotQueues[i_Slot] = nullptr;

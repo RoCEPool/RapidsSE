@@ -51,7 +51,7 @@ void TaskList::operator delete(void* pTaskQueueAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TaskList::TaskList(cmpFun fCompare)
+TaskList::TaskList(void)
 : Object(CN_TASKLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);

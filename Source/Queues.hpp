@@ -26,6 +26,7 @@ namespace Threads
     // QR_SLEEPING_QUEUE           // (ordered by wakeup time)
   
     TaskQueue* m_pReadyQueue;      // set of queued tasks ready to be executed
+    TaskList*  m_pReadyList;       // 
     // QR_READY_QUEUE              // (ordered by arrival)
   
     TaskQueue* m_pReadySlotQueues[C_SLOTS_PER_NODE];
