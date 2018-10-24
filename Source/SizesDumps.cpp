@@ -169,6 +169,7 @@ pDUMPFUN *gpDump[]
   /* 65 */ &Heap::vDump,            // CN_LARGEPERSISTENT
   /* 66 */ &Heap::vDump,            // CN_LARGETRANSIENT
   /* 67 */ &LoadChunk::vDump,       // CN_LINEITEM
+  /*    */ &Dump::vInvalid,         // CN_LIST
   /* 68 */ &LoadChunk::vDump,       // CN_LOADCHUNK
   /* 71 */ &LoadMap::vDump,         // CN_LOADMAP
   /* 72 */ &Dump::vInvalid,         // CN_LOCK
@@ -419,11 +420,9 @@ i8 giClassSize[]
   
   /* 65 */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
   /* 66 */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
-  
   /* 67 */ sizeof(LineItem),           // CN_LINEITEM
+  /*    */ sizeof(ListNL_t<Task>),     // CN_LIST
   /* 68 */ sizeof(LoadChunk),          // CN_LOADCHUNK
-
-
   /* 71 */ sizeof(LoadMap),            // CN_LOADMAP
   /* 72 */ sizeof(Lock),               // CN_LOCK
   
@@ -672,11 +671,9 @@ eHT geWhichHeap[]
 
   /* 65 */ HT_INVALID,           // CN_LARGEPERSISTENT
   /* 66 */ HT_INVALID,           // CN_LARGETRANSIENT
-  
   /* 67 */ HT_INVALID,           // CN_LINEITEM
+  /*    */ HT_TRANSIENT_SMALL,   // CN_LIST
   /* 68 */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
-
-
   /* 71 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
   /* 72 */ HT_INVALID,           // CN_LOCK
   

@@ -164,11 +164,9 @@ pFINALIZE *gpFinalize[]
   
   /* 65 */ &Finalize::vUndefined,         // CN_LARGEPERSISTENT
   /* 66 */ &Finalize::vUndefined,         // CN_LARGETRANSIENT
-  
   /* 67 */ &Finalize::vUndefined,         // CN_LINEITEM
+  /*    */ &Finalize::vUndefined,         // CN_LIST
   /* 68 */ &Finalize::vUndefined,         // CN_LOADCHUNK
-
-
   /* 71 */ &Finalize::vUndefined,         // CN_LOADMAP
   /* 72 */ &Finalize::vUndefined,         // CN_LOCK
   
