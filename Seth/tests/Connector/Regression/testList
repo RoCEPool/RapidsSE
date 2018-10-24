@@ -2,7 +2,7 @@
 aggs-avg.test
 aggs-count.test
 aggs-max.test
-//aggs-min.test
+aggs-min.test
 //aggs-sum.test
 
 
