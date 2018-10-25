@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*/
 /* aggs-avg -- Regression tests                                               */
 /*----------------------------------------------------------------------------*/
-LOOP 50 {
+LOOP 500 {
 // Source file: ../qa/queries/aggs/avg/ravg13.sql
 // Result file: ../qa/queries/aggs/avg/results/avg13.res
 select a.colb1, b.colb2, avg(a.cola1 + b.cola2) from table1 a join table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by a.colb1, b.colb2;

@@ -16,7 +16,8 @@
   tp: ping_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  5 thread.sleep_s
+  "ping sleeps" .
+  1 thread.sleep_s
   "ping wakes" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
