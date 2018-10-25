@@ -1,11 +1,12 @@
 //schemaCreate.test
-aggs-avg.test
-aggs-count.test
-aggs-max.test
-aggs-min.test
-aggs-sum.test
-AndOrNot.test
-between.test
-cast.test
-schemaDrop.test
+//aggs-avg.test
+//aggs-count.test
+//aggs-max.test
+//aggs-min.test
+//aggs-sum.test
+//AndOrNot.test
+//between.test
+//cast.test
+alias.test
+//schemaDrop.test
 
