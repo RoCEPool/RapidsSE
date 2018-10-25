@@ -6,4 +6,5 @@
 //aggs-sum.test
 //schemaDrop.test
 //AndOrNot.test
+between.test
 
