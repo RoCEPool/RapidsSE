@@ -75,8 +75,9 @@ Queues::Queues(void)
   //m_pExecutingQueue = new TaskQueue(bTaskCompareQueueOrder);
   m_pExecutingList  = new TaskList;
 
-  m_pWaitingQueue   = new TaskQueue(bTaskCompareQueueOrder);
-  
+  //m_pWaitingQueue   = new TaskQueue(bTaskCompareQueueOrder);
+  m_pWaitingList  = new TaskList;
+
   _checkInitialised_(CN_QUEUES);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
@@ -222,9 +223,9 @@ void Queues::vAddToWaitingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pWaitingQueue->vGrabLock();
+  m_pWaitingList->vGrabLock();
   vAddToWaitingQueue_NL(pTask);
-  m_pWaitingQueue->vDropLock();
+  m_pWaitingList->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -334,7 +335,7 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
   pTask->vQueueOrder(++m_ziQueueOrder);
   
   // put task inyo the waiting queue
-  m_pWaitingQueue->vAddTask(pTask);
+  m_pWaitingList->vAddTask(pTask);
   
   // drop task lock
   pTask->vDropLock();
@@ -442,11 +443,11 @@ void Queues::vDumpWaitingQueue(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("WaitingQueue: %p\n"_Stz, m_pWaitingQueue);
+  vTrace("WaitingList: %p\n"_Stz, m_pWaitingList);
   vTrace("------------------------------------\n"_Stz);
-  m_pWaitingQueue->vGrabLock();
-  m_pWaitingQueue->vContentDump();
-  m_pWaitingQueue->vDropLock();
+  m_pWaitingList->vGrabLock();
+  m_pWaitingList->vContentDump();
+  m_pWaitingList->vDropLock();
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
   vTrace("\n"_Stz);
@@ -499,7 +500,7 @@ i8 Queues::nQWaitingQueueTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  return m_pWaitingQueue->nTasks();
+  return m_pWaitingList->nTasks();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -968,9 +969,9 @@ void Queues::vRemoveFromWaitingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pWaitingQueue->vGrabLock();
-  m_pWaitingQueue->vRemoveTask(pTask);
-  m_pWaitingQueue->vDropLock();
+  m_pWaitingList->vGrabLock();
+  m_pWaitingList->vRemoveTask(pTask);
+  m_pWaitingList->vDropLock();
   
   pTask->vQueue(QR_NONE);
 }

@@ -45,7 +45,8 @@ namespace Threads
     TaskList*  m_pExecutingList;   //
                                    // (ordered by arrival)
   
-    TaskQueue* m_pWaitingQueue;    // suspended tasks which waiting to be signaled
+    //TaskQueue* m_pWaitingQueue;    // suspended tasks which waiting to be signaled
+    TaskList*  m_pWaitingList;     //
                                    // (ordered by arrival)
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
