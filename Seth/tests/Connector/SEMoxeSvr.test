@@ -1,71 +1,23 @@
+for i in {1..5}
+do
+echo "Welcome $i times"
 
-rapids-shell.sh -p 5334 < schemaCreateMoxe.test
-rapids-shell.sh -p 5334 < schemaCreateSESvr.test
-rapids-shell.sh -p 5334 < inssel.test
-rapids-shell.sh -p 5334 < selCountMoxe.test
-rapids-shell.sh -p 5334 < selCountSE.test
-rapids-shell.sh -p 5334 < schemaDropSE.test
+for j in {1..10}
+  echo "Iteration $j of $i"
+  ./rapids-shell -p 5334 < schemaCreateSE.test
+  ./rapids-shell -p 5334 < schemaLoadSESvr.test
+  ./rapids-shell -p 5334 < schemaCreateMoxe.test
+  ./rapids-shell -p 5334 < insSelIntoMoxe.test
+  ./rapids-shell -p 5334 < selCountSE.test
+  ./rapids-shell -p 5334 < selCountMoxe.test
 
-rapids-shell.sh -p 5334 < schemaCreateMoxe.test
-rapids-shell.sh -p 5334 < schemaCreateSESvrSvr.test
-rapids-shell.sh -p 5334 < inssel.test
-rapids-shell.sh -p 5334 < selCountMoxe.test
-rapids-shell.sh -p 5334 < selCountSE.test
-rapids-shell.sh -p 5334 < schemaDropSE.test
+  ./rapids-shell -p 5334 < schemaDropSE.test
+  ./rapids-shell -p 5334 < schemaCreateSE.test
+  ./rapids-shell -p 5334 < insSelIntoSE.test
+  ./rapids-shell -p 5334 < selCountSE.test
+  ./rapids-shell -p 5334 < selCountMoxe.test
 
-rapids-shell.sh -p 5334 < schemaCreateMoxe.test
-rapids-shell.sh -p 5334 < schemaCreateSESvr.test
-rapids-shell.sh -p 5334 < inssel.test
-rapids-shell.sh -p 5334 < selCountMoxe.test
-rapids-shell.sh -p 5334 < selCountSE.test
-rapids-shell.sh -p 5334 < schemaDropSE.test
-
-rapids-shell.sh -p 5334 < schemaCreateMoxe.test
-rapids-shell.sh -p 5334 < schemaCreateSESvr.test
-rapids-shell.sh -p 5334 < inssel.test
-rapids-shell.sh -p 5334 < selCountMoxe.test
-rapids-shell.sh -p 5334 < selCountSE.test
-rapids-shell.sh -p 5334 < schemaDropSE.test
-
-rapids-shell.sh -p 5334 < schemaCreateMoxe.test
-rapids-shell.sh -p 5334 < schemaCreateSESvr.test
-rapids-shell.sh -p 5334 < inssel.test
-rapids-shell.sh -p 5334 < selCountMoxe.test
-rapids-shell.sh -p 5334 < selCountSE.test
-rapids-shell.sh -p 5334 < schemaDropSE.test
-
-rapids-shell.sh -p 5334 < schemaCreateMoxe.test
-rapids-shell.sh -p 5334 < schemaCreateSESvr.test
-rapids-shell.sh -p 5334 < inssel.test
-rapids-shell.sh -p 5334 < selCountMoxe.test
-rapids-shell.sh -p 5334 < selCountSE.test
-rapids-shell.sh -p 5334 < schemaDropSE.test
-
-rapids-shell.sh -p 5334 < schemaCreateMoxe.test
-rapids-shell.sh -p 5334 < schemaCreateSESvr.test
-rapids-shell.sh -p 5334 < inssel.test
-rapids-shell.sh -p 5334 < selCountMoxe.test
-rapids-shell.sh -p 5334 < selCountSE.test
-rapids-shell.sh -p 5334 < schemaDropSE.test
-
-rapids-shell.sh -p 5334 < schemaCreateMoxe.test
-rapids-shell.sh -p 5334 < schemaCreateSESvr.test
-rapids-shell.sh -p 5334 < inssel.test
-rapids-shell.sh -p 5334 < selCountMoxe.test
-rapids-shell.sh -p 5334 < selCountSE.test
-rapids-shell.sh -p 5334 < schemaDropSE.test
-
-rapids-shell.sh -p 5334 < schemaCreateMoxe.test
-rapids-shell.sh -p 5334 < schemaCreateSESvr.test
-rapids-shell.sh -p 5334 < inssel.test
-rapids-shell.sh -p 5334 < selCountMoxe.test
-rapids-shell.sh -p 5334 < selCountSE.test
-rapids-shell.sh -p 5334 < schemaDropSE.test
-
-rapids-shell.sh -p 5334 < schemaCreateMoxe.test
-rapids-shell.sh -p 5334 < schemaCreateSESvr.test
-rapids-shell.sh -p 5334 < inssel.test
-rapids-shell.sh -p 5334 < selCountMoxe.test
-rapids-shell.sh -p 5334 < selCountSE.test
-rapids-shell.sh -p 5334 < schemaDropSE.test
-
+  ./rapids-shell -p 5334 < schemaDropSE.test
+  ./rapids-shell -p 5334 < schemaDropMoxe.test
+  done
+done
