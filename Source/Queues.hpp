@@ -41,7 +41,8 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are not checked in the round robin
   
-    TaskQueue* m_pExecutingQueue;  // queue of tasks currently executing
+    //TaskQueue* m_pExecutingQueue;  // queue of tasks currently executing
+    TaskList*  m_pExecutingList;   //
                                    // (ordered by arrival)
   
     TaskQueue* m_pWaitingQueue;    // suspended tasks which waiting to be signaled

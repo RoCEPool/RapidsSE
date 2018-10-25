@@ -72,8 +72,9 @@ Queues::Queues(void)
   for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++)
     m_pReadySendQueues[i_Node] = new TaskQueue(bTaskCompareQueueOrder);
   
-  m_pExecutingQueue = new TaskQueue(bTaskCompareQueueOrder);
-  
+  //m_pExecutingQueue = new TaskQueue(bTaskCompareQueueOrder);
+  m_pExecutingList  = new TaskList;
+
   m_pWaitingQueue   = new TaskQueue(bTaskCompareQueueOrder);
   
   _checkInitialised_(CN_QUEUES);
@@ -152,9 +153,9 @@ void Queues::vAddToExecutingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pExecutingQueue->vGrabLock();
+  m_pExecutingList->vGrabLock();
   vAddToExecutingQueue_NL(pTask);
-  m_pExecutingQueue->vDropLock();
+  m_pExecutingList->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,7 +239,7 @@ void Queues::vAddToExecutingQueue_NL(Task* pTask)
   pTask->vQueue(QR_EXECUTING_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
   
-  m_pExecutingQueue->vAddTask(pTask);
+  m_pExecutingList->vAddTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -347,11 +348,11 @@ void Queues::vDumpExecutingQueue(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("ExecutingQueue: %p\n"_Stz, m_pExecutingQueue);
+  vTrace("ExecutingList: %p\n"_Stz, m_pExecutingList);
   vTrace("------------------------------------\n"_Stz);
-  m_pExecutingQueue->vGrabLock();
-  m_pExecutingQueue->vContentDump();
-  m_pExecutingQueue->vDropLock();
+  m_pExecutingList->vGrabLock();
+  m_pExecutingList->vContentDump();
+  m_pExecutingList->vDropLock();
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
   vTrace("\n"_Stz);
@@ -458,7 +459,7 @@ i8 Queues::nExecutingQueueTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  return m_pExecutingQueue->nTasks();
+  return m_pExecutingList->nTasks();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -953,9 +954,9 @@ void Queues::vRemoveFromExecutingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pExecutingQueue->vGrabLock();
-  m_pExecutingQueue->vRemoveTask(pTask);
-  m_pExecutingQueue->vDropLock();
+  m_pExecutingList->vGrabLock();
+  m_pExecutingList->vRemoveTask(pTask);
+  m_pExecutingList->vDropLock();
   
   pTask->vQueue(QR_NONE);
 }
