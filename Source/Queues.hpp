@@ -25,15 +25,14 @@ namespace Threads
     TaskQueue* m_pSleepingQueue;   // set of queued sleeping tasks
     // QR_SLEEPING_QUEUE           // (ordered by wakeup time)
   
-    //TaskQueue* m_pReadyQueue;      // set of queued tasks ready to be executed
-    TaskList*  m_pReadyList;       // 
+    TaskList*  m_pReadyQueue;      //  set of queued tasks ready to be executed
     // QR_READY_QUEUE              // (ordered by arrival)
   
-    TaskQueue* m_pReadySlotQueues[C_SLOTS_PER_NODE];
+    TaskList* m_pReadySlotQueues[C_SLOTS_PER_NODE];
     // QR_READY_QUEUE + 1 ..       // tasks queued for partitioned execution
     //   gxArguments.m_nSlots - 1  // (ordered by arrival)
   
-    TaskQueue* m_pReadySendQueues[C_MAX_NODES];
+    TaskList* m_pReadySendQueues[C_MAX_NODES];
     // gxArguments.m_nSlots ..     // set of tasks queued for socket sending
     //   gxArguments.m_nSlots +    // (ordered by arrival)
     //   gxArguments.m_nNodes - 1
@@ -41,10 +40,10 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // queues which are not checked in the round robin
   
-    TaskQueue* m_pExecutingQueue;  // queue of tasks currently executing
+    TaskList*  m_pExecutingSet;    // set of tasks currently executing
                                    // (ordered by arrival)
   
-    TaskQueue* m_pWaitingQueue;    // suspended tasks which waiting to be signaled
+    TaskList*  m_pWaitingSet;      // suspended tasks which waiting to be signaled
                                    // (ordered by arrival)
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

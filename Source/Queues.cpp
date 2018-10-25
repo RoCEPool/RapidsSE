@@ -59,23 +59,22 @@ Queues::Queues(void)
   
   m_pSleepingQueue = new TaskQueue(bTaskCompareWakeupTime);
   
-  //m_pReadyQueue    = new TaskQueue(bTaskCompareQueueOrder);
-  m_pReadyList     = new TaskList;
+  m_pReadyQueue     = new TaskList;
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_pReadySlotQueues[i_Slot] = nullptr;
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
-    m_pReadySlotQueues[i_Slot] = new TaskQueue(bTaskCompareQueueOrder);
+    m_pReadySlotQueues[i_Slot] = new TaskList;
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_pReadySendQueues[i_Node] = nullptr;
   for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++)
-    m_pReadySendQueues[i_Node] = new TaskQueue(bTaskCompareQueueOrder);
+    m_pReadySendQueues[i_Node] = new TaskList;
   
-  m_pExecutingQueue = new TaskQueue(bTaskCompareQueueOrder);
-  
-  m_pWaitingQueue   = new TaskQueue(bTaskCompareQueueOrder);
-  
+  m_pExecutingSet  = new TaskList;
+
+  m_pWaitingSet  = new TaskList;
+
   _checkInitialised_(CN_QUEUES);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
@@ -152,9 +151,9 @@ void Queues::vAddToExecutingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pExecutingQueue->vGrabLock();
+  m_pExecutingSet->vGrabLock();
   vAddToExecutingQueue_NL(pTask);
-  m_pExecutingQueue->vDropLock();
+  m_pExecutingSet->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,9 +163,9 @@ void Queues::vAddToReadyQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pReadyList->vGrabLock();
+  m_pReadyQueue->vGrabLock();
   vAddToReadyQueue_NL(pTask);
-  m_pReadyList->vDropLock();
+  m_pReadyQueue->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,9 +220,9 @@ void Queues::vAddToWaitingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pWaitingQueue->vGrabLock();
+  m_pWaitingSet->vGrabLock();
   vAddToWaitingQueue_NL(pTask);
-  m_pWaitingQueue->vDropLock();
+  m_pWaitingSet->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,7 +237,7 @@ void Queues::vAddToExecutingQueue_NL(Task* pTask)
   pTask->vQueue(QR_EXECUTING_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
   
-  m_pExecutingQueue->vAddTask(pTask);
+  m_pExecutingSet->vAddTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,7 +252,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   
   pTask->vQueue(QR_READY_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
-  m_pReadyList->vAddTask(pTask);
+  m_pReadyQueue->vAddTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -333,7 +332,7 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
   pTask->vQueueOrder(++m_ziQueueOrder);
   
   // put task inyo the waiting queue
-  m_pWaitingQueue->vAddTask(pTask);
+  m_pWaitingSet->vAddTask(pTask);
   
   // drop task lock
   pTask->vDropLock();
@@ -347,11 +346,11 @@ void Queues::vDumpExecutingQueue(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("ExecutingQueue: %p\n"_Stz, m_pExecutingQueue);
+  vTrace("ExecutingList: %p\n"_Stz, m_pExecutingSet);
   vTrace("------------------------------------\n"_Stz);
-  m_pExecutingQueue->vGrabLock();
-  m_pExecutingQueue->vContentDump();
-  m_pExecutingQueue->vDropLock();
+  m_pExecutingSet->vGrabLock();
+  m_pExecutingSet->vContentDump();
+  m_pExecutingSet->vDropLock();
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
   vTrace("\n"_Stz);
@@ -365,11 +364,11 @@ void Queues::vDumpReadyQueue(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("ReadyQueue: %p\n"_Stz, m_pReadyList);
+  vTrace("ReadyQueue: %p\n"_Stz, m_pReadyQueue);
   vTrace("------------------------------------\n"_Stz);
-  m_pReadyList->vGrabLock();
-  m_pReadyList->vContentDump();
-  m_pReadyList->vDropLock();
+  m_pReadyQueue->vGrabLock();
+  m_pReadyQueue->vContentDump();
+  m_pReadyQueue->vDropLock();
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
   vTrace("\n"_Stz);
@@ -441,11 +440,11 @@ void Queues::vDumpWaitingQueue(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("WaitingQueue: %p\n"_Stz, m_pWaitingQueue);
+  vTrace("WaitingList: %p\n"_Stz, m_pWaitingSet);
   vTrace("------------------------------------\n"_Stz);
-  m_pWaitingQueue->vGrabLock();
-  m_pWaitingQueue->vContentDump();
-  m_pWaitingQueue->vDropLock();
+  m_pWaitingSet->vGrabLock();
+  m_pWaitingSet->vContentDump();
+  m_pWaitingSet->vDropLock();
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
   vTrace("\n"_Stz);
@@ -458,7 +457,7 @@ i8 Queues::nExecutingQueueTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  return m_pExecutingQueue->nTasks();
+  return m_pExecutingSet->nTasks();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -468,7 +467,7 @@ i8 Queues::nReadyQueueTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  return m_pReadyList->nTasks();
+  return m_pReadyQueue->nTasks();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -498,7 +497,7 @@ i8 Queues::nQWaitingQueueTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  return m_pWaitingQueue->nTasks();
+  return m_pWaitingSet->nTasks();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -553,19 +552,17 @@ Task* Queues::pInspectReadyQueue(Thread* pCallingThread)
   // lock queue and check for task
   
   // attempt to grab a write lock on the general queue
-  if (! m_pReadyList->bGrabLock()) {
+  if (! m_pReadyQueue->bGrabLock()) {
     // unable to lock queue (another thread must be processing it)
     // so move on to the next queue
     return nullptr;
   }
   
   // pop task off the general queue
-  //RJH vTrace("m_pReadyQueue pPopTask\n"_Stz);
-  pPoppedTask = m_pReadyList->pPopTask();
-  //RJH vTrace("m_pReadyQueue pPopTask %p\n"_Stz, pPoppedTask);
+  pPoppedTask = m_pReadyQueue->pPopTask();
   
   // drop the lock
-  m_pReadyList->vDropLock();
+  m_pReadyQueue->vDropLock();
   
   // is there a task to run?
   if (! pPoppedTask)
@@ -593,7 +590,7 @@ Task* Queues::pInspectReadySendQueue(Thread* pCallingThread)
   
   i8 i_Queue = i_ToReadySendQueue(pCallingThread->m_iLastRRqueue);
   
-  TaskQueue* pReadySendQueue = m_pReadySendQueues[i_Queue];
+  TaskList* pReadySendQueue = m_pReadySendQueues[i_Queue];
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock queue and check for task
@@ -638,7 +635,7 @@ Task* Queues::pInspectReadySlotQueue(Thread* pCallingThread)
   
   i8 i_Queue = i_ToReadySlotQueue(pCallingThread->m_iLastRRqueue);
   
-  TaskQueue* pReadySlotQueue = m_pReadySlotQueues[i_Queue];
+  TaskList* pReadySlotQueue = m_pReadySlotQueues[i_Queue];
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock queue and check for task
@@ -797,63 +794,6 @@ bool Queues::bIsSleepingQueue(i8 iRRqueue)
 /*----------------------------------------------------------------------------*/
 /* pop next queued task in round robin fashion                                */
 /*----------------------------------------------------------------------------*/
-/*
-bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  Task* pPoppedTask;
-  
-  // set popped task to be null to start with
-  *ppPoppedTask = NULL;
-  
-  // start a round robin sequence
-  pCallingThread->vRRstart();
-  
-  // round robin thru the queues
-  while (pCallingThread->bRRnext()) {
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // inspect the queues
-    
-    if (QR_SLEEPING_QUEUE == pCallingThread->m_iLastRRqueue) {
-      
-      if ( ! (pPoppedTask = pInspectSleepingQueue(pCallingThread)) )
-        continue;
-      *ppPoppedTask = pPoppedTask;
-      return true;
-    }
-    
-    if (QR_READY_QUEUE == pCallingThread->m_iLastRRqueue) {
-      
-      if ( ! (pPoppedTask = pInspectReadyQueue(pCallingThread)) )
-        continue;
-      *ppPoppedTask = pPoppedTask;
-      return true;
-    }
-    
-    if (QR_READY_QUEUE > pCallingThread->m_iLastRRqueue &&
-        C_SLOTS_PER_NODE < pCallingThread->m_iLastRRqueue) {
-      
-      if ( ! (pPoppedTask = pInspectReadySlotQueue(pCallingThread)) )
-        continue;
-      *ppPoppedTask = pPoppedTask;
-      return true;
-    }
-    
-    if ( ! (pPoppedTask = pInspectReadySendQueue(pCallingThread)) )
-      continue;
-    *ppPoppedTask = pPoppedTask;
-    return true;
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-  } // while (true)
-  
-  return false;
-}
-*/
-//------------------------------------------------------------------------------
 bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
@@ -953,9 +893,9 @@ void Queues::vRemoveFromExecutingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pExecutingQueue->vGrabLock();
-  m_pExecutingQueue->vRemoveTask(pTask);
-  m_pExecutingQueue->vDropLock();
+  m_pExecutingSet->vGrabLock();
+  m_pExecutingSet->vRemoveTask(pTask);
+  m_pExecutingSet->vDropLock();
   
   pTask->vQueue(QR_NONE);
 }
@@ -967,9 +907,9 @@ void Queues::vRemoveFromWaitingQueue(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pWaitingQueue->vGrabLock();
-  m_pWaitingQueue->vRemoveTask(pTask);
-  m_pWaitingQueue->vDropLock();
+  m_pWaitingSet->vGrabLock();
+  m_pWaitingSet->vRemoveTask(pTask);
+  m_pWaitingSet->vDropLock();
   
   pTask->vQueue(QR_NONE);
 }
@@ -1148,16 +1088,16 @@ void Queues::vScheduleYieldedTask(Task* pTask)
     //     continue to execute the yield task.
     //   Otherwise we add the task to the ready queue
     
-    m_pReadyList->vGrabLock();
-    i8 iLengthReadyQueue = m_pReadyList->nTasks();
+    m_pReadyQueue->vGrabLock();
+    i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
     if (0 == iLengthReadyQueue) {
-      m_pReadyList->vDropLock();
+      m_pReadyQueue->vDropLock();
       pCallingThread->vReExecuteTask(pTask);
     }
     else {
       pTask->vState(TS_READY);
       vAddToReadyQueue_NL(pTask);
-      m_pReadyList->vDropLock();
+      m_pReadyQueue->vDropLock();
     }
 
     return;
@@ -1177,7 +1117,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   i8 i_Slot = pTask->iSlot();
 
   // first check if any tasks in ready queue
-  i8 iLengthReadyQueue = m_pReadyList->nTasks();
+  i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
   vTrace("ReadyQ %lld\n"_Stz, i_Slot, iLengthReadyQueue);
   
   if (0 == iLengthReadyQueue) {

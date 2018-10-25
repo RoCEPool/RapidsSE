@@ -77,7 +77,7 @@ TaskList::~TaskList(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to the queue                                                      */
+/* add task to list                                                           */
 /*----------------------------------------------------------------------------*/
 void TaskList::vAddTask(Task* pTask)
 {
@@ -130,7 +130,7 @@ bool TaskList::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* peek at a task at the front of the queue                                   */
+/* peek at task at top of list                                                */
 /*----------------------------------------------------------------------------*/
 Task* TaskList::pPeekTask(void)
 {
@@ -150,7 +150,7 @@ Task* TaskList::pPeekTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop a task from the front of the queue                                     */
+/* pop task from top of list                                                  */
 /*----------------------------------------------------------------------------*/
 Task* TaskList::pPopTask(void)
 {
@@ -177,7 +177,17 @@ Task* TaskList::pPopTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of tasks in queue                                               */
+/* remove task from list                                                      */
+/*----------------------------------------------------------------------------*/
+void TaskList::vRemoveTask(Task* pTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  
+  m_pListTasks->vRemove(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of tasks in list                                                */
 /*----------------------------------------------------------------------------*/
 i8 TaskList::nTasks(void)
 {

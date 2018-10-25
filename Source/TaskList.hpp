@@ -35,6 +35,7 @@ namespace Tasks
     bool   bIsLocked(void);
     Task*  pPeekTask(void);
     Task*  pPopTask(void);
+    void   vRemoveTask(Task* pTask);
     i8     nTasks(void);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
