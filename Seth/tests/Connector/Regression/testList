@@ -1,9 +1,9 @@
-schemaCreate.test
-aggs-avg.test
-aggs-count.test
-aggs-max.test
-aggs-min.test
-aggs-sum.test
-schemaDrop.test
-
+//schemaCreate.test
+//aggs-avg.test
+//aggs-count.test
+//aggs-max.test
+//aggs-min.test
+//aggs-sum.test
+//schemaDrop.test
+//AndOrNot.test
 

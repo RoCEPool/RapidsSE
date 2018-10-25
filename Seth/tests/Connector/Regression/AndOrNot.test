@@ -171,7 +171,6 @@ rows:
   (65, 437, 'blue', 'blue')
   (65, 446, 'blue', 'blue')
   (65, 488, 'blue', 'blue')
-  ('152 row', 'retu', 'ned (', '8 sec)')
 
 
   // Source file: ../qa/queries/AndOrNot/raon4.sql
@@ -179,7 +178,6 @@ rows:
 select pcol1, pcol9, colb1, colb9 from table1 join table9 on colb1 = colb9 where pcol1=pcol9 and (colb1='green' or colb1='blue') order by pcol1;
 rows:
   (3, 3, 'green', 'green')
-  ('row(s', 'return', 'returned (2.', 'sec)')
 
 
   // Source file: ../qa/queries/AndOrNot/raon5.sql
@@ -190,79 +188,104 @@ rows:
   (10, 26, 'TEAL', 'blue')
   (16, 403, 'green', 'indigo')
   (37, 437, 'violet', 'blue')
-  ('row(s', 'return', 'd (0.49', 'ec)')
 
 
   // Source file: ../qa/queries/AndOrNot/raon6.sql
   // Result file: ../qa/queries/AndOrNot/results/aon6.res
 select count(*) from table1 a, table9 b where colb1 = 'green' or colb9= 'blue' and a.ucol = b.ucol;
+mute
+//CHECK_RESULT
+/*
 rows:
   (2502)
-  ('row(s) returned (0.81 sec)')
-
+*/
 
   // Source file: ../qa/queries/AndOrNot/raon7.sql
   // Result file: ../qa/queries/AndOrNot/results/aon7.res
 select count(*) from table1 where not (colb1 LIKE 'bl%' or colb1 LIKE 'BL%' );
+mute
+//CHECK_RESULT
+/*
 rows:
   (84)
-
+*/
 
   // Source file: ../qa/queries/AndOrNot/raon8.sql
   // Result file: ../qa/queries/AndOrNot/results/aon8.res
 select count(*) from table1 where not colb1 LIKE 'bl%' or not colb1 LIKE 'BL%' ;
+mute
+//CHECK_RESULT
+/*
 rows:
   (100)
-  ('row(s) returned (0.43 sec)')
-
+*/
 
   // Source file: ../qa/queries/AndOrNot/raon9.sql
   // Result file: ../qa/queries/AndOrNot/results/aon9.res
 select count(*) from table1 where not colb1 in ('blue', 'black', 'BLUE', 'BLACK');
+mute
+//CHECK_RESULT
+/*
 rows:
   (84)
-
+*/
 
   // Source file: ../qa/queries/AndOrNot/raon10.sql
   // Result file: ../qa/queries/AndOrNot/results/aon10.res
 select count(*) from table1 join table9 on pcol1 = pcol9 where not colb1 ='green' and not colb9='green';
+mute
+//CHECK_RESULT
+/*
 rows:
   (91)
-
+*/
 
   // Source file: ../qa/queries/AndOrNot/raon11.sql
   // Result file: ../qa/queries/AndOrNot/results/aon11.res
 select count(*) from table1, table9 where table1.ucol = table9.ucol and not colb1 ='green' or not colb9='green';
+mute
+//CHECK_RESULT
+/*
 rows:
   (47304)
-  ('row(s) returned (0.77 sec)')
-
+*/
 
   // Source file: ../qa/queries/AndOrNot/raon12.sql
   // Result file: ../qa/queries/AndOrNot/results/aon12.res
 select count(*) from table1, table9 where table1.ucol = table9.ucol and not (colb1 ='green' or colb9='green');
+mute
+//CHECK_RESULT
+/*
 rows:
   (45)
-
+*/
 
   // Source file: ../qa/queries/AndOrNot/raon13.sql
   // Result file: ../qa/queries/AndOrNot/results/aon13.res
 select count(*) from table1, table9 where table1.ucol = table9.ucol and not (colb1 ='green' or colb9='green') or not (colb1 = 'blue' or colb9 = 'blue');
+mute
+//CHECK_RESULT
+/*
 rows:
   (45887)
-
+*/
 
   // Source file: ../qa/queries/AndOrNot/raon14.sql
   // Result file: ../qa/queries/AndOrNot/results/aon14.res
 select count(*) from table1, table9 where table1.ucol = table9.ucol and (not (colb1 ='green' or colb9='green') or not (colb1 = 'blue' or colb9 = 'blue'));
+mute
+//CHECK_RESULT
+/*
 rows:
   (51)
-  ('row(s) returned (1.08 sec)')
-
+*/
 
   // Source file: ../qa/queries/AndOrNot/raon15.sql
   // Result file: ../qa/queries/AndOrNot/results/aon15.res
 select count(*) from table1, table9 where table1.ucol = table9.ucol and (not (colb1 ='green' or colb9='green') and not (colb1 = 'blue' or colb9 = 'blue'));
+mute
+//CHECK_RESULT
+/*
 rows:
   (39)
-
+*/
