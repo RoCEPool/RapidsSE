@@ -16,18 +16,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Node(void)
 {
-  vAddStep("node::new"_Stz,       &Task::vNodeNew);
+  vAddStep("node::new"_Stz,        &Task::vNodeNew);
   
-  vAddStep("node.init"_Stz,       &Task::vNodeInit);
-  vAddStep("node.IP"_Stz,         &Task::vNodeIP);
-  vAddStep("node.name"_Stz,       &Task::vNodeName);
-  vAddStep("node.no"_Stz,         &Task::vNodeNo);
-  vAddStep("node.partitions"_Stz, &Task::vNodePartitions);
-  vAddStep("node.port"_Stz,       &Task::vNodePort);
-  vAddStep("node.size"_Stz,       &Task::vNodeSize);
-  vAddStep("node.socket!"_Stz,    &Task::vNodeSocketStore);
-  vAddStep("node.socket@"_Stz,    &Task::vNodeSocketFetch);
-  vAddStep("node.status"_Stz,     &Task::vNodeStatus);
+  vAddStep("node.init"_Stz,        &Task::vNodeInit);
+  vAddStep("node.IP"_Stz,          &Task::vNodeIP);
+  vAddStep("node.name"_Stz,        &Task::vNodeName);
+  vAddStep("node.no"_Stz,          &Task::vNodeNo);
+  vAddStep("node.partitions"_Stz,  &Task::vNodePartitions);
+  vAddStep("node.port"_Stz,        &Task::vNodePort);
+  vAddStep("node.recvSocket!"_Stz, &Task::vNodeRecvSocketStore);
+  vAddStep("node.recvSocket@"_Stz, &Task::vNodeRecvSocketFetch);
+  vAddStep("node.sendSocket!"_Stz, &Task::vNodeSendSocketStore);
+  vAddStep("node.sendSocket@"_Stz, &Task::vNodeSendSocketFetch);
+  vAddStep("node.size"_Stz,        &Task::vNodeSize);
+  vAddStep("node.status"_Stz,      &Task::vNodeStatus);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,6 +169,88 @@ void Task::vNodePort(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* node.recvSocket! -- set receive socket for node                            */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeRecvSocketStore(MP_Task mpTask)
+{
+  ENTRY("vNodeRecvSocketStore"_Stz);
+  
+  Object* pPtrNode;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.recvSocket!"_Stz);
+  Node* pNode = _pNode(pPtrNode);
+  
+  Object* pSocketPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
+    THROW_INVALID_DSTACK("node.recvSocket!"_Stz);
+  Socket* pSocket = _pSocket(pSocketPtr);
+  
+  pNode->vRecvSocket(pSocket);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.recvSocket@ -- get receive socket for node                            */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeRecvSocketFetch(MP_Task mpTask)
+{
+  ENTRY("vNodeRecvSocketFetch"_Stz);
+  
+  Object* pPtrNode;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.recvSocket@"_Stz);
+  Node* pNode = _pNode(pPtrNode);
+  
+  Socket* pSocket = pNode->pRecvSocket();
+  
+  mpTask->m_pDataStack->vPushObject(pSocket);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.sendSocket! -- set send socket for node                               */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeSendSocketStore(MP_Task mpTask)
+{
+  ENTRY("vNodeSendSocketStore"_Stz);
+  
+  Object* pPtrNode;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.sendSocket!"_Stz);
+  Node* pNode = _pNode(pPtrNode);
+
+  Object* pSocketPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
+    THROW_INVALID_DSTACK("node.sendSocket!"_Stz);
+  Socket* pSocket = _pSocket(pSocketPtr);
+    
+  pNode->vSendSocket(pSocket);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.sendSocket@ -- get send socket for node                               */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeSendSocketFetch(MP_Task mpTask)
+{
+  ENTRY("vNodeSendSocketFetch"_Stz);
+  
+  Object* pPtrNode;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.sendSocket"_Stz);
+  Node* pNode = _pNode(pPtrNode);
+  
+  Socket* pSocket = pNode->pSendSocket();
+  
+  mpTask->m_pDataStack->vPushObject(pSocket);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* node.size -- get size of this node (of a grid)                             */
 /*----------------------------------------------------------------------------*/
 void Task::vNodeSize(MP_Task mpTask)
@@ -174,47 +258,6 @@ void Task::vNodeSize(MP_Task mpTask)
   ENTRY("vNodeSize"_Stz);
   
   mpTask->m_pDataStack->vPushInt(gpAttachMap->m_iRegionSize);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* node.socket! -- set socket for node                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vNodeSocketStore(MP_Task mpTask)
-{
-  ENTRY("vNodeSocketStore"_Stz);
-  
-  Object* pPtrNode;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.socket"_Stz);
-  Node* pNode = _pNode(pPtrNode);
-
-  Object* pSocketPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
-    THROW_INVALID_DSTACK("node.socket!"_Stz);
-  Socket* pSocket = _pSocket(pSocketPtr);
-    
-  pNode->vSocket(pSocket);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* node.socket@ -- get socket for node                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vNodeSocketFetch(MP_Task mpTask)
-{
-  ENTRY("vNodeSocketFetch"_Stz);
-  
-  Object* pPtrNode;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.socket"_Stz);
-  Node* pNode = _pNode(pPtrNode);
-  
-  Socket* pSocket = pNode->pSocket();
-  
-  mpTask->m_pDataStack->vPushObject(pSocket);
   
   EXIT();
 }

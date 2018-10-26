@@ -60,18 +60,19 @@ namespace Tasks
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
   
-    static void vAddSteps_Job();
-    static void vAddSteps_JobAnalyzeIndex();
-    static void vAddSteps_JobClass();
-    static void vAddSteps_JobCreateIndex();
-    static void vAddSteps_JobFetchRows();
-    static void vAddSteps_JobGeneric();
-    static void vAddSteps_JobInsertRow();
-    static void vAddSteps_JobLoadBuffer();
-    static void vAddSteps_JobLoadTable();
-    static void vAddSteps_JobReceiver();
-    static void vAddSteps_JobSubLoader();
-    static void vAddSteps_JobTruncateTable();
+    static void vAddSteps_Job(void);
+    static void vAddSteps_JobAnalyzeIndex(void);
+    static void vAddSteps_JobClass(void);
+    static void vAddSteps_JobCreateIndex(void);
+    static void vAddSteps_JobFetchRows(void);
+    static void vAddSteps_JobGeneric(void);
+    static void vAddSteps_JobInsertRow(void);
+    static void vAddSteps_JobLoadBuffer(void);
+    static void vAddSteps_JobLoadTable(void);
+    static void vAddSteps_JobNodeInfo(void);
+    static void vAddSteps_JobReceiver(void);
+    static void vAddSteps_JobSubLoader(void);
+    static void vAddSteps_JobTruncateTable(void);
   
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);

@@ -13,7 +13,8 @@ namespace GridModel
     s256  m_sNodeName;  // name of the node
     s256  m_sNodeIP;    // ip address of node
     i8    m_iPortNo;    // port number of node
-    Socket* m_pSocket;  // socket connection to node
+    Socket* m_pRecvSocket;  // socket used for receiving from node
+    Socket* m_pSendSocket;  // socket used for sending to node
   
     // must be last
     Footer m_xFooter;
@@ -36,8 +37,10 @@ namespace GridModel
     void vNodeNo(i8 iNodeNo);
     i8   iNodePortNo(void);
     
-    Socket* pSocket(void);
-    void vSocket(Socket* pSocket);
+    Socket* pRecvSocket(void);
+    void vRecvSocket(Socket* pSocket);
+    Socket* pSendSocket(void);
+    void vSendSocket(Socket* pSocket);
   
     Footer* aFooter(void);
   };

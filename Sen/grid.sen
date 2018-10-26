@@ -254,7 +254,7 @@ tp: printResult
 /*----------------------------------------------------------------------------*/
 : socketLock ( -- )
 
-  task::this task.sendNode@ node.socket@ socket.grabWrite
+  task::this task.sendNode@ node.sendSocket@ socket.grabWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -262,7 +262,7 @@ tp: printResult
 /*----------------------------------------------------------------------------*/
 : socketUnlock ( -- )
 
-  task::this task.sendNode@ node.socket@ socket.dropWrite
+  task::this task.sendNode@ node.sendSocket@ socket.dropWrite
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -270,7 +270,7 @@ tp: printResult
 /*----------------------------------------------------------------------------*/
 : >socketObject ( pObject -- )
 
-  task::this task.sendNode@ node.socket@
+  task::this task.sendNode@ node.sendSocket@
 
   tp: sending
 
@@ -286,7 +286,7 @@ tp: printResult
 /*----------------------------------------------------------------------------*/
 : >socketValSet ( valset -- )
 
-  task::this task.sendNode@ node.socket@
+  task::this task.sendNode@ node.sendSocket@
 
   tp: sending
 

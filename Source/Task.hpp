@@ -530,6 +530,7 @@ namespace Tasks
     static void vFlowThrow(MP_Task mpTask);
     
     // grid    
+    static void vGridFindNode(MP_Task mpTask);
     static void vGridNode(MP_Task mpTask);
     static void vGridNodes(MP_Task mpTask);
     static void vGridPartitions(MP_Task mpTask);
@@ -763,6 +764,9 @@ namespace Tasks
     static void vJob_LoadTableTaskFetch(MP_Task mpTask);
     static void vJob_LoadTableTaskStore(MP_Task mpTask);
   
+    // job NodeInfo
+    static void vJob_NodeInfoNodeNameFetch(MP_Task mpTask);
+  
     // job receiver
     static void vJob_ReceiverConnNoFetch(MP_Task mpTask);
     static void vJob_ReceiverConnNoStore(MP_Task mpTask);
@@ -844,9 +848,11 @@ namespace Tasks
     static void vNodeNo(MP_Task mpTask);
     static void vNodePartitions(MP_Task mpTask);
     static void vNodePort(MP_Task mpTask);
+    static void vNodeRecvSocketStore(MP_Task mpTask);
+    static void vNodeRecvSocketFetch(MP_Task mpTask);
+    static void vNodeSendSocketStore(MP_Task mpTask);
+    static void vNodeSendSocketFetch(MP_Task mpTask);
     static void vNodeSize(MP_Task mpTask);
-    static void vNodeSocketStore(MP_Task mpTask);
-    static void vNodeSocketFetch(MP_Task mpTask);
     static void vNodeStatus(MP_Task mpTask);
         
     // object

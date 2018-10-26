@@ -16,6 +16,7 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Grid(void)
 {
+  vAddStep("grid::findNode"_Stz,     &Task::vGridFindNode);
   vAddStep("grid::node"_Stz,         &Task::vGridNode);
   vAddStep("grid::nodes"_Stz,        &Task::vGridNodes);
   vAddStep("grid::partitions"_Stz,   &Task::vGridPartitions);
@@ -33,7 +34,25 @@ void Step::vAddSteps_Grid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid::node -- get node from grid                                            */
+/* grid::findNode -- find node based on name                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vGridFindNode(MP_Task mpTask)
+{
+  ENTRY("vGridFindNode"_Stz);
+  
+  s256 sNodeNm;
+  if ( ! mpTask->m_pDataStack->bPop(sNodeNm) )
+    THROW_INVALID_DSTACK("grid::findNode"_Stz);
+  
+  Node* pNode = gpAttachMap->m_pGrid->pFindNode(sNodeNm);
+  
+  mpTask->m_pDataStack->vPushObject(pNode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::node -- get node from grid                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vGridNode(MP_Task mpTask)
 {
@@ -93,7 +112,7 @@ void Task::vGridShow(MP_Task mpTask)
            pNode->aNodeName(),
            pNode->aNodeIP(),
            pNode->iNodePortNo(),
-           pNode->pSocket() ? "connected" : "not connected");
+           pNode->pSendSocket() ? "connected" : "not connected");
   }
   
   vTrace("\n"_Stz);
