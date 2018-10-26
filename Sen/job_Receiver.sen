@@ -7,10 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver                                                         */
 /*----------------------------------------------------------------------------*/
-: spawn_Receiver ( pSocket iConnNo -- )
+: spawn_Receiver ( pAnsweredNode pSocket iConnNo -- )
 
   params| iConnNo |
   params| pSocket |
+  params| pAnsweredNode |
 
   0 locals| pJobClass_Receiver |
   0 locals| pJob_Receiver |

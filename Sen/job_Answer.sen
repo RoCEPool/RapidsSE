@@ -22,18 +22,27 @@
 /*----------------------------------------------------------------------------*/
 /* receive node info from node we just answered                               */
 /*----------------------------------------------------------------------------*/
-: recvNodeInfo ( pSocket -- )
+: recvNodeInfo ( pSocket -- pAnsweredNode )
 
   params| pSocket |
 
-  0 locals| pJob |
+  0 locals| pJob_NodeInfo |
+  0 locals| pAnsweredNode |
 
-  pSocket socket.recvObject drop to pJob
+  // receive the node info job
+  pSocket socket.recvObject drop to pJob_NodeInfo
 
-  //pSocket pJob job_NodeInfo.nodeName@ "PEER NODE: %v" fmt.print drop
-  pSocket pJob job_NodeInfo.nodeName@ grid::findNode node.recvSocket!
+  // find the answered node in grid
+  pJob_NodeInfo job_NodeInfo.nodeName@ grid::findNode to pAnsweredNode
 
-  pJob job.delete
+  // set the receive socket in the answered node
+  pSocket pAnsweredNode node.recvSocket!
+
+  // delete the node info job
+  pJob_NodeInfo job.delete
+
+  // return the answered node
+  pAnsweredNode
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -48,6 +57,7 @@
   0 locals| iPort |
   0 locals| pListeningSocket |
   0 locals| pAcceptedSocket |
+  0 locals| pAnsweredNode |
   0 locals| pConnectorTask |
 
   0 locals| nConns |
@@ -73,13 +83,9 @@
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // wait for next socket
 
-    tp: waitingOnAccept
-
     assertStackDepthZero
 
     pListeningSocket socket.accept to pAcceptedSocket
-
-    tp: socketAccepted
 
     args.verbose if
       iPort "Answered connection on port %v" fmt.print
@@ -88,22 +94,15 @@
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // receive node info
 
-    pAcceptedSocket recvNodeInfo
+    pAcceptedSocket recvNodeInfo to pAnsweredNode
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // spawn receiver task for the new socket
 
-    //ddlLock::grabWrite
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // increment connection counter
     nConns 1 + to nConns
 
-      pAcceptedSocket
-      nConns
-    spawn_Receiver
-
-    //ddlLock::dropWrite
+    pAnsweredNode pAcceptedSocket nConns spawn_Receiver
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // if first socket on non-start node then start the connector task
