@@ -37,7 +37,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send node info job to the other node
   pSocket socket.grabWrite
-  pJob_NodeInfo socket.sendObject
+  pJob_NodeInfo pSocket socket.sendObject assert
   pSocket socket.dropWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -94,6 +94,9 @@
     args.verbose if
       grid::thisNode@ I "Node%v connected to node%v" fmt.print
     then
+
+    // send this node's info to the node we just connected to
+    //pSocket sendNodeInfo
 
   loop
 
