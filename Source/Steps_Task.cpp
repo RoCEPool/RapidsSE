@@ -37,8 +37,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.send"_Stz,      &Task::vTaskSend);
   vAddStep("task.sendNode@"_Stz, &Task::vTaskSendNodeFetch);
   vAddStep("task.sendNode!"_Stz, &Task::vTaskSendNodeStore);
-  vAddStep("task.socket@"_Stz,   &Task::vTaskSocketFetch);
-  vAddStep("task.socket!"_Stz,   &Task::vTaskSocketStore);
   vAddStep("task.state@"_Stz,    &Task::vTaskStateFetch);
   vAddStep("task.state!"_Stz,    &Task::vTaskStateStore);
   vAddStep("task::this"_Stz,     &Task::vTaskThis);
@@ -491,51 +489,6 @@ void Task::vTaskSleep(MP_Task mpTask)
   
   mpTask->vSleep(nMicroSeconds);
   mpTask->vState(TS_SLEEPING);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.socket@ -- fetch socket of task on data stack                      */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskSocketFetch(MP_Task mpTask)
-{
-  ENTRY("vTaskSocketFetch"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.socket@"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Socket* pSocket = pThatTask->m_pSocket;
-  
-  Object* pSocketEmb = static_cast<Object*>(pSocket);
-  
-  mpTask->m_pDataStack->vPushObject(pSocketEmb);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.socket! -- store socket on data stack into task                       */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskSocketStore(MP_Task mpTask)
-{
-  ENTRY("vTaskSocketStore"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.socket!"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Object* ptrSocket;
-  
-  if ( ! mpTask->m_pDataStack->bPop(ptrSocket) )
-    THROW_INVALID_DSTACK("task.socket!"_Stz);
-  
-  Socket* pSocket = static_cast<Socket*>(ptrSocket);
-  
-  pThatTask->m_pSocket = pSocket;
   
   EXIT();
 }
