@@ -770,6 +770,8 @@ namespace Tasks
     // job receiver
     static void vJob_ReceiverConnNoFetch(MP_Task mpTask);
     static void vJob_ReceiverConnNoStore(MP_Task mpTask);
+    static void vJob_ReceiverNodeFetch(MP_Task mpTask);
+    static void vJob_ReceiverNodeStore(MP_Task mpTask);
     static void vJob_ReceiverSocketFetch(MP_Task mpTask);
     static void vJob_ReceiverSocketStore(MP_Task mpTask);
     
