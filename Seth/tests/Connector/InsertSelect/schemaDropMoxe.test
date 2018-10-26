@@ -1,0 +1,23 @@
+
+drop table  MOXE.TABLE1;
+drop table  MOXE.TABLE2;
+drop table  MOXE.TABLE3;
+drop table  MOXE.TABLE4;
+drop table  MOXE.TABLE5;
+drop table  MOXE.TABLE6;
+drop table  MOXE.TABLE7;
+drop table  MOXE.TABLE8;
+drop table  MOXE.TABLE9;
+drop table  MOXE.CUSTOMERH;
+drop table  MOXE.ORDERS;
+drop table  MOXE.LINEITEM;
+drop table  MOXE.PART;
+drop table  MOXE.SUPPLIER;
+drop table  MOXE.PARTSUPP;
+drop table  MOXE.NATION;
+drop table  MOXE.REGION;
+drop table  MOXE.SHIPPING;
+drop table  MOXE.SHIPADDRESS;
+drop table  MOXE.MANUFACTURER;
+drop table  MOXE.RETURNS;
+
