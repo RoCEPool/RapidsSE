@@ -22,6 +22,7 @@
 
   iConnNo pJob_Receiver job_receiver.connNo!
   pSocket pJob_Receiver job_receiver.socket!
+  pAnsweredNode pJob_Receiver job_receiver.node!
 
   pJob_Receiver SEED_RUN job.spawn
 ;
