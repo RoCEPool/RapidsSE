@@ -9,8 +9,8 @@
 //between.test
 //cast.test
 //case.test
-except.test
-//exists.test
+//except.test
+exists.test
 //having.test
 //schemaDrop.test
 
