@@ -1,0 +1,8 @@
+
+//------------------------------------------------------------------------------
+LOG 'Creating SE schema';
+//INCLUDE 'schemaCreateSE.test';
+
+//------------------------------------------------------------------------------
+LOG 'Loading SE schema';
+INCLUDE 'schemaLoadSE.test';
