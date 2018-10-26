@@ -847,9 +847,11 @@ namespace Tasks
     static void vNodeNo(MP_Task mpTask);
     static void vNodePartitions(MP_Task mpTask);
     static void vNodePort(MP_Task mpTask);
+    static void vNodeRecvSocketStore(MP_Task mpTask);
+    static void vNodeRecvSocketFetch(MP_Task mpTask);
+    static void vNodeSendSocketStore(MP_Task mpTask);
+    static void vNodeSendSocketFetch(MP_Task mpTask);
     static void vNodeSize(MP_Task mpTask);
-    static void vNodeSocketStore(MP_Task mpTask);
-    static void vNodeSocketFetch(MP_Task mpTask);
     static void vNodeStatus(MP_Task mpTask);
         
     // object
