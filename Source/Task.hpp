@@ -530,6 +530,7 @@ namespace Tasks
     static void vFlowThrow(MP_Task mpTask);
     
     // grid    
+    static void vGridFindNode(MP_Task mpTask);
     static void vGridNode(MP_Task mpTask);
     static void vGridNodes(MP_Task mpTask);
     static void vGridPartitions(MP_Task mpTask);

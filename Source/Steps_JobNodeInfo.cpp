@@ -30,7 +30,7 @@ void Task::vJob_NodeInfoNodeNameFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_nodeInfo.nodeName@"_Stz);
   Job_NodeInfo* pJob_NodeInfo = _pJob_NodeInfo(pPtrJob_NodeInfo);
   
-  mpTask->m_pDataStack->vPushS32(pJob_NodeInfo->m_sNodeName);
+  mpTask->m_pDataStack->vPushS256(pJob_NodeInfo->m_sNodeName);
   
   EXIT();
 }
