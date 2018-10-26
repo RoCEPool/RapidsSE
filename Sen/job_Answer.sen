@@ -30,7 +30,9 @@
 
   pSocket socket.recvObject drop to pJob
 
-  //pSocket pJob job_NodeInfo.nodeName grid::nodeSocket!
+  pSocket pJob job_NodeInfo.nodeName@ "PEER NODE: %v" fmt.print drop // grid::nodeSocket!
+
+  pJob job.delete
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -85,7 +87,7 @@
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // receive node info
 
-    // pAcceptedSocket recvNodeInfo
+    pAcceptedSocket recvNodeInfo
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // spawn receiver task for the new socket

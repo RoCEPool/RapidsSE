@@ -96,7 +96,7 @@
     then
 
     // send this node's info to the node we just connected to
-    //pSocket sendNodeInfo
+    pSocket sendNodeInfo
 
   loop
 
