@@ -77,6 +77,7 @@ Node::Node(i8 iNodeNo, Stz* pName, Stz* pIpAddress, i8 iPortNo)
   m_sNodeName = (Stz*)pName;
   m_sNodeIP   = (Stz*)pIpAddress;
   m_iPortNo   = iPortNo;
+  m_pRecvSocket = nullptr;
   m_pSendSocket = nullptr;
   
   _checkInitialised_(CN_NODE);
@@ -164,6 +165,26 @@ i8 Node::iNodePortNo(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
   return m_iPortNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get recv socket from node                                                  */
+/*----------------------------------------------------------------------------*/
+Socket* Node::pRecvSocket(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  return m_pRecvSocket;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set recv socket for node                                                   */
+/*----------------------------------------------------------------------------*/
+void Node::vRecvSocket(Socket* pSocket)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
+  m_pRecvSocket = pSocket;
 }
 
 /*----------------------------------------------------------------------------*/
