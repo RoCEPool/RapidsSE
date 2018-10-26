@@ -86,7 +86,6 @@ namespace Tasks
     i8      m_iDdlLocked;   // ? has the ddl lock?
     i8      m_iTracing;     // tracing mask
 
-    Socket* m_pSocket;       // socket associated with task
     GridModel::Node* m_pSendNode; // node to send to
 
     Stack*   m_pDataStack;   // data stack

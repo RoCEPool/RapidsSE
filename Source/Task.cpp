@@ -100,7 +100,6 @@ Task::Task(Job* pJob)
   
   m_pSession     = nullptr;
   
-  m_pSocket      = nullptr;
   m_pPlan        = nullptr;
   
   m_iDdlLocked   = 0;
