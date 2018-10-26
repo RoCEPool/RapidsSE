@@ -50,10 +50,10 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // get socket
-  pJob_Receiver job_receiver.socket@ to pSocket
+  //pJob_Receiver job_receiver.socket@ to pSocket
 
   // set socket in task (task socket should go)
-  pSocket task::this task.socket!
+  //pSocket task::this task.socket!
 
   // set task comment (this should go, never really used it)
   //"receiver_run" task::this task.comment!
@@ -70,6 +70,14 @@
 
   0 locals| pJob |
   0 locals| pWorkingBuffer |
+  0 locals| pOtherNode |
+  0 locals| pSocket |
+
+  job::this locals| pJob_Receiver |
+
+  pJob_Receiver job_Receiver.node@   to pOtherNode
+  //pJob_Receiver job_Receiver.socket@ to pSocket
+  pOtherNode node.recvSocket@ to pSocket
 
   begin
 
@@ -77,7 +85,9 @@
 
     //"receiver_run recv" .
 
-    socket> drop to pJob
+    //socket> drop to pJob
+
+    pSocket socket.recvObject drop to pJob
 
     pJob not if
       ifAgain
@@ -87,7 +97,7 @@
 
     pJob job.hasWorkingBuffer if
       //"receiver_loop: job has working buffer" .
-      socket> drop to pWorkingBuffer
+      pSocket socket.recvObject drop to pWorkingBuffer
       pWorkingBuffer pJob job.workingBuffer!
     then
 
