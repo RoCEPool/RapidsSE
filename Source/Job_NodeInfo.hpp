@@ -9,7 +9,7 @@ namespace JobsModel
   class Job_NodeInfo : public Job
   {
   public:
-    i8 m_iSenderNodeNo;     // the node that sent this job
+    s32 m_sSenderNode;     // the node that sent this job
     
     // must be last
     Footer m_xFooter;
