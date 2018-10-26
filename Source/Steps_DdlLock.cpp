@@ -27,7 +27,7 @@ void Step::vAddSteps_DdlLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ddlLock.dropRead -- drop ddl lock for read                                 */
+/* ddlLock::dropRead -- drop ddl lock for read                                */
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockDropRead(MP_Task mpTask)
 {
@@ -43,7 +43,7 @@ void Task::vDdlLockDropRead(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ddlLock.dropWrite -- drop ddl lock for write                               */
+/* ddlLock::dropWrite -- drop ddl lock for write                              */
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockDropWrite(MP_Task mpTask)
 {
@@ -59,7 +59,7 @@ void Task::vDdlLockDropWrite(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ddlLock.grabRead -- grab ddl lock for read                                 */
+/* ddlLock::grabRead -- grab ddl lock for read                                */
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockGrabRead(MP_Task mpTask)
 {
@@ -75,7 +75,7 @@ void Task::vDdlLockGrabRead(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ddlLock.grabWrite -- grab ddl lock for write                               */
+/* ddlLock::grabWrite -- grab ddl lock for write                              */
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockGrabWrite(MP_Task mpTask)
 {
@@ -91,7 +91,7 @@ void Task::vDdlLockGrabWrite(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ddlLock.testDrop -- test for ddl lock and drop if locked by task           */
+/* ddlLock::testDrop -- test for ddl lock and drop if locked by task          */
 /*----------------------------------------------------------------------------*/
 void Task::vDdlLockTestDrop(MP_Task mpTask)
 {
