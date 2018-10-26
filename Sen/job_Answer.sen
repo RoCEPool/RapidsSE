@@ -20,6 +20,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* receive node info from node we just answered                               */
+/*----------------------------------------------------------------------------*/
+: recvNodeInfo ( pSocket -- )
+
+  params| pSocket |
+
+  0 locals| pJob |
+
+  pSocket socket.recvObject drop to pJob
+
+  //pSocket pJob job_NodeInfo.nodeName grid::nodeSocket!
+;
+
+/*----------------------------------------------------------------------------*/
 /* answer loop: accept new sockets, spawn receiver task                       */
 /*----------------------------------------------------------------------------*/
 : answer_run ( -- )
@@ -67,6 +81,11 @@
     args.verbose if
       iPort "Answered connection on port %v" fmt.print
     then
+
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // receive node info
+
+    // pAcceptedSocket recvNodeInfo
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // spawn receiver task for the new socket
