@@ -77,7 +77,7 @@ Node::Node(i8 iNodeNo, Stz* pName, Stz* pIpAddress, i8 iPortNo)
   m_sNodeName = (Stz*)pName;
   m_sNodeIP   = (Stz*)pIpAddress;
   m_iPortNo   = iPortNo;
-  m_pSocket   = nullptr;
+  m_pSendSocket = nullptr;
   
   _checkInitialised_(CN_NODE);
   
@@ -169,21 +169,21 @@ i8 Node::iNodePortNo(void)
 /*----------------------------------------------------------------------------*/
 /* get socket to node                                                         */
 /*----------------------------------------------------------------------------*/
-Socket* Node::pSocket(void)
+Socket* Node::pSendSocket(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  return m_pSocket;
+  return m_pSendSocket;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set socket to node                                                         */
 /*----------------------------------------------------------------------------*/
-void Node::vSocket(Socket* pSocket)
+void Node::vSendSocket(Socket* pSocket)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  m_pSocket = pSocket;
+  m_pSendSocket = pSocket;
 }
 
 /*----------------------------------------------------------------------------*/

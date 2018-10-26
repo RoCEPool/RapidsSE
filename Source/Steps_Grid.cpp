@@ -93,7 +93,7 @@ void Task::vGridShow(MP_Task mpTask)
            pNode->aNodeName(),
            pNode->aNodeIP(),
            pNode->iNodePortNo(),
-           pNode->pSocket() ? "connected" : "not connected");
+           pNode->pSendSocket() ? "connected" : "not connected");
   }
   
   vTrace("\n"_Stz);

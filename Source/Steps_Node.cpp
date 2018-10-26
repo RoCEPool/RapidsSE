@@ -195,7 +195,7 @@ void Task::vNodeSocketStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("node.socket!"_Stz);
   Socket* pSocket = _pSocket(pSocketPtr);
     
-  pNode->vSocket(pSocket);
+  pNode->vSendSocket(pSocket);
   
   EXIT();
 }
@@ -212,7 +212,7 @@ void Task::vNodeSocketFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("node.socket"_Stz);
   Node* pNode = _pNode(pPtrNode);
   
-  Socket* pSocket = pNode->pSocket();
+  Socket* pSocket = pNode->pSendSocket();
   
   mpTask->m_pDataStack->vPushObject(pSocket);
   
