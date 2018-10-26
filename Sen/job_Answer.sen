@@ -30,7 +30,8 @@
 
   pSocket socket.recvObject drop to pJob
 
-  pSocket pJob job_NodeInfo.nodeName@ "PEER NODE: %v" fmt.print drop // grid::nodeSocket!
+  //pSocket pJob job_NodeInfo.nodeName@ "PEER NODE: %v" fmt.print drop
+  pSocket pJob job_NodeInfo.nodeName@ grid::findNode node.recvSocket!
 
   pJob job.delete
 ;
