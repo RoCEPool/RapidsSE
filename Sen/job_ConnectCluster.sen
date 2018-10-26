@@ -11,7 +11,7 @@
 
   params| pNode |
 
-  pNode node.socket@ if
+  pNode node.sendSocket@ if
     true
   else
     false

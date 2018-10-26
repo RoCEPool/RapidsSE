@@ -88,7 +88,7 @@
     socket::open socket.connect to pSocket
 
     // set the socket in the node
-    pSocket pNode node.socket!
+    pSocket pNode node.sendSocket!
 
     // print connection message
     args.verbose if

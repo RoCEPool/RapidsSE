@@ -167,7 +167,7 @@ i8 Node::iNodePortNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get socket to node                                                         */
+/* get send socket from node                                                  */
 /*----------------------------------------------------------------------------*/
 Socket* Node::pSendSocket(void)
 {
@@ -177,7 +177,7 @@ Socket* Node::pSendSocket(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set socket to node                                                         */
+/* set send socket for node                                                   */
 /*----------------------------------------------------------------------------*/
 void Node::vSendSocket(Socket* pSocket)
 {

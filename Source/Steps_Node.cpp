@@ -25,8 +25,8 @@ void Step::vAddSteps_Node(void)
   vAddStep("node.partitions"_Stz, &Task::vNodePartitions);
   vAddStep("node.port"_Stz,       &Task::vNodePort);
   vAddStep("node.size"_Stz,       &Task::vNodeSize);
-  vAddStep("node.socket!"_Stz,    &Task::vNodeSocketStore);
-  vAddStep("node.socket@"_Stz,    &Task::vNodeSocketFetch);
+  vAddStep("node.sendSocket!"_Stz,    &Task::vNodeSocketStore);
+  vAddStep("node.sendSocket@"_Stz,    &Task::vNodeSocketFetch);
   vAddStep("node.status"_Stz,     &Task::vNodeStatus);
 }
 
@@ -179,7 +179,7 @@ void Task::vNodeSize(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* node.socket! -- set socket for node                                        */
+/* node.sendSocket! -- set send socket for node                               */
 /*----------------------------------------------------------------------------*/
 void Task::vNodeSocketStore(MP_Task mpTask)
 {
@@ -187,12 +187,12 @@ void Task::vNodeSocketStore(MP_Task mpTask)
   
   Object* pPtrNode;
   if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.socket"_Stz);
+    THROW_INVALID_DSTACK("node.sendSocket"_Stz);
   Node* pNode = _pNode(pPtrNode);
 
   Object* pSocketPtr;
   if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
-    THROW_INVALID_DSTACK("node.socket!"_Stz);
+    THROW_INVALID_DSTACK("node.sendSocket!"_Stz);
   Socket* pSocket = _pSocket(pSocketPtr);
     
   pNode->vSendSocket(pSocket);
@@ -201,7 +201,7 @@ void Task::vNodeSocketStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* node.socket@ -- get socket for node                                        */
+/* node.sendSocket@ -- get send socket for node                               */
 /*----------------------------------------------------------------------------*/
 void Task::vNodeSocketFetch(MP_Task mpTask)
 {
@@ -209,7 +209,7 @@ void Task::vNodeSocketFetch(MP_Task mpTask)
   
   Object* pPtrNode;
   if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.socket"_Stz);
+    THROW_INVALID_DSTACK("node.sendSocket"_Stz);
   Node* pNode = _pNode(pPtrNode);
   
   Socket* pSocket = pNode->pSendSocket();
