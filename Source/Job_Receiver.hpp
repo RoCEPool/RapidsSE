@@ -15,7 +15,6 @@ namespace JobsModel
   {
   private:
     i8      m_iConnNo;  // which logical connection
-    Socket* m_pSocket;  // socket
     GridModel::Node* m_pNode; // the peer node on the other side of the socket
   
      // must be last
@@ -38,9 +37,6 @@ namespace JobsModel
     GridModel::Node* pNode(void);
     void vNode(GridModel::Node* pNode);
   
-    Socket* pSocket(void);
-    void vSocket(Socket* pSocket);
-
     void vShow(void);
     Footer* aFooter(void);
 

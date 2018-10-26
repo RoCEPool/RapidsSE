@@ -7,10 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* spawn the receiver                                                         */
 /*----------------------------------------------------------------------------*/
-: spawn_Receiver ( pAnsweredNode pSocket iConnNo -- )
+: spawn_Receiver ( pAnsweredNode iConnNo -- )
 
   params| iConnNo |
-  params| pSocket |
   params| pAnsweredNode |
 
   0 locals| pJobClass_Receiver |
@@ -21,7 +20,6 @@
   nullptr pJobClass_Receiver jobClass.new to pJob_Receiver
 
   iConnNo pJob_Receiver job_receiver.connNo!
-  pSocket pJob_Receiver job_receiver.socket!
   pAnsweredNode pJob_Receiver job_receiver.node!
 
   pJob_Receiver SEED_RUN job.spawn

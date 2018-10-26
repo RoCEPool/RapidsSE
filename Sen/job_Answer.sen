@@ -102,7 +102,7 @@
     // increment connection counter
     nConns 1 + to nConns
 
-    pAnsweredNode pAcceptedSocket nConns spawn_Receiver
+    pAnsweredNode nConns spawn_Receiver
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // if first socket on non-start node then start the connector task
