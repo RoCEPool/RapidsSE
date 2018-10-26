@@ -111,7 +111,7 @@ Job_NodeInfo::Job_NodeInfo(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NODEINFO,_FOOTER_);
   
-  m_sSenderNode = gpAttachMap->m_pGrid->pThisNode()->aNodeName();
+  m_sNodeName = gpAttachMap->m_pGrid->pThisNode()->aNodeName();
   
   _checkInitialised_(CN_JOB_NODEINFO);
   
