@@ -12,6 +12,7 @@
 //except.test
 //exists.test
 //having.test
-intersect.test
+//intersect.test
+PartKey1way.test
 //schemaDrop.test
 
