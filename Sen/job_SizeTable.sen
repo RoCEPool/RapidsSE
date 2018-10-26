@@ -21,7 +21,7 @@
   sTableNm pushTable assert
 
   sTableNm checkIsTable not if popTable false exit then
-  sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
 
   // pop table folder
   popTable
@@ -84,8 +84,8 @@
   CN_JOB_SIZETABLE pJob_SizeTable object.assertClass
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grad a ddl lock
-  ddlLock::grabWrite
+  // grab a ddl lock
+  ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
@@ -135,7 +135,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabWrite
+  ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
@@ -147,7 +147,7 @@
   pJob_SizeTable job.objectName@
   checkSizeTable not if pJob_SizeTable <ERROR_JOB> exit then
 
-  ddlLock::dropWrite
+  <DONE_CHECK>
 ;
 
 /*----------------------------------------------------------------------------*/

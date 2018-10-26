@@ -150,9 +150,9 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grad a ddl lock
+  // grab a ddl lock
 
-  ddlLock::grabWrite
+  ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // path checks
@@ -181,7 +181,7 @@
 
   testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> exit then
 
-  ddlLock::dropWrite
+  <DONE_CHECK>
 ;
 
 /*----------------------------------------------------------------------------*/

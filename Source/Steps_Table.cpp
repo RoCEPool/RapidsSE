@@ -23,7 +23,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.dump"_Stz,               &Task::vTableDump);
   vAddStep("table.getColumnsAsString"_Stz, &Task::vTableGetColumnsAsString);
   vAddStep("table.getPtn"_Stz,             &Task::vTableGetPtn);
-  vAddStep("table.getRef"_Stz,             &Task::vTableGetRef);
   vAddStep("table.hiddenIndex@"_Stz,       &Task::vTableHiddenIndexFetch);
   vAddStep("table.hiddenIndex!"_Stz,       &Task::vTableHiddenIndexStore);
   vAddStep("table.indexCount"_Stz,         &Task::vTableIndexCount);
@@ -34,9 +33,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.lazyBuildIndexes"_Stz,   &Task::vTableLazyBuildIndexes);
   vAddStep("table.isLoading!"_Stz,         &Task::vTableIsLoadingStore);
   vAddStep("table.name"_Stz,               &Task::vTableName);
-  vAddStep("table.ref"_Stz,                &Task::vTableRef);
   vAddStep("table.removeIndex"_Stz,        &Task::vTableRemoveIndex);
-  vAddStep("table.retRef"_Stz,             &Task::vTableRetRef);
   vAddStep("table.showColumnVec"_Stz,      &Task::vTableShowColumnVec);
   vAddStep("table.slots"_Stz,              &Task::vTableSlots);
   vAddStep("table.subDic"_Stz,             &Task::vTableSubDic);
@@ -422,23 +419,6 @@ void Task::vTableGetPtn(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.getRef -- get table reference                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vTableGetRef(MP_Task mpTask)
-{
-  ENTRY("vTableGetRef"_Stz);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.getRef"_Stz);
-  Table* pTable = _pTable(pPtrTable);
-  
-  pTable->vRefInc();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* table.hiddenIndex@ -- fetch the hidden index from the table                */
 /*----------------------------------------------------------------------------*/
 void Task::vTableHiddenIndexFetch(MP_Task mpTask)
@@ -586,27 +566,6 @@ void Task::vTableName(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.ref -- has table got references?                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vTableRef(MP_Task mpTask)
-{
-  ENTRY("vTableRef"_Stz);
-  
-  Object* pPtrTable;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.ref"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  
-  bool bRef = pTable->bRefOut();
-  
-  mpTask->m_pDataStack->vPushInt(bRef);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* table.removeIndex -- remove an index from the table                        */
 /*----------------------------------------------------------------------------*/
 void Task::vTableRemoveIndex(MP_Task mpTask)
@@ -627,23 +586,6 @@ void Task::vTableRemoveIndex(MP_Task mpTask)
   Index* pIndex = _pIndex(pPtrIndex);
 
   pTable->vRemoveIndex(pIndex);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.retRef -- return table reference                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vTableRetRef(MP_Task mpTask)
-{
-  ENTRY("vTableRetRef"_Stz);
-  
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.retRef"_Stz);
-  Table* pTable = _pTable(pPtrTable);
-  
-  pTable->vRefDec();
   
   EXIT();
 }

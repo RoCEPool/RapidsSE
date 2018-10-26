@@ -116,7 +116,7 @@
   task::this pJob_EndInsert job_EndInsert.task!
 
   //----------------------------------------------------------------------------
-  // grad a lock ????
+  // grab a lock ????
 
   pJob_EndInsert job::originator@ locals| iOriginNode |
   grid::thisNode@ locals| iThisNode |

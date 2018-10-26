@@ -56,7 +56,7 @@
   CN_JOB_TABLESIZES pJob_TableSizes object.assertClass
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grad a ddl lock
+  // grab a ddl lock
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -135,7 +135,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  ddlLock::grabWrite
+  ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
@@ -146,7 +146,7 @@
   // should be in the tables folder
   checkInTables not if pJob_TableSizes <ERROR_JOB> exit then
 
-  ddlLock::dropWrite
+  <DONE_CHECK>
 ;
 
 /*----------------------------------------------------------------------------*/

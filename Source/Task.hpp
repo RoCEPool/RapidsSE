@@ -1104,7 +1104,6 @@ namespace Tasks
     static void vTableGetColumnsAsString(MP_Task mpTask);
     static void vTableColumnFetch(MP_Task mpTask);
     static void vTableGetPtn(MP_Task mpTask);
-    static void vTableGetRef(MP_Task mpTask);
     static void vTableHiddenIndexFetch(MP_Task mpTask);
     static void vTableHiddenIndexStore(MP_Task mpTask);
     static void vTableIndexCount(MP_Task mpTask);
@@ -1115,9 +1114,7 @@ namespace Tasks
     static void vTableIsLoadingStore(MP_Task mpTask);
     static void vTableList(MP_Task mpTask);
     static void vTableName(MP_Task mpTask);
-    static void vTableRef(MP_Task mpTask);
     static void vTableRemoveIndex(MP_Task mpTask);
-    static void vTableRetRef(MP_Task mpTask);
     static void vTableShowColumnVec(MP_Task mpTask);
     static void vTableSlots(MP_Task mpTask);
     static void vTableSubDic(MP_Task mpTask);

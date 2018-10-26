@@ -4,9 +4,15 @@
 //aggs-max.test
 //aggs-min.test
 //aggs-sum.test
+//alias.test
 //AndOrNot.test
 //between.test
 //cast.test
-alias.test
+//case.test
+//except.test
+//exists.test
+//having.test
+//intersect.test
+PartKey1way.test
 //schemaDrop.test
 

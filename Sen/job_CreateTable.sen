@@ -118,7 +118,7 @@
   CN_JOB_CREATETABLE pJob_CreateTable object.assertClass
 
   //----------------------------------------------------------------------------
-  // grad a ddl lock
+  // grab a ddl lock
   ddlLock::grabWrite
 
   //----------------------------------------------------------------------------
@@ -132,10 +132,6 @@
   sTableNm makeTable to pTable
 
   //----------------------------------------------------------------------------
-  // get a table reference
-  pTable table.getRef
-
-  //----------------------------------------------------------------------------
   // add table columns
   pJob_CreateTable pTable table.createColumnVec
 
@@ -146,10 +142,6 @@
   //----------------------------------------------------------------------------
   // move back to tables
   popTable
-
-  //----------------------------------------------------------------------------
-  // return table reference
-  pTable table.retRef
 
   //----------------------------------------------------------------------------
   // should be in tables
@@ -177,8 +169,8 @@
   //"checkResources received" .
 
   //----------------------------------------------------------------------------
-  // grad a ddl lock
-  ddlLock::grabWrite
+  // grab a ddl lock
+  ddlLock::grabRead
 
   //----------------------------------------------------------------------------
   // set dictionary stack
@@ -194,7 +186,7 @@
   pJob_CreateTable job.objectName@
   checkMakeTable not if pJob_CreateTable <ERROR_JOB> exit then
 
-  ddlLock::dropWrite
+  <DONE_CHECK>
 ;
 
 /*----------------------------------------------------------------------------*/

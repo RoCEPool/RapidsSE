@@ -102,10 +102,6 @@
   sTableNm find execute to pTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the table reference
-  //getTableRef
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the table in the index
   pTable pIndex index.table!
 
@@ -194,7 +190,7 @@
   CN_JOB_CREATEINDEX pJob_CreateIndex object.assertClass
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // grad a ddl lock
+  // grab a ddl lock
   ddlLock::grabWrite
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -231,8 +227,8 @@
   //"checkResources received" .
 
   //----------------------------------------------------------------------------
-  // grad a ddl lock
-  ddlLock::grabWrite
+  // grab a ddl lock
+  ddlLock::grabRead
 
   //----------------------------------------------------------------------------
   // set dictionary stack
@@ -247,7 +243,7 @@
   // check ok to make index
   pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex <ERROR_JOB> exit then
 
-  ddlLock::dropWrite
+  <DONE_CHECK>
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -72,7 +72,6 @@ Table::Table(void)
   m_xSlots.vTable(this);
   
   m_ziIndexNo.vCheckInit();
-  m_ziRefCount.vCheckInit();
   m_pHiddenIndex = nullptr;
   
   m_pIdxVec = new IdxVec;
@@ -605,38 +604,6 @@ bool Table::bPopulateIndex(i8 iIndexNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_xSlots.bPopulateIndex(iIndexNo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* decrement references to this dictionary                                    */
-/*----------------------------------------------------------------------------*/
-void Table::vRefDec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  --m_ziRefCount;
-}
-
-/*----------------------------------------------------------------------------*/
-/* increment references to this dictionary                                    */
-/*----------------------------------------------------------------------------*/
-void Table::vRefInc(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  ++m_ziRefCount;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for outstanding references to this dictionary                         */
-/*----------------------------------------------------------------------------*/
-bool Table::bRefOut(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  u8 iRef = *m_ziRefCount;
-  
-  return iRef ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/

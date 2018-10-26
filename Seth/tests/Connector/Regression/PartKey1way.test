@@ -1,18 +1,24 @@
 
-  // Source file: ../qa/queries/PartKey1way/r1wayPart10.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart10.res
- select sum(a.cole1), avg(b.cola2), a.colb1 from table1 a join table2 b on pcol1 = pcol2 group by a.colb1 order by a.colb1 limit 5 offset 20;
+// Source file: ../qa/queries/PartKey1way/r1wayPart10.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart10.res
+select sum(a.cole1), avg(b.cola2), a.colb1 from table1 a join table2 b on pcol1 = pcol2 group by a.colb1 order by a.colb1 limit 5 offset 20;
+mute
+//CHECK_RESULT
+/*
 rows:
   (195.270000000000, 273, 'peach')
   (22.160000000000, 444, 'pink')
   (346.760000000000, 265, 'purple')
   (61.670000000000, 198, 'red')
   (270.830000000000, 330, 'tan')
+*/
 
-
-  // Source file: ../qa/queries/PartKey1way/r1wayPart11.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart11.res
- select a.colb1, a.pcol1, b.colb4, b.ucolvc from table1 a right outer join table4 b on pcol1 = pcol4 order by pcol1 desc, colb4, ucolvc;
+// Source file: ../qa/queries/PartKey1way/r1wayPart11.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart11.res
+select a.colb1, a.pcol1, b.colb4, b.ucolvc from table1 a right outer join table4 b on pcol1 = pcol4 order by pcol1 desc, colb4, ucolvc;
+mute
+//CHECK_RESULT
+/*
 rows:
   ('brown', 99, 'GREEN', 'ppp')
   ('GREEN', 98, 'pink', 'uuu')
@@ -514,11 +520,14 @@ rows:
   (NULL, NULL, 'yellow', 'vvv')
   (NULL, NULL, 'yellow', 'www')
   (NULL, NULL, 'yellow', 'www')
+*/
 
-
-  // Source file: ../qa/queries/PartKey1way/r1wayPart12.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart12.res
- select a.colb1, b.colb4, b.ucolvc from table4 b left outer join table1 a on pcol1 = pcol4 order by pcol1 desc, b.ucolvc, b.colb4;
+// Source file: ../qa/queries/PartKey1way/r1wayPart12.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart12.res
+select a.colb1, b.colb4, b.ucolvc from table4 b left outer join table1 a on pcol1 = pcol4 order by pcol1 desc, b.ucolvc, b.colb4;
+mute
+//CHECK_RESULT
+/*
 rows:
   ('brown', 'GREEN', 'ppp')
   ('GREEN', 'pink', 'uuu')
@@ -1020,11 +1029,14 @@ rows:
   (NULL, 'red', 'zzz')
   (NULL, 'teal', 'zzz')
   (NULL, 'white', 'zzz')
+*/
 
-
-  // Source file: ../qa/queries/PartKey1way/r1wayPart14.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart14.res
+// Source file: ../qa/queries/PartKey1way/r1wayPart14.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart14.res
 select x, y from (select colb1 as x, ucol as y from table1 union select colb5, ucol from table5) q where x like ('%ea%') order by q.x, q.y;
+mute
+//CHECK_RESULT
+/*
 rows:
   ('peach', 68)
   ('peach', 86)
@@ -1070,40 +1082,43 @@ rows:
   ('teal', 896)
   ('teal', 917)
   ('teal', 964)
+*/
 
-
-  // Source file: ../qa/queries/PartKey1way/r1wayPart16.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart16.res
- select sum(cold1), sum(cola1) from table1 union select sum(cola1), sum(cola3) from table3;
+// Source file: ../qa/queries/PartKey1way/r1wayPart16.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart16.res
+select sum(cold1), sum(cola1) from table1 union select sum(cola1), sum(cola3) from table3;
+mute
+//CHECK_RESULT
+/*
 rows:
   (12401.08, 24782)
   (126032.0, 125365)
+*/
 
-
-  // Source file: ../qa/queries/PartKey1way/r1wayPart17.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart17.res
- select sum(a.cola2), sum(b.cola4) from table3 a join table4 b on pcol3 = pcol4 where a.cola2 >15 and b.cola4 < 20;
+// Source file: ../qa/queries/PartKey1way/r1wayPart17.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart17.res
+select sum(a.cola2), sum(b.cola4) from table3 a join table4 b on pcol3 = pcol4 where a.cola2 >15 and b.cola4 < 20;
 rows:
   (8051, 344)
 
 
-  // Source file: ../qa/queries/PartKey1way/r1wayPart18.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart18.res
- select sum(a.cola2) as Sum1, sum(b.cola4) as Sum2 from table3 a join table4 b on pcol3 = pcol4 where a.cola2 >15 and b.cola4 < 20;
+// Source file: ../qa/queries/PartKey1way/r1wayPart18.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart18.res
+select sum(a.cola2) as Sum1, sum(b.cola4) as Sum2 from table3 a join table4 b on pcol3 = pcol4 where a.cola2 >15 and b.cola4 < 20;
 rows:
   (8051, 344)
 
 
-  // Source file: ../qa/queries/PartKey1way/r1wayPart19.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart19.res
- select sum(a.cola2) as Sum1, sum(b.cola4) as Sum2 from table3 a join table4 b on pcol3 = pcol4 where a.cola2 >15 and b.cola4 < 20 and a.colc3 > timestamp '2015-06-01 12:00:00';
+// Source file: ../qa/queries/PartKey1way/r1wayPart19.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart19.res
+select sum(a.cola2) as Sum1, sum(b.cola4) as Sum2 from table3 a join table4 b on pcol3 = pcol4 where a.cola2 >15 and b.cola4 < 20 and a.colc3 > timestamp '2015-06-01 12:00:00';
 rows:
   (3093, 140)
 
 
-  // Source file: ../qa/queries/PartKey1way/r1wayPart1.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart1.res
- select pcol1, pcol2, colb1, b.ucolvc from table1 a join table2 b on pcol1 = pcol2 where b.ucolvc in ('ccc', 'jjj', 'lll', 'www') order by pcol1, pcol2;
+// Source file: ../qa/queries/PartKey1way/r1wayPart1.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart1.res
+select pcol1, pcol2, colb1, b.ucolvc from table1 a join table2 b on pcol1 = pcol2 where b.ucolvc in ('ccc', 'jjj', 'lll', 'www') order by pcol1, pcol2;
 rows:
   (7, 7, 'green', 'jjj')
   (8, 8, 'aqua', 'ccc')
@@ -1118,16 +1133,16 @@ rows:
   (93, 93, 'TEAL', 'jjj')
 
 
-  // Source file: ../qa/queries/PartKey1way/r1wayPart20.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart20.res
- select sum(a.cola2) as Sum1, sum(b.cola4) as Sum2 from table3 a join table4 b on pcol3 = pcol4 where a.cola2 >15 and b.cola4 < 20 and a.colc3 between timestamp '2015-06-01 12:00:00' and  timestamp '2015-07-31 08:00:00';
+// Source file: ../qa/queries/PartKey1way/r1wayPart20.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart20.res
+select sum(a.cola2) as Sum1, sum(b.cola4) as Sum2 from table3 a join table4 b on pcol3 = pcol4 where a.cola2 >15 and b.cola4 < 20 and a.colc3 between timestamp '2015-06-01 12:00:00' and  timestamp '2015-07-31 08:00:00';
 rows:
   (564, 22)
 
 
-  // Source file: ../qa/queries/PartKey1way/r1wayPart2.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart2.res
- select pcol1, pcol2, colb1, b.ucolvc from table1 a join table2 b on pcol1 = pcol2 where b.cola2 / a.cola1 > 1.0 order by pcol1;
+// Source file: ../qa/queries/PartKey1way/r1wayPart2.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart2.res
+select pcol1, pcol2, colb1, b.ucolvc from table1 a join table2 b on pcol1 = pcol2 where b.cola2 / a.cola1 > 1.0 order by pcol1;
 rows:
   (1, 1, 'PINK', 'uuu')
   (3, 3, 'green', 'eee')
@@ -1155,9 +1170,12 @@ rows:
   (98, 98, 'GREEN', 'uuu')
 
 
-  // Source file: ../qa/queries/PartKey1way/r1wayPart3.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart3.res
- select a.colb4, b.colb3, left(a.ucolvc,2) from table4 a join table3 b on pcol4 = pcol3 where upper(a.colb4) = colb3 order by pcol4,pcol3;
+// Source file: ../qa/queries/PartKey1way/r1wayPart3.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart3.res
+select a.colb4, b.colb3, left(a.ucolvc,2) from table4 a join table3 b on pcol4 = pcol3 where upper(a.colb4) = colb3 order by pcol4,pcol3;
+mute
+//CHECK_RESULT
+/*
 rows:
   ('TEAL', 'TEAL', 'ee')
   ('PURPLE', 'PURPLE', 'uu')
@@ -1167,11 +1185,14 @@ rows:
   ('white', 'WHITE', 'll')
   ('red', 'RED', 'uu')
   ('pink', 'PINK', 'bb')
+*/
 
-
-  // Source file: ../qa/queries/PartKey1way/r1wayPart4.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart4.res
- select sum(cola1), avg(cola2), b.ucolvc from table1 a join table2 b on pcol1 = pcol2 where b.ucolvc not in ('qqq','uuu','ooo','ddd') group by b.ucolvc order by b.ucolvc;
+// Source file: ../qa/queries/PartKey1way/r1wayPart4.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart4.res
+select sum(cola1), avg(cola2), b.ucolvc from table1 a join table2 b on pcol1 = pcol2 where b.ucolvc not in ('qqq','uuu','ooo','ddd') group by b.ucolvc order by b.ucolvc;
+mute
+//CHECK_RESULT
+/*
 rows:
   (1026, 360, 'aaa')
   (470, 300, 'bbb')
@@ -1194,19 +1215,19 @@ rows:
   (210, 183, 'xxx')
   (2168, 192, 'yyy')
   (653, 105, 'zzz')
+*/
 
-
-  // Source file: ../qa/queries/PartKey1way/r1wayPart5.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart5.res
- select a.colb1, b.colb2, a.ucolvc, b.ucolvc from table1 a join table2 b using (ucolvc) where (upper(b.colb2) like 'BL%' or lower(b.colb2) like 'bl%') and (upper(a.colb1) like 'BL%' or lower(a.colb1) like 'bl%') order by a.ucol;
+// Source file: ../qa/queries/PartKey1way/r1wayPart5.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart5.res
+select a.colb1, b.colb2, a.ucolvc, b.ucolvc from table1 a join table2 b using (ucolvc) where (upper(b.colb2) like 'BL%' or lower(b.colb2) like 'bl%') and (upper(a.colb1) like 'BL%' or lower(a.colb1) like 'bl%') order by a.ucol;
 rows:
   ('black', 'BLACK', 'iii', 'iii')
   ('BLACK', 'blue', 'eee', 'eee')
 
 
-  // Source file: ../qa/queries/PartKey1way/r1wayPart6.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart6.res
- select a.colb1, b.colb3, a.pcol1, b.pcol3 from table1 a join table3 b on a.colb1 = b.colb3 where b.pcol3 = 50 and a.pcol1 between 10 and 30 order by pcol1, colb1;
+// Source file: ../qa/queries/PartKey1way/r1wayPart6.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart6.res
+select a.colb1, b.colb3, a.pcol1, b.pcol3 from table1 a join table3 b on a.colb1 = b.colb3 where b.pcol3 = 50 and a.pcol1 between 10 and 30 order by pcol1, colb1;
 rows:
   ('TEAL', 'TEAL', 10, 50)
   ('TEAL', 'TEAL', 10, 50)
@@ -1217,16 +1238,22 @@ rows:
   ('BLACK', 'BLACK', 30, 50)
 
 
-  // Source file: ../qa/queries/PartKey1way/r1wayPart7.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart7.res
- select sum(a.cole1), sum(b.cold9), avg(b.colg9) from table1 a join table9 b on a.colf1 = b.colf9 where a.colf1 < 10;
+// Source file: ../qa/queries/PartKey1way/r1wayPart7.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart7.res
+select sum(a.cole1), sum(b.cold9), avg(b.colg9) from table1 a join table9 b on a.colf1 = b.colf9 where a.colf1 < 10;
+mute
+//CHECK_RESULT
+/*
 rows:
   (66632.960000000000, 27280.23, 0)
+*/
 
-
-  // Source file: ../qa/queries/PartKey1way/r1wayPart8.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart8.res
- select sum(a.cole1), avg(b.cola2), a.colb1 from table1 a join table2 b on pcol1 = pcol2 where a.colb1 between 'BLACK' and 'blue' group by a.colb1 order by colb1;
+// Source file: ../qa/queries/PartKey1way/r1wayPart8.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart8.res
+select sum(a.cole1), avg(b.cola2), a.colb1 from table1 a join table2 b on pcol1 = pcol2 where a.colb1 between 'BLACK' and 'blue' group by a.colb1 order by colb1;
+mute
+//CHECK_RESULT
+/*
 rows:
   (581.890000000000, 219, 'BLACK')
   (12.660000000000, 192, 'BLUE')
@@ -1241,11 +1268,14 @@ rows:
   (224.130000000000, 400, 'aqua')
   (252.310000000000, 378, 'black')
   (333.280000000000, 269, 'blue')
+*/
 
-
-  // Source file: ../qa/queries/PartKey1way/r1wayPart9.sql
-  // Result file: ../qa/queries/PartKey1way/results/1wayPart9.res
- select sum(a.cole1), avg(b.cola2), a.colb1 from table1 a join table2 b on pcol1 = pcol2 where pcol1 > 50 group by a.colb1 order by a.colb1;
+// Source file: ../qa/queries/PartKey1way/r1wayPart9.sql
+// Result file: ../qa/queries/PartKey1way/results/1wayPart9.res
+select sum(a.cole1), avg(b.cola2), a.colb1 from table1 a join table2 b on pcol1 = pcol2 where pcol1 > 50 group by a.colb1 order by a.colb1;
+mute
+//CHECK_RESULT
+/*
 rows:
   (485.440000000000, 196, 'BLACK')
   (NULL, 13, 'BLUE')
@@ -1270,4 +1300,4 @@ rows:
   (165.520000000000, 262, 'tan')
   (259.970000000000, 59, 'teal')
   (32.130000000000, 278, 'violet')
-
+*/

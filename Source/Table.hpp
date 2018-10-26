@@ -30,7 +30,6 @@ namespace DBobjects
     Dic    m_xSubDic;      // sub dictionary for this table
     Slots  m_xSlots;       // slots
     Atomic m_ziIndexNo;    // index no
-    Atomic m_ziRefCount;    // reference count
     Index* m_pHiddenIndex; // hidden index
     
     IdxVec*    m_pIdxVec;    // index vector
@@ -72,9 +71,6 @@ namespace DBobjects
     bool  bIsValidIndexColumns(JobsModel::Job_CreateIndex* pJob);
     TablePtn* pPartition(i8 iSlot);
     bool bPopulateIndex(i8 iIndexNo);
-    void vRefDec(void);
-    void vRefInc(void);
-    bool bRefOut(void);
     void vRemoveIndex(Index* pIndex);
     i8   nIndexBuffers(i8 iIndexNo);
     PtnColVec*  pPtnColVec(void);
