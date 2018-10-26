@@ -11,6 +11,7 @@
 //case.test
 //except.test
 //exists.test
-having.test
+//having.test
+intersect.test
 //schemaDrop.test
 
