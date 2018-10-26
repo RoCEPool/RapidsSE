@@ -1,8 +1,36 @@
 
+LOOP 5 {
 //------------------------------------------------------------------------------
 LOG 'Creating SE schema';
-//INCLUDE 'schemaCreateSE.test';
+INCLUDE 'schemaCreateSESvr.test';
 
 //------------------------------------------------------------------------------
 LOG 'Loading SE schema';
 INCLUDE 'schemaLoadSE.test';
+
+//------------------------------------------------------------------------------
+LOG 'Creating MOXE schema';
+INCLUDE 'schemaCreateMoxe.test';
+
+//------------------------------------------------------------------------------
+LOG 'InsertSelecting from SE into MOXE';
+INCLUDE 'insSelIntoMoxe.test';
+
+//------------------------------------------------------------------------------
+LOG 'Selecting from SE';
+INCLUDE 'selCountSE.test';
+
+//------------------------------------------------------------------------------
+LOG 'Selecting from MOXE';
+INCLUDE 'selCountMoxe.test';
+
+//------------------------------------------------------------------------------
+LOG 'Dropping SE schema';
+INCLUDE 'schemaDropSE.test';
+
+//------------------------------------------------------------------------------
+LOG 'Dropping MOXE schema';
+INCLUDE 'schemaDropMoxe.test';
+
+}
+
