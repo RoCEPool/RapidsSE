@@ -92,7 +92,7 @@
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // spawn receiver task for the new socket
 
-    ddlLock::grabWrite
+    //ddlLock::grabWrite
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // increment connection counter
@@ -102,7 +102,7 @@
       nConns
     spawn_Receiver
 
-    ddlLock::dropWrite
+    //ddlLock::dropWrite
 
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // if first socket on non-start node then start the connector task

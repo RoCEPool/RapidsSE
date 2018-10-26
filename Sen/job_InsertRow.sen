@@ -55,9 +55,8 @@
   //checkResources received" .
 
   //----------------------------------------------------------------------------
-  // grad a ddl lock
-
-  ddlLock::grabWrite
+  // grab a ddl lock
+  ddlLock::grabRead
 
   //----------------------------------------------------------------------------
   // path checks
@@ -87,7 +86,7 @@
 
   checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> exit then
 
-  ddlLock::dropWrite
+  <DONE_CHECK>
 ;
 
 /*----------------------------------------------------------------------------*/

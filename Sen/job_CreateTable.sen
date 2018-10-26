@@ -118,7 +118,7 @@
   CN_JOB_CREATETABLE pJob_CreateTable object.assertClass
 
   //----------------------------------------------------------------------------
-  // grad a ddl lock
+  // grab a ddl lock
   ddlLock::grabWrite
 
   //----------------------------------------------------------------------------
@@ -169,8 +169,8 @@
   //"checkResources received" .
 
   //----------------------------------------------------------------------------
-  // grad a ddl lock
-  ddlLock::grabWrite
+  // grab a ddl lock
+  ddlLock::grabRead
 
   //----------------------------------------------------------------------------
   // set dictionary stack
@@ -186,7 +186,7 @@
   pJob_CreateTable job.objectName@
   checkMakeTable not if pJob_CreateTable <ERROR_JOB> exit then
 
-  ddlLock::dropWrite
+  <DONE_CHECK>
 ;
 
 /*----------------------------------------------------------------------------*/
