@@ -648,7 +648,11 @@ void JobsModel::vJob_LoadTable_post(Interface::Session* pSession, Job* pJob)
       iRowsInvalid   += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsInvalid;
       iRowsSkipped   += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsSkipped;
     }
-    vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+    if (iRowsInvalid || iRowsSkipped)
+      vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
+             iRowsProcessed,iRowsInvalid,iRowsSkipped);
+    else
+      vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
            iRowsProcessed,iRowsInvalid,iRowsSkipped);
   }
 }
