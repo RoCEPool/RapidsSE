@@ -132,10 +132,6 @@
   sTableNm makeTable to pTable
 
   //----------------------------------------------------------------------------
-  // get a table reference
-  pTable table.getRef
-
-  //----------------------------------------------------------------------------
   // add table columns
   pJob_CreateTable pTable table.createColumnVec
 
@@ -146,10 +142,6 @@
   //----------------------------------------------------------------------------
   // move back to tables
   popTable
-
-  //----------------------------------------------------------------------------
-  // return table reference
-  pTable table.retRef
 
   //----------------------------------------------------------------------------
   // should be in tables

@@ -21,7 +21,7 @@
   sTableNm pushTable assert
 
   sTableNm checkIsTable not if popTable false exit then
-  sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
+  //sTableNm tableInUse if popTable EC_TABLE_IN_USE false exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push indexes folder

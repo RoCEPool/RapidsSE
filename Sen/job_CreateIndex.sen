@@ -102,10 +102,6 @@
   sTableNm find execute to pTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the table reference
-  //getTableRef
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the table in the index
   pTable pIndex index.table!
 
