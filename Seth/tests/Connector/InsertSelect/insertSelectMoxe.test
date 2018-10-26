@@ -29,5 +29,9 @@ LOOP 5 {
   LOG 'Dropping SE schema';
   INCLUDE 'schemaDropSE.test';
 
+  //------------------------------------------------------------------------------
+  LOG 'Dropping MOXE schema';
+  INCLUDE 'schemaDropMoxe.test';
+
 }
 
