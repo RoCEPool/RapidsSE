@@ -78,7 +78,6 @@ Word::Word(Stz* sName)
   //m_pDic        = pDic;
   m_pKind         = gpAttachMap->m_pWord ? gpAttachMap->m_pWord : this;
   m_iEpoch        = gpAttachMap->m_iEpoch;
-  m_pParticipant  = nullptr;
   m_bImmediate    = false;
   m_iParams       = 0;
 //  m_iDataBytes    = 0;
