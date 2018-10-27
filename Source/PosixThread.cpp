@@ -467,8 +467,10 @@ bool PosixThread::bTlsCreate(pthread_key_t* pTlsKey)
 {
   i8 iResult = pthread_key_create(pTlsKey,nullptr);
   
-  if (0 == iResult)
+  if (0 == iResult) {
+    RASSERT(-1 != (int)*pTlsKey);
     return true;
+  }
   
   return false;
 }
@@ -478,6 +480,8 @@ bool PosixThread::bTlsCreate(pthread_key_t* pTlsKey)
 /*----------------------------------------------------------------------------*/
 void* PosixThread::pTlsGet(pthread_key_t iTlsKey)
 {
+  RASSERT(-1 != (int)iTlsKey);
+  
   void* pVal = pthread_getspecific(iTlsKey);
   
   return pVal;
@@ -488,6 +492,8 @@ void* PosixThread::pTlsGet(pthread_key_t iTlsKey)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vTlsSet(pthread_key_t iTlsKey, void* pArg)
 {
+  RASSERT(-1 != (int)iTlsKey);
+  
   pthread_setspecific(iTlsKey,pArg);
 }
 
