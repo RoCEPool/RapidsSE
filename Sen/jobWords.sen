@@ -264,15 +264,17 @@
 
   params| pJob |
 
+  task::sendSocket@ locals| pSocket |
+
   pJob job.preSend
 
   socketLock
 
-    pJob >socket
+    pJob pSocket socket.sendObject drop
 
     pJob job.hasWorkingBuffer if
       //"job.send: Job has working buffer" .
-       pJob job.workingBuffer@ >socket
+       pJob job.workingBuffer@ pSocket socket.sendObject drop
     then
 
   socketUnlock
