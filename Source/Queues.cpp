@@ -318,7 +318,7 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   // task must be in the waiting state
-  RASSERT(TS_WAITING_ACK == pTask->eState());
+  RASSERT(TS_WAITING == pTask->eState());
   
   // task must be locked
   RASSERT(pTask->bIsLocked());
@@ -922,9 +922,9 @@ void Queues::vScheduleAckedTask(Task* pTaskToBeAcked)
   
   pTaskToBeAcked->vGrabLock();
 
-  // having got the lock, the task should be TS_WAITING_ACK and QR_WAITING_QUEUE
+  // having got the lock, the task should be TS_WAITING and QR_WAITING_QUEUE
 
-  RASSERT(TS_WAITING_ACK == pTaskToBeAcked->eState());
+  RASSERT(TS_WAITING == pTaskToBeAcked->eState());
   RASSERT(QR_WAITING_QUEUE == pTaskToBeAcked->eQueue());
   
   pTaskToBeAcked->vDropLock();
@@ -1062,7 +1062,7 @@ void Queues::vScheduleWaitingTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_WAITING_ACK == pTask->eState());
+  RASSERT(TS_WAITING == pTask->eState());
   
   vAddToWaitingQueue(pTask);
 }

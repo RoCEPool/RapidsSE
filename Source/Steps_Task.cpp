@@ -530,7 +530,7 @@ ENTRY("vTaskStateStore"_Stz);
     THROW_INVALID_DSTACK("task.state!"_Stz);
   
   // a task being set to waiting state must be locked
-  if (TS_WAITING_ACK == iState) {
+  if (TS_WAITING == iState) {
     //RASSERT(pThatTask->bIsLocked());
   }
   

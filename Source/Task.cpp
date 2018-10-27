@@ -981,7 +981,7 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
     case TS_SLEEPING:
       return QR_SLEEPING_QUEUE;
       
-    case TS_WAITING_ACK: 
+    case TS_WAITING: 
       return QR_WAITING_QUEUE;
       
     default:
