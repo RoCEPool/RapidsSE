@@ -31,8 +31,6 @@
   //task.send
 
   // send the ended job
-  //pJob__Ended >socket
-
   iJobId job::originator@ pJob__Ended job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

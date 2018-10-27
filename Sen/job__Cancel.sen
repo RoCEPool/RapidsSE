@@ -39,8 +39,6 @@
     //task.send
 
     // send the cancel job
-    //pJob__Cancel >socket
-
     I pJob__Cancel job.forward
   loop
 

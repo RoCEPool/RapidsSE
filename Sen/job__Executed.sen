@@ -55,8 +55,6 @@
   //task.send
 
   // send the executed job
-  //pJob__Executed >socket
-
   iJobId job::originator@ pJob__Executed job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

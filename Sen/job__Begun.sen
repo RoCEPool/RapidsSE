@@ -40,8 +40,6 @@
   //task.send
 
   // send the begun job
-  //pJob__Begun >socket
-
   iJobId job::originator@ pJob__Begun job.reply
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

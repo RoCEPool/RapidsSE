@@ -39,8 +39,6 @@
   //ask.send
 
   // send the cancelled job
-  //pJob__Cancelled >socket
-
   iJobId job::originator@ locals| iOriginator |
   //iOriginator pJob__Cancelled jobCancelled.cancelOriginator!
 
