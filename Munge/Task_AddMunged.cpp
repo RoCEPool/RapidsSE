@@ -12661,7 +12661,6 @@ void Task::vAddMunged(MP_Task mpTask)
     ": setAcks     ( -- ) task::this task.acks! ;\n"
     "\n"
     ": ackWait     ( -- ) TS_WAITING task::this task.state! ;\n"
-    ": isAckWaiting ( task -- ) task.state@ TS_WAITING == ;\n"
     ": ack         ( task -- ) task.ack ;\n"
     "\n"
     ": task::sendSocket@ task::this task.sendNode@ node.sendSocket@ ;\n"
