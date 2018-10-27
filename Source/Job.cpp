@@ -156,7 +156,7 @@ void Job::vInit(void)
   m_pWorkingBuffer = nullptr;
   m_bFindingJob = false;
   
-  m_iState = 0;
+  m_eState = JS_RUNNING;
   
   
   // initialise mutex attribute

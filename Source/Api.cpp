@@ -204,7 +204,8 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   
   vApiLocation(pSession,106);
   
-  pJob->m_iState = 1;
+  // set the job state to be waiting
+  pJob->m_eState = JS_WAITING;
   
   //vApiLocation(pSession,107);
   
@@ -238,7 +239,7 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
     if (0 != rCode)
       vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 
-  } while (pJob->m_iState != 2);
+  } while (pJob->m_eState != JS_SIGNALLED);
 
   RASSERT( _bIsValidJob(pJob->eClass()) );
   RASSERT( iJobSeq == pJob->m_iJobSeq );
@@ -246,6 +247,9 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   vApiLocation(pSession,109);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // set the job state back to running
+  pJob->m_eState = JS_RUNNING;
 
   // unlock this job's mutex
   rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);

@@ -11,8 +11,6 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  printf("8-Bit-Guy\n");
-  
   printf("Stack base %llx size %lld pointer %llx\n",
          PosixThread::aStackBase(),
          PosixThread::iStackSize(),

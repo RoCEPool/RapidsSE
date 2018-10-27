@@ -1335,8 +1335,8 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   //}
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 
-  pJob->m_iState = 2;
+  //
+  pJob->m_eState = JS_SIGNALLED;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   RASSERT( _bIsValidJob(pJob->eClass()) );

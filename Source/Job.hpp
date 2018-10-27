@@ -7,7 +7,6 @@
 
 namespace JobsModel
 {
-  class JobClass_o;    // forward definition
   struct JobClass; // forward definition
 
   class Job;
@@ -38,6 +37,20 @@ namespace JobsModel
   /*  6 */ "LOCAL"_Stz,
   /*  7 */ "SYSTEM"_Stz,
   /*  8 */ "THREAD"_Stz,
+  };
+  
+  enum eJS // job state
+  {
+  /*  0 */ JS_RUNNING=0,
+  /*  1 */ JS_WAITING,
+  /*  2 */ JS_SIGNALLED
+  };
+  
+  static Stz* aJS[]
+  {
+  /*  0 */ "RUNNING"_Stz,
+  /*  1 */ "WAITING"_Stz,
+  /*  2 */ "SIGNALLED"_Stz,
   };
   
   enum eJT // job trace
@@ -101,7 +114,7 @@ namespace JobsModel
 
     bool m_bFindingJob; // temp. to be fixed
   
-    i8 m_iState; // cond wait state
+    eJS m_eState; // cond wait state
     
     pthread_mutex_t     m_xThreadMutex;     // connector thread mutex variable
     pthread_mutexattr_t m_xThreadMutexAttr; // connector thread mutex shared attribute
