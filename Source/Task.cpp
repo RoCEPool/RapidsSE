@@ -981,8 +981,7 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
     case TS_SLEEPING:
       return QR_SLEEPING_QUEUE;
       
-    case TS_WAITING_ACK: //! whats the difference between these two?
-    case TS_WAITING_SIGNAL:
+    case TS_WAITING_ACK: 
       return QR_WAITING_QUEUE;
       
     default:

@@ -34,10 +34,9 @@ namespace Tasks
   
   // task is waiting for signal 
   /* 7 */ TS_WAITING_ACK,   // task is waiting on ack from cooperating task
-  /* 8 */ TS_WAITING_SIGNAL,// task is waiting on signal indicating queue arrival
   
-  /* 9 */ TS_YIELDED,       // task is yielded, not running and is in a TaskSet
-  /*10 */ TS_ENUMS
+  /* 8 */ TS_YIELDED,       // task is yielded, not running and is in a TaskSet
+  /* 9 */ TS_ENUMS
   };
   
   static Stz* aTS[]
@@ -50,9 +49,8 @@ namespace Tasks
     /* 5 */ "SEND"_Stz,
     /* 6 */ "SLEEPING"_Stz,
     /* 7 */ "WAITING_ACK"_Stz,
-    /* 8 */ "WAITING_SIGNAL"_Stz,
-    /* 9 */ "YIELDED"_Stz,
-    /*10 */ "ENUMS"_Stz,
+    /* 8 */ "YIELDED"_Stz,
+    /* 9 */ "ENUMS"_Stz,
   };
   
   typedef NP<Task,CN_TASK> NP_Task;

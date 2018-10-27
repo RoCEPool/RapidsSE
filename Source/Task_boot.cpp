@@ -582,7 +582,6 @@ void Task::vAddConstants(void)
   /*  3 */ vAddConstant("TS_EXITED"_Stz,         TS_EXITED);
   /*  4 */ vAddConstant("TS_SLEEPING"_Stz,       TS_SLEEPING);
   /*  5 */ vAddConstant("TS_WAITING_ACK"_Stz,    TS_WAITING_ACK);
-  /*  6 */ vAddConstant("TS_WAITING_SIGNAL"_Stz, TS_WAITING_SIGNAL);
   /*  7 */ vAddConstant("TS_YIELDED"_Stz,        TS_YIELDED);
   /*  8 */ vAddConstant("TS_ENUMS"_Stz,          TS_ENUMS);
 

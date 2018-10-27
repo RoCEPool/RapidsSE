@@ -86,7 +86,6 @@ void Handlers::vThreadLoopHandler(NP_Task* pNpTask)
 
     case TS_BLOCKED:     ASSERT(0);
     case TS_EXECUTING:   ASSERT(0);
-    case TS_WAITING_SIGNAL: ASSERT(0);
       
     default:
       break;

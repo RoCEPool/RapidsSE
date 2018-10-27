@@ -318,8 +318,7 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   // task must be in the waiting state
-  RASSERT(TS_WAITING_ACK == pTask->eState() ||
-          TS_WAITING_SIGNAL == pTask->eState());
+  RASSERT(TS_WAITING_ACK == pTask->eState());
   
   // task must be locked
   RASSERT(pTask->bIsLocked());
@@ -1064,7 +1063,6 @@ void Queues::vScheduleWaitingTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   RASSERT(TS_WAITING_ACK == pTask->eState());
-          //|| TS_WAITING_SIGNAL == pTask->eState());
   
   vAddToWaitingQueue(pTask);
 }
