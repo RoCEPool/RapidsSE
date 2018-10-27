@@ -15,10 +15,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Task(void)
 {
+  vAddStep("task::breakPoint"_Stz, &Task::vTaskBreakPoint);
+  vAddStep("task::this"_Stz,       &Task::vTaskThis);
+
   vAddStep("task.ack"_Stz,       &Task::vTaskAck);
   vAddStep("task.acks!"_Stz,     &Task::vTaskAcksStore);
-  vAddStep("task::breakPoint"_Stz, &Task::vTaskBreakPoint);
-  vAddStep("task.delete"_Stz,    &Task::vTaskDelete);
   vAddStep("task.dicStack"_Stz,  &Task::vTaskDicStack);
   vAddStep("task.dump"_Stz,      &Task::vTaskDump);
   vAddStep("task.dropLock"_Stz,  &Task::vTaskDropLock);
@@ -39,7 +40,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.sendNode!"_Stz, &Task::vTaskSendNodeStore);
   vAddStep("task.state@"_Stz,    &Task::vTaskStateFetch);
   vAddStep("task.state!"_Stz,    &Task::vTaskStateStore);
-  vAddStep("task::this"_Stz,     &Task::vTaskThis);
   vAddStep("task.thread"_Stz,    &Task::vTaskThread);
   vAddStep("task.wait"_Stz,      &Task::vTaskWait);
   vAddStep("task.yield"_Stz,     &Task::vTaskYield);
@@ -94,25 +94,6 @@ void Task::vTaskBreakPoint(MP_Task mpTask)
 {
   ENTRY("vTaskBreakPoint"_Stz);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.delete -- delete task on stack                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskDelete(MP_Task mpTask)
-{
-  ENTRY("vTaskDelete"_Stz);
-  
-  Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("task.delete"_Stz);
-  
-  Task* pThatTask = _pTask(pPtrTask);
-  ASSERT(CN_TASK == pThatTask->eClass());
-  
-  delete pThatTask;
-  
   EXIT();
 }
 

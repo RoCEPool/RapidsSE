@@ -1126,7 +1126,6 @@ namespace Tasks
     static void vTaskAck(MP_Task mpTask);
     static void vTaskAcksStore(MP_Task mpTask);
     static void vTaskBreakPoint(MP_Task mpTask);
-    static void vTaskDelete(MP_Task mpTask);
     static void vTaskDestructorTraceFetch(MP_Task mpTask);
     static void vTaskDestructorTraceStore(MP_Task mpTask);
     static void vTaskDicStack(MP_Task mpTask);
