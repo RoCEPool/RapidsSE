@@ -13,11 +13,6 @@
 : isAckWaiting ( task -- ) task.state@ TS_WAITING_ACK == ;
 : ack         ( task -- ) task.ack ;
 
-: grabMutex    ( task -- ) task.thread thread.mutexLock ;
-: waitSignal   ( -- ) task::this task.thread thread.condWait ;
-: dropMutex    ( task -- ) task.thread thread.mutexUnlock ;
-
-
 : task::sendSocket@ task::this task.sendNode@ node.sendSocket@ ;
 
 /*============================================================================*/
