@@ -133,15 +133,17 @@ void Job::vInit(void)
   m_iSession = -1;
   
   m_pJobClass = nullptr;
-  m_eSeed    = SS_ENUMS;
-  m_eJobTrace   = JT_NONE;
+  m_eSeed     = SS_ENUMS;
+  m_eJobTrace = JT_NONE;
+  
+  m_pExecutingTask    = nullptr;
+  m_pOriginatingTask  = nullptr;
+
   m_iParticipantNode  = -1;
   m_xAcksRemaining.vCheckInit();
-  m_pOriginatingTask  = nullptr;
   m_pWorkingBuffer = nullptr;
   
   m_eState = JS_RUNNING;
-  
   
   // initialise mutex attribute
   MemLib::vZero(&m_xThreadMutexAttr,sizeof(m_xThreadMutexAttr),CN_SEMAPHORE);
@@ -168,8 +170,6 @@ void Job::vInit(void)
   MemLib::vZero(&m_xThreadCond,sizeof(m_xThreadCond),CN_SEMAPHORE);
   pthread_cond_init(&m_xThreadCond, &m_xThreadCondAttr);
   
-  
-  m_pExecutingTask = nullptr;
   
   m_bNoWait = false;
 }

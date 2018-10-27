@@ -108,10 +108,12 @@ namespace JobsModel
     eSS  m_eSeed;              // task seed
     eJT  m_eJobTrace;          // job trace
   
+    Tasks::Task* m_pExecutingTask;   // task executing the job
+    Tasks::Task* m_pOriginatingTask; // originating task of the request
+  
     i8  m_iParticipantNode;    // participant node no
     Decider m_xAcksRemaining;  // acks remaining
-    Tasks::Task* m_pOriginatingTask;  // originating task of the request
-    
+  
     WorkingBuffer* m_pWorkingBuffer; // working buffer
   
     eJS m_eState; // cond wait state
@@ -120,7 +122,6 @@ namespace JobsModel
     pthread_cond_t      m_xThreadCond;      // connector thread condition variable
     pthread_condattr_t  m_xThreadCondAttr;  // connector thread condition shared attribute
   
-    Tasks::Task* m_pExecutingTask; // task executing the job
   
     bool m_bNoWait; // no wait
 
