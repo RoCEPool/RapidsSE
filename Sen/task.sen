@@ -16,21 +16,7 @@
 : grabMutex    ( task -- ) task.thread thread.mutexLock ;
 : waitSignal   ( -- ) task::this task.thread thread.condWait ;
 : dropMutex    ( task -- ) task.thread thread.mutexUnlock ;
-: isSignalWaiting ( task -- ) task.state@ TS_WAITING_SIGNAL == ;
-: signal       ( task -- ) task.thread thread.condSignal ;
 
-: signalWait    ( -- )
-
-  TS_WAITING_SIGNAL setState
-
-tp: nowWaiting
-
-  waitSignal
-
-TS_EXECUTING setState
-
-  tp: nowRunning
-;
 
 : task::sendSocket@ task::this task.sendNode@ node.sendSocket@ ;
 
