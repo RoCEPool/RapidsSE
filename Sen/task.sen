@@ -4,9 +4,6 @@
 
 " task.sen" .verbose
 
-: getState    ( -- ) task::this task.state@ ;
-: setState    ( -- ) task::this task.state! ;
-
 : setAcks     ( -- ) task::this task.acks! ;
 
 : ackWait     ( -- ) TS_WAITING task::this task.state! ;
