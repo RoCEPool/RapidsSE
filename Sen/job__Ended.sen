@@ -79,7 +79,7 @@
   pJob job.removeOriginator
 
   // notify the originating task
-  pJob job.originatingTask@ ack
+  pJob job.originatingTask@ task.ack
 
   //"All Done" .
 

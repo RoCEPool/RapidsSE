@@ -63,7 +63,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // notify the truncate job
-  pTask_TruncateTable ack
+  pTask_TruncateTable task.ack
 
   // null the job in the task
   nullptr pTask task.job!

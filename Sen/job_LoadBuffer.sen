@@ -76,7 +76,7 @@
     //"All buffers loaded; Would ack task_LoadTable (node) %v"
     //fmt.print
 
-    pTask_LoadTable ack
+    pTask_LoadTable task.ack
   then
 
 ;

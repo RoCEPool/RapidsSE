@@ -72,7 +72,7 @@
       //"All buffers inserted; Would ack task_EndInsert (node) %v"
     //fmt.print
 
-    pTask_EndInsert ack
+    pTask_EndInsert task.ack
   then
 
 ;
