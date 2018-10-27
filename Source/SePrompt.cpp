@@ -158,6 +158,8 @@ void SePrompt::vPromptLoop(void)
     
     vWaitCond();
 
+    vUnlockMutex();
+    
     vPostJob();
     
     vDeleteJob();
