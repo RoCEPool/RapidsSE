@@ -82,7 +82,6 @@ Word::Word(Stz* sName)
   m_bIndirect     = false;
   m_bImmediate    = false;
   m_iParams       = 0;
-  m_sFinalRoutine = ""_Stz;
 //  m_iDataBytes    = 0;
   m_pPrevWord     = nullptr;
   m_iVariable     = 0;
@@ -500,37 +499,8 @@ void Word::vEncode(TaskStep* ppEntryStep)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the final routine (invoked after all participants have responded)      */
-/*----------------------------------------------------------------------------*/
-void Word::vFinalRoutine(Stz* pRoutine)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_sFinalRoutine = (Stz*)pRoutine;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the final routine (invoked after all participants have responded)      */
-/*----------------------------------------------------------------------------*/
-char* Word::pFinalRoutine(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_sFinalRoutine.aChar();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get pointer to first cell in data area                                     */
 /*----------------------------------------------------------------------------*/
-//Cell* Word::pFirstCell(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-//
-//  Cell* pFirst = pAdd<Cell*>((void*)this,sizeof(Word));
-//                                         
-//  return pPoolCheck<Cell*>(pFirst);
-//}
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Cell* Word::pFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);

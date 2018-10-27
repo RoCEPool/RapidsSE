@@ -46,7 +46,6 @@ namespace Dictionaries
     bool     m_bIndirect;    // word is an indirect type
     bool     m_bImmediate;   // immediate execution during compile?
     i8       m_iParams;      // number of parameters
-    s32      m_sFinalRoutine; // final routine to be called after all participants repond
     Word*    m_pPrevWord;    // previous word in dictionary
     i8       m_iVariable;    // variable number
 //  i8       m_iDataBytes;   // number of data bytes
@@ -101,8 +100,6 @@ namespace Dictionaries
     void  vEncode(Stz* aWord, Value* pValue);
     void  vEncode(Stz* aWord, ValWrk* pValWrk);
     void  vEncode(TaskStep* ppEntryStep);
-    void  vFinalRoutine(Stz* pRoutine);
-    char* pFinalRoutine(void);
     Cell* pFirstCell(void);
     bool  bHasCell(Cell* pCell);
     bool  bImmediate(void);
