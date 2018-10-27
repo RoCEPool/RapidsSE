@@ -114,6 +114,9 @@ void Task::vInputPush(MP_Task mpTask)
 {
 ENTRY("vInputPush"_Stz);
   
+  if ( ! mpTask->m_pCompiler )
+    mpTask->m_pCompiler = new Compiler;
+  
   mpTask->m_pCompiler->m_pTokeniser->vPush();
   
   EXIT();
@@ -125,6 +128,9 @@ ENTRY("vInputPush"_Stz);
 void Task::vInputStdin(MP_Task mpTask)
 {
 ENTRY("vInputStdin"_Stz);
+  
+  if ( ! mpTask->m_pCompiler )
+    mpTask->m_pCompiler = new Compiler;
   
   mpTask->m_pCompiler->m_pTokeniser->vUseStdin();
   

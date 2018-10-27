@@ -232,6 +232,9 @@ ENTRY("vCreateFrom"_Stz);
   //vTrace(": %s\n"_Stz,sName.aChar());
   Word* pNewWord = new(pDic) Word(sName);
   
+  if (! mpTask->m_pCompiler)
+    mpTask->m_pCompiler = new Compiler;
+  
   mpTask->m_pCompiler->m_pCurrentWord = pNewWord;
   
   EXIT();

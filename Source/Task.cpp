@@ -91,7 +91,7 @@ Task::Task(Job* pJob)
   IP.m_pCell     = nullptr;
   m_pEntryCell   = nullptr;
   
-  m_pCompiler    = new Compiler;
+  m_pCompiler    = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
   
   m_pWord        = nullptr;
   m_iTracing     = C_TRACE_NONE;
