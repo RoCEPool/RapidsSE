@@ -84,7 +84,6 @@ void Handlers::vThreadLoopHandler(NP_Task* pNpTask)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // should never come to thread handler for these states
 
-    case TS_BLOCKED:   ASSERT(0);
     case TS_EXECUTING: ASSERT(0);
       
     default:

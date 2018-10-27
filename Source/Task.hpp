@@ -25,29 +25,27 @@ namespace Tasks
   enum eTS // Task State
   {
   /* 0 */ TS_NONE=0,
-  /* 1 */ TS_BLOCKED,   // task is blocked by another transaction
-  /* 2 */ TS_EXECUTING, // task is currenty being executed by Thread::vLoop
-  /* 3 */ TS_EXITED,    // task has completed
-  /* 4 */ TS_READY,     // task is ready to be executed
-  /* 5 */ TS_SEND,      // task is wants to send
-  /* 6 */ TS_SLEEPING,  // task is sleeping
-  /* 7 */ TS_WAITING,   // task is waiting on ack from cooperating task
-  /* 8 */ TS_YIELDED,   // task is yielded, not running and is in a TaskSet
-  /* 9 */ TS_ENUMS
+  /* 1 */ TS_EXECUTING, // task is currenty being executed by Thread::vLoop
+  /* 2 */ TS_EXITED,    // task has completed
+  /* 3 */ TS_READY,     // task is ready to be executed
+  /* 4 */ TS_SEND,      // task is wants to send
+  /* 5 */ TS_SLEEPING,  // task is sleeping
+  /* 6 */ TS_WAITING,   // task is waiting on ack from cooperating task
+  /* 7 */ TS_YIELDED,   // task is yielded, not running and is in a TaskSet
+  /* 8 */ TS_ENUMS
   };
   
   static Stz* aTS[]
   {
     /* 0 */ "NONE"_Stz,
-    /* 1 */ "BLOCKED"_Stz,
-    /* 2 */ "EXECUTING"_Stz,
-    /* 3 */ "EXITED"_Stz,
-    /* 4 */ "READY"_Stz,
-    /* 5 */ "SEND"_Stz,
-    /* 6 */ "SLEEPING"_Stz,
-    /* 7 */ "WAITING"_Stz,
-    /* 8 */ "YIELDED"_Stz,
-    /* 9 */ "ENUMS"_Stz,
+    /* 1 */ "EXECUTING"_Stz,
+    /* 2 */ "EXITED"_Stz,
+    /* 3 */ "READY"_Stz,
+    /* 4 */ "SEND"_Stz,
+    /* 5 */ "SLEEPING"_Stz,
+    /* 6 */ "WAITING"_Stz,
+    /* 7 */ "YIELDED"_Stz,
+    /* 8 */ "ENUMS"_Stz,
   };
   
   typedef NP<Task,CN_TASK> NP_Task;
