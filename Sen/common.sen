@@ -6,7 +6,7 @@
 
 "common_file.sen" include
 
-"common_trace.sen" include
+//"common_trace.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

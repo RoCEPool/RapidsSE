@@ -46,7 +46,6 @@ namespace Dictionaries
     i8       m_iParams;      // number of parameters
     Word*    m_pPrevWord;    // previous word in dictionary
     i8       m_iVariable;    // variable number
-//  i8       m_iDataBytes;   // number of data bytes
     TaskStep m_pEntryStep;   // entry step for this word
     Cell*    m_pEntryCell;   // the cell to start executing from
                              //   for normal words this will be the first cell
