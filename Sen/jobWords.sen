@@ -330,7 +330,7 @@
   task::this task.grabLock
 
   // set acks for originator task
-  1 setAcks
+  1 task::acks!
 
   // send the job to each node in the grid
   grid::nodes 0 do
@@ -340,7 +340,7 @@
   loop
 
   // wait for ack from deciding job__Ended
-  ackWait
+  task::wait
 ;
 
 /*============================================================================*/

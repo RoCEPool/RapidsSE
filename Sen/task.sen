@@ -4,9 +4,9 @@
 
 " task.sen" .verbose
 
-: setAcks     ( -- ) task::this task.acks! ;
+: task::acks! ( nAcks -- ) task::this task.acks! ;
 
-: ackWait     ( -- ) TS_WAITING task::this task.state! ;
+: task::wait  ( -- ) TS_WAITING task::this task.state! ;
 
 : task::sendSocket@ task::this task.sendNode@ node.sendSocket@ ;
 

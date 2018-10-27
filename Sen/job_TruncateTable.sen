@@ -71,7 +71,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the acks
-  grid::slots setAcks
+  grid::slots task::acks!
 
   grid::slots 0
   do
@@ -80,7 +80,7 @@
   loop
 
   //"truncateTable ack waiting" .
-  ackWait
+  task::wait
   //"truncateTable acked" .
 
   pJob_TruncateTable job.notice
