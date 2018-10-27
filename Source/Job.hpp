@@ -42,14 +42,16 @@ namespace JobsModel
   enum eJS // job state
   {
   /*  0 */ JS_RUNNING=0,
-  /*  1 */ JS_WAITING,
-  /*  2 */ JS_SIGNALLED
+  /*  1 */ JS_LOCKED,
+  /*  2 */ JS_WAITING,
+  /*  3 */ JS_SIGNALLED
   };
   
   static Stz* aJS[]
   {
   /*  0 */ "RUNNING"_Stz,
-  /*  1 */ "WAITING"_Stz,
+  /*  1 */ "LOCKED"_Stz,
+  /*  2 */ "WAITING"_Stz,
   /*  2 */ "SIGNALLED"_Stz,
   };
   
@@ -115,7 +117,6 @@ namespace JobsModel
     bool m_bFindingJob; // temp. to be fixed
   
     eJS m_eState; // cond wait state
-    
     pthread_mutex_t     m_xThreadMutex;     // connector thread mutex variable
     pthread_mutexattr_t m_xThreadMutexAttr; // connector thread mutex shared attribute
     pthread_cond_t      m_xThreadCond;      // connector thread condition variable

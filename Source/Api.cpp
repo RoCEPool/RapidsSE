@@ -204,8 +204,8 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   
   vApiLocation(pSession,106);
   
-  // set the job state to be waiting
-  pJob->m_eState = JS_WAITING;
+  // set the job state to be locked
+  pJob->m_eState = JS_LOCKED;
   
   //vApiLocation(pSession,107);
   
@@ -217,6 +217,10 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for condition & state
   
+  // set the job state to be waiting
+  pJob->m_eState = JS_WAITING;
+  
+  // wait till signalled
   i8 iLocation = 10000;
   do {
     

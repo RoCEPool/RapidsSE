@@ -146,10 +146,10 @@ void SePrompt::vPromptLoop(void)
     
     // sleep before executing wait so that system call to spawn
     // other se nodes completes. Else it interferes with the wait
-    if (m_pJob->eClass() == CN_JOB_STARTCLUSTER) {
-      // loop till the se nodes have been spawned i.e till start node is set
-      while (gpAttachMap->m_pGrid->m_iStartNode == -1);
-    }
+//    if (m_pJob->eClass() == CN_JOB_STARTCLUSTER) {
+//      // loop till the se nodes have been spawned i.e till start node is set
+//      while (gpAttachMap->m_pGrid->m_iStartNode == -1);
+//    }
     
     if (bNoWait()) {
       vUnlockMutex();
@@ -366,9 +366,13 @@ void SePrompt::vLockMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  RASSERT(JS_RUNNING == m_pJob->m_eState);
+  
   i8 rCode = pthread_mutex_lock(&m_pJob->m_xThreadMutex);
   if (0 != rCode)
     vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+  
+  m_pJob->m_eState = JS_LOCKED;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -391,6 +395,8 @@ void SePrompt::vPostJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
+  RASSERT(JS_RUNNING == m_pJob->m_eState);
+  
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
   pCommandProcessor->vPostJob(m_pSession);
@@ -447,6 +453,8 @@ void SePrompt::vSpawnJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  RASSERT(JS_LOCKED == m_pJob->m_eState);
+  
   if (m_bNoWait)
     m_pJob->m_bNoWait = true;
   
@@ -499,9 +507,14 @@ void SePrompt::vUnlockMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  // have to be locked, waiting or signalled
+  RASSERT(JS_RUNNING != m_pJob->m_eState);
+  
   i8 rCode = pthread_mutex_unlock(&m_pJob->m_xThreadMutex);
-  if (0 != rCode)
+   if (0 != rCode)
     vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+
+  m_pJob->m_eState = JS_RUNNING;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -511,11 +524,19 @@ void SePrompt::vWaitCond(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  // wait for condition
-  i8 rCode = pthread_cond_wait(&m_pJob->m_xThreadCond,
-                               &m_pJob->m_xThreadMutex);
-  if (0 != rCode)
-    vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+  i8 rCode;
+  
+  RASSERT(JS_LOCKED == m_pJob->m_eState);
+  m_pJob->m_eState = JS_WAITING;
+  
+  do {
+    
+    rCode = pthread_cond_wait(&m_pJob->m_xThreadCond,
+                              &m_pJob->m_xThreadMutex);
+    if (0 != rCode)
+      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+    
+  } while (m_pJob->m_eState != JS_SIGNALLED);
 }
 
 /*----------------------------------------------------------------------------*/
