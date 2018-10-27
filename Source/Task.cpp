@@ -93,8 +93,6 @@ Task::Task(Job* pJob)
   
   m_pCompiler    = new Compiler;
   
-  m_pRetryIP     = nullptr;
-  m_pBeginIP     = nullptr;
   m_pWord        = nullptr;
   m_iTracing     = C_TRACE_NONE;
   
@@ -586,8 +584,8 @@ void Task::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  IP.m_pCell = m_pRetryIP;
-  m_pBeginIP = nullptr;
+  IP.m_pCell = m_pCompiler->m_pRetryIP;
+  m_pCompiler->m_pBeginIP = nullptr;
   
   m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
   

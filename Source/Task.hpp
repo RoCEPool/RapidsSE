@@ -105,8 +105,6 @@ namespace Tasks
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // can these be removed ?
   
-    Cell* m_pBeginIP;
-    Cell* m_pRetryIP;
     Word* m_pWord;
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
