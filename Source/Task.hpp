@@ -1270,7 +1270,6 @@ namespace Tasks
     static void vFindInCurrent(MP_Task mpTask);
     static void vForget(MP_Task mpTask);
     static void vHashHashColon(MP_Task mpTask);
-    static void vIndirect(MP_Task mpTask);
     static void vImmediate(MP_Task mpTask);
     static void vLocate(MP_Task mpTask);
     static void vOpDic(MP_Task mpTask);

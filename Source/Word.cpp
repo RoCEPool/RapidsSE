@@ -79,7 +79,6 @@ Word::Word(Stz* sName)
   m_pKind         = gpAttachMap->m_pWord ? gpAttachMap->m_pWord : this;
   m_iEpoch        = gpAttachMap->m_iEpoch;
   m_pParticipant  = nullptr;
-  m_bIndirect     = false;
   m_bImmediate    = false;
   m_iParams       = 0;
 //  m_iDataBytes    = 0;
@@ -261,13 +260,12 @@ void Word::vContentDump(void)
   
   Word* pStepWord = gpAttachMap->m_xMainDic.pFindStep(m_pEntryStep);
   
-  vTrace("Word %p: %s %s Kind %s Indirect %d Immediate %d DataBytes %lld "_Stz
+  vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "_Stz
          "Step %p %s ..Data.. %p\n"_Stz,
          this,
          m_sName.aChar(),
          aWT[m_eWordType]->aChar(),
          m_pKind->m_sName.aChar(),
-         m_bIndirect,
          m_bImmediate,
 //       m_iDataBytes,
          m_xBody.nUsed(),
@@ -527,26 +525,6 @@ bool Word::bHasCell(Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set word as indirect type                                                  */
-/*----------------------------------------------------------------------------*/
-void Word::vIndirect(bool bIndirect)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_bIndirect = bIndirect;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set distributed type                                                       */
-/*----------------------------------------------------------------------------*/
-bool Word::bIndirect(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_bIndirect;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get immediate flag                                                         */
 /*----------------------------------------------------------------------------*/
 bool Word::bImmediate(void)
@@ -636,13 +614,12 @@ void Word::vObjectDump(Stz* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vTrace("epoch %lld %s (%s) %s %s %s DataBytes %lld "_Stz
+  vTrace("epoch %lld %s (%s) %s %s DataBytes %lld "_Stz
          "Step %p ..Data.. %p\n"_Stz,
          m_iEpoch,
          m_sName.aChar(),
          m_pDic ? m_pDic->sName().aChar() : "<none>",
          aWT[m_eWordType]->aChar(),
-         m_bIndirect ? "Indirect"_Stz : "Not Indirect"_Stz,
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
 //       m_iDataBytes,
          m_xBody.nUsed(),

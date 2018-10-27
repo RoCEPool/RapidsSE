@@ -33,7 +33,6 @@ void Step::vAddSteps_Word(void)
   vAddStep("findInCurrent"_Stz,   &Task::vFindInCurrent);
   vAddStep("forget"_Stz,          &Task::vForget);
   vAddStep("##:"_Stz,             &Task::vHashHashColon,    true );
-  vAddStep("indirect"_Stz,        &Task::vIndirect,         true );
   vAddStep("immediate"_Stz,       &Task::vImmediate,        true );
   vAddStep("locate"_Stz,          &Task::vLocate);
 
@@ -514,23 +513,6 @@ void Task::vHashHashColon(MP_Task mpTask)
   pW->vEncode("plan.lambda+"_Stz);       //   append to lambda text
   
   // at runtime the dstack will be ( )
-  
-  EXIT();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* indirect -- create an indirect word                              immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vIndirect(MP_Task mpTask)
-{
-  ENTRY("vIndirect"_Stz);
-  
-  Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
-  
-  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().aChar());
-  
-  pCurrentWord->vIndirect(true);
   
   EXIT();
 }
