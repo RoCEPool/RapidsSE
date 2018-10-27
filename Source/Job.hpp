@@ -100,14 +100,15 @@ namespace JobsModel
               public JobResult
   {
   public:
-    i8  m_iJobId;              // job id
-    i8  m_iJobSeq;             // sequence number
-    i8  m_iSession;            // which session
+    i8  m_iJobId;           // job id
+    i8  m_iJobSeq;          // sequence number
+    i8  m_iSession;         // which session
   
-    JobClass* m_pJobClass;     // job class
-    eSS  m_eSeed;              // task seed
-    eJT  m_eJobTrace;          // job trace
-  
+    JobClass* m_pJobClass;  // job class
+    eSS  m_eSeed;           // task seed
+    eJT  m_eJobTrace;       // job trace
+    bool m_bNoWait;         // no wait
+
     Tasks::Task* m_pExecutingTask;   // task executing the job
     Tasks::Task* m_pOriginatingTask; // originating task of the request
   
@@ -121,9 +122,6 @@ namespace JobsModel
     pthread_mutexattr_t m_xThreadMutexAttr; // connector thread mutex shared attribute
     pthread_cond_t      m_xThreadCond;      // connector thread condition variable
     pthread_condattr_t  m_xThreadCondAttr;  // connector thread condition shared attribute
-  
-  
-    bool m_bNoWait; // no wait
 
   public:
     Job(eCN eClassNo);
