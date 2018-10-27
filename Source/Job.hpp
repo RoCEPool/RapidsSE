@@ -113,8 +113,6 @@ namespace JobsModel
     Tasks::Task* m_pOriginatingTask;  // originating task of the request
     
     WorkingBuffer* m_pWorkingBuffer; // working buffer
-
-    bool m_bFindingJob; // temp. to be fixed
   
     eJS m_eState; // cond wait state
     pthread_mutex_t     m_xThreadMutex;     // connector thread mutex variable
@@ -122,7 +120,7 @@ namespace JobsModel
     pthread_cond_t      m_xThreadCond;      // connector thread condition variable
     pthread_condattr_t  m_xThreadCondAttr;  // connector thread condition shared attribute
   
-    Tasks::Task* m_pExecutingTask; // task executing the system
+    Tasks::Task* m_pExecutingTask; // task executing the job
   
     bool m_bNoWait; // no wait
 

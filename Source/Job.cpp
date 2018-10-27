@@ -115,21 +115,6 @@ Job::Job(eCN eClassNo, Session* pSession)
 Job::~Job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-
-#ifdef JOB_TRACE
-  if ( JOB_TRACE && ! m_bFindingJob ) {
-    vTrace("~Job: Deleted Job %p %s id %lld partNode %lld (node: %s)\n"_Stz,
-           this,
-           aCN[eClass()],
-           m_iJobId,
-           m_iParticipantNode,
-           gpAttachMap->m_pGrid->pThisNode()->aNodeName()
-          );
-    
-    if (CN_JOB__CANCELLED == eClass())
-      int iDebug = 1;
-  }
-#endif
   
   pthread_mutex_destroy(&m_xThreadMutex);
   pthread_mutexattr_destroy(&m_xThreadMutexAttr);
@@ -154,7 +139,6 @@ void Job::vInit(void)
   m_xAcksRemaining.vCheckInit();
   m_pOriginatingTask  = nullptr;
   m_pWorkingBuffer = nullptr;
-  m_bFindingJob = false;
   
   m_eState = JS_RUNNING;
   
