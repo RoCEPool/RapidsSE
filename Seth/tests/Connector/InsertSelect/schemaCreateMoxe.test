@@ -1,8 +1,8 @@
 //drop connector moxe;
 //success
 
-//create connector moxe type moxe;
-//success
+create connector moxe type moxe;
+success
 
 create table MOXE.TABLE1 (
   pcol1   INTEGER NOT NULL,
