@@ -13,6 +13,7 @@
 //exists.test
 //having.test
 //intersect.test
-PartKey1way.test
+//PartKey1way.test
+PartKey2way.test
 //schemaDrop.test
 

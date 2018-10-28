@@ -1,7 +1,10 @@
 
-  // Source file: ../qa/queries/PartKey2way/r2wayPart10.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart10.res
- select sum(a.cola1), avg(c.cola1), min(a.cola1), max(c.cola1), a.colb1, b.ucolvc, c.colb3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 where a.colb1 in ('YELLOW','peach') group by a.colb1, b.ucolvc, c.colb3 order by a.colb1, b.ucolvc, c.colb3;
+// Source file: ../qa/queries/PartKey2way/r2wayPart10.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart10.res
+select sum(a.cola1), avg(c.cola1), min(a.cola1), max(c.cola1), a.colb1, b.ucolvc, c.colb3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 where a.colb1 in ('YELLOW','peach') group by a.colb1, b.ucolvc, c.colb3 order by a.colb1, b.ucolvc, c.colb3;
+mute
+//CHECK_RESULT
+/*
 rows:
   (332, 191, 332, 191, 'YELLOW', 'kkk', 'GREEN')
   (332, 208, 332, 208, 'YELLOW', 'kkk', 'blue')
@@ -29,11 +32,14 @@ rows:
   (323, 206, 323, 206, 'peach', 'lll', 'tan')
   (26, 116, 26, 116, 'peach', 'vvv', 'PINK')
   (26, 497, 26, 497, 'peach', 'vvv', 'orange')
+*/
 
-
-  // Source file: ../qa/queries/PartKey2way/r2wayPart11.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart11.res
- select sum(a.cola1) as TotCola, b.ucolvc from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 group by b.ucolvc order by b.ucolvc, TotCola;
+// Source file: ../qa/queries/PartKey2way/r2wayPart11.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart11.res
+select sum(a.cola1) as TotCola, b.ucolvc from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 group by b.ucolvc order by b.ucolvc, TotCola;
+mute
+//CHECK_RESULT
+/*
 rows:
   (2502, 'aaa')
   (2894, 'bbb')
@@ -60,25 +66,34 @@ rows:
   (840, 'xxx')
   (10928, 'yyy')
   (2287, 'zzz')
+*/
 
-
-  // Source file: ../qa/queries/PartKey2way/r2wayPart12.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart12.res
- select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 order by SumOf;
+// Source file: ../qa/queries/PartKey2way/r2wayPart12.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart12.res
+select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 order by SumOf;
+mute
+//CHECK_RESULT
+/*
 rows:
   (24872, 252, 2, 500)
+*/
 
-
-  // Source file: ../qa/queries/PartKey2way/r2wayPart13.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart13.res
- select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 order by SumOf limit 10;
+// Source file: ../qa/queries/PartKey2way/r2wayPart13.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart13.res
+select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 order by SumOf limit 10;
+mute
+//CHECK_RESULT
+/*
 rows:
   (24872, 252, 2, 500)
+*/
 
-
-  // Source file: ../qa/queries/PartKey2way/r2wayPart14.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart14.res
- select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 group by a.cola1 order by SumOf limit 10 offset 80;
+// Source file: ../qa/queries/PartKey2way/r2wayPart14.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart14.res
+select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 group by a.cola1 order by SumOf limit 10 offset 80;
+mute
+//CHECK_RESULT
+/*
 rows:
   (591, 248, 295, 471)
   (592, 196, 267, 327)
@@ -89,19 +104,25 @@ rows:
   (891, 266, 169, 457)
   (950, 308, 242, 481)
   (984, 223, 152, 487)
+*/
 
-
-  // Source file: ../qa/queries/PartKey2way/r2wayPart15.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart15.res
- select sum(a.pcol1) as SumOf, avg(c.cola1) as AvgOf, min(a.cola1) as MinOf, max(c.cola1) as MaxOf from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 where a.cola1 between 13 and 27 group by a.cola1, c.colb3 order by a.cola1, AvgOf, MinOf, MaxOf;
+// Source file: ../qa/queries/PartKey2way/r2wayPart15.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart15.res
+select sum(a.pcol1) as SumOf, avg(c.cola1) as AvgOf, min(a.cola1) as MinOf, max(c.cola1) as MaxOf from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 where a.cola1 between 13 and 27 group by a.cola1, c.colb3 order by a.cola1, AvgOf, MinOf, MaxOf;
+mute
+//CHECK_RESULT
+/*
 rows:
   (12, 116, 26, 116)
   (12, 497, 26, 497)
+*/
 
-
-  // Source file: ../qa/queries/PartKey2way/r2wayPart16.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart16.res
- select sum(a.pcol1) as SumOf, avg(c.cola1) as AvgOf, min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 where a.colb1 between 'bbb' and 'eee' group by a.cola1, c.colb3 order by SumOf, AvgOf;
+// Source file: ../qa/queries/PartKey2way/r2wayPart16.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart16.res
+select sum(a.pcol1) as SumOf, avg(c.cola1) as AvgOf, min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 where a.colb1 between 'bbb' and 'eee' group by a.cola1, c.colb3 order by SumOf, AvgOf;
+mute
+//CHECK_RESULT
+/*
 rows:
   (4, 166, 124, 166)
   (4, 175, 124, 175)
@@ -158,11 +179,14 @@ rows:
   (132, 77, 56, 116)
   (198, 181, 169, 317)
   (198, 343, 169, 457)
+*/
 
-
-  // Source file: ../qa/queries/PartKey2way/r2wayPart17.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart17.res
- select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 where c.cola1 < 27 group by a.cola1, c.colb3 order by c.colb3, SumOf;
+// Source file: ../qa/queries/PartKey2way/r2wayPart17.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart17.res
+select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 where c.cola1 < 27 group by a.cola1, c.colb3 order by c.colb3, SumOf;
+mute
+//CHECK_RESULT
+/*
 rows:
   (78, 8, 222, 8)
   (91, 15, 295, 15)
@@ -190,18 +214,21 @@ rows:
   (60, 16, 323, 16)
   (64, 16, 95, 16)
   (19, 23, 2, 23)
+*/
 
-
-  // Source file: ../qa/queries/PartKey2way/r2wayPart18.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart18.res
- select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
+// Source file: ../qa/queries/PartKey2way/r2wayPart18.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart18.res
+select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
+mute
+//CHECK_RESULT
+/*
 rows:
   (24872, 252, 2, 500)
+*/
 
-
-  // Source file: ../qa/queries/PartKey2way/r2wayPart19.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart19.res
- select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 group by a.cola1, c.colb3 order by a.cola1, c.colb3 asc limit 20;
+// Source file: ../qa/queries/PartKey2way/r2wayPart19.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart19.res
+select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 group by a.cola1, c.colb3 order by a.cola1, c.colb3 asc limit 20;
 rows:
   (19, 427, 2, 427)
   (38, 227, 2, 315)
@@ -225,9 +252,9 @@ rows:
   (59, 500, 44, 500)
 
 
-  // Source file: ../qa/queries/PartKey2way/r2wayPart1.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart1.res
- select a.pcol1, b.pcol2, c.pcol4 from table1 a join table2 b on a.pcol1 = b.pcol2 join table4 c on a.pcol1 = c.pcol4 where b.pcol2 between 24 and 47 order by a.pcol1;
+// Source file: ../qa/queries/PartKey2way/r2wayPart1.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart1.res
+select a.pcol1, b.pcol2, c.pcol4 from table1 a join table2 b on a.pcol1 = b.pcol2 join table4 c on a.pcol1 = c.pcol4 where b.pcol2 between 24 and 47 order by a.pcol1;
 rows:
   (24, 24, 24)
   (25, 25, 25)
@@ -255,9 +282,9 @@ rows:
   (47, 47, 47)
 
 
-  // Source file: ../qa/queries/PartKey2way/r2wayPart20.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart20.res
- select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1), c.colb3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 group by a.cola1, c.colb3 order by a.cola1, c.colb3 desc limit 20;
+// Source file: ../qa/queries/PartKey2way/r2wayPart20.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart20.res
+select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1), c.colb3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 group by a.cola1, c.colb3 order by a.cola1, c.colb3 desc limit 20;
 rows:
   (19, 23, 2, 23, 'yellow')
   (19, 311, 2, 311, 'purple')
@@ -281,9 +308,9 @@ rows:
   (59, 360, 44, 360, 'TEAL')
 
 
-  // Source file: ../qa/queries/PartKey2way/r2wayPart2.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart2.res
- select a.colb1, b.colb2, c.colb3, c.colc3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 where extract(month from c.colc3) between 4 and 5 and colb3 = 'purple' order by pcol2, pcol3, colc3;
+// Source file: ../qa/queries/PartKey2way/r2wayPart2.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart2.res
+select a.colb1, b.colb2, c.colb3, c.colc3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 where extract(month from c.colc3) between 4 and 5 and colb3 = 'purple' order by pcol2, pcol3, colc3;
 rows:
   ('GREEN', 'brown', 'purple', TIMESTAMP '2015-04-20 00:00:00.0')
   ('violet', 'yellow', 'purple', TIMESTAMP '2015-04-02 00:00:00.0')
@@ -293,9 +320,9 @@ rows:
   ('brown', 'ORANGE', 'purple', TIMESTAMP '2015-05-04 00:00:00.0')
 
 
-  // Source file: ../qa/queries/PartKey2way/r2wayPart3.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart3.res
- select a.colb1, b.colb2, c.colb3, c.colc3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 order by pcol1,pcol2,c.colc3 limit 15;
+// Source file: ../qa/queries/PartKey2way/r2wayPart3.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart3.res
+select a.colb1, b.colb2, c.colb3, c.colc3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 order by pcol1,pcol2,c.colc3 limit 15;
 rows:
   ('PINK', 'yellow', 'WHITE', TIMESTAMP '2015-02-04 00:00:00.0')
   ('PINK', 'yellow', 'blue', TIMESTAMP '2015-02-05 00:00:00.0')
@@ -314,9 +341,9 @@ rows:
   ('green', 'maroon', 'ORANGE', TIMESTAMP '2015-08-05 00:00:00.0')
 
 
-  // Source file: ../qa/queries/PartKey2way/r2wayPart4.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart4.res
- select a.colb1, b.colb2, c.colb3, c.colc3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 order by colb1, colb2, colb3, colc3 limit 15;
+// Source file: ../qa/queries/PartKey2way/r2wayPart4.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart4.res
+select a.colb1, b.colb2, c.colb3, c.colc3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 order by colb1, colb2, colb3, colc3 limit 15;
 rows:
   ('BLACK', 'BLACK', 'TEAL', TIMESTAMP '2015-01-29 00:00:00.0')
   ('BLACK', 'BLACK', 'TEAL', TIMESTAMP '2015-04-23 00:00:00.0')
@@ -335,9 +362,9 @@ rows:
   ('BLACK', 'maroon', 'TEAL', TIMESTAMP '2015-10-07 00:00:00.0')
 
 
-  // Source file: ../qa/queries/PartKey2way/r2wayPart5.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart5.res
- select a.colb1, b.colb2, c.colb3, c.colc3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 order by colb1, colb2, colb3, colc3 limit 15 offset 5;
+// Source file: ../qa/queries/PartKey2way/r2wayPart5.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart5.res
+select a.colb1, b.colb2, c.colb3, c.colc3 from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3 order by colb1, colb2, colb3, colc3 limit 15 offset 5;
 rows:
   ('BLACK', 'GREEN', 'YELLOW', TIMESTAMP '2015-12-24 00:00:00.0')
   ('BLACK', 'GREEN', 'YELLOW', TIMESTAMP '2015-06-06 00:00:00.0')
@@ -356,30 +383,30 @@ rows:
   ('BLACK', 'pink', 'GREEN', TIMESTAMP '2015-10-16 00:00:00.0')
 
 
-  // Source file: ../qa/queries/PartKey2way/r2wayPart6.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart6.res
- select sum(a.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
+// Source file: ../qa/queries/PartKey2way/r2wayPart6.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart6.res
+select sum(a.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
 rows:
   (125124)
 
 
-  // Source file: ../qa/queries/PartKey2way/r2wayPart7.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart7.res
- select sum(a.cola1), avg(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
+// Source file: ../qa/queries/PartKey2way/r2wayPart7.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart7.res
+select sum(a.cola1), avg(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
 rows:
   (125124, 252)
 
 
-  // Source file: ../qa/queries/PartKey2way/r2wayPart8.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart8.res
- select sum(a.cola1), avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
+// Source file: ../qa/queries/PartKey2way/r2wayPart8.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart8.res
+select sum(a.cola1), avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
 rows:
   (125124, 252, 2, 500)
 
 
-  // Source file: ../qa/queries/PartKey2way/r2wayPart9.sql
-  // Result file: ../qa/queries/PartKey2way/results/2wayPart9.res
- select sum(a.cola1), avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
+// Source file: ../qa/queries/PartKey2way/r2wayPart9.sql
+// Result file: ../qa/queries/PartKey2way/results/2wayPart9.res
+select sum(a.cola1), avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
 rows:
   (125124, 252, 2, 500)
 
