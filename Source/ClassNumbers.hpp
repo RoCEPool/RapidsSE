@@ -38,6 +38,7 @@ enum eCN : u2 // Class Number
   /*  19 */ CN_ACCESSPATH,
   /*  20 */ CN_ACCUM,
   /*  21 */ CN_ACCUMVEC,
+  /*  21 */ CN_ACTIVITYMARK,
   /*     */ CN_APISTATE,
   /*  22 */ CN_ARG,
   /*  23 */ CN_ARGUMENTS,
@@ -284,6 +285,7 @@ static Stz* aCN[]
   /*  19 */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
   /*  20 */ "ACCUM"_Stz,               // CN_ACCUM
   /*  21 */ "ACCUMVEC"_Stz,            // CN_ACCUMVEC
+  /*  21 */ "ACTIVITYMARK"_Stz,        // CN_ACTIVITYMARK
   /*     */ "APISTATE"_Stz,            // CN_APISTATE
   /*  22 */ "ARG"_Stz,                 // CN_ARG
   /*  23 */ "ARGUMENTS"_Stz,           // CN_ARGUMENTS
