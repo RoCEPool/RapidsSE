@@ -107,11 +107,14 @@ void Task::vGridShow(MP_Task mpTask)
   
   for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
     Node* pNode = gpAttachMap->m_pGrid->m_pNodes[i_Node];
-    vTrace("  Node %lld : %s IP %s port %lld %s\n"_Stz,
+    vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
            pNode->iNodeNo(),
            pNode->aNodeName(),
            pNode->aNodeIP(),
            pNode->iNodePortNo(),
+           pNode->pRecvSocket(),
+           pNode->pSendSocket(),
+
            pNode->pSendSocket() ? "connected" : "not connected");
   }
   

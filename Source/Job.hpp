@@ -7,7 +7,6 @@
 
 namespace JobsModel
 {
-  class JobClass_o;    // forward definition
   struct JobClass; // forward definition
 
   class Job;
@@ -38,6 +37,22 @@ namespace JobsModel
   /*  6 */ "LOCAL"_Stz,
   /*  7 */ "SYSTEM"_Stz,
   /*  8 */ "THREAD"_Stz,
+  };
+  
+  enum eJS // job state
+  {
+  /*  0 */ JS_RUNNING=0,
+  /*  1 */ JS_LOCKED,
+  /*  2 */ JS_WAITING,
+  /*  3 */ JS_SIGNALLED
+  };
+  
+  static Stz* aJS[]
+  {
+  /*  0 */ "RUNNING"_Stz,
+  /*  1 */ "LOCKED"_Stz,
+  /*  2 */ "WAITING"_Stz,
+  /*  2 */ "SIGNALLED"_Stz,
   };
   
   enum eJT // job trace
@@ -85,32 +100,28 @@ namespace JobsModel
               public JobResult
   {
   public:
-    i8  m_iJobId;              // job id
-    i8  m_iJobSeq;             // sequence number
-    i8  m_iSession;            // which session
+    i8  m_iJobId;           // job id
+    i8  m_iJobSeq;          // sequence number
+    i8  m_iSession;         // which session
   
-    JobClass* m_pJobClass;     // job class
-    eSS  m_eSeed;              // task seed
-    eJT  m_eJobTrace;          // job trace
+    JobClass* m_pJobClass;  // job class
+    eSS  m_eSeed;           // task seed
+    eJT  m_eJobTrace;       // job trace
+    bool m_bNoWait;         // no wait
+
+    Tasks::Task* m_pExecutingTask;   // task executing the job
+    Tasks::Task* m_pOriginatingTask; // originating task of the request
   
     i8  m_iParticipantNode;    // participant node no
     Decider m_xAcksRemaining;  // acks remaining
-    Tasks::Task* m_pOriginatingTask;  // originating task of the request
-    
-    WorkingBuffer* m_pWorkingBuffer; // working buffer
-
-    bool m_bFindingJob; // temp. to be fixed
   
-    i8 m_iState; // cond wait state
-    
+    WorkingBuffer* m_pWorkingBuffer; // working buffer
+  
+    eJS m_eState; // cond wait state
     pthread_mutex_t     m_xThreadMutex;     // connector thread mutex variable
     pthread_mutexattr_t m_xThreadMutexAttr; // connector thread mutex shared attribute
     pthread_cond_t      m_xThreadCond;      // connector thread condition variable
     pthread_condattr_t  m_xThreadCondAttr;  // connector thread condition shared attribute
-  
-    Tasks::Task* m_pExecutingTask; // task executing the system
-  
-    bool m_bNoWait; // no wait
 
   public:
     Job(eCN eClassNo);

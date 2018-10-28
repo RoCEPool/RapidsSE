@@ -15,10 +15,11 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Task(void)
 {
+  vAddStep("task::breakPoint"_Stz, &Task::vTaskBreakPoint);
+  vAddStep("task::this"_Stz,       &Task::vTaskThis);
+
   vAddStep("task.ack"_Stz,       &Task::vTaskAck);
   vAddStep("task.acks!"_Stz,     &Task::vTaskAcksStore);
-  vAddStep("task::breakPoint"_Stz, &Task::vTaskBreakPoint);
-  vAddStep("task.delete"_Stz,    &Task::vTaskDelete);
   vAddStep("task.dicStack"_Stz,  &Task::vTaskDicStack);
   vAddStep("task.dump"_Stz,      &Task::vTaskDump);
   vAddStep("task.dropLock"_Stz,  &Task::vTaskDropLock);
@@ -37,11 +38,8 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.send"_Stz,      &Task::vTaskSend);
   vAddStep("task.sendNode@"_Stz, &Task::vTaskSendNodeFetch);
   vAddStep("task.sendNode!"_Stz, &Task::vTaskSendNodeStore);
-  vAddStep("task.socket@"_Stz,   &Task::vTaskSocketFetch);
-  vAddStep("task.socket!"_Stz,   &Task::vTaskSocketStore);
   vAddStep("task.state@"_Stz,    &Task::vTaskStateFetch);
   vAddStep("task.state!"_Stz,    &Task::vTaskStateStore);
-  vAddStep("task::this"_Stz,     &Task::vTaskThis);
   vAddStep("task.thread"_Stz,    &Task::vTaskThread);
   vAddStep("task.wait"_Stz,      &Task::vTaskWait);
   vAddStep("task.yield"_Stz,     &Task::vTaskYield);
@@ -96,25 +94,6 @@ void Task::vTaskBreakPoint(MP_Task mpTask)
 {
   ENTRY("vTaskBreakPoint"_Stz);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.delete -- delete task on stack                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskDelete(MP_Task mpTask)
-{
-  ENTRY("vTaskDelete"_Stz);
-  
-  Object* pPtrTask;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("task.delete"_Stz);
-  
-  Task* pThatTask = _pTask(pPtrTask);
-  ASSERT(CN_TASK == pThatTask->eClass());
-  
-  delete pThatTask;
-  
   EXIT();
 }
 
@@ -496,51 +475,6 @@ void Task::vTaskSleep(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.socket@ -- fetch socket of task on data stack                      */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskSocketFetch(MP_Task mpTask)
-{
-  ENTRY("vTaskSocketFetch"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.socket@"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Socket* pSocket = pThatTask->m_pSocket;
-  
-  Object* pSocketEmb = static_cast<Object*>(pSocket);
-  
-  mpTask->m_pDataStack->vPushObject(pSocketEmb);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.socket! -- store socket on data stack into task                       */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskSocketStore(MP_Task mpTask)
-{
-  ENTRY("vTaskSocketStore"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.socket!"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Object* ptrSocket;
-  
-  if ( ! mpTask->m_pDataStack->bPop(ptrSocket) )
-    THROW_INVALID_DSTACK("task.socket!"_Stz);
-  
-  Socket* pSocket = static_cast<Socket*>(ptrSocket);
-  
-  pThatTask->m_pSocket = pSocket;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* task.state@ -- fetch state of task                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskStateFetch(MP_Task mpTask)
@@ -577,7 +511,7 @@ ENTRY("vTaskStateStore"_Stz);
     THROW_INVALID_DSTACK("task.state!"_Stz);
   
   // a task being set to waiting state must be locked
-  if (TS_WAITING_ACK == iState) {
+  if (TS_WAITING == iState) {
     //RASSERT(pThatTask->bIsLocked());
   }
   

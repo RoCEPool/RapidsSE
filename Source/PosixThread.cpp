@@ -8,6 +8,9 @@
 
 Atomic gzThreadOpenCount;
 
+extern pthread_key_t giTLS_TaskKey;
+extern pthread_key_t giTLS_ThreadKey;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -301,6 +304,28 @@ void PosixThread::vThreadPriority(i8 iPriority)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* test for C++ thread                                                        */
+/*----------------------------------------------------------------------------*/
+bool PosixThread::bIsCppThread(void)
+{
+  if (-1 != (int)giTLS_ThreadKey)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for Java thread                                                       */
+/*----------------------------------------------------------------------------*/
+bool PosixThread::bIsJavaThread(void)
+{
+  if (-1 == (int)giTLS_ThreadKey)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sleep for given number of microseconds                                     */
 /*----------------------------------------------------------------------------*/
 void PosixThread::vSleepMicro(i8 nMicroSeconds)
@@ -467,8 +492,10 @@ bool PosixThread::bTlsCreate(pthread_key_t* pTlsKey)
 {
   i8 iResult = pthread_key_create(pTlsKey,nullptr);
   
-  if (0 == iResult)
+  if (0 == iResult) {
+    RASSERT(-1 != (int)*pTlsKey);
     return true;
+  }
   
   return false;
 }
@@ -478,6 +505,8 @@ bool PosixThread::bTlsCreate(pthread_key_t* pTlsKey)
 /*----------------------------------------------------------------------------*/
 void* PosixThread::pTlsGet(pthread_key_t iTlsKey)
 {
+  RASSERT(-1 != (int)iTlsKey);
+  
   void* pVal = pthread_getspecific(iTlsKey);
   
   return pVal;
@@ -488,6 +517,8 @@ void* PosixThread::pTlsGet(pthread_key_t iTlsKey)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vTlsSet(pthread_key_t iTlsKey, void* pArg)
 {
+  RASSERT(-1 != (int)iTlsKey);
+  
   pthread_setspecific(iTlsKey,pArg);
 }
 

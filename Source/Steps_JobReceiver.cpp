@@ -17,9 +17,8 @@ void Step::vAddSteps_JobReceiver(void)
 {
   vAddStep("job_receiver.connNo@"_Stz, &Task::vJob_ReceiverConnNoFetch);
   vAddStep("job_receiver.connNo!"_Stz, &Task::vJob_ReceiverConnNoStore);
-  vAddStep("job_receiver.socket@"_Stz, &Task::vJob_ReceiverSocketFetch);
-  vAddStep("job_receiver.socket!"_Stz, &Task::vJob_ReceiverSocketStore);
-
+  vAddStep("job_receiver.node@"_Stz,   &Task::vJob_ReceiverNodeFetch);
+  vAddStep("job_receiver.node!"_Stz,   &Task::vJob_ReceiverNodeStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,41 +61,41 @@ void Task::vJob_ReceiverConnNoStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_receiver.socket@ -- fetch socket from job_receiver                     */
+/* job_receiver.node@ -- fetch node from job_receiver                         */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_ReceiverSocketFetch(MP_Task mpTask)
+void Task::vJob_ReceiverNodeFetch(MP_Task mpTask)
 {
-  ENTRY("vJob_ReceiverSocketFetch"_Stz);
+  ENTRY("vJob_ReceiverNodeFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_Receiver.socket@"_Stz);
+    THROW_INVALID_DSTACK("job_Receiver.node@"_Stz);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
-  Socket* pSocket = pJob_Receiver->pSocket();
-  mpTask->m_pDataStack->vPushObject(pSocket);
+  Node* pNode = pJob_Receiver->pNode();
+  mpTask->m_pDataStack->vPushObject(pNode);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_receiver.socket! -- store socket into job_receiver                     */
+/* job_receiver.node! -- store node into job_receiver                         */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_ReceiverSocketStore(MP_Task mpTask)
+void Task::vJob_ReceiverNodeStore(MP_Task mpTask)
 {
-  ENTRY("vJob_ReceiverSocketStore"_Stz);
+  ENTRY("vJob_ReceiverNodeStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_receiver.socket!"_Stz);
+    THROW_INVALID_DSTACK("job_receiver.node!"_Stz);
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
-  Object* pSocketPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
-    THROW_INVALID_DSTACK("job_receiver.socket!"_Stz);
-  Socket* pSocket = _pSocket(pSocketPtr);
+  Object* pNodePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pNodePtr) )
+    THROW_INVALID_DSTACK("job_receiver.node!"_Stz);
+  Node* pNode = _pNode(pNodePtr);
   
-  pJob_Receiver->vSocket(pSocket);
+  pJob_Receiver->vNode(pNode);
   
   EXIT();
 }

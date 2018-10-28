@@ -446,7 +446,6 @@ void Task::vJobFindOriginator(MP_Task mpTask)
   
   Job__Find* pFindJob = new Job__Find;
   pFindJob->m_iJobId = iJobId;
-  pFindJob->m_bFindingJob = true;
   
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
   Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
@@ -490,7 +489,6 @@ void Task::vJobFindParticipant(MP_Task mpTask)
   
   Job__Find* pFindJob = new Job__Find;
   pFindJob->m_iJobId = iJobId;
-  pFindJob->m_bFindingJob = true;
 
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
   Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
@@ -1335,8 +1333,8 @@ void Task::vJobSignalConnector(MP_Task mpTask)
   //}
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // 
-  pJob->m_iState = 2;
+  //
+  pJob->m_eState = JS_SIGNALLED;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   RASSERT( _bIsValidJob(pJob->eClass()) );

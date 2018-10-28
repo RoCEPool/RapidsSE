@@ -15,6 +15,10 @@ namespace Tasks
     Word* m_pCurrentWord;  // current word being compiled
     i8    m_nSubDic;       // number of sub dictionaries
     i8    m_nVariables;    // number of locals/params variables
+  
+    Cell* m_pBeginIP;
+    Cell* m_pRetryIP;
+
 
     Tokeniser* m_pTokeniser; // input stream tokenizer
 

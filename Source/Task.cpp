@@ -91,16 +91,13 @@ Task::Task(Job* pJob)
   IP.m_pCell     = nullptr;
   m_pEntryCell   = nullptr;
   
-  m_pCompiler    = new Compiler;
+  m_pCompiler    = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
   
-  m_pRetryIP     = nullptr;
-  m_pBeginIP     = nullptr;
   m_pWord        = nullptr;
   m_iTracing     = C_TRACE_NONE;
   
   m_pSession     = nullptr;
   
-  m_pSocket      = nullptr;
   m_pPlan        = nullptr;
   
   m_iDdlLocked   = 0;
@@ -587,8 +584,8 @@ void Task::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  IP.m_pCell = m_pRetryIP;
-  m_pBeginIP = nullptr;
+  IP.m_pCell = m_pCompiler->m_pRetryIP;
+  m_pCompiler->m_pBeginIP = nullptr;
   
   m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
   
@@ -982,8 +979,7 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
     case TS_SLEEPING:
       return QR_SLEEPING_QUEUE;
       
-    case TS_WAITING_ACK: //! whats the difference between these two?
-    case TS_WAITING_SIGNAL:
+    case TS_WAITING: 
       return QR_WAITING_QUEUE;
       
     default:

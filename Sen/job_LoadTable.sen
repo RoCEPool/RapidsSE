@@ -44,14 +44,14 @@
 
   task::this task.grabLock
 
-  grid::slots setAcks
+  grid::slots task::acks!
 
   args.subLoaders 0
   do
     pJob_LoadTable job_subLoader::spawn
   loop
 
-  ackWait
+  task::wait
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -60,8 +60,8 @@
 : LoadTable_waitOnly ( pJob_LoadTable --  )
 
   task::this task.grabLock
-  grid::slots setAcks
-  ackWait
+  grid::slots task::acks!
+  task::wait
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

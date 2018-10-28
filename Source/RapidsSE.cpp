@@ -42,7 +42,9 @@ void RapidsSE::vMainEntry(void)
   vKillPrev();
   
   vOpenPool();
-  
+
+  vOpenTraceFile();
+
   if (gxArguments.m_bStart)
     vSetGlobals();
   
@@ -383,6 +385,20 @@ bool RapidsSE::bOpenPool(StrVal& sPoolName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* open trace file                                                            */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vOpenTraceFile(void)
+{
+  gpTraceFile = new File;
+  
+  bool bOpened = gpTraceFile->bOpen("/tmp/se_trace.txt"_Stz, C_OPEN_WRITE);
+  RASSERT(bOpened);
+  
+  if (gxArguments.m_bVerbose)
+    vInfo("** trace file opened: /tmp/se_trace.txt\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print exit                                                                 */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vPrintExit(void)
@@ -624,8 +640,8 @@ void RapidsSE::vStartSystem(void)
                               gxArguments.m_nSubLoaders);
   
   // get the trace file
-  Word* pTraceFileWord = gpAttachMap->m_xMainDic.pFindWord("trace_file"_Stz);
-  gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
+  //Word* pTraceFileWord = gpAttachMap->m_xMainDic.pFindWord("trace_file"_Stz);
+  //gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
   
   //if (gpAttachMap->m_bVerbose)
   //  vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());

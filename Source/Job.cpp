@@ -115,21 +115,6 @@ Job::Job(eCN eClassNo, Session* pSession)
 Job::~Job(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-
-#ifdef JOB_TRACE
-  if ( JOB_TRACE && ! m_bFindingJob ) {
-    vTrace("~Job: Deleted Job %p %s id %lld partNode %lld (node: %s)\n"_Stz,
-           this,
-           aCN[eClass()],
-           m_iJobId,
-           m_iParticipantNode,
-           gpAttachMap->m_pGrid->pThisNode()->aNodeName()
-          );
-    
-    if (CN_JOB__CANCELLED == eClass())
-      int iDebug = 1;
-  }
-#endif
   
   pthread_mutex_destroy(&m_xThreadMutex);
   pthread_mutexattr_destroy(&m_xThreadMutexAttr);
@@ -148,16 +133,17 @@ void Job::vInit(void)
   m_iSession = -1;
   
   m_pJobClass = nullptr;
-  m_eSeed    = SS_ENUMS;
-  m_eJobTrace   = JT_NONE;
+  m_eSeed     = SS_ENUMS;
+  m_eJobTrace = JT_NONE;
+  
+  m_pExecutingTask    = nullptr;
+  m_pOriginatingTask  = nullptr;
+
   m_iParticipantNode  = -1;
   m_xAcksRemaining.vCheckInit();
-  m_pOriginatingTask  = nullptr;
   m_pWorkingBuffer = nullptr;
-  m_bFindingJob = false;
   
-  m_iState = 0;
-  
+  m_eState = JS_RUNNING;
   
   // initialise mutex attribute
   MemLib::vZero(&m_xThreadMutexAttr,sizeof(m_xThreadMutexAttr),CN_SEMAPHORE);
@@ -184,8 +170,6 @@ void Job::vInit(void)
   MemLib::vZero(&m_xThreadCond,sizeof(m_xThreadCond),CN_SEMAPHORE);
   pthread_cond_init(&m_xThreadCond, &m_xThreadCondAttr);
   
-  
-  m_pExecutingTask = nullptr;
   
   m_bNoWait = false;
 }

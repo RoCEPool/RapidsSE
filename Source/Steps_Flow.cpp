@@ -35,7 +35,7 @@ void Task::vFlowBegin_(MP_Task mpTask)
 {
   ENTRY("vBegin_"_Stz);
   
-  mpTask->m_pBeginIP = mpTask->IP.m_pCell;
+  mpTask->m_pCompiler->m_pBeginIP = mpTask->IP.m_pCell;
   
   EXIT();
 }
@@ -105,7 +105,7 @@ void Task::vFlowJumpBegin_(MP_Task mpTask)
 {
   ENTRY("vFlowJumpBegin_"_Stz);
   
-  mpTask->IP.m_pCell = mpTask->m_pBeginIP;
+  mpTask->IP.m_pCell = mpTask->m_pCompiler->m_pBeginIP;
   
   EXIT();
 }
@@ -219,7 +219,7 @@ void Task::vFlowRetryPoint(MP_Task mpTask)
 {
   ENTRY("vFlowRetryPoint"_Stz);
   
-  mpTask->m_pRetryIP = mpTask->IP.m_pCell;
+  mpTask->m_pCompiler->m_pRetryIP = mpTask->IP.m_pCell;
   
   mpTask->m_pDataStack->vRetryPoint();
   

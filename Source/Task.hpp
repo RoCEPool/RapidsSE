@@ -25,34 +25,27 @@ namespace Tasks
   enum eTS // Task State
   {
   /* 0 */ TS_NONE=0,
-  /* 1 */ TS_BLOCKED,       // task is blocked by another transaction
-  /* 2 */ TS_EXECUTING,     // task is currenty being executed by Thread::vLoop
-  /* 3 */ TS_EXITED,        // task has completed
-  /* 4 */ TS_READY,         // task is ready to be executed
-  /* 5 */ TS_SEND,          // task is wants to send
-  /* 6 */ TS_SLEEPING,      // task is sleeping
-  
-  // task is waiting for signal 
-  /* 7 */ TS_WAITING_ACK,   // task is waiting on ack from cooperating task
-  /* 8 */ TS_WAITING_SIGNAL,// task is waiting on signal indicating queue arrival
-  
-  /* 9 */ TS_YIELDED,       // task is yielded, not running and is in a TaskSet
-  /*10 */ TS_ENUMS
+  /* 1 */ TS_EXECUTING, // task is currenty being executed by Thread::vLoop
+  /* 2 */ TS_EXITED,    // task has completed
+  /* 3 */ TS_READY,     // task is ready to be executed
+  /* 4 */ TS_SEND,      // task is wants to send
+  /* 5 */ TS_SLEEPING,  // task is sleeping
+  /* 6 */ TS_WAITING,   // task is waiting on ack from cooperating task
+  /* 7 */ TS_YIELDED,   // task is yielded, not running and is in a TaskSet
+  /* 8 */ TS_ENUMS
   };
   
   static Stz* aTS[]
   {
     /* 0 */ "NONE"_Stz,
-    /* 1 */ "BLOCKED"_Stz,
-    /* 2 */ "EXECUTING"_Stz,
-    /* 3 */ "EXITED"_Stz,
-    /* 4 */ "READY"_Stz,
-    /* 5 */ "SEND"_Stz,
-    /* 6 */ "SLEEPING"_Stz,
-    /* 7 */ "WAITING_ACK"_Stz,
-    /* 8 */ "WAITING_SIGNAL"_Stz,
-    /* 9 */ "YIELDED"_Stz,
-    /*10 */ "ENUMS"_Stz,
+    /* 1 */ "EXECUTING"_Stz,
+    /* 2 */ "EXITED"_Stz,
+    /* 3 */ "READY"_Stz,
+    /* 4 */ "SEND"_Stz,
+    /* 5 */ "SLEEPING"_Stz,
+    /* 6 */ "WAITING"_Stz,
+    /* 7 */ "YIELDED"_Stz,
+    /* 8 */ "ENUMS"_Stz,
   };
   
   typedef NP<Task,CN_TASK> NP_Task;
@@ -86,7 +79,6 @@ namespace Tasks
     i8      m_iDdlLocked;   // ? has the ddl lock?
     i8      m_iTracing;     // tracing mask
 
-    Socket* m_pSocket;       // socket associated with task
     GridModel::Node* m_pSendNode; // node to send to
 
     Stack*   m_pDataStack;   // data stack
@@ -113,8 +105,6 @@ namespace Tasks
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // can these be removed ?
   
-    Cell* m_pBeginIP;
-    Cell* m_pRetryIP;
     Word* m_pWord;
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -770,8 +760,8 @@ namespace Tasks
     // job receiver
     static void vJob_ReceiverConnNoFetch(MP_Task mpTask);
     static void vJob_ReceiverConnNoStore(MP_Task mpTask);
-    static void vJob_ReceiverSocketFetch(MP_Task mpTask);
-    static void vJob_ReceiverSocketStore(MP_Task mpTask);
+    static void vJob_ReceiverNodeFetch(MP_Task mpTask);
+    static void vJob_ReceiverNodeStore(MP_Task mpTask);
     
     // Job subLoader
     static void vJob_SubLoaderBegin(MP_Task mpTask);
@@ -1134,7 +1124,6 @@ namespace Tasks
     static void vTaskAck(MP_Task mpTask);
     static void vTaskAcksStore(MP_Task mpTask);
     static void vTaskBreakPoint(MP_Task mpTask);
-    static void vTaskDelete(MP_Task mpTask);
     static void vTaskDestructorTraceFetch(MP_Task mpTask);
     static void vTaskDestructorTraceStore(MP_Task mpTask);
     static void vTaskDicStack(MP_Task mpTask);
@@ -1156,8 +1145,6 @@ namespace Tasks
     static void vTaskSendNodeFetch(MP_Task mpTask);
     static void vTaskSendNodeStore(MP_Task mpTask);
     static void vTaskSleep(MP_Task mpTask);
-    static void vTaskSocketFetch(MP_Task mpTask);
-    static void vTaskSocketStore(MP_Task mpTask);
     static void vTaskStateFetch(MP_Task mpTask);
     static void vTaskStateStore(MP_Task mpTask);
     static void vTaskThread(MP_Task mpTask);
@@ -1283,7 +1270,6 @@ namespace Tasks
     static void vFindInCurrent(MP_Task mpTask);
     static void vForget(MP_Task mpTask);
     static void vHashHashColon(MP_Task mpTask);
-    static void vIndirect(MP_Task mpTask);
     static void vImmediate(MP_Task mpTask);
     static void vLocate(MP_Task mpTask);
     static void vOpDic(MP_Task mpTask);

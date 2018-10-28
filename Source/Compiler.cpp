@@ -39,6 +39,9 @@ Compiler::Compiler(void)
   m_nSubDic      = 0;
   m_nVariables   = 0;
 
+  m_pRetryIP     = nullptr;
+  m_pBeginIP     = nullptr;
+
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();
   s32 sString(""_Stz);

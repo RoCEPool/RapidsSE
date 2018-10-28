@@ -112,7 +112,7 @@ Job_Receiver::Job_Receiver(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
     
   m_iConnNo  = -1;
-  m_pSocket  = nullptr;
+  m_pNode    = nullptr;
   
   _checkInitialised_(CN_JOB_RECEIVER);
   
@@ -169,23 +169,23 @@ void Job_Receiver::vConnNo(i8 iConnNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get socket                                                                 */
+/* get node                                                                   */
 /*----------------------------------------------------------------------------*/
-Socket* Job_Receiver::pSocket(void)
+GridModel::Node* Job_Receiver::pNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
   
-  return m_pSocket;
+  return m_pNode;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set socket                                                                 */
+/* set node                                                                   */
 /*----------------------------------------------------------------------------*/
-void Job_Receiver::vSocket(Socket* pSocket)
+void Job_Receiver::vNode(GridModel::Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
-
-  m_pSocket = pSocket;
+  
+  m_pNode = pNode;
 }
 
 /*----------------------------------------------------------------------------*/

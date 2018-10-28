@@ -32,7 +32,10 @@ namespace System
     void vThreadPriority(i8 iPriority);
     
     //---------------------------------------------------------------------------
-    
+  
+    static bool  bIsCppThread(void);
+    static bool  bIsJavaThread(void);
+  
     static void  vSleepMicro(i8 nMicroSeconds);
     static void  vSleepMilli(i8 nMilliSeconds);
     static void  vSleepNano(i8 nNanoSeconds);

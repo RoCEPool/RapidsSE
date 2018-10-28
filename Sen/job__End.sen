@@ -39,8 +39,6 @@
     //task.send
 
     // send the end job
-    //pJob__End >socket
-
     I pJob__End job.forward
   loop
 
