@@ -27,7 +27,7 @@ success
 create index jCdt_idx5 on jCdt (jE);
 success
 
-ld jCdt "../Seth/tests/Select/range.csv";
+ld jCdt "/DATA/Select/range.csv";
 success
 
 //------------------------------------------------------------------------------
