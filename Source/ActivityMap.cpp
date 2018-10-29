@@ -38,7 +38,7 @@ bool ActivityMap::bCreateNewShm(void)
     Shm::bUnlink(sRegionName,xSysCall);
   }
   
-  // open a new shm region
+  // create a new shm region
   bResult  = Shm::bCreate(sRegionName,
                           sizeof(ActivityMap),
                           iFD,
@@ -110,6 +110,9 @@ bool ActivityMap::bOpenExistingShm(void)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMark(Stz* aFormat, ...)
 {
+  if ( ! gpActivityMap )
+    return;
+  
   va_list xArgs;
   
   va_start(xArgs,aFormat);
@@ -228,7 +231,7 @@ void ActivityMap::vWriteMark(Stz* aFormat, va_list xArgs)
 void ActivityMap::vDumpMap(void)
 {
   File* pActivityFile = new File();
-  bool bOpened = pActivityFile->bOpen("/tmp/ActivityMap.csv"_Stz,C_OPEN_WRITE);
+  bool bOpened = pActivityFile->bOpen("/rapids/ActivityMap.csv"_Stz,C_OPEN_WRITE);
   RASSERT(bOpened);
 
   vLockMutex();
