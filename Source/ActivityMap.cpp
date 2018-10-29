@@ -7,7 +7,7 @@
 
 extern AttachMap* gpAttachMap;
 
-ActivityMap* gpActivityShm = nullptr;
+ActivityMap* gpActivityMap = nullptr;
 
 /*----------------------------------------------------------------------------*/
 /* -- Static -----------------------------------------------------------------*/
@@ -16,16 +16,16 @@ ActivityMap* gpActivityShm = nullptr;
 /*----------------------------------------------------------------------------*/
 /* close ActivityMap                                                          */
 /*----------------------------------------------------------------------------*/
-bool ActivityMap::bClose(void)
+bool ActivityMap::bCloseShm(void)
 {
   
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* create ActivityMap                                                         */
+/* create a new ActivityMap shared memory segment                             */
 /*----------------------------------------------------------------------------*/
-bool ActivityMap::bCreate(void)
+bool ActivityMap::bCreateNewShm(void)
 {
   
   return false;
@@ -34,7 +34,7 @@ bool ActivityMap::bCreate(void)
 /*----------------------------------------------------------------------------*/
 /* open existing ActivityMap                                                  */
 /*----------------------------------------------------------------------------*/
-bool ActivityMap::bOpen(void)
+bool ActivityMap::bOpenExistingShm(void)
 {
   
   return false;
@@ -49,7 +49,7 @@ void ActivityMap::vMark(Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  gpActivityShm->vMarkShm(aFormat,xArgs);
+  gpActivityMap->vWriteMark(aFormat,xArgs);
 
   va_end(xArgs);
 }
@@ -59,7 +59,7 @@ void ActivityMap::vMark(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vDump(void)
 {
-  gpActivityShm->vDumpShm();
+  gpActivityMap->vDumpMap();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,19 +73,19 @@ void* ActivityMap::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  RASSERT( ! gpActivityShm );
+  RASSERT( ! gpActivityMap );
   
   bool bResult;
   if (0 == gpAttachMap->m_pGrid->m_iThisNode) {
-    bResult = ActivityMap::bCreate();
+    bResult = ActivityMap::bCreateNewShm();
     RASSERT(bResult);
   }
   else {
-    bResult = ActivityMap::bOpen();
+    bResult = ActivityMap::bOpenExistingShm();
     RASSERT(bResult);
   }
   
-  return gpActivityShm;
+  return gpActivityMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,8 +96,10 @@ void ActivityMap::operator delete(void* aAddress)
   ActivityMap* aActivity = static_cast<ActivityMap*>(aAddress);
   
   if (0 == gpAttachMap->m_pGrid->m_iThisNode) {
+    aActivity->bCloseShm();
   }
   else {
+    aActivity->bCloseShm();
   }
 }
 
@@ -125,7 +127,7 @@ ActivityMap::ActivityMap(void)
   
   for (i8 i_Mark = 0; i_Mark < C_ACTIVITY_MARKS; i_Mark++) {
     ActivityMark* aActivityMark = &m_xActivity[i_Mark];
-    //aActivityMark->vInit();
+    aActivityMark->vInit();
   }
 }
 
@@ -142,9 +144,9 @@ ActivityMap::~ActivityMap(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* write an ActivityMap mark                                                     */
+/* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMarkShm(Stz* aFormat, va_list xArgs)
+void ActivityMap::vWriteMark(Stz* aFormat, va_list xArgs)
 {
   char aMark[1024];
   
@@ -156,41 +158,58 @@ void ActivityMap::vMarkShm(Stz* aFormat, va_list xArgs)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump ActivityMap                                                              */
+/* dump ActivityMap to a csv file in /tmp                                     */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vDumpShm(void)
+void ActivityMap::vDumpMap(void)
 {
+  File* pActivityFile = new File();
+  bool bOpened = pActivityFile->bOpen("/tmp/ActivityMap.csv"_Stz,C_OPEN_WRITE);
+  RASSERT(bOpened);
+
+  vLockMutex();
   
+  for (i8 i_Mark = 0; i_Mark < m_nMarks; i_Mark++) {
+    ActivityMark* aActivityMark = &m_xActivity[i_Mark];
+    aActivityMark->vDump(pActivityFile);
+  }
+  
+  vUnlockMutex();
+  
+  pActivityFile->vClose();
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop ActivityMap mutex                                                        */
+/* grab ActivityMap mutex                                                     */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vDropMutex(void)
+void ActivityMap::vLockMutex(void)
 {
-  
+  i8 rCode = pthread_mutex_lock(&m_xMutex);
+  if (0 != rCode)
+    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
-/* grab ActivityMap mutex                                                        */
+/* drop ActivityMap mutex                                                     */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vGrabMutex(void)
+void ActivityMap::vUnlockMutex(void)
 {
-  
+  i8 rCode = pthread_mutex_unlock(&m_xMutex);
+  if (0 != rCode)
+    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get a new ActivityMap mark                                                    */
+/* get a new ActivityMap mark                                                 */
 /*----------------------------------------------------------------------------*/
 ActivityMark* ActivityMap::aNewActivityMark(void)
 {
-  vGrabMutex();
+  vLockMutex();
   
   ActivityMark* aActivityMark = &m_xActivity[m_nMarks];
   
   m_nMarks++;
   
-  vDropMutex();
+  vUnlockMutex();
 
   return aActivityMark;
 }

@@ -24,6 +24,7 @@ namespace Measurement
   
     void vInit(void);
     void vWrite(char* aMark);
+    void vDump(File* pFile);
 
     Footer* aFooter(void);
   };
