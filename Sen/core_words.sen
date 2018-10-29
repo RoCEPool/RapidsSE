@@ -9,8 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : >>am immediate
 
-  word::this word.name ,
+  // format the string to be printed
+  word::this word.name ">>%v" str.format
 
+  // encode push of that string
+  ,
+
+  // encode call to markEntry
   POSTPONE ActivityMap::markEntry
 ;
 
@@ -19,8 +24,13 @@
 /*----------------------------------------------------------------------------*/
 : <<am immediate
 
-  word::this word.name ,
+  // format the string to be printed
+  word::this word.name "<<%v" str.format
 
+  // encode push of that string
+  ,
+
+  // encode call to markExit
   POSTPONE ActivityMap::markExit
 ;
 
