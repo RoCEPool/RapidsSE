@@ -2,7 +2,7 @@
 -- insert-select MOXE->SE tests
 --------------------------------------------------------------------------------
 
-Loop 10 {
+Loop 3 {
   
 
 -- refresh metadata

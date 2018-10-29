@@ -37,8 +37,8 @@ JobClass xJobClass_EndInsert =
   vJob_EndInsert_post,    // prompt post-process function
   pJob_EndInsert_new,     // job new function
   vJob_EndInsert_delete,  // job delete function
-  nullptr,                // job pre-send function
-  nullptr,                // job post-receive function
+  vJob_send,              // job pre-send function
+  vJob_recv,              // job post-receive function
   vJob_EndInsert_show,    // job show function
   
   // help and example
