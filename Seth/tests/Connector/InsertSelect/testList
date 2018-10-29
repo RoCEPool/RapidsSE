@@ -1,4 +1,4 @@
-//insertSelect.test
-//insertSelectNulls.test
+insertSelect.test
+insertSelectNulls.test
 insertSelectMoxe.test
 insertSelectIntMoxe.test
