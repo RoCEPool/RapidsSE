@@ -17,7 +17,7 @@ rows:
   ('key')
 
 // load data into the table
-ld dataTable "../Seth/tests/partitionKey/data.csv";
+ld dataTable "/DATA/partitionKey/data.csv";
 success
 
 // select rows from the table

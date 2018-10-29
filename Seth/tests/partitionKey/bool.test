@@ -20,16 +20,16 @@ create index idx1 on boolTable (key1);
 success;
 
 // load data into the table
-ld boolTable "../Seth/tests/partitionKey/bool.csv";
+ld boolTable "/DATA/partitionKey/bool.csv";
 success
 
 // analyze table
 antbl boolTable;
 rows:
- ('NODE0',*,*,0)
- ('NODE0',*,*,5)
- ('NODE0',*,*,0)
- ('NODE0',*,*,5)
+ ('NODE1',*,*,0)
+ ('NODE1',*,*,5)
+ ('NODE1',*,*,0)
+ ('NODE1',*,*,5)
 
 // drop the table
 drop table boolTable;
