@@ -506,7 +506,10 @@ Thread* Queues::pGrabIdleThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  Thread* pThisThread = Thread::pThisTLSThread();
+  Thread* pThisThread = nullptr;
+  
+  if ( ! PosixThread::bIsJavaThread() )
+    pThisThread = Thread::pThisTLSThread();
   
   m_pThreadVector->vGrabLock();
 
