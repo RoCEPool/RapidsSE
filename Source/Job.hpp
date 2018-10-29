@@ -108,6 +108,7 @@ namespace JobsModel
     eSS  m_eSeed;           // task seed
     eJT  m_eJobTrace;       // job trace
     bool m_bNoWait;         // no wait
+    bool m_bMark;           // write activity marks?
 
     Tasks::Task* m_pExecutingTask;   // task executing the job
     Tasks::Task* m_pOriginatingTask; // originating task of the request
