@@ -19,15 +19,15 @@
 diclock.grabwrite
 
   createTenants
-  WT_OBJECT word.this word.type!
+  WT_OBJECT word::this word.type!
   sizeof_dic allot
-  word.this >body object.magic!
-  CN_DIC word.this >body object.class!
-  tick folder word.this word.kind!
-  word.this >body dic.init
-  true word.this >body object.wordbody!
+  word::this >body object.magic!
+  CN_DIC word::this >body object.class!
+  tick folder word::this word.kind!
+  word::this >body dic.init
+  true word::this >body object.wordbody!
 
-  //word.this word.name "  dic: %v" str.format .
+  //word::this word.name "  dic: %v" str.format .
 
 diclock.dropwrite
   does>
@@ -42,15 +42,15 @@ diclock.dropwrite
 diclock.grabwrite
 
   create
-  WT_OBJECT word.this word.type!
+  WT_OBJECT word::this word.type!
   sizeof_dic allot
-  word.this >body object.magic!
-  CN_DIC word.this >body object.class!
-  tick folder word.this word.kind!
-  word.this >body dic.init
-  true word.this >body object.wordbody!
+  word::this >body object.magic!
+  CN_DIC word::this >body object.class!
+  tick folder word::this word.kind!
+  word::this >body dic.init
+  true word::this >body object.wordbody!
 
-  //word.this word.name "  dic: %v" str.format .
+  //word::this word.name "  dic: %v" str.format .
 
 diclock.dropwrite
   does>
@@ -63,15 +63,15 @@ diclock.dropwrite
 diclock.grabwrite
 
   createPersistent
-  WT_OBJECT word.this word.type!
+  WT_OBJECT word::this word.type!
   sizeof_dic allot
-  word.this >body object.magic!
-  CN_DIC word.this >body object.class!
-  tick folder word.this word.kind!
-  word.this >body dic.init
-  true word.this >body object.wordbody!
+  word::this >body object.magic!
+  CN_DIC word::this >body object.class!
+  tick folder word::this word.kind!
+  word::this >body dic.init
+  true word::this >body object.wordbody!
 
-  //word.this word.name "  dic: %v" str.format .
+  //word::this word.name "  dic: %v" str.format .
 
 diclock.dropwrite
 
@@ -86,16 +86,16 @@ diclock.dropwrite
 diclock.grabwrite
 
   >create
-  WT_OBJECT word.this word.type!
+  WT_OBJECT word::this word.type!
   sizeof_dic allot
-  word.this >body object.magic!
-  CN_DIC word.this >body object.class!
-  tick folder word.this word.kind!
-  word.this >body dic.init
-  true word.this >body object.wordbody!
-  word.this
+  word::this >body object.magic!
+  CN_DIC word::this >body object.class!
+  tick folder word::this word.kind!
+  word::this >body dic.init
+  true word::this >body object.wordbody!
+  word::this
 
-  //word.this word.name "  :dic %v" str.format .
+  //word::this word.name "  :dic %v" str.format .
 
 diclock.dropwrite
   does>
@@ -108,16 +108,16 @@ diclock.dropwrite
 diclock.grabwrite
 
   >createPersistent
-  WT_OBJECT word.this word.type!
+  WT_OBJECT word::this word.type!
   sizeof_dic allot
-  word.this >body object.magic!
-  CN_DIC word.this >body object.class!
-  tick folder word.this word.kind!
-  word.this >body dic.init
-  true word.this >body object.wordbody!
-  word.this
+  word::this >body object.magic!
+  CN_DIC word::this >body object.class!
+  tick folder word::this word.kind!
+  word::this >body dic.init
+  true word::this >body object.wordbody!
+  word::this
 
-  //word.this word.name "  :dic %v" str.format .
+  //word::this word.name "  :dic %v" str.format .
 
 diclock.dropwrite
   does>

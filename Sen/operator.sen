@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 : operator immediate
 
-  tick opKind word.this word.kind!
+  tick opKind word::this word.kind!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -28,7 +28,7 @@
   create
 
   // push the name of the word
-  word.this word.name
+  word::this word.name
 
   // append the name of the word as a pushValue in the symbolic arg
   encodePushValue

@@ -5,6 +5,13 @@
 "-core.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* word entry mark                                                            */
+/*----------------------------------------------------------------------------*/
+: >>am immediate
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* unnamed trace point                                                        */
 /*----------------------------------------------------------------------------*/
 : tp immediate
@@ -381,7 +388,7 @@ true tick CASE word.immediate!
 : <<
   //1234
 
-  [ word.this encodePushValue ]
+  [ word::this encodePushValue ]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -550,7 +557,7 @@ tp: g
   encodePushValue
   //tick . compile,
 
-  word.this encodePushValue
+  word::this encodePushValue
   tick word.name compile,
   //tick . compile,
   tick performancepoint compile,

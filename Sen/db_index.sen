@@ -32,13 +32,13 @@
 : index:
 
   create
-  WT_OBJECT word.this word.type!
+  WT_OBJECT word::this word.type!
   sizeof_index allot
-  word.this >body object.magic!
-  CN_INDEX word.this >body object.class!
-  word.this >body index.init
-  true word.this >body object.wordbody!
-  tick index word.this word.kind!
+  word::this >body object.magic!
+  CN_INDEX word::this >body object.class!
+  word::this >body index.init
+  true word::this >body object.wordbody!
+  tick index word::this word.kind!
   does>
 ;
 
@@ -48,14 +48,14 @@
 : :index
 
   >create
-  WT_OBJECT word.this word.type!
+  WT_OBJECT word::this word.type!
   sizeof_index allot
-  word.this >body object.magic!
-  CN_INDEX word.this >body object.class!
-  word.this >body index.init
-  true word.this >body object.wordbody!
-  tick index word.this word.kind!
-  word.this
+  word::this >body object.magic!
+  CN_INDEX word::this >body object.class!
+  word::this >body index.init
+  true word::this >body object.wordbody!
+  tick index word::this word.kind!
+  word::this
   does>
 ;
 

@@ -15,6 +15,8 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Word(void)
 {
+  vAddStep("word::this"_Stz,      &Task::vWordThis);
+  
   vAddStep("allot"_Stz,           &Task::vAllot);
   vAddStep("cell"_Stz,            &Task::vCell);
   vAddStep(":"_Stz,               &Task::vColon);
@@ -53,7 +55,6 @@ void Step::vAddSteps_Word(void)
   vAddStep("word.kind!"_Stz,      &Task::vWordKindSet);
   vAddStep("word.name"_Stz,       &Task::vWordName);
   vAddStep("word.prev"_Stz,       &Task::vWordPrev);
-  vAddStep("word.this"_Stz,       &Task::vWordThis);
   vAddStep("word.type@"_Stz,      &Task::vWordTypeGet);
   vAddStep("word.type!"_Stz,      &Task::vWordTypeSet);
 }
@@ -1048,7 +1049,7 @@ void Task::vWordPrev(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.this -- push current word                                             */
+/* word::this -- push current word                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vWordThis(MP_Task mpTask)
 {
