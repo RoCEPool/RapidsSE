@@ -50,8 +50,8 @@
   INCLUDE 'insSelIntoSE2.test';
 
   //------------------------------------------------------------------------------
-  //LOG 'Selecting from SE2';
-  //INCLUDE 'selCountSE2.test';
+  LOG 'Selecting from SE2';
+  INCLUDE 'selCountSE2.test';
 
   //------------------------------------------------------------------------------
   LOG 'Dropping SE schema';
