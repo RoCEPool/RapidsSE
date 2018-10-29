@@ -7,5 +7,5 @@ indexEntry.test
 supplierEntry.test
 lineitemEntry.test
 //supplierEntryLoop.test
-//lineitemEntryLoop.test
-//indexEntryLoop.test
+lineitemEntryLoop.test
+indexEntryLoop.test
