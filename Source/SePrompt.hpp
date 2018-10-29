@@ -26,6 +26,8 @@ namespace Prompt
     bool     m_bTimed;     // command is being timed
     bool     m_bTraced;    // command is being traced
     bool     m_bNoWait;    // dont wait for command
+    bool     m_bMarked;    // mark the job
+    bool     m_bMarkAll;   // mark all jobs
 
     Job*     m_pJob;       // job
   
@@ -45,6 +47,7 @@ namespace Prompt
 
     // these are the prompt.xyz task primitives
     bool bBlankLine(void);
+    void vCheckMarked(void);
     void vCheckTimed(void);
     void vCheckTraced(void);
     void vCheckNoWait(void);
@@ -63,6 +66,7 @@ namespace Prompt
     void vPreJob(void);
     void vReportTime(void);
     Session* pSession(void);
+    void vSetJob(void);
     void vSpawnJob(void);
     TokenVec* pTknVec(void);
     void vUnlockMutex(void);

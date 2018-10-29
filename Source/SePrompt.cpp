@@ -61,9 +61,11 @@ SePrompt::SePrompt(void)
 
   // m_xTimer
   
-  m_bTimed  = false;
-  m_bTraced = false;
-  m_bNoWait = false;
+  m_bTimed   = false;
+  m_bTraced  = false;
+  m_bNoWait  = false;
+  m_bMarked  = false;
+  m_bMarkAll = false;
 
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -117,6 +119,7 @@ void SePrompt::vPromptLoop(void)
       continue;
     
     vCheckTimed();
+    vCheckMarked();
     vCheckTraced();
     vCheckNoWait();
 
@@ -139,6 +142,8 @@ void SePrompt::vPromptLoop(void)
       vDeleteJob();
       continue;
     }
+    
+    vSetJob();
         
     vLockMutex();
     
@@ -205,6 +210,24 @@ void SePrompt::vCheckTimed(void)
   vCutToken(0);
 
   m_xTimer.vStart();
+}
+
+/*----------------------------------------------------------------------------*/
+/* check for mark                                                             */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCheckMarked(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_bMarked = false;
+  
+  Token* pTkn0 = pTkn(0);
+  
+  if (! pTkn0->bSame("mark"_Stz))
+    return;
+  
+  m_bMarked = true;
+  vCutToken(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -403,7 +426,7 @@ void SePrompt::vPostJob(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* call pre-job function                                                     */
+/* call pre-job function                                                      */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vPreJob(void)
 {
@@ -414,9 +437,6 @@ void SePrompt::vPreJob(void)
   pCommandProcessor->vPreJob(m_pSession);
   
   m_pJob = pCommandProcessor->pJob();
-  
-  if (m_bTraced)
-    m_pJob->m_eJobTrace = JT_ALL;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -444,6 +464,20 @@ Session* SePrompt::pSession(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   return m_pSession;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set anything additional in the job                                         */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vSetJob(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (m_bTraced)
+    m_pJob->m_eJobTrace = JT_ALL;
+
+  if (m_bMarked)
+    m_pJob->m_bMark = true;
 }
 
 /*----------------------------------------------------------------------------*/
