@@ -45,11 +45,9 @@ void RapidsSE::vMainEntry(void)
 
   vOpenTraceFile();
   
-  vOpenActivityMap();
-
   if (gxArguments.m_bStart)
     vSetGlobals();
-  
+
   vCheckPort();
   
   //gpAttachMap->vPrintAttachMap();
@@ -637,6 +635,7 @@ void RapidsSE::vStartSystem(void)
   
   //--------------------------------------------------------------------------
   
+  vOpenActivityMap();
   vCallBoot();
   
   //--------------------------------------------------------------------------

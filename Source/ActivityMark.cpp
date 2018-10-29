@@ -46,11 +46,11 @@ void ActivityMark::operator delete(void* pDataAddress)
 ActivityMark::ActivityMark(void)
 : Object(CN_ACTIVITYMARK)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
   _checkInitialised_(CN_ACTIVITYMARK);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +58,7 @@ ActivityMark::ActivityMark(void)
 /*----------------------------------------------------------------------------*/
 ActivityMark::~ActivityMark(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +70,7 @@ ActivityMark::~ActivityMark(void)
 /*----------------------------------------------------------------------------*/
 void ActivityMark::vInit(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
   m_iTick = -1;
   m_aMark[0] = '\0';
@@ -81,7 +81,7 @@ void ActivityMark::vInit(void)
 /*----------------------------------------------------------------------------*/
 void ActivityMark::vWrite(char* aMark)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
   m_iTick = Synch::iTicks();
   
@@ -94,6 +94,8 @@ void ActivityMark::vWrite(char* aMark)
 /*----------------------------------------------------------------------------*/
 void ActivityMark::vDump(File* pFile)
 {
+  _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
+  
   pFile->vPrint("%lld,%s\n"_Stz,m_iTick,m_aMark);
 }
 

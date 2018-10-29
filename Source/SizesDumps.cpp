@@ -292,7 +292,7 @@ i8 giClassSize[]
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
   /* 20 */ sizeof(Accum),              // CN_ACCUM
   /* 21 */ sizeof(AccumVec),           // CN_ACCUMVEC
-  /*    */ 0,                          // CN_ACTIVITYMARK
+  /*    */ sizeof(ActivityMark),       // CN_ACTIVITYMARK
   /*    */ sizeof(ApiState),           // CN_APISTATE
   /* 22 */ sizeof(Arg),                // CN_ARG
   /* 23 */ sizeof(Arguments),          // CN_ARGUMENTS
