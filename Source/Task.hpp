@@ -225,6 +225,8 @@ namespace Tasks
     // activity map
     static void vActivityMapDump(MP_Task mpTask);
     static void vActivityMapMark(MP_Task mpTask);
+    static void vActivityMapMarkEntry(MP_Task mpTask);
+    static void vActivityMapMarkExit(MP_Task mpTask);
 
     // address
     static void vAddressEqual(MP_Task mpTask);
