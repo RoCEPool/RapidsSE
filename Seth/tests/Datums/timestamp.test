@@ -37,8 +37,8 @@ lsidxcol tspTbl tsp_idx2;
 rows:
 ('tsp_col7', 'TIMESTAMP', 0, 0, true, false)
 
-ld tspTbl "/rapids/Datums/timestamp.csv" ;
-success
+ld tspTbl "/DATA/Datums/timestamp.csv" ;
+failure contains: '27 invalid'
 
 // check no of rows
 fetch tspTbl;

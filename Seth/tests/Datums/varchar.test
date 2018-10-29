@@ -46,8 +46,8 @@ lsidxcol VchTbl vch_idx3;
 rows:
   ('vch_col5', 'VARCHAR', 64000, 0, true, false)
 
-ld VchTbl "/rapids/Datums/varchar.csv" enclosed_by_leading "'";
-success
+ld VchTbl "/DATA/Datums/varchar.csv" enclosed_by_leading "'";
+failure contains: '2 invalid'
 
 // check no of rows
 fetch VchTbl;

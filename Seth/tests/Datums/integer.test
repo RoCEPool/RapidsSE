@@ -34,8 +34,8 @@ lsidxcol IntTbl int_idx2;
 rows:
   ('int_col4', 'INTEGER', 19, 0, true, false)
 
-ld IntTbl "/rapids/Datums/integer.csv" ;
-success
+ld IntTbl "/DATA/Datums/integer.csv" ;
+failure contains: '16 invalid'
 
 // check no of rows
 fetch IntTbl;

@@ -22,7 +22,7 @@ success
 // create indexes
 create index bol_idx2 on bolTbl (bol_col8);
 success
-/*
+
 // check existence of index
 lsidx bolTbl;
 rows:
@@ -38,9 +38,9 @@ rows:
 lsidxcol bolTbl bol_idx2;
 rows:
   ('bol_col8', 'BOOLEAN', 0, 0, true, false)
-*/
+
 ld bolTbl "/DATA/Datums/boolean.csv" ;
-success
+failure contains: '19 invalid'
 
 // check no of rows
 fetch bolTbl;
