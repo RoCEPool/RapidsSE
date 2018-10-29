@@ -49,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex_exe ( Job_SizeIndex -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_SizeIndex |
   job::this locals| pJob_SizeIndex |
@@ -182,7 +182,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_sizeIndex |
 
@@ -201,7 +201,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_sizeIndex |
 
@@ -217,7 +217,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_sizeIndex |
 

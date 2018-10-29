@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 : connectCluster_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -113,7 +113,7 @@
 /*----------------------------------------------------------------------------*/
 : connectCluster_exe ( -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_ConnectCluster |
   job::this locals| pJob_ConnectCluster |
@@ -136,7 +136,7 @@
 /*----------------------------------------------------------------------------*/
 : connectCluster_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_status |
 
@@ -152,7 +152,7 @@
 /*----------------------------------------------------------------------------*/
 : connectCluster_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_status |
 
@@ -166,7 +166,7 @@
 /*----------------------------------------------------------------------------*/
 : connectCluster_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_status |
 

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : checkVerifyIndex ( "<tableNm>" "<indexNm>" -- true | errorCode false )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   params| sIndexNm sTableNm |
 
@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_exe ( Job_VerifyIndex )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_VerifyIndex |
   job::this locals| pJob_VerifyIndex |
@@ -182,7 +182,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_VerifyIndex |
 
@@ -201,7 +201,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_VerifyIndex |
 
@@ -217,7 +217,7 @@
 /*----------------------------------------------------------------------------*/
 : verifyIndex_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_VerifyIndex |
 

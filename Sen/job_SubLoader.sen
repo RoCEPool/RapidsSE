@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 : subLoader_run ( -- )
 
-  <SEED_RUN>
+  >>am <SEED_RUN>
 
   0 locals| pThisTask |
   0 locals| pJob_SubLoader |

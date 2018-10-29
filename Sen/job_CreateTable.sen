@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_req (  -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -104,7 +104,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_exe ( pJob_CreateTable -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_CreateTable |
   job::this locals| pJob_CreateTable |
@@ -205,7 +205,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_CreateTable |
 
@@ -228,7 +228,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_CreateTable |
 
@@ -247,7 +247,7 @@
 /*----------------------------------------------------------------------------*/
 : createTable_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_CreateTable |
 

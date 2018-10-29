@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 0 locals| pJob pTask bIsDetailed |
 
@@ -73,7 +73,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable_exe ( Job_AnalyzeTable -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_AnalyzeTable |
   job::this locals| pJob_AnalyzeTable |
@@ -168,7 +168,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_analyzeTable |
 
@@ -187,7 +187,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
  job::this locals| pJob_analyzeTable |
 
@@ -203,7 +203,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_analyzeTable |
 

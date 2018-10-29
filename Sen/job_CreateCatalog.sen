@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_req ( -- )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob_CreateCatalog pTask |
 
@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_exe ( pJob_CreateCatalog -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_CreateCatalog |
   job::this locals| pJob_CreateCatalog |
@@ -160,7 +160,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_createCatalog |
 
@@ -179,7 +179,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_createCatalog |
 
@@ -195,7 +195,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_createCatalog |
 

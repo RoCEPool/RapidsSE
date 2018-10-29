@@ -150,7 +150,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_req (  -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -176,7 +176,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_exe ( Job_CreateIndex -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_CreateIndex |
   job::this locals| pJob_CreateIndex |
@@ -262,7 +262,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_createIndex |
 
@@ -280,7 +280,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_createIndex |
 
@@ -296,7 +296,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_createIndex |
 

@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : status_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -42,7 +42,7 @@
 /*----------------------------------------------------------------------------*/
 : status_exe ( pJob_Status -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_Status |
   job::this locals| pJob_Status |
@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 : status_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_status |
 
@@ -92,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 : status_end ( -- )
 
- <SEED_END>
+ >>am <SEED_END>
 
  job::this locals| pJob_status |
 
@@ -106,7 +106,7 @@
 /*----------------------------------------------------------------------------*/
 : status_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_status |
 

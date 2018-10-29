@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema_exe ( pJob_DropSchema -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_DropSchema |
   job::this locals| pJob_DropSchema |
@@ -142,7 +142,7 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_dropSchema |
 
@@ -161,7 +161,7 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_dropSchema |
 
@@ -177,7 +177,7 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_dropSchema |
 

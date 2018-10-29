@@ -72,7 +72,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__Executed_rcv ( -- )
 
-  <SEED_RCV>
+  >>am <SEED_RCV>
 
   job::this locals| pJob__Executed |
   pJob__Executed job.id@ locals| iJobId |

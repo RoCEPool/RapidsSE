@@ -37,7 +37,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -70,7 +70,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_exe ( Job_SizeTable -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_SizeTable |
   job::this locals| pJob_SizeTable |
@@ -166,7 +166,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
  job::this locals| pJob_sizeTable |
 
@@ -184,7 +184,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_sizeTable |
 
@@ -200,7 +200,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_sizeTable |
 

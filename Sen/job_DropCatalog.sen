@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_exe ( pJob_DropCatalog -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_DropCatalog |
   job::this locals| pJob_DropCatalog |
@@ -142,7 +142,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_dropCatalog |
 
@@ -161,7 +161,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_dropCatalog |
 
@@ -177,7 +177,7 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_dropCatalog |
 

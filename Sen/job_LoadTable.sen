@@ -73,7 +73,7 @@
 /*----------------------------------------------------------------------------*/
 : LoadTable_req (  -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   job::this locals| pJob_LoadTable |
 
@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_exe ( -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   job::this locals| pJob_LoadTable |
 
@@ -197,7 +197,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_LoadTable |
 
@@ -215,7 +215,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_LoadTable |
 
@@ -231,7 +231,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_LoadTable |
 

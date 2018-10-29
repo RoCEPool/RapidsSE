@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 : UseSchema_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| sSchemaNm pJob_UseSchema pTask |
 

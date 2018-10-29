@@ -86,7 +86,7 @@
 /*----------------------------------------------------------------------------*/
 : LoadBuffer_kid ( -- )
 
-  <SEED_KID>
+  >>am <SEED_KID>
 
   job::this locals| pJob_LoadBuffer |
 
@@ -132,7 +132,7 @@
 /*----------------------------------------------------------------------------*/
 : loadBuffer_run (  -- )
 
-  <SEED_RUN>
+  >>am <SEED_RUN>
 
   job::this locals| pJob_LoadBuffer  |
 

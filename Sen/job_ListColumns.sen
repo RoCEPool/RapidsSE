@@ -54,7 +54,7 @@
 /*----------------------------------------------------------------------------*/
 : listColumns_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 0 0 locals| sTableNm iCount pJob_ListColumns pTask |
 

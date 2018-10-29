@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_exe ( pJob_WaitCluster -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_WaitCluster |
   job::this locals| pJob_WaitCluster |
@@ -62,7 +62,7 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_WaitCluster |
 
@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_WaitCluster |
 
@@ -92,7 +92,7 @@
 /*----------------------------------------------------------------------------*/
 : waitCluster_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_WaitCluster |
 

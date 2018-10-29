@@ -50,7 +50,7 @@
 /*----------------------------------------------------------------------------*/
 : connector_run ( -- )
 
-  <SEED_RUN>
+  >>am <SEED_RUN>
 
   assertStackDepthZero
 

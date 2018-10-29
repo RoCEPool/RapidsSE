@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_req ( -- )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob_CreateTenant pTask |
 
@@ -74,7 +74,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_exe ( pJob_CreateTenant -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_CreateTenant |
   job::this locals| pJob_CreateTenant |
@@ -155,7 +155,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_createTenant |
 
@@ -174,7 +174,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_createTenant |
 
@@ -190,7 +190,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_createTenant |
 

@@ -77,7 +77,7 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -116,7 +116,7 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_exe ( pJob_StartCluster -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_StartCluster |
   job::this locals| pJob_StartCluster |
@@ -139,7 +139,7 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_status |
 
@@ -155,7 +155,7 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_status |
 
@@ -169,7 +169,7 @@
 /*----------------------------------------------------------------------------*/
 : startCluster_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_status |
 

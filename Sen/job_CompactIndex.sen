@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_exe ( Job_CompactIndex -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_CompactIndex |
   job::this locals| pJob_CompactIndex |
@@ -173,7 +173,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_compactIndex |
 
@@ -192,7 +192,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_compactIndex |
 
@@ -208,7 +208,7 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_compactIndex |
 

@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 : listCatalogs_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob_ListCatalogs pTask |
 

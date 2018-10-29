@@ -78,7 +78,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_req ( -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -104,7 +104,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_exe ( Job_DropIndex -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_DropIndex |
   job::this locals| pJob_DropIndex |
@@ -206,7 +206,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_dropIndex |
 
@@ -225,7 +225,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_dropIndex |
 
@@ -241,7 +241,7 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_dropIndex |
 

@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
 : receiver_run ( -- )
 
-  <SEED_RUN>
+  >>am <SEED_RUN>
 
   // initialise
   receiver_init

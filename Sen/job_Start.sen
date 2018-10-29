@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : start_run ( -- <R> )
 
-  <SEED_RUN>
+  >>am <SEED_RUN>
 
   task::this           locals| pThisTask |
   pThisTask task.job@  locals| pThisJob  |

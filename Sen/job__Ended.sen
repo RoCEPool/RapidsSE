@@ -48,7 +48,7 @@
 /*----------------------------------------------------------------------------*/
 : Job__Ended_rcv ( -- )
 
-  <SEED_RCV>
+  >>am <SEED_RCV>
 
   job::this locals| pJob__Ended |
   pJob__Ended job.id@ locals| iJobId |

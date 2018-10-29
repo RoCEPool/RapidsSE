@@ -76,7 +76,7 @@
 /*----------------------------------------------------------------------------*/
 : endInsert_req (  -- <R> )
 
-  <SEED_REQ>
+  >>am <SEED_REQ>
 
   0 0 locals| pJob pTask |
 
@@ -99,7 +99,7 @@
 /*----------------------------------------------------------------------------*/
 : endInsert_exe ( Job_EndInsert -- )
 
-  <SEED_EXE>
+  >>am <SEED_EXE>
 
   //params| pJob_CreateTable |
   job::this locals| pJob_EndInsert |
@@ -170,7 +170,7 @@
 /*----------------------------------------------------------------------------*/
 : endInsert_beg ( -- )
 
-  <SEED_BEG>
+  >>am <SEED_BEG>
 
   job::this locals| pJob_EndInsert |
 
@@ -193,7 +193,7 @@
 /*----------------------------------------------------------------------------*/
 : endInsert_end ( -- )
 
-  <SEED_END>
+  >>am <SEED_END>
 
   job::this locals| pJob_EndInsert |
 
@@ -212,7 +212,7 @@
 /*----------------------------------------------------------------------------*/
 : endInsert_can ( -- )
 
-  <SEED_CAN>
+  >>am <SEED_CAN>
 
   job::this locals| pJob_EndInsert |
 
