@@ -3,7 +3,7 @@
 /*----------------------------------------------------------------------------*/
 
 // create the table
-create table PART (
+create table rapidsse.public.PART (
 p_partkey INTEGER NOT NULL,
 p_name VARCHAR(55),
 p_mfgr VARCHAR(25),
@@ -17,15 +17,15 @@ p_comment VARCHAR(23)
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load part' with file='../Seth/tests/Load/part_curlyBraces.csv', enclosed_by='{}',  terminator='\r\n', node='node1';
+escape connector se 'load rapidsse.public.part' with file='/DATA/Load/part_curlyBraces.csv', enclosed_by='{}',  terminator='\r\n', node='node1';
 success
 
-select * from part where p_type is null;
+select * from rapidsse.public.part where p_type is null;
 rows: 10
 
 CLEANUP {
   
-  drop table part;
+  drop table rapidsse.public.part;
   mute
 
   bye;

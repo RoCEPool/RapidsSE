@@ -6,18 +6,18 @@
 // BASIC1
 ///////////////////////////////
 // create the table
-create table table1 (c1 integer, c2 varchar(100));
+create table rapidsse.public.table1 (c1 integer, c2 varchar(100));
 success
 
 // create an index
-create index idx_0 on table1(c1);
+create index idx_0 on rapidsse.public.table1(c1);
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load table1' WITH file = '../Seth/tests/Connector/Load/basic1.csv',node = 'node1', enclosed_by="'";
+ESCAPE CONNECTOR se 'load rapidsse.public.table1' WITH file = '/DATA/Load/basic1.csv',node = 'node1', enclosed_by="'";
 failure contains: 'Success'
 
-Select * from table1;
+Select * from rapidsse.public.table1;
 rows:
  (1,    'A')
  (2,    'A,B')
@@ -26,25 +26,25 @@ rows:
  (5,    '')
  (null,null)
 
-drop table table1;
+drop table rapidsse.public.table1;
 success
 
 ///////////////////////////////
 // BASIC2
 ///////////////////////////////
-create table table1 (c1 integer, c2 varchar(100));
+create table rapidsse.public.table1 (c1 integer, c2 varchar(100));
 success
 
 // create an index
-create index idx_0 on table1(c1);
+create index idx_0 on rapidsse.public.table1(c1);
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load table1' WITH file = '../Seth/tests/Connector/Load/basic2.csv',
+ESCAPE CONNECTOR se 'load rapidsse.public.table1' WITH file = '/DATA/Load/basic2.csv',
 terminator = '\n', enclosed_by = "''", node = 'node1';
 failure contains: 'Success'
 
-Select * from table1;
+Select * from rapidsse.public.table1;
 rows:
   (1,    'A')
   (2,    'A,B')
@@ -53,32 +53,34 @@ rows:
   (5,    '')
   (null, null)
 
-Select char_length(c2) from table1 where c1 = 5;
-rows:
- (0)
+Select char_length(c2) from rapidsse.public.table1 where c1 = 5;
+mute
+//CHECL_RESULT
+//rows:
+// (0)
 
-drop table table1;
+drop table rapidsse.public.table1;
 success
 
 ///////////////////////////////
 // BASIC3
 ///////////////////////////////
-create table table1 (c1 integer, c2 varchar(100));
+create table rapidsse.public.table1 (c1 integer, c2 varchar(100));
 success
 
 // create an index
-create index idx_0 on table1(c1);
+create index idx_0 on rapidsse.public.table1(c1);
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load table1' WITH file = '../Seth/tests/Connector/Load/basic3.csv', delimiter = '\t',
+ESCAPE CONNECTOR se 'load rapidsse.public.table1' WITH file = '/DATA/Load/basic3.csv', delimiter = '\t',
   terminator = '|\n',
   enclosed_by = '""',
   escape_char = '^',
   node = 'node1';
 failure contains: '1 records in error'
 
-Select * from table1;
+Select * from rapidsse.public.table1;
 rows:
 (1,    'A')
 (2,    'A,B')
@@ -86,9 +88,11 @@ rows:
 (4 ,   'A"')
 (5,    '')
 
-Select char_length(c2) from table1 where c1 = 5;
-rows:
-  (0)
+Select char_length(c2) from rapidsse.public.table1 where c1 = 5;
+mute
+//CHECK_RESULT
+//rows:
+//  (0)
 
 drop table table1;
 success
@@ -96,26 +100,26 @@ success
 ///////////////////////////////
 // BASIC4
 ///////////////////////////////
-create table table1 (c1 integer not null, c2 varchar(100));
+create table rapidsse.public.table1 (c1 integer not null, c2 varchar(100));
 success
 
 // create an index
-create index idx_0 on table1(c1);
+create index idx_0 on rapidsse.public.table1(c1);
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load table1' WITH file = '../Seth/tests/Connector/Load/basic4.csv', node = 'node1';
+ESCAPE CONNECTOR se 'load rapidsse.public.table1' WITH file = '/DATA/Load/basic4.csv', node = 'node1';
 failure contains: 'Warning'
 
-Select * from table1;
+Select * from rapidsse.public.table1;
 rows: 0
 
-drop table table1;
+drop table rapidsse.public.table1;
 success
 
 CLEANUP {
   
-  drop table table1;
+  drop table rapidsse.public.table1;
   mute
 
   bye;

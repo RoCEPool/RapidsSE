@@ -1,0 +1,5 @@
+1,A,Should be A|
+2,A\|,Should be A <pipe>|
+3,A,Not terminated correctly
+4,A,This should show <pipe<\||
+

@@ -1,0 +1,4 @@
+{10001} ,{quick brown fox},       {valid: quoted field}
+{10002 },{quick brown\{\}fox},    {valid: quoted field}
+{10003 } ,{quick brown fox{,       {invalid: quoted field}
+{10004 ,{quick brown fox},        {invalid: missing closing brace on int field}

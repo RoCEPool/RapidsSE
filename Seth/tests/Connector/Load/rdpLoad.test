@@ -4,7 +4,7 @@
 
 // create the table
 
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -39,11 +39,11 @@ success
 ////////////////////////////////////////////////////////////////////////////////
 
 // load with missing tableName
-escape connector se 'load' with  file='../JTEST/rdp.csv', node='node1';
+escape connector se 'load' with  file='/DATA/Load/rdp.csv', node='node1';
 failure contains: 'No table name'
 
 // load data into the table with invalid table
-escape connector se 'load rdp2' with file='../JTEST/rdp.csv', node='node1';
+escape connector se 'load rdp2' with file='/DATA/Load/rdp.csv', node='node1';
 failure contains: 'no such table'
 
 
@@ -53,7 +53,7 @@ failure contains: 'no such table'
 ////////////////////////////////////////////////////////////////////////////////
 
 // load data into the table with invalid file
-escape connector se 'load rdp' with file='../JTEST/rdpX.csv', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdpX.csv', node='node1';
 failure contains: 'invalid file'
 
 // load with missing fileName
@@ -67,15 +67,15 @@ failure contains: 'No file name'
 ////////////////////////////////////////////////////////////////////////////////
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 43
 
 // drop the table
-drop table rdp;
+drop table rapidsse.public.rdp;
 success
 
 
@@ -86,7 +86,7 @@ success
 ////////////////////////////////////////////////////////////////////////////////
 
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -113,19 +113,19 @@ rdp_vch      VARCHAR(32)             // col 13
 success
 
 // create an index
-create index rdp_idx_0 on rdp(rdp_testno);
+create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', delimiter= 'xy', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', delimiter= 'xy', node='node1';
 failure contains: 'delimiter can only be'
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', delimiter= '\n', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', delimiter= '\n', node='node1';
 failure contains: 'delimiter can only be'
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', delimiter= '\r', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', delimiter= '\r', node='node1';
 failure contains: 'delimiter can only be'
 
 //-----------------------//
@@ -133,11 +133,11 @@ failure contains: 'delimiter can only be'
 //-----------------------//
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 43
 
 drop table rdp;
@@ -147,7 +147,7 @@ success
 // DELIMITER='|'         //
 //-----------------------//
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -174,15 +174,15 @@ rdp_vch      VARCHAR(32)             // col 13
 success
 
 // create an index
-create index rdp_idx_0 on rdp(rdp_testno);
+create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp_pipe.csv', delimiter= '|', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp_pipe.csv', delimiter= '|', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 40
 
 drop table rdp;
@@ -192,7 +192,7 @@ success
 // DELIMITER='\t'         //
 //-----------------------//
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -219,23 +219,23 @@ rdp_vch      VARCHAR(32)             // col 13
 success
 
 // create an index
-create index rdp_idx_0 on rdp(rdp_testno);
+create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp_delimiter_tab.csv', delimiter= '\t', enclosed_by="'", node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp_delimiter_tab.csv', delimiter= '\t', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 2
 
 // 1000 tests
-select * from rdp where rdp_testno = 1000;
+select * from rapidsse.public.rdp where rdp_testno = 1000;
 rows:
  (1000,'test 1000', false,false, 0,0, 0.0e0,0.0e0,  0,0, TIMESTAMP '1900-01-01 00:00:00.0',TIMESTAMP '1900-01-01 00:00:00.0', 'quick brown fox','quick brown fox')
 
-select * from rdp where rdp_testno = 1001;
+select * from rapidsse.public.rdp where rdp_testno = 1001;
 rows:
   (1001,'test 1001', false,null , 0,null, 0.0e0,null, 0,null,TIMESTAMP '1900-01-01 00:00:00.0' ,null, 'quick brown fox' ,null)
 
@@ -249,7 +249,7 @@ success
 ////////////////////////////////////////////////////////////////////////////////
 
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -276,15 +276,15 @@ rdp_vch      VARCHAR(32)             // col 13
 success
 
 // create an index
-create index rdp_idx_0 on rdp(rdp_testno);
+create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with incorrect enclosed by
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', enclosed_by= 'xyz', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', enclosed_by= 'xyz', node='node1';
 failure contains: 'enclosed_by can only be'
 
 // load data into the table with incorrect enclosed by
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', enclosed_by= '\nx', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', enclosed_by= '\nx', node='node1';
 failure contains: 'enclosed_by can only be'
 
 // load data into the table with incorrect enclosed by
@@ -296,11 +296,11 @@ failure contains: 'enclosed_by can only be'
 //-----------------------//
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp_enclosed_by_pipe.csv', enclosed_by='|', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp_enclosed_by_pipe.csv', enclosed_by='|', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 2
 
 drop table rdp;
@@ -312,7 +312,7 @@ success
 //-----------------------//
 
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -339,15 +339,15 @@ rdp_vch      VARCHAR(32)             // col 13
 success
 
 // create an index
-create index rdp_idx_0 on rdp(rdp_testno);
+create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp_enclosed_by_quote.csv', enclosed_by="'", node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp_enclosed_by_quote.csv', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 40
 
 drop table rdp;
@@ -359,7 +359,7 @@ success
 ////////////////////////////////////////////////////////////////////////////////
 
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -386,15 +386,15 @@ rdp_vch      VARCHAR(32)             // col 13
 success
 
 // create an index
-create index rdp_idx_0 on rdp(rdp_testno);
+create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with incorrect escape_char
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', escape_char= 'xy', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', escape_char= 'xy', node='node1';
 failure contains: 'escape_char can only be'
 
 // load data into the table with incorrect enclosed by
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', escape_char= '\n', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', escape_char= '\n', node='node1';
 failure contains: 'escape_char can only be'
 
 //-----------------------//
@@ -402,14 +402,14 @@ failure contains: 'escape_char can only be'
 //-----------------------//
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', escape_char='\', enclosed_by="'", node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', escape_char='\', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 43
 
-select * from rdp where rdp_testno = 2000;
+select * from rapidsse.public.rdp where rdp_testno = 2000;
 rows:
   (2000,'test 2000', false,false, 0,0 , 0.0e0,0.0e0 , 0,0   ,TIMESTAMP '1900-01-01 00:00:00.0',TIMESTAMP '1900-01-01 00:00:00.0','quick brown \yfox','quick brown fox')
 
@@ -422,7 +422,7 @@ success
 ////////////////////////////////////////////////////////////////////////////////
 
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -449,51 +449,51 @@ rdp_vch      VARCHAR(32)             // col 13
 success
 
 // create an index
-create index rdp_idx_0 on rdp(rdp_testno);
+create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator= 'xy', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= 'xy', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator= 'x', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= 'x', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator= 'xy\r\n', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= 'xy\r\n', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator= 'xy\r', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= 'xy\r', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator= 'xy\n', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= 'xy\n', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator= '\r\n\r', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\r\n\r', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator= '\r\r', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\r\r', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator= '\n\n', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\n\n', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator= '\r\nx', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\r\nx', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator= '\rx', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\rx', node='node1';
 failure contains: 'terminator can only be'
 
 // load data into the table with incorrect terminator
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator= '\nx', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator= '\nx', node='node1';
 failure contains: 'terminator can only be'
 
 //-----------------------//
@@ -501,14 +501,14 @@ failure contains: 'terminator can only be'
 //-----------------------//
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator='\n', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator='\n', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 43
 
-drop table rdp;
+drop table rapidsse.public.rdp;
 success
 
 
@@ -517,7 +517,7 @@ success
 //-----------------------//
 /*
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -548,11 +548,11 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator='\r', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator='\r', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 41
 
 drop table rdp;
@@ -564,7 +564,7 @@ success
 //-----------------------//
 
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -591,16 +591,16 @@ rdp_vch      VARCHAR(32)             // col 13
 success
 
 // create an index
-create index rdp_idx_0 on rdp(rdp_testno);
+create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
 
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator='\n', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator='\n', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 43
 
 drop table rdp;
@@ -612,7 +612,7 @@ success
 //-----------------------//
 
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -647,7 +647,7 @@ escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator=';\r\n',
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 41
 
 drop table rdp;
@@ -659,7 +659,7 @@ success
 //-----------------------//
 
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -686,28 +686,28 @@ rdp_vch      VARCHAR(32)             // col 13
 success
 
 // create an index
-create index rdp_idx_0 on rdp(rdp_testno);
+create index rdp_idx_0 on rapidsse.public.rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp_terminator.csv', terminator=';\n', node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp_terminator.csv', terminator=';\n', node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 40
-/*
+
 drop table rdp;
 success
 
-
+/*
 
 //-----------------------//
 // TERMINATOR  ;\r       //
 //-----------------------//
 
 // create table again
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -738,236 +738,235 @@ create index rdp_idx_0 on rdp(rdp_testno);
 success
 
 // load data into the table with default formatter settings
-escape connector se 'load rdp' with file='../JTEST/rdp.csv', terminator=';\r', enclosed_by="'", node='node1';
+escape connector se 'load rdp' with file='/DATA/Load/rdp.csv', terminator=';\r', enclosed_by="'", node='node1';
 failure contains: 'Success'
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 40
 
 
-select * from rdp where rdp_testno = 1010;
+select * from rapidsse.public.rdp where rdp_testno = 1010;
 rows:
   (1010,'test 1010', true,true, 1,1, 1.0e0,1.0e0, 1,1, TIMESTAMP '1901-01-01 00:00:00.0', TIMESTAMP '1901-01-01 01:01:01','quick brown fox' ,'quick brown fox''s')
 
-select * from rdp where rdp_testno = 1011;
+select * from rapidsse.public.rdp where rdp_testno = 1011;
 rows:
   (1011,'test 1011', true ,null ,-1,null, -1.0e0,null, -1,null, TIMESTAMP '1901-01-01 00:00:00.0',null , 'quick brown fox' ,null)
 
 
 
-select * from rdp where rdp_testno = 1020;
+select * from rapidsse.public.rdp where rdp_testno = 1020;
 rows:
   (1020,'test 1020', false,true , 2,2 , 2.0e0,2.0e0 , 2,2   ,TIMESTAMP '1902-01-01 00:00:00.0',TIMESTAMP '1902-02-02 02:02:02','quick brown fox' ,'quick brow
 n fox')
 
-select * from rdp where rdp_testno = 1021;
+select * from rapidsse.public.rdp where rdp_testno = 1021;
 rows:
   (1021,'test 1021', true,null ,-2,null,-2.0e0,null,-2,null, TIMESTAMP '1902-01-01 00:00:00.0',null, 'quick brown fox' ,null)
 
 
 
-select * from rdp where rdp_testno = 1030;
+select * from rapidsse.public.rdp where rdp_testno = 1030;
 rows:
   (1030,'test 1030', true,false, 3,3 , 3.0e0,3.0e0 , 3,3   ,TIMESTAMP '1903-01-01 00:00:00.0',TIMESTAMP '1903-03-03 03:03:03', 'quick brown fox' ,'quick brow\n fox')
 
-select * from rdp where rdp_testno = 1031;
+select * from rapidsse.public.rdp where rdp_testno = 1031;
 rows:
   (1031,'test 1031', true,null ,-3,null, -3.0e0,null, -3,null, TIMESTAMP '1903-01-01 00:00:00.0',null, 'quick brown fox' ,null)
 
 
 
-select * from rdp where rdp_testno = 1040;
+select * from rapidsse.public.rdp where rdp_testno = 1040;
 rows:
   (1040,'test 1040', false,true , 4,4 , 4.0e0,4.0e0, 4,4, TIMESTAMP '1904-01-01 00:00:00.0',TIMESTAMP '1904-04-04 04:04:04','quick brown fox' ,'quick brow\N fox')
 
-select * from rdp where rdp_testno = 1041 ;
+select * from rapidsse.public.rdp where rdp_testno = 1041 ;
 rows:
   (1041,'test 1041', false,null ,-4,null,-4.0,null,-4,null,TIMESTAMP '1904-01-01 00:00:00.0',null, 'quick brown fox' ,null)
 
 
 // ignore last column because of tab
-select * from rdp where rdp_testno = 1050 ;
+select * from rapidsse.public.rdp where rdp_testno = 1050 ;
 rows:
   (1050,'test 1050', true,true, 5,5, 5.0e0,5.0e0, 5,5 ,TIMESTAMP '1905-01-01 00:00:00.0',TIMESTAMP '1905-05-05 05:05:05', 'quick brown fox',*)
 
-select * from rdp where rdp_testno = 1051 ;
+select * from rapidsse.public.rdp where rdp_testno = 1051 ;
 rows:
   (1051,'test 1051', false,null ,-5,null, -5.0e0,null, -5,null, TIMESTAMP '1905-01-01 00:00:00.0',null, 'quick brown fox' ,null)
 
 
 
-select * from rdp where rdp_testno = 1060 ;
+select * from rapidsse.public.rdp where rdp_testno = 1060 ;
 rows:
   (1060,'test 1060', false,false, 6,6 , 6.0e0,6.0e0, 6,6, TIMESTAMP '1906-01-01 00:00:00.0',TIMESTAMP '1906-06-06 06:06:06', 'quick brown fox' ,'')
 
-select * from rdp where rdp_testno = 1061 ;
+select * from rapidsse.public.rdp where rdp_testno = 1061 ;
 rows:
   (1061,'test 1061', false,null, -6,null, -6.0e0,null, -6,null, TIMESTAMP '1906-01-01 00:00:00.0',null, 'quick brown fox' ,null)
 
 
 
-select * from rdp where rdp_testno = 1070 ;
+select * from rapidsse.public.rdp where rdp_testno = 1070 ;
 rows:
   (1070,'test 1070', true,true, 7,7, 7.0e0,7.0e0, 7,7, TIMESTAMP '1907-01-01 00:00:00.0',TIMESTAMP '1907-07-07 07:07:07', 'quick brown fox' ,'quick brown fox')
 
-select * from rdp where rdp_testno = 1071 ;
+select * from rapidsse.public.rdp where rdp_testno = 1071 ;
 rows:
   (1071,'test 1071', true,null, -7,null, -7.0e0,null, -7,null, TIMESTAMP '1907-01-01 00:00:00.0',null, 'quick brown fox',null)
 
 
-select * from rdp where rdp_testno = 1080 ;
+select * from rapidsse.public.rdp where rdp_testno = 1080 ;
 rows:
  (1080,'test 1080', false,true, 8,8, 8.0e0,8.0e0, 8,8, TIMESTAMP '1908-01-01 00:00:00.0',TIMESTAMP '1908-08-08 08:08:08', 'quick brown fox' ,'quick brown fox')
 
-select * from rdp where rdp_testno = 1081 ;
+select * from rapidsse.public.rdp where rdp_testno = 1081 ;
 rows:
   (1081,'test 1081', true,null, -8,null, -8.0e0,null, -8,null, TIMESTAMP '1908-01-01 00:00:00.0',null, 'quick brown fox',null)
 
 
 // ignore last column because of escape chars
-select * from rdp where rdp_testno =1090 ;
+select * from rapidsse.public.rdp where rdp_testno =1090 ;
 rows:
   (1090,'test 1090', false,true, 9,9, 9.0e0,9.0e0, 9,9  ,TIMESTAMP '1909-01-01 00:00:00.0',TIMESTAMP '1909-09-09 09:09:09', 'quick brown fox' ,*)
 
-select * from rdp where rdp_testno = 1091 ;
+select * from rapidsse.public.rdp where rdp_testno = 1091 ;
 rows:
   (1091,'test 1091', false,null, -9,null, -9.0e0,null, -9,null, TIMESTAMP '1909-01-01 00:00:00.0',null, 'quick brown fox' ,null)
 
 
 
-select * from rdp where rdp_testno = 2000 ;
+select * from rapidsse.public.rdp where rdp_testno = 2000 ;
 rows:
   (2000,'test 2000', false,false, 0,0, 0.0e0,0.0e0, 0,0, TIMESTAMP '1900-01-01 00:00:00.0',TIMESTAMP '1900-01-01 00:00:00.0', 'quick brown \yfox','quick brown fox')
 
-select * from rdp where rdp_testno = 2001 ;
+select * from rapidsse.public.rdp where rdp_testno = 2001 ;
 rows:
   (2001,'test 2001', false,null ,0,null, 0.0e0,null, 0,null, TIMESTAMP '1900-01-01 00:00:00.0',null, 'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2010 ;
+select * from rapidsse.public.rdp where rdp_testno = 2010 ;
 rows:
   (2010,'test 2010', true,true, 1,1, 1.0e0,1.0e0, 1,1, TIMESTAMP '1901-01-01 00:00:00.0',TIMESTAMP '1901-01-01 01:01:01', 'quick brown fox','quick brown fox''s')
 
-select * from rdp where rdp_testno = 2011 ;
+select * from rapidsse.public.rdp where rdp_testno = 2011 ;
 rows:
   (2011,'test 2011', true,null, -1,null, -1.0e0,null, -1,null, TIMESTAMP '1901-01-01 00:00:00.0',null, 'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2020 ;
+select * from rapidsse.public.rdp where rdp_testno = 2020 ;
 rows:
   (2020,'test 2020', false,true , 2,2 , 2.0,2.0 , 2,2   ,TIMESTAMP '1902-01-01 00:00:00.0',TIMESTAMP '1902-02-02 02:02:02','quick brown fox','quick brow
 n fox')
 
-select * from rdp where rdp_testno = 2021 ;
+select * from rapidsse.public.rdp where rdp_testno = 2021 ;
 rows:
   (2021,'test 2021', true,null, -2,null, -2.0e0,null, -2,null, TIMESTAMP '1902-01-01 00:00:00.0',null, 'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno =2030 ;
+select * from rapidsse.public.rdp where rdp_testno =2030 ;
 rows:
   (2030,'test 2030', true,false, 3,3 , 3.0e0,3.0e0, 3,3, TIMESTAMP '1903-01-01 00:00:00.0',TIMESTAMP '1903-03-03 03:03:03', 'quick brown fox','quick brow\n fox')
 
-select * from rdp where rdp_testno =2031 ;
+select * from rapidsse.public.rdp where rdp_testno =2031 ;
 rows:
   (2031,'test 2031', true,null, -3,null, -3.0e0,null, -3,null, TIMESTAMP '1903-01-01 00:00:00.0',null, 'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2040 ;
+select * from rapidsse.public.rdp where rdp_testno = 2040 ;
 rows:
 (2040,'test 2040', false,true , 4,4 , 4.0e0,4.0e0 , 4,4   ,TIMESTAMP '1904-01-01 00:00:00.0',TIMESTAMP '1904-04-04 04:04:04','quick brown fox','quick brow\N fox')
 
-select * from rdp where rdp_testno = 2041 ;
+select * from rapidsse.public.rdp where rdp_testno = 2041 ;
 rows:
 (2041,'test 2041', false,null ,-4,null,-4.0e0,null,-4,null,TIMESTAMP '1904-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 // ignore last column because of tab
-select * from rdp where rdp_testno = 2050 ;
+select * from rapidsse.public.rdp where rdp_testno = 2050 ;
 rows:
 (2050,'test 2050', true ,true , 5,5 , 5.0e0,5.0e0 , 5,5   ,TIMESTAMP '1905-01-01 00:00:00.0',TIMESTAMP '1905-05-05 05:05:05','quick brown fox',*)
 
-select * from rdp where rdp_testno = 2051 ;
+select * from rapidsse.public.rdp where rdp_testno = 2051 ;
 rows:
 (2051,'test 2051', false,null ,-5,null,-5.0e0,null,-5,null,TIMESTAMP '1905-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2060 ;
+select * from rapidsse.public.rdp where rdp_testno = 2060 ;
 rows:
   (2060,'test 2060', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00.0',TIMESTAMP '1906-06-06 06:06:06','quick brown fox',null)
 
-select * from rdp where rdp_testno = 2061 ;
+select * from rapidsse.public.rdp where rdp_testno = 2061 ;
 rows:
   (2061,'test 2061', false,null ,-6,null,-6.0e0,null,-6,null,TIMESTAMP '1906-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2070 ;
+select * from rapidsse.public.rdp where rdp_testno = 2070 ;
 rows:
 (2070,'test 2070', true ,true , 7,7 , 7.0e0,7.0e0 , 7,7   ,TIMESTAMP '1907-01-01 00:00:00.0',TIMESTAMP '1907-07-07 07:07:07','quick brown fox','quick brown fox')
 
-select * from rdp where rdp_testno = 2071 ;
+select * from rapidsse.public.rdp where rdp_testno = 2071 ;
 rows:
 (2071,'test 2071', true ,null ,-7,null,-7.0e0,null,-7,null,TIMESTAMP '1907-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2080 ;
+select * from rapidsse.public.rdp where rdp_testno = 2080 ;
 rows:
 (2080,'test 2080', false,true , 8,8 , 8.0e0,8.0e0 , 8,8   ,TIMESTAMP '1908-01-01 00:00:00.0',TIMESTAMP '1908-08-08 08:08:08','quick brown fox','quick brown fox')
 
-select * from rdp where rdp_testno = 2081 ;
+select * from rapidsse.public.rdp where rdp_testno = 2081 ;
 rows:
 (2081,'test 2081', true ,null ,-8,null,-8.0e0,null,-8,null,TIMESTAMP '1908-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 
 // ignore last column because of tab
-select * from rdp where rdp_testno = 2090 ;
+select * from rapidsse.public.rdp where rdp_testno = 2090 ;
 rows:
 (2090,'test 2090', false,true , 9,9 , 9.0e0,9.0e0 , 9,9   ,TIMESTAMP '1909-01-01 00:00:00.0',TIMESTAMP '1909-09-09 09:09:09','quick brown fox',*)
 
-select * from rdp where rdp_testno = 2091 ;
+select * from rapidsse.public.rdp where rdp_testno = 2091 ;
 rows:
 (2091,'test 2091', false,null ,-9,null,-9.0e0,null,-9,null,TIMESTAMP '1909-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 // seth giving errors with max values (?)
-// rdp not liking timestamp
-//select * from rdp where rdp_testno = 3000 ;
+// rapidsse.public.rdp not liking timestamp
+//select * from rapidsse.public.rdp where rdp_testno = 3000 ;
 //rows:
 // (3000,'test 3000', false,true, -9223372036854775807,9223372036854775807, -1.797693e+308,1.797693e+308, -9223372036854775807,9223372036854775807, TIMESTAMP '0001-01-01 00:00:00.0',TIMESTAMP '4000-01-01 12:59:59', 'quick brown fox','quick brown fox')
-*/
 
-select * from rdp where rdp_testno = 1010;
+select * from rapidsse.public.rdp where rdp_testno = 1010;
 rows:
 (1010,'''test 1010''', true,true, 1,1, 1.0e0,1.0e0, 1,1, TIMESTAMP '1901-01-01 00:00:00.0', TIMESTAMP '1901-01-01 01:01:01.0','''quick brown fox''' ,'''quick brown fox''s''')
 
-// export rdp data no table name
+// export rapidsse.public.rdp data no table name
 escape connector se 'export' with file='/tmp/rdp.csv' , enclosed_by="'", node='node1';
 failure contains: 'No table name'
 
-// export rdp data invalid table name
+// export rapidsse.public.rdp data invalid table name
 escape connector se 'export x' with file='/tmp/rdp.csv' , node='node1';
 failure contains: 'no such table'
 
-// export rdp data no file name
+// export rapidsse.public.rdp data no file name
 escape connector se 'export rdp' with node='node1';
 failure contains: 'No file name'
 
-// export rdp data
+// export rapidsse.public.rdp data
 escape connector se 'export rdp' with file='/tmp/rdp.csv' , node='node1';
 success
 
 drop table rdp;
 success
 
-create table RDP (
+create table rapidsse.public.rdp (
 
 rdp_testno   INTEGER       NOT NULL, // col 0
 rdp_comment  VARCHAR(64)   NOT NULL, // col 1
@@ -1003,216 +1002,216 @@ failure contains: 'Success'
 
 
 // unable to select 3000 because of min/max's
-select * from rdp where rdp_testno < 3000;
+select * from rapidsse.public.rdp where rdp_testno < 3000;
 rows: 40
 
 
 
 // 1000 tests
-select * from rdp where rdp_testno = 1000;
+select * from rapidsse.public.rdp where rdp_testno = 1000;
 rows:
 (1000,'''test 1000''', false,false, 0,0, 0.0e0,0.0e0,  0,0, TIMESTAMP '1900-01-01 00:00:00.0',TIMESTAMP '1900-01-01 00:00:00.0', '''quick brown fox''','''quick brown fox''')
 
-select * from rdp where rdp_testno = 1001;
+select * from rapidsse.public.rdp where rdp_testno = 1001;
 rows:
 (1001,'''test 1001''', false,null , 0,null, 0.0e0,null, 0,null,TIMESTAMP '1900-01-01 00:00:00.0' ,null, '''quick brown fox''' ,null)
 
 
 
-select * from rdp where rdp_testno = 1010;
+select * from rapidsse.public.rdp where rdp_testno = 1010;
 rows:
 (1010,'''test 1010''', true,true, 1,1, 1.0e0,1.0e0, 1,1, TIMESTAMP '1901-01-01 00:00:00.0', TIMESTAMP '1901-01-01 01:01:01.0','''quick brown fox''' ,'''quick brown fox''s''')
 
-select * from rdp where rdp_testno = 1011;
+select * from rapidsse.public.rdp where rdp_testno = 1011;
 rows:
 (1011,'''test 1011''', true ,null ,-1,null, -1.0e0,null, -1,null, TIMESTAMP '1901-01-01 00:00:00.0',null , '''quick brown fox''' ,null)
 
 
 
-select * from rdp where rdp_testno = 1020;
+select * from rapidsse.public.rdp where rdp_testno = 1020;
 rows:
 (1020,'''test 1020''', false,true , 2,2 , 2.0e0,2.0e0 , 2,2   ,TIMESTAMP '1902-01-01 00:00:00.0',TIMESTAMP '1902-02-02 02:02:02.0','''quick brown fox''' ,'''quick brow
 n fox''')
 
-select * from rdp where rdp_testno = 1021;
+select * from rapidsse.public.rdp where rdp_testno = 1021;
 rows:
 (1021,'''test 1021''', true,null ,-2,null,-2.0e0,null,-2,null, TIMESTAMP '1902-01-01 00:00:00.0',null, '''quick brown fox''' ,null)
 
 
 
-select * from rdp where rdp_testno = 1030;
+select * from rapidsse.public.rdp where rdp_testno = 1030;
 rows:
 (1030,'''test 1030''', true,false, 3,3 , 3.0e0,3.0e0 , 3,3   ,TIMESTAMP '1903-01-01 00:00:00.0',TIMESTAMP '1903-03-03 03:03:03.0', '''quick brown fox''' ,'''quick brow\n fox''')
 
-select * from rdp where rdp_testno = 1031;
+select * from rapidsse.public.rdp where rdp_testno = 1031;
 rows:
 (1031,'''test 1031''', true,null ,-3,null, -3.0e0,null, -3,null, TIMESTAMP '1903-01-01 00:00:00.0',null, '''quick brown fox''' ,null)
 
 
 
-select * from rdp where rdp_testno = 1040;
+select * from rapidsse.public.rdp where rdp_testno = 1040;
 rows:
 (1040,'''test 1040''', false,true , 4,4 , 4.0e0,4.0e0, 4,4, TIMESTAMP '1904-01-01 00:00:00.0',TIMESTAMP '1904-04-04 04:04:04.0','''quick brown fox''' ,'''quick browN fox''')
 
-select * from rdp where rdp_testno = 1041 ;
+select * from rapidsse.public.rdp where rdp_testno = 1041 ;
 rows:
 (1041,'''test 1041''', false,null ,-4,null,-4.0,null,-4,null,TIMESTAMP '1904-01-01 00:00:00.0',null, '''quick brown fox''' ,null)
 
 
 // ignore last column because of tab
-select * from rdp where rdp_testno = 1050 ;
+select * from rapidsse.public.rdp where rdp_testno = 1050 ;
 rows:
 (1050,'''test 1050''', true,true, 5,5, 5.0e0,5.0e0, 5,5 ,TIMESTAMP '1905-01-01 00:00:00.0',TIMESTAMP '1905-05-05 05:05:05', '''quick brown fox''',*)
 
-select * from rdp where rdp_testno = 1051 ;
+select * from rapidsse.public.rdp where rdp_testno = 1051 ;
 rows:
 (1051,'''test 1051''', false,null ,-5,null, -5.0e0,null, -5,null, TIMESTAMP '1905-01-01 00:00:00.0',null, '''quick brown fox''' ,null)
 
 
 
-select * from rdp where rdp_testno = 1060 ;
+select * from rapidsse.public.rdp where rdp_testno = 1060 ;
 rows:
 (1060,'''test 1060''', false,false, 6,6 , 6.0e0,6.0e0, 6,6, TIMESTAMP '1906-01-01 00:00:00.0',TIMESTAMP '1906-06-06 06:06:06.0', '''quick brown fox''' ,'''''')
 
-select * from rdp where rdp_testno = 1061 ;
+select * from rapidsse.public.rdp where rdp_testno = 1061 ;
 rows:
 (1061,'''test 1061''', false,null, -6,null, -6.0e0,null, -6,null, TIMESTAMP '1906-01-01 00:00:00.0',null, '''quick brown fox''' ,null)
 
 
 
-select * from rdp where rdp_testno = 1070 ;
+select * from rapidsse.public.rdp where rdp_testno = 1070 ;
 rows:
 (1070,'''test 1070''', true,true, 7,7, 7.0e0,7.0e0, 7,7, TIMESTAMP '1907-01-01 00:00:00.0',TIMESTAMP '1907-07-07 07:07:07.0', '''quick brown fox''' ,'''quick brown fox''')
 
-select * from rdp where rdp_testno = 1071 ;
+select * from rapidsse.public.rdp where rdp_testno = 1071 ;
 rows:
 (1071,'''test 1071''', true,null, -7,null, -7.0e0,null, -7,null, TIMESTAMP '1907-01-01 00:00:00.0',null, '''quick brown fox''',null)
 
 
-select * from rdp where rdp_testno = 1080 ;
+select * from rapidsse.public.rdp where rdp_testno = 1080 ;
 rows:
 (1080,'''test 1080''', false,true, 8,8, 8.0e0,8.0e0, 8,8, TIMESTAMP '1908-01-01 00:00:00.0',TIMESTAMP '1908-08-08 08:08:08.0', '''quick brown fox''' ,'''quick brown fox''')
 
-select * from rdp where rdp_testno = 1081 ;
+select * from rapidsse.public.rdp where rdp_testno = 1081 ;
 rows:
 (1081,'''test 1081''', true,null, -8,null, -8.0e0,null, -8,null, TIMESTAMP '1908-01-01 00:00:00.0',null, '''quick brown fox''','''N''')
 
 
 // ignore last column because of escape chars
-select * from rdp where rdp_testno =1090 ;
+select * from rapidsse.public.rdp where rdp_testno =1090 ;
 rows:
 (1090,'''test 1090''', false,true, 9,9, 9.0e0,9.0e0, 9,9  ,TIMESTAMP '1909-01-01 00:00:00.0',TIMESTAMP '1909-09-09 09:09:09.0', '''quick brown fox''' ,*)
 
-select * from rdp where rdp_testno = 1091 ;
+select * from rapidsse.public.rdp where rdp_testno = 1091 ;
 rows:
 (1091,'''test 1091''', false,null, -9,null, -9.0e0,null, -9,null, TIMESTAMP '1909-01-01 00:00:00.0',null, '''quick brown fox''' ,null)
 
 
 
-select * from rdp where rdp_testno = 2000 ;
+select * from rapidsse.public.rdp where rdp_testno = 2000 ;
 rows:
 (2000,'''test 2000''', false,false, 0,0, 0.0e0,0.0e0, 0,0, TIMESTAMP '1900-01-01 00:00:00.0',TIMESTAMP '1900-01-01 00:00:00.0', 'quick brown \yfox','quick brown fox')
 
-select * from rdp where rdp_testno = 2001 ;
+select * from rapidsse.public.rdp where rdp_testno = 2001 ;
 rows:
 (2001,'''test 2001''', false,null ,0,null, 0.0e0,null, 0,null, TIMESTAMP '1900-01-01 00:00:00.0',null, 'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2010 ;
+select * from rapidsse.public.rdp where rdp_testno = 2010 ;
 rows:
 (2010,'''test 2010''', true,true, 1,1, 1.0e0,1.0e0, 1,1, TIMESTAMP '1901-01-01 00:00:00.0',TIMESTAMP '1901-01-01 01:01:01.0', 'quick brown fox','quick brown fox''s')
 
-select * from rdp where rdp_testno = 2011 ;
+select * from rapidsse.public.rdp where rdp_testno = 2011 ;
 rows:
 (2011,'''test 2011''', true,null, -1,null, -1.0e0,null, -1,null, TIMESTAMP '1901-01-01 00:00:00.0',null, 'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2020 ;
+select * from rapidsse.public.rdp where rdp_testno = 2020 ;
 rows:
 (2020,'''test 2020''', false,true , 2,2 , 2.0,2.0 , 2,2   ,TIMESTAMP '1902-01-01 00:00:00.0',TIMESTAMP '1902-02-02 02:02:02.0','quick brown fox','quick brow
 n fox')
 
-select * from rdp where rdp_testno = 2021 ;
+select * from rapidsse.public.rdp where rdp_testno = 2021 ;
 rows:
 (2021,'''test 2021''', true,null, -2,null, -2.0e0,null, -2,null, TIMESTAMP '1902-01-01 00:00:00.0',null, 'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno =2030 ;
+select * from rapidsse.public.rdp where rdp_testno =2030 ;
 rows:
 (2030,'''test 2030''', true,false, 3,3 , 3.0e0,3.0e0, 3,3, TIMESTAMP '1903-01-01 00:00:00.0',TIMESTAMP '1903-03-03 03:03:03.0', 'quick brown fox','quick brow\n fox')
 
-select * from rdp where rdp_testno =2031 ;
+select * from rapidsse.public.rdp where rdp_testno =2031 ;
 rows:
 (2031,'''test 2031''', true,null, -3,null, -3.0e0,null, -3,null, TIMESTAMP '1903-01-01 00:00:00.0',null, 'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2040 ;
+select * from rapidsse.public.rdp where rdp_testno = 2040 ;
 rows:
 (2040,'''test 2040''', false,true , 4,4 , 4.0e0,4.0e0 , 4,4   ,TIMESTAMP '1904-01-01 00:00:00.0',TIMESTAMP '1904-04-04 04:04:04.0','quick brown fox','quick browN fox')
 
-select * from rdp where rdp_testno = 2041 ;
+select * from rapidsse.public.rdp where rdp_testno = 2041 ;
 rows:
 (2041,'''test 2041''', false,null ,-4,null,-4.0e0,null,-4,null,TIMESTAMP '1904-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 // ignore last column because of tab
-select * from rdp where rdp_testno = 2050 ;
+select * from rapidsse.public.rdp where rdp_testno = 2050 ;
 rows:
 (2050,'''test 2050''', true ,true , 5,5 , 5.0e0,5.0e0 , 5,5   ,TIMESTAMP '1905-01-01 00:00:00.0',TIMESTAMP '1905-05-05 05:05:05.0','quick brown fox',*)
 
-select * from rdp where rdp_testno = 2051 ;
+select * from rapidsse.public.rdp where rdp_testno = 2051 ;
 rows:
 (2051,'''test 2051''', false,null ,-5,null,-5.0e0,null,-5,null,TIMESTAMP '1905-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2060 ;
+select * from rapidsse.public.rdp where rdp_testno = 2060 ;
 rows:
 (2060,'''test 2060''', false,false, 6,6 , 6.0e0,6.0e0 , 6,6   ,TIMESTAMP '1906-01-01 00:00:00.0',TIMESTAMP '1906-06-06 06:06:06.0','quick brown fox','')
 
-select * from rdp where rdp_testno = 2061 ;
+select * from rapidsse.public.rdp where rdp_testno = 2061 ;
 rows:
 (2061,'''test 2061''', false,null ,-6,null,-6.0e0,null,-6,null,TIMESTAMP '1906-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2070 ;
+select * from rapidsse.public.rdp where rdp_testno = 2070 ;
 rows:
 (2070,'''test 2070''', true ,true , 7,7 , 7.0e0,7.0e0 , 7,7   ,TIMESTAMP '1907-01-01 00:00:00.0',TIMESTAMP '1907-07-07 07:07:07.0','quick brown fox','quick brown fox')
 
-select * from rdp where rdp_testno = 2071 ;
+select * from rapidsse.public.rdp where rdp_testno = 2071 ;
 rows:
 (2071,'''test 2071''', true ,null ,-7,null,-7.0e0,null,-7,null,TIMESTAMP '1907-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 
-select * from rdp where rdp_testno = 2080 ;
+select * from rapidsse.public.rdp where rdp_testno = 2080 ;
 rows:
 (2080,'''test 2080''', false,true , 8,8 , 8.0e0,8.0e0 , 8,8   ,TIMESTAMP '1908-01-01 00:00:00.0',TIMESTAMP '1908-08-08 08:08:08.0','quick brown fox','quick brown fox')
 
-select * from rdp where rdp_testno = 2081 ;
+select * from rapidsse.public.rdp where rdp_testno = 2081 ;
 rows:
 (2081,'''test 2081''', true ,null ,-8,null,-8.0e0,null,-8,null,TIMESTAMP '1908-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 
 // ignore last column because of tab
-select * from rdp where rdp_testno = 2090 ;
+select * from rapidsse.public.rdp where rdp_testno = 2090 ;
 rows:
 (2090,'''test 2090''', false,true , 9,9 , 9.0e0,9.0e0 , 9,9   ,TIMESTAMP '1909-01-01 00:00:00.0',TIMESTAMP '1909-09-09 09:09:09.0','quick brown fox',*)
 
-select * from rdp where rdp_testno = 2091 ;
+select * from rapidsse.public.rdp where rdp_testno = 2091 ;
 rows:
 (2091,'''test 2091''', false,null ,-9,null,-9.0e0,null,-9,null,TIMESTAMP '1909-01-01 00:00:00.0',null               ,'quick brown fox',null)
 
 
 // seth giving errors with max values (?)
-// rdp not liking timestamp
-//select * from rdp where rdp_testno = 3000 ;
+// rapidsse.public.rdp not liking timestamp
+//select * from rapidsse.public.rdp where rdp_testno = 3000 ;
 //rows:
 // (3000,'test 3000', false,true, -9223372036854775807,9223372036854775807, -1.797693e+308,1.797693e+308, -9223372036854775807,9223372036854775807, TIMESTAMP '0001-01-01 00:00:00.0',TIMESTAMP '4000-01-01 12:59:59', 'quick brown fox','quick brown fox')
 
@@ -1243,7 +1242,7 @@ rdp_vch      VARCHAR(32)             // col 13
 );
 success
 
-select * from rdp where rdp_testno = 1010;
+select * from rapidsse.public.rdp where rdp_testno = 1010;
 rows:
 (1010,'''test 1010''', true,true, 1,1, 1.0e0,1.0e0, 1,1, TIMESTAMP '1901-01-01 00:00:00.0', TIMESTAMP '1901-01-01 01:01:01.0','''quick brown fox''' ,'''quick brown fox''s''')
 
@@ -1468,18 +1467,18 @@ rows:
 
 
 // seth giving errors with max values (?)
-// rdp not liking timestamp
-//select * from rdp where rdp_testno = 3000 ;
+// rapidsse.public.rdp not liking timestamp
+//select * from rapidsse.public.rdp where rdp_testno = 3000 ;
 //rows:
 // (3000,'test 3000', false,true, -9223372036854775807,9223372036854775807, -1.797693e+308,1.797693e+308, -9223372036854775807,9223372036854775807, TIMESTAMP '0001-01-01 00:00:00.0',TIMESTAMP '4000-01-01 12:59:59', 'quick brown fox','quick brown fox')
 
-
+*/
 CLEANUP {
   
-  drop table rdp;
+  drop table rapidsse.public.rdp;
   mute
   
-  drop table rdp2;
+  drop table rapidsse.public.rdp2;
   mute
 
   bye;

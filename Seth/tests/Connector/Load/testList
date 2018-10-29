@@ -1,6 +1,7 @@
 basic.test
 enclosedBy.test
 enclosedByBraces.test
+//part_curlyBraces.test
 rdp.test
 rdpLoad.test
 regressionData.test
@@ -9,6 +10,7 @@ terminator_cr.test
 terminatorLarge_cr.test
 terminatorSmall_cr.test
 terminatorSmallNull_cr.test
+tsp_formatter.test
 vch_enclosedBy.test
 vch_enclosedByBraces.test
 vch_term_defaults.test

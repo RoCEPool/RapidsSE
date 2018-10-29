@@ -4,7 +4,7 @@
 
 // create the table
 
-create table terminator_cr (
+create table rapidsse.public.terminator_cr (
   c1 integer,
   c2 varchar,
   c3 varchar
@@ -12,28 +12,28 @@ create table terminator_cr (
 success
 
 // load data into the table with default formatter settings
-ESCAPE CONNECTOR se 'load terminator_cr' with file='../Seth/tests/Load/terminatorLarge_cr.csv' , terminator='\r', node='NODE1' ;
+ESCAPE CONNECTOR se 'load terminator_cr' with file='/DATA/Load/terminatorLarge_cr.csv' , terminator='\r', node='NODE1' ;
 failure contains: 'Success'
 
 // create index
-create index idx on terminator_cr(c1);
+create index idx on rapidsse.public.terminator_cr(c1);
 success
 
 // fetch
-select * from terminator_cr where c1 = 1;
+select * from rapidsse.public.terminator_cr where c1 = 1;
 rows:
   ( 1, 'This is terminatoed by <CR>');
 
 // fetch
-select * from terminator_cr ;
+select * from rapidsse.public.terminator_cr ;
 rows: 6895
 
-drop table terminator_cr;
+drop table rapidsse.public.terminator_cr;
 success
 
 CLEANUP {
   
-  drop table terminator_cr;
+  drop table rapidsse.public.terminator_cr;
   mute
 
   bye;
