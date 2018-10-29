@@ -13,7 +13,7 @@ success
 
 // load data into the table with default formatter settings
 ld terminator_cr "/DATA/Load/terminatorSmallNull_cr.csv" record_ends "\n";
-success
+failure contains: '1 invalid'
 
 // create index
 create index idx on terminator_cr(c1);

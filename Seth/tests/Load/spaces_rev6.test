@@ -14,7 +14,7 @@ create index idx on T1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-ld T1 "../Seth/tests/Load/spaces.csv" ;
+ld T1 "/DATA/Load/spaces.csv" ;
 success
 
 // fetch rows
@@ -44,7 +44,7 @@ create index idx on T1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-ld T1 "../Seth/tests/Load/spaces_enclosedBy.csv" enclosed_by_leading "'" ;
+ld T1 "/DATA/Load/spaces_enclosedBy.csv" enclosed_by_leading "'" ;
 success
 
 // fetch rows

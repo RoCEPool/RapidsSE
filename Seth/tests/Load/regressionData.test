@@ -299,10 +299,10 @@ success
 ld CUSTOMERH "/DATA/Load/customer.csv" ;
 success
 
-ld PARTSUPP "/DATA/Load/Load/partsupp.csv" ;
+ld PARTSUPP "/DATA/Load/partsupp.csv" record_ends "\r\n";
 success
 
-ld PART "/DATA/Load/Load/part.csv" ;
+ld PART "/DATA/Load/part.csv" ;
 success
 
 ld SHIPPING "/DATA/Load/shipping.csv" ;
@@ -317,7 +317,7 @@ success
 ld MANUFACTURER "/DATA/Load/manufacturer.csv";
 success
 
-ld NATION "/DATA/Load/nation.csv";
+ld NATION "/DATA/Load/nation.csv" record_ends "\r\n";;
 success
 
 ld REGION "/DATA/Load/region.csv" ;
@@ -336,23 +336,24 @@ success
 //fetch limitRow;
 //rows: 0
 
-ld limitRow "/DATA/Load/largeRow2.tbl";
-success
+ld limitRow "/DATA/Load/largeRow2.csv";
+failure contains: '1 invalid'
 
 fetch limitRow;
 rows: 0
 
-ld limitRow "/DATA/Load/largeRow3.tbl";
+ld limitRow "/DATA/Load/largeRow3.csv";
+failure contains: '1 invalid'
 
 fetch limitRow;
 rows: 0
 
-ld limitRow "/DATA/Load/15KRow.tbl";
+ld limitRow "/DATA/Load/15KRow.csv";
 
 fetch limitRow;
 rows: 1
 
-ld limitRow "/DATA/Load/16KRow.tbl";
+ld limitRow "/DATA/Load/16KRow.csv";
 
 fetch limitRow;
 rows: 2

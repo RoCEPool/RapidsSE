@@ -15,7 +15,7 @@ success
 
 // load T1 with deafult enclosedBy
 ld T1 "/DATA/Load/emptyString1.csv" ;
-failure contains: '5 invalid'
+success
 
 // fetch rows
 fetch T1;
