@@ -44,10 +44,10 @@ void RapidsSE::vMainEntry(void)
   vOpenPool();
 
   vOpenTraceFile();
-
+  
   if (gxArguments.m_bStart)
     vSetGlobals();
-  
+
   vCheckPort();
   
   //gpAttachMap->vPrintAttachMap();
@@ -287,6 +287,15 @@ void RapidsSE::vKillPrev(void)
     
     Region::vUnlink(sRegionName);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* create or open the ActivityMap                                             */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vOpenActivityMap(void)
+{
+  //new ActivityMap;
+  //ActivityMap::vMark("ActivityMap opened"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -627,6 +636,7 @@ void RapidsSE::vStartSystem(void)
   
   //--------------------------------------------------------------------------
   
+  vOpenActivityMap();
   vCallBoot();
   
   //--------------------------------------------------------------------------

@@ -16,7 +16,7 @@ using namespace Measurement;
 //-----------------------------------------------------------------------------
 
 #include "ActivityMark.hpp"
-#include "Activity.hpp"
+#include "ActivityMap.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

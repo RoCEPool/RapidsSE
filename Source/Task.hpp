@@ -222,6 +222,9 @@ namespace Tasks
     static void vAccumSumFetch(MP_Task mpTask);
     static void vAccumSumStore(MP_Task mpTask);
   
+    // activity map
+    static void vActivityMapDump(MP_Task mpTask);
+  
     // address
     static void vAddressEqual(MP_Task mpTask);
     static void vAddressFetch(MP_Task mpTask);

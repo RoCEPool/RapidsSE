@@ -15,6 +15,7 @@ namespace Tasks
 
     static void vAddSteps_AccessPath(void);
     static void vAddSteps_Accum(void);
+    static void vAddSteps_ActivityMap(void);
     static void vAddSteps_Address(void);
     static void vAddSteps_Args(void);
     static void vAddSteps_Assert(void);

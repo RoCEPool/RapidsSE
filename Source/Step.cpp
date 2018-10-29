@@ -19,6 +19,7 @@ void Step::vAddSteps(void)
 {
   Step::vAddSteps_AccessPath();
   Step::vAddSteps_Accum();
+  Step::vAddSteps_ActivityMap();
   Step::vAddSteps_Address();
   Step::vAddSteps_Args();
   Step::vAddSteps_Assert();

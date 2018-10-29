@@ -31,6 +31,7 @@ namespace StorageEngine
     static void vErrorHandler(Error* pError);
     static void vKillPrev(void);
     static void vMainEntry(void);
+    static void vOpenActivityMap(void);
     static void vOpenPool(void);
     static bool bOpenPool(StrVal& sPoolName);
     static void vOpenTraceFile(void);
