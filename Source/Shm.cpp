@@ -146,7 +146,8 @@ bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* map a new an anonymous region of memory (private or shared)                */
 /*----------------------------------------------------------------------------*/
-void* Shm::pMap(int iFd, void* aAddress, i8 iBytes, bool bShared, bool bHugeTlb, SysCall& SysCall)
+void* Shm::aMap(int iFd, void* aAddress, i8 iBytes, bool bShared,
+                bool bHugeTlb, SysCall& SysCall)
 {
   SysCall.vClear();
   

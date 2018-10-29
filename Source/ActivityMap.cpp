@@ -51,7 +51,7 @@ bool ActivityMap::bCreateNewShm(void)
   }
 
   // allocate memory for the shm region
-  void* aAddr = Shm::pMap(iFD,
+  void* aAddr = Shm::aMap(iFD,
                           nullptr,
                           sizeof(ActivityMap),
                           true,
@@ -88,7 +88,7 @@ bool ActivityMap::bOpenExistingShm(void)
   }
 
   // allocate memory for the shm region
-  void* aAddr = Shm::pMap(iFD,
+  void* aAddr = Shm::aMap(iFD,
                           nullptr,
                           sizeof(ActivityMap),
                           true,

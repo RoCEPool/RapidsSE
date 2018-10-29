@@ -97,7 +97,7 @@ void ShmUtility::vAttach(void)
   }
   
   // allocate an extent of memory
-  maRegion = Shm::pMap(iFD,
+  maRegion = Shm::aMap(iFD,
                        maRegionAddress,
                        miRegionSize,
                        C_SHARED_REGION,
@@ -139,7 +139,7 @@ void ShmUtility::vCreate(void)
   }
   
   // allocate memory for the shm region
-  maRegion = Shm::pMap(iFD,
+  maRegion = Shm::aMap(iFD,
                        maRegionAddress,
                        miRegionSize,
                        true,
