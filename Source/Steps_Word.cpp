@@ -137,7 +137,9 @@ void Task::vComma(MP_Task mpTask)
     THROW_INVALID_DSTACK("comma"_Stz);
   
   pCurrentWord->vEncode("pushValue"_Stz,&xValWrk);
-  pCurrentWord->vEncode("exit"_Stz);
+  
+  // I replaced this with POSTPONE exit where needed -ray
+  //pCurrentWord->vEncode("exit"_Stz);
   
   EXIT();
 }
