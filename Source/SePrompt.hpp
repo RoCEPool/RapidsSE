@@ -61,6 +61,8 @@ namespace Prompt
     bool bFindJobClass(void);
     void vGetCommand(void);
     void vLockMutex(void);
+    bool bMarkAll(void);
+    void vMarkAll(bool bMarkAll);
     bool bNoWait(void);
     void vPostJob(void);
     void vPreJob(void);
