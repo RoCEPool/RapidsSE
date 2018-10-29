@@ -34,7 +34,7 @@ lsidxcol IntTbl int_idx2;
 rows:
   ('int_col4', 'INTEGER', 19, 0, true, false)
 
-ld IntTbl "../Seth/tests/Datums/integer.csv" ;
+ld IntTbl "/rapids/Datums/integer.csv" ;
 success
 
 // check no of rows

@@ -37,7 +37,7 @@ lsidxcol tspTbl tsp_idx2;
 rows:
 ('tsp_col7', 'TIMESTAMP', 0, 0, true, false)
 
-ld tspTbl "../Seth/tests/Datums/timestamp.csv" ;
+ld tspTbl "/rapids/Datums/timestamp.csv" ;
 success
 
 // check no of rows

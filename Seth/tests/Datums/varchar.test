@@ -46,7 +46,7 @@ lsidxcol VchTbl vch_idx3;
 rows:
   ('vch_col5', 'VARCHAR', 64000, 0, true, false)
 
-ld VchTbl "../Seth/tests/Datums/varchar.csv" enclosed_by_leading "'";
+ld VchTbl "/rapids/Datums/varchar.csv" enclosed_by_leading "'";
 success
 
 // check no of rows

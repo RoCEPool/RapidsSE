@@ -35,7 +35,7 @@ lsidxcol fltTbl flt_idx2;
 rows:
 ('flt_col6', 'FLOAT', 19, 0, true, false)
 
-ld fltTbl "../Seth/tests/Datums/float.csv" ;
+ld fltTbl "/rapids/Datums/float.csv" ;
 success
 
 // check no of rows

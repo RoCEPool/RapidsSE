@@ -38,7 +38,7 @@ lsidxcol decTbl dec_idx2;
 rows:
 ('dec_col6', 'DECIMAL',19, 0, true, false)
 
-ld decTbl "../Seth/tests/Datums/decimal.csv" ;
+ld decTbl "/rapids/Datums/decimal.csv" ;
 success
 
 // check no of rows
