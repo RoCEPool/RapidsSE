@@ -25,26 +25,24 @@ namespace Measurement
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  private:
     static bool bClose(void);
     static bool bCreate(void);
     static bool bOpen(void);
   
-    static void vMark(void);
+  public:
+    static void vMark(Stz* aFormat, ...);
     static void vDump(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    bool bCloseShm(void);
-    bool bCreateShm(void);
-    bool bOpenShm(void);
-  
-    void vMarkShm(void);
+    void vMarkShm(Stz* aFormat, va_list xArgs);
     void vDumpShm(void);
 
     void vDropMutex(void);
     void vGrabMutex(void);
   
-    ActivityMark* aNewMark(void);
+    ActivityMark* aNewActivityMark(void);
   };
   
 }

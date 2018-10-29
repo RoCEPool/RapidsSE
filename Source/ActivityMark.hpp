@@ -8,6 +8,8 @@ namespace Measurement
   class ActivityMark : public Object
   {
   private:
+    i8   m_iTick;
+    char m_aMark[128];
   
     // must be last
     Footer m_xFooter;
@@ -20,6 +22,9 @@ namespace Measurement
     ActivityMark(void);
     ~ActivityMark(void);
   
+    void vInit(void);
+    void vWrite(char* aMark);
+
     Footer* aFooter(void);
   };
   
