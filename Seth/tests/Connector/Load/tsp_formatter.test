@@ -170,16 +170,16 @@ rows:
 select * from tsp where tsp_key = 26;
 rows:
   (26, TIMESTAMP '2016-07-08 16:09:10.123456')
-
-drop table tsp;
-success
 */
+drop table rapidsse.public.tsp;
+success
+
 
 //------------------------------------------------------------------------------
 // load data into the table with default formatter settings
 
 // create the tables
-create table tsp (
+create table rapidsse.public.tsp (
   tsp_key    INTEGER     NOT NULL,
   tsp_tsp    TIMESTAMP   NOT NULL
 );
