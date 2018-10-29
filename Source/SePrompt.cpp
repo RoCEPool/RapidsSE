@@ -496,7 +496,7 @@ void SePrompt::vSetJob(void)
   if (m_bTraced)
     m_pJob->m_eJobTrace = JT_ALL;
 
-  if (m_bMarked)
+  if (m_bMarked || m_bMarkAll)
     m_pJob->m_bMark = true;
 }
 
