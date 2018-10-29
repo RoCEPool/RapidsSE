@@ -9,6 +9,7 @@ namespace Measurement
   {
   private:
     i8   m_iTick;
+    char m_aNode[32];
     char m_aMark[128];
   
     // must be last
