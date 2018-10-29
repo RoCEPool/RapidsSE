@@ -58,7 +58,8 @@ void Task::vActivityMapMarkEntry(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("activityMap::markEntry"_Stz);
   
-  ActivityMap::vMark(sWordNm);
+  if (mpTask->m_pJob->m_bMark)
+    ActivityMap::vMark(sWordNm);
   
   EXIT();
 }
@@ -75,7 +76,8 @@ void Task::vActivityMapMarkExit(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sWordNm) )
     THROW_INVALID_DSTACK("activityMap::markExit"_Stz);
   
-  ActivityMap::vMark(sWordNm);
+  if (mpTask->m_pJob->m_bMark)
+    ActivityMap::vMark(sWordNm);
   
   EXIT();
 }

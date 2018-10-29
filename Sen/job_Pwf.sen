@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : pwf_req ( -- <R> )
 
-  <SEED_REQ>
-  ">>pwf_req" activityMap::mark
+  >>am <SEED_REQ>
+  //">>pwf_req" activityMap::mark
 
   100 apiState::setPosition
 
@@ -59,8 +59,8 @@
 
   900 apiState::setPosition
 
-  "<<pwf_req" activityMap::mark
-  <DONE_REQ>
+  //"<<pwf_req" activityMap::mark
+  <<am <DONE_REQ>
 ;
 
 /*============================================================================*/
