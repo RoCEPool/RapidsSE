@@ -19,7 +19,7 @@ create table T1 (
 success
 
 // load data into the table with enclosed_by as 3 characters
-ld T1 "../JTEST/enclosedByBraces.csv" enclosed_by_leading "{" enclosed_by_trailing "}";
+ld T1 "/DATA/Load/enclosedByBraces.csv" enclosed_by_leading "{" enclosed_by_trailing "}";
 success
 
 fetch T1;

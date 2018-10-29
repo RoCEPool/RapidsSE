@@ -14,8 +14,8 @@ create index idx on T1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-ld T1 "../JTEST/emptyString1.csv" ;
-success
+ld T1 "/DATA/Load/emptyString1.csv" ;
+failure contains: '5 invalid'
 
 // fetch rows
 fetch T1;
@@ -45,7 +45,7 @@ create index idx on T1 (col_id);
 success
 
 // load table T1 with enclosed_by_leading '
-ld T1 "../JTEST/emptyString1.csv" enclosed_by_leading "'";
+ld T1 "/DATA/Load/emptyString1.csv" enclosed_by_leading "'";
 success
 
 // fetch rows
@@ -76,7 +76,7 @@ create index idx on T1 (col_id);
 success
 
 // load table T1 with enclosed_by_leading '
-ld T1 "../JTEST/emptyString2.csv" enclosed_by_leading "{" enclosed_by_trailing "}";
+ld T1 "/DATA/Load/emptyString2.csv" enclosed_by_leading "{" enclosed_by_trailing "}";
 success
 
 // fetch rows

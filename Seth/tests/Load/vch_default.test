@@ -15,7 +15,7 @@ create index idx on vch (vch_testno);
 success
 
 // load data into the table with default formatter settings
-ld vch "../JTEST/vch_no_enclosed.csv" ;
+ld vch "/DATA/Load/vch_no_enclosed.csv" ;
 success
 
 fetch vch;
@@ -107,7 +107,7 @@ create index idx on vch (vch_testno);
 success
 
 // load data into the table with \0 as enclosed_by_leading
-ld vch "../JTEST/vch_no_enclosed.csv" enclosed_by_leading "\0";
+ld vch "/DATA/Load/vch_no_enclosed.csv" enclosed_by_leading "\0";
 success
 
 fetch vch;

@@ -74,7 +74,7 @@ create index idx on T1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-ld T1 "../Seth/tests/Load/spaces_enclosedByCurly.csv" enclosed_by_leading "{" enclosed_by_trailing "}";
+ld T1 "/DATA/Load/spaces_enclosedByCurly.csv" enclosed_by_leading "{" enclosed_by_trailing "}";
 success
 
 // fetch rows

@@ -18,7 +18,7 @@ success
 
 create index idx on part (p_type);
 
-ld part "../Seth/tests/Load/part_curlyBraces.csv" enclosed_by_leading "{" enclosed_by_trailing "}" record_ends "\n";
+ld part "/DATA/Load/part_curlyBraces.csv" enclosed_by_leading "{" enclosed_by_trailing "}" record_ends "\n";
 success
 
 fetch part;

@@ -263,67 +263,67 @@ create table RETURNS (
 success
 
 // load data into the tables
-ld TABLE1 "../Seth/tests/Load/tbl1data.csv" ;
+ld TABLE1 "/DATA/Load/tbl1data.csv" ;
 success
 
-ld TABLE2 "../Seth/tests/Load/tbl2data.csv" ;
+ld TABLE2 "/DATA/Load/tbl2data.csv" ;
 success
 
-ld TABLE3 "../Seth/tests/Load/tbl3data.csv" ;
+ld TABLE3 "/DATA/Load/tbl3data.csv" ;
 success
 
-ld TABLE4 "../Seth/tests/Load/tbl4data.csv" ;
+ld TABLE4 "/DATA/Load/tbl4data.csv" ;
 success
 
-ld TABLE5 "../Seth/tests/Load/tbl5data.csv" ;
+ld TABLE5 "/DATA/Load/tbl5data.csv" ;
 success
 
-ld TABLE6 "../Seth/tests/Load/tbl6data.csv" ;
+ld TABLE6 "/DATA/Load/tbl6data.csv" ;
 success
 
-ld TABLE7 "../Seth/tests/Load/tbl7data.csv" ;
+ld TABLE7 "/DATA/Load/tbl7data.csv" ;
 success
 
-ld TABLE8 "../Seth/tests/Load/tbl8data.csv" ;
+ld TABLE8 "/DATA/Load/tbl8data.csv" ;
 success
 
-ld TABLE9 "../Seth/tests/Load/tbl9data.csv" ;
+ld TABLE9 "/DATA/Load/tbl9data.csv" ;
 success
 
-ld ORDERS "../Seth/tests/Load/orders.csv" ;
+ld ORDERS "/DATA/Load/orders.csv" ;
 success
 
-ld LINEITEM "../Seth/tests/Load/lineitem.csv" ;
+ld LINEITEM "/DATA/Load/lineitem.csv" ;
 success
 
-ld CUSTOMERH "../Seth/tests/Load/customer.csv" ;
+ld CUSTOMERH "/DATA/Load/customer.csv" ;
 success
 
-ld PARTSUPP "../Seth/tests/Load/partsupp.csv" ;
+ld PARTSUPP "/DATA/Load/Load/partsupp.csv" ;
 success
 
-ld PART "../Seth/tests/Load/part.csv" ;
+ld PART "/DATA/Load/Load/part.csv" ;
 success
 
-ld SHIPPING "../Seth/tests/Load/shipping.csv" ;
+ld SHIPPING "/DATA/Load/shipping.csv" ;
 success
 
-ld SHIPADDRESS "../Seth/tests/Load/shipaddr.csv" ;
+ld SHIPADDRESS "/DATA/Load/shipaddr.csv" ;
 success
 
-ld SUPPLIER "../Seth/tests/Load/supplier.csv" ;
+ld SUPPLIER "/DATA/Load/supplier.csv" ;
 success
 
-ld MANUFACTURER "../Seth/tests/Load/manufacturer.csv";
+ld MANUFACTURER "/DATA/Load/manufacturer.csv";
 success
 
-ld NATION "../Seth/tests/Load/nation.csv";
+ld NATION "/DATA/Load/nation.csv";
 success
 
-ld REGION "../Seth/tests/Load/region.csv" ;
+ld REGION "/DATA/Load/region.csv" ;
 success
 
-ld RETURNS "../Seth/tests/Load/returns.csv";
+ld RETURNS "/DATA/Load/returns.csv";
 success
 
 // tests row limits
@@ -336,23 +336,23 @@ success
 //fetch limitRow;
 //rows: 0
 
-ld limitRow "../Seth/tests/Load/largeRow2.tbl";
+ld limitRow "/DATA/Load/largeRow2.tbl";
 success
 
 fetch limitRow;
 rows: 0
 
-ld limitRow "../Seth/tests/Load/largeRow3.tbl";
+ld limitRow "/DATA/Load/largeRow3.tbl";
 
 fetch limitRow;
 rows: 0
 
-ld limitRow "../Seth/tests/Load/15KRow.tbl";
+ld limitRow "/DATA/Load/15KRow.tbl";
 
 fetch limitRow;
 rows: 1
 
-ld limitRow "../Seth/tests/Load/16KRow.tbl";
+ld limitRow "/DATA/Load/16KRow.tbl";
 
 fetch limitRow;
 rows: 2

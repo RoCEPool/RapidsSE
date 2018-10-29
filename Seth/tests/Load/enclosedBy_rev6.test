@@ -19,7 +19,7 @@ create index idx on T1 (col_id);
 success
 
 // load T1 with deafult enclosedBy
-ld T1 "../JTEST/enclosedBy1.csv" ;
+ld T1 "/DATA/Load/enclosedBy1.csv" ;
 success
 
 // fetch rows
@@ -56,7 +56,7 @@ create index idx on T1 (col_id);
 success
 
 // load table T1 with enclosed_by_leading '
-ld T1 "../JTEST/enclosedBy2.csv" enclosed_by_leading "'";
+ld T1 "/DATA/Load/enclosedBy2.csv" enclosed_by_leading "'";
 success
 
 // fetch rows
@@ -93,7 +93,7 @@ create index idx on T1 (col_id);
 success
 
 // load table T1 2ith enclosed_by_leading [ and enclosed_by_trailing ]
-ld T1 "../JTEST/enclosedBy3.csv" enclosed_by_leading "[" enclosed_by_trailing "]";
+ld T1 "/DATA/enclosedBy3.csv" enclosed_by_leading "[" enclosed_by_trailing "]";
 success
 
 // fetch rows
