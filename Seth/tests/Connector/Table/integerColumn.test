@@ -3,7 +3,7 @@
 //----------------------------------------------------------------------------//
 
 // create a table , no size in varchar
-create table T1 (
+create table rapidsse.public.T1 (
   name    varchar,
   id      integer
 );
@@ -30,29 +30,29 @@ rows:
   ('NAME')
 
 // insert rows in the table
-insert into T1 values ('abc',10);
+insert into rapidsse.public.T1 values ('abc',10);
 success
 
-insert into T1 values ('abc',-20);
+insert into rapidsse.public.T1 values ('abc',-20);
 success
 
-insert into T1 values ('abc',0);
+insert into rapidsse.public.T1 values ('abc',0);
 success
 
 //max
-insert into T1 values ('abc',+9223372036854775807);
+insert into rapidsse.public.T1 values ('abc',+9223372036854775807);
 success
 
 // min
-insert into T1 values ('abc',-9223372036854775807);
+insert into rapidsse.public.T1 values ('abc',-9223372036854775807);
 success
 
 // null
-insert into T1 (name) values ('abc');
+insert into rapidsse.public.T1 (name) values ('abc');
 success
 
 // insert larger than max integer
-insert into T1 values ('abc',9223372036854775808);
+insert into rapidsse.public.T1 values ('abc',9223372036854775808);
 failure
 
 // insert smaller than min integer
@@ -60,7 +60,7 @@ insert into T1 values ('abc',-9223372036854775808);
 failure
 
 // select from T1
-select * from T1;
+select * from rapidsse.public.T1;
 rows:
   ('abc',null)
   ('abc',-9223372036854775807)
@@ -70,11 +70,11 @@ rows:
   ('abc',+9223372036854775807)
 
 // drop table
-drop table T1;
+drop table rapidsse.public.T1;
 success
 
 // create a table , no size in varchar
-create table T1 (
+create table rapidsse.public.T1 (
   name    varchar,
   id      integer(10) NOT NULL
 ) partition by (id);
@@ -96,37 +96,37 @@ rows:
   ('INTEGER', true, false, 19)
 
 // insert rows in the table
-insert into T1 values ('abc',10);
+insert into rapidsse.public.T1 values ('abc',10);
 success
 
-insert into T1 values ('abc',-20);
+insert into rapidsse.public.T1 values ('abc',-20);
 success
 
-insert into T1 values ('abc',0);
+insert into rapidsse.public.T1 values ('abc',0);
 success
 
 //max
-insert into T1 values ('abc',+9223372036854775807);
+insert into rapidsse.public.T1 values ('abc',+9223372036854775807);
 success
 
 // min
-insert into T1 values ('abc',-9223372036854775807);
+insert into rapidsse.public.T1 values ('abc',-9223372036854775807);
 success
 
 // null
-insert into T1 (name) values ('abc');
+insert into rapidsse.public.T1 (name) values ('abc');
 failure
 
 // insert larger than max integer
-insert into T1 values ('abc',9223372036854775808);
+insert into rapidsse.public.T1 values ('abc',9223372036854775808);
 failure
 
 // insert smaller than min integer
-insert into T1 values ('abc',-9223372036854775808);
+insert into rapidsse.public.T1 values ('abc',-9223372036854775808);
 failure
 
 // select from T1
-select * from T1;
+select * from rapidsse.public.T1;
 rows:
 ('abc',-9223372036854775807)
 ('abc',-20)
@@ -135,10 +135,10 @@ rows:
 ('abc',+9223372036854775807)
 
 // drop table
-drop table T1;
+drop table rapidsse.public.T1;
 success
 
 CLEANUP {
-  drop table T1;
+  drop table rapidsse.public.T1;
   mute
 }

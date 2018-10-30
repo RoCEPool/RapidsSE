@@ -2,7 +2,7 @@
 -- tpch insert-select tests (SF1)
 -------------------------------------------------------------------------------
 
-create table customer1 (
+create table rapidsse.public.customer1 (
 C_CUSTKEY       INTEGER NOT NULL,
 C_NAME          VARCHAR(25) NOT NULL,
 C_ADDRESS       VARCHAR(40) NOT NULL,
@@ -14,10 +14,10 @@ C_COMMENT       VARCHAR(117) NOT NULL
 );
 success
 
-ESCAPE CONNECTOR se 'load customer1' with file='/tpch/customer.tbl' , terminator = ',\n', node = 'Node1' ;
+ESCAPE CONNECTOR se 'load customer1' with file='/TPCH/SF1/customer.tbl' , terminator = ',\n', node = 'Node1' ;
 failure contains: 'Success'
 
-create table customer2 (
+create table rapidsse.public.customer2 (
 C_CUSTKEY       INTEGER NOT NULL,
 C_NAME          VARCHAR(25) NOT NULL,
 C_ADDRESS       VARCHAR(40) NOT NULL,
@@ -29,26 +29,26 @@ C_COMMENT       VARCHAR(117) NOT NULL
 );
 success
 
-insert into customer2 select * from customer1;
+insert into rapidsse.public.customer2 select * from customer1;
 success
 
-select * from customer2;
+select * from rapidsse.public.customer2;
 rows: 150000
 
-drop table customer1;
+drop table rapidsse.public.customer1;
 success
 
-drop table customer2;
+drop table rapidsse.public.customer2;
 success
 
 CLEANUP {
-  
-  drop table customer2;
+
+  drop table rapidsse.public.customer1;
   mute
-  
-  drop table customer1;
+
+  drop table rapidsse.public.customer2;
   mute
-  
+
   bye;
   mute
 }

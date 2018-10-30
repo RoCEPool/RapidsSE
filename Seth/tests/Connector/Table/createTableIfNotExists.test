@@ -3,7 +3,7 @@
 //----------------------------------------------------------------------------//
 
 // create a table
-create table T1 (c1 integer);
+create table rapidsse.public.T1 (c1 integer);
 success;
 
 // check existence of table
@@ -21,17 +21,17 @@ rows:
 ('rapidsse', 'public', 'T1', true)
 
 // now drop the table
-drop table T1;
+drop table rapidsse.public.T1;
 success;
 
 // check existence of table
 select * from rapids.system.tables where catalog_name = 'rapidsse';
 rows: 0
 
-create table if not exists T1 (c1 integer);
+create table if not exists rapidsse.public.T1 (c1 integer);
 success;
 
-create table T1 (c1 integer);
+create table rapidsse.public.T1 (c1 integer);
 failure contains: 'already exists'
 
 // check existence of table
@@ -40,6 +40,6 @@ rows:
 ('rapidsse', 'public', 'T1', true)
 
 CLEANUP {
-drop table T1 ;   mute;
+  drop table rapidsse.public.T1 ;   mute;
 
 }
