@@ -22,6 +22,7 @@ using namespace Prompt;
 #include "PromptNote.hpp"
 
 #include "Prompt_activityMap.hpp"
+#include "Prompt_am.hpp"
 #include "Prompt_apiState.hpp"
 #include "Prompt_args.hpp"
 #include "Prompt_attachMap.hpp"
