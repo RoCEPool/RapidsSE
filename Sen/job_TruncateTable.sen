@@ -176,6 +176,8 @@
   pJob_truncateTable truncateTable.releaseResources
 
   job::participantEnded
+
+  <DONE_END>
 ;
 
 /*----------------------------------------------------------------------------*/
