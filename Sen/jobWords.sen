@@ -161,6 +161,8 @@
 
   ddlLock::testDrop
 
+  nullptr task::this task.job!
+
   ::task_exit
 ;
 

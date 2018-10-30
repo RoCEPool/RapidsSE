@@ -126,9 +126,7 @@
 
   pJob_ConnectCluster send_job__executed
 
-  nullptr task::this task.job!
-
-  <DONE_EXE>
+  <<am <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/

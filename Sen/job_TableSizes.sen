@@ -116,9 +116,7 @@
 
   pJob_TableSizes send_job__executed
 
-  nullptr task::this task.job!
-
-  <DONE_EXE>
+  <<am <DONE_EXE>
 
   //"STACK IS c:" . stk
 ;
