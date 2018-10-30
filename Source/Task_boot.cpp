@@ -124,7 +124,8 @@ void Task::vAddConstants(void)
   vAddConstant("args.unlink"_Stz,            gxArguments.m_bUnlink);
   vAddConstant("args.verbose"_Stz,           gxArguments.m_bVerbose);
   vAddConstant("args.welcome"_Stz,           gxArguments.m_bWelcome);
-  
+  vAddConstant("args.activityMap"_Stz,       gxArguments.m_bActivityMap);
+
   // true / flase
   vAddConstant("true"_Stz,    (i8)1);
   vAddConstant("false"_Stz,   (i8)0);

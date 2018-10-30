@@ -64,7 +64,8 @@ namespace StorageEngine
     bool m_bTracing;    // tracing
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
-  
+    bool m_bActivityMap; // use activity map
+
     // working
     i8   m_nJumboTook;  // number of pool buffers taken by jumbo buffers
     i8   m_iJumboSize;  // size of the jumbo heap

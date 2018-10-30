@@ -81,7 +81,7 @@ Arguments::Arguments(void)
   m_bTracing    = false;
   m_bVerbose    = false;
   m_bWelcome    = true;
-
+  m_bActivityMap = false;
   
   _checkInitialised_(CN_ARGUMENTS);
   
@@ -515,6 +515,16 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     if (argv[i_Arg]->bSame("--developer"_Stz)) {
       m_bDeveloper = true;
+      continue;
+    }
+    
+    if (argv[i_Arg]->bSame("--activityMap"_Stz)) {
+      m_bActivityMap = true;
+      continue;
+    }
+    
+    if (argv[i_Arg]->bSame("--noActivityMap"_Stz)) {
+      m_bActivityMap = false;
       continue;
     }
     
