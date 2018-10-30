@@ -126,6 +126,8 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable.checkResources ( Job_SizeTable -- )
 
+  <Check_Resources>
+
   params| pJob_SizeTable  |
 
   tp: sizeTable.checkResources
@@ -145,7 +147,7 @@
   pJob_SizeTable job.objectName@
   checkSizeTable not if pJob_SizeTable <ERROR_JOB> exit then
 
-  <DONE_CHECK>
+  <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -153,10 +155,14 @@
 /*----------------------------------------------------------------------------*/
 : sizeTable.releaseResources ( Job_SizeTable -- )
 
+  <Release_Resources>
+
   params| pJob_SizeTable  |
 
   tp: sizeTable.releaseResources
   //releaseResources received" .
+
+  <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/

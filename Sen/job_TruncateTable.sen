@@ -95,6 +95,8 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable.checkResources ( Job_TruncateTable -- )
 
+  <Check_Resources>
+
   params| pJob_TruncateTable  |
   0 locals| sTableNm |
 
@@ -131,7 +133,7 @@
   // pop table dictionary
   popTable
 
-  <DONE_CHECK>
+  <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -139,10 +141,14 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable.releaseResources ( Job_TruncateTable -- )
 
+  <Release_Resources>
+
   params| pJob_TruncateTable  |
 
   tp: truncateTable.releaseResources
   //releaseResources received" .
+
+  <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/

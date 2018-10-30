@@ -47,6 +47,8 @@
 /*----------------------------------------------------------------------------*/
 : insertRow.checkResources ( pJob_InsertRow -- )
 
+  <Check_Resources>
+
   params| pJob_InsertRow  |
 
   pJob_InsertRow job.objectName@ locals| sTableNm |
@@ -86,7 +88,7 @@
 
   checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> exit then
 
-  <DONE_CHECK>
+  <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -94,10 +96,14 @@
 /*----------------------------------------------------------------------------*/
 : insertRow.releaseResources ( pJob_InsertRow -- )
 
+  <Release_Resources>
+
   params| pJob_InsertRow  |
 
   tp: insertRow.releaseResources
   //releaseResources received" .
+
+  <Resources_Released>
 ;
 
 /*============================================================================*/

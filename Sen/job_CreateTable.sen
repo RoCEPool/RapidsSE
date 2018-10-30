@@ -161,6 +161,8 @@
 /*----------------------------------------------------------------------------*/
 : createTable.checkResources ( pJob_CreateTable -- )
 
+  <Check_Resources>
+
   params| pJob_CreateTable  |
 
   tp: createTable.checkResources
@@ -184,7 +186,7 @@
   pJob_CreateTable job.objectName@
   checkMakeTable not if pJob_CreateTable <ERROR_JOB> exit then
 
-  <DONE_CHECK>
+  <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -192,10 +194,14 @@
 /*----------------------------------------------------------------------------*/
 : createTable.releaseResources ( pJob_CreateTable -- )
 
+  <Release_Resources>
+
   params| pJob_CreateTable  |
 
   tp: createTable.releaseResources
   //"releaseResources received" .
+
+  <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
