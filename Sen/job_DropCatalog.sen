@@ -121,7 +121,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the catalog
   pJob_DropCatalog job.objectName@
-  checkRemoveCatalog not if pJob_DropCatalog <ERROR_JOB> exit then
+  checkRemoveCatalog not if pJob_DropCatalog <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

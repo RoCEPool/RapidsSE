@@ -68,7 +68,7 @@
   //pathDump
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> exit then
+  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!am exit then
   //sTableNm "In table folder: %v" fmt.print
 
   // push table dictionary
@@ -76,7 +76,7 @@
   //pathDump
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> exit then
+  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!am exit then
   drop
 
   // pop table dictionary
@@ -86,7 +86,7 @@
   //----------------------------------------------------------------------------
   // check if we have enough buffers
 
-  checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> exit then
+  checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

@@ -182,7 +182,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
   pJob_DropTable job.objectName@
-  checkRemoveTable not if pJob_DropTable <ERROR_JOB> exit then
+  checkRemoveTable not if pJob_DropTable <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

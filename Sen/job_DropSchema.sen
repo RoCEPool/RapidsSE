@@ -121,7 +121,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the catalog
   pJob_DropSchema job.objectName@
-  checkRemoveSchema not if pJob_DropSchema <ERROR_JOB> exit then
+  checkRemoveSchema not if pJob_DropSchema <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

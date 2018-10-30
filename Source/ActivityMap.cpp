@@ -224,6 +224,9 @@ void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
 
   ActivityMark* aActivityMark = aNewActivityMark();
   
+  if (! aActivityMark)
+    return;
+  
   aActivityMark->vWrite(iJobId,aMark);
 }
 
@@ -275,12 +278,23 @@ ActivityMark* ActivityMap::aNewActivityMark(void)
 {
   vLockMutex();
   
+  if (m_nMarks >= C_ACTIVITY_MARKS) {
+    vUnlockMutex();
+    return nullptr;
+  }
+
   ActivityMark* aActivityMark = &m_xActivity[m_nMarks];
   
   m_nMarks++;
   
-  vUnlockMutex();
+  if (C_ACTIVITY_MARKS == m_nMarks) {
+    aActivityMark->vWrite(0,(char*)"*** ACTIVITY MAP FULL ***");
+    vUnlockMutex();
+    return nullptr;
+  }
 
+  vUnlockMutex();
+  
   return aActivityMark;
 }
 

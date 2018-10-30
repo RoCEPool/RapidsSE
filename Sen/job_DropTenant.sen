@@ -121,7 +121,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the catalog
   pJob_DropTenant job.objectName@
-  checkRemoveTenant not if pJob_DropTenant <ERROR_JOB> exit then
+  checkRemoveTenant not if pJob_DropTenant <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

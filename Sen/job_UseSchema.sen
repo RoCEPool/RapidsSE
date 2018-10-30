@@ -39,8 +39,8 @@
   // get schema name from job
   pJob_UseSchema job.objectName@ to sSchemaNm
 
-  sSchemaNm checkIsWord not if EC_NO_SUCH_SCHEMA pJob_UseSchema <ERROR_JOB> exit then
-  checkIsSchema not if pJob_UseSchema <ERROR_JOB> exit then
+  sSchemaNm checkIsWord not if EC_NO_SUCH_SCHEMA pJob_UseSchema <ERROR_JOB> !!am exit then
+  checkIsSchema not if pJob_UseSchema <ERROR_JOB> !!am exit then
   execute pathPush
 
   // find the tables folder

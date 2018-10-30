@@ -237,11 +237,11 @@
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  checkEnoughBuffers not if pJob_CreateIndex <ERROR_JOB> exit then
+  checkEnoughBuffers not if pJob_CreateIndex <ERROR_JOB> !!am exit then
 
   //----------------------------------------------------------------------------
   // check ok to make index
-  pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex <ERROR_JOB> exit then
+  pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

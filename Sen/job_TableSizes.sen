@@ -85,7 +85,7 @@
     sTableNm pushTable assert
 
     // check it is a table
-    sTableNm checkIsTable not if drop pJob_TableSizes <ERROR_JOB> exit then
+    sTableNm checkIsTable not if drop pJob_TableSizes <ERROR_JOB> !!am exit then
 
     // push indexes folder
     pushIndexes assert
@@ -144,7 +144,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  checkInTables not if pJob_TableSizes <ERROR_JOB> exit then
+  checkInTables not if pJob_TableSizes <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

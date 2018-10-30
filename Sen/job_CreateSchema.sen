@@ -130,13 +130,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  checkEnoughBuffers not if pJob_CreateSchema <ERROR_JOB> exit then
+  checkEnoughBuffers not if pJob_CreateSchema <ERROR_JOB> !!am exit then
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
   pJob_CreateSchema job.objectName@
-  checkMakeSchema not if pJob_CreateSchema <ERROR_JOB> exit then
+  checkMakeSchema not if pJob_CreateSchema <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

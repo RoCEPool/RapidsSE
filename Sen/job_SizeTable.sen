@@ -145,7 +145,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
   pJob_SizeTable job.objectName@
-  checkSizeTable not if pJob_SizeTable <ERROR_JOB> exit then
+  checkSizeTable not if pJob_SizeTable <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

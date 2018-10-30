@@ -165,7 +165,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check remove index
-  sTableNm checkRemoveIndex not if pJob_DropIndex <ERROR_JOB> exit then
+  sTableNm checkRemoveIndex not if pJob_DropIndex <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -178,13 +178,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is an index we are dropping
   sIndexNm checkIsIndex not if
-    popIndexes popTable assertInTables pJob_DropIndex <ERROR_JOB> exit
+    popIndexes popTable assertInTables pJob_DropIndex <ERROR_JOB> !!am exit
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cannot drop hidden index
   sIndexNm "hidden" str.equal if
-    popIndexes popTable assertInTables EC_NO_SUCH_INDEX pJob_DropIndex <ERROR_JOB> exit
+    popIndexes popTable assertInTables EC_NO_SUCH_INDEX pJob_DropIndex <ERROR_JOB> !!am exit
   then
 
   <<am <Resources_Checked>

@@ -129,12 +129,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  checkEnoughBuffers not if pJob_CreateTenant <ERROR_JOB> exit then
+  checkEnoughBuffers not if pJob_CreateTenant <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
   pJob_CreateTenant job.objectName@
-  checkMakeTenant not if pJob_CreateTenant <ERROR_JOB> exit then
+  checkMakeTenant not if pJob_CreateTenant <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

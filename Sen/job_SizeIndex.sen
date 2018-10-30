@@ -161,7 +161,7 @@
   pJob_SizeIndex job.indexName@ to sIndexNm
   pJob_SizeIndex job.objectName@ to sTableNm
 
-  sTableNm sIndexNm checkSizeIndex not if pJob_SizeIndex <ERROR_JOB> exit then
+  sTableNm sIndexNm checkSizeIndex not if pJob_SizeIndex <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

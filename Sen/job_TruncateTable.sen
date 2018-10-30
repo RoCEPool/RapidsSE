@@ -114,12 +114,12 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  checkInTables not if pJob_TruncateTable <ERROR_JOB> exit then
+  checkInTables not if pJob_TruncateTable <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
   pJob_TruncateTable job.objectName@ to sTableNm
-  sTableNm checkIsTableFolder not if pJob_TruncateTable <ERROR_JOB> exit then
+  sTableNm checkIsTableFolder not if pJob_TruncateTable <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -127,7 +127,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_TruncateTable <ERROR_JOB> exit then
+  sTableNm checkIsTable not if popTable pJob_TruncateTable <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary

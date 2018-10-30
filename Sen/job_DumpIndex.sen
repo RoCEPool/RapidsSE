@@ -129,7 +129,7 @@
   pJob_DumpIndex job.indexName@ to sIndexNm
   pJob_DumpIndex job.objectName@ to sTableNm
 
-  sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_JOB> exit then
+  sTableNm sIndexNm checkDumpIndex not if pJob_DumpIndex <ERROR_JOB> !!am exit then
 
   ddlLock::dropWrite
 ;

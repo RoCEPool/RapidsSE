@@ -159,7 +159,7 @@
   pJob_VerifyIndex job.indexName@ to sIndexNm
   pJob_VerifyIndex job.objectName@ to sTableNm
 
-  sTableNm sIndexNm checkVerifyIndex not if pJob_VerifyIndex <ERROR_JOB> exit then
+  sTableNm sIndexNm checkVerifyIndex not if pJob_VerifyIndex <ERROR_JOB> !!am exit then
 
   ddlLock::dropRead
 ;

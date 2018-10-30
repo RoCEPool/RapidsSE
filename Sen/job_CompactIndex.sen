@@ -152,7 +152,7 @@
   pJob_CompactIndex job.indexName@ to sIndexNm
   pJob_CompactIndex job.objectName@ to sTableNm
 
-  sTableNm sIndexNm checkCompactIndex not if pJob_CompactIndex <ERROR_JOB> exit then
+  sTableNm sIndexNm checkCompactIndex not if pJob_CompactIndex <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

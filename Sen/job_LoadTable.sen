@@ -127,7 +127,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for sufficient memory
 
-  checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> exit then
+  checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if file exists (SHOULDN"T THIS BE ONLY ON ORIGINATING NODE?)
@@ -142,7 +142,7 @@
 
     OPEN_READ fp file.open ( t|f )
     not if
-       fp file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable <ERROR_JOB> exit
+       fp file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable <ERROR_JOB> !!am exit
     then
 
     fp file.close fp file.delete assert::stack_0
@@ -162,7 +162,7 @@
   //pathDump
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> exit then
+  sTableNm checkIsTableFolder not if pJob_LoadTable <ERROR_JOB> !!am exit then
   //sTableNm "In table folder: %v" fmt.print
 
   // push table dictionary
@@ -170,7 +170,7 @@
   //pathDump
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_LoadTable <ERROR_JOB> exit then
+  sTableNm checkIsTable not if popTable pJob_LoadTable <ERROR_JOB> !!am exit then
 
   // pop table dictionary
   popTable
@@ -179,7 +179,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
 
-  testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> exit then
+  testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

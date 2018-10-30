@@ -163,7 +163,7 @@
   // check if we can remove the table
   pJob_AnalyzeIndex job.objectName@
   pJob_AnalyzeIndex job.indexName@
-  checkAnalyzeIndex not if pJob_AnalyzeIndex <ERROR_JOB> exit then
+  checkAnalyzeIndex not if pJob_AnalyzeIndex <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

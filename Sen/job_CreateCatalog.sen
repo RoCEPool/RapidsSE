@@ -133,13 +133,13 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  checkEnoughBuffers not if pJob_CreateCatalog <ERROR_JOB> exit then
+  checkEnoughBuffers not if pJob_CreateCatalog <ERROR_JOB> !!am exit then
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog
   pJob_CreateCatalog job.objectName@
-  checkMakeCatalog not if pJob_CreateCatalog <ERROR_JOB> exit then
+  checkMakeCatalog not if pJob_CreateCatalog <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

@@ -147,7 +147,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can remove the table
   pJob_AnalyzeTable job.objectName@
-  checkAnalyzeTable not if pJob_AnalyzeTable <ERROR_JOB> exit then
+  checkAnalyzeTable not if pJob_AnalyzeTable <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;
