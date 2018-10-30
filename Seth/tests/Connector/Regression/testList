@@ -13,9 +13,9 @@
 //exists.test
 //having.test
 //intersect.test
-like.test
+//like.test
 //PartKey1way.test
-//PartKey2way.test
+PartKey2way.test
 //Stage9.test
 
 //schemaDrop.test
