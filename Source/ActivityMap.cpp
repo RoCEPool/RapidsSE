@@ -5,6 +5,7 @@
 #include "Measurement.h"
 #include "StorageEngine.h"
 
+extern Arguments  gxArguments;
 extern AttachMap* gpAttachMap;
 
 ActivityMap* gpActivityMap = nullptr;
@@ -144,17 +145,23 @@ void* ActivityMap::operator new(size_t iSize)
   RASSERT( ! gpActivityMap );
   
   bool bResult;
-  if (0 == gpAttachMap->m_pGrid->m_iThisNode) {
+  if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart) {
     bResult = ActivityMap::bCreateNewShm();
     RASSERT(bResult);
     if (gpAttachMap->m_bVerbose)
-      vTrace("ActivityMap %s created\n\n"_Stz,C_ACTIVITY_REGION);
+      vTrace("ActivityMap %s : created new map (size %lldB, max %lld marks)\n\n"_Stz,
+             C_ACTIVITY_REGION,
+             sizeof(ActivityMap),
+             C_ACTIVITY_MARKS);
   }
   else {
     bResult = ActivityMap::bOpenExistingShm();
     RASSERT(bResult);
     if (gpAttachMap->m_bVerbose)
-      vTrace("ActivityMap %s opened\n\n"_Stz,C_ACTIVITY_REGION);
+      vTrace("ActivityMap %s : opened existing map (size %lldB, max %lld marks)\n\n"_Stz,
+             C_ACTIVITY_REGION,
+             sizeof(ActivityMap),
+             C_ACTIVITY_MARKS);
   }
   
   return gpActivityMap;

@@ -497,8 +497,10 @@ void RapidsSE::vRunCmdLine(void)
         vWaitStop();
     }
     
-    else if (gxArguments.m_bPrompt)
+    else if (gxArguments.m_bPrompt) {
+      vOpenActivityMap();
       vCallPrompt();
+    }
     else if (gxArguments.m_bStatus)  vPrintStatus();
     else if (gxArguments.m_bStop)    vStopSystem();
     else if (gxArguments.m_bUnlink)  vUnlinkSystem();
