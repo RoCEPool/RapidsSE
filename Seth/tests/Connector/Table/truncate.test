@@ -2,7 +2,7 @@
 // create table , load and truncate in a loop                                 //
 //----------------------------------------------------------------------------//
 
-create table customer (
+create table rapidsse.public.customer (
 C_CUSTKEY       INTEGER NOT NULL,
 C_NAME          VARCHAR(25) NOT NULL,
 C_ADDRESS       VARCHAR(40) NOT NULL,
@@ -14,7 +14,7 @@ C_COMMENT       VARCHAR(117) NOT NULL
 );
 success
 
-CREATE INDEX customer_idx1 ON customer(c_custkey);
+CREATE INDEX customer_idx1 ON rapidsse.public.customer(c_custkey);
 success
 
 loop 10 {
@@ -22,22 +22,22 @@ loop 10 {
 ESCAPE CONNECTOR se 'load customer' with file='/tpch/customer.tbl' , terminator = ',\n', node = 'Node1' ;
 failure contains: 'Success'
 
-select * from customer;
+select * from rapidsse.public.customer;
 rows: 150000
 
-truncate table customer;
+truncate table rapidsse.public.customer;
 success;
 
-select * from customer;
+select * from rapidsse.public.customer;
 rows: 0
 
 }
 
 // drop table
-drop table customer;
+drop table rapidsse.public.customer;
 success
 
 CLEANUP {
-  drop table customer;
+  drop table rapidsse.public.customer;
   mute
 }

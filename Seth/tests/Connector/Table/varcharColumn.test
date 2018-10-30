@@ -3,14 +3,14 @@
 //----------------------------------------------------------------------------//
 
 // create a table , size in varchar > 64K
-create table T1 (
+create table rapidsse.public.T1 (
   id      integer,
   name    varchar(65540)
 );
 failure
 
 // create a table , size in varchar = 64K
-create table T1 (
+create table rapidsse.public.T1 (
   id      integer,
   name    varchar(65536)
 );
@@ -32,11 +32,11 @@ rows:
 ('VARCHAR', false, true, 65536)
 
 // drop the table
-drop table T1;
+drop table rapidsse.public.T1;
 success
 
 // create a table , no size in varchar
-create table T1 (
+create table rapidsse.public.T1 (
   id      integer,
   name    varchar
 );
@@ -63,26 +63,26 @@ rows:
   ('ID')
 
 // insert rows in the table
-insert into T1 values (10, 'abcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.T1 values (10, 'abcdefghijklmnopqrstuvwxyz');
 success
 
-insert into T1 values (20, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.T1 values (20, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into T1 values (30, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.T1 values (30, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into T1 values (40, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.T1 values (40, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into T1 values (50, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.T1 values (50, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into T1 (id) values (60);
+insert into rapidsse.public.T1 (id) values (60);
 success
 
 // select from T1
-select * from T1;
+select * from rapidsse.public.T1;
 rows:
   (10, 'abcdefghijklmnopqrstuvwxyz')
   (20, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz')
@@ -92,11 +92,11 @@ rows:
   (60, null)
 
 // drop table
-drop table T1;
+drop table rapidsse.public.T1;
 success
 
 // create a table , no size in varchar
-create table T1 (
+create table rapidsse.public.T1 (
   id      integer,
   name    varchar(32) NOT NULL
 );
@@ -118,26 +118,26 @@ rows:
   ('VARCHAR', false, false, 32)
 
 // insert rows in the table
-insert into T1 values (10, 'abcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.T1 values (10, 'abcdefghijklmnopqrstuvwxyz');
 success
 
-insert into T1 values (20, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.T1 values (20, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into T1 values (30, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.T1 values (30, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into T1 values (40, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.T1 values (40, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into T1 values (50, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
+insert into rapidsse.public.T1 values (50, 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz');
 success
 
-insert into T1 (id) values (60);
+insert into rapidsse.public.T1 (id) values (60);
 failure: 'Subsystem exception: '
 
 // select from T1
-select * from T1;
+select * from rapidsse.public.T1;
 rows:
 (10, 'abcdefghijklmnopqrstuvwxyz')
 (20, 'abcdefghijklmnopqrstuvwxyzabcdef')
@@ -146,11 +146,11 @@ rows:
 (50, 'abcdefghijklmnopqrstuvwxyzabcdef')
 
 // drop table
-drop table T1;
+drop table rapidsse.public.T1;
 success
 
 // create a table , no size in varchar
-create table T1 (
+create table rapidsse.public.T1 (
 id      integer,
 name    varchar
 ) partition by (name);
@@ -172,23 +172,23 @@ rows:
 ('VARCHAR', true, true, 65536)
 
 // insert rows in the table
-insert into T1 values (10, 'a');
+insert into rapidsse.public.T1 values (10, 'a');
 success
 
-insert into T1 values (20, 'b');
+insert into rapidsse.public.T1 values (20, 'b');
 success
 
-insert into T1 values (30, 'c');
+insert into rapidsse.public.T1 values (30, 'c');
 success
 
-insert into T1 values (40, 'd');
+insert into rapidsse.public.T1 values (40, 'd');
 success
 
-insert into T1 values (50, 'e');
+insert into rapidsse.public.T1 values (50, 'e');
 success
 
 // select from T1
-select * from T1;
+select * from rapidsse.public.T1;
 rows:
 (10, 'a')
 (20, 'b')
@@ -197,10 +197,10 @@ rows:
 (50, 'e')
 
 // drop table
-drop table T1;
+drop table rapidsse.public.T1;
 success
 
 CLEANUP {
-  drop table T1;
+  drop table rapidsse.public.T1;
   mute
 }

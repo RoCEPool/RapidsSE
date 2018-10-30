@@ -2,7 +2,7 @@
 // create regression schema test                                              //
 //----------------------------------------------------------------------------//
 
-loop 100 {
+//loop 100 {
 create table rapidsse.public.BugTestData (
    edcol1 integer,
    edcol2 varchar(50),
@@ -390,7 +390,7 @@ success
 drop table rapidsse.public.REGION;
 success
 
-}
+//}
 
 CLEANUP {
     

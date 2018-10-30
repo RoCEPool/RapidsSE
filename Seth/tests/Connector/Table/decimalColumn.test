@@ -3,28 +3,28 @@
 //----------------------------------------------------------------------------//
 
 // create a table , precision > 19
-create table T1 (
+create table rapidsse.public.T1 (
   id      integer,
   val   decimal(20,10)
 );
 failure
 
 // create a table , scale > precision
-create table T1 (
+create table rapidsse.public.T1 (
   id      integer,
   val   decimal(3,10)
 );
 failure
 
 // create a table , scale > 19
-create table T1 (
+create table rapidsse.public.T1 (
   id      integer,
   val   decimal(19,20)
 );
 failure
 
 // create a table , no size in varchar
-create table T1 (
+create table rapidsse.public.T1 (
   id      integer,
   val     decimal
 );
@@ -51,21 +51,21 @@ rows:
   ('ID')
 
 // insert rows in the table
-insert into T1 values (10, 12.78);
+insert into rapidsse.public.T1 values (10, 12.78);
 success
 
-insert into T1 values (20, 13.0);
+insert into rapidsse.public.T1 values (20, 13.0);
 success
 
-insert into T1 values (30,16);
+insert into rapidsse.public.T1 values (30,16);
 success
 
 // null
-insert into T1 (id) values (40);
+insert into rapidsse.public.T1 (id) values (40);
 success
 
 // select from T1
-select * from T1;
+select * from rapidsse.public.T1;
 rows:
   (10,13)
   (20,13)
@@ -73,11 +73,11 @@ rows:
   (40,null)
 
 // drop table
-drop table T1;
+drop table rapidsse.public.T1;
 success
 
 // create a table , no size in varchar
-create table T1 (
+create table rapidsse.public.T1 (
   id      integer,
   val   decimal(10,2) NOT NULL
 ) partition by (val);
@@ -99,39 +99,39 @@ rows:
   ('DECIMAL', true, false, 10, 2)
 
 // insert rows in the table
-insert into T1 values (10, 12.788);
+insert into rapidsse.public.T1 values (10, 12.788);
 success
 
-insert into T1 values (20, 13.02);
+insert into rapidsse.public.T1 values (20, 13.02);
 success
 
-insert into T1 values (30,16.4);
+insert into rapidsse.public.T1 values (30,16.4);
 success
 
 // null
-insert into T1 (name) values ('abc');
+insert into rapidsse.public.T1 (name) values ('abc');
 failure
 
 // insert larger than max integer
-insert into T1 values (60,9223372036854775808.34);
+insert into rapidsse.public.T1 values (60,9223372036854775808.34);
 failure
 
 // insert smaller than min integer
-insert into T1 values (60,-9223372036854775808.0);
+insert into rapidsse.public.T1 values (60,-9223372036854775808.0);
 failure
 
 // select from T1
-select * from T1;
+select * from rapidsse.public.T1;
 rows:
 (10,12.79)
 (20,13.02)
 (30,16.40)
 
 // drop table
-drop table T1;
+drop table rapidsse.public.T1;
 success
 
 CLEANUP {
-  drop table T1;
+  drop table rapidsse.public.T1;
   mute
 }

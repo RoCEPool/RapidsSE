@@ -1,7 +1,0 @@
-//tpchQueriesMac.test
-tpchLoadMac.test
-supplierInsertSelect.test
-partInsertSelect.test
-regionInsertSelect.test
-ordersInsertSelect.test
-lineitemInsertSelect.test
