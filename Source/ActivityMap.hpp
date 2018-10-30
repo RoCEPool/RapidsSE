@@ -32,12 +32,12 @@ namespace Measurement
     static bool bOpenExistingShm(void);
   
   public:
-    static void vMark(Stz* aFormat, ...);
+    static void vMark(i8 iJobId, Stz* aFormat, ...);
     static void vDump(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    void vWriteMark(Stz* aFormat, va_list xArgs);
+    void vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs);
     void vDumpMap(void);
 
     void vLockMutex(void);

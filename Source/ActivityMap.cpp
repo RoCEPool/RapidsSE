@@ -108,7 +108,7 @@ bool ActivityMap::bOpenExistingShm(void)
 /*----------------------------------------------------------------------------*/
 /* write an Activity mark                                                     */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vMark(Stz* aFormat, ...)
+void ActivityMap::vMark(i8 iJobId, Stz* aFormat, ...)
 {
   if ( ! gpActivityMap )
     return;
@@ -117,7 +117,7 @@ void ActivityMap::vMark(Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  gpActivityMap->vWriteMark(aFormat,xArgs);
+  gpActivityMap->vWriteMark(iJobId,aFormat,xArgs);
 
   va_end(xArgs);
 }
@@ -216,7 +216,7 @@ ActivityMap::~ActivityMap(void)
 /*----------------------------------------------------------------------------*/
 /* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vWriteMark(Stz* aFormat, va_list xArgs)
+void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
 {
   char aMark[1024];
   
@@ -224,7 +224,7 @@ void ActivityMap::vWriteMark(Stz* aFormat, va_list xArgs)
 
   ActivityMark* aActivityMark = aNewActivityMark();
   
-  aActivityMark->vWrite(aMark);
+  aActivityMark->vWrite(iJobId,aMark);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -112,6 +112,8 @@
 /*----------------------------------------------------------------------------*/
 : createSchema.checkResources ( pJob_CreateSchema -- )
 
+  >>am <Check_Resources>
+
   params| pJob_CreateSchema  |
 
   tp: createSchema.checkResources
@@ -136,7 +138,7 @@
   pJob_CreateSchema job.objectName@
   checkMakeSchema not if pJob_CreateSchema <ERROR_JOB> exit then
 
-  <DONE_CHECK>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -144,10 +146,14 @@
 /*----------------------------------------------------------------------------*/
 : createSchema.releaseResources ( pJob_CreateSchema -- )
 
+  >>am <Release_Resources>
+
   params| pJob_CreateSchema  |
 
   tp: createSchema.releaseResources
   //"releaseResources received" .
+
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -166,7 +172,7 @@
 
   job::participantBegun
 
-  <DONE_BEG>
+  <<am <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

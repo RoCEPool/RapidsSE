@@ -128,6 +128,8 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable.checkResources ( Job_AnalyzeTable -- )
 
+  >>am <Check_Resources>
+
   params| pJob_AnalyzeTable  |
 
   tp: analyzeTable.checkResources
@@ -147,7 +149,7 @@
   pJob_AnalyzeTable job.objectName@
   checkAnalyzeTable not if pJob_AnalyzeTable <ERROR_JOB> exit then
 
-  <DONE_CHECK>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -155,10 +157,14 @@
 /*----------------------------------------------------------------------------*/
 : analyzeTable.releaseResources ( Job_AnalyzeTable -- )
 
+  >>am <Release_Resources>
+
   params| pJob_AnalyzeTable  |
 
   tp: analyzeTable.releaseResources
   //"releaseResources received" .
+
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -177,7 +183,7 @@
 
   job::participantBegun
 
-  <DONE_BEG>
+  <<am <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

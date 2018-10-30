@@ -10,6 +10,7 @@ namespace Measurement
   private:
     i8   m_iTick;
     char m_aNode[32];
+    i8   m_iJobId;
     char m_aMark[128];
   
     // must be last
@@ -24,7 +25,7 @@ namespace Measurement
     ~ActivityMark(void);
   
     void vInit(void);
-    void vWrite(char* aMark);
+    void vWrite(i8 iJobId, char* aMark);
     void vDump(File* pFile);
 
     Footer* aFooter(void);

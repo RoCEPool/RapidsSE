@@ -35,6 +35,21 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* word error mark                                                            */
+/*----------------------------------------------------------------------------*/
+: !!am immediate
+
+  // format the string to be printed
+  word::this word.name "!!%v" str.format
+
+  // encode push of that string
+  ,
+
+  // encode call to markExit
+  POSTPONE ActivityMap::markExit
+;
+
+/*----------------------------------------------------------------------------*/
 /* unnamed trace point                                                        */
 /*----------------------------------------------------------------------------*/
 : tp immediate

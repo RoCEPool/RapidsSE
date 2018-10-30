@@ -141,6 +141,8 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex.checkResources ( Job_DropIndex -- )
 
+  >>am <Check_Resources>
+
   params| pJob_DropIndex  |
   0 0 locals| sIndexNm sTableNm |
 
@@ -185,7 +187,7 @@
     popIndexes popTable assertInTables EC_NO_SUCH_INDEX pJob_DropIndex <ERROR_JOB> exit
   then
 
-  <DONE_CHECK>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -193,10 +195,14 @@
 /*----------------------------------------------------------------------------*/
 : dropIndex.releaseResources ( Job_DropIndex -- )
 
+  >>am <Release_Resources>
+
   params| pJob_DropIndex  |
 
   tp: dropIndex.releaseResources
   //releaseResources received" .
+
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -215,7 +221,7 @@
 
   job::participantBegun
 
-  <DONE_BEG>
+  <<am <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

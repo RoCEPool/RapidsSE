@@ -130,6 +130,8 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex.checkResources ( Job_CompactIndex -- )
 
+  >>am <Check_Resources>
+
   params| pJob_CompactIndex  |
   0 0 locals| sIndexNm sTableNm |
 
@@ -152,7 +154,7 @@
 
   sTableNm sIndexNm checkCompactIndex not if pJob_CompactIndex <ERROR_JOB> exit then
 
-  <DONE_CHECK>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -160,10 +162,14 @@
 /*----------------------------------------------------------------------------*/
 : compactIndex.releaseResources ( Job_CompactIndex -- )
 
+  >>am <Release_Resources>
+
   params| pJob_CompactIndex  |
 
   tp: compactIndex.releaseResources
   //"releaseResources received" .
+
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -182,7 +188,7 @@
 
   job::participantBegun
 
-  <DONE_BEG>
+  <<am <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

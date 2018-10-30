@@ -111,6 +111,8 @@
 /*----------------------------------------------------------------------------*/
 : createTenant.checkResources ( pJob_CreateTenant -- )
 
+  >>am <Check_Resources>
+
   params| pJob_CreateTenant  |
 
   tp: createTenant.checkResources
@@ -134,7 +136,7 @@
   pJob_CreateTenant job.objectName@
   checkMakeTenant not if pJob_CreateTenant <ERROR_JOB> exit then
 
-  <DONE_CHECK>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -142,10 +144,14 @@
 /*----------------------------------------------------------------------------*/
 : createTenant.releaseResources ( pJob_CreateTenant -- )
 
+  >>am <Release_Resources>
+
   params| pJob_CreateTenant  |
 
   tp: createTenant.releaseResources
   //releaseResources received" .
+
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +170,7 @@
 
   job::participantBegun
 
-  <DONE_BEG>
+  <<am <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

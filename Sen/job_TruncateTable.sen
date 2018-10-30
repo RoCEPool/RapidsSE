@@ -95,6 +95,8 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable.checkResources ( Job_TruncateTable -- )
 
+  >>am <Check_Resources>
+
   params| pJob_TruncateTable  |
   0 locals| sTableNm |
 
@@ -131,7 +133,7 @@
   // pop table dictionary
   popTable
 
-  <DONE_CHECK>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -139,10 +141,14 @@
 /*----------------------------------------------------------------------------*/
 : truncateTable.releaseResources ( Job_TruncateTable -- )
 
+  >>am <Release_Resources>
+
   params| pJob_TruncateTable  |
 
   tp: truncateTable.releaseResources
   //releaseResources received" .
+
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -161,7 +167,7 @@
 
   job::participantBegun
 
-  <DONE_BEG>
+  <<am <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

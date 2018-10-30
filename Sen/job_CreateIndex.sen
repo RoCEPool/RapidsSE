@@ -218,6 +218,8 @@
 /*----------------------------------------------------------------------------*/
 : createIndex.checkResources ( Job_CreateIndex -- )
 
+  >>am <Check_Resources>
+
   params| pJob_CreateIndex  |
   0 0 locals| sTableNm sIndexNm |
 
@@ -241,7 +243,7 @@
   // check ok to make index
   pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex <ERROR_JOB> exit then
 
-  <DONE_CHECK>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -249,10 +251,14 @@
 /*----------------------------------------------------------------------------*/
 : createIndex.releaseResources ( Job_CreateIndex -- )
 
+  >>am <Release_Resources>
+
   params| pJob_CreateIndex  |
 
   tp: createIndex.releaseResources
   //"releaseResources received" .
+
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -270,7 +276,7 @@
 
   job::participantBegun
 
-  <DONE_BEG>
+  <<am <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/

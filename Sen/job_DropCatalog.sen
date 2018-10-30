@@ -102,6 +102,8 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog.checkResources ( Job_DropCatalog -- )
 
+  >>am <Check_Resources>
+
   params| pJob_DropCatalog  |
 
   tp: dropCatalog.checkResources
@@ -121,7 +123,7 @@
   pJob_DropCatalog job.objectName@
   checkRemoveCatalog not if pJob_DropCatalog <ERROR_JOB> exit then
 
-  <DONE_CHECK>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -129,10 +131,14 @@
 /*----------------------------------------------------------------------------*/
 : dropCatalog.releaseResources ( Job_DropCatalog -- )
 
+  >>am <Release_Resources>
+
   params| pJob_DropCatalog  |
 
   tp: dropCatalog.releaseResources
   //releaseResources received" .
+
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -151,7 +157,7 @@
 
   job::participantBegun
 
-  <DONE_BEG>
+  <<am <DONE_BEG>
 ;
 
 /*----------------------------------------------------------------------------*/
