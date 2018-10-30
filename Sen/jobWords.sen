@@ -39,10 +39,6 @@
 
   // send job__begun back to originating node
   pJob "Job__Begun::send" find execute
-
-  // the job remains in the participant list
-  // the task exits and gets deleted
-  nullptr task::this task.job!
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -124,6 +120,10 @@
 /* done executing a beg seed                                                  */
 /*----------------------------------------------------------------------------*/
 : <DONE_BEG> ( --  )
+
+  // the job remains in the participant list
+  // the task exits and gets deleted
+  nullptr task::this task.job!
 
   ::task_exit
 ;
