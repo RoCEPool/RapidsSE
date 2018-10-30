@@ -330,7 +330,7 @@ void JobsModel::vJob_InsertRow_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJob);
   
-  vTrace("DELETING INSERTROW\n"_Stz);
+  //vTrace("DELETING INSERTROW\n"_Stz);
   delete pJob_InsertRow;
 }
 
