@@ -139,7 +139,7 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex.checkResources ( Job_SizeIndex -- )
 
-  <Check_Resources>
+  >>am <Check_Resources>
 
   params| pJob_SizeIndex  |
   0 0 locals| sIndexNm sTableNm |
@@ -163,7 +163,7 @@
 
   sTableNm sIndexNm checkSizeIndex not if pJob_SizeIndex <ERROR_JOB> exit then
 
-  <Resources_Checked>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -171,14 +171,14 @@
 /*----------------------------------------------------------------------------*/
 : sizeIndex.releaseResources ( Job_SizeIndex -- )
 
-  <Release_Resources>
+  >>am <Release_Resources>
 
   params| pJob_SizeIndex  |
 
   tp: sizeIndex.releaseResources
   //releaseResources received" .
 
-  <Resources_Released>
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/

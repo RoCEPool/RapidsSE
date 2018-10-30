@@ -115,7 +115,7 @@
 /*----------------------------------------------------------------------------*/
 : loadTable.checkResources ( pJob_LoadTable -- )
 
-  <Check_Resources>
+  >>am <Check_Resources>
 
   params| pJob_LoadTable  |
 
@@ -181,7 +181,7 @@
 
   testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> exit then
 
-  <Resources_Checked>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -189,11 +189,11 @@
 /*----------------------------------------------------------------------------*/
 : loadTable.releaseResources ( pJob_LoadTable -- )
 
-  <Release_Resources>
+  >>am <Release_Resources>
 
   params| pJob_LoadTable  |
 
-  <Resources_Released>
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/

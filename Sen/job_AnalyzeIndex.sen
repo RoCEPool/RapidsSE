@@ -143,7 +143,7 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex.checkResources ( Job_AnalyzeIndex -- )
 
-  <Check_Resources>
+  >>am <Check_Resources>
 
   params| pJob_AnalyzeIndex  |
 
@@ -165,7 +165,7 @@
   pJob_AnalyzeIndex job.indexName@
   checkAnalyzeIndex not if pJob_AnalyzeIndex <ERROR_JOB> exit then
 
-  <Resources_Checked>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -173,14 +173,14 @@
 /*----------------------------------------------------------------------------*/
 : analyzeIndex.releaseResources ( Job_AnalyzeIndex -- )
 
-  <Release_Resources>
+  >>am <Release_Resources>
 
   params| pJob_AnalyzeIndex  |
 
   tp: analyzeIndex.releaseResources
   //"releaseResources received" .
 
-  <Resources_Released>
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/

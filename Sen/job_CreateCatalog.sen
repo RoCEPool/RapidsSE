@@ -115,7 +115,7 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog.checkResources ( pJob_CreateCatalog -- )
 
-  <Check_Resources>
+  >>am <Check_Resources>
 
   params| pJob_CreateCatalog  |
 
@@ -141,7 +141,7 @@
   pJob_CreateCatalog job.objectName@
   checkMakeCatalog not if pJob_CreateCatalog <ERROR_JOB> exit then
 
-  <Resources_Checked>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -149,14 +149,14 @@
 /*----------------------------------------------------------------------------*/
 : createCatalog.releaseResources ( pJob_CreateCatalog -- )
 
-  <Release_Resources>
+  >>am <Release_Resources>
 
   params| pJob_CreateCatalog  |
 
   tp: createCatalog.releaseResources
   //"releaseResources received" .
 
-  <Resources_Released>
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/

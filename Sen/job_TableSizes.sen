@@ -126,7 +126,7 @@
 /*----------------------------------------------------------------------------*/
 : tableSizes.checkResources ( Job_TableSizes -- )
 
-  <Check_Resources>
+  >>am <Check_Resources>
 
   params| pJob_TableSizes  |
 
@@ -146,7 +146,7 @@
   // should be in the tables folder
   checkInTables not if pJob_TableSizes <ERROR_JOB> exit then
 
-  <Resources_Checked>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -154,14 +154,14 @@
 /*----------------------------------------------------------------------------*/
 : tableSizes.releaseResources ( Job_SizeTable -- )
 
-  <Release_Resources>
+  >>am <Release_Resources>
 
   params| pJob_SizeTable  |
 
   tp: sizeTable.releaseResources
   //releaseResources received" .
 
-  <Resources_Released>
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/

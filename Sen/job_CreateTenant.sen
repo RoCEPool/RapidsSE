@@ -111,7 +111,7 @@
 /*----------------------------------------------------------------------------*/
 : createTenant.checkResources ( pJob_CreateTenant -- )
 
-  <Check_Resources>
+  >>am <Check_Resources>
 
   params| pJob_CreateTenant  |
 
@@ -136,7 +136,7 @@
   pJob_CreateTenant job.objectName@
   checkMakeTenant not if pJob_CreateTenant <ERROR_JOB> exit then
 
-  <Resources_Checked>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -144,14 +144,14 @@
 /*----------------------------------------------------------------------------*/
 : createTenant.releaseResources ( pJob_CreateTenant -- )
 
-  <Release_Resources>
+  >>am <Release_Resources>
 
   params| pJob_CreateTenant  |
 
   tp: createTenant.releaseResources
   //releaseResources received" .
 
-  <Resources_Released>
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/

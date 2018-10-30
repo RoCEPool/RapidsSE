@@ -47,7 +47,7 @@
 /*----------------------------------------------------------------------------*/
 : insertRow.checkResources ( pJob_InsertRow -- )
 
-  <Check_Resources>
+  >>am <Check_Resources>
 
   params| pJob_InsertRow  |
 
@@ -88,7 +88,7 @@
 
   checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> exit then
 
-  <Resources_Checked>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -96,14 +96,14 @@
 /*----------------------------------------------------------------------------*/
 : insertRow.releaseResources ( pJob_InsertRow -- )
 
-  <Release_Resources>
+  >>am <Release_Resources>
 
   params| pJob_InsertRow  |
 
   tp: insertRow.releaseResources
   //releaseResources received" .
 
-  <Resources_Released>
+  <<am <Resources_Released>
 ;
 
 /*============================================================================*/

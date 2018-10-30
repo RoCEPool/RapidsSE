@@ -218,7 +218,7 @@
 /*----------------------------------------------------------------------------*/
 : createIndex.checkResources ( Job_CreateIndex -- )
 
-  <Check_Resources>
+  >>am <Check_Resources>
 
   params| pJob_CreateIndex  |
   0 0 locals| sTableNm sIndexNm |
@@ -243,7 +243,7 @@
   // check ok to make index
   pJob_CreateIndex checkMakeIndex not if pJob_CreateIndex <ERROR_JOB> exit then
 
-  <Resources_Checked>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -251,14 +251,14 @@
 /*----------------------------------------------------------------------------*/
 : createIndex.releaseResources ( Job_CreateIndex -- )
 
-  <Release_Resources>
+  >>am <Release_Resources>
 
   params| pJob_CreateIndex  |
 
   tp: createIndex.releaseResources
   //"releaseResources received" .
 
-  <Resources_Released>
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/

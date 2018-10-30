@@ -163,7 +163,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTable.checkResources ( Job_DropTable -- )
 
-  <Check_Resources>
+  >>am <Check_Resources>
 
   params| pJob_DropTable  |
 
@@ -184,7 +184,7 @@
   pJob_DropTable job.objectName@
   checkRemoveTable not if pJob_DropTable <ERROR_JOB> exit then
 
-  <Resources_Checked>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -192,14 +192,14 @@
 /*----------------------------------------------------------------------------*/
 : dropTable.releaseResources ( Job_DropTable -- )
 
-  <Release_Resources>
+  >>am <Release_Resources>
 
   params| pJob_DropTable  |
 
   tp: dropTable.releaseResources
   //releaseResources received" .
 
-  <Resources_Released>
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -102,7 +102,7 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema.checkResources ( Job_DropSchema -- )
 
-  <Check_Resources>
+  >>am <Check_Resources>
 
   params| pJob_DropSchema  |
 
@@ -123,7 +123,7 @@
   pJob_DropSchema job.objectName@
   checkRemoveSchema not if pJob_DropSchema <ERROR_JOB> exit then
 
-  <Resources_Checked>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -131,14 +131,14 @@
 /*----------------------------------------------------------------------------*/
 : dropSchema.releaseResources ( Job_DropSchema -- )
 
-  <Release_Resources>
+  >>am <Release_Resources>
 
   params| pJob_DropSchema  |
 
   tp: dropSchema.releaseResources
   //releaseResources received" .
 
-  <Resources_Released>
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/

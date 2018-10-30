@@ -102,7 +102,7 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant.checkResources ( Job_DropTenant -- )
 
-  <Check_Resources>
+  >>am <Check_Resources>
 
   params| pJob_DropTenant  |
 
@@ -123,7 +123,7 @@
   pJob_DropTenant job.objectName@
   checkRemoveTenant not if pJob_DropTenant <ERROR_JOB> exit then
 
-  <Resources_Checked>
+  <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -131,14 +131,14 @@
 /*----------------------------------------------------------------------------*/
 : dropTenant.releaseResources ( Job_DropTenant -- )
 
-  <Release_Resources>
+  >>am <Release_Resources>
 
   params| pJob_DropTenant  |
 
   tp: dropTenant.releaseResources
   //releaseResources received" .
 
-  <Resources_Released>
+  <<am <Resources_Released>
 ;
 
 /*----------------------------------------------------------------------------*/
