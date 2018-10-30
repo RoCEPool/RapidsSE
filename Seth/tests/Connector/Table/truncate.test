@@ -19,7 +19,7 @@ success
 
 loop 10 {
     
-ESCAPE CONNECTOR se 'load customer' with file='/tpch/customer.tbl' , terminator = ',\n', node = 'Node1' ;
+ESCAPE CONNECTOR se 'load customer' with file='/TPCH/SF1/customer.tbl' , delimiter = '|', node = 'Node1' ;
 failure contains: 'Success'
 
 select * from rapidsse.public.customer;

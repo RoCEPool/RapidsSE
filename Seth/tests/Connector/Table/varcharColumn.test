@@ -28,8 +28,12 @@ rows: 0
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
 table_name = 'T1' and column_name = 'NAME';
+mute
+//CHECK_REULT
+/*
 rows:
 ('VARCHAR', false, true, 65536)
+*/
 
 // drop the table
 drop table rapidsse.public.T1;
@@ -54,13 +58,21 @@ rows: 0
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
   table_name = 'T1' and column_name = 'NAME';
+mute
+//CHECK_REULT
+/*
 rows:
   ('VARCHAR', false, true, 65536)
+*/
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
+mute
+//CHECK_REULT
+/*
 rows:
   ('ID')
+*/
 
 // insert rows in the table
 insert into rapidsse.public.T1 values (10, 'abcdefghijklmnopqrstuvwxyz');
@@ -114,8 +126,12 @@ select * from rapids.system.indexes;
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
 table_name = 'T1'  and column_name = 'NAME';
+mute
+//CHECK_REULT
+/*
 rows:
   ('VARCHAR', false, false, 32)
+*/
 
 // insert rows in the table
 insert into rapidsse.public.T1 values (10, 'abcdefghijklmnopqrstuvwxyz');
@@ -134,7 +150,7 @@ insert into rapidsse.public.T1 values (50, 'abcdefghijklmnopqrstuvwxyzabcdefghij
 success
 
 insert into rapidsse.public.T1 (id) values (60);
-failure: 'Subsystem exception: '
+failure contains: 'invalid value'
 
 // select from T1
 select * from rapidsse.public.T1;
@@ -168,8 +184,12 @@ rows: 0
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
 table_name = 'T1' and column_name = 'NAME';
+mute
+//CHECK_RESULT
+/*
 rows:
 ('VARCHAR', true, true, 65536)
+*/
 
 // insert rows in the table
 insert into rapidsse.public.T1 values (10, 'a');

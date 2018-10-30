@@ -74,6 +74,10 @@ fetch vchTbl "vch_col2 'one zero' =";
 rows:
   (10,'one zero','110',0,null)
 
+fetch vchTbl "vch_col5 'abc' =";
+rows:
+(16,'abcdefghij',116,6,'abc')
+
 // drop the table
 drop table VchTbl;
 success

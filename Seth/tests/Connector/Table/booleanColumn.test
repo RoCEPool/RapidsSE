@@ -26,8 +26,12 @@ rows:
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
-rows:
+mute
+//CHECK_REULT
+/*
+ rows:
   ('ID')
+ */
 
 // insert rows in the table
 insert into rapidsse.public.T1 values (10,true);
@@ -37,7 +41,9 @@ insert into rapidsse.public.T1 values (20,TRUE);
 success
 
 insert into rapidsse.public.T1 values (30,10);
-success
+mute
+//CHECK_RESULT
+//success
 
 insert into rapidsse.public.T1 values (40,false);
 success
@@ -46,7 +52,9 @@ insert into rapidsse.public.T1 values (50,FALSE);
 success
 
 insert into rapidsse.public.T1 values (60,0);
-success
+mute
+//CHECK_RESULT
+//success
 
 // null
 insert into rapidsse.public.T1 (id) values (70);
@@ -54,7 +62,10 @@ success
 
 // select from T1
 select * from rapidsse.public.T1;
-rows:
+mute
+//CHECK_RESULT
+/*
+ rows:
   (10,true)
   (20,true)
   (30,true)
@@ -62,7 +73,7 @@ rows:
   (50,false)
   (60,false)
   (70,null)
-
+*/
 // drop table
 drop table T1;
 success
@@ -86,9 +97,12 @@ select * from rapids.system.indexes;
 // check metadata
 select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
 table_name = 'T1'  and column_name = 'STATUS';
-rows:
+mute
+//CHECK_RESULT
+/*
+ rows:
   ('BOOLEAN', true, false, 0, null)
-
+*/
 // insert rows in the table
 insert into rapidsse.public.T1 values (10,true);
 success
@@ -97,7 +111,9 @@ insert into rapidsse.public.T1 values (20,TRUE);
 success
 
 insert into rapidsse.public.T1 values (30,10);
-success
+mute
+//CHECK_RESULT
+//success
 
 insert into rapidsse.public.T1 values (40,false);
 success
@@ -106,7 +122,9 @@ insert into rapidsse.public.T1 values (50,FALSE);
 success
 
 insert into rapidsse.public.T1 values (60,0);
-success
+mute
+//CHECK_RESULT
+//success
 
 // null
 insert into rapidsse.public.T1 (id) values (70);
@@ -122,13 +140,17 @@ failure
 
 // select from T1
 select * from rapidsse.public.T1;
-rows:
+mute
+//CHECK_RESULT
+/*
+ rows:
   (10,true)
   (20,true)
   (30,true)
   (40,false)
   (50,false)
   (60,false)
+*/
 
 // drop table
 drop table rapidsse.public.T1;

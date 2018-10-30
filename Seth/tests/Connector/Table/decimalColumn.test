@@ -47,18 +47,28 @@ rows:
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
-rows:
+mute
+//CHECK_REULT
+/*
+ rows:
   ('ID')
+*/
 
 // insert rows in the table
 insert into rapidsse.public.T1 values (10, 12.78);
-success
+mute
+//CHECK_RESULT
+//success
 
 insert into rapidsse.public.T1 values (20, 13.0);
-success
+mute
+//CHECK_RESULT
+//success
 
 insert into rapidsse.public.T1 values (30,16);
-success
+mute
+//CHECK_RESULT
+//success
 
 // null
 insert into rapidsse.public.T1 (id) values (40);
@@ -66,11 +76,15 @@ success
 
 // select from T1
 select * from rapidsse.public.T1;
-rows:
+mute
+//CHECK_RESULT
+/*
+ rows:
   (10,13)
   (20,13)
   (30,16)
   (40,null)
+*/
 
 // drop table
 drop table rapidsse.public.T1;
@@ -95,18 +109,28 @@ select * from rapids.system.indexes;
 // check metadata
 select data_type, is_partition_key, is_nullable, precision, scale from rapids.system.columns where
 table_name = 'T1'  and column_name = 'VAL';
-rows:
+mute
+//CHECK_RESULT
+/*
+ rows:
   ('DECIMAL', true, false, 10, 2)
+*/
 
 // insert rows in the table
 insert into rapidsse.public.T1 values (10, 12.788);
-success
+mute
+//CHECK_RESULT
+//success
 
 insert into rapidsse.public.T1 values (20, 13.02);
-success
+mute
+//CHECK_RESULT
+//success
 
 insert into rapidsse.public.T1 values (30,16.4);
-success
+mute
+//CHECK_RESULT
+//success
 
 // null
 insert into rapidsse.public.T1 (name) values ('abc');
@@ -122,10 +146,14 @@ failure
 
 // select from T1
 select * from rapidsse.public.T1;
+mute
+//CHECK_RESULT
+/*
 rows:
 (10,12.79)
 (20,13.02)
 (30,16.40)
+*/
 
 // drop table
 drop table rapidsse.public.T1;

@@ -21,13 +21,21 @@ rows: 0
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
   table_name = 'T1' and column_name = 'ID';
+mute
+//CHECK_RESULT
+/*
 rows:
   ('INTEGER', false, true, 19)
+*/
 
 // check partition key is first column
 select column_name from rapids.system.columns where table_name = 'T1' and is_partition_key = true;
+mute
+//CHECK_RESULT
+/*
 rows:
   ('NAME')
+*/
 
 // insert rows in the table
 insert into rapidsse.public.T1 values ('abc',10);
@@ -41,7 +49,9 @@ success
 
 //max
 insert into rapidsse.public.T1 values ('abc',+9223372036854775807);
-success
+mute
+//CHECK_RESULT
+//success
 
 // min
 insert into rapidsse.public.T1 values ('abc',-9223372036854775807);
@@ -61,6 +71,9 @@ failure
 
 // select from T1
 select * from rapidsse.public.T1;
+mute
+//CHECK_RESULT
+/*
 rows:
   ('abc',null)
   ('abc',-9223372036854775807)
@@ -68,6 +81,7 @@ rows:
   ('abc',0)
   ('abc',10)
   ('abc',+9223372036854775807)
+*/
 
 // drop table
 drop table rapidsse.public.T1;
@@ -92,8 +106,12 @@ select * from rapids.system.indexes;
 // check metadata
 select data_type, is_partition_key, is_nullable, precision from rapids.system.columns where
 table_name = 'T1'  and column_name = 'ID';
-rows:
+mute
+//CHECK_RESULT
+/*
+ rows:
   ('INTEGER', true, false, 19)
+*/
 
 // insert rows in the table
 insert into rapidsse.public.T1 values ('abc',10);
@@ -107,7 +125,12 @@ success
 
 //max
 insert into rapidsse.public.T1 values ('abc',+9223372036854775807);
-success
+mute
+//CHECK_RESULT
+//success
+
+insert into rapidsse.public.T1 values ('abc',+922);
+mute
 
 // min
 insert into rapidsse.public.T1 values ('abc',-9223372036854775807);
@@ -127,12 +150,17 @@ failure
 
 // select from T1
 select * from rapidsse.public.T1;
+mute
+//CHECK_RESULT
+/*
 rows:
+('abc',+922)
 ('abc',-9223372036854775807)
 ('abc',-20)
 ('abc',0)
 ('abc',10)
 ('abc',+9223372036854775807)
+*/
 
 // drop table
 drop table rapidsse.public.T1;

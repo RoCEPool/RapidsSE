@@ -12,7 +12,7 @@ rows:
 ('rapidsse', 'public', 'T1', true)
 
 // create table only if it does not exits
-create table if not exists T1 (c1 integer);
+create table if not exists rapidsse.public.T1 (c1 integer);
 success;
 
 // check existence of table
