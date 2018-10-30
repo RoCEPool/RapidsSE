@@ -296,7 +296,8 @@ void RapidsSE::vOpenActivityMap(void)
 {
   if (gxArguments.m_bActivityMap) {
     new ActivityMap;
-    ActivityMap::vMark(0,"ActivityMap opened"_Stz);
+    //ActivityMap::vMark(0,"ActivityMap opened"_Stz);
+    ActivityMap::vMark(0,gxArguments.m_sWelcome);
   }
 }
 
@@ -456,15 +457,17 @@ void RapidsSE::vPrintWelcome(void)
 #else
   aRelDbg = "release"_Stz;
 #endif
-  
+
+  gxArguments.m_sWelcome.vSprint("RapidsSE v%s (%s %s -- %s) pid %lld"_Stz,
+        RAPIDSSE_VERSION_STRING,
+        __DATE__,
+        __TIME__,
+        aRelDbg,
+        Process::iGetPid()
+        );
+
   if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus)
-    vInfo("RapidsSE v%s (%s %s -- %s) pid %lld\n"_Stz,
-          RAPIDSSE_VERSION_STRING,
-          __DATE__,
-          __TIME__,
-          aRelDbg,
-          Process::iGetPid()
-          );
+    vInfo("%s\n"_Stz,gxArguments.m_sWelcome.aStr());
   
   if (gxArguments.m_bVerbose) {
 #ifdef MUNGE

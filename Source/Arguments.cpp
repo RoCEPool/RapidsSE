@@ -24,6 +24,9 @@ Arguments::Arguments(void)
   m_nJumboTook    = C_JUMBO_RATIO * m_nJumboBuffers;
   m_iJumboSize    = m_nJumboTook * C_SIZE_POOL_BUFFER;
 
+  // welcome
+  m_sWelcome = "<none"_Stz;
+  
   // configuration
 #ifdef __APPLE__
   m_sCommandsDir  = "../../../../Commands"_Stz;

@@ -9,6 +9,9 @@ namespace StorageEngine
   {
   public:
   
+    // welcome
+    s256  m_sWelcome;      // the welcome text
+  
     // configuration
     s256  m_sCommandsDir;  // commands dir
     i8    m_nJumboBuffers; // number of jumbo buffers
