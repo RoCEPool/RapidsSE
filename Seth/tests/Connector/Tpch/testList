@@ -1,10 +1,10 @@
-customerInsSel.test
-lineitemInsSel.test
+//customerInsSel.test
+//lineitemInsSel.test
 nationInsSel.test
 ordersInsSel.test
 partInsSel.test
 partSuppInsSel.test
 regionInsSel.test
-supplierInsSel.test
-tpchLoad.test
-tpchQueries.test
+//supplierInsSel.test
+//tpchLoop.test
+//tpchLoopInsSel.test

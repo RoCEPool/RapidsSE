@@ -2,7 +2,7 @@
 -- tpch insert-select tests (SF1)
 -------------------------------------------------------------------------------
 
-create table partsupp1 (
+create table rapidsse.public.partsupp1 (
 PS_PARTKEY      INTEGER NOT NULL,
 PS_SUPPKEY      INTEGER NOT NULL,
 PS_AVAILQTY     INTEGER NOT NULL,
@@ -11,10 +11,10 @@ PS_COMMENT      VARCHAR(199) NOT NULL
 );
 success
 
-ESCAPE CONNECTOR se 'load partsupp1' with file='/tpch/partsupp.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load partsupp1' with file='/TPCH/SF1/partsupp.tbl' , node = 'Node1' , delimiter = '|';
 failure contains: 'Success'
 
-create table partsupp2 (
+create table rapidsse.public.partsupp2 (
 PS_PARTKEY      INTEGER NOT NULL,
 PS_SUPPKEY      INTEGER NOT NULL,
 PS_AVAILQTY     INTEGER NOT NULL,
@@ -23,24 +23,24 @@ PS_COMMENT      VARCHAR(199) NOT NULL
 );
 success
 
-insert into partsupp2 select * from partsupp1;
+insert into rapidsse.public.partsupp2 select * from partsupp1;
 success
 
-select * from partsupp2;
+select * from rapidsse.public.partsupp2;
 rows: 800000
 
-drop table partsupp1;
+drop table rapidsse.public.partsupp1;
 success
 
-drop table partsupp2;
+drop table rapidsse.public.partsupp2;
 success
 
 CLEANUP {
   
-  drop table partsupp1;
+  drop table rapidsse.public.partsupp1;
   mute
   
-  drop table partsupp2;
+  drop table rapidsse.public.partsupp2;
   mute
   
   bye;

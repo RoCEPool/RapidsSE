@@ -3,14 +3,24 @@
 --------------------------------------------------------------------------------
 
 // Logging a message
-LOG 'Running tpchQueries2 test in a loop.';
+LOG 'Running tpchQueries test in a loop.';
 
-LOOP 50  {
+LOOP 1 {
+
+//------------------------------------------------------------------------------
+LOG 'Create tpch schema...';
+INCLUDE 'tpchSchemaCreate.test';
+
+//------------------------------------------------------------------------------
+LOG 'Loading tpch data...';
+INCLUDE 'tpchLoad.test';
 
 //------------------------------------------------------------------------------
 LOG 'Running tpch queries...';
-INCLUDE 'tpchQueries2.test';
+INCLUDE 'tpchQueries.test';
 
+//------------------------------------------------------------------------------
+LOG 'Dropping tpch schema...';
 INCLUDE 'tpchSchemaDrop.test';
 
 } -- end of llop

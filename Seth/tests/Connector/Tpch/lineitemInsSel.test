@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------
 
 loop 1 {
-create table lineitem1 (
+create table rapidsse.public.lineitem1 (
   L_ORDERKEY      INTEGER NOT NULL,
   L_PARTKEY       INTEGER NOT NULL,
   L_SUPPKEY       INTEGER NOT NULL,
@@ -23,19 +23,19 @@ create table lineitem1 (
 );
 success
 
-CREATE INDEX lineitem_idx1 ON lineitem1(l_partkey);
+CREATE INDEX lineitem_idx1 ON rapidsse.public.lineitem1(l_partkey);
 success
 
-CREATE INDEX lineitem_idx2 ON lineitem1(l_shipdate);
+CREATE INDEX lineitem_idx2 ON rapidsse.public.lineitem1(l_shipdate);
 success
 
-CREATE INDEX lineitem_idx3 ON lineitem1(l_suppkey);
+CREATE INDEX lineitem_idx3 ON rapidsse.public.lineitem1(l_suppkey);
 success
 
-ESCAPE CONNECTOR se 'load lineitem1' with file='/tpch/lineitem.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load lineitem1' with file='/TPCH/SF1/lineitem.tbl' , node = 'Node1' , delimiter = '|';
 failure contains: 'Success'
 
-create table lineitem2 (
+create table rapidsse.public.lineitem2 (
   L_ORDERKEY      INTEGER NOT NULL,
   L_PARTKEY       INTEGER NOT NULL,
   L_SUPPKEY       INTEGER NOT NULL,
@@ -55,35 +55,35 @@ create table lineitem2 (
 );
 success
 
-CREATE INDEX lineitem_idx1 ON lineitem2(l_partkey);
+CREATE INDEX lineitem_idx1 ON rapidsse.public.lineitem2(l_partkey);
 success
 
-CREATE INDEX lineitem_idx2 ON lineitem2(l_shipdate);
+CREATE INDEX lineitem_idx2 ON rapidsse.public.lineitem2(l_shipdate);
 success
 
-CREATE INDEX lineitem_idx3 ON lineitem2(l_suppkey);
+CREATE INDEX lineitem_idx3 ON rapidsse.public.lineitem2(l_suppkey);
 success
 
-insert into lineitem2 select * from lineitem1;
+insert into rapidsse.public.lineitem2 select * from rapidsse.public.lineitem1;
 success
 
-select * from lineitem2;
+select * from rapidsse.public.lineitem2;
 rows: 6001215
 
-drop table lineitem1;
+drop tablerapidsse.public. lineitem1;
 success
 
-drop table lineitem2;
+drop table rapidsse.public.lineitem2;
 success
 
 }
 
 CLEANUP {
   
-  drop table lineitem1;
+  drop table rapidsse.public.lineitem1;
   mute
   
-  drop table lineitem2;
+  drop table rapidsse.public.lineitem2;
   mute
   
   bye;

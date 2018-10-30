@@ -2,7 +2,7 @@
 -- tpch insert-select tests (SF1)
 -------------------------------------------------------------------------------
 
-create table nation1 (
+create table rapidsse.public.nation1 (
 N_NATIONKEY       INTEGER NOT NULL,
 N_NAME            VARCHAR(25) NOT NULL,
 N_REGIONKEY       INTEGER NOT NULL,
@@ -10,7 +10,7 @@ N_COMMENT         VARCHAR(152)
 );
 success
 
-create table nation2 (
+create table rapidsse.public.nation2 (
 N_NATIONKEY       INTEGER NOT NULL,
 N_NAME            VARCHAR(25) NOT NULL,
 N_REGIONKEY       INTEGER NOT NULL,
@@ -18,27 +18,27 @@ N_COMMENT         VARCHAR(152)
 );
 success
 
-ESCAPE CONNECTOR se 'load nation1' with file='/tpch/nation.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load nation1' with file='/TPCH/SF1/nation.tbl' , node = 'Node1', delimiter = '|' ;
 failure contains: 'Success'
 
-insert into nation2 select * from nation1;
+insert into rapidsse.public.nation2 select * from nation1;
 success
 
-select * from nation2;
+select * from rapidsse.public.nation2;
 rows: 25
 
-drop table nation1;
+drop table rapidsse.public.nation1;
 success
 
-drop table nation2;
+drop table rapidsse.public.nation2;
 success
 
 CLEANUP {
   
-  drop table nation1;
+  drop table rapidsse.public.nation1;
   mute
   
-  drop table nation2;
+  drop table rapidsse.public.nation2;
   mute
   
   bye;

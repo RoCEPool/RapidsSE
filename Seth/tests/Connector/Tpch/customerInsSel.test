@@ -14,7 +14,7 @@ C_COMMENT       VARCHAR(117) NOT NULL
 );
 success
 
-ESCAPE CONNECTOR se 'load customer1' with file='/TPCH/SF1/customer.tbl' , terminator = ',\n', node = 'Node1' ;
+ESCAPE CONNECTOR se 'load customer1' with file='/TPCH/SF1/customer.tbl' , delimiter = '|', node = 'Node1' ;
 failure contains: 'Success'
 
 create table rapidsse.public.customer2 (

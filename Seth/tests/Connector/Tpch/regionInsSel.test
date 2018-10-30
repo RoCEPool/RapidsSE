@@ -2,47 +2,47 @@
 -- tpch insert-select tests (SF1)
 -------------------------------------------------------------------------------
 
-create table region1 (
+create table rapidsse.public.region1 (
 R_REGIONKEY       INTEGER NOT NULL,
 R_NAME            VARCHAR(25) NOT NULL,
 R_COMMENT         VARCHAR(152)
 );
 success
 
-create index idx1 on region1(R_REGIONKEY);
+create index idx1 on rapidsse.public.region1(R_REGIONKEY);
 success
 
-ESCAPE CONNECTOR se 'load region1' with file='/tpch/region.tbl' , node = 'Node1' ;
+ESCAPE CONNECTOR se 'load region1' with file='/TPCH/SF1/region.tbl' , node = 'Node1' , delimiter = '|';
 failure contains: 'Success'
 
-create table region2 (
+create table rapidsse.public.region2 (
 R_REGIONKEY       INTEGER NOT NULL,
 R_NAME            VARCHAR(25) NOT NULL,
 R_COMMENT         VARCHAR(152)
 );
 success
 
-create index idx1 on region2(R_REGIONKEY);
+create index idx1 on rapidsse.public.region2(R_REGIONKEY);
 success
 
-insert into region2 select * from region1;
+insert into rapidsse.public.region2 select * from region1;
 success
 
-select * from region2;
+select * from rapidsse.public.region2;
 rows: 5
 
-drop table region1;
+drop table rapidsse.public.region1;
 success
 
-drop table region2;
+drop table rapidsse.public.region2;
 success
 
 CLEANUP {
 
-  drop table region1;
+  drop table rapidsse.public.region1;
   mute
 
-  drop table region2;
+  drop table rapidsse.public.region2;
   mute
 
   bye;
