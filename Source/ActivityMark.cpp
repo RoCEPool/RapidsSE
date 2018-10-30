@@ -75,15 +75,16 @@ void ActivityMark::vInit(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
-  m_iTick = -1;
+  m_iTick    = -1;
   m_aNode[0] = '\0';
+  m_iJobId   = -1;
   m_aMark[0] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
 /* write                                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMark::vWrite(char* aMark)
+void ActivityMark::vWrite(i8 iJobId, char* aMark)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
@@ -93,6 +94,8 @@ void ActivityMark::vWrite(char* aMark)
                    gpAttachMap->m_pGrid->m_pThisNode->aNodeName()->aChar(),
                    sizeof(m_aNode));
   m_aNode[sizeof(m_aNode) - 1] = '\0';
+  
+  m_iJobId = iJobId;
 
   StrLib::vCopyLen(m_aMark,aMark,sizeof(m_aMark));
   m_aMark[sizeof(m_aMark) - 1] = '\0';
@@ -105,7 +108,11 @@ void ActivityMark::vDump(File* pFile)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
-  pFile->vPrint("%lld,%s,%s\n"_Stz,m_iTick,m_aNode,m_aMark);
+  pFile->vPrint("%lld,%s,%lld,%s\n"_Stz,
+                m_iTick,
+                m_aNode,
+                m_iJobId,
+                m_aMark);
 }
 
 /*----------------------------------------------------------------------------*/

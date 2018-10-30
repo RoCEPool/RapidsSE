@@ -295,7 +295,7 @@ void RapidsSE::vKillPrev(void)
 void RapidsSE::vOpenActivityMap(void)
 {
   new ActivityMap;
-  ActivityMap::vMark("ActivityMap opened"_Stz);
+  ActivityMap::vMark(0,"ActivityMap opened"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
