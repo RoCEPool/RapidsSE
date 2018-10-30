@@ -147,10 +147,14 @@ void* ActivityMap::operator new(size_t iSize)
   if (0 == gpAttachMap->m_pGrid->m_iThisNode) {
     bResult = ActivityMap::bCreateNewShm();
     RASSERT(bResult);
+    if (gpAttachMap->m_bVerbose)
+      vTrace("ActivityMap %s created\n\n"_Stz,C_ACTIVITY_REGION);
   }
   else {
     bResult = ActivityMap::bOpenExistingShm();
     RASSERT(bResult);
+    if (gpAttachMap->m_bVerbose)
+      vTrace("ActivityMap %s opened\n\n"_Stz,C_ACTIVITY_REGION);
   }
   
   return gpActivityMap;
