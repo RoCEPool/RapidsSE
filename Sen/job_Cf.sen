@@ -39,7 +39,7 @@
   sFolderNm ".." str.equal if
     0 pathPick dic.name "tenants" str.equal not if pathDrop then
     savePath
-    <DONE_REQ>
+    <<am <DONE_REQ>
     exit
   then
 
@@ -50,7 +50,7 @@
   sFolderNm "~" str.equal if
     begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
     savePath
-    <DONE_REQ>
+    <<am <DONE_REQ>
     exit
   then
 
@@ -62,7 +62,7 @@
     pathDropAll
     attachmap::tenants@ execute pathPush
     savePath
-    <DONE_REQ>
+    <<am <DONE_REQ>
     exit
   then
 
@@ -73,7 +73,7 @@
   pCurrentFolder checkIsDic not if pJob_Cf <ERROR_REQUEST> exit then
   pCurrentFolder execute pathPush
   savePath
-  <DONE_REQ>
+  <<am <DONE_REQ>
 ;
 
 /*============================================================================*/

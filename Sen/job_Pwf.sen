@@ -60,7 +60,7 @@
   900 apiState::setPosition
 
   //"<<pwf_req" activityMap::mark
-  <<am <DONE_REQ>
+    <<am <DONE_REQ>
 ;
 
 /*============================================================================*/

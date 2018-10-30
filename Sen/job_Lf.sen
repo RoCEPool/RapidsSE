@@ -72,7 +72,7 @@
   grid::thisNode@ pJob_Lf job.response!
   iCount grid::thisNode@ pJob_Lf job.rowsProcessed!
 
-  <DONE_REQ>
+  <<am <DONE_REQ>
 ;
 
 /*============================================================================*/

@@ -41,7 +41,7 @@
   grid::thisNode@ pJob_ListPartitions job.response!
   1 grid::thisNode@ pJob_ListPartitions job.rowsProcessed!
 
-  <DONE_REQ>
+  <<am <DONE_REQ>
 ;
 
 /*============================================================================*/

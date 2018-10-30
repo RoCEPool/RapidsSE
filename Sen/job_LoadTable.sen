@@ -80,7 +80,7 @@
   // add job to originator list and distribute
   pJob_LoadTable job.distribute
 
-  <DONE_REQ>
+  <<am <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/

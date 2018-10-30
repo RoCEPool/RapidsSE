@@ -39,7 +39,7 @@
   // add job to originator jobs
   //pJob_InsertRow job.addOriginator
 
-  <DONE_REQ>
+  <<am <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -31,7 +31,7 @@
   // distribute the job
   pJob job.distribute
 
-  <DONE_REQ>
+  <<am <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
