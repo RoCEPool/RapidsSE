@@ -70,7 +70,7 @@ success
 select * from rapidsse.public.lineitem2;
 rows: 6001215
 
-drop tablerapidsse.public. lineitem1;
+drop table.rapidsse.public. lineitem1;
 success
 
 drop table rapidsse.public.lineitem2;

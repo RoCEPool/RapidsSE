@@ -7,7 +7,7 @@ refresh;
 success
 
 // create the tpch tables for insert-select
-create table customer2 (
+create table rapidsse.public.customer2 (
 C_CUSTKEY       INTEGER,
 C_NAME          VARCHAR(25),
 C_ADDRESS       VARCHAR(40),
@@ -16,12 +16,11 @@ C_PHONE         VARCHAR(15),
 C_ACCTBAL       DECIMAL(15,2),
 C_MKTSEGMENT    VARCHAR(10),
 C_COMMENT       VARCHAR(117),
-index customer_idx1 on c_custkey,
-index customer_idx2 on c_nationkey
+index customer_idx1 on c_custkey
 );
 success;
 
-create table lineitem2 (
+create table rapidsse.public.lineitem2 (
 L_ORDERKEY      INTEGER,
 L_PARTKEY       INTEGER,
 L_SUPPKEY       INTEGER,
@@ -38,13 +37,11 @@ L_RECEIPTDATE   TIMESTAMP,
 L_SHIPINSTRUCT  VARCHAR(25),
 L_SHIPMODE      VARCHAR(10),
 L_COMMENT       VARCHAR(44),
-index lineitem_idx1 on l_partkey,
-index lineitem_idx2 on l_shipdate,
-index lineitem_idx3 on l_suppkey
+index lineitem_idx2 on l_shipdate
 );
 success;
 
-create table nation2 (
+create table rapidsse.public.nation2 (
 N_NATIONKEY       INTEGER,
 N_NAME            VARCHAR(25),
 N_REGIONKEY       INTEGER,
@@ -52,7 +49,7 @@ N_COMMENT         VARCHAR(152)
 );
 success;
 
-create table orders2 (
+create table rapidsse.public.orders2 (
 O_ORDERKEY        INTEGER,
 O_CUSTKEY         INTEGER,
 O_ORDERSTATUS     VARCHAR(1),
@@ -62,11 +59,11 @@ O_ORDERPRIORITY   VARCHAR(15),
 O_CLERK           VARCHAR(15),
 O_SHIPPRIORITY    INTEGER,
 O_COMMENT         VARCHAR(79),
-index orders_idx1 on o_orderdate
+index orders_idx1 on o_orderkey
 );
 success;
 
-create table part2 (
+create table rapidsse.public.part2 (
 P_PARTKEY           INTEGER,
 P_NAME              VARCHAR(55),
 P_MFGR              VARCHAR(25),
@@ -80,7 +77,7 @@ index part_idx1 on p_brand
 );
 success;
 
-create table partsupp2 (
+create table rapidsse.public.partsupp2 (
 PS_PARTKEY      INTEGER,
 PS_SUPPKEY      INTEGER,
 PS_AVAILQTY     INTEGER,
@@ -90,14 +87,14 @@ index partsupp_idx1 on ps_suppkey
 );
 success;
 
-create table region2 (
+create table rapidsse.public.region2 (
 R_REGIONKEY       INTEGER,
 R_NAME            VARCHAR(25),
 R_COMMENT         VARCHAR(152)
 );
 success;
 
-create table supplier2 (
+create table rapidsse.public.supplier2 (
 S_SUPPKEY       INTEGER,
 S_NAME          VARCHAR(25),
 S_ADDRESS       VARCHAR(40),
@@ -105,8 +102,7 @@ S_NATIONKEY     INTEGER,
 S_PHONE         VARCHAR(15),
 S_ACCTBAL       DECIMAL(15,2),
 S_COMMENT       VARCHAR(101),
-index supplier_idx1 on s_suppkey,
-index supplier_idx2 on s_nationkey
+index supplier_idx1 on s_suppkey
 );
 success;
 

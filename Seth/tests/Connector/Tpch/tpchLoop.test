@@ -23,7 +23,7 @@ INCLUDE 'tpchQueries.test';
 LOG 'Dropping tpch schema...';
 INCLUDE 'tpchSchemaDrop.test';
 
-} -- end of llop
+} -- end of loop
 
 CLEANUP {
 
