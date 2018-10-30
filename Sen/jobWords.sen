@@ -72,11 +72,6 @@
 
   // remove the job from the participant jobs
   pJobParticipant job.removeParticipant
-
-  // delete the job
-  "delete_completed_job" find execute
-
-  ::task_exit
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -137,6 +132,9 @@
 /* done executing a can seed                                                  */
 /*----------------------------------------------------------------------------*/
 : <DONE_CAN> ( --  )
+
+  // delete the job
+  job::this "delete_completed_job" find execute
 
   ::task_exit
 ;
