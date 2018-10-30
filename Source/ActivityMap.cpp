@@ -176,7 +176,9 @@ void ActivityMap::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 ActivityMap::ActivityMap(void)
 {
-  
+  if (0 != gpAttachMap->m_pGrid->m_iThisNode)
+    return;
+
   // initialise mutex attribute
   MemLib::vZero(&m_xMutexAttr,sizeof(m_xMutexAttr),CN_SEMAPHORE);
   i8 iResult = pthread_mutexattr_init(&m_xMutexAttr);
