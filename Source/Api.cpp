@@ -82,6 +82,8 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     Job_EndInsert* pJob_EndInsert =
       static_cast<Job_EndInsert*>(pJobClass_EndInsert->pPreJob(pSession));
     
+    vApiJob(pSession,pJob_EndInsert);
+    
     // push the endInsert job on the stack
     pSession->m_pJobStack->vPushObject(pJob_EndInsert);
     
@@ -144,7 +146,7 @@ eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
   // validate the session
   VALIDATE_SESSION("a"_Stz);
   
-  // delete the jobs from teh sessions jobStack
+  // delete the jobs from the sessions jobStack
   vDeleteJobs(pSession);
   
   // mark session as exiting (any fetches still running will stop)
@@ -793,6 +795,8 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       ASSERT(pJobClass);
       Job* pJobInsertBuffer = pJobClass->pPreJob(pSession);
       Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobInsertBuffer);
+      
+      vApiJob(pSession,pJob_InsertBuffer);
       
       // set table name in InsertBuffer
       //vTrace("Setting tableName %s in InsertBuffer job\n"_Stz, pJob_InsertRow->m_sObjectName.aChar());
