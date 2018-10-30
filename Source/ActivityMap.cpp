@@ -241,9 +241,12 @@ void ActivityMap::vDumpMap(void)
 
   vLockMutex();
   
-  for (i8 i_Mark = 0; i_Mark < m_nMarks; i_Mark++) {
-    ActivityMark* aActivityMark = &m_xActivity[i_Mark];
-    aActivityMark->vDump(pActivityFile);
+  ActivityMark* aActivityMark = &m_xActivity[0];
+  aActivityMark->vDump(pActivityFile,0,nullptr);
+  
+  for (i8 i_Mark = 1; i_Mark < m_nMarks; i_Mark++) {
+    aActivityMark = &m_xActivity[i_Mark];
+    aActivityMark->vDump(pActivityFile,i_Mark,&m_xActivity[i_Mark - 1]);
   }
   
   vUnlockMutex();
@@ -294,7 +297,6 @@ ActivityMark* ActivityMap::aNewActivityMark(void)
   }
 
   vUnlockMutex();
-  
   return aActivityMark;
 }
 

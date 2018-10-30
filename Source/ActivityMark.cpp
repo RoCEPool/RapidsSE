@@ -104,12 +104,14 @@ void ActivityMark::vWrite(i8 iJobId, char* aMark)
 /*----------------------------------------------------------------------------*/
 /* dump to csv file                                                           */
 /*----------------------------------------------------------------------------*/
-void ActivityMark::vDump(File* pFile)
+void ActivityMark::vDump(File* pFile, i8 i_Mark, ActivityMark* pPrevMark)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
-  pFile->vPrint("%lld,%s,%lld,%s\n"_Stz,
+  pFile->vPrint("%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
+                i_Mark,
                 m_iTick,
+                pPrevMark ? m_iTick - pPrevMark->m_iTick : 0,
                 m_aNode,
                 m_iJobId,
                 m_aMark);
