@@ -121,6 +121,9 @@ Job::~Job(void)
   
   pthread_cond_destroy(&m_xThreadCond);
   pthread_condattr_destroy(&m_xThreadCondAttr);
+  
+  if (m_bMark)
+    ActivityMap::vMark(m_iJobId,"~Job"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

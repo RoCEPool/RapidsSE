@@ -287,7 +287,6 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of job
   
@@ -299,7 +298,7 @@ void Task::vSocketRecvObject(MP_Task mpTask)
     MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
     
     void* aBody = pAdd<void*>(pJob,sizeof(Object));
-    i8 nRemainingBytes = giClassSize[eClass] - sizeof(Object);
+    i8 nRemainingBytes = nObjectSize - sizeof(Object);
 
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,xSysCall);
     if (! bResult) {
@@ -310,7 +309,11 @@ void Task::vSocketRecvObject(MP_Task mpTask)
 
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
-
+    
+    if (pJob->m_bMark)
+      ActivityMap::vMark(pJob->m_iJobId,"recv %s from socket %llx"_Stz,
+                         aCN[eClass],pSocket);
+                         
     mpTask->m_pDataStack->vPushObject(pJob);
     mpTask->m_pDataStack->vPushInt((i8)1);
     EXIT();
@@ -672,9 +675,12 @@ void Task::vSocketSendObject(MP_Task mpTask)
   //vTrace("vSocketSendObject: send %p %lld %s %lld bytes\n"_Stz,
   //       pObject,eClass,aCN[eClass],nObjectSize);
   
-  if (eClass == CN_WORKINGBUFFER)
-    int iDebug = 1;
-
+  if (_bIsValidJob(eClass)) {
+    Job* pJob = _pJob(pObject);
+    if (pJob->m_bMark)
+      ActivityMap::vMark(pJob->m_iJobId,"send %s to socket %llx"_Stz,
+                         aCN[eClass],pSocket);
+  }
 
   SysCall xSysCall;
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, xSysCall);
