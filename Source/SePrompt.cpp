@@ -66,6 +66,9 @@ SePrompt::SePrompt(void)
   m_bNoWait  = false;
   m_bMarked  = false;
   m_bMarkAll = false;
+  
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++)
+    m_bMarkJob[i_Class] = false;
 
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -416,6 +419,26 @@ void SePrompt::vMarkAll(bool bMarkAll)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   m_bMarkAll = bMarkAll;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get markJob                                                               */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bMarkJob(eCN e_Class)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return m_bMarkJob[e_Class];
+}
+
+/*----------------------------------------------------------------------------*/
+/* set markall                                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vMarkJob(eCN e_Class, bool bMarkJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_bMarkJob[e_Class] = bMarkJob;
 }
 
 /*----------------------------------------------------------------------------*/
