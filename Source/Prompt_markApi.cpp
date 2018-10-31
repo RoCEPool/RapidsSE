@@ -49,6 +49,12 @@ bool Prompt::bPrompt_markApi(SePrompt* pPrompt)
   if (nTokens == 2) {
     aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
     
+    if (aTkn1->bSame("?"_Stz)) {
+      for (i8 i_Api = 1; i_Api < AC_ENUMS; i_Api++)
+        vTrace("  %s\n"_Stz,aAC[i_Api]);
+      return true;
+    }
+    
     if (aTkn1->bSame("all"_Stz)) {
       vTrace("MarkApiAll is currently : %s\n"_Stz,
              gpAttachMap->m_bMarkApiAll ? "on"_Stz : "off"_Stz);
