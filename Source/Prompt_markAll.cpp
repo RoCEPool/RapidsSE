@@ -29,18 +29,12 @@ bool Prompt::bPrompt_markAll(SePrompt* pPrompt)
   
     Stz* aArg = pPrompt->pTknVec()->pGet(1)->aText();
 
-    if (aArg->bSame("on"_Stz)   ||
-        aArg->bSame("1"_Stz)    ||
-        aArg->bSame("true"_Stz) ||
-        aArg->bSame("t"_Stz) ) {
+    if (aArg->bIsSomeTrue() ) {
       pPrompt->vMarkAll(true);
       return true;
     }
 
-    if (aArg->bSame("off"_Stz)   ||
-        aArg->bSame("0"_Stz)    ||
-        aArg->bSame("false"_Stz) ||
-        aArg->bSame("f"_Stz) ) {
+    if (aArg->bIsSomeFalse() ) {
       pPrompt->vMarkAll(false);
       return true;
     }
