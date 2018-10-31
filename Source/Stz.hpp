@@ -28,6 +28,8 @@ namespace Base
     void vCopyLen(Stz* aArg, i8 nBytes);
     bool bEqual(Stz* aArg);
     bool bIsNumeric(void);
+    bool bIsSomeFalse(void);
+    bool bIsSomeTrue(void);
     i8 iLength(void);
     char* aChar(void);
     bool bSame(Stz* aArg);

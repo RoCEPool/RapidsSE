@@ -114,16 +114,6 @@ bool Stz::bEqual(Stz* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bIsNumeric: test if this Stz is numeric                                    */
-/*----------------------------------------------------------------------------*/
-bool Stz::bIsNumeric(void)
-{
-  bool bNumeric = StrLib::bIsNumeric(aChar());
-  
-  return bNumeric;
-}
-
-/*----------------------------------------------------------------------------*/
 /* iLength: get length in bytes of arg (not including terminating null)       */
 /*----------------------------------------------------------------------------*/
 i8 Stz::iLength(void)
@@ -131,6 +121,50 @@ i8 Stz::iLength(void)
   i8 iLen = strlen(aChar());
   
   return iLen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsSomeFalse: test if this Stz is recognizable as a false                  */
+/*----------------------------------------------------------------------------*/
+bool Stz::bIsSomeFalse(void)
+{
+  if (bSame("off"_Stz)   ||
+      bSame("0"_Stz)     ||
+      bSame("false"_Stz) ||
+      bSame("f"_Stz)     ||
+      bSame("no"_Stz)    ||
+      bSame("n"_Stz)
+      )
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsSomeTrue: test if this Stz is recognizable as a true                    */
+/*----------------------------------------------------------------------------*/
+bool Stz::bIsSomeTrue(void)
+{
+  if (bSame("on"_Stz)   ||
+      bSame("1"_Stz)    ||
+      bSame("true"_Stz) ||
+      bSame("t"_Stz)    ||
+      bSame("yes"_Stz)  ||
+      bSame("y"_Stz)
+      )
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsNumeric: test if this Stz is numeric                                    */
+/*----------------------------------------------------------------------------*/
+bool Stz::bIsNumeric(void)
+{
+  bool bNumeric = StrLib::bIsNumeric(aChar());
+  
+  return bNumeric;
 }
 
 /*----------------------------------------------------------------------------*/
