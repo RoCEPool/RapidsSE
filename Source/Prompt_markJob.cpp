@@ -31,18 +31,29 @@ bool Prompt::bPrompt_markJob(SePrompt* pPrompt)
 
   i8 nTokens = pPrompt->pTknVec()->nTokens();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (nTokens == 1) {
+    
     for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++)
       if (pPrompt->bMarkJob((eCN)i_Class))
         vTrace("%s : %s\n"_Stz,
                aCN[i_Class],
                pPrompt->bMarkJob((eCN)i_Class) ? "on"_Stz : "off"_Stz);
+    
+    vTrace("MarkJobAll is currently : %s\n"_Stz,
+           pPrompt->bMarkAll() ? "on"_Stz : "off"_Stz);
 
     return true;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (nTokens == 2) {
     aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
+    if (aTkn1->bSame("all"_Stz)) {
+      vTrace("MarkJobAll is currently : %s\n"_Stz,
+             pPrompt->bMarkAll() ? "on"_Stz : "off"_Stz);
+      return true;
+    }
     pJobClass = JobClass::pFind(aTkn1, nullptr);
     if (pJobClass)
       vTrace("%s : %s\n"_Stz,
@@ -51,9 +62,19 @@ bool Prompt::bPrompt_markJob(SePrompt* pPrompt)
     return true;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (nTokens == 3) {
     aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
     aTkn2 = pPrompt->pTknVec()->pGet(2)->aText();
+    
+    if (aTkn1->bSame("all"_Stz)) {
+      if (aTkn2->bIsSomeTrue())
+        pPrompt->vMarkAll(true);
+      else
+      if (aTkn2->bIsSomeFalse())
+        pPrompt->vMarkAll(false);
+      return true;
+    }
     
     if (aTkn2->bIsSomeTrue()) {
       pJobClass = JobClass::pFind(aTkn1, nullptr);
@@ -77,6 +98,7 @@ bool Prompt::bPrompt_markJob(SePrompt* pPrompt)
     return true;
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (nTokens == 4) {
     aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
     aTkn2 = pPrompt->pTknVec()->pGet(2)->aText();
