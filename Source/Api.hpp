@@ -30,7 +30,9 @@ enum eAC // api call kind
   /* 14 */ AC_PoolOpen,
   /* 15 */ AC_SessionDelete,
   /* 16 */ AC_SessionInvalid,
-  /* 17 */ AC_SessionNew
+  /* 17 */ AC_SessionNew,
+  
+  /* 18 */ AC_ENUMS
 };
 
 static Stz* aAC[]
@@ -54,7 +56,7 @@ static Stz* aAC[]
   /* 15 */ "RapidsSE_SessionDelete"_Stz,
   /* 16 */ "RapidsSE_SessionInvalid"_Stz,
   /* 17 */ "RapidsSE_SessionNew"_Stz
-};
+  /* 18 */ "ENUMS"_Stz};
 
 extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel);

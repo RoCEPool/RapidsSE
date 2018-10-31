@@ -32,6 +32,8 @@ namespace System
     ~Time(void);
     
     void vSet(Since* pSince);
+    void vSetNowLocal(void);
+    void vSetNowUTC(void);
 
     void vAppendUtc(char** pz);
     bool bExtractUTC(char** ps);

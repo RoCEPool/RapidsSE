@@ -66,6 +66,8 @@ bool ActivityMap::bCreateNewShm(void)
 
   gpActivityMap = static_cast<ActivityMap*>(aAddr);
   
+  gpAttachMap->m_aActivityMap = gpActivityMap;
+  
   return true;
 }
 

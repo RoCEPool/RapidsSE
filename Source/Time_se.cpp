@@ -72,6 +72,46 @@ void Time::vSet(Since* pSince)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set as current local time                                                  */
+/*----------------------------------------------------------------------------*/
+void Time::vSetNowLocal(void)
+{
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+  
+  time_t t1 = time(0);   // get time now
+  struct tm * aLocalTime = localtime( & t1 );
+  
+  m_iYear   = aLocalTime->tm_year;
+  m_iMonth  = aLocalTime->tm_mon+1;
+  m_iDay    = aLocalTime->tm_mday;
+  m_iHour   = aLocalTime->tm_hour;
+  m_iMinute = aLocalTime->tm_min;
+  m_iSecond = aLocalTime->tm_sec;
+  m_iMicro  = 0;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* set as current UTC time                                                    */
+/*----------------------------------------------------------------------------*/
+void Time::vSetNowUTC(void)
+{
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+  
+  time_t t1 = time(0);   // get time now
+  struct tm * aLocalTime = localtime( & t1 );
+  
+  m_iYear   = aLocalTime->tm_year;
+  m_iMonth  = aLocalTime->tm_mon+1;
+  m_iDay    = aLocalTime->tm_mday;
+  m_iHour   = aLocalTime->tm_hour;
+  m_iMinute = aLocalTime->tm_min;
+  m_iSecond = aLocalTime->tm_sec;
+  m_iMicro  = 0;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* vAppendUtc: append given time into workspace                               */
 /*----------------------------------------------------------------------------*/
 void Time::vAppendUtc(char** pz)
