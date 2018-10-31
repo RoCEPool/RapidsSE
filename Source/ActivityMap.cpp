@@ -150,10 +150,20 @@ void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vNew(void)
 {
-  if (gxArguments.m_bActivityMap) {
-    new ActivityMap;
-    ActivityMap::vMark(0,gxArguments.m_sWelcome);
-  }
+  if (! gxArguments.m_bActivityMap)
+    return;
+  
+  new ActivityMap;
+  ActivityMap::vMark(0,gxArguments.m_sWelcome);
+
+  Time xTime;
+  xTime.vSetNowLocal();
+  
+  s32 sDate;
+  char* z = sDate.aChar();
+  
+  xTime.vAppendLocal(&z);
+  ActivityMap::vMark(0,sDate);
 }
 
 /*----------------------------------------------------------------------------*/
