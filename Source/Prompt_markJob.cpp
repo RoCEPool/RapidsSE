@@ -31,8 +31,15 @@ bool Prompt::bPrompt_markJob(SePrompt* pPrompt)
 
   i8 nTokens = pPrompt->pTknVec()->nTokens();
 
-  if (nTokens == 1)
+  if (nTokens == 1) {
+    for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++)
+      if (pPrompt->bMarkJob((eCN)i_Class))
+        vTrace("%s : %s\n"_Stz,
+               aCN[i_Class],
+               pPrompt->bMarkJob((eCN)i_Class) ? "on"_Stz : "off"_Stz);
+
     return true;
+  }
   
   if (nTokens == 2) {
     aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
