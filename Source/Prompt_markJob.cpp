@@ -49,11 +49,13 @@ bool Prompt::bPrompt_markJob(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (nTokens == 2) {
     aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
+    
     if (aTkn1->bSame("all"_Stz)) {
       vTrace("MarkJobAll is currently : %s\n"_Stz,
              pPrompt->bMarkAll() ? "on"_Stz : "off"_Stz);
       return true;
     }
+    
     pJobClass = JobClass::pFind(aTkn1, nullptr);
     if (pJobClass)
       vTrace("%s : %s\n"_Stz,
