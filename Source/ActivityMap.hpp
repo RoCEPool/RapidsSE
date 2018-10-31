@@ -5,7 +5,7 @@
 
 namespace Measurement
 {
-  static const i8 C_ACTIVITY_MARKS = 1024; // C_1M;
+  static const i8    C_ACTIVITY_MARKS  = 1024; // C_1M;
   static const char* C_ACTIVITY_REGION = "/SE_ActivityMap";
 
   class ActivityMap
@@ -33,6 +33,8 @@ namespace Measurement
   
   public:
     static void vMark(i8 iJobId, Stz* aFormat, ...);
+    static void vNew(void);
+    static void vOpen(void);
     static void vDump(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

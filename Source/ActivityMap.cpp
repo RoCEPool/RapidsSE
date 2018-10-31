@@ -126,6 +126,28 @@ void ActivityMap::vMark(i8 iJobId, Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new ActivityMap                                                            */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vNew(void)
+{
+  if (gxArguments.m_bActivityMap) {
+    new ActivityMap;
+    ActivityMap::vMark(0,gxArguments.m_sWelcome);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* open ActivityMap                                                           */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vOpen(void)
+{
+  if (gpAttachMap->m_aActivityMap) {
+    new ActivityMap;
+    ActivityMap::vMark(0,"Opened by Java thread"_Stz);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump ActivityMap                                                           */
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vDump(void)

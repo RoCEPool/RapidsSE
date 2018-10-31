@@ -294,11 +294,7 @@ void RapidsSE::vKillPrev(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vOpenActivityMap(void)
 {
-  if (gxArguments.m_bActivityMap) {
-    new ActivityMap;
-    //ActivityMap::vMark(0,"ActivityMap opened"_Stz);
-    ActivityMap::vMark(0,gxArguments.m_sWelcome);
-  }
+  ActivityMap::vNew();
 }
 
 /*----------------------------------------------------------------------------*/
