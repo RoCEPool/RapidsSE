@@ -85,6 +85,8 @@ namespace StorageEngine
     
     Formatters    m_xFormatters; // record formatters
   
+    bool          m_bMarkApi[AC_ENUMS];
+  
     // statistics counters
     i8            m_iSchEnqueueTask;
     i8            m_iSchEnqueueTaskWait;
