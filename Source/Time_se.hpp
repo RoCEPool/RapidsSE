@@ -35,6 +35,7 @@ namespace System
     void vSetNowLocal(void);
     void vSetNowUTC(void);
 
+    void vAppendLocal(char** pz);
     void vAppendUtc(char** pz);
     bool bExtractUTC(char** ps);
     

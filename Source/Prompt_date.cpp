@@ -21,22 +21,15 @@ PromptNote mPromptNote_date (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_date(SePrompt* pPrompt)
 {
-  Since xNow;
-  
-  xNow.vSet();
-
   Time xTime;
+  xTime.vSetNowLocal();
   
-  xTime.vSet(&xNow);
+  s32 sDate;
+  char* z = sDate.aChar();
   
-  vTrace("%lld/%02lld/%02lld %02lld:%02lld:%02lld (utc)\n"_Stz,
-         (i8)xTime.m_iYear + 1900,
-         (i8)xTime.m_iMonth,
-         (i8)xTime.m_iDay,
-         (i8)xTime.m_iHour,
-         (i8)xTime.m_iMinute,
-         (i8)xTime.m_iSecond
-         );
+  xTime.vAppendLocal(&z);
+
+  vTrace("%s\n"_Stz,sDate.aChar());
   
   return true;
 }

@@ -112,6 +112,55 @@ void Time::vSetNowUTC(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vAppendLocal: append given time into workspace                             */
+/*----------------------------------------------------------------------------*/
+void Time::vAppendLocal(char** pz)
+{
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+  
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  char* z = *pz;
+  
+  i8 iYear  = m_iYear + 1900;
+  i8 iMilli = DIV(m_iMicro,1000);
+  
+  StrLib::vAppendDecimal(&z,iYear);
+  StrLib::vAppendChar(&z,'-');
+  
+  if (m_iMonth < 10) StrLib::vAppendChar(&z,'0');
+  StrLib::vAppendDecimal(&z,m_iMonth);
+  StrLib::vAppendChar(&z,'-');
+  
+  if (m_iDay < 10) StrLib::vAppendChar(&z,'0');
+  StrLib::vAppendDecimal(&z,m_iDay);
+  StrLib::vAppendChar(&z,' ');
+  
+  if (m_iHour < 10) StrLib::vAppendChar(&z,'0');
+  StrLib::vAppendDecimal(&z,m_iHour);
+  StrLib::vAppendChar(&z,':');
+  
+  if (m_iMinute < 10) StrLib::vAppendChar(&z,'0');
+  StrLib::vAppendDecimal(&z,m_iMinute);
+  StrLib::vAppendChar(&z,':');
+  
+  if (m_iSecond < 10) StrLib::vAppendChar(&z,'0');
+  StrLib::vAppendDecimal(&z,m_iSecond);
+  
+//  StrLib::vAppendChar(&z,'.');
+//  if (iMilli < 100) StrLib::vAppendChar(&z,'0');
+//  if (iMilli < 10)  StrLib::vAppendChar(&z,'0');
+//  StrLib::vAppendDecimal(&z,iMilli);
+//  StrLib::vAppendChar(&z,'Z');
+  
+  StrLib::vAppendString(&z," (local)");
+
+  *z = '\0';
+  
+  *pz = z;
+}
+
+/*----------------------------------------------------------------------------*/
 /* vAppendUtc: append given time into workspace                               */
 /*----------------------------------------------------------------------------*/
 void Time::vAppendUtc(char** pz)
