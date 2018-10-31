@@ -169,12 +169,22 @@ void ActivityMap::vNew(void)
 /*----------------------------------------------------------------------------*/
 /* open ActivityMap                                                           */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vOpen(void)
+void ActivityMap::vOpenByApi(void)
 {
-  if (gpAttachMap->m_aActivityMap) {
-    new ActivityMap;
-    ActivityMap::vMark(0,"Opened by Java thread"_Stz);
-  }
+  if (! gpAttachMap->m_aActivityMap)
+    return;
+  
+  new ActivityMap;
+  ActivityMap::vMark(0,"Opened by API"_Stz);
+
+  Time xTime;
+  xTime.vSetNowLocal();
+  
+  s32 sDate;
+  char* z = sDate.aChar();
+  
+  xTime.vAppendLocal(&z);
+  ActivityMap::vMark(0,sDate);
 }
 
 /*----------------------------------------------------------------------------*/

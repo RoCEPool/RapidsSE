@@ -1057,7 +1057,7 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
     
     *ppInstance = gpAttachMap;
     
-    ActivityMap::vOpen();
+    ActivityMap::vOpenByApi();
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
