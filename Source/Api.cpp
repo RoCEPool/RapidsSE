@@ -14,10 +14,12 @@ extern ActivityMap* gpActivityMap;
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_CheckLibraryVersion"_Stz;
+  eAC  eApiCall = AC_CheckLibraryVersion;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
                                                                       // API ???
   Session* pSession = nullptr;
-  
-  Stz* aApiCall = "RapidsSE_CheckLibraryVersion"_Stz;
   
   try {
     TRACE_ENTRY_P1(pVersion);
@@ -54,12 +56,14 @@ eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_EndInsertJobs"_Stz;
+  eAC  eApiCall = AC_EndInsertJobs;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+  
   vApiCall(pSession,AC_EndInsertJobs);                               // API CALL
   vApiLocation(pSession,100);
 
   eEC eResult;
-  
-  Stz* aApiCall = "RapidsSE_EndInsertJobs"_Stz;
   
   try {
     
@@ -152,6 +156,8 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     
     vApiReturn(pSession);                                          // API RETURN
     vApiLocation(pSession,900);
+    
+    ActivityMap::vMark(0,"J< %s"_Stz,aApiCall);
     return EC_NONE;
   }
   catch (Error* pError) {
@@ -175,10 +181,13 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_EndJobs"_Stz;
+  eAC  eApiCall = AC_EndJobs;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+  
   vApiCall(pSession,AC_EndJobs);                                     // API CALL
   vApiLocation(pSession,100);
   
-  Stz* aApiCall = "RapidsSE_EndJobs"_Stz;
   eEC eResult;
   
   // trace entry
@@ -203,6 +212,10 @@ eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool bFromPrompt)
 {
+  Stz* aApiCall = "RapidsSE_pExecCmdStr"_Stz;
+  eAC  eApiCall = AC_ExecCmdStr;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
   vApiCall(pSession,AC_ExecCmdStr);                                  // API CALL
   vApiLocation(pSession,100);
 
@@ -328,10 +341,13 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
                             Stz* sCatalogName, Stz* sSchemaName,
                             void** ppJob, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_ExecuteCommand"_Stz;
+  eAC  eApiCall = AC_ExecuteCommand;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
   vApiCall(pSession,AC_ExecuteCommand);                              // API CALL
   vApiLocation(pSession,100);
 
-  Stz* aApiCall = "RapidsSE_ExecuteCommand"_Stz;
   eEC eResult;
   
   try {
@@ -412,10 +428,13 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuffer, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
+  eAC  eApiCall = AC_FetchNextBuffer;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
   vApiCall(pSession,AC_FetchNextBuffer);                             // API CALL
   vApiLocation(pSession,100);
 
-  Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
   eEC eResult;
   
   try {
@@ -497,12 +516,14 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_GetErrorMessage"_Stz;
+  eAC  eApiCall = AC_GetErrorMessage;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
   vApiCall(pSession,AC_GetErrorMessage);                             // API CALL
   vApiLocation(pSession,100);
 
   eEC eResult;
-  
-  Stz* aApiCall = "RapidsSE_GetErrorMessage"_Stz;
   
   try {
     // trace entry
@@ -546,10 +567,13 @@ eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, 
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_GetRow"_Stz;
+  eAC  eApiCall = AC_GetRow;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
   vApiCall(pSession,AC_GetRow);                                      // API CALL
   vApiLocation(pSession,100);
 
-  Stz* aApiCall = "RapidsSE_GetRow"_Stz;
   eEC eResult;
   
   // trace entry
@@ -615,10 +639,13 @@ eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_GetRowCount"_Stz;
+  eAC  eApiCall = AC_GetRowCount;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
   vApiCall(pSession,AC_GetRowCount);                                 // API CALL
   vApiLocation(pSession,100);
 
-  Stz* aApiCall = "RapidsSE_GetRowCount"_Stz;
   eEC eResult;
   
   // trace entry
@@ -651,10 +678,13 @@ eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTr
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_GetRowCountTableColumn"_Stz;
+  eAC  eApiCall = AC_GetRowCountTableColumn;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
   vApiCall(pSession,AC_GetRowCountTableColumn);                      // API CALL
   vApiLocation(pSession,100);
 
-  Stz* aApiCall = "RapidsSE_GetRowCountTableColumn"_Stz;
   eEC eResult;
   
   // trace entry
@@ -690,10 +720,13 @@ eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCo
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_GetRowTableColumn"_Stz;
+  eAC  eApiCall = AC_GetRowTableColumn;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
   vApiCall(pSession,AC_GetRowTableColumn);                           // API CALL
   vApiLocation(pSession,100);
 
-  Stz* aApiCall = "RapidsSE_GetRowTableColumn"_Stz;
   eEC eResult;
   
   // trace entry
@@ -741,13 +774,15 @@ eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void**
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_InsertRow"_Stz;
+  eAC  eApiCall = AC_InsertRow;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
   vApiCall(pSession,AC_InsertRow);                                   // API CALL
   vApiLocation(pSession,100);
 
-
   eEC eResult;
   
-  Stz* aApiCall = "RapidsSE_InsertRow"_Stz;
   
   try {
     
@@ -884,12 +919,14 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_LoadResult"_Stz;
+  eAC  eApiCall = AC_LoadResult;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
   vApiCall(pSession,AC_LoadResult);                                  // API CALL
   vApiLocation(pSession,100);
 
   eEC eResult;
-  
-  Stz* aApiCall = "RapidsSE_LoadResult"_Stz;
   
   try {
     // trace entry
@@ -954,8 +991,8 @@ eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pI
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
 {
-                                                                      // API ???
   Stz* aApiCall = "RapidsSE_PoolOpen"_Stz;
+                                                                      // API ???
   Session* pSession = nullptr;
   
   try {
@@ -1006,11 +1043,14 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
 {
+  Stz* aApiCall = "RapidsSE_SessionDelete"_Stz;
+  eAC  eApiCall = AC_SessionDelete;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
   vApiCall(pSession,AC_SessionDelete);                               // API CALL
   vApiLocation(pSession,100);
 
   eEC eResult;
-  Stz* aApiCall = "RapidsSE_SessionDelete"_Stz;
   
   try {
     // trace entry
@@ -1056,8 +1096,10 @@ eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE_SessionInvalid(int iError, i8 iTraceLevel)
 {
-                                                                      // API ???
   Stz* aApiCall = "RapidsSE_SessionInvalid"_Stz;
+  eAC  eApiCall = AC_SessionInvalid;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+                                                                      // API ???
   Session* pSession = nullptr;
   
   try {
@@ -1094,9 +1136,11 @@ bool RapidsSE_SessionInvalid(int iError, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel)
 {
-                                                                      // API ???
- eEC eResult;
   Stz* aApiCall = "RapidsSE_SessionNew"_Stz;
+  eAC  eApiCall = AC_SessionNew;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+                                                                      // API ???
+  eEC eResult;
   Session* pSession = nullptr;
   
   try {

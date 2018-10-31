@@ -126,6 +126,23 @@ void ActivityMap::vMark(i8 iJobId, Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* write an Activity mark for api call                                        */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
+{
+  if ( ! gpActivityMap )
+    return;
+  
+  va_list xArgs;
+  
+  va_start(xArgs,aFormat);
+  
+  gpActivityMap->vWriteMark(iJobId,aFormat,xArgs);
+  
+  va_end(xArgs);
+}
+
+/*----------------------------------------------------------------------------*/
 /* new ActivityMap                                                            */
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vNew(void)

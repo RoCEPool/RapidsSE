@@ -33,6 +33,7 @@ namespace Measurement
   
   public:
     static void vMark(i8 iJobId, Stz* aFormat, ...);
+    static void vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...);
     static void vNew(void);
     static void vOpen(void);
     static void vDump(void);
