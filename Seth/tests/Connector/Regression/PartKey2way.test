@@ -436,10 +436,9 @@ mute
 
 // Source file: ../qa/queries/PartKey2way/r2wayPart9.sql
 // Result file: ../qa/queries/PartKey2way/results/2wayPart9.res
+select sum(a.cola1), avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
 mute
 //CHECK_RESULT
-/*
- select sum(a.cola1), avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
-rows:
+/*rows:
   (125124, 252, 2, 500)
 */

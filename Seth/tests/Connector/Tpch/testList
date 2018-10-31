@@ -6,5 +6,5 @@
 //partSuppInsSel.test
 //regionInsSel.test
 //supplierInsSel.test
-//tpchLoop.test
+tpchLoop.test
 tpchLoopInsSel.test
