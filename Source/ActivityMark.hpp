@@ -24,10 +24,12 @@ namespace Measurement
     ActivityMark(void);
     ~ActivityMark(void);
   
+    static i8 iAsMicroseconds(i8 iTickDelta);
+  
     void vInit(void);
     void vWrite(i8 iJobId, char* aMark);
     void vDump(File* pFile, i8 i_Mark, ActivityMark* pPrevMark) ;
-
+  
     Footer* aFooter(void);
   };
   

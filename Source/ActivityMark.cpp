@@ -65,6 +65,20 @@ ActivityMark::~ActivityMark(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* convert tick delta to microseconds                                         */
+/*----------------------------------------------------------------------------*/
+i8 ActivityMark::iAsMicroseconds(i8 iTickDelta)
+{
+  i8 iMicroseconds = iTickDelta / C_1K;
+  
+  return iMicroseconds;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -108,10 +122,15 @@ void ActivityMark::vDump(File* pFile, i8 i_Mark, ActivityMark* pPrevMark)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
+  i8 iDeltaUs = 0;
+  
+  if (pPrevMark)
+    iDeltaUs = iAsMicroseconds(m_iTick - pPrevMark->m_iTick);
+  
   pFile->vPrint("%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
                 i_Mark,
                 m_iTick,
-                pPrevMark ? m_iTick - pPrevMark->m_iTick : 0,
+                iDeltaUs,
                 m_aNode,
                 m_iJobId,
                 m_aMark);
