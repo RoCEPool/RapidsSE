@@ -65,8 +65,6 @@ SePrompt::SePrompt(void)
   m_bTraced  = false;
   m_bNoWait  = false;
   m_bMarked  = false;
-  m_bMarkAll = false;
-  
 
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -406,7 +404,7 @@ bool SePrompt::bMarkAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_bMarkAll;
+  return gpAttachMap->m_bMarkJobAll;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -416,11 +414,11 @@ void SePrompt::vMarkAll(bool bMarkAll)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_bMarkAll = bMarkAll;
+  gpAttachMap->m_bMarkJobAll = bMarkAll;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get markJob                                                               */
+/* get markJob                                                                */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bMarkJob(eCN e_Class)
 {
@@ -517,7 +515,9 @@ void SePrompt::vSetJob(void)
   if (m_bTraced)
     m_pJob->m_eJobTrace = JT_ALL;
 
-  if (m_bMarked || m_bMarkAll || gpAttachMap->m_bMarkJob[m_pJob->eClass()])
+  if (m_bMarked ||
+      gpAttachMap->m_bMarkJobAll ||
+      gpAttachMap->m_bMarkJob[m_pJob->eClass()])
     m_pJob->m_bMark = true;
 }
 

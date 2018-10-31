@@ -60,6 +60,7 @@ AttachMap::AttachMap(void)
   m_xHeapMem.Persistent.m_pSmall  =
     new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
 
+  m_bMarkJobAll = false;
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++)
     m_bMarkJob[i_Class] = false;
 

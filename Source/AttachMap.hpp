@@ -86,7 +86,10 @@ namespace StorageEngine
     Formatters    m_xFormatters; // record formatters
   
     ActivityMap*  m_aActivityMap; // there is an activity map
+  
+    bool          m_bMarkApiAll;
     bool          m_bMarkApi[AC_ENUMS];
+    bool          m_bMarkJobAll;
     bool          m_bMarkJob[CN_ENUMS];
 
     // statistics counters

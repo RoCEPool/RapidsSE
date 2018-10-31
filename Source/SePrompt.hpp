@@ -27,7 +27,6 @@ namespace Prompt
     bool     m_bTraced;    // command is being traced
     bool     m_bNoWait;    // dont wait for command
     bool     m_bMarked;    // mark the job
-    bool     m_bMarkAll;   // mark all jobs
 
     Job*     m_pJob;       // job
   
