@@ -325,6 +325,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
           TRACE_EXIT("eb"_Stz);
           vApiError(pSession,eError);                                 // API ERROR
           vApiLocation(pSession,812);
+          pSession->m_pJobStack->vPushObject(pJob);
           return pJob->m_xNode[i_Node].m_eErrorCode;
         }
       }
