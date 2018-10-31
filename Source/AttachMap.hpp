@@ -87,7 +87,8 @@ namespace StorageEngine
   
     ActivityMap*  m_aActivityMap; // there is an activity map
     bool          m_bMarkApi[AC_ENUMS];
-  
+    bool          m_bMarkJob[CN_ENUMS];
+
     // statistics counters
     i8            m_iSchEnqueueTask;
     i8            m_iSchEnqueueTaskWait;

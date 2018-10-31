@@ -60,6 +60,9 @@ AttachMap::AttachMap(void)
   m_xHeapMem.Persistent.m_pSmall  =
     new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
 
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++)
+    m_bMarkJob[i_Class] = false;
+
   _checkInitialised_(CN_ATTACHMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);

@@ -31,8 +31,6 @@ namespace Prompt
 
     Job*     m_pJob;       // job
   
-    bool     m_bMarkJob[CN_ENUMS];
-  
     // must be last
     Footer m_xFooter;
   
