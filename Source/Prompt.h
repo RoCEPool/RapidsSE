@@ -43,7 +43,6 @@ using namespace Prompt;
 #include "Prompt_jobcat.hpp"
 #include "Prompt_locks.hpp"
 #include "Prompt_ls.hpp"
-#include "Prompt_markAll.hpp"
 #include "Prompt_markApi.hpp"
 #include "Prompt_markJob.hpp"
 #include "Prompt_masks.hpp"
