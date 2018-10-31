@@ -83,6 +83,9 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
       static_cast<Job_EndInsert*>(pJobClass_EndInsert->pPreJob(pSession));
     
     vApiJob(pSession,pJob_EndInsert);
+    vApiLocation(pSession,105);
+    
+    i8 iJobSeq = pJob_EndInsert->m_iJobSeq;
     
     // push the endInsert job on the stack
     pSession->m_pJobStack->vPushObject(pJob_EndInsert);
@@ -95,14 +98,52 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     if (0 != rCode)
       vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
     
+    vApiLocation(pSession,106);
+    
+    // set the job state to be locked
+    pJob_EndInsert->m_eState = JS_LOCKED;
+    
     // spawn the endInsert job
     RapidsSE_bSpawnJob(pJob_EndInsert, SS_SEED_REQ, pSession);
     
-    // wait for condition
-    rCode = pthread_cond_wait(&pJob_EndInsert->m_xThreadCond,
-                              &pJob_EndInsert->m_xThreadMutex);
-    if (0 != rCode)
-      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // wait for condition & state
+    
+    // set the job state to be waiting
+    pJob_EndInsert->m_eState = JS_WAITING;
+    
+    // wait till signalled
+    do {
+      
+      RASSERT( _bIsValidJob(pJob_EndInsert->eClass()) );
+      RASSERT( iJobSeq == pJob_EndInsert->m_iJobSeq );
+      
+      //    vTrace("ThreadCond:\n"_Stz);
+      //    MemLib::vHexDump(&pJob->m_xThreadCond,  sizeof(pthread_cond_t));
+      //
+      //    vTrace("ThreadMutex:\n"_Stz);
+      //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
+      
+      rCode = pthread_cond_wait(&pJob_EndInsert->m_xThreadCond,
+                                &pJob_EndInsert->m_xThreadMutex);
+      
+      RASSERT( _bIsValidJob(pJob_EndInsert->eClass()) );
+      RASSERT( iJobSeq == pJob_EndInsert->m_iJobSeq );
+      
+      if (0 != rCode)
+        vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+      
+    } while (pJob_EndInsert->m_eState != JS_SIGNALLED);
+
+    RASSERT( _bIsValidJob(pJob_EndInsert->eClass()) );
+    RASSERT( iJobSeq == pJob_EndInsert->m_iJobSeq );
+    
+    vApiLocation(pSession,109);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    // set the job state back to running
+    pJob_EndInsert->m_eState = JS_RUNNING;
     
     // delete all jobs in the ssession
     vDeleteJobs(pSession);
