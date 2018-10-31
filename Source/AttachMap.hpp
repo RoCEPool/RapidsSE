@@ -123,6 +123,8 @@ namespace StorageEngine
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vPrintStartupInfo(void);
+  
+    eAC  eFindApi(Stz* aApiNm);
     
     Footer* aFooter(void);
   };
