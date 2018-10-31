@@ -28,6 +28,7 @@ bool Prompt::bPrompt_markApi(SePrompt* pPrompt)
   i8 nTokens = pPrompt->pTknVec()->nTokens();
 
   Stz* aTkn1 = nullptr;
+  Stz* aTkn2 = nullptr;
 
   if (nTokens == 1) {
     for (i8 i_Api = 0; i_Api < AC_ENUMS; i_Api++)
@@ -40,6 +41,24 @@ bool Prompt::bPrompt_markApi(SePrompt* pPrompt)
   
   if (nTokens == 2) {
     aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
+    eAC eApiCall = gpAttachMap->eFindApi(aTkn1);
+    if (AC_NONE != eApiCall)
+      vTrace("%s : %s\n"_Stz,
+             aAC[eApiCall],
+             gpAttachMap->m_bMarkApi[eApiCall] ? "on"_Stz : "off"_Stz);
+  }
+  
+  if (nTokens == 3) {
+    aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
+    aTkn2 = pPrompt->pTknVec()->pGet(2)->aText();
+    eAC eApiCall = gpAttachMap->eFindApi(aTkn1);
+    if (AC_NONE != eApiCall) {
+      if (aTkn2->bIsSomeTrue())
+        gpAttachMap->m_bMarkApi[eApiCall] = true;
+      else
+      if (aTkn2->bIsSomeFalse())
+        gpAttachMap->m_bMarkApi[eApiCall] = true;
+    }
   }
   
   return true;
