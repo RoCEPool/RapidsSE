@@ -23,32 +23,75 @@ extern PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_markJob(SePrompt* pPrompt)
 {
+  JobClass* pJobClass = nullptr;
+  
+  Stz* aTkn1 = nullptr;
+  Stz* aTkn2 = nullptr;
+  Stz* aTkn3 = nullptr;
+
   i8 nTokens = pPrompt->pTknVec()->nTokens();
 
-  if (nTokens > 1) {
+  if (nTokens == 1)
+    return true;
   
-    Stz* aArg = pPrompt->pTknVec()->pGet(1)->aText();
-
-    if (aArg->bSame("on"_Stz)   ||
-        aArg->bSame("1"_Stz)    ||
-        aArg->bSame("true"_Stz) ||
-        aArg->bSame("t"_Stz) ) {
-      pPrompt->vMarkAll(true);
-      return true;
-    }
-
-    if (aArg->bSame("off"_Stz)   ||
-        aArg->bSame("0"_Stz)    ||
-        aArg->bSame("false"_Stz) ||
-        aArg->bSame("f"_Stz) ) {
-      pPrompt->vMarkAll(false);
-      return true;
-    }
-
+  if (nTokens == 2) {
+    aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
+    pJobClass = JobClass::pFind(aTkn1, nullptr);
+    if (pJobClass)
+      vTrace("%s : %s\n"_Stz,
+             aCN[pJobClass->m_eClass],
+             pPrompt->bMarkJob(pJobClass->m_eClass) ? "on"_Stz : "off"_Stz);
+    return true;
   }
+  
+  if (nTokens == 3) {
+    aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
+    aTkn2 = pPrompt->pTknVec()->pGet(2)->aText();
+    
+    if (aTkn2->bIsSomeTrue()) {
+      pJobClass = JobClass::pFind(aTkn1, nullptr);
+      if (pJobClass)
+        pPrompt->vMarkJob(pJobClass->m_eClass,true);
+      return true;
+    }
 
-  vTrace("MarkAll is currently : %s\n"_Stz,
-         pPrompt->bMarkAll() ? "on"_Stz : "off"_Stz);
+    if (aTkn2->bIsSomeFalse()) {
+      pJobClass = JobClass::pFind(aTkn1, nullptr);
+      if (pJobClass)
+        pPrompt->vMarkJob(pJobClass->m_eClass,false);
+      return true;
+    }
+    
+    pJobClass = JobClass::pFind(aTkn1, aTkn2);
+    if (pJobClass)
+      vTrace("%s : %s\n"_Stz,
+             aCN[pJobClass->m_eClass],
+             pPrompt->bMarkJob(pJobClass->m_eClass) ? "on"_Stz : "off"_Stz);
+    return true;
+  }
+  
+  if (nTokens == 4) {
+    aTkn1 = pPrompt->pTknVec()->pGet(1)->aText();
+    aTkn2 = pPrompt->pTknVec()->pGet(2)->aText();
+    aTkn3 = pPrompt->pTknVec()->pGet(3)->aText();
+    
+    pJobClass = JobClass::pFind(aTkn1, aTkn2);
+    if (! pJobClass)
+      return true;
+    
+    if (aTkn3->bIsSomeTrue()) {
+      pPrompt->vMarkJob(pJobClass->m_eClass,true);
+      return true;
+    }
+    
+    if (aTkn3->bIsSomeFalse()) {
+      pPrompt->vMarkJob(pJobClass->m_eClass,false);
+      return true;
+    }
+    
+    return true;
+  }
+  
   return true;
 }
 
