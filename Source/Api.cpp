@@ -5,9 +5,9 @@
 #include "Interface.h"
 #include "StorageEngine.h"
 
-extern BufferPool* gpBufferPool;
-extern AttachMap*  gpAttachMap;
-
+extern BufferPool*  gpBufferPool;
+extern AttachMap*   gpAttachMap;
+extern ActivityMap* gpActivityMap;
 
 /*----------------------------------------------------------------------------*/
 /* check the library version against version passed                           */
