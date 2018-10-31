@@ -138,8 +138,12 @@ void Job::vInit(void)
   m_pJobClass = nullptr;
   m_eSeed     = SS_ENUMS;
   m_eJobTrace = JT_NONE;
-  m_bMark     = false;
   
+  if (gpAttachMap->m_bMarkJobAll || gpAttachMap->m_bMarkJob[eClass()])
+    m_bMark = true;
+  else
+    m_bMark = false;
+
   m_pExecutingTask    = nullptr;
   m_pOriginatingTask  = nullptr;
 

@@ -515,9 +515,7 @@ void SePrompt::vSetJob(void)
   if (m_bTraced)
     m_pJob->m_eJobTrace = JT_ALL;
 
-  if (m_bMarked ||
-      gpAttachMap->m_bMarkJobAll ||
-      gpAttachMap->m_bMarkJob[m_pJob->eClass()])
+  if (m_bMarked)
     m_pJob->m_bMark = true;
 }
 
