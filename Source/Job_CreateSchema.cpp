@@ -73,9 +73,9 @@ Job_CreateSchema* JobsModel::_pJob_CreateSchema(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_CreateSchema::operator new(size_t iSize)
+void* Job_CreateSchema::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_CreateTable* pJob_CreateSchema =
     static_cast<Job_CreateTable*>(HeapMem::pAllocate(CN_JOB_CREATESCHEMA));
@@ -86,9 +86,9 @@ void* Job_CreateSchema::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_CreateSchema::operator new(size_t iSize, void* aAddress)
+void* Job_CreateSchema::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

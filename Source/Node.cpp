@@ -19,9 +19,9 @@ Node* GridModel::_pNode(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Node::operator new(size_t iSize)
+void* Node::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
 
   void* pObject = HeapMem::pAllocate(CN_NODE);
   
@@ -31,9 +31,9 @@ void* Node::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Node::operator new(size_t iSize, Node* pNode)
+void* Node::operator new(size_t, Node* pNode)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pNode;
 }
 

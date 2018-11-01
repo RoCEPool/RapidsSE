@@ -32,9 +32,9 @@ Table* DBobjects::_pTable(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Table::operator new(size_t iSize)
+void* Table::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   Table* pTable = nullptr;
   
   return pTable;
@@ -43,9 +43,9 @@ void* Table::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Table::operator new(size_t iSize, Table* pTable)
+void* Table::operator new(size_t, Table* pTable)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pTable;
 }
 

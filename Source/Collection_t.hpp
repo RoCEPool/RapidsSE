@@ -50,7 +50,7 @@ using namespace Structures;
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void* Collection_t<OBJECT>::operator new(size_t iSize)
+void* Collection_t<OBJECT>::operator new(size_t)
 {
   vFatal("fatal: Collection_t class cannot be new'd"_Stz);
   

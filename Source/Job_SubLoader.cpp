@@ -73,9 +73,9 @@ Job_SubLoader* JobsModel::_pJob_SubLoader(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_SubLoader::operator new(size_t iSize)
+void* Job_SubLoader::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_SubLoader* pJob_SubLoader =
     static_cast<Job_SubLoader*>(HeapMem::pAllocate(CN_JOB_SUBLOADER));
@@ -86,9 +86,9 @@ void* Job_SubLoader::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_SubLoader::operator new(size_t iSize, void* aAddress)
+void* Job_SubLoader::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

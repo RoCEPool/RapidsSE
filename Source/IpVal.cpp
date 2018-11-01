@@ -21,9 +21,9 @@ IpVal* Values::_pIpVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* IpVal::operator new(size_t iSize)
+void* IpVal::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: IpVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

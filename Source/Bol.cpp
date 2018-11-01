@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Bol::operator new(size_t iSize)
+void* Bol::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   vFatal("fatal: Bol class cannot be new'd\n"_Stz);
   

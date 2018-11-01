@@ -27,9 +27,9 @@ Semaphore* System::_pSemaphore(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Semaphore::operator new(size_t iSize)
+void* Semaphore::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pSemaphore = HeapMem::pAllocate(CN_SEMAPHORE);
   
@@ -39,9 +39,9 @@ void* Semaphore::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Semaphore::operator new(size_t iSize, Semaphore* pSemaphore)
+void* Semaphore::operator new(size_t, Semaphore* pSemaphore)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pSemaphore;
 }
 

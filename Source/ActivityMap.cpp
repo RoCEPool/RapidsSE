@@ -204,9 +204,9 @@ void ActivityMap::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ActivityMap::operator new(size_t iSize)
+void* ActivityMap::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   RASSERT( ! gpActivityMap );
   

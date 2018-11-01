@@ -23,9 +23,9 @@ Planner* Plans::_pPlanner(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Planner::operator new(size_t iSize)
+void* Planner::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = HeapMem::pAllocate(CN_PLANNER);
   

@@ -34,9 +34,9 @@ Plan* Plans::_pPlan(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Plan::operator new(size_t iSize)
+void* Plan::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   ASSERT(gpAttachMap->m_pPlanList);
   
   Plan* pPlan = reinterpret_cast<Plan*>(HeapMem::pAllocate(CN_PLAN));
@@ -47,9 +47,9 @@ void* Plan::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Plan::operator new(size_t iSize, Plan* pPlan)
+void* Plan::operator new(size_t, Plan* pPlan)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   ASSERT(gpAttachMap->m_pPlanList);
   
   return pPlan;

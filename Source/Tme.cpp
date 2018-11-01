@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Tme::operator new(size_t iSize)
+void* Tme::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   vFatal("fatal: Tme class cannot be new'd\n"_Stz);
   

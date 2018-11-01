@@ -19,9 +19,9 @@ GraphCursor* Structures::_pGraphCursor(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* GraphCursor::operator new(size_t iSize)
+void* GraphCursor::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = HeapMem::pAllocate(CN_GRAPHCURSOR);
   
@@ -31,9 +31,9 @@ void* GraphCursor::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* GraphCursor::operator new(size_t iSize, GraphCursor* pGraphCursor)
+void* GraphCursor::operator new(size_t, GraphCursor* pGraphCursor)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return pGraphCursor;
 }

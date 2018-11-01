@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Bcd::operator new(size_t iSize)
+void* Bcd::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   vFatal("fatal: Bcd class cannot be new'd\n"_Stz);
   

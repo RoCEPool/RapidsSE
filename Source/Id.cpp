@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Id::operator new(size_t iSize)
+void* Id::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: RowId class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -22,9 +22,9 @@ void* Id::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Id::operator new(size_t iSize, Id* pId)
+void* Id::operator new(size_t, Id* pId)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pId;
 }
 

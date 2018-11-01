@@ -73,9 +73,9 @@ Job_AnalyzeIndex* JobsModel::_pJob_AnalyzeIndex(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_AnalyzeIndex::operator new(size_t iSize)
+void* Job_AnalyzeIndex::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_AnalyzeIndex* pJob_AnalyzeIndex =
     static_cast<Job_AnalyzeIndex*>(HeapMem::pAllocate(CN_JOB_ANALYZEINDEX));
@@ -86,9 +86,9 @@ void* Job_AnalyzeIndex::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_AnalyzeIndex::operator new(size_t iSize, void* aAddress)
+void* Job_AnalyzeIndex::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

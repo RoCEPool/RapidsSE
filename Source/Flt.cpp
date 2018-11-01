@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Flt::operator new(size_t iSize)
+void* Flt::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   vFatal("fatal: Flt class cannot be new'd\n"_Stz);
   

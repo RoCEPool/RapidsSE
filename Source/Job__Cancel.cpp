@@ -68,9 +68,9 @@ Job__Cancel* JobsModel::_pJob__Cancel(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job__Cancel::operator new(size_t iSize)
+void* Job__Cancel::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job__Cancel* pJob__Cancel =
     static_cast<Job__Cancel*>(HeapMem::pAllocate(CN_JOB__CANCEL));
@@ -81,9 +81,9 @@ void* Job__Cancel::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job__Cancel::operator new(size_t iSize, void* aAddress)
+void* Job__Cancel::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

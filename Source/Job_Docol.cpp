@@ -73,9 +73,9 @@ Job_Docol* JobsModel::_pJob_Docol(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_Docol::operator new(size_t iSize)
+void* Job_Docol::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_Docol* pJob_Docol =
     static_cast<Job_Docol*>(HeapMem::pAllocate(CN_JOB_DOCOL));
@@ -86,9 +86,9 @@ void* Job_Docol::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_Docol::operator new(size_t iSize, void* aAddress)
+void* Job_Docol::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

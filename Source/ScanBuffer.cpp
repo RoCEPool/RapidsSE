@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ScanBuffer::operator new(size_t iSize)
+void* ScanBuffer::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   ScanBuffer* pScanBuffer = (ScanBuffer*)HeapMem::pAllocate(CN_SCANBUFFER);
   

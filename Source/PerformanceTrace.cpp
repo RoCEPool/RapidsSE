@@ -23,9 +23,9 @@ PerformanceTrace* Utilities::_pPerformanceTrace(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* PerformanceTrace::operator new(size_t iSize)
+void* PerformanceTrace::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = HeapMem::pAllocate(CN_PERFORMANCETRACE);
   

@@ -73,9 +73,9 @@ Job_DropTenant* JobsModel::_pJob_DropTenant(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_DropTenant::operator new(size_t iSize)
+void* Job_DropTenant::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_DropTenant* pJob_DropTenant =
     static_cast<Job_DropTenant*>(HeapMem::pAllocate(CN_JOB_DROPTENANT));
@@ -86,9 +86,9 @@ void* Job_DropTenant::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_DropTenant::operator new(size_t iSize, void* aAddress)
+void* Job_DropTenant::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

@@ -21,9 +21,9 @@ PtrVal* Values::_pPtrVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* PtrVal::operator new(size_t iSize)
+void* PtrVal::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: PtrVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

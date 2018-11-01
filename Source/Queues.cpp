@@ -28,7 +28,7 @@ Queues* Threads::_pQueues(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new a queues from existing memory                                          */
 /*----------------------------------------------------------------------------*/
-void* Queues::operator new(size_t iSize)
+void* Queues::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_QUEUES);
   

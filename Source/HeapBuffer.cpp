@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* get a new heap buffer from buffer pool                                     */
 /*----------------------------------------------------------------------------*/
-void* HeapBuffer::operator new(size_t iSize)
+void* HeapBuffer::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   HeapBuffer* pHeapBuffer = (HeapBuffer*)gpBufferPool->pAllocBuffer();
   

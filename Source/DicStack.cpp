@@ -22,9 +22,9 @@ DicStack* DicStack::_pDicStack(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* DicStack::operator new(size_t iSize)
+void* DicStack::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: DicStack class cannot be new'd"_Stz);
   
   NEVER_REACH;

@@ -73,9 +73,9 @@ Job_Ping* JobsModel::_pJob_Ping(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_Ping::operator new(size_t iSize)
+void* Job_Ping::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_Ping* pJob_Ping =
     static_cast<Job_Ping*>(HeapMem::pAllocate(CN_JOB_PING));
@@ -86,9 +86,9 @@ void* Job_Ping::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_Ping::operator new(size_t iSize, void* aAddress)
+void* Job_Ping::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

@@ -19,9 +19,9 @@ Graph* Structures::_pGraph(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Graph::operator new(size_t iSize)
+void* Graph::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = HeapMem::pAllocate(CN_GRAPH);
   
@@ -31,9 +31,9 @@ void* Graph::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Graph::operator new(size_t iSize, Graph* pGraph)
+void* Graph::operator new(size_t, Graph* pGraph)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return pGraph;
 }

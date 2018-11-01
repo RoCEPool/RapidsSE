@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* LoadChunk::operator new(size_t iSize)
+void* LoadChunk::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   LoadChunk* pLoadChunk = (LoadChunk*)HeapMem::pAllocate(CN_LOADCHUNK);
   
   return pPoolCheck<void*>(pLoadChunk);

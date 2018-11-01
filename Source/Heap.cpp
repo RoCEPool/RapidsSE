@@ -22,9 +22,9 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* Heap::operator new(size_t iSize)
+void* Heap::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   
   return pPoolCheck<void*>(pBuffer);

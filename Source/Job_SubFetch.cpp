@@ -73,9 +73,9 @@ Job_SubFetch* JobsModel::_pJob_SubFetch(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_SubFetch::operator new(size_t iSize)
+void* Job_SubFetch::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_SubFetch* pJob_SubFetch =
     static_cast<Job_SubFetch*>(HeapMem::pAllocate(CN_JOB_SUBFETCH));
@@ -86,9 +86,9 @@ void* Job_SubFetch::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_SubFetch::operator new(size_t iSize, void* aAddress)
+void* Job_SubFetch::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

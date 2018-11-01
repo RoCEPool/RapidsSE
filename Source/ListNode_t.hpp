@@ -36,7 +36,7 @@ using namespace Structures;
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void* ListNode_t<OBJECT>::operator new(size_t iSize)
+void* ListNode_t<OBJECT>::operator new(size_t)
 {
   vFatal("fatal: ListNode_t class cannot be new'd"_Stz);
   

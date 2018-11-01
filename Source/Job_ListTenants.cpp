@@ -73,9 +73,9 @@ Job_ListTenants* JobsModel::_pJob_ListTenants(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_ListTenants::operator new(size_t iSize)
+void* Job_ListTenants::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_ListTenants* pJob_ListTenants =
     static_cast<Job_ListTenants*>(HeapMem::pAllocate(CN_JOB_LISTTENANTS));
@@ -86,9 +86,9 @@ void* Job_ListTenants::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_ListTenants::operator new(size_t iSize, void* aAddress)
+void* Job_ListTenants::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

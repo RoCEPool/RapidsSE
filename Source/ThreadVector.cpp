@@ -19,9 +19,9 @@ ThreadVector* ThreadVector::_pThreadVector(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ThreadVector::operator new(size_t iSize)
+void* ThreadVector::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = HeapMem::pAllocate(CN_THREADVECTOR);
   

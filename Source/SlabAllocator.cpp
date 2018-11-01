@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* fetch a new buffer from buffer pool                                        */
 /*----------------------------------------------------------------------------*/
-void* SlabAllocator::operator new(size_t iSize)
+void* SlabAllocator::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_SLABALLOCATOR);
   
   return pBuffer;

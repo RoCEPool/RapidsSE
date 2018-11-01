@@ -13,9 +13,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Dte::operator new(size_t iSize)
+void* Dte::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   vFatal("fatal: Dte class cannot be new'd\n"_Stz);
   

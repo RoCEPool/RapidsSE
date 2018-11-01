@@ -10,9 +10,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Formatters::operator new(size_t iSize)
+void* Formatters::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Formatters* pFormatters = (Formatters*)gpBufferPool->pAllocBuffer();
   

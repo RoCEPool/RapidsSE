@@ -8,9 +8,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Value::operator new(size_t iSize)
+void* Value::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: Value class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

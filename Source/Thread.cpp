@@ -31,9 +31,9 @@ Thread* Threads::_pThread(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new a thread from existing memory                                          */
 /*----------------------------------------------------------------------------*/
-void* Thread::operator new(size_t iSize)
+void* Thread::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   void* pObject = HeapMem::pAllocate(CN_THREAD);
   
   return pObject;
@@ -42,9 +42,9 @@ void* Thread::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* new a thread from existing memory                                          */
 /*----------------------------------------------------------------------------*/
-void* Thread::operator new(size_t iSize, Thread* pThread)
+void* Thread::operator new(size_t, Thread* pThread)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pThread;
 }
 

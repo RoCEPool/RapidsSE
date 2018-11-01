@@ -73,9 +73,9 @@ Job_SubTruncate* JobsModel::_pJob_SubTruncate(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_SubTruncate::operator new(size_t iSize)
+void* Job_SubTruncate::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_SubTruncate* pJob_SubTruncate =
     static_cast<Job_SubTruncate*>(HeapMem::pAllocate(CN_JOB_SUBTRUNCATE));
@@ -86,9 +86,9 @@ void* Job_SubTruncate::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_SubTruncate::operator new(size_t iSize, void* aAddress)
+void* Job_SubTruncate::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

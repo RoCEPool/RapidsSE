@@ -13,9 +13,9 @@ extern Arguments   gxArguments;
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* BufferPool::operator new(size_t iSize, void* pRegion)
+void* BufferPool::operator new(size_t, void* pRegion)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return pRegion;
 }

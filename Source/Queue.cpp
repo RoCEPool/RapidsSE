@@ -19,9 +19,9 @@ Queue* Structures::_pQueue(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Queue::operator new(size_t iSize)
+void* Queue::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
 
   void* pObject = HeapMem::pAllocate(CN_QUEUE);
   
@@ -31,9 +31,9 @@ void* Queue::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Queue::operator new(size_t iSize, Queue* pQueue)
+void* Queue::operator new(size_t, Queue* pQueue)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pQueue;
 }
 

@@ -19,9 +19,9 @@ RowOnce* DBobjects::_pRowOnce(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowOnce::operator new(size_t iSize)
+void* RowOnce::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
 
   void* pObject = HeapMem::pAllocate(CN_ROWONCE);
   

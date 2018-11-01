@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* JobDicPath::operator new(size_t iSize)
+void* JobDicPath::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   vFatal("fatal: JobDicPath class cannot be new'd\n"_Stz);
   

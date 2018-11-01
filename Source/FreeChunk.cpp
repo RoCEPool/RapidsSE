@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* FreeChunk::operator new(size_t iSize, FreeChunk* pFreeChunk)
+void* FreeChunk::operator new(size_t, FreeChunk* pFreeChunk)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pFreeChunk;
 }
 

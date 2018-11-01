@@ -73,9 +73,9 @@ Job_SizeIndex* JobsModel::_pJob_SizeIndex(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_SizeIndex::operator new(size_t iSize)
+void* Job_SizeIndex::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_SizeIndex* pJob_SizeIndex =
     static_cast<Job_SizeIndex*>(HeapMem::pAllocate(CN_JOB_SIZEINDEX));
@@ -86,9 +86,9 @@ void* Job_SizeIndex::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_SizeIndex::operator new(size_t iSize, void* aAddress)
+void* Job_SizeIndex::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

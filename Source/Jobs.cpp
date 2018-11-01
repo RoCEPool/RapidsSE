@@ -26,7 +26,7 @@ Jobs* JobsModel::_pJobs(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new a jobs from existing memory                                            */
 /*----------------------------------------------------------------------------*/
-void* Jobs::operator new(size_t iSize)
+void* Jobs::operator new(size_t)
 {
   void* pObject = HeapMem::pAllocate(CN_JOBS);
   

@@ -19,9 +19,9 @@ SelCursor* DBobjects::_pSelCursor(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* SelCursor::operator new(size_t iSize)
+void* SelCursor::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
 
   void* pObject = HeapMem::pAllocate(CN_SELCURSOR);
   
@@ -31,9 +31,9 @@ void* SelCursor::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* SelCursor::operator new(size_t iSize, SelCursor* pSelCursor)
+void* SelCursor::operator new(size_t, SelCursor* pSelCursor)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pSelCursor;
 }
 

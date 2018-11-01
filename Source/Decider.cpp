@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Decider::operator new(size_t iSize, Decider* pDecider)
+void* Decider::operator new(size_t, Decider* pDecider)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pDecider;
 }
 

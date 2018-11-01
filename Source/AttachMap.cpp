@@ -10,9 +10,9 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* AttachMap::operator new(size_t iSize)
+void* AttachMap::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   AttachMap* pAttachMap = (AttachMap*)gpBufferPool->pAllocAttachMapBuffer();
   

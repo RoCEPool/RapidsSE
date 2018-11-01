@@ -23,9 +23,9 @@ PerformanceEntry* Utilities::_pPerformanceEntry(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* PerformanceEntry::operator new(size_t iSize, PerformanceEntry* pPeformanceEntry)
+void* PerformanceEntry::operator new(size_t, PerformanceEntry* pPeformanceEntry)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
 
   MemLib::vZero(pPeformanceEntry,sizeof(PerformanceEntry),CN_PERFORMANCEENTRY);
   return pPeformanceEntry;

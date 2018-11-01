@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* JobFileName::operator new(size_t iSize)
+void* JobFileName::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   vFatal("fatal: JobFileName class cannot be new'd\n"_Stz);
   

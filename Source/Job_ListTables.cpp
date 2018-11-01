@@ -73,9 +73,9 @@ Job_ListTables* JobsModel::_pJob_ListTables(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_ListTables::operator new(size_t iSize)
+void* Job_ListTables::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_ListTables* pJob_ListTables =
     static_cast<Job_ListTables*>(HeapMem::pAllocate(CN_JOB_LISTTABLES));
@@ -86,9 +86,9 @@ void* Job_ListTables::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_ListTables::operator new(size_t iSize, void* aAddress)
+void* Job_ListTables::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

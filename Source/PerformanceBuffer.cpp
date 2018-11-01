@@ -27,9 +27,9 @@ PerformanceBuffer* DBobjects::_pPerformanceBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* fetch a new performance buffer from buffer pool                            */
 /*----------------------------------------------------------------------------*/
-void* PerformanceBuffer::operator new(size_t iSize)
+void* PerformanceBuffer::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_PERFORMANCEBUFFER);
   
   return pBuffer;

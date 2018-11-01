@@ -10,9 +10,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StepArray::operator new(size_t iSize)
+void* StepArray::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   RASSERT(! gpAttachMap->m_pStepArray);
   
   gpAttachMap->m_pStepArray = (StepArray*)HeapMem::pAllocate(CN_STEPARRAY);

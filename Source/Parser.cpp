@@ -26,9 +26,9 @@ Parser* Parser::_pParser(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Parser::operator new(size_t iSize, bool bMalloc)
+void* Parser::operator new(size_t, bool bMalloc)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   Parser* pParser;
   
   if (bMalloc)

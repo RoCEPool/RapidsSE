@@ -21,9 +21,9 @@ Timer* System::_pTimer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Timer::operator new(size_t iSize, Timer* pTimer)
+void* Timer::operator new(size_t, Timer* pTimer)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pTimer;
 }
 

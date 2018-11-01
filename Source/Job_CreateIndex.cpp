@@ -117,9 +117,9 @@ Job_CreateIndex* JobsModel::_pJob_CreateIndex(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_CreateIndex::operator new(size_t iSize)
+void* Job_CreateIndex::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_CreateIndex* pJob_CreateIndex =
     static_cast<Job_CreateIndex*>(HeapMem::pAllocate(CN_JOB_CREATEINDEX));
@@ -130,9 +130,9 @@ void* Job_CreateIndex::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_CreateIndex::operator new(size_t iSize, void* aAddress)
+void* Job_CreateIndex::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

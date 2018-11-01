@@ -73,9 +73,9 @@ Job_ShowCluster* JobsModel::_pJob_ShowCluster(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_ShowCluster::operator new(size_t iSize)
+void* Job_ShowCluster::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_ShowCluster* pJob_ShowCluster =
     static_cast<Job_ShowCluster*>(HeapMem::pAllocate(CN_JOB_SHOWCLUSTER));
@@ -86,9 +86,9 @@ void* Job_ShowCluster::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_ShowCluster::operator new(size_t iSize, void* aAddress)
+void* Job_ShowCluster::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

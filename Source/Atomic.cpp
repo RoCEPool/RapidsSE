@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Atomic::operator new(size_t iSize, Atomic* pAtomic)
+void* Atomic::operator new(size_t, Atomic* pAtomic)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pAtomic;
 }
 

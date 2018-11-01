@@ -19,9 +19,9 @@ TmeVal* Values::_pTmeVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* TmeVal::operator new(size_t iSize)
+void* TmeVal::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: TmeVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

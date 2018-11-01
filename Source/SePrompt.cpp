@@ -19,9 +19,9 @@ PromptCatalog gxPromptCatalog;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* SePrompt::operator new(size_t iSize)
+void* SePrompt::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   SePrompt* pSePrompt = (SePrompt*)HeapMem::pAllocate(CN_SEPROMPT);
   
   return pPoolCheck<void*>(pSePrompt);

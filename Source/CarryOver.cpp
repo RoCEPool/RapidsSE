@@ -9,9 +9,9 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* CarryOver::operator new(size_t iSize)
+void* CarryOver::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   CarryOver* pCarryOver = (CarryOver*)gpBufferPool->pAllocBuffer();
   

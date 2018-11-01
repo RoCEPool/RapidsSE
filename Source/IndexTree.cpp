@@ -63,9 +63,9 @@ void IndexTree::vFinalize(eCN eClass, Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* IndexTree::operator new(size_t iSize)
+void* IndexTree::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = HeapMem::pAllocate(CN_INDEXTREE);
   

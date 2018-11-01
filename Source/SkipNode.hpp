@@ -16,7 +16,7 @@ namespace Structures
 
     
   public:
-    void* operator new(size_t iSize, i8 iLevel, SlabAllocator* pSlabAllocator);
+    void* operator new(size_t, i8 iLevel, SlabAllocator* pSlabAllocator);
     void  operator delete(void*);
     
     SkipNode(void* pObject);

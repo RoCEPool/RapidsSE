@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Compiler::operator new(size_t iSize)
+void* Compiler::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Compiler* pCompiler = reinterpret_cast<Compiler*>(HeapMem::pAllocate(CN_COMPILER));
   

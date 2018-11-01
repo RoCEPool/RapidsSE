@@ -73,9 +73,9 @@ Job_NodeInfo* JobsModel::_pJob_NodeInfo(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_NodeInfo::operator new(size_t iSize)
+void* Job_NodeInfo::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_NodeInfo* pJob_NodeInfo =
     static_cast<Job_NodeInfo*>(HeapMem::pAllocate(CN_JOB_NODEINFO));
@@ -86,9 +86,9 @@ void* Job_NodeInfo::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_NodeInfo::operator new(size_t iSize, void* aAddress)
+void* Job_NodeInfo::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

@@ -24,9 +24,9 @@ RightVec* DBobjects::_aRightVec(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RightVec::operator new(size_t iSize)
+void* RightVec::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: RightVec class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -35,9 +35,9 @@ void* RightVec::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RightVec::operator new(size_t iSize, RightVec* pRightVec)
+void* RightVec::operator new(size_t, RightVec* pRightVec)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pRightVec;
 }
 

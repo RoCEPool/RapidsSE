@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* Slab::operator new(size_t iSize)
+void* Slab::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   Slab* pSlab = (Slab*)HeapMem::pAllocate(CN_SLAB);
   
   return pPoolCheck<void*>(pSlab);

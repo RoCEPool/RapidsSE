@@ -23,9 +23,9 @@ CommandProcessor* Interface::_pCommandProcessor(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* CommandProcessor::operator new(size_t iSize)
+void* CommandProcessor::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Object* pObject = HeapMem::pAllocate(CN_COMMANDPROCESSOR);
   

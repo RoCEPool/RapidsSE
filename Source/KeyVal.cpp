@@ -23,9 +23,9 @@ KeyVal* DBobjects::_aKeyVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* KeyVal::operator new(size_t iSize)
+void* KeyVal::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   KeyVal* pKeyVal = reinterpret_cast<KeyVal*>(HeapMem::pAllocate(CN_KEYVAL));
   

@@ -25,9 +25,9 @@ Job__Find* JobsModel::_pJob__Find(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job__Find::operator new(size_t iSize)
+void* Job__Find::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job__Find* pJob__Executed =
     static_cast<Job__Find*>(HeapMem::pAllocate(CN_JOB__FIND));
@@ -38,9 +38,9 @@ void* Job__Find::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job__Find::operator new(size_t iSize, void* aAddress)
+void* Job__Find::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

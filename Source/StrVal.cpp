@@ -26,9 +26,9 @@ StrVal* Values::_pStrVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StrVal::operator new(size_t iSize)
+void* StrVal::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   vFatal("fatal: StrVal class cannot be new'd\n"_Stz);
   
@@ -38,9 +38,9 @@ void* StrVal::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StrVal::operator new(size_t iSize, StrVal* pThis)
+void* StrVal::operator new(size_t, StrVal* pThis)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return pThis;
 }

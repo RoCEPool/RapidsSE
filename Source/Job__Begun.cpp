@@ -68,9 +68,9 @@ Job__Begun* JobsModel::_pJob__Begun(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job__Begun::operator new(size_t iSize)
+void* Job__Begun::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job__Begun* pJob__Begun =
     static_cast<Job__Begun*>(HeapMem::pAllocate(CN_JOB__BEGUN));
@@ -81,9 +81,9 @@ void* Job__Begun::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job__Begun::operator new(size_t iSize, void* aAddress)
+void* Job__Begun::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

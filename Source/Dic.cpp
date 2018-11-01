@@ -19,9 +19,9 @@ Dic* Dictionaries::_pDic(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Dic::operator new(size_t iSize)
+void* Dic::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Dic* pDic = (Dic*)(HeapMem::pAllocate(CN_DIC));
   
@@ -31,9 +31,9 @@ void* Dic::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Dic::operator new(size_t iSize, Dic* pDic)
+void* Dic::operator new(size_t, Dic* pDic)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return pDic;
 }

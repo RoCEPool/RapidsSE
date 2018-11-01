@@ -23,9 +23,9 @@ Tokeniser* Parsing::_pTokeniser(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Tokeniser::operator new(size_t iSize)
+void* Tokeniser::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pTokeniser = HeapMem::pAllocate(CN_TOKENISER);
   

@@ -24,9 +24,9 @@ Column* DBobjects::_pColumn(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Column::operator new(size_t iSize)
+void* Column::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = HeapMem::pAllocate(CN_COLUMN);
   

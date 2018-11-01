@@ -73,9 +73,9 @@ Job_ListIdxColumns* JobsModel::_pJob_ListIdxColumns(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_ListIdxColumns::operator new(size_t iSize)
+void* Job_ListIdxColumns::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_ListIdxColumns* pJob_ListIdxColumns =
     static_cast<Job_ListIdxColumns*>(HeapMem::pAllocate(CN_JOB_LISTIDXCOLUMNS));
@@ -86,9 +86,9 @@ void* Job_ListIdxColumns::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_ListIdxColumns::operator new(size_t iSize, void* aAddress)
+void* Job_ListIdxColumns::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

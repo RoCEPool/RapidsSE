@@ -9,9 +9,9 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Buffer::operator new(size_t iSize)
+void* Buffer::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   
   return pBuffer;

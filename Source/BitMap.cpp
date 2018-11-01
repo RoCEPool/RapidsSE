@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* BitMap::operator new(size_t iSize)
+void* BitMap::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   BitMap* pBitMap = (BitMap*)HeapMem::pAllocate(CN_BITMAP);
   

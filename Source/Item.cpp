@@ -15,9 +15,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Item::operator new(size_t iSize)
+void* Item::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: Item class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -26,9 +26,9 @@ void* Item::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Item::operator new(size_t iSize, Item* pItem)
+void* Item::operator new(size_t, Item* pItem)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pItem;
 }
 

@@ -19,9 +19,9 @@ ValReg* Values::_pValReg(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ValReg::operator new(size_t iSize)
+void* ValReg::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: ValReg class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

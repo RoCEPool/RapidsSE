@@ -73,9 +73,9 @@ Job_TruncateTable* JobsModel::_pJob_TruncateTable(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_TruncateTable::operator new(size_t iSize)
+void* Job_TruncateTable::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_TruncateTable* pJob_TruncateTable =
     static_cast<Job_TruncateTable*>(HeapMem::pAllocate(CN_JOB_TRUNCATETABLE));
@@ -86,9 +86,9 @@ void* Job_TruncateTable::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_TruncateTable::operator new(size_t iSize, void* aAddress)
+void* Job_TruncateTable::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

@@ -66,9 +66,9 @@ Array<ARRAY_CN, ITEM, MAX_ITEMS>* Structures::_pArray(void* aAddr)
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-void* Array<ARRAY_CN, ITEM, MAX_ITEMS>::operator new(size_t iSize)
+void* Array<ARRAY_CN, ITEM, MAX_ITEMS>::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = HeapMem::pAllocate(ARRAY_CN);
   

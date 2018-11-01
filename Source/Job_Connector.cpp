@@ -73,9 +73,9 @@ Job_Connector* JobsModel::_pJob_Connector(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_Connector::operator new(size_t iSize)
+void* Job_Connector::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_Connector* pJob_Connector =
     static_cast<Job_Connector*>(HeapMem::pAllocate(CN_JOB_CONNECTOR));
@@ -86,9 +86,9 @@ void* Job_Connector::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_Connector::operator new(size_t iSize, void* aAddress)
+void* Job_Connector::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

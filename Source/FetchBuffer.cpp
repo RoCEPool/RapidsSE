@@ -21,9 +21,9 @@ FetchBuffer* DBobjects::_pFetchBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* fetch a new result buffer from buffer pool                                 */
 /*----------------------------------------------------------------------------*/
-void* FetchBuffer::operator new(size_t iSize)
+void* FetchBuffer::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_FETCHBUFFER);
   
   return pBuffer;
@@ -32,9 +32,9 @@ void* FetchBuffer::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* fetch a new buffer from buffer pool                                        */
 /*----------------------------------------------------------------------------*/
-void* FetchBuffer::operator new(size_t iSize, void* aAddr)
+void* FetchBuffer::operator new(size_t, void* aAddr)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddr;
 }

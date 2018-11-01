@@ -23,9 +23,9 @@ Accum* MockEE::_pAccum(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Accum::operator new(size_t iSize)
+void* Accum::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = HeapMem::pAllocate(CN_ACCUM);
   

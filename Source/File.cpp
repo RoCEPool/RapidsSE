@@ -51,9 +51,9 @@ File* System::_pFile(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* File::operator new(size_t iSize)
+void* File::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
 
   void* pObject = HeapMem::pAllocate(CN_FILE);
   
@@ -63,9 +63,9 @@ void* File::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* File::operator new(size_t iSize, File* pFile)
+void* File::operator new(size_t, File* pFile)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pFile;
 }
 

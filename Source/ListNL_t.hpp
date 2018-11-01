@@ -42,9 +42,9 @@ using namespace Structures;
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void* ListNL_t<OBJECT>::operator new(size_t iSize)
+void* ListNL_t<OBJECT>::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = HeapMem::pAllocate(CN_TASKLIST);
   

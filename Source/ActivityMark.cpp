@@ -26,9 +26,9 @@ ActivityMark* Measurement::_pActivityMark(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ActivityMark::operator new(size_t iSize)
+void* ActivityMark::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = nullptr;
   

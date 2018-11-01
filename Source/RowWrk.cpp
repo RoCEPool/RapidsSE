@@ -13,9 +13,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowWrk::operator new(size_t iSize)
+void* RowWrk::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: EntWrk class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -24,9 +24,9 @@ void* RowWrk::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowWrk::operator new(size_t iSize, RowWrk* pRowWrk)
+void* RowWrk::operator new(size_t, RowWrk* pRowWrk)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pRowWrk;
 }
 

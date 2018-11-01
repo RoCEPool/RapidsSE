@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* JobResult::operator new(size_t iSize)
+void* JobResult::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   vFatal("fatal: JobResult class cannot be new'd\n"_Stz);
   

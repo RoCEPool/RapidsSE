@@ -22,9 +22,9 @@ PlanList* Plans::_pPlanList(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* PlanList::operator new(size_t iSize)
+void* PlanList::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
 
   void* pObject = HeapMem::pAllocate(CN_PLANLIST);
   
@@ -34,9 +34,9 @@ void* PlanList::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* PlanList::operator new(size_t iSize, PlanList* pPlanList)
+void* PlanList::operator new(size_t, PlanList* pPlanList)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pPlanList;
 }
 

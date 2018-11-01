@@ -40,9 +40,9 @@ Task* Tasks::_pTask(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Task::operator new(size_t iSize)
+void* Task::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Task* pTask = reinterpret_cast<Task*>(HeapMem::pAllocate(CN_TASK));
   

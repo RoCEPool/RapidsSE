@@ -25,9 +25,9 @@ Row* DBobjects::_pRow(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Row::operator new(size_t iSize)
+void* Row::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: Row class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

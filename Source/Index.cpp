@@ -52,9 +52,9 @@ void Index::vFinalize(eCN eClass, Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Index::operator new(size_t iSize)
+void* Index::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   Index* pIndex = nullptr;
   
   return pIndex;
@@ -63,9 +63,9 @@ void* Index::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Index::operator new(size_t iSize, Index* pIndex)
+void* Index::operator new(size_t, Index* pIndex)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pIndex;
 }
 

@@ -73,9 +73,9 @@ Job_DropIndex* JobsModel::_pJob_DropIndex(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_DropIndex::operator new(size_t iSize)
+void* Job_DropIndex::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_DropIndex* pJob_DropIndex =
     static_cast<Job_DropIndex*>(HeapMem::pAllocate(CN_JOB_DROPINDEX));
@@ -86,9 +86,9 @@ void* Job_DropIndex::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_DropIndex::operator new(size_t iSize, void* aAddress)
+void* Job_DropIndex::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

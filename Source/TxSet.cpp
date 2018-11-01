@@ -63,9 +63,9 @@ TxSet* Transactions::_pTxSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* TxSet::operator new(size_t iSize)
+void* TxSet::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pObject = HeapMem::pAllocate(CN_TXSET);
   

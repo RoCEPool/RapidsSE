@@ -73,9 +73,9 @@ Job_FetchRows* JobsModel::_pJob_FetchRows(void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_FetchRows::operator new(size_t iSize)
+void* Job_FetchRows::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   Job_FetchRows* pJob_FetchRows =
     static_cast<Job_FetchRows*>(HeapMem::pAllocate(CN_JOB_FETCHROWS));
@@ -86,9 +86,9 @@ void* Job_FetchRows::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_FetchRows::operator new(size_t iSize, void* aAddress)
+void* Job_FetchRows::operator new(size_t, void* aAddress)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return aAddress;
 }

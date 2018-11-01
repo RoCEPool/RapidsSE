@@ -23,9 +23,9 @@ Lock* System::_pLock(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Lock::operator new(size_t iSize, Lock* pLock)
+void* Lock::operator new(size_t, Lock* pLock)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   return pLock;
 }

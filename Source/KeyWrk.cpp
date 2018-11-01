@@ -12,9 +12,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* KeyWrk::operator new(size_t iSize)
+void* KeyWrk::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: KeyWrk class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -23,9 +23,9 @@ void* KeyWrk::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* KeyWrk::operator new(size_t iSize, KeyWrk* pKeyWrk)
+void* KeyWrk::operator new(size_t, KeyWrk* pKeyWrk)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pKeyWrk;
 }
 

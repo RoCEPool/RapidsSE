@@ -23,9 +23,9 @@ Wilderness* DBobjects::_pWilderness(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Wilderness::operator new(size_t iSize)
+void* Wilderness::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: Wilderness class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -34,9 +34,9 @@ void* Wilderness::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Wilderness::operator new(size_t iSize, Wilderness* pWilderness)
+void* Wilderness::operator new(size_t, Wilderness* pWilderness)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pWilderness;
 }
 

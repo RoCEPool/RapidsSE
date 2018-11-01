@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* IntVal::operator new(size_t iSize)
+void* IntVal::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: IntVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

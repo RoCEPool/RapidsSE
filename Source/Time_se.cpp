@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new: class cannot be new'd                                        */
 /*----------------------------------------------------------------------------*/
-void* Time::operator new(size_t iSize)
+void* Time::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: Time class cannot be new'd"_Stz);
   
   NEVER_REACH;

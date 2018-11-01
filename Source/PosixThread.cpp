@@ -30,9 +30,9 @@ PosixThread* System::_pPosixThread(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* PosixThread::operator new(size_t iSize)
+void* PosixThread::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   void* pPosixThread = HeapMem::pAllocate(CN_POSIXTHREAD);
   

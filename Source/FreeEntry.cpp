@@ -25,9 +25,9 @@ FreeEntry* DBobjects::_pFreeEntry(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* FreeEntry::operator new(size_t iSize)
+void* FreeEntry::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: FreeEntry class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -36,18 +36,18 @@ void* FreeEntry::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* FreeEntry::operator new(size_t iSize, Entry* pEntry)
+void* FreeEntry::operator new(size_t, Entry* pEntry)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return reinterpret_cast<FreeEntry*>(pEntry);
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* FreeEntry::operator new(size_t iSize, FreeEntry* pFreeEntry)
+void* FreeEntry::operator new(size_t, FreeEntry* pFreeEntry)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pFreeEntry;
 }
 

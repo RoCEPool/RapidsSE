@@ -15,9 +15,9 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Vch::operator new(size_t iSize)
+void* Vch::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   
   vFatal("fatal: Vch class cannot be new'd\n"_Stz);
   

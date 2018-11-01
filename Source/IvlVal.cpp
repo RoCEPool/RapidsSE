@@ -19,9 +19,9 @@ IvlVal* Values::_pIvlVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* IvlVal::operator new(size_t iSize)
+void* IvlVal::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: IvlVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

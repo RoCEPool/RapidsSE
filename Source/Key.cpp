@@ -21,9 +21,9 @@ Key* DBobjects::_aKey(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Key::operator new(size_t iSize)
+void* Key::operator new(size_t)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   vFatal("fatal: Key class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -32,9 +32,9 @@ void* Key::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Key::operator new(size_t iSize, Key* pKey)
+void* Key::operator new(size_t, Key* pKey)
 {
-  RASSERT(iSize);
+  //UNUSED(iSize)
   return pKey;
 }
 
