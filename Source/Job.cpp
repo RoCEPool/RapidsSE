@@ -46,9 +46,9 @@ Job* JobsModel::_pJob(void* aAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(aAddr);
   
-  if ( pJob && ! _bIsValidJob(pJob->eClass() )) {
-    gpAttachMap->m_pApiState->vDump();
-  }
+  if (pJob && ! _bIsValidJob(pJob->eClass()) )
+      vTrace("_Job got class %s\n"_Stz,aCN[pJob->eClass()]);
+      
   RASSERT( ! pJob || _bIsValidJob(pJob->eClass()) );
   
   return pJob;
