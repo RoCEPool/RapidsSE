@@ -161,7 +161,8 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     vApiReturn(pSession);                                          // API RETURN
     vApiLocation(pSession,900);
     
-    ActivityMap::vMark(0,"J< %s"_Stz,aApiCall);
+    ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+
     return EC_NONE;
   }
   catch (Error* pError) {
