@@ -143,6 +143,12 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
   if (C_UNKNOWN != nBuffersToBeInserted) {
     pPartition->vBuffersToBeInserted(nBuffersToBeInserted);
     pPartition->vEndInsertJobId(pJob_InsertBuffer->m_iEndInsertJobId);
+    if (pJob_InsertBuffer->m_bMark) {
+      ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"Setting m_nBuffersToBeInserted in partition %lld to %lld"_Stz,
+                         iPartition, nBuffersToBeInserted);
+      ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"Setting EndInsertJobId in partition %lld to %lld"_Stz,
+                         iPartition, pJob_InsertBuffer->m_iEndInsertJobId);
+    }
   }
   
   // have all buffers been loaded?
@@ -153,6 +159,9 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
     pJob_InsertBuffer->m_iEndInsertJobId = pPartition->iEndInsertJobId();
     bAllBuffersInserted = true;
     
+    if (pJob_InsertBuffer->m_bMark) {
+      ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"All buffers insertserted for partition %lld"_Stz, iPartition);
+      
     // reset these in tblPtn for next insert into table
     pPartition->vBuffersToBeInserted(0);
     pPartition->vBuffersInserted(0);
