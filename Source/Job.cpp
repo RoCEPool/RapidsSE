@@ -123,7 +123,7 @@ Job::~Job(void)
   pthread_condattr_destroy(&m_xThreadCondAttr);
   
   if (m_bMark)
-    ActivityMap::vMark(m_iJobId,"~Job"_Stz);
+    ActivityMap::vMark(m_iJobId,"~Job %s"_Stz,aCN[eClass()]);
 }
 
 /*----------------------------------------------------------------------------*/
