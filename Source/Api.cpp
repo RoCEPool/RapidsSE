@@ -113,6 +113,7 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     
     // spawn the endInsert job
     RapidsSE_bSpawnJob(pJob_EndInsert, SS_SEED_REQ, pSession);
+    vApiLocation(pSession,107);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for condition & state
@@ -146,7 +147,7 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     RASSERT( _bIsValidJob(pJob_EndInsert->eClass()) );
     RASSERT( iJobSeq == pJob_EndInsert->m_iJobSeq );
     
-    vApiLocation(pSession,109);
+    vApiLocation(pSession,108);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

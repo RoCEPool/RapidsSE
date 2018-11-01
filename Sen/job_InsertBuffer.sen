@@ -71,7 +71,7 @@
       //pTask_EndInsert
       //"All buffers inserted; Would ack task_EndInsert (node) %v"
     //fmt.print
-
+    "InsertBuffer.insert acking endInsert:" .verbose
     pTask_EndInsert task.ack
   then
 

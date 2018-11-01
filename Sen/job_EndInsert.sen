@@ -49,9 +49,10 @@
 
   loop
 
-  //"EndInsert_sendLast ack waiting" .
+
+  "EndInsert_sendLast ack waiting" .verbose
   task::wait
-  //"EndInsert_sendLast acked" .
+  "EndInsert_sendLast acked" .verbose
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -65,9 +66,9 @@
 
   grid::slots task::acks!
 
-  //"EndInsert_waitOnly waiting" .
+  "EndInsert_waitOnly waiting" .verbose
   task::wait
-  //"EndInsert_waitOnly acked" .
+  "EndInsert_waitOnly acked" .verbose
 ;
 
 
