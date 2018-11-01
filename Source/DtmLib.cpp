@@ -802,7 +802,7 @@ bool DtmLib::bValidRecordEnd(char* aSrc, Formatters* pFormatters)
         return false;
       
     default: // otherwise not a field end
-      RASSERT(0);
+      NEVER_REACH;
       return false;
   }
 }

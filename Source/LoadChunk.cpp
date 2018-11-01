@@ -248,7 +248,7 @@ void LoadChunk::vAdvanceRecordEnd(char** aaSrc, Formatters* pFormatters)
       break;
       
     default:
-      RASSERT(0);
+      NEVER_REACH;
       break;
   }
 }

@@ -844,7 +844,7 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
       return true;
     }
     
-    RASSERT(0);
+    NEVER_REACH;
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   } // while (true)
