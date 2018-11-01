@@ -15,7 +15,6 @@ void Step::vAddSteps_Table(void)
 {
   vAddStep("table.addIndex"_Stz,           &Task::vTableAddIndex);
   vAddStep("table.analyze"_Stz,            &Task::vTableAnalyze);
-  vAddStep("table.appendBuffer"_Stz,       &Task::vTableAppendBuffer);
   vAddStep("table.columnCount@"_Stz,       &Task::vTableColumnCountFetch);
   vAddStep("table.column@"_Stz,            &Task::vTableColumnFetch);
   vAddStep("table.createColumnVec"_Stz,    &Task::vTableCreateColumnVec);
@@ -207,45 +206,6 @@ void Task::vTableIsLoadingStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("table.isLoading"_Stz);
   
   pTable->vIsLoading(iLoading == 1 ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.appendBuffer -- append row buffer into table                         */
-/*----------------------------------------------------------------------------*/
-void Task::vTableAppendBuffer(MP_Task mpTask)
-{
-  ENTRY("vTableAppendBuffer"_Stz);
-
-  // no longer invoked
-  RASSERT(0);
-  /*
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.appendBuffer"_Stz);
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  i8 iPartition = 0;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("table.appendBuffer"_Stz);
-  
-  Object* pPtrRowBuffer;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrRowBuffer) )
-    THROW_INVALID_DSTACK("table.appendBuffer"_Stz);
-  
-  EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
-  
-  i8 iSlot = Partition::iPartitionToSlot(iPartition);
-  
-  
-  
-  bool bIndexesLoaded = pTable->bAppendBuffer(iSlot,pRowBuffer);
-  
-  mpTask->m_pDataStack->vPushInt(bIndexesLoaded ? 1 : 0);
-  */
   
   EXIT();
 }
