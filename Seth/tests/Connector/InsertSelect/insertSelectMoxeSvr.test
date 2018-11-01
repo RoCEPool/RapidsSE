@@ -1,5 +1,5 @@
 
-LOOP 5 {
+LOOP 1 {
 //------------------------------------------------------------------------------
 LOG 'Creating SE schema';
 INCLUDE 'schemaCreateSESvr.test';
