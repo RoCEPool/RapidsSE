@@ -15,7 +15,7 @@ Arg* Plans::_pArg(void* aAddr)
 {
   Arg* pArg = reinterpret_cast<Arg*>(aAddr);
   
-  RASSERT( ! pArg || CN_ARG == pArg->eClass() );
+  RASSERT( !pArg || CN_ARG == pArg->eClass() );
  
   return pArg;
 }

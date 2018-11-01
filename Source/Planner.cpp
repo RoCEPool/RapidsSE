@@ -15,7 +15,7 @@ Planner* Plans::_pPlanner(void* aAddr)
 {
   Planner* pPlanner = reinterpret_cast<Planner*>(aAddr);
   
-  RASSERT( ! pPlanner || CN_PLANNER == pPlanner->eClass() );
+  RASSERT( !pPlanner || CN_PLANNER == pPlanner->eClass() );
  
   return pPlanner;
 }

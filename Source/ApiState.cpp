@@ -17,7 +17,7 @@ ApiState* StorageEngine::_pApiState(void* aAddr)
 {
   ApiState* pArg = reinterpret_cast<ApiState*>(aAddr);
   
-  RASSERT( ! pArg || CN_APISTATE == pArg->eClass() );
+  RASSERT( !pArg || CN_APISTATE == pArg->eClass() );
  
   return pArg;
 }

@@ -15,7 +15,7 @@
 //{
 //  LineItem* pLineItem = reinterpret_cast<LineItem*>(aAddr);
 //  
-//  RASSERT( ! pLineItem || CN_LINEITEM == pLineItem->eClass() );
+//  RASSERT( !pLineItem || CN_LINEITEM == pLineItem->eClass() );
 // 
 //  return pLineItem;
 //}
