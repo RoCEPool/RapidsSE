@@ -47,11 +47,12 @@ void Jobs::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Jobs::Jobs(cmpFun fCompare)
+Jobs::Jobs(cmpFun fCompare, eJL eJobsList)
 : Object(CN_JOBS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
+  m_eJobsList = eJobsList;
   m_xLock.vInitLock(LK_JOBS);
   m_iNextJobId = gpAttachMap->m_pGrid->iThisNode() << 48;
   m_pJobsSkipList = new SkipList(true, fCompare);
@@ -259,13 +260,15 @@ void Jobs::vMarkContents(i8 iJobId)
   i8 iLevel = 0;
 
   if (0 == m_pJobsSkipList->nObjects()) {
-    ActivityMap::vMark(iJobId,"Jobs List is empty"_Stz);
+    ActivityMap::vMark(iJobId,"%s Jobs List is empty"_Stz,
+                       aJL[m_eJobsList]);
     return;
   }
   
   SkipNode* pNode = m_pJobsSkipList->pFirst(iLevel);
   
-  ActivityMap::vMark(iJobId,"Contents of Jobs List:"_Stz);
+  ActivityMap::vMark(iJobId,"Contents of %s Jobs List:"_Stz,
+                     aJL[m_eJobsList]);
 
   while (pNode) {
     Job* pJob = _pJob(pNode->m_pObject);

@@ -5,10 +5,22 @@
 
 namespace JobsModel
 {
+  enum eJL // jobs list
+  {
+  /* 0 */ JL_ORIGINATING=0,
+  /* 1 */ JL_PARTICIPATING
+  };
+  
+  static Stz* aJL[]
+  {
+  /* 0 */ "Originating"_Stz,
+  /* 1 */ "Participating"_Stz
+  };
+
   class Jobs : public Object
   {
   private:
-  
+    eJL       m_eJobsList;     // which job list
     Lock      m_xLock;         // lock
     i8        m_iNextJobId;    // next job id
     SkipList* m_pJobsSkipList; // skip list of jobs
@@ -21,7 +33,7 @@ namespace JobsModel
     void* operator new(size_t, Jobs* pJobs);
     void  operator delete(void*);
     
-    Jobs(cmpFun fCompare);
+    Jobs(cmpFun fCompare, eJL eJobsList);
     ~Jobs(void);
     
     void   vAddJob(Job* pJob);
