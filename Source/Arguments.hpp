@@ -68,6 +68,7 @@ namespace StorageEngine
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
     bool m_bActivityMap; // use activity map
+    s256 m_sAmPath;     // activity map path
 
     // working
     i8   m_nJumboTook;  // number of pool buffers taken by jumbo buffers

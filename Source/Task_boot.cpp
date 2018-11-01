@@ -125,6 +125,7 @@ void Task::vAddConstants(void)
   vAddConstant("args.verbose"_Stz,           gxArguments.m_bVerbose);
   vAddConstant("args.welcome"_Stz,           gxArguments.m_bWelcome);
   vAddConstant("args.activityMap"_Stz,       gxArguments.m_bActivityMap);
+  vAddConstant("args.amPath"_Stz,            gxArguments.m_sAmPath);
 
   // true / flase
   vAddConstant("true"_Stz,    (i8)1);

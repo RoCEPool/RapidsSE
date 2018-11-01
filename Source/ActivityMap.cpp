@@ -315,8 +315,15 @@ void ActivityMap::vDumpMap(void)
   i8 iTotalDelta = 0;
   
   File* pActivityFile = new File();
-  bool bOpened = pActivityFile->bOpen("/rapids/ActivityMap.csv"_Stz,C_OPEN_WRITE);
-  RASSERT(bOpened);
+  
+  s256 sAmPath = gxArguments.m_sAmPath;
+  
+  bool bOpened = pActivityFile->bOpen(sAmPath,C_OPEN_WRITE);
+  
+  if (! bOpened) {
+    vTrace("Unable to open activity file: %s\n"_Stz,sAmPath.aChar());
+    return;
+  }
 
   vLockMutex();
   
@@ -334,7 +341,7 @@ void ActivityMap::vDumpMap(void)
   
   pActivityFile->vClose();
   
-  vTrace("ActivityMap dumped : /rapids/ActivityMap.csv\n"_Stz);
+  vTrace("ActivityMap dumped : %s\n"_Stz,sAmPath.aChar());
 }
 
 /*----------------------------------------------------------------------------*/

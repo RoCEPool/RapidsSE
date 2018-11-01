@@ -85,7 +85,8 @@ Arguments::Arguments(void)
   m_bVerbose    = false;
   m_bWelcome    = true;
   m_bActivityMap = false;
-  
+  m_sAmPath      = "/tmp/SE_ActivityMap.csv"_Stz;
+
   _checkInitialised_(CN_ARGUMENTS);
   
   vEnvironmentVariables();
@@ -528,6 +529,12 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     if (argv[i_Arg]->bSame("--noActivityMap"_Stz)) {
       m_bActivityMap = false;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--AmPath"_Stz)) {
+      m_sAmPath = (Stz*)argv[++i_Arg];
       continue;
     }
     
