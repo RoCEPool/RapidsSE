@@ -964,8 +964,6 @@ namespace Tasks
     static void vRowEscapedString(MP_Task mpTask);
     
     // rowBuffer
-    static void vRowBufferAppend(MP_Task mpTask);
-    static void vRowBufferAppendRecord(MP_Task mpTask);
     static void vRowBufferDump(MP_Task mpTask);
     static void vRowBufferNew(MP_Task mpTask);
     
