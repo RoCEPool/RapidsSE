@@ -193,7 +193,8 @@ void ActivityMap::vOpenByApi(void)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vDump(void)
 {
-  gpActivityMap->vDumpMap();
+  if (gpActivityMap)
+    gpActivityMap->vDumpMap();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -332,6 +333,8 @@ void ActivityMap::vDumpMap(void)
   vUnlockMutex();
   
   pActivityFile->vClose();
+  
+  vTrace("ActivityMap dumped : /rapids/ActivityMap.csv\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
