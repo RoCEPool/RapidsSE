@@ -7386,7 +7386,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "  // grab this task's lock\n"
     "  pThisTask task.grabLock\n"
     "\n"
-    "  nTotalPartitions task::acks!\n"
+    "  grid::slots task::acks!\n"
     "\n"
     "  // for all partitions\n"
     "  nTotalPartitions 0 do\n"
