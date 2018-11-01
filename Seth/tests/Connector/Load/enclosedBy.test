@@ -10,7 +10,7 @@ create table rapidsse.public.T1 (
 );
 
 // load data into the table with enclosed_by as 3 characters
-ESCAPE CONNECTOR se 'load rapidsse.public.T1' WITH file = '/Users/alkayamarti/rapidsSE/rapidsse/JTEST/enclosedBy.csv', enclosed_by = "'" , node = 'node1' ;
+ESCAPE CONNECTOR se 'load rapidsse.public.T1' WITH file = '/DATA/Load/enclosedBy.csv', enclosed_by = "'" , node = 'node1' ;
 failure contains: 'Success'
 
 Select * from rapidsse.public.T1;
