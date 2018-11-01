@@ -160,7 +160,7 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
     bAllBuffersInserted = true;
     
     if (pJob_InsertBuffer->m_bMark) 
-      ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"All buffers insertserted for partition %lld"_Stz, iPartition);
+      ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"All buffers inserted for partition %lld"_Stz, iPartition);
       
     // reset these in tblPtn for next insert into table
     pPartition->vBuffersToBeInserted(0);

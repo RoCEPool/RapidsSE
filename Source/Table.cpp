@@ -21,6 +21,9 @@ Table* DBobjects::_pTable(void* aAddr)
 {
   Table* pTable = reinterpret_cast<Table*>(aAddr);
   
+  if (pTable && CN_TABLE != pTable->eClass())
+    vTrace("_pTable got class %s\n"_Stz,aCN[pTable->eClass()]);
+  
   RASSERT( !pTable || CN_TABLE == pTable->eClass() );
   
   return pTable;
