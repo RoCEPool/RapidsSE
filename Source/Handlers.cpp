@@ -26,7 +26,7 @@ void Handlers::vAckTaskHandler(Task* pTaskBeingAcked, Task* pTaskAcking)
   bool bAmDecider = pTaskBeingAcked->bAckAndDecide();
   
   if (bAmDecider) {
-    if (pJobAcking->m_bMark)
+    if (pJobBeingAcked->m_bMark || pJobAcking->m_bMark)
       ActivityMap::vMark(pJobAcking->m_iJobId,"Decider %s acks %s"_Stz,
                          aCN[pJobAcking->eClass()],
                          aCN[pJobBeingAcked->eClass()]
