@@ -310,6 +310,8 @@ void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vDumpMap(void)
 {
+  i8 iTotalDelta = 0;
+  
   File* pActivityFile = new File();
   bool bOpened = pActivityFile->bOpen("/rapids/ActivityMap.csv"_Stz,C_OPEN_WRITE);
   RASSERT(bOpened);
@@ -317,11 +319,13 @@ void ActivityMap::vDumpMap(void)
   vLockMutex();
   
   ActivityMark* aActivityMark = &m_xActivity[0];
-  aActivityMark->vDump(pActivityFile,0,nullptr);
+  aActivityMark->vDump(pActivityFile,
+                       0,nullptr,iTotalDelta);
   
   for (i8 i_Mark = 1; i_Mark < m_nMarks; i_Mark++) {
     aActivityMark = &m_xActivity[i_Mark];
-    aActivityMark->vDump(pActivityFile,i_Mark,&m_xActivity[i_Mark - 1]);
+    aActivityMark->vDump(pActivityFile,
+                         i_Mark,&m_xActivity[i_Mark - 1],iTotalDelta);
   }
   
   vUnlockMutex();

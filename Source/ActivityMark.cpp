@@ -118,7 +118,8 @@ void ActivityMark::vWrite(i8 iJobId, char* aMark)
 /*----------------------------------------------------------------------------*/
 /* dump to csv file                                                           */
 /*----------------------------------------------------------------------------*/
-void ActivityMark::vDump(File* pFile, i8 i_Mark, ActivityMark* pPrevMark)
+void ActivityMark::vDump(File* pFile,
+                         i8 i_Mark, ActivityMark* pPrevMark, i8& iTotalDelta)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
@@ -127,13 +128,21 @@ void ActivityMark::vDump(File* pFile, i8 i_Mark, ActivityMark* pPrevMark)
   if (pPrevMark)
     iDeltaUs = iAsMicroseconds(m_iTick - pPrevMark->m_iTick);
   
-  pFile->vPrint("%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
+  iTotalDelta += iDeltaUs;
+  
+  if (StrLib::bSame(m_aMark,"delta reset"))
+    iTotalDelta = 0;
+  
+  pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
                 i_Mark,
                 m_iTick,
                 iDeltaUs,
+                iTotalDelta,
+                
                 m_aNode,
                 m_iJobId,
                 m_aMark);
+  
 }
 
 /*----------------------------------------------------------------------------*/

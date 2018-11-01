@@ -28,7 +28,7 @@ namespace Measurement
   
     void vInit(void);
     void vWrite(i8 iJobId, char* aMark);
-    void vDump(File* pFile, i8 i_Mark, ActivityMark* pPrevMark) ;
+    void vDump(File* pFile, i8 i_Mark, ActivityMark* pPrevMark, i8& iTotalDelta);
   
     Footer* aFooter(void);
   };
