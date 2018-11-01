@@ -22,7 +22,7 @@ PosixThread* System::_pPosixThread(void* aAddr)
 {
   PosixThread* pPosixThread = reinterpret_cast<PosixThread*>(aAddr);
   
-  RASSERT( !pPosixThread || CN_POSIXTHREAD == pPosixThread->eClass() );
+  RASSERT_CAST( !pPosixThread || CN_POSIXTHREAD == pPosixThread->eClass() );
   
   return pPosixThread;
 }

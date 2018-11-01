@@ -15,7 +15,7 @@ Predicate* Plans::_pPredicate(void* aAddr)
 {
   Predicate* pPredicate = reinterpret_cast<Predicate*>(aAddr);
   
-  RASSERT( !pPredicate || CN_PREDICATE == pPredicate->eClass() );
+  RASSERT_CAST( !pPredicate || CN_PREDICATE == pPredicate->eClass() );
  
   return pPredicate;
 }

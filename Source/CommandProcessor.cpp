@@ -15,7 +15,7 @@ CommandProcessor* Interface::_pCommandProcessor(void* aAddr)
 {
   CommandProcessor* pCommandProcessor = reinterpret_cast<CommandProcessor*>(aAddr);
   
-  RASSERT( !pCommandProcessor || CN_COMMANDPROCESSOR == pCommandProcessor->eClass() );
+  RASSERT_CAST( !pCommandProcessor || CN_COMMANDPROCESSOR == pCommandProcessor->eClass() );
   
   return pCommandProcessor;
 }

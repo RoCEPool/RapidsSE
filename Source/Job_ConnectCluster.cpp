@@ -65,7 +65,7 @@ Job_ConnectCluster* JobsModel::_pJob_ConnectCluster(void* aAddress)
 {
   Job_ConnectCluster* pJob_ConnectCluster = reinterpret_cast<Job_ConnectCluster*>(aAddress);
   
-  //RASSERT( !pJob_ConnectCluster || CN_JOB_CONNECTCLUSTER == pJob_ConnectCluster->eClass());
+  //RASSERT_CAST( !pJob_ConnectCluster || CN_JOB_CONNECTCLUSTER == pJob_ConnectCluster->eClass());
   
   return pJob_ConnectCluster;
 }

@@ -65,7 +65,7 @@ Job_ListPartitions* JobsModel::_pJob_ListPartitions(void* aAddress)
 {
   Job_ListPartitions* pJob_ListPartitions = reinterpret_cast<Job_ListPartitions*>(aAddress);
   
-  //RASSERT( !pJob_ListPartitions || CN_JOB_LISTPARTITIONS == pJob_ListPartitions->eClass());
+  //RASSERT_CAST( !pJob_ListPartitions || CN_JOB_LISTPARTITIONS == pJob_ListPartitions->eClass());
   
   return pJob_ListPartitions;
 }

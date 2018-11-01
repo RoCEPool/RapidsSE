@@ -65,7 +65,7 @@ Job_CompactIndex* JobsModel::_pJob_CompactIndex(void* aAddress)
 {
   Job_CompactIndex* pJob_CompactIndex = reinterpret_cast<Job_CompactIndex*>(aAddress);
   
-  RASSERT( !pJob_CompactIndex || CN_JOB_COMPACTINDEX == pJob_CompactIndex->eClass());
+  RASSERT_CAST( !pJob_CompactIndex || CN_JOB_COMPACTINDEX == pJob_CompactIndex->eClass());
   
   return pJob_CompactIndex;
 }

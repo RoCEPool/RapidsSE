@@ -65,7 +65,7 @@ Job_Start* JobsModel::_pJob_Start(void* aAddress)
 {
   Job_Start* pJob_Start = reinterpret_cast<Job_Start*>(aAddress);
   
-  RASSERT( !pJob_Start || CN_JOB_START == pJob_Start->eClass());
+  RASSERT_CAST( !pJob_Start || CN_JOB_START == pJob_Start->eClass());
   
   return pJob_Start;
 }

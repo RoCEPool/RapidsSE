@@ -15,11 +15,11 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 ApiState* StorageEngine::_pApiState(void* aAddr)
 {
-  ApiState* pArg = reinterpret_cast<ApiState*>(aAddr);
+  ApiState* pApiState = reinterpret_cast<ApiState*>(aAddr);
   
-  RASSERT( !pArg || CN_APISTATE == pArg->eClass() );
+  RASSERT_CAST( !pApiState || CN_APISTATE == pApiState->eClass() );
  
-  return pArg;
+  return pApiState;
 }
 
 /*----------------------------------------------------------------------------*/

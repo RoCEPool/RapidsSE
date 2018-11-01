@@ -15,7 +15,7 @@ KeyVal* DBobjects::_aKeyVal(void* aAddr)
 {
   KeyVal* aKeyVal = reinterpret_cast<KeyVal*>(aAddr);
   
-  RASSERT( !aKeyVal || CN_KEYVAL == aKeyVal->eClass() );
+  RASSERT_CAST( !aKeyVal || CN_KEYVAL == aKeyVal->eClass() );
  
   return aKeyVal;
 }

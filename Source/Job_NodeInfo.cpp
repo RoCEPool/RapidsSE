@@ -65,7 +65,7 @@ Job_NodeInfo* JobsModel::_pJob_NodeInfo(void* aAddress)
 {
   Job_NodeInfo* pJob_NodeInfo = reinterpret_cast<Job_NodeInfo*>(aAddress);
   
-  //RASSERT( !pJob_NodeInfo || CN_JOB_NODEINFO == pJob_NodeInfo->eClass());
+  //RASSERT_CAST( !pJob_NodeInfo || CN_JOB_NODEINFO == pJob_NodeInfo->eClass());
   
   return pJob_NodeInfo;
 }

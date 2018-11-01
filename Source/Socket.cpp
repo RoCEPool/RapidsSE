@@ -15,7 +15,7 @@ Socket* System::_pSocket(void* aAddr)
 {
   Socket* pSocket = reinterpret_cast<Socket*>(aAddr);
   
-  RASSERT( !pSocket || CN_SOCKET == pSocket->eClass() );
+  RASSERT_CAST( !pSocket || CN_SOCKET == pSocket->eClass() );
   
   return pSocket;
 }

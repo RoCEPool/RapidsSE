@@ -13,7 +13,7 @@ Timer* System::_pTimer(void* aAddr)
 {
   Timer* pTimer = reinterpret_cast<Timer*>(aAddr);
   
-  RASSERT( !pTimer || CN_TIMER == pTimer->eClass() );
+  RASSERT_CAST( !pTimer || CN_TIMER == pTimer->eClass() );
   
   return pTimer;
 }

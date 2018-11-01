@@ -14,7 +14,7 @@ Tx* Transactions::_pTx(void* aAddr)
 {
   Tx* pTx = reinterpret_cast<Tx*>(aAddr);
   
-  RASSERT( !pTx || CN_TX == pTx->eClass() );
+  RASSERT_CAST( !pTx || CN_TX == pTx->eClass() );
   
   return pTx;
 }

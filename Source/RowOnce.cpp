@@ -11,7 +11,7 @@ RowOnce* DBobjects::_pRowOnce(void* aAddr)
 {
   RowOnce* pRowOnce = reinterpret_cast<RowOnce*>(aAddr);
   
-  RASSERT( !pRowOnce || CN_ROWONCE == pRowOnce->eClass() );
+  RASSERT_CAST( !pRowOnce || CN_ROWONCE == pRowOnce->eClass() );
   
   return pRowOnce;
 }

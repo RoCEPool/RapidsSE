@@ -12,7 +12,7 @@ TaskList* Tasks::_pTaskList(void* aAddr)
 {
   TaskList* pTaskQueue = reinterpret_cast<TaskList*>(aAddr);
   
-  RASSERT( !pTaskQueue || CN_TASKLIST == pTaskQueue->eClass() );
+  RASSERT_CAST( !pTaskQueue || CN_TASKLIST == pTaskQueue->eClass() );
   
   return pTaskQueue;
 }

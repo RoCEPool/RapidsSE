@@ -66,7 +66,7 @@ Job_DropSchema* JobsModel::_pJob_DropSchema(void* aAddress)
 {
   Job_DropSchema* pJob_DropSchema = reinterpret_cast<Job_DropSchema*>(aAddress);
   
-  RASSERT( !pJob_DropSchema || CN_JOB_DROPSCHEMA == pJob_DropSchema->eClass());
+  RASSERT_CAST( !pJob_DropSchema || CN_JOB_DROPSCHEMA == pJob_DropSchema->eClass());
   
   return pJob_DropSchema;
 }

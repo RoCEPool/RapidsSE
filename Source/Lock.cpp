@@ -15,7 +15,7 @@ Lock* System::_pLock(void* aAddr)
 {
   Lock* pLock = reinterpret_cast<Lock*>(aAddr);
   
-  RASSERT( !pLock || CN_LOCK == pLock->eClass() );
+  RASSERT_CAST( !pLock || CN_LOCK == pLock->eClass() );
   
   return pLock;
 }

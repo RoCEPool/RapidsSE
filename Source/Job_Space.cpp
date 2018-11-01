@@ -65,7 +65,7 @@ Job_Space* JobsModel::_pJob_Space(void* aAddress)
 {
   Job_Space* pJob_Space = reinterpret_cast<Job_Space*>(aAddress);
   
-  //RASSERT( !Job_Space || CN_JOB_SPACE == Job_Space->eClass());
+  //RASSERT_CAST( !Job_Space || CN_JOB_SPACE == Job_Space->eClass());
   
   return pJob_Space;
 }

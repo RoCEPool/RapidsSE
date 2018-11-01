@@ -60,7 +60,7 @@ Job__Cancel* JobsModel::_pJob__Cancel(void* aAddress)
 {
   Job__Cancel* pJob__Cancel = reinterpret_cast<Job__Cancel*>(aAddress);
   
-  RASSERT( !pJob__Cancel || CN_JOB__CANCEL == pJob__Cancel->eClass());
+  RASSERT_CAST( !pJob__Cancel || CN_JOB__CANCEL == pJob__Cancel->eClass());
   
   return pJob__Cancel;
 }

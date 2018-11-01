@@ -11,7 +11,7 @@ SkipNode* Structures::_pSkipNode(void* aAddr)
 {
   SkipNode* pSkipNode = reinterpret_cast<SkipNode*>(aAddr);
   
-  RASSERT( !pSkipNode || CN_SKIPNODE == pSkipNode->eClass() );
+  RASSERT_CAST( !pSkipNode || CN_SKIPNODE == pSkipNode->eClass() );
   
   return pSkipNode;
 }

@@ -19,7 +19,7 @@ Grid* GridModel::_pGrid(void* aAddr)
 {
   Grid* pGrid = reinterpret_cast<Grid*>(aAddr);
   
-  RASSERT( !pGrid || CN_GRID == pGrid->eClass() );
+  RASSERT_CAST( !pGrid || CN_GRID == pGrid->eClass() );
   
   return pGrid;
 }

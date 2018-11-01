@@ -11,7 +11,7 @@ SelCursor* DBobjects::_pSelCursor(void* aAddr)
 {
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(aAddr);
   
-  RASSERT( !pSelCursor || CN_SELCURSOR == pSelCursor->eClass() );
+  RASSERT_CAST( !pSelCursor || CN_SELCURSOR == pSelCursor->eClass() );
   
   return pSelCursor;
 }

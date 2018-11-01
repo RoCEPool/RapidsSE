@@ -109,7 +109,7 @@ Job_CreateIndex* JobsModel::_pJob_CreateIndex(void* aAddress)
 {
   Job_CreateIndex* pJob_CreateIndex = reinterpret_cast<Job_CreateIndex*>(aAddress);
   
-  RASSERT( !pJob_CreateIndex || CN_JOB_CREATEINDEX == pJob_CreateIndex->eClass());
+  RASSERT_CAST( !pJob_CreateIndex || CN_JOB_CREATEINDEX == pJob_CreateIndex->eClass());
   
   return pJob_CreateIndex;
 }

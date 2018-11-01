@@ -15,7 +15,7 @@ Dir* System::_pDir(void* aAddr)
 {
   Dir* pDir = reinterpret_cast<Dir*>(aAddr);
   
-  RASSERT( !pDir || CN_DIR == pDir->eClass() );
+  RASSERT_CAST( !pDir || CN_DIR == pDir->eClass() );
   
   return pDir;
 }

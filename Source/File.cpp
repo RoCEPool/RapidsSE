@@ -43,7 +43,7 @@ File* System::_pFile(void* aAddr)
 {
   File* pFile = reinterpret_cast<File*>(aAddr);
   
-  RASSERT( !pFile || CN_FILE == pFile->eClass() );
+  RASSERT_CAST( !pFile || CN_FILE == pFile->eClass() );
   
   return pFile;
 }

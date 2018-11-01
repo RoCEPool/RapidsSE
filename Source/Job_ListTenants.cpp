@@ -65,7 +65,7 @@ Job_ListTenants* JobsModel::_pJob_ListTenants(void* aAddress)
 {
   Job_ListTenants* pJob_ListTenants = reinterpret_cast<Job_ListTenants*>(aAddress);
   
-  //RASSERT( !pJob_ListTenants || CN_JOB_LISTTENANTS == pJob_ListTenants->eClass());
+  //RASSERT_CAST( !pJob_ListTenants || CN_JOB_LISTTENANTS == pJob_ListTenants->eClass());
   
   return pJob_ListTenants;
 }

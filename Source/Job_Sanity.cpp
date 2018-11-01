@@ -65,7 +65,7 @@ Job_Sanity* JobsModel::_pJob_Sanity(void* aAddress)
 {
   Job_Sanity* pJob_Sanity = reinterpret_cast<Job_Sanity*>(aAddress);
   
-  //RASSERT( !pJob_Status || CN_JOB_SANITY == Job_Space->eClass());
+  //RASSERT_CAST( !pJob_Status || CN_JOB_SANITY == Job_Space->eClass());
   
   return pJob_Sanity;
 }

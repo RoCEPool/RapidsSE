@@ -65,7 +65,7 @@ Job_CreateTenant* JobsModel::_pJob_CreateTenant(void* aAddress)
 {
   Job_CreateTenant* pJob_CreateTenant = reinterpret_cast<Job_CreateTenant*>(aAddress);
   
-  //RASSERT( !pJob_CreateTenant || CN_JOB_CREATETENANT == pJob_CreateTenant->eClass());
+  //RASSERT_CAST( !pJob_CreateTenant || CN_JOB_CREATETENANT == pJob_CreateTenant->eClass());
   
   return pJob_CreateTenant;
 }

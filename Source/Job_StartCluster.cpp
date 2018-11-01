@@ -65,7 +65,7 @@ Job_StartCluster* JobsModel::_pJob_StartCluster(void* aAddress)
 {
   Job_StartCluster* pJob_StartCluster = reinterpret_cast<Job_StartCluster*>(aAddress);
   
-  //RASSERT( !pJob_StartCluster || CN_JOB_STARTCLUSTER == pJob_StartCluster->eClass());
+  //RASSERT_CAST( !pJob_StartCluster || CN_JOB_STARTCLUSTER == pJob_StartCluster->eClass());
   
   return pJob_StartCluster;
 }

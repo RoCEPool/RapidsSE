@@ -55,7 +55,7 @@ TxSet* Transactions::_pTxSet(void* aAddr)
 {
   TxSet* pTxSet = reinterpret_cast<TxSet*>(aAddr);
   
-  RASSERT( !pTxSet || CN_TXSET == pTxSet->eClass() );
+  RASSERT_CAST( !pTxSet || CN_TXSET == pTxSet->eClass() );
   
   return pTxSet;
 }

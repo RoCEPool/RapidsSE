@@ -11,7 +11,7 @@ Buffer* FreeBuffer::_pFreeBuffer(void* aAddr)
 {
   Buffer* pBuffer = reinterpret_cast<Buffer*>(aAddr);
   
-  RASSERT( !pBuffer || CN_FREEBUFFER == pBuffer->eClass() );
+  RASSERT_CAST( !pBuffer || CN_FREEBUFFER == pBuffer->eClass() );
   
   return pBuffer;
 }
@@ -26,7 +26,7 @@ FreeBuffer::FreeBuffer(void)
   
   _checkInitialised_(CN_FREEBUFFER);
   
-  ASSERT("Should never be reached"_Stz);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +36,7 @@ FreeBuffer::~FreeBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   
-  ASSERT("Should never be reached"_Stz);
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

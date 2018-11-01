@@ -65,7 +65,7 @@ Job_InsertRow* JobsModel::_pJob_InsertRow(void* aAddress)
 {
   Job_InsertRow* pJob_InsertRow = reinterpret_cast<Job_InsertRow*>(aAddress);
   
-  //RASSERT( !pJob_InsertRow || CN_JOB_INSERTROW == pJob_InsertRow->eClass());
+  //RASSERT_CAST( !pJob_InsertRow || CN_JOB_INSERTROW == pJob_InsertRow->eClass());
   
   return pJob_InsertRow;
 }

@@ -65,7 +65,7 @@ Job_Docol* JobsModel::_pJob_Docol(void* aAddress)
 {
   Job_Docol* pJob_Docol = reinterpret_cast<Job_Docol*>(aAddress);
   
-  //RASSERT( !Job_Docol || CN_JOB_DOCOL == pJob_Docol->eClass());
+  //RASSERT_CAST( !Job_Docol || CN_JOB_DOCOL == pJob_Docol->eClass());
   
   return pJob_Docol;
 }

@@ -11,7 +11,7 @@ ThreadVector* ThreadVector::_pThreadVector(void* aAddr)
 {
   ThreadVector* pThreadVector = reinterpret_cast<ThreadVector*>(aAddr);
   
-  RASSERT( !pThreadVector || CN_THREADVECTOR == pThreadVector->eClass() );
+  RASSERT_CAST( !pThreadVector || CN_THREADVECTOR == pThreadVector->eClass() );
   
   return pThreadVector;
 }

@@ -11,7 +11,7 @@ PredicateVec* PredicateVec::_pPredicateVec(void* aAddr)
 {
   PredicateVec* pPredicateVec = reinterpret_cast<PredicateVec*>(aAddr);
   
-  RASSERT( !pPredicateVec || CN_PREDICATEVEC == pPredicateVec->eClass() );
+  RASSERT_CAST( !pPredicateVec || CN_PREDICATEVEC == pPredicateVec->eClass() );
   
   return pPredicateVec;
 }

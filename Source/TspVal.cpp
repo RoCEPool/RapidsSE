@@ -11,7 +11,7 @@ TspVal* Values::_pTspVal(void* aAddr)
 {
   TspVal* pTspVal = reinterpret_cast<TspVal*>(aAddr);
   
-  RASSERT( !pTspVal || CN_TSPVAL == pTspVal->eClass() );
+  RASSERT_CAST( !pTspVal || CN_TSPVAL == pTspVal->eClass() );
   
   return pTspVal;
 }

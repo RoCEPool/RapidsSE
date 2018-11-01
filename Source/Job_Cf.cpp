@@ -65,7 +65,7 @@ Job_Cf* JobsModel::_pJob_Cf(void* aAddress)
 {
   Job_Cf* pJob_Cf = reinterpret_cast<Job_Cf*>(aAddress);
   
-  //RASSERT( !pJob_Cf || CN_JOB_CF == pJob_Cf->eClass());
+  //RASSERT_CAST( !pJob_Cf || CN_JOB_CF == pJob_Cf->eClass());
   
   return pJob_Cf;
 }

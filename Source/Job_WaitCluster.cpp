@@ -65,7 +65,7 @@ Job_WaitCluster* JobsModel::_pJob_WaitCluster(void* aAddress)
 {
   Job_WaitCluster* pJob_WaitCluster = reinterpret_cast<Job_WaitCluster*>(aAddress);
   
-  RASSERT( !pJob_WaitCluster || CN_JOB_WAITCLUSTER == pJob_WaitCluster->eClass());
+  RASSERT_CAST( !pJob_WaitCluster || CN_JOB_WAITCLUSTER == pJob_WaitCluster->eClass());
   
   return pJob_WaitCluster;
 }

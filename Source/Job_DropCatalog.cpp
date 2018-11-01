@@ -65,7 +65,7 @@ Job_DropCatalog* JobsModel::_pJob_DropCatalog(void* aAddress)
 {
   Job_DropCatalog* pJob_DropCatalog = reinterpret_cast<Job_DropCatalog*>(aAddress);
   
-  RASSERT( !pJob_DropCatalog || CN_JOB_DROPCATALOG == pJob_DropCatalog->eClass());
+  RASSERT_CAST( !pJob_DropCatalog || CN_JOB_DROPCATALOG == pJob_DropCatalog->eClass());
   
   return pJob_DropCatalog;
 }

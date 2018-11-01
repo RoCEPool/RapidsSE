@@ -65,7 +65,7 @@ Job_ListTables* JobsModel::_pJob_ListTables(void* aAddress)
 {
   Job_ListTables* pJob_ListTables = reinterpret_cast<Job_ListTables*>(aAddress);
   
-  //RASSERT( !pJob_ListTables || CN_JOB_LISTTABLES == pJob_ListTables->eClass());
+  //RASSERT_CAST( !pJob_ListTables || CN_JOB_LISTTABLES == pJob_ListTables->eClass());
   
   return pJob_ListTables;
 }

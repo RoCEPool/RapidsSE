@@ -65,7 +65,7 @@ Job_SizeIndex* JobsModel::_pJob_SizeIndex(void* aAddress)
 {
   Job_SizeIndex* pJob_SizeIndex = reinterpret_cast<Job_SizeIndex*>(aAddress);
   
-  RASSERT( !pJob_SizeIndex || CN_JOB_SIZEINDEX == pJob_SizeIndex->eClass());
+  RASSERT_CAST( !pJob_SizeIndex || CN_JOB_SIZEINDEX == pJob_SizeIndex->eClass());
   
   return pJob_SizeIndex;
 }

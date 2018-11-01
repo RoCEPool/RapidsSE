@@ -11,7 +11,7 @@ TmeVal* Values::_pTmeVal(void* aAddr)
 {
   TmeVal* pTmeVal = reinterpret_cast<TmeVal*>(aAddr);
   
-  RASSERT( !pTmeVal || CN_TMEVAL == pTmeVal->eClass() );
+  RASSERT_CAST( !pTmeVal || CN_TMEVAL == pTmeVal->eClass() );
   
   return pTmeVal;
 }

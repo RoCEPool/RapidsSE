@@ -11,7 +11,7 @@ RegFrame* Dictionaries::_pRegFrame(void* aAddr)
 {
   RegFrame* pRegFrame = reinterpret_cast<RegFrame*>(aAddr);
   
-  RASSERT( !pRegFrame || CN_REGFRAME == pRegFrame->eClass() );
+  RASSERT_CAST( !pRegFrame || CN_REGFRAME == pRegFrame->eClass() );
 
   return pRegFrame;
 }

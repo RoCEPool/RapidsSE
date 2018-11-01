@@ -65,7 +65,7 @@ Job_DropIndex* JobsModel::_pJob_DropIndex(void* aAddress)
 {
   Job_DropIndex* pJob_DropIndex = reinterpret_cast<Job_DropIndex*>(aAddress);
   
-  RASSERT( !pJob_DropIndex || CN_JOB_DROPINDEX == pJob_DropIndex->eClass());
+  RASSERT_CAST( !pJob_DropIndex || CN_JOB_DROPINDEX == pJob_DropIndex->eClass());
   
   return pJob_DropIndex;
 }

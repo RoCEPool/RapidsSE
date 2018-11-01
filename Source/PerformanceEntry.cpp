@@ -15,7 +15,7 @@ PerformanceEntry* Utilities::_pPerformanceEntry(void* aAddr)
 {
   PerformanceEntry* pPerformanceTrace = reinterpret_cast<PerformanceEntry*>(aAddr);
   
-  RASSERT( !pPerformanceTrace || CN_PERFORMANCEENTRY == pPerformanceTrace->eClass() );
+  RASSERT_CAST( !pPerformanceTrace || CN_PERFORMANCEENTRY == pPerformanceTrace->eClass() );
   
   return pPerformanceTrace;
 }

@@ -64,7 +64,7 @@ Job_LoadBuffer* JobsModel::_pJob_LoadBuffer(void* aAddress)
 {
   Job_LoadBuffer* pJob_LoadBuffer = reinterpret_cast<Job_LoadBuffer*>(aAddress);
   
-  RASSERT( !pJob_LoadBuffer || CN_JOB_LOADBUFFER == pJob_LoadBuffer->eClass());
+  RASSERT_CAST( !pJob_LoadBuffer || CN_JOB_LOADBUFFER == pJob_LoadBuffer->eClass());
   
   return pJob_LoadBuffer;
 }

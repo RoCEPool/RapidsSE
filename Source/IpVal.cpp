@@ -13,7 +13,7 @@ IpVal* Values::_pIpVal(void* aAddr)
 {
   IpVal* pIpVal = reinterpret_cast<IpVal*>(aAddr);
   
-  RASSERT( !pIpVal || CN_IPVAL == pIpVal->eClass() );
+  RASSERT_CAST( !pIpVal || CN_IPVAL == pIpVal->eClass() );
   
   return pIpVal;
 }

@@ -60,7 +60,7 @@ Job__Ended* JobsModel::_pJob__Ended(void* aAddress)
 {
   Job__Ended* pJob__Ended = reinterpret_cast<Job__Ended*>(aAddress);
   
-  RASSERT( !pJob__Ended || CN_JOB__ENDED == pJob__Ended->eClass());
+  RASSERT_CAST( !pJob__Ended || CN_JOB__ENDED == pJob__Ended->eClass());
   
   return pJob__Ended;
 }

@@ -65,7 +65,7 @@ Job_ListSchemas* JobsModel::_pJob_ListSchemas(void* aAddress)
 {
   Job_ListSchemas* pJob_ListSchemas = reinterpret_cast<Job_ListSchemas*>(aAddress);
   
-  //RASSERT( !pJob_ListSchemas || CN_JOB_LISTSCHEMAS == pJob_ListSchemas->eClass());
+  //RASSERT_CAST( !pJob_ListSchemas || CN_JOB_LISTSCHEMAS == pJob_ListSchemas->eClass());
   
   return pJob_ListSchemas;
 }

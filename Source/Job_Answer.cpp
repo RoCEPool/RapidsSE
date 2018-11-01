@@ -65,7 +65,7 @@ Job_Answer* JobsModel::_pJob_Answer(void* aAddress)
 {
   Job_Answer* pJob_Answer = reinterpret_cast<Job_Answer*>(aAddress);
   
-  RASSERT( !pJob_Answer || CN_JOB_ANSWER == pJob_Answer->eClass());
+  RASSERT_CAST( !pJob_Answer || CN_JOB_ANSWER == pJob_Answer->eClass());
   
   return pJob_Answer;
 }

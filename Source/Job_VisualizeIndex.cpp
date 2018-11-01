@@ -65,7 +65,7 @@ Job_VisualizeIndex* JobsModel::_pJob_VisualizeIndex(void* aAddress)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = reinterpret_cast<Job_VisualizeIndex*>(aAddress);
   
-  RASSERT( !pJob_VisualizeIndex || CN_JOB_VISUALIZEINDEX == pJob_VisualizeIndex->eClass());
+  RASSERT_CAST( !pJob_VisualizeIndex || CN_JOB_VISUALIZEINDEX == pJob_VisualizeIndex->eClass());
   
   return pJob_VisualizeIndex;
 }

@@ -25,7 +25,7 @@ Session* Interface::_pSession(void* aAddr)
     //return nullptr;
   }
   
-  RASSERT( !pSession || CN_SESSION == pSession->eClass() );
+  RASSERT_CAST( !pSession || CN_SESSION == pSession->eClass() );
   
   return pSession;
 }
@@ -42,7 +42,7 @@ Session* Interface::_pSession(i8 iAddr)
     return nullptr;
   }
   
-  RASSERT( !pSession || CN_SESSION == pSession->eClass() );
+  RASSERT_CAST( !pSession || CN_SESSION == pSession->eClass() );
   
   return pSession;
 }

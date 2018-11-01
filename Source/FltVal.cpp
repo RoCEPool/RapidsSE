@@ -11,7 +11,7 @@ FltVal* Values::_pFltVal(void* aAddr)
 {
   FltVal* pFltVal = reinterpret_cast<FltVal*>(aAddr);
   
-  RASSERT( !pFltVal || CN_FLTVAL == pFltVal->eClass() );
+  RASSERT_CAST( !pFltVal || CN_FLTVAL == pFltVal->eClass() );
   
   return pFltVal;
 }

@@ -11,7 +11,7 @@ IvlVal* Values::_pIvlVal(void* aAddr)
 {
   IvlVal* pIvlVal = reinterpret_cast<IvlVal*>(aAddr);
   
-  RASSERT( !pIvlVal || CN_IVLVAL == pIvlVal->eClass() );
+  RASSERT_CAST( !pIvlVal || CN_IVLVAL == pIvlVal->eClass() );
   
   return pIvlVal;
 }

@@ -637,7 +637,7 @@ SePrompt* Prompt::_pSePrompt(void* aAddr)
 {
   SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(aAddr);
   
-  RASSERT( !pSePrompt || CN_SEPROMPT == pSePrompt->eClass() );
+  RASSERT_CAST( !pSePrompt || CN_SEPROMPT == pSePrompt->eClass() );
   
   return pSePrompt;
 }

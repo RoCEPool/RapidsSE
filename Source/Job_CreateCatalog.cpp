@@ -65,7 +65,7 @@ Job_CreateCatalog* JobsModel::_pJob_CreateCatalog(void* aAddress)
 {
   Job_CreateCatalog* pJob_CreateCatalog = reinterpret_cast<Job_CreateCatalog*>(aAddress);
   
-  RASSERT( !pJob_CreateCatalog || CN_JOB_CREATECATALOG == pJob_CreateCatalog->eClass());
+  RASSERT_CAST( !pJob_CreateCatalog || CN_JOB_CREATECATALOG == pJob_CreateCatalog->eClass());
   
   return pJob_CreateCatalog;
 }

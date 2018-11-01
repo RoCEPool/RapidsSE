@@ -65,7 +65,7 @@ Job_SubFetch* JobsModel::_pJob_SubFetch(void* aAddress)
 {
   Job_SubFetch* pJob_SubFetch = reinterpret_cast<Job_SubFetch*>(aAddress);
   
-  RASSERT( !pJob_SubFetch || CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
+  RASSERT_CAST( !pJob_SubFetch || CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   return pJob_SubFetch;
 }

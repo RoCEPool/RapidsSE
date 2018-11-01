@@ -15,7 +15,7 @@ LoadMap* Loader::_pLoadMap(void* aAddr)
 {
   LoadMap* pLoadMap = reinterpret_cast<LoadMap*>(aAddr);
   
-  RASSERT( !pLoadMap || CN_LOADMAP == pLoadMap->eClass() );
+  RASSERT_CAST( !pLoadMap || CN_LOADMAP == pLoadMap->eClass() );
   
   return pLoadMap;
 }

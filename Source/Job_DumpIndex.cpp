@@ -65,7 +65,7 @@ Job_DumpIndex* JobsModel::_pJob_DumpIndex(void* aAddress)
 {
   Job_DumpIndex* pJob_DumpIndex = reinterpret_cast<Job_DumpIndex*>(aAddress);
   
-  RASSERT( !pJob_DumpIndex || CN_JOB_DUMPINDEX == pJob_DumpIndex->eClass());
+  RASSERT_CAST( !pJob_DumpIndex || CN_JOB_DUMPINDEX == pJob_DumpIndex->eClass());
   
   return pJob_DumpIndex;
 }

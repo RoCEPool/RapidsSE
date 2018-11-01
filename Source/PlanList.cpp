@@ -14,7 +14,7 @@ PlanList* Plans::_pPlanList(void* aAddr)
 {
   PlanList* pPlanList = reinterpret_cast<PlanList*>(aAddr);
   
-  RASSERT( !pPlanList || CN_PLANLIST == pPlanList->eClass() );
+  RASSERT_CAST( !pPlanList || CN_PLANLIST == pPlanList->eClass() );
   
   return pPlanList;
 }
