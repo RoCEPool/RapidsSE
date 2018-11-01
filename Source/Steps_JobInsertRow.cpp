@@ -123,8 +123,13 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
   
   // get table, partition and working buffer
   Table* pTable = pJob_InsertBuffer->m_pTable;
+  RASSERT(pTable->eClass() == CN_TABLE);
+  
   TablePtn* pPartition = pTable->pPartition(iSlot);
+  RASSERT(pPartition->eClass() == CN_TABLEPTN);
+  
   WorkingBuffer* pWorkingBuffer = pJob_InsertBuffer->m_pWorkingBuffer;
+  RASSERT(pWorkingBuffer->eClass() == CN_WORKINGBUFFER);
   
   i8 iTxId = 0;
   
@@ -144,8 +149,8 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
     pPartition->vBuffersToBeInserted(nBuffersToBeInserted);
     pPartition->vEndInsertJobId(pJob_InsertBuffer->m_iEndInsertJobId);
     if (pJob_InsertBuffer->m_bMark) {
-      ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"Setting m_nBuffersToBeInserted in partition %lld to %lld"_Stz,
-                         iPartition, nBuffersToBeInserted);
+      ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"Setting m_nBuffersToBeInserted in partition %lld slot %lld to %lld"_Stz,
+                         iPartition, iSlot, nBuffersToBeInserted);
       ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"Setting EndInsertJobId in partition %lld to %lld"_Stz,
                          iPartition, pJob_InsertBuffer->m_iEndInsertJobId);
     }

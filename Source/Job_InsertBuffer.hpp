@@ -11,7 +11,6 @@ namespace JobsModel
   public:
     Table*         m_pTable;         // table pointer
     Tasks::Task*   m_pTask;          // task running this job
-    WorkingBuffer* m_pWorkingBuffer; // working buffer
     i8             m_iPartitionId;   // partition id
     i8             m_iEndInsertJobId;// EndInsert job id
     i8             m_nBuffersToBeInserted; // buffers loadabale
