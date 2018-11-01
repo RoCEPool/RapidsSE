@@ -17,7 +17,7 @@ Index* DBobjects::_pIndex(void* pAddr)
 {
   Index* pIndex = reinterpret_cast<Index*>(pAddr);
   
-  RASSERT_CAST( !pIndex || CN_INDEX == pIndex->eClass() );
+  RASSERT_TYPE(pIndex,CN_INDEX);
   
   return pIndex;
 }

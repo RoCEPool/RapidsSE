@@ -15,7 +15,7 @@ GroupBy* MockEE::_pGroupBy(void* aAddr)
 {
   GroupBy* pGroupBy = reinterpret_cast<GroupBy*>(aAddr);
   
-  RASSERT_CAST( !pGroupBy || CN_GROUPBY == pGroupBy->eClass() );
+  RASSERT_TYPE(pGroupBy,CN_GROUPBY);
  
   return pGroupBy;
 }

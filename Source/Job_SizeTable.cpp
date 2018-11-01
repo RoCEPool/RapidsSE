@@ -65,7 +65,7 @@ Job_SizeTable* JobsModel::_pJob_SizeTable(void* aAddress)
 {
   Job_SizeTable* pJob_SizeTable = reinterpret_cast<Job_SizeTable*>(aAddress);
   
-  RASSERT_CAST( !pJob_SizeTable || CN_JOB_SIZETABLE == pJob_SizeTable->eClass());
+  RASSERT_TYPE(pJob_SizeTable,CN_JOB_SIZETABLE);
   
   return pJob_SizeTable;
 }

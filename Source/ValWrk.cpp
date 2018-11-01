@@ -11,7 +11,7 @@ ValWrk* Values::_pValWrk(void* aAddr)
 {
   ValWrk* pValWrk = reinterpret_cast<ValWrk*>(aAddr);
   
-  RASSERT_CAST( !pValWrk || CN_VALWRK == pValWrk->eClass() );
+  RASSERT_TYPE(pValWrk,CN_VALWRK);
   
   return pValWrk;
 }

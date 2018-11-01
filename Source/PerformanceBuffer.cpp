@@ -19,7 +19,7 @@ PerformanceBuffer* DBobjects::_pPerformanceBuffer(void* aAddr)
 {
   PerformanceBuffer* pPerformanceBuffer = reinterpret_cast<PerformanceBuffer*>(aAddr);
   
-  RASSERT_CAST( !pPerformanceBuffer || CN_PERFORMANCEBUFFER == pPerformanceBuffer->eClass());
+  RASSERT_TYPE(pPerformanceBuffer,CN_PERFORMANCEBUFFER);
   
   return pPerformanceBuffer;
 }

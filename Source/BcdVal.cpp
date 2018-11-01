@@ -11,7 +11,7 @@ BcdVal* Values::_pBcdVal(void* aAddr)
 {
   BcdVal* pBcdVal = reinterpret_cast<BcdVal*>(aAddr);
   
-  RASSERT_CAST( !pBcdVal || CN_BCDVAL == pBcdVal->eClass() );
+  RASSERT_TYPE(pBcdVal,CN_BCDVAL);
   
   return pBcdVal;
 }

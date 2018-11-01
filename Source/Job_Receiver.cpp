@@ -65,7 +65,7 @@ Job_Receiver* JobsModel::_pJob_Receiver(void* aAddress)
 {
   Job_Receiver* pJob_Receiver = reinterpret_cast<Job_Receiver*>(aAddress);
   
-  RASSERT_CAST( !pJob_Receiver || CN_JOB_RECEIVER == pJob_Receiver->eClass());
+  RASSERT_TYPE(pJob_Receiver,CN_JOB_RECEIVER);
   
   return pJob_Receiver;
 }

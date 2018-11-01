@@ -11,7 +11,7 @@ void* Values::_pStrVar(void* aAddr)
 {
   Object* pStrVar = reinterpret_cast<Object*>(aAddr);
   
-  RASSERT_CAST( !pStrVar || CN_STRVAR == pStrVar->eClass() );
+  RASSERT_TYPE(pStrVar,CN_STRVAR);
   
   return pStrVar;
 }

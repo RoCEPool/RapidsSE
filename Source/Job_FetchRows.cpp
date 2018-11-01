@@ -65,7 +65,7 @@ Job_FetchRows* JobsModel::_pJob_FetchRows(void* aAddress)
 {
   Job_FetchRows* pJob_FetchRows = reinterpret_cast<Job_FetchRows*>(aAddress);
   
-  RASSERT_CAST( !pJob_FetchRows || CN_JOB_FETCHROWS == pJob_FetchRows->eClass());
+  RASSERT_TYPE(pJob_FetchRows,CN_JOB_FETCHROWS);
   
   return pJob_FetchRows;
 }

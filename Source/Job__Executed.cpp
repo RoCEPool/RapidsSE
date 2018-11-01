@@ -60,7 +60,7 @@ Job__Executed* JobsModel::_pJob__Executed(void* aAddress)
 {
   Job__Executed* pJob__Executed = reinterpret_cast<Job__Executed*>(aAddress);
   
-  RASSERT_CAST( !pJob__Executed || CN_JOB__EXECUTED == pJob__Executed->eClass());
+  RASSERT_TYPE(pJob__Executed,CN_JOB__EXECUTED);
   
   return pJob__Executed;
 }

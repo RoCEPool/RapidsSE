@@ -65,7 +65,7 @@ Job_DropTenant* JobsModel::_pJob_DropTenant(void* aAddress)
 {
   Job_DropTenant* pJob_DropTenant = reinterpret_cast<Job_DropTenant*>(aAddress);
   
-  RASSERT_CAST( !pJob_DropTenant || CN_JOB_DROPTENANT == pJob_DropTenant->eClass());
+  RASSERT_TYPE(pJob_DropTenant,CN_JOB_DROPTENANT);
   
   return pJob_DropTenant;
 }

@@ -65,7 +65,7 @@ Job_DropTable* JobsModel::_pJob_DropTable(void* aAddress)
 {
   Job_DropTable* pJob_DropTable = reinterpret_cast<Job_DropTable*>(aAddress);
   
-  RASSERT_CAST( !pJob_DropTable || CN_JOB_DROPTABLE == pJob_DropTable->eClass());
+  RASSERT_TYPE(pJob_DropTable,CN_JOB_DROPTABLE);
   
   return pJob_DropTable;
 }

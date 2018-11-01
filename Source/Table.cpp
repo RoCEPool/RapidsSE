@@ -24,7 +24,7 @@ Table* DBobjects::_pTable(void* aAddr)
   if (pTable && CN_TABLE != pTable->eClass())
     vTrace("_pTable got class %s\n"_Stz,aCN[pTable->eClass()]);
   
-  RASSERT_CAST( !pTable || CN_TABLE == pTable->eClass() );
+  RASSERT_TYPE(pTable,CN_TABLE);
   
   return pTable;
 }

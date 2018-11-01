@@ -65,7 +65,7 @@ Job_ShowCluster* JobsModel::_pJob_ShowCluster(void* aAddress)
 {
   Job_ShowCluster* pJob_ShowCluster = reinterpret_cast<Job_ShowCluster*>(aAddress);
   
-  //RASSERT_CAST( !pJob_ShowCluster || CN_JOB_SHOWCLUSTER == pJob_ShowCluster->eClass());
+  //RASSERT_TYPE(pJob_ShowCluster,CN_JOB_SHOWCLUSTER);
   
   return pJob_ShowCluster;
 }

@@ -74,7 +74,7 @@ Job_CreateTable* JobsModel::_pJob_CreateTable(void* aAddress)
 {
   Job_CreateTable* pJob_CreateTable = reinterpret_cast<Job_CreateTable*>(aAddress);
   
-  RASSERT_CAST( !pJob_CreateTable || CN_JOB_CREATETABLE == pJob_CreateTable->eClass());
+  RASSERT_TYPE(pJob_CreateTable,CN_JOB_CREATETABLE);
   
   return pJob_CreateTable;
 }

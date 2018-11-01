@@ -15,7 +15,7 @@ SkipList* Structures::_pSkipList(void* aAddr)
 {
   SkipList* pSkipList = reinterpret_cast<SkipList*>(aAddr);
   
-  RASSERT_CAST( !pSkipList || CN_SKIPLIST == pSkipList->eClass() );
+  RASSERT_TYPE(pSkipList,CN_SKIPLIST);
   
   return pSkipList;
 }

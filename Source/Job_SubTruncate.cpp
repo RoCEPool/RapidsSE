@@ -65,7 +65,7 @@ Job_SubTruncate* JobsModel::_pJob_SubTruncate(void* aAddress)
 {
   Job_SubTruncate* pJob_TruncateTable = reinterpret_cast<Job_SubTruncate*>(aAddress);
   
-  RASSERT_CAST( !pJob_TruncateTable || CN_JOB_SUBTRUNCATE == pJob_TruncateTable->eClass());
+  RASSERT_TYPE(pJob_TruncateTable,CN_JOB_SUBTRUNCATE);
   
   return pJob_TruncateTable;
 }

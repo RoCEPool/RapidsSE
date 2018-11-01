@@ -13,7 +13,7 @@ Stack* Stack::_pStack(void* aAddr)
 {
   Stack* pStack = reinterpret_cast<Stack*>(aAddr);
   
-  RASSERT_CAST( !pStack || CN_STACK == pStack->eClass() );
+  RASSERT_TYPE(pStack,CN_STACK);
   
   return pStack;
 }

@@ -132,7 +132,7 @@ namespace DBobjects
   {
     Entry* pEntry = reinterpret_cast<Entry*>(aAddr);
     
-    //RASSERT_CAST( !pEntry || CN_ENTRY == pEntry->eClass() );
+    //RASSERT_TYPE(pEntry,CN_ENTRY);
     
     return pEntry;
   }

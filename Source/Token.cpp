@@ -11,7 +11,7 @@ Token* Token::_pToken(void* aAddr)
 {
   Token* pToken = reinterpret_cast<Token*>(aAddr);
   
-  RASSERT_CAST( !pToken || CN_TOKEN == pToken->eClass() );
+  RASSERT_TYPE(pToken,CN_TOKEN);
   
   return pToken;
 }

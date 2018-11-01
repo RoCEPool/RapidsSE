@@ -11,7 +11,7 @@ BolVal* Values::_pBolVal(void* aAddr)
 {
   BolVal* pBolVal = reinterpret_cast<BolVal*>(aAddr);
   
-  RASSERT_CAST( !pBolVal || CN_BOLVAL == pBolVal->eClass() );
+  RASSERT_TYPE(pBolVal,CN_BOLVAL);
   
   return pBolVal;
 }

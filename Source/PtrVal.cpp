@@ -13,7 +13,7 @@ PtrVal* Values::_pPtrVal(void* aAddr)
 {
   PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(aAddr);
   
-  RASSERT_CAST( !pPtrVal || CN_PTRVAL == pPtrVal->eClass() );
+  RASSERT_TYPE(pPtrVal,CN_PTRVAL);
   
   return pPtrVal;
 }

@@ -15,7 +15,7 @@ ValSet* Values::_pValSet(void* aAddr)
 {
   ValSet* pValSet = reinterpret_cast<ValSet*>(aAddr);
   
-  RASSERT_CAST( !pValSet || CN_VALSET == pValSet->eClass() );
+  RASSERT_TYPE(pValSet,CN_VALSET);
   
   return pValSet;
 }

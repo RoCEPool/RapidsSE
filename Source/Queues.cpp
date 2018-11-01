@@ -20,7 +20,7 @@ Queues* Threads::_pQueues(void* aAddr)
 {
   Queues* pQueues = reinterpret_cast<Queues*>(aAddr);
   
-  RASSERT_CAST( !pQueues || CN_QUEUES == pQueues->eClass() );
+  RASSERT_TYPE(pQueues,CN_QUEUES);
   
   return pQueues;
 }

@@ -11,7 +11,7 @@ TokenVec* TokenVec::_pTokenSet(void* aAddr)
 {
   TokenVec* pTokenSet = reinterpret_cast<TokenVec*>(aAddr);
   
-  RASSERT_CAST( !pTokenSet || CN_TOKENVEC == pTokenSet->eClass() );
+  RASSERT_TYPE(pTokenSet,CN_TOKENVEC);
   
   return pTokenSet;
 }

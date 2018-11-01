@@ -14,7 +14,7 @@ BinVal* Values::_pBinVal(void* aAddr)
 {
   BinVal* pBinVal = reinterpret_cast<BinVal*>(aAddr);
   
-  RASSERT_CAST( !pBinVal || CN_BINVAL == pBinVal->eClass() );
+  RASSERT_TYPE(pBinVal,CN_BINVAL);
   
   return pBinVal;
 }

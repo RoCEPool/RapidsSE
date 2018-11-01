@@ -71,7 +71,7 @@ Job_LoadTable* JobsModel::_pJob_LoadTable(void* aAddress)
 {
   Job_LoadTable* pJob_LoadTable = reinterpret_cast<Job_LoadTable*>(aAddress);
   
-  //RASSERT_CAST( !pJob_LoadTable || CN_JOB_LOADTABLE == pJob_LoadTable->eClass());
+  //RASSERT_TYPE(pJob_LoadTable,CN_JOB_LOADTABLE);
   
   return pJob_LoadTable;
 }

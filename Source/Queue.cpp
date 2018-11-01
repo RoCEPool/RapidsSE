@@ -11,7 +11,7 @@ Queue* Structures::_pQueue(void* aAddr)
 {
   Queue* pQueue = reinterpret_cast<Queue*>(aAddr);
   
-  RASSERT_CAST( !pQueue || CN_QUEUE == pQueue->eClass() );
+  RASSERT_TYPE(pQueue,CN_QUEUE);
   
   return pQueue;
 }

@@ -11,7 +11,7 @@ Buffer* FreeBuffer::_pFreeBuffer(void* aAddr)
 {
   Buffer* pBuffer = reinterpret_cast<Buffer*>(aAddr);
   
-  RASSERT_CAST( !pBuffer || CN_FREEBUFFER == pBuffer->eClass() );
+  RASSERT_TYPE(pBuffer,CN_FREEBUFFER);
   
   return pBuffer;
 }

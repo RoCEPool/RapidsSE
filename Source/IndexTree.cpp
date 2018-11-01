@@ -27,7 +27,7 @@ IndexTree* DBobjects::_pIndexTree(void* pAddr)
 {
   IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pAddr);
   
-  RASSERT_CAST( !pIndexTree || CN_INDEXTREE == pIndexTree->eClass() );
+  RASSERT_TYPE(pIndexTree,CN_INDEXTREE);
   
   return pIndexTree;
 }

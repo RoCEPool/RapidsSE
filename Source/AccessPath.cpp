@@ -15,7 +15,7 @@ AccessPath* Plans::_pAccessPath(void* aAddr)
 {
   AccessPath* pAccessPath = reinterpret_cast<AccessPath*>(aAddr);
   
-  RASSERT_CAST( !pAccessPath || CN_ACCESSPATH == pAccessPath->eClass() );
+  RASSERT_TYPE(pAccessPath,CN_ACCESSPATH);
  
   return pAccessPath;
 }

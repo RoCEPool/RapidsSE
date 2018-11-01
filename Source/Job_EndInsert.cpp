@@ -71,7 +71,7 @@ Job_EndInsert* JobsModel::_pJob_EndInsert(void* aAddress)
 {
   Job_EndInsert* pJob_EndInsert = reinterpret_cast<Job_EndInsert*>(aAddress);
   
-  //RASSERT_CAST( !pJob_EndInsert || CN_JOB_ENDINSERT == pJob_EndInsert->eClass());
+  //RASSERT_TYPE(pJob_EndInsert,CN_JOB_ENDINSERT);
   
   return pJob_EndInsert;
 }

@@ -65,7 +65,7 @@ Job_VerifyIndex* JobsModel::_pJob_VerifyIndex(void* aAddress)
 {
   Job_VerifyIndex* pJob_VerifyIndex = reinterpret_cast<Job_VerifyIndex*>(aAddress);
   
-  RASSERT_CAST( !pJob_VerifyIndex || CN_JOB_VERIFYINDEX == pJob_VerifyIndex->eClass());
+  RASSERT_TYPE(pJob_VerifyIndex,CN_JOB_VERIFYINDEX);
   
   return pJob_VerifyIndex;
 }

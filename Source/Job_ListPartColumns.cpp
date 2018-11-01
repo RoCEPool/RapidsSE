@@ -65,7 +65,7 @@ Job_ListPartColumns* JobsModel::_pJob_ListPartColumns(void* aAddress)
 {
   Job_ListPartColumns* pJob_ListPartColumns = reinterpret_cast<Job_ListPartColumns*>(aAddress);
   
-  //RASSERT_CAST( !pJob_ListPartColumns || CN_JOB_LISTPARTCOLUMNS == pJob_ListPartColumns->eClass());
+  //RASSERT_TYPE(pJob_ListPartColumns,CN_JOB_LISTPARTCOLUMNS);
   
   return pJob_ListPartColumns;
 }

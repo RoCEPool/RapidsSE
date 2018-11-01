@@ -20,7 +20,7 @@ Task* Tasks::_pTask(void* aAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(aAddr);
   
-  RASSERT_CAST( !pTask || CN_TASK == pTask->eClass() );
+  RASSERT_TYPE(pTask,CN_TASK);
 
   return pTask;
 }
@@ -32,7 +32,7 @@ Task* Tasks::_pTask(i8 iAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(iAddr);
   
-  RASSERT_CAST( !pTask || CN_TASK == pTask->eClass() );
+  RASSERT_TYPE(pTask,CN_TASK);
   
   return pTask;
 }

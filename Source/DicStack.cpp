@@ -14,7 +14,7 @@ DicStack* DicStack::_pDicStack(void* aAddr)
 {
   DicStack* pDicStack = reinterpret_cast<DicStack*>(aAddr);
   
-  RASSERT_CAST( !pDicStack || CN_DICSTACK == pDicStack->eClass() );
+  RASSERT_TYPE(pDicStack,CN_DICSTACK);
   
   return pDicStack;
 }

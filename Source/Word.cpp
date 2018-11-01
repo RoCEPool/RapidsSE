@@ -17,7 +17,7 @@ Word* Dictionaries::_pWord(void* aAddr)
 {
   Word* pWord = reinterpret_cast<Word*>(aAddr);
   
-  RASSERT_CAST( !pWord || CN_WORD == pWord->eClass() );
+  RASSERT_TYPE(pWord,CN_WORD);
 
   return pWord;
 }

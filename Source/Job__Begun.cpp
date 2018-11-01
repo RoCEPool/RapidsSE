@@ -60,7 +60,7 @@ Job__Begun* JobsModel::_pJob__Begun(void* aAddress)
 {
   Job__Begun* pJob__Begun = reinterpret_cast<Job__Begun*>(aAddress);
   
-  RASSERT_CAST( !pJob__Begun || CN_JOB__BEGUN == pJob__Begun->eClass());
+  RASSERT_TYPE(pJob__Begun,CN_JOB__BEGUN);
   
   return pJob__Begun;
 }

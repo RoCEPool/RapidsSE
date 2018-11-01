@@ -19,7 +19,7 @@ TablePtn* DBobjects::_pTablePtn(void* aAddr)
 {
   TablePtn* pTablePtn = reinterpret_cast<TablePtn*>(aAddr);
   
-  RASSERT_CAST( !pTablePtn || CN_TABLEPTN == pTablePtn->eClass() );
+  RASSERT_TYPE(pTablePtn,CN_TABLEPTN);
   
   return pTablePtn;
 }

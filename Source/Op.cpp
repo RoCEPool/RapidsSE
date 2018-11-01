@@ -15,7 +15,7 @@ Op* Plans::_pOp(void* aAddr)
 {
   Op* pOp = reinterpret_cast<Op*>(aAddr);
   
-  RASSERT_CAST( !pOp || CN_OP == pOp->eClass() );
+  RASSERT_TYPE(pOp,CN_OP);
  
   return pOp;
 }

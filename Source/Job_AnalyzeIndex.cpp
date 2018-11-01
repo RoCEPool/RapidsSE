@@ -65,7 +65,7 @@ Job_AnalyzeIndex* JobsModel::_pJob_AnalyzeIndex(void* aAddress)
 {
   Job_AnalyzeIndex* pJob_AnalyzeTable = reinterpret_cast<Job_AnalyzeIndex*>(aAddress);
   
-  RASSERT_CAST( !pJob_AnalyzeTable || CN_JOB_ANALYZEINDEX == pJob_AnalyzeTable->eClass());
+  RASSERT_TYPE(pJob_AnalyzeTable,CN_JOB_ANALYZEINDEX);
   
   return pJob_AnalyzeTable;
 }

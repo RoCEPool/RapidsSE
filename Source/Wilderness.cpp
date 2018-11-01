@@ -15,7 +15,7 @@ Wilderness* DBobjects::_pWilderness(void* aAddr)
 {
   Wilderness* pWilderness = reinterpret_cast<Wilderness*>(aAddr);
   
-  RASSERT_CAST( !pWilderness || CN_WILDERNESS == pWilderness->eClass() );
+  RASSERT_TYPE(pWilderness,CN_WILDERNESS);
   
   return pWilderness;
 }

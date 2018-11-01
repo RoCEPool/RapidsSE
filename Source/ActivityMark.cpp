@@ -18,7 +18,7 @@ ActivityMark* Measurement::_pActivityMark(void* aAddr)
 {
   ActivityMark* pActivityMark = reinterpret_cast<ActivityMark*>(aAddr);
   
-  RASSERT_CAST( !pActivityMark || CN_ACTIVITYMARK == pActivityMark->eClass() );
+  RASSERT_TYPE(pActivityMark,CN_ACTIVITYMARK);
  
   return pActivityMark;
 }

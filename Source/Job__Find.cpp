@@ -17,7 +17,7 @@ Job__Find* JobsModel::_pJob__Find(void* aAddress)
 {
   Job__Find* pJob__Find = reinterpret_cast<Job__Find*>(aAddress);
   
-  RASSERT_CAST( !pJob__Find || CN_JOB__FIND == pJob__Find->eClass());
+  RASSERT_TYPE(pJob__Find,CN_JOB__FIND);
   
   return pJob__Find;
 }

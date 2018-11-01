@@ -11,7 +11,7 @@ ValReg* Values::_pValReg(void* aAddr)
 {
   ValReg* pValReg = reinterpret_cast<ValReg*>(aAddr);
   
-  RASSERT_CAST( !pValReg || CN_VALREG == pValReg->eClass() );
+  RASSERT_TYPE(pValReg,CN_VALREG);
   
   return pValReg;
 }

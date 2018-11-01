@@ -18,7 +18,7 @@ Parser* Parser::_pParser(void* aAddr)
 {
   Parser* pParser = reinterpret_cast<Parser*>(aAddr);
   
-  RASSERT_CAST( !pParser || CN_PARSER == pParser->eClass() );
+  RASSERT_TYPE(pParser,CN_PARSER);
   
   return pParser;
 }

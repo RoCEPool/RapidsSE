@@ -65,7 +65,7 @@ Job_Connector* JobsModel::_pJob_Connector(void* aAddress)
 {
   Job_Connector* pJob_Connector = reinterpret_cast<Job_Connector*>(aAddress);
   
-  RASSERT_CAST( !pJob_Connector || CN_JOB_CONNECTOR == pJob_Connector->eClass());
+  RASSERT_TYPE(pJob_Connector,CN_JOB_CONNECTOR);
   
   return pJob_Connector;
 }

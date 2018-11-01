@@ -11,7 +11,7 @@ ObjVal* Values::_pObjVal(void* aAddr)
 {
   ObjVal* pObjVal = reinterpret_cast<ObjVal*>(aAddr);
   
-  RASSERT_CAST( !pObjVal || CN_OBJVAL == pObjVal->eClass() );
+  RASSERT_TYPE(pObjVal,CN_OBJVAL);
   
   return pObjVal;
 }

@@ -26,7 +26,7 @@ EntryBuffer* DBobjects::_pEntryBuffer(void* aAddress)
 {
   EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(aAddress);
   
-  RASSERT_CAST( !pEntryBuffer || CN_ENTRYBUFFER == pEntryBuffer->eClass());
+  RASSERT_TYPE(pEntryBuffer,CN_ENTRYBUFFER);
   
   return pEntryBuffer;
 }

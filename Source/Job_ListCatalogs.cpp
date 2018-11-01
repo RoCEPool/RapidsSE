@@ -65,7 +65,7 @@ Job_ListCatalogs* JobsModel::_pJob_ListCatalogs(void* aAddress)
 {
   Job_ListCatalogs* pJob_ListCatalogs = reinterpret_cast<Job_ListCatalogs*>(aAddress);
   
-  //RASSERT_CAST( !pJob_ListCatalogs || CN_JOB_LISTCATALOGS == pJob_ListCatalogs->eClass());
+  //RASSERT_TYPE(pJob_ListCatalogs,CN_JOB_LISTCATALOGS);
   
   return pJob_ListCatalogs;
 }

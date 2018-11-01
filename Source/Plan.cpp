@@ -14,7 +14,7 @@ Plan* Plans::_pPlan(void* aAddr)
 {
   Plan* pPlan = reinterpret_cast<Plan*>(aAddr);
   
-  RASSERT_CAST( !pPlan || CN_PLAN == pPlan->eClass() );
+  RASSERT_TYPE(pPlan,CN_PLAN);
 
   return pPlan;
 }
@@ -26,7 +26,7 @@ Plan* Plans::_pPlan(i8 iAddr)
 {
   Plan* pPlan = reinterpret_cast<Plan*>(iAddr);
   
-  RASSERT_CAST( !pPlan || CN_PLAN == pPlan->eClass() );
+  RASSERT_TYPE(pPlan,CN_PLAN);
   
   return pPlan;
 }

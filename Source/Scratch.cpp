@@ -13,7 +13,7 @@ Scratch* System::_pScratch(void* aAddress)
 {
   Scratch* pScratch = reinterpret_cast<Scratch*>(aAddress);
   
-  RASSERT_CAST( !pScratch || CN_SCRATCH == pScratch->eClass() );
+  RASSERT_TYPE(pScratch,CN_SCRATCH);
   
   return pScratch;
 }

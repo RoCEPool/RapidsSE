@@ -11,7 +11,7 @@ DteVal* Values::_pDteVal(void* aAddr)
 {
   DteVal* pDteVal = reinterpret_cast<DteVal*>(aAddr);
   
-  RASSERT_CAST( !pDteVal || CN_DTEVAL == pDteVal->eClass() );
+  RASSERT_TYPE(pDteVal,CN_DTEVAL);
   
   return pDteVal;
 }

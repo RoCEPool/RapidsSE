@@ -15,7 +15,7 @@ Tokeniser* Parsing::_pTokeniser(void* aAddr)
 {
   Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(aAddr);
   
-  RASSERT_CAST( !pTokeniser || CN_TOKENISER == pTokeniser->eClass() );
+  RASSERT_TYPE(pTokeniser,CN_TOKENISER);
   
   return pTokeniser;
 }

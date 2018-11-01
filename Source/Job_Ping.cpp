@@ -65,7 +65,7 @@ Job_Ping* JobsModel::_pJob_Ping(void* aAddress)
 {
   Job_Ping* pJob_Ping = reinterpret_cast<Job_Ping*>(aAddress);
   
-  //RASSERT_CAST( !pJob_Ping || CN_JOB_PING == pJob_Ping->eClass());
+  //RASSERT_TYPE(pJob_Ping,CN_JOB_PING);
   
   return pJob_Ping;
 }

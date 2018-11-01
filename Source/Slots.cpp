@@ -19,7 +19,7 @@ Slots* DBobjects::_pSlots(void* aAddr)
 {
   Slots* pSlots = reinterpret_cast<Slots*>(aAddr);
   
-  RASSERT_CAST( !pSlots || CN_SLOTS == pSlots->eClass() );
+  RASSERT_TYPE(pSlots,CN_SLOTS);
   
   return pSlots;
 }

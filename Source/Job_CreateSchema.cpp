@@ -65,7 +65,7 @@ Job_CreateSchema* JobsModel::_pJob_CreateSchema(void* aAddress)
 {
   Job_CreateSchema* pJob_CreateSchema = reinterpret_cast<Job_CreateSchema*>(aAddress);
   
-  //RASSERT_CAST( !pJob_CreateSchema || CN_JOB_CREATESCHEMA == pJob_CreateSchema->eClass());
+  //RASSERT_TYPE(pJob_CreateSchema,CN_JOB_CREATESCHEMA);
   
   return pJob_CreateSchema;
 }

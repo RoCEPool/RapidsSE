@@ -18,7 +18,7 @@ Jobs* JobsModel::_pJobs(void* aAddr)
 {
   Jobs* pJobs = reinterpret_cast<Jobs*>(aAddr);
   
-  RASSERT_CAST( !pJobs || CN_JOBS == pJobs->eClass() );
+  RASSERT_TYPE(pJobs,CN_JOBS);
   
   return pJobs;
 }

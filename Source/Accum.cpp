@@ -15,7 +15,7 @@ Accum* MockEE::_pAccum(void* aAddr)
 {
   Accum* pAccum = reinterpret_cast<Accum*>(aAddr);
   
-  RASSERT_CAST( !pAccum || CN_ACCUM == pAccum->eClass() );
+  RASSERT_TYPE(pAccum,CN_ACCUM);
  
   return pAccum;
 }

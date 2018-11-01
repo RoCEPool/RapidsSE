@@ -16,7 +16,7 @@ Column* DBobjects::_pColumn(void* aAddr)
 {
   Column* pColumn = reinterpret_cast<Column*>(aAddr);
   
-  RASSERT_CAST( !pColumn || CN_COLUMN == pColumn->eClass() );
+  RASSERT_TYPE(pColumn,CN_COLUMN);
  
   return pColumn;
 }

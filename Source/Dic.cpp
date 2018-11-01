@@ -11,7 +11,7 @@ Dic* Dictionaries::_pDic(void* aAddr)
 {
   Dic* pDic = reinterpret_cast<Dic*>(aAddr);
   
-  RASSERT_CAST( !pDic || CN_DIC == pDic->eClass() );
+  RASSERT_TYPE(pDic,CN_DIC);
 
   return pDic;
 }

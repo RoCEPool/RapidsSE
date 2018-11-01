@@ -62,7 +62,7 @@ namespace Debugging
   { \
     if ( pARG && eCLASS != pARG->eClass()  ) { \
       printf("RASSERT_TYPE in %s at %d\n",__FILE__,__LINE__); \
-      printf("  Expecting class %lld; Got %lld\n",eCLASS,pARG->eClass()); \
+      printf("  Expecting class %d; Got %d\n",eCLASS,pARG->eClass()); \
       Debugging::vAssertTrap(); \
       THROW_ERROR_MSG(EC_ASSERT, \
                       (__builtin_expect(!(pARG && eCLASS != pARG->eClass()), 0) \

@@ -19,7 +19,7 @@ Semaphore* System::_pSemaphore(void* aAddr)
 {
   Semaphore* pSemaphore = reinterpret_cast<Semaphore*>(aAddr);
   
-  RASSERT_CAST( !pSemaphore || CN_SEMAPHORE == pSemaphore->eClass() );
+  RASSERT_TYPE(pSemaphore,CN_SEMAPHORE);
   
   return pSemaphore;
 }

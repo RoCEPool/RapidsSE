@@ -65,7 +65,7 @@ Job_UseSchema* JobsModel::_pJob_UseSchema(void* aAddress)
 {
   Job_UseSchema* pJob_UseSchema = reinterpret_cast<Job_UseSchema*>(aAddress);
   
-  //RASSERT_CAST( !pJob_UseSchema || CN_JOB_USESCHEMA == pJob_UseSchema->eClass());
+  //RASSERT_TYPE(pJob_UseSchema,CN_JOB_USESCHEMA);
   
   return pJob_UseSchema;
 }

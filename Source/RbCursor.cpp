@@ -11,7 +11,7 @@ RbCursor* DBobjects::_pRbCursor(void* aAddr)
 {
   RbCursor* pRbCursor = reinterpret_cast<RbCursor*>(aAddr);
   
-  RASSERT_CAST( !pRbCursor || CN_RBCURSOR == pRbCursor->eClass() );
+  RASSERT_TYPE(pRbCursor,CN_RBCURSOR);
   
   return pRbCursor;
 }

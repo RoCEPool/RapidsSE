@@ -11,7 +11,7 @@ GraphCursor* Structures::_pGraphCursor(void* aAddr)
 {
   GraphCursor* pGraphCursor = reinterpret_cast<GraphCursor*>(aAddr);
   
-  RASSERT_CAST( !pGraphCursor || CN_GRAPHCURSOR == pGraphCursor->eClass() );
+  RASSERT_TYPE(pGraphCursor,CN_GRAPHCURSOR);
   
   return pGraphCursor;
 }

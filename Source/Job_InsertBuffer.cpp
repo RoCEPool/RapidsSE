@@ -69,7 +69,7 @@ Job_InsertBuffer* JobsModel::_pJob_InsertBuffer(void* aAddress)
 {
   Job_InsertBuffer* pJob_InsertBuffer = reinterpret_cast<Job_InsertBuffer*>(aAddress);
   
-  //RASSERT_CAST( !pJob_InsertBuffer || CN_JOB_INSERTBUFFER == pJob_InsertBuffer->eClass());
+  //RASSERT_TYPE(pJob_InsertBuffer,CN_JOB_INSERTBUFFER);
   
   return pJob_InsertBuffer;
 }
