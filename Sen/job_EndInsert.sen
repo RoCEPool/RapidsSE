@@ -34,7 +34,7 @@
   // grab this task's lock
   pThisTask task.grabLock
 
-  grid::slots task::acks!
+  grid::nodes task::acks!
 
   // for all partitions
   nTotalPartitions 0 do
@@ -50,9 +50,9 @@
   loop
 
 
-  "EndInsert_sendLast ack waiting" .verbose
+  //"EndInsert_sendLast ack waiting" .verbose
   task::wait
-  "EndInsert_sendLast acked" .verbose
+  //"EndInsert_sendLast acked" .verbose
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -66,9 +66,9 @@
 
   grid::slots task::acks!
 
-  "EndInsert_waitOnly waiting" .verbose
+  //"EndInsert_waitOnly waiting" .verbose
   task::wait
-  "EndInsert_waitOnly acked" .verbose
+  //"EndInsert_waitOnly acked" .verbose
 ;
 
 
