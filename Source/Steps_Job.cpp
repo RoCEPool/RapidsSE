@@ -149,10 +149,12 @@ void Task::vJobAddOriginator(MP_Task mpTask)
   gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
 
-  if (pJob->m_bMark)
+  if (pJob->m_bMark) {
     ActivityMap::vMark(pJob->m_iJobId,"Added %s to Originator List"_Stz,
                        aCN[pJob->eClass()]);
-
+    gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
+  }
+  
 #ifdef JOB_TRACE
   if ( JOB_TRACE )
     vTrace("Added job %p %s id %lld partNode %lld into originator\n"_Stz,
@@ -182,9 +184,11 @@ void Task::vJobAddParticipant(MP_Task mpTask)
   gpAttachMap->m_pParticipatingJobs->vAddJob(pJob);
   gpAttachMap->m_pParticipatingJobs->vDropLock();
   
-  if (pJob->m_bMark)
+  if (pJob->m_bMark) {
     ActivityMap::vMark(pJob->m_iJobId,"Added %s to Participant List"_Stz,
                        aCN[pJob->eClass()]);
+    gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
+  }
   
 #ifdef JOB_TRACE
   if ( JOB_TRACE )
@@ -1021,10 +1025,11 @@ void Task::vJobRemoveOriginator(MP_Task mpTask)
     gpAttachMap->m_pOriginatingJobs->vDropLock();
   }
   
-  if (pJob->m_bMark)
+  if (pJob->m_bMark) {
     ActivityMap::vMark(pJob->m_iJobId,"Removed %s from Originator List"_Stz,
                        aCN[pJob->eClass()]);
-
+    gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
+  }
   
 #ifdef JOB_TRACE
   if ( JOB_TRACE )
@@ -1061,10 +1066,12 @@ void Task::vJobRemoveParticipant(MP_Task mpTask)
     gpAttachMap->m_pParticipatingJobs->vDropLock();
   }
   
-  if (pJob->m_bMark)
+  if (pJob->m_bMark) {
     ActivityMap::vMark(pJob->m_iJobId,"Removed %s from Participant List"_Stz,
                        aCN[pJob->eClass()]);
-
+    gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
+  }
+  
 #ifdef JOB_TRACE
   if ( JOB_TRACE )
     vTrace("removed job %p id %lld from participant\n"_Stz,pJob, pJob->iJobId());

@@ -38,6 +38,7 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void vContentDump(void);
+    void vMarkContents(i8 iJobId);
     
     Footer* aFooter(void);
   };

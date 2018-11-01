@@ -252,6 +252,34 @@ void Jobs::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* mark the contents                                                          */
+/*----------------------------------------------------------------------------*/
+void Jobs::vMarkContents(i8 iJobId)
+{
+  i8 iLevel = 0;
+
+  if (0 == m_pJobsSkipList->nObjects()) {
+    ActivityMap::vMark(iJobId,"Jobs List is empty"_Stz);
+    return;
+  }
+  
+  SkipNode* pNode = m_pJobsSkipList->pFirst(iLevel);
+  
+  ActivityMap::vMark(iJobId,"Contents of Jobs List:"_Stz);
+
+  while (pNode) {
+    Job* pJob = _pJob(pNode->m_pObject);
+    ActivityMap::vMark(iJobId,"Job %p %s id %lld partNode %lld"_Stz,
+      pJob,
+      aCN[pJob->eClass()],
+      pJob->m_iJobId,
+      pJob->m_iParticipantNode);
+    
+    pNode = m_pJobsSkipList->pNext(pNode, iLevel);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
