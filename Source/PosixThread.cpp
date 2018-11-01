@@ -433,7 +433,7 @@ void* PosixThread::aStackBase(void)
     vWarn("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
   
 #else
-  RASSERT(0);
+#error "Unknown Operating System"
 #endif
   
   return aAddress;
@@ -479,7 +479,7 @@ i8 PosixThread::iStackSize(void)
   iSize = (i8) iStackSize;
   
 #else
-  RASSERT(0);
+#error "Unknown Operating System"
 #endif
   
   return iSize;

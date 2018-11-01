@@ -18,8 +18,7 @@ u8 Synch::uAtomicAdd(i8* pWord, i8 iValue)
   u8 uResult = __sync_add_and_fetch((u8*)pWord, iValue);
   
 #else
-  RASSERT(0);
-  
+#error "Unknown Operating System"
 #endif
   
   return uResult;
