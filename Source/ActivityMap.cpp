@@ -133,7 +133,8 @@ void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
   if ( ! gpActivityMap )
     return;
   
-  if ( ! gpAttachMap->m_bMarkApi[eApiCall] )
+  if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
+       ! gpAttachMap->m_bMarkApiAll )
     return;
   
   va_list xArgs;
