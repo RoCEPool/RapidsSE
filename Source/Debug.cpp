@@ -3,17 +3,26 @@
 /*============================================================================*/
 
 #include "Debugging.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* assert trap                                                                */
 /*----------------------------------------------------------------------------*/
 void Debugging::vAssertTrap(void)
 {
-  // put a breakpoint here to trap asserts
-  sleep(0);
   
   // dump the call stack
   vStackDump();
+  
+  // add activity dump and api state dump
+  ActivityMap::vDump();
+  
+  gpAttachMap->m_pApiState->vDump();
+  
+  // put a breakpoint here to trap asserts
+  sleep(0);
   
   // generate a core
   abort();
