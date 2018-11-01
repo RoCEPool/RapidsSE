@@ -34,7 +34,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the schemas folder
-  checkInSchemas not if pJob_ListSchemas <ERROR_REQUEST> exit then
+  checkInSchemas not if pJob_ListSchemas <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents

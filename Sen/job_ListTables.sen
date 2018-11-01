@@ -41,7 +41,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder
-  checkInTables not if pJob_ListTables <ERROR_REQUEST> exit then
+  checkInTables not if pJob_ListTables <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents

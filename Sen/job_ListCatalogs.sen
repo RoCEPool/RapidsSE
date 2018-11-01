@@ -35,7 +35,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the catalogs folder
-  checkInCatalogs not if pJob_ListCatalogs <ERROR_REQUEST> exit then
+  checkInCatalogs not if pJob_ListCatalogs <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list catalogs folder contents

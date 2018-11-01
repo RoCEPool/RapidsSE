@@ -34,7 +34,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tenants folder
-  checkInTenants not if pJob_ListTenants <ERROR_REQUEST> exit then
+  checkInTenants not if pJob_ListTenants <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // list tables folder contents

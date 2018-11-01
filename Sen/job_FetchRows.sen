@@ -141,7 +141,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //check if we can fetch rows
-  sTableNm checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> exit then
+  sTableNm checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the table

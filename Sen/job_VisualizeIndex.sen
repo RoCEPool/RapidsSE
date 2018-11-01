@@ -83,7 +83,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //check if we can visualize index
-  sTableNm sIndexNm checkVisualizeIndex not if pJob_VisualizeIndex <ERROR_REQUEST> exit then
+  sTableNm sIndexNm checkVisualizeIndex not if pJob_VisualizeIndex <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table and indexes folder

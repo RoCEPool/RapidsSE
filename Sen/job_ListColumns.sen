@@ -79,7 +79,7 @@
 
   //----------------------------------------------------------------------------
   // should be in the tables folder
-  checkInTables not if pJob_ListColumns <ERROR_REQUEST> exit then
+  checkInTables not if pJob_ListColumns <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name from job
@@ -87,7 +87,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_ListColumns <ERROR_REQUEST> exit then
+  sTableNm checkIsTableFolder not if pJob_ListColumns <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -95,7 +95,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_ListColumns <ERROR_REQUEST> exit then
+  sTableNm checkIsTable not if popTable pJob_ListColumns <ERROR_REQUEST> !!am exit then
 
   args.metadata if
     "(columnNo INTEGER, columnName VARCHAR, columnType VARCHAR, columnLength INTEGER, columnScale INTEGER, isNull boolean, isPartitionKey boolean)"
