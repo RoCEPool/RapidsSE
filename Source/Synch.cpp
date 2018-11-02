@@ -125,6 +125,28 @@ i8 Synch::iTickFrequency(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert tick delta to microseconds                                        */
+/*----------------------------------------------------------------------------*/
+i8 Synch::iToMicroseconds(i8 iTickDelta)
+{
+  i8 iTicksPerMicrosecond = iTickFrequency() / 1000;
+  
+  i8 iMicroseconds = iTickDelta / iTicksPerMicrosecond;
+  
+  return iMicroseconds;
+}
+
+/*----------------------------------------------------------------------------*/
+/* read hardware timestamp counter                                            */
+/*----------------------------------------------------------------------------*/
+i8 Synch::iRdtscp(void)
+{
+  i8 iTscp = iRdtscp();
+  
+  return iRdtscp();
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop read lock                                                             */
 /*----------------------------------------------------------------------------*/
 u8 Synch::iLockDropRead(u8* pWord)

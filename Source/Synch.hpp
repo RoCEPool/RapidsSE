@@ -15,7 +15,9 @@ namespace System
     static bool bTestAndSet(u8* pWord, u8 uIf, u8 uThen);
     
     static i8   iTicks(void);
+    static i8   iToMicroseconds(i8 iTickDelta);
     static i8   iTickFrequency(void);
+    static i8   iRdtscp(void);
     
     static u8   iLockDropRead(u8*);
     static u8   iLockGrabRead(u8*);
