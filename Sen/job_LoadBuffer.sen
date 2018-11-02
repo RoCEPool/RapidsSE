@@ -100,7 +100,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   delete_completed_job
 
-  <DONE_KID>
+  <<am <DONE_KID>
 ;
 
 

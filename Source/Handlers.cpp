@@ -20,6 +20,19 @@ void Handlers::vAckTaskHandler(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
+  ActivityMap::vMark(0,"pTaskBeingAcked:%p pTaskAcking:%p "_Stz,
+                     pTaskBeingAcked,
+                     pTaskAcking
+                     );
+  
+  ActivityMap::vMark(0,"pJobAcking:%s "_Stz,
+                     aCN[pTaskAcking->pJob()->eClass()]
+                     );
+  
+  ActivityMap::vMark(0,"pJobBeingAcked:%s "_Stz,
+                     aCN[pTaskBeingAcked->eClass()]
+                     );
+  
   Job* pJobBeingAcked = pTaskBeingAcked->pJob();
   Job* pJobAcking = pTaskAcking->pJob();
   
