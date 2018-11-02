@@ -135,9 +135,6 @@ Job_AnalyzeTable::~Job_AnalyzeTable(void)
 /*----------------------------------------------------------------------------*/
 void Job_AnalyzeTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_ANALYZETABLE == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_ANALYZETABLE);
-  
   Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pObject);
 
   pJob_AnalyzeTable->vShow();

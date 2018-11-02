@@ -129,9 +129,6 @@ Job__End::~Job__End(void)
 /*----------------------------------------------------------------------------*/
 void Job__End::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB__END == eClass);
-  RASSERT(pObject->eClass() == CN_JOB__END);
-  
   Job__End* pJob__End = _pJob__End(pObject);
 
   pJob__End->vShow();

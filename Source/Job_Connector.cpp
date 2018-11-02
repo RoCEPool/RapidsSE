@@ -134,9 +134,6 @@ Job_Connector::~Job_Connector(void)
 /*----------------------------------------------------------------------------*/
 void Job_Connector::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_CONNECTOR == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_CONNECTOR);
-  
   Job_Connector* pJob_Connector = _pJob_Connector(pObject);
 
   pJob_Connector->vShow();

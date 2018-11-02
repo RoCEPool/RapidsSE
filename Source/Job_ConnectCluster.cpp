@@ -65,7 +65,7 @@ Job_ConnectCluster* JobsModel::_pJob_ConnectCluster(void* aAddress)
 {
   Job_ConnectCluster* pJob_ConnectCluster = reinterpret_cast<Job_ConnectCluster*>(aAddress);
   
-  //RASSERT_TYPE(pJob_ConnectCluster,CN_JOB_CONNECTCLUSTER);
+  RASSERT_TYPE(pJob_ConnectCluster,CN_JOB_CONNECTCLUSTER);
   
   return pJob_ConnectCluster;
 }
@@ -134,9 +134,6 @@ Job_ConnectCluster::~Job_ConnectCluster(void)
 /*----------------------------------------------------------------------------*/
 void Job_ConnectCluster::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_CONNECTCLUSTER == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_CONNECTCLUSTER);
-  
   Job_ConnectCluster* pJob_ConnectCluster = _pJob_ConnectCluster(pObject);
   
   pJob_ConnectCluster->vShow();

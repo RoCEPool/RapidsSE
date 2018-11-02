@@ -65,7 +65,7 @@ Job_CreateTenant* JobsModel::_pJob_CreateTenant(void* aAddress)
 {
   Job_CreateTenant* pJob_CreateTenant = reinterpret_cast<Job_CreateTenant*>(aAddress);
   
-  //RASSERT_TYPE(pJob_CreateTenant,CN_JOB_CREATETENANT);
+  RASSERT_TYPE(pJob_CreateTenant,CN_JOB_CREATETENANT);
   
   return pJob_CreateTenant;
 }
@@ -134,9 +134,6 @@ Job_CreateTenant::~Job_CreateTenant(void)
 /*----------------------------------------------------------------------------*/
 void Job_CreateTenant::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_CREATETENANT == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_CREATETENANT);
-  
   Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pObject);
 
   pJob_CreateTenant->vShow();

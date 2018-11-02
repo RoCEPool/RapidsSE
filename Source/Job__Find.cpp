@@ -86,9 +86,6 @@ Job__Find::~Job__Find(void)
 /*----------------------------------------------------------------------------*/
 void Job__Find::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB__FIND == eClass);
-  RASSERT(pObject->eClass() == CN_JOB__FIND);
-  
   Job__Find* pJob__Executed = _pJob__Find(pObject);
 
   pJob__Executed->vShow();

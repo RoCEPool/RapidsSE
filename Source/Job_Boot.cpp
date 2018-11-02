@@ -134,9 +134,6 @@ Job_Boot::~Job_Boot(void)
 /*----------------------------------------------------------------------------*/
 void Job_Boot::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_BOOT == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_BOOT);
-  
   Job_Boot* pJob_Boot = _pJob_Boot(pObject);
 
   pJob_Boot->vShow();

@@ -135,9 +135,6 @@ Job_AnalyzeIndex::~Job_AnalyzeIndex(void)
 /*----------------------------------------------------------------------------*/
 void Job_AnalyzeIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_ANALYZEINDEX == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_ANALYZEINDEX);
-  
   Job_AnalyzeIndex* pJob_AnalyzeIndex = _pJob_AnalyzeIndex(pObject);
 
   pJob_AnalyzeIndex->vShow();

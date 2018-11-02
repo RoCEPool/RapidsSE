@@ -158,9 +158,6 @@ Job_CreateTable::~Job_CreateTable(void)
 /*----------------------------------------------------------------------------*/
 void Job_CreateTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_CREATETABLE == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_CREATETABLE);
-  
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pObject);
 
   pJob_CreateTable->vShow();

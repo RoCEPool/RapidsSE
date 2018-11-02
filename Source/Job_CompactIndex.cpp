@@ -133,9 +133,6 @@ Job_CompactIndex::~Job_CompactIndex(void)
 /*----------------------------------------------------------------------------*/
 void Job_CompactIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_COMPACTINDEX == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_COMPACTINDEX);
-  
   Job_CompactIndex* pJob_CompactIndex = _pJob_CompactIndex(pObject);
 
   pJob_CompactIndex->vShow();

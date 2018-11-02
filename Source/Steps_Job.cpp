@@ -355,8 +355,8 @@ void Task::vJobDicPath(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.dicPath"_Stz);
-  Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
-  
+  Job* pJob = _pJob(pJobPtr);
+
   mpTask->m_pDataStack->vPushObject(&pJob->m_xDicPath);
   
   EXIT();
@@ -372,8 +372,8 @@ void Task::vJobErrorFetch(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.error@"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
-  
+  Job* pJob = _pJob(pJobPtr);
+
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.error@"_Stz);
@@ -393,8 +393,8 @@ void Task::vJobErrorStore(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
-  
+  Job* pJob = _pJob(pJobPtr);
+
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.error!"_Stz);
@@ -592,8 +592,8 @@ void Task::vJobIndexNameFetch(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.indexName@"_Stz);
-  Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
-  
+  Job* pJob = _pJob(pJobPtr);
+
   mpTask->m_pDataStack->vPushS32(pJob->m_sIndexName);
   
   EXIT();
@@ -811,8 +811,8 @@ void Task::vJobObjectNameFetch(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.objectNamed@"_Stz);
-  Job_CreateSchema* pJob = _pJob_CreateSchema(pJobPtr);
-  
+  Job* pJob = _pJob(pJobPtr);
+
   mpTask->m_pDataStack->vPushS32(pJob->m_sObjectName);
   
   EXIT();

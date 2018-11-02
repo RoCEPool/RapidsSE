@@ -129,9 +129,6 @@ Job__Cancel::~Job__Cancel(void)
 /*----------------------------------------------------------------------------*/
 void Job__Cancel::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB__CANCEL == eClass);
-  RASSERT(pObject->eClass() == CN_JOB__CANCEL);
-  
   Job__Cancel* pJob__Cancele = _pJob__Cancel(pObject);
 
   pJob__Cancele->vShow();

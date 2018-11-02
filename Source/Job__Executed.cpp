@@ -135,9 +135,6 @@ Job__Executed::~Job__Executed(void)
 /*----------------------------------------------------------------------------*/
 void Job__Executed::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB__EXECUTED == eClass);
-  RASSERT(pObject->eClass() == CN_JOB__EXECUTED);
-  
   Job__Executed* pJob__Executed = _pJob__Executed(pObject);
 
   pJob__Executed->vShow();

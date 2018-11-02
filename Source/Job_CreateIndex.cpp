@@ -185,9 +185,6 @@ Job_CreateIndex::~Job_CreateIndex(void)
 /*----------------------------------------------------------------------------*/
 void Job_CreateIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_CREATEINDEX == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_CREATEINDEX);
-  
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pObject);
 
   pJob_CreateIndex->vShow();

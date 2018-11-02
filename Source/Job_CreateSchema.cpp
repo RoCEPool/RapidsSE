@@ -65,7 +65,7 @@ Job_CreateSchema* JobsModel::_pJob_CreateSchema(void* aAddress)
 {
   Job_CreateSchema* pJob_CreateSchema = reinterpret_cast<Job_CreateSchema*>(aAddress);
   
-  //RASSERT_TYPE(pJob_CreateSchema,CN_JOB_CREATESCHEMA);
+  RASSERT_TYPE(pJob_CreateSchema,CN_JOB_CREATESCHEMA);
   
   return pJob_CreateSchema;
 }
@@ -134,9 +134,6 @@ Job_CreateSchema::~Job_CreateSchema(void)
 /*----------------------------------------------------------------------------*/
 void Job_CreateSchema::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_CREATESCHEMA == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_CREATESCHEMA);
-  
   Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pObject);
 
   pJob_CreateSchema->vShow();

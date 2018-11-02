@@ -134,9 +134,6 @@ Job_CreateCatalog::~Job_CreateCatalog(void)
 /*----------------------------------------------------------------------------*/
 void Job_CreateCatalog::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_CREATECATALOG == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_CREATECATALOG);
-  
   Job_CreateCatalog* pJob_CreateCatalog = _pJob_CreateCatalog(pObject);
 
   pJob_CreateCatalog->vShow();

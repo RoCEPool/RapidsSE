@@ -134,9 +134,6 @@ Job_Answer::~Job_Answer(void)
 /*----------------------------------------------------------------------------*/
 void Job_Answer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_ANSWER == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_ANSWER);
-  
   Job_Answer* pJob_Answer = _pJob_Answer(pObject);
 
   pJob_Answer->vShow();

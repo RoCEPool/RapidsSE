@@ -129,9 +129,6 @@ Job__Execute::~Job__Execute(void)
 /*----------------------------------------------------------------------------*/
 void Job__Execute::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB__EXECUTE == eClass);
-  RASSERT(pObject->eClass() == CN_JOB__EXECUTE);
-  
   Job__Execute* pJob__Execute = _pJob__Execute(pObject);
 
   pJob__Execute->vShow();
