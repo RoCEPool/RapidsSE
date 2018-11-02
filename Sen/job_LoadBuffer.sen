@@ -97,10 +97,12 @@
     pJob_LoadBuffer LoadBuffer.load
   //then
 
+  <<am
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   delete_completed_job
 
-  <<am <DONE_KID>
+  <DONE_KID>
 ;
 
 

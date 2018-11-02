@@ -89,9 +89,10 @@
   pJob_InsertBuffer InsertBuffer.insert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  <<am
   delete_completed_job
 
-  <<am <DONE_KID>
+  <DONE_KID>
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
