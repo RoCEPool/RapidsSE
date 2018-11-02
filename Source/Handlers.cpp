@@ -29,9 +29,9 @@ void Handlers::vAckTaskHandler(Task* pTaskBeingAcked, Task* pTaskAcking)
                      aCN[pTaskAcking->pJob()->eClass()]
                      );
   
-  ActivityMap::vMark(0,"pJobBeingAcked:%s "_Stz,
-                     aCN[pTaskBeingAcked->eClass()]
-                     );
+//  ActivityMap::vMark(0,"pJobBeingAcked:%s "_Stz,
+//                     aCN[pTaskBeingAcked->pJob()->eClass()]
+//                     );
   
   Job* pJobBeingAcked = pTaskBeingAcked->pJob();
   Job* pJobAcking = pTaskAcking->pJob();
