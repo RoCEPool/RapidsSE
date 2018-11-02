@@ -155,10 +155,10 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
       ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"Setting EndInsertJobId in partition %lld to %lld"_Stz,
                          iPartition, pJob_InsertBuffer->m_iEndInsertJobId);
       
-      vTrace("Setting m_nBuffersToBeInserted in partition %lld slot %lld to %lld"_Stz,
-                         iPartition, iSlot, nBuffersToBeInserted);
-      vTrace("Setting EndInsertJobId in partition %lld to %lld"_Stz,
-                         iPartition, pJob_InsertBuffer->m_iEndInsertJobId);
+      //vTrace("Setting m_nBuffersToBeInserted in partition %lld slot %lld to %lld\n"_Stz,
+      //                   iPartition, iSlot, nBuffersToBeInserted);
+      //vTrace("Setting EndInsertJobId in partition %lld to %lld\n"_Stz,
+      //                   iPartition, pJob_InsertBuffer->m_iEndInsertJobId);
     }
   }
   

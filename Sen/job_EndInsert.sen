@@ -34,7 +34,7 @@
   // grab this task's lock
   pThisTask task.grabLock
 
-  grid::nodes task::acks!
+  grid::slots task::acks!
 
   // for all partitions
   nTotalPartitions 0 do
