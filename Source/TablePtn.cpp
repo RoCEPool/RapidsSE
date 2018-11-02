@@ -113,7 +113,7 @@ TablePtn::TablePtn(void)
 
   m_nBuffersToBeInserted = 0;
   m_nBuffersInserted = 0;
-  m_iEndInsertJobId = -1;
+  m_iEndInsertJobId = C_UNKNOWN;
   
   m_pIndexTreeVec = new IndexTreeVec;
   

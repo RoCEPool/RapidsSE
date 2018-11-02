@@ -164,7 +164,7 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
   
   // have all buffers been loaded?
   bool bAllBuffersInserted = false;
-  if ( pPartition->nBuffersToBeInserted() &&
+  if ( C_UNKNOWN != pPartition->iEndInsertJobId() &&
       (pPartition->nBuffersToBeInserted() == pPartition->nBuffersInserted())) {
     //vTrace("Buffers inserted for partition %lld %lld\n"_Stz, iPartition, pPartition->nBuffersToBeInserted(), pPartition->iEndInsertJobId());
     pJob_InsertBuffer->m_iEndInsertJobId = pPartition->iEndInsertJobId();
@@ -293,7 +293,7 @@ void Task::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
   
   if (iIsFinal) {
     i8 nBuffersToBeInserted = pJob_InsertRow->m_nBuffersToBeInserted[iPartition];
-    ASSERT(C_UNKNOWN != nBuffersToBeInserted);
+    RASSERT(C_UNKNOWN != nBuffersToBeInserted);
     pJob_InsertBuffer->m_nBuffersToBeInserted = nBuffersToBeInserted;
   }
   
