@@ -253,7 +253,7 @@ void ActivityMap::operator delete(void* aAddress)
 /*----------------------------------------------------------------------------*/
 ActivityMap::ActivityMap(void)
 {
-  if (0 != gpAttachMap->m_pGrid->m_iThisNode)
+  if (0 != gpAttachMap->m_pGrid->m_iThisNode || PosixThread::bIsJavaThread() )
     return;
 
   // initialise mutex attribute

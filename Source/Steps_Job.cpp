@@ -1349,6 +1349,10 @@ void Task::vJobSignalConnector(MP_Task mpTask)
     return;
   }
   
+  if (pJob->m_bMark)
+    ActivityMap::vMark(pJob->m_iJobId,"Connector signalled by %s"_Stz,
+                       aCN[pJob->eClass()]);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock & unlock this job's mutex to ensure the connector has entered wait
   //if (! gxArguments.m_nDummyThreads) {
@@ -1379,10 +1383,6 @@ void Task::vJobSignalConnector(MP_Task mpTask)
     if (0 != rCode)
       vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
   //}
-
-  if (pJob->m_bMark)
-    ActivityMap::vMark(pJob->m_iJobId,"Connector signalled by %s"_Stz,
-                       aCN[pJob->eClass()]);
   
   EXIT();
 }
