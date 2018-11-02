@@ -4,6 +4,8 @@
 
 am "Running script: _R35";
 
+markjob all on;
+
 print "";
 print "=====================================================================";
 print "starting the cluster...";
@@ -647,6 +649,8 @@ docol epochDump;
 //print "exiting prompt with bye...";
 //print "=====================================================================";
 //bye;
+
+am "End of script: _R35";
 
 ActivityMap;
 
