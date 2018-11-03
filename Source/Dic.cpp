@@ -131,10 +131,7 @@ void Dic::vDicKind(Word* pDicKind)
 /*----------------------------------------------------------------------------*/
 void Dic::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_DIC);
-  RASSERT(pObject->eClass() == CN_DIC);
-  
-  Dic* pDic = reinterpret_cast<Dic*>(pObject);
+  Dic* pDic = _pDic(pObject);
   
   vTrace("name %s lastWord %p count %lld\n"_Stz,
          pDic->m_sName.aChar(),

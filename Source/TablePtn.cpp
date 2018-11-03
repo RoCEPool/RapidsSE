@@ -29,10 +29,7 @@ TablePtn* DBobjects::_pTablePtn(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void TablePtn::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_TABLEPTN);
-  RASSERT(pObject->eClass() == CN_TABLEPTN);
-  
-  TablePtn* pPartition = reinterpret_cast<TablePtn*>(pObject);
+  TablePtn* pPartition = _pTablePtn(pObject);
   
   vTrace("m_iPartitionId %lld, DataVec %p\n"_Stz,
          pPartition->m_iPartitionId, pPartition->m_pIndexTreeVec);

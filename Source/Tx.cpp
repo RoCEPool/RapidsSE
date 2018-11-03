@@ -330,10 +330,7 @@ void Tx::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_TX);
-  RASSERT(pObject->eClass() == CN_TX);
-  
-  Tx* pTx = reinterpret_cast<Tx*>(pObject);
+  Tx* pTx = _pTx(pObject);
   
   // get string of the distributed members of this transaction
   char cMembers[C_64KB] = "";

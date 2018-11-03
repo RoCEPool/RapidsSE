@@ -67,10 +67,7 @@ Token::~Token(void)
 /*----------------------------------------------------------------------------*/
 void Token::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_TOKEN);
-  RASSERT(pObject->eClass() == CN_TOKEN);
-  
-  Token* pToken = reinterpret_cast<Token*>(pObject);
+  Token* pToken = _pToken(pObject);
   
   vTrace("token %s %s\n"_Stz,
          aTN[pToken->m_eToken],

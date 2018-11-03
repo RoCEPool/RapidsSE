@@ -125,10 +125,7 @@ Table::~Table(void)
 /*----------------------------------------------------------------------------*/
 void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_TABLE);
-  RASSERT(pObject->eClass() == CN_TABLE);
-  
-  Table* pTable = reinterpret_cast<Table*>(pObject);
+  Table* pTable = _pTable(pObject);
   
   vTrace("name %s type %s\n"_Stz,
          pTable->m_sTableName.aChar(),
@@ -140,10 +137,7 @@ void Table::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Table::vFinalize(eCN eClass, Object* pObject)
 {
-  ASSERT(eClass == CN_TABLE);
-  ASSERT(pObject->eClass() == CN_TABLE);
-  
-  Table* pTable = reinterpret_cast<Table*>(pObject);
+  Table* pTable = _pTable(pObject);
   ASSERT(pTable->bWordBody());
   
   pTable->vTidyUp();

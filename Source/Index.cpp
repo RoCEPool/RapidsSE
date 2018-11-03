@@ -27,8 +27,6 @@ Index* DBobjects::_pIndex(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void Index::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_INDEX);
-  RASSERT(pObject->eClass() == CN_INDEX);
 }
 
 /*----------------------------------------------------------------------------*/

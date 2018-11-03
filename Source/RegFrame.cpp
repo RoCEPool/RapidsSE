@@ -70,9 +70,6 @@ RegFrame::~RegFrame(void)
 /*----------------------------------------------------------------------------*/
 void RegFrame::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_REGFRAME);
-  RASSERT(pObject->eClass() == CN_REGFRAME);
-  
   RegFrame* pRegFrame = _pRegFrame(pObject);
   
   vTrace("\n"_Stz);

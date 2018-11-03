@@ -29,10 +29,6 @@ Slots* DBobjects::_pSlots(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void Slots::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_SLOTS);
-  RASSERT(pObject->eClass() == CN_SLOTS);
-  
-  
 }
 
 /*----------------------------------------------------------------------------*/
