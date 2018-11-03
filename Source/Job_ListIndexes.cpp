@@ -65,7 +65,7 @@ Job_ListIndexes* JobsModel::_pJob_ListIndexes(void* aAddress)
 {
   Job_ListIndexes* pJob_ListIndexes = reinterpret_cast<Job_ListIndexes*>(aAddress);
   
-  RASSERT_TYPE(pJob_ListIndexes,CN_JOB_LF);
+  RASSERT_TYPE(pJob_ListIndexes,CN_JOB_LISTINDEXES);
   
   return pJob_ListIndexes;
 }
