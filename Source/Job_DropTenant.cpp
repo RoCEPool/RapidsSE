@@ -134,9 +134,6 @@ Job_DropTenant::~Job_DropTenant(void)
 /*----------------------------------------------------------------------------*/
 void Job_DropTenant::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_DROPSCHEMA == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_DROPTENANT);
-  
   Job_DropTenant* pJob_DropTenant = _pJob_DropTenant(pObject);
 
   pJob_DropTenant->vShow();

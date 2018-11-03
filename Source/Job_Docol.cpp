@@ -65,7 +65,7 @@ Job_Docol* JobsModel::_pJob_Docol(void* aAddress)
 {
   Job_Docol* pJob_Docol = reinterpret_cast<Job_Docol*>(aAddress);
   
-  //RASSERT_TYPE(Job_Docol,CN_JOB_DOCOL);
+  RASSERT_TYPE(pJob_Docol,CN_JOB_DOCOL);
   
   return pJob_Docol;
 }
@@ -134,9 +134,6 @@ Job_Docol::~Job_Docol(void)
 /*----------------------------------------------------------------------------*/
 void Job_Docol::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_DOCOL == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_DOCOL);
-  
   Job_Docol* pJob_Docol = _pJob_Docol(pObject);
 
   pJob_Docol->vShow();

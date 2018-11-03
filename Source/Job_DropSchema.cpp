@@ -135,9 +135,6 @@ Job_DropSchema::~Job_DropSchema(void)
 /*----------------------------------------------------------------------------*/
 void Job_DropSchema::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_DROPSCHEMA == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_DROPSCHEMA);
-  
   Job_DropSchema* pJob_DropSchema = _pJob_DropSchema(pObject);
 
   pJob_DropSchema->vShow();

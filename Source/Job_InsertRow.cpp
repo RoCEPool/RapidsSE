@@ -65,7 +65,7 @@ Job_InsertRow* JobsModel::_pJob_InsertRow(void* aAddress)
 {
   Job_InsertRow* pJob_InsertRow = reinterpret_cast<Job_InsertRow*>(aAddress);
   
-  //RASSERT_TYPE(pJob_InsertRow,CN_JOB_INSERTROW);
+  RASSERT_TYPE(pJob_InsertRow,CN_JOB_INSERTROW);
   
   return pJob_InsertRow;
 }
@@ -145,9 +145,6 @@ Job_InsertRow::~Job_InsertRow(void)
 /*----------------------------------------------------------------------------*/
 void Job_InsertRow::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_INSERTROW == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_INSERTROW);
-  
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pObject);
 
   pJob_InsertRow->vShow();

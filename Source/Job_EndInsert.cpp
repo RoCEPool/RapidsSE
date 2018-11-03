@@ -71,7 +71,7 @@ Job_EndInsert* JobsModel::_pJob_EndInsert(void* aAddress)
 {
   Job_EndInsert* pJob_EndInsert = reinterpret_cast<Job_EndInsert*>(aAddress);
   
-  //RASSERT_TYPE(pJob_EndInsert,CN_JOB_ENDINSERT);
+  RASSERT_TYPE(pJob_EndInsert,CN_JOB_ENDINSERT);
   
   return pJob_EndInsert;
 }
@@ -143,9 +143,6 @@ Job_EndInsert::~Job_EndInsert(void)
 /*----------------------------------------------------------------------------*/
 void Job_EndInsert::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_ENDINSERT == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_ENDINSERT);
-  
   Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pObject);
 
   pJob_EndInsert->vShow();

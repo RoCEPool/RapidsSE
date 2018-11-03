@@ -134,9 +134,6 @@ Job_DropIndex::~Job_DropIndex(void)
 /*----------------------------------------------------------------------------*/
 void Job_DropIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_DROPINDEX == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_DROPINDEX);
-  
   Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pObject);
 
   pJob_DropIndex->vShow();

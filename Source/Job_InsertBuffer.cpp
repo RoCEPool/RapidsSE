@@ -69,7 +69,7 @@ Job_InsertBuffer* JobsModel::_pJob_InsertBuffer(void* aAddress)
 {
   Job_InsertBuffer* pJob_InsertBuffer = reinterpret_cast<Job_InsertBuffer*>(aAddress);
   
-  //RASSERT_TYPE(pJob_InsertBuffer,CN_JOB_INSERTBUFFER);
+  RASSERT_TYPE(pJob_InsertBuffer,CN_JOB_INSERTBUFFER);
   
   return pJob_InsertBuffer;
 }
@@ -144,9 +144,6 @@ Job_InsertBuffer::~Job_InsertBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Job_InsertBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_INSERTBUFFER == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_INSERTBUFFER);
-  
   Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pObject);
 
   pJob_InsertBuffer->vShow();

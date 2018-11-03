@@ -134,9 +134,6 @@ Job_DropCatalog::~Job_DropCatalog(void)
 /*----------------------------------------------------------------------------*/
 void Job_DropCatalog::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_DROPCATALOG == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_DROPCATALOG);
-  
   Job_DropCatalog* pJob_DropCatalog = _pJob_DropCatalog(pObject);
 
   pJob_DropCatalog->vShow();

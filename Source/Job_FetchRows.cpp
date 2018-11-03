@@ -160,9 +160,6 @@ Job_FetchRows::~Job_FetchRows(void)
 /*----------------------------------------------------------------------------*/
 void Job_FetchRows::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_FETCHROWS == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_FETCHROWS);
-  
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pObject);
 
   pJob_FetchRows->vShow();
