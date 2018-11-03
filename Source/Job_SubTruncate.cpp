@@ -136,9 +136,6 @@ Job_SubTruncate::~Job_SubTruncate(void)
 /*----------------------------------------------------------------------------*/
 void Job_SubTruncate::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_SUBTRUNCATE == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_SUBTRUNCATE);
-  
   Job_SubTruncate* pJob_SubTruncate = _pJob_SubTruncate(pObject);
 
   pJob_SubTruncate->vShow();

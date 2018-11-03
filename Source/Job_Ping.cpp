@@ -65,7 +65,7 @@ Job_Ping* JobsModel::_pJob_Ping(void* aAddress)
 {
   Job_Ping* pJob_Ping = reinterpret_cast<Job_Ping*>(aAddress);
   
-  //RASSERT_TYPE(pJob_Ping,CN_JOB_PING);
+  RASSERT_TYPE(pJob_Ping,CN_JOB_PING);
   
   return pJob_Ping;
 }
@@ -134,9 +134,6 @@ Job_Ping::~Job_Ping(void)
 /*----------------------------------------------------------------------------*/
 void Job_Ping::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_LF == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_PING);
-  
   Job_Ping* pJob_Ping = _pJob_Ping(pObject);
 
   pJob_Ping->vShow();

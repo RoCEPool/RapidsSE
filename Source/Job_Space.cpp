@@ -65,7 +65,7 @@ Job_Space* JobsModel::_pJob_Space(void* aAddress)
 {
   Job_Space* pJob_Space = reinterpret_cast<Job_Space*>(aAddress);
   
-  //RASSERT_TYPE(Job_Space,CN_JOB_SPACE);
+  RASSERT_TYPE(pJob_Space,CN_JOB_SPACE);
   
   return pJob_Space;
 }
@@ -134,9 +134,6 @@ Job_Space::~Job_Space(void)
 /*----------------------------------------------------------------------------*/
 void Job_Space::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_SPACE == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_SPACE);
-  
   Job_Space* pJob_Space = _pJob_Space(pObject);
 
   pJob_Space->vShow();

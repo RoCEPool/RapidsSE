@@ -65,7 +65,7 @@ Job_ShowCluster* JobsModel::_pJob_ShowCluster(void* aAddress)
 {
   Job_ShowCluster* pJob_ShowCluster = reinterpret_cast<Job_ShowCluster*>(aAddress);
   
-  //RASSERT_TYPE(pJob_ShowCluster,CN_JOB_SHOWCLUSTER);
+  RASSERT_TYPE(pJob_ShowCluster,CN_JOB_SHOWCLUSTER);
   
   return pJob_ShowCluster;
 }
@@ -134,9 +134,6 @@ Job_ShowCluster::~Job_ShowCluster(void)
 /*----------------------------------------------------------------------------*/
 void Job_ShowCluster::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_DOCOL == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_SHOWCLUSTER);
-  
   Job_ShowCluster* pJob_ShowCluster = _pJob_ShowCluster(pObject);
 
   pJob_ShowCluster->vShow();

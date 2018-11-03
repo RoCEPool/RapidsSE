@@ -65,7 +65,7 @@ Job_Status* JobsModel::_pJob_Status(void* aAddress)
 {
   Job_Status* pJob_Status = reinterpret_cast<Job_Status*>(aAddress);
   
-  //RASSERT_TYPE(pJob_Status,CN_JOB_STATUS);
+  RASSERT_TYPE(pJob_Status,CN_JOB_STATUS);
   
   return pJob_Status;
 }
@@ -133,9 +133,6 @@ Job_Status::~Job_Status(void)
 /*----------------------------------------------------------------------------*/
 void Job_Status::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_STATUS == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_STATUS);
-  
   Job_Status* pJob_Status = _pJob_Status(pObject);
 
   pJob_Status->vShow();
