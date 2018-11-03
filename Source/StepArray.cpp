@@ -8,6 +8,18 @@
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+StepArray* Tasks::_pStepArray(void* aAddr)
+{
+  StepArray* pStepArray = reinterpret_cast<StepArray*>(aAddr);
+  
+  RASSERT_TYPE(pStepArray,CN_STEPARRAY);
+  
+  return pStepArray;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* StepArray::operator new(size_t)
@@ -66,10 +78,7 @@ StepAccum* StepArray::pAllocAccum(Stz* aStepNm)
 /*----------------------------------------------------------------------------*/
 void StepArray::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_STEPARRAY);
-  RASSERT(pObject->eClass() == CN_STEPARRAY);
-  
-  StepArray* pStepArray = reinterpret_cast<StepArray*>(pObject);
+  StepArray* pStepArray = _pStepArray(pObject);
   
   vTrace("\n"_Stz, aTab, pStepArray);
 }

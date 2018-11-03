@@ -84,10 +84,7 @@ SePrompt::~SePrompt(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_SEPROMPT);
-  RASSERT(pObject->eClass() == CN_SEPROMPT);
-  
-  SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(pObject);
+  SePrompt* pSePrompt = _pSePrompt(pObject);
   
   vTrace("SePrompt %p session %p \n"_Stz,
          pSePrompt,

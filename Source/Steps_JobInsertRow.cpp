@@ -134,13 +134,13 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
   
   // get table, partition and working buffer
   Table* pTable = pJob_InsertBuffer->m_pTable;
-  RASSERT(pTable->eClass() == CN_TABLE);
+  RASSERT_TYPE(pTable,CN_TABLE);
   
   TablePtn* pPartition = pTable->pPartition(iSlot);
-  RASSERT(pPartition->eClass() == CN_TABLEPTN);
+  RASSERT_TYPE(pPartition,CN_TABLEPTN);
   
   WorkingBuffer* pWorkingBuffer = pJob_InsertBuffer->m_pWorkingBuffer;
-  RASSERT(pWorkingBuffer->eClass() == CN_WORKINGBUFFER);
+  RASSERT_TYPE(pWorkingBuffer,CN_WORKINGBUFFER);
   
   i8 iTxId = 0;
   

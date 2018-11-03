@@ -134,9 +134,6 @@ Job_WaitCluster::~Job_WaitCluster(void)
 /*----------------------------------------------------------------------------*/
 void Job_WaitCluster::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_WAITCLUSTER == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_WAITCLUSTER);
-  
   Job_WaitCluster* pJob_WaitCluster = _pJob_WaitCluster(pObject);
 
   pJob_WaitCluster->vShow();

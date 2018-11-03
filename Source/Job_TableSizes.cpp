@@ -133,9 +133,6 @@ Job_TableSizes::~Job_TableSizes(void)
 /*----------------------------------------------------------------------------*/
 void Job_TableSizes::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_TABLESIZES == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_TABLESIZES);
-  
   Job_TableSizes* pJob_TableSizes = _pJob_TableSizes(pObject);
 
   pJob_TableSizes->vShow();

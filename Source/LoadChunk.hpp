@@ -43,6 +43,8 @@ namespace Loader
   
     Footer* aFooter(void);
   };
+  
+  LoadChunk* _pLoadChunk(void* aAddr);
 }
 
 /*============================================================================*/

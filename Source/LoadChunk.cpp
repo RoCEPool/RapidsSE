@@ -9,6 +9,18 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+LoadChunk* Loader::_pLoadChunk(void* aAddr)
+{
+  LoadChunk* pLoadChunk = reinterpret_cast<LoadChunk*>(aAddr);
+  
+  RASSERT_TYPE(pLoadChunk,CN_LOADCHUNK);
+  
+  return pLoadChunk;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* LoadChunk::operator new(size_t)
@@ -62,10 +74,7 @@ LoadChunk::~LoadChunk(void)
 /*----------------------------------------------------------------------------*/
 void LoadChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_LOADCHUNK);
-  RASSERT(pObject->eClass() == CN_LOADCHUNK);
-  
-  LoadChunk* pLoadChunk = reinterpret_cast<LoadChunk*>(pObject);
+  LoadChunk* pLoadChunk = _pLoadChunk(pObject);
   
   vTrace("\n"_Stz);
 }

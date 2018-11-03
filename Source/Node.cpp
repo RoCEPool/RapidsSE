@@ -106,10 +106,7 @@ void Node::vInit(void)
 /*----------------------------------------------------------------------------*/
 void Node::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_NODE);
-  RASSERT(pObject->eClass() == CN_NODE);
-  
-  Node* pNode = reinterpret_cast<Node*>(pObject);
+  Node* pNode = _pNode(pObject);
 
   vTrace("no %lld prev %p next %p\n"_Stz,
          pNode->m_iPortNo,

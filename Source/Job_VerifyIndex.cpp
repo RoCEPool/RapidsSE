@@ -133,9 +133,6 @@ Job_VerifyIndex::~Job_VerifyIndex(void)
 /*----------------------------------------------------------------------------*/
 void Job_VerifyIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_VERIFYINDEX == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_VERIFYINDEX);
-  
   Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pObject);
 
   pJob_VerifyIndex->vShow();

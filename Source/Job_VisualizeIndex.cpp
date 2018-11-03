@@ -133,9 +133,6 @@ Job_VisualizeIndex::~Job_VisualizeIndex(void)
 /*----------------------------------------------------------------------------*/
 void Job_VisualizeIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_VISUALIZEINDEX == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_VISUALIZEINDEX);
-  
   Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pObject);
 
   pJob_VisualizeIndex->vShow();

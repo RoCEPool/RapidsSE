@@ -452,8 +452,7 @@ void Task::vEntryBufferToEntryBuffer(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("entryBuffer::toEntryBuffer"_Stz);
   
-  EntryBuffer* pEntryBuffer = reinterpret_cast<EntryBuffer*>(sString.iToI8());
-  RASSERT(CN_ENTRYBUFFER == pEntryBuffer->eClass());
+  EntryBuffer* pEntryBuffer = _pEntryBuffer((void*)sString.iToI8());
   
   mpTask->m_pDataStack->vPushObject(pEntryBuffer);
   

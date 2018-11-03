@@ -207,10 +207,7 @@ void TaskQueue::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void TaskQueue::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_TASKQUEUE);
-  RASSERT(pObject->eClass() == CN_TASKQUEUE);
-  
-  TaskQueue* pTaskQueue = reinterpret_cast<TaskQueue*>(pObject);
+  TaskQueue* pTaskQueue = _pTaskQueue(pObject);
   
   SkipList* pSkipList = pTaskQueue->m_pTaskSkipList;
   vTrace("HEIGHT %lld HEAD 0x%llx ITEMS %lld\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead, pSkipList->m_nObjects);

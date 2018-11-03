@@ -120,10 +120,7 @@ Plan::~Plan(void)
 /*----------------------------------------------------------------------------*/
 void Plan::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_PLAN);
-  RASSERT(pObject->eClass() == CN_PLAN);
-  
-  Plan* pPlan = reinterpret_cast<Plan*>(pObject);
+  Plan* pPlan = _pPlan(pObject);
   
   vTrace("planId %lld.%lld name %s\n"_Stz,
          pPlan->m_iPlanId >> 48,

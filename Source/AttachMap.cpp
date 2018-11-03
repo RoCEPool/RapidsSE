@@ -8,6 +8,18 @@ extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+AttachMap* StorageEngine::_pAttachMap(void* aAddr)
+{
+  AttachMap* pAttachMap = reinterpret_cast<AttachMap*>(aAddr);
+  
+  RASSERT_TYPE(pAttachMap,CN_ATTACHMAP);
+  
+  return pAttachMap;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* AttachMap::operator new(size_t)
@@ -248,9 +260,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
 /*----------------------------------------------------------------------------*/
 void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_ATTACHMAP == eClass);
-  AttachMap* pAttachMap = reinterpret_cast<AttachMap*>(pObject);
-  RASSERT(pAttachMap->eClass() == eClass);
+  AttachMap* pAttachMap = _pAttachMap(pObject);
   
   vTrace("pid %lld utc %s regionSize %lld\n"_Stz,
          pAttachMap->m_iPid,

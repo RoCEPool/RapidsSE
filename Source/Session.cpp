@@ -171,10 +171,7 @@ void Session::vEndTx()
 /*----------------------------------------------------------------------------*/
 void Session::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_SESSION);
-  RASSERT(pObject->eClass() == CN_SESSION);
-  
-  Session* pSession = reinterpret_cast<Session*>(pObject);
+  Session* pSession = _pSession(pObject);
   
   vTrace("pid %lld %s partition %lld slot %lld"_Stz
          " response '%s'\n"_Stz,

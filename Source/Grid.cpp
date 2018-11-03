@@ -105,12 +105,9 @@ void Grid::vInit(i8 nNodes, i8 nSlots)
 /*----------------------------------------------------------------------------*/
 void Grid::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_GRID);
-  RASSERT(pObject->eClass() == CN_GRID);
+  //Grid* pGrid = _pGrid(pObject);
   
-  Grid* pGrid = reinterpret_cast<Grid*>(pObject);
-  
-  vTrace("\n"_Stz);
+  //vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

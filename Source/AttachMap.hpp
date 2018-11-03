@@ -133,6 +133,8 @@ namespace StorageEngine
     
     Footer* aFooter(void);
   };
+  
+  AttachMap* _pAttachMap(void* aAddr);
 }
 
 /*============================================================================*/
