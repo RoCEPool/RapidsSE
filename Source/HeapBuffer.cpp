@@ -5,6 +5,18 @@
 #include "Pool.h"
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+HeapBuffer* Pool::_pHeapBuffer(void* aAddr)
+{
+  HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(aAddr);
+  
+  RASSERT_TYPE(pHeapBuffer,CN_HEAPBUFFER);
+  
+  return pHeapBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get a new heap buffer from buffer pool                                     */
 /*----------------------------------------------------------------------------*/
 void* HeapBuffer::operator new(size_t)
