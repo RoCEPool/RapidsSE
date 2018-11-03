@@ -94,10 +94,7 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
 /*----------------------------------------------------------------------------*/
 void HeapBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_HEAPBUFFER);
-  RASSERT(pObject->eClass() == CN_HEAPBUFFER);
-  
-  HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(pObject);
+  HeapBuffer* pHeapBuffer = _pHeapBuffer(pObject);
   
   vTrace("nextBuffer %p prevBuffer %p\n"_Stz,
          pHeapBuffer->m_pNextBuffer,
