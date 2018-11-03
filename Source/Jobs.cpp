@@ -222,10 +222,7 @@ void Jobs::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void Jobs::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_JOBS);
-  RASSERT(pObject->eClass() == CN_JOBS);
-  
-  Jobs* pJobs = reinterpret_cast<Jobs*>(pObject);
+  Jobs* pJobs = _pJobs(pObject);
   //vSkipListDump(pJobs->m_pJobsSkipList);
   SkipList* pSkipList = pJobs->m_pJobsSkipList;
   //vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
