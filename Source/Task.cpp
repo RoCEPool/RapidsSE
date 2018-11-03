@@ -259,10 +259,7 @@ void Task::vDebug(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_TASK);
-  RASSERT(pObject->eClass() == CN_TASK);
-  
-  Task* pTask = reinterpret_cast<Task*>(pObject);
+  Task* pTask = _pTask(pObject);
   
   vTrace("%s %p state %s txId %lld\n"_Stz,
          pTask->aJobName(),

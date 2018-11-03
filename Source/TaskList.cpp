@@ -163,14 +163,6 @@ Task* TaskList::pPopTask(void)
   
   ASSERT(m_xLock.bIsLocked());
   
-//  SkipNode* pNode = m_pTaskSkipList->pFirst(0);
-//  if (pNode) {
-//    pTask = _pTask(pNode->m_pObject);
-//    RASSERT(pTask);
-//    bRemoved = m_pTaskSkipList->bRemove(pTask);
-//    RASSERT(bRemoved);
-//  }
-
   pTask = m_pListTasks->pPop();
   
   return pTask;
@@ -227,11 +219,9 @@ void TaskList::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 void TaskList::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_TASKLIST);
-  RASSERT(pObject->eClass() == CN_TASKLIST);
   
   /*
-  TaskList* pTaskQueue = reinterpret_cast<TaskList*>(pObject);
+  TaskList* pTaskQueue = _pTaskList(pObject);
   
   SkipList* pSkipList = pTaskQueue->m_pTaskSkipList;
   vTrace("HEIGHT %lld HEAD 0x%llx ITEMS %lld\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead, pSkipList->m_nObjects);
@@ -259,15 +249,10 @@ void TaskList::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("\n"_Stz);
   //pTaskQueue->List_t<Task>::vContentDump("TaskList::"_Stz, aTab);
-   */
   
-  
-  
-  
-  
-
   vTrace("====================================\n"_Stz);
   vTrace("\n"_Stz);
+  */
 }
 
 /*----------------------------------------------------------------------------*/

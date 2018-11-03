@@ -14,7 +14,7 @@ AttachMap* StorageEngine::_pAttachMap(void* aAddr)
 {
   AttachMap* pAttachMap = reinterpret_cast<AttachMap*>(aAddr);
   
-  RASSERT_TYPE(pAttachMap,CN_SEPROMPT);
+  RASSERT_TYPE(pAttachMap,CN_ATTACHMAP);
   
   return pAttachMap;
 }

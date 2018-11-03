@@ -34,6 +34,8 @@ namespace Tasks
   
     Footer* aFooter(void);
   };
+  
+  StepArray* _pStepArray(void* aAddr);
 }
 
 /*============================================================================*/
