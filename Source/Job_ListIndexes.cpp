@@ -65,7 +65,7 @@ Job_ListIndexes* JobsModel::_pJob_ListIndexes(void* aAddress)
 {
   Job_ListIndexes* pJob_ListIndexes = reinterpret_cast<Job_ListIndexes*>(aAddress);
   
-  //RASSERT_TYPE(pJob_ListIndexes,CN_JOB_LF);
+  RASSERT_TYPE(pJob_ListIndexes,CN_JOB_LF);
   
   return pJob_ListIndexes;
 }
@@ -134,9 +134,6 @@ Job_ListIndexes::~Job_ListIndexes(void)
 /*----------------------------------------------------------------------------*/
 void Job_ListIndexes::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_LISTINDEXES == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_LISTINDEXES);
-  
   Job_ListIndexes* pJob_ListIndexes = _pJob_ListIndexes(pObject);
 
   pJob_ListIndexes->vShow();

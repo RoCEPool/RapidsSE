@@ -146,9 +146,6 @@ Job_LoadBuffer::~Job_LoadBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Job_LoadBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_LOADBUFFER == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_LOADBUFFER);
-  
   Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pObject);
 
   pJob_LoadBuffer->vShow();

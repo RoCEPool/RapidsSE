@@ -65,7 +65,7 @@ Job_ListPartitions* JobsModel::_pJob_ListPartitions(void* aAddress)
 {
   Job_ListPartitions* pJob_ListPartitions = reinterpret_cast<Job_ListPartitions*>(aAddress);
   
-  //RASSERT_TYPE(pJob_ListPartitions,CN_JOB_LISTPARTITIONS);
+  RASSERT_TYPE(pJob_ListPartitions,CN_JOB_LISTPARTITIONS);
   
   return pJob_ListPartitions;
 }
@@ -134,9 +134,6 @@ Job_ListPartitions::~Job_ListPartitions(void)
 /*----------------------------------------------------------------------------*/
 void Job_ListPartitions::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_LISTPARTITIONS == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_LISTPARTITIONS);
-  
   Job_ListPartitions* pJob_ListPartitions = _pJob_ListPartitions(pObject);
 
   pJob_ListPartitions->vShow();
