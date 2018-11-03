@@ -132,6 +132,9 @@ Job_InsertBuffer::Job_InsertBuffer(Interface::Session* pSession)
 Job_InsertBuffer::~Job_InsertBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTBUFFER,_FOOTER_);
+  
+  delete m_pWorkingBuffer;
+  m_pWorkingBuffer = nullptr;
 }
 
 
