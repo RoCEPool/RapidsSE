@@ -116,10 +116,7 @@ void DicStack::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 void DicStack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_DICSTACK);
-  RASSERT(pObject->eClass() == CN_DICSTACK);
-  
-  DicStack* pDicStack = reinterpret_cast<DicStack*>(pObject);
+  DicStack* pDicStack = _pDicStack(pObject);
   
   vTrace("top %p:"_Stz,pDicStack->m_iTop);
   //for (i8 i_Dic = pDicStack->m_iTop; i_Dic >= 0; i_Dic --)

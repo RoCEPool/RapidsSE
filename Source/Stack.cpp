@@ -80,9 +80,6 @@ Stack::~Stack(void)
 /*----------------------------------------------------------------------------*/
 void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_STACK);
-  RASSERT(pObject->eClass() == CN_STACK);
-  
   Stack* pStack = _pStack(pObject);
   
   vTrace("values %lld top %p\n"_Stz,

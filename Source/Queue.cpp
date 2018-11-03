@@ -135,10 +135,7 @@ void Queue::vContentDump(Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Queue::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_QUEUE);
-  RASSERT(pObject->eClass() == CN_QUEUE);
-  
-  Queue* pQueue = reinterpret_cast<Queue*>(pObject);
+  Queue* pQueue = _pQueue(pObject);
   
   vTrace("count %lld top %p end %p\n"_Stz,
          pQueue->m_iCount,

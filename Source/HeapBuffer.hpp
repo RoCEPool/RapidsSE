@@ -36,6 +36,8 @@ namespace Pool
     Stz* aChunkEnd(FreeChunk* pChunk, i8 nBytes);
     
   };
+  
+  HeapBuffer* _pHeapBuffer(void* aAddr);
 }
 
 /*============================================================================*/

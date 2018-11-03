@@ -364,10 +364,7 @@ TaskStep* Word::ppEntryStep(void)
 /*----------------------------------------------------------------------------*/
 void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_WORD);
-  RASSERT(pObject->eClass() == CN_WORD);
-  
-  Word* pWord = reinterpret_cast<Word*>(pObject);
+  Word* pWord = _pWord(pObject);
   
   // dump only the objects
   if (WT_OBJECT == pWord->m_eWordType)

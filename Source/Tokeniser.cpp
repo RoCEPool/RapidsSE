@@ -127,10 +127,7 @@ TokenVec* Tokeniser::pTokenise(StrVal& sString)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_TOKENISER);
-  RASSERT(pObject->eClass() == CN_TOKENISER);
-  
-  Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(pObject);
+  Tokeniser* pTokeniser = _pTokeniser(pObject);
   
   vTrace("parser %p %s\n"_Stz,
          pTokeniser->m_pParser,

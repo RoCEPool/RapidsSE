@@ -38,6 +38,8 @@ namespace Structures
     Value*   pNextValue(Value* pValue);
     void     vVerify(void);
   };
+  
+  QueueBuffer* _pQueueBuffer(void* aAddr);
 }
 
 /*============================================================================*/

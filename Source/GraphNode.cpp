@@ -79,9 +79,6 @@ GraphNode::~GraphNode(void)
 /*----------------------------------------------------------------------------*/
 void GraphNode::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_GRAPHNODE);
-  RASSERT(pObject->eClass() == CN_GRAPHNODE);
-  
   vTrace("\n"_Stz);
 }
 

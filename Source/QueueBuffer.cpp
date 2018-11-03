@@ -5,6 +5,18 @@
 #include "Structures.h"
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+QueueBuffer* Structures::_pQueueBuffer(void* aAddr)
+{
+  QueueBuffer* pQueueBuffer = reinterpret_cast<QueueBuffer*>(aAddr);
+  
+  RASSERT_TYPE(pQueueBuffer,CN_QUEUEBUFFER);
+  
+  return pQueueBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* QueueBuffer::operator new(size_t)
@@ -104,10 +116,7 @@ void QueueBuffer::vContentDump(Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void QueueBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_QUEUEBUFFER);
-  RASSERT(pObject->eClass() == CN_QUEUEBUFFER);
-  
-  QueueBuffer* pQueueBuffer = reinterpret_cast<QueueBuffer*>(pObject);
+  QueueBuffer* pQueueBuffer = _pQueueBuffer(pObject);
   
   vTrace("values %lld top %p next %p\n"_Stz,
          pQueueBuffer->m_nValues,

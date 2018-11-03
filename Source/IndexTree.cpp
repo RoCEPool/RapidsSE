@@ -37,9 +37,6 @@ IndexTree* DBobjects::_pIndexTree(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_INDEXTREE);
-  RASSERT(pObject->eClass() == CN_INDEXTREE);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +47,7 @@ void IndexTree::vFinalize(eCN eClass, Object* pObject)
   ASSERT(eClass == CN_INDEXTREE);
   ASSERT(pObject->eClass() == CN_INDEXTREE);
   
-  IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pObject);
+  IndexTree* pIndexTree = _pIndexTree(pObject);
   ASSERT(pIndexTree->bWordBody());
   
   pIndexTree->vTidyUp();

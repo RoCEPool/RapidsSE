@@ -59,7 +59,7 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>* Structures::_pVector(void* aAddr)
   Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>* pVector =
     reinterpret_cast<Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>*>(aAddr);
   
-  RASSERT( !pVector || VEC_CN == pVector->eClass() );
+  RASSERT_TYPE(pVector,VEC_CN);
   
   return pVector;
 }

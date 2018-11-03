@@ -103,10 +103,7 @@ Socket::~Socket()
 /*----------------------------------------------------------------------------*/
 void Socket::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(eClass == CN_SOCKET);
-  RASSERT(pObject->eClass() == CN_SOCKET);
-  
-  Socket* pSocket = reinterpret_cast<Socket*>(pObject);
+  Socket* pSocket = _pSocket(pObject);
 
   vTrace("id %lld %s\n"_Stz,
          pSocket->m_iSocketId,

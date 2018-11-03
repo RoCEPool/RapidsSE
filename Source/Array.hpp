@@ -57,7 +57,7 @@ Array<ARRAY_CN, ITEM, MAX_ITEMS>* Structures::_pArray(void* aAddr)
   Array<ARRAY_CN, ITEM, MAX_ITEMS>* pArray =
     reinterpret_cast<Array<ARRAY_CN, ITEM, MAX_ITEMS>*>(aAddr);
   
-  RASSERT( !pArray || ARRAY_CN == pArray->eClass() );
+  RASSERT_TYPE(pArray,ARRAY_CN);
   
   return pArray;
 }
