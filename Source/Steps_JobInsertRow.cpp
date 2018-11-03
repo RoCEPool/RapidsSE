@@ -59,7 +59,18 @@ void Task::vJob_EndInsertTaskFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_EndInsert.task@"_Stz);
   Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJobPtr);
   
+  // wait till the endInsert job is in a waiting state
+  // there is a timing hole where its possible a last buffer
+  // is being inserted but on the node the EndInsert hasn't
+  // started executing yet.
+  while ( pJob_EndInsert->m_eState != JS_WAITING )
+    ;
+  
   Task* pTask = pJob_EndInsert->m_pTask;
+  
+  // now we can assert that the job has a task
+  RASSERT(pTask);
+  
   mpTask->m_pDataStack->vPushObject(pTask);
   
   EXIT();
