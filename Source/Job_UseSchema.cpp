@@ -65,7 +65,7 @@ Job_UseSchema* JobsModel::_pJob_UseSchema(void* aAddress)
 {
   Job_UseSchema* pJob_UseSchema = reinterpret_cast<Job_UseSchema*>(aAddress);
   
-  //RASSERT_TYPE(pJob_UseSchema,CN_JOB_USESCHEMA);
+  RASSERT_TYPE(pJob_UseSchema,CN_JOB_USESCHEMA);
   
   return pJob_UseSchema;
 }
@@ -134,9 +134,6 @@ Job_UseSchema::~Job_UseSchema(void)
 /*----------------------------------------------------------------------------*/
 void Job_UseSchema::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_USESCHEMA == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_USESCHEMA);
-  
   Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pObject);
 
   pJob_UseSchema->vShow();

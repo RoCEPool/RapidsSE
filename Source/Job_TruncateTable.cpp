@@ -135,9 +135,6 @@ Job_TruncateTable::~Job_TruncateTable(void)
 /*----------------------------------------------------------------------------*/
 void Job_TruncateTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_TRUNCATETABLE == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_TRUNCATETABLE);
-  
   Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pObject);
 
   pJob_TruncateTable->vShow();
