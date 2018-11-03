@@ -65,7 +65,7 @@ Job_Pwf* JobsModel::_pJob_Pwf(void* aAddress)
 {
   Job_Pwf* pJob_Pwf = reinterpret_cast<Job_Pwf*>(aAddress);
   
-  //RASSERT_TYPE(pJob_Pwf,CN_JOB_PWF);
+  RASSERT_TYPE(pJob_Pwf,CN_JOB_PWF);
   
   return pJob_Pwf;
 }
@@ -134,9 +134,6 @@ Job_Pwf::~Job_Pwf(void)
 /*----------------------------------------------------------------------------*/
 void Job_Pwf::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_DOCOL == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_PWF);
-  
   Job_Pwf* pJob_Pwf = _pJob_Pwf(pObject);
 
   pJob_Pwf->vShow();

@@ -65,7 +65,7 @@ Job_Sanity* JobsModel::_pJob_Sanity(void* aAddress)
 {
   Job_Sanity* pJob_Sanity = reinterpret_cast<Job_Sanity*>(aAddress);
   
-  //RASSERT_TYPE(pJob_Status,CN_JOB_SANITY);
+  RASSERT_TYPE(pJob_Sanity,CN_JOB_SANITY);
   
   return pJob_Sanity;
 }
@@ -137,9 +137,6 @@ Job_Sanity::~Job_Sanity(void)
 /*----------------------------------------------------------------------------*/
 void Job_Sanity::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_SANITY == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_SANITY);
-  
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pObject);
 
   pJob_Sanity->vShow();

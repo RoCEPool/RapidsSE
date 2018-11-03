@@ -65,7 +65,7 @@ Job_ListSchemas* JobsModel::_pJob_ListSchemas(void* aAddress)
 {
   Job_ListSchemas* pJob_ListSchemas = reinterpret_cast<Job_ListSchemas*>(aAddress);
   
-  //RASSERT_TYPE(pJob_ListSchemas,CN_JOB_LISTSCHEMAS);
+  RASSERT_TYPE(pJob_ListSchemas,CN_JOB_LISTSCHEMAS);
   
   return pJob_ListSchemas;
 }
@@ -134,9 +134,6 @@ Job_ListSchemas::~Job_ListSchemas(void)
 /*----------------------------------------------------------------------------*/
 void Job_ListSchemas::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_LISTSCHEMAS == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_LISTSCHEMAS);
-  
   Job_ListSchemas* pJob_ListSchemas = _pJob_ListSchemas(pObject);
 
   pJob_ListSchemas->vShow();

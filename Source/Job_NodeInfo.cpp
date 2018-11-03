@@ -65,7 +65,7 @@ Job_NodeInfo* JobsModel::_pJob_NodeInfo(void* aAddress)
 {
   Job_NodeInfo* pJob_NodeInfo = reinterpret_cast<Job_NodeInfo*>(aAddress);
   
-  //RASSERT_TYPE(pJob_NodeInfo,CN_JOB_NODEINFO);
+  RASSERT_TYPE(pJob_NodeInfo,CN_JOB_NODEINFO);
   
   return pJob_NodeInfo;
 }
@@ -136,9 +136,6 @@ Job_NodeInfo::~Job_NodeInfo(void)
 /*----------------------------------------------------------------------------*/
 void Job_NodeInfo::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_NODEINFO == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_NODEINFO);
-  
   Job_NodeInfo* pJob_NodeInfo = _pJob_NodeInfo(pObject);
 
   pJob_NodeInfo->vShow();

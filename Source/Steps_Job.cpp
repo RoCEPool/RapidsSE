@@ -553,7 +553,7 @@ void Task::vJobHasWorkingBuffer(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.hasWorkingBuffer"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
+  Job* pJob = _pJob(pJobPtr);
   
   
   i8 bHas = pJob->m_pWorkingBuffer ? true : false;
@@ -628,7 +628,7 @@ void Task::vJobMetadataStore(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.metadata"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
+  Job* pJob = _pJob(pJobPtr);
   
   s4K sMetadata;
   if ( ! mpTask->m_pDataStack->bPop(sMetadata) )
@@ -1107,7 +1107,7 @@ void Task::vJobResponseFetch(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.response@"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
+  Job* pJob = _pJob(pJobPtr);
   
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
@@ -1128,7 +1128,7 @@ void Task::vJobResponseStore(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.response!"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
+  Job* pJob = _pJob(pJobPtr);
   
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
@@ -1153,7 +1153,7 @@ void Task::vJobRowsInvalidFetch(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.rowsInvalid@"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
+  Job* pJob = _pJob(pJobPtr);
   
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
@@ -1175,7 +1175,7 @@ void Task::vJobRowsInvalidStore(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.rowsInvalid!"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
+  Job* pJob = _pJob(pJobPtr);
   
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
@@ -1200,7 +1200,7 @@ void Task::vJobRowsProcessedFetch(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.rowsProcessed@"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
+  Job* pJob = _pJob(pJobPtr);
   
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
@@ -1222,7 +1222,7 @@ void Task::vJobRowsProcessedStore(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
+  Job* pJob = _pJob(pJobPtr);
   
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
@@ -1247,7 +1247,7 @@ void Task::vJobRowsSkippedFetch(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.rowsSkipped@"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
+  Job* pJob = _pJob(pJobPtr);
   
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
@@ -1270,7 +1270,7 @@ void Task::vJobRowsSkippedStore(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.rowsSkipped!"_Stz);
-  Job_Space* pJob = _pJob_Space(pJobPtr);
+  Job* pJob = _pJob(pJobPtr);
   
   i8 iNode;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )

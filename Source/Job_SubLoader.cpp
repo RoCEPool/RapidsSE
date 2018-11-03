@@ -151,9 +151,6 @@ Job_SubLoader::~Job_SubLoader(void)
 /*----------------------------------------------------------------------------*/
 void Job_SubLoader::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_SUBLOADER == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_SUBLOADER);
-  
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pObject);
 
   pJob_SubLoader->vShow();

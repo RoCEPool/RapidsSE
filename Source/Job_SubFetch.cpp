@@ -139,9 +139,6 @@ Job_SubFetch::~Job_SubFetch(void)
 /*----------------------------------------------------------------------------*/
 void Job_SubFetch::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_SUBFETCH == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_SUBFETCH);
-  
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pObject);
 
   pJob_SubFetch->vShow();

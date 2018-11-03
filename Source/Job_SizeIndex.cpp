@@ -133,9 +133,6 @@ Job_SizeIndex::~Job_SizeIndex(void)
 /*----------------------------------------------------------------------------*/
 void Job_SizeIndex::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_SIZEINDEX == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_SIZEINDEX);
-  
   Job_SizeIndex* pJob_SizeIndex = _pJob_SizeIndex(pObject);
 
   pJob_SizeIndex->vShow();

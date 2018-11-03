@@ -71,7 +71,7 @@ Job_LoadTable* JobsModel::_pJob_LoadTable(void* aAddress)
 {
   Job_LoadTable* pJob_LoadTable = reinterpret_cast<Job_LoadTable*>(aAddress);
   
-  //RASSERT_TYPE(pJob_LoadTable,CN_JOB_LOADTABLE);
+  RASSERT_TYPE(pJob_LoadTable,CN_JOB_LOADTABLE);
   
   return pJob_LoadTable;
 }
@@ -149,9 +149,6 @@ Job_LoadTable::~Job_LoadTable(void)
 /*----------------------------------------------------------------------------*/
 void Job_LoadTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_LOADTABLE == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_LOADTABLE);
-  
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pObject);
 
   pJob_LoadTable->vShow();

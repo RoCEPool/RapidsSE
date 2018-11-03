@@ -65,7 +65,7 @@ Job_ListTenants* JobsModel::_pJob_ListTenants(void* aAddress)
 {
   Job_ListTenants* pJob_ListTenants = reinterpret_cast<Job_ListTenants*>(aAddress);
   
-  //RASSERT_TYPE(pJob_ListTenants,CN_JOB_LISTTENANTS);
+  RASSERT_TYPE(pJob_ListTenants,CN_JOB_LISTTENANTS);
   
   return pJob_ListTenants;
 }
@@ -134,9 +134,6 @@ Job_ListTenants::~Job_ListTenants(void)
 /*----------------------------------------------------------------------------*/
 void Job_ListTenants::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_LISTTENANTS == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_LISTTENANTS);
-  
   Job_ListTenants* pJob_ListTenants = _pJob_ListTenants(pObject);
 
   pJob_ListTenants->vShow();

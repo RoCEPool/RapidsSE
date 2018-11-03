@@ -65,7 +65,7 @@ Job_ListTables* JobsModel::_pJob_ListTables(void* aAddress)
 {
   Job_ListTables* pJob_ListTables = reinterpret_cast<Job_ListTables*>(aAddress);
   
-  //RASSERT_TYPE(pJob_ListTables,CN_JOB_LISTTABLES);
+  RASSERT_TYPE(pJob_ListTables,CN_JOB_LISTTABLES);
   
   return pJob_ListTables;
 }
@@ -134,9 +134,6 @@ Job_ListTables::~Job_ListTables(void)
 /*----------------------------------------------------------------------------*/
 void Job_ListTables::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_LISTTABLES == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_LISTTABLES);
-  
   Job_ListTables* pJob_ListTables = _pJob_ListTables(pObject);
 
   pJob_ListTables->vShow();

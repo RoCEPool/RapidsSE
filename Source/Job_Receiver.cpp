@@ -136,9 +136,6 @@ Job_Receiver::~Job_Receiver(void)
 /*----------------------------------------------------------------------------*/
 void Job_Receiver::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_RECEIVER == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_RECEIVER);
-  
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pObject);
 
   pJob_Receiver->vShow();

@@ -65,7 +65,7 @@ Job_StartCluster* JobsModel::_pJob_StartCluster(void* aAddress)
 {
   Job_StartCluster* pJob_StartCluster = reinterpret_cast<Job_StartCluster*>(aAddress);
   
-  //RASSERT_TYPE(pJob_StartCluster,CN_JOB_STARTCLUSTER);
+  RASSERT_TYPE(pJob_StartCluster,CN_JOB_STARTCLUSTER);
   
   return pJob_StartCluster;
 }
@@ -134,9 +134,6 @@ Job_StartCluster::~Job_StartCluster(void)
 /*----------------------------------------------------------------------------*/
 void Job_StartCluster::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RASSERT(CN_JOB_STARTCLUSTER == eClass);
-  RASSERT(pObject->eClass() == CN_JOB_STARTCLUSTER);
-  
   Job_StartCluster* pJob_StartCluster = _pJob_StartCluster(pObject);
   
   pJob_StartCluster->vShow();
