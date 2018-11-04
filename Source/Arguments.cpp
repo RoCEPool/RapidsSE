@@ -125,6 +125,28 @@ void Arguments::vEnvironmentVariables(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* mark the arguments                                                         */
+/*----------------------------------------------------------------------------*/
+void Arguments::vMark(void)
+{
+  ActivityMap::vMark(0,"Args:"_Stz);
+  
+  s256 sArg;
+  
+  for (i8 i_Arg = 1; i_Arg < gi_argc; ) {
+    
+    sArg = (Stz*)(gi_argv[i_Arg ++]);
+    
+    while (i_Arg < gi_argc && '-' != *gi_argv[i_Arg]) {
+      StrLib::vConcat(sArg.aChar(),' ');
+      StrLib::vConcat(sArg.aChar(),gi_argv[i_Arg ++]);
+    }
+    
+    ActivityMap::vMark(0,"  %s"_Stz,sArg.aChar());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* parse command line arguments                                               */
 /*----------------------------------------------------------------------------*/
 bool Arguments::bParse(int argc, Stz* argv[])
@@ -600,6 +622,32 @@ bool Arguments::bParse(int argc, Stz* argv[])
 /*----------------------------------------------------------------------------*/
 /* print arguments                                                            */
 /*----------------------------------------------------------------------------*/
+void Arguments::vPrint(void)
+{
+  vTrace("\nArgs:"_Stz);
+  
+  for (i8 i_Arg = 1; i_Arg < gi_argc; i_Arg++) {
+    if ('-' == *gi_argv[i_Arg])
+      vTrace("\n  %s"_Stz,gi_argv[i_Arg]);
+    else
+      vTrace(" %s"_Stz,gi_argv[i_Arg]);
+  }
+  vTrace("\n\n"_Stz);
+  
+  vTrace("  ./SE "_Stz);
+  for (i8 i_Arg = 1; i_Arg < gi_argc; i_Arg++) {
+    vTrace("%s "_Stz,gi_argv[i_Arg]);
+  }
+  
+  //vTrace("--region %s"_Stz,m_sRegionName.aStr());
+  
+  vTrace("\n"_Stz);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* print arguments                                                            */
+/*----------------------------------------------------------------------------*/
 void Arguments::vPrintStartupInfo(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
@@ -717,32 +765,6 @@ void Arguments::vScribble(void)
   i8 nBytes = sizeof(Arguments) - sizeof(Object) - sizeof(Footer);
   
   MemLib::vSet(aDst,0xFF,nBytes,CN_ARGUMENTS);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print arguments                                                            */
-/*----------------------------------------------------------------------------*/
-void Arguments::vPrint(void)
-{
-  vTrace("\nArgs:"_Stz);
-  
-  for (i8 i_Arg = 1; i_Arg < gi_argc; i_Arg++) {
-    if ('-' == *gi_argv[i_Arg])
-      vTrace("\n  %s"_Stz,gi_argv[i_Arg]);
-    else
-      vTrace(" %s"_Stz,gi_argv[i_Arg]);
-  }
-  vTrace("\n\n"_Stz);
-
-  vTrace("  ./SE "_Stz);
-  for (i8 i_Arg = 1; i_Arg < gi_argc; i_Arg++) {
-    vTrace("%s "_Stz,gi_argv[i_Arg]);
-  }
-  
-  //vTrace("--region %s"_Stz,m_sRegionName.aStr());
-  
-  vTrace("\n"_Stz);
-
 }
 
 /*----------------------------------------------------------------------------*/

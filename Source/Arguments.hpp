@@ -81,19 +81,15 @@ namespace StorageEngine
     Arguments(void);
     ~Arguments(void);
     
+    static void vMark(void);
+  
     void vEnvironmentVariables(void);
-    
     bool bParse(int argc, Stz* argv[]);
-  
-    void vPrintStartupInfo(void);
-    
-    void vPrintHelp(void);
-  
-    void vSanityCheck(void);
-
-    void vScribble(void);
-  
     void vPrint(void);
+    void vPrintStartupInfo(void);
+    void vPrintHelp(void);
+    void vSanityCheck(void);
+    void vScribble(void);
   
     Footer* aFooter(void);
   };

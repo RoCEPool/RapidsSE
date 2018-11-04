@@ -155,8 +155,13 @@ void ActivityMap::vNew(void)
     return;
   
   new ActivityMap;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   ActivityMap::vMark(0,gxArguments.m_sWelcome);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Time xTime;
   xTime.vSetNowLocal();
   
@@ -165,6 +170,10 @@ void ActivityMap::vNew(void)
   
   xTime.vAppendLocal(&z);
   ActivityMap::vMark(0,sDate);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Arguments::vMark();
 }
 
 /*----------------------------------------------------------------------------*/
