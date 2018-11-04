@@ -164,6 +164,8 @@ void SePrompt::vPromptLoop(void)
     vPostJob();
     
     vDeleteJob();
+    
+    vFreeSpace();
 
     if (gxArguments.m_bCommand)
       break;
@@ -309,7 +311,7 @@ void SePrompt::vCutToken(i8 i_Tkn)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set continue                                                               */
+/* delete the job                                                             */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vDeleteJob(void)
 {
@@ -364,6 +366,19 @@ bool SePrompt::bFindJobClass(void)
   bool bFindJobClass = pCommandProcessor->bFindJobClass();
   
   return bFindJobClass;
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark free space                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vFreeSpace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  i8 iFreeSpace = gpBufferPool->iFreeSpace();
+  i8 iFreeSpaceInPool = BPA::iPoolFree();
+
+  ActivityMap::vMark(0,"Free space: %lld"_Stz,iFreeSpace + iFreeSpaceInPool);
 }
 
 /*----------------------------------------------------------------------------*/

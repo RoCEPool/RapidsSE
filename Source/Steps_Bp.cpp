@@ -159,11 +159,11 @@ void Task::vBpWriteBufferPool(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp::freeBuffers -- push number of free buffers in buffer pool onto stack    */
+/* bp::freeBuffers -- push number of free buffers in buffer pool onto stack   */
 /*----------------------------------------------------------------------------*/
 void Task::vFreeBuffers(MP_Task mpTask)
 {
-  ENTRY("vFreePercent"_Stz);
+  ENTRY("vFreeBuffers"_Stz);
   
   i8 iFreeBuffers = gpBufferPool->iFreeCount();
   
@@ -219,7 +219,7 @@ void Task::vInUseSpace(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp::snapshot -- push snapshot of buffer pool onto stack                     */
+/* bp::snapshot -- push snapshot of buffer pool onto stack                    */
 /*----------------------------------------------------------------------------*/
 void Task::vSnapshot(MP_Task mpTask)
 {
@@ -259,7 +259,7 @@ void Task::vSnapshot(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp::totalSpace -- push total space in buffer pool onto stack                */
+/* bp::totalSpace -- push total space in buffer pool onto stack               */
 /*----------------------------------------------------------------------------*/
 void Task::vTotalSpace(MP_Task mpTask)
 {

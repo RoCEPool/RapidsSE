@@ -34,7 +34,6 @@ namespace Pool
     void vResourceSummary(void);
     void vWordList(i8 iEpoch);
     void vWriteBuffers(Stz* sFilePath);
-
     void vWriteHeap(Heap* pHeap, File* pFile);
     void vWritePersistentHeapMem(Stz* sFilePath);
   

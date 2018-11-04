@@ -511,20 +511,33 @@ void BPA::vPoolDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get free space in the pool                                                 */
+/* get free space in the buffer pool                                          */
 /*----------------------------------------------------------------------------*/
 i8 BPA::iPoolFree(void)
 {
-  i8 iTransientSmall   = gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount() * C_SIZE_SMALL_OBJECT;
-  i8 iTransientMedium  = gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount() * C_SIZE_MEDIUM_OBJECT;
-  i8 iTransientLarge   = gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount() * C_SIZE_LARGE_OBJECT;
-  i8 iPersistentSmall  = gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iFreeCount() * C_SIZE_SMALL_OBJECT;
-  i8 iPersistentMedium = gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iFreeCount() * C_SIZE_MEDIUM_OBJECT;
-  i8 iPersistentLarge  = gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iFreeCount() * C_SIZE_LARGE_OBJECT;
+  i8 iTransientSmall =
+     gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount() * C_SIZE_SMALL_OBJECT;
+  
+  i8 iTransientMedium =
+     gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount() * C_SIZE_MEDIUM_OBJECT;
+  
+  i8 iTransientLarge =
+     gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount() * C_SIZE_LARGE_OBJECT;
+  
+  
+  i8 iPersistentSmall =
+     gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iFreeCount() * C_SIZE_SMALL_OBJECT;
+  
+  i8 iPersistentMedium =
+     gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iFreeCount() * C_SIZE_MEDIUM_OBJECT;
+  
+  i8 iPersistentLarge =
+     gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iFreeCount() * C_SIZE_LARGE_OBJECT;
 
+  
   i8 iTotalFree =
-    iTransientSmall + iTransientMedium + iTransientLarge +
-    iPersistentSmall + iPersistentMedium + iPersistentLarge;
+       iTransientSmall  + iTransientMedium  + iTransientLarge +
+       iPersistentSmall + iPersistentMedium + iPersistentLarge;
   
   return iTotalFree;
 }
