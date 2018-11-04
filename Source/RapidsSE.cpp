@@ -294,7 +294,7 @@ void RapidsSE::vKillPrev(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vOpenActivityMap(void)
 {
-  ActivityMap::vNew();
+  ActivityMap::vOpenBySE();
 }
 
 /*----------------------------------------------------------------------------*/

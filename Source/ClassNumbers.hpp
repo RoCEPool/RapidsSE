@@ -177,7 +177,8 @@ enum eCN : u2 // Class Number
   /* 143 */ CN_MEDIUMTRANSIENT,
   
   /* 144 */ CN_NODE,
-  
+  /*     */ CN_NOW,
+
   /* 145 */ CN_OP,
   
   /* 146 */ CN_PARSER,
@@ -424,7 +425,8 @@ static Stz* aCN[]
   /* 143 */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
   
   /* 144 */ "NODE"_Stz,                // CN_NODE
-  
+  /*     */ "NOW"_Stz,                 // CN_NOW
+
   /* 145 */ "OP"_Stz,                  // CN_OP
   
   /* 146 */ "PARSER"_Stz,              // CN_PARSER

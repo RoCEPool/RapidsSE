@@ -45,6 +45,7 @@ using namespace System;
 #include "Timer.hpp"
 
 #include "Since.hpp"
+#include "Now.hpp"
 
 #include "RelationalOps.h"
 

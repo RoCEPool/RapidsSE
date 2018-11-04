@@ -187,7 +187,7 @@ void Task::vFreePercent(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bp::freeSpace -- push free space in buffer pool onto stack                  */
+/* bp::freeSpace -- push free space in buffer pool onto stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vFreeSpace(MP_Task mpTask)
 {

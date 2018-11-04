@@ -147,9 +147,24 @@ void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new ActivityMap                                                            */
+/* open ActivityMap (called by API)                                           */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vNew(void)
+void ActivityMap::vOpenByApi(void)
+{
+  if (! gpAttachMap->m_aActivityMap)
+    return;
+  
+  new ActivityMap;
+  ActivityMap::vMark(0,"Opened by API"_Stz);
+  
+  Now xNow;
+  ActivityMap::vMark(0,"Time is: "_Stz,xNow.sFormatted());
+}
+
+/*----------------------------------------------------------------------------*/
+/* create or open ActivityMap (called by SE)                                  */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vOpenBySE(void)
 {
   if (! gxArguments.m_bActivityMap)
     return;
@@ -159,42 +174,15 @@ void ActivityMap::vNew(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ActivityMap::vMark(0,gxArguments.m_sWelcome);
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Time xTime;
-  xTime.vSetNowLocal();
-  
-  s32 sDate;
-  char* z = sDate.aChar();
-  
-  xTime.vAppendLocal(&z);
-  ActivityMap::vMark(0,sDate);
-  
+  Now xNow;
+  ActivityMap::vMark(0,"Time is: %s"_Stz,xNow.sFormatted());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Arguments::vMark();
-}
-
-/*----------------------------------------------------------------------------*/
-/* open ActivityMap                                                           */
-/*----------------------------------------------------------------------------*/
-void ActivityMap::vOpenByApi(void)
-{
-  if (! gpAttachMap->m_aActivityMap)
-    return;
-  
-  new ActivityMap;
-  ActivityMap::vMark(0,"Opened by API"_Stz);
-
-  Time xTime;
-  xTime.vSetNowLocal();
-  
-  s32 sDate;
-  char* z = sDate.aChar();
-  
-  xTime.vAppendLocal(&z);
-  ActivityMap::vMark(0,sDate);
 }
 
 /*----------------------------------------------------------------------------*/
