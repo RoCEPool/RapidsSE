@@ -328,8 +328,13 @@ void ActivityMap::vDumpMap(void)
   aActivityMark->vDump(pActivityFile,
                        0,nullptr,iTotalDelta);
   
-  for (i8 i_Mark = 1; i_Mark < m_nMarks; i_Mark++) {
+  for (i8 i_Mark = 1; i_Mark < C_ACTIVITY_MARKS; i_Mark++) {
+    
     aActivityMark = &m_xActivity[i_Mark];
+    
+    if (-1 == aActivityMark->m_iMark)
+      break;
+    
     aActivityMark->vDump(pActivityFile,
                          i_Mark,&m_xActivity[i_Mark - 1],iTotalDelta);
   }
@@ -340,6 +345,40 @@ void ActivityMap::vDumpMap(void)
   
   vTrace("ActivityMap dumped : %s\n"_Stz,sAmPath.aChar());
 }
+/*----------------------------------------------------------------------------*/
+//void ActivityMap::vDumpMap(void)
+//{
+//  i8 iTotalDelta = 0;
+//
+//  File* pActivityFile = new File();
+//
+//  s256 sAmPath = gxArguments.m_sAmPath;
+//
+//  bool bOpened = pActivityFile->bOpen(sAmPath,C_OPEN_WRITE);
+//
+//  if (! bOpened) {
+//    vTrace("Unable to open activity file: %s\n"_Stz,sAmPath.aChar());
+//    return;
+//  }
+//
+//  vLockMutex();
+//
+//  ActivityMark* aActivityMark = &m_xActivity[0];
+//  aActivityMark->vDump(pActivityFile,
+//                       0,nullptr,iTotalDelta);
+//
+//  for (i8 i_Mark = 1; i_Mark < m_nMarks; i_Mark++) {
+//    aActivityMark = &m_xActivity[i_Mark];
+//    aActivityMark->vDump(pActivityFile,
+//                         i_Mark,&m_xActivity[i_Mark - 1],iTotalDelta);
+//  }
+//
+//  vUnlockMutex();
+//
+//  pActivityFile->vClose();
+//
+//  vTrace("ActivityMap dumped : %s\n"_Stz,sAmPath.aChar());
+//}
 
 /*----------------------------------------------------------------------------*/
 /* grab ActivityMap mutex                                                     */
@@ -368,26 +407,41 @@ ActivityMark* ActivityMap::aNewActivityMark(void)
 {
   vLockMutex();
   
-  if (m_nMarks >= C_ACTIVITY_MARKS) {
-    vUnlockMutex();
-    return nullptr;
-  }
-
-  ActivityMark* aActivityMark = &m_xActivity[m_nMarks];
+  ActivityMark* aActivityMark = &m_xActivity[m_nMarks % C_ACTIVITY_MARKS];
   
   aActivityMark->m_iMark = m_nMarks;
   
   m_nMarks++;
   
-  if (C_ACTIVITY_MARKS == m_nMarks) {
-    aActivityMark->vWrite(0,(char*)"*** ACTIVITY MAP FULL ***");
-    vUnlockMutex();
-    return nullptr;
-  }
-
   vUnlockMutex();
+  
   return aActivityMark;
 }
+/*----------------------------------------------------------------------------*/
+//ActivityMark* ActivityMap::aNewActivityMark(void)
+//{
+//  vLockMutex();
+//
+//  if (m_nMarks >= C_ACTIVITY_MARKS) {
+//    vUnlockMutex();
+//    return nullptr;
+//  }
+//
+//  ActivityMark* aActivityMark = &m_xActivity[m_nMarks];
+//
+//  aActivityMark->m_iMark = m_nMarks;
+//
+//  m_nMarks++;
+//
+//  if (C_ACTIVITY_MARKS == m_nMarks) {
+//    aActivityMark->vWrite(0,(char*)"*** ACTIVITY MAP FULL ***");
+//    vUnlockMutex();
+//    return nullptr;
+//  }
+//
+//  vUnlockMutex();
+//  return aActivityMark;
+//}
 
 /*============================================================================*/
 /* end                                                                        */
