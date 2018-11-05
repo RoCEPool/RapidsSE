@@ -375,6 +375,8 @@ ActivityMark* ActivityMap::aNewActivityMark(void)
 
   ActivityMark* aActivityMark = &m_xActivity[m_nMarks];
   
+  aActivityMark->m_iMark = m_nMarks;
+  
   m_nMarks++;
   
   if (C_ACTIVITY_MARKS == m_nMarks) {

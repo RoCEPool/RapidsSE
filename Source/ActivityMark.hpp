@@ -7,11 +7,14 @@ namespace Measurement
 {
   class ActivityMark : public Object
   {
+  friend class ActivityMap;
+  
   private:
-    i8   m_iTick;
-    char m_aNode[32];
-    i8   m_iJobId;
-    char m_aMark[128];
+    i8   m_iMark;      // mark no
+    i8   m_iTick;      // tick of mark
+    char m_aNode[32];  // which node
+    i8   m_iJobId;     // which job
+    char m_aMark[128]; // comment
   
     // must be last
     Footer m_xFooter;

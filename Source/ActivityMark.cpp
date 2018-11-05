@@ -89,6 +89,7 @@ void ActivityMark::vInit(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
+  m_iMark    = -1;
   m_iTick    = -1;
   m_aNode[0] = '\0';
   m_iJobId   = -1;
@@ -111,7 +112,9 @@ void ActivityMark::vWrite(i8 iJobId, char* aMark)
   
   m_iJobId = iJobId;
 
-  StrLib::vCopyLen(m_aMark,aMark,sizeof(m_aMark));
+  StrLib::vCopyLen(m_aMark,
+                   aMark,
+                   sizeof(m_aMark));
   m_aMark[sizeof(m_aMark) - 1] = '\0';
 }
 
@@ -134,7 +137,7 @@ void ActivityMark::vDump(File* pFile,
     iTotalDelta = 0;
   
   pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
-                i_Mark,
+                m_iMark,
                 m_iTick,
                 iDeltaUs,
                 iTotalDelta,
