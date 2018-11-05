@@ -86,6 +86,7 @@ Arguments::Arguments(void)
   m_bWelcome    = true;
   m_bActivityMap = false;
   m_sAmPath      = "/tmp/SE_ActivityMap.csv"_Stz;
+  m_nActivityMarks = C_ACTIVITY_MARKS;
 
   _checkInitialised_(CN_ARGUMENTS);
   
@@ -560,10 +561,18 @@ bool Arguments::bParse(int argc, Stz* argv[])
       continue;
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--activityMarks"_Stz)) {
+      m_nActivityMarks = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
     vError("Unrecognized command argument: %s\n"_Stz,argv[i_Arg]);
     return false;
   }
-  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // if --node was defined just set the m_nNodes
   if (iNode) {
     

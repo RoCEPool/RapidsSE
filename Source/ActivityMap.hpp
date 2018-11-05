@@ -14,7 +14,7 @@ namespace Measurement
     pthread_mutex_t     m_xMutex;     // mutex variable
     pthread_mutexattr_t m_xMutexAttr; // mutex shared attribute
   
-    i8 m_nMarks;
+    i8 m_i_Mark;
     ActivityMark m_xActivity[C_ACTIVITY_MARKS];
 
   public:

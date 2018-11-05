@@ -267,7 +267,7 @@ ActivityMap::ActivityMap(void)
   iResult = pthread_mutex_init(&m_xMutex,&m_xMutexAttr);
   ASSERT( ! iResult);
 
-  m_nMarks = 0;
+  m_i_Mark = 0;
   
   for (i8 i_Mark = 0; i_Mark < C_ACTIVITY_MARKS; i_Mark++) {
     ActivityMark* aActivityMark = &m_xActivity[i_Mark];
@@ -435,11 +435,11 @@ ActivityMark* ActivityMap::aNewActivityMark(void)
 {
   vLockMutex();
   
-  ActivityMark* aActivityMark = &m_xActivity[m_nMarks % C_ACTIVITY_MARKS];
+  ActivityMark* aActivityMark = &m_xActivity[m_i_Mark % C_ACTIVITY_MARKS];
   
-  aActivityMark->m_iMark = m_nMarks;
+  aActivityMark->m_iMark = m_i_Mark;
   
-  m_nMarks++;
+  m_i_Mark++;
   
   vUnlockMutex();
   
