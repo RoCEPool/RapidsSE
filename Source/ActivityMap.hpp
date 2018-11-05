@@ -5,7 +5,7 @@
 
 namespace Measurement
 {
-  static const i8    C_ACTIVITY_MARKS  = 256; //C_1M;
+  static const i8    C_ACTIVITY_MARKS  = C_1M;
   static const char* C_ACTIVITY_REGION = "/SE_ActivityMap";
 
   class ActivityMap
@@ -14,7 +14,8 @@ namespace Measurement
     pthread_mutex_t     m_xMutex;     // mutex variable
     pthread_mutexattr_t m_xMutexAttr; // mutex shared attribute
   
-    i8 m_nMarks;
+    i8 m_i_Mark;  // current mark subscript
+    i8 m_nMarks;  // number of marks in array
     ActivityMark m_xActivity[C_ACTIVITY_MARKS];
 
   public:
@@ -37,11 +38,13 @@ namespace Measurement
     static void vOpenByApi(void);
     static void vOpenBySE(void);
     static void vDump(void);
+    static i8   iSize(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     void vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs);
     void vDumpMap(void);
+    void vFindRange(i8& i_MinMark, i8& i_MaxMark);
 
     void vLockMutex(void);
     void vUnlockMutex(void);

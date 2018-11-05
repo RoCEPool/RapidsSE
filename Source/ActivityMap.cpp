@@ -66,7 +66,8 @@ bool ActivityMap::bCreateNewShm(void)
 
   gpActivityMap = static_cast<ActivityMap*>(aAddr);
   
-  gpAttachMap->m_aActivityMap = gpActivityMap;
+  gpAttachMap->m_aActivityMap   = gpActivityMap;
+  gpAttachMap->m_nActivityMarks = gxArguments.m_nActivityMarks;
   
   return true;
 }
@@ -195,6 +196,18 @@ void ActivityMap::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute the size of ActivityMap given gpAttachMap->m_nActivityMarks        */
+/*----------------------------------------------------------------------------*/
+i8 ActivityMap::iSize(void)
+{
+  i8 iMapSize = sizeof(ActivityMap)
+                  - sizeof(ActivityMark)
+                  + sizeof(ActivityMark) * gpAttachMap->m_nActivityMarks;
+  
+  return iMapSize;
+}
+
+/*----------------------------------------------------------------------------*/
 /* -- LifeCycle --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -215,7 +228,7 @@ void* ActivityMap::operator new(size_t)
       vTrace("ActivityMap %s : created new map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
              sizeof(ActivityMap),
-             C_ACTIVITY_MARKS);
+             gpAttachMap->m_nActivityMarks);
   }
   else {
     bResult = ActivityMap::bOpenExistingShm();
@@ -224,7 +237,7 @@ void* ActivityMap::operator new(size_t)
       vTrace("ActivityMap %s : opened existing map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
              sizeof(ActivityMap),
-             C_ACTIVITY_MARKS);
+             gpAttachMap->m_nActivityMarks);
   }
   
   return gpActivityMap;
@@ -267,9 +280,10 @@ ActivityMap::ActivityMap(void)
   iResult = pthread_mutex_init(&m_xMutex,&m_xMutexAttr);
   ASSERT( ! iResult);
 
-  m_nMarks = 0;
+  m_i_Mark = 0;
+  m_nMarks = gxArguments.m_nActivityMarks;
   
-  for (i8 i_Mark = 0; i_Mark < C_ACTIVITY_MARKS; i_Mark++) {
+  for (i8 i_Mark = 0; i_Mark < m_nMarks; i_Mark++) {
     ActivityMark* aActivityMark = &m_xActivity[i_Mark];
     aActivityMark->vInit();
   }
@@ -324,19 +338,26 @@ void ActivityMap::vDumpMap(void)
 
   vLockMutex();
   
-  ActivityMark* aActivityMark = &m_xActivity[0];
+  i8 i_MinMark;
+  i8 i_MaxMark;
+  
+  vFindRange(i_MinMark,i_MaxMark);
+  
+  ActivityMark* aActivityMark = &m_xActivity[i_MinMark % m_nMarks];
   aActivityMark->vDump(pActivityFile,
                        0,nullptr,iTotalDelta);
   
-  for (i8 i_Mark = 1; i_Mark < C_ACTIVITY_MARKS; i_Mark++) {
+  for (i8 i_Mark = i_MinMark + 1; i_Mark <= i_MaxMark; i_Mark++) {
     
-    aActivityMark = &m_xActivity[i_Mark];
+    aActivityMark = &m_xActivity[i_Mark % m_nMarks];
     
     if (-1 == aActivityMark->m_iMark)
       break;
     
     aActivityMark->vDump(pActivityFile,
-                         i_Mark,&m_xActivity[i_Mark - 1],iTotalDelta);
+                         i_Mark,
+                         &m_xActivity[(i_Mark - 1) % m_nMarks],
+                         iTotalDelta);
   }
   
   vUnlockMutex();
@@ -381,6 +402,27 @@ void ActivityMap::vDumpMap(void)
 //}
 
 /*----------------------------------------------------------------------------*/
+/* find dump range                                                            */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vFindRange(i8& i_MinMark, i8& i_MaxMark)
+{
+  i_MinMark = C_I8_MAX;
+  i_MaxMark = C_I8_MIN;
+  
+  for (i8 i_Mark = 0; i_Mark < m_nMarks; i_Mark++) {
+    
+    if (-1 == m_xActivity[i_Mark].m_iMark)
+      return;
+          
+    if (m_xActivity[i_Mark].m_iMark < i_MinMark)
+      i_MinMark = m_xActivity[i_Mark].m_iMark;
+    
+    if (m_xActivity[i_Mark].m_iMark > i_MaxMark)
+      i_MaxMark = m_xActivity[i_Mark].m_iMark;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab ActivityMap mutex                                                     */
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vLockMutex(void)
@@ -407,41 +449,16 @@ ActivityMark* ActivityMap::aNewActivityMark(void)
 {
   vLockMutex();
   
-  ActivityMark* aActivityMark = &m_xActivity[m_nMarks % C_ACTIVITY_MARKS];
+  ActivityMark* aActivityMark = &m_xActivity[m_i_Mark % m_nMarks];
   
-  aActivityMark->m_iMark = m_nMarks;
+  aActivityMark->m_iMark = m_i_Mark;
   
-  m_nMarks++;
+  m_i_Mark++;
   
   vUnlockMutex();
   
   return aActivityMark;
 }
-/*----------------------------------------------------------------------------*/
-//ActivityMark* ActivityMap::aNewActivityMark(void)
-//{
-//  vLockMutex();
-//
-//  if (m_nMarks >= C_ACTIVITY_MARKS) {
-//    vUnlockMutex();
-//    return nullptr;
-//  }
-//
-//  ActivityMark* aActivityMark = &m_xActivity[m_nMarks];
-//
-//  aActivityMark->m_iMark = m_nMarks;
-//
-//  m_nMarks++;
-//
-//  if (C_ACTIVITY_MARKS == m_nMarks) {
-//    aActivityMark->vWrite(0,(char*)"*** ACTIVITY MAP FULL ***");
-//    vUnlockMutex();
-//    return nullptr;
-//  }
-//
-//  vUnlockMutex();
-//  return aActivityMark;
-//}
 
 /*============================================================================*/
 /* end                                                                        */
