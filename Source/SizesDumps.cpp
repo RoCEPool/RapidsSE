@@ -393,7 +393,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_LoadBuffer),     // CN_JOB_LOADBUFFER
   /*    */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
   /*    */ sizeof(Job_NodeInfo),       // CN_JOB_NODEINFO
-  /*    */ 0,                          // CN_JOB_PERIODIC
+  /*    */ sizeof(Job_Periodic),       // CN_JOB_PERIODIC
   /*    */ sizeof(Job_Ping),           // CN_JOB_PING
   /*    */ sizeof(Job_Pwf),            // CN_JOB_PWF
   /*    */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER

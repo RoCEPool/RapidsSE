@@ -88,6 +88,7 @@ using namespace JobsModel;
 
 #include "Job_NodeInfo.hpp"
 
+#include "Job_Periodic.hpp"
 #include "Job_Ping.hpp"
 #include "Job_Pwf.hpp"
 
