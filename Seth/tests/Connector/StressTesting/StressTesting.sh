@@ -13,7 +13,7 @@ do
   do
 
   # cp cluster file
-  cp $SETH_PATH/tests/Connector/StressTesting/cluster.config${nodes}N_${partitions}P $Master/cluster.config
+  cp $SETH_PATH/tests/Connector/StressTesting/cluster.config${nodes}N_${partitions}P $MASTER/cluster.config
 
   #install rdp
   ./run.sh $1
