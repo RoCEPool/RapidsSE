@@ -5,6 +5,16 @@
 " job_Start.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* start periodic                                                             */
+/*----------------------------------------------------------------------------*/
+: start_periodic ( -- )
+
+  "start_periodic" .verbose
+
+  spawn_Periodic
+;
+
+/*----------------------------------------------------------------------------*/
 /* start socket tasks                                                         */
 /*----------------------------------------------------------------------------*/
 : start_sockets ( -- )
@@ -27,6 +37,7 @@
   "start_run" .verbose
 
   snooze start_sockets
+  //snooze start_periodic
 
   nullptr pThisTask task.job!
 

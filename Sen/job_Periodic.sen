@@ -1,0 +1,49 @@
+/*============================================================================*/
+/* job_Periodic.sen -- periodic job                                           */
+/*============================================================================*/
+
+" job_Periodic.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* spawn the periodic job                                                     */
+/*----------------------------------------------------------------------------*/
+: spawn_Periodic ( -- )
+
+  0 locals| pJobClass_Periodic |
+  0 locals| pJob_Periodic |
+
+  CN_JOB_PERIODIC jobClass::find to pJobClass_Periodic
+
+  nullptr pJobClass_Periodic jobClass.new to pJob_Periodic
+
+  pJob_Periodic SEED_RUN job.spawn
+;
+
+/*----------------------------------------------------------------------------*/
+/* periodic loop:                                                             */
+/*----------------------------------------------------------------------------*/
+: periodic_run ( -- )
+
+  >>am <SEED_RUN>
+
+  "Periodic Job Started" .
+
+  begin
+
+    "Periodic Job" .
+
+    10 thread.sleep_s
+
+  again
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // should never exit
+  hazard
+
+  <DONE_RUN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
