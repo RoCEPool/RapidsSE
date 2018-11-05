@@ -16,6 +16,7 @@
 "job_Connector.sen" include
 "Job_Answer.sen" include
 
+"job_Alarm.sen" include
 "job_AnalyzeIndex.sen" include
 "job_AnalyzeTable.sen" include
 
