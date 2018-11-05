@@ -43,7 +43,8 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJobs(CN_JOB_CF);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LF);
   nJobs++; JobClass::vTraceJobs(CN_JOB_PWF);
-  
+  nJobs++; JobClass::vTraceJobs(CN_JOB_PERIODIC);
+
   nJobs++; JobClass::vTraceJobs(CN_JOB_INSERTROW);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LISTTENANTS);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LISTCATALOGS);
