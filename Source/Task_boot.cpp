@@ -746,7 +746,7 @@ void Task::vAddRoutines(void)
 //"      \"unknown\" ."
 //"      input.token ."
   "      input.unknown"
-//"      dic.isCompiled not if process.quit then "
+//"      dic.isCompiled not if process::quit then "
   "      jumpBegin_"
   "    then"
   

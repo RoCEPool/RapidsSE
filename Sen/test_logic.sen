@@ -8,17 +8,17 @@
 
   "  logic tests" .put .\n
 
-  0 if "if failure" . process.quit then
+  0 if "if failure" . process::quit then
 
-  1 if else "else failure" . process.quit then
+  1 if else "else failure" . process::quit then
 
-  0 not if else "not failure" . process.quit then
+  0 not if else "not failure" . process::quit then
 
-  0 0 == if else "== failure" . process.quit then
+  0 0 == if else "== failure" . process::quit then
 
-  1 1 == if else "== failure" . process.quit then
+  1 1 == if else "== failure" . process::quit then
 
-  0 1 not == if else "not failure" . process.quit then
+  0 1 not == if else "not failure" . process::quit then
 
 ;
 
