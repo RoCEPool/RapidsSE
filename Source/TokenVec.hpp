@@ -41,7 +41,7 @@ namespace Parsing
     void vStripAmpersand(void);
     void vStripSingleQuotes(void);
     void vStripSemicolon(void);
-
+    void vToString(Stz* aBuff);
 
     Footer* aFooter(void);
   };

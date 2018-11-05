@@ -63,6 +63,7 @@ namespace Prompt
     void vLockMutex(void);
     bool bMarkAll(void);
     void vMarkAll(bool bMarkAll);
+    void vMarkCommand(void);
     bool bMarkJob(eCN eClass);
     void vMarkJob(eCN eClass, bool bMarkJob);
     bool bNoWait(void);

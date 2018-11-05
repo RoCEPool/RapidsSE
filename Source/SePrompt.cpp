@@ -119,6 +119,8 @@ void SePrompt::vPromptLoop(void)
     vCheckTraced();
     vCheckNoWait();
 
+    vMarkCommand();
+    
     if (bExecuteFunction())
       continue;
     
@@ -427,6 +429,22 @@ void SePrompt::vMarkAll(bool bMarkAll)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   gpAttachMap->m_bMarkJobAll = bMarkAll;
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark command                                                               */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vMarkCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  s16KB sCommand;
+
+  TokenVec* pTknVec = this->pTknVec();
+
+  pTknVec->vToString(sCommand);
+  
+  ActivityMap::vMark(0,"Prompt command: %s"_Stz,sCommand.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
