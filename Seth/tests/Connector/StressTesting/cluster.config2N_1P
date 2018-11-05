@@ -16,7 +16,7 @@
       "clientPort"          : 5334,     
       "seEnabled"           : true,
       "clusterPort"         : 4334,
-      "seArgs"              : " --partitions 1 --size 12gb --regionPrefix /SE --port 5444",
+      "seArgs"              : " --partitionsPerNode 1 --size 12gb --regionPrefix /SE --port 5444",
       "name"                : "node0",
       "role"                : "DQC",
       "installationDir"     : "/home/alka/master/current",
@@ -25,7 +25,7 @@
     {
       "hostname"            : "192.168.1.26",
       "seEnabled"           : true,
-      "seArgs"              : " --partitions 1 --size 12gb --regionPrefix /SE --port 5445",
+      "seArgs"              : " --partitionsPerNode 1 --size 12gb --regionPrefix /SE --port 5445",
       "clientPort"          : 5335,      
       "clusterPort"         : 4335,
       "name"                : "node1",
