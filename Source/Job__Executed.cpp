@@ -43,7 +43,7 @@ JobClass xJobClass__Executed =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob__Executed_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_AnalyzeIndex_class;
+  *pNextFun = (pFUN*)pJob_Alarm_class;
   
   return &xJobClass__Executed;
 }

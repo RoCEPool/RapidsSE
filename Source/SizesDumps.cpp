@@ -357,7 +357,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job__Executed),      // CN_JOB__EXECUTED
   /*    */ sizeof(Job__Find),          // CN_JOB__FIND
   
-  /*    */ 0,                          // CN_JOB_ALARM
+  /*    */ sizeof(Job_Alarm),          // CN_JOB_ALARM
   /*    */ sizeof(Job_AnalyzeIndex),   // CN_JOB_ANALYZEINDEX
   /*    */ sizeof(Job_AnalyzeTable),   // CN_JOB_ANALYZETABLE
   /*    */ sizeof(Job_Answer),         // CN_JOB_ANSWER
