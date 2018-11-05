@@ -38,6 +38,7 @@ namespace Measurement
     static void vOpenByApi(void);
     static void vOpenBySE(void);
     static void vDump(void);
+    static i8   iSize(void);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

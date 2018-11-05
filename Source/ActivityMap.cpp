@@ -196,6 +196,18 @@ void ActivityMap::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* compute the size of ActivityMap given gpAttachMap->m_nActivityMarks        */
+/*----------------------------------------------------------------------------*/
+i8 ActivityMap::iSize(void)
+{
+  i8 iMapSize = sizeof(ActivityMap)
+                  - sizeof(ActivityMark)
+                  + sizeof(ActivityMark) * gpAttachMap->m_nActivityMarks;
+  
+  return iMapSize;
+}
+
+/*----------------------------------------------------------------------------*/
 /* -- LifeCycle --------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
