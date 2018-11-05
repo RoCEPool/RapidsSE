@@ -18,7 +18,7 @@ do
   #install rdp
   ./run.sh $1
 
-    for i in {1..100}
+    for i in {1..20}
     do
       echo "Welcome $i times"
 
@@ -40,7 +40,7 @@ do
       bin/rapidsse --name NODE10 --node NODE10 127.0.0.1 6666 --start --munged --dummyThreads $DUMMY_THREADS &
 
       cd $SETH_PATH
-#      for j in {1..10}
+      for j in {1..2}
       do
       echo "Regression Iteration $j of $i"
         ./dbth.sh -f tests/Connector/Regression/testList
