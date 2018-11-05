@@ -60,6 +60,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Grid();
   Step::vAddSteps_GroupBy();
   
+  Step::vAddSteps_Handler();
+  
   Step::vAddSteps_Index();
   Step::vAddSteps_Input();
   Step::vAddSteps_Int();

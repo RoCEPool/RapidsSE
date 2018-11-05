@@ -32,7 +32,7 @@
 
     "Alarm Job" .
 
-    10 thread.sleep_s
+    handler::serviceSleepQueue
 
   again
 

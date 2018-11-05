@@ -57,6 +57,8 @@ namespace Tasks
     static void vAddSteps_Grid(void);
     static void vAddSteps_GroupBy(void);
   
+    static void vAddSteps_Handler(void);
+  
     static void vAddSteps_Index(void);
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
