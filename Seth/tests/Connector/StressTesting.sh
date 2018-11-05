@@ -4,9 +4,6 @@ BASIC_DUMMY_THREADS=200
 SETH_PATH=~/master/rapidsse/Seth
 MASTER=~master
 
-      let DUMMY_THREADS=$BASIC_DUMMY_THREADS + $(($i % 100))
-      echo "Starting $DUMMY_THREADS dummy threads"
-/*
 # for no of nodes
 for nodes in {1..4}
 do
@@ -40,7 +37,7 @@ do
       let DUMMY_THREADS=$(( $BASIC_DUMMY_THREADS + $(( $i % 100 )) ))
       echo "Starting $DUMMY_THREADS dummy threads"
       cd $SE_PATH
-      bin/rapidsse --name NODE10 --node NODE10 127.0.0.1 6666 --start --munged --dummyThreads &
+      bin/rapidsse --name NODE10 --node NODE10 127.0.0.1 6666 --start --munged --dummyThreads $DUMMY_THREADS &
 
       cd $SETH_PATH
       for j in {1..10}
