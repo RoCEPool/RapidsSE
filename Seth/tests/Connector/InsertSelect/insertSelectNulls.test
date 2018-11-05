@@ -30,6 +30,7 @@ success
 insert into rapidsse.public.T1000 values(3,'three',3,3);
 success
 
+
 -- create another table with an index
 create table rapidsse.public.R1000 (
   R1000_key   INTEGER,
@@ -39,6 +40,8 @@ create table rapidsse.public.R1000 (
 );
 success
 
+Loop 1000 {
+  
 -- insert-select
 insert into rapidsse.public.R1000 select * from T1000;
 success
@@ -46,6 +49,8 @@ success
 -- check data
 select * from rapidsse.public.R1000;
 mute
+}
+
 //CHECK_RESULT
 /*
  rows: 4
@@ -56,10 +61,10 @@ rows:
   (1,'one',1,null);
 
 CLEANUP {
-  drop table T1000;
-  mute
-  drop table R1000;
-  mute
+  //drop table T1000;
+  //mute
+  //drop table R1000;
+  //mute
 }
 
 
