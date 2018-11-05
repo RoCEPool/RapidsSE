@@ -201,19 +201,10 @@ void Thread::vLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  Queues* pQueues = gpAttachMap->m_pQueues;
-  
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
   
-  // sleep infinite
-  //m_pPosixThread->vSleepSec(100000000);
-  
-  
   vMutexLock();
-  
-  //if (++gpAttachMap->m_ziThreads == gxArguments.m_nThreads)
-  //  RapidsSE::vSpawnJobStart();
   
   ++gpAttachMap->m_ziThreads;
   
@@ -221,8 +212,11 @@ void Thread::vLoop(void)
     
     // get next task
     if (! *m_npTask && ! bQueuePeek()) {
-      vHandlerWait();
       
+      // wait upto 5ms to be given a signal
+      vHandlerTimedWait();
+      
+      // attempt again if no task
       if ( ! *m_npTask)
         continue;
     }
@@ -325,9 +319,9 @@ bool Thread::bGrabLock(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* this thread waits till its given a task by a handler                       */
+/* this thread waits till its given a task by a handler or wait time over     */
 /*----------------------------------------------------------------------------*/
-void Thread::vHandlerWait(void)
+void Thread::vHandlerTimedWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -343,6 +337,7 @@ void Thread::vHandlerWait(void)
   m_eThreadState = TC_IDLE;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait 5ms
   
   vCondTimedWait(5000); // while waiting the mutex is dropped
 
