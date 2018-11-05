@@ -103,7 +103,7 @@ namespace Parsing
     Footer* aFooter(void);
   };
   
-  static Tokeniser* _pTokeniser(void* aAddr);
+  Tokeniser* _pTokeniser(void* aAddr);
 }
 
 /*============================================================================*/
