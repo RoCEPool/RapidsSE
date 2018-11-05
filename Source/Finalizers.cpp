@@ -96,6 +96,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTE
   /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTED
   /*    */ &Finalize::vUndefined,         // CN_JOB__FIND
+  /*    */ &Finalize::vUndefined,         // CN_JOB_ALARM
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANSWER

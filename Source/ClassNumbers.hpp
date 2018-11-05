@@ -99,6 +99,7 @@ enum eCN : u2 // Class Number
   /*  68 */ CN_JOB__EXECUTE,
   /*  69 */ CN_JOB__EXECUTED,
   /*     */ CN_JOB__FIND,
+  /*     */ CN_JOB_ALARM,
   /*  70 */ CN_JOB_ANALYZEINDEX,
   /*  71 */ CN_JOB_ANALYZETABLE,
   /*  72 */ CN_JOB_ANSWER,
@@ -348,6 +349,7 @@ static Stz* aCN[]
   /*  68 */ "JOB__EXECUTE"_Stz,        // CN_JOB__EXECUTE
   /*  69 */ "JOB__EXECUTED"_Stz,       // CN_JOB__EXECUTED
   /*     */ "JOB__FIND"_Stz,           // CN_JOB__FIND
+  /*     */ "JOB_ALARM"_Stz,           // CN_JOB_ALARM
   /*  70 */ "JOB_ANALYZEINDEX"_Stz,    // CN_JOB_ANALYZEINDEX
   /*  71 */ "JOB_ANALYZETABLE"_Stz,    // CN_JOB_ANALYZETABLE
   /*  72 */ "JOB_ANSWER"_Stz,          // CN_JOB_ANSWER
