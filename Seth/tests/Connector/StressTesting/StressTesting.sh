@@ -2,7 +2,7 @@ export SE_PATH=~/master/rapidsse/Linux
 export LD_LIBRARY_PATH=$SE_PATH
 BASIC_DUMMY_THREADS=200
 SETH_PATH=~/master/rapidsse/Seth
-MASTER=~master
+MASTER=~/master
 
 # for no of nodes
 for nodes in {1..4}
