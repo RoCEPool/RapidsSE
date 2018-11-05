@@ -29,31 +29,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* increment integer variable                                                 */
-/*----------------------------------------------------------------------------*/
-: ++ dup @ 1+ swap ! ;
-
-/*----------------------------------------------------------------------------*/
-/* decrement integer variable                                                 */
-/*----------------------------------------------------------------------------*/
-: -- dup @ 1- swap ! ;
-
-/*----------------------------------------------------------------------------*/
-/* define a constant (using name on stack)                                    */
-/*----------------------------------------------------------------------------*/
-: :constant
-
-  // create a word using the string on top of the stack
-  >create
-
-  // encode a push value of the value currently on the stack
-  ,
-
-  // encode a push value of the value currently on the stack
-  POSTPONE exit
-;
-
-/*----------------------------------------------------------------------------*/
 /* case test                                                                  */
 /*----------------------------------------------------------------------------*/
 : caseTest
@@ -150,53 +125,6 @@
   find
   not if EC_NO_SUCH_WORD false exit then
   true
-;
-
-/*----------------------------------------------------------------------------*/
-/* forget named word                                                          */
-/*----------------------------------------------------------------------------*/
-: :forget ( <"wordNm"> )
-
-  find ( word )
-
-  dup not if drop exit then ( )
-
-  word.forget ( )
-;
-
-/*----------------------------------------------------------------------------*/
-/* drop all values on stack except topmost                                    */
-/*----------------------------------------------------------------------------*/
-: nipAll ( ... top -- top )
-
-  // handle expty stack case
-  depth not if exit then
-
-  // save topmost
-  >r
-
-  // drop everything else
-  begin
-    depth while
-      drop
-  repeat
-
-  // restore topmost
-  r>
-;
-
-/*----------------------------------------------------------------------------*/
-/* drop n values from stack                                                   */
-/*----------------------------------------------------------------------------*/
-: dropN ( ... #values -- )
-
-  // handle expty stack case
-  depth not if exit then
-
-  // drop everything else
-  0 do
-    drop
-  loop
 ;
 
 /*----------------------------------------------------------------------------*/

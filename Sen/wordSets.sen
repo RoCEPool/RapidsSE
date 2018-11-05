@@ -5,6 +5,7 @@
 "-wordSets.sen" .verbose
 
 "wordSet_core.sen" include
+"wordSet_corePlus.sen" include
 
 "wordSet_words.sen" include
 "wordSet_am.sen" include
