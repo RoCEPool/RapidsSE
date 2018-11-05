@@ -1,0 +1,165 @@
+/*============================================================================*/
+/* wordSet_coresen -- core words                                              */
+/*============================================================================*/
+
+" wordSet_core.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* add 1 to integer on stack                                                  */
+/*----------------------------------------------------------------------------*/
+: 1+ 1 + ;
+
+/*----------------------------------------------------------------------------*/
+/* decrement integer on stack                                                 */
+/*----------------------------------------------------------------------------*/
+: 1- 1 - ;
+
+/*----------------------------------------------------------------------------*/
+/* begin a loop                                                               */
+/*----------------------------------------------------------------------------*/
+: BEGIN immediate
+
+  here
+;
+
+/*----------------------------------------------------------------------------*/
+/* do a loop                                                                  */
+/*----------------------------------------------------------------------------*/
+: DO immediate
+
+  POSTPONE 2>R // encode 2>r into future word
+
+  HERE true   // push address of last cell & simple do
+;
+
+/*----------------------------------------------------------------------------*/
+/* ?do a loop                                                                 */
+/*----------------------------------------------------------------------------*/
+: ?DO immediate
+
+  POSTPONE 2>R // encode 2>r into future word
+
+  POSTPONE AHEAD
+
+  false   // push address of last cell & simple do
+;
+
+/*----------------------------------------------------------------------------*/
+/* unloop by dropping limit and index off rstack                              */
+/*----------------------------------------------------------------------------*/
+: UNLOOP immediate
+
+  POSTPONE rdrop
+  POSTPONE rdrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* iterate a loop                                                             */
+/*----------------------------------------------------------------------------*/
+: ITERATE immediate
+
+  POSTPONE 2>R // encode 2>r into future word
+
+  POSTPONE AHEAD
+;
+
+/*----------------------------------------------------------------------------*/
+/* define a constant                                                          */
+/*----------------------------------------------------------------------------*/
+: ,_ALT
+
+  HERE ! CELL ALLOT
+;
+
+/*----------------------------------------------------------------------------*/
+/* define a constant                                                          */
+/*----------------------------------------------------------------------------*/
+: CONSTANT
+
+  // create a word using the next token in the input stream
+  create
+
+  // encode a push value of the value currently on the stack
+  ,
+
+  // encode an exit into the created word
+  POSTPONE exit
+;
+
+/*----------------------------------------------------------------------------*/
+/* resolve IF supplying alternate execution                                   */
+/*----------------------------------------------------------------------------*/
+: ELSE immediate ( orig1 -- orig2 / -- )
+
+  POSTPONE AHEAD // unconditional forward branch orig2
+  1 CS-ROLL      // put orig1 back on top
+  POSTPONE THEN  // resolve forward branch from orig1
+;
+
+/*----------------------------------------------------------------------------*/
+/* conditional exit from loops                                                */
+/*----------------------------------------------------------------------------*/
+: WHILE immediate ( dest -- orig dest / flag -- )
+
+  POSTPONE IF // conditional forward branch
+  1 CS-ROLL   // keep dest on top
+;
+
+/*----------------------------------------------------------------------------*/
+/* resolve a single WHILE and jump to BEGIN                                   */
+/*----------------------------------------------------------------------------*/
+: REPEAT immediate ( orig dest -- orig dest / flag -- )
+
+  POSTPONE AGAIN // unconditional backward branch to dest
+  POSTPONE THEN  // resolve forward branch from orig
+;
+
+/*----------------------------------------------------------------------------*/
+/* initialise OFs counter                                                     */
+/*----------------------------------------------------------------------------*/
+0 CONSTANT CASE
+true tick CASE word.immediate!
+
+/*----------------------------------------------------------------------------*/
+/* OF block                                                                   */
+/*----------------------------------------------------------------------------*/
+: OF immediate
+
+  1+   // inc number of OFs
+  >R   // save OFs counter
+
+  POSTPONE OVER  // copy case value
+  POSTPONE ==    // test case value against of value
+  POSTPONE IF    // add conditional block (with orig on control stack)
+  POSTPONE DROP  // discard case value within conditional block
+
+  R> // restore OFs counter
+;
+
+/*----------------------------------------------------------------------------*/
+/* ENDOF block                                                                */
+/*----------------------------------------------------------------------------*/
+: ENDOF immediate
+
+  >R // save OFs counter
+
+  POSTPONE ELSE // add conditional block (with orig2 on control stack)
+
+  R> // restore OFs counter
+;
+
+/*----------------------------------------------------------------------------*/
+/* ENDCASE block                                                              */
+/*----------------------------------------------------------------------------*/
+: ENDCASE immediate
+
+  POSTPONE DROP  // discard case value
+
+  0 ?DO          // resolve all forward ENDOF branches
+    POSTPONE THEN
+  LOOP
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

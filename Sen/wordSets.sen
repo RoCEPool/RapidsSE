@@ -4,6 +4,8 @@
 
 "-wordSets.sen" .verbose
 
+"wordSet_core.sen" include
+
 "wordSet_words.sen" include
 "wordSet_dic.sen" include
 "wordSet_object.sen" include
