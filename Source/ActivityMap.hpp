@@ -5,7 +5,7 @@
 
 namespace Measurement
 {
-  static const i8    C_ACTIVITY_MARKS  = 256; //C_1M;
+  static const i8    C_ACTIVITY_MARKS  = C_1M;
   static const char* C_ACTIVITY_REGION = "/SE_ActivityMap";
 
   class ActivityMap
@@ -42,6 +42,7 @@ namespace Measurement
   
     void vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs);
     void vDumpMap(void);
+    void vFindRange(i8& i_MinMark, i8& i_MaxMark);
 
     void vLockMutex(void);
     void vUnlockMutex(void);

@@ -324,19 +324,26 @@ void ActivityMap::vDumpMap(void)
 
   vLockMutex();
   
-  ActivityMark* aActivityMark = &m_xActivity[0];
+  i8 i_MinMark;
+  i8 i_MaxMark;
+  
+  vFindRange(i_MinMark,i_MaxMark);
+  
+  ActivityMark* aActivityMark = &m_xActivity[i_MinMark % C_ACTIVITY_MARKS];
   aActivityMark->vDump(pActivityFile,
                        0,nullptr,iTotalDelta);
   
-  for (i8 i_Mark = 1; i_Mark < C_ACTIVITY_MARKS; i_Mark++) {
+  for (i8 i_Mark = i_MinMark + 1; i_Mark <= i_MaxMark; i_Mark++) {
     
-    aActivityMark = &m_xActivity[i_Mark];
+    aActivityMark = &m_xActivity[i_Mark % C_ACTIVITY_MARKS];
     
     if (-1 == aActivityMark->m_iMark)
       break;
     
     aActivityMark->vDump(pActivityFile,
-                         i_Mark,&m_xActivity[i_Mark - 1],iTotalDelta);
+                         i_Mark,
+                         &m_xActivity[(i_Mark - 1) % C_ACTIVITY_MARKS],
+                         iTotalDelta);
   }
   
   vUnlockMutex();
@@ -379,6 +386,27 @@ void ActivityMap::vDumpMap(void)
 //
 //  vTrace("ActivityMap dumped : %s\n"_Stz,sAmPath.aChar());
 //}
+
+/*----------------------------------------------------------------------------*/
+/* find dump range                                                            */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vFindRange(i8& i_MinMark, i8& i_MaxMark)
+{
+  i_MinMark = C_I8_MAX;
+  i_MaxMark = C_I8_MIN;
+  
+  for (i8 i_Mark = 0; i_Mark < C_ACTIVITY_MARKS; i_Mark++) {
+    
+    if (-1 == m_xActivity[i_Mark].m_iMark)
+      return;
+          
+    if (m_xActivity[i_Mark].m_iMark < i_MinMark)
+      i_MinMark = m_xActivity[i_Mark].m_iMark;
+    
+    if (m_xActivity[i_Mark].m_iMark > i_MaxMark)
+      i_MaxMark = m_xActivity[i_Mark].m_iMark;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* grab ActivityMap mutex                                                     */
