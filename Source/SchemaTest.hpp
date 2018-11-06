@@ -10,7 +10,7 @@ namespace Utilities
   class SchemaTest : public Object
   {
   private:
-  
+    i8   m_nTests;   // number of tests generated
     File m_xFile;    // file to write to
   
     s32  m_sTableNm; // name of the table

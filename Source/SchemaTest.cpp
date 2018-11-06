@@ -51,6 +51,8 @@ SchemaTest::SchemaTest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEMATEST,_FOOTER_);
   
+  m_nTests = 0;
+  
   //m_xFile
   m_sTableNm = "<none>"_Stz;
   
@@ -109,6 +111,8 @@ void SchemaTest::vGenerate(void)
   
   vFileFooter();
   vCloseFile();
+  
+  vTrace("  %lld tests generated\n"_Stz,m_nTests);
 }
 
 
@@ -130,11 +134,11 @@ void SchemaTest::vCloseFile(void)
 void SchemaTest::vFileFooter(void)
 {
   m_xFile.vPrint("%s\n"_Stz,
-                 "/*============================================================================*/"_Stz);
+  "/*============================================================================*/"_Stz);
   m_xFile.vPrint("%s\n"_Stz,
-                 "/* end                                                                        */"_Stz);
+  "/* end                                                                        */"_Stz);
   m_xFile.vPrint("%s\n"_Stz,
-                 "/*============================================================================*/"_Stz);
+  "/*============================================================================*/"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -162,7 +166,13 @@ void SchemaTest::vFormColumnList(void)
   // the t columns
   for (i_Col = 0; i_Col < m_nTotalColumns; i_Col++) {
    
-    m_sStatement.vConcat("  col"_Stz);
+    if (i_Col < m_nXcolumns)
+      m_sStatement.vConcat("  x"_Stz);
+    else if (i_Col < m_nXcolumns + m_nTcolumns)
+      m_sStatement.vConcat("  t"_Stz);
+    else
+      m_sStatement.vConcat("  z"_Stz);
+
     s32 sColNo;
     StrLib::wToString(i_Col,sColNo.aChar());
     m_sStatement.vConcat(sColNo);
@@ -305,6 +315,8 @@ void SchemaTest::vMakeTest(void)
   
   vFormDropTable();
   vWriteStatement();
+  
+  m_nTests++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -382,13 +394,23 @@ void SchemaTest::vAddColumns(i8 i_Col)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vForPattern(i8 nX, i8 nT, i8 nZ)
 {
-  m_nTcolumns = nT;
-  m_nZcolumns = nZ;
   
-  if (-1 == nX)
+  if (-1 == nX) {
+    m_nTcolumns = nT;
+    m_nZcolumns = nZ;
     m_nXcolumns = C_MAX_COLUMNS - m_nTcolumns - m_nZcolumns;
+  }
   else
+  if (-1 == nZ) {
+    m_nTcolumns = nT;
     m_nXcolumns = nX;
+    m_nZcolumns = C_MAX_COLUMNS - m_nTcolumns - m_nXcolumns;
+  }
+  else {
+    m_nXcolumns = nX;
+    m_nTcolumns = nT;
+    m_nZcolumns = nZ;
+  }
   
   m_nTotalColumns = m_nXcolumns + m_nTcolumns + m_nZcolumns;
 
@@ -409,10 +431,27 @@ void SchemaTest::vTestSet(void)
 //  vForPattern(0,4,0);  m_xFile.vPrint("\n"_Stz);
 //  vForPattern(0,5,0);  m_xFile.vPrint("\n"_Stz);
 //
+  
+  vForPattern(1,1,0);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(1,2,0);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(1,3,0);  m_xFile.vPrint("\n"_Stz);
+  
+  vForPattern(2,1,0);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(2,2,0);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(2,3,0);  m_xFile.vPrint("\n"_Stz);
+  
   vForPattern(3,1,0);  m_xFile.vPrint("\n"_Stz);
   vForPattern(3,2,0);  m_xFile.vPrint("\n"_Stz);
   vForPattern(3,3,0);  m_xFile.vPrint("\n"_Stz);
 
+  vForPattern(0,1,1);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(0,2,1);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(0,3,1);  m_xFile.vPrint("\n"_Stz);
+
+  vForPattern(0,1,2);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(0,2,2);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(0,3,2);  m_xFile.vPrint("\n"_Stz);
+  
   vForPattern(0,1,3);  m_xFile.vPrint("\n"_Stz);
   vForPattern(0,2,3);  m_xFile.vPrint("\n"_Stz);
   vForPattern(0,3,3);  m_xFile.vPrint("\n"_Stz);
@@ -424,6 +463,22 @@ void SchemaTest::vTestSet(void)
   vForPattern(73,1,0); m_xFile.vPrint("\n"_Stz);
   vForPattern(73,2,0); m_xFile.vPrint("\n"_Stz);
   vForPattern(73,3,0); m_xFile.vPrint("\n"_Stz);
+  
+  vForPattern(73,1,1); m_xFile.vPrint("\n"_Stz);
+  vForPattern(73,2,1); m_xFile.vPrint("\n"_Stz);
+  vForPattern(73,3,1); m_xFile.vPrint("\n"_Stz);
+  
+  vForPattern(73,1,2); m_xFile.vPrint("\n"_Stz);
+  vForPattern(73,2,2); m_xFile.vPrint("\n"_Stz);
+  vForPattern(73,3,2); m_xFile.vPrint("\n"_Stz);
+  
+  vForPattern(73,1,3); m_xFile.vPrint("\n"_Stz);
+  vForPattern(73,2,3); m_xFile.vPrint("\n"_Stz);
+  vForPattern(73,3,4); m_xFile.vPrint("\n"_Stz);
+  
+  vForPattern(73,3,-1); m_xFile.vPrint("\n"_Stz);
+  vForPattern(73,2,-1); m_xFile.vPrint("\n"_Stz);
+  vForPattern(73,1,-1); m_xFile.vPrint("\n"_Stz);
 
   vForPattern(-1,3,3); m_xFile.vPrint("\n"_Stz);
   vForPattern(-1,2,3); m_xFile.vPrint("\n"_Stz);
