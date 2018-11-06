@@ -51,6 +51,12 @@ SchemaTest::SchemaTest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEMATEST,_FOOTER_);
   
+  //m_xFile
+  m_sTableNm = "<none>"_Stz;
+  m_nColumns = 0;
+  for (i8 i_Col = 0; i_Col < C_COLUMNS; i_Col++)
+    m_eColumns[i_Col] = CT_NONE;
+  
   _checkInitialised_(CN_SCHEMATEST);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCHEMATEST,_FOOTER_);
