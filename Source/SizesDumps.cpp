@@ -471,7 +471,7 @@ i8 giClassSize[]
   /*106 */ 0,                          // CN_ROWWRK
   
   /*107 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
-  /*    */ 0,                          // CN_SCHEMATEST
+  /*    */ sizeof(SchemaTest),         // CN_SCHEMATEST
   /*108 */ sizeof(Scratch),            // CN_SCRATCH
   /*113 */ sizeof(SelCursor),          // CN_SELCURSOR
   /*114 */ sizeof(Semaphore),          // CN_SEMAPHORE

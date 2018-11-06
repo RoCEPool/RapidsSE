@@ -24,6 +24,8 @@ using namespace Utilities;
 #include "PerformanceTrace.hpp"
 #include "Prefetch.hpp"
 
+#include "SchemaTest.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
