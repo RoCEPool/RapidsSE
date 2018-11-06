@@ -100,6 +100,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB__EXECUTED
   /*    */ &Dump::vDummy,           // CN_JOB__FIND
 
+  /*    */ &Dump::vDummy,           // CN_JOB_ALARM
   /*    */ &Dump::vDummy,           // CN_JOB_ANALYZEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_ANALYZETABLE
   /*    */ &Dump::vDummy,           // CN_JOB_ANSWER
@@ -137,6 +138,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_LOADBUFFER
   /*    */ &Dump::vDummy,           // CN_JOB_LOADTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_NODEINFO
+  /*    */ &Dump::vDummy,           // CN_JOB_PERIODIC
   /*    */ &Dump::vDummy,           // CN_JOB_PING
   /*    */ &Dump::vDummy,           // CN_JOB_PWF
   /*    */ &Dump::vDummy,           // CN_JOB_RECEIVER
@@ -355,6 +357,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job__Executed),      // CN_JOB__EXECUTED
   /*    */ sizeof(Job__Find),          // CN_JOB__FIND
   
+  /*    */ sizeof(Job_Alarm),          // CN_JOB_ALARM
   /*    */ sizeof(Job_AnalyzeIndex),   // CN_JOB_ANALYZEINDEX
   /*    */ sizeof(Job_AnalyzeTable),   // CN_JOB_ANALYZETABLE
   /*    */ sizeof(Job_Answer),         // CN_JOB_ANSWER
@@ -392,6 +395,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_LoadBuffer),     // CN_JOB_LOADBUFFER
   /*    */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
   /*    */ sizeof(Job_NodeInfo),       // CN_JOB_NODEINFO
+  /*    */ sizeof(Job_Periodic),       // CN_JOB_PERIODIC
   /*    */ sizeof(Job_Ping),           // CN_JOB_PING
   /*    */ sizeof(Job_Pwf),            // CN_JOB_PWF
   /*    */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER
@@ -609,6 +613,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_JOB__EXECUTED
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_JOB__FIND
 
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ALARM
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANALYZEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANALYZETABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ANSWER
@@ -646,6 +651,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADBUFFER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LOADTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_NODEINFO
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PERIODIC
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PING
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PWF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_RECEIVER

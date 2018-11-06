@@ -4,7 +4,7 @@
 
 "job_Boot.sen" .verbose
 
-"core.sen" include
+"wordSets.sen" include
 "tasks.sen" include
 "gridModel.sen" include
 "dbObjects.sen" include

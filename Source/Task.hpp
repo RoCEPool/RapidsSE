@@ -551,6 +551,9 @@ namespace Tasks
     static void vGroupByNew(MP_Task mpTask);
     static void vGroupByStart(MP_Task mpTask);
   
+    // handler
+    static void vHandlerServiceSleepQueue(MP_Task mpTask);
+  
     // index
     static void vIndexAnalyze(MP_Task mpTask);
     static void vIndexColumnFetch(MP_Task mpTask);

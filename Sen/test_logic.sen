@@ -8,18 +8,39 @@
 
   "  logic tests" .put .\n
 
-  0 if "if failure" . process.quit then
+  0 if "if failure" . process::quit then
 
-  1 if else "else failure" . process.quit then
+  1 if else "else failure" . process::quit then
 
-  0 not if else "not failure" . process.quit then
+  0 not if else "not failure" . process::quit then
 
-  0 0 == if else "== failure" . process.quit then
+  0 0 == if else "== failure" . process::quit then
 
-  1 1 == if else "== failure" . process.quit then
+  1 1 == if else "== failure" . process::quit then
 
-  0 1 not == if else "not failure" . process.quit then
+  0 1 not == if else "not failure" . process::quit then
 
+;
+
+/*----------------------------------------------------------------------------*/
+/* case test                                                                  */
+/*----------------------------------------------------------------------------*/
+: caseTest
+
+  10 0 do
+    I case
+      0 of "zero"  . endof
+      1 of "one"   . endof
+      2 of "two"   . endof
+      3 of "three" . endof
+      4 of "four"  . endof
+      5 of "five"  . endof
+      6 of "six"   . endof
+      7 of "seven" . endof
+      8 of "eight" . endof
+      9 of "nine"  . endof
+    endcase
+  loop
 ;
 
 /*============================================================================*/

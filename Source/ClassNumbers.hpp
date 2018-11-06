@@ -99,6 +99,7 @@ enum eCN : u2 // Class Number
   /*  68 */ CN_JOB__EXECUTE,
   /*  69 */ CN_JOB__EXECUTED,
   /*     */ CN_JOB__FIND,
+  /*     */ CN_JOB_ALARM,
   /*  70 */ CN_JOB_ANALYZEINDEX,
   /*  71 */ CN_JOB_ANALYZETABLE,
   /*  72 */ CN_JOB_ANSWER,
@@ -136,6 +137,7 @@ enum eCN : u2 // Class Number
   /* 104 */ CN_JOB_LOADBUFFER,
   /* 105 */ CN_JOB_LOADTABLE,
   /*     */ CN_JOB_NODEINFO,
+  /*     */ CN_JOB_PERIODIC,
   /* 106 */ CN_JOB_PING,
   /* 108 */ CN_JOB_PWF,
   /* 109 */ CN_JOB_RECEIVER,
@@ -347,6 +349,7 @@ static Stz* aCN[]
   /*  68 */ "JOB__EXECUTE"_Stz,        // CN_JOB__EXECUTE
   /*  69 */ "JOB__EXECUTED"_Stz,       // CN_JOB__EXECUTED
   /*     */ "JOB__FIND"_Stz,           // CN_JOB__FIND
+  /*     */ "JOB_ALARM"_Stz,           // CN_JOB_ALARM
   /*  70 */ "JOB_ANALYZEINDEX"_Stz,    // CN_JOB_ANALYZEINDEX
   /*  71 */ "JOB_ANALYZETABLE"_Stz,    // CN_JOB_ANALYZETABLE
   /*  72 */ "JOB_ANSWER"_Stz,          // CN_JOB_ANSWER
@@ -384,6 +387,7 @@ static Stz* aCN[]
   /* 104 */ "JOB_LOADBUFFER"_Stz,      // CN_JOB_LOADBUFFER
   /* 105 */ "JOB_LOADTABLE"_Stz,       // CN_JOB_LOADTABLE
   /*     */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
+  /*     */ "JOB_PERIODIC"_Stz,        // CN_JOB_PERIODIC
   /* 106 */ "JOB_PING"_Stz,            // CN_JOB_PING
   /* 108 */ "JOB_PWF"_Stz,             // CN_JOB_PWF
   /* 109 */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER

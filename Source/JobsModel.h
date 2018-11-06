@@ -42,6 +42,7 @@ using namespace JobsModel;
 #include "Job__Executed.hpp"
 #include "Job__Find.hpp"
 
+#include "Job_Alarm.hpp"
 #include "Job_AnalyzeTable.hpp"
 #include "Job_AnalyzeIndex.hpp"
 #include "Job_Answer.hpp"
@@ -88,6 +89,7 @@ using namespace JobsModel;
 
 #include "Job_NodeInfo.hpp"
 
+#include "Job_Periodic.hpp"
 #include "Job_Ping.hpp"
 #include "Job_Pwf.hpp"
 

@@ -96,6 +96,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTE
   /*    */ &Finalize::vUndefined,         // CN_JOB__EXECUTED
   /*    */ &Finalize::vUndefined,         // CN_JOB__FIND
+  /*    */ &Finalize::vUndefined,         // CN_JOB_ALARM
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANSWER
@@ -133,6 +134,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_NODEINFO
+  /*    */ &Finalize::vUndefined,         // CN_JOB_PERIODIC
   /*    */ &Finalize::vUndefined,         // CN_JOB_PING
   /*    */ &Finalize::vUndefined,         // CN_JOB_PWF
   /*    */ &Finalize::vUndefined,         // CN_JOB_RECEIVER

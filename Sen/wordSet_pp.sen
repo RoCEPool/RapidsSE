@@ -1,24 +1,47 @@
 /*============================================================================*/
-/* core_object.sen -- object words                                             */
+/* wordSet_pp.sen -- performance point words                                  */
 /*============================================================================*/
 
-" core_object.send" .verbose
+" wordSet_pp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* create a node using name on the stack (leaves node word on stack)          */
+/* named performance point                                                    */
 /*----------------------------------------------------------------------------*/
-: object.assertClass ( eClassNo pObject -- )
+: pp: immediate
 
-  locals| pObject |
-  locals| eClassNo |
+  token:
+  encodePushValue
+  //tick . compile,
 
-  pObject object.class@ eClassNo !=
-  if
-      pObject object.class@
-      eClassNo
-    "Expecting class %v; actual class %v\n" str.format .
-    assert
-  then
+  word::this encodePushValue
+  tick word.name compile,
+  //tick . compile,
+  tick performancepoint compile,
+;
+
+: ppTest
+
+  "before" .
+  pp: first
+  pp: second
+  pp: third
+  "after" .
+
+  performancePrint
+;
+
+: ppLoops
+
+  100000 0 do
+    pp: ppLoops
+
+    I 1000 % 0 == if
+      I .
+    then
+
+  loop
+
+  performancePrint
 ;
 
 /*============================================================================*/

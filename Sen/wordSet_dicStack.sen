@@ -1,8 +1,20 @@
 /*============================================================================*/
-/* core_dicStack.sen -- dictionary stack related words                        */
+/* wordSet_dicStack.sen -- dictionary stack related words                     */
 /*============================================================================*/
 
-" core_dicStack.sen" .verbose
+" wordSet_dicStack.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* get depth of path                                                          */
+/*----------------------------------------------------------------------------*/
+: pathDepth ( -- )
+
+  // push the dic stack of this task
+  task::this task.dicStack
+
+  // get depth
+  dicStack.depth
+;
 
 /*----------------------------------------------------------------------------*/
 /* drop top dictionary from path                                              */

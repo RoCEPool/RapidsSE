@@ -227,6 +227,7 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB__EXECUTE"_Stz,       CN_JOB__EXECUTE);
   /*    */ vAddConstant("CN_JOB__EXECUTED"_Stz,      CN_JOB__EXECUTED);
   
+  /*    */ vAddConstant("CN_JOB_ALARM"_Stz,          CN_JOB_ALARM);
   /*    */ vAddConstant("CN_JOB_ANALYZEINDEX"_Stz,   CN_JOB_ANALYZEINDEX);
   /*    */ vAddConstant("CN_JOB_ANALYZETABLE"_Stz,   CN_JOB_ANALYZETABLE);
   /*    */ vAddConstant("CN_JOB_ANSWER"_Stz,         CN_JOB_ANSWER);
@@ -262,6 +263,7 @@ void Task::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_LOADBUFFER"_Stz,     CN_JOB_LOADBUFFER);
   /*    */ vAddConstant("CN_JOB_LOADTABLE"_Stz,      CN_JOB_LOADTABLE);
   /*    */ vAddConstant("CN_JOB_NODEINFO"_Stz,       CN_JOB_NODEINFO);
+  /*    */ vAddConstant("CN_JOB_PERIODIC"_Stz,       CN_JOB_PERIODIC);
   /*    */ vAddConstant("CN_JOB_PING"_Stz,           CN_JOB_PING);
   /*    */ vAddConstant("CN_JOB_PWF"_Stz,            CN_JOB_PWF);
   /*    */ vAddConstant("CN_JOB_RECEIVER"_Stz,       CN_JOB_RECEIVER);
@@ -744,7 +746,7 @@ void Task::vAddRoutines(void)
 //"      \"unknown\" ."
 //"      input.token ."
   "      input.unknown"
-//"      dic.isCompiled not if process.quit then "
+//"      dic.isCompiled not if process::quit then "
   "      jumpBegin_"
   "    then"
   

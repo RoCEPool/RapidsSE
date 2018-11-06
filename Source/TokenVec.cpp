@@ -324,6 +324,8 @@ void TokenVec::vToString(Stz* aBuff)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
+  StrLib::vCopy(aBuff->aChar(),"");
+  
   i8 nTokens = this->nTokens();
   
   // concat all the tokens together

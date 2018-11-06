@@ -8,11 +8,11 @@
 
   "  arithmetic tests" .put .\n
 
-  0 0 + 0 == if else "+ failure" . process.quit then
+  0 0 + 0 == if else "+ failure" . process::quit then
 
-  1 1 + 2 == if else "+ failure" . process.quit then
+  1 1 + 2 == if else "+ failure" . process::quit then
 
-  8 5 - 3 == if else "- failure" . process.quit then
+  8 5 - 3 == if else "- failure" . process::quit then
 
 ;
 

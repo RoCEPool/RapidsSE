@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* core_dic.sen -- dictionary related words                                   */
+/* wordSet_dic.sen -- dictionary related words                                */
 /*============================================================================*/
 
-" core_dic.sen" .verbose
+" wordSet_dic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* folder is used as a kind of word to identify folders                       */

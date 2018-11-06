@@ -1,14 +1,21 @@
 /*============================================================================*/
-/* core.sen -- additional high-level core words                               */
+/* wordSets.sen -- additional high-level words                                */
 /*============================================================================*/
 
-"-core.sen" .verbose
+"-wordSets.sen" .verbose
 
-"core_words.sen" include
-"core_dic.sen" include
-"core_object.sen" include
-"core_useful.sen" include
-"core_dicStack.sen" include
+"wordSet_core.sen" include
+"wordSet_corePlus.sen" include
+
+"wordSet_am.sen" include
+"wordSet_debug.sen" include
+"wordSet_dic.sen" include
+"wordSet_object.sen" include
+"wordSet_pp.sen" include
+"wordSet_useful.sen" include
+"wordSet_valset.sen" include
+
+"wordSet_dicStack.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

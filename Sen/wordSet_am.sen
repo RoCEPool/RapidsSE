@@ -1,0 +1,63 @@
+/*============================================================================*/
+/* wordSet_am.sen -- application mark related words                           */
+/*============================================================================*/
+
+" wordSet_am.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* word entry mark                                                            */
+/*----------------------------------------------------------------------------*/
+: >>am immediate
+
+  // format the string to be printed
+  word::this word.name ">>%v" str.format
+
+  // encode push of that string
+  ,
+
+  // encode call to markEntry
+  POSTPONE ActivityMap::markEntry
+;
+
+/*----------------------------------------------------------------------------*/
+/* word exit mark                                                             */
+/*----------------------------------------------------------------------------*/
+: <<am immediate
+
+  // format the string to be printed
+  word::this word.name "<<%v" str.format
+
+  // encode push of that string
+  ,
+
+  // encode call to markExit
+  POSTPONE ActivityMap::markExit
+;
+
+/*----------------------------------------------------------------------------*/
+/* word error mark                                                            */
+/*----------------------------------------------------------------------------*/
+: !!am immediate
+
+  // format the string to be printed
+  word::this word.name "!!%v" str.format
+
+  // encode push of that string
+  ,
+
+  // encode call to markExit
+  POSTPONE ActivityMap::markExit
+;
+
+/*----------------------------------------------------------------------------*/
+/* activity mark                                                              */
+/*----------------------------------------------------------------------------*/
+: .am immediate
+
+  // encode call to markEntry
+  POSTPONE ActivityMap::mark
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

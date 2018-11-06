@@ -48,7 +48,7 @@ JobClass xJobClass_NodeInfo =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_NodeInfo_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Ping_class;
+  *pNextFun = (pFUN*)pJob_Periodic_class;
   
   return &xJobClass_NodeInfo;
 }
