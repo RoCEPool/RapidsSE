@@ -16,9 +16,10 @@
 /* put task into infinite snooze loop                                         */
 /*----------------------------------------------------------------------------*/
 : snoozeLoop
-    begin
-      "snoozing..." . snooze task.yield
-    again
+
+  begin
+    "snoozing..." . snooze task.yield
+  again
 ;
 
 /*----------------------------------------------------------------------------*/
