@@ -45,6 +45,9 @@ do
       echo "Regression Iteration $j of $i"
       ./dbth.sh -f tests/Connector/Regression/testList
 
+      ./bootstrapper.sh -a stop
+      ./bootstrapper.sh -a start
+
       echo "InsertSelect Iteration $j of $i"
       ./dbth.sh -f tests/Connector/InsertSelect/testList
 
