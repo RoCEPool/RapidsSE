@@ -155,7 +155,64 @@ void SchemaTest::vFileHeader(void)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vFormColumnList(void)
 {
-  m_sStatement.vConcat("  col0 integer "_Stz);
+  //m_sStatement.vConcat("  col0 integer "_Stz);
+  
+  i8 i_Col;
+  
+  // the t columns
+  for (i_Col = 0; i_Col < m_nTotalColumns; i_Col++) {
+   
+    m_sStatement.vConcat("  col"_Stz);
+    s32 sColNo;
+    StrLib::wToString(i_Col,sColNo.aChar());
+    m_sStatement.vConcat(sColNo);
+
+    switch (m_eColumns[i_Col]) {
+    
+      case DBobjects::CT_BOOLEAN:
+        m_sStatement.vConcat(" boolean"_Stz);
+        break;
+        
+      case DBobjects::CT_DATE:
+        m_sStatement.vConcat(" date"_Stz);
+        break;
+        
+      case DBobjects::CT_DECIMAL:
+        m_sStatement.vConcat(" decimal"_Stz);
+        break;
+        
+      case DBobjects::CT_FLOAT:
+        m_sStatement.vConcat(" float"_Stz);
+        break;
+        
+      case DBobjects::CT_INTEGER:
+        m_sStatement.vConcat(" integer"_Stz);
+        break;
+        
+      case DBobjects::CT_INTERVAL:
+        m_sStatement.vConcat(" interval"_Stz);
+        break;
+        
+      case DBobjects::CT_TIME:
+        m_sStatement.vConcat(" time"_Stz);
+        break;
+        
+      case DBobjects::CT_TIMESTAMP:
+        m_sStatement.vConcat(" timestamp"_Stz);
+        break;
+        
+      case DBobjects::CT_VARCHAR:
+        m_sStatement.vConcat(" varchar(32)"_Stz);
+        break;
+        
+      default:
+        NEVER_REACH;
+    }
+    
+    if (i_Col + 1 < m_nTotalColumns)
+      m_sStatement.vConcat(",\n"_Stz);
+
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,7 +228,7 @@ void SchemaTest::vFormCreateTable(void)
   
   vFormColumnList();
 
-  m_sStatement.vConcat(" ) ;"_Stz);
+  m_sStatement.vConcat("\n) ;"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -347,42 +404,42 @@ void SchemaTest::vTestSet(void)
 {
   // left
   vForPattern(0,1,0);  m_xFile.vPrint("\n"_Stz);
-//  vForPattern(0,2,0);  m_xFile.vPrint("\n"_Stz);
-//  vForPattern(0,3,0);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(0,2,0);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(0,3,0);  m_xFile.vPrint("\n"_Stz);
 //  vForPattern(0,4,0);  m_xFile.vPrint("\n"_Stz);
 //  vForPattern(0,5,0);  m_xFile.vPrint("\n"_Stz);
 //
-//  vForPattern(3,1,0);  m_xFile.vPrint("\n"_Stz);
-//  vForPattern(3,2,0);  m_xFile.vPrint("\n"_Stz);
-//  vForPattern(3,3,0);  m_xFile.vPrint("\n"_Stz);
-//
-//  vForPattern(0,1,3);  m_xFile.vPrint("\n"_Stz);
-//  vForPattern(0,2,3);  m_xFile.vPrint("\n"_Stz);
-//  vForPattern(0,3,3);  m_xFile.vPrint("\n"_Stz);
-//
-//  vForPattern(3,1,3);  m_xFile.vPrint("\n"_Stz);
-//  vForPattern(3,2,3);  m_xFile.vPrint("\n"_Stz);
-//  vForPattern(3,3,3);  m_xFile.vPrint("\n"_Stz);
-//
-//  vForPattern(73,1,0); m_xFile.vPrint("\n"_Stz);
-//  vForPattern(73,2,0); m_xFile.vPrint("\n"_Stz);
-//  vForPattern(73,3,0); m_xFile.vPrint("\n"_Stz);
-//
-//  vForPattern(-1,3,3); m_xFile.vPrint("\n"_Stz);
-//  vForPattern(-1,2,3); m_xFile.vPrint("\n"_Stz);
-//  vForPattern(-1,1,3); m_xFile.vPrint("\n"_Stz);
-//
-//  vForPattern(-1,3,2); m_xFile.vPrint("\n"_Stz);
-//  vForPattern(-1,2,2); m_xFile.vPrint("\n"_Stz);
-//  vForPattern(-1,1,2); m_xFile.vPrint("\n"_Stz);
-//
-//  vForPattern(-1,3,1); m_xFile.vPrint("\n"_Stz);
-//  vForPattern(-1,2,1); m_xFile.vPrint("\n"_Stz);
-//  vForPattern(-1,1,1); m_xFile.vPrint("\n"_Stz);
-//
-//  vForPattern(-1,3,0); m_xFile.vPrint("\n"_Stz);
-//  vForPattern(-1,2,0); m_xFile.vPrint("\n"_Stz);
-//  vForPattern(-1,1,0); m_xFile.vPrint("\n"_Stz);
+  vForPattern(3,1,0);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(3,2,0);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(3,3,0);  m_xFile.vPrint("\n"_Stz);
+
+  vForPattern(0,1,3);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(0,2,3);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(0,3,3);  m_xFile.vPrint("\n"_Stz);
+
+  vForPattern(3,1,3);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(3,2,3);  m_xFile.vPrint("\n"_Stz);
+  vForPattern(3,3,3);  m_xFile.vPrint("\n"_Stz);
+
+  vForPattern(73,1,0); m_xFile.vPrint("\n"_Stz);
+  vForPattern(73,2,0); m_xFile.vPrint("\n"_Stz);
+  vForPattern(73,3,0); m_xFile.vPrint("\n"_Stz);
+
+  vForPattern(-1,3,3); m_xFile.vPrint("\n"_Stz);
+  vForPattern(-1,2,3); m_xFile.vPrint("\n"_Stz);
+  vForPattern(-1,1,3); m_xFile.vPrint("\n"_Stz);
+
+  vForPattern(-1,3,2); m_xFile.vPrint("\n"_Stz);
+  vForPattern(-1,2,2); m_xFile.vPrint("\n"_Stz);
+  vForPattern(-1,1,2); m_xFile.vPrint("\n"_Stz);
+
+  vForPattern(-1,3,1); m_xFile.vPrint("\n"_Stz);
+  vForPattern(-1,2,1); m_xFile.vPrint("\n"_Stz);
+  vForPattern(-1,1,1); m_xFile.vPrint("\n"_Stz);
+
+  vForPattern(-1,3,0); m_xFile.vPrint("\n"_Stz);
+  vForPattern(-1,2,0); m_xFile.vPrint("\n"_Stz);
+  vForPattern(-1,1,0); m_xFile.vPrint("\n"_Stz);
 }
 
 
