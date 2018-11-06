@@ -1254,7 +1254,8 @@ namespace Tasks
   
     // utility
     static void vUtilityPrefetch(MP_Task mpTask);
-  
+    static void vUtilitySchemaTest(MP_Task mpTask);
+
     // vector
     static void vVectorDifference(MP_Task mpTask);
     

@@ -16,10 +16,14 @@ namespace Utilities
     
     void* operator new(size_t);
     void  operator delete(void*);
-    
+  
     SchemaTest(void);
     ~SchemaTest(void);
+
+    static void vRun(void);
   
+    void vGenerate(void);
+
     Footer* aFooter(void);
   };
   
