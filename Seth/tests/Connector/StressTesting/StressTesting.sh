@@ -45,6 +45,7 @@ do
       echo "Regression Iteration $j of $i"
       ./dbth.sh -f tests/Connector/Regression/testList
 
+      cd ~/master/current
       ./bootstrapper.sh -a stop
       ./bootstrapper.sh -a start
 
