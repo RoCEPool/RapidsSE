@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* _schemaTest -- schema stress test (auto generated)                         */
+/*============================================================================*/
+time create table X0_b_Z0 (
+  col0 integer  ) ;
+time drop table X0_b_Z0 ;
+time create table X0_d_Z0 (
+  col0 integer  ) ;
+time drop table X0_d_Z0 ;
+time create table X0_m_Z0 (
+  col0 integer  ) ;
+time drop table X0_m_Z0 ;
+time create table X0_f_Z0 (
+  col0 integer  ) ;
+time drop table X0_f_Z0 ;
+time create table X0_i_Z0 (
+  col0 integer  ) ;
+time drop table X0_i_Z0 ;
+time create table X0_l_Z0 (
+  col0 integer  ) ;
+time drop table X0_l_Z0 ;
+time create table X0_t_Z0 (
+  col0 integer  ) ;
+time drop table X0_t_Z0 ;
+time create table X0_p_Z0 (
+  col0 integer  ) ;
+time drop table X0_p_Z0 ;
+time create table X0_s_Z0 (
+  col0 integer  ) ;
+time drop table X0_s_Z0 ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

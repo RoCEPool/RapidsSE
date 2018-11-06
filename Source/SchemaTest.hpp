@@ -14,7 +14,12 @@ namespace Utilities
     File m_xFile;    // file to write to
   
     s32  m_sTableNm; // name of the table
-    i8   m_nColumns; // number of columns
+  
+    i8   m_nXcolumns; // number of X columns
+    i8   m_nTcolumns; // number of T columns
+    i8   m_nZcolumns; // number of Z columns
+    i8   m_nTotalColumns; // total number of columns
+
     eCT  m_eColumns[C_COLUMNS]; // column pattern
   
     s48K m_sStatement; // statement
@@ -35,32 +40,23 @@ namespace Utilities
     void vGenerate(void);
 
     void vCloseFile(void);
+    void vFileFooter(void);
+    void vFileHeader(void);
+    void vFormColumnList(void);
     void vFormCreateTable(void);
     void vFormDropTable(void);
-    void vFormTable(void);
-    void vIterate(void);
+    void vFormTableName(void);
     void vOpenFile(void);
     void vMakeTest(void);
+    eCT  eRandomType(void);
     void vWriteStatement(void);
 
-    void v_1col(void);
-    void v_2col(void);
-    void v_3col(void);
-    void v_4col(void);
-    void v_5col(void);
-    void v_6col(void);
-
-    void v_x1col(void);
-    void v_x2col(void);
-    void v_x3col(void);
-
-    void v_y1col(void);
-    void v_y2col(void);
-    void v_y3col(void);
+    void vAddXcolumns();
+    void vAddZcolumns();
+    void vAddColumns(i8 i_Col);
+    void vForPattern(i8 nX, i8 nT, i8 nZ);
   
-    void v_z1col(void);
-    void v_z2col(void);
-    void v_z3col(void);
+    void vTestSet(void);
   
     Footer* aFooter(void);
   };
