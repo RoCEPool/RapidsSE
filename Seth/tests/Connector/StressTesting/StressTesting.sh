@@ -1,5 +1,5 @@
 export SE_PATH=~/master/rapidsse/Linux
-export LD_LIBRARY_PATH=$SE_PATH
+export LD_LIBRARY_PATH=$SE_PATH/bin
 BASIC_DUMMY_THREADS=200
 SETH_PATH=~/master/rapidsse/Seth
 MASTER=~/master
@@ -16,9 +16,11 @@ do
   cp $SETH_PATH/tests/Connector/StressTesting/cluster.config${nodes}N_${partitions}P $MASTER/cluster.config
 
   #install rdp
-  ./run.sh $1
-
-    for i in {1..20}
+  cd current
+  cp ../cluster.config cfg
+  ./bootstrapper.sh -a install -i ../$1
+  
+  for i in {1..5}
     do
       echo "Welcome $i times"
 
@@ -51,4 +53,4 @@ do
   done
 
 done
-*/
+

@@ -17,7 +17,7 @@
       "seEnabled"           : true,
       "clusterPort"         : 4334,
       "seArgs"              : " --activityMap --partitionsPerNode 3 --size 12gb --regionPrefix /SE --port 5444",
-      "name"                : "node0",
+      "name"                : "node1",
       "role"                : "DQC",
       "installationDir"     : "/home/alka/master/current",
       "workingDir"          : "/home/alka/master/current"
@@ -27,7 +27,7 @@
       "seEnabled"           : false,
       "clientPort"          : 5335,
       "clusterPort"         : 4335,
-      "name"                : "node1",
+      "name"                : "node2",
       "installationDir"     : "/home/alka/master/dqe1",
       "workingDir"          : "/home/alka/master/dqe1/current"
     },
@@ -36,7 +36,7 @@
       "clientPort"          : 5336,      
       "seEnabled"           : false,
       "clusterPort"         : 4336,
-      "name"                : "node2",
+      "name"                : "node3",
       "installationDir"     : "/home/alka/master/dqe2",
       "workingDir"          : "/home/alka/master/dqe2/current"
     },
@@ -45,7 +45,7 @@
       "clientPort"          : 5337,      
       "clusterPort"         : 4337,
       "seEnabled"           : false,
-      "name"                : "node3",
+      "name"                : "node4",
       "installationDir"     : "/home/alka/master/dqe3",
       "workingDir"          : "/home/alka/master/dqe3/current"
     }
