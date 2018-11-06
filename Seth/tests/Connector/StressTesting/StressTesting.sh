@@ -20,7 +20,7 @@ do
   cp ../cluster.config cfg
   ./bootstrapper.sh -a install -i ../$1
   
-  for i in {1..5}
+  for i in {1..3}
     do
       echo "Welcome $i times"
 
@@ -42,11 +42,11 @@ do
       bin/rapidsse --name NODE10 --node NODE10 127.0.0.1 6666 --start --munged --dummyThreads $DUMMY_THREADS &
 
       cd $SETH_PATH
-      for j in {1..2}
-      do
       echo "Regression Iteration $j of $i"
-        ./dbth.sh -f tests/Connector/Regression/testList
-      done
+      ./dbth.sh -f tests/Connector/Regression/testList
+
+      echo "InsertSelect Iteration $j of $i"
+      ./dbth.sh -f tests/Connector/InsertSelect/testList
 
     done
     ./bootstrapper.sh -a stop

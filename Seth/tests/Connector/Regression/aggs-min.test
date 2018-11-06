@@ -84,17 +84,23 @@ rows:
 
 // Source file: ../qa/queries/aggs/min/rmin9.sql
 // Result file: ../qa/queries/aggs/min/results/min9.res
-select min(colg9) from table9;
+//select min(colg9) from table9;
+mute
+//CHECK_RESULT
+/*
 rows:
   (-175)
-
+*/
 
 // Source file: ../qa/queries/aggs/min/rmin10.sql
 // Result file: ../qa/queries/aggs/min/results/min10.res
 select min(colg1) + min(colf1) + min(cola1) from table1;
+mute
+//CHECK_RESULT
+/*
 rows:
   (-167)
-
+*/
 
 // Source file: ../qa/queries/aggs/min/rmin11.sql
 // Result file: ../qa/queries/aggs/min/results/min11.res
@@ -119,9 +125,12 @@ rows:
 // Source file: ../qa/queries/aggs/min/rmin13.sql
 // Result file: ../qa/queries/aggs/min/results/min13.res
 select min(cola1 + colf1 + colg1) from table1 where colb1 = 'black';
+mute
+//CHECK_RESULT
+/*
 rows:
   (-40)
-
+*/
 
 // Source file: ../qa/queries/aggs/min/rmin14.sql
 // Result file: ../qa/queries/aggs/min/results/min14.res
