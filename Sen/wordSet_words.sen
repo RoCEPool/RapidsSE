@@ -308,46 +308,6 @@ tp: f
 tp: g
 ;
 
-/*----------------------------------------------------------------------------*/
-/* named performance point                                                    */
-/*----------------------------------------------------------------------------*/
-: pp: immediate
-
-  token:
-  encodePushValue
-  //tick . compile,
-
-  word::this encodePushValue
-  tick word.name compile,
-  //tick . compile,
-  tick performancepoint compile,
-;
-
-: ppTest
-
-  "before" .
-  pp: first
-  pp: second
-  pp: third
-  "after" .
-
-  performancePrint
-;
-
-: ppLoops
-
-  100000 0 do
-    pp: ppLoops
-
-    I 1000 % 0 == if
-      I .
-    then
-
-  loop
-
-  performancePrint
-;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
