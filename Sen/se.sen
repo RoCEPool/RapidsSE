@@ -4,6 +4,8 @@
 
 "-se.sen" .verbose
 
+"se_docols.sen" include
+
 "se_munge.sen" include
 
 "se_folder.sen" include
