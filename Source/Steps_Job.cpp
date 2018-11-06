@@ -79,6 +79,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job::this"_Stz,            &Task::vJobThis);
   vAddStep("job.trace!"_Stz,           &Task::vJobTraceStore);
   vAddStep("job.trace@"_Stz,           &Task::vJobTraceFetch);
+  vAddStep("job::waitParticipant"_Stz, &Task::vJobWaitParticipant);
   vAddStep("job.workingBuffer@"_Stz,   &Task::vJobWorkingBufferFetch);
   vAddStep("job.workingBuffer!"_Stz,   &Task::vJobWorkingBufferStore);
 }
@@ -1458,6 +1459,42 @@ void Task::vJobTraceStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.trace!"_Stz);
   
   pJob->vJobTrace((eJT)iJobTrace);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job::waitParticipant -- wait for participant till found in participant jobs*/
+/*----------------------------------------------------------------------------*/
+void Task::vJobWaitParticipant(MP_Task mpTask)
+{
+  ENTRY("vJobWaitParticipant"_Stz);
+  
+  i8 iJobId;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
+    THROW_INVALID_DSTACK("job::vJobWaitParticipant"_Stz);
+  
+  Object* pJobObject;
+  if ( ! mpTask->m_pDataStack->bPop(pJobObject) )
+    THROW_INVALID_DSTACK("job::vJobWaitParticipant"_Stz);
+  
+  Job* pCallingJob = _pJob(pJobObject);
+  
+  Job__Find* pFindJob = new Job__Find;
+  pFindJob->m_iJobId = iJobId;
+  
+  Job* pJobFound = nullptr;
+  
+  while ( ! pJobFound ) {
+    gpAttachMap->m_pParticipatingJobs->vGrabLock();
+    pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+    gpAttachMap->m_pParticipatingJobs->vDropLock();
+  }
+  
+  delete pFindJob;
+  
+  RASSERT(pJobFound);
+  mpTask->m_pDataStack->vPushObject(pJobFound);
   
   EXIT();
 }

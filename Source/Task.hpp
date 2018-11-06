@@ -692,6 +692,7 @@ namespace Tasks
     static void vJobThis(MP_Task mpTask);
     static void vJobTraceStore(MP_Task mpTask);
     static void vJobTraceFetch(MP_Task mpTask);
+    static void vJobWaitParticipant(MP_Task mpTask);
     static void vJobWorkingBufferFetch(MP_Task mpTask);
     static void vJobWorkingBufferStore(MP_Task mpTask);
     

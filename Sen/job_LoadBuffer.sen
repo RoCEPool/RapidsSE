@@ -32,7 +32,10 @@
 
   // get the load table job (participant node)
   pJob_LoadBuffer job_loadBuffer.jobLoadTableId@ to iLoadJobId
-  pJob_LoadBuffer iLoadJobId job::findParticipant to pJob_LoadTable
+
+  // we wait till the LoadTable can be found in the participant job skip list
+  // there is a possiblity that the buffer arrives on a node before the loadTable
+  pJob_LoadBuffer iLoadJobId job::waitParticipant to pJob_LoadTable
 
   // store the load table job in this load buffer job
   pJob_LoadTable pJob_LoadBuffer job_loadBuffer.jobLoadTable!
