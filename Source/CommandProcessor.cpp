@@ -234,10 +234,21 @@ void CommandProcessor::vGetCommandArgument(void)
   
   pTknVec()->vReset();
   
-  while (TN_NONE !=
-         m_pTokeniser->eNextToken((char*)pTkn(pTknVec()->nTokens())->aText())) {
+  //while (TN_NONE !=
+  //       m_pTokeniser->eNextToken((char*)pTkn(pTknVec()->nTokens())->aText())) {
+  
+  while (true) {
     
-    //vTrace("vGetCommand : [%lld] %s\n"_Stz,i_Token,pTkn(i_Token));
+    Token* pToken = pTkn(pTknVec()->nTokens());
+    
+    eTN eToken = m_pTokeniser->eNextToken((char*)pToken->aText());
+    
+    if (TN_NONE == eToken)
+      break;
+    
+    pToken->vToken(eToken);
+
+   //vTrace("vGetCommand : [%lld] %s\n"_Stz,i_Token,pTkn(i_Token));
     
     pTknVec()->vIncTokens();
     ASSERT(pTknVec()->nTokens() < C_TOKENS);
