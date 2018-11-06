@@ -2,10 +2,10 @@
 /* wordSet_object.sen -- object words                                         */
 /*============================================================================*/
 
-" wordSet_object.send" .verbose
+" wordSet_object.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* create a node using name on the stack (leaves node word on stack)          */
+/* assert that the object is of a particular class                           */
 /*----------------------------------------------------------------------------*/
 : object.assertClass ( eClassNo pObject -- )
 
