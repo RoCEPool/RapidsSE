@@ -1,0 +1,54 @@
+/*============================================================================*/
+/* grid_node.sen -- node routines                                             */
+/*============================================================================*/
+
+" grid_node.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* test if this node is given originating node                                */
+/*----------------------------------------------------------------------------*/
+: node::isOrigin ( iOriginNode -- true|false )
+
+  params| iOriginNode |
+
+  0 locals| iThisNode  |
+
+  grid::thisNode@ to iThisNode
+
+  iThisNode iOriginNode == if
+    true
+  else
+    false
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* check node has enough buffers                                              */
+/*----------------------------------------------------------------------------*/
+: node::checkEnoughBuffers
+
+  // return true if enough buffers, others return error code
+  bp::freeBuffers C_LOW_BUFFERS > if
+    true
+  else
+    EC_LOW_BUFFERS
+    false
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test node has enough buffers                                               */
+/*----------------------------------------------------------------------------*/
+: node::testEnoughBuffers
+
+  // return true if enough buffers, others return error code
+  bp::freeBuffers C_LOW_BUFFERS > if
+    true
+  else
+    false
+  then
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

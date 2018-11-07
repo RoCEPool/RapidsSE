@@ -127,7 +127,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for sufficient memory
 
-  bp::checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
+  node::checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if file exists (SHOULDN"T THIS BE ONLY ON ORIGINATING NODE?)
@@ -179,7 +179,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
 
-  bp::testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
+  node::testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

@@ -96,7 +96,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check there is enough buffers and load
 
-  // bp::checkEnoughBuffers if
+  // node::checkEnoughBuffers if
     pJob_LoadBuffer LoadBuffer.load
   //then
 
