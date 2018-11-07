@@ -91,8 +91,8 @@
   // get the job from the task
   pTask task.job@ to pJob
 
-  //"setStartNode..." .
-  setStartNode
+  //"grid::setStartNode..." .
+  grid::setStartNode
 
   //"spawn_Connector..." .
   spawn_Connector

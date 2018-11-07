@@ -93,7 +93,7 @@
 /*----------------------------------------------------------------------------*/
 /* spawn all other nodes for a grid on this machine                           */
 /*----------------------------------------------------------------------------*/
-: spawnNodes ( -- )
+: grid::spawnNodes ( -- )
 
   // test for single node
   grid::nodes 1 == if exit then
@@ -145,7 +145,7 @@
 /*----------------------------------------------------------------------------*/
 /* set start node                                                             */
 /*----------------------------------------------------------------------------*/
-: setStartNode ( -- )
+: grid::setStartNode ( -- )
 
   // set this node as the grid start node
   grid::thisNode@ grid::StartNode!
@@ -153,9 +153,9 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* check system has enough buffers                                            */
+/* check node has enough buffers                                              */
 /*----------------------------------------------------------------------------*/
-: checkEnoughBuffers
+: bp::checkEnoughBuffers
 
   // return true if enough buffers, others return error code
   bp::freeBuffers C_LOW_BUFFERS >
@@ -168,9 +168,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* test system has enough buffers                                             */
+/* test node has enough buffers                                               */
 /*----------------------------------------------------------------------------*/
-: testEnoughBuffers
+: bp::testEnoughBuffers
 
   // return true if enough buffers, others return error code
   bp::freeBuffers C_LOW_BUFFERS >
@@ -184,7 +184,7 @@
 /*----------------------------------------------------------------------------*/
 /* test if this node is given originating node                                */
 /*----------------------------------------------------------------------------*/
-: isOriginNode ( iOriginNode -- true|false )
+: node::isOrigin ( iOriginNode -- true|false )
 
   params| iOriginNode |
 

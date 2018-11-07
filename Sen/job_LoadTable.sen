@@ -99,7 +99,7 @@
 
   pJob_LoadTable job.id@ job::originator@ to iOriginNode
 
-  iOriginNode isOriginNode if
+  iOriginNode node::isOrigin if
     pJob_LoadTable LoadTable_executeLoad
   else
     LoadTable_waitOnly
@@ -127,14 +127,14 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check for sufficient memory
 
-  checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
+  bp::checkEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if file exists (SHOULDN"T THIS BE ONLY ON ORIGINATING NODE?)
 
   pJob_LoadTable job.id@ job::originator@ to iOriginNode
 
-  iOriginNode isOriginNode if
+  iOriginNode node::isOrigin if
 
     file::new to fp
 
@@ -179,7 +179,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
 
-  testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
+  bp::testEnoughBuffers not if pJob_LoadTable <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

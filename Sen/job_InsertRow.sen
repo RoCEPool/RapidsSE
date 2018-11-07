@@ -86,7 +86,7 @@
   //----------------------------------------------------------------------------
   // check if we have enough buffers
 
-  checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> !!am exit then
+  bp::checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;

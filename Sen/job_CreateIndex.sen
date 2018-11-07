@@ -237,7 +237,7 @@
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers
-  checkEnoughBuffers not if pJob_CreateIndex <ERROR_JOB> !!am exit then
+  bp::checkEnoughBuffers not if pJob_CreateIndex <ERROR_JOB> !!am exit then
 
   //----------------------------------------------------------------------------
   // check ok to make index
