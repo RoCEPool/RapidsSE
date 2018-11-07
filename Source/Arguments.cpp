@@ -61,31 +61,36 @@ Arguments::Arguments(void)
   m_bUnlink = false;
 
   // options
-  m_bConfig     = true;
-  m_bDeveloper  = true;
-  m_bDontFree   = false;
-  m_nEntries    = 0;
-  m_bFreeRB     = false;
-  m_bLock       = false;
-  m_bHugePages  = false;
-  m_bKillPrev   = false;
-  m_bMetadata   = false;
-  m_bMunged     = false;
-  m_bProgress   = false;
-  m_bReload     = false;
-  m_bRestart    = true;
-  m_nSubLoaders = 4;
-  m_iThisNode   = -1;
-  m_nThreads    = 12;
+  m_bConfig      = true;
+  m_bDeveloper   = true;
+  m_bDontFree    = false;
+  m_nEntries     = 0;
+  m_bFreeRB      = false;
+  m_nLimitDir    = 0;
+  m_nLimitFile   = 0;
+  m_nLimitThread = 0;
+  m_nLimitShm    = 0;
+  m_nLimitSocket = 0;
+  m_bLock        = false;
+  m_bHugePages   = false;
+  m_bKillPrev    = false;
+  m_bMetadata    = false;
+  m_bMunged      = false;
+  m_bProgress    = false;
+  m_bReload      = false;
+  m_bRestart     = true;
+  m_nSubLoaders  = 4;
+  m_iThisNode    = -1;
+  m_nThreads     = 12;
   m_nDummyThreads = 0;
-  m_nDummySleep = 10;
-  m_nDummyLoop  = 0;
+  m_nDummySleep  = 10;
+  m_nDummyLoop   = 0;
   m_nPeriodicSleep = 10;
-  m_bTouch      = false;
-  m_bTracepoint = false;
-  m_bTracing    = false;
-  m_bVerbose    = false;
-  m_bWelcome    = true;
+  m_bTouch       = false;
+  m_bTracepoint  = false;
+  m_bTracing     = false;
+  m_bVerbose     = false;
+  m_bWelcome     = true;
   m_bActivityMap = false;
   m_sAmPath      = "/tmp/SE_ActivityMap.csv"_Stz;
   m_nActivityMarks = C_ACTIVITY_MARKS;
@@ -463,6 +468,31 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
+    if (argv[i_Arg]->bSame("--limitDir"_Stz)) {
+      m_nLimitDir = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    if (argv[i_Arg]->bSame("--limitFile"_Stz)) {
+      m_nLimitFile = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    if (argv[i_Arg]->bSame("--limitThread"_Stz)) {
+      m_nLimitThread = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    if (argv[i_Arg]->bSame("--limitShm"_Stz)) {
+      m_nLimitShm = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    if (argv[i_Arg]->bSame("--limitSocket"_Stz)) {
+      m_nLimitSocket = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
     // lock shared memory pages in memory
     if (argv[i_Arg]->bSame("--lock"_Stz)) {
       m_bLock = true;
