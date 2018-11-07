@@ -143,8 +143,8 @@ void SchemaTest::vGenerate(void)
 void SchemaTest::vTestSet(void)
 {
   vForPattern(0,1,0);
-  vForPattern(0,2,0);
-  vForPattern(0,3,0);
+//  vForPattern(0,2,0);
+//  vForPattern(0,3,0);
 //  vForPattern(0,4,0);
 //  vForPattern(0,5,0);
 

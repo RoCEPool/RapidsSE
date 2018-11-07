@@ -1,0 +1,115 @@
+/*----------------------------------------------------------------------------*/
+/* schemaTest.test -- schema stress test (auto generated)                     */
+/*----------------------------------------------------------------------------*/
+create table X0_Cb_Z0 (
+  c0 boolean
+) ;
+success
+
+lscol X0_Cb_Z0 ;
+rows:
+  (0, 'c0', 'BOOLEAN', 0, 0, true, true)
+
+drop table X0_Cb_Z0 ;
+success
+
+create table X0_Cd_Z0 (
+  c0 date
+) ;
+success
+
+lscol X0_Cd_Z0 ;
+rows:
+  (0, 'c0', 'DATE', 0, 0, true, true)
+
+drop table X0_Cd_Z0 ;
+success
+
+create table X0_Cm_Z0 (
+  c0 decimal
+) ;
+success
+
+lscol X0_Cm_Z0 ;
+rows:
+  (0, 'c0', 'DECIMAL', 19, 0, true, true)
+
+drop table X0_Cm_Z0 ;
+success
+
+create table X0_Cf_Z0 (
+  c0 float
+) ;
+success
+
+lscol X0_Cf_Z0 ;
+rows:
+  (0, 'c0', 'FLOAT', 19, 0, true, true)
+
+drop table X0_Cf_Z0 ;
+success
+
+create table X0_Ci_Z0 (
+  c0 integer
+) ;
+success
+
+lscol X0_Ci_Z0 ;
+rows:
+  (0, 'c0', 'INTEGER', 19, 0, true, true)
+
+drop table X0_Ci_Z0 ;
+success
+
+create table X0_Cl_Z0 (
+  c0 interval
+) ;
+success
+
+lscol X0_Cl_Z0 ;
+rows:
+  (0, 'c0', 'INTERVAL', 0, 0, true, true)
+
+drop table X0_Cl_Z0 ;
+success
+
+create table X0_Ct_Z0 (
+  c0 time
+) ;
+success
+
+lscol X0_Ct_Z0 ;
+rows:
+  (0, 'c0', 'TIME', 0, 0, true, true)
+
+drop table X0_Ct_Z0 ;
+success
+
+create table X0_Cp_Z0 (
+  c0 timestamp
+) ;
+success
+
+lscol X0_Cp_Z0 ;
+rows:
+  (0, 'c0', 'TIMESTAMP', 0, 0, true, true)
+
+drop table X0_Cp_Z0 ;
+success
+
+create table X0_Cs_Z0 (
+  c0 varchar(32)
+) ;
+success
+
+lscol X0_Cs_Z0 ;
+rows:
+  (0, 'c0', 'VARCHAR', 32, 0, true, true)
+
+drop table X0_Cs_Z0 ;
+success
+
+
+/*----------------------------------------------------------------------------*/
+/* end                                                                        */
+/*----------------------------------------------------------------------------*/
