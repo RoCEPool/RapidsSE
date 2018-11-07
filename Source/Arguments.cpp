@@ -79,6 +79,7 @@ Arguments::Arguments(void)
   m_nThreads    = 12;
   m_nDummyThreads = 0;
   m_nDummySleep = 10;
+  m_nDummyLoop  = 0;
   m_bTouch      = false;
   m_bTracepoint = false;
   m_bTracing    = false;
@@ -256,6 +257,12 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--dummySleep"_Stz)) {
       m_nDummySleep = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--dummyLoop"_Stz)) {
+      m_nDummyLoop = argv[++i_Arg]->iToI8();
       continue;
     }
     
@@ -697,6 +704,7 @@ void Arguments::vPrintStartupInfo(void)
   if (m_nDummyThreads) {
     vTrace("  --dummyThreads %lld\n"_Stz,m_nDummyThreads);
     vTrace("  --dummySleep %lld\n"_Stz,m_nDummySleep);
+    vTrace("  --dummyLoop %lld\n"_Stz,m_nDummyLoop);
   }
   
 #ifdef _DEBUG

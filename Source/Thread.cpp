@@ -172,8 +172,16 @@ void* Thread::aEntryPointDummy(void* pArg)
     vTrace("Thread::pDummyEntryPoint %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  while (true)
+  while (true) {
+    
+    // sleep for a bit to generate a context switch
     PosixThread::vSleepMicro(gxArguments.m_nDummySleep);
+    
+    // burn some cpu
+    i8 iSum = 0;
+    for (i8 i_Loop = 0; i_Loop < gxArguments.m_nDummyLoop; i_Loop++)
+      iSum += Synch::iRdTscp();
+  }
   
   //delete pThread;
   
