@@ -6,8 +6,6 @@
 
 #include "Pool.h"
 
-Atomic gzSocketOpenCount;
-
 extern ResourceTracker gxResourceTracker;
 
 
@@ -187,7 +185,6 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
     return false;
   }
   
-  ++gzSocketOpenCount;
   gxResourceTracker.vIncSocketOpen();
 
   SysCall.vSuccess();
@@ -218,7 +215,6 @@ bool Socket::bClose(SysCall& SysCall)
   
   m_iSocketId = -1;
   
-  --gzSocketOpenCount;
   gxResourceTracker.vDecSocketOpen();
 
   SysCall.vSuccess();
@@ -281,7 +277,6 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
     return false;
   }
   
-  ++gzSocketOpenCount;
   gxResourceTracker.vIncSocketOpen();
 
   SysCall.vSuccess();
@@ -339,7 +334,6 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
     return false;
   }
   
-  ++gzSocketOpenCount;
   gxResourceTracker.vIncSocketOpen();
 
   SysCall.vSuccess();

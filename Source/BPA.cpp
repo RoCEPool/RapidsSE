@@ -6,12 +6,6 @@
 
 extern AttachMap* gpAttachMap;
 
-extern Atomic gzDirOpenCount;
-extern Atomic gzFileOpenCount;
-extern Atomic gzShmOpenCount;
-extern Atomic gzSocketOpenCount;
-extern Atomic gzThreadOpenCount;
-
 extern ResourceTracker gxResourceTracker;
 
 /*============================================================================*/

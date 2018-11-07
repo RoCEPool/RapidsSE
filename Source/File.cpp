@@ -6,8 +6,6 @@
 
 #include "Pool.h"
 
-Atomic gzFileOpenCount;
-
 extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
@@ -185,7 +183,6 @@ void File::vClose(void)
     return;
   }
   
-  --gzFileOpenCount;
   gxResourceTracker.vDecFileOpen();
 
   vReset();
@@ -372,7 +369,6 @@ bool File::bOpen(void)
     return false;
   }
   
-  ++gzFileOpenCount;
   gxResourceTracker.vIncFileOpen();
 
   return true;
@@ -406,7 +402,6 @@ bool File::bOpen(Stz* aOpenMode, i8 iTraceLevel)
     return false;
   }
   
-  ++gzFileOpenCount;
   gxResourceTracker.vIncFileOpen();
 
   return true;
@@ -440,7 +435,6 @@ bool File::bOpen(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel)
     return false;
   }
   
-  ++gzFileOpenCount;
   gxResourceTracker.vIncFileOpen();
 
   return true;

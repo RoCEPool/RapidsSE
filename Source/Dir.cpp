@@ -6,8 +6,6 @@
 
 #include "StorageEngine.h"
 
-Atomic gzDirOpenCount;
-
 extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
@@ -238,7 +236,6 @@ void Dir::vClose(void)
     return;
   }
 
-  --gzDirOpenCount;
   gxResourceTracker.vDecDirOpen();
 
   m_pDirPtr = nullptr;
@@ -310,7 +307,6 @@ bool Dir::bOpen(void)
     return false;
   }
 
-  ++gzDirOpenCount;
   gxResourceTracker.vIncDirOpen();
 
   ASSERT(bIsOpen());
