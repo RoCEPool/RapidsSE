@@ -160,6 +160,21 @@ i8 ResourceTracker::nThreadOpen(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* report                                                                     */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vReport(void)
+{
+  vTrace("Resources:\n"_Stz);
+
+  vTrace("  dir %lld\n"_Stz,   nDirOpen());
+  vTrace("  file %lld\n"_Stz,  nFileOpen());
+  vTrace("  shm %lld\n"_Stz,   nShmOpen());
+  vTrace("  socket %lld\n"_Stz,nSocketOpen());
+  vTrace("  thread %lld\n"_Stz,nThreadOpen());
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

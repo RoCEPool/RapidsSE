@@ -40,6 +40,8 @@ namespace System
     i8 nSocketOpen(void);
     i8 nThreadOpen(void);
   
+    void vReport(void);
+  
     Footer* aFooter(void);
   };
 }
