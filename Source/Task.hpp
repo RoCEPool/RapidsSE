@@ -237,6 +237,7 @@ namespace Tasks
     static void vApiStateSetPosition(MP_Task mpTask);
   
     // args
+    static void vArgsOscillate(MP_Task mpTask);
     static void vArgsPrint(MP_Task mpTask);
 
     // assert
