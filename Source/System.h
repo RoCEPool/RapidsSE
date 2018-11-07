@@ -22,9 +22,9 @@ using namespace System;
   #include "Asm.h"
 #endif
 
+#include "Atomic.hpp"
 #include "ResourceTracker.hpp"
 
-#include "Atomic.hpp"
 #include "Decider.hpp"
 #include "Dir.hpp"
 #include "Env.hpp"

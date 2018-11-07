@@ -12,6 +12,12 @@ ResourceTracker::ResourceTracker(void)
 {
   _precondition_(_MAGIC_,CN_RESOURCETRACKER,_FOOTER_);
  
+  m_ziDirOpen.vCheckInit();
+  m_ziFileOpen.vCheckInit();
+  m_ziShmOpen.vCheckInit();
+  m_ziSocketOpen.vCheckInit();
+  m_ziThreadOpen.vCheckInit();
+
   _checkInitialised_(CN_RESOURCETRACKER);
 }
 
@@ -22,6 +28,87 @@ ResourceTracker::~ResourceTracker(void)
 {
   _precondition_(_MAGIC_,CN_RESOURCETRACKER,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* decrement                                                                  */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vDecDirOpen(void)
+{
+  i8 iDirOpen = --m_ziDirOpen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement                                                                  */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vDecFileOpen(void)
+{
+  i8 iFileOpen = --m_ziFileOpen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement                                                                  */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vDecShmOpen(void)
+{
+  i8 iShmOpen = --m_ziShmOpen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement                                                                  */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vDecSocketOpen(void)
+{
+  i8 iSocketOpen = --m_ziSocketOpen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement                                                                  */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vDecThreadOpen(void)
+{
+  i8 iThreadOpen = --m_ziThreadOpen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment                                                                  */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vIncDirOpen(void)
+{
+  i8 iDirOpen = ++m_ziDirOpen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment                                                                  */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vIncFileOpen(void)
+{
+  i8 iFileOpen = ++m_ziFileOpen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment                                                                  */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vIncShmOpen(void)
+{
+  i8 iShmOpen = ++m_ziShmOpen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment                                                                  */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vIncSocketOpen(void)
+{
+  i8 iSocketOpen = ++m_ziSocketOpen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment                                                                  */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vIncThreadOpen(void)
+{
+  i8 iThreadOpen = ++m_ziThreadOpen;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
