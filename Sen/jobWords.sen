@@ -12,6 +12,52 @@
 5 constant SEED_CAN
 
 /*----------------------------------------------------------------------------*/
+/* copy dictionary path from job to datastack                                 */
+/*----------------------------------------------------------------------------*/
+: getPath ( pJob -- )
+
+  0 locals| pDicPathJob pJob |
+
+  // get job dic path
+  pJob job.dicPath to pDicPathJob
+
+  // copy the path from job dic path onto data stack
+  pDicPathJob dicPath.depth 0 ?do
+    I pDicPathJob dicPath.pick
+  loop
+
+  pDicPathJob dicPath.depth
+;
+
+/*----------------------------------------------------------------------------*/
+/* set dictionary path of this task back into session                         */
+/*----------------------------------------------------------------------------*/
+: savePath ( -- )
+
+  0 0 locals| pDicStackSession pDicStackTask |
+
+  // get session dic stack
+  task::this task.session@ session.dicStack to pDicStackSession
+
+  // get task dic stack
+  task::this task.dicStack to pDicStackTask
+
+  // copy the path from task dic stack onto data stack
+  pDicStackTask dicStack.depth 0 ?do
+    I pDicStackTask dicStack.pick
+  loop
+
+  // clear session dic stack
+  pDicStackSession dicStack.dropAll
+
+  // copy the path from data stack onto session dic stack
+  pDicStackTask dicStack.depth 0 ?do
+    pDicStackSession dicStack.push
+  loop
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* begin a new job on participant node                                        */
 /*----------------------------------------------------------------------------*/
 : job.beginParticipant ( pJob -- )
