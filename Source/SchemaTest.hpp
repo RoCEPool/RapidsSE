@@ -10,13 +10,16 @@ namespace Utilities
   class SchemaTest : public Object
   {
   private:
-    i8   m_nTests;   // number of tests generated
-    File m_xFile;    // file to write to
+    i8   m_nTests;    // number of tests generated
   
-    s32  m_sTableNm; // name of the table
+    s256 m_sFileNm;   // file name
+    File m_xFile;     // file to write to
+  
+    s32  m_sStream;   // stream prefix
+    s32  m_sTableNm;  // name of the table
     s32  m_sColumnNm; // name of the column
     s32  m_sColumnTy; // definition of the column
-    s256 m_sRow;     // result row
+    s256 m_sRow;      // result row
 
     i8   m_nXcolumns; // number of X columns
     i8   m_nCcolumns; // number of C columns
@@ -35,13 +38,16 @@ namespace Utilities
     void* operator new(size_t);
     void  operator delete(void*);
   
-    SchemaTest(void);
+    SchemaTest(Stz* sStream);
     ~SchemaTest(void);
 
-    static void vRun(void);
+    static void vRun(Stz* sStream);
 
     void vGenerate(void);
 
+    void vAddCcolumns(i8 i_Col);
+    void vAddXcolumns();
+    void vAddZcolumns();
     void vCloseFile(void);
     void vFileFooter(void);
     void vFileHeader(void);
@@ -60,9 +66,6 @@ namespace Utilities
     void vWriteSuccess(void);
     void vWriteStatement(void);
 
-    void vAddXcolumns();
-    void vAddZcolumns();
-    void vAddColumns(i8 i_Col);
     void vForPattern(i8 nX, i8 nC, i8 nZ);
   
     void vTestSet(void);

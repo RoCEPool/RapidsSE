@@ -4,7 +4,21 @@
 
 " se_docols.sen" .verbose
 
-: schemaTest utility::schemaTest ;
+: schemaTest "" utility::schemaTest ;
+
+: schemaTestAll
+
+  "A" utility::schemaTest
+  "B" utility::schemaTest
+  "C" utility::schemaTest
+  "D" utility::schemaTest
+  "E" utility::schemaTest
+  "F" utility::schemaTest
+  "G" utility::schemaTest
+  "H" utility::schemaTest
+  "I" utility::schemaTest
+  "J" utility::schemaTest
+;
 
 /*============================================================================*/
 /* end                                                                        */

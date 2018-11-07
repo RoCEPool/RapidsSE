@@ -48,14 +48,28 @@ void SchemaTest::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SchemaTest::SchemaTest(void)
+SchemaTest::SchemaTest(Stz* sStream)
 : Object(CN_SCHEMATEST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEMATEST,_FOOTER_);
   
   m_nTests = 0;
   
-  //m_xFile
+  m_sStream = sStream;
+
+#ifdef ST_SETH
+  m_sFileNm = "../Seth/schemaTest"_Stz;
+  if (*m_sStream.aChar()) {
+    m_sFileNm.vConcat("_"_Stz);
+    m_sFileNm.vConcat(m_sStream);
+  }
+  m_sFileNm.vConcat(".test"_Stz);
+#else
+  m_sFileNm = "../Commands/_schemaTest"_Stz;
+  m_sFileNm.vConcat(m_sStream);
+#endif
+
+  m_xFile.vPath(m_sFileNm);
   m_sTableNm  = "<none>"_Stz;
   m_sColumnNm = "<none>"_Stz;
   m_sColumnTy = "<none>"_Stz;
@@ -91,9 +105,9 @@ SchemaTest::~SchemaTest(void)
 /*----------------------------------------------------------------------------*/
 /* run                                                                        */
 /*----------------------------------------------------------------------------*/
-void SchemaTest::vRun(void)
+void SchemaTest::vRun(Stz* sStream)
 {
-  SchemaTest* pSchemaTest = new SchemaTest;
+  SchemaTest* pSchemaTest = new SchemaTest(sStream);
   
   pSchemaTest->vGenerate();
   
@@ -117,7 +131,10 @@ void SchemaTest::vGenerate(void)
   vFileFooter();
   vCloseFile();
   
-  vTrace("  %lld tests generated\n"_Stz,m_nTests);
+  if (*m_sStream.aChar())
+    vTrace("  %lld tests generated (for stream %s)\n"_Stz,m_nTests,m_sStream.aChar());
+  else
+    vTrace("  %lld tests generated\n"_Stz,m_nTests);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,6 +218,29 @@ void SchemaTest::vTestSet(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* add C columns                                                              */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vAddCcolumns(i8 i_Col)
+{
+  if (0 == i_Col)
+    vAddXcolumns();
+  
+  for (i8 i_Type = CT_NONE + 1; i_Type < CT_ENUMS; i_Type++) {
+    
+    if (CT_CHAR == i_Type)
+      continue;
+    
+    m_eColumns[m_nXcolumns + i_Col] = (eCT)i_Type;
+    
+    if (i_Col + 1 == m_nCcolumns) {
+      vAddZcolumns();
+      vMakeTest();
+    }
+    else
+      vAddCcolumns(i_Col + 1);
+  }
+}
+/*----------------------------------------------------------------------------*/
 /* add the x columns                                                          */
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vAddXcolumns(void)
@@ -226,29 +266,6 @@ void SchemaTest::vAddZcolumns(void)
     m_eColumns[i_Col] = eRandomType();
 }
 
-/*----------------------------------------------------------------------------*/
-/* column variants                                                            */
-/*----------------------------------------------------------------------------*/
-void SchemaTest::vAddColumns(i8 i_Col)
-{
-  if (0 == i_Col)
-    vAddXcolumns();
-  
-  for (i8 i_Type = CT_NONE + 1; i_Type < CT_ENUMS; i_Type++) {
-    
-    if (CT_CHAR == i_Type)
-      continue;
-    
-    m_eColumns[m_nXcolumns + i_Col] = (eCT)i_Type;
-    
-    if (i_Col + 1 == m_nCcolumns) {
-      vAddZcolumns();
-      vMakeTest();
-    }
-    else
-      vAddColumns(i_Col + 1);
-  }
-}
 /*----------------------------------------------------------------------------*/
 /* close file                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -427,6 +444,11 @@ void SchemaTest::vFormTableName(void)
   // table prefix
   m_sTableNm = ""_Stz;
   
+  if (*m_sStream.aChar()) {
+    m_sTableNm.vConcat(m_sStream);
+    m_sTableNm.vConcat("_"_Stz);
+  }
+  
   // no columns
 //  s32 sTableNo;
 //  StrLib::wToString(m_nCcolumns,sTableNo.aChar());
@@ -575,7 +597,7 @@ void SchemaTest::vForPattern(i8 nX, i8 nC, i8 nZ)
   
   m_nTotalColumns = m_nXcolumns + m_nCcolumns + m_nZcolumns;
   
-  vAddColumns(0);
+  vAddCcolumns(0);
   
   m_xFile.vPrint("\n"_Stz);
 }
@@ -585,13 +607,8 @@ void SchemaTest::vForPattern(i8 nX, i8 nC, i8 nZ)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vOpenFile(void)
 {
-#ifdef ST_SETH
-  bool bOpened = m_xFile.bOpen("../Seth/schemaTest.test"_Stz, C_OPEN_WRITE);
+  bool bOpened = m_xFile.bOpen(C_OPEN_WRITE);
   RASSERT(bOpened);
-#else
-  bool bOpened = m_xFile.bOpen("../Commands/_schemaTest"_Stz, C_OPEN_WRITE);
-  RASSERT(bOpened);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/

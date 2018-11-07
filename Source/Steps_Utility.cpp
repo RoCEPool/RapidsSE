@@ -37,7 +37,11 @@ void Task::vUtilitySchemaTest(MP_Task mpTask)
 {
   ENTRY("vUtilitySchemaTest"_Stz);
   
-  SchemaTest::vRun();
+  s32 sStream;
+  if ( ! mpTask->m_pDataStack->bPop(sStream) )
+    THROW_INVALID_DSTACK("task.seed"_Stz);
+
+  SchemaTest::vRun(sStream);
   
   EXIT();
 }
