@@ -34,6 +34,12 @@ namespace System
     void vIncSocketOpen(void);
     void vIncThreadOpen(void);
 
+    i8 nDirOpen(void);
+    i8 nFileOpen(void);
+    i8 nShmOpen(void);
+    i8 nSocketOpen(void);
+    i8 nThreadOpen(void);
+  
     Footer* aFooter(void);
   };
 }
