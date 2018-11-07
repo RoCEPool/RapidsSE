@@ -282,7 +282,7 @@
 
   pJob job.preSend
 
-  socketLock
+  task::socketLock
 
     pJob pSocket socket.sendObject drop
 
@@ -291,7 +291,7 @@
        pJob job.workingBuffer@ pSocket socket.sendObject drop
     then
 
-  socketUnlock
+  task::socketUnlock
 ;
 
 /*----------------------------------------------------------------------------*/
