@@ -14,9 +14,12 @@ namespace Utilities
     File m_xFile;    // file to write to
   
     s32  m_sTableNm; // name of the table
-  
+    s32  m_sColumnNm; // name of the column
+    s32  m_sColumnTy; // definition of the column
+    s256 m_sRow;     // result row
+
     i8   m_nXcolumns; // number of X columns
-    i8   m_nTcolumns; // number of T columns
+    i8   m_nCcolumns; // number of C columns
     i8   m_nZcolumns; // number of Z columns
     i8   m_nTotalColumns; // total number of columns
 
@@ -43,18 +46,24 @@ namespace Utilities
     void vFileFooter(void);
     void vFileHeader(void);
     void vFormColumnList(void);
+    void vFormColumnName(i8 i_Col);
+    void vFormColumnType(i8 i_Col);
     void vFormCreateTable(void);
     void vFormDropTable(void);
+    void vFormRow(i8 i_Col);
     void vFormTableName(void);
     void vOpenFile(void);
     void vMakeTest(void);
     eCT  eRandomType(void);
+    void vWriteLsCol(void);
+    void vWriteRows(void);
+    void vWriteSuccess(void);
     void vWriteStatement(void);
 
     void vAddXcolumns();
     void vAddZcolumns();
     void vAddColumns(i8 i_Col);
-    void vForPattern(i8 nX, i8 nT, i8 nZ);
+    void vForPattern(i8 nX, i8 nC, i8 nZ);
   
     void vTestSet(void);
   

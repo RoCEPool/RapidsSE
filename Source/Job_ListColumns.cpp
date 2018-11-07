@@ -241,7 +241,7 @@ void JobsModel::vJob_ListColumns_post(Interface::Session* pSession, Job* pJob)
     i8 iColumns = pColumnVec->nItems();
     for (i8 iColumn = 0; iColumn < iColumns - 1; iColumn++) {
       Column* pColumn = pColumnVec->pGet(iColumn);
-      vTrace("row; (%lld, %s, %s, %lld, %lld, %s, %s)\n"_Stz,
+      vTrace("row: (%lld, '%s', '%s', %lld, %lld, %s, %s)\n"_Stz,
              pColumn->iColumnNo(),
              pColumn->sColumnName().aChar(),
              aCT[pColumn->eColumnType()],

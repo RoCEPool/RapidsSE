@@ -4,6 +4,8 @@
 
 #include "Utilities.h"
 
+#define ST_SETH
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -54,9 +56,12 @@ SchemaTest::SchemaTest(void)
   m_nTests = 0;
   
   //m_xFile
-  m_sTableNm = "<none>"_Stz;
-  
-  m_nTcolumns = 0;
+  m_sTableNm  = "<none>"_Stz;
+  m_sColumnNm = "<none>"_Stz;
+  m_sColumnTy = "<none>"_Stz;
+  m_sRow      = "<none>"_Stz;
+
+  m_nCcolumns = 0;
   m_nXcolumns = 0;
   m_nZcolumns = 0;
 
@@ -115,234 +120,86 @@ void SchemaTest::vGenerate(void)
   vTrace("  %lld tests generated\n"_Stz,m_nTests);
 }
 
-
 /*----------------------------------------------------------------------------*/
+/* set of tests to generate                                                   */
 /*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* close file                                                                 */
-/*----------------------------------------------------------------------------*/
-void SchemaTest::vCloseFile(void)
+void SchemaTest::vTestSet(void)
 {
-  m_xFile.vClose();
+  vForPattern(0,1,0);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(0,2,0);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(0,3,0);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(0,4,0);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(0,5,0);  m_xFile.vPrint("\n"_Stz);
+
+
+//  vForPattern(1,1,0);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(1,2,0);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(1,3,0);  m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(2,1,0);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(2,2,0);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(2,3,0);  m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(3,1,0);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(3,2,0);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(3,3,0);  m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(0,1,1);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(0,2,1);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(0,3,1);  m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(0,1,2);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(0,2,2);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(0,3,2);  m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(0,1,3);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(0,2,3);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(0,3,3);  m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(3,1,3);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(3,2,3);  m_xFile.vPrint("\n"_Stz);
+//  vForPattern(3,3,3);  m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(73,1,0); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(73,2,0); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(73,3,0); m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(73,1,1); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(73,2,1); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(73,3,1); m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(73,1,2); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(73,2,2); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(73,3,2); m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(73,1,3); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(73,2,3); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(73,3,4); m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(73,3,-1); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(73,2,-1); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(73,1,-1); m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(-1,3,3); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(-1,2,3); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(-1,1,3); m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(-1,3,2); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(-1,2,2); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(-1,1,2); m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(-1,3,1); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(-1,2,1); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(-1,1,1); m_xFile.vPrint("\n"_Stz);
+//
+//  vForPattern(-1,3,0); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(-1,2,0); m_xFile.vPrint("\n"_Stz);
+//  vForPattern(-1,1,0); m_xFile.vPrint("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* file footer                                                                */
 /*----------------------------------------------------------------------------*/
-void SchemaTest::vFileFooter(void)
-{
-  m_xFile.vPrint("%s\n"_Stz,
-  "/*============================================================================*/"_Stz);
-  m_xFile.vPrint("%s\n"_Stz,
-  "/* end                                                                        */"_Stz);
-  m_xFile.vPrint("%s\n"_Stz,
-  "/*============================================================================*/"_Stz);
-}
 
-/*----------------------------------------------------------------------------*/
-/* file header                                                                */
-/*----------------------------------------------------------------------------*/
-void SchemaTest::vFileHeader(void)
-{
-  m_xFile.vPrint("%s\n"_Stz,
-  "/*============================================================================*/"_Stz);
-  m_xFile.vPrint("%s\n"_Stz,
-  "/* _schemaTest -- schema stress test (auto generated)                         */"_Stz);
-  m_xFile.vPrint("%s\n"_Stz,
-  "/*============================================================================*/"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* form column list                                                           */
-/*----------------------------------------------------------------------------*/
-void SchemaTest::vFormColumnList(void)
-{
-  //m_sStatement.vConcat("  col0 integer "_Stz);
-  
-  i8 i_Col;
-  
-  // the t columns
-  for (i_Col = 0; i_Col < m_nTotalColumns; i_Col++) {
-   
-    if (i_Col < m_nXcolumns)
-      m_sStatement.vConcat("  x"_Stz);
-    else if (i_Col < m_nXcolumns + m_nTcolumns)
-      m_sStatement.vConcat("  t"_Stz);
-    else
-      m_sStatement.vConcat("  z"_Stz);
-
-    s32 sColNo;
-    StrLib::wToString(i_Col,sColNo.aChar());
-    m_sStatement.vConcat(sColNo);
-
-    switch (m_eColumns[i_Col]) {
-    
-      case DBobjects::CT_BOOLEAN:
-        m_sStatement.vConcat(" boolean"_Stz);
-        break;
-        
-      case DBobjects::CT_DATE:
-        m_sStatement.vConcat(" date"_Stz);
-        break;
-        
-      case DBobjects::CT_DECIMAL:
-        m_sStatement.vConcat(" decimal"_Stz);
-        break;
-        
-      case DBobjects::CT_FLOAT:
-        m_sStatement.vConcat(" float"_Stz);
-        break;
-        
-      case DBobjects::CT_INTEGER:
-        m_sStatement.vConcat(" integer"_Stz);
-        break;
-        
-      case DBobjects::CT_INTERVAL:
-        m_sStatement.vConcat(" interval"_Stz);
-        break;
-        
-      case DBobjects::CT_TIME:
-        m_sStatement.vConcat(" time"_Stz);
-        break;
-        
-      case DBobjects::CT_TIMESTAMP:
-        m_sStatement.vConcat(" timestamp"_Stz);
-        break;
-        
-      case DBobjects::CT_VARCHAR:
-        m_sStatement.vConcat(" varchar(32)"_Stz);
-        break;
-        
-      default:
-        NEVER_REACH;
-    }
-    
-    if (i_Col + 1 < m_nTotalColumns)
-      m_sStatement.vConcat(",\n"_Stz);
-
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* form create table statement                                                */
-/*----------------------------------------------------------------------------*/
-void SchemaTest::vFormCreateTable(void)
-{
-  m_sStatement = "time create table "_Stz;
-  
-  m_sStatement.vConcat(m_sTableNm);
-
-  m_sStatement.vConcat(" (\n"_Stz);
-  
-  vFormColumnList();
-
-  m_sStatement.vConcat("\n) ;"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* form drop table statement                                                  */
-/*----------------------------------------------------------------------------*/
-void SchemaTest::vFormDropTable(void)
-{
-  m_sStatement = "time drop table "_Stz;
-  
-  m_sStatement.vConcat(m_sTableNm);
-  
-  m_sStatement.vConcat(" ;"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* form table name                                                            */
-/*----------------------------------------------------------------------------*/
-void SchemaTest::vFormTableName(void)
-{
-  i8 i_Col;
-  
-  // table prefix
-  m_sTableNm = ""_Stz;
-  
-  // no columns
-//  s32 sTableNo;
-//  StrLib::wToString(m_nTcolumns,sTableNo.aChar());
-//  m_sTableNm.vConcat(sTableNo);
-//  m_sTableNm.vConcat("_"_Stz);
-  
-  // x columns prefix
-  s32 sX;
-  StrLib::wToString(m_nXcolumns,sX.aChar());
-  m_sTableNm.vConcat("X"_Stz);
-  m_sTableNm.vConcat(sX);
-  m_sTableNm.vConcat("_"_Stz);
-  
-  s256 sColShorts;
-  sColShorts = ""_Stz;
-  
-  // the t columns
-  for (i_Col = m_nXcolumns;
-       i_Col < m_nXcolumns + m_nTcolumns;
-       i_Col++)
-    sColShorts.vConcat(aCT_short[m_eColumns[i_Col]]);
-
-  m_sTableNm.vConcat(sColShorts);
-  
-  // z columns suffix
-  s32 sZ;
-  StrLib::wToString(m_nZcolumns,sZ.aChar());
-  m_sTableNm.vConcat("_Z"_Stz);
-  m_sTableNm.vConcat(sZ);
-}
-
-/*----------------------------------------------------------------------------*/
-/* open file                                                                  */
-/*----------------------------------------------------------------------------*/
-void SchemaTest::vOpenFile(void)
-{
-  bool bOpened = m_xFile.bOpen("../Commands/_schemaTest"_Stz, C_OPEN_WRITE);
-  RASSERT(bOpened);
-}
-
-/*----------------------------------------------------------------------------*/
-/* make a test for given column pattern                                       */
-/*----------------------------------------------------------------------------*/
-void SchemaTest::vMakeTest(void)
-{
-  vFormTableName();
-  
-  vFormCreateTable();
-  vWriteStatement();
-  
-  vFormDropTable();
-  vWriteStatement();
-  
-  m_nTests++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* random column type                                                         */
-/*----------------------------------------------------------------------------*/
-eCT SchemaTest::eRandomType(void)
-{
-  while (true) {
-    eCT eColumn = (eCT)Random::iRandom(CT_BOOLEAN,CT_VARCHAR);
-    
-    if (CT_CHAR != eColumn)
-      return eColumn;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* write statement to file                                                    */
-/*----------------------------------------------------------------------------*/
-void SchemaTest::vWriteStatement(void)
-{
-  m_xFile.vPrint("%s\n"_Stz,m_sStatement.aChar());
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* add the x columns                                                          */
@@ -364,7 +221,7 @@ void SchemaTest::vAddZcolumns(void)
 {
   i8 i_Col;
   
-  for (i_Col = m_nXcolumns + m_nTcolumns;
+  for (i_Col = m_nXcolumns + m_nCcolumns;
        i_Col < m_nTotalColumns;
        i_Col++)
     m_eColumns[i_Col] = eRandomType();
@@ -385,7 +242,7 @@ void SchemaTest::vAddColumns(i8 i_Col)
     
     m_eColumns[m_nXcolumns + i_Col] = (eCT)i_Type;
     
-    if (i_Col + 1 == m_nTcolumns) {
+    if (i_Col + 1 == m_nCcolumns) {
       vAddZcolumns();
       vMakeTest();
     }
@@ -393,114 +250,431 @@ void SchemaTest::vAddColumns(i8 i_Col)
       vAddColumns(i_Col + 1);
   }
 }
+/*----------------------------------------------------------------------------*/
+/* close file                                                                 */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vCloseFile(void)
+{
+  m_xFile.vClose();
+}
 
 /*----------------------------------------------------------------------------*/
-/* for nColumns                                                               */
+/* file footer                                                                */
 /*----------------------------------------------------------------------------*/
-void SchemaTest::vForPattern(i8 nX, i8 nT, i8 nZ)
+void SchemaTest::vFileFooter(void)
+{
+#ifdef ST_SETH
+  m_xFile.vPrint("%s\n"_Stz,
+  "/*----------------------------------------------------------------------------*/"_Stz);
+  m_xFile.vPrint("%s\n"_Stz,
+  "/* end                                                                        */"_Stz);
+  m_xFile.vPrint("%s\n"_Stz,
+  "/*----------------------------------------------------------------------------*/"_Stz);
+#else
+  m_xFile.vPrint("%s\n"_Stz,
+  "/*============================================================================*/"_Stz);
+  m_xFile.vPrint("%s\n"_Stz,
+  "/* end                                                                        */"_Stz);
+  m_xFile.vPrint("%s\n"_Stz,
+  "/*============================================================================*/"_Stz);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* file header                                                                */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vFileHeader(void)
+{
+#ifdef ST_SETH
+  m_xFile.vPrint("%s\n"_Stz,
+  "/*----------------------------------------------------------------------------*/"_Stz);
+  m_xFile.vPrint("%s\n"_Stz,
+  "/* schemaTest.test -- schema stress test (auto generated)                     */"_Stz);
+  m_xFile.vPrint("%s\n"_Stz,
+   "/*----------------------------------------------------------------------------*/"_Stz);
+#else
+  m_xFile.vPrint("%s\n"_Stz,
+  "/*============================================================================*/"_Stz);
+  m_xFile.vPrint("%s\n"_Stz,
+  "/* _schemaTest -- schema stress test (auto generated)                         */"_Stz);
+  m_xFile.vPrint("%s\n"_Stz,
+  "/*============================================================================*/"_Stz);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* form column list                                                           */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vFormColumnList(void)
+{
+  for (i8 i_Col = 0; i_Col < m_nTotalColumns; i_Col++) {
+   
+    vFormColumnName(i_Col);
+    m_sStatement.vConcat("  "_Stz);
+    m_sStatement.vConcat(m_sColumnNm);
+    
+    vFormColumnType(i_Col);
+    m_sStatement.vConcat(" "_Stz);
+    m_sStatement.vConcat(m_sColumnTy);
+
+    if (i_Col + 1 < m_nTotalColumns)
+      m_sStatement.vConcat(",\n"_Stz);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* form column name                                                           */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vFormColumnName(i8 i_Col)
+{
+  m_sColumnNm = ""_Stz;
+  
+  if (i_Col < m_nXcolumns)
+    m_sColumnNm.vConcat("x"_Stz);
+  else if (i_Col < m_nXcolumns + m_nCcolumns)
+    m_sColumnNm.vConcat("c"_Stz);
+  else
+    m_sColumnNm.vConcat("z"_Stz);
+  
+  s32 sColNo;
+  StrLib::wToString(i_Col,sColNo.aChar());
+  m_sColumnNm.vConcat(sColNo);
+}
+
+/*----------------------------------------------------------------------------*/
+/* form column type                                                           */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vFormColumnType(i8 i_Col)
+{
+  m_sColumnTy = ""_Stz;
+  
+  switch (m_eColumns[i_Col]) {
+      
+    case DBobjects::CT_BOOLEAN:
+      m_sColumnTy.vConcat("boolean"_Stz);
+      break;
+      
+    case DBobjects::CT_DATE:
+      m_sColumnTy.vConcat("date"_Stz);
+      break;
+      
+    case DBobjects::CT_DECIMAL:
+      m_sColumnTy.vConcat("decimal"_Stz);
+      break;
+      
+    case DBobjects::CT_FLOAT:
+      m_sColumnTy.vConcat("float"_Stz);
+      break;
+      
+    case DBobjects::CT_INTEGER:
+      m_sColumnTy.vConcat("integer"_Stz);
+      break;
+      
+    case DBobjects::CT_INTERVAL:
+      m_sColumnTy.vConcat("interval"_Stz);
+      break;
+      
+    case DBobjects::CT_TIME:
+      m_sColumnTy.vConcat("time"_Stz);
+      break;
+      
+    case DBobjects::CT_TIMESTAMP:
+      m_sColumnTy.vConcat("timestamp"_Stz);
+      break;
+      
+    case DBobjects::CT_VARCHAR:
+      m_sColumnTy.vConcat("varchar(32)"_Stz);
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+}
+/*----------------------------------------------------------------------------*/
+/* form create table statement                                                */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vFormCreateTable(void)
+{
+  m_sStatement = "create table "_Stz;
+  
+  m_sStatement.vConcat(m_sTableNm);
+
+  m_sStatement.vConcat(" (\n"_Stz);
+  
+  vFormColumnList();
+
+  m_sStatement.vConcat("\n) ;"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* form drop table statement                                                  */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vFormDropTable(void)
+{
+  m_sStatement = "drop table "_Stz;
+  
+  m_sStatement.vConcat(m_sTableNm);
+  
+  m_sStatement.vConcat(" ;"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* form table name                                                            */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vFormTableName(void)
+{
+  i8 i_Col;
+  
+  // table prefix
+  m_sTableNm = ""_Stz;
+  
+  // no columns
+//  s32 sTableNo;
+//  StrLib::wToString(m_nCcolumns,sTableNo.aChar());
+//  m_sTableNm.vConcat(sTableNo);
+//  m_sTableNm.vConcat("_"_Stz);
+  
+  // x columns prefix
+  s32 sX;
+  StrLib::wToString(m_nXcolumns,sX.aChar());
+  m_sTableNm.vConcat("X"_Stz);
+  m_sTableNm.vConcat(sX);
+  
+  s256 sColShorts;
+  sColShorts = ""_Stz;
+  
+  // the t columns
+  for (i_Col = m_nXcolumns;
+       i_Col < m_nXcolumns + m_nCcolumns;
+       i_Col++)
+    sColShorts.vConcat(aCT_short[m_eColumns[i_Col]]);
+
+  m_sTableNm.vConcat("_C"_Stz);
+  m_sTableNm.vConcat(sColShorts);
+  
+  // z columns suffix
+  s32 sZ;
+  StrLib::wToString(m_nZcolumns,sZ.aChar());
+  m_sTableNm.vConcat("_Z"_Stz);
+  m_sTableNm.vConcat(sZ);
+}
+
+/*----------------------------------------------------------------------------*/
+/* form row                                                                   */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vFormRow(i8 i_Col)
+{
+  m_sRow = ""_Stz;
+  
+  m_sRow.vConcat("  ("_Stz);
+  
+  s32 sColNo;
+  StrLib::wToString(i_Col,sColNo.aChar());
+  m_sRow.vConcat(sColNo);
+  m_sRow.vConcat(","_Stz);
+
+  vFormColumnName(i_Col);
+  m_sRow.vConcat(" '"_Stz);
+  m_sRow.vConcat(m_sColumnNm);
+  m_sRow.vConcat("', "_Stz);
+  
+  switch (m_eColumns[i_Col]) {
+      
+    case DBobjects::CT_BOOLEAN:
+      if (! i_Col)
+        m_sRow.vConcat("'BOOLEAN', 0, 0, true, true"_Stz);
+      else
+        m_sRow.vConcat("'BOOLEAN', 0, 0, true, false"_Stz);
+      break;
+      
+    case DBobjects::CT_DATE:
+      if (! i_Col)
+        m_sRow.vConcat("'DATE', 0, 0, true, true"_Stz);
+      else
+        m_sRow.vConcat("'DATE', 0, 0, true, false"_Stz);
+      break;
+      
+    case DBobjects::CT_DECIMAL:
+      if (! i_Col)
+        m_sRow.vConcat("'DECIMAL', 19, 0, true, true"_Stz);
+      else
+        m_sRow.vConcat("'DECIMAL', 19, 0, true, false"_Stz);
+      break;
+      
+    case DBobjects::CT_FLOAT:
+      if (! i_Col)
+        m_sRow.vConcat("'FLOAT', 19, 0, true, true"_Stz);
+      else
+        m_sRow.vConcat("'FLOAT', 19, 0, true, false"_Stz);
+      break;
+      
+    case DBobjects::CT_INTEGER:
+      if (! i_Col)
+        m_sRow.vConcat("'INTEGER', 19, 0, true, true"_Stz);
+      else
+        m_sRow.vConcat("'INTEGER', 19, 0, true, false"_Stz);
+      break;
+      
+    case DBobjects::CT_INTERVAL:
+      if (! i_Col)
+        m_sRow.vConcat("'INTERVAL', 0, 0, true, true"_Stz);
+      else
+        m_sRow.vConcat("'INTERVAL', 0, 0, true, false"_Stz);
+      break;
+      
+    case DBobjects::CT_TIME:
+      if (! i_Col)
+        m_sRow.vConcat("'TIME', 0, 0, true, true"_Stz);
+      else
+        m_sRow.vConcat("'TIME', 0, 0, true, false"_Stz);
+      break;
+      
+    case DBobjects::CT_TIMESTAMP:
+      if (! i_Col)
+        m_sRow.vConcat("'TIMESTAMP', 0, 0, true, true"_Stz);
+      else
+        m_sRow.vConcat("'TIMESTAMP', 0, 0, true, false"_Stz);
+      break;
+      
+    case DBobjects::CT_VARCHAR:
+      if (! i_Col)
+        m_sRow.vConcat("'VARCHAR', 32, 0, true, true"_Stz);
+      else
+        m_sRow.vConcat("'VARCHAR', 32, 0, true, false"_Stz);
+      break;
+      
+    default:
+      NEVER_REACH;
+  }
+
+
+  m_sRow.vConcat(")"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* for given pattern                                                          */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vForPattern(i8 nX, i8 nC, i8 nZ)
 {
   
   if (-1 == nX) {
-    m_nTcolumns = nT;
+    m_nCcolumns = nC;
     m_nZcolumns = nZ;
-    m_nXcolumns = C_MAX_COLUMNS - m_nTcolumns - m_nZcolumns;
+    m_nXcolumns = C_MAX_COLUMNS - m_nCcolumns - m_nZcolumns;
   }
   else
-  if (-1 == nZ) {
-    m_nTcolumns = nT;
-    m_nXcolumns = nX;
-    m_nZcolumns = C_MAX_COLUMNS - m_nTcolumns - m_nXcolumns;
-  }
-  else {
-    m_nXcolumns = nX;
-    m_nTcolumns = nT;
-    m_nZcolumns = nZ;
-  }
+    if (-1 == nZ) {
+      m_nCcolumns = nC;
+      m_nXcolumns = nX;
+      m_nZcolumns = C_MAX_COLUMNS - m_nCcolumns - m_nXcolumns;
+    }
+    else {
+      m_nXcolumns = nX;
+      m_nCcolumns = nC;
+      m_nZcolumns = nZ;
+    }
   
-  m_nTotalColumns = m_nXcolumns + m_nTcolumns + m_nZcolumns;
-
+  m_nTotalColumns = m_nXcolumns + m_nCcolumns + m_nZcolumns;
+  
   vAddColumns(0);
 }
-
-
-
 /*----------------------------------------------------------------------------*/
-/* 1 column variants                                                          */
+/* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-void SchemaTest::vTestSet(void)
+void SchemaTest::vOpenFile(void)
 {
-  // left
-  vForPattern(0,1,0);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(0,2,0);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(0,3,0);  m_xFile.vPrint("\n"_Stz);
-//  vForPattern(0,4,0);  m_xFile.vPrint("\n"_Stz);
-//  vForPattern(0,5,0);  m_xFile.vPrint("\n"_Stz);
-//
-  
-  vForPattern(1,1,0);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(1,2,0);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(1,3,0);  m_xFile.vPrint("\n"_Stz);
-  
-  vForPattern(2,1,0);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(2,2,0);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(2,3,0);  m_xFile.vPrint("\n"_Stz);
-  
-  vForPattern(3,1,0);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(3,2,0);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(3,3,0);  m_xFile.vPrint("\n"_Stz);
-
-  vForPattern(0,1,1);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(0,2,1);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(0,3,1);  m_xFile.vPrint("\n"_Stz);
-
-  vForPattern(0,1,2);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(0,2,2);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(0,3,2);  m_xFile.vPrint("\n"_Stz);
-  
-  vForPattern(0,1,3);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(0,2,3);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(0,3,3);  m_xFile.vPrint("\n"_Stz);
-
-  vForPattern(3,1,3);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(3,2,3);  m_xFile.vPrint("\n"_Stz);
-  vForPattern(3,3,3);  m_xFile.vPrint("\n"_Stz);
-
-  vForPattern(73,1,0); m_xFile.vPrint("\n"_Stz);
-  vForPattern(73,2,0); m_xFile.vPrint("\n"_Stz);
-  vForPattern(73,3,0); m_xFile.vPrint("\n"_Stz);
-  
-  vForPattern(73,1,1); m_xFile.vPrint("\n"_Stz);
-  vForPattern(73,2,1); m_xFile.vPrint("\n"_Stz);
-  vForPattern(73,3,1); m_xFile.vPrint("\n"_Stz);
-  
-  vForPattern(73,1,2); m_xFile.vPrint("\n"_Stz);
-  vForPattern(73,2,2); m_xFile.vPrint("\n"_Stz);
-  vForPattern(73,3,2); m_xFile.vPrint("\n"_Stz);
-  
-  vForPattern(73,1,3); m_xFile.vPrint("\n"_Stz);
-  vForPattern(73,2,3); m_xFile.vPrint("\n"_Stz);
-  vForPattern(73,3,4); m_xFile.vPrint("\n"_Stz);
-  
-  vForPattern(73,3,-1); m_xFile.vPrint("\n"_Stz);
-  vForPattern(73,2,-1); m_xFile.vPrint("\n"_Stz);
-  vForPattern(73,1,-1); m_xFile.vPrint("\n"_Stz);
-
-  vForPattern(-1,3,3); m_xFile.vPrint("\n"_Stz);
-  vForPattern(-1,2,3); m_xFile.vPrint("\n"_Stz);
-  vForPattern(-1,1,3); m_xFile.vPrint("\n"_Stz);
-
-  vForPattern(-1,3,2); m_xFile.vPrint("\n"_Stz);
-  vForPattern(-1,2,2); m_xFile.vPrint("\n"_Stz);
-  vForPattern(-1,1,2); m_xFile.vPrint("\n"_Stz);
-
-  vForPattern(-1,3,1); m_xFile.vPrint("\n"_Stz);
-  vForPattern(-1,2,1); m_xFile.vPrint("\n"_Stz);
-  vForPattern(-1,1,1); m_xFile.vPrint("\n"_Stz);
-
-  vForPattern(-1,3,0); m_xFile.vPrint("\n"_Stz);
-  vForPattern(-1,2,0); m_xFile.vPrint("\n"_Stz);
-  vForPattern(-1,1,0); m_xFile.vPrint("\n"_Stz);
+#ifdef ST_SETH
+  bool bOpened = m_xFile.bOpen("../Seth/schemaTest.test"_Stz, C_OPEN_WRITE);
+  RASSERT(bOpened);
+#else
+  bool bOpened = m_xFile.bOpen("../Commands/_schemaTest"_Stz, C_OPEN_WRITE);
+  RASSERT(bOpened);
+#endif
 }
+
+/*----------------------------------------------------------------------------*/
+/* make a test for given column pattern                                       */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vMakeTest(void)
+{
+  vFormTableName();
+  
+  vFormCreateTable();
+  vWriteStatement();
+  
+#ifdef ST_SETH
+  vWriteSuccess();
+  vWriteLsCol();
+  vWriteRows();
+#endif
+  
+  vFormDropTable();
+  vWriteStatement();
+  
+#ifdef ST_SETH
+  vWriteSuccess();
+#endif
+  
+  m_nTests++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* random column type                                                         */
+/*----------------------------------------------------------------------------*/
+eCT SchemaTest::eRandomType(void)
+{
+  while (true) {
+    eCT eColumn = (eCT)Random::iRandom(CT_BOOLEAN,CT_VARCHAR);
+    
+    if (CT_CHAR != eColumn)
+      return eColumn;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* write lscols command to file                                               */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vWriteLsCol(void)
+{
+  m_xFile.vPrint("lscol %s ;\n"_Stz,m_sTableNm.aChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* write rows to file                                                         */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vWriteRows(void)
+{
+  m_xFile.vPrint("rows:\n"_Stz);
+  for (i8 i_Col = 0; i_Col < m_nTotalColumns; i_Col++) {
+    vFormRow(i_Col);
+    m_xFile.vPrint("%s\n"_Stz,m_sRow.aChar());
+  }
+  m_xFile.vPrint("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write statement to file                                                    */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vWriteStatement(void)
+{
+  m_xFile.vPrint("%s\n"_Stz,m_sStatement.aChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* write success to file                                                      */
+/*----------------------------------------------------------------------------*/
+void SchemaTest::vWriteSuccess(void)
+{
+  m_xFile.vPrint("success\n\n"_Stz);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+
+
 
 
 /*----------------------------------------------------------------------------*/

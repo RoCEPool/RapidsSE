@@ -10,7 +10,9 @@ time create table t
   t_str  VARCHAR(32) NOT NULL
 );
 
-time drop table t;
+lscol t;
+
+//time drop table t;
 
 /*============================================================================*/
 /* end                                                                        */
