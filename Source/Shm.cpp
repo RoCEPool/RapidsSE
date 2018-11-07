@@ -9,6 +9,8 @@
 extern AttachMap* gpAttachMap;
 extern Arguments gxArguments;
 
+extern ResourceTracker gxResourceTracker;
+
 Atomic gzShmOpenCount;
 
 /*----------------------------------------------------------------------------*/
@@ -28,7 +30,8 @@ bool Shm::bAttach(StrVal& sRegionName, int& iFD, SysCall& xSysCall)
   }
   
   ++gzShmOpenCount;
-  
+  gxResourceTracker.vIncShmOpen();
+
   return true;
 }
 
@@ -48,7 +51,8 @@ bool Shm::bClose(int iFD, SysCall& xSysCall)
   }
   
   --gzShmOpenCount;
-  
+  gxResourceTracker.vDecShmOpen();
+
   xSysCall.vSuccess();
   
   return true;
@@ -92,6 +96,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   //  vTrace("Shm::bCreate D\n"_Stz);
   
   ++gzShmOpenCount;
+  gxResourceTracker.vIncShmOpen();
 
   // fill with 0's
   rCode = ftruncate(iFD, iSize);

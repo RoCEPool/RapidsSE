@@ -8,6 +8,8 @@
 
 Atomic gzFileOpenCount;
 
+extern ResourceTracker gxResourceTracker;
+
 /*----------------------------------------------------------------------------*/
 
 // Opens for reading. If the file does not exist or cannot be found, the
@@ -184,7 +186,8 @@ void File::vClose(void)
   }
   
   --gzFileOpenCount;
-  
+  gxResourceTracker.vDecFileOpen();
+
   vReset();
   
   m_xSysCall.vSuccess();
@@ -370,7 +373,8 @@ bool File::bOpen(void)
   }
   
   ++gzFileOpenCount;
-  
+  gxResourceTracker.vIncFileOpen();
+
   return true;
 }
 
@@ -403,7 +407,8 @@ bool File::bOpen(Stz* aOpenMode, i8 iTraceLevel)
   }
   
   ++gzFileOpenCount;
-  
+  gxResourceTracker.vIncFileOpen();
+
   return true;
 }
 
@@ -436,7 +441,8 @@ bool File::bOpen(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel)
   }
   
   ++gzFileOpenCount;
-  
+  gxResourceTracker.vIncFileOpen();
+
   return true;
 }
 

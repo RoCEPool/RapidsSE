@@ -8,6 +8,8 @@
 
 Atomic gzDirOpenCount;
 
+extern ResourceTracker gxResourceTracker;
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -237,6 +239,7 @@ void Dir::vClose(void)
   }
 
   --gzDirOpenCount;
+  gxResourceTracker.vDecDirOpen();
 
   m_pDirPtr = nullptr;
   
@@ -308,7 +311,8 @@ bool Dir::bOpen(void)
   }
 
   ++gzDirOpenCount;
-  
+  gxResourceTracker.vIncDirOpen();
+
   ASSERT(bIsOpen());
   return true;
 }

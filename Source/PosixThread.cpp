@@ -8,6 +8,8 @@
 
 Atomic gzThreadOpenCount;
 
+extern ResourceTracker gxResourceTracker;
+
 extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_ThreadKey;
 
@@ -167,7 +169,8 @@ bool PosixThread::bSpawnThread(void* pFun(void*), void* pArg)
   }
   
   ++gzThreadOpenCount;
-  
+  gxResourceTracker.vIncThreadOpen();
+
   // this is important otherwise resources are not released
   pthread_detach(m_iPosixThreadId);
   
@@ -222,6 +225,7 @@ void PosixThread::vThreadExit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
   
   --gzThreadOpenCount;
+  gxResourceTracker.vDecThreadOpen();
 }
         
 /*----------------------------------------------------------------------------*/
