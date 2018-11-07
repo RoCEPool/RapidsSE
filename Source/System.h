@@ -22,6 +22,8 @@ using namespace System;
   #include "Asm.h"
 #endif
 
+#include "ResourceTracker.hpp"
+
 #include "Atomic.hpp"
 #include "Decider.hpp"
 #include "Dir.hpp"
