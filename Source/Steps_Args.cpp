@@ -15,12 +15,12 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Args(void)
 {
-  vAddStep("args.oscillate"_Stz,  &Task::vArgsOscillate);
+  vAddStep("args::oscillate"_Stz,  &Task::vArgsOscillate);
   vAddStep("args.print"_Stz,      &Task::vArgsPrint);
 }
 
 /*----------------------------------------------------------------------------*/
-/* args.oscillate -- oscillate the dummy parameters                           */
+/* args::oscillate -- oscillate the dummy parameters                          */
 /*----------------------------------------------------------------------------*/
 void Task::vArgsOscillate(MP_Task mpTask)
 {

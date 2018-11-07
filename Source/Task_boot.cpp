@@ -103,6 +103,7 @@ void Task::vAddConstants(void)
   vAddConstant("args.nodeName"_Stz,          gxArguments.m_sNodeName);
   vAddConstant("args.nodes"_Stz,             gxArguments.m_nNodes);
   vAddConstant("args.partitionsPerNode"_Stz, gxArguments.m_nSlots);
+  vAddConstant("args.periodicSleep"_Stz,     gxArguments.m_nPeriodicSleep);
   vAddConstant("args.progress"_Stz,          gxArguments.m_bProgress);
   vAddConstant("args.prompt"_Stz,            gxArguments.m_bPrompt);
   vAddConstant("args.regionPrefix"_Stz,      gxArguments.m_sRegionPrefix);
