@@ -68,6 +68,7 @@ Arguments::Arguments(void)
   m_bFreeRB      = false;
   m_nLimitDir    = 0;
   m_nLimitFile   = 0;
+  m_nLimitMalloc = 0;
   m_nLimitThread = 0;
   m_nLimitShm    = 0;
   m_nLimitSocket = 0;
@@ -475,6 +476,11 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     if (argv[i_Arg]->bSame("--limitFile"_Stz)) {
       m_nLimitFile = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    if (argv[i_Arg]->bSame("--limitMalloc"_Stz)) {
+      m_nLimitMalloc = argv[++i_Arg]->iToI8();
       continue;
     }
     

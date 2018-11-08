@@ -40,7 +40,7 @@ ResourceTracker::~ResourceTracker(void)
 void ResourceTracker::vAddMallocAmt(i8 nBytes)
 {
   i8 iMallocAmt = m_ziMallocAmt.iAdd(nBytes);
-  RASSERT(iMallocAmt);
+  RASSERT(! gxArguments.m_nLimitMalloc || iMallocAmt <= gxArguments.m_nLimitMalloc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,6 +165,16 @@ i8 ResourceTracker::nFileOpen(void)
 /*----------------------------------------------------------------------------*/
 /* get                                                                        */
 /*----------------------------------------------------------------------------*/
+i8 ResourceTracker::nMallocAmt(void)
+{
+  i8 iMallocAmt = *m_ziMallocAmt;
+  
+  return iMallocAmt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get                                                                        */
+/*----------------------------------------------------------------------------*/
 i8 ResourceTracker::nShmOpen(void)
 {
   i8 iShmOpen = *m_ziShmOpen;
@@ -203,6 +213,8 @@ void ResourceTracker::vReport(void)
          nDirOpen(),gxArguments.m_nLimitDir);
   vTrace("  file %lld (limit %lld)\n"_Stz,
          nFileOpen(),gxArguments.m_nLimitFile);
+  vTrace("  malloc %lld (limit %lld)\n"_Stz,
+         nMallocAmt(),gxArguments.m_nLimitMalloc);
   vTrace("  shm %lld (limit %lld)\n"_Stz,
          nShmOpen(),gxArguments.m_nLimitShm);
   vTrace("  socket %lld (limit %lld)\n"_Stz,

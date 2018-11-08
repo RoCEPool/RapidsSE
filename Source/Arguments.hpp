@@ -51,6 +51,7 @@ namespace StorageEngine
     bool m_bFreeRB;     // but free RowBuffers back to heap
     i8   m_nLimitDir;   // limit of open dir's
     i8   m_nLimitFile;  // limit of open file's
+    i8   m_nLimitMalloc;// limit of malloc amout
     i8   m_nLimitThread;// limit of open threads's
     i8   m_nLimitShm;   // limit of open shm's
     i8   m_nLimitSocket;// limit of open socket's
