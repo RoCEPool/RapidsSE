@@ -180,11 +180,16 @@ void ResourceTracker::vReport(void)
 {
   vTrace("Resources:\n"_Stz);
 
-  vTrace("  dir %lld\n"_Stz,   nDirOpen());
-  vTrace("  file %lld\n"_Stz,  nFileOpen());
-  vTrace("  shm %lld\n"_Stz,   nShmOpen());
-  vTrace("  socket %lld\n"_Stz,nSocketOpen());
-  vTrace("  thread %lld\n"_Stz,nThreadOpen());
+  vTrace("  dir %lld (limit %lld)\n"_Stz,
+         nDirOpen(),gxArguments.m_nLimitDir);
+  vTrace("  file %lld (limit %lld)\n"_Stz,
+         nFileOpen(),gxArguments.m_nLimitFile);
+  vTrace("  shm %lld (limit %lld)\n"_Stz,
+         nShmOpen(),gxArguments.m_nLimitShm);
+  vTrace("  socket %lld (limit %lld)\n"_Stz,
+         nSocketOpen(),gxArguments.m_nLimitSocket);
+  vTrace("  thread %lld (limit %lld)\n"_Stz,
+         nThreadOpen(),gxArguments.m_nLimitThread);
 }
 
 
