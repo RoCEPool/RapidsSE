@@ -21,6 +21,7 @@ using namespace Measurement;
 #include "PerformanceEntry.hpp"
 #include "PerformanceBuffer.hpp"
 #include "PerformanceTrace.hpp"
+#include "ResourceTracker.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
