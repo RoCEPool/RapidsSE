@@ -18,6 +18,10 @@ using namespace Measurement;
 #include "ActivityMark.hpp"
 #include "ActivityMap.hpp"
 
+#include "PerformanceEntry.hpp"
+#include "PerformanceBuffer.hpp"
+#include "PerformanceTrace.hpp"
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

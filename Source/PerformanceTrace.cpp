@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PerformanceTrace* Utilities::_pPerformanceTrace(void* aAddr)
+PerformanceTrace* Measurement::_pPerformanceTrace(void* aAddr)
 {
   PerformanceTrace* pPerformanceTrace = reinterpret_cast<PerformanceTrace*>(aAddr);
   

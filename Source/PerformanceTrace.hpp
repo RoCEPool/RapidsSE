@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Utilities
+namespace Measurement
 {
   class PerformanceTrace : public Object
   {

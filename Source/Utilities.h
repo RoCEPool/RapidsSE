@@ -19,9 +19,6 @@ using namespace Utilities;
 #include "LoadChunk.hpp"
 #include "LoadMap.hpp"
 
-#include "PerformanceEntry.hpp"
-#include "PerformanceBuffer.hpp"
-#include "PerformanceTrace.hpp"
 #include "Prefetch.hpp"
 
 #include "SchemaTest.hpp"

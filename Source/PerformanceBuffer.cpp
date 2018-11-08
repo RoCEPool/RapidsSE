@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PerformanceBuffer* DBobjects::_pPerformanceBuffer(void* aAddr)
+PerformanceBuffer* Measurement::_pPerformanceBuffer(void* aAddr)
 {
   PerformanceBuffer* pPerformanceBuffer = reinterpret_cast<PerformanceBuffer*>(aAddr);
   
