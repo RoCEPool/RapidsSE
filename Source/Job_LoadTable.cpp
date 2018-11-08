@@ -122,8 +122,6 @@ Job_LoadTable::Job_LoadTable(Interface::Session* pSession)
   
   m_pLoadMap      = nullptr;
   
-  m_pThisTask     = nullptr;
-  
   _checkInitialised_(CN_JOB_LOADTABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
@@ -352,26 +350,6 @@ void Job_LoadTable::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
   m_pTable = pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get task                                                                   */
-/*----------------------------------------------------------------------------*/
-Tasks::Task* Job_LoadTable::pThisTask(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
-  
-  return m_pThisTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set task                                                                   */
-/*----------------------------------------------------------------------------*/
-void Job_LoadTable::vThisTask(Tasks::Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
-  
-  m_pThisTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/

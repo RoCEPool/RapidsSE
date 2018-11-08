@@ -647,6 +647,7 @@ namespace Tasks
     static void vJobDecAcksRemaining(MP_Task mpTask);
     static void vJobDelete(MP_Task mpTask);
     static void vJobDicPath(MP_Task mpTask);
+    static void vJobExecutingTaskFetch(MP_Task mpTask);
     static void vJobFindOriginator(MP_Task mpTask);
     static void vJobFindParticipant(MP_Task mpTask);
     static void vJobHasError(MP_Task mpTask);

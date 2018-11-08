@@ -41,7 +41,7 @@
   pJob_LoadTable pJob_LoadBuffer job_loadBuffer.jobLoadTable!
 
   // get the load table task
-  pJob_LoadTable job_LoadTable.task@ to pTask_LoadTable
+  pJob_LoadTable job.executingtask@ to pTask_LoadTable
 
   //pTask_LoadTable pJob_LoadTable iLoadJobId
   //  "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v"

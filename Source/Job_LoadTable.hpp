@@ -14,8 +14,6 @@ namespace JobsModel
     Formatters m_xFormatters;  // record formatters
   
     LoadMap*   m_pLoadMap;     // load map
-    
-    Tasks::Task* m_pThisTask;  // task running this job
   
     // must be last
     Footer m_xFooter;
@@ -37,9 +35,6 @@ namespace JobsModel
   
     Table* pTable(void);
     void   vTable(Table* pTable);
-
-    Tasks::Task* pThisTask(void);
-    void vThisTask(Tasks::Task* pTask);
 
     void vShow(void);
     

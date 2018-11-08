@@ -20,8 +20,6 @@ void Step::vAddSteps_JobLoadTable(void)
   vAddStep("job_loadTable.dumpMap"_Stz,       &Task::vJob_LoadTableDumpMap);
   vAddStep("job_loadTable.filePath@"_Stz,     &Task::vJob_LoadTableFilePathFetch);
   vAddStep("job_loadTable.table!"_Stz,        &Task::vJob_LoadTableTableStore);
-  vAddStep("job_loadTable.task@"_Stz,         &Task::vJob_LoadTableTaskFetch);
-  vAddStep("job_loadTable.task!"_Stz,         &Task::vJob_LoadTableTaskStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,45 +120,6 @@ void Task::vJob_LoadTableTableStore(MP_Task mpTask)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* job_LoadTable.task@ -- fetch task from job_loadTable                       */
-/*----------------------------------------------------------------------------*/
-void Task::vJob_LoadTableTaskFetch(MP_Task mpTask)
-{
-  ENTRY("vJob_LoadTableTaskFetch"_Stz);
-  
-  Object* pPtrJob_LoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    THROW_INVALID_DSTACK("job_LoadTable.task@"_Stz);
-  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
-  
-  Task* pTask = pJob_LoadTable->pThisTask();
-  mpTask->m_pDataStack->vPushObject(pTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_LoadTable.task! -- store task into job_loadTable                       */
-/*----------------------------------------------------------------------------*/
-void Task::vJob_LoadTableTaskStore(MP_Task mpTask)
-{
-  ENTRY("vJob_LoadTableTaskStore"_Stz);
-  
-  Object* pPtrJob_LoadTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    THROW_INVALID_DSTACK("job_LoadBuffer.table@"_Stz);
-  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
-
-  Object* pTaskPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskPtr) )
-    THROW_INVALID_DSTACK("job_LoadBuffer.table@"_Stz);
-  Task* pTask = _pTask(pTaskPtr);
-  
-  pJob_LoadTable->vThisTask(pTask);
-  
-  EXIT();
-}
 
 /*============================================================================*/
 /* end                                                                        */

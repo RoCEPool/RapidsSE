@@ -37,6 +37,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.error@"_Stz,           &Task::vJobErrorFetch);
   vAddStep("job.execute@"_Stz,         &Task::vJobExecuteFetch);
   
+  vAddStep("job.executingTask@"_Stz,   &Task::vJobExecutingTaskFetch);
+  
   vAddStep("job.hasError"_Stz,         &Task::vJobHasError);
   vAddStep("job.hasWorkingBuffer"_Stz, &Task::vJobHasWorkingBuffer);
   vAddStep("job.id@"_Stz,              &Task::vJobIdFetch);
@@ -443,6 +445,23 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
   }
   
   mpTask->m_pDataStack->vPushS32(sExecute);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.exectingTask@ -- fetch the job executing task                          */
+/*----------------------------------------------------------------------------*/
+void Task::vJobExecutingTaskFetch(MP_Task mpTask)
+{
+  ENTRY("vJobExecutingTaskFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.exectingTask@"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushObject(pJob->m_pExecutingTask);
   
   EXIT();
 }
@@ -1410,6 +1429,20 @@ void Task::vJobSpawn(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job::this -- get this job from this task                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vJobThis(MP_Task mpTask)
+{
+  ENTRY("vJobThis"_Stz);
+  
+  Job* pJob = mpTask->m_pJob;
+  
+  mpTask->m_pDataStack->vPushObject(pJob);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* job.trace@ -- fetch the job trace                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vJobTraceFetch(MP_Task mpTask)
@@ -1425,20 +1458,6 @@ void Task::vJobTraceFetch(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushInt(eJobTrace);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job::this -- get this job from this task                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vJobThis(MP_Task mpTask)
-{
-  ENTRY("vJobThis"_Stz);
-  
-  Job* pJob = mpTask->m_pJob;
-  
-  mpTask->m_pDataStack->vPushObject(pJob);
-
   EXIT();
 }
 

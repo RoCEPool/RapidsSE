@@ -94,9 +94,6 @@
 
   0 locals| iOriginNode |
 
-  // store task into Job_LoadTable
-  task::this pJob_LoadTable job_loadTable.task!
-
   pJob_LoadTable job.id@ job::originator@ to iOriginNode
 
   iOriginNode node::isOrigin if
