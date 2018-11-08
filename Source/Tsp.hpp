@@ -31,7 +31,7 @@ namespace Datums
     void* operator new(size_t);
   
     Tsp(void);
-    ~Tsp(void);
+    ~Tsp(void) noexcept(false);
   
     bool operator <  (Tsp& xTsp);
     bool operator <= (Tsp& xTsp);

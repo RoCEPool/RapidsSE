@@ -18,7 +18,7 @@ namespace Values
     StrVar(void);
     StrVar(Stz* aArg);
     StrVar(StrVar* pThis);
-   ~StrVar(void);
+   ~StrVar(void) noexcept(false);
     
     void operator =(i8);
     void operator =(Stz* aArg);
@@ -96,7 +96,7 @@ StrVar<SIZE>::StrVar(StrVar* pThis)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-StrVar<SIZE>::~StrVar(void)
+StrVar<SIZE>::~StrVar(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
 }

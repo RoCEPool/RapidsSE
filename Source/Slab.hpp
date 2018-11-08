@@ -20,7 +20,7 @@ namespace Pool
     void  operator delete(void*);
     
     Slab(void);
-    ~Slab(void);
+    ~Slab(void) noexcept(false);
   
     char* aAllotBytes(i8 nBytes);
 

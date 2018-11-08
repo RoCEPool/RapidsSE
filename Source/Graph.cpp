@@ -64,7 +64,7 @@ Graph::Graph(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Graph::~Graph(void)
+Graph::~Graph(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPH,_FOOTER_);
 }

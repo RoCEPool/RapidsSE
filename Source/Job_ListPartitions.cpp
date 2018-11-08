@@ -119,7 +119,7 @@ Job_ListPartitions::Job_ListPartitions(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_ListPartitions::~Job_ListPartitions(void)
+Job_ListPartitions::~Job_ListPartitions(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTITIONS,_FOOTER_);
 }

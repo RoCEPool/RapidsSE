@@ -38,7 +38,7 @@ namespace Prompt
     void  operator delete(void*);
 
     SePrompt(void);
-    ~SePrompt(void);
+    ~SePrompt(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   

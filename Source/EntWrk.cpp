@@ -35,7 +35,7 @@ EntWrk::EntWrk(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-EntWrk::~EntWrk(void)
+EntWrk::~EntWrk(void) noexcept(false)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 }

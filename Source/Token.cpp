@@ -57,7 +57,7 @@ Token::Token(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Token::~Token(void)
+Token::~Token(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 }

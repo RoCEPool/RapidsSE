@@ -88,7 +88,7 @@ Node::Node(i8 iNodeNo, Stz* pName, Stz* pIpAddress, i8 iPortNo)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Node::~Node(void)
+Node::~Node(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
 }

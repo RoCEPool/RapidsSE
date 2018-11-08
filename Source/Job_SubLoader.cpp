@@ -133,7 +133,7 @@ Job_SubLoader::Job_SubLoader(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_SubLoader::~Job_SubLoader(void)
+Job_SubLoader::~Job_SubLoader(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   

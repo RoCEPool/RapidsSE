@@ -22,7 +22,7 @@ namespace Interface
     void  operator delete(void*);
     
     CommandProcessor(void);
-    ~CommandProcessor(void);
+    ~CommandProcessor(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   

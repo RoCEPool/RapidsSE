@@ -17,7 +17,7 @@ namespace Pool
     void  operator delete(void*);
     
     HeapBuffer(void);
-   ~HeapBuffer(void);
+   ~HeapBuffer(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

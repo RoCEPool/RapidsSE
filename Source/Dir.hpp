@@ -25,7 +25,7 @@ namespace System
     void operator delete(void* pDirAddress);
     
     Dir(void);
-   ~Dir(void);
+   ~Dir(void) noexcept(false);
 
     bool bChangeCurrent(s256& rPath);
     bool bExists(s256& rPath);

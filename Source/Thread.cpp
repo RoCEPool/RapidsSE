@@ -95,7 +95,7 @@ Thread::Thread(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Thread::~Thread(void)
+Thread::~Thread(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   

@@ -65,7 +65,7 @@ Jobs::Jobs(cmpFun fCompare, eJL eJobsList)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Jobs::~Jobs(void)
+Jobs::~Jobs(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
 }

@@ -22,7 +22,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_SubTruncate(Interface::Session* pSession);
-    ~Job_SubTruncate(void);
+    ~Job_SubTruncate(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

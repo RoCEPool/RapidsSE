@@ -130,7 +130,7 @@ Job_LoadTable::Job_LoadTable(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_LoadTable::~Job_LoadTable(void)
+Job_LoadTable::~Job_LoadTable(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   

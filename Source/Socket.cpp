@@ -88,7 +88,7 @@ Socket::Socket(int iSocketId)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Socket::~Socket()
+Socket::~Socket() noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   

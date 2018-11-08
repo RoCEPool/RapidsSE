@@ -23,7 +23,7 @@ namespace System
     void operator delete(void* pSemaphoreAddress);
 
     Semaphore(void);
-    ~Semaphore(void);
+    ~Semaphore(void) noexcept(false);
   
     void vCondBroadcast(void);
     void vCondSignal(void);

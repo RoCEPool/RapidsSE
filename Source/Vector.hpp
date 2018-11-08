@@ -23,7 +23,7 @@ namespace Structures
     void  operator delete(void*);
 
     Vector(void);
-    ~Vector(void);
+    ~Vector(void) noexcept(false);
 
     ITEM*& operator [](SUB nItemNo);
 
@@ -118,7 +118,7 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::Vector(void)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
-Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~Vector(void)
+Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::~Vector(void) noexcept(false)
 {
   _precondition_(_MAGIC_,VEC_CN,_FOOTER_);
   

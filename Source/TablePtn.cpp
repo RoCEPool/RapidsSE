@@ -122,7 +122,7 @@ TablePtn::TablePtn(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TablePtn::~TablePtn(void)
+TablePtn::~TablePtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   

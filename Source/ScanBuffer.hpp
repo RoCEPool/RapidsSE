@@ -20,7 +20,7 @@ namespace Structures
     void  operator delete(void*);
     
     ScanBuffer(void);
-    ~ScanBuffer(void);
+    ~ScanBuffer(void) noexcept(false);
     
     Stz* aInto(i8& iAvailableBytes);
     void vMore(i8& iMoreBytes);

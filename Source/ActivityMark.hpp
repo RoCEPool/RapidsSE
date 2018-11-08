@@ -25,7 +25,7 @@ namespace Measurement
     void  operator delete(void*);
     
     ActivityMark(void);
-    ~ActivityMark(void);
+    ~ActivityMark(void) noexcept(false);
   
     static i8 iAsMicroseconds(i8 iTickDelta);
   

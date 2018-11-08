@@ -29,7 +29,7 @@ ResourceTracker::ResourceTracker(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ResourceTracker::~ResourceTracker(void)
+ResourceTracker::~ResourceTracker(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_RESOURCETRACKER,_FOOTER_);
 }

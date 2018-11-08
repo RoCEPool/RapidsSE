@@ -107,7 +107,7 @@ void Plan::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Plan::~Plan(void)
+Plan::~Plan(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   

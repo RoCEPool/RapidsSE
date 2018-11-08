@@ -41,7 +41,7 @@ namespace Pool
     
     BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
                bool bTouch, bool bDontFree, bool bFreeRB);
-    ~BufferPool(void);
+    ~BufferPool(void) noexcept(false);
   
     static void vReport(void);
     

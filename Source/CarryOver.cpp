@@ -47,7 +47,7 @@ CarryOver::CarryOver(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-CarryOver::~CarryOver(void)
+CarryOver::~CarryOver(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARRYOVER,_FOOTER_);
 }

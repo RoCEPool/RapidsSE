@@ -25,7 +25,7 @@ namespace DBobjects
     static void vFinalize(eCN eClass, Object* pObject);
     
     Slots(void);
-    ~Slots(void);
+    ~Slots(void) noexcept(false);
     
     void       vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn);
     void       vCreateColumnVec(void);

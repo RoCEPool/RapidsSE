@@ -119,7 +119,7 @@ Job_DropTable::Job_DropTable(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_DropTable::~Job_DropTable(void)
+Job_DropTable::~Job_DropTable(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTABLE,_FOOTER_);
 }

@@ -17,7 +17,7 @@ namespace Measurement
     
   public:
     StepAccum(void);
-    ~StepAccum(void);
+    ~StepAccum(void) noexcept(false);
     
     void vPrint(File& xFile);
     void vReset(void);

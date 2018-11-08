@@ -61,7 +61,7 @@ PerformanceEntry::PerformanceEntry(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PerformanceEntry::~PerformanceEntry(void)
+PerformanceEntry::~PerformanceEntry(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEENTRY,_FOOTER_);
 }

@@ -70,7 +70,7 @@ LoadMap::LoadMap(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-LoadMap::~LoadMap(void)
+LoadMap::~LoadMap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
 }

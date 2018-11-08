@@ -19,7 +19,7 @@ namespace Datums
     void* operator new(size_t);
   
     Flt(void);
-    ~Flt(void);
+    ~Flt(void) noexcept(false);
   
     bool operator <  (Flt& xFlt);
     bool operator <= (Flt& xFlt);

@@ -24,7 +24,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_SubFetch(Interface::Session* pSession);
-    ~Job_SubFetch(void);
+    ~Job_SubFetch(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

@@ -120,7 +120,7 @@ Job__Executed::Job__Executed(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job__Executed::~Job__Executed(void)
+Job__Executed::~Job__Executed(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTED,_FOOTER_);
 }

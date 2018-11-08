@@ -77,7 +77,7 @@ Parser::Parser(Parser* pNext)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Parser::~Parser(void)
+Parser::~Parser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   

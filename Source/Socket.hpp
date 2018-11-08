@@ -26,7 +26,7 @@ namespace System
     
     Socket();
     Socket(int iSocketId);
-    ~Socket();
+    ~Socket() noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

@@ -119,7 +119,7 @@ Job_Pwf::Job_Pwf(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Pwf::~Job_Pwf(void)
+Job_Pwf::~Job_Pwf(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PWF,_FOOTER_);
 }

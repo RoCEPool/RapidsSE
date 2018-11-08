@@ -89,7 +89,7 @@ ApiState::ApiState(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ApiState::~ApiState(void)
+ApiState::~ApiState(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
 }

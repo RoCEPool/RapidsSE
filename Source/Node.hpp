@@ -26,7 +26,7 @@ namespace GridModel
     
     Node(void);
     Node(i8 iNodeNo, Stz* aName, Stz* aIpAddress, i8 iPort);
-    ~Node(void);
+    ~Node(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

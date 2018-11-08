@@ -40,7 +40,7 @@ namespace Datums
     void  operator delete(void*);
     
     Formatters(void);
-    ~Formatters(void);
+    ~Formatters(void) noexcept(false);
   
     void vReset(void);
     void vReset(Formatters* pDefaults);

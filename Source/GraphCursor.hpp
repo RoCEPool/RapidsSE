@@ -20,7 +20,7 @@ namespace Structures
     void  operator delete(void* pGraphCursorAddress);
  
     GraphCursor(void);
-    ~GraphCursor(void);
+    ~GraphCursor(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

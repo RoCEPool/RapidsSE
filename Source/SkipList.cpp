@@ -80,7 +80,7 @@ SkipList::SkipList(bool bUniqueKey, cmpFun fCompare, bool bSlabAllocator)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SkipList::~SkipList(void)
+SkipList::~SkipList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 

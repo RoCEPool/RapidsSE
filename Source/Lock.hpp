@@ -91,7 +91,7 @@ namespace System
     void  operator delete(void* pLockAddress);
     
     Lock(void);
-    ~Lock(void);
+    ~Lock(void) noexcept(false);
   
     void vInitLock(eLK eLockKind);
   

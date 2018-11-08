@@ -44,7 +44,7 @@ namespace StorageEngine
     void  operator delete(void*);
     
     ApiState(void);
-    ~ApiState(void);
+    ~ApiState(void) noexcept(false);
   
     i8   iAllocState(Session* pSession);
     void vApiCall(Session* pSession, eAC eApiCall);

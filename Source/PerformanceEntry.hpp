@@ -22,7 +22,7 @@ namespace Measurement
     void  operator delete(void*);
     
     PerformanceEntry(void);
-    ~PerformanceEntry(void);
+    ~PerformanceEntry(void) noexcept(false);
   
     void vSet(i8 iTicks, Stz* aWord, Stz* aNote);
   

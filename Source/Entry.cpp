@@ -60,7 +60,7 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Entry::~Entry(void)
+Entry::~Entry(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
 }

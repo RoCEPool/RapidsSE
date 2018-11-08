@@ -58,7 +58,7 @@ PredicateVec::PredicateVec(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PredicateVec::~PredicateVec(void)
+PredicateVec::~PredicateVec(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_PREDICATEVEC,_FOOTER_);
 }

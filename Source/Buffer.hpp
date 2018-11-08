@@ -18,7 +18,7 @@ namespace Pool
     void  operator delete(void*);
 
     Buffer(eCN eClass);
-    ~Buffer(void);
+    ~Buffer(void) noexcept(false);
   
     static Buffer* pGetBuffer(Object* pObject);
   

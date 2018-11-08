@@ -39,7 +39,7 @@ namespace Utilities
     void  operator delete(void*);
   
     SchemaTest(Stz* sStream);
-    ~SchemaTest(void);
+    ~SchemaTest(void) noexcept(false);
 
     static void vRun(Stz* sStream);
 

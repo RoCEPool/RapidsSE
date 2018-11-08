@@ -59,7 +59,7 @@ ActivityMark::ActivityMark(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ActivityMark::~ActivityMark(void)
+ActivityMark::~ActivityMark(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
 }

@@ -72,7 +72,7 @@ WorkingBuffer::WorkingBuffer(Table* pTable, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-WorkingBuffer::~WorkingBuffer(void)
+WorkingBuffer::~WorkingBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORKINGBUFFER,_FOOTER_);
 }

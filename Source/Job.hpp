@@ -127,7 +127,7 @@ namespace JobsModel
   public:
     Job(eCN eClassNo);
     Job(eCN eClassNo, Interface::Session* pSession);
-    ~Job(void);
+    ~Job(void) noexcept(false);
     
     static i8 iOriginatorNode(i8 iJobId);
     

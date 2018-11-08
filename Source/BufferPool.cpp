@@ -65,7 +65,7 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-BufferPool::~BufferPool(void)
+BufferPool::~BufferPool(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   

@@ -93,7 +93,7 @@ SchemaTest::SchemaTest(Stz* sStream)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SchemaTest::~SchemaTest(void)
+SchemaTest::~SchemaTest(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEMATEST,_FOOTER_);
 }

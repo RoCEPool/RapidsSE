@@ -103,7 +103,7 @@ IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-IndexTree::~IndexTree(void)
+IndexTree::~IndexTree(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   

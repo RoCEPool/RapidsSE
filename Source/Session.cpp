@@ -107,7 +107,7 @@ Session::Session(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Session::~Session(void)
+Session::~Session(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   

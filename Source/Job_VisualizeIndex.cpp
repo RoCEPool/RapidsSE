@@ -119,7 +119,7 @@ Job_VisualizeIndex::Job_VisualizeIndex(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_VisualizeIndex::~Job_VisualizeIndex(void)
+Job_VisualizeIndex::~Job_VisualizeIndex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VISUALIZEINDEX,_FOOTER_);
 }

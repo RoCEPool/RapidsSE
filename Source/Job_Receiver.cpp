@@ -122,7 +122,7 @@ Job_Receiver::Job_Receiver(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Receiver::~Job_Receiver(void)
+Job_Receiver::~Job_Receiver(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
 }

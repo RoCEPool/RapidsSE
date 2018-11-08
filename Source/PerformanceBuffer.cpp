@@ -64,7 +64,7 @@ PerformanceBuffer::PerformanceBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PerformanceBuffer::~PerformanceBuffer(void)
+PerformanceBuffer::~PerformanceBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
 }

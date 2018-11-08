@@ -16,7 +16,7 @@ namespace DBobjects
     void* operator new(size_t, KeyWrk*);
     
     KeyWrk(void);
-    ~KeyWrk(void);
+    ~KeyWrk(void) noexcept(false);
     
     void vAddDatum(char* aDatum);
     void vAddDatum(ValWrk& xValWrk, Column* pCol);

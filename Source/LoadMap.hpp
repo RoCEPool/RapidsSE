@@ -30,7 +30,7 @@ namespace Loader
     void  operator delete(void*);
     
     LoadMap(void);
-    ~LoadMap(void);
+    ~LoadMap(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   

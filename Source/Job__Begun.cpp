@@ -116,7 +116,7 @@ Job__Begun::Job__Begun(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job__Begun::~Job__Begun(void)
+Job__Begun::~Job__Begun(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__BEGUN,_FOOTER_);
 }

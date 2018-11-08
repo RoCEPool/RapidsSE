@@ -23,7 +23,7 @@ namespace Transactions
     void  operator delete(void*);
     
     TxSet(i8 iNodeNo);
-    ~TxSet(void);
+    ~TxSet(void) noexcept(false);
   
     void vAddLocalTx(Tx* pTx);
     void vAddDistTx_NL(Tx* pTx);

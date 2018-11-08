@@ -19,7 +19,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_StartCluster(Interface::Session* pSession);
-    ~Job_StartCluster(void);
+    ~Job_StartCluster(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

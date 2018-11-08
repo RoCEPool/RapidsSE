@@ -56,7 +56,7 @@ namespace Pool
     void  operator delete(void*);
     
     Heap(eCN eClass, i8 iObjectSize);
-    ~Heap(void);
+    ~Heap(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   

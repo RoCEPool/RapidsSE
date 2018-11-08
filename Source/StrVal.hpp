@@ -34,7 +34,7 @@ namespace Values
     StrVal(StrVal* pThis);
     StrVal(StrVal* pThis, i8 nBytes);
   
-    ~StrVal(void);
+    ~StrVal(void) noexcept(false);
   
     operator Stz&(void);
     operator Stz*(void);

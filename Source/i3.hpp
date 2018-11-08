@@ -13,7 +13,7 @@ namespace Base
   public:
     i3(void);
     i3(i8 iArg);
-    ~i3(void);
+    ~i3(void) noexcept(false);
   
     explicit operator i8(); // { return m_iValue; }
   

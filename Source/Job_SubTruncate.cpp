@@ -122,7 +122,7 @@ Job_SubTruncate::Job_SubTruncate(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_SubTruncate::~Job_SubTruncate(void)
+Job_SubTruncate::~Job_SubTruncate(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBTRUNCATE,_FOOTER_);
 }

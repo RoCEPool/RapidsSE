@@ -83,7 +83,7 @@ Queues::Queues(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Queues::~Queues(void)
+Queues::~Queues(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
 }

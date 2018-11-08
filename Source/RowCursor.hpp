@@ -25,7 +25,7 @@ namespace DBobjects
     void  operator delete(void*);
     
     RowCursor(void);
-    ~RowCursor(void);
+    ~RowCursor(void) noexcept(false);
     
     void    vBegin(i8 iPartition);
     void    vEnd(void);

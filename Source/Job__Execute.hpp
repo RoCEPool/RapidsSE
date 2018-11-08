@@ -18,7 +18,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job__Execute(void);
-    ~Job__Execute(void);
+    ~Job__Execute(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

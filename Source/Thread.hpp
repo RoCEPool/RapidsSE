@@ -95,7 +95,7 @@ namespace Threads
     void  operator delete(void*);
     
     Thread(void);
-    ~Thread(void);
+    ~Thread(void) noexcept(false);
   
     static void* aEntryPoint(void* pArg);
     static void* aEntryPointDummy(void* pArg);

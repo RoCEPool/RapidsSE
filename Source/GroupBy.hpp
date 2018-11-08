@@ -18,7 +18,7 @@ namespace MockEE
     void  operator delete(void*);
     
     GroupBy(void);
-    ~GroupBy(void);
+    ~GroupBy(void) noexcept(false);
   
     void vApplyBuffer(EntryBuffer* pEntryBuffer);
     void vApplyEntry(Entry* pLineItemEntry);

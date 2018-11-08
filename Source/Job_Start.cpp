@@ -119,7 +119,7 @@ Job_Start::Job_Start(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Start::~Job_Start(void)
+Job_Start::~Job_Start(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_START,_FOOTER_);
 }

@@ -66,7 +66,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Heap::~Heap(void)
+Heap::~Heap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }

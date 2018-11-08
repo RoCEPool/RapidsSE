@@ -62,7 +62,7 @@ DicStack::DicStack(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-DicStack::~DicStack(void)
+DicStack::~DicStack(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   

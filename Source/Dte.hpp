@@ -27,7 +27,7 @@ namespace Datums
     void* operator new(size_t);
   
     Dte(void);
-    ~Dte(void);
+    ~Dte(void) noexcept(false);
   
     bool operator <  (Dte& xDte);
     bool operator <= (Dte& xDte);

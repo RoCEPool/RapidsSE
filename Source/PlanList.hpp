@@ -19,7 +19,7 @@ namespace Plans
     void  operator delete(void*);
     
     PlanList(void);
-    ~PlanList(void);
+    ~PlanList(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

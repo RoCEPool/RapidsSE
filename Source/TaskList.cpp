@@ -69,7 +69,7 @@ TaskList::TaskList(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TaskList::~TaskList(void)
+TaskList::~TaskList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   

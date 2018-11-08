@@ -19,7 +19,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_ListIndexes(Interface::Session* pSession);
-    ~Job_ListIndexes(void);
+    ~Job_ListIndexes(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

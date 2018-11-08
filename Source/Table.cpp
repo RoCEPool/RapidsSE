@@ -113,7 +113,7 @@ Table::Table(Stz* pTableName)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Table::~Table(void)
+Table::~Table(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   

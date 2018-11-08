@@ -38,7 +38,7 @@ namespace Interface
     void  operator delete(void*);
     
     Session(i8 iPartition);
-    ~Session(void);
+    ~Session(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

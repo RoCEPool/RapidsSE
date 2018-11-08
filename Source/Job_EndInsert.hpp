@@ -22,7 +22,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_EndInsert(Interface::Session* pSession);
-    ~Job_EndInsert(void);
+    ~Job_EndInsert(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

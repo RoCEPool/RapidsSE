@@ -96,7 +96,7 @@ WorkingRow::WorkingRow(Row* aSrcRow, ColumnVec *pColumnVec, i8 nWorkingRowSize, 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-WorkingRow::~WorkingRow(void)
+WorkingRow::~WorkingRow(void) noexcept(false)
 {
   _poolAddress_(this);
   

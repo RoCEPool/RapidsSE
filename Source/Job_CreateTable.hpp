@@ -36,7 +36,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_CreateTable(Interface::Session* pSession);
-    ~Job_CreateTable(void);
+    ~Job_CreateTable(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

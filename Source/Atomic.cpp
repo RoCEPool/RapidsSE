@@ -41,7 +41,7 @@ Atomic::Atomic(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Atomic::~Atomic(void)
+Atomic::~Atomic(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
 }

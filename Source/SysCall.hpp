@@ -32,7 +32,7 @@ namespace System
     
   public:
     SysCall(void);
-    ~SysCall(void);
+    ~SysCall(void) noexcept(false);
     
     void vClear(void);
     void vError(i8 iErrno);

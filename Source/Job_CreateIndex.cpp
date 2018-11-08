@@ -170,7 +170,7 @@ Job_CreateIndex::Job_CreateIndex(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_CreateIndex::~Job_CreateIndex(void)
+Job_CreateIndex::~Job_CreateIndex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATEINDEX,_FOOTER_);
 }

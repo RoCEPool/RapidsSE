@@ -72,7 +72,7 @@ FreeEntry::FreeEntry(i8 nSizeItem)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-FreeEntry::~FreeEntry(void)
+FreeEntry::~FreeEntry(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
 }

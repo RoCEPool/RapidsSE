@@ -55,7 +55,7 @@ Timer::Timer(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Timer::~Timer(void)
+Timer::~Timer(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
 }

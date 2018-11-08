@@ -43,7 +43,7 @@ namespace Plans
     
     Predicate(void);
   //Predicate(ePK ePredicate, Arg* pArg1, Arg* pArg2, Op* pOp);
-    ~Predicate(void);
+    ~Predicate(void) noexcept(false);
     
     ePK ePredicate(void);
     void vPredicate(ePK ePredicate);

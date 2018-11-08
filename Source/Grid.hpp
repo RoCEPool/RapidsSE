@@ -29,7 +29,7 @@ namespace GridModel
     void  operator delete(void*);
     
     Grid(i8 nNodes, i8 nSlots);
-    ~Grid(void);
+    ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   

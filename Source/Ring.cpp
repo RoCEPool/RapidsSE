@@ -43,7 +43,7 @@ Ring::Ring(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Ring::~Ring(void)
+Ring::~Ring(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RING,_FOOTER_);
 }

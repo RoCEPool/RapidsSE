@@ -80,7 +80,7 @@ namespace DBobjects
     Column(Stz* aName);
     Column(Stz* aName, Stz* aDefinition);
     Column(JobsModel::Job_CreateTable* pJob, i8 iColumnNo);
-    ~Column(void);
+    ~Column(void) noexcept(false);
   
     i8   iColumnLength(void);
     void vColumnLength(i8 iColumnLength);

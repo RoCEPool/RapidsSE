@@ -79,7 +79,7 @@ Tokeniser::Tokeniser(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Tokeniser::~Tokeniser(void)
+Tokeniser::~Tokeniser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   

@@ -19,7 +19,7 @@ namespace Parsing
     void  operator delete(void*);
     
     TokenVec(void);
-    ~TokenVec(void);
+    ~TokenVec(void) noexcept(false);
   
     static TokenVec* _pTokenSet(void* aAddr);
   

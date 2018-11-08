@@ -119,7 +119,7 @@ Job_ListIndexes::Job_ListIndexes(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_ListIndexes::~Job_ListIndexes(void)
+Job_ListIndexes::~Job_ListIndexes(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTINDEXES,_FOOTER_);
 }

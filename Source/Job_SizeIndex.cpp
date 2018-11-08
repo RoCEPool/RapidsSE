@@ -119,7 +119,7 @@ Job_SizeIndex::Job_SizeIndex(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_SizeIndex::~Job_SizeIndex(void)
+Job_SizeIndex::~Job_SizeIndex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SIZEINDEX,_FOOTER_);
 }

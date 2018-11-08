@@ -129,7 +129,7 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_LoadBuffer::~Job_LoadBuffer(void)
+Job_LoadBuffer::~Job_LoadBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   

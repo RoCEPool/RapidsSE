@@ -69,7 +69,7 @@ Scratch::Scratch(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Scratch::~Scratch(void)
+Scratch::~Scratch(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
 }

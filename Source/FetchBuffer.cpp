@@ -72,7 +72,7 @@ FetchBuffer::FetchBuffer(Table* pTable, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-FetchBuffer::~FetchBuffer(void)
+FetchBuffer::~FetchBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
 }

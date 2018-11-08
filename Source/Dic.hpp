@@ -28,7 +28,7 @@ namespace Dictionaries
     void  operator delete(void*);
     
     Dic(void);
-    ~Dic(void);
+    ~Dic(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);

@@ -55,7 +55,7 @@ Compiler::Compiler(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Compiler::~Compiler(void)
+Compiler::~Compiler(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMPILER,_FOOTER_);
   

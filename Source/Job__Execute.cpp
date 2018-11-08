@@ -114,7 +114,7 @@ Job__Execute::Job__Execute(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job__Execute::~Job__Execute(void)
+Job__Execute::~Job__Execute(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__EXECUTE,_FOOTER_);
 }

@@ -128,7 +128,7 @@ Job_InsertBuffer::Job_InsertBuffer(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_InsertBuffer::~Job_InsertBuffer(void)
+Job_InsertBuffer::~Job_InsertBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTBUFFER,_FOOTER_);
   

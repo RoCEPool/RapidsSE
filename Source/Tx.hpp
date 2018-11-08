@@ -55,7 +55,7 @@ namespace Transactions
     
     Tx(bool bAddToSet = true);
     Tx(i8 iDistTxId);
-    ~Tx(void);
+    ~Tx(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Tx*  pTestDistTx(i8 iDistTxId);

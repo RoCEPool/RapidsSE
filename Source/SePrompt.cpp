@@ -72,7 +72,7 @@ SePrompt::SePrompt(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SePrompt::~SePrompt(void)
+SePrompt::~SePrompt(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

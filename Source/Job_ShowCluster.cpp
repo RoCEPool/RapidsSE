@@ -119,7 +119,7 @@ Job_ShowCluster::Job_ShowCluster(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_ShowCluster::~Job_ShowCluster(void)
+Job_ShowCluster::~Job_ShowCluster(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SHOWCLUSTER,_FOOTER_);
 }

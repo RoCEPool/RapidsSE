@@ -18,7 +18,7 @@ namespace System
     void  operator delete(void* pAtomicAddress);
     
     Atomic(void);
-    ~Atomic(void);
+    ~Atomic(void) noexcept(false);
     
     void vCheckInit(void);
     

@@ -119,7 +119,7 @@ Job_DropIndex::Job_DropIndex(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_DropIndex::~Job_DropIndex(void)
+Job_DropIndex::~Job_DropIndex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPINDEX,_FOOTER_);
 }

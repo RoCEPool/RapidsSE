@@ -16,7 +16,7 @@ namespace DBobjects
     void* operator new(size_t);
   
     Row(void);
-    ~Row(void);
+    ~Row(void) noexcept(false);
   
     static bool bFormatRow(ColumnVec* pColVec, Formatters* pFormatters,
                            Stz* aRawData, i8 iRawLength,

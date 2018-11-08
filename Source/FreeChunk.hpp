@@ -18,7 +18,7 @@ namespace Pool
     void  operator delete(void*);
 
     FreeChunk(void);
-    ~FreeChunk(void);
+    ~FreeChunk(void) noexcept(false);
     void vInit(eCN eClass);
     
     FreeChunk* pNextFree(void);

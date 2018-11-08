@@ -16,7 +16,7 @@ namespace Dictionaries
     void* operator new(size_t);
   
     DicPath(void);
-   ~DicPath(void);
+   ~DicPath(void) noexcept(false);
     
     void vContentDump(void);
   };

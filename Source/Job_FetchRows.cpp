@@ -130,7 +130,7 @@ Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_FetchRows::~Job_FetchRows(void)
+Job_FetchRows::~Job_FetchRows(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
   

@@ -20,7 +20,7 @@ namespace DBobjects
     void  operator delete(void*);
   
     RowOnce(void);
-    ~RowOnce(void);
+    ~RowOnce(void) noexcept(false);
   
     bool bRowSeen(Id xRowId);
   

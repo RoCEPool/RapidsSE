@@ -60,7 +60,7 @@ RegFrame::RegFrame(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RegFrame::~RegFrame(void)
+RegFrame::~RegFrame(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
 }

@@ -23,7 +23,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_InsertRow(Interface::Session* pSession);
-    ~Job_InsertRow(void);
+    ~Job_InsertRow(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

@@ -17,7 +17,7 @@ namespace DBobjects
   
     WorkingRow(Row* aSrcRow, ColumnVec* pColumnVec, i8 nWorkingRowSize,
                i8 nRowSize, bool bComressed);
-    ~WorkingRow(void);
+    ~WorkingRow(void) noexcept(false);
   
     static i8 nUncompressedBytesRequired(Row* aRow, ColumnVec* pColumnVec, i8 nRowSize);
     static i8 nBytesRequired(i8 nRowSize);

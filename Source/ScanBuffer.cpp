@@ -46,7 +46,7 @@ ScanBuffer::ScanBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ScanBuffer::~ScanBuffer(void)
+ScanBuffer::~ScanBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }

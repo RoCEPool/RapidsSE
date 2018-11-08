@@ -19,7 +19,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_Ping(Interface::Session* pSession);
-    ~Job_Ping(void);
+    ~Job_Ping(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

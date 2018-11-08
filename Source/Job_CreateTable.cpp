@@ -143,7 +143,7 @@ Job_CreateTable::Job_CreateTable(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_CreateTable::~Job_CreateTable(void)
+Job_CreateTable::~Job_CreateTable(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATETABLE,_FOOTER_);
 }

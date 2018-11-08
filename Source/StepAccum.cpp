@@ -24,7 +24,7 @@ StepAccum::StepAccum(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-StepAccum::~StepAccum(void)
+StepAccum::~StepAccum(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPACCUM,_FOOTER_);
 }

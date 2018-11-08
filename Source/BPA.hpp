@@ -17,7 +17,7 @@ namespace Pool
   public:
     
     BPA(void);
-    ~BPA(void);
+    ~BPA(void) noexcept(false);
     
     static i8 iPoolFree(void);
     

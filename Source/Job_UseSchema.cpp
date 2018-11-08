@@ -119,7 +119,7 @@ Job_UseSchema::Job_UseSchema(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_UseSchema::~Job_UseSchema(void)
+Job_UseSchema::~Job_UseSchema(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_USESCHEMA,_FOOTER_);
 }

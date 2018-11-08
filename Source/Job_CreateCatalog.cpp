@@ -119,7 +119,7 @@ Job_CreateCatalog::Job_CreateCatalog(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_CreateCatalog::~Job_CreateCatalog(void)
+Job_CreateCatalog::~Job_CreateCatalog(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATECATALOG,_FOOTER_);
 }

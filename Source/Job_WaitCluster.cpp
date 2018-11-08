@@ -119,7 +119,7 @@ Job_WaitCluster::Job_WaitCluster(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_WaitCluster::~Job_WaitCluster(void)
+Job_WaitCluster::~Job_WaitCluster(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WAITCLUSTER,_FOOTER_);
 }

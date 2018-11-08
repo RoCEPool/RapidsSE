@@ -43,7 +43,7 @@ ItemBuffer::ItemBuffer(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ItemBuffer::~ItemBuffer(void)
+ItemBuffer::~ItemBuffer(void) noexcept(false)
 {
   //_precondition_(_ADDRESS_);
 }

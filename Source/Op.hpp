@@ -22,7 +22,7 @@ namespace Plans
   
     Op(void);
     Op(eRO eOpKind);
-    ~Op(void);
+    ~Op(void) noexcept(false);
   
     eRO eOpKind(void);
     void vOpKind(eRO eOpKind);

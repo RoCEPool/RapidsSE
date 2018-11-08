@@ -20,7 +20,7 @@ namespace DBobjects
     void  operator delete(void*);
     
     Ring(void);
-    ~Ring(void);
+    ~Ring(void) noexcept(false);
     
     Footer* aFooter(void);
   };

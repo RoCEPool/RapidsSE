@@ -32,7 +32,7 @@ namespace Values
     void* operator new(size_t);
     void  operator delete(void*);
     ValSet(void);
-    ~ValSet(void);
+    ~ValSet(void) noexcept(false);
 
     void vAppend(Stz*& pCursor, Value* pValue);
     bool bExtractValue(Stz*& pCursor, Value*& pValue);

@@ -29,7 +29,7 @@ namespace Parsing
     void  operator delete(void*);
     
     Tokeniser(void);
-    ~Tokeniser(void);
+    ~Tokeniser(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static TokenVec* pTokenise(StrVal& sString);

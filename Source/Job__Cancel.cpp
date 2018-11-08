@@ -114,7 +114,7 @@ Job__Cancel::Job__Cancel(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job__Cancel::~Job__Cancel(void)
+Job__Cancel::~Job__Cancel(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__CANCEL,_FOOTER_);
 }

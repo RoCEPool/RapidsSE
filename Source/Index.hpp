@@ -68,7 +68,7 @@ namespace DBobjects
     static void vFinalize(eCN eClass, Object* pObject);
     
     Index(void);
-    ~Index(void);
+    ~Index(void) noexcept(false);
   
     Stz*   pAnalyze(void);
     void   vCreateColumnVec(s32& sName, s48K& sDefinition);

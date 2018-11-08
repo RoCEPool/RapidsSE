@@ -57,7 +57,7 @@ RowOnce::RowOnce(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RowOnce::~RowOnce(void)
+RowOnce::~RowOnce(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWONCE,_FOOTER_);
   

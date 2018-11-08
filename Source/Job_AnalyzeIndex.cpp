@@ -121,7 +121,7 @@ Job_AnalyzeIndex::Job_AnalyzeIndex(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_AnalyzeIndex::~Job_AnalyzeIndex(void)
+Job_AnalyzeIndex::~Job_AnalyzeIndex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANALYZEINDEX,_FOOTER_);
 }

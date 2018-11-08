@@ -17,7 +17,7 @@ namespace Datums
     void* operator new(size_t);
   
     Vch(void);
-    ~Vch(void);
+    ~Vch(void) noexcept(false);
   
     bool operator <  (Vch& xVch);
     bool operator <= (Vch& xVch);

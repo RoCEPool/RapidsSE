@@ -38,7 +38,7 @@ namespace DBobjects
     static void vFinalize(eCN eClass, Object* pObject);
     
     IndexTree(Index* pIndex, i8 iPartitionNo);
-    ~IndexTree(void);
+    ~IndexTree(void) noexcept(false);
   
     Stz*         pAnalyze(void);
     void         vAppendEntriesFromBuffer(i8 iTxId,

@@ -119,7 +119,7 @@ Job_DropTenant::Job_DropTenant(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_DropTenant::~Job_DropTenant(void)
+Job_DropTenant::~Job_DropTenant(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPTENANT,_FOOTER_);
 }

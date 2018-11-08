@@ -17,7 +17,7 @@ namespace Base
   
     Stz(Stz* aArg);
 
-    ~Stz(void);
+    ~Stz(void) noexcept(false);
     
     void operator =(i8);
     void operator =(Stz*);

@@ -22,7 +22,7 @@ namespace MockEE
     void  operator delete(void*);
     
     Accum(void);
-    ~Accum(void);
+    ~Accum(void) noexcept(false);
   
     Footer* aFooter(void);
   };

@@ -52,7 +52,7 @@ StepTracker::StepTracker(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-StepTracker::~StepTracker(void)
+StepTracker::~StepTracker(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTRACKER,_FOOTER_);
 }

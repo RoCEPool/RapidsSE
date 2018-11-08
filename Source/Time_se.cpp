@@ -41,7 +41,7 @@ Time::Time(void)
 /*----------------------------------------------------------------------------*/
 /* Time: destructor                                                           */
 /*----------------------------------------------------------------------------*/
-Time::~Time(void)
+Time::~Time(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
 }

@@ -119,7 +119,7 @@ Job_Ping::Job_Ping(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Ping::~Job_Ping(void)
+Job_Ping::~Job_Ping(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PING,_FOOTER_);
 }

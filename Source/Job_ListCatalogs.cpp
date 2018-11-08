@@ -119,7 +119,7 @@ Job_ListCatalogs::Job_ListCatalogs(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_ListCatalogs::~Job_ListCatalogs(void)
+Job_ListCatalogs::~Job_ListCatalogs(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTCATALOGS,_FOOTER_);
 }

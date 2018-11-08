@@ -46,7 +46,7 @@ JobDicPath::JobDicPath(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-JobDicPath::~JobDicPath(void)
+JobDicPath::~JobDicPath(void) noexcept(false)
 {
   
 }

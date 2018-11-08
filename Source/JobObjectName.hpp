@@ -16,7 +16,7 @@ namespace JobsModel
     void* operator new(size_t);
   
     JobObjectName(void);
-   ~JobObjectName(void);
+   ~JobObjectName(void) noexcept(false);
   };
 }
 

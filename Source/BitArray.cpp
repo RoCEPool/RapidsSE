@@ -46,7 +46,7 @@ BitArray::BitArray(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-BitArray::~BitArray(void)
+BitArray::~BitArray(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BITARRAY,_FOOTER_);
   

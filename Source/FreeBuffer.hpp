@@ -13,7 +13,7 @@ namespace Pool
     
   public:
     FreeBuffer(void);
-    ~FreeBuffer(void);
+    ~FreeBuffer(void) noexcept(false);
     
     bn   nNextFree(void);
     void vNextFree(bn nBuffer);

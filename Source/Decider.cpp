@@ -41,7 +41,7 @@ Decider::Decider(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Decider::~Decider(void)
+Decider::~Decider(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
 }

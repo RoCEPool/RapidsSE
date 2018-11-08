@@ -121,7 +121,7 @@ Job_NodeInfo::Job_NodeInfo(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_NodeInfo::~Job_NodeInfo(void)
+Job_NodeInfo::~Job_NodeInfo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NODEINFO,_FOOTER_);
 }

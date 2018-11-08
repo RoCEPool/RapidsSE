@@ -114,7 +114,7 @@ Job__End::Job__End(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job__End::~Job__End(void)
+Job__End::~Job__End(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__END,_FOOTER_);
 }

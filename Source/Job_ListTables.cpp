@@ -119,7 +119,7 @@ Job_ListTables::Job_ListTables(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_ListTables::~Job_ListTables(void)
+Job_ListTables::~Job_ListTables(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTTABLES,_FOOTER_);
 }

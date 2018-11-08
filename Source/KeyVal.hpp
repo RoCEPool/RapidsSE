@@ -15,7 +15,7 @@ namespace DBobjects
     void  operator delete(void*);
   
     KeyVal(KeyWrk& xKeyWrk);
-    ~KeyVal(void);
+    ~KeyVal(void) noexcept(false);
   
     char* aEachDatum (Column* pColumn, i8& nBytes, char** aaCursor);
  

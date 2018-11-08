@@ -16,7 +16,7 @@ namespace Datums
     void* operator new(size_t);
   
     Bol(void);
-    ~Bol(void);
+    ~Bol(void) noexcept(false);
   
     bool operator <  (Bol& xBol);
     bool operator <= (Bol& xBol);

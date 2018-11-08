@@ -122,7 +122,7 @@ Job_Sanity::Job_Sanity(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Sanity::~Job_Sanity(void)
+Job_Sanity::~Job_Sanity(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SANITY,_FOOTER_);
 }

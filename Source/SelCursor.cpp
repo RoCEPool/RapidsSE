@@ -70,7 +70,7 @@ SelCursor::SelCursor(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SelCursor::~SelCursor(void)
+SelCursor::~SelCursor(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
 }

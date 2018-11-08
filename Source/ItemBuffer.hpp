@@ -14,7 +14,7 @@ namespace Structures
   
   public:
     ItemBuffer(eCN eClassNo);
-   ~ItemBuffer(void);
+   ~ItemBuffer(void) noexcept(false);
   
     Item*  pAllotItem(i8 nBytes);
     char*  aAllotSpace(i8 nBytes);

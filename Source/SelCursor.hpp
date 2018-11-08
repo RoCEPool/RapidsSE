@@ -25,7 +25,7 @@ namespace DBobjects
     void  operator delete(void*);
     
     SelCursor(void);
-    ~SelCursor(void);
+    ~SelCursor(void) noexcept(false);
     
     static void vFinalize(eCN eClass, Object* pObject);
     

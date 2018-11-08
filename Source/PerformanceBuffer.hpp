@@ -20,7 +20,7 @@ namespace Measurement
     void  operator delete(void*);
   
     PerformanceBuffer(void);
-   ~PerformanceBuffer(void);
+   ~PerformanceBuffer(void) noexcept(false);
   
     PerformanceEntry*  pAllotEntry(void);
   

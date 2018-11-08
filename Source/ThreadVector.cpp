@@ -55,7 +55,7 @@ ThreadVector::ThreadVector(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ThreadVector::~ThreadVector(void)
+ThreadVector::~ThreadVector(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_THREADVECTOR,_FOOTER_);
 }

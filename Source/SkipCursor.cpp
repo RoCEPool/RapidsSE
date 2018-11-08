@@ -22,7 +22,7 @@ SkipCursor::SkipCursor(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SkipCursor::~SkipCursor(void)
+SkipCursor::~SkipCursor(void) noexcept(false)
 {
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPCURSOR,_FOOTER_);
 }

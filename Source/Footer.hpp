@@ -17,7 +17,7 @@ namespace CorrectnessAlgebra
   
   public:
     Footer(void);
-    ~Footer(void);
+    ~Footer(void) noexcept(false);
     
     void vAssertFooter(void) const;
     bool bValidFooter(void);

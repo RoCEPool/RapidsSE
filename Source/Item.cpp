@@ -46,7 +46,7 @@ Item::Item(eCN eClassNo, i8 nSizeItem)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Item::~Item(void)
+Item::~Item(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 }

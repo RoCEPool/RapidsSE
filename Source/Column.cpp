@@ -148,7 +148,7 @@ Column::Column(JobsModel::Job_CreateTable* pJob, i8 iColumnNo)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Column::~Column(void)
+Column::~Column(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
 }

@@ -20,7 +20,7 @@ namespace System
     void operator delete(void* pPosixThreadAddress);
 
     PosixThread(void);
-    ~PosixThread(void);
+    ~PosixThread(void) noexcept(false);
     
     bool bBindThread(i8 iCpu);
     void vSetOSThreadId(void);

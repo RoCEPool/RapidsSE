@@ -48,7 +48,7 @@ namespace DBobjects
     
     Table(void);
     Table(Stz* aTableName);
-    ~Table(void);
+    ~Table(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);

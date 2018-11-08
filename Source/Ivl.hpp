@@ -25,7 +25,7 @@ namespace Datums
     void* operator new(size_t);
   
     Ivl(void);
-    ~Ivl(void);
+    ~Ivl(void) noexcept(false);
   
     bool operator <  (Ivl& xIvl);
     bool operator <= (Ivl& xIvl);

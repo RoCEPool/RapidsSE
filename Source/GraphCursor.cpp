@@ -64,7 +64,7 @@ GraphCursor::GraphCursor(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-GraphCursor::~GraphCursor(void)
+GraphCursor::~GraphCursor(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHCURSOR,_FOOTER_);
 }

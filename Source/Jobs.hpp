@@ -34,7 +34,7 @@ namespace JobsModel
     void  operator delete(void*);
     
     Jobs(cmpFun fCompare, eJL eJobsList);
-    ~Jobs(void);
+    ~Jobs(void) noexcept(false);
     
     void   vAddJob(Job* pJob);
     void   vDropLock(void);

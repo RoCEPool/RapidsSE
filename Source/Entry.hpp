@@ -50,7 +50,7 @@ namespace DBobjects
     void* operator new(size_t, Entry*);
   
     Entry(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
-    ~Entry(void);
+    ~Entry(void) noexcept(false);
   
     void vAssertEntry(void);
     bool bValidEntry(void);

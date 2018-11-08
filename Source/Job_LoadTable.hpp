@@ -24,7 +24,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_LoadTable(Interface::Session* pSession);
-    ~Job_LoadTable(void);
+    ~Job_LoadTable(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

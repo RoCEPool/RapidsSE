@@ -23,7 +23,7 @@ namespace Measurement
     void  operator delete(void*);
 
     ActivityMap(void);
-    ~ActivityMap(void);
+    ~ActivityMap(void) noexcept(false);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

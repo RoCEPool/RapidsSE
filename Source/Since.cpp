@@ -25,7 +25,7 @@ Since::Since(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Since::~Since(void)
+Since::~Since(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
 }

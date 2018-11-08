@@ -48,7 +48,7 @@ JobResult::JobResult(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-JobResult::~JobResult(void)
+JobResult::~JobResult(void) noexcept(false)
 {
 
 }

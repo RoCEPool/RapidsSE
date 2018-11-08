@@ -13,7 +13,7 @@ namespace Pool
   public:
     bn(void);
     bn(i8 iBufferNo);
-    ~bn(void);
+    ~bn(void) noexcept(false);
     
     static bn nNil(void);
     bool operator ==(bn n);

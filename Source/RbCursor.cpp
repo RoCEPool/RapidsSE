@@ -69,7 +69,7 @@ RbCursor::RbCursor(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RbCursor::~RbCursor(void)
+RbCursor::~RbCursor(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RBCURSOR,_FOOTER_);
 }

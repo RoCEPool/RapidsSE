@@ -49,7 +49,7 @@ KeyWrk::KeyWrk(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-KeyWrk::~KeyWrk(void)
+KeyWrk::~KeyWrk(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
 }

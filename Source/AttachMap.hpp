@@ -119,7 +119,7 @@ namespace StorageEngine
     void  operator delete(void*);
     
     AttachMap(void);
-    ~AttachMap(void);
+    ~AttachMap(void) noexcept(false);
     
     void vGetGlobals(void);
     void vPrintAttachMap(void);

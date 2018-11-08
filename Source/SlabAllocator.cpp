@@ -41,7 +41,7 @@ SlabAllocator::SlabAllocator(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SlabAllocator::~SlabAllocator(void)
+SlabAllocator::~SlabAllocator(void) noexcept(false)
 {
   _magic_();
   

@@ -114,7 +114,7 @@ Job__Ended::Job__Ended(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job__Ended::~Job__Ended(void)
+Job__Ended::~Job__Ended(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__ENDED,_FOOTER_);
 }

@@ -18,7 +18,7 @@ namespace JobsModel
   
     JobDicPath(void);
     JobDicPath(Interface::Session* pSession);
-   ~JobDicPath(void);
+   ~JobDicPath(void) noexcept(false);
   };
 }
 

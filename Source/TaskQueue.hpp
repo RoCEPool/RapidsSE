@@ -26,7 +26,7 @@ namespace Tasks
     void  operator delete(void*);
     
     TaskQueue(cmpFun fCompare);
-    ~TaskQueue(void);
+    ~TaskQueue(void) noexcept(false);
     
     void   vAddTask(Task* pTask);
     void   vDropLock(void);

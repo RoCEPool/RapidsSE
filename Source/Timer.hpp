@@ -21,7 +21,7 @@ namespace System
     void* operator new(size_t, Timer* pTimer);
     void operator delete(void* pTimerAddress);
     Timer(void);
-    ~Timer();
+    ~Timer() noexcept(false);
     
     void vInit(void);
     void vReset(void);

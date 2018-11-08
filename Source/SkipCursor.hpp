@@ -17,7 +17,7 @@ namespace Structures
     
   public:
     SkipCursor(void);
-    ~SkipCursor(void);
+    ~SkipCursor(void) noexcept(false);
     
     Footer* aFooter(void);
   };

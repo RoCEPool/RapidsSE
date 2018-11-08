@@ -119,7 +119,7 @@ Job_Answer::Job_Answer(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Answer::~Job_Answer(void)
+Job_Answer::~Job_Answer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ANSWER,_FOOTER_);
 }

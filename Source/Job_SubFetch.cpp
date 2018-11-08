@@ -125,7 +125,7 @@ Job_SubFetch::Job_SubFetch(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_SubFetch::~Job_SubFetch(void)
+Job_SubFetch::~Job_SubFetch(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBFETCH,_FOOTER_);
 }

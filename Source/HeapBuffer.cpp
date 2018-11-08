@@ -57,7 +57,7 @@ HeapBuffer::HeapBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-HeapBuffer::~HeapBuffer(void)
+HeapBuffer::~HeapBuffer(void) noexcept(false)
 {
   _poolAddress_(this);
   _magic_();

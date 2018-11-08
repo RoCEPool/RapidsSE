@@ -25,7 +25,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     JobResult(void);
-    ~JobResult(void);
+    ~JobResult(void) noexcept(false);
   };
 }
 

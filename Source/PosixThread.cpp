@@ -68,7 +68,7 @@ PosixThread::PosixThread()
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PosixThread::~PosixThread(void)
+PosixThread::~PosixThread(void) noexcept(false)
 {
 }
 

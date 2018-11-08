@@ -68,7 +68,7 @@ TaskQueue::TaskQueue(cmpFun fCompare)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TaskQueue::~TaskQueue(void)
+TaskQueue::~TaskQueue(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
 }

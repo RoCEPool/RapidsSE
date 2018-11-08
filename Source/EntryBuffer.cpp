@@ -102,7 +102,7 @@ EntryBuffer::EntryBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-EntryBuffer::~EntryBuffer(void)
+EntryBuffer::~EntryBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 }

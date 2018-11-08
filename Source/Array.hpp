@@ -21,7 +21,7 @@ namespace Structures
     void  operator delete(void*);
 
     Array(void);
-    ~Array(void);
+    ~Array(void) noexcept(false);
   
     ITEM& operator [](i8 iItemNo);
   
@@ -113,7 +113,7 @@ Array<ARRAY_CN, ITEM, MAX_ITEMS>::Array(void)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template <eCN ARRAY_CN, class ITEM, i8 MAX_ITEMS>
-Array<ARRAY_CN, ITEM, MAX_ITEMS>::~Array(void)
+Array<ARRAY_CN, ITEM, MAX_ITEMS>::~Array(void) noexcept(false)
 {
   _precondition_(_MAGIC_,ARRAY_CN,_FOOTER_);
   

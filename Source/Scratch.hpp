@@ -18,7 +18,7 @@ namespace System
     void* operator new(size_t, Scratch* pScratch);
     void operator delete(void* aAddress);
     Scratch(void);
-    ~Scratch(void);
+    ~Scratch(void) noexcept(false);
 
     char* aWspArea(void);
     Stz*  aWspStr(void);

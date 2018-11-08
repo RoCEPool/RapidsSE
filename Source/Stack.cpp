@@ -70,7 +70,7 @@ Stack::Stack(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Stack::~Stack(void)
+Stack::~Stack(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }

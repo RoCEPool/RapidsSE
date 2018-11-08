@@ -42,7 +42,7 @@ namespace DBobjects
     void  operator delete(void*);
     
     TablePtn(void);
-    ~TablePtn(void);
+    ~TablePtn(void) noexcept(false);
   
     void vAddTotalBuffersLoadable(i8 nBuffersLoadable);
     void vAddIndex(IndexTree* pIndexTree);

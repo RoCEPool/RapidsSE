@@ -119,7 +119,7 @@ Job_ListSchemas::Job_ListSchemas(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_ListSchemas::~Job_ListSchemas(void)
+Job_ListSchemas::~Job_ListSchemas(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTSCHEMAS,_FOOTER_);
 }

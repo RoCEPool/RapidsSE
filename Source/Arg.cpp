@@ -77,7 +77,7 @@ Arg::Arg(eAK eArgKind, Stz* aArgVal)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Arg::~Arg(void)
+Arg::~Arg(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ARG,_FOOTER_);
 }

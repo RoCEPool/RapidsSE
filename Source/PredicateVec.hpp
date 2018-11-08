@@ -19,7 +19,7 @@ namespace Parsing
     void  operator delete(void*);
     
     PredicateVec(void);
-    ~PredicateVec(void);
+    ~PredicateVec(void) noexcept(false);
   
     void vSetMatched(i8 i_Pred);
   

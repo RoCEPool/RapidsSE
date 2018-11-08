@@ -15,7 +15,7 @@ namespace Structures
     void* operator new(size_t, Item*);
   
     Item(eCN eClassNo, i8 nSizeItem);
-    ~Item(void);
+    ~Item(void) noexcept(false);
   
     i8 nSizeItem(void);
   

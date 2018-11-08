@@ -56,7 +56,7 @@ namespace Threads
     void  operator delete(void*);
     
     Queues(void);
-    ~Queues(void);
+    ~Queues(void) noexcept(false);
   
     static void vThreadsReport(void);
   

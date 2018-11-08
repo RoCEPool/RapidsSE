@@ -64,7 +64,7 @@ LoadChunk::LoadChunk(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-LoadChunk::~LoadChunk(void)
+LoadChunk::~LoadChunk(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 }

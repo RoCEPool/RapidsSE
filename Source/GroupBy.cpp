@@ -60,7 +60,7 @@ GroupBy::GroupBy(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-GroupBy::~GroupBy(void)
+GroupBy::~GroupBy(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GROUPBY,_FOOTER_);
   

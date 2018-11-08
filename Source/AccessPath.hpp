@@ -58,7 +58,7 @@ namespace Plans
     void  operator delete(void*);
     
     AccessPath(eAT eAccess);
-    ~AccessPath(void);
+    ~AccessPath(void) noexcept(false);
   
     Table* pTable(void);
     void vTable(Table* pTable);

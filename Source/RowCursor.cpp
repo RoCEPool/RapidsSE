@@ -70,7 +70,7 @@ RowCursor::RowCursor(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RowCursor::~RowCursor(void)
+RowCursor::~RowCursor(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
 }

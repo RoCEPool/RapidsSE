@@ -107,7 +107,7 @@ Index::Index(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Index::~Index(void)
+Index::~Index(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   

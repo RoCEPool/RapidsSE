@@ -122,7 +122,7 @@ namespace Tasks
     void  operator delete(void*);
     
     Task(Job* pJob);
-    ~Task(void);
+    ~Task(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

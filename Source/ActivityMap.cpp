@@ -307,7 +307,7 @@ ActivityMap::ActivityMap(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-ActivityMap::~ActivityMap(void)
+ActivityMap::~ActivityMap(void) noexcept(false)
 {
 }
 

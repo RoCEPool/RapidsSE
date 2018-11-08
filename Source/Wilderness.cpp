@@ -53,7 +53,7 @@ Wilderness::Wilderness(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Wilderness::~Wilderness(void)
+Wilderness::~Wilderness(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WILDERNESS);
 }

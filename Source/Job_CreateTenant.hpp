@@ -19,7 +19,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_CreateTenant(Interface::Session* pSession);
-    ~Job_CreateTenant(void);
+    ~Job_CreateTenant(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

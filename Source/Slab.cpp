@@ -49,7 +49,7 @@ Slab::Slab(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Slab::~Slab(void)
+Slab::~Slab(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLAB,_FOOTER_);
 }

@@ -120,7 +120,7 @@ Job_DropSchema::Job_DropSchema(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_DropSchema::~Job_DropSchema(void)
+Job_DropSchema::~Job_DropSchema(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DROPSCHEMA,_FOOTER_);
 }

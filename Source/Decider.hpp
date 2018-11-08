@@ -18,7 +18,7 @@ namespace System
     void  operator delete(void* aAddress);
     
     Decider(void);
-    ~Decider(void);
+    ~Decider(void) noexcept(false);
   
     void vCheckInit(void);
     bool bDecAndDecide(void);

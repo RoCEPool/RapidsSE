@@ -24,7 +24,7 @@ namespace Structures
     void  operator delete(void* pQueueAddress);
  
     Queue(void);
-    ~Queue(void);
+    ~Queue(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

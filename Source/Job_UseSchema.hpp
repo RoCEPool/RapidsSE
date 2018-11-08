@@ -19,7 +19,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_UseSchema(Interface::Session* pSession);
-    ~Job_UseSchema(void);
+    ~Job_UseSchema(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

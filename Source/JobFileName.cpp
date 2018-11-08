@@ -31,7 +31,7 @@ JobFileName::JobFileName(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-JobFileName::~JobFileName(void)
+JobFileName::~JobFileName(void) noexcept(false)
 {
 }
 

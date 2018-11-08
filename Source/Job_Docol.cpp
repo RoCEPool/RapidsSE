@@ -119,7 +119,7 @@ Job_Docol::Job_Docol(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Docol::~Job_Docol(void)
+Job_Docol::~Job_Docol(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_DOCOL,_FOOTER_);
 }

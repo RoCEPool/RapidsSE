@@ -16,7 +16,7 @@ namespace System
     
   public:
     Since();
-    ~Since();
+    ~Since() noexcept(false);
     
     void  vAdd(i8 iMicroseconds);
     void  vGet(i8& iSeconds, i8& iMicroseconds);

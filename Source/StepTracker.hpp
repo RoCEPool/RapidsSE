@@ -21,7 +21,7 @@ namespace Measurement
     void* operator new(size_t);
     
     StepTracker(void);
-    ~StepTracker(void);
+    ~StepTracker(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

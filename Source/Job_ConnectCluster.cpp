@@ -119,7 +119,7 @@ Job_ConnectCluster::Job_ConnectCluster(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_ConnectCluster::~Job_ConnectCluster(void)
+Job_ConnectCluster::~Job_ConnectCluster(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CONNECTCLUSTER,_FOOTER_);
 }

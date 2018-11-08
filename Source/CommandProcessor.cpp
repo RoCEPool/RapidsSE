@@ -74,7 +74,7 @@ CommandProcessor::CommandProcessor(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-CommandProcessor::~CommandProcessor(void)
+CommandProcessor::~CommandProcessor(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   

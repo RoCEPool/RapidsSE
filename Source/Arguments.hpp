@@ -88,7 +88,7 @@ namespace StorageEngine
     
   public:
     Arguments(void);
-    ~Arguments(void);
+    ~Arguments(void) noexcept(false);
     
     static void vMark(void);
   

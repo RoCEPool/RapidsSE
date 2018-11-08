@@ -71,7 +71,7 @@ Job__Find::Job__Find(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job__Find::~Job__Find(void)
+Job__Find::~Job__Find(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB__FIND,_FOOTER_);
 }

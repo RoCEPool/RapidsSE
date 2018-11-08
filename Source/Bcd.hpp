@@ -22,7 +22,7 @@ namespace Datums
     void* operator new(size_t);
   
     Bcd(void);
-    ~Bcd(void);
+    ~Bcd(void) noexcept(false);
   
     bool operator <  (Bcd& xBcd);
     bool operator <= (Bcd& xBcd);

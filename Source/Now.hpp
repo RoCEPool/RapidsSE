@@ -16,7 +16,7 @@ namespace System
     
   public:
     Now();
-    ~Now();
+    ~Now() noexcept(false);
   
     Stz* sFormatted(void);  
   

@@ -21,7 +21,7 @@ namespace Measurement
     
   public:
     ResourceTracker(void);
-    ~ResourceTracker(void);
+    ~ResourceTracker(void) noexcept(false);
   
     void vAddMallocAmt(i8 nBytes);
     void vSubMallocAmt(i8 nBytes);

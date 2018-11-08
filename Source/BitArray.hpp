@@ -21,7 +21,7 @@ namespace Structures
     void  operator delete(void*);
     
     BitArray(void);
-    ~BitArray(void);
+    ~BitArray(void) noexcept(false);
   
     i8 nBitsOn(void);
     bool bBitState(i8 i_BitNo);

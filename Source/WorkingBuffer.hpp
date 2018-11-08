@@ -24,7 +24,7 @@ namespace DBobjects
     void  operator delete(void*);
   
     WorkingBuffer(Table* pTable, i8 iPartition);
-   ~WorkingBuffer(void);
+   ~WorkingBuffer(void) noexcept(false);
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public:

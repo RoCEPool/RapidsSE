@@ -30,7 +30,7 @@ namespace Tasks
     void  operator delete(void*);
   
     Compiler(void);
-    ~Compiler(void);
+    ~Compiler(void) noexcept(false);
         
     Footer* aFooter(void);
   };

@@ -50,7 +50,7 @@ Buffer::Buffer(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Buffer::~Buffer(void)
+Buffer::~Buffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   

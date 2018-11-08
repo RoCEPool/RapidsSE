@@ -27,7 +27,7 @@ namespace Structures
     void  operator delete(void*);
     
     SkipList(bool bUniqueKey, cmpFun fCompare, bool bSlabAllocator=false);
-   ~SkipList(void);
+   ~SkipList(void) noexcept(false);
     
     void  vCheck(void);
     void  vContents(void (*fvDump)(void* pObject));

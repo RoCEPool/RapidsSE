@@ -101,7 +101,7 @@ Word::Word(Stz* sName)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Word::~Word(void)
+Word::~Word(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

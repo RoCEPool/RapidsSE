@@ -65,7 +65,7 @@ Queue::Queue(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Queue::~Queue(void)
+Queue::~Queue(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   

@@ -119,7 +119,7 @@ Job_ListIdxColumns::Job_ListIdxColumns(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_ListIdxColumns::~Job_ListIdxColumns(void)
+Job_ListIdxColumns::~Job_ListIdxColumns(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTIDXCOLUMNS,_FOOTER_);
 }

@@ -23,7 +23,7 @@ namespace Measurement
     void  operator delete(void*);
     
     PerformanceTrace(void);
-    ~PerformanceTrace(void);
+    ~PerformanceTrace(void) noexcept(false);
   
     void vAdd(Stz* aWord, Stz* aNote);
     void vPrint(void);

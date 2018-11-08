@@ -65,7 +65,7 @@ Grid::Grid(i8 nNodes, i8 nSlots)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Grid::~Grid(void)
+Grid::~Grid(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 }

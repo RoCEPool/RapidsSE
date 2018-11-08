@@ -68,7 +68,7 @@ Planner::Planner(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Planner::~Planner(void)
+Planner::~Planner(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANNER,_FOOTER_);
   

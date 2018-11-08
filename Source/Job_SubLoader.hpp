@@ -32,7 +32,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_SubLoader(Interface::Session* pSession);
-    ~Job_SubLoader(void);
+    ~Job_SubLoader(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

@@ -104,7 +104,7 @@ Arguments::Arguments(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Arguments::~Arguments(void)
+Arguments::~Arguments(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
 }

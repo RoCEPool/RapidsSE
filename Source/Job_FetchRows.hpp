@@ -30,7 +30,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_FetchRows(Interface::Session* pSession);
-    ~Job_FetchRows(void);
+    ~Job_FetchRows(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

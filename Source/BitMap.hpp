@@ -20,7 +20,7 @@ namespace Structures
     void  operator delete(void*);
     
     BitMap(void);
-    ~BitMap(void);
+    ~BitMap(void) noexcept(false);
   
     void vSetOn(i8 i_Array, i8 i_Bit);
   

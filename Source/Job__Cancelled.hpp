@@ -20,7 +20,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job__Cancelled(void);
-    ~Job__Cancelled(void);
+    ~Job__Cancelled(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

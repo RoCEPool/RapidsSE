@@ -58,7 +58,7 @@ QueueBuffer::QueueBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-QueueBuffer::~QueueBuffer(void)
+QueueBuffer::~QueueBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
 }

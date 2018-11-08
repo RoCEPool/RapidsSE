@@ -29,7 +29,7 @@ namespace System
     void* operator new(size_t);
     
     Time(void);
-    ~Time(void);
+    ~Time(void) noexcept(false);
     
     void vSet(Since* pSince);
     void vSetNowLocal(void);

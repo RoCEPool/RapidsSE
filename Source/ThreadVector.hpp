@@ -19,7 +19,7 @@ namespace Threads
     void  operator delete(void*);
     
     ThreadVector(void);
-    ~ThreadVector(void);
+    ~ThreadVector(void) noexcept(false);
   
     void vDropLock(void);
     void vGrabLock(void);

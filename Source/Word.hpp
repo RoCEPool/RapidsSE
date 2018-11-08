@@ -65,7 +65,7 @@ namespace Dictionaries
     void  operator delete(void* pWordAddress);
   
     Word(Stz* sName);
-    ~Word(void);
+    ~Word(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

@@ -64,7 +64,7 @@ Accum::Accum(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Accum::~Accum(void)
+Accum::~Accum(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCUM,_FOOTER_);
 }

@@ -121,7 +121,7 @@ Task::Task(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Task::~Task(void)
+Task::~Task(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

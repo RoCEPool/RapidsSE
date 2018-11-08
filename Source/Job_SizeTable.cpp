@@ -119,7 +119,7 @@ Job_SizeTable::Job_SizeTable(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_SizeTable::~Job_SizeTable(void)
+Job_SizeTable::~Job_SizeTable(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SIZETABLE,_FOOTER_);
 }

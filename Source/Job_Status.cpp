@@ -119,7 +119,7 @@ Job_Status::Job_Status(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Status::~Job_Status(void)
+Job_Status::~Job_Status(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_STATUS,_FOOTER_);
 }

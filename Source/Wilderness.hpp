@@ -13,7 +13,7 @@ namespace Structures
     void* operator new(size_t, Wilderness*);
   
     Wilderness(void);
-    ~Wilderness(void);
+    ~Wilderness(void) noexcept(false);
   
     void vAssertWilderness(void);
     bool bValidWilderness(void);

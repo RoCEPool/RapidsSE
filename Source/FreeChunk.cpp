@@ -37,7 +37,7 @@ FreeChunk::FreeChunk(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-FreeChunk::~FreeChunk(void)
+FreeChunk::~FreeChunk(void) noexcept(false)
 {
   vFatal("fatal: FreeChunk class cannot be deleted"_Stz);
   

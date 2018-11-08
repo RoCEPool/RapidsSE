@@ -119,7 +119,7 @@ Job_TruncateTable::Job_TruncateTable(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_TruncateTable::~Job_TruncateTable(void)
+Job_TruncateTable::~Job_TruncateTable(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
 }

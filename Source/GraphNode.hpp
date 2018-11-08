@@ -22,7 +22,7 @@ namespace Structures
     void  operator delete(void* pGraphNodeAddress);
  
     GraphNode(void);
-    ~GraphNode(void);
+    ~GraphNode(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

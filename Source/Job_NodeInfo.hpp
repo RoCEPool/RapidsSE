@@ -20,7 +20,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_NodeInfo(Interface::Session* pSession);
-    ~Job_NodeInfo(void);
+    ~Job_NodeInfo(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

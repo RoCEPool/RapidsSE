@@ -51,7 +51,7 @@ namespace DBobjects
     void  operator delete(void*);
   
     EntryBuffer(void);
-    ~EntryBuffer(void);
+    ~EntryBuffer(void) noexcept(false);
 
     void vAssertEntryBuffer(void);
     bool bValidEntryBuffer(void);

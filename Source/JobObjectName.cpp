@@ -32,7 +32,7 @@ JobObjectName::JobObjectName(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-JobObjectName::~JobObjectName(void)
+JobObjectName::~JobObjectName(void) noexcept(false)
 {
 }
 

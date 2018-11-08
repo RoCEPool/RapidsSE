@@ -66,7 +66,7 @@ PlanList::PlanList(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PlanList::~PlanList(void)
+PlanList::~PlanList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANLIST,_FOOTER_);
   

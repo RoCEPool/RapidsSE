@@ -41,7 +41,7 @@ namespace System
     void* operator new(size_t, File* pFile);
     void operator delete(void* pFileAddress);
     File(void);
-   ~File();
+   ~File() noexcept(false);
     
     static bool bRemove(s256& rPath);
     

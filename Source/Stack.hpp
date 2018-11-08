@@ -42,7 +42,7 @@ namespace Structures
     void  operator delete(void*);
     
     Stack(void);
-    ~Stack(void);
+    ~Stack(void) noexcept(false);
     
     static Stack* _pStack(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

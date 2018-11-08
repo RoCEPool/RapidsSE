@@ -19,7 +19,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_SizeIndex(Interface::Session* pSession);
-    ~Job_SizeIndex(void);
+    ~Job_SizeIndex(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

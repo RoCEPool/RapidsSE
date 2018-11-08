@@ -38,7 +38,7 @@ namespace DBobjects
     void* operator new(size_t, Key*);
   
     Key(KeyWrk& xKeyWrk);
-    ~Key(void);
+    ~Key(void) noexcept(false);
   
     bool operator <(Key* pKeyArg);
     bool operator <=(Key* pKeyArg);

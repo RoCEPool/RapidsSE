@@ -20,7 +20,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_DropSchema(Interface::Session* pSession);
-    ~Job_DropSchema(void);
+    ~Job_DropSchema(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

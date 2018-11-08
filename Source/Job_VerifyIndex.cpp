@@ -119,7 +119,7 @@ Job_VerifyIndex::Job_VerifyIndex(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_VerifyIndex::~Job_VerifyIndex(void)
+Job_VerifyIndex::~Job_VerifyIndex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_VERIFYINDEX,_FOOTER_);
 }

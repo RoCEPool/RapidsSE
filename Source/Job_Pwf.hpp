@@ -19,7 +19,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_Pwf(Interface::Session* pSession);
-    ~Job_Pwf(void);
+    ~Job_Pwf(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

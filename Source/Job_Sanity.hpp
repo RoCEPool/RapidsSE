@@ -22,7 +22,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_Sanity(Interface::Session* pSession);
-    ~Job_Sanity(void);
+    ~Job_Sanity(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

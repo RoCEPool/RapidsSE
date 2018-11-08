@@ -20,7 +20,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_DropTenant(Interface::Session* pSession);
-    ~Job_DropTenant(void);
+    ~Job_DropTenant(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

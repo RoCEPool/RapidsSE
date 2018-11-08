@@ -26,7 +26,7 @@ namespace Tasks
     void  operator delete(void*);
     
     TaskList(void);
-    ~TaskList(void);
+    ~TaskList(void) noexcept(false);
     
     void   vAddTask(Task* pTask);
     void   vDropLock(void);

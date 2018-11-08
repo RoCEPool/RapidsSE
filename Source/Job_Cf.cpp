@@ -119,7 +119,7 @@ Job_Cf::Job_Cf(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Cf::~Job_Cf(void)
+Job_Cf::~Job_Cf(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CF,_FOOTER_);
 }

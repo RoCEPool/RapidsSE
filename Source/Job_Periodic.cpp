@@ -119,7 +119,7 @@ Job_Periodic::Job_Periodic(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_Periodic::~Job_Periodic(void)
+Job_Periodic::~Job_Periodic(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PERIODIC,_FOOTER_);
 }

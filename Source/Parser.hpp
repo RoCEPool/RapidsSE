@@ -45,7 +45,7 @@ namespace Parsing
     void operator delete(void* pDirAddress);
     
     Parser(Parser* pNext);
-    ~Parser(void);
+    ~Parser(void) noexcept(false);
     
     static Parser* _pParser(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

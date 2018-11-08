@@ -19,7 +19,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_VisualizeIndex(Interface::Session* pSession);
-    ~Job_VisualizeIndex(void);
+    ~Job_VisualizeIndex(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

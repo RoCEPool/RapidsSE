@@ -100,7 +100,7 @@ StrVal::StrVal(StrVal* pThis, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-StrVal::~StrVal(void)
+StrVal::~StrVal(void) noexcept(false)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 }

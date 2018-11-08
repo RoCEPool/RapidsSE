@@ -127,7 +127,7 @@ Job_EndInsert::Job_EndInsert(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_EndInsert::~Job_EndInsert(void)
+Job_EndInsert::~Job_EndInsert(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ENDINSERT,_FOOTER_);
 }

@@ -45,7 +45,7 @@ BitMap::BitMap(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-BitMap::~BitMap(void)
+BitMap::~BitMap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BITMAP,_FOOTER_);
 }

@@ -119,7 +119,7 @@ Job_ListPartColumns::Job_ListPartColumns(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_ListPartColumns::~Job_ListPartColumns(void)
+Job_ListPartColumns::~Job_ListPartColumns(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LISTPARTCOLUMNS,_FOOTER_);
 }

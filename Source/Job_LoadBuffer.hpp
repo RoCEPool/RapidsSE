@@ -36,7 +36,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_LoadBuffer(Interface::Session* pSession);
-    ~Job_LoadBuffer(void);
+    ~Job_LoadBuffer(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Job_LoadBuffer* pNewJobLoadBuffer(Job_SubLoader* pJob_SubLoader, bool bFinal);

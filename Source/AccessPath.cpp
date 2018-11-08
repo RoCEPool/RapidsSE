@@ -69,7 +69,7 @@ AccessPath::AccessPath(eAT eAccess)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-AccessPath::~AccessPath(void)
+AccessPath::~AccessPath(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ACCESSPATH,_FOOTER_);
   

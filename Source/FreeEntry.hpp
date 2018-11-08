@@ -17,7 +17,7 @@ namespace DBobjects
     void* operator new(size_t, FreeEntry*);
   
     FreeEntry(i8 nSizeItem);
-    ~FreeEntry(void);
+    ~FreeEntry(void) noexcept(false);
   
     void vAssertFreeEntry(void);
     bool bValidFreeEntry(void);

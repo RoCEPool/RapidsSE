@@ -84,7 +84,7 @@ AttachMap::AttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-AttachMap::~AttachMap(void)
+AttachMap::~AttachMap(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }

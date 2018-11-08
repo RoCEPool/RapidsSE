@@ -29,7 +29,7 @@ namespace DBobjects
   
   public:
   EntWrk(eCN eClass);
-    ~EntWrk(void);
+    ~EntWrk(void) noexcept(false);
   
     char*  aEmbedded(void);
     void   vEmbedded(char* aEmbedded);

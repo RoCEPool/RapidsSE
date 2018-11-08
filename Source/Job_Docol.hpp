@@ -19,7 +19,7 @@ namespace JobsModel
     void  operator delete(void*);
   
     Job_Docol(Interface::Session* pSession);
-    ~Job_Docol(void);
+    ~Job_Docol(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 

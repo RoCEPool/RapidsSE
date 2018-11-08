@@ -60,7 +60,7 @@ Formatters::Formatters(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Formatters::~Formatters(void)
+Formatters::~Formatters(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS,_FOOTER_);
 }

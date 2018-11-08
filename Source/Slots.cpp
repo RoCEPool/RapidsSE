@@ -103,7 +103,7 @@ Slots::Slots(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Slots::~Slots(void)
+Slots::~Slots(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   vTidyUp();

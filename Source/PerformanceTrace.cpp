@@ -65,7 +65,7 @@ PerformanceTrace::PerformanceTrace(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PerformanceTrace::~PerformanceTrace(void)
+PerformanceTrace::~PerformanceTrace(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCETRACE,_FOOTER_);
 }

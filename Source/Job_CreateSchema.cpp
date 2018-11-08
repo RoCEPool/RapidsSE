@@ -119,7 +119,7 @@ Job_CreateSchema::Job_CreateSchema(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_CreateSchema::~Job_CreateSchema(void)
+Job_CreateSchema::~Job_CreateSchema(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CREATESCHEMA,_FOOTER_);
 }

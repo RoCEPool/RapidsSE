@@ -35,7 +35,7 @@ namespace Plans
     
     Arg(void);
     Arg(eAK eArgKind, Stz* aArgVal);
-    ~Arg(void);
+    ~Arg(void) noexcept(false);
   
     eAK eArgKind(void);
     void vArgKind(eAK eArgKind);

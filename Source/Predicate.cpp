@@ -81,7 +81,7 @@ Predicate::Predicate(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Predicate::~Predicate(void)
+Predicate::~Predicate(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PREDICATE,_FOOTER_);
   

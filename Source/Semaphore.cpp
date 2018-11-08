@@ -97,7 +97,7 @@ Semaphore::Semaphore()
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Semaphore::~Semaphore(void)
+Semaphore::~Semaphore(void) noexcept(false)
 {
   pthread_mutex_destroy(&m_xMutex);
   pthread_mutexattr_destroy(&m_xMutexAttr);

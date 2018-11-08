@@ -46,7 +46,7 @@ RowWrk::RowWrk(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RowWrk::~RowWrk(void)
+RowWrk::~RowWrk(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_ROWWRK,_FOOTER_);
 }

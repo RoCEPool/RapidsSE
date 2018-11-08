@@ -19,7 +19,7 @@ namespace Pool
   void  operator delete(void*);
   
     SlabAllocator(void);
-    ~SlabAllocator(void);
+    ~SlabAllocator(void) noexcept(false);
         
     char* aAllotBytes(i8 nBytes);
   

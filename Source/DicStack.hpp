@@ -21,7 +21,7 @@ namespace Dictionaries
     void  operator delete(void*);
     
     DicStack(void);
-    ~DicStack(void);
+    ~DicStack(void) noexcept(false);
     
     static DicStack* _pDicStack(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

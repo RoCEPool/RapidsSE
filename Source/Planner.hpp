@@ -28,7 +28,7 @@ namespace Plans
     void  operator delete(void*);
     
     Planner(void);
-    ~Planner(void);
+    ~Planner(void) noexcept(false);
   
     void vChoosePath(i8 i_Phrase);
     AccessPath* pChosenPath(i8 i_Phrase);

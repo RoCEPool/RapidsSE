@@ -26,7 +26,7 @@ namespace Loader
     void  operator delete(void*);
     
     LoadChunk(void);
-    ~LoadChunk(void);
+    ~LoadChunk(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

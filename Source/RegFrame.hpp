@@ -24,7 +24,7 @@ namespace Dictionaries
     void  operator delete(void*);
     
     RegFrame(void);
-    ~RegFrame(void);
+    ~RegFrame(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

@@ -17,7 +17,7 @@ namespace DBobjects
     void* operator new(size_t, RightVec*);
   
     RightVec(void);
-    ~RightVec(void);
+    ~RightVec(void) noexcept(false);
 
     i8 iOffset(i8 i_OffsetNo);
     void vOffset(i8 i_OffsetNo, i8 iOffset);

@@ -32,7 +32,7 @@ FreeBuffer::FreeBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* destructor -- never called                                                 */
 /*----------------------------------------------------------------------------*/
-FreeBuffer::~FreeBuffer(void)
+FreeBuffer::~FreeBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   

@@ -17,7 +17,7 @@ namespace StorageEngine
     void  operator delete(void*);
     
     CarryOver(void);
-    ~CarryOver(void);
+    ~CarryOver(void) noexcept(false);
         
     Footer* aFooter(void);
   };

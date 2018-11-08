@@ -69,7 +69,7 @@ GraphNode::GraphNode(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-GraphNode::~GraphNode(void)
+GraphNode::~GraphNode(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE,_FOOTER_);
 }
