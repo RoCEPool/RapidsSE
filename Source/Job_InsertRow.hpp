@@ -32,8 +32,6 @@ namespace JobsModel
     eEC eInsertLastBuffer(i8 iPartition);
     void vNewWorkingBuffer(i8 iParition);
     bool bPopulateJob(TokenVec* pTokenVec);
-    Tasks::Task* pTask(void);
-    void vTask(Tasks::Task* pTask);
 
     void vShow(void);
     

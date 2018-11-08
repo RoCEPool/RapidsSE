@@ -116,7 +116,6 @@ Job_InsertBuffer::Job_InsertBuffer(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTBUFFER,_FOOTER_);
   
   m_pTable          = nullptr;
-  m_pTask           = nullptr;
   m_iPartitionId    = -1;
   m_iEndInsertJobId = -1;
   m_nBuffersToBeInserted = C_UNKNOWN;
