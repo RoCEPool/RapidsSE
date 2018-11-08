@@ -1381,10 +1381,10 @@ namespace Tasks
       #define ENTRY(aStepNm) \
         static StepAccum* pStepAccum = nullptr; \
         if (! pStepAccum) { \
-          gpAttachMap->m_pStepArray->vGrabWrite(); \
+          gpAttachMap->m_pStepTracker->vGrabWrite(); \
           if (! pStepAccum) \
-            pStepAccum = gpAttachMap->m_pStepArray->pAllocAccum(aStepNm); \
-          gpAttachMap->m_pStepArray->vDropWrite(); \
+            pStepAccum = gpAttachMap->m_pStepTracker->pAllocAccum(aStepNm); \
+          gpAttachMap->m_pStepTracker->vDropWrite(); \
         } \
         i8 _iTscEntry = Synch::iTicks(); \
         mpTask->vPrimitive(aStepNm);

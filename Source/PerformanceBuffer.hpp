@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Measurement
 {
   class PerformanceBuffer : public ItemBuffer
   {

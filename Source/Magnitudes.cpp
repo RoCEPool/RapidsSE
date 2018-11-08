@@ -2,7 +2,8 @@
 /* Magnitudes.cpp -- Various Useful Magnitude functions                       */
 /*============================================================================*/
 
-#include "System.h"
+#include "base.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* convert magnitude to equivalent bytes                                      */

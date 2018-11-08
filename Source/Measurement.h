@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "System.h"
+#include "Structures.h"
 
 //-----------------------------------------------------------------------------
 namespace Measurement
@@ -17,6 +17,15 @@ using namespace Measurement;
 
 #include "ActivityMark.hpp"
 #include "ActivityMap.hpp"
+
+#include "LockTracker.hpp"
+
+#include "PerformanceEntry.hpp"
+#include "PerformanceBuffer.hpp"
+#include "PerformanceTrace.hpp"
+#include "ResourceTracker.hpp"
+#include "StepAccum.hpp"
+#include "StepTracker.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

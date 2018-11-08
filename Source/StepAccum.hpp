@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Tasks
+namespace Measurement
 {
   class StepAccum : public Object
   {

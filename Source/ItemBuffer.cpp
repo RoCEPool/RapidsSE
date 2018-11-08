@@ -2,7 +2,7 @@
 /* ItemBuffer.cpp -- Item Buffer                                              */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "Structures.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ItemBuffer* DBobjects::_pItemBuffer(void* aAddr)
+ItemBuffer* Structures::_pItemBuffer(void* aAddr)
 {
   ItemBuffer* pBufferAbstract = reinterpret_cast<ItemBuffer*>(aAddr);
   

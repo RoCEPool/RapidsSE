@@ -48,13 +48,10 @@ typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
 #include "KeyTest.hpp"
 #include "Row.hpp"
 #include "RowWrk.hpp"
-#include "Item.hpp"
-#include "ItemBuffer.hpp"
 #include "Entry.hpp"
 #include "EntryBuffer.hpp"
 #include "IndexTree.hpp"
 #include "FreeEntry.hpp"
-#include "Wilderness.hpp"
 
 #include "FetchBuffer.hpp"
 

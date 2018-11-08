@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace Structures
 {
   class ItemBuffer : public Object
   {

@@ -23,15 +23,12 @@ using namespace System;
 #endif
 
 #include "Atomic.hpp"
-#include "ResourceTracker.hpp"
 
 #include "Decider.hpp"
 #include "Dir.hpp"
 #include "Env.hpp"
 #include "File.hpp"
 #include "Lock.hpp"
-#include "Locks.hpp"
-#include "Magnitudes.hpp"
 #include "OpSys.hpp"
 #include "PosixThread.hpp"
 #include "Process.hpp"

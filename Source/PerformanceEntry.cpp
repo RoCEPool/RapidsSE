@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PerformanceEntry* Utilities::_pPerformanceEntry(void* aAddr)
+PerformanceEntry* Measurement::_pPerformanceEntry(void* aAddr)
 {
   PerformanceEntry* pPerformanceTrace = reinterpret_cast<PerformanceEntry*>(aAddr);
   

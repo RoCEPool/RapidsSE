@@ -1,14 +1,14 @@
 /*============================================================================*/
-/* LockTrack.cpp -- lock statistics tracker                                   */
+/* LockTracker.cpp -- lock statistics tracker                                 */
 /*============================================================================*/
 
-#include "System.h"
+#include "Measurement.h"
 #include "Pool.h"
 
 /*----------------------------------------------------------------------------*/
 /* list steps                                                                 */
 /*----------------------------------------------------------------------------*/
-void Locks::vList(File& xFile)
+void LockTracker::vList(File& xFile)
 {
   xFile.vPrint("Lock, LockNm, WorkUnits, ReadGrab, ReadCollision, WriteGrab, WriteCollision\n"_Stz);
   for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++)
@@ -27,7 +27,7 @@ void Locks::vList(File& xFile)
 /*----------------------------------------------------------------------------*/
 /* locks report                                                               */
 /*----------------------------------------------------------------------------*/
-void Locks::vReport(void)
+void LockTracker::vReport(void)
 {
   vTrace("  Lock       Lock Name   ReadGrab  Collision  WriteGrab  Collision\n"_Stz);
   
@@ -51,7 +51,7 @@ void Locks::vReport(void)
 /*----------------------------------------------------------------------------*/
 /* reset steps                                                                */
 /*----------------------------------------------------------------------------*/
-void Locks::vReset(void)
+void LockTracker::vReset(void)
 {
   for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++) {
     m_ziWorkUnits[i_Lock] = 0;

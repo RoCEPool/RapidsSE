@@ -29,7 +29,7 @@ ENTRY("vLocksList"_Stz);
   File xFile;
   xFile.bOpen("locks.csv"_Stz, C_OPEN_WRITE);
   
-  gpAttachMap->m_xLocks.vList(xFile);
+  gpAttachMap->m_xLockTracker.vList(xFile);
   
   xFile.vClose();
   
@@ -43,7 +43,7 @@ void Task::vLocksReset(MP_Task mpTask)
 {
   ENTRY("vLocksReset"_Stz);
   
-  gpAttachMap->m_xLocks.vReset();
+  gpAttachMap->m_xLockTracker.vReset();
   
   EXIT();
 }

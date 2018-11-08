@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Locks.hpp -- lock statistics tracker                                       */
+/* LockTracker.hpp -- lock statistics tracker                                 */
 /*============================================================================*/
 #pragma once
 
-#include "System.h"
+#include "Measurement.h"
 
-namespace System
+namespace Measurement
 {
-  class Locks
+  class LockTracker
   {
   public:
     Atomic m_ziWorkUnits[LK_ENUMS];       // number of work units (optional)

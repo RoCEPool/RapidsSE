@@ -2,7 +2,7 @@
 /* Item.cpp -- buffer item                                                    */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "Structures.h"
 
 #include "StorageEngine.h"
 

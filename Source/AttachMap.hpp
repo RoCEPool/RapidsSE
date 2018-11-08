@@ -60,7 +60,7 @@ namespace StorageEngine
     Jobs*         m_pOriginatingJobs;
     Jobs*         m_pParticipatingJobs;
   
-    StepArray*    m_pStepArray;
+    StepTracker*  m_pStepTracker;
     
     bool          m_bVerbose;
     bool          m_bTracepoint;
@@ -74,7 +74,7 @@ namespace StorageEngine
     i8            m_iQuit;
     i8            m_iStop;
     
-    Locks         m_xLocks;
+    LockTracker   m_xLockTracker;
     
     Lock          m_xDdlLock;
     Lock          m_xDicLock;

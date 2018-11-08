@@ -1,66 +1,66 @@
 /*============================================================================*/
-/* StepAccum.cpp -- Step Accumulator                                          */
+/* StepTracker.cpp -- Step Tracker                                            */
 /*============================================================================*/
 
+#include "Measurement.h"
 #include "StorageEngine.h"
-#include "Tasks.h"
 
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StepArray* Tasks::_pStepArray(void* aAddr)
+StepTracker* Measurement::_pStepTracker(void* aAddr)
 {
-  StepArray* pStepArray = reinterpret_cast<StepArray*>(aAddr);
+  StepTracker* pStepTracker = reinterpret_cast<StepTracker*>(aAddr);
   
-  RASSERT_TYPE(pStepArray,CN_STEPARRAY);
+  RASSERT_TYPE(pStepTracker,CN_STEPTRACKER);
   
-  return pStepArray;
+  return pStepTracker;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StepArray::operator new(size_t)
+void* StepTracker::operator new(size_t)
 {
   //UNUSED(iSize)
-  RASSERT(! gpAttachMap->m_pStepArray);
+  RASSERT(! gpAttachMap->m_pStepTracker);
   
-  gpAttachMap->m_pStepArray = (StepArray*)HeapMem::pAllocate(CN_STEPARRAY);
+  gpAttachMap->m_pStepTracker = (StepTracker*)HeapMem::pAllocate(CN_STEPTRACKER);
   
-  return gpAttachMap->m_pStepArray;
+  return gpAttachMap->m_pStepTracker;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StepArray::StepArray(void)
-: Object(CN_STEPARRAY)
+StepTracker::StepTracker(void)
+: Object(CN_STEPTRACKER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTRACKER,_FOOTER_);
   
   m_zLock.vInitLock(LK_STEP_ARRAY);
   m_iNext = 0;
   //m_xStepAccum[]
   
-  _checkInitialised_(CN_STEPARRAY);
+  _checkInitialised_(CN_STEPTRACKER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STEPTRACKER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-StepArray::~StepArray(void)
+StepTracker::~StepTracker(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTRACKER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a step accumulator                                                */
 /*----------------------------------------------------------------------------*/
-StepAccum* StepArray::pAllocAccum(Stz* aStepNm)
+StepAccum* StepTracker::pAllocAccum(Stz* aStepNm)
 {
   ASSERT(m_zLock.bIsLocked());
 
@@ -76,17 +76,17 @@ StepAccum* StepArray::pAllocAccum(Stz* aStepNm)
 /*----------------------------------------------------------------------------*/
 /* dump grid                                                                  */
 /*----------------------------------------------------------------------------*/
-void StepArray::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void StepTracker::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  StepArray* pStepArray = _pStepArray(pObject);
+  StepTracker* pStepTracker = _pStepTracker(pObject);
   
-  vTrace("\n"_Stz, aTab, pStepArray);
+  vTrace("\n"_Stz, aTab, pStepTracker);
 }
 
 /*----------------------------------------------------------------------------*/
 /* list steps                                                                 */
 /*----------------------------------------------------------------------------*/
-void StepArray::vList(File& xFile)
+void StepTracker::vList(File& xFile)
 {
   m_zLock.vGrabWrite();
   
@@ -100,7 +100,7 @@ void StepArray::vList(File& xFile)
 /*----------------------------------------------------------------------------*/
 /* reset steps                                                                */
 /*----------------------------------------------------------------------------*/
-void StepArray::vReset(void)
+void StepTracker::vReset(void)
 {
   m_zLock.vGrabWrite();
   
@@ -113,7 +113,7 @@ void StepArray::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* grab write lock                                                            */
 /*----------------------------------------------------------------------------*/
-void StepArray::vGrabWrite(void)
+void StepTracker::vGrabWrite(void)
 {
   m_zLock.vGrabWrite();
 }
@@ -121,7 +121,7 @@ void StepArray::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 /* drop write lock                                                            */
 /*----------------------------------------------------------------------------*/
-void StepArray::vDropWrite(void)
+void StepTracker::vDropWrite(void)
 {
   m_zLock.vDropWrite();
 }
@@ -132,9 +132,9 @@ void StepArray::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* StepArray::aFooter(void)
+Footer* StepTracker::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTRACKER);
   
   return &m_xFooter;
 }

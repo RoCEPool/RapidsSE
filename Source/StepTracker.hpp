@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-namespace Tasks
+namespace Measurement
 {
   static const i8 C_STEPS = 1024;
   
-  class StepArray : public Object
+  class StepTracker : public Object
   {
   public:
     Lock      m_zLock;
@@ -20,8 +20,8 @@ namespace Tasks
   public:
     void* operator new(size_t);
     
-    StepArray(void);
-    ~StepArray(void);
+    StepTracker(void);
+    ~StepTracker(void);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
@@ -35,7 +35,7 @@ namespace Tasks
     Footer* aFooter(void);
   };
   
-  StepArray* _pStepArray(void* aAddr);
+  StepTracker* _pStepTracker(void* aAddr);
 }
 
 /*============================================================================*/

@@ -229,7 +229,7 @@ enum eCN : u2 // Class Number
   /* 184 */ CN_SOCKET,
   /* 185 */ CN_STACK,
   /* 186 */ CN_STEPACCUM,
-  /* 187 */ CN_STEPARRAY,
+  /* 187 */ CN_STEPTRACKER,
   /* 188 */ CN_SYSCALL,
   
   /* 189 */ CN_TABLE,
@@ -481,7 +481,7 @@ static Stz* aCN[]
   /* 184 */ "SOCKET"_Stz,              // CN_SOCKET
   /* 185 */ "STACK"_Stz,               // CN_STACK
   /* 186 */ "STEPACCUM"_Stz,           // CN_STEPACCUM
-  /* 187 */ "STEPARRAY"_Stz,           // CN_STEPARRAY
+  /* 187 */ "STEPTRACKER"_Stz,         // CN_STEPTRACKER
   /* 188 */ "SYSCALL"_Stz,             // CN_SYSCALL
   
   /* 189 */ "TABLE"_Stz,               // CN_TABLE

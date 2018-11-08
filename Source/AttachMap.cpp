@@ -216,7 +216,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
 
 
   ASSERT(m_pPlanList);  
-  ASSERT(m_pStepArray);
+  ASSERT(m_pStepTracker);
     
   m_nIndexLevels  = 3;
   m_nIndexOffsets = 3;
@@ -225,7 +225,6 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
   m_iStop       = 0;
   m_iQuit       = 0;
   
-  //m_xLocks
   
   //m_xDdlLock.vInitLock(LK_DDL);
   //m_xDicLock.vInitLock(LK_DIC);
