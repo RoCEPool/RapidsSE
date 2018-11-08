@@ -15,8 +15,6 @@
 /*----------------------------------------------------------------------------*/
 void* Tme::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   vFatal("fatal: Tme class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

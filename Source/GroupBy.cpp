@@ -25,8 +25,6 @@ GroupBy* MockEE::_pGroupBy(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* GroupBy::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_GROUPBY);
   
   return pObject;

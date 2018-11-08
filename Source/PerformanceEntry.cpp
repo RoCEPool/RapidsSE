@@ -25,8 +25,6 @@ PerformanceEntry* Measurement::_pPerformanceEntry(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* PerformanceEntry::operator new(size_t, PerformanceEntry* pPeformanceEntry)
 {
-  //UNUSED(iSize)
-
   MemLib::vZero(pPeformanceEntry,sizeof(PerformanceEntry),CN_PERFORMANCEENTRY);
   return pPeformanceEntry;
 }

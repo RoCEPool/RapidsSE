@@ -21,8 +21,6 @@ RegFrame* Dictionaries::_pRegFrame(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* RegFrame::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pRegFrame = HeapMem::pAllocate(CN_REGFRAME);
   
   return pRegFrame;

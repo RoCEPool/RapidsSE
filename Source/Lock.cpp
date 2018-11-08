@@ -25,8 +25,6 @@ Lock* System::_pLock(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Lock::operator new(size_t, Lock* pLock)
 {
-  //UNUSED(iSize)
-  
   return pLock;
 }
 

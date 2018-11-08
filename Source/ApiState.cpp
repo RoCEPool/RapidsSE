@@ -27,8 +27,6 @@ ApiState* StorageEngine::_pApiState(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ApiState::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_APISTATE);
   
   return pObject;

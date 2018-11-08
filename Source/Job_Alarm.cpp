@@ -75,8 +75,6 @@ Job_Alarm* JobsModel::_pJob_Alarm(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_Alarm::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_Alarm* pJob_Alarm =
     static_cast<Job_Alarm*>(HeapMem::pAllocate(CN_JOB_ALARM));
   
@@ -88,8 +86,6 @@ void* Job_Alarm::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_Alarm::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

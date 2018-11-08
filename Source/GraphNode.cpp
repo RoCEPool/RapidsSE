@@ -21,8 +21,6 @@ GraphNode* Structures::_pGraphNode(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* GraphNode::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_GRAPHNODE);
   
   return pObject;
@@ -33,8 +31,6 @@ void* GraphNode::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* GraphNode::operator new(size_t, GraphNode* pGraphNode)
 {
-  //UNUSED(iSize)
-  
   return pGraphNode;
 }
 

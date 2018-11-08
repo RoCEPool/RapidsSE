@@ -25,8 +25,6 @@ Dir* System::_pDir(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Dir::operator new(size_t)
 {
-  //UNUSED(iSize)
-
   void* pDir = HeapMem::pAllocate(CN_DIR);
   
   return pDir;
@@ -37,7 +35,6 @@ void* Dir::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Dir::operator new(size_t, Dir* pDir)
 {
-  //UNUSED(iSize)
   return pDir;
 }
 

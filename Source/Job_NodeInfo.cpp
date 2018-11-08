@@ -75,8 +75,6 @@ Job_NodeInfo* JobsModel::_pJob_NodeInfo(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_NodeInfo::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_NodeInfo* pJob_NodeInfo =
     static_cast<Job_NodeInfo*>(HeapMem::pAllocate(CN_JOB_NODEINFO));
   
@@ -88,8 +86,6 @@ void* Job_NodeInfo::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_NodeInfo::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

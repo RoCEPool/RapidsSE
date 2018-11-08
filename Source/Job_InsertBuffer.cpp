@@ -79,8 +79,6 @@ Job_InsertBuffer* JobsModel::_pJob_InsertBuffer(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_InsertBuffer::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_InsertBuffer* pJob_InsertBuffer =
     static_cast<Job_InsertBuffer*>(HeapMem::pAllocate(CN_JOB_INSERTBUFFER));
   
@@ -92,8 +90,6 @@ void* Job_InsertBuffer::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_InsertBuffer::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

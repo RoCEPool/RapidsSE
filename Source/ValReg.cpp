@@ -21,7 +21,6 @@ ValReg* Values::_pValReg(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ValReg::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: ValReg class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

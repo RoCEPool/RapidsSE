@@ -23,8 +23,6 @@ TaskQueue* Tasks::_pTaskQueue(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TaskQueue::operator new(size_t)
 {
-  //UNUSED(iSize)
-
   void* pObject = HeapMem::pAllocate(CN_TASKQUEUE);
   
   return pObject;
@@ -35,7 +33,6 @@ void* TaskQueue::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* TaskQueue::operator new(size_t, TaskQueue* pTaskQueue)
 {
-  //UNUSED(iSize)
   return pTaskQueue;
 }
 

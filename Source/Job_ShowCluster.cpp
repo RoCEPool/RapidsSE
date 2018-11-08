@@ -75,8 +75,6 @@ Job_ShowCluster* JobsModel::_pJob_ShowCluster(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_ShowCluster::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_ShowCluster* pJob_ShowCluster =
     static_cast<Job_ShowCluster*>(HeapMem::pAllocate(CN_JOB_SHOWCLUSTER));
   
@@ -88,8 +86,6 @@ void* Job_ShowCluster::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_ShowCluster::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

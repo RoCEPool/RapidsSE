@@ -75,8 +75,6 @@ Job_Sanity* JobsModel::_pJob_Sanity(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_Sanity::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_Sanity* pJob_Sanity =
     static_cast<Job_Sanity*>(HeapMem::pAllocate(CN_JOB_SANITY));
   
@@ -88,8 +86,6 @@ void* Job_Sanity::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_Sanity::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

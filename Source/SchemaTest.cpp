@@ -27,8 +27,6 @@ SchemaTest* Utilities::_pSchemaTest(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* SchemaTest::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_SCHEMATEST);
   
   return pObject;

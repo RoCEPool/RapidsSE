@@ -24,7 +24,6 @@ DicStack* DicStack::_pDicStack(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* DicStack::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: DicStack class cannot be new'd"_Stz);
   
   NEVER_REACH;

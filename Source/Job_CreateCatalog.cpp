@@ -75,8 +75,6 @@ Job_CreateCatalog* JobsModel::_pJob_CreateCatalog(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_CreateCatalog::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_CreateCatalog* pJob_CreateCatalog =
     static_cast<Job_CreateCatalog*>(HeapMem::pAllocate(CN_JOB_CREATECATALOG));
   
@@ -88,8 +86,6 @@ void* Job_CreateCatalog::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_CreateCatalog::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

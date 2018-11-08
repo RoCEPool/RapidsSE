@@ -22,8 +22,6 @@ TaskList* Tasks::_pTaskList(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TaskList::operator new(size_t)
 {
-  //UNUSED(iSize)
-
   void* pObject = HeapMem::pAllocate(CN_TASKLIST);
   
   return pObject;
@@ -34,7 +32,6 @@ void* TaskList::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* TaskList::operator new(size_t, TaskList* pTaskQueue)
 {
-  //UNUSED(iSize)
   return pTaskQueue;
 }
 

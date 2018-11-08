@@ -21,7 +21,6 @@ FltVal* Values::_pFltVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* FltVal::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: FltVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

@@ -75,8 +75,6 @@ Job_InsertRow* JobsModel::_pJob_InsertRow(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_InsertRow::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_InsertRow* pJob_LoadTable =
     static_cast<Job_InsertRow*>(HeapMem::pAllocate(CN_JOB_INSERTROW));
   
@@ -88,8 +86,6 @@ void* Job_InsertRow::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_InsertRow::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

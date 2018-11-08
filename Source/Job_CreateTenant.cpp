@@ -75,8 +75,6 @@ Job_CreateTenant* JobsModel::_pJob_CreateTenant(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_CreateTenant::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_CreateTenant* pJob_CreateTenant =
     static_cast<Job_CreateTenant*>(HeapMem::pAllocate(CN_JOB_CREATETENANT));
   
@@ -88,8 +86,6 @@ void* Job_CreateTenant::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_CreateTenant::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

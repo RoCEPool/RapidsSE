@@ -21,7 +21,6 @@ BolVal* Values::_pBolVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* BolVal::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: BolVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

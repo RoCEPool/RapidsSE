@@ -75,8 +75,6 @@ Job_WaitCluster* JobsModel::_pJob_WaitCluster(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_WaitCluster::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_WaitCluster* pJob_WaitCluster =
     static_cast<Job_WaitCluster*>(HeapMem::pAllocate(CN_JOB_WAITCLUSTER));
   
@@ -88,8 +86,6 @@ void* Job_WaitCluster::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_WaitCluster::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

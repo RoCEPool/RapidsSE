@@ -25,7 +25,6 @@ Wilderness* Structures::_pWilderness(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Wilderness::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: Wilderness class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -36,7 +35,6 @@ void* Wilderness::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Wilderness::operator new(size_t, Wilderness* pWilderness)
 {
-  //UNUSED(iSize)
   return pWilderness;
 }
 

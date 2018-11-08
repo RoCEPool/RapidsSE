@@ -81,8 +81,6 @@ Job_EndInsert* JobsModel::_pJob_EndInsert(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_EndInsert::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_EndInsert* pJob_EndInsert =
     static_cast<Job_EndInsert*>(HeapMem::pAllocate(CN_JOB_ENDINSERT));
   
@@ -94,8 +92,6 @@ void* Job_EndInsert::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_EndInsert::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

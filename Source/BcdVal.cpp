@@ -21,7 +21,6 @@ BcdVal* Values::_pBcdVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* BcdVal::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: BcdVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

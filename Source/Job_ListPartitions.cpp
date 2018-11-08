@@ -75,8 +75,6 @@ Job_ListPartitions* JobsModel::_pJob_ListPartitions(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_ListPartitions::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_ListPartitions* pJob_ListPartitions =
     static_cast<Job_ListPartitions*>(HeapMem::pAllocate(CN_JOB_LISTPARTITIONS));
   
@@ -88,8 +86,6 @@ void* Job_ListPartitions::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_ListPartitions::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

@@ -32,8 +32,6 @@ PosixThread* System::_pPosixThread(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* PosixThread::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pPosixThread = HeapMem::pAllocate(CN_POSIXTHREAD);
   
   return pPosixThread;

@@ -27,8 +27,6 @@ Job__Find* JobsModel::_pJob__Find(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job__Find::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job__Find* pJob__Executed =
     static_cast<Job__Find*>(HeapMem::pAllocate(CN_JOB__FIND));
   
@@ -40,8 +38,6 @@ void* Job__Find::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job__Find::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

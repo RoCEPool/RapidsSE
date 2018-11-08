@@ -75,8 +75,6 @@ Job_Connector* JobsModel::_pJob_Connector(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_Connector::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_Connector* pJob_Connector =
     static_cast<Job_Connector*>(HeapMem::pAllocate(CN_JOB_CONNECTOR));
   
@@ -88,8 +86,6 @@ void* Job_Connector::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_Connector::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

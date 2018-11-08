@@ -75,7 +75,6 @@ i8 TablePtn::iSlotToPartition(i8 iSlot)
 /*----------------------------------------------------------------------------*/
 void* TablePtn::operator new(size_t)
 {
-  //UNUSED(iSize)
   void* pObject = HeapMem::pAllocate(CN_TABLEPTN);
   
   return pObject;

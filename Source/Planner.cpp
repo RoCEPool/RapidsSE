@@ -25,8 +25,6 @@ Planner* Plans::_pPlanner(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Planner::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_PLANNER);
   
   return pObject;

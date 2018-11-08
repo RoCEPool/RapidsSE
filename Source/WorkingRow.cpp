@@ -23,7 +23,6 @@ WorkingRow* DBobjects::_pWorkingRow(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* WorkingRow::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: WorkingRow class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -34,7 +33,6 @@ void* WorkingRow::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* WorkingRow::operator new(size_t, WorkingRow* pWorkingRow)
 {
-  //UNUSED(iSize)
   return pWorkingRow;
 }
 

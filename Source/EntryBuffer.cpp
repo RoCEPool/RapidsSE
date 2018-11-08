@@ -36,8 +36,6 @@ EntryBuffer* DBobjects::_pEntryBuffer(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* EntryBuffer::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   EntryBuffer* pEntryBuffer =
     static_cast<EntryBuffer*>(HeapMem::pAllocate(CN_ENTRYBUFFER));
   
@@ -49,8 +47,6 @@ void* EntryBuffer::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* EntryBuffer::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

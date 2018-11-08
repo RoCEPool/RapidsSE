@@ -75,8 +75,6 @@ Job_DropCatalog* JobsModel::_pJob_DropCatalog(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_DropCatalog::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_DropCatalog* pJob_DropSchema =
     static_cast<Job_DropCatalog*>(HeapMem::pAllocate(CN_JOB_DROPCATALOG));
   
@@ -88,8 +86,6 @@ void* Job_DropCatalog::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_DropCatalog::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

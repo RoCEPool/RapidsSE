@@ -75,8 +75,6 @@ Job_Pwf* JobsModel::_pJob_Pwf(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_Pwf::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_Pwf* pJob_Pwf =
     static_cast<Job_Pwf*>(HeapMem::pAllocate(CN_JOB_PWF));
   
@@ -88,8 +86,6 @@ void* Job_Pwf::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_Pwf::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

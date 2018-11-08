@@ -9,8 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void* Compiler::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Compiler* pCompiler = reinterpret_cast<Compiler*>(HeapMem::pAllocate(CN_COMPILER));
   
   return pCompiler;

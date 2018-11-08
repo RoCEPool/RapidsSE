@@ -75,8 +75,6 @@ Job_DropIndex* JobsModel::_pJob_DropIndex(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_DropIndex::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_DropIndex* pJob_DropIndex =
     static_cast<Job_DropIndex*>(HeapMem::pAllocate(CN_JOB_DROPINDEX));
   
@@ -88,8 +86,6 @@ void* Job_DropIndex::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_DropIndex::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

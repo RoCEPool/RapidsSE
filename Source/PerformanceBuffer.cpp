@@ -29,7 +29,6 @@ PerformanceBuffer* Measurement::_pPerformanceBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* PerformanceBuffer::operator new(size_t)
 {
-  //UNUSED(iSize)
   Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_PERFORMANCEBUFFER);
   
   return pBuffer;

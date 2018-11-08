@@ -75,8 +75,6 @@ Job_Receiver* JobsModel::_pJob_Receiver(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_Receiver::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_Receiver* pJob_Receiver =
     static_cast<Job_Receiver*>(HeapMem::pAllocate(CN_JOB_RECEIVER));
   
@@ -88,8 +86,6 @@ void* Job_Receiver::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_Receiver::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

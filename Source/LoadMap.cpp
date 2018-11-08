@@ -25,8 +25,6 @@ LoadMap* Loader::_pLoadMap(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* LoadMap::operator new(size_t)
 {
-  //UNUSED(iSize)
-
   Object* pObject = HeapMem::pAllocate(CN_LOADMAP);
   
   return pObject;

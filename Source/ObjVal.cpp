@@ -21,7 +21,6 @@ ObjVal* Values::_pObjVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ObjVal::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: StrVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

@@ -75,8 +75,6 @@ Job_SubTruncate* JobsModel::_pJob_SubTruncate(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_SubTruncate::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_SubTruncate* pJob_SubTruncate =
     static_cast<Job_SubTruncate*>(HeapMem::pAllocate(CN_JOB_SUBTRUNCATE));
   
@@ -88,8 +86,6 @@ void* Job_SubTruncate::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_SubTruncate::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void* FreeChunk::operator new(size_t, FreeChunk* pFreeChunk)
 {
-  //UNUSED(iSize)
   return pFreeChunk;
 }
 

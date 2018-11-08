@@ -75,8 +75,6 @@ Job_VisualizeIndex* JobsModel::_pJob_VisualizeIndex(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_VisualizeIndex::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_VisualizeIndex* pJob_VisualizeIndex =
     static_cast<Job_VisualizeIndex*>(HeapMem::pAllocate(CN_JOB_VISUALIZEINDEX));
   
@@ -88,8 +86,6 @@ void* Job_VisualizeIndex::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_VisualizeIndex::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

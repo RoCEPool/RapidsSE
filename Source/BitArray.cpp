@@ -9,8 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void* BitArray::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_BITARRAY);
   
   return pObject;

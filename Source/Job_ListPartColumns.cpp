@@ -75,8 +75,6 @@ Job_ListPartColumns* JobsModel::_pJob_ListPartColumns(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_ListPartColumns::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_ListPartColumns* pJob_ListPartColumns =
     static_cast<Job_ListPartColumns*>(HeapMem::pAllocate(CN_JOB_LISTPARTCOLUMNS));
   
@@ -88,8 +86,6 @@ void* Job_ListPartColumns::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_ListPartColumns::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

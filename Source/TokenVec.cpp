@@ -21,8 +21,6 @@ TokenVec* TokenVec::_pTokenSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TokenVec::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_TOKENVEC);
   
   return pObject;

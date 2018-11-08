@@ -21,8 +21,6 @@ PredicateVec* PredicateVec::_pPredicateVec(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* PredicateVec::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_PREDICATEVEC);
   
   return pObject;

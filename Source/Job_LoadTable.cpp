@@ -81,8 +81,6 @@ Job_LoadTable* JobsModel::_pJob_LoadTable(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_LoadTable::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_LoadTable* pJob_LoadTable =
     static_cast<Job_LoadTable*>(HeapMem::pAllocate(CN_JOB_LOADTABLE));
   
@@ -94,8 +92,6 @@ void* Job_LoadTable::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_LoadTable::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

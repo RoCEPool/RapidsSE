@@ -75,8 +75,6 @@ Job_Cf* JobsModel::_pJob_Cf(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_Cf::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_Cf* pJob_Cf =
     static_cast<Job_Cf*>(HeapMem::pAllocate(CN_JOB_CF));
   
@@ -88,8 +86,6 @@ void* Job_Cf::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_Cf::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

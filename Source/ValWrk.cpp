@@ -21,7 +21,6 @@ ValWrk* Values::_pValWrk(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ValWrk::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: ValWrk class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

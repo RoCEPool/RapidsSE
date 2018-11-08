@@ -28,8 +28,6 @@ StrVal* Values::_pStrVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* StrVal::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   vFatal("fatal: StrVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -40,8 +38,6 @@ void* StrVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* StrVal::operator new(size_t, StrVal* pThis)
 {
-  //UNUSED(iSize)
-  
   return pThis;
 }
 

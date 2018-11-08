@@ -24,8 +24,6 @@ AttachMap* StorageEngine::_pAttachMap(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* AttachMap::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   AttachMap* pAttachMap = (AttachMap*)gpBufferPool->pAllocAttachMapBuffer();
   
   return pPoolCheck<void*>(pAttachMap);

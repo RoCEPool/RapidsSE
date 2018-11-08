@@ -21,8 +21,6 @@ Dic* Dictionaries::_pDic(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Dic::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Dic* pDic = (Dic*)(HeapMem::pAllocate(CN_DIC));
   
   return pDic;
@@ -33,8 +31,6 @@ void* Dic::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Dic::operator new(size_t, Dic* pDic)
 {
-  //UNUSED(iSize)
-  
   return pDic;
 }
 

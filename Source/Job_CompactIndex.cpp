@@ -75,8 +75,6 @@ Job_CompactIndex* JobsModel::_pJob_CompactIndex(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_CompactIndex::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_CompactIndex* pJob_CompactIndex =
     static_cast<Job_CompactIndex*>(HeapMem::pAllocate(CN_JOB_COMPACTINDEX));
   
@@ -88,8 +86,6 @@ void* Job_CompactIndex::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_CompactIndex::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

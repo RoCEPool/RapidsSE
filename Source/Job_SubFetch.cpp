@@ -75,8 +75,6 @@ Job_SubFetch* JobsModel::_pJob_SubFetch(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_SubFetch::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_SubFetch* pJob_SubFetch =
     static_cast<Job_SubFetch*>(HeapMem::pAllocate(CN_JOB_SUBFETCH));
   
@@ -88,8 +86,6 @@ void* Job_SubFetch::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_SubFetch::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

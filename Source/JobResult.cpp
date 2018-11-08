@@ -13,8 +13,6 @@
 /*----------------------------------------------------------------------------*/
 void* JobResult::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   vFatal("fatal: JobResult class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

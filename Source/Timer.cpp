@@ -23,7 +23,6 @@ Timer* System::_pTimer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Timer::operator new(size_t, Timer* pTimer)
 {
-  //UNUSED(iSize)
   return pTimer;
 }
 

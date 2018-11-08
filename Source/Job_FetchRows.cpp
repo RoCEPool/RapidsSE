@@ -75,8 +75,6 @@ Job_FetchRows* JobsModel::_pJob_FetchRows(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_FetchRows::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_FetchRows* pJob_FetchRows =
     static_cast<Job_FetchRows*>(HeapMem::pAllocate(CN_JOB_FETCHROWS));
   
@@ -88,8 +86,6 @@ void* Job_FetchRows::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_FetchRows::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

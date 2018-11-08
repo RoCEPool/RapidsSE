@@ -21,8 +21,6 @@ GraphCursor* Structures::_pGraphCursor(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* GraphCursor::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_GRAPHCURSOR);
   
   return pObject;
@@ -33,8 +31,6 @@ void* GraphCursor::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* GraphCursor::operator new(size_t, GraphCursor* pGraphCursor)
 {
-  //UNUSED(iSize)
-  
   return pGraphCursor;
 }
 

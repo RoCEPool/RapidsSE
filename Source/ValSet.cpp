@@ -25,7 +25,6 @@ ValSet* Values::_pValSet(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ValSet::operator new(size_t)
 {
-  //UNUSED(iSize)
   ValSet* pValSet = reinterpret_cast<ValSet*>(HeapMem::pAllocate(CN_VALSET));
   
   return pValSet;

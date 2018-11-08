@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void* SlabAllocator::operator new(size_t)
 {
-  //UNUSED(iSize)
   Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_SLABALLOCATOR);
   
   return pBuffer;

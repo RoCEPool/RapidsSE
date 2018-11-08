@@ -75,8 +75,6 @@ Job_DropTable* JobsModel::_pJob_DropTable(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_DropTable::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_DropTable* pJob_DropTable =
     static_cast<Job_DropTable*>(HeapMem::pAllocate(CN_JOB_DROPTABLE));
   
@@ -88,8 +86,6 @@ void* Job_DropTable::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_DropTable::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

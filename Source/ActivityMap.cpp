@@ -231,8 +231,6 @@ i8 ActivityMap::iSize(void)
 /*----------------------------------------------------------------------------*/
 void* ActivityMap::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   RASSERT( ! gpActivityMap );
   
   bool bResult;

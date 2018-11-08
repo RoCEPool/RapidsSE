@@ -25,7 +25,6 @@ LoadChunk* Loader::_pLoadChunk(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* LoadChunk::operator new(size_t)
 {
-  //UNUSED(iSize)
   LoadChunk* pLoadChunk = (LoadChunk*)HeapMem::pAllocate(CN_LOADCHUNK);
   
   return pPoolCheck<void*>(pLoadChunk);

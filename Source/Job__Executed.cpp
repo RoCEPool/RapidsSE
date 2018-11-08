@@ -70,8 +70,6 @@ Job__Executed* JobsModel::_pJob__Executed(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job__Executed::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job__Executed* pJob__Executed =
     static_cast<Job__Executed*>(HeapMem::pAllocate(CN_JOB__EXECUTED));
   
@@ -83,8 +81,6 @@ void* Job__Executed::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job__Executed::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

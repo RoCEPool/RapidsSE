@@ -15,8 +15,6 @@
 /*----------------------------------------------------------------------------*/
 void* Bol::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   vFatal("fatal: Bol class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

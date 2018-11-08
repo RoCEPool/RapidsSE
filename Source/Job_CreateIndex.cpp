@@ -119,8 +119,6 @@ Job_CreateIndex* JobsModel::_pJob_CreateIndex(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_CreateIndex::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_CreateIndex* pJob_CreateIndex =
     static_cast<Job_CreateIndex*>(HeapMem::pAllocate(CN_JOB_CREATEINDEX));
   
@@ -132,8 +130,6 @@ void* Job_CreateIndex::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_CreateIndex::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

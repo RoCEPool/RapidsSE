@@ -9,8 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void* BitMap::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   BitMap* pBitMap = (BitMap*)HeapMem::pAllocate(CN_BITMAP);
   
   return pPoolCheck<void*>(pBitMap);

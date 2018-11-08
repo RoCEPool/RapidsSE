@@ -14,7 +14,6 @@
 /*----------------------------------------------------------------------------*/
 void* KeyWrk::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: KeyWrk class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -25,7 +24,6 @@ void* KeyWrk::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* KeyWrk::operator new(size_t, KeyWrk* pKeyWrk)
 {
-  //UNUSED(iSize)
   return pKeyWrk;
 }
 

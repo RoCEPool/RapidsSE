@@ -24,7 +24,6 @@ BinVal* Values::_pBinVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* BinVal::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: BinVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -35,8 +34,6 @@ void* BinVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* BinVal::operator new(size_t, BinVal* pBinVal)
 {
-  //UNUSED(iSize)
-
   return pBinVal;
 }
 

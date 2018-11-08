@@ -28,8 +28,6 @@ ActivityMark* Measurement::_pActivityMark(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ActivityMark::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = nullptr;
   
   return pObject;

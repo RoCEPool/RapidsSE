@@ -25,8 +25,6 @@ Predicate* Plans::_pPredicate(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Predicate::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_PREDICATE);
   
   return pObject;

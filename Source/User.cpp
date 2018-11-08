@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void* User::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: User class cannot be new'd"_Stz);
   
   NEVER_REACH;
@@ -20,7 +19,6 @@ void* User::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* User::operator new(size_t, User* pUser)
 {
-  //UNUSED(iSize)
   return pUser;
 }
 

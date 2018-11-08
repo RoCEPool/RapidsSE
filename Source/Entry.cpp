@@ -17,7 +17,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void* Entry::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: Entry class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -28,7 +27,6 @@ void* Entry::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Entry::operator new(size_t, Entry* pEntry)
 {
-  //UNUSED(iSize)
   return pEntry;
 }
 

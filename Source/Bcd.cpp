@@ -15,8 +15,6 @@
 /*----------------------------------------------------------------------------*/
 void* Bcd::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   vFatal("fatal: Bcd class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

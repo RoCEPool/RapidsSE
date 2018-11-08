@@ -25,8 +25,6 @@ SkipList* Structures::_pSkipList(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* SkipList::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_SKIPLIST);
  
   return pObject;
@@ -37,8 +35,6 @@ void* SkipList::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* SkipList::operator new(size_t, SkipList* pSkipList)
 {
-  //UNUSED(iSize)
-  
   return pSkipList;
 }
 

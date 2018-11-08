@@ -13,7 +13,6 @@
 /*----------------------------------------------------------------------------*/
 void* Slab::operator new(size_t)
 {
-  //UNUSED(iSize)
   Slab* pSlab = (Slab*)HeapMem::pAllocate(CN_SLAB);
   
   return pPoolCheck<void*>(pSlab);

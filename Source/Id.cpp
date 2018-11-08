@@ -13,7 +13,6 @@
 /*----------------------------------------------------------------------------*/
 void* Id::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: RowId class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
@@ -24,7 +23,6 @@ void* Id::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Id::operator new(size_t, Id* pId)
 {
-  //UNUSED(iSize)
   return pId;
 }
 

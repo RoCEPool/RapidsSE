@@ -75,8 +75,6 @@ Job_ConnectCluster* JobsModel::_pJob_ConnectCluster(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_ConnectCluster::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_ConnectCluster* pJob_ConnectCluster =
   static_cast<Job_ConnectCluster*>(HeapMem::pAllocate(CN_JOB_CONNECTCLUSTER));
   
@@ -88,8 +86,6 @@ void* Job_ConnectCluster::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_ConnectCluster::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

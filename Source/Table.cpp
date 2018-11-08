@@ -34,7 +34,6 @@ Table* DBobjects::_pTable(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Table::operator new(size_t)
 {
-  //UNUSED(iSize)
   Table* pTable = nullptr;
   
   return pTable;
@@ -45,7 +44,6 @@ void* Table::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Table::operator new(size_t, Table* pTable)
 {
-  //UNUSED(iSize)
   return pTable;
 }
 

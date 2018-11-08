@@ -70,8 +70,6 @@ Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>* Structures::_pVector(void* aAddr)
 template <eCN VEC_CN, class ITEM, eCN ITEM_CN, i8 MAX_ITEMS, class SUB>
 void* Vector<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(VEC_CN);
   
   return pObject;

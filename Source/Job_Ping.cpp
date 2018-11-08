@@ -75,8 +75,6 @@ Job_Ping* JobsModel::_pJob_Ping(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_Ping::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_Ping* pJob_Ping =
     static_cast<Job_Ping*>(HeapMem::pAllocate(CN_JOB_PING));
   
@@ -88,8 +86,6 @@ void* Job_Ping::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_Ping::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

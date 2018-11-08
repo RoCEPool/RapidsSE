@@ -27,8 +27,6 @@ Word* Dictionaries::_pWord(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Word::operator new(size_t, Dic* pDic)
 {
-  //UNUSED(iSize)
-
   Word* pWord = (Word*)(HeapMem::pAllocate(CN_WORD));
   
   pWord->m_bPersistent = false;
@@ -42,7 +40,6 @@ void* Word::operator new(size_t, Dic* pDic)
 /*----------------------------------------------------------------------------*/
 void* Word::operator new(size_t, Dic* pDic, bool bPersistent)
 {
-  //UNUSED(iSize)
   RASSERT(bPersistent || ! bPersistent);
   
   Word* pWord = (Word*)(HeapMem::pAllocate(CN_WORD,bPersistent));

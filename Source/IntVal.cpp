@@ -9,7 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void* IntVal::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: IntVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

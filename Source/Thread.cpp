@@ -33,7 +33,6 @@ Thread* Threads::_pThread(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Thread::operator new(size_t)
 {
-  //UNUSED(iSize)
   void* pObject = HeapMem::pAllocate(CN_THREAD);
   
   return pObject;
@@ -44,7 +43,6 @@ void* Thread::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Thread::operator new(size_t, Thread* pThread)
 {
-  //UNUSED(iSize)
   return pThread;
 }
 

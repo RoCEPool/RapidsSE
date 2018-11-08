@@ -75,8 +75,6 @@ Job_TruncateTable* JobsModel::_pJob_TruncateTable(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_TruncateTable::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_TruncateTable* pJob_TruncateTable =
     static_cast<Job_TruncateTable*>(HeapMem::pAllocate(CN_JOB_TRUNCATETABLE));
   
@@ -88,8 +86,6 @@ void* Job_TruncateTable::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_TruncateTable::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

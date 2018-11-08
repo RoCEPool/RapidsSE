@@ -53,7 +53,6 @@ void Slots::vFinalize(eCN eClass, Object* pObject)
 /*----------------------------------------------------------------------------*/
 void* Slots::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: Slots class cannot be new'd"_Stz);
   
   NEVER_REACH;

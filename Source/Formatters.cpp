@@ -12,8 +12,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void* Formatters::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Formatters* pFormatters = (Formatters*)gpBufferPool->pAllocBuffer();
   
   return pPoolCheck<void*>(pFormatters);

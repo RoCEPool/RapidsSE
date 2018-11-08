@@ -84,8 +84,6 @@ Job_CreateTable* JobsModel::_pJob_CreateTable(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_CreateTable::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_CreateTable* pJob_CreateTable =
     static_cast<Job_CreateTable*>(HeapMem::pAllocate(CN_JOB_CREATETABLE));
   
@@ -97,8 +95,6 @@ void* Job_CreateTable::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_CreateTable::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

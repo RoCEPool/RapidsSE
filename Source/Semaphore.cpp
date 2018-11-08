@@ -29,8 +29,6 @@ Semaphore* System::_pSemaphore(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Semaphore::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pSemaphore = HeapMem::pAllocate(CN_SEMAPHORE);
   
   return pSemaphore;
@@ -41,7 +39,6 @@ void* Semaphore::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Semaphore::operator new(size_t, Semaphore* pSemaphore)
 {
-  //UNUSED(iSize)
   return pSemaphore;
 }
 

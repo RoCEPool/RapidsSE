@@ -21,7 +21,6 @@ TmeVal* Values::_pTmeVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TmeVal::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: TmeVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

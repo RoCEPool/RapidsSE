@@ -29,8 +29,6 @@ Grid* GridModel::_pGrid(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Grid::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_GRID);
   
   return pObject;

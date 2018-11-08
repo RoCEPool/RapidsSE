@@ -75,8 +75,6 @@ Job_DropTenant* JobsModel::_pJob_DropTenant(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_DropTenant::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_DropTenant* pJob_DropTenant =
     static_cast<Job_DropTenant*>(HeapMem::pAllocate(CN_JOB_DROPTENANT));
   
@@ -88,8 +86,6 @@ void* Job_DropTenant::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_DropTenant::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

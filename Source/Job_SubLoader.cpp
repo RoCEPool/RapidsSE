@@ -75,8 +75,6 @@ Job_SubLoader* JobsModel::_pJob_SubLoader(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_SubLoader::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_SubLoader* pJob_SubLoader =
     static_cast<Job_SubLoader*>(HeapMem::pAllocate(CN_JOB_SUBLOADER));
   
@@ -88,8 +86,6 @@ void* Job_SubLoader::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_SubLoader::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

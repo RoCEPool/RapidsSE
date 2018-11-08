@@ -25,8 +25,6 @@ AccessPath* Plans::_pAccessPath(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* AccessPath::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_ACCESSPATH);
   
   return pObject;

@@ -75,8 +75,6 @@ Job_Periodic* JobsModel::_pJob_Periodic(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_Periodic::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_Periodic* pJob_Periodic =
     static_cast<Job_Periodic*>(HeapMem::pAllocate(CN_JOB_PERIODIC));
   
@@ -88,8 +86,6 @@ void* Job_Periodic::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_Periodic::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

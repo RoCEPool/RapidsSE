@@ -13,8 +13,6 @@
 /*----------------------------------------------------------------------------*/
 void* JobFileName::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   vFatal("fatal: JobFileName class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

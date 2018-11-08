@@ -11,7 +11,6 @@
 /*----------------------------------------------------------------------------*/
 void* Time::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: Time class cannot be new'd"_Stz);
   
   NEVER_REACH;

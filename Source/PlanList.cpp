@@ -24,8 +24,6 @@ PlanList* Plans::_pPlanList(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* PlanList::operator new(size_t)
 {
-  //UNUSED(iSize)
-
   void* pObject = HeapMem::pAllocate(CN_PLANLIST);
   
   return pObject;
@@ -36,7 +34,6 @@ void* PlanList::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* PlanList::operator new(size_t, PlanList* pPlanList)
 {
-  //UNUSED(iSize)
   return pPlanList;
 }
 

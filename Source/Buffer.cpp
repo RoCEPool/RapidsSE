@@ -11,7 +11,6 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* Buffer::operator new(size_t)
 {
-  //UNUSED(iSize)
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   
   return pBuffer;

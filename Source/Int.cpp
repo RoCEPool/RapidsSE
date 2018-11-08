@@ -15,8 +15,6 @@
 /*----------------------------------------------------------------------------*/
 void* Int::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   vFatal("fatal: Int class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

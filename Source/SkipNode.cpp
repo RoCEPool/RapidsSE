@@ -21,8 +21,6 @@ SkipNode* Structures::_pSkipNode(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* SkipNode::operator new(size_t, i8 iLevel, SlabAllocator* pSlabAllocator)
 {
-  //UNUSED(iSize)
-  
   int nBytes = sizeof(SkipNode) + ((int)iLevel * sizeof(SkipNode*));
   //i8 nMaxBytes = iMaxSize();
   //vTrace("SkipNode iMaxSize %lld\n"_Stz,nMaxBytes);

@@ -17,8 +17,6 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void* Vch::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   vFatal("fatal: Vch class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

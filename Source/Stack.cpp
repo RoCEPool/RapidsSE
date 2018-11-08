@@ -23,8 +23,6 @@ Stack* Stack::_pStack(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Stack::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pStack = HeapMem::pAllocate(CN_STACK);
   
   return pStack;

@@ -23,8 +23,6 @@ Scratch* System::_pScratch(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Scratch::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_SCRATCH);
   
   return pObject;
@@ -35,7 +33,6 @@ void* Scratch::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Scratch::operator new(size_t, Scratch* pScratch)
 {
-  //UNUSED(iSize)
   return pScratch;
 }
 

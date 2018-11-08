@@ -21,7 +21,6 @@ DteVal* Values::_pDteVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* DteVal::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: DteVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

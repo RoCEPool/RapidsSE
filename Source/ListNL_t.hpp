@@ -44,8 +44,6 @@ using namespace Structures;
 template <class OBJECT>
 void* ListNL_t<OBJECT>::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_TASKLIST);
   
   return pObject;

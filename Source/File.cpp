@@ -53,8 +53,6 @@ File* System::_pFile(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* File::operator new(size_t)
 {
-  //UNUSED(iSize)
-
   void* pObject = HeapMem::pAllocate(CN_FILE);
   
   return pObject;
@@ -65,7 +63,6 @@ void* File::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* File::operator new(size_t, File* pFile)
 {
-  //UNUSED(iSize)
   return pFile;
 }
 

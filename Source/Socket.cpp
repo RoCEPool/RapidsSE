@@ -26,7 +26,6 @@ Socket* System::_pSocket(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Socket::operator new(size_t)
 {
-  //UNUSED(iSize)
   void* pSocket = HeapMem::pAllocate(CN_SOCKET);
   
   return pSocket;
@@ -37,7 +36,6 @@ void* Socket::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Socket::operator new(size_t, Socket* pSocket)
 {
-  //UNUSED(iSize)
   return pSocket;
 }
 

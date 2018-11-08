@@ -21,8 +21,6 @@ ThreadVector* ThreadVector::_pThreadVector(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* ThreadVector::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_THREADVECTOR);
   
   return pObject;

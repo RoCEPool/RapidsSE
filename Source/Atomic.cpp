@@ -11,7 +11,6 @@
 /*----------------------------------------------------------------------------*/
 void* Atomic::operator new(size_t, Atomic* pAtomic)
 {
-  //UNUSED(iSize)
   return pAtomic;
 }
 

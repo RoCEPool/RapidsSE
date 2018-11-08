@@ -52,8 +52,6 @@ Session* Interface::_pSession(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 void* Session::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Object* pObject = HeapMem::pAllocate(CN_SESSION);
   
   return pObject;

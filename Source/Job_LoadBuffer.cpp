@@ -74,8 +74,6 @@ Job_LoadBuffer* JobsModel::_pJob_LoadBuffer(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_LoadBuffer::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_LoadBuffer* pJob_LoadBuffer =
     static_cast<Job_LoadBuffer*>(HeapMem::pAllocate(CN_JOB_LOADBUFFER));
   
@@ -87,8 +85,6 @@ void* Job_LoadBuffer::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_LoadBuffer::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

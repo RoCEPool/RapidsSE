@@ -13,8 +13,6 @@
 /*----------------------------------------------------------------------------*/
 void* DicPath::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   vFatal("fatal: DicPath class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

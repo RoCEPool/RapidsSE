@@ -11,7 +11,6 @@
 /*----------------------------------------------------------------------------*/
 void* Decider::operator new(size_t, Decider* pDecider)
 {
-  //UNUSED(iSize)
   return pDecider;
 }
 

@@ -15,8 +15,6 @@
 /*----------------------------------------------------------------------------*/
 void* Flt::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   vFatal("fatal: Flt class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

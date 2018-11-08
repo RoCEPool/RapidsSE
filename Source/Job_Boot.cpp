@@ -75,8 +75,6 @@ Job_Boot* JobsModel::_pJob_Boot(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_Boot::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_Boot* pJob_Boot =
     static_cast<Job_Boot*>(HeapMem::pAllocate(CN_JOB_BOOT));
   
@@ -88,8 +86,6 @@ void* Job_Boot::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_Boot::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

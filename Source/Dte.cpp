@@ -15,8 +15,6 @@
 /*----------------------------------------------------------------------------*/
 void* Dte::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   vFatal("fatal: Dte class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

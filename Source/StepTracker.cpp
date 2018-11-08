@@ -24,7 +24,6 @@ StepTracker* Measurement::_pStepTracker(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* StepTracker::operator new(size_t)
 {
-  //UNUSED(iSize)
   RASSERT(! gpAttachMap->m_pStepTracker);
   
   gpAttachMap->m_pStepTracker = (StepTracker*)HeapMem::pAllocate(CN_STEPTRACKER);

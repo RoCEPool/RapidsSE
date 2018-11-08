@@ -23,7 +23,6 @@ FetchBuffer* DBobjects::_pFetchBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* FetchBuffer::operator new(size_t)
 {
-  //UNUSED(iSize)
   Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_FETCHBUFFER);
   
   return pBuffer;
@@ -34,8 +33,6 @@ void* FetchBuffer::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* FetchBuffer::operator new(size_t, void* aAddr)
 {
-  //UNUSED(iSize)
-  
   return aAddr;
 }
 

@@ -25,8 +25,6 @@ Op* Plans::_pOp(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Op::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_OP);
   
   return pObject;

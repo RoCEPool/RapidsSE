@@ -75,8 +75,6 @@ Job_DumpIndex* JobsModel::_pJob_DumpIndex(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_DumpIndex::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_DumpIndex* pJob_DumpIndex =
     static_cast<Job_DumpIndex*>(HeapMem::pAllocate(CN_JOB_DUMPINDEX));
   
@@ -88,8 +86,6 @@ void* Job_DumpIndex::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_DumpIndex::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

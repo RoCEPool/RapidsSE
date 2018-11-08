@@ -70,8 +70,6 @@ Job__Cancelled* JobsModel::_pJob__Cancelled(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job__Cancelled::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job__Cancelled* pJob__Cancelled =
     static_cast<Job__Cancelled*>(HeapMem::pAllocate(CN_JOB__CANCELLED));
   
@@ -83,8 +81,6 @@ void* Job__Cancelled::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job__Cancelled::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

@@ -21,8 +21,6 @@ Token* Token::_pToken(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Token::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pToken = HeapMem::pAllocate(CN_TOKEN);
   
   return pToken;

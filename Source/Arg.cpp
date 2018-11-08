@@ -25,8 +25,6 @@ Arg* Plans::_pArg(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Arg::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_ARG);
   
   return pObject;

@@ -75,8 +75,6 @@ Job_ListSchemas* JobsModel::_pJob_ListSchemas(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_ListSchemas::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_ListSchemas* pJob_ListSchemas =
     static_cast<Job_ListSchemas*>(HeapMem::pAllocate(CN_JOB_LISTSCHEMAS));
   
@@ -88,8 +86,6 @@ void* Job_ListSchemas::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_ListSchemas::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

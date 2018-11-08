@@ -21,8 +21,6 @@ HeapBuffer* Pool::_pHeapBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* HeapBuffer::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   HeapBuffer* pHeapBuffer = (HeapBuffer*)gpBufferPool->pAllocBuffer();
   
   return pPoolCheck<void*>(pHeapBuffer);

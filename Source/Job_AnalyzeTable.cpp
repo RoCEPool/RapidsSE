@@ -75,8 +75,6 @@ Job_AnalyzeTable* JobsModel::_pJob_AnalyzeTable(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_AnalyzeTable::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   Job_AnalyzeTable* pJob_AnalyzeTable =
     static_cast<Job_AnalyzeTable*>(HeapMem::pAllocate(CN_JOB_ANALYZETABLE));
   
@@ -88,8 +86,6 @@ void* Job_AnalyzeTable::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Job_AnalyzeTable::operator new(size_t, void* aAddress)
 {
-  //UNUSED(iSize)
-  
   return aAddress;
 }
 

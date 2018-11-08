@@ -21,7 +21,6 @@ TspVal* Values::_pTspVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* TspVal::operator new(size_t)
 {
-  //UNUSED(iSize)
   vFatal("fatal: TspVal class cannot be new'd\n"_Stz);
   
   NEVER_REACH;

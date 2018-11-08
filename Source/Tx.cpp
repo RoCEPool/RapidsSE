@@ -24,8 +24,6 @@ Tx* Transactions::_pTx(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Tx::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   void* pObject = HeapMem::pAllocate(CN_TXSET);
 
   return pObject;
@@ -36,7 +34,6 @@ void* Tx::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Tx::operator new(size_t, Tx* pTx)
 {
-  //UNUSED(iSize)
   return pTx;
 }
 

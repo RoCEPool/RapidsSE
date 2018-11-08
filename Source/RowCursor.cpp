@@ -21,8 +21,6 @@ RowCursor* DBobjects::_pRowCursor(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* RowCursor::operator new(size_t)
 {
-  //UNUSED(iSize)
-
   void* pObject = HeapMem::pAllocate(CN_ROWCURSOR);
   
   return pObject;
@@ -33,7 +31,6 @@ void* RowCursor::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* RowCursor::operator new(size_t, RowCursor* pRowCursor)
 {
-  //UNUSED(iSize)
   return pRowCursor;
 }
 

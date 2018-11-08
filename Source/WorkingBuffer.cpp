@@ -23,7 +23,6 @@ WorkingBuffer* DBobjects::_pWorkingBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* WorkingBuffer::operator new(size_t)
 {
-  //UNUSED(iSize)
   Buffer* pBuffer = (Buffer*)HeapMem::pAllocate(CN_WORKINGBUFFER);
   
   return pBuffer;
@@ -34,8 +33,6 @@ void* WorkingBuffer::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* WorkingBuffer::operator new(size_t, void* aAddr)
 {
-  //UNUSED(iSize)
-  
   return aAddr;
 }
 

@@ -15,8 +15,6 @@ extern Arguments   gxArguments;
 /*----------------------------------------------------------------------------*/
 void* BufferPool::operator new(size_t, void* pRegion)
 {
-  //UNUSED(iSize)
-  
   return pRegion;
 }
 

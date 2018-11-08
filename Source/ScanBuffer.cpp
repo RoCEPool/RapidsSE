@@ -9,8 +9,6 @@
 /*----------------------------------------------------------------------------*/
 void* ScanBuffer::operator new(size_t)
 {
-  //UNUSED(iSize)
-  
   ScanBuffer* pScanBuffer = (ScanBuffer*)HeapMem::pAllocate(CN_SCANBUFFER);
   
   return pPoolCheck<void*>(pScanBuffer);
