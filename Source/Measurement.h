@@ -25,7 +25,7 @@ using namespace Measurement;
 #include "PerformanceTrace.hpp"
 #include "ResourceTracker.hpp"
 #include "StepAccum.hpp"
-#include "StepArray.hpp"
+#include "StepTracker.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

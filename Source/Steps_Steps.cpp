@@ -29,7 +29,7 @@ ENTRY("vStepsList"_Stz);
   File xFile;
   xFile.bOpen("steps.csv"_Stz, C_OPEN_WRITE);
   
-  gpAttachMap->m_pStepArray->vList(xFile);
+  gpAttachMap->m_pStepTracker->vList(xFile);
   
   xFile.vClose();
   
@@ -43,7 +43,7 @@ void Task::vStepsReset(MP_Task mpTask)
 {
   ENTRY("vStepsReset"_Stz);
   
-  gpAttachMap->m_pStepArray->vReset();
+  gpAttachMap->m_pStepTracker->vReset();
   
   EXIT();
 }

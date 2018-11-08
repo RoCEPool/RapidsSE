@@ -563,7 +563,7 @@ void Task::vAddConstants(void)
   /* 52 */ vAddConstant("SIZEOF_SOCKET"_Stz,       sizeof(Socket));
   /* 53 */ vAddConstant("SIZEOF_STACK"_Stz,        sizeof(Stack));
   /* 54 */ vAddConstant("SIZEOF_STEPACCUM"_Stz,    sizeof(StepAccum));
-  /* 55 */ vAddConstant("SIZEOF_STEPARRAY"_Stz,    sizeof(StepArray));
+  /* 55 */ vAddConstant("SIZEOF_STEPTRACKER"_Stz,  sizeof(StepTracker));
   /* 56 */ vAddConstant("SIZEOF_SYSCALL"_Stz,      sizeof(SysCall));
   /* 57 */ vAddConstant("SIZEOF_TABLE"_Stz,        sizeof(Table));
   /* 58 */ vAddConstant("SIZEOF_TASK"_Stz,         sizeof(Task));

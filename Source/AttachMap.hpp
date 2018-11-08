@@ -60,7 +60,7 @@ namespace StorageEngine
     Jobs*         m_pOriginatingJobs;
     Jobs*         m_pParticipatingJobs;
   
-    StepArray*    m_pStepArray;
+    StepTracker*  m_pStepTracker;
     
     bool          m_bVerbose;
     bool          m_bTracepoint;

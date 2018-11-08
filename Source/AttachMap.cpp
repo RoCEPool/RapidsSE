@@ -216,7 +216,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
 
 
   ASSERT(m_pPlanList);  
-  ASSERT(m_pStepArray);
+  ASSERT(m_pStepTracker);
     
   m_nIndexLevels  = 3;
   m_nIndexOffsets = 3;

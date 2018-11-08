@@ -233,7 +233,7 @@ pDUMPFUN *gpDump[]
   /*125 */ &Socket::vDump,          // CN_SOCKET
   /*126 */ &Stack::vDump,           // CN_STACK
   /*127 */ &Dump::vInvalid,         // CN_STEPACCUM
-  /*128 */ &StepArray::vDump,       // CN_STEPARRAY
+  /*128 */ &StepTracker::vDump,     // CN_STEPARRAY
   /*129 */ &Dump::vInvalid,         // CN_SYSCALL
 
   /*130 */ &Table::vDump,           // CN_TABLE
@@ -489,7 +489,7 @@ i8 giClassSize[]
   /*125 */ sizeof(Socket),             // CN_SOCKET
   /*126 */ sizeof(Stack),              // CN_STACK
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
-  /*128 */ sizeof(StepArray),          // CN_STEPARRAY
+  /*128 */ sizeof(StepTracker),        // CN_STEPARRAY
   /*129 */ sizeof(SysCall),            // CN_SYSCALL
 
   /*130 */ sizeof(Table),              // CN_TABLE
