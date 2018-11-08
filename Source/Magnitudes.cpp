@@ -2,7 +2,7 @@
 /* Magnitudes.cpp -- Various Useful Magnitude functions                       */
 /*============================================================================*/
 
-#include "base.h"
+#include "Base.h"
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
