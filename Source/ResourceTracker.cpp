@@ -4,6 +4,10 @@
 
 #include "System.h"
 
+#include "StorageEngine.h"
+
+extern Arguments gxArguments;
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -35,6 +39,7 @@ ResourceTracker::~ResourceTracker(void)
 void ResourceTracker::vDecDirOpen(void)
 {
   i8 iDirOpen = --m_ziDirOpen;
+  RASSERT(iDirOpen >= 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,6 +48,7 @@ void ResourceTracker::vDecDirOpen(void)
 void ResourceTracker::vDecFileOpen(void)
 {
   i8 iFileOpen = --m_ziFileOpen;
+  RASSERT(iFileOpen >= 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,6 +57,7 @@ void ResourceTracker::vDecFileOpen(void)
 void ResourceTracker::vDecShmOpen(void)
 {
   i8 iShmOpen = --m_ziShmOpen;
+  RASSERT(iShmOpen >= 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,6 +66,7 @@ void ResourceTracker::vDecShmOpen(void)
 void ResourceTracker::vDecSocketOpen(void)
 {
   i8 iSocketOpen = --m_ziSocketOpen;
+  RASSERT(iSocketOpen >= 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,6 +75,7 @@ void ResourceTracker::vDecSocketOpen(void)
 void ResourceTracker::vDecThreadOpen(void)
 {
   i8 iThreadOpen = --m_ziThreadOpen;
+  RASSERT(iThreadOpen >= 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,6 +84,7 @@ void ResourceTracker::vDecThreadOpen(void)
 void ResourceTracker::vIncDirOpen(void)
 {
   i8 iDirOpen = ++m_ziDirOpen;
+  RASSERT(! gxArguments.m_nLimitDir || iDirOpen <= gxArguments.m_nLimitDir);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,6 +93,7 @@ void ResourceTracker::vIncDirOpen(void)
 void ResourceTracker::vIncFileOpen(void)
 {
   i8 iFileOpen = ++m_ziFileOpen;
+  RASSERT(! gxArguments.m_nLimitFile || iFileOpen <= gxArguments.m_nLimitFile);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,6 +102,7 @@ void ResourceTracker::vIncFileOpen(void)
 void ResourceTracker::vIncShmOpen(void)
 {
   i8 iShmOpen = ++m_ziShmOpen;
+  RASSERT(! gxArguments.m_nLimitShm || iShmOpen <= gxArguments.m_nLimitShm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,6 +111,7 @@ void ResourceTracker::vIncShmOpen(void)
 void ResourceTracker::vIncSocketOpen(void)
 {
   i8 iSocketOpen = ++m_ziSocketOpen;
+  RASSERT(! gxArguments.m_nLimitSocket || iSocketOpen <= gxArguments.m_nLimitSocket);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,6 +120,7 @@ void ResourceTracker::vIncSocketOpen(void)
 void ResourceTracker::vIncThreadOpen(void)
 {
   i8 iThreadOpen = ++m_ziThreadOpen;
+  RASSERT(! gxArguments.m_nLimitThread || iThreadOpen <= gxArguments.m_nLimitThread);
 }
 
 /*----------------------------------------------------------------------------*/
