@@ -36,7 +36,7 @@ void Step::vAddSteps_Encode(void)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeAgain(MP_Task mpTask)
 {
-  ENTRY("vAgain"_Stz); // ( dest -- / -- )
+  ENTRY("vEncodeAgain"_Stz); // ( dest -- / -- )
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
@@ -56,7 +56,7 @@ void Task::vEncodeAgain(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeAhead(MP_Task mpTask)
 {
-  ENTRY("vAhead"_Stz);// ( -- orig / -- )
+  ENTRY("vEncodeAhead"_Stz);// ( -- orig / -- )
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
@@ -119,7 +119,7 @@ void Task::vEncodeCallRoutine(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeContinue(MP_Task mpTask)
 {
-  ENTRY("vContinue"_Stz); // ( -- orig / flag -- )
+  ENTRY("vEncodeContinue"_Stz); // ( -- orig / flag -- )
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
@@ -142,7 +142,7 @@ void Task::vEncodeContinue(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeHere(MP_Task mpTask)
 {
-  ENTRY("vFlowHere"_Stz);
+  ENTRY("vEncodeHere"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
@@ -159,7 +159,7 @@ void Task::vEncodeHere(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeIf(MP_Task mpTask)
 {
-  ENTRY("vIf"_Stz); // ( -- orig / flag -- )
+  ENTRY("vEncodeIf"_Stz); // ( -- orig / flag -- )
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
@@ -178,7 +178,7 @@ void Task::vEncodeIf(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeIfAgain(MP_Task mpTask)
 {
-  ENTRY("vIfAgain"_Stz); // ( dest -- / -- )
+  ENTRY("vEncodeIfAgain"_Stz); // ( dest -- / -- )
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
@@ -209,7 +209,7 @@ void Task::vEncodeIfAgain(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeLoop(MP_Task mpTask)
 {
-  ENTRY("vLoop"_Stz);
+  ENTRY("vEncodeLoop"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
@@ -257,7 +257,7 @@ void Task::vEncodeLoop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeLoopPlus(MP_Task mpTask)
 {
-  ENTRY("vLoopPlus"_Stz);
+  ENTRY("vEncodeLoopPlus"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
@@ -305,7 +305,7 @@ void Task::vEncodeLoopPlus(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeNext(MP_Task mpTask)
 {
-  ENTRY("vLoop"_Stz);
+  ENTRY("vEncodeNext"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
@@ -348,7 +348,7 @@ void Task::vEncodePushValue(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeThen(MP_Task mpTask)
 {
-  ENTRY("vThen"_Stz);  // ( orig -- / -- )
+  ENTRY("vEncodeThen"_Stz);  // ( orig -- / -- )
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
@@ -368,7 +368,7 @@ void Task::vEncodeThen(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeUntil(MP_Task mpTask)
 {
-  ENTRY("vUntil"_Stz); // ( dest -- / flag -- )
+  ENTRY("vEncodeUntil"_Stz); // ( dest -- / flag -- )
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
