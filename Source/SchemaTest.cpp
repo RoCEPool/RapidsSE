@@ -144,69 +144,69 @@ void SchemaTest::vTestSet(void)
   vForPattern(0,2,0);
   vForPattern(0,3,0);
 
-//  vForPattern(1,1,0);
-//  vForPattern(1,2,0);
-//  vForPattern(1,3,0);
-//
-//  vForPattern(2,1,0);
-//  vForPattern(2,2,0);
-//  vForPattern(2,3,0);
-//
-//  vForPattern(3,1,0);
-//  vForPattern(3,2,0);
-//  vForPattern(3,3,0);
-//
-//  vForPattern(0,1,1);
-//  vForPattern(0,2,1);
-//  vForPattern(0,3,1);
-//
-//  vForPattern(0,1,2);
-//  vForPattern(0,2,2);
-//  vForPattern(0,3,2);
-//
-//  vForPattern(0,1,3);
-//  vForPattern(0,2,3);
-//  vForPattern(0,3,3);
-//
-//  vForPattern(3,1,3);
-//  vForPattern(3,2,3);
-//  vForPattern(3,3,3);
-//
-//  vForPattern(73,1,0);
-//  vForPattern(73,2,0);
-//  vForPattern(73,3,0);
-//
-//  vForPattern(73,1,1);
-//  vForPattern(73,2,1);
-//  vForPattern(73,3,1);
-//
-//  vForPattern(73,1,2);
-//  vForPattern(73,2,2);
-//  vForPattern(73,3,2);
-//
-//  vForPattern(73,1,3);
-//  vForPattern(73,2,3);
-//  vForPattern(73,3,3);
-//
-//  vForPattern(73,3,-1);
-//  vForPattern(73,2,-1);
-//  vForPattern(73,1,-1);
-//
-//  vForPattern(-1,3,3);
-//  vForPattern(-1,2,3);
-//  vForPattern(-1,1,3);
-//
-//  vForPattern(-1,3,2);
-//  vForPattern(-1,2,2);
-//  vForPattern(-1,1,2);
-//
-//  vForPattern(-1,3,1);
-//  vForPattern(-1,2,1);
-//  vForPattern(-1,1,1);
-//
-//  vForPattern(-1,3,0);
-//  vForPattern(-1,2,0);
-//  vForPattern(-1,1,0);
+  vForPattern(1,1,0);
+  vForPattern(1,2,0);
+  vForPattern(1,3,0);
+
+  vForPattern(2,1,0);
+  vForPattern(2,2,0);
+  vForPattern(2,3,0);
+
+  vForPattern(3,1,0);
+  vForPattern(3,2,0);
+  vForPattern(3,3,0);
+
+  vForPattern(0,1,1);
+  vForPattern(0,2,1);
+  vForPattern(0,3,1);
+
+  vForPattern(0,1,2);
+  vForPattern(0,2,2);
+  vForPattern(0,3,2);
+
+  vForPattern(0,1,3);
+  vForPattern(0,2,3);
+  vForPattern(0,3,3);
+
+  vForPattern(3,1,3);
+  vForPattern(3,2,3);
+  vForPattern(3,3,3);
+
+  vForPattern(73,1,0);
+  vForPattern(73,2,0);
+  vForPattern(73,3,0);
+
+  vForPattern(73,1,1);
+  vForPattern(73,2,1);
+  vForPattern(73,3,1);
+
+  vForPattern(73,1,2);
+  vForPattern(73,2,2);
+  vForPattern(73,3,2);
+
+  vForPattern(73,1,3);
+  vForPattern(73,2,3);
+  vForPattern(73,3,3);
+
+  vForPattern(73,3,-1);
+  vForPattern(73,2,-1);
+  vForPattern(73,1,-1);
+
+  vForPattern(-1,3,3);
+  vForPattern(-1,2,3);
+  vForPattern(-1,1,3);
+
+  vForPattern(-1,3,2);
+  vForPattern(-1,2,2);
+  vForPattern(-1,1,2);
+
+  vForPattern(-1,3,1);
+  vForPattern(-1,2,1);
+  vForPattern(-1,1,1);
+
+  vForPattern(-1,3,0);
+  vForPattern(-1,2,0);
+  vForPattern(-1,1,0);
 }
 
 /*----------------------------------------------------------------------------*/

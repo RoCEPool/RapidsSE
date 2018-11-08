@@ -4,7 +4,7 @@
 
 startCluster;
 
-docol schematestAll;
+docol schematest;
 
 //_schemaTest;
 

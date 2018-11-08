@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : BEGIN immediate
 
-  here
+  HERE // push address of last cell of word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -28,8 +28,7 @@
 : DO immediate
 
   POSTPONE 2>R // encode 2>r into future word
-
-  HERE true   // push address of last cell & simple do
+  HERE true    // push address of last cell & simple do
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,11 +36,9 @@
 /*----------------------------------------------------------------------------*/
 : ?DO immediate
 
-  POSTPONE 2>R // encode 2>r into future word
-
+  POSTPONE 2>R   // encode 2>r into future word
   POSTPONE AHEAD
-
-  false   // push address of last cell & simple do
+  false          // push address of last cell & simple do
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +56,6 @@
 : ITERATE immediate
 
   POSTPONE 2>R // encode 2>r into future word
-
   POSTPONE AHEAD
 ;
 
@@ -76,14 +72,9 @@
 /*----------------------------------------------------------------------------*/
 : CONSTANT
 
-  // create a word using the next token in the input stream
-  create
-
-  // encode a push value of the value currently on the stack
-  ,
-
-  // encode an exit into the created word
-  POSTPONE exit
+  create        // create a word using the next token in the input stream
+  ,             // encode a push value of the value currently on the stack
+  POSTPONE exit // encode an exit into the created word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -141,11 +132,9 @@ true tick CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 : ENDOF immediate
 
-  >R // save OFs counter
-
+  >R            // save OFs counter
   POSTPONE ELSE // add conditional block (with orig2 on control stack)
-
-  R> // restore OFs counter
+  R>            // restore OFs counter
 ;
 
 /*----------------------------------------------------------------------------*/
