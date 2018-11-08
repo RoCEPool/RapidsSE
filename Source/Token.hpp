@@ -10,7 +10,7 @@ namespace Parsing
   /*  0 */ TN_NONE=0,  // none
   /*  1 */ TN_INTEGER, // integer literal, e.g. 1, 42
   /*  2 */ TN_NAME,    // name token, e.g. WASHER (or ++ in special mode)
-  /*  3 */ TN_OTHER,   // other literal, e.g. {, ~
+  /*  3 */ TN_OTHER,   // other literal, e.g. {,~
   /*  4 */ TN_STRING,  // string literal, e.g. "the answer"
   /*  5 */ TN_ENUMS
   };

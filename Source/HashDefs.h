@@ -35,7 +35,7 @@
 #define NIL(a,b) (a ? a : b)          // null replacement
 
 #define BITWISE_AND(a,b) ((a) & (b))  // bitwise and
-#define BITWISE_NOT(a)   ( ~((u8)a) )     // bitwise not
+#define BITWISE_NOT(a)   (~ ((u8)a) ) // bitwise not
 #define BITWISE_OR(a,b)  ((a) | (b))  // bitwise or
 #define BITWISE_XOR(a,b) ((a) ^ (b))  // bitwise xor
 

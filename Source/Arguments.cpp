@@ -337,7 +337,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--size"_Stz)) {
       
       bool bResult = Magnitudes::bBytes((Stz*)argv[++i_Arg], m_iRegionSize);

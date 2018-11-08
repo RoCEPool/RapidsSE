@@ -163,7 +163,7 @@ void BitArray::vSetOff(i8 i_BitNo)
   
   if (bBitState(i_BitNo)) {
     char cChar = m_bBytes[i_Byte];
-    cChar &= ~cMask;
+    cChar &= (~ cMask);
     m_bBytes[i_Byte] = cChar;
     m_nBitsOn--;
   }

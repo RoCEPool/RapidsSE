@@ -187,7 +187,7 @@ u8 BitLib::uSetOff(u8 uBitMap, i8 iBit)
   u8 uMask = uBitMask(iBit);
   
   // flip mask so particular bit is off in the mask, all others on
-  uMask = ~ uMask;
+  uMask = (~ uMask);
   
   // mask off given bit in given bit map
   uBitMap &= uMask;
@@ -216,7 +216,7 @@ void BitLib::vSetOff(u8& uBitMap, i8 iBit)
   u8 uMask = uBitMask(iBit);
   
   // flip mask so particular bit is off in the mask, all others on
-  uMask = ~ uMask;
+  uMask = (~ uMask);
   
   // mask off given bit in given bit map
   uBitMap &= uMask;
