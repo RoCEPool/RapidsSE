@@ -8,6 +8,7 @@
 #include "Debugging.h"
 
 extern AttachMap* gpAttachMap;
+extern ResourceTracker gxResourceTracker;
 
 extern i8 giClassSize[];
 
@@ -85,6 +86,8 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
 {
   free(aBlock);
+  
+  gxResourceTracker.vSubMallocAmt(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,6 +189,8 @@ void MemLib::vHexDump(void *aAddress, i8 iBytes)
 void* MemLib::aMallocBlock(i8 nBytes)
 {
   void* aBlock = (void*)malloc(nBytes);
+  
+  gxResourceTracker.vAddMallocAmt(nBytes);
   
   return aBlock;
 }
