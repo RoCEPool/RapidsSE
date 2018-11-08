@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Tasks
+namespace Measurement
 {
   static const i8 C_STEPS = 1024;
   

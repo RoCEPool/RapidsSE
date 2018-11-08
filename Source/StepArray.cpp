@@ -2,15 +2,15 @@
 /* StepAccum.cpp -- Step Accumulator                                          */
 /*============================================================================*/
 
+#include "Measurement.h"
 #include "StorageEngine.h"
-#include "Tasks.h"
 
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StepArray* Tasks::_pStepArray(void* aAddr)
+StepArray* Measurement::_pStepArray(void* aAddr)
 {
   StepArray* pStepArray = reinterpret_cast<StepArray*>(aAddr);
   
