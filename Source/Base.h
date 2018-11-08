@@ -26,6 +26,7 @@ using namespace Base;
 #include "Hardware.hpp"
 #include "IntLib.hpp"
 #include "i3.hpp"
+#include "Magnitudes.hpp"
 #include "MemLib.hpp"
 #include "Stz.hpp"
 #include "StrLib.hpp"

@@ -30,7 +30,6 @@ using namespace System;
 #include "File.hpp"
 #include "Lock.hpp"
 #include "Locks.hpp"
-#include "Magnitudes.hpp"
 #include "OpSys.hpp"
 #include "PosixThread.hpp"
 #include "Process.hpp"
