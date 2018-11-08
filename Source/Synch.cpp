@@ -142,9 +142,11 @@ i8 Synch::iToMicroseconds(i8 iTickDelta)
 /*----------------------------------------------------------------------------*/
 i8 Synch::iRdTscp(void)
 {
-  i8 iTscp = iRdtscp();
+//  i8 iTscp = iRdtscp();
+//
+//  return iTscp;
   
-  return iTscp;
+  return 0;
 }
 
 /*----------------------------------------------------------------------------*/
