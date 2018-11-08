@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Wilderness* DBobjects::_pWilderness(void* aAddr)
+Wilderness* Structures::_pWilderness(void* aAddr)
 {
   Wilderness* pWilderness = reinterpret_cast<Wilderness*>(aAddr);
   

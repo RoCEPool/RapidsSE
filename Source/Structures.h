@@ -20,6 +20,11 @@ using namespace Structures;
 #include "CollectionNode_t.hpp"
 #include "Collection_t.hpp"
 
+#include "Item.hpp"
+#include "ItemBuffer.hpp"
+#include "Wilderness.hpp"
+
+
 #include "ListCursor_t.hpp"
 #include "ListNode_t.hpp"
 #include "List_t.hpp"
