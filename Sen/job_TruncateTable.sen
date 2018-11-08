@@ -58,9 +58,6 @@
   pJob_TruncateTable getPath
   dicStack.set
 
-  // store task into job_truncateTable
-  pThisTask pJob_TruncateTable job_truncateTable.task!
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
   ddlLock::grabWrite
