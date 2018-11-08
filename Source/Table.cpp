@@ -52,9 +52,8 @@ void* Table::operator new(size_t, Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Table::operator delete(void* pTableAddress)
+void Table::operator delete(void*)
 {
-  RASSERT(pTableAddress);
 }
 
 /*----------------------------------------------------------------------------*/

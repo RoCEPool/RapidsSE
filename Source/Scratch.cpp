@@ -44,8 +44,6 @@ void* Scratch::operator new(size_t, Scratch* pScratch)
 /*----------------------------------------------------------------------------*/
 void Scratch::operator delete(void* aAddress)
 {
-  ASSERT(aAddress);
-  
   Object* pObject = reinterpret_cast<Object*>(aAddress);
   
   HeapMem::vFree(pObject);

@@ -36,14 +36,11 @@ void* Queues::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Queues are never delete (for the moment)                                   */
+/* Queues are never deleted (for the moment)                                  */
 /*----------------------------------------------------------------------------*/
 void Queues::operator delete(void* aAddr)
 {
-  RASSERT(aAddr);
   vFatal("fatal: Queues class cannot be deleted"_Stz);
-  
-  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

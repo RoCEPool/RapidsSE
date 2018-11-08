@@ -62,12 +62,9 @@ void* Slots::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Slots::operator delete(void* pBufferAddress)
+void Slots::operator delete(void*)
 {
-  RASSERT(pBufferAddress);
   vFatal("fatal: Slots class cannot be deleted"_Stz);
-  
-  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

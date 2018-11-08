@@ -70,9 +70,8 @@ void* Index::operator new(size_t, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Index::operator delete(void* pIndexAddress)
+void Index::operator delete(void*)
 {
-  RASSERT(pIndexAddress);
 }
 
 /*----------------------------------------------------------------------------*/

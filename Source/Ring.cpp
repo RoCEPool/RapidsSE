@@ -20,10 +20,7 @@ void* Ring::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Ring::operator delete(void* pBufferAddress)
 {
-  RASSERT(pBufferAddress);
   vFatal("fatal: Ring class cannot be deleted"_Stz);
-  
-  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

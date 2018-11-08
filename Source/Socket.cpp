@@ -44,9 +44,8 @@ void* Socket::operator new(size_t, Socket* pSocket)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Socket::operator delete(void* pSocketAddress)
+void Socket::operator delete(void*)
 {
-  RASSERT(pSocketAddress);
 }
 
 /*----------------------------------------------------------------------------*/

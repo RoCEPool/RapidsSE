@@ -18,11 +18,8 @@ void* Atomic::operator new(size_t, Atomic* pAtomic)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void Atomic::operator delete(void* pAtomicAddress)
+void Atomic::operator delete(void*)
 {
-  RASSERT(pAtomicAddress);
-  // do nothing
-  // must be explicitly free'd by caller
 }
 
 /*----------------------------------------------------------------------------*/

@@ -18,9 +18,8 @@ void* Decider::operator new(size_t, Decider* pDecider)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void Decider::operator delete(void* pDeciderAddress)
+void Decider::operator delete(void* )
 {
-  RASSERT(pDeciderAddress);
   // do nothing
   // must be explicitly free'd by caller
 }

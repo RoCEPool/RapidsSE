@@ -74,7 +74,6 @@ void* IndexTree::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void IndexTree::operator delete(void* pDataAddress)
 {
-  RASSERT(pDataAddress);
   IndexTree* pIndexTree = reinterpret_cast<IndexTree*>(pDataAddress);
   
   HeapMem::vFree(pIndexTree);

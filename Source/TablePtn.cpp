@@ -86,7 +86,6 @@ void* TablePtn::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void TablePtn::operator delete(void* pBufferAddress)
 {
-  RASSERT(pBufferAddress);
   Object* pObject = reinterpret_cast<Object*>(pBufferAddress);
   
   HeapMem::vFree(pObject);

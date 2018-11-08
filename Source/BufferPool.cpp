@@ -23,9 +23,8 @@ void* BufferPool::operator new(size_t, void* pRegion)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void BufferPool::operator delete(void* pRegion)
+void BufferPool::operator delete(void*)
 {
-  RASSERT(pRegion);
 }
 
 /*----------------------------------------------------------------------------*/

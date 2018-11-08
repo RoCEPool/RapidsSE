@@ -30,9 +30,8 @@ void* Timer::operator new(size_t, Timer* pTimer)
 /*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
-void Timer::operator delete(void* pTimerAddress)
+void Timer::operator delete(void*)
 {
-  ASSERT(pTimerAddress);
   // do nothing
   // must be explicitly free'd by caller
 }

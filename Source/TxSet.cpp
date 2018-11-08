@@ -75,13 +75,9 @@ void* TxSet::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void TxSet::operator delete(void* pBufferAddress)
+void TxSet::operator delete(void*)
 {
-  RASSERT(pBufferAddress);
-  
   vFatal("fatal: TxSet class cannot be deleted"_Stz);
-  
-  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

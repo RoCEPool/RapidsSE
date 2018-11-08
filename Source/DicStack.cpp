@@ -33,12 +33,9 @@ void* DicStack::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void DicStack::operator delete(void* aAddress)
+void DicStack::operator delete(void*)
 {
-  RASSERT(aAddress);
   vFatal("fatal: DicStack class cannot be deleted"_Stz);
-  
-  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

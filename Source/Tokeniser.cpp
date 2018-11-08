@@ -37,7 +37,6 @@ void* Tokeniser::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::operator delete(void* pTokeniserAddress)
 {
-  RASSERT(pTokeniserAddress);
   Tokeniser* pTokeniser = _pTokeniser(pTokeniserAddress);
   
   HeapMem::vFree(pTokeniser);

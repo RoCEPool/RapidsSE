@@ -33,7 +33,6 @@ void* Token::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Token::operator delete(void* pTokenAddress)
 {
-  RASSERT(pTokenAddress);
   Token* pToken = _pToken(pTokenAddress);
   
   HeapMem::vFree(pToken);

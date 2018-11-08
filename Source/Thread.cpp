@@ -51,12 +51,9 @@ void* Thread::operator new(size_t, Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* threads are never delete (for the moment)                                  */
 /*----------------------------------------------------------------------------*/
-void Thread::operator delete(void* pTxAddress)
+void Thread::operator delete(void*)
 {
-  RASSERT(pTxAddress);
   vFatal("fatal: Thread class cannot be deleted"_Stz);
-
-  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

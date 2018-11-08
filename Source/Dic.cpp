@@ -42,9 +42,7 @@ void* Dic::operator new(size_t, Dic* pDic)
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void Dic::operator delete(void* pDicAddress)
-{
-  RASSERT(pDicAddress);
-  
+{  
   Dic* pDic = reinterpret_cast<Dic*>(pDicAddress);
   
   HeapMem::vFree(pDic);

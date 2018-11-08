@@ -36,12 +36,9 @@ void* Jobs::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* Jobs are never deleted (for the moment)                                    */
 /*----------------------------------------------------------------------------*/
-void Jobs::operator delete(void* aAddr)
+void Jobs::operator delete(void*)
 {
-  RASSERT(aAddr);
   vFatal("fatal: Jobs class cannot be deleted"_Stz);
-  
-  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -39,12 +39,9 @@ void* Grid::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Grid::operator delete(void* pBufferAddress)
+void Grid::operator delete(void*)
 {
-  RASSERT(pBufferAddress);
   vFatal("fatal: GridModel class cannot be deleted"_Stz);
-  
-  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

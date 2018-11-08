@@ -35,7 +35,6 @@ void* Stack::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Stack::operator delete(void* pBufferAddress)
 {
-  RASSERT(pBufferAddress);
   Stack* pStack = _pStack(pBufferAddress);
   
   HeapMem::vFree(pStack);
