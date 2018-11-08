@@ -82,7 +82,7 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* free a block of memory                                                     */
 /*----------------------------------------------------------------------------*/
-void MemLib::vFreeBlock(void* aBlock)
+void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
 {
   free(aBlock);
 }

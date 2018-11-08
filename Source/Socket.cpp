@@ -96,7 +96,7 @@ Socket::~Socket()
     vWarn("Socket %d not closed!\n"_Stz, m_iSocketId);
   }
   
-  MemLib::vFreeBlock(m_aLowBuff);
+  MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
