@@ -332,7 +332,7 @@ void Task::vAddConstants(void)
   /* 66 */ vAddConstant("CN_SOCKET"_Stz,       CN_SOCKET);
   /* 67 */ vAddConstant("CN_STACK"_Stz,        CN_STACK);
   /* 68 */ vAddConstant("CN_STEPACCUM"_Stz,    CN_STEPACCUM);
-  /* 69 */ vAddConstant("CN_STEPARRAY"_Stz,    CN_STEPARRAY);
+  /* 69 */ vAddConstant("CN_STEPTRACKER"_Stz,  CN_STEPTRACKER);
   /* 70 */ vAddConstant("CN_SYSCALL"_Stz,      CN_SYSCALL);
 
   /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);

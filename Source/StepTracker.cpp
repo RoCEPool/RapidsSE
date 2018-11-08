@@ -14,7 +14,7 @@ StepTracker* Measurement::_pStepTracker(void* aAddr)
 {
   StepTracker* pStepTracker = reinterpret_cast<StepTracker*>(aAddr);
   
-  RASSERT_TYPE(pStepTracker,CN_STEPARRAY);
+  RASSERT_TYPE(pStepTracker,CN_STEPTRACKER);
   
   return pStepTracker;
 }
@@ -27,7 +27,7 @@ void* StepTracker::operator new(size_t)
   //UNUSED(iSize)
   RASSERT(! gpAttachMap->m_pStepTracker);
   
-  gpAttachMap->m_pStepTracker = (StepTracker*)HeapMem::pAllocate(CN_STEPARRAY);
+  gpAttachMap->m_pStepTracker = (StepTracker*)HeapMem::pAllocate(CN_STEPTRACKER);
   
   return gpAttachMap->m_pStepTracker;
 }
@@ -36,17 +36,17 @@ void* StepTracker::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StepTracker::StepTracker(void)
-: Object(CN_STEPARRAY)
+: Object(CN_STEPTRACKER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTRACKER,_FOOTER_);
   
   m_zLock.vInitLock(LK_STEP_ARRAY);
   m_iNext = 0;
   //m_xStepAccum[]
   
-  _checkInitialised_(CN_STEPARRAY);
+  _checkInitialised_(CN_STEPTRACKER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STEPTRACKER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +54,7 @@ StepTracker::StepTracker(void)
 /*----------------------------------------------------------------------------*/
 StepTracker::~StepTracker(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTRACKER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@ void StepTracker::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 Footer* StepTracker::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTRACKER);
   
   return &m_xFooter;
 }
