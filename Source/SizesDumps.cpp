@@ -206,7 +206,7 @@ pDUMPFUN *gpDump[]
 
   /* 97 */ &Dump::vUndefined,       // CN_RBCURSOR
   /*    */ &RegFrame::vDump,        // CN_REGFRAME
-
+  /*    */ &RegFrame::vDump,        // CN_RESOURCETRACKER
   /*101 */ &Dump::vUndefined,       // CN_RING
   /*102 */ &Dump::vUndefined,       // CN_ROARRAY
   /*103 */ &Dump::vUndefined,       // CN_ROWBUFFER
@@ -215,8 +215,8 @@ pDUMPFUN *gpDump[]
   /*106 */ &Dump::vUndefined,       // CN_ROWWRK
   
   /*107 */ &Dump::vUndefined,       // CN_SCANBUFFER
+  /*    */ &Dump::vUndefined,       // CN_SCHEMATEST
   /*108 */ &Dump::vUndefined,       // CN_SCRATCH
-
   /*113 */ &Dump::vUndefined,       // CN_SELCURSOR
   /*114 */ &Dump::vUndefined,       // CN_SEMAPHORE
   /*115 */ &SePrompt::vDump,        // CN_SEPROMPT
@@ -462,7 +462,7 @@ i8 giClassSize[]
   
   /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
   /*    */ sizeof(RegFrame),           // CN_REGFRAME
-  
+  /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*101 */ sizeof(Ring),               // CN_RING
   /*102 */ 0,                          // CN_ROWARRAY
   /*103 */ 0,                          // CN_ROWBUFFER
@@ -471,8 +471,8 @@ i8 giClassSize[]
   /*106 */ 0,                          // CN_ROWWRK
   
   /*107 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
+  /*    */ sizeof(SchemaTest),         // CN_SCHEMATEST
   /*108 */ sizeof(Scratch),            // CN_SCRATCH
-
   /*113 */ sizeof(SelCursor),          // CN_SELCURSOR
   /*114 */ sizeof(Semaphore),          // CN_SEMAPHORE
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
@@ -718,7 +718,8 @@ eHT geWhichHeap[]
   
   /* 97 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
-  
+  /*    */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
+
   /*101 */ HT_INVALID,           // CN_RING
   /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROARRAY
   /*103 */ HT_INVALID,           // CN_ROWBUFFER
@@ -727,8 +728,8 @@ eHT geWhichHeap[]
   /*106 */ HT_INVALID,           // CN_ROWWRK
   
   /*107 */ HT_TRANSIENT_LARGE,   // CN_SCANBUFFER
+  /*107 */ HT_TRANSIENT_LARGE,   // CN_SCHEMATEST
   /*108 */ HT_TRANSIENT_LARGE,   // CN_SCRATCH
-
   /*113 */ HT_TRANSIENT_SMALL,   // CN_SELCURSOR
   /*114 */ HT_TRANSIENT_SMALL,   // CN_SEMAPHORE
   /*115 */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT

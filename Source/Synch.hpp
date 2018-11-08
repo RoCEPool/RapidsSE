@@ -17,7 +17,7 @@ namespace System
     static i8   iTicks(void);
     static i8   iToMicroseconds(i8 iTickDelta);
     static i8   iTickFrequency(void);
-    static i8   iRdtscp(void);
+    static i8   iRdTscp(void);
     
     static u8   iLockDropRead(u8*);
     static u8   iLockGrabRead(u8*);

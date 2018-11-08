@@ -91,11 +91,11 @@
   // get the job from the task
   pTask task.job@ to pJob
 
-  //"spawnNodes..." .
-  spawnNodes
+  //"grid::spawnNodes..." .
+  grid::spawnNodes
 
-  //"setStartNode..." .
-  setStartNode
+  //"grid::setStartNode..." .
+  grid::setStartNode
 
   //"spawn_Connector..." .
   spawn_Connector

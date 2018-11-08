@@ -49,7 +49,7 @@ void Parser::operator delete(void* pParserAddress)
   Parser* pParser = reinterpret_cast<Parser*>(pParserAddress);
   
   if (pParser->m_bMalloc)
-    MemLib::vFreeBlock(pParser);
+    MemLib::vFreeBlock(pParser,sizeof(Parser));
   else
     HeapMem::vFree(pParser);
 }

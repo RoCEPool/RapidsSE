@@ -2,13 +2,17 @@
 /* _t -- create table t                                                       */
 /*============================================================================*/
 
-// startCluster;
+startCluster;
 
-create table t
+time create table t
 (
   t_int  INTEGER NOT NULL,
   t_str  VARCHAR(32) NOT NULL
 );
+
+lscol t;
+
+//time drop table t;
 
 /*============================================================================*/
 /* end                                                                        */

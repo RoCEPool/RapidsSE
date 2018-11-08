@@ -49,6 +49,12 @@ namespace StorageEngine
     bool m_bDontFree;   // dont actually free objects back to heap
     i8   m_nEntries;    // no of entries per buffer
     bool m_bFreeRB;     // but free RowBuffers back to heap
+    i8   m_nLimitDir;   // limit of open dir's
+    i8   m_nLimitFile;  // limit of open file's
+    i8   m_nLimitMalloc;// limit of malloc amout
+    i8   m_nLimitThread;// limit of open threads's
+    i8   m_nLimitShm;   // limit of open shm's
+    i8   m_nLimitSocket;// limit of open socket's
     bool m_bLock;       // lock shared memory pages in memory
     bool m_bHugePages;  // to use huge pages
     bool m_bKillPrev;   // kill previous se's (temporary)
@@ -62,6 +68,8 @@ namespace StorageEngine
     i8   m_nThreads;    // number of general threads
     i8   m_nDummyThreads; // number of dummy threads
     i8   m_nDummySleep; // sleep period for dummy threads
+    i8   m_nDummyLoop;  // loop count for dummy threads
+    i8   m_nPeriodicSleep; // sleep period for periodic job
     bool m_bTouch;      // touch all shm pages during region create
     bool m_bTracepoint; // print tracepoint
     bool m_bTracing;    // tracing

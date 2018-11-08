@@ -4,11 +4,45 @@
 
 " task.sen" .verbose
 
-: task::acks! ( nAcks -- ) task::this task.acks! ;
+/*----------------------------------------------------------------------------*/
+/* set the number of acks the task will wait for                              */
+/*----------------------------------------------------------------------------*/
+: task::acks! ( nAcks -- )
 
-: task::wait  ( -- ) TS_WAITING task::this task.state! ;
+  task::this task.acks!
+;
 
-: task::sendSocket@ task::this task.sendNode@ node.sendSocket@ ;
+/*----------------------------------------------------------------------------*/
+/* put this task into a waiting state                                         */
+/*----------------------------------------------------------------------------*/
+: task::wait  ( -- )
+
+  TS_WAITING task::this task.state!
+;
+
+/*----------------------------------------------------------------------------*/
+/* get this tasks send socket                                                 */
+/*----------------------------------------------------------------------------*/
+: task::sendSocket@
+
+  task::this task.sendNode@ node.sendSocket@
+;
+
+/*----------------------------------------------------------------------------*/
+/* grab lock on the tasks send socket                                         */
+/*----------------------------------------------------------------------------*/
+: task::socketLock ( -- )
+
+  task::this task.sendNode@ node.sendSocket@ socket.grabWrite
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop lock on the tasks send socket                                         */
+/*----------------------------------------------------------------------------*/
+: task::socketUnlock ( -- )
+
+  task::this task.sendNode@ node.sendSocket@ socket.dropWrite
+;
 
 /*============================================================================*/
 /* end                                                                        */

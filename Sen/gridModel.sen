@@ -4,7 +4,8 @@
 
 "-gridModel.sen" .verbose
 
-"grid.sen" include
+"grid_grid.sen" include
+"grid_node.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

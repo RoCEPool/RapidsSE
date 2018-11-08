@@ -54,6 +54,7 @@ using namespace Prompt;
 #include "Prompt_pwd.hpp"
 #include "Prompt_question.hpp"
 #include "Prompt_rassert.hpp"
+#include "Prompt_resources.hpp"
 #include "Prompt_se.hpp"
 #include "Prompt_shell.hpp"
 #include "Prompt_sizes.hpp"

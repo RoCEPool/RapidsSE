@@ -6,11 +6,7 @@
 
 extern AttachMap* gpAttachMap;
 
-extern Atomic gzDirOpenCount;
-extern Atomic gzFileOpenCount;
-extern Atomic gzShmOpenCount;
-extern Atomic gzSocketOpenCount;
-extern Atomic gzThreadOpenCount;
+extern ResourceTracker gxResourceTracker;
 
 /*============================================================================*/
 /* end                                                                        */
@@ -655,11 +651,11 @@ void BPA::vResourceSummary(void)
   vTrace("\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
   vTrace(" Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Stz,
-         *gzDirOpenCount,
-         *gzFileOpenCount,
-         *gzShmOpenCount,
-         *gzSocketOpenCount,
-         *gzThreadOpenCount);
+         gxResourceTracker.nDirOpen(),
+         gxResourceTracker.nFileOpen(),
+         gxResourceTracker.nShmOpen(),
+         gxResourceTracker.nSocketOpen(),
+         gxResourceTracker.nThreadOpen());
   vTrace("****************************************************************\n"_Stz);
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);

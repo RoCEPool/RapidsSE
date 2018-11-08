@@ -129,7 +129,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we have enough buffers
-  checkEnoughBuffers not if pJob_CreateTenant <ERROR_JOB> !!am exit then
+  node::checkEnoughBuffers not if pJob_CreateTenant <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check if we can make the catalog

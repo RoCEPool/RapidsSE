@@ -201,7 +201,7 @@ pFINALIZE *gpFinalize[]
   
   /* 97 */ &Finalize::vUndefined,         // CN_RBCURSOR
   /*    */ &Finalize::vUndefined,         // CN_REGFRAME
-
+  /*    */ &Finalize::vUndefined,         // CN_RESOURCETRACKER
   /*101 */ &Finalize::vUndefined,         // CN_RING
   /*102 */ &Finalize::vUndefined,         // CN_ROARRAY
   /*103 */ &Finalize::vUndefined,         // CN_ROWBUFFER
@@ -210,8 +210,8 @@ pFINALIZE *gpFinalize[]
   /*106 */ &Finalize::vUndefined,         // CN_ROWWRK
   
   /*107 */ &Finalize::vUndefined,         // CN_SCANBUFFER
+  /*    */ &Finalize::vUndefined,         // CN_SCHEMATEST
   /*108 */ &Finalize::vUndefined,         // CN_SCRATCH
-
   /*113 */ &SelCursor::vFinalize,         // CN_SELCURSOR
   /*114 */ &Finalize::vUndefined,         // CN_SEMAPHORE
   /*115 */ &Finalize::vUndefined,         // CN_SEPROMPT

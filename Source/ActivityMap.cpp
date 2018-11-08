@@ -160,6 +160,7 @@ void ActivityMap::vOpenByApi(void)
   
   Now xNow;
   ActivityMap::vMark(0,"Time is: "_Stz,xNow.sFormatted());
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,6 +182,20 @@ void ActivityMap::vOpenBySE(void)
   Now xNow;
   ActivityMap::vMark(0,"Time is: %s"_Stz,xNow.sFormatted());
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  s32 sMem;
+  Magnitudes::vMagnitude(Hardware::iPhysicalMemory(),sMem);
+  
+  s32 sClock;
+  Magnitudes::vHz(Hardware::iClockFrequency(),sClock);
+  
+  ActivityMap::vMark(0,"hw: %lld cores; %s memory; %s clock frequency"_Stz,
+                     Hardware::iCoreCount(),
+                     sMem.aStr(),
+                     sClock.aStr()
+                     );
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Arguments::vMark();

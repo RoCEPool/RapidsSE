@@ -5,7 +5,8 @@
 #include "StorageEngine.h"
 #include "ShmUtility.hpp"
 
-Arguments     gxArguments;
+Arguments  gxArguments;
+ResourceTracker gxResourceTracker;
 
 BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;

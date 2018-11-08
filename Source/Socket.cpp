@@ -6,7 +6,8 @@
 
 #include "Pool.h"
 
-Atomic gzSocketOpenCount;
+extern ResourceTracker gxResourceTracker;
+
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -95,7 +96,7 @@ Socket::~Socket()
     vWarn("Socket %d not closed!\n"_Stz, m_iSocketId);
   }
   
-  MemLib::vFreeBlock(m_aLowBuff);
+  MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,8 +185,8 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
     return false;
   }
   
-  ++gzSocketOpenCount;
-  
+  gxResourceTracker.vIncSocketOpen();
+
   SysCall.vSuccess();
   return true;
 }
@@ -214,8 +215,8 @@ bool Socket::bClose(SysCall& SysCall)
   
   m_iSocketId = -1;
   
-  --gzSocketOpenCount;
-  
+  gxResourceTracker.vDecSocketOpen();
+
   SysCall.vSuccess();
   return true;
 }
@@ -276,7 +277,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
     return false;
   }
   
-  ++gzSocketOpenCount;
+  gxResourceTracker.vIncSocketOpen();
 
   SysCall.vSuccess();
   return true;
@@ -333,7 +334,7 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
     return false;
   }
   
-  ++gzSocketOpenCount;
+  gxResourceTracker.vIncSocketOpen();
 
   SysCall.vSuccess();
   return true;
