@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "System.h"
+#include "Measurement.h"
 
-namespace System
+namespace Measurement
 {
   class Locks
   {
