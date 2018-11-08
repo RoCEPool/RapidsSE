@@ -113,9 +113,6 @@
   // assert correct job
   CN_JOB_ENDINSERT pJob_EndInsert object.assertClass
 
-  // set the task in the job
-  task::this pJob_EndInsert job_EndInsert.task!
-
   //----------------------------------------------------------------------------
   // grab a lock ????
 

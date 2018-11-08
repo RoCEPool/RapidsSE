@@ -16,8 +16,6 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_JobInsertRow(void)
 {
   vAddStep("job_endInsert.insertRowJob@"_Stz, &Task::vJob_EndInsertInsertRowJobFetch);
-  vAddStep("job_endInsert.task@"_Stz,         &Task::vJob_EndInsertTaskFetch);
-  vAddStep("job_endInsert.task!"_Stz,         &Task::vJob_EndInsertTaskStore);
 
   vAddStep("job_insertBuffer.endInsertJob@"_Stz, &Task::vJob_InsertBufferEndInsertJobIdFetch);
   vAddStep("job_insertBuffer.InsertRows"_Stz,    &Task::vJob_InsertBufferInsertRows);
@@ -43,50 +41,6 @@ void Task::vJob_EndInsertInsertRowJobFetch(MP_Task mpTask)
   Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJobPtr);
   
   mpTask->m_pDataStack->vPushObject(pJob_EndInsert->m_pJobInsertRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_EndInsert.task@ -- fetch task from job_endInsert                       */
-/*----------------------------------------------------------------------------*/
-void Task::vJob_EndInsertTaskFetch(MP_Task mpTask)
-{
-  ENTRY("vJob_EndInsertTaskFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_EndInsert.task@"_Stz);
-  Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJobPtr);
-  
-  Task* pTask = pJob_EndInsert->m_pTask;
-  
-  // now we can assert that the job has a task
-  RASSERT(pTask);
-  
-  mpTask->m_pDataStack->vPushObject(pTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_EndInsert.task! -- store task from job_endInsert                       */
-/*----------------------------------------------------------------------------*/
-void Task::vJob_EndInsertTaskStore(MP_Task mpTask)
-{
-  ENTRY("vJob_EndInsertTaskStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_EndInsert.task!"_Stz);
-  Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJobPtr);
-  
-  Object* pTaskPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskPtr) )
-    THROW_INVALID_DSTACK("job_EndInsert.task!"_Stz);
-  Task* pTask = _pTask(pTaskPtr);
-  
-  pJob_EndInsert->m_pTask = pTask;
   
   EXIT();
 }

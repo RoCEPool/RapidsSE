@@ -12,7 +12,6 @@ namespace JobsModel
   {
   public:
     Job_InsertRow* m_pJobInsertRow;                  // insert row job
-    Tasks::Task*   m_pTask;                          // task running this job
     
     // must be last
     Footer m_xFooter;

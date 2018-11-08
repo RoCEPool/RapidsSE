@@ -117,7 +117,6 @@ Job_EndInsert::Job_EndInsert(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ENDINSERT,_FOOTER_);
   
-  m_pTask = nullptr;
   m_pJobInsertRow = nullptr;
   
   _checkInitialised_(CN_JOB_ENDINSERT);
