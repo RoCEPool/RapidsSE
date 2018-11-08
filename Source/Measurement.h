@@ -18,7 +18,7 @@ using namespace Measurement;
 #include "ActivityMark.hpp"
 #include "ActivityMap.hpp"
 
-#include "Locks.hpp"
+#include "LockTracker.hpp"
 
 #include "PerformanceEntry.hpp"
 #include "PerformanceBuffer.hpp"

@@ -74,7 +74,7 @@ namespace StorageEngine
     i8            m_iQuit;
     i8            m_iStop;
     
-    Locks         m_xLocks;
+    LockTracker   m_xLocks;
     
     Lock          m_xDdlLock;
     Lock          m_xDicLock;
