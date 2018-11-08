@@ -19,8 +19,6 @@ void Step::vAddSteps_JobTruncateTable(void)
   vAddStep("job_subTruncate.slot@"_Stz,         &Task::vJob_SubTruncateSlotFetch);
   
   vAddStep("Job_truncateTable.spawnSub"_Stz, &Task::vJob_TruncateTableSpawnSub);
-  vAddStep("Job_truncateTable.task@"_Stz,    &Task::vJob_TruncateTableTaskFetch);
-  vAddStep("Job_truncateTable.task!"_Stz,    &Task::vJob_TruncateTableTaskStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,48 +92,6 @@ void Task::vJob_TruncateTableSpawnSub(MP_Task mpTask)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* Job_truncateTable.task@ -- fetch task from job_truncateTable               */
-/*----------------------------------------------------------------------------*/
-void Task::vJob_TruncateTableTaskFetch(MP_Task mpTask)
-{
-  ENTRY("vJob_TruncateTableTaskFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_truncateTable.task@"_Stz);
-  Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJobPtr);
-  
-  Task* pTask = pJob_TruncateTable->m_pTask;
-  mpTask->m_pDataStack->vPushObject(pTask);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job_truncateTable.task! -- store task in job_truncateTable                 */
-/*----------------------------------------------------------------------------*/
-void Task::vJob_TruncateTableTaskStore(MP_Task mpTask)
-{
-  ENTRY("vJob_TruncateTableTaskStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_truncateTable.task!"_Stz);
-  Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJobPtr);
-  
-  Object* pTaskPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskPtr) )
-    THROW_INVALID_DSTACK("Job_truncateTable.task!"_Stz);
-  Task* pTask = _pTask(pTaskPtr);
-  
-  pJob_TruncateTable->m_pTask = pTask;
-  
-  EXIT();
-}
-
-
 
 /*============================================================================*/
 /* end                                                                        */

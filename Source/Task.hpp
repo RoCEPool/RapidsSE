@@ -792,8 +792,6 @@ namespace Tasks
   
     // Job truncate
     static void vJob_TruncateTableSpawnSub(MP_Task mpTask);
-    static void vJob_TruncateTableTaskFetch(MP_Task mpTask);
-    static void vJob_TruncateTableTaskStore(MP_Task mpTask);
 
     // load buffer
     static void vLoadBufferSpawn(MP_Task mpTask);

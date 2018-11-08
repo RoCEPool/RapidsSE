@@ -110,8 +110,6 @@ Job_TruncateTable::Job_TruncateTable(Interface::Session* pSession)
 : Job(CN_JOB_TRUNCATETABLE, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_TRUNCATETABLE,_FOOTER_);
-    
-  m_pTask           = nullptr;
   
   _checkInitialised_(CN_JOB_TRUNCATETABLE);
   
