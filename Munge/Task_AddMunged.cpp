@@ -6670,7 +6670,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "    // get the end insert table job (participant node)\n"
     "    pJob_InsertBuffer job_insertBuffer.endInsertJob@ locals| iEndInsertJobId |\n"
-    "    pJob_InsertBuffer iEndInsertJobId job::findParticipant locals| pJob_EndInsert |\n"
+    "    pJob_InsertBuffer iEndInsertJobId job::waitParticipant locals| pJob_EndInsert |\n"
     "    pJob_EndInsert job_EndInsert.task@ locals| pTask_EndInsert |\n"
     "\n"
     "    //pTask_EndInsert pJob_EndInsert iEndInsertJobId\n"
