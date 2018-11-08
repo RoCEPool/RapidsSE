@@ -121,8 +121,6 @@ Job_FetchRows::Job_FetchRows(Interface::Session* pSession)
   m_nLastBuffers = 0;
   m_nLastBuffersScanned = 0;
   m_pRowOnce     = nullptr;
- 
-  m_pTask        = nullptr;
   
   _checkInitialised_(CN_JOB_FETCHROWS);
   

@@ -19,8 +19,8 @@ success
 insert into rapidsse.public.T1000 values(0,'zero',0,0);
 success
 
-insert into rapidsse.public.T1000 values(1,'one',1,null);
-mute
+//insert into rapidsse.public.T1000 values(1,'one',1,null);
+//mute
 //CHECK_RESULT
 //success;
  
@@ -40,31 +40,27 @@ create table rapidsse.public.R1000 (
 );
 success
 
-Loop 1000 {
+select * from rapidsse.public.R1000 where R1000_key = 1;
+rows:
+(1,'one',1,null);
+
+Loop 100 {
   
 -- insert-select
 insert into rapidsse.public.R1000 select * from T1000;
 success
 
--- check data
-select * from rapidsse.public.R1000;
-mute
 }
 
-//CHECK_RESULT
-/*
- rows: 4
-*/
-
-select * from rapidsse.public.R1000 where R1000_key = 1;
-rows:
-  (1,'one',1,null);
+-- check data
+select * from rapidsse.public.R1000;
+rows: 300
 
 CLEANUP {
-  //drop table T1000;
-  //mute
-  //drop table R1000;
-  //mute
+  drop table T1000;
+  mute
+  drop table R1000;
+  mute
 }
 
 

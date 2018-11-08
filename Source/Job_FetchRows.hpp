@@ -20,7 +20,6 @@ namespace JobsModel
     i8           m_nLastBuffers;        // expected last buffers
     i8           m_nLastBuffersScanned; // last buffers scanned so far.
     RowOnce*     m_pRowOnce;            // has row been seen before?
-    Tasks::Task* m_pTask;               // task running this job
     
     // must be last
     Footer m_xFooter;

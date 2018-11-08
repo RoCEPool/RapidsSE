@@ -8,19 +8,23 @@ MASTER=~/master
 for nodes in {1..4}
 do
 
+  echo "NODES $nodes"
+
   # for no of partitions
   for partitions in {1..4}
   do
+
+  echo "PARTITIONS $partitions"
 
   # cp cluster file
   cp $SETH_PATH/tests/Connector/StressTesting/cluster.config${nodes}N_${partitions}P $MASTER/cluster.config
 
   #install rdp
-  cd current
+  cd ~/master/current
   cp ../cluster.config cfg
   ./bootstrapper.sh -a install -i ../$1
   
-  for i in {1..3}
+  for i in {1..1}
     do
       echo "Welcome $i times"
 
@@ -42,6 +46,9 @@ do
       bin/rapidsse --name NODE10 --node NODE10 127.0.0.1 6666 --start --munged --dummyThreads $DUMMY_THREADS &
 
       cd $SETH_PATH
+
+      for j in {1..1}
+      do
       echo "Regression Iteration $j of $i"
       ./dbth.sh -f tests/Connector/Regression/testList
 
@@ -49,8 +56,10 @@ do
       ./bootstrapper.sh -a stop
       ./bootstrapper.sh -a start
 
+      cd $SETH_PATH
       echo "InsertSelect Iteration $j of $i"
       ./dbth.sh -f tests/Connector/InsertSelect/testList
+     done
 
     done
     ./bootstrapper.sh -a stop
