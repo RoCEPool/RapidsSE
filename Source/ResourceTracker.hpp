@@ -11,6 +11,7 @@ namespace System
   
     Atomic m_ziDirOpen;
     Atomic m_ziFileOpen;
+    Atomic m_ziMallocAmt;
     Atomic m_ziShmOpen;
     Atomic m_ziSocketOpen;
     Atomic m_ziThreadOpen;
@@ -22,6 +23,9 @@ namespace System
     ResourceTracker(void);
     ~ResourceTracker(void);
   
+    void vAddMallocAmt(i8 nBytes);
+    void vSubMallocAmt(i8 nBytes);
+
     void vDecDirOpen(void);
     void vDecFileOpen(void);
     void vDecShmOpen(void);
@@ -36,6 +40,7 @@ namespace System
 
     i8 nDirOpen(void);
     i8 nFileOpen(void);
+    i8 nMallocAmt(void);
     i8 nShmOpen(void);
     i8 nSocketOpen(void);
     i8 nThreadOpen(void);

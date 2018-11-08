@@ -18,6 +18,7 @@ ResourceTracker::ResourceTracker(void)
  
   m_ziDirOpen.vCheckInit();
   m_ziFileOpen.vCheckInit();
+  m_ziMallocAmt.vCheckInit();
   m_ziShmOpen.vCheckInit();
   m_ziSocketOpen.vCheckInit();
   m_ziThreadOpen.vCheckInit();
@@ -31,6 +32,24 @@ ResourceTracker::ResourceTracker(void)
 ResourceTracker::~ResourceTracker(void)
 {
   _precondition_(_MAGIC_,CN_RESOURCETRACKER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add                                                                        */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vAddMallocAmt(i8 nBytes)
+{
+  i8 iMallocAmt = m_ziMallocAmt.iAdd(nBytes);
+  RASSERT(iMallocAmt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sub                                                                        */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vSubMallocAmt(i8 nBytes)
+{
+  i8 iMallocAmt = m_ziMallocAmt.iAdd( - nBytes);
+  RASSERT(iMallocAmt >= 0);
 }
 
 /*----------------------------------------------------------------------------*/
