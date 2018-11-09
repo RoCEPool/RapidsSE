@@ -122,7 +122,6 @@ namespace Tasks
     static void vAddSteps_Table(void);
     static void vAddSteps_TablePartition(void);
     static void vAddSteps_Task(void);
-    static void vAddSteps_TaskCursor(void);
     static void vAddSteps_Thread(void);
     static void vAddSteps_Timer(void);
     static void vAddSteps_To(void);
@@ -130,9 +129,9 @@ namespace Tasks
     static void vAddSteps_Tx(void);
     static void vAddSteps_TxSet(void);
   
-    static void vAddSteps_Vector(void);
-  
     static void vAddSteps_Utility(void);
+  
+    static void vAddSteps_Vector(void);
   
     static void vAddSteps_Word(void);
     static void vAddSteps_WorkingBuffer(void);
