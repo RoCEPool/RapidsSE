@@ -281,20 +281,28 @@ void Lock::vGrabWrite(void)
   
   do {
     xTimer.vUpdate();
-//    if (xTimer.iMilliseconds() > 100 && ! bReported) {
-//      bReported = true;
-//      vWarn("Lock::vGrabWrite -- Unable to grab write lock %p %s %p\n"_Stz,
-//             this,
-//              aLK[m_eLockKind],
-//             m_uLockWord);
-//    }
+    if (xTimer.iMilliseconds() > 100 && ! bReported) {
+      bReported = true;
+      ActivityMap::vMark(0,"Lock::vGrabWrite -- Unable to grab write lock %p %s %p\n"_Stz,
+                         this,
+                         aLK[m_eLockKind],
+                         m_uLockWord);
+      //vWarn("Lock::vGrabWrite -- Unable to grab write lock %p %s %p\n"_Stz,
+      //       this,
+      //        aLK[m_eLockKind],
+      //       m_uLockWord);
+    }
     
     rCode = Synch::iLockGrabWrite(&m_uLockWord);
   } while ( ! rCode );
   
   if (bReported) {
-    vWarn("Lock::vGrabWrite -- Able to grab write lock %p %p\n"_Stz,
-           this, m_uLockWord);
+    ActivityMap::vMark(0,"Lock::vGrabWrite -- Able to grab write lock %p %p\n"_Stz,
+                       this,
+                       aLK[m_eLockKind],
+                       m_uLockWord);
+    //vWarn("Lock::vGrabWrite -- Able to grab write lock %p %p\n"_Stz,
+    //       this, m_uLockWord);
   }
 
   vCheckWrite();

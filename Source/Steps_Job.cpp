@@ -1089,7 +1089,7 @@ void Task::vJobRemoveParticipant(MP_Task mpTask)
   if (pJob->m_bMark) {
     ActivityMap::vMark(pJob->m_iJobId,"Removed %s from Participant List"_Stz,
                        aCN[pJob->eClass()]);
-    gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
+    gpAttachMap->m_pParticipatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
 #ifdef JOB_TRACE
