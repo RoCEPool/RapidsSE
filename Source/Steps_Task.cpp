@@ -192,7 +192,7 @@ void Task::vTaskIsAckSet(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.isAckSet"_Stz);
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
-  i8 iIsAckSet = pTaskBeingAcked->m_pJob->m_xAcksRemaining.bIsSet();
+  i8 iIsAckSet = pTaskBeingAcked->m_xAcksRemaining.bIsSet();
   mpTask->m_pDataStack->vPushInt(iIsAckSet);
 
   EXIT();
