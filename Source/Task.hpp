@@ -654,6 +654,7 @@ namespace Tasks
     static void vJobHasWorkingBuffer(MP_Task mpTask);
     static void vJobIdFetch(MP_Task mpTask);
     static void vJobIndexNameFetch(MP_Task mpTask);
+    static void vJobIsExecuting(MP_Task mpTask);
     static void vJobErrorStore(MP_Task mpTask);
     static void vJobErrorFetch(MP_Task mpTask);
     static void vJobExecuteFetch(MP_Task mpTask);

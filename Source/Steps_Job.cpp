@@ -44,6 +44,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.id@"_Stz,              &Task::vJobIdFetch);
   vAddStep("job.indexName@"_Stz,       &Task::vJobIndexNameFetch);
   
+  vAddStep("job.IsExecuting"_Stz,      &Task::vJobIsExecuting);
+  
   vAddStep("job.jobClass"_Stz,         &Task::vJobJobClass);
   vAddStep("job.metadata!"_Stz,        &Task::vJobMetadataStore);
   vAddStep("job.newBegun"_Stz,         &Task::vJobNewBegun);
@@ -615,6 +617,24 @@ void Task::vJobIndexNameFetch(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
 
   mpTask->m_pDataStack->vPushS32(pJob->m_sIndexName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.isExecuting -- is the job executing (SEED_EXE)                         */
+/*----------------------------------------------------------------------------*/
+void Task::vJobIsExecuting(MP_Task mpTask)
+{
+  ENTRY("vJobIsExecuting"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job.isExecuting"_Stz);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 iIsExecuting = pJob->m_eSeed == SS_SEED_EXE ? 1 : 0;
+  mpTask->m_pDataStack->vPushInt(iIsExecuting);
   
   EXIT();
 }
