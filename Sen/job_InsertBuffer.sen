@@ -71,6 +71,13 @@
       //pTask_EndInsert
       //"All buffers inserted; Would ack task_EndInsert (node) %v"
     //fmt.print
+
+    begin
+       pTask_EndInsert task.IsAckSet
+    not while
+       1 thread.sleep_ms
+    repeat
+
     "InsertBuffer.insert acking endInsert:" .verbose
     pTask_EndInsert task.ack
   then
