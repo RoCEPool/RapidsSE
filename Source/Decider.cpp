@@ -76,6 +76,16 @@ bool Decider::bDecAndDecide(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* has decider been set?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Decider::bIsSet(void)
+{
+  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
+  
+  return m_nAcksRemaining ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get current number of acks remaining **FOR PRINING ONLY**                  */
 /*----------------------------------------------------------------------------*/
 i8 Decider::iPrintOnlyValue(void)

@@ -22,6 +22,7 @@ namespace System
   
     void vCheckInit(void);
     bool bDecAndDecide(void);
+    bool bIsSet(void);
     i8   iPrintOnlyValue(void);
     void vSetRemaining(i8 nAcksRemaining);
 
