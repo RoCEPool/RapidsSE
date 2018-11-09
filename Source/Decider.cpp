@@ -65,6 +65,9 @@ bool Decider::bDecAndDecide(void)
 {
   _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
 
+  if (m_nAcksRemaining < 1)
+    vTrace("m_nAcksRemaining is %lld\n"_Stz, m_nAcksRemaining);
+  
   RASSERT(m_nAcksRemaining > 0);
   i8 iNewValueWas = Synch::uAtomicDec(&m_nAcksRemaining);
   RASSERT(iNewValueWas >= 0);
@@ -105,6 +108,7 @@ void Decider::vSetRemaining(i8 nAcksRemaining)
   RASSERT(0 == m_nAcksRemaining);
   RASSERT(nAcksRemaining > 0);
   
+  vTrace("Setting m_nAcksRemaining to %lld\n"_Stz, nAcksRemaining);
   m_nAcksRemaining = nAcksRemaining;
 }
 
