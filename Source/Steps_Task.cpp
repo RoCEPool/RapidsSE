@@ -83,6 +83,16 @@ void Task::vTaskAcksStore(MP_Task mpTask)
 
   RASSERT(pGivenTask->bIsLocked());
   
+  Job* pJob = pGivenTask->m_pJob;
+  
+  if (pJob && pJob->m_bMark) {
+    ActivityMap::vMark(pJob->m_iJobId,"Setting acks in task %p for job %s to %lld"_Stz,
+                       pGivenTask,
+                       aCN[pJob->eClass()],
+                       nAcksRequired);
+    gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
+  }
+  
   pGivenTask->m_xAcksRemaining.vSetRemaining(nAcksRequired);
 
   EXIT();

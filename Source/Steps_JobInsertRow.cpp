@@ -109,9 +109,11 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
     if (pJob_InsertBuffer->m_bMark) {
       ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"Setting m_nBuffersToBeInserted in partition %lld slot %lld to %lld"_Stz,
                          iPartition, iSlot, nBuffersToBeInserted);
+      gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob_InsertBuffer->m_iJobId);
       
       ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"Setting EndInsertJobId in partition %lld to %lld"_Stz,
                          iPartition, pJob_InsertBuffer->m_iEndInsertJobId);
+      gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob_InsertBuffer->m_iJobId);
       
       //vTrace("Setting m_nBuffersToBeInserted in partition %lld slot %lld to %lld\n"_Stz,
       //                   iPartition, iSlot, nBuffersToBeInserted);
@@ -128,9 +130,11 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
     pJob_InsertBuffer->m_iEndInsertJobId = pPartition->iEndInsertJobId();
     bAllBuffersInserted = true;
     
-    if (pJob_InsertBuffer->m_bMark) 
+    if (pJob_InsertBuffer->m_bMark) {
       ActivityMap::vMark(pJob_InsertBuffer->m_iJobId,"All buffers inserted for partition %lld"_Stz, iPartition);
-      
+      gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob_InsertBuffer->m_iJobId);
+    }
+    
     // reset these in tblPtn for next insert into table
     pPartition->vBuffersToBeInserted(0);
     pPartition->vBuffersInserted(0);
