@@ -24,6 +24,7 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.dump"_Stz,      &Task::vTaskDump);
   vAddStep("task.dropLock"_Stz,  &Task::vTaskDropLock);
   vAddStep("task.grabLock"_Stz,  &Task::vTaskGrabLock);
+  vAddStep("task.isAckSet"_Stz,  &Task::vTaskIsAckSet);
   vAddStep("task.job@"_Stz,      &Task::vTaskJobFetch);
   vAddStep("task.job!"_Stz,      &Task::vTaskJobStore);
   vAddStep("task.name@"_Stz,     &Task::vTaskNameFetch);
@@ -166,6 +167,24 @@ void Task::vTaskGrabLock(MP_Task mpTask)
   
   pThatTask->vGrabLock();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.isAckSet -- is task ack set?                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskIsAckSet(MP_Task mpTask)
+{
+  ENTRY("vTaskIsAckSet"_Stz);
+  
+  Object* pTaskObject;
+  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.isAckSet"_Stz);
+  Task* pTaskBeingAcked = _pTask(pTaskObject);
+  
+  i8 iIsAckSet = pTaskBeingAcked->m_pJob->m_xAcksRemaining.bIsSet();
+  mpTask->m_pDataStack->vPushInt(iIsAckSet);
+
   EXIT();
 }
 

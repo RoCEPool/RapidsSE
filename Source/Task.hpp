@@ -1135,6 +1135,7 @@ namespace Tasks
     static void vTaskDropLock(MP_Task mpTask);
     static void vTaskDump(MP_Task mpTask);
     static void vTaskGrabLock(MP_Task mpTask);
+    static void vTaskIsAckSet(MP_Task mpTask);
     static void vTaskJobFetch(MP_Task mpTask);
     static void vTaskJobStore(MP_Task mpTask);
     static void vTaskNameFetch(MP_Task mpTask);
