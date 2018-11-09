@@ -193,6 +193,14 @@ void Task::vTaskIsAckSet(MP_Task mpTask)
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
   i8 iIsAckSet = pTaskBeingAcked->m_xAcksRemaining.bIsSet();
+  Job* pJob = pTaskBeingAcked->m_pJob;
+  
+  if (pJob && pJob->m_bMark) {
+    ActivityMap::vMark(pJob->m_iJobId,"Task %p: IsAckSet %lld"_Stz,
+                       pTaskBeingAcked,
+                       iIsAckSet);
+  }
+  
   mpTask->m_pDataStack->vPushInt(iIsAckSet);
 
   EXIT();
