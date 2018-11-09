@@ -21,7 +21,6 @@ using namespace CorrectnessAlgebra;
 #include "Object2.hpp"
 #include "Wsp.hpp"
 #include "WspFxd.hpp"
-#include "WspFx2.hpp"
 #include "WspVbl.hpp"
 
 #include "NP.hpp"

@@ -78,7 +78,7 @@ StrVar<SIZE>::StrVar(Stz* aArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-StrVar<SIZE>::StrVar(StrVar* pThis)
+StrVar<SIZE>::StrVar(StrVar*)
 : StrVal(CN_STRVAR,SIZE)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
