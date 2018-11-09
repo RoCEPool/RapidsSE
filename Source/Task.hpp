@@ -819,8 +819,8 @@ namespace Tasks
     static void vLockInit(MP_Task mpTask);
     
     // locks
-    static void vLocksList(MP_Task mpTask);
-    static void vLocksReset(MP_Task mpTask);
+    static void vLockTrackerList(MP_Task mpTask);
+    static void vLockTrackerReset(MP_Task mpTask);
   
     // logic
     static void vLogicAnd(MP_Task mpTask);

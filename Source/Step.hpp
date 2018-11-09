@@ -80,7 +80,7 @@ namespace Tasks
   
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);
-    static void vAddSteps_Locks(void);
+    static void vAddSteps_LockTracker(void);
     static void vAddSteps_Logic(void);
   
     static void vAddSteps_Magnitude(void);

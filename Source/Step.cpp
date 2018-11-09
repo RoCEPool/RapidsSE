@@ -83,7 +83,7 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();
-  Step::vAddSteps_Locks();
+  Step::vAddSteps_LockTracker();
   Step::vAddSteps_Logic();
   
   Step::vAddSteps_Magnitude();

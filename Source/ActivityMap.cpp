@@ -378,6 +378,8 @@ void ActivityMap::vDumpMap(void)
   pActivityFile->vClose();
   
   vTrace("ActivityMap dumped : %s\n"_Stz,sAmPath.aChar());
+  
+  delete pActivityFile;
 }
 /*----------------------------------------------------------------------------*/
 //void ActivityMap::vDumpMap(void)
