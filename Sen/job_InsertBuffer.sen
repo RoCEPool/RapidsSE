@@ -79,7 +79,10 @@
     repeat
 
     "InsertBuffer.insert acking endInsert:" .verbose
+    pTask_EndInsert task.grabLock
+    pTask_EndInsert task.dropLock
     pTask_EndInsert task.ack
+
   then
 
 ;
