@@ -28,7 +28,7 @@ i8 IntLib::iDecile(i8 iValue, i8 iMax)
   double dPercent = (iValue * 100) / iMax;
   double dDecile = dPercent / 10;
   
-  i8 iDecile = round(dDecile);
+  i8 iDecile = (i8)round(dDecile);
   
   if (iDecile == 10)
     iDecile = 9;

@@ -74,10 +74,10 @@ i8 FltVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void FltVal::vToString(Stz* aWorkspace)
-{
-  *aWorkspace = m_dFlt;
-}
+//void FltVal::vToString(Stz* aWorkspace)
+//{
+//  *aWorkspace = m_dFlt;
+//}
 
 /*============================================================================*/
 /* end                                                                        */
