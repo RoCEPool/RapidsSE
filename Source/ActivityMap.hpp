@@ -5,7 +5,7 @@
 
 namespace Measurement
 {
-  static const i8    C_ACTIVITY_MARKS  = C_1M;
+  static const i8    C_ACTIVITY_MARKS  = C_1M * 10;
   static const char* C_ACTIVITY_REGION = "/SE_ActivityMap";
 
   class ActivityMap
