@@ -5,7 +5,19 @@
 " job_NetHog.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* Job_NetHog request (on originating node)                                   */
+/* Job_NetHog receive (on every node the hog runs thru)                       */
+/*----------------------------------------------------------------------------*/
+: NetHog_rcv (  -- <R> )
+
+  >>am <SEED_BEG>
+
+  <<am
+  delete_completed_job
+  <DONE_RCV>
+;
+
+/*----------------------------------------------------------------------------*/
+/* Job_NetHog request (on command node)                                       */
 /*----------------------------------------------------------------------------*/
 : NetHog_req (  -- <R> )
 
