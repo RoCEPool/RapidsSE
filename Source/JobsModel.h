@@ -87,6 +87,7 @@ using namespace JobsModel;
 #include "Job_LoadBuffer.hpp"
 #include "Job_LoadTable.hpp"
 
+#include "Job_NetHog.hpp"
 #include "Job_NodeInfo.hpp"
 
 #include "Job_Periodic.hpp"

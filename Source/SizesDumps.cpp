@@ -395,7 +395,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_ListTenants),    // CN_JOB_LISTTENANTS
   /*    */ sizeof(Job_LoadBuffer),     // CN_JOB_LOADBUFFER
   /*    */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
-  /*    */ 0,                          // CN_JOB_NETHOG
+  /*    */ sizeof(Job_NetHog),         // CN_JOB_NETHOG
   /*    */ sizeof(Job_NodeInfo),       // CN_JOB_NODEINFO
   /*    */ sizeof(Job_Periodic),       // CN_JOB_PERIODIC
   /*    */ sizeof(Job_Ping),           // CN_JOB_PING
