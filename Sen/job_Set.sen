@@ -57,6 +57,8 @@
 "Job_LoadBuffer.sen" include
 "Job_LoadTable.sen" include
 
+"Job_NetHog.sen" include
+
 "Job_Periodic.sen" include
 "Job_Ping.sen" include
 "Job_Pwf.sen" include

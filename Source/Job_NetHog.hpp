@@ -6,14 +6,9 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_NetHog : public Job,
-                        public JobFileName
+  class Job_NetHog : public Job
   {
   public:
-    Table*     m_pTable;       // table being load
-    Formatters m_xFormatters;  // record formatters
-  
-    LoadMap*   m_pLoadMap;     // load map
   
     // must be last
     Footer m_xFooter;
@@ -29,18 +24,9 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
-    void vDumpMap(void);
-    bool bFindChunk(void);
-    bool bPopulateJob(TokenVec* pTokenVec);
-  
-    Table* pTable(void);
-    void   vTable(Table* pTable);
-
     void vShow(void);
     
-  private:
-    bool bExtractDateFormat(Stz* dateFormat);
-    
+  
   public:
     Footer* aFooter(void);
   
