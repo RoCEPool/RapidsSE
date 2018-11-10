@@ -108,7 +108,7 @@ void Decider::vSetRemaining(i8 nAcksRemaining)
   RASSERT(0 == m_nAcksRemaining);
   RASSERT(nAcksRemaining > 0);
   
-  vTrace("Setting m_nAcksRemaining to %lld\n"_Stz, nAcksRemaining);
+  //vTrace("Setting m_nAcksRemaining to %lld\n"_Stz, nAcksRemaining);
   m_nAcksRemaining = nAcksRemaining;
 }
 
