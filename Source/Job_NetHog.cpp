@@ -14,8 +14,8 @@ JobClass xJobClass_NetHog =
   "Job_NetHog"_Stz,      // name of the job class
   CN_JOB_NETHOG,         // class enum
   JK_LOCAL,              // job kind
-  "load table"_Stz,      // comment about the job
-  "ld"_Stz,              // the prompt command
+  "network hog"_Stz,     // comment about the job
+  "nethog"_Stz,          // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "netHog_req"_Stz,      // the _req task seed
@@ -28,7 +28,7 @@ JobClass xJobClass_NetHog =
   false,                 // buffer attached?
   JT_NONE,               // job trace
   pJob_NetHog_pre,       // prompt pre-process function
-  nullptr,               // prompt post-process function
+  vJob_NetHog_post,      // prompt post-process function
   pJob_NetHog_new,       // job new function
   vJob_NetHog_delete,    // job delete function
   vJob_send,             // job pre-send function
@@ -176,6 +176,13 @@ Footer* Job_NetHog::aFooter(void)
 Job* JobsModel::pJob_NetHog_pre(Interface::Session* pSession)
 {
   Job_NetHog* pJob_NetHog = new Job_NetHog(pSession);
+  
+  TokenVec* pTknVec = pSession->m_pCommandProcessor->pTknVec();
+  
+  Token* pHogCount = pTknVec->pGet(1);
+  i8 nHogs = pHogCount->iToI8();
+  
+  vTrace("Starting %lld hogs\n"_Stz,nHogs);
   
   return pJob_NetHog;
 }
