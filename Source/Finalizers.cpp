@@ -133,6 +133,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTTENANTS
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_LOADTABLE
+  /*    */ &Finalize::vUndefined,         // CN_JOB_NETHOG
   /*    */ &Finalize::vUndefined,         // CN_JOB_NODEINFO
   /*    */ &Finalize::vUndefined,         // CN_JOB_PERIODIC
   /*    */ &Finalize::vUndefined,         // CN_JOB_PING
