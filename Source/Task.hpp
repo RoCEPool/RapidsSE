@@ -765,6 +765,9 @@ namespace Tasks
     static void vJob_LoadTableTaskFetch(MP_Task mpTask);
     static void vJob_LoadTableTaskStore(MP_Task mpTask);
   
+    // job NetHog
+    static void vJob_NetHogHogNoFetch(MP_Task mpTask);
+  
     // job NodeInfo
     static void vJob_NodeInfoNodeNameFetch(MP_Task mpTask);
   

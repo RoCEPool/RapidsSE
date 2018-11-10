@@ -8880,7 +8880,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*----------------------------------------------------------------------------*/\n"
     "/* path for SE                                                                */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "\\\"../OS\\\\\\\\ X/Build/Products/Release/SE\\\" constant SE_PATH\n"
+    "\\\"../OS\\\\\\\\ X/Build/Products/Debug/SE\\\" constant SE_PATH\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* form the shell command for spawning a node                                 */\n"
@@ -14396,6 +14396,8 @@ void Task::vAddMunged(MP_Task mpTask)
     "\\\"Job_LoadBuffer.sen\\\" include\n"
     "\\\"Job_LoadTable.sen\\\" include\n"
     "\n"
+    "\\\"Job_NetHog.sen\\\" include\n"
+    "\n"
     "\\\"Job_Periodic.sen\\\" include\n"
     "\\\"Job_Ping.sen\\\" include\n"
     "\\\"Job_Pwf.sen\\\" include\n"
@@ -14453,6 +14455,53 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT Op_recv.sen"_Stz
+  ;
+
+  vCompileConstant(sDefinition);
+
+  // munge of job_NetHog.sen
+  sDefinition =
+    "\""
+    "\\\"munged job_NetHog.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* job_NetHog.sen -- Network Hog Job                                          */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\" job_NetHog.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* Job_NetHog receive (on every node the hog runs thru)                       */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": NetHog_rcv (  -- <R> )\n"
+    "\n"
+    "  >>am <SEED_BEG>\n"
+    "\n"
+    "  job::this job_netHog.hogNo@ \\\"Hogging %v\\\" fmt.print\n"
+    "\n"
+    "  <<am\n"
+    "  delete_completed_job\n"
+    "  <DONE_RCV>\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* Job_NetHog request (on command node)                                       */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": NetHog_req (  -- <R> )\n"
+    "\n"
+    "  >>am <SEED_REQ>\n"
+    "\n"
+    "  \\\"Hog Boss\\\" .\n"
+    "\n"
+    "  job::this locals| pJob_NetHog |\n"
+    "\n"
+    "  <<am <DONE_REQ>\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT job_NetHog.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);

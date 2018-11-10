@@ -73,6 +73,7 @@ namespace Tasks
     static void vAddSteps_JobInsertRow(void);
     static void vAddSteps_JobLoadBuffer(void);
     static void vAddSteps_JobLoadTable(void);
+    static void vAddSteps_JobNetHog(void);
     static void vAddSteps_JobNodeInfo(void);
     static void vAddSteps_JobReceiver(void);
     static void vAddSteps_JobSubLoader(void);

@@ -11,7 +11,7 @@
 
   >>am <SEED_BEG>
 
-  "Hogging" .
+  job::this job_netHog.hogNo@ "Hogging %v" fmt.print
 
   <<am
   delete_completed_job
