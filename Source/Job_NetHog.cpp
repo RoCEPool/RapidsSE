@@ -43,6 +43,8 @@ JobClass xJobClass_NetHog =
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
 
+i8 giHogNo = 0;
+
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
@@ -106,6 +108,8 @@ Job_NetHog::Job_NetHog(Interface::Session* pSession)
 : Job(CN_JOB_NETHOG, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_NETHOG,_FOOTER_);
+  
+  m_iHogNo = -1;
   
   _checkInitialised_(CN_JOB_NETHOG);
   

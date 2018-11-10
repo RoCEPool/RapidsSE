@@ -9,6 +9,7 @@ namespace JobsModel
   class Job_NetHog : public Job
   {
   public:
+    i8 m_iHogNo;  // hog number
   
     // must be last
     Footer m_xFooter;
