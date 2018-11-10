@@ -184,6 +184,18 @@ Job* JobsModel::pJob_NetHog_pre(Interface::Session* pSession)
   
   vTrace("Starting %lld hogs\n"_Stz,nHogs);
   
+  for (i8 i_Hog = 0; i_Hog < nHogs; i_Hog++) {
+    
+    JobClass* pJobClass_NetHog = JobClass::pFind(CN_JOB_NETHOG);
+    Job_NetHog* pJob_NetHog = _pJob_NetHog(pJobClass_NetHog->pNewJob(nullptr));
+
+    pJob_NetHog->m_iHogNo  = i_Hog;
+    pJob_NetHog->m_bNoWait = true;
+    
+    bool bResult = RapidsSE_bSpawnJob(pJob_NetHog,SS_SEED_RCV,pSession);
+    RASSERT_WARN(bResult);
+  }
+  
   return pJob_NetHog;
 }
 

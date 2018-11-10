@@ -11,6 +11,8 @@
 
   >>am <SEED_BEG>
 
+  "Hogging" .
+
   <<am
   delete_completed_job
   <DONE_RCV>
@@ -22,6 +24,8 @@
 : NetHog_req (  -- <R> )
 
   >>am <SEED_REQ>
+
+  "Hog Boss" .
 
   job::this locals| pJob_NetHog |
 

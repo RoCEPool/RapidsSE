@@ -37,7 +37,8 @@ namespace Debugging
   #else
     #define ASSERT(condition)
   #endif
-    
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #define RASSERT(condition) \
   { \
     if ( !(condition) ) { \
@@ -48,6 +49,7 @@ namespace Debugging
     } \
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #define RASSERT_CAST(condition) \
   { \
     if ( !(condition) ) { \
@@ -58,6 +60,7 @@ namespace Debugging
     } \
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #define RASSERT_TYPE(pARG,eCLASS) \
   { \
     if ( pARG && eCLASS != pARG->eClass()  ) { \
@@ -70,6 +73,15 @@ namespace Debugging
     } \
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  #define RASSERT_WARN(condition) \
+  { \
+    if ( !(condition) ) { \
+      printf("RWARN in %s at %d\n",__FILE__,__LINE__); \
+      Debugging::vAssertTrap(); \
+    } \
+  }
+  
   /*--------------------------------------------------------------------------*/
   /* initialise memory to zero                                                */
   /*--------------------------------------------------------------------------*/
