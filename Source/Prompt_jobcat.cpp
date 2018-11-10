@@ -46,6 +46,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJobs(CN_JOB_CF);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LF);
   nJobs++; JobClass::vTraceJobs(CN_JOB_PWF);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_PING);
 
   nJobs++; JobClass::vTraceJobs(CN_JOB_INSERTROW);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LISTTENANTS);
@@ -88,7 +89,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJobs(CN_JOB_DROPTENANT);
   nJobs++; JobClass::vTraceJobs(CN_JOB_ENDINSERT);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LOADTABLE);
-  nJobs++; JobClass::vTraceJobs(CN_JOB_PING);
   nJobs++; JobClass::vTraceJobs(CN_JOB_FETCHROWS);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SIZEINDEX);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SIZETABLE);
