@@ -253,7 +253,10 @@ void Jobs::vMarkContents(i8 iJobId)
 {
   i8 iLevel = 0;
 
+  vGrabLock();
+  
   if (0 == m_pJobsSkipList->nObjects()) {
+    vDropLock();
     ActivityMap::vMark(iJobId,"%s Jobs List is empty"_Stz,
                        aJL[m_eJobsList]);
     return;
@@ -274,6 +277,7 @@ void Jobs::vMarkContents(i8 iJobId)
     
     pNode = m_pJobsSkipList->pNext(pNode, iLevel);
   }
+  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
