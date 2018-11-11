@@ -19,7 +19,6 @@
 
   0 locals| iLoadJobId      |
   0 locals| pJob_LoadTable  |
-  0 locals| pTask_LoadTable |
 
   0 locals| sTableNm    |
   0 locals| i_Partition |
@@ -41,11 +40,7 @@
   pJob_LoadTable pJob_LoadBuffer job_loadBuffer.jobLoadTable!
 
   // get the load table task
-  pJob_LoadTable job.executingtask@ to pTask_LoadTable
-
-  //pTask_LoadTable pJob_LoadTable iLoadJobId
-  //  "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v"
-  //fmt.print
+  //pJob_LoadTable job.executingtask@ to pTask_LoadTable
 
   // get table name
   pJob_LoadBuffer job.objectName@ to sTableNm
@@ -75,10 +70,36 @@
 
   // ack the load table task if all buffers have been loaded
   bAllLoaded if
-    //pTask_LoadTable
-    //"All buffers loaded; Would ack task_LoadTable (node) %v"
-    //fmt.print
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // first check if the job is executing SS_SEED_EXE
+    // then get the task that is executing it
+    begin
+      pJob_LoadTable job.IsExecuting
+    not while
+      1 thread.sleep_ms
+    repeat
+
+    pJob_LoadTable job.executingTask@ locals| pTask_LoadTable |
+
+   //pTask_LoadTable pJob_LoadTable iLoadJobId
+   //  "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v"
+   //fmt.print
+
+   //pTask_LoadTable
+   //"All buffers loaded; Would ack task_LoadTable (node) %v"
+   //fmt.print
+
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // wait for acks to be set in the endInsert task
+    begin
+      pTask_LoadTable task.IsAckSet
+    not while
+      1 thread.sleep_ms
+    repeat
+
+    pTask_LoadTable task.grabLock
+    pTask_LoadTable task.dropLock
     pTask_LoadTable task.ack
   then
 

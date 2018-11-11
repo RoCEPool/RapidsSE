@@ -27,6 +27,8 @@ INCLUDE 'tpchSchemaDrop.test';
 
 CLEANUP {
 
+  INCLUDE 'tpchSchemaDrop.test';
+
   bye;
   mute
 }

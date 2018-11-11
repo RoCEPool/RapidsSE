@@ -59,13 +59,15 @@
   // ack the load table task if all buffers have been loaded
   bAllLoaded if
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the end insert table job (participant node)
     pJob_InsertBuffer job_insertBuffer.endInsertJob@ locals| iEndInsertJobId |
     pJob_InsertBuffer iEndInsertJobId job::waitParticipant locals| pJob_EndInsert |
 
 
-   // first check if the job is executing SS_SEED_EXE
-   // then get the task that is executing it
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // first check if the job is executing SS_SEED_EXE
+    // then get the task that is executing it
     begin
       pJob_EndInsert job.IsExecuting
     not while
@@ -74,14 +76,8 @@
 
     pJob_EndInsert job.executingTask@ locals| pTask_EndInsert |
 
-    //pTask_EndInsert pJob_EndInsert iEndInsertJobId
-    //"EndInsertJobId %v job_EndInsert (node) %v task_EndInsert %v"
-    //fmt.print
-
-      //pTask_EndInsert
-      //"All buffers inserted; Would ack task_EndInsert (node) %v"
-    //fmt.print
-
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // wait for acks to be set in the endInsert task
     begin
        pTask_EndInsert task.IsAckSet
     not while
