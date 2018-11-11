@@ -48,7 +48,7 @@ JobClass xJobClass_FetchRows =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_FetchRows_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_InsertBuffer_class;
+  *pNextFun = (pFUN*)pJob_GenData_class;
   
   return &xJobClass_FetchRows;
 }

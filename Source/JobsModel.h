@@ -71,6 +71,8 @@ using namespace JobsModel;
 
 #include "Job_FetchRows.hpp"
 
+#include "Job_GenData.hpp"
+
 #include "Job_InsertRow.hpp"
 #include "Job_InsertBuffer.hpp"
 

@@ -43,7 +43,6 @@ JobClass xJobClass_NetHog =
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
 
-i8 giHogNo = 0;
 
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
