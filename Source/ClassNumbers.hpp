@@ -122,6 +122,7 @@ enum eCN : u2 // Class Number
   /*  89 */ CN_JOB_DUMPINDEX,
   /*  90 */ CN_JOB_ENDINSERT,
   /*  91 */ CN_JOB_FETCHROWS,
+  /*     */ CN_JOB_GENDATA,
   /*  92 */ CN_JOB_INSERTBUFFER,
   /*  93 */ CN_JOB_INSERTROW,
   /*  94 */ CN_JOB_LF,
@@ -375,6 +376,7 @@ static Stz* aCN[]
   /*  89 */ "JOB_DUMPINDEX"_Stz,       // CN_JOB_DUMPINDEX
   /*  90 */ "JOB_ENDINSERT"_Stz,       // CN_JOB_ENDINSERT
   /*  91 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
+  /*     */ "JOB_GENDATA"_Stz,         // CN_JOB_GENDATA
   /*  92 */ "JOB_INSERTBUFFER"_Stz,    // CN_JOB_INSERTBUFFER
   /*  93 */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
   /*  94 */ "JOB_LF"_Stz,              // CN_JOB_LF
