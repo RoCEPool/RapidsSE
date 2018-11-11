@@ -152,7 +152,7 @@ bool Job_Cf::bPopulateJob(TokenVec* pTokenVec)
   
   // - - - - - - - - - - - - - - - - - - - - -
   // get no of tokens in token vector
-  iNumTokens = pTokenVec->nTokens();;
+  iNumTokens = pTokenVec->nTokens();
   
   // - - - - - - - - - - - - - - - - - - - - -
   // there should be 2 tokens

@@ -14,8 +14,8 @@ JobClass xJobClass_GenData =
   "Job_GenData"_Stz,     // name of the job class
   CN_JOB_GENDATA,        // class enum
   JK_LOCAL,              // job kind
-  "data generator"_Stz,  // comment about the job
-  "datagen"_Stz,         // the prompt command
+  "generate data"_Stz,   // comment about the job
+  "gendata"_Stz,         // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "genData_req"_Stz,     // the _req task seed
@@ -171,10 +171,24 @@ Footer* Job_GenData::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_GenData_pre(Interface::Session* pSession)
 {
+  i8 nTokens;
+
   Job_GenData* pJob_GenData = new Job_GenData(pSession);
   
-  //TokenVec* pTknVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTknVec = pSession->m_pCommandProcessor->pTknVec();
   
+  // - - - - - - - - - - - - - - - - - - - - -
+  // get no of tokens in token vector
+  nTokens = pTknVec->nTokens();
+  
+  // - - - - - - - - - - - - - - - - - - - - -
+  // there should be 2 tokens
+  if (nTokens != 2)
+    return nullptr;
+  
+  // set the table name
+  pJob_GenData->m_sObjectName = pTknVec->pGet(1)->aText();
+
   return pJob_GenData;
 }
 
