@@ -1,0 +1,58 @@
+/*============================================================================*/
+/* job_GenData.sen -- Generate Data Job                                       */
+/*============================================================================*/
+
+" job_GenData.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* Job_GenData request (on command node)                                       */
+/*----------------------------------------------------------------------------*/
+: GenData_req (  -- <R> )
+
+  >>am <SEED_REQ>
+
+  0 locals| sTableNm |
+
+  job::this locals| pJob_GenData |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_ListColumns getPath
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if pJob_GenData <ERROR_REQUEST> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get table name from job
+  pJob_GenData job.objectName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm checkIsTable not if popTable pJob_GenData <ERROR_REQUEST> !!am exit then
+
+
+  //----------------------------------------------------------------------------
+
+  //----------------------------------------------------------------------------
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  popTable
+  assertInTables
+
+  <<am <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

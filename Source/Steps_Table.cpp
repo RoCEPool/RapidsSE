@@ -20,6 +20,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.createColumnVec"_Stz,    &Task::vTableCreateColumnVec);
   vAddStep("table.drop"_Stz,               &Task::vTableDrop);
   vAddStep("table.dump"_Stz,               &Task::vTableDump);
+  vAddStep("table.genData"_Stz,            &Task::vTableGenData);
   vAddStep("table.getColumnsAsString"_Stz, &Task::vTableGetColumnsAsString);
   vAddStep("table.getPtn"_Stz,             &Task::vTableGetPtn);
   vAddStep("table.hiddenIndex@"_Stz,       &Task::vTableHiddenIndexFetch);
@@ -314,6 +315,16 @@ ENTRY("vTableDump"_Stz);
   
   pTable->vContentDump();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.genData -- generate data for table                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTableGenData(MP_Task mpTask)
+{
+  ENTRY("vTableGenData"_Stz);
+
   EXIT();
 }
 
