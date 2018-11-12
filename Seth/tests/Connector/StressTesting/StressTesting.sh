@@ -61,8 +61,9 @@ do
 
       cd $SETH_PATH
 
-      echo "Starting RDP Seth Tests....."
-      ./allTestsRdp
+      //echo "Starting RDP Seth Tests....."
+      echo "InsertSelect tests"
+      ./dbth.sh -f tests/Connector/InsertSelect/testList
 
       # kill any dummyThread of SE's that are running
       kill -9 $DUMMYSE_PID
