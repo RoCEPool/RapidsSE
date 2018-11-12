@@ -35,7 +35,7 @@ INCLUDE 'tpchSchemaDrop.test';
 LOG 'Dropping tpch schema2...';
 INCLUDE 'tpchSchemaDrop2.test';
 
-} -- end of llop
+} -- end of loop
 
 CLEANUP {
 

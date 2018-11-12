@@ -16,8 +16,20 @@ LOG 'Loading tpch data...';
 INCLUDE 'tpchLoad.test';
 
 //------------------------------------------------------------------------------
+LOG 'Selecting tpch data...';
+INCLUDE 'tpchSelect.test';
+
+//------------------------------------------------------------------------------
 LOG 'Running tpch queries...';
 INCLUDE 'tpchQueries.test';
+
+//------------------------------------------------------------------------------
+LOG 'truncating tpch tables...';
+INCLUDE 'tpchTruncate.test';
+
+//------------------------------------------------------------------------------
+LOG 'selecting from truncated tpch tables...';
+INCLUDE 'tpchTruncateSelect.test';
 
 //------------------------------------------------------------------------------
 LOG 'Dropping tpch schema...';

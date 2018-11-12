@@ -1,0 +1,37 @@
+--------------------------------------------------------------------------------
+-- tpch select from truncated tables (SF1)
+-------------------------------------------------------------------------------
+  
+-- refresh metadata
+refresh;
+success
+
+select count(*) table customer;
+rows: 0
+
+select count(*) table supplier;
+rows: 0
+
+select count(*) table orders;
+rows: 0
+
+select count(*) table partsupp;
+rows: 0
+
+select count(*) table part;
+rows: 0
+
+select count(*) table region;
+rows: 0
+
+select count(*) table lineitem;
+rows: 0
+
+select count(*) table nation;
+rows: 0
+
+CLEANUP {
+
+}
+
+

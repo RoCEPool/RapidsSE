@@ -1,0 +1,37 @@
+--------------------------------------------------------------------------------
+-- tpch truncate tables (SF1)
+-------------------------------------------------------------------------------
+  
+-- refresh metadata
+refresh;
+success
+
+truncate table customer;
+success
+
+truncate table supplier;
+success
+
+truncate table orders;
+success
+
+truncate table partsupp;
+success
+
+truncate table part;
+success
+
+truncate table region;
+success
+
+truncate table lineitem;
+success
+
+truncate table nation;
+success
+
+CLEANUP {
+
+}
+
+
