@@ -27,7 +27,29 @@ INCLUDE 'tpchSchemaDrop.test';
 
 CLEANUP {
 
-  INCLUDE 'tpchSchemaDrop.test';
+  drop table customer;
+  mute
+
+  drop table supplier;
+  mute
+
+  drop table orders;
+  mute
+
+  drop table partsupp;
+  mute
+
+  drop table part;
+  mute
+
+  drop table region;
+  mute
+
+  drop table lineitem;
+  mute
+
+  drop table nation;
+  mute
 
   bye;
   mute

@@ -12,7 +12,7 @@ LOG 'Create tpch schema...';
 INCLUDE 'tpchSchemaCreate.test';
 
 //------------------------------------------------------------------------------
-LOG 'Create tpch schema...';
+LOG 'Create tpch schema2...';
 INCLUDE 'tpchSchemaCreate2.test';
 
 //------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ LOG 'Dropping tpch schema...';
 INCLUDE 'tpchSchemaDrop.test';
 
 //------------------------------------------------------------------------------
-LOG 'Dropping tpch schema...';
+LOG 'Dropping tpch schema2...';
 INCLUDE 'tpchSchemaDrop2.test';
 
 } -- end of llop
