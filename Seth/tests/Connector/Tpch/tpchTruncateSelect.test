@@ -6,28 +6,28 @@
 refresh;
 success
 
-select count(*) table customer;
+select count(*) from rapidsse.public.customer;
 rows: 0
 
-select count(*) table supplier;
+select count(*) from rapidsse.public.supplier;
 rows: 0
 
-select count(*) table orders;
+select count(*) from rapidsse.public.orders;
 rows: 0
 
-select count(*) table partsupp;
+select count(*) from rapidsse.public.partsupp;
 rows: 0
 
-select count(*) table part;
+select count(*) from rapidsse.public.part;
 rows: 0
 
-select count(*) table region;
+select count(*) from rapidsse.public.region;
 rows: 0
 
-select count(*) table lineitem;
+select count(*) from rapidsse.public.lineitem;
 rows: 0
 
-select count(*) table nation;
+select count(*) from rapidsse.public.nation;
 rows: 0
 
 CLEANUP {
