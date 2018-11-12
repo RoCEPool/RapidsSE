@@ -17,7 +17,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pJob_ListColumns getPath
+  pJob_GenData getPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
