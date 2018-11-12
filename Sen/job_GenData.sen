@@ -5,7 +5,7 @@
 " job_GenData.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* Job_GenData request (on command node)                                       */
+/* Job_GenData request (on command node)                                      */
 /*----------------------------------------------------------------------------*/
 : GenData_req (  -- <R> )
 
