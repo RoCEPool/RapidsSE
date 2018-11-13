@@ -58,6 +58,10 @@ namespace Datums
     
     static i8 iCmp(char* aArgA, char* aArgB);
   
+    static void vMaxValue(Int& xInt);
+    static void vMidValue(Int& xInt);
+    static void vMinValue(Int& xInt);
+    static void vNullValue(Int& xInt);
   };
 }
 
