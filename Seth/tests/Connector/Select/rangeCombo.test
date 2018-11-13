@@ -37,8 +37,8 @@ rows:
 
 CLEANUP {
 
-  //drop table rapidsse.public.T1;
-  //mute
+  drop table rapidsse.public.T1;
+  mute
 
   bye;
   mute
