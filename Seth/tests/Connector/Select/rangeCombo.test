@@ -1,0 +1,45 @@
+/*----------------------------------------------------------------------------*/
+/* range query tests                                                          */
+/*----------------------------------------------------------------------------*/
+
+// (1) create table t1
+create table rapidsse.public.T1 (
+  jA  INTEGER NOT NULL,
+  jB  INTEGER NOT NULL,
+  jC  VARCHAR(10) NOT NULL,
+  jD  VARCHAR(10) NOT NULL
+);
+success
+
+create index T1_idx1 on T1 (jA, jC);
+success
+
+ESCAPE CONNECTOR se 'load T1' with file = '/DATA/Select/rangeCombo.csv', node = 'node1';
+failure contains: 'Success'
+
+select * from rapidsse.public.T1;
+rows: 5
+
+select * from  rapidsse.public.T1 where jA <= 2;
+rows: 2
+
+select * from  rapidsse.public.T1 where jC <= '2';
+rows: 0
+
+select * from  rapidsse.public.T1 where jA >= 4 and jC >= 'ddd';
+rows:
+  (4,14,'ddd',' mood')
+  (5,15,'eee',' boat')
+
+select * from  rapidsse.public.T1 where jA = 4 and jC = 'ddd';
+rows:
+  (4,14,'ddd',' mood')
+
+CLEANUP {
+
+  //drop table rapidsse.public.T1;
+  //mute
+
+  bye;
+  mute
+}
