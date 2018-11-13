@@ -6,28 +6,28 @@
 refresh;
 success
 
-truncate table customer;
+truncate table rapidsse.public.customer;
 success
 
-truncate table supplier;
+truncate table rapidsse.public.supplier;
 success
 
-truncate table orders;
+truncate table rapidsse.public.orders;
 success
 
-truncate table partsupp;
+truncate table rapidsse.public.partsupp;
 success
 
-truncate table part;
+truncate table rapidsse.public.part;
 success
 
-truncate table region;
+truncate table rapidsse.public.region;
 success
 
-truncate table lineitem;
+truncate table rapidsse.public.lineitem;
 success
 
-truncate table nation;
+truncate table rapidsse.public.nation;
 success
 
 CLEANUP {

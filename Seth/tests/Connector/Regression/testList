@@ -4,7 +4,7 @@ aggs-count.test
 aggs-max.test
 aggs-min.test
 aggs-sum.test
-alias.test
+//alias.test
 AndOrNot.test
 between.test
 cast.test
@@ -16,7 +16,7 @@ intersect.test
 like.test
 PartKey1way.test
 PartKey2way.test
-Stage9.test
+//Stage9.test
 Using1way.test
 schemaDrop.test
 
