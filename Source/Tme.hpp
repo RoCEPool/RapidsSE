@@ -62,6 +62,11 @@ namespace Datums
     static bool bGreaterThan(char* aArgA, char* aArgB);
     
     static i8 iCmp(char* aArgA, char* aArgB);
+  
+    static void vMaxValue(Tme& xTme);
+    static void vMidValue(Tme& xTme);
+    static void vMinValue(Tme& xTme);
+    static void vNullValue(Tme& xTme);
   };
 }
 
