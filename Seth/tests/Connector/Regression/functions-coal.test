@@ -1,7 +1,7 @@
 
   // Source file: ../qa/queries/functions/coal/rcoal1.sql
   // Result file: ../qa/queries/functions/coal/results/coal1.res
- select colb9, coalesce(cole9,colf9,colg9) from table9 where pcol9 between 230 and 240 order by pcol9;
+ select colb9, coalesce(cole9,colf9,colg9) from rapidsse.public.table9 where pcol9 between 230 and 240 order by pcol9;
 rows:
   ('RED', 125.080000000000)
   ('yellow', -49.190000000000)
@@ -18,7 +18,7 @@ rows:
 
   // Source file: ../qa/queries/functions/coal/rcoal2.sql
   // Result file: ../qa/queries/functions/coal/results/coal2.res
- select colb9, ucolvc, coalesce(colb9,ucolvc) from table9 where colb9 is null order by pcol9;
+ select colb9, ucolvc, coalesce(colb9,ucolvc) from rapidsse.public.table9 where colb9 is null order by pcol9;
 rows:
   (NULL, 'vvv', 'vvv')
   (NULL, 'bbb', 'bbb')
@@ -32,7 +32,7 @@ rows:
 
   // Source file: ../qa/queries/functions/coal/rcoal3.sql
   // Result file: ../qa/queries/functions/coal/results/coal3.res
- select pcol1, pcol9, colb1, colb9 from table9 join table1 on coalesce(colb9,'black') = colb1 where colb9 is null order by pcol1,pcol9;
+ select pcol1, pcol9, colb1, colb9 from rapidsse.public.table9 join rapidsse.public.table1 on coalesce(colb9,'black') = colb1 where colb9 is null order by pcol1,pcol9;
 rows:
   (4, 10, 'black', NULL)
   (4, 120, 'black', NULL)
@@ -62,7 +62,7 @@ rows:
 
   // Source file: ../qa/queries/functions/coal/rcoal4.sql
   // Result file: ../qa/queries/functions/coal/results/coal4.res
- select colg9, cole9, coalesce(colg9,cole9,1.0) from table9 where coalesce(colg9,cole9,1.0) <= 1.0 and colg9 is null order by pcol9;
+ select colg9, cole9, coalesce(colg9,cole9,1.0) from rapidsse.public.table9 where coalesce(colg9,cole9,1.0) <= 1.0 and colg9 is null order by pcol9;
 rows:
   (NULL, -86.200000000000, -86.200000000000)
   (NULL, NULL, 1.0)

@@ -1,7 +1,7 @@
 
 // Source file: ../qa/queries/exists/rexists10.sql
 // Result file: ../qa/queries/exists/results/exists10.res
-select colc1, cold1 from table1 where cold1 < 40.5 and exists (select cola2 from table2 where cola2 < 750 ) order by colc1, cold1;
+select colc1, cold1 from rapidsse.public.table1 where cold1 < 40.5 and exists (select cola2 from rapidsse.public.table2 where cola2 < 750 ) order by colc1, cold1;
 mute
 //CHECK_RESULT
 /*
@@ -17,7 +17,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists11.sql
 // Result file: ../qa/queries/exists/results/exists11.res
-select colc1, cold1 from table1 where cold1 < 40.5 and exists (select colb2 from table2 where colb2 like 'aquamar%' ) order by colc1, cold1;
+select colc1, cold1 from rapidsse.public.table1 where cold1 < 40.5 and exists (select colb2 from rapidsse.public.table2 where colb2 like 'aquamar%' ) order by colc1, cold1;
 mute
 //CHECK_RESULT
 /*
@@ -26,7 +26,7 @@ affected: 0
 
 // Source file: ../qa/queries/exists/rexists12.sql
 // Result file: ../qa/queries/exists/results/exists12.res
-select colc1, cold1 from table1 where cold1 < 40.5 and exists (select colc2 from table2 where colc2 between timestamp '2009-10-09 12:00:00' and timestamp '2009-11-15 08:00:00' ) order by colc1, cold1;
+select colc1, cold1 from rapidsse.public.table1 where cold1 < 40.5 and exists (select colc2 from rapidsse.public.table2 where colc2 between timestamp '2009-10-09 12:00:00' and timestamp '2009-11-15 08:00:00' ) order by colc1, cold1;
 mute
 //CHECK_RESULT
 /*
@@ -35,7 +35,7 @@ affected: 0
 
 // Source file: ../qa/queries/exists/rexists13.sql
 // Result file: ../qa/queries/exists/results/exists13.res
-select colc1, cold1 from table1 where cold1 < 17.3 and exists (select cold9 from table9 where cold9 > 220.6 and cold9 < 232.9 ) order by colc1, cold1;
+select colc1, cold1 from rapidsse.public.table1 where cold1 < 17.3 and exists (select cold9 from rapidsse.public.table9 where cold9 > 220.6 and cold9 < 232.9 ) order by colc1, cold1;
 mute
 //CHECK_RESULT
 /*
@@ -46,7 +46,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists14.sql
 // Result file: ../qa/queries/exists/results/exists14.res
-select colc1, cold1 from table1 where cold1 < 40.5 and exists (select cole9 from table9 where cole9 > -135.99 and cole9 < -135.50 ) order by colc1, cold1;
+select colc1, cold1 from rapidsse.public.table1 where cold1 < 40.5 and exists (select cole9 from rapidsse.public.table9 where cole9 > -135.99 and cole9 < -135.50 ) order by colc1, cold1;
 mute
 //CHECK_RESULT
 /*
@@ -55,7 +55,7 @@ affected: 0
 
 // Source file: ../qa/queries/exists/rexists15.sql
 // Result file: ../qa/queries/exists/results/exists15.res
-select colc1, cold1 from table1 where cold1 < 40.5 and exists (select colf7 from table7 where pcol7 /colf7 < pcol7 and pcol7 < 50 ) order by colc1, cold1;
+select colc1, cold1 from rapidsse.public.table1 where cold1 < 40.5 and exists (select colf7 from rapidsse.public.table7 where pcol7 /colf7 < pcol7 and pcol7 < 50 ) order by colc1, cold1;
 mute
 //CHECK_RESULT
 /*
@@ -71,7 +71,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists16.sql
 // Result file: ../qa/queries/exists/results/exists16.res
-select exists (select cola1 from table1 where cola1 = 45 ), colb1 from table1 order by colb1 limit 5;
+select exists (select cola1 from rapidsse.public.table1 where cola1 = 45 ), colb1 from rapidsse.public.table1 order by colb1 limit 5;
 mute
 //CHECK_RESULT
 /*
@@ -85,7 +85,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists17.sql
 // Result file: ../qa/queries/exists/results/exists17.res
-select exists (select cola1 from table1 where cola1 = 45 ), colb1 from table1 where exists(select cola1 from table1 where cola1 < 10000) order by colb1 limit 5 offset 50;
+select exists (select cola1 from rapidsse.public.table1 where cola1 = 45 ), colb1 from rapidsse.public.table1 where exists(select cola1 from rapidsse.public.table1 where cola1 < 10000) order by colb1 limit 5 offset 50;
 mute
 //CHECK_RESULT
 /*
@@ -99,7 +99,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists2.sql
 // Result file: ../qa/queries/exists/results/exists2.res
-select cola1, colb1 from table1 where colb1 like 'bl%' and exists (select cola2 from table2 where pcol2 > 1 and pcol2 < 3) order by pcol1;
+select cola1, colb1 from rapidsse.public.table1 where colb1 like 'bl%' and exists (select cola2 from rapidsse.public.table2 where pcol2 > 1 and pcol2 < 3) order by pcol1;
 mute
 //CHECK_RESULT
 /*
@@ -114,7 +114,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists3.sql
 // Result file: ../qa/queries/exists/results/exists3.res
-select cola1, colb1 from table1 where colb1 like 'bl%' and exists (select colb2 from table2 where colb2 like 'gree%') order by cola1, colb1;
+select cola1, colb1 from rapidsse.public.table1 where colb1 like 'bl%' and exists (select colb2 from rapidsse.public.table2 where colb2 like 'gree%') order by cola1, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -129,7 +129,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists4.sql
 // Result file: ../qa/queries/exists/results/exists4.res
-select cola1, colb1 from table1 where colb1 like '%in%' and exists (select cold7 from table7 where cold7 > 11.0 and cold7 < 12.5) order by cola1, colb1;
+select cola1, colb1 from rapidsse.public.table1 where colb1 like '%in%' and exists (select cold7 from rapidsse.public.table7 where cold7 > 11.0 and cold7 < 12.5) order by cola1, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -143,7 +143,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists5.sql
 // Result file: ../qa/queries/exists/results/exists5.res
-select cola1, colb1 from table1 where colb1 like '%in%' and exists (select cold7 from table7 where cold7 > 11.0 and cold7 < 11.4) order by cola1, colb1;
+select cola1, colb1 from rapidsse.public.table1 where colb1 like '%in%' and exists (select cold7 from rapidsse.public.table7 where cold7 > 11.0 and cold7 < 11.4) order by cola1, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -157,7 +157,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists6.sql
 // Result file: ../qa/queries/exists/results/exists6.res
-select cola1, colb1 from table1 where colb1 = 'green' and exists (select colc2 from table2 where colc2 > timestamp '2015-11-01 00:00:00') order by cola1, colb1;
+select cola1, colb1 from rapidsse.public.table1 where colb1 = 'green' and exists (select colc2 from rapidsse.public.table2 where colc2 > timestamp '2015-11-01 00:00:00') order by cola1, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -171,7 +171,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists7.sql
 // Result file: ../qa/queries/exists/results/exists7.res
-select cola1, colb1 from table1 where cola1 between 12 and 57 and exists (select cole1 from table1 where cole1 between 11.56 and 28.97) order by cola1, colb1;
+select cola1, colb1 from rapidsse.public.table1 where cola1 between 12 and 57 and exists (select cole1 from rapidsse.public.table1 where cole1 between 11.56 and 28.97) order by cola1, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -187,7 +187,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists8.sql
 // Result file: ../qa/queries/exists/results/exists8.res
-select cola1, colb1 from table1 where cola1 between 12 and 45 and exists (select cole1 from table1 where cole1 between 117.20 and 118.53) order by cola1, colb1;
+select cola1, colb1 from rapidsse.public.table1 where cola1 between 12 and 45 and exists (select cole1 from rapidsse.public.table1 where cole1 between 117.20 and 118.53) order by cola1, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -200,7 +200,7 @@ rows:
 
 // Source file: ../qa/queries/exists/rexists9.sql
 // Result file: ../qa/queries/exists/results/exists9.res
-select cola1, colb1 from table1 where cola1 > 400 and cola1 < 415 and exists (select colf9 from table9 where colf9 = 8) order by cola1, colb1;
+select cola1, colb1 from rapidsse.public.table1 where cola1 > 400 and cola1 < 415 and exists (select colf9 from rapidsse.public.table9 where colf9 = 8) order by cola1, colb1;
 mute
 //CHECK_RESULT
 /*

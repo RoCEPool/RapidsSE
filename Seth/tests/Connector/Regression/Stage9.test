@@ -87,7 +87,7 @@ mute
 // Source file: ../qa/queries/Stage9/rstage9-3.sql
 // Result file: ../qa/queries/Stage9/results/stage9-3.res
 select c_custkey, c_name, sum(l_extendedprice),  l_discount, c_acctbal, n_name, c_address, c_phone, c_comment from
-rapidsse.public.customerh join orders on c_custkey = o_custkey join
+rapidsse.public.customerh join rapidsse.public.orders on c_custkey = o_custkey join
 rapidsse.public.lineitem on l_orderkey = o_orderkey join
 rapidsse.public.nation on c_nationkey = n_nationkey where o_orderdate >= timestamp '2013-02-01 12:00:00' and o_orderdate < timestamp '2013-08-01 12:00:00' and l_returnflag = 'R' group by c_custkey, c_name, l_discount, c_acctbal, c_phone, n_name, c_address, c_comment;
 mute
@@ -177,7 +177,7 @@ mute
 
 // Source file: ../qa/queries/Stage9/rstage9-8.sql
 // Result file: ../qa/queries/Stage9/results/stage9-8.res
-select count(*), sum(r_credit) from orders join rapidsse.public.lineitem on o_orderkey = l_orderkey join rapidsse.public.returns on o_orderkey = returns.l_orderkey join manufacturer on o_orderkey = m_orderkey join shipaddress on o_orderkey = sa_orderkey where o_orderdate >= timestamp '2013-12-01 12:00:00' and o_orderdate <= timestamp '2014-12-31 12:00:00' and o_clerk <> 'red' and o_orderpriority = '1-URGENT';
+select count(*), sum(r_credit) from rapidsse.public.orders join rapidsse.public.lineitem on o_orderkey = l_orderkey join rapidsse.public.returns on o_orderkey = returns.l_orderkey join rapidsse.public.manufacturer on o_orderkey = m_orderkey join rapidsse.public.shipaddress on o_orderkey = sa_orderkey where o_orderdate >= timestamp '2013-12-01 12:00:00' and o_orderdate <= timestamp '2014-12-31 12:00:00' and o_clerk <> 'red' and o_orderpriority = '1-URGENT';
 mute
 //CHECK_RESULT
 /*
@@ -187,9 +187,9 @@ mute
 
 // Source file: ../qa/queries/Stage9/rstage9-9.sql
 // Result file: ../qa/queries/Stage9/results/stage9-9.res
-select p_name, p_retailprice from (select p_name, p_retailprice from rapidsse.public.lineitem join
+select p_name, p_retailprice from rapidsse.public.(select p_name, p_retailprice from rapidsse.public.lineitem join
 rapidsse.public.part on l_partkey = p_partkey where p_partkey < 10) as pline union select o_clerk, o_totalprice from
-(select o_clerk, o_totalprice from orders join lineitem on o_orderkey = l_orderkey where o_orderkey < 10) as oline;
+(select o_clerk, o_totalprice from rapidsse.public.orders join rapidsse.public.lineitem on o_orderkey = l_orderkey where o_orderkey < 10) as oline;
 mute
 //CHECK_RESULT
 /*
@@ -216,7 +216,7 @@ mute
 
 // Source file: ../qa/queries/Stage9/rstage9-10.sql
 // Result file: ../qa/queries/Stage9/results/stage9-10.res
-select Mfgr, Name from (select p_mfgr as Mfgr, p_name as Name from (select p_partkey, p_mfgr, p_name from rapidsse.public.lineitem join rapidsse.public.part on l_partkey = p_partkey where l_returnflag = 'R' and l_shipmode = 'AIR' and l_linestatus = 'O' and l_shipinstruct = 'DELIVER IN PERSON' and p_partkey < 1000) as PartList) as PartMfgr where Mfgr = 'Mfg#3' and Name = 'Eget Ipsum Associates';
+select Mfgr, Name from rapidsse.public.(select p_mfgr as Mfgr, p_name as Name from rapidsse.public.(select p_partkey, p_mfgr, p_name from rapidsse.public.lineitem join rapidsse.public.part on l_partkey = p_partkey where l_returnflag = 'R' and l_shipmode = 'AIR' and l_linestatus = 'O' and l_shipinstruct = 'DELIVER IN PERSON' and p_partkey < 1000) as PartList) as PartMfgr where Mfgr = 'Mfg#3' and Name = 'Eget Ipsum Associates';
 mute
 //CHECK_RESULT
 /*
@@ -227,7 +227,7 @@ mute
 
 // Source file: ../qa/queries/Stage9/rstage9-11.sql
 // Result file: ../qa/queries/Stage9/results/stage9-11.res
-select Mfgr, Name from (select p_mfgr as Mfgr, p_name as Name from (select p_partkey, p_mfgr, p_name from rapidsse.public.lineitem join rapidsse.public.part on l_partkey = p_partkey where l_returnflag = 'R' and l_shipmode = 'AIR' and l_linestatus = 'O' and l_shipinstruct = 'DELIVER IN PERSON' and p_partkey < 1000) as PartList) as PartMfgr where Mfgr = 'Mfg#3' and Name = 'Eget Ipsum Associates';
+select Mfgr, Name from rapidsse.public.(select p_mfgr as Mfgr, p_name as Name from rapidsse.public.(select p_partkey, p_mfgr, p_name from rapidsse.public.lineitem join rapidsse.public.part on l_partkey = p_partkey where l_returnflag = 'R' and l_shipmode = 'AIR' and l_linestatus = 'O' and l_shipinstruct = 'DELIVER IN PERSON' and p_partkey < 1000) as PartList) as PartMfgr where Mfgr = 'Mfg#3' and Name = 'Eget Ipsum Associates';
 mute
 //CHECK_RESULT
 /*
@@ -261,7 +261,7 @@ mute
 
 // Source file: ../qa/queries/Stage9/rstage9-12.sql
 // Result file: ../qa/queries/Stage9/results/stage9-12.res
-select o_orderkey, c_nationkey from (select o_orderkey, c_nationkey from rapidsse.public.customerh join rapidsse.public.orders on c_custkey = o_custkey where o_clerk = 'violet' and c_mktsegment = 'FURNITURE') AS furn join lineitem on o_orderkey = l_orderkey order by c_nationkey limit 25;
+select o_orderkey, c_nationkey from rapidsse.public.(select o_orderkey, c_nationkey from rapidsse.public.customerh join rapidsse.public.orders on c_custkey = o_custkey where o_clerk = 'violet' and c_mktsegment = 'FURNITURE') AS furn join rapidsse.public.lineitem on o_orderkey = l_orderkey order by c_nationkey limit 25;
 mute
 //CHECK_RESULT
 /*
@@ -285,7 +285,7 @@ mute
 
 // Source file: ../qa/queries/Stage9/rstage9-13.sql
 // Result file: ../qa/queries/Stage9/results/stage9-13.res
-select l_returnflag, m_qualitycode, m_specialorders, o_orderpriority, sa_carrier from rapidsse.public.lineitem join rapidsse.public.manufacturer on l_orderkey = m_orderkey join orders on l_orderkey = o_orderkey join shipaddress on l_orderkey = sa_orderkey where l_orderkey < 10;
+select l_returnflag, m_qualitycode, m_specialorders, o_orderpriority, sa_carrier from rapidsse.public.lineitem join rapidsse.public.manufacturer on l_orderkey = m_orderkey join rapidsse.public.orders on l_orderkey = o_orderkey join rapidsse.public.shipaddress on l_orderkey = sa_orderkey where l_orderkey < 10;
 mute
 //CHECK_RESULT
 /*
@@ -295,7 +295,7 @@ mute
 
 // Source file: ../qa/queries/Stage9/rstage9-14.sql
 // Result file: ../qa/queries/Stage9/results/stage9-14.res
-select count(*), sum(r_credit) from rapidsse.public.orders join rapidsse.public.lineitem on o_orderkey = l_orderkey join rapidsse.public.returns on o_orderkey = returns.l_orderkey join rapidsse.public.manufacturer on o_orderkey = m_orderkey join shipaddress on o_orderkey = sa_orderkey where o_orderdate >= timestamp '2013-12-01 12:00:00' and o_orderdate <= timestamp '2014-12-31 12:00:00' and o_clerk <> 'red' and o_orderpriority = '1-URGENT';
+select count(*), sum(r_credit) from rapidsse.public.orders join rapidsse.public.lineitem on o_orderkey = l_orderkey join rapidsse.public.returns on o_orderkey = returns.l_orderkey join rapidsse.public.manufacturer on o_orderkey = m_orderkey join rapidsse.public.shipaddress on o_orderkey = sa_orderkey where o_orderdate >= timestamp '2013-12-01 12:00:00' and o_orderdate <= timestamp '2014-12-31 12:00:00' and o_clerk <> 'red' and o_orderpriority = '1-URGENT';
 mute
 //CHECK_RESULT
 /*
@@ -403,7 +403,7 @@ mute
 
 // Source file: ../qa/queries/Stage9/rstage9-20.sql
 // Result file: ../qa/queries/Stage9/results/stage9-20.res
-select l_orderkey, sum(l_extendedprice) as revenue, o_orderdate, o_shippriority from rapidsse.public.customerh join rapidsse.public.orders on c_custkey = o_custkey join lineitem on l_orderkey = o_orderkey where c_mktsegment = 'FURNITURE' and o_orderdate < timestamp '2014-05-01 12:00:00' and l_shipdate > timestamp '2014-04-01 12:00:00' group by l_orderkey, o_orderdate, o_shippriority;
+select l_orderkey, sum(l_extendedprice) as revenue, o_orderdate, o_shippriority from rapidsse.public.customerh join rapidsse.public.orders on c_custkey = o_custkey join rapidsse.public.lineitem on l_orderkey = o_orderkey where c_mktsegment = 'FURNITURE' and o_orderdate < timestamp '2014-05-01 12:00:00' and l_shipdate > timestamp '2014-04-01 12:00:00' group by l_orderkey, o_orderdate, o_shippriority;
 mute
 //CHECK_RESULT
 /*
@@ -424,7 +424,7 @@ rows:
 
 // Source file: ../qa/queries/Stage9/rstage9-22.sql
 // Result file: ../qa/queries/Stage9/results/stage9-22.res
-//select n_name, sum(l_extendedprice) as revenue from rapidsse.public.customerh join rapidsse.public.orders on c_custkey = o_custkey /*+BLOCK*/ join lineitem on l_orderkey = o_orderkey join supplier on l_suppkey = s_suppkey join nation on c_nationkey = s_nationkey and s_nationkey = n_nationkey join region on n_regionkey = r_regionkey where r_name = 'UNITED STATES' and o_orderdate >= timestamp '2014-01-01 12:00:00' and o_orderdate < timestamp '2014-02-01 12:00:00' group by n_name;
+//select n_name, sum(l_extendedprice) as revenue from rapidsse.public.customerh join rapidsse.public.orders on c_custkey = o_custkey /*+BLOCK*/ join rapidsse.public.lineitem on l_orderkey = o_orderkey join rapidsse.public.supplier on l_suppkey = s_suppkey join rapidsse.public.nation on c_nationkey = s_nationkey and s_nationkey = n_nationkey join rapidsse.public.region on n_regionkey = r_regionkey where r_name = 'UNITED STATES' and o_orderdate >= timestamp '2014-01-01 12:00:00' and o_orderdate < timestamp '2014-02-01 12:00:00' group by n_name;
 //mute
 //CHECK_RESULT
 /*

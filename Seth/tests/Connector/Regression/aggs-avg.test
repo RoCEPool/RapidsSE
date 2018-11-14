@@ -4,23 +4,32 @@
 
 // Source file: ../qa/queries/aggs/avg/ravg1.sql
 // Result file: ../qa/queries/aggs/avg/results/avg1.res
-select avg(cola1) from table1;
+select avg(cola1) from rapidsse.public.table1;
 rows:
   (247)
 
 
 // Source file: ../qa/queries/aggs/avg/ravg2.sql
 // Result file: ../qa/queries/aggs/avg/results/avg2.res
-select cast(avg(cold1) as decimal(10,7)) from table1;
+select cast(avg(cold1) as decimal(10,7)) from rapidsse.public.moxe.table1;
 mute
 //CHECK_RESULT
-//rows:
-//  (124.0108000)
+/*
+rows:
+  (124.0108000)
+*/
 
+select cast(avg(cold1) as decimal(10,7)) from rapidsse.public.table1;
+mute
+//CHECK_RESULT
+/*
+rows:
+  (124.0108000)
+*/
 
 // Source file: ../qa/queries/aggs/avg/ravg3.sql
 // Result file: ../qa/queries/aggs/avg/results/avg3.res
-select avg(cole1) from table1;
+select avg(cole1) from rapidsse.public.table1;
 mute
 //CHECK_RESULT
 /*
@@ -30,21 +39,21 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg4.sql
 // Result file: ../qa/queries/aggs/avg/results/avg4.res
-select avg(colf1) from table1;
+select avg(colf1) from rapidsse.public.table1;
 rows:
   (7)
 
 
 // Source file: ../qa/queries/aggs/avg/ravg5.sql
 // Result file: ../qa/queries/aggs/avg/results/avg5.res
-select avg(colg1) from table1;
+select avg(colg1) from rapidsse.public.table1;
 rows:
   (-2)
 
 
 // Source file: ../qa/queries/aggs/avg/ravg6.sql
 // Result file: ../qa/queries/aggs/avg/results/avg6.res
-select colb1, avg(cola1) from table1 group by colb1 order by colb1;
+select colb1, avg(cola1) from rapidsse.public.table1 group by colb1 order by colb1;
 rows:
   ('BLACK', 283)
   ('BLUE', 273)
@@ -78,7 +87,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg7.sql
 // Result file: ../qa/queries/aggs/avg/results/avg7.res
-select colb1, avg(cole1), avg(cole1) + 1.1 from table1 group by colb1 order by colb1;
+select colb1, avg(cole1), avg(cole1) + 1.1 from rapidsse.public.table1 group by colb1 order by colb1;
 rows: 28
 /*
 rows:
@@ -114,7 +123,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg8.sql
 // Result file: ../qa/queries/aggs/avg/results/avg8.res
-select colb1, avg(cola1), avg(cola1) + 2 from table1 group by colb1 order by colb1;
+select colb1, avg(cola1), avg(cola1) + 2 from rapidsse.public.table1 group by colb1 order by colb1;
 rows:
   ('BLACK', 283, 285)
   ('BLUE', 273, 275)
@@ -147,7 +156,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg9.sql
 // Result file: ../qa/queries/aggs/avg/results/avg9.res
-select colb1, avg(cola1), avg(cola1) + 1.3 from table1 group by colb1 order by colb1;
+select colb1, avg(cola1), avg(cola1) + 1.3 from rapidsse.public.table1 group by colb1 order by colb1;
 rows: 28
 //CHECK_RESULT
 /*
@@ -184,7 +193,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg10.sql
 // Result file: ../qa/queries/aggs/avg/results/avg10.res
-select colb1, avg(colg1), avg(colg1) - .6 from table1 group by colb1 order by colb1;
+select colb1, avg(colg1), avg(colg1) - .6 from rapidsse.public.table1 group by colb1 order by colb1;
 rows: 28
 //CHECK_RESULT
 /*
@@ -221,7 +230,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg11.sql
 // Result file: ../qa/queries/aggs/avg/results/avg11.res
-select colb1, cast((avg(cold1)) as decimal(10,7)), cast((avg(cold1) * 0.35) as decimal(10,7))  from table1 group by colb1 order by colb1;
+select colb1, cast((avg(cold1)) as decimal(10,7)), cast((avg(cold1) * 0.35) as decimal(10,7))  from rapidsse.public.table1 group by colb1 order by colb1;
 mute
 //CHECK_RESULT
 /*
@@ -258,7 +267,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg12.sql
 // Result file: ../qa/queries/aggs/avg/results/avg12.res
-select colb1, avg(cold1) - -1.5 from table1 group by colb1 order by colb1;
+select colb1, avg(cold1) - -1.5 from rapidsse.public.table1 group by colb1 order by colb1;
 rows: 28
 //CHECK_RESULT
 /*
@@ -295,7 +304,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg13.sql
 // Result file: ../qa/queries/aggs/avg/results/avg13.res
-select a.colb1, b.colb2, avg(a.cola1 + b.cola2) from table1 a join table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by a.colb1, b.colb2;
+select a.colb1, b.colb2, avg(a.cola1 + b.cola2) from rapidsse.public.table1 a join rapidsse.public.table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by a.colb1, b.colb2;
 rows:
   ('BLACK', 'BLACK', 655)
   ('BLACK', 'GREEN', 472)
@@ -310,7 +319,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg14.sql
 // Result file: ../qa/queries/aggs/avg/results/avg14.res
-select a.colb1, b.colb2, avg(a.cola1 - b.cola2) from table1 a join table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by a.colb1, b.colb2;
+select a.colb1, b.colb2, avg(a.cola1 - b.cola2) from rapidsse.public.table1 a join rapidsse.public.table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by a.colb1, b.colb2;
 rows:
   ('BLACK', 'BLACK', 181)
   ('BLACK', 'GREEN', -348)
@@ -325,7 +334,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg15.sql
 // Result file: ../qa/queries/aggs/avg/results/avg15.res
-select a.colb1, b.colb2, avg(a.cola1 / b.cola2) as AvgInt from table1 a join table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by AvgInt, a.colb1, b.colb2;
+select a.colb1, b.colb2, avg(a.cola1 / b.cola2) as AvgInt from rapidsse.public.table1 a join rapidsse.public.table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by AvgInt, a.colb1, b.colb2;
 rows:
   ('BLACK', 'GREEN', 0)
   ('BLACK', 'purple', 0)
@@ -340,7 +349,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg16.sql
 // Result file: ../qa/queries/aggs/avg/results/avg16.res
-select a.colb1, b.colb2, avg(a.cola1 * b.cola2) from table1 a join table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by a.colb1, b.colb2;
+select a.colb1, b.colb2, avg(a.cola1 * b.cola2) from rapidsse.public.table1 a join rapidsse.public.table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by a.colb1, b.colb2;
 rows:
   ('BLACK', 'BLACK', 99066)
   ('BLACK', 'GREEN', 25420)
@@ -355,7 +364,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg17.sql
 // Result file: ../qa/queries/aggs/avg/results/avg17.res
-select a.colb1, b.colb9, avg(a.cold1 + b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cold1 + b.cold9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows: 8
 //CHECK_RESULT
 /*
@@ -372,7 +381,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg18.sql
 // Result file: ../qa/queries/aggs/avg/results/avg18.res
-select a.colb1, b.colb9, avg(a.cold1 - b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cold1 - b.cold9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows: 8
 /*
 rows:
@@ -388,7 +397,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg19.sql
 // Result file: ../qa/queries/aggs/avg/results/avg19.res
-select a.colb1, b.colb9, avg(a.cold1 * b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cold1 * b.cold9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows: 8
 //CHECK_RESULT
 /*
@@ -405,7 +414,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg20.sql
 // Result file: ../qa/queries/aggs/avg/results/avg20.res
-select a.colb1, b.colb9, avg(a.cold1 / b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cold1 / b.cold9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows: 8
 //CHECK_RESULT
 /*
@@ -422,7 +431,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg21.sql
 // Result file: ../qa/queries/aggs/avg/results/avg21.res
-select a.colb1, b.colb9, avg(a.cole1 / b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cole1 / b.cole9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows: 8
 //CHECK_RESULT
 /*
@@ -439,7 +448,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg22.sql
 // Result file: ../qa/queries/aggs/avg/results/avg22.res
-select a.colb1, b.colb9, avg(a.cole1 * b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cole1 * b.cole9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows: 8
 //CHECK_RESULT
 /*
@@ -456,7 +465,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg23.sql
 // Result file: ../qa/queries/aggs/avg/results/avg23.res
-select a.colb1, b.colb9, avg(a.cole1 - b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cole1 - b.cole9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows: 8
 //CHECK_RESULT
 /*
@@ -473,7 +482,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg24.sql
 // Result file: ../qa/queries/aggs/avg/results/avg24.res
-select a.colb1, b.colb9, avg(a.cole1 + b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cole1 + b.cole9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows: 8
 //CHECK_RESULT
 /*
@@ -490,7 +499,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg25.sql
 // Result file: ../qa/queries/aggs/avg/results/avg25.res
-select a.colb1, b.colb9, avg(a.colf1 + b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.colf1 + b.colf9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows:
   ('grey', 'BLACK', 10)
   ('yellow', 'BLACK', 21)
@@ -503,7 +512,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg26.sql
 // Result file: ../qa/queries/aggs/avg/results/avg26.res
-select a.colb1, b.colb9, avg(a.colf1 - b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.colf1 - b.colf9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows:
   ('grey', 'BLACK', 6)
   ('yellow', 'BLACK', -9)
@@ -516,7 +525,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg27.sql
 // Result file: ../qa/queries/aggs/avg/results/avg27.res
-select a.colb1, b.colb9, avg(a.colf1 * b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.colf1 * b.colf9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows:
   ('grey', 'BLACK', 16)
   ('yellow', 'BLACK', 90)
@@ -529,7 +538,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg28.sql
 // Result file: ../qa/queries/aggs/avg/results/avg28.res
-select a.colb1, b.colb9, avg(a.colf1 - b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.colf1 - b.colf9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows:
   ('grey', 'BLACK', 6)
   ('yellow', 'BLACK', -9)
@@ -542,7 +551,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg29.sql
 // Result file: ../qa/queries/aggs/avg/results/avg29.res
-select a.colb1, b.colb9, avg(a.colf1 + b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.colf1 + b.colf9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows:
   ('grey', 'BLACK', 10)
   ('yellow', 'BLACK', 21)
@@ -556,7 +565,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg30.sql
 // Result file: ../qa/queries/aggs/avg/results/avg30.res
-select a.colb1, b.colb9, avg(a.cola1 + b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cola1 + b.cold9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows: 8
 //CHECK_RESULT
 /*
@@ -573,7 +582,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg31.sql
 // Result file: ../qa/queries/aggs/avg/results/avg31.res
-select a.colb1, b.colb9, avg(a.cola1 + b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cola1 + b.cole9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows: 8
 //CHECK_RESULT
 /*
@@ -589,7 +598,7 @@ rows: 8
 
 // Source file: ../qa/queries/aggs/avg/ravg32.sql
 // Result file: ../qa/queries/aggs/avg/results/avg32.res
-select a.colb1, b.colb9, avg(a.cola1 + b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cola1 + b.colf9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows:
   ('grey', 'BLACK', 262)
   ('yellow', 'BLACK', 17)
@@ -603,7 +612,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg33.sql
 // Result file: ../qa/queries/aggs/avg/results/avg33.res
-select a.colb1, b.colb9, avg(a.cold1 + b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
+select a.colb1, b.colb9, avg(a.cold1 + b.cole9) from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 rows: 8
 //CHECK_RESULT
 /*
@@ -619,7 +628,7 @@ rows: 8
 
 // Source file: ../qa/queries/aggs/avg/ravg34.sql
 // Result file: ../qa/queries/aggs/avg/results/avg34.res
-select a.colb1, b.colb9, avg(a.cola1 + b.colg9 + a.cole1 + b.cole9)/ 4  from table1 a join table9 b on pcol1 = pcol9 group by a.colb1, b.colb9 order by a.colb1, b.colb9;
+select a.colb1, b.colb9, avg(a.cola1 + b.colg9 + a.cole1 + b.cole9)/ 4  from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 mute
 //CHECK_RESULT
 /*
@@ -725,7 +734,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg35.sql
 // Result file: ../qa/queries/aggs/avg/results/avg35.res
-select colb1, cast((avg(cola1 + cold1 + ucol)) as decimal(10,7)) from table1 where colb1 = 'black' group by colb1;
+select colb1, cast((avg(cola1 + cold1 + ucol)) as decimal(10,7)) from rapidsse.public.table1 where colb1 = 'black' group by colb1;
 mute
 //CHECK_RESULT
 //rows:

@@ -1,7 +1,7 @@
 
   // Source file: ../qa/queries/functions/abs/rabs1.sql
   // Result file: ../qa/queries/functions/abs/results/abs1.res
- select abs(colg1), colg1 from table1 order by colg1 limit 10;
+ select abs(colg1), colg1 from rapidsse.public.table1 order by colg1 limit 10;
 rows:
   (170, -170)
   (167, -167)
@@ -17,7 +17,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs2.sql
   // Result file: ../qa/queries/functions/abs/results/abs2.res
- select abs(colg1) + 10, colg1 from table1 order by colg1 limit 10;
+ select abs(colg1) + 10, colg1 from rapidsse.public.table1 order by colg1 limit 10;
 rows:
   (180, -170)
   (177, -167)
@@ -33,7 +33,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs3.sql
   // Result file: ../qa/queries/functions/abs/results/abs3.res
- select abs(colg1) / 10, colg1 from table1 order by colg1 limit 10;
+ select abs(colg1) / 10, colg1 from rapidsse.public.table1 order by colg1 limit 10;
 rows:
   (17, -170)
   (16, -167)
@@ -49,7 +49,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs4.sql
   // Result file: ../qa/queries/functions/abs/results/abs4.res
- select abs(colg1) / .5, colg1 from table1 order by colg1 limit 10;
+ select abs(colg1) / .5, colg1 from rapidsse.public.table1 order by colg1 limit 10;
 rows:
   (340.0, -170)
   (334.0, -167)
@@ -65,7 +65,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs5.sql
   // Result file: ../qa/queries/functions/abs/results/abs5.res
- select (abs(colg1) / .5) * 2.5, colg1 from table1 order by colg1 limit 10;
+ select (abs(colg1) / .5) * 2.5, colg1 from rapidsse.public.table1 order by colg1 limit 10;
 rows:
   (850.00, -170)
   (835.00, -167)
@@ -81,7 +81,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs6.sql
   // Result file: ../qa/queries/functions/abs/results/abs6.res
- select abs(colg1) - cole1, colg1, cole1 from table1 order by colg1 limit 10;
+ select abs(colg1) - cole1, colg1, cole1 from rapidsse.public.table1 order by colg1 limit 10;
 rows:
   (88.730000000000, -170, 81.270000000000)
   (70.510000000000, -167, 96.490000000000)
@@ -97,7 +97,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs7.sql
   // Result file: ../qa/queries/functions/abs/results/abs7.res
- select colb1, colc1, cole1, abs(cole1) as PosVal from table1 order by PosVal limit 10 offset 10;
+ select colb1, colc1, cole1, abs(cole1) as PosVal from rapidsse.public.table1 order by PosVal limit 10 offset 10;
 rows:
   ('black', TIMESTAMP '2015-06-06 00:00:00.0', 8.40, 8.40)
   ('ORANGE', TIMESTAMP '2015-10-02 00:00:00.0', 8.87, 8.87)
@@ -113,7 +113,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs8.sql
   // Result file: ../qa/queries/functions/abs/results/abs8.res
- select colg1, abs(colg1), colf1, colf1 + abs(colg1) as TotVal from table1 where abs(colg1) > 150 order by TotVal, colf1;
+ select colg1, abs(colg1), colf1, colf1 + abs(colg1) as TotVal from rapidsse.public.table1 where abs(colg1) > 150 order by TotVal, colf1;
 rows:
   (-152, 152, 8, 160)
   (-151, 151, 9, 160)
@@ -134,7 +134,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs9.sql
   // Result file: ../qa/queries/functions/abs/results/abs9.res
- select colg1, abs(colg1), colf1, colg1 + abs(colg1) as TotVal from table1 where colg1 < 0 order by colg1, colf1;
+ select colg1, abs(colg1), colf1, colg1 + abs(colg1) as TotVal from rapidsse.public.table1 where colg1 < 0 order by colg1, colf1;
 rows:
   (-170, 170, 15, 0)
   (-167, 167, 3, 0)
@@ -191,7 +191,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs10.sql
   // Result file: ../qa/queries/functions/abs/results/abs10.res
- select colg1, cole1, colb1 from table1 where colg1 < -160 or abs(colg1) > 170 order by colb1, colg1;
+ select colg1, cole1, colb1 from rapidsse.public.table1 where colg1 < -160 or abs(colg1) > 170 order by colb1, colg1;
 rows:
   (175, 135.680000000000, 'GREEN')
   (175, 8.870000000000, 'ORANGE')
@@ -203,7 +203,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs11.sql
   // Result file: ../qa/queries/functions/abs/results/abs11.res
- select colg1, cole1, colb1 from table1 where abs(colg1) / cole1 > 4.7 order by colb1, colg1;
+ select colg1, cole1, colb1 from rapidsse.public.table1 where abs(colg1) / cole1 > 4.7 order by colb1, colg1;
 rows:
   (175, 8.870000000000, 'ORANGE')
   (-139, 6.360000000000, 'TEAL')
@@ -219,7 +219,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs12.sql
   // Result file: ../qa/queries/functions/abs/results/abs12.res
- select cole1, abs(cole1) / .53 from table1 where colg1 >= 80 and colg1 <= 87 order by cole1;
+ select cole1, abs(cole1) / .53 from rapidsse.public.table1 where colg1 >= 80 and colg1 <= 87 order by cole1;
 rows:
   (NULL, NULL)
   (NULL, NULL)
@@ -233,7 +233,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs13.sql
   // Result file: ../qa/queries/functions/abs/results/abs13.res
- select abs(null), cola1, colb1 from table1 where cola1 between 200 and 300 order by cola1, colb1 limit 10;
+ select abs(null), cola1, colb1 from rapidsse.public.table1 where cola1 between 200 and 300 order by cola1, colb1 limit 10;
 rows:
   (NULL, 201, 'PINK')
   (NULL, 210, 'WHITE')
@@ -249,7 +249,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs14.sql
   // Result file: ../qa/queries/functions/abs/results/abs14.res
-  select a.pcol1, b.pcol2, c.pcol4, a.colg1, b.cola2, a.colb1, b.colb2, c.ucolvc from table1 a join table2 b on a.pcol1 = b.pcol2 join table4 c on pcol2 = pcol4 where abs(a.colg1 + b.cola2 + c.pcol4) < 150 order by a.colb1, b.colb2, c.ucolvc;
+  select a.pcol1, b.pcol2, c.pcol4, a.colg1, b.cola2, a.colb1, b.colb2, c.ucolvc from rapidsse.public.table1 a join rapidsse.public.table2 b on a.pcol1 = b.pcol2 join rapidsse.public.table4 c on pcol2 = pcol4 where abs(a.colg1 + b.cola2 + c.pcol4) < 150 order by a.colb1, b.colb2, c.ucolvc;
 rows:
   (88, 88, 88, -26, 85, 'BLACK', 'purple', 'ooo')
   (5, 5, 5, -46, 93, 'PINK', 'maroon', 'xxx')
@@ -275,7 +275,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs15.sql
   // Result file: ../qa/queries/functions/abs/results/abs15.res
- select a.pcol1, b.pcol2, c.pcol4, a.colg1, b.cola2, a.colb1, b.colb2, c.ucolvc from table1 a join table2 b on a.pcol1 = b.pcol2 join table4 c on pcol2 = pcol4 where abs(abs(a.colg1) + b.cola2 + c.pcol4) < 150 order by a.colb1, b.colb2, c.ucolvc desc;
+ select a.pcol1, b.pcol2, c.pcol4, a.colg1, b.cola2, a.colb1, b.colb2, c.ucolvc from rapidsse.public.table1 a join rapidsse.public.table2 b on a.pcol1 = b.pcol2 join rapidsse.public.table4 c on pcol2 = pcol4 where abs(abs(a.colg1) + b.cola2 + c.pcol4) < 150 order by a.colb1, b.colb2, c.ucolvc desc;
 rows:
   (5, 5, 5, -46, 93, 'PINK', 'maroon', 'xxx')
   (18, 18, 18, -4, 18, 'blue', 'green', 'bbb')
@@ -286,7 +286,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs16.sql
   // Result file: ../qa/queries/functions/abs/results/abs16.res
- select a.pcol1, b.pcol2, c.ucol, a.colg1, b.cola2, a.colb1, b.colb2, c.ucolvc from table1 a join table2 b on a.pcol1 = b.pcol2 join table4 c on pcol2 = pcol4 where ((abs(a.colg1) / b.cola2) + c.ucol) < 50 order by pcol1;
+ select a.pcol1, b.pcol2, c.ucol, a.colg1, b.cola2, a.colb1, b.colb2, c.ucolvc from rapidsse.public.table1 a join rapidsse.public.table2 b on a.pcol1 = b.pcol2 join rapidsse.public.table4 c on pcol2 = pcol4 where ((abs(a.colg1) / b.cola2) + c.ucol) < 50 order by pcol1;
 rows:
   (25, 25, 26, 114, 289, 'orange', 'PINK', 'fff')
   (31, 31, 45, -136, 232, 'teal', 'PINK', 'jjj')
@@ -296,7 +296,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs17.sql
   // Result file: ../qa/queries/functions/abs/results/abs17.res
- select a.pcol1, b.pcol2, c.ucol, a.colg1, b.cola2, a.colb1, b.colb2, c.ucolvc from table1 a join table2 b on a.pcol1 = b.pcol2 /*+HASH*/ join table4 c on pcol2 = pcol4 where ((abs(a.colg1) / b.cola2) + c.ucol) < 50 order by pcol1;
+ select a.pcol1, b.pcol2, c.ucol, a.colg1, b.cola2, a.colb1, b.colb2, c.ucolvc from rapidsse.public.table1 a join rapidsse.public.table2 b on a.pcol1 = b.pcol2 /*+HASH*/ join rapidsse.public.table4 c on pcol2 = pcol4 where ((abs(a.colg1) / b.cola2) + c.ucol) < 50 order by pcol1;
 rows:
   (25, 25, 26, 114, 289, 'orange', 'PINK', 'fff')
   (31, 31, 45, -136, 232, 'teal', 'PINK', 'jjj')
@@ -306,7 +306,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs18.sql
   // Result file: ../qa/queries/functions/abs/results/abs18.res
- select a.pcol1, b.pcol2, c.ucol, a.colg1, b.cola2, a.colb1, b.colb2, c.ucolvc from table1 a /*+HASH*/ join table2 b on a.pcol1 = b.pcol2 /*+HASH*/ join table4 c on pcol2 = pcol4 where ((abs(a.colg1) / b.cola2) + c.ucol) < 50 order by pcol1;
+ select a.pcol1, b.pcol2, c.ucol, a.colg1, b.cola2, a.colb1, b.colb2, c.ucolvc from rapidsse.public.table1 a /*+HASH*/ join rapidsse.public.table2 b on a.pcol1 = b.pcol2 /*+HASH*/ join rapidsse.public.table4 c on pcol2 = pcol4 where ((abs(a.colg1) / b.cola2) + c.ucol) < 50 order by pcol1;
 rows:
   (25, 25, 26, 114, 289, 'orange', 'PINK', 'fff')
   (31, 31, 45, -136, 232, 'teal', 'PINK', 'jjj')
@@ -316,7 +316,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs19.sql
   // Result file: ../qa/queries/functions/abs/results/abs19.res
- select a.ucol, a.ucolvc, b.ucol, b.ucolvc from (select ucol, ucolvc from table1 where abs(colg1) < 25) as a join table4 b on a.ucol = b.ucol order by a.ucolvc, b.ucolvc;
+ select a.ucol, a.ucolvc, b.ucol, b.ucolvc from rapidsse.public.(select ucol, ucolvc from rapidsse.public.table1 where abs(colg1) < 25) as a join rapidsse.public.table4 b on a.ucol = b.ucol order by a.ucolvc, b.ucolvc;
 rows:
   (505, 'kkk', 505, 'yyy')
   (626, 'nnn', 626, 'zzz')
@@ -330,7 +330,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs21.sql
   // Result file: ../qa/queries/functions/abs/results/abs21.res
- select colb9, colg9, abs(colg9) + null from table9 where colb9 < 'BLU' order by pcol9;
+ select colb9, colg9, abs(colg9) + null from rapidsse.public.table9 where colb9 < 'BLU' order by pcol9;
 rows:
   ('BLACK', 136, NULL)
   ('BLACK', 149, NULL)
@@ -352,7 +352,7 @@ rows:
 
   // Source file: ../qa/queries/functions/abs/rabs22.sql
   // Result file: ../qa/queries/functions/abs/results/abs22.res
- select colb9, colg9, abs(null) + colg9 from table9 where pcol9 < 10 order by colb9 desc, colg9;
+ select colb9, colg9, abs(null) + colg9 from rapidsse.public.table9 where pcol9 < 10 order by colb9 desc, colg9;
 rows:
   ('yellow', 160, NULL)
   ('tan', -44, NULL)

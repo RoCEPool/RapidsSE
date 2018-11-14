@@ -1,4 +1,6 @@
-schemaCreate.test
+schemaCreateSE.test
+schemaCreateMoxe.test
+insSelIntoMoxe.test
 aggs-avg.test
 aggs-count.test
 aggs-max.test
@@ -18,5 +20,6 @@ PartKey1way.test
 PartKey2way.test
 //Stage9.test
 Using1way.test
-schemaDrop.test
+schemaDropMoxe.test
+schemaDropSE.test
 

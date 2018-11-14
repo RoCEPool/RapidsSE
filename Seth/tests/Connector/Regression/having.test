@@ -1,7 +1,7 @@
 
 // Source file: ../qa/queries/having/rhaving1.sql
 // Result file: ../qa/queries/having/results/having1.res
-select sum(cola1), colb1 from table1 group by colb1 having sum(cola1) > 500 order by colb1;
+select sum(cola1), colb1 from rapidsse.public.table1 group by colb1 having sum(cola1) > 500 order by colb1;
 mute
 //CHECK_RESULT
 /*
@@ -29,7 +29,7 @@ rows:
 
 // Source file: ../qa/queries/having/rhaving2.sql
 // Result file: ../qa/queries/having/results/having2.res
-select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
+select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from rapidsse.public.table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
 mute
 //CHECK_RESULT
 /*
@@ -60,7 +60,7 @@ rows:
 
 // Source file: ../qa/queries/having/rhaving3.sql
 // Result file: ../qa/queries/having/results/having3.res
-select sum(cola1), avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa' order by colb1, ucolvc;
+select sum(cola1), avg(ucol), colb1, ucolvc from rapidsse.public.table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa' order by colb1, ucolvc;
 rows:
   (95, 662, 'GREEN', 'aaa')
   (235, 158, 'black', 'bbb')
@@ -72,7 +72,7 @@ rows:
 
 // Source file: ../qa/queries/having/rhaving4.sql
 // Result file: ../qa/queries/having/results/having4.res
-select sum(cola1), avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having colb1 = 'black' order by colb1, ucolvc;
+select sum(cola1), avg(ucol), colb1, ucolvc from rapidsse.public.table1 group by colb1, ucolvc having colb1 = 'black' order by colb1, ucolvc;
 rows:
   (235, 158, 'black', 'bbb')
   (5, 123, 'black', 'iii')
@@ -81,7 +81,7 @@ rows:
 
 // Source file: ../qa/queries/having/rhaving5.sql
 // Result file: ../qa/queries/having/results/having5.res
-select sum(cola1) as SumOf, colb1 from table1 group by colb1 having colb1 like 'bl%' order by colb1;
+select sum(cola1) as SumOf, colb1 from rapidsse.public.table1 group by colb1 having colb1 like 'bl%' order by colb1;
 rows:
   (364, 'black')
   (660, 'blue')

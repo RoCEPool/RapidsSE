@@ -1,7 +1,7 @@
 
 // Source file: ../qa/queries/cast/rcast10.sql
 // Result file: ../qa/queries/cast/results/cast10.res
-select cast(colf9 as float) as fl1, cast(colf9 as decimal) as dc1, cast(colf9 as decimal(5,2)) as exp1, cast(colf9 as varchar) as str1 from table9 where ucolvc between 'qqq' and 'rrr' and colb9 like 'bl%' order by pcol9, ucolvc;
+select cast(colf9 as float) as fl1, cast(colf9 as decimal) as dc1, cast(colf9 as decimal(5,2)) as exp1, cast(colf9 as varchar) as str1 from rapidsse.public.table9 where ucolvc between 'qqq' and 'rrr' and colb9 like 'bl%' order by pcol9, ucolvc;
 mute
 //CHECK_RESULT
 /*
@@ -14,7 +14,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast11.sql
 // Result file: ../qa/queries/cast/results/cast11.res
-select cast(cole1 as integer), cast(cole9 as integer) from table1 join table9 using(ucol) where colb9 in ('orange','violet') order by cola1, colb9;
+select cast(cole1 as integer), cast(cole9 as integer) from rapidsse.public.table1 join rapidsse.public.table9 using(ucol) where colb9 in ('orange','violet') order by cola1, colb9;
 mute
 //CHECK_RESULT
 /*
@@ -31,7 +31,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast12.sql
 // Result file: ../qa/queries/cast/results/cast12.res
-select cast(cole1 as float) * 0.001, cast(cole1 as float) * 2.2 from table1 where colb1 in ('violet','teal') order by cola1, colb1;
+select cast(cole1 as float) * 0.001, cast(cole1 as float) * 2.2 from rapidsse.public.table1 where colb1 in ('violet','teal') order by cola1, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -48,7 +48,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast13.sql
 // Result file: ../qa/queries/cast/results/cast13.res
-select cast(cole1 as decimal), cast(cole9 as decimal), cast(cole4 as decimal) from table1, table9, table4 where table1.ucol = table9.ucol and table1.ucol=table4.ucol order by pcol1, pcol9, pcol4;
+select cast(cole1 as decimal), cast(cole9 as decimal), cast(cole4 as decimal) from rapidsse.public.table1, table9, table4 where table1.ucol = table9.ucol and table1.ucol=table4.ucol order by pcol1, pcol9, pcol4;
 mute
 //CHECK_RESULT
 /*
@@ -81,7 +81,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast14.sql
 // Result file: ../qa/queries/cast/results/cast14.res
-select pcol1, cast(cole1 as varchar) as Raw, substring(cast(cole1 as varchar),1,10) as TenSubstr from table1 order by pcol1 limit 10 offset 20;
+select pcol1, cast(cole1 as varchar) as Raw, substring(cast(cole1 as varchar),1,10) as TenSubstr from rapidsse.public.table1 order by pcol1 limit 10 offset 20;
 mute
 //CHECK_RESULT
 /*
@@ -100,7 +100,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast15.sql
 // Result file: ../qa/queries/cast/results/cast15.res
-select pcol1, cast(cold1 as integer) as Raw, cast(cold1 as integer) * 5 as Mult, colb1 from table1 where colb1 in ('indigo','aqua') order by pcol1;
+select pcol1, cast(cold1 as integer) as Raw, cast(cold1 as integer) * 5 as Mult, colb1 from rapidsse.public.table1 where colb1 in ('indigo','aqua') order by pcol1;
 mute
 //CHECK_RESULT
 /*
@@ -116,7 +116,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast16.sql
 // Result file: ../qa/queries/cast/results/cast16.res
-select pcol1, cast(cold1 as decimal), cast(cold1 as decimal) * 0.002, colb1 from table1 where colb1 in ('aqua','teal','violet') order by pcol1, colb1;
+select pcol1, cast(cold1 as decimal), cast(cold1 as decimal) * 0.002, colb1 from rapidsse.public.table1 where colb1 in ('aqua','teal','violet') order by pcol1, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -136,7 +136,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast17.sql
 // Result file: ../qa/queries/cast/results/cast17.res
-select pcol1, cast(cold1 as decimal) as Raw, cast(cold1 as decimal(5,2)) as WDec, cast(cold1 as decimal(5,2)) * 2.5, colb1 from table1 where colb1 in ('violet','orange','purple') order by pcol1, colb1;
+select pcol1, cast(cold1 as decimal) as Raw, cast(cold1 as decimal(5,2)) as WDec, cast(cold1 as decimal(5,2)) * 2.5, colb1 from rapidsse.public.table1 where colb1 in ('violet','orange','purple') order by pcol1, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -157,7 +157,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast18.sql
 // Result file: ../qa/queries/cast/results/cast18.res
-select pcol9, cast(cold9 as float), cast(cold9 as decimal), cast(cold9 as float) * cast(cold9 as decimal) from table9 where colb9 in ('yellow','PINK') order by pcol9, colb9;
+select pcol9, cast(cold9 as float), cast(cold9 as decimal), cast(cold9 as float) * cast(cold9 as decimal) from rapidsse.public.table9 where colb9 in ('yellow','PINK') order by pcol9, colb9;
 mute
 //CHECK_RESULT
 /*
@@ -199,7 +199,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast19.sql
 // Result file: ../qa/queries/cast/results/rcast19.res
-select pcol9, cast(cold9 as varchar), substring(cast(cold9 as varchar),1,5), left(cast(cold9 as varchar),5) from table9 where colb9 like 'YELL%' order by pcol9, colb9;
+select pcol9, cast(cold9 as varchar), substring(cast(cold9 as varchar),1,5), left(cast(cold9 as varchar),5) from rapidsse.public.table9 where colb9 like 'YELL%' order by pcol9, colb9;
 mute
 //CHECK_RESULT
 /*
@@ -227,7 +227,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast1.sql
 // Result file: ../qa/queries/cast/results/rcast1.res
-select cast(colc1 as varchar), cast(cold1 as integer), cast(cole1 as integer), cast('11.54' as decimal) from table1 where cast(extract(month from colc1) as varchar) = '10' order by colc1, cold1, cole1;
+select cast(colc1 as varchar), cast(cold1 as integer), cast(cole1 as integer), cast('11.54' as decimal) from rapidsse.public.table1 where cast(extract(month from rapidsse.public.colc1) as varchar) = '10' order by colc1, cold1, cole1;
 mute
 //CHECK_RESULT
 /*
@@ -246,7 +246,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast21.sql
 // Result file: ../qa/queries/cast/results/rcast21.res
-select colc1, cast(colc1 as varchar), substring(cast(colc1 as varchar),1,10) + ' DATE' from table1 where colb1 in ('PINK','PURPLE') order by pcol1, colb1;
+select colc1, cast(colc1 as varchar), substring(cast(colc1 as varchar),1,10) + ' DATE' from rapidsse.public.table1 where colb1 in ('PINK','PURPLE') order by pcol1, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -265,7 +265,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast22.sql
 // Result file: ../qa/queries/cast/results/cast22.res
-select pcol1, cast(colc1 as timestamp), pcol7, cast(colc7 as timestamp) from table1 join table7 on pcol1 = pcol7 where colb1 like 'bl%' order by pcol1, pcol7;
+select pcol1, cast(colc1 as timestamp), pcol7, cast(colc7 as timestamp) from rapidsse.public.table1 join rapidsse.public.table7 on pcol1 = pcol7 where colb1 like 'bl%' order by pcol1, pcol7;
 mute
 //CHECK_RESULT
 /*
@@ -280,7 +280,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast23.sql
 // Result file: ../qa/queries/cast/results/cast23.res
-select pcol1, case when cast(substring(cast(colc1 as varchar),6,2) as integer) < 10 then right(substring(cast(colc1 as varchar),6,2),1) + '/2015' when cast(substring(cast(colc1 as varchar),6,2) as integer) >= 10 then substring(cast(colc1 as varchar),6,2) +'/2015' else 'null' end from table1 where colb1 in ('GREEN','green') order by pcol1;
+select pcol1, case when cast(substring(cast(colc1 as varchar),6,2) as integer) < 10 then right(substring(cast(colc1 as varchar),6,2),1) + '/2015' when cast(substring(cast(colc1 as varchar),6,2) as integer) >= 10 then substring(cast(colc1 as varchar),6,2) +'/2015' else 'null' end from rapidsse.public.table1 where colb1 in ('GREEN','green') order by pcol1;
 mute
 //CHECK_RESULT
 /*
@@ -300,7 +300,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast24.sql
 // Result file: ../qa/queries/cast/results/cast24.res
-select cast(cole1 as decimal(10,4)), cast(cole9 as decimal(10,3)), cast(cole4 as decimal(10,2)) from table1, table9, table4 where table1.ucol = table9.ucol and table1.ucol=table4.ucol order by pcol1, pcol9, pcol4;
+select cast(cole1 as decimal(10,4)), cast(cole9 as decimal(10,3)), cast(cole4 as decimal(10,2)) from rapidsse.public.table1, table9, table4 where table1.ucol = table9.ucol and table1.ucol=table4.ucol order by pcol1, pcol9, pcol4;
 mute
 //CHECK_RESULT
 /*
@@ -333,7 +333,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast2.sql
 // Result file: ../qa/queries/cast/results/cast2.res
-select colb1, cast((avg(cold1) - -1.5) as decimal(10,7)) from table1 where colb1 in ('gold','GOLD','PINK','pink','purple','PURPLE','orange','ORANGE') group by colb1 order by colb1;
+select colb1, cast((avg(cold1) - -1.5) as decimal(10,7)) from rapidsse.public.table1 where colb1 in ('gold','GOLD','PINK','pink','purple','PURPLE','orange','ORANGE') group by colb1 order by colb1;
 mute
 //CHECK_RESULT
 /*
@@ -349,7 +349,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast3.sql
 // Result file: ../qa/queries/cast/results/cast3.res
-select a.colb1, b.colb9, cast((avg(a.cola1 + b.colg9 + a.cole1 + b.cole9) / 4) as decimal(10,7)) as OverAvg from table1 a join table9 b on pcol1 = pcol9 where lower(a.colb1) like '%ee%' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
+select a.colb1, b.colb9, cast((avg(a.cola1 + b.colg9 + a.cole1 + b.cole9) / 4) as decimal(10,7)) as OverAvg from rapidsse.public.table1 a join rapidsse.public.table9 b on pcol1 = pcol9 where lower(a.colb1) like '%ee%' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 mute
 //CHECK_RESULT
 /*
@@ -368,7 +368,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast4.sql
 // Result file: ../qa/queries/cast/results/cast4.res
-select cast(colf9 as integer) as Tiny2Int, colb9 from table9 where cast(colf9 as integer) between -15 and 15 order by colb9, Tiny2Int limit 10;
+select cast(colf9 as integer) as Tiny2Int, colb9 from rapidsse.public.table9 where cast(colf9 as integer) between -15 and 15 order by colb9, Tiny2Int limit 10;
 mute
 //CHECK_RESULT
 /*
@@ -387,7 +387,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast5.sql
 // Result file: ../qa/queries/cast/results/cast5.res
-select cast(colg9 as integer) as SmToInt, ucolvc from table9 where ucolvc = 'ddd' order by SmToInt;
+select cast(colg9 as integer) as SmToInt, ucolvc from rapidsse.public.table9 where ucolvc = 'ddd' order by SmToInt;
 mute
 //CHECK_RESULT
 /*
@@ -417,7 +417,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast6.sql
 // Result file: ../qa/queries/cast/results/cast6.res
-select cast(ucol as integer) / cast(colf9 as integer) as Int2Int, ucolvc from table9 where colf9 <> 0 and ucolvc = 'qqq' order by Int2Int;
+select cast(ucol as integer) / cast(colf9 as integer) as Int2Int, ucolvc from rapidsse.public.table9 where colf9 <> 0 and ucolvc = 'qqq' order by Int2Int;
 mute
 //CHECK_RESULT
 /*
@@ -447,7 +447,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast7.sql
 // Result file: ../qa/queries/cast/results/cast7.res
-select cast( cast(pcol9 as float) / cast(ucol as float) as integer) as Fl2Int, ucolvc from table9 where ucolvc in ('eee','jjj','nnn') and ucol > 480 order by Fl2Int, ucolvc;
+select cast( cast(pcol9 as float) / cast(ucol as float) as integer) as Fl2Int, ucolvc from rapidsse.public.table9 where ucolvc in ('eee','jjj','nnn') and ucol > 480 order by Fl2Int, ucolvc;
 mute
 //CHECK_RESULT
 /*
@@ -484,7 +484,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast8.sql
 // Result file: ../qa/queries/cast/results/cast8.res
-select cast(pcol9 as float) as fl1, cast(scol9 as decimal) as dc1, cast(tcol9 as decimal(5,2)) as exp1, cast(ucol as varchar) as str1 from table9 where ucolvc between 'qqq' and 'rrr' and colb9 like 'bl%' order by pcol9, ucolvc;
+select cast(pcol9 as float) as fl1, cast(scol9 as decimal) as dc1, cast(tcol9 as decimal(5,2)) as exp1, cast(ucol as varchar) as str1 from rapidsse.public.table9 where ucolvc between 'qqq' and 'rrr' and colb9 like 'bl%' order by pcol9, ucolvc;
 mute
 //CHECK_RESULT
 /*
@@ -497,7 +497,7 @@ rows:
 
 // Source file: ../qa/queries/cast/rcast9.sql
 // Result file: ../qa/queries/cast/results/cast9.res
-select cast(colg9 as float) as fl1, cast(colg9 as decimal) as dc1, cast(colg9 as decimal(5,2)) as exp1, cast(colg9 as varchar) as str1 from table9 where ucolvc between 'qqq' and 'rrr' and colb9 like 'bl%' order by pcol9, ucolvc;
+select cast(colg9 as float) as fl1, cast(colg9 as decimal) as dc1, cast(colg9 as decimal(5,2)) as exp1, cast(colg9 as varchar) as str1 from rapidsse.public.table9 where ucolvc between 'qqq' and 'rrr' and colb9 like 'bl%' order by pcol9, ucolvc;
 mute
 //CHECK_RESULT
 /*

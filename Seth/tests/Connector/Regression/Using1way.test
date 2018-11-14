@@ -2,7 +2,7 @@
 // Source file: ../qa/queries/Using1way/rusing10.sql
 // Result file: ../qa/queries/Using1way/results/using10.res
 
-select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1 limit 10 offset 10;
+select sum(cold1) as SumOf, colb1 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by colb1 order by colb1 limit 10 offset 10;
 mute
 //CHECK_RESULT
 /*
@@ -21,7 +21,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing11.sql
 // Result file: ../qa/queries/Using1way/results/using11.res
-select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1 limit 10;
+select sum(cold1) as SumOf, colb1 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by colb1 order by colb1 limit 10;
 mute
 //CHECK_RESULT
 /*
@@ -40,7 +40,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing12.sql
 // Result file: ../qa/queries/Using1way/results/using12.res
-select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1;
+select sum(cold1) as SumOf, colb1 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by colb1 order by colb1;
 mute
 //CHECK_RESULT
 /*
@@ -77,7 +77,7 @@ rows:
 
 // Source file: ../qa/queries/Using1way/rusing13.sql
 // Result file: ../qa/queries/Using1way/results/using13.res
-select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by SumOf;
+select sum(cold1) as SumOf, colb1 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by colb1 order by SumOf;
 mute
 //CHECK_RESULT
 /*
@@ -114,7 +114,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing14.sql
 // Result file: ../qa/queries/Using1way/results/using14.res
-select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from table1 a join table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by SumOf;
+select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by SumOf;
 mute
 //CHECK_RESULT
 /*
@@ -148,7 +148,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing15.sql
 // Result file: ../qa/queries/Using1way/results/using15.res
-select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from table1 a join table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by a.ucolvc limit 10;
+select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by a.ucolvc limit 10;
 mute
 //CHECK_RESULT
 /*
@@ -167,7 +167,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing16.sql
 // Result file: ../qa/queries/Using1way/results/using16.res
-select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from table1 a join table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by a.ucolvc limit 10 offset 10;
+select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by a.ucolvc limit 10 offset 10;
 mute
 //CHECK_RESULT
 /*
@@ -186,7 +186,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing17.sql
 // Result file: ../qa/queries/Using1way/results/using17.res
-select sum(cold1) as SumOf from table1 a join table2 b using (ucol) where a.ucol between 27 and 53;
+select sum(cold1) as SumOf from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucol) where a.ucol between 27 and 53;
 mute
 //CHECK_RESULT
 /*
@@ -196,7 +196,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing18.sql
 // Result file: ../qa/queries/Using1way/results/using18.res
-select sum(cold1) as SumOf from table1 a join table9 b using (ucolvc) where cold9 >= 0;
+select sum(cold1) as SumOf from rapidsse.public.table1 a join rapidsse.public.table9 b using (ucolvc) where cold9 >= 0;
 mute
 //CHECK_RESULT
 /*
@@ -206,13 +206,13 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing19.sql
 // Result file: ../qa/queries/Using1way/results/using19.res
-select sum(cole1) as SumOf from table1 a join table9 b using (ucol) where b.cole9 <= 0;
+select sum(cole1) as SumOf from rapidsse.public.table1 a join rapidsse.public.table9 b using (ucol) where b.cole9 <= 0;
 rows:
   (1777.19)
 
 // Source file: ../qa/queries/Using1way/rusing1.sql
 // Result file: ../qa/queries/Using1way/results/using1.res
-select a.colb1, a.ucol, b.colb2, b.ucol from table1 a join table2 b using (ucol) order by a.ucol, b.colb2;
+select a.colb1, a.ucol, b.colb2, b.ucol from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucol) order by a.ucol, b.colb2;
 rows:
   ('RED', 93, 'green', 93)
   ('purple', 140, 'yellow', 140)
@@ -231,14 +231,14 @@ rows:
 
 // Source file: ../qa/queries/Using1way/rusing20.sql
 // Result file: ../qa/queries/Using1way/results/using20.res
-select count(*) from table1 join table9 using (ucolvc);
+select count(*) from rapidsse.public.table1 join rapidsse.public.table9 using (ucolvc);
 rows:
   (1905)
 
 
 // Source file: ../qa/queries/Using1way/rusing21.sql
 // Result file: ../qa/queries/Using1way/results/using21.res
-select sum(cold1), avg(cola2) from table1 a join table2 b using (ucolvc);
+select sum(cold1), avg(cola2) from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc);
 mute
 //CHECK_RESULT
 /*
@@ -248,7 +248,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing22.sql
 // Result file: ../qa/queries/Using1way/results/using22.res
-select sum(cold1), avg(cola2), colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1;
+select sum(cold1), avg(cola2), colb1 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by colb1 order by colb1;
 mute
 //CHECK_RESULT
 /*
@@ -285,7 +285,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing23.sql
 // Result file: ../qa/queries/Using1way/results/using23.res
-select sum(cold1), avg(cola2) as AvgNum, colb1, colb2 from table1 a join table2 b using (ucolvc) where a.ucolvc in ('aaa','eee') group by colb1, colb2 order by colb1, colb2;
+select sum(cold1), avg(cola2) as AvgNum, colb1, colb2 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) where a.ucolvc in ('aaa','eee') group by colb1, colb2 order by colb1, colb2;
  rows:
   (209.23, 218, 'BLACK', 'PURPLE')
   (418.46, 198, 'BLACK', 'TEAL')
@@ -314,7 +314,7 @@ select sum(cold1), avg(cola2) as AvgNum, colb1, colb2 from table1 a join table2 
 
 // Source file: ../qa/queries/Using1way/rusing24.sql
 // Result file: ../qa/queries/Using1way/results/using24.res
-select colb1, colb2, colc1, scol2 from table1 join table2 using (ucol) where colb1 = 'purple';
+select colb1, colb2, colc1, scol2 from rapidsse.public.table1 join rapidsse.public.table2 using (ucol) where colb1 = 'purple';
 rows:
   ('purple', 'pink', TIMESTAMP '2015-12-04 00:00:00.0', 131)
   ('purple', 'yellow', TIMESTAMP '2015-01-10 00:00:00.0', 110)
@@ -322,7 +322,7 @@ rows:
 
 // Source file: ../qa/queries/Using1way/rusing25.sql
 // Result file: ../qa/queries/Using1way/results/using25.res
-select colb1, colb2, colc1, scol2 from table1 join table2 using (ucol) where colc1 > timestamp '2015-08-02 12:00:00' order by colb1, colb2, scol2;
+select colb1, colb2, colc1, scol2 from rapidsse.public.table1 join rapidsse.public.table2 using (ucol) where colc1 > timestamp '2015-08-02 12:00:00' order by colb1, colb2, scol2;
 rows:
   ('RED', 'green', TIMESTAMP '2015-11-13 00:00:00.0', 163)
   ('green', 'YELLOW', TIMESTAMP '2015-10-21 00:00:00.0', 130)
@@ -333,7 +333,7 @@ rows:
 
 // Source file: ../qa/queries/Using1way/rusing26.sql
 // Result file: ../qa/queries/Using1way/results/using26.res
-select colb1, colb2, colc1, scol2 from table1 a join table2 b using (ucol) where b.ucol > 45 order by b.ucol, colb1, colb2;
+select colb1, colb2, colc1, scol2 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucol) where b.ucol > 45 order by b.ucol, colb1, colb2;
 rows:
   ('RED', 'green', TIMESTAMP '2015-11-13 00:00:00.0', 163)
   ('purple', 'yellow', TIMESTAMP '2015-01-10 00:00:00.0', 110)
@@ -352,7 +352,7 @@ rows:
 
 // Source file: ../qa/queries/Using1way/rusing27.sql
 // Result file: ../qa/queries/Using1way/results/using27.res
-select colb1, colb2, colc1, scol2 from table1 a join table2 b using (ucol) where b.ucol > 45 and a.ucolvc = 'eee' order by b.ucol,scol2;
+select colb1, colb2, colc1, scol2 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucol) where b.ucol > 45 and a.ucolvc = 'eee' order by b.ucol,scol2;
 rows:
   ('indigo', 'pink', TIMESTAMP '2015-05-14 00:00:00.0', 80)
   ('indigo', 'peach', TIMESTAMP '2015-05-14 00:00:00.0', 100)
@@ -361,7 +361,7 @@ rows:
 
 // Source file: ../qa/queries/Using1way/rusing28.sql
 // Result file: ../qa/queries/Using1way/results/using28.res
-select a.colb1, b.colb2, a.colc1,b.scol2 from table1 a left outer join table2 b using (ucol) where a.ucolvc = 'ttt' order by a.ucolvc, colb1;
+select a.colb1, b.colb2, a.colc1,b.scol2 from rapidsse.public.table1 a left outer join rapidsse.public.table2 b using (ucol) where a.ucolvc = 'ttt' order by a.ucolvc, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -375,7 +375,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing29.sql
 // Result file: ../qa/queries/Using1way/results/using29.res
-select colb1, colb2, colc1, scol2 from table1 a right outer join table2 b using (ucol) order by colb1, colb2, scol2;
+select colb1, colb2, colc1, scol2 from rapidsse.public.table1 a right outer join rapidsse.public.table2 b using (ucol) order by colb1, colb2, scol2;
 mute
 //CHECK_RESULT
 /*
@@ -484,7 +484,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing2.sql
 // Result file: ../qa/queries/Using1way/results/using2.res
-select a.ucolvc, a.colb1, a.ucol, b.colb2, b.ucol from table1 a join table2 b using (ucolvc) where a.ucolvc = 'aaa' order by a.ucolvc, colb1, a.ucol, b.colb2;
+select a.ucolvc, a.colb1, a.ucol, b.colb2, b.ucol from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) where a.ucolvc = 'aaa' order by a.ucolvc, colb1, a.ucol, b.colb2;
 mute
 //CHECK_RESULT
 /*
@@ -502,7 +502,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing30.sql
 // Result file: ../qa/queries/Using1way/results/using30.res
-select sum(a.ucol) from table1 a left outer join table2 b using(ucol);
+select sum(a.ucol) from rapidsse.public.table1 a left outer join rapidsse.public.table2 b using(ucol);
 mute
 //CHECK_RESULT
 /*
@@ -512,14 +512,14 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing31.sql
 // Result file: ../qa/queries/Using1way/results/using31.res
-select sum(b.ucol) from table1 a join table2 b using(ucol);
+select sum(b.ucol) from rapidsse.public.table1 a join rapidsse.public.table2 b using(ucol);
 rows:
   (5847)
 
 
 // Source file: ../qa/queries/Using1way/rusing32.sql
 // Result file: ../qa/queries/Using1way/results/using32.res
-select sum(b.ucol) from table1 a right outer join table2 b using(ucol);
+select sum(b.ucol) from rapidsse.public.table1 a right outer join rapidsse.public.table2 b using(ucol);
 mute
 //CHECK_RESULT
 /*
@@ -529,7 +529,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing33.sql
 // Result file: ../qa/queries/Using1way/results/using33.res
-select sum(a.ucol) from table1 a left outer join table2 b using(ucol) where a.ucol > 45;
+select sum(a.ucol) from rapidsse.public.table1 a left outer join rapidsse.public.table2 b using(ucol) where a.ucol > 45;
 mute
 //CHECK_RESULT
 /*
@@ -539,7 +539,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing34.sql
 // Result file: ../qa/queries/Using1way/results/using34.res
-select a.colb1, b.colb5, a.ucolvc, b.ucolvc from table1 a join table5 b using (ucol, ucolvc) order by a.ucol, a.ucolvc;
+select a.colb1, b.colb5, a.ucolvc, b.ucolvc from rapidsse.public.table1 a join rapidsse.public.table5 b using (ucol, ucolvc) order by a.ucol, a.ucolvc;
 rows:
   ('black', 'PURPLE', 'bbb', 'bbb')
   ('violet', 'PINK', 'fff', 'fff')
@@ -548,14 +548,14 @@ rows:
 
 // Source file: ../qa/queries/Using1way/rusing35.sql
 // Result file: ../qa/queries/Using1way/results/using35.res
-select a.colb1, b.colb5, a.ucolvc, b.ucolvc from table1 a join table5 b using (ucol, ucolvc) where a.ucolvc = 'bbb' order by b.ucol,b.ucolvc;
+select a.colb1, b.colb5, a.ucolvc, b.ucolvc from rapidsse.public.table1 a join rapidsse.public.table5 b using (ucol, ucolvc) where a.ucolvc = 'bbb' order by b.ucol,b.ucolvc;
 rows:
   ('black', 'PURPLE', 'bbb', 'bbb')
 
 
 // Source file: ../qa/queries/Using1way/rusing3.sql
 // Result file: ../qa/queries/Using1way/results/using3.res
-select a.colb1, a.ucol, b.colb2, b.ucol from table1 a join table2 b using (ucolvc) where a.colb1 like 'gr%' and b.colb2 like 'gr%' order by a.ucolvc;
+select a.colb1, a.ucol, b.colb2, b.ucol from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) where a.colb1 like 'gr%' and b.colb2 like 'gr%' order by a.ucolvc;
 mute
 //CHECK_RESULT
 /*
@@ -568,7 +568,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing4.sql
 // Result file: ../qa/queries/Using1way/results/using4.res
-select count(distinct a.ucolvc) from table1 a join table2 b using (ucolvc);
+select count(distinct a.ucolvc) from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc);
 mute
 //CHECK_RESULT
 /*
@@ -578,7 +578,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing5.sql
 // Result file: ../qa/queries/Using1way/results/using5.res
-select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1;
+select count(a.ucolvc) as NumOf, colb1 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by colb1 order by NumOf, colb1;
 mute
 //CHECK_RESULT
 /*
@@ -615,7 +615,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing6.sql
 // Result file: ../qa/queries/Using1way/results/using6.res
-select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10;
+select count(a.ucolvc) as NumOf, colb1 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10;
 mute
 //CHECK_RESULT
 /*
@@ -634,7 +634,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing7.sql
 // Result file: ../qa/queries/Using1way/results/using7.res
-select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10;
+select count(a.ucolvc) as NumOf, colb1 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10;
 mute
 //CHECK_RESULT
 /*
@@ -653,7 +653,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing8.sql
 // Result file: ../qa/queries/Using1way/results/using8.res
-select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10 offset 10;
+select count(a.ucolvc) as NumOf, colb1 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10 offset 10;
 mute
 //CHECK_RESULT
 /*
@@ -672,7 +672,7 @@ mute
 
 // Source file: ../qa/queries/Using1way/rusing9.sql
 // Result file: ../qa/queries/Using1way/results/using9.res
-select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by SumOf, colb1 limit 10 offset 10;
+select sum(cold1) as SumOf, colb1 from rapidsse.public.table1 a join rapidsse.public.table2 b using (ucolvc) group by colb1 order by SumOf, colb1 limit 10 offset 10;
 mute
 //CHECK_RESULT
 /*

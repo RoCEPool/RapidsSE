@@ -4,19 +4,19 @@
 
 // Source file: ../qa/queries/aggs/sum/rnsum1.sql
 // Result file: ../qa/queries/aggs/sum/results/nsum1.res
-select colb9, ucolvc from table9 where sum(colf9) > 0 group by colb9, ucolvc;
+select colb9, ucolvc from rapidsse.public.table9 where sum(colf9) > 0 group by colb9, ucolvc;
 failure contains: 'Invalid aggregate expression in WHERE predicate'
 
 
 // Source file: ../qa/queries/aggs/sum/rnsum2.sql
 // Result file: ../qa/queries/aggs/sum/results/nsum2.res
-select colb9 from table9 where ucol between sum(cold9) and sum(cole9);
+select colb9 from rapidsse.public.table9 where ucol between sum(cold9) and sum(cole9);
 failure contains: 'Invalid aggregate expression in WHERE predicate'
 
 
 // Source file: ../qa/queries/aggs/sum/rnsum3.sql
 // Result file: ../qa/queries/aggs/sum/results/nsum3.res
-select colb1, sum(colc1) from table1 group by colb1;
+select colb1, sum(colc1) from rapidsse.public.table1 group by colb1;
 mute
 //CHECK_RESULT
 //failure contains: 'Incorrect argument type in SUM'
@@ -24,13 +24,13 @@ mute
 
 // Source file: ../qa/queries/aggs/sum/rnsum4.sql
 // Result file: ../qa/queries/aggs/sum/results/nsum4.res
-select sum(avg( cola1 + colf1 + colg1 )) from table1;
+select sum(avg( cola1 + colf1 + colg1 )) from rapidsse.public.table1;
 failure contains: 'Invalid nested aggregation'
 
 
 // Source file: ../qa/queries/aggs/sum/rnsum5.sql
 // Result file: ../qa/queries/aggs/sum/results/nsum5.res
-select colb1, sum(null) from table1 group by colb1;
+select colb1, sum(null) from rapidsse.public.table1 group by colb1;
 mute
 //CHECK_RESULT
 //failure contains: 'Incorrect argument type in SUM'
@@ -38,14 +38,14 @@ mute
 
 // Source file: ../qa/queries/aggs/sum/rsum10.sql
 // Result file: ../qa/queries/aggs/sum/results/sum10.res
-select sum(cola1 + ucol) from table1;
+select sum(cola1 + ucol) from rapidsse.public.table1;
 rows:
   (73808)
 
 
 // Source file: ../qa/queries/aggs/sum/rsum11.sql
 // Result file: ../qa/queries/aggs/sum/results/sum11.res
-select colb1, sum(cola1) / 4 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cola1) / 4 from rapidsse.public.table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 rows: 3
 //CHECK_RESULT
 /*
@@ -58,7 +58,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum12.sql
 // Result file: ../qa/queries/aggs/sum/results/sum12.res
-select colb1, sum(cola1) * 4 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
+select colb1, sum(cola1) * 4 from rapidsse.public.table1 where colb1 < 'indigo' group by colb1 order by colb1;
 rows: 17
 //CHECK_RESULT
 /*
@@ -84,7 +84,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum13.sql
 // Result file: ../qa/queries/aggs/sum/results/sum13.res
-select colb1, sum(cola1) - 44.5 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
+select colb1, sum(cola1) - 44.5 from rapidsse.public.table1 where colb1 < 'indigo' group by colb1 order by colb1;
 rows: 17
 //CHECK_RESULT
 /*
@@ -110,7 +110,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum14.sql
 // Result file: ../qa/queries/aggs/sum/results/sum14.res
-select colb1, sum(cola1) + 0.38 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
+select colb1, sum(cola1) + 0.38 from rapidsse.public.table1 where colb1 < 'indigo' group by colb1 order by colb1;
 rows: 17
 //CHECK_RESULT
 /*
@@ -136,7 +136,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum15.sql
 // Result file: ../qa/queries/aggs/sum/results/sum15.res
-select colb1, sum(cold1) / 4 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) / 4 from rapidsse.public.table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 rows: 3
 //CHECK_RESULT
 /*
@@ -148,7 +148,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum16.sql
 // Result file: ../qa/queries/aggs/sum/results/sum16.res
-select colb1, sum(cold1) * 4 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) * 4 from rapidsse.public.table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 rows: 3
 //CHECK_RESULT
 /*
@@ -160,7 +160,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum17.sql
 // Result file: ../qa/queries/aggs/sum/results/sum17.res
-select colb1, sum(cold1) - -500 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) - -500 from rapidsse.public.table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 rows: 3
 //CHECK_RESULT
 /*
@@ -172,7 +172,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum18.sql
 // Result file: ../qa/queries/aggs/sum/results/sum18.res
-select colb1, sum(cold1) + -20 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) + -20 from rapidsse.public.table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 rows: 3
 //CHECK_RESULT
 /*
@@ -184,7 +184,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum19.sql
 // Result file: ../qa/queries/aggs/sum/results/sum19.res
-select colb1, sum(cold1) - 500 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) - 500 from rapidsse.public.table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 rows: 3
 //CHECK_RESULT
 /*
@@ -196,14 +196,14 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum1.sql
 // Result file: ../qa/queries/aggs/sum/results/sum1.res
-select sum(cola1) from table1;
+select sum(cola1) from rapidsse.public.table1;
 rows:
   (24782)
 
 
 // Source file: ../qa/queries/aggs/sum/rsum20.sql
 // Result file: ../qa/queries/aggs/sum/results/sum20.res
-select colb1, sum(cold1) - 750 from table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
+select colb1, sum(cold1) - 750 from rapidsse.public.table1 where colb1 < 'INDIGO' group by colb1 order by colb1;
 rows: 3
 //CHECK_RESULT
 /*
@@ -215,14 +215,14 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum21.sql
 // Result file: ../qa/queries/aggs/sum/results/sum21.res
-select sum(abs(colf9)) from table9;
+select sum(abs(colf9)) from rapidsse.public.table9;
 rows:
   (3624)
 
 
 // Source file: ../qa/queries/aggs/sum/rsum22.sql
 // Result file: ../qa/queries/aggs/sum/results/rsum22.res
-select x, y from (select sum(colf1) as x, sum(colg9) as y from table1 join table9 using (ucol)) as TwoTbs;
+select x, y from rapidsse.public.(select sum(colf1) as x, sum(colg9) as y from rapidsse.public.table1 join rapidsse.public.table9 using (ucol)) as TwoTbs;
 mute
 //CHECK_RESULT
 /*
@@ -232,14 +232,14 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum23.sql
 // Result file: ../qa/queries/aggs/sum/results/rsum23.res
-select x, y from (select sum(cola1) as x, colb1 as y from table1 where colb1 = upper('pink') group by colb1) as OuterQry;
+select x, y from rapidsse.public.(select sum(cola1) as x, colb1 as y from rapidsse.public.table1 where colb1 = upper('pink') group by colb1) as OuterQry;
 rows:
   (1268, 'PINK')
 
 
 // Source file: ../qa/queries/aggs/sum/rsum2.sql
 // Result file: ../qa/queries/aggs/sum/results/sum2.res
-select sum(cold1) from table1;
+select sum(cold1) from rapidsse.public.table1;
 rows: 1
 //CHECK_RESULT
 //rows:
@@ -248,7 +248,7 @@ rows: 1
 
 // Source file: ../qa/queries/aggs/sum/rsum3.sql
 // Result file: ../qa/queries/aggs/sum/results/sum3.res
-select sum(cole1) from table1;
+select sum(cole1) from rapidsse.public.table1;
 rows: 1
 //CHECK_RESULT
 //rows:
@@ -257,21 +257,21 @@ rows: 1
 
 // Source file: ../qa/queries/aggs/sum/rsum4.sql
 // Result file: ../qa/queries/aggs/sum/results/sum4.res
-select sum(colf1) from table1;
+select sum(colf1) from rapidsse.public.table1;
 rows:
   (790)
 
 
 // Source file: ../qa/queries/aggs/sum/rsum5.sql
 // Result file: ../qa/queries/aggs/sum/results/sum5.res
-select sum(colg1) from table1;
+select sum(colg1) from rapidsse.public.table1;
 rows:
   (-285)
 
 
 // Source file: ../qa/queries/aggs/sum/rsum6.sql
 // Result file: ../qa/queries/aggs/sum/results/sum6.res
-select colb1, sum(cola1) from table1 where colb1 < 'gre' group by colb1 order by colb1;
+select colb1, sum(cola1) from rapidsse.public.table1 where colb1 < 'gre' group by colb1 order by colb1;
 rows: 15
 //CHECK_RESULT
 /*
@@ -295,14 +295,14 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum7.sql
 // Result file: ../qa/queries/aggs/sum/results/sum7.res
-select sum(cola1) + sum(cold1) from table1;
+select sum(cola1) + sum(cold1) from rapidsse.public.table1;
 rows:
   (37183.08)
 
 
 // Source file: ../qa/queries/aggs/sum/rsum8.sql
 // Result file: ../qa/queries/aggs/sum/results/sum8.res
-select sum(cola1) + sum(cole1) from table1;
+select sum(cola1) + sum(cole1) from rapidsse.public.table1;
 rows: 1
 //CHECK_RESULT
 //rows:
@@ -311,7 +311,7 @@ rows: 1
 
 // Source file: ../qa/queries/aggs/sum/rsum9.sql
 // Result file: ../qa/queries/aggs/sum/results/sum9.res
-select sum(colf1) + sum(colf1) from table1;
+select sum(colf1) + sum(colf1) from rapidsse.public.table1;
 rows:
   (1580)
 
