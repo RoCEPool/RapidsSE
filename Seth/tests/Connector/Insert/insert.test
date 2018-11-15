@@ -110,6 +110,23 @@ success
 drop table rapidsse.public.R1000;
 success
 
+// insert large strings (JIRA-351)
+create table rapidsse.public.FOO (
+  COL0 VARCHAR(97),
+  COL1 TIMESTAMP,
+  COL2 VARCHAR(191),
+  COL3 BOOLEAN,
+  COL4 DECIMAL(6, 2),
+  COL5 DECIMAL(13, 2)
+);
+success
+
+insert into rapidsse.public.FOO values ( 'bO8cTNviezh16xVLHNuT54uTL2RKzZIVq2DDF2xjQeVc2AkJzyHBvVIYMhekvKCJYOc3oPmdUKjY3UTlxtgVHw20w1jFHgyUe', '2017-06-30 00:00:00.0', 'QYAhEltcjmTFnddCVpIG8ZzrFpO3VYUPnGoD7Q5Kr8jGRgsdq3gwpjxRzEtbtkveyxIEhFKPIqpMHWX25rvFQYc8L233aBJ87IBip749zNnKYcGe8EAZt EzMITAYfmJ0FYptB55wADXHDGC6Ya70q2045xmc8m3RvxjSkfPGvp8ycYL1NobBP7AI5807Vsc', TRUE, 9960.26, -78557870545.09);
+success
+
+select * from rapidsse.public.FOO;
+rows: ('bO8cTNviezh16xVLHNuT54uTL2RKzZIVq2DDF2xjQeVc2AkJzyHBvVIYMhekvKCJYOc3oPmdUKjY3UTlxtgVHw20w1jFHgyUe',TIMESTAMP '2017-06-30 00:00:00','QYAhEltcjmTFnddCVpIG8ZzrFpO3VYUPnGoD7Q5Kr8jGRgsdq3gwpjxRzEtbtkveyxIEhFKPIqpMHWX25rvFQYc8L233aBJ87IBip749zNnKYcGe8EAZt EzMITAYfmJ0FYptB55wADXHDGC6Ya70q2045xmc8m3RvxjSkfPGvp8ycYL1NobBP7AI5807Vs',true,9960.26,-78557870545.09);
+
 CLEANUP {
   drop table rapidsse.public.T1000;
   mute
