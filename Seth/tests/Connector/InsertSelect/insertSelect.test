@@ -85,25 +85,25 @@ rows:
 ('rapidsse', 'public', 'R1000', 'INDEX3', false, false, 'SKIPLIST', 1, 'R1000_NAME')
 
 -- insert-select
-insert into rapidsse.public.R1000 select * from T1000;
+insert into rapidsse.public.R1000 select * from rapidsse.public.T1000;
 success
 
 -- check data
-select count(*) from R1000;
+select count(*) from rapidsse.public.R1000;
 rows:
 (4)
 
-drop table T1000;
+drop table rapidsse.public.T1000;
 success
 
-drop table R1000;
+drop table rapidsse.public.R1000;
 success
 
 CLEANUP {
-  drop table T1000;
+  drop table rapidsse.public.T1000;
   mute
   
-  drop table R1000;
+  drop table rapidsse.public.R1000;
   mute
 }
 

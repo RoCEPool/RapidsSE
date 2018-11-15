@@ -66,7 +66,7 @@ insert into rapidsse.public.T1 values ('abc',9223372036854775808);
 failure
 
 // insert smaller than min integer
-insert into T1 values ('abc',-9223372036854775808);
+insert into rapidsse.public.T1 values ('abc',-9223372036854775808);
 failure
 
 // select from T1

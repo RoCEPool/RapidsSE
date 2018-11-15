@@ -222,7 +222,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum22.sql
 // Result file: ../qa/queries/aggs/sum/results/rsum22.res
-select x, y from rapidsse.public.(select sum(colf1) as x, sum(colg9) as y from rapidsse.public.table1 join rapidsse.public.table9 using (ucol)) as TwoTbs;
+select x, y from (select sum(colf1) as x, sum(colg9) as y from rapidsse.public.table1 join rapidsse.public.table9 using (ucol)) as TwoTbs;
 mute
 //CHECK_RESULT
 /*
@@ -232,7 +232,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/sum/rsum23.sql
 // Result file: ../qa/queries/aggs/sum/results/rsum23.res
-select x, y from rapidsse.public.(select sum(cola1) as x, colb1 as y from rapidsse.public.table1 where colb1 = upper('pink') group by colb1) as OuterQry;
+select x, y from (select sum(cola1) as x, colb1 as y from rapidsse.public.table1 where colb1 = upper('pink') group by colb1) as OuterQry;
 rows:
   (1268, 'PINK')
 

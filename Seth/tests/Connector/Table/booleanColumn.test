@@ -75,7 +75,7 @@ mute
   (70,null)
 */
 // drop table
-drop table T1;
+drop table rapidsse.public.T1;
 success
 
 // create a table , no size in varchar

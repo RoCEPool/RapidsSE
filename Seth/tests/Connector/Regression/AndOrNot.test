@@ -182,7 +182,7 @@ rows:
 
   // Source file: ../qa/queries/AndOrNot/raon5.sql
   // Result file: ../qa/queries/AndOrNot/results/aon5.res
-select pcol1, pcol9, colb1, colb9 from rapidsse.public.table1 a, table9 b where (colb1 = 'green' or colb9= 'blue') and a.ucol = b.ucol order by pcol1;
+select pcol1, pcol9, colb1, colb9 from rapidsse.public.table1 a, rapidsse.public.table9 b where (colb1 = 'green' or colb9= 'blue') and a.ucol = b.ucol order by pcol1;
 rows:
   (2, 256, 'green', 'orange')
   (10, 26, 'TEAL', 'blue')
@@ -192,7 +192,7 @@ rows:
 
   // Source file: ../qa/queries/AndOrNot/raon6.sql
   // Result file: ../qa/queries/AndOrNot/results/aon6.res
-select count(*) from rapidsse.public.table1 a, table9 b where colb1 = 'green' or colb9= 'blue' and a.ucol = b.ucol;
+select count(*) from rapidsse.public.table1 a, rapidsse.public.table9 b where colb1 = 'green' or colb9= 'blue' and a.ucol = b.ucol;
 mute
 //CHECK_RESULT
 /*
@@ -242,7 +242,7 @@ rows:
 
   // Source file: ../qa/queries/AndOrNot/raon11.sql
   // Result file: ../qa/queries/AndOrNot/results/aon11.res
-select count(*) from rapidsse.public.table1, table9 where table1.ucol = table9.ucol and not colb1 ='green' or not colb9='green';
+select count(*) from rapidsse.public.table1, rapidsse.public.table9 where table1.ucol = table9.ucol and not colb1 ='green' or not colb9='green';
 mute
 //CHECK_RESULT
 /*
@@ -252,7 +252,7 @@ rows:
 
   // Source file: ../qa/queries/AndOrNot/raon12.sql
   // Result file: ../qa/queries/AndOrNot/results/aon12.res
-select count(*) from rapidsse.public.table1, table9 where table1.ucol = table9.ucol and not (colb1 ='green' or colb9='green');
+select count(*) from rapidsse.public.table1, rapidsse.public.table9 where table1.ucol = table9.ucol and not (colb1 ='green' or colb9='green');
 mute
 //CHECK_RESULT
 /*
@@ -262,7 +262,7 @@ rows:
 
   // Source file: ../qa/queries/AndOrNot/raon13.sql
   // Result file: ../qa/queries/AndOrNot/results/aon13.res
-select count(*) from rapidsse.public.table1, table9 where table1.ucol = table9.ucol and not (colb1 ='green' or colb9='green') or not (colb1 = 'blue' or colb9 = 'blue');
+select count(*) from rapidsse.public.table1, rapidsse.public.table9 where table1.ucol = table9.ucol and not (colb1 ='green' or colb9='green') or not (colb1 = 'blue' or colb9 = 'blue');
 mute
 //CHECK_RESULT
 /*
@@ -272,7 +272,7 @@ rows:
 
   // Source file: ../qa/queries/AndOrNot/raon14.sql
   // Result file: ../qa/queries/AndOrNot/results/aon14.res
-select count(*) from rapidsse.public.table1, table9 where table1.ucol = table9.ucol and (not (colb1 ='green' or colb9='green') or not (colb1 = 'blue' or colb9 = 'blue'));
+select count(*) from rapidsse.public.table1, rapidsse.public.table9 where table1.ucol = table9.ucol and (not (colb1 ='green' or colb9='green') or not (colb1 = 'blue' or colb9 = 'blue'));
 mute
 //CHECK_RESULT
 /*
@@ -282,7 +282,7 @@ rows:
 
   // Source file: ../qa/queries/AndOrNot/raon15.sql
   // Result file: ../qa/queries/AndOrNot/results/aon15.res
-select count(*) from rapidsse.public.table1, table9 where table1.ucol = table9.ucol and (not (colb1 ='green' or colb9='green') and not (colb1 = 'blue' or colb9 = 'blue'));
+select count(*) from rapidsse.public.table1, rapidsse.public.table9 where table1.ucol = table9.ucol and (not (colb1 ='green' or colb9='green') and not (colb1 = 'blue' or colb9 = 'blue'));
 mute
 //CHECK_RESULT
 /*

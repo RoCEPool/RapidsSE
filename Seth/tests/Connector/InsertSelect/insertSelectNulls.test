@@ -47,7 +47,7 @@ rows:
 Loop 100 {
   
 -- insert-select
-insert into rapidsse.public.R1000 select * from T1000;
+insert into rapidsse.public.R1000 select * from rapidsse.public.T1000;
 success
 
 }
@@ -57,9 +57,9 @@ select * from rapidsse.public.R1000;
 rows: 300
 
 CLEANUP {
-  drop table T1000;
+  drop table rapidsse.public.T1000;
   mute
-  drop table R1000;
+  drop table rapidsse.public.R1000;
   mute
 }
 
