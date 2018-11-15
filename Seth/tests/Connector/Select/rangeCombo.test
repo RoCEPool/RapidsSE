@@ -11,7 +11,7 @@ create table rapidsse.public.T1 (
 );
 success
 
-create index T1_idx1 on T1 (jA, jC);
+create index T1_idx1 on rapidsse.public.T1 (jA, jC);
 success
 
 ESCAPE CONNECTOR se 'load T1' with file = '/DATA/Select/rangeCombo.csv', node = 'node1';
