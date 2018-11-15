@@ -11,7 +11,7 @@ rows:
 
 // Source file: ../qa/queries/aggs/avg/ravg2.sql
 // Result file: ../qa/queries/aggs/avg/results/avg2.res
-select cast(avg(cold1) as decimal(10,7)) from rapidsse.public.moxe.table1;
+select cast(avg(cold1) as decimal(10,7)) from rapidsse.public.table1;
 mute
 //CHECK_RESULT
 /*
