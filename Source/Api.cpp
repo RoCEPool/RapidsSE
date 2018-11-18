@@ -494,17 +494,26 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
       PosixThread::vSleepMilli(1);
     }
     
+    //vTrace("Got buffer %lld\n"_Stz, pJob_FetchRows->m_iPartition);
+    
     //ASSERT(pSession->m_pJob == pJob_FetchRows);
     
     // get entry buffer
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
     pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
+    //vTrace("Got buffer %p %lld\n"_Stz, pJob_FetchRows->m_pFetchBuffer, pJob_FetchRows->m_iPartition);
     
     // is it a last buffer ?
     if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
       pJob_FetchRows->m_nLastBuffersScanned++;
-      //vTrace("m_nLastBuffersScanned: %lld %lld\n"_Stz, pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
+//      vTrace("FNB: LAST %p %s m_nLastBuffersScanned: %lld %lld\n"_Stz, pJob_FetchRows->m_pFetchBuffer,
+//             pJob_FetchRows->m_pTable->aTableName(),
+//             pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
     }
+    
+//    vTrace("FNB: NOT LAST %p %s m_nLastBuffersScanned: %lld %lld\n"_Stz,pJob_FetchRows->m_pFetchBuffer,
+//           pJob_FetchRows->m_pTable->aTableName(),
+//           pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
     
     // return the fetched buffer
     *ppFetchBuffer = pJob_FetchRows->m_pFetchBuffer;
@@ -1339,9 +1348,50 @@ void vDeleteJobs(Session* pSession)
     eCN eClass = pJobPtr->eClass();
     JobClass* pJobClass = JobClass::pFind(eClass);
     
-    // delete the job
+    vApiLocation(pSession,200);
+    
     //vTrace("API deleting job %p jobId %lld %s\n"_Stz, pJobPtr, pJobPtr->m_iJobId, aCN[eClass]);
+    
+    // If we come across a JOB_FETCHROWS then we need to empty its queues
+    if (eClass == CN_JOB_FETCHROWS) {
+      Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+  
+      //vTrace("%s m_nLastBuffersScanned: %lld %lld\n"_Stz,pJob_FetchRows->m_pTable->aTableName(),
+      //       pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
+      
+      // if we had an entry buffer delete it
+      pJob_FetchRows->vDeleteBuffer();
+      
+      while (pJob_FetchRows->m_nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers) {
+        // pop an entryBuffer off the queue
+        vApiLocation(pSession,300);
+        ValWrk xValWrk;
+        while (!pJob_FetchRows->m_pBufferQueue->bPop(&xValWrk)) {
+          PosixThread::vSleepMilli(1);
+          vApiLocation(pSession,400);
+          continue;
+        }
+        
+        vApiLocation(pSession,500);
+        
+        PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+        pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
+        
+        if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
+          pJob_FetchRows->m_nLastBuffersScanned++;
+          //vTrace("%s m_nLastBuffersScanned: %lld %lld\n"_Stz, pJob_FetchRows->m_pTable->aTableName(),
+          //       pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
+        }
+        
+        // delete the buffer
+        pJob_FetchRows->vDeleteBuffer();
+      }
+    }
+    vApiLocation(pSession,600);
+    
+    // delete the job
     pJobClass->vDeleteJob(pSession,pJobPtr);
+    
     pSession->m_nJobDelete++;
   }
 }
