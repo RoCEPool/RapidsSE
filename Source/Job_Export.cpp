@@ -146,24 +146,6 @@ bool Job_Export::bPopulateJob(TokenVec* pTokenVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_EXPORT,_FOOTER_);
   
-  i8 iNumTokens;
-  
-  ASSERT(pTokenVec->pGet(0)->bSame("lscol"_Stz));
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // get no of tokens in token vector
-  iNumTokens = pTokenVec->nTokens();;
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 1 tokens
-  if (iNumTokens != 2) {
-    return nullptr;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // set the table name
-  m_sObjectName = pTokenVec->pGet(1)->aText();
-  
   return true;
 }
 
@@ -210,7 +192,7 @@ void JobsModel::vJob_Export_post(Interface::Session* pSession, Job* pJob)
 {
   //Job_Export* pJob_Export = _pJob_Export(pJob);
   
-  vTrace("export not yet supported\n"_Stz);
+  vTrace("Warning: export not yet supported\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

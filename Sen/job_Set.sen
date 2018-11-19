@@ -38,6 +38,7 @@
 "job_DumpIndex.sen" include
 
 "job_EndInsert.sen" include
+"job_Export.sen" include
 
 "job_FetchRows.sen" include
 
