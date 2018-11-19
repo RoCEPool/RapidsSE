@@ -854,7 +854,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
     
     //vTrace("row length %lld\n"_Stz, iRawDataLength);
     
-    if (iRawDataLength > C_16KB) {
+    if (iRawDataLength > C_MAX_RECORD) {
       eEC eErrorCode = EC_MAX_ROW_LENGTH;
       TRACE_ERROR("d"_Stz, eErrorCode);
       vApiReturn(pSession);                                        // API RETURN
