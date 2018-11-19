@@ -174,7 +174,88 @@ create table max_columns (
 );
 success
 
-ld max_columns "/DATA/load/max_columns.csv" record_terminator ";" ;
+//ld max_columns "/DATA/load/max_columns2.csv" record_terminator ";" ;
+ld max_columns "/DATA/load/max_columns2.csv" ;
+success
+
+drop table max_columns;
+
+// create the table
+create table max_columns (
+
+  c_testno     INTEGER NOT NULL,
+
+  c_field000   VARCHAR(254),
+  c_field001   VARCHAR(254),
+  c_field002   VARCHAR(254),
+  c_field003   VARCHAR(254),
+  c_field004   VARCHAR(254),
+  c_field005   VARCHAR(254),
+  c_field006   VARCHAR(254),
+  c_field007   VARCHAR(254),
+  c_field008   VARCHAR(254),
+  c_field009   VARCHAR(254),
+
+  c_field010   VARCHAR(254),
+  c_field011   VARCHAR(254),
+  c_field012   VARCHAR(254),
+  c_field013   VARCHAR(254),
+  c_field014   VARCHAR(254),
+  c_field015   VARCHAR(254),
+  c_field016   VARCHAR(254),
+  c_field017   VARCHAR(254),
+  c_field018   VARCHAR(254),
+  c_field019   VARCHAR(254),
+
+  c_field020   VARCHAR(254),
+  c_field021   VARCHAR(254),
+  c_field022   VARCHAR(254),
+  c_field023   VARCHAR(254),
+  c_field024   VARCHAR(254),
+  c_field025   VARCHAR(254),
+  c_field026   VARCHAR(254),
+  c_field027   VARCHAR(254),
+  c_field028   VARCHAR(254),
+  c_field029   VARCHAR(254),
+
+  c_field030   VARCHAR(254),
+  c_field031   VARCHAR(254),
+  c_field032   VARCHAR(254),
+  c_field033   VARCHAR(254),
+  c_field034   VARCHAR(254),
+  c_field035   VARCHAR(254),
+  c_field036   VARCHAR(254),
+  c_field037   VARCHAR(254),
+  c_field038   VARCHAR(254),
+  c_field039   VARCHAR(254),
+
+  c_field040   VARCHAR(254),
+  c_field041   VARCHAR(254),
+  c_field042   VARCHAR(254),
+  c_field043   VARCHAR(254),
+  c_field044   VARCHAR(254),
+  c_field045   VARCHAR(254),
+  c_field046   VARCHAR(254),
+  c_field047   VARCHAR(254),
+  c_field048   VARCHAR(254),
+  c_field049   VARCHAR(254),
+
+  c_field050   VARCHAR(254),
+  c_field051   VARCHAR(254),
+  c_field052   VARCHAR(254),
+  c_field053   VARCHAR(254),
+  c_field054   VARCHAR(254),
+  c_field055   VARCHAR(254),
+  c_field056   VARCHAR(254),
+  c_field057   VARCHAR(254),
+  c_field058   VARCHAR(254),
+  c_field059   VARCHAR(254)
+);
+
+ld max_columns "/DATA/load/max_60_columns.csv" ;
+success
+
+drop table max_columns;
 success
 
 CLEANUP {
