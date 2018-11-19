@@ -122,6 +122,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTENANT
   /*    */ &Dump::vDummy,           // CN_JOB_DUMPINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_ENDINSERT
+  /*    */ &Dump::vDummy,           // CN_JOB_EXPORT
   /*    */ &Dump::vDummy,           // CN_JOB_FETCHROWS
   /*    */ &Dump::vDummy,           // CN_JOB_GENDATA
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTBUFFER
@@ -381,6 +382,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_DropTenant),     // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_DumpIndex),      // CN_JOB_DUMPINDEX
   /*    */ sizeof(Job_EndInsert),      // CN_JOB_ENDINSERT
+  /*    */ 0,                          // CN_JOB_EXPORT
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
   /*    */ sizeof(Job_GenData),        // CN_JOB_GENDATA
   /*    */ sizeof(Job_InsertBuffer),   // CN_JOB_INSERTBUFFER
@@ -639,6 +641,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTENANT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DUMPINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ENDINSERT
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_EXPORT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_FETCHROWS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_GENDATA
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTBUFFER
