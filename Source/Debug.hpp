@@ -8,6 +8,7 @@ namespace Debugging
   static const i8 C_STACK_BACKTRACE = 10;
 
   void vAssertTrap(void);
+  void vAssertType(void* aObject, eCN eExpectingClass);
   void vDebugTrap(void);
   void vStackDump(void);
   void vThrowTrap(void);
@@ -54,11 +55,7 @@ namespace Debugging
   { \
     if ( pARG && eCLASS != pARG->eClass()  ) { \
       printf("RASSERT_TYPE in %s at %d\n",__FILE__,__LINE__); \
-      printf("  Expecting class %d; Got %d\n",eCLASS,pARG->eClass()); \
-      Debugging::vAssertTrap(); \
-      THROW_ERROR_MSG(EC_ASSERT, \
-                      (__builtin_expect(!(pARG && eCLASS != pARG->eClass()), 0) \
-                                  ? (Stz*) #eCLASS : ""_Stz)); \
+      Debugging::vAssertType(pARG,eCLASS); \
     } \
   }
 

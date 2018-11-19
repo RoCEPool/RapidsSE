@@ -66,7 +66,7 @@ Task::Task(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  
   m_xLock.vInitLock(LK_TASK);
   
   m_pJob         = pJob;

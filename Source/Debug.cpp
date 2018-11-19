@@ -29,6 +29,19 @@ void Debugging::vAssertTrap(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* handle an rassert                                                          */
+/*----------------------------------------------------------------------------*/
+void Debugging::vAssertType(void* aObject, eCN eExpectingClass)
+{
+  Object* pObject = static_cast<Object*>(aObject);
+  eCN eGotClass = pObject->eClass();
+  
+  printf("  Expecting class %d; Got %d\n",eExpectingClass,eGotClass);
+  
+  Debugging::vAssertTrap();
+}
+
+/*----------------------------------------------------------------------------*/
 /* debug trap                                                                 */
 /*----------------------------------------------------------------------------*/
 void Debugging::vDebugTrap(void)
@@ -61,6 +74,7 @@ void Debugging::vThrowTrap(void)
   // put a breakpoint here to trap throws
   sleep(0);
 }
+
 
 /*============================================================================*/
 /* end                                                                        */
