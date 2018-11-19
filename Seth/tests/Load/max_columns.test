@@ -174,8 +174,7 @@ create table max_columns (
 );
 success
 
-//ld max_columns "/DATA/load/max_columns2.csv" record_terminator ";" ;
-ld max_columns "/DATA/load/max_columns2.csv" ;
+ld max_columns "/DATA/load/max_150_columns_varchar100.csv" ;
 success
 
 drop table max_columns;
@@ -252,7 +251,7 @@ create table max_columns (
   c_field059   VARCHAR(254)
 );
 
-ld max_columns "/DATA/load/max_60_columns.csv" ;
+ld max_columns "/DATA/load/max_60_columns_varchar254.csv" ;
 success
 
 drop table max_columns;
