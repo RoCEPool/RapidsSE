@@ -78,7 +78,7 @@ namespace Pool
   private:
     bool bExtendHeap(void);
     FreeChunk* pPopFree(void);
-    void vPushFree(FreeChunk* pFreeChunk);
+    void vPushFree(FreeChunk* pFreeChunk, eCN eWasClass);
     void vVerify(void);
     void vValidFree(FreeChunk* pFreeChunk);
     

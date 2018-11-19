@@ -134,7 +134,7 @@ void Heap::vAddFree(FreeChunk* pFreeChunk)
   
   m_iBufferCount++;
   
-  vPushFree(pFreeChunk);
+  vPushFree(pFreeChunk,CN_NONE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +287,7 @@ void Heap::vFreeObject(Object* pObject)
 
   m_zLock.vGrabWrite();
   
-  vPushFree(static_cast<FreeChunk*>(pObject));
+  vPushFree(static_cast<FreeChunk*>(pObject),pObject->eClass());
   
   m_iAllocCount--;
 
@@ -374,7 +374,7 @@ bool Heap::bExtendHeap(void)
        pFreeChunk = pHeapBuffer->pNextChunk(pFreeChunk,m_iObjectSize)) {
     //pFreeChunk->vSetMagic();
     new(pFreeChunk) FreeChunk;
-    vPushFree(pFreeChunk);
+    vPushFree(pFreeChunk,CN_NONE);
     //vTrace("bExtendHeap %p : %p\n"_Stz,pHeapBuffer,pFreeChunk);
   }
   
@@ -410,7 +410,7 @@ FreeChunk* Heap::pPopFree(void)
 /*----------------------------------------------------------------------------*/
 /* push free chunk onto free chain                                            */
 /*----------------------------------------------------------------------------*/
-void Heap::vPushFree(FreeChunk* pFreeChunk)
+void Heap::vPushFree(FreeChunk* pFreeChunk, eCN eWasClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   

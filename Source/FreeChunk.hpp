@@ -8,7 +8,8 @@ namespace Pool
   class FreeChunk : public Object
   {
   private:
-    FreeChunk* m_pNextFree;  // next free chunk in chain
+    FreeChunk* m_pNextFree; // next free chunk in chain
+    eCN        m_eWasClass; // what was the class
     
     // must be last
     //Footer m_xFooter;
@@ -19,8 +20,10 @@ namespace Pool
 
     FreeChunk(void);
     ~FreeChunk(void) noexcept(false);
-    void vInit(eCN eClass);
-    
+    void vInit(eCN eWasClass);
+    eCN eWasClass(void);
+    void vWasClass(eCN eWasClass);
+
     FreeChunk* pNextFree(void);
     void       vNextFree(FreeChunk* pNextFree);
     

@@ -42,12 +42,33 @@ FreeChunk::~FreeChunk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* initialize a free chunk                                                    */
 /*----------------------------------------------------------------------------*/
-void FreeChunk::vInit(eCN eClassNo)
+void FreeChunk::vInit(eCN eWasClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
   vSetMagic();
-  vSetClass(eClassNo);
+  vSetClass(CN_FREECHUNK);
+  m_eWasClass = eWasClass;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the was-class of the free chunk                                        */
+/*----------------------------------------------------------------------------*/
+eCN FreeChunk::eWasClass(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_eWasClass;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the was-class of the free chunk                                        */
+/*----------------------------------------------------------------------------*/
+void FreeChunk::vWasClass(eCN eWasClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eWasClass = eWasClass;
 }
 
 /*----------------------------------------------------------------------------*/
