@@ -50,17 +50,6 @@ namespace Debugging
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  #define RASSERT_CAST(condition) \
-  { \
-    if ( !(condition) ) { \
-      printf("RASSERT_CAST in %s at %d\n",__FILE__,__LINE__); \
-      Debugging::vAssertTrap(); \
-      THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) \
-                                  ? (Stz*) #condition : ""_Stz)); \
-    } \
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   #define RASSERT_TYPE(pARG,eCLASS) \
   { \
     if ( pARG && eCLASS != pARG->eClass()  ) { \
