@@ -12,7 +12,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Debugging::vAssertTrap(void)
 {
-  
   // dump the call stack
   vStackDump();
   
@@ -45,7 +44,19 @@ void Debugging::vAssertType(void* aObject, eCN eExpectingClass)
     printf("  FreeChunk was %d\n",eWasClass);
   }
   
-  Debugging::vAssertTrap();
+  vAssertTrap();
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert warning                                                             */
+/*----------------------------------------------------------------------------*/
+void Debugging::vAssertWarn(void)
+{
+  // dump the call stack
+  vStackDump();
+  
+  // put a breakpoint here to trap asserts
+  sleep(0);
 }
 
 /*----------------------------------------------------------------------------*/
