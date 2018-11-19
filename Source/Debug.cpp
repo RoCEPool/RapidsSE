@@ -38,6 +38,13 @@ void Debugging::vAssertType(void* aObject, eCN eExpectingClass)
   
   printf("  Expecting class %d; Got %d\n",eExpectingClass,eGotClass);
   
+  if (CN_FREECHUNK == eGotClass) {
+    FreeChunk* pFreeChunk = static_cast<FreeChunk*>(aObject);
+    eCN eWasClass = pFreeChunk->eWasClass();
+    
+    printf("  FreeChunk was %d\n",eWasClass);
+  }
+  
   Debugging::vAssertTrap();
 }
 
@@ -74,7 +81,6 @@ void Debugging::vThrowTrap(void)
   // put a breakpoint here to trap throws
   sleep(0);
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
