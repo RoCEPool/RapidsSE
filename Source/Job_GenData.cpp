@@ -189,6 +189,9 @@ Job* JobsModel::pJob_GenData_pre(Interface::Session* pSession)
   // set the table name
   pJob_GenData->m_sObjectName = pTknVec->pGet(1)->aText();
 
+  // set the file name
+  pJob_GenData->m_sFileName = pTknVec->pGet(2)->aText();
+  
   return pJob_GenData;
 }
 

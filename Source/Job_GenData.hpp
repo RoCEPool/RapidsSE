@@ -6,7 +6,8 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_GenData : public Job
+  class Job_GenData : public Job,
+                      public JobFileName
   {
   public:
   
