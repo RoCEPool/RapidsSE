@@ -214,7 +214,6 @@ and l_shipinstruct = 'DELIVER IN PERSON' ) or ( p_partkey = l_partkey and p_bran
 p_size between 15 and 45 and l_shipmode in ('AIR', 'REG AIR') and l_shipinstruct = 'COLLECT COD');
 rows: 1
 */
-fetch part "P_BRAND 'Brand#11' =  P_BRAND 'Brand#24' =  OR P_BRAND 'Brand#55' =  OR"
 
 // QUERY 20 (MOXE)
 select s_name, s_address from MOXE.supplier, MOXE.nation where s_suppkey in
