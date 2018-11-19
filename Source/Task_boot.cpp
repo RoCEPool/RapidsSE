@@ -580,7 +580,7 @@ void Task::vAddConstants(void)
 
   /*  0 */ vAddConstant("SIZEOF_S32"_Stz,          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256"_Stz,         sizeof(s256));
-  /*  2 */ vAddConstant("SIZEOF_S16K"_Stz,         sizeof(s48K));
+  /*  2 */ vAddConstant("SIZEOF_S48K"_Stz,         sizeof(s48K));
   
   // TS_ : task state
   /*  0 */ vAddConstant("TS_NONE"_Stz,       TS_NONE);
