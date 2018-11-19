@@ -54,7 +54,7 @@ JobClass xJobClass_EndInsert =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_EndInsert_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_FetchRows_class;
+  *pNextFun = (pFUN*)pJob_Export_class;
   
   return &xJobClass_EndInsert;
 }

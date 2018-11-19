@@ -68,6 +68,7 @@ using namespace JobsModel;
 #include "Job_DumpIndex.hpp"
 
 #include "Job_EndInsert.hpp"
+#include "Job_Export.hpp"
 
 #include "Job_FetchRows.hpp"
 

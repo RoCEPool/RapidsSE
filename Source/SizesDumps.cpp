@@ -382,7 +382,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_DropTenant),     // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_DumpIndex),      // CN_JOB_DUMPINDEX
   /*    */ sizeof(Job_EndInsert),      // CN_JOB_ENDINSERT
-  /*    */ 0,                          // CN_JOB_EXPORT
+  /*    */ sizeof(Job_Export),         // CN_JOB_EXPORT
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
   /*    */ sizeof(Job_GenData),        // CN_JOB_GENDATA
   /*    */ sizeof(Job_InsertBuffer),   // CN_JOB_INSERTBUFFER
