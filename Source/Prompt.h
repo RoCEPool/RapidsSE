@@ -60,6 +60,7 @@ using namespace Prompt;
 #include "Prompt_sizes.hpp"
 #include "Prompt_sleep.hpp"
 #include "Prompt_ssn.hpp"
+#include "Prompt_st.hpp"
 #include "Prompt_takeMem.hpp"
 #include "Prompt_taskQueues.hpp"
 #include "Prompt_threads.hpp"
