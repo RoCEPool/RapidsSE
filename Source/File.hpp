@@ -40,7 +40,10 @@ namespace System
     void* operator new(size_t);
     void* operator new(size_t, File* pFile);
     void operator delete(void* pFileAddress);
+  
     File(void);
+    File(Stz* aFilePath, i8 iTraceLevel=0);
+    File(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel=0);
    ~File() noexcept(false);
     
     static bool bRemove(s256& rPath);

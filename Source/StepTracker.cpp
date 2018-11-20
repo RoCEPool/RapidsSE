@@ -87,6 +87,12 @@ void StepTracker::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void StepTracker::vList(File& xFile)
 {
+  bool bOpened = xFile.bOpen();
+  if (! bOpened) {
+    vTrace("Unable to open StepTracker file\n"_Stz);
+    return;
+  }
+  
   m_zLock.vGrabWrite();
   
   xFile.vPrint("Step, Invoked, StepTotal, Per Invoke\n"_Stz);
@@ -94,6 +100,8 @@ void StepTracker::vList(File& xFile)
     m_xStepAccum[i_Step].vPrint(xFile);
   
   m_zLock.vDropWrite();
+
+  xFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/

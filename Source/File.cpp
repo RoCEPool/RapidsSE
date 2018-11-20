@@ -92,6 +92,43 @@ File::File(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+File::File(Stz* aFilePath, i8 iTraceLevel)
+: Object(CN_FILE)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  vInit();
+  
+  m_sFilePath = aFilePath;
+  m_iTraceLevel = iTraceLevel;
+
+  _checkInitialised_(CN_FILE);
+  
+  _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+File::File(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel)
+: Object(CN_FILE)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  vInit();
+  
+  m_sFilePath = aFilePath;
+  m_sOpenMode = aOpenMode;
+  m_iTraceLevel = iTraceLevel;
+  
+  _checkInitialised_(CN_FILE);
+  
+  _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 File::~File(void) noexcept(false)
