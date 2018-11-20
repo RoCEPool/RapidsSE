@@ -284,6 +284,8 @@ void Task::vSocketRecvObject(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
 
+  RASSERT(_bIsValidJob(eClass) || CN_WORKINGBUFFER == eClass);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of job
   
@@ -393,6 +395,8 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
   
+  RASSERT(_bIsValidJob(eClass) || CN_WORKINGBUFFER == eClass);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the specific case of job_loadBuffer under low memory condition
   
@@ -543,6 +547,8 @@ void Task::vSocketSendObject(MP_Task mpTask)
                          aCN[eClass],pSocket);
   }
 
+  RASSERT(_bIsValidJob(eClass) || CN_WORKINGBUFFER == eClass);
+    
   SysCall xSysCall;
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, xSysCall);
 
