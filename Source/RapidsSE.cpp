@@ -32,6 +32,8 @@ void RapidsSE::vMainEntry(void)
   // init the tls keys
   TlsKeys::vInit();
   
+  HwCounters::bInit();
+  
   StorageEngine::vCheckAllAssumptions();
 
   vSanityCheck();

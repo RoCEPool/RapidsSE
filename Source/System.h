@@ -28,6 +28,7 @@ using namespace System;
 #include "Dir.hpp"
 #include "Env.hpp"
 #include "File.hpp"
+#include "HwCounters.hpp"
 #include "Lock.hpp"
 #include "OpSys.hpp"
 #include "PosixThread.hpp"
