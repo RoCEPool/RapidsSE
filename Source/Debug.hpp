@@ -7,6 +7,8 @@ namespace Debugging
 {
   static const i8 C_STACK_BACKTRACE = 10;
 
+  void vAssertDebug(void);
+  void vAssertRelease(void);
   void vAssertTrap(void);
   void vAssertType(void* aObject, eCN eExpectingClass);
   void vAssertWarn(void);
@@ -24,13 +26,14 @@ namespace Debugging
   #endif
   
   /*--------------------------------------------------------------------------*/
-  /* our ASSERT macro                                                         */
+  /* our ASSERT macros                                                        */
   /*--------------------------------------------------------------------------*/
   #ifdef __ASSERT_CHECKS
     #define ASSERT(condition) \
     { \
       if ( !(condition) ) { \
         printf("ASSERT in %s at %d\n",__FILE__,__LINE__); \
+        /* Debugging::vAssertDebug(); */ \
         Debugging::vAssertTrap(); \
         THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) \
                                     ? (Stz*) #condition : ""_Stz)); \
@@ -45,9 +48,7 @@ namespace Debugging
   { \
     if ( !(condition) ) { \
       printf("RASSERT in %s at %d\n",__FILE__,__LINE__); \
-      Debugging::vAssertTrap(); \
-      THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) \
-                                  ? (Stz*) #condition : ""_Stz)); \
+      Debugging::vAssertRelease(); \
     } \
   }
   
