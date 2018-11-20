@@ -612,8 +612,6 @@ void RapidsSE::vStartSystem(void)
   // create the plan list here
   gpAttachMap->m_pPlanList = new PlanList;
   
-  
-  
   gpAttachMap->m_xDdlLock.vInitLock(LK_DDL);
   gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
   
