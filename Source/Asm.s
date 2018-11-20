@@ -1,6 +1,6 @@
-#-----------------------------------------------------------------------------#
-# iAsm.s: assembler routines                                                  #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# Asm.s: assembler routines                                                    #
+#------------------------------------------------------------------------------#
 
 #
 # OS X calling convention:
@@ -11,9 +11,10 @@
 # refer: http://en.wikipedia.org/wiki/X86_calling_conventions
 #
 
-#-----------------------------------------------------------------------------#
-# _iAtomicDec: atomically decrement integer at [rdi]                          #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# _iAtomicDec: atomically decrement integer at [rdi]                           #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _iAtomicDec
@@ -30,6 +31,8 @@ iAtomicDec:
 
 #endif
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
   mov rcx,-1
   lock xadd [rdi], rcx
   mov rax, rcx
@@ -37,9 +40,10 @@ iAtomicDec:
 
 ret
 
-#-----------------------------------------------------------------------------#
-# _iAtomicInc: atomically increment integer at [rdi]                          #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# _iAtomicInc: atomically increment integer at [rdi]                           #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _iAtomicInc
@@ -55,6 +59,9 @@ _iAtomicInc:
 iAtomicInc:
 
 #endif
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
   mov rcx,1
   lock xadd [rdi], rcx
   mov rax, rcx
@@ -62,9 +69,10 @@ iAtomicInc:
 
 ret
 
-#-----------------------------------------------------------------------------#
-# _iCpuid: cpuid with arg in rdi, register to return in rsi                   #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# _iCpuid: cpuid with arg in rdi, register to return in rsi                    #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _iCpuid
@@ -80,12 +88,15 @@ _iCpuid:
 iCpuid:
 
 #endif
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
   mov rax,0
   mov rax,rdi
 
   cpuid
 
-  # 0 is eax
+   # 0 is eax
   cmp rsi,0
   jne _1
 
@@ -94,7 +105,7 @@ iCpuid:
 
   ret
 
-  # 1 is ebx
+   # 1 is ebx
 _1:
   cmp rsi,1
   jne _2
@@ -104,7 +115,7 @@ _1:
 
   ret
 
-  # 2 is ecx
+   # 2 is ecx
 _2:
   cmp rsi,2
   jne _3
@@ -114,7 +125,7 @@ _2:
 
   ret
 
-  # 3 is edx
+   # 3 is edx
 _3:
   mov rax,0
   mov eax,edx
@@ -123,9 +134,10 @@ _3:
 
 ret
 
-#-----------------------------------------------------------------------------#
-# _iDropRead: drop read lock at [rdi] (no wait)                               #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# _iDropRead: drop read lock at [rdi] (no wait)                                #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _iDropRead
@@ -142,11 +154,13 @@ iDropRead:
 
 #endif
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
 _DropRead:
-  mov rsi, [rdi]  # get value at rdi
+  mov rsi, [rdi]   # get value at rdi
   mov rdx, rsi
-  dec rdx         # remove one read lock
-  call _TestSet   # attempt to drop read lock
+  dec rdx          # remove one read lock
+  call _TestSet    # attempt to drop read lock
 
   cmp rax,0
 
@@ -156,9 +170,10 @@ _DropRead:
 
 ret
 
-#-----------------------------------------------------------------------------#
-# _iDropWrite: drop write lock at [rdi] (no wait)                             #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# _iDropWrite: drop write lock at [rdi] (no wait)                              #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _iDropWrite
@@ -174,16 +189,20 @@ _iDropWrite:
 iDropWrite:
 
 #endif
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
   mov rax, 0
-  mov [rdi], rax  # clear the write lock
+  mov [rdi], rax   # clear the write lock
 
   mov rax, 1
 
 ret
 
-#-----------------------------------------------------------------------------#
-# _iGrabRead: grab read lock at [rdi] (no wait)                               #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# _iGrabRead: grab read lock at [rdi] (no wait)                                #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _iGrabRead
@@ -200,23 +219,25 @@ iGrabRead:
 
 #endif
 
-  mov r9, 1       # construct mask
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+  mov r9, 1        # construct mask
   shl r9, 63
 
 _iGrabReadRetry:
 
-  mov rax, [rdi]  # get value at rdi
-  mov r8, rax     # keep copy in r8
+  mov rax, [rdi]   # get value at rdi
+  mov r8, rax      # keep copy in r8
 
-  and rax, r9     # test if currently write locked
+  and rax, r9      # test if currently write locked
 
-  js _GrabReadFailed  # is locked, fail
+  js _GrabReadFailed   # is locked, fail
 
-  mov rsi, r8     # the <if> value
-  mov rdx, r8     # construcr <then> value
+  mov rsi, r8      # the <if> value
+  mov rdx, r8      # construcr <then> value
   inc rdx
 
-  call _TestSet   # attempt to grab
+  call _TestSet    # attempt to grab
 
   cmp rax,0
   je _iGrabReadRetry
@@ -230,9 +251,10 @@ _GrabReadFailed:
 
 ret
 
-#-----------------------------------------------------------------------------#
-# _iGrabWrite: grab write lock at [rdi] (no wait)                             #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# _iGrabWrite: grab write lock at [rdi] (no wait)                              #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _iGrabWrite
@@ -248,20 +270,23 @@ _iGrabWrite:
 iGrabWrite:
 
 #endif
-  mov rax, [rdi]  # get value at rdi
-  mov r8, rax     # keep copy in r8
-  mov r9, 1       # construct mask
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+  mov rax, [rdi]   # get value at rdi
+  mov r8, rax      # keep copy in r8
+  mov r9, 1        # construct mask
   shl r9, 63
 
-  and rax, r9     # test if write locked already
+  and rax, r9      # test if write locked already
 
-  js _GrabWriteFailed  # is locked, fail
+  js _GrabWriteFailed   # is locked, fail
 
-  mov rsi, r8     # the <if> value
-  mov rdx, r8     # construct <then> value
+  mov rsi, r8      # the <if> value
+  mov rdx, r8      # construct <then> value
   or  rdx, r9
 
-  call _TestSet   # attempt to grab
+  call _TestSet    # attempt to grab
 
   cmp rax,0
   je _GrabWriteFailed
@@ -280,9 +305,10 @@ _GrabWriteFailed:
 
 ret
 
-#-----------------------------------------------------------------------------#
-# _iIsLocked: return true if locked                                           #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# _iIsLocked: return true if locked                                            #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _iIsLocked
@@ -299,13 +325,15 @@ iIsLocked:
 
 #endif
 
-  mov rax, [rdi]  # get value at rdi
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+  mov rax, [rdi]   # get value at rdi
 
   mov r9, 0
 
-  cmp rax, r9     # test if currently locked
+  cmp rax, r9      # test if currently locked
 
-  jne _IsLocked   # is locked
+  jne _IsLocked    # is locked
 
   mov rax,0
   ret
@@ -316,9 +344,62 @@ _IsLocked:
 
 ret
 
-#-----------------------------------------------------------------------------#
-# _iRdtscp: read time-stamp counter                                           #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# _iPmcInit: initialise performance measurement counters                       #
+#------------------------------------------------------------------------------#
+
+#ifdef __APPLE__
+
+.globl _iPmcInit
+.intel_syntax noprefix
+
+_iPmcInit:
+
+#else
+
+.globl iPmcInit
+.intel_syntax noprefix
+
+iPmcInit:
+
+#endif
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+# to be written ...
+
+ret
+
+#------------------------------------------------------------------------------#
+# _iRdPmc: read performance measurement counter                                #
+#------------------------------------------------------------------------------#
+
+#ifdef __APPLE__
+
+.globl _iRdPmc
+.intel_syntax noprefix
+
+_iRdPmc:
+
+#else
+
+.globl iRdPmc
+.intel_syntax noprefix
+
+iRdPmc:
+
+#endif
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+# to be written ...
+
+ret
+
+#------------------------------------------------------------------------------#
+# _iRdtscp: read time-stamp counter                                            #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _iRdtscp
@@ -334,6 +415,9 @@ _iRdtscp:
 iRdtscp:
 
 #endif
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
   push rbx
   push rcx
   push rdx
@@ -348,9 +432,10 @@ iRdtscp:
 
 ret
 
-#-----------------------------------------------------------------------------#
-# _iTestSet: atomic test and set                                              #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# _iTestSet: atomic test and set                                               #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _iTestSet
@@ -366,6 +451,8 @@ _iTestSet:
 iTestSet:
 
 #endif
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
 _TestSet:
   mov rax, rsi
@@ -384,9 +471,16 @@ _Failed:
   mov rax,0
   ret
 
-#-----------------------------------------------------------------------------#
-# _vPrefetch: prefetch                                                        #
-#-----------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+
+
+#------------------------------------------------------------------------------#
+# _vPrefetch: prefetch                                                         #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _vPrefetch
@@ -403,13 +497,16 @@ vPrefetch:
 
 #endif
 
-prefetcht0 [rdi]
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+  prefetcht0 [rdi]
 
 ret
 
-#-----------------------------------------------------------------------------#
-# _iTestPrefetch: test for prefetch                                           #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# _iTestPrefetch: test for prefetch                                            #
+#------------------------------------------------------------------------------#
+
 #ifdef __APPLE__
 
 .globl _iTestPrefetch
@@ -426,11 +523,13 @@ iTestPrefetch:
 
 #endif
 
-mov ecx,0x1a4
-rdmsr 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+  mov ecx,0x1a4
+  rdmsr
 
 ret
 
-#-----------------------------------------------------------------------------#
-# end of file                                                                 #
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+# end of file                                                                  #
+#------------------------------------------------------------------------------#
