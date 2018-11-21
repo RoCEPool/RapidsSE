@@ -54,8 +54,7 @@ bool Prompt::bPrompt_st(SePrompt* pPrompt)
       vTrace("No step tracker\n"_Stz);
       return true;
     }
-    File xFile("/Rapids/StepTracker.csv"_Stz);
-    gpAttachMap->m_pStepTracker->vWrite(xFile);
+    gpAttachMap->m_pStepTracker->vWrite();
     return true;
   }
   

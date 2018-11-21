@@ -117,8 +117,10 @@ void StepTracker::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* write steps to given file                                                  */
 /*----------------------------------------------------------------------------*/
-void StepTracker::vWrite(File& xFile)
+void StepTracker::vWrite(void)
 {
+  File xFile("/Rapids/StepTracker.csv"_Stz);
+
   bool bOpened = xFile.bOpen(C_OPEN_WRITE);
   if (! bOpened) {
     vTrace("Unable to open StepTracker file: %s\n"_Stz,xFile.sPath().aStr());

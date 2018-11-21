@@ -53,10 +53,8 @@ void Task::vStepsWrite(MP_Task mpTask)
 {
   ENTRY("vStepsWrite"_Stz);
 
-  if (gpAttachMap->m_pStepTracker) {
-    File xFile("/Rapids/StepTracker.csv"_Stz);
-    gpAttachMap->m_pStepTracker->vWrite(xFile);
-  }
+  if (gpAttachMap->m_pStepTracker)
+    gpAttachMap->m_pStepTracker->vWrite();
   
   EXIT();
 }

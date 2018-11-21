@@ -30,7 +30,7 @@ namespace Measurement
     void vDropWrite(void);
     void vGrabWrite(void);
     void vReset(void);
-    void vWrite(File& xFile);
+    void vWrite(void);
 
   
     Footer* aFooter(void);
