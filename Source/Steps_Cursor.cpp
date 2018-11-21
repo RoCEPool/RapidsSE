@@ -15,14 +15,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Cursor(void)
 {
-  vAddStep("cursor@"_Stz,         &Task::vCursorFetch);
-  vAddStep("cursor!"_Stz,         &Task::vCursorStore);
+  vAddStep("cursor@"_Stz,         &Step::vCursorFetch);
+  vAddStep("cursor!"_Stz,         &Step::vCursorStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* cursor@ -- fetch cursor from return stack onto data stack                  */
 /*----------------------------------------------------------------------------*/
-void Task::vCursorFetch(MP_Task mpTask)
+void Step::vCursorFetch(MP_Task mpTask)
 {
   ENTRY("vCursorFetch"_Stz);
   
@@ -40,7 +40,7 @@ void Task::vCursorFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* cursor! -- replace cursor on return stack from data stack                  */
 /*----------------------------------------------------------------------------*/
-void Task::vCursorStore(MP_Task mpTask)
+void Step::vCursorStore(MP_Task mpTask)
 {
   ENTRY("vCursorStore"_Stz);
   

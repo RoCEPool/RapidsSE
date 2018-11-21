@@ -15,13 +15,13 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobCreateIndex(void)
 {
-  vAddStep("job_createIndex.isUnique@"_Stz, &Task::vJob_CreateIndexIsUniqueFetch);
+  vAddStep("job_createIndex.isUnique@"_Stz, &Step::vJob_CreateIndexIsUniqueFetch);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_createIndex.isUnique@ -- fetch column type from create table job       */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_CreateIndexIsUniqueFetch(MP_Task mpTask)
+void Step::vJob_CreateIndexIsUniqueFetch(MP_Task mpTask)
 {
   ENTRY("vJob_CreateIndexIsUniqueFetch"_Stz);
   

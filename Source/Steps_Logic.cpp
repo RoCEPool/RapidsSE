@@ -15,15 +15,15 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Logic(void)
 {
-  vAddStep("and"_Stz,             &Task::vLogicAnd);
-  vAddStep("not"_Stz,             &Task::vLogicNot);
-  vAddStep("or"_Stz,              &Task::vLogicOr);
+  vAddStep("and"_Stz,             &Step::vLogicAnd);
+  vAddStep("not"_Stz,             &Step::vLogicNot);
+  vAddStep("or"_Stz,              &Step::vLogicOr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* and -- logical and of top two values                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vLogicAnd(MP_Task mpTask)
+void Step::vLogicAnd(MP_Task mpTask)
 {
   ENTRY("vLogicAnd"_Stz);
   
@@ -45,7 +45,7 @@ void Task::vLogicAnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* not -- not of top value                                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vLogicNot(MP_Task mpTask)
+void Step::vLogicNot(MP_Task mpTask)
 {
   ENTRY("vLogicNot"_Stz);
   
@@ -63,7 +63,7 @@ void Task::vLogicNot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* or -- logical or of top two values                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vLogicOr(MP_Task mpTask)
+void Step::vLogicOr(MP_Task mpTask)
 {
   ENTRY("vLogicOr"_Stz);
   

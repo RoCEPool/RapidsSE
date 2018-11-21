@@ -15,23 +15,23 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobInsertRow(void)
 {
-  vAddStep("job_endInsert.insertRowJob@"_Stz, &Task::vJob_EndInsertInsertRowJobFetch);
+  vAddStep("job_endInsert.insertRowJob@"_Stz, &Step::vJob_EndInsertInsertRowJobFetch);
 
-  vAddStep("job_insertBuffer.endInsertJob@"_Stz, &Task::vJob_InsertBufferEndInsertJobIdFetch);
-  vAddStep("job_insertBuffer.InsertRows"_Stz,    &Task::vJob_InsertBufferInsertRows);
-  vAddStep("job_insertBuffer.partition@"_Stz,    &Task::vJob_InsertBufferPartitionFetch);
-  vAddStep("job_insertBuffer.table!"_Stz,        &Task::vJob_InsertBufferTableStore);
+  vAddStep("job_insertBuffer.endInsertJob@"_Stz, &Step::vJob_InsertBufferEndInsertJobIdFetch);
+  vAddStep("job_insertBuffer.InsertRows"_Stz,    &Step::vJob_InsertBufferInsertRows);
+  vAddStep("job_insertBuffer.partition@"_Stz,    &Step::vJob_InsertBufferPartitionFetch);
+  vAddStep("job_insertBuffer.table!"_Stz,        &Step::vJob_InsertBufferTableStore);
   
-  vAddStep("job_insertRow.table!"_Stz,           &Task::vJob_InsertRowTableStore);
-  vAddStep("job_InsertRow.danglingBuffer"_Stz,   &Task::vJob_InsertRowDanglingBuffer);
-  vAddStep("job_InsertRow.SpawnInsertBuffer"_Stz,&Task::vJob_InsertRowSpawnInsertBuffer);
+  vAddStep("job_insertRow.table!"_Stz,           &Step::vJob_InsertRowTableStore);
+  vAddStep("job_InsertRow.danglingBuffer"_Stz,   &Step::vJob_InsertRowDanglingBuffer);
+  vAddStep("job_InsertRow.SpawnInsertBuffer"_Stz,&Step::vJob_InsertRowSpawnInsertBuffer);
   
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_EndInsert.InsertRowJob@ -- fetch insertRow jobid from job              */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_EndInsertInsertRowJobFetch(MP_Task mpTask)
+void Step::vJob_EndInsertInsertRowJobFetch(MP_Task mpTask)
 {
   ENTRY("vJob_EndInsertInsertRowJobFetch"_Stz);
   
@@ -48,7 +48,7 @@ void Task::vJob_EndInsertInsertRowJobFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_InsertBuffer.endInsertJob@ -- fetch endInsert jobid from job           */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_InsertBufferEndInsertJobIdFetch(MP_Task mpTask)
+void Step::vJob_InsertBufferEndInsertJobIdFetch(MP_Task mpTask)
 {
   ENTRY("vJob_InsertBufferEndInsertJobIdFetch"_Stz);
   
@@ -66,7 +66,7 @@ void Task::vJob_InsertBufferEndInsertJobIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_InsertBuffer.insertRows -- insert rows from working buffer into table  */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
+void Step::vJob_InsertBufferInsertRows(MP_Task mpTask)
 {
   ENTRY("vJobInsertBufferInsertRows"_Stz);
   
@@ -149,7 +149,7 @@ void Task::vJob_InsertBufferInsertRows(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_InsertBuffer.partition@ -- fetch partition no. from job_insertBuffer   */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_InsertBufferPartitionFetch(MP_Task mpTask)
+void Step::vJob_InsertBufferPartitionFetch(MP_Task mpTask)
 {
   ENTRY("vJob_InsertBufferPartitionFetch"_Stz);
   
@@ -168,7 +168,7 @@ void Task::vJob_InsertBufferPartitionFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_InsertBuffer.table! -- store table into job_insertBuffer               */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_InsertBufferTableStore(MP_Task mpTask)
+void Step::vJob_InsertBufferTableStore(MP_Task mpTask)
 {
   ENTRY("vJob_InsertBufferTableStore"_Stz);
   
@@ -190,7 +190,7 @@ void Task::vJob_InsertBufferTableStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_InsertRow.danglingBuffer--ensure there's a dangling buffer in partition */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_InsertRowDanglingBuffer(MP_Task mpTask)
+void Step::vJob_InsertRowDanglingBuffer(MP_Task mpTask)
 {
   ENTRY("vJob_InsertRowDanglingBuffer"_Stz);
   
@@ -212,7 +212,7 @@ void Task::vJob_InsertRowDanglingBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_InsertRow.spawnInsertBuffer -- spawn Job_InsertBuffer                  */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
+void Step::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
 {
   ENTRY("vJob_InsertRowSpawnInsertBuffer"_Stz);
   
@@ -271,7 +271,7 @@ void Task::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_InsertRow.table! -- store table into job_insertRow                     */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_InsertRowTableStore(MP_Task mpTask)
+void Step::vJob_InsertRowTableStore(MP_Task mpTask)
 {
   ENTRY("vJobInsertRowTableStore"_Stz);
   

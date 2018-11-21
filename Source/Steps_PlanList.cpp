@@ -15,16 +15,16 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_PlanList(void)
 {
-  vAddStep("planList::addPlan"_Stz,    &Task::vPlanListAddPlan);
-  vAddStep("planList::findPlan"_Stz,   &Task::vPlanListFindPlan);
-  vAddStep("planList::removePlan"_Stz, &Task::vPlanListRemovePlan);
-  vAddStep("planList::show"_Stz,       &Task::vPlanListShow);
+  vAddStep("planList::addPlan"_Stz,    &Step::vPlanListAddPlan);
+  vAddStep("planList::findPlan"_Stz,   &Step::vPlanListFindPlan);
+  vAddStep("planList::removePlan"_Stz, &Step::vPlanListRemovePlan);
+  vAddStep("planList::show"_Stz,       &Step::vPlanListShow);
 }
 
 /*----------------------------------------------------------------------------*/
 /* planList::addPlan -- add a plan to plan list ( plan -- )                    */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanListAddPlan(MP_Task mpTask)
+void Step::vPlanListAddPlan(MP_Task mpTask)
 {
   ENTRY("vPlanListAddPlan"_Stz);
 
@@ -43,7 +43,7 @@ void Task::vPlanListAddPlan(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planList::findPlan -- find plan in list ( planId -- plan true | false )     */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanListFindPlan(MP_Task mpTask)
+void Step::vPlanListFindPlan(MP_Task mpTask)
 {
   ENTRY("vPlanListFindPlan"_Stz);
   
@@ -68,7 +68,7 @@ void Task::vPlanListFindPlan(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planList::removePlan -- remove a plan from plan list ( plan -- )            */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanListRemovePlan(MP_Task mpTask)
+void Step::vPlanListRemovePlan(MP_Task mpTask)
 {
   ENTRY("vPlanListRemovePlan"_Stz);
   
@@ -87,7 +87,7 @@ void Task::vPlanListRemovePlan(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planList::show -- show plan list ( plan -- )                                */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanListShow(MP_Task mpTask)
+void Step::vPlanListShow(MP_Task mpTask)
 {
   ENTRY("vPlanListShow"_Stz);
   

@@ -15,13 +15,13 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobNetHog(void)
 {
-  vAddStep("job_nethog.hogNo@"_Stz,     &Task::vJob_NetHogHogNoFetch);
+  vAddStep("job_nethog.hogNo@"_Stz,     &Step::vJob_NetHogHogNoFetch);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_nodeInfo.nodeName@ -- fetch node name                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_NetHogHogNoFetch(MP_Task mpTask)
+void Step::vJob_NetHogHogNoFetch(MP_Task mpTask)
 {
   ENTRY("vJob_NetHogHogNoFetch"_Stz);
   

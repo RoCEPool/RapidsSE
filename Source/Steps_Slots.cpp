@@ -13,16 +13,16 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Slots(void)
 {
-  vAddStep("slots.columnCount"_Stz,     &Task::vSlotsColumnCount);
-  vAddStep("slots.columnName"_Stz,      &Task::vSlotsColumnName);
-  vAddStep("slots.createColumnVec"_Stz, &Task::vSlotsCreateColumnVec);
-  vAddStep("slots.subDic"_Stz,          &Task::vSlotsSubDic);
+  vAddStep("slots.columnCount"_Stz,     &Step::vSlotsColumnCount);
+  vAddStep("slots.columnName"_Stz,      &Step::vSlotsColumnName);
+  vAddStep("slots.createColumnVec"_Stz, &Step::vSlotsCreateColumnVec);
+  vAddStep("slots.subDic"_Stz,          &Step::vSlotsSubDic);
 }
 
 /*----------------------------------------------------------------------------*/
 /* slots.columnCount -- get column count                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vSlotsColumnCount(MP_Task mpTask)
+void Step::vSlotsColumnCount(MP_Task mpTask)
 {
   ENTRY("vSlotsColumnCount"_Stz);
   
@@ -40,7 +40,7 @@ void Task::vSlotsColumnCount(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* slots.columnName -- get column name                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vSlotsColumnName(MP_Task mpTask)
+void Step::vSlotsColumnName(MP_Task mpTask)
 {
   ENTRY("vSlotsColumnName"_Stz);
   
@@ -65,7 +65,7 @@ void Task::vSlotsColumnName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* slots.createColumnVec -- create slots column vector from subdic         */
 /*----------------------------------------------------------------------------*/
-void Task::vSlotsCreateColumnVec(MP_Task mpTask)
+void Step::vSlotsCreateColumnVec(MP_Task mpTask)
 {
   ENTRY("vSlotsCreateColumnVec"_Stz);
   
@@ -83,7 +83,7 @@ void Task::vSlotsCreateColumnVec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* slots.subDic -- get slots sub dictionary                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSlotsSubDic(MP_Task mpTask)
+void Step::vSlotsSubDic(MP_Task mpTask)
 {
   ENTRY("vSlotsSubDic"_Stz);
   

@@ -15,16 +15,16 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Push(void)
 {
-  vAddStep("i"_Stz,               &Task::vPushI);
-  vAddStep("j"_Stz,               &Task::vPushJ);
-  vAddStep("nullPtr"_Stz,         &Task::vPushNullPtr);
-  vAddStep("pushValue"_Stz,       &Task::vPushValue);
+  vAddStep("i"_Stz,               &Step::vPushI);
+  vAddStep("j"_Stz,               &Step::vPushJ);
+  vAddStep("nullPtr"_Stz,         &Step::vPushNullPtr);
+  vAddStep("pushValue"_Stz,       &Step::vPushValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* i -- copy loop index from return stack onto data stack                     */
 /*----------------------------------------------------------------------------*/
-void Task::vPushI(MP_Task mpTask)
+void Step::vPushI(MP_Task mpTask)
 {
   ENTRY("vPushI"_Stz);
   
@@ -38,7 +38,7 @@ void Task::vPushI(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* j -- copy 2nd loop index from return stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPushJ(MP_Task mpTask)
+void Step::vPushJ(MP_Task mpTask)
 {
   ENTRY("vPushJ"_Stz);
   
@@ -52,7 +52,7 @@ void Task::vPushJ(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* nullPtr -- push a nullptr                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vPushNullPtr(MP_Task mpTask)
+void Step::vPushNullPtr(MP_Task mpTask)
 {
   ENTRY("vPushNullPtr"_Stz);
   
@@ -67,7 +67,7 @@ void Task::vPushNullPtr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* pushValue -- push value arg onto stack                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vPushValue(MP_Task mpTask)
+void Step::vPushValue(MP_Task mpTask)
 {
   ENTRY("vPushValue"_Stz);
   

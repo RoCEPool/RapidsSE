@@ -15,23 +15,23 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Flow(void)
 {
-  vAddStep("begin_"_Stz,          &Task::vFlowBegin_);
-  vAddStep("execute"_Stz,         &Task::vFlowExecute);
-  vAddStep("hazard"_Stz,          &Task::vFlowHazard);
-  vAddStep("jump"_Stz,            &Task::vFlowJump);
-  vAddStep("jumpBegin_"_Stz,      &Task::vFlowJumpBegin_);
-  vAddStep("jumpFalse"_Stz,       &Task::vFlowJumpFalse);
-  vAddStep("jumpTrue"_Stz,        &Task::vFlowJumpTrue);
-  vAddStep("nop"_Stz,             &Task::vFlowNop);
-  vAddStep("retryPoint"_Stz,      &Task::vFlowRetryPoint);
-  vAddStep("test"_Stz,            &Task::vFlowTest);
-  vAddStep("throw"_Stz,           &Task::vFlowThrow);
+  vAddStep("begin_"_Stz,          &Step::vFlowBegin_);
+  vAddStep("execute"_Stz,         &Step::vFlowExecute);
+  vAddStep("hazard"_Stz,          &Step::vFlowHazard);
+  vAddStep("jump"_Stz,            &Step::vFlowJump);
+  vAddStep("jumpBegin_"_Stz,      &Step::vFlowJumpBegin_);
+  vAddStep("jumpFalse"_Stz,       &Step::vFlowJumpFalse);
+  vAddStep("jumpTrue"_Stz,        &Step::vFlowJumpTrue);
+  vAddStep("nop"_Stz,             &Step::vFlowNop);
+  vAddStep("retryPoint"_Stz,      &Step::vFlowRetryPoint);
+  vAddStep("test"_Stz,            &Step::vFlowTest);
+  vAddStep("throw"_Stz,           &Step::vFlowThrow);
 }
 
 /*----------------------------------------------------------------------------*/
 /* begin_ -- begin of the docol loop : docol (used only in docol)   immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowBegin_(MP_Task mpTask)
+void Step::vFlowBegin_(MP_Task mpTask)
 {
   ENTRY("vBegin_"_Stz);
   
@@ -43,7 +43,7 @@ void Task::vFlowBegin_(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* execute -- execute word on data stack                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowExecute(MP_Task mpTask)
+void Step::vFlowExecute(MP_Task mpTask)
 {
   ENTRY("vFlowExecute"_Stz);
   
@@ -77,7 +77,7 @@ void Task::vFlowExecute(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* hazard -- should never be called                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowHazard(MP_Task mpTask)
+void Step::vFlowHazard(MP_Task mpTask)
 {
   ENTRY("vFlowHazard"_Stz);
   
@@ -89,7 +89,7 @@ void Task::vFlowHazard(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jump -- jump to location                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowJump(MP_Task mpTask)
+void Step::vFlowJump(MP_Task mpTask)
 {
   ENTRY("vJump"_Stz);
   
@@ -101,7 +101,7 @@ void Task::vFlowJump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jumpBegin_ -- jump to begin_ (used only in : docol)              immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowJumpBegin_(MP_Task mpTask)
+void Step::vFlowJumpBegin_(MP_Task mpTask)
 {
   ENTRY("vFlowJumpBegin_"_Stz);
   
@@ -115,7 +115,7 @@ void Task::vFlowJumpBegin_(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 #define JUMP_FALSE
 #ifdef JUMP_FALSE
-void Task::vFlowJumpFalse(MP_Task mpTask)
+void Step::vFlowJumpFalse(MP_Task mpTask)
 {
   ENTRY("vJumpFalse"_Stz);
   
@@ -158,7 +158,7 @@ void Task::vFlowJumpFalse(MP_Task mpTask)
 
 #else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void Task::vFlowJumpFalse(MP_Task mpTask)
+void Step::vFlowJumpFalse(MP_Task mpTask)
 {
   ENTRY("vJumpFalse"_Stz);
   
@@ -182,7 +182,7 @@ void Task::vFlowJumpFalse(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jumpTrue -- jump on true to location                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowJumpTrue(MP_Task mpTask)
+void Step::vFlowJumpTrue(MP_Task mpTask)
 {
   ENTRY("vJumpTrue"_Stz);
   
@@ -205,7 +205,7 @@ void Task::vFlowJumpTrue(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* nop -- no op                                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowNop(MP_Task mpTask)
+void Step::vFlowNop(MP_Task mpTask)
 {
   ENTRY("vFlowNop"_Stz);
   
@@ -215,7 +215,7 @@ void Task::vFlowNop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* retryPoint -- mark retry point                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowRetryPoint(MP_Task mpTask)
+void Step::vFlowRetryPoint(MP_Task mpTask)
 {
   ENTRY("vFlowRetryPoint"_Stz);
   
@@ -231,7 +231,7 @@ void Task::vFlowRetryPoint(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* test -- print test                                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowTest(MP_Task mpTask)
+void Step::vFlowTest(MP_Task mpTask)
 {
   ENTRY("vFlowTest"_Stz);
   
@@ -243,7 +243,7 @@ void Task::vFlowTest(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* throw -- throw c++ exception (for testing purposes)                        */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowThrow(MP_Task mpTask)
+void Step::vFlowThrow(MP_Task mpTask)
 {
   ENTRY("vFlowThrow"_Stz);
   

@@ -15,16 +15,16 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Docol(void)
 {
-  vAddStep("]"_Stz,                     &Task::vDocolCompiling);
-  vAddStep("["_Stz,                     &Task::vDocolInterpreting,   true );
-  vAddStep("docol.isCompiling"_Stz,     &Task::vDocolIsCompiling);
-  vAddStep("docol.isInterpreting"_Stz,  &Task::vDocolIsInterpreting);
+  vAddStep("]"_Stz,                     &Step::vDocolCompiling);
+  vAddStep("["_Stz,                     &Step::vDocolInterpreting,   true );
+  vAddStep("docol.isCompiling"_Stz,     &Step::vDocolIsCompiling);
+  vAddStep("docol.isInterpreting"_Stz,  &Step::vDocolIsInterpreting);
 }
 
 /*----------------------------------------------------------------------------*/
 /* ] -- enter compiler state                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vDocolCompiling(MP_Task mpTask)
+void Step::vDocolCompiling(MP_Task mpTask)
 {
   ENTRY("vDocolCompiling"_Stz);
   
@@ -36,7 +36,7 @@ void Task::vDocolCompiling(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* [ -- enter interpreter state                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vDocolInterpreting(MP_Task mpTask)
+void Step::vDocolInterpreting(MP_Task mpTask)
 {
   ENTRY("vDocolInterpreting"_Stz);
   
@@ -48,7 +48,7 @@ void Task::vDocolInterpreting(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* docol.isCompiling -- currently in compiling mode?                          */
 /*----------------------------------------------------------------------------*/
-void Task::vDocolIsCompiling(MP_Task mpTask)
+void Step::vDocolIsCompiling(MP_Task mpTask)
 {
   ENTRY("vDocolIsCompiling"_Stz);
   
@@ -62,7 +62,7 @@ void Task::vDocolIsCompiling(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* docol.isInterpreting -- currently in interpreting mode?                    */
 /*----------------------------------------------------------------------------*/
-void Task::vDocolIsInterpreting(MP_Task mpTask)
+void Step::vDocolIsInterpreting(MP_Task mpTask)
 {
   ENTRY("vDocolIsInterpreting"_Stz);
   

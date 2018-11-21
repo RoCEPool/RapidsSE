@@ -15,17 +15,17 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Queues(void)
 {
-  vAddStep("queues::QueuesExecutingLength"_Stz, &Task::vQueuesExecutingLength);
-  vAddStep("queues::QueuesReadyLength"_Stz,     &Task::vQueuesReadyLength);
-  vAddStep("queues::QueuesReadySlotLength"_Stz, &Task::vQueuesReadySlotLength);
-  vAddStep("queues::QueuesSleepingLength"_Stz,  &Task::vQueuesSleepingLength);
-  vAddStep("queues::QueuesWaitingLength"_Stz,   &Task::vQueuesWaitingLength);
+  vAddStep("queues::QueuesExecutingLength"_Stz, &Step::vQueuesExecutingLength);
+  vAddStep("queues::QueuesReadyLength"_Stz,     &Step::vQueuesReadyLength);
+  vAddStep("queues::QueuesReadySlotLength"_Stz, &Step::vQueuesReadySlotLength);
+  vAddStep("queues::QueuesSleepingLength"_Stz,  &Step::vQueuesSleepingLength);
+  vAddStep("queues::QueuesWaitingLength"_Stz,   &Step::vQueuesWaitingLength);
 }
 
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesExecutingLength -- get the executing queue length            */
 /*----------------------------------------------------------------------------*/
-void Task::vQueuesExecutingLength(MP_Task mpTask)
+void Step::vQueuesExecutingLength(MP_Task mpTask)
 {
   ENTRY("vQueuesExecutingLength"_Stz);
   
@@ -43,7 +43,7 @@ void Task::vQueuesExecutingLength(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesReadyLength -- get the ready queue length                    */
 /*----------------------------------------------------------------------------*/
-void Task::vQueuesReadyLength(MP_Task mpTask)
+void Step::vQueuesReadyLength(MP_Task mpTask)
 {
   ENTRY("vQueuesReadyLength"_Stz);
   
@@ -61,7 +61,7 @@ void Task::vQueuesReadyLength(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesReadySlotLength -- get the ready slot queue length           */
 /*----------------------------------------------------------------------------*/
-void Task::vQueuesReadySlotLength(MP_Task mpTask)
+void Step::vQueuesReadySlotLength(MP_Task mpTask)
 {
   ENTRY("vQueuesReadySlotLength"_Stz);
   
@@ -79,7 +79,7 @@ void Task::vQueuesReadySlotLength(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesSleepingLength -- get the sleeping queue length              */
 /*----------------------------------------------------------------------------*/
-void Task::vQueuesSleepingLength(MP_Task mpTask)
+void Step::vQueuesSleepingLength(MP_Task mpTask)
 {
   ENTRY("vQueuesSleepingLength"_Stz);
   
@@ -92,7 +92,7 @@ void Task::vQueuesSleepingLength(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* queues::QueuesWaitingLength -- get the sleeping queue length              */
 /*----------------------------------------------------------------------------*/
-void Task::vQueuesWaitingLength(MP_Task mpTask)
+void Step::vQueuesWaitingLength(MP_Task mpTask)
 {
   ENTRY("vQueuesWaitingLength"_Stz);
   

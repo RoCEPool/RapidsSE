@@ -13,20 +13,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_GroupBy(void)
 {
-  vAddStep("groupBy::new"_Stz,         &Task::vGroupByNew);
+  vAddStep("groupBy::new"_Stz,         &Step::vGroupByNew);
   
-  vAddStep("groupBy.applyBuffer"_Stz,  &Task::vGroupByApplyBuffer);
-  vAddStep("groupBy.applyEntry"_Stz,   &Task::vGroupByApplyEntry);
-  vAddStep("groupBy.applyPartial"_Stz, &Task::vGroupByApplyPartial);
-  vAddStep("groupBy.delete"_Stz,       &Task::vGroupByDelete);
-  vAddStep("groupBy.end"_Stz,          &Task::vGroupByEnd);
-  vAddStep("groupBy.start"_Stz,        &Task::vGroupByStart);
+  vAddStep("groupBy.applyBuffer"_Stz,  &Step::vGroupByApplyBuffer);
+  vAddStep("groupBy.applyEntry"_Stz,   &Step::vGroupByApplyEntry);
+  vAddStep("groupBy.applyPartial"_Stz, &Step::vGroupByApplyPartial);
+  vAddStep("groupBy.delete"_Stz,       &Step::vGroupByDelete);
+  vAddStep("groupBy.end"_Stz,          &Step::vGroupByEnd);
+  vAddStep("groupBy.start"_Stz,        &Step::vGroupByStart);
 }
 
 /*----------------------------------------------------------------------------*/
 /* groupBy.applyBuffer -- apply buffer of lineitems to accum                  */
 /*----------------------------------------------------------------------------*/
-void Task::vGroupByApplyBuffer(MP_Task mpTask)
+void Step::vGroupByApplyBuffer(MP_Task mpTask)
 {
   ENTRY("vGroupByApplyBuffer"_Stz);
   
@@ -48,7 +48,7 @@ void Task::vGroupByApplyBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* groupBy.applyEntry -- apply entry of lineitems to accum                    */
 /*----------------------------------------------------------------------------*/
-void Task::vGroupByApplyEntry(MP_Task mpTask)
+void Step::vGroupByApplyEntry(MP_Task mpTask)
 {
   ENTRY("vGroupByApplyBuffer"_Stz);
   
@@ -70,7 +70,7 @@ void Task::vGroupByApplyEntry(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* groupBy.applyPartial -- apply groupBy partial result of lineitems to accum  */
 /*----------------------------------------------------------------------------*/
-void Task::vGroupByApplyPartial(MP_Task mpTask)
+void Step::vGroupByApplyPartial(MP_Task mpTask)
 {
   ENTRY("vGroupByApplyBuffer"_Stz);
   
@@ -92,7 +92,7 @@ void Task::vGroupByApplyPartial(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* groupBy.delete -- delete group by                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vGroupByDelete(MP_Task mpTask)
+void Step::vGroupByDelete(MP_Task mpTask)
 {
   ENTRY("vGroupByDelete"_Stz);
   
@@ -109,7 +109,7 @@ void Task::vGroupByDelete(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* groupBy.end -- end group by processing                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vGroupByEnd(MP_Task mpTask)
+void Step::vGroupByEnd(MP_Task mpTask)
 {
   ENTRY("vGroupByEnd"_Stz);
   
@@ -126,7 +126,7 @@ void Task::vGroupByEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* groupBy::new -- group by new                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vGroupByNew(MP_Task mpTask)
+void Step::vGroupByNew(MP_Task mpTask)
 {
   ENTRY("vGroupByNew"_Stz);
   
@@ -140,7 +140,7 @@ void Task::vGroupByNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* groupBy.start -- start group by processing                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vGroupByStart(MP_Task mpTask)
+void Step::vGroupByStart(MP_Task mpTask)
 {
   ENTRY("vGroupByStart"_Stz);
   

@@ -15,23 +15,23 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_File(void)
 {
-  vAddStep("file::new"_Stz,       &Task::vFileNew);
+  vAddStep("file::new"_Stz,       &Step::vFileNew);
   
-  vAddStep("file.close"_Stz,      &Task::vFileClose);
-  vAddStep("file.delete"_Stz,     &Task::vFileDelete);
-  vAddStep("file.init"_Stz,       &Task::vFileInit);
-  vAddStep("file.open"_Stz,       &Task::vFileOpen);
-  vAddStep("file.path@"_Stz,      &Task::vFilePathGet);
-  vAddStep("file.path!"_Stz,      &Task::vFilePathSet);
-  vAddStep("file.read"_Stz,       &Task::vFileRead);
-  vAddStep("file.readRecord"_Stz, &Task::vFileReadRecord);
-  vAddStep("file.write"_Stz,      &Task::vFileWrite);
+  vAddStep("file.close"_Stz,      &Step::vFileClose);
+  vAddStep("file.delete"_Stz,     &Step::vFileDelete);
+  vAddStep("file.init"_Stz,       &Step::vFileInit);
+  vAddStep("file.open"_Stz,       &Step::vFileOpen);
+  vAddStep("file.path@"_Stz,      &Step::vFilePathGet);
+  vAddStep("file.path!"_Stz,      &Step::vFilePathSet);
+  vAddStep("file.read"_Stz,       &Step::vFileRead);
+  vAddStep("file.readRecord"_Stz, &Step::vFileReadRecord);
+  vAddStep("file.write"_Stz,      &Step::vFileWrite);
 }
 
 /*----------------------------------------------------------------------------*/
 /* file.close -- close a file ( file -- )                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vFileClose(MP_Task mpTask)
+void Step::vFileClose(MP_Task mpTask)
 {
 ENTRY("vFileClose"_Stz);
   
@@ -50,7 +50,7 @@ ENTRY("vFileClose"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.delete -- delete a file ( file -- )                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vFileDelete(MP_Task mpTask)
+void Step::vFileDelete(MP_Task mpTask)
 {
 ENTRY("vFileDelete"_Stz);
   
@@ -69,7 +69,7 @@ ENTRY("vFileDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.init -- initialise a file ( file -- )                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vFileInit(MP_Task mpTask)
+void Step::vFileInit(MP_Task mpTask)
 {
 ENTRY("vFileInit"_Stz);
   
@@ -88,7 +88,7 @@ ENTRY("vFileInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file::new -- new a file ( -- file )                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vFileNew(MP_Task mpTask)
+void Step::vFileNew(MP_Task mpTask)
 {
 ENTRY("vFileNew"_Stz);
   
@@ -105,7 +105,7 @@ ENTRY("vFileNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.open -- open a file ( mode file -- bool )                             */
 /*----------------------------------------------------------------------------*/
-void Task::vFileOpen(MP_Task mpTask)
+void Step::vFileOpen(MP_Task mpTask)
 {
 ENTRY("vFileOpen"_Stz);
   
@@ -131,7 +131,7 @@ ENTRY("vFileOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.path@ -- get file path ( file -- "<path>" )                           */
 /*----------------------------------------------------------------------------*/
-void Task::vFilePathGet(MP_Task mpTask)
+void Step::vFilePathGet(MP_Task mpTask)
 {
 ENTRY("vFilePathGet"_Stz);
   
@@ -152,7 +152,7 @@ ENTRY("vFilePathGet"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.path! -- set file path ( "<path>" file -- )                           */
 /*----------------------------------------------------------------------------*/
-void Task::vFilePathSet(MP_Task mpTask)
+void Step::vFilePathSet(MP_Task mpTask)
 {
 ENTRY("vFilePathSet"_Stz);
   
@@ -176,7 +176,7 @@ ENTRY("vFilePathSet"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.read -- read line from a file ( file -- "<line>" 1 | 0 )              */
 /*----------------------------------------------------------------------------*/
-void Task::vFileRead(MP_Task mpTask)
+void Step::vFileRead(MP_Task mpTask)
 {
 ENTRY("vFileRead"_Stz);
   
@@ -204,7 +204,7 @@ ENTRY("vFileRead"_Stz);
 /*----------------------------------------------------------------------------*/
 /* file.readRecord -- read record from file  ( file -- 1 | 0 )                */
 /*----------------------------------------------------------------------------*/
-void Task::vFileReadRecord(MP_Task mpTask)
+void Step::vFileReadRecord(MP_Task mpTask)
 {
   ENTRY("vFileRead"_Stz);
   
@@ -229,7 +229,7 @@ void Task::vFileReadRecord(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* file.write -- write to a file ( "<line>" file -- )                         */
 /*----------------------------------------------------------------------------*/
-void Task::vFileWrite(MP_Task mpTask)
+void Step::vFileWrite(MP_Task mpTask)
 {
 ENTRY("vFileWrite"_Stz);
   

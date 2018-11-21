@@ -15,18 +15,18 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Object(void)
 {
-  vAddStep("object.class@"_Stz,     &Task::vObjectClassFetch);
-  vAddStep("object.class!"_Stz,     &Task::vObjectClassStore);
-  vAddStep("object@"_Stz,           &Task::vObjectFetch);
-  vAddStep("object.magic!"_Stz,     &Task::vObjectMagicMark);
-  vAddStep("object!"_Stz,           &Task::vObjectStore);
-  vAddStep("object.wordbody!"_Stz,  &Task::vObjectWordBodySet);
+  vAddStep("object.class@"_Stz,     &Step::vObjectClassFetch);
+  vAddStep("object.class!"_Stz,     &Step::vObjectClassStore);
+  vAddStep("object@"_Stz,           &Step::vObjectFetch);
+  vAddStep("object.magic!"_Stz,     &Step::vObjectMagicMark);
+  vAddStep("object!"_Stz,           &Step::vObjectStore);
+  vAddStep("object.wordbody!"_Stz,  &Step::vObjectWordBodySet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* object.class@ -- fetch class number from object                            */
 /*----------------------------------------------------------------------------*/
-void Task::vObjectClassFetch(MP_Task mpTask)
+void Step::vObjectClassFetch(MP_Task mpTask)
 {
   ENTRY("vObjectClassFetch"_Stz);
   
@@ -45,7 +45,7 @@ void Task::vObjectClassFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object.class! -- store class number into object                            */
 /*----------------------------------------------------------------------------*/
-void Task::vObjectClassStore(MP_Task mpTask)
+void Step::vObjectClassStore(MP_Task mpTask)
 {
   ENTRY("vObjectClassStore"_Stz);
   
@@ -65,7 +65,7 @@ void Task::vObjectClassStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object.dump -- dump the given object                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vObjectDump(MP_Task mpTask)
+void Step::vObjectDump(MP_Task mpTask)
 {
   ENTRY("vObjectDump"_Stz);
   
@@ -85,7 +85,7 @@ void Task::vObjectDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object@ -- fetch object from return stack onto data stack                  */
 /*----------------------------------------------------------------------------*/
-void Task::vObjectFetch(MP_Task mpTask)
+void Step::vObjectFetch(MP_Task mpTask)
 {
   ENTRY("vObjectFetch"_Stz);
   
@@ -103,7 +103,7 @@ void Task::vObjectFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object.magic! -- put magic number into object                             */
 /*----------------------------------------------------------------------------*/
-void Task::vObjectMagicMark(MP_Task mpTask)
+void Step::vObjectMagicMark(MP_Task mpTask)
 {
   ENTRY("vObjectMagicMark"_Stz);
   
@@ -119,7 +119,7 @@ void Task::vObjectMagicMark(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object! -- replace object on return stack from data stack                  */
 /*----------------------------------------------------------------------------*/
-void Task::vObjectStore(MP_Task mpTask)
+void Step::vObjectStore(MP_Task mpTask)
 {
   ENTRY("vObjectStore"_Stz);
   
@@ -138,7 +138,7 @@ void Task::vObjectStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* object.wordbody! -- mark object as a part of a wordbody                    */
 /*----------------------------------------------------------------------------*/
-void Task::vObjectWordBodySet(MP_Task mpTask)
+void Step::vObjectWordBodySet(MP_Task mpTask)
 {
   ENTRY("vObjectWordBodySet"_Stz);
   

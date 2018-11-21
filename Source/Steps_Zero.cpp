@@ -15,18 +15,18 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Zero(void)
 {
-  vAddStep("0<"_Stz,              &Task::vZeroLess);
-  vAddStep("0<="_Stz,             &Task::vZeroLessEqual);
-  vAddStep("0=="_Stz,             &Task::vZeroEqual);
-  vAddStep("0!="_Stz,             &Task::vZeroNotEqual);
-  vAddStep("0>="_Stz,             &Task::vZeroGreaterEqual);
-  vAddStep("0>"_Stz,              &Task::vZeroGreater);
+  vAddStep("0<"_Stz,              &Step::vZeroLess);
+  vAddStep("0<="_Stz,             &Step::vZeroLessEqual);
+  vAddStep("0=="_Stz,             &Step::vZeroEqual);
+  vAddStep("0!="_Stz,             &Step::vZeroNotEqual);
+  vAddStep("0>="_Stz,             &Step::vZeroGreaterEqual);
+  vAddStep("0>"_Stz,              &Step::vZeroGreater);
 }
 
 /*----------------------------------------------------------------------------*/
 /* 0< -- test if top value is less than zero                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroLess(MP_Task mpTask)
+void Step::vZeroLess(MP_Task mpTask)
 {
   ENTRY("vZeroLess"_Stz);
   
@@ -45,7 +45,7 @@ void Task::vZeroLess(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* 0<= -- test if top value is less than or equal to zero                     */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroLessEqual(MP_Task mpTask)
+void Step::vZeroLessEqual(MP_Task mpTask)
 {
   ENTRY("vZeroLessEqual"_Stz);
   
@@ -64,7 +64,7 @@ void Task::vZeroLessEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* 0== -- test if top value is equal to zero / nullptr                        */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroEqual(MP_Task mpTask)
+void Step::vZeroEqual(MP_Task mpTask)
 {
   ENTRY("vZeroEqual"_Stz);
   
@@ -83,7 +83,7 @@ void Task::vZeroEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* 0!= -- test if top value is not equal to zero                              */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroNotEqual(MP_Task mpTask)
+void Step::vZeroNotEqual(MP_Task mpTask)
 {
   ENTRY("vZeroNotEqual"_Stz);
   
@@ -102,7 +102,7 @@ void Task::vZeroNotEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* zeroGreaterEqual -- test if top value is greater than or equal to zero     */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroGreaterEqual(MP_Task mpTask)
+void Step::vZeroGreaterEqual(MP_Task mpTask)
 {
   ENTRY("vZeroGreaterEqual"_Stz);
   
@@ -121,7 +121,7 @@ void Task::vZeroGreaterEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* 0> -- test if top value is greater than zero                              */
 /*----------------------------------------------------------------------------*/
-void Task::vZeroGreater(MP_Task mpTask)
+void Step::vZeroGreater(MP_Task mpTask)
 {
   ENTRY("vZeroGreater"_Stz);
   

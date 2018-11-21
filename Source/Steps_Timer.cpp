@@ -15,24 +15,24 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Timer(void)
 {
-  vAddStep("timer::new"_Stz,       &Task::vTimerNew);
+  vAddStep("timer::new"_Stz,       &Step::vTimerNew);
   
-  vAddStep("timer.delete"_Stz,    &Task::vTimerDelete);
-  vAddStep("timer.init"_Stz,      &Task::vTimerInit);
-  vAddStep("timer.microsecs"_Stz, &Task::vTimerMicrosecs);
-  vAddStep("timer.millisecs"_Stz, &Task::vTimerMillisecs);
-  vAddStep("timer.nanosecs"_Stz,  &Task::vTimerNanosecs);
-  vAddStep("timer.reset"_Stz,     &Task::vTimerReset);
-  vAddStep("timer.secs"_Stz,      &Task::vTimerSecs);
-  vAddStep("timer.start"_Stz,     &Task::vTimerStart);
-  vAddStep("timer.ticks"_Stz,     &Task::vTimerTicks);
-  vAddStep("timer.update"_Stz,    &Task::vTimerUpdate);
+  vAddStep("timer.delete"_Stz,    &Step::vTimerDelete);
+  vAddStep("timer.init"_Stz,      &Step::vTimerInit);
+  vAddStep("timer.microsecs"_Stz, &Step::vTimerMicrosecs);
+  vAddStep("timer.millisecs"_Stz, &Step::vTimerMillisecs);
+  vAddStep("timer.nanosecs"_Stz,  &Step::vTimerNanosecs);
+  vAddStep("timer.reset"_Stz,     &Step::vTimerReset);
+  vAddStep("timer.secs"_Stz,      &Step::vTimerSecs);
+  vAddStep("timer.start"_Stz,     &Step::vTimerStart);
+  vAddStep("timer.ticks"_Stz,     &Step::vTimerTicks);
+  vAddStep("timer.update"_Stz,    &Step::vTimerUpdate);
 }
 
 /*----------------------------------------------------------------------------*/
 /* timer.delete -- delete timer                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerDelete(MP_Task mpTask)
+void Step::vTimerDelete(MP_Task mpTask)
 {
 ENTRY("vTimeDelete"_Stz);
   
@@ -56,7 +56,7 @@ ENTRY("vTimeDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.init -- init timer                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerInit(MP_Task mpTask)
+void Step::vTimerInit(MP_Task mpTask)
 {
 ENTRY("vTimerInit"_Stz);
   
@@ -75,7 +75,7 @@ ENTRY("vTimerInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.microsecs -- get elapsed duration in microseconds                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerMicrosecs(MP_Task mpTask)
+void Step::vTimerMicrosecs(MP_Task mpTask)
 {
 ENTRY("vTimerMicrosecs"_Stz);
   
@@ -96,7 +96,7 @@ ENTRY("vTimerMicrosecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.millisecs -- get elapsed duration in milliseconds                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerMillisecs(MP_Task mpTask)
+void Step::vTimerMillisecs(MP_Task mpTask)
 {
 ENTRY("vTimerMillisecs"_Stz);
   
@@ -117,7 +117,7 @@ ENTRY("vTimerMillisecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.nanosecs -- get elapsed duration in nanoseconds                      */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerNanosecs(MP_Task mpTask)
+void Step::vTimerNanosecs(MP_Task mpTask)
 {
 ENTRY("vTimerNanosecs"_Stz);
   
@@ -138,7 +138,7 @@ ENTRY("vTimerNanosecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer::new -- new timer                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerNew(MP_Task mpTask)
+void Step::vTimerNew(MP_Task mpTask)
 {
 ENTRY("vTimerNew"_Stz);
 
@@ -158,7 +158,7 @@ ENTRY("vTimerNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.reset -- reset timer                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerReset(MP_Task mpTask)
+void Step::vTimerReset(MP_Task mpTask)
 {
 ENTRY("vTimerReset"_Stz);
   
@@ -177,7 +177,7 @@ ENTRY("vTimerReset"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.secs -- get elapsed duration in seconds                              */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerSecs(MP_Task mpTask)
+void Step::vTimerSecs(MP_Task mpTask)
 {
 ENTRY("vTimerSecs"_Stz);
   
@@ -198,7 +198,7 @@ ENTRY("vTimerSecs"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.start -- start timer                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerStart(MP_Task mpTask)
+void Step::vTimerStart(MP_Task mpTask)
 {
 ENTRY("vTimerStart"_Stz);
   
@@ -217,7 +217,7 @@ ENTRY("vTimerStart"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.ticks -- get elapsed ticks                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerTicks(MP_Task mpTask)
+void Step::vTimerTicks(MP_Task mpTask)
 {
 ENTRY("vTimerTicks"_Stz);
   
@@ -238,7 +238,7 @@ ENTRY("vTimerTicks"_Stz);
 /*----------------------------------------------------------------------------*/
 /* timer.update -- update timer                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTimerUpdate(MP_Task mpTask)
+void Step::vTimerUpdate(MP_Task mpTask)
 {
 ENTRY("vTimerUpdate"_Stz);
   

@@ -15,26 +15,26 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Encode(void)
 {
-  vAddStep("again"_Stz,               &Task::vEncodeAgain,         true );
-  vAddStep("ahead"_Stz,               &Task::vEncodeAhead,         true );
-  vAddStep("continue"_Stz,            &Task::vEncodeContinue,      true);
-  vAddStep("encodeCallPrimitive"_Stz, &Task::vEncodeCallPrimitive);
-  vAddStep("encodeCallRoutine"_Stz,   &Task::vEncodeCallRoutine);
-  vAddStep("encodePushValue"_Stz,     &Task::vEncodePushValue);
-  vAddStep("here"_Stz,                &Task::vEncodeHere);
-  vAddStep("if"_Stz,                  &Task::vEncodeIf,            true );
-  vAddStep("ifAgain"_Stz,             &Task::vEncodeIfAgain,       true );
-  vAddStep("loop"_Stz,                &Task::vEncodeLoop,          true );
-  vAddStep("+loop"_Stz,               &Task::vEncodeLoopPlus,      true );
-  vAddStep("next"_Stz,                &Task::vEncodeNext,          true );
-  vAddStep("then"_Stz,                &Task::vEncodeThen,          true );
-  vAddStep("until"_Stz,               &Task::vEncodeUntil,         true );
+  vAddStep("again"_Stz,               &Step::vEncodeAgain,         true );
+  vAddStep("ahead"_Stz,               &Step::vEncodeAhead,         true );
+  vAddStep("continue"_Stz,            &Step::vEncodeContinue,      true);
+  vAddStep("encodeCallPrimitive"_Stz, &Step::vEncodeCallPrimitive);
+  vAddStep("encodeCallRoutine"_Stz,   &Step::vEncodeCallRoutine);
+  vAddStep("encodePushValue"_Stz,     &Step::vEncodePushValue);
+  vAddStep("here"_Stz,                &Step::vEncodeHere);
+  vAddStep("if"_Stz,                  &Step::vEncodeIf,            true );
+  vAddStep("ifAgain"_Stz,             &Step::vEncodeIfAgain,       true );
+  vAddStep("loop"_Stz,                &Step::vEncodeLoop,          true );
+  vAddStep("+loop"_Stz,               &Step::vEncodeLoopPlus,      true );
+  vAddStep("next"_Stz,                &Step::vEncodeNext,          true );
+  vAddStep("then"_Stz,                &Step::vEncodeThen,          true );
+  vAddStep("until"_Stz,               &Step::vEncodeUntil,         true );
 }
 
 /*----------------------------------------------------------------------------*/
 /* again -- encode jump to known backward address                   immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeAgain(MP_Task mpTask)
+void Step::vEncodeAgain(MP_Task mpTask)
 {
   ENTRY("vEncodeAgain"_Stz); // ( dest -- / -- )
   
@@ -54,7 +54,7 @@ void Task::vEncodeAgain(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ahead -- encode jump to unknown forward address                  immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeAhead(MP_Task mpTask)
+void Step::vEncodeAhead(MP_Task mpTask)
 {
   ENTRY("vEncodeAhead"_Stz);// ( -- orig / -- )
   
@@ -73,7 +73,7 @@ void Task::vEncodeAhead(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* encodeCallPrimitive -- encode call to primitive step                       */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeCallPrimitive(MP_Task mpTask)
+void Step::vEncodeCallPrimitive(MP_Task mpTask)
 {
   ENTRY("vEncodeCallPrimitive"_Stz);
   
@@ -94,7 +94,7 @@ void Task::vEncodeCallPrimitive(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* encodeCallRoutine -- encode call to a routine of calls                     */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeCallRoutine(MP_Task mpTask)
+void Step::vEncodeCallRoutine(MP_Task mpTask)
 {
   ENTRY("vEncodeCallRoutine"_Stz);
   
@@ -117,7 +117,7 @@ void Task::vEncodeCallRoutine(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* encode -- encode jump on true to known backward address          immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeContinue(MP_Task mpTask)
+void Step::vEncodeContinue(MP_Task mpTask)
 {
   ENTRY("vEncodeContinue"_Stz); // ( -- orig / flag -- )
   
@@ -140,7 +140,7 @@ void Task::vEncodeContinue(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* here -- push address of last cell of word                        immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeHere(MP_Task mpTask)
+void Step::vEncodeHere(MP_Task mpTask)
 {
   ENTRY("vEncodeHere"_Stz);
   
@@ -157,7 +157,7 @@ void Task::vEncodeHere(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* if -- encode jump on false to unknown forward address            immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeIf(MP_Task mpTask)
+void Step::vEncodeIf(MP_Task mpTask)
 {
   ENTRY("vEncodeIf"_Stz); // ( -- orig / flag -- )
   
@@ -176,7 +176,7 @@ void Task::vEncodeIf(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ifAgain -- encode jump to known backward address (inside if)     immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeIfAgain(MP_Task mpTask)
+void Step::vEncodeIfAgain(MP_Task mpTask)
 {
   ENTRY("vEncodeIfAgain"_Stz); // ( dest -- / -- )
   
@@ -207,7 +207,7 @@ void Task::vEncodeIfAgain(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loop -- encode runtime for : LOOP                                immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeLoop(MP_Task mpTask)
+void Step::vEncodeLoop(MP_Task mpTask)
 {
   ENTRY("vEncodeLoop"_Stz);
   
@@ -255,7 +255,7 @@ void Task::vEncodeLoop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loopPlus -- encode runtime for : +LOOP                           immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeLoopPlus(MP_Task mpTask)
+void Step::vEncodeLoopPlus(MP_Task mpTask)
 {
   ENTRY("vEncodeLoopPlus"_Stz);
   
@@ -303,7 +303,7 @@ void Task::vEncodeLoopPlus(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* next -- encode runtime for : NEXT                                immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeNext(MP_Task mpTask)
+void Step::vEncodeNext(MP_Task mpTask)
 {
   ENTRY("vEncodeNext"_Stz);
   
@@ -328,7 +328,7 @@ void Task::vEncodeNext(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* encodePushValue -- encode push value                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodePushValue(MP_Task mpTask)
+void Step::vEncodePushValue(MP_Task mpTask)
 {
   ENTRY("vEncodePushValue"_Stz);
   
@@ -346,7 +346,7 @@ void Task::vEncodePushValue(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* then -- resolve jump to unknown forward address                  immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeThen(MP_Task mpTask)
+void Step::vEncodeThen(MP_Task mpTask)
 {
   ENTRY("vEncodeThen"_Stz);  // ( orig -- / -- )
   
@@ -366,7 +366,7 @@ void Task::vEncodeThen(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* until -- encode jump false to known backward address             immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeUntil(MP_Task mpTask)
+void Step::vEncodeUntil(MP_Task mpTask)
 {
   ENTRY("vEncodeUntil"_Stz); // ( dest -- / flag -- )
   

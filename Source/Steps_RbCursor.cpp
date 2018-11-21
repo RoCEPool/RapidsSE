@@ -15,24 +15,24 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RbCursor(void)
 {
-  vAddStep("rbCursor::new"_Stz,      &Task::vRbCursorNew);
+  vAddStep("rbCursor::new"_Stz,      &Step::vRbCursorNew);
   
-  vAddStep("rbCursor.begin"_Stz,     &Task::vRbCursorBegin);
-  vAddStep("rbCursor.delete"_Stz,    &Task::vRbCursorDelete);
-  vAddStep("rbCursor.end"_Stz,       &Task::vRbCursorEnd);
-  vAddStep("rbCursor.first"_Stz,     &Task::vRbCursorFirst);
-  vAddStep("rbCursor.get"_Stz,       &Task::vRbCursorGet);
-  vAddStep("rbCursor.init"_Stz,      &Task::vRbCursorInit);
-  vAddStep("rbCursor.next"_Stz,      &Task::vRbCursorNext);
-  vAddStep("rbCursor.rowBuffer"_Stz, &Task::vRbCursorRowBuffer);
-  vAddStep("rbCursor.table@"_Stz,    &Task::vRbCursorTableFetch);
-  vAddStep("rbCursor.table!"_Stz,    &Task::vRbCursorTableStore);
+  vAddStep("rbCursor.begin"_Stz,     &Step::vRbCursorBegin);
+  vAddStep("rbCursor.delete"_Stz,    &Step::vRbCursorDelete);
+  vAddStep("rbCursor.end"_Stz,       &Step::vRbCursorEnd);
+  vAddStep("rbCursor.first"_Stz,     &Step::vRbCursorFirst);
+  vAddStep("rbCursor.get"_Stz,       &Step::vRbCursorGet);
+  vAddStep("rbCursor.init"_Stz,      &Step::vRbCursorInit);
+  vAddStep("rbCursor.next"_Stz,      &Step::vRbCursorNext);
+  vAddStep("rbCursor.rowBuffer"_Stz, &Step::vRbCursorRowBuffer);
+  vAddStep("rbCursor.table@"_Stz,    &Step::vRbCursorTableFetch);
+  vAddStep("rbCursor.table!"_Stz,    &Step::vRbCursorTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* rbCursor.begin -- begin using row buffer cursor                            */
 /*----------------------------------------------------------------------------*/
-void Task::vRbCursorBegin(MP_Task mpTask)
+void Step::vRbCursorBegin(MP_Task mpTask)
 {
 ENTRY("vRbCursorBegin"_Stz);
   
@@ -55,7 +55,7 @@ ENTRY("vRbCursorBegin"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rbCursor.delete -- delete a row buffer cursor                              */
 /*----------------------------------------------------------------------------*/
-void Task::vRbCursorDelete(MP_Task mpTask)
+void Step::vRbCursorDelete(MP_Task mpTask)
 {
 ENTRY("vRbCursorDelete"_Stz);
   
@@ -77,7 +77,7 @@ ENTRY("vRbCursorDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rbCursor.end -- end using row buffer cursor                                */
 /*----------------------------------------------------------------------------*/
-void Task::vRbCursorEnd(MP_Task mpTask)
+void Step::vRbCursorEnd(MP_Task mpTask)
 {
 ENTRY("vRbCursorEnd"_Stz);
   
@@ -96,7 +96,7 @@ ENTRY("vRbCursorEnd"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rbCursor.first -- set to first                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vRbCursorFirst(MP_Task mpTask)
+void Step::vRbCursorFirst(MP_Task mpTask)
 {
 ENTRY("vRbCursorFirst"_Stz);
   
@@ -119,7 +119,7 @@ ENTRY("vRbCursorFirst"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rbCursor.get -- get current row buffer                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vRbCursorGet(MP_Task mpTask)
+void Step::vRbCursorGet(MP_Task mpTask)
 {
 ENTRY("vRbCursorGet"_Stz);
   
@@ -140,7 +140,7 @@ ENTRY("vRbCursorGet"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rbCursor.init -- init a row buffer cursor                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vRbCursorInit(MP_Task mpTask)
+void Step::vRbCursorInit(MP_Task mpTask)
 {
 ENTRY("vRbCursorInit"_Stz);
   
@@ -159,7 +159,7 @@ ENTRY("vRbCursorInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rbCursor::new -- new a row buffer cursor                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vRbCursorNew(MP_Task mpTask)
+void Step::vRbCursorNew(MP_Task mpTask)
 {
 ENTRY("vRbCursorNew"_Stz);
   
@@ -174,7 +174,7 @@ ENTRY("vRbCursorNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rbCursor.next -- advance to next                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vRbCursorNext(MP_Task mpTask)
+void Step::vRbCursorNext(MP_Task mpTask)
 {
 ENTRY("vRbCursorNext"_Stz);
   
@@ -197,7 +197,7 @@ ENTRY("vRbCursorNext"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rbCursor.rowBuffer -- get current rowBuffer                                */
 /*----------------------------------------------------------------------------*/
-void Task::vRbCursorRowBuffer(MP_Task mpTask)
+void Step::vRbCursorRowBuffer(MP_Task mpTask)
 {
   ENTRY("vRbCursorRowBuffer"_Stz);
   
@@ -219,7 +219,7 @@ void Task::vRbCursorRowBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* rbCursor.table@ -- fetch table                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vRbCursorTableFetch(MP_Task mpTask)
+void Step::vRbCursorTableFetch(MP_Task mpTask)
 {
 ENTRY("vRbCursorTableFetch"_Stz);
   
@@ -240,7 +240,7 @@ ENTRY("vRbCursorTableFetch"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rbCursor.table! -- store table                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vRbCursorTableStore(MP_Task mpTask)
+void Step::vRbCursorTableStore(MP_Task mpTask)
 {
 ENTRY("vRbCursorTableStore"_Stz);
   

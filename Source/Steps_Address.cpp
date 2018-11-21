@@ -19,15 +19,15 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Address(void)
 {
-  vAddStep("eql"_Stz,             &Task::vAddressEqual);
-  vAddStep("@"_Stz,               &Task::vAddressFetch);
-  vAddStep("!"_Stz,               &Task::vAddressStore);
+  vAddStep("eql"_Stz,             &Step::vAddressEqual);
+  vAddStep("@"_Stz,               &Step::vAddressFetch);
+  vAddStep("!"_Stz,               &Step::vAddressStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* eql -- test top two address on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
-void Task::vAddressEqual(MP_Task mpTask)
+void Step::vAddressEqual(MP_Task mpTask)
 {
   ENTRY("vAddressEql"_Stz);
   
@@ -50,7 +50,7 @@ void Task::vAddressEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* @ -- fetch value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAddressFetch(MP_Task mpTask)
+void Step::vAddressFetch(MP_Task mpTask)
 {
   ENTRY("vAddressFetch"_Stz);
   
@@ -93,7 +93,7 @@ void Task::vAddressFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ! -- store value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAddressStore(MP_Task mpTask)
+void Step::vAddressStore(MP_Task mpTask)
 {
   ENTRY("vAddressStore"_Stz);
   

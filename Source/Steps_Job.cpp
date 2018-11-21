@@ -16,82 +16,82 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
-  vAddStep("apiState::setPosition"_Stz,&Task::vApiStateSetPosition);
+  vAddStep("apiState::setPosition"_Stz,&Step::vApiStateSetPosition);
   
-  vAddStep("job::findOriginator"_Stz,  &Task::vJobFindOriginator);
-  vAddStep("job::findParticipant"_Stz, &Task::vJobFindParticipant);
+  vAddStep("job::findOriginator"_Stz,  &Step::vJobFindOriginator);
+  vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
   
-  vAddStep("job.acksRemaining!"_Stz,   &Task::vJobAcksRemaining);
-  vAddStep("job.addOriginator"_Stz,    &Task::vJobAddOriginator);
-  vAddStep("job.addParticipant"_Stz,   &Task::vJobAddParticipant);
-  vAddStep("job.class"_Stz,            &Task::vJobClass);
-  vAddStep("job.columnCount@"_Stz,     &Task::vJobColumnCountFetch);
-  vAddStep("job.columnIsPartKey"_Stz,  &Task::vJobColumnIsPartKey);
-  vAddStep("job.columnName@"_Stz,      &Task::vJobColumnNameFetch);
-  vAddStep("job.columnType@"_Stz,      &Task::vJobColumnTypeFetch);
-  vAddStep("job.decAcksRemaining"_Stz, &Task::vJobDecAcksRemaining);
-  vAddStep("job.delete"_Stz,           &Task::vJobDelete);
-  vAddStep("job.dicPath"_Stz,          &Task::vJobDicPath);
+  vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
+  vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
+  vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
+  vAddStep("job.class"_Stz,            &Step::vJobClass);
+  vAddStep("job.columnCount@"_Stz,     &Step::vJobColumnCountFetch);
+  vAddStep("job.columnIsPartKey"_Stz,  &Step::vJobColumnIsPartKey);
+  vAddStep("job.columnName@"_Stz,      &Step::vJobColumnNameFetch);
+  vAddStep("job.columnType@"_Stz,      &Step::vJobColumnTypeFetch);
+  vAddStep("job.decAcksRemaining"_Stz, &Step::vJobDecAcksRemaining);
+  vAddStep("job.delete"_Stz,           &Step::vJobDelete);
+  vAddStep("job.dicPath"_Stz,          &Step::vJobDicPath);
   
-  vAddStep("job.error!"_Stz,           &Task::vJobErrorStore);
-  vAddStep("job.error@"_Stz,           &Task::vJobErrorFetch);
-  vAddStep("job.execute@"_Stz,         &Task::vJobExecuteFetch);
+  vAddStep("job.error!"_Stz,           &Step::vJobErrorStore);
+  vAddStep("job.error@"_Stz,           &Step::vJobErrorFetch);
+  vAddStep("job.execute@"_Stz,         &Step::vJobExecuteFetch);
   
-  vAddStep("job.executingTask@"_Stz,   &Task::vJobExecutingTaskFetch);
+  vAddStep("job.executingTask@"_Stz,   &Step::vJobExecutingTaskFetch);
   
-  vAddStep("job.hasError"_Stz,         &Task::vJobHasError);
-  vAddStep("job.hasWorkingBuffer"_Stz, &Task::vJobHasWorkingBuffer);
-  vAddStep("job.id@"_Stz,              &Task::vJobIdFetch);
-  vAddStep("job.indexName@"_Stz,       &Task::vJobIndexNameFetch);
+  vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
+  vAddStep("job.hasWorkingBuffer"_Stz, &Step::vJobHasWorkingBuffer);
+  vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
+  vAddStep("job.indexName@"_Stz,       &Step::vJobIndexNameFetch);
   
-  vAddStep("job.IsExecuting"_Stz,      &Task::vJobIsExecuting);
+  vAddStep("job.IsExecuting"_Stz,      &Step::vJobIsExecuting);
   
-  vAddStep("job.jobClass"_Stz,         &Task::vJobJobClass);
-  vAddStep("job.metadata!"_Stz,        &Task::vJobMetadataStore);
-  vAddStep("job.newBegun"_Stz,         &Task::vJobNewBegun);
-  vAddStep("job.newCancel"_Stz,        &Task::vJobNewCancel);
-  vAddStep("job.newCancelled"_Stz,     &Task::vJobNewCancelled);
-  vAddStep("job.newEnd"_Stz,           &Task::vJobNewEnd);
-  vAddStep("job.newEnded"_Stz,         &Task::vJobNewEnded);
-  vAddStep("job.newExecute"_Stz,       &Task::vJobNewExecute);
-  vAddStep("job.newExecuted"_Stz,      &Task::vJobNewExecuted);
-  vAddStep("job.objectName@"_Stz,      &Task::vJobObjectNameFetch);
-  vAddStep("job.originatingTask@"_Stz, &Task::vJobOriginatingTaskFetch);
-  vAddStep("job.originatingTask!"_Stz, &Task::vJobOriginatingTaskStore);
-  vAddStep("job::originator@"_Stz,     &Task::vJobOriginatorFetch);
-  vAddStep("job.participant@"_Stz,     &Task::vJobParticipantFetch);
-  vAddStep("job.participant!"_Stz,     &Task::vJobParticipantStore);
-  vAddStep("job.partitions@"_Stz,      &Task::vJobPartitionsFetch);
-  vAddStep("job.postRecv"_Stz,         &Task::vJobPostRecv);
-  vAddStep("job.preSend"_Stz,          &Task::vJobPreSend);
-  vAddStep("job.recv"_Stz,             &Task::vJobRecv);
-  vAddStep("job.regionSize@"_Stz,      &Task::vJobRegionSizeFetch);
-  vAddStep("job.removeOriginator"_Stz, &Task::vJobRemoveOriginator);
-  vAddStep("job.removeParticipant"_Stz,&Task::vJobRemoveParticipant);
-  vAddStep("job.response@"_Stz,        &Task::vJobResponseFetch);
-  vAddStep("job.response!"_Stz,        &Task::vJobResponseStore);
-  vAddStep("job.rowsInvalid@"_Stz,     &Task::vJobRowsInvalidFetch);
-  vAddStep("job.rowsInvalid!"_Stz,     &Task::vJobRowsInvalidStore);
-  vAddStep("job.rowsProcessed@"_Stz,   &Task::vJobRowsProcessedFetch);
-  vAddStep("job.rowsProcessed!"_Stz,   &Task::vJobRowsProcessedStore);
-  vAddStep("job.rowsSkipped@"_Stz,     &Task::vJobRowsSkippedFetch);
-  vAddStep("job.rowsSkipped!"_Stz,     &Task::vJobRowsSkippedStore);
-  vAddStep("job.send"_Stz,             &Task::vJobRecv);
-  vAddStep("job.show"_Stz,             &Task::vJobShow);
-  vAddStep("job.signalConnector"_Stz,  &Task::vJobSignalConnector);
-  vAddStep("job.spawn"_Stz,            &Task::vJobSpawn);
-  vAddStep("job::this"_Stz,            &Task::vJobThis);
-  vAddStep("job.trace!"_Stz,           &Task::vJobTraceStore);
-  vAddStep("job.trace@"_Stz,           &Task::vJobTraceFetch);
-  vAddStep("job::waitParticipant"_Stz, &Task::vJobWaitParticipant);
-  vAddStep("job.workingBuffer@"_Stz,   &Task::vJobWorkingBufferFetch);
-  vAddStep("job.workingBuffer!"_Stz,   &Task::vJobWorkingBufferStore);
+  vAddStep("job.jobClass"_Stz,         &Step::vJobJobClass);
+  vAddStep("job.metadata!"_Stz,        &Step::vJobMetadataStore);
+  vAddStep("job.newBegun"_Stz,         &Step::vJobNewBegun);
+  vAddStep("job.newCancel"_Stz,        &Step::vJobNewCancel);
+  vAddStep("job.newCancelled"_Stz,     &Step::vJobNewCancelled);
+  vAddStep("job.newEnd"_Stz,           &Step::vJobNewEnd);
+  vAddStep("job.newEnded"_Stz,         &Step::vJobNewEnded);
+  vAddStep("job.newExecute"_Stz,       &Step::vJobNewExecute);
+  vAddStep("job.newExecuted"_Stz,      &Step::vJobNewExecuted);
+  vAddStep("job.objectName@"_Stz,      &Step::vJobObjectNameFetch);
+  vAddStep("job.originatingTask@"_Stz, &Step::vJobOriginatingTaskFetch);
+  vAddStep("job.originatingTask!"_Stz, &Step::vJobOriginatingTaskStore);
+  vAddStep("job::originator@"_Stz,     &Step::vJobOriginatorFetch);
+  vAddStep("job.participant@"_Stz,     &Step::vJobParticipantFetch);
+  vAddStep("job.participant!"_Stz,     &Step::vJobParticipantStore);
+  vAddStep("job.partitions@"_Stz,      &Step::vJobPartitionsFetch);
+  vAddStep("job.postRecv"_Stz,         &Step::vJobPostRecv);
+  vAddStep("job.preSend"_Stz,          &Step::vJobPreSend);
+  vAddStep("job.recv"_Stz,             &Step::vJobRecv);
+  vAddStep("job.regionSize@"_Stz,      &Step::vJobRegionSizeFetch);
+  vAddStep("job.removeOriginator"_Stz, &Step::vJobRemoveOriginator);
+  vAddStep("job.removeParticipant"_Stz,&Step::vJobRemoveParticipant);
+  vAddStep("job.response@"_Stz,        &Step::vJobResponseFetch);
+  vAddStep("job.response!"_Stz,        &Step::vJobResponseStore);
+  vAddStep("job.rowsInvalid@"_Stz,     &Step::vJobRowsInvalidFetch);
+  vAddStep("job.rowsInvalid!"_Stz,     &Step::vJobRowsInvalidStore);
+  vAddStep("job.rowsProcessed@"_Stz,   &Step::vJobRowsProcessedFetch);
+  vAddStep("job.rowsProcessed!"_Stz,   &Step::vJobRowsProcessedStore);
+  vAddStep("job.rowsSkipped@"_Stz,     &Step::vJobRowsSkippedFetch);
+  vAddStep("job.rowsSkipped!"_Stz,     &Step::vJobRowsSkippedStore);
+  vAddStep("job.send"_Stz,             &Step::vJobRecv);
+  vAddStep("job.show"_Stz,             &Step::vJobShow);
+  vAddStep("job.signalConnector"_Stz,  &Step::vJobSignalConnector);
+  vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
+  vAddStep("job::this"_Stz,            &Step::vJobThis);
+  vAddStep("job.trace!"_Stz,           &Step::vJobTraceStore);
+  vAddStep("job.trace@"_Stz,           &Step::vJobTraceFetch);
+  vAddStep("job::waitParticipant"_Stz, &Step::vJobWaitParticipant);
+  vAddStep("job.workingBuffer@"_Stz,   &Step::vJobWorkingBufferFetch);
+  vAddStep("job.workingBuffer!"_Stz,   &Step::vJobWorkingBufferStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* apiState::setPosition -- set last reported position                        */
 /*----------------------------------------------------------------------------*/
-void Task::vApiStateSetPosition(MP_Task mpTask)
+void Step::vApiStateSetPosition(MP_Task mpTask)
 {
   ENTRY("vApiStateSetPosition"_Stz);
   
@@ -117,7 +117,7 @@ void Task::vApiStateSetPosition(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.acksRemaining! -- set acks remaining for this job                      */
 /*----------------------------------------------------------------------------*/
-void Task::vJobAcksRemaining(MP_Task mpTask)
+void Step::vJobAcksRemaining(MP_Task mpTask)
 {
   ENTRY("vJobAcksRemaining"_Stz);
   
@@ -138,7 +138,7 @@ void Task::vJobAcksRemaining(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.addOriginator -- add job to originator job set                         */
 /*----------------------------------------------------------------------------*/
-void Task::vJobAddOriginator(MP_Task mpTask)
+void Step::vJobAddOriginator(MP_Task mpTask)
 {
   ENTRY("vJobAddOriginator"_Stz);
   
@@ -176,7 +176,7 @@ void Task::vJobAddOriginator(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.addParticipant -- add job to participant job set                       */
 /*----------------------------------------------------------------------------*/
-void Task::vJobAddParticipant(MP_Task mpTask)
+void Step::vJobAddParticipant(MP_Task mpTask)
 {
   ENTRY("vJobAddParticipant"_Stz);
   
@@ -210,7 +210,7 @@ void Task::vJobAddParticipant(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.columnCount@ -- fetch the no of columns of the create table job        */
 /*----------------------------------------------------------------------------*/
-void Task::vJobColumnCountFetch(MP_Task mpTask)
+void Step::vJobColumnCountFetch(MP_Task mpTask)
 {
   ENTRY("vJobColumnCountFetch"_Stz);
   
@@ -227,7 +227,7 @@ void Task::vJobColumnCountFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.columnIsPartKey -- return true if column is a partition by key        */
 /*----------------------------------------------------------------------------*/
-void Task::vJobColumnIsPartKey(MP_Task mpTask)
+void Step::vJobColumnIsPartKey(MP_Task mpTask)
 {
   ENTRY("vJobColumnIsPartKey"_Stz);
   
@@ -248,7 +248,7 @@ void Task::vJobColumnIsPartKey(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.columnName@ -- fetch the name of the column of the create table job    */
 /*----------------------------------------------------------------------------*/
-void Task::vJobColumnNameFetch(MP_Task mpTask)
+void Step::vJobColumnNameFetch(MP_Task mpTask)
 {
   ENTRY("vJobColumnNameFetch"_Stz);
   
@@ -269,7 +269,7 @@ void Task::vJobColumnNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.columnType@ -- fetch column type from create table job                 */
 /*----------------------------------------------------------------------------*/
-void Task::vJobColumnTypeFetch(MP_Task mpTask)
+void Step::vJobColumnTypeFetch(MP_Task mpTask)
 {
   ENTRY("vJobColumnTypeFetch"_Stz);
   
@@ -290,7 +290,7 @@ void Task::vJobColumnTypeFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.class -- get the class of the job                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vJobClass(MP_Task mpTask)
+void Step::vJobClass(MP_Task mpTask)
 {
   ENTRY("vJobClass"_Stz);
   
@@ -309,7 +309,7 @@ void Task::vJobClass(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.delete -- delete the job                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vJobDelete(MP_Task mpTask)
+void Step::vJobDelete(MP_Task mpTask)
 {
   ENTRY("vJobDelete"_Stz);
   
@@ -334,7 +334,7 @@ void Task::vJobDelete(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.decAcksRemaining -- decrement acks remaining for this job              */
 /*----------------------------------------------------------------------------*/
-void Task::vJobDecAcksRemaining(MP_Task mpTask)
+void Step::vJobDecAcksRemaining(MP_Task mpTask)
 {
   ENTRY("vJobDecAcksRemaining"_Stz);
   
@@ -353,7 +353,7 @@ void Task::vJobDecAcksRemaining(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.dicPath -- get job dic path                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vJobDicPath(MP_Task mpTask)
+void Step::vJobDicPath(MP_Task mpTask)
 {
   ENTRY("vJobDicPath"_Stz);
   
@@ -370,7 +370,7 @@ void Task::vJobDicPath(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.error@ -- fetch the job error for the node                             */
 /*----------------------------------------------------------------------------*/
-void Task::vJobErrorFetch(MP_Task mpTask)
+void Step::vJobErrorFetch(MP_Task mpTask)
 {
   ENTRY("vJobErrorFetch"_Stz);
   
@@ -391,7 +391,7 @@ void Task::vJobErrorFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.error! -- store the job error for the node                             */
 /*----------------------------------------------------------------------------*/
-void Task::vJobErrorStore(MP_Task mpTask)
+void Step::vJobErrorStore(MP_Task mpTask)
 {
   ENTRY("vJobErrorStore"_Stz);
   
@@ -417,7 +417,7 @@ void Task::vJobErrorStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.execute@ -- fetch the job word to be executed                          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobExecuteFetch(MP_Task mpTask)
+void Step::vJobExecuteFetch(MP_Task mpTask)
 {
   ENTRY("vJobExecuteFetch"_Stz);
   
@@ -454,7 +454,7 @@ void Task::vJobExecuteFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.exectingTask@ -- fetch the job executing task                          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobExecutingTaskFetch(MP_Task mpTask)
+void Step::vJobExecutingTaskFetch(MP_Task mpTask)
 {
   ENTRY("vJobExecutingTaskFetch"_Stz);
   
@@ -471,7 +471,7 @@ void Task::vJobExecutingTaskFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job::findOriginator -- find job from originator job set                     */
 /*----------------------------------------------------------------------------*/
-void Task::vJobFindOriginator(MP_Task mpTask)
+void Step::vJobFindOriginator(MP_Task mpTask)
 {
   ENTRY("vJobFindOriginator"_Stz);
   
@@ -508,7 +508,7 @@ void Task::vJobFindOriginator(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job::findParticipant -- find job from participant job set                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJobFindParticipant(MP_Task mpTask)
+void Step::vJobFindParticipant(MP_Task mpTask)
 {
   ENTRY("vJobFindParticipant"_Stz);
   
@@ -551,7 +551,7 @@ void Task::vJobFindParticipant(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.hasError -- return true if job has error                               */
 /*----------------------------------------------------------------------------*/
-void Task::vJobHasError(MP_Task mpTask)
+void Step::vJobHasError(MP_Task mpTask)
 {
   ENTRY("vJobErrorFetch"_Stz);
   
@@ -568,7 +568,7 @@ void Task::vJobHasError(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.hasWorkingBuffer -- return true if job has a working buffer            */
 /*----------------------------------------------------------------------------*/
-void Task::vJobHasWorkingBuffer(MP_Task mpTask)
+void Step::vJobHasWorkingBuffer(MP_Task mpTask)
 {
   ENTRY("vJobHasWorkingBuffer"_Stz);
   
@@ -590,7 +590,7 @@ void Task::vJobHasWorkingBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.id@ -- fetch the job id of the job                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vJobIdFetch(MP_Task mpTask)
+void Step::vJobIdFetch(MP_Task mpTask)
 {
   ENTRY("vJobIdFetch"_Stz);
   
@@ -607,7 +607,7 @@ void Task::vJobIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.indexName@ -- fetch the index name of the job                          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobIndexNameFetch(MP_Task mpTask)
+void Step::vJobIndexNameFetch(MP_Task mpTask)
 {
   ENTRY("vJobIndexNameFetch"_Stz);
   
@@ -624,7 +624,7 @@ void Task::vJobIndexNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.isExecuting -- is the job executing (SEED_EXE)                         */
 /*----------------------------------------------------------------------------*/
-void Task::vJobIsExecuting(MP_Task mpTask)
+void Step::vJobIsExecuting(MP_Task mpTask)
 {
   ENTRY("vJobIsExecuting"_Stz);
   
@@ -642,7 +642,7 @@ void Task::vJobIsExecuting(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.jobClass -- get the JobClass of the job                                */
 /*----------------------------------------------------------------------------*/
-void Task::vJobJobClass(MP_Task mpTask)
+void Step::vJobJobClass(MP_Task mpTask)
 {
   ENTRY("vJobJobClass"_Stz);
   
@@ -661,7 +661,7 @@ void Task::vJobJobClass(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.metadata! -- store meta data string in the job                         */
 /*----------------------------------------------------------------------------*/
-void Task::vJobMetadataStore(MP_Task mpTask)
+void Step::vJobMetadataStore(MP_Task mpTask)
 {
   ENTRY("vJobMetadataStore"_Stz);
   
@@ -682,7 +682,7 @@ void Task::vJobMetadataStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.newBegun -- new a job__begun for this job                              */
 /*----------------------------------------------------------------------------*/
-void Task::vJobNewBegun(MP_Task mpTask)
+void Step::vJobNewBegun(MP_Task mpTask)
 {
   ENTRY("vJobNewBegun"_Stz);
   
@@ -705,7 +705,7 @@ void Task::vJobNewBegun(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.newCancel -- new a job__cancel for this job                            */
 /*----------------------------------------------------------------------------*/
-void Task::vJobNewCancel(MP_Task mpTask)
+void Step::vJobNewCancel(MP_Task mpTask)
 {
   ENTRY("vJobNewCancel"_Stz);
   
@@ -728,7 +728,7 @@ void Task::vJobNewCancel(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.newCancelled -- new a job__cancelled for this job                      */
 /*----------------------------------------------------------------------------*/
-void Task::vJobNewCancelled(MP_Task mpTask)
+void Step::vJobNewCancelled(MP_Task mpTask)
 {
   ENTRY("vJobNewCancelled"_Stz);
   
@@ -751,7 +751,7 @@ void Task::vJobNewCancelled(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.newEnd - new a job__end for this job                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJobNewEnd(MP_Task mpTask)
+void Step::vJobNewEnd(MP_Task mpTask)
 {
   ENTRY("vJobNewEnd"_Stz);
   
@@ -774,7 +774,7 @@ void Task::vJobNewEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.newEnded -- new a job__ended for this job                              */
 /*----------------------------------------------------------------------------*/
-void Task::vJobNewEnded(MP_Task mpTask)
+void Step::vJobNewEnded(MP_Task mpTask)
 {
   ENTRY("vJobNewEnded"_Stz);
   
@@ -797,7 +797,7 @@ void Task::vJobNewEnded(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.newExecute -- new a job__execute for this job                          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobNewExecute(MP_Task mpTask)
+void Step::vJobNewExecute(MP_Task mpTask)
 {
   ENTRY("vJobNewExecute"_Stz);
   
@@ -820,7 +820,7 @@ void Task::vJobNewExecute(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.newExecuted -- new a job__executed for this job                        */
 /*----------------------------------------------------------------------------*/
-void Task::vJobNewExecuted(MP_Task mpTask)
+void Step::vJobNewExecuted(MP_Task mpTask)
 {
   ENTRY("vJobNewExecuted"_Stz);
   
@@ -844,7 +844,7 @@ void Task::vJobNewExecuted(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.objectName@ -- fetch the object name of the job                        */
 /*----------------------------------------------------------------------------*/
-void Task::vJobObjectNameFetch(MP_Task mpTask)
+void Step::vJobObjectNameFetch(MP_Task mpTask)
 {
   ENTRY("vJobObjectNameFetch"_Stz);
   
@@ -861,7 +861,7 @@ void Task::vJobObjectNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.originatingTask@ -- fetch the originating task from the job            */
 /*----------------------------------------------------------------------------*/
-void Task::vJobOriginatingTaskFetch(MP_Task mpTask)
+void Step::vJobOriginatingTaskFetch(MP_Task mpTask)
 {
   ENTRY("vJobOriginatingTaskFetch"_Stz);
   
@@ -878,7 +878,7 @@ void Task::vJobOriginatingTaskFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.originatingTask! -- store the originating task in the job              */
 /*----------------------------------------------------------------------------*/
-void Task::vJobOriginatingTaskStore(MP_Task mpTask)
+void Step::vJobOriginatingTaskStore(MP_Task mpTask)
 {
   ENTRY("vJobOriginatingTaskStore"_Stz);
   
@@ -901,7 +901,7 @@ void Task::vJobOriginatingTaskStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job::originator@ -- fetch the originator node from the job                  */
 /*----------------------------------------------------------------------------*/
-void Task::vJobOriginatorFetch(MP_Task mpTask)
+void Step::vJobOriginatorFetch(MP_Task mpTask)
 {
   ENTRY("vJobOriginatorFetch"_Stz);
   
@@ -917,7 +917,7 @@ void Task::vJobOriginatorFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.participant@ -- fetch the participant node from the job                */
 /*----------------------------------------------------------------------------*/
-void Task::vJobParticipantFetch(MP_Task mpTask)
+void Step::vJobParticipantFetch(MP_Task mpTask)
 {
   ENTRY("vJobRemoveParticipant"_Stz);
   
@@ -934,7 +934,7 @@ void Task::vJobParticipantFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.partcipant! -- store the participant node in the job                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJobParticipantStore(MP_Task mpTask)
+void Step::vJobParticipantStore(MP_Task mpTask)
 {
   ENTRY("vJobParticipantStore"_Stz);
   
@@ -955,7 +955,7 @@ void Task::vJobParticipantStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.partitions@ -- fetch partitions from job_sanity                        */
 /*----------------------------------------------------------------------------*/
-void Task::vJobPartitionsFetch(MP_Task mpTask)
+void Step::vJobPartitionsFetch(MP_Task mpTask)
 {
   ENTRY("vJobParticipantResponseFetch"_Stz);
   
@@ -972,7 +972,7 @@ void Task::vJobPartitionsFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.postRecv -- run the post-receive function of the job                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJobPostRecv(MP_Task mpTask)
+void Step::vJobPostRecv(MP_Task mpTask)
 {
   ENTRY("vJobPostRecv"_Stz);
   
@@ -998,7 +998,7 @@ void Task::vJobPostRecv(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.preSend -- run the pre-send function of the job                        */
 /*----------------------------------------------------------------------------*/
-void Task::vJobPreSend(MP_Task mpTask)
+void Step::vJobPreSend(MP_Task mpTask)
 {
   ENTRY("vJobPreSend"_Stz);
   
@@ -1018,7 +1018,7 @@ void Task::vJobPreSend(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.recv -- post-receive function                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRecv(MP_Task mpTask)
+void Step::vJobRecv(MP_Task mpTask)
 {
   ENTRY("vJobRecv"_Stz);
   
@@ -1040,7 +1040,7 @@ void Task::vJobRecv(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.removeOriginator -- remove job from originator job set                 */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRemoveOriginator(MP_Task mpTask)
+void Step::vJobRemoveOriginator(MP_Task mpTask)
 {
   ENTRY("vJobRemoveOriginator"_Stz);
   
@@ -1082,7 +1082,7 @@ void Task::vJobRemoveOriginator(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.removeParticipant -- remove job from participant job set               */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRemoveParticipant(MP_Task mpTask)
+void Step::vJobRemoveParticipant(MP_Task mpTask)
 {
   ENTRY("vJobRemoveParticipant"_Stz);
   
@@ -1123,7 +1123,7 @@ void Task::vJobRemoveParticipant(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.regionSizeResponse@ -- fetch region size from job_sanity               */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRegionSizeFetch(MP_Task mpTask)
+void Step::vJobRegionSizeFetch(MP_Task mpTask)
 {
   ENTRY("vJobRegionSizeFetch"_Stz);
   
@@ -1140,7 +1140,7 @@ void Task::vJobRegionSizeFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.response@ -- fetch the job response from a node                        */
 /*----------------------------------------------------------------------------*/
-void Task::vJobResponseFetch(MP_Task mpTask)
+void Step::vJobResponseFetch(MP_Task mpTask)
 {
   ENTRY("vJobResponseFetch"_Stz);
   
@@ -1161,7 +1161,7 @@ void Task::vJobResponseFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.response! -- store the job response from a node                        */
 /*----------------------------------------------------------------------------*/
-void Task::vJobResponseStore(MP_Task mpTask)
+void Step::vJobResponseStore(MP_Task mpTask)
 {
   ENTRY("vJobResponseStore"_Stz);
   
@@ -1186,7 +1186,7 @@ void Task::vJobResponseStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.rowsInvalid@ -- fetch the rows invalid by the job from a node          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRowsInvalidFetch(MP_Task mpTask)
+void Step::vJobRowsInvalidFetch(MP_Task mpTask)
 {
   ENTRY("vJobRowsInvalidFetch"_Stz);
   
@@ -1208,7 +1208,7 @@ void Task::vJobRowsInvalidFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.rowsInvalid! -- store the rows invalid by the job from a node          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRowsInvalidStore(MP_Task mpTask)
+void Step::vJobRowsInvalidStore(MP_Task mpTask)
 {
   ENTRY("vJobRowsInvalidStore"_Stz);
   
@@ -1233,7 +1233,7 @@ void Task::vJobRowsInvalidStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.rowsProcessed@ -- fetch the rows processed by the job from a node      */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRowsProcessedFetch(MP_Task mpTask)
+void Step::vJobRowsProcessedFetch(MP_Task mpTask)
 {
   ENTRY("vJobRowsProcessedFetch"_Stz);
   
@@ -1255,7 +1255,7 @@ void Task::vJobRowsProcessedFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.rowsProcessed! -- store the rows processed by the job from a node      */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRowsProcessedStore(MP_Task mpTask)
+void Step::vJobRowsProcessedStore(MP_Task mpTask)
 {
   ENTRY("vJobRowsProcessedStore"_Stz);
   
@@ -1280,7 +1280,7 @@ void Task::vJobRowsProcessedStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.rowsSkipped@ -- fetch the rows skipped by the job from a node          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRowsSkippedFetch(MP_Task mpTask)
+void Step::vJobRowsSkippedFetch(MP_Task mpTask)
 {
   ENTRY("vJobRowsSkippedFetch"_Stz);
   
@@ -1303,7 +1303,7 @@ void Task::vJobRowsSkippedFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.rowsSkipped! -- store the rows skipped by the job from a node          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobRowsSkippedStore(MP_Task mpTask)
+void Step::vJobRowsSkippedStore(MP_Task mpTask)
 {
   ENTRY("vJobRowsSkippedStore"_Stz);
   
@@ -1328,7 +1328,7 @@ void Task::vJobRowsSkippedStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.send -- pre-send of job                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vJobSend(MP_Task mpTask)
+void Step::vJobSend(MP_Task mpTask)
 {
   ENTRY("vJobSend"_Stz);
   
@@ -1349,7 +1349,7 @@ void Task::vJobSend(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.show -- show the job                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJobShow(MP_Task mpTask)
+void Step::vJobShow(MP_Task mpTask)
 {
   ENTRY("vJobShow"_Stz);
   
@@ -1371,7 +1371,7 @@ void Task::vJobShow(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.signalConnector -- signal the connector thread                         */
 /*----------------------------------------------------------------------------*/
-void Task::vJobSignalConnector(MP_Task mpTask)
+void Step::vJobSignalConnector(MP_Task mpTask)
 {
   ENTRY("vJobSignalConnector"_Stz);
   
@@ -1430,7 +1430,7 @@ void Task::vJobSignalConnector(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.spawn -- spawn the job on the stack                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vJobSpawn(MP_Task mpTask)
+void Step::vJobSpawn(MP_Task mpTask)
 {
   ENTRY("vJobSpawn"_Stz);
   
@@ -1451,7 +1451,7 @@ void Task::vJobSpawn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job::this -- get this job from this task                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJobThis(MP_Task mpTask)
+void Step::vJobThis(MP_Task mpTask)
 {
   ENTRY("vJobThis"_Stz);
   
@@ -1465,7 +1465,7 @@ void Task::vJobThis(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.trace@ -- fetch the job trace                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobTraceFetch(MP_Task mpTask)
+void Step::vJobTraceFetch(MP_Task mpTask)
 {
   ENTRY("vJobTraceFetch"_Stz);
   
@@ -1484,7 +1484,7 @@ void Task::vJobTraceFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.trace! -- store the job trace                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vJobTraceStore(MP_Task mpTask)
+void Step::vJobTraceStore(MP_Task mpTask)
 {
   ENTRY("vJobTraceStore"_Stz);
   
@@ -1505,7 +1505,7 @@ void Task::vJobTraceStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job::waitParticipant -- wait for participant till found in participant jobs*/
 /*----------------------------------------------------------------------------*/
-void Task::vJobWaitParticipant(MP_Task mpTask)
+void Step::vJobWaitParticipant(MP_Task mpTask)
 {
   ENTRY("vJobWaitParticipant"_Stz);
   
@@ -1541,7 +1541,7 @@ void Task::vJobWaitParticipant(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.workingBuffer! -- store working buffer in the job                      */
 /*----------------------------------------------------------------------------*/
-void Task::vJobWorkingBufferStore(MP_Task mpTask)
+void Step::vJobWorkingBufferStore(MP_Task mpTask)
 {
   ENTRY("vJobWorkingBufferStore"_Stz);
   
@@ -1563,7 +1563,7 @@ void Task::vJobWorkingBufferStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job.workingBuffer@ -- fetch working buffer from job                        */
 /*----------------------------------------------------------------------------*/
-void Task::vJobWorkingBufferFetch(MP_Task mpTask)
+void Step::vJobWorkingBufferFetch(MP_Task mpTask)
 {
   ENTRY("vJobWorkingBufferStore"_Stz);
   

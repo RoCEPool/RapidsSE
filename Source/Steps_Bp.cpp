@@ -18,30 +18,30 @@ i8 giCountObjects[CN_ENUMS];
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Bp(void)
 {
-  vAddStep("bp::analyze"_Stz,     &Task::vBpAnalyze);
-  vAddStep("bp::dump"_Stz,        &Task::vBpDump);
-  vAddStep("bp::freeBuffers"_Stz, &Task::vFreeBuffers);
-  vAddStep("bp::freePercent"_Stz, &Task::vFreePercent);
-  vAddStep("bp::freeSpace"_Stz,   &Task::vFreeSpace);
-  vAddStep("bp::inUseSpace"_Stz,  &Task::vInUseSpace);
-  vAddStep("bp::readBufferPool"_Stz,&Task::vBpReadBufferPool);
-  vAddStep("bp::snapshot"_Stz,    &Task::vSnapshot);
-  vAddStep("bp::totalSpace"_Stz,  &Task::vTotalSpace);
-  vAddStep("bp::writeBufferPool"_Stz,&Task::vBpWriteBufferPool);
+  vAddStep("bp::analyze"_Stz,     &Step::vBpAnalyze);
+  vAddStep("bp::dump"_Stz,        &Step::vBpDump);
+  vAddStep("bp::freeBuffers"_Stz, &Step::vFreeBuffers);
+  vAddStep("bp::freePercent"_Stz, &Step::vFreePercent);
+  vAddStep("bp::freeSpace"_Stz,   &Step::vFreeSpace);
+  vAddStep("bp::inUseSpace"_Stz,  &Step::vInUseSpace);
+  vAddStep("bp::readBufferPool"_Stz,&Step::vBpReadBufferPool);
+  vAddStep("bp::snapshot"_Stz,    &Step::vSnapshot);
+  vAddStep("bp::totalSpace"_Stz,  &Step::vTotalSpace);
+  vAddStep("bp::writeBufferPool"_Stz,&Step::vBpWriteBufferPool);
 
-  vAddStep("bpa"_Stz,             &Task::vBpAnalyze);
-  vAddStep("bpd"_Stz,             &Task::vBpDump);
-  vAddStep("bpr"_Stz,             &Task::vBpReadBufferPool);
-  vAddStep("bpw"_Stz,             &Task::vBpWriteBufferPool);
+  vAddStep("bpa"_Stz,             &Step::vBpAnalyze);
+  vAddStep("bpd"_Stz,             &Step::vBpDump);
+  vAddStep("bpr"_Stz,             &Step::vBpReadBufferPool);
+  vAddStep("bpw"_Stz,             &Step::vBpWriteBufferPool);
  
-  vAddStep("epochDump"_Stz,       &Task::vBpEpochDump);
-  vAddStep("epochTake"_Stz,       &Task::vBpEpochTake);
+  vAddStep("epochDump"_Stz,       &Step::vBpEpochDump);
+  vAddStep("epochTake"_Stz,       &Step::vBpEpochTake);
 }
 
 /*----------------------------------------------------------------------------*/
 /* bp.analyze -- buffer pool analyze                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vBpAnalyze(MP_Task mpTask)
+void Step::vBpAnalyze(MP_Task mpTask)
 {
   ENTRY("vBpa"_Stz);
   
@@ -57,7 +57,7 @@ void Task::vBpAnalyze(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp.dump -- dump of objects in the buffer pool                              */
 /*----------------------------------------------------------------------------*/
-void Task::vBpDump(MP_Task mpTask)
+void Step::vBpDump(MP_Task mpTask)
 {
   ENTRY("vBpDump"_Stz);
   
@@ -72,7 +72,7 @@ void Task::vBpDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* epochDump -- dump an epoch                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vBpEpochDump(MP_Task mpTask)
+void Step::vBpEpochDump(MP_Task mpTask)
 {
   ENTRY("vBpEpochDump"_Stz);
   
@@ -109,7 +109,7 @@ void Task::vBpEpochDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* epochTake -- take an epoch                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vBpEpochTake(MP_Task mpTask)
+void Step::vBpEpochTake(MP_Task mpTask)
 {
   ENTRY("vBpEpochTake"_Stz);
   
@@ -127,7 +127,7 @@ void Task::vBpEpochTake(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp.readBufferPool -- read the buffers from the file                        */
 /*----------------------------------------------------------------------------*/
-void Task::vBpReadBufferPool(MP_Task mpTask)
+void Step::vBpReadBufferPool(MP_Task mpTask)
 {
   ENTRY("vBpReadBufferPool"_Stz);
   
@@ -143,7 +143,7 @@ void Task::vBpReadBufferPool(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp.writeBufferPool -- write the buffer pool buffers to a file              */
 /*----------------------------------------------------------------------------*/
-void Task::vBpWriteBufferPool(MP_Task mpTask)
+void Step::vBpWriteBufferPool(MP_Task mpTask)
 {
   ENTRY("vBpWriteBufferPool"_Stz);
   
@@ -161,7 +161,7 @@ void Task::vBpWriteBufferPool(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freeBuffers -- push number of free buffers in buffer pool onto stack   */
 /*----------------------------------------------------------------------------*/
-void Task::vFreeBuffers(MP_Task mpTask)
+void Step::vFreeBuffers(MP_Task mpTask)
 {
   ENTRY("vFreeBuffers"_Stz);
   
@@ -175,7 +175,7 @@ void Task::vFreeBuffers(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freePercent -- push free percent of buffer pool onto stack              */
 /*----------------------------------------------------------------------------*/
-void Task::vFreePercent(MP_Task mpTask)
+void Step::vFreePercent(MP_Task mpTask)
 {
   ENTRY("vFreePercent"_Stz);
   
@@ -189,7 +189,7 @@ void Task::vFreePercent(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::freeSpace -- push free space in buffer pool onto stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vFreeSpace(MP_Task mpTask)
+void Step::vFreeSpace(MP_Task mpTask)
 {
   ENTRY("vFreeSpace"_Stz);
   
@@ -204,7 +204,7 @@ void Task::vFreeSpace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::inUseSpace -- push in-use space in buffer pool onto stack              */
 /*----------------------------------------------------------------------------*/
-void Task::vInUseSpace(MP_Task mpTask)
+void Step::vInUseSpace(MP_Task mpTask)
 {
   ENTRY("vInUseSpace"_Stz);
   
@@ -221,7 +221,7 @@ void Task::vInUseSpace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::snapshot -- push snapshot of buffer pool onto stack                    */
 /*----------------------------------------------------------------------------*/
-void Task::vSnapshot(MP_Task mpTask)
+void Step::vSnapshot(MP_Task mpTask)
 {
   ENTRY("vSnapshot"_Stz);
   
@@ -261,7 +261,7 @@ void Task::vSnapshot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bp::totalSpace -- push total space in buffer pool onto stack               */
 /*----------------------------------------------------------------------------*/
-void Task::vTotalSpace(MP_Task mpTask)
+void Step::vTotalSpace(MP_Task mpTask)
 {
   ENTRY("vTotalSpace"_Stz);
   

@@ -13,15 +13,15 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AttachMap(void)
 {
-  vAddStep("attachmap::attachmap@"_Stz,   &Task::vAttachMapFetch);
-  vAddStep("attachmap::attachmap!"_Stz,   &Task::vAttachMapStore);
-  vAddStep("attachmap::tenants@"_Stz,     &Task::vAttachMapTenantsFetch);
+  vAddStep("attachmap::attachmap@"_Stz,   &Step::vAttachMapFetch);
+  vAddStep("attachmap::attachmap!"_Stz,   &Step::vAttachMapStore);
+  vAddStep("attachmap::tenants@"_Stz,     &Step::vAttachMapTenantsFetch);
 }
 
 /*----------------------------------------------------------------------------*/
 /* attachmap@ -- fetch value from attachmap                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vAttachMapFetch(MP_Task mpTask)
+void Step::vAttachMapFetch(MP_Task mpTask)
 {
   ENTRY("vAttachMapFetch"_Stz);
   
@@ -50,7 +50,7 @@ void Task::vAttachMapFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* attachmap! -- store value in attachmap                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vAttachMapStore(MP_Task mpTask)
+void Step::vAttachMapStore(MP_Task mpTask)
 {
   ENTRY("vAttachMapStore"_Stz);
   
@@ -92,7 +92,7 @@ void Task::vAttachMapStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* attachmap::tenants@ -- fetch word tenants from attachmap                   */
 /*----------------------------------------------------------------------------*/
-void Task::vAttachMapTenantsFetch(MP_Task mpTask)
+void Step::vAttachMapTenantsFetch(MP_Task mpTask)
 {
   ENTRY("vAttachMapTenantsFetch"_Stz);
   

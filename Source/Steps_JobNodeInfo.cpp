@@ -15,13 +15,13 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobNodeInfo(void)
 {
-  vAddStep("job_nodeInfo.nodeName@"_Stz,     &Task::vJob_NodeInfoNodeNameFetch);
+  vAddStep("job_nodeInfo.nodeName@"_Stz,     &Step::vJob_NodeInfoNodeNameFetch);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_nodeInfo.nodeName@ -- fetch node name                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_NodeInfoNodeNameFetch(MP_Task mpTask)
+void Step::vJob_NodeInfoNodeNameFetch(MP_Task mpTask)
 {
   ENTRY("vJob_NodeInfoNodeNameFetch"_Stz);
   

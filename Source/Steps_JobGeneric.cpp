@@ -15,29 +15,29 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobGeneric(void)
 {
-  vAddStep("jobBegun.error@"_Stz,     &Task::vJob__BegunErrorFetch);
-  vAddStep("jobBegun.error!"_Stz,     &Task::vJob__BegunErrorStore);
+  vAddStep("jobBegun.error@"_Stz,     &Step::vJob__BegunErrorFetch);
+  vAddStep("jobBegun.error!"_Stz,     &Step::vJob__BegunErrorStore);
   
-  vAddStep("jobCancelled.error@"_Stz, &Task::vJob__CancelledErrorFetch);
-  vAddStep("jobCancelled.error!"_Stz, &Task::vJob__CancelledErrorStore);
+  vAddStep("jobCancelled.error@"_Stz, &Step::vJob__CancelledErrorFetch);
+  vAddStep("jobCancelled.error!"_Stz, &Step::vJob__CancelledErrorStore);
 
-  vAddStep("jobExecuted.error@"_Stz,    &Task::vJob__ExecutedErrorFetch);
-  vAddStep("jobExecuted.error!"_Stz,    &Task::vJob__ExecutedErrorStore);
-  vAddStep("jobExecuted.response@"_Stz, &Task::vJob__ExecutedResponseFetch);
-  vAddStep("jobExecuted.response!"_Stz, &Task::vJob__ExecutedResponseStore);
+  vAddStep("jobExecuted.error@"_Stz,    &Step::vJob__ExecutedErrorFetch);
+  vAddStep("jobExecuted.error!"_Stz,    &Step::vJob__ExecutedErrorStore);
+  vAddStep("jobExecuted.response@"_Stz, &Step::vJob__ExecutedResponseFetch);
+  vAddStep("jobExecuted.response!"_Stz, &Step::vJob__ExecutedResponseStore);
   
-  vAddStep("jobExecuted.rowsInvalid@"_Stz,  &Task::vJob__ExecutedRowsInvalidFetch);
-  vAddStep("jobExecuted.rowsInvalid!"_Stz,  &Task::vJob__ExecutedRowsInvalidStore);
-  vAddStep("jobExecuted.rowsProcessed@"_Stz,&Task::vJob__ExecutedRowsProcessedFetch);
-  vAddStep("jobExecuted.rowsProcessed!"_Stz,&Task::vJob__ExecutedRowsProcessedStore);
-  vAddStep("jobExecuted.rowsSkipped@"_Stz,  &Task::vJob__ExecutedRowsSkippedFetch);
-  vAddStep("jobExecuted.rowsSkipped!"_Stz,  &Task::vJob__ExecutedRowsSkippedStore);
+  vAddStep("jobExecuted.rowsInvalid@"_Stz,  &Step::vJob__ExecutedRowsInvalidFetch);
+  vAddStep("jobExecuted.rowsInvalid!"_Stz,  &Step::vJob__ExecutedRowsInvalidStore);
+  vAddStep("jobExecuted.rowsProcessed@"_Stz,&Step::vJob__ExecutedRowsProcessedFetch);
+  vAddStep("jobExecuted.rowsProcessed!"_Stz,&Step::vJob__ExecutedRowsProcessedStore);
+  vAddStep("jobExecuted.rowsSkipped@"_Stz,  &Step::vJob__ExecutedRowsSkippedFetch);
+  vAddStep("jobExecuted.rowsSkipped!"_Stz,  &Step::vJob__ExecutedRowsSkippedStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* jobBegun.error@ -- fetch job error of participant from job__begun          */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__BegunErrorFetch(MP_Task mpTask)
+void Step::vJob__BegunErrorFetch(MP_Task mpTask)
 {
   ENTRY("vJob__BegunErrorFetch"_Stz);
   
@@ -55,7 +55,7 @@ void Task::vJob__BegunErrorFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobBegun.error! -- store job error of participant in job__begun            */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__BegunErrorStore(MP_Task mpTask)
+void Step::vJob__BegunErrorStore(MP_Task mpTask)
 {
   ENTRY("vJob__BegunErrorStore"_Stz);
   
@@ -76,7 +76,7 @@ void Task::vJob__BegunErrorStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobCancelled.error@ -- fetch job error of participant from job__cancelled  */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__CancelledErrorFetch(MP_Task mpTask)
+void Step::vJob__CancelledErrorFetch(MP_Task mpTask)
 {
   ENTRY("vJob__CancelledErrorFetch"_Stz);
   
@@ -94,7 +94,7 @@ void Task::vJob__CancelledErrorFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobCancelled.error! -- store job error of participant in job__cancelled    */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__CancelledErrorStore(MP_Task mpTask)
+void Step::vJob__CancelledErrorStore(MP_Task mpTask)
 {
   ENTRY("vJob__CancelledErrorStore"_Stz);
   
@@ -115,7 +115,7 @@ void Task::vJob__CancelledErrorStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.error@ -- fetch job error of participant from job__executed    */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__ExecutedErrorFetch(MP_Task mpTask)
+void Step::vJob__ExecutedErrorFetch(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedErrorFetch"_Stz);
   
@@ -133,7 +133,7 @@ void Task::vJob__ExecutedErrorFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.error! -- store job error of participant in job__executed      */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__ExecutedErrorStore(MP_Task mpTask)
+void Step::vJob__ExecutedErrorStore(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedErrorStore"_Stz);
   
@@ -154,7 +154,7 @@ void Task::vJob__ExecutedErrorStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.response@ -- fetch participant response from job__executed     */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__ExecutedResponseFetch(MP_Task mpTask)
+void Step::vJob__ExecutedResponseFetch(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedResponseFetch"_Stz);
   
@@ -171,7 +171,7 @@ void Task::vJob__ExecutedResponseFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.response! -- store participant response in job__executed       */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__ExecutedResponseStore(MP_Task mpTask)
+void Step::vJob__ExecutedResponseStore(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedResponseStore"_Stz);
   
@@ -192,7 +192,7 @@ void Task::vJob__ExecutedResponseStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.rowsInvalid@ -- fetch rowsInvalid in job__executed             */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__ExecutedRowsInvalidFetch(MP_Task mpTask)
+void Step::vJob__ExecutedRowsInvalidFetch(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedRowsInvalidFetch"_Stz);
   
@@ -209,7 +209,7 @@ void Task::vJob__ExecutedRowsInvalidFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.rowsInvalid! -- store rowsInvalid in job__executed             */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__ExecutedRowsInvalidStore(MP_Task mpTask)
+void Step::vJob__ExecutedRowsInvalidStore(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedRowsInvalidStore"_Stz);
   
@@ -230,7 +230,7 @@ void Task::vJob__ExecutedRowsInvalidStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.rowsProcessed@ -- store rowsProcessed in job__executed         */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__ExecutedRowsProcessedFetch(MP_Task mpTask)
+void Step::vJob__ExecutedRowsProcessedFetch(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedRowsProcessedFetch"_Stz);
   
@@ -247,7 +247,7 @@ void Task::vJob__ExecutedRowsProcessedFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.rowsProcessed! -- store rowsProcessed in job__executed         */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__ExecutedRowsProcessedStore(MP_Task mpTask)
+void Step::vJob__ExecutedRowsProcessedStore(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedRowsProcessedStore"_Stz);
   
@@ -268,7 +268,7 @@ void Task::vJob__ExecutedRowsProcessedStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.rowsSkipped@ -- fetch rowsSkipped in job__executed             */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__ExecutedRowsSkippedFetch(MP_Task mpTask)
+void Step::vJob__ExecutedRowsSkippedFetch(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedRowsSkippedFetch"_Stz);
   
@@ -285,7 +285,7 @@ void Task::vJob__ExecutedRowsSkippedFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobExecuted.rowsSkipped! -- store rowsSkipped in job__executed             */
 /*----------------------------------------------------------------------------*/
-void Task::vJob__ExecutedRowsSkippedStore(MP_Task mpTask)
+void Step::vJob__ExecutedRowsSkippedStore(MP_Task mpTask)
 {
   ENTRY("vJob__ExecutedRowsSkippedStore"_Stz);
   

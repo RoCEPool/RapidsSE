@@ -15,17 +15,17 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobLoadTable(void)
 {
-  vAddStep("job_loadTable.addInvalidRows"_Stz,&Task::vJob_LoadTableAddInvalidRows);
-  vAddStep("job_loadTable.chunkFile"_Stz,     &Task::vJob_LoadTableChunkFile);
-  vAddStep("job_loadTable.dumpMap"_Stz,       &Task::vJob_LoadTableDumpMap);
-  vAddStep("job_loadTable.filePath@"_Stz,     &Task::vJob_LoadTableFilePathFetch);
-  vAddStep("job_loadTable.table!"_Stz,        &Task::vJob_LoadTableTableStore);
+  vAddStep("job_loadTable.addInvalidRows"_Stz,&Step::vJob_LoadTableAddInvalidRows);
+  vAddStep("job_loadTable.chunkFile"_Stz,     &Step::vJob_LoadTableChunkFile);
+  vAddStep("job_loadTable.dumpMap"_Stz,       &Step::vJob_LoadTableDumpMap);
+  vAddStep("job_loadTable.filePath@"_Stz,     &Step::vJob_LoadTableFilePathFetch);
+  vAddStep("job_loadTable.table!"_Stz,        &Step::vJob_LoadTableTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_loadTable.addInvalidRows -- add invalid rows to load table's invalid   */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_LoadTableAddInvalidRows(MP_Task mpTask)
+void Step::vJob_LoadTableAddInvalidRows(MP_Task mpTask)
 {
   ENTRY("vJob_LoadTableAddInvalidRows"_Stz);
   
@@ -46,7 +46,7 @@ void Task::vJob_LoadTableAddInvalidRows(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loadTable.chunkFile -- chunk the file                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_LoadTableChunkFile(MP_Task mpTask)
+void Step::vJob_LoadTableChunkFile(MP_Task mpTask)
 {
   ENTRY("vJob_LoadTableChunkFile"_Stz);
   
@@ -67,7 +67,7 @@ void Task::vJob_LoadTableChunkFile(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loadTable.dumpMap -- dump the load map                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_LoadTableDumpMap(MP_Task mpTask)
+void Step::vJob_LoadTableDumpMap(MP_Task mpTask)
 {
   ENTRY("vJob_LoaderDUmpMap"_Stz);
   
@@ -84,7 +84,7 @@ void Task::vJob_LoadTableDumpMap(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadTable.filePath@ -- fetch filePath from job_loadTable               */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_LoadTableFilePathFetch(MP_Task mpTask)
+void Step::vJob_LoadTableFilePathFetch(MP_Task mpTask)
 {
   ENTRY("vJob_LoadTableFilePathFetch"_Stz);
   
@@ -102,7 +102,7 @@ void Task::vJob_LoadTableFilePathFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* loadTable.table! -- store table into loader                                */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_LoadTableTableStore(MP_Task mpTask)
+void Step::vJob_LoadTableTableStore(MP_Task mpTask)
 {
   ENTRY("vJob_LoaderTableStore"_Stz);
   

@@ -15,20 +15,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Session(void)
 {
-  vAddStep("session.commandProcessor"_Stz, &Task::vSessionCommandProcessor);
-  vAddStep("session.dicStack"_Stz,         &Task::vSessionDicStack);
-  vAddStep("session.dump"_Stz,             &Task::vSessionDump);
-  vAddStep("session.isExiting"_Stz,        &Task::vSessionIsExiting);
-  vAddStep("session.pid"_Stz,              &Task::vSessionPid);
-  vAddStep("session.slot@"_Stz,            &Task::vSessionSlotFetch);
-  vAddStep("session.tx@"_Stz,              &Task::vSessionTxFetch);
-  vAddStep("session.tx!"_Stz,              &Task::vSessionTxStore);
+  vAddStep("session.commandProcessor"_Stz, &Step::vSessionCommandProcessor);
+  vAddStep("session.dicStack"_Stz,         &Step::vSessionDicStack);
+  vAddStep("session.dump"_Stz,             &Step::vSessionDump);
+  vAddStep("session.isExiting"_Stz,        &Step::vSessionIsExiting);
+  vAddStep("session.pid"_Stz,              &Step::vSessionPid);
+  vAddStep("session.slot@"_Stz,            &Step::vSessionSlotFetch);
+  vAddStep("session.tx@"_Stz,              &Step::vSessionTxFetch);
+  vAddStep("session.tx!"_Stz,              &Step::vSessionTxStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* session.commandProcessor -- get session command processor                  */
 /*----------------------------------------------------------------------------*/
-void Task::vSessionCommandProcessor(MP_Task mpTask)
+void Step::vSessionCommandProcessor(MP_Task mpTask)
 {
   ENTRY("vSessionDicStack"_Stz);
   
@@ -47,7 +47,7 @@ void Task::vSessionCommandProcessor(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.dicStack -- get session dic stack                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vSessionDicStack(MP_Task mpTask)
+void Step::vSessionDicStack(MP_Task mpTask)
 {
   ENTRY("vSessionDicStack"_Stz);
   
@@ -66,7 +66,7 @@ void Task::vSessionDicStack(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.dump -- dump of SE interface                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vSessionDump(MP_Task mpTask)
+void Step::vSessionDump(MP_Task mpTask)
 {
 ENTRY("vSessionDump"_Stz);
   
@@ -85,7 +85,7 @@ ENTRY("vSessionDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* session.isExiting -- is session exiting                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vSessionIsExiting(MP_Task mpTask)
+void Step::vSessionIsExiting(MP_Task mpTask)
 {
   ENTRY("vSessionIsExiting"_Stz);
   
@@ -104,7 +104,7 @@ void Task::vSessionIsExiting(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.pid -- get pid of SE session                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vSessionPid(MP_Task mpTask)
+void Step::vSessionPid(MP_Task mpTask)
 {
   ENTRY("vSessionPid"_Stz);
   
@@ -123,7 +123,7 @@ void Task::vSessionPid(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.slot@ -- fetch slot of SE session                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vSessionSlotFetch(MP_Task mpTask)
+void Step::vSessionSlotFetch(MP_Task mpTask)
 {
   ENTRY("vSessionSlotFetch"_Stz);
   
@@ -142,7 +142,7 @@ void Task::vSessionSlotFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.tx@ -- fetch tx of SE session                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vSessionTxFetch(MP_Task mpTask)
+void Step::vSessionTxFetch(MP_Task mpTask)
 {
   ENTRY("vSessionTxFetch"_Stz);
   
@@ -161,7 +161,7 @@ void Task::vSessionTxFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* session.tx! -- store tx of SE session                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vSessionTxStore(MP_Task mpTask)
+void Step::vSessionTxStore(MP_Task mpTask)
 {
   ENTRY("vSessionTxStore"_Stz);
   

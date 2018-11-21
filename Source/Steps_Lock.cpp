@@ -15,17 +15,17 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Lock(void)
 {
-  vAddStep("lock.dropRead"_Stz,   &Task::vLockDropRead);
-  vAddStep("lock.dropWrite"_Stz,  &Task::vLockDropWrite);
-  vAddStep("lock.grabRead"_Stz,   &Task::vLockGrabRead);
-  vAddStep("lock.grabWrite"_Stz,  &Task::vLockGrabWrite);
-  vAddStep("lock.init"_Stz,       &Task::vLockInit);
+  vAddStep("lock.dropRead"_Stz,   &Step::vLockDropRead);
+  vAddStep("lock.dropWrite"_Stz,  &Step::vLockDropWrite);
+  vAddStep("lock.grabRead"_Stz,   &Step::vLockGrabRead);
+  vAddStep("lock.grabWrite"_Stz,  &Step::vLockGrabWrite);
+  vAddStep("lock.init"_Stz,       &Step::vLockInit);
 }
 
 /*----------------------------------------------------------------------------*/
 /* lock.dropread -- drop read lock                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vLockDropRead(MP_Task mpTask)
+void Step::vLockDropRead(MP_Task mpTask)
 {
 ENTRY("vLockDropRead"_Stz);
   
@@ -45,7 +45,7 @@ ENTRY("vLockDropRead"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.dropwrite -- drop write lock                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vLockDropWrite(MP_Task mpTask)
+void Step::vLockDropWrite(MP_Task mpTask)
 {
 ENTRY("vLockDropWrite"_Stz);
 
@@ -65,7 +65,7 @@ ENTRY("vLockDropWrite"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.grabread -- grab read lock                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vLockGrabRead(MP_Task mpTask)
+void Step::vLockGrabRead(MP_Task mpTask)
 {
 ENTRY("vLockGrabRead"_Stz);
 
@@ -85,7 +85,7 @@ ENTRY("vLockGrabRead"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.grabwrite -- grab write lock                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vLockGrabWrite(MP_Task mpTask)
+void Step::vLockGrabWrite(MP_Task mpTask)
 {
 ENTRY("vLockGrabWrite"_Stz);
 
@@ -105,7 +105,7 @@ ENTRY("vLockGrabWrite"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lock.init -- initialise lock                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vLockInit(MP_Task mpTask)
+void Step::vLockInit(MP_Task mpTask)
 {
 ENTRY("vLockInit"_Stz);
   

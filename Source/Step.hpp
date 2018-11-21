@@ -3,12 +3,20 @@
 /*============================================================================*/
 #pragma once
 
+#include "Utilities.h"
+
 namespace Tasks
 {
+  // tracing masks
+  static const i8 C_TRACE_NONE     = 0x0;
+  static const i8 C_TRACE_STEPS    = 0x1;
+  static const i8 C_TRACE_ROUTINES = 0x2;
+
   class Step
   {
   friend class Task;
- 
+  friend class Dictionaries::Word;
+  
     static void vAddStep(Stz* aName, TaskStep pStep, bool bImmediate=false);
 
     static void vAddSteps(void);
@@ -138,8 +146,14 @@ namespace Tasks
     static void vAddSteps_WorkingBuffer(void);
   
     static void vAddSteps_Zero(void);
+  
+    /*------------------------------------------------------------------------*/
+  
+    #include "StepsSet.hpp"
   };
 }
+
+#include "StepMacros.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

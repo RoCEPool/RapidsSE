@@ -15,16 +15,16 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobReceiver(void)
 {
-  vAddStep("job_receiver.connNo@"_Stz, &Task::vJob_ReceiverConnNoFetch);
-  vAddStep("job_receiver.connNo!"_Stz, &Task::vJob_ReceiverConnNoStore);
-  vAddStep("job_receiver.node@"_Stz,   &Task::vJob_ReceiverNodeFetch);
-  vAddStep("job_receiver.node!"_Stz,   &Task::vJob_ReceiverNodeStore);
+  vAddStep("job_receiver.connNo@"_Stz, &Step::vJob_ReceiverConnNoFetch);
+  vAddStep("job_receiver.connNo!"_Stz, &Step::vJob_ReceiverConnNoStore);
+  vAddStep("job_receiver.node@"_Stz,   &Step::vJob_ReceiverNodeFetch);
+  vAddStep("job_receiver.node!"_Stz,   &Step::vJob_ReceiverNodeStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_receiver.connNo@ -- fetch connNo from job_receiver                     */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_ReceiverConnNoFetch(MP_Task mpTask)
+void Step::vJob_ReceiverConnNoFetch(MP_Task mpTask)
 {
   ENTRY("vJob_ReceiverConnNoFetch"_Stz);
   
@@ -42,7 +42,7 @@ void Task::vJob_ReceiverConnNoFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.connNo! -- store connNo into job_receiver                     */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_ReceiverConnNoStore(MP_Task mpTask)
+void Step::vJob_ReceiverConnNoStore(MP_Task mpTask)
 {
   ENTRY("vJob_ReceiverConnNoStore"_Stz);
   
@@ -63,7 +63,7 @@ void Task::vJob_ReceiverConnNoStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.node@ -- fetch node from job_receiver                         */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_ReceiverNodeFetch(MP_Task mpTask)
+void Step::vJob_ReceiverNodeFetch(MP_Task mpTask)
 {
   ENTRY("vJob_ReceiverNodeFetch"_Stz);
   
@@ -81,7 +81,7 @@ void Task::vJob_ReceiverNodeFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_receiver.node! -- store node into job_receiver                         */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_ReceiverNodeStore(MP_Task mpTask)
+void Step::vJob_ReceiverNodeStore(MP_Task mpTask)
 {
   ENTRY("vJob_ReceiverNodeStore"_Stz);
   

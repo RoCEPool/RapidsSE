@@ -15,14 +15,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_DicLock(void)
 {
-  vAddStep("dicLock.dropWrite"_Stz,&Task::vDicLockDropWrite);
-  vAddStep("dicLock.grabWrite"_Stz,&Task::vDicLockGrabWrite);
+  vAddStep("dicLock.dropWrite"_Stz,&Step::vDicLockDropWrite);
+  vAddStep("dicLock.grabWrite"_Stz,&Step::vDicLockGrabWrite);
 }
 
 /*----------------------------------------------------------------------------*/
 /* diclLock.dropWrite -- drop dic lock for write                              */
 /*----------------------------------------------------------------------------*/
-void Task::vDicLockDropWrite(MP_Task mpTask)
+void Step::vDicLockDropWrite(MP_Task mpTask)
 {
   ENTRY("vDicLockDropWrite"_Stz);
   
@@ -35,7 +35,7 @@ void Task::vDicLockDropWrite(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicLock.grabWrite -- grab dic lock for write                               */
 /*----------------------------------------------------------------------------*/
-void Task::vDicLockGrabWrite(MP_Task mpTask)
+void Step::vDicLockGrabWrite(MP_Task mpTask)
 {
   ENTRY("vDicLockGrabWrite"_Stz);
   

@@ -15,20 +15,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_To(void)
 {
-  vAddStep(">binval"_Stz,     &Task::vToBinVal);
-  vAddStep(">body"_Stz,       &Task::vToBody);
-  vAddStep(">digitName"_Stz,  &Task::vToDigitName);
-  vAddStep(">int"_Stz,        &Task::vToInt);
-  vAddStep(">object"_Stz,     &Task::vToObject);
-  vAddStep(">ptr"_Stz,        &Task::vToPtr);
-  vAddStep(">str"_Stz,        &Task::vToStr);
-  vAddStep(">task"_Stz,       &Task::vToTask);
+  vAddStep(">binval"_Stz,     &Step::vToBinVal);
+  vAddStep(">body"_Stz,       &Step::vToBody);
+  vAddStep(">digitName"_Stz,  &Step::vToDigitName);
+  vAddStep(">int"_Stz,        &Step::vToInt);
+  vAddStep(">object"_Stz,     &Step::vToObject);
+  vAddStep(">ptr"_Stz,        &Step::vToPtr);
+  vAddStep(">str"_Stz,        &Step::vToStr);
+  vAddStep(">task"_Stz,       &Step::vToTask);
 }
 
 /*----------------------------------------------------------------------------*/
 /* >binval -- change object to binval                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vToBinVal(MP_Task mpTask)
+void Step::vToBinVal(MP_Task mpTask)
 {
   ENTRY("vToBinVal"_Stz);
   
@@ -44,7 +44,7 @@ void Task::vToBinVal(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >body -- convert word pointer to body pointer                              */
 /*----------------------------------------------------------------------------*/
-void Task::vToBody(MP_Task mpTask)
+void Step::vToBody(MP_Task mpTask)
 {
   ENTRY("vToBody"_Stz);
   
@@ -66,7 +66,7 @@ void Task::vToBody(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >int -- convert value to int                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vToInt(MP_Task mpTask)
+void Step::vToInt(MP_Task mpTask)
 {
   ENTRY("vToInt"_Stz);
   
@@ -84,7 +84,7 @@ void Task::vToInt(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >object -- change binval to object                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vToObject(MP_Task mpTask)
+void Step::vToObject(MP_Task mpTask)
 {
   ENTRY("vToObject"_Stz);
   
@@ -100,7 +100,7 @@ void Task::vToObject(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >ptr -- convert int to ptr                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vToPtr(MP_Task mpTask)
+void Step::vToPtr(MP_Task mpTask)
 {
   ENTRY("vToPtr"_Stz);
   
@@ -118,7 +118,7 @@ void Task::vToPtr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >str -- convert value to str                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vToStr(MP_Task mpTask)
+void Step::vToStr(MP_Task mpTask)
 {
   ENTRY("vToStr"_Stz);
   
@@ -137,7 +137,7 @@ void Task::vToStr(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >task -- convert int to task ptr                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vToTask(MP_Task mpTask)
+void Step::vToTask(MP_Task mpTask)
 {
   ENTRY("vToTask"_Stz);
   

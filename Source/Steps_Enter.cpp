@@ -15,14 +15,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Enter(void)
 {
-  vAddStep("enterObject"_Stz,     &Task::vEnterObject);
-  vAddStep("enterRoutine"_Stz,    &Task::vEnterRoutine);
+  vAddStep("enterObject"_Stz,     &Step::vEnterObject);
+  vAddStep("enterRoutine"_Stz,    &Step::vEnterRoutine);
 }
 
 /*----------------------------------------------------------------------------*/
 /* enterObject -- enter object routine   (this is the does step for a object) */
 /*----------------------------------------------------------------------------*/
-void Task::vEnterObject(MP_Task mpTask)
+void Step::vEnterObject(MP_Task mpTask)
 {
   ENTRY("vEnterObject"_Stz);
   
@@ -50,7 +50,7 @@ void Task::vEnterObject(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* enterRoutine -- enter word routine    (this is the does step for a : word) */
 /*----------------------------------------------------------------------------*/
-void Task::vEnterRoutine(MP_Task mpTask)
+void Step::vEnterRoutine(MP_Task mpTask)
 {
   ENTRY("vEnterRoutine"_Stz);
   

@@ -15,15 +15,15 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Process(void)
 {
-  vAddStep("process.getPid"_Stz,  &Task::vProcessGetPid);
-  vAddStep("process::quit"_Stz,    &Task::vProcessQuit);
-  vAddStep("process.testPid"_Stz, &Task::vProcessTestPid);
+  vAddStep("process.getPid"_Stz,  &Step::vProcessGetPid);
+  vAddStep("process::quit"_Stz,    &Step::vProcessQuit);
+  vAddStep("process.testPid"_Stz, &Step::vProcessTestPid);
 }
 
 /*----------------------------------------------------------------------------*/
 /* process.getpid -- get pid of this process                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vProcessGetPid(MP_Task mpTask)
+void Step::vProcessGetPid(MP_Task mpTask)
 {
 ENTRY("vProcessGetPid"_Stz);
   
@@ -37,7 +37,7 @@ ENTRY("vProcessGetPid"_Stz);
 /*----------------------------------------------------------------------------*/
 /* process::quit -- process exits early                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vProcessQuit(MP_Task mpTask)
+void Step::vProcessQuit(MP_Task mpTask)
 {
   ENTRY("vProcessQuit"_Stz);
   
@@ -51,7 +51,7 @@ void Task::vProcessQuit(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* process.testpid -- test pid on stack                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vProcessTestPid(MP_Task mpTask)
+void Step::vProcessTestPid(MP_Task mpTask)
 {
 ENTRY("vProcessTestPid"_Stz);
 

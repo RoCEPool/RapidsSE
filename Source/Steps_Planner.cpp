@@ -16,30 +16,30 @@ extern Arguments       gxArguments;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Planner(void)
 {
-  vAddStep("planner::new"_Stz,           &Task::vPlannerNew);
+  vAddStep("planner::new"_Stz,           &Step::vPlannerNew);
   
-  vAddStep("planner.choosePaths"_Stz,    &Task::vPlannerChoosePaths);
-  vAddStep("planner.chosenPath"_Stz,     &Task::vPlannerChosenPath);
-  vAddStep("planner.delete"_Stz,         &Task::vPlannerDelete);
-  vAddStep("planner.fetchTechnique@"_Stz,&Task::vPlannerFetchTechniqueFetch);
-  vAddStep("planner.genPaths"_Stz,       &Task::vPlannerGenPaths);
-  vAddStep("planner.highkey@"_Stz,       &Task::vPlannerHighKeyFetch);
-  vAddStep("planner.indexNm@"_Stz,       &Task::vPlannerIndexNmFetch);
-  vAddStep("planner.key@"_Stz,           &Task::vPlannerKeyFetch);
-  vAddStep("planner.lowkey@"_Stz,        &Task::vPlannerLowKeyFetch);
-  vAddStep("planner.matchPaths"_Stz,     &Task::vPlannerMatchPaths);
-  vAddStep("planner.phrases@"_Stz,       &Task::vPlannerPhrasesFetch);
-  vAddStep("planner.parseWhere"_Stz,     &Task::vPlannerParseWhere);
-  vAddStep("planner.scorePaths"_Stz,     &Task::vPlannerScorePaths);
-  vAddStep("planner.showPaths"_Stz,      &Task::vPlannerShowPaths);
-  vAddStep("planner.table@"_Stz,         &Task::vPlannerTableFetch);
-  vAddStep("planner.table!"_Stz,         &Task::vPlannerTableStore);
+  vAddStep("planner.choosePaths"_Stz,    &Step::vPlannerChoosePaths);
+  vAddStep("planner.chosenPath"_Stz,     &Step::vPlannerChosenPath);
+  vAddStep("planner.delete"_Stz,         &Step::vPlannerDelete);
+  vAddStep("planner.fetchTechnique@"_Stz,&Step::vPlannerFetchTechniqueFetch);
+  vAddStep("planner.genPaths"_Stz,       &Step::vPlannerGenPaths);
+  vAddStep("planner.highkey@"_Stz,       &Step::vPlannerHighKeyFetch);
+  vAddStep("planner.indexNm@"_Stz,       &Step::vPlannerIndexNmFetch);
+  vAddStep("planner.key@"_Stz,           &Step::vPlannerKeyFetch);
+  vAddStep("planner.lowkey@"_Stz,        &Step::vPlannerLowKeyFetch);
+  vAddStep("planner.matchPaths"_Stz,     &Step::vPlannerMatchPaths);
+  vAddStep("planner.phrases@"_Stz,       &Step::vPlannerPhrasesFetch);
+  vAddStep("planner.parseWhere"_Stz,     &Step::vPlannerParseWhere);
+  vAddStep("planner.scorePaths"_Stz,     &Step::vPlannerScorePaths);
+  vAddStep("planner.showPaths"_Stz,      &Step::vPlannerShowPaths);
+  vAddStep("planner.table@"_Stz,         &Step::vPlannerTableFetch);
+  vAddStep("planner.table!"_Stz,         &Step::vPlannerTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* planner.choosePaths -- choose an access path for each phrase               */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerChoosePaths(MP_Task mpTask)
+void Step::vPlannerChoosePaths(MP_Task mpTask)
 {
   ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
   
@@ -59,7 +59,7 @@ void Task::vPlannerChoosePaths(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.chosenPath -- push chosen access path for given phrase             */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerChosenPath(MP_Task mpTask)
+void Step::vPlannerChosenPath(MP_Task mpTask)
 {
   ENTRY((Stz*)__func__);                         //! needs to be tested on Linux
   
@@ -81,7 +81,7 @@ void Task::vPlannerChosenPath(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.delete -- delete the plan ( planner -- )                           */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerDelete(MP_Task mpTask)
+void Step::vPlannerDelete(MP_Task mpTask)
 {
 ENTRY("vPlannerDelete"_Stz);
   
@@ -98,7 +98,7 @@ ENTRY("vPlannerDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* planner.fetchTechnique@ -- fetch the fetch technique for given phrase( -- )*/
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
+void Step::vPlannerFetchTechniqueFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerDelete"_Stz);
   
@@ -120,7 +120,7 @@ void Task::vPlannerFetchTechniqueFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.genPaths -- generate all access paths for table                    */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerGenPaths(MP_Task mpTask)
+void Step::vPlannerGenPaths(MP_Task mpTask)
 {
   ENTRY("vPlannerGenPaths"_Stz);
   
@@ -139,7 +139,7 @@ void Task::vPlannerGenPaths(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.highKey@ -- fetch high key for given phrase ( -- )                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerHighKeyFetch(MP_Task mpTask)
+void Step::vPlannerHighKeyFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerHighKeyFetch"_Stz);
   
@@ -165,7 +165,7 @@ void Task::vPlannerHighKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.indexNm@ -- fetch index name for given phrase ( -- )               */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerIndexNmFetch(MP_Task mpTask)
+void Step::vPlannerIndexNmFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerIndexFetch"_Stz);
   
@@ -190,7 +190,7 @@ void Task::vPlannerIndexNmFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.key@ -- fetch key for given phrase ( -- )                          */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerKeyFetch(MP_Task mpTask)
+void Step::vPlannerKeyFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerKeyFetch"_Stz);
   
@@ -216,7 +216,7 @@ void Task::vPlannerKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.lowKey@ -- fetch low key for given phrase ( -- )                   */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerLowKeyFetch(MP_Task mpTask)
+void Step::vPlannerLowKeyFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerLowKeyFetch"_Stz);
   
@@ -242,7 +242,7 @@ void Task::vPlannerLowKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.matchPaths -- attempt to match predicates with paths               */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerMatchPaths(MP_Task mpTask)
+void Step::vPlannerMatchPaths(MP_Task mpTask)
 {
   ENTRY("vPlannerMatchnPaths"_Stz);
   
@@ -261,7 +261,7 @@ void Task::vPlannerMatchPaths(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner::new -- new a planner ( -- planner )                               */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerNew(MP_Task mpTask)
+void Step::vPlannerNew(MP_Task mpTask)
 {
 ENTRY("vPlannerNew"_Stz);
   
@@ -275,7 +275,7 @@ ENTRY("vPlannerNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* planner.parseWhere -- parse a where clause                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerParseWhere(MP_Task mpTask)
+void Step::vPlannerParseWhere(MP_Task mpTask)
 {
   ENTRY("vPlannerParseWhere"_Stz);
   
@@ -307,7 +307,7 @@ void Task::vPlannerParseWhere(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.phrases@ -- fetch number of phrases ( -- nPhrases )                */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerPhrasesFetch(MP_Task mpTask)
+void Step::vPlannerPhrasesFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerPhrasesFetch"_Stz);
   
@@ -326,7 +326,7 @@ void Task::vPlannerPhrasesFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.scorePaths -- score the generated set of paths                     */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerScorePaths(MP_Task mpTask)
+void Step::vPlannerScorePaths(MP_Task mpTask)
 {
   ENTRY("vPlannerScorePaths"_Stz);
   
@@ -343,7 +343,7 @@ void Task::vPlannerScorePaths(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.showPaths -- show generated paths                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerShowPaths(MP_Task mpTask)
+void Step::vPlannerShowPaths(MP_Task mpTask)
 {
   ENTRY("vPlannerShowPaths"_Stz);
   
@@ -360,7 +360,7 @@ void Task::vPlannerShowPaths(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.table@ -- fetch table from access path                             */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerTableFetch(MP_Task mpTask)
+void Step::vPlannerTableFetch(MP_Task mpTask)
 {
   ENTRY("vPlannerTableFetch"_Stz);
   
@@ -379,7 +379,7 @@ void Task::vPlannerTableFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planner.table! -- store table into access path                             */
 /*----------------------------------------------------------------------------*/
-void Task::vPlannerTableStore(MP_Task mpTask)
+void Step::vPlannerTableStore(MP_Task mpTask)
 {
   ENTRY("vPlannerTableStore"_Stz);
   

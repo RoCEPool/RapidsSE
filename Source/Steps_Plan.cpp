@@ -15,29 +15,29 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Plan(void)
 {
-  vAddStep("plan::new"_Stz,           &Task::vPlanNew);
+  vAddStep("plan::new"_Stz,           &Step::vPlanNew);
   
-  vAddStep("plan.delete"_Stz,         &Task::vPlanDelete);
-  vAddStep("plan.dic"_Stz,            &Task::vPlanDic);
-  vAddStep("plan.executingTask@"_Stz, &Task::vPlanExecutingTaskFetch);
-  vAddStep("plan.executingTask!"_Stz, &Task::vPlanExecutingTaskStore);
-  vAddStep("plan.finished"_Stz,       &Task::vPlanFinished);
-  vAddStep("plan.id@"_Stz,            &Task::vPlanIdFetch);
-  vAddStep("plan.lambda+"_Stz,        &Task::vPlanLambdaAppend);
-  vAddStep("plan.lambda@"_Stz,        &Task::vPlanLambdaFetch);
-  vAddStep("plan.lambda!"_Stz,        &Task::vPlanLambdaStore);
-  vAddStep("plan.name@"_Stz,          &Task::vPlanNameFetch);
-  vAddStep("plan.name!"_Stz,          &Task::vPlanNameStore);
-  vAddStep("plan.opFrame++"_Stz,      &Task::vPlanOpFrameAdd);
-  vAddStep("plan.opFrame?"_Stz,       &Task::vPlanOpFrameFind);
-  vAddStep("plan.opFrame0"_Stz,       &Task::vPlanOpFrameTop);
-  vAddStep("plan.show"_Stz,           &Task::vPlanShow);
+  vAddStep("plan.delete"_Stz,         &Step::vPlanDelete);
+  vAddStep("plan.dic"_Stz,            &Step::vPlanDic);
+  vAddStep("plan.executingTask@"_Stz, &Step::vPlanExecutingTaskFetch);
+  vAddStep("plan.executingTask!"_Stz, &Step::vPlanExecutingTaskStore);
+  vAddStep("plan.finished"_Stz,       &Step::vPlanFinished);
+  vAddStep("plan.id@"_Stz,            &Step::vPlanIdFetch);
+  vAddStep("plan.lambda+"_Stz,        &Step::vPlanLambdaAppend);
+  vAddStep("plan.lambda@"_Stz,        &Step::vPlanLambdaFetch);
+  vAddStep("plan.lambda!"_Stz,        &Step::vPlanLambdaStore);
+  vAddStep("plan.name@"_Stz,          &Step::vPlanNameFetch);
+  vAddStep("plan.name!"_Stz,          &Step::vPlanNameStore);
+  vAddStep("plan.opFrame++"_Stz,      &Step::vPlanOpFrameAdd);
+  vAddStep("plan.opFrame?"_Stz,       &Step::vPlanOpFrameFind);
+  vAddStep("plan.opFrame0"_Stz,       &Step::vPlanOpFrameTop);
+  vAddStep("plan.show"_Stz,           &Step::vPlanShow);
 }
 
 /*----------------------------------------------------------------------------*/
 /* plan.delete -- delete a plan ( plan -- )                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanDelete(MP_Task mpTask)
+void Step::vPlanDelete(MP_Task mpTask)
 {
   ENTRY("vPlanDelete"_Stz);
   
@@ -56,7 +56,7 @@ void Task::vPlanDelete(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.dic -- get plan dic ( plan -- dic )                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanDic(MP_Task mpTask)
+void Step::vPlanDic(MP_Task mpTask)
 {
   ENTRY("vPlanDic"_Stz);
   
@@ -77,7 +77,7 @@ void Task::vPlanDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.executingTask@ -- fetch task executing the plan                       */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanExecutingTaskFetch(MP_Task mpTask)
+void Step::vPlanExecutingTaskFetch(MP_Task mpTask)
 {
   ENTRY("vPlanExecutingTaskFetch"_Stz);
   
@@ -98,7 +98,7 @@ void Task::vPlanExecutingTaskFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.executingTask! -- store the executingTask in the plan                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanExecutingTaskStore(MP_Task mpTask)
+void Step::vPlanExecutingTaskStore(MP_Task mpTask)
 {
   ENTRY("vPlanExecuteTaskStore"_Stz);
   
@@ -121,7 +121,7 @@ void Task::vPlanExecutingTaskStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.finished -- planning has finished ( plan -- )                         */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanFinished(MP_Task mpTask)
+void Step::vPlanFinished(MP_Task mpTask)
 {
   ENTRY("vPlanFinished"_Stz);
   
@@ -139,7 +139,7 @@ void Task::vPlanFinished(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.id@ -- fetch plan id ( plan-- id )                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanIdFetch(MP_Task mpTask)
+void Step::vPlanIdFetch(MP_Task mpTask)
 {
   ENTRY("vPlanIdFetch"_Stz);
   
@@ -160,7 +160,7 @@ void Task::vPlanIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.lambda+ -- append to the lambda of the plan                           */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanLambdaAppend(MP_Task mpTask)
+void Step::vPlanLambdaAppend(MP_Task mpTask)
 {
   ENTRY("vPlanLambdaAppend"_Stz);
   
@@ -182,7 +182,7 @@ void Task::vPlanLambdaAppend(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.lambda@ -- fetch lambda from the plan                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanLambdaFetch(MP_Task mpTask)
+void Step::vPlanLambdaFetch(MP_Task mpTask)
 {
   ENTRY("vPlanLambdaFetch"_Stz);
   
@@ -203,7 +203,7 @@ void Task::vPlanLambdaFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.lambda! -- store lambda of the plan                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanLambdaStore(MP_Task mpTask)
+void Step::vPlanLambdaStore(MP_Task mpTask)
 {
   ENTRY("vPlanLambdaStore"_Stz);
   
@@ -224,7 +224,7 @@ void Task::vPlanLambdaStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.name@ -- fetch plan name ( plan-- "<planNm>" )                        */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanNameFetch(MP_Task mpTask)
+void Step::vPlanNameFetch(MP_Task mpTask)
 {
   ENTRY("vPlanNameFetch"_Stz);
   
@@ -245,7 +245,7 @@ void Task::vPlanNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.name! -- store plan name ( "<planNm>" plan -- )                       */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanNameStore(MP_Task mpTask)
+void Step::vPlanNameStore(MP_Task mpTask)
 {
   ENTRY("vPlanNameStore"_Stz);
   
@@ -269,7 +269,7 @@ void Task::vPlanNameStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan::new -- new a plan ( -- plan )                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanNew(MP_Task mpTask)
+void Step::vPlanNew(MP_Task mpTask)
 {
   ENTRY("vPlanNew"_Stz);
   
@@ -283,7 +283,7 @@ void Task::vPlanNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.opFrame++ -- add named op frame into plan ( plan -- opFrame )         */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanOpFrameAdd(MP_Task mpTask)
+void Step::vPlanOpFrameAdd(MP_Task mpTask)
 {
   ENTRY("vPlanOpFrameAdd"_Stz);
   
@@ -321,7 +321,7 @@ void Task::vPlanOpFrameAdd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.opFrame -- find named op frame in plan ( plan -- opFrame )            */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanOpFrameFind(MP_Task mpTask)
+void Step::vPlanOpFrameFind(MP_Task mpTask)
 {
   ENTRY("vPlanOpFrameFind"_Stz);
   
@@ -350,7 +350,7 @@ void Task::vPlanOpFrameFind(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.opFrame0 -- push top op frame in plan ( plan -- opFrame )             */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanOpFrameTop(MP_Task mpTask)
+void Step::vPlanOpFrameTop(MP_Task mpTask)
 {
   ENTRY("vPlanOpFrameTop"_Stz);
   
@@ -369,7 +369,7 @@ void Task::vPlanOpFrameTop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* plan.show -- show plan ( -- plan )                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanShow(MP_Task mpTask)
+void Step::vPlanShow(MP_Task mpTask)
 {
   ENTRY("vPlanShow"_Stz);
   

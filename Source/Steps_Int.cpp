@@ -15,26 +15,26 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Int(void)
 {
-  vAddStep("+"_Stz,               &Task::vIntAdd);
-  vAddStep("/"_Stz,               &Task::vIntDivide);
-  vAddStep("=="_Stz,              &Task::vIntEqual);
-  vAddStep(">"_Stz,               &Task::vIntGreater);
-  vAddStep(">="_Stz,              &Task::vIntGreaterEqual);
-  vAddStep("hash"_Stz,            &Task::vIntHash);
-  vAddStep("ho16"_Stz,            &Task::vIntHo16);
-  vAddStep("<"_Stz,               &Task::vIntLess);
-  vAddStep("<="_Stz,              &Task::vIntLessEqual);
-  vAddStep("%"_Stz,               &Task::vIntModulo);
-  vAddStep("*"_Stz,               &Task::vIntMultiply);
-  vAddStep("neg"_Stz,             &Task::vIntNeg);
-  vAddStep("!="_Stz,              &Task::vIntNotEqual);
-  vAddStep("-"_Stz,               &Task::vIntSubtract);
+  vAddStep("+"_Stz,               &Step::vIntAdd);
+  vAddStep("/"_Stz,               &Step::vIntDivide);
+  vAddStep("=="_Stz,              &Step::vIntEqual);
+  vAddStep(">"_Stz,               &Step::vIntGreater);
+  vAddStep(">="_Stz,              &Step::vIntGreaterEqual);
+  vAddStep("hash"_Stz,            &Step::vIntHash);
+  vAddStep("ho16"_Stz,            &Step::vIntHo16);
+  vAddStep("<"_Stz,               &Step::vIntLess);
+  vAddStep("<="_Stz,              &Step::vIntLessEqual);
+  vAddStep("%"_Stz,               &Step::vIntModulo);
+  vAddStep("*"_Stz,               &Step::vIntMultiply);
+  vAddStep("neg"_Stz,             &Step::vIntNeg);
+  vAddStep("!="_Stz,              &Step::vIntNotEqual);
+  vAddStep("-"_Stz,               &Step::vIntSubtract);
 }
 
 /*----------------------------------------------------------------------------*/
 /* + -- add top two integers on stack                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vIntAdd(MP_Task mpTask)
+void Step::vIntAdd(MP_Task mpTask)
 {
   ENTRY("vIntAdd"_Stz);
   /*
@@ -66,7 +66,7 @@ void Task::vIntAdd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* / -- divide top integer by second integer on stack                         */
 /*----------------------------------------------------------------------------*/
-void Task::vIntDivide(MP_Task mpTask)
+void Step::vIntDivide(MP_Task mpTask)
 {
   ENTRY("vIntDivide"_Stz);
   
@@ -85,7 +85,7 @@ void Task::vIntDivide(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* == -- test top two integers on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
-void Task::vIntEqual(MP_Task mpTask)
+void Step::vIntEqual(MP_Task mpTask)
 {
   ENTRY("vIntEqual"_Stz);
   
@@ -104,7 +104,7 @@ void Task::vIntEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* > -- test top two integers on data stack for greater than                  */
 /*----------------------------------------------------------------------------*/
-void Task::vIntGreater(MP_Task mpTask)
+void Step::vIntGreater(MP_Task mpTask)
 {
   ENTRY("vIntGreater"_Stz);
   
@@ -123,7 +123,7 @@ void Task::vIntGreater(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >= -- test top two integers on data stack for greater than equal to        */
 /*----------------------------------------------------------------------------*/
-void Task::vIntGreaterEqual(MP_Task mpTask)
+void Step::vIntGreaterEqual(MP_Task mpTask)
 {
   ENTRY("vIntGreaterEqual"_Stz);
   
@@ -142,7 +142,7 @@ void Task::vIntGreaterEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* hash -- get hash of string                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vIntHash(MP_Task mpTask)
+void Step::vIntHash(MP_Task mpTask)
 {
   ENTRY("vIntHash"_Stz);
   
@@ -162,7 +162,7 @@ void Task::vIntHash(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ho16 -- get high order 16 bits of int                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vIntHo16(MP_Task mpTask)
+void Step::vIntHo16(MP_Task mpTask)
 {
   ENTRY("vIntHash"_Stz);
   
@@ -178,7 +178,7 @@ void Task::vIntHo16(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* < -- test top two integers on data stack for less than                     */
 /*----------------------------------------------------------------------------*/
-void Task::vIntLess(MP_Task mpTask)
+void Step::vIntLess(MP_Task mpTask)
 {
   ENTRY("vIntLess"_Stz);
   
@@ -197,7 +197,7 @@ void Task::vIntLess(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* <= -- test top two integers on data stack for less than equal to           */
 /*----------------------------------------------------------------------------*/
-void Task::vIntLessEqual(MP_Task mpTask)
+void Step::vIntLessEqual(MP_Task mpTask)
 {
   ENTRY("vIntLessEqual"_Stz);
   
@@ -216,7 +216,7 @@ void Task::vIntLessEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* % -- modulo of top integer by second integer on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vIntModulo(MP_Task mpTask)
+void Step::vIntModulo(MP_Task mpTask)
 {
   ENTRY("vIntModulo"_Stz);
   
@@ -235,7 +235,7 @@ void Task::vIntModulo(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* * multiply second integer by top integer on stack                          */
 /*----------------------------------------------------------------------------*/
-void Task::vIntMultiply(MP_Task mpTask)
+void Step::vIntMultiply(MP_Task mpTask)
 {
   ENTRY("vIntMultiply"_Stz);
   
@@ -254,7 +254,7 @@ void Task::vIntMultiply(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* neg -- gegate top integer on stack                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vIntNeg(MP_Task mpTask)
+void Step::vIntNeg(MP_Task mpTask)
 {
   ENTRY("vIntNeg"_Stz);
   
@@ -273,7 +273,7 @@ void Task::vIntNeg(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* != -- test top two integers on data stack for not equal                    */
 /*----------------------------------------------------------------------------*/
-void Task::vIntNotEqual(MP_Task mpTask)
+void Step::vIntNotEqual(MP_Task mpTask)
 {
   ENTRY("vIntNotEqual"_Stz);
   
@@ -292,7 +292,7 @@ void Task::vIntNotEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* - -- subtract second integer from top integer on stack                     */
 /*----------------------------------------------------------------------------*/
-void Task::vIntSubtract(MP_Task mpTask)
+void Step::vIntSubtract(MP_Task mpTask)
 {
   ENTRY("vIntSubtract"_Stz);
   

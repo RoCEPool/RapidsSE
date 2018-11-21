@@ -54,12 +54,11 @@ namespace Tasks
   class Task : public Object,
                public ListNode_t<Task>
   {
+  friend class Step;
+  friend class Word;
+
   private:
   
-    // tracing masks
-    static const i8 C_TRACE_NONE     = 0x0;
-    static const i8 C_TRACE_STEPS    = 0x1;
-    static const i8 C_TRACE_ROUTINES = 0x2;
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // keep
@@ -195,17 +194,18 @@ namespace Tasks
 
     /*------------------------------------------------------------------------*/
 
-#include "StepsSet.hpp"
+//#include "StepsSet.hpp"
   
     /*------------------------------------------------------------------------*/
 
-  private:
+  public:
     static bool   bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, Job_FetchRows* pJob_FetchRows);
     static bool   bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, Job_FetchRows* pJob_FetchRows);
     //static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::Session* pSession);
     
     /*------------------------------------------------------------------------*/
     
+  private:
     Footer* aFooter(void);
 
     /*------------------------------------------------------------------------*/

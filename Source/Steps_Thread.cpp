@@ -14,26 +14,26 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Thread(void)
 {
-  vAddStep("thread.bind"_Stz,            &Task::vThreadBind);
-  vAddStep("thread.condSignal"_Stz,      &Task::vThreadCondSignal);
-  vAddStep("thread.condWait"_Stz,        &Task::vThreadCondWait);
-  vAddStep("thread.cpu"_Stz,             &Task::vThreadCpu);
-  vAddStep("thread.dedicated@"_Stz,      &Task::vThreadDedicatedFetch);
-  vAddStep("thread.dedicated!"_Stz,      &Task::vThreadDedicatedStore);
-  vAddStep("thread.dump"_Stz,            &Task::vThreadDump);
-  vAddStep("thread.id"_Stz,              &Task::vThreadId);
-  vAddStep("thread.mutexLock"_Stz,       &Task::vThreadMutexLock);
-  vAddStep("thread.mutexUnlock"_Stz,     &Task::vThreadMutexUnlock);
-  vAddStep("thread.sleep_s"_Stz,         &Task::vThreadSleep_s);
-  vAddStep("thread.sleep_ms"_Stz,        &Task::vThreadSleep_ms);
-  vAddStep("thread.sleep_us"_Stz,        &Task::vThreadSleep_us);
-  vAddStep("thread.sleep_ns"_Stz,        &Task::vThreadSleep_ns);
+  vAddStep("thread.bind"_Stz,            &Step::vThreadBind);
+  vAddStep("thread.condSignal"_Stz,      &Step::vThreadCondSignal);
+  vAddStep("thread.condWait"_Stz,        &Step::vThreadCondWait);
+  vAddStep("thread.cpu"_Stz,             &Step::vThreadCpu);
+  vAddStep("thread.dedicated@"_Stz,      &Step::vThreadDedicatedFetch);
+  vAddStep("thread.dedicated!"_Stz,      &Step::vThreadDedicatedStore);
+  vAddStep("thread.dump"_Stz,            &Step::vThreadDump);
+  vAddStep("thread.id"_Stz,              &Step::vThreadId);
+  vAddStep("thread.mutexLock"_Stz,       &Step::vThreadMutexLock);
+  vAddStep("thread.mutexUnlock"_Stz,     &Step::vThreadMutexUnlock);
+  vAddStep("thread.sleep_s"_Stz,         &Step::vThreadSleep_s);
+  vAddStep("thread.sleep_ms"_Stz,        &Step::vThreadSleep_ms);
+  vAddStep("thread.sleep_us"_Stz,        &Step::vThreadSleep_us);
+  vAddStep("thread.sleep_ns"_Stz,        &Step::vThreadSleep_ns);
 }
 
 /*----------------------------------------------------------------------------*/
 /* thread.bind -- bind this thread to a cpu                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadBind(MP_Task mpTask)
+void Step::vThreadBind(MP_Task mpTask)
 {
 ENTRY("vThreadBind"_Stz);
   
@@ -58,7 +58,7 @@ ENTRY("vThreadBind"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.condSignal -- signal condition on threads mutex                     */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCondSignal(MP_Task mpTask)
+void Step::vThreadCondSignal(MP_Task mpTask)
 {
  ENTRY("vThreadCondSignal"_Stz);
   
@@ -77,7 +77,7 @@ void Task::vThreadCondSignal(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.condWait -- wait for cond on threads mutex                          */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCondWait(MP_Task mpTask)
+void Step::vThreadCondWait(MP_Task mpTask)
 {
  ENTRY("vThreadCondWait"_Stz);
   
@@ -96,7 +96,7 @@ void Task::vThreadCondWait(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.cpu -- get the cpu this thread is running on                        */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadCpu(MP_Task mpTask)
+void Step::vThreadCpu(MP_Task mpTask)
 {
 ENTRY("vThreadCpu"_Stz);
   
@@ -117,7 +117,7 @@ ENTRY("vThreadCpu"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.dedicated@ -- fetch m_eDedicated                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadDedicatedFetch(MP_Task mpTask)
+void Step::vThreadDedicatedFetch(MP_Task mpTask)
 {
   ENTRY("vThreadDedicatedFetch"_Stz);
   
@@ -134,7 +134,7 @@ void Task::vThreadDedicatedFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.dedicated! -- store m_eDedicated                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadDedicatedStore(MP_Task mpTask)
+void Step::vThreadDedicatedStore(MP_Task mpTask)
 {
   ENTRY("vThreadDedicatedStore"_Stz);
   
@@ -155,7 +155,7 @@ void Task::vThreadDedicatedStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* thread.dump -- thread dump                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadDump(MP_Task mpTask)
+void Step::vThreadDump(MP_Task mpTask)
 {
 ENTRY("vThreadDump"_Stz);
   
@@ -176,7 +176,7 @@ ENTRY("vThreadDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.id -- get the id of thread                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadId(MP_Task mpTask)
+void Step::vThreadId(MP_Task mpTask)
 {
 ENTRY("vThreadId"_Stz);
   
@@ -197,7 +197,7 @@ ENTRY("vThreadId"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.mutexLock -- acquire a threads mutex lock                           */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadMutexLock(MP_Task mpTask)
+void Step::vThreadMutexLock(MP_Task mpTask)
 {
 ENTRY("vThreadMutexLock"_Stz);
   
@@ -216,7 +216,7 @@ ENTRY("vThreadMutexLock"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.mutexUnlock -- release a threads mutex lock                         */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadMutexUnlock(MP_Task mpTask)
+void Step::vThreadMutexUnlock(MP_Task mpTask)
 {
 ENTRY("vThreadMutexUnlock"_Stz);
 
@@ -235,7 +235,7 @@ ENTRY("vThreadMutexUnlock"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.sleep_s -- sleep for n seconds                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSleep_s(MP_Task mpTask)
+void Step::vThreadSleep_s(MP_Task mpTask)
 {
 ENTRY("vThreadSleep_s"_Stz);
   
@@ -254,7 +254,7 @@ ENTRY("vThreadSleep_s"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.sleep_ms -- sleep for n milliseconds                                */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSleep_ms(MP_Task mpTask)
+void Step::vThreadSleep_ms(MP_Task mpTask)
 {
 ENTRY("vThreadSleep_ms"_Stz);
   
@@ -273,7 +273,7 @@ ENTRY("vThreadSleep_ms"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.sleep_us -- sleep for n microseconds                                */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSleep_us(MP_Task mpTask)
+void Step::vThreadSleep_us(MP_Task mpTask)
 {
 ENTRY("vThreadSleep_us"_Stz);
   
@@ -292,7 +292,7 @@ ENTRY("vThreadSleep_us"_Stz);
 /*----------------------------------------------------------------------------*/
 /* thread.sleep_ns -- sleep for n nanoseconds                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vThreadSleep_ns(MP_Task mpTask)
+void Step::vThreadSleep_ns(MP_Task mpTask)
 {
 ENTRY("vThreadSleep_ns"_Stz);
   

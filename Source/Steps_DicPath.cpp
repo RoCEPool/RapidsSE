@@ -15,15 +15,15 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_DicPath(void)
 {
-  vAddStep("dicPath.depth"_Stz,    &Task::vDicPathDepth);
-  vAddStep("dicPath.dump"_Stz,     &Task::vDicPathDump);
-  vAddStep("dicPath.pick"_Stz,     &Task::vDicPathPick);
+  vAddStep("dicPath.depth"_Stz,    &Step::vDicPathDepth);
+  vAddStep("dicPath.dump"_Stz,     &Step::vDicPathDump);
+  vAddStep("dicPath.pick"_Stz,     &Step::vDicPathPick);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dicPath.depth -- get number of dictionaries in dictionary path             */
 /*----------------------------------------------------------------------------*/
-void Task::vDicPathDepth(MP_Task mpTask)
+void Step::vDicPathDepth(MP_Task mpTask)
 {
   ENTRY("vDicStackDepth"_Stz);
   
@@ -44,7 +44,7 @@ void Task::vDicPathDepth(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicPath.dump -- dump dictionary path                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vDicPathDump(MP_Task mpTask)
+void Step::vDicPathDump(MP_Task mpTask)
 {
   ENTRY("vDicPathDump"_Stz);
   
@@ -63,7 +63,7 @@ void Task::vDicPathDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicPath.pick -- pick a dic from dic path and push onto data stack          */
 /*----------------------------------------------------------------------------*/
-void Task::vDicPathPick(MP_Task mpTask)
+void Step::vDicPathPick(MP_Task mpTask)
 {
   ENTRY("vDicPathPick"_Stz);
   

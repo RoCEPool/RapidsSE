@@ -15,19 +15,19 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobLoadBuffer(void)
 {
-  vAddStep("job_loadBuffer::spawn"_Stz,          &Task::vJob_LoadBufferSpawn);
+  vAddStep("job_loadBuffer::spawn"_Stz,          &Step::vJob_LoadBufferSpawn);
   
-  vAddStep("job_loadBuffer.insertRows"_Stz,      &Task::vJob_LoadBufferInsertRows);
-  vAddStep("job_loadBuffer.jobLoadTableId@"_Stz, &Task::vJob_LoadBufferJobLoadTableIdFetch);
-  vAddStep("job_loadBuffer.jobLoadTable!"_Stz,   &Task::vJob_LoadBufferJobLoadTableStore);
-  vAddStep("job_loadBuffer.partition@"_Stz,      &Task::vJob_LoadBufferPartitionFetch);
-  vAddStep("job_loadBuffer.table!"_Stz,          &Task::vJob_LoadBufferTableStore);
+  vAddStep("job_loadBuffer.insertRows"_Stz,      &Step::vJob_LoadBufferInsertRows);
+  vAddStep("job_loadBuffer.jobLoadTableId@"_Stz, &Step::vJob_LoadBufferJobLoadTableIdFetch);
+  vAddStep("job_loadBuffer.jobLoadTable!"_Stz,   &Step::vJob_LoadBufferJobLoadTableStore);
+  vAddStep("job_loadBuffer.partition@"_Stz,      &Step::vJob_LoadBufferPartitionFetch);
+  vAddStep("job_loadBuffer.table!"_Stz,          &Step::vJob_LoadBufferTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_LoadBuffer.insertRows -- insert rows from working buffer into table    */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_LoadBufferInsertRows(MP_Task mpTask)
+void Step::vJob_LoadBufferInsertRows(MP_Task mpTask)
 {
   ENTRY("vJob_LoadBufferInsertRows"_Stz);
   
@@ -46,7 +46,7 @@ void Task::vJob_LoadBufferInsertRows(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadBuffer.jobLoadTableId@ -- fetch load table job id                  */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_LoadBufferJobLoadTableIdFetch(MP_Task mpTask)
+void Step::vJob_LoadBufferJobLoadTableIdFetch(MP_Task mpTask)
 {
   ENTRY("vJob_LoadBufferLoadJobIdFetch"_Stz);
   
@@ -64,7 +64,7 @@ void Task::vJob_LoadBufferJobLoadTableIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadBuffer.jobLoadTable! -- store job_loadTable                        */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_LoadBufferJobLoadTableStore(MP_Task mpTask)
+void Step::vJob_LoadBufferJobLoadTableStore(MP_Task mpTask)
 {
   ENTRY("vJob_LoadBufferJobLoadTableStore"_Stz);
   
@@ -85,7 +85,7 @@ void Task::vJob_LoadBufferJobLoadTableStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadBuffer.partition@ -- fetch partition no. from job_loadBuffer       */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_LoadBufferPartitionFetch(MP_Task mpTask)
+void Step::vJob_LoadBufferPartitionFetch(MP_Task mpTask)
 {
   ENTRY("vJob_LoadBufferPartitionFetch"_Stz);
   
@@ -103,7 +103,7 @@ void Task::vJob_LoadBufferPartitionFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_loadBuffer::spawn -- spawn Job_LoadBuffer                              */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
+void Step::vJob_LoadBufferSpawn(MP_Task mpTask)
 {
   ENTRY("vJob_LoadBufferSpawn"_Stz);
   
@@ -133,7 +133,7 @@ void Task::vJob_LoadBufferSpawn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_LoadBuffer.table! -- store table into job_loadBuffer                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_LoadBufferTableStore(MP_Task mpTask)
+void Step::vJob_LoadBufferTableStore(MP_Task mpTask)
 {
   ENTRY("vJob_LoadBufferTableStore"_Stz);
   

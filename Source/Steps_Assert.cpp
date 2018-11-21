@@ -14,29 +14,29 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Assert(void)
 {
-  vAddStep("assert"_Stz,           &Task::vAssert);
-  vAddStep("assert::class"_Stz,    &Task::vAssertClass);
-  vAddStep("assert::class_0"_Stz,  &Task::vAssertClass_0);
-  vAddStep("assert::class_1"_Stz,  &Task::vAssertClass_1);
-  vAddStep("assert::class_2"_Stz,  &Task::vAssertClass_2);
-  vAddStep("assert::class_3"_Stz,  &Task::vAssertClass_3);
-  vAddStep("assert::class_4"_Stz,  &Task::vAssertClass_4);
-  vAddStep("assert::stack_0"_Stz,  &Task::vAssertStack_0);
-  vAddStep("assert::stack_0+"_Stz, &Task::vAssertStack_0more);
-  vAddStep("assert::stack_1"_Stz,  &Task::vAssertStack_1);
-  vAddStep("assert::stack_1+"_Stz, &Task::vAssertStack_1more);
-  vAddStep("assert::stack_2"_Stz,  &Task::vAssertStack_2);
-  vAddStep("assert::stack_2+"_Stz, &Task::vAssertStack_2more);
-  vAddStep("assert::stack_3"_Stz,  &Task::vAssertStack_3);
-  vAddStep("assert::stack_3+"_Stz, &Task::vAssertStack_3more);
-  vAddStep("assert::stack_4"_Stz,  &Task::vAssertStack_4);
-  vAddStep("assert::stack_5+"_Stz, &Task::vAssertStack_4more);
+  vAddStep("assert"_Stz,           &Step::vAssert);
+  vAddStep("assert::class"_Stz,    &Step::vAssertClass);
+  vAddStep("assert::class_0"_Stz,  &Step::vAssertClass_0);
+  vAddStep("assert::class_1"_Stz,  &Step::vAssertClass_1);
+  vAddStep("assert::class_2"_Stz,  &Step::vAssertClass_2);
+  vAddStep("assert::class_3"_Stz,  &Step::vAssertClass_3);
+  vAddStep("assert::class_4"_Stz,  &Step::vAssertClass_4);
+  vAddStep("assert::stack_0"_Stz,  &Step::vAssertStack_0);
+  vAddStep("assert::stack_0+"_Stz, &Step::vAssertStack_0more);
+  vAddStep("assert::stack_1"_Stz,  &Step::vAssertStack_1);
+  vAddStep("assert::stack_1+"_Stz, &Step::vAssertStack_1more);
+  vAddStep("assert::stack_2"_Stz,  &Step::vAssertStack_2);
+  vAddStep("assert::stack_2+"_Stz, &Step::vAssertStack_2more);
+  vAddStep("assert::stack_3"_Stz,  &Step::vAssertStack_3);
+  vAddStep("assert::stack_3+"_Stz, &Step::vAssertStack_3more);
+  vAddStep("assert::stack_4"_Stz,  &Step::vAssertStack_4);
+  vAddStep("assert::stack_5+"_Stz, &Step::vAssertStack_4more);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assert -- assert top value on stack is true                                */
 /*----------------------------------------------------------------------------*/
-void Task::vAssert(MP_Task mpTask)
+void Step::vAssert(MP_Task mpTask)
 {
   ENTRY("vAssert"_Stz);
   
@@ -53,7 +53,7 @@ void Task::vAssert(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class -- assert class of value on stack                            */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass(MP_Task mpTask)
+void Step::vAssertClass(MP_Task mpTask)
 {
   ENTRY("vAssertClass"_Stz);
   
@@ -80,7 +80,7 @@ void Task::vAssertClass(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class_0 -- assert class of value[0] on stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass_0(MP_Task mpTask)
+void Step::vAssertClass_0(MP_Task mpTask)
 {
   ENTRY("vAssertClass_0"_Stz);
   
@@ -107,7 +107,7 @@ void Task::vAssertClass_0(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class_1 -- assert class of value[1] on stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass_1(MP_Task mpTask)
+void Step::vAssertClass_1(MP_Task mpTask)
 {
   ENTRY("vAssertClass_1"_Stz);
   
@@ -134,7 +134,7 @@ void Task::vAssertClass_1(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class_2 -- assert class of value[2] on stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass_2(MP_Task mpTask)
+void Step::vAssertClass_2(MP_Task mpTask)
 {
   ENTRY("vAssertClass_2"_Stz);
   
@@ -161,7 +161,7 @@ void Task::vAssertClass_2(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class_3 -- assert class of value[3] on stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass_3(MP_Task mpTask)
+void Step::vAssertClass_3(MP_Task mpTask)
 {
   ENTRY("vAssertClass_3"_Stz);
   
@@ -188,7 +188,7 @@ void Task::vAssertClass_3(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::class_4 -- assert class of value[4] on stack                       */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertClass_4(MP_Task mpTask)
+void Step::vAssertClass_4(MP_Task mpTask)
 {
   ENTRY("vAssertClass_4"_Stz);
   
@@ -215,7 +215,7 @@ void Task::vAssertClass_4(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* assert::stack_0 -- asssert 0 values on stack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_0(MP_Task mpTask)
+void Step::vAssertStack_0(MP_Task mpTask)
 {
 ENTRY("vAssertStack_0"_Stz);
 
@@ -230,7 +230,7 @@ ENTRY("vAssertStack_0"_Stz);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_0+ -- asssert 0 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_0more(MP_Task mpTask)
+void Step::vAssertStack_0more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_0more"_Stz);
   
@@ -245,7 +245,7 @@ ENTRY("vAssertStack_0more"_Stz);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_1 -- asssert 1 values on stack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_1(MP_Task mpTask)
+void Step::vAssertStack_1(MP_Task mpTask)
 {
 ENTRY("vAssertStack_1"_Stz);
   
@@ -260,7 +260,7 @@ ENTRY("vAssertStack_1"_Stz);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_1+ -- asssert 0 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_1more(MP_Task mpTask)
+void Step::vAssertStack_1more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_1more"_Stz);
   
@@ -275,7 +275,7 @@ ENTRY("vAssertStack_1more"_Stz);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_2 -- asssert 2 values on stack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_2(MP_Task mpTask)
+void Step::vAssertStack_2(MP_Task mpTask)
 {
 ENTRY("vAssertStack_2"_Stz);
   
@@ -290,7 +290,7 @@ ENTRY("vAssertStack_2"_Stz);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_2+ -- asssert 2 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_2more(MP_Task mpTask)
+void Step::vAssertStack_2more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_2more"_Stz);
   
@@ -305,7 +305,7 @@ ENTRY("vAssertStack_2more"_Stz);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_3 -- asssert 3 values on stack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_3(MP_Task mpTask)
+void Step::vAssertStack_3(MP_Task mpTask)
 {
 ENTRY("vAssertStack_3"_Stz);
   
@@ -320,7 +320,7 @@ ENTRY("vAssertStack_3"_Stz);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_3+ -- asssert 3 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_3more(MP_Task mpTask)
+void Step::vAssertStack_3more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_3more"_Stz);
   
@@ -335,7 +335,7 @@ ENTRY("vAssertStack_3more"_Stz);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_4 -- asssert 4 values on stack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_4(MP_Task mpTask)
+void Step::vAssertStack_4(MP_Task mpTask)
 {
 ENTRY("vAssertStack_4"_Stz);
   
@@ -350,7 +350,7 @@ ENTRY("vAssertStack_4"_Stz);
 /*----------------------------------------------------------------------------*/
 /* assert::stack_4+ -- asssert 4 or more values on stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vAssertStack_4more(MP_Task mpTask)
+void Step::vAssertStack_4more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_4more"_Stz);
   

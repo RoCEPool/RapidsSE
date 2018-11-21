@@ -15,19 +15,19 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Queue(void)
 {
-  vAddStep("queue::new"_Stz,      &Task::vQueueNew);
+  vAddStep("queue::new"_Stz,      &Step::vQueueNew);
   
-  vAddStep("queue.append"_Stz,    &Task::vQueueAppend);
-  vAddStep("queue.delete"_Stz,    &Task::vQueueDelete);
-  vAddStep("queue.dump"_Stz,      &Task::vQueueDump);
-  vAddStep("queue.init"_Stz,      &Task::vQueueInit);
-  vAddStep("queue.pop"_Stz,       &Task::vQueuePop);
+  vAddStep("queue.append"_Stz,    &Step::vQueueAppend);
+  vAddStep("queue.delete"_Stz,    &Step::vQueueDelete);
+  vAddStep("queue.dump"_Stz,      &Step::vQueueDump);
+  vAddStep("queue.init"_Stz,      &Step::vQueueInit);
+  vAddStep("queue.pop"_Stz,       &Step::vQueuePop);
 }
 
 /*----------------------------------------------------------------------------*/
 /* queue.append -- append onto queue                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vQueueAppend(MP_Task mpTask)
+void Step::vQueueAppend(MP_Task mpTask)
 {
 ENTRY("vQueueAppend"_Stz);
   
@@ -49,7 +49,7 @@ ENTRY("vQueueAppend"_Stz);
 /*----------------------------------------------------------------------------*/
 /* queue.delete -- delete the queue                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vQueueDelete(MP_Task mpTask)
+void Step::vQueueDelete(MP_Task mpTask)
 {
   ENTRY("vQueueDelete"_Stz);
   
@@ -71,7 +71,7 @@ void Task::vQueueDelete(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* q.dump -- queue dump                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vQueueDump(MP_Task mpTask)
+void Step::vQueueDump(MP_Task mpTask)
 {
 ENTRY("vQueueDump"_Stz);
   
@@ -92,7 +92,7 @@ ENTRY("vQueueDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* queue.init -- queue init                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vQueueInit(MP_Task mpTask)
+void Step::vQueueInit(MP_Task mpTask)
 {
 ENTRY("vQueueInit"_Stz);
   
@@ -118,7 +118,7 @@ ENTRY("vQueueInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* queue::new -- create a named queue                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vQueueNew(MP_Task mpTask)
+void Step::vQueueNew(MP_Task mpTask)
 {
   ENTRY("vQueueNew"_Stz);
   
@@ -139,7 +139,7 @@ void Task::vQueueNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* queue.pop -- queue pop                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vQueuePop(MP_Task mpTask)
+void Step::vQueuePop(MP_Task mpTask)
 {
   ENTRY("vQueuePop"_Stz);
   

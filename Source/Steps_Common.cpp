@@ -15,19 +15,19 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Common(void)
 {
-  vAddStep("common.fetch"_Stz,    &Task::vCommonFetch);
-  vAddStep("common.store"_Stz,    &Task::vCommonStore);
-  vAddStep("common/"_Stz,         &Task::vCommonSlash,      true);
-  vAddStep("toCommon"_Stz,        &Task::vCommonToCommon,   true);
+  vAddStep("common.fetch"_Stz,    &Step::vCommonFetch);
+  vAddStep("common.store"_Stz,    &Step::vCommonStore);
+  vAddStep("common/"_Stz,         &Step::vCommonSlash,      true);
+  vAddStep("toCommon"_Stz,        &Step::vCommonToCommon,   true);
 
-  vAddStep("opFrame.drop"_Stz,    &Task::vOpFrameDrop);
-  vAddStep("opFrame.push"_Stz,    &Task::vOpFramePush);
+  vAddStep("opFrame.drop"_Stz,    &Step::vOpFrameDrop);
+  vAddStep("opFrame.push"_Stz,    &Step::vOpFramePush);
 }
 
 /*----------------------------------------------------------------------------*/
 /* common.fetch -- push commons[n] onto dstack                                */
 /*----------------------------------------------------------------------------*/
-void Task::vCommonFetch(MP_Task mpTask)
+void Step::vCommonFetch(MP_Task mpTask)
 {
   ENTRY("vCommonFetch"_Stz);
   
@@ -48,7 +48,7 @@ void Task::vCommonFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* common.store -- pop dstack into common[n]                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vCommonStore(MP_Task mpTask)
+void Step::vCommonStore(MP_Task mpTask)
 {
   ENTRY("vCommonStore"_Stz);
   
@@ -69,7 +69,7 @@ void Task::vCommonStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* common/ -- declare set of common variables                      immediate  */
 /*----------------------------------------------------------------------------*/
-void Task::vCommonSlash(MP_Task mpTask)
+void Step::vCommonSlash(MP_Task mpTask)
 {
 ENTRY("vCommonSlash"_Stz);
 
@@ -136,7 +136,7 @@ ENTRY("vCommonSlash"_Stz);
 /*----------------------------------------------------------------------------*/
 /* toCommon -- compile store value into common variable             immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vCommonToCommon(MP_Task mpTask)
+void Step::vCommonToCommon(MP_Task mpTask)
 {
 ENTRY("vCommonToCommon"_Stz);
   
@@ -160,7 +160,7 @@ ENTRY("vCommonToCommon"_Stz);
 /*----------------------------------------------------------------------------*/
 /* opFrame.drop -- discard op frame, discard op dictionary                    */
 /*----------------------------------------------------------------------------*/
-void Task::vOpFrameDrop(MP_Task mpTask)
+void Step::vOpFrameDrop(MP_Task mpTask)
 {
   ENTRY("vOpFrameDrop"_Stz);
   
@@ -181,7 +181,7 @@ void Task::vOpFrameDrop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* opFrame.push -- push op frame, push op dictionary                          */
 /*----------------------------------------------------------------------------*/
-void Task::vOpFramePush(MP_Task mpTask)
+void Step::vOpFramePush(MP_Task mpTask)
 {
   ENTRY("vOpFramePush"_Stz);
   

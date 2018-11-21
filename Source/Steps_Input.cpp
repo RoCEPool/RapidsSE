@@ -15,25 +15,25 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Input(void)
 {
-  vAddStep("input.close"_Stz,     &Task::vInputClose);
-  vAddStep("input.depth"_Stz,     &Task::vInputDepth);
-  vAddStep("input.next"_Stz,      &Task::vInputNext);
-  vAddStep("input.open"_Stz,      &Task::vInputOpen);
-  vAddStep("input.pop"_Stz,       &Task::vInputPop);
-  vAddStep("input.push"_Stz,      &Task::vInputPush);
-  vAddStep("input.stdin"_Stz,     &Task::vInputStdin);
-  vAddStep("input.text"_Stz,      &Task::vInputText);
-  vAddStep("input.token"_Stz,     &Task::vInputToken);
-  vAddStep("input.type"_Stz,      &Task::vInputType);
-  vAddStep("input.unknown"_Stz,   &Task::vInputUnknown);
+  vAddStep("input.close"_Stz,     &Step::vInputClose);
+  vAddStep("input.depth"_Stz,     &Step::vInputDepth);
+  vAddStep("input.next"_Stz,      &Step::vInputNext);
+  vAddStep("input.open"_Stz,      &Step::vInputOpen);
+  vAddStep("input.pop"_Stz,       &Step::vInputPop);
+  vAddStep("input.push"_Stz,      &Step::vInputPush);
+  vAddStep("input.stdin"_Stz,     &Step::vInputStdin);
+  vAddStep("input.text"_Stz,      &Step::vInputText);
+  vAddStep("input.token"_Stz,     &Step::vInputToken);
+  vAddStep("input.type"_Stz,      &Step::vInputType);
+  vAddStep("input.unknown"_Stz,   &Step::vInputUnknown);
 
-  vAddStep("token:"_Stz,          &Task::vTokenColon);
+  vAddStep("token:"_Stz,          &Step::vTokenColon);
 }
 
 /*----------------------------------------------------------------------------*/
 /* input.close -- close current input stream                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vInputClose(MP_Task mpTask)
+void Step::vInputClose(MP_Task mpTask)
 {
 ENTRY("vInputClose"_Stz);
   
@@ -45,7 +45,7 @@ ENTRY("vInputClose"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.depth -- push current depth of input stream onto data stack         */
 /*----------------------------------------------------------------------------*/
-void Task::vInputDepth(MP_Task mpTask)
+void Step::vInputDepth(MP_Task mpTask)
 {
 ENTRY("vInputDepth"_Stz);
   
@@ -59,7 +59,7 @@ ENTRY("vInputDepth"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.next -- get next input token from current input stream               */
 /*----------------------------------------------------------------------------*/
-void Task::vInputNext(MP_Task mpTask)
+void Step::vInputNext(MP_Task mpTask)
 {
 ENTRY("vInputNext"_Stz);
   
@@ -77,7 +77,7 @@ ENTRY("vInputNext"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.open -- open new input using filepath on data stack                  */
 /*----------------------------------------------------------------------------*/
-void Task::vInputOpen(MP_Task mpTask)
+void Step::vInputOpen(MP_Task mpTask)
 {
 ENTRY("vInputOpen"_Stz);
   
@@ -97,7 +97,7 @@ ENTRY("vInputOpen"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.pop -- pop to previous input stream                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vInputPop(MP_Task mpTask)
+void Step::vInputPop(MP_Task mpTask)
 {
 ENTRY("vInputPop"_Stz);
   
@@ -110,7 +110,7 @@ ENTRY("vInputPop"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.push -- push input stream, allowing for new input stream             */
 /*----------------------------------------------------------------------------*/
-void Task::vInputPush(MP_Task mpTask)
+void Step::vInputPush(MP_Task mpTask)
 {
 ENTRY("vInputPush"_Stz);
   
@@ -125,7 +125,7 @@ ENTRY("vInputPush"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.stdin -- use stdin as new input stream                               */
 /*----------------------------------------------------------------------------*/
-void Task::vInputStdin(MP_Task mpTask)
+void Step::vInputStdin(MP_Task mpTask)
 {
 ENTRY("vInputStdin"_Stz);
   
@@ -140,7 +140,7 @@ ENTRY("vInputStdin"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.text -- use string as new input stream                               */
 /*----------------------------------------------------------------------------*/
-void Task::vInputText(MP_Task mpTask)
+void Step::vInputText(MP_Task mpTask)
 {
 ENTRY("vInputText"_Stz);
   
@@ -161,7 +161,7 @@ ENTRY("vInputText"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.token -- push current token of input stream onto data stack          */
 /*----------------------------------------------------------------------------*/
-void Task::vInputToken(MP_Task mpTask)
+void Step::vInputToken(MP_Task mpTask)
 {
 ENTRY("vInputToken"_Stz);
   
@@ -173,7 +173,7 @@ ENTRY("vInputToken"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.type -- push current token type onto data stack                      */
 /*----------------------------------------------------------------------------*/
-void Task::vInputType(MP_Task mpTask)
+void Step::vInputType(MP_Task mpTask)
 {
 ENTRY("vInputType"_Stz);
   
@@ -187,7 +187,7 @@ ENTRY("vInputType"_Stz);
 /*----------------------------------------------------------------------------*/
 /* input.unknown -- unknown current token                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vInputUnknown(MP_Task mpTask)
+void Step::vInputUnknown(MP_Task mpTask)
 {
   ENTRY("vInputUnknown"_Stz);
   
@@ -205,7 +205,7 @@ void Task::vInputUnknown(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* token: -- token colon                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vTokenColon(MP_Task mpTask)
+void Step::vTokenColon(MP_Task mpTask)
 {
   ENTRY("vTokenColon"_Stz);
   

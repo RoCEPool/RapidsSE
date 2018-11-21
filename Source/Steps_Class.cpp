@@ -15,13 +15,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Class(void)
 {
-  vAddStep("class::name"_Stz,      &Task::vClassName);
+  vAddStep("class::name"_Stz,      &Step::vClassName);
 }
 
 /*----------------------------------------------------------------------------*/
 /* class::name -- translate class no to name                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vClassName(MP_Task mpTask)
+void Step::vClassName(MP_Task mpTask)
 {
   ENTRY("vClassName"_Stz);
   

@@ -2,6 +2,8 @@
 /* Steps_Accum.cpp -- Accumulator step group                                  */
 /*============================================================================*/
 
+#include "Step.hpp"
+
 #include "StorageEngine.h"
 
 extern AttachMap*      gpAttachMap;
@@ -13,26 +15,26 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Accum(void)
 {
-  vAddStep("accum::new"_Stz,   &Task::vAccumNew);
+  vAddStep("accum::new"_Stz,   &Step::vAccumNew);
 
-  vAddStep("accum.accumBuffer@"_Stz, &Task::vAccumAccumBuffer);  
-  vAddStep("accum.count@"_Stz, &Task::vAccumCountFetch);
-  vAddStep("accum.count!"_Stz, &Task::vAccumCountStore);
-  vAddStep("accum.delete"_Stz, &Task::vAccumDelete);
-  vAddStep("accum.group@"_Stz, &Task::vAccumGroupFetch);
-  vAddStep("accum.group!"_Stz, &Task::vAccumGroupStore);
-  vAddStep("accum.max@"_Stz,   &Task::vAccumMaxFetch);
-  vAddStep("accum.max!"_Stz,   &Task::vAccumMaxStore);
-  vAddStep("accum.min@"_Stz,   &Task::vAccumMinFetch);
-  vAddStep("accum.min!"_Stz,   &Task::vAccumMinStore);
-  vAddStep("accum.sum@"_Stz,   &Task::vAccumSumFetch);
-  vAddStep("accum.sum!"_Stz,   &Task::vAccumSumStore);
+  vAddStep("accum.accumBuffer@"_Stz, &Step::vAccumAccumBuffer);  
+  vAddStep("accum.count@"_Stz, &Step::vAccumCountFetch);
+  vAddStep("accum.count!"_Stz, &Step::vAccumCountStore);
+  vAddStep("accum.delete"_Stz, &Step::vAccumDelete);
+  vAddStep("accum.group@"_Stz, &Step::vAccumGroupFetch);
+  vAddStep("accum.group!"_Stz, &Step::vAccumGroupStore);
+  vAddStep("accum.max@"_Stz,   &Step::vAccumMaxFetch);
+  vAddStep("accum.max!"_Stz,   &Step::vAccumMaxStore);
+  vAddStep("accum.min@"_Stz,   &Step::vAccumMinFetch);
+  vAddStep("accum.min!"_Stz,   &Step::vAccumMinStore);
+  vAddStep("accum.sum@"_Stz,   &Step::vAccumSumFetch);
+  vAddStep("accum.sum!"_Stz,   &Step::vAccumSumStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* accum.delete -- delete accumulator                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumDelete(MP_Task mpTask)
+void Step::vAccumDelete(MP_Task mpTask)
 {
   ENTRY("vAccumDelete"_Stz);
   
@@ -49,7 +51,7 @@ void Task::vAccumDelete(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum::new -- accumulator new                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumNew(MP_Task mpTask)
+void Step::vAccumNew(MP_Task mpTask)
 {
   ENTRY("vAccumNew"_Stz);
   
@@ -63,7 +65,7 @@ void Task::vAccumNew(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum.accumBuffer-- accumulat a buffer of rows                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumAccumBuffer(MP_Task mpTask)
+void Step::vAccumAccumBuffer(MP_Task mpTask)
 {
   ENTRY("vAccumAccumBuffer"_Stz);
   
@@ -80,7 +82,7 @@ void Task::vAccumAccumBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum.count@ -- fetch count                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumCountFetch(MP_Task mpTask)
+void Step::vAccumCountFetch(MP_Task mpTask)
 {
   ENTRY("vAccumCountFetch"_Stz);
   
@@ -97,7 +99,7 @@ void Task::vAccumCountFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum.count! -- store count                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumCountStore(MP_Task mpTask)
+void Step::vAccumCountStore(MP_Task mpTask)
 {
   ENTRY("vAccumCountStore"_Stz);
   
@@ -118,7 +120,7 @@ void Task::vAccumCountStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum.group@ -- fetch group                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumGroupFetch(MP_Task mpTask)
+void Step::vAccumGroupFetch(MP_Task mpTask)
 {
   ENTRY("vAccumGroupFetch"_Stz);
   
@@ -135,7 +137,7 @@ void Task::vAccumGroupFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum.group! -- store group                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumGroupStore(MP_Task mpTask)
+void Step::vAccumGroupStore(MP_Task mpTask)
 {
   ENTRY("vAccumGroupStore"_Stz);
   
@@ -156,7 +158,7 @@ void Task::vAccumGroupStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum.max@ -- fetch max                                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumMaxFetch(MP_Task mpTask)
+void Step::vAccumMaxFetch(MP_Task mpTask)
 {
   ENTRY("vAccumMaxFetch"_Stz);
   
@@ -173,7 +175,7 @@ void Task::vAccumMaxFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum.max! -- store max                                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumMaxStore(MP_Task mpTask)
+void Step::vAccumMaxStore(MP_Task mpTask)
 {
   ENTRY("vAccumMaxStore"_Stz);
   
@@ -194,7 +196,7 @@ void Task::vAccumMaxStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum.min@ -- fetch min                                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumMinFetch(MP_Task mpTask)
+void Step::vAccumMinFetch(MP_Task mpTask)
 {
   ENTRY("vAccumMinFetch"_Stz);
   
@@ -211,7 +213,7 @@ void Task::vAccumMinFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum.min! -- store min                                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumMinStore(MP_Task mpTask)
+void Step::vAccumMinStore(MP_Task mpTask)
 {
   ENTRY("vAccumMinStore"_Stz);
   
@@ -232,7 +234,7 @@ void Task::vAccumMinStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum.sum@ -- fetch sum                                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumSumFetch(MP_Task mpTask)
+void Step::vAccumSumFetch(MP_Task mpTask)
 {
   ENTRY("vAccumSumFetch"_Stz);
   
@@ -249,7 +251,7 @@ void Task::vAccumSumFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accum.sum! -- store sum                                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vAccumSumStore(MP_Task mpTask)
+void Step::vAccumSumStore(MP_Task mpTask)
 {
   ENTRY("vAccumSumStore"_Stz);
   

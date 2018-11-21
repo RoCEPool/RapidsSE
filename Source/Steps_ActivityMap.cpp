@@ -2,6 +2,8 @@
 /* Steps_ActivityMap.cpp -- Activity Map step group                           */
 /*============================================================================*/
 
+#include "Step.hpp"
+
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -11,16 +13,16 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_ActivityMap(void)
 {
-  vAddStep("activityMap::dump"_Stz,       &Task::vActivityMapDump);
-  vAddStep("activityMap::mark"_Stz,       &Task::vActivityMapMark);
-  vAddStep("activityMap::markEntry"_Stz,  &Task::vActivityMapMarkEntry);
-  vAddStep("activityMap::markExit"_Stz,   &Task::vActivityMapMarkExit);
+  vAddStep("activityMap::dump"_Stz,       &Step::vActivityMapDump);
+  vAddStep("activityMap::mark"_Stz,       &Step::vActivityMapMark);
+  vAddStep("activityMap::markEntry"_Stz,  &Step::vActivityMapMarkEntry);
+  vAddStep("activityMap::markExit"_Stz,   &Step::vActivityMapMarkExit);
 }
 
 /*----------------------------------------------------------------------------*/
 /* activityMap::dump -- dump the activity map                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vActivityMapDump(MP_Task mpTask)
+void Step::vActivityMapDump(MP_Task mpTask)
 {
   ENTRY("vActivityMapDump"_Stz);
   
@@ -32,7 +34,7 @@ void Task::vActivityMapDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* activityMap::mark -- write a mark into the activity map                    */
 /*----------------------------------------------------------------------------*/
-void Task::vActivityMapMark(MP_Task mpTask)
+void Step::vActivityMapMark(MP_Task mpTask)
 {
   ENTRY("vActivityMapMark"_Stz);
   
@@ -50,7 +52,7 @@ void Task::vActivityMapMark(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* activityMap::markEntry -- write a mark for word entry                      */
 /*----------------------------------------------------------------------------*/
-void Task::vActivityMapMarkEntry(MP_Task mpTask)
+void Step::vActivityMapMarkEntry(MP_Task mpTask)
 {
   ENTRY("vActivityMapMarkEntry"_Stz);
   
@@ -69,7 +71,7 @@ void Task::vActivityMapMarkEntry(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* activityMap::mark -- write a mark for word exit                            */
 /*----------------------------------------------------------------------------*/
-void Task::vActivityMapMarkExit(MP_Task mpTask)
+void Step::vActivityMapMarkExit(MP_Task mpTask)
 {
   ENTRY("vActivityMapMarkExit"_Stz);
   

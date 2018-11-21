@@ -15,19 +15,19 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Trace(void)
 {
-  vAddStep("traceOff"_Stz,         &Task::vTraceOff);
-  vAddStep("traceOn"_Stz,          &Task::vTraceOn);
-  vAddStep("tracePoint"_Stz,       &Task::vTracePoint);
-  vAddStep("trace!"_Stz,           &Task::vTraceSet);
+  vAddStep("traceOff"_Stz,         &Step::vTraceOff);
+  vAddStep("traceOn"_Stz,          &Step::vTraceOn);
+  vAddStep("tracePoint"_Stz,       &Step::vTracePoint);
+  vAddStep("trace!"_Stz,           &Step::vTraceSet);
 
-  vAddStep("performancePoint"_Stz, &Task::vPerformancePoint);
-  vAddStep("performancePrint"_Stz, &Task::vPerformancePrint);
+  vAddStep("performancePoint"_Stz, &Step::vPerformancePoint);
+  vAddStep("performancePrint"_Stz, &Step::vPerformancePrint);
 }
 
 /*----------------------------------------------------------------------------*/
 /* turn tracing off                                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vTraceOff(MP_Task mpTask)
+void Step::vTraceOff(MP_Task mpTask)
 {
   ENTRY("vTraceOff"_Stz);
   
@@ -39,7 +39,7 @@ void Task::vTraceOff(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* turn tracing on                                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vTraceOn(MP_Task mpTask)
+void Step::vTraceOn(MP_Task mpTask)
 {
   ENTRY("vTraceOn"_Stz);
   
@@ -51,7 +51,7 @@ void Task::vTraceOn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* trace point                                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vTracePoint(MP_Task mpTask)
+void Step::vTracePoint(MP_Task mpTask)
 {
   ENTRY("vTracePoint"_Stz);
   
@@ -69,7 +69,7 @@ void Task::vTracePoint(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* set tracing                                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vTraceSet(MP_Task mpTask)
+void Step::vTraceSet(MP_Task mpTask)
 {
   ENTRY("vTraceSet"_Stz);
   
@@ -86,7 +86,7 @@ void Task::vTraceSet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* performance point                                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vPerformancePoint(MP_Task mpTask)
+void Step::vPerformancePoint(MP_Task mpTask)
 {
   ENTRY("vPerformancePoint"_Stz);
   
@@ -107,7 +107,7 @@ void Task::vPerformancePoint(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* performance print                                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vPerformancePrint(MP_Task mpTask)
+void Step::vPerformancePrint(MP_Task mpTask)
 {
   ENTRY("vPerformancePrint"_Stz);
   

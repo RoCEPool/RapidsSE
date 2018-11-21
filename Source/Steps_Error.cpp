@@ -15,13 +15,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Error(void)
 {
-  vAddStep("error.msg"_Stz,       &Task::vErrorMsg);
+  vAddStep("error.msg"_Stz,       &Step::vErrorMsg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* error.msg -- get error message given the error code                        */
 /*----------------------------------------------------------------------------*/
-void Task::vErrorMsg(MP_Task mpTask)
+void Step::vErrorMsg(MP_Task mpTask)
 {
   ENTRY("vErrorMsg"_Stz);
   

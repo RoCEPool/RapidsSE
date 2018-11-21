@@ -15,14 +15,14 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobAnalyzeIndex(void)
 {
-  vAddStep("jobAnalyzeIndex.isDetailed"_Stz, &Task::vJob_AnalyzeIndexIsDetailed);
-  vAddStep("jobAnalyzeTable.isDetailed"_Stz, &Task::vJob_AnalyzeTableIsDetailed);
+  vAddStep("jobAnalyzeIndex.isDetailed"_Stz, &Step::vJob_AnalyzeIndexIsDetailed);
+  vAddStep("jobAnalyzeTable.isDetailed"_Stz, &Step::vJob_AnalyzeTableIsDetailed);
 }
 
 /*----------------------------------------------------------------------------*/
 /* jobAnalyzeIndex.isDetailed -- is it a detailed analysis of the index       */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_AnalyzeIndexIsDetailed(MP_Task mpTask)
+void Step::vJob_AnalyzeIndexIsDetailed(MP_Task mpTask)
 {
   ENTRY("vJob_AnalyzeIndexIsDetailed"_Stz);
   
@@ -41,7 +41,7 @@ void Task::vJob_AnalyzeIndexIsDetailed(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jobAnalyzeTable.isDetailed -- is it a detailed analysis of the index       */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_AnalyzeTableIsDetailed(MP_Task mpTask)
+void Step::vJob_AnalyzeTableIsDetailed(MP_Task mpTask)
 {
   ENTRY("vJob_AnalyzeTableIsDetailed"_Stz);
   

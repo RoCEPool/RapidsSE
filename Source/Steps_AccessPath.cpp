@@ -2,6 +2,8 @@
 /* Steps_AccessPath.cpp - access path step group                              */
 /*============================================================================*/
 
+#include "Step.hpp"
+
 #include "StorageEngine.h"
 //#include "Tasks.h"
 #include "SePrompt.hpp"
@@ -15,14 +17,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AccessPath(void)
 {
-  vAddStep("accessPath.table@"_Stz,   &Task::vAccessPathTableFetch);
-  vAddStep("accessPath.table!"_Stz,   &Task::vAccessPathTableStore);
+  vAddStep("accessPath.table@"_Stz,   &Step::vAccessPathTableFetch);
+  vAddStep("accessPath.table!"_Stz,   &Step::vAccessPathTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* accessPath.table! -- store table into access path                          */
 /*----------------------------------------------------------------------------*/
-void Task::vAccessPathTableStore(MP_Task mpTask)
+void Step::vAccessPathTableStore(MP_Task mpTask)
 {
   ENTRY("vAccessPathTableStore"_Stz);
   
@@ -44,7 +46,7 @@ void Task::vAccessPathTableStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* accessPath.table@ -- fetch table from access path                          */
 /*----------------------------------------------------------------------------*/
-void Task::vAccessPathTableFetch(MP_Task mpTask)
+void Step::vAccessPathTableFetch(MP_Task mpTask)
 {
   ENTRY("vAccessPathTableFetch"_Stz);
   

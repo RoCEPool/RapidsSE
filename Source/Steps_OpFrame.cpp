@@ -15,14 +15,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_OpFrame(void)
 {
-  vAddStep("opFrame.dic"_Stz,       &Task::vOpFrameDic);
-  vAddStep("opFrame.name"_Stz,      &Task::vOpFrameName);
+  vAddStep("opFrame.dic"_Stz,       &Step::vOpFrameDic);
+  vAddStep("opFrame.name"_Stz,      &Step::vOpFrameName);
 }
 
 /*----------------------------------------------------------------------------*/
 /* opFrame.dic -- push dic of given op frame ( opFrame -- opDic)              */
 /*----------------------------------------------------------------------------*/
-void Task::vOpFrameDic(MP_Task mpTask)
+void Step::vOpFrameDic(MP_Task mpTask)
 {
   ENTRY("vOpFrameDic"_Stz);
   
@@ -43,7 +43,7 @@ void Task::vOpFrameDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* opFrame.name -- get name of given op frame ( opFrame -- string )           */
 /*----------------------------------------------------------------------------*/
-void Task::vOpFrameName(MP_Task mpTask)
+void Step::vOpFrameName(MP_Task mpTask)
 {
   ENTRY("vOpFrameName"_Stz);
   

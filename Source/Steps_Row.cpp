@@ -15,14 +15,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Row(void)
 {
-  vAddStep("row.asString"_Stz,         &Task::vRowString);
-  vAddStep("row.asEscapedString"_Stz,  &Task::vRowEscapedString);
+  vAddStep("row.asString"_Stz,         &Step::vRowString);
+  vAddStep("row.asEscapedString"_Stz,  &Step::vRowEscapedString);
 }
 
 /*----------------------------------------------------------------------------*/
 /* return row as a string                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vRowString(MP_Task mpTask)
+void Step::vRowString(MP_Task mpTask)
 {
   ENTRY("vRowString"_Stz);
   
@@ -56,7 +56,7 @@ void Task::vRowString(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* rows.asEscapedString return row as an escaped string                       */
 /*----------------------------------------------------------------------------*/
-void Task::vRowEscapedString(MP_Task mpTask)
+void Step::vRowEscapedString(MP_Task mpTask)
 {
   ENTRY("vRowEscapedString"_Stz);
   

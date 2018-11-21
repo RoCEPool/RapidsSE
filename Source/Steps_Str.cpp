@@ -15,32 +15,32 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Str(void)
 {
-  vAddStep("s256.init"_Stz,    &Task::vS256Init);
+  vAddStep("s256.init"_Stz,    &Step::vS256Init);
   
-  vAddStep("str::algebra"_Stz, &Task::vStrAlgebra);
-  vAddStep("strAlgebra"_Stz,   &Task::vStrAlgebra);
+  vAddStep("str::algebra"_Stz, &Step::vStrAlgebra);
+  vAddStep("strAlgebra"_Stz,   &Step::vStrAlgebra);
   
-  vAddStep("str.cat"_Stz,      &Task::vStrCat);
-  vAddStep("str.clip"_Stz,     &Task::vStrClip);
-  vAddStep("str.equal"_Stz,    &Task::vStrEqual);
-  vAddStep("str.escape"_Stz,   &Task::vStrEscape);
-  vAddStep("str.firstCsv"_Stz, &Task::vStrFirstCsv);
-  vAddStep("str.format"_Stz,   &Task::vStrFormat);
-  vAddStep("str.left"_Stz,     &Task::vStrLeft);
-  vAddStep("str.length"_Stz,   &Task::vStrLength);
-  vAddStep("str.pad"_Stz,      &Task::vStrPad);
-  vAddStep("str.prepend"_Stz,  &Task::vStrPrepend);
-  vAddStep("str.random"_Stz,   &Task::vStrRandom);
-  vAddStep("str.replace"_Stz,  &Task::vStrReplace);
-  vAddStep("str.right"_Stz,    &Task::vStrRight);
-  vAddStep("str.sub"_Stz,      &Task::vStrSub);
-  vAddStep("str.tailInt"_Stz,  &Task::vStrTailInt);
+  vAddStep("str.cat"_Stz,      &Step::vStrCat);
+  vAddStep("str.clip"_Stz,     &Step::vStrClip);
+  vAddStep("str.equal"_Stz,    &Step::vStrEqual);
+  vAddStep("str.escape"_Stz,   &Step::vStrEscape);
+  vAddStep("str.firstCsv"_Stz, &Step::vStrFirstCsv);
+  vAddStep("str.format"_Stz,   &Step::vStrFormat);
+  vAddStep("str.left"_Stz,     &Step::vStrLeft);
+  vAddStep("str.length"_Stz,   &Step::vStrLength);
+  vAddStep("str.pad"_Stz,      &Step::vStrPad);
+  vAddStep("str.prepend"_Stz,  &Step::vStrPrepend);
+  vAddStep("str.random"_Stz,   &Step::vStrRandom);
+  vAddStep("str.replace"_Stz,  &Step::vStrReplace);
+  vAddStep("str.right"_Stz,    &Step::vStrRight);
+  vAddStep("str.sub"_Stz,      &Step::vStrSub);
+  vAddStep("str.tailInt"_Stz,  &Step::vStrTailInt);
 }
 
 /*----------------------------------------------------------------------------*/
 /* s256.init -- initialise an s256                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vS256Init(MP_Task mpTask)
+void Step::vS256Init(MP_Task mpTask)
 {
   ENTRY("vS256Init"_Stz);
   
@@ -63,7 +63,7 @@ void Task::vS256Init(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.algebra -- string algebra tests                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vStrAlgebra(MP_Task mpTask)
+void Step::vStrAlgebra(MP_Task mpTask)
 {
   ENTRY("vStrAlgebra"_Stz);
  
@@ -84,7 +84,7 @@ void Task::vStrAlgebra(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.cat -- concat two strings                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vStrCat(MP_Task mpTask)
+void Step::vStrCat(MP_Task mpTask)
 {
   ENTRY("vStrCat"_Stz);
   
@@ -107,7 +107,7 @@ void Task::vStrCat(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.clip -- returns left or right n part of a string ( length str -- str ) */
 /*----------------------------------------------------------------------------*/
-void Task::vStrClip(MP_Task mpTask)
+void Step::vStrClip(MP_Task mpTask)
 {
   ENTRY("vStrClip"_Stz);
   
@@ -142,7 +142,7 @@ void Task::vStrClip(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.equal -- test if two strings are equal                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vStrEqual(MP_Task mpTask)
+void Step::vStrEqual(MP_Task mpTask)
 {
   ENTRY("vStrEql"_Stz);
   
@@ -165,7 +165,7 @@ void Task::vStrEqual(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.escape -- put a '\\' before and '\"'                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vStrEscape(MP_Task mpTask)
+void Step::vStrEscape(MP_Task mpTask)
 {
   ENTRY("vStrEscape"_Stz);
   
@@ -186,7 +186,7 @@ void Task::vStrEscape(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.firstCsv -- get first value from csv string                            */
 /*----------------------------------------------------------------------------*/
-void Task::vStrFirstCsv(MP_Task mpTask)
+void Step::vStrFirstCsv(MP_Task mpTask)
 {
   ENTRY("vStrFirstCsv"_Stz);
   
@@ -209,7 +209,7 @@ void Task::vStrFirstCsv(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.format -- pop format string and use it for a sprintf                   */
 /*----------------------------------------------------------------------------*/
-void Task::vStrFormat(MP_Task mpTask)
+void Step::vStrFormat(MP_Task mpTask)
 {
   ENTRY("vStrFormat"_Stz);
   
@@ -229,7 +229,7 @@ void Task::vStrFormat(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.left -- returns left n part of a string ( length str -- str )          */
 /*----------------------------------------------------------------------------*/
-void Task::vStrLeft(MP_Task mpTask)
+void Step::vStrLeft(MP_Task mpTask)
 {
   ENTRY("vClip"_Stz);
   
@@ -259,7 +259,7 @@ void Task::vStrLeft(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.length -- string length                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vStrLength(MP_Task mpTask)
+void Step::vStrLength(MP_Task mpTask)
 {
   ENTRY("vStrLen"_Stz);
   
@@ -280,7 +280,7 @@ void Task::vStrLength(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.pad -- pad string to given length                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vStrPad(MP_Task mpTask)
+void Step::vStrPad(MP_Task mpTask)
 {
   ENTRY("vStringPad"_Stz);
   
@@ -305,7 +305,7 @@ void Task::vStrPad(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.prepend -- prepend top string before second string                     */
 /*----------------------------------------------------------------------------*/
-void Task::vStrPrepend(MP_Task mpTask)
+void Step::vStrPrepend(MP_Task mpTask)
 {
   ENTRY("vStrPrepend"_Stz);
   
@@ -351,7 +351,7 @@ void Task::vStrPrepend(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.random-- generate random string of given length                        */
 /*----------------------------------------------------------------------------*/
-void Task::vStrRandom(MP_Task mpTask)
+void Step::vStrRandom(MP_Task mpTask)
 {
   ENTRY("vStrRandom"_Stz);
   
@@ -371,7 +371,7 @@ void Task::vStrRandom(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.replace-- replace this with that within string                         */
 /*----------------------------------------------------------------------------*/
-void Task::vStrReplace(MP_Task mpTask)
+void Step::vStrReplace(MP_Task mpTask)
 {
   ENTRY("vStrReplace"_Stz);
   
@@ -400,7 +400,7 @@ void Task::vStrReplace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* str.right -- Returns the right n part of a string ( length str -- str )    */
 /*----------------------------------------------------------------------------*/
-void Task::vStrRight(MP_Task mpTask)
+void Step::vStrRight(MP_Task mpTask)
 {
   ENTRY("vStrRight"_Stz);
   
@@ -433,7 +433,7 @@ void Task::vStrRight(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* substr -- substring ( length start str == substr )                         */
 /*----------------------------------------------------------------------------*/
-void Task::vStrSub(MP_Task mpTask)
+void Step::vStrSub(MP_Task mpTask)
 {
   ENTRY("vStrSub"_Stz);
   
@@ -471,7 +471,7 @@ void Task::vStrSub(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tailInt -- extract (possible) int at end of string                         */
 /*----------------------------------------------------------------------------*/
-void Task::vStrTailInt(MP_Task mpTask)
+void Step::vStrTailInt(MP_Task mpTask)
 {
   ENTRY("vStrTailInt"_Stz);
   
@@ -510,109 +510,6 @@ void Task::vStrTailInt(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* sprint of stack using given format string                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vSprint(s48K& sFormat, s48K& sString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  char* pf = sFormat.aChar();
-  char* ps = sString.aChar();
-  
-  while (*pf) {
-    
-    // test for ordinary character
-    if ('%' != *pf) {
-      *ps++ = *pf++;
-      continue;
-    }
-    
-    // we have a '%'
-    pf++;
-    
-    // test for %%
-    if ('%' == *pf) {
-      *ps++ = *pf++;
-      continue;
-    }
-    
-    // should be %v or %V
-    ASSERT('v' == *pf || 'V' == *pf);
-    
-    Value* pValue0 = m_pDataStack->pPeekValue(0);
-    eCN eClass = pValue0->eClass();
-    
-    // test for StrVal
-    if (CN_STRVAL == eClass) {
-      
-      //*pf = 's';                                                    //! Defect??
-      
-      s48K sValue;
-      m_pDataStack->bPop(sValue);
-      
-      if ('V' == *pf)
-        *ps++ = '"';
-      
-      for (char* pv = sValue.aChar(); *pv; )
-      *ps++ = *pv++;
-      
-      if ('V' == *pf)
-        *ps++ = '"';
-      
-      pf++;
-      
-      continue;
-    }
-    
-    // test for intval
-    if (CN_INTVAL == eClass) {
-      
-      //*pf = 'i';                                                    //! Defect??
-      
-      i8 iValue;
-      m_pDataStack->bPop(iValue);
-      
-      char aValue[32];
-      StrLib::wToString(iValue,aValue);
-      
-      for (char* pv = aValue; *pv; )
-      *ps++ = *pv++;
-      
-      pf++;
-      
-      continue;
-    }
-    
-    // test for ptrval
-    if (CN_PTRVAL == eClass) {
-      
-      //*pf = 'i';                                                    //! Defect??
-      
-      Object* pValue;
-      m_pDataStack->bPop(pValue);
-      
-      char aValue[32];
-      StrLib::wToPointer(pValue,aValue);
-      
-      for (char* pv = aValue; *pv; )
-        *ps++ = *pv++;
-      
-      pf++;
-      
-      continue;
-    }
-
-    // just copy %?
-    *ps++ = '%';
-    *ps++ = *pf++;
-  }
-  
-  //*pf = '\0';                                                       //! Defect??
-  *ps = '\0';
-  
-}
 
 /*============================================================================*/
 /* end                                                                        */

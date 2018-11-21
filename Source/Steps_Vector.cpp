@@ -15,13 +15,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Vector(void)
 {
-  vAddStep("vector.diff"_Stz,     &Task::vVectorDifference,  false );
+  vAddStep("vector.diff"_Stz,     &Step::vVectorDifference,  false );
 }
 
 /*----------------------------------------------------------------------------*/
 /* vector.difference -- get the difference of two vectors                     */
 /*----------------------------------------------------------------------------*/
-void Task::vVectorDifference(MP_Task mpTask)
+void Step::vVectorDifference(MP_Task mpTask)
 {
   ENTRY("vVectorDifference"_Stz);
   

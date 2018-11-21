@@ -15,13 +15,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Env(void)
 {
-  vAddStep("env@"_Stz,            &Task::vEnvGet);
+  vAddStep("env@"_Stz,            &Step::vEnvGet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* env@ -- get environment variable                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vEnvGet(MP_Task mpTask)
+void Step::vEnvGet(MP_Task mpTask)
 {
   ENTRY("vEnvGet"_Stz);
   

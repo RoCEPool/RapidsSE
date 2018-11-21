@@ -15,16 +15,16 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Memory(void)
 {
-  vAddStep("memory.byteDump"_Stz,   &Task::vMemoryByteDump);
-  vAddStep("memory::list"_Stz,       &Task::vMemoryList);
-  vAddStep("memory::reset"_Stz,      &Task::vMemoryReset);
-  vAddStep("memory.wordDump"_Stz,   &Task::vMemoryWordDump);
+  vAddStep("memory.byteDump"_Stz,   &Step::vMemoryByteDump);
+  vAddStep("memory::list"_Stz,       &Step::vMemoryList);
+  vAddStep("memory::reset"_Stz,      &Step::vMemoryReset);
+  vAddStep("memory.wordDump"_Stz,   &Step::vMemoryWordDump);
 }
 
 /*----------------------------------------------------------------------------*/
 /* memory.bytedump -- byte-oriented dump                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vMemoryByteDump(MP_Task mpTask)
+void Step::vMemoryByteDump(MP_Task mpTask)
 {
 ENTRY("vMemoryByteDump"_Stz);
   
@@ -46,7 +46,7 @@ ENTRY("vMemoryByteDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* memory.reset -- reset memory statistics                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vMemoryReset(MP_Task mpTask)
+void Step::vMemoryReset(MP_Task mpTask)
 {
   ENTRY("vMemoryReset"_Stz);
   
@@ -70,7 +70,7 @@ void Task::vMemoryReset(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* memory.list-- trace memory statistics                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vMemoryList(MP_Task mpTask)
+void Step::vMemoryList(MP_Task mpTask)
 {
   ENTRY("vMemoryList"_Stz);
 
@@ -127,7 +127,7 @@ void Task::vMemoryList(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* memory.worddump -- word-oriented dump                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vMemoryWordDump(MP_Task mpTask)
+void Step::vMemoryWordDump(MP_Task mpTask)
 {
 ENTRY("vMemoryWordDump"_Stz);
   

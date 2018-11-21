@@ -15,25 +15,25 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_RowCursor(void)
 {
-  vAddStep("rowCursor::new"_Stz,         &Task::vRowCursorNew);
+  vAddStep("rowCursor::new"_Stz,         &Step::vRowCursorNew);
   
-  vAddStep("rowCursor.begin"_Stz,        &Task::vRowCursorBegin);
-  vAddStep("rowCursor.delete"_Stz,       &Task::vRowCursorDelete);
-  vAddStep("rowCursor.end"_Stz,          &Task::vRowCursorEnd);
-  vAddStep("rowCursor.entryBuffer@"_Stz, &Task::vRowCursorEntryBufferFetch);
-  vAddStep("rowCursor.entryBuffer!"_Stz, &Task::vRowCursorEntryBufferStore);
-  vAddStep("rowCursor.first"_Stz,        &Task::vRowCursorFirst);
-  vAddStep("rowCursor.init"_Stz,         &Task::vRowCursorInit);
-  vAddStep("rowCursor.next"_Stz,         &Task::vRowCursorNext);
-  vAddStep("rowCursor.row"_Stz,          &Task::vRowCursorRow);
-  vAddStep("rowCursor.table@"_Stz,       &Task::vRowCursorTableFetch);
-  vAddStep("rowCursor.table!"_Stz,       &Task::vRowCursorTableStore);
+  vAddStep("rowCursor.begin"_Stz,        &Step::vRowCursorBegin);
+  vAddStep("rowCursor.delete"_Stz,       &Step::vRowCursorDelete);
+  vAddStep("rowCursor.end"_Stz,          &Step::vRowCursorEnd);
+  vAddStep("rowCursor.entryBuffer@"_Stz, &Step::vRowCursorEntryBufferFetch);
+  vAddStep("rowCursor.entryBuffer!"_Stz, &Step::vRowCursorEntryBufferStore);
+  vAddStep("rowCursor.first"_Stz,        &Step::vRowCursorFirst);
+  vAddStep("rowCursor.init"_Stz,         &Step::vRowCursorInit);
+  vAddStep("rowCursor.next"_Stz,         &Step::vRowCursorNext);
+  vAddStep("rowCursor.row"_Stz,          &Step::vRowCursorRow);
+  vAddStep("rowCursor.table@"_Stz,       &Step::vRowCursorTableFetch);
+  vAddStep("rowCursor.table!"_Stz,       &Step::vRowCursorTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* rowCursor.begin -- begin using row cursor                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorBegin(MP_Task mpTask)
+void Step::vRowCursorBegin(MP_Task mpTask)
 {
 ENTRY("vRowCursorBegin"_Stz);
   
@@ -56,7 +56,7 @@ ENTRY("vRowCursorBegin"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rowCursor.delete -- delete a row cursor                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorDelete(MP_Task mpTask)
+void Step::vRowCursorDelete(MP_Task mpTask)
 {
 ENTRY("vRowCursorDelete"_Stz);
   
@@ -78,7 +78,7 @@ ENTRY("vRowCursorDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rowCursor.end -- end using row cursor                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorEnd(MP_Task mpTask)
+void Step::vRowCursorEnd(MP_Task mpTask)
 {
 ENTRY("vRowCursorEnd"_Stz);
   
@@ -97,7 +97,7 @@ ENTRY("vRowCursorEnd"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rowCursor.first -- set to first and get row                                */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorFirst(MP_Task mpTask)
+void Step::vRowCursorFirst(MP_Task mpTask)
 {
 ENTRY("vRowCursorFirst"_Stz);
   
@@ -120,7 +120,7 @@ ENTRY("vRowCursorFirst"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rowCursor.init -- init a row cursor                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorInit(MP_Task mpTask)
+void Step::vRowCursorInit(MP_Task mpTask)
 {
 ENTRY("vRowCursorInit"_Stz);
   
@@ -139,7 +139,7 @@ ENTRY("vRowCursorInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rowCursor::new -- new an row cursor                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorNew(MP_Task mpTask)
+void Step::vRowCursorNew(MP_Task mpTask)
 {
 ENTRY("vRowCursorNew"_Stz);
   
@@ -154,7 +154,7 @@ ENTRY("vRowCursorNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rowCursor.next -- advance to next and get row                              */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorNext(MP_Task mpTask)
+void Step::vRowCursorNext(MP_Task mpTask)
 {
 ENTRY("vRowCursorNext"_Stz);
   
@@ -177,7 +177,7 @@ ENTRY("vRowCursorNext"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rowCursor.row -- get current row                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorRow(MP_Task mpTask)
+void Step::vRowCursorRow(MP_Task mpTask)
 {
   ENTRY("vRowCursorRow"_Stz);
   
@@ -196,7 +196,7 @@ void Task::vRowCursorRow(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* rowCursor.entryBuffer@ -- fetch entryBuffer                                */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorEntryBufferFetch(MP_Task mpTask)
+void Step::vRowCursorEntryBufferFetch(MP_Task mpTask)
 {
   ENTRY("vRowCursorEntryBufferFetch"_Stz);
   
@@ -218,7 +218,7 @@ void Task::vRowCursorEntryBufferFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* rowCursor.entryBuffer! -- store entryBuffer                                */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorEntryBufferStore(MP_Task mpTask)
+void Step::vRowCursorEntryBufferStore(MP_Task mpTask)
 {
   ENTRY("vRowCursorEntryBufferStore"_Stz);
   
@@ -243,7 +243,7 @@ void Task::vRowCursorEntryBufferStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* rowCursor.table@ -- fetch table from row cursor                            */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorTableFetch(MP_Task mpTask)
+void Step::vRowCursorTableFetch(MP_Task mpTask)
 {
 ENTRY("vRowCursorTableFetch"_Stz);
   
@@ -264,7 +264,7 @@ ENTRY("vRowCursorTableFetch"_Stz);
 /*----------------------------------------------------------------------------*/
 /* rowCursor.table! -- store table into row cursor                            */
 /*----------------------------------------------------------------------------*/
-void Task::vRowCursorTableStore(MP_Task mpTask)
+void Step::vRowCursorTableStore(MP_Task mpTask)
 {
 ENTRY("vRowCursorTableStore"_Stz);
   

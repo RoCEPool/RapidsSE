@@ -15,13 +15,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Shell(void)
 {
-  vAddStep("shell.execute"_Stz,  &Task::vShellExecute);
+  vAddStep("shell.execute"_Stz,  &Step::vShellExecute);
 }
 
 /*----------------------------------------------------------------------------*/
 /* shell.execute -- execute given shell command                               */
 /*----------------------------------------------------------------------------*/
-void Task::vShellExecute(MP_Task mpTask)
+void Step::vShellExecute(MP_Task mpTask)
 {
   ENTRY("vShellExecute"_Stz);
   

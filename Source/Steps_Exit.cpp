@@ -15,13 +15,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Exit(void)
 {
-  vAddStep("exit"_Stz,            &Task::vExit);
+  vAddStep("exit"_Stz,            &Step::vExit);
 }
 
 /*----------------------------------------------------------------------------*/
 /* exit -- exit from routine                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vExit(MP_Task mpTask)
+void Step::vExit(MP_Task mpTask)
 {
   ENTRY("vExit"_Stz);
   

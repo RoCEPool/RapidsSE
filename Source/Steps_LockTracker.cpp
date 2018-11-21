@@ -15,14 +15,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_LockTracker(void)
 {
-  vAddStep("lockTracker::list"_Stz,  &Task::vLockTrackerList);
-  vAddStep("lockTracker::reset"_Stz, &Task::vLockTrackerReset);
+  vAddStep("lockTracker::list"_Stz,  &Step::vLockTrackerList);
+  vAddStep("lockTracker::reset"_Stz, &Step::vLockTrackerReset);
 }
 
 /*----------------------------------------------------------------------------*/
 /* lockTracker::list -- list lock stats                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vLockTrackerList(MP_Task mpTask)
+void Step::vLockTrackerList(MP_Task mpTask)
 {
 ENTRY("vLockTrackerList"_Stz);
 
@@ -39,7 +39,7 @@ ENTRY("vLockTrackerList"_Stz);
 /*----------------------------------------------------------------------------*/
 /* lockTracker::reset -- reset locks                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vLockTrackerReset(MP_Task mpTask)
+void Step::vLockTrackerReset(MP_Task mpTask)
 {
   ENTRY("vLockTrackerReset"_Stz);
   

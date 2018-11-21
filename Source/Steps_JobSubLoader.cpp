@@ -15,24 +15,24 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobSubLoader(void)
 {
-  vAddStep("Job_subLoader::spawn"_Stz,        &Task::vJob_SubLoaderSpawn);
+  vAddStep("Job_subLoader::spawn"_Stz,        &Step::vJob_SubLoaderSpawn);
   
-  vAddStep("job_subLoader.begin"_Stz,         &Task::vJob_SubLoaderBegin);
-  vAddStep("job_subLoader.danglingBuffer"_Stz,&Task::vJob_SubLoaderDanglingBuffer);
-  vAddStep("job_subLoader.end"_Stz,           &Task::vJob_SubLoaderEnd);
-  vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Task::vJob_SubLoaderJobLoadTableFetch);
-  vAddStep("Job_subLoader.partition@"_Stz,    &Task::vJob_SubLoaderPartitionFetch);
-  vAddStep("Job_subLoader.partition!"_Stz,    &Task::vJob_SubLoaderPartitionStore);
-  vAddStep("Job_subLoader.processRecords"_Stz,&Task::vJob_SubLoaderProcessRecords);
-  vAddStep("Job_subLoader.recordsInvalid"_Stz,&Task::vJob_SubLoaderRecordsInvalid);
+  vAddStep("job_subLoader.begin"_Stz,         &Step::vJob_SubLoaderBegin);
+  vAddStep("job_subLoader.danglingBuffer"_Stz,&Step::vJob_SubLoaderDanglingBuffer);
+  vAddStep("job_subLoader.end"_Stz,           &Step::vJob_SubLoaderEnd);
+  vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Step::vJob_SubLoaderJobLoadTableFetch);
+  vAddStep("Job_subLoader.partition@"_Stz,    &Step::vJob_SubLoaderPartitionFetch);
+  vAddStep("Job_subLoader.partition!"_Stz,    &Step::vJob_SubLoaderPartitionStore);
+  vAddStep("Job_subLoader.processRecords"_Stz,&Step::vJob_SubLoaderProcessRecords);
+  vAddStep("Job_subLoader.recordsInvalid"_Stz,&Step::vJob_SubLoaderRecordsInvalid);
 
-  vAddStep("Job_subLoader.workingBuffer"_Stz, &Task::vJob_SubLoaderWorkingBuffer);
+  vAddStep("Job_subLoader.workingBuffer"_Stz, &Step::vJob_SubLoaderWorkingBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_subLoader::spawn -- spawn a new subloader                              */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
+void Step::vJob_SubLoaderSpawn(MP_Task mpTask)
 {
   ENTRY("vJob_SubLoaderSpawn"_Stz);
   
@@ -71,7 +71,7 @@ void Task::vJob_SubLoaderSpawn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.begin -- begin loading                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderBegin(MP_Task mpTask)
+void Step::vJob_SubLoaderBegin(MP_Task mpTask)
 {
   ENTRY("vSubLoaderBegin"_Stz);
   
@@ -88,7 +88,7 @@ void Task::vJob_SubLoaderBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.dangingBuffer -- ensure a dangling buffer for partition      */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderDanglingBuffer(MP_Task mpTask)
+void Step::vJob_SubLoaderDanglingBuffer(MP_Task mpTask)
 {
   ENTRY("vJob_SubLoaderDanglingBuffer"_Stz);
   
@@ -109,7 +109,7 @@ void Task::vJob_SubLoaderDanglingBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.end -- end loading                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderEnd(MP_Task mpTask)
+void Step::vJob_SubLoaderEnd(MP_Task mpTask)
 {
   ENTRY("vSubLoaderEnd"_Stz);
   
@@ -126,7 +126,7 @@ void Task::vJob_SubLoaderEnd(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.jobLoadTable@ -- fetch the job load table                    */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask)
+void Step::vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask)
 {
   ENTRY("vJob_SubLoaderJobLoadTableFetch"_Stz);
   
@@ -143,7 +143,7 @@ void Task::vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.partition@ -- get partition no derived from hash of record   */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderPartitionFetch(MP_Task mpTask)
+void Step::vJob_SubLoaderPartitionFetch(MP_Task mpTask)
 {
   ENTRY("vJob_SubLoaderPartitionFetch"_Stz);
   
@@ -162,7 +162,7 @@ void Task::vJob_SubLoaderPartitionFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.partition! -- store partition number                         */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderPartitionStore(MP_Task mpTask)
+void Step::vJob_SubLoaderPartitionStore(MP_Task mpTask)
 {
   ENTRY("vJob_SubLoaderPartitionStore"_Stz);
   
@@ -183,7 +183,7 @@ void Task::vJob_SubLoaderPartitionStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subLoader.processRecords -- read & process rows till buffer full / eof */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderProcessRecords(MP_Task mpTask)
+void Step::vJob_SubLoaderProcessRecords(MP_Task mpTask)
 {
   ENTRY("vJob_SubLoaderProcessRecords"_Stz);
   
@@ -202,7 +202,7 @@ void Task::vJob_SubLoaderProcessRecords(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* subLoader.recordsInvalid -- return no of invalid records fetched by sub    */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderRecordsInvalid(MP_Task mpTask)
+void Step::vJob_SubLoaderRecordsInvalid(MP_Task mpTask)
 {
   ENTRY("vJob_SubLoaderRecordsInvalid"_Stz);
   
@@ -220,7 +220,7 @@ void Task::vJob_SubLoaderRecordsInvalid(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* subLoader.workingBuffer -- get a working buffer                            */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubLoaderWorkingBuffer(MP_Task mpTask)
+void Step::vJob_SubLoaderWorkingBuffer(MP_Task mpTask)
 {
   ENTRY("vJob_SubLoaderWorkingBuffer"_Stz);
   

@@ -15,26 +15,26 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Tx(void)
 {
-  vAddStep("tx::begin"_Stz,      &Task::vTxBegin);
-  vAddStep("tx.commit"_Stz,      &Task::vTxCommit);
-  vAddStep("tx.counterDec"_Stz,  &Task::vTxCounterDec);
-  vAddStep("tx.counter@"_Stz,    &Task::vTxCounterFetch);
-  vAddStep("tx.counter!"_Stz,    &Task::vTxCounterStore);
-  vAddStep("tx.distMember@"_Stz, &Task::vTxDistMemberFetch);
-  vAddStep("tx.distMember!"_Stz, &Task::vTxDistMemberStore);
-  vAddStep("tx.dump"_Stz,        &Task::vTxDump);
-  vAddStep("tx::dumpAll"_Stz,    &Task::vTxDumpAll);
-  vAddStep("tx.free"_Stz,        &Task::vTxFree);
-  vAddStep("tx.id"_Stz,          &Task::vTxId);
-  vAddStep("tx.prepare"_Stz,     &Task::vTxPrepare);
-  vAddStep("tx.rollback"_Stz,    &Task::vTxRollback);
-  vAddStep("tx::testDist"_Stz,   &Task::vTxTestDist);
+  vAddStep("tx::begin"_Stz,      &Step::vTxBegin);
+  vAddStep("tx.commit"_Stz,      &Step::vTxCommit);
+  vAddStep("tx.counterDec"_Stz,  &Step::vTxCounterDec);
+  vAddStep("tx.counter@"_Stz,    &Step::vTxCounterFetch);
+  vAddStep("tx.counter!"_Stz,    &Step::vTxCounterStore);
+  vAddStep("tx.distMember@"_Stz, &Step::vTxDistMemberFetch);
+  vAddStep("tx.distMember!"_Stz, &Step::vTxDistMemberStore);
+  vAddStep("tx.dump"_Stz,        &Step::vTxDump);
+  vAddStep("tx::dumpAll"_Stz,    &Step::vTxDumpAll);
+  vAddStep("tx.free"_Stz,        &Step::vTxFree);
+  vAddStep("tx.id"_Stz,          &Step::vTxId);
+  vAddStep("tx.prepare"_Stz,     &Step::vTxPrepare);
+  vAddStep("tx.rollback"_Stz,    &Step::vTxRollback);
+  vAddStep("tx::testDist"_Stz,   &Step::vTxTestDist);
 }
 
 /*----------------------------------------------------------------------------*/
 /* tx::begin -- begin a tx                                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTxBegin(MP_Task mpTask)
+void Step::vTxBegin(MP_Task mpTask)
 {
   ENTRY("vTxBegin"_Stz);
   
@@ -53,7 +53,7 @@ void Task::vTxBegin(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx.commit -- commit a tx                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCommit(MP_Task mpTask)
+void Step::vTxCommit(MP_Task mpTask)
 {
   ENTRY("vTxCommit"_Stz);
   
@@ -75,7 +75,7 @@ void Task::vTxCommit(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx.counterDec -- decrement tx general counter                              */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCounterDec(MP_Task mpTask)
+void Step::vTxCounterDec(MP_Task mpTask)
 {
   ENTRY("vTxCounterDec"_Stz);
   
@@ -100,7 +100,7 @@ void Task::vTxCounterDec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx.counter@ -- fetch tx general counter                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCounterFetch(MP_Task mpTask)
+void Step::vTxCounterFetch(MP_Task mpTask)
 {
   ENTRY("vTxCounterFetch"_Stz);
   
@@ -119,7 +119,7 @@ void Task::vTxCounterFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx.counter! -- store tx general counter                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vTxCounterStore(MP_Task mpTask)
+void Step::vTxCounterStore(MP_Task mpTask)
 {
   ENTRY("vTxCounterStore"_Stz);
   
@@ -140,7 +140,7 @@ void Task::vTxCounterStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx.distMember@ -- fetch if given node is a distributed member of tx        */
 /*----------------------------------------------------------------------------*/
-void Task::vTxDistMemberFetch(MP_Task mpTask)
+void Step::vTxDistMemberFetch(MP_Task mpTask)
 {
   ENTRY("vTxDistMemberFetch"_Stz);
   
@@ -165,7 +165,7 @@ void Task::vTxDistMemberFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx.distMember! -- store if given node is a distributed member of tx        */
 /*----------------------------------------------------------------------------*/
-void Task::vTxDistMemberStore(MP_Task mpTask)
+void Step::vTxDistMemberStore(MP_Task mpTask)
 {
   ENTRY("vTxDistMemberStore"_Stz);
   
@@ -192,7 +192,7 @@ void Task::vTxDistMemberStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx.dump -- dump a tx                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vTxDump(MP_Task mpTask)
+void Step::vTxDump(MP_Task mpTask)
 {
 ENTRY("vTxDump"_Stz);
   
@@ -210,7 +210,7 @@ ENTRY("vTxDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* tx::dumpAll -- dump all tx's                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTxDumpAll(MP_Task mpTask)
+void Step::vTxDumpAll(MP_Task mpTask)
 {
   ENTRY("vTxDumpAll"_Stz);
   
@@ -222,7 +222,7 @@ void Task::vTxDumpAll(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx.free -- free a tx                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vTxFree(MP_Task mpTask)
+void Step::vTxFree(MP_Task mpTask)
 {
   ENTRY("vTxFree"_Stz);
   
@@ -245,7 +245,7 @@ void Task::vTxFree(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx.id -- get tx id from tx on data stack                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vTxId(MP_Task mpTask)
+void Step::vTxId(MP_Task mpTask)
 {
   ENTRY("vTxId"_Stz);
   
@@ -264,7 +264,7 @@ void Task::vTxId(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx.prepare -- prepare a tx                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vTxPrepare(MP_Task mpTask)
+void Step::vTxPrepare(MP_Task mpTask)
 {
   ENTRY("vTxPrepare"_Stz);
   
@@ -286,7 +286,7 @@ void Task::vTxPrepare(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx.rollback -- rollback a tx                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vTxRollback(MP_Task mpTask)
+void Step::vTxRollback(MP_Task mpTask)
 {
   ENTRY("vTxRollback"_Stz);
   
@@ -308,7 +308,7 @@ void Task::vTxRollback(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tx::testDist -- test for a distributed tx and create if it doesnt exist    */
 /*----------------------------------------------------------------------------*/
-void Task::vTxTestDist(MP_Task mpTask)
+void Step::vTxTestDist(MP_Task mpTask)
 {
   ENTRY("vTxTestDist"_Stz);
   

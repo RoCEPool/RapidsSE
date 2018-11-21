@@ -15,18 +15,18 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_DicStack(void)
 {
-  vAddStep("dicStack.depth"_Stz,    &Task::vDicStackDepth);
-  vAddStep("dicStack.drop"_Stz,     &Task::vDicStackDrop);
-  vAddStep("dicStack.dump"_Stz,     &Task::vDicStackDump);
-  vAddStep("dicStack.pick"_Stz,     &Task::vDicStackPick);
-  vAddStep("dicStack.pop"_Stz,      &Task::vDicStackPop);
-  vAddStep("dicStack.push"_Stz,     &Task::vDicStackPush);
+  vAddStep("dicStack.depth"_Stz,    &Step::vDicStackDepth);
+  vAddStep("dicStack.drop"_Stz,     &Step::vDicStackDrop);
+  vAddStep("dicStack.dump"_Stz,     &Step::vDicStackDump);
+  vAddStep("dicStack.pick"_Stz,     &Step::vDicStackPick);
+  vAddStep("dicStack.pop"_Stz,      &Step::vDicStackPop);
+  vAddStep("dicStack.push"_Stz,     &Step::vDicStackPush);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dicStack.depth -- get number of dictionaries on dictionary stack           */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackDepth(MP_Task mpTask)
+void Step::vDicStackDepth(MP_Task mpTask)
 {
   ENTRY("vDicStackDepth"_Stz);
   
@@ -47,7 +47,7 @@ void Task::vDicStackDepth(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.drop -- discard top of dictionary stack                           */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackDrop(MP_Task mpTask)
+void Step::vDicStackDrop(MP_Task mpTask)
 {
   ENTRY("vDicStackDrop"_Stz);
   
@@ -66,7 +66,7 @@ void Task::vDicStackDrop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.dump -- dump dictionary stack                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackDump(MP_Task mpTask)
+void Step::vDicStackDump(MP_Task mpTask)
 {
   ENTRY("vDicStackDump"_Stz);
   
@@ -85,7 +85,7 @@ void Task::vDicStackDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.pick -- pick a dic from dic stack and push onto data stack        */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackPick(MP_Task mpTask)
+void Step::vDicStackPick(MP_Task mpTask)
 {
   ENTRY("vDicStackPick"_Stz);
   
@@ -110,7 +110,7 @@ void Task::vDicStackPick(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.pop -- pop top of dictionary stack                                */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackPop(MP_Task mpTask)
+void Step::vDicStackPop(MP_Task mpTask)
 {
   ENTRY("vDicStackPop"_Stz);
   
@@ -129,7 +129,7 @@ void Task::vDicStackPop(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.push -- push a dictionary onto given dictionary stack             */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackPush(MP_Task mpTask)
+void Step::vDicStackPush(MP_Task mpTask)
 {
   ENTRY("vDicStackPush"_Stz);
   

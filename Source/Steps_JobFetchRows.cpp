@@ -15,23 +15,23 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobFetchRows(void)
 {
-  vAddStep("Job_fetchRows.lastBuffers!"_Stz, &Task::vJob_FetchRowsLastBuffersStore);
-  vAddStep("Job_fetchRows.partition@"_Stz,   &Task::vJob_FetchRowsPartitionFetch);
-  vAddStep("Job_fetchRows.planner!"_Stz,     &Task::vJob_FetchRowsPlannerStore);
-  vAddStep("Job_fetchRows.spawnSub"_Stz,     &Task::vJob_FetchRowsSpawnSub);
-  vAddStep("Job_fetchRows.table!"_Stz,       &Task::vJob_FetchRowsTableStore);
-  vAddStep("Job_fetchRows.where@"_Stz,       &Task::vJob_FetchRowsWhereFetch);
+  vAddStep("Job_fetchRows.lastBuffers!"_Stz, &Step::vJob_FetchRowsLastBuffersStore);
+  vAddStep("Job_fetchRows.partition@"_Stz,   &Step::vJob_FetchRowsPartitionFetch);
+  vAddStep("Job_fetchRows.planner!"_Stz,     &Step::vJob_FetchRowsPlannerStore);
+  vAddStep("Job_fetchRows.spawnSub"_Stz,     &Step::vJob_FetchRowsSpawnSub);
+  vAddStep("Job_fetchRows.table!"_Stz,       &Step::vJob_FetchRowsTableStore);
+  vAddStep("Job_fetchRows.where@"_Stz,       &Step::vJob_FetchRowsWhereFetch);
   
-  vAddStep("Job_subFetch.bufferQueue@"_Stz,  &Task::vJob_SubFetchBufferQueueFetch);
-  vAddStep("Job_subFetch.phrase@"_Stz,       &Task::vJob_SubFetchPhraseFetch);
-  vAddStep("Job_subFetch.Planner@"_Stz,      &Task::vJob_SubFetchPlannerFetch);
-  vAddStep("Job_subFetch.slot@"_Stz,         &Task::vJob_SubFetchSlotFetch);
+  vAddStep("Job_subFetch.bufferQueue@"_Stz,  &Step::vJob_SubFetchBufferQueueFetch);
+  vAddStep("Job_subFetch.phrase@"_Stz,       &Step::vJob_SubFetchPhraseFetch);
+  vAddStep("Job_subFetch.Planner@"_Stz,      &Step::vJob_SubFetchPlannerFetch);
+  vAddStep("Job_subFetch.slot@"_Stz,         &Step::vJob_SubFetchSlotFetch);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.lastBuffers! -- set no of expected last buffers              */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_FetchRowsLastBuffersStore(MP_Task mpTask)
+void Step::vJob_FetchRowsLastBuffersStore(MP_Task mpTask)
 {
   ENTRY("vJob_FetchRowsLastBuffersStore"_Stz);
   
@@ -52,7 +52,7 @@ void Task::vJob_FetchRowsLastBuffersStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.partition@ -- fetch partition no from the job                */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_FetchRowsPartitionFetch(MP_Task mpTask)
+void Step::vJob_FetchRowsPartitionFetch(MP_Task mpTask)
 {
   ENTRY("vJob_FetchRowsPartitionFetch"_Stz);
   
@@ -69,7 +69,7 @@ void Task::vJob_FetchRowsPartitionFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.planner! -- store planner in the job                         */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_FetchRowsPlannerStore(MP_Task mpTask)
+void Step::vJob_FetchRowsPlannerStore(MP_Task mpTask)
 {
   ENTRY("vJob_FetchRowsPlannerStore"_Stz);
   
@@ -95,7 +95,7 @@ void Task::vJob_FetchRowsPlannerStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.spawnSub -- spawn sub fetch job                              */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_FetchRowsSpawnSub(MP_Task mpTask)
+void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask)
 {
   ENTRY("vJob_FetchRowsSpawnSub"_Stz);
   
@@ -144,7 +144,7 @@ void Task::vJob_FetchRowsSpawnSub(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.table! -- store table in the job                             */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_FetchRowsTableStore(MP_Task mpTask)
+void Step::vJob_FetchRowsTableStore(MP_Task mpTask)
 {
   ENTRY("vJob_FetchRowsTableStore"_Stz);
   
@@ -166,7 +166,7 @@ void Task::vJob_FetchRowsTableStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_fetchRows.where@ -- fetch the where string from the job                */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_FetchRowsWhereFetch(MP_Task mpTask)
+void Step::vJob_FetchRowsWhereFetch(MP_Task mpTask)
 {
   ENTRY("vJob_FetchRowsWhereFetch"_Stz);
   
@@ -183,7 +183,7 @@ void Task::vJob_FetchRowsWhereFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subFetch.bufferQueue@ -- fetch the job buffer queue                    */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubFetchBufferQueueFetch(MP_Task mpTask)
+void Step::vJob_SubFetchBufferQueueFetch(MP_Task mpTask)
 {
   ENTRY("vJob_SubFetchBufferQueueFetch"_Stz);
   
@@ -200,7 +200,7 @@ void Task::vJob_SubFetchBufferQueueFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subFetch.phrase@ -- fetch the job phrase                               */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubFetchPhraseFetch(MP_Task mpTask)
+void Step::vJob_SubFetchPhraseFetch(MP_Task mpTask)
 {
   ENTRY("vJob_SubFetchPhraseFetch"_Stz);
   
@@ -217,7 +217,7 @@ void Task::vJob_SubFetchPhraseFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subFetch.planner@ -- fetch the job planner                             */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubFetchPlannerFetch(MP_Task mpTask)
+void Step::vJob_SubFetchPlannerFetch(MP_Task mpTask)
 {
   ENTRY("vJob_SubFetchPlannerFetch"_Stz);
   
@@ -235,7 +235,7 @@ void Task::vJob_SubFetchPlannerFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subFetch.slot@ -- fetch the job slot                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubFetchSlotFetch(MP_Task mpTask)
+void Step::vJob_SubFetchSlotFetch(MP_Task mpTask)
 {
   ENTRY("vJob_SubFetchSlotFetch"_Stz);
   

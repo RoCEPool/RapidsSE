@@ -15,20 +15,20 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Locals(void)
 {
-  vAddStep("local.fetch"_Stz,     &Task::vLocalFetch);
-  vAddStep("local.store"_Stz,     &Task::vLocalStore);
-  vAddStep("locals|"_Stz,         &Task::vLocalsBar,        true);
-  vAddStep("locals.pop"_Stz,      &Task::vLocalsPop);
-  vAddStep("locals.push"_Stz,     &Task::vLocalsPush);
-  vAddStep("to"_Stz,              &Task::vLocalsTo,         true);
+  vAddStep("local.fetch"_Stz,     &Step::vLocalFetch);
+  vAddStep("local.store"_Stz,     &Step::vLocalStore);
+  vAddStep("locals|"_Stz,         &Step::vLocalsBar,        true);
+  vAddStep("locals.pop"_Stz,      &Step::vLocalsPop);
+  vAddStep("locals.push"_Stz,     &Step::vLocalsPush);
+  vAddStep("to"_Stz,              &Step::vLocalsTo,         true);
   
-  vAddStep("params|"_Stz,         &Task::vLocalsBar,        true);
+  vAddStep("params|"_Stz,         &Step::vLocalsBar,        true);
 }
 
 /*----------------------------------------------------------------------------*/
 /* local.fetch -- push locals[n] onto dstack                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalFetch(MP_Task mpTask)
+void Step::vLocalFetch(MP_Task mpTask)
 {
   ENTRY("vLocalFetch"_Stz);
   
@@ -49,7 +49,7 @@ void Task::vLocalFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* localStore -- pop dstack into locals[n]                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalStore(MP_Task mpTask)
+void Step::vLocalStore(MP_Task mpTask)
 {
   ENTRY("vLocalStore"_Stz);
   
@@ -70,7 +70,7 @@ void Task::vLocalStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* locals| -- declare set of locals                                immediate  */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalsBar(MP_Task mpTask)
+void Step::vLocalsBar(MP_Task mpTask)
 {
 ENTRY("vLocalsBar"_Stz);
   
@@ -128,7 +128,7 @@ ENTRY("vLocalsBar"_Stz);
 /*----------------------------------------------------------------------------*/
 /* locals.pop -- pop locals frame                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalsPop(MP_Task mpTask)
+void Step::vLocalsPop(MP_Task mpTask)
 {
 ENTRY("vLocalsPop"_Stz);
   
@@ -147,7 +147,7 @@ ENTRY("vLocalsPop"_Stz);
 /*----------------------------------------------------------------------------*/
 /* locals.push -- push locals frame                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalsPush(MP_Task mpTask)
+void Step::vLocalsPush(MP_Task mpTask)
 {
 ENTRY("vLocalsPush"_Stz);
   
@@ -165,7 +165,7 @@ ENTRY("vLocalsPush"_Stz);
 /*----------------------------------------------------------------------------*/
 /* to -- compile store value into local variable                    immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vLocalsTo(MP_Task mpTask)
+void Step::vLocalsTo(MP_Task mpTask)
 {
 ENTRY("vLocalsTo"_Stz);
   

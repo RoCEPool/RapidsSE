@@ -16,17 +16,17 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_WorkingBuffer(void)
 {
-  vAddStep("workingBuffer.isLast@"_Stz,          &Task::vWorkingBufferIsLastFetch);
-  vAddStep("workingBuffer.isLast!"_Stz,          &Task::vWorkingBufferIsLastStore);
-  vAddStep("workingBuffer.rows"_Stz,             &Task::vWorkingBufferRows);
-  vAddStep("workingBuffer.show"_Stz,             &Task::vWorkingBufferShow);
-  vAddStep("workingBuffer::toWorkingBuffer"_Stz, &Task::vWorkingBufferToWorkingBuffer);
+  vAddStep("workingBuffer.isLast@"_Stz,          &Step::vWorkingBufferIsLastFetch);
+  vAddStep("workingBuffer.isLast!"_Stz,          &Step::vWorkingBufferIsLastStore);
+  vAddStep("workingBuffer.rows"_Stz,             &Step::vWorkingBufferRows);
+  vAddStep("workingBuffer.show"_Stz,             &Step::vWorkingBufferShow);
+  vAddStep("workingBuffer::toWorkingBuffer"_Stz, &Step::vWorkingBufferToWorkingBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* workingBuffer.isLast@ -- get if buffer is last                             */
 /*----------------------------------------------------------------------------*/
-void Task::vWorkingBufferIsLastFetch(MP_Task mpTask)
+void Step::vWorkingBufferIsLastFetch(MP_Task mpTask)
 {
   ENTRY("vWorkingBufferIsLastFetch"_Stz);
   
@@ -45,7 +45,7 @@ void Task::vWorkingBufferIsLastFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* workingBuffer.isLast! -- set buffer is last                                */
 /*----------------------------------------------------------------------------*/
-void Task::vWorkingBufferIsLastStore(MP_Task mpTask)
+void Step::vWorkingBufferIsLastStore(MP_Task mpTask)
 {
   ENTRY("vWorkingBufferIsLastStore"_Stz);
   
@@ -64,7 +64,7 @@ void Task::vWorkingBufferIsLastStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* workingBuffer.rows -- get number of rows in working buffer                 */
 /*----------------------------------------------------------------------------*/
-void Task::vWorkingBufferRows(MP_Task mpTask)
+void Step::vWorkingBufferRows(MP_Task mpTask)
 {
   ENTRY("vWorkingBufferShow"_Stz);
   
@@ -83,7 +83,7 @@ void Task::vWorkingBufferRows(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* workingBuffer.show -- show info about a working buffer                     */
 /*----------------------------------------------------------------------------*/
-void Task::vWorkingBufferShow(MP_Task mpTask)
+void Step::vWorkingBufferShow(MP_Task mpTask)
 {
   ENTRY("vWorkingBufferShow"_Stz);
   
@@ -102,7 +102,7 @@ void Task::vWorkingBufferShow(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* workingBuffer::toWorkingBuffer -- convert string to working buffer pointer */
 /*----------------------------------------------------------------------------*/
-void Task::vWorkingBufferToWorkingBuffer(MP_Task mpTask)
+void Step::vWorkingBufferToWorkingBuffer(MP_Task mpTask)
 {
   ENTRY("vWorkingBufferToWorkingBuffer"_Stz);
   

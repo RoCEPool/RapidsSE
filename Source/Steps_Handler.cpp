@@ -15,13 +15,13 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Handler(void)
 {
-  vAddStep("handler::serviceSleepQueue"_Stz,  &Task::vHandlerServiceSleepQueue);
+  vAddStep("handler::serviceSleepQueue"_Stz,  &Step::vHandlerServiceSleepQueue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* error.msg -- get error message given the error code                        */
 /*----------------------------------------------------------------------------*/
-void Task::vHandlerServiceSleepQueue(MP_Task mpTask)
+void Step::vHandlerServiceSleepQueue(MP_Task mpTask)
 {
   ENTRY("vHandlerServiceSleepQueue"_Stz);
   

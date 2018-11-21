@@ -16,22 +16,22 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Socket(void)
 {
-  vAddStep("socket::open"_Stz,      &Task::vSocketOpen);
-  vAddStep("socket::listen"_Stz,    &Task::vSocketListen);
+  vAddStep("socket::open"_Stz,      &Step::vSocketOpen);
+  vAddStep("socket::listen"_Stz,    &Step::vSocketListen);
   
-  vAddStep("socket.accept"_Stz,     &Task::vSocketAccept);
-  vAddStep("socket.close"_Stz,      &Task::vSocketClose);
-  vAddStep("socket.connect"_Stz,    &Task::vSocketConnect);
-  vAddStep("socket.dropWrite"_Stz,  &Task::vSocketDropWrite);
-  vAddStep("socket.grabWrite"_Stz,  &Task::vSocketGrabWrite);
-  vAddStep("socket.recvObject"_Stz, &Task::vSocketRecvObject);
-  vAddStep("socket.sendObject"_Stz, &Task::vSocketSendObject);
+  vAddStep("socket.accept"_Stz,     &Step::vSocketAccept);
+  vAddStep("socket.close"_Stz,      &Step::vSocketClose);
+  vAddStep("socket.connect"_Stz,    &Step::vSocketConnect);
+  vAddStep("socket.dropWrite"_Stz,  &Step::vSocketDropWrite);
+  vAddStep("socket.grabWrite"_Stz,  &Step::vSocketGrabWrite);
+  vAddStep("socket.recvObject"_Stz, &Step::vSocketRecvObject);
+  vAddStep("socket.sendObject"_Stz, &Step::vSocketSendObject);
 }
 
 /*----------------------------------------------------------------------------*/
 /* socket.accept: accept a socket connection                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketAccept(MP_Task mpTask)
+void Step::vSocketAccept(MP_Task mpTask)
 {
   SysCall xSysCall;
   Socket* pSocket;
@@ -63,7 +63,7 @@ void Task::vSocketAccept(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* open a socket                                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketClose(MP_Task mpTask)
+void Step::vSocketClose(MP_Task mpTask)
 {
   SysCall xSysCall;
   Socket* pSocket;
@@ -89,7 +89,7 @@ void Task::vSocketClose(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.connect: connect to a server                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketConnect(MP_Task mpTask)
+void Step::vSocketConnect(MP_Task mpTask)
 {
   SysCall xSysCall;
   Socket* pSocket;
@@ -154,7 +154,7 @@ void Task::vSocketConnect(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.dropWrite: drop socket write lock                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketDropWrite(MP_Task mpTask)
+void Step::vSocketDropWrite(MP_Task mpTask)
 {
   ENTRY("vSocketDropWrite"_Stz);
   
@@ -171,7 +171,7 @@ void Task::vSocketDropWrite(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.grabWrite: grab socket write lock                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketGrabWrite(MP_Task mpTask)
+void Step::vSocketGrabWrite(MP_Task mpTask)
 {
   ENTRY("vSocketGrabWrite"_Stz);
   
@@ -188,7 +188,7 @@ void Task::vSocketGrabWrite(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket::listen: listen in for socket connections                           */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketListen(MP_Task mpTask)
+void Step::vSocketListen(MP_Task mpTask)
 {
   SysCall xSysCall;
   Socket* pSocket;
@@ -221,7 +221,7 @@ void Task::vSocketListen(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket::open: open a socket                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketOpen(MP_Task mpTask)
+void Step::vSocketOpen(MP_Task mpTask)
 {
   SysCall xSysCall;
   Socket* pSocket;
@@ -243,7 +243,7 @@ void Task::vSocketOpen(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.recvObject: recv object from a socket                               */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketRecvObject(MP_Task mpTask)
+void Step::vSocketRecvObject(MP_Task mpTask)
 {
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   // test for low memory condition
@@ -359,7 +359,7 @@ void Task::vSocketRecvObject(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.recvObject_LowMem: recv object from a socket (under low mem cond)   */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
+void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
 {
   ENTRY("vSocketRecvObject_LowMem"_Stz);
   
@@ -521,7 +521,7 @@ void Task::vSocketRecvObject_LowMem(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* socket.sendObject: send object via a socket                                */
 /*----------------------------------------------------------------------------*/
-void Task::vSocketSendObject(MP_Task mpTask)
+void Step::vSocketSendObject(MP_Task mpTask)
 {
   ENTRY("vSocketSendObject"_Stz);
   

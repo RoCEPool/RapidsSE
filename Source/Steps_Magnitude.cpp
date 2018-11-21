@@ -15,15 +15,15 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Magnitude(void)
 {
-  vAddStep("toDigitName"_Stz,     &Task::vToDigitName);
-  vAddStep("bytes.magnitude"_Stz, &Task::vBytesMagnitude);
-  vAddStep("number.magnitude"_Stz, &Task::vNumberMagnitude);
+  vAddStep("toDigitName"_Stz,     &Step::vToDigitName);
+  vAddStep("bytes.magnitude"_Stz, &Step::vBytesMagnitude);
+  vAddStep("number.magnitude"_Stz, &Step::vNumberMagnitude);
 }
 
 /*----------------------------------------------------------------------------*/
 /* >DigitName -- convert to digit name                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vToDigitName(MP_Task mpTask)
+void Step::vToDigitName(MP_Task mpTask)
 {
   ENTRY("vToDigitName"_Stz);
   
@@ -57,7 +57,7 @@ void Task::vToDigitName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* bytes.magnitude -- return magnitude of bytes                               */
 /*----------------------------------------------------------------------------*/
-void Task::vBytesMagnitude(MP_Task mpTask)
+void Step::vBytesMagnitude(MP_Task mpTask)
 {
   ENTRY("vBytesMagnitude"_Stz);
   
@@ -76,7 +76,7 @@ void Task::vBytesMagnitude(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* number.magnitude -- get magnitude of number                                */
 /*----------------------------------------------------------------------------*/
-void Task::vNumberMagnitude(MP_Task mpTask)
+void Step::vNumberMagnitude(MP_Task mpTask)
 {
   ENTRY("vNumberMagnitude"_Stz);
   

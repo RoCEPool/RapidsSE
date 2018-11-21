@@ -15,54 +15,54 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Word(void)
 {
-  vAddStep("word::this"_Stz,      &Task::vWordThis);
+  vAddStep("word::this"_Stz,      &Step::vWordThis);
   
-  vAddStep("allot"_Stz,           &Task::vAllot);
-  vAddStep("cell"_Stz,            &Task::vCell);
-  vAddStep(":"_Stz,               &Task::vColon);
-  vAddStep(","_Stz,               &Task::vComma);
-  vAddStep("compile,"_Stz,        &Task::vCompileComma);
-  vAddStep("create"_Stz,          &Task::vCreate);
-  vAddStep("createTenants"_Stz,   &Task::vCreateTenants);
-  vAddStep(">create"_Stz,         &Task::vCreateFrom);
-  vAddStep(">createInMain"_Stz,   &Task::vCreateFromInMain);
-  vAddStep(">createPersistent"_Stz, &Task::vCreateFromPersistent);
-  vAddStep("createPersistent"_Stz,&Task::vCreatePersistent);
-  vAddStep("dic?"_Stz,            &Task::vDicWhich);
-  vAddStep("does>"_Stz,           &Task::vDoes,             true );
-  vAddStep("does_rt"_Stz,         &Task::vDoes_RT);
-  vAddStep("find"_Stz,            &Task::vFind);
-  vAddStep("findInCurrent"_Stz,   &Task::vFindInCurrent);
-  vAddStep("forget"_Stz,          &Task::vForget);
-  vAddStep("##:"_Stz,             &Task::vHashHashColon,    true );
-  vAddStep("immediate"_Stz,       &Task::vImmediate,        true );
-  vAddStep("locate"_Stz,          &Task::vLocate);
+  vAddStep("allot"_Stz,           &Step::vAllot);
+  vAddStep("cell"_Stz,            &Step::vCell);
+  vAddStep(":"_Stz,               &Step::vColon);
+  vAddStep(","_Stz,               &Step::vComma);
+  vAddStep("compile,"_Stz,        &Step::vCompileComma);
+  vAddStep("create"_Stz,          &Step::vCreate);
+  vAddStep("createTenants"_Stz,   &Step::vCreateTenants);
+  vAddStep(">create"_Stz,         &Step::vCreateFrom);
+  vAddStep(">createInMain"_Stz,   &Step::vCreateFromInMain);
+  vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
+  vAddStep("createPersistent"_Stz,&Step::vCreatePersistent);
+  vAddStep("dic?"_Stz,            &Step::vDicWhich);
+  vAddStep("does>"_Stz,           &Step::vDoes,             true );
+  vAddStep("does_rt"_Stz,         &Step::vDoes_RT);
+  vAddStep("find"_Stz,            &Step::vFind);
+  vAddStep("findInCurrent"_Stz,   &Step::vFindInCurrent);
+  vAddStep("forget"_Stz,          &Step::vForget);
+  vAddStep("##:"_Stz,             &Step::vHashHashColon,    true );
+  vAddStep("immediate"_Stz,       &Step::vImmediate,        true );
+  vAddStep("locate"_Stz,          &Step::vLocate);
 
-  vAddStep("opDic"_Stz,           &Task::vOpDic,            true );
-  vAddStep("planDic"_Stz,         &Task::vPlanDicTask,      true );
-  vAddStep("postpone"_Stz,        &Task::vPostpone,         true );
-  vAddStep("see"_Stz,             &Task::vSee);
-  vAddStep(";"_Stz,               &Task::vSemicolon,        true );
-  vAddStep("subDic"_Stz,          &Task::vSubDic,           true );
-  vAddStep("tick"_Stz,            &Task::vTick,             true );
-  vAddStep("word.dump"_Stz,       &Task::vWordDump);
-  vAddStep("word.forget"_Stz,     &Task::vWordForget);
-  vAddStep("word.immediate@"_Stz, &Task::vWordImmediateGet);
-  vAddStep("word.immediate!"_Stz, &Task::vWordImmediateSet);
-  vAddStep("word.isImmediate"_Stz,&Task::vWordIsImmediate);
-  vAddStep("word.isPrimitive"_Stz,&Task::vWordIsPrimitive);
-  vAddStep("word.kind@"_Stz,      &Task::vWordKindGet);
-  vAddStep("word.kind!"_Stz,      &Task::vWordKindSet);
-  vAddStep("word.name"_Stz,       &Task::vWordName);
-  vAddStep("word.prev"_Stz,       &Task::vWordPrev);
-  vAddStep("word.type@"_Stz,      &Task::vWordTypeGet);
-  vAddStep("word.type!"_Stz,      &Task::vWordTypeSet);
+  vAddStep("opDic"_Stz,           &Step::vOpDic,            true );
+  vAddStep("planDic"_Stz,         &Step::vPlanDicTask,      true );
+  vAddStep("postpone"_Stz,        &Step::vPostpone,         true );
+  vAddStep("see"_Stz,             &Step::vSee);
+  vAddStep(";"_Stz,               &Step::vSemicolon,        true );
+  vAddStep("subDic"_Stz,          &Step::vSubDic,           true );
+  vAddStep("tick"_Stz,            &Step::vTick,             true );
+  vAddStep("word.dump"_Stz,       &Step::vWordDump);
+  vAddStep("word.forget"_Stz,     &Step::vWordForget);
+  vAddStep("word.immediate@"_Stz, &Step::vWordImmediateGet);
+  vAddStep("word.immediate!"_Stz, &Step::vWordImmediateSet);
+  vAddStep("word.isImmediate"_Stz,&Step::vWordIsImmediate);
+  vAddStep("word.isPrimitive"_Stz,&Step::vWordIsPrimitive);
+  vAddStep("word.kind@"_Stz,      &Step::vWordKindGet);
+  vAddStep("word.kind!"_Stz,      &Step::vWordKindSet);
+  vAddStep("word.name"_Stz,       &Step::vWordName);
+  vAddStep("word.prev"_Stz,       &Step::vWordPrev);
+  vAddStep("word.type@"_Stz,      &Step::vWordTypeGet);
+  vAddStep("word.type!"_Stz,      &Step::vWordTypeSet);
 }
 
 /*----------------------------------------------------------------------------*/
 /* allot -- reserve n bytes in current word                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vAllot(MP_Task mpTask)
+void Step::vAllot(MP_Task mpTask)
 {
   ENTRY("vAllot"_Stz);
   
@@ -84,7 +84,7 @@ void Task::vAllot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* cell -- push size of cell                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vCell(MP_Task mpTask)
+void Step::vCell(MP_Task mpTask)
 {
   ENTRY("vCell"_Stz);
   
@@ -98,7 +98,7 @@ void Task::vCell(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* : -- colon                                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vColon(MP_Task mpTask)
+void Step::vColon(MP_Task mpTask)
 {
   ENTRY("vColon"_Stz);
   
@@ -127,7 +127,7 @@ void Task::vColon(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* comma -- encode push value                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vComma(MP_Task mpTask)
+void Step::vComma(MP_Task mpTask)
 {
   ENTRY("vComma"_Stz);
   
@@ -148,7 +148,7 @@ void Task::vComma(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* compile, -- encode call                                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vCompileComma(MP_Task mpTask)
+void Step::vCompileComma(MP_Task mpTask)
 {
   ENTRY("vCompileComma"_Stz);
   
@@ -169,7 +169,7 @@ void Task::vCompileComma(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* create -- create word in dictionary                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vCreate(MP_Task mpTask)
+void Step::vCreate(MP_Task mpTask)
 {
 ENTRY("vCreate"_Stz);
   
@@ -193,7 +193,7 @@ ENTRY("vCreate"_Stz);
 /*----------------------------------------------------------------------------*/
 /* createPersistent -- create word in dictionary (persistent heap)            */
 /*----------------------------------------------------------------------------*/
-void Task::vCreatePersistent(MP_Task mpTask)
+void Step::vCreatePersistent(MP_Task mpTask)
 {
   ENTRY("vCreate"_Stz);
   
@@ -217,7 +217,7 @@ void Task::vCreatePersistent(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >create -- create word in dictionary using string on stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vCreateFrom(MP_Task mpTask)
+void Step::vCreateFrom(MP_Task mpTask)
 {
 ENTRY("vCreateFrom"_Stz);
 
@@ -245,7 +245,7 @@ ENTRY("vCreateFrom"_Stz);
 /*----------------------------------------------------------------------------*/
 /* >createPersistent -- create word in dic using string on stack (persistent) */
 /*----------------------------------------------------------------------------*/
-void Task::vCreateFromPersistent(MP_Task mpTask)
+void Step::vCreateFromPersistent(MP_Task mpTask)
 {
   ENTRY("vCreateFrom"_Stz);
   
@@ -270,7 +270,7 @@ void Task::vCreateFromPersistent(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* >createInMain -- create word in main dictionary using string on stack      */
 /*----------------------------------------------------------------------------*/
-void Task::vCreateFromInMain(MP_Task mpTask)
+void Step::vCreateFromInMain(MP_Task mpTask)
 {
   ENTRY("vCreateFrom"_Stz);
   
@@ -291,7 +291,7 @@ void Task::vCreateFromInMain(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* createTenants -- create tenant word in dictionary                          */
 /*----------------------------------------------------------------------------*/
-void Task::vCreateTenants(MP_Task mpTask)
+void Step::vCreateTenants(MP_Task mpTask)
 {
   ENTRY("vCreateTenant"_Stz);
   
@@ -317,7 +317,7 @@ void Task::vCreateTenants(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* dic? -- test & push which sub dic a colon defn is to be compiled into      */
 /*----------------------------------------------------------------------------*/
-void Task::vDicWhich(MP_Task mpTask)
+void Step::vDicWhich(MP_Task mpTask)
 {
   ENTRY("vDicWhich"_Stz);
   
@@ -347,7 +347,7 @@ void Task::vDicWhich(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* does> -- routine does                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vDoes(MP_Task mpTask)
+void Step::vDoes(MP_Task mpTask)
 {
 ENTRY("vDoes"_Stz);
   
@@ -364,13 +364,13 @@ ENTRY("vDoes"_Stz);
 /*----------------------------------------------------------------------------*/
 /* does_rt -- runtime for does>                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vDoes_RT(MP_Task mpTask)
+void Step::vDoes_RT(MP_Task mpTask)
 {
   ENTRY("vDoes_RT"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  pCurrentWord->vEntryStep(&Task::vEnterObject);
+  pCurrentWord->vEntryStep(&Step::vEnterObject);
   pCurrentWord->vEntryCell(mpTask->IP.m_pCell+1);
   
   EXIT();
@@ -379,7 +379,7 @@ void Task::vDoes_RT(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* find -- find word                                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vFind(MP_Task mpTask)
+void Step::vFind(MP_Task mpTask)
 {
 ENTRY("vFind"_Stz);
   
@@ -401,7 +401,7 @@ ENTRY("vFind"_Stz);
 /*----------------------------------------------------------------------------*/
 /* findInCurrent -- find word in current dictionary                           */
 /*----------------------------------------------------------------------------*/
-void Task::vFindInCurrent(MP_Task mpTask)
+void Step::vFindInCurrent(MP_Task mpTask)
 {
   ENTRY("vFindInCurrent"_Stz);
   
@@ -423,7 +423,7 @@ void Task::vFindInCurrent(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* forget -- forget word                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vForget(MP_Task mpTask)
+void Step::vForget(MP_Task mpTask)
 {
 ENTRY("vForget"_Stz);
   
@@ -445,7 +445,7 @@ ENTRY("vForget"_Stz);
 /*----------------------------------------------------------------------------*/
 /* ##: -- encode paste of abstract colon defn into plan lambda text immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vHashHashColon(MP_Task mpTask)
+void Step::vHashHashColon(MP_Task mpTask)
 {
   ENTRY("vHashHashColon"_Stz);
   
@@ -523,13 +523,13 @@ void Task::vHashHashColon(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* immediate -- make the most recent definition an immediate word             */
 /*----------------------------------------------------------------------------*/
-void Task::vImmediate(MP_Task mpTask)
+void Step::vImmediate(MP_Task mpTask)
 {
   ENTRY("vImmediate"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n"_Stz,pCurrentWord->sName().aChar());
+  //vTrace("Step::vImmediate: %s\n"_Stz,pCurrentWord->sName().aChar());
   
   pCurrentWord->vImmediate(true);
   
@@ -539,7 +539,7 @@ void Task::vImmediate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* locate -- locate word based on ip                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vLocate(MP_Task mpTask)
+void Step::vLocate(MP_Task mpTask)
 {
   ENTRY("vLocate"_Stz);
   
@@ -568,7 +568,7 @@ void Task::vLocate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* opDic -- search for named op frame and push op dictionary onto path stack  */
 /*----------------------------------------------------------------------------*/
-void Task::vOpDic(MP_Task mpTask)
+void Step::vOpDic(MP_Task mpTask)
 {
   ENTRY("vOpDic"_Stz);
   
@@ -611,7 +611,7 @@ void Task::vOpDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* planDic -- push plan dictionary onto path stack                            */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanDicTask(MP_Task mpTask)
+void Step::vPlanDicTask(MP_Task mpTask)
 {
   ENTRY("vPlanDicTask"_Stz);
   
@@ -627,7 +627,7 @@ void Task::vPlanDicTask(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* postpone -- append call to next word from input to current word  immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vPostpone(MP_Task mpTask)
+void Step::vPostpone(MP_Task mpTask)
 {
   ENTRY("vPostpone"_Stz);
   
@@ -669,7 +669,7 @@ void Task::vPostpone(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* see -- dump routine                                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vSee(MP_Task mpTask)
+void Step::vSee(MP_Task mpTask)
 {
   ENTRY("vSee"_Stz);
   
@@ -695,9 +695,9 @@ void Task::vSee(MP_Task mpTask)
     Word* pCallsWord = mpTask->m_xPathStack.pFindStep(*pDoesCell->m_ppEntryStep);
     
     // jumps
-    if (*pDoesCell->m_ppEntryStep == Task::vFlowJump ||
-        *pDoesCell->m_ppEntryStep == Task::vFlowJumpFalse ||
-        *pDoesCell->m_ppEntryStep == Task::vFlowJumpTrue ) {
+    if (*pDoesCell->m_ppEntryStep == Step::vFlowJump ||
+        *pDoesCell->m_ppEntryStep == Step::vFlowJumpFalse ||
+        *pDoesCell->m_ppEntryStep == Step::vFlowJumpTrue ) {
       
       vTrace("%p: %s"_Stz,pDoesCell,pCallsWord->sName().aChar());
       
@@ -711,7 +711,7 @@ void Task::vSee(MP_Task mpTask)
     }
     
     // push
-    if ( *pDoesCell->m_ppEntryStep == Task::vPushValue ) {
+    if ( *pDoesCell->m_ppEntryStep == Step::vPushValue ) {
       
       vTrace("%p: %s"_Stz,pDoesCell,pCallsWord->sName().aChar());
       
@@ -734,7 +734,7 @@ void Task::vSee(MP_Task mpTask)
     }
     
     // enterRoutine
-    if ( *pDoesCell->m_ppEntryStep == Task::vEnterRoutine ) {
+    if ( *pDoesCell->m_ppEntryStep == Step::vEnterRoutine ) {
       
       Word* pCallsWord = (Word*)( ((u8)pDoesCell->m_ppEntryStep & (u8)~0xFFFF)
                                  + sizeof(HeapBuffer));
@@ -756,7 +756,7 @@ void Task::vSee(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* ; -- end compile routine                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vSemicolon(MP_Task mpTask)
+void Step::vSemicolon(MP_Task mpTask)
 {
   ENTRY("vSemicolon"_Stz);
   
@@ -790,7 +790,7 @@ void Task::vSemicolon(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* subDic -- push sub dictionary                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vSubDic(MP_Task mpTask)
+void Step::vSubDic(MP_Task mpTask)
 {
   ENTRY("vSubDic"_Stz);
   
@@ -815,7 +815,7 @@ void Task::vSubDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* tick -- find next word                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vTick(MP_Task mpTask)
+void Step::vTick(MP_Task mpTask)
 {
   ENTRY("vTick"_Stz);
   
@@ -846,7 +846,7 @@ void Task::vTick(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word -- root kind                                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vWord(MP_Task mpTask)
+void Step::vWord(MP_Task mpTask)
 {
   ENTRY("vWord"_Stz);
   EXIT();
@@ -855,7 +855,7 @@ void Task::vWord(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.forget -- forget word on stack                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vWordForget(MP_Task mpTask)
+void Step::vWordForget(MP_Task mpTask)
 {
 ENTRY("vWordForget"_Stz);
   
@@ -875,7 +875,7 @@ ENTRY("vWordForget"_Stz);
 /*----------------------------------------------------------------------------*/
 /* word.dump -- dump word                                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vWordDump(MP_Task mpTask)
+void Step::vWordDump(MP_Task mpTask)
 {
 ENTRY("vWordDump"_Stz);
   
@@ -892,7 +892,7 @@ ENTRY("vWordDump"_Stz);
 /*----------------------------------------------------------------------------*/
 /* word.immediate@ -- get immediate flag of word                              */
 /*----------------------------------------------------------------------------*/
-void Task::vWordImmediateGet(MP_Task mpTask)
+void Step::vWordImmediateGet(MP_Task mpTask)
 {
   ENTRY("vWordImmediateGet"_Stz);
   
@@ -911,7 +911,7 @@ void Task::vWordImmediateGet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.immediate! -- set immediate flag of word                              */
 /*----------------------------------------------------------------------------*/
-void Task::vWordImmediateSet(MP_Task mpTask)
+void Step::vWordImmediateSet(MP_Task mpTask)
 {
   ENTRY("vWordImmediateSet"_Stz);
   
@@ -933,7 +933,7 @@ void Task::vWordImmediateSet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* isImmediate -- is word immediate?                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vWordIsImmediate(MP_Task mpTask)
+void Step::vWordIsImmediate(MP_Task mpTask)
 {
   ENTRY("vWordIsImmediate"_Stz);
   
@@ -954,7 +954,7 @@ void Task::vWordIsImmediate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.isPrimitive -- is word a primitive?                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vWordIsPrimitive(MP_Task mpTask)
+void Step::vWordIsPrimitive(MP_Task mpTask)
 {
   ENTRY("vWordIsPrimitive"_Stz);
   
@@ -973,7 +973,7 @@ void Task::vWordIsPrimitive(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.kind@ -- word kind get                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vWordKindGet(MP_Task mpTask)
+void Step::vWordKindGet(MP_Task mpTask)
 {
 ENTRY("vWordKindGet"_Stz);
   
@@ -992,7 +992,7 @@ ENTRY("vWordKindGet"_Stz);
 /*----------------------------------------------------------------------------*/
 /* word.kind! -- word kind set                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vWordKindSet(MP_Task mpTask)
+void Step::vWordKindSet(MP_Task mpTask)
 {
 ENTRY("vWordKindSet"_Stz);
   
@@ -1013,7 +1013,7 @@ ENTRY("vWordKindSet"_Stz);
 /*----------------------------------------------------------------------------*/
 /* word.name -- push name of word                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vWordName(MP_Task mpTask)
+void Step::vWordName(MP_Task mpTask)
 {
 ENTRY("vWordName"_Stz);
   
@@ -1032,7 +1032,7 @@ ENTRY("vWordName"_Stz);
 /*----------------------------------------------------------------------------*/
 /* word.prev -- push prev word                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vWordPrev(MP_Task mpTask)
+void Step::vWordPrev(MP_Task mpTask)
 {
   ENTRY("vWordPrev"_Stz);
   
@@ -1051,7 +1051,7 @@ void Task::vWordPrev(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word::this -- push current word                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vWordThis(MP_Task mpTask)
+void Step::vWordThis(MP_Task mpTask)
 {
 ENTRY("vWordThis"_Stz);
   
@@ -1065,7 +1065,7 @@ ENTRY("vWordThis"_Stz);
 /*----------------------------------------------------------------------------*/
 /* word.type@ -- word type get                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vWordTypeGet(MP_Task mpTask)
+void Step::vWordTypeGet(MP_Task mpTask)
 {
   ENTRY("vWordTypeGet"_Stz);
   
@@ -1084,7 +1084,7 @@ void Task::vWordTypeGet(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* word.type! -- word type set                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vWordTypeSet(MP_Task mpTask)
+void Step::vWordTypeSet(MP_Task mpTask)
 {
   ENTRY("vWordTypeSet"_Stz);
   

@@ -14,14 +14,14 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Utility(void)
 {
-  vAddStep("utility::prefetch"_Stz,   &Task::vUtilityPrefetch);
-  vAddStep("utility::schemaTest"_Stz, &Task::vUtilitySchemaTest);
+  vAddStep("utility::prefetch"_Stz,   &Step::vUtilityPrefetch);
+  vAddStep("utility::schemaTest"_Stz, &Step::vUtilitySchemaTest);
 }
 
 /*----------------------------------------------------------------------------*/
 /* utility::prefetch -- test prefetch                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vUtilityPrefetch(MP_Task mpTask)
+void Step::vUtilityPrefetch(MP_Task mpTask)
 {
   ENTRY("vUtilityPrefetch"_Stz);
   
@@ -33,7 +33,7 @@ void Task::vUtilityPrefetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* utility::schemaTest -- run schema test                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vUtilitySchemaTest(MP_Task mpTask)
+void Step::vUtilitySchemaTest(MP_Task mpTask)
 {
   ENTRY("vUtilitySchemaTest"_Stz);
   

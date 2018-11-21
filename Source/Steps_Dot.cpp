@@ -15,16 +15,16 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dot(void)
 {
-  vAddStep("."_Stz,            &Task::vDot);
-  vAddStep(".put"_Stz,         &Task::vDotPut);
-  vAddStep(".\\n"_Stz,         &Task::vDotNewline);
-  vAddStep(".verbose"_Stz,     &Task::vDotVerbose);
+  vAddStep("."_Stz,            &Step::vDot);
+  vAddStep(".put"_Stz,         &Step::vDotPut);
+  vAddStep(".\\n"_Stz,         &Step::vDotNewline);
+  vAddStep(".verbose"_Stz,     &Step::vDotVerbose);
 }
 
 /*----------------------------------------------------------------------------*/
 /* . -- print top value on stack                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vDot(MP_Task mpTask)
+void Step::vDot(MP_Task mpTask)
 {
   ENTRY("vDot"_Stz);
   
@@ -49,7 +49,7 @@ void Task::vDot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* .put -- print top value on stack (no new line)                             */
 /*----------------------------------------------------------------------------*/
-void Task::vDotPut(MP_Task mpTask)
+void Step::vDotPut(MP_Task mpTask)
 {
   ENTRY("vDotPut"_Stz);
   
@@ -68,7 +68,7 @@ void Task::vDotPut(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* .\n -- print new line                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vDotNewline(MP_Task mpTask)
+void Step::vDotNewline(MP_Task mpTask)
 {
   ENTRY("vDotNewline"_Stz);
   
@@ -80,7 +80,7 @@ void Task::vDotNewline(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* .verbose -- print top value on stack if arg.m_bVerbose                     */
 /*----------------------------------------------------------------------------*/
-void Task::vDotVerbose(MP_Task mpTask)
+void Step::vDotVerbose(MP_Task mpTask)
 {
   ENTRY("vDotVerbose"_Stz);
   

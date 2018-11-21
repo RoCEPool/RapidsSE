@@ -15,48 +15,48 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Index(void)
 {
-  vAddStep("index.analyze"_Stz,         &Task::vIndexAnalyze);
-  vAddStep("index.columnCount@"_Stz,    &Task::vIndexColumnCountFetch);
-  vAddStep("index.column@"_Stz,         &Task::vIndexColumnFetch);
-  vAddStep("index.columnName"_Stz,      &Task::vIndexColumnName);
-  vAddStep("index.columnType"_Stz,      &Task::vIndexColumnType);
-  vAddStep("index.compact"_Stz,         &Task::vIndexCompact);
-  vAddStep("index.createColumnVecHidden"_Stz, &Task::vIndexCreateColumnVecHidden);
-  vAddStep("index.createColumnVec"_Stz, &Task::vIndexCreateColumnVec);
-  vAddStep("index.dump"_Stz,            &Task::vIndexDump);
-  vAddStep("index.exactKey"_Stz,        &Task::vIndexExactKey);
-  vAddStep("index.init"_Stz,            &Task::vIndexInit);
-  vAddStep("index.isHidden@"_Stz,       &Task::vIndexIsHiddenFetch);
-  vAddStep("index.isHidden!"_Stz,       &Task::vIndexIsHiddenStore);
-  vAddStep("index.isPrimaryKey@"_Stz,   &Task::vIndexIsPrimaryKeyFetch);
-  vAddStep("index.isPrimaryKey!"_Stz,   &Task::vIndexIsPrimaryKeyStore);
-  vAddStep("index.isUnique@"_Stz,       &Task::vIndexIsUniqueFetch);
-  vAddStep("index.isUnique!"_Stz,       &Task::vIndexIsUniqueStore);
-  vAddStep("index.isValidUniqueIndex"_Stz,&Task::vIndexIsValidUniqueIndex);
-  vAddStep("index.lowerBound"_Stz,      &Task::vIndexLowerBound);
-  vAddStep("index.name@"_Stz,           &Task::vIndexNameFetch);
-  vAddStep("index.populate"_Stz,        &Task::vIndexPopulate);
-  vAddStep("index.position"_Stz,        &Task::vIndexPosition);
-  vAddStep("index.positionFirst"_Stz,   &Task::vIndexPositionFirst);
-  vAddStep("index.range"_Stz,           &Task::vIndexRange);
-  vAddStep("index.setSingleColumn"_Stz, &Task::vIndexSetSingleColumn);
-  vAddStep("index.showColumnVec"_Stz,   &Task::vIndexShowColumnVec);
-  vAddStep("index.scan"_Stz,            &Task::vIndexScan);
-  vAddStep("index.space"_Stz,           &Task::vIndexSpace);
-  vAddStep("index.subDic"_Stz,          &Task::vIndexSubDic);
-  vAddStep("index.table@"_Stz,          &Task::vIndexTableFetch);
-  vAddStep("index.table!"_Stz,          &Task::vIndexTableStore);
-  vAddStep("index.truncate"_Stz,        &Task::vIndexTruncate);
-  vAddStep("index.upper"_Stz,           &Task::vIndexUpper);
-  vAddStep("index.upperBound"_Stz,      &Task::vIndexUpperBound);
-  vAddStep("index.verify"_Stz,          &Task::vIndexVerify);
-  vAddStep("index.visualize"_Stz,       &Task::vIndexVisualize);
+  vAddStep("index.analyze"_Stz,         &Step::vIndexAnalyze);
+  vAddStep("index.columnCount@"_Stz,    &Step::vIndexColumnCountFetch);
+  vAddStep("index.column@"_Stz,         &Step::vIndexColumnFetch);
+  vAddStep("index.columnName"_Stz,      &Step::vIndexColumnName);
+  vAddStep("index.columnType"_Stz,      &Step::vIndexColumnType);
+  vAddStep("index.compact"_Stz,         &Step::vIndexCompact);
+  vAddStep("index.createColumnVecHidden"_Stz, &Step::vIndexCreateColumnVecHidden);
+  vAddStep("index.createColumnVec"_Stz, &Step::vIndexCreateColumnVec);
+  vAddStep("index.dump"_Stz,            &Step::vIndexDump);
+  vAddStep("index.exactKey"_Stz,        &Step::vIndexExactKey);
+  vAddStep("index.init"_Stz,            &Step::vIndexInit);
+  vAddStep("index.isHidden@"_Stz,       &Step::vIndexIsHiddenFetch);
+  vAddStep("index.isHidden!"_Stz,       &Step::vIndexIsHiddenStore);
+  vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
+  vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
+  vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
+  vAddStep("index.isUnique!"_Stz,       &Step::vIndexIsUniqueStore);
+  vAddStep("index.isValidUniqueIndex"_Stz,&Step::vIndexIsValidUniqueIndex);
+  vAddStep("index.lowerBound"_Stz,      &Step::vIndexLowerBound);
+  vAddStep("index.name@"_Stz,           &Step::vIndexNameFetch);
+  vAddStep("index.populate"_Stz,        &Step::vIndexPopulate);
+  vAddStep("index.position"_Stz,        &Step::vIndexPosition);
+  vAddStep("index.positionFirst"_Stz,   &Step::vIndexPositionFirst);
+  vAddStep("index.range"_Stz,           &Step::vIndexRange);
+  vAddStep("index.setSingleColumn"_Stz, &Step::vIndexSetSingleColumn);
+  vAddStep("index.showColumnVec"_Stz,   &Step::vIndexShowColumnVec);
+  vAddStep("index.scan"_Stz,            &Step::vIndexScan);
+  vAddStep("index.space"_Stz,           &Step::vIndexSpace);
+  vAddStep("index.subDic"_Stz,          &Step::vIndexSubDic);
+  vAddStep("index.table@"_Stz,          &Step::vIndexTableFetch);
+  vAddStep("index.table!"_Stz,          &Step::vIndexTableStore);
+  vAddStep("index.truncate"_Stz,        &Step::vIndexTruncate);
+  vAddStep("index.upper"_Stz,           &Step::vIndexUpper);
+  vAddStep("index.upperBound"_Stz,      &Step::vIndexUpperBound);
+  vAddStep("index.verify"_Stz,          &Step::vIndexVerify);
+  vAddStep("index.visualize"_Stz,       &Step::vIndexVisualize);
 }
 
 /*----------------------------------------------------------------------------*/
 /* index.analyze -- analyze index                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexAnalyze(MP_Task mpTask)
+void Step::vIndexAnalyze(MP_Task mpTask)
 {
   ENTRY("vIndexAnalyze"_Stz);
   
@@ -83,7 +83,7 @@ void Task::vIndexAnalyze(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.column@ -- get the column from the index                             */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexColumnFetch(MP_Task mpTask)
+void Step::vIndexColumnFetch(MP_Task mpTask)
 {
   ENTRY("vIndexColumnFetch"_Stz);
   
@@ -108,7 +108,7 @@ void Task::vIndexColumnFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.columnCount@ -- fetch index column count                             */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexColumnCountFetch(MP_Task mpTask)
+void Step::vIndexColumnCountFetch(MP_Task mpTask)
 {
   ENTRY("vIndexColumnCountFetch"_Stz);
   
@@ -126,7 +126,7 @@ void Task::vIndexColumnCountFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.columnName -- get column name                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexColumnName(MP_Task mpTask)
+void Step::vIndexColumnName(MP_Task mpTask)
 {
   ENTRY("vIndexColumnName"_Stz);
   
@@ -151,7 +151,7 @@ void Task::vIndexColumnName(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.columnType -- get column type                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexColumnType(MP_Task mpTask)
+void Step::vIndexColumnType(MP_Task mpTask)
 {
   ENTRY("vIndexColumnType"_Stz);
   
@@ -177,7 +177,7 @@ void Task::vIndexColumnType(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.compact -- index compaction                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexCompact(MP_Task mpTask)
+void Step::vIndexCompact(MP_Task mpTask)
 {
   ENTRY("vIndexCompact"_Stz);
   
@@ -198,7 +198,7 @@ void Task::vIndexCompact(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.createColumnVecHidden -- create column vector for hidden index       */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexCreateColumnVecHidden(MP_Task mpTask)
+void Step::vIndexCreateColumnVecHidden(MP_Task mpTask)
 {
   ENTRY("vIndexCreateColumnVecHidden"_Stz);
   
@@ -224,7 +224,7 @@ void Task::vIndexCreateColumnVecHidden(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.createColumnVecR -- create column vector from job_createIndex        */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexCreateColumnVec(MP_Task mpTask)
+void Step::vIndexCreateColumnVec(MP_Task mpTask)
 {
   ENTRY("vIndexCreateColumnVec"_Stz);
   
@@ -248,7 +248,7 @@ void Task::vIndexCreateColumnVec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.dump -- dump the index                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexDump(MP_Task mpTask)
+void Step::vIndexDump(MP_Task mpTask)
 {
   ENTRY("vIndexDump"_Stz);
   
@@ -279,7 +279,7 @@ void Task::vIndexDump(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.exactKey -- return exact key matches from index                      */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexExactKey(MP_Task mpTask)
+void Step::vIndexExactKey(MP_Task mpTask)
 {
   ENTRY("vIndexExactKey"_Stz);
   
@@ -382,7 +382,7 @@ void Task::vIndexExactKey(MP_Task mpTask)
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in fetchBuffer
-        bool bResult = bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
+        bool bResult = Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
         RASSERT(bResult);
       }
     }
@@ -423,7 +423,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.init -- initialize the index                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexInit(MP_Task mpTask)
+void Step::vIndexInit(MP_Task mpTask)
 {
   ENTRY("vIndexInit"_Stz);
   Object* pPtrIndex = nullptr;
@@ -442,7 +442,7 @@ void Task::vIndexInit(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isHidden@ -- fetch isHidden from index                               */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexIsHiddenFetch(MP_Task mpTask)
+void Step::vIndexIsHiddenFetch(MP_Task mpTask)
 {
   ENTRY("vIndexIsHiddenFetch"_Stz);
   
@@ -464,7 +464,7 @@ void Task::vIndexIsHiddenFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isHidden! -- store isHidden into index                               */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexIsHiddenStore(MP_Task mpTask)
+void Step::vIndexIsHiddenStore(MP_Task mpTask)
 {
   ENTRY("vIndexIsHiddenStore"_Stz);
   
@@ -488,7 +488,7 @@ void Task::vIndexIsHiddenStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isPrimaryKey@ -- fetch isPrimaryKey from index                       */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexIsPrimaryKeyFetch(MP_Task mpTask)
+void Step::vIndexIsPrimaryKeyFetch(MP_Task mpTask)
 {
   ENTRY("vIndexIsPrimaryKeyFetch"_Stz);
   
@@ -510,7 +510,7 @@ void Task::vIndexIsPrimaryKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isPrimaryKey! -- store isPrimaryKey into index                       */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexIsPrimaryKeyStore(MP_Task mpTask)
+void Step::vIndexIsPrimaryKeyStore(MP_Task mpTask)
 {
   ENTRY("vIndexIsPrimaryKeyStore"_Stz);
   
@@ -534,7 +534,7 @@ void Task::vIndexIsPrimaryKeyStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isUnique@ -- fetch isUnique from index                               */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexIsUniqueFetch(MP_Task mpTask)
+void Step::vIndexIsUniqueFetch(MP_Task mpTask)
 {
   ENTRY("vIndexIsUniqueFetch"_Stz);
   
@@ -556,7 +556,7 @@ void Task::vIndexIsUniqueFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isUnique! -- store isUnique into index                               */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexIsUniqueStore(MP_Task mpTask)
+void Step::vIndexIsUniqueStore(MP_Task mpTask)
 {
   ENTRY("vIndexIsUniqueStore"_Stz);
   
@@ -580,7 +580,7 @@ void Task::vIndexIsUniqueStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.isValidUniqueIndex -- is it a valid unqiue index                     */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexIsValidUniqueIndex(MP_Task mpTask)
+void Step::vIndexIsValidUniqueIndex(MP_Task mpTask)
 {
   ENTRY("vIndexIsValidUniqueIndex"_Stz);
   
@@ -619,7 +619,7 @@ void Task::vIndexIsValidUniqueIndex(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.lowerBound -- return rows with lower bound                           */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexLowerBound(MP_Task mpTask)
+void Step::vIndexLowerBound(MP_Task mpTask)
 {
   ENTRY("vIndexLowerBound"_Stz);
   
@@ -716,7 +716,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
     Entry* pDataRowEntry = pLowerEntry->pDataEntry();
     
     // insert row from entry in fetchBuffer
-    if ( ! bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows)) {
+    if ( ! Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows)) {
       
       // Buffer is Full;
       // put this tempEntryBuffer in session bufferQueue
@@ -727,7 +727,7 @@ void Task::vIndexLowerBound(MP_Task mpTask)
       pFetchBuffer = new FetchBuffer(pTable, iSlot);
       
       // insert row from entry in fetchBuffer
-      bool bResult = bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
+      bool bResult = Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
       RASSERT(bResult);
     }
     
@@ -766,7 +766,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.name@ -- fetch index name                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexNameFetch(MP_Task mpTask)
+void Step::vIndexNameFetch(MP_Task mpTask)
 {
   ENTRY("vIndexNameFetch"_Stz);
   
@@ -788,7 +788,7 @@ void Task::vIndexNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.populate -- populate the index                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexPopulate(MP_Task mpTask)
+void Step::vIndexPopulate(MP_Task mpTask)
 {
   ENTRY("vIndexPopulate"_Stz);
   Object* pPtrIndex = nullptr;
@@ -815,7 +815,7 @@ void Task::vIndexPopulate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.position -- position at key in an index buffer                       */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexPosition(MP_Task mpTask)
+void Step::vIndexPosition(MP_Task mpTask)
 {
   ENTRY("vIndexPosition"_Stz);
   Object* pPtrIndex = nullptr;
@@ -865,7 +865,7 @@ void Task::vIndexPosition(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.positionFirst -- position at first index buffer                      */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexPositionFirst(MP_Task mpTask)
+void Step::vIndexPositionFirst(MP_Task mpTask)
 {
   ENTRY("vIndexFirst"_Stz);
   
@@ -896,7 +896,7 @@ void Task::vIndexPositionFirst(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.range -- return rows within given range                              */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexRange(MP_Task mpTask)
+void Step::vIndexRange(MP_Task mpTask)
 {
   ENTRY("vIndexRange"_Stz);
   
@@ -1093,7 +1093,7 @@ void Task::vIndexRange(MP_Task mpTask)
       Entry* pDataRowEntry = pLowerEntry->pDataEntry();
       
       // insert row from entry in tempEntryBuffer
-      if ( ! bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows)) {
+      if ( ! Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows)) {
         
         // Buffer is Full
         // put this fetchBuffer in session bufferQueue
@@ -1104,7 +1104,7 @@ void Task::vIndexRange(MP_Task mpTask)
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
-        bool bResult = bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
+        bool bResult = Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
         RASSERT(bResult);
       }
       
@@ -1152,7 +1152,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.scan -- scan the index                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexScan(MP_Task mpTask)
+void Step::vIndexScan(MP_Task mpTask)
 {
   ENTRY("vIndexScan"_Stz);
   
@@ -1277,7 +1277,7 @@ void Task::vIndexScan(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.setSingleColumn -- set if single column index                        */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexSetSingleColumn(MP_Task mpTask)
+void Step::vIndexSetSingleColumn(MP_Task mpTask)
 {
   ENTRY("vIndexSetSingleColumn"_Stz);
   
@@ -1294,7 +1294,7 @@ void Task::vIndexSetSingleColumn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.showColumnVec -- show column vector                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexShowColumnVec(MP_Task mpTask)
+void Step::vIndexShowColumnVec(MP_Task mpTask)
 {
   ENTRY("vIndexShowColumnVec"_Stz);
   
@@ -1312,7 +1312,7 @@ void Task::vIndexShowColumnVec(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.space -- push space used by index                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexSpace(MP_Task mpTask)
+void Step::vIndexSpace(MP_Task mpTask)
 {
   ENTRY("vIndexSpace"_Stz);
   
@@ -1333,7 +1333,7 @@ void Task::vIndexSpace(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.subDic -- get table sub dictionary                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexSubDic(MP_Task mpTask)
+void Step::vIndexSubDic(MP_Task mpTask)
 {
   ENTRY("vIndexSubDic"_Stz);
   
@@ -1354,7 +1354,7 @@ void Task::vIndexSubDic(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.table@ -- fetch table in index                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexTableFetch(MP_Task mpTask)
+void Step::vIndexTableFetch(MP_Task mpTask)
 {
   ENTRY("vIndexTableFetch"_Stz);
   
@@ -1377,7 +1377,7 @@ void Task::vIndexTableFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.table! -- store table in index                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexTableStore(MP_Task mpTask)
+void Step::vIndexTableStore(MP_Task mpTask)
 {
   ENTRY("vIndexTableStore"_Stz);
   
@@ -1404,7 +1404,7 @@ void Task::vIndexTableStore(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.truncate -- truncate the index                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexTruncate(MP_Task mpTask)
+void Step::vIndexTruncate(MP_Task mpTask)
 {
   ENTRY("vIndexTruncate"_Stz);
   
@@ -1428,7 +1428,7 @@ void Task::vIndexTruncate(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.upper -- check if entry is within upper bound for the index          */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexUpper(MP_Task mpTask)
+void Step::vIndexUpper(MP_Task mpTask)
 {
   ENTRY("vIndexUpper"_Stz);
   
@@ -1486,7 +1486,7 @@ void Task::vIndexUpper(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.upperBound -- return rows with upper bound                           */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexUpperBound(MP_Task mpTask)
+void Step::vIndexUpperBound(MP_Task mpTask)
 {
   ENTRY("vIndexUpperBound"_Stz);
   
@@ -1635,7 +1635,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
       Entry* pDataRowEntry = pEntry->pDataEntry();
       
       // insert row from entry in tempEntryBuffer
-      if ( ! bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows)) {
+      if ( ! Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows)) {
         
         // Buffer is full
         // put this tempEntryBuffer in session bufferQueue
@@ -1646,7 +1646,7 @@ void Task::vIndexUpperBound(MP_Task mpTask)
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
-        bool bResult = bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
+        bool bResult = Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
         RASSERT(bResult);
       }
       
@@ -1689,7 +1689,7 @@ LastBuffer:
 /*----------------------------------------------------------------------------*/
 /* index.verify -- verify index                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexVerify(MP_Task mpTask)
+void Step::vIndexVerify(MP_Task mpTask)
 {
   ENTRY("vIndexVerify"_Stz);
   
@@ -1711,7 +1711,7 @@ void Task::vIndexVerify(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* index.visualize -- visualize the index                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vIndexVisualize(MP_Task mpTask)
+void Step::vIndexVisualize(MP_Task mpTask)
 {
   ENTRY("vIndexVisualize"_Stz);
   

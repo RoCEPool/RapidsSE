@@ -13,18 +13,18 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Column(void)
 {
-  vAddStep("column.isNullable@"_Stz,     &Task::vColumnIsNullableFetch);
-  vAddStep("column.isPartitionKey@"_Stz, &Task::vColumnIsPartitionKeyFetch);
-  vAddStep("column.length@"_Stz,         &Task::vColumnLengthFetch);
-  vAddStep("column.name@"_Stz,           &Task::vColumnNameFetch);
-  vAddStep("column.scale@"_Stz,          &Task::vColumnScaleFetch);
-  vAddStep("column.type@"_Stz,           &Task::vColumnTypeFetch);
+  vAddStep("column.isNullable@"_Stz,     &Step::vColumnIsNullableFetch);
+  vAddStep("column.isPartitionKey@"_Stz, &Step::vColumnIsPartitionKeyFetch);
+  vAddStep("column.length@"_Stz,         &Step::vColumnLengthFetch);
+  vAddStep("column.name@"_Stz,           &Step::vColumnNameFetch);
+  vAddStep("column.scale@"_Stz,          &Step::vColumnScaleFetch);
+  vAddStep("column.type@"_Stz,           &Step::vColumnTypeFetch);
 }
 
 /*----------------------------------------------------------------------------*/
 /* column.isNullable@ -- fetch column is nullable                             */
 /*----------------------------------------------------------------------------*/
-void Task::vColumnIsNullableFetch(MP_Task mpTask)
+void Step::vColumnIsNullableFetch(MP_Task mpTask)
 {
   ENTRY("vColumnIsNullableFetch"_Stz);
   
@@ -47,7 +47,7 @@ void Task::vColumnIsNullableFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* column.isPartitionKey@ -- fetch column is partitionKey                     */
 /*----------------------------------------------------------------------------*/
-void Task::vColumnIsPartitionKeyFetch(MP_Task mpTask)
+void Step::vColumnIsPartitionKeyFetch(MP_Task mpTask)
 {
   ENTRY("vColumnIsPartitionKeyFetch"_Stz);
   
@@ -70,7 +70,7 @@ void Task::vColumnIsPartitionKeyFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* column.length@ -- fetch column length                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vColumnLengthFetch(MP_Task mpTask)
+void Step::vColumnLengthFetch(MP_Task mpTask)
 {
   ENTRY("vColumnLengthFetch"_Stz);
   
@@ -90,7 +90,7 @@ void Task::vColumnLengthFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* column.name@ -- fetch column name                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vColumnNameFetch(MP_Task mpTask)
+void Step::vColumnNameFetch(MP_Task mpTask)
 {
   ENTRY("vColumnNameFetch"_Stz);
   
@@ -110,7 +110,7 @@ void Task::vColumnNameFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* column.scale@ -- fetch column scale                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vColumnScaleFetch(MP_Task mpTask)
+void Step::vColumnScaleFetch(MP_Task mpTask)
 {
   ENTRY("vColumnScaleFetch"_Stz);
   
@@ -130,7 +130,7 @@ void Task::vColumnScaleFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* column.type@ -- fetch column type                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vColumnTypeFetch(MP_Task mpTask)
+void Step::vColumnTypeFetch(MP_Task mpTask)
 {
   ENTRY("vColumnTypeFetch"_Stz);
   

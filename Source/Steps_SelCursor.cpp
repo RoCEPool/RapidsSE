@@ -15,25 +15,25 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SelCursor(void)
 {
-  vAddStep("selCursor::new"_Stz,      &Task::vSelCursorNew);
+  vAddStep("selCursor::new"_Stz,      &Step::vSelCursorNew);
   
-  vAddStep("selCursor.begin"_Stz,     &Task::vSelCursorBegin);
-  vAddStep("selCursor.delete"_Stz,    &Task::vSelCursorDelete);
-  vAddStep("selCursor.end"_Stz,       &Task::vSelCursorEnd);
-  vAddStep("selCursor.first"_Stz,     &Task::vSelCursorFirst);
-  vAddStep("selCursor.get"_Stz,       &Task::vSelCursorGet);
-  vAddStep("selCursor.hasRow"_Stz,    &Task::vSelCursorHasRow);
-  vAddStep("selCursor.init"_Stz,      &Task::vSelCursorInit);
-  vAddStep("selCursor.next"_Stz,      &Task::vSelCursorNext);
-  vAddStep("selCursor.rowBuffer"_Stz, &Task::vSelCursorRowBuffer);
-  vAddStep("selCursor.table@"_Stz,    &Task::vSelCursorTableFetch);
-  vAddStep("selCursor.table!"_Stz,    &Task::vSelCursorTableStore);
+  vAddStep("selCursor.begin"_Stz,     &Step::vSelCursorBegin);
+  vAddStep("selCursor.delete"_Stz,    &Step::vSelCursorDelete);
+  vAddStep("selCursor.end"_Stz,       &Step::vSelCursorEnd);
+  vAddStep("selCursor.first"_Stz,     &Step::vSelCursorFirst);
+  vAddStep("selCursor.get"_Stz,       &Step::vSelCursorGet);
+  vAddStep("selCursor.hasRow"_Stz,    &Step::vSelCursorHasRow);
+  vAddStep("selCursor.init"_Stz,      &Step::vSelCursorInit);
+  vAddStep("selCursor.next"_Stz,      &Step::vSelCursorNext);
+  vAddStep("selCursor.rowBuffer"_Stz, &Step::vSelCursorRowBuffer);
+  vAddStep("selCursor.table@"_Stz,    &Step::vSelCursorTableFetch);
+  vAddStep("selCursor.table!"_Stz,    &Step::vSelCursorTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
 /* selCursor.begin -- begin using row cursor                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorBegin(MP_Task mpTask)
+void Step::vSelCursorBegin(MP_Task mpTask)
 {
 ENTRY("vSelCursorBegin"_Stz);
   
@@ -56,7 +56,7 @@ ENTRY("vSelCursorBegin"_Stz);
 /*----------------------------------------------------------------------------*/
 /* selCursor.delete -- delete a row cursor                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorDelete(MP_Task mpTask)
+void Step::vSelCursorDelete(MP_Task mpTask)
 {
 ENTRY("vSelCursorDelete"_Stz);
   
@@ -78,7 +78,7 @@ ENTRY("vSelCursorDelete"_Stz);
 /*----------------------------------------------------------------------------*/
 /* selCursor.end -- end using row cursor                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorEnd(MP_Task mpTask)
+void Step::vSelCursorEnd(MP_Task mpTask)
 {
 ENTRY("vSelCursorEnd"_Stz);
   
@@ -97,7 +97,7 @@ ENTRY("vSelCursorEnd"_Stz);
 /*----------------------------------------------------------------------------*/
 /* selCursor.first -- set to first and get row                                */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorFirst(MP_Task mpTask)
+void Step::vSelCursorFirst(MP_Task mpTask)
 {
 ENTRY("vSelCursorFirst"_Stz);
   
@@ -120,7 +120,7 @@ ENTRY("vSelCursorFirst"_Stz);
 /*----------------------------------------------------------------------------*/
 /* selCursor.get -- get current row                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorGet(MP_Task mpTask)
+void Step::vSelCursorGet(MP_Task mpTask)
 {
 ENTRY("vSelCursorGet"_Stz);
   
@@ -143,7 +143,7 @@ ENTRY("vSelCursorGet"_Stz);
 /*----------------------------------------------------------------------------*/
 /* selCursor.hasRow -- is there a current row                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorHasRow(MP_Task mpTask)
+void Step::vSelCursorHasRow(MP_Task mpTask)
 {
   ENTRY("vSelCursorGet"_Stz);
   
@@ -164,7 +164,7 @@ void Task::vSelCursorHasRow(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* selCursor.init -- init a row cursor                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorInit(MP_Task mpTask)
+void Step::vSelCursorInit(MP_Task mpTask)
 {
 ENTRY("vSelCursorInit"_Stz);
   
@@ -183,7 +183,7 @@ ENTRY("vSelCursorInit"_Stz);
 /*----------------------------------------------------------------------------*/
 /* selCursor::new -- new an row cursor                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorNew(MP_Task mpTask)
+void Step::vSelCursorNew(MP_Task mpTask)
 {
 ENTRY("vSelCursorNew"_Stz);
   
@@ -198,7 +198,7 @@ ENTRY("vSelCursorNew"_Stz);
 /*----------------------------------------------------------------------------*/
 /* selCursor.next -- advance to next and get row                              */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorNext(MP_Task mpTask)
+void Step::vSelCursorNext(MP_Task mpTask)
 {
 ENTRY("vSelCursorNext"_Stz);
   
@@ -221,7 +221,7 @@ ENTRY("vSelCursorNext"_Stz);
 /*----------------------------------------------------------------------------*/
 /* selCursor.rowBuffer -- get current rowBuffer                               */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorRowBuffer(MP_Task mpTask)
+void Step::vSelCursorRowBuffer(MP_Task mpTask)
 {
   ENTRY("vSelCursorRowBuffer"_Stz);
   
@@ -243,7 +243,7 @@ void Task::vSelCursorRowBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* selCursor.table@ -- fetch table from row cursor                            */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorTableFetch(MP_Task mpTask)
+void Step::vSelCursorTableFetch(MP_Task mpTask)
 {
 ENTRY("vSelCursorTableFetch"_Stz);
   
@@ -264,7 +264,7 @@ ENTRY("vSelCursorTableFetch"_Stz);
 /*----------------------------------------------------------------------------*/
 /* selCursor.table! -- store table into row cursor                            */
 /*----------------------------------------------------------------------------*/
-void Task::vSelCursorTableStore(MP_Task mpTask)
+void Step::vSelCursorTableStore(MP_Task mpTask)
 {
 ENTRY("vSelCursorTableStore"_Stz);
   

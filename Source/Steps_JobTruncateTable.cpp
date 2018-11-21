@@ -15,16 +15,16 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobTruncateTable(void)
 {
-  vAddStep("job_subTruncate.truncateJobId@"_Stz,&Task::vJob_SubTruncateTruncateJobIdFetch);
-  vAddStep("job_subTruncate.slot@"_Stz,         &Task::vJob_SubTruncateSlotFetch);
+  vAddStep("job_subTruncate.truncateJobId@"_Stz,&Step::vJob_SubTruncateTruncateJobIdFetch);
+  vAddStep("job_subTruncate.slot@"_Stz,         &Step::vJob_SubTruncateSlotFetch);
   
-  vAddStep("Job_truncateTable.spawnSub"_Stz, &Task::vJob_TruncateTableSpawnSub);
+  vAddStep("Job_truncateTable.spawnSub"_Stz, &Step::vJob_TruncateTableSpawnSub);
 }
 
 /*----------------------------------------------------------------------------*/
 /* job_subTruncate.slot@ -- fetch the job slot                                */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubTruncateSlotFetch(MP_Task mpTask)
+void Step::vJob_SubTruncateSlotFetch(MP_Task mpTask)
 {
   ENTRY("vJob_SubTruncateSlotFetch"_Stz);
   
@@ -41,7 +41,7 @@ void Task::vJob_SubTruncateSlotFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_subTruncate.truncateJobId@ -- fetch the truncate job id                */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_SubTruncateTruncateJobIdFetch(MP_Task mpTask)
+void Step::vJob_SubTruncateTruncateJobIdFetch(MP_Task mpTask)
 {
   ENTRY("vJob_SubTruncateTruncateJobIdFetch"_Stz);
   
@@ -58,7 +58,7 @@ void Task::vJob_SubTruncateTruncateJobIdFetch(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* Job_truncateTable.spawnSub -- spawn sub truncate job                       */
 /*----------------------------------------------------------------------------*/
-void Task::vJob_TruncateTableSpawnSub(MP_Task mpTask)
+void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask)
 {
   ENTRY("vJob_TruncateTableSpawnSub"_Stz);
   

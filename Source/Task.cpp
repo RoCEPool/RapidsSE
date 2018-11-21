@@ -983,6 +983,111 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
 }
 
 /*----------------------------------------------------------------------------*/
+/* sprint of stack using given format string                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vSprint(s48K& sFormat, s48K& sString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  char* pf = sFormat.aChar();
+  char* ps = sString.aChar();
+  
+  while (*pf) {
+    
+    // test for ordinary character
+    if ('%' != *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // we have a '%'
+    pf++;
+    
+    // test for %%
+    if ('%' == *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // should be %v or %V
+    ASSERT('v' == *pf || 'V' == *pf);
+    
+    Value* pValue0 = m_pDataStack->pPeekValue(0);
+    eCN eClass = pValue0->eClass();
+    
+    // test for StrVal
+    if (CN_STRVAL == eClass) {
+      
+      //*pf = 's';                                                    //! Defect??
+      
+      s48K sValue;
+      m_pDataStack->bPop(sValue);
+      
+      if ('V' == *pf)
+        *ps++ = '"';
+      
+      for (char* pv = sValue.aChar(); *pv; )
+        *ps++ = *pv++;
+      
+      if ('V' == *pf)
+        *ps++ = '"';
+      
+      pf++;
+      
+      continue;
+    }
+    
+    // test for intval
+    if (CN_INTVAL == eClass) {
+      
+      //*pf = 'i';                                                    //! Defect??
+      
+      i8 iValue;
+      m_pDataStack->bPop(iValue);
+      
+      char aValue[32];
+      StrLib::wToString(iValue,aValue);
+      
+      for (char* pv = aValue; *pv; )
+        *ps++ = *pv++;
+      
+      pf++;
+      
+      continue;
+    }
+    
+    // test for ptrval
+    if (CN_PTRVAL == eClass) {
+      
+      //*pf = 'i';                                                    //! Defect??
+      
+      Object* pValue;
+      m_pDataStack->bPop(pValue);
+      
+      char aValue[32];
+      StrLib::wToPointer(pValue,aValue);
+      
+      for (char* pv = aValue; *pv; )
+        *ps++ = *pv++;
+      
+      pf++;
+      
+      continue;
+    }
+    
+    // just copy %?
+    *ps++ = '%';
+    *ps++ = *pf++;
+  }
+  
+  //*pf = '\0';                                                       //! Defect??
+  *ps = '\0';
+  
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

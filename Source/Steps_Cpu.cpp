@@ -15,13 +15,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Cpu(void)
 {
-  vAddStep("cpu.rdtscp"_Stz,      &Task::vCpuRdtscp);
+  vAddStep("cpu.rdtscp"_Stz,      &Step::vCpuRdtscp);
 }
 
 /*----------------------------------------------------------------------------*/
 /* cpu.rdtscp -- read cpu time stamp counter                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vCpuRdtscp(MP_Task mpTask)
+void Step::vCpuRdtscp(MP_Task mpTask)
 {
   ENTRY("vCpuRdtscp"_Stz);
   

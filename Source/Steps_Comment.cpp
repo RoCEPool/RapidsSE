@@ -2,6 +2,8 @@
 /* Steps_Comment.cpp - comment steps group                                    */
 /*============================================================================*/
 
+#include "Step.hpp"
+
 #include "StorageEngine.h"
 //#include "Tasks.h"
 #include "SePrompt.hpp"
@@ -15,13 +17,13 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Comment(void)
 {
-  vAddStep("("_Stz,               &Task::vComment,          true );
+  vAddStep("("_Stz,               &Step::vComment,          true );
 }
 
 /*----------------------------------------------------------------------------*/
 /* comment -- comment                                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vComment(MP_Task mpTask)
+void Step::vComment(MP_Task mpTask)
 {
   ENTRY("vComment"_Stz);
   
