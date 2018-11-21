@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StepArray.hpp -- Step Accumulator Array                                    */
+/* StepTracker.hpp -- Step Tracker                                            */
 /*============================================================================*/
 #pragma once
 
@@ -26,11 +26,12 @@ namespace Measurement
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     StepAccum* pAllocAccum(Stz* aFnName);
-    void vWrite(File& xFile);
-    void vReset(void);
   
-    void vGrabWrite(void);
     void vDropWrite(void);
+    void vGrabWrite(void);
+    void vReset(void);
+    void vWrite(File& xFile);
+
   
     Footer* aFooter(void);
   };

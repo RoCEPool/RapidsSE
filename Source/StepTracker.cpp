@@ -57,6 +57,19 @@ StepTracker::~StepTracker(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump grid                                                                  */
+/*----------------------------------------------------------------------------*/
+void StepTracker::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  StepTracker* pStepTracker = _pStepTracker(pObject);
+  
+  vTrace("\n"_Stz, aTab, pStepTracker);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* allocate a step accumulator                                                */
 /*----------------------------------------------------------------------------*/
 StepAccum* StepTracker::pAllocAccum(Stz* aStepNm)
@@ -73,13 +86,32 @@ StepAccum* StepTracker::pAllocAccum(Stz* aStepNm)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump grid                                                                  */
+/* drop write lock                                                            */
 /*----------------------------------------------------------------------------*/
-void StepTracker::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void StepTracker::vDropWrite(void)
 {
-  StepTracker* pStepTracker = _pStepTracker(pObject);
+  m_zLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void StepTracker::vGrabWrite(void)
+{
+  m_zLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset steps                                                                */
+/*----------------------------------------------------------------------------*/
+void StepTracker::vReset(void)
+{
+  m_zLock.vGrabWrite();
   
-  vTrace("\n"_Stz, aTab, pStepTracker);
+  for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
+    m_xStepAccum[i_Step].vReset();
+  
+  m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,40 +132,12 @@ void StepTracker::vWrite(File& xFile)
     m_xStepAccum[i_Step].vPrint(xFile);
   
   m_zLock.vDropWrite();
-
+  
   vTrace("Written: %s\n"_Stz,xFile.sPath().aStr());
   
   xFile.vClose();
 }
 
-/*----------------------------------------------------------------------------*/
-/* reset steps                                                                */
-/*----------------------------------------------------------------------------*/
-void StepTracker::vReset(void)
-{
-  m_zLock.vGrabWrite();
-  
-  for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
-    m_xStepAccum[i_Step].vReset();
-  
-  m_zLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grab write lock                                                            */
-/*----------------------------------------------------------------------------*/
-void StepTracker::vGrabWrite(void)
-{
-  m_zLock.vGrabWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop write lock                                                            */
-/*----------------------------------------------------------------------------*/
-void StepTracker::vDropWrite(void)
-{
-  m_zLock.vDropWrite();
-}
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
