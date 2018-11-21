@@ -5,7 +5,7 @@
 
 namespace Measurement
 {
-  static const i8 C_STEPS = 1024;
+  static const i8 C_STEPS = 2048;
   
   class StepTracker : public Object
   {
