@@ -605,7 +605,7 @@ void RapidsSE::vStartSystem(void)
   
   ASSERT( ! gpAttachMap->m_xMainDic.bHasWords() );
   
-  new StepTracker;
+  //new StepTracker;
   
   gpAttachMap->m_pQueues = new Queues;
   

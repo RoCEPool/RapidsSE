@@ -26,9 +26,9 @@ void* StepTracker::operator new(size_t)
 {
   RASSERT(! gpAttachMap->m_pStepTracker);
   
-  gpAttachMap->m_pStepTracker = (StepTracker*)HeapMem::pAllocate(CN_STEPTRACKER);
+  StepTracker* pStepTracker = (StepTracker*)HeapMem::pAllocate(CN_STEPTRACKER);
   
-  return gpAttachMap->m_pStepTracker;
+  return pStepTracker;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +87,7 @@ void StepTracker::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void StepTracker::vList(File& xFile)
 {
-  bool bOpened = xFile.bOpen();
+  bool bOpened = xFile.bOpen(C_OPEN_WRITE);
   if (! bOpened) {
     vTrace("Unable to open StepTracker file\n"_Stz);
     return;
