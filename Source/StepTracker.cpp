@@ -7,6 +7,8 @@
 
 extern AttachMap* gpAttachMap;
 
+const Stz* C_STEPTRACKER_FILE = "/Rapids/StepTracker.csv"_Stz;
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -119,7 +121,7 @@ void StepTracker::vReset(void)
 /*----------------------------------------------------------------------------*/
 void StepTracker::vWrite(void)
 {
-  File xFile("/Rapids/StepTracker.csv"_Stz);
+  File xFile((Stz*)C_STEPTRACKER_FILE);
 
   bool bOpened = xFile.bOpen(C_OPEN_WRITE);
   if (! bOpened) {
@@ -129,7 +131,7 @@ void StepTracker::vWrite(void)
   
   m_zLock.vGrabWrite();
   
-  xFile.vPrint("Step, Invoked, StepTotal, Per Invoke\n"_Stz);
+  xFile.vPrint("Step, Invoked, Step Total, Per Invoke\n"_Stz);
   for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
     m_xStepAccum[i_Step].vPrint(xFile);
   
