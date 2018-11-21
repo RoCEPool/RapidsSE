@@ -149,7 +149,6 @@ namespace Tasks
     bool bPopInt(i8& iInt);
     bool bPopObject(Object*& pObject);
     bool bPopStr(s48K& sStr);
-    void vPrimitive(Stz *aPrimitive);
     void vPushInt(i8 iInt);
     void vPushObject(Object* pObject);
     void vPushStr(Stz* aStr);
@@ -175,6 +174,7 @@ namespace Tasks
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);
+    void vTraceStep(Stz *aStepNm);
     bool bWakeupNow(void);
     i8   iWakeupTime(void);
     void vWakeupTask(void);

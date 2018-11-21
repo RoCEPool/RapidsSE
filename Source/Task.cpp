@@ -464,38 +464,6 @@ bool Task::bPopStr(s48K& sStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* primitive entry                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vPrimitive(Stz* aPrimitive)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if ( ! (m_iTracing & C_TRACE_STEPS) )
-    return;
-  
-  s256 sRoutine;
-  
-  Cell* pCell = IP.m_pCell;
-  Word* pLocatedWord = m_xPathStack.pLocate(pCell);
-  if (pLocatedWord)
-    sRoutine = pLocatedWord->sName();
-  else
-    sRoutine = "<unknown>"_Stz;
-  
-  i8 iDataValues  = m_pDataStack->iValues();
-  i8 iReturnValues = m_pReturnStack->iValues();
-  vTrace("%-15s %15s : r%lld ; d%2d="_Stz,
-         sRoutine.aChar(),
-         aPrimitive,
-         iReturnValues,
-         iDataValues);
-  
-  s48K sStackContents;
-  vStackContents(m_pDataStack, sStackContents);
-  vTrace("%s\n"_Stz,sStackContents.aChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* push int                                                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vPushInt(i8 iInt)
@@ -844,6 +812,35 @@ void Task::vTracePoint(Stz* aMark)
 
   vStackContents(m_pDataStack, sStackContents);
   
+  vTrace("%s\n"_Stz,sStackContents.aChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace step                                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTraceStep(Stz* aStepNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  s256 sRoutine;
+  
+  Cell* pCell = IP.m_pCell;
+  Word* pLocatedWord = m_xPathStack.pLocate(pCell);
+  if (pLocatedWord)
+    sRoutine = pLocatedWord->sName();
+  else
+    sRoutine = "<unknown>"_Stz;
+  
+  i8 iDataValues  = m_pDataStack->iValues();
+  i8 iReturnValues = m_pReturnStack->iValues();
+  vTrace("%-15s %15s : r%lld ; d%2d="_Stz,
+         sRoutine.aChar(),
+         aStepNm,
+         iReturnValues,
+         iDataValues);
+  
+  s48K sStackContents;
+  vStackContents(m_pDataStack, sStackContents);
   vTrace("%s\n"_Stz,sStackContents.aChar());
 }
 

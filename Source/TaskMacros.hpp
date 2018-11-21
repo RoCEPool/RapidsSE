@@ -76,7 +76,8 @@
       _iTscEntry = Synch::iTicks(); \
     } \
     \
-    mpTask->vPrimitive(aStepNm);
+    if (C_TRACE_STEPS && mpTask->m_iTracing) \
+      mpTask->vTraceStep(aStepNm);
 
   #define EXIT() \
     if (pStepAccum) { \
