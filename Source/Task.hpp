@@ -1065,6 +1065,7 @@ namespace Tasks
 
     // steps
     static void vStepsReset(MP_Task mpTask);
+    static void vStepsStart(MP_Task mpTask);
     static void vStepsWrite(MP_Task mpTask);
 
     // string
