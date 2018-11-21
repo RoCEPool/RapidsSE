@@ -83,13 +83,13 @@ void StepTracker::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* list steps                                                                 */
+/* write steps to given file                                                  */
 /*----------------------------------------------------------------------------*/
-void StepTracker::vList(File& xFile)
+void StepTracker::vWrite(File& xFile)
 {
   bool bOpened = xFile.bOpen(C_OPEN_WRITE);
   if (! bOpened) {
-    vTrace("Unable to open StepTracker file\n"_Stz);
+    vTrace("Unable to open StepTracker file: %s\n"_Stz,xFile.sPath().aStr());
     return;
   }
   
@@ -101,6 +101,8 @@ void StepTracker::vList(File& xFile)
   
   m_zLock.vDropWrite();
 
+  vTrace("Written: %s\n"_Stz,xFile.sPath().aStr());
+  
   xFile.vClose();
 }
 

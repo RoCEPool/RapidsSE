@@ -26,7 +26,7 @@ namespace Measurement
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     StepAccum* pAllocAccum(Stz* aFnName);
-    void vList(File& xFile);
+    void vWrite(File& xFile);
     void vReset(void);
   
     void vGrabWrite(void);

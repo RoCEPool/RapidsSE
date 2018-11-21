@@ -163,8 +163,8 @@ traceon
   steps::reset
 ;
 
-: stepsList
-  steps::list
+: stepsWrite
+  steps::write
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -15,35 +15,31 @@ extern AttachMap*      gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Steps(void)
 {
-  vAddStep("steps::list"_Stz,  &Task::vStepsList);
   vAddStep("steps::reset"_Stz, &Task::vStepsReset);
+  vAddStep("steps::write"_Stz, &Task::vStepsWrite);
 }
 
 /*----------------------------------------------------------------------------*/
-/* steps::list -- list steps                                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vStepsList(MP_Task mpTask)
-{
-ENTRY("vStepsList"_Stz);
-
-  File xFile;
-  xFile.bOpen("steps.csv"_Stz, C_OPEN_WRITE);
-  
-  gpAttachMap->m_pStepTracker->vList(xFile);
-  
-  xFile.vClose();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* steps::reset -- reset steps                                               */
+/* steps::reset -- reset steps                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vStepsReset(MP_Task mpTask)
 {
   ENTRY("vStepsReset"_Stz);
   
   gpAttachMap->m_pStepTracker->vReset();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* steps::write -- write steps                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vStepsWrite(MP_Task mpTask)
+{
+  ENTRY("vStepsList"_Stz);
+  
+  File xFile("/Rapids/StepTracker.csv"_Stz);
+  gpAttachMap->m_pStepTracker->vWrite(xFile);
   
   EXIT();
 }

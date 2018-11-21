@@ -38,17 +38,6 @@ bool Prompt::bPrompt_st(SePrompt* pPrompt)
     return true;
   }
   
-  // list step tracker contents to file
-  if ( (*pTokenVec)[1]->bSame("list"_Stz) ) {
-    if (! gpAttachMap->m_pStepTracker) {
-      vTrace("No step tracker\n"_Stz);
-      return true;
-    }
-    File xFile("/Rapids/StepTracker.csv"_Stz);
-    gpAttachMap->m_pStepTracker->vList(xFile);
-    return true;
-  }
-  
   // reset step tracker
   if ( (*pTokenVec)[1]->bSame("reset"_Stz) ) {
     if (! gpAttachMap->m_pStepTracker) {
@@ -56,6 +45,17 @@ bool Prompt::bPrompt_st(SePrompt* pPrompt)
       return true;
     }
     gpAttachMap->m_pStepTracker->vReset();
+    return true;
+  }
+  
+  // write step tracker contents to file
+  if ( (*pTokenVec)[1]->bSame("write"_Stz) ) {
+    if (! gpAttachMap->m_pStepTracker) {
+      vTrace("No step tracker\n"_Stz);
+      return true;
+    }
+    File xFile("/Rapids/StepTracker.csv"_Stz);
+    gpAttachMap->m_pStepTracker->vWrite(xFile);
     return true;
   }
   

@@ -1064,9 +1064,9 @@ namespace Tasks
     static void vSocketSendObject(MP_Task mpTask);
 
     // steps
-    static void vStepsList(MP_Task mpTask);
     static void vStepsReset(MP_Task mpTask);
-    
+    static void vStepsWrite(MP_Task mpTask);
+
     // string
     static void vStrAlgebra(MP_Task mpTask);
     static void vStrCat(MP_Task mpTask);
