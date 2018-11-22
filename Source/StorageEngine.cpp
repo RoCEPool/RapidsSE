@@ -18,12 +18,14 @@ void StorageEngine::vCheckAllAssumptions(void)
   // this is in reverse order of the spaces in the project
   Base::vCheckAssumptions();
   Debugging::vCheckAssumptions();
+  // third party??
   CorrectnessAlgebra::vCheckAssumptions();
   Datums::vCheckAssumptions();
   Values::vCheckAssumptions();
   System::vCheckAssumptions();
   Pool::vCheckAssumptions();
   Structures::vCheckAssumptions();
+  Measurement::vCheckAssumptions();
   Parsing::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Dictionaries::vCheckAssumptions();
@@ -33,10 +35,12 @@ void StorageEngine::vCheckAllAssumptions(void)
   JobsModel::vCheckAssumptions();
   MockEE::vCheckAssumptions();
   Utilities::vCheckAssumptions();
+  Steps::vCheckAssumptions();
   Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
   GridModel::vCheckAssumptions();
   Interface::vCheckAssumptions();
+  Prompt::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
 }
 
