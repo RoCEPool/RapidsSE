@@ -22,6 +22,11 @@ namespace Values
     d8* aFlt(void);
   
     //void vToString(Stz* aWorkspace);
+  
+    void vMaxValue(void);
+    void vMidValue(void);
+    void vMinValue(void);
+    void vNullValue(void);
   };
   
   FltVal* _pFltVal(void* aAddr);

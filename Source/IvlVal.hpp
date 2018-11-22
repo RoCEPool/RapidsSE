@@ -23,6 +23,11 @@ namespace Values
     i8 iIvl(void);
     
     void vToString(Stz* aWorkspace);
+  
+    void vMaxValue(void);
+    void vMidValue(void);
+    void vMinValue(void);
+    void vNullValue(void);
   };
   
   IvlVal* _pIvlVal(void* aAddr);

@@ -23,6 +23,11 @@ namespace Values
     i8 iDte(void) const;
     
     void vToString(Stz* aWorkspace);
+  
+    void vMaxValue(void);
+    void vMidValue(void);
+    void vMinValue(void);
+    void vNullValue(void);
   };
   
   DteVal* _pDteVal(void* aAddr);

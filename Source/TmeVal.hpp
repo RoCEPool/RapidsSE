@@ -23,6 +23,11 @@ namespace Values
     i8 iTme(void);
     
     void vToString(Stz* aWorkspace);
+  
+    void vMaxValue(void);
+    void vMidValue(void);
+    void vMinValue(void);
+    void vNullValue(void);
   };
   
   TmeVal* _pTmeVal(void* aAddr);

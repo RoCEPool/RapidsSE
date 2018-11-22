@@ -23,6 +23,11 @@ namespace Values
     i8 iBcd(void) const;
     
     void vToString(Stz* aWorkspace);
+  
+    void vMaxValue(void);
+    void vMidValue(void);
+    void vMinValue(void);
+    void vNullValue(void);
   };
   
   BcdVal* _pBcdVal(void* aAddr);

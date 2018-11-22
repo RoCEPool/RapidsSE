@@ -23,6 +23,11 @@ namespace Values
     i8 iBol(void) const;
     
     void vToString(Stz* aWorkspace);
+  
+    void vMaxValue(void);
+    void vMidValue(void);
+    void vMinValue(void);
+    void vNullValue(void);
   };
   
   BolVal* _pBolVal(void* aAddr);
