@@ -3,13 +3,8 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
-//#include "Tasks.h"
-#include "SePrompt.hpp"
 
-extern BufferPool*     gpBufferPool;
-extern AttachMap*      gpAttachMap;
-
-// indexbuffer: ////////////////////////////////////////////////////////////////
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

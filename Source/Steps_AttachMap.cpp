@@ -3,10 +3,8 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
-//#include "Tasks.h"
-#include "SePrompt.hpp"
 
-extern AttachMap*      gpAttachMap;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

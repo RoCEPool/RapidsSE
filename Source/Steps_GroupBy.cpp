@@ -4,9 +4,7 @@
 
 #include "StorageEngine.h"
 
-extern AttachMap*      gpAttachMap;
-
-// accum: //////////////////////////////////////////////////////////////////////
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

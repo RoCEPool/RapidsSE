@@ -3,12 +3,9 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
-#include "SePrompt.hpp"
 
-extern AttachMap* gpAttachMap;
 extern Arguments  gxArguments;
-
-// args: ///////////////////////////////////////////////////////////////////////
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */

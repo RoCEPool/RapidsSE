@@ -3,15 +3,11 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
-//#include "Tasks.h"
-#include "SePrompt.hpp"
 
-extern AttachMap*      gpAttachMap;
+extern AttachMap* gpAttachMap;
 extern BufferPool*     gpBufferPool;
 
 i8 giCountObjects[CN_ENUMS];
-
-// bp: /////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
