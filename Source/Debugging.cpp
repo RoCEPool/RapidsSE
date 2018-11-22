@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Debugging.cpp -- Debugging namespace                                       */
+/* Debugging.cpp -- Debugging namespace functions                             */
 /*============================================================================*/
 
 #include "Debugging.h"

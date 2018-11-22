@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Interface.cpp - interface functions                                        */
+/* Interface.cpp - Interface namespace functions                              */
 /*============================================================================*/
 
 #include "Interface.h"

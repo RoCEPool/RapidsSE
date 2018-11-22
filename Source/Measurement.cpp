@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Measurement.cpp - Measurement                                              */
+/* Measurement.cpp - Measurement namespace functions                          */
 /*============================================================================*/
 
 #include "Measurement.h"

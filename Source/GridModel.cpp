@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* GridModel.cpp -- Grid Model functions                                      */
+/* GridModel.cpp -- GridModel namespace functions                             */
 /*============================================================================*/
 
 #include "GridModel.h"

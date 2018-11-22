@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Transactions.cpp - transactions functions                                  */
+/* Transactions.cpp - Transactions namespace functions                        */
 /*============================================================================*/
 
 #include "Transactions.h"

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CorrectnessAlgebra.cpp -- Correctness Algebra                              */
+/* CorrectnessAlgebra.cpp -- Correctness Algebra namespace functions          */
 /*============================================================================*/
 
 #include "CorrectnessAlgebra.h"

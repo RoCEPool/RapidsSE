@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DBobjects.cpp - dbobjects functions                                        */
+/* DBobjects.cpp - DBobjects namespace functions                              */
 /*============================================================================*/
 
 #include "DBobjects.h"

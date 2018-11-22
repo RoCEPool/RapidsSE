@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MockEE.cpp -- Mock execution engine namespace                              */
+/* MockEE.cpp -- MockEE namespace functions                                   */
 /*============================================================================*/
 
 #include "MockEE.h"

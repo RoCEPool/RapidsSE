@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StorageEngine.cpp - storage engine functions                               */
+/* StorageEngine.cpp - StorageEngine namespace functions                      */
 /*============================================================================*/
 
 #include "StorageEngine.h"

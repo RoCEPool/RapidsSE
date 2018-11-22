@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Dictionaries.cpp - dictionaries functions                                  */
+/* Dictionaries.cpp - Dictionaries namespace functions                        */
 /*============================================================================*/
 
 #include "Dictionaries.h"
