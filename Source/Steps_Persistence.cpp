@@ -4,7 +4,7 @@
 
 #include "StorageEngine.h"
 
-extern AttachMap*      gpAttachMap;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
