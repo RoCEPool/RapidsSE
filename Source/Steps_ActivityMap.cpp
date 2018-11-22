@@ -2,8 +2,6 @@
 /* Steps_ActivityMap.cpp -- Activity Map step group                           */
 /*============================================================================*/
 
-#include "Step.hpp"
-
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

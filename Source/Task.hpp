@@ -20,6 +20,7 @@ namespace Threads
   class Thread;
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 namespace Tasks
 {  
   enum eTS // Task State
@@ -49,16 +50,14 @@ namespace Tasks
   };
   
   typedef NP<Task,CN_TASK> NP_Task;
-  typedef MP<Task,CN_TASK> MP_Task;
   
   class Task : public Object,
                public ListNode_t<Task>
   {
-  friend class Step;
+  friend class Steps::Step;
   friend class Word;
 
   private:
-  
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // keep

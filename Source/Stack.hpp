@@ -6,12 +6,19 @@
 namespace Tasks
 {
   class Task;
+}
+
+namespace Steps
+{
   class Step;
 }
+
 namespace Dictionaries
 {
   class Cell;
 }
+
+//------------------------------------------------------------------------------
 
 namespace Structures
 {
@@ -21,7 +28,7 @@ namespace Structures
   class Stack: public Object
   {
   friend class Tasks::Task;
-  friend class Tasks::Step;
+  friend class Steps::Step;
 
   private:
   

@@ -2,11 +2,9 @@
 /* Steps_AccessPath.cpp - access path step group                              */
 /*============================================================================*/
 
-#include "Step.hpp"
-
 #include "StorageEngine.h"
 //#include "Tasks.h"
-#include "SePrompt.hpp"
+//#include "SePrompt.hpp"
 
 extern AttachMap*      gpAttachMap;
 

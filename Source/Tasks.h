@@ -14,7 +14,7 @@ enum eQR // queue round robin
   /* -1 */ QR_READY_QUEUE,
 };
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 namespace Tasks
 {
@@ -23,13 +23,12 @@ namespace Tasks
 
 using namespace Tasks;
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 #include "Compiler.hpp"
 
 #include "Socket.hpp"
 
-//#include "Step.hpp"
 #include "Task.hpp"
 #include "TaskMacros.hpp"
 #include "TaskList.hpp"

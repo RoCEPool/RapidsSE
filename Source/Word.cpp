@@ -84,7 +84,7 @@ Word::Word(Stz* sName)
   
   _setFooter_();
   
-  m_pEntryStep   = &Tasks::Step::vEnterRoutine;
+  m_pEntryStep   = &Steps::Step::vEnterRoutine;
   m_pEntryCell   = pFirstCell();
 
   _checkInitialised_(CN_WORD);

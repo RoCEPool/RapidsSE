@@ -11,6 +11,7 @@ namespace Tasks
 {
   typedef MP<Task,CN_TASK> MP_Task;
 }
+
 namespace Dictionaries
 {
   typedef void (*TaskStep)(Tasks::MP_Task);

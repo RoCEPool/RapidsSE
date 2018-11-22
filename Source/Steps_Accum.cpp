@@ -2,8 +2,6 @@
 /* Steps_Accum.cpp -- Accumulator step group                                  */
 /*============================================================================*/
 
-#include "Step.hpp"
-
 #include "StorageEngine.h"
 
 extern AttachMap*      gpAttachMap;

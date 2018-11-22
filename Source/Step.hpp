@@ -3,9 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Utilities.h"
-
-namespace Tasks
+namespace Steps
 {
   // tracing masks
   static const i8 C_TRACE_NONE     = 0x0;
@@ -14,7 +12,7 @@ namespace Tasks
 
   class Step
   {
-  friend class Task;
+  friend class Tasks::Task;
   friend class Dictionaries::Word;
   
     static void vAddStep(Stz* aName, TaskStep pStep, bool bImmediate=false);
