@@ -171,27 +171,33 @@ Footer* Job_GenData::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_GenData_pre(Interface::Session* pSession)
 {
+  IntVal xInt;
+
+  xInt.vMinValue();  vTrace("%lld\n"_Stz,xInt.iAsI8());
+  xInt.vMidValue();  vTrace("%lld\n"_Stz,xInt.iAsI8());
+  xInt.vMaxValue();  vTrace("%lld\n"_Stz,xInt.iAsI8());
+  xInt.vNullValue(); vTrace("%lld\n"_Stz,xInt.iAsI8());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nTokens;
 
   Job_GenData* pJob_GenData = new Job_GenData(pSession);
-  
+
   TokenVec* pTknVec = pSession->m_pCommandProcessor->pTknVec();
-  
-  // - - - - - - - - - - - - - - - - - - - - -
+
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();
-  
-  // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 2 tokens
-  if (nTokens != 2)
-    return nullptr;
-  
+
+  // there should be 3 tokens
+  if (nTokens != 3)
+    return pJob_GenData;
+
   // set the table name
   pJob_GenData->m_sObjectName = pTknVec->pGet(1)->aText();
 
   // set the file name
   pJob_GenData->m_sFileName = pTknVec->pGet(2)->aText();
-  
+
   return pJob_GenData;
 }
 
