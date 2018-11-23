@@ -16,7 +16,6 @@ void Task::vAddBaseWords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddSteps();
   Step::vAddSteps();
   
   vAddConstants();
@@ -655,21 +654,6 @@ void Task::vAddStep(Stz* aName, TaskStep pStep, bool bImmediate)
   pNewWord->vWordType(WT_PRIMITIVE);
   pNewWord->vEntryStep(pStep);
   pNewWord->vImmediate(bImmediate);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddSteps(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (gpAttachMap->m_bVerbose)
-    vTrace("[[mainThread]] Adding primitives...\n"_Stz);
-  
-  vAddStep("word"_Stz,            &Step::vWord);
-  gpAttachMap->m_pWord = gpAttachMap->m_xMainDic.pFindWord("word"_Stz);
-
 }
 
 /*----------------------------------------------------------------------------*/

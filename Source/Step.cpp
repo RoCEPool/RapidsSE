@@ -5,6 +5,8 @@
 #include "Steps.h"
 #include "StorageEngine.h"
 
+extern AttachMap* gpAttachMap;
+extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
@@ -19,6 +21,14 @@ void Step::vAddStep(Stz* aName, TaskStep pStep, bool bImmediate)
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps(void)
 {
+  if (gpAttachMap->m_bVerbose)
+    vTrace("[[mainThread]] Adding primitives...\n"_Stz);
+  
+  vAddStep("word"_Stz,            &Step::vWord);
+  gpAttachMap->m_pWord = gpAttachMap->m_xMainDic.pFindWord("word"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Step::vAddSteps_AccessPath();
   Step::vAddSteps_Accum();
   Step::vAddSteps_ActivityMap();
