@@ -83,10 +83,21 @@ i8* TmeVal::aInt(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-//void TmeVal::vToString(Stz* aWorkspace)
-//{
-//  *aWorkspace = m_iTme;
-//}
+void TmeVal::vToString(Stz* aWorkspace)
+{
+  if (bIsNull()) {
+    aWorkspace->vConcat("null"_Stz);
+    return;
+  }
+  
+  StrLib::vSprint(aWorkspace,
+                  "%ll02d:%ll02d:%ll02d.%lld"_Stz,
+                  (i8)x.m_uHour,
+                  (i8)x.m_uMinute,
+                  (i8)x.m_uSecond,
+                  (i8)x.m_uMicro
+                  );
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
