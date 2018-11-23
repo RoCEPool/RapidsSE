@@ -109,6 +109,16 @@ Job_GenData::Job_GenData(Interface::Session* pSession)
   
   m_pTable = nullptr;
   
+  m_bIsSchemaTest     = false;
+  m_nLeadingDontCare  = 0;
+  m_nCareColumns      = 0;
+  m_nTrailingDontCare = 0;
+  
+  for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
+    m_pCareColumn[i_Col] = nullptr;
+    m_iCareState[i_Col]  = 0;
+  }
+
   _checkInitialised_(CN_JOB_GENDATA);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
