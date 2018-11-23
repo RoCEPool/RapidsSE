@@ -27,7 +27,8 @@ namespace JobsModel
   public:
     void vShow(void);
     
-  
+    void vGenerate(void);
+
   public:
     Footer* aFooter(void);
   
@@ -43,6 +44,7 @@ namespace JobsModel
   void vJob_GenData_show(Job* pJob);
   
   JobClass* pJob_GenData_class(pFUN** aaFun);
+  
 }
 
 /*============================================================================*/

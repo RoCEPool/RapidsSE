@@ -40,8 +40,9 @@
   // check it is a table
   sTableNm checkIsTable not if popTable pJob_GenData <ERROR_REQUEST> !!am exit then
 
-
   //----------------------------------------------------------------------------
+
+   pJob_GenData job_genData.generate
 
   //----------------------------------------------------------------------------
 
