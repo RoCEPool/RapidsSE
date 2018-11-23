@@ -16,7 +16,7 @@ print "creating table SensorEvents...";
 print "=====================================================================";
 create table SensorEvents (
   se_key   INTEGER,
-  se_v1    INTERVAL
+  se_v1    DATE
 );
 
 print "";

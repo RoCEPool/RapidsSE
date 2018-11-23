@@ -83,10 +83,20 @@ i8 DteVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-//void DteVal::vToString(Stz* aWorkspace)
-//{
-//  *aWorkspace = m_iDte;
-//}
+void DteVal::vToString(Stz* aWorkspace)
+{
+  if (bIsNull()) {
+    aWorkspace->vConcat("null"_Stz);
+    return;
+  }
+  
+  StrLib::vSprint(aWorkspace,
+                  "%ll04d-%ll02d-%ll02d"_Stz,
+                  (i8)x.m_uYear,
+                  (i8)x.m_uMonth,
+                  (i8)x.m_uDay
+                  );
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
