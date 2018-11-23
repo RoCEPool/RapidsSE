@@ -333,11 +333,108 @@ void JobsModel::vJob_GenData_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create record                                                              */
+/* append value for given column                                              */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vAddInt(i8 i_Col, i8 iState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  IntVal xVal;
+
+  switch (iState) {
+    case C_GEN_MIN: xVal.vMinValue();  break;
+    case C_GEN_MID: xVal.vMidValue();  break;
+    case C_GEN_MAX: xVal.vMaxValue();  break;
+    case C_GEN_NUL: xVal.vNullValue(); break;
+    default:
+      NEVER_REACH;
+  }
+  
+  s32 sWsp;
+  xVal.vToString(sWsp);
+  
+  m_sRecord.vConcat(sWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append value for given column                                              */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vAppendValue(i8 i_Col)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+
+  if (i_Col)
+    m_sRecord.vAppend(',');
+  
+  i8 iState = m_iCareState[i_Col];
+
+  Column* pColumn = m_pCareColumn[i_Col];
+  eCT eColType = pColumn->eColumnType();
+  
+  switch (eColType) {
+    case CT_BOOLEAN:   break;
+    case CT_DATE:      break;
+    case CT_DECIMAL:   break;
+    case CT_FLOAT:     break;
+    case CT_INTEGER:   vAddInt(i_Col,iState); break;
+    case CT_INTERVAL:  break;
+    case CT_TIME:      break;
+    case CT_TIMESTAMP: break;
+    case CT_VARCHAR:   break;
+
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* create record using the column x value matrix                              */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vCreateRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  m_sRecord = ""_Stz;
+  
+  for (i8 i_Col = 0; i_Col < m_nCareColumns; i_Col++)
+    vAppendValue(i_Col);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump matrix combination                                                    */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vDumpCombination(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  for (i8 i_Col = 0; i_Col < m_nCareColumns; i_Col++) {
+    
+    i8 iState = m_iCareState[i_Col];
+    
+    switch (iState) {
+      case C_GEN_MIN: vTrace("Min "_Stz); break;
+      case C_GEN_MID: vTrace("Mid "_Stz); break;
+      case C_GEN_MAX: vTrace("Max "_Stz); break;
+      case C_GEN_NUL: vTrace("Nul "_Stz); break;
+      default:
+        NEVER_REACH;
+    }
+    
+  }
+  
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set first combination of the matrix                                        */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vFirstCombination(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  // load initial state of matrix
+  for (i8 i_Col = 0; i_Col < m_nCareColumns; i_Col++)
+    m_iCareState[i_Col] = 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -364,16 +461,13 @@ void Job_GenData::vGenerate(void)
 /*----------------------------------------------------------------------------*/
 /* iterate column x value                                                     */
 /*----------------------------------------------------------------------------*/
-void Job_GenData::vIterateMatrix(void)
+void Job_GenData::vIterateCombinations(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
-  // load initial state of matrix
-  for (i8 i_Col = 0; i_Col < m_nCareColumns; i_Col++)
-    m_iCareState[i_Col] = 1;
-  
-  // iterate thru all possibilities
+  vFirstCombination();
   do {
+    vDumpCombination();
     vCreateRecord();
     vWriteRecord();
   } while (bNextCombination());
@@ -418,7 +512,7 @@ void Job_GenData::vLoadColumns(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* advance the state of the care matrix to next combination                   */
+/* advance the state of the matrix to next combination                        */
 /*----------------------------------------------------------------------------*/
 bool Job_GenData::bNextCombination(void)
 {
@@ -473,7 +567,7 @@ void Job_GenData::vTable(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write record                                                               */
+/* write generated record                                                     */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vWriteRecord(void)
 {

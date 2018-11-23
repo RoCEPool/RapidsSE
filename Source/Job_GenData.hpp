@@ -43,10 +43,23 @@ namespace JobsModel
 
   public:
     void   vShow(void);
-    
+  
+    void   vAddBcd(i8 i_Col, i8 iState);
+    void   vAddBol(i8 i_Col, i8 iState);
+    void   vAddDte(i8 i_Col, i8 iState);
+    void   vAddFlt(i8 i_Col, i8 iState);
+    void   vAddInt(i8 i_Col, i8 iState);
+    void   vAddIvl(i8 i_Col, i8 iState);
+    void   vAddTme(i8 i_Col, i8 iState);
+    void   vAddTsp(i8 i_Col, i8 iState);
+    void   vAddStr(i8 i_Col, i8 iState);
+
+    void   vAppendValue(i8 i_Col);
     void   vCreateRecord(void);
+    void   vDumpCombination(void);
+    void   vFirstCombination(void);
     void   vGenerate(void);
-    void   vIterateMatrix(void);
+    void   vIterateCombinations(void);
     void   vLoadColumns(void);
     bool   bNextCombination(void);
     Table* pTable(void);
