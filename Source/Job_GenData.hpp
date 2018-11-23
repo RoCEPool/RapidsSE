@@ -5,6 +5,11 @@
 
 namespace JobsModel
 {
+  static const i8 C_GEN_MIN = 1; // generate a min value
+  static const i8 C_GEN_MID = 2; // generate a mid value
+  static const i8 C_GEN_MAX = 3; // generate a max value
+  static const i8 C_GEN_NUL = 4; // generate a null value
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_GenData : public Job,
                       public JobFileName
