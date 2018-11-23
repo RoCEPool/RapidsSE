@@ -15,9 +15,11 @@ namespace Steps
   friend class Tasks::Task;
   friend class Dictionaries::Word;
   
-    static void vAddStep(Stz* aName, TaskStep pStep, bool bImmediate=false);
-
+  public:
     static void vAddSteps(void);
+  
+  private:
+    static void vAddStep(Stz* aName, TaskStep pStep, bool bImmediate=false);
 
     static void vAddSteps_AccessPath(void);
     static void vAddSteps_Accum(void);
