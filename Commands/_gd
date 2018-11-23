@@ -12,18 +12,18 @@ startCluster;
 
 print "";
 print "=====================================================================";
-print "creating table j10...";
+print "creating table SensorEvents...";
 print "=====================================================================";
-create table j10 (
-  j10_key   INTEGER NOT NULL,
-  j10_name  VARCHAR(32) NOT NULL
+create table SensorEvents (
+  se_key   INTEGER,
+  se_int   INTEGER
 );
 
 print "";
 print "=====================================================================";
 print "generate data";
 print "=====================================================================";
-gendata j10 "/tmp/j10.csv";
+gendata SensorEvents "/tmp/SensorEvents.csv";
 
 print "";
 print "=====================================================================";

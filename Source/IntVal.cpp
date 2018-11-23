@@ -64,6 +64,11 @@ i8 IntVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 void IntVal::vToString(Stz* aWorkspace)
 {
+  if (bIsNull()) {
+    aWorkspace->vConcat("null"_Stz);
+    return;
+  }
+  
   *aWorkspace = m_iInt;
 }
 

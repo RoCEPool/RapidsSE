@@ -455,6 +455,8 @@ void Job_GenData::vGenerate(void)
   
   vLoadColumns();
   
+  vIterateCombinations();
+  
   m_xFile.vClose();
 }
 
@@ -541,7 +543,7 @@ bool Job_GenData::bNextCombination(void)
   m_iCareState[i_IncCol] = iState + 1;
   
   for (i8 i_ResetCol = i_IncCol + 1; i_ResetCol < m_nCareColumns; i_ResetCol++)
-    m_iCareState[i_ResetCol] = C_GEN_MAX;
+    m_iCareState[i_ResetCol] = C_GEN_MIN;
   
   return true;
 }
