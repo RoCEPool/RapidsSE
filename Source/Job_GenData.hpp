@@ -42,15 +42,16 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
-    void vShow(void);
+    void   vShow(void);
     
-    void vCreateRecord(void);
-    void vGenerate(void);
-    void vIterateMatrix(void);
-    void vLoadColumns(void);
+    void   vCreateRecord(void);
+    void   vGenerate(void);
+    void   vIterateMatrix(void);
+    void   vLoadColumns(void);
+    bool   bNextCombination(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
-    void vWriteRecord(void);
+    void   vWriteRecord(void);
 
   public:
     Footer* aFooter(void);

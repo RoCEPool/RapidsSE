@@ -369,9 +369,14 @@ void Job_GenData::vIterateMatrix(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
   // load initial state of matrix
+  for (i8 i_Col = 0; i_Col < m_nCareColumns; i_Col++)
+    m_iCareState[i_Col] = 1;
   
   // iterate thru all possibilities
-  
+  do {
+    vCreateRecord();
+    vWriteRecord();
+  } while (bNextCombination());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,6 +415,41 @@ void Job_GenData::vLoadColumns(void)
       m_pCareColumn[m_nCareColumns++] = pCol;
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* advance the state of the care matrix to next combination                   */
+/*----------------------------------------------------------------------------*/
+bool Job_GenData::bNextCombination(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  i8 i_LastCol = m_nCareColumns - 1;
+  
+  i8 iState = m_iCareState[i_LastCol];
+  
+  if (iState < C_GEN_NUL) {
+    m_iCareState[i_LastCol] = iState + 1;
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 i_IncCol;
+  for (i_IncCol = i_LastCol - 1; i_IncCol >= 0; i_IncCol--)
+    if (m_iCareState[i_IncCol] < C_GEN_NUL)
+      break;
+  
+  if (i_IncCol < 0)
+    return false;
+  
+  iState = m_iCareState[i_IncCol];
+  m_iCareState[i_IncCol] = iState + 1;
+  
+  for (i8 i_ResetCol = i_IncCol + 1; i_ResetCol < m_nCareColumns; i_ResetCol++)
+    m_iCareState[i_ResetCol] = C_GEN_MAX;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
