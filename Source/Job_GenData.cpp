@@ -324,6 +324,15 @@ void Job_GenData::vGenerate(void)
 {
   vTrace("Generating data for %s into %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
+  
+  File xFile;
+  bool bOpened = xFile.bOpen(m_sFileName.aStr(), C_OPEN_WRITE);
+  if (! bOpened) {
+    vTrace("Unable to open file: %s\n"_Stz,m_sFileName.aStr());
+    return;
+  }
+  
+  xFile.vClose();
 }
 
 /*============================================================================*/
