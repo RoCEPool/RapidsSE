@@ -118,6 +118,7 @@ Job_GenData::Job_GenData(Interface::Session* pSession)
   for (i8 i_Col = 0; i_Col < C_MAX_COLUMNS; i_Col++) {
     m_pCareColumn[i_Col] = nullptr;
     m_iCareState[i_Col]  = 0;
+    m_iMaxState[i_Col]   = 0;
   }
 
   m_sRecord = ""_Stz;
@@ -494,7 +495,7 @@ void Job_GenData::vAddStr(i8 i_Col, i8 iState)
       return;
     default:
       NEVER_REACH;
-  }  
+  }
   
   m_sRecord.vConcat(xVal);
 }
@@ -699,7 +700,12 @@ void Job_GenData::vLoadColumns(void)
     }
     else {
       vTrace("C: %s\n"_Stz,pCol->sColumnName().aChar());
-      m_pCareColumn[m_nCareColumns++] = pCol;
+      m_pCareColumn[m_nCareColumns] = pCol;
+      if (pCol->bIsNullable())
+        m_iMaxState[m_nCareColumns] = C_GEN_NUL;
+      else
+        m_iMaxState[m_nCareColumns] = C_GEN_MAX;
+      m_nCareColumns++;
     }
   }
 }
@@ -714,8 +720,9 @@ bool Job_GenData::bNextCombination(void)
   i8 i_LastCol = m_nCareColumns - 1;
   
   i8 iState = m_iCareState[i_LastCol];
-  
-  if (iState < C_GEN_NUL) {
+  i8 iMaxState = m_iMaxState[i_LastCol];
+
+  if (iState < iMaxState) {
     m_iCareState[i_LastCol] = iState + 1;
     return true;
   }
@@ -724,7 +731,7 @@ bool Job_GenData::bNextCombination(void)
   
   i8 i_IncCol;
   for (i_IncCol = i_LastCol - 1; i_IncCol >= 0; i_IncCol--)
-    if (m_iCareState[i_IncCol] < C_GEN_NUL)
+    if (m_iCareState[i_IncCol] < m_iMaxState[i_IncCol])
       break;
   
   if (i_IncCol < 0)

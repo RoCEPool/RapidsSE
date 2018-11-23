@@ -25,7 +25,8 @@ namespace JobsModel
 
     Column* m_pCareColumn[C_MAX_COLUMNS]; // the care columns
     i8      m_iCareState[C_MAX_COLUMNS];  // the generate state of care columns
-  
+    i8      m_iMaxState[C_MAX_COLUMNS];   // the maximum state of care columns
+
     s48K    m_sRecord;  // created record
   
     // must be last

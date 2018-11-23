@@ -15,7 +15,7 @@ print "=====================================================================";
 print "creating table SensorEvents...";
 print "=====================================================================";
 create table SensorEvents (
-  se_key   INTEGER,
+  se_key   INTEGER not null,
   se_v1    VARCHAR(32)
 );
 
