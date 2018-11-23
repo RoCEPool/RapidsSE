@@ -335,6 +335,30 @@ void JobsModel::vJob_GenData_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* append value for given column                                              */
 /*----------------------------------------------------------------------------*/
+void Job_GenData::vAddBcd(i8 i_Col, i8 iState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  BcdVal xVal;
+  
+  switch (iState) {
+    case C_GEN_MIN: xVal.vMinValue();  break;
+    case C_GEN_MID: xVal.vMidValue();  break;
+    case C_GEN_MAX: xVal.vMaxValue();  break;
+    case C_GEN_NUL: xVal.vNullValue(); break;
+    default:
+      NEVER_REACH;
+  }
+  
+  s32 sWsp;
+  xVal.vToString(sWsp);
+  
+  m_sRecord.vConcat(sWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append value for given column                                              */
+/*----------------------------------------------------------------------------*/
 void Job_GenData::vAddBol(i8 i_Col, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
@@ -494,7 +518,7 @@ void Job_GenData::vAppendValue(i8 i_Col)
   switch (eColType) {
     case CT_BOOLEAN:   vAddBol(i_Col,iState); break;
     case CT_DATE:      vAddDte(i_Col,iState); break;
-    case CT_DECIMAL:   break;
+    case CT_DECIMAL:   vAddBcd(i_Col,iState); break;
     case CT_FLOAT:     vAddFlt(i_Col,iState); break;
     case CT_INTEGER:   vAddInt(i_Col,iState); break;
     case CT_INTERVAL:  vAddIvl(i_Col,iState); break;

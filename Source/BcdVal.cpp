@@ -86,6 +86,11 @@ i8 BcdVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 void BcdVal::vToString(Stz* aWorkspace)
 {
+  if (bIsNull()) {
+    aWorkspace->vConcat("null"_Stz);
+    return;
+  }
+  
   *aWorkspace = m_iBcd;
 }
 
