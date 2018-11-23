@@ -50,9 +50,9 @@ namespace JobsModel
     void   vAddFlt(i8 i_Col, i8 iState);
     void   vAddInt(i8 i_Col, i8 iState);
     void   vAddIvl(i8 i_Col, i8 iState);
+    void   vAddStr(i8 i_Col, i8 iState);
     void   vAddTme(i8 i_Col, i8 iState);
     void   vAddTsp(i8 i_Col, i8 iState);
-    void   vAddStr(i8 i_Col, i8 iState);
 
     void   vAppendValue(i8 i_Col);
     void   vCreateRecord(void);
