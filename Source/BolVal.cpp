@@ -86,7 +86,17 @@ i8 BolVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 void BolVal::vToString(Stz* aWorkspace)
 {
-  *aWorkspace = m_bBol;
+  if (bIsNull()) {
+    aWorkspace->vConcat("null"_Stz);
+    return;
+  }
+
+  if (m_bBol) {
+    aWorkspace->vConcat("true"_Stz);
+    return;
+  }
+
+  aWorkspace->vConcat("false"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
