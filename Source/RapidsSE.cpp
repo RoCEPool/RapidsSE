@@ -644,6 +644,8 @@ void RapidsSE::vStartSystem(void)
   
   Step::vAddSteps();
   
+  vAddConstants();
+
   vCallBoot();
   
   //--------------------------------------------------------------------------

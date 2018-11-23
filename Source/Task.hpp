@@ -181,9 +181,6 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
 
     void vAddBaseWords(void);
-    void vAddConstant(Stz* aName, i8 iVal);
-    void vAddConstant(Stz* aName, Stz* aValue);
-    void vAddConstants(void);
     void vAddMunged(MP_Task mpTask);
     void vAddRoutines(void);
     Word* pCompileColon(StrVal& sDefinition);
