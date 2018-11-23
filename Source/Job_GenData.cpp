@@ -346,7 +346,47 @@ void Job_GenData::vGenerate(void)
     return;
   }
   
+  vLoadColumns();
+  
   xFile.vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* load columns                                                               */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vLoadColumns(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+
+  ColumnVec* pColVec = m_pTable->pColumnVec();
+  
+  i8 nCols = pColVec->nItems();
+  
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+    Column* pCol = pColVec->pGet(i_Col);
+ 
+    if (pCol->sColumnName().bSame("hidden_column"_Stz)) {
+      vTrace("skipping: %s\n"_Stz,pCol->sColumnName().aChar());
+      continue;
+    }
+    
+    // use first character of column name to determine column kind
+    char cKind = *pCol->sColumnName().aChar();
+    
+    if ('X' == cKind) {
+      vTrace("X: %s\n"_Stz,pCol->sColumnName().aChar());
+      m_nLeadingDontCare++;
+    }
+    else
+    if ('Z' == cKind) {
+      vTrace("Z: %s\n"_Stz,pCol->sColumnName().aChar());
+      m_nTrailingDontCare++;
+    }
+    else {
+      vTrace("C: %s\n"_Stz,pCol->sColumnName().aChar());
+      m_pCareColumn[m_nCareColumns++] = pCol;
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

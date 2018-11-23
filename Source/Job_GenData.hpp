@@ -42,7 +42,7 @@ namespace JobsModel
     void vShow(void);
     
     void vGenerate(void);
-  
+    void vLoadColumns(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
 
