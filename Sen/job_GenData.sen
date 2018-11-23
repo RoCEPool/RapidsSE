@@ -12,6 +12,7 @@
   >>am <SEED_REQ>
 
   0 locals| sTableNm |
+  0 locals| pTable |
 
   job::this locals| pJob_GenData |
 
@@ -42,7 +43,11 @@
 
   //----------------------------------------------------------------------------
 
-   pJob_GenData job_genData.generate
+  // get table
+  sTableNm find execute to pTable
+  pTable pJob_GenData job_GenData.table!
+
+  pJob_GenData job_genData.generate
 
   //----------------------------------------------------------------------------
 

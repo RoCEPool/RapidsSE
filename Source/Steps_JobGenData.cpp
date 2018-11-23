@@ -12,10 +12,11 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_JobGenData(void)
 {
   vAddStep("job_genData.generate"_Stz,     &Step::vJob_GenDataGenerate);
+  vAddStep("job_genData.table!"_Stz,       &Step::vJob_GenDataTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_nodeInfo.nodeName@ -- fetch node name                                  */
+/* job_genData.generate -- generate data for a table                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_GenDataGenerate(MP_Task mpTask)
 {
@@ -30,6 +31,29 @@ void Step::vJob_GenDataGenerate(MP_Task mpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* job_genData.table! -- store table into job_genData                         */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_GenDataTableStore(MP_Task mpTask)
+{
+  ENTRY("vJob_GenDataTableStore"_Stz);
+  
+  Object* pPtrTable;
+  Object* pPtrJob_GenData;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_GenData,pPtrTable) )
+    THROW_INVALID_DSTACK("job_genData.tableStore"_Stz);
+  
+  Job_GenData* pJob_GenData = _pJob_GenData(pPtrJob_GenData);
+  
+  Table* pTable = _pTable(pPtrTable);
+  
+  pJob_GenData->vTable(pTable);
+  
+  EXIT();
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

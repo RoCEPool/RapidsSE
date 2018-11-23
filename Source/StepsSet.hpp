@@ -522,6 +522,7 @@
 
   // job genData
   static void vJob_GenDataGenerate(Tasks::MP_Task mpTask);
+  static void vJob_GenDataTableStore(Tasks::MP_Task mpTask);
 
   // job generic
   static void vJob__BegunErrorFetch(Tasks::MP_Task mpTask);

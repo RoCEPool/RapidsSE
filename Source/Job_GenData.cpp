@@ -107,6 +107,8 @@ Job_GenData::Job_GenData(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
+  m_pTable = nullptr;
+  
   _checkInitialised_(CN_JOB_GENDATA);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
@@ -322,7 +324,9 @@ void JobsModel::vJob_GenData_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vGenerate(void)
 {
-  vTrace("Generating data for %s into %s\n"_Stz,
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+ vTrace("Generating data for %s into %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
   
   File xFile;
@@ -333,6 +337,26 @@ void Job_GenData::vGenerate(void)
   }
   
   xFile.vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* Job_GenData::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table                                                                  */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  m_pTable = pTable;
 }
 
 /*============================================================================*/

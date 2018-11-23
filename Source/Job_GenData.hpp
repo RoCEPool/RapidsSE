@@ -10,7 +10,8 @@ namespace JobsModel
                       public JobFileName
   {
   public:
-  
+    Table*  m_pTable;  // table having data generate
+
     // must be last
     Footer m_xFooter;
   
@@ -28,6 +29,9 @@ namespace JobsModel
     void vShow(void);
     
     void vGenerate(void);
+  
+    Table* pTable(void);
+    void   vTable(Table* pTable);
 
   public:
     Footer* aFooter(void);
