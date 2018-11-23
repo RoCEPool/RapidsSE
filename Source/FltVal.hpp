@@ -21,7 +21,7 @@ namespace Values
     d8 dFlt(void) const;
     d8* aFlt(void);
   
-    //void vToString(Stz* aWorkspace);
+    void vToString(Stz* aWorkspace);
   
     void vMaxValue(void);
     void vMidValue(void);

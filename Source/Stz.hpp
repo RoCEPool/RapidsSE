@@ -19,6 +19,7 @@ namespace Base
 
     ~Stz(void) noexcept(false);
     
+    void operator =(d8);
     void operator =(i8);
     void operator =(Stz*);
     void operator =(void*);

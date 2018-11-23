@@ -182,6 +182,7 @@ namespace Base
     static i8    iToI8(const char* s);
     static void  vToLower(char* s);
     static char* wToPointer(void* pArg, char* w);
+    static char* wToString(d8 dArg, char* w);
     static char* wToString(i8 iArg, char* w);
     
     static char* zTerminator(char* s);

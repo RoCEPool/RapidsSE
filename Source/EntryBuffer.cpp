@@ -1253,7 +1253,7 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
   
   s256 sHigherBuffer;
   if (m_pHigherBuffer)
-    StrLib::wToString(((EntryBuffer*)m_pHigherBuffer)->m_iBufferLevel,
+    StrLib::wToString((i8)((EntryBuffer*)m_pHigherBuffer)->m_iBufferLevel,
                       sHigherBuffer.aChar());
   else
     sHigherBuffer = "..."_Stz;

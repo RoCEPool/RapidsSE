@@ -2630,6 +2630,20 @@ char* StrLib::wToPointer(void* pArg, char* wArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* wToString: convert given float into its char/str form                      */
+/*----------------------------------------------------------------------------*/
+char* StrLib::wToString(d8 d, char* w)
+{
+  char xWsp[32];
+  
+  snprintf(xWsp,sizeof(xWsp),"%g",d);
+  
+  vAppendString(&w,xWsp);
+  
+  return w;
+}
+
+/*----------------------------------------------------------------------------*/
 /* wToString: convert given integer into its char/str form                    */
 /*----------------------------------------------------------------------------*/
 char* StrLib::wToString(i8 i, char* w)

@@ -335,6 +335,30 @@ void JobsModel::vJob_GenData_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* append value for given column                                              */
 /*----------------------------------------------------------------------------*/
+void Job_GenData::vAddFlt(i8 i_Col, i8 iState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  FltVal xVal;
+  
+  switch (iState) {
+    case C_GEN_MIN: xVal.vMinValue();  break;
+    case C_GEN_MID: xVal.vMidValue();  break;
+    case C_GEN_MAX: xVal.vMaxValue();  break;
+    case C_GEN_NUL: xVal.vNullValue(); break;
+    default:
+      NEVER_REACH;
+  }
+  
+  s32 sWsp;
+  xVal.vToString(sWsp);
+  
+  m_sRecord.vConcat(sWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append value for given column                                              */
+/*----------------------------------------------------------------------------*/
 void Job_GenData::vAddInt(i8 i_Col, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
@@ -375,7 +399,7 @@ void Job_GenData::vAppendValue(i8 i_Col)
     case CT_BOOLEAN:   break;
     case CT_DATE:      break;
     case CT_DECIMAL:   break;
-    case CT_FLOAT:     break;
+    case CT_FLOAT:     vAddFlt(i_Col,iState); break;
     case CT_INTEGER:   vAddInt(i_Col,iState); break;
     case CT_INTERVAL:  break;
     case CT_TIME:      break;
