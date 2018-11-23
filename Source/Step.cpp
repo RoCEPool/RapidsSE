@@ -13,7 +13,13 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 void Step::vAddStep(Stz* aName, TaskStep pStep, bool bImmediate)
 {
-  Task::vAddStep(aName,pStep,bImmediate);
+  Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
+  
+  //m_pCompiler->m_pCurrentWord = pNewWord;
+  
+  pNewWord->vWordType(WT_PRIMITIVE);
+  pNewWord->vEntryStep(pStep);
+  pNewWord->vImmediate(bImmediate);
 }
 
 /*----------------------------------------------------------------------------*/

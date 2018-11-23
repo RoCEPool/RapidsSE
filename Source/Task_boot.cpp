@@ -641,22 +641,6 @@ void Task::vAddConstants(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add primitive word into main dictionary                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vAddStep(Stz* aName, TaskStep pStep, bool bImmediate)
-{
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
-  
-  //m_pCompiler->m_pCurrentWord = pNewWord;
-  
-  pNewWord->vWordType(WT_PRIMITIVE);
-  pNewWord->vEntryStep(pStep);
-  pNewWord->vImmediate(bImmediate);
-}
-
-/*----------------------------------------------------------------------------*/
 /* add initial set of axiomatic routines into dictionary (min set to boot)    */
 /*----------------------------------------------------------------------------*/
 void Task::vAddRoutines(void)
