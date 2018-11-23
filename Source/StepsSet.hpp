@@ -507,6 +507,22 @@
   // job CreateIndex
   static void vJob_CreateIndexIsUniqueFetch(Tasks::MP_Task mpTask);
 
+  // job FetchRows
+  static void vJob_FetchRowsLastBuffersStore(Tasks::MP_Task mpTask);
+  static void vJob_FetchRowsPartitionFetch(Tasks::MP_Task mpTask);
+  static void vJob_FetchRowsPlannerStore(Tasks::MP_Task mpTask);
+  static void vJob_FetchRowsSpawnSub(Tasks::MP_Task mpTask);
+  static void vJob_FetchRowsTableStore(Tasks::MP_Task mpTask);
+  static void vJob_FetchRowsWhereFetch(Tasks::MP_Task mpTask);
+
+  static void vJob_SubFetchBufferQueueFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubFetchPhraseFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubFetchPlannerFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubFetchSlotFetch(Tasks::MP_Task mpTask);
+
+  // job genData
+  static void vJob_GenDataGenerate(Tasks::MP_Task mpTask);
+
   // job generic
   static void vJob__BegunErrorFetch(Tasks::MP_Task mpTask);
   static void vJob__BegunErrorStore(Tasks::MP_Task mpTask);
@@ -522,19 +538,6 @@
   static void vJob__ExecutedRowsProcessedStore(Tasks::MP_Task mpTask);
   static void vJob__ExecutedRowsSkippedFetch(Tasks::MP_Task mpTask);
   static void vJob__ExecutedRowsSkippedStore(Tasks::MP_Task mpTask);
-
-  // job FetchRows
-  static void vJob_FetchRowsLastBuffersStore(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsPartitionFetch(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsPlannerStore(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsSpawnSub(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsTableStore(Tasks::MP_Task mpTask);
-  static void vJob_FetchRowsWhereFetch(Tasks::MP_Task mpTask);
-
-  static void vJob_SubFetchBufferQueueFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubFetchPhraseFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubFetchPlannerFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubFetchSlotFetch(Tasks::MP_Task mpTask);
 
   // job insertRow
   static void vJob_EndInsertInsertRowJobFetch(Tasks::MP_Task mpTask);
