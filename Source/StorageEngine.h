@@ -13,10 +13,6 @@ namespace StorageEngine
   void vCheckAllAssumptions(void);
   void vCheckAssumptions(void);
   void vSetSignalHandlers(void);
-  
-  void vAddConstant(Stz* aName, i8 iVal);
-  void vAddConstant(Stz* aName, Stz* aValue);
-  void vAddConstants(void);
 }
 
 using namespace StorageEngine;

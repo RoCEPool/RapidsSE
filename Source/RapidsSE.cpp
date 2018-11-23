@@ -644,7 +644,7 @@ void RapidsSE::vStartSystem(void)
   
   Step::vAddSteps();
   
-  vAddConstants();
+  Axioms::vAddConstants();
 
   vCallBoot();
   

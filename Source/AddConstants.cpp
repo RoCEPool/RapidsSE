@@ -10,7 +10,7 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
-void StorageEngine::vAddConstant(Stz* aName, i8 iVal)
+void Axioms::vAddConstant(Stz* aName, i8 iVal)
 {
   Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
   
@@ -24,7 +24,7 @@ void StorageEngine::vAddConstant(Stz* aName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
-void StorageEngine::vAddConstant(Stz* aName, Stz* aValue)
+void Axioms::vAddConstant(Stz* aName, Stz* aValue)
 {
   Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
   
@@ -38,7 +38,7 @@ void StorageEngine::vAddConstant(Stz* aName, Stz* aValue)
 /*----------------------------------------------------------------------------*/
 /* add constants                                                              */
 /*----------------------------------------------------------------------------*/
-void StorageEngine::vAddConstants(void)
+void Axioms::vAddConstants(void)
 {
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
