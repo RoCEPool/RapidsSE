@@ -76,6 +76,11 @@ i8 FltVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 void FltVal::vToString(Stz* aWorkspace)
 {
+  if (bIsNull()) {
+    aWorkspace->vConcat("null"_Stz);
+    return;
+  }
+  
   *aWorkspace = m_dFlt;
 }
 

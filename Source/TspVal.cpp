@@ -82,10 +82,24 @@ i8* TspVal::aInt(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-//void TspVal::vToString(Stz* aWorkspace)
-//{
-//  *aWorkspace = m_iTsp;
-//}
+void TspVal::vToString(Stz* aWorkspace)
+{
+  if (bIsNull()) {
+    aWorkspace->vConcat("null"_Stz);
+    return;
+  }
+
+  StrLib::vSprint(aWorkspace,
+                  "%ll04d-%ll02d-%ll02d %ll02d:%ll02d:%ll02d.%lld"_Stz,
+                  (i8)x.m_uYear,
+                  (i8)x.m_uMonth,
+                  (i8)x.m_uDay,
+                  (i8)x.m_uHour,
+                  (i8)x.m_uMinute,
+                  (i8)x.m_uSecond,
+                  (i8)x.m_uMicro
+                  );
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
