@@ -16,6 +16,7 @@ namespace JobsModel
   {
   public:
     Table*  m_pTable;  // table having data generate
+    File    m_xFile;   // file being generated
   
     bool    m_bIsSchemaTest;     // is a schema test generated file?
     i8      m_nLeadingDontCare;  // number of leading dont care columns
@@ -24,6 +25,8 @@ namespace JobsModel
 
     Column* m_pCareColumn[C_MAX_COLUMNS]; // the care columns
     i8      m_iCareState[C_MAX_COLUMNS];  // the generate state of care columns
+  
+    s48K    m_sRecord;  // created record
   
     // must be last
     Footer m_xFooter;
@@ -41,10 +44,13 @@ namespace JobsModel
   public:
     void vShow(void);
     
+    void vCreateRecord(void);
     void vGenerate(void);
+    void vIterateMatrix(void);
     void vLoadColumns(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
+    void vWriteRecord(void);
 
   public:
     Footer* aFooter(void);

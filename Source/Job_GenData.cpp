@@ -108,6 +108,7 @@ Job_GenData::Job_GenData(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
   m_pTable = nullptr;
+  //m_xFile
   
   m_bIsSchemaTest     = false;
   m_nLeadingDontCare  = 0;
@@ -119,6 +120,8 @@ Job_GenData::Job_GenData(Interface::Session* pSession)
     m_iCareState[i_Col]  = 0;
   }
 
+  m_sRecord = ""_Stz;
+  
   _checkInitialised_(CN_JOB_GENDATA);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
@@ -330,7 +333,15 @@ void JobsModel::vJob_GenData_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* show job function                                                          */
+/* create record                                                              */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vCreateRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate data for table                                                    */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vGenerate(void)
 {
@@ -339,8 +350,7 @@ void Job_GenData::vGenerate(void)
  vTrace("Generating data for %s into %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
   
-  File xFile;
-  bool bOpened = xFile.bOpen(m_sFileName.aStr(), C_OPEN_WRITE);
+  bool bOpened = m_xFile.bOpen(m_sFileName.aStr(), C_OPEN_WRITE);
   if (! bOpened) {
     vTrace("Unable to open file: %s\n"_Stz,m_sFileName.aStr());
     return;
@@ -348,7 +358,20 @@ void Job_GenData::vGenerate(void)
   
   vLoadColumns();
   
-  xFile.vClose();
+  m_xFile.vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate column x value                                                     */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vIterateMatrix(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  // load initial state of matrix
+  
+  // iterate thru all possibilities
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -407,6 +430,16 @@ void Job_GenData::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
   m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* write record                                                               */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vWriteRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  m_xFile.vPrint("%s\n"_Stz,m_sRecord.aChar());
 }
 
 /*============================================================================*/
