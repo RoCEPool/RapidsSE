@@ -83,10 +83,19 @@ i8* IvlVal::aInt(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-//void IvlVal::vToString(Stz* aWorkspace)
-//{
-//  *aWorkspace = m_iIvl;
-//}
+void IvlVal::vToString(Stz* aWorkspace)
+{
+  if (bIsNull()) {
+    aWorkspace->vConcat("null"_Stz);
+    return;
+  }
+
+  StrLib::vSprint(aWorkspace,
+                  "%lld.%lld"_Stz,
+                  (i8)x.m_uSecond,
+                  (i8)x.m_uMilli
+                  );
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
