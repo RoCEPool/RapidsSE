@@ -45,17 +45,20 @@ namespace JobsModel
   public:
     void   vShow(void);
   
-    void   vAddBcd(i8 i_Col, i8 iState);
-    void   vAddBol(i8 i_Col, i8 iState);
-    void   vAddDte(i8 i_Col, i8 iState);
-    void   vAddFlt(i8 i_Col, i8 iState);
-    void   vAddInt(i8 i_Col, i8 iState);
-    void   vAddIvl(i8 i_Col, i8 iState);
-    void   vAddStr(i8 i_Col, i8 iState);
-    void   vAddTme(i8 i_Col, i8 iState);
-    void   vAddTsp(i8 i_Col, i8 iState);
+    void   vAddBcd(Column* pColumn, i8 iState);
+    void   vAddBol(Column* pColumn, i8 iState);
+    void   vAddDte(Column* pColumn, i8 iState);
+    void   vAddFlt(Column* pColumn, i8 iState);
+    void   vAddInt(Column* pColumn, i8 iState);
+    void   vAddIvl(Column* pColumn, i8 iState);
+    void   vAddStr(Column* pColumn, i8 iState);
+    void   vAddTme(Column* pColumn, i8 iState);
+    void   vAddTsp(Column* pColumn, i8 iState);
 
-    void   vAppendValue(i8 i_Col);
+    void   vAppendCare(i8 i_Col);
+    void   vAppendLeads(void);
+    void   vAppendTails(void);
+    void   vAppendValue(Column* pColumn, i8 iState);
     void   vCreateRecord(void);
     void   vDumpCombination(void);
     void   vFirstCombination(void);

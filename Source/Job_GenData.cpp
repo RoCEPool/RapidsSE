@@ -336,7 +336,7 @@ void JobsModel::vJob_GenData_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* append value for given column                                              */
 /*----------------------------------------------------------------------------*/
-void Job_GenData::vAddBcd(i8 i_Col, i8 iState)
+void Job_GenData::vAddBcd(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
@@ -360,7 +360,7 @@ void Job_GenData::vAddBcd(i8 i_Col, i8 iState)
 /*----------------------------------------------------------------------------*/
 /* append value for given column                                              */
 /*----------------------------------------------------------------------------*/
-void Job_GenData::vAddBol(i8 i_Col, i8 iState)
+void Job_GenData::vAddBol(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
@@ -384,7 +384,7 @@ void Job_GenData::vAddBol(i8 i_Col, i8 iState)
 /*----------------------------------------------------------------------------*/
 /* append value for given column                                              */
 /*----------------------------------------------------------------------------*/
-void Job_GenData::vAddDte(i8 i_Col, i8 iState)
+void Job_GenData::vAddDte(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
@@ -408,7 +408,7 @@ void Job_GenData::vAddDte(i8 i_Col, i8 iState)
 /*----------------------------------------------------------------------------*/
 /* append value for given column                                              */
 /*----------------------------------------------------------------------------*/
-void Job_GenData::vAddFlt(i8 i_Col, i8 iState)
+void Job_GenData::vAddFlt(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
@@ -432,7 +432,7 @@ void Job_GenData::vAddFlt(i8 i_Col, i8 iState)
 /*----------------------------------------------------------------------------*/
 /* append value for given column                                              */
 /*----------------------------------------------------------------------------*/
-void Job_GenData::vAddInt(i8 i_Col, i8 iState)
+void Job_GenData::vAddInt(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
@@ -456,7 +456,7 @@ void Job_GenData::vAddInt(i8 i_Col, i8 iState)
 /*----------------------------------------------------------------------------*/
 /* append value for given column                                              */
 /*----------------------------------------------------------------------------*/
-void Job_GenData::vAddIvl(i8 i_Col, i8 iState)
+void Job_GenData::vAddIvl(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
@@ -480,7 +480,7 @@ void Job_GenData::vAddIvl(i8 i_Col, i8 iState)
 /*----------------------------------------------------------------------------*/
 /* append value for given column                                              */
 /*----------------------------------------------------------------------------*/
-void Job_GenData::vAddStr(i8 i_Col, i8 iState)
+void Job_GenData::vAddStr(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
@@ -503,7 +503,7 @@ void Job_GenData::vAddStr(i8 i_Col, i8 iState)
 /*----------------------------------------------------------------------------*/
 /* append value for given column                                              */
 /*----------------------------------------------------------------------------*/
-void Job_GenData::vAddTme(i8 i_Col, i8 iState)
+void Job_GenData::vAddTme(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
@@ -527,7 +527,7 @@ void Job_GenData::vAddTme(i8 i_Col, i8 iState)
 /*----------------------------------------------------------------------------*/
 /* append value for given column                                              */
 /*----------------------------------------------------------------------------*/
-void Job_GenData::vAddTsp(i8 i_Col, i8 iState)
+void Job_GenData::vAddTsp(Column* pColumn, i8 iState)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
@@ -549,31 +549,74 @@ void Job_GenData::vAddTsp(i8 i_Col, i8 iState)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value for given column                                              */
+/* append value for given care column                                         */
 /*----------------------------------------------------------------------------*/
-void Job_GenData::vAppendValue(i8 i_Col)
+void Job_GenData::vAppendCare(i8 i_CareCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  Column* pColumn = m_pCareColumn[i_CareCol];
+  i8 iState = m_iCareState[i_CareCol];
+  
+  vAppendValue(pColumn,iState);
+}
 
-  if (i_Col)
+/*----------------------------------------------------------------------------*/
+/* append leading values                                                      */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vAppendLeads(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  ColumnVec* pColVec = m_pTable->pColumnVec();
+
+  for (i8 i_Lead = 0; i_Lead < m_nLeadingDontCare; i_Lead++) {
+    Column* pColumn = pColVec->pGet(i_Lead);
+    vAppendValue(pColumn,C_GEN_MID);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append trailing values                                                     */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vAppendTails(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  ColumnVec* pColVec = m_pTable->pColumnVec();
+  i8 nCols = pColVec->nItems();
+  
+  i8 i_Start = m_nLeadingDontCare + m_nCareColumns;
+  for (i8 i_Tail = i_Start; i_Tail < nCols; i_Tail++) {
+    Column* pColumn = pColVec->pGet(i_Tail);
+    vAppendValue(pColumn,C_GEN_MID);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append value for given for given column and state                          */
+/*----------------------------------------------------------------------------*/
+void Job_GenData::vAppendValue(Column* pColumn, i8 iState)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
+  
+  eCT eColumnType = pColumn->eColumnType();
+  i8 iColumnNo = pColumn->iColumnNo();
+  
+  if (iColumnNo)
     m_sRecord.vAppend(',');
   
-  i8 iState = m_iCareState[i_Col];
-
-  Column* pColumn = m_pCareColumn[i_Col];
-  eCT eColType = pColumn->eColumnType();
-  
-  switch (eColType) {
-    case CT_BOOLEAN:   vAddBol(i_Col,iState); break;
-    case CT_DATE:      vAddDte(i_Col,iState); break;
-    case CT_DECIMAL:   vAddBcd(i_Col,iState); break;
-    case CT_FLOAT:     vAddFlt(i_Col,iState); break;
-    case CT_INTEGER:   vAddInt(i_Col,iState); break;
-    case CT_INTERVAL:  vAddIvl(i_Col,iState); break;
-    case CT_TIME:      vAddTme(i_Col,iState); break;
-    case CT_TIMESTAMP: vAddTsp(i_Col,iState); break;
-    case CT_VARCHAR:   vAddStr(i_Col,iState); break;
-
+  switch (eColumnType) {
+    case CT_BOOLEAN:   vAddBol(pColumn,iState); break;
+    case CT_DATE:      vAddDte(pColumn,iState); break;
+    case CT_DECIMAL:   vAddBcd(pColumn,iState); break;
+    case CT_FLOAT:     vAddFlt(pColumn,iState); break;
+    case CT_INTEGER:   vAddInt(pColumn,iState); break;
+    case CT_INTERVAL:  vAddIvl(pColumn,iState); break;
+    case CT_TIME:      vAddTme(pColumn,iState); break;
+    case CT_TIMESTAMP: vAddTsp(pColumn,iState); break;
+    case CT_VARCHAR:   vAddStr(pColumn,iState); break;
+      
     default:
       NEVER_REACH;
   }
@@ -588,8 +631,12 @@ void Job_GenData::vCreateRecord(void)
   
   m_sRecord = ""_Stz;
   
-  for (i8 i_Col = 0; i_Col < m_nCareColumns; i_Col++)
-    vAppendValue(i_Col);
+  vAppendLeads();
+  
+  for (i8 i_CareCol = 0; i_CareCol < m_nCareColumns; i_CareCol++)
+    vAppendCare(i_CareCol);
+  
+  vAppendTails();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -599,9 +646,9 @@ void Job_GenData::vDumpCombination(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
-  for (i8 i_Col = 0; i_Col < m_nCareColumns; i_Col++) {
+  for (i8 i_CareCol = 0; i_CareCol < m_nCareColumns; i_CareCol++) {
     
-    i8 iState = m_iCareState[i_Col];
+    i8 iState = m_iCareState[i_CareCol];
     
     switch (iState) {
       case C_GEN_MIN: vTrace("Min "_Stz); break;
@@ -679,29 +726,29 @@ void Job_GenData::vLoadColumns(void)
   i8 nCols = pColVec->nItems();
   
   for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    Column* pCol = pColVec->pGet(i_Col);
+    Column* pColumn = pColVec->pGet(i_Col);
  
-    if (pCol->sColumnName().bSame("hidden_column"_Stz)) {
-      vTrace("skipping: %s\n"_Stz,pCol->sColumnName().aChar());
+    if (pColumn->sColumnName().bSame("hidden_column"_Stz)) {
+      vTrace("skipping: %s\n"_Stz,pColumn->sColumnName().aChar());
       continue;
     }
     
     // use first character of column name to determine column kind
-    char cKind = *pCol->sColumnName().aChar();
+    char cKind = *pColumn->sColumnName().aChar();
     
     if ('X' == cKind) {
-      vTrace("X: %s\n"_Stz,pCol->sColumnName().aChar());
+      vTrace("X: %s\n"_Stz,pColumn->sColumnName().aChar());
       m_nLeadingDontCare++;
     }
     else
     if ('Z' == cKind) {
-      vTrace("Z: %s\n"_Stz,pCol->sColumnName().aChar());
+      vTrace("Z: %s\n"_Stz,pColumn->sColumnName().aChar());
       m_nTrailingDontCare++;
     }
     else {
-      vTrace("C: %s\n"_Stz,pCol->sColumnName().aChar());
-      m_pCareColumn[m_nCareColumns] = pCol;
-      if (pCol->bIsNullable())
+      vTrace("C: %s\n"_Stz,pColumn->sColumnName().aChar());
+      m_pCareColumn[m_nCareColumns] = pColumn;
+      if (pColumn->bIsNullable())
         m_iMaxState[m_nCareColumns] = C_GEN_NUL;
       else
         m_iMaxState[m_nCareColumns] = C_GEN_MAX;
