@@ -55,7 +55,7 @@ namespace JobsModel
     void   vAddTme(Column* pColumn, i8 iState);
     void   vAddTsp(Column* pColumn, i8 iState);
 
-    void   vAppendCare(i8 i_Col);
+    void   vAppendCare(i8 i_CareCol);
     void   vAppendLeads(void);
     void   vAppendTails(void);
     void   vAppendValue(Column* pColumn, i8 iState);
@@ -85,7 +85,6 @@ namespace JobsModel
   void vJob_GenData_show(Job* pJob);
   
   JobClass* pJob_GenData_class(pFUN** aaFun);
-  
 }
 
 /*============================================================================*/

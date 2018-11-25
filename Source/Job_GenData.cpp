@@ -187,87 +187,87 @@ Footer* Job_GenData::aFooter(void)
 /*----------------------------------------------------------------------------*/
 Job* JobsModel::pJob_GenData_pre(Interface::Session* pSession)
 {
-  IntVal xBcd;
-  
-  xBcd.vMinValue();  vTrace("Bcd min: %lld\n"_Stz,xBcd.iAsI8());
-  xBcd.vMidValue();  vTrace("Bcd mid: %lld\n"_Stz,xBcd.iAsI8());
-  xBcd.vMaxValue();  vTrace("Bcd max: %lld\n"_Stz,xBcd.iAsI8());
-  xBcd.vNullValue(); vTrace("Bcd nul: %lld\n"_Stz,xBcd.iAsI8());
-  
-  BolVal xBol;
-  
-  xBol.vMinValue();  vTrace("Bol min: %lld\n"_Stz,xBol.iAsI8());
-  xBol.vMidValue();  vTrace("Bol mid: %lld\n"_Stz,xBol.iAsI8());
-  xBol.vMaxValue();  vTrace("Bol max: %lld\n"_Stz,xBol.iAsI8());
-  xBol.vNullValue(); vTrace("Bol nul: %lld\n"_Stz,xBol.iAsI8());
-  
-  DteVal xDte;
-  
-  xDte.vMinValue();  vTrace("Dte min: %ll04d-%ll02d-%ll02d\n"_Stz,
-                            xDte.iYear(),xDte.iMonth(),xDte.iDay());
-  xDte.vMidValue();  vTrace("Dte mid: %ll04d-%ll02d-%ll02d\n"_Stz,
-                            xDte.iYear(),xDte.iMonth(),xDte.iDay());
-  xDte.vMaxValue();  vTrace("Dte max: %ll04d-%ll02d-%ll02d\n"_Stz,
-                            xDte.iYear(),xDte.iMonth(),xDte.iDay());
-  xDte.vNullValue(); vTrace("Dte nul: %ll04d-%ll02d-%ll02d\n"_Stz,
-                            xDte.iYear(),xDte.iMonth(),xDte.iDay());
-  
-  FltVal xFlt;
-  
-  xFlt.vMinValue();  vTrace("Flt min: %f\n"_Stz,xFlt.dAsD8());
-  xFlt.vMidValue();  vTrace("Flt mid: %f\n"_Stz,xFlt.dAsD8());
-  xFlt.vMaxValue();  vTrace("Flt max: %f\n"_Stz,xFlt.dAsD8());
-  xFlt.vNullValue(); vTrace("Flt nul: %f\n"_Stz,xFlt.dAsD8());
-  
-  IntVal xInt;
-
-  xInt.vMinValue();  vTrace("Int min: %lld\n"_Stz,xInt.iAsI8());
-  xInt.vMidValue();  vTrace("Int mid: %lld\n"_Stz,xInt.iAsI8());
-  xInt.vMaxValue();  vTrace("Int max: %lld\n"_Stz,xInt.iAsI8());
-  xInt.vNullValue(); vTrace("Int nul: %lld\n"_Stz,xInt.iAsI8());
-
-  IvlVal xIvl;
-  
-  xIvl.vMinValue();  vTrace("Ivl min: %lld.%lld\n"_Stz,
-                            xIvl.iSecond(),xIvl.iMilli());
-  xIvl.vMidValue();  vTrace("Ivl mid: %lld.%lld\n"_Stz,
-                            xIvl.iSecond(),xIvl.iMilli());
-  xIvl.vMaxValue();  vTrace("Ivl max: %lld.%lld\n"_Stz,
-                            xIvl.iSecond(),xIvl.iMilli());
-  xIvl.vNullValue(); vTrace("Ivl nul: %lld.%lld\n"_Stz,
-                            xIvl.iSecond(),xIvl.iMilli());
-  
-  TmeVal xTme;
-  
-  xTme.vMinValue();  vTrace("Tme min: %ll02d:%ll02d:%ll02d\n"_Stz,
-                            xTme.iHour(),xTme.iMinute(),xTme.iSecond());
-  xTme.vMidValue();  vTrace("Tme mid: %ll02d:%ll02d:%ll02d\n"_Stz,
-                            xTme.iHour(),xTme.iMinute(),xTme.iSecond());
-  xTme.vMaxValue();  vTrace("Tme max: %ll02d:%ll02d:%ll02d\n"_Stz,
-                            xTme.iHour(),xTme.iMinute(),xTme.iSecond());
-  xTme.vNullValue(); vTrace("Tme nul: %ll02d:%ll02d:%ll02d\n"_Stz,
-                            xTme.iHour(),xTme.iMinute(),xTme.iSecond());
-  
-  TspVal xTsp;
-  
-  xTsp.vMinValue();  vTrace("Dte min: %ll04d-%ll02d-%ll02d\n"_Stz,
-                            xTsp.iYear(),xTsp.iMonth(),xTsp.iDay(),
-                            xTsp.iHour(),xTsp.iMinute(),xTsp.iSecond());
-  xTsp.vMidValue();  vTrace("Dte mid: %ll04d-%ll02d-%ll02d\n"_Stz,
-                            xTsp.iYear(),xTsp.iMonth(),xTsp.iDay(),
-                            xTsp.iHour(),xTsp.iMinute(),xTsp.iSecond());
-  xTsp.vMaxValue();  vTrace("Dte max: %ll04d-%ll02d-%ll02d\n"_Stz,
-                            xTsp.iYear(),xTsp.iMonth(),xTsp.iDay(),
-                            xTsp.iHour(),xTsp.iMinute(),xTsp.iSecond());
-  xTsp.vNullValue(); vTrace("Dte nul: %ll04d-%ll02d-%ll02d\n"_Stz,
-                            xTsp.iYear(),xTsp.iMonth(),xTsp.iDay(),
-                            xTsp.iHour(),xTsp.iMinute(),xTsp.iSecond());
-  
-  s32 xStr;
-  
-  xStr.vMinValue();  vTrace("Str min: %s\n"_Stz,xStr.aChar());
-  xStr.vMidValue();  vTrace("Str mid: %s\n"_Stz,xStr.aChar());
-  xStr.vMaxValue();  vTrace("Str max: %s\n"_Stz,xStr.aChar());
+//  IntVal xBcd;
+//
+//  xBcd.vMinValue();  vTrace("Bcd min: %lld\n"_Stz,xBcd.iAsI8());
+//  xBcd.vMidValue();  vTrace("Bcd mid: %lld\n"_Stz,xBcd.iAsI8());
+//  xBcd.vMaxValue();  vTrace("Bcd max: %lld\n"_Stz,xBcd.iAsI8());
+//  xBcd.vNullValue(); vTrace("Bcd nul: %lld\n"_Stz,xBcd.iAsI8());
+//
+//  BolVal xBol;
+//
+//  xBol.vMinValue();  vTrace("Bol min: %lld\n"_Stz,xBol.iAsI8());
+//  xBol.vMidValue();  vTrace("Bol mid: %lld\n"_Stz,xBol.iAsI8());
+//  xBol.vMaxValue();  vTrace("Bol max: %lld\n"_Stz,xBol.iAsI8());
+//  xBol.vNullValue(); vTrace("Bol nul: %lld\n"_Stz,xBol.iAsI8());
+//
+//  DteVal xDte;
+//
+//  xDte.vMinValue();  vTrace("Dte min: %ll04d-%ll02d-%ll02d\n"_Stz,
+//                            xDte.iYear(),xDte.iMonth(),xDte.iDay());
+//  xDte.vMidValue();  vTrace("Dte mid: %ll04d-%ll02d-%ll02d\n"_Stz,
+//                            xDte.iYear(),xDte.iMonth(),xDte.iDay());
+//  xDte.vMaxValue();  vTrace("Dte max: %ll04d-%ll02d-%ll02d\n"_Stz,
+//                            xDte.iYear(),xDte.iMonth(),xDte.iDay());
+//  xDte.vNullValue(); vTrace("Dte nul: %ll04d-%ll02d-%ll02d\n"_Stz,
+//                            xDte.iYear(),xDte.iMonth(),xDte.iDay());
+//
+//  FltVal xFlt;
+//
+//  xFlt.vMinValue();  vTrace("Flt min: %f\n"_Stz,xFlt.dAsD8());
+//  xFlt.vMidValue();  vTrace("Flt mid: %f\n"_Stz,xFlt.dAsD8());
+//  xFlt.vMaxValue();  vTrace("Flt max: %f\n"_Stz,xFlt.dAsD8());
+//  xFlt.vNullValue(); vTrace("Flt nul: %f\n"_Stz,xFlt.dAsD8());
+//
+//  IntVal xInt;
+//
+//  xInt.vMinValue();  vTrace("Int min: %lld\n"_Stz,xInt.iAsI8());
+//  xInt.vMidValue();  vTrace("Int mid: %lld\n"_Stz,xInt.iAsI8());
+//  xInt.vMaxValue();  vTrace("Int max: %lld\n"_Stz,xInt.iAsI8());
+//  xInt.vNullValue(); vTrace("Int nul: %lld\n"_Stz,xInt.iAsI8());
+//
+//  IvlVal xIvl;
+//
+//  xIvl.vMinValue();  vTrace("Ivl min: %lld.%lld\n"_Stz,
+//                            xIvl.iSecond(),xIvl.iMilli());
+//  xIvl.vMidValue();  vTrace("Ivl mid: %lld.%lld\n"_Stz,
+//                            xIvl.iSecond(),xIvl.iMilli());
+//  xIvl.vMaxValue();  vTrace("Ivl max: %lld.%lld\n"_Stz,
+//                            xIvl.iSecond(),xIvl.iMilli());
+//  xIvl.vNullValue(); vTrace("Ivl nul: %lld.%lld\n"_Stz,
+//                            xIvl.iSecond(),xIvl.iMilli());
+//
+//  TmeVal xTme;
+//
+//  xTme.vMinValue();  vTrace("Tme min: %ll02d:%ll02d:%ll02d\n"_Stz,
+//                            xTme.iHour(),xTme.iMinute(),xTme.iSecond());
+//  xTme.vMidValue();  vTrace("Tme mid: %ll02d:%ll02d:%ll02d\n"_Stz,
+//                            xTme.iHour(),xTme.iMinute(),xTme.iSecond());
+//  xTme.vMaxValue();  vTrace("Tme max: %ll02d:%ll02d:%ll02d\n"_Stz,
+//                            xTme.iHour(),xTme.iMinute(),xTme.iSecond());
+//  xTme.vNullValue(); vTrace("Tme nul: %ll02d:%ll02d:%ll02d\n"_Stz,
+//                            xTme.iHour(),xTme.iMinute(),xTme.iSecond());
+//
+//  TspVal xTsp;
+//
+//  xTsp.vMinValue();  vTrace("Dte min: %ll04d-%ll02d-%ll02d\n"_Stz,
+//                            xTsp.iYear(),xTsp.iMonth(),xTsp.iDay(),
+//                            xTsp.iHour(),xTsp.iMinute(),xTsp.iSecond());
+//  xTsp.vMidValue();  vTrace("Dte mid: %ll04d-%ll02d-%ll02d\n"_Stz,
+//                            xTsp.iYear(),xTsp.iMonth(),xTsp.iDay(),
+//                            xTsp.iHour(),xTsp.iMinute(),xTsp.iSecond());
+//  xTsp.vMaxValue();  vTrace("Dte max: %ll04d-%ll02d-%ll02d\n"_Stz,
+//                            xTsp.iYear(),xTsp.iMonth(),xTsp.iDay(),
+//                            xTsp.iHour(),xTsp.iMinute(),xTsp.iSecond());
+//  xTsp.vNullValue(); vTrace("Dte nul: %ll04d-%ll02d-%ll02d\n"_Stz,
+//                            xTsp.iYear(),xTsp.iMonth(),xTsp.iDay(),
+//                            xTsp.iHour(),xTsp.iMinute(),xTsp.iSecond());
+//
+//  s32 xStr;
+//
+//  xStr.vMinValue();  vTrace("Str min: %s\n"_Stz,xStr.aChar());
+//  xStr.vMidValue();  vTrace("Str mid: %s\n"_Stz,xStr.aChar());
+//  xStr.vMaxValue();  vTrace("Str max: %s\n"_Stz,xStr.aChar());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nTokens;
@@ -334,7 +334,7 @@ void JobsModel::vJob_GenData_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append value for given column                                              */
+/* add value for given bcd column                                             */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vAddBcd(Column* pColumn, i8 iState)
 {
@@ -358,7 +358,7 @@ void Job_GenData::vAddBcd(Column* pColumn, i8 iState)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value for given column                                              */
+/* add value for given bol column                                             */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vAddBol(Column* pColumn, i8 iState)
 {
@@ -382,7 +382,7 @@ void Job_GenData::vAddBol(Column* pColumn, i8 iState)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value for given column                                              */
+/* add value for given dte column                                             */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vAddDte(Column* pColumn, i8 iState)
 {
@@ -406,7 +406,7 @@ void Job_GenData::vAddDte(Column* pColumn, i8 iState)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value for given column                                              */
+/* add value for given flt column                                             */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vAddFlt(Column* pColumn, i8 iState)
 {
@@ -430,7 +430,7 @@ void Job_GenData::vAddFlt(Column* pColumn, i8 iState)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value for given column                                              */
+/* add value for given int column                                             */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vAddInt(Column* pColumn, i8 iState)
 {
@@ -454,7 +454,7 @@ void Job_GenData::vAddInt(Column* pColumn, i8 iState)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value for given column                                              */
+/* add value for given ivl column                                             */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vAddIvl(Column* pColumn, i8 iState)
 {
@@ -478,7 +478,7 @@ void Job_GenData::vAddIvl(Column* pColumn, i8 iState)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value for given column                                              */
+/* add value for given str column                                             */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vAddStr(Column* pColumn, i8 iState)
 {
@@ -501,7 +501,7 @@ void Job_GenData::vAddStr(Column* pColumn, i8 iState)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value for given column                                              */
+/* add value for given tme column                                             */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vAddTme(Column* pColumn, i8 iState)
 {
@@ -525,7 +525,7 @@ void Job_GenData::vAddTme(Column* pColumn, i8 iState)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value for given column                                              */
+/* add value for given tsp column                                             */
 /*----------------------------------------------------------------------------*/
 void Job_GenData::vAddTsp(Column* pColumn, i8 iState)
 {
@@ -708,7 +708,7 @@ void Job_GenData::vIterateCombinations(void)
   
   vFirstCombination();
   do {
-    vDumpCombination();
+    //vDumpCombination();
     vCreateRecord();
     vWriteRecord();
   } while (bNextCombination());
@@ -737,12 +737,12 @@ void Job_GenData::vLoadColumns(void)
     char cKind  = *pColumn->sColumnName().aChar();
     char cUnder = *(pColumn->sColumnName().aChar() + 1);
     
-    if ('X' == cKind && '_' == cUnder) {
+    if (('X' == cKind || 'x' == cKind) && '_' == cUnder) {
       vTrace("X: %s\n"_Stz,pColumn->sColumnName().aChar());
       m_nLeadingDontCare++;
     }
     else
-    if ('Z' == cKind && '_' == cUnder) {
+    if (('Z' == cKind || 'z' == cKind) && '_' == cUnder) {
       vTrace("Z: %s\n"_Stz,pColumn->sColumnName().aChar());
       m_nTrailingDontCare++;
     }
