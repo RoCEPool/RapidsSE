@@ -725,8 +725,8 @@ void Job_GenData::vLoadColumns(void)
   
   i8 nCols = pColVec->nItems();
   
-  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
-    Column* pColumn = pColVec->pGet(i_Col);
+  for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
+    Column* pColumn = pColVec->pGet(i_Column);
  
     if (pColumn->sColumnName().bSame("hidden_column"_Stz)) {
       vTrace("skipping: %s\n"_Stz,pColumn->sColumnName().aChar());
@@ -734,14 +734,15 @@ void Job_GenData::vLoadColumns(void)
     }
     
     // use first character of column name to determine column kind
-    char cKind = *pColumn->sColumnName().aChar();
+    char cKind  = *pColumn->sColumnName().aChar();
+    char cUnder = *(pColumn->sColumnName().aChar() + 1);
     
-    if ('X' == cKind) {
+    if ('X' == cKind && '_' == cUnder) {
       vTrace("X: %s\n"_Stz,pColumn->sColumnName().aChar());
       m_nLeadingDontCare++;
     }
     else
-    if ('Z' == cKind) {
+    if ('Z' == cKind && '_' == cUnder) {
       vTrace("Z: %s\n"_Stz,pColumn->sColumnName().aChar());
       m_nTrailingDontCare++;
     }
@@ -764,20 +765,20 @@ bool Job_GenData::bNextCombination(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENDATA,_FOOTER_);
   
-  i8 i_LastCol = m_nCareColumns - 1;
+  i8 i_LastCareCol = m_nCareColumns - 1;
   
-  i8 iState = m_iCareState[i_LastCol];
-  i8 iMaxState = m_iMaxState[i_LastCol];
+  i8 iState = m_iCareState[i_LastCareCol];
+  i8 iMaxState = m_iMaxState[i_LastCareCol];
 
   if (iState < iMaxState) {
-    m_iCareState[i_LastCol] = iState + 1;
+    m_iCareState[i_LastCareCol] = iState + 1;
     return true;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 i_IncCol;
-  for (i_IncCol = i_LastCol - 1; i_IncCol >= 0; i_IncCol--)
+  for (i_IncCol = i_LastCareCol - 1; i_IncCol >= 0; i_IncCol--)
     if (m_iCareState[i_IncCol] < m_iMaxState[i_IncCol])
       break;
   
