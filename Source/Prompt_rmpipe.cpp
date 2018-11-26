@@ -27,12 +27,12 @@ bool Prompt::bPrompt_rmpipe(SePrompt* pPrompt)
   
   TokenVec* pTokenVec = pPrompt->pTknVec();
 
-  ASSERT((*pTokenVec)[0]->bSame("mkpipe"_Stz));
+  ASSERT((*pTokenVec)[0]->bSame("rmpipe"_Stz));
   
   sPipe = (*pTokenVec)[1]->aText();
   
-  if (! xPipe.bCreate(sPipe)) {
-    vTrace("Filed to created pipe: %s\n"_Stz,sPipe.aChar());
+  if (! xPipe.bRemove(sPipe)) {
+    vTrace("Failed to remove pipe: %s\n"_Stz,sPipe.aChar());
     return false;
   }
   

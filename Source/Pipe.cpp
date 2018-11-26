@@ -81,6 +81,38 @@ bool Pipe::bCreate(Stz* sPipePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove pipe                                                                */
+/*----------------------------------------------------------------------------*/
+bool Pipe::bRemove(void)
+{
+  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  
+  m_xSysCall.vClear();
+  
+  i8 iResult = remove(m_sPipePath.aChar());
+  
+  if (iResult) {
+    m_xSysCall.vError(errno);
+    vWarn("Pipe::bRemove: remove() error; errno=%d\n"_Stz,errno);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove pipe                                                                */
+/*----------------------------------------------------------------------------*/
+bool Pipe::bRemove(Stz* sPipePath)
+{
+  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  
+  m_sPipePath = sPipePath;
+  
+  return bRemove();
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

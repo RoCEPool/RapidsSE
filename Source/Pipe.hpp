@@ -21,7 +21,10 @@ namespace System
 
     bool bCreate(void);
     bool bCreate(Stz* sPipePath);
- 
+  
+    bool bRemove(void);
+    bool bRemove(Stz* sPipePath);
+
     SysCall& rSysCall(void);
   
     Footer* aFooter(void);
