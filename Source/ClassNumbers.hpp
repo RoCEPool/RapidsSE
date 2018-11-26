@@ -191,6 +191,7 @@ enum eCN : u2 // Class Number
   /* 148 */ CN_PERFORMANCEBUFFER,
   /* 149 */ CN_PERFORMANCEENTRY,
   /* 150 */ CN_PERFORMANCETRACE,
+  /*     */ CN_PIPE,
   /* 151 */ CN_PLAN,
   /* 152 */ CN_PLANNER,
   /* 153 */ CN_PLANLIST,
@@ -446,6 +447,7 @@ static Stz* aCN[]
   /* 148 */ "PERFORMANCEBUFFER"_Stz,   // CN_PERFORMANCEBUFFER
   /* 149 */ "PERFORMANCEENTRY"_Stz,    // CN_PERFORMANCEENTRY
   /* 150 */ "PERFORMANCETRACE"_Stz,    // CN_PERFORMANCETRACE
+  /*     */ "PIPE"_Stz,                // CN_PIPE
   /* 151 */ "PLAN"_Stz,                // CN_PLAN
   /* 152 */ "PLANNER"_Stz,             // CN_PLANNER
   /* 153 */ "PLANLIST"_Stz,            // CN_PLANLIST

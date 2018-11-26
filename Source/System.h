@@ -31,6 +31,7 @@ using namespace System;
 #include "HwCounters.hpp"
 #include "Lock.hpp"
 #include "OpSys.hpp"
+#include "Pipe.hpp"
 #include "PosixThread.hpp"
 #include "Process.hpp"
 #include "Random.hpp"

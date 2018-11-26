@@ -190,6 +190,7 @@ pFINALIZE *gpFinalize[]
   /* 83 */ &Finalize::vUndefined,         // CN_PERFORMANCEBUFFER
   /* 84 */ &Finalize::vUndefined,         // CN_PERFORMANCEENTRY
   /* 85 */ &Finalize::vUndefined,         // CN_PERFORMANCETRACE
+  /*    */ &Finalize::vUndefined,         // CN_PIPE
   /* 86 */ &Finalize::vUndefined,         // CN_PLAN
   /* 87 */ &Finalize::vUndefined,         // CN_PLANNER
   /* 88 */ &Finalize::vUndefined,         // CN_PLANLIST
