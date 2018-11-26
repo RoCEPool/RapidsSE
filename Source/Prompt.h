@@ -70,6 +70,7 @@ using namespace Prompt;
 
 #include "Prompt_rassert.hpp"
 #include "Prompt_resources.hpp"
+#include "Prompt_rmpipe.hpp"
 
 #include "Prompt_se.hpp"
 #include "Prompt_shell.hpp"
