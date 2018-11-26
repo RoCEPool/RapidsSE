@@ -16,7 +16,7 @@ Pipe::Pipe(void)
 {
   _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
   
-  m_sPipePath = "<none"_Stz;
+  m_sPipePath = "<none>"_Stz;
   //m_xSysCall;
   
   _checkInitialised_(CN_PIPE);
@@ -45,7 +45,7 @@ Pipe::Pipe(Stz* sPipePath)
 /*----------------------------------------------------------------------------*/
 Pipe::~Pipe(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,6 +78,20 @@ bool Pipe::bCreate(Stz* sPipePath)
   m_sPipePath = sPipePath;
   
   return bCreate();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Pipe::aFooter(void)
+{
+  _precondition_(_MAGIC_,CN_PIPE);
+  
+  return &m_xFooter;
 }
 
 /*============================================================================*/

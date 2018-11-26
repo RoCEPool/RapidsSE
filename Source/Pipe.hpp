@@ -11,6 +11,9 @@ namespace System
     s256    m_sPipePath;   // the path of the file (relative or absolute)
     SysCall m_xSysCall;
 
+    // must be last
+    Footer m_xFooter;
+
   public:
     Pipe(void);
     Pipe(Stz* aFilePath);
@@ -20,6 +23,8 @@ namespace System
     bool bCreate(Stz* sPipePath);
  
     SysCall& rSysCall(void);
+  
+    Footer* aFooter(void);
   };
 }
 
