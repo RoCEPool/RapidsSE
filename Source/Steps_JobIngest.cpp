@@ -1,0 +1,58 @@
+/*============================================================================*/
+/* Steps_JobIngest.cpp - job_ingest step group                                */
+/*============================================================================*/
+
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_JobIngest(void)
+{
+  vAddStep("job_ingest.ingest"_Stz,     &Step::vJob_IngestIngest);
+  vAddStep("job_ingest.table!"_Stz,     &Step::vJob_IngestTableStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_ingest.ingest -- ingest data into a table                              */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_IngestIngest(MP_Task mpTask)
+{
+  ENTRY("vJob_IngestIngest"_Stz);
+  
+  Object* pPtrJobIngest;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobIngest) )
+    THROW_INVALID_DSTACK("job_ingest.ingest"_Stz);
+  Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJobIngest);
+  
+  pJob_Ingest->vIngest();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_ingest.table! -- store table into job_ingest                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_IngestTableStore(MP_Task mpTask)
+{
+  ENTRY("vJob_IngestTableStore"_Stz);
+  
+  Object* pPtrTable;
+  Object* pPtrJob_Ingest;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_Ingest,pPtrTable) )
+    THROW_INVALID_DSTACK("job_ingest.tableStore"_Stz);
+  
+  Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
+  
+  Table* pTable = _pTable(pPtrTable);
+  
+  pJob_Ingest->vTable(pTable);
+  
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

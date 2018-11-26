@@ -24,7 +24,7 @@ void Step::vJob_GenDataGenerate(MP_Task mpTask)
   
   Object* pPtrJob_GenData;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_GenData) )
-    THROW_INVALID_DSTACK("job_nethog.hogNo@"_Stz);
+    THROW_INVALID_DSTACK("job_genData.generate"_Stz);
   Job_GenData* pJob_GenData = _pJob_GenData(pPtrJob_GenData);
   
   pJob_GenData->vGenerate();
