@@ -387,7 +387,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Export),         // CN_JOB_EXPORT
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
   /*    */ sizeof(Job_GenData),        // CN_JOB_GENDATA
-  /*    */ 0,                          // CN_JOB_INGEST
+  /*    */ sizeof(Job_Ingest),         // CN_JOB_INGEST
   /*    */ sizeof(Job_InsertBuffer),   // CN_JOB_INSERTBUFFER
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
   /*    */ sizeof(Job_Lf),             // CN_JOB_LF

@@ -48,7 +48,7 @@ JobClass xJobClass_GenData =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_GenData_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_InsertBuffer_class;
+  *pNextFun = (pFUN*)pJob_Ingest_class;
   
   return &xJobClass_GenData;
 }
