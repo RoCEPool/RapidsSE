@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* job_Ingest.sen -- Ingest Job                                               */
+/*============================================================================*/
+
+" job_Ingest.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* Job_Ingest request (on command node)                                       */
+/*----------------------------------------------------------------------------*/
+: Ingest_req (  -- <R> )
+
+  >>am <SEED_REQ>
+
+  0 locals| sTableNm |
+  0 locals| pTable |
+
+  job::this locals| pJob_Ingest |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_Ingest getPath
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if pJob_Ingest <ERROR_REQUEST> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get table name from job
+  pJob_Ingest job.objectName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm checkIsTable not if popTable pJob_Ingest <ERROR_REQUEST> !!am exit then
+
+  //----------------------------------------------------------------------------
+
+  // get table
+  sTableNm find execute to pTable
+  pTable pJob_Ingest job_ingest.table!
+
+  pJob_Ingest job_ingest.ingest
+
+  //----------------------------------------------------------------------------
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  popTable
+  assertInTables
+
+  <<am <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

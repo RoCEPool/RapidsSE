@@ -44,6 +44,7 @@
 
 "job_GenData.sen" include
 
+"job_Ingest.sen" include
 "job_InsertBuffer.sen" include
 "job_InsertRow.sen" include
 
