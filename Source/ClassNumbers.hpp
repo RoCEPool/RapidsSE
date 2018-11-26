@@ -124,6 +124,7 @@ enum eCN : u2 // Class Number
   /*     */ CN_JOB_EXPORT,
   /*  91 */ CN_JOB_FETCHROWS,
   /*     */ CN_JOB_GENDATA,
+  /*     */ CN_JOB_INGEST,
   /*  92 */ CN_JOB_INSERTBUFFER,
   /*  93 */ CN_JOB_INSERTROW,
   /*  94 */ CN_JOB_LF,
@@ -380,6 +381,7 @@ static Stz* aCN[]
   /*     */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  91 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /*     */ "JOB_GENDATA"_Stz,         // CN_JOB_GENDATA
+  /*     */ "JOB_INGEST"_Stz,          // CN_JOB_INGEST
   /*  92 */ "JOB_INSERTBUFFER"_Stz,    // CN_JOB_INSERTBUFFER
   /*  93 */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
   /*  94 */ "JOB_LF"_Stz,              // CN_JOB_LF
