@@ -19,7 +19,7 @@ JobClass xJobClass_GenData =
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "genData_req"_Stz,     // the _req task seed
-  "genData_rcv"_Stz,     // the _rcv task seed
+  nullptr,               // the _rcv task seed
   nullptr,               // the _exe task seed
   nullptr,               // the _end task seed
   nullptr,               // the _can task seed
@@ -31,8 +31,8 @@ JobClass xJobClass_GenData =
   vJob_GenData_post,     // prompt post-process function
   pJob_GenData_new,      // job new function
   vJob_GenData_delete,   // job delete function
-  vJob_send,             // job pre-send function
-  vJob_recv,             // job post-receive function
+  nullptr,               // job pre-send function
+  nullptr,               // job post-receive function
   vJob_GenData_show,     // job show function
   
   // help and example
