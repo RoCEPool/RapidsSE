@@ -8,6 +8,78 @@
 
 extern ResourceTracker gxResourceTracker;
 
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Pipe::Pipe(void)
+: Object(CN_PIPE)
+{
+  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  
+  m_sPipePath = "<none"_Stz;
+  //m_xSysCall;
+  
+  _checkInitialised_(CN_PIPE);
+  
+  _postcondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Pipe::Pipe(Stz* sPipePath)
+: Object(CN_PIPE)
+{
+  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  
+  m_sPipePath = sPipePath;
+  //m_xSysCall;
+
+  _checkInitialised_(CN_PIPE);
+  
+  _postcondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Pipe::~Pipe(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* create pipe                                                                */
+/*----------------------------------------------------------------------------*/
+bool Pipe::bCreate(void)
+{
+  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  
+  m_xSysCall.vClear();
+  
+  i8 iResult = mkfifo(m_sPipePath.aChar(),0777);
+  
+  if (iResult) {
+    m_xSysCall.vError(errno);
+    vWarn("Pipe::bCreate: mkfifo() error; errno=%d"_Stz,errno);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create pipe                                                                */
+/*----------------------------------------------------------------------------*/
+bool Pipe::bCreate(Stz* sPipePath)
+{
+  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  
+  m_sPipePath = sPipePath;
+  
+  return bCreate();
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
