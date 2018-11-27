@@ -11,7 +11,7 @@ namespace JobsModel
   {
   public:
     Table*  m_pTable;  // table being ingested
-    File    m_xPipe;   // pipe being generated
+    File    m_xPipe;   // pipe being ingested
 
     // must be last
     Footer m_xFooter;
@@ -29,7 +29,11 @@ namespace JobsModel
   public:
     void vShow(void);
   
+    void   vConvertRecord(void);
     void   vIngest(void);
+    void   vIngestPipe(void);
+    void   vInsertRow(void);
+    bool   bReadRecord(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
 

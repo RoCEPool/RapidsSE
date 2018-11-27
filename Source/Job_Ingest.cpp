@@ -184,14 +184,17 @@ Job* JobsModel::pJob_Ingest_pre(Interface::Session* pSession)
   nTokens = pTknVec->nTokens();
 
   // there should be 3 tokens
-  if (nTokens != 3)
+  if (nTokens < 3)
     return pJob_Ingest;
 
   // set the table name
   pJob_Ingest->m_sObjectName = pTknVec->pGet(1)->aText();
 
   // set the file name
-  pJob_Ingest->m_sFileName = pTknVec->pGet(2)->aText();
+  if (pTknVec->pGet(2)->sText().bSame("pipe"_Stz))
+    pJob_Ingest->m_sFileName = pTknVec->pGet(3)->aText();
+  else
+    pJob_Ingest->m_sFileName = pTknVec->pGet(2)->aText();
 
   return pJob_Ingest;
 }
@@ -238,6 +241,15 @@ void JobsModel::vJob_Ingest_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* convert record into row                                                    */
+/*----------------------------------------------------------------------------*/
+void Job_Ingest::vConvertRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* ingest data for table                                                      */
 /*----------------------------------------------------------------------------*/
 void Job_Ingest::vIngest(void)
@@ -253,7 +265,41 @@ void Job_Ingest::vIngest(void)
     return;
   }
   
+  
+  
   m_xPipe.vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ingest pipe of records                                                     */
+/*----------------------------------------------------------------------------*/
+void Job_Ingest::vIngestPipe(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  
+  while (bReadRecord()) {
+    vConvertRecord();
+    vInsertRow();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert row into table                                                      */
+/*----------------------------------------------------------------------------*/
+void Job_Ingest::vInsertRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* read record from pipe                                                      */
+/*----------------------------------------------------------------------------*/
+bool Job_Ingest::bReadRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
