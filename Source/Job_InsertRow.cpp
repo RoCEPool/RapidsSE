@@ -188,26 +188,6 @@ bool Job_InsertRow::bInsertRow(Stz* aRow, i8 iRowPartition, i8 iRowLength, eEC& 
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert last rowbuffer into current table                                   */
-/*----------------------------------------------------------------------------*/
-eEC Job_InsertRow::eInsertLastBuffer(i8 iPartition)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
-  
-  //vTrace("%p inserting entries from row buffer into table..%lld.\n"_Stz, this, iPartition);
-  
-  if (! m_pWorkingBuffer[iPartition]) {
-    m_pWorkingBuffer[iPartition] = new WorkingBuffer(m_pTable, iPartition);
-    if (! m_pWorkingBuffer[iPartition]) {
-      vTrace("EntryBuffer allocation failed\n"_Stz);
-      return EC_LOW_BUFFERS;
-    }
-  }
-  
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
 bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
