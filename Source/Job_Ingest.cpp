@@ -261,7 +261,7 @@ void Job_Ingest::vIngest(void)
  vTrace("Ingesting data into %s from %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
   
-  bool bOpened = m_xPipe.bOpen(m_sFileName.aStr(), C_OPEN_WRITE);
+  bool bOpened = m_xPipe.bOpen(m_sFileName.aStr(), C_OPEN_READ);
   if (! bOpened) {
     vTrace("Unable to open pipe: %s\n"_Stz,m_sFileName.aStr());
     return;
