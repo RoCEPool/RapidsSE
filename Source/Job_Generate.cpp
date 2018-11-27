@@ -11,8 +11,8 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_GenData =
 {
-  "Job_Generate"_Stz,     // name of the job class
-  CN_JOB_GENERATE,        // class enum
+  "Job_Generate"_Stz,    // name of the job class
+  CN_JOB_GENERATE,       // class enum
   JK_LOCAL,              // job kind
   "generate data"_Stz,   // comment about the job
   "gendata"_Stz,         // the prompt command
@@ -27,13 +27,13 @@ JobClass xJobClass_GenData =
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
-  pJob_Generate_pre,      // prompt pre-process function
-  vJob_Generate_post,     // prompt post-process function
-  pJob_Generate_new,      // job new function
-  vJob_Generate_delete,   // job delete function
+  pJob_Generate_pre,     // prompt pre-process function
+  vJob_Generate_post,    // prompt post-process function
+  pJob_Generate_new,     // job new function
+  vJob_Generate_delete,  // job delete function
   nullptr,               // job pre-send function
   nullptr,               // job post-receive function
-  vJob_Generate_show,     // job show function
+  vJob_Generate_show,    // job show function
   
   // help and example
   true,
@@ -107,7 +107,8 @@ Job_Generate::Job_Generate(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  m_pTable = nullptr;
+  m_pTable     = nullptr;
+  m_bContinous = false;
   //m_xFile
   
   m_bIsSchemaTest     = false;
@@ -279,15 +280,23 @@ Job* JobsModel::pJob_Generate_pre(Interface::Session* pSession)
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();
 
-  // there should be 3 tokens
-  if (nTokens != 3)
+  // there should be 4 tokens
+  if (nTokens != 4)
     return pJob_Generate;
 
   // set the table name
   pJob_Generate->m_sObjectName = pTknVec->pGet(1)->aText();
-
+  
   // set the file name
-  pJob_Generate->m_sFileName = pTknVec->pGet(2)->aText();
+  if (pTknVec->pGet(2)->sText().bSame("file"_Stz)) {
+    pJob_Generate->m_bContinous = false;
+    pJob_Generate->m_sFileName = pTknVec->pGet(3)->aText();
+  }
+  else
+  if (pTknVec->pGet(2)->sText().bSame("pipe"_Stz)) {
+    pJob_Generate->m_bContinous = true;
+    pJob_Generate->m_sFileName = pTknVec->pGet(3)->aText();
+  }
 
   return pJob_Generate;
 }
@@ -683,7 +692,7 @@ void Job_Generate::vGenerate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
- vTrace("Generating data for %s into %s\n"_Stz,
+  vTrace("Generating data for %s into %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
   
   bool bOpened = m_xFile.bOpen(m_sFileName.aStr(), C_OPEN_WRITE);

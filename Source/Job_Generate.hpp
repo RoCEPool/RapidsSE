@@ -15,8 +15,9 @@ namespace JobsModel
                        public JobFileName
   {
   public:
-    Table*  m_pTable;  // table having data generate
-    File    m_xFile;   // file being generated
+    Table*  m_pTable;     // table having data generate
+    bool    m_bContinous; // generate continous stream?
+    File    m_xFile;      // file being generated
   
     bool    m_bIsSchemaTest;     // is a schema test generated file?
     i8      m_nLeadingDontCare;  // number of leading dont care columns
