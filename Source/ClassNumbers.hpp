@@ -85,6 +85,7 @@ enum eCN : u2 // Class Number
   /*  55 */ CN_INDEX,
   /*  56 */ CN_INDEXTREE,
   /*  57 */ CN_INDEXTREEVEC,
+  /*     */ CN_INGESTCHUNK,
   /*  58 */ CN_IDXCOLVEC,
   /*  59 */ CN_IDXVEC,
   /*  60 */ CN_INDEXLEVELS,
@@ -342,6 +343,7 @@ static Stz* aCN[]
   /*  55 */ "INDEX"_Stz,               // CN_INDEX
   /*  56 */ "INDEXTREE"_Stz,           // CN_INDEXTREE
   /*  57 */ "INDEXTREEVEC"_Stz,        // CN_INDEXTREEVEC
+  /*     */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK
   /*  58 */ "IDXCOLVEC"_Stz,           // CN_IDXCOLVEC
   /*  59 */ "IDXVEC"_Stz,              // CN_IDXVEC
   /*  60 */ "INDEXLEVELS"_Stz,         // CN_INDEXLEVELS
