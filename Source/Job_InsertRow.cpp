@@ -108,16 +108,10 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   
   m_pTable = nullptr;
-  m_iPartition = 0;
   
   // set the enclosined_by to be a '
   m_xFormatters.m_cEnclosedBy_Leading = '\'';
   m_xFormatters.m_cEnclosedBy_Trailing = '\'';
-  
-  for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
-    m_pWorkingBuffer[i_Partition] = nullptr;
-    m_nBuffersToBeInserted[i_Partition] = 0;
-  }
   
   _checkInitialised_(CN_JOB_INSERTROW);
   
@@ -151,40 +145,18 @@ void Job_InsertRow::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/* populate the job                                                           */
+/* fromat a row                                                               */
 /*----------------------------------------------------------------------------*/
-bool Job_InsertRow::bInsertRow(Stz* aRow, i8 iRowPartition, i8 iRowLength, eEC& eErrorCode)
+bool Job_InsertRow::bFormatRow(Stz* aRawData, i8 iRawLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   
-  // check for working buffer
-  if (! m_pWorkingBuffer[iRowPartition]) {
-    m_pWorkingBuffer[iRowPartition] = new WorkingBuffer(m_pTable, iRowPartition);
-    m_nBuffersToBeInserted[iRowPartition]++;
-    
-    if (! m_pWorkingBuffer[iRowPartition]) {
-      vTrace("WorkingBuffer allocation failed\n"_Stz);
-      eErrorCode = EC_LOW_BUFFERS;
-      return false;
-    }
-  }
+  bool bBlankLine;
   
-  // get tx id
-  i8 iDistTxId = -1;
+  bool bValid = Job_WriteBehind::bFormatRow(
+                  m_pTable, &m_xFormatters, aRawData, iRawLength, bBlankLine);
   
-  RowWrk xRowWrk;
-  
-  xRowWrk.vTxId(iDistTxId);
-  xRowWrk.vEmbedded((char*)aRow);
-  xRowWrk.vRowSize(iRowLength);
-  
-  // append row into working buffer
-  if (m_pWorkingBuffer[iRowPartition]->bAppendRow(xRowWrk)) {
-    return true;
-  }
-  
-  // buffer is full
-  return false;
+  return bValid;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,17 +180,6 @@ bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
   m_sObjectName = pTokenVec->pGet(2)->aText();
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new working buffer                                                */
-/*----------------------------------------------------------------------------*/
-void Job_InsertRow::vNewWorkingBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
-  
-  m_pWorkingBuffer[m_iPartition] = new WorkingBuffer(m_pTable, m_iPartition);
-  m_nBuffersToBeInserted[m_iPartition]++;
 }
 
 /*----------------------------------------------------------------------------*/

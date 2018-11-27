@@ -185,10 +185,10 @@ Job_LoadBuffer* Job_LoadBuffer::pNewJobLoadBuffer(Job_SubLoader* pJob_SubLoader,
   pJob_LoadBuffer->m_nRows = pWorkingBuffer->nWorkingRows();
 
   if (bFinal) {
-    i8 nBuffersLoadable = pJob_SubLoader->m_nBuffersLoadable[iPartition];
+    i8 nWriteBehindBuffers = pJob_SubLoader->m_nWriteBehindBuffers[iPartition];
     
-    ASSERT(C_UNKNOWN != nBuffersLoadable);
-    pJob_LoadBuffer->vBuffersFromSubLoader(nBuffersLoadable);
+    ASSERT(C_UNKNOWN != nWriteBehindBuffers);
+    pJob_LoadBuffer->vBuffersFromSubLoader(nWriteBehindBuffers);
     
     pJob_LoadBuffer->m_bEndOfBuffers = true;
   }

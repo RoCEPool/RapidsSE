@@ -36,7 +36,7 @@ Job_WriteBehind::Job_WriteBehind(void)
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pWorkingBuffer[i_Partition]   = nullptr;
-    m_nBuffersLoadable[i_Partition] = 0;
+    m_nWriteBehindBuffers[i_Partition] = 0;
   }
 }
 
@@ -85,7 +85,7 @@ void Job_WriteBehind::vHashRecord(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-bool Job_WriteBehind::bInsertRow(Table* pTable)
+bool Job_WriteBehind::bInsertRow(Table* pTable, eEC &eErrorCode)
 {
   
   // check for working buffer
@@ -96,6 +96,7 @@ bool Job_WriteBehind::bInsertRow(Table* pTable)
     
     if (! m_pWorkingBuffer[m_iPartition]) {
       vTrace("EntryBuffer allocation failed\n"_Stz);
+      eErrorCode = EC_LOW_BUFFERS;
       return false;
     }
   }
@@ -131,7 +132,7 @@ void Job_WriteBehind::vNewWorkingBuffer(Table* pTable)
   m_pWorkingBuffer[m_iPartition] =
   new WorkingBuffer(pTable,m_iPartition);
   
-  m_nBuffersLoadable[m_iPartition]++;
+  m_nWriteBehindBuffers[m_iPartition]++;
 }
 
 /*============================================================================*/

@@ -6,14 +6,12 @@
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_InsertRow : public Job
+  class Job_InsertRow : public Job,
+                        public Job_WriteBehind
   {
   public:
     Table*         m_pTable;                             // table pointer
     Formatters     m_xFormatters;                        // record formatters
-    i8             m_iPartition;                         // current partition
-    WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS];   // working buffers
-    i8             m_nBuffersToBeInserted[C_MAX_PARTITIONS]; // buffers insertable
     
     // must be last
     Footer m_xFooter;
@@ -29,8 +27,7 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
-    bool bInsertRow(Stz* pRow, i8 iLength, i8 iRowLength, eEC& eErrorCode);
-    void vNewWorkingBuffer(void);
+    bool bFormatRow(Stz* aRawData, i8 iRawLength);
     bool bPopulateJob(TokenVec* pTokenVec);
 
     void vShow(void);

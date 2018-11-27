@@ -197,7 +197,7 @@ void Step::vJob_InsertRowDanglingBuffer(MP_Task mpTask)
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pPtrInsertRow);
   
   if ( ! pJob_InsertRow->m_pWorkingBuffer[pJob_InsertRow->m_iPartition] )
-    pJob_InsertRow->vNewWorkingBuffer();
+    pJob_InsertRow->vNewWorkingBuffer(pJob_InsertRow->m_pTable);
   
   EXIT();
 }
@@ -268,9 +268,9 @@ void Step::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
   pJob_InsertBuffer->m_pCurrentBuffer = pWorkingBuffer;
   
   if (iIsFinal) {
-    i8 nBuffersToBeInserted = pJob_InsertRow->m_nBuffersToBeInserted[iPartition];
-    RASSERT(C_UNKNOWN != nBuffersToBeInserted);
-    pJob_InsertBuffer->m_nBuffersToBeInserted = nBuffersToBeInserted;
+    i8 nWriteBehindBuffers = pJob_InsertRow->m_nWriteBehindBuffers[iPartition];
+    RASSERT(C_UNKNOWN != nWriteBehindBuffers);
+    pJob_InsertBuffer->m_nBuffersToBeInserted = nWriteBehindBuffers;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

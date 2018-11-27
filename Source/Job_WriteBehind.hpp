@@ -15,7 +15,7 @@ namespace JobsModel
     i8     m_iPartition; // partition of record
     
     WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
-    i8 m_nBuffersLoadable[C_MAX_PARTITIONS]; // how many buffers are loadable
+    i8 m_nWriteBehindBuffers[C_MAX_PARTITIONS]; // how many buffers 
     
   public:
     void* operator new(size_t);
@@ -27,7 +27,7 @@ namespace JobsModel
     bool bFormatRow(Table* pTable, Formatters* pFormatters,
                     Stz* aRawData, i8 iRawLength, bool &bBlankLine);
     void vHashRecord(Table* pTable);
-    bool bInsertRow(Table* pTable);
+    bool bInsertRow(Table* pTable, eEC& eErrorCode);
     void vNewWorkingBuffer(Table* pTable);
   };
 }

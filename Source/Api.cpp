@@ -863,16 +863,18 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       return eErrorCode;
     }
     
-    s17KB s;
-    i8 iRowLength;
-    bool bBlankLine;
+    bool bValid = pJob_InsertRow->bFormatRow(sRow, iRawDataLength);
     
-    // format the record into row format
-    bool bValid = Row::bFormatRow(pJob_InsertRow->m_pTable->pColumnVec(),
-                                  &pJob_InsertRow->m_xFormatters,
-                                  sRow, iRawDataLength,
-                                  s, iRowLength, bBlankLine,
-                                  true /* allowNonPrintable */);
+//    s17KB s;
+//    i8 iRowLength;
+//    bool bBlankLine;
+//
+//    // format the record into row format
+//    bool bValid = Row::bFormatRow(pJob_InsertRow->m_pTable->pColumnVec(),
+//                                  &pJob_InsertRow->m_xFormatters,
+//                                  sRow, iRawDataLength,
+//                                  s, iRowLength, bBlankLine,
+//                                  true /* allowNonPrintable */);
     if (! bValid) {
       eEC eErrorCode = EC_INVALID_VALUE;
       TRACE_ERROR("d"_Stz, eErrorCode);
@@ -884,8 +886,8 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
 
     //vTrace("row formatted\n"_Stz);
     
-    // get the partition this row hashes to
-    i8 iRowPartition = pJob_InsertRow->m_pTable->iRowPartition(s);
+    // hash the row to a partition
+    pJob_InsertRow->vHashRecord(pJob_InsertRow->m_pTable);
     
     //vTrace("Row partition %lld\n"_Stz, iRowPartition);
     
@@ -895,7 +897,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
     while (true) {
       
       // insert row into a working buffer in job InsertRow
-      bool bResult = pJob_InsertRow->bInsertRow(s, iRowPartition, iRowLength, eErrorCode);
+      bool bResult = pJob_InsertRow->bInsertRow(pJob_InsertRow->m_pTable, eErrorCode);
 
       //vTrace("Inserted row into buffer\n"_Stz);
       
@@ -929,9 +931,10 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       
       // move the working buffer from insertRow to insertBuffer
       //vTrace("Setting workingBuffer %p in InsertBuffer job\n"_Stz, pJob_InsertRow->m_pWorkingBuffer[iRowPartition]);
-      pJob_InsertBuffer->m_iPartitionId = iRowPartition;
-      pJob_InsertBuffer->m_pCurrentBuffer = pJob_InsertRow->m_pWorkingBuffer[iRowPartition];
-      pJob_InsertRow->m_pWorkingBuffer[iRowPartition] = nullptr;
+      i8 iPartition = pJob_InsertRow->m_iPartition;
+      pJob_InsertBuffer->m_iPartitionId = iPartition;
+      pJob_InsertBuffer->m_pCurrentBuffer = pJob_InsertRow->m_pWorkingBuffer[iPartition];
+      pJob_InsertRow->m_pWorkingBuffer[iPartition] = nullptr;
       
       //vLockMutex();
       //vTrace("Spawning InsertBuffer job\n"_Stz);

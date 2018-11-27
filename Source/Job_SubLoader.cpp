@@ -263,13 +263,15 @@ bool Job_SubLoader::bProcessRecords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
+  eEC eErrorCode;
+  
   while (bFetchRecord()) {
     
     // hash the record to get m_iPartition
     vHashRecord(m_pJob_LoadTable->m_pTable);
     
     // attempt to add record into a buffer
-    bool bInserted = bInsertRow(m_pJob_LoadTable->m_pTable);
+    bool bInserted = bInsertRow(m_pJob_LoadTable->m_pTable, eErrorCode);
     
     // check if target buffer was full
     if (! bInserted) {
