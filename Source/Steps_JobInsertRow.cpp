@@ -82,7 +82,7 @@ void Step::vJob_InsertBufferInsertRows(MP_Task mpTask)
   TablePtn* pPartition = pTable->pPartition(iSlot);
   RASSERT_TYPE(pPartition,CN_TABLEPTN);
   
-  WorkingBuffer* pWorkingBuffer = pJob_InsertBuffer->m_pWorkingBuffer;
+  WorkingBuffer* pWorkingBuffer = pJob_InsertBuffer->m_pCurrentBuffer;
   RASSERT_TYPE(pWorkingBuffer,CN_WORKINGBUFFER);
   
   i8 iTxId = 0;
@@ -234,7 +234,7 @@ void Step::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
   Session* pSession = pJob_InsertRow->m_pSession;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a load buffer job
+  // create a insert buffer job
   
   //! this needs to be optimised
   JobClass* pJobClass_InsertBuffer = JobClass::pFind(CN_JOB_INSERTBUFFER);
@@ -247,7 +247,7 @@ void Step::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
   pJob_InsertBuffer->m_iEndInsertJobId = iJob_EndJobid;
   pJob_InsertBuffer->m_sObjectName = pJob_InsertRow->m_sObjectName;
   pJob_InsertBuffer->m_iPartitionId = iPartition;
-  pJob_InsertBuffer->m_pWorkingBuffer = pWorkingBuffer;
+  pJob_InsertBuffer->m_pCurrentBuffer = pWorkingBuffer;
   
   if (iIsFinal) {
     i8 nBuffersToBeInserted = pJob_InsertRow->m_nBuffersToBeInserted[iPartition];

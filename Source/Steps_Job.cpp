@@ -574,7 +574,7 @@ void Step::vJobHasWorkingBuffer(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   
-  i8 bHas = pJob->m_pWorkingBuffer ? true : false;
+  i8 bHas = pJob->m_pCurrentBuffer ? true : false;
   if (pJob->m_pJobClass->m_eClass == CN_JOB_LOADBUFFER)
     int iDebug = 1;
   
@@ -1551,7 +1551,7 @@ void Step::vJobWorkingBufferStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.WorkingBuffer!"_Stz);
   WorkingBuffer* pWorkingBuffer = _pWorkingBuffer(pWorkingBufferPtr);
 
-  pJob->m_pWorkingBuffer = pWorkingBuffer;
+  pJob->m_pCurrentBuffer = pWorkingBuffer;
   
   EXIT();
 }
@@ -1568,7 +1568,7 @@ void Step::vJobWorkingBufferFetch(MP_Task mpTask)
   THROW_INVALID_DSTACK("job.WorkingBuffer@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushObject(pJob->m_pWorkingBuffer);
+  mpTask->m_pDataStack->vPushObject(pJob->m_pCurrentBuffer);
   
   EXIT();
 }

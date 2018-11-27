@@ -6,22 +6,16 @@
 namespace JobsModel
 {
   static const i8 C_MAX_RECORD = C_16KB;
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_SubLoader : public Job
+  class Job_SubLoader : public Job,
+                        public Job_WriteBehind
   {
   public:
     Job_LoadTable* m_pJob_LoadTable;
 
     LoadChunk* m_pLoadChunk; // chunk loading buffer
     bool m_bMoreChunks; // continue while there are more chunks
-  
-    s48K m_aRecord;    // formatted row
-    i8   m_iLength;    // length of record
-    i8   m_iPartition; // partition of record
-  
-    WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
-    i8 m_nBuffersLoadable[C_MAX_PARTITIONS]; // how many buffers are loadable
 
     // must be last
     Footer m_xFooter;
@@ -44,9 +38,6 @@ namespace JobsModel
     void vEnd(void);
   
     bool bFetchRecord(void);
-    void vHashRecord(void);
-    bool bInsertRow(void);
-    void vNewWorkingBuffer(void);
     bool bProcessRecords(void);
     bool bReadChunk(void);
   

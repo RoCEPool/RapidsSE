@@ -129,8 +129,8 @@ Job_LoadBuffer::~Job_LoadBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
-  delete m_pWorkingBuffer;
-  m_pWorkingBuffer = nullptr;
+  delete m_pCurrentBuffer;
+  m_pCurrentBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,7 +181,7 @@ Job_LoadBuffer* Job_LoadBuffer::pNewJobLoadBuffer(Job_SubLoader* pJob_SubLoader,
   pJob_LoadBuffer->vJobLoadTableId(iJobLoadTableId);
   pJob_LoadBuffer->m_sObjectName = pJob_SubLoader->m_sObjectName;
   pJob_LoadBuffer->vPartition(iPartition);
-  pJob_LoadBuffer->m_pWorkingBuffer = pWorkingBuffer;
+  pJob_LoadBuffer->m_pCurrentBuffer = pWorkingBuffer;
   pJob_LoadBuffer->m_nRows = pWorkingBuffer->nWorkingRows();
 
   if (bFinal) {
@@ -229,7 +229,7 @@ bool Job_LoadBuffer::bInsertRows(void)
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   
-  if (! m_pWorkingBuffer) {
+  if (! m_pCurrentBuffer) {
     bool bAllBuffersLoaded = bInsertRows_LowMem();
     return bAllBuffersLoaded;
   }
@@ -260,14 +260,14 @@ bool Job_LoadBuffer::bInsertRows(void)
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Job_LoadBuffer %lld %lld %s\n"_Stz,
-           m_pWorkingBuffer->nWorkingRows(),
+           m_pCurrentBuffer->nWorkingRows(),
            m_nRows,
-           m_pWorkingBuffer->bIsLast() ? "IsLast" : "");
+           m_pCurrentBuffer->bIsLast() ? "IsLast" : "");
   
   i8 iTxId = 0;
   
   // insert the working buffer
-  m_pTable->vInsertEntries(iTxId, iSlot, m_pWorkingBuffer);
+  m_pTable->vInsertEntries(iTxId, iSlot, m_pCurrentBuffer);
   
   // we loaded one additional buffer from a subloader
   pPartition->vIncTotalBuffersLoaded();
@@ -442,7 +442,7 @@ void Job_LoadBuffer::vShow(void)
                 m_iJobLoadTableId,
                 m_sObjectName.aStr(),
                 m_iPartition,
-                m_pWorkingBuffer->nWorkingRows());
+                m_pCurrentBuffer->nWorkingRows());
   
   Job::vShow(sShow);
 }

@@ -155,7 +155,7 @@ void Job::vInit(void)
 
   m_iParticipantNode  = -1;
   m_xAcksRemaining.vCheckInit();
-  m_pWorkingBuffer = nullptr;
+  m_pCurrentBuffer = nullptr;
   
   m_eState = JS_RUNNING;
   

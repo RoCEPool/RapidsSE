@@ -414,7 +414,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     Job_LoadBuffer* pJob_LoadBuffer =
       static_cast<Job_LoadBuffer*>(aLowBuff);
 
-    bDiscardWorkingBuffer = pJob_LoadBuffer->m_pWorkingBuffer ? true : false;
+    bDiscardWorkingBuffer = pJob_LoadBuffer->m_pCurrentBuffer ? true : false;
 
     pJob_LoadBuffer->m_bLowMem = true;
     
@@ -425,12 +425,12 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     
     if (-1 != pJob_LoadBuffer->m_nBuffersFromSubLoader) {
       
-      pJob_LoadBuffer->m_pWorkingBuffer = nullptr;
+      pJob_LoadBuffer->m_pCurrentBuffer = nullptr;
     }
     else {
       //pJob_LoadBuffer = nullptr;
       //vTrace("Discarded Job_LoadBuffer under low mem\n"_Stz);
-      pJob_LoadBuffer->m_pWorkingBuffer = nullptr;
+      pJob_LoadBuffer->m_pCurrentBuffer = nullptr;
     }
 
     if (bDiscardWorkingBuffer) {

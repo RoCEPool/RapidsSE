@@ -32,6 +32,7 @@ using namespace JobsModel;
 #include "JobObjectName.hpp"
 #include "JobResult.hpp"
 #include "Job.hpp"
+#include "Job_WriteBehind.hpp"
 
 #include "Job__Begun.hpp"
 #include "Job__Cancel.hpp"

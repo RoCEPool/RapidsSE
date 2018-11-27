@@ -930,7 +930,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       // move the working buffer from insertRow to insertBuffer
       //vTrace("Setting workingBuffer %p in InsertBuffer job\n"_Stz, pJob_InsertRow->m_pWorkingBuffer[iRowPartition]);
       pJob_InsertBuffer->m_iPartitionId = iRowPartition;
-      pJob_InsertBuffer->m_pWorkingBuffer = pJob_InsertRow->m_pWorkingBuffer[iRowPartition];
+      pJob_InsertBuffer->m_pCurrentBuffer = pJob_InsertRow->m_pWorkingBuffer[iRowPartition];
       pJob_InsertRow->m_pWorkingBuffer[iRowPartition] = nullptr;
       
       //vLockMutex();

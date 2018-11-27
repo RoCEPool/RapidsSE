@@ -97,7 +97,7 @@ void Step::vJob_SubLoaderDanglingBuffer(MP_Task mpTask)
   //  pSubLoader->vNewWorkingBuffer();
     
   if ( ! pJob_SubLoader->m_pWorkingBuffer[pJob_SubLoader->m_iPartition] )
-    pJob_SubLoader->vNewWorkingBuffer();
+    pJob_SubLoader->vNewWorkingBuffer(pJob_SubLoader->m_pJob_LoadTable->m_pTable);
   
   EXIT();
 }
