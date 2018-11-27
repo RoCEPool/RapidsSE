@@ -213,12 +213,12 @@ bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* create a new working buffer                                                */
 /*----------------------------------------------------------------------------*/
-void Job_InsertRow::vNewWorkingBuffer(i8 iPartition)
+void Job_InsertRow::vNewWorkingBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   
-  m_pWorkingBuffer[iPartition] = new WorkingBuffer(m_pTable, iPartition);
-  m_nBuffersToBeInserted[iPartition]++;
+  m_pWorkingBuffer[m_iPartition] = new WorkingBuffer(m_pTable, m_iPartition);
+  m_nBuffersToBeInserted[m_iPartition]++;
 }
 
 /*----------------------------------------------------------------------------*/

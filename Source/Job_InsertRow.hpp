@@ -30,7 +30,7 @@ namespace JobsModel
 
   public:
     bool bInsertRow(Stz* pRow, i8 iLength, i8 iRowLength, eEC& eErrorCode);
-    void vNewWorkingBuffer(i8 iParition);
+    void vNewWorkingBuffer(void);
     bool bPopulateJob(TokenVec* pTokenVec);
 
     void vShow(void);

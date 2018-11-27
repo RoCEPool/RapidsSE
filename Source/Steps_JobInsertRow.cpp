@@ -197,7 +197,7 @@ void Step::vJob_InsertRowDanglingBuffer(MP_Task mpTask)
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pPtrInsertRow);
   
   if ( ! pJob_InsertRow->m_pWorkingBuffer[pJob_InsertRow->m_iPartition] )
-    pJob_InsertRow->vNewWorkingBuffer(pJob_InsertRow->m_iPartition);
+    pJob_InsertRow->vNewWorkingBuffer();
   
   EXIT();
 }
