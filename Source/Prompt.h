@@ -63,6 +63,7 @@ using namespace Prompt;
 #include "Prompt_opsys.hpp"
 
 #include "Prompt_plist.hpp"
+#include "Prompt_pmc.hpp"
 #include "Prompt_print.hpp"
 #include "Prompt_pwd.hpp"
 
