@@ -18,8 +18,9 @@ void Step::vAddSteps_JobInsertRow(void)
   vAddStep("job_insertBuffer.partition@"_Stz,    &Step::vJob_InsertBufferPartitionFetch);
   vAddStep("job_insertBuffer.table!"_Stz,        &Step::vJob_InsertBufferTableStore);
   
-  vAddStep("job_insertRow.table!"_Stz,           &Step::vJob_InsertRowTableStore);
   vAddStep("job_InsertRow.danglingBuffer"_Stz,   &Step::vJob_InsertRowDanglingBuffer);
+  vAddStep("job_insertRow.partition!"_Stz,       &Step::vJob_InsertRowPartitionStore);
+  vAddStep("job_insertRow.table!"_Stz,           &Step::vJob_InsertRowTableStore);
   vAddStep("job_InsertRow.SpawnInsertBuffer"_Stz,&Step::vJob_InsertRowSpawnInsertBuffer);
   
 }
@@ -195,12 +196,29 @@ void Step::vJob_InsertRowDanglingBuffer(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_InsertRow.danglingBuffer"_Stz);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pPtrInsertRow);
   
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iPartition) )
-    THROW_INVALID_DSTACK("job_InsertRow.danglingBuffer"_Stz);
+  if ( ! pJob_InsertRow->m_pWorkingBuffer[pJob_InsertRow->m_iPartition] )
+    pJob_InsertRow->vNewWorkingBuffer(pJob_InsertRow->m_iPartition);
   
-  if ( ! pJob_InsertRow->m_pWorkingBuffer[iPartition] )
-    pJob_InsertRow->vNewWorkingBuffer(iPartition);
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertRow.partition! -- store partition into job_insertRow             */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_InsertRowPartitionStore(MP_Task mpTask)
+{
+  ENTRY("vJob_InsertRowPartitionStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_InsertRow.partition!"_Stz);
+  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
+  
+  i8 iPartition;
+  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
+    THROW_INVALID_DSTACK("job_InsertRow.partition!"_Stz);
+  
+  pJob_InsertRow->m_iPartition = iPartition;
   
   EXIT();
 }

@@ -82,7 +82,7 @@ void Step::vJob_SubLoaderBegin(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_subLoader.dangingBuffer -- ensure a dangling buffer for partition      */
+/* job_subLoader.danglingBuffer -- ensure a dangling buffer for partition     */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderDanglingBuffer(MP_Task mpTask)
 {

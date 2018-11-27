@@ -553,6 +553,7 @@
   static void vJob_InsertBufferTableStore(Tasks::MP_Task mpTask);
 
   static void vJob_InsertRowDanglingBuffer(Tasks::MP_Task mpTask);
+  static void vJob_InsertRowPartitionStore(Tasks::MP_Task mpTask);
   static void vJob_InsertRowSpawnInsertBuffer(Tasks::MP_Task mpTask);
   static void vJob_InsertRowTableStore(Tasks::MP_Task mpTask);
 

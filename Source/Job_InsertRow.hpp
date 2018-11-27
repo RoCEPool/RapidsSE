@@ -11,6 +11,7 @@ namespace JobsModel
   public:
     Table*         m_pTable;                             // table pointer
     Formatters     m_xFormatters;                        // record formatters
+    i8             m_iPartition;                         // current partition
     WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS];   // working buffers
     i8             m_nBuffersToBeInserted[C_MAX_PARTITIONS]; // buffers insertable
     

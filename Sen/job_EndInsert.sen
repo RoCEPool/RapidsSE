@@ -41,8 +41,11 @@
 
     //I "LAST BUFFER for partition %v" fmt.print
 
+    // set the partition in the Job_InsertRow
+    I pJob_InsertRow job_InsertRow.partition!
+
     // ensure there's a dangling buffer for partition I
-    I pJob_InsertRow job_InsertRow.danglingBuffer
+    pJob_InsertRow job_InsertRow.danglingBuffer
 
     // send last buffer to node
     I pJob_EndInsert job.Id@ pJob_InsertRow EndInsert_sendBuffer

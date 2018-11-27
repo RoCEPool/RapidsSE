@@ -108,6 +108,7 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   
   m_pTable = nullptr;
+  m_iPartition = 0;
   
   // set the enclosined_by to be a '
   m_xFormatters.m_cEnclosedBy_Leading = '\'';
