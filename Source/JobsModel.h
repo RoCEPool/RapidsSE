@@ -73,7 +73,7 @@ using namespace JobsModel;
 
 #include "Job_FetchRows.hpp"
 
-#include "Job_GenData.hpp"
+#include "Job_Generate.hpp"
 
 #include "Job_Ingest.hpp"
 #include "Job_InsertRow.hpp"

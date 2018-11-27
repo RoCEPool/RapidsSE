@@ -120,7 +120,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_ENDINSERT
   /*    */ &Finalize::vUndefined,         // CN_JOB_EXPORT
   /*    */ &Finalize::vUndefined,         // CN_JOB_FETCHROWS
-  /*    */ &Finalize::vUndefined,         // CN_JOB_GENDATA
+  /*    */ &Finalize::vUndefined,         // CN_JOB_GENERATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_INGEST
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTBUFFER
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROW

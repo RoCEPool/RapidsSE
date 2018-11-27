@@ -27,7 +27,7 @@ print "";
 print "=====================================================================";
 print "generate data";
 print "=====================================================================";
-gendata SensorEvents "/tmp/SensorEvents.csv";
+generate SensorEvents "/tmp/SensorEvents.csv";
 
 print "";
 print "=====================================================================";

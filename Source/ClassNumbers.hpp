@@ -123,7 +123,7 @@ enum eCN : u2 // Class Number
   /*  90 */ CN_JOB_ENDINSERT,
   /*     */ CN_JOB_EXPORT,
   /*  91 */ CN_JOB_FETCHROWS,
-  /*     */ CN_JOB_GENDATA,
+  /*     */ CN_JOB_GENERATE,
   /*     */ CN_JOB_INGEST,
   /*  92 */ CN_JOB_INSERTBUFFER,
   /*  93 */ CN_JOB_INSERTROW,
@@ -380,7 +380,7 @@ static Stz* aCN[]
   /*  90 */ "JOB_ENDINSERT"_Stz,       // CN_JOB_ENDINSERT
   /*     */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  91 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
-  /*     */ "JOB_GENDATA"_Stz,         // CN_JOB_GENDATA
+  /*     */ "JOB_GENDATA"_Stz,         // CN_JOB_GENERATE
   /*     */ "JOB_INGEST"_Stz,          // CN_JOB_INGEST
   /*  92 */ "JOB_INSERTBUFFER"_Stz,    // CN_JOB_INSERTBUFFER
   /*  93 */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
