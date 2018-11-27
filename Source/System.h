@@ -22,6 +22,8 @@ using namespace System;
   #include "Asm.h"
 #endif
 
+#include "Pmc.h"
+
 #include "Atomic.hpp"
 
 #include "Decider.hpp"
