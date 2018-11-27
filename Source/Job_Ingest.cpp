@@ -110,6 +110,8 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   m_pTable = nullptr;
   //m_xPipe
   
+  m_xWsp.vFill(0xEF,CN_JOB_INGEST);
+
   _checkInitialised_(CN_JOB_INGEST);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);

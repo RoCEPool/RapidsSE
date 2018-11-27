@@ -132,7 +132,7 @@ void LoadMap::vFilePath(StrVal& sPath)
 //    return false;
 //  }
 //  
-//  i8 iTestSeek = m_iChunkNext + C_LOADCHUNK_LENGTH - C_LOADMAP_BLOCK;
+//  i8 iTestSeek = m_iChunkNext + C_LOAD_CHUNK - C_LOADMAP_BLOCK;
 //  
 //  if (iTestSeek > m_iChunkTell) {
 //    iTestSeek = m_iChunkTell - 1;
@@ -179,7 +179,7 @@ bool LoadMap::bFindChunk(void)
     return false;
   }
   
-  i8 iTestSeek = m_iChunkNext + C_LOADCHUNK_LENGTH - C_LOADMAP_BLOCK;
+  i8 iTestSeek = m_iChunkNext + C_LOAD_CHUNK - C_LOADMAP_BLOCK;
   
   if (iTestSeek > m_iChunkTell) {
     iTestSeek = m_iChunkTell - 1;

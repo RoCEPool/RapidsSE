@@ -5,8 +5,9 @@
 
 namespace Loader
 {
-  static const i8 C_LOADCHUNK_LENGTH = C_1M; // its 1M not 1MB (i.e. < 1MB)
+  static const i8 C_LOAD_CHUNK = C_1M; // its 1M not 1MB (i.e. < 1MB)
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class LoadChunk : public Object
   {
   private:
@@ -16,7 +17,7 @@ namespace Loader
     i8   m_iRecordBytes; // size of record
     bool m_bHaveRecord;  // record in work space?
   
-    WspFxd<C_LOADCHUNK_LENGTH> m_xWsp; // workspace
+    WspFxd<C_LOAD_CHUNK> m_xWsp; // workspace
   
     // must be last
     Footer m_xFooter;

@@ -5,6 +5,8 @@
 
 namespace JobsModel
 {
+  static const i8 C_INGEST_CHUNK = C_512KB; 
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Ingest : public Job,
                      public JobFileName
@@ -12,6 +14,8 @@ namespace JobsModel
   public:
     Table*  m_pTable;  // table being ingested
     File    m_xPipe;   // pipe being ingested
+  
+    WspFxd<C_INGEST_CHUNK> m_xWsp; // workspace
 
     // must be last
     Footer m_xFooter;

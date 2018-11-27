@@ -127,7 +127,7 @@ void Axioms::vAddConstants(void)
   vAddConstant("C_MAX_NODES"_Stz,         C_MAX_NODES);
   vAddConstant("C_MAX_PARTITIONS"_Stz,    C_MAX_PARTITIONS);
 
-  vAddConstant("C_LOADCHUNK_LENGTH"_Stz,  C_LOADCHUNK_LENGTH);
+  vAddConstant("C_LOAD_CHUNK"_Stz,  C_LOAD_CHUNK);
   vAddConstant("C_LOW_BUFFERS"_Stz,       C_LOW_BUFFERS);
   vAddConstant("C_MAX_PRECISION_BCD"_Stz, C_MAX_PRECISION_BCD);
   vAddConstant("C_MAX_COLUMNS"_Stz,       C_MAX_COLUMNS);

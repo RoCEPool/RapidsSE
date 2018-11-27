@@ -25,7 +25,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_constants(SePrompt* pPrompt)
 {
-  vTrace("  C_LOADCHUNK_LENGTH  = %lld\n"_Stz,C_LOADCHUNK_LENGTH);
+  vTrace("  C_LOAD_CHUNK  = %lld\n"_Stz,C_LOAD_CHUNK);
   vTrace("  C_LOW_BUFFERS       = %lld\n"_Stz,C_LOW_BUFFERS);
   vTrace("  C_MAX_PRECISION_BCD = %lld\n"_Stz,C_MAX_PRECISION_BCD);
   vTrace("  C_MAX_COLUMNS       = %lld\n"_Stz,C_MAX_COLUMNS);
