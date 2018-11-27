@@ -57,6 +57,23 @@ Job_WriteBehind::~Job_WriteBehind(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* insert row into working buffer                                             */
+/*----------------------------------------------------------------------------*/
+bool Job_WriteBehind::bFormatRow(Table* pTable, Formatters* pFormatters,
+                                 Stz* aRawData, i8 iRawLength, bool &bBlankLine)
+{
+  // format the raw data into a row
+  bool bValid = Row::bFormatRow(pTable->pColumnVec(),
+                           pFormatters,
+                           aRawData, iRawLength,
+                           m_aRecord.aStr(), m_iLength,
+                           bBlankLine,
+                           false /* allowNonPrintable */);
+  
+  return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
 /* hash the first field of record                                             */
 /*----------------------------------------------------------------------------*/
 void Job_WriteBehind::vHashRecord(Table* pTable)

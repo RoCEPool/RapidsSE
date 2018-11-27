@@ -24,12 +24,11 @@ namespace JobsModel
     ~Job_WriteBehind(void) noexcept(false);
     
   public:
-  
+    bool bFormatRow(Table* pTable, Formatters* pFormatters,
+                    Stz* aRawData, i8 iRawLength, bool &bBlankLine);
     void vHashRecord(Table* pTable);
     bool bInsertRow(Table* pTable);
     void vNewWorkingBuffer(Table* pTable);
-    
-  private:
   };
 }
 

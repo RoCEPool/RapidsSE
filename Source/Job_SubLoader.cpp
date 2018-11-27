@@ -242,13 +242,8 @@ bool Job_SubLoader::bFetchRecord(void)
       return false;
     }
     
-    // format the raw data into a row
-    bValid = Row::bFormatRow(pTable->pColumnVec(),
-                             pFormatters,
-                             aRawData, iLength,
-                             m_aRecord.aStr(), m_iLength,
-                             bBlankLine,
-                             false /* allowNonPrintable */);
+    bValid = bFormatRow(pTable, pFormatters, aRawData, iLength, bBlankLine);
+    
     if (bValid) {
       //m_xNode[i_Node].m_ziRowsValid.iInc();
       return bValid;
