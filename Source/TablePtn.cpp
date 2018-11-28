@@ -103,7 +103,7 @@ TablePtn::TablePtn(void)
   
   m_nSubLoadersDone  = 0;
   //m_nTotalBuffersLoadable = 0;
-  m_nTotalBuffersLoaded   = 0;
+  //m_nTotalBuffersLoaded   = 0;
   m_bLowMemLoad = false;
 
   m_nWriteBehindBuffers = 0;
@@ -170,22 +170,22 @@ bool TablePtn::bAllBuffersLoaded(void)
   i8 nSubLoadersInGrid = gpAttachMap->m_nSubLoaders;
   
 //  vTrace("m_nSubLoadersDone %lld nSubLoadersInGrid %lld\n"
-//         "m_nWriteBehindBuffers %lld m_nTotalBuffersLoaded %lld\n"_Stz,
+//         "m_nWriteBehindBuffers %lld m_nBuffersWritten %lld\n"_Stz,
 //         m_nSubLoadersDone,
 //         nSubLoadersInGrid,
 //         m_nWriteBehindBuffers,
-//         m_nTotalBuffersLoaded);
+//         m_nBuffersWritten);
   
-  if (m_nSubLoadersDone      == nSubLoadersInGrid &&
-      m_nTotalBuffersLoaded  == m_nWriteBehindBuffers) {
+  if (m_nSubLoadersDone  == nSubLoadersInGrid &&
+      m_nBuffersWritten  == m_nWriteBehindBuffers) {
  
     if (gpAttachMap->m_bVerbose)
-      vTrace("All buffers have been loaded: %lld\n"_Stz,m_nTotalBuffersLoaded);
+      vTrace("All buffers have been loaded: %lld\n"_Stz,m_nBuffersWritten);
 
     // reset for next load
-    m_nSubLoadersDone      = 0;
-    m_nTotalBuffersLoaded  = 0;
-    m_nWriteBehindBuffers  = 0;
+    m_nSubLoadersDone     = 0;
+    m_nBuffersWritten     = 0;
+    m_nWriteBehindBuffers = 0;
     m_bLowMemLoad = false;
 
     return true;
@@ -323,17 +323,6 @@ void TablePtn::vIncBuffersWritten(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* increment buffers loaded so far                                            */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vIncTotalBuffersLoaded(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  ASSERT(bIsLocked());
-  m_nTotalBuffersLoaded++;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get IndexTree                                                              */
 /*----------------------------------------------------------------------------*/
 IndexTree* TablePtn::pIndexTree(i8 iIndexNo)
@@ -434,9 +423,9 @@ void TablePtn::vResetLoad(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_nSubLoadersDone      = 0;
-  m_nWriteBehindBuffers  = 0;
-  m_nTotalBuffersLoaded  = 0;
+  m_nSubLoadersDone     = 0;
+  m_nWriteBehindBuffers = 0;
+  m_nBuffersWritten     = 0;
   m_bLowMemLoad = false;
 
 }

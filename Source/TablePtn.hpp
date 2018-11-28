@@ -19,7 +19,7 @@ namespace DBobjects
   
     i8 m_nSubLoadersDone;        // number of subloeader which have completed
     //i8 m_nTotalBuffersLoadable;  // total no of buffers to be loaded
-    i8 m_nTotalBuffersLoaded;    // total no of buffers loaded so far
+    //i8 m_nTotalBuffersLoaded;    // total no of buffers loaded so far
 
     bool m_bLowMemLoad;          // was low memory detected during this load
   
@@ -58,7 +58,6 @@ namespace DBobjects
     bool bGrabRead(void);
     bool bGrabWrite(void);
     IndexTree* pHiddenIndexTree(void);
-    void vIncTotalBuffersLoaded(void);
     void vIncBuffersWritten(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
