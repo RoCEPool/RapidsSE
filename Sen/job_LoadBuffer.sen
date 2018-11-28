@@ -37,7 +37,7 @@
   pJob_LoadBuffer iLoadJobId job::waitParticipant to pJob_LoadTable
 
   // store the load table job in this load buffer job
-  pJob_LoadTable pJob_LoadBuffer job_loadBuffer.jobLoadTable!
+  //pJob_LoadTable pJob_LoadBuffer job_loadBuffer.jobLoadTable!
 
   // get the load table task
   //pJob_LoadTable job.executingtask@ to pTask_LoadTable

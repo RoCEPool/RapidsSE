@@ -109,8 +109,6 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::Session* pSession)
   m_iJobLoadTableId = -1;
   m_iPartition = -1;
   m_nBuffersFromSubLoader = C_UNKNOWN;
-
-  m_pJob_LoadTable = nullptr;
   
   m_pTable = nullptr;
   m_bEndOfBuffers = false;
@@ -347,26 +345,6 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   //  vTrace("Buffers loaded\n"_Stz);
   
   return bAllBuffersLoaded;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the load table job                                                     */
-/*----------------------------------------------------------------------------*/
-Job_LoadTable* Job_LoadBuffer::pJobLoadTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
-  
-  return m_pJob_LoadTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the load table job                                                     */
-/*----------------------------------------------------------------------------*/
-void Job_LoadBuffer::vJobLoadTable(Job_LoadTable* pJobLoadTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
-  
-  m_pJob_LoadTable = pJobLoadTable;
 }
 
 /*----------------------------------------------------------------------------*/

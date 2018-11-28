@@ -17,7 +17,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  0 locals| iInsertJobId    |
   0 locals| pJob_EndInsert  |
   0 locals| pTask_EndInsert |
 
@@ -28,7 +27,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "WriteBuffer.insert :" .verbose
-  pJob_WriteBuffer job.show
+  //pJob_WriteBuffer job.show
 
   // get table name
   pJob_WriteBuffer job.objectName@ to sTableNm
@@ -60,34 +59,38 @@
   bAllLoaded if
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the end insert table job (participant node)
-    pJob_WriteBuffer Job_WriteBuffer.endInsertJob@ locals| iEndInsertJobId |
-    pJob_WriteBuffer iEndInsertJobId job::waitParticipant locals| pJob_EndInsert |
+    // get the parent job (participant node)
+    // parent jo can be EndInsert of LoadTable
+    pJob_WriteBuffer Job_WriteBuffer.parentJobId@ locals| iParentJobId |
+
+    // we wait till the parent job can be found in the participant job skip list
+    // there is a possiblity that the buffer arrives on a node before the parent job
+    pJob_WriteBuffer iParentJobId job::waitParticipant locals| pJob_Parent |
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // first check if the job is executing SS_SEED_EXE
     // then get the task that is executing it
     begin
-      pJob_EndInsert job.IsExecuting
+      pJob_Parent job.IsExecuting
     not while
       1 thread.sleep_ms
     repeat
 
-    pJob_EndInsert job.executingTask@ locals| pTask_EndInsert |
+    pJob_Parent job.executingTask@ locals| pTask_Parent |
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // wait for acks to be set in the endInsert task
     begin
-       pTask_EndInsert task.IsAckSet
+       pTask_Parent task.IsAckSet
     not while
        1 thread.sleep_ms
     repeat
 
-    "WriteBuffer.insert acking endInsert:" .verbose
-    pTask_EndInsert task.grabLock
-    pTask_EndInsert task.dropLock
-    pTask_EndInsert task.ack
+    "WriteBuffer.insert acking parentJob(endInsert/loadTable):" .verbose
+    pTask_Parent task.grabLock
+    pTask_Parent task.dropLock
+    pTask_Parent task.ack
 
   then
 
@@ -102,7 +105,12 @@
 
   job::this locals| pJob_WriteBuffer |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check there is enough buffers and load
+
+  // node::checkEnoughBuffers if
   pJob_WriteBuffer writeBuffer.insert
+  //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   <<am

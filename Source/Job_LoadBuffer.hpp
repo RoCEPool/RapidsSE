@@ -17,8 +17,6 @@ namespace JobsModel
     i8 m_iPartition; // which partition
     i8 m_nBuffersFromSubLoader; // number of buffers to be loadeed from sub loader
   
-    Job_LoadTable* m_pJob_LoadTable;
-  
     Table* m_pTable; // which table
 
     bool   m_bEndOfBuffers; // no more buffers  WON'T WORK RAY
@@ -50,10 +48,6 @@ namespace JobsModel
 
     i8   iJobLoadTableId(void);
     void vJobLoadTableId(i8 iJobId);
-
-    Job_LoadTable* pJobLoadTable(void);
-    void vJobLoadTable(Job_LoadTable* pJobLoadTable);
-  
 
     i8   iPartition(void);
     void vPartition(i8 iPartition);
