@@ -603,7 +603,7 @@
   static void vJob_TruncateTableSpawnSub(Tasks::MP_Task mpTask);
 
   // Job WriteBuffer
-  static void vJob_WriteBufferEndInsertJobIdFetch(Tasks::MP_Task mpTask);
+  static void vJob_WriteBufferParentJobIdFetch(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferInsertRows(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferPartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferTableStore(Tasks::MP_Task mpTask);

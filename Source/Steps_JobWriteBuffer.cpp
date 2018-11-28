@@ -11,22 +11,22 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobWriteBuffer(void)
 {
-  vAddStep("job_writeBuffer.endInsertJob@"_Stz, &Step::vJob_WriteBufferEndInsertJobIdFetch);
+  vAddStep("job_writeBuffer.parentJobId@"_Stz,  &Step::vJob_WriteBufferParentJobIdFetch);
   vAddStep("job_writeBuffer.InsertRows"_Stz,    &Step::vJob_WriteBufferInsertRows);
   vAddStep("job_writeBuffer.partition@"_Stz,    &Step::vJob_WriteBufferPartitionFetch);
   vAddStep("job_writeBuffer.table!"_Stz,        &Step::vJob_WriteBufferTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_WriteBuffer.endInsertJob@ -- fetch endInsert jobid from job            */
+/* job_WriteBuffer.parentJobId@ -- fetch parent jobid from job                */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferEndInsertJobIdFetch(MP_Task mpTask)
+void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask)
 {
-  ENTRY("vJob_WriteBufferEndInsertJobIdFetch"_Stz);
+  ENTRY("vJob_WriteBufferParentJobIdFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_WriteBuffer.endInsertJob@"_Stz);
+    THROW_INVALID_DSTACK("job_WriteBuffer.parentJobId@"_Stz);
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   i8 iInsertJobId = pJob_WriteBuffer->m_iEndInsertJobId;
