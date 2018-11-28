@@ -40,7 +40,8 @@ namespace Loader
     void  vPushBack(void);
     void  vReadChunk(void);
     void  vReadChunk(i8 iSeek, i8 nBytes);
-    
+    Stz*  aReadRecord(i8& nRecordBytes);
+
   private:
     void  vAdvanceRecordEnd(char** aSrc);
     void  vReset(void);

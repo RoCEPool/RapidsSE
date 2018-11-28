@@ -13,6 +13,8 @@ namespace JobsModel
     Table*  m_pTable;  // table being ingested
   
     IngestChunk* m_pIngestChunk; // chunk of pipe being ingested
+    Stz*         m_aRecord;      //
+    i8           m_nRecordBytes; //
   
     // must be last
     Footer m_xFooter;

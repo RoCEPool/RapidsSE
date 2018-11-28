@@ -110,6 +110,8 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   m_pTable = nullptr;
   
   m_pIngestChunk = new IngestChunk(&gpAttachMap->m_xFormatters);
+  m_aRecord = nullptr;
+  m_nRecordBytes = 0;
   
   _checkInitialised_(CN_JOB_INGEST);
   
@@ -292,6 +294,13 @@ void Job_Ingest::vInsertRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
+  s48K sRecord;
+  
+  MemLib::vCopy(sRecord.aChar(),m_aRecord,m_nRecordBytes,CN_JOB_INGEST);
+  
+  sRecord.aChar()[m_nRecordBytes] = '\0';
+  
+  vTrace(" : %s\n"_Stz,sRecord.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -301,7 +310,12 @@ bool Job_Ingest::bReadRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  return false;
+  m_aRecord = m_pIngestChunk->aReadRecord(m_nRecordBytes);
+
+  if (m_aRecord)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
