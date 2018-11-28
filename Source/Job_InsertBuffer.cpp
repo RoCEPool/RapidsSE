@@ -114,7 +114,7 @@ Job_InsertBuffer::Job_InsertBuffer(Interface::Session* pSession)
   m_pTable          = nullptr;
   m_iPartitionId    = -1;
   m_iEndInsertJobId = -1;
-  m_nBuffersToBeInserted = C_UNKNOWN;
+  m_nWriteBehindBuffers = C_UNKNOWN;
   
   _checkInitialised_(CN_JOB_INSERTBUFFER);
   

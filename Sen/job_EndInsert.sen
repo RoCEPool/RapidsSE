@@ -21,7 +21,7 @@
 : EndInsert_sendLast ( pJob_EndInsert -- )
 
   params| pJob_EndInsert  |
-  0 0 0 0 locals| pThisTask iInsertRowJobId pJob_InsertRow nBuffersToBeInserted |
+  0 0 0 locals| pThisTask iInsertRowJobId pJob_InsertRow |
 
   task::this to pThisTask
 

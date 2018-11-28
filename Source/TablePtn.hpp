@@ -23,7 +23,7 @@ namespace DBobjects
 
     bool m_bLowMemLoad;          // was low memory detected during this load
   
-    i8 m_nBuffersToBeInserted;   // buffers to be inserted
+    i8 m_nWriteBehindBuffers;   // buffers to be inserted
     i8 m_nBuffersInserted;       // buffers inserted so far
     i8 m_iEndInsertJobId;        // end insert jobid
     
@@ -47,9 +47,9 @@ namespace DBobjects
     void vAddTotalBuffersLoadable(i8 nBuffersLoadable);
     void vAddIndex(IndexTree* pIndexTree);
     bool bAllBuffersLoaded(void);
-    void vBuffersToBeInserted(i8 m_nBuffersToBeInserted);
+    void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     void vBuffersInserted(i8 m_nBuffersInserted);
-    i8   nBuffersToBeInserted(void);
+    i8   nWriteBehindBuffers(void);
     i8   nBuffersInserted(void);
     void vDropRead(void);
     void vDropWrite();

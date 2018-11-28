@@ -106,7 +106,7 @@ TablePtn::TablePtn(void)
   m_nTotalBuffersLoaded   = 0;
   m_bLowMemLoad = false;
 
-  m_nBuffersToBeInserted = 0;
+  m_nWriteBehindBuffers = 0;
   m_nBuffersInserted = 0;
   m_iEndInsertJobId = C_UNKNOWN;
   
@@ -194,10 +194,10 @@ bool TablePtn::bAllBuffersLoaded(void)
 /*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vBuffersToBeInserted(i8 nBuffersToBeInserted)
+void TablePtn::vWriteBehindBuffers(i8 nWriteBehindBuffers)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  m_nBuffersToBeInserted = nBuffersToBeInserted;
+  m_nWriteBehindBuffers = nWriteBehindBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,11 +212,11 @@ void TablePtn::vBuffersInserted(i8 nBuffersInserted)
 /*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
 /*----------------------------------------------------------------------------*/
-i8 TablePtn::nBuffersToBeInserted(void)
+i8 TablePtn::nWriteBehindBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  return m_nBuffersToBeInserted;
+  return m_nWriteBehindBuffers;
 }
 
 /*----------------------------------------------------------------------------*/

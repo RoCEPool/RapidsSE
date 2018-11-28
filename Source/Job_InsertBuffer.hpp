@@ -12,7 +12,7 @@ namespace JobsModel
     Table*         m_pTable;         // table pointer
     i8             m_iPartitionId;   // partition id
     i8             m_iEndInsertJobId;// EndInsert job id
-    i8             m_nBuffersToBeInserted; // buffers loadabale
+    i8             m_nWriteBehindBuffers; // write behind buffers
     
     // must be last
     Footer m_xFooter;
