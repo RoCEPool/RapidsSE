@@ -59,7 +59,7 @@ Job* JobsModel::_pJob(void* aAddr)
 /*----------------------------------------------------------------------------*/
 bool JobsModel::_bIsValidJob(Base::eCN eClass)
 {
-  if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WAITCLUSTER)
+  if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WRITEBUFFER)
     return true;
   else
     return false;

@@ -48,7 +48,7 @@ JobClass xJobClass_Ingest =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_Ingest_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_InsertBuffer_class;
+  *pNextFun = (pFUN*)pJob_InsertRow_class;
   
   return &xJobClass_Ingest;
 }

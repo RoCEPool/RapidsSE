@@ -126,7 +126,6 @@ enum eCN : u2 // Class Number
   /*  91 */ CN_JOB_FETCHROWS,
   /*     */ CN_JOB_GENERATE,
   /*     */ CN_JOB_INGEST,
-  /*  92 */ CN_JOB_INSERTBUFFER,
   /*  93 */ CN_JOB_INSERTROW,
   /*  94 */ CN_JOB_LF,
   /*  95 */ CN_JOB_LISTCATALOGS,
@@ -163,6 +162,7 @@ enum eCN : u2 // Class Number
   /* 124 */ CN_JOB_VERIFYINDEX,
   /* 125 */ CN_JOB_VISUALIZEINDEX,
   /* 126 */ CN_JOB_WAITCLUSTER,
+  /*     */ CN_JOB_WRITEBUFFER,
   /* 127 */ CN_JOBS,
   /* 128 */ CN_JUMBOPERSISTENT,
   /* 129 */ CN_JUMBOTRANSIENT,
@@ -384,7 +384,6 @@ static Stz* aCN[]
   /*  91 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /*     */ "JOB_GENDATA"_Stz,         // CN_JOB_GENERATE
   /*     */ "JOB_INGEST"_Stz,          // CN_JOB_INGEST
-  /*  92 */ "JOB_INSERTBUFFER"_Stz,    // CN_JOB_INSERTBUFFER
   /*  93 */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
   /*  94 */ "JOB_LF"_Stz,              // CN_JOB_LF
   /*  95 */ "JOB_LISTCATALOGS"_Stz,    // CN_JOB_LISTCATALOGS
@@ -421,6 +420,7 @@ static Stz* aCN[]
   /* 124 */ "JOB_VERIFYINDEX"_Stz,     // CN_JOB_VERIFYINDEX
   /* 125 */ "JOB_VISUALIZEINDEX"_Stz,  // CN_JOB_VISUALIZEINDEX
   /* 126 */ "JOB_WAITCLUSTER"_Stz,     // CN_JOB_WAITCLUSTER
+  /*     */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
   /* 127 */ "JOBS"_Stz,                // CN_JOBS
   /* 128 */ "JUMBOPERSISTENT"_Stz,     // CN_JUMBOPERSISTENT
   /* 129 */ "JUMBOTRANSIENT"_Stz,      // CN_JUMBOTRANSIENT

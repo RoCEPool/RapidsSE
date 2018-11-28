@@ -89,24 +89,24 @@ void Job_WriteBehind::vInsertBuffer(Interface::Session* pSession, Stz* sTableNam
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the InsertBuffer job
-  JobClass* pJobClass = JobClass::pFind(CN_JOB_INSERTBUFFER);
+  JobClass* pJobClass = JobClass::pFind(CN_JOB_WRITEBUFFER);
   ASSERT(pJobClass);
-  Job* pJobInsertBuffer = pJobClass->pPreJob(pSession);
-  Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobInsertBuffer);
+  Job* pJobWriteBuffer = pJobClass->pPreJob(pSession);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobWriteBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set table name in InsertBuffer
-  pJob_InsertBuffer->m_sObjectName = sTableName;
+  pJob_WriteBuffer->m_sObjectName = sTableName;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the working buffer to insertBuffer
-  pJob_InsertBuffer->m_iPartitionId = m_iPartition;
-  pJob_InsertBuffer->m_pCurrentBuffer = m_pWorkingBuffer[m_iPartition];
+  pJob_WriteBuffer->m_iPartitionId = m_iPartition;
+  pJob_WriteBuffer->m_pCurrentBuffer = m_pWorkingBuffer[m_iPartition];
   m_pWorkingBuffer[m_iPartition] = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the Insert buffer job
-  bool bResult = RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_RUN,pSession);
+  bool bResult = RapidsSE_bSpawnJob(pJob_WriteBuffer,SS_SEED_RUN,pSession);
   ASSERT(bResult);
 }
 

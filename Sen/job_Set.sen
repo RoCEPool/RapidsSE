@@ -45,7 +45,6 @@
 "job_GenData.sen" include
 
 "job_Ingest.sen" include
-"job_InsertBuffer.sen" include
 "job_InsertRow.sen" include
 
 "Job_Lf.sen" include
@@ -88,6 +87,7 @@
 "job_VisualizeIndex.sen" include
 
 "job_WaitCluster.sen" include
+"job_WriteBuffer.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

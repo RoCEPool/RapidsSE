@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* job_InsertBuffer.sen -- Insert Buffer Job                                  */
+/* job_WriteBuffer.sen -- Write Buffer Job                                    */
 /*============================================================================*/
 
-" job_InsertBuffer.sen" .verbose
+" job_WriteBuffer.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
 //                               on kid node                                  //
@@ -11,9 +11,9 @@
 /*----------------------------------------------------------------------------*/
 /* load buffer into table                                                     */
 /*----------------------------------------------------------------------------*/
-: InsertBuffer.insert ( pJob_InsertBuffer -- )
+: WriteBuffer.insert ( pJob_WriteBuffer -- )
 
-  params| pJob_InsertBuffer |
+  params| pJob_WriteBuffer |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -27,29 +27,29 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "InsertBuffer.insert :" .verbose
-  pJob_InsertBuffer job.show
+  "WriteBuffer.insert :" .verbose
+  pJob_WriteBuffer job.show
 
   // get table name
-  pJob_InsertBuffer job.objectName@ to sTableNm
+  pJob_WriteBuffer job.objectName@ to sTableNm
 
   // push table dictionary
-  pJob_InsertBuffer getPath dicStack.set
+  pJob_WriteBuffer getPath dicStack.set
   sTableNm pushTable assert
   //pathDump
 
   // use table name find and set target table
   sTableNm find execute locals| pTable |
-  pTable pJob_InsertBuffer Job_InsertBuffer.table!
+  pTable pJob_WriteBuffer Job_WriteBuffer.table!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // grab write lock on table partition
-  pJob_InsertBuffer Job_InsertBuffer.partition@ to i_Partition
+  pJob_WriteBuffer Job_WriteBuffer.partition@ to i_Partition
   i_Partition pTable tablePtnGrabWrite
 
   // now insert the buffer of rows
-  pJob_InsertBuffer job_InsertBuffer.insertRows to bAllLoaded
+  pJob_WriteBuffer Job_WriteBuffer.insertRows to bAllLoaded
 
   // drop write lock on table partition
   i_Partition pTable tablePtnDropWrite
@@ -61,8 +61,8 @@
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the end insert table job (participant node)
-    pJob_InsertBuffer job_insertBuffer.endInsertJob@ locals| iEndInsertJobId |
-    pJob_InsertBuffer iEndInsertJobId job::waitParticipant locals| pJob_EndInsert |
+    pJob_WriteBuffer Job_WriteBuffer.endInsertJob@ locals| iEndInsertJobId |
+    pJob_WriteBuffer iEndInsertJobId job::waitParticipant locals| pJob_EndInsert |
 
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -84,7 +84,7 @@
        1 thread.sleep_ms
     repeat
 
-    "InsertBuffer.insert acking endInsert:" .verbose
+    "WriteBuffer.insert acking endInsert:" .verbose
     pTask_EndInsert task.grabLock
     pTask_EndInsert task.dropLock
     pTask_EndInsert task.ack
@@ -96,13 +96,13 @@
 /*----------------------------------------------------------------------------*/
 /* seed on kid node                                                           */
 /*----------------------------------------------------------------------------*/
-: insertBuffer_kid ( -- )
+: writeBuffer_kid ( -- )
 
   >>am <SEED_KID>
 
-  job::this locals| pJob_InsertBuffer |
+  job::this locals| pJob_WriteBuffer |
 
-  pJob_InsertBuffer InsertBuffer.insert
+  pJob_WriteBuffer writeBuffer.insert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   <<am
@@ -118,35 +118,35 @@
 /*----------------------------------------------------------------------------*/
 /* forward this load buffer job to kid node                                   */
 /*----------------------------------------------------------------------------*/
-: InsertBuffer.forward ( pJob_InsertBuffer -- )
+: WriteBuffer.forward ( pJob_WriteBuffer -- )
 
-  params| pJob_InsertBuffer |
+  params| pJob_WriteBuffer |
 
   // which partition are we forwarding to?
-  pJob_InsertBuffer job_insertBuffer.partition@ locals| i_Partition |
+  pJob_WriteBuffer Job_WriteBuffer.partition@ locals| i_Partition |
 
   // convert i_Partition to i_ForwardNode
   i_Partition grid::toNode locals| i_ForwardNode |
 
-  //i_Partition i_ForwardNode "InsertBuffer.forward : Node %v Partition %v" fmt.print
+  //i_Partition i_ForwardNode "WriteBuffer.forward : Node %v Partition %v" fmt.print
 
   // send this job to the forward node
-  i_ForwardNode pJob_InsertBuffer job.forward
+  i_ForwardNode pJob_WriteBuffer job.forward
 ;
 
 /*----------------------------------------------------------------------------*/
 /* seed on inserting node                                                     */
 /*----------------------------------------------------------------------------*/
-: insertBuffer_run (  -- )
+: writeBuffer_run (  -- )
 
   >>am <SEED_RUN>
 
-  job::this locals| pJob_InsertBuffer  |
+  job::this locals| pJob_WriteBuffer  |
 
-  "insertBuffer_run :" .verbose
+  "pJob_WriteBuffer :" .verbose
 
   // simply forward this job to kid node
-  pJob_InsertBuffer InsertBuffer.forward
+  pJob_WriteBuffer writeBuffer.forward
 
   delete_completed_job
 

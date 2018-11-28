@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Job_InsertBuffer.hpp -- Insert Buffer Job                                  */
+/* Job_WriteBuffer.hpp -- Write Buffer Job                                    */
 /*============================================================================*/
 #pragma once
 
 namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_InsertBuffer : public Job
+  class Job_WriteBuffer : public Job
   {
   public:
     Table*         m_pTable;         // table pointer
@@ -22,8 +22,8 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_InsertBuffer(Interface::Session* pSession);
-    ~Job_InsertBuffer(void) noexcept(false);
+    Job_WriteBuffer(Interface::Session* pSession);
+    ~Job_WriteBuffer(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
@@ -36,14 +36,14 @@ namespace JobsModel
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job_InsertBuffer* _pJob_InsertBuffer(void* aAddr);
+  Job_WriteBuffer* _pJob_WriteBuffer(void* aAddr);
   
-  Job* pJob_InsertBuffer_pre(Interface::Session* pSession);
-  Job* pJob_InsertBuffer_new(Job* pArg);
-  void vJob_InsertBuffer_delete(Interface::Session* pSession, Job* pJob);
-  void vJob_InsertBuffer_show(Job* pJob);
+  Job* pJob_WriteBuffer_pre(Interface::Session* pSession);
+  Job* pJob_WriteBuffer_new(Job* pArg);
+  void vJob_WriteBuffer_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_WriteBuffer_show(Job* pJob);
   
-  JobClass* pJob_InsertBuffer_class(pFUN** aaFun);
+  JobClass* pJob_WriteBuffer_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

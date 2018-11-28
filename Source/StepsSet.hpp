@@ -547,11 +547,6 @@
   // job insertRow
   static void vJob_EndInsertInsertRowJobFetch(Tasks::MP_Task mpTask);
 
-  static void vJob_InsertBufferEndInsertJobIdFetch(Tasks::MP_Task mpTask);
-  static void vJob_InsertBufferInsertRows(Tasks::MP_Task mpTask);
-  static void vJob_InsertBufferPartitionFetch(Tasks::MP_Task mpTask);
-  static void vJob_InsertBufferTableStore(Tasks::MP_Task mpTask);
-
   static void vJob_InsertRowDanglingBuffer(Tasks::MP_Task mpTask);
   static void vJob_InsertRowPartitionStore(Tasks::MP_Task mpTask);
   static void vJob_InsertRowSpawnInsertBuffer(Tasks::MP_Task mpTask);
@@ -606,6 +601,12 @@
 
   // Job truncate
   static void vJob_TruncateTableSpawnSub(Tasks::MP_Task mpTask);
+
+  // Job WriteBuffer
+  static void vJob_WriteBufferEndInsertJobIdFetch(Tasks::MP_Task mpTask);
+  static void vJob_WriteBufferInsertRows(Tasks::MP_Task mpTask);
+  static void vJob_WriteBufferPartitionFetch(Tasks::MP_Task mpTask);
+  static void vJob_WriteBufferTableStore(Tasks::MP_Task mpTask);
 
   // load buffer
   static void vLoadBufferSpawn(Tasks::MP_Task mpTask);

@@ -48,7 +48,7 @@ JobClass xJobClass_WaitCluster =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_WaitCluster_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)nullptr;
+  *pNextFun = (pFUN*)pJob_WriteBuffer_class;
   
   return &xJobClass_WaitCluster;
 }

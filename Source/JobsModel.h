@@ -77,7 +77,6 @@ using namespace JobsModel;
 
 #include "Job_Ingest.hpp"
 #include "Job_InsertRow.hpp"
-#include "Job_InsertBuffer.hpp"
 
 #include "Job_Lf.hpp"
 #include "Job_ListColumns.hpp"
@@ -122,6 +121,7 @@ using namespace JobsModel;
 #include "Job_VisualizeIndex.hpp"
 
 #include "Job_WaitCluster.hpp"
+#include "Job_WriteBuffer.hpp"
 
 #include "Jobs.hpp"
 

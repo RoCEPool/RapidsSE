@@ -18,13 +18,12 @@ namespace DBobjects
     i8 m_iPartitionId; // partition number
   
     i8 m_nSubLoadersDone;        // number of subloeader which have completed
-    //i8 m_nTotalBuffersLoadable;  // total no of buffers to be loaded
-    //i8 m_nTotalBuffersLoaded;    // total no of buffers loaded so far
 
     bool m_bLowMemLoad;          // was low memory detected during this load
   
-    i8 m_nWriteBehindBuffers;   // buffers to be written
-    i8 m_nBuffersWritten;       // buffers written so far
+    i8 m_nWriteBehindBuffers;    // buffers to be written
+    i8 m_nBuffersWritten;        // buffers written so far
+    
     i8 m_iEndInsertJobId;        // end insert jobid
     
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees

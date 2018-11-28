@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_InsertBuffer.cpp -- Insert Row Job                                        */
+/* Job_WriteBuffer.cpp -- write buffer Job                                    */
 /*============================================================================*/
 
 #include "JobsModel.h"
@@ -15,15 +15,15 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_InsertBuffer =
 {
-  "Job_InsertRow"_Stz,    // name of the job class
-  CN_JOB_INSERTBUFFER,    // class enum
+  "Job_WriteBuffer"_Stz,  // name of the job class
+  CN_JOB_WRITEBUFFER,     // class enum
   JK_DIST2PC,             // job kind
-  "insert buffer"_Stz,    // comment about the job
+  "write buffer"_Stz,     // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
-  "insertBuffer_run"_Stz, // the _run task seed
+  "writeBuffer_run"_Stz,  // the _run task seed
   nullptr,                // the _req task seed
-  "insertBuffer_kid"_Stz, // the _rcv task seed
+  "writeBuffer_kid"_Stz,  // the _rcv task seed
   nullptr,                // the _exe task seed
   nullptr,                // the _end task seed
   nullptr,                // the _can task seed
@@ -31,13 +31,13 @@ JobClass xJobClass_InsertBuffer =
   false,                  // detached job?
   true,                   // buffer attached?
   JT_NONE,                // job trace
-  pJob_InsertBuffer_pre,  // prompt pre-process function
+  pJob_WriteBuffer_pre,   // prompt pre-process function
   nullptr,                // prompt post-process function
-  pJob_InsertBuffer_new,   // job new function
-  vJob_InsertBuffer_delete,// job delete function
-  vJob_send,               // job pre-send function
-  vJob_recv,               // job post-receive function
-  vJob_InsertBuffer_show,  // job show function
+  pJob_WriteBuffer_new,   // job new function
+  vJob_WriteBuffer_delete,// job delete function
+  vJob_send,              // job pre-send function
+  vJob_recv,              // job post-receive function
+  vJob_WriteBuffer_show,  // job show function
   
   // help and example
   false,
@@ -50,9 +50,9 @@ JobClass xJobClass_InsertBuffer =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_InsertBuffer_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_WriteBuffer_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_InsertRow_class;
+  *pNextFun = (pFUN*)nullptr;
   
   return &xJobClass_InsertBuffer;
 }
@@ -65,30 +65,30 @@ JobClass* JobsModel::pJob_InsertBuffer_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_InsertBuffer* JobsModel::_pJob_InsertBuffer(void* aAddress)
+Job_WriteBuffer* JobsModel::_pJob_WriteBuffer(void* aAddress)
 {
-  Job_InsertBuffer* pJob_InsertBuffer = reinterpret_cast<Job_InsertBuffer*>(aAddress);
+  Job_WriteBuffer* pJob_WriteBuffer = reinterpret_cast<Job_WriteBuffer*>(aAddress);
   
-  RASSERT_TYPE(pJob_InsertBuffer,CN_JOB_INSERTBUFFER);
+  RASSERT_TYPE(pJob_WriteBuffer,CN_JOB_WRITEBUFFER);
   
-  return pJob_InsertBuffer;
+  return pJob_WriteBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_InsertBuffer::operator new(size_t)
+void* Job_WriteBuffer::operator new(size_t)
 {
-  Job_InsertBuffer* pJob_InsertBuffer =
-    static_cast<Job_InsertBuffer*>(HeapMem::pAllocate(CN_JOB_INSERTBUFFER));
+  Job_WriteBuffer* pJob_WriteBuffer =
+    static_cast<Job_WriteBuffer*>(HeapMem::pAllocate(CN_JOB_WRITEBUFFER));
   
-  return pJob_InsertBuffer;
+  return pJob_WriteBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_InsertBuffer::operator new(size_t, void* aAddress)
+void* Job_WriteBuffer::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -96,37 +96,37 @@ void* Job_InsertBuffer::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void Job_InsertBuffer::operator delete(void* aAddress)
+void Job_WriteBuffer::operator delete(void* aAddress)
 {
-  Job_InsertBuffer* pJob_InsertBuffer = static_cast<Job_InsertBuffer*>(aAddress);
+  Job_WriteBuffer* pJob_WriteBuffer = static_cast<Job_WriteBuffer*>(aAddress);
   //vTrace("DELETING INSERTBUFFER\n"_Stz);
-  HeapMem::vFree(pJob_InsertBuffer);
+  HeapMem::vFree(pJob_WriteBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InsertBuffer::Job_InsertBuffer(Interface::Session* pSession)
-: Job(CN_JOB_INSERTBUFFER, pSession)
+Job_WriteBuffer::Job_WriteBuffer(Interface::Session* pSession)
+: Job(CN_JOB_WRITEBUFFER, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
   
   m_pTable          = nullptr;
   m_iPartitionId    = -1;
   m_iEndInsertJobId = -1;
   m_nWriteBehindBuffers = C_UNKNOWN;
   
-  _checkInitialised_(CN_JOB_INSERTBUFFER);
+  _checkInitialised_(CN_JOB_WRITEBUFFER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTBUFFER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_InsertBuffer::~Job_InsertBuffer(void) noexcept(false)
+Job_WriteBuffer::~Job_WriteBuffer(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
   
   delete m_pCurrentBuffer;
   m_pCurrentBuffer = nullptr;
@@ -140,11 +140,11 @@ Job_InsertBuffer::~Job_InsertBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_InsertBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Job_WriteBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pObject);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pObject);
 
-  pJob_InsertBuffer->vShow();
+  pJob_WriteBuffer->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,9 +154,9 @@ void Job_InsertBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_InsertBuffer::vShow(void)
+void Job_WriteBuffer::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,9 +166,9 @@ void Job_InsertBuffer::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Job_InsertBuffer::aFooter(void)
+Footer* Job_WriteBuffer::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER);
   
   return &m_xFooter;
 }
@@ -184,42 +184,42 @@ Footer* Job_InsertBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_InsertBuffer_pre(Interface::Session* pSession)
+Job* JobsModel::pJob_WriteBuffer_pre(Interface::Session* pSession)
 {
-  Job_InsertBuffer* pJob_InsertBuffer = new Job_InsertBuffer(pSession);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession);
   
-  return pJob_InsertBuffer;
+  return pJob_WriteBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_InsertBuffer_new(Job* pArg)
+Job* JobsModel::pJob_WriteBuffer_new(Job* pArg)
 {
-  Job_InsertBuffer* pJob_InsertBuffer = new Job_InsertBuffer(nullptr);
+  Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr);
   
-  return pJob_InsertBuffer;
+  return pJob_WriteBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_InsertBuffer_delete(Interface::Session* pSession, Job* pJob)
+void JobsModel::vJob_WriteBuffer_delete(Interface::Session* pSession, Job* pJob)
 {
-  Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJob);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJob);
   
   //vTrace("DELETING INSERTBUFFER\n"_Stz);
-  delete pJob_InsertBuffer;
+  delete pJob_WriteBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_InsertBuffer_show(Job* pJob)
+void JobsModel::vJob_WriteBuffer_show(Job* pJob)
 {
-  Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJob);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJob);
 
-  pJob_InsertBuffer->vShow();
+  pJob_WriteBuffer->vShow();
 }
 
 /*============================================================================*/

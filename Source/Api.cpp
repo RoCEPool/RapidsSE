@@ -921,7 +921,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       /*
       // create InsertBuffer job
       //vTrace("Buffer full!!! Creating InsertBuffer job\n"_Stz);
-      JobClass* pJobClass = JobClass::pFind(CN_JOB_INSERTBUFFER);
+      JobClass* pJobClass = JobClass::pFind(CN_JOB_WRITEBUFFER);
       ASSERT(pJobClass);
       Job* pJobInsertBuffer = pJobClass->pPreJob(pSession);
       Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobInsertBuffer);

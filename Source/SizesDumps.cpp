@@ -127,7 +127,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_FETCHROWS
   /*    */ &Dump::vDummy,           // CN_JOB_GENERATE
   /*    */ &Dump::vDummy,           // CN_JOB_INGEST
-  /*    */ &Dump::vDummy,           // CN_JOB_INSERTBUFFER
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTROW
   /*    */ &Dump::vDummy,           // CN_JOB_LF
   /*    */ &Dump::vDummy,           // CN_JOB_LISTCATALOGS
@@ -164,6 +163,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_VERIFYINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_VISUALIZEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_WAITCLUSTER
+  /*    */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
 
   /*    */ &Jobs::vDump,            // CN_JOBS
   
@@ -390,7 +390,6 @@ i8 giClassSize[]
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
   /*    */ sizeof(Job_Generate),        // CN_JOB_GENERATE
   /*    */ sizeof(Job_Ingest),         // CN_JOB_INGEST
-  /*    */ sizeof(Job_InsertBuffer),   // CN_JOB_INSERTBUFFER
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
   /*    */ sizeof(Job_Lf),             // CN_JOB_LF
   /*    */ sizeof(Job_ListCatalogs),   // CN_JOB_LISTCATALOGS
@@ -427,7 +426,8 @@ i8 giClassSize[]
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VERIFYINDEX
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
-
+  /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
+  
   /*    */ sizeof(Jobs),               // CN_JOBS
   
   /* 59 */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
@@ -652,7 +652,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_FETCHROWS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_GENERATE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INGEST
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTBUFFER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTROW
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCATALOGS
@@ -689,7 +688,8 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VERIFYINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VISUALIZEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WAITCLUSTER
-
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
+  
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOBS
   
   /* 59 */ HT_INVALID,           // CN_JUMBOPERSISTENT
