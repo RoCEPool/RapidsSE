@@ -108,7 +108,7 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::Session* pSession)
     
   m_iJobLoadTableId = -1;
   m_iPartition = -1;
-  m_nBuffersFromSubLoader = C_UNKNOWN;
+  m_nWriteBehindBuffers = C_UNKNOWN;
   
   m_pTable = nullptr;
   m_bEndOfBuffers = false;
@@ -186,7 +186,7 @@ Job_LoadBuffer* Job_LoadBuffer::pNewJobLoadBuffer(Job_SubLoader* pJob_SubLoader,
     i8 nWriteBehindBuffers = pJob_SubLoader->m_nWriteBehindBuffers[iPartition];
     
     ASSERT(C_UNKNOWN != nWriteBehindBuffers);
-    pJob_LoadBuffer->vBuffersFromSubLoader(nWriteBehindBuffers);
+    pJob_LoadBuffer->vWriteBehindBuffers(nWriteBehindBuffers);
     
     pJob_LoadBuffer->m_bEndOfBuffers = true;
   }
@@ -201,21 +201,21 @@ Job_LoadBuffer* Job_LoadBuffer::pNewJobLoadBuffer(Job_SubLoader* pJob_SubLoader,
 /*----------------------------------------------------------------------------*/
 /* get number of buffers loadable                                             */
 /*----------------------------------------------------------------------------*/
-i8 Job_LoadBuffer::nBuffersFromSubLoader(void)
+i8 Job_LoadBuffer::nWriteBehindBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
-  return m_nBuffersFromSubLoader;
+  return m_nWriteBehindBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get number of buffers from the subloader which are to loaded               */
 /*----------------------------------------------------------------------------*/
-void Job_LoadBuffer::vBuffersFromSubLoader(i8 nBuffers)
+void Job_LoadBuffer::vWriteBehindBuffers(i8 nBuffers)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
   
-  m_nBuffersFromSubLoader = nBuffers;
+  m_nWriteBehindBuffers = nBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -276,8 +276,8 @@ bool Job_LoadBuffer::bInsertRows(void)
   
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
-  if (C_UNKNOWN != m_nBuffersFromSubLoader)
-    pPartition->vAddWriteBehindBuffers(m_nBuffersFromSubLoader);
+  if (C_UNKNOWN != m_nWriteBehindBuffers)
+    pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
   
   // have all buffers been loaded?
   bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();
@@ -336,8 +336,8 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
-  if (C_UNKNOWN != m_nBuffersFromSubLoader)
-    pPartition->vAddWriteBehindBuffers(m_nBuffersFromSubLoader);
+  if (C_UNKNOWN != m_nWriteBehindBuffers)
+    pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
   
   // have all buffers been loaded?
   bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();

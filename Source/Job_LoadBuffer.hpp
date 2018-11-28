@@ -15,7 +15,7 @@ namespace JobsModel
     i8 m_iJobLoadTableId; // the job id of the load table job
   
     i8 m_iPartition; // which partition
-    i8 m_nBuffersFromSubLoader; // number of buffers to be loadeed from sub loader
+    i8 m_nWriteBehindBuffers; // number of buffers to be loadeed from sub loader
   
     Table* m_pTable; // which table
 
@@ -40,8 +40,8 @@ namespace JobsModel
     static Job_LoadBuffer* pNewJobLoadBuffer(Job_SubLoader* pJob_SubLoader, bool bFinal);
 
   public:
-    i8   nBuffersFromSubLoader(void);
-    void vBuffersFromSubLoader(i8 nBuffers);
+    i8   nWriteBehindBuffers(void);
+    void vWriteBehindBuffers(i8 nBuffers);
   
     bool bInsertRows(void);
     bool bInsertRows_LowMem(void);

@@ -423,7 +423,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     
     pJob_LoadBuffer = static_cast<Job_LoadBuffer*>(pJob);
     
-    if (-1 != pJob_LoadBuffer->m_nBuffersFromSubLoader) {
+    if (-1 != pJob_LoadBuffer->m_nWriteBehindBuffers) {
       
       pJob_LoadBuffer->m_pCurrentBuffer = nullptr;
     }
