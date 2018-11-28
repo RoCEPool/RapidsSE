@@ -107,7 +107,7 @@ TablePtn::TablePtn(void)
   m_bLowMemLoad = false;
 
   m_nWriteBehindBuffers = 0;
-  m_nBuffersInserted = 0;
+  m_nBuffersWritten = 0;
   m_iEndInsertJobId = C_UNKNOWN;
   
   m_pIndexTreeVec = new IndexTreeVec;
@@ -203,10 +203,10 @@ void TablePtn::vWriteBehindBuffers(i8 nWriteBehindBuffers)
 /*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vBuffersInserted(i8 nBuffersInserted)
+void TablePtn::vBuffersWritten(i8 nBuffersWritten)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  m_nBuffersInserted = nBuffersInserted;
+  m_nBuffersWritten = nBuffersWritten;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,11 +222,11 @@ i8 TablePtn::nWriteBehindBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
 /*----------------------------------------------------------------------------*/
-i8 TablePtn::nBuffersInserted(void)
+i8 TablePtn::nBuffersWritten(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  return m_nBuffersInserted;
+  return m_nBuffersWritten;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -305,13 +305,13 @@ IndexTree* TablePtn::pHiddenIndexTree(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* increment buffers loaded so far                                            */
+/* increment buffers written so far                                           */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vIncBuffersInserted(void)
+void TablePtn::vIncBuffersWritten(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_nBuffersInserted++;
+  m_nBuffersWritten++;
 }
 
 /*----------------------------------------------------------------------------*/

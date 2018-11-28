@@ -23,8 +23,8 @@ namespace DBobjects
 
     bool m_bLowMemLoad;          // was low memory detected during this load
   
-    i8 m_nWriteBehindBuffers;   // buffers to be inserted
-    i8 m_nBuffersInserted;       // buffers inserted so far
+    i8 m_nWriteBehindBuffers;   // buffers to be written
+    i8 m_nBuffersWritten;       // buffers written so far
     i8 m_iEndInsertJobId;        // end insert jobid
     
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
@@ -48,9 +48,9 @@ namespace DBobjects
     void vAddIndex(IndexTree* pIndexTree);
     bool bAllBuffersLoaded(void);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
-    void vBuffersInserted(i8 m_nBuffersInserted);
+    void vBuffersWritten(i8 m_nBuffersWritten);
     i8   nWriteBehindBuffers(void);
-    i8   nBuffersInserted(void);
+    i8   nBuffersWritten(void);
     void vDropRead(void);
     void vDropWrite();
     void vEndInsertJobId(i8 iJobId);
@@ -59,7 +59,7 @@ namespace DBobjects
     bool bGrabWrite(void);
     IndexTree* pHiddenIndexTree(void);
     void vIncTotalBuffersLoaded(void);
-    void vIncBuffersInserted(void);
+    void vIncBuffersWritten(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
     bool bIsLocked(void);

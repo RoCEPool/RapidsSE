@@ -95,7 +95,7 @@ void Step::vJob_InsertBufferInsertRows(MP_Task mpTask)
   //delete pWorkingBuffer;
   
   // we inserted one additional buffer
-  pPartition->vIncBuffersInserted();
+  pPartition->vIncBuffersWritten();
   
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
@@ -122,7 +122,7 @@ void Step::vJob_InsertBufferInsertRows(MP_Task mpTask)
   // have all buffers been loaded?
   bool bAllBuffersInserted = false;
   if ( C_UNKNOWN != pPartition->iEndInsertJobId() &&
-      (pPartition->nWriteBehindBuffers() == pPartition->nBuffersInserted())) {
+      (pPartition->nWriteBehindBuffers() == pPartition->nBuffersWritten())) {
     //vTrace("Buffers inserted for partition %lld %lld\n"_Stz, iPartition, pPartition->nWriteBehindBuffers(), pPartition->iEndInsertJobId());
     pJob_InsertBuffer->m_iEndInsertJobId = pPartition->iEndInsertJobId();
     bAllBuffersInserted = true;
@@ -134,7 +134,7 @@ void Step::vJob_InsertBufferInsertRows(MP_Task mpTask)
     
     // reset these in tblPtn for next insert into table
     pPartition->vWriteBehindBuffers(0);
-    pPartition->vBuffersInserted(0);
+    pPartition->vBuffersWritten(0);
     pPartition->vEndInsertJobId(-1);
   }
   
