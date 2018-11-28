@@ -83,6 +83,34 @@ void Job_WriteBehind::vHashRecord(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert buffer into the table                                               */
+/*----------------------------------------------------------------------------*/
+void Job_WriteBehind::vInsertBuffer(Interface::Session* pSession, Stz* sTableName)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the InsertBuffer job
+  JobClass* pJobClass = JobClass::pFind(CN_JOB_INSERTBUFFER);
+  ASSERT(pJobClass);
+  Job* pJobInsertBuffer = pJobClass->pPreJob(pSession);
+  Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobInsertBuffer);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set table name in InsertBuffer
+  pJob_InsertBuffer->m_sObjectName = sTableName;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // move the working buffer to insertBuffer
+  pJob_InsertBuffer->m_iPartitionId = m_iPartition;
+  pJob_InsertBuffer->m_pCurrentBuffer = m_pWorkingBuffer[m_iPartition];
+  m_pWorkingBuffer[m_iPartition] = nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the Insert buffer job
+  bool bResult = RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_RUN,pSession);
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
 bool Job_WriteBehind::bInsertRow(Table* pTable, eEC &eErrorCode)
