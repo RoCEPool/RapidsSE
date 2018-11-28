@@ -29,8 +29,8 @@ void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_WriteBuffer.parentJobId@"_Stz);
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
-  i8 iInsertJobId = pJob_WriteBuffer->m_iEndInsertJobId;
-  mpTask->m_pDataStack->vPushInt(iInsertJobId);
+  i8 iParentJobId = pJob_WriteBuffer->m_iParentJobId;
+  mpTask->m_pDataStack->vPushInt(iParentJobId);
   
   EXIT();
 }
@@ -66,9 +66,6 @@ void Step::vJob_WriteBufferInsertRows(MP_Task mpTask)
   // insert the working buffer
   pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
   
-  // delete the workingBuffer
-  //delete pWorkingBuffer;
-  
   // we inserted one additional buffer
   pPartition->vIncBuffersWritten();
   
@@ -77,40 +74,33 @@ void Step::vJob_WriteBufferInsertRows(MP_Task mpTask)
   i8 nWriteBehindBuffers = pJob_WriteBuffer->m_nWriteBehindBuffers;
   if (C_UNKNOWN != nWriteBehindBuffers) {
     pPartition->vWriteBehindBuffers(nWriteBehindBuffers);
-    pPartition->vEndInsertJobId(pJob_WriteBuffer->m_iEndInsertJobId);
+    pPartition->vParentJobId(pJob_WriteBuffer->m_iParentJobId);
+    
     if (pJob_WriteBuffer->m_bMark) {
       ActivityMap::vMark(pJob_WriteBuffer->m_iJobId,"Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld"_Stz,
                          iPartition, iSlot, nWriteBehindBuffers);
-      //gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob_InsertBuffer->m_iJobId);
       
-      ActivityMap::vMark(pJob_WriteBuffer->m_iJobId,"Setting EndInsertJobId in partition %lld to %lld"_Stz,
-                         iPartition, pJob_WriteBuffer->m_iEndInsertJobId);
-      //gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob_InsertBuffer->m_iJobId);
-      
-      //vTrace("Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld\n"_Stz,
-      //                   iPartition, iSlot, nBuffersToBeInserted);
-      //vTrace("Setting EndInsertJobId in partition %lld to %lld\n"_Stz,
-      //                   iPartition, pJob_InsertBuffer->m_iEndInsertJobId);
+      ActivityMap::vMark(pJob_WriteBuffer->m_iJobId,"Setting ParentJobId in partition %lld to %lld"_Stz,
+                         iPartition, pJob_WriteBuffer->m_iParentJobId);
     }
   }
   
   // have all buffers been loaded?
   bool bAllBuffersInserted = false;
-  if ( C_UNKNOWN != pPartition->iEndInsertJobId() &&
+  if ( C_UNKNOWN != pPartition->iParentJobId() &&
       (pPartition->nWriteBehindBuffers() == pPartition->nBuffersWritten())) {
     //vTrace("Buffers inserted for partition %lld %lld\n"_Stz, iPartition, pPartition->nWriteBehindBuffers(), pPartition->iEndInsertJobId());
-    pJob_WriteBuffer->m_iEndInsertJobId = pPartition->iEndInsertJobId();
+    pJob_WriteBuffer->m_iParentJobId = pPartition->iParentJobId();
     bAllBuffersInserted = true;
     
     if (pJob_WriteBuffer->m_bMark) {
       ActivityMap::vMark(pJob_WriteBuffer->m_iJobId,"All buffers inserted for partition %lld"_Stz, iPartition);
-      //gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob_InsertBuffer->m_iJobId);
     }
     
     // reset these in tblPtn for next insert into table
     pPartition->vWriteBehindBuffers(0);
     pPartition->vBuffersWritten(0);
-    pPartition->vEndInsertJobId(-1);
+    pPartition->vParentJobId(-1);
   }
   
   mpTask->m_pDataStack->vPushInt(bAllBuffersInserted);

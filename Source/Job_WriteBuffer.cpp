@@ -111,9 +111,9 @@ Job_WriteBuffer::Job_WriteBuffer(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
   
-  m_pTable          = nullptr;
-  m_iPartitionId    = -1;
-  m_iEndInsertJobId = -1;
+  m_pTable       = nullptr;
+  m_iPartitionId = -1;
+  m_iParentJobId = -1;
   m_nWriteBehindBuffers = C_UNKNOWN;
   
   _checkInitialised_(CN_JOB_WRITEBUFFER);

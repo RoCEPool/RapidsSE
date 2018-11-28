@@ -115,8 +115,8 @@ void Step::vJob_InsertRowSpawnInsertBuffer(MP_Task mpTask)
   
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
-  pJob_WriteBuffer->m_iEndInsertJobId = iJob_EndJobid;
-  pJob_WriteBuffer->m_sObjectName = pJob_InsertRow->m_sObjectName;
+  pJob_WriteBuffer->m_iParentJobId = iJob_EndJobid;
+  pJob_WriteBuffer->m_sObjectName  = pJob_InsertRow->m_sObjectName;
   pJob_WriteBuffer->m_iPartitionId = iPartition;
   pJob_WriteBuffer->m_pCurrentBuffer = pWorkingBuffer;
   

@@ -24,7 +24,7 @@ namespace DBobjects
     i8 m_nWriteBehindBuffers;    // buffers to be written
     i8 m_nBuffersWritten;        // buffers written so far
     
-    i8 m_iEndInsertJobId;        // end insert jobid
+    i8 m_iParentJobId;            // parent jobid
     
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
@@ -52,8 +52,6 @@ namespace DBobjects
     i8   nBuffersWritten(void);
     void vDropRead(void);
     void vDropWrite();
-    void vEndInsertJobId(i8 iJobId);
-    i8   iEndInsertJobId(void);
     bool bGrabRead(void);
     bool bGrabWrite(void);
     IndexTree* pHiddenIndexTree(void);
@@ -61,6 +59,8 @@ namespace DBobjects
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
     bool bIsLocked(void);
+    void vParentJobId(i8 iJobId);
+    i8   iParentJobId(void);
     i8   iPartitionId(void);
     void vPartitionId(i8 iPartitionId);
     bool bPopulateIndex(i8 iIndexNo);
