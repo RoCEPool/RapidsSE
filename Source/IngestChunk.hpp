@@ -14,14 +14,15 @@ namespace Loader
     File m_xFile;              // file/pipe being ingested
     Formatters* m_pFormatters; // using these formatters
   
-    Stz* m_aEndChunk;    // last byte of where chunk ends
+    WspFxd<C_INGEST_CHUNK> m_xWsp; // workspace
+    Stz* m_aStartChunk;            // first byte of chunk
+    Stz* m_aEndChunk;              // last byte of where chunk ends
+    i8   m_nBytesRemaining;        // bytes remaining
+
     Stz* m_aNextRecord;  // first byte of next record
     i8   m_nRecordBytes; // size of record
+  
     bool m_bHaveRecord;  // record in work space?
-  
-    i8   m_nBytesRemaining; // bytes remaining
-  
-    WspFxd<C_INGEST_CHUNK> m_xWsp; // workspace
   
     // must be last
     Footer m_xFooter;
@@ -41,11 +42,13 @@ namespace Loader
     Stz*  aNextRecord(i8& nRecordBytes);
     bool  bOpenFile(s256& sPath);
     void  vPushBack(void);
-    void  vReadChunk(void);
+    bool  bReadChunk(void);
     void  vReadChunk(i8 iSeek, i8 nBytes);
 
   private:
     void  vAdvanceRecordEnd(char** aSrc);
+    void  vCopyDown(void);
+    bool  bFindRecordEnd(char** aRecordEnd);
     void  vReset(void);
   
     Footer* aFooter(void);

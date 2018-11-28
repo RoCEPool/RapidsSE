@@ -51,6 +51,8 @@ IngestChunk::IngestChunk(Formatters* pFormatters)
   m_pFormatters = pFormatters;
   
   m_xWsp.vFill(0xEF,CN_INGESTCHUNK);
+  
+  m_aStartChunk = (Stz*)m_xWsp.aArea();
     
   vReset();
   
@@ -97,55 +99,42 @@ void IngestChunk::vCloseFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next record                                                           */
+/* get next record                                                            */
 /*----------------------------------------------------------------------------*/
 Stz* IngestChunk::aGetRecord(i8& nRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
   
   if (! m_aNextRecord) {
-    vReadChunk();
-  }
-  
-  ASSERT(m_aEndChunk);
-  ASSERT(m_aNextRecord);
-  
-  if (m_bHaveRecord) {
-    m_aNextRecord = pAdd<Stz*>(m_aNextRecord,- (m_nRecordBytes + 1));
-    m_bHaveRecord = false;
-  }
-  
-  //
-  // At this point, m_aNextRecord is the address of the next record
-  // in the chunk.
-  //
-  
-  // have we exhausted the chunk?
-  if (m_aNextRecord > m_aEndChunk) {
-    nRecordBytes = 0;
-    vReset();
-    return nullptr;
+    if (! bReadChunk())
+      return nullptr;
   }
   
   // get start address of next record
-  Stz* pRecord = m_aNextRecord;
+  Stz* aStartRecord = m_aNextRecord;
+  Stz* aEndRecord   = m_aNextRecord;
   
-  // find end of next record
-  //while (C_NL != *((char*)m_aNextRecord) &&
-  //       C_CR != *((char*)m_aNextRecord))
-  //  m_aNextRecord++;
-  //*m_aNextRecord = '\0';
+  bool bFound = bFindRecordEnd((char**)&aEndRecord);
+  if (! bFound) {
+    if (! bReadChunk())
+      return nullptr;
+    aStartRecord = m_aNextRecord;
+    aEndRecord   = m_aNextRecord;
+    bFound = bFindRecordEnd((char**)&aEndRecord);
+  }
   
-  vAdvanceRecordEnd((char**)&m_aNextRecord);
+  if (! bFound)
+    return nullptr;
   
   // compute the number of bytes
-  m_nRecordBytes = m_aNextRecord - pRecord;
+  m_nRecordBytes = aEndRecord - aStartRecord + 1;
   nRecordBytes = m_nRecordBytes;
   
   // advance to beginning of next record for next time
-  m_aNextRecord++;
+  m_aNextRecord = aEndRecord + 1;
+  m_nBytesRemaining -= m_nRecordBytes;
   
-  return pRecord;
+  return aStartRecord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -230,19 +219,30 @@ void IngestChunk::vPushBack(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read next chunk from file                                                   */
+/* read next chunk from file                                                  */
 /*----------------------------------------------------------------------------*/
-void IngestChunk::vReadChunk(void)
+bool IngestChunk::bReadChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
   
-  i8 nBytesRead = m_xFile.iReadChunk(m_xWsp.aArea(),C_INGEST_CHUNK);
+  vCopyDown();
+  
+  i8   nAsMuchAs = C_INGEST_CHUNK - m_nBytesRemaining;
+  Stz* aIntoAddr = pAdd<Stz*>(m_aStartChunk,m_nBytesRemaining);
+  
+  i8 nBytesRead = m_xFile.iReadChunk(aIntoAddr,nAsMuchAs);
+  
+  if (! nBytesRead)
+    return false;
+  
   m_nBytesRemaining += nBytesRead;
 
-  ((char*)m_xWsp.aStr())[m_nBytesRemaining] = '\0';
+  //((char*)m_aStartChunk)[m_nBytesRemaining] = '\0';
   
-  m_aEndChunk   = &m_xWsp.aStr()[m_nBytesRemaining - 1];
-  m_aNextRecord = m_xWsp.aStr();
+  m_aEndChunk   = &(m_aStartChunk)[m_nBytesRemaining - 1];
+  m_aNextRecord = m_aStartChunk;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,7 +257,7 @@ void IngestChunk::vReadChunk(i8 iSeek, i8 nBytes)
   m_xFile.vSeek(iSeek);
   
   //MemLib::vHexDump(m_xWsp.aStr(),nBytes+16);
-  i8 iBytesRead = m_xFile.iReadChunk(m_xWsp.aArea(),nBytes);
+  i8 iBytesRead = m_xFile.iReadChunk(m_aStartChunk,nBytes);
 
   //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
   ((char*)m_xWsp.aStr())[iBytesRead] = '\0';                       //! show Alka
@@ -335,6 +335,102 @@ void IngestChunk::vAdvanceRecordEnd(char** aaSrc)
       NEVER_REACH;
       break;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy any remainder to beginning of workspace                               */
+/*----------------------------------------------------------------------------*/
+void IngestChunk::vCopyDown(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
+  
+  if (! m_nBytesRemaining)
+    return;
+  
+  MemLib::vCopy(m_aStartChunk,m_aNextRecord,m_nBytesRemaining,CN_INGESTCHUNK);
+}
+
+/*----------------------------------------------------------------------------*/
+/* advance to last character of record ( \n or \r )                           */
+/*----------------------------------------------------------------------------*/
+bool IngestChunk::bFindRecordEnd(char** aaRecordEnd)
+{
+  // test for explicit record ends
+  
+  switch (m_pFormatters->m_eRecordEnds) {
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case RE_NL: // advance to next \n
+      
+      for (;;) {
+        
+        // find next \n
+        while (*aaRecordEnd <= (char*)m_aEndChunk && C_NL != **aaRecordEnd)
+          (*aaRecordEnd)++;
+        
+        if (*aaRecordEnd > (char*)m_aEndChunk)
+          return false;
+        
+        // if there is no record terminator we have found ending \n
+        if (! m_pFormatters->m_cRecordTerminator)
+          break;
+        
+        // we found the next \n if prior character is the record terminator
+        if (m_pFormatters->m_cRecordTerminator == *(*aaRecordEnd-1))
+          break;
+        
+        (*aaRecordEnd)++;
+      }
+      
+      ASSERT(C_NL == **aaRecordEnd);
+      return true;
+      
+      break;
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case RE_CR: // advance to next \r
+      for (;;) {
+        // find next \r
+        while (C_CR != **aaRecordEnd)
+          (*aaRecordEnd)++;
+        // if there is no record terminator we have found ending \r
+        if (! m_pFormatters->m_cRecordTerminator)
+          break;
+        // we found the next \r if prior character is the record terminator
+        if (m_pFormatters->m_cRecordTerminator == *(*aaRecordEnd-1))
+          break;
+        (*aaRecordEnd)++;
+      }
+      ASSERT(C_CR == **aaRecordEnd);
+      return true;
+      break;
+      
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case RE_CRNL: // advance to next \r\n
+      for (;;) {
+        // find next \r\n
+        while (C_CR != **aaRecordEnd && C_NL != *(*aaRecordEnd+1))
+          (*aaRecordEnd)++;
+        // if there is no record terminator we have found ending \r\n
+        if (! m_pFormatters->m_cRecordTerminator)
+          break;
+        // we found the next \r\n if prior character is the record terminator
+        if (m_pFormatters->m_cRecordTerminator == *(*aaRecordEnd-1))
+          break;
+        (*aaRecordEnd)++;
+      }
+      // skip over \r to be on the \n
+      ASSERT(C_CR == **aaRecordEnd);
+      (*aaRecordEnd)++;
+      ASSERT(C_NL == **aaRecordEnd);
+      return true;
+      break;
+      
+    default:
+      NEVER_REACH;
+      break;
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

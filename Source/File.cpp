@@ -545,13 +545,13 @@ void File::vPrint(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* read chunk                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 File::iReadChunk(void* pChunk, i8 nBytes)
+i8 File::iReadChunk(void* aChunk, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   m_xSysCall.vClear();
   
-  i8 iBytesRead = fread(pChunk,1,nBytes,m_aFilePtr);
+  i8 iBytesRead = fread(aChunk,1,nBytes,m_aFilePtr);
   
   return iBytesRead;
 }
