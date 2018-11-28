@@ -9,10 +9,10 @@ namespace JobsModel
   class Job_WriteBuffer : public Job
   {
   public:
-    Table*         m_pTable;         // table pointer
-    i8             m_iPartitionId;   // partition id
-    i8             m_iParentJobId;   // parent (EndInsert/LoadTable) job id
-    i8             m_nWriteBehindBuffers; // write behind buffers
+    Table* m_pTable;         // table pointer
+    i8     m_iPartitionId;   // partition id
+    i8     m_iParentJobId;   // parent (EndInsert/LoadTable) job id
+    i8     m_nWriteBehindBuffers; // write behind buffers
     
     // must be last
     Footer m_xFooter;

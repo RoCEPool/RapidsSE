@@ -554,7 +554,7 @@
 
   // job LoadBuffer
   static void vJob_LoadBufferInsertRows(Tasks::MP_Task mpTask);
-  static void vJob_LoadBufferJobLoadTableIdFetch(Tasks::MP_Task mpTask);
+  static void vJob_LoadBufferParentJobIdFetch(Tasks::MP_Task mpTask);
   static void vJob_LoadBufferPartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_LoadBufferSpawn(Tasks::MP_Task mpTask);
   static void vJob_LoadBufferTableStore(Tasks::MP_Task mpTask);

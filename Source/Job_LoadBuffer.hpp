@@ -12,13 +12,11 @@ namespace JobsModel
   class Job_LoadBuffer : public Job
   {
   public:
-    i8 m_iJobLoadTableId; // the job id of the load table job
-  
+    Table* m_pTable; // which table
     i8 m_iPartition; // which partition
+    i8 m_iParentJobId; // the job id of the load table job
     i8 m_nWriteBehindBuffers; // number of buffers to be loadeed from sub loader
   
-    Table* m_pTable; // which table
-
     bool   m_bEndOfBuffers; // no more buffers  WON'T WORK RAY
 
     i8     m_nRows; // how many rows in working buffer  WON"T WORK RAY
@@ -45,9 +43,6 @@ namespace JobsModel
   
     bool bInsertRows(void);
     bool bInsertRows_LowMem(void);
-
-    i8   iJobLoadTableId(void);
-    void vJobLoadTableId(i8 iJobId);
 
     i8   iPartition(void);
     void vPartition(i8 iPartition);

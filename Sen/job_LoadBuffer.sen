@@ -30,7 +30,7 @@
   //pJob_LoadBuffer job.show
 
   // get the load table job (participant node)
-  pJob_LoadBuffer job_loadBuffer.jobLoadTableId@ to iLoadJobId
+  pJob_LoadBuffer job_loadBuffer.parentJobId@ to iLoadJobId
 
   // we wait till the LoadTable can be found in the participant job skip list
   // there is a possiblity that the buffer arrives on a node before the loadTable

@@ -106,8 +106,8 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
     
-  m_iJobLoadTableId = -1;
-  m_iPartition = -1;
+  m_iParentJobId = -1;
+  m_iPartition   = -1;
   m_nWriteBehindBuffers = C_UNKNOWN;
   
   m_pTable = nullptr;
@@ -176,7 +176,7 @@ Job_LoadBuffer* Job_LoadBuffer::pNewJobLoadBuffer(Job_SubLoader* pJob_SubLoader,
 
   pJob_LoadBuffer->vSeed(SS_SEED_RUN);
 
-  pJob_LoadBuffer->vJobLoadTableId(iJobLoadTableId);
+  pJob_LoadBuffer->m_iParentJobId = iJobLoadTableId;
   pJob_LoadBuffer->m_sObjectName = pJob_SubLoader->m_sObjectName;
   pJob_LoadBuffer->vPartition(iPartition);
   pJob_LoadBuffer->m_pCurrentBuffer = pWorkingBuffer;
@@ -238,7 +238,7 @@ bool Job_LoadBuffer::bInsertRows(void)
   // find the load table job
   
   Job__Find* pFindJob = new Job__Find;
-  pFindJob->m_iJobId = m_iJobLoadTableId;
+  pFindJob->m_iJobId = m_iParentJobId;
   
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
   Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
@@ -303,7 +303,7 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   // find the load table job
   
   Job__Find* pFindJob = new Job__Find;
-  pFindJob->m_iJobId = m_iJobLoadTableId;
+  pFindJob->m_iJobId = m_iParentJobId;
   
   gpAttachMap->m_pParticipatingJobs->vGrabLock();
   Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
@@ -345,26 +345,6 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   //  vTrace("Buffers loaded\n"_Stz);
   
   return bAllBuffersLoaded;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the job id of the load table job                                       */
-/*----------------------------------------------------------------------------*/
-i8 Job_LoadBuffer::iJobLoadTableId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
-  
-  return m_iJobLoadTableId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the job id of the load table job                                       */
-/*----------------------------------------------------------------------------*/
-void Job_LoadBuffer::vJobLoadTableId(i8 iJobId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
-  
-  m_iJobLoadTableId = iJobId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -417,7 +397,7 @@ void Job_LoadBuffer::vShow(void)
   s48K sShow;
   
   sShow.vSprint("JobLoadTableId %lld; Table %s; Partition %lld; Rows %lld\n"_Stz,
-                m_iJobLoadTableId,
+                m_iParentJobId,
                 m_sObjectName.aStr(),
                 m_iPartition,
                 m_pCurrentBuffer->nWorkingRows());
