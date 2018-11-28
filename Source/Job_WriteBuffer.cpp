@@ -13,7 +13,7 @@ extern AttachMap* gpAttachMap;
  
  */
 
-JobClass xJobClass_InsertBuffer =
+JobClass xJobClass_WriteBuffer =
 {
   "Job_WriteBuffer"_Stz,  // name of the job class
   CN_JOB_WRITEBUFFER,     // class enum
@@ -54,7 +54,7 @@ JobClass* JobsModel::pJob_WriteBuffer_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)nullptr;
   
-  return &xJobClass_InsertBuffer;
+  return &xJobClass_WriteBuffer;
 }
 
 

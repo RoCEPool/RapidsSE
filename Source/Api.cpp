@@ -916,7 +916,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       }
       
       // buffer was full
-      pJob_InsertRow->vInsertBuffer(pSession, pJob_InsertRow->m_sObjectName);
+      pJob_InsertRow->vWriteBuffer(pSession, pJob_InsertRow->m_sObjectName);
     
       /*
       // create InsertBuffer job

@@ -83,9 +83,9 @@ void Job_WriteBehind::vHashRecord(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert buffer into the table                                               */
+/* write buffer into the table                                                */
 /*----------------------------------------------------------------------------*/
-void Job_WriteBehind::vInsertBuffer(Interface::Session* pSession, Stz* sTableName)
+void Job_WriteBehind::vWriteBuffer(Interface::Session* pSession, Stz* sTableName)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the InsertBuffer job
