@@ -18,7 +18,7 @@ _customer;
 
 print "";
 print "=====================================================================";
-print "loading customer table...";
+print "ingesting customer table...";
 print "=====================================================================";
 ingest customer "/tpchSF1/customer.tbl" ;
 

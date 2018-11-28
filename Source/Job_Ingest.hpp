@@ -11,9 +11,8 @@ namespace JobsModel
   {
   public:
     Table*  m_pTable;  // table being ingested
-    File    m_xPipe;   // pipe being ingested
   
-    IngestChunk* m_pIngestChunck; // chunk of pipe being ingested
+    IngestChunk* m_pIngestChunk; // chunk of pipe being ingested
   
     // must be last
     Footer m_xFooter;

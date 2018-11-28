@@ -143,20 +143,24 @@ Stz* IngestChunk::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-void IngestChunk::vOpenFile(s256& sPath)
+bool IngestChunk::bOpenFile(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
   
   // open the file
   m_xFile.vPath(sPath);
-  bool b = m_xFile.bOpen(C_OPEN_READ);
-  RASSERT(b);
+  bool bOpened = m_xFile.bOpen(C_OPEN_READ);
+
+  if (! bOpened)
+    return false;
   
   // set buffer
   //m_xFile.vBuffer(C_1MB);
   
   // set no buffering
   m_xFile.vBuffer(0);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

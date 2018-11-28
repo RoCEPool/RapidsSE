@@ -110,7 +110,7 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   m_pTable = nullptr;
   //m_xPipe
   
-  m_pIngestChunck = new IngestChunk;
+  m_pIngestChunk = new IngestChunk;
   
   _checkInitialised_(CN_JOB_INGEST);
   
@@ -124,7 +124,7 @@ Job_Ingest::~Job_Ingest(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  delete m_pIngestChunck;
+  delete m_pIngestChunk;
 }
 
 
@@ -262,7 +262,7 @@ void Job_Ingest::vIngest(void)
  vTrace("Ingesting data into %s from %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
   
-  bool bOpened = m_xPipe.bOpen(m_sFileName.aStr(), C_OPEN_READ);
+  bool bOpened = m_pIngestChunk->bOpenFile(m_sFileName);
   if (! bOpened) {
     vTrace("Unable to open pipe: %s\n"_Stz,m_sFileName.aStr());
     return;
@@ -270,7 +270,7 @@ void Job_Ingest::vIngest(void)
   
   
   
-  m_xPipe.vClose();
+  m_pIngestChunk->vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/
