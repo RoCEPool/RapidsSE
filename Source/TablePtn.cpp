@@ -138,6 +138,7 @@ void TablePtn::vAddTotalBuffersLoadable(i8 nBuffersFromSomeSubLoader)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
+  ASSERT(bIsLocked());
   ASSERT(C_UNKNOWN != nBuffersFromSomeSubLoader);
   
   m_nSubLoadersDone++;
@@ -162,6 +163,8 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 bool TablePtn::bAllBuffersLoaded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(m_xLock.bIsLocked());
   
   // compute the total number of subloaders in the grid
   i8 nSubLoadersInGrid = gpAttachMap->m_nSubLoaders;
@@ -197,6 +200,8 @@ bool TablePtn::bAllBuffersLoaded(void)
 void TablePtn::vWriteBehindBuffers(i8 nWriteBehindBuffers)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(bIsLocked());
   m_nWriteBehindBuffers = nWriteBehindBuffers;
 }
 
@@ -206,6 +211,8 @@ void TablePtn::vWriteBehindBuffers(i8 nWriteBehindBuffers)
 void TablePtn::vBuffersWritten(i8 nBuffersWritten)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  ASSERT(bIsLocked());
   m_nBuffersWritten = nBuffersWritten;
 }
 
@@ -311,6 +318,7 @@ void TablePtn::vIncBuffersWritten(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
+  ASSERT(bIsLocked());
   m_nBuffersWritten++;
 }
 
@@ -321,6 +329,7 @@ void TablePtn::vIncTotalBuffersLoaded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
+  ASSERT(bIsLocked());
   m_nTotalBuffersLoaded++;
 }
 
