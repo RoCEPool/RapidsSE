@@ -102,7 +102,7 @@ TablePtn::TablePtn(void)
   m_iPartitionId = -1;
   
   m_nSubLoadersDone  = 0;
-  m_nTotalBuffersLoadable = 0;
+  //m_nTotalBuffersLoadable = 0;
   m_nTotalBuffersLoaded   = 0;
   m_bLowMemLoad = false;
 
@@ -134,7 +134,7 @@ TablePtn::~TablePtn(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* add no. of loadable buffers by a subloader into total for this partition   */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAddTotalBuffersLoadable(i8 nBuffersFromSomeSubLoader)
+void TablePtn::vAddWriteBehindBuffers(i8 nBuffersFromSomeSubLoader)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -143,7 +143,7 @@ void TablePtn::vAddTotalBuffersLoadable(i8 nBuffersFromSomeSubLoader)
   
   m_nSubLoadersDone++;
   
-  m_nTotalBuffersLoadable += nBuffersFromSomeSubLoader;
+  m_nWriteBehindBuffers += nBuffersFromSomeSubLoader;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,22 +170,22 @@ bool TablePtn::bAllBuffersLoaded(void)
   i8 nSubLoadersInGrid = gpAttachMap->m_nSubLoaders;
   
 //  vTrace("m_nSubLoadersDone %lld nSubLoadersInGrid %lld\n"
-//         "m_nTotalBuffersLoadable %lld m_nTotalBuffersLoaded %lld\n"_Stz,
+//         "m_nWriteBehindBuffers %lld m_nTotalBuffersLoaded %lld\n"_Stz,
 //         m_nSubLoadersDone,
 //         nSubLoadersInGrid,
-//         m_nTotalBuffersLoadable,
+//         m_nWriteBehindBuffers,
 //         m_nTotalBuffersLoaded);
   
   if (m_nSubLoadersDone      == nSubLoadersInGrid &&
-      m_nTotalBuffersLoaded  == m_nTotalBuffersLoadable) {
+      m_nTotalBuffersLoaded  == m_nWriteBehindBuffers) {
  
     if (gpAttachMap->m_bVerbose)
       vTrace("All buffers have been loaded: %lld\n"_Stz,m_nTotalBuffersLoaded);
 
     // reset for next load
-    m_nSubLoadersDone       = 0;
-    m_nTotalBuffersLoaded   = 0;
-    m_nTotalBuffersLoadable = 0;
+    m_nSubLoadersDone      = 0;
+    m_nTotalBuffersLoaded  = 0;
+    m_nWriteBehindBuffers  = 0;
     m_bLowMemLoad = false;
 
     return true;
@@ -434,9 +434,9 @@ void TablePtn::vResetLoad(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_nSubLoadersDone       = 0;
-  m_nTotalBuffersLoadable = 0;
-  m_nTotalBuffersLoaded   = 0;
+  m_nSubLoadersDone      = 0;
+  m_nWriteBehindBuffers  = 0;
+  m_nTotalBuffersLoaded  = 0;
   m_bLowMemLoad = false;
 
 }

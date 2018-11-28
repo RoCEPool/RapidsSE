@@ -279,7 +279,7 @@ bool Job_LoadBuffer::bInsertRows(void)
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
   if (C_UNKNOWN != m_nBuffersFromSubLoader)
-    pPartition->vAddTotalBuffersLoadable(m_nBuffersFromSubLoader);
+    pPartition->vAddWriteBehindBuffers(m_nBuffersFromSubLoader);
   
   // have all buffers been loaded?
   bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();
@@ -339,7 +339,7 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
   if (C_UNKNOWN != m_nBuffersFromSubLoader)
-    pPartition->vAddTotalBuffersLoadable(m_nBuffersFromSubLoader);
+    pPartition->vAddWriteBehindBuffers(m_nBuffersFromSubLoader);
   
   // have all buffers been loaded?
   bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();

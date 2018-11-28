@@ -18,7 +18,7 @@ namespace DBobjects
     i8 m_iPartitionId; // partition number
   
     i8 m_nSubLoadersDone;        // number of subloeader which have completed
-    i8 m_nTotalBuffersLoadable;  // total no of buffers to be loaded
+    //i8 m_nTotalBuffersLoadable;  // total no of buffers to be loaded
     i8 m_nTotalBuffersLoaded;    // total no of buffers loaded so far
 
     bool m_bLowMemLoad;          // was low memory detected during this load
@@ -44,7 +44,7 @@ namespace DBobjects
     TablePtn(void);
     ~TablePtn(void) noexcept(false);
   
-    void vAddTotalBuffersLoadable(i8 nBuffersLoadable);
+    void vAddWriteBehindBuffers(i8 nBuffersLoadable);
     void vAddIndex(IndexTree* pIndexTree);
     bool bAllBuffersLoaded(void);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
