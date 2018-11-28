@@ -11,10 +11,12 @@ namespace Loader
   class IngestChunk : public Object
   {
   private:
-    File m_xFile;        // file/pipe being ingested
+    File m_xFile;              // file/pipe being ingested
+    Formatters* m_pFormatters; // using these formatters
+  
     Stz* m_aEndChunk;    // last byte of where chunk ends
     Stz* m_aNextRecord;  // first byte of next record
-    i8   m_iRecordBytes; // size of record
+    i8   m_nRecordBytes; // size of record
     bool m_bHaveRecord;  // record in work space?
   
     WspFxd<C_INGEST_CHUNK> m_xWsp; // workspace
@@ -26,21 +28,21 @@ namespace Loader
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IngestChunk(void);
+    IngestChunk(Formatters* pFormatters);
     ~IngestChunk(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void  vCloseFile(void);
     i8    iNextRecord(void);
-    Stz*  aNextRecord(i8& iRecordBytes, Formatters* pFormatters);
+    Stz*  aNextRecord(i8& nRecordBytes);
     bool  bOpenFile(s256& sPath);
     void  vPushBack(void);
     void  vReadChunk(void);
     void  vReadChunk(i8 iSeek, i8 nBytes);
     
   private:
-    void  vAdvanceRecordEnd(char** aSrc, Formatters* pFormatters);
+    void  vAdvanceRecordEnd(char** aSrc);
     void  vReset(void);
   
     Footer* aFooter(void);

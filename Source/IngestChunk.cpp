@@ -43,11 +43,13 @@ void IngestChunk::operator delete(void* pIngestChunkAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IngestChunk::IngestChunk(void)
+IngestChunk::IngestChunk(Formatters* pFormatters)
 : Object(CN_INGESTCHUNK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
 
+  m_pFormatters = pFormatters;
+  
   m_xWsp.vFill(0xEF,CN_INGESTCHUNK);
     
   vReset();
@@ -95,7 +97,7 @@ void IngestChunk::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 /* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
-Stz* IngestChunk::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
+Stz* IngestChunk::aNextRecord(i8& iRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
   
@@ -103,7 +105,7 @@ Stz* IngestChunk::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
   ASSERT(m_aNextRecord);
   
   if (m_bHaveRecord) {
-    m_aNextRecord = pAdd<Stz*>(m_aNextRecord,- (m_iRecordBytes + 1));
+    m_aNextRecord = pAdd<Stz*>(m_aNextRecord,- (m_nRecordBytes + 1));
     m_bHaveRecord = false;
   }
   
@@ -128,11 +130,11 @@ Stz* IngestChunk::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
   //  m_aNextRecord++;
   //*m_aNextRecord = '\0';
   
-  vAdvanceRecordEnd((char**)&m_aNextRecord, pFormatters);
+  vAdvanceRecordEnd((char**)&m_aNextRecord);
 
   // compute the number of bytes
-  m_iRecordBytes = m_aNextRecord - pRecord;
-  iRecordBytes = m_iRecordBytes;
+  m_nRecordBytes = m_aNextRecord - pRecord;
+  iRecordBytes = m_nRecordBytes;
   
   // advance to beginning of next record for next time
   m_aNextRecord++;
@@ -217,11 +219,11 @@ void IngestChunk::vReadChunk(i8 iSeek, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* advance to last character of record ( \n or \r )                           */
 /*----------------------------------------------------------------------------*/
-void IngestChunk::vAdvanceRecordEnd(char** aaSrc, Formatters* pFormatters)
+void IngestChunk::vAdvanceRecordEnd(char** aaSrc)
 {
   // test for explicit record ends
   
-  switch (pFormatters->m_eRecordEnds) {
+  switch (m_pFormatters->m_eRecordEnds) {
       
     case RE_NL: // advance to next \n
       for (;;) {
@@ -229,10 +231,10 @@ void IngestChunk::vAdvanceRecordEnd(char** aaSrc, Formatters* pFormatters)
         while (C_NL != **aaSrc)
           (*aaSrc)++;
         // if there is no record terminator we have found ending \n
-        if (! pFormatters->m_cRecordTerminator)
+        if (! m_pFormatters->m_cRecordTerminator)
           break;
         // we found the next \n if prior character is the record terminator
-        if (pFormatters->m_cRecordTerminator == *(*aaSrc-1))
+        if (m_pFormatters->m_cRecordTerminator == *(*aaSrc-1))
           break;
         (*aaSrc)++;
       }
@@ -245,10 +247,10 @@ void IngestChunk::vAdvanceRecordEnd(char** aaSrc, Formatters* pFormatters)
         while (C_CR != **aaSrc)
           (*aaSrc)++;
         // if there is no record terminator we have found ending \r
-        if (! pFormatters->m_cRecordTerminator)
+        if (! m_pFormatters->m_cRecordTerminator)
           break;
         // we found the next \r if prior character is the record terminator
-        if (pFormatters->m_cRecordTerminator == *(*aaSrc-1))
+        if (m_pFormatters->m_cRecordTerminator == *(*aaSrc-1))
           break;
         (*aaSrc)++;
       }
@@ -261,10 +263,10 @@ void IngestChunk::vAdvanceRecordEnd(char** aaSrc, Formatters* pFormatters)
         while (C_CR != **aaSrc && C_NL != *(*aaSrc+1))
           (*aaSrc)++;
         // if there is no record terminator we have found ending \r\n
-        if (! pFormatters->m_cRecordTerminator)
+        if (! m_pFormatters->m_cRecordTerminator)
           break;
         // we found the next \r\n if prior character is the record terminator
-        if (pFormatters->m_cRecordTerminator == *(*aaSrc-1))
+        if (m_pFormatters->m_cRecordTerminator == *(*aaSrc-1))
           break;
         (*aaSrc)++;
       }
@@ -289,7 +291,7 @@ void IngestChunk::vReset(void)
   
   m_aEndChunk    = nullptr;
   m_aNextRecord  = nullptr;
-  m_iRecordBytes = 0;
+  m_nRecordBytes = 0;
   m_bHaveRecord  = false;
 }
 

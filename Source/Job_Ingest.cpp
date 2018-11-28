@@ -108,9 +108,8 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
   m_pTable = nullptr;
-  //m_xPipe
   
-  m_pIngestChunk = new IngestChunk;
+  m_pIngestChunk = new IngestChunk(&gpAttachMap->m_xFormatters);
   
   _checkInitialised_(CN_JOB_INGEST);
   
@@ -268,7 +267,7 @@ void Job_Ingest::vIngest(void)
     return;
   }
   
-  
+  vIngestPipe();
   
   m_pIngestChunk->vCloseFile();
 }
