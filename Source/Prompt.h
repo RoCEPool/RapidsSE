@@ -37,6 +37,8 @@ using namespace Prompt;
 
 #include "Prompt_date.hpp"
 
+#include "Prompt_errno.hpp"
+
 #include "Prompt_giveMem.hpp"
 
 #include "Prompt_hashDefs.hpp"
