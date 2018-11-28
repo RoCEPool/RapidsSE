@@ -54,6 +54,8 @@ IngestChunk::IngestChunk(Formatters* pFormatters)
     
   vReset();
   
+  m_nBytesRemaining = 0;
+  
   ASSERT(! m_aEndChunk);
   ASSERT(! m_aNextRecord);
  
@@ -92,6 +94,58 @@ void IngestChunk::vCloseFile(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
   
   m_xFile.vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next record                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* IngestChunk::aGetRecord(i8& nRecordBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
+  
+  if (! m_aNextRecord) {
+    vReadChunk();
+  }
+  
+  ASSERT(m_aEndChunk);
+  ASSERT(m_aNextRecord);
+  
+  if (m_bHaveRecord) {
+    m_aNextRecord = pAdd<Stz*>(m_aNextRecord,- (m_nRecordBytes + 1));
+    m_bHaveRecord = false;
+  }
+  
+  //
+  // At this point, m_aNextRecord is the address of the next record
+  // in the chunk.
+  //
+  
+  // have we exhausted the chunk?
+  if (m_aNextRecord > m_aEndChunk) {
+    nRecordBytes = 0;
+    vReset();
+    return nullptr;
+  }
+  
+  // get start address of next record
+  Stz* pRecord = m_aNextRecord;
+  
+  // find end of next record
+  //while (C_NL != *((char*)m_aNextRecord) &&
+  //       C_CR != *((char*)m_aNextRecord))
+  //  m_aNextRecord++;
+  //*m_aNextRecord = '\0';
+  
+  vAdvanceRecordEnd((char**)&m_aNextRecord);
+  
+  // compute the number of bytes
+  m_nRecordBytes = m_aNextRecord - pRecord;
+  nRecordBytes = m_nRecordBytes;
+  
+  // advance to beginning of next record for next time
+  m_aNextRecord++;
+  
+  return pRecord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,22 +230,23 @@ void IngestChunk::vPushBack(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read next chunk                                                            */
+/* read next chunk from file                                                   */
 /*----------------------------------------------------------------------------*/
 void IngestChunk::vReadChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
   
-  i8 iBytesRead = m_xFile.iReadChunk(m_xWsp.aArea(),C_INGEST_CHUNK);
+  i8 nBytesRead = m_xFile.iReadChunk(m_xWsp.aArea(),C_INGEST_CHUNK);
+  m_nBytesRemaining += nBytesRead;
+
+  ((char*)m_xWsp.aStr())[m_nBytesRemaining] = '\0';
   
-  ((char*)m_xWsp.aStr())[iBytesRead] = '\0';
-  
-  m_aEndChunk   = &m_xWsp.aStr()[iBytesRead - 1];
+  m_aEndChunk   = &m_xWsp.aStr()[m_nBytesRemaining - 1];
   m_aNextRecord = m_xWsp.aStr();
 }
 
 /*----------------------------------------------------------------------------*/
-/* read given chunk                                                           */
+/* read given chunk from file                                                 */
 /*----------------------------------------------------------------------------*/
 void IngestChunk::vReadChunk(i8 iSeek, i8 nBytes)
 {
@@ -210,58 +265,6 @@ void IngestChunk::vReadChunk(i8 iSeek, i8 nBytes)
   
   m_aEndChunk   = &m_xWsp.aStr()[iBytesRead - 1];
   m_aNextRecord = m_xWsp.aStr();
-}
-
-/*----------------------------------------------------------------------------*/
-/* read next record                                                           */
-/*----------------------------------------------------------------------------*/
-Stz* IngestChunk::aReadRecord(i8& nRecordBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
-  
-  if (! m_aNextRecord) {
-    vReadChunk();
-  }
-  
-  ASSERT(m_aEndChunk);
-  ASSERT(m_aNextRecord);
-  
-  if (m_bHaveRecord) {
-    m_aNextRecord = pAdd<Stz*>(m_aNextRecord,- (m_nRecordBytes + 1));
-    m_bHaveRecord = false;
-  }
-  
-  //
-  // At this point, m_aNextRecord is the address of the next record
-  // in the chunk.
-  //
-  
-  // have we exhausted the chunk?
-  if (m_aNextRecord > m_aEndChunk) {
-    nRecordBytes = 0;
-    vReset();
-    return nullptr;
-  }
-  
-  // get start address of next record
-  Stz* pRecord = m_aNextRecord;
-  
-  // find end of next record
-  //while (C_NL != *((char*)m_aNextRecord) &&
-  //       C_CR != *((char*)m_aNextRecord))
-  //  m_aNextRecord++;
-  //*m_aNextRecord = '\0';
-  
-  vAdvanceRecordEnd((char**)&m_aNextRecord);
-  
-  // compute the number of bytes
-  m_nRecordBytes = m_aNextRecord - pRecord;
-  nRecordBytes = m_nRecordBytes;
-  
-  // advance to beginning of next record for next time
-  m_aNextRecord++;
-  
-  return pRecord;
 }
 
 /*----------------------------------------------------------------------------*/

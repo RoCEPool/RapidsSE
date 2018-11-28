@@ -19,6 +19,8 @@ namespace Loader
     i8   m_nRecordBytes; // size of record
     bool m_bHaveRecord;  // record in work space?
   
+    i8   m_nBytesRemaining; // bytes remaining
+  
     WspFxd<C_INGEST_CHUNK> m_xWsp; // workspace
   
     // must be last
@@ -34,13 +36,13 @@ namespace Loader
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void  vCloseFile(void);
+    Stz*  aGetRecord(i8& nRecordBytes);
     i8    iNextRecord(void);
     Stz*  aNextRecord(i8& nRecordBytes);
     bool  bOpenFile(s256& sPath);
     void  vPushBack(void);
     void  vReadChunk(void);
     void  vReadChunk(i8 iSeek, i8 nBytes);
-    Stz*  aReadRecord(i8& nRecordBytes);
 
   private:
     void  vAdvanceRecordEnd(char** aSrc);

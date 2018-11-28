@@ -310,7 +310,7 @@ bool Job_Ingest::bReadRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  m_aRecord = m_pIngestChunk->aReadRecord(m_nRecordBytes);
+  m_aRecord = m_pIngestChunk->aGetRecord(m_nRecordBytes);
 
   if (m_aRecord)
     return true;
