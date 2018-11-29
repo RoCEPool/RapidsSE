@@ -111,7 +111,6 @@ Job_LoadBuffer::Job_LoadBuffer(Interface::Session* pSession)
   m_nWriteBehindBuffers = C_UNKNOWN;
   
   m_pTable = nullptr;
-  m_bEndOfBuffers = false;
   m_nRows = 0;
   m_bLowMem = false;
 
@@ -187,8 +186,6 @@ Job_LoadBuffer* Job_LoadBuffer::pNewJobLoadBuffer(Job_SubLoader* pJob_SubLoader,
     
     ASSERT(C_UNKNOWN != nWriteBehindBuffers);
     pJob_LoadBuffer->vWriteBehindBuffers(nWriteBehindBuffers);
-    
-    pJob_LoadBuffer->m_bEndOfBuffers = true;
   }
 
   return pJob_LoadBuffer;
