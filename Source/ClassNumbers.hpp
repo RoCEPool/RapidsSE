@@ -143,6 +143,7 @@ enum eCN : u2 // Class Number
   /*     */ CN_JOB_NODEINFO,
   /*     */ CN_JOB_PERIODIC,
   /* 106 */ CN_JOB_PING,
+  /*     */ CN_JOB_PUBLISH,
   /*     */ CN_JOB_PURGE,
   /* 108 */ CN_JOB_PWF,
   /* 109 */ CN_JOB_RECEIVER,
@@ -403,6 +404,7 @@ static Stz* aCN[]
   /*     */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
   /*     */ "JOB_PERIODIC"_Stz,        // CN_JOB_PERIODIC
   /* 106 */ "JOB_PING"_Stz,            // CN_JOB_PING
+  /*     */ "JOB_PUBLISH"_Stz,         // CN_JOB_PUBLISH
   /*     */ "JOB_PURGE"_Stz,           // CN_JOB_PURGE
   /* 108 */ "JOB_PWF"_Stz,             // CN_JOB_PWF
   /* 109 */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER
