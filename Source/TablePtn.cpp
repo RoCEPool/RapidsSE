@@ -102,14 +102,14 @@ TablePtn::TablePtn(void)
   m_iPartitionId = -1;
   
   m_nSubLoadersDone  = 0;
-  //m_nTotalBuffersLoadable = 0;
-  //m_nTotalBuffersLoaded   = 0;
   m_bLowMemLoad = false;
 
   m_nWriteBehindBuffers = 0;
   m_nBuffersWritten     = 0;
   
   m_iParentJobId = C_UNKNOWN;
+  
+  m_eDataSource = DS_NONE;
   
   m_pIndexTreeVec = new IndexTreeVec;
   
@@ -142,9 +142,8 @@ void TablePtn::vAddWriteBehindBuffers(i8 nBuffersFromSomeSubLoader)
   ASSERT(bIsLocked());
   ASSERT(C_UNKNOWN != nBuffersFromSomeSubLoader);
   
-  m_nSubLoadersDone++;
-  
   m_nWriteBehindBuffers += nBuffersFromSomeSubLoader;
+  m_nSubLoadersDone++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,8 +186,10 @@ bool TablePtn::bAllBuffersLoaded(void)
     m_nSubLoadersDone     = 0;
     m_nBuffersWritten     = 0;
     m_nWriteBehindBuffers = 0;
+    m_iParentJobId        = -1;
+    
     m_bLowMemLoad = false;
-
+    
     return true;
   }
   else
@@ -354,6 +355,26 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* data being ingested                                                        */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vIngesting(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  m_eDataSource = DS_INGEST;
+}
+
+/*----------------------------------------------------------------------------*/
+/* data being ingested                                                        */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vInserting(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  m_eDataSource = DS_INSERT;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is the table partition locked?                                             */
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bIsLocked(void)
@@ -361,6 +382,16 @@ bool TablePtn::bIsLocked(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_xLock.bIsLocked();
+}
+
+/*----------------------------------------------------------------------------*/
+/* data being loaded                                                          */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vLoading(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
+  
+  m_eDataSource = DS_LOAD;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -418,17 +449,18 @@ bool TablePtn::bPopulateIndex(i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset the buffer load members                                              */
+/* reset the buffer write members                                             */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vResetLoad(void)
+void TablePtn::vResetWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   m_nSubLoadersDone     = 0;
   m_nWriteBehindBuffers = 0;
   m_nBuffersWritten     = 0;
+  m_iParentJobId        = -1;
+  
   m_bLowMemLoad = false;
-
 }
 
 /*----------------------------------------------------------------------------*/
