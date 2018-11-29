@@ -581,6 +581,9 @@
   static void vJob_ReceiverNodeFetch(Tasks::MP_Task mpTask);
   static void vJob_ReceiverNodeStore(Tasks::MP_Task mpTask);
 
+  // job repeater
+  static void vJob_RepeaterRepeat(Tasks::MP_Task mpTask);
+
   // Job subLoader
   static void vJob_SubLoaderBegin(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderDanglingBuffer(Tasks::MP_Task mpTask);
