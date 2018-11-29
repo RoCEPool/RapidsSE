@@ -17,7 +17,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  0 locals| iLoadJobId      |
   0 locals| pJob_LoadTable  |
 
   0 locals| sTableNm    |
@@ -28,19 +27,6 @@
 
   //"LoadBuffer_kid :" .
   //pJob_LoadBuffer job.show
-
-  // get the load table job (participant node)
-  pJob_LoadBuffer job_loadBuffer.parentJobId@ to iLoadJobId
-
-  // we wait till the LoadTable can be found in the participant job skip list
-  // there is a possiblity that the buffer arrives on a node before the loadTable
-  pJob_LoadBuffer iLoadJobId job::waitParticipant to pJob_LoadTable
-
-  // store the load table job in this load buffer job
-  //pJob_LoadTable pJob_LoadBuffer job_loadBuffer.jobLoadTable!
-
-  // get the load table task
-  //pJob_LoadTable job.executingtask@ to pTask_LoadTable
 
   // get table name
   pJob_LoadBuffer job.objectName@ to sTableNm
@@ -71,6 +57,14 @@
   // ack the load table task if all buffers have been loaded
   bAllLoaded if
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the load table job (participant node)
+    pJob_LoadBuffer job_loadBuffer.parentJobId@ locals| iParentJobId |
+
+    // we wait till the LoadTable can be found in the participant job skip list
+    // there is a possiblity that the buffer arrives on a node before the loadTable
+    pJob_LoadBuffer iParentJobId job::waitParticipant to pJob_LoadTable
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // first check if the job is executing SS_SEED_EXE
     // then get the task that is executing it
@@ -80,7 +74,7 @@
       1 thread.sleep_ms
     repeat
 
-    pJob_LoadTable job.executingTask@ locals| pTask_LoadTable |
+    pJob_LoadTable job.executingTask@ locals| pTask_Parent |
 
    //pTask_LoadTable pJob_LoadTable iLoadJobId
    //  "LoadJobId %v job_LoadTable (node) %v task_LoadTable %v"
@@ -93,14 +87,14 @@
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // wait for acks to be set in the endInsert task
     begin
-      pTask_LoadTable task.IsAckSet
+      pTask_Parent task.IsAckSet
     not while
       1 thread.sleep_ms
     repeat
 
-    pTask_LoadTable task.grabLock
-    pTask_LoadTable task.dropLock
-    pTask_LoadTable task.ack
+    pTask_Parent task.grabLock
+    pTask_Parent task.dropLock
+    pTask_Parent task.ack
   then
 
 ;

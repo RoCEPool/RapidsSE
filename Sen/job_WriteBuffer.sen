@@ -18,7 +18,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   0 locals| pJob_EndInsert  |
-  0 locals| pTask_EndInsert |
 
   0 locals| sTableNm    |
   0 locals| i_Partition |
