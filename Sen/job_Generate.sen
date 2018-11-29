@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* job_Generate.sen -- Generate Data Job                                      */
+/*============================================================================*/
+
+" job_Generate.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* Job_Generate request (on command node)                                     */
+/*----------------------------------------------------------------------------*/
+: Generate_req (  -- <R> )
+
+  >>am <SEED_REQ>
+
+  0 locals| sTableNm |
+  0 locals| pTable |
+
+  job::this locals| pJob_Generate |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_Generate getPath
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if pJob_Generate <ERROR_REQUEST> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get table name from job
+  pJob_Generate job.objectName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm checkIsTable not if popTable pJob_Generate <ERROR_REQUEST> !!am exit then
+
+  //----------------------------------------------------------------------------
+
+  // get table
+  sTableNm find execute to pTable
+  pTable pJob_Generate job_GenData.table!
+
+  pJob_Generate job_genData.generate
+
+  //----------------------------------------------------------------------------
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  popTable
+  assertInTables
+
+  <<am <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

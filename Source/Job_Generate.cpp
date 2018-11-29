@@ -18,7 +18,7 @@ JobClass xJobClass_GenData =
   "generate"_Stz,        // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
-  "genData_req"_Stz,     // the _req task seed
+  "generate_req"_Stz,    // the _req task seed
   nullptr,               // the _rcv task seed
   nullptr,               // the _exe task seed
   nullptr,               // the _end task seed
