@@ -2,7 +2,7 @@
 /* Job_Ingest.cpp -- Ingest Job                                               */
 /*============================================================================*/
 
-// Job Short: GenData
+// Job Short: Ingest
 
 #include "JobsModel.h"
 #include "StorageEngine.h"

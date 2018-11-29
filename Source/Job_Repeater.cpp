@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Job_Repeater.cpp -- Ingest Job                                               */
+/* Job_Repeater.cpp -- Repeater Job                                           */
 /*============================================================================*/
 
-// Job Short: GenData
+// Job Short: Repeater
 
 #include "JobsModel.h"
 #include "StorageEngine.h"
@@ -238,7 +238,7 @@ void JobsModel::vJob_Repeater_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* ingest data for table                                                      */
+/* indefinitely copy file into pipe                                           */
 /*----------------------------------------------------------------------------*/
 void Job_Repeater::vIndefiniteCopy(void)
 {
@@ -258,7 +258,7 @@ void Job_Repeater::vIndefiniteCopy(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ingest data for table                                                      */
+/* repeatedly copy file into pipe                                             */
 /*----------------------------------------------------------------------------*/
 void Job_Repeater::vRepeat(void)
 {
@@ -279,6 +279,9 @@ void Job_Repeater::vRepeat(void)
     return;
   }
 
+  vIndefiniteCopy();
+  
+  NEVER_REACH;
 }
 
 /*============================================================================*/
