@@ -15,7 +15,7 @@ JobClass xJobClass_Repeater =
   CN_JOB_REPEATER,       // class enum
   JK_LOCAL,              // job kind
   "repeat data"_Stz,     // comment about the job
-  "ingest"_Stz,          // the prompt command
+  "repeater"_Stz,        // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "repeater_req"_Stz,    // the _req task seed
@@ -111,6 +111,8 @@ Job_Repeater::Job_Repeater(Interface::Session* pSession)
   //m_xFile
   //m_xPipe
   
+  m_xWsp.vFill(0xEF,CN_JOB_REPEATER);
+
   _checkInitialised_(CN_JOB_REPEATER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
@@ -238,13 +240,45 @@ void JobsModel::vJob_Repeater_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* ingest data for table                                                      */
 /*----------------------------------------------------------------------------*/
+void Job_Repeater::vIndefiniteCopy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
+  
+  i8 nBytesRead;
+  
+  for (;;) {
+    
+    m_xFile.vSeek(0);
+    
+    while ( (nBytesRead = m_xFile.iReadChunk(m_xWsp.aArea(),C_REPEATER_WSP)) ) {
+      bool bWritten = m_xPipe.bWriteBytes(m_xWsp.aArea(),nBytesRead);
+      ASSERT(bWritten);
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* ingest data for table                                                      */
+/*----------------------------------------------------------------------------*/
 void Job_Repeater::vRepeat(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
- vTrace("Repeating data from %s into %s\n"_Stz,
+  vTrace("Repeating data from %s into %s\n"_Stz,
          m_sFileName.aStr(), m_sPipeName.aStr());
   
+  bool bFileOpened = m_xFile.bOpen(m_sFileName,C_OPEN_READ);
+  if (! bFileOpened) {
+    vTrace("Unable to open file: %s\n"_Stz,m_sFileName.aStr());
+    return;
+  }
+  
+  bool bPipeOpened = m_xPipe.bOpen(m_sPipeName,C_OPEN_WRITE);
+  if (! bPipeOpened) {
+    vTrace("Unable to open pipe: %s\n"_Stz,m_sPipeName.aStr());
+    return;
+  }
+
 }
 
 /*============================================================================*/
