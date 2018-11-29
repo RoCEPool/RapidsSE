@@ -64,6 +64,7 @@
 
 "Job_Periodic.sen" include
 "Job_Ping.sen" include
+"Job_Purge.sen" include
 "Job_Pwf.sen" include
 
 "Job_Repeater.sen" include

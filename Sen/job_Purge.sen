@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* job_Purge.sen -- Purge Job                                                 */
+/*============================================================================*/
+
+" job_Purge.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* Job_Purge request (on command node)                                        */
+/*----------------------------------------------------------------------------*/
+: Purge_req (  -- <R> )
+
+  >>am <SEED_REQ>
+
+  0 locals| sTableNm |
+  0 locals| pTable |
+
+  job::this locals| pJob_Purge |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_Purge getPath
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if pJob_Purge <ERROR_REQUEST> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get table name from job
+  pJob_Purge job.objectName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm checkIsTable not if popTable pJob_Purge <ERROR_REQUEST> !!am exit then
+
+  //----------------------------------------------------------------------------
+
+  // get table
+  sTableNm find execute to pTable
+  pTable pJob_Purge job_purge.table!
+
+  pJob_Purge job_purge.purge
+
+  //----------------------------------------------------------------------------
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  popTable
+  assertInTables
+
+  <<am <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
