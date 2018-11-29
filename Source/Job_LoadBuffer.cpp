@@ -277,7 +277,7 @@ bool Job_LoadBuffer::bInsertRows(void)
     pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
   
   // have all buffers been loaded?
-  bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();
+  bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded(DS_LOAD);
   //if (bAllBuffersLoaded)
   //  vTrace("Buffers loaded\n"_Stz);
   
@@ -337,7 +337,7 @@ bool Job_LoadBuffer::bInsertRows_LowMem(void)
     pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
   
   // have all buffers been loaded?
-  bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded();
+  bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded(DS_LOAD);
   //if (bAllBuffersLoaded)
   //  vTrace("Buffers loaded\n"_Stz);
   

@@ -109,8 +109,6 @@ TablePtn::TablePtn(void)
   
   m_iParentJobId = C_UNKNOWN;
   
-  m_eDataSource = DS_NONE;
-  
   m_pIndexTreeVec = new IndexTreeVec;
   
   _checkInitialised_(CN_TABLEPTN);
@@ -160,7 +158,7 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 /*----------------------------------------------------------------------------*/
 /* have all buffers been loaded?                                              */
 /*----------------------------------------------------------------------------*/
-bool TablePtn::bAllBuffersLoaded(void)
+bool TablePtn::bAllBuffersLoaded(eDS eDataSource)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
@@ -176,12 +174,28 @@ bool TablePtn::bAllBuffersLoaded(void)
 //         m_nWriteBehindBuffers,
 //         m_nBuffersWritten);
   
-  if (m_nSubLoadersDone  == nSubLoadersInGrid &&
-      m_nBuffersWritten  == m_nWriteBehindBuffers) {
+  bool bAllDone = false;
+  
+  if (eDataSource == DS_LOAD) {
+    if (m_nSubLoadersDone  == nSubLoadersInGrid &&
+        m_nBuffersWritten  == m_nWriteBehindBuffers) {
+      
+      bAllDone = true;
+    }
+  }
  
+  if (eDataSource == DS_INSERT) {
+    if ( C_UNKNOWN != m_iParentJobId &&
+        (m_nBuffersWritten == m_nWriteBehindBuffers) ) {
+      
+      bAllDone = true;
+    }
+  }
+  
+  if (bAllDone) {
     if (gpAttachMap->m_bVerbose)
       vTrace("All buffers have been loaded: %lld\n"_Stz,m_nBuffersWritten);
-
+    
     // reset for next load
     m_nSubLoadersDone     = 0;
     m_nBuffersWritten     = 0;
@@ -189,11 +203,9 @@ bool TablePtn::bAllBuffersLoaded(void)
     m_iParentJobId        = -1;
     
     m_bLowMemLoad = false;
-    
-    return true;
   }
-  else
-    return false;
+  
+  return bAllDone;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -355,26 +367,6 @@ IndexTreeVec* TablePtn::pIndexTreeVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* data being ingested                                                        */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vIngesting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_eDataSource = DS_INGEST;
-}
-
-/*----------------------------------------------------------------------------*/
-/* data being ingested                                                        */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vInserting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_eDataSource = DS_INSERT;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is the table partition locked?                                             */
 /*----------------------------------------------------------------------------*/
 bool TablePtn::bIsLocked(void)
@@ -382,16 +374,6 @@ bool TablePtn::bIsLocked(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
   return m_xLock.bIsLocked();
-}
-
-/*----------------------------------------------------------------------------*/
-/* data being loaded                                                          */
-/*----------------------------------------------------------------------------*/
-void TablePtn::vLoading(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
-  
-  m_eDataSource = DS_LOAD;
 }
 
 /*----------------------------------------------------------------------------*/

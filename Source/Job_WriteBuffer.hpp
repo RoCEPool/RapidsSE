@@ -5,10 +5,12 @@
 
 namespace JobsModel
 {
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_WriteBuffer : public Job
   {
   public:
+    eDS    m_eDataSource;    // data source
     Table* m_pTable;         // table pointer
     i8     m_iPartitionId;   // partition id
     i8     m_iParentJobId;   // parent (EndInsert/LoadTable) job id

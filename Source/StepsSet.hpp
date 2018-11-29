@@ -944,10 +944,7 @@
   static void vTablePtnDropRead(Tasks::MP_Task mpTask);
   static void vTablePtnDropWrite(Tasks::MP_Task mpTask);
   static void vTablePtnDump(Tasks::MP_Task mpTask);
-  static void vTablePtnIngesting(Tasks::MP_Task mpTask);
-  static void vTablePtnInserting(Tasks::MP_Task mpTask);
   static void vTablePtnIsLocked(Tasks::MP_Task mpTask);
-  static void vTablePtnLoading(Tasks::MP_Task mpTask);
 
   // task
   static void vTaskAck(Tasks::MP_Task mpTask);

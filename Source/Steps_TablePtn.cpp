@@ -17,10 +17,7 @@ void Step::vAddSteps_TablePartition(void)
   vAddStep("tablePtn.dropRead"_Stz,         &Step::vTablePtnDropRead);
   vAddStep("tablePtn.dropWrite"_Stz,        &Step::vTablePtnDropWrite);
   vAddStep("tablePtn.dump"_Stz,             &Step::vTablePtnDump);
-  vAddStep("tablePtn.Ingesting"_Stz ,       &Step::vTablePtnIngesting);
-  vAddStep("tablePtn.Inserting"_Stz ,       &Step::vTablePtnInserting);
   vAddStep("tablePtn.isLocked"_Stz,         &Step::vTablePtnIsLocked);
-  vAddStep("tablePtn.Loading"_Stz ,         &Step::vTablePtnLoading);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,40 +114,6 @@ void Step::vTablePtnDropWrite(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tablePtn.ingesting -- data ingested into tablePtn                          */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnIngesting(MP_Task mpTask)
-{
-  ENTRY("vTablePtnIngesting"_Stz);
-  
-  Object* pPtrTablePtn;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTablePtn) )
-    THROW_INVALID_DSTACK("tablePtn.ingesting"_Stz);
-  TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
-  
-  pTablePtn->vIngesting();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tablePtn.insterting -- data inserted into tablePtn                         */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnInserting(MP_Task mpTask)
-{
-  ENTRY("vTablePtnInserting"_Stz);
-  
-  Object* pPtrTablePtn;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTablePtn) )
-    THROW_INVALID_DSTACK("tablePtn.insterting"_Stz);
-  TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
-  
-  pTablePtn->vInserting();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* tablePtn.isLocked -- test if a table partition is locked                   */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnIsLocked(MP_Task mpTask)
@@ -166,23 +129,6 @@ void Step::vTablePtnIsLocked(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushInt(bIsLocked);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tablePtn.loading -- data loading into tablePtn                             */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnLoading(MP_Task mpTask)
-{
-  ENTRY("vTablePtnLoading"_Stz);
-  
-  Object* pPtrTablePtn;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTablePtn) )
-    THROW_INVALID_DSTACK("tablePtn.loading"_Stz);
-  TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
-  
-  pTablePtn->vLoading();
-  
   EXIT();
 }
 

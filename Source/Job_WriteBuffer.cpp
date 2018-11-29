@@ -111,6 +111,7 @@ Job_WriteBuffer::Job_WriteBuffer(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
   
+  m_eDataSource  = DS_NONE;
   m_pTable       = nullptr;
   m_iPartitionId = -1;
   m_iParentJobId = -1;
@@ -173,6 +174,18 @@ bool Job_WriteBuffer::bInsertRows(void)
     }
   }
 
+  // get the parentJobId
+  m_iParentJobId = pPartition->iParentJobId();
+  
+  bool bAllDone = pPartition->bAllBuffersLoaded(m_eDataSource);
+  
+  if (bAllDone) {
+    if (m_bMark) {
+      ActivityMap::vMark(m_iJobId,"All buffers written for partition %lld"_Stz, m_iPartitionId);
+    }
+  }
+  
+  /*
   // have all buffers been loaded?
   bool bAllBuffersInserted = false;
   if ( C_UNKNOWN != pPartition->iParentJobId() &&
@@ -190,8 +203,9 @@ bool Job_WriteBuffer::bInsertRows(void)
     pPartition->vBuffersWritten(0);
     pPartition->vParentJobId(-1);
   }
-
-  return bAllBuffersInserted;
+*/
+  
+  return bAllDone;
 }
 
 /*----------------------------------------------------------------------------*/
