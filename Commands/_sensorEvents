@@ -1,0 +1,15 @@
+/*============================================================================*/
+/* _sensorEvents - create sensor events table                                 */
+/*============================================================================*/
+
+create table sensorEvents (
+	S_SENSOR        INTEGER NOT NULL,
+	S_TEMPERATURE   INTEGER NOT NULL,
+  S_PRESSURE      INTEGER NOT NULL,
+  S_VOLUME        INTEGER NOT NULL,
+	S_COMMENT       VARCHAR(32)
+);
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
