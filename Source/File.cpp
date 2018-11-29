@@ -10,31 +10,6 @@ extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
 
-// Opens for reading. If the file does not exist or cannot be found, the
-// fopen call fails.
-Stz* C_OPEN_READ = "r"_Stz;
-
-// Opens an empty file for writing. If the given file exists, its contents
-// are destroyed.
-Stz* C_OPEN_WRITE = "w"_Stz;
-
-// Opens for writing at the end of the file (appending) without removing
-// the end-of-file (EOF) marker before new data is written to the file.
-// Creates the file if it does not exist.
-Stz* C_OPEN_APPEND = "a"_Stz;
-
-// Opens for both reading and writing. The file must exist.
-Stz* C_OPEN_READ_WRITE_EXIST = "r+"_Stz;
-
-// Opens an empty file for both reading and writing. If the file exists, its
-// contents are destroyed.
-Stz* C_OPEN_READ_WRITE_CREATE = "w+"_Stz;
-
-// Opens for reading and appending. The appending operation includes the
-// removal of the EOF marker before new data is written to the file. The EOF
-// marker is not restored after writing is complete. Creates the file if it
-// does not exist.
-Stz* C_OPEN_READ_APPEND = "a+"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */

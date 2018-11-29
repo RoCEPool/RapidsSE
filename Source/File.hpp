@@ -3,12 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-extern Stz* C_OPEN_READ;
-extern Stz* C_OPEN_WRITE;
-extern Stz* C_OPEN_APPEND;
-extern Stz* C_OPEN_READ_WRITE_EXIST;
-extern Stz* C_OPEN_READ_WRITE_CREATE;
-extern Stz* C_OPEN_READ_APPEND;
 
 namespace System
 {
@@ -16,6 +10,33 @@ namespace System
   
   static const i8 C_PATH_MAX = 256;
   
+  // Opens for reading. If the file does not exist or cannot be found, the
+  // fopen call fails.
+  static Stz* C_OPEN_READ = "r"_Stz;
+  
+  // Opens an empty file for writing. If the given file exists, its contents
+  // are destroyed.
+  static Stz* C_OPEN_WRITE = "w"_Stz;
+  
+  // Opens for writing at the end of the file (appending) without removing
+  // the end-of-file (EOF) marker before new data is written to the file.
+  // Creates the file if it does not exist.
+  static Stz* C_OPEN_APPEND = "a"_Stz;
+  
+  // Opens for both reading and writing. The file must exist.
+  static Stz* C_OPEN_READ_WRITE_EXIST = "r+"_Stz;
+  
+  // Opens an empty file for both reading and writing. If the file exists, its
+  // contents are destroyed.
+  static Stz* C_OPEN_READ_WRITE_CREATE = "w+"_Stz;
+  
+  // Opens for reading and appending. The appending operation includes the
+  // removal of the EOF marker before new data is written to the file. The EOF
+  // marker is not restored after writing is complete. Creates the file if it
+  // does not exist.
+  static Stz* C_OPEN_READ_APPEND = "a+"_Stz;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class File : public Object
   {
   private:
