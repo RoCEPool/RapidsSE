@@ -20,7 +20,9 @@ print "";
 print "=====================================================================";
 print "ingesting customer table...";
 print "=====================================================================";
-ingest customer "/tpchSF1/customer.tbl" ;
+//ingest customer "/tmp/customer.pipe" nowait ;
+
+//repeater "/tpchSF1/customer.tbl" "/tmp/customer.pipe" ;
 
 print "";
 print "=====================================================================";

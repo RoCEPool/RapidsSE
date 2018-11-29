@@ -5,6 +5,8 @@
 
 namespace JobsModel
 {
+  static const i8 C_REPEATER_WSP = C_256KB;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Repeater : public Job,
                        public JobFileName
@@ -15,6 +17,8 @@ namespace JobsModel
     File  m_xFile;     // the file
     File  m_xPipe;     // the pipe
 
+    WspFxd<C_REPEATER_WSP> m_xWsp; // workspace
+  
     // must be last
     Footer m_xFooter;
   
@@ -31,6 +35,7 @@ namespace JobsModel
   public:
     void vShow(void);
   
+    void vIndefiniteCopy(void);
     void vRepeat(void);
 
   public:
