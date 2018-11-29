@@ -140,6 +140,31 @@ bool Job_WriteBuffer::bInsertRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
 
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+  
+//  if (! m_pCurrentBuffer) {
+//    bool bAllBuffersLoaded = bInsertRows_LowMem();
+//    return bAllBuffersLoaded;
+//  }
+  
+  // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the load table job
+  
+//  Job__Find* pFindJob = new Job__Find;
+//  pFindJob->m_iJobId = m_iParentJobId;
+//
+//  gpAttachMap->m_pParticipatingJobs->vGrabLock();
+//  Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+//  gpAttachMap->m_pParticipatingJobs->vDropLock();
+//
+//  delete pFindJob;
+//
+  //Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   // convert partition to node slot
   i8 iSlot = TablePtn::iPartitionToSlot(m_iPartitionId);
 
@@ -159,6 +184,10 @@ bool Job_WriteBuffer::bInsertRows(void)
   // we inserted one additional buffer
   pPartition->vIncBuffersWritten();
 
+  // add the number of rows into rows processed
+  i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
+  //pJob->m_xNode[iThisNode].m_ziRowsProcessed += m_nRows;
+  
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
   if (C_UNKNOWN != m_nWriteBehindBuffers) {

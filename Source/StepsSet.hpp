@@ -612,6 +612,7 @@
   static void vJob_WriteBufferParentJobIdFetch(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferInsertRows(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferPartitionFetch(Tasks::MP_Task mpTask);
+  static void vJob_WriteBufferSpawn(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferTableStore(Tasks::MP_Task mpTask);
 
   // load buffer

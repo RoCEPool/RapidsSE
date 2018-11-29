@@ -12,7 +12,7 @@
 
   1 locals| isFinal |
 
-  isFinal iPartition iJob_EndJobid pJob_InsertRow job_InsertRow.spawnInsertBuffer
+  isFinal iPartition iJob_EndJobid pJob_InsertRow job_writeBuffer::spawn
 ;
 
 /*----------------------------------------------------------------------------*/
