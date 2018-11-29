@@ -14,11 +14,11 @@ JobClass xJobClass_Publish =
   "Job_Publish"_Stz,     // name of the job class
   CN_JOB_PUBLISH,        // class enum
   JK_LOCAL,              // job kind
-  "purge table"_Stz,     // comment about the job
-  "purge"_Stz,           // the prompt command
+  "publish table"_Stz,   // comment about the job
+  "publish"_Stz,         // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
-  "purge_req"_Stz,       // the _req task seed
+  "publish_req"_Stz,     // the _req task seed
   nullptr,               // the _rcv task seed
   nullptr,               // the _exe task seed
   nullptr,               // the _end task seed

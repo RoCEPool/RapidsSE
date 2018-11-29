@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* job_Publish.sen -- Publish Job                                             */
+/*============================================================================*/
+
+" job_Publish.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* Job_Publish request (on command node)                                      */
+/*----------------------------------------------------------------------------*/
+: Publish_req (  -- <R> )
+
+  >>am <SEED_REQ>
+
+  0 locals| sTableNm |
+  0 locals| pTable |
+
+  job::this locals| pJob_Publish |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_Publish getPath
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab ddl read lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if pJob_Publish <ERROR_REQUEST> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get table name from job
+  pJob_Publish job.objectName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check it is a table
+  sTableNm checkIsTable not if popTable pJob_Publish <ERROR_REQUEST> !!am exit then
+
+  //----------------------------------------------------------------------------
+
+  // get table
+  sTableNm find execute to pTable
+  pTable pJob_Publish job_Publish.table!
+
+  pJob_Publish job_publish.publish
+
+  //----------------------------------------------------------------------------
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table dictionary
+  popTable
+  assertInTables
+
+  <<am <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
