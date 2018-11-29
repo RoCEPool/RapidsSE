@@ -17,6 +17,24 @@ namespace DBobjects
     /* 1 */ "NORMAL"_Stz
   };
   
+  enum eDS // data source
+  {
+    /* 0 */ DS_NONE=0,
+    /* 1 */ DS_INGEST,
+    /* 2 */ DS_INSERT,
+    /* 3 */ DS_LOAD,
+    /* 3 */ DS_ENUMS
+  };
+  
+  static Stz* aDS[]
+  {
+    /* 0 */ "none"_Stz,
+    /* 1 */ "ingest"_Stz,
+    /* 2 */ "insert"_Stz,
+    /* 3 */ "load"_Stz,
+    /* 4 */ "enums"_Stz
+  };
+  
   static const char* C_SORT_REGION_BASE  = (char*)0x409600000000;
   static const i8    C_SORT_REGION_DELTA = C_1GB * 128;
 
@@ -37,6 +55,8 @@ namespace DBobjects
 
     Atomic     m_ziSubLoaders[C_SLOTS_PER_NODE];  // subloader*slot count
     bool       m_bIsLoading;   // data is loading
+    
+    eDS        m_eDataSource;  // HACK
     
     // must be last
     Footer m_xFooter;
@@ -59,6 +79,16 @@ namespace DBobjects
     void vLazyBuildIndexes(i8 iSlot);
     
     void vInsertEntries(i8 iTxId, i8 iPartition, WorkingBuffer* pWorkingBuffer);
+    
+    void vIngesting(void);
+    bool bIngesting(void);
+    
+    void vInserting(void);
+    bool bInserting(void);
+    
+    void vLoading(void);
+    bool bLoading(void);
+    
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);

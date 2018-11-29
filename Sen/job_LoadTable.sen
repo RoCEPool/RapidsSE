@@ -34,6 +34,9 @@
   sTableNm find execute to pTable
   pTable pJob_LoadTable Job_LoadTable.table!
 
+  // set data source as loading
+  pTable table.loading
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // chunk the file being loaded
 

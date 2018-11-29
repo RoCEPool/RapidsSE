@@ -926,6 +926,9 @@
   static void vTableInit(Tasks::MP_Task mpTask);
   static void vTableInsert(Tasks::MP_Task mpTask);
   static void vTableInsertEntries(Tasks::MP_Task mpTask);
+  static void vTableIngesting(Tasks::MP_Task mpTask);
+  static void vTableInserting(Tasks::MP_Task mpTask);
+  static void vTableLoading(Tasks::MP_Task mpTask);
   static void vTableLazyBuildIndexes(Tasks::MP_Task mpTask);
   static void vTableIsLoadingStore(Tasks::MP_Task mpTask);
   static void vTableList(Tasks::MP_Task mpTask);
@@ -944,10 +947,7 @@
   static void vTablePtnDropRead(Tasks::MP_Task mpTask);
   static void vTablePtnDropWrite(Tasks::MP_Task mpTask);
   static void vTablePtnDump(Tasks::MP_Task mpTask);
-  static void vTablePtnIngesting(Tasks::MP_Task mpTask);
-  static void vTablePtnInserting(Tasks::MP_Task mpTask);
   static void vTablePtnIsLocked(Tasks::MP_Task mpTask);
-  static void vTablePtnLoading(Tasks::MP_Task mpTask);
 
   // task
   static void vTaskAck(Tasks::MP_Task mpTask);

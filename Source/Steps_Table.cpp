@@ -30,6 +30,9 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.isValidIndexColumns"_Stz,&Step::vTableIsValidIndexColumns);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table.isLoading!"_Stz,         &Step::vTableIsLoadingStore);
+  vAddStep("table.Ingesting"_Stz ,         &Step::vTableIngesting);
+  vAddStep("table.Inserting"_Stz ,         &Step::vTableInserting);
+  vAddStep("table.Loading"_Stz ,           &Step::vTableLoading);
   vAddStep("table.name"_Stz,               &Step::vTableName);
   vAddStep("table.removeIndex"_Stz,        &Step::vTableRemoveIndex);
   vAddStep("table.showColumnVec"_Stz,      &Step::vTableShowColumnVec);
@@ -205,6 +208,57 @@ void Step::vTableIsLoadingStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("table.isLoading"_Stz);
   
   pTable->vIsLoading(iLoading == 1 ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.ingesting -- data ingested into table                                */
+/*----------------------------------------------------------------------------*/
+void Step::vTableIngesting(MP_Task mpTask)
+{
+  ENTRY("vTableIngesting"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.ingesting"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+  
+  pTable->vIngesting();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.insterting -- data inserted into table                            */
+/*----------------------------------------------------------------------------*/
+void Step::vTableInserting(MP_Task mpTask)
+{
+  ENTRY("vTableInserting"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.ingesting"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+  
+  pTable->vInserting();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.loading -- data loading into table                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTableLoading(MP_Task mpTask)
+{
+  ENTRY("vTableLoading"_Stz);
+  
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.loading"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+  
+  pTable->vLoading();
   
   EXIT();
 }

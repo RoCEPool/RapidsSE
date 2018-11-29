@@ -8,24 +8,6 @@ namespace DBobjects
   class Index;
   class EntWrk;
   
-  enum eDS // data source
-  {
-    /* 0 */ DS_NONE=0,
-    /* 1 */ DS_INGEST,
-    /* 2 */ DS_INSERT,
-    /* 3 */ DS_LOAD,
-    /* 3 */ DS_ENUMS
-  };
-  
-  static Stz* aDS[]
-  {
-    /* 0 */ "none"_Stz,
-    /* 1 */ "ingest"_Stz,
-    /* 2 */ "insert"_Stz,
-    /* 3 */ "load"_Stz,
-    /* 4 */ "enums"_Stz
-  };
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   class TablePtn : public Object
@@ -41,8 +23,6 @@ namespace DBobjects
     
     i8 m_nSubLoadersDone;        // number of subloeader which have completed
     i8 m_iParentJobId;           // parent jobid
-    
-    bool m_eDataSource;           // HACK
     
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
