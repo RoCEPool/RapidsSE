@@ -577,6 +577,10 @@
   // job NodeInfo
   static void vJob_NodeInfoNodeNameFetch(Tasks::MP_Task mpTask);
 
+  // job publish
+  static void vJob_PublishPublish(Tasks::MP_Task mpTask);
+  static void vJob_PublishTableStore(Tasks::MP_Task mpTask);
+
   // job purge
   static void vJob_PurgePurge(Tasks::MP_Task mpTask);
   static void vJob_PurgeTableStore(Tasks::MP_Task mpTask);
