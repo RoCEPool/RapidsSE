@@ -230,7 +230,7 @@ bool IngestChunk::bReadChunk(void)
   i8   nAsMuchAs = C_INGEST_CHUNK - m_nBytesRemaining;
   Stz* aIntoAddr = pAdd<Stz*>(m_aStartChunk,m_nBytesRemaining);
   
-  i8 nBytesRead = m_xFile.iReadChunk(aIntoAddr,nAsMuchAs);
+  i8 nBytesRead = m_xFile.iReadBytes(aIntoAddr,nAsMuchAs);
   
   if (! nBytesRead)
     return false;
@@ -257,7 +257,7 @@ void IngestChunk::vReadChunk(i8 iSeek, i8 nBytes)
   m_xFile.vSeek(iSeek);
   
   //MemLib::vHexDump(m_xWsp.aStr(),nBytes+16);
-  i8 iBytesRead = m_xFile.iReadChunk(m_aStartChunk,nBytes);
+  i8 iBytesRead = m_xFile.iReadBytes(m_aStartChunk,nBytes);
 
   //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
   ((char*)m_xWsp.aStr())[iBytesRead] = '\0';                       //! show Alka

@@ -22,7 +22,7 @@ namespace System
     s256    m_sFilePath;   // the path of the file (relative or absolute)
     s32     m_sOpenMode;   // open mode
     i8      m_iTraceLevel;
-    FILE*   m_aFilePtr;
+    FILE*   m_pFile;
   
     SysCall m_xSysCall;
     
@@ -67,7 +67,7 @@ namespace System
     void vPath(Stz* aFilePath);
     void vPath(StrVal& sFilePath);
     void vPrint(Stz* aFormat,...);
-    i8   iReadChunk(void* pChunk, i8 nBytes);
+    i8   iReadBytes(void* aDst, i8 nBytes);
     bool bReadLine(StrVal& s);
     bool bReadLine(Stz* y);
     bool bReadRecord(void);
@@ -83,7 +83,7 @@ namespace System
     i8   iTraceLevel(void);
     void vTraceLevel(i8 iTraceLevel);
     void vUngetChar(char cChar);
-    bool bWriteBytes(void* pBuffer, i8 nSize);
+    bool bWriteBytes(void* aSrc, i8 nSize);
     void vZero(void);
   
     Footer* aFooter(void);

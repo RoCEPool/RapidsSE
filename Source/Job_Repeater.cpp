@@ -250,7 +250,7 @@ void Job_Repeater::vIndefiniteCopy(void)
     
     m_xFile.vSeek(0);
     
-    while ( (nBytesRead = m_xFile.iReadChunk(m_xWsp.aArea(),C_REPEATER_WSP)) ) {
+    while ( (nBytesRead = m_xFile.iReadBytes(m_xWsp.aArea(),C_REPEATER_WSP)) ) {
       bool bWritten = m_xPipe.bWriteBytes(m_xWsp.aArea(),nBytesRead);
       ASSERT(bWritten);
     }

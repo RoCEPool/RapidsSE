@@ -30,10 +30,10 @@ void vTest1(void)
   ASSERT(b);
   
   xTimer.vStart();
-  i8 iBytesRead = xFile.iReadChunk(buffer,iChunk);
+  i8 iBytesRead = xFile.iReadBytes(buffer,iChunk);
   
   while (iBytesRead) {
-    iBytesRead = xFile.iReadChunk(buffer,iChunk);
+    iBytesRead = xFile.iReadBytes(buffer,iChunk);
   }
   xTimer.vUpdate();
   vTrace("duration %lldms\n"_Stz,xTimer.iMilliseconds());

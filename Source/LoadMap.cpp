@@ -191,7 +191,7 @@ bool LoadMap::bFindChunk(void)
   
   m_xChunkFile.vSeek(iTestSeek);
   
-  i8 iBytesRead = m_xChunkFile.iReadChunk(m_xBlockTest,C_LOADMAP_BLOCK);
+  i8 iBytesRead = m_xChunkFile.iReadBytes(m_xBlockTest,C_LOADMAP_BLOCK);
   
   const char *z = &m_xBlockTest[iBytesRead - 1];
   
@@ -237,13 +237,13 @@ void LoadMap::vChunkTest(void)
     
     if (iSeek) {
       m_xChunkFile.vSeek(iSeek - 1);
-      i8 iBytesRead = m_xChunkFile.iReadChunk(m_xBlockTest,1);
+      i8 iBytesRead = m_xChunkFile.iReadBytes(m_xBlockTest,1);
       ASSERT(1 == iBytesRead);
       ASSERT('\n' == m_xBlockTest[0]);
     }
     
     m_xChunkFile.vSeek(iSeek + nBytes - 1);
-    i8 iBytesRead = m_xChunkFile.iReadChunk(m_xBlockTest,1);
+    i8 iBytesRead = m_xChunkFile.iReadBytes(m_xBlockTest,1);
     ASSERT(1 == iBytesRead);
     ASSERT('\n' == m_xBlockTest[0]);
     
