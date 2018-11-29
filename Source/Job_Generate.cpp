@@ -15,7 +15,7 @@ JobClass xJobClass_GenData =
   CN_JOB_GENERATE,       // class enum
   JK_LOCAL,              // job kind
   "generate data"_Stz,   // comment about the job
-  "gendata"_Stz,         // the prompt command
+  "generate"_Stz,        // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "genData_req"_Stz,     // the _req task seed
