@@ -99,6 +99,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobNetHog();
   Step::vAddSteps_JobNodeInfo();
   Step::vAddSteps_JobReceiver();
+  Step::vAddSteps_JobRepeater();
   Step::vAddSteps_JobSubLoader();
   Step::vAddSteps_JobTruncateTable();
   Step::vAddSteps_JobWriteBuffer();
