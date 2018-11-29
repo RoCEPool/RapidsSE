@@ -132,6 +132,67 @@ Job_WriteBuffer::~Job_WriteBuffer(void) noexcept(false)
   m_pCurrentBuffer = nullptr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* insert rows from working buffer into table                                 */
+/*----------------------------------------------------------------------------*/
+bool Job_WriteBuffer::bInsertRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+
+  // convert partition to node slot
+  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartitionId);
+
+  // get table, partition and working buffer
+  RASSERT_TYPE(m_pTable,CN_TABLE);
+
+  TablePtn* pPartition = m_pTable->pPartition(iSlot);
+  RASSERT_TYPE(pPartition,CN_TABLEPTN);
+
+  RASSERT_TYPE(m_pCurrentBuffer,CN_WORKINGBUFFER);
+
+  i8 iTxId = 0;
+
+  // insert the working buffer
+  m_pTable->vInsertEntries(iTxId, iSlot, m_pCurrentBuffer);
+
+  // we inserted one additional buffer
+  pPartition->vIncBuffersWritten();
+
+  // does this job have information about the number of buffers loadable
+  // from a subloader for this partition?
+  if (C_UNKNOWN != m_nWriteBehindBuffers) {
+    pPartition->vWriteBehindBuffers(m_nWriteBehindBuffers);
+    pPartition->vParentJobId(m_iParentJobId);
+    
+    if (m_bMark) {
+      ActivityMap::vMark(m_iJobId,"Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld"_Stz,
+                         m_iPartitionId, iSlot, m_nWriteBehindBuffers);
+      
+      ActivityMap::vMark(m_iJobId,"Setting ParentJobId in partition %lld to %lld"_Stz,
+                         m_iPartitionId, m_iParentJobId);
+    }
+  }
+
+  // have all buffers been loaded?
+  bool bAllBuffersInserted = false;
+  if ( C_UNKNOWN != pPartition->iParentJobId() &&
+      (pPartition->nWriteBehindBuffers() == pPartition->nBuffersWritten())) {
+    //vTrace("Buffers inserted for partition %lld %lld\n"_Stz, iPartition, pPartition->nWriteBehindBuffers(), pPartition->iEndInsertJobId());
+    m_iParentJobId = pPartition->iParentJobId();
+    bAllBuffersInserted = true;
+    
+    if (m_bMark) {
+      ActivityMap::vMark(m_iJobId,"All buffers inserted for partition %lld"_Stz, m_iPartitionId);
+    }
+    
+    // reset these in tblPtn for next insert into table
+    pPartition->vWriteBehindBuffers(0);
+    pPartition->vBuffersWritten(0);
+    pPartition->vParentJobId(-1);
+  }
+
+  return bAllBuffersInserted;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Static Functions --------------------------------------------------------*/
