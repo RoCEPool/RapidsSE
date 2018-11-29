@@ -40,6 +40,14 @@
   sTableNm find execute locals| pTable |
   pTable pJob_LoadBuffer Job_LoadBuffer.table!
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the load table job (participant node)
+  pJob_LoadBuffer job_loadBuffer.parentJobId@ locals| iParentJobId |
+
+  // we wait till the LoadTable can be found in the participant job skip list
+  // there is a possiblity that the buffer arrives on a node before the loadTable
+  pJob_LoadBuffer iParentJobId job::waitParticipant to pJob_LoadTable
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // grab write lock on table partition
@@ -56,14 +64,6 @@
 
   // ack the load table task if all buffers have been loaded
   bAllLoaded if
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the load table job (participant node)
-    pJob_LoadBuffer job_loadBuffer.parentJobId@ locals| iParentJobId |
-
-    // we wait till the LoadTable can be found in the participant job skip list
-    // there is a possiblity that the buffer arrives on a node before the loadTable
-    pJob_LoadBuffer iParentJobId job::waitParticipant to pJob_LoadTable
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // first check if the job is executing SS_SEED_EXE

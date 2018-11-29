@@ -185,26 +185,6 @@ bool Job_WriteBuffer::bInsertRows(void)
     }
   }
   
-  /*
-  // have all buffers been loaded?
-  bool bAllBuffersInserted = false;
-  if ( C_UNKNOWN != pPartition->iParentJobId() &&
-      (pPartition->nWriteBehindBuffers() == pPartition->nBuffersWritten())) {
-    //vTrace("Buffers inserted for partition %lld %lld\n"_Stz, iPartition, pPartition->nWriteBehindBuffers(), pPartition->iEndInsertJobId());
-    m_iParentJobId = pPartition->iParentJobId();
-    bAllBuffersInserted = true;
-    
-    if (m_bMark) {
-      ActivityMap::vMark(m_iJobId,"All buffers inserted for partition %lld"_Stz, m_iPartitionId);
-    }
-    
-    // reset these in tblPtn for next insert into table
-    pPartition->vWriteBehindBuffers(0);
-    pPartition->vBuffersWritten(0);
-    pPartition->vParentJobId(-1);
-  }
-*/
-  
   return bAllDone;
 }
 
