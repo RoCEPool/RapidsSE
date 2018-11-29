@@ -241,6 +241,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_PING"_Stz,           CN_JOB_PING);
   /*    */ vAddConstant("CN_JOB_PWF"_Stz,            CN_JOB_PWF);
   /*    */ vAddConstant("CN_JOB_RECEIVER"_Stz,       CN_JOB_RECEIVER);
+  /*    */ vAddConstant("CN_JOB_REPEATER"_Stz,       CN_JOB_REPEATER);
   /*    */ vAddConstant("CN_JOB_SANITY"_Stz,         CN_JOB_SANITY);
   /*    */ vAddConstant("CN_JOB_SHOWCLUSTER"_Stz,    CN_JOB_SHOWCLUSTER);
   /*    */ vAddConstant("CN_JOB_SIZEINDEX"_Stz,      CN_JOB_SIZEINDEX);

@@ -146,6 +146,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_PING
   /*    */ &Dump::vDummy,           // CN_JOB_PWF
   /*    */ &Dump::vDummy,           // CN_JOB_RECEIVER
+  /*    */ &Dump::vDummy,           // CN_JOB_REPEATER
   /*    */ &Dump::vDummy,           // CN_JOB_SANITY
   /*    */ &Dump::vDummy,           // CN_JOB_SHOWCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_SPACE
@@ -409,6 +410,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Ping),           // CN_JOB_PING
   /*    */ sizeof(Job_Pwf),            // CN_JOB_PWF
   /*    */ sizeof(Job_Receiver),       // CN_JOB_RECEIVER
+  /*    */ 0,       // CN_JOB_REPEATER
   /*    */ sizeof(Job_Sanity),         // CN_JOB_SANITY
   /*    */ sizeof(Job_ShowCluster),    // CN_JOB_SHOWCLUSTER
   /*    */ sizeof(Job_SizeIndex),      // CN_JOB_SIZEINDEX
@@ -671,6 +673,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PING
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_PWF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_RECEIVER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_REPEATER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SANITY
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SHOWCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SIZEINDEX
