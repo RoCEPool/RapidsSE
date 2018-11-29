@@ -11,29 +11,16 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_TablePartition(void)
 {
-  vAddStep("tablePtn.dump"_Stz,             &Step::vTablePtnDump);
+  
   vAddStep("tablePtn.attemptGrabRead"_Stz , &Step::vTablePtnAttemptGrabRead);
   vAddStep("tablePtn.attemptGrabWrite"_Stz, &Step::vTablePtnAttemptGrabWrite);
   vAddStep("tablePtn.dropRead"_Stz,         &Step::vTablePtnDropRead);
   vAddStep("tablePtn.dropWrite"_Stz,        &Step::vTablePtnDropWrite);
+  vAddStep("tablePtn.dump"_Stz,             &Step::vTablePtnDump);
+  vAddStep("tablePtn.Ingesting"_Stz ,       &Step::vTablePtnIngesting);
+  vAddStep("tablePtn.Inserting"_Stz ,       &Step::vTablePtnInserting);
   vAddStep("tablePtn.isLocked"_Stz,         &Step::vTablePtnIsLocked);
-}
-
-/*----------------------------------------------------------------------------*/
-/* tablePtn.dump -- dump partition id                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vTablePtnDump(MP_Task mpTask)
-{
-  ENTRY("vTablePtnDump"_Stz);
-  
-  Object* pPtrTablePtn;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTablePtn) )
-    THROW_INVALID_DSTACK("tablePtn.dump"_Stz);
-  TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
-  
-  mpTask->m_pDataStack->vPushInt(pTablePtn->iPartitionId());
-  
-  EXIT();
+  vAddStep("tablePtn.Loading"_Stz ,         &Step::vTablePtnLoading);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,6 +82,23 @@ void Step::vTablePtnDropRead(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* tablePtn.dump -- dump partition id                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnDump(MP_Task mpTask)
+{
+  ENTRY("vTablePtnDump"_Stz);
+  
+  Object* pPtrTablePtn;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTablePtn) )
+    THROW_INVALID_DSTACK("tablePtn.dump"_Stz);
+  TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
+  
+  mpTask->m_pDataStack->vPushInt(pTablePtn->iPartitionId());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* tablePtn.dropWrite -- drop a write lock on the partition of a table        */
 /*----------------------------------------------------------------------------*/
 void Step::vTablePtnDropWrite(MP_Task mpTask)
@@ -108,6 +112,40 @@ void Step::vTablePtnDropWrite(MP_Task mpTask)
   
   // drop the write lock
   pTablePtn->vDropWrite();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tablePtn.ingesting -- data ingested into tablePtn                          */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnIngesting(MP_Task mpTask)
+{
+  ENTRY("vTablePtnIngesting"_Stz);
+  
+  Object* pPtrTablePtn;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTablePtn) )
+    THROW_INVALID_DSTACK("tablePtn.ingesting"_Stz);
+  TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
+  
+  pTablePtn->vIngesting();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tablePtn.insterting -- data inserted into tablePtn                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnInserting(MP_Task mpTask)
+{
+  ENTRY("vTablePtnInserting"_Stz);
+  
+  Object* pPtrTablePtn;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTablePtn) )
+    THROW_INVALID_DSTACK("tablePtn.insterting"_Stz);
+  TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
+  
+  pTablePtn->vInserting();
   
   EXIT();
 }
@@ -128,6 +166,23 @@ void Step::vTablePtnIsLocked(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushInt(bIsLocked);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tablePtn.loading -- data loading into tablePtn                             */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePtnLoading(MP_Task mpTask)
+{
+  ENTRY("vTablePtnLoading"_Stz);
+  
+  Object* pPtrTablePtn;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTablePtn) )
+    THROW_INVALID_DSTACK("tablePtn.loading"_Stz);
+  TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
+  
+  pTablePtn->vLoading();
+  
   EXIT();
 }
 

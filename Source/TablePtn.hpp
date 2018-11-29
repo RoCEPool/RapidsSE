@@ -8,6 +8,24 @@ namespace DBobjects
   class Index;
   class EntWrk;
   
+  enum eDS // data source
+  {
+    /* 0 */ DS_NONE=0,
+    /* 1 */ DS_INGEST,
+    /* 2 */ DS_INSERT,
+    /* 3 */ DS_LOAD,
+    /* 3 */ DS_ENUMS
+  };
+  
+  static Stz* aDS[]
+  {
+    /* 0 */ "none"_Stz,
+    /* 1 */ "ingest"_Stz,
+    /* 2 */ "insert"_Stz,
+    /* 3 */ "load"_Stz,
+    /* 4 */ "enums"_Stz
+  };
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   class TablePtn : public Object
@@ -16,15 +34,15 @@ namespace DBobjects
     Lock m_xLock; // lock on the partition
   
     i8 m_iPartitionId; // partition number
-  
-    i8 m_nSubLoadersDone;        // number of subloeader which have completed
-
     bool m_bLowMemLoad;          // was low memory detected during this load
   
     i8 m_nWriteBehindBuffers;    // buffers to be written
     i8 m_nBuffersWritten;        // buffers written so far
     
-    i8 m_iParentJobId;            // parent jobid
+    i8 m_nSubLoadersDone;        // number of subloeader which have completed
+    i8 m_iParentJobId;           // parent jobid
+    
+    bool m_eDataSource;           // HACK
     
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
   
@@ -58,13 +76,16 @@ namespace DBobjects
     void vIncBuffersWritten(void);
     IndexTree* pIndexTree(i8 iIndexNo);
     IndexTreeVec* pIndexTreeVec(void);
+    void vIngesting(void);
+    void vInserting(void);
     bool bIsLocked(void);
+    void vLoading(void);
     void vParentJobId(i8 iJobId);
     i8   iParentJobId(void);
     i8   iPartitionId(void);
     void vPartitionId(i8 iPartitionId);
     bool bPopulateIndex(i8 iIndexNo);
-    void vResetLoad(void);
+    void vResetWrite(void);
     void vTidyUp(void);
     void vTidyUpIndex(i8 iIndexNo);
     
