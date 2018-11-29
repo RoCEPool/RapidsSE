@@ -99,6 +99,7 @@ using namespace JobsModel;
 #include "Job_Pwf.hpp"
 
 #include "Job_Receiver.hpp"
+#include "Job_Repeater.hpp"
 
 #include "Job_Sanity.hpp"
 #include "Job_SizeIndex.hpp"
