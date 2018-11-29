@@ -16,8 +16,6 @@ namespace JobsModel
     i8 m_iPartition; // which partition
     i8 m_iParentJobId; // the job id of the load table job
     i8 m_nWriteBehindBuffers; // number of buffers to be loadeed from sub loader
-  
-    bool   m_bEndOfBuffers; // no more buffers  WON'T WORK RAY
 
     i8     m_nRows; // how many rows in working buffer  WON"T WORK RAY
 
