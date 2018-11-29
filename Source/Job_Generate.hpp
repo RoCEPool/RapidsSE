@@ -15,9 +15,10 @@ namespace JobsModel
                        public JobFileName
   {
   public:
-    Table*  m_pTable;     // table having data generate
-    bool    m_bContinous; // generate continous stream?
-    File    m_xFile;      // file being generated
+    Table*  m_pTable;      // table having data generate
+    bool    m_bIndefinite; // generate continous stream?
+    i8      m_nRecords;    // number of records to generate
+    File    m_xFile;       // file being generated
   
     bool    m_bIsSchemaTest;     // is a schema test generated file?
     i8      m_nLeadingDontCare;  // number of leading dont care columns
@@ -56,15 +57,18 @@ namespace JobsModel
     void   vAddTme(Column* pColumn, i8 iState);
     void   vAddTsp(Column* pColumn, i8 iState);
 
-    void   vAppendCare(i8 i_CareCol);
+    void   vAppendData(i8 i_CareCol);
     void   vAppendLeads(void);
+    void   vAppendPattern(i8 i_CareCol);
     void   vAppendTails(void);
     void   vAppendValue(Column* pColumn, i8 iState);
-    void   vCreateRecord(void);
+    void   vCreateDataRecord(void);
+    void   vCreatePatternRecord(void);
     void   vDumpCombination(void);
     void   vFirstCombination(void);
     void   vGenerate(void);
-    void   vIterateCombinations(void);
+    void   vGenerateDataRecords(void);
+    void   vGeneratePatternRecords(void);
     void   vLoadColumns(void);
     bool   bNextCombination(void);
     Table* pTable(void);

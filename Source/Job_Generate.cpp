@@ -107,8 +107,9 @@ Job_Generate::Job_Generate(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  m_pTable     = nullptr;
-  m_bContinous = false;
+  m_pTable      = nullptr;
+  m_bIndefinite = false;
+  m_nRecords    = 0;
   //m_xFile
   
   m_bIsSchemaTest     = false;
@@ -280,8 +281,8 @@ Job* JobsModel::pJob_Generate_pre(Interface::Session* pSession)
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();
 
-  // there should be 4 tokens
-  if (nTokens != 4)
+  // there should be at least 4 tokens
+  if (nTokens < 4)
     return pJob_Generate;
 
   // set the table name
@@ -289,13 +290,21 @@ Job* JobsModel::pJob_Generate_pre(Interface::Session* pSession)
   
   // set the file name
   if (pTknVec->pGet(2)->sText().bSame("file"_Stz)) {
-    pJob_Generate->m_bContinous = false;
+    pJob_Generate->m_bIndefinite = false;
     pJob_Generate->m_sFileName = pTknVec->pGet(3)->aText();
   }
   else
   if (pTknVec->pGet(2)->sText().bSame("pipe"_Stz)) {
-    pJob_Generate->m_bContinous = true;
+    pJob_Generate->m_bIndefinite = true;
     pJob_Generate->m_sFileName = pTknVec->pGet(3)->aText();
+  }
+  
+  if (5 == nTokens) {
+    if (pTknVec->pGet(4)->eToken() != TN_INTEGER)
+      return pJob_Generate;
+
+   pJob_Generate->m_bIndefinite = false;
+   pJob_Generate->m_nRecords    = pTknVec->pGet(4)->iToI8();
   }
 
   return pJob_Generate;
@@ -560,14 +569,13 @@ void Job_Generate::vAddTsp(Column* pColumn, i8 iState)
 /*----------------------------------------------------------------------------*/
 /* append value for given care column                                         */
 /*----------------------------------------------------------------------------*/
-void Job_Generate::vAppendCare(i8 i_CareCol)
+void Job_Generate::vAppendData(i8 i_CareCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
   Column* pColumn = m_pCareColumn[i_CareCol];
-  i8 iState = m_iCareState[i_CareCol];
   
-  vAppendValue(pColumn,iState);
+  vAppendValue(pColumn,C_GEN_MID);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -583,6 +591,19 @@ void Job_Generate::vAppendLeads(void)
     Column* pColumn = pColVec->pGet(i_Lead);
     vAppendValue(pColumn,C_GEN_MID);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append value for given care column                                         */
+/*----------------------------------------------------------------------------*/
+void Job_Generate::vAppendPattern(i8 i_CareCol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
+  
+  Column* pColumn = m_pCareColumn[i_CareCol];
+  i8 iState = m_iCareState[i_CareCol];
+  
+  vAppendValue(pColumn,iState);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -634,7 +655,7 @@ void Job_Generate::vAppendValue(Column* pColumn, i8 iState)
 /*----------------------------------------------------------------------------*/
 /* create record using the column x value matrix                              */
 /*----------------------------------------------------------------------------*/
-void Job_Generate::vCreateRecord(void)
+void Job_Generate::vCreateDataRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
@@ -643,7 +664,24 @@ void Job_Generate::vCreateRecord(void)
   vAppendLeads();
   
   for (i8 i_CareCol = 0; i_CareCol < m_nCareColumns; i_CareCol++)
-    vAppendCare(i_CareCol);
+    vAppendData(i_CareCol);
+  
+  vAppendTails();
+}
+
+/*----------------------------------------------------------------------------*/
+/* create record using the column x value matrix                              */
+/*----------------------------------------------------------------------------*/
+void Job_Generate::vCreatePatternRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
+  
+  m_sRecord = ""_Stz;
+  
+  vAppendLeads();
+  
+  for (i8 i_CareCol = 0; i_CareCol < m_nCareColumns; i_CareCol++)
+    vAppendPattern(i_CareCol);
   
   vAppendTails();
 }
@@ -703,22 +741,40 @@ void Job_Generate::vGenerate(void)
   
   vLoadColumns();
   
-  vIterateCombinations();
+  if (! m_bIndefinite && ! m_nRecords)
+    vGeneratePatternRecords();
+  else
+    vGenerateDataRecords();
   
   m_xFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate a specific/indefinite number of records                           */
+/*----------------------------------------------------------------------------*/
+void Job_Generate::vGenerateDataRecords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
+  
+  while (m_bIndefinite || m_nRecords) {
+    vCreateDataRecord();
+    vWriteRecord();
+    if (m_nRecords)
+      m_nRecords--;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* iterate column x value                                                     */
 /*----------------------------------------------------------------------------*/
-void Job_Generate::vIterateCombinations(void)
+void Job_Generate::vGeneratePatternRecords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
   vFirstCombination();
   do {
     //vDumpCombination();
-    vCreateRecord();
+    vCreatePatternRecord();
     vWriteRecord();
   } while (bNextCombination());
 }
