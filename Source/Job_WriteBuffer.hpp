@@ -28,6 +28,7 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    bool bInsertRows(void);
     void vShow(void);
     
   public:
