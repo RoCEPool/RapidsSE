@@ -15,7 +15,7 @@ JobClass xJobClass_Repeater =
   CN_JOB_REPEATER,       // class enum
   JK_LOCAL,              // job kind
   "repeat data"_Stz,     // comment about the job
-  "ingest"_Stz,          // the prompt command
+  "repeater"_Stz,        // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "repeater_req"_Stz,    // the _req task seed
