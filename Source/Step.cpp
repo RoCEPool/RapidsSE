@@ -98,6 +98,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobLoadTable();
   Step::vAddSteps_JobNetHog();
   Step::vAddSteps_JobNodeInfo();
+  Step::vAddSteps_JobPurge();
   Step::vAddSteps_JobReceiver();
   Step::vAddSteps_JobRepeater();
   Step::vAddSteps_JobSubLoader();
