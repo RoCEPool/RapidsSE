@@ -36,9 +36,6 @@
   sTableNm find execute locals| pTable |
   pTable pJob_InsertRow job_insertRow.table!
 
-  // set data source as inserting
-  pTable table.inserting
-
   // add job to originator jobs
   //pJob_InsertRow job.addOriginator
 

@@ -88,7 +88,6 @@ Table::Table(void)
     m_ziSubLoaders[i_Slot] = 0;
   
   m_bIsLoading = false;
-  m_eDataSource = DS_NONE;
   
   _checkInitialised_(CN_TABLE);
   
@@ -428,66 +427,6 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, WorkingBuffer* pWorkingBuffer)
         pEntry = pHiddenEntryBuffer->pFirstEntry();
     }
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* data being ingested                                                        */
-/*----------------------------------------------------------------------------*/
-void Table::vIngesting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  m_eDataSource = DS_INGEST;
-}
-
-/*----------------------------------------------------------------------------*/
-/* data being ingested                                                        */
-/*----------------------------------------------------------------------------*/
-bool Table::bIngesting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return m_eDataSource == DS_INGEST ? true : false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* data being ingested                                                        */
-/*----------------------------------------------------------------------------*/
-void Table::vInserting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  m_eDataSource = DS_INSERT;
-}
-
-/*----------------------------------------------------------------------------*/
-/* data being ingested                                                        */
-/*----------------------------------------------------------------------------*/
-bool Table::bInserting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return m_eDataSource == DS_INSERT ? true : false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* data being loaded                                                          */
-/*----------------------------------------------------------------------------*/
-void Table::vLoading(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  m_eDataSource = DS_LOAD;
-}
-
-/*----------------------------------------------------------------------------*/
-/* data being loaded                                                          */
-/*----------------------------------------------------------------------------*/
-bool Table::bLoading(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  return m_eDataSource == DS_LOAD ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
