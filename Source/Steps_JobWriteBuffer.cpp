@@ -101,6 +101,10 @@ void Step::vJob_WriteBufferSpawn(MP_Task mpTask)
   pJob_InsertRow->m_pWorkingBuffer[iPartition] = nullptr;
   Session* pSession = pJob_InsertRow->m_pSession;
   
+  Job_InsertTable* pJob_InsertTable = pJob_InsertRow->m_pJob_InsertTable;
+  
+  i8 iJobInsertTableId = pJob_InsertTable->iJobId();
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a insert buffer job
   
@@ -113,7 +117,7 @@ void Step::vJob_WriteBufferSpawn(MP_Task mpTask)
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
   pJob_WriteBuffer->m_eDataSource  = DS_INSERT;
-  pJob_WriteBuffer->m_iParentJobId = iJob_EndJobid;
+  pJob_WriteBuffer->m_iParentJobId = iJobInsertTableId;
   pJob_WriteBuffer->m_sObjectName  = pJob_InsertRow->m_sObjectName;
   pJob_WriteBuffer->m_iPartitionId = iPartition;
   pJob_WriteBuffer->m_pCurrentBuffer = pWorkingBuffer;
