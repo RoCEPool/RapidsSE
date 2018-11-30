@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 bool HwCounters::bInit(void)
 {
-  i8 iReturnCode = iPmcInit();
+  i8 iReturnCode = 0; //iPmcInit();
   
   return 0 == iReturnCode ? true : false;
 }
@@ -21,7 +21,7 @@ bool HwCounters::bInit(void)
 /*----------------------------------------------------------------------------*/
 i8 HwCounters::iCacheHits(void)
 {
-  i8 iHits = iRdPmc(0);
+  i8 iHits = 0; //iRdPmc(0);
   
   return iHits;
 }
@@ -31,7 +31,7 @@ i8 HwCounters::iCacheHits(void)
 /*----------------------------------------------------------------------------*/
 i8 HwCounters::iCacheMisses(void)
 {
-  i8 iMisses = iRdPmc(0);
+  i8 iMisses = 0; //iRdPmc(0);
   
   return iMisses;
 }
