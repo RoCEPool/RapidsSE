@@ -382,12 +382,12 @@ static Stz* aCN[]
   /*  87 */ "JOB_DROPTABLE"_Stz,       // CN_JOB_DROPTABLE
   /*  88 */ "JOB_DROPTENANT"_Stz,      // CN_JOB_DROPTENANT
   /*  89 */ "JOB_DUMPINDEX"_Stz,       // CN_JOB_DUMPINDEX
-  /*  90 */ "Job_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
   /*     */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  91 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /*     */ "JOB_GENDATA"_Stz,         // CN_JOB_GENERATE
   /*     */ "JOB_INGEST"_Stz,          // CN_JOB_INGEST
   /*  93 */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
+  /*  90 */ "Job_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
   /*  94 */ "JOB_LF"_Stz,              // CN_JOB_LF
   /*  95 */ "JOB_LISTCATALOGS"_Stz,    // CN_JOB_LISTCATALOGS
   /*  96 */ "JOB_LISTCOLUMNS"_Stz,     // CN_JOB_LISTCOLUMNS

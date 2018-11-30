@@ -31,6 +31,7 @@ void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask)
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   i8 iParentJobId = pJob_WriteBuffer->m_iParentJobId;
+  RASSERT(C_UNKNOWN != iParentJobId);
   mpTask->m_pDataStack->vPushInt(iParentJobId);
   
   EXIT();
@@ -99,8 +100,6 @@ void Step::vJob_WriteBufferSpawn(MP_Task mpTask)
   
   Job_InsertTable* pJob_InsertTable = pJob_InsertRow->m_pJob_InsertTable;
   
-  i8 iJobInsertTableId = pJob_InsertTable->iJobId();
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a insert buffer job
   
@@ -113,7 +112,8 @@ void Step::vJob_WriteBufferSpawn(MP_Task mpTask)
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
   pJob_WriteBuffer->m_eDataSource  = DS_INSERT;
-  pJob_WriteBuffer->m_iParentJobId = iJobInsertTableId;
+  pJob_WriteBuffer->m_iParentJobId = pJob_InsertTable->iJobId();
+  RASSERT(C_UNKNOWN != pJob_WriteBuffer->m_iParentJobId);
   pJob_WriteBuffer->m_sObjectName  = pJob_InsertRow->m_sObjectName;
   pJob_WriteBuffer->m_iPartitionId = iPartition;
   pJob_WriteBuffer->m_pCurrentBuffer = pWorkingBuffer;
