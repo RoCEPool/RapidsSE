@@ -57,6 +57,7 @@ using namespace Prompt;
 #include "Prompt_markApi.hpp"
 #include "Prompt_markJob.hpp"
 #include "Prompt_masks.hpp"
+#include "Prompt_memory.hpp"
 #include "Prompt_mkpipe.hpp"
 
 #include "Prompt_numbers.hpp"
