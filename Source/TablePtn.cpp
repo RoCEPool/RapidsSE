@@ -185,9 +185,7 @@ bool TablePtn::bAllBuffersLoaded(eDS eDataSource)
   }
  
   if (eDataSource == DS_INSERT) {
-    if ( C_UNKNOWN != m_iParentJobId &&
-        (m_nBuffersWritten == m_nWriteBehindBuffers) ) {
-      
+    if (m_nBuffersWritten == m_nWriteBehindBuffers) {
       bAllDone = true;
     }
   }
