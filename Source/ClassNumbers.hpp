@@ -121,12 +121,12 @@ enum eCN : u2 // Class Number
   /*  87 */ CN_JOB_DROPTABLE,
   /*  88 */ CN_JOB_DROPTENANT,
   /*  89 */ CN_JOB_DUMPINDEX,
-  /*  90 */ CN_JOB_INSERTTABLE,
   /*     */ CN_JOB_EXPORT,
   /*  91 */ CN_JOB_FETCHROWS,
   /*     */ CN_JOB_GENERATE,
   /*     */ CN_JOB_INGEST,
   /*  93 */ CN_JOB_INSERTROW,
+  /*  90 */ CN_JOB_INSERTTABLE,
   /*  94 */ CN_JOB_LF,
   /*  95 */ CN_JOB_LISTCATALOGS,
   /*  96 */ CN_JOB_LISTCOLUMNS,
@@ -382,7 +382,7 @@ static Stz* aCN[]
   /*  87 */ "JOB_DROPTABLE"_Stz,       // CN_JOB_DROPTABLE
   /*  88 */ "JOB_DROPTENANT"_Stz,      // CN_JOB_DROPTENANT
   /*  89 */ "JOB_DUMPINDEX"_Stz,       // CN_JOB_DUMPINDEX
-  /*  90 */ "Job_InsertTable"_Stz,       // CN_JOB_INSERTTABLE
+  /*  90 */ "Job_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
   /*     */ "JOB_EXPORT"_Stz,          // CN_JOB_EXPORT
   /*  91 */ "JOB_FETCHROWS"_Stz,       // CN_JOB_FETCHROWS
   /*     */ "JOB_GENDATA"_Stz,         // CN_JOB_GENERATE

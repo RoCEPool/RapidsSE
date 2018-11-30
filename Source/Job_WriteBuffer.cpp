@@ -138,7 +138,7 @@ Job_WriteBuffer::~Job_WriteBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Job_WriteBuffer::bInsertRows(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
 
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   
