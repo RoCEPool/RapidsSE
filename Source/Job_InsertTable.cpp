@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_EndInsert.cpp -- Insert Row Job                                        */
+/* Job_InsertTable.cpp -- Insert Row Job                                        */
 /*============================================================================*/
 
 // Job Short: EndInsert
@@ -17,29 +17,29 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_EndInsert =
 {
-  "Job_EndInsert"_Stz,    // name of the job class
-  CN_JOB_ENDINSERT,       // class enum
-  JK_DIST2PC,             // job kind
-  "end insert"_Stz,       // comment about the job
-  nullptr,                // the prompt command
-  nullptr,                // the second word
-  nullptr,                // the _run task seed
-  "endInsert_req"_Stz,    // the _req task seed
-  "endInsert_beg"_Stz,    // the _rcv task seed
-  "endInsert_exe"_Stz,    // the _exe task seed
-  "endInsert_end"_Stz,    // the _end task seed
-  "endInsert_can"_Stz,    // the _can task seed
-  false,                  // check resources?
-  false,                  // detached job?
-  false,                  // buffer attached?
-  JT_NONE,                // job trace
-  pJob_EndInsert_pre,     // prompt pre-process function
-  vJob_EndInsert_post,    // prompt post-process function
-  pJob_EndInsert_new,     // job new function
-  vJob_EndInsert_delete,  // job delete function
-  vJob_send,              // job pre-send function
-  vJob_recv,              // job post-receive function
-  vJob_EndInsert_show,    // job show function
+  "Job_InsertTable"_Stz,    // name of the job class
+  CN_JOB_INSERTTABLE,       // class enum
+  JK_DIST2PC,               // job kind
+  "insert table"_Stz,       // comment about the job
+  nullptr,                  // the prompt command
+  nullptr,                  // the second word
+  nullptr,                  // the _run task seed
+  "insertTable_req"_Stz,    // the _req task seed
+  "insertTable_beg"_Stz,    // the _rcv task seed
+  "insertTable_exe"_Stz,    // the _exe task seed
+  "insertTable_end"_Stz,    // the _end task seed
+  "insertTable_can"_Stz,    // the _can task seed
+  false,                    // check resources?
+  false,                    // detached job?
+  false,                    // buffer attached?
+  JT_NONE,                  // job trace
+  pJob_InsertTable_pre,     // prompt pre-process function
+  vJob_InsertTable_post,    // prompt post-process function
+  pJob_InsertTable_new,     // job new function
+  vJob_InsertTable_delete,  // job delete function
+  vJob_send,                // job pre-send function
+  vJob_recv,                // job post-receive function
+  vJob_InsertTable_show,    // job show function
   
   // help and example
   false,
@@ -52,7 +52,7 @@ JobClass xJobClass_EndInsert =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_EndInsert_class(pFUN** pNextFun)
+JobClass* JobsModel::pJob_InsertTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Export_class;
   
@@ -67,30 +67,30 @@ JobClass* JobsModel::pJob_EndInsert_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_EndInsert* JobsModel::_pJob_EndInsert(void* aAddress)
+Job_InsertTable* JobsModel::_pJob_InsertTable(void* aAddress)
 {
-  Job_EndInsert* pJob_EndInsert = reinterpret_cast<Job_EndInsert*>(aAddress);
+  Job_InsertTable* pJob_InsertTable = reinterpret_cast<Job_InsertTable*>(aAddress);
   
-  RASSERT_TYPE(pJob_EndInsert,CN_JOB_ENDINSERT);
+  RASSERT_TYPE(pJob_InsertTable,CN_JOB_INSERTTABLE);
   
-  return pJob_EndInsert;
+  return pJob_InsertTable;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_EndInsert::operator new(size_t)
+void* Job_InsertTable::operator new(size_t)
 {
-  Job_EndInsert* pJob_EndInsert =
-    static_cast<Job_EndInsert*>(HeapMem::pAllocate(CN_JOB_ENDINSERT));
+  Job_InsertTable* pJob_InsertTable =
+    static_cast<Job_InsertTable*>(HeapMem::pAllocate(CN_JOB_INSERTTABLE));
   
-  return pJob_EndInsert;
+  return pJob_InsertTable;
 }
 
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_EndInsert::operator new(size_t, void* aAddress)
+void* Job_InsertTable::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -98,34 +98,34 @@ void* Job_EndInsert::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void Job_EndInsert::operator delete(void* aAddress)
+void Job_InsertTable::operator delete(void* aAddress)
 {
-  Job_EndInsert* pJob_EndInsert = static_cast<Job_EndInsert*>(aAddress);
+  Job_InsertTable* pJob_InsertTable = static_cast<Job_InsertTable*>(aAddress);
   
-  HeapMem::vFree(pJob_EndInsert);
+  HeapMem::vFree(pJob_InsertTable);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_EndInsert::Job_EndInsert(Interface::Session* pSession)
-: Job(CN_JOB_ENDINSERT, pSession)
+Job_InsertTable::Job_InsertTable(Interface::Session* pSession)
+: Job(CN_JOB_INSERTTABLE, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ENDINSERT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE,_FOOTER_);
   
   m_pJobInsertRow = nullptr;
   
-  _checkInitialised_(CN_JOB_ENDINSERT);
+  _checkInitialised_(CN_JOB_INSERTTABLE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_ENDINSERT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_EndInsert::~Job_EndInsert(void) noexcept(false)
+Job_InsertTable::~Job_InsertTable(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ENDINSERT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE,_FOOTER_);
 }
 
 
@@ -136,11 +136,11 @@ Job_EndInsert::~Job_EndInsert(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_EndInsert::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Job_InsertTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pObject);
+  Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pObject);
 
-  pJob_EndInsert->vShow();
+  pJob_InsertTable->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,9 +150,9 @@ void Job_EndInsert::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_EndInsert::vShow(void)
+void Job_InsertTable::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ENDINSERT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -162,9 +162,9 @@ void Job_EndInsert::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Job_EndInsert::aFooter(void)
+Footer* Job_InsertTable::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_ENDINSERT);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE);
   
   return &m_xFooter;
 }
@@ -180,34 +180,34 @@ Footer* Job_EndInsert::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_EndInsert_pre(Interface::Session* pSession)
+Job* JobsModel::pJob_InsertTable_pre(Interface::Session* pSession)
 {
-  Job_EndInsert* pJob_EndInsert = new Job_EndInsert(pSession);
+  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession);
   
 //  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
 //
-//  bool bResult = pJob_EndInsert->bPopulateJob(pTokenVec);
+//  bool bResult = pJob_InsertTable->bPopulateJob(pTokenVec);
 //
 //  if ( !bResult) {
 //    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-//    pJob_EndInsert->m_bHasError = true;
-//    pJob_EndInsert->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+//    pJob_InsertTable->m_bHasError = true;
+//    pJob_InsertTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
 //  }
   
-  return pJob_EndInsert;
+  return pJob_InsertTable;
 }
 
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_EndInsert_post(Interface::Session* pSession, Job* pJob)
+void JobsModel::vJob_InsertTable_post(Interface::Session* pSession, Job* pJob)
 {
-  Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJob);
+  Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJob);
   
-  if ( pJob_EndInsert->m_bHasError ) {
+  if ( pJob_InsertTable->m_bHasError ) {
     
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_EndInsert->m_xNode[i_Node].m_eErrorCode]);
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_InsertTable->m_xNode[i_Node].m_eErrorCode]);
     }
     
   }
@@ -216,32 +216,32 @@ void JobsModel::vJob_EndInsert_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_EndInsert_new(Job* pArg)
+Job* JobsModel::pJob_InsertTable_new(Job* pArg)
 {
-  Job_EndInsert* pJob_EndInsert = new Job_EndInsert(nullptr);
+  Job_InsertTable* pJob_InsertTable = new Job_InsertTable(nullptr);
   
-  return pJob_EndInsert;
+  return pJob_InsertTable;
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_EndInsert_delete(Interface::Session* pSession, Job* pJob)
+void JobsModel::vJob_InsertTable_delete(Interface::Session* pSession, Job* pJob)
 {
-  Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJob);
+  Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJob);
   
   //vTrace("DELETING ENDINSERT\n"_Stz);
-  delete pJob_EndInsert;
+  delete pJob_InsertTable;
 }
 
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_EndInsert_show(Job* pJob)
+void JobsModel::vJob_InsertTable_show(Job* pJob)
 {
-  Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJob);
+  Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJob);
 
-  pJob_EndInsert->vShow();
+  pJob_InsertTable->vShow();
 }
 
 /*============================================================================*/

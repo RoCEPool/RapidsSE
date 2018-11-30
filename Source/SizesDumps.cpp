@@ -122,12 +122,12 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_DROPTENANT
   /*    */ &Dump::vDummy,           // CN_JOB_DUMPINDEX
-  /*    */ &Dump::vDummy,           // CN_JOB_ENDINSERT
   /*    */ &Dump::vDummy,           // CN_JOB_EXPORT
   /*    */ &Dump::vDummy,           // CN_JOB_FETCHROWS
   /*    */ &Dump::vDummy,           // CN_JOB_GENERATE
   /*    */ &Dump::vDummy,           // CN_JOB_INGEST
   /*    */ &Dump::vDummy,           // CN_JOB_INSERTROW
+  /*    */ &Dump::vDummy,           // CN_JOB_INSERTTABLE
   /*    */ &Dump::vDummy,           // CN_JOB_LF
   /*    */ &Dump::vDummy,           // CN_JOB_LISTCATALOGS
   /*    */ &Dump::vDummy,           // CN_JOB_LISTCOLUMNS
@@ -388,12 +388,12 @@ i8 giClassSize[]
   /*    */ sizeof(Job_DropTable),      // CN_JOB_DROPTABLE
   /*    */ sizeof(Job_DropTenant),     // CN_JOB_DROPTENANT
   /*    */ sizeof(Job_DumpIndex),      // CN_JOB_DUMPINDEX
-  /*    */ sizeof(Job_EndInsert),      // CN_JOB_ENDINSERT
   /*    */ sizeof(Job_Export),         // CN_JOB_EXPORT
   /*    */ sizeof(Job_FetchRows),      // CN_JOB_FETCHROWS
-  /*    */ sizeof(Job_Generate),        // CN_JOB_GENERATE
+  /*    */ sizeof(Job_Generate),       // CN_JOB_GENERATE
   /*    */ sizeof(Job_Ingest),         // CN_JOB_INGEST
   /*    */ sizeof(Job_InsertRow),      // CN_JOB_INSERTROW
+  /*    */ sizeof(Job_InsertTable),    // CN_JOB_INSERTTABLE
   /*    */ sizeof(Job_Lf),             // CN_JOB_LF
   /*    */ sizeof(Job_ListCatalogs),   // CN_JOB_LISTCATALOGS
   /*    */ sizeof(Job_ListColumns),    // CN_JOB_LISTCOLUMNS
@@ -653,12 +653,12 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DROPTENANT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_DUMPINDEX
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_ENDINSERT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_EXPORT
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_FETCHROWS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_GENERATE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INGEST
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTROW
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_INSERTTABLE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LF
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCATALOGS
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_LISTCOLUMNS

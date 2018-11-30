@@ -48,7 +48,7 @@ JobClass xJobClass_DumpIndex =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_DumpIndex_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_EndInsert_class;
+  *pNextFun = (pFUN*)pJob_InsertTable_class;
   
   return &xJobClass_DumpIndex;
 }

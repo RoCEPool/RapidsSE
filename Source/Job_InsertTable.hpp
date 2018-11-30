@@ -1,14 +1,14 @@
 /*============================================================================*/
-/* Job_EndInsert.hpp -- End Insert Job                                        */
+/* Job_InsertTable.hpp -- Insert Table Job                                    */
 /*============================================================================*/
 #pragma once
 
 namespace JobsModel
 {
-  class Job_InsertRow;
+  class Job_InsertTable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_EndInsert : public Job
+  class Job_InsertTable : public Job
   {
   public:
     Job_InsertRow* m_pJobInsertRow;                  // insert row job
@@ -21,8 +21,8 @@ namespace JobsModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_EndInsert(Interface::Session* pSession);
-    ~Job_EndInsert(void) noexcept(false);
+    Job_InsertTable(Interface::Session* pSession);
+    ~Job_InsertTable(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
@@ -40,15 +40,15 @@ namespace JobsModel
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job_EndInsert* _pJob_EndInsert(void* aAddr);
+  Job_InsertTable* _pJob_InsertTable(void* aAddr);
   
-  Job* pJob_EndInsert_pre(Interface::Session* pSession);
-  void vJob_EndInsert_post(Interface::Session* pSession, Job* pJob);
-  Job* pJob_EndInsert_new(Job* pArg);
-  void vJob_EndInsert_delete(Interface::Session* pSession, Job* pJob);
-  void vJob_EndInsert_show(Job* pJob);
+  Job* pJob_InsertTable_pre(Interface::Session* pSession);
+  void vJob_InsertTable_post(Interface::Session* pSession, Job* pJob);
+  Job* pJob_InsertTable_new(Job* pArg);
+  void vJob_InsertTable_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_InsertTable_show(Job* pJob);
   
-  JobClass* pJob_EndInsert_class(pFUN** aaFun);
+  JobClass* pJob_InsertTable_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

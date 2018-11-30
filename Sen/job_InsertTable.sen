@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* job_EndInsert.sen -- Job End Insert                                        */
+/* job_InsertTable.sen -- Job Insert Table                                    */
 /*============================================================================*/
 
-" job_EndInsert.sen" .verbose
+" job_InsertTable.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* send working buffer to node                                                */
 /*----------------------------------------------------------------------------*/
-: EndInsert_sendBuffer ( iPartition job_EndJobid pJob_InsertRow -- )
-  params| pJob_InsertRow iJob_EndJobid iPartition |
+: InsertTable_sendBuffer ( iPartition job_InsertTableJobid pJob_InsertRow -- )
+  params| pJob_InsertRow iJob_InsertTableJobid iPartition |
 
   1 locals| isFinal |
 
-  isFinal iPartition iJob_EndJobid pJob_InsertRow job_writeBuffer::spawn
+  isFinal iPartition iJob_InsertTableJobid pJob_InsertRow job_writeBuffer::spawn
 ;
 
 /*----------------------------------------------------------------------------*/
 /* send last buffers to all partitions                                        */
 /*----------------------------------------------------------------------------*/
-: EndInsert_sendLast ( pJob_EndInsert -- )
+: InsertTable_sendLast ( pJob_InsertTable -- )
 
-  params| pJob_EndInsert  |
+  params| pJob_InsertTable  |
   0 0 0 locals| pThisTask iInsertRowJobId pJob_InsertRow |
 
   task::this to pThisTask
@@ -28,7 +28,7 @@
   // calculate total partitions in the cluster
   grid::slots grid::nodes * locals| nTotalPartitions |
 
-  pJob_EndInsert job_EndInsert.insertRowJob@ to pJob_InsertRow
+  pJob_InsertTable job_InsertTable.insertRowJob@ to pJob_InsertRow
   //pJob_InsertRow .
 
   // grab this task's lock
@@ -48,20 +48,20 @@
     pJob_InsertRow job_InsertRow.danglingBuffer
 
     // send last buffer to node
-    I pJob_EndInsert job.Id@ pJob_InsertRow EndInsert_sendBuffer
+    I pJob_InsertTable job.Id@ pJob_InsertRow InsertTable_sendBuffer
 
   loop
 
 
-  //"EndInsert_sendLast ack waiting" .verbose
+  //"InsertTable_sendLast ack waiting" .verbose
   task::wait
-  //"EndInsert_sendLast acked" .verbose
+  //"InsertTable_sendLast acked" .verbose
 ;
 
 /*----------------------------------------------------------------------------*/
 /* wait for ack only                                                          */
 /*----------------------------------------------------------------------------*/
-: EndInsert_waitOnly ( pJob_EndInsert --  )
+: InsertTable_waitOnly ( pJob_InsertTable --  )
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab this task's lock
@@ -69,16 +69,16 @@
 
   grid::slots task::acks!
 
-  //"EndInsert_waitOnly waiting" .verbose
+  //"InsertTable_waitOnly waiting" .verbose
   task::wait
-  //"EndInsert_waitOnly acked" .verbose
+  //"InsertTable_waitOnly acked" .verbose
 ;
 
 
 /*----------------------------------------------------------------------------*/
-/* Job_EndInsert request (on originating node)                                */
+/* Job_InsertTable request (on originating node)                              */
 /*----------------------------------------------------------------------------*/
-: endInsert_req (  -- <R> )
+: insertTable_req (  -- <R> )
 
   >>am <SEED_REQ>
 
@@ -99,87 +99,84 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_EndInsert job on each node                                     */
+/* execute Job_InsertTable job on each node                                   */
 /*----------------------------------------------------------------------------*/
-: endInsert_exe ( Job_EndInsert -- )
+: insertTable_exe ( Job_InsertTable -- )
 
   >>am <SEED_EXE>
 
-  //params| pJob_CreateTable |
-  job::this locals| pJob_EndInsert |
+  job::this locals| pJob_InsertTable |
 
   0 0 locals| pTable sTableNm |
 
-  tp: endInsert_exe
+  tp: insertTable_exe
 
   //----------------------------------------------------------------------------
   // assert correct job
-  CN_JOB_ENDINSERT pJob_EndInsert object.assertClass
+  CN_JOB_INSERTTABLE pJob_InsertTable object.assertClass
 
   //----------------------------------------------------------------------------
   // grab a lock ????
 
-  pJob_EndInsert job::originator@ locals| iOriginNode |
+  pJob_InsertTable job::originator@ locals| iOriginNode |
   grid::thisNode@ locals| iThisNode |
 
   //iThisNode iOriginNode "Originating node %v; this node %v" fmt.print
   
   iThisNode iOriginNode == if
-    //"endInsert is executing on this node" .
-    pJob_EndInsert EndInsert_sendLast
+    //"InsertTable is executing on this node" .
+    pJob_InsertTable InsertTable_sendLast
   else
-    //"endInsert is not executed on this node" .
-    EndInsert_waitOnly
+    //"InsertTable is not executed on this node" .
+    InsertTable_waitOnly
   then
 
   //----------------------------------------------------------------------------
-  pJob_EndInsert job.notice
+  pJob_InsertTable job.notice
 
   // delete_completed_job
 
-  pJob_EndInsert send_job__executed
+  pJob_InsertTable send_job__executed
 
   <<am <DONE_EXE>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_EndInsert job check resources                                  */
+/* execute Job_InsertTable job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: endInsert.checkResources ( pJob_EndInsert -- )
+: insertTable.checkResources ( pJob_InsertTable -- )
 
-  params| pJob_EndInsert  |
+  params| pJob_InsertTable  |
 
-  tp: endInsert.checkResources
+  tp: insertTable.checkResources
   //checkResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_EndInsert job release resources                                */
+/* execute Job_InsertTable job release resources                              */
 /*----------------------------------------------------------------------------*/
-: endInsert.releaseResources ( pJob_EndInsert -- )
+: insertTable.releaseResources ( pJob_InsertTable -- )
 
-  params| pJob_CreateTable  |
-
-  tp: endInsert.releaseResources
+  tp: insertTable.releaseResources
   //releaseResources received" .
 ;
 
 /*----------------------------------------------------------------------------*/
 /* begin job                                                                  */
 /*----------------------------------------------------------------------------*/
-: endInsert_beg ( -- )
+: insertTable_beg ( -- )
 
   >>am <SEED_BEG>
 
-  job::this locals| pJob_EndInsert |
+  job::this locals| pJob_InsertTable |
 
-  ">> endInsert_beg <<" .verbose
+  ">> insertTable_beg <<" .verbose
 
   // add this job to the participants list
-  pJob_EndInsert job.beginParticipant
+  pJob_InsertTable job.beginParticipant
 
   // check resources
-  pJob_EndInsert endInsert.checkResources
+  pJob_InsertTable insertTable.checkResources
 
   // this job has begun
   job::participantBegun
@@ -190,16 +187,16 @@
 /*----------------------------------------------------------------------------*/
 /* end job                                                                    */
 /*----------------------------------------------------------------------------*/
-: endInsert_end ( -- )
+: insertTable_end ( -- )
 
   >>am <SEED_END>
 
-  job::this locals| pJob_EndInsert |
+  job::this locals| pJob_InsertTable |
 
-  ">> endInsert_end <<" .verbose
+  ">> insertTable_end <<" .verbose
 
   // release resources
-  pJob_EndInsert endInsert.releaseResources
+  pJob_InsertTable insertTable.releaseResources
 
   job::participantEnded
 
@@ -209,13 +206,13 @@
 /*----------------------------------------------------------------------------*/
 /* cancel job                                                                 */
 /*----------------------------------------------------------------------------*/
-: endInsert_can ( -- )
+: insertTable_can ( -- )
 
   >>am <SEED_CAN>
 
-  job::this locals| pJob_EndInsert |
+  job::this locals| pJob_InsertTable |
 
-  pJob_EndInsert endInsert.releaseResources
+  pJob_InsertTable insertTable.releaseResources
 
   job::participantCancelled
 

@@ -37,7 +37,6 @@
 "job_DropTenant.sen" include
 "job_DumpIndex.sen" include
 
-"job_EndInsert.sen" include
 "job_Export.sen" include
 
 "job_FetchRows.sen" include
@@ -46,6 +45,7 @@
 
 "job_Ingest.sen" include
 "job_InsertRow.sen" include
+"job_InsertTable.sen" include
 
 "Job_Lf.sen" include
 "Job_ListColumns.sen" include

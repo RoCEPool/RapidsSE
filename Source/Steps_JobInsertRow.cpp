@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobInsertRow(void)
 {
-  vAddStep("job_endInsert.insertRowJob@"_Stz, &Step::vJob_EndInsertInsertRowJobFetch);
+  vAddStep("Job_InsertTable.insertRowJob@"_Stz, &Step::vJob_InsertTableInsertRowJobFetch);
   
   vAddStep("job_InsertRow.danglingBuffer"_Stz,   &Step::vJob_InsertRowDanglingBuffer);
   vAddStep("job_insertRow.partition!"_Stz,       &Step::vJob_InsertRowPartitionStore);
@@ -19,18 +19,18 @@ void Step::vAddSteps_JobInsertRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_EndInsert.InsertRowJob@ -- fetch insertRow jobid from job              */
+/* Job_InsertTable.InsertRowJob@ -- fetch insertRow jobid from job              */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_EndInsertInsertRowJobFetch(MP_Task mpTask)
+void Step::vJob_InsertTableInsertRowJobFetch(MP_Task mpTask)
 {
-  ENTRY("vJob_EndInsertInsertRowJobFetch"_Stz);
+  ENTRY("vJob_InsertTableInsertRowJobFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_EndInsert.InsertRowJob@"_Stz);
-  Job_EndInsert* pJob_EndInsert = _pJob_EndInsert(pJobPtr);
+    THROW_INVALID_DSTACK("Job_InsertTable.InsertRowJob@"_Stz);
+  Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJobPtr);
   
-  mpTask->m_pDataStack->vPushObject(pJob_EndInsert->m_pJobInsertRow);
+  mpTask->m_pDataStack->vPushObject(pJob_InsertTable->m_pJobInsertRow);
   
   EXIT();
 }
