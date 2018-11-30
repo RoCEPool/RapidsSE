@@ -20,7 +20,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("job.addParticipant"_Stz,   &Step::vJobAddParticipant);
-  vAddStep("job.addRowsProcessed"_Stz, &Step::vJobAddRowsProcessed);
   vAddStep("job.class"_Stz,            &Step::vJobClass);
   vAddStep("job.columnCount@"_Stz,     &Step::vJobColumnCountFetch);
   vAddStep("job.columnIsPartKey"_Stz,  &Step::vJobColumnIsPartKey);
@@ -200,31 +199,6 @@ void Step::vJobAddParticipant(MP_Task mpTask)
          pJob->iJobId(),
          pJob->iParticipantNode());
 #endif
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job.addRowsProcessed -- add the rows processed by the job from a node      */
-/*----------------------------------------------------------------------------*/
-void Step::vJobAddRowsProcessed(MP_Task mpTask)
-{
-  ENTRY("vJobRowsProcessedStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
-  Job* pJob = _pJob(pJobPtr);
-  
-  i8 iNode;
-  if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
-    THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
-  
-  i8 iRowsProcessed;
-  if ( ! mpTask->m_pDataStack->bPop(iRowsProcessed) )
-    THROW_INVALID_DSTACK("job.rowsProcessed!"_Stz);
-  
-  pJob->m_xNode[iNode].m_ziRowsProcessed += iRowsProcessed;
   
   EXIT();
 }

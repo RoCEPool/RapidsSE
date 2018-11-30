@@ -16,7 +16,6 @@ void Step::vAddSteps_JobLoadBuffer(void)
   vAddStep("job_loadBuffer.insertRows"_Stz,      &Step::vJob_LoadBufferInsertRows);
   vAddStep("job_loadBuffer.parentJobId@"_Stz,    &Step::vJob_LoadBufferParentJobIdFetch);
   vAddStep("job_loadBuffer.partition@"_Stz,      &Step::vJob_LoadBufferPartitionFetch);
-  vAddStep("job_loadBuffer.rows@"_Stz,           &Step::vJob_LoadBufferRowsFetch);
   vAddStep("job_loadBuffer.table!"_Stz,          &Step::vJob_LoadBufferTableStore);
 }
 
@@ -72,24 +71,6 @@ void Step::vJob_LoadBufferPartitionFetch(MP_Task mpTask)
   i8 i_Partition = pJob_LoadBuffer->iPartition();
   mpTask->m_pDataStack->vPushInt(i_Partition);
 
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_LoadBuffer.rows@ -- fetch rows from job_loadBuffer                     */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_LoadBufferRowsFetch(MP_Task mpTask)
-{
-  ENTRY("vJob_LoadBufferRowsFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_LoadBuffer.rows@"_Stz);
-  Job_LoadBuffer* pJob_LoadBuffer = _pJob_LoadBuffer(pJobPtr);
-  
-  i8 nRows = pJob_LoadBuffer->m_nRows;
-  mpTask->m_pDataStack->vPushInt(nRows);
-  
   EXIT();
 }
 

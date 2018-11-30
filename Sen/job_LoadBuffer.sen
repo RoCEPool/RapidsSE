@@ -22,7 +22,6 @@
   0 locals| sTableNm    |
   0 locals| i_Partition |
   0 locals| bAllLoaded  |
-  0 locals| n_Rows      |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -58,8 +57,6 @@
   // now insert the buffer of rows
   pJob_LoadBuffer job_LoadBuffer.insertRows to bAllLoaded
 
-  pJob_LoadBuffer job_loadBuffer.rows@ to n_Rows
-
   // drop write lock on table partition
   i_Partition pTable tablePtnDropWrite
 
@@ -67,9 +64,6 @@
 
   // ack the load table task if all buffers have been loaded
   bAllLoaded if
-
-    // set the no of rows loaded
-    n_Rows grid::thisNode@ pJob_LoadTable job.AddRowsProcessed
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // first check if the job is executing SS_SEED_EXE

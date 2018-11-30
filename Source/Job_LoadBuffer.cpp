@@ -268,8 +268,8 @@ bool Job_LoadBuffer::bInsertRows(void)
   pPartition->vIncBuffersWritten();
   
   // add the number of rows into rows processed
-  //i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
-  //pJob_LoadTable->m_xNode[iThisNode].m_ziRowsProcessed += m_nRows;
+  i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
+  pJob_LoadTable->m_xNode[iThisNode].m_ziRowsProcessed += m_nRows;
   
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?

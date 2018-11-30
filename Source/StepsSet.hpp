@@ -440,7 +440,6 @@
   static void vJobAcksRemaining(Tasks::MP_Task mpTask);
   static void vJobAddOriginator(Tasks::MP_Task mpTask);
   static void vJobAddParticipant(Tasks::MP_Task mpTask);
-  static void vJobAddRowsProcessed(Tasks::MP_Task mpTask);
   static void vJobClass(Tasks::MP_Task mpTask);
   static void vJobColumnCountFetch(Tasks::MP_Task mpTask);
   static void vJobColumnNameFetch(Tasks::MP_Task mpTask);
@@ -557,7 +556,6 @@
   static void vJob_LoadBufferInsertRows(Tasks::MP_Task mpTask);
   static void vJob_LoadBufferParentJobIdFetch(Tasks::MP_Task mpTask);
   static void vJob_LoadBufferPartitionFetch(Tasks::MP_Task mpTask);
-  static void vJob_LoadBufferRowsFetch(Tasks::MP_Task mpTask);
   static void vJob_LoadBufferSpawn(Tasks::MP_Task mpTask);
   static void vJob_LoadBufferTableStore(Tasks::MP_Task mpTask);
 
