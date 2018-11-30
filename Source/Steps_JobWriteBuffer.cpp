@@ -85,10 +85,6 @@ void Step::vJob_WriteBufferSpawn(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_InsertRow.spawnInsertBuffer!"_Stz);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pPtrInsertRow);
   
-  i8 iJob_EndJobid;
-  if ( ! mpTask->m_pDataStack->bPop(iJob_EndJobid) )
-    THROW_INVALID_DSTACK("job_InsertRow.spawnInsertBuffer"_Stz);
-  
   i8 iPartition;
   if ( ! mpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("job_InsertRow.spawnInsertBuffer"_Stz);

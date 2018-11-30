@@ -7,12 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* send working buffer to node                                                */
 /*----------------------------------------------------------------------------*/
-: InsertTable_sendBuffer ( iPartition job_InsertTableJobid pJob_InsertRow -- )
-  params| pJob_InsertRow iJob_InsertTableJobid iPartition |
+: InsertTable_sendBuffer ( iPartition pJob_InsertRow -- )
+  params| pJob_InsertRow iPartition |
 
   1 locals| isFinal |
 
-  isFinal iPartition iJob_InsertTableJobid pJob_InsertRow job_writeBuffer::spawn
+  isFinal iPartition pJob_InsertRow job_writeBuffer::spawn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -48,7 +48,7 @@
     pJob_InsertRow job_InsertRow.danglingBuffer
 
     // send last buffer to node
-    I pJob_InsertTable job.Id@ pJob_InsertRow InsertTable_sendBuffer
+    I pJob_InsertRow InsertTable_sendBuffer
 
   loop
 
