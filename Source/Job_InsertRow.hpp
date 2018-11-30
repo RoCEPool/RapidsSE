@@ -5,13 +5,16 @@
 
 namespace JobsModel
 {
+  class Job_InsertTable;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_InsertRow : public Job,
                         public Job_WriteBehind
   {
   public:
-    Table*         m_pTable;                             // table pointer
-    Formatters     m_xFormatters;                        // record formatters
+    Job_InsertTable* m_pJob_InsertTable;                   // insert table job
+    Table*           m_pTable;                             // table pointer
+    Formatters       m_xFormatters;                        // record formatters
     
     // must be last
     Footer m_xFooter;

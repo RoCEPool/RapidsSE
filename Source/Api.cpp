@@ -85,18 +85,18 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     //pJob_InsertRow->m_pWorkingBuffer[0]->vShow(true);
     
     // create Job_InsertTable
-    JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
-    ASSERT(pJobClass_InsertTable)
-    Job_InsertTable* pJob_InsertTable =
-      static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
+//    JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
+//    ASSERT(pJobClass_InsertTable)
+//    Job_InsertTable* pJob_InsertTable =
+//      static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
+    
+    Job_InsertTable* pJob_InsertTable = pJob_InsertRow->m_pJob_InsertTable;
+    pSession->m_pJobStack->vPushObject(pJob_InsertTable);
     
     vApiJob(pSession,pJob_InsertTable);
     vApiLocation(pSession,105);
     
     i8 iJobSeq = pJob_InsertTable->m_iJobSeq;
-    
-    // push the endInsert job on the stack
-    pSession->m_pJobStack->vPushObject(pJob_InsertTable);
     
     // set insertRowJobId in the endInsert job
     pJob_InsertTable->m_pJobInsertRow = pJob_InsertRow;
@@ -111,7 +111,7 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     // set the job state to be locked
     pJob_InsertTable->m_eState = JS_LOCKED;
     
-    // spawn the endInsert job
+    // spawn the insertTable job
     RapidsSE_bSpawnJob(pJob_InsertTable, SS_SEED_REQ, pSession);
     vApiLocation(pSession,107);
     
@@ -849,7 +849,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
     //VALIDATE_TABLE("c"_Stz);
     
     Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
- 
+    
     i8 iRawDataLength = StrLib::iSize(sRow->aChar());
     
     //vTrace("row length %lld\n"_Stz, iRawDataLength);
@@ -1089,7 +1089,7 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
     TRACE_ERROR("!", pError->eErrorCode());
     eEC eError = pError->eErrorCode();
     //vApiError(pSession,eError);                                     // API ERROR
-    return pError->eErrorCode();
+    return eError;
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
@@ -1144,7 +1144,7 @@ eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
     eEC eError = pError->eErrorCode();
     //vApiError(pSession,eError);                                     // API ERROR
     ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return pError->eErrorCode();
+    return eError;
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
@@ -1397,6 +1397,7 @@ void vDeleteJobs(Session* pSession)
     vApiLocation(pSession,600);
     
     // delete the job
+    vTrace("Deleting job %p %s\n"_Stz, pJobPtr, aCN[pJobPtr->eClass()]);
     pJobClass->vDeleteJob(pSession,pJobPtr);
     
     pSession->m_nJobDelete++;
