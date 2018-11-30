@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
+#include "Test.h"
 
 extern Arguments  gxArguments;
 
@@ -11,22 +12,7 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-//  printf("Stack base %llx size %lld pointer %llx\n",
-//         PosixThread::aStackBase(),
-//         PosixThread::iStackSize(),
-//         PosixThread::aStackPointer());
-  
-//  Time xNow;
-//  xNow.vSetNowLocal();
-//  
-//  vTrace("%lld/%02lld/%02lld %02lld:%02lld:%02lld (local)\n"_Stz,
-//         (i8)xNow.m_iYear + 1900,
-//         (i8)xNow.m_iMonth,
-//         (i8)xNow.m_iDay,
-//         (i8)xNow.m_iHour,
-//         (i8)xNow.m_iMinute,
-//         (i8)xNow.m_iSecond
-//         );
+  vTest9();
 
   // parse the command line arguments
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )

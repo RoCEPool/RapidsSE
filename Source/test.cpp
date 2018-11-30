@@ -3,16 +3,7 @@
 /*============================================================================*/
   
 #include "StorageEngine.h"
-
-void vTest1(void);
-void vTest2(void);
-void vTest3(void);
-void vTest4(void);
-void vTest5(void);
-void vTest6(void);
-void vTest7(void);
-void vTest8(void);
-void vTest9(void);
+#include "Test.h"
 
 /*----------------------------------------------------------------------------*/
 /* test1                                                                      */
@@ -219,6 +210,10 @@ void vTest5(void)
 /*----------------------------------------------------------------------------*/
 void vTest6(void)
 {
+//  printf("Stack base %llx size %lld pointer %llx\n",
+//         PosixThread::aStackBase(),
+//         PosixThread::iStackSize(),
+//         PosixThread::aStackPointer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -226,23 +221,17 @@ void vTest6(void)
 /*----------------------------------------------------------------------------*/
 void vTest7(void)
 {
-  Dir xDir;
-  s256 sCurrent;
-  //  if (xDir.bGetCurrent(sCurrent))
-  //    vInfo("dir: %s\n",sCurrent.aChar());
-  
-  
-  //  vTrace("Task::vWord %p\n"_Stz,Task::vWord);
-  
-  //  Timer xTimer;
-  //
-  //  xTimer.vStart();
-  //
-  //  PosixThread::vSleepMilli(10);
-  //
-  //  xTimer.vUpdate();
-  //
-  //  vTrace("duration %lldns\n"_Stz,xTimer.iNanoseconds());
+//  Time xNow;
+//  xNow.vSetNowLocal();
+//
+//  vTrace("%lld/%02lld/%02lld %02lld:%02lld:%02lld (local)\n"_Stz,
+//         (i8)xNow.m_iYear + 1900,
+//         (i8)xNow.m_iMonth,
+//         (i8)xNow.m_iDay,
+//         (i8)xNow.m_iHour,
+//         (i8)xNow.m_iMinute,
+//         (i8)xNow.m_iSecond
+//         );
 }
 
 /*----------------------------------------------------------------------------*/
