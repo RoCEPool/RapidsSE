@@ -116,6 +116,8 @@ Job_WriteBuffer::Job_WriteBuffer(Interface::Session* pSession)
   m_iPartitionId = -1;
   m_iParentJobId = -1;
   m_nWriteBehindBuffers = C_UNKNOWN;
+  m_nRows = 0;
+  m_bLowMem = false;
   
   _checkInitialised_(CN_JOB_WRITEBUFFER);
   
@@ -215,6 +217,66 @@ bool Job_WriteBuffer::bInsertRows(void)
   }
   
   return bAllDone;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert rows while under low memory condition                               */
+/*----------------------------------------------------------------------------*/
+bool Job_WriteBuffer::bInsertRows_LowMem(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  if (gpAttachMap->m_bVerbose)
+    vTrace("Job_WriteBuffer (LowMem) \n"_Stz);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the load table job
+  
+//  Job__Find* pFindJob = new Job__Find;
+//  pFindJob->m_iJobId = m_iParentJobId;
+//
+//  gpAttachMap->m_pParticipatingJobs->vGrabLock();
+//  Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+//  gpAttachMap->m_pParticipatingJobs->vDropLock();
+//
+//  delete pFindJob;
+//
+//  Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
+  // convert partition to node slot
+  i8 iSlot = TablePtn::iPartitionToSlot(m_iPartitionId);
+  
+  // get table, partition and working buffer
+  TablePtn* pPartition = m_pTable->pPartition(iSlot);
+  
+  // add the number of rows into rows skipped
+  //i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
+  //pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped += m_nRows;
+  
+//  if (gpAttachMap->m_bVerbose)
+//    vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
+//           *pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped,
+//           m_nRows);
+  
+  // we loaded one additional buffer from a subloader
+  pPartition->vIncBuffersWritten();
+  
+  // does this job have information about the number of buffers loadable
+  // from a subloader for this partition?
+  if (C_UNKNOWN != m_nWriteBehindBuffers)
+    pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
+  
+  // have all buffers been loaded?
+  bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded(DS_LOAD);
+  //if (bAllBuffersLoaded)
+  //  vTrace("Buffers loaded\n"_Stz);
+  
+  return bAllBuffersLoaded;
 }
 
 /*----------------------------------------------------------------------------*/

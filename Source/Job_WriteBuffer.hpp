@@ -16,6 +16,10 @@ namespace JobsModel
     i8     m_iParentJobId;   // parent (EndInsert/LoadTable) job id
     i8     m_nWriteBehindBuffers; // write behind buffers
     
+    i8     m_nRows; // how many rows in working buffer  WON"T WORK RAY
+    
+    bool   m_bLowMem; // was received under low memory conditions
+    
     // must be last
     Footer m_xFooter;
   
@@ -31,6 +35,7 @@ namespace JobsModel
 
   public:
     bool bInsertRows(void);
+    bool bInsertRows_LowMem(void);
     void vShow(void);
     
   public:
