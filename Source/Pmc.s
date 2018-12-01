@@ -25,7 +25,14 @@ iPmc_Cpuid:
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
 # .. to be written ..
-mov rax,73
+#mov rax,73
+
+  mov rax,0
+  mov eax,0x0A
+
+  cpuid
+
+#mov eax,edx
 
 ret
 
