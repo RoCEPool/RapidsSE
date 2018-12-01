@@ -297,6 +297,7 @@ void Job_WriteBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 Job_WriteBuffer* Job_WriteBuffer::pNewJobWriteBuffer(Session* pSession,
                                                      Stz* sTableName,
+                                                     eDS eDataSource,
                                                      WorkingBuffer* pWorkingBuffer,
                                                      i8 iParentJobId,
                                                      i8 iPartition,
@@ -314,6 +315,8 @@ Job_WriteBuffer* Job_WriteBuffer::pNewJobWriteBuffer(Session* pSession,
   
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
+  pJob_WriteBuffer->m_eDataSource  = DS_INSERT;
+  RASSERT(C_UNKNOWN != iParentJobId);
   pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
   pJob_WriteBuffer->m_sObjectName   = sTableName;
   pJob_WriteBuffer->m_iPartitionId  = iPartition;

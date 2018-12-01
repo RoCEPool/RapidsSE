@@ -33,7 +33,7 @@ namespace JobsModel
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Job_WriteBuffer* pNewJobWriteBuffer(Interface::Session* pSession,
-                                              Stz* sTableName,
+                                              Stz* sTableName, eDS eDataSource,
                                               WorkingBuffer* pWorkingBuffer,
                                               i8 iParentJobId,
                                               i8 iPartition,
