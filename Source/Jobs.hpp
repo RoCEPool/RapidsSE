@@ -39,6 +39,7 @@ namespace JobsModel
     void   vAddJob(Job* pJob);
     void   vDropLock(void);
     Job*   pFindJob(Job* pFindJob);
+    i8     iGetJobId(void);
     void   vGrabLock(void);
     bool   bGrabLock(void);
     bool   bIsLocked(void);

@@ -142,7 +142,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_InsertTable job check resources                                  */
+/* execute Job_InsertTable job check resources                                */
 /*----------------------------------------------------------------------------*/
 : insertTable.checkResources ( pJob_InsertTable -- )
 

@@ -142,11 +142,15 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job.addOriginator"_Stz);
   Job* pJob = _pJob(pJobPtr);
-           
+  
+  // does the job have an id ?
+  if (C_UNKNOWN == pJob->m_iJobId) {
+    i8 iJobId = gpAttachMap->m_pOriginatingJobs->iGetJobId();
+    pJob->m_iJobId = iJobId;
+  }
+  
+  // add the job to the originating jobs
   gpAttachMap->m_pOriginatingJobs->vGrabLock();
-  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
-  pJob->m_iJobId = iJobId;
-
   gpAttachMap->m_pOriginatingJobs->vAddJob(pJob);
   gpAttachMap->m_pOriginatingJobs->vDropLock();
 

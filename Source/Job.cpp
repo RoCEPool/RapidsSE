@@ -137,9 +137,9 @@ Job::~Job(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Job::vInit(void)
 {
-  m_iJobId   = -1;
+  m_iJobId   = C_UNKNOWN;
   m_iJobSeq  = ++gzJobSeq;
-  m_iSession = -1;
+  m_iSession = C_UNKNOWN;
   
   m_pJobClass = nullptr;
   m_eSeed     = SS_ENUMS;
@@ -153,7 +153,7 @@ void Job::vInit(void)
   m_pExecutingTask    = nullptr;
   m_pOriginatingTask  = nullptr;
 
-  m_iParticipantNode  = -1;
+  m_iParticipantNode  = C_UNKNOWN;
   m_xAcksRemaining.vCheckInit();
   m_pCurrentBuffer = nullptr;
   
