@@ -32,7 +32,14 @@ namespace JobsModel
     ~Job_WriteBuffer(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-
+    static Job_WriteBuffer* pNewJobWriteBuffer(Interface::Session* pSession,
+                                              Stz* sTableName,
+                                              WorkingBuffer* pWorkingBuffer,
+                                              i8 iParentJobId,
+                                              i8 iPartition,
+                                              bool bFinal,
+                                              i8 nWriteBehindBuffers);
+    
   public:
     bool bInsertRows(void);
     bool bInsertRows_LowMem(void);

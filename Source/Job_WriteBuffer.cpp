@@ -293,6 +293,42 @@ void Job_WriteBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get partition being loaded                                                 */
+/*----------------------------------------------------------------------------*/
+Job_WriteBuffer* Job_WriteBuffer::pNewJobWriteBuffer(Session* pSession,
+                                                     Stz* sTableName,
+                                                     WorkingBuffer* pWorkingBuffer,
+                                                     i8 iParentJobId,
+                                                     i8 iPartition,
+                                                     bool bFinal,
+                                                     i8 nWriteBehindBuffers)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a write buffer job
+  
+  //! this needs to be optimised
+  JobClass* pJobClass_WriteBuffer = JobClass::pFind(CN_JOB_WRITEBUFFER);
+  
+  Job_WriteBuffer* pJob_WriteBuffer =
+  static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(pSession));
+  
+  pJob_WriteBuffer->vSeed(SS_SEED_RUN);
+  
+  pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
+  pJob_WriteBuffer->m_sObjectName   = sTableName;
+  pJob_WriteBuffer->m_iPartitionId  = iPartition;
+  pJob_WriteBuffer->m_pCurrentBuffer = pWorkingBuffer;
+  pJob_WriteBuffer->m_nRows = pWorkingBuffer->nWorkingRows();
+  
+  if (bFinal) {
+    ASSERT(C_UNKNOWN != nWriteBehindBuffers);
+    pJob_WriteBuffer->m_nWriteBehindBuffers = nWriteBehindBuffers;
+  }
+  
+  return pJob_WriteBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
