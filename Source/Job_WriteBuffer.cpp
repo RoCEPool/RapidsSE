@@ -144,26 +144,12 @@ bool Job_WriteBuffer::bInsertRows(void)
 
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   
-//  if (! m_pCurrentBuffer) {
-//    bool bAllBuffersLoaded = bInsertRows_LowMem();
-//    return bAllBuffersLoaded;
-//  }
+  if (! m_pCurrentBuffer) {
+    bool bAllBuffersLoaded = bInsertRows_LowMem();
+    return bAllBuffersLoaded;
+  }
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the load table job
-  
-//  Job__Find* pFindJob = new Job__Find;
-//  pFindJob->m_iJobId = m_iParentJobId;
-//
-//  gpAttachMap->m_pParticipatingJobs->vGrabLock();
-//  Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-//  gpAttachMap->m_pParticipatingJobs->vDropLock();
-//
-//  delete pFindJob;
-//
-  //Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -178,6 +164,11 @@ bool Job_WriteBuffer::bInsertRows(void)
 
   RASSERT_TYPE(m_pCurrentBuffer,CN_WORKINGBUFFER);
 
+  if (gpAttachMap->m_bVerbose)
+    vTrace("Job_WriteBuffer %lld %lld %s\n"_Stz,
+           m_pCurrentBuffer->nWorkingRows(),
+           m_nRows,
+           m_pCurrentBuffer->bIsLast() ? "IsLast" : "");
   i8 iTxId = 0;
 
   // insert the working buffer
@@ -186,37 +177,45 @@ bool Job_WriteBuffer::bInsertRows(void)
   // we inserted one additional buffer
   pPartition->vIncBuffersWritten();
 
-  // add the number of rows into rows processed
-  i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
-  //pJob->m_xNode[iThisNode].m_ziRowsProcessed += m_nRows;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the load table job
+  if (m_eDataSource == DS_LOAD) {
+    Job__Find* pFindJob = new Job__Find;
+    pFindJob->m_iJobId = m_iParentJobId;
+    
+    gpAttachMap->m_pParticipatingJobs->vGrabLock();
+    Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+    gpAttachMap->m_pParticipatingJobs->vDropLock();
+    
+    delete pFindJob;
+    
+    Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
   
-  // does this job have information about the number of buffers loadable
+    // add the number of rows into rows processed
+    i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_LoadTable->m_xNode[iThisNode].m_ziRowsProcessed += m_nRows;
+  }
+  
+  // does this job have information about the number of buffers to be written
   // from a subloader for this partition?
   if (C_UNKNOWN != m_nWriteBehindBuffers) {
     pPartition->vWriteBehindBuffers(m_nWriteBehindBuffers);
-    pPartition->vParentJobId(m_iParentJobId);
     
     if (m_bMark) {
       ActivityMap::vMark(m_iJobId,"Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld"_Stz,
                          m_iPartitionId, iSlot, m_nWriteBehindBuffers);
-      
-      ActivityMap::vMark(m_iJobId,"Setting ParentJobId in partition %lld to %lld"_Stz,
-                         m_iPartitionId, m_iParentJobId);
     }
   }
-
-  // get the parentJobId
-  m_iParentJobId = pPartition->iParentJobId();
   
-  bool bAllDone = pPartition->bAllBuffersLoaded(m_eDataSource);
+  bool bAllBuffersWritten = pPartition->bAllBuffersLoaded(m_eDataSource);
   
-  if (bAllDone) {
+  if (bAllBuffersWritten) {
     if (m_bMark) {
       ActivityMap::vMark(m_iJobId,"All buffers written for partition %lld"_Stz, m_iPartitionId);
     }
   }
   
-  return bAllDone;
+  return bAllBuffersWritten;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,21 +231,6 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
     vTrace("Job_WriteBuffer (LowMem) \n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the load table job
-  
-//  Job__Find* pFindJob = new Job__Find;
-//  pFindJob->m_iJobId = m_iParentJobId;
-//
-//  gpAttachMap->m_pParticipatingJobs->vGrabLock();
-//  Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-//  gpAttachMap->m_pParticipatingJobs->vDropLock();
-//
-//  delete pFindJob;
-//
-//  Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   
   // convert partition to node slot
   i8 iSlot = TablePtn::iPartitionToSlot(m_iPartitionId);
@@ -254,16 +238,31 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
   // get table, partition and working buffer
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
   
-  // add the number of rows into rows skipped
-  //i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
-  //pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped += m_nRows;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the load table job
+  if (m_eDataSource == DS_LOAD) {
+    Job__Find* pFindJob = new Job__Find;
+    pFindJob->m_iJobId = m_iParentJobId;
+    
+    gpAttachMap->m_pParticipatingJobs->vGrabLock();
+    Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+    gpAttachMap->m_pParticipatingJobs->vDropLock();
+    
+    delete pFindJob;
+    
+    Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
+
+    // add the number of rows into rows skipped
+    i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
+    pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped += m_nRows;
   
-//  if (gpAttachMap->m_bVerbose)
-//    vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
-//           *pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped,
-//           m_nRows);
+    if (gpAttachMap->m_bVerbose)
+      vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
+             *pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped,
+             m_nRows);
+  }
   
-  // we loaded one additional buffer from a subloader
+  // we wrote one additional buffer
   pPartition->vIncBuffersWritten();
   
   // does this job have information about the number of buffers loadable
@@ -272,11 +271,11 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
     pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
   
   // have all buffers been loaded?
-  bool bAllBuffersLoaded = pPartition->bAllBuffersLoaded(DS_LOAD);
+  bool bAllBuffersInserted = pPartition->bAllBuffersLoaded(DS_LOAD);
   //if (bAllBuffersLoaded)
   //  vTrace("Buffers loaded\n"_Stz);
   
-  return bAllBuffersLoaded;
+  return bAllBuffersInserted;
 }
 
 /*----------------------------------------------------------------------------*/
