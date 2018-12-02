@@ -22,6 +22,7 @@
   0 locals| sTableNm    |
   0 locals| i_Partition |
   0 locals| bAllLoaded  |
+  0 locals| pJob_Parent |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -48,7 +49,7 @@
   // we wait till the parent job can be found in the participant job skip list
   // there is a possiblity that the buffer arrives on a node before the parent job
   pJob_WriteBuffer Job_WriteBuffer.isLoading if
-    pJob_WriteBuffer iParentJobId job::waitParticipant locals| pJob_Parent |
+    pJob_WriteBuffer iParentJobId job::waitParticipant to pJob_Parent
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -71,7 +72,7 @@
     // we wait till the parent job can be found in the participant job skip list
     // there is a possiblity that the buffer arrives on a node before the parent job
     pJob_WriteBuffer Job_WriteBuffer.isInserting if
-      pJob_WriteBuffer iParentJobId job::waitParticipant locals| pJob_Parent |
+      pJob_WriteBuffer iParentJobId job::waitParticipant to pJob_Parent
     then
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

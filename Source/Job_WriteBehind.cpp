@@ -86,7 +86,7 @@ void Job_WriteBehind::vHashRecord(Table* pTable)
 /* write buffer into the table                                                */
 /*----------------------------------------------------------------------------*/
 void Job_WriteBehind::vWriteBuffer(Interface::Session* pSession, Stz* sTableName,
-                                   i8 iParentJobId)
+                                   eDS eDataSource, i8 iParentJobId)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the InsertBuffer job
@@ -101,7 +101,7 @@ void Job_WriteBehind::vWriteBuffer(Interface::Session* pSession, Stz* sTableName
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // move the working buffer to insertBuffer
-  pJob_WriteBuffer->m_eDataSource  = DS_INSERT;
+  pJob_WriteBuffer->m_eDataSource  = eDataSource;
   pJob_WriteBuffer->m_iPartitionId = m_iPartition;
   pJob_WriteBuffer->m_iParentJobId = iParentJobId;
   RASSERT(C_UNKNOWN != iParentJobId);

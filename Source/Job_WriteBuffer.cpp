@@ -194,12 +194,16 @@ bool Job_WriteBuffer::bInsertRows(void)
     // add the number of rows into rows processed
     i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
     pJob_LoadTable->m_xNode[iThisNode].m_ziRowsProcessed += m_nRows;
+    
+    if (C_UNKNOWN != m_nWriteBehindBuffers)
+      pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
   }
-  
-  // does this job have information about the number of buffers to be written
-  // from a subloader for this partition?
-  if (C_UNKNOWN != m_nWriteBehindBuffers) {
-    pPartition->vWriteBehindBuffers(m_nWriteBehindBuffers);
+  else {
+    // does this job have information about the number of buffers to be written
+    // from a subloader for this partition?
+    if (C_UNKNOWN != m_nWriteBehindBuffers) {
+      pPartition->vWriteBehindBuffers(m_nWriteBehindBuffers);
+  }
     
     if (m_bMark) {
       ActivityMap::vMark(m_iJobId,"Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld"_Stz,
@@ -315,7 +319,7 @@ Job_WriteBuffer* Job_WriteBuffer::pNewJobWriteBuffer(Session* pSession,
   
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
-  pJob_WriteBuffer->m_eDataSource  = DS_INSERT;
+  pJob_WriteBuffer->m_eDataSource  = eDataSource;
   RASSERT(C_UNKNOWN != iParentJobId);
   pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
   pJob_WriteBuffer->m_sObjectName   = sTableName;
