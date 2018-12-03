@@ -88,30 +88,16 @@ void Job_WriteBehind::vHashRecord(Table* pTable)
 void Job_WriteBehind::vWriteBuffer(Interface::Session* pSession, Stz* sTableName,
                                    eDS eDataSource, i8 iParentJobId)
 {
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the InsertBuffer job
-  JobClass* pJobClass = JobClass::pFind(CN_JOB_WRITEBUFFER);
-  ASSERT(pJobClass);
-  Job* pJobWriteBuffer = pJobClass->pPreJob(pSession);
-  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobWriteBuffer);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set table name in InsertBuffer
-  pJob_WriteBuffer->m_sObjectName = sTableName;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // move the working buffer to insertBuffer
-  pJob_WriteBuffer->m_eDataSource  = eDataSource;
-  pJob_WriteBuffer->m_iPartitionId = m_iPartition;
-  pJob_WriteBuffer->m_iParentJobId = iParentJobId;
-  RASSERT(C_UNKNOWN != iParentJobId);
-  pJob_WriteBuffer->m_pCurrentBuffer = m_pWorkingBuffer[m_iPartition];
+  // get the working buffer
+  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
   m_pWorkingBuffer[m_iPartition] = nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the Insert buffer job
-  bool bResult = RapidsSE_bSpawnJob(pJob_WriteBuffer,SS_SEED_RUN,pSession);
-  ASSERT(bResult);
+  // spawn a write buffer job for load
+  Job_WriteBuffer::vSpawnJobWriteBuffer(pSession, sTableName, eDataSource,
+                                        pWorkingBuffer, iParentJobId,
+                                        m_iPartition, false, 0);
 }
 
 /*----------------------------------------------------------------------------*/

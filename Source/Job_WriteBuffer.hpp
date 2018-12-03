@@ -31,7 +31,7 @@ namespace JobsModel
     ~Job_WriteBuffer(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static Job_WriteBuffer* pNewJobWriteBuffer(Interface::Session* pSession,
+    static void vSpawnJobWriteBuffer(Interface::Session* pSession,
                                               Stz* sTableName, eDS eDataSource,
                                               WorkingBuffer* pWorkingBuffer,
                                               i8 iParentJobId,

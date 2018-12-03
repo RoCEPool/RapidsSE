@@ -309,7 +309,7 @@ void Job_WriteBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get partition being loaded                                                 */
 /*----------------------------------------------------------------------------*/
-Job_WriteBuffer* Job_WriteBuffer::pNewJobWriteBuffer(Session* pSession,
+void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
                                                      Stz* sTableName,
                                                      eDS eDataSource,
                                                      WorkingBuffer* pWorkingBuffer,
@@ -343,7 +343,10 @@ Job_WriteBuffer* Job_WriteBuffer::pNewJobWriteBuffer(Session* pSession,
     pJob_WriteBuffer->m_nWriteBehindBuffers = nWriteBehindBuffers;
   }
   
-  return pJob_WriteBuffer;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the write buffer job
+  
+  RapidsSE_bSpawnJob(pJob_WriteBuffer,SS_SEED_RUN,pSession);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -188,9 +188,11 @@ void Step::vJob_SubLoaderProcessRecords(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subLoader.processRecords"_Stz);
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
-  bool bTargetBufferFull = pJob_SubLoader->bProcessRecords();
+//  bool bTargetBufferFull = pJob_SubLoader->bProcessRecords();
+//
+//  mpTask->m_pDataStack->vPushInt(bTargetBufferFull);
   
-  mpTask->m_pDataStack->vPushInt(bTargetBufferFull);
+  pJob_SubLoader->bProcessRecords();
   
   EXIT();
 }

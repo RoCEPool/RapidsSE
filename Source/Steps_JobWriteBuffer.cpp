@@ -169,16 +169,11 @@ void Step::vJob_WriteBufferSpawnInsert(MP_Task mpTask)
   Stz* pTableName = pJob_InsertRow->m_sObjectName;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a write buffer job for insert
-  Job_WriteBuffer* pJob_WriteBuffer = Job_WriteBuffer::pNewJobWriteBuffer(
-                                        pSession, pTableName, DS_INSERT,
-                                        pWorkingBuffer, iParentJobId, iPartition,
-                                        bFinal, nWriteBehindBuffers);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the write buffer job
-  
-  RapidsSE_bSpawnJob(pJob_WriteBuffer,SS_SEED_RUN,pSession);
+  // spawn a write buffer job for insert
+  Job_WriteBuffer::vSpawnJobWriteBuffer(
+                      pSession, pTableName, DS_INSERT,
+                      pWorkingBuffer, iParentJobId, iPartition,
+                      bFinal, nWriteBehindBuffers);
   
   EXIT();
 }
@@ -217,15 +212,10 @@ void Step::vJob_WriteBufferSpawnLoad(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a write buffer job for load
-  Job_WriteBuffer* pJob_WriteBuffer = Job_WriteBuffer::pNewJobWriteBuffer(
-                                          pSession, sTableName, DS_LOAD,
-                                          pWorkingBuffer, iParentJobId, iPartition,
-                                          bFinal, nWriteBehindBuffers);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the write buffer job
-  
-  RapidsSE_bSpawnJob(pJob_WriteBuffer,SS_SEED_RUN,pSession);
+  Job_WriteBuffer::vSpawnJobWriteBuffer(
+                      pSession, sTableName, DS_LOAD,
+                      pWorkingBuffer, iParentJobId, iPartition,
+                      bFinal, nWriteBehindBuffers);
   
   EXIT();
 }

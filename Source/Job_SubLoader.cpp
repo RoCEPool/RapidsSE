@@ -263,26 +263,32 @@ bool Job_SubLoader::bProcessRecords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
-  eEC eErrorCode;
+  eEC eErrorCode = EC_NONE;
   
   while (bFetchRecord()) {
     
     // hash the record to get m_iPartition
     vHashRecord(m_pJob_LoadTable->m_pTable);
     
-    // attempt to add record into a buffer
-    bool bInserted = bInsertRow(m_pJob_LoadTable->m_pTable, eErrorCode);
+    while (true) {
+      // attempt to add record into a buffer
+      bool bInserted = bInsertRow(m_pJob_LoadTable->m_pTable, eErrorCode);
     
-    // check if target buffer was full
-    if (! bInserted) {
+      // if inserted then done
+      if (bInserted)
+       break;
+    
+      // was there an error ?
+      if ( eErrorCode != EC_NONE ) {
+        vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
+        return false;
+      }
+    
       // buffer was full
-      // return to loaderSub to append buffer to the table/partition
-      
-      m_pLoadChunk->vPushBack();
-      
-      return true;
+      i8 iParentJobId = m_pJob_LoadTable->m_iJobId;
+      RASSERT(C_UNKNOWN != iParentJobId);
+      vWriteBuffer(m_pJob_LoadTable->m_pSession, m_pJob_LoadTable->m_sObjectName, DS_LOAD, iParentJobId);
     }
-    
   }
   
   return false;

@@ -56,11 +56,13 @@
   params| pJob_SubLoader |
   0 locals| pJobLoadTable_Participant |
 
-  begin pJob_SubLoader job_subLoader.processRecords while
+  //begin pJob_SubLoader job_subLoader.processRecords while
 
-    false pJob_SubLoader SubLoader_sendBuffer
+  //  false pJob_SubLoader SubLoader_sendBuffer
 
-  repeat
+  //repeat
+
+  pJob_SubLoader job_subLoader.processRecords
 
   // get the job_loader from subLoader
   pJob_SubLoader job_subLoader.jobLoadTable@ to pJobLoadTable_Participant
