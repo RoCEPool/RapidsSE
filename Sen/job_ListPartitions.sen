@@ -26,22 +26,90 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set metadata string in the job
   args.metadata if
-    "(partitonCount INTEGER, partitionNumber INTEGER, ...)"
+    "(NodeName VARCHAR, partitionNumber INTEGER)"
     pJob_ListPartitions job.metadata!
   then
 
-  grid::slots "row: ( %v" str.format
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pJob_ListPartitions job.distribute
+
+  <<am <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get space in the pool (executed on all nodes)                              */
+/*----------------------------------------------------------------------------*/
+: listPartitions_exe ( pJob_ListPartitions -- )
+
+  >>am <SEED_EXE>
+
+  //params| pJob_Space |
+  job::this locals| pJob_ListPartitions |
+
+  CN_JOB_LISTPARTITIONS pJob_ListPartitions object.assertClass
+
+  ""   // intialize the string
   grid::slots 0 do
-    I grid::toPartition ", %v" str.format str.cat
+    I grid::toPartition
+    I grid::toPartition grid::toNode grid::toNode grid::node node.name
+    "row: ( %v, %v)\n" str.format str.cat
   loop
-  " )" str.format str.cat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set response in job
   grid::thisNode@ pJob_ListPartitions job.response!
-  1 grid::thisNode@ pJob_ListPartitions job.rowsProcessed!
+  grid::slots grid::thisNode@ pJob_ListPartitions job.rowsProcessed!
 
-  <<am <DONE_REQ>
+  pJob_ListPartitions job.notice
+
+  pJob_ListPartitions send_job__executed
+
+  <<am <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: listPartitions_beg ( -- )
+
+  >>am <SEED_BEG>
+
+  job::this locals| pJob_ListPartitions |
+
+  pJob_ListPartitions job.beginParticipant
+
+  job::participantBegun
+
+  <<am <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: listPartitions_end ( -- )
+
+  >>am <SEED_END>
+
+  ">> listPartitions_end <<" .
+
+  job::participantEnded
+
+  <<am <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: listPartitions_can ( -- )
+
+  >>am <SEED_CAN>
+
+  ">> listPartitions_can <<" .
+
+  job::participantCancelled
+
+  <<am <DONE_CAN>
 ;
 
 /*============================================================================*/

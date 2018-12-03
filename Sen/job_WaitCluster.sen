@@ -13,7 +13,7 @@
 
   0 0 locals| pJob pTask |
 
-  tp: space_req
+  tp: waitCluster_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task

@@ -11,18 +11,18 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_ListPartitions =
 {
-  "Job_ListPartitions"_Stz,// name of the job class
-  CN_JOB_LISTPARTITIONS,   // class enum
-  JK_LOCAL,                // job kind
-  "list partitions"_Stz,   // comment about the job
-  "lspart"_Stz,            // the prompt command
-  nullptr,                 // the second word
-  nullptr,                 // the _run task seed
-  "listPartitions_req"_Stz,// the _req task seed
-  nullptr,                 // the _exe task seed
-  nullptr,                 // the _rcv task seed
-  nullptr,                 // the _end task seed
-  nullptr,                 // the _can task seed
+  "Job_ListPartitions"_Stz, // name of the job class
+  CN_JOB_LISTPARTITIONS,    // class enum
+  JK_DIST2PC,               // job kind
+  "list partitions"_Stz,    // comment about the job
+  "lspart"_Stz,             // the prompt command
+  nullptr,                  // the second word
+  nullptr,                  // the _run task seed
+  "listPartitions_req"_Stz, // the _req task seed
+  "listPartitions_beg"_Stz, // the _exe task seed
+  "listPartitions_exe"_Stz, // the _rcv task seed
+  "listPartitions_end"_Stz, // the _end task seed
+  "listPartitions_can"_Stz, // the _can task seed
   false,                   // check resources?
   false,                   // detached job?
   false,                   // buffer attached?
@@ -31,9 +31,9 @@ JobClass xJobClass_ListPartitions =
   vJob_ListPartitions_post,// prompt post-process function
   nullptr,                 // job new function
   vJob_ListPartitions_delete, // job delete function
-  nullptr,                 // job pre-send function
-  nullptr,                 // job post-receive function
-  vJob_ListPartitions_show,// job show function
+  vJob_send,                  // job pre-send function
+  vJob_recv,                  // job post-receive function
+  vJob_ListPartitions_show,  // job show function
   
   // help and example
   true,
@@ -225,10 +225,13 @@ void JobsModel::vJob_ListPartitions_post(Interface::Session* pSession, Job* pJob
     if (gpAttachMap->m_bMetadata) {
       vTrace("metadata: %s\n"_Stz, pJob_ListPartitions->m_sMetadata.aStr());
     }
+    i8 iRowsProcessed = 0;
+    
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("%s"_Stz, pJob_ListPartitions->m_xNode[i_Node].m_sResponse.aChar());
+      vTrace("%s\n"_Stz, pJob_ListPartitions->m_xNode[i_Node].m_sResponse.aChar());
+      iRowsProcessed += *pJob_ListPartitions->m_xNode[i_Node].m_ziRowsProcessed;
     }
-    vTrace("success: %lld rows affected\n"_Stz, gpAttachMap->m_pGrid->m_nNodes);
+    vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   }
 }
 

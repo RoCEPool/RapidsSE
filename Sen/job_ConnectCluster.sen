@@ -81,7 +81,7 @@
 
   0 0 locals| pJob pTask |
 
-  tp: space_req
+  tp: connectCluster_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
