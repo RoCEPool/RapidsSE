@@ -80,17 +80,13 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     // validate the job
     VALIDATE_JOB("b"_Stz);
     
+    // get the insertRow job
     Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
     
-    //pJob_InsertRow->m_pWorkingBuffer[0]->vShow(true);
-    
-    // create Job_InsertTable
-//    JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
-//    ASSERT(pJobClass_InsertTable)
-//    Job_InsertTable* pJob_InsertTable =
-//      static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
-    
+    // get the insertTable job from the insertRow job
     Job_InsertTable* pJob_InsertTable = pJob_InsertRow->m_pJob_InsertTable;
+    
+    // push the InsertTable job onto the jobstack
     pSession->m_pJobStack->vPushObject(pJob_InsertTable);
     
     vApiJob(pSession,pJob_InsertTable);
@@ -98,7 +94,7 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     
     i8 iJobSeq = pJob_InsertTable->m_iJobSeq;
     
-    // set insertRowJobId in the endInsert job
+    // set insertRowJob in the insertTable job
     pJob_InsertTable->m_pJobInsertRow = pJob_InsertRow;
     
     // lock this job's mutex
@@ -817,7 +813,7 @@ eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void**
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLevel)
+eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_InsertRow"_Stz;
   eAC  eApiCall = AC_InsertRow;
@@ -827,7 +823,6 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
   vApiLocation(pSession,100);
 
   eEC eResult;
-  
   
   try {
     
@@ -840,20 +835,18 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
     VALIDATE_SESSION("a"_Stz);
 
     // validate parameter
-    VALIDATE_PARAM("b"_Stz, sRow);
+    VALIDATE_PARAM("b"_Stz, sRecord);
     
     // validate the job
     VALIDATE_JOB("b"_Stz);
-    
-    // validate table
-    //VALIDATE_TABLE("c"_Stz);
-    
+  
+    // get the insertRow job
     Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
     
-    i8 iRawDataLength = StrLib::iSize(sRow->aChar());
+    // get the length of the record
+    i8 iRawDataLength = StrLib::iSize(sRecord->aChar());
     
-    //vTrace("row length %lld\n"_Stz, iRawDataLength);
-    
+    // check length of record
     if (iRawDataLength > C_MAX_RECORD) {
       eEC eErrorCode = EC_MAX_ROW_LENGTH;
       TRACE_ERROR("d"_Stz, eErrorCode);
@@ -863,18 +856,10 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       return eErrorCode;
     }
     
-    bool bValid = pJob_InsertRow->bFormatRow(sRow, iRawDataLength);
+    // format the row
+    bool bValid = pJob_InsertRow->bFormatRow(sRecord, iRawDataLength);
     
-//    s17KB s;
-//    i8 iRowLength;
-//    bool bBlankLine;
-//
-//    // format the record into row format
-//    bool bValid = Row::bFormatRow(pJob_InsertRow->m_pTable->pColumnVec(),
-//                                  &pJob_InsertRow->m_xFormatters,
-//                                  sRow, iRawDataLength,
-//                                  s, iRowLength, bBlankLine,
-//                                  true /* allowNonPrintable */);
+    // is the record invalid ?
     if (! bValid) {
       eEC eErrorCode = EC_INVALID_VALUE;
       TRACE_ERROR("d"_Stz, eErrorCode);
@@ -883,23 +868,16 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
       return eErrorCode;
     }
-
-    //vTrace("row formatted\n"_Stz);
     
     // hash the row to a partition
     pJob_InsertRow->vHashRecord(pJob_InsertRow->m_pTable);
     
-    //vTrace("Row partition %lld\n"_Stz, iRowPartition);
-    
-    // insert the row in this partition's buffer
     eEC eErrorCode = EC_NONE;
     
     while (true) {
       
       // insert row into a working buffer in job InsertRow
       bool bResult = pJob_InsertRow->bInsertRow(pJob_InsertRow->m_pTable, eErrorCode);
-
-      //vTrace("Inserted row into buffer\n"_Stz);
       
       // if inserted then done
       if (bResult)
@@ -919,33 +897,6 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRow, i8 iTraceLev
       i8 iParentJobId = pJob_InsertRow->m_pJob_InsertTable->m_iJobId;
       RASSERT(C_UNKNOWN != iParentJobId);
       pJob_InsertRow->vWriteBuffer(pSession, pJob_InsertRow->m_sObjectName, DS_INSERT, iParentJobId);
-    
-      /*
-      // create InsertBuffer job
-      //vTrace("Buffer full!!! Creating InsertBuffer job\n"_Stz);
-      JobClass* pJobClass = JobClass::pFind(CN_JOB_WRITEBUFFER);
-      ASSERT(pJobClass);
-      Job* pJobInsertBuffer = pJobClass->pPreJob(pSession);
-      Job_InsertBuffer* pJob_InsertBuffer = _pJob_InsertBuffer(pJobInsertBuffer);
-      
-      vApiJob(pSession,pJob_InsertBuffer);
-      
-      // set table name in InsertBuffer
-      //vTrace("Setting tableName %s in InsertBuffer job\n"_Stz, pJob_InsertRow->m_sObjectName.aChar());
-      pJob_InsertBuffer->m_sObjectName = pJob_InsertRow->m_sObjectName;
-      
-      // move the working buffer from insertRow to insertBuffer
-      //vTrace("Setting workingBuffer %p in InsertBuffer job\n"_Stz, pJob_InsertRow->m_pWorkingBuffer[iRowPartition]);
-      i8 iPartition = pJob_InsertRow->m_iPartition;
-      pJob_InsertBuffer->m_iPartitionId = iPartition;
-      pJob_InsertBuffer->m_pCurrentBuffer = pJob_InsertRow->m_pWorkingBuffer[iPartition];
-      pJob_InsertRow->m_pWorkingBuffer[iPartition] = nullptr;
-      
-      //vLockMutex();
-      //vTrace("Spawning InsertBuffer job\n"_Stz);
-      bResult = RapidsSE_bSpawnJob(pJob_InsertBuffer,SS_SEED_RUN,pSession);
-      ASSERT(bResult);
-      */
     }
 
     // trace exit
