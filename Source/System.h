@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Values.h"
+#include "Assembler.h"
 
 //-----------------------------------------------------------------------------
 
@@ -18,14 +18,7 @@ using namespace System;
 
 #include "SysCall.hpp"
 
-#if !( (defined(__APPLE__) || defined(__LINUX__)) )
-  #include "Asm.h"
-#endif
-
-#include "Pmc.h"
-
 #include "Atomic.hpp"
-
 #include "Decider.hpp"
 #include "Dir.hpp"
 #include "Env.hpp"

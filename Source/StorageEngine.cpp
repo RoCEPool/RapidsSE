@@ -22,7 +22,8 @@ void StorageEngine::vCheckAllAssumptions(void)
   CorrectnessAlgebra::vCheckAssumptions();
   Datums::vCheckAssumptions();
   Values::vCheckAssumptions();
-  System::vCheckAssumptions();
+  Values::vCheckAssumptions();
+  Assembler::vCheckAssumptions();
   Pool::vCheckAssumptions();
   Structures::vCheckAssumptions();
   Measurement::vCheckAssumptions();
