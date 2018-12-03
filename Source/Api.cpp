@@ -870,32 +870,23 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTrace
     pJob_InsertRow->vHashRecord(pJob_InsertRow->m_pTable);
     
     eEC eErrorCode = EC_NONE;
-    
-    while (true) {
-      
-      // insert row into a working buffer in job InsertRow
-      bool bResult = pJob_InsertRow->bInsertRow(pJob_InsertRow->m_pTable, eErrorCode);
-      
-      // if inserted then done
-      if (bResult)
-        break;
-      
-      // was there an error ?
-      if ( eErrorCode != EC_NONE ) {
-        vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
-        TRACE_ERROR("f"_Stz, eErrorCode);
-        vApiError(pSession,eErrorCode);                             // API ERROR
-        vApiLocation(pSession,812);
-        ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
-        return eErrorCode;
-      }
-      
-      // buffer was full
-      i8 iParentJobId = pJob_InsertRow->m_pJob_InsertTable->m_iJobId;
-      RASSERT(C_UNKNOWN != iParentJobId);
-      pJob_InsertRow->vWriteBuffer(pSession, pJob_InsertRow->m_sObjectName, DS_INSERT, iParentJobId);
-    }
 
+    Table* pTable   = pJob_InsertRow->m_pTable;
+    i8 iParentJobId = pJob_InsertRow->m_pJob_InsertTable->m_iJobId;
+    
+    // insert row into a working buffer in job InsertRow
+    eErrorCode = pJob_InsertRow->eInsertRow(pSession, pTable, DS_INSERT, iParentJobId);
+    
+    // was there an error ?
+    if ( eErrorCode != EC_NONE ) {
+      vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
+      TRACE_ERROR("f"_Stz, eErrorCode);
+      vApiError(pSession,eErrorCode);                             // API ERROR
+      vApiLocation(pSession,812);
+      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+      return eErrorCode;
+    }
+    
     // trace exit
     TRACE_EXIT("ea"_Stz);
     vApiReturn(pSession);                                          // API RETURN

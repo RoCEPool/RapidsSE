@@ -83,63 +83,60 @@ void Job_WriteBehind::vHashRecord(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* write buffer into the table                                                */
-/*----------------------------------------------------------------------------*/
-void Job_WriteBehind::vWriteBuffer(Interface::Session* pSession, Stz* sTableName,
-                                   eDS eDataSource, i8 iParentJobId)
-{
-  
-  // get the working buffer
-  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
-  m_pWorkingBuffer[m_iPartition] = nullptr;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn a write buffer job for load
-  Job_WriteBuffer::vSpawnJobWriteBuffer(pSession, sTableName, eDataSource,
-                                        pWorkingBuffer, iParentJobId,
-                                        m_iPartition, false, 0);
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-bool Job_WriteBehind::bInsertRow(Table* pTable, eEC &eErrorCode)
+eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource, i8 iParentJobId)
 {
   
-  // check for working buffer
-  if (! m_pWorkingBuffer[m_iPartition]) {
+  eEC eErrorCode = EC_NONE;
+  
+  // insert the row in a working buffer
+  while (true ) {
     
-    // create a new working buffer for this partition
-    vNewWorkingBuffer(pTable);
-    
+    // check for working buffer
     if (! m_pWorkingBuffer[m_iPartition]) {
-      vTrace("EntryBuffer allocation failed\n"_Stz);
-      eErrorCode = EC_LOW_BUFFERS;
-      return false;
+      
+      // create a new working buffer for this partition
+      vNewWorkingBuffer(pTable);
+      
+      if (! m_pWorkingBuffer[m_iPartition]) {
+        vTrace("EntryBuffer allocation failed\n"_Stz);
+        eErrorCode = EC_LOW_BUFFERS;
+        return eErrorCode;
+      }
     }
+    
+    // get working buffer
+    WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
+    
+    // get the tx id
+    //Session* pSession = m_pLoadTable->pSession();
+    //Tx* pTx = pSession->pTx();
+    //i8 iDistTxId = pTx->iDistTxId();
+    i8 iDistTxId = 0;
+    
+    RowWrk xRowWrk;
+    
+    xRowWrk.vTxId(iDistTxId);
+    xRowWrk.vEmbedded(m_aRecord.aChar());
+    xRowWrk.vRowSize(m_iLength);
+    
+    // insert row into working buffer
+    bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
+    
+    if (bAppended)
+      return eErrorCode;
+      
+    m_pWorkingBuffer[m_iPartition] = nullptr;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // spawn a write buffer job 
+    Job_WriteBuffer::vSpawnJobWriteBuffer(pSession, pTable->aTableName(), eDataSource,
+                                          pWorkingBuffer, iParentJobId,
+                                          m_iPartition, false, 0);
   }
   
-  // get working buffer
-  WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
-  
-  // get the tx id
-  //Session* pSession = m_pLoadTable->pSession();
-  //Tx* pTx = pSession->pTx();
-  //i8 iDistTxId = pTx->iDistTxId();
-  i8 iDistTxId = 0;
-  
-  RowWrk xRowWrk;
-  
-  xRowWrk.vTxId(iDistTxId);
-  xRowWrk.vEmbedded(m_aRecord.aChar());
-  xRowWrk.vRowSize(m_iLength);
-  
-  // insert row into working buffer
-  bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
-  
-  //pEntryBuffer->vShow();
-  
-  return bAppended;
+  return eErrorCode;
 }
 
 /*----------------------------------------------------------------------------*/

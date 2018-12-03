@@ -263,31 +263,22 @@ bool Job_SubLoader::bProcessRecords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
-  eEC eErrorCode = EC_NONE;
+  Session* pSession = m_pJob_LoadTable->m_pSession;
+  Table* pTable = m_pJob_LoadTable->m_pTable;
+  i8 iParentJobId = m_pJob_LoadTable->m_iJobId;
   
   while (bFetchRecord()) {
     
     // hash the record to get m_iPartition
     vHashRecord(m_pJob_LoadTable->m_pTable);
-    
-    while (true) {
-      // attempt to add record into a buffer
-      bool bInserted = bInsertRow(m_pJob_LoadTable->m_pTable, eErrorCode);
-    
-      // if inserted then done
-      if (bInserted)
-       break;
-    
-      // was there an error ?
-      if ( eErrorCode != EC_NONE ) {
-        vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
-        return false;
-      }
-    
-      // buffer was full
-      i8 iParentJobId = m_pJob_LoadTable->m_iJobId;
-      RASSERT(C_UNKNOWN != iParentJobId);
-      vWriteBuffer(m_pJob_LoadTable->m_pSession, m_pJob_LoadTable->m_sObjectName, DS_LOAD, iParentJobId);
+      
+    // attempt to add record into a buffer
+    eEC eErrorCode = eInsertRow(pSession, pTable, DS_LOAD, iParentJobId);
+  
+    // was there an error ?
+    if (eErrorCode != EC_NONE) {
+      vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
+      return false;
     }
   }
   

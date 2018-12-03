@@ -27,8 +27,7 @@ namespace JobsModel
     bool bFormatRow(Table* pTable, Formatters* pFormatters,
                     Stz* aRawData, i8 iRawLength, bool &bBlankLine);
     void vHashRecord(Table* pTable);
-    void vWriteBuffer(Interface::Session* pSession, Stz* sTableName, eDS eDataSource, i8 iParentJobId);
-    bool bInsertRow(Table* pTable, eEC& eErrorCode);
+    eEC  eInsertRow(Interface::Session* pSession, Table* pTable, eDS eDataSource, i8 iParentJobId);
     void vNewWorkingBuffer(Table* pTable);
   };
 }
