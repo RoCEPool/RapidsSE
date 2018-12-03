@@ -213,7 +213,6 @@ and l_shipinstruct = 'DELIVER IN PERSON' ) or ( p_partkey = l_partkey and p_bran
 ( 'LG CASE', 'LG BOX', 'LG PACK', 'LG PKG') and l_quantity >= 90 and l_quantity <= 300 + 10 and
 p_size between 15 and 45 and l_shipmode in ('AIR', 'REG AIR') and l_shipinstruct = 'COLLECT COD');
 rows: 1
-*/
 
 // QUERY 20 (MOXE)
 select s_name, s_address from MOXE.supplier, MOXE.nation where s_suppkey in
@@ -222,6 +221,7 @@ and ps_availqty > ( select 0.5 * sum(l_quantity) from MOXE.lineitem where l_part
 l_suppkey = ps_suppkey and l_shipdate >= timestamp '2013-08-01 12:00:00' and
 l_shipdate < timestamp '2014-08-01 12:00:00') ) and s_nationkey = n_nationkey and n_name = 'POLAND' order by s_name;
 rows: 1
+*/
 
 // QUERY 20 (SE)
 select s_name, s_address from rapidsse.public.supplier, rapidsse.public.nation where s_suppkey in
