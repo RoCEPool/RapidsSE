@@ -109,6 +109,23 @@ Job* Jobs::pFindJob(Job* pFindJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next job id                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Jobs::iGetJobId(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
+  
+  vGrabLock();
+  
+  // generate next jobId
+  i8 iJobId = m_iNextJobId++;
+  
+  vDropLock();
+  
+  return iJobId;
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void Jobs::vGrabLock(void)

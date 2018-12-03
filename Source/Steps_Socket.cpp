@@ -395,9 +395,9 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the specific case of job_loadBuffer under low memory condition
   
-  if (CN_JOB_LOADBUFFER == eClass) {
+  if (CN_JOB_WRITEBUFFER == eClass) {
 
-    vTrace("Received Job_LoadBuffer under low mem\n"_Stz);
+    vTrace("Received Job_WriteBuffer under low mem\n"_Stz);
     
     MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
     
@@ -411,26 +411,26 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
       return;
     }
     
-    Job_LoadBuffer* pJob_LoadBuffer =
-      static_cast<Job_LoadBuffer*>(aLowBuff);
+    Job_WriteBuffer* pJob_WriteBuffer =
+      static_cast<Job_WriteBuffer*>(aLowBuff);
 
-    bDiscardWorkingBuffer = pJob_LoadBuffer->m_pCurrentBuffer ? true : false;
+    bDiscardWorkingBuffer = pJob_WriteBuffer->m_pCurrentBuffer ? true : false;
 
-    pJob_LoadBuffer->m_bLowMem = true;
+    pJob_WriteBuffer->m_bLowMem = true;
     
-    Job* pJob = static_cast<Job*>(HeapMem::pAllocate(CN_JOB_LOADBUFFER));
-    MemLib::vCopy(pJob,pJob_LoadBuffer,sizeof(Job_LoadBuffer),CN_JOB_LOADBUFFER);
+    Job* pJob = static_cast<Job*>(HeapMem::pAllocate(CN_JOB_WRITEBUFFER));
+    MemLib::vCopy(pJob,pJob_WriteBuffer,sizeof(Job_WriteBuffer),CN_JOB_WRITEBUFFER);
     
-    pJob_LoadBuffer = static_cast<Job_LoadBuffer*>(pJob);
+    pJob_WriteBuffer = static_cast<Job_WriteBuffer*>(pJob);
     
-    if (-1 != pJob_LoadBuffer->m_nWriteBehindBuffers) {
+    if (-1 != pJob_WriteBuffer->m_nWriteBehindBuffers) {
       
-      pJob_LoadBuffer->m_pCurrentBuffer = nullptr;
+      pJob_WriteBuffer->m_pCurrentBuffer = nullptr;
     }
     else {
       //pJob_LoadBuffer = nullptr;
       //vTrace("Discarded Job_LoadBuffer under low mem\n"_Stz);
-      pJob_LoadBuffer->m_pCurrentBuffer = nullptr;
+      pJob_WriteBuffer->m_pCurrentBuffer = nullptr;
     }
 
     if (bDiscardWorkingBuffer) {
@@ -439,7 +439,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
       vTrace("Discarded WorkingBuffer under low mem\n"_Stz);
     }
     
-    mpTask->m_pDataStack->vPushObject(pJob_LoadBuffer);
+    mpTask->m_pDataStack->vPushObject(pJob_WriteBuffer);
     mpTask->m_pDataStack->vPushInt((i8)1);
     EXIT();
     return;

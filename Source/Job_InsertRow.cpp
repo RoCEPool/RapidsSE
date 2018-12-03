@@ -119,6 +119,10 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
   m_pJob_InsertTable =
   static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
   
+  // get a jobId for the insertTable job
+  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iGetJobId();
+  m_pJob_InsertTable->m_iJobId = iJobId;
+  
   _checkInitialised_(CN_JOB_INSERTROW);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);

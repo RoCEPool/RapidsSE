@@ -10,11 +10,14 @@ namespace JobsModel
   class Job_WriteBuffer : public Job
   {
   public:
-    eDS    m_eDataSource;    // data source
+    eDS    m_eDataSource;    // data source (injest/insert/load)
     Table* m_pTable;         // table pointer
     i8     m_iPartitionId;   // partition id
-    i8     m_iParentJobId;   // parent (EndInsert/LoadTable) job id
+    i8     m_iParentJobId;   // parent (IngestTable/InsertTable/LoadTable) job id
+    i8     m_nRows; // how many rows in working buffer  WON"T WORK RAY
     i8     m_nWriteBehindBuffers; // write behind buffers
+    
+    bool   m_bLowMem; // was received under low memory conditions
     
     // must be last
     Footer m_xFooter;
@@ -28,9 +31,17 @@ namespace JobsModel
     ~Job_WriteBuffer(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-
+    static Job_WriteBuffer* pNewJobWriteBuffer(Interface::Session* pSession,
+                                              Stz* sTableName, eDS eDataSource,
+                                              WorkingBuffer* pWorkingBuffer,
+                                              i8 iParentJobId,
+                                              i8 iPartition,
+                                              bool bFinal,
+                                              i8 nWriteBehindBuffers);
+    
   public:
     bool bInsertRows(void);
+    bool bInsertRows_LowMem(void);
     void vShow(void);
     
   public:
