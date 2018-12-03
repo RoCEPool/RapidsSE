@@ -11,28 +11,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobInsertRow(void)
 {
-  vAddStep("Job_InsertTable.insertRowJob@"_Stz, &Step::vJob_InsertTableInsertRowJobFetch);
-  
   vAddStep("job_InsertRow.danglingBuffer"_Stz,   &Step::vJob_InsertRowDanglingBuffer);
   vAddStep("job_insertRow.partition!"_Stz,       &Step::vJob_InsertRowPartitionStore);
   vAddStep("job_insertRow.table!"_Stz,           &Step::vJob_InsertRowTableStore);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Job_InsertTable.InsertRowJob@ -- fetch insertRow jobid from job              */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_InsertTableInsertRowJobFetch(MP_Task mpTask)
-{
-  ENTRY("vJob_InsertTableInsertRowJobFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("Job_InsertTable.InsertRowJob@"_Stz);
-  Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushObject(pJob_InsertTable->m_pJobInsertRow);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
