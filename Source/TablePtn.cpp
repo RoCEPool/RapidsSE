@@ -156,9 +156,9 @@ void TablePtn::vAddIndex(IndexTree* pIndexTree)
 }
 
 /*----------------------------------------------------------------------------*/
-/* have all buffers been loaded?                                              */
+/* have all buffers been written?                                              */
 /*----------------------------------------------------------------------------*/
-bool TablePtn::bAllBuffersLoaded(eDS eDataSource)
+bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   

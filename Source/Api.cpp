@@ -1399,7 +1399,7 @@ void vDeleteJobs(Session* pSession)
     vApiLocation(pSession,600);
     
     // delete the job
-    vTrace("Deleting job %p %s\n"_Stz, pJobPtr, aCN[pJobPtr->eClass()]);
+    //vTrace("Deleting job %p %s\n"_Stz, pJobPtr, aCN[pJobPtr->eClass()]);
     pJobClass->vDeleteJob(pSession,pJobPtr);
     
     pSession->m_nJobDelete++;

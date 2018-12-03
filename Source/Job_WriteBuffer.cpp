@@ -146,8 +146,8 @@ bool Job_WriteBuffer::bInsertRows(void)
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
   
   if (! m_pCurrentBuffer) {
-    bool bAllBuffersLoaded = bInsertRows_LowMem();
-    return bAllBuffersLoaded;
+    bool bAllBuffersWritten = bInsertRows_LowMem();
+    return bAllBuffersWritten;
   }
   
   // ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
@@ -172,14 +172,16 @@ bool Job_WriteBuffer::bInsertRows(void)
            m_pCurrentBuffer->bIsLast() ? "IsLast" : "");
   i8 iTxId = 0;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the working buffer
   m_pTable->vInsertEntries(iTxId, iSlot, m_pCurrentBuffer);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we inserted one additional buffer
   pPartition->vIncBuffersWritten();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the load table job
+  // Loading ?
   if (m_eDataSource == DS_LOAD) {
     Job__Find* pFindJob = new Job__Find;
     pFindJob->m_iJobId = m_iParentJobId;
@@ -199,20 +201,27 @@ bool Job_WriteBuffer::bInsertRows(void)
     if (C_UNKNOWN != m_nWriteBehindBuffers)
       pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
   }
-  else {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Insering ?
+  else if (m_eDataSource == DS_INSERT) {
     // does this job have information about the number of buffers to be written
     // from a subloader for this partition?
     if (C_UNKNOWN != m_nWriteBehindBuffers) {
       pPartition->vWriteBehindBuffers(m_nWriteBehindBuffers);
-  }
+    }
     
     if (m_bMark) {
       ActivityMap::vMark(m_iJobId,"Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld"_Stz,
                          m_iPartitionId, iSlot, m_nWriteBehindBuffers);
     }
   }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Ingesting
+  else {
+    RASSERT(m_eDataSource == DS_INGEST);
+  }
   
-  bool bAllBuffersWritten = pPartition->bAllBuffersLoaded(m_eDataSource);
+  bool bAllBuffersWritten = pPartition->bAllBuffersWritten(m_eDataSource);
   
   if (bAllBuffersWritten) {
     if (m_bMark) {
@@ -276,11 +285,11 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
     pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
   
   // have all buffers been loaded?
-  bool bAllBuffersInserted = pPartition->bAllBuffersLoaded(DS_LOAD);
+  bool bAllBuffersWritten = pPartition->bAllBuffersWritten(DS_LOAD);
   //if (bAllBuffersLoaded)
   //  vTrace("Buffers loaded\n"_Stz);
   
-  return bAllBuffersInserted;
+  return bAllBuffersWritten;
 }
 
 /*----------------------------------------------------------------------------*/

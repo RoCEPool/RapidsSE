@@ -94,7 +94,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobGeneric();
   Step::vAddSteps_JobIngest();
   Step::vAddSteps_JobInsertRow();
-  Step::vAddSteps_JobLoadBuffer();
   Step::vAddSteps_JobLoadTable();
   Step::vAddSteps_JobNetHog();
   Step::vAddSteps_JobNodeInfo();

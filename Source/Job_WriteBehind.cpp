@@ -2,7 +2,7 @@
 /* Job_WriteBehind.cpp -- Write Behind part of a Job (Ingest/Insert/Load)     */
 /*============================================================================*/
 
-// Job Short: LoadBuffer
+// Job Short: WriteBehind
 
 #include "JobsModel.h"
 #include "StorageEngine.h"

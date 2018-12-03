@@ -48,7 +48,7 @@ JobClass xJobClass_ListTenants =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_ListTenants_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_LoadBuffer_class;
+  *pNextFun = (pFUN*)pJob_LoadTable_class;
   
   return &xJobClass_ListTenants;
 }

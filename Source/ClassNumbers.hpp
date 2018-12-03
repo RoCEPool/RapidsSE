@@ -137,7 +137,6 @@ enum eCN : u2 // Class Number
   /* 101 */ CN_JOB_LISTSCHEMAS,
   /* 102 */ CN_JOB_LISTTABLES,
   /* 103 */ CN_JOB_LISTTENANTS,
-  /* 104 */ CN_JOB_LOADBUFFER,
   /* 105 */ CN_JOB_LOADTABLE,
   /*     */ CN_JOB_NETHOG,
   /*     */ CN_JOB_NODEINFO,
@@ -398,7 +397,6 @@ static Stz* aCN[]
   /* 101 */ "JOB_LISTSCHEMAS"_Stz,     // CN_JOB_LISTSCHEMAS
   /* 102 */ "JOB_LISTTABLES"_Stz,      // CN_JOB_LISTTABLES
   /* 103 */ "JOB_LISTTENANTS"_Stz,     // CN_JOB_LISTTENANTS
-  /* 104 */ "JOB_LOADBUFFER"_Stz,      // CN_JOB_LOADBUFFER
   /* 105 */ "JOB_LOADTABLE"_Stz,       // CN_JOB_LOADTABLE
   /*     */ "JOB_NETHOG"_Stz,          // CN_JOB_NETHOG
   /*     */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO

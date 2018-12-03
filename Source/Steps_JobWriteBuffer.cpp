@@ -53,9 +53,9 @@ void Step::vJob_WriteBufferInsertRows(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_WriteBuffer.insertRows!"_Stz);
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
-  bool bAllBuffersLoaded = pJob_WriteBuffer->bInsertRows();
+  bool bAllBuffersWritten = pJob_WriteBuffer->bInsertRows();
   
-  mpTask->m_pDataStack->vPushInt(bAllBuffersLoaded);
+  mpTask->m_pDataStack->vPushInt(bAllBuffersWritten);
   
   EXIT();
 }

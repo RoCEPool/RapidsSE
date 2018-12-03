@@ -81,7 +81,6 @@ namespace Steps
     static void vAddSteps_JobGeneric(void);
     static void vAddSteps_JobIngest(void);
     static void vAddSteps_JobInsertRow(void);
-    static void vAddSteps_JobLoadBuffer(void);
     static void vAddSteps_JobLoadTable(void);
     static void vAddSteps_JobNetHog(void);
     static void vAddSteps_JobNodeInfo(void);

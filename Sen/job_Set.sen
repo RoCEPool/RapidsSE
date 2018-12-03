@@ -57,7 +57,6 @@
 "Job_ListSchemas.sen" include
 "Job_ListTables.sen" include
 "Job_ListTenants.sen" include
-"Job_LoadBuffer.sen" include
 "Job_LoadTable.sen" include
 
 "Job_NetHog.sen" include

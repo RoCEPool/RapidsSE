@@ -393,7 +393,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   RASSERT(_bIsValidJob(eClass) || CN_WORKINGBUFFER == eClass);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // handle the specific case of job_loadBuffer under low memory condition
+  // handle the specific case of job_writeBuffer under low memory condition
   
   if (CN_JOB_WRITEBUFFER == eClass) {
 
@@ -402,7 +402,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
     
     void* aLowBody = pAdd<void*>(aLowBuff,sizeof(Object));
-    i8 nRemainingBytes = sizeof(Job_LoadBuffer) - sizeof(Object);
+    i8 nRemainingBytes = sizeof(Job_WriteBuffer) - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,xSysCall);
     if (! bResult) {
@@ -428,8 +428,8 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
       pJob_WriteBuffer->m_pCurrentBuffer = nullptr;
     }
     else {
-      //pJob_LoadBuffer = nullptr;
-      //vTrace("Discarded Job_LoadBuffer under low mem\n"_Stz);
+      //pJob_WriteBuffer = nullptr;
+      //vTrace("Discarded Job_WriteBuffer under low mem\n"_Stz);
       pJob_WriteBuffer->m_pCurrentBuffer = nullptr;
     }
 

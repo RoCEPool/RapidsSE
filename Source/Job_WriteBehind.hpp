@@ -15,7 +15,7 @@ namespace JobsModel
     i8     m_iPartition; // partition of record
     
     WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
-    i8 m_nWriteBehindBuffers[C_MAX_PARTITIONS]; // how many buffers 
+    i8 m_nWriteBehindBuffers[C_MAX_PARTITIONS];        // how many buffers
     
   public:
     void* operator new(size_t);

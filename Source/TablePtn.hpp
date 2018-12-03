@@ -43,7 +43,7 @@ namespace DBobjects
   
     void vAddWriteBehindBuffers(i8 nBuffersLoadable);
     void vAddIndex(IndexTree* pIndexTree);
-    bool bAllBuffersLoaded(eDS eDataSource);
+    bool bAllBuffersWritten(eDS eDataSource);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
     void vBuffersWritten(i8 m_nBuffersWritten);
     i8   nWriteBehindBuffers(void);
