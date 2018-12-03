@@ -113,11 +113,12 @@ Job_WriteBuffer::Job_WriteBuffer(Interface::Session* pSession)
   
   m_eDataSource  = DS_NONE;
   m_pTable       = nullptr;
-  m_iPartitionId = -1;
-  m_iParentJobId = -1;
+  m_iPartitionId = C_UNKNOWN;
+  m_iParentJobId = C_UNKNOWN;
+  m_nRows        = 0;
   m_nWriteBehindBuffers = C_UNKNOWN;
-  m_nRows = 0;
-  m_bLowMem = false;
+  
+  m_bLowMem      = false;
   
   _checkInitialised_(CN_JOB_WRITEBUFFER);
   
@@ -321,6 +322,7 @@ Job_WriteBuffer* Job_WriteBuffer::pNewJobWriteBuffer(Session* pSession,
   
   pJob_WriteBuffer->m_eDataSource  = eDataSource;
   RASSERT(C_UNKNOWN != iParentJobId);
+  
   pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
   pJob_WriteBuffer->m_sObjectName   = sTableName;
   pJob_WriteBuffer->m_iPartitionId  = iPartition;

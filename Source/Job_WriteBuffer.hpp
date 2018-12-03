@@ -10,13 +10,12 @@ namespace JobsModel
   class Job_WriteBuffer : public Job
   {
   public:
-    eDS    m_eDataSource;    // data source
+    eDS    m_eDataSource;    // data source (injest/insert/load)
     Table* m_pTable;         // table pointer
     i8     m_iPartitionId;   // partition id
-    i8     m_iParentJobId;   // parent (EndInsert/LoadTable) job id
-    i8     m_nWriteBehindBuffers; // write behind buffers
-    
+    i8     m_iParentJobId;   // parent (IngestTable/InsertTable/LoadTable) job id
     i8     m_nRows; // how many rows in working buffer  WON"T WORK RAY
+    i8     m_nWriteBehindBuffers; // write behind buffers
     
     bool   m_bLowMem; // was received under low memory conditions
     
