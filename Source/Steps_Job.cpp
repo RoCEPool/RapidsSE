@@ -579,7 +579,7 @@ void Step::vJobHasWorkingBuffer(MP_Task mpTask)
   
   
   i8 bHas = pJob->m_pCurrentBuffer ? true : false;
-  if (pJob->m_pJobClass->m_eClass == CN_JOB_LOADBUFFER)
+  if (pJob->m_pJobClass->m_eClass == CN_JOB_WRITEBUFFER)
     int iDebug = 1;
   
   mpTask->m_pDataStack->vPushInt(bHas);
