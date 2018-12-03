@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace System
+namespace Assembler
 {
   extern "C" u8 iAtomicDec(i8*); // use posix calls
   extern "C" u8 iAtomicInc(i8*);

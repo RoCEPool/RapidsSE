@@ -3,9 +3,12 @@
 /*============================================================================*/
 #pragma once
 
-namespace System
+namespace Assembler
 {
   extern "C" u8 iPmc_Cpuid(void);
+  
+  extern "C" u8 iPmc_GetLlcMisses(void);
+
 }
 
 /*============================================================================*/
