@@ -110,7 +110,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put response in the job
   grid::thisNode@ pJob_AnalyzeTable job.response!
-  1 grid::thisNode@ pJob_AnalyzeTable job.rowsProcessed!
+  grid::slots grid::thisNode@ pJob_AnalyzeTable job.rowsProcessed!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
