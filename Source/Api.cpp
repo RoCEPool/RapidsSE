@@ -94,9 +94,6 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     
     i8 iJobSeq = pJob_InsertTable->m_iJobSeq;
     
-    // set insertRowJob in the insertTable job
-    pJob_InsertTable->m_pJobInsertRow = pJob_InsertRow;
-    
     // lock this job's mutex
     i8 rCode = pthread_mutex_lock(&pJob_InsertTable->m_xThreadMutex);
     if (0 != rCode)

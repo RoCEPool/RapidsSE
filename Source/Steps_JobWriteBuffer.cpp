@@ -147,10 +147,6 @@ void Step::vJob_WriteBufferSpawnInsert(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_WriteBuffer::spawnInsert"_Stz);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pPtrInsertRow);
   
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("job_WriteBuffer::spawnInsert"_Stz);
-  
   i8 iFinal;
   if ( ! mpTask->m_pDataStack->bPop(iFinal) )
     THROW_INVALID_DSTACK("job_WriteBuffer::spawnInsert"_Stz);
@@ -160,12 +156,13 @@ void Step::vJob_WriteBufferSpawnInsert(MP_Task mpTask)
   // get the session
   Session* pSession = pJob_InsertRow->m_pSession;
   
-  // get the working buffer
-  WorkingBuffer* pWorkingBuffer = pJob_InsertRow->m_pWorkingBuffer[iPartition];
-  pJob_InsertRow->m_pWorkingBuffer[iPartition] = nullptr;
-  
   // get the insert table
   Job_InsertTable* pJob_InsertTable = pJob_InsertRow->m_pJob_InsertTable;
+  
+  // get the working buffer
+  i8 iPartition = pJob_InsertRow->m_iPartition;
+  WorkingBuffer* pWorkingBuffer = pJob_InsertRow->m_pWorkingBuffer[iPartition];
+  pJob_InsertRow->m_pWorkingBuffer[iPartition] = nullptr;
   
   i8 iParentJobId = pJob_InsertTable->iJobId();
   i8 nWriteBehindBuffers = pJob_InsertRow->m_nWriteBehindBuffers[iPartition];
@@ -177,31 +174,9 @@ void Step::vJob_WriteBufferSpawnInsert(MP_Task mpTask)
                                         pSession, pTableName, DS_INSERT,
                                         pWorkingBuffer, iParentJobId, iPartition,
                                         bFinal, nWriteBehindBuffers);
-  /*
-  //! this needs to be optimised
-  JobClass* pJobClass_WriteBuffer = JobClass::pFind(CN_JOB_WRITEBUFFER);
-  
-  Job_WriteBuffer* pJob_WriteBuffer =
-  static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(pSession));
-  
-  pJob_WriteBuffer->vSeed(SS_SEED_RUN);
-  
-  pJob_WriteBuffer->m_eDataSource  = DS_INSERT;
-  pJob_WriteBuffer->m_iParentJobId = pJob_InsertTable->iJobId();
-  RASSERT(C_UNKNOWN != pJob_WriteBuffer->m_iParentJobId);
-  pJob_WriteBuffer->m_sObjectName  = pJob_InsertRow->m_sObjectName;
-  pJob_WriteBuffer->m_iPartitionId = iPartition;
-  pJob_WriteBuffer->m_pCurrentBuffer = pWorkingBuffer;
-  
-  if (iIsFinal) {
-    i8 nWriteBehindBuffers = pJob_InsertRow->m_nWriteBehindBuffers[iPartition];
-    RASSERT(C_UNKNOWN != nWriteBehindBuffers);
-    pJob_WriteBuffer->m_nWriteBehindBuffers = nWriteBehindBuffers;
-  }
-  */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the load buffer job
+  // spawn the write buffer job
   
   RapidsSE_bSpawnJob(pJob_WriteBuffer,SS_SEED_RUN,pSession);
   
@@ -226,6 +201,7 @@ void Step::vJob_WriteBufferSpawnLoad(MP_Task mpTask)
   
   bool bFinal = iFinal ? true : false;
   
+  // get the session
   Session* pSession = pJob_SubLoader->m_pSession;
   
   // get the load table
@@ -240,36 +216,14 @@ void Step::vJob_WriteBufferSpawnLoad(MP_Task mpTask)
   Stz* sTableName = pJob_SubLoader->m_sObjectName;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a write buffer job for insert
+  // create a write buffer job for load
   Job_WriteBuffer* pJob_WriteBuffer = Job_WriteBuffer::pNewJobWriteBuffer(
                                           pSession, sTableName, DS_LOAD,
                                           pWorkingBuffer, iParentJobId, iPartition,
                                           bFinal, nWriteBehindBuffers);
-  /*
-   //! this needs to be optimised
-   JobClass* pJobClass_WriteBuffer = JobClass::pFind(CN_JOB_WRITEBUFFER);
-   
-   Job_WriteBuffer* pJob_WriteBuffer =
-   static_cast<Job_WriteBuffer*>(pJobClass_WriteBuffer->pPreJob(pSession));
-   
-   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
-   
-   pJob_WriteBuffer->m_eDataSource  = DS_INSERT;
-   pJob_WriteBuffer->m_iParentJobId = pJob_InsertTable->iJobId();
-   RASSERT(C_UNKNOWN != pJob_WriteBuffer->m_iParentJobId);
-   pJob_WriteBuffer->m_sObjectName  = pJob_InsertRow->m_sObjectName;
-   pJob_WriteBuffer->m_iPartitionId = iPartition;
-   pJob_WriteBuffer->m_pCurrentBuffer = pWorkingBuffer;
-   
-   if (iIsFinal) {
-   i8 nWriteBehindBuffers = pJob_InsertRow->m_nWriteBehindBuffers[iPartition];
-   RASSERT(C_UNKNOWN != nWriteBehindBuffers);
-   pJob_WriteBuffer->m_nWriteBehindBuffers = nWriteBehindBuffers;
-   }
-   */
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the load buffer job
+  // spawn the write buffer job
   
   RapidsSE_bSpawnJob(pJob_WriteBuffer,SS_SEED_RUN,pSession);
   
