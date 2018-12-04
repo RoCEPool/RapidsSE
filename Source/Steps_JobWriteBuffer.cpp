@@ -35,7 +35,9 @@ void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask)
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   i8 iParentJobId = pJob_WriteBuffer->m_iParentJobId;
-  RASSERT(C_UNKNOWN != iParentJobId);
+  eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
+  
+  RASSERT(DS_INGEST== eDataSource || C_UNKNOWN != iParentJobId);
   mpTask->m_pDataStack->vPushInt(iParentJobId);
   
   EXIT();
