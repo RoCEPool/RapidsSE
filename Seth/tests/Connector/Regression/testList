@@ -23,7 +23,7 @@ Using1way.test
 
 tpchQueries.test
 schemaCreateIndexesSE.test
-tpchQueries.test
+//tpchQueries.test
 
 schemaDropMoxe.test
 schemaDropSE.test

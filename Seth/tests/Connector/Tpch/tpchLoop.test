@@ -20,8 +20,8 @@ LOG 'Selecting tpch data...';
 INCLUDE 'tpchSelect.test';
 
 //------------------------------------------------------------------------------
-LOG 'Running tpch queries...';
-INCLUDE 'tpchQueries.test';
+//LOG 'Running tpch queries...';
+//INCLUDE 'tpchQueries.test';
 
 //------------------------------------------------------------------------------
 LOG 'truncating tpch tables...';
