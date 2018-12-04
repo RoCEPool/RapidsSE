@@ -59,14 +59,14 @@ iPmc_GetLlcMisses:
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
 # .. to be written ..
-#mov rax,73
 
-  mov rax,0
-  mov eax,0x0A
+#  mov rax,0
+#  mov eax,0x0A
+#  cpuid
 
-  cpuid
-
-#mov eax,edx
+  mov rax,0x0
+  mov ecx,0xC2
+  rdpmc
 
 ret
 
