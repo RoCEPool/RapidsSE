@@ -49,7 +49,7 @@
 
   CN_JOB_SPACE pJob_Space object.assertClass
 
-  "GETTING SPACE on NODE " grid::thisNode@ >str str.cat .
+  "GETTING SPACE on NODE " grid::thisNode@ >str str.cat .verbose
 //
   "row: ('"
   grid::thisNodeName@ str.cat
@@ -94,7 +94,7 @@
 
   >>am <SEED_END>
 
-  ">> space_end <<" .
+  ">> space_end <<" .verbose
 
   job::participantEnded
 
@@ -108,7 +108,7 @@
 
   >>am <SEED_CAN>
 
-  ">> space_can <<" .
+  ">> space_can <<" .verbose
 
   job::participantCancelled
 

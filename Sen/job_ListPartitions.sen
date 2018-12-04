@@ -53,7 +53,7 @@
   grid::slots 0 do
     I grid::toPartition
     I grid::toPartition grid::toNode grid::toNode grid::node node.name
-    "row: ( %v, %v)\n" str.format str.cat
+    "row: ( %v, %v )\n" str.format str.cat
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,7 +91,7 @@
 
   >>am <SEED_END>
 
-  ">> listPartitions_end <<" .
+  ">> listPartitions_end <<" .verbose
 
   job::participantEnded
 
@@ -105,7 +105,7 @@
 
   >>am <SEED_CAN>
 
-  ">> listPartitions_can <<" .
+  ">> listPartitions_can <<" .verbose
 
   job::participantCancelled
 
