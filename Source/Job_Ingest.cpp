@@ -109,9 +109,9 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   
   m_pTable = nullptr;
   
-  m_pIngestChunk = new IngestChunk(&gpAttachMap->m_xFormatters);
-  m_aRecord = nullptr;
-  m_nRecordBytes = 0;
+  m_pIngestChunk  = new IngestChunk(&gpAttachMap->m_xFormatters);
+  m_aRawData      = nullptr;
+  m_nRawDataBytes = 0;
   
   _checkInitialised_(CN_JOB_INGEST);
   
@@ -269,7 +269,8 @@ void Job_Ingest::vIngest(void)
     return;
   }
   
-  vIngestPipe();
+  bool bResult = bIngestPipe();
+  RASSERT(bResult);
   
   m_pIngestChunk->vCloseFile();
 }
@@ -277,14 +278,33 @@ void Job_Ingest::vIngest(void)
 /*----------------------------------------------------------------------------*/
 /* ingest pipe of records                                                     */
 /*----------------------------------------------------------------------------*/
-void Job_Ingest::vIngestPipe(void)
+bool Job_Ingest::bIngestPipe(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
+  i8 iParentJobId = m_iJobId;
+  bool bBlankLine = false;
+  
   while (bReadRecord()) {
-    vConvertRecord();
-    vInsertRow();
+    //vConvertRecord();
+    //vInsertRow();
+    
+    bool bFormat = bFormatRow(m_pTable, &gpAttachMap->m_xFormatters, m_aRawData, m_nRawDataBytes, bBlankLine);
+    RASSERT( ! bBlankLine );
+    
+    // hash the record to get m_iPartition
+    vHashRecord(m_pTable);
+    
+    // attempt to add record into a buffer
+    eEC eErrorCode = eInsertRow(m_pSession, m_pTable, DS_INGEST, iParentJobId);
+    
+    // was there an error ?
+    if (eErrorCode != EC_NONE) {
+      vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
+      return false;
+    }
   }
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,9 +316,9 @@ void Job_Ingest::vInsertRow(void)
   
   s48K sRecord;
   
-  MemLib::vCopy(sRecord.aChar(),m_aRecord,m_nRecordBytes,CN_JOB_INGEST);
+  MemLib::vCopy(sRecord.aChar(),m_aRawData,m_nRawDataBytes,CN_JOB_INGEST);
   
-  sRecord.aChar()[m_nRecordBytes] = '\0';
+  sRecord.aChar()[m_nRawDataBytes] = '\0';
   
   vTrace(" : %s\n"_Stz,sRecord.aChar());
 }
@@ -310,9 +330,9 @@ bool Job_Ingest::bReadRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  m_aRecord = m_pIngestChunk->aGetRecord(m_nRecordBytes);
+  m_aRawData = m_pIngestChunk->aGetRecord(m_nRawDataBytes);
 
-  if (m_aRecord)
+  if (m_aRawData)
     return true;
   else
     return false;

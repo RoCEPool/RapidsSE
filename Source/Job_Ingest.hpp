@@ -7,15 +7,17 @@ namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Ingest : public Job,
-                     public JobFileName
+                     public JobFileName,
+                     public Job_WriteBehind
   {
   public:
     Table*  m_pTable;  // table being ingested
   
-    IngestChunk* m_pIngestChunk; // chunk of pipe being ingested
-    Stz*         m_aRecord;      //
-    i8           m_nRecordBytes; //
-  
+    IngestChunk* m_pIngestChunk;  // chunk of pipe being ingested
+    Stz*         m_aRawData;      //
+    i8           m_nRawDataBytes; //
+    Formatters    m_xFormatters;  //
+    
     // must be last
     Footer m_xFooter;
   
@@ -34,7 +36,7 @@ namespace JobsModel
   
     void   vConvertRecord(void);
     void   vIngest(void);
-    void   vIngestPipe(void);
+    bool   bIngestPipe(void);
     void   vInsertRow(void);
     bool   bReadRecord(void);
     Table* pTable(void);
