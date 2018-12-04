@@ -155,6 +155,7 @@ void SePrompt::vPromptLoop(void)
     
     if (bNoWait()) {
       vUnlockMutex();
+      m_bNoWait = false;
       continue;
     }
     
