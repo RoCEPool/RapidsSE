@@ -24,8 +24,8 @@ LOG 'Insert-select from 2...';
 INCLUDE 'tpchInsSel.test';
 
 //------------------------------------------------------------------------------
-LOG 'Running tpch queries...';
-INCLUDE 'tpchQueries.test';
+//LOG 'Running tpch queries...';
+//INCLUDE 'tpchQueries.test';
 
 //------------------------------------------------------------------------------
 LOG 'Dropping tpch schema...';
