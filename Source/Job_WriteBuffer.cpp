@@ -219,6 +219,9 @@ bool Job_WriteBuffer::bInsertRows(void)
   // Ingesting
   else {
     RASSERT(m_eDataSource == DS_INGEST);
+    
+    // this runs forever
+    return false;
   }
   
   bool bAllBuffersWritten = pPartition->bAllBuffersWritten(m_eDataSource);
@@ -330,7 +333,9 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   pJob_WriteBuffer->vSeed(SS_SEED_RUN);
   
   pJob_WriteBuffer->m_eDataSource  = eDataSource;
-  RASSERT(C_UNKNOWN != iParentJobId);
+  
+  // DS_INSERT/DSLOAD should have a known parent job id
+  RASSERT(DS_INGEST == eDataSource || C_UNKNOWN != iParentJobId);
   
   pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
   pJob_WriteBuffer->m_sObjectName   = sTableName;
