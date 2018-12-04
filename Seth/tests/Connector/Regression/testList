@@ -21,7 +21,7 @@ PartKey2way.test
 //Stage9.test
 Using1way.test
 
-tpchQueries.test
+//tpchQueries.test
 schemaCreateIndexesSE.test
 //tpchQueries.test
 
