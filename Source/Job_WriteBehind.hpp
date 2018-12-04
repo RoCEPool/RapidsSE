@@ -11,7 +11,7 @@ namespace JobsModel
   {
   public:
     s48K   m_aRecord;    // formatted row
-    i8     m_iLength;    // length of record
+    i8     m_nRecordBytes;    // length of record
     i8     m_iPartition; // partition of record
     
     WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers

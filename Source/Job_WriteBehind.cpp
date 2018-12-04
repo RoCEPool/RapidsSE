@@ -31,8 +31,8 @@ void* Job_WriteBehind::operator new(size_t)
 Job_WriteBehind::Job_WriteBehind(void)
 {
   //m_aRecord
-  m_iPartition = 0;
-  m_iLength    = 0;
+  m_nRecordBytes = 0;
+  m_iPartition   = 0;
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pWorkingBuffer[i_Partition]   = nullptr;
@@ -66,7 +66,8 @@ bool Job_WriteBehind::bFormatRow(Table* pTable, Formatters* pFormatters,
   bool bValid = Row::bFormatRow(pTable->pColumnVec(),
                            pFormatters,
                            aRawData, iRawLength,
-                           m_aRecord.aStr(), m_iLength,
+                           m_aRecord.aStr(),
+                           m_nRecordBytes,
                            bBlankLine,
                            false /* allowNonPrintable */);
   
@@ -119,7 +120,7 @@ eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSourc
     
     xRowWrk.vTxId(iDistTxId);
     xRowWrk.vEmbedded(m_aRecord.aChar());
-    xRowWrk.vRowSize(m_iLength);
+    xRowWrk.vRowSize(m_nRecordBytes);
     
     // insert row into working buffer
     bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
