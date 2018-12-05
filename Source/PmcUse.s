@@ -40,7 +40,7 @@ iPmc_Info:
 ret
 
 #------------------------------------------------------------------------------#
-# get llc misses                                                               #
+# get llc misses from IA32_PERFEVTSEL1                                         #
 #------------------------------------------------------------------------------#
 #ifdef __APPLE__
 .globl _iPmc_GetLlcMisses
@@ -60,8 +60,9 @@ iPmc_GetLlcMisses:
   # zero RAX
   mov rax,0x0
 
-  # we will read IA32_PERFEVTSEL1
-  mov ecx,0x1
+  # RDPMC uses the index relative to the base of each counter type
+  #
+  mov ecx,0x1  # we will read IA32_PERFEVTSEL1
 
   # read IA32_PERFEVTSEL1 into EDX:EAX
   rdpmc
