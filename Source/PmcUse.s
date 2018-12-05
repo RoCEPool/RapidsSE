@@ -16,13 +16,26 @@ iPmc_Info:
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
+#
+# Refer: CPUID -- CPU identification instruction in Intel Manual Vol 2A
+#
+# Refer: Table 3-8 Information Returned by CPUID Instruction Vol 2A
+#
+
+  # clear RAX
   mov rax,0
 
+  # put x0A into eax to get the Architectural Performance Monitoring Leaf
   mov eax,0x0A
 
+  # get leaf
   cpuid
 
-#mov eax,edx
+  # rax/eax contains:
+  #   bits 07..00: version ID of architectural performance monitoring
+  #   bits 15..08: number of general purpose pm counters per logical processor
+  #   bits 23..16: bit width of each general purpose pm counter
+  #   bits 31..24: length of EBX vector to enumerate architectural pm events
 
 ret
 
