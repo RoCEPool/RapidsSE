@@ -26,7 +26,6 @@ namespace JobsModel
   public:
     bool bFormatRow(Table* pTable, Formatters* pFormatters,
                     Stz* aRawData, i8 iRawLength, bool &bBlankLine);
-    void vHashRecord(Table* pTable);
     eEC  eInsertRow(Interface::Session* pSession, Table* pTable, eDS eDataSource, i8 iParentJobId);
     void vNewWorkingBuffer(Table* pTable);
   };

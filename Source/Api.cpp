@@ -867,8 +867,6 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTrace
       return eErrorCode;
     }
     
-    // hash the row to a partition
-    pJob_InsertRow->vHashRecord(pJob_InsertRow->m_pTable);
     
     eEC eErrorCode = EC_NONE;
 

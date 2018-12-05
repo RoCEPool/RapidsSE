@@ -292,9 +292,6 @@ bool Job_Ingest::bIngestPipe(void)
     bool bFormat = bFormatRow(m_pTable, &gpAttachMap->m_xFormatters, m_aRawData, m_nRawDataBytes, bBlankLine);
     RASSERT( ! bBlankLine );
     
-    // hash the record to get m_iPartition
-    vHashRecord(m_pTable);
-    
     // attempt to add record into a buffer
     eEC eErrorCode = eInsertRow(m_pSession, m_pTable, DS_INGEST, iParentJobId);
     

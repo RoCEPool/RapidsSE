@@ -268,9 +268,6 @@ bool Job_SubLoader::bProcessRecords(void)
   i8 iParentJobId = m_pJob_LoadTable->m_iJobId;
   
   while (bFetchRecord()) {
-    
-    // hash the record to get m_iPartition
-    vHashRecord(m_pJob_LoadTable->m_pTable);
       
     // attempt to add record into a buffer
     eEC eErrorCode = eInsertRow(pSession, pTable, DS_LOAD, iParentJobId);

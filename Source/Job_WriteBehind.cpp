@@ -75,15 +75,6 @@ bool Job_WriteBehind::bFormatRow(Table* pTable, Formatters* pFormatters,
 }
 
 /*----------------------------------------------------------------------------*/
-/* hash the first field of record                                             */
-/*----------------------------------------------------------------------------*/
-void Job_WriteBehind::vHashRecord(Table* pTable)
-{
-  m_iPartition = pTable->iRowPartition(m_aRecord);
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
 eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource, i8 iParentJobId)
@@ -93,6 +84,9 @@ eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSourc
   
   // insert the row in a working buffer
   while (true ) {
+    
+    // hash the record to a partition
+    m_iPartition = pTable->iRowPartition(m_aRecord);
     
     // check for working buffer
     if (! m_pWorkingBuffer[m_iPartition]) {
