@@ -13,6 +13,8 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 void Step::vAddStep(Stz* aName, TaskStep pStep, bool bImmediate)
 {
+  RASSERT(aName->nSize() <= 32);
+  
   Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
   
   //m_pCompiler->m_pCurrentWord = pNewWord;

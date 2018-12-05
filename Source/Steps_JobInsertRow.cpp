@@ -12,7 +12,7 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_JobInsertRow(void)
 {
   vAddStep("Job_InsertTable.insertRowJob@"_Stz,    &Step::vJob_InsertTableInsertRowJobFetch);
-  vAddStep("Job_InsertTable.spawnLastBuffers"_Stz, &Step::vJob_InsertTableSpawnLastBuffers);
+  vAddStep("Job_InsertTable.spawnLastBuffs"_Stz,   &Step::vJob_InsertTableSpawnLastBuffers);
   vAddStep("job_insertRow.table!"_Stz,             &Step::vJob_InsertRowTableStore);
 }
 
@@ -34,7 +34,7 @@ void Step::vJob_InsertTableInsertRowJobFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_InsertTable.spawnLastBuffers --spawn last write buffers ~each partition*/
+/* Job_InsertTable.spawnLastBuffs --spawn last write buffers ~each partition*/
 /*----------------------------------------------------------------------------*/
 void Step::vJob_InsertTableSpawnLastBuffers(MP_Task mpTask)
 {
@@ -42,7 +42,7 @@ void Step::vJob_InsertTableSpawnLastBuffers(MP_Task mpTask)
   
   Object* pPtrInsertRow;
   if ( ! mpTask->m_pDataStack->bPop(pPtrInsertRow) )
-    THROW_INVALID_DSTACK("Job_InsertTable.spawnLastBuffers"_Stz);
+    THROW_INVALID_DSTACK("Job_InsertTable.spawnLastBuffs"_Stz);
   Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pPtrInsertRow);
   
   // get the insert row job
