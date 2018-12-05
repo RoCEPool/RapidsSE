@@ -283,7 +283,7 @@ void vTest8(void)
 /*----------------------------------------------------------------------------*/
 void vTest9(void)
 {
-  vTrace("iPmc_Cpuid %ll0x\n"_Stz,iPmc_Cpuid());
+  vTrace("iPmc_Info %ll0x\n"_Stz,iPmc_Info());
   
   u8 u = iPmc_GetLlcMisses();
 }

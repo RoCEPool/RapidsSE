@@ -25,7 +25,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_pmc(SePrompt* pPrompt)
 {
-  i8 iPmc = 0; //iPmc_Cpuid();
+  i8 iPmc = 0; //iPmc_Info();
   
   vTrace("pmc: %lld\n"_Stz,iPmc);
 

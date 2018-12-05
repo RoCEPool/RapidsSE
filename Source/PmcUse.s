@@ -5,29 +5,19 @@
 #------------------------------------------------------------------------------#
 # use cpuid to get pmc information                                             #
 #------------------------------------------------------------------------------#
-
 #ifdef __APPLE__
-
-.globl _iPmc_Cpuid
-.intel_syntax noprefix
-
-_iPmc_Cpuid:
-
+.globl _iPmc_Info
+_iPmc_Info:
 #else
-
-.globl iPmc_Cpuid
-.intel_syntax noprefix
-
-iPmc_Cpuid:
-
+.globl iPmc_Info
+iPmc_Info:
 #endif
+.intel_syntax noprefix
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
-# .. to be written ..
-#mov rax,73
-
   mov rax,0
+
   mov eax,0x0A
 
   cpuid
@@ -39,30 +29,16 @@ ret
 #------------------------------------------------------------------------------#
 # get llc misses                                                               #
 #------------------------------------------------------------------------------#
-
 #ifdef __APPLE__
-
 .globl _iPmc_GetLlcMisses
-.intel_syntax noprefix
-
 _iPmc_GetLlcMisses:
-
 #else
-
 .globl iPmc_GetLlcMisses
-.intel_syntax noprefix
-
 iPmc_GetLlcMisses:
-
 #endif
+.intel_syntax noprefix
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-# .. to be written ..
-
-#  mov rax,0
-#  mov eax,0x0A
-#  cpuid
 
   mov rax,0x0
   mov ecx,0x1
