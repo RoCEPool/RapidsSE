@@ -32,7 +32,6 @@ Job_WriteBehind::Job_WriteBehind(void)
 {
   //m_aRecord
   m_nRecordBytes = 0;
-  m_iPartition   = 0;
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pWorkingBuffer[i_Partition]   = nullptr;
@@ -86,15 +85,15 @@ eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSourc
   while (true ) {
     
     // hash the record to a partition
-    m_iPartition = pTable->iRowPartition(m_aRecord);
+    i8 iPartition = pTable->iRowPartition(m_aRecord);
     
     // check for working buffer
-    if (! m_pWorkingBuffer[m_iPartition]) {
+    if (! m_pWorkingBuffer[iPartition]) {
       
       // create a new working buffer for this partition
-      vNewWorkingBuffer(pTable);
+      vNewWorkingBuffer(pTable, iPartition);
       
-      if (! m_pWorkingBuffer[m_iPartition]) {
+      if (! m_pWorkingBuffer[iPartition]) {
         vTrace("EntryBuffer allocation failed\n"_Stz);
         eErrorCode = EC_LOW_BUFFERS;
         return eErrorCode;
@@ -102,7 +101,7 @@ eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSourc
     }
     
     // get working buffer
-    WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[m_iPartition];
+    WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[iPartition];
     
     // get the tx id
     //Session* pSession = m_pLoadTable->pSession();
@@ -122,13 +121,13 @@ eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSourc
     if (bAppended)
       return eErrorCode;
       
-    m_pWorkingBuffer[m_iPartition] = nullptr;
+    m_pWorkingBuffer[iPartition] = nullptr;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn a write buffer job 
     Job_WriteBuffer::vSpawnJobWriteBuffer(pSession, pTable->aTableName(), eDataSource,
                                           pWorkingBuffer, iParentJobId,
-                                          m_iPartition, false, 0);
+                                          iPartition, false, 0);
   }
   
   return eErrorCode;
@@ -137,12 +136,12 @@ eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSourc
 /*----------------------------------------------------------------------------*/
 /* create a new working buffer                                                */
 /*----------------------------------------------------------------------------*/
-void Job_WriteBehind::vNewWorkingBuffer(Table* pTable)
+void Job_WriteBehind::vNewWorkingBuffer(Table* pTable, i8 iPartition)
 {
-  m_pWorkingBuffer[m_iPartition] =
-  new WorkingBuffer(pTable,m_iPartition);
+  m_pWorkingBuffer[iPartition] =
+  new WorkingBuffer(pTable,iPartition);
   
-  m_nWriteBehindBuffers[m_iPartition]++;
+  m_nWriteBehindBuffers[iPartition]++;
 }
 
 /*============================================================================*/

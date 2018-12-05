@@ -168,11 +168,9 @@ void Step::vJob_WriteBufferSpawnLastInsert(MP_Task mpTask)
   // spawn a write buffer job for insert for each partition
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
     
-    pJob_InsertRow->m_iPartition = iPartition;
-    
     // get the working buffer
     if ( ! pJob_InsertRow->m_pWorkingBuffer[iPartition] )
-      pJob_InsertRow->vNewWorkingBuffer(pJob_InsertRow->m_pTable);
+      pJob_InsertRow->vNewWorkingBuffer(pJob_InsertRow->m_pTable, iPartition);
     
     WorkingBuffer* pWorkingBuffer = pJob_InsertRow->m_pWorkingBuffer[iPartition];
     pJob_InsertRow->m_pWorkingBuffer[iPartition] = nullptr;
@@ -218,11 +216,9 @@ void Step::vJob_WriteBufferSpawnLastLoad(MP_Task mpTask)
   Stz* sTableName = pJob_SubLoader->m_sObjectName;
   
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
- 
-    pJob_SubLoader->m_iPartition = iPartition;
     
     if ( ! pJob_SubLoader->m_pWorkingBuffer[iPartition] )
-      pJob_SubLoader->vNewWorkingBuffer(pJob_LoadTable->m_pTable);
+      pJob_SubLoader->vNewWorkingBuffer(pJob_LoadTable->m_pTable, iPartition);
     
     // get the working buffer
     WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];

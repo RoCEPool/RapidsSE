@@ -12,7 +12,6 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_JobInsertRow(void)
 {
   vAddStep("Job_InsertTable.insertRowJob@"_Stz, &Step::vJob_InsertTableInsertRowJobFetch);
-  
   vAddStep("job_insertRow.table!"_Stz,           &Step::vJob_InsertRowTableStore);
 }
 

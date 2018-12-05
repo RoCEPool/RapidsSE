@@ -10,9 +10,8 @@ namespace JobsModel
   class Job_WriteBehind
   {
   public:
-    s48K   m_aRecord;    // formatted row
+    s48K   m_aRecord;         // formatted row
     i8     m_nRecordBytes;    // length of record
-    i8     m_iPartition; // partition of record
     
     WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
     i8 m_nWriteBehindBuffers[C_MAX_PARTITIONS];        // how many buffers
@@ -27,7 +26,7 @@ namespace JobsModel
     bool bFormatRow(Table* pTable, Formatters* pFormatters,
                     Stz* aRawData, i8 iRawLength, bool &bBlankLine);
     eEC  eInsertRow(Interface::Session* pSession, Table* pTable, eDS eDataSource, i8 iParentJobId);
-    void vNewWorkingBuffer(Table* pTable);
+    void vNewWorkingBuffer(Table* pTable, i8 iPartition);
   };
 }
 
