@@ -17,8 +17,8 @@ void Step::vAddSteps_JobWriteBuffer(void)
   vAddStep("job_writeBuffer.isInserting"_Stz,   &Step::vJob_WriteBufferIsInserting);
   vAddStep("job_writeBuffer.isLoading"_Stz,     &Step::vJob_WriteBufferIsLoading);
   vAddStep("job_writeBuffer.partition@"_Stz,    &Step::vJob_WriteBufferPartitionFetch);
-  vAddStep("job_writeBuffer::spawnInsert"_Stz,  &Step::vJob_WriteBufferSpawnInsert);
-  vAddStep("job_writeBuffer::spawnLoad"_Stz,    &Step::vJob_WriteBufferSpawnLoad);
+  vAddStep("job_writeBuffer::spawnLastInsert"_Stz,  &Step::vJob_WriteBufferSpawnLastInsert);
+  vAddStep("job_writeBuffer::spawnLastLoad"_Stz,    &Step::vJob_WriteBufferSpawnLastLoad);
   vAddStep("job_writeBuffer.table!"_Stz,        &Step::vJob_WriteBufferTableStore);
 }
 
@@ -138,22 +138,22 @@ void Step::vJob_WriteBufferPartitionFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_WriteBuffer::spawnInsert -- spawn a write buffer for insert            */
+/* job_WriteBuffer::spawnLastInsert -- spawn a last write buffer for insert   */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferSpawnInsert(MP_Task mpTask)
+void Step::vJob_WriteBufferSpawnLastInsert(MP_Task mpTask)
 {
-  ENTRY("vJob_WriteBufferSpawnInsert"_Stz);
+  ENTRY("vJob_WriteBufferSpawnLastInsert"_Stz);
   
   Object* pPtrInsertRow;
   if ( ! mpTask->m_pDataStack->bPop(pPtrInsertRow) )
     THROW_INVALID_DSTACK("job_WriteBuffer::spawnInsert"_Stz);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pPtrInsertRow);
   
-  i8 iFinal;
-  if ( ! mpTask->m_pDataStack->bPop(iFinal) )
-    THROW_INVALID_DSTACK("job_WriteBuffer::spawnInsert"_Stz);
-  
-  bool bFinal = iFinal ? true : false;
+//  i8 iFinal;
+//  if ( ! mpTask->m_pDataStack->bPop(iFinal) )
+//    THROW_INVALID_DSTACK("job_WriteBuffer::spawnInsert"_Stz);
+//
+//  bool bFinal = iFinal ? true : false;
   
   // get the session
   Session* pSession = pJob_InsertRow->m_pSession;
@@ -161,42 +161,50 @@ void Step::vJob_WriteBufferSpawnInsert(MP_Task mpTask)
   // get the insert table
   Job_InsertTable* pJob_InsertTable = pJob_InsertRow->m_pJob_InsertTable;
   
-  // get the working buffer
-  i8 iPartition = pJob_InsertRow->m_iPartition;
-  WorkingBuffer* pWorkingBuffer = pJob_InsertRow->m_pWorkingBuffer[iPartition];
-  pJob_InsertRow->m_pWorkingBuffer[iPartition] = nullptr;
-  
   i8 iParentJobId = pJob_InsertTable->iJobId();
-  i8 nWriteBehindBuffers = pJob_InsertRow->m_nWriteBehindBuffers[iPartition];
   Stz* pTableName = pJob_InsertRow->m_sObjectName;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn a write buffer job for insert
-  Job_WriteBuffer::vSpawnJobWriteBuffer(
-                      pSession, pTableName, DS_INSERT,
-                      pWorkingBuffer, iParentJobId, iPartition,
-                      bFinal, nWriteBehindBuffers);
+  // spawn a write buffer job for insert for each partition
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
+    
+    pJob_InsertRow->m_iPartition = iPartition;
+    
+    // get the working buffer
+    if ( ! pJob_InsertRow->m_pWorkingBuffer[iPartition] )
+      pJob_InsertRow->vNewWorkingBuffer(pJob_InsertRow->m_pTable);
+    
+    WorkingBuffer* pWorkingBuffer = pJob_InsertRow->m_pWorkingBuffer[iPartition];
+    pJob_InsertRow->m_pWorkingBuffer[iPartition] = nullptr;
+    
+    i8 nWriteBehindBuffers = pJob_InsertRow->m_nWriteBehindBuffers[iPartition];
+    
+    Job_WriteBuffer::vSpawnJobWriteBuffer(
+                        pSession, pTableName, DS_INSERT,
+                        pWorkingBuffer, iParentJobId, iPartition,
+                        true, nWriteBehindBuffers);
+  }
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_WriteBuffer::spawnLoad -- spawn a write buffer for load                */
+/* job_WriteBuffer::spawnLastLoad -- spawn a write buffer for load            */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_WriteBufferSpawnLoad(MP_Task mpTask)
+void Step::vJob_WriteBufferSpawnLastLoad(MP_Task mpTask)
 {
-  ENTRY("vJob_WriteBufferSpawnLoad"_Stz);
+  ENTRY("vJob_WriteBufferSpawnLastLoad"_Stz);
   
   Object* pPtrJob_SubLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("job_WriteBuffer::spawnLoad"_Stz);
+    THROW_INVALID_DSTACK("job_WriteBuffer::spawnLastLoad"_Stz);
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
-  i8 iFinal;
-  if ( ! mpTask->m_pDataStack->bPop(iFinal) )
-    THROW_INVALID_DSTACK("job_WriteBuffer::spawnLoad"_Stz);
-  
-  bool bFinal = iFinal ? true : false;
+//  i8 iFinal;
+//  if ( ! mpTask->m_pDataStack->bPop(iFinal) )
+//    THROW_INVALID_DSTACK("job_WriteBuffer::spawnLoad"_Stz);
+//
+//  bool bFinal = iFinal ? true : false;
   
   // get the session
   Session* pSession = pJob_SubLoader->m_pSession;
@@ -204,20 +212,31 @@ void Step::vJob_WriteBufferSpawnLoad(MP_Task mpTask)
   // get the load table
   Job_LoadTable* pJob_LoadTable = pJob_SubLoader->pJob_LoadTable();
   
-  i8 iPartition = pJob_SubLoader->m_iPartition;
-  WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];
-  pJob_SubLoader->m_pWorkingBuffer[iPartition] = nullptr;
-  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn a write buffer job for insert for each partition
   i8 iParentJobId = pJob_LoadTable->iJobId();
-  i8 nWriteBehindBuffers = pJob_SubLoader->m_nWriteBehindBuffers[iPartition];
   Stz* sTableName = pJob_SubLoader->m_sObjectName;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create a write buffer job for load
-  Job_WriteBuffer::vSpawnJobWriteBuffer(
-                      pSession, sTableName, DS_LOAD,
-                      pWorkingBuffer, iParentJobId, iPartition,
-                      bFinal, nWriteBehindBuffers);
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
+ 
+    pJob_SubLoader->m_iPartition = iPartition;
+    
+    if ( ! pJob_SubLoader->m_pWorkingBuffer[iPartition] )
+      pJob_SubLoader->vNewWorkingBuffer(pJob_LoadTable->m_pTable);
+    
+    // get the working buffer
+    WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];
+    pJob_SubLoader->m_pWorkingBuffer[iPartition] = nullptr;
+    
+    i8 nWriteBehindBuffers = pJob_SubLoader->m_nWriteBehindBuffers[iPartition];
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // create a write buffer job for load
+    Job_WriteBuffer::vSpawnJobWriteBuffer(
+                        pSession, sTableName, DS_LOAD,
+                        pWorkingBuffer, iParentJobId, iPartition,
+                        true, nWriteBehindBuffers);
+  }
   
   EXIT();
 }
