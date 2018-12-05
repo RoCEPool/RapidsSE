@@ -547,7 +547,6 @@
   // job insertRow
   static void vJob_InsertTableInsertRowJobFetch(Tasks::MP_Task mpTask);
 
-  static void vJob_InsertRowPartitionStore(Tasks::MP_Task mpTask);
   static void vJob_InsertRowSpawnInsertBuffer(Tasks::MP_Task mpTask);
   static void vJob_InsertRowTableStore(Tasks::MP_Task mpTask);
 

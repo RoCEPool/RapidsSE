@@ -13,12 +13,11 @@ void Step::vAddSteps_JobInsertRow(void)
 {
   vAddStep("Job_InsertTable.insertRowJob@"_Stz, &Step::vJob_InsertTableInsertRowJobFetch);
   
-  vAddStep("job_insertRow.partition!"_Stz,       &Step::vJob_InsertRowPartitionStore);
   vAddStep("job_insertRow.table!"_Stz,           &Step::vJob_InsertRowTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_InsertTable.InsertRowJob@ -- fetch insertRow jobid from job              */
+/* Job_InsertTable.InsertRowJob@ -- fetch insertRow jobid from job            */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_InsertTableInsertRowJobFetch(MP_Task mpTask)
 {
@@ -30,27 +29,6 @@ void Step::vJob_InsertTableInsertRowJobFetch(MP_Task mpTask)
   Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJobPtr);
   
   mpTask->m_pDataStack->vPushObject(pJob_InsertTable->m_pJobInsertRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_InsertRow.partition! -- store partition into job_insertRow             */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_InsertRowPartitionStore(MP_Task mpTask)
-{
-  ENTRY("vJob_InsertRowPartitionStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_InsertRow.partition!"_Stz);
-  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
-  
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("job_InsertRow.partition!"_Stz);
-  
-  pJob_InsertRow->m_iPartition = iPartition;
   
   EXIT();
 }
