@@ -587,7 +587,6 @@
 
   // Job subLoader
   static void vJob_SubLoaderBegin(Tasks::MP_Task mpTask);
-  static void vJob_SubLoaderDanglingBuffer(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderEnd(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderJobLoadTableFetch(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderSpawn(Tasks::MP_Task mpTask);

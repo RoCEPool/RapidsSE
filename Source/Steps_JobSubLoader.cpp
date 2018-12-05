@@ -14,7 +14,6 @@ void Step::vAddSteps_JobSubLoader(void)
   vAddStep("Job_subLoader::spawn"_Stz,        &Step::vJob_SubLoaderSpawn);
   
   vAddStep("job_subLoader.begin"_Stz,         &Step::vJob_SubLoaderBegin);
-  vAddStep("job_subLoader.danglingBuffer"_Stz,&Step::vJob_SubLoaderDanglingBuffer);
   vAddStep("job_subLoader.end"_Stz,           &Step::vJob_SubLoaderEnd);
   vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Step::vJob_SubLoaderJobLoadTableFetch);
   vAddStep("Job_subLoader.processRecords"_Stz,&Step::vJob_SubLoaderProcessRecords);
@@ -75,27 +74,6 @@ void Step::vJob_SubLoaderBegin(MP_Task mpTask)
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
 
   pJob_SubLoader->vBegin();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_subLoader.danglingBuffer -- ensure a dangling buffer for partition     */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderDanglingBuffer(MP_Task mpTask)
-{
-  ENTRY("vJob_SubLoaderDanglingBuffer"_Stz);
-  
-  Object* pPtrJob_SubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("job_subLoader.delete"_Stz);
-  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
-  
-  //if ( ! pSubLoader->pWorkingBuffer() )
-  //  pSubLoader->vNewWorkingBuffer();
-    
-  if ( ! pJob_SubLoader->m_pWorkingBuffer[pJob_SubLoader->m_iPartition] )
-    pJob_SubLoader->vNewWorkingBuffer(pJob_SubLoader->m_pJob_LoadTable->m_pTable);
   
   EXIT();
 }
