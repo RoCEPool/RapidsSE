@@ -13,7 +13,6 @@ void Step::vAddSteps_JobInsertRow(void)
 {
   vAddStep("Job_InsertTable.insertRowJob@"_Stz, &Step::vJob_InsertTableInsertRowJobFetch);
   
-  vAddStep("job_InsertRow.danglingBuffer"_Stz,   &Step::vJob_InsertRowDanglingBuffer);
   vAddStep("job_insertRow.partition!"_Stz,       &Step::vJob_InsertRowPartitionStore);
   vAddStep("job_insertRow.table!"_Stz,           &Step::vJob_InsertRowTableStore);
 }
@@ -31,24 +30,6 @@ void Step::vJob_InsertTableInsertRowJobFetch(MP_Task mpTask)
   Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJobPtr);
   
   mpTask->m_pDataStack->vPushObject(pJob_InsertTable->m_pJobInsertRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_InsertRow.danglingBuffer--ensure there's a dangling buffer in partition */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_InsertRowDanglingBuffer(MP_Task mpTask)
-{
-  ENTRY("vJob_InsertRowDanglingBuffer"_Stz);
-  
-  Object* pPtrInsertRow;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrInsertRow) )
-    THROW_INVALID_DSTACK("job_InsertRow.danglingBuffer"_Stz);
-  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pPtrInsertRow);
-  
-  if ( ! pJob_InsertRow->m_pWorkingBuffer[pJob_InsertRow->m_iPartition] )
-    pJob_InsertRow->vNewWorkingBuffer(pJob_InsertRow->m_pTable);
   
   EXIT();
 }
