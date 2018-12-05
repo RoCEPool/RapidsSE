@@ -439,7 +439,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuffer, i8 iTraceLevel)
+eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuffer, i8* piExpectedRows, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
   eAC  eApiCall = AC_FetchNextBuffer;
@@ -487,13 +487,14 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
       PosixThread::vSleepMilli(1);
     }
     
-    //vTrace("Got buffer %lld\n"_Stz, pJob_FetchRows->m_iPartition);
+    //vTrace("Buffers remaining %lld\n"_Stz, pJob_FetchRows->m_pBufferQueue->iCount());
     
-    //ASSERT(pSession->m_pJob == pJob_FetchRows);
+    *piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
     
     // get entry buffer
     PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
     pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
+    //vTrace("Expected rows per buffer %lld %lld\n"_Stz, rowsPerBuffer, pJob_FetchRows->m_pFetchBuffer->nFetchedRows());
     //vTrace("Got buffer %p %lld\n"_Stz, pJob_FetchRows->m_pFetchBuffer, pJob_FetchRows->m_iPartition);
     
     // is it a last buffer ?
