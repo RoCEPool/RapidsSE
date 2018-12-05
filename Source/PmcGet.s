@@ -65,7 +65,7 @@ iPmc_GetLlcMisses:
 #  cpuid
 
   mov rax,0x0
-  mov ecx,0xC2
+  mov ecx,0x1
   rdpmc
 
 ret

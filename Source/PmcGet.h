@@ -8,6 +8,7 @@ namespace Assembler
   extern "C" u8 iPmc_Cpuid(void);
   
   extern "C" u8 iPmc_GetLlcMisses(void);
+  extern "C" u8 iPmc_SetLlcMisses(void);
 
 }
 
