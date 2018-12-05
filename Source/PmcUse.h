@@ -5,9 +5,8 @@
 
 namespace Assembler
 {
-  extern "C" u8 iPmc_Info(void);
-  
   extern "C" u8 iPmc_GetLlcMisses(void);
+  extern "C" u8 iPmc_Info(void);
 }
 
 /*============================================================================*/

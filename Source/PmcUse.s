@@ -53,9 +53,21 @@ iPmc_GetLlcMisses:
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
+#
+# Refer: RDPMC -- Read Performance Monitoring Counter in Intel Manual Vol 2B
+#
+
+  # zero RAX
   mov rax,0x0
+
+  # we will read IA32_PERFEVTSEL1
   mov ecx,0x1
+
+  # read IA32_PERFEVTSEL1 into EDX:EAX
   rdpmc
+
+  # for the moment we'll just return the lower order bits
+  # we need to or with EDX
 
 ret
 
