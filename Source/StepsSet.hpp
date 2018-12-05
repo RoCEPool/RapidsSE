@@ -592,8 +592,6 @@
   static void vJob_SubLoaderJobLoadTableFetch(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderSpawn(Tasks::MP_Task mpTask);
 
-  static void vJob_SubLoaderPartitionFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubLoaderPartitionStore(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderProcessRecords(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderRecordsInvalid(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderWorkingBuffer(Tasks::MP_Task mpTask);

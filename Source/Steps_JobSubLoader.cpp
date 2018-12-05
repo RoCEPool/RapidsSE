@@ -17,8 +17,6 @@ void Step::vAddSteps_JobSubLoader(void)
   vAddStep("job_subLoader.danglingBuffer"_Stz,&Step::vJob_SubLoaderDanglingBuffer);
   vAddStep("job_subLoader.end"_Stz,           &Step::vJob_SubLoaderEnd);
   vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Step::vJob_SubLoaderJobLoadTableFetch);
-  vAddStep("Job_subLoader.partition@"_Stz,    &Step::vJob_SubLoaderPartitionFetch);
-  vAddStep("Job_subLoader.partition!"_Stz,    &Step::vJob_SubLoaderPartitionStore);
   vAddStep("Job_subLoader.processRecords"_Stz,&Step::vJob_SubLoaderProcessRecords);
   vAddStep("Job_subLoader.recordsInvalid"_Stz,&Step::vJob_SubLoaderRecordsInvalid);
 
@@ -132,46 +130,6 @@ void Step::vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask)
   Job_SubLoader* pJob = _pJob_SubLoader(pJobPtr);
   
   mpTask->m_pDataStack->vPushObject(pJob->m_pJob_LoadTable);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_subLoader.partition@ -- get partition no derived from hash of record   */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderPartitionFetch(MP_Task mpTask)
-{
-  ENTRY("vJob_SubLoaderPartitionFetch"_Stz);
-  
-  Object* pPtrJob_SubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("job_subLoader.partition@"_Stz);
-  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
-  
-  i8 iPartition = pJob_SubLoader->m_iPartition;
-  
-  mpTask->m_pDataStack->vPushInt(iPartition);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_subLoader.partition! -- store partition number                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderPartitionStore(MP_Task mpTask)
-{
-  ENTRY("vJob_SubLoaderPartitionStore"_Stz);
-  
-  Object* pPtrJob_SubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("job_subLoader.partition!"_Stz);
-  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
-  
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("job_subLoader.partition!"_Stz);
-  
-  pJob_SubLoader->m_iPartition = iPartition;
   
   EXIT();
 }
