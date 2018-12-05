@@ -17,6 +17,7 @@ void Step::vAddSteps_JobSubLoader(void)
   vAddStep("job_subLoader.end"_Stz,           &Step::vJob_SubLoaderEnd);
   vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Step::vJob_SubLoaderJobLoadTableFetch);
   vAddStep("Job_subLoader.processRecords"_Stz,&Step::vJob_SubLoaderProcessRecords);
+  vAddStep("Job_subLoader.spawnLastBuffers"_Stz,&Step::vJob_SubLoaderSpawnLastBuffers);
   vAddStep("Job_subLoader.recordsInvalid"_Stz,&Step::vJob_SubLoaderRecordsInvalid);
 
   vAddStep("Job_subLoader.workingBuffer"_Stz, &Step::vJob_SubLoaderWorkingBuffer);
@@ -56,6 +57,7 @@ void Step::vJob_SubLoaderSpawn(MP_Task mpTask)
   
   EXIT();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -133,6 +135,50 @@ void Step::vJob_SubLoaderProcessRecords(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* job_subLoader.spawnLastBuffers --spawn last write buffers ~ each partition */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubLoaderSpawnLastBuffers(MP_Task mpTask)
+{
+  ENTRY("vJob_SubLoaderSpawnLastBuffers"_Stz);
+  
+  Object* pPtrJob_SubLoader;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
+    THROW_INVALID_DSTACK("job_subLoader.spawnLastBuffers::spawnLastLoad"_Stz);
+  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
+  
+  // get the session
+  Session* pSession = pJob_SubLoader->m_pSession;
+  
+  // get the load table
+  Job_LoadTable* pJob_LoadTable = pJob_SubLoader->pJob_LoadTable();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn a write buffer job for insert for each partition
+  i8 iParentJobId = pJob_LoadTable->iJobId();
+  Stz* sTableName = pJob_SubLoader->m_sObjectName;
+  
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
+    
+    if ( ! pJob_SubLoader->m_pWorkingBuffer[iPartition] )
+      pJob_SubLoader->vNewWorkingBuffer(pJob_LoadTable->m_pTable, iPartition);
+    
+    // get the working buffer
+    WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];
+    pJob_SubLoader->m_pWorkingBuffer[iPartition] = nullptr;
+    
+    i8 nWriteBehindBuffers = pJob_SubLoader->m_nWriteBehindBuffers[iPartition];
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // create a write buffer job for load
+    Job_WriteBuffer::vSpawnJobWriteBuffer(
+          pSession, sTableName, DS_LOAD,
+          pWorkingBuffer, iParentJobId, iPartition,
+          true, nWriteBehindBuffers);
+  }
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* subLoader.recordsInvalid -- return no of invalid records fetched by sub    */
 /*----------------------------------------------------------------------------*/

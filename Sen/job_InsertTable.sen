@@ -25,7 +25,7 @@
 
   grid::slots task::acks!
 
-  pJob_InsertRow job_writeBuffer::spawnLastInsert
+  pJob_InsertTable job_insertTable.spawnLastBuffers
 
   //"InsertTable_sendLast ack waiting" .verbose
   task::wait

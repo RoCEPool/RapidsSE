@@ -12,12 +12,7 @@
   params| pJob_SubLoader |
   0 locals| pJobLoadTable_Participant |
 
-  //begin pJob_SubLoader job_subLoader.processRecords while
-
-  //  false pJob_SubLoader SubLoader_sendBuffer
-
-  //repeat
-
+  // process all the records
   pJob_SubLoader job_subLoader.processRecords
 
   // get the job_loader from subLoader
@@ -26,8 +21,8 @@
   // get the valid/invalid rows loaded from subloader
   pJob_SubLoader job_subLoader.recordsInvalid pJobLoadTable_Participant job_loadTable.addInvalidRows
 
-  //pJob_SubLoader SubLoader_sendLast
-  pJob_SubLoader job_writeBuffer::spawnLastLoad
+  // spawn last buffers for each partition
+  pJob_SubLoader job_subLoader.spawnLastBuffers
 ;
 
 /*----------------------------------------------------------------------------*/

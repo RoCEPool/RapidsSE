@@ -84,9 +84,11 @@ eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSourc
   // insert the row in a working buffer
   while (true ) {
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
     i8 iPartition = pTable->iRowPartition(m_aRecord);
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check for working buffer
     if (! m_pWorkingBuffer[iPartition]) {
       
@@ -100,7 +102,8 @@ eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSourc
       }
     }
     
-    // get working buffer
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the working buffer
     WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[iPartition];
     
     // get the tx id
@@ -115,15 +118,18 @@ eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSourc
     xRowWrk.vEmbedded(m_aRecord.aChar());
     xRowWrk.vRowSize(m_nRecordBytes);
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
     bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // appended ?
     if (bAppended)
       return eErrorCode;
       
     m_pWorkingBuffer[iPartition] = nullptr;
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn a write buffer job 
     Job_WriteBuffer::vSpawnJobWriteBuffer(pSession, pTable->aTableName(), eDataSource,
                                           pWorkingBuffer, iParentJobId,
@@ -139,7 +145,7 @@ eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSourc
 void Job_WriteBehind::vNewWorkingBuffer(Table* pTable, i8 iPartition)
 {
   m_pWorkingBuffer[iPartition] =
-  new WorkingBuffer(pTable,iPartition);
+    new WorkingBuffer(pTable,iPartition);
   
   m_nWriteBehindBuffers[iPartition]++;
 }

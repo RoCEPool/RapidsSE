@@ -546,8 +546,8 @@
 
   // job insertRow
   static void vJob_InsertTableInsertRowJobFetch(Tasks::MP_Task mpTask);
+  static void vJob_InsertTableSpawnLastBuffers(Tasks::MP_Task mpTask);
 
-  static void vJob_InsertRowSpawnInsertBuffer(Tasks::MP_Task mpTask);
   static void vJob_InsertRowTableStore(Tasks::MP_Task mpTask);
 
   // job LoadTable
@@ -590,6 +590,7 @@
   static void vJob_SubLoaderSpawn(Tasks::MP_Task mpTask);
 
   static void vJob_SubLoaderProcessRecords(Tasks::MP_Task mpTask);
+  static void vJob_SubLoaderSpawnLastBuffers(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderRecordsInvalid(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderWorkingBuffer(Tasks::MP_Task mpTask);
 
@@ -608,7 +609,6 @@
   static void vJob_WriteBufferIsLoading(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferPartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferSpawnLastInsert(Tasks::MP_Task mpTask);
-  static void vJob_WriteBufferSpawnLastLoad(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferTableStore(Tasks::MP_Task mpTask);
 
   // load table

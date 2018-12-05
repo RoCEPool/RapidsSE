@@ -334,7 +334,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   
   pJob_WriteBuffer->m_eDataSource  = eDataSource;
   
-  // DS_INSERT/DSLOAD should have a known parent job id
+  // DS_INSERT/DS_LOAD should have a known parent job id
   RASSERT(DS_INGEST == eDataSource || C_UNKNOWN != iParentJobId);
   
   pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
