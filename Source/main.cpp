@@ -12,7 +12,7 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  //vTest9();
+  vTest9();
 
   // parse the command line arguments
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )

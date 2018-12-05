@@ -276,16 +276,20 @@ void vTest8(void)
   return;
 }
 
-#include <sys/kern_control.h>
-
 /*----------------------------------------------------------------------------*/
 /* test9                                                                      */
 /*----------------------------------------------------------------------------*/
+#define nElem (1024*1028*16)
+i8 xI8[nElem];
+
 void vTest9(void)
 {
-  vTrace("iPmc_Info %ll0x\n"_Stz,iPmc_Info());
+  vTrace("iPmc_Info %llx\n"_Stz,iPmc_Info());
   
-  u8 u = iPmc_GetLlcMisses();
+  vTrace("iPmc_GetLlcMisses %lld\n"_Stz,iPmc_GetLlcMisses());
+  for (i8 i = 0; i < nElem; i++)
+    xI8[i] = i;
+  vTrace("iPmc_GetLlcMisses %lld\n"_Stz,iPmc_GetLlcMisses());
 }
 
 /*============================================================================*/
