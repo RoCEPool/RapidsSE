@@ -288,15 +288,15 @@ void vTest9(void)
   
   //vTrace("iPmc_Info %llx\n"_Stz,iPmc_Info());
   
-  //vTrace("iPmc_GetLlcMisses %llx\n"_Stz,iPmc_GetLlcMisses());
+  vTrace("Starting iPmc_GetLlcMisses %lld\n"_Stz,iPmc_GetLlcMisses());
   for (i8 i = 0; i < nElem; i++)
     xI8[i] = i;
   for (i8 i = 0; i < nElem; i++) {
     i8 iElem = Random::iRandom(nElem-1);
-    vTrace("iElem %lld; iPmc_GetLlcMisses %llx\n"_Stz,iElem,iPmc_GetLlcMisses());
+    //vTrace("iElem %lld; iPmc_GetLlcMisses %llx\n"_Stz,iElem,iPmc_GetLlcMisses());
     iSum += xI8[iElem];
   }
-  vTrace("iPmc_GetLlcMisses %llx; iSum %lld\n"_Stz,iPmc_GetLlcMisses(),iSum);
+  vTrace("Ending   iPmc_GetLlcMisses %lld; iSum %lld\n"_Stz,iPmc_GetLlcMisses(),iSum);
 }
 
 /*============================================================================*/

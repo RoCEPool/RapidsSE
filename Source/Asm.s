@@ -8,6 +8,8 @@
 # the first six integer or pointer arguments are passed in
 # registers RDI, RSI, RDX, RCX, R8, and R9
 #
+# the return value is passed in RAX
+#
 # refer: http://en.wikipedia.org/wiki/X86_calling_conventions
 #
 
