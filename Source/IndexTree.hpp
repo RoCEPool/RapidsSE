@@ -61,6 +61,7 @@ namespace DBobjects
     void         vLazyBuild(void);
     EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
+    void         vPurge(void);
     EntryBuffer* pRoot(void);
     void         vTidyUp(void);
     void         vTruncate(void);

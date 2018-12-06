@@ -27,10 +27,11 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.init"_Stz,               &Step::vTableInit);
   vAddStep("table.insert"_Stz,             &Step::vTableInsert);
   vAddStep("table.insertEntries"_Stz,      &Step::vTableInsertEntries);
+  vAddStep("table.isLoading!"_Stz,         &Step::vTableIsLoadingStore);
   vAddStep("table.isValidIndexColumns"_Stz,&Step::vTableIsValidIndexColumns);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
-  vAddStep("table.isLoading!"_Stz,         &Step::vTableIsLoadingStore);
   vAddStep("table.name"_Stz,               &Step::vTableName);
+  vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table.removeIndex"_Stz,        &Step::vTableRemoveIndex);
   vAddStep("table.showColumnVec"_Stz,      &Step::vTableShowColumnVec);
   vAddStep("table.slots"_Stz,              &Step::vTableSlots);
@@ -531,6 +532,30 @@ void Step::vTableName(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushS32(sName);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.purge -- purge rows/buffers in table on data stack                   */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePurge(MP_Task mpTask)
+{
+  ENTRY("vTablePurge"_Stz);
+  
+  Object* pPtrTable;
+  i8 iSlot;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.purge"_Stz);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
+    THROW_INVALID_DSTACK("table.purge"_Stz);
+  
+  pTable->vPurge(iSlot);
+  
   EXIT();
 }
 

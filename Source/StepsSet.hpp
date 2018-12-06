@@ -570,6 +570,10 @@
   static void vJob_PublishPublish(Tasks::MP_Task mpTask);
   static void vJob_PublishTableStore(Tasks::MP_Task mpTask);
 
+  // job subPurge
+  static void vJob_SubPurgeSlotFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubPurgePurgeJobIdFetch(Tasks::MP_Task mpTask);
+
   // job purge
   static void vJob_PurgePurge(Tasks::MP_Task mpTask);
   static void vJob_PurgeSpawnSub(Tasks::MP_Task mpTask);
@@ -921,10 +925,11 @@
   static void vTableInit(Tasks::MP_Task mpTask);
   static void vTableInsert(Tasks::MP_Task mpTask);
   static void vTableInsertEntries(Tasks::MP_Task mpTask);
-  static void vTableLazyBuildIndexes(Tasks::MP_Task mpTask);
   static void vTableIsLoadingStore(Tasks::MP_Task mpTask);
+  static void vTableLazyBuildIndexes(Tasks::MP_Task mpTask);
   static void vTableList(Tasks::MP_Task mpTask);
   static void vTableName(Tasks::MP_Task mpTask);
+  static void vTablePurge(Tasks::MP_Task mpTask);
   static void vTableRemoveIndex(Tasks::MP_Task mpTask);
   static void vTableShowColumnVec(Tasks::MP_Task mpTask);
   static void vTableSlots(Tasks::MP_Task mpTask);

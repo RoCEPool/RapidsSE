@@ -196,6 +196,16 @@ PtnColVec* Slots::pPtnColVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* purge partition                                                            */
+/*----------------------------------------------------------------------------*/
+void Slots::vPurgeIndex(i8 iPartitionNO, i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+  
+  m_pTablePtnVec->pGet(iPartitionNO)->pIndexTree(iIndexNo)->vPurge();
+}
+
+/*----------------------------------------------------------------------------*/
 /* show column vector                                                         */
 /*----------------------------------------------------------------------------*/
 void Slots::vShowColumnVec(void)
@@ -282,7 +292,7 @@ void Slots::vTruncate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tuncate all partitions                                                     */
+/* tuncate partition                                                          */
 /*----------------------------------------------------------------------------*/
 void Slots::vTruncateIndex(i8 iPartitionNO, i8 iIndexNo)
 {

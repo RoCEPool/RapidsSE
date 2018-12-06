@@ -640,6 +640,22 @@ PtnColVec*  Table::pPtnColVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* purge rows/buffers                                                         */
+/*----------------------------------------------------------------------------*/
+void Table::vPurge(i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  vTrace("Purging table %s\n"_Stz, m_sTableName.aChar());
+  
+  // purge all other indices
+  for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
+    Index* pIndex = m_pIdxVec->pGet(iIndexNo);
+    m_xSlots.vPurgeIndex(iPartition, pIndex->iIndexNo());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
 i8 Table::iRowPartition(Stz* pRow)

@@ -32,6 +32,7 @@ namespace DBobjects
     TablePtn*  pPartition(i8 iSlot);
     bool       bPopulateIndex(i8 iIndexNo);
     PtnColVec* pPtnColVec(void);
+    void       vPurgeIndex(i8 iPartitionNo, i8 iIndexNo);
     void       vShowColumnVec(void);
     Dic*       pSubDic(void);
     void       vTable(Table* pTable);

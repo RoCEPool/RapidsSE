@@ -1014,6 +1014,36 @@ EntryBuffer* IndexTree::pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols,
 }
 
 /*----------------------------------------------------------------------------*/
+/* purge the index                                                            */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vPurge(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  // only allowing purging of hidden index
+  RASSERT(m_pIndex->bIsHidden());
+  
+  m_zLock.vGrabWrite();
+  
+  if ( ! m_pRootBuffer)
+    return;
+  
+  // is currentBuffer same as rootBuffer ?
+  if (m_pCurrentBuffer == m_pRootBuffer)
+    m_pCurrentBuffer = nullptr;
+  
+  EntryBuffer* pEntryBuffer = m_pRootBuffer;
+  
+  // get next entry buffer
+  m_pRootBuffer = m_pRootBuffer->pNextBuffer();
+  
+  // delete the roor buffer
+  delete pEntryBuffer;
+  
+  m_zLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get root entry                                                             */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* IndexTree::pRoot(void)

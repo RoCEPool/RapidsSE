@@ -78,6 +78,7 @@
 "job_StartCluster.sen" include
 "job_Status.sen" include
 "job_SubFetch.sen" include
+"job_SubPurge.sen" include
 "job_SubLoader.sen" include
 "job_SubTruncate.sen" include
 
