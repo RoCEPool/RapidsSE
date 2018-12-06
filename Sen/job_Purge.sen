@@ -75,9 +75,9 @@
   I pJob_purge job_purge.spawnSub
   loop
 
-  //"purge ack waiting" .
+  "purge ack waiting" .
   task::wait
-  //"purge acked" .
+  "purge acked" .
 
   pJob_purge job.notice
 

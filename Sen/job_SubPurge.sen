@@ -48,7 +48,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for acks to be set in the purge task
   begin
-    pJob_Purge task.IsAckSet
+    pTask_Purge task.IsAckSet
   not while
     1 thread.sleep_ms
   repeat
