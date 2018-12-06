@@ -424,7 +424,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Status),         // CN_JOB_STATUS
   /*    */ sizeof(Job_SubFetch),       // CN_JOB_SUBFETCH
   /*    */ sizeof(Job_SubLoader),      // CN_JOB_SUBLOADER
-  /*    */ sizeof(Job_SubTruncate),    // CN_JOB_SUBPURGE
+  /*    */ sizeof(Job_SubPurge),       // CN_JOB_SUBPURGE
   /*    */ sizeof(Job_SubTruncate),    // CN_JOB_SUBTRUNCATE
   /*    */ sizeof(Job_TableSizes),     // CN_JOB_TABLESIZES
   /*    */ sizeof(Job_TruncateTable),  // CN_JOB_TRUNCATETABLE
