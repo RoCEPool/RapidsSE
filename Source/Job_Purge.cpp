@@ -13,17 +13,17 @@ JobClass xJobClass_Purge =
 {
   "Job_Purge"_Stz,       // name of the job class
   CN_JOB_PURGE,          // class enum
-  JK_LOCAL,              // job kind
+  JK_DIST2PC,            // job kind
   "purge table"_Stz,     // comment about the job
   "purge"_Stz,           // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "purge_req"_Stz,       // the _req task seed
-  nullptr,               // the _rcv task seed
-  nullptr,               // the _exe task seed
-  nullptr,               // the _end task seed
-  nullptr,               // the _can task seed
-  false,                 // check resources?
+  "purge_beg"_Stz,       // the _rcv task seed
+  "purge_exe"_Stz,       // the _exe task seed
+  "purge_end"_Stz,       // the _end task seed
+  "purge_can"_Stz,       // the _can task seed
+  true,                  // check resources?
   false,                 // detached job?
   false,                 // buffer attached?
   JT_NONE,               // job trace
@@ -31,8 +31,8 @@ JobClass xJobClass_Purge =
   vJob_Purge_post,       // prompt post-process function
   pJob_Purge_new,        // job new function
   vJob_Purge_delete,     // job delete function
-  nullptr,               // job pre-send function
-  nullptr,               // job post-receive function
+  vJob_send,             // job pre-send function
+  vJob_recv,             // job post-receive function
   vJob_Purge_show,       // job show function
   
   // help and example
