@@ -15,12 +15,12 @@ iPmc_Info:
 .intel_syntax noprefix
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-#
-# Refer: CPUID -- CPU identification instruction in Intel Manual Vol 2A
-#
-# Refer: Table 3-8 Information Returned by CPUID Instruction Vol 2A
-#
+#                                                                              #
+# Refer: CPUID -- CPU identification instruction in Intel Manual Vol 2A        #
+#                                                                              #
+# Refer: Table 3-8 Information Returned by CPUID Instruction Vol 2A            #
+#                                                                              #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
   # clear RAX
   mov rax,0
@@ -40,7 +40,7 @@ iPmc_Info:
 ret
 
 #------------------------------------------------------------------------------#
-# iPmc_GetLlcMisses -- get llc misses from IA32_PERFEVTSEL1                    #
+# iPmc_GetLlcMisses -- get llc misses from IA32_PMC                            #
 #------------------------------------------------------------------------------#
 #ifdef __APPLE__
 .globl _iPmc_GetLlcMisses
@@ -52,19 +52,19 @@ iPmc_GetLlcMisses:
 .intel_syntax noprefix
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
-
-#
-# Refer: RDPMC -- Read Performance Monitoring Counter in Intel Manual Vol 2B
-#
+#                                                                              #
+# Refer: RDPMC -- Read Performance Monitoring Counter in Intel Manual Vol 2B   #
+#                                                                              #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
   # zero RAX
   mov rax,0x0
 
   # RDPMC uses the index relative to the base of each counter type
   #
-  mov ecx,0x1  # we will read IA32_PERFEVTSEL1
+  mov ecx,0x1  # we will read IA32_PMC1
 
-  # read IA32_PERFEVTSEL1 into EDX:EAX
+  # read IA32_PMC1 into EDX:EAX
   rdpmc
 
   # for the moment we'll just return the lower order bits
