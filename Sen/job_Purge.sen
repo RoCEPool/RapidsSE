@@ -5,16 +5,52 @@
 " job_Purge.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* Job_Purge request (on command node)                                        */
+/* purge request (on originating node)                                        */
 /*----------------------------------------------------------------------------*/
-: Purge_req (  -- <R> )
+: purge_req ( -- <R> )
 
   >>am <SEED_REQ>
 
-  0 locals| sTableNm |
-  0 locals| pTable |
+  0 0 locals| pJob pTask |
+
+  tp: purge
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pJob job.distribute
+
+  <<am <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Purge request on a node                                        */
+/*----------------------------------------------------------------------------*/
+: purge_exe (  Job_Purge -- <R> )
+
+  >>am <SEED_REQ>
 
   job::this locals| pJob_Purge |
+
+  0 locals| sTableNm |
+  0 locals| pThisTask |
+
+  tp: purge_exe
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_PURGE pJob_Purge object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pThisTask
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
@@ -26,12 +62,60 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the tables folder
-  checkInTables not if pJob_Purge <ERROR_REQUEST> !!am exit then
+  // grab this task's lock
+  pThisTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get table name from job
+  // set the acks
+  grid::slots task::acks!
+
+  grid::slots 0
+  do
+  //I "Creating Job_SubPurge %v" fmt.print
+  I pJob_purge job_purge.spawnSub
+  loop
+
+  //"purge ack waiting" .
+  task::wait
+  //"purge acked" .
+
+  pJob_purge job.notice
+
+  pJob_purge send_job__executed
+
+  <<am <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_purge job check resources                                      */
+/*----------------------------------------------------------------------------*/
+: purge.checkResources ( Job_Purge -- )
+
+  >>am <Check_Resources>
+
+  params| pJob_Purge  |
+  0 locals| sTableNm |
+
+  tp: purge.checkResources
+  //checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_Purge getPath
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if pJob_Purge <ERROR_JOB> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // there should be a table folder
   pJob_Purge job.objectName@ to sTableNm
+  sTableNm checkIsTableFolder not if pJob_Purge <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -39,24 +123,79 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_Purge <ERROR_REQUEST> !!am exit then
-
-  //----------------------------------------------------------------------------
-
-  // get table
-  sTableNm find execute to pTable
-  pTable pJob_Purge job_purge.table!
-
-  pJob_Purge job_purge.purge
-
-  //----------------------------------------------------------------------------
+  sTableNm checkIsTable not if popTable pJob_Purge <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
   popTable
-  assertInTables
 
-  <<am <DONE_REQ>
+  <<am <Resources_Checked>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_Purge job release resources                                    */
+/*----------------------------------------------------------------------------*/
+: purge.releaseResources ( Job_Purge -- )
+
+  >>am <Release_Resources>
+
+  params| pJob_Purge  |
+
+  tp: purge.releaseResources
+  //releaseResources received" .
+
+  <<am <Resources_Released>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: purge_beg ( -- )
+
+  >>am <SEED_BEG>
+
+  job::this locals| pJob_Purge |
+
+  pJob_Purge job.beginParticipant
+
+  // check resources
+  pJob_Purge purge.checkResources
+
+  job::participantBegun
+
+  <<am <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: purge_end ( -- )
+
+  >>am <SEED_END>
+
+  job::this locals| pJob_Purge |
+
+  pJob_Purge purge.releaseResources
+
+  job::participantEnded
+
+  <<am <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: purge_can ( -- )
+
+  >>am <SEED_CAN>
+
+  job::this locals| pJob_Purge |
+
+  pJob_Purge purge.releaseResources
+
+  job::participantCancelled
+
+  <<am <DONE_CAN>
 ;
 
 /*============================================================================*/

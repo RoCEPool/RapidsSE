@@ -88,7 +88,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_AnalyzeIndex job check resources                               */
+/* execute Job_TruncateTable job check resources                              */
 /*----------------------------------------------------------------------------*/
 : truncateTable.checkResources ( Job_TruncateTable -- )
 
@@ -134,7 +134,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_AnalyzeIndex job release resources                             */
+/* execute Job_truncateTable job release resources                            */
 /*----------------------------------------------------------------------------*/
 : truncateTable.releaseResources ( Job_TruncateTable -- )
 

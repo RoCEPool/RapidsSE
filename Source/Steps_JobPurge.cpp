@@ -12,6 +12,7 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_JobPurge(void)
 {
   vAddStep("job_purge.purge"_Stz,    &Step::vJob_PurgePurge);
+  vAddStep("Job_purge.spawnSub"_Stz, &Step::vJob_PurgeSpawnSub);
   vAddStep("job_purge.table!"_Stz,   &Step::vJob_PurgeTableStore);
 }
 
@@ -28,6 +29,46 @@ void Step::vJob_PurgePurge(MP_Task mpTask)
   Job_Purge* pJob_Purge = _pJob_Purge(pPtrJobPurge);
   
   pJob_Purge->vPurge();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_purge.spawnSub -- spawn sub purge job                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
+{
+  ENTRY("vJob_PurgeSpawnSub"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("Job_purge.spawnSub"_Stz);
+  Job_Purge* pJob_Purge = _pJob_Purge(pJobPtr);
+  
+  i8 iSlot;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
+    THROW_INVALID_DSTACK("Job_purge.spawnSub"_Stz);
+  
+  Session* pSession = pJob_Purge->m_pSession;
+  i8 iPurgeJobId = pJob_Purge->m_iJobId;
+  
+  /*
+  JobClass* pJobClass_SubPurge = JobClass::pFind(CN_JOB_SUBPURGE);
+  
+  Job_SubPurge* pJob_SubPurge =
+  static_cast<Job_SubPurge*>(pJobClass_SubPurge->pPreJob(nullptr));
+  
+  Job_SubPurge->vSeed(SS_SEED_RUN);
+  
+  Job_SubPurge->m_iPurgeJobId = iPurgeJobId;
+  Job_SubPurge->m_sObjectName = pJob_Purge->m_sObjectName;
+  Job_SubPurge->m_iSlot = iSlot;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  
+  RapidsSE_bSpawnJob(Job_SubPurge,SS_SEED_RUN,nullptr);
+  */
   
   EXIT();
 }
