@@ -11,9 +11,46 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobPublish(void)
 {
+  vAddStep("job_subPublish.publishJobId@"_Stz,&Step::vJob_SubPublishPublishJobIdFetch);
+  vAddStep("job_subPublish.slot@"_Stz,        &Step::vJob_SubPublishSlotFetch);
+  
   vAddStep("job_publish.publish"_Stz,  &Step::vJob_PublishPublish);
   vAddStep("Job_publish.spawnSub"_Stz, &Step::vJob_PublishSpawnSub);
   vAddStep("job_publish.table!"_Stz,   &Step::vJob_PublishTableStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subPurge.purgeJobId@ -- fetch the purge job id                         */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubPublishPublishJobIdFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_SubPublishPublishJobIdFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subPublish.publishJobId@"_Stz);
+  Job_SubPublish* pJob = _pJob_SubPublish(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_iPublishJobId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subPublish.slot@ -- fetch the job slot                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubPublishSlotFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_SubPublishSlotFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_subPublish.slot@"_Stz);
+  Job_SubPublish* pJob = _pJob_SubPublish(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob->m_iSlot);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

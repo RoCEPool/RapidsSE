@@ -31,6 +31,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.isValidIndexColumns"_Stz,&Step::vTableIsValidIndexColumns);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
   vAddStep("table.name"_Stz,               &Step::vTableName);
+  vAddStep("table.publish"_Stz,            &Step::vTablePublish);
   vAddStep("table.purge"_Stz,              &Step::vTablePurge);
   vAddStep("table.removeIndex"_Stz,        &Step::vTableRemoveIndex);
   vAddStep("table.showColumnVec"_Stz,      &Step::vTableShowColumnVec);
@@ -532,6 +533,30 @@ void Step::vTableName(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushS32(sName);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.publish -- purge rows/buffers in table on data stack                 */
+/*----------------------------------------------------------------------------*/
+void Step::vTablePublish(MP_Task mpTask)
+{
+  ENTRY("vTablePublish"_Stz);
+  
+  Object* pPtrTable;
+  i8 iSlot;
+  
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.publish"_Stz);
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
+    THROW_INVALID_DSTACK("table.publish"_Stz);
+  
+  pTable->vPublish(iSlot);
+  
   EXIT();
 }
 

@@ -10,8 +10,8 @@ namespace JobsModel
   {
   public:
    
-    i8 m_iPurgeJobId;    // job id of the purge job that spawned this sub truncate
-    i8 m_iSlot;          // slot this sub truncate truncates
+    i8 m_iPurgeJobId;    // job id of the purge job that spawned this sub purge
+    i8 m_iSlot;          // slot this sub purge truncates
     
     // must be last
     Footer m_xFooter;

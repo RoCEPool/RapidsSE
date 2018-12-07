@@ -74,6 +74,7 @@ namespace DBobjects
     void vRemoveIndex(Index* pIndex);
     i8   nIndexBuffers(i8 iIndexNo);
     PtnColVec*  pPtnColVec(void);
+    void vPublish(i8 iPartitionNo);
     void vPurge(i8 iPartitionNo);
     i8   iRowPartition(Stz* pRow);
 

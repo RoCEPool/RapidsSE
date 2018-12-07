@@ -154,6 +154,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_STATUS
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBFETCH
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBLOADER
+  /*    */ &Finalize::vUndefined,         // CN_JOB_SUBPUBLISH
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBPURGE
   /*    */ &Finalize::vUndefined,         // CN_JOB_SUBTRUNCATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_TABLESIZES

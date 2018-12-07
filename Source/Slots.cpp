@@ -196,7 +196,17 @@ PtnColVec* Slots::pPtnColVec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* purge partition                                                            */
+/* publish partition buffers                                                  */
+/*----------------------------------------------------------------------------*/
+void Slots::vPublishIndex(i8 iPartitionNO, i8 iIndexNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
+  
+  m_pTablePtnVec->pGet(iPartitionNO)->pIndexTree(iIndexNo)->vPublish();
+}
+
+/*----------------------------------------------------------------------------*/
+/* purge partition buffers                                                    */
 /*----------------------------------------------------------------------------*/
 void Slots::vPurgeIndex(i8 iPartitionNO, i8 iIndexNo)
 {

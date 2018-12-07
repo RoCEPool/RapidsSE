@@ -566,6 +566,10 @@
   // job NodeInfo
   static void vJob_NodeInfoNodeNameFetch(Tasks::MP_Task mpTask);
 
+  // job subPublish
+  static void vJob_SubPublishSlotFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubPublishPublishJobIdFetch(Tasks::MP_Task mpTask);
+
   // job publish
   static void vJob_PublishPublish(Tasks::MP_Task mpTask);
   static void vJob_PublishSpawnSub(Tasks::MP_Task mpTask);
@@ -930,6 +934,7 @@
   static void vTableLazyBuildIndexes(Tasks::MP_Task mpTask);
   static void vTableList(Tasks::MP_Task mpTask);
   static void vTableName(Tasks::MP_Task mpTask);
+  static void vTablePublish(Tasks::MP_Task mpTask);
   static void vTablePurge(Tasks::MP_Task mpTask);
   static void vTableRemoveIndex(Tasks::MP_Task mpTask);
   static void vTableShowColumnVec(Tasks::MP_Task mpTask);
