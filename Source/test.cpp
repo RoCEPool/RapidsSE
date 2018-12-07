@@ -279,26 +279,26 @@ void vTest8(void)
 /*----------------------------------------------------------------------------*/
 /* test9                                                                      */
 /*----------------------------------------------------------------------------*/
-#define nElem (1024*1024*16)
-i8 xI8[nElem];
-
-void vTest9(void)
-{
-  i8 iSum = 0;
-  
-  vTrace("iPmc_Info %llx\n"_Stz,iPmc_Info());
-  
-  vTrace("Starting   iPmc_GetLlcMisses %lld\n"_Stz,iPmc_GetLlcMisses());
-  for (i8 i = 0; i < nElem; i++)
-    xI8[i] = i;
-  //vTrace("Sequential iPmc_GetLlcMisses %lld; iSum %lld\n"_Stz,iPmc_GetLlcMisses(),iSum);
-  for (i8 i = 0; i < nElem; i++) {
-    i8 iElem = Random::iRandom(nElem-1);
-    //vTrace("iElem %lld; iPmc_GetLlcMisses %llx\n"_Stz,iElem,iPmc_GetLlcMisses());
-    iSum += xI8[iElem];
-  }
-  vTrace("Random     iPmc_GetLlcMisses %lld; iSum %lld\n"_Stz,iPmc_GetLlcMisses(),iSum);
-}
+//#define nElem (1024*1024*16)
+//i8 xI8[nElem];
+//
+//void vTest9(void)
+//{
+//  i8 iSum = 0;
+//
+//  vTrace("iPmc_Info %llx\n"_Stz,iPmc_Info());
+//
+//  vTrace("Starting   iPmc_GetLlcMisses %lld\n"_Stz,iPmc_GetLlcMisses());
+//  for (i8 i = 0; i < nElem; i++)
+//    xI8[i] = i;
+//  //vTrace("Sequential iPmc_GetLlcMisses %lld; iSum %lld\n"_Stz,iPmc_GetLlcMisses(),iSum);
+//  for (i8 i = 0; i < nElem; i++) {
+//    i8 iElem = Random::iRandom(nElem-1);
+//    //vTrace("iElem %lld; iPmc_GetLlcMisses %llx\n"_Stz,iElem,iPmc_GetLlcMisses());
+//    iSum += xI8[iElem];
+//  }
+//  vTrace("Random     iPmc_GetLlcMisses %lld; iSum %lld\n"_Stz,iPmc_GetLlcMisses(),iSum);
+//}
 
 /*============================================================================*/
 /* end                                                                        */
