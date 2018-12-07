@@ -148,6 +148,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Table();
   Step::vAddSteps_TablePartition();
   Step::vAddSteps_Task();
+  Step::vAddSteps_Test();
   Step::vAddSteps_Thread();
   Step::vAddSteps_Timer();
   Step::vAddSteps_To();

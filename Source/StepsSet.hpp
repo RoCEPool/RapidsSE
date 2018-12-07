@@ -978,6 +978,18 @@
   static void vTaskWait(Tasks::MP_Task mpTask);
   static void vTaskYield(Tasks::MP_Task mpTask);
 
+  // test
+  static void vTestTest0(Tasks::MP_Task mpTask);
+  static void vTestTest1(Tasks::MP_Task mpTask);
+  static void vTestTest2(Tasks::MP_Task mpTask);
+  static void vTestTest3(Tasks::MP_Task mpTask);
+  static void vTestTest4(Tasks::MP_Task mpTask);
+  static void vTestTest5(Tasks::MP_Task mpTask);
+  static void vTestTest6(Tasks::MP_Task mpTask);
+  static void vTestTest7(Tasks::MP_Task mpTask);
+  static void vTestTest8(Tasks::MP_Task mpTask);
+  static void vTestTest9(Tasks::MP_Task mpTask);
+
   // thread
   static void vThreadBind(Tasks::MP_Task mpTask);
   static void vThreadCondSignal(Tasks::MP_Task mpTask);
