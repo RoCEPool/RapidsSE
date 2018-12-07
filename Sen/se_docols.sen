@@ -20,6 +20,17 @@
   "J" utility::schemaTest
 ;
 
+: test0 test::test0 ;
+: test1 test::test1 ;
+: test2 test::test2 ;
+: test3 test::test3 ;
+: test4 test::test4 ;
+: test5 test::test5 ;
+: test6 test::test6 ;
+: test7 test::test7 ;
+: test8 test::test8 ;
+: test9 test::test9 ;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
