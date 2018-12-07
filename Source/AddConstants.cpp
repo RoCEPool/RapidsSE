@@ -58,6 +58,7 @@ void Axioms::vAddConstants(void)
   vAddConstant("magic"_Stz,            C_MAGIC);
   
   // Arguments
+  vAddConstant("args.bindThreads"_Stz,       gxArguments.m_bBindThreads);
   vAddConstant("args.config"_Stz,            gxArguments.m_bConfig);
   vAddConstant("args.developer"_Stz,         gxArguments.m_bDeveloper);
   vAddConstant("args.dontFree"_Stz,          gxArguments.m_bDontFree);

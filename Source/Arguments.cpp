@@ -61,6 +61,7 @@ Arguments::Arguments(void)
   m_bUnlink = false;
 
   // options
+  m_bBindThreads = false;
   m_bConfig      = true;
   m_bDeveloper   = true;
   m_bDontFree    = false;
@@ -595,6 +596,10 @@ bool Arguments::bParse(int argc, Stz* argv[])
       continue;
     }
     
+    if (argv[i_Arg]->bSame("--bindThreads"_Stz)) {
+      m_bBindThreads = true;
+      continue;
+    }
     if (argv[i_Arg]->bSame("--activityMap"_Stz)) {
       m_bActivityMap = true;
       continue;
@@ -743,7 +748,10 @@ void Arguments::vPrintStartupInfo(void)
   
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_nSlots);
   vTrace("  --threads %lld\n"_Stz,m_nThreads);
-  
+
+  if (m_bBindThreads)
+    vTrace("  --bindThreads\n"_Stz);
+
   if (m_nDummyThreads) {
     vTrace("  --dummyThreads %lld\n"_Stz,m_nDummyThreads);
     vTrace("  --dummySleep %lld\n"_Stz,m_nDummySleep);
