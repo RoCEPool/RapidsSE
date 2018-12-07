@@ -10,7 +10,7 @@ extern File*       gpTraceFile;
 extern BufferPool* gpBufferPool;
 extern AttachMap*  gpAttachMap;
 
-char gaReportBuffer[C_1MB] = {'\0'};
+char gxTraceWorkspace[C_1MB] = {'\0'};
   
 bool mbReportTimestamp = true;
 
@@ -53,11 +53,11 @@ void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
     xLock.vGrabWrite();
   
   i8 iLen = 0;
-  char* s = gaReportBuffer;
+  char* s = gxTraceWorkspace;
   *s = '\0';
   
   assert(iLevel != 0);
-  vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,aFormat->aChar(),xArgs);
+  vsnprintf(s,sizeof(gxTraceWorkspace)-iLen-3,aFormat->aChar(),xArgs);
   
   //if (StrLib::bContains(gaReportBuffer,"serverThread"))
   //  i8 iDebug = 1;
@@ -67,13 +67,13 @@ void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
   // print to file
   fprintf(stdout,"%s%s",
           bLowMem ? "LOW-MEMORY! " : "",
-          gaReportBuffer);
+          gxTraceWorkspace);
   fflush(stdout);
   
   if (gpTraceFile) {
     gpTraceFile->vPrint("%s%s"_Stz,
                         bLowMem ? "LOW-MEMORY! " : "",
-                        gaReportBuffer);
+                        gxTraceWorkspace);
     gpTraceFile->vFlush();
   }
 
@@ -146,7 +146,7 @@ __attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
 void Debugging::vReport(i8 iLevel, Stz* aFormat, va_list xArgs)
 {
   i8 iLen = 0;
-  char* s = gaReportBuffer;
+  char* s = gxTraceWorkspace;
   *s = '\0';
   
   time_t tNow = time(0);
@@ -154,14 +154,14 @@ void Debugging::vReport(i8 iLevel, Stz* aFormat, va_list xArgs)
   sTime[ strlen(sTime) - 1 ] = '\0';
   
   assert(iLevel != 0);
-  vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,aFormat->aChar(),xArgs);
+  vsnprintf(s,sizeof(gxTraceWorkspace)-iLen-3,aFormat->aChar(),xArgs);
   
   // print to file
-  fprintf(stderr,"%s: %s", sTime, gaReportBuffer);
+  fprintf(stderr,"%s: %s", sTime, gxTraceWorkspace);
   fflush(stderr);
   
   if (gpTraceFile) {
-    gpTraceFile->vPrint("%s: %s"_Stz, sTime, gaReportBuffer);
+    gpTraceFile->vPrint("%s: %s"_Stz, sTime, gxTraceWorkspace);
     gpTraceFile->vFlush();
   }
 }
