@@ -1020,27 +1020,29 @@ void IndexTree::vPublish(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-//  // only allowing publishing of hidden index
-//  RASSERT(m_pIndex->bIsHidden());
-//  
-//  m_zLock.vGrabWrite();
-//  
-//  if ( ! m_pRootBuffer)
-//    return;
-//  
-//  // is currentBuffer same as rootBuffer ?
-//  if (m_pCurrentBuffer == m_pRootBuffer)
-//    m_pCurrentBuffer = nullptr;
-//  
-//  EntryBuffer* pEntryBuffer = m_pRootBuffer;
-//  
-//  // get next entry buffer
-//  m_pRootBuffer = m_pRootBuffer->pNextBuffer();
-//  
-//  // delete the roor buffer
-//  delete pEntryBuffer;
-//  
-//  m_zLock.vDropWrite();
+  // only allowing publishing of hidden index
+  RASSERT(m_pIndex->bIsHidden());
+  
+  if ( ! m_pRootBuffer)
+    return;
+  
+  m_zLock.vGrabWrite();
+  
+  // is there a current buffer ?
+  if ( ! m_pCurrentBuffer)
+    return;
+  
+  s48K sRowString;
+  
+  // publish the current buffer (last buffer that was added)
+  for (Entry* pEntry = m_pCurrentBuffer->pFirstEntry(); pEntry != nullptr;
+       pEntry = m_pCurrentBuffer->pNextEntry(pEntry, 0)) {
+    Row* pRow = pEntry->aRow();
+    pRow->vAsBinaryStringVLQ(sRowString, m_pIndex->pTable()->pColumnVec());
+    //vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+  }
+  vTrace("Partition%lld: published %lld rows\n"_Stz,m_iPartitionNo, m_pCurrentBuffer->nItems());
+  m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1053,10 +1055,10 @@ void IndexTree::vPurge(void)
   // only allowing purging of hidden index
   RASSERT(m_pIndex->bIsHidden());
   
-  m_zLock.vGrabWrite();
-  
   if ( ! m_pRootBuffer)
     return;
+  
+  m_zLock.vGrabWrite();
   
   // is currentBuffer same as rootBuffer ?
   if (m_pCurrentBuffer == m_pRootBuffer)

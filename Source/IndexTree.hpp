@@ -25,7 +25,7 @@ namespace DBobjects
     TablePtn*    m_pPartition;     // which partition                     UNUSED
     EntryBuffer* m_pRootBuffer;    // the root buffer
     EntryBuffer* m_pCurrentBuffer; // current buffer for insert hidden index
-  
+    
     // must be last
     Footer m_xFooter;
     
