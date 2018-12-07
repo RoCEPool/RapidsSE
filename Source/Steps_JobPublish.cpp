@@ -86,23 +86,23 @@ void Step::vJob_PublishSpawnSub(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("Job_publish.spawnSub"_Stz);
   
-//  Session* pSession = pJob_Publish->m_pSession;
-//  i8 iPublishJobId = pJob_Publish->m_iJobId;
-//
-//  JobClass* pJobClass_SubPublish = JobClass::pFind(CN_JOB_SUBPUBLISH);
-//
-//  Job_SubPublish* pJob_SubPublish =
-//  static_cast<Job_SubPublish*>(pJob_SubPublish->pPreJob(nullptr));
-//
-//  pJob_SubPublish->vSeed(SS_SEED_RUN);
-//
-//  pJob_SubPublish->m_iPurgeJobId = iPurgeJobId;
-//  pJob_SubPublish->m_sObjectName = pJob_Publish->m_sObjectName;
-//  pJob_SubPublish->m_iSlot = iSlot;
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//  RapidsSE_bSpawnJob(pJob_SubPublish,SS_SEED_RUN,nullptr);
+  Session* pSession = pJob_Publish->m_pSession;
+  i8 iPublishJobId = pJob_Publish->m_iJobId;
+
+  JobClass* pJobClass_SubPublish = JobClass::pFind(CN_JOB_SUBPUBLISH);
+
+  Job_SubPublish* pJob_SubPublish =
+  static_cast<Job_SubPublish*>(pJobClass_SubPublish->pPreJob(nullptr));
+
+  pJob_SubPublish->vSeed(SS_SEED_RUN);
+
+  pJob_SubPublish->m_iPublishJobId = iPublishJobId;
+  pJob_SubPublish->m_sObjectName = pJob_Publish->m_sObjectName;
+  pJob_SubPublish->m_iSlot = iSlot;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  RapidsSE_bSpawnJob(pJob_SubPublish,SS_SEED_RUN,nullptr);
   
   EXIT();
 }
