@@ -22,7 +22,7 @@ namespace System
     PosixThread(void);
     ~PosixThread(void) noexcept(false);
     
-    bool bBindThread(i8 iCpu);
+    bool bBindThread(i8 i_Core);
     void vSetOSThreadId(void);
     bool bSpawnThread(void* pFun(void*), void* pArg);
     i8   iThreadCpu(void);

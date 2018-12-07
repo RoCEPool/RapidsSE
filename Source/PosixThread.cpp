@@ -75,52 +75,57 @@ PosixThread::~PosixThread(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* bind os thread to a cpu                                                    */
+/* bind thread to a core                                                      */
 /*----------------------------------------------------------------------------*/
-bool PosixThread::bBindThread(i8 iCpu)
+bool PosixThread::bBindThread(i8 i_Core)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
   
-  i8 iCpuCount = Hardware::iCpuCount();
-  
-//  if (iCpu > iCpuCount) {
-//    vWarn("Unable to bind to Cpu %lld on a system having %lld cores!\n"_Stz, iCpu, iCpuCount);
+//  i8 iCoreCount = Hardware::iCoreCount();
+//  if (i_Core > iCoreCount) {
+//    vWarn("Unable to bind to core %lld on a system having %lld cores!\n"_Stz,
+//          i_Core, iCoreCount);
 //    return false;
 //  }
   
-  #ifdef __APPLE__
-  
-    thread_port_t mach_thread;
+#ifdef __APPLE__
 
-    vWarn("binding to core %d\n"_Stz, (int)iCpu);
-  
-    thread_affinity_policy_data_t policy = { (int)iCpu };
-    mach_thread = pthread_mach_thread_np(m_iPosixThreadId);
-    int iReturn = thread_policy_set(mach_thread, THREAD_AFFINITY_POLICY,
-                      (thread_policy_t)&policy, 1);
-  
-    RASSERT(iReturn == 0);
-    return true;
+  thread_affinity_policy_data_t xPolicy = { (int)i_Core };
 
-  #else
-  /*
-    i8 iResult;
+  vTrace("binding thread with posix id %d to core %d\n"_Stz,
+         m_iPosixThreadId, (int)i_Core);
+
+  thread_port_t uMachThread = pthread_mach_thread_np(m_iPosixThreadId);
+
+  int iReturn =
+    thread_policy_set(uMachThread,
+                      THREAD_AFFINITY_POLICY,
+                      (thread_policy_t)&xPolicy,
+                      1 //mach_msg_type_number_t
+                      );
   
-    cpu_set_t xAffinity;
-  
-    CPU_ZERO(&xAffinity);
-    CPU_SET(iCpu, &xAffinity);
-  
-    ASSERT(pthread_self() == m_iPosixThreadId);
-  
-    iResult = pthread_setafffinity_np(m_iPosixThreadId, sizeof(cpu_set_t), &xAffinity);
-    if (iResult == -1) {
-      vWarn("Error in pthread_setafffinity_np() : %lld\n"_Stz, errno);
-      
-    }
-  */
-    return true;
-    #endif
+  RASSERT(iReturn == 0);
+  return true;
+
+#else
+
+//  i8 iResult;
+//
+//  cpu_set_t xAffinity;
+//
+//  CPU_ZERO(&xAffinity);
+//  CPU_SET(iCpu, &xAffinity);
+//
+//  ASSERT(pthread_self() == m_iPosixThreadId);
+//
+//  iResult = pthread_setafffinity_np(m_iPosixThreadId,
+//                                    sizeof(cpu_set_t), &xAffinity);
+//  if (iResult == -1) {
+//    vWarn("Error in pthread_setafffinity_np() : %lld\n"_Stz, errno);
+//  }
+
+  return true;
+#endif
 }
 
 
