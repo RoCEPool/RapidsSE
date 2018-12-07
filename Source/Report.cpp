@@ -6,8 +6,9 @@
 
 #include "StorageEngine.h"
 
-extern File* gpTraceFile;
+extern File*       gpTraceFile;
 extern BufferPool* gpBufferPool;
+extern AttachMap*  gpAttachMap;
 
 char gaReportBuffer[C_1MB] = {'\0'};
   
@@ -44,6 +45,13 @@ void Debugging::vInfo(Stz* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
 {
+  static Lock xLock(LK_TRACE);
+  
+  bool bLock = (gpAttachMap ? true : false);
+  
+  if (bLock)
+    xLock.vGrabWrite();
+  
   i8 iLen = 0;
   char* s = gaReportBuffer;
   *s = '\0';
@@ -68,6 +76,9 @@ void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
                         gaReportBuffer);
     gpTraceFile->vFlush();
   }
+
+  if (bLock)
+    xLock.vDropWrite();
 }
 
 /*---------------------------------------------------------------------------*/

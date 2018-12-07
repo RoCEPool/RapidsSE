@@ -102,7 +102,8 @@ namespace Threads
 
     static Thread* pThisTLSThread(void);
   
-    void vBind(i8 iCpu);
+    void vBind(i8 iCore);
+    void vBindCore(void);
     i8   iCpu(void);
     void vContentDump(void) const;
     void vDropLock(void);

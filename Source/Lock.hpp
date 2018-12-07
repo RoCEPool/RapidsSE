@@ -35,9 +35,10 @@ namespace System
   /* 20 */ LK_TASK_SET,
   /* 21 */ LK_THREAD,
   /* 22 */ LK_THREAD_VECTOR,
-  /* 23 */ LK_TX_SET,
-  /* 24 */ LK_UNKNOWN,
-  /* 25 */ LK_ENUMS
+  /* 23 */ LK_TRACE,
+  /* 24 */ LK_TX_SET,
+  /* 25 */ LK_UNKNOWN,
+  /* 26 */ LK_ENUMS
   };
   
   static Stz* aLK[]
@@ -65,9 +66,10 @@ namespace System
   /* 20 */ "TASK_SET"_Stz,
   /* 21 */ "THREAD"_Stz,
   /* 22 */ "THREAD_VECTOR"_Stz,
-  /* 23 */ "TX_SET"_Stz,
-  /* 24 */ "UNKNOWN"_Stz,
-  /* 25 */ "ENUMS"_Stz
+  /* 23 */ "TRACE"_Stz,
+  /* 24 */ "TX_SET"_Stz,
+  /* 25 */ "UNKNOWN"_Stz,
+  /* 26 */ "ENUMS"_Stz
   };
 
   class Lock : public Object
@@ -91,6 +93,7 @@ namespace System
     void  operator delete(void* pLockAddress);
     
     Lock(void);
+    Lock(eLK eLockKind);
     ~Lock(void) noexcept(false);
   
     void vInitLock(eLK eLockKind);

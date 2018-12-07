@@ -120,6 +120,9 @@ void* Thread::aEntryPoint(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
+  if (gxArguments.m_bBindThreads)
+    pThread->vBindCore();
+    
   try {
     pThread->vLoop();
   }
@@ -238,14 +241,30 @@ void Thread::vLoop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bind the os/posix thread to a cpu                                          */
+/* bind the os/posix thread to given core                                     */
 /*----------------------------------------------------------------------------*/
-void Thread::vBind(i8 iCpu)
+void Thread::vBind(i8 iCore)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPosixThread->bBindThread(iCpu);
+  bool bResult = m_pPosixThread->bBindThread(iCore);
   ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* bind calling thread to a core                                              */
+/*----------------------------------------------------------------------------*/
+void Thread::vBindCore(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  i8 nCores = Hardware::iCoreCount();
+  
+  i8 iBindToCore = nCores - m_iThreadNo;
+  
+  vTrace("Thread %lld binding to core %lld\n"_Stz,m_iThreadNo,iBindToCore);
+  
+  vBind(iBindToCore);
 }
 
 /*----------------------------------------------------------------------------*/

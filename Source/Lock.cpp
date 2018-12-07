@@ -61,6 +61,29 @@ Lock::Lock(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Lock::Lock(eLK eLockKind)
+: Object(CN_LOCK)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  m_uLockWord = 0;
+  
+  m_eLockKind = eLockKind;
+  
+  m_ziReadGrabs.vCheckInit();
+  m_ziReadCollisions.vCheckInit();
+  
+  m_ziWriteGrabs.vCheckInit();
+  m_ziWriteCollisions.vCheckInit();
+  
+  _checkInitialised_(CN_LOCK);
+  
+  _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Lock::~Lock(void) noexcept(false)
