@@ -568,6 +568,7 @@
 
   // job publish
   static void vJob_PublishPublish(Tasks::MP_Task mpTask);
+  static void vJob_PublishSpawnSub(Tasks::MP_Task mpTask);
   static void vJob_PublishTableStore(Tasks::MP_Task mpTask);
 
   // job subPurge

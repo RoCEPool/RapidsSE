@@ -7,7 +7,7 @@ namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Purge : public Job,
-                     public JobFileName
+                    public JobFileName
   {
   public:
     Table*  m_pTable;  // table being purged

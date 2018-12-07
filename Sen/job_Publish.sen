@@ -5,20 +5,56 @@
 " job_Publish.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* Job_Publish request (on command node)                                      */
+/* publish request (on originating node)                                      */
 /*----------------------------------------------------------------------------*/
-: Publish_req (  -- <R> )
+: publish_req ( -- <R> )
 
   >>am <SEED_REQ>
 
-  0 locals| sTableNm |
-  0 locals| pTable |
+  0 0 locals| pJob pTask |
 
-  job::this locals| pJob_Publish |
+  tp: publish
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pJob job.distribute
+
+  <<am <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_publish request on a node                                      */
+/*----------------------------------------------------------------------------*/
+: publish_exe (  Job_publish -- <R> )
+
+  >>am <SEED_REQ>
+
+  job::this locals| pJob_publish |
+
+  0 locals| sTableNm |
+  0 locals| pThisTask |
+
+  tp: publish_exe
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_publish pJob_publish object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pThisTask
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pJob_Publish getPath
+  pJob_publish getPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -26,12 +62,60 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // should be in the tables folder
-  checkInTables not if pJob_Publish <ERROR_REQUEST> !!am exit then
+  // grab this task's lock
+  pThisTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get table name from job
-  pJob_Publish job.objectName@ to sTableNm
+  // set the acks
+  grid::slots task::acks!
+
+  grid::slots 0
+  do
+  //I "Creating Job_Subpublish %v" fmt.print
+  I pJob_publish job_publish.spawnSub
+  loop
+
+  "publish ack waiting" .
+  task::wait
+  "publish acked" .
+
+  pJob_publish job.notice
+
+  pJob_publish send_job__executed
+
+  <<am <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_publish job check resources                                    */
+/*----------------------------------------------------------------------------*/
+: publish.checkResources ( Job_publish -- )
+
+  >>am <Check_Resources>
+
+  params| pJob_publish  |
+  0 locals| sTableNm |
+
+  tp: publish.checkResources
+  //checkResources received" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_publish getPath
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // should be in the tables folder
+  checkInTables not if pJob_publish <ERROR_JOB> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // there should be a table folder
+  pJob_publish job.objectName@ to sTableNm
+  sTableNm checkIsTableFolder not if pJob_publish <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push table dictionary
@@ -39,24 +123,79 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_Publish <ERROR_REQUEST> !!am exit then
-
-  //----------------------------------------------------------------------------
-
-  // get table
-  sTableNm find execute to pTable
-  pTable pJob_Publish job_Publish.table!
-
-  pJob_Publish job_publish.publish
-
-  //----------------------------------------------------------------------------
+  sTableNm checkIsTable not if popTable pJob_publish <ERROR_JOB> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table dictionary
   popTable
-  assertInTables
 
-  <<am <DONE_REQ>
+  <<am <Resources_Checked>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_publish job release resources                                  */
+/*----------------------------------------------------------------------------*/
+: publish.releaseResources ( Job_publish -- )
+
+  >>am <Release_Resources>
+
+  params| pJob_publish  |
+
+  tp: publish.releaseResources
+  //releaseResources received" .
+
+  <<am <Resources_Released>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: publish_beg ( -- )
+
+  >>am <SEED_BEG>
+
+  job::this locals| pJob_publish |
+
+  pJob_publish job.beginParticipant
+
+  // check resources
+  pJob_publish publish.checkResources
+
+  job::participantBegun
+
+  <<am <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: publish_end ( -- )
+
+  >>am <SEED_END>
+
+  job::this locals| pJob_publish |
+
+  pJob_publish publish.releaseResources
+
+  job::participantEnded
+
+  <<am <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: publish_can ( -- )
+
+  >>am <SEED_CAN>
+
+  job::this locals| pJob_publish |
+
+  pJob_publish publish.releaseResources
+
+  job::participantCancelled
+
+  <<am <DONE_CAN>
 ;
 
 /*============================================================================*/

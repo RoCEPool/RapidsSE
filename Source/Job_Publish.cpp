@@ -13,16 +13,16 @@ JobClass xJobClass_Publish =
 {
   "Job_Publish"_Stz,     // name of the job class
   CN_JOB_PUBLISH,        // class enum
-  JK_LOCAL,              // job kind
+  JK_DIST2PC,            // job kind
   "publish table"_Stz,   // comment about the job
   "publish"_Stz,         // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "publish_req"_Stz,     // the _req task seed
-  nullptr,               // the _rcv task seed
-  nullptr,               // the _exe task seed
-  nullptr,               // the _end task seed
-  nullptr,               // the _can task seed
+  "publish_beg"_Stz,     // the _rcv task seed
+  "publish_exe"_Stz,     // the _exe task seed
+  "publish_end"_Stz,     // the _end task seed
+  "publish_can"_Stz,          // the _can task seed
   false,                 // check resources?
   false,                 // detached job?
   false,                 // buffer attached?
@@ -31,8 +31,8 @@ JobClass xJobClass_Publish =
   vJob_Publish_post,     // prompt post-process function
   pJob_Publish_new,      // job new function
   vJob_Publish_delete,   // job delete function
-  nullptr,               // job pre-send function
-  nullptr,               // job post-receive function
+  vJob_send,             // job pre-send function
+  vJob_recv,             // job post-receive function
   vJob_Publish_show,     // job show function
   
   // help and example
