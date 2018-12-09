@@ -23,7 +23,7 @@ void Step::vAddSteps_Test(void)
   vAddStep("test::test9"_Stz,  &Step::vTestTest9);
 }
 
-#define nElem (1024*1024*16)
+#define nElem (1024*1024*64)
 i8 xI8[nElem];
 
 /*----------------------------------------------------------------------------*/
@@ -34,10 +34,12 @@ void Step::vTestTest0(MP_Task mpTask)
   ENTRY("vTestTest0"_Stz);
   
   i8 iSum = 0;
+  i8 iStartCore = iPmc_Core();
   
-  vTrace("iPmc_Info %llx\n"_Stz,iPmc_Info());
+  vTrace("iPmc_Info(%lld) %llx\n"_Stz,iPmc_Core(),iPmc_Info());
   
-  vTrace("Starting   iPmc_GetLlcMisses %lld\n"_Stz,iPmc_GetLlcMisses());
+  vTrace("Starting(%lld)   iPmc_GetLlcMisses %lld\n"_Stz,
+         iPmc_Core(),iPmc_GetLlcMisses());
   
   for (i8 i = 0; i < nElem; i++)
     xI8[i] = i;
@@ -48,10 +50,15 @@ void Step::vTestTest0(MP_Task mpTask)
     //vTrace("iElem %lld; iPmc_GetLlcMisses %llx\n"_Stz,
     //       iElem,iPmc_GetLlcMisses());
     iSum += xI8[iElem];
+    
+    if (iPmc_Core() != iStartCore) {
+      iStartCore = iPmc_Core();
+      vTrace("Now on (%lld) at %lld\n"_Stz,iStartCore,i);
+    }
   }
   
-  vTrace("Random     iPmc_GetLlcMisses %lld; iSum %lld\n"_Stz,
-        iPmc_GetLlcMisses(),iSum);
+  vTrace("Random(%lld)     iPmc_GetLlcMisses %lld; iSum %lld\n"_Stz,
+        iPmc_Core(),iPmc_GetLlcMisses(),iSum);
 
   
   EXIT();

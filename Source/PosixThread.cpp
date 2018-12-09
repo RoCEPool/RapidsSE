@@ -81,6 +81,10 @@ bool PosixThread::bBindThread(i8 i_Core)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
   
+//
+// refer: https://developer.apple.com/library/archive/releasenotes/Performance/RN-AffinityAPI/
+//
+  
 //  i8 iCoreCount = Hardware::iCoreCount();
 //  if (i_Core > iCoreCount) {
 //    vWarn("Unable to bind to core %lld on a system having %lld cores!\n"_Stz,
@@ -89,15 +93,25 @@ bool PosixThread::bBindThread(i8 i_Core)
 //  }
   
 #ifdef __APPLE__
-
+  int iReturn = 0;
   thread_affinity_policy_data_t xPolicy = { (int)i_Core };
+  thread_port_t uMachThread = pthread_mach_thread_np(m_iPosixThreadId);
 
   vTrace("binding thread with posix id %d to core %d\n"_Stz,
          m_iPosixThreadId, (int)i_Core);
 
-  thread_port_t uMachThread = pthread_mach_thread_np(m_iPosixThreadId);
+//  mach_msg_type_number_t policy_infoCnt = 1;
+//  boolean_t get_default;
+//  
+//  iReturn =
+//    thread_policy_get(uMachThread,
+//                      THREAD_AFFINITY_POLICY,
+//                      (thread_policy_t)&xPolicy,
+//                      &policy_infoCnt,
+//                      &get_default
+//                      );
 
-  int iReturn =
+  iReturn =
     thread_policy_set(uMachThread,
                       THREAD_AFFINITY_POLICY,
                       (thread_policy_t)&xPolicy,
@@ -128,6 +142,66 @@ bool PosixThread::bBindThread(i8 i_Core)
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/* set standard scheduling policy for thread                                  */
+/*----------------------------------------------------------------------------*/
+void PosixThread::vDisableRealtime(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+#ifdef __APPLE__
+  
+#else
+  
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* set realtime scheduling policy for thread                                  */
+/*----------------------------------------------------------------------------*/
+void PosixThread::vEnableRealtime(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+#ifdef __APPLE__
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 iClockFrequency = Hardware::iClockFrequency();
+
+  i8 iOverTheNextPeriodOfTicks   = iClockFrequency * 60;           // 60s
+  i8 iThreadRequiresSoManyTicks  = iOverTheNextPeriodOfTicks / 2;  // 30s
+  i8 iMustCompleteIn             = iThreadRequiresSoManyTicks ;    // 30s
+  
+  bool bPreemptible = false;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  struct thread_time_constraint_policy xTtcPolicy;
+  
+  i8 iReturn;
+  
+  thread_port_t threadport = pthread_mach_thread_np(pthread_self());
+  
+  xTtcPolicy.period      = (int)iOverTheNextPeriodOfTicks;
+  xTtcPolicy.computation = (int)iThreadRequiresSoManyTicks;
+  xTtcPolicy.constraint  = (int)iMustCompleteIn;
+  xTtcPolicy.preemptible = bPreemptible;
+  
+  iReturn = thread_policy_set(threadport,
+                              THREAD_TIME_CONSTRAINT_POLICY,
+                              (thread_policy_t)&xTtcPolicy,
+                              THREAD_TIME_CONSTRAINT_POLICY_COUNT);
+  
+  if (iReturn != KERN_SUCCESS) {
+    vTrace("PosixThread::vEnableRealtime: thread_policy_set() failed.\n"_Stz);
+    return;
+  }
+
+#else
+  
+#endif
+}
 
 /*----------------------------------------------------------------------------*/
 /* get os thread id                                                           */

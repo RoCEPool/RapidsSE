@@ -3,6 +3,46 @@
 #==============================================================================#
 
 #------------------------------------------------------------------------------#
+# iPmc_Core -- use cpuid to get current core                                   #
+#------------------------------------------------------------------------------#
+#ifdef __APPLE__
+.globl _iPmc_Core
+_iPmc_Core:
+#else
+.globl iPmc_Core
+iPmc_Core:
+#endif
+.intel_syntax noprefix
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+#                                                                              #
+# Refer: CPUID -- CPU identification instruction in Intel Manual Vol 2A        #
+# Refer: Table 3-8 Information Returned by CPUID Instruction Vol 2A            #
+#                                                                              #
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
+
+  # clear RAX
+  mov rax,0
+
+  # put x01 into eax to get Basic CPUID Information leaf (part 01)
+  mov eax,0x0B
+  mov ecx,0
+
+  # get leaf
+  cpuid
+
+  //shr ebx,24
+  //mov eax,ebx
+
+  #shl ebx,16
+  #shr ebx,16
+  mov eax,edx
+
+ret
+#------------------------------------------------------------------------------#
+
+
+#------------------------------------------------------------------------------#
 # iPmc_Info -- use cpuid to get pmc information                                #
 #------------------------------------------------------------------------------#
 #ifdef __APPLE__
@@ -38,6 +78,8 @@ iPmc_Info:
   #   bits 31..24: length of EBX vector to enumerate architectural pm events
 
 ret
+#------------------------------------------------------------------------------#
+
 
 #------------------------------------------------------------------------------#
 # iPmc_GetLlcMisses -- get llc misses from IA32_PMC                            #
@@ -70,7 +112,12 @@ iPmc_GetLlcMisses:
   # for the moment we'll just return the lower order bits
   # we need to or with EDX
 
+
+#mov eax,edx
+
 ret
+#------------------------------------------------------------------------------#
+
 
 #==============================================================================#
 # end of file                                                                  #

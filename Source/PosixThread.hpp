@@ -23,6 +23,8 @@ namespace System
     ~PosixThread(void) noexcept(false);
     
     bool bBindThread(i8 i_Core);
+    void vDisableRealtime(void);
+    void vEnableRealtime(void);
     void vSetOSThreadId(void);
     bool bSpawnThread(void* pFun(void*), void* pArg);
     i8   iThreadCpu(void);
