@@ -20,6 +20,64 @@ void OpSys::vGetInfo(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get scheduler period in microseconds                                       */
+/*----------------------------------------------------------------------------*/
+i8 OpSys::iSchedulerPeriod_us(void)
+{
+  
+#ifdef __APPLE__
+  
+  struct clockinfo xKernelClockRate;
+  
+  int iMib[2];
+  size_t nSize;
+  
+  iMib[0] = CTL_KERN;
+  iMib[1] = KERN_CLOCKRATE;
+  nSize = sizeof xKernelClockRate;
+  sysctl(iMib, 2, &xKernelClockRate, &nSize, NULL, 0);
+  
+  //vTrace("Kern ClockRate %d\n"_Stz,clockrate.hz);
+  
+  return xKernelClockRate.hz;
+  
+#else
+  const i8 C_BUFSIZ=512;
+  char buf[C_BUFSIZ];
+  double dFreq;
+  i8 iFreq = 0;
+  
+  // open the /Proc/cpuinfo file
+  FILE* fp = fopen("/proc/cpuinfo", "r");
+  if ( !fp ) {
+    vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d"_Stz, errno);
+    return 0;
+  }
+  
+  // look for cpu MHz
+  while (fgets(buf, C_BUFSIZ, fp) != NULL) {
+    if (strstr(buf, "cpu MHz") == NULL)
+      continue;
+    
+    char*p = strchr(buf,':');
+    if (p == NULL)
+      continue;
+    p++;
+    while (isspace(*p))
+      p++;
+    sscanf(p,"%lf", &dFreq);
+    iFreq = static_cast<i8>(dFreq * (double)C_1M);
+  }
+  
+  //vTrace("Clock frequency: %lld\n"_Stz, iFreq);
+  
+  return iFreq;
+  
+#endif
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* trace utsname information                                                  */
 /*----------------------------------------------------------------------------*/
 void OpSys::vTraceInfo(void)

@@ -171,7 +171,7 @@ void PosixThread::vEnableRealtime(void)
 
   i8 iOverTheNextPeriodOfTicks   = iClockFrequency * 60;           // 60s
   i8 iThreadRequiresSoManyTicks  = iOverTheNextPeriodOfTicks / 2;  // 30s
-  i8 iMustCompleteIn             = iThreadRequiresSoManyTicks ;    // 30s
+  i8 iMustCompleteIn             = iOverTheNextPeriodOfTicks ;     // 60s
   
   bool bPreemptible = false;
 
@@ -179,22 +179,21 @@ void PosixThread::vEnableRealtime(void)
   
   struct thread_time_constraint_policy xTtcPolicy;
   
-  i8 iReturn;
-  
-  thread_port_t threadport = pthread_mach_thread_np(pthread_self());
+  thread_port_t uThreadPort = pthread_mach_thread_np(pthread_self());
   
   xTtcPolicy.period      = (int)iOverTheNextPeriodOfTicks;
   xTtcPolicy.computation = (int)iThreadRequiresSoManyTicks;
   xTtcPolicy.constraint  = (int)iMustCompleteIn;
   xTtcPolicy.preemptible = bPreemptible;
   
-  iReturn = thread_policy_set(threadport,
-                              THREAD_TIME_CONSTRAINT_POLICY,
-                              (thread_policy_t)&xTtcPolicy,
-                              THREAD_TIME_CONSTRAINT_POLICY_COUNT);
+  i8 iReturn = thread_policy_set(uThreadPort,
+                                 THREAD_TIME_CONSTRAINT_POLICY,
+                                 (thread_policy_t)&xTtcPolicy,
+                                 THREAD_TIME_CONSTRAINT_POLICY_COUNT);
   
   if (iReturn != KERN_SUCCESS) {
-    vTrace("PosixThread::vEnableRealtime: thread_policy_set() failed.\n"_Stz);
+    vTrace("PosixThread::vEnableRealtime: thread_policy_set() failed %lld.\n"_Stz,
+           iReturn);
     return;
   }
 

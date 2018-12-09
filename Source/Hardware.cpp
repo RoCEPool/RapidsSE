@@ -13,10 +13,22 @@ i8 Hardware::iClockFrequency(void)
 {
   
 #ifdef __APPLE__
+
+  struct clockinfo clockrate;
   
   int mib[2];
   unsigned int freq;
   size_t len;
+  
+  mib[0] = CTL_KERN;
+  mib[1] = KERN_CLOCKRATE;
+  len = sizeof clockrate;
+  sysctl(mib, 2, &clockrate, &len, NULL, 0);
+
+  vTrace("Kern ClockRate %d\n"_Stz,clockrate.hz);
+
+  // - - -
+
   
   mib[0] = CTL_HW;
   mib[1] = HW_CPU_FREQ;

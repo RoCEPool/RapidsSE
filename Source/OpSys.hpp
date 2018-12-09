@@ -9,6 +9,7 @@ namespace System
   {
   public:
     static void vGetInfo(void);
+    static i8   iSchedulerPeriod_us(void);
     static void vTraceInfo(void);
   
     static char* aMachine(void);

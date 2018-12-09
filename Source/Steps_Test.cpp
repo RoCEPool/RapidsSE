@@ -36,6 +36,9 @@ void Step::vTestTest0(MP_Task mpTask)
   i8 iSum = 0;
   i8 iStartCore = iPmc_Core();
   
+  PosixThread* pPosixThread = mpTask->pThread()->m_pPosixThread;
+  pPosixThread->vEnableRealtime();
+  
   vTrace("iPmc_Info(%lld) %llx\n"_Stz,iPmc_Core(),iPmc_Info());
   
   vTrace("Starting(%lld)   iPmc_GetLlcMisses %lld\n"_Stz,
