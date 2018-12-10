@@ -1,0 +1,112 @@
+/*============================================================================*/
+/* job_InsertRow.sen -- Job Insert Row                                        */
+/*============================================================================*/
+
+" job_InsertRow.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* request to insert a row (on originating node)                              */
+/*----------------------------------------------------------------------------*/
+: insertRow_req ( -- <R> )
+
+  >>am <SEED_REQ>
+
+  0 0 locals| pJob pTask |
+
+  tp: insertRow_req
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute the job
+  pJob job.distribute
+
+  <<am <DONE_REQ>
+;
+
+/*----------------------------------------------------------------------------*/
+/* insert row (executed on all nodes)                                         */
+/*----------------------------------------------------------------------------*/
+: insertRow_exe ( pJob_InsertRow -- )
+
+  >>am <SEED_EXE>
+
+  //params| pJob_Space |
+  job::this locals| pJob_InsertRow |
+
+  CN_JOB_INSERTROW pJob_InsertRow object.assertClass
+
+  // get table name
+  pJob_InsertRow job.objectName@ locals| sTableNm
+
+  // push table dictionary
+  pJob_InsertRow getPath dicStack.set
+  sTableNm pushTable assert
+
+  // use table name find and set target table
+  sTableNm find execute locals| pTable |
+
+  pTable pJob_InsertRow job_insertRow.writeRow
+
+  pJob_InsertRow job.notice
+
+  pJob_InsertRow send_job__executed
+
+  <<am <DONE_EXE>
+;
+
+/*----------------------------------------------------------------------------*/
+/* begin job                                                                  */
+/*----------------------------------------------------------------------------*/
+: insertRow_beg ( -- )
+
+  >>am <SEED_BEG>
+
+  job::this locals| pJob_InsertRow |
+
+  pJob_InsertRow job.beginParticipant
+
+  job::participantBegun
+
+  <<am <DONE_BEG>
+;
+
+/*----------------------------------------------------------------------------*/
+/* end job                                                                    */
+/*----------------------------------------------------------------------------*/
+: insertRow_end ( -- )
+
+  >>am <SEED_END>
+
+  ">> insertRow_end <<" .verbose
+
+  job::participantEnded
+
+  <<am <DONE_END>
+;
+
+/*----------------------------------------------------------------------------*/
+/* cancel job                                                                 */
+/*----------------------------------------------------------------------------*/
+: insertRow_can ( -- )
+
+  >>am <SEED_CAN>
+
+  ">> insertRow_can <<" .verbose
+
+  job::participantCancelled
+
+  <<am <DONE_CAN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+
+

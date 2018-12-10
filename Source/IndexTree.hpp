@@ -45,6 +45,9 @@ namespace DBobjects
                                           WorkingBuffer* pWorkingBuffer,
                                           EntryBuffer** ppFirstBuffer,
                                           Entry** ppFirstEntry);
+    Entry*       pAppendRow(i8 iTxId,
+                            Stz* aRow,
+                            i8 iRowLength);
     void         vAppendBuffer(EntryBuffer* pEntryBuffer);
     void         vCompact(void);
     void         vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pLeftL0);
@@ -57,6 +60,7 @@ namespace DBobjects
     Index*       pIndex(void);
     i8           nEntryBuffers(void);
     
+    bool         bInsertEntry(Entry* pRow);
     void         vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer, Entry* pRowEntry);
     void         vLazyBuild(void);
     EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
@@ -73,15 +77,7 @@ namespace DBobjects
     Footer*      aFooter(void);
     
   private:
-    //EntryBuffer* pAppendL0Entry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId,
-    //                            EntryVec& xPriorVec);
-    //EntryBuffer* pAppendL0Entry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId);
-    //void         vFixHigherBuffer(EntryBuffer* pEntryBuffer, i8 iLevel);
-    //bool         bInsertEntry(EntryBuffer* pRoot,KeyWrk& xKeyWrk, Id xId, i8 iLevel);
-    //void         vInsertFirstEntry(EntryBuffer* pToBuffer, EntryBuffer* pFromBuffer);
-    //EntryBuffer* pSplitBuffer(EntryBuffer* pEntryBuffer);
     void         vDumpLevel(EntryBuffer* pEntryBuffer);
-    bool         bInsertEntry(Entry* pRow);
   };
   
   IndexTree* _pIndexTree(void* pAddr);

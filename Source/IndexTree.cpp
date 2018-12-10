@@ -860,6 +860,58 @@ void IndexTree::vAppendEntriesFromBuffer(i8 iTxId,
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert an entry for {key,id} into an index buffer at given level           */
+/*----------------------------------------------------------------------------*/
+Entry* IndexTree::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  EntryVec xPriorVec;
+  Entry* pNewEntry;
+  
+  m_zLock.vGrabWrite();
+  
+  if (m_pRootBuffer == nullptr) {
+    ASSERT( ! m_pCurrentBuffer )
+    m_pRootBuffer = new EntryBuffer();
+    m_pRootBuffer->vIndex(m_pIndex);
+    m_pRootBuffer->vPartitionNo(m_iPartitionNo);
+    m_pCurrentBuffer = m_pRootBuffer;
+  }
+  
+  RowWrk xRowWrk;
+  
+  xRowWrk.vTxId(iTxId);
+  xRowWrk.vEmbedded((char*)aRow);
+  xRowWrk.vRowSize(iRowLength);
+  //xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
+    
+  pNewEntry = m_pCurrentBuffer->pAppendRow(xRowWrk);
+  //m_pCurrentBuffer->vDump();
+  if ( !pNewEntry ) {
+    //----------------------------------------------------------------------------
+    // create a new entry buffer and link with current buffer
+    EntryBuffer* pNewBuffer = new EntryBuffer();
+    pNewBuffer->vIndex(m_pIndex);
+    pNewBuffer->vPartitionNo(m_iPartitionNo);
+    pNewBuffer->vNextBuffer(m_pCurrentBuffer->pNextBuffer());
+    pNewBuffer->vPrevBuffer(m_pCurrentBuffer);
+    m_pCurrentBuffer->vNextBuffer(pNewBuffer);
+    
+    //----------------------------------------------------------------------------
+    // toggle to the new buffer
+    m_pCurrentBuffer = pNewBuffer;
+    
+    // now insert into new buffer
+    pNewEntry = m_pCurrentBuffer->pAppendRow(xRowWrk);
+    ASSERT(pNewEntry);
+  }
+  m_zLock.vDropWrite();
+      
+  return pNewEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append an entry into this index at level 0                                 */
 /*----------------------------------------------------------------------------*/
 //void IndexTree::vAppendEntry(KeyWrk& xKeyWrk,

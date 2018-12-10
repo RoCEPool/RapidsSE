@@ -12,8 +12,10 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_JobInsertRows(void)
 {
   vAddStep("Job_InsertTable.insertRowsJob@"_Stz,    &Step::vJob_InsertTableInsertRowsJobFetch);
-  vAddStep("Job_InsertTable.spawnLastBuffs"_Stz,   &Step::vJob_InsertTableSpawnLastBuffers);
+  vAddStep("Job_InsertTable.spawnLastBuffs"_Stz,    &Step::vJob_InsertTableSpawnLastBuffers);
   vAddStep("job_insertRows.table!"_Stz,             &Step::vJob_InsertRowsTableStore);
+  
+  vAddStep("job_insertRow.writeRow"_Stz,            &Step::vJob_InsertRowWriteRow);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,6 +97,40 @@ void Step::vJob_InsertRowsTableStore(MP_Task mpTask)
   Table* pTable = _pTable(pTablePtr);
   
   pJob_InsertRows->m_pTable = pTable;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertRow.writeRow -- write row into the table                         */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_InsertRowWriteRow(MP_Task mpTask)
+{
+  ENTRY("vJob_InsertRowWriteRow"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_InsertRow.writeRow!"_Stz);
+  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
+  
+  Object* pTablePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+    THROW_INVALID_DSTACK("job_InsertRow.writeRow!"_Stz);
+  Table* pTable = _pTable(pTablePtr);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // convert partition to node slot
+  i8 iSlot = TablePtn::iPartitionToSlot(pJob_InsertRow->m_iPartitionId);
+  
+  TablePtn* pPartition = pTable->pPartition(iSlot);
+  RASSERT_TYPE(pPartition,CN_TABLEPTN);
+  
+  i8 iTxId = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert the row
+  pTable->vInsertRow(iTxId, iSlot, pJob_InsertRow->m_aRecord, pJob_InsertRow->m_nRecordBytes);
   
   EXIT();
 }

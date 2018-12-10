@@ -12,8 +12,11 @@ namespace JobsModel
                         public Job_WriteBehind
   {
   public:
-    Table*           m_pTable;                             // table pointer
-    Formatters       m_xFormatters;                        // record formatters
+    Table*     m_pTable;             // table pointer
+    i8         m_iPartitionId;       // partition id
+    s48K       m_aRecord;            // formatted row
+    i8         m_nRecordBytes;       // length of record
+    Formatters m_xFormatters;        // record formatters
     
     // must be last
     Footer m_xFooter;

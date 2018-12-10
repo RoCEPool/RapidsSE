@@ -550,6 +550,8 @@
 
   static void vJob_InsertRowsTableStore(Tasks::MP_Task mpTask);
 
+  static void vJob_InsertRowWriteRow(Tasks::MP_Task mpTask);
+
   // job LoadTable
   static void vJob_LoadTableAddInvalidRows(Tasks::MP_Task mpTask);
   static void vJob_LoadTableAddValidRows(Tasks::MP_Task mpTask);
