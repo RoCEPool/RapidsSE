@@ -81,10 +81,10 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     VALIDATE_JOB("b"_Stz);
     
     // get the insertRow job
-    Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
+    Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pJobPtr);
     
     // get the insertTable job from the insertRow job
-    Job_InsertTable* pJob_InsertTable = pJob_InsertRow->m_pJob_InsertTable;
+    Job_InsertTable* pJob_InsertTable = pJob_InsertRows->m_pJob_InsertTable;
     
     // push the InsertTable job onto the jobstack
     pSession->m_pJobStack->vPushObject(pJob_InsertTable);
@@ -811,7 +811,7 @@ eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void**
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTraceLevel)
+eEC RapidsSE_InsertRows(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_InsertRow"_Stz;
   eAC  eApiCall = AC_InsertRow;
@@ -839,7 +839,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTrace
     VALIDATE_JOB("b"_Stz);
   
     // get the insertRow job
-    Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
+    Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pJobPtr);
     
     // get the length of the record
     i8 iRawDataLength = StrLib::iSize(sRecord->aChar());
@@ -855,7 +855,7 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTrace
     }
     
     // format the row
-    bool bValid = pJob_InsertRow->bFormatRow(sRecord, iRawDataLength);
+    bool bValid = pJob_InsertRows->bFormatRow(sRecord, iRawDataLength);
     
     // is the record invalid ?
     if (! bValid) {
@@ -870,11 +870,11 @@ eEC RapidsSE_InsertRow(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTrace
     
     eEC eErrorCode = EC_NONE;
 
-    Table* pTable   = pJob_InsertRow->m_pTable;
-    i8 iParentJobId = pJob_InsertRow->m_pJob_InsertTable->m_iJobId;
+    Table* pTable   = pJob_InsertRows->m_pTable;
+    i8 iParentJobId = pJob_InsertRows->m_pJob_InsertTable->m_iJobId;
     
     // insert row into a working buffer in job InsertRow
-    eErrorCode = pJob_InsertRow->eInsertRow(pSession, pTable, DS_INSERT, iParentJobId);
+    eErrorCode = pJob_InsertRows->eInsertRow(pSession, pTable, DS_INSERT, iParentJobId);
     
     // was there an error ?
     if ( eErrorCode != EC_NONE ) {

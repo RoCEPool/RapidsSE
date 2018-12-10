@@ -544,11 +544,11 @@
   static void vJob_IngestIngest(Tasks::MP_Task mpTask);
   static void vJob_IngestTableStore(Tasks::MP_Task mpTask);
 
-  // job insertRow
-  static void vJob_InsertTableInsertRowJobFetch(Tasks::MP_Task mpTask);
+  // job insertRows
+  static void vJob_InsertTableInsertRowsJobFetch(Tasks::MP_Task mpTask);
   static void vJob_InsertTableSpawnLastBuffers(Tasks::MP_Task mpTask);
 
-  static void vJob_InsertRowTableStore(Tasks::MP_Task mpTask);
+  static void vJob_InsertRowsTableStore(Tasks::MP_Task mpTask);
 
   // job LoadTable
   static void vJob_LoadTableAddInvalidRows(Tasks::MP_Task mpTask);

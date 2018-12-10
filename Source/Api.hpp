@@ -70,7 +70,7 @@ extern "C" eEC  RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void*
 extern "C" eEC  RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8* pRowCount, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_InsertRow(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_InsertRows(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInvalidRows, i8* piSkippedRows, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel);

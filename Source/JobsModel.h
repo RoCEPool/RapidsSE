@@ -76,6 +76,7 @@ using namespace JobsModel;
 
 #include "Job_Ingest.hpp"
 #include "Job_InsertRow.hpp"
+#include "Job_InsertRows.hpp"
 #include "Job_InsertTable.hpp"
 
 #include "Job_Lf.hpp"

@@ -1,18 +1,18 @@
 /*============================================================================*/
-/* job_InsertRow.sen -- Job Insert Row                                        */
+/* job_InsertRows.sen -- Job Insert Rows                                      */
 /*============================================================================*/
 
-" job_InsertRow.sen" .verbose
+" job_InsertRows.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* job_InsertRow request (on originating node)                                */
 /*----------------------------------------------------------------------------*/
-: InsertRow_req (  -- <R> )
+: InsertRows_req (  -- <R> )
 
   >>am <SEED_REQ>
 
   0 locals| pThisTask |
-  0 0 0 locals| pJob_InsertRow sTableNm pTable |
+  0 0 0 locals| pJob_InsertRows sTableNm pTable |
 
   tp: InsertRow_req
 
@@ -20,24 +20,24 @@
   task::this to pThisTask
 
   // get the job from the task
-  pThisTask task.job@ to pJob_InsertRow
-  //pJob_InsertRow pThisTask "InsertRow_req task: %v job_InsertRow %v" fmt.print
+  pThisTask task.job@ to pJob_InsertRows
+  //pJob_InsertRows pThisTask "InsertRow_req task: %v job_InsertRow %v" fmt.print
 
   // distribute the job
   //Job_InsertRow job.distribute
 
-  pJob_InsertRow job.objectName@ to sTableNm
+  pJob_InsertRows job.objectName@ to sTableNm
 
   // push table dictionary
-  pJob_InsertRow getPath dicStack.set
+  pJob_InsertRows getPath dicStack.set
   sTableNm pushTable assert
   //pathDump
 
   sTableNm find execute locals| pTable |
-  pTable pJob_InsertRow job_insertRow.table!
+  pTable pJob_InsertRows job_insertRows.table!
 
   // add job to originator jobs
-  //pJob_InsertRow job.addOriginator
+  //pJob_InsertRows job.addOriginator
 
   <<am <DONE_REQ>
 ;
@@ -45,13 +45,13 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_LoadTable job check resources                                  */
 /*----------------------------------------------------------------------------*/
-: insertRow.checkResources ( pJob_InsertRow -- )
+: insertRows.checkResources ( pJob_InsertRows -- )
 
   >>am <Check_Resources>
 
-  params| pJob_InsertRow  |
+  params| pJob_InsertRows  |
 
-  pJob_InsertRow job.objectName@ locals| sTableNm |
+  pJob_InsertRows job.objectName@ locals| sTableNm |
 
   tp: insertRow.checkResources
   //checkResources received" .
@@ -64,11 +64,11 @@
   // path checks
 
   // set dictionary stack
-  pJob_InsertRow getPath dicStack.set
+  pJob_InsertRows getPath dicStack.set
   //pathDump
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!am exit then
+  sTableNm checkIsTableFolder not if pJob_InsertRows <ERROR_JOB> !!am exit then
   //sTableNm "In table folder: %v" fmt.print
 
   // push table dictionary
@@ -76,7 +76,7 @@
   //pathDump
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!am exit then
+  sTableNm checkIsTable not if popTable pJob_InsertRows <ERROR_JOB> !!am exit then
   drop
 
   // pop table dictionary
@@ -86,7 +86,7 @@
   //----------------------------------------------------------------------------
   // check if we have enough buffers
 
-  node::checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> !!am exit then
+  node::checkEnoughBuffers not if pJob_InsertRows <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;
@@ -94,11 +94,11 @@
 /*----------------------------------------------------------------------------*/
 /* execute Job_LoadTable job release resources                                */
 /*----------------------------------------------------------------------------*/
-: insertRow.releaseResources ( pJob_InsertRow -- )
+: insertRows.releaseResources ( pJob_InsertRows -- )
 
   >>am <Release_Resources>
 
-  params| pJob_InsertRow  |
+  params| pJob_InsertRows  |
 
   tp: insertRow.releaseResources
   //releaseResources received" .

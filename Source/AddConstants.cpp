@@ -224,6 +224,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_EXPORT"_Stz,         CN_JOB_EXPORT);
   /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);
   /*    */ vAddConstant("CN_JOB_INSERTROW"_Stz,      CN_JOB_INSERTROW);
+  /*    */ vAddConstant("CN_JOB_INSERTROWS"_Stz,     CN_JOB_INSERTROWS);
   /*    */ vAddConstant("CN_JOB_INSERTTABLE"_Stz,    CN_JOB_INSERTTABLE);
   /*    */ vAddConstant("CN_JOB_LF"_Stz,             CN_JOB_LF);
   /*    */ vAddConstant("CN_JOB_LISTCATALOGS"_Stz,   CN_JOB_LISTCATALOGS);

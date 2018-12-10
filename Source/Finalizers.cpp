@@ -123,6 +123,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_GENERATE
   /*    */ &Finalize::vUndefined,         // CN_JOB_INGEST
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROW
+  /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTROWS
   /*    */ &Finalize::vUndefined,         // CN_JOB_INSERTTABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_LF
   /*    */ &Finalize::vUndefined,         // CN_JOB_LISTCATALOGS

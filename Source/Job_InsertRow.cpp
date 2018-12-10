@@ -48,7 +48,7 @@ JobClass xJobClass_InsertRow =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_InsertRow_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Lf_class;
+  *pNextFun = (pFUN*)pJob_InsertRows_class;
   
   return &xJobClass_InsertRow;
 }
@@ -112,19 +112,6 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
   // set the enclosined_by to be a '
   m_xFormatters.m_cEnclosedBy_Leading = '\'';
   m_xFormatters.m_cEnclosedBy_Trailing = '\'';
-  
-  // create Job_InsertTable
-  JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
-  ASSERT(pJobClass_InsertTable);
-  m_pJob_InsertTable =
-  static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
-  
-  // get a jobId for the insertTable job
-  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iGetJobId();
-  m_pJob_InsertTable->m_iJobId = iJobId;
-  
-  // set insertRowJob in the insertTable job
-  m_pJob_InsertTable->m_pJobInsertRow = this;
   
   _checkInitialised_(CN_JOB_INSERTROW);
   

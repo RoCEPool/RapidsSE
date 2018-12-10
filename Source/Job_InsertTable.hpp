@@ -11,7 +11,7 @@ namespace JobsModel
   class Job_InsertTable : public Job
   {
   public:
-    Job_InsertRow* m_pJobInsertRow;                  // insert row job
+    Job_InsertRows* m_pJobInsertRows;                  // insert row job
     
     // must be last
     Footer m_xFooter;

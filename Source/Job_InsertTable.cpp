@@ -54,7 +54,7 @@ JobClass xJobClass_EndInsert =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_InsertTable_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Export_class;
+  *pNextFun = (pFUN*)pJob_Lf_class;
   
   return &xJobClass_EndInsert;
 }
@@ -113,7 +113,7 @@ Job_InsertTable::Job_InsertTable(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE,_FOOTER_);
   
-  m_pJobInsertRow = nullptr;
+  m_pJobInsertRows = nullptr;
   
   _checkInitialised_(CN_JOB_INSERTTABLE);
   
