@@ -15,8 +15,6 @@ namespace JobsModel
     i8         m_iPartitionId;       // partition id
     s48K       m_aRawData;           // raw record
     i8         m_nRawDataBytes;      // length of record
-    s48K       m_aRecord;            // formatted record
-    i8         m_nRecordBytes;       // length of record
     Formatters m_xFormatters;        // record formatters
     
     // must be last

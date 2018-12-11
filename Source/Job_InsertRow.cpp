@@ -112,8 +112,6 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
   
   //m_aRawData
   m_nRawDataBytes = C_UNKNOWN;
-  //m_aRecord
-  m_nRecordBytes = C_UNKNOWN;
   
   // set the enclosined_by to be a '
   m_xFormatters.m_cEnclosedBy_Leading = '\'';
@@ -157,18 +155,19 @@ bool Job_InsertRow::bFormatRow(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   
-  bool bBlankLine;
+//  bool bBlankLine;
+//
+//  // format the raw data into a row
+//  bool bValid = Row::bFormatRow(pTable->pColumnVec(),
+//                                &m_xFormatters,
+//                                m_aRawData, m_nRawDataBytes,
+//                                m_aRecord.aStr(),
+//                                m_nRecordBytes,
+//                                bBlankLine,
+//                                false /* allowNonPrintable */);
   
-  // format the raw data into a row
-  bool bValid = Row::bFormatRow(pTable->pColumnVec(),
-                                &m_xFormatters,
-                                m_aRawData, m_nRawDataBytes,
-                                m_aRecord.aStr(),
-                                m_nRecordBytes,
-                                bBlankLine,
-                                false /* allowNonPrintable */);
-  
-  return bValid;
+//  return bValid;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
