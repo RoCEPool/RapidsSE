@@ -127,6 +127,7 @@ using namespace JobsModel;
 
 #include "Job_WaitCluster.hpp"
 #include "Job_WriteBuffer.hpp"
+#include "Job_WriteRow.hpp"
 
 #include "Jobs.hpp"
 
