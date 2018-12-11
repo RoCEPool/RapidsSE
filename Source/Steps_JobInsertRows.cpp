@@ -120,13 +120,19 @@ void Step::vJob_InsertRowWriteRow(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  i8 iTxId = 0;
+  
+  pJob_InsertRow->bFormatRow(pTable);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // hash the record to a partition
+  pJob_InsertRow->m_iPartitionId = pTable->iRowPartition(pJob_InsertRow->m_aRecord);
+  
   // convert partition to node slot
   i8 iSlot = TablePtn::iPartitionToSlot(pJob_InsertRow->m_iPartitionId);
   
   TablePtn* pPartition = pTable->pPartition(iSlot);
   RASSERT_TYPE(pPartition,CN_TABLEPTN);
-  
-  i8 iTxId = 0;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the row

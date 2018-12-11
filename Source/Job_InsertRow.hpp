@@ -8,13 +8,14 @@ namespace JobsModel
   class Job_InsertTable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_InsertRow : public Job,
-                        public Job_WriteBehind
+  class Job_InsertRow : public Job
   {
   public:
     Table*     m_pTable;             // table pointer
     i8         m_iPartitionId;       // partition id
-    s48K       m_aRecord;            // formatted row
+    s48K       m_aRawData;           // raw record
+    i8         m_nRawDataBytes;      // length of record
+    s48K       m_aRecord;            // formatted record
     i8         m_nRecordBytes;       // length of record
     Formatters m_xFormatters;        // record formatters
     
@@ -32,7 +33,7 @@ namespace JobsModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
-    bool bFormatRow(Stz* aRawData, i8 iRawLength);
+    bool bFormatRow(Table* pTable);
     bool bPopulateJob(TokenVec* pTokenVec);
 
     void vShow(void);

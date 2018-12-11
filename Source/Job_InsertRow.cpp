@@ -13,16 +13,16 @@ JobClass xJobClass_InsertRow =
 {
   "Job_InsertRow"_Stz,    // name of the job class
   CN_JOB_INSERTROW,       // class enum
-  JK_LOCAL,               // job kind
+  JK_DIST2PC,             // job kind
   "insert into tableNm"_Stz, // comment about the job
   "insert"_Stz,           // the prompt command
   "into"_Stz,             // the second word
   nullptr,                // the _run task seed
   "insertRow_req"_Stz,    // the _req task seed
-  nullptr,                // the _rcv task seed
-  nullptr,                // the _exe task seed
-  nullptr,                // the _end task seed
-  nullptr,                // the _can task seed
+  "insertRow_beg"_Stz,    // the _rcv task seed
+  "insertRow_exe"_Stz,    // the _exe task seed
+  "insertRow_end"_Stz,    // the _end task seed
+  "insertRow_can"_Stz,    // the _can task seed
   true,                   // check resources?
   false,                  // detached job?
   false,                  // buffer attached?
@@ -31,14 +31,14 @@ JobClass xJobClass_InsertRow =
   vJob_InsertRow_post,    // prompt post-process function
   pJob_InsertRow_new,     // job new function
   vJob_InsertRow_delete,  // job delete function
-  nullptr,                // job pre-send function
-  nullptr,                // job post-receive function
+  vJob_send,              // job pre-send function
+  vJob_recv,              // job post-receive function
   vJob_InsertRow_show,    // job show function
   
   // help and example
   true,
-  "insert row \"<values>\""_Stz,
-  "insert row \"1,abcdef\";"_Stz,
+  "insert into tableName values (<values>);"_Stz,
+  "insert into t1 values (10,'aaa');"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
@@ -110,6 +110,8 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
   m_pTable = nullptr;
   m_iPartitionId = C_UNKNOWN;
   
+  //m_aRawData
+  m_nRawDataBytes = C_UNKNOWN;
   //m_aRecord
   m_nRecordBytes = C_UNKNOWN;
   
@@ -151,14 +153,20 @@ void Job_InsertRow::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* fromat a row                                                               */
 /*----------------------------------------------------------------------------*/
-bool Job_InsertRow::bFormatRow(Stz* aRawData, i8 iRawLength)
+bool Job_InsertRow::bFormatRow(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   
   bool bBlankLine;
   
-  bool bValid = Job_WriteBehind::bFormatRow(
-                  m_pTable, &m_xFormatters, aRawData, iRawLength, bBlankLine);
+  // format the raw data into a row
+  bool bValid = Row::bFormatRow(pTable->pColumnVec(),
+                                &m_xFormatters,
+                                m_aRawData, m_nRawDataBytes,
+                                m_aRecord.aStr(),
+                                m_nRecordBytes,
+                                bBlankLine,
+                                false /* allowNonPrintable */);
   
   return bValid;
 }
@@ -173,15 +181,37 @@ bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
   ASSERT(pTokenVec->pGet(0)->bSame("insert"_Stz));
   ASSERT(pTokenVec->pGet(1)->bSame("into"_Stz));
   
+  if ( ! pTokenVec->pGet(3)->bSame("values"_Stz))
+    return false;
+  
+  if ( ! pTokenVec->pGet(4)->bSame("("_Stz))
+    return false;
+  
   // get no of tokens in token vector
   i8 nTokens = pTokenVec->nTokens();;
   
-  // there should be at least 3 tokens
-  if (nTokens != 3)
-    return nullptr;
+  // there should be at least 6 tokens
+  if (nTokens < 6)
+    return false;
   
   // get the table name
   m_sObjectName = pTokenVec->pGet(2)->aText();
+
+  // get the rawRecord
+  i8 i = 5;
+  m_aRawData.vCopy(""_Stz);
+  while ( ! pTokenVec->pGet(i)->bSame(")"_Stz)) {
+    m_aRawData.vConcat(pTokenVec->pGet(i++)->aText());
+    if ( ! pTokenVec->pGet(i)->bSame(","_Stz))
+      continue;
+    m_aRawData.vConcat(pTokenVec->pGet(i++)->aText());
+  }
+  
+  if ( ! pTokenVec->pGet(i)->bSame(")"_Stz))
+    return false;
+  
+  // get the length of the record
+  m_nRawDataBytes = StrLib::iSize(m_aRawData.aChar());
 
   return true;
 }

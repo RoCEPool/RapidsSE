@@ -43,10 +43,11 @@
   CN_JOB_INSERTROW pJob_InsertRow object.assertClass
 
   // get table name
-  pJob_InsertRow job.objectName@ locals| sTableNm
+  pJob_InsertRow job.objectName@ locals| sTableNm |
 
   // push table dictionary
   pJob_InsertRow getPath dicStack.set
+
   sTableNm pushTable assert
 
   // use table name find and set target table
