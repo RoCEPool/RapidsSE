@@ -169,6 +169,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_VISUALIZEINDEX
   /*    */ &Dump::vDummy,           // CN_JOB_WAITCLUSTER
   /*    */ &Dump::vDummy,           // CN_JOB_WRITEBUFFER
+  /*    */ &Dump::vDummy,           // CN_JOB_WRITEROW
 
   /*    */ &Jobs::vDump,            // CN_JOBS
   
@@ -437,6 +438,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_VisualizeIndex), // CN_JOB_VISUALIZEINDEX
   /*    */ sizeof(Job_WaitCluster),    // CN_JOB_WAITCLUSTER
   /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEBUFFER
+  /*    */ sizeof(Job_WriteBuffer),    // CN_JOB_WRITEROW
   
   /*    */ sizeof(Jobs),               // CN_JOBS
   
@@ -704,6 +706,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_VISUALIZEINDEX
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WAITCLUSTER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEBUFFER
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_WRITEROW
   
   /*    */ HT_TRANSIENT_SMALL,   // CN_JOBS
   

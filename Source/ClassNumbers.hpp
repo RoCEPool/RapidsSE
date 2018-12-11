@@ -168,6 +168,7 @@ enum eCN : u2 // Class Number
   /* 125 */ CN_JOB_VISUALIZEINDEX,
   /* 126 */ CN_JOB_WAITCLUSTER,
   /*     */ CN_JOB_WRITEBUFFER,
+  /*     */ CN_JOB_WRITEROW,
   /* 127 */ CN_JOBS,
   /* 128 */ CN_JUMBOPERSISTENT,
   /* 129 */ CN_JUMBOTRANSIENT,
@@ -431,6 +432,7 @@ static Stz* aCN[]
   /* 125 */ "JOB_VISUALIZEINDEX"_Stz,  // CN_JOB_VISUALIZEINDEX
   /* 126 */ "JOB_WAITCLUSTER"_Stz,     // CN_JOB_WAITCLUSTER
   /*     */ "JOB_WRITEBUFFER"_Stz,     // CN_JOB_WRITEBUFFER
+  /*     */ "JOB_WRITEROW"_Stz,        // CN_JOB_WRITEROW
   /* 127 */ "JOBS"_Stz,                // CN_JOBS
   /* 128 */ "JUMBOPERSISTENT"_Stz,     // CN_JUMBOPERSISTENT
   /* 129 */ "JUMBOTRANSIENT"_Stz,      // CN_JUMBOTRANSIENT
