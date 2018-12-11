@@ -11,7 +11,7 @@
 
   >>am <SEED_REQ>
 
-  0 0 locals| pJob pTask |
+  0 0 locals| pJob_InsertRow pTask |
 
   tp: insertRow_req
 
@@ -21,11 +21,47 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
-  pTask task.job@ to pJob
+  pTask task.job@ to pJob_InsertRow
+
+  // get table name
+  pJob_InsertRow job.objectName@ locals| sTableNm |
+
+  // push table dictionary
+  pJob_InsertRow getPath dicStack.set
+
+  //----------------------------------------------------------------------------
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  //----------------------------------------------------------------------------
+  // path checks
+
+  // set dictionary stack
+  pJob_InsertRow getPath dicStack.set
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!am <DONE_REQ> then
+
+  // push table dictionary
+  sTableNm pushTable assert
+
+  // check it is a table
+  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!am <DONE_REQ> then
+
+  // use table name find and set target table
+  sTableNm find execute locals| pTable |
+
+  popTable
+
+  pTable pJob_InsertRow job_insertRow.hashRow
+  pJob_InsertRow job_insertRow.partition@ locals| iPartition |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  pJob_InsertRow.spawnJobWriteRow
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute the job
-  pJob job.distribute
+  pJob_InsertRow job.distribute
 
   <<am <DONE_REQ>
 ;
@@ -45,15 +81,16 @@
   // get table name
   pJob_InsertRow job.objectName@ locals| sTableNm |
 
-  // push table dictionary
-  pJob_InsertRow getPath dicStack.set
+  // if job being inserted on this node then wait
+  pJob_InsertRow job_insertRow.partition! locals| iPartition |
 
-  sTableNm pushTable assert
-
-  // use table name find and set target table
-  sTableNm find execute locals| pTable |
-
-  pTable pJob_InsertRow job_insertRow.writeRow
+  // wait if the row being inserted on this partition
+  // writeRow will notify it
+  iPartition Grid::toNode Grid::thisNode == if
+    task::this task.grabLock
+    1 task::acks!
+    task::wait
+  then
 
   pJob_InsertRow job.notice
 

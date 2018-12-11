@@ -176,24 +176,21 @@ void Job_WriteRow::vSpawnJobWriteRow(Session* pSession,
   // create a write buffer job
   
   //! this needs to be optimised
-//  JobClass* pJobClass_WriteRow = JobClass::pFind(CN_JOB_WRITEROW);
-//
-//  Job_WriteRow* pJob_WriteRow =
-//  static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(pSession));
-//
-//  pJob_WriteRow->vSeed(SS_SEED_RUN);
-//
-//  pJob_WriteRow->m_iParentJobId  = iParentJobId;
-//  pJob_WriteRow->m_sObjectName   = sTableName;
-//  pJob_WriteRow->m_iPartitionId  = iPartition;
-//  pJob_WriteRow->m_pCurrentBuffer = pWorkingBuffer;
-//  pJob_WriteRow->m_nRows = pWorkingBuffer->nWorkingRows();
-//
-//
-//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  // spawn the write buffer job
-//
-//  RapidsSE_bSpawnJob(pJob_WriteRow,SS_SEED_RUN,pSession);
+  JobClass* pJobClass_WriteRow = JobClass::pFind(CN_JOB_WRITEROW);
+
+  Job_WriteRow* pJob_WriteRow =
+  static_cast<Job_WriteRow*>(pJobClass_WriteRow->pPreJob(pSession));
+
+  pJob_WriteRow->vSeed(SS_SEED_RUN);
+
+  pJob_WriteRow->m_iParentJobId  = iParentJobId;
+  pJob_WriteRow->m_sObjectName   = sTableName;
+  pJob_WriteRow->m_iPartitionId  = iPartition;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the write buffer job
+
+  RapidsSE_bSpawnJob(pJob_WriteRow,SS_SEED_RUN,pSession);
 }
 
 /*----------------------------------------------------------------------------*/

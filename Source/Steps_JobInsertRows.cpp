@@ -15,6 +15,9 @@ void Step::vAddSteps_JobInsertRows(void)
   vAddStep("Job_InsertTable.spawnLastBuffs"_Stz,    &Step::vJob_InsertTableSpawnLastBuffers);
   vAddStep("job_insertRows.table!"_Stz,             &Step::vJob_InsertRowsTableStore);
   
+  vAddStep("job_insertRow.hashRow"_Stz,             &Step::vJob_InsertRowHashRow);
+  vAddStep("job_insertRow.partition@"_Stz,          &Step::vJob_InsertRowPartitionFetch);
+  vAddStep("job_insertRow.spawnWriteRow"_Stz,       &Step::vJob_InsertRowSpawnWriteRow);
   vAddStep("job_insertRow.writeRow"_Stz,            &Step::vJob_InsertRowWriteRow);
 }
 
@@ -102,20 +105,20 @@ void Step::vJob_InsertRowsTableStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_InsertRow.writeRow -- write row into the table                         */
+/* job_InsertRow.hashRow -- hash row to a partition                           */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InsertRowWriteRow(MP_Task mpTask)
+void Step::vJob_InsertRowHashRow(MP_Task mpTask)
 {
-  ENTRY("vJob_InsertRowWriteRow"_Stz);
+  ENTRY("vJob_InsertRowHashRow"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_InsertRow.writeRow!"_Stz);
+    THROW_INVALID_DSTACK("job_InsertRow.hashRow"_Stz);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
   Object* pTablePtr;
   if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
-    THROW_INVALID_DSTACK("job_InsertRow.writeRow!"_Stz);
+    THROW_INVALID_DSTACK("job_InsertRow.hashRow"_Stz);
   Table* pTable = _pTable(pTablePtr);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -126,7 +129,48 @@ void Step::vJob_InsertRowWriteRow(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // hash the record to a partition
-  pJob_InsertRow->m_iPartitionId = pTable->iRowPartition(pJob_InsertRow->m_aRecord);
+  //pJob_InsertRow->m_iPartitionId = pTable->iRowPartition(pJob_InsertRow->m_aRecord);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertRow.partition@ -- feth the partition                             */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_InsertRowPartitionFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_InsertRowPartitionFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_InsertRow.partition@"_Stz);
+  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
+  
+  mpTask->m_pDataStack->vPushInt(pJob_InsertRow->m_iPartitionId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertRow.writeRow -- write row into the table                         */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_InsertRowWriteRow(MP_Task mpTask)
+{
+  ENTRY("vJob_InsertRowWriteRow"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_InsertRow.writeRow"_Stz);
+  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
+  
+  Object* pTablePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+    THROW_INVALID_DSTACK("job_InsertRow.writeRow"_Stz);
+  Table* pTable = _pTable(pTablePtr);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 iTxId = 0;
   
   // convert partition to node slot
   i8 iSlot = TablePtn::iPartitionToSlot(pJob_InsertRow->m_iPartitionId);
@@ -136,7 +180,38 @@ void Step::vJob_InsertRowWriteRow(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the row
-  pTable->vInsertRow(iTxId, iSlot, pJob_InsertRow->m_aRecord, pJob_InsertRow->m_nRecordBytes);
+  //pTable->vInsertRow(iTxId, iSlot, pJob_InsertRow->m_aRecord, pJob_InsertRow->m_nRecordBytes);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_InsertRow.spawnWriteRow -- spawn a writeRow job                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_InsertRowSpawnWriteRow(MP_Task mpTask)
+{
+  ENTRY("vJob_InsertRowSpawnWriteRow"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_InsertRow.spawnWriteRow"_Stz);
+  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
+  
+  // get the session
+  Session* pSession = pJob_InsertRow->m_pSession;
+  
+  // get the parent id
+  i8 iParentJobId = pJob_InsertRow->iJobId();
+  
+  // get the partition id
+  i8 iPartition = pJob_InsertRow->m_iPartitionId;
+  
+  // get the object name
+  Stz* sTableName = pJob_InsertRow->m_sObjectName;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a write buffer job for load
+  Job_WriteRow::vSpawnJobWriteRow(pSession, sTableName, iParentJobId, iPartition);
   
   EXIT();
 }
