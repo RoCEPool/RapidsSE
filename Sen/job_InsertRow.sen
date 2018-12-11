@@ -63,6 +63,69 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* execute Job_InsertRow job check resources                                  */
+/*----------------------------------------------------------------------------*/
+: insertRow.checkResources ( pJob_InsertRow -- )
+
+  >>am <Check_Resources>
+
+  params| pJob_InsertRow  |
+
+  pJob_InsertRow job.objectName@ locals| sTableNm |
+
+  tp: insertRow.checkResources
+  //checkResources received" .
+
+  //----------------------------------------------------------------------------
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  //----------------------------------------------------------------------------
+  // path checks
+
+  // set dictionary stack
+  pJob_InsertRow getPath dicStack.set
+  //pathDump
+
+  // there should be a table folder
+  sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!am exit then
+  //sTableNm "In table folder: %v" fmt.print
+
+  // push table dictionary
+  sTableNm pushTable assert
+  //pathDump
+
+  // check it is a table
+  sTableNm checkIsTable not if popTable pJob_InsertRow <ERROR_JOB> !!am exit then
+
+  // pop table dictionary
+  popTable
+  //pathDump
+
+  //----------------------------------------------------------------------------
+  // check if we have enough buffers
+
+  node::checkEnoughBuffers not if pJob_InsertRow <ERROR_JOB> !!am exit then
+
+  <<am <Resources_Checked>
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute Job_LoadTable job release resources                                */
+/*----------------------------------------------------------------------------*/
+: insertRow.releaseResources ( pJob_InsertRow -- )
+
+  >>am <Release_Resources>
+
+  params| pJob_InsertRow  |
+
+  tp: insertRow.releaseResources
+  //releaseResources received" .
+
+  <<am <Resources_Released>
+;
+
+/*----------------------------------------------------------------------------*/
 /* begin job                                                                  */
 /*----------------------------------------------------------------------------*/
 : insertRow_beg ( -- )
@@ -72,6 +135,9 @@
   job::this locals| pJob_InsertRow |
 
   pJob_InsertRow job.beginParticipant
+
+  // check resources
+  pJob_InsertRow insertRow.checkResources
 
   job::participantBegun
 
@@ -85,7 +151,12 @@
 
   >>am <SEED_END>
 
+  job::this locals| pJob_InsertRow |
+
   ">> insertRow_end <<" .verbose
+
+  // release resources
+  pJob_InsertRow insertRow.releaseResources
 
   job::participantEnded
 

@@ -43,7 +43,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_LoadTable job check resources                                  */
+/* execute Job_InsertRows job check resources                                 */
 /*----------------------------------------------------------------------------*/
 : insertRows.checkResources ( pJob_InsertRows -- )
 
@@ -53,7 +53,7 @@
 
   pJob_InsertRows job.objectName@ locals| sTableNm |
 
-  tp: insertRow.checkResources
+  tp: insertRows.checkResources
   //checkResources received" .
 
   //----------------------------------------------------------------------------
@@ -92,7 +92,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_LoadTable job release resources                                */
+/* execute Job_InsertRows job release resources                               */
 /*----------------------------------------------------------------------------*/
 : insertRows.releaseResources ( pJob_InsertRows -- )
 
@@ -100,7 +100,7 @@
 
   params| pJob_InsertRows  |
 
-  tp: insertRow.releaseResources
+  tp: insertRows.releaseResources
   //releaseResources received" .
 
   <<am <Resources_Released>

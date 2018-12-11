@@ -12,6 +12,8 @@ j1000_j10   INTEGER NOT NULL
 
 create index idx on j1000 (j1000_key);
 
+insert into j10 values (10,'abcd',30,40);
+
 insert into j1000 values (10,'abcd',30,40);
 insert into j1000 values (11,'efgh',31,41);
 fetch j1000;
