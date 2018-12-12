@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_JobInsertRow.cpp - job step group                                    */
+/* Steps_JobWriteBuffer.cpp - job step group                                  */
 /*============================================================================*/
 
 #include "StorageEngine.h"

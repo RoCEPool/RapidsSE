@@ -91,6 +91,7 @@ namespace Steps
     static void vAddSteps_JobSubLoader(void);
     static void vAddSteps_JobTruncateTable(void);
     static void vAddSteps_JobWriteBuffer(void);
+    static void vAddSteps_JobWriteRow(void);
   
     static void vAddSteps_Locals(void);
     static void vAddSteps_Lock(void);

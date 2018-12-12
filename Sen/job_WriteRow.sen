@@ -1,0 +1,157 @@
+/*============================================================================*/
+/* job_WriteRowr.sen -- Write Row Job                                         */
+/*============================================================================*/
+
+" job_WriteRow.sen" .verbose
+
+////////////////////////////////////////////////////////////////////////////////
+//                               on kid node                                  //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* write row into the table                                                   */
+/*----------------------------------------------------------------------------*/
+: WriteRow.insert ( pJob_WriteRow -- )
+
+  params| pJob_WriteRow |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  0 locals| pJob_InsertRow  |
+
+  0 locals| sTableNm    |
+  0 locals| i_Partition |
+  0 locals| bAllLoaded  |
+  0 locals| pJob_Parent |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  "WriteRow.insert :" .verbose
+  //pJob_WriteRow job.show
+
+  // get table name
+  pJob_WriteRow job.objectName@ to sTableNm
+
+  // push table dictionary
+  pJob_WriteRow getPath dicStack.set
+  sTableNm pushTable assert
+  //pathDump
+
+  // use table name find and set target table
+  sTableNm find execute locals| pTable |
+  pTable pJob_WriteRow Job_WriteRow.table!
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the parent job (participant node)
+  // parent jo can be EndInsert of LoadTable
+  pJob_WriteRow Job_WriteRow.parentJobId@ locals| iParentJobId |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // grab write lock on table partition
+  pJob_WriteRow Job_WriteRow.partition@ to i_Partition
+  i_Partition pTable tablePtnGrabWrite
+
+  // now insert the Row of rows
+  pJob_WriteRow Job_WriteRow.insertRow
+
+  // drop write lock on table partition
+  i_Partition pTable tablePtnDropWrite
+
+  // we wait till the parent job can be found in the participant job skip list
+  pJob_WriteRow iParentJobId job::waitParticipant to pJob_Parent
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // first check if the job is executing SS_SEED_EXE
+  // then get the task that is executing it
+  begin
+    pJob_Parent job.IsExecuting
+  not while
+    1 thread.sleep_ms
+  repeat
+
+  pJob_Parent job.executingTask@ locals| pTask_Parent |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for acks to be set in the endInsert task
+  begin
+     pTask_Parent task.IsAckSet
+  not while
+     1 thread.sleep_ms
+  repeat
+
+  "WriteRow.insert acking parentJob(insertRow):" .verbose
+  pTask_Parent task.grabLock
+  pTask_Parent task.dropLock
+  pTask_Parent task.ack
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* seed on kid node                                                           */
+/*----------------------------------------------------------------------------*/
+: writeRow_kid ( -- )
+
+  >>am <SEED_KID>
+
+  job::this locals| pJob_WriteRow |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check there is enough Rows and load
+
+  // node::checkEnoughRows if
+  pJob_WriteRow writeRow.insert
+  //then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  <<am
+  delete_completed_job
+
+  <DONE_KID>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+//                            on loading node                                 //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* forward this load Row job to kid node                                      */
+/*----------------------------------------------------------------------------*/
+: WriteRow.forward ( pJob_WriteRow -- )
+
+  params| pJob_WriteRow |
+
+  // which partition are we forwarding to?
+  pJob_WriteRow Job_WriteRow.partition@ locals| i_Partition |
+
+  // convert i_Partition to i_ForwardNode
+  i_Partition grid::toNode locals| i_ForwardNode |
+
+  //i_Partition i_ForwardNode "WriteRow.forward : Node %v Partition %v" fmt.print
+
+  // send this job to the forward node
+  i_ForwardNode pJob_WriteRow job.forward
+;
+
+/*----------------------------------------------------------------------------*/
+/* seed on writing node                                                       */
+/*----------------------------------------------------------------------------*/
+: writeRow_run (  -- )
+
+  >>am <SEED_RUN>
+
+  job::this locals| pJob_WriteRow  |
+
+  "writeRow_run :" .verbose
+
+  // simply forward this job to kid node
+  pJob_WriteRow writeRow.forward
+
+  delete_completed_job
+
+  <DONE_RUN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

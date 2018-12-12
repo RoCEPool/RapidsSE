@@ -106,6 +106,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobSubLoader();
   Step::vAddSteps_JobTruncateTable();
   Step::vAddSteps_JobWriteBuffer();
+  Step::vAddSteps_JobWriteRow();
   
   Step::vAddSteps_Locals();
   Step::vAddSteps_Lock();

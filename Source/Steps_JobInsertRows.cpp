@@ -17,7 +17,7 @@ void Step::vAddSteps_JobInsertRows(void)
   
   vAddStep("job_insertRow.hashRow"_Stz,             &Step::vJob_InsertRowHashRow);
   vAddStep("job_insertRow.partition@"_Stz,          &Step::vJob_InsertRowPartitionFetch);
-  vAddStep("job_insertRow.spawnWriteRow"_Stz,       &Step::vJob_InsertRowSpawnWriteRow);
+  vAddStep("job_insertRow.spawnJobWriteRow"_Stz,    &Step::vJob_InsertRowSpawnJobWriteRow);
   vAddStep("job_insertRow.writeRow"_Stz,            &Step::vJob_InsertRowWriteRow);
 }
 
@@ -188,13 +188,13 @@ void Step::vJob_InsertRowWriteRow(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* job_InsertRow.spawnWriteRow -- spawn a writeRow job                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_InsertRowSpawnWriteRow(MP_Task mpTask)
+void Step::vJob_InsertRowSpawnJobWriteRow(MP_Task mpTask)
 {
-  ENTRY("vJob_InsertRowSpawnWriteRow"_Stz);
+  ENTRY("vJob_InsertRowSpawnJobWriteRow"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_InsertRow.spawnWriteRow"_Stz);
+    THROW_INVALID_DSTACK("job_InsertRow.spawnJobWriteRow"_Stz);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
   // get the session

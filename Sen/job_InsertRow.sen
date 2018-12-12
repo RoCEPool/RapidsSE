@@ -57,7 +57,7 @@
   pJob_InsertRow job_insertRow.partition@ locals| iPartition |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  pJob_InsertRow.spawnJobWriteRow
+  pJob_InsertRow Job_InsertRow.spawnJobWriteRow
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute the job
@@ -82,11 +82,11 @@
   pJob_InsertRow job.objectName@ locals| sTableNm |
 
   // if job being inserted on this node then wait
-  pJob_InsertRow job_insertRow.partition! locals| iPartition |
+  pJob_InsertRow job_insertRow.partition@ locals| iPartition |
 
   // wait if the row being inserted on this partition
   // writeRow will notify it
-  iPartition Grid::toNode Grid::thisNode == if
+  iPartition Grid::toNode Grid::thisNode@ == if
     task::this task.grabLock
     1 task::acks!
     task::wait

@@ -1,0 +1,99 @@
+/*============================================================================*/
+/* Steps_JobWriteRow.cpp - job step group                                    */
+/*============================================================================*/
+
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Step::vAddSteps_JobWriteRow(void)
+{
+  vAddStep("job_writeRow.parentJobId@"_Stz,  &Step::vJob_WriteRowParentJobIdFetch);
+  vAddStep("job_writeRow.InsertRow"_Stz,     &Step::vJob_WriteRowInsertRow);
+  vAddStep("job_WriteRow.partition@"_Stz,    &Step::vJob_WriteRowPartitionFetch);
+  vAddStep("job_WriteRow.table!"_Stz,        &Step::vJob_WriteRowTableStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_WriteRow.parentJobId@ -- fetch parent jobid from job                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_WriteRowParentJobIdFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_WriteRowParentJobIdFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_WriteRow.parentJobId@"_Stz);
+  Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
+  
+  i8 iParentJobId = pJob_WriteRow->m_iParentJobId;
+  RASSERT(C_UNKNOWN != iParentJobId);
+  
+  mpTask->m_pDataStack->vPushInt(iParentJobId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_WriteRow.insertRow -- insert row into the table                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_WriteRowInsertRow(MP_Task mpTask)
+{
+  ENTRY("vJob_WriteRowInsertRow"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_WriteRow.insertRow!"_Stz);
+  Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
+  
+  pJob_WriteRow->vInsertRow();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_WriteRow.partition@ -- fetch partition no. from job_WriteRow           */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_WriteRowPartitionFetch(MP_Task mpTask)
+{
+  ENTRY("vJob_WriteRowPartitionFetch"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_WriteRow.partition@"_Stz);
+  Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
+  
+  i8 i_Partition = pJob_WriteRow->m_iPartitionId;
+  mpTask->m_pDataStack->vPushInt(i_Partition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_WriteRow.table! -- store table into job_WriteRow                       */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_WriteRowTableStore(MP_Task mpTask)
+{
+  ENTRY("vJob_WriteRowTableStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_WriteRow.table!"_Stz);
+  Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
+  
+  Object* pTablePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+    THROW_INVALID_DSTACK("job_WriteRow.table!"_Stz);
+  Table* pTable = _pTable(pTablePtr);
+  
+  pJob_WriteRow->m_pTable = pTable;
+  
+  EXIT();
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
