@@ -108,14 +108,10 @@ Job_InsertRow::Job_InsertRow(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
   
   m_pTable = nullptr;
-  m_iPartitionId = C_UNKNOWN;
   
   //m_aRawData
   m_nRawDataBytes = C_UNKNOWN;
-  
-  // set the enclosined_by to be a '
-  m_xFormatters.m_cEnclosedBy_Leading = '\'';
-  m_xFormatters.m_cEnclosedBy_Trailing = '\'';
+  m_iPartitionId = C_UNKNOWN;
   
   _checkInitialised_(CN_JOB_INSERTROW);
   
@@ -240,6 +236,10 @@ Job* JobsModel::pJob_InsertRow_pre(Interface::Session* pSession)
     pJob_InsertRow->m_bHasError = true;
     pJob_InsertRow->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
   }
+  
+  // get a jobId for the insertRow job
+  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iGetJobId();
+  pJob_InsertRow->vJobId(iJobId);
   
   return pJob_InsertRow;
 }

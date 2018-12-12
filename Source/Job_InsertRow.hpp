@@ -12,10 +12,9 @@ namespace JobsModel
   {
   public:
     Table*     m_pTable;             // table pointer
-    i8         m_iPartitionId;       // partition id
     s48K       m_aRawData;           // raw record
     i8         m_nRawDataBytes;      // length of record
-    Formatters m_xFormatters;        // record formatters
+    i8         m_iPartitionId;       // partition
     
     // must be last
     Footer m_xFooter;

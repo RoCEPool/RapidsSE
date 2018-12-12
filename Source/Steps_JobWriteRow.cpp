@@ -12,7 +12,8 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_JobWriteRow(void)
 {
   vAddStep("job_writeRow.parentJobId@"_Stz,  &Step::vJob_WriteRowParentJobIdFetch);
-  vAddStep("job_writeRow.InsertRow"_Stz,     &Step::vJob_WriteRowInsertRow);
+  vAddStep("job_writeRow.insertRow"_Stz,     &Step::vJob_WriteRowInsertRow);
+  vAddStep("job_writeRow.hashRow"_Stz,       &Step::vJob_WriteRowHashRow);
   vAddStep("job_WriteRow.partition@"_Stz,    &Step::vJob_WriteRowPartitionFetch);
   vAddStep("job_WriteRow.table!"_Stz,        &Step::vJob_WriteRowTableStore);
 }
@@ -33,6 +34,40 @@ void Step::vJob_WriteRowParentJobIdFetch(MP_Task mpTask)
   RASSERT(C_UNKNOWN != iParentJobId);
   
   mpTask->m_pDataStack->vPushInt(iParentJobId);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_WriteRow.hashRow -- hash row to a partition                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_WriteRowHashRow(MP_Task mpTask)
+{
+  ENTRY("vJob_WriteRowHashRow"_Stz);
+  
+  Object* pJobWriteRowPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobWriteRowPtr) )
+    THROW_INVALID_DSTACK("job_WriteRow.hashRow"_Stz);
+  Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobWriteRowPtr);
+  
+  Object* pJobInsertRowPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobInsertRowPtr) )
+    THROW_INVALID_DSTACK("job_WriteRow.hashRow"_Stz);
+  Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobInsertRowPtr);
+  
+  Object* pTablePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+    THROW_INVALID_DSTACK("job_WriteRow.hashRow"_Stz);
+  Table* pTable = _pTable(pTablePtr);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // first format the row
+  pJob_WriteRow->bFormatRow(pTable, pJob_InsertRow->m_aRawData, pJob_InsertRow->m_nRawDataBytes);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // hash the record to a partition
+  pJob_WriteRow->m_iPartitionId = pTable->iRowPartition(pJob_WriteRow->m_aRecord);
+  pJob_InsertRow->m_iPartitionId  = pJob_WriteRow->m_iPartitionId ;
   
   EXIT();
 }

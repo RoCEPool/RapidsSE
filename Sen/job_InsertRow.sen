@@ -55,8 +55,16 @@
   popTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // new a writeRow job
+  pJob_InsertRow job_insertRow.NewJobWriteRow locals| pJob_WriteRow |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // hash the row
+  pTable pJob_InsertRow pJob_WriteRow job_writeRow.HashRow
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the writeRow job for the node to which the row hashes to
-  pJob_InsertRow Job_InsertRow.spawnJobWriteRow
+  pJob_WriteRow pJob_InsertRow Job_InsertRow.spawnJobWriteRow
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute the job

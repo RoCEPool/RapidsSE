@@ -118,6 +118,10 @@ Job_WriteRow::Job_WriteRow(Interface::Session* pSession)
   //m_aRecord
   m_nRecordBytes = false;
   
+  // set the enclosined_by to be a '
+  m_xFormatters.m_cEnclosedBy_Leading = '\'';
+  m_xFormatters.m_cEnclosedBy_Trailing = '\'';
+  
   _checkInitialised_(CN_JOB_WRITEROW);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
@@ -165,12 +169,11 @@ void Job_WriteRow::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get partition being loaded                                                 */
+/* new a WriteRow job                                                         */
 /*----------------------------------------------------------------------------*/
-void Job_WriteRow::vSpawnJobWriteRow(Session* pSession,
-                                     Stz* sTableName,
-                                     i8 iParentJobId,
-                                     i8 iPartition)
+Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Interface::Session* pSession,
+                                   Stz* sTableName,
+                                   i8 iParentJobId)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a write buffer job
@@ -183,14 +186,11 @@ void Job_WriteRow::vSpawnJobWriteRow(Session* pSession,
 
   pJob_WriteRow->vSeed(SS_SEED_RUN);
 
-  pJob_WriteRow->m_iParentJobId  = iParentJobId;
-  pJob_WriteRow->m_sObjectName   = sTableName;
-  pJob_WriteRow->m_iPartitionId  = iPartition;
+  pJob_WriteRow->m_iParentJobId = iParentJobId;
+  pJob_WriteRow->m_sObjectName  = sTableName;
+  pJob_WriteRow->m_iPartitionId = C_UNKNOWN;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn the write buffer job
-
-  RapidsSE_bSpawnJob(pJob_WriteRow,SS_SEED_RUN,pSession);
+  return pJob_WriteRow;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,18 +202,13 @@ void Job_WriteRow::vSpawnJobWriteRow(Session* pSession,
 /*----------------------------------------------------------------------------*/
 bool Job_WriteRow::bFormatRow(Table* pTable, Stz* aRawData, i8 nRawDataBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
   
   bool bBlankLine;
-  Formatters xFormatters;
-  
-  // set the enclosined_by to be a '
-  xFormatters.m_cEnclosedBy_Leading = '\'';
-  xFormatters.m_cEnclosedBy_Trailing = '\'';
   
   // format the raw data into a row
   bool bValid = Row::bFormatRow(pTable->pColumnVec(),
-                                &xFormatters,
+                                &m_xFormatters,
                                 aRawData, nRawDataBytes,
                                 m_aRecord.aStr(),
                                 m_nRecordBytes,

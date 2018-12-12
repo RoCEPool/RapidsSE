@@ -10,11 +10,12 @@ namespace JobsModel
   class Job_WriteRow : public Job
   {
   public:
-    Table* m_pTable;         // table pointer
-    i8     m_iPartitionId;   // partition id
-    i8     m_iParentJobId;   // parent (InsertRow) job id
-    s48K   m_aRecord;        // formatted row
-    i8     m_nRecordBytes;   // length of record
+    Table* m_pTable;          // table pointer
+    i8     m_iPartitionId;    // partition id
+    i8     m_iParentJobId;    // parent (InsertRow) job id
+    s48K   m_aRecord;         // formatted row
+    i8     m_nRecordBytes;    // length of record
+    Formatters m_xFormatters; // formatters
     
     // must be last
     Footer m_xFooter;
@@ -29,10 +30,9 @@ namespace JobsModel
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    static void vSpawnJobWriteRow(Interface::Session* pSession,
-                                              Stz* sTableName,
-                                              i8 iParentJobId,
-                                              i8 iPartition);
+    static Job_WriteRow* pNewJobWriteRow(Interface::Session* pSession,
+                                         Stz* sTableName,
+                                         i8 iParentJobId);
     
   public:
     bool bFormatRow(Table* pTable, Stz* aRawData, i8 nRawDataBytes);

@@ -551,7 +551,7 @@
   static void vJob_InsertRowsTableStore(Tasks::MP_Task mpTask);
 
   static void vJob_InsertRowPartitionFetch(Tasks::MP_Task mpTask);
-  static void vJob_InsertRowWriteRow(Tasks::MP_Task mpTask);
+  static void vJob_InsertRowNewJobWriteRow(Tasks::MP_Task mpTask);
   static void vJob_InsertRowSpawnJobWriteRow(Tasks::MP_Task mpTask);
 
   // job LoadTable
@@ -626,6 +626,7 @@
 
   // Job WriteRow
   static void vJob_WriteRowParentJobIdFetch(Tasks::MP_Task mpTask);
+  static void vJob_WriteRowHashRow(Tasks::MP_Task mpTask);
   static void vJob_WriteRowInsertRow(Tasks::MP_Task mpTask);
   static void vJob_WriteRowPartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_WriteRowTableStore(Tasks::MP_Task mpTask);
