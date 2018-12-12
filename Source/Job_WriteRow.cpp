@@ -198,6 +198,32 @@ void Job_WriteRow::vSpawnJobWriteRow(Session* pSession,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* fromat a row                                                               */
+/*----------------------------------------------------------------------------*/
+bool Job_WriteRow::bFormatRow(Table* pTable, Stz* aRawData, i8 nRawDataBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
+  
+  bool bBlankLine;
+  Formatters xFormatters;
+  
+  // set the enclosined_by to be a '
+  xFormatters.m_cEnclosedBy_Leading = '\'';
+  xFormatters.m_cEnclosedBy_Trailing = '\'';
+  
+  // format the raw data into a row
+  bool bValid = Row::bFormatRow(pTable->pColumnVec(),
+                                &xFormatters,
+                                aRawData, nRawDataBytes,
+                                m_aRecord.aStr(),
+                                m_nRecordBytes,
+                                bBlankLine,
+                                false /* allowNonPrintable */);
+
+  return bValid;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
 void Job_WriteRow::vShow(void)

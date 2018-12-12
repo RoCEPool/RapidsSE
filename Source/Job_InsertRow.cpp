@@ -148,27 +148,6 @@ void Job_InsertRow::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/* fromat a row                                                               */
-/*----------------------------------------------------------------------------*/
-bool Job_InsertRow::bFormatRow(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROW,_FOOTER_);
-  
-//  bool bBlankLine;
-//
-//  // format the raw data into a row
-//  bool bValid = Row::bFormatRow(pTable->pColumnVec(),
-//                                &m_xFormatters,
-//                                m_aRawData, m_nRawDataBytes,
-//                                m_aRecord.aStr(),
-//                                m_nRecordBytes,
-//                                bBlankLine,
-//                                false /* allowNonPrintable */);
-  
-//  return bValid;
-  return false;
-}
 
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */

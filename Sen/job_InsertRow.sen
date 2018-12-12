@@ -23,17 +23,18 @@
   // get the job from the task
   pTask task.job@ to pJob_InsertRow
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get table name
   pJob_InsertRow job.objectName@ locals| sTableNm |
 
   // push table dictionary
   pJob_InsertRow getPath dicStack.set
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
   ddlLock::grabRead
 
-  //----------------------------------------------------------------------------
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - --
   // path checks
 
   // set dictionary stack
@@ -53,10 +54,8 @@
 
   popTable
 
-  pTable pJob_InsertRow job_insertRow.hashRow
-  pJob_InsertRow job_insertRow.partition@ locals| iPartition |
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn the writeRow job for the node to which the row hashes to
   pJob_InsertRow Job_InsertRow.spawnJobWriteRow
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -28,12 +28,14 @@ namespace JobsModel
     ~Job_WriteRow(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    
     static void vSpawnJobWriteRow(Interface::Session* pSession,
                                               Stz* sTableName,
                                               i8 iParentJobId,
                                               i8 iPartition);
     
   public:
+    bool bFormatRow(Table* pTable, Stz* aRawData, i8 nRawDataBytes);
     void vInsertRow(void);
     void vShow(void);
     
