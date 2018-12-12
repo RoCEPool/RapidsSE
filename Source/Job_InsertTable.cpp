@@ -184,15 +184,9 @@ Job* JobsModel::pJob_InsertTable_pre(Interface::Session* pSession)
 {
   Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession);
   
-//  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
-//
-//  bool bResult = pJob_InsertTable->bPopulateJob(pTokenVec);
-//
-//  if ( !bResult) {
-//    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-//    pJob_InsertTable->m_bHasError = true;
-//    pJob_InsertTable->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
-//  }
+  // get a jobId for the insertTable job
+  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iGetJobId();
+  pJob_InsertTable->m_iJobId = iJobId;
   
   return pJob_InsertTable;
 }

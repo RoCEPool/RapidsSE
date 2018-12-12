@@ -119,10 +119,6 @@ Job_InsertRows::Job_InsertRows(Interface::Session* pSession)
   m_pJob_InsertTable =
   static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
   
-  // get a jobId for the insertTable job
-  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iGetJobId();
-  m_pJob_InsertTable->m_iJobId = iJobId;
-  
   // set insertRowJob in the insertTable job
   m_pJob_InsertTable->m_pJobInsertRows = this;
   
@@ -180,7 +176,7 @@ bool Job_InsertRows::bPopulateJob(TokenVec* pTokenVec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
   
   ASSERT(pTokenVec->pGet(0)->bSame("insert"_Stz));
-  ASSERT(pTokenVec->pGet(1)->bSame("into"_Stz));
+  ASSERT(pTokenVec->pGet(1)->bSame("rows"_Stz));
   
   // get no of tokens in token vector
   i8 nTokens = pTokenVec->nTokens();;
