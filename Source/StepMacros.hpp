@@ -31,7 +31,7 @@
       i8 _iTscExit = Synch::iTicks(); \
       i8 _iTscDiff = _iTscExit - _iTscEntry; \
       pStepAccum->m_nInvoked++; \
-      pStepAccum->m_nCycles += _iTscDiff; \
+      pStepAccum->m_nSumCycles += _iTscDiff; \
     }
 
 #else
