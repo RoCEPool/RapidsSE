@@ -167,11 +167,12 @@ void PosixThread::vEnableRealtime(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iClockFrequency = Hardware::iClockFrequency();
+  i8 iSchedulerPeriod_us  = OpSys::iSchedulerPeriod_us();
+  i8 iKernelTicksPerSec   = C_1M / iSchedulerPeriod_us;
 
-  i8 iOverTheNextPeriodOfTicks   = iClockFrequency * 60;           // 60s
-  i8 iThreadRequiresSoManyTicks  = iOverTheNextPeriodOfTicks / 2;  // 30s
-  i8 iMustCompleteIn             = iOverTheNextPeriodOfTicks ;     // 60s
+  i8 iOverTheNextPeriod     = iKernelTicksPerSec * 100; //8000;    // 60s
+  i8 iThreadRequiresSoLong  = iOverTheNextPeriod / 2;     // 30s
+  i8 iMustCompleteIn        = iThreadRequiresSoLong ;     // 30s
   
   bool bPreemptible = false;
 
@@ -181,8 +182,8 @@ void PosixThread::vEnableRealtime(void)
   
   thread_port_t uThreadPort = pthread_mach_thread_np(pthread_self());
   
-  xTtcPolicy.period      = (int)iOverTheNextPeriodOfTicks;
-  xTtcPolicy.computation = (int)iThreadRequiresSoManyTicks;
+  xTtcPolicy.period      = (int)iOverTheNextPeriod;
+  xTtcPolicy.computation = (int)iThreadRequiresSoLong;
   xTtcPolicy.constraint  = (int)iMustCompleteIn;
   xTtcPolicy.preemptible = bPreemptible;
   

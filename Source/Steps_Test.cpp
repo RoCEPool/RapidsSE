@@ -23,7 +23,7 @@ void Step::vAddSteps_Test(void)
   vAddStep("test::test9"_Stz,  &Step::vTestTest9);
 }
 
-#define nElem (1024*1024*64)
+#define nElem (1024*1024*16)
 i8 xI8[nElem];
 
 /*----------------------------------------------------------------------------*/
@@ -33,16 +33,18 @@ void Step::vTestTest0(MP_Task mpTask)
 {
   ENTRY("vTestTest0"_Stz);
   
-  i8 iSum = 0;
-  i8 iStartCore = iPmc_Core();
-  
   PosixThread* pPosixThread = mpTask->pThread()->m_pPosixThread;
   pPosixThread->vEnableRealtime();
+
+  i8 iSum = 0;
+  i8 iStartCore = iPmc_Core();
+  i8 iStartMisses = iPmc_GetLlcMisses();
   
-  vTrace("iPmc_Info(%lld) %llx\n"_Stz,iPmc_Core(),iPmc_Info());
   
-  vTrace("Starting(%lld)   iPmc_GetLlcMisses %lld\n"_Stz,
-         iPmc_Core(),iPmc_GetLlcMisses());
+  //vTrace("iPmc_Info(%lld) %llx\n"_Stz,iPmc_Core(),iPmc_Info());
+  
+  //vTrace("Starting(%lld)   iPmc_GetLlcMisses %lld\n"_Stz,
+  //       iPmc_Core(),iPmc_GetLlcMisses());
   
   for (i8 i = 0; i < nElem; i++)
     xI8[i] = i;
@@ -60,8 +62,8 @@ void Step::vTestTest0(MP_Task mpTask)
     }
   }
   
-  vTrace("Random(%lld)     iPmc_GetLlcMisses %lld; iSum %lld\n"_Stz,
-        iPmc_Core(),iPmc_GetLlcMisses(),iSum);
+  vTrace("Random(%lld)     LlcMisses %lld; iSum %lld\n"_Stz,
+        iPmc_Core(),iPmc_GetLlcMisses() - iStartMisses,iSum);
 
   
   EXIT();
