@@ -3,6 +3,10 @@
 --------------------------------------------------------------------------------
 
 -- refresh metadata
+Loop 10 {
+
+LOG 'Running loop';
+
 refresh;
 success
 
@@ -156,6 +160,10 @@ rows:
   (2,3)
   (2,3)
 
+drop table rapidsse.public.dc1;
+success
+
+}
 CLEANUP {
 
   drop table rapidsse.public.foo;
@@ -169,6 +177,7 @@ CLEANUP {
 
   drop table rapidsse.public.R1000;
   mute
+
 }
 
 
