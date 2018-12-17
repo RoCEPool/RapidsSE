@@ -2,14 +2,14 @@
 /* Timer.cpp -- timer                                                         */
 /*============================================================================*/
 
-#include "System.h"
+#include "Measurement.h"
 
 #include "Pool.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Timer* System::_pTimer(void* aAddr)
+Timer* Measurement::_pTimer(void* aAddr)
 {
   Timer* pTimer = reinterpret_cast<Timer*>(aAddr);
   
