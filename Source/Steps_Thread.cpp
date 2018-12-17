@@ -17,7 +17,9 @@ void Step::vAddSteps_Thread(void)
   vAddStep("thread.cpu"_Stz,             &Step::vThreadCpu);
   vAddStep("thread.dedicated@"_Stz,      &Step::vThreadDedicatedFetch);
   vAddStep("thread.dedicated!"_Stz,      &Step::vThreadDedicatedStore);
+  vAddStep("thread::disableRealtime"_Stz, &Step::vThreadDisableRealtime);
   vAddStep("thread.dump"_Stz,            &Step::vThreadDump);
+  vAddStep("threa::enableRealtime"_Stz,  &Step::vThreadEnableRealtime);
   vAddStep("thread.id"_Stz,              &Step::vThreadId);
   vAddStep("thread.mutexLock"_Stz,       &Step::vThreadMutexLock);
   vAddStep("thread.mutexUnlock"_Stz,     &Step::vThreadMutexUnlock);
@@ -150,6 +152,20 @@ void Step::vThreadDedicatedStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread.disableRealtime -- disable realtime                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vThreadDisableRealtime(MP_Task mpTask)
+{
+  ENTRY("vThreadDisableRealtime"_Stz);
+  
+  Thread* pThread = Thread::pThisTLSThread();
+  
+  pThread->m_pPosixThread->vDisableRealtime();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* thread.dump -- thread dump                                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vThreadDump(MP_Task mpTask)
@@ -166,6 +182,20 @@ ENTRY("vThreadDump"_Stz);
   Thread* pThread = static_cast<Thread*>(pObject);
   
   pThread->vContentDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.enableRealtime -- enable realtime                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vThreadEnableRealtime(MP_Task mpTask)
+{
+  ENTRY("vThreadEnableRealtime"_Stz);
+  
+  Thread* pThread = Thread::pThisTLSThread();
+  
+  pThread->m_pPosixThread->vEnableRealtime();
   
   EXIT();
 }

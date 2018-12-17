@@ -1013,7 +1013,9 @@
   static void vThreadCpu(Tasks::MP_Task mpTask);
   static void vThreadDedicatedFetch(Tasks::MP_Task mpTask);
   static void vThreadDedicatedStore(Tasks::MP_Task mpTask);
+  static void vThreadDisableRealtime(Tasks::MP_Task mpTask);
   static void vThreadDump(Tasks::MP_Task mpTask);
+  static void vThreadEnableRealtime(Tasks::MP_Task mpTask);
   static void vThreadId(Tasks::MP_Task mpTask);
   static void vThreadMutexLock(Tasks::MP_Task mpTask);
   static void vThreadMutexUnlock(Tasks::MP_Task mpTask);
