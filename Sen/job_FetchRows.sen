@@ -131,9 +131,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
-  200 apiState::setPosition
   ddlLock::grabRead
-  300 apiState::setPosition
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the table name
@@ -168,8 +166,6 @@
 
   //pPlanner planner.showPaths
 
-  500 apiState::setPosition
-
   // assert we have a plan
   pPlanner assert
   pPlanner planner.phrases@ to iPhrases
@@ -184,16 +180,11 @@
     iPhrases pJob_FetchRows job_fetchRows.lastBuffers!
   then
 
-  600 apiState::setPosition
 
   iPhrases 0
   do
-    700 apiState::setPosition
     I pPlanner pJob_FetchRows spawnSub
-    750 apiState::setPosition
   loop
-
-  800 apiState::setPosition
 
   popTable
 
