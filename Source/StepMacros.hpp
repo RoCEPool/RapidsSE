@@ -17,12 +17,13 @@
     \
     if (gpAttachMap->m_pStepTracker) { \
       if (! pStepAccum) { \
-        gpAttachMap->m_pStepTracker->vGrabWrite(); \
+        StepTracker* pStepTracker = gpAttachMap->m_pStepTracker; \
+        pStepTracker->vGrabWrite(); \
         if (! pStepAccum) \
-          pStepAccum = gpAttachMap->m_pStepTracker->pAllocAccum(aStepNm); \
-        gpAttachMap->m_pStepTracker->vDropWrite(); \
+          pStepAccum = pStepTracker->pAllocAccum(aStepNm); \
+        pStepTracker->vDropWrite(); \
       } \
-      _iEnterCycles = Synch::iTicks(); \
+      pStepAccum->vEnter(_iEnterCycles,_iEnterMisses); \
     } \
     \
     if (C_TRACE_STEPS && mpTask->m_iTracing) \
@@ -34,10 +35,7 @@
   #define EXIT() \
     \
     if (pStepAccum) { \
-      i8 _iExitCycles = Synch::iTicks(); \
-      i8 _iDiffCycles = _iExitCycles - _iEnterCycles; \
-      pStepAccum->m_nInvoked++; \
-      pStepAccum->m_nSumCycles += _iDiffCycles; \
+      pStepAccum->vExit(_iEnterCycles,_iEnterMisses); \
     }
 
 /*----------------------------------------------------------------------------*/
