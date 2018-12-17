@@ -811,13 +811,149 @@ eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void**
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRows(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTraceLevel)
+eEC RapidsSE_InsertRow(Session* pSession, Stz* sTableName, Stz* sRecord, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_InsertRow"_Stz;
   eAC  eApiCall = AC_InsertRow;
   ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-
+  
   vApiCall(pSession,AC_InsertRow);                                   // API CALL
+  vApiLocation(pSession,100);
+  
+  eEC eResult;
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    //TRACE_ROW();
+    
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
+    
+    // validate parameter
+    VALIDATE_PARAM("b"_Stz, sRecord);
+    
+    // create Job_InsertTable
+    JobClass* pJobClass_InsertRow = JobClass::pFind(CN_JOB_INSERTROW);
+    ASSERT(pJobClass_InsertRow);
+    Job_InsertRow* pJob_InsertRow =
+      static_cast<Job_InsertRow*>(pJobClass_InsertRow->pPreJob(pSession));
+    
+    // push the InsertTable job onto the jobstack
+    pSession->m_pJobStack->vPushObject(pJob_InsertRow);
+    vApiJob(pSession,pJob_InsertRow);
+    
+    // get the length of the record
+    i8 iRawDataLength = StrLib::iSize(sRecord->aChar());
+    
+    // check length of record
+    if (iRawDataLength > C_MAX_RECORD) {
+      eEC eErrorCode = EC_MAX_ROW_LENGTH;
+      TRACE_ERROR("d"_Stz, eErrorCode);
+      vApiReturn(pSession);                                        // API RETURN
+      vApiLocation(pSession,910);
+      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+      return eErrorCode;
+    }
+    
+    // set the row in the insertRow job
+    pJob_InsertRow->m_sObjectName = sTableName;
+    pJob_InsertRow->m_aRawData = sRecord;
+    pJob_InsertRow->m_nRawDataBytes = iRawDataLength;
+    
+    i8 iJobSeq = pJob_InsertRow->m_iJobSeq;
+    
+    // lock this job's mutex
+    i8 rCode = pthread_mutex_lock(&pJob_InsertRow->m_xThreadMutex);
+    if (0 != rCode)
+      vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+    
+    vApiLocation(pSession,106);
+    
+    // set the job state to be locked
+    pJob_InsertRow->m_eState = JS_LOCKED;
+    
+    // spawn the insertTable job
+    RapidsSE_bSpawnJob(pJob_InsertRow, SS_SEED_REQ, pSession);
+    vApiLocation(pSession,107);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // wait for condition & state
+    
+    // set the job state to be waiting
+    pJob_InsertRow->m_eState = JS_WAITING;
+    
+    // wait till signalled
+    do {
+      
+      RASSERT( _bIsValidJob(pJob_InsertRow->eClass()) );
+      RASSERT( iJobSeq == pJob_InsertRow->m_iJobSeq );
+      
+      //    vTrace("ThreadCond:\n"_Stz);
+      //    MemLib::vHexDump(&pJob->m_xThreadCond,  sizeof(pthread_cond_t));
+      //
+      //    vTrace("ThreadMutex:\n"_Stz);
+      //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
+      
+      rCode = pthread_cond_wait(&pJob_InsertRow->m_xThreadCond,
+                                &pJob_InsertRow->m_xThreadMutex);
+      
+      RASSERT( _bIsValidJob(pJob_InsertRow->eClass()) );
+      RASSERT( iJobSeq == pJob_InsertRow->m_iJobSeq );
+      
+      if (0 != rCode)
+        vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+      
+    } while (pJob_InsertRow->m_eState != JS_SIGNALLED);
+    
+    RASSERT( _bIsValidJob(pJob_InsertRow->eClass()) );
+    RASSERT( iJobSeq == pJob_InsertRow->m_iJobSeq );
+    
+    vApiLocation(pSession,108);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    // set the job state back to running
+    pJob_InsertRow->m_eState = JS_RUNNING;
+    
+    // trace exit
+    TRACE_EXIT("ea"_Stz);
+    vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,900);
+    ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+    return EC_NONE;
+    
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,800);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    vApiLocation(pSession,801);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert the given row into a table                                          */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_InsertRows(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTraceLevel)
+{
+  Stz* aApiCall = "RapidsSE_InsertRows"_Stz;
+  eAC  eApiCall = AC_InsertRows;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+
+  vApiCall(pSession,AC_InsertRows);                                   // API CALL
   vApiLocation(pSession,100);
 
   eEC eResult;
@@ -1060,7 +1196,7 @@ eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
     // validate the session
     VALIDATE_SESSION("a"_Stz);
     
-    // delete jobs from teh job stack of the session
+    // delete jobs from the job stack of the session
     vDeleteJobs(pSession);
     
     vApiReturn(pSession);                                          // API RETURN
@@ -1223,10 +1359,10 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession)
   
   //----------------------------------------------------------------------------
   
+  Task* pNewTask = new Task(pJob);
+  
   // form the word to execute for the request
   pJob->vSeed(eSeed);
-  
-  Task* pNewTask = new Task(pJob);
   
   pNewTask->vSession(pSession);
   

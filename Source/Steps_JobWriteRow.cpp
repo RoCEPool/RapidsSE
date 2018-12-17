@@ -62,13 +62,18 @@ void Step::vJob_WriteRowHashRow(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first format the row
-  pJob_WriteRow->bFormatRow(pTable, pJob_InsertRow->m_aRawData, pJob_InsertRow->m_nRawDataBytes);
+  bool bResult = pJob_WriteRow->bFormatRow(pTable, pJob_InsertRow->m_aRawData, pJob_InsertRow->m_nRawDataBytes);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // hash the record to a partition
-  pJob_WriteRow->m_iPartitionId = pTable->iRowPartition(pJob_WriteRow->m_aRecord);
-  pJob_InsertRow->m_iPartitionId  = pJob_WriteRow->m_iPartitionId ;
-  
+  if ( ! bResult )
+    mpTask->m_pDataStack->vPushInt(0);
+  else {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // hash the record to a partition
+    pJob_WriteRow->m_iPartitionId = pTable->iRowPartition(pJob_WriteRow->m_aRecord);
+    pJob_InsertRow->m_iPartitionId  = pJob_WriteRow->m_iPartitionId ;
+    
+    mpTask->m_pDataStack->vPushInt(1);
+  }
   EXIT();
 }
 

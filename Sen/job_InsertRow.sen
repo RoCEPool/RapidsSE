@@ -60,7 +60,9 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // hash the row
-  pTable pJob_InsertRow pJob_WriteRow job_writeRow.HashRow
+  pTable pJob_InsertRow pJob_WriteRow job_writeRow.HashRow locals| bResult |
+
+  bResult not if EC_INVALID_VALUE pJob_InsertRow <ERROR_JOB> !!am <DONE_REQ> then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the writeRow job for the node to which the row hashes to
@@ -94,6 +96,7 @@
   // wait if the row being inserted on this partition
   // writeRow will notify it
   iPartition Grid::toNode Grid::thisNode@ == if
+    //task::this iPartition "waiting for ack %v %v" str.format .
     task::this task.grabLock
     1 task::acks!
     task::wait

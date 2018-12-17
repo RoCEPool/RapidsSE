@@ -158,32 +158,35 @@ bool Job_InsertRow::bPopulateJob(TokenVec* pTokenVec)
   if ( ! pTokenVec->pGet(3)->bSame("values"_Stz))
     return false;
   
-  if ( ! pTokenVec->pGet(4)->bSame("("_Stz))
-    return false;
-  
-  // get no of tokens in token vector
-  i8 nTokens = pTokenVec->nTokens();;
-  
-  // there should be at least 6 tokens
-  if (nTokens < 6)
-    return false;
-  
-  // get the table name
-  m_sObjectName = pTokenVec->pGet(2)->aText();
-
-  // get the rawRecord
-  i8 i = 5;
-  m_aRawData.vCopy(""_Stz);
-  while ( ! pTokenVec->pGet(i)->bSame(")"_Stz)) {
-    m_aRawData.vConcat(pTokenVec->pGet(i++)->aText());
-    if ( ! pTokenVec->pGet(i)->bSame(","_Stz))
-      continue;
-    m_aRawData.vConcat(pTokenVec->pGet(i++)->aText());
-  }
-  
-  if ( ! pTokenVec->pGet(i)->bSame(")"_Stz))
-    return false;
-  
+//  if ( ! pTokenVec->pGet(4)->bSame("("_Stz))
+//    return false;
+//
+//  // get no of tokens in token vector
+//  i8 nTokens = pTokenVec->nTokens();;
+//
+//  // there should be at least 6 tokens
+//  if (nTokens < 6)
+//    return false;
+//
+//  // get the table name
+//  m_sObjectName = pTokenVec->pGet(2)->aText();
+//
+//  s17KB s;
+//  pTokenVec->vToString(s);
+//
+//  // get the rawRecord
+//  i8 i = 5;
+//  m_aRawData.vCopy(""_Stz);
+//  while ( ! pTokenVec->pGet(i)->bSame(")"_Stz)) {
+//    m_aRawData.vConcat(pTokenVec->pGet(i++)->aText());
+//    if ( ! pTokenVec->pGet(i)->bSame(","_Stz))
+//      continue;
+//    m_aRawData.vConcat(pTokenVec->pGet(i++)->aText());
+//  }
+//
+//  if ( ! pTokenVec->pGet(i)->bSame(")"_Stz))
+//    return false;
+//
   // get the length of the record
   m_nRawDataBytes = StrLib::iSize(m_aRawData.aChar());
 
@@ -227,19 +230,20 @@ Job* JobsModel::pJob_InsertRow_pre(Interface::Session* pSession)
 {
   Job_InsertRow* pJob_InsertRow = new Job_InsertRow(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+//  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
-  bool bResult = pJob_InsertRow->bPopulateJob(pTokenVec);
-  
-  if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_InsertRow->m_bHasError = true;
-    pJob_InsertRow->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
-  }
+//  bool bResult = pJob_InsertRow->bPopulateJob(pTokenVec);
+//
+//  if ( !bResult) {
+//    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+//    pJob_InsertRow->m_bHasError = true;
+//    pJob_InsertRow->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+//  }
   
   // get a jobId for the insertRow job
   i8 iJobId = gpAttachMap->m_pOriginatingJobs->iGetJobId();
   pJob_InsertRow->vJobId(iJobId);
+  vTrace("InsertRow id \n"_Stz, iJobId);
   
   return pJob_InsertRow;
 }

@@ -26,13 +26,14 @@ enum eAC // api call kind
   /* 10 */ AC_GetRowCountTableColumn,
   /* 11 */ AC_GetRowTableColumn,
   /* 12 */ AC_InsertRow,
-  /* 13 */ AC_LoadResult,
-  /* 14 */ AC_PoolOpen,
-  /* 15 */ AC_SessionDelete,
-  /* 16 */ AC_SessionInvalid,
-  /* 17 */ AC_SessionNew,
+  /* 13 */ AC_InsertRows,
+  /* 14 */ AC_LoadResult,
+  /* 15 */ AC_PoolOpen,
+  /* 16 */ AC_SessionDelete,
+  /* 17 */ AC_SessionInvalid,
+  /* 18 */ AC_SessionNew,
   
-  /* 18 */ AC_ENUMS
+  /* 19 */ AC_ENUMS
 };
 
 static Stz* aAC[]
@@ -70,6 +71,7 @@ extern "C" eEC  RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void*
 extern "C" eEC  RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8* pRowCount, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_InsertRow(Session* pSession, Stz* pTable, Stz* sRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_InsertRows(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInvalidRows, i8* piSkippedRows, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
