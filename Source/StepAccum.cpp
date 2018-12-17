@@ -34,6 +34,31 @@ StepAccum::~StepAccum(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/* enter                                                                      */
+/*----------------------------------------------------------------------------*/
+void StepAccum::vEnter(i8& nEnterCycles, i8& nEnterMisses)
+{
+  nEnterCycles = Synch::iTicks();
+  nEnterMisses = iPmc_GetLlcMisses();
+}
+
+/*----------------------------------------------------------------------------*/
+/* enter                                                                      */
+/*----------------------------------------------------------------------------*/
+void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
+{
+  i8 nExitCycles = Synch::iTicks();
+  i8 nDiffCycles = nExitCycles - nEnterCycles;
+
+  i8 nExitMisses = iPmc_GetLlcMisses();
+  i8 nDiffMisses = nExitMisses - nEnterMisses;
+
+  m_nInvoked++;
+  m_nSumCycles += nDiffCycles;
+  m_nSumMisses += nDiffMisses;
+}
+
+/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void StepAccum::vPrint(File& xFile)
