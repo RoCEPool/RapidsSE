@@ -151,6 +151,21 @@ void PosixThread::vDisableRealtime(void)
   
 #ifdef __APPLE__
   
+  thread_port_t uThreadPort = pthread_mach_thread_np(pthread_self());
+
+  struct thread_standard_policy xStandardPolicy;
+
+  i8 iReturn = thread_policy_set(uThreadPort,
+                                 THREAD_STANDARD_POLICY,
+                                 (thread_policy_t)&xStandardPolicy,
+                                 THREAD_STANDARD_POLICY_COUNT);
+  
+  if (iReturn != KERN_SUCCESS) {
+    vTrace("PosixThread::vDisableRealtime: thread_policy_set() failed %lld.\n"_Stz,
+           iReturn);
+    return;
+  }
+
 #else
   
 #endif
@@ -178,18 +193,18 @@ void PosixThread::vEnableRealtime(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  struct thread_time_constraint_policy xTtcPolicy;
+  struct thread_time_constraint_policy xRealtimePolicy;
   
   thread_port_t uThreadPort = pthread_mach_thread_np(pthread_self());
   
-  xTtcPolicy.period      = (int)iOverTheNextPeriod;
-  xTtcPolicy.computation = (int)iThreadRequiresSoLong;
-  xTtcPolicy.constraint  = (int)iMustCompleteIn;
-  xTtcPolicy.preemptible = bPreemptible;
+  xRealtimePolicy.period      = (int)iOverTheNextPeriod;
+  xRealtimePolicy.computation = (int)iThreadRequiresSoLong;
+  xRealtimePolicy.constraint  = (int)iMustCompleteIn;
+  xRealtimePolicy.preemptible = bPreemptible;
   
   i8 iReturn = thread_policy_set(uThreadPort,
                                  THREAD_TIME_CONSTRAINT_POLICY,
-                                 (thread_policy_t)&xTtcPolicy,
+                                 (thread_policy_t)&xRealtimePolicy,
                                  THREAD_TIME_CONSTRAINT_POLICY_COUNT);
   
   if (iReturn != KERN_SUCCESS) {
