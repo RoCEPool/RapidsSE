@@ -16,7 +16,6 @@ namespace Measurement
     i8   m_nSumMisses;  // total llc misses
     i8   m_nMaxMisses;  // maximum llc misses
 
-  
     // must be last
     Footer m_xFooter;
     
