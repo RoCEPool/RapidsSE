@@ -39,7 +39,7 @@ StepAccum::~StepAccum(void) noexcept(false)
 void StepAccum::vEnter(i8& nEnterCycles, i8& nEnterMisses)
 {
   nEnterCycles = Synch::iTicks();
-  nEnterMisses = iPmc_GetLlcMisses();
+  nEnterMisses = 0 ; //iPmc_GetLlcMisses();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +50,7 @@ void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
   i8 nExitCycles = Synch::iTicks();
   i8 nDiffCycles = nExitCycles - nEnterCycles;
 
-  i8 nExitMisses = iPmc_GetLlcMisses();
+  i8 nExitMisses = 0; //iPmc_GetLlcMisses();
   i8 nDiffMisses = nExitMisses - nEnterMisses;
 
   m_nInvoked++;
