@@ -37,8 +37,8 @@ void Step::vTestTest0(MP_Task mpTask)
   pPosixThread->vEnableRealtime();
 
   i8 iSum = 0;
-  i8 iStartCore = 0 ; //iPmc_Core();
-  i8 iStartMisses = 0 ; //iPmc_GetLlcMisses();
+  i8 iStartCore = iPmc_Core();
+  i8 iStartMisses = iPmc_GetLlcMisses();
   
   
   //vTrace("iPmc_Info(%lld) %llx\n"_Stz,iPmc_Core(),iPmc_Info());
@@ -56,14 +56,14 @@ void Step::vTestTest0(MP_Task mpTask)
     //       iElem,iPmc_GetLlcMisses());
     iSum += xI8[iElem];
     
-//    if (iPmc_Core() != iStartCore) {
-//      iStartCore = iPmc_Core();
-//      vTrace("Now on (%lld) at %lld\n"_Stz,iStartCore,i);
-//    }
+    if (iPmc_Core() != iStartCore) {
+      iStartCore = iPmc_Core();
+      vTrace("Now on (%lld) at %lld\n"_Stz,iStartCore,i);
+    }
   }
   
-//  vTrace("Random(%lld)     LlcMisses %lld; iSum %lld\n"_Stz,
-//        iPmc_Core(),iPmc_GetLlcMisses() - iStartMisses,iSum);
+  vTrace("Random(%lld)     LlcMisses %lld; iSum %lld\n"_Stz,
+        iPmc_Core(),iPmc_GetLlcMisses() - iStartMisses,iSum);
 
   
   EXIT();
