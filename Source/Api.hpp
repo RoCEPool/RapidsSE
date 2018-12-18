@@ -87,6 +87,7 @@ void vApiJob(Session* pSession, Job* pJob);
 void vApiLocation(Session* pSession, i8 iLocation);
 void vApiReturn(Session* pSession);
 void vDeleteJobs(Session* pSession);
+void vSpawnJobAndWait(Session* pSession, Job* pJob);
 
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */

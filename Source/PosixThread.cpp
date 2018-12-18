@@ -6,8 +6,10 @@
 
 #include "StorageEngine.h"
 
-#include <mach/mach_time.h>
-#include <mach/thread_policy.h>
+#ifdef __APPLE__
+  #include <mach/mach_time.h>
+  #include <mach/thread_policy.h>
+#endif
 
 extern ResourceTracker gxResourceTracker;
 
