@@ -18,7 +18,6 @@ eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
   eAC  eApiCall = AC_CheckLibraryVersion;
   ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
 
-                                                                      // API ???
   Session* pSession = nullptr;
   
   try {

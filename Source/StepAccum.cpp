@@ -38,8 +38,13 @@ StepAccum::~StepAccum(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void StepAccum::vEnter(i8& nEnterCycles, i8& nEnterMisses)
 {
+#ifdef _APPLE
   nEnterCycles = Synch::iTicks();
   nEnterMisses = iPmc_GetLlcMisses();
+#else
+  nEnterCycles = 0;
+  nEnterMisses = 0;
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,6 +52,7 @@ void StepAccum::vEnter(i8& nEnterCycles, i8& nEnterMisses)
 /*----------------------------------------------------------------------------*/
 void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
 {
+  #ifdef _APPLE
   i8 nExitCycles = Synch::iTicks();
   i8 nDiffCycles = nExitCycles - nEnterCycles;
 
@@ -61,6 +67,9 @@ void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
     m_nMaxCycles = nDiffCycles;
   if (nDiffMisses > m_nMaxMisses)
     m_nMaxMisses = nDiffMisses;
+#else
+  // do nothing
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

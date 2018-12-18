@@ -33,6 +33,7 @@ void Step::vTestTest0(MP_Task mpTask)
 {
   ENTRY("vTestTest0"_Stz);
   
+#ifdef _APPLE
   PosixThread* pPosixThread = mpTask->pThread()->m_pPosixThread;
   pPosixThread->vEnableRealtime_2();
 
@@ -78,6 +79,7 @@ void Step::vTestTest0(MP_Task mpTask)
          iSum,
          sElapsedMagnitude.aChar());
 
+#endif
   
   EXIT();
 }
