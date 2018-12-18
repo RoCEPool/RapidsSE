@@ -23,8 +23,8 @@ void Step::vAddSteps_Test(void)
   vAddStep("test::test9"_Stz,  &Step::vTestTest9);
 }
 
-#define nElem (1024*1024*16)
-i8 xI8[nElem];
+#define nElems (C_1M * 16)
+i8 xArray[nElems];
 
 /*----------------------------------------------------------------------------*/
 /* test::test0 -- test0                                                       */
@@ -33,38 +33,43 @@ void Step::vTestTest0(MP_Task mpTask)
 {
   ENTRY("vTestTest0"_Stz);
   
-#ifdef _APPLE
+#ifdef __APPLE__
   PosixThread* pPosixThread = mpTask->pThread()->m_pPosixThread;
   pPosixThread->vEnableRealtime_2();
 
   Timer xTimer;
   xTimer.vStart();
 
-  i8 iSum = 0;
   i8 iStartCore = iPmc_Core();
   i8 iStartMisses = iPmc_GetLlcMisses();
   
+  pPosixThread->iGetInfo();
   
-  pPosixThread->vGetInfo();
+  for (i8 i_Elem = 0; i_Elem < nElems; i_Elem++)
+    xArray[i_Elem] = i_Elem;
   
-  //vTrace("iPmc_Info(%lld) %llx\n"_Stz,iPmc_Core(),iPmc_Info());
+  i8 iSum = 0;
+  i8 nIterations = 0;
+  i8 nSwitches = 0;
   
-  //vTrace("Starting(%lld)   iPmc_GetLlcMisses %lld\n"_Stz,
-  //       iPmc_Core(),iPmc_GetLlcMisses());
+  for (i8 nTimes = 0; nTimes < 10; nTimes++) {
   
-  for (i8 i = 0; i < nElem; i++)
-    xI8[i] = i;
-  //vTrace("Sequential iPmc_GetLlcMisses %lld; iSum %lld\n"_Stz,
-  //       iPmc_GetLlcMisses(),iSum);
-  for (i8 i = 0; i < nElem; i++) {
-    i8 iElem = Random::iRandom(nElem-1);
-    //vTrace("iElem %lld; iPmc_GetLlcMisses %llx\n"_Stz,
-    //       iElem,iPmc_GetLlcMisses());
-    iSum += xI8[iElem];
-    
-    if (iPmc_Core() != iStartCore) {
-      iStartCore = iPmc_Core();
-      vTrace("Now on (%lld) at %lld\n"_Stz,iStartCore,i);
+    for (i8 i_Elem = 0; i_Elem < nElems; i_Elem++) {
+      
+      nIterations++;
+      
+      i8 i_Random = Random::iRandom(nElems-1);
+      vTrace("iSum %lld xArray %lld\n"_Stz,iSum,xArray[i_Random]);
+      iSum += xArray[i_Random];
+      vTrace("iSum %lld\n"_Stz,iSum);
+      
+      if (iPmc_Core() != iStartCore) {
+        nSwitches++;
+        iStartCore = iPmc_Core();
+      }
+      
+      if (nIterations % 100000 == 0)
+        pPosixThread->vEnableRealtime_2();
     }
   }
   
@@ -73,11 +78,12 @@ void Step::vTestTest0(MP_Task mpTask)
   s32 sElapsedMagnitude;
   Magnitudes::vTimeMag(xTimer.iNanoseconds(),sElapsedMagnitude);
 
-  vTrace("Random(%lld)     LlcMisses %lld; iSum %lld; Elapsed %s\n"_Stz,
-        iPmc_Core(),
+  vTrace("LlcMisses %lld; iSum %lld; Elapsed %s; Iterations %lld; Switches %lld\n"_Stz,
          iPmc_GetLlcMisses() - iStartMisses,
          iSum,
-         sElapsedMagnitude.aChar());
+         sElapsedMagnitude.aChar(),
+         nIterations,
+         nSwitches);
 
 #endif
   

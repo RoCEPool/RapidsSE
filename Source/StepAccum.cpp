@@ -38,7 +38,7 @@ StepAccum::~StepAccum(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void StepAccum::vEnter(i8& nEnterCycles, i8& nEnterMisses)
 {
-#ifdef _APPLE
+#ifdef __APPLE__
   nEnterCycles = Synch::iTicks();
   nEnterMisses = iPmc_GetLlcMisses();
 #else
@@ -52,7 +52,7 @@ void StepAccum::vEnter(i8& nEnterCycles, i8& nEnterMisses)
 /*----------------------------------------------------------------------------*/
 void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
 {
-  #ifdef _APPLE
+  #ifdef __APPLE__
   i8 nExitCycles = Synch::iTicks();
   i8 nDiffCycles = nExitCycles - nEnterCycles;
 

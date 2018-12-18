@@ -235,8 +235,8 @@ void PosixThread::vEnableRealtime_2(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  mach_timebase_info_data_t xTimebase;
-  iReturn = mach_timebase_info(&xTimebase);
+  mach_timebase_info_data_t xBase;
+  iReturn = mach_timebase_info(&xBase);
   if (iReturn != KERN_SUCCESS) {
     vTrace("Warning: Couldn't get timebase.\n"_Stz);
     return;
@@ -246,11 +246,15 @@ void PosixThread::vEnableRealtime_2(void)
 //  vTrace("nanoseconds per tick: %lld\n"_Stz,
 //         xTimebase.numer / xTimebase.denom);
 
+//  uint64_t nsec = C_1M;
+//  uint64_t absunit;
+//  nanoseconds_to_absolutetime(nsec, &absunit);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iOverTheNextPeriod     = 50 * 1000 * xTimebase.denom / xTimebase.numer;
-  i8 iThreadRequiresSoLong  = 50 * 1000 * xTimebase.denom / xTimebase.numer;
-  i8 iMustCompleteIn        = 100 * 1000 * xTimebase.denom / xTimebase.numer;
+  i8 iOverTheNextPeriod     = 20 * C_1M * xBase.denom / xBase.numer;
+  i8 iThreadRequiresSoLong  = 10 * C_1M * xBase.denom / xBase.numer;
+  i8 iMustCompleteIn        = 10 * C_1M * xBase.denom / xBase.numer;
   
   bool bPreemptible = false;
   
