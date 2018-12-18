@@ -6,6 +6,9 @@
 
 #include "StorageEngine.h"
 
+#include <mach/mach_time.h>
+#include <mach/thread_policy.h>
+
 extern ResourceTracker gxResourceTracker;
 
 extern pthread_key_t giTLS_TaskKey;
@@ -185,9 +188,9 @@ void PosixThread::vEnableRealtime(void)
   i8 iSchedulerPeriod_us  = OpSys::iSchedulerPeriod_us();
   i8 iKernelTicksPerSec   = C_1M / iSchedulerPeriod_us;
 
-  i8 iOverTheNextPeriod     = iKernelTicksPerSec * 1; //8000;    // 60s
+  i8 iOverTheNextPeriod     = iKernelTicksPerSec * 10; //8000;    // 60s
   i8 iThreadRequiresSoLong  = iOverTheNextPeriod / 1;     // 30s
-  i8 iMustCompleteIn        = iThreadRequiresSoLong ;     // 30s
+  i8 iMustCompleteIn        = iThreadRequiresSoLong * 2;     // 30s
   
   bool bPreemptible = false;
 
@@ -216,6 +219,127 @@ void PosixThread::vEnableRealtime(void)
 #else
   
 #endif
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void PosixThread::vEnableRealtime_2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+#ifdef __APPLE__
+  
+  i8 iReturn = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  mach_timebase_info_data_t xTimebase;
+  iReturn = mach_timebase_info(&xTimebase);
+  if (iReturn != KERN_SUCCESS) {
+    vTrace("Warning: Couldn't get timebase.\n"_Stz);
+    return;
+  }
+  
+  // The number of nanoseconds per tick is:
+  vTrace("nanoseconds per tick: %lld\n"_Stz,
+         xTimebase.numer / xTimebase.denom);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 iOverTheNextPeriod     = 5000 * 1000 * xTimebase.denom / xTimebase.numer;
+  i8 iThreadRequiresSoLong  = 5000 * 1000 * xTimebase.denom / xTimebase.numer;
+  i8 iMustCompleteIn        = 5000 * 1000 * xTimebase.denom / xTimebase.numer;
+  
+  bool bPreemptible = false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  struct thread_time_constraint_policy xRealtimePolicy;
+  
+  thread_port_t uThreadPort = pthread_mach_thread_np(pthread_self());
+  
+  xRealtimePolicy.period      = (int)iOverTheNextPeriod;
+  xRealtimePolicy.computation = (int)iThreadRequiresSoLong;
+  xRealtimePolicy.constraint  = (int)iMustCompleteIn;
+  xRealtimePolicy.preemptible = bPreemptible;
+  
+  iReturn = thread_policy_set(uThreadPort,
+                              THREAD_TIME_CONSTRAINT_POLICY,
+                              (thread_policy_t)&xRealtimePolicy,
+                              THREAD_TIME_CONSTRAINT_POLICY_COUNT);
+  
+  if (iReturn != KERN_SUCCESS) {
+    vTrace("PosixThread::vEnableRealtime: thread_policy_set() failed %lld.\n"_Stz,
+           iReturn);
+    return;
+  }
+  
+#else
+  
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current thread info                                                    */
+/*----------------------------------------------------------------------------*/
+void PosixThread::vGetInfo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+#ifdef __APPLE__
+  
+  i8 iReturn = 0;
+  
+  thread_port_t uThreadPort = pthread_mach_thread_np(pthread_self());
+  struct thread_basic_info BasicInfo;
+  mach_msg_type_number_t  Count = THREAD_BASIC_INFO_COUNT;
+
+  iReturn = thread_info(uThreadPort,
+                        THREAD_BASIC_INFO,
+                        (thread_info_t)&BasicInfo,
+                        &Count);
+  
+  if (iReturn != KERN_SUCCESS) {
+    vTrace("PosixThread::vGetInfo: thread_info() failed %lld.\n"_Stz,
+           iReturn);
+    return;
+  }
+
+
+#else
+  
+#endif
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current thread policy                                                  */
+/*----------------------------------------------------------------------------*/
+void PosixThread::vGetPolicy(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
+  
+#ifdef __APPLE__
+
+  i8 iReturn = 0;
+
+  thread_affinity_policy_data_t current_policy;
+  
+  thread_port_t uThreadPort = pthread_mach_thread_np(pthread_self());
+
+  mach_msg_type_number_t policy_count = THREAD_AFFINITY_POLICY_COUNT;
+
+  boolean_t get_default = FALSE;
+
+  iReturn = thread_policy_get(uThreadPort,
+                              THREAD_AFFINITY_POLICY,
+                              (thread_policy_t)&current_policy,
+                              &policy_count,
+                              &get_default);
+#else
+
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/

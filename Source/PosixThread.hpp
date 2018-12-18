@@ -25,6 +25,9 @@ namespace System
     bool bBindThread(i8 i_Core);
     void vDisableRealtime(void);
     void vEnableRealtime(void);
+    void vEnableRealtime_2(void);
+    void vGetInfo(void);
+    void vGetPolicy(void);
     void vSetOSThreadId(void);
     bool bSpawnThread(void* pFun(void*), void* pArg);
     i8   iThreadCpu(void);

@@ -34,12 +34,17 @@ void Step::vTestTest0(MP_Task mpTask)
   ENTRY("vTestTest0"_Stz);
   
   PosixThread* pPosixThread = mpTask->pThread()->m_pPosixThread;
-  pPosixThread->vEnableRealtime();
+  pPosixThread->vEnableRealtime_2();
+
+  Timer xTimer;
+  xTimer.vStart();
 
   i8 iSum = 0;
   i8 iStartCore = iPmc_Core();
   i8 iStartMisses = iPmc_GetLlcMisses();
   
+  
+  pPosixThread->vGetInfo();
   
   //vTrace("iPmc_Info(%lld) %llx\n"_Stz,iPmc_Core(),iPmc_Info());
   
@@ -62,8 +67,16 @@ void Step::vTestTest0(MP_Task mpTask)
     }
   }
   
-  vTrace("Random(%lld)     LlcMisses %lld; iSum %lld\n"_Stz,
-        iPmc_Core(),iPmc_GetLlcMisses() - iStartMisses,iSum);
+  xTimer.vUpdate();
+  
+  s32 sElapsedMagnitude;
+  Magnitudes::vTimeMag(xTimer.iNanoseconds(),sElapsedMagnitude);
+
+  vTrace("Random(%lld)     LlcMisses %lld; iSum %lld; Elapsed %s\n"_Stz,
+        iPmc_Core(),
+         iPmc_GetLlcMisses() - iStartMisses,
+         iSum,
+         sElapsedMagnitude.aChar());
 
   
   EXIT();
