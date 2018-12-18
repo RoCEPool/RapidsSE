@@ -91,61 +91,28 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     
     vApiJob(pSession,pJob_InsertTable);
     vApiLocation(pSession,105);
-    
-    i8 iJobSeq = pJob_InsertTable->m_iJobSeq;
-    
-    // lock this job's mutex
-    i8 rCode = pthread_mutex_lock(&pJob_InsertTable->m_xThreadMutex);
-    if (0 != rCode)
-      vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
-    
-    vApiLocation(pSession,106);
-    
-    // set the job state to be locked
-    pJob_InsertTable->m_eState = JS_LOCKED;
-    
-    // spawn the insertTable job
-    RapidsSE_bSpawnJob(pJob_InsertTable, SS_SEED_REQ, pSession);
-    vApiLocation(pSession,107);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // wait for condition & state
-    
-    // set the job state to be waiting
-    pJob_InsertTable->m_eState = JS_WAITING;
-    
-    // wait till signalled
-    do {
-      
-      RASSERT( _bIsValidJob(pJob_InsertTable->eClass()) );
-      RASSERT( iJobSeq == pJob_InsertTable->m_iJobSeq );
-      
-      //    vTrace("ThreadCond:\n"_Stz);
-      //    MemLib::vHexDump(&pJob->m_xThreadCond,  sizeof(pthread_cond_t));
-      //
-      //    vTrace("ThreadMutex:\n"_Stz);
-      //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
-      
-      rCode = pthread_cond_wait(&pJob_InsertTable->m_xThreadCond,
-                                &pJob_InsertTable->m_xThreadMutex);
-      
-      RASSERT( _bIsValidJob(pJob_InsertTable->eClass()) );
-      RASSERT( iJobSeq == pJob_InsertTable->m_iJobSeq );
-      
-      if (0 != rCode)
-        vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-      
-    } while (pJob_InsertTable->m_eState != JS_SIGNALLED);
 
-    RASSERT( _bIsValidJob(pJob_InsertTable->eClass()) );
-    RASSERT( iJobSeq == pJob_InsertTable->m_iJobSeq );
-    
-    vApiLocation(pSession,108);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    // set the job state back to running
-    pJob_InsertTable->m_eState = JS_RUNNING;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // spawn and wait for job
+    vSpawnJobAndWait(pSession, pJob_InsertTable);
+ 
+    // check if job had an error
+    if (pJob_InsertTable->m_bHasError) {
+      
+      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+        
+        eEC eError = pJob_InsertTable->m_xNode[i_Node].m_eErrorCode;
+        
+        if (eError != EC_NONE) {
+          TRACE_ERROR("eb"_Stz, eError);
+          vApiError(pSession,eError);
+          vApiLocation(pSession,800);
+          ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+          return pJob_InsertTable->m_xNode[i_Node].m_eErrorCode;
+        }
+      }
+      ASSERT(0);
+    }
     
     // delete all jobs in the ssession
     vDeleteJobs(pSession);
@@ -255,87 +222,15 @@ Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool 
   vApiJob(pSession,pJob);                                             // API JOB
   vApiLocation(pSession,105);
   
-  i8 iJobSeq = pJob->m_iJobSeq;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // lock this job's mutex
+  // spawn and wait for job
+  vSpawnJobAndWait(pSession, pJob);
   
-  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
-  if (0 != rCode)
-    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
-  
-  vApiLocation(pSession,106);
-  
-  // set the job state to be locked
-  pJob->m_eState = JS_LOCKED;
-  
-  //vApiLocation(pSession,107);
-  
-  // spawn the job
-  RapidsSE_bSpawnJob(pJob, SS_SEED_REQ, pSession);
-  
-  vApiLocation(pSession,108);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait for condition & state
-  
-  // set the job state to be waiting
-  pJob->m_eState = JS_WAITING;
-  
-  // wait till signalled
-  i8 iLocation = 10000;
-  do {
-    
-    RASSERT( _bIsValidJob(pJob->eClass()) );
-    RASSERT( iJobSeq == pJob->m_iJobSeq );
-    
-//    vTrace("ThreadCond:\n"_Stz);
-//    MemLib::vHexDump(&pJob->m_xThreadCond,  sizeof(pthread_cond_t));
-//
-//    vTrace("ThreadMutex:\n"_Stz);
-//    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
-
-    rCode = pthread_cond_wait(&pJob->m_xThreadCond,
-                              &pJob->m_xThreadMutex);
-
-    RASSERT( _bIsValidJob(pJob->eClass()) );
-    RASSERT( iJobSeq == pJob->m_iJobSeq );
-
-    vApiLocation(pSession,iLocation++);
-    if (0 != rCode)
-      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-
-  } while (pJob->m_eState != JS_SIGNALLED);
-
-  RASSERT( _bIsValidJob(pJob->eClass()) );
-  RASSERT( iJobSeq == pJob->m_iJobSeq );
-
-  vApiLocation(pSession,109);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // set the job state back to running
-  pJob->m_eState = JS_RUNNING;
-
-  // unlock this job's mutex
-  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
-  if (0 != rCode)
-    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
-
-  vApiLocation(pSession,110);
-
-  RASSERT( _bIsValidJob(pJob->eClass()) );
-  RASSERT( iJobSeq == pJob->m_iJobSeq );
-
-  //vApiLocation(pSession,111);
-  
+  // run post ?
   if (bPostJob)
     pCommandProcessor->vPostJob(pSession);
   
-  //vApiLocation(pSession,112);
-  
   vApiReturn(pSession);
-  // API RETURN
   vApiLocation(pSession,900);
   
   ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
@@ -864,83 +759,28 @@ eEC RapidsSE_InsertRow(Session* pSession, Stz* sTableName, Stz* sRecord, i8 iTra
     pJob_InsertRow->m_aRawData = sRecord;
     pJob_InsertRow->m_nRawDataBytes = iRawDataLength;
     
-    i8 iJobSeq = pJob_InsertRow->m_iJobSeq;
-    
-    // lock this job's mutex
-    i8 rCode = pthread_mutex_lock(&pJob_InsertRow->m_xThreadMutex);
-    if (0 != rCode)
-      vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
-    
-    vApiLocation(pSession,106);
-    
-    // set the job state to be locked
-    pJob_InsertRow->m_eState = JS_LOCKED;
-    
-    // spawn the insertTable job
-    RapidsSE_bSpawnJob(pJob_InsertRow, SS_SEED_REQ, pSession);
-    vApiLocation(pSession,107);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // wait for condition & state
-    
-    // set the job state to be waiting
-    pJob_InsertRow->m_eState = JS_WAITING;
-    
-    // wait till signalled
-    do {
-      
-      RASSERT( _bIsValidJob(pJob_InsertRow->eClass()) );
-      RASSERT( iJobSeq == pJob_InsertRow->m_iJobSeq );
-      
-      //    vTrace("ThreadCond:\n"_Stz);
-      //    MemLib::vHexDump(&pJob->m_xThreadCond,  sizeof(pthread_cond_t));
-      //
-      //    vTrace("ThreadMutex:\n"_Stz);
-      //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
-      
-      rCode = pthread_cond_wait(&pJob_InsertRow->m_xThreadCond,
-                                &pJob_InsertRow->m_xThreadMutex);
-      
-      RASSERT( _bIsValidJob(pJob_InsertRow->eClass()) );
-      RASSERT( iJobSeq == pJob_InsertRow->m_iJobSeq );
-      
-      if (0 != rCode)
-        vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-      
-    } while (pJob_InsertRow->m_eState != JS_SIGNALLED);
-    
-    RASSERT( _bIsValidJob(pJob_InsertRow->eClass()) );
-    RASSERT( iJobSeq == pJob_InsertRow->m_iJobSeq );
-    
-    vApiLocation(pSession,108);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-    // set the job state back to running
-    pJob_InsertRow->m_eState = JS_RUNNING;
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // spawn and wait for the job
+    vSpawnJobAndWait(pSession, pJob_InsertRow);
     
     // check if job had an error
     if (pJob_InsertRow->m_bHasError) {
-      vApiLocation(pSession,109);
+     
       for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-        vApiLocation(pSession,110);
+   
         eEC eError = pJob_InsertRow->m_xNode[i_Node].m_eErrorCode;
-        vApiLocation(pSession,111);
+
         if (eError != EC_NONE) {
-          vApiLocation(pSession,112);
-          //vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[eError]);
-          vApiLocation(pSession,113);
           TRACE_ERROR("eb"_Stz, eError);
-          vApiLocation(pSession,114);
-          vApiError(pSession,eError); 
-          // API ERROR
-          vApiLocation(pSession,812);
-          ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+          vApiError(pSession,eError);
+          vApiLocation(pSession,800);
+          ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
           return pJob_InsertRow->m_xNode[i_Node].m_eErrorCode;
         }
       }
       ASSERT(0);
     }
+    
     // trace exit
     TRACE_EXIT("ec"_Stz);
     vApiReturn(pSession);                                          // API RETURN
@@ -954,14 +794,14 @@ eEC RapidsSE_InsertRow(Session* pSession, Stz* sTableName, Stz* sRecord, i8 iTra
     TRACE_ERROR("!", pError->eErrorCode());
     eEC eError = pError->eErrorCode();
     vApiError(pSession,eError);                                     // API ERROR
-    vApiLocation(pSession,800);
+    vApiLocation(pSession,901);
     ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
     return pError->eErrorCode();
   }
   catch (...) {
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
-    vApiLocation(pSession,801);
+    vApiLocation(pSession,902);
     ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
     return EC_SE_UNKNOWN_ERROR;
   }
@@ -1503,6 +1343,71 @@ void vDeleteJobs(Session* pSession)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* Spawn amd wait for job to complete                                         */
+/*----------------------------------------------------------------------------*/
+void vSpawnJobAndWait(Session* pSession, Job* pJob) {
+  
+  i8 iJobSeq = pJob->m_iJobSeq;
+  
+  // lock this job's mutex
+  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
+  if (0 != rCode)
+    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+  
+  vApiLocation(pSession,106);
+  
+  // set the job state to be locked
+  pJob->m_eState = JS_LOCKED;
+  
+  // spawn the insertTable job
+  RapidsSE_bSpawnJob(pJob, SS_SEED_REQ, pSession);
+  vApiLocation(pSession,107);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for condition & state
+  
+  // set the job state to be waiting
+  pJob->m_eState = JS_WAITING;
+  
+  // wait till signalled
+  do {
+    
+    RASSERT( _bIsValidJob(pJob->eClass()) );
+    RASSERT( iJobSeq == pJob->m_iJobSeq );
+    
+    //    vTrace("ThreadCond:\n"_Stz);
+    //    MemLib::vHexDump(&pJob->m_xThreadCond,  sizeof(pthread_cond_t));
+    //
+    //    vTrace("ThreadMutex:\n"_Stz);
+    //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
+    
+    rCode = pthread_cond_wait(&pJob->m_xThreadCond,
+                              &pJob->m_xThreadMutex);
+    
+    RASSERT( _bIsValidJob(pJob->eClass()) );
+    RASSERT( iJobSeq == pJob->m_iJobSeq );
+    
+    if (0 != rCode)
+      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+    
+  } while (pJob->m_eState != JS_SIGNALLED);
+  
+  RASSERT( _bIsValidJob(pJob->eClass()) );
+  RASSERT( iJobSeq == pJob->m_iJobSeq );
+  
+  vApiLocation(pSession,108);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // set the job state back to running
+  pJob->m_eState = JS_RUNNING;
+  
+  // unlock this job's mutex
+  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
+  if (0 != rCode)
+    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
