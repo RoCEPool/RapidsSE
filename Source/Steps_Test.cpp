@@ -68,8 +68,8 @@ void Step::vTestTest0(MP_Task mpTask)
         iStartCore = iPmc_Core();
       }
       
-      if (nIterations % 100000 == 0)
-        pPosixThread->vEnableRealtime_2();
+      //if (nIterations % 100000 == 0)
+      //  pPosixThread->vEnableRealtime_2();
     }
   }
   
@@ -77,13 +77,18 @@ void Step::vTestTest0(MP_Task mpTask)
   
   s32 sElapsedMagnitude;
   Magnitudes::vTimeMag(xTimer.iNanoseconds(),sElapsedMagnitude);
+  
+  i8 iRate = xTimer.iNanoseconds() / nSwitches;
+  s32 sRateMagnitude;
+  Magnitudes::vTimeMag(iRate,sRateMagnitude);
 
-  vTrace("LlcMisses %lld; iSum %lld; Elapsed %s; Iterations %lld; Switches %lld\n"_Stz,
+  vTrace("LlcMisses %lld; iSum %lld; Elapsed %s; Iterations %lld; Switches %lld; Rate %s\n"_Stz,
          iPmc_GetLlcMisses() - iStartMisses,
          iSum,
          sElapsedMagnitude.aChar(),
          nIterations,
-         nSwitches);
+         nSwitches,
+         sRateMagnitude.aChar());
 
 #endif
   

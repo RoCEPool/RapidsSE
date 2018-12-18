@@ -72,6 +72,11 @@ iPmc_Info:
 #                                                                              #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
+  # use RBX, RCX, RDX
+  push rbx
+  push rcx
+  push rdx
+
   # clear RAX
   mov rax,0
 
@@ -86,6 +91,11 @@ iPmc_Info:
   #   bits 15..08: number of general purpose pm counters per logical processor
   #   bits 23..16: bit width of each general purpose pm counter
   #   bits 31..24: length of EBX vector to enumerate architectural pm events
+
+  # restore
+  pop rdx
+  pop rcx
+  pop rbx
 
 ret
 #------------------------------------------------------------------------------#
@@ -109,6 +119,11 @@ iPmc_GetLlcMisses:
 #                                                                              #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
+  # use RBX, RCX, RDX
+  push rbx
+  push rcx
+  push rdx
+
   # zero RAX
   mov rax,0x0
 
@@ -122,8 +137,12 @@ iPmc_GetLlcMisses:
   # for the moment we'll just return the lower order bits
   # we need to or with EDX
 
+  #mov eax,edx
 
-#mov eax,edx
+  # restore
+  pop rdx
+  pop rcx
+  pop rbx
 
 ret
 #------------------------------------------------------------------------------#
