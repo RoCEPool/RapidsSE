@@ -21,6 +21,11 @@ iPmc_Core:
 #                                                                              #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -#
 
+  # use RBX, RCX, RDX
+  push rbx
+  push rcx
+  push rdx
+
   # clear RAX
   mov rax,0
 
@@ -37,6 +42,11 @@ iPmc_Core:
   #shl ebx,16
   #shr ebx,16
   mov eax,edx
+
+  # restore
+  pop rdx
+  pop rcx
+  pop rbx
 
 ret
 #------------------------------------------------------------------------------#

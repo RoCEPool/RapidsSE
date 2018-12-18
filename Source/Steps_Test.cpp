@@ -59,9 +59,9 @@ void Step::vTestTest0(MP_Task mpTask)
       nIterations++;
       
       i8 i_Random = Random::iRandom(nElems-1);
-      vTrace("iSum %lld xArray %lld\n"_Stz,iSum,xArray[i_Random]);
+      //vTrace("iSum %lld xArray %lld\n"_Stz,iSum,xArray[i_Random]);
       iSum += xArray[i_Random];
-      vTrace("iSum %lld\n"_Stz,iSum);
+      //vTrace("iSum %lld\n"_Stz,iSum);
       
       if (iPmc_Core() != iStartCore) {
         nSwitches++;
