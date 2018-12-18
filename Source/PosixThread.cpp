@@ -241,14 +241,14 @@ void PosixThread::vEnableRealtime_2(void)
   }
   
   // The number of nanoseconds per tick is:
-  vTrace("nanoseconds per tick: %lld\n"_Stz,
-         xTimebase.numer / xTimebase.denom);
+//  vTrace("nanoseconds per tick: %lld\n"_Stz,
+//         xTimebase.numer / xTimebase.denom);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  i8 iOverTheNextPeriod     = 5000 * 1000 * xTimebase.denom / xTimebase.numer;
-  i8 iThreadRequiresSoLong  = 5000 * 1000 * xTimebase.denom / xTimebase.numer;
-  i8 iMustCompleteIn        = 5000 * 1000 * xTimebase.denom / xTimebase.numer;
+  i8 iOverTheNextPeriod     = 50 * 1000 * xTimebase.denom / xTimebase.numer;
+  i8 iThreadRequiresSoLong  = 50 * 1000 * xTimebase.denom / xTimebase.numer;
+  i8 iMustCompleteIn        = 100 * 1000 * xTimebase.denom / xTimebase.numer;
   
   bool bPreemptible = false;
   
@@ -282,7 +282,7 @@ void PosixThread::vEnableRealtime_2(void)
 /*----------------------------------------------------------------------------*/
 /* get current thread info                                                    */
 /*----------------------------------------------------------------------------*/
-void PosixThread::vGetInfo(void)
+i8 PosixThread::iGetInfo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POSIXTHREAD,_FOOTER_);
   
@@ -302,9 +302,12 @@ void PosixThread::vGetInfo(void)
   if (iReturn != KERN_SUCCESS) {
     vTrace("PosixThread::vGetInfo: thread_info() failed %lld.\n"_Stz,
            iReturn);
-    return;
+    return -1;
   }
 
+  //vTrace("Current Policy: %lld\n"_Stz,BasicInfo.policy);
+  
+  return BasicInfo.policy;
 
 #else
   

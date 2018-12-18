@@ -26,7 +26,7 @@ namespace System
     void vDisableRealtime(void);
     void vEnableRealtime(void);
     void vEnableRealtime_2(void);
-    void vGetInfo(void);
+    i8   iGetInfo(void);
     void vGetPolicy(void);
     void vSetOSThreadId(void);
     bool bSpawnThread(void* pFun(void*), void* pArg);

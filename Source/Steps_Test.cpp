@@ -34,7 +34,9 @@ void Step::vTestTest0(MP_Task mpTask)
   ENTRY("vTestTest0"_Stz);
   
   PosixThread* pPosixThread = mpTask->pThread()->m_pPosixThread;
-  pPosixThread->vEnableRealtime_2();
+  
+  if (2 != pPosixThread->iGetInfo())
+    pPosixThread->vEnableRealtime_2();
 
   Timer xTimer;
   xTimer.vStart();
@@ -44,7 +46,6 @@ void Step::vTestTest0(MP_Task mpTask)
   i8 iStartMisses = iPmc_GetLlcMisses();
   
   
-  pPosixThread->vGetInfo();
   
   //vTrace("iPmc_Info(%lld) %llx\n"_Stz,iPmc_Core(),iPmc_Info());
   
@@ -53,20 +54,29 @@ void Step::vTestTest0(MP_Task mpTask)
   
   for (i8 i = 0; i < nElem; i++)
     xI8[i] = i;
+  
   //vTrace("Sequential iPmc_GetLlcMisses %lld; iSum %lld\n"_Stz,
   //       iPmc_GetLlcMisses(),iSum);
-  for (i8 i = 0; i < nElem; i++) {
-    i8 iElem = Random::iRandom(nElem-1);
-    //vTrace("iElem %lld; iPmc_GetLlcMisses %llx\n"_Stz,
-    //       iElem,iPmc_GetLlcMisses());
-    iSum += xI8[iElem];
-    
-    if (iPmc_Core() != iStartCore) {
-      iStartCore = iPmc_Core();
-      vTrace("Now on (%lld) at %lld\n"_Stz,iStartCore,i);
-    }
-  }
   
+  for (i8 nTimes = 0; nTimes < 100; nTimes++) {
+    for (i8 i = 0; i < nElem; i++) {
+      i8 iElem = Random::iRandom(nElem-1);
+      //vTrace("iElem %lld; iPmc_GetLlcMisses %llx\n"_Stz,
+      //       iElem,iPmc_GetLlcMisses());
+      iSum += xI8[iElem];
+      
+      if (iPmc_Core() != iStartCore) {
+        iStartCore = iPmc_Core();
+        vTrace("Now on (%lld) at %lld\n"_Stz,iStartCore,i);
+      }
+    }
+    //if (2 != pPosixThread->iGetInfo())
+//    pPosixThread->vDisableRealtime();
+//    pPosixThread->iGetInfo();
+//    pPosixThread->vEnableRealtime_2();
+//    pPosixThread->iGetInfo();
+  }
+
   xTimer.vUpdate();
   
   s32 sElapsedMagnitude;
@@ -78,7 +88,8 @@ void Step::vTestTest0(MP_Task mpTask)
          iSum,
          sElapsedMagnitude.aChar());
 
-  
+  pPosixThread->iGetInfo();
+
   EXIT();
 }
 
