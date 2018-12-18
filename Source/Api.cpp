@@ -386,14 +386,15 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
     // check if job had an error
     if (pJob->m_bHasError) {
       for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-        if (pJob->m_xNode[i_Node].m_eErrorCode != EC_NONE) {
+        eEC eError = pJob->m_xNode[i_Node].m_eErrorCode;
+        if ( eError != EC_NONE) {
           //vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
-          TRACE_EXIT("eb"_Stz);
-          vApiError(pSession,eError);                                 // API ERROR
+          TRACE_ERROR("eb"_Stz, eError);
+          vApiError(pSession,pJob->m_xNode[i_Node].m_eErrorCode);                                 // API ERROR
           vApiLocation(pSession,812);
           pSession->m_pJobStack->vPushObject(pJob);
           ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
-          return pJob->m_xNode[i_Node].m_eErrorCode;
+          return eError;
         }
       }
       ASSERT(0);
@@ -851,7 +852,7 @@ eEC RapidsSE_InsertRow(Session* pSession, Stz* sTableName, Stz* sRecord, i8 iTra
     // check length of record
     if (iRawDataLength > C_MAX_RECORD) {
       eEC eErrorCode = EC_MAX_ROW_LENGTH;
-      TRACE_ERROR("d"_Stz, eErrorCode);
+      TRACE_ERROR("ea"_Stz, eErrorCode);
       vApiReturn(pSession);                                        // API RETURN
       vApiLocation(pSession,910);
       ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
@@ -918,8 +919,30 @@ eEC RapidsSE_InsertRow(Session* pSession, Stz* sTableName, Stz* sRecord, i8 iTra
     // set the job state back to running
     pJob_InsertRow->m_eState = JS_RUNNING;
     
+    // check if job had an error
+    if (pJob_InsertRow->m_bHasError) {
+      vApiLocation(pSession,109);
+      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+        vApiLocation(pSession,110);
+        eEC eError = pJob_InsertRow->m_xNode[i_Node].m_eErrorCode;
+        vApiLocation(pSession,111);
+        if (eError != EC_NONE) {
+          vApiLocation(pSession,112);
+          //vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[eError]);
+          vApiLocation(pSession,113);
+          TRACE_ERROR("eb"_Stz, eError);
+          vApiLocation(pSession,114);
+          vApiError(pSession,eError); 
+          // API ERROR
+          vApiLocation(pSession,812);
+          ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+          return pJob_InsertRow->m_xNode[i_Node].m_eErrorCode;
+        }
+      }
+      ASSERT(0);
+    }
     // trace exit
-    TRACE_EXIT("ea"_Stz);
+    TRACE_EXIT("ec"_Stz);
     vApiReturn(pSession);                                          // API RETURN
     vApiLocation(pSession,900);
     ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
