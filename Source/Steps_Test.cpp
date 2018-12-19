@@ -23,6 +23,7 @@ void Step::vAddSteps_Test(void)
   vAddStep("test::test9"_Stz,  &Step::vTestTest9);
 }
 
+// this tool large an array to fit on thread stack so it's declared as a global
 #define nElems (C_1M * 16)
 i8 xArray[nElems];
 
@@ -37,20 +38,27 @@ void Step::vTestTest0(MP_Task mpTask)
   PosixThread* pPosixThread = mpTask->pThread()->m_pPosixThread;
   pPosixThread->vEnableRealtime_2();
 
-  Timer xTimer;
-  xTimer.vStart();
-
-  i8 iStartCore = iPmc_Core();
-  i8 iStartMisses = iPmc_GetLlcMisses();
-  
   pPosixThread->iGetInfo();
   
   for (i8 i_Elem = 0; i_Elem < nElems; i_Elem++)
     xArray[i_Elem] = i_Elem;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Timer xElapsedTimer;
+  xElapsedTimer.vStart();
+
   
-  i8 iSum = 0;
+  i8 iSumArray = 0;
   i8 nIterations = 0;
   i8 nSwitches = 0;
+  
+  i8 nSumMisses = 0;
+  
+  i8 iStartCore = iPmc_Core();
+  i8 iStartMisses = iPmc_GetLlcMisses();
+  if (iStartMisses < 0)
+    vTrace("iStartMisses %lld\n"_Stz,iStartMisses);
   
   for (i8 nTimes = 0; nTimes < 10; nTimes++) {
   
@@ -59,35 +67,38 @@ void Step::vTestTest0(MP_Task mpTask)
       nIterations++;
       
       i8 i_Random = Random::iRandom(nElems-1);
-      //vTrace("iSum %lld xArray %lld\n"_Stz,iSum,xArray[i_Random]);
-      iSum += xArray[i_Random];
-      //vTrace("iSum %lld\n"_Stz,iSum);
+      iSumArray += xArray[i_Random];
       
-      if (iPmc_Core() != iStartCore) {
+      if (iPmc_Core() == iStartCore) {
+        nSumMisses += (iPmc_GetLlcMisses() - iStartMisses);
+      }
+      else {
         nSwitches++;
         iStartCore = iPmc_Core();
       }
-      
-      //if (nIterations % 100000 == 0)
-      //  pPosixThread->vEnableRealtime_2();
+      iStartMisses = iPmc_GetLlcMisses();
+      if (iStartMisses < 0)
+        vTrace("iStartMisses %lld\n"_Stz,iStartMisses);
     }
   }
   
-  xTimer.vUpdate();
+  xElapsedTimer.vUpdate();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   
   s32 sElapsedMagnitude;
-  Magnitudes::vTimeMag(xTimer.iNanoseconds(),sElapsedMagnitude);
+  Magnitudes::vTimeMag(xElapsedTimer.iNanoseconds(),sElapsedMagnitude);
   
-  i8 iRate = xTimer.iNanoseconds() / nSwitches;
+  i8 iRate = xElapsedTimer.iNanoseconds() / nSwitches;
   s32 sRateMagnitude;
   Magnitudes::vTimeMag(iRate,sRateMagnitude);
 
-  vTrace("LlcMisses %lld; iSum %lld; Elapsed %s; Iterations %lld; Switches %lld; Rate %s\n"_Stz,
-         iPmc_GetLlcMisses() - iStartMisses,
-         iSum,
+  vTrace("Elapsed %s; Iterations %lld; Switches %lld; SumMisses %lld; Rate %s\n"_Stz,
          sElapsedMagnitude.aChar(),
          nIterations,
          nSwitches,
+         nSumMisses,
          sRateMagnitude.aChar());
 
 #endif
