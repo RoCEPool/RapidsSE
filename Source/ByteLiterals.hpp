@@ -14,7 +14,7 @@ namespace Base
 
   i8 operator "" _K(unsigned long long i);
   i8 operator "" _M(unsigned long long i);
-  i8 operator "" _B(unsigned long long i);
+  i8 operator "" _G(unsigned long long i);
   i8 operator "" _T(unsigned long long i);
   i8 operator "" _P(unsigned long long i);
 }
