@@ -185,7 +185,7 @@ void ActivityMap::vOpenBySE(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s32 sMem;
-  Magnitudes::vMagnitude(Hardware::iPhysicalMemory(),sMem);
+  Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
   
   s32 sClock;
   Magnitudes::vHz(Hardware::iClockFrequency(),sClock);

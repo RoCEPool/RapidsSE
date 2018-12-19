@@ -98,7 +98,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   SysCall xSysCall;
   s256 sSize;
   
-  Magnitudes::vMagnitude(iRegionSize, sSize);
+  Magnitudes::vByteMag(iRegionSize, sSize);
 
   if (gxArguments.m_bVerbose)
     vInfo("Creating RapidsSE instance %s; size %s (%lldB)...\n"_Stz,

@@ -25,7 +25,7 @@ PromptNote mPromptNote_hw (
 bool Prompt::bPrompt_hw(SePrompt* pPrompt)
 {
   s32 sMem;
-  Magnitudes::vMagnitude(Hardware::iPhysicalMemory(),sMem);
+  Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
 
   s32 sClock;
   Magnitudes::vHz(Hardware::iClockFrequency(),sClock);

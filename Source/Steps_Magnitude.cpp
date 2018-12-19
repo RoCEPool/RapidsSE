@@ -62,7 +62,7 @@ void Step::vBytesMagnitude(MP_Task mpTask)
     THROW_INVALID_DSTACK("bytes.magnitude"_Stz);
   
   s256 sMag;
-  Magnitudes::vMagnitude(iBytes, sMag);
+  Magnitudes::vByteMag(iBytes, sMag);
   
   mpTask->m_pDataStack->vPushS256(sMag);
   
@@ -87,7 +87,7 @@ void Step::vNumberMagnitude(MP_Task mpTask)
   
   s256 s;
   
-  Magnitudes::vMagnitude(iNumber, iScale, s);
+  Magnitudes::vByteMag(iNumber, iScale, s);
   
   mpTask->m_pDataStack->vPushS256(s);
   

@@ -146,7 +146,7 @@ void Step::vTestTest0(MP_Task mpTask)
   Magnitudes::vTimeMag(xElapsedTimer.iNanoseconds(),sElapsedMag);
   
   s32 sSizeMag;
-  Magnitudes::vMagnitude(sizeof(xArray),sSizeMag);
+  Magnitudes::vByteMag(sizeof(xArray),sSizeMag);
   
   s32 sIterationsMag;
   Magnitudes::vUnitMag(nIterations,sIterationsMag);

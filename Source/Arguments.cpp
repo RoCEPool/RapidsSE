@@ -351,7 +351,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
       if (m_iRegionSize > DIV(C_MEMORY_PERCENT * iTotalMemory, 100)) {
         vError("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
         s32 sMag;
-        Magnitudes::vMagnitude(iTotalMemory,sMag);
+        Magnitudes::vByteMag(iTotalMemory,sMag);
         vError("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
                C_MEMORY_PERCENT,
                sMag.aChar());
@@ -359,10 +359,10 @@ bool Arguments::bParse(int argc, Stz* argv[])
       }
       
       s32 sMinSize;
-      Magnitudes::vMagnitude(C_MIN_REGION, sMinSize);
+      Magnitudes::vByteMag(C_MIN_REGION, sMinSize);
       
       s32 sSize;
-      Magnitudes::vMagnitude(m_iRegionSize, sSize);
+      Magnitudes::vByteMag(m_iRegionSize, sSize);
       
       if (m_iRegionSize < C_MIN_REGION) {
         vError("Insufficient region size: %s. At least %s is required\n"_Stz,

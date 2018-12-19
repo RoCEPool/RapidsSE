@@ -80,7 +80,7 @@ void BufferPool::vReport(void)
 {
   // get magnitudes of the various buffer pools
   s32 sRegionSize;
-  Magnitudes::vMagnitude(gpAttachMap->m_iRegionSize, sRegionSize);
+  Magnitudes::vByteMag(gpAttachMap->m_iRegionSize, sRegionSize);
   
   i8  iSum = C_SIZE_POOL_BUFFER
              +
@@ -89,7 +89,7 @@ void BufferPool::vReport(void)
              gpBufferPool->m_iFreeCount  * C_SIZE_POOL_BUFFER;
 
   s32 sSum;
-  Magnitudes::vMagnitude(iSum, sSum);
+  Magnitudes::vByteMag(iSum, sSum);
 
   vTrace("  BP %p size %s buffers %lld alloc %lld free %lld (sum=%s)\n"_Stz,
          gpBufferPool,
@@ -132,10 +132,10 @@ Buffer* BufferPool::pAllocBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   static i8 nAllocs = 0;
-  static s32 sMagSmall;  Magnitudes::vMagnitude(C_SIZE_SMALL_OBJECT, sMagSmall);
-  static s32 sMagMedium; Magnitudes::vMagnitude(C_SIZE_MEDIUM_OBJECT,sMagMedium);
-  static s32 sMagLarge;  Magnitudes::vMagnitude(C_SIZE_LARGE_OBJECT, sMagLarge);
-  static s32 sMagJumbo;  Magnitudes::vMagnitude(C_SIZE_JUMBO_OBJECT, sMagJumbo);
+  static s32 sMagSmall;  Magnitudes::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
+  static s32 sMagMedium; Magnitudes::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
+  static s32 sMagLarge;  Magnitudes::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
+  static s32 sMagJumbo;  Magnitudes::vByteMag(C_SIZE_JUMBO_OBJECT, sMagJumbo);
   
   m_zFreeLock.vGrabWrite();
   

@@ -26,10 +26,10 @@ extern AttachMap*  gpAttachMap;
 bool Prompt::bPrompt_config(SePrompt* pPrompt)
 {
   s32 sShmSize;
-  Magnitudes::vMagnitude(gpAttachMap->m_iRegionSize, sShmSize);
+  Magnitudes::vByteMag(gpAttachMap->m_iRegionSize, sShmSize);
   
   s32 sFreeSpace;
-  Magnitudes::vMagnitude(gpBufferPool->iFreeSpace(), sFreeSpace);
+  Magnitudes::vByteMag(gpBufferPool->iFreeSpace(), sFreeSpace);
   
   vTrace("  Node %s Shm %s Free %s Nodes %lld Slots %lld Threads %lld SubLoaders %lld : %s\n"_Stz,
          gxArguments.m_sNodeName.aChar(),

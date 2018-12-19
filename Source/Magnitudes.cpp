@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Magnitudes.cpp -- Various Useful Magnitude functions                       */
+/* Magnitudes.cpp -- Magnitude Conversions                                    */
 /*============================================================================*/
 
 #include "Base.h"
@@ -85,7 +85,7 @@ void Magnitudes::vHz(i8 iValue, Stz* psBuf)
 /*----------------------------------------------------------------------------*/
 /* convert bytes to its magnitude equivalent                                  */
 /*----------------------------------------------------------------------------*/
-void Magnitudes::vMagnitude(i8 iValue, Stz* psBuf)
+void Magnitudes::vByteMag(i8 iValue, Stz* psBuf)
 {
        if (iValue < C_1KB) psBuf->vSprint("%lldB"_Stz, iValue);
   else if (iValue < C_1MB) psBuf->vSprint("%lldKB"_Stz,iValue/C_1KB);
@@ -98,7 +98,7 @@ void Magnitudes::vMagnitude(i8 iValue, Stz* psBuf)
 /*----------------------------------------------------------------------------*/
 /* convert bytes to its magnitude equivalent upto n decimals                  */
 /*----------------------------------------------------------------------------*/
-void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, Stz* psBuf)
+void Magnitudes::vByteMag(i8 iValue, i8 iDecimals, Stz* psBuf)
 {
   //ASSERT(iDecimals > 0);
   
