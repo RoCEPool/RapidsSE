@@ -16,13 +16,11 @@ using namespace Utilities;
 
 //------------------------------------------------------------------------------
 
-#include "LoadChunk.hpp"
-#include "LoadMap.hpp"
-
+#include "GenData.hpp"
 #include "LlcTest.hpp"
 #include "Prefetch.hpp"
-
 #include "SchemaTest.hpp"
+#include "ShmUtility.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
