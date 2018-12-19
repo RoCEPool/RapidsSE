@@ -8,7 +8,7 @@ namespace Utilities
   class LlcTest
   {
   public:
-    static void vTest(void);
+    static void vTest(Tasks::MP_Task mpTask);
   };
 }
 
