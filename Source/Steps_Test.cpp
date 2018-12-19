@@ -48,37 +48,56 @@ void Step::vTestTest0(MP_Task mpTask)
   Timer xElapsedTimer;
   xElapsedTimer.vStart();
 
-  
   i8 iSumArray = 0;
   i8 nIterations = 0;
   i8 nSwitches = 0;
+  i8 nBoundaries = 0;
   
   i8 nSumMisses = 0;
-  
-  i8 iStartCore = iPmc_Core();
-  i8 iStartMisses = iPmc_GetLlcMisses();
-  if (iStartMisses < 0)
-    vTrace("iStartMisses %lld\n"_Stz,iStartMisses);
+  i8 iMaxDelta = 0;
   
   for (i8 nTimes = 0; nTimes < 10; nTimes++) {
   
     for (i8 i_Elem = 0; i_Elem < nElems; i_Elem++) {
       
-      nIterations++;
+      i8 iEnterCore = iPmc_Core();
+      i8 iEnterMisses = iPmc_GetLlcMisses();
       
+      // our pseudo step - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      nIterations++;
       i8 i_Random = Random::iRandom(nElems-1);
       iSumArray += xArray[i_Random];
-      
-      if (iPmc_Core() == iStartCore) {
-        nSumMisses += (iPmc_GetLlcMisses() - iStartMisses);
-      }
-      else {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      i8 iExitCore = iPmc_Core();
+      i8 iExitMisses = iPmc_GetLlcMisses();
+
+      // ignore if we switched cores
+      if (iExitCore != iEnterCore) {
         nSwitches++;
-        iStartCore = iPmc_Core();
+        continue;
       }
-      iStartMisses = iPmc_GetLlcMisses();
-      if (iStartMisses < 0)
-        vTrace("iStartMisses %lld\n"_Stz,iStartMisses);
+      
+      i8 iDeltaMisses = iExitMisses - iEnterMisses;
+      
+      // ignore if delta misses is out of bounds
+      if (iDeltaMisses <= 0 || iDeltaMisses > 1000) {
+        nBoundaries++;
+        continue;
+      }
+      
+      if (nSumMisses < 0) {
+        vTrace("negative at A: %lld\n"_Stz,nSumMisses);
+      }
+      
+      nSumMisses += iDeltaMisses;
+      
+      if (nSumMisses < 0) {
+        vTrace("negative at B: %lld\n"_Stz,nSumMisses);
+      }
+      
+      if (iDeltaMisses > iMaxDelta)
+        iMaxDelta = iDeltaMisses;
     }
   }
   
@@ -94,12 +113,15 @@ void Step::vTestTest0(MP_Task mpTask)
   s32 sRateMagnitude;
   Magnitudes::vTimeMag(iRate,sRateMagnitude);
 
-  vTrace("Elapsed %s; Iterations %lld; Switches %lld; SumMisses %lld; Rate %s\n"_Stz,
+  vTrace("Elapsed %s Iterations %lld Switches %lld Boundaries %lld SumMisses %lld Rate %s MaxDelta %lld\n"_Stz,
          sElapsedMagnitude.aChar(),
          nIterations,
          nSwitches,
+         nBoundaries,
          nSumMisses,
-         sRateMagnitude.aChar());
+         sRateMagnitude.aChar(),
+         iMaxDelta
+         );
 
 #endif
   

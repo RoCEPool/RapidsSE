@@ -124,20 +124,23 @@ iPmc_GetLlcMisses:
   push rcx
   push rdx
 
-  # zero RAX
+  # serialize
+  mov eax,0x0A
+  cpuid
+
+  # zero RAX, RDX
   mov rax,0x0
+  mov rdx,0x0
 
   # RDPMC uses the index relative to the base of each counter type
-  #
   mov ecx,0x1  # we will read IA32_PMC1
 
   # read IA32_PMC1 into EDX:EAX
   rdpmc
 
-  # for the moment we'll just return the lower order bits
-  # we need to or with EDX
-
-  #mov eax,edx
+  # create a 64 bit integer in RAX from EDX:EAX
+  shl rdx,32
+  or  rax,rdx
 
   # restore
   pop rdx
