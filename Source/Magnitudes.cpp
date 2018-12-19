@@ -124,6 +124,19 @@ void Magnitudes::vTimeMag(i8 iNanosecs, Stz* psBuf)
   else                       psBuf->vSprint("%llds"_Stz, iNanosecs/C_1G);
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert bytes to its magnitude equivalent                                  */
+/*----------------------------------------------------------------------------*/
+void Magnitudes::vUnitMag(i8 iValue, Stz* psBuf)
+{
+  if (iValue < C_1K) psBuf->vSprint("%lld"_Stz, iValue);
+  else if (iValue < C_1M) psBuf->vSprint("%lldK"_Stz,iValue/C_1K);
+  else if (iValue < C_1G) psBuf->vSprint("%lldM"_Stz,iValue/C_1M);
+  else if (iValue < C_1T) psBuf->vSprint("%lldG"_Stz,iValue/C_1G);
+  else if (iValue < C_1Q) psBuf->vSprint("%lldT"_Stz,iValue/C_1T);
+  else                    psBuf->vSprint("%lldP"_Stz,iValue/C_1Q);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

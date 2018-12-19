@@ -12,6 +12,7 @@ namespace Base
     static void vMagnitude(i8 iValue, Stz* psBuf);
     static void vMagnitude(i8 iValue, i8 iDecimals, Stz* psBuf);
     static void vTimeMag(i8 iNanosecs, Stz* psBuf);
+    static void vUnitMag(i8 iValue, Stz* psBuf);
   };
 }
 
