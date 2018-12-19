@@ -7,11 +7,12 @@ namespace Base
 {
   class Magnitudes {
   public:
-    static bool bBytes(Stz* psBuf, i8& iBytes);
-    static void vHz(i8 iValue, Stz* psBuf);
+    static bool bToBytes(Stz* psBuf, i8& iBytes);
+    
     static void vByteMag(i8 iValue, Stz* psBuf);
-    static void vByteMag(i8 iValue, i8 iDecimals, Stz* psBuf);
-    static void vTimeMag(i8 iNanosecs, Stz* psBuf);
+    static void vByteMag(i8 iValue, i8 nDecimals, Stz* psBuf);
+    static void vHzMag(i8 iValue, Stz* psBuf);
+    static void vTimeMag(i8 iValue, Stz* psBuf);
     static void vUnitMag(i8 iValue, Stz* psBuf);
   };
 }

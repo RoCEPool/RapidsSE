@@ -341,7 +341,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--size"_Stz)) {
       
-      bool bResult = Magnitudes::bBytes((Stz*)argv[++i_Arg], m_iRegionSize);
+      bool bResult = Magnitudes::bToBytes((Stz*)argv[++i_Arg], m_iRegionSize);
       if (!bResult) {
         vError("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
         return false;

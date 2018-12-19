@@ -188,7 +188,7 @@ void ActivityMap::vOpenBySE(void)
   Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
   
   s32 sClock;
-  Magnitudes::vHz(Hardware::iClockFrequency(),sClock);
+  Magnitudes::vHzMag(Hardware::iClockFrequency(),sClock);
   
   ActivityMap::vMark(0,"hw: %lld cores; %s memory; %s clock frequency"_Stz,
                      Hardware::iCoreCount(),

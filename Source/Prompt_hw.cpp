@@ -28,7 +28,7 @@ bool Prompt::bPrompt_hw(SePrompt* pPrompt)
   Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
 
   s32 sClock;
-  Magnitudes::vHz(Hardware::iClockFrequency(),sClock);
+  Magnitudes::vHzMag(Hardware::iClockFrequency(),sClock);
 
   vTrace("hw: %lld cores; %s memory; %s clock frequency\n"_Stz,
          Hardware::iCoreCount(),
