@@ -19,6 +19,7 @@ using namespace Utilities;
 #include "LoadChunk.hpp"
 #include "LoadMap.hpp"
 
+#include "LlcTest.hpp"
 #include "Prefetch.hpp"
 
 #include "SchemaTest.hpp"
