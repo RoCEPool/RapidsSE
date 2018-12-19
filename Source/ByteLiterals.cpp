@@ -85,11 +85,11 @@ i8 Base::operator "" _T(unsigned long long i)
 }
 
 /*----------------------------------------------------------------------------*/
-/* _Q literal suffix                                                          */
+/* _P literal suffix                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Base::operator "" _Q(unsigned long long i)
+i8 Base::operator "" _P(unsigned long long i)
 {
-  return i * C_1Q;
+  return i * C_1P;
 }
 
 /*============================================================================*/

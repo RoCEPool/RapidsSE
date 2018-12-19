@@ -30,7 +30,7 @@ const i8 C_1K   = 1000LL;         // 1 thousand    = 1,000
 const i8 C_1M   = C_1K * C_1K;    // 1 million     = 1,000,000
 const i8 C_1G   = C_1M * C_1K;    // 1 billion     = 1,000,000,000
 const i8 C_1T   = C_1G * C_1K;    // 1 trillion    = 1,000,000,000,000
-const i8 C_1Q   = C_1T * C_1K;    // 1 quadrillion = 1,000,000,000,000,000
+const i8 C_1P   = C_1T * C_1K;    // 1 quadrillion = 1,000,000,000,000,000
 
 const i8 C_2K   = C_1K * 2;       // 2 thousand    = 2,000
 const i8 C_4K   = C_1K * 4;       // 4 thousand    = 4,000

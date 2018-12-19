@@ -112,8 +112,8 @@ void Magnitudes::vHzMag(i8 iValue, Stz* psBuf)
   else if (iValue < C_1M) psBuf->vSprint("%.*fKhz"_Stz,nPoints,dValue/C_1K);
   else if (iValue < C_1G) psBuf->vSprint("%.*fMhz"_Stz,nPoints,dValue/C_1M);
   else if (iValue < C_1T) psBuf->vSprint("%.*fGhz"_Stz,nPoints,dValue/C_1G);
-  else if (iValue < C_1Q) psBuf->vSprint("%.*fThz"_Stz,nPoints,dValue/C_1T);
-  else                    psBuf->vSprint("%.*fPhz"_Stz,nPoints,dValue/C_1Q);
+  else if (iValue < C_1P) psBuf->vSprint("%.*fThz"_Stz,nPoints,dValue/C_1T);
+  else                    psBuf->vSprint("%.*fPhz"_Stz,nPoints,dValue/C_1P);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,8 +136,8 @@ void Magnitudes::vUnitMag(i8 iValue, Stz* psBuf)
   else if (iValue < C_1M) psBuf->vSprint("%lldK"_Stz,iValue/C_1K);
   else if (iValue < C_1G) psBuf->vSprint("%lldM"_Stz,iValue/C_1M);
   else if (iValue < C_1T) psBuf->vSprint("%lldG"_Stz,iValue/C_1G);
-  else if (iValue < C_1Q) psBuf->vSprint("%lldT"_Stz,iValue/C_1T);
-  else                    psBuf->vSprint("%lldP"_Stz,iValue/C_1Q);
+  else if (iValue < C_1P) psBuf->vSprint("%lldT"_Stz,iValue/C_1T);
+  else                    psBuf->vSprint("%lldP"_Stz,iValue/C_1P);
 }
 
 /*============================================================================*/
