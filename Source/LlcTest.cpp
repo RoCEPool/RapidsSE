@@ -5,7 +5,7 @@
 #include "StorageEngine.h"
 
 // this is too large an array to fit on thread stack so it's declared global
-#define C_ELEMENTS (C_1MB * 16)
+#define C_ELEMENTS (C_1MB * 32)
 i8 xArray[C_ELEMENTS];
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +113,7 @@ void LlcTest::vAnIteration(i8 iIteration, i8 nStepLength, i8 nMissRatio)
   i8 iEnterCore = iPmc_Core();
   i8 iEnterMisses = iPmc_GetLlcMisses();
   
-  #define C_REPEATED 1
+  #define C_REPEATED 10
   for (i8 i_Count = 0; i_Count < C_REPEATED; i_Count++) {
     
     for (i8 i_Element = 0; i_Element < C_ELEMENTS; i_Element++) {
