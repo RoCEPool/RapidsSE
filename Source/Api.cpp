@@ -379,6 +379,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
     // pop an entryBuffer off the queue
     ValWrk xValWrk;
     while (!pJob_FetchRows->m_pBufferQueue->bPop(&xValWrk)) {
+      //vTrace("SLEEPING\n"_Stz);
       PosixThread::vSleepMilli(1);
     }
     
@@ -1035,6 +1036,126 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
     return EC_SE_UNKNOWN_ERROR;
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch next buffer                                                          */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer, void** ppEntry, void** ppRow, i8* piExpectedRows, i8 iTraceLevel)
+{
+  Stz* aApiCall = "RapidsSE_ScanNextRow"_Stz;
+  eAC  eApiCall = AC_ScanNextRow;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+  
+  vApiCall(pSession,AC_ScanNextRow);
+  vApiLocation(pSession,100);
+  
+  eEC eResult;
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
+    
+    // Validate job
+    VALIDATE_JOB("b"_Stz);
+    
+    // validate the reference pointer
+    VALIDATE_REFPOINTER("c"_Stz, ppRow);
+    
+    Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(pJobPtr);
+    
+    // get the table
+    Table* pTable = pJob_SelectTable->m_pTable;
+    
+    //*piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
+    
+    Entry* pEntry = nullptr;
+    EntryBuffer* pEntryBuffer = nullptr;
+    
+    // do we have a buffer ?
+    if ( ! *ppEntryBuffer) {
+      // get first entry buffer
+      TablePtn* pPartition = pTable->pPartition(pJob_SelectTable->m_iPartition);
+      Index* pIndex = pTable->pHiddenIndex();
+      IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
+      pEntryBuffer = pIndexTree->pFirstL0Buffer();
+      vTrace("Got first buffer %p\n"_Stz, pEntryBuffer);
+      if ( ! pEntryBuffer) {
+        *ppRow = nullptr;
+        
+      } else {
+        pEntry = pEntryBuffer->pFirstEntry();
+        *ppEntry = pEntry;
+        *ppEntryBuffer = pEntryBuffer;
+        *ppRow = pEntry->aRow();
+      }
+      
+      TRACE_EXIT("ea"_Stz);
+      return EC_NONE;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // we have a buffer
+    pEntryBuffer = *((EntryBuffer**)(ppEntryBuffer));
+    
+    // we should have an entry
+    pEntry = *((Entry**)(ppEntry));
+    RASSERT(pEntry);
+    
+    // get the next entry
+    pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // did we find an entry ?
+    if ( ! pEntry ) {
+      vTrace("didn't get next entry\n"_Stz);
+      // get next buffer from the current indexBuffer
+      pEntryBuffer = pEntryBuffer->pNextBuffer();
+      
+      if ( pEntryBuffer ) {
+        vTrace("got next buffer %p\n"_Stz, pEntryBuffer);
+        pEntry = pEntryBuffer->pFirstEntry();
+
+      }
+    }
+    
+    if (pEntry) {
+      TRACE_EXIT("eb"_Stz);
+      *ppEntryBuffer = pEntryBuffer;
+      *ppEntry = pEntry;
+      *ppRow = pEntry->aRow();
+      //vTrace("Returning rowEntry %p\n"_Stz, pEntry);
+    }
+    else {
+      TRACE_EXIT("ec"_Stz);
+      *ppRow = nullptr;
+    }
+    
+    vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,900);
+    ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,801);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    vApiLocation(pSession,802);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return EC_SE_UNKNOWN_ERROR;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

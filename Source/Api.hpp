@@ -29,9 +29,10 @@ enum eAC // api call kind
   /* 13 */ AC_InsertRows,
   /* 14 */ AC_LoadResult,
   /* 15 */ AC_PoolOpen,
-  /* 16 */ AC_SessionDelete,
-  /* 17 */ AC_SessionInvalid,
-  /* 18 */ AC_SessionNew,
+  /* 16 */ AC_ScanNextRow,
+  /* 17 */ AC_SessionDelete,
+  /* 18 */ AC_SessionInvalid,
+  /* 19 */ AC_SessionNew,
   
   /* 19 */ AC_ENUMS
 };
@@ -75,6 +76,7 @@ extern "C" eEC  RapidsSE_InsertRow(Session* pSession, Stz* pTable, Stz* sRow, i8
 extern "C" eEC  RapidsSE_InsertRows(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInvalidRows, i8* piSkippedRows, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_ScanNextRow(Session* pSession, void* pJob, void** ppEntryBuffer, void** ppEntry, void** ppRow, i8* piExepectedRows, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel);
 extern "C" bool RapidsSE_SessionInvalid(int eError, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel);
