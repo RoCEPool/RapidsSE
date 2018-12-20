@@ -1,0 +1,66 @@
+/*============================================================================*/
+/* job_SelectTable.sen -- Job Select Table                                    */
+/*============================================================================*/
+
+" job_SelectTable.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* select table request (on originating node)                                 */
+/*----------------------------------------------------------------------------*/
+: selectTable_req ( -- <R> )
+
+  >>am <SEED_REQ>
+
+  100 apiState::setPosition
+
+  0 locals| sTableNm  |
+  0 0 0 locals| pJob_SelectTable pTask pTable |
+  0 locals| iFetchPartition |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_SelectTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // assert correct job
+  CN_JOB_SELECTTABLE pJob_SelectTable object.assertClass
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack
+  pJob_SelectTable getPath
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  ddlLock::grabRead
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the table name
+  pJob_SelectTable job.objectName@ to sTableNm
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  //check if we can fetch rows from selected table
+  sTableNm checkFetchRows not if pJob_SelectTable <ERROR_REQUEST> !!am exit then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the table
+  sTableNm pushTable assert
+  sTableNm find execute to pTable
+  pTable pJob_SelectTable job_fetchRows.table!
+
+  popTable
+
+  pJob_SelectTable job.notice
+
+  900 apiState::setPosition
+
+  <<am <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

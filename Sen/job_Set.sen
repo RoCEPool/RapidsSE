@@ -2,7 +2,7 @@
 /* job_Set.sen -- Job set                                                     */
 /*============================================================================*/
 
-" job_Set.sen" .verbose
+"job_Set.sen" .verbose
 
 "job__Ended.sen" include
 "job__End.sen" include
@@ -71,6 +71,7 @@
 "Job_Repeater.sen" include
 
 "Job_Sanity.sen" include
+"Job_SelectTable.sen" include
 "Job_ShowCluster.sen" include
 "Job_SizeIndex.sen" include
 "Job_SizeTable.sen" include
