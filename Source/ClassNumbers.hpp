@@ -151,6 +151,7 @@ enum eCN : u2 // Class Number
   /* 110 */ CN_JOB_SANITY,
   /*     */ CN_JOB_SELECTTABLE,
   /* 111 */ CN_JOB_SHOWCLUSTER,
+  /*     */ CN_JOB_SINK,
   /* 112 */ CN_JOB_SIZEINDEX,
   /* 113 */ CN_JOB_SIZETABLE,
   /* 114 */ CN_JOB_SPACE,
@@ -416,6 +417,7 @@ static Stz* aCN[]
   /* 110 */ "JOB_SELECTTABLE"_Stz,     // CN_JOB_SELECTTABLE
   /*     */ "JOB_SANITY"_Stz,          // CN_JOB_SANITY
   /* 111 */ "JOB_SHOWCLUSTER"_Stz,     // CN_JOB_SHOWCLUSTER
+  /*     */ "JOB_SINK"_Stz,            // CN_JOB_SINK
   /* 112 */ "JOB_SIZEINDEX"_Stz,       // CN_JOB_SIZEINDEX
   /* 113 */ "JOB_SIZETABLE"_Stz,       // CN_JOB_SIZETABLE
   /* 114 */ "JOB_SPACE"_Stz,           // CN_JOB_SPACE
