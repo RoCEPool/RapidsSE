@@ -10,7 +10,7 @@ namespace JobsModel
                    public JobFileName
   {
   public:
-  
+
     // must be last
     Footer m_xFooter;
   

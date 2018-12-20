@@ -179,18 +179,15 @@ Job* JobsModel::pJob_Sink_pre(Interface::Session* pSession)
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();
 
-  // there should be 3 tokens
-  if (nTokens < 3)
+  // there should be 2 tokens
+  if (nTokens < 2)
     return pJob_Sink;
-
-  // set the table name
-  pJob_Sink->m_sObjectName = pTknVec->pGet(1)->aText();
 
   // set the file name
   if (pTknVec->pGet(2)->sText().bSame("pipe"_Stz))
-    pJob_Sink->m_sFileName = pTknVec->pGet(3)->aText();
-  else
     pJob_Sink->m_sFileName = pTknVec->pGet(2)->aText();
+  else
+    pJob_Sink->m_sFileName = pTknVec->pGet(1)->aText();
 
   return pJob_Sink;
 }
