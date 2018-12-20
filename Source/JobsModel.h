@@ -105,6 +105,7 @@ using namespace JobsModel;
 
 #include "Job_Sanity.hpp"
 #include "Job_SelectTable.hpp"
+#include "Job_Sink.hpp"
 #include "Job_SizeIndex.hpp"
 #include "Job_SizeTable.hpp"
 #include "Job_Space.hpp"
