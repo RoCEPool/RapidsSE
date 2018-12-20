@@ -73,6 +73,7 @@
 "Job_Sanity.sen" include
 "Job_SelectTable.sen" include
 "Job_ShowCluster.sen" include
+"Job_Sink.sen" include
 "Job_SizeIndex.sen" include
 "Job_SizeTable.sen" include
 "job_Space.sen" include
