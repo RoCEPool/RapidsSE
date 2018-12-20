@@ -13,9 +13,8 @@
 
   100 apiState::setPosition
 
-  0 locals| sTableNm  |
+  0 0 locals| sTableNm  iPartition |
   0 0 0 locals| pJob_SelectTable pTask pTable |
-  0 locals| iFetchPartition |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the task
@@ -42,15 +41,17 @@
   // get the table name
   pJob_SelectTable job.objectName@ to sTableNm
 
+  pJob_SelectTable job_selectTable.partition@ to iPartition
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //check if we can fetch rows from selected table
-  sTableNm checkFetchRows not if pJob_SelectTable <ERROR_REQUEST> !!am exit then
+  sTableNm iPartition checkFetchRows not if pJob_SelectTable <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the table
   sTableNm pushTable assert
   sTableNm find execute to pTable
-  pTable pJob_SelectTable job_fetchRows.table!
+  pTable pJob_SelectTable job_selectTable.table!
 
   popTable
 

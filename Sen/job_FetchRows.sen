@@ -54,12 +54,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_AnalyzeIndex job check resources                               */
+/* execute checkFetchRows                                                     */
 /*----------------------------------------------------------------------------*/
-: checkFetchRows ( "<tableNm>" "<indexNm>" -- true | errorCode false )
+: checkFetchRows ( "<tableNm>"  partition -- true | errorCode false )
 
-  params| sTableNm |
-  0 0 locals| pJob_FetchRows iPartition |
+  params| iPartition sTableNm |
+  0 locals| pJob_FetchRows |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the job from the task
@@ -67,7 +67,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // check partition if specified (should belong to this node)
-  pJob_FetchRows job_fetchRows.partition@ to iPartition
   -1 iPartition != if
     iPartition grid::partitions >= if EC_INVALID_PARTITION false exit then
     iPartition grid::toNode grid::thisNode@ != if EC_INVALID_PARTITION false exit then
@@ -134,12 +133,13 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the table name
+  // get the table name and partition
   pJob_FetchRows job.objectName@ to sTableNm
+  pJob_FetchRows job_fetchRows.partition@ to iFetchPartition
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //check if we can fetch rows
-  sTableNm checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> !!am exit then
+  sTableNm iFetchPartition checkFetchRows not if pJob_FetchRows <ERROR_REQUEST> !!am exit then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the table
@@ -169,8 +169,6 @@
   // assert we have a plan
   pPlanner assert
   pPlanner planner.phrases@ to iPhrases
-
-  pJob_FetchRows job_fetchRows.partition@ to iFetchPartition
 
   -1 iFetchPartition == if
      // set the no of last buffers to no phrases * slots in the job

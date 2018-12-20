@@ -579,6 +579,11 @@
   static void vJob_PublishSpawnSub(Tasks::MP_Task mpTask);
   static void vJob_PublishTableStore(Tasks::MP_Task mpTask);
 
+  // job SelectTable
+  static void vJob_SelectTablePartitionFetch(Tasks::MP_Task mpTask);
+  static void vJob_SelectTableTableStore(Tasks::MP_Task mpTask);
+
+
   // job subPurge
   static void vJob_SubPurgeSlotFetch(Tasks::MP_Task mpTask);
   static void vJob_SubPurgePurgeJobIdFetch(Tasks::MP_Task mpTask);

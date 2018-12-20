@@ -15,10 +15,10 @@ JobClass xJobClass_SelectTable =
   CN_JOB_SELECTTABLE,        // class enum
   JK_LOCAL,                  // job kind
   "select table"_Stz,        // comment about the job
-  "fetch"_Stz,               // the prompt command
+  "select"_Stz,              // the prompt command
   nullptr,                   // the second word
   nullptr,                   // the _run task seed
-  nullptr,                   // the _req task seed
+  "selectTable_req"_Stz,     // the _req task seed
   nullptr,                   // the _rcv task seed
   nullptr,                   // the _exe task seed
   nullptr,                   // the _end task seed
@@ -37,8 +37,8 @@ JobClass xJobClass_SelectTable =
   
   // help and example
   true,
-  "fetch <tableName> [\"<where>\"]"_Stz,
-  "fetch supplier \"S_SUPPKEY 22 ==\";"_Stz,
+  "select <tableName> P#"_Stz,
+  "fetch supplier 1;"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
@@ -107,16 +107,8 @@ Job_SelectTable::Job_SelectTable(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECTTABLE,_FOOTER_);
     
-  m_sWhere       = ""_Stz;
   m_pTable       = nullptr;
   m_iPartition   = -1;
-  m_bDisplay     = true;
-  m_pPlanner     = nullptr;
-  m_pBufferQueue = new Queue;
-  m_pFetchBuffer = nullptr;
-  m_nLastBuffers = 0;
-  m_nLastBuffersScanned = 0;
-  m_pRowOnce     = nullptr;
   
   _checkInitialised_(CN_JOB_SELECTTABLE);
   
@@ -130,19 +122,6 @@ Job_SelectTable::~Job_SelectTable(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECTTABLE,_FOOTER_);
   
-  m_pBufferQueue->vFinalize();
-  delete m_pBufferQueue;
-  
-  // in case excepton , we may not have deleted buffer
-  if (m_pFetchBuffer)
-    delete m_pFetchBuffer;
-  
-  delete m_pPlanner;
-  
-  if (m_pRowOnce) {
-    delete m_pRowOnce;
-    m_pRowOnce = nullptr;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,36 +143,6 @@ void Job_SelectTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create row once object                                                     */
-/*----------------------------------------------------------------------------*/
-void Job_SelectTable::vCreateRowOnce(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECTTABLE,_FOOTER_);
-  
-  RASSERT(! m_pRowOnce);
-  
-  m_pRowOnce = new RowOnce;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete last fetch buffer                                                   */
-/*----------------------------------------------------------------------------*/
-void Job_SelectTable::vDeleteBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECTTABLE,_FOOTER_);
-  
-  if (m_pFetchBuffer) {
-    delete m_pFetchBuffer;
-    m_pFetchBuffer = nullptr;
-  }
-  
-//  if (m_pRowOnce) {
-//    delete m_pRowOnce;
-//    m_pRowOnce = nullptr;
-//  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
 bool Job_SelectTable::bPopulateJob(TokenVec* pTokenVec)
@@ -208,30 +157,19 @@ bool Job_SelectTable::bPopulateJob(TokenVec* pTokenVec)
   iNumTokens = pTokenVec->nItems();
   
   // - - - - - - - - - - - - - - - - - - - - -
-  // there should be 2 tokens
-  if (iNumTokens < 2)
+  // there should be 3 tokens
+  if (iNumTokens < 3)
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - -
   // set the table name
   m_sObjectName = pTokenVec->pGet(1)->aText();
   
+  // - - - - - - - - - - - - - - - - - - - - -
+  // set the partition number
+  m_iPartition = pTokenVec->pGet(2)->iToI8();
+  
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if row has been seen so far                                           */
-/*----------------------------------------------------------------------------*/
-bool Job_SelectTable::bRowSeen(Id xRowId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SELECTTABLE,_FOOTER_);
-  
-  if (! m_pRowOnce)
-    return false;
-  
-  bool bSeen = m_pRowOnce->bRowSeen(xRowId);
-  
-  return bSeen;
 }
 
 /*----------------------------------------------------------------------------*/
