@@ -17,6 +17,7 @@ using namespace Loader;
 //------------------------------------------------------------------------------
 
 #include "IngestChunk.hpp"
+#include "IoChunk.hpp"
 #include "LoadChunk.hpp"
 #include "LoadMap.hpp"
 
