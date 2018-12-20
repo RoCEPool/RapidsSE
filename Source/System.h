@@ -23,6 +23,7 @@ using namespace System;
 #include "Dir.hpp"
 #include "Env.hpp"
 #include "File.hpp"
+#include "Hardware.hpp"
 #include "HwCounters.hpp"
 #include "Lock.hpp"
 #include "OpSys.hpp"

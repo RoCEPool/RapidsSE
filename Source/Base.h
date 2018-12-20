@@ -26,7 +26,6 @@ using namespace Base;
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
 #include "ClassNumbers.hpp"
-#include "Hardware.hpp"
 #include "IntLib.hpp"
 #include "i3.hpp"
 #include "Magnitudes.hpp"
