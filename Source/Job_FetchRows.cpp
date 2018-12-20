@@ -13,16 +13,16 @@ JobClass xJobClass_FetchRows =
 {
   "Job_FetchRows"_Stz,       // name of the job class
   CN_JOB_FETCHROWS,          // class enum
-  JK_DIST2PC,                // job kind
+  JK_LOCAL,                  // job kind
   "fetch rows"_Stz,          // comment about the job
   "fetch"_Stz,               // the prompt command
   nullptr,                   // the second word
   nullptr,                   // the _run task seed
   "fetchRows_req"_Stz,       // the _req task seed
-  "fetchRows_beg"_Stz,       // the _rcv task seed
-  "fetchRows_exe"_Stz,       // the _exe task seed
-  "fetchRows_end"_Stz,       // the _end task seed
-  "fetchRows_can"_Stz,       // the _can task seed
+  nullptr,                   // the _rcv task seed
+  nullptr,                   // the _exe task seed
+  nullptr,                   // the _end task seed
+  nullptr,                   // the _can task seed
   true,                      // check resources?
   false,                     // detached job?
   false,                     // buffer attached?
@@ -31,8 +31,8 @@ JobClass xJobClass_FetchRows =
   vJob_FetchRows_post,       // prompt post-process function
   nullptr,                   // job new function
   vJob_FetchRows_delete,     // job delete function
-  vJob_send,                 // job pre-send function
-  vJob_recv,                 // job post-receive function
+  nullptr,                   // job pre-send function
+  nullptr,                   // job post-receive function
   vJob_FetchRows_show,       // job show function
   
   // help and example
