@@ -579,15 +579,6 @@
   static void vJob_PublishSpawnSub(Tasks::MP_Task mpTask);
   static void vJob_PublishTableStore(Tasks::MP_Task mpTask);
 
-  // job SelectTable
-  static void vJob_SelectTablePartitionFetch(Tasks::MP_Task mpTask);
-  static void vJob_SelectTableTableStore(Tasks::MP_Task mpTask);
-
-
-  // job subPurge
-  static void vJob_SubPurgeSlotFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubPurgePurgeJobIdFetch(Tasks::MP_Task mpTask);
-
   // job purge
   static void vJob_PurgePurge(Tasks::MP_Task mpTask);
   static void vJob_PurgeSpawnSub(Tasks::MP_Task mpTask);
@@ -602,6 +593,13 @@
   // job repeater
   static void vJob_RepeaterRepeat(Tasks::MP_Task mpTask);
 
+  // job SelectTable
+  static void vJob_SelectTablePartitionFetch(Tasks::MP_Task mpTask);
+  static void vJob_SelectTableTableStore(Tasks::MP_Task mpTask);
+
+  // job sink
+  static void vJob_SinkSink(Tasks::MP_Task mpTask);
+
   // Job subLoader
   static void vJob_SubLoaderBegin(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderEnd(Tasks::MP_Task mpTask);
@@ -612,6 +610,10 @@
   static void vJob_SubLoaderSpawnLastBuffers(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderRecordsInvalid(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderWorkingBuffer(Tasks::MP_Task mpTask);
+
+  // job subPurge
+  static void vJob_SubPurgeSlotFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubPurgePurgeJobIdFetch(Tasks::MP_Task mpTask);
 
   // Job subTruncate
   static void vJob_SubTruncateSlotFetch(Tasks::MP_Task mpTask);

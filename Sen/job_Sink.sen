@@ -13,7 +13,7 @@
 
   job::this locals| pJob_Sink |
 
-  pJob_Sink job_ingest.ingest
+  pJob_Sink job_sink.sink
 
   <<am <DONE_REQ>
 ;
