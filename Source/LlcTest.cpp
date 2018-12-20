@@ -5,7 +5,7 @@
 #include "StorageEngine.h"
 
 // this is too large an array to fit on thread stack so it's declared global
-#define C_ELEMENTS (C_1MB * 64)
+#define C_ELEMENTS (C_1MB * 16)
 i8 xArray[C_ELEMENTS];
 
 /*----------------------------------------------------------------------------*/
@@ -14,6 +14,7 @@ i8 xArray[C_ELEMENTS];
 void LlcTest::vTest(MP_Task mpTask)
 {
 #ifdef __APPLE__
+  
   PosixThread* pPosixThread = mpTask->pThread()->m_pPosixThread;
   
   pPosixThread->vEnableRealtime_2();
@@ -24,7 +25,76 @@ void LlcTest::vTest(MP_Task mpTask)
   for (i8 i_Element = 0; i_Element < C_ELEMENTS; i_Element++)
     xArray[i_Element] = i_Element;
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  i8 iIteration = 0;
+  
+
+  //           Step   Miss
+  //           Length Ratio
+  vAnIteration(iIteration++, 1,     1);
+  vAnIteration(iIteration++, 1,     3);
+  vAnIteration(iIteration++, 1,     5);
+
+  vAnIteration(iIteration++, 3,     1);
+  vAnIteration(iIteration++, 3,     3);
+  vAnIteration(iIteration++, 3,     5);
+  
+  vAnIteration(iIteration++, 5,     1);
+  vAnIteration(iIteration++, 5,     3);
+  vAnIteration(iIteration++, 5,     5);
+  
+  vAnIteration(iIteration++, 10,    1);
+  vAnIteration(iIteration++, 10,    3);
+  vAnIteration(iIteration++, 10,    5);
+  
+  vAnIteration(iIteration++, 30,    1);
+  vAnIteration(iIteration++, 30,    3);
+  vAnIteration(iIteration++, 30,    5);
+  
+  vAnIteration(iIteration++, 50,    1);
+  vAnIteration(iIteration++, 50,    3);
+  vAnIteration(iIteration++, 50,    5);
+  
+  vAnIteration(iIteration++, 100,   1);
+  vAnIteration(iIteration++, 100,   3);
+  vAnIteration(iIteration++, 100,   5);
+  
+  vAnIteration(iIteration++, 300,   1);
+  vAnIteration(iIteration++, 300,   3);
+  vAnIteration(iIteration++, 300,   5);
+  
+  vAnIteration(iIteration++, 500,   1);
+  vAnIteration(iIteration++, 500,   3);
+  vAnIteration(iIteration++, 500,   5);
+  
+  vAnIteration(iIteration++, 1000,  1);
+  vAnIteration(iIteration++, 1000,  3);
+  vAnIteration(iIteration++, 1000,  5);
+  
+  vAnIteration(iIteration++, 3000,  1);
+  vAnIteration(iIteration++, 3000,  3);
+  vAnIteration(iIteration++, 3000,  5);
+  
+  vAnIteration(iIteration++, 5000,  1);
+  vAnIteration(iIteration++, 5000,  3);
+  vAnIteration(iIteration++, 5000,  5);
+  
+  vAnIteration(iIteration++, 10000, 1);
+  vAnIteration(iIteration++, 10000, 3);
+  vAnIteration(iIteration++, 10000, 5);
+  
+  //vAnIteration(iIteration++, 10,    10);
+
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* test                                                                       */
+/*----------------------------------------------------------------------------*/
+void LlcTest::vAnIteration(i8 iIteration, i8 nStepLength, i8 nMissRatio)
+{
+#ifdef __APPLE__
+
+  i8 nMissBoundary = nStepLength * nMissRatio;
   
   Timer xElapsedTimer;
   xElapsedTimer.vStart();
@@ -43,7 +113,7 @@ void LlcTest::vTest(MP_Task mpTask)
   i8 iEnterCore = iPmc_Core();
   i8 iEnterMisses = iPmc_GetLlcMisses();
   
-  #define C_REPEATED 10
+  #define C_REPEATED 1
   for (i8 i_Count = 0; i_Count < C_REPEATED; i_Count++) {
     
     for (i8 i_Element = 0; i_Element < C_ELEMENTS; i_Element++) {
@@ -51,11 +121,9 @@ void LlcTest::vTest(MP_Task mpTask)
       nIterations++;
       
       // our pseudo step - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      #define C_STEP_LENGTH 100
-      #define C_MISS_BOUNDARY (C_STEP_LENGTH * 3)
       i8 i_Random = Random::iRandom(C_ELEMENTS);
       iRandomSum += xArray[i_Random];
-      if (i_Element % C_STEP_LENGTH != 0)
+      if (i_Element % nStepLength != 0)
         continue;
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       
@@ -83,7 +151,7 @@ void LlcTest::vTest(MP_Task mpTask)
         iEnterMisses = iPmc_GetLlcMisses();
         continue;
       }
-      if (iDeltaMisses > C_MISS_BOUNDARY) {
+      if (iDeltaMisses > nMissBoundary) {
         nBoundaries++;
         iEnterCore = iPmc_Core();
         iEnterMisses = iPmc_GetLlcMisses();
@@ -143,17 +211,19 @@ void LlcTest::vTest(MP_Task mpTask)
   Magnitudes::vTimeMag(iEvery,sEveryMag);
   
   
-  vTrace("C_ELEMENTS %lld Array %s C_REPEATED %lld C_STEP_LENGTH %lld C_MISS_BOUNDARY %lld\n"
+  vTrace("\n-- Iteration %lld ----------------------------------------------------------------------\n"
+         "C_ELEMENTS %lld Array %s StepLength %lld MissBoundary %lld\n"
          "Elapsed %s Iterations %s Misses %s Adjusted %s CacheRatio %lld%% AdjMissRatio %lld%%\n"
          "Steps %s Switches %lld Every %s Zeroes %lld Boundaries %lld\n"
          "MinDelta %lld AvgDelta %lld MaxDelta %lld WorstDelta %lld\n"
          "Sum %lld AvgElement %lld\n"_Stz,
          
+         iIteration,
+         
          C_ELEMENTS,
          sSizeMag.aChar(),
-         C_REPEATED,
-         C_STEP_LENGTH,
-         C_MISS_BOUNDARY,
+         nStepLength,
+         nMissBoundary,
          
          sElapsedMag.aChar(),
          sIterationsMag.aChar(),
@@ -176,7 +246,7 @@ void LlcTest::vTest(MP_Task mpTask)
          iRandomSum,
          iAvgElement
          );
-  
+
 #endif
 }
 
