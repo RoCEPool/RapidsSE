@@ -12,33 +12,33 @@ extern AttachMap* gpAttachMap;
 JobClass xJobClass_Sink =
 {
   "Job_Sink"_Stz,      // name of the job class
-  CN_JOB_INGEST,         // class enum
-  JK_LOCAL,              // job kind
+  CN_JOB_SINK,         // class enum
+  JK_LOCAL,            // job kind
   "sink data"_Stz,     // comment about the job
   "sink"_Stz,          // the prompt command
-  nullptr,               // the second word
-  nullptr,               // the _run task seed
+  nullptr,             // the second word
+  nullptr,             // the _run task seed
   "sink_req"_Stz,      // the _req task seed
-  nullptr,               // the _rcv task seed
-  nullptr,               // the _exe task seed
-  nullptr,               // the _end task seed
-  nullptr,               // the _can task seed
-  false,                 // check resources?
-  false,                 // detached job?
-  false,                 // buffer attached?
-  JT_NONE,               // job trace
+  nullptr,             // the _rcv task seed
+  nullptr,             // the _exe task seed
+  nullptr,             // the _end task seed
+  nullptr,             // the _can task seed
+  false,               // check resources?
+  false,               // detached job?
+  false,               // buffer attached?
+  JT_NONE,             // job trace
   pJob_Sink_pre,       // prompt pre-process function
   vJob_Sink_post,      // prompt post-process function
   pJob_Sink_new,       // job new function
   vJob_Sink_delete,    // job delete function
-  nullptr,               // job pre-send function
-  nullptr,               // job post-receive function
+  nullptr,             // job pre-send function
+  nullptr,             // job post-receive function
   vJob_Sink_show,      // job show function
   
   // help and example
   true,
-  "sink <tableNm> <pipeNm>"_Stz,
-  "sink SensorEvents \"/rapids/SensorPipe\";"_Stz,
+  "sink <pipeNm>"_Stz,
+  "sink \"/rapids/SensorPipe\";"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
@@ -48,7 +48,7 @@ JobClass xJobClass_Sink =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_Sink_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_InsertRow_class;
+  *pNextFun = (pFUN*)pJob_SizeIndex_class;
   
   return &xJobClass_Sink;
 }
@@ -65,7 +65,7 @@ Job_Sink* JobsModel::_pJob_Sink(void* aAddress)
 {
   Job_Sink* pJob_Sink = reinterpret_cast<Job_Sink*>(aAddress);
   
-  RASSERT_TYPE(pJob_Sink,CN_JOB_INGEST);
+  RASSERT_TYPE(pJob_Sink,CN_JOB_SINK);
   
   return pJob_Sink;
 }
@@ -76,7 +76,7 @@ Job_Sink* JobsModel::_pJob_Sink(void* aAddress)
 void* Job_Sink::operator new(size_t)
 {
   Job_Sink* pJob_Sink =
-    static_cast<Job_Sink*>(HeapMem::pAllocate(CN_JOB_INGEST));
+    static_cast<Job_Sink*>(HeapMem::pAllocate(CN_JOB_SINK));
   
   return pJob_Sink;
 }
@@ -103,19 +103,13 @@ void Job_Sink::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Sink::Job_Sink(Interface::Session* pSession)
-: Job(CN_JOB_INGEST, pSession)
+: Job(CN_JOB_SINK, pSession)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
-  m_pTable = nullptr;
+  _checkInitialised_(CN_JOB_SINK);
   
-  m_pIngestChunk  = new IngestChunk(&gpAttachMap->m_xFormatters);
-  m_aRawData      = nullptr;
-  m_nRawDataBytes = 0;
-  
-  _checkInitialised_(CN_JOB_INGEST);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,9 +117,7 @@ Job_Sink::Job_Sink(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job_Sink::~Job_Sink(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
-  delete m_pIngestChunk;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
 }
 
 
@@ -152,7 +144,7 @@ void Job_Sink::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Job_Sink::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +156,7 @@ void Job_Sink::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* Job_Sink::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK);
   
   return &m_xFooter;
 }
@@ -245,114 +237,28 @@ void JobsModel::vJob_Sink_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert record into row                                                    */
+/* sink data                                                                  */
 /*----------------------------------------------------------------------------*/
-void Job_Sink::vConvertRecord(void)
+void Job_Sink::vSink(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
+  
+  vTrace("Sink data from %s\n"_Stz,m_sFileName.aStr());
   
 }
 
 /*----------------------------------------------------------------------------*/
-/* sink data for table                                                      */
+/* sink pipe of records                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_Sink::vIngest(void)
+bool Job_Sink::bSinkPipe(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
- vTrace("Ingesting data into %s from %s\n"_Stz,
-         m_sObjectName.aStr(), m_sFileName.aStr());
-  
-  bool bOpened = m_pIngestChunk->bOpenFile(m_sFileName);
-  if (! bOpened) {
-    vTrace("Unable to open pipe: %s\n"_Stz,m_sFileName.aStr());
-    return;
-  }
-  
-  bool bResult = bIngestPipe();
-  RASSERT(bResult);
-  
-  m_pIngestChunk->vCloseFile();
-}
-
-/*----------------------------------------------------------------------------*/
-/* sink pipe of records                                                     */
-/*----------------------------------------------------------------------------*/
-bool Job_Sink::bIngestPipe(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
   i8 iParentJobId = m_iJobId;
   bool bBlankLine = false;
   
-  while (bReadRecord()) {
-    //vConvertRecord();
-    //vInsertRow();
-    
-    bool bFormat = bFormatRow(m_pTable, &gpAttachMap->m_xFormatters, m_aRawData, m_nRawDataBytes, bBlankLine);
-    RASSERT( ! bBlankLine );
-    
-    // attempt to add record into a buffer
-    eEC eErrorCode = eInsertRow(m_pSession, m_pTable, DS_INGEST, iParentJobId);
-    
-    // was there an error ?
-    if (eErrorCode != EC_NONE) {
-      vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
-      return false;
-    }
-  }
+
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert row into table                                                      */
-/*----------------------------------------------------------------------------*/
-void Job_Sink::vInsertRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
-  s48K sRecord;
-  
-  MemLib::vCopy(sRecord.aChar(),m_aRawData,m_nRawDataBytes,CN_JOB_INGEST);
-  
-  sRecord.aChar()[m_nRawDataBytes] = '\0';
-  
-  vTrace(" : %s\n"_Stz,sRecord.aChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* read record from pipe                                                      */
-/*----------------------------------------------------------------------------*/
-bool Job_Sink::bReadRecord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
-  m_aRawData = m_pIngestChunk->aGetRecord(m_nRawDataBytes);
-
-  if (m_aRawData)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table                                                                  */
-/*----------------------------------------------------------------------------*/
-Table* Job_Sink::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
-  return m_pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set table                                                                  */
-/*----------------------------------------------------------------------------*/
-void Job_Sink::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
-  m_pTable = pTable;
 }
 
 /*============================================================================*/

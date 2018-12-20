@@ -423,7 +423,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_Sanity),         // CN_JOB_SANITY
   /*    */ sizeof(Job_SelectTable),    // CN_JOB_SELECTTABLE
   /*    */ sizeof(Job_ShowCluster),    // CN_JOB_SHOWCLUSTER
-  /*    */ 0,      // CN_JOB_SINK
+  /*    */ sizeof(Job_Sink),           // CN_JOB_SINK
   /*    */ sizeof(Job_SizeIndex),      // CN_JOB_SIZEINDEX
   /*    */ sizeof(Job_SizeTable),      // CN_JOB_SIZETABLE
   /*    */ sizeof(Job_Space),          // CN_JOB_SPACE

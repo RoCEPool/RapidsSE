@@ -7,17 +7,10 @@ namespace JobsModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Sink : public Job,
-                   public JobFileName,
-                   public Job_WriteBehind
+                   public JobFileName
   {
   public:
-    Table*  m_pTable;  // table being ingested
   
-    IngestChunk* m_pIngestChunk;  // chunk of pipe being ingested
-    Stz*         m_aRawData;      //
-    i8           m_nRawDataBytes; //
-    Formatters    m_xFormatters;  //
-    
     // must be last
     Footer m_xFooter;
   
@@ -34,13 +27,9 @@ namespace JobsModel
   public:
     void vShow(void);
   
-    void   vConvertRecord(void);
-    void   vIngest(void);
-    bool   bIngestPipe(void);
-    void   vInsertRow(void);
+    void   vSink(void);
+    bool   bSinkPipe(void);
     bool   bReadRecord(void);
-    Table* pTable(void);
-    void   vTable(Table* pTable);
 
   public:
     Footer* aFooter(void);
