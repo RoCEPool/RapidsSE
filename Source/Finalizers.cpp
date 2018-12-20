@@ -146,6 +146,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_RECEIVER
   /*    */ &Finalize::vUndefined,         // CN_JOB_REPEATER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SANITY
+  /*    */ &Finalize::vUndefined,         // CN_JOB_SELECT
   /*    */ &Finalize::vUndefined,         // CN_JOB_SHOWCLUSTER
   /*    */ &Finalize::vUndefined,         // CN_JOB_SIZEINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_SIZETABLE

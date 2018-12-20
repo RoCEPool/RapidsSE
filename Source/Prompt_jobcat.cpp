@@ -102,6 +102,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJobs(CN_JOB_TRUNCATETABLE);
   nJobs++; JobClass::vTraceJobs(CN_JOB_VERIFYINDEX);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SANITY);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_SELECT);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SPACE);
   nJobs++; JobClass::vTraceJobs(CN_JOB_STATUS);
   nJobs++; JobClass::vTraceJobs(CN_JOB_STARTCLUSTER);
