@@ -11,29 +11,29 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SelectTable =
 {
-  "Job_SelectTable"_Stz,       // name of the job class
-  CN_JOB_SELECTTABLE,          // class enum
-  JK_DIST2PC,                // job kind
-  "fetch rows"_Stz,          // comment about the job
+  "Job_SelectTable"_Stz,     // name of the job class
+  CN_JOB_SELECTTABLE,        // class enum
+  JK_LOCAL,                  // job kind
+  "select table"_Stz,        // comment about the job
   "fetch"_Stz,               // the prompt command
   nullptr,                   // the second word
   nullptr,                   // the _run task seed
-  "SelectTable_req"_Stz,       // the _req task seed
-  "SelectTable_beg"_Stz,       // the _rcv task seed
-  "SelectTable_exe"_Stz,       // the _exe task seed
-  "SelectTable_end"_Stz,       // the _end task seed
-  "SelectTable_can"_Stz,       // the _can task seed
+  nullptr,                   // the _req task seed
+  nullptr,                   // the _rcv task seed
+  nullptr,                   // the _exe task seed
+  nullptr,                   // the _end task seed
+  nullptr,                   // the _can task seed
   true,                      // check resources?
   false,                     // detached job?
   false,                     // buffer attached?
   JT_NONE,                   // job trace
-  pJob_SelectTable_pre,        // prompt pre-process function
-  vJob_SelectTable_post,       // prompt post-process function
+  pJob_SelectTable_pre,      // prompt pre-process function
+  vJob_SelectTable_post,     // prompt post-process function
   nullptr,                   // job new function
-  vJob_SelectTable_delete,     // job delete function
-  vJob_send,                 // job pre-send function
-  vJob_recv,                 // job post-receive function
-  vJob_SelectTable_show,       // job show function
+  vJob_SelectTable_delete,   // job delete function
+  nullptr,                   // job pre-send function
+  nullptr,                   // job post-receive function
+  vJob_SelectTable_show,     // job show function
   
   // help and example
   true,
