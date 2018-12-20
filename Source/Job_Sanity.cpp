@@ -48,7 +48,7 @@ JobClass xJobClass_Sanity =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_Sanity_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_ShowCluster_class;
+  *pNextFun = (pFUN*)pJob_SelectTable_class;
   
   return &xJobClass_Sanity;
 }
