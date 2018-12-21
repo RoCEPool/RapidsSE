@@ -29,7 +29,7 @@ namespace JobsModel
   public:
     void vShow(void);
   
-    void   vSink(void);
+    void vCat(void);
 
   public:
     Footer* aFooter(void);

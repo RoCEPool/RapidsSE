@@ -504,6 +504,9 @@
   static void vJob_AnalyzeIndexIsDetailed(Tasks::MP_Task mpTask);
   static void vJob_AnalyzeTableIsDetailed(Tasks::MP_Task mpTask);
 
+  // job cat
+  static void vJob_CatCat(Tasks::MP_Task mpTask);
+
   // job CreateIndex
   static void vJob_CreateIndexIsUniqueFetch(Tasks::MP_Task mpTask);
 

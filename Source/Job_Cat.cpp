@@ -246,11 +246,11 @@ void JobsModel::vJob_Cat_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* cat data                                                                  */
 /*----------------------------------------------------------------------------*/
-void Job_Cat::vSink(void)
+void Job_Cat::vCat(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
-  vTrace("Sink data from %s\n"_Stz,m_sFileName.aStr());
+  vTrace("Cat data from %s\n"_Stz,m_sFileName.aStr());
   
   m_pIoChunk->vOpenFile(m_sFileName);
   
