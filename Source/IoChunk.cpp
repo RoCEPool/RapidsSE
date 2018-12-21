@@ -49,8 +49,8 @@ IoChunk::IoChunk(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
 
   //m_xFile
-  m_nBytesRead = 0;
-  m_aEndChunk = nullptr;
+  m_nDataBytes = 0;
+  m_aLastDataByte = nullptr;
   
   m_xWsp.vFill(0xEF,CN_IOCHUNK);
  
@@ -68,11 +68,11 @@ IoChunk::~IoChunk(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump SubLoader                                                             */
+/* dump IoChunk                                                               */
 /*----------------------------------------------------------------------------*/
 void IoChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  IoChunk* pIoChunk = _pIoChunk(pObject);
+  //IoChunk* pIoChunk = _pIoChunk(pObject);
   
   vTrace("\n"_Stz);
 }
@@ -95,7 +95,7 @@ void IoChunk::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-void IoChunk::vOpenFile(s256& sPath)
+void IoChunk::vOpenRead(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
   
@@ -124,20 +124,20 @@ i8 IoChunk::nReadBytes(i8 nBytes)
   if (nBytes == C_IO_CHUNK)
     nBytes -= 1;
   
-  m_nBytesRead = m_xFile.iReadBytes(m_xWsp.aArea(),nBytes);
+  m_nDataBytes = m_xFile.iReadBytes(m_xWsp.aArea(),nBytes);
 
-  if (! m_nBytesRead)
+  if (! m_nDataBytes)
     return 0;
   
-  ((char*)m_xWsp.aStr())[m_nBytesRead] = '\0';
+  ((char*)m_xWsp.aStr())[m_nDataBytes] = '\0';
   
-  m_aEndChunk = &m_xWsp.aStr()[m_nBytesRead - 1];
+  m_aLastDataByte = &m_xWsp.aStr()[m_nDataBytes - 1];
   
-  return m_nBytesRead;
+  return m_nDataBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get string from wo                                                         */
+/* get wsp as string pointer                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* IoChunk::aStr(void)
 {

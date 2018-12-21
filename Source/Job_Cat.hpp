@@ -10,7 +10,9 @@ namespace JobsModel
                   public JobFileName
   {
   public:
-    IoChunk* m_pIoChunk;
+    IoChunk* m_pInChunk;
+    IoChunk* m_pOutChunk;
+  
     bool     m_bPrint;
   
     // must be last

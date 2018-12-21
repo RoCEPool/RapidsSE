@@ -252,7 +252,7 @@ void Job_Sink::vSink(void)
   
   vTrace("Sink data from %s\n"_Stz,m_sFileName.aStr());
   
-  m_pIoChunk->vOpenFile(m_sFileName);
+  m_pIoChunk->vOpenRead(m_sFileName);
   
   i8 nBytesSoFar = 0;
   

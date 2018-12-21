@@ -107,7 +107,9 @@ Job_Cat::Job_Cat(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
-  m_pIoChunk = new IoChunk;
+  m_pInChunk  = new IoChunk;
+  m_pOutChunk = new IoChunk;
+  
   m_bPrint = false;
   
   _checkInitialised_(CN_JOB_CAT);
@@ -122,7 +124,8 @@ Job_Cat::~Job_Cat(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
-  delete m_pIoChunk;
+  delete m_pInChunk;
+  delete m_pOutChunk;
 }
 
 
@@ -252,7 +255,7 @@ void Job_Cat::vCat(void)
   
   vTrace("Cat data from %s\n"_Stz,m_sFileName.aStr());
   
-  m_pIoChunk->vOpenFile(m_sFileName);
+  m_pInChunk->vOpenRead(m_sFileName);
   
   i8 nBytesSoFar = 0;
   
@@ -267,12 +270,12 @@ void Job_Cat::vCat(void)
   
   for (;;) {
   
-    i8 nBytesRead = m_pIoChunk->nReadBytes(-1);
+    i8 nBytesRead = m_pInChunk->nReadBytes(-1);
     if (! nBytesRead)
       break;
     
     if (m_bPrint)
-      vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStr());
+      vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pInChunk->aStr());
     
     nBytesSoFar += nBytesRead;
     
@@ -311,7 +314,7 @@ void Job_Cat::vCat(void)
   vTrace("Extrapolated %s/day\n"_Stz,
          sAvgMag.aStr());
 
-  m_pIoChunk->vCloseFile();
+  m_pInChunk->vCloseFile();
 }
 
 /*============================================================================*/
