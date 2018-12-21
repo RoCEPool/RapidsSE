@@ -48,7 +48,7 @@ JobClass xJobClass_Boot =
 /*----------------------------------------------------------------------------*/
 JobClass* JobsModel::pJob_Boot_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Cf_class;
+  *pNextFun = (pFUN*)pJob_Cat_class;
   
   return &xJobClass_Boot;
 }
