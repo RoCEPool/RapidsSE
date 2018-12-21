@@ -48,11 +48,11 @@ IoChunk::IoChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
 
+  //m_xFile
+  m_nBytesRead = 0;
+  m_aEndChunk = nullptr;
+  
   m_xWsp.vFill(0xEF,CN_IOCHUNK);
-  
-  
-  ASSERT(! m_aEndChunk);
-  ASSERT(! m_aNextRecord);
  
   _checkInitialised_(CN_IOCHUNK);
   
@@ -118,16 +118,33 @@ bool IoChunk::bReadChunk(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
   
+  if (-1 == nBytes)
+    nBytes = C_IO_CHUNK -1;
+  else
+  if (nBytes == C_IO_CHUNK)
+    nBytes -= 1;
+  
   m_nBytesRead = m_xFile.iReadBytes(m_xWsp.aArea(),nBytes);
 
+  if (! m_nBytesRead)
+    return false;
+  
+  ((char*)m_xWsp.aStr())[m_nBytesRead] = '\0';
+  
   m_aEndChunk = &m_xWsp.aStr()[m_nBytesRead - 1];
   
-  if (m_nBytesRead)
-    return true;
-  else
-    return false;
+  return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get string from wo                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* IoChunk::aStr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
+  
+  return m_xWsp.aStr();
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

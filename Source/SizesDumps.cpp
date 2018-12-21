@@ -361,7 +361,7 @@ i8 giClassSize[]
   /* 54 */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* 55 */ sizeof(IdxVec),             // CN_IDXVEC
   /* 56 */ 0,                          // CN_INDEXLEVELS
-  /*    */ 0,                          // CN_IOCHUNK
+  /*    */ sizeof(IoChunk),            // CN_IOCHUNK
   /* 57 */ sizeof(Item),               // CN_ITEM
   /* 58 */ sizeof(ItemBuffer),         // CN_ITEMBUFFER
   

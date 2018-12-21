@@ -107,6 +107,9 @@ Job_Sink::Job_Sink(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
+  m_pIoChunk = new IoChunk;
+  m_bPrint = false;
+  
   _checkInitialised_(CN_JOB_SINK);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
@@ -118,6 +121,8 @@ Job_Sink::Job_Sink(Interface::Session* pSession)
 Job_Sink::~Job_Sink(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
+  
+  delete m_pIoChunk;
 }
 
 
@@ -188,7 +193,12 @@ Job* JobsModel::pJob_Sink_pre(Interface::Session* pSession)
     pJob_Sink->m_sFileName = pTknVec->pGet(2)->aText();
   else
     pJob_Sink->m_sFileName = pTknVec->pGet(1)->aText();
-
+  
+  if (pTknVec->pGet(nTokens - 1)->sText().bSame("print"_Stz) ||
+      pTknVec->pGet(nTokens - 1)->sText().bSame("display"_Stz) ||
+      pTknVec->pGet(nTokens - 1)->sText().bSame("displayOn"_Stz))
+    pJob_Sink->m_bPrint = true;
+  
   return pJob_Sink;
 }
 
@@ -242,20 +252,25 @@ void Job_Sink::vSink(void)
   
   vTrace("Sink data from %s\n"_Stz,m_sFileName.aStr());
   
+  m_pIoChunk->vOpenFile(m_sFileName);
+  
+  while (bSinkPipe())
+    if (m_bPrint)
+      vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStr());
+
+  m_pIoChunk->vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/
-/* sink pipe of records                                                       */
+/* sink pipe                                                                  */
 /*----------------------------------------------------------------------------*/
 bool Job_Sink::bSinkPipe(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
-  i8 iParentJobId = m_iJobId;
-  bool bBlankLine = false;
+  bool bRead = m_pIoChunk->bReadChunk(-1);
   
-
-  return true;
+  return bRead;
 }
 
 /*============================================================================*/
