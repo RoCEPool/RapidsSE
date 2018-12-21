@@ -114,12 +114,12 @@ void IoChunk::vOpenFile(s256& sPath)
 /*----------------------------------------------------------------------------*/
 /* read given chunk                                                           */
 /*----------------------------------------------------------------------------*/
-bool IoChunk::bReadChunk(i8 nBytes)
+i8 IoChunk::nReadBytes(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
   
   if (-1 == nBytes)
-    nBytes = C_IO_CHUNK -1;
+    nBytes = C_IO_CHUNK - 1;
   else
   if (nBytes == C_IO_CHUNK)
     nBytes -= 1;
@@ -127,13 +127,13 @@ bool IoChunk::bReadChunk(i8 nBytes)
   m_nBytesRead = m_xFile.iReadBytes(m_xWsp.aArea(),nBytes);
 
   if (! m_nBytesRead)
-    return false;
+    return 0;
   
   ((char*)m_xWsp.aStr())[m_nBytesRead] = '\0';
   
   m_aEndChunk = &m_xWsp.aStr()[m_nBytesRead - 1];
   
-  return true;
+  return m_nBytesRead;
 }
 
 /*----------------------------------------------------------------------------*/

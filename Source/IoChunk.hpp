@@ -32,7 +32,7 @@ namespace Loader
     
     void  vCloseFile(void);
     void  vOpenFile(s256& sPath);
-    bool  bReadChunk(i8 nBytes);
+    i8    nReadBytes(i8 nBytes);
     Stz*  aStr(void);
     
   private:

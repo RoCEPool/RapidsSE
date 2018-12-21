@@ -30,8 +30,6 @@ namespace JobsModel
     void vShow(void);
   
     void   vSink(void);
-    bool   bSinkPipe(void);
-    bool   bReadRecord(void);
 
   public:
     Footer* aFooter(void);

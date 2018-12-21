@@ -254,23 +254,64 @@ void Job_Sink::vSink(void)
   
   m_pIoChunk->vOpenFile(m_sFileName);
   
-  while (bSinkPipe())
+  i8 nBytesSoFar = 0;
+  
+#define C_NEXT_INTERVAL (C_1GB *10)
+  i8 nNextLimit = C_NEXT_INTERVAL;
+  
+  s32 sAvgMag;
+  s32 sSumMag;
+
+  Timer xElapsedTimer;
+  xElapsedTimer.vStart();
+  
+  for (;;) {
+  
+    i8 nBytesRead = m_pIoChunk->nReadBytes(-1);
+    if (! nBytesRead)
+      break;
+    
     if (m_bPrint)
       vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStr());
+    
+    nBytesSoFar += nBytesRead;
+    
+    if (nBytesSoFar && nBytesSoFar >= nNextLimit) {
+      
+      xElapsedTimer.vUpdate();
+      
+      i8 iAvgBytesPerSec = DIV(nBytesSoFar,xElapsedTimer.iSeconds());
+      Magnitudes::vByteMag(iAvgBytesPerSec,2,sAvgMag);
+      Magnitudes::vByteMag(nBytesSoFar,2,sSumMag);
+
+      vTrace("Elapsed %llds: %lls sofar; %s/s\n"_Stz,
+             xElapsedTimer.iSeconds(),
+             sSumMag.aStr(),
+             sAvgMag.aStr());
+      
+      nNextLimit += C_NEXT_INTERVAL;
+    }
+  
+  }
+  
+  xElapsedTimer.vUpdate();
+  
+  i8 iAvgBytesPerSec = DIV(nBytesSoFar,xElapsedTimer.iSeconds());
+  
+  Magnitudes::vByteMag(iAvgBytesPerSec,2,sAvgMag);
+  
+  vTrace("Elapsed %llds: %lls sofar; %s/s\n"_Stz,
+         xElapsedTimer.iSeconds(),
+         sSumMag.aStr(),
+         sAvgMag.aStr());
+
+  i8 iExtrapolatedPerDay = iAvgBytesPerSec * 60 * 60 * 24;
+  Magnitudes::vByteMag(iExtrapolatedPerDay,2,sAvgMag);
+  
+  vTrace("Extrapolated %s/day\n"_Stz,
+         sAvgMag.aStr());
 
   m_pIoChunk->vCloseFile();
-}
-
-/*----------------------------------------------------------------------------*/
-/* sink pipe                                                                  */
-/*----------------------------------------------------------------------------*/
-bool Job_Sink::bSinkPipe(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
-  
-  bool bRead = m_pIoChunk->bReadChunk(-1);
-  
-  return bRead;
 }
 
 /*============================================================================*/
