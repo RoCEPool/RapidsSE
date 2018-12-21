@@ -55,6 +55,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJobs(CN_JOB_PUBLISH);
   nJobs++; JobClass::vTraceJobs(CN_JOB_PURGE);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SINK);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_CAT);
   nJobs++; JobClass::vTraceJobs(CN_JOB_INSERTROW);
   nJobs++; JobClass::vTraceJobs(CN_JOB_INSERTROWS);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LISTTENANTS);

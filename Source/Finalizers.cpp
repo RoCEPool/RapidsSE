@@ -103,6 +103,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANALYZETABLE
   /*    */ &Finalize::vUndefined,         // CN_JOB_ANSWER
   /*    */ &Finalize::vUndefined,         // CN_JOB_BOOT
+  /*    */ &Finalize::vUndefined,         // CN_JOB_CAT
   /*    */ &Finalize::vUndefined,         // CN_JOB_CF
   /*    */ &Finalize::vUndefined,         // CN_JOB_COMPACTINDEX
   /*    */ &Finalize::vUndefined,         // CN_JOB_CONNECTCLUSTER

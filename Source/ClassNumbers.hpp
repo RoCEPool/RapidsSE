@@ -106,6 +106,7 @@ enum eCN : u2 // Class Number
   /*  71 */ CN_JOB_ANALYZETABLE,
   /*  72 */ CN_JOB_ANSWER,
   /*  73 */ CN_JOB_BOOT,
+  /*     */ CN_JOB_CAT,
   /*  74 */ CN_JOB_CF,
   /*  75 */ CN_JOB_COMPACTINDEX,
   /*  76 */ CN_JOB_CONNECTCLUSTER,
@@ -373,6 +374,7 @@ static Stz* aCN[]
   /*  71 */ "JOB_ANALYZETABLE"_Stz,    // CN_JOB_ANALYZETABLE
   /*  72 */ "JOB_ANSWER"_Stz,          // CN_JOB_ANSWER
   /*  73 */ "JOB_BOOT"_Stz,            // CN_JOB_BOOT
+  /*     */ "JOB_CAT"_Stz,             // CN_JOB_CAT
   /*  74 */ "JOB_CF"_Stz,              // CN_JOB_CF
   /*  75 */ "JOB_COMPACTINDEX"_Stz,    // CN_JOB_COMPACTINDEX
   /*  76 */ "JOB_CONNECTCLUSTER"_Stz,  // CN_JOB_CONNECTCLUSTER
