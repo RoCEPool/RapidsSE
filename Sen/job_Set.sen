@@ -20,6 +20,7 @@
 "job_AnalyzeIndex.sen" include
 "job_AnalyzeTable.sen" include
 
+"job_Cat.sen" include
 "job_Cf.sen" include
 "job_CompactIndex.sen" include
 "job_ConnectCluster.sen" include

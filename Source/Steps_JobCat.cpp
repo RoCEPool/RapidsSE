@@ -15,7 +15,7 @@ void Step::vAddSteps_JobCat(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_cat.cat -- cat data from pipe                                       */
+/* job_cat.cat -- cat data from pipe                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_CatCat(MP_Task mpTask)
 {
