@@ -87,7 +87,6 @@ void IoChunk::vCloseFile(void)
   m_xFile.vClose();
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -100,8 +99,21 @@ void IoChunk::vOpenRead(s256& sPath)
   bool b = m_xFile.bOpen(C_OPEN_READ);
   RASSERT(b);
   
-  // set buffer
-  //m_xFile.vBuffer(C_1MB);
+  // set no buffering
+  m_xFile.vBuffer(0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* open file                                                                  */
+/*----------------------------------------------------------------------------*/
+void IoChunk::vOpenWrite(s256& sPath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
+  
+  // open the file
+  m_xFile.vPath(sPath);
+  bool b = m_xFile.bOpen(C_OPEN_WRITE);
+  RASSERT(b);
   
   // set no buffering
   m_xFile.vBuffer(0);
@@ -130,6 +142,17 @@ i8 IoChunk::nReadBytes(i8 nBytes)
   m_aLastDataByte = &m_xWsp.aStr()[m_nDataBytes - 1];
   
   return m_nDataBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* write data                                                                 */
+/*----------------------------------------------------------------------------*/
+void IoChunk::vWriteData(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
+  
+  bool bResult = m_xFile.bWriteBytes(m_xWsp.aArea(),m_nDataBytes);
+  RASSERT(bResult);
 }
 
 /*----------------------------------------------------------------------------*/

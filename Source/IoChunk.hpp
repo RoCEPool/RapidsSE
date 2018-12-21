@@ -12,7 +12,7 @@ namespace Loader
   {
   private:
     File m_xFile; // file being used
-    
+  
     // must be last
     Footer m_xFooter;
   
@@ -29,6 +29,8 @@ namespace Loader
     void  vOpenRead(s256& sPath);
     void  vOpenWrite(s256& sPath);
     i8    nReadBytes(i8 nBytes);
+    i8    nWriteBytes(i8 nBytes);
+    void  vWriteData(void);
     Stz*  aStr(void);
     
   private:
