@@ -44,15 +44,11 @@ void IoChunk::operator delete(void* pIoChunkAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IoChunk::IoChunk(void)
-: Object(CN_IOCHUNK)
+: DataChunk(CN_IOCHUNK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
 
   //m_xFile
-  m_nDataBytes = 0;
-  m_aLastDataByte = nullptr;
-  
-  m_xWsp.vFill(0xEF,CN_IOCHUNK);
  
   _checkInitialised_(CN_IOCHUNK);
   

@@ -8,16 +8,11 @@ namespace Loader
   static const i8 C_IO_CHUNK = C_1M; // its 1M not 1MB (i.e. < 1MB)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class IoChunk : public Object // public DataChunk
+  class IoChunk : public DataChunk
   {
   private:
     File m_xFile; // file being used
-  
-    i8   m_nDataBytes;     // current number of bytes of actual data
-    Stz* m_aLastDataByte;  // last data byte of where data chunk ends
-  
-    WspFxd<C_IO_CHUNK> m_xWsp; // workspace
-  
+    
     // must be last
     Footer m_xFooter;
   
