@@ -23,8 +23,9 @@ namespace Structures
     DataChunk(eCN eClass);
     ~DataChunk(void) noexcept(false);
   
+    void  vCopy(DataChunk* pSource);
     Stz*  aStr(void);
-    
+  
   private:
   };
   

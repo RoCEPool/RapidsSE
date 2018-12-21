@@ -57,6 +57,23 @@ DataChunk::~DataChunk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* copy source data chunk into this data chunk                                */
+/*----------------------------------------------------------------------------*/
+void DataChunk::vCopy(DataChunk* pSource)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  MemLib::vCopy(m_xWsp.aArea(),
+                pSource->aStr(),
+                pSource->m_nDataBytes,
+                eClass());
+  
+  m_nDataBytes = pSource->m_nDataBytes;
+  
+  m_aLastDataByte = &m_xWsp.aStr()[m_nDataBytes - 1];
+}
+
+/*----------------------------------------------------------------------------*/
 /* get wsp as string pointer                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* DataChunk::aStr(void)
