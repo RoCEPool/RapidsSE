@@ -187,19 +187,21 @@ Job* JobsModel::pJob_Cat_pre(Interface::Session* pSession)
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();
 
-  // there should be 2 tokens
-  if (nTokens < 2)
+  // there should be at least 3 tokens
+  if (nTokens < 3)
     return pJob_Cat;
 
-  // set the file name
-  if (pTknVec->pGet(2)->sText().bSame("pipe"_Stz))
-    pJob_Cat->m_sFileName = pTknVec->pGet(2)->aText();
-  else
-    pJob_Cat->m_sFileName = pTknVec->pGet(1)->aText();
+  // set the input file name
+  pJob_Cat->m_sFileName = pTknVec->pGet(1)->sText();
   
-  if (pTknVec->pGet(nTokens - 1)->sText().bSame("print"_Stz) ||
-      pTknVec->pGet(nTokens - 1)->sText().bSame("display"_Stz) ||
-      pTknVec->pGet(nTokens - 1)->sText().bSame("displayOn"_Stz))
+  // set the output file name
+  pJob_Cat->m_sOutputFile = pTknVec->pGet(2)->sText();
+  
+  // is the last token the print option
+  i8 i_Last = nTokens - 1;
+  if (pTknVec->pGet(i_Last)->sText().bSame("print"_Stz) ||
+      pTknVec->pGet(i_Last)->sText().bSame("display"_Stz) ||
+      pTknVec->pGet(i_Last)->sText().bSame("displayOn"_Stz))
     pJob_Cat->m_bPrint = true;
   
   return pJob_Cat;

@@ -10,6 +10,8 @@ namespace JobsModel
                   public JobFileName
   {
   public:
+    s256 m_sOutputFile; // output file name
+
     IoChunk* m_pInChunk;
     IoChunk* m_pOutChunk;
   

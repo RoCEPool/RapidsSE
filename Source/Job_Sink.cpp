@@ -184,19 +184,18 @@ Job* JobsModel::pJob_Sink_pre(Interface::Session* pSession)
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();
 
-  // there should be 2 tokens
+  // there should be at least 2 tokens
   if (nTokens < 2)
     return pJob_Sink;
 
   // set the file name
-  if (pTknVec->pGet(2)->sText().bSame("pipe"_Stz))
-    pJob_Sink->m_sFileName = pTknVec->pGet(2)->aText();
-  else
-    pJob_Sink->m_sFileName = pTknVec->pGet(1)->aText();
+  pJob_Sink->m_sFileName = pTknVec->pGet(1)->sText();
   
-  if (pTknVec->pGet(nTokens - 1)->sText().bSame("print"_Stz) ||
-      pTknVec->pGet(nTokens - 1)->sText().bSame("display"_Stz) ||
-      pTknVec->pGet(nTokens - 1)->sText().bSame("displayOn"_Stz))
+  // is the last token the print option?
+  i8 i_Last = nTokens - 1;
+  if (pTknVec->pGet(i_Last)->sText().bSame("print"_Stz) ||
+      pTknVec->pGet(i_Last)->sText().bSame("display"_Stz) ||
+      pTknVec->pGet(i_Last)->sText().bSame("displayOn"_Stz))
     pJob_Sink->m_bPrint = true;
   
   return pJob_Sink;
@@ -254,16 +253,7 @@ void Job_Sink::vSink(void)
   
   m_pIoChunk->vOpenRead(m_sFileName);
   
-  i8 nBytesSoFar = 0;
-  
-#define C_NEXT_INTERVAL (C_1GB *10)
-  i8 nNextLimit = C_NEXT_INTERVAL;
-  
-  s32 sAvgMag;
-  s32 sSumMag;
-
-  Timer xElapsedTimer;
-  xElapsedTimer.vStart();
+  m_pIoChunk->vSetReporting("Elapsed"_Stz,C_1GB * 10);
   
   for (;;) {
   
@@ -273,43 +263,7 @@ void Job_Sink::vSink(void)
     
     if (m_bPrint)
       vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStr());
-    
-    nBytesSoFar += nBytesRead;
-    
-    if (nBytesSoFar && nBytesSoFar >= nNextLimit) {
-      
-      xElapsedTimer.vUpdate();
-      
-      i8 iAvgBytesPerSec = DIV(nBytesSoFar,xElapsedTimer.iSeconds());
-      Magnitudes::vByteMag(iAvgBytesPerSec,2,sAvgMag);
-      Magnitudes::vByteMag(nBytesSoFar,2,sSumMag);
-
-      vTrace("Elapsed %llds: %lls sofar; %s/s\n"_Stz,
-             xElapsedTimer.iSeconds(),
-             sSumMag.aStr(),
-             sAvgMag.aStr());
-      
-      nNextLimit += C_NEXT_INTERVAL;
-    }
-  
   }
-  
-  xElapsedTimer.vUpdate();
-  
-  i8 iAvgBytesPerSec = DIV(nBytesSoFar,xElapsedTimer.iSeconds());
-  
-  Magnitudes::vByteMag(iAvgBytesPerSec,2,sAvgMag);
-  
-  vTrace("Elapsed %llds: %lls sofar; %s/s\n"_Stz,
-         xElapsedTimer.iSeconds(),
-         sSumMag.aStr(),
-         sAvgMag.aStr());
-
-  i8 iExtrapolatedPerDay = iAvgBytesPerSec * 60 * 60 * 24;
-  Magnitudes::vByteMag(iExtrapolatedPerDay,2,sAvgMag);
-  
-  vTrace("Extrapolated %s/day\n"_Stz,
-         sAvgMag.aStr());
 
   m_pIoChunk->vCloseFile();
 }
