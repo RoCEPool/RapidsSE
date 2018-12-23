@@ -382,7 +382,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_AnalyzeTable),   // CN_JOB_ANALYZETABLE
   /*    */ sizeof(Job_Answer),         // CN_JOB_ANSWER
   /*    */ sizeof(Job_Boot),           // CN_JOB_BOOT
-  /*    */ 0,             // CN_JOB_CAT
+  /*    */ sizeof(Job_Cat),            // CN_JOB_CAT
   /*    */ sizeof(Job_Cf),             // CN_JOB_CF
   /*    */ sizeof(Job_CompactIndex),   // CN_JOB_COMPACTINDEX
   /*    */ sizeof(Job_ConnectCluster), // CN_JOB_CONNECTCLUSTER

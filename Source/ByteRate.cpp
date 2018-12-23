@@ -117,7 +117,7 @@ void ByteRate::vSetReporting(Stz* sPrefix, i8 iReportQuantum)
 /*----------------------------------------------------------------------------*/
 void ByteRate::vReportStatistics(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
   
   s32 sAvgMag;
   s32 sSumMag;

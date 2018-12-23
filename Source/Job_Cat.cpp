@@ -112,6 +112,8 @@ Job_Cat::Job_Cat(Interface::Session* pSession)
   
   m_bPrint = false;
   
+  m_pByteRate = new ByteRate;
+
   _checkInitialised_(CN_JOB_CAT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
@@ -126,6 +128,8 @@ Job_Cat::~Job_Cat(void) noexcept(false)
   
   delete m_pInChunk;
   delete m_pOutChunk;
+ 
+  delete m_pByteRate;
 }
 
 
@@ -255,12 +259,15 @@ void Job_Cat::vCat(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
-  vTrace("Cat data from %s\n"_Stz,m_sFileName.aStr());
+  vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputFile.aStr());
   
   m_pInChunk->vOpenRead(m_sFileName);
   m_pInChunk->vSetReporting("Elapsed"_Stz,C_1GB * 10);
   
   m_pOutChunk->vOpenWrite(m_sOutputFile);
+
+  m_pByteRate->vSetReporting("Elapsed"_Stz,C_1GB * 10);
+  m_pByteRate->vBeginTiming();
 
   for (;;) {
     
@@ -273,9 +280,13 @@ void Job_Cat::vCat(void)
     
     m_pOutChunk->vCopy(m_pInChunk);
     
+    m_pByteRate->vAddBytes(nBytesRead);
+
     //m_pOutChunk->vWriteData();
   }
   
+  m_pByteRate->vEndTiming();
+
   m_pInChunk->vCloseFile();
   m_pOutChunk->vCloseFile();
 }

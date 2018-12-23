@@ -10,8 +10,9 @@ namespace JobsModel
                    public JobFileName
   {
   public:
-    IoChunk* m_pIoChunk;
-    bool     m_bPrint;
+    IoChunk*  m_pIoChunk;
+    bool      m_bPrint;
+    ByteRate* m_pByteRate;
   
     // must be last
     Footer m_xFooter;

@@ -12,10 +12,12 @@ namespace JobsModel
   public:
     s256 m_sOutputFile; // output file name
 
-    IoChunk* m_pInChunk;
-    IoChunk* m_pOutChunk;
+    IoChunk*  m_pInChunk;
+    IoChunk*  m_pOutChunk;
   
-    bool     m_bPrint;
+    bool      m_bPrint;
+    ByteRate* m_pByteRate;
+  
   
     // must be last
     Footer m_xFooter;

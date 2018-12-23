@@ -107,8 +107,9 @@ Job_Sink::Job_Sink(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
-  m_pIoChunk = new IoChunk;
-  m_bPrint = false;
+  m_pIoChunk  = new IoChunk;
+  m_bPrint    = false;
+  m_pByteRate = new ByteRate;
   
   _checkInitialised_(CN_JOB_SINK);
   
@@ -123,6 +124,7 @@ Job_Sink::~Job_Sink(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
   delete m_pIoChunk;
+  delete m_pByteRate;
 }
 
 
@@ -254,6 +256,9 @@ void Job_Sink::vSink(void)
   m_pIoChunk->vOpenRead(m_sFileName);
   
   m_pIoChunk->vSetReporting("Elapsed"_Stz,C_1GB * 10);
+
+  m_pByteRate->vSetReporting("Elapsed"_Stz,C_1GB * 10);
+  m_pByteRate->vBeginTiming();
   
   for (;;) {
   
@@ -263,8 +268,11 @@ void Job_Sink::vSink(void)
     
     if (m_bPrint)
       vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStr());
+    
+    m_pByteRate->vAddBytes(nBytesRead);
   }
 
+  m_pByteRate->vEndTiming();
   m_pIoChunk->vCloseFile();
 }
 
