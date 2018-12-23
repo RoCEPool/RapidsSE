@@ -20,7 +20,6 @@ void Step::vAddSteps_File(void)
   vAddStep("file.path@"_Stz,      &Step::vFilePathGet);
   vAddStep("file.path!"_Stz,      &Step::vFilePathSet);
   vAddStep("file.read"_Stz,       &Step::vFileRead);
-  vAddStep("file.readRecord"_Stz, &Step::vFileReadRecord);
   vAddStep("file.write"_Stz,      &Step::vFileWrite);
 }
 
@@ -188,31 +187,6 @@ ENTRY("vFileRead"_Stz);
 
   if (pFile->bReadLine(sLine)) {
     mpTask->m_pDataStack->vPushS48K(sLine);
-    mpTask->m_pDataStack->vPushInt((i8)1);
-  }
-  else {
-    mpTask->m_pDataStack->vPushInt((i8)0);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* file.readRecord -- read record from file  ( file -- 1 | 0 )                */
-/*----------------------------------------------------------------------------*/
-void Step::vFileReadRecord(MP_Task mpTask)
-{
-  ENTRY("vFileRead"_Stz);
-  
-  Object* pPtrFile;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.readRecord"_Stz);
-  
-  File* pFile = _pFile(pPtrFile);
-  ASSERT(pFile);
-  
-  if (pFile->bReadRecord()) {
     mpTask->m_pDataStack->vPushInt((i8)1);
   }
   else {

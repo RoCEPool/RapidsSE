@@ -91,9 +91,6 @@ namespace System
     i8   iReadBytes(void* aDst, i8 nBytes);
     bool bReadLine(StrVal& s);
     bool bReadLine(Stz* y);
-    bool bReadRecord(void);
-    Scratch* pRecord(void);
-    i8 iRecordLength(void);
     void vReset(void);
     void vSeek(i8 iOffset);
     void vSeekEnd(void);
