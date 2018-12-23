@@ -132,10 +132,10 @@ void ByteRate::vReportStatistics(void)
   Magnitudes::vByteMag(m_nBytesSoFar,2,sSumMag);
   Magnitudes::vByteMag(iExtrapolatedPerDay,2,sDayMag);
 
-  vTrace("%s %llds: %lls sofar; %s/s (%s/day)\n"_Stz,
-         m_sReportPrefix.aStr(),
-         m_xElapsedTimer.iSeconds(),
+  vTrace("%s %llds: %s/s (%s/day)\n"_Stz,
          sSumMag.aStr(),
+         m_xElapsedTimer.iSeconds(),
+         
          sAvgMag.aStr(),
          sDayMag.aStr());
   
