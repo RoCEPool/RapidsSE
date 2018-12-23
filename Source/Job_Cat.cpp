@@ -258,20 +258,12 @@ void Job_Cat::vCat(void)
   vTrace("Cat data from %s\n"_Stz,m_sFileName.aStr());
   
   m_pInChunk->vOpenRead(m_sFileName);
+  m_pInChunk->vSetReporting("Elapsed"_Stz,C_1GB * 10);
   
-  i8 nBytesSoFar = 0;
-  
-#define C_NEXT_INTERVAL (C_1GB *10)
-  i8 nNextLimit = C_NEXT_INTERVAL;
-  
-  s32 sAvgMag;
-  s32 sSumMag;
+  m_pOutChunk->vOpenWrite(m_sOutputFile);
 
-  Timer xElapsedTimer;
-  xElapsedTimer.vStart();
-  
   for (;;) {
-  
+    
     i8 nBytesRead = m_pInChunk->nReadBytes(-1);
     if (! nBytesRead)
       break;
@@ -279,44 +271,13 @@ void Job_Cat::vCat(void)
     if (m_bPrint)
       vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pInChunk->aStr());
     
-    nBytesSoFar += nBytesRead;
+    m_pOutChunk->vCopy(m_pInChunk);
     
-    if (nBytesSoFar && nBytesSoFar >= nNextLimit) {
-      
-      xElapsedTimer.vUpdate();
-      
-      i8 iAvgBytesPerSec = DIV(nBytesSoFar,xElapsedTimer.iSeconds());
-      Magnitudes::vByteMag(iAvgBytesPerSec,2,sAvgMag);
-      Magnitudes::vByteMag(nBytesSoFar,2,sSumMag);
-
-      vTrace("Elapsed %llds: %lls sofar; %s/s\n"_Stz,
-             xElapsedTimer.iSeconds(),
-             sSumMag.aStr(),
-             sAvgMag.aStr());
-      
-      nNextLimit += C_NEXT_INTERVAL;
-    }
-  
+    //m_pOutChunk->vWriteData();
   }
   
-  xElapsedTimer.vUpdate();
-  
-  i8 iAvgBytesPerSec = DIV(nBytesSoFar,xElapsedTimer.iSeconds());
-  
-  Magnitudes::vByteMag(iAvgBytesPerSec,2,sAvgMag);
-  
-  vTrace("Elapsed %llds: %lls sofar; %s/s\n"_Stz,
-         xElapsedTimer.iSeconds(),
-         sSumMag.aStr(),
-         sAvgMag.aStr());
-
-  i8 iExtrapolatedPerDay = iAvgBytesPerSec * 60 * 60 * 24;
-  Magnitudes::vByteMag(iExtrapolatedPerDay,2,sAvgMag);
-  
-  vTrace("Extrapolated %s/day\n"_Stz,
-         sAvgMag.aStr());
-
   m_pInChunk->vCloseFile();
+  m_pOutChunk->vCloseFile();
 }
 
 /*============================================================================*/

@@ -233,6 +233,7 @@ void IoChunk::vSetReporting(Stz* sPrefix, i8 iReportQuantum)
   m_bStatistics    = true;
   m_sReportPrefix  = sPrefix;
   m_iReportQuantum = iReportQuantum;
+  m_nNextReport    = iReportQuantum;
 }
 
 /*----------------------------------------------------------------------------*/
