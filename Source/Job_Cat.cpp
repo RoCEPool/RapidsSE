@@ -262,7 +262,6 @@ void Job_Cat::vCat(void)
   vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputFile.aStr());
   
   m_pInChunk->vOpenRead(m_sFileName);
-  m_pInChunk->vSetReporting("Elapsed"_Stz,C_1GB * 10);
   
   m_pOutChunk->vOpenWrite(m_sOutputFile);
 

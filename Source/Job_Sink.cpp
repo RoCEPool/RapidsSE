@@ -255,8 +255,6 @@ void Job_Sink::vSink(void)
   
   m_pIoChunk->vOpenRead(m_sFileName);
   
-  m_pIoChunk->vSetReporting("Elapsed"_Stz,C_1GB * 10);
-
   m_pByteRate->vSetReporting("Elapsed"_Stz,C_1GB * 10);
   m_pByteRate->vBeginTiming();
   

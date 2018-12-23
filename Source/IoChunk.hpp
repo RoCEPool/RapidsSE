@@ -13,14 +13,6 @@ namespace Loader
   private:
     File m_xFile; // file being used
   
-    bool  m_bStatistics;    // report statistics
-    s32   m_sReportPrefix;  // report prefix
-    i8    m_iReportQuantum; // how often to report at
-  
-    Timer m_xElapsedTimer;  // timer
-    i8    m_nBytesSoFar;    // number of bytes read/written so far
-    i8    m_nNextReport;    // next byte quantity to report at
-  
     // must be last
     Footer m_xFooter;
   
@@ -34,13 +26,9 @@ namespace Loader
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void  vCloseFile(void);
-    void  vExtrapolatedReport(void);
     void  vOpenRead(s256& sPath);
     void  vOpenWrite(s256& sPath);
-    void  vPossiblyReport(void);
     i8    nReadBytes(i8 nBytes);
-    void  vReportStatistics(void);
-    void  vSetReporting(Stz* sPrefix, i8 iReportQuantum);
     i8    nWriteBytes(i8 nBytes);
     void  vWriteData(void);
     Stz*  aStr(void);
