@@ -47,9 +47,10 @@ pDUMPFUN *gpDump[]
 
   /* 26 */ &Dump::vDummy,           // CN_BITARRAY
   /* 27 */ &Dump::vDummy,           // CN_BITMAP
-  /* 28 */ &Dump::vInvalid,         // CN_BUFFERPOOL
   /* 29 */ &Dump::vInvalid,         // CN_BPA
-  
+  /* 28 */ &Dump::vInvalid,         // CN_BUFFERPOOL
+  /*    */ &Dump::vInvalid,         // CN_BYTERATE
+
   /* 30 */ &Dump::vDummy,           // CN_CARRYOVER
   /* 31 */ &Dump::vDummy,           // CN_COLUMN
   /* 32 */ &Dump::vDummy,           // CN_COLUMNVEC
@@ -320,8 +321,9 @@ i8 giClassSize[]
   
   /* 26 */ sizeof(BitArray),           // CN_BITARRAY
   /* 27 */ sizeof(BitArray),           // CN_BITMAP
-  /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 29 */ sizeof(BPA),                // CN_BPA
+  /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
+  /* 28 */ 0,           // CN_BYTERATE
 
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
   /* 31 */ sizeof(Column),             // CN_COLUMN
@@ -592,8 +594,9 @@ eHT geWhichHeap[]
   
   /* 26 */ HT_TRANSIENT_SMALL,   // CN_BITARRAY
   /* 27 */ HT_TRANSIENT_LARGE,   // CN_BITMAP
-  /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
   /* 29 */ HT_INVALID,           // CN_BPA
+  /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
+  /* 29 */ HT_TRANSIENT_SMALL,   // CN_BYTERATE
 
   /* 30 */ HT_INVALID,           // CN_CARRYOVER
   /* 31 */ HT_TRANSIENT_SMALL,   // CN_COLUMN

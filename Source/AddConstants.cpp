@@ -169,9 +169,10 @@ void Axioms::vAddConstants(void)
   /* 13 */ vAddConstant("CN_ATOMIC"_Stz,       CN_ATOMIC);
   /* 14 */ vAddConstant("CN_ATTACHMAP"_Stz,    CN_ATTACHMAP);
   
-  /* 16 */ vAddConstant("CN_BUFFERPOOL"_Stz,   CN_BUFFERPOOL);
   /* 17 */ vAddConstant("CN_BPA"_Stz,          CN_BPA);
-  
+  /* 16 */ vAddConstant("CN_BUFFERPOOL"_Stz,   CN_BUFFERPOOL);
+  /* 16 */ vAddConstant("CN_BYTERATE"_Stz,     CN_BYTERATE);
+
   /* 18 */ vAddConstant("CN_DIC"_Stz,          CN_DIC);
   /*    */ vAddConstant("CN_DICPATH"_Stz,      CN_DICPATH);
   /* 19 */ vAddConstant("CN_DICSTACK"_Stz,     CN_DICSTACK);

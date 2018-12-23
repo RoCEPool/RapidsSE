@@ -47,9 +47,10 @@ enum eCN : u2 // Class Number
   
   /*  26 */ CN_BITARRAY,
   /*  27 */ CN_BITMAP,
-  /*  28 */ CN_BUFFERPOOL,
   /*  29 */ CN_BPA,
-  
+  /*  28 */ CN_BUFFERPOOL,
+  /*     */ CN_BYTERATE,
+
   /*  30 */ CN_CARRYOVER,
   /*  31 */ CN_COLUMN,
   /*  32 */ CN_COLUMNVEC,
@@ -315,9 +316,10 @@ static Stz* aCN[]
   
   /*  26 */ "BITARRAY"_Stz,            // CN_BITARRAY
   /*  27 */ "BITMAP"_Stz,              // CN_BITMAP
-  /*  28 */ "BUFFERPOOL"_Stz,          // CN_BUFFERPOOL
   /*  29 */ "BPA"_Stz,                 // CN_BPA
-  
+  /*  28 */ "BUFFERPOOL"_Stz,          // CN_BUFFERPOOL
+  /*  28 */ "BYTERATE"_Stz,            // CN_BYTERATE
+
   /*  30 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /*  31 */ "COLUMN"_Stz,              // CN_COLUMN
   /*  32 */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC

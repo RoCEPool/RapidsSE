@@ -44,9 +44,10 @@ pFINALIZE *gpFinalize[]
   
   /* 26 */ &Finalize::vUndefined,         // CN_BITARRAY
   /* 27 */ &Finalize::vUndefined,         // CN_BITMAP
-  /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
   /* 29 */ &Finalize::vUndefined,         // CN_BPA
-  
+  /* 28 */ &Finalize::vUndefined,         // CN_BUFFERPOOL
+  /*    */ &Finalize::vUndefined,         // CN_BYTERATE
+
   /* 30 */ &Finalize::vUndefined,         // CN_CARRYOVER
   /* 31 */ &Finalize::vUndefined,         // CN_COLUMN
   /* 32 */ &Finalize::vUndefined,         // CN_COLUMNVEC
