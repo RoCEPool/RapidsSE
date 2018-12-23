@@ -281,7 +281,7 @@ void Job_Cat::vCat(void)
     
     m_pByteRate->vAddBytes(nBytesRead);
 
-    //m_pOutChunk->vWriteData();
+    m_pOutChunk->vWriteData();
   }
   
   m_pByteRate->vEndTiming();
