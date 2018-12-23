@@ -31,17 +31,17 @@ void* DataChunk::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DataChunk::DataChunk(eCN eClass)
-: Object(eClass)
+DataChunk::DataChunk(eCN eClassNo)
+: Object(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
   m_nDataBytes = 0;
   m_aLastDataByte = nullptr;
   
-  m_xWsp.vFill(0xEF,eClass);
+  m_xWsp.vFill(0xEF,eClassNo);
  
-  _postcondition_(_ADDRESS_,_MAGIC_);
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/

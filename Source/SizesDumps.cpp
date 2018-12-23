@@ -323,7 +323,7 @@ i8 giClassSize[]
   /* 27 */ sizeof(BitArray),           // CN_BITMAP
   /* 29 */ sizeof(BPA),                // CN_BPA
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
-  /* 28 */ 0,           // CN_BYTERATE
+  /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
 
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
   /* 31 */ sizeof(Column),             // CN_COLUMN
