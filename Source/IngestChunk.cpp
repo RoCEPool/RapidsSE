@@ -203,7 +203,7 @@ bool IngestChunk::bOpenFile(s256& sPath)
   //m_xFile.vBuffer(C_1MB);
   
   // set no buffering
-  m_xFile.vBuffer(0);
+  m_xFile.vSetBuffering(C_NO_BUFFERING);
   
   return true;
 }

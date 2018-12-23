@@ -100,7 +100,7 @@ void IoChunk::vOpenRead(s256& sPath)
   RASSERT(b);
   
   // set no buffering
-  m_xFile.vBuffer(0);
+  m_xFile.vSetBuffering(C_NO_BUFFERING);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +116,7 @@ void IoChunk::vOpenWrite(s256& sPath)
   RASSERT(b);
   
   // set no buffering
-  m_xFile.vBuffer(0);
+  m_xFile.vSetBuffering(C_NO_BUFFERING);
 }
 
 /*----------------------------------------------------------------------------*/

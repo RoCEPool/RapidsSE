@@ -9,7 +9,9 @@ namespace System
   class Scratch;
   
   static const i8 C_PATH_MAX = 256;
-  
+
+  static const i8 C_NO_BUFFERING = 0;
+
   // Opens for reading. If the file does not exist or cannot be found, the
   // fopen call fails.
   static Stz* C_OPEN_READ = "r"_Stz;
@@ -49,7 +51,7 @@ namespace System
     
     char*   m_aLimit;
     char*   m_aNext;
-    
+  
     Scratch* m_pScratch;
     Scratch* m_pRecord;
     i8       m_iRecordLength;
@@ -69,7 +71,6 @@ namespace System
     
     static bool bRemove(s256& rPath);
     
-    void vBuffer(i8 nBytes);
     void vClear(void);
     void vClose(void);
     bool bExists(Stz *aFilePath);
@@ -96,6 +97,7 @@ namespace System
     void vSeekEnd(void);
     void vSet(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel=0);
     void vSet(FILE* pFilePtr, Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel=0);
+    void vSetBuffering(i8 nBytes);
     SysCall& rSysCall(void);
     i8   iTell(void);
     i8   iTraceLevel(void);

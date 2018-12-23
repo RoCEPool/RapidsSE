@@ -125,26 +125,6 @@ File::~File(void) noexcept(false)
 /*---------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set file buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void File::vBuffer(i8 nBytes)
-{
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-  
-  m_xSysCall.vClear();
-  int iResult;
-  
-  if (nBytes == 0)
-    iResult = setvbuf(m_pFile,NULL,_IONBF,(int)0);
-  else
-    iResult = setvbuf(m_pFile,NULL,_IOFBF,(int)nBytes);
-  
-  if (iResult)
-    vWarn("File::vBuffer: setvbuf failed: %s"_Stz,m_sFilePath.aChar());
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* clear file arguments                                                       */
 /*----------------------------------------------------------------------------*/
 void File::vClear(void)
@@ -727,6 +707,27 @@ void File::vSet(FILE* pFilePtr, Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel)
   m_sOpenMode   = (Stz*)aOpenMode;
   m_pFile    = pFilePtr;
   m_iTraceLevel = iTraceLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set file buffering                                                         */
+/*----------------------------------------------------------------------------*/
+void File::vSetBuffering(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  m_xSysCall.vClear();
+  int iResult;
+  
+  if (C_NO_BUFFERING == nBytes)
+    // set non-buffered file
+    iResult = setvbuf(m_pFile,NULL,_IONBF,(int)0);
+  else
+    // set fully buffered file, with buffer created/managed along with file
+    iResult = setvbuf(m_pFile,NULL,_IOFBF,(int)nBytes);
+  
+  if (iResult)
+    vWarn("File::vBuffer: setvbuf failed: %s"_Stz,m_sFilePath.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
