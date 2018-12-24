@@ -599,25 +599,6 @@ void File::vSet(Stz* aFilePath, Stz* aOpenMode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set file arguments                                                         */
-/*----------------------------------------------------------------------------*/
-void File::vSet(Stz* aFilePath, Stz* aOpenMode, FILE* aFilePtr)
-{
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-
-  m_xSysCall.vClear();
-  
-  if (m_aFile) {
-    vWarn("File::vSet: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
-    vClose();
-  }
-  
-  m_sFilePath   = (Stz*)aFilePath;
-  m_sOpenMode   = (Stz*)aOpenMode;
-  m_aFile       = aFilePtr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set file buffering                                                         */
 /*----------------------------------------------------------------------------*/
 void File::vSetBuffering(i8 nBytes)

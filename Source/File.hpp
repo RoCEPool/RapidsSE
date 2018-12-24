@@ -86,7 +86,6 @@ namespace System
     void vSeek(i8 iOffset);
     void vSeekEnd(void);
     void vSet(Stz* aFilePath, Stz* aOpenMode);
-    void vSet(Stz* aFilePath, Stz* aOpenMode, FILE* aFilePtr);
     void vSetBuffering(i8 nBytes);
     SysCall& rSysCall(void);
     i8   iTell(void);
