@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* write the .cpp header portion of the file                                  */
 /*----------------------------------------------------------------------------*/
-: mungeCppHeader
+: mungeCppHeader ( cppFile -- )
 
-  locals| cppFile |
+  params| cppFile |
 
   "/*============================================================================*/"
   cppFile file.write "\n" cppFile file.write
@@ -107,9 +107,9 @@
 /*----------------------------------------------------------------------------*/
 /* write the .cpp footer portion of the file                                  */
 /*----------------------------------------------------------------------------*/
-: mungeCppFooter
+: mungeCppFooter ( cppFile -- )
 
-  locals| cppFile |
+  params| cppFile |
 
   "}\n" cppFile file.write
   "\n" cppFile file.write
