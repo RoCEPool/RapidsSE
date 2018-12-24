@@ -57,8 +57,8 @@ namespace System
     void operator delete(void* pFileAddress);
   
     File(void);
-    File(Stz* aFilePath, i8 iTraceLevel=0);
-    File(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel=0);
+    File(Stz* aFilePath);
+    File(Stz* aFilePath, Stz* aOpenMode);
    ~File() noexcept(false);
     
     static bool bRemove(s256& rPath);
@@ -75,8 +75,8 @@ namespace System
     bool bIsStdin(void);
     bool bIsStdout(void);
     bool bOpen(void);
-    bool bOpen(Stz* aOpenMode, i8 iTraceLevel=0);
-    bool bOpen(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel=0);
+    bool bOpen(Stz* aOpenMode);
+    bool bOpen(Stz* aFilePath, Stz* aOpenMode);
     s256& sPath(void);
     void vPath(Stz* aFilePath);
     void vPath(StrVal& sFilePath);
@@ -86,8 +86,8 @@ namespace System
     void vReset(void);
     void vSeek(i8 iOffset);
     void vSeekEnd(void);
-    void vSet(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel=0);
-    void vSet(FILE* pFilePtr, Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel=0);
+    void vSet(Stz* aFilePath, Stz* aOpenMode);
+    void vSet(FILE* pFilePtr, Stz* aFilePath, Stz* aOpenMode);
     void vSetBuffering(i8 nBytes);
     SysCall& rSysCall(void);
     i8   iTell(void);

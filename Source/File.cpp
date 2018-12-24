@@ -69,7 +69,7 @@ File::File(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-File::File(Stz* aFilePath, i8 iTraceLevel)
+File::File(Stz* aFilePath)
 : Object(CN_FILE)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
@@ -86,7 +86,7 @@ File::File(Stz* aFilePath, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-File::File(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel)
+File::File(Stz* aFilePath, Stz* aOpenMode)
 : Object(CN_FILE)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
@@ -350,7 +350,7 @@ bool File::bOpen(void)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-bool File::bOpen(Stz* aOpenMode, i8 iTraceLevel)
+bool File::bOpen(Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -379,7 +379,7 @@ bool File::bOpen(Stz* aOpenMode, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-bool File::bOpen(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel)
+bool File::bOpen(Stz* aFilePath, Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -390,7 +390,7 @@ bool File::bOpen(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel)
     vClose();
   }
   
-  vSet((Stz*)aFilePath,aOpenMode,iTraceLevel);
+  vSet((Stz*)aFilePath,aOpenMode);
   
   m_aFile = fopen(m_sFilePath.aChar(),m_sOpenMode.aChar());
   
@@ -590,7 +590,7 @@ void File::vSeekEnd(void)
 /*----------------------------------------------------------------------------*/
 /* set file arguments                                                         */
 /*----------------------------------------------------------------------------*/
-void File::vSet(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel)
+void File::vSet(Stz* aFilePath, Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -608,7 +608,7 @@ void File::vSet(Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* set file arguments                                                         */
 /*----------------------------------------------------------------------------*/
-void File::vSet(FILE* pFilePtr, Stz* aFilePath, Stz* aOpenMode, i8 iTraceLevel)
+void File::vSet(FILE* pFilePtr, Stz* aFilePath, Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
