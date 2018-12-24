@@ -100,7 +100,7 @@ void IoChunk::vOpenRead(s256& sPath)
   RASSERT(b);
   
   // set buffering
-  m_xFile.vSetBuffering(C_1MB);
+  //m_xFile.vSetBuffering(C_1MB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +116,7 @@ void IoChunk::vOpenWrite(s256& sPath)
   RASSERT(b);
   
   // set buffering
-  m_xFile.vSetBuffering(C_1MB);
+  //m_xFile.vSetBuffering(C_1MB);
 }
 
 /*----------------------------------------------------------------------------*/
