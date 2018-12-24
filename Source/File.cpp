@@ -172,6 +172,8 @@ void File::vClose(void)
   }
   
   gxResourceTracker.vDecFileOpen();
+  
+  m_aFile = nullptr;
 
   vReset();
   
@@ -547,6 +549,11 @@ bool File::bRemove(s256& rPath)
 void File::vReset(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
+  if (m_aFile) {
+    vWarn("File::vReset: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
+    vClose();
+  }
 
   m_aFile = nullptr;
   vSet(""_Stz,""_Stz);
