@@ -70,27 +70,6 @@ File::File(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-File::File(Stz* aFilePath)
-: Object(CN_FILE)
-{
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-  
-  
-  m_sFilePath = aFilePath;
-  //m_sOpenMode
-  m_aFile    = nullptr;
-  
-  m_xSysCall.vClear();
-
-
-  _checkInitialised_(CN_FILE);
-  
-  _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 File::File(Stz* aFilePath, Stz* aOpenMode)
 : Object(CN_FILE)
 {

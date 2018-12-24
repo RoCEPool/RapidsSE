@@ -121,9 +121,9 @@ void StepTracker::vReset(void)
 /*----------------------------------------------------------------------------*/
 void StepTracker::vWrite(void)
 {
-  File xFile((Stz*)C_STEPTRACKER_FILE);
+  File xFile;
 
-  bool bOpened = xFile.bOpen(C_OPEN_WRITE);
+  bool bOpened = xFile.bOpen((Stz*)C_STEPTRACKER_FILE,C_OPEN_WRITE);
   if (! bOpened) {
     vTrace("Unable to open StepTracker file: %s\n"_Stz,xFile.sPath().aStr());
     return;

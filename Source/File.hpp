@@ -57,7 +57,6 @@ namespace System
     void operator delete(void* pFileAddress);
   
     File(void);
-    File(Stz* aFilePath);
     File(Stz* aFilePath, Stz* aOpenMode);
    ~File() noexcept(false);
     
