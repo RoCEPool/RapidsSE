@@ -305,7 +305,6 @@
   // file
   static void vFileClose(Tasks::MP_Task mpTask);
   static void vFileDelete(Tasks::MP_Task mpTask);
-  static void vFileInit(Tasks::MP_Task mpTask);
   static void vFileNew(Tasks::MP_Task mpTask);
   static void vFileOpen(Tasks::MP_Task mpTask);
   static void vFilePathGet(Tasks::MP_Task mpTask);

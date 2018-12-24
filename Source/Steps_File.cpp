@@ -15,7 +15,6 @@ void Step::vAddSteps_File(void)
   
   vAddStep("file.close"_Stz,      &Step::vFileClose);
   vAddStep("file.delete"_Stz,     &Step::vFileDelete);
-  vAddStep("file.init"_Stz,       &Step::vFileInit);
   vAddStep("file.open"_Stz,       &Step::vFileOpen);
   vAddStep("file.path@"_Stz,      &Step::vFilePathGet);
   vAddStep("file.read"_Stz,       &Step::vFileRead);
@@ -56,25 +55,6 @@ ENTRY("vFileDelete"_Stz);
   File* pFile = _pFile(pPtrFile);
 
   delete pFile;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* file.init -- initialise a file ( file -- )                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vFileInit(MP_Task mpTask)
-{
-ENTRY("vFileInit"_Stz);
-  
-  Object* pPtrFile;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.init"_Stz);
-  
-  File* pFile = _pFile(pPtrFile);
-  
-  new (pFile) File;
   
   EXIT();
 }
