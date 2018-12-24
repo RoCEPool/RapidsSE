@@ -16,8 +16,7 @@ void vTest1(void)
   Timer xTimer;
   
   vTrace("Reading lineitem.tbl in chunks of %lld\n"_Stz, iChunk);
-  xFile.vPath("/Volumes/Data/Users/alkayamarti/tpch_SF10/lineitem.tbl"_Stz);
-  bool b = xFile.bOpen(C_OPEN_READ);
+  bool b = xFile.bOpen("/Volumes/Data/Users/alkayamarti/tpch_SF10/lineitem.tbl"_Stz,C_OPEN_READ);
   ASSERT(b);
   
   xTimer.vStart();

@@ -194,7 +194,7 @@ bool IngestChunk::bOpenFile(s256& sPath)
   
   // open the file
   m_xFile.vPath(sPath);
-  bool bOpened = m_xFile.bOpen(C_OPEN_READ);
+  bool bOpened = m_xFile.bOpen(sPath,C_OPEN_READ);
 
   if (! bOpened)
     return false;

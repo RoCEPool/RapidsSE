@@ -71,7 +71,6 @@ namespace System
     bool bIsStdin(void);
     bool bIsStdout(void);
     bool bOpen(void);
-    bool bOpen(Stz* aOpenMode);
     bool bOpen(Stz* aFilePath, Stz* aOpenMode);
     s256& sPath(void);
     void vPath(Stz* aFilePath);

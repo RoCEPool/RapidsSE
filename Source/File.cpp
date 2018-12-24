@@ -301,35 +301,6 @@ bool File::bOpen(void)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-bool File::bOpen(Stz* aOpenMode)
-{
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-
-  if (m_aFile) {
-    vWarn("File::bOpen: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
-    vClose();
-  }
-  
-  m_xSysCall.vClear();
-  
-  m_sOpenMode   = (Stz*)aOpenMode;
-  
-  m_aFile = fopen(m_sFilePath.aChar(),m_sOpenMode.aChar());
-  
-  if ( ! m_aFile ) {
-    vWarn("File::bOpen: fopen(%s,%s) error; errno=%d\n"_Stz,
-          m_sFilePath.aChar(),m_sOpenMode.aChar(),errno);
-    return false;
-  }
-  
-  gxResourceTracker.vIncFileOpen();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* open file                                                                  */
-/*----------------------------------------------------------------------------*/
 bool File::bOpen(Stz* aFilePath, Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
