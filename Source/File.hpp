@@ -89,7 +89,7 @@ namespace System
     i8   iTell(void);
     void vUngetChar(char cChar);
     void vUseStdin(void);
-    bool bWriteBytes(void* aSrc, i8 nSize);
+    bool bWriteBytes(void* aSrc, i8 nBytes);
   
     Footer* aFooter(void);
   };

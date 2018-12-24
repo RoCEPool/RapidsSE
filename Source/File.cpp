@@ -310,14 +310,15 @@ bool File::bOpen(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_xSysCall.vClear();
   
   if (m_aFile) {
     vWarn("File::bOpen: previous file not closed: %s"_Stz,m_sFilePath.aChar());
     vClose();
   }
   
-  vTrace("File::bOpen: opening file %s mode %s"_Stz,m_sFilePath.aChar(),m_sOpenMode.aChar());
+  m_xSysCall.vClear();
+
+  //vTrace("File::bOpen: opening file %s mode %s"_Stz,m_sFilePath.aChar(),m_sOpenMode.aChar());
   
   m_aFile = fopen(m_sFilePath.aChar(),m_sOpenMode.aChar());
   
@@ -339,12 +340,12 @@ bool File::bOpen(Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_xSysCall.vClear();
-  
   if (m_aFile) {
     vWarn("File::bOpen: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
     vClose();
   }
+  
+  m_xSysCall.vClear();
   
   m_sOpenMode   = (Stz*)aOpenMode;
   
@@ -368,12 +369,12 @@ bool File::bOpen(Stz* aFilePath, Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_xSysCall.vClear();
-
   if (m_aFile) {
     vWarn("File::bOpen: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
     vClose();
   }
+  
+  m_xSysCall.vClear();
   
   m_sFilePath   = aFilePath;
   m_sOpenMode   = aOpenMode;
@@ -640,12 +641,12 @@ void File::vUseStdin(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  m_xSysCall.vClear();
-  
   if (m_aFile) {
-    vWarn("File::vSet: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
+    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
     vClose();
   }
+  
+  m_xSysCall.vClear();
   
   m_sFilePath   = "stdin"_Stz;
   m_sOpenMode   = C_OPEN_READ;
@@ -655,15 +656,16 @@ void File::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 /* set trace level                                                            */
 /*----------------------------------------------------------------------------*/
-bool File::bWriteBytes(void* pBuffer, i8 nSize)
+bool File::bWriteBytes(void* pBuffer, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   m_xSysCall.vClear();
   
-  i8 iResult = fwrite(pBuffer , 1, nSize, m_aFile);
-  if (iResult != nSize) {
-    vWarn("File::vWriteBytes: fwrite(%p) error; errno=%d\n"_Stz,
+  i8 iResult = fwrite(pBuffer , 1, nBytes, m_aFile);
+  
+  if (iResult != nBytes) {
+    vWarn("File::vWriteBytes: fwrite(%s) error; errno=%d\n"_Stz,
           m_sFilePath.aChar(),errno);
     m_xSysCall.vError(errno);
     return false;
