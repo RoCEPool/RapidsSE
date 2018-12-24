@@ -108,15 +108,17 @@ ENTRY("vFileOpen"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrFile) )
     THROW_INVALID_DSTACK("file.open"_Stz);
-  
   File* pFile = _pFile(pPtrFile);
   
   s32 sMode;
-  
   if ( ! mpTask->m_pDataStack->bPop(sMode) )
     THROW("file.open"_Stz);
   
-  bool bOpened = pFile->bOpen(sMode);
+  s256 sPath;
+  if ( ! mpTask->m_pDataStack->bPop(sPath) )
+    THROW_INVALID_DSTACK("file.open"_Stz);
+  
+  bool bOpened = pFile->bOpen(sPath,sMode);
   
   mpTask->m_pDataStack->vPushInt(bOpened);
   

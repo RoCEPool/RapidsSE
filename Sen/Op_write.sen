@@ -15,7 +15,7 @@ common/ write nStreams    /
 /*----------------------------------------------------------------------------*/
 : writeOpenFile subDic write ( plan -- )
 
-  locals| thePlan  |
+  params| thePlan  |
 
   // open new file?
   filePointer if
@@ -24,16 +24,14 @@ common/ write nStreams    /
     exit
   then
 
+  // create a file pointer
+  file::new toCommon filePointer
+
   // get file name
   thePlan plan.dic task::this task.dicStack dicStack.push
   $$fileNm //dup .
   task::this task.dicStack dicStack.drop
 
-  // create a file pointer
-  file::new toCommon filePointer
-
-  // set file path
-  filePointer file.path!
 
   // open file for writing
   OPEN_READ_WRITE_CREATE filePointer file.open

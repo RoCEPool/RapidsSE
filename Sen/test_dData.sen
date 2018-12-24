@@ -16,8 +16,11 @@
 
   file::new locals| pFile |
 
-  sFileNm pFile file.path!
-  OPEN_WRITE pFile file.open not if "file not opened" . exit then
+  sFileNm OPEN_WRITE pFile file.open
+  not if
+    "file not opened" .
+    exit
+  then
 
   nRecs 0 > if
     nRecs 0

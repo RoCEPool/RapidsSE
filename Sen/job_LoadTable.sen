@@ -135,9 +135,7 @@
 
     file::new to pFile
 
-    pJob_LoadTable job_LoadTable.filePath@ pFile file.path!
-
-    OPEN_READ pFile file.open ( t|f )
+    pJob_LoadTable job_LoadTable.filePath@ OPEN_READ pFile file.open
     not if
        pFile file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable <ERROR_JOB> !!am exit
     then

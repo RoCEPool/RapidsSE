@@ -11,9 +11,11 @@
 
   file::new locals| pFile |
 
-  "../JTEST/j1000.csv" pFile file.path!
-
-  OPEN_WRITE pFile file.open not if "file not opened" . exit then
+  "../JTEST/j1000.csv" OPEN_WRITE pFile file.open
+  not if
+    "file not opened" .
+    exit
+  then
 
   1000 0
   do
@@ -37,9 +39,11 @@
 
   file::new locals| pFile |
 
-  "../JTEST/j100.csv" pFile file.path!
-
-  OPEN_WRITE pFile file.open not if "file not opened" . exit then
+  "../JTEST/j100.csv" OPEN_WRITE pFile file.open
+  not if
+    "file not opened" .
+    exit
+  then
 
   100 0
   do
@@ -61,9 +65,11 @@
 
   file::new locals| pFile |
 
-  "../JTEST/j10.csv" pFile file.path!
-
-  OPEN_WRITE pFile file.open not if "file not opened" . exit then
+  "../JTEST/j10.csv" OPEN_WRITE pFile file.open
+  not if
+    "file not opened" .
+    exit
+  then
 
   10 0
   do
@@ -83,9 +89,11 @@
 
   file::new locals| pFile |
 
-  "../JTEST/jDupe27.csv" pFile file.path!
-
-  OPEN_WRITE pFile file.open not if "file not opened" . exit then
+  "../JTEST/jDupe27.csv" OPEN_WRITE pFile file.open
+  not if
+    "file not opened" .
+    exit
+  then
 
   27 0
   do
