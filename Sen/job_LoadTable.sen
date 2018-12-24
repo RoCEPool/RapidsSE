@@ -116,7 +116,7 @@
 
   params| pJob_LoadTable  |
 
-  0 locals| fp |
+  0 locals| pFile |
   0 locals| iOriginNode |
 
   pJob_LoadTable job.objectName@ locals| sTableNm |
@@ -133,16 +133,16 @@
 
   iOriginNode node::isOrigin if
 
-    file::new to fp
+    file::new to pFile
 
-    pJob_LoadTable job_LoadTable.filePath@ fp file.path!
+    pJob_LoadTable job_LoadTable.filePath@ pFile file.path!
 
-    OPEN_READ fp file.open ( t|f )
+    OPEN_READ pFile file.open ( t|f )
     not if
-       fp file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable <ERROR_JOB> !!am exit
+       pFile file.delete assert::stack_0 EC_INVALID_FILE pJob_LoadTable <ERROR_JOB> !!am exit
     then
 
-    fp file.close fp file.delete assert::stack_0
+    pFile file.close pFile file.delete assert::stack_0
 
   then
 
