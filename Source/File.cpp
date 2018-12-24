@@ -123,25 +123,6 @@ File::~File(void) noexcept(false)
 /*---------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* clear file arguments                                                       */
-/*----------------------------------------------------------------------------*/
-void File::vClear(void)
-{
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-  
-  if (m_aFile) {
-    vWarn("File::vSet: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
-    vClose();
-  }
-  
-  m_xSysCall.vClear();
-    
-  m_sFilePath   = ""_Stz;
-  m_sOpenMode   = ""_Stz;
-  m_aFile       = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* close file                                                                 */
 /*----------------------------------------------------------------------------*/
 void File::vClose(void)

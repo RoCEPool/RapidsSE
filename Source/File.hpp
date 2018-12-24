@@ -63,7 +63,6 @@ namespace System
     
     static bool bRemove(s256& rPath);
     
-    void vClear(void);
     void vClose(void);
     bool bExists(Stz *aFilePath);
     char cGetChar(void);
