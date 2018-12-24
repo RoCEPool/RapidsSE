@@ -148,11 +148,13 @@
 /*----------------------------------------------------------------------------*/
 /* munge one .sen file                                                        */
 /*----------------------------------------------------------------------------*/
-: mungeSenFile ( "<fileNm"> cppFile -- )
+: mungeSenFile ( cppFile "<fileNm>" -- )
 
-  file::new locals| senFile cppFile |
+  params| fileNm cppFile |
 
-  senFile file.path!
+  file::new locals| senFile |
+
+  fileNm senFile file.path!
 
   OPEN_READ senFile file.open assert
 
@@ -181,7 +183,7 @@
     senDir dir.entryName .
 
     // convert to C++
-    senDir dir.entryName cppFile mungeSenFile
+    cppFile senDir dir.entryName mungeSenFile
 
   repeat
 ;
