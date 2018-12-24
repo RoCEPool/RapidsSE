@@ -91,6 +91,7 @@ namespace System
     SysCall& rSysCall(void);
     i8   iTell(void);
     void vUngetChar(char cChar);
+    void vUseStdin(void);
     bool bWriteBytes(void* aSrc, i8 nSize);
   
     Footer* aFooter(void);

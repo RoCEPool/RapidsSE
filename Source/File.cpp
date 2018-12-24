@@ -687,6 +687,25 @@ void File::vUngetChar(char cChar)
 }
 
 /*----------------------------------------------------------------------------*/
+/* use stdin                                                                  */
+/*----------------------------------------------------------------------------*/
+void File::vUseStdin(void)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  m_xSysCall.vClear();
+  
+  if (m_aFile) {
+    vWarn("File::vSet: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
+    vClose();
+  }
+  
+  m_sFilePath   = "stdin"_Stz;
+  m_sOpenMode   = C_OPEN_READ;
+  m_aFile       = stdin;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set trace level                                                            */
 /*----------------------------------------------------------------------------*/
 bool File::bWriteBytes(void* pBuffer, i8 nSize)
