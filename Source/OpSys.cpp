@@ -48,18 +48,18 @@ i8 OpSys::iSchedulerPeriod_us(void)
   i8 iFreq = 0;
   
   // open the /Proc/cpuinfo file
-  FILE* fp = fopen("/proc/cpuinfo", "r");
-  if ( !fp ) {
+  FILE* aFile = fopen("/proc/cpuinfo", "r");
+  if ( !aFile ) {
     vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d"_Stz, errno);
     return 0;
   }
   
   // look for cpu MHz
-  while (fgets(buf, C_BUFSIZ, fp) != NULL) {
+  while (fgets(buf, C_BUFSIZ, aFile) != NULL) {
     if (strstr(buf, "cpu MHz") == NULL)
       continue;
     
-    char*p = strchr(buf,':');
+    char* p = strchr(buf,':');
     if (p == NULL)
       continue;
     p++;
