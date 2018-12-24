@@ -9,27 +9,25 @@
 /*----------------------------------------------------------------------------*/
 : jData1000
 
-  file::new >r
+  file::new locals| pFile |
 
-  "../JTEST/j1000.csv" r0 file.path!
+  "../JTEST/j1000.csv" pFile file.path!
 
-  OPEN_WRITE r0 file.open not if "file not opened" . exit then
+  OPEN_WRITE pFile file.open not if "file not opened" . exit then
 
   1000 0
   do
-    I >str          r2 file.write
-    "|"             r2 file.write
-    I >DigitWords   r2 file.write
-    "|"             r2 file.write
-    I 100 % >str    r2 file.write
-    "|"             r2 file.write
-    I 10 % >str     r2 file.write
-    "\n"            r2 file.write
+    I >str          pFile file.write
+    "|"             pFile file.write
+    I >DigitWords   pFile file.write
+    "|"             pFile file.write
+    I 100 % >str    pFile file.write
+    "|"             pFile file.write
+    I 10 % >str     pFile file.write
+    "\n"            pFile file.write
   loop
 
-  r0 file.close
-
-  rdrop
+  pFile file.close
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,25 +35,23 @@
 /*----------------------------------------------------------------------------*/
 : jData100
 
-  file::new >r
+  file::new locals| pFile |
 
-  "../JTEST/j100.csv" r0 file.path!
+  "../JTEST/j100.csv" pFile file.path!
 
-  OPEN_WRITE r0 file.open not if "file not opened" . exit then
+  OPEN_WRITE pFile file.open not if "file not opened" . exit then
 
   100 0
   do
-    I >str          r2 file.write
-    "|"             r2 file.write
-    I >DigitWords   r2 file.write
-    "|"             r2 file.write
-    I 10 % >str     r2 file.write
-    "\n"            r2 file.write
+    I >str          pFile file.write
+    "|"             pFile file.write
+    I >DigitWords   pFile file.write
+    "|"             pFile file.write
+    I 10 % >str     pFile file.write
+    "\n"            pFile file.write
   loop
 
-  r0 file.close
-
-  rdrop
+  pFile file.close
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -63,23 +59,21 @@
 /*----------------------------------------------------------------------------*/
 : jData10
 
-  file::new >r
+  file::new locals| pFile |
 
-  "../JTEST/j10.csv" r0 file.path!
+  "../JTEST/j10.csv" pFile file.path!
 
-  OPEN_WRITE r0 file.open not if "file not opened" . exit then
+  OPEN_WRITE pFile file.open not if "file not opened" . exit then
 
   10 0
   do
-    I >str          r2 file.write
-    "|"             r2 file.write
-    I >DigitWords   r2 file.write
-    "\n"            r2 file.write
+    I >str          pFile file.write
+    "|"             pFile file.write
+    I >DigitWords   pFile file.write
+    "\n"            pFile file.write
   loop
 
-  r0 file.close
-
-  rdrop
+  pFile file.close
 ;
 
 /*----------------------------------------------------------------------------*/
