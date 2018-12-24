@@ -369,9 +369,7 @@ bool CommandProcessor::bTestFile(Stz* aFileName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  File xFile;
-  
-  if (xFile.bExists(aFileName))
+  if (File::bExists(aFileName))
     return true;
   else
     return false;

@@ -61,8 +61,8 @@ namespace System
     File(Stz* aFilePath, Stz* aOpenMode);
    ~File() noexcept(false);
     
+    static bool bExists(Stz *aFilePath);
     static bool bRemove(Stz* aFilePath);
-    bool bExists(Stz *aFilePath);
 
     void vClose(void);
     char cGetChar(void);

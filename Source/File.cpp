@@ -128,28 +128,11 @@ File::~File(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* remove specified file from file system                                     */
-/*----------------------------------------------------------------------------*/
-bool File::bRemove(Stz* aFilePath)
-{
-  int iResult = unlink(aFilePath->aChar());
-  
-  if (-1 == iResult) {
-    vWarn("File::bRemove: unlink() error; errno=%d"_Stz,errno);
-    return false;
-  }
-  
-  return true;
-}
-
 /*---------------------------------------------------------------------------*/
-/* test if named file exists                                                 */
+/* test if given file exists in file system                                  */
 /*---------------------------------------------------------------------------*/
 bool File::bExists(Stz* aFilePath)
 {
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-  
   struct stat xStat;
   
   int iResult = stat(aFilePath->aChar(),&xStat);
@@ -163,6 +146,21 @@ bool File::bExists(Stz* aFilePath)
   vWarn("File::bExists: %s stat() error; errno=%d"_Stz, aFilePath->aChar(), errno);
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given file from file system                                         */
+/*----------------------------------------------------------------------------*/
+bool File::bRemove(Stz* aFilePath)
+{
+  int iResult = unlink(aFilePath->aChar());
+  
+  if (-1 == iResult) {
+    vWarn("File::bRemove: unlink() error; errno=%d"_Stz,errno);
+    return false;
+  }
+  
+  return true;
 }
 
 
