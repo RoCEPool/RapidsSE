@@ -173,26 +173,27 @@ ENTRY("vFilePathSet"_Stz);
 /*----------------------------------------------------------------------------*/
 void Step::vFileRead(MP_Task mpTask)
 {
-ENTRY("vFileRead"_Stz);
+  ENTRY("vFileRead"_Stz);
   
   Object* pPtrFile;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrFile) )
     THROW_INVALID_DSTACK("file.read"_Stz);
-  
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
   s48K sLine;
-
-  if (pFile->bReadLine(sLine)) {
+  
+  bool bResult = pFile->bReadLine(sLine);
+  
+  if (bResult) {
     mpTask->m_pDataStack->vPushS48K(sLine);
     mpTask->m_pDataStack->vPushInt((i8)1);
   }
   else {
     mpTask->m_pDataStack->vPushInt((i8)0);
   }
-  
+
   EXIT();
 }
 

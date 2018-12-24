@@ -520,15 +520,6 @@ bool File::bReadLine(Stz* aBuffer)
 
   m_xSysCall.vClear();
   
-  // nb: man fscanf does not indicate that errno gets set???
-  
-  //i8 nItems;
-  
-  //  if (stdin == m_pFile)
-  //    nItems = fscanf(m_pFile,"%[^\n]%*c",s.aChar());
-  //  else
-  //    nItems = fscanf(m_pFile,"%[^\n]\n",s.aChar());
-  
   char *y = aBuffer->aChar();
   
   *y = '\0';
@@ -543,57 +534,6 @@ bool File::bReadLine(Stz* aBuffer)
   *y = '\0';
   
   if (*aBuffer->aChar()) {
-    m_xSysCall.vSuccess();
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* read next line                                                             */
-/*----------------------------------------------------------------------------*/
-bool File::bReadLine(StrVal& s)
-{
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-  
-  m_xSysCall.vClear();
-  
-  if ( ! m_pScratch ) {
-    m_pScratch = new Scratch;
-    m_aNext  = m_pScratch->aWspArea();
-    m_aLimit = m_pScratch->aWspArea();
-  }
-  
-  char* z = s.aChar();
-  *z = '\0';
-  
-  i8 nChars = 0;
-  for (;;) {
-    
-    if (m_aNext == m_aLimit) {
-      m_aNext = m_pScratch->aWspArea();
-      i8 iBytesRead = fread(m_aNext,1,m_pScratch->nWspLength(),m_pFile);
-      
-      if ( ! iBytesRead )
-        break;
-      
-      m_aLimit = m_aNext + iBytesRead;
-    }
-    
-    char c = *m_aNext++;
-    nChars++;
-    
-    if ('\n' == c || (char)EOF == c)
-      break;
-    
-    *z++ = c;
-  }
-  
-  *z = '\0';
-  
-  if (nChars) {
     m_xSysCall.vSuccess();
     return true;
   }

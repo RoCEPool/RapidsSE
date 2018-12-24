@@ -90,7 +90,6 @@ namespace System
     void vPath(StrVal& sFilePath);
     void vPrint(Stz* aFormat,...);
     i8   iReadBytes(void* aDst, i8 nBytes);
-    bool bReadLine(StrVal& s);
     bool bReadLine(Stz* y);
     void vReset(void);
     void vSeek(i8 iOffset);
