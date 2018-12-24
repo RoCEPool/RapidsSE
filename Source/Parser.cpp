@@ -316,7 +316,7 @@ void Parser::vResetParser(void)
   
   // reset input sources
   m_eSource   = IS_NONE;
-  m_xFile.vZero();
+  m_xFile.vClear();
   m_bLineMode = false;
   m_sRawLine  = ""_Stz;
   m_aRawLine  = m_sRawLine.aChar();

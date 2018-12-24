@@ -93,7 +93,6 @@ namespace System
     i8   iTell(void);
     void vUngetChar(char cChar);
     bool bWriteBytes(void* aSrc, i8 nSize);
-    void vZero(void);
   
     Footer* aFooter(void);
   };

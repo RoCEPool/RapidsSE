@@ -129,11 +129,16 @@ void File::vClear(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
+  if (m_aFile) {
+    vWarn("File::vSet: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
+    vClose();
+  }
+  
   m_xSysCall.vClear();
     
   m_sFilePath   = ""_Stz;
   m_sOpenMode   = ""_Stz;
-  m_aFile    = nullptr;
+  m_aFile       = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -711,20 +716,6 @@ bool File::bWriteBytes(void* pBuffer, i8 nSize)
   }
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* zero this structure -- used only in special/nesting cases                  */
-/*----------------------------------------------------------------------------*/
-void File::vZero(void)
-{
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-
-  m_xSysCall.vClear();
-  
-  m_sFilePath   = ""_Stz;
-  m_sOpenMode   = ""_Stz;
-  m_aFile    = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
