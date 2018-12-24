@@ -138,7 +138,7 @@ bool Parser::bUseFile(StrVal& sPath)
   m_eSource = IS_FILE;
   m_bRead = true;
   
-  bool bOpened = m_xFile.bOpen(C_OPEN_READ);
+  bool bOpened = m_xFile.bOpen(sPath,C_OPEN_READ);
   
   return bOpened;
 }

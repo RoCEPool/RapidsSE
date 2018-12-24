@@ -739,8 +739,7 @@ void RapidsSE::vWriteRegionName(void)
   // used by shell script to start se prompt
   if (gxArguments.m_bStart) {
     File xFile;
-    xFile.vPath("./se.region"_Stz);
-    bool b = xFile.bOpen(C_OPEN_READ_WRITE_CREATE);
+    bool b = xFile.bOpen("./se.region"_Stz,C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
     xFile.vPrint("%s\n"_Stz,gxArguments.m_sRegionName.aChar());
     xFile.vClose();

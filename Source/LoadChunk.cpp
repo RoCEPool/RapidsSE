@@ -149,7 +149,7 @@ void LoadChunk::vOpenFile(s256& sPath)
   
   // open the file
   m_xFile.vPath(sPath);
-  bool b = m_xFile.bOpen(C_OPEN_READ);
+  bool b = m_xFile.bOpen(sPath,C_OPEN_READ);
   RASSERT(b);
   
   // set buffer

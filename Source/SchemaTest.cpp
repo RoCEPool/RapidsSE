@@ -603,7 +603,7 @@ void SchemaTest::vForPattern(i8 nX, i8 nC, i8 nZ)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vOpenFile(void)
 {
-  bool bOpened = m_xFile.bOpen(C_OPEN_WRITE);
+  bool bOpened = m_xFile.bOpen(m_sFileNm,C_OPEN_WRITE);
   RASSERT(bOpened);
 }
 
