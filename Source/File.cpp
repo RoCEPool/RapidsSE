@@ -555,8 +555,11 @@ void File::vReset(void)
     vClose();
   }
 
-  m_aFile = nullptr;
-  vSet(""_Stz,""_Stz);
+  m_xSysCall.vClear();
+  
+  m_sFilePath   = ""_Stz;
+  m_sOpenMode   = ""_Stz;
+  m_aFile       = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
