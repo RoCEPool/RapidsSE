@@ -61,10 +61,10 @@ namespace System
     File(Stz* aFilePath, Stz* aOpenMode);
    ~File() noexcept(false);
     
-    static bool bRemove(s256& sPath);
-    
-    void vClose(void);
+    static bool bRemove(Stz* aPath);
     bool bExists(Stz *aFilePath);
+
+    void vClose(void);
     char cGetChar(void);
     void vFileDump(void);
     void vFlush(void);
