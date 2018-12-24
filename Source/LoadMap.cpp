@@ -43,13 +43,16 @@ void LoadMap::operator delete(void* pLoadMapAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LoadMap::LoadMap(void)
+LoadMap::LoadMap(Stz* aFilePath)
 : Object(CN_LOADMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
   m_iEntries = 0;
   m_bDone    = false;
+  
+  m_sFilePath = aFilePath;
+  
   m_zLock.vInitLock(LK_LOAD_MAP);
   m_iNext    = 0;
   for (i8 i_Entry = 0; i_Entry < C_LOADMAP_ENTRIES; i_Entry++)
@@ -99,14 +102,6 @@ void LoadMap::vDumpMap(void)
   }
 
   vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set file path                                                              */
-/*----------------------------------------------------------------------------*/
-void LoadMap::vFilePath(StrVal& sPath)
-{
-  m_xChunkFile.vPath(sPath);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +159,7 @@ bool LoadMap::bFindChunk(void)
   
   // open the file 
   if (! m_xChunkFile.bIsOpen()) {
-    bool b = m_xChunkFile.bOpen(C_OPEN_READ);
+    bool b = m_xChunkFile.bOpen(m_sFilePath,C_OPEN_READ);
     if (! b)
       return false;
     

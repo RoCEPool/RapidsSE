@@ -14,6 +14,7 @@ namespace Loader
     i8   m_iEntries;   // logical limit of m_iEnd
     bool m_bDone;      // is map complete?
     
+    s256 m_sFilePath;  // file path
     File m_xChunkFile; // from which file
     i8   m_iChunkNext; // seek before next read
     char m_xBlockTest[C_LOADMAP_BLOCK];
@@ -29,14 +30,13 @@ namespace Loader
     void* operator new(size_t);
     void  operator delete(void*);
     
-    LoadMap(void);
+    LoadMap(Stz* aFilePath);
     ~LoadMap(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     void vDumpMap(void);
-    void vFilePath(StrVal& sPath);
-    
+     
     bool bFindChunk(void);
     
     void vEolOffset(i8 iEolOffset);
