@@ -56,8 +56,12 @@ File::File(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  vInit();
- 
+  //m_sFilePath
+  //m_sOpenMode
+  m_aFile    = nullptr;
+  
+  m_xSysCall.vClear();
+
   _checkInitialised_(CN_FILE);
   
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
@@ -71,9 +75,13 @@ File::File(Stz* aFilePath)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  vInit();
   
   m_sFilePath = aFilePath;
+  //m_sOpenMode
+  m_aFile    = nullptr;
+  
+  m_xSysCall.vClear();
+
 
   _checkInitialised_(CN_FILE);
   
@@ -88,11 +96,12 @@ File::File(Stz* aFilePath, Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  vInit();
-  
   m_sFilePath = aFilePath;
   m_sOpenMode = aOpenMode;
+  m_aFile    = nullptr;
   
+  m_xSysCall.vClear();
+
   _checkInitialised_(CN_FILE);
   
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
@@ -234,21 +243,6 @@ char File::cGetChar(void)
     cChar = 0;
   
   return cChar;
-}
-
-/*----------------------------------------------------------------------------*/
-/* init                                                                       */
-/*----------------------------------------------------------------------------*/
-void File::vInit(void)
-{
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-
-  //m_xSysCall.vSetMagic();
-  
-  //m_sFilePath
-  //m_sOpenMode
-  m_aFile    = nullptr;
-  m_xSysCall.vClear();
 }
 
 /*----------------------------------------------------------------------------*/

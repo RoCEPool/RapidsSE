@@ -68,7 +68,6 @@ namespace System
     char cGetChar(void);
     void vFileDump(void);
     void vFlush(void);
-    void vInit(void);
     bool bIsClosed(void);
     bool bIsOpen(void);
     bool bIsStdin(void);
