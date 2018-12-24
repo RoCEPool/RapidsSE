@@ -9,9 +9,6 @@
 extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 File* System::_pFile(void* aAddr)
@@ -143,9 +140,9 @@ void File::vClose(void)
     return;
   }
   
-  i8 rCode = fclose(m_aFile);
+  i8 iResult = fclose(m_aFile);
   
-  if ((char)EOF == rCode) {
+  if ((char)EOF == iResult) {
     m_xSysCall.vError(errno);
     vWarn("File::vClose: fclose(%p) error; errno=%d : %s %s"_Stz,
           m_aFile,errno,m_sFilePath.aChar(),m_sOpenMode.aChar());
@@ -184,14 +181,14 @@ bool File::bExists(Stz* psFileName)
   
   struct stat xStat;
   
-  int rCode = stat(psFileName->aChar(),&xStat);
+  int iResult = stat(psFileName->aChar(),&xStat);
   
-  if (0 == rCode && (xStat.st_mode & S_IFREG)) {
+  if (0 == iResult && (xStat.st_mode & S_IFREG)) {
     m_xSysCall.vSuccess();
     return true;
   }
   
-  if (rCode && ENOENT == errno) {
+  if (iResult && ENOENT == errno) {
     m_xSysCall.vFailure(0);
     return false;
   }
@@ -211,9 +208,9 @@ void File::vFlush(void)
 
   m_xSysCall.vClear();
   
-  i8 rCode = fflush(m_aFile);
+  i8 iResult = fflush(m_aFile);
 
-  if ((char)EOF == rCode) {
+  if ((char)EOF == iResult) {
     m_xSysCall.vError(errno);
     vWarn("File::vFlush: fflush() error; errno=%d"_Stz,errno);
     return;
@@ -514,9 +511,9 @@ bool File::bRemove(s256& rPath)
 {
   char* aPath = rPath.aChar();
   
-  int rCode = unlink(aPath);
+  int iResult = unlink(aPath);
   
-  if (-1 == rCode) {
+  if (-1 == iResult) {
     vWarn("File::bRemove: rmdir() error; errno=%d"_Stz,errno);
     return false;
   }
@@ -552,9 +549,9 @@ void File::vSeek(i8 iOffset)
 
   m_xSysCall.vClear();
   
-  i8 rCode = fseeko(m_aFile,iOffset,SEEK_SET);
+  i8 iResult = fseeko(m_aFile,iOffset,SEEK_SET);
   
-  if (rCode) {
+  if (iResult) {
     m_xSysCall.vError(errno);
     vWarn("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
     return;
@@ -572,9 +569,9 @@ void File::vSeekEnd(void)
 
   m_xSysCall.vClear();
   
-  i8 rCode = fseeko(m_aFile,0,SEEK_END);
+  i8 iResult = fseeko(m_aFile,0,SEEK_END);
   
-  if (rCode) {
+  if (iResult) {
     m_xSysCall.vError(errno);
     vWarn("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
     return;
@@ -660,9 +657,9 @@ i8 File::iTell(void)
   
   m_xSysCall.vClear();
   
-  i8 rCode = ftello(m_aFile);
+  i8 iResult = ftello(m_aFile);
   
-  if (-1 == rCode) {
+  if (-1 == iResult) {
     m_xSysCall.vError(errno);
     vWarn("File::iTell: ftello() error; errno=%d"_Stz,errno);
     return -1;
@@ -670,7 +667,7 @@ i8 File::iTell(void)
   
   m_xSysCall.vSuccess();
   
-  return rCode;
+  return iResult;
 }
 
 /*----------------------------------------------------------------------------*/
