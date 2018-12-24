@@ -61,7 +61,7 @@ namespace System
     File(Stz* aFilePath, Stz* aOpenMode);
    ~File() noexcept(false);
     
-    static bool bRemove(Stz* aPath);
+    static bool bRemove(Stz* aFilePath);
     bool bExists(Stz *aFilePath);
 
     void vClose(void);

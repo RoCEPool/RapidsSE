@@ -131,9 +131,9 @@ File::~File(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* remove specified file from file system                                     */
 /*----------------------------------------------------------------------------*/
-bool File::bRemove(Stz* aPath)
+bool File::bRemove(Stz* aFilePath)
 {
-  int iResult = unlink(aPath->aChar());
+  int iResult = unlink(aFilePath->aChar());
   
   if (-1 == iResult) {
     vWarn("File::bRemove: unlink() error; errno=%d"_Stz,errno);
@@ -142,6 +142,29 @@ bool File::bRemove(Stz* aPath)
   
   return true;
 }
+
+/*---------------------------------------------------------------------------*/
+/* test if named file exists                                                 */
+/*---------------------------------------------------------------------------*/
+bool File::bExists(Stz* aFilePath)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  struct stat xStat;
+  
+  int iResult = stat(aFilePath->aChar(),&xStat);
+  
+  if (0 == iResult && (xStat.st_mode & S_IFREG))
+    return true;
+  
+  if (iResult && ENOENT == errno)
+    return false;
+  
+  vWarn("File::bExists: %s stat() error; errno=%d"_Stz, aFilePath->aChar(), errno);
+  
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -196,35 +219,6 @@ void File::vFileDump(void)
   vTrace("%sFile:\n"_Stz, m_sFilePath.aChar());
   vTrace("%s  Open Mode %s\n"_Stz, m_sOpenMode.aChar());
   vTrace("%s  File Pointer 0x%p\n"_Stz, m_aFile);
-}
-
-/*---------------------------------------------------------------------------*/
-/* test if named file exists                                                 */
-/*---------------------------------------------------------------------------*/
-bool File::bExists(Stz* psFileName)
-{
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-
-  m_xSysCall.vClear();
-  
-  struct stat xStat;
-  
-  int iResult = stat(psFileName->aChar(),&xStat);
-  
-  if (0 == iResult && (xStat.st_mode & S_IFREG)) {
-    m_xSysCall.vSuccess();
-    return true;
-  }
-  
-  if (iResult && ENOENT == errno) {
-    m_xSysCall.vFailure(0);
-    return false;
-  }
-  
-  m_xSysCall.vError(errno);
-  vWarn("File::bExists: %s stat() error; errno=%d"_Stz, psFileName->aChar(), errno);
-  
-  return false;
 }
 
 /*---------------------------------------------------------------------------*/
