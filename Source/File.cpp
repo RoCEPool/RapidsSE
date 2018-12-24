@@ -420,23 +420,6 @@ void File::vPath(Stz* aFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set path                                                                   */
-/*----------------------------------------------------------------------------*/
-void File::vPath(StrVal& sFilePath)
-{
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-
-  m_xSysCall.vClear();
-  
-  if (m_aFile) {
-    vWarn("File::vPath: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
-    vClose();
-  }
-  
-  m_sFilePath = sFilePath;
-}
-
-/*----------------------------------------------------------------------------*/
 /* formatted print                                                            */
 /*----------------------------------------------------------------------------*/
 void File::vPrint(Stz* aFormat, ...)
