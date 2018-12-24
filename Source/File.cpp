@@ -375,8 +375,9 @@ bool File::bOpen(Stz* aFilePath, Stz* aOpenMode)
     vClose();
   }
   
-  vSet((Stz*)aFilePath,aOpenMode);
-  
+  m_sFilePath   = aFilePath;
+  m_sOpenMode   = aOpenMode;
+
   m_aFile = fopen(m_sFilePath.aChar(),m_sOpenMode.aChar());
   
   if ( ! m_aFile ) {
@@ -578,24 +579,6 @@ void File::vSeekEnd(void)
   }
   
   m_xSysCall.vSuccess();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set file arguments                                                         */
-/*----------------------------------------------------------------------------*/
-void File::vSet(Stz* aFilePath, Stz* aOpenMode)
-{
-  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-
-  m_xSysCall.vClear();
-  
-  if (m_aFile) {
-    vWarn("File::vSet: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
-    vClose();
-  }
-  
-  m_sFilePath   = (Stz*)aFilePath;
-  m_sOpenMode   = (Stz*)aOpenMode;
 }
 
 /*----------------------------------------------------------------------------*/
