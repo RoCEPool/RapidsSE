@@ -44,11 +44,10 @@ namespace System
   private:
     s256    m_sFilePath;   // the path of the file (relative or absolute)
     s32     m_sOpenMode;   // open mode
-    i8      m_iTraceLevel;
-    FILE*   m_pFile;
+    FILE*   m_aFile;       // the os/lib file pointer
   
     SysCall m_xSysCall;
-    
+  
     // must be last
     Footer m_xFooter;
     
@@ -92,8 +91,6 @@ namespace System
     void vSetBuffering(i8 nBytes);
     SysCall& rSysCall(void);
     i8   iTell(void);
-    i8   iTraceLevel(void);
-    void vTraceLevel(i8 iTraceLevel);
     void vUngetChar(char cChar);
     bool bWriteBytes(void* aSrc, i8 nSize);
     void vZero(void);
