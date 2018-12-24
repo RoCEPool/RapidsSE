@@ -309,7 +309,6 @@
   static void vFileNew(Tasks::MP_Task mpTask);
   static void vFileOpen(Tasks::MP_Task mpTask);
   static void vFilePathGet(Tasks::MP_Task mpTask);
-  static void vFilePathSet(Tasks::MP_Task mpTask);
   static void vFileRead(Tasks::MP_Task mpTask);
   static void vFileReadRecord(Tasks::MP_Task mpTask);
   static void vFileWrite(Tasks::MP_Task mpTask);

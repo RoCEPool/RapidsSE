@@ -18,7 +18,6 @@ void Step::vAddSteps_File(void)
   vAddStep("file.init"_Stz,       &Step::vFileInit);
   vAddStep("file.open"_Stz,       &Step::vFileOpen);
   vAddStep("file.path@"_Stz,      &Step::vFilePathGet);
-  vAddStep("file.path!"_Stz,      &Step::vFilePathSet);
   vAddStep("file.read"_Stz,       &Step::vFileRead);
   vAddStep("file.write"_Stz,      &Step::vFileWrite);
 }
@@ -142,30 +141,6 @@ ENTRY("vFilePathGet"_Stz);
   s256 sPath = pFile->sPath();
   
   mpTask->m_pDataStack->vPushS256(sPath);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* file.path! -- set file path ( "<path>" file -- )                           */
-/*----------------------------------------------------------------------------*/
-void Step::vFilePathSet(MP_Task mpTask)
-{
-ENTRY("vFilePathSet"_Stz);
-  
-  Object* pPtrFile;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrFile) )
-    THROW_INVALID_DSTACK("file.path!"_Stz);
-  
-  File* pFile = _pFile(pPtrFile);
-  
-  s256 sPath;
-  
-  if ( ! mpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("file.path!"_Stz);
-  
-  pFile->vPath(sPath);
   
   EXIT();
 }
