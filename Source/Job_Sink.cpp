@@ -108,8 +108,7 @@ Job_Sink::Job_Sink(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
   m_pIoChunk  = new IoChunk;
-  m_bPrint    = false;
-  m_pByteRate = new ByteRate;
+  m_pByteRate = nullptr;
   
   _checkInitialised_(CN_JOB_SINK);
   
@@ -193,12 +192,11 @@ Job* JobsModel::pJob_Sink_pre(Interface::Session* pSession)
   // set the file name
   pJob_Sink->m_sFileName = pTknVec->pGet(1)->sText();
   
-  // is the last token the print option?
+  // is the last token the stats option?
   i8 i_Last = nTokens - 1;
-  if (pTknVec->pGet(i_Last)->sText().bSame("print"_Stz) ||
-      pTknVec->pGet(i_Last)->sText().bSame("display"_Stz) ||
-      pTknVec->pGet(i_Last)->sText().bSame("displayOn"_Stz))
-    pJob_Sink->m_bPrint = true;
+  if (pTknVec->pGet(i_Last)->sText().bSame("stats"_Stz) ||
+      pTknVec->pGet(i_Last)->sText().bSame("statistics"_Stz))
+    pJob_Sink->m_pByteRate = new ByteRate;
   
   return pJob_Sink;
 }
@@ -255,8 +253,10 @@ void Job_Sink::vSink(void)
   
   m_pIoChunk->vOpenRead(m_sFileName);
   
-  m_pByteRate->vSetReporting("Elapsed"_Stz,C_1GB * 10);
-  m_pByteRate->vBeginTiming();
+  if (m_pByteRate) {
+    m_pByteRate->vSetReporting("  sink : "_Stz,C_1GB * 10);
+    m_pByteRate->vBeginTiming();
+  }
   
   for (;;) {
   
@@ -264,13 +264,15 @@ void Job_Sink::vSink(void)
     if (! nBytesRead)
       break;
     
-    if (m_bPrint)
-      vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStr());
+    //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStr());
     
-    m_pByteRate->vAddBytes(nBytesRead);
+    if (m_pByteRate)
+      m_pByteRate->vAddBytes(nBytesRead);
   }
 
-  m_pByteRate->vEndTiming();
+  if (m_pByteRate)
+    m_pByteRate->vEndTiming();
+  
   m_pIoChunk->vCloseFile();
 }
 

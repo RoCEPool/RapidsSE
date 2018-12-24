@@ -11,7 +11,6 @@ namespace JobsModel
   {
   public:
     IoChunk*  m_pIoChunk;
-    bool      m_bPrint;
     ByteRate* m_pByteRate;
   
     // must be last
@@ -34,7 +33,6 @@ namespace JobsModel
 
   public:
     Footer* aFooter(void);
-  
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

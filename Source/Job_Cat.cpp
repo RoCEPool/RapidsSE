@@ -110,9 +110,7 @@ Job_Cat::Job_Cat(Interface::Session* pSession)
   m_pInChunk  = new IoChunk;
   m_pOutChunk = new IoChunk;
   
-  m_bPrint = false;
-  
-  m_pByteRate = new ByteRate;
+  m_pByteRate = nullptr;
 
   _checkInitialised_(CN_JOB_CAT);
   
@@ -203,10 +201,9 @@ Job* JobsModel::pJob_Cat_pre(Interface::Session* pSession)
   
   // is the last token the print option
   i8 i_Last = nTokens - 1;
-  if (pTknVec->pGet(i_Last)->sText().bSame("print"_Stz) ||
-      pTknVec->pGet(i_Last)->sText().bSame("display"_Stz) ||
-      pTknVec->pGet(i_Last)->sText().bSame("displayOn"_Stz))
-    pJob_Cat->m_bPrint = true;
+  if (pTknVec->pGet(i_Last)->sText().bSame("stats"_Stz) ||
+      pTknVec->pGet(i_Last)->sText().bSame("statistics"_Stz))
+    pJob_Cat->m_pByteRate = new ByteRate;
   
   return pJob_Cat;
 }
@@ -265,26 +262,29 @@ void Job_Cat::vCat(void)
   
   m_pOutChunk->vOpenWrite(m_sOutputFile);
 
-  m_pByteRate->vSetReporting("Elapsed"_Stz,C_1GB * 10);
-  m_pByteRate->vBeginTiming();
-
+  if (m_pByteRate) {
+    m_pByteRate->vSetReporting("  cat : "_Stz,C_1GB * 10);
+     m_pByteRate->vBeginTiming();
+  }
+  
   for (;;) {
     
     i8 nBytesRead = m_pInChunk->nReadBytes(-1);
     if (! nBytesRead)
       break;
     
-    if (m_bPrint)
-      vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pInChunk->aStr());
+    //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pInChunk->aStr());
     
     m_pOutChunk->vCopy(m_pInChunk);
     
-    m_pByteRate->vAddBytes(nBytesRead);
+    if (m_pByteRate)
+      m_pByteRate->vAddBytes(nBytesRead);
 
     m_pOutChunk->vWriteData();
   }
   
-  m_pByteRate->vEndTiming();
+  if (m_pByteRate)
+    m_pByteRate->vEndTiming();
 
   m_pInChunk->vCloseFile();
   m_pOutChunk->vCloseFile();

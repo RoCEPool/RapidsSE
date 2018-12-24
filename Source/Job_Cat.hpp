@@ -15,10 +15,8 @@ namespace JobsModel
     IoChunk*  m_pInChunk;
     IoChunk*  m_pOutChunk;
   
-    bool      m_bPrint;
     ByteRate* m_pByteRate;
-  
-  
+    
     // must be last
     Footer m_xFooter;
   
