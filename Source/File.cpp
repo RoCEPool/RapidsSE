@@ -507,9 +507,9 @@ bool File::bReadLine(Stz* aBuffer)
 /*----------------------------------------------------------------------------*/
 /* remove specified file                                                      */
 /*----------------------------------------------------------------------------*/
-bool File::bRemove(s256& rPath)
+bool File::bRemove(s256& sPath)
 {
-  char* aPath = rPath.aChar();
+  char* aPath = sPath.aChar();
   
   int iResult = unlink(aPath);
   
@@ -601,7 +601,7 @@ void File::vSet(Stz* aFilePath, Stz* aOpenMode)
 /*----------------------------------------------------------------------------*/
 /* set file arguments                                                         */
 /*----------------------------------------------------------------------------*/
-void File::vSet(FILE* pFilePtr, Stz* aFilePath, Stz* aOpenMode)
+void File::vSet(Stz* aFilePath, Stz* aOpenMode, FILE* aFilePtr)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -614,7 +614,7 @@ void File::vSet(FILE* pFilePtr, Stz* aFilePath, Stz* aOpenMode)
   
   m_sFilePath   = (Stz*)aFilePath;
   m_sOpenMode   = (Stz*)aOpenMode;
-  m_aFile    = pFilePtr;
+  m_aFile       = aFilePtr;
 }
 
 /*----------------------------------------------------------------------------*/

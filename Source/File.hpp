@@ -61,7 +61,7 @@ namespace System
     File(Stz* aFilePath, Stz* aOpenMode);
    ~File() noexcept(false);
     
-    static bool bRemove(s256& rPath);
+    static bool bRemove(s256& sPath);
     
     void vClose(void);
     bool bExists(Stz *aFilePath);
@@ -86,7 +86,7 @@ namespace System
     void vSeek(i8 iOffset);
     void vSeekEnd(void);
     void vSet(Stz* aFilePath, Stz* aOpenMode);
-    void vSet(FILE* pFilePtr, Stz* aFilePath, Stz* aOpenMode);
+    void vSet(Stz* aFilePath, Stz* aOpenMode, FILE* aFilePtr);
     void vSetBuffering(i8 nBytes);
     SysCall& rSysCall(void);
     i8   iTell(void);
