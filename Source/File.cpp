@@ -271,13 +271,6 @@ void File::vInit(void)
   //m_sOpenMode
   m_pFile    = nullptr;
   m_iTraceLevel = 0;
-  
-  m_aLimit    = nullptr;
-  m_aNext     = nullptr;
-  m_pScratch  = nullptr;
-  m_pRecord   = nullptr;
-  m_iRecordLength = 0;
-  
   m_xSysCall.vClear();
 }
 

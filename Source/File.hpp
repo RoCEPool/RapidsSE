@@ -49,13 +49,6 @@ namespace System
   
     SysCall m_xSysCall;
     
-    char*   m_aLimit;
-    char*   m_aNext;
-  
-    Scratch* m_pScratch;
-    Scratch* m_pRecord;
-    i8       m_iRecordLength;
-    
     // must be last
     Footer m_xFooter;
     
