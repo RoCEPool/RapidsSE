@@ -76,6 +76,21 @@ Dir::~Dir(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* change current working directory                                           */
+/*----------------------------------------------------------------------------*/
+bool Dir::bChangeCurrent(Stz* aDirPath)
+{
+  i8 iCode = chdir(aDirPath->aChar());
+  
+  if (iCode) {
+    vWarn("chdir() error; errno=%d\n"_Stz,errno);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if directory path exists                                              */
 /*----------------------------------------------------------------------------*/
 bool Dir::bExists(Stz* aDirPath)
@@ -130,26 +145,6 @@ bool Dir::bRemove(Stz* aDirPath)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* change current working directory                                           */
-/*----------------------------------------------------------------------------*/
-bool Dir::bChangeCurrent(Stz* aDirPath)
-{
-  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
-  
-  m_oSysCall.vClear();
-  i8 iCode = chdir(aDirPath->aChar());
-  
-  if (iCode) {
-    m_oSysCall.vError(errno);
-    //vWarn("chdir() error; errno=%d\n"_Stz,errno);
-    return false;
-  }
-  
-  m_oSysCall.vSuccess();
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get current working directory                                              */

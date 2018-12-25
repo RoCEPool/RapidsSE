@@ -44,8 +44,7 @@ void Step::vDirChangeCurrent(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sDir) )
     THROW_INVALID_DSTACK("dir.changeCurrent"_Stz);
   
-  Dir xDir;
-  if ( ! xDir.bChangeCurrent(sDir) )
+  if ( ! Dir::bChangeCurrent(sDir) )
     THROW("Unable to change current directory"_Stz);
   
   EXIT();

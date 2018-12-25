@@ -26,11 +26,11 @@ namespace System
     Dir(void);
    ~Dir(void) noexcept(false);
 
+    static bool bChangeCurrent(Stz* aDirPath);
     static bool bExists(Stz* aDirPath);
     static bool bMake(Stz* aDirPath);
     static bool bRemove(Stz* aDirPath);
 
-    bool bChangeCurrent(Stz* aDirPath);
     bool bGetCurrent(Stz* aDirPath);
   
     //--

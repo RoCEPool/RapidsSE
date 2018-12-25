@@ -22,7 +22,6 @@ PromptNote mPromptNote_cd (
 bool Prompt::bPrompt_cd(SePrompt* pPrompt)
 {
   s256 sDir;
-  Dir xDir;
   
   TokenVec* pTokenVec = pPrompt->pTknVec();
 
@@ -37,7 +36,7 @@ bool Prompt::bPrompt_cd(SePrompt* pPrompt)
     sDir.vConcat((*pTokenVec)[i_Token]->aText());
   }
   
-  if ( ! xDir.bChangeCurrent(sDir) ) {
+  if ( ! Dir::bChangeCurrent(sDir) ) {
     return false;
   }
   
