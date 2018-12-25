@@ -134,49 +134,6 @@ bool IngestChunk::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of next record and its byte length                             */
-/*----------------------------------------------------------------------------*/
-Stz* IngestChunk::aNextRecord(i8& nRecordBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
-  
-  ASSERT(m_aEndChunk);
-  ASSERT(m_aNextRecord);
-  
-  //
-  // At this point, m_aNextRecord is the address of the next record
-  // in the chunk.
-  //
-  
-  // have we exhausted the chunk?
-  if (m_aNextRecord > m_aEndChunk) {
-    nRecordBytes = 0;
-    vReset();
-    return nullptr;
-  }
-  
-  // get start address of next record
-  Stz* pRecord = m_aNextRecord;
-  
-  // find end of next record
-  //while (C_NL != *((char*)m_aNextRecord) &&
-  //       C_CR != *((char*)m_aNextRecord))
-  //  m_aNextRecord++;
-  //*m_aNextRecord = '\0';
-  
-  vAdvanceRecordEnd((char**)&m_aNextRecord);
-
-  // compute the number of bytes
-  m_nRecordBytes = m_aNextRecord - pRecord;
-  nRecordBytes = m_nRecordBytes;
-  
-  // advance to beginning of next record for next time
-  m_aNextRecord++;
-  
-  return pRecord;
-}
-
-/*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
 bool IngestChunk::bOpenFile(s256& sPath)
@@ -240,72 +197,6 @@ void IngestChunk::vReadChunk(i8 iSeek, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* advance to last character of record ( \n or \r )                           */
-/*----------------------------------------------------------------------------*/
-void IngestChunk::vAdvanceRecordEnd(char** aaSrc)
-{
-  // test for explicit record ends
-  
-  switch (m_pFormatters->m_eRecordEnds) {
-      
-    case RE_NL: // advance to next \n
-      for (;;) {
-        // find next \n
-        while (C_NL != **aaSrc)
-          (*aaSrc)++;
-        // if there is no record terminator we have found ending \n
-        if (! m_pFormatters->m_cRecordTerminator)
-          break;
-        // we found the next \n if prior character is the record terminator
-        if (m_pFormatters->m_cRecordTerminator == *(*aaSrc-1))
-          break;
-        (*aaSrc)++;
-      }
-      ASSERT(C_NL == **aaSrc);
-      break;
-      
-    case RE_CR: // advance to next \r
-      for (;;) {
-        // find next \r
-        while (C_CR != **aaSrc)
-          (*aaSrc)++;
-        // if there is no record terminator we have found ending \r
-        if (! m_pFormatters->m_cRecordTerminator)
-          break;
-        // we found the next \r if prior character is the record terminator
-        if (m_pFormatters->m_cRecordTerminator == *(*aaSrc-1))
-          break;
-        (*aaSrc)++;
-      }
-      ASSERT(C_CR == **aaSrc);
-      break;
-      
-    case RE_CRNL: // advance to next \r\n
-      for (;;) {
-        // find next \r\n
-        while (C_CR != **aaSrc && C_NL != *(*aaSrc+1))
-          (*aaSrc)++;
-        // if there is no record terminator we have found ending \r\n
-        if (! m_pFormatters->m_cRecordTerminator)
-          break;
-        // we found the next \r\n if prior character is the record terminator
-        if (m_pFormatters->m_cRecordTerminator == *(*aaSrc-1))
-          break;
-        (*aaSrc)++;
-      }
-      // skip over \r to be on the \n
-      ASSERT(C_CR == **aaSrc);
-      (*aaSrc)++;
-      ASSERT(C_NL == **aaSrc);
-      break;
-      
-    default:
-      NEVER_REACH;
-      break;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* copy any remainder to beginning of workspace                               */
