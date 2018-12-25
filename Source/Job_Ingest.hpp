@@ -8,7 +8,7 @@ namespace JobsModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Ingest : public Job,
                      public JobFileName,
-                     public Job_WriteBehind
+                     public JobWriteBehind
   {
   public:
     Table*  m_pTable;  // table being ingested

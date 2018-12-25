@@ -9,7 +9,7 @@ namespace JobsModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_InsertRows : public Job,
-                         public Job_WriteBehind
+                         public JobWriteBehind
   {
   public:
     Job_InsertTable* m_pJob_InsertTable;                   // insert table job

@@ -9,7 +9,7 @@ namespace JobsModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_SubLoader : public Job,
-                        public Job_WriteBehind
+                        public JobWriteBehind
   {
   public:
     Job_LoadTable* m_pJob_LoadTable;
