@@ -5,13 +5,10 @@
 
 namespace Loader
 {
-  static const i8 C_IO_CHUNK = C_1M; // its 1M not 1MB (i.e. < 1MB)
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class IoChunk : public DataChunk
+  class IoChunk : public FileChunk
   {
   private:
-    File m_oFile; // file being used
   
     // must be last
     Footer m_xFooter;
@@ -24,16 +21,7 @@ namespace Loader
     ~IoChunk(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
-    void  vCloseFile(void);
-    void  vOpenRead(s256& sPath);
-    void  vOpenWrite(s256& sPath);
-    i8    nReadBytes(i8 nBytes);
-    void  vRewindFile(void);
-    i8    nWriteBytes(i8 nBytes);
-    void  vWriteData(void);
-    Stz*  aStr(void);
-    
+        
   private:
     Footer* aFooter(void);
   };

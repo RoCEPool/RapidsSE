@@ -44,11 +44,9 @@ void IoChunk::operator delete(void* pIoChunkAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IoChunk::IoChunk(void)
-: DataChunk(CN_IOCHUNK)
+: FileChunk(CN_IOCHUNK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
-
-  //m_oFile
   
   _checkInitialised_(CN_IOCHUNK);
   
@@ -71,106 +69,6 @@ void IoChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
   //IoChunk* pIoChunk = _pIoChunk(pObject);
   
   vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* close file                                                                 */
-/*----------------------------------------------------------------------------*/
-void IoChunk::vCloseFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
-  
-  m_oFile.vClose();
-}
-
-/*----------------------------------------------------------------------------*/
-/* open file                                                                  */
-/*----------------------------------------------------------------------------*/
-void IoChunk::vOpenRead(s256& sPath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
-  
-  // open the file
-  bool b = m_oFile.bOpen(sPath,C_OPEN_READ);
-  RASSERT(b);
-  
-  // set buffering
-  //m_oFile.vSetBuffering(C_1MB);
-}
-
-/*----------------------------------------------------------------------------*/
-/* open file                                                                  */
-/*----------------------------------------------------------------------------*/
-void IoChunk::vOpenWrite(s256& sPath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
-  
-  // open the file
-  bool b = m_oFile.bOpen(sPath,C_OPEN_WRITE);
-  RASSERT(b);
-  
-  // set buffering
-  //m_oFile.vSetBuffering(C_1MB);
-}
-
-/*----------------------------------------------------------------------------*/
-/* read given chunk                                                           */
-/*----------------------------------------------------------------------------*/
-i8 IoChunk::nReadBytes(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
-  
-  if (-1 == nBytes)
-    nBytes = C_IO_CHUNK - 1;
-  else
-  if (nBytes == C_IO_CHUNK)
-    nBytes -= 1;
-  
-  m_nDataBytes = m_oFile.iReadBytes(m_xWsp.aArea(),nBytes);
-
-  if (! m_nDataBytes)
-    return 0;
-  
-  ((char*)m_xWsp.aStr())[m_nDataBytes] = '\0';
-  
-  m_aLastDataByte = &m_xWsp.aStr()[m_nDataBytes - 1];
-  
-  return m_nDataBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* rewind file                                                                */
-/*----------------------------------------------------------------------------*/
-void IoChunk::vRewindFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
-  
-  m_oFile.vSeekStart();
-}
-
-/*----------------------------------------------------------------------------*/
-/* write data                                                                 */
-/*----------------------------------------------------------------------------*/
-void IoChunk::vWriteData(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
-  
-  bool bResult = m_oFile.bWriteBytes(m_xWsp.aArea(),m_nDataBytes);
-  RASSERT(bResult);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get wsp as string pointer                                                  */
-/*----------------------------------------------------------------------------*/
-Stz* IoChunk::aStr(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
-  
-  return m_xWsp.aStr();
 }
 
 /*----------------------------------------------------------------------------*/
