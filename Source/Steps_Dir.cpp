@@ -23,7 +23,6 @@ void Step::vAddSteps_Dir(void)
   vAddStep("dir.delete"_Stz,      &Step::vDirDelete);
   vAddStep("dir.entryName"_Stz,   &Step::vDirEntryName);
   vAddStep("dir.entryType"_Stz,   &Step::vDirEntryType);
-  vAddStep("dir.init"_Stz,        &Step::vDirInit);
   vAddStep("dir.isClosed"_Stz,    &Step::vDirIsClosed);
   vAddStep("dir.isOpen"_Stz,      &Step::vDirIsOpen);
   vAddStep("dir.open"_Stz,        &Step::vDirOpen);
@@ -218,27 +217,6 @@ ENTRY("vDirEntryType"_Stz);
   iEntryType = pDir->iEntryType();
   
   mpTask->m_pDataStack->vPushInt(iEntryType);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dir.init -- init directory                                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vDirInit(MP_Task mpTask)
-{
-ENTRY("vDirInit"_Stz);
-  
-  Object* pPtrDir;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.init"_Stz);
-  
-  Dir* pDir = _pDir(pPtrDir);
-  
-  new(pDir) Dir;
-  
-  pDir->vInit();
   
   EXIT();
 }

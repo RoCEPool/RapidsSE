@@ -21,7 +21,6 @@ namespace System
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Dir* pDir);
     void operator delete(void* pDirAddress);
     
     Dir(void);

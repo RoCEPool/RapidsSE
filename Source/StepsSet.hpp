@@ -205,7 +205,6 @@
   static void vDirDelete(Tasks::MP_Task mpTask);
   static void vDirEntryName(Tasks::MP_Task mpTask);
   static void vDirEntryType(Tasks::MP_Task mpTask);
-  static void vDirInit(Tasks::MP_Task mpTask);
   static void vDirIsClosed(Tasks::MP_Task mpTask);
   static void vDirIsOpen(Tasks::MP_Task mpTask);
   static void vDirNew(Tasks::MP_Task mpTask);
