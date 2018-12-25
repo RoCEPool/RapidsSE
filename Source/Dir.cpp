@@ -50,7 +50,7 @@ Dir::Dir(void)
   
   m_sDirPath   = "<none>"_Stz;
   
-  m_aDir    = nullptr;
+  m_aDir       = nullptr;
   m_sEntryName = "<none>"_Stz;
   m_iEntryType = 0;
   
@@ -72,9 +72,33 @@ Dir::~Dir(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* change current working directory                                           */
+/*----------------------------------------------------------------------------*/
+bool Dir::bChangeCurrent(Stz* aDirPath)
+{
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
+  m_oSysCall.vClear();
+  i8 iCode = chdir(aDirPath->aChar());
+  
+  if (iCode) {
+    m_oSysCall.vError(errno);
+    //vWarn("chdir() error; errno=%d\n"_Stz,errno);
+    return false;
+  }
+  
+  m_oSysCall.vSuccess();
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if directory path exists                                              */
 /*----------------------------------------------------------------------------*/
-bool Dir::bExists(s256& rPath)
+bool Dir::bExists(Stz* aDirPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
@@ -82,7 +106,7 @@ bool Dir::bExists(s256& rPath)
   
   struct stat xStat;
 
-  int iCode = stat(rPath.aChar(),&xStat);
+  int iCode = stat(aDirPath->aChar(),&xStat);
 
   if (0 == iCode && (xStat.st_mode & S_IFDIR)) {
     m_oSysCall.vSuccess();
@@ -96,7 +120,7 @@ bool Dir::bExists(s256& rPath)
 
   m_oSysCall.vError(errno);
   
-  vError("Dir::bExists: stat(%s) error; errno=%d"_Stz,rPath.aChar(),errno);
+  vError("Dir::bExists: stat(%s) error; errno=%d"_Stz,aDirPath->aChar(),errno);
 
   return false;
 }
@@ -104,17 +128,17 @@ bool Dir::bExists(s256& rPath)
 /*----------------------------------------------------------------------------*/
 /* get current working directory                                              */
 /*----------------------------------------------------------------------------*/
-bool Dir::bGetCurrent(s256& rPath)
+bool Dir::bGetCurrent(Stz* aDirPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   m_oSysCall.vClear();
   
-  char* aDirPath = getcwd(rPath.aChar(),rPath.nAreaSize());
+  char* aCurrPath = getcwd(aDirPath->aChar(),C_PATH_MAX);
 
-  m_sDirPath = (Stz*)aDirPath;
+  m_sDirPath = (Stz*)aCurrPath;
   
-  if ( ! aDirPath ) {
+  if ( ! aCurrPath ) {
     m_oSysCall.vError(errno);
     vWarn("Dir::bGet: getcwd() error; errno=%d"_Stz,errno);
     return false;
@@ -127,13 +151,13 @@ bool Dir::bGetCurrent(s256& rPath)
 /*----------------------------------------------------------------------------*/
 /* make specified directory                                                   */
 /*----------------------------------------------------------------------------*/
-bool Dir::bMake(s256& rPath)
+bool Dir::bMake(Stz* aDirPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   m_oSysCall.vClear();
   
-  char* aPath = rPath.aChar();
+  char* aPath = aDirPath->aChar();
 
   if (mkdir(aPath,0777) != 0 && EEXIST != errno) {
     m_oSysCall.vError(errno);
@@ -148,39 +172,19 @@ bool Dir::bMake(s256& rPath)
 /*----------------------------------------------------------------------------*/
 /* remove specified directory                                                 */
 /*----------------------------------------------------------------------------*/
-bool Dir::bRemove(s256& rPath)
+bool Dir::bRemove(Stz* aDirPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   m_oSysCall.vClear();
   
-  char* aPath = rPath.aChar();
+  char* aPath = aDirPath->aChar();
   
   int rCode = rmdir(aPath);
 
   if (-1 == rCode) {
     m_oSysCall.vError(errno);
     vWarn("Dir::bRemove: rmdir() error; errno=%d"_Stz,errno);
-    return false;
-  }
-
-  m_oSysCall.vSuccess();
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* change current working directory                                           */
-/*----------------------------------------------------------------------------*/
-bool Dir::bChangeCurrent(s256& rPath)
-{
-  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
-  
-  m_oSysCall.vClear();
-  i8 iCode = chdir(rPath.aChar());
-  
-  if (iCode) {
-    m_oSysCall.vError(errno);
-    //vWarn("chdir() error; errno=%d\n"_Stz,errno);
     return false;
   }
 

@@ -26,21 +26,21 @@ namespace System
     Dir(void);
    ~Dir(void) noexcept(false);
 
-    bool bChangeCurrent(s256& rPath);
-    bool bExists(s256& rPath);
-    bool bGetCurrent(s256& rPath);
-    bool bMake(s256& rPath);
-    bool bRemove(s256& rPath);
+    bool bChangeCurrent(Stz* aDirPath);
+    bool bExists(Stz* aDirPath);
+    bool bGetCurrent(Stz* aDirPath);
+    bool bMake(Stz* aDirPath);
+    bool bRemove(Stz* aDirPath);
     
     //--
     
     void vClose(void);
-    StrVal&   sEntryName(void);
+    StrVal& sEntryName(void);
     i8   iEntryType(void);
     bool bIsClosed(void);
     bool bIsOpen(void);
     bool bOpen(Stz* aDirPath);
-    StrVal&   sPath(void);
+    StrVal& sPath(void);
     bool bRead(void);
     void vRewind(void);
     void vSeek(i8 iPosition);
