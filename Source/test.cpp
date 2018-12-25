@@ -31,24 +31,6 @@ void vTest1(void)
   oFile.vClose();
 }
 
-//  i8 i = 0;
-//  Synch::uAtomicInc(&i);
-//  vInfo("AtomicInc i = %lld\n"_Stz,i);
-//  Synch::uAtomicDec(&i);
-//  vInfo("AtomicDec i = %lld\n"_Stz,i);
-//
-//  u8 u = 2;
-//  bool b = Synch::bTestAndSet(&u,1,3);
-//  vInfo("TestAndSet %s u = %lld\n"_Stz,b ? "true"_Stz : "false"_Stz,u);
-
-
-//  Timer oTimer;
-//  oTimer.vStart();
-//  PosixThread::vSleepMicro(500);
-//  oTimer.vUpdate();
-//
-//  vInfo("Timert %lld\n"_Stz,oTimer.iMicroseconds());
-
 /*----------------------------------------------------------------------------*/
 /* test2                                                                      */
 /*----------------------------------------------------------------------------*/
