@@ -10,7 +10,7 @@ namespace System
   private:
     s256    m_sDirPath;   // the path of the directory
    
-    DIR*    m_pDirPtr;    // dir pointer/descriptor
+    DIR*    m_aDir;       // dir pointer/descriptor
     s256    m_sEntryName; // name of entry just read
     i8      m_iEntryType; // type of entry just read
  

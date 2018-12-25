@@ -58,7 +58,7 @@ Dir::Dir(void)
   
   m_sDirPath   = "<none>"_Stz;
   
-  m_pDirPtr    = nullptr;
+  m_aDir    = nullptr;
   m_sEntryName = "<none>"_Stz;
   m_iEntryType = 0;
   
@@ -226,7 +226,7 @@ void Dir::vClose(void)
   
   ASSERT(bIsOpen());
   
-  i8 iResult = closedir(m_pDirPtr);
+  i8 iResult = closedir(m_aDir);
   if (-1 == iResult) {
     m_oSysCall.vError(errno);
     vWarn("Dir::vClose: closedir() error; errno=%d"_Stz,errno);
@@ -235,7 +235,7 @@ void Dir::vClose(void)
 
   gxResourceTracker.vDecDirOpen();
 
-  m_pDirPtr = nullptr;
+  m_aDir = nullptr;
   
   ASSERT(bIsClosed());
 }
@@ -267,7 +267,7 @@ bool Dir::bIsClosed(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  if (! m_pDirPtr)
+  if (! m_aDir)
     return true;
   else
     return false;
@@ -280,7 +280,7 @@ bool Dir::bIsOpen(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  if (m_pDirPtr)
+  if (m_aDir)
     return true;
   else
     return false;
@@ -297,8 +297,8 @@ bool Dir::bOpen(void)
   
   char* wPath = m_sDirPath.aChar();
  
-  m_pDirPtr = opendir(wPath);
-  if (! m_pDirPtr) {
+  m_aDir = opendir(wPath);
+  if (! m_aDir) {
     m_oSysCall.vError(errno);
     vWarn("Dir::bOpen: opendir() error; errno=%d"_Stz,errno);
     return false;
@@ -344,7 +344,7 @@ bool Dir::bRead(void)
   
   struct dirent *pDirEnt;
   
-  pDirEnt = readdir(m_pDirPtr);
+  pDirEnt = readdir(m_aDir);
   
   if ( ! pDirEnt ) {
     m_sEntryName = "<none>"_Stz;
@@ -371,7 +371,7 @@ void Dir::vRewind(void)
   ASSERT(bIsOpen());
   m_oSysCall.vClear();
   
-  rewinddir(m_pDirPtr);
+  rewinddir(m_aDir);
   
   m_oSysCall.vSuccess();
 }
@@ -386,7 +386,7 @@ void Dir::vSeek(i8 iPosition)
   ASSERT(bIsOpen());
   m_oSysCall.vClear();
 
-  seekdir(m_pDirPtr,iPosition);
+  seekdir(m_aDir,iPosition);
   
   m_oSysCall.vSuccess();
 }
@@ -401,7 +401,7 @@ i8 Dir::iTell(void)
   ASSERT(bIsOpen());
   m_oSysCall.vClear();
   
-  i8 iPosition = telldir(m_pDirPtr);
+  i8 iPosition = telldir(m_aDir);
   
   m_oSysCall.vSuccess();
   return iPosition;
