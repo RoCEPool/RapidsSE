@@ -913,11 +913,11 @@ bool Task::bWakeupNow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  Since xNow;
+  Since xSince;
   
-  xNow.vSet();
+  xSince.vSet();
   
-  i8 iTimeNow = xNow.iGetAsMicroseconds();
+  i8 iTimeNow = xSince.iGetAsMicroseconds();
 
   if (iWakeupTime() <= iTimeNow)
     return true;

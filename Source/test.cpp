@@ -220,17 +220,6 @@ void vTest6(void)
 /*----------------------------------------------------------------------------*/
 void vTest7(void)
 {
-//  Time xNow;
-//  xNow.vSetNowLocal();
-//
-//  vTrace("%lld/%02lld/%02lld %02lld:%02lld:%02lld (local)\n"_Stz,
-//         (i8)xNow.m_iYear + 1900,
-//         (i8)xNow.m_iMonth,
-//         (i8)xNow.m_iDay,
-//         (i8)xNow.m_iHour,
-//         (i8)xNow.m_iMinute,
-//         (i8)xNow.m_iSecond
-//         );
 }
 
 /*----------------------------------------------------------------------------*/

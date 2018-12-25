@@ -158,8 +158,8 @@ void ActivityMap::vOpenByApi(void)
   new ActivityMap;
   ActivityMap::vMark(0,"Opened by API"_Stz);
   
-  Now xNow;
-  ActivityMap::vMark(0,"Time is: "_Stz,xNow.sFormatted());
+  Now oNow;
+  ActivityMap::vMark(0,"Time is: "_Stz,oNow.sFormatted());
   
 }
 
@@ -179,8 +179,8 @@ void ActivityMap::vOpenBySE(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Now xNow;
-  ActivityMap::vMark(0,"Time is: %s"_Stz,xNow.sFormatted());
+  Now oNow;
+  ActivityMap::vMark(0,"Time is: %s"_Stz,oNow.sFormatted());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
