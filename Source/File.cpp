@@ -453,7 +453,7 @@ void File::vSetBuffering(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* get SysCall                                                                */
 /*----------------------------------------------------------------------------*/
-SysCall& File::rSysCall(void)
+SysCall& File::oSysCall(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 

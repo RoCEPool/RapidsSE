@@ -25,7 +25,7 @@ namespace System
     bool bRemove(void);
     bool bRemove(Stz* sPipePath);
 
-    SysCall& rSysCall(void);
+    SysCall& oSysCall(void);
   
     Footer* aFooter(void);
   };

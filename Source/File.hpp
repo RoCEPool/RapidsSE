@@ -76,7 +76,7 @@ namespace System
     void vSeek(i8 iOffset);
     void vSeekEnd(void);
     void vSetBuffering(i8 nBytes);
-    SysCall& rSysCall(void);
+    SysCall& oSysCall(void);
     i8   iTell(void);
     void vUngetChar(char cChar);
     void vUseStdin(void);
