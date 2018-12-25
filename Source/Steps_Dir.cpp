@@ -100,11 +100,11 @@ void Step::vDirMake(MP_Task mpTask)
 ENTRY("vDirMake"_Stz);
   
   s256 sPath;
-  
   if ( ! mpTask->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("dir.make"_Stz);
   
   i8 iResult = Dir::bMake(sPath);
+  
   mpTask->m_pDataStack->vPushInt(iResult);
   
   EXIT();
@@ -118,19 +118,15 @@ void Step::vDirRemove(MP_Task mpTask)
 ENTRY("vDirRemove"_Stz);
   
   s256 sPath;
-  
   if ( ! mpTask->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("dir.remove"_Stz);
   
-  Dir xDir;
+  i8 iResult = Dir::bRemove(sPath);
   
-  i8 iResult = xDir.bRemove(sPath);
   mpTask->m_pDataStack->vPushInt(iResult);
   
   EXIT();
 }
-
-
 
 /*----------------------------------------------------------------------------*/
 /* dir.close -- close directory                                               */

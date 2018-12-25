@@ -28,11 +28,11 @@ namespace System
 
     static bool bExists(Stz* aDirPath);
     static bool bMake(Stz* aDirPath);
+    static bool bRemove(Stz* aDirPath);
 
     bool bChangeCurrent(Stz* aDirPath);
     bool bGetCurrent(Stz* aDirPath);
-    bool bRemove(Stz* aDirPath);
-    
+  
     //--
     
     void vClose(void);

@@ -111,6 +111,23 @@ bool Dir::bMake(Stz* aDirPath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove specified directory                                                 */
+/*----------------------------------------------------------------------------*/
+bool Dir::bRemove(Stz* aDirPath)
+{
+  char* aPath = aDirPath->aChar();
+  
+  int rCode = rmdir(aPath);
+  
+  if (-1 == rCode) {
+    vWarn("Dir::bRemove: rmdir() error; errno=%d"_Stz,errno);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -153,29 +170,6 @@ bool Dir::bGetCurrent(Stz* aDirPath)
     return false;
   }
   
-  m_oSysCall.vSuccess();
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove specified directory                                                 */
-/*----------------------------------------------------------------------------*/
-bool Dir::bRemove(Stz* aDirPath)
-{
-  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
-  
-  m_oSysCall.vClear();
-  
-  char* aPath = aDirPath->aChar();
-  
-  int rCode = rmdir(aPath);
-
-  if (-1 == rCode) {
-    m_oSysCall.vError(errno);
-    vWarn("Dir::bRemove: rmdir() error; errno=%d"_Stz,errno);
-    return false;
-  }
-
   m_oSysCall.vSuccess();
   return true;
 }
