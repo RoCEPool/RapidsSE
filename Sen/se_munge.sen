@@ -195,10 +195,10 @@
   file::new dir::new "" locals| origDir senDir cppFile |
 
   // save original dir and change to ../Sen
-  dir.getCurrent to OrigDir
+  dir::getCurrent to OrigDir
 
-  "../Sen" dir.changeCurrent
-  dir.getCurrent "Current working directory now: %v" str.format .
+  "../Sen" dir::changeCurrent
+  dir::getCurrent "Current working directory now: %v" str.format .
 
   // open sen directory
   "." senDir dir.open assert
@@ -222,8 +222,8 @@
   senDir dir.delete
 
   // change back to original dir
-  origDir dir.changeCurrent
-  dir.getCurrent "Current working directory now: %v" str.format .
+  origDir dir::changeCurrent
+  dir::getCurrent "Current working directory now: %v" str.format .
 ;
 
 /*============================================================================*/

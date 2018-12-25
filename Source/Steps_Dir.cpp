@@ -11,26 +11,26 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Dir(void)
 {
-  vAddStep("dir::new"_Stz,         &Step::vDirNew);
+  vAddStep("dir::new"_Stz,           &Step::vDirNew);
   
-  vAddStep("dir.changeCurrent"_Stz, &Step::vDirChangeCurrent);
-  vAddStep("dir.exists"_Stz,        &Step::vDirExists);
-  vAddStep("dir.getCurrent"_Stz,    &Step::vDirGetCurrent);
-  vAddStep("dir.make"_Stz,          &Step::vDirMake);
-  vAddStep("dir.remove"_Stz,        &Step::vDirRemove);
+  vAddStep("dir::changeCurrent"_Stz, &Step::vDirChangeCurrent);
+  vAddStep("dir::exists"_Stz,        &Step::vDirExists);
+  vAddStep("dir::getCurrent"_Stz,    &Step::vDirGetCurrent);
+  vAddStep("dir::make"_Stz,          &Step::vDirMake);
+  vAddStep("dir::remove"_Stz,        &Step::vDirRemove);
   
-  vAddStep("dir.close"_Stz,       &Step::vDirClose);
-  vAddStep("dir.delete"_Stz,      &Step::vDirDelete);
-  vAddStep("dir.entryName"_Stz,   &Step::vDirEntryName);
-  vAddStep("dir.entryType"_Stz,   &Step::vDirEntryType);
-  vAddStep("dir.isClosed"_Stz,    &Step::vDirIsClosed);
-  vAddStep("dir.isOpen"_Stz,      &Step::vDirIsOpen);
-  vAddStep("dir.open"_Stz,        &Step::vDirOpen);
-  vAddStep("dir.path@"_Stz,       &Step::vDirPathGet);
-  vAddStep("dir.read"_Stz,        &Step::vDirRead);
-  vAddStep("dir.rewind"_Stz,      &Step::vDirRewind);
-  vAddStep("dir.seek"_Stz,        &Step::vDirSeek);
-  vAddStep("dir.tell"_Stz,        &Step::vDirTell);
+  vAddStep("dir.close"_Stz,          &Step::vDirClose);
+  vAddStep("dir.delete"_Stz,         &Step::vDirDelete);
+  vAddStep("dir.entryName"_Stz,      &Step::vDirEntryName);
+  vAddStep("dir.entryType"_Stz,      &Step::vDirEntryType);
+  vAddStep("dir.isClosed"_Stz,       &Step::vDirIsClosed);
+  vAddStep("dir.isOpen"_Stz,         &Step::vDirIsOpen);
+  vAddStep("dir.open"_Stz,           &Step::vDirOpen);
+  vAddStep("dir.path@"_Stz,          &Step::vDirPathGet);
+  vAddStep("dir.read"_Stz,           &Step::vDirRead);
+  vAddStep("dir.rewind"_Stz,         &Step::vDirRewind);
+  vAddStep("dir.seek"_Stz,           &Step::vDirSeek);
+  vAddStep("dir.tell"_Stz,           &Step::vDirTell);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ void Step::vDirChangeCurrent(MP_Task mpTask)
   
   s256 sDir;
   if ( ! mpTask->m_pDataStack->bPop(sDir) )
-    THROW_INVALID_DSTACK("dir.changeCurrent"_Stz);
+    THROW_INVALID_DSTACK("dir::changeCurrent"_Stz);
   
   if ( ! Dir::bChangeCurrent(sDir) )
     THROW("Unable to change current directory"_Stz);
@@ -51,7 +51,7 @@ void Step::vDirChangeCurrent(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dir.exists -- test if a directory exists                                   */
+/* dir::exists -- test if a directory exists                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vDirExists(MP_Task mpTask)
 {
@@ -59,7 +59,7 @@ ENTRY("vDirExists"_Stz);
   
   s256 sDirPath;
   if ( ! mpTask->m_pDataStack->bPop(sDirPath) )
-    THROW_INVALID_DSTACK("dir.exists"_Stz);
+    THROW_INVALID_DSTACK("dir::exists"_Stz);
   
   i8 iResult = Dir::bExists(sDirPath);
   
@@ -69,7 +69,7 @@ ENTRY("vDirExists"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dir.getCurrent -- get working directory                                    */
+/* dir::getCurrent -- get working directory                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vDirGetCurrent(MP_Task mpTask)
 {
@@ -91,7 +91,7 @@ void Step::vDirGetCurrent(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dir.make -- make a directory                                               */
+/* dir::make -- make a directory                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vDirMake(MP_Task mpTask)
 {
@@ -99,7 +99,7 @@ ENTRY("vDirMake"_Stz);
   
   s256 sPath;
   if ( ! mpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("dir.make"_Stz);
+    THROW_INVALID_DSTACK("dir::make"_Stz);
   
   i8 iResult = Dir::bMake(sPath);
   
@@ -109,7 +109,7 @@ ENTRY("vDirMake"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dir.remove -- remove a directory                                           */
+/* dir::remove -- remove a directory                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vDirRemove(MP_Task mpTask)
 {
@@ -117,7 +117,7 @@ ENTRY("vDirRemove"_Stz);
   
   s256 sPath;
   if ( ! mpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("dir.remove"_Stz);
+    THROW_INVALID_DSTACK("dir::remove"_Stz);
   
   i8 iResult = Dir::bRemove(sPath);
   
