@@ -37,7 +37,7 @@ namespace Loader
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void  vCloseFile(void);
-    Stz*  aGetRecord(i8& nRecordBytes);
+    bool  bGetRecord(Stz** aaRecord, i8& nRecordBytes);
     i8    iNextRecord(void);
     Stz*  aNextRecord(i8& nRecordBytes);
     bool  bOpenFile(s256& sPath);

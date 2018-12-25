@@ -110,8 +110,8 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   m_pTable = nullptr;
   
   m_pIngestChunk  = new IngestChunk(&gpAttachMap->m_xFormatters);
-  m_aRawData      = nullptr;
-  m_nRawDataBytes = 0;
+  m_aRecord      = nullptr;
+  m_nBytes = 0;
   
   _checkInitialised_(CN_JOB_INGEST);
   
@@ -245,15 +245,6 @@ void JobsModel::vJob_Ingest_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert record into row                                                    */
-/*----------------------------------------------------------------------------*/
-void Job_Ingest::vConvertRecord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* ingest data for table                                                      */
 /*----------------------------------------------------------------------------*/
 void Job_Ingest::vIngest(void)
@@ -282,57 +273,14 @@ bool Job_Ingest::bIngestPipe(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  i8 iParentJobId = m_iJobId;
-  bool bBlankLine = false;
-  
-  while (bReadRecord()) {
-    //vConvertRecord();
-    //vInsertRow();
+  while (m_pIngestChunk->bGetRecord(&m_aRecord,m_nBytes)) {
     
-    bool bFormat = bFormatRow(m_pTable, &gpAttachMap->m_xFormatters, m_aRawData, m_nRawDataBytes, bBlankLine);
-    RASSERT( ! bBlankLine );
-    
-    // attempt to add record into a buffer
-    eEC eErrorCode = eInsertRow(m_pSession, m_pTable, DS_INGEST, iParentJobId);
-    
-    // was there an error ?
-    if (eErrorCode != EC_NONE) {
-      vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
+    if (! bProcessRecord(m_pSession, m_iJobId, m_pTable,
+                         &gpAttachMap->m_xFormatters,  m_aRecord, m_nBytes))
       return false;
-    }
   }
+  
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert row into table                                                      */
-/*----------------------------------------------------------------------------*/
-void Job_Ingest::vInsertRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
-  s48K sRecord;
-  
-  MemLib::vCopy(sRecord.aChar(),m_aRawData,m_nRawDataBytes,CN_JOB_INGEST);
-  
-  sRecord.aChar()[m_nRawDataBytes] = '\0';
-  
-  vTrace(" : %s\n"_Stz,sRecord.aChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* read record from pipe                                                      */
-/*----------------------------------------------------------------------------*/
-bool Job_Ingest::bReadRecord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
-  m_aRawData = m_pIngestChunk->aGetRecord(m_nRawDataBytes);
-
-  if (m_aRawData)
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/

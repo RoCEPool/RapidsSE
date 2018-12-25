@@ -34,9 +34,10 @@ print "ingesting customer table...";
 print "=====================================================================";
 // purge customer;
 //nowait ingest customer "/tmp/customer.pipe" ;
-nowait sink "/tmp/customer.pipe" stats;
+//nowait sink "/tmp/customer.pipe" stats;
+//nowait repeater "/tpchSF1/customer.tbl" "/tmp/customer.pipe" ;
 
-nowait repeater "/tpchSF1/customer.tbl" "/tmp/customer.pipe" ;
+ingest customer "/tpchSF1/customer.tbl" ;
 
 print "";
 print "=====================================================================";

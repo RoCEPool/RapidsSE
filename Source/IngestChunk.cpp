@@ -101,13 +101,15 @@ void IngestChunk::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 /* get next record                                                            */
 /*----------------------------------------------------------------------------*/
-Stz* IngestChunk::aGetRecord(i8& nRecordBytes)
+bool IngestChunk::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
   
   if (! m_aNextRecord) {
-    if (! bReadChunk())
-      return nullptr;
+    if (! bReadChunk()) {
+      *aaRecord = nullptr;
+      return false;
+    }
   }
   
   // get start address of next record
@@ -134,7 +136,9 @@ Stz* IngestChunk::aGetRecord(i8& nRecordBytes)
   m_aNextRecord = aEndRecord + 1;
   m_nBytesRemaining -= m_nRecordBytes;
   
-  return aStartRecord;
+  *aaRecord = aStartRecord;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

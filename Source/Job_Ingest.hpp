@@ -14,8 +14,8 @@ namespace JobsModel
     Table*  m_pTable;  // table being ingested
   
     IngestChunk* m_pIngestChunk;  // chunk of pipe being ingested
-    Stz*         m_aRawData;      //
-    i8           m_nRawDataBytes; //
+    Stz*         m_aRecord;       //
+    i8           m_nBytes;        //
     Formatters    m_xFormatters;  //
     
     // must be last
@@ -34,11 +34,8 @@ namespace JobsModel
   public:
     void vShow(void);
   
-    void   vConvertRecord(void);
     void   vIngest(void);
     bool   bIngestPipe(void);
-    void   vInsertRow(void);
-    bool   bReadRecord(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
 

@@ -59,16 +59,16 @@ Job_WriteBehind::~Job_WriteBehind(void) noexcept(false)
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
 bool Job_WriteBehind::bFormatRow(Table* pTable, Formatters* pFormatters,
-                                 Stz* aRawData, i8 iRawLength, bool &bBlankLine)
+                                 Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   // format the raw data into a row
   bool bValid = Row::bFormatRow(pTable->pColumnVec(),
-                           pFormatters,
-                           aRawData, iRawLength,
-                           m_aRecord.aStr(),
-                           m_nRecordBytes,
-                           bBlankLine,
-                           false /* allowNonPrintable */);
+                                pFormatters,
+                                aRecord, nBytes,
+                                m_aRecord.aStr(),
+                                m_nRecordBytes,
+                                bBlankLine,
+                                false /* allowNonPrintable */);
   
   return bValid;
 }
@@ -138,6 +138,37 @@ eEC Job_WriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSourc
   
   return eErrorCode;
 }
+
+/*----------------------------------------------------------------------------*/
+/* process record                                                             */
+/*----------------------------------------------------------------------------*/
+bool Job_WriteBehind::bProcessRecord(Interface::Session* pSession,
+                                     i8 iParentJobId,
+                                     Table* pTable,
+                                     Formatters* pFormatters,
+                                     Stz* aRecord,
+                                     i8 nBytes)
+{
+  bool bBlankLine = false;
+  
+  bool bFormat = bFormatRow(pTable, pFormatters, aRecord, nBytes, bBlankLine);
+  RASSERT( ! bBlankLine );
+  
+  // attempt to add record into a write-behind buffer
+  eEC eErrorCode = eInsertRow(pSession, pTable, DS_INGEST, iParentJobId);
+  
+  // was there an error ?
+  if (eErrorCode != EC_NONE) {
+    vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
+    return false;
+  }
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* create a new working buffer                                                */
