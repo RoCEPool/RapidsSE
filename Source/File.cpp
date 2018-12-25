@@ -342,13 +342,13 @@ i8 File::iReadBytes(void* aDst, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* read next line                                                             */
 /*----------------------------------------------------------------------------*/
-bool File::bReadLine(Stz* aBuffer)
+bool File::bReadLine(Stz* aDst)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   m_xSysCall.vClear();
   
-  char *y = aBuffer->aChar();
+  char *y = aDst->aChar();
   
   *y = '\0';
   for (;;) {
@@ -361,7 +361,7 @@ bool File::bReadLine(Stz* aBuffer)
   
   *y = '\0';
   
-  if (*aBuffer->aChar()) {
+  if (*aDst->aChar()) {
     m_xSysCall.vSuccess();
     return true;
   }

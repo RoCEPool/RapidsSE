@@ -73,7 +73,7 @@ namespace System
     s256& sPath(void);
     void vPrint(Stz* aFormat,...);
     i8   iReadBytes(void* aDst, i8 nBytes);
-    bool bReadLine(Stz* y);
+    bool bReadLine(Stz* aDst);
     void vReset(void);
     void vSeek(i8 iOffset);
     void vSeekEnd(void);
