@@ -8,10 +8,10 @@ namespace System
   class Dir : public Object
   {
   private:
-    s256    m_xDirPath;   // the path of the directory
+    s256    m_sDirPath;   // the path of the directory
    
     DIR*    m_pDirPtr;    // dir pointer/descriptor
-    s256    m_xEntryName; // name of entry just read
+    s256    m_sEntryName; // name of entry just read
     i8      m_iEntryType; // type of entry just read
  
     SysCall m_oSysCall;   // system call handler

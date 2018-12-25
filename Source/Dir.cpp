@@ -56,10 +56,10 @@ Dir::Dir(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_xDirPath   = "<none>"_Stz;
+  m_sDirPath   = "<none>"_Stz;
   
   m_pDirPtr    = nullptr;
-  m_xEntryName = "<none>"_Stz;
+  m_sEntryName = "<none>"_Stz;
   m_iEntryType = 0;
   
   //m_oSysCall
@@ -122,7 +122,7 @@ bool Dir::bGetCurrent(s256& rPath)
   
   char* aDirPath = getcwd(rPath.aChar(),rPath.nAreaSize());
 
-  m_xDirPath = (Stz*)aDirPath;
+  m_sDirPath = (Stz*)aDirPath;
   
   if ( ! aDirPath ) {
     m_oSysCall.vError(errno);
@@ -143,7 +143,7 @@ void Dir::vInit(void)
   
   m_oSysCall.vSetMagic();
   
-  m_xDirPath = ""_Stz;
+  m_sDirPath = ""_Stz;
   m_oSysCall.vClear();
 }
 
@@ -247,7 +247,7 @@ StrVal& Dir::sEntryName(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  return m_xEntryName;
+  return m_sEntryName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -295,7 +295,7 @@ bool Dir::bOpen(void)
   
   ASSERT(bIsClosed());
   
-  char* wPath = m_xDirPath.aChar();
+  char* wPath = m_sDirPath.aChar();
  
   m_pDirPtr = opendir(wPath);
   if (! m_pDirPtr) {
@@ -317,7 +317,7 @@ StrVal& Dir::sPath(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  return m_xDirPath;
+  return m_sDirPath;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -329,7 +329,7 @@ void Dir::vPath(s256& sPath)
   
   ASSERT(bIsClosed());
   
-  m_xDirPath = sPath;
+  m_sDirPath = sPath;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -347,13 +347,13 @@ bool Dir::bRead(void)
   pDirEnt = readdir(m_pDirPtr);
   
   if ( ! pDirEnt ) {
-    m_xEntryName = "<none>"_Stz;
+    m_sEntryName = "<none>"_Stz;
     m_iEntryType = 0;
     m_oSysCall.vSuccess();
     return false;
   }
   
-  m_xEntryName = (Stz*)pDirEnt->d_name;
+  m_sEntryName = (Stz*)pDirEnt->d_name;
   
   m_iEntryType = pDirEnt->d_type;
   
