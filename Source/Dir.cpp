@@ -91,6 +91,21 @@ bool Dir::bChangeCurrent(Stz* aDirPath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current working directory                                              */
+/*----------------------------------------------------------------------------*/
+bool Dir::bGetCurrent(Stz* aDirPath)
+{
+  char* aCurrPath = getcwd(aDirPath->aChar(),C_PATH_MAX);
+  
+  if ( ! aCurrPath ) {
+    vWarn("Dir::bGet: getcwd() error; errno=%d"_Stz,errno);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if directory path exists                                              */
 /*----------------------------------------------------------------------------*/
 bool Dir::bExists(Stz* aDirPath)
@@ -143,35 +158,7 @@ bool Dir::bRemove(Stz* aDirPath)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get current working directory                                              */
-/*----------------------------------------------------------------------------*/
-bool Dir::bGetCurrent(Stz* aDirPath)
-{
-  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
-  
-  m_oSysCall.vClear();
-  
-  char* aCurrPath = getcwd(aDirPath->aChar(),C_PATH_MAX);
-
-  m_sDirPath = (Stz*)aCurrPath;
-  
-  if ( ! aCurrPath ) {
-    m_oSysCall.vError(errno);
-    vWarn("Dir::bGet: getcwd() error; errno=%d"_Stz,errno);
-    return false;
-  }
-  
-  m_oSysCall.vSuccess();
-  return true;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 

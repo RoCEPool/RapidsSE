@@ -77,11 +77,10 @@ void Step::vDirGetCurrent(MP_Task mpTask)
   
   ValWrk xStrVal;
   
-  Dir xDir;
-  s256 xDirPath;
+  s256 sDirPath;
   
-  if (xDir.bGetCurrent(xDirPath)) {
-    xStrVal = xDirPath;
+  if (Dir::bGetCurrent(sDirPath)) {
+    xStrVal = sDirPath;
     mpTask->m_pDataStack->vPushValWrk(xStrVal);
   }
   else {

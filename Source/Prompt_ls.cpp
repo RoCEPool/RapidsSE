@@ -31,9 +31,8 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
   ASSERT((*pTokenVec)[0]->bSame("ls"_Stz));
   
   // get the current directory
-  if (!xDir.bGetCurrent(sDir)) {
+  if (!Dir::bGetCurrent(sDir))
     return false;
-  }
   
   // open the current directory
   if (!xDir.bOpen(sDir)) {

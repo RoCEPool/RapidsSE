@@ -27,13 +27,10 @@ namespace System
    ~Dir(void) noexcept(false);
 
     static bool bChangeCurrent(Stz* aDirPath);
+    static bool bGetCurrent(Stz* aDirPath);
     static bool bExists(Stz* aDirPath);
     static bool bMake(Stz* aDirPath);
     static bool bRemove(Stz* aDirPath);
-
-    bool bGetCurrent(Stz* aDirPath);
-  
-    //--
     
     void vClose(void);
     StrVal& sEntryName(void);

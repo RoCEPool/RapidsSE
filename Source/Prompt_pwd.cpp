@@ -21,16 +21,13 @@ PromptNote mPromptNote_pwd (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_pwd(SePrompt* pPrompt)
 {
-  Dir xDir;
-  s256 sDir;
-  
   TokenVec* pTokenVec = pPrompt->pTknVec();
   
   ASSERT((*pTokenVec)[0]->bSame("pwd"_Stz));
   
-  if (xDir.bGetCurrent(sDir)) {
+  s256 sDir;
+  if (Dir::bGetCurrent(sDir))
     vTrace("%s\n"_Stz, sDir.aChar());
-  }
   
   return true;
 }
