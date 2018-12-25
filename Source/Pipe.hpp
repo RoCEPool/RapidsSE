@@ -19,7 +19,7 @@ namespace System
     Pipe(Stz* aFilePath);
    ~Pipe(void) noexcept(false);
 
-    static bool bCreate(Stz* sPipePath);
+    static bool bMake(Stz* sPipePath);
     static bool bRemove(Stz* sPipePath);
 
     SysCall& oSysCall(void);

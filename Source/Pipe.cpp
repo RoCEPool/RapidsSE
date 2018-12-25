@@ -49,14 +49,14 @@ Pipe::~Pipe(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* create pipe                                                                */
+/* make pipe                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Pipe::bCreate(Stz* sPipePath)
+bool Pipe::bMake(Stz* sPipePath)
 {
   i8 iResult = mkfifo(sPipePath->aChar(),0777);
   
   if (iResult) {
-    vWarn("Pipe::bCreate: mkfifo() error; errno=%d"_Stz,errno);
+    vWarn("Pipe::bMake: mkfifo() error; errno=%d"_Stz,errno);
     return false;
   }
   

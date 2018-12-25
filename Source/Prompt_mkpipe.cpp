@@ -29,8 +29,8 @@ bool Prompt::bPrompt_mkpipe(SePrompt* pPrompt)
   
   sPipePath = (*pTokenVec)[1]->aText();
   
-  if (! Pipe::bCreate(sPipePath)) {
-    vTrace("Filed to created pipe: %s\n"_Stz,sPipePath.aChar());
+  if (! Pipe::bMake(sPipePath)) {
+    vTrace("Failed to make pipe: %s\n"_Stz,sPipePath.aChar());
     return false;
   }
   
