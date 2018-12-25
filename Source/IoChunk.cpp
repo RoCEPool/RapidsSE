@@ -48,7 +48,7 @@ IoChunk::IoChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
 
-  //m_xFile
+  //m_oFile
   
   _checkInitialised_(CN_IOCHUNK);
   
@@ -84,7 +84,7 @@ void IoChunk::vCloseFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
   
-  m_xFile.vClose();
+  m_oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,11 +95,11 @@ void IoChunk::vOpenRead(s256& sPath)
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
   
   // open the file
-  bool b = m_xFile.bOpen(sPath,C_OPEN_READ);
+  bool b = m_oFile.bOpen(sPath,C_OPEN_READ);
   RASSERT(b);
   
   // set buffering
-  //m_xFile.vSetBuffering(C_1MB);
+  //m_oFile.vSetBuffering(C_1MB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -110,11 +110,11 @@ void IoChunk::vOpenWrite(s256& sPath)
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
   
   // open the file
-  bool b = m_xFile.bOpen(sPath,C_OPEN_WRITE);
+  bool b = m_oFile.bOpen(sPath,C_OPEN_WRITE);
   RASSERT(b);
   
   // set buffering
-  //m_xFile.vSetBuffering(C_1MB);
+  //m_oFile.vSetBuffering(C_1MB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +130,7 @@ i8 IoChunk::nReadBytes(i8 nBytes)
   if (nBytes == C_IO_CHUNK)
     nBytes -= 1;
   
-  m_nDataBytes = m_xFile.iReadBytes(m_xWsp.aArea(),nBytes);
+  m_nDataBytes = m_oFile.iReadBytes(m_xWsp.aArea(),nBytes);
 
   if (! m_nDataBytes)
     return 0;
@@ -149,7 +149,7 @@ void IoChunk::vWriteData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
   
-  bool bResult = m_xFile.bWriteBytes(m_xWsp.aArea(),m_nDataBytes);
+  bool bResult = m_oFile.bWriteBytes(m_xWsp.aArea(),m_nDataBytes);
   RASSERT(bResult);
 }
 

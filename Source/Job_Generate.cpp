@@ -110,7 +110,7 @@ Job_Generate::Job_Generate(Interface::Session* pSession)
   m_pTable      = nullptr;
   m_bIndefinite = false;
   m_nRecords    = 0;
-  //m_xFile
+  //m_oFile
   
   m_bIsSchemaTest     = false;
   m_nLeadingDontCare  = 0;
@@ -733,7 +733,7 @@ void Job_Generate::vGenerate(void)
   vTrace("Generating data for %s into %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
   
-  bool bOpened = m_xFile.bOpen(m_sFileName.aStr(), C_OPEN_WRITE);
+  bool bOpened = m_oFile.bOpen(m_sFileName.aStr(), C_OPEN_WRITE);
   if (! bOpened) {
     vTrace("Unable to open file: %s\n"_Stz,m_sFileName.aStr());
     return;
@@ -746,7 +746,7 @@ void Job_Generate::vGenerate(void)
   else
     vGenerateDataRecords();
   
-  m_xFile.vClose();
+  m_oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -886,7 +886,7 @@ void Job_Generate::vWriteRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
-  m_xFile.vPrint("%s\n"_Stz,m_sRecord.aChar());
+  m_oFile.vPrint("%s\n"_Stz,m_sRecord.aChar());
 }
 
 /*============================================================================*/

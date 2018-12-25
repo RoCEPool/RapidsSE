@@ -89,7 +89,7 @@ void LoadChunk::vCloseFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
-  m_xFile.vClose();
+  m_oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,14 +148,14 @@ void LoadChunk::vOpenFile(s256& sPath)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
   // open the file
-  bool b = m_xFile.bOpen(sPath,C_OPEN_READ);
+  bool b = m_oFile.bOpen(sPath,C_OPEN_READ);
   RASSERT(b);
   
   // set buffer
-  //m_xFile.vBuffer(C_1MB);
+  //m_oFile.vBuffer(C_1MB);
   
   // set no buffering (WHY??)
-  m_xFile.vSetBuffering(C_NO_BUFFERING);
+  m_oFile.vSetBuffering(C_NO_BUFFERING);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,10 +177,10 @@ void LoadChunk::vReadChunk(i8 iSeek, i8 nBytes)
   
   //vTrace("vReadChunk: seek %lld bytes %lld\n"_Stz,iSeek,nBytes);
 
-  m_xFile.vSeek(iSeek);
+  m_oFile.vSeek(iSeek);
   
   //MemLib::vHexDump(m_xWsp.aStr(),nBytes+16);
-  i8 iBytesRead = m_xFile.iReadBytes(m_xWsp.aArea(),nBytes);
+  i8 iBytesRead = m_oFile.iReadBytes(m_xWsp.aArea(),nBytes);
 
   //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
   ((char*)m_xWsp.aStr())[iBytesRead] = '\0';                       //! show Alka

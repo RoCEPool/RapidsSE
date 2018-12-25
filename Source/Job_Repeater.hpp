@@ -14,7 +14,7 @@ namespace JobsModel
   public:
     s256  m_sPipeName; // pipe name
   
-    File  m_xFile;     // the file
+    File  m_oFile;     // the file
     File  m_xPipe;     // the pipe
 
     WspFxd<C_REPEATER_WSP> m_xWsp; // workspace

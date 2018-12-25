@@ -18,7 +18,7 @@ namespace JobsModel
     Table*  m_pTable;      // table having data generate
     bool    m_bIndefinite; // generate continous stream?
     i8      m_nRecords;    // number of records to generate
-    File    m_xFile;       // file being generated
+    File    m_oFile;       // file being generated
   
     bool    m_bIsSchemaTest;     // is a schema test generated file?
     i8      m_nLeadingDontCare;  // number of leading dont care columns

@@ -95,7 +95,7 @@ void IngestChunk::vCloseFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
   
-  m_xFile.vClose();
+  m_oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,16 +193,16 @@ bool IngestChunk::bOpenFile(s256& sPath)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
   
   // open the file
-  bool bOpened = m_xFile.bOpen(sPath,C_OPEN_READ);
+  bool bOpened = m_oFile.bOpen(sPath,C_OPEN_READ);
 
   if (! bOpened)
     return false;
   
   // set buffer
-  //m_xFile.vBuffer(C_1MB);
+  //m_oFile.vBuffer(C_1MB);
   
   // set no buffering
-  m_xFile.vSetBuffering(C_NO_BUFFERING);
+  m_oFile.vSetBuffering(C_NO_BUFFERING);
   
   return true;
 }
@@ -229,7 +229,7 @@ bool IngestChunk::bReadChunk(void)
   i8   nAsMuchAs = C_INGEST_CHUNK - m_nBytesRemaining;
   Stz* aIntoAddr = pAdd<Stz*>(m_aStartChunk,m_nBytesRemaining);
   
-  i8 nBytesRead = m_xFile.iReadBytes(aIntoAddr,nAsMuchAs);
+  i8 nBytesRead = m_oFile.iReadBytes(aIntoAddr,nAsMuchAs);
   
   if (! nBytesRead)
     return false;
@@ -253,10 +253,10 @@ void IngestChunk::vReadChunk(i8 iSeek, i8 nBytes)
   
   //vTrace("vReadChunk: seek %lld bytes %lld\n"_Stz,iSeek,nBytes);
 
-  m_xFile.vSeek(iSeek);
+  m_oFile.vSeek(iSeek);
   
   //MemLib::vHexDump(m_xWsp.aStr(),nBytes+16);
-  i8 iBytesRead = m_xFile.iReadBytes(m_aStartChunk,nBytes);
+  i8 iBytesRead = m_oFile.iReadBytes(m_aStartChunk,nBytes);
 
   //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
   ((char*)m_xWsp.aStr())[iBytesRead] = '\0';                       //! show Alka

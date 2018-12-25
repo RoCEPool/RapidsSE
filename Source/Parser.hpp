@@ -21,7 +21,7 @@ namespace Parsing
     // input sources
     eIS     m_eSource;   // what source are we parsing? given file or given string?
     s256    m_sPrompt;   // user prompt when reading from stdin
-    File    m_xFile;     // given file
+    File    m_oFile;     // given file
     bool    m_bLineMode; // line mode?
     s48K    m_sRawLine;  // either raw line read from file or given string
     char*   m_aRawLine;  // ptr into m_sLine.s() -- debug help

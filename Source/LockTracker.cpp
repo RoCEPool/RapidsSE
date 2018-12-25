@@ -8,11 +8,11 @@
 /*----------------------------------------------------------------------------*/
 /* list steps                                                                 */
 /*----------------------------------------------------------------------------*/
-void LockTracker::vList(File& xFile)
+void LockTracker::vList(File& oFile)
 {
-  xFile.vPrint("Lock, LockNm, WorkUnits, ReadGrab, ReadCollision, WriteGrab, WriteCollision\n"_Stz);
+  oFile.vPrint("Lock, LockNm, WorkUnits, ReadGrab, ReadCollision, WriteGrab, WriteCollision\n"_Stz);
   for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++)
-    xFile.vPrint("%lld, %s, %lld, %lld, %lld, %lld, %lld\n"_Stz,
+    oFile.vPrint("%lld, %s, %lld, %lld, %lld, %lld, %lld\n"_Stz,
                  i_Lock,
                  aLK[i_Lock],
                  *m_ziWorkUnits[i_Lock],

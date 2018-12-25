@@ -75,7 +75,7 @@ void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
 /*----------------------------------------------------------------------------*/
 /* print to given file                                                        */
 /*----------------------------------------------------------------------------*/
-void StepAccum::vPrint(File& xFile)
+void StepAccum::vPrint(File& oFile)
 {
   if (0 == m_nInvoked)
     return;
@@ -133,7 +133,7 @@ void StepAccum::vPrint(File& xFile)
 //          );
 
   //            0   1     2     3     4     5     6     7
-  xFile.vPrint("%s, %lld, %lld, %lld, %lld, %lld, %lld, %lld\n"_Stz,
+  oFile.vPrint("%s, %lld, %lld, %lld, %lld, %lld, %lld, %lld\n"_Stz,
                m_aStepNm,               // 0
                m_nInvoked,              // 1
                

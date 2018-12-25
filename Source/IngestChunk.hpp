@@ -11,7 +11,7 @@ namespace Loader
   class IngestChunk : public Object
   {
   private:
-    File m_xFile;              // file/pipe being ingested
+    File m_oFile;              // file/pipe being ingested
     Formatters* m_pFormatters; // using these formatters
   
     WspFxd<C_INGEST_CHUNK> m_xWsp; // workspace

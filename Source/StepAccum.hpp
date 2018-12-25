@@ -25,7 +25,7 @@ namespace Measurement
   
     void vEnter(i8& nEnterCycles, i8& nEnterMisses);
     void vExit(i8 nEnterCycles, i8 nEnterMisses);
-    void vPrint(File& xFile);
+    void vPrint(File& oFile);
     void vReset(void);
     
     Footer* aFooter(void);

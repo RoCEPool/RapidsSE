@@ -121,25 +121,25 @@ void StepTracker::vReset(void)
 /*----------------------------------------------------------------------------*/
 void StepTracker::vWrite(void)
 {
-  File xFile;
+  File oFile;
 
-  bool bOpened = xFile.bOpen((Stz*)C_STEPTRACKER_FILE,C_OPEN_WRITE);
+  bool bOpened = oFile.bOpen((Stz*)C_STEPTRACKER_FILE,C_OPEN_WRITE);
   if (! bOpened) {
-    vTrace("Unable to open StepTracker file: %s\n"_Stz,xFile.sFilePath().aStr());
+    vTrace("Unable to open StepTracker file: %s\n"_Stz,oFile.sFilePath().aStr());
     return;
   }
   
   m_zLock.vGrabWrite();
   
-  xFile.vPrint("Step, Invoked, Step Total, Per Invoke\n"_Stz);
+  oFile.vPrint("Step, Invoked, Step Total, Per Invoke\n"_Stz);
   for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
-    m_xStepAccum[i_Step].vPrint(xFile);
+    m_xStepAccum[i_Step].vPrint(oFile);
   
   m_zLock.vDropWrite();
   
-  vTrace("Written: %s\n"_Stz,xFile.sFilePath().aStr());
+  vTrace("Written: %s\n"_Stz,oFile.sFilePath().aStr());
   
-  xFile.vClose();
+  oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/

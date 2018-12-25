@@ -22,12 +22,12 @@ void Step::vLockTrackerList(MP_Task mpTask)
 {
 ENTRY("vLockTrackerList"_Stz);
 
-  File xFile;
-  xFile.bOpen("locks.csv"_Stz, C_OPEN_WRITE);
+  File oFile;
+  oFile.bOpen("locks.csv"_Stz, C_OPEN_WRITE);
   
-  gpAttachMap->m_xLockTracker.vList(xFile);
+  gpAttachMap->m_xLockTracker.vList(oFile);
   
-  xFile.vClose();
+  oFile.vClose();
   
   EXIT();
 }

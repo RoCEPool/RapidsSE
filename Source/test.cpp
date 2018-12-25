@@ -10,25 +10,25 @@
 /*----------------------------------------------------------------------------*/
 void vTest1(void)
 {
-  File xFile;
+  File oFile;
   i8 iChunk = C_32KB;
   char buffer[iChunk];
   Timer xTimer;
   
   vTrace("Reading lineitem.tbl in chunks of %lld\n"_Stz, iChunk);
-  bool b = xFile.bOpen("/Volumes/Data/Users/alkayamarti/tpch_SF10/lineitem.tbl"_Stz,C_OPEN_READ);
+  bool b = oFile.bOpen("/Volumes/Data/Users/alkayamarti/tpch_SF10/lineitem.tbl"_Stz,C_OPEN_READ);
   ASSERT(b);
   
   xTimer.vStart();
-  i8 iBytesRead = xFile.iReadBytes(buffer,iChunk);
+  i8 iBytesRead = oFile.iReadBytes(buffer,iChunk);
   
   while (iBytesRead) {
-    iBytesRead = xFile.iReadBytes(buffer,iChunk);
+    iBytesRead = oFile.iReadBytes(buffer,iChunk);
   }
   xTimer.vUpdate();
   vTrace("duration %lldms\n"_Stz,xTimer.iMilliseconds());
   
-  xFile.vClose();
+  oFile.vClose();
 }
 
 //  i8 i = 0;

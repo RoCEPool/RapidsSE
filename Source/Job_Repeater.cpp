@@ -108,7 +108,7 @@ Job_Repeater::Job_Repeater(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
   m_sPipeName = "<none>"_Stz;
-  //m_xFile
+  //m_oFile
   //m_xPipe
   
   m_xWsp.vFill(0xEF,CN_JOB_REPEATER);
@@ -248,9 +248,9 @@ void Job_Repeater::vIndefiniteCopy(void)
   
   for (;;) {
     
-    m_xFile.vSeek(0);
+    m_oFile.vSeek(0);
     
-    while ( (nBytesRead = m_xFile.iReadBytes(m_xWsp.aArea(),C_REPEATER_WSP)) ) {
+    while ( (nBytesRead = m_oFile.iReadBytes(m_xWsp.aArea(),C_REPEATER_WSP)) ) {
       bool bWritten = m_xPipe.bWriteBytes(m_xWsp.aArea(),nBytesRead);
       ASSERT(bWritten);
     }
@@ -267,7 +267,7 @@ void Job_Repeater::vRepeat(void)
   vTrace("Repeating data from %s into %s\n"_Stz,
          m_sFileName.aStr(), m_sPipeName.aStr());
   
-  bool bFileOpened = m_xFile.bOpen(m_sFileName,C_OPEN_READ);
+  bool bFileOpened = m_oFile.bOpen(m_sFileName,C_OPEN_READ);
   if (! bFileOpened) {
     vTrace("Unable to open file: %s\n"_Stz,m_sFileName.aStr());
     return;

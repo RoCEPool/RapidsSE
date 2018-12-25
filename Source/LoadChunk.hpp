@@ -11,7 +11,7 @@ namespace Loader
   class LoadChunk : public Object
   {
   private:
-    File m_xFile;        // file being loaded
+    File m_oFile;        // file being loaded
     Stz* m_aEndChunk;    // last byte of where chunk ends
     Stz* m_aNextRecord;  // first byte of next record
     i8   m_iRecordBytes; // size of record

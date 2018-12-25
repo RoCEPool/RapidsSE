@@ -18,7 +18,7 @@ namespace Measurement
     Atomic m_ziWriteGrabs[LK_ENUMS];      // number of write grabs
     Atomic m_ziWriteCollisions[LK_ENUMS]; // number of write collisions
   
-    void vList(File& xFile);
+    void vList(File& oFile);
     void vReport(void);
     void vReset(void);
   };

@@ -80,8 +80,8 @@ Parser::~Parser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  if (m_xFile.bIsOpen())
-    m_xFile.vClose();
+  if (m_oFile.bIsOpen())
+    m_oFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,7 +137,7 @@ bool Parser::bUseFile(StrVal& sPath)
   m_eSource = IS_FILE;
   m_bRead = true;
   
-  bool bOpened = m_xFile.bOpen(sPath,C_OPEN_READ);
+  bool bOpened = m_oFile.bOpen(sPath,C_OPEN_READ);
   
   return bOpened;
 }
@@ -151,7 +151,7 @@ void Parser::vUseStdin(void)
   
   vResetParser();
   
-  m_xFile.vUseStdin();
+  m_oFile.vUseStdin();
   m_eSource = IS_STDIN;
   m_bRead = true;
 }
@@ -180,8 +180,8 @@ void Parser::vUseEnd(void)
   switch (m_eSource) {
       
     case IS_FILE:
-      ASSERT( m_xFile.bIsOpen() );
-      m_xFile.vClose();
+      ASSERT( m_oFile.bIsOpen() );
+      m_oFile.vClose();
       break;
       
     case IS_STDIN:
@@ -295,7 +295,7 @@ bool Parser::bStdin(void)
   if (IS_STDIN != m_eSource)
     return false;
 
-  bool bIsStdin = m_xFile.bIsStdin();
+  bool bIsStdin = m_oFile.bIsStdin();
 
   return bIsStdin;
 }
@@ -311,11 +311,11 @@ void Parser::vResetParser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  //ASSERT(! m_xFile.bIsOpen());
+  //ASSERT(! m_oFile.bIsOpen());
   
   // reset input sources
   m_eSource   = IS_NONE;
-  m_xFile.vReset();
+  m_oFile.vReset();
   m_bLineMode = false;
   m_sRawLine  = ""_Stz;
   m_aRawLine  = m_sRawLine.aChar();
@@ -692,7 +692,7 @@ char Parser::cFromRawFile(void)
     return cRaw;
   }
   
-  ASSERT(m_xFile.bIsOpen());
+  ASSERT(m_oFile.bIsOpen());
   
   if (! m_bLineMode) {
     vReadLineFile();
@@ -734,8 +734,8 @@ char Parser::cFromRawStdin(void)
     return cRaw;
   }
   
-  ASSERT(m_xFile.bIsStdin());
-  ASSERT(m_xFile.bIsOpen());
+  ASSERT(m_oFile.bIsStdin());
+  ASSERT(m_oFile.bIsOpen());
   
   if (! m_bLineMode) {
     vReadLineStdin();
@@ -796,7 +796,7 @@ void Parser::vReadLineFile(void)
   
   do {
     
-    cInput = m_xFile.cGetChar();
+    cInput = m_oFile.cGetChar();
     
     *m_pRawChar++ = cInput;
     
@@ -841,7 +841,7 @@ void Parser::vReadLineStdin(void)
   
   for (;;) {
     
-    char cInput = m_xFile.cGetChar();
+    char cInput = m_oFile.cGetChar();
     
     *m_pRawChar++ = cInput;
     

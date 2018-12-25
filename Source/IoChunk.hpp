@@ -11,7 +11,7 @@ namespace Loader
   class IoChunk : public DataChunk
   {
   private:
-    File m_xFile; // file being used
+    File m_oFile; // file being used
   
     // must be last
     Footer m_xFooter;
