@@ -28,15 +28,15 @@ bool ActivityMap::bCloseShm(void)
 bool ActivityMap::bCreateNewShm(void)
 {
   int iFD;
-  SysCall xSysCall;
+  SysCall oSysCall;
   s256 sRegionName;
   
   sRegionName = *C_ACTIVITY_REGION;
   
   // unlink previous  // open existing shm region
-  bool bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
+  bool bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
   if ( bResult ) {
-    Shm::bUnlink(sRegionName,xSysCall);
+    Shm::bUnlink(sRegionName,oSysCall);
   }
   
   // create a new shm region
@@ -44,7 +44,7 @@ bool ActivityMap::bCreateNewShm(void)
                           sizeof(ActivityMap),
                           iFD,
                           false,
-                          xSysCall);
+                          oSysCall);
   if ( ! bResult ) {
     vTrace("ActivityMap::bCreateNewShm: failed to create region %s\n"_Stz,
            sRegionName.aChar());
@@ -57,10 +57,10 @@ bool ActivityMap::bCreateNewShm(void)
                           sizeof(ActivityMap),
                           true,
                           false,
-                          xSysCall);
+                          oSysCall);
   if ( ! aAddr )  {
     vTrace("ActivityMap::bCreateNewShm: failed to map!\n"_Stz);
-    Shm::bClose(iFD,xSysCall);
+    Shm::bClose(iFD,oSysCall);
     NEVER_REACH;
   }
 
@@ -78,13 +78,13 @@ bool ActivityMap::bCreateNewShm(void)
 bool ActivityMap::bOpenExistingShm(void)
 {
   int iFD;
-  SysCall xSysCall;
+  SysCall oSysCall;
   s256 sRegionName;
   
   sRegionName = *C_ACTIVITY_REGION;
   
   // open existing shm region
-  bool bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
+  bool bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
   if ( ! bResult ) {
     vTrace("ActivityMap::bOpenExistingShm: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
@@ -97,10 +97,10 @@ bool ActivityMap::bOpenExistingShm(void)
                           sizeof(ActivityMap),
                           true,
                           false,
-                          xSysCall);
+                          oSysCall);
   if ( ! aAddr )  {
     vTrace("ActivityMap::bOpenExistingShm: failed to map!\n"_Stz);
-    Shm::bClose(iFD,xSysCall);
+    Shm::bClose(iFD,oSysCall);
     NEVER_REACH;
   }
   

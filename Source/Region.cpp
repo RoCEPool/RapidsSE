@@ -17,14 +17,14 @@ extern void* C_ADDR_POOL;
 bool Region::bAttach(StrVal& sRegionName, bool bWecome)
 {
   int iFD;
-  SysCall xSysCall;
+  SysCall oSysCall;
   bool bResult;
   
   if (bWecome)
     vTrace("Attaching to SE instance %s\n"_Stz,sRegionName.aChar());
   
   // open existing shm region
-  bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
+  bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttach: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
@@ -37,10 +37,10 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
                        10_MB,
                        C_SHARED_REGION,
                        false,
-                       xSysCall);
+                       oSysCall);
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttach failed to map\n"_Stz);
-    Shm::bClose(iFD,xSysCall);
+    Shm::bClose(iFD,oSysCall);
     return false;
   }
   
@@ -52,13 +52,13 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
   gpAttachMap = nullptr;
   
   // close the temporary mapping
-  bResult = Shm::bClose(iFD,xSysCall);
-  bResult = Shm::bUnmap(mpRegion,10_MB,xSysCall);
+  bResult = Shm::bClose(iFD,oSysCall);
+  bResult = Shm::bUnmap(mpRegion,10_MB,oSysCall);
   
   //--------------------------------------------------------------------------
   
   // reopen the existing shm region
-  bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
+  bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttach: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
@@ -71,10 +71,10 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
                        iRegionSize,
                        C_SHARED_REGION,
                        false,
-                       xSysCall);
+                       oSysCall);
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttach failed to map\n"_Stz);
-    Shm::bClose(iFD,xSysCall);
+    Shm::bClose(iFD,oSysCall);
     return false;
   }
   
@@ -95,7 +95,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
                      bool bDontFree, bool bFreeRB)
 {
   int iFD;
-  SysCall xSysCall;
+  SysCall oSysCall;
   s256 sSize;
   
   Magnitudes::vByteMag(iRegionSize, sSize);
@@ -114,7 +114,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
                               iRegionSize,
                               iFD,
                               bRestart,
-                              xSysCall);
+                              oSysCall);
 
   //if (gxArguments.m_bVerbose)
   //  vTrace("Region::vCreate B\n"_Stz);
@@ -131,14 +131,14 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
                        iRegionSize,
                        true,
                        false,
-                       xSysCall);
+                       oSysCall);
   
   //if (gxArguments.m_bVerbose)
   //  vTrace("Region::vCreate C; mpRegion=%p\n"_Stz,mpRegion);
   
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vCreate failed to map!\n"_Stz);
-    Shm::bClose(iFD,xSysCall);
+    Shm::bClose(iFD,oSysCall);
     NEVER_REACH;
   }
   
@@ -161,15 +161,15 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
   if (bLock) {
     bResult = Shm::bLock(mpRegion,
                          iRegionSize,
-                         xSysCall);
+                         oSysCall);
   
     if ( ! bResult )  {
       vFatal("RapidsSE::vAttach failed to lock\n"_Stz);
-      bResult = Shm::bUnmap(mpRegion, iRegionSize, xSysCall);
+      bResult = Shm::bUnmap(mpRegion, iRegionSize, oSysCall);
       if ( ! bResult )  {
         vFatal("RapidsSE::vAttach failed to unmap\n"_Stz);
       }
-      Shm::bClose(iFD,xSysCall);
+      Shm::bClose(iFD,oSysCall);
       exit(EXIT_FAILURE);
     }
     
@@ -185,14 +185,14 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
 bool Region::bTest(StrVal& sRegionName)
 {
   int iFD;
-  SysCall xSysCall;
+  SysCall oSysCall;
   
   // open existing shm region
-  bool bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
+  bool bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
   if ( ! bResult )
     return false;
   
-  bResult = Shm::bClose(iFD,xSysCall);
+  bResult = Shm::bClose(iFD,oSysCall);
   
   return true;
 }
@@ -202,9 +202,9 @@ bool Region::bTest(StrVal& sRegionName)
 /*----------------------------------------------------------------------------*/
 void Region::vUnlink(StrVal& sRegionName)
 {
-  SysCall xSysCall;
+  SysCall oSysCall;
   
-  if (Shm::bUnlink(sRegionName,xSysCall)) {
+  if (Shm::bUnlink(sRegionName,oSysCall)) {
     if (gxArguments.m_bVerbose)
       vTrace("Region %s succesfully unlinked\n"_Stz,sRegionName.aChar());
   }
@@ -220,14 +220,14 @@ void Region::vUnlink(StrVal& sRegionName)
 /*----------------------------------------------------------------------------*/
 void* Region::pOpen(StrVal& sRegionName, int& iFD)
 {
-  SysCall xSysCall;
+  SysCall oSysCall;
   bool bResult;
   
   //if (gxArguments.m_bVerbose)
   //  vInfo("Region::pOpen %s\n"_Stz,sRegionName.aChar());
   
   // open shm region
-  bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
+  bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
   if ( ! bResult ) {
     vTrace("Region::pOpen: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
@@ -240,10 +240,10 @@ void* Region::pOpen(StrVal& sRegionName, int& iFD)
                             10_MB,
                             C_SHARED_REGION,
                             false,
-                            xSysCall);
+                            oSysCall);
   if ( ! pRegion )  {
     vTrace("Region::pOpen failed to map\n"_Stz);
-    Shm::bClose(iFD,xSysCall);
+    Shm::bClose(iFD,oSysCall);
     return nullptr;
   }
   
@@ -256,11 +256,11 @@ void* Region::pOpen(StrVal& sRegionName, int& iFD)
 void Region::vClose(void* pRegion, int iFD)
 {
   bool bResult;
-  SysCall xSysCall;
+  SysCall oSysCall;
   
   // close the temporary mapping
-  bResult = Shm::bClose(iFD,xSysCall);
-  bResult = Shm::bUnmap(pRegion,10_MB,xSysCall);
+  bResult = Shm::bClose(iFD,oSysCall);
+  bResult = Shm::bUnmap(pRegion,10_MB,oSysCall);
 }
 
 /*============================================================================*/

@@ -9,7 +9,7 @@ namespace System
   {
   private:
     s256    m_sPipePath;   // the path of the file (relative or absolute)
-    SysCall m_xSysCall;
+    SysCall m_oSysCall;
 
     // must be last
     Footer m_xFooter;

@@ -14,7 +14,7 @@ namespace System
     s256    m_xEntryName; // name of entry just read
     i8      m_iEntryType; // type of entry just read
  
-    SysCall m_xSysCall;   // system call handler
+    SysCall m_oSysCall;   // system call handler
     
     // must be last
     Footer m_xFooter;

@@ -83,12 +83,12 @@ void ShmUtility::vRun(int argc, Stz* argv[])
 void ShmUtility::vAttach(void)
 {
   int iFD;
-  SysCall xSysCall;
+  SysCall oSysCall;
  
   // open existing shm region
   bool bResult = Shm::bAttach(msRegionName,
                               iFD,
-                              xSysCall);
+                              oSysCall);
 
   if ( ! bResult ) {
     vFatal("ShmUtility::vAttach: failed to open region: %s\n"_Stz,
@@ -102,10 +102,10 @@ void ShmUtility::vAttach(void)
                        miRegionSize,
                        C_SHARED_REGION,
                        false,
-                       xSysCall);
+                       oSysCall);
 
   if ( ! maRegion )  {
-    Shm::bClose(iFD,xSysCall);
+    Shm::bClose(iFD,oSysCall);
     vFatal("ShmUtility::vAttach failed to map\n"_Stz);
   }
 
@@ -122,7 +122,7 @@ void ShmUtility::vAttach(void)
 void ShmUtility::vCreate(void)
 {
   int iFD;
-  SysCall xSysCall;
+  SysCall oSysCall;
   bool bRestart = false;
   
   // open a new shm region
@@ -130,7 +130,7 @@ void ShmUtility::vCreate(void)
                               miRegionSize,
                               iFD,
                               bRestart,
-                              xSysCall);
+                              oSysCall);
   
   if ( ! bResult ) {
     vFatal("ShmUtility::vCreate: failed to create region %s\n"_Stz,
@@ -144,7 +144,7 @@ void ShmUtility::vCreate(void)
                        miRegionSize,
                        true,
                        false,
-                       xSysCall);
+                       oSysCall);
 
   vTrace("Region %s Created\n"_Stz,msRegionName.aChar());
 }
@@ -154,9 +154,9 @@ void ShmUtility::vCreate(void)
 /*----------------------------------------------------------------------------*/
 void ShmUtility::vDelete(void)
 {
-  SysCall xSysCall;
+  SysCall oSysCall;
   
-  if (! Shm::bUnlink(msRegionName,xSysCall)) {
+  if (! Shm::bUnlink(msRegionName,oSysCall)) {
     vFatal("Region %s not unlinked\n"_Stz,msRegionName.aChar());
   }
   

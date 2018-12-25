@@ -62,7 +62,7 @@ Dir::Dir(void)
   m_xEntryName = "<none>"_Stz;
   m_iEntryType = 0;
   
-  //m_xSysCall
+  //m_oSysCall
   
   ASSERT(bIsClosed());
   
@@ -88,23 +88,23 @@ bool Dir::bExists(s256& rPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   struct stat xStat;
 
   int iCode = stat(rPath.aChar(),&xStat);
 
   if (0 == iCode && (xStat.st_mode & S_IFDIR)) {
-    m_xSysCall.vSuccess();
+    m_oSysCall.vSuccess();
     return true;
   }
 
   if (iCode && ENOENT == errno) {
-    m_xSysCall.vSuccess();
+    m_oSysCall.vSuccess();
     return false;
   }
 
-  m_xSysCall.vError(errno);
+  m_oSysCall.vError(errno);
   
   vError("Dir::bExists: stat(%s) error; errno=%d"_Stz,rPath.aChar(),errno);
 
@@ -118,19 +118,19 @@ bool Dir::bGetCurrent(s256& rPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   char* aDirPath = getcwd(rPath.aChar(),rPath.nAreaSize());
 
   m_xDirPath = (Stz*)aDirPath;
   
   if ( ! aDirPath ) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("Dir::bGet: getcwd() error; errno=%d"_Stz,errno);
     return false;
   }
   
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
   return true;
 }
 
@@ -141,10 +141,10 @@ void Dir::vInit(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_xSysCall.vSetMagic();
+  m_oSysCall.vSetMagic();
   
   m_xDirPath = ""_Stz;
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,17 +154,17 @@ bool Dir::bMake(s256& rPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   char* aPath = rPath.aChar();
 
   if (mkdir(aPath,0777) != 0 && EEXIST != errno) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("Dir::bMake: mkdir() error; errno=%d"_Stz,errno);
     return false;
   }
 
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
   return true;
 }
 
@@ -175,19 +175,19 @@ bool Dir::bRemove(s256& rPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   char* aPath = rPath.aChar();
   
   int rCode = rmdir(aPath);
 
   if (-1 == rCode) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("Dir::bRemove: rmdir() error; errno=%d"_Stz,errno);
     return false;
   }
 
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
   return true;
 }
 
@@ -198,16 +198,16 @@ bool Dir::bChangeCurrent(s256& rPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   i8 iCode = chdir(rPath.aChar());
   
   if (iCode) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     //vWarn("chdir() error; errno=%d\n"_Stz,errno);
     return false;
   }
 
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
   return true;
 }
 
@@ -228,7 +228,7 @@ void Dir::vClose(void)
   
   i8 iResult = closedir(m_pDirPtr);
   if (-1 == iResult) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("Dir::vClose: closedir() error; errno=%d"_Stz,errno);
     return;
   }
@@ -299,7 +299,7 @@ bool Dir::bOpen(void)
  
   m_pDirPtr = opendir(wPath);
   if (! m_pDirPtr) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("Dir::bOpen: opendir() error; errno=%d"_Stz,errno);
     return false;
   }
@@ -340,7 +340,7 @@ bool Dir::bRead(void)
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   ASSERT(bIsOpen());
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   struct dirent *pDirEnt;
   
@@ -349,7 +349,7 @@ bool Dir::bRead(void)
   if ( ! pDirEnt ) {
     m_xEntryName = "<none>"_Stz;
     m_iEntryType = 0;
-    m_xSysCall.vSuccess();
+    m_oSysCall.vSuccess();
     return false;
   }
   
@@ -357,7 +357,7 @@ bool Dir::bRead(void)
   
   m_iEntryType = pDirEnt->d_type;
   
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
   return true;
 }
 
@@ -369,11 +369,11 @@ void Dir::vRewind(void)
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   ASSERT(bIsOpen());
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   rewinddir(m_pDirPtr);
   
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -384,11 +384,11 @@ void Dir::vSeek(i8 iPosition)
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   ASSERT(bIsOpen());
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
 
   seekdir(m_pDirPtr,iPosition);
   
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -399,11 +399,11 @@ i8 Dir::iTell(void)
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   ASSERT(bIsOpen());
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   i8 iPosition = telldir(m_pDirPtr);
   
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
   return iPosition;
 }
 

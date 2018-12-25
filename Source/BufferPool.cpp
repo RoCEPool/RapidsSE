@@ -316,11 +316,11 @@ bool BufferPool::bDetachPool(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  SysCall xSysCall;
+  SysCall oSysCall;
   
-  bool bResult = Shm::bClose(m_iShmFD,xSysCall);
+  bool bResult = Shm::bClose(m_iShmFD,oSysCall);
   
-  bResult = Shm::bUnmap(m_pBase,gpAttachMap->m_iRegionSize,xSysCall);
+  bResult = Shm::bUnmap(m_pBase,gpAttachMap->m_iRegionSize,oSysCall);
   
   return bResult;
 }

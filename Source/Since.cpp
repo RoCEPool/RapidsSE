@@ -84,9 +84,9 @@ void Since::vSet(void)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  SysCall xSysCall;
+  SysCall oSysCall;
   
-  vGetTimeOfDay(m_iSeconds,m_iMicroseconds,xSysCall);
+  vGetTimeOfDay(m_iSeconds,m_iMicroseconds,oSysCall);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,21 +180,21 @@ void Since::vToTime(Time* pTime)
 /*----------------------------------------------------------------------------*/
 /* get time of day (current realtime clock)                                   */
 /*----------------------------------------------------------------------------*/
-void Since::vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& xSysCall)
+void Since::vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& oSysCall)
 {
   struct timeval xTimeVal;
   
-  xSysCall.vClear();
+  oSysCall.vClear();
   
   i8 rCode = gettimeofday(&xTimeVal,NULL);
   
   if (rCode) {
-    xSysCall.vError(errno);
+    oSysCall.vError(errno);
     vError("gettimeofday() error; errno=%d"_Stz,errno);
     return;
   }
   
-  xSysCall.vSuccess();
+  oSysCall.vSuccess();
   
   iSeconds      = xTimeVal.tv_sec;
   iMicroseconds = xTimeVal.tv_usec;

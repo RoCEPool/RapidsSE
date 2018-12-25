@@ -17,7 +17,7 @@ Pipe::Pipe(void)
   _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
   
   m_sPipePath = "<none>"_Stz;
-  //m_xSysCall;
+  //m_oSysCall;
   
   _checkInitialised_(CN_PIPE);
   
@@ -33,7 +33,7 @@ Pipe::Pipe(Stz* sPipePath)
   _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
   
   m_sPipePath = sPipePath;
-  //m_xSysCall;
+  //m_oSysCall;
 
   _checkInitialised_(CN_PIPE);
   
@@ -55,12 +55,12 @@ bool Pipe::bCreate(void)
 {
   _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   i8 iResult = mkfifo(m_sPipePath.aChar(),0777);
   
   if (iResult) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("Pipe::bCreate: mkfifo() error; errno=%d"_Stz,errno);
     return false;
   }
@@ -87,12 +87,12 @@ bool Pipe::bRemove(void)
 {
   _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   i8 iResult = remove(m_sPipePath.aChar());
   
   if (iResult) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("Pipe::bRemove: remove() error; errno=%d\n"_Stz,errno);
     return false;
   }

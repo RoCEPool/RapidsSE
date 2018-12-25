@@ -151,7 +151,7 @@ void RapidsSE::vChangeDirectory(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vCheckPort(void)
 {
-  SysCall xSysCall;
+  SysCall oSysCall;
   Socket* pSocket;
   i8      iPort;
   
@@ -164,23 +164,23 @@ void RapidsSE::vCheckPort(void)
     vInfo("Looking for listeners on port %lld\n"_Stz, iPort);
   
   pSocket = new Socket;
-  bool bResult = pSocket->bCreateServer((int)iPort, xSysCall);
+  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
   
   if ( ! bResult ) {
-    if (xSysCall.iError() == EADDRINUSE) {
+    if (oSysCall.iError() == EADDRINUSE) {
       vError("Address in use (port: %lld). CHECK IF ANOTHER INSTANCE OF RAPIDSSE IS RUNNING!\n"_Stz,
              iPort);
       
     }
     else {
       vError("Unable to listen for connections (port: %lld): Errno %d!\n"_Stz,
-             iPort, xSysCall.iError());
+             iPort, oSysCall.iError());
     }
     //RapidsSE::vStopSystem();
     exit(EXIT_FAILURE);
   }
   
-  pSocket->bClose(xSysCall);
+  pSocket->bClose(oSysCall);
 }
 
 /*----------------------------------------------------------------------------*/

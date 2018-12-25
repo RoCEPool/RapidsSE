@@ -68,9 +68,9 @@ bool Prompt::bPrompt_shell(SePrompt* pPrompt)
 
   vTrace("Shell:: %s\n"_Stz,sCommand.aStr());
   
-  SysCall xSysCall;
+  SysCall oSysCall;
   
-  i8 iExitStatus = Shell::iExecute(sCommand.aStr(),xSysCall);
+  i8 iExitStatus = Shell::iExecute(sCommand.aStr(),oSysCall);
   
   return iExitStatus ? true : false;
 }

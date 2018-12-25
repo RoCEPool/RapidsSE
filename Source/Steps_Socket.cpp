@@ -28,7 +28,7 @@ void Step::vAddSteps_Socket(void)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketAccept(MP_Task mpTask)
 {
-  SysCall xSysCall;
+  SysCall oSysCall;
   Socket* pSocket;
   int     iSocketId;
   Object* pObject;
@@ -42,10 +42,10 @@ void Step::vSocketAccept(MP_Task mpTask)
   pSocket = reinterpret_cast<Socket*>(pObject);
   
   // accept a connection
-  bool bResult = pSocket->bAcceptClient(iSocketId, xSysCall);
+  bool bResult = pSocket->bAcceptClient(iSocketId, oSysCall);
   
   if ( ! bResult )
-    THROW("Unable to accept connection: Errno %d!"_Stz, xSysCall.iError());
+    THROW("Unable to accept connection: Errno %d!"_Stz, oSysCall.iError());
   
   // return the new socket
   Socket* pNewSocket = new Socket(iSocketId);
@@ -60,7 +60,7 @@ void Step::vSocketAccept(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketClose(MP_Task mpTask)
 {
-  SysCall xSysCall;
+  SysCall oSysCall;
   Socket* pSocket;
   Object* pObject;
   
@@ -73,10 +73,10 @@ void Step::vSocketClose(MP_Task mpTask)
   pSocket = reinterpret_cast<Socket*>(pObject);
   
   // close the socket
-  bool bResult = pSocket->bClose(xSysCall);
+  bool bResult = pSocket->bClose(oSysCall);
   
   if ( ! bResult )
-    THROW("Unable to close socket: Errno %d!"_Stz, xSysCall.iError());
+    THROW("Unable to close socket: Errno %d!"_Stz, oSysCall.iError());
   
   EXIT();
 }
@@ -86,7 +86,7 @@ void Step::vSocketClose(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketConnect(MP_Task mpTask)
 {
-  SysCall xSysCall;
+  SysCall oSysCall;
   Socket* pSocket;
   Object* pObject;
   ValWrk xNode;
@@ -119,9 +119,9 @@ void Step::vSocketConnect(MP_Task mpTask)
   i8 iConnRefusedCount = 0;
   
   while (!bResult) {
-    bResult = pSocket->bConnectServer(sAddr, (int)iPort, xSysCall);
+    bResult = pSocket->bConnectServer(sAddr, (int)iPort, oSysCall);
     if ( ! bResult ) {
-      i8 iError = xSysCall.iError();
+      i8 iError = oSysCall.iError();
       
       if (iError == ETIMEDOUT) {
         if (0 == iTimedOutCount++)
@@ -185,7 +185,7 @@ void Step::vSocketGrabWrite(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketListen(MP_Task mpTask)
 {
-  SysCall xSysCall;
+  SysCall oSysCall;
   Socket* pSocket;
   i8      iPort;
   
@@ -195,15 +195,15 @@ void Step::vSocketListen(MP_Task mpTask)
     THROW_INVALID_DSTACK("socketlisten"_Stz);
   
   pSocket = new Socket;
-  bool bResult = pSocket->bCreateServer((int)iPort, xSysCall);
+  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
   
   if ( ! bResult ) {
-    if (xSysCall.iError() == EADDRINUSE) {
+    if (oSysCall.iError() == EADDRINUSE) {
       THROW("Address in use (port: %lld). Check if another instance of RAPIDSSE is running!"_Stz,
       iPort);
     }
     else
-      THROW("Unable to listen for connections: Errno %d!"_Stz, xSysCall.iError());
+      THROW("Unable to listen for connections: Errno %d!"_Stz, oSysCall.iError());
   }
   
   // return new socket
@@ -218,16 +218,16 @@ void Step::vSocketListen(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Step::vSocketOpen(MP_Task mpTask)
 {
-  SysCall xSysCall;
+  SysCall oSysCall;
   Socket* pSocket;
   
   ENTRY("vSocketOpen"_Stz);
   
   pSocket = new Socket;
-  bool bResult = pSocket->bSocket(xSysCall);
+  bool bResult = pSocket->bSocket(oSysCall);
   
   if ( ! bResult )
-    THROW("Unable to create socket: Errno %d!"_Stz, xSysCall.iError());
+    THROW("Unable to create socket: Errno %d!"_Stz, oSysCall.iError());
   
   Object* pPtrSocket = pSocket;
   mpTask->m_pDataStack->vPushObject(pPtrSocket);
@@ -263,9 +263,9 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   
   char xObjectHeader[sizeof(Object)+C_1K];
   i8 nObjectBytes = sizeof(Object);
-  SysCall xSysCall;
+  SysCall oSysCall;
 
-  bool bResult = pSocket->bRecvBytes(xObjectHeader,nObjectBytes, xSysCall);
+  bool bResult = pSocket->bRecvBytes(xObjectHeader,nObjectBytes, oSysCall);
   if (! bResult) {
     mpTask->m_pDataStack->vPushInt((i8)0);
     EXIT();
@@ -294,7 +294,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     void* aBody = pAdd<void*>(pJob,sizeof(Object));
     i8 nRemainingBytes = nObjectSize - sizeof(Object);
 
-    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,xSysCall);
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
       mpTask->m_pDataStack->vPushInt((i8)0);
       EXIT();
@@ -326,7 +326,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     void* aBody = pAdd<void*>(pWorkingBuffer,sizeof(Object));
     i8 nRemainingBytes = giClassSize[CN_WORKINGBUFFER] - sizeof(Object);
     
-    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,xSysCall);
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
       mpTask->m_pDataStack->vPushInt((i8)0);
       EXIT();
@@ -374,9 +374,9 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   
   char xObjectHeader[sizeof(Object)+C_1K];
   i8 nObjectBytes = sizeof(Object);
-  SysCall xSysCall;
+  SysCall oSysCall;
   
-  bool bResult = pSocket->bRecvBytes(xObjectHeader,nObjectBytes, xSysCall);
+  bool bResult = pSocket->bRecvBytes(xObjectHeader,nObjectBytes, oSysCall);
   if (! bResult) {
     mpTask->m_pDataStack->vPushInt((i8)0);
     EXIT();
@@ -404,7 +404,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     void* aLowBody = pAdd<void*>(aLowBuff,sizeof(Object));
     i8 nRemainingBytes = sizeof(Job_WriteBuffer) - sizeof(Object);
     
-    bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,xSysCall);
+    bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
     if (! bResult) {
       mpTask->m_pDataStack->vPushInt((i8)0);
       EXIT();
@@ -435,7 +435,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
 
     if (bDiscardWorkingBuffer) {
 
-      bResult = pSocket->bRecvBytes(aLowBuff,sizeof(WorkingBuffer),xSysCall);
+      bResult = pSocket->bRecvBytes(aLowBuff,sizeof(WorkingBuffer),oSysCall);
       vTrace("Discarded WorkingBuffer under low mem\n"_Stz);
     }
     
@@ -460,7 +460,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     void* aBody = pAdd<void*>(pJob,sizeof(Object));
     i8 nRemainingBytes = giClassSize[eClass] - sizeof(Object);
     
-    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,xSysCall);
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
       mpTask->m_pDataStack->vPushInt((i8)0);
       EXIT();
@@ -488,7 +488,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     void* aBody = pAdd<void*>(pWorkingBuffer,sizeof(Object));
     i8 nRemainingBytes = giClassSize[CN_WORKINGBUFFER] - sizeof(Object);
     
-    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,xSysCall);
+    bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
       mpTask->m_pDataStack->vPushInt((i8)0);
       EXIT();
@@ -544,8 +544,8 @@ void Step::vSocketSendObject(MP_Task mpTask)
 
   RASSERT(_bIsValidJob(eClass) || CN_WORKINGBUFFER == eClass);
     
-  SysCall xSysCall;
-  bool bResult = pSocket->bSendTo(pObject, nObjectSize, xSysCall);
+  SysCall oSysCall;
+  bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
 
   mpTask->m_pDataStack->vPushInt((i8)bResult);
 

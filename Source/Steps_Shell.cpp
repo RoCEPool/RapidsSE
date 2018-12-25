@@ -26,9 +26,9 @@ void Step::vShellExecute(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xCommand) )
     THROW_INVALID_DSTACK("shell.execute"_Stz);
   
-  SysCall xSysCall;
+  SysCall oSysCall;
   
-  i8 iExitStatus = Shell::iExecute(_pStrVal(xCommand.pNestedValueSelf())->aStr(),xSysCall);
+  i8 iExitStatus = Shell::iExecute(_pStrVal(xCommand.pNestedValueSelf())->aStr(),oSysCall);
   
   mpTask->m_pDataStack->vPushInt(iExitStatus);
   

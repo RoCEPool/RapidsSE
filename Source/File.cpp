@@ -52,7 +52,7 @@ File::File(void)
   //m_sOpenMode
   m_aFile    = nullptr;
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
 
   _checkInitialised_(CN_FILE);
   
@@ -71,7 +71,7 @@ File::~File(void) noexcept(false)
 
     vClose();
     
-    if (m_xSysCall.bHadError())
+    if (m_oSysCall.bHadError())
       vWarn("File::~File: file could not be closed: %s"_Stz,m_sFilePath.aChar());
   }
 }
@@ -127,7 +127,7 @@ void File::vClose(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
 
   // never close stdin
   if (bIsStdin()) {
@@ -136,7 +136,7 @@ void File::vClose(void)
   }
   
   if ( ! m_aFile ) {
-    m_xSysCall.vFailure(0);
+    m_oSysCall.vFailure(0);
     vWarn("File::vClose: file not open: %s"_Stz,m_sFilePath.aChar());
     return;
   }
@@ -144,7 +144,7 @@ void File::vClose(void)
   i8 iResult = fclose(m_aFile);
   
   if ((char)EOF == iResult) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("File::vClose: fclose(%p) error; errno=%d : %s %s"_Stz,
           m_aFile,errno,m_sFilePath.aChar(),m_sOpenMode.aChar());
     return;
@@ -156,7 +156,7 @@ void File::vClose(void)
 
   vReset();
   
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -188,17 +188,17 @@ void File::vFlush(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   i8 iResult = fflush(m_aFile);
 
   if ((char)EOF == iResult) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("File::vFlush: fflush() error; errno=%d"_Stz,errno);
     return;
   }
 
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,7 +282,7 @@ bool File::bOpen(Stz* aFilePath, Stz* aOpenMode)
     vClose();
   }
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   m_sFilePath   = aFilePath;
   m_sOpenMode   = aOpenMode;
@@ -290,7 +290,7 @@ bool File::bOpen(Stz* aFilePath, Stz* aOpenMode)
   m_aFile = fopen(m_sFilePath.aChar(),m_sOpenMode.aChar());
   
   if ( ! m_aFile ) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("File::bOpen: fopen(%s,%s) error; errno=%d\n"_Stz,
           m_sFilePath.aChar(),m_sOpenMode.aChar(),errno);
     return false;
@@ -308,7 +308,7 @@ void File::vPrint(Stz* aFormat, ...)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   va_list args;
 
@@ -317,12 +317,12 @@ void File::vPrint(Stz* aFormat, ...)
   va_end(args);
 
   if (-1 == nPrinted) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("File::vPrint: vfprintf() error; errno=%d"_Stz,errno);
     return;
   }
   
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -332,7 +332,7 @@ i8 File::iReadBytes(void* aDst, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   i8 iBytesRead = fread(aDst,1,nBytes,m_aFile);
   
@@ -346,7 +346,7 @@ bool File::bReadLine(Stz* aDst)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   char *y = aDst->aChar();
   
@@ -362,7 +362,7 @@ bool File::bReadLine(Stz* aDst)
   *y = '\0';
   
   if (*aDst->aChar()) {
-    m_xSysCall.vSuccess();
+    m_oSysCall.vSuccess();
     return true;
   }
   else {
@@ -382,7 +382,7 @@ void File::vReset(void)
     vClose();
   }
 
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   m_sFilePath   = ""_Stz;
   m_sOpenMode   = ""_Stz;
@@ -396,17 +396,17 @@ void File::vSeek(i8 iOffset)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   i8 iResult = fseeko(m_aFile,iOffset,SEEK_SET);
   
   if (iResult) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
     return;
   }
   
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -416,17 +416,17 @@ void File::vSeekEnd(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   i8 iResult = fseeko(m_aFile,0,SEEK_END);
   
   if (iResult) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
     return;
   }
   
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -436,7 +436,7 @@ void File::vSetBuffering(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   int iResult;
   
   if (C_NO_BUFFERING == nBytes)
@@ -457,7 +457,7 @@ SysCall& File::rSysCall(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  return m_xSysCall;
+  return m_oSysCall;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -467,17 +467,17 @@ i8 File::iTell(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   i8 iResult = ftello(m_aFile);
   
   if (-1 == iResult) {
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     vWarn("File::iTell: ftello() error; errno=%d"_Stz,errno);
     return -1;
   }
   
-  m_xSysCall.vSuccess();
+  m_oSysCall.vSuccess();
   
   return iResult;
 }
@@ -510,7 +510,7 @@ void File::vUseStdin(void)
     vClose();
   }
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   m_sFilePath   = "stdin"_Stz;
   m_sOpenMode   = C_OPEN_READ;
@@ -524,14 +524,14 @@ bool File::bWriteBytes(void* pBuffer, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  m_xSysCall.vClear();
+  m_oSysCall.vClear();
   
   i8 iResult = fwrite(pBuffer , 1, nBytes, m_aFile);
   
   if (iResult != nBytes) {
     vWarn("File::vWriteBytes: fwrite(%s) error; errno=%d\n"_Stz,
           m_sFilePath.aChar(),errno);
-    m_xSysCall.vError(errno);
+    m_oSysCall.vError(errno);
     return false;
   }
   

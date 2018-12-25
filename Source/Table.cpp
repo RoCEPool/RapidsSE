@@ -990,7 +990,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexTree* pNewIndexTree,
   s256 sRegionName;
   s32 sRegionMagnitude;
   bool bResult;
-  SysCall xSysCall;
+  SysCall oSysCall;
   i8 iDebug;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1047,7 +1047,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexTree* pNewIndexTree,
                          nSortRegionSize,
                          iFD,
                          true,
-                         xSysCall);
+                         oSysCall);
   
   if (gxArguments.m_bVerbose) {
     if (bResult) {
@@ -1067,7 +1067,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexTree* pNewIndexTree,
                                 nSortRegionSize,
                                 true,
                                 false,
-                                xSysCall);
+                                oSysCall);
   
   if (gxArguments.m_bVerbose) {
     if (aSortRegion)  {
@@ -1077,7 +1077,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexTree* pNewIndexTree,
              sRegionMagnitude.aChar());
     }
     else {
-      Shm::bClose(iFD,xSysCall);
+      Shm::bClose(iFD,oSysCall);
       vFatal("Table::vNewIndexLoad: failed to map sort region\n"_Stz);
       NEVER_REACH;
     }
@@ -1112,9 +1112,9 @@ void Table::vNewIndexLoad(i8 iPartition, IndexTree* pNewIndexTree,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // destroy the sort region
   
-  bResult = Shm::bClose(iFD,xSysCall);
-  bResult = Shm::bUnmap(aSortRegionAddr,nSortRegionSize,xSysCall);
-  bResult = Shm::bUnlink(sRegionName,xSysCall);
+  bResult = Shm::bClose(iFD,oSysCall);
+  bResult = Shm::bUnmap(aSortRegionAddr,nSortRegionSize,oSysCall);
+  bResult = Shm::bUnlink(sRegionName,oSysCall);
  
   iDebug = 2;
   //vTrace("vNewIndexLoad: DONE\n"_Stz);

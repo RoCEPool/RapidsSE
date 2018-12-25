@@ -46,7 +46,7 @@ namespace System
     s32     m_sOpenMode;   // open mode
     FILE*   m_aFile;       // the os/lib file pointer
   
-    SysCall m_xSysCall;
+    SysCall m_oSysCall;
   
     // must be last
     Footer m_xFooter;
