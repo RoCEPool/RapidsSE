@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Loader
+namespace Chunks
 {
   class LoadMap : public Object
   {

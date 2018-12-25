@@ -2,7 +2,7 @@
 /* IngestChunk.cpp -- Ingest Chunk Buffer                                     */
 /*============================================================================*/
 
-#include "Loader.h"
+#include "Chunks.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IngestChunk* Loader::_pIngestChunk(void* aAddr)
+IngestChunk* Chunks::_pIngestChunk(void* aAddr)
 {
   IngestChunk* pIngestChunk = reinterpret_cast<IngestChunk*>(aAddr);
   

@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Loader
+namespace Chunks
 {
   static const i8 C_INGEST_CHUNK = C_1M; // its 1M not 1MB (i.e. < 1MB)
   

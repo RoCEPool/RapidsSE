@@ -31,7 +31,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Transactions::vCheckAssumptions();
   Dictionaries::vCheckAssumptions();
   DBobjects::vCheckAssumptions();
-  Loader::vCheckAssumptions();
+  Chunks::vCheckAssumptions();
   Plans::vCheckAssumptions();
   JobsModel::vCheckAssumptions();
   MockEE::vCheckAssumptions();

@@ -2,7 +2,7 @@
 /* LoadMap.hpp -- Load Map                                                    */
 /*============================================================================*/
 
-#include "Loader.h"
+#include "Chunks.h"
 
 #include "StorageEngine.h"
 
@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-LoadMap* Loader::_pLoadMap(void* aAddr)
+LoadMap* Chunks::_pLoadMap(void* aAddr)
 {
   LoadMap* pLoadMap = reinterpret_cast<LoadMap*>(aAddr);
   

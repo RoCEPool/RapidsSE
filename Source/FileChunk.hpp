@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Loader
+namespace Chunks
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class FileChunk : public DataChunk
