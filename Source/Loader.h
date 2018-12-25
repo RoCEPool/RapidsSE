@@ -16,6 +16,7 @@ using namespace Loader;
 
 //------------------------------------------------------------------------------
 
+#include "DataChunk.hpp"
 #include "FileChunk.hpp"
 #include "IoChunk.hpp"
 #include "IoCopy.hpp"
