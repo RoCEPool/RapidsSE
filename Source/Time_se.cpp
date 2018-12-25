@@ -56,9 +56,9 @@ void Time::vSet(Since* pSince)
   
   time_t iSeconds = pSince->iSeconds();
   
-  void* pTimeResult = gmtime_r(&iSeconds,&xTimeResult);
+  void* aTimeResult = gmtime_r(&iSeconds,&xTimeResult);
   
-  if ( ! pTimeResult )
+  if ( ! aTimeResult )
     vError("gmtime_r() error; errno=%d"_Stz,errno);
   
   m_iYear   = xTimeResult.tm_year;
@@ -78,7 +78,7 @@ void Time::vSetNowLocal(void)
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
   
   time_t t1 = time(0);   // get time now
-  struct tm * aLocalTime = localtime( & t1 );
+  struct tm* aLocalTime = localtime( & t1 );
   
   m_iYear   = aLocalTime->tm_year;
   m_iMonth  = aLocalTime->tm_mon+1;
@@ -98,7 +98,7 @@ void Time::vSetNowUTC(void)
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
   
   time_t t1 = time(0);   // get time now
-  struct tm * aLocalTime = localtime( & t1 );
+  struct tm* aLocalTime = localtime( & t1 );
   
   m_iYear   = aLocalTime->tm_year;
   m_iMonth  = aLocalTime->tm_mon+1;

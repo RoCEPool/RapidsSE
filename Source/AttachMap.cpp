@@ -181,8 +181,8 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
   
   m_iPid = Process::iGetPid();
   m_oSince.vSet();
-  m_xTime.vSet(&m_oSince);
-  m_xTime.vUTC(m_sUTC);
+  m_oTime.vSet(&m_oSince);
+  m_oTime.vUTC(m_sUTC);
   
   m_sRegionName = aRegionName;
   m_iRegionSize = iRegionSize;

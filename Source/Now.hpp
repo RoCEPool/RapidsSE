@@ -8,7 +8,7 @@ namespace System
   class Now : public Object
   {
   private:
-    Time m_xTime;
+    Time m_oTime;
     s32  m_sFormatted;
 
     // must be last

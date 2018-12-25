@@ -21,13 +21,13 @@ PromptNote mPromptNote_date (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_date(SePrompt* pPrompt)
 {
-  Time xTime;
-  xTime.vSetNowLocal();
+  Time oTime;
+  oTime.vSetNowLocal();
   
   s32 sDate;
   char* z = sDate.aChar();
   
-  xTime.vAppendLocal(&z);
+  oTime.vAppendLocal(&z);
 
   vTrace("%s\n"_Stz,sDate.aChar());
   

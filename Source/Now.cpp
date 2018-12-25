@@ -14,11 +14,11 @@ Now::Now(void)
 {
   _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
   
-  m_xTime.vSetNowLocal();
+  m_oTime.vSetNowLocal();
   
   char* z = m_sFormatted.aChar();
   
-  m_xTime.vAppendLocal(&z);
+  m_oTime.vAppendLocal(&z);
 
   _checkInitialised_(CN_SINCE);
   

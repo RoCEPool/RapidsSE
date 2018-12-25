@@ -158,9 +158,9 @@ void Since::vToTime(Time* pTime)
   
   time_t iSeconds = m_iSeconds;
   
-  void* pTimeResult = gmtime_r(&iSeconds,&xTimeResult);
+  void* aTimeResult = gmtime_r(&iSeconds,&xTimeResult);
   
-  if ( ! pTimeResult )
+  if ( ! aTimeResult )
     vError("gmtime_r() error; errno=%d"_Stz,errno);
   
   pTime->m_iYear   = xTimeResult.tm_year;

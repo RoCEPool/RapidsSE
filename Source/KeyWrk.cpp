@@ -85,7 +85,6 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters)
   
   char* pDst = aLatter();
   char* pSrc = (char*)pStrVal->aStr();
-  i8 iValue;
   
   switch(pCol->eDatumType()) {
       
@@ -97,23 +96,24 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters)
     }
       
     case DM_BOL: {
-      Bol xBoolean;
-      bool b = Bol::bExtract(&pSrc,&xBoolean,pCol,pFormatters);
-      nBytes = Bol::nCopy((char*)pDst,(char*)&xBoolean);
+      Bol xBol;
+      bool b = Bol::bExtract(&pSrc,&xBol,pCol,pFormatters);
+      nBytes = Bol::nCopy((char*)pDst,(char*)&xBol);
       break;
     }
       
     case DM_DTE: {
-      Dte xDate;
-      bool b = Dte::bExtract(&pSrc,&xDate,pCol,pFormatters);
-      nBytes = Dte::nCopy((char*)pDst,(char*)&xDate);
+      Dte xDte;
+      bool b = Dte::bExtract(&pSrc,&xDte,pCol,pFormatters);
+      nBytes = Dte::nCopy((char*)pDst,(char*)&xDte);
       break;
     }
       
-    case DM_INT:
-      iValue = StrLib::iToI8(pSrc);
-      nBytes = Int::nCopy(pDst,(void*)&iValue);
+    case DM_INT: {
+      i8 iInt = StrLib::iToI8(pSrc);
+      nBytes = Int::nCopy(pDst,(void*)&iInt);
       break;
+    }
       
     case DM_IVL: {
       Ivl xInterval;
