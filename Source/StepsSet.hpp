@@ -210,7 +210,6 @@
   static void vDirNew(Tasks::MP_Task mpTask);
   static void vDirOpen(Tasks::MP_Task mpTask);
   static void vDirPathGet(Tasks::MP_Task mpTask);
-  static void vDirPathSet(Tasks::MP_Task mpTask);
   static void vDirRead(Tasks::MP_Task mpTask);
   static void vDirRewind(Tasks::MP_Task mpTask);
   static void vDirSeek(Tasks::MP_Task mpTask);

@@ -27,7 +27,6 @@ void Step::vAddSteps_Dir(void)
   vAddStep("dir.isOpen"_Stz,      &Step::vDirIsOpen);
   vAddStep("dir.open"_Stz,        &Step::vDirOpen);
   vAddStep("dir.path@"_Stz,       &Step::vDirPathGet);
-  vAddStep("dir.path!"_Stz,       &Step::vDirPathSet);
   vAddStep("dir.read"_Stz,        &Step::vDirRead);
   vAddStep("dir.rewind"_Stz,      &Step::vDirRewind);
   vAddStep("dir.seek"_Stz,        &Step::vDirSeek);
@@ -324,30 +323,6 @@ ENTRY("vDirPathGet"_Stz);
   
   mpTask->m_pDataStack->vPushS256(sPath);
 
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dir.path! -- set path                                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vDirPathSet(MP_Task mpTask)
-{
-ENTRY("vDirPathSet"_Stz);
-  
-  Object* pPtrDir;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
-    THROW_INVALID_DSTACK("dir.path!"_Stz);
-  
-  Dir* pDir = _pDir(pPtrDir);
-  
-  s256 sPath;
-
-  if ( ! mpTask->m_pDataStack->bPop(sPath) )
-    THROW_INVALID_DSTACK("dir.path!"_Stz);
-  
-  pDir->vPath(sPath);
   
   EXIT();
 }
