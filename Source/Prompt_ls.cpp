@@ -21,9 +21,9 @@ PromptNote mPromptNote_ls (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_ls(SePrompt* pPrompt)
 {
-  Dir  xDir;
-  s256 sDir;
-  s256 sDirEntry;
+  Dir  oDir;
+  s256 sDirPath;
+  s256 sEntryName;
   i8 iEntryType;
   
   TokenVec* pTokenVec = pPrompt->pTknVec();
@@ -31,23 +31,22 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
   ASSERT((*pTokenVec)[0]->bSame("ls"_Stz));
   
   // get the current directory
-  if (!Dir::bGetCurrent(sDir))
+  if (!Dir::bGetCurrent(sDirPath))
     return false;
   
   // open the current directory
-  if (!xDir.bOpen(sDir)) {
+  if (!oDir.bOpen(sDirPath))
     return false;
-  }
   
-  // read the current directory
-  while (xDir.bRead()) {
-    sDirEntry = xDir.sEntryName();
-    iEntryType = xDir.iEntryType();
-    vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.aChar());
+  // read the current directory and list contents
+  while (oDir.bRead()) {
+    sEntryName = oDir.sEntryName();
+    iEntryType = oDir.iEntryType();
+    vTrace("%c %s\n"_Stz, iEntryType == DT_DIR ? 'd' : 'f', sEntryName.aChar());
   }
   
   // close the current directory
-  xDir.vClose();
+  oDir.vClose();
   
   return true;
 }
