@@ -91,6 +91,7 @@ enum eCN : u2 // Class Number
   /*  59 */ CN_IDXVEC,
   /*  60 */ CN_INDEXLEVELS,
   /*     */ CN_IOCHUNK,
+  /*     */ CN_IOCOPY,
   /*  61 */ CN_ITEM,
   /*  62 */ CN_ITEMBUFFER,
   
@@ -360,6 +361,7 @@ static Stz* aCN[]
   /*  59 */ "IDXVEC"_Stz,              // CN_IDXVEC
   /*  60 */ "INDEXLEVELS"_Stz,         // CN_INDEXLEVELS
   /*     */ "IOCHUNK"_Stz,             // CN_IOCHUNK
+  /*     */ "IOCOPY"_Stz,              // CN_IOCOPY
   /*  61 */ "ITEM"_Stz,                // CN_ITEM
   /*  62 */ "ITEMBUFFER"_Stz,          // CN_ITEMBUFFER
   

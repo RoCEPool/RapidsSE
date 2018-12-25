@@ -250,7 +250,7 @@ void JobsModel::vJob_Cat_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* cat data                                                                  */
+/* cat data                                                                   */
 /*----------------------------------------------------------------------------*/
 void Job_Cat::vCat(void)
 {
@@ -264,7 +264,7 @@ void Job_Cat::vCat(void)
 
   if (m_pByteRate) {
     m_pByteRate->vSetReporting("  cat : "_Stz,C_1GB * 10);
-     m_pByteRate->vBeginTiming();
+    m_pByteRate->vBeginTiming();
   }
   
   for (;;) {

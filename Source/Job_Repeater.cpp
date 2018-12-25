@@ -107,7 +107,7 @@ Job_Repeater::Job_Repeater(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
-  m_sPipePath = "<none>"_Stz;
+  m_sOutputPath = "<none>"_Stz;
   //m_oFile
   //m_oPipe
   
@@ -191,7 +191,7 @@ Job* JobsModel::pJob_Repeater_pre(Interface::Session* pSession)
     return pJob_Repeater;
 
   pJob_Repeater->m_sFileName = pTknVec->pGet(1)->aText();
-  pJob_Repeater->m_sPipePath = pTknVec->pGet(2)->aText();
+  pJob_Repeater->m_sOutputPath = pTknVec->pGet(2)->aText();
 
   return pJob_Repeater;
 }
@@ -265,7 +265,7 @@ void Job_Repeater::vRepeat(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
   vTrace("Repeating data from %s into %s\n"_Stz,
-         m_sFileName.aStr(), m_sPipePath.aStr());
+         m_sFileName.aStr(), m_sOutputPath.aStr());
   
   bool bFileOpened = m_oFile.bOpen(m_sFileName,C_OPEN_READ);
   if (! bFileOpened) {
@@ -273,9 +273,9 @@ void Job_Repeater::vRepeat(void)
     return;
   }
   
-  bool bPipeOpened = m_oPipe.bOpen(m_sPipePath,C_OPEN_WRITE);
+  bool bPipeOpened = m_oPipe.bOpen(m_sOutputPath,C_OPEN_WRITE);
   if (! bPipeOpened) {
-    vTrace("Unable to open output pipe: %s\n"_Stz,m_sPipePath.aStr());
+    vTrace("Unable to open output pipe: %s\n"_Stz,m_sOutputPath.aStr());
     return;
   }
 

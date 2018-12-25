@@ -12,7 +12,7 @@ namespace JobsModel
                        public JobFileName
   {
   public:
-  s256  m_sPipePath;   // pipe path
+    s256  m_sOutputPath;  // pipe path
   
     File  m_oFile;     // the file
     File  m_oPipe;     // the pipe

@@ -91,6 +91,7 @@ pDUMPFUN *gpDump[]
   /* 55 */ &Dump::vDummy,           // CN_IDXVEC
   /* 56 */ &Dump::vDummy,           // CN_INDEXLEVELS
   /*    */ &Dump::vDummy,           // CN_IOCHUNK
+  /*    */ &Dump::vDummy,           // CN_IOCOPY
   /* 57 */ &Dump::vInvalid,         // CN_ITEM
   /* 58 */ &Dump::vInvalid,         // CN_ITEMBUFFER
   
@@ -365,6 +366,7 @@ i8 giClassSize[]
   /* 55 */ sizeof(IdxVec),             // CN_IDXVEC
   /* 56 */ 0,                          // CN_INDEXLEVELS
   /*    */ sizeof(IoChunk),            // CN_IOCHUNK
+  /*    */ 0,            // CN_IOCAT
   /* 57 */ sizeof(Item),               // CN_ITEM
   /* 58 */ sizeof(ItemBuffer),         // CN_ITEMBUFFER
   
@@ -638,6 +640,7 @@ eHT geWhichHeap[]
   /* 55 */ HT_TRANSIENT_MEDIUM,  // CN_IDXVEC
   /* 56 */ HT_TRANSIENT_MEDIUM,  // CN_INDEXLEVELS
   /*    */ HT_TRANSIENT_LARGE,   // CN_IOCHUNK
+  /*    */ HT_TRANSIENT_SMALL,   // CN_IOCOPY
   /* 57 */ HT_INVALID,           // CN_ITEM
   /* 58 */ HT_INVALID,           // CN_ITEMBUFFER
 
