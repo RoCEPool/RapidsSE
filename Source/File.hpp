@@ -6,8 +6,6 @@
 
 namespace System
 {
-  class Scratch;
-  
   static const i8 C_PATH_MAX = 256;
 
   static const i8 C_NO_BUFFERING = 0;

@@ -189,15 +189,15 @@ void Semaphore::vCondTimedWait(i8 iMicroSeconds)
   RASSERT(m_bLocked);
   RASSERT(bMutexIsLocked());
 
-  Since xSince;
+  Since oSince;
   
-  xSince.vSet();
+  oSince.vSet();
   
-  xSince.vAdd(iMicroSeconds);
+  oSince.vAdd(iMicroSeconds);
   
   struct timespec xTimeSpec;
-  xTimeSpec.tv_sec  = xSince.m_iSeconds;
-  xTimeSpec.tv_nsec = xSince.m_iMicroseconds * 1000;
+  xTimeSpec.tv_sec  = oSince.m_iSeconds;
+  xTimeSpec.tv_nsec = oSince.m_iMicroseconds * 1000;
   
   // clear this threads tracking of the mutex
   m_bLocked = false;

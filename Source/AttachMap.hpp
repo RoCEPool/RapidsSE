@@ -27,7 +27,7 @@ namespace StorageEngine
   {
   public:
     i8            m_iPid;
-    Since         m_xSince;
+    Since         m_oSince;
     Time          m_xTime;
     s32           m_sUTC;
     
