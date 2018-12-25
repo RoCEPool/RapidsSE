@@ -50,17 +50,12 @@ IngestChunk::IngestChunk(Formatters* pFormatters)
 
   m_pFormatters = pFormatters;
   
-  m_xWsp.vFill(0xEF,CN_INGESTCHUNK);
-  
   m_aStartChunk = (Stz*)m_xWsp.aArea();
     
   vReset();
   
   m_nBytesRemaining = 0;
   
-  ASSERT(! m_aEndChunk);
-  ASSERT(! m_aNextRecord);
- 
   _checkInitialised_(CN_INGESTCHUNK);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
@@ -79,9 +74,6 @@ IngestChunk::~IngestChunk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void IngestChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  IngestChunk* pIngestChunk = _pIngestChunk(pObject);
-  
-  vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,7 +87,7 @@ void IngestChunk::vCloseFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
   
-  m_oFile.vClose();
+  FileChunk::vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,11 +143,6 @@ Stz* IngestChunk::aNextRecord(i8& nRecordBytes)
   ASSERT(m_aEndChunk);
   ASSERT(m_aNextRecord);
   
-  if (m_bHaveRecord) {
-    m_aNextRecord = pAdd<Stz*>(m_aNextRecord,- (m_nRecordBytes + 1));
-    m_bHaveRecord = false;
-  }
-  
   //
   // At this point, m_aNextRecord is the address of the next record
   // in the chunk.
@@ -195,30 +182,10 @@ Stz* IngestChunk::aNextRecord(i8& nRecordBytes)
 bool IngestChunk::bOpenFile(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
-  
-  // open the file
-  bool bOpened = m_oFile.bOpen(sPath,C_OPEN_READ);
 
-  if (! bOpened)
-    return false;
-  
-  // set buffer
-  //m_oFile.vBuffer(C_1MB);
-  
-  // set no buffering
-  m_oFile.vSetBuffering(C_NO_BUFFERING);
+  FileChunk::vOpenRead(sPath);
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* push record back into sequence                                             */
-/*----------------------------------------------------------------------------*/
-void IngestChunk::vPushBack(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
-  
-  m_bHaveRecord = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -446,7 +413,6 @@ void IngestChunk::vReset(void)
   m_aEndChunk    = nullptr;
   m_aNextRecord  = nullptr;
   m_nRecordBytes = 0;
-  m_bHaveRecord  = false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -20,8 +20,6 @@ namespace Chunks
     Stz* m_aNextRecord;  // first byte of next record
     i8   m_nRecordBytes; // size of record
   
-    bool m_bHaveRecord;  // record in work space?
-  
     // must be last
     Footer m_xFooter;
 
@@ -39,8 +37,7 @@ namespace Chunks
     i8    iNextRecord(void);
     Stz*  aNextRecord(i8& nRecordBytes);
     bool  bOpenFile(s256& sPath);
-    void  vPushBack(void);
-    bool  bReadChunk(void);
+     bool  bReadChunk(void);
     void  vReadChunk(i8 iSeek, i8 nBytes);
 
   private:
