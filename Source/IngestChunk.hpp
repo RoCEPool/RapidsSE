@@ -8,13 +8,11 @@ namespace Chunks
   static const i8 C_INGEST_CHUNK = C_1M; // its 1M not 1MB (i.e. < 1MB)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class IngestChunk : public Object
+  class IngestChunk : public FileChunk
   {
   private:
-    File m_oFile;              // file/pipe being ingested
     Formatters* m_pFormatters; // using these formatters
   
-    WspFxd<C_INGEST_CHUNK> m_xWsp; // workspace
     Stz* m_aStartChunk;            // first byte of chunk
     Stz* m_aEndChunk;              // last byte of where chunk ends
     i8   m_nBytesRemaining;        // bytes remaining

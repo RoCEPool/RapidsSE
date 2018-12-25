@@ -8,7 +8,7 @@ namespace Chunks
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class FileChunk : public DataChunk
   {
-  private:
+  protected:
     File m_oFile; // file being used
   
   public: //$ functions:
