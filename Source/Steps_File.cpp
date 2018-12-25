@@ -118,7 +118,7 @@ ENTRY("vFilePathGet"_Stz);
   
   File* pFile = _pFile(pPtrFile);
 
-  s256 sPath = pFile->sPath();
+  s256 sPath = pFile->sFilePath();
   
   mpTask->m_pDataStack->vPushS256(sPath);
   

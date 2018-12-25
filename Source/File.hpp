@@ -64,13 +64,13 @@ namespace System
     void vClose(void);
     char cGetChar(void);
     void vFileDump(void);
+    s256& sFilePath(void);
     void vFlush(void);
     bool bIsClosed(void);
     bool bIsOpen(void);
     bool bIsStdin(void);
     bool bIsStdout(void);
     bool bOpen(Stz* aFilePath, Stz* aOpenMode);
-    s256& sPath(void);
     void vPrint(Stz* aFormat,...);
     i8   iReadBytes(void* aDst, i8 nBytes);
     bool bReadLine(Stz* aDst);

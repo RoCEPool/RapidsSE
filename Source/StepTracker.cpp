@@ -125,7 +125,7 @@ void StepTracker::vWrite(void)
 
   bool bOpened = xFile.bOpen((Stz*)C_STEPTRACKER_FILE,C_OPEN_WRITE);
   if (! bOpened) {
-    vTrace("Unable to open StepTracker file: %s\n"_Stz,xFile.sPath().aStr());
+    vTrace("Unable to open StepTracker file: %s\n"_Stz,xFile.sFilePath().aStr());
     return;
   }
   
@@ -137,7 +137,7 @@ void StepTracker::vWrite(void)
   
   m_zLock.vDropWrite();
   
-  vTrace("Written: %s\n"_Stz,xFile.sPath().aStr());
+  vTrace("Written: %s\n"_Stz,xFile.sFilePath().aStr());
   
   xFile.vClose();
 }
