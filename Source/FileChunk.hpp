@@ -11,9 +11,6 @@ namespace Chunks
   private:
     File m_oFile; // file being used
   
-    // must be last
-    Footer m_xFooter;
-  
   public: //$ functions:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -29,9 +26,6 @@ namespace Chunks
     i8    nWriteBytes(i8 nBytes);
     void  vWriteData(void);
     Stz*  aStr(void);
-    
-  private:
-    Footer* aFooter(void);
   };
   
   FileChunk* _pFileChunk(void* aAddr);

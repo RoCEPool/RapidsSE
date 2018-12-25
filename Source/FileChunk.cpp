@@ -44,11 +44,11 @@ void FileChunk::operator delete(void* pFileChunkAddress)
 FileChunk::FileChunk(eCN eClassNo)
 : DataChunk(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
 
   //m_oFile
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +56,7 @@ FileChunk::FileChunk(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 FileChunk::~FileChunk(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,7 +68,7 @@ FileChunk::~FileChunk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void FileChunk::vCloseFile(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oFile.vClose();
 }
@@ -78,7 +78,7 @@ void FileChunk::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 void FileChunk::vOpenRead(s256& sPath)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   // open the file
   bool b = m_oFile.bOpen(sPath,C_OPEN_READ);
@@ -93,7 +93,7 @@ void FileChunk::vOpenRead(s256& sPath)
 /*----------------------------------------------------------------------------*/
 void FileChunk::vOpenWrite(s256& sPath)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   // open the file
   bool b = m_oFile.bOpen(sPath,C_OPEN_WRITE);
@@ -108,7 +108,7 @@ void FileChunk::vOpenWrite(s256& sPath)
 /*----------------------------------------------------------------------------*/
 i8 FileChunk::nReadBytes(i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   if (-1 == nBytes)
     nBytes = C_DATA_CHUNK - 1;
@@ -133,7 +133,7 @@ i8 FileChunk::nReadBytes(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void FileChunk::vRewindFile(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_oFile.vSeekStart();
 }
@@ -143,7 +143,7 @@ void FileChunk::vRewindFile(void)
 /*----------------------------------------------------------------------------*/
 void FileChunk::vWriteData(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   bool bResult = m_oFile.bWriteBytes(m_xWsp.aArea(),m_nDataBytes);
   RASSERT(bResult);
@@ -154,23 +154,9 @@ void FileChunk::vWriteData(void)
 /*----------------------------------------------------------------------------*/
 Stz* FileChunk::aStr(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_xWsp.aStr();
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* FileChunk::aFooter(void)
-{
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return &m_xFooter;
+  return m_xWsp.aStr();
 }
 
 /*============================================================================*/

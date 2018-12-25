@@ -16,7 +16,6 @@ namespace Chunks
   
     WspFxd<C_DATA_CHUNK> m_xWsp; // workspace
   
-  
   public:
     void* operator new(size_t);
     
@@ -25,8 +24,6 @@ namespace Chunks
   
     void  vCopy(DataChunk* pSource);
     Stz*  aStr(void);
-  
-  private:
   };
   
   DataChunk* _pDataChunk(void* aAddr);
