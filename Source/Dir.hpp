@@ -39,19 +39,14 @@ namespace System
     void vClose(void);
     StrVal&   sEntryName(void);
     i8   iEntryType(void);
-    //bool bExists(void);
-    //bool bGetCurrent(void);
     bool bIsClosed(void);
     bool bIsOpen(void);
-    //bool bMake(void);
     bool bOpen(void);
     StrVal&   sPath(void);
     void vPath(s256& sPath);
     bool bRead(void);
-    //bool bRemove(void);
     void vRewind(void);
     void vSeek(i8 iPosition);
-    //bool bSetCurrent(void);
     i8   iTell(void);
     
     Footer* aFooter(void);
