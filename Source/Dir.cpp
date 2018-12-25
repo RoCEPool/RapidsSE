@@ -96,6 +96,21 @@ bool Dir::bExists(Stz* aDirPath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* make specified directory                                                   */
+/*----------------------------------------------------------------------------*/
+bool Dir::bMake(Stz* aDirPath)
+{
+  char* aPath = aDirPath->aChar();
+  
+  if (mkdir(aPath,0777) != 0 && EEXIST != errno) {
+    vWarn("Dir::bMake: mkdir() error; errno=%d"_Stz,errno);
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -138,27 +153,6 @@ bool Dir::bGetCurrent(Stz* aDirPath)
     return false;
   }
   
-  m_oSysCall.vSuccess();
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* make specified directory                                                   */
-/*----------------------------------------------------------------------------*/
-bool Dir::bMake(Stz* aDirPath)
-{
-  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
-  
-  m_oSysCall.vClear();
-  
-  char* aPath = aDirPath->aChar();
-
-  if (mkdir(aPath,0777) != 0 && EEXIST != errno) {
-    m_oSysCall.vError(errno);
-    vWarn("Dir::bMake: mkdir() error; errno=%d"_Stz,errno);
-    return false;
-  }
-
   m_oSysCall.vSuccess();
   return true;
 }

@@ -104,9 +104,7 @@ ENTRY("vDirMake"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("dir.make"_Stz);
   
-  Dir xDir;
-  
-  i8 iResult = xDir.bMake(sPath);
+  i8 iResult = Dir::bMake(sPath);
   mpTask->m_pDataStack->vPushInt(iResult);
   
   EXIT();

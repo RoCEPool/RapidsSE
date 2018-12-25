@@ -27,10 +27,10 @@ namespace System
    ~Dir(void) noexcept(false);
 
     static bool bExists(Stz* aDirPath);
-  
+    static bool bMake(Stz* aDirPath);
+
     bool bChangeCurrent(Stz* aDirPath);
     bool bGetCurrent(Stz* aDirPath);
-    bool bMake(Stz* aDirPath);
     bool bRemove(Stz* aDirPath);
     
     //--
