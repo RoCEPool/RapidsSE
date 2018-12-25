@@ -107,11 +107,9 @@ Job_Cat::Job_Cat(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
-  m_pInChunk  = new IoChunk;
-  m_pOutChunk = new IoChunk;
+  m_pIoCopy = new IoCopy;
+  m_bStatistics = false;
   
-  m_pByteRate = nullptr;
-
   _checkInitialised_(CN_JOB_CAT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
@@ -124,10 +122,7 @@ Job_Cat::~Job_Cat(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
-  delete m_pInChunk;
-  delete m_pOutChunk;
- 
-  delete m_pByteRate;
+  delete m_pIoCopy;
 }
 
 
@@ -203,7 +198,7 @@ Job* JobsModel::pJob_Cat_pre(Interface::Session* pSession)
   i8 i_Last = nTokens - 1;
   if (pTknVec->pGet(i_Last)->sText().bSame("stats"_Stz) ||
       pTknVec->pGet(i_Last)->sText().bSame("statistics"_Stz))
-    pJob_Cat->m_pByteRate = new ByteRate;
+    pJob_Cat->m_bStatistics = true;
   
   return pJob_Cat;
 }
@@ -258,36 +253,16 @@ void Job_Cat::vCat(void)
   
   vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputFile.aStr());
   
-  m_pInChunk->vOpenRead(m_sFileName);
+  m_pIoCopy->vOpenRead(m_sFileName);
+  m_pIoCopy->vOpenWrite(m_sOutputFile);
   
-  m_pOutChunk->vOpenWrite(m_sOutputFile);
-
-  if (m_pByteRate) {
-    m_pByteRate->vSetReporting("  cat : "_Stz,C_1GB * 10);
-    m_pByteRate->vBeginTiming();
-  }
+  if (m_bStatistics)
+    m_pIoCopy->vWithStatistics("  cat : "_Stz);
   
-  for (;;) {
-    
-    i8 nBytesRead = m_pInChunk->nReadBytes(-1);
-    if (! nBytesRead)
-      break;
-    
-    //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pInChunk->aStr());
-    
-    m_pOutChunk->vCopy(m_pInChunk);
-    
-    if (m_pByteRate)
-      m_pByteRate->vAddBytes(nBytesRead);
-
-    m_pOutChunk->vWriteData();
-  }
+  while (m_pIoCopy->bCopyChunk())
+    ;
   
-  if (m_pByteRate)
-    m_pByteRate->vEndTiming();
-
-  m_pInChunk->vCloseFile();
-  m_pOutChunk->vCloseFile();
+  m_pIoCopy->vCloseBoth();
 }
 
 /*============================================================================*/
