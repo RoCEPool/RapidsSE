@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace JobsModel
+namespace JobModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job__Find : public Job

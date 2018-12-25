@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace JobsModel
+namespace JobModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_ListTables : public Job

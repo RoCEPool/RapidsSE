@@ -4,7 +4,7 @@
 
 // Job Short: SubFetch
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_SubFetch =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_SubFetch_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_SubFetch_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SubLoader_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_SubFetch_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_SubFetch* JobsModel::_pJob_SubFetch(void* aAddress)
+Job_SubFetch* JobModel::_pJob_SubFetch(void* aAddress)
 {
   Job_SubFetch* pJob_SubFetch = reinterpret_cast<Job_SubFetch*>(aAddress);
   
@@ -173,7 +173,7 @@ Footer* Job_SubFetch::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_SubFetch_pre(Interface::Session* pSession)
+Job* JobModel::pJob_SubFetch_pre(Interface::Session* pSession)
 {
   Job_SubFetch* pJob_SubFetch = new Job_SubFetch(pSession);
   
@@ -183,7 +183,7 @@ Job* JobsModel::pJob_SubFetch_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubFetch_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_SubFetch_post(Interface::Session* pSession, Job* pJob)
 {
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pJob);
   
@@ -199,7 +199,7 @@ void JobsModel::vJob_SubFetch_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubFetch_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_SubFetch_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pJob);
   
@@ -209,7 +209,7 @@ void JobsModel::vJob_SubFetch_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubFetch_show(Job* pJob)
+void JobModel::vJob_SubFetch_show(Job* pJob)
 {
   Job_SubFetch* pJob_SubFetch = _pJob_SubFetch(pJob);
 

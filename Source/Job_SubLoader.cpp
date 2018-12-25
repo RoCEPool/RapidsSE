@@ -4,7 +4,7 @@
 
 // Job Short: SubLoader
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_SubLoader =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_SubLoader_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_SubLoader_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SubPublish_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_SubLoader_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_SubLoader* JobsModel::_pJob_SubLoader(void* aAddress)
+Job_SubLoader* JobModel::_pJob_SubLoader(void* aAddress)
 {
   Job_SubLoader* pJob_SubLoader = reinterpret_cast<Job_SubLoader*>(aAddress);
   
@@ -354,7 +354,7 @@ Footer* Job_SubLoader::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::vJob_SubLoader_pre(Interface::Session* pSession)
+Job* JobModel::vJob_SubLoader_pre(Interface::Session* pSession)
 {
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(pSession);
   
@@ -364,7 +364,7 @@ Job* JobsModel::vJob_SubLoader_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_SubLoader_new(Job* pArg)
+Job* JobModel::pJob_SubLoader_new(Job* pArg)
 {
   Job_SubLoader* pJob_SubLoader = new Job_SubLoader(nullptr);
   
@@ -374,7 +374,7 @@ Job* JobsModel::pJob_SubLoader_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubLoader_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_SubLoader_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pJob);
   
@@ -384,7 +384,7 @@ void JobsModel::vJob_SubLoader_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubLoader_show(Job* pJob)
+void JobModel::vJob_SubLoader_show(Job* pJob)
 {
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pJob);
 

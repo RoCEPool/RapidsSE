@@ -4,7 +4,7 @@
 
 // Job Short: Space
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Space =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_Space_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_Space_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Start_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_Space_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Space* JobsModel::_pJob_Space(void* aAddress)
+Job_Space* JobModel::_pJob_Space(void* aAddress)
 {
   Job_Space* pJob_Space = reinterpret_cast<Job_Space*>(aAddress);
   
@@ -191,7 +191,7 @@ Footer* Job_Space::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Space_pre(Interface::Session* pSession)
+Job* JobModel::pJob_Space_pre(Interface::Session* pSession)
 {
   Job_Space* pJob_Space = new Job_Space(pSession);
   
@@ -211,7 +211,7 @@ Job* JobsModel::pJob_Space_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Space_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Space_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Space* pJob_Space = _pJob_Space(pJob);
 
@@ -238,7 +238,7 @@ void JobsModel::vJob_Space_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Space_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Space_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Space* pJob_Space = _pJob_Space(pJob);
   
@@ -248,7 +248,7 @@ void JobsModel::vJob_Space_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Space_show(Job* pJob)
+void JobModel::vJob_Space_show(Job* pJob)
 {
   Job_Space* pJob_Space = _pJob_Space(pJob);
 

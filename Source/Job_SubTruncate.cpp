@@ -4,7 +4,7 @@
 
 // Job Short: SubTruncate
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_SubTruncate =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_SubTruncate_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_SubTruncate_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_TableSizes_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_SubTruncate_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_SubTruncate* JobsModel::_pJob_SubTruncate(void* aAddress)
+Job_SubTruncate* JobModel::_pJob_SubTruncate(void* aAddress)
 {
   Job_SubTruncate* pJob_TruncateTable = reinterpret_cast<Job_SubTruncate*>(aAddress);
   
@@ -170,7 +170,7 @@ Footer* Job_SubTruncate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_SubTruncate_pre(Interface::Session* pSession)
+Job* JobModel::pJob_SubTruncate_pre(Interface::Session* pSession)
 {
   Job_SubTruncate* pJob_SubTruncate = new Job_SubTruncate(pSession);
   
@@ -180,7 +180,7 @@ Job* JobsModel::pJob_SubTruncate_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubTruncate_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_SubTruncate_post(Interface::Session* pSession, Job* pJob)
 {
   Job_SubTruncate* pJob_SubTruncate = _pJob_SubTruncate(pJob);
   
@@ -196,7 +196,7 @@ void JobsModel::vJob_SubTruncate_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubTruncate_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_SubTruncate_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SubTruncate* pJob_SubTruncate = _pJob_SubTruncate(pJob);
   
@@ -206,7 +206,7 @@ void JobsModel::vJob_SubTruncate_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubTruncate_show(Job* pJob)
+void JobModel::vJob_SubTruncate_show(Job* pJob)
 {
   Job_SubTruncate* pJob_SubTruncate = _pJob_SubTruncate(pJob);
 

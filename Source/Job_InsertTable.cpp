@@ -4,7 +4,7 @@
 
 // Job Short: EndInsert
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -52,7 +52,7 @@ JobClass xJobClass_EndInsert =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_InsertTable_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_InsertTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Lf_class;
   
@@ -67,7 +67,7 @@ JobClass* JobsModel::pJob_InsertTable_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_InsertTable* JobsModel::_pJob_InsertTable(void* aAddress)
+Job_InsertTable* JobModel::_pJob_InsertTable(void* aAddress)
 {
   Job_InsertTable* pJob_InsertTable = reinterpret_cast<Job_InsertTable*>(aAddress);
   
@@ -180,7 +180,7 @@ Footer* Job_InsertTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_InsertTable_pre(Interface::Session* pSession)
+Job* JobModel::pJob_InsertTable_pre(Interface::Session* pSession)
 {
   Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession);
   
@@ -194,7 +194,7 @@ Job* JobsModel::pJob_InsertTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_InsertTable_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_InsertTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJob);
   
@@ -210,7 +210,7 @@ void JobsModel::vJob_InsertTable_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_InsertTable_new(Job* pArg)
+Job* JobModel::pJob_InsertTable_new(Job* pArg)
 {
   Job_InsertTable* pJob_InsertTable = new Job_InsertTable(nullptr);
   
@@ -220,7 +220,7 @@ Job* JobsModel::pJob_InsertTable_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_InsertTable_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_InsertTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJob);
   
@@ -231,7 +231,7 @@ void JobsModel::vJob_InsertTable_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_InsertTable_show(Job* pJob)
+void JobModel::vJob_InsertTable_show(Job* pJob)
 {
   Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJob);
 

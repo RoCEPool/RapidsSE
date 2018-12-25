@@ -4,7 +4,7 @@
 
 // Job Short: TruncateTable
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_TruncateTable =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_TruncateTable_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_TruncateTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_UseSchema_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_TruncateTable_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_TruncateTable* JobsModel::_pJob_TruncateTable(void* aAddress)
+Job_TruncateTable* JobModel::_pJob_TruncateTable(void* aAddress)
 {
   Job_TruncateTable* pJob_TruncateTable = reinterpret_cast<Job_TruncateTable*>(aAddress);
   
@@ -193,7 +193,7 @@ Footer* Job_TruncateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_TruncateTable_pre(Interface::Session* pSession)
+Job* JobModel::pJob_TruncateTable_pre(Interface::Session* pSession)
 {
   Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(pSession);
   
@@ -213,7 +213,7 @@ Job* JobsModel::pJob_TruncateTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_TruncateTable_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_TruncateTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJob);
   
@@ -232,7 +232,7 @@ void JobsModel::vJob_TruncateTable_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_TruncateTable_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_TruncateTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJob);
   
@@ -242,7 +242,7 @@ void JobsModel::vJob_TruncateTable_delete(Interface::Session* pSession, Job* pJo
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_TruncateTable_show(Job* pJob)
+void JobModel::vJob_TruncateTable_show(Job* pJob)
 {
   Job_TruncateTable* pJob_TruncateTable = _pJob_TruncateTable(pJob);
 

@@ -5,7 +5,7 @@
 
 #define JOB_TRACE false
 
-namespace JobsModel
+namespace JobModel
 {
   struct JobClass; // forward definition
 

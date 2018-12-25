@@ -4,7 +4,7 @@
 
 // Job Short: Docol
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Docol =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_Docol_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_Docol_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_DropCatalog_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_Docol_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Docol* JobsModel::_pJob_Docol(void* aAddress)
+Job_Docol* JobModel::_pJob_Docol(void* aAddress)
 {
   Job_Docol* pJob_Docol = reinterpret_cast<Job_Docol*>(aAddress);
   
@@ -195,7 +195,7 @@ Footer* Job_Docol::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Docol_pre(Interface::Session* pSession)
+Job* JobModel::pJob_Docol_pre(Interface::Session* pSession)
 {
   Job_Docol* pJob_Docol = new Job_Docol(pSession);
   
@@ -215,7 +215,7 @@ Job* JobsModel::pJob_Docol_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Docol_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Docol_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Docol* pJob_Docol = _pJob_Docol(pJob);
   
@@ -228,7 +228,7 @@ void JobsModel::vJob_Docol_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Docol_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Docol_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Docol* pJob_Docol = _pJob_Docol(pJob);
   
@@ -238,7 +238,7 @@ void JobsModel::vJob_Docol_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Docol_show(Job* pJob)
+void JobModel::vJob_Docol_show(Job* pJob)
 {
   Job_Docol* pJob_Docol = _pJob_Docol(pJob);
 

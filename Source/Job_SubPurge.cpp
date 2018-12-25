@@ -4,7 +4,7 @@
 
 // Job Short: SubPurge
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_SubPurge =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_SubPurge_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_SubPurge_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SubTruncate_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_SubPurge_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_SubPurge* JobsModel::_pJob_SubPurge(void* aAddress)
+Job_SubPurge* JobModel::_pJob_SubPurge(void* aAddress)
 {
   Job_SubPurge* pJob_SubPurge = reinterpret_cast<Job_SubPurge*>(aAddress);
   
@@ -170,7 +170,7 @@ Footer* Job_SubPurge::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_SubPurge_pre(Interface::Session* pSession)
+Job* JobModel::pJob_SubPurge_pre(Interface::Session* pSession)
 {
   Job_SubPurge* pJob_SubPurge = new Job_SubPurge(pSession);
   
@@ -180,7 +180,7 @@ Job* JobsModel::pJob_SubPurge_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubPurge_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_SubPurge_post(Interface::Session* pSession, Job* pJob)
 {
   Job_SubPurge* pJob_SubPurge = _pJob_SubPurge(pJob);
   
@@ -196,7 +196,7 @@ void JobsModel::vJob_SubPurge_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubPurge_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_SubPurge_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SubPurge* pJob_SubPurge = _pJob_SubPurge(pJob);
   
@@ -206,7 +206,7 @@ void JobsModel::vJob_SubPurge_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SubPurge_show(Job* pJob)
+void JobModel::vJob_SubPurge_show(Job* pJob)
 {
   Job_SubPurge* pJob_SubPurge = _pJob_SubPurge(pJob);
 

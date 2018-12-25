@@ -4,7 +4,7 @@
 
 // Job Short: Receiver
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Receiver =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_Receiver_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_Receiver_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Repeater_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_Receiver_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Receiver* JobsModel::_pJob_Receiver(void* aAddress)
+Job_Receiver* JobModel::_pJob_Receiver(void* aAddress)
 {
   Job_Receiver* pJob_Receiver = reinterpret_cast<Job_Receiver*>(aAddress);
   
@@ -210,7 +210,7 @@ Footer* Job_Receiver::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Receiver_new(Job* pArg)
+Job* JobModel::pJob_Receiver_new(Job* pArg)
 {
   Job_Receiver* pJob_Receiver = new Job_Receiver(nullptr);
   
@@ -220,7 +220,7 @@ Job* JobsModel::pJob_Receiver_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Receiver_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Receiver_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJob);
   
@@ -230,7 +230,7 @@ void JobsModel::vJob_Receiver_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Receiver_show(Job* pJob)
+void JobModel::vJob_Receiver_show(Job* pJob)
 {
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJob);
 

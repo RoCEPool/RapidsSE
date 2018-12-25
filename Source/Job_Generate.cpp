@@ -4,7 +4,7 @@
 
 // Job Short: GenData
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_GenData =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_Generate_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_Generate_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Ingest_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_Generate_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Generate* JobsModel::_pJob_Generate(void* aAddress)
+Job_Generate* JobModel::_pJob_Generate(void* aAddress)
 {
   Job_Generate* pJob_Generate = reinterpret_cast<Job_Generate*>(aAddress);
   
@@ -187,7 +187,7 @@ Footer* Job_Generate::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Generate_pre(Interface::Session* pSession)
+Job* JobModel::pJob_Generate_pre(Interface::Session* pSession)
 {
 //  IntVal xBcd;
 //
@@ -313,14 +313,14 @@ Job* JobsModel::pJob_Generate_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Generate_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Generate_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Generate_new(Job* pArg)
+Job* JobModel::pJob_Generate_new(Job* pArg)
 {
   Job_Generate* pJob_Generate = new Job_Generate(nullptr);
   
@@ -330,7 +330,7 @@ Job* JobsModel::pJob_Generate_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Generate_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Generate_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Generate* pJob_Generate = _pJob_Generate(pJob);
   
@@ -340,7 +340,7 @@ void JobsModel::vJob_Generate_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Generate_show(Job* pJob)
+void JobModel::vJob_Generate_show(Job* pJob)
 {
   Job_Generate* pJob_Generate = _pJob_Generate(pJob);
 

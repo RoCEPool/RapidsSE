@@ -4,7 +4,7 @@
 
 // Job Short: NetHog
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -47,7 +47,7 @@ JobClass xJobClass_NetHog =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_NetHog_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_NetHog_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_NodeInfo_class;
   
@@ -62,7 +62,7 @@ JobClass* JobsModel::pJob_NetHog_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_NetHog* JobsModel::_pJob_NetHog(void* aAddress)
+Job_NetHog* JobModel::_pJob_NetHog(void* aAddress)
 {
   Job_NetHog* pJob_NetHog = reinterpret_cast<Job_NetHog*>(aAddress);
   
@@ -172,7 +172,7 @@ Footer* Job_NetHog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_NetHog_pre(Interface::Session* pSession)
+Job* JobModel::pJob_NetHog_pre(Interface::Session* pSession)
 {
   Job_NetHog* pJob_NetHog = new Job_NetHog(pSession);
   
@@ -201,14 +201,14 @@ Job* JobsModel::pJob_NetHog_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_NetHog_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_NetHog_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_NetHog_new(Job* pArg)
+Job* JobModel::pJob_NetHog_new(Job* pArg)
 {
   Job_NetHog* pJob_NetHog = new Job_NetHog(nullptr);
   
@@ -218,7 +218,7 @@ Job* JobsModel::pJob_NetHog_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_NetHog_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_NetHog_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_NetHog* pJob_NetHog = _pJob_NetHog(pJob);
   
@@ -228,7 +228,7 @@ void JobsModel::vJob_NetHog_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_NetHog_show(Job* pJob)
+void JobModel::vJob_NetHog_show(Job* pJob)
 {
   Job_NetHog* pJob_NetHog = _pJob_NetHog(pJob);
 

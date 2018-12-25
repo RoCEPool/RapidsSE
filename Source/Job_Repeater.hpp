@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace JobsModel
+namespace JobModel
 {
   static const i8 C_REPEATER_WSP = C_256KB;
   

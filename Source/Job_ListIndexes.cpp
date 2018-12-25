@@ -4,7 +4,7 @@
 
 // Job Short: ListIndexes
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_ListIndexes =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_ListIndexes_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_ListIndexes_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_ListPartColumns_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_ListIndexes_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_ListIndexes* JobsModel::_pJob_ListIndexes(void* aAddress)
+Job_ListIndexes* JobModel::_pJob_ListIndexes(void* aAddress)
 {
   Job_ListIndexes* pJob_ListIndexes = reinterpret_cast<Job_ListIndexes*>(aAddress);
   
@@ -196,7 +196,7 @@ Footer* Job_ListIndexes::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ListIndexes_pre(Interface::Session* pSession)
+Job* JobModel::pJob_ListIndexes_pre(Interface::Session* pSession)
 {
   Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(pSession);
   
@@ -216,7 +216,7 @@ Job* JobsModel::pJob_ListIndexes_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListIndexes_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_ListIndexes_post(Interface::Session* pSession, Job* pJob)
 {
   Job_ListIndexes* pJob_ListIndexes = _pJob_ListIndexes(pJob);
   
@@ -243,7 +243,7 @@ void JobsModel::vJob_ListIndexes_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListIndexes_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_ListIndexes_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_ListIndexes* pJob_ListIndexes = _pJob_ListIndexes(pJob);
   
@@ -254,7 +254,7 @@ void JobsModel::vJob_ListIndexes_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListIndexes_show(Job* pJob)
+void JobModel::vJob_ListIndexes_show(Job* pJob)
 {
   Job_ListIndexes* pJob_ListIndexes = _pJob_ListIndexes(pJob);
 

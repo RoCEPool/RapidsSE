@@ -5,7 +5,7 @@
 // Job Short: WaitCluster
 
 #include "StorageEngine.h"
-#include "JobsModel.h"
+#include "JobModel.h"
 
 extern AttachMap*      gpAttachMap;
 
@@ -46,7 +46,7 @@ JobClass xJobClass_WaitCluster =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_WaitCluster_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_WaitCluster_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_WriteBuffer_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_WaitCluster_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_WaitCluster* JobsModel::_pJob_WaitCluster(void* aAddress)
+Job_WaitCluster* JobModel::_pJob_WaitCluster(void* aAddress)
 {
   Job_WaitCluster* pJob_WaitCluster = reinterpret_cast<Job_WaitCluster*>(aAddress);
   
@@ -191,7 +191,7 @@ Footer* Job_WaitCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_WaitCluster_pre(Interface::Session* pSession)
+Job* JobModel::pJob_WaitCluster_pre(Interface::Session* pSession)
 {
   Job_WaitCluster* pJob_WaitCluster = new Job_WaitCluster(pSession);
   
@@ -201,14 +201,14 @@ Job* JobsModel::pJob_WaitCluster_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_WaitCluster_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_WaitCluster_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_WaitCluster_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_WaitCluster_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_WaitCluster* pJob_WaitCluster = _pJob_WaitCluster(pJob);
   
@@ -218,7 +218,7 @@ void JobsModel::vJob_WaitCluster_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_WaitCluster_show(Job* pJob)
+void JobModel::vJob_WaitCluster_show(Job* pJob)
 {
   Job_WaitCluster* pJob_WaitCluster = _pJob_WaitCluster(pJob);
 

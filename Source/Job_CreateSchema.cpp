@@ -4,7 +4,7 @@
 
 // Job Short: CreateSchema
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_CreateSchema =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_CreateSchema_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_CreateSchema_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CreateTable_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_CreateSchema_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_CreateSchema* JobsModel::_pJob_CreateSchema(void* aAddress)
+Job_CreateSchema* JobModel::_pJob_CreateSchema(void* aAddress)
 {
   Job_CreateSchema* pJob_CreateSchema = reinterpret_cast<Job_CreateSchema*>(aAddress);
   
@@ -195,7 +195,7 @@ Footer* Job_CreateSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateSchema_pre(Interface::Session* pSession)
+Job* JobModel::pJob_CreateSchema_pre(Interface::Session* pSession)
 {
   Job_CreateSchema* pJob_CreateSchema = new Job_CreateSchema(pSession);
   
@@ -215,7 +215,7 @@ Job* JobsModel::pJob_CreateSchema_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateSchema_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_CreateSchema_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pJob);
   
@@ -234,7 +234,7 @@ void JobsModel::vJob_CreateSchema_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateSchema_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_CreateSchema_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pJob);
   
@@ -245,7 +245,7 @@ void JobsModel::vJob_CreateSchema_delete(Interface::Session* pSession, Job* pJob
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateSchema_show(Job* pJob)
+void JobModel::vJob_CreateSchema_show(Job* pJob)
 {
   Job_CreateSchema* pJob_CreateSchema = _pJob_CreateSchema(pJob);
 

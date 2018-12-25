@@ -4,7 +4,7 @@
 
 // Job Short: _Ended
 
-#include "JobsModel.h"
+#include "JobModel.h"
 
 JobClass xJobClass__Ended =
 {
@@ -41,7 +41,7 @@ JobClass xJobClass__Ended =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob__Ended_class(pFUN** pNextFun)
+JobClass* JobModel::pJob__Ended_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob__Execute_class;
   
@@ -56,7 +56,7 @@ JobClass* JobsModel::pJob__Ended_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job__Ended* JobsModel::_pJob__Ended(void* aAddress)
+Job__Ended* JobModel::_pJob__Ended(void* aAddress)
 {
   Job__Ended* pJob__Ended = reinterpret_cast<Job__Ended*>(aAddress);
   
@@ -163,7 +163,7 @@ Footer* Job__Ended::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob__Ended_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob__Ended_delete(Interface::Session* pSession, Job* pJob)
 {
   Job__Ended* pJob__Ended = _pJob__Ended(pJob);
   

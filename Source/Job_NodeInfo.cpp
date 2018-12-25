@@ -4,7 +4,7 @@
 
 // Job Short: Lf
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_NodeInfo =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_NodeInfo_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_NodeInfo_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Periodic_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_NodeInfo_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_NodeInfo* JobsModel::_pJob_NodeInfo(void* aAddress)
+Job_NodeInfo* JobModel::_pJob_NodeInfo(void* aAddress)
 {
   Job_NodeInfo* pJob_NodeInfo = reinterpret_cast<Job_NodeInfo*>(aAddress);
   
@@ -170,7 +170,7 @@ Footer* Job_NodeInfo::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_NodeInfo_new(Job* pArg)
+Job* JobModel::pJob_NodeInfo_new(Job* pArg)
 {
   Job_NodeInfo* pJob_NodeInfo = new Job_NodeInfo(nullptr);
   
@@ -180,7 +180,7 @@ Job* JobsModel::pJob_NodeInfo_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_NodeInfo_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_NodeInfo_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_NodeInfo* pJob_NodeInfo = _pJob_NodeInfo(pJob);
   
@@ -190,7 +190,7 @@ void JobsModel::vJob_NodeInfo_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_NodeInfo_show(Job* pJob)
+void JobModel::vJob_NodeInfo_show(Job* pJob)
 {
   Job_NodeInfo* pJob_NodeInfo= _pJob_NodeInfo(pJob);
 

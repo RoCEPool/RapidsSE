@@ -2,7 +2,7 @@
 /* Job.cpp -- a job in the system                                             */
 /*============================================================================*/
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 Atomic gzJobSeq;
@@ -42,7 +42,7 @@ bool bJobCompare(void* pObjectInsert, void* pObjectScan, bool& bMatch)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::_pJob(void* aAddr)
+Job* JobModel::_pJob(void* aAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(aAddr);
   
@@ -57,7 +57,7 @@ Job* JobsModel::_pJob(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* is given class a valid job?                                                */
 /*----------------------------------------------------------------------------*/
-bool JobsModel::_bIsValidJob(Base::eCN eClass)
+bool JobModel::_bIsValidJob(Base::eCN eClass)
 {
   if (eClass >= CN_JOB__BEGUN && eClass <= CN_JOB_WRITEROW)
     return true;
@@ -68,7 +68,7 @@ bool JobsModel::_bIsValidJob(Base::eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::_pJob(i8 iAddr)
+Job* JobModel::_pJob(i8 iAddr)
 {
   Job* pJob = reinterpret_cast<Job*>(iAddr);
 
@@ -332,14 +332,14 @@ void Job::vShow(s48K& s)
 /*----------------------------------------------------------------------------*/
 /* pre-send job function                                                      */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_send(Job* pJob)
+void JobModel::vJob_send(Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* post-recv job function                                                     */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_recv(Job* pJob)
+void JobModel::vJob_recv(Job* pJob)
 {
   pJob->m_pExecutingTask = nullptr;
 }

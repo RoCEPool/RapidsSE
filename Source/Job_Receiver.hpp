@@ -8,7 +8,7 @@ namespace GridModel
   class Node;
 }
 
-namespace JobsModel
+namespace JobModel
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Receiver : public Job

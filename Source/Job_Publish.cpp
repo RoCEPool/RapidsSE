@@ -4,7 +4,7 @@
 
 // Job Short: Ingest
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Publish =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_Publish_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_Publish_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Purge_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_Publish_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Publish* JobsModel::_pJob_Publish(void* aAddress)
+Job_Publish* JobModel::_pJob_Publish(void* aAddress)
 {
   Job_Publish* pJob_Publish = reinterpret_cast<Job_Publish*>(aAddress);
   
@@ -170,7 +170,7 @@ Footer* Job_Publish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Publish_pre(Interface::Session* pSession)
+Job* JobModel::pJob_Publish_pre(Interface::Session* pSession)
 {
   i8 nTokens;
 
@@ -194,14 +194,14 @@ Job* JobsModel::pJob_Publish_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Publish_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Publish_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Publish_new(Job* pArg)
+Job* JobModel::pJob_Publish_new(Job* pArg)
 {
   Job_Publish* pJob_Publish = new Job_Publish(nullptr);
   
@@ -211,7 +211,7 @@ Job* JobsModel::pJob_Publish_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Publish_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Publish_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Publish* pJob_Publish = _pJob_Publish(pJob);
   
@@ -221,7 +221,7 @@ void JobsModel::vJob_Publish_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Publish_show(Job* pJob)
+void JobModel::vJob_Publish_show(Job* pJob)
 {
   Job_Publish* pJob_Publish = _pJob_Publish(pJob);
 

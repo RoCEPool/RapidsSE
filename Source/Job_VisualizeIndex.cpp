@@ -4,7 +4,7 @@
 
 // Job Short: VisualizeIndex
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_VisualizeIndex =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_VisualizeIndex_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_VisualizeIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_WaitCluster_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_VisualizeIndex_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_VisualizeIndex* JobsModel::_pJob_VisualizeIndex(void* aAddress)
+Job_VisualizeIndex* JobModel::_pJob_VisualizeIndex(void* aAddress)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = reinterpret_cast<Job_VisualizeIndex*>(aAddress);
   
@@ -197,7 +197,7 @@ Footer* Job_VisualizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_VisualizeIndex_pre(Interface::Session* pSession)
+Job* JobModel::pJob_VisualizeIndex_pre(Interface::Session* pSession)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = new Job_VisualizeIndex(pSession);
   
@@ -217,7 +217,7 @@ Job* JobsModel::pJob_VisualizeIndex_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_VisualizeIndex_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_VisualizeIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pJob);
   
@@ -233,7 +233,7 @@ void JobsModel::vJob_VisualizeIndex_post(Interface::Session* pSession, Job* pJob
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_VisualizeIndex_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_VisualizeIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pJob);
   
@@ -243,7 +243,7 @@ void JobsModel::vJob_VisualizeIndex_delete(Interface::Session* pSession, Job* pJ
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_VisualizeIndex_show(Job* pJob)
+void JobModel::vJob_VisualizeIndex_show(Job* pJob)
 {
   Job_VisualizeIndex* pJob_VisualizeIndex = _pJob_VisualizeIndex(pJob);
 

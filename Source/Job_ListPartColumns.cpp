@@ -4,7 +4,7 @@
 
 // Job Short: ListPartColumns
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_ListPartColumns =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_ListPartColumns_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_ListPartColumns_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_ListPartitions_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_ListPartColumns_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_ListPartColumns* JobsModel::_pJob_ListPartColumns(void* aAddress)
+Job_ListPartColumns* JobModel::_pJob_ListPartColumns(void* aAddress)
 {
   Job_ListPartColumns* pJob_ListPartColumns = reinterpret_cast<Job_ListPartColumns*>(aAddress);
   
@@ -196,7 +196,7 @@ Footer* Job_ListPartColumns::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ListPartColumns_pre(Interface::Session* pSession)
+Job* JobModel::pJob_ListPartColumns_pre(Interface::Session* pSession)
 {
   Job_ListPartColumns* pJob_ListPartColumns = new Job_ListPartColumns(pSession);
   
@@ -216,7 +216,7 @@ Job* JobsModel::pJob_ListPartColumns_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListPartColumns_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_ListPartColumns_post(Interface::Session* pSession, Job* pJob)
 {
   Job_ListPartColumns* pJob_ListPartColumns = _pJob_ListPartColumns(pJob);
   
@@ -243,7 +243,7 @@ void JobsModel::vJob_ListPartColumns_post(Interface::Session* pSession, Job* pJo
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListPartColumns_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_ListPartColumns_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_ListPartColumns* pJob_ListPartColumns = _pJob_ListPartColumns(pJob);
   
@@ -253,7 +253,7 @@ void JobsModel::vJob_ListPartColumns_delete(Interface::Session* pSession, Job* p
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListPartColumns_show(Job* pJob)
+void JobModel::vJob_ListPartColumns_show(Job* pJob)
 {
   Job_ListPartColumns* pJob_ListPartColumns = _pJob_ListPartColumns(pJob);
 

@@ -4,7 +4,7 @@
 
 // Job Short: CreateCatalog
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_CreateCatalog =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_CreateCatalog_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_CreateCatalog_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CreateIndex_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_CreateCatalog_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_CreateCatalog* JobsModel::_pJob_CreateCatalog(void* aAddress)
+Job_CreateCatalog* JobModel::_pJob_CreateCatalog(void* aAddress)
 {
   Job_CreateCatalog* pJob_CreateCatalog = reinterpret_cast<Job_CreateCatalog*>(aAddress);
   
@@ -194,7 +194,7 @@ Footer* Job_CreateCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateCatalog_pre(Interface::Session* pSession)
+Job* JobModel::pJob_CreateCatalog_pre(Interface::Session* pSession)
 {
   Job_CreateCatalog* pJob_CreateCatalog = new Job_CreateCatalog(pSession);
   
@@ -214,7 +214,7 @@ Job* JobsModel::pJob_CreateCatalog_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateCatalog_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_CreateCatalog_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateCatalog* pJob_CreateCatalog = _pJob_CreateCatalog(pJob);
   
@@ -233,7 +233,7 @@ void JobsModel::vJob_CreateCatalog_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateCatalog_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_CreateCatalog_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateCatalog* pJob_CreateCatalog = _pJob_CreateCatalog(pJob);
   
@@ -243,7 +243,7 @@ void JobsModel::vJob_CreateCatalog_delete(Interface::Session* pSession, Job* pJo
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateCatalog_show(Job* pJob)
+void JobModel::vJob_CreateCatalog_show(Job* pJob)
 {
   Job_CreateCatalog* pJob_CreateCatalog = _pJob_CreateCatalog(pJob);
 

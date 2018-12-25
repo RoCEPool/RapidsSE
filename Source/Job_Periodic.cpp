@@ -4,7 +4,7 @@
 
 // Job Short: Periodic
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Periodic =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_Periodic_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_Periodic_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Ping_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_Periodic_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Periodic* JobsModel::_pJob_Periodic(void* aAddress)
+Job_Periodic* JobModel::_pJob_Periodic(void* aAddress)
 {
   Job_Periodic* pJob_Periodic = reinterpret_cast<Job_Periodic*>(aAddress);
   
@@ -169,7 +169,7 @@ Footer* Job_Periodic::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Periodic_new(Job* pArg)
+Job* JobModel::pJob_Periodic_new(Job* pArg)
 {
   Job_Periodic* pJob_Periodic = new Job_Periodic(nullptr);
   
@@ -179,7 +179,7 @@ Job* JobsModel::pJob_Periodic_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Periodic_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Periodic_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Periodic* pJob_Periodic = _pJob_Periodic(pJob);
   
@@ -189,7 +189,7 @@ void JobsModel::vJob_Periodic_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Periodic_show(Job* pJob)
+void JobModel::vJob_Periodic_show(Job* pJob)
 {
   Job_Periodic* pJob_Periodic = _pJob_Periodic(pJob);
 

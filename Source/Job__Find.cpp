@@ -4,7 +4,7 @@
 
 // Job Short: _Executed
 
-#include "JobsModel.h"
+#include "JobModel.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job__Find* JobsModel::_pJob__Find(void* aAddress)
+Job__Find* JobModel::_pJob__Find(void* aAddress)
 {
   Job__Find* pJob__Find = reinterpret_cast<Job__Find*>(aAddress);
   

@@ -4,7 +4,7 @@
 
 // Job Short: Pwf
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Pwf =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_Pwf_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_Pwf_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Receiver_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_Pwf_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Pwf* JobsModel::_pJob_Pwf(void* aAddress)
+Job_Pwf* JobModel::_pJob_Pwf(void* aAddress)
 {
   Job_Pwf* pJob_Pwf = reinterpret_cast<Job_Pwf*>(aAddress);
   
@@ -192,7 +192,7 @@ Footer* Job_Pwf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Pwf_pre(Interface::Session* pSession)
+Job* JobModel::pJob_Pwf_pre(Interface::Session* pSession)
 {
   Job_Pwf* pJob_Pwf = new Job_Pwf(pSession);
   
@@ -212,7 +212,7 @@ Job* JobsModel::pJob_Pwf_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Pwf_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Pwf_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Pwf* pJob_Pwf = _pJob_Pwf(pJob);
   
@@ -235,7 +235,7 @@ void JobsModel::vJob_Pwf_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Pwf_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Pwf_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Pwf* pJob_Pwf = _pJob_Pwf(pJob);
   
@@ -245,7 +245,7 @@ void JobsModel::vJob_Pwf_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Pwf_show(Job* pJob)
+void JobModel::vJob_Pwf_show(Job* pJob)
 {
   Job_Pwf* pJob_Pwf = _pJob_Pwf(pJob);
 

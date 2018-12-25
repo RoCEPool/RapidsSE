@@ -4,7 +4,7 @@
 
 // Job Short: DumpIndex
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_DumpIndex =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_DumpIndex_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_DumpIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Export_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_DumpIndex_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_DumpIndex* JobsModel::_pJob_DumpIndex(void* aAddress)
+Job_DumpIndex* JobModel::_pJob_DumpIndex(void* aAddress)
 {
   Job_DumpIndex* pJob_DumpIndex = reinterpret_cast<Job_DumpIndex*>(aAddress);
   
@@ -197,7 +197,7 @@ Footer* Job_DumpIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DumpIndex_pre(Interface::Session* pSession)
+Job* JobModel::pJob_DumpIndex_pre(Interface::Session* pSession)
 {
   Job_DumpIndex* pJob_DumpIndex = new Job_DumpIndex(pSession);
   
@@ -217,7 +217,7 @@ Job* JobsModel::pJob_DumpIndex_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DumpIndex_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_DumpIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_DumpIndex* pJob_DumpIndex = _pJob_DumpIndex(pJob);
   
@@ -234,7 +234,7 @@ void JobsModel::vJob_DumpIndex_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DumpIndex_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_DumpIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_DumpIndex* pJob_DumpIndex = _pJob_DumpIndex(pJob);
   
@@ -244,7 +244,7 @@ void JobsModel::vJob_DumpIndex_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DumpIndex_show(Job* pJob)
+void JobModel::vJob_DumpIndex_show(Job* pJob)
 {
   Job_DumpIndex* pJob_DumpIndex = _pJob_DumpIndex(pJob);
 

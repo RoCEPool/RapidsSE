@@ -4,7 +4,7 @@
 
 // Job Short: DropSchema
 
-#include "JobsModel.h"
+#include "JobModel.h"
 
 #include "StorageEngine.h"
 
@@ -47,7 +47,7 @@ JobClass xJobClass_DropSchema =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_DropSchema_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_DropSchema_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_DropTable_class;
   
@@ -62,7 +62,7 @@ JobClass* JobsModel::pJob_DropSchema_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_DropSchema* JobsModel::_pJob_DropSchema(void* aAddress)
+Job_DropSchema* JobModel::_pJob_DropSchema(void* aAddress)
 {
   Job_DropSchema* pJob_DropSchema = reinterpret_cast<Job_DropSchema*>(aAddress);
   
@@ -197,7 +197,7 @@ Footer* Job_DropSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropSchema_pre(Interface::Session* pSession)
+Job* JobModel::pJob_DropSchema_pre(Interface::Session* pSession)
 {
   Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSession);
   
@@ -217,7 +217,7 @@ Job* JobsModel::pJob_DropSchema_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropSchema_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_DropSchema_post(Interface::Session* pSession, Job* pJob)
 {
   Job_DropSchema* pJob_DropSchema = _pJob_DropSchema(pJob);
   
@@ -236,7 +236,7 @@ void JobsModel::vJob_DropSchema_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropSchema_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_DropSchema_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_DropSchema* pJob_DropSchema = _pJob_DropSchema(pJob);
   
@@ -246,7 +246,7 @@ void JobsModel::vJob_DropSchema_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropSchema_show(Job* pJob)
+void JobModel::vJob_DropSchema_show(Job* pJob)
 {
   Job_DropSchema* pJob_DropSchema = _pJob_DropSchema(pJob);
 

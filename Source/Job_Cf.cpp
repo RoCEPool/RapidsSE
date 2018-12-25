@@ -4,7 +4,7 @@
 
 // Job Short: Cf
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Cf =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_Cf_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_Cf_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CompactIndex_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_Cf_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Cf* JobsModel::_pJob_Cf(void* aAddress)
+Job_Cf* JobModel::_pJob_Cf(void* aAddress)
 {
   Job_Cf* pJob_Cf = reinterpret_cast<Job_Cf*>(aAddress);
   
@@ -191,7 +191,7 @@ Footer* Job_Cf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Cf_pre(Interface::Session* pSession)
+Job* JobModel::pJob_Cf_pre(Interface::Session* pSession)
 {
   Job_Cf* pJob_Cf = new Job_Cf(pSession);
   
@@ -211,7 +211,7 @@ Job* JobsModel::pJob_Cf_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Cf_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Cf_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Cf* pJob_Cf = _pJob_Cf(pJob);
   
@@ -227,7 +227,7 @@ void JobsModel::vJob_Cf_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* delete job function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Cf_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Cf_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Cf* pJob_Cf = _pJob_Cf(pJob);
   
@@ -237,7 +237,7 @@ void JobsModel::vJob_Cf_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Cf_show(Job* pJob)
+void JobModel::vJob_Cf_show(Job* pJob)
 {
   Job_Cf* pJob_Cf = _pJob_Cf(pJob);
   

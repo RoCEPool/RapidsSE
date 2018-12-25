@@ -2,7 +2,7 @@
 /* Jobs.cpp -- Collection of the Systems' Jobs                                */
 /*============================================================================*/
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -14,7 +14,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Jobs* JobsModel::_pJobs(void* aAddr)
+Jobs* JobModel::_pJobs(void* aAddr)
 {
   Jobs* pJobs = reinterpret_cast<Jobs*>(aAddr);
   

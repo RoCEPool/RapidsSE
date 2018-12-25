@@ -4,7 +4,7 @@
 
 // Job Short: DropIndex
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_DropIndex =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_DropIndex_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_DropIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_DropSchema_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_DropIndex_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_DropIndex* JobsModel::_pJob_DropIndex(void* aAddress)
+Job_DropIndex* JobModel::_pJob_DropIndex(void* aAddress)
 {
   Job_DropIndex* pJob_DropIndex = reinterpret_cast<Job_DropIndex*>(aAddress);
   
@@ -205,7 +205,7 @@ Footer* Job_DropIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropIndex_pre(Interface::Session* pSession)
+Job* JobModel::pJob_DropIndex_pre(Interface::Session* pSession)
 {
   Job_DropIndex* pJob_DropIndex = new Job_DropIndex(pSession);
   
@@ -225,7 +225,7 @@ Job* JobsModel::pJob_DropIndex_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropIndex_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_DropIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pJob);
   
@@ -244,7 +244,7 @@ void JobsModel::vJob_DropIndex_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropIndex_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_DropIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pJob);
   
@@ -254,7 +254,7 @@ void JobsModel::vJob_DropIndex_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropIndex_show(Job* pJob)
+void JobModel::vJob_DropIndex_show(Job* pJob)
 {
   Job_DropIndex* pJob_DropIndex = _pJob_DropIndex(pJob);
 

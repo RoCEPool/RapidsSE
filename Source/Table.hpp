@@ -63,13 +63,13 @@ namespace DBobjects
     ColumnVec* pColumnVec(void);
     void vContentDump(void);
     void vCreateColumnVec(s32& sName, s48K& sDefinition);
-    void vCreateColumnVec(JobsModel::Job_CreateTable* pJob);
+    void vCreateColumnVec(JobModel::Job_CreateTable* pJob);
     Index* pHiddenIndex(void);
     void vHiddenIndex(Index* pHiddenIndex);
     IdxVec* pIdxVec(void);
     void  vIsLoading(bool bIsLoading);
     bool  bIsLoading(void);
-    bool  bIsValidIndexColumns(JobsModel::Job_CreateIndex* pJob);
+    bool  bIsValidIndexColumns(JobModel::Job_CreateIndex* pJob);
     TablePtn* pPartition(i8 iSlot);
     bool bPopulateIndex(i8 iIndexNo);
     void vRemoveIndex(Index* pIndex);

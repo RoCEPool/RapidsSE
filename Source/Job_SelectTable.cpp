@@ -4,7 +4,7 @@
 
 // Job Short: SelectTable
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_SelectTable =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_SelectTable_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_SelectTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_ShowCluster_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_SelectTable_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_SelectTable* JobsModel::_pJob_SelectTable(void* aAddress)
+Job_SelectTable* JobModel::_pJob_SelectTable(void* aAddress)
 {
   Job_SelectTable* pJob_SelectTable = reinterpret_cast<Job_SelectTable*>(aAddress);
   
@@ -201,7 +201,7 @@ Footer* Job_SelectTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_SelectTable_pre(Interface::Session* pSession)
+Job* JobModel::pJob_SelectTable_pre(Interface::Session* pSession)
 {
   Job_SelectTable* pJob_SelectTable = new Job_SelectTable(pSession);
   
@@ -221,7 +221,7 @@ Job* JobsModel::pJob_SelectTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SelectTable_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_SelectTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(pJob);
   
@@ -239,7 +239,7 @@ void JobsModel::vJob_SelectTable_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SelectTable_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_SelectTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(pJob);
   
@@ -249,7 +249,7 @@ void JobsModel::vJob_SelectTable_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_SelectTable_show(Job* pJob)
+void JobModel::vJob_SelectTable_show(Job* pJob)
 {
   Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(pJob);
 

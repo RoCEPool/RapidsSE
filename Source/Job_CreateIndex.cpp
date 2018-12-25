@@ -4,7 +4,7 @@
 
 // Job Short: CreateIndex
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -80,7 +80,7 @@ JobClass xJobClass_CreateIndexUnique =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_CreateIndex_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_CreateIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CreateIndexUnique_class;
   
@@ -90,7 +90,7 @@ JobClass* JobsModel::pJob_CreateIndex_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_CreateIndexUnique_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_CreateIndexUnique_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CreateSchema_class;
   
@@ -105,7 +105,7 @@ JobClass* JobsModel::pJob_CreateIndexUnique_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_CreateIndex* JobsModel::_pJob_CreateIndex(void* aAddress)
+Job_CreateIndex* JobModel::_pJob_CreateIndex(void* aAddress)
 {
   Job_CreateIndex* pJob_CreateIndex = reinterpret_cast<Job_CreateIndex*>(aAddress);
   
@@ -338,7 +338,7 @@ Footer* Job_CreateIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CreateIndex_pre(Interface::Session* pSession)
+Job* JobModel::pJob_CreateIndex_pre(Interface::Session* pSession)
 {
   Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(pSession);
   
@@ -357,7 +357,7 @@ Job* JobsModel::pJob_CreateIndex_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateIndex_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_CreateIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJob);
   
@@ -376,7 +376,7 @@ void JobsModel::vJob_CreateIndex_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateIndex_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_CreateIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJob);
   
@@ -386,7 +386,7 @@ void JobsModel::vJob_CreateIndex_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CreateIndex_show(Job* pJob)
+void JobModel::vJob_CreateIndex_show(Job* pJob)
 {
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pJob);
 

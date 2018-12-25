@@ -4,7 +4,7 @@
 
 // Job Short: Connector
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Connector =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_Connector_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_Connector_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CreateCatalog_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_Connector_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Connector* JobsModel::_pJob_Connector(void* aAddress)
+Job_Connector* JobModel::_pJob_Connector(void* aAddress)
 {
   Job_Connector* pJob_Connector = reinterpret_cast<Job_Connector*>(aAddress);
   
@@ -168,7 +168,7 @@ Footer* Job_Connector::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Connector_new(Job* pArg)
+Job* JobModel::pJob_Connector_new(Job* pArg)
 {
   Job_Connector* pJob_Connector = new Job_Connector(nullptr);
   
@@ -178,7 +178,7 @@ Job* JobsModel::pJob_Connector_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Connector_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Connector_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Connector* pJob_Connector = _pJob_Connector(pJob);
   
@@ -188,7 +188,7 @@ void JobsModel::vJob_Connector_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Connector_show(Job* pJob)
+void JobModel::vJob_Connector_show(Job* pJob)
 {
   Job_Connector* pJob_Connector = _pJob_Connector(pJob);
 

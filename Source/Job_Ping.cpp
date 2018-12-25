@@ -4,7 +4,7 @@
 
 // Job Short: Lf
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Ping =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_Ping_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_Ping_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Publish_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_Ping_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Ping* JobsModel::_pJob_Ping(void* aAddress)
+Job_Ping* JobModel::_pJob_Ping(void* aAddress)
 {
   Job_Ping* pJob_Ping = reinterpret_cast<Job_Ping*>(aAddress);
   
@@ -192,7 +192,7 @@ Footer* Job_Ping::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Ping_pre(Interface::Session* pSession)
+Job* JobModel::pJob_Ping_pre(Interface::Session* pSession)
 {
   Job_Ping* pJob_Ping = new Job_Ping(pSession);
   
@@ -212,7 +212,7 @@ Job* JobsModel::pJob_Ping_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Ping_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Ping_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Ping* pJob_Ping = _pJob_Ping(pJob);
   
@@ -235,7 +235,7 @@ void JobsModel::vJob_Ping_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Ping_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Ping_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Ping* pJob_Ping = _pJob_Ping(pJob);
   
@@ -245,7 +245,7 @@ void JobsModel::vJob_Ping_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Ping_show(Job* pJob)
+void JobModel::vJob_Ping_show(Job* pJob)
 {
   Job_Ping* pJob_Ping= _pJob_Ping(pJob);
 

@@ -6,7 +6,7 @@
 
 #include "Dictionaries.h"
 
-namespace JobsModel
+namespace JobModel
 {
   class Job_CreateTable;
   class Job_CreateIndex;

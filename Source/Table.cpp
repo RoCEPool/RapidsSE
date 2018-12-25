@@ -524,7 +524,7 @@ void Table::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
 /*----------------------------------------------------------------------------*/
-void Table::vCreateColumnVec(JobsModel::Job_CreateTable* pJob)
+void Table::vCreateColumnVec(JobModel::Job_CreateTable* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -586,7 +586,7 @@ bool Table::bIsLoading(void)
 /*----------------------------------------------------------------------------*/
 /* validate index columns                                                     */
 /*----------------------------------------------------------------------------*/
-bool Table::bIsValidIndexColumns(JobsModel::Job_CreateIndex* pJob)
+bool Table::bIsValidIndexColumns(JobModel::Job_CreateIndex* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   

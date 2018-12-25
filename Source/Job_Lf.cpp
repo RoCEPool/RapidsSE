@@ -4,7 +4,7 @@
 
 // Job Short: Lf
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Lf =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_Lf_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_Lf_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_ListCatalogs_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_Lf_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Lf* JobsModel::_pJob_Lf(void* aAddress)
+Job_Lf* JobModel::_pJob_Lf(void* aAddress)
 {
   Job_Lf* pJob_Lf = reinterpret_cast<Job_Lf*>(aAddress);
   
@@ -192,7 +192,7 @@ Footer* Job_Lf::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_Lf_pre(Interface::Session* pSession)
+Job* JobModel::pJob_Lf_pre(Interface::Session* pSession)
 {
   Job_Lf* pJob_Lf = new Job_Lf(pSession);
   
@@ -212,7 +212,7 @@ Job* JobsModel::pJob_Lf_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Lf_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Lf_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Lf* pJob_Lf = _pJob_Lf(pJob);
   
@@ -235,7 +235,7 @@ void JobsModel::vJob_Lf_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Lf_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_Lf_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Lf* pJob_Lf = _pJob_Lf(pJob);
   
@@ -245,7 +245,7 @@ void JobsModel::vJob_Lf_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_Lf_show(Job* pJob)
+void JobModel::vJob_Lf_show(Job* pJob)
 {
   Job_Lf* pJob_Lf = _pJob_Lf(pJob);
 

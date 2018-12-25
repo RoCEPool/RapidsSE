@@ -4,7 +4,7 @@
 
 // Job Short: DropCatalog
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_DropCatalog =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_DropCatalog_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_DropCatalog_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_DropIndex_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_DropCatalog_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_DropCatalog* JobsModel::_pJob_DropCatalog(void* aAddress)
+Job_DropCatalog* JobModel::_pJob_DropCatalog(void* aAddress)
 {
   Job_DropCatalog* pJob_DropCatalog = reinterpret_cast<Job_DropCatalog*>(aAddress);
   
@@ -196,7 +196,7 @@ Footer* Job_DropCatalog::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_DropCatalog_pre(Interface::Session* pSession)
+Job* JobModel::pJob_DropCatalog_pre(Interface::Session* pSession)
 {
   Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSession);
   
@@ -216,7 +216,7 @@ Job* JobsModel::pJob_DropCatalog_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropCatalog_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_DropCatalog_post(Interface::Session* pSession, Job* pJob)
 {
   Job_DropCatalog* pJob_DropCatalog = _pJob_DropCatalog(pJob);
   
@@ -235,7 +235,7 @@ void JobsModel::vJob_DropCatalog_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropCatalog_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_DropCatalog_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_DropCatalog* pJob_DropCatalog = _pJob_DropCatalog(pJob);
   
@@ -245,7 +245,7 @@ void JobsModel::vJob_DropCatalog_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_DropCatalog_show(Job* pJob)
+void JobModel::vJob_DropCatalog_show(Job* pJob)
 {
   Job_DropCatalog* pJob_DropCatalog = _pJob_DropCatalog(pJob);
 

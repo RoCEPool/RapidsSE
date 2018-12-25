@@ -4,7 +4,7 @@
 
 // Job Short: CompactIndex
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_CompactIndex =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_CompactIndex_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_CompactIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_ConnectCluster_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_CompactIndex_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_CompactIndex* JobsModel::_pJob_CompactIndex(void* aAddress)
+Job_CompactIndex* JobModel::_pJob_CompactIndex(void* aAddress)
 {
   Job_CompactIndex* pJob_CompactIndex = reinterpret_cast<Job_CompactIndex*>(aAddress);
   
@@ -197,7 +197,7 @@ Footer* Job_CompactIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_CompactIndex_pre(Interface::Session* pSession)
+Job* JobModel::pJob_CompactIndex_pre(Interface::Session* pSession)
 {
   Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(pSession);
   
@@ -217,7 +217,7 @@ Job* JobsModel::pJob_CompactIndex_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CompactIndex_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_CompactIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CompactIndex* pJob_CompactIndex = _pJob_CompactIndex(pJob);
   
@@ -236,7 +236,7 @@ void JobsModel::vJob_CompactIndex_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CompactIndex_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_CompactIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CompactIndex* pJob_CompactIndex = _pJob_CompactIndex(pJob);
   
@@ -246,7 +246,7 @@ void JobsModel::vJob_CompactIndex_delete(Interface::Session* pSession, Job* pJob
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_CompactIndex_show(Job* pJob)
+void JobModel::vJob_CompactIndex_show(Job* pJob)
 {
   Job_CompactIndex* pJob_CompactIndex = _pJob_CompactIndex(pJob);
 

@@ -4,7 +4,7 @@
 
 // Job Short: StartCluster
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_StartCluster =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_StartCluster_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_StartCluster_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Status_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_StartCluster_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_StartCluster* JobsModel::_pJob_StartCluster(void* aAddress)
+Job_StartCluster* JobModel::_pJob_StartCluster(void* aAddress)
 {
   Job_StartCluster* pJob_StartCluster = reinterpret_cast<Job_StartCluster*>(aAddress);
   
@@ -190,7 +190,7 @@ Footer* Job_StartCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_StartCluster_pre(Interface::Session* pSession)
+Job* JobModel::pJob_StartCluster_pre(Interface::Session* pSession)
 {
   Job_StartCluster* pJob_StartCluster = new Job_StartCluster(pSession);
   
@@ -210,14 +210,14 @@ Job* JobsModel::pJob_StartCluster_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_StartCluster_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_StartCluster_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_StartCluster_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_StartCluster_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_StartCluster* pJob_StartCluster = _pJob_StartCluster(pJob);
   
@@ -227,7 +227,7 @@ void JobsModel::vJob_StartCluster_delete(Interface::Session* pSession, Job* pJob
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_StartCluster_show(Job* pJob)
+void JobModel::vJob_StartCluster_show(Job* pJob)
 {
   Job_StartCluster* pJob_StartCluster = _pJob_StartCluster(pJob);
   

@@ -4,7 +4,7 @@
 
 // Job Short: ListTables
 
-#include "JobsModel.h"
+#include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_ListTables =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobsModel::pJob_ListTables_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_ListTables_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_ListTenants_class;
   
@@ -61,7 +61,7 @@ JobClass* JobsModel::pJob_ListTables_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_ListTables* JobsModel::_pJob_ListTables(void* aAddress)
+Job_ListTables* JobModel::_pJob_ListTables(void* aAddress)
 {
   Job_ListTables* pJob_ListTables = reinterpret_cast<Job_ListTables*>(aAddress);
   
@@ -192,7 +192,7 @@ Footer* Job_ListTables::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobsModel::pJob_ListTables_pre(Interface::Session* pSession)
+Job* JobModel::pJob_ListTables_pre(Interface::Session* pSession)
 {
   Job_ListTables* pJob_ListTables = new Job_ListTables(pSession);
   
@@ -212,7 +212,7 @@ Job* JobsModel::pJob_ListTables_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListTables_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_ListTables_post(Interface::Session* pSession, Job* pJob)
 {
   Job_ListTables* pJob_ListTables = _pJob_ListTables(pJob);
   
@@ -240,7 +240,7 @@ void JobsModel::vJob_ListTables_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListTables_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_ListTables_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_ListTables* pJob_ListTables = _pJob_ListTables(pJob);
   
@@ -250,7 +250,7 @@ void JobsModel::vJob_ListTables_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobsModel::vJob_ListTables_show(Job* pJob)
+void JobModel::vJob_ListTables_show(Job* pJob)
 {
   Job_ListTables* pJob_ListTables = _pJob_ListTables(pJob);
 
