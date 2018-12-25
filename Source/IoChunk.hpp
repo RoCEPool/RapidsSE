@@ -29,6 +29,7 @@ namespace Loader
     void  vOpenRead(s256& sPath);
     void  vOpenWrite(s256& sPath);
     i8    nReadBytes(i8 nBytes);
+    void  vRewindFile(void);
     i8    nWriteBytes(i8 nBytes);
     void  vWriteData(void);
     Stz*  aStr(void);

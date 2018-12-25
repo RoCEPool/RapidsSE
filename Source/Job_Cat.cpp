@@ -192,7 +192,7 @@ Job* JobsModel::pJob_Cat_pre(Interface::Session* pSession)
   pJob_Cat->m_sFileName = pTknVec->pGet(1)->sText();
   
   // set the output file name
-  pJob_Cat->m_sOutputFile = pTknVec->pGet(2)->sText();
+  pJob_Cat->m_sOutputPath = pTknVec->pGet(2)->sText();
   
   // is the last token the print option
   i8 i_Last = nTokens - 1;
@@ -245,22 +245,22 @@ void JobsModel::vJob_Cat_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* cat data                                                                   */
+/* copy from input to output                                                  */
 /*----------------------------------------------------------------------------*/
 void Job_Cat::vCat(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
-  vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputFile.aStr());
+  vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputPath.aStr());
   
   m_pIoCopy->vOpenRead(m_sFileName);
-  m_pIoCopy->vOpenWrite(m_sOutputFile);
+  m_pIoCopy->vOpenWrite(m_sOutputPath);
   
   if (m_bStatistics)
     m_pIoCopy->vWithStatistics("  cat : "_Stz);
   
   while (m_pIoCopy->bCopyChunk())
-    ;
+    {;}
   
   m_pIoCopy->vCloseBoth();
 }

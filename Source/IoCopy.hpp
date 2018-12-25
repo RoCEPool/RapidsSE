@@ -28,6 +28,7 @@ namespace Loader
     bool  bCopyChunk(void);
     void  vOpenRead(s256& sPath);
     void  vOpenWrite(s256& sPath);
+    void  vRewindInput(void);
     void  vWithStatistics(Stz* aPrefix);
   
   private:

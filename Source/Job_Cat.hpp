@@ -10,7 +10,7 @@ namespace JobsModel
                   public JobFileName
   {
   public:
-    s256 m_sOutputFile; // output file name
+    s256 m_sOutputPath; // output file name
 
     IoCopy*   m_pIoCopy;
     bool      m_bStatistics;

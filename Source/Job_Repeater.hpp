@@ -14,11 +14,9 @@ namespace JobsModel
   public:
     s256  m_sOutputPath;  // pipe path
   
-    File  m_oFile;     // the file
-    File  m_oPipe;     // the pipe
+    IoCopy*   m_pIoCopy;
+    bool      m_bStatistics;
 
-    WspFxd<C_REPEATER_WSP> m_xWsp; // workspace
-  
     // must be last
     Footer m_xFooter;
   
@@ -35,7 +33,6 @@ namespace JobsModel
   public:
     void vShow(void);
   
-    void vIndefiniteCopy(void);
     void vRepeat(void);
 
   public:

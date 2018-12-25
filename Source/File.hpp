@@ -74,6 +74,7 @@ namespace System
     bool bReadLine(Stz* aDst);
     void vReset(void);
     void vSeek(i8 iOffset);
+    void vSeekStart(void);
     void vSeekEnd(void);
     void vSetBuffering(i8 nBytes);
     SysCall& oSysCall(void);

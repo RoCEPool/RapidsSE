@@ -108,10 +108,9 @@ Job_Repeater::Job_Repeater(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
   m_sOutputPath = "<none>"_Stz;
-  //m_oFile
-  //m_oPipe
   
-  m_xWsp.vFill(0xEF,CN_JOB_REPEATER);
+  m_pIoCopy = new IoCopy;
+  m_bStatistics = false;
 
   _checkInitialised_(CN_JOB_REPEATER);
   
@@ -190,9 +189,22 @@ Job* JobsModel::pJob_Repeater_pre(Interface::Session* pSession)
   if (nTokens < 3)
     return pJob_Repeater;
 
-  pJob_Repeater->m_sFileName = pTknVec->pGet(1)->aText();
-  pJob_Repeater->m_sOutputPath = pTknVec->pGet(2)->aText();
-
+  // there should be at least 3 tokens
+  if (nTokens < 3)
+    return pJob_Repeater;
+  
+  // set the input file name
+  pJob_Repeater->m_sFileName = pTknVec->pGet(1)->sText();
+  
+  // set the output file name
+  pJob_Repeater->m_sOutputPath = pTknVec->pGet(2)->sText();
+  
+  // is the last token the print option
+  i8 i_Last = nTokens - 1;
+  if (pTknVec->pGet(i_Last)->sText().bSame("stats"_Stz) ||
+      pTknVec->pGet(i_Last)->sText().bSame("statistics"_Stz))
+    pJob_Repeater->m_bStatistics = true;
+  
   return pJob_Repeater;
 }
 
@@ -238,48 +250,25 @@ void JobsModel::vJob_Repeater_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* indefinitely copy file into pipe                                           */
-/*----------------------------------------------------------------------------*/
-void Job_Repeater::vIndefiniteCopy(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
-  
-  i8 nBytesRead;
-  
-  for (;;) {
-    
-    m_oFile.vSeek(0);
-    
-    while ( (nBytesRead = m_oFile.iReadBytes(m_xWsp.aArea(),C_REPEATER_WSP)) ) {
-      bool bWritten = m_oPipe.bWriteBytes(m_xWsp.aArea(),nBytesRead);
-      ASSERT(bWritten);
-    }
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* repeatedly copy file into pipe                                             */
+/* repeatedly copy from input to output                                       */
 /*----------------------------------------------------------------------------*/
 void Job_Repeater::vRepeat(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
-  vTrace("Repeating data from %s into %s\n"_Stz,
-         m_sFileName.aStr(), m_sOutputPath.aStr());
+  vTrace("Repeat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputPath.aStr());
   
-  bool bFileOpened = m_oFile.bOpen(m_sFileName,C_OPEN_READ);
-  if (! bFileOpened) {
-    vTrace("Unable to open input file: %s\n"_Stz,m_sFileName.aStr());
-    return;
-  }
+  m_pIoCopy->vOpenRead(m_sFileName);
+  m_pIoCopy->vOpenWrite(m_sOutputPath);
   
-  bool bPipeOpened = m_oPipe.bOpen(m_sOutputPath,C_OPEN_WRITE);
-  if (! bPipeOpened) {
-    vTrace("Unable to open output pipe: %s\n"_Stz,m_sOutputPath.aStr());
-    return;
+  if (m_bStatistics)
+    m_pIoCopy->vWithStatistics("  repeat : "_Stz);
+  
+  for (;;) {
+    while (m_pIoCopy->bCopyChunk())
+      {;}
+    m_pIoCopy->vRewindInput();
   }
-
-  vIndefiniteCopy();
   
   NEVER_REACH;
 }
