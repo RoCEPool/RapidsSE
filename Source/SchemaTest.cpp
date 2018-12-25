@@ -67,7 +67,6 @@ SchemaTest::SchemaTest(Stz* sStream)
   m_sFileNm.vConcat(m_sStream);
 #endif
 
-  m_xFile.vPath(m_sFileNm);
   m_sTableNm  = "<none>"_Stz;
   m_sColumnNm = "<none>"_Stz;
   m_sColumnTy = "<none>"_Stz;

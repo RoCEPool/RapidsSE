@@ -134,7 +134,6 @@ bool Parser::bUseFile(StrVal& sPath)
   
   vResetParser();
   
-  m_xFile.vPath(sPath);
   m_eSource = IS_FILE;
   m_bRead = true;
   

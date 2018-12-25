@@ -73,7 +73,6 @@ namespace System
     bool bOpen(void);
     bool bOpen(Stz* aFilePath, Stz* aOpenMode);
     s256& sPath(void);
-    void vPath(Stz* aFilePath);
     void vPrint(Stz* aFormat,...);
     i8   iReadBytes(void* aDst, i8 nBytes);
     bool bReadLine(Stz* y);

@@ -95,7 +95,6 @@ void IoChunk::vOpenRead(s256& sPath)
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
   
   // open the file
-  m_xFile.vPath(sPath);
   bool b = m_xFile.bOpen(sPath,C_OPEN_READ);
   RASSERT(b);
   
@@ -111,7 +110,6 @@ void IoChunk::vOpenWrite(s256& sPath)
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
   
   // open the file
-  m_xFile.vPath(sPath);
   bool b = m_xFile.bOpen(sPath,C_OPEN_WRITE);
   RASSERT(b);
   
