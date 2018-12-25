@@ -281,11 +281,13 @@ bool Dir::bIsOpen(void)
 /*----------------------------------------------------------------------------*/
 /* open the directory for reading                                             */
 /*----------------------------------------------------------------------------*/
-bool Dir::bOpen(void)
+bool Dir::bOpen(Stz* aDirPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   ASSERT(bIsClosed());
+  
+  m_sDirPath = aDirPath;
   
   char* wPath = m_sDirPath.aChar();
  

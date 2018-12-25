@@ -291,10 +291,13 @@ ENTRY("vDirOpen"_Stz);
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrDir) )
     THROW_INVALID_DSTACK("dir.open"_Stz);
-  
   Dir* pDir = _pDir(pPtrDir);
   
-  bool bOpened = pDir->bOpen();
+  s256 sPath;
+  if ( ! mpTask->m_pDataStack->bPop(sPath) )
+    THROW_INVALID_DSTACK("dir.open"_Stz);
+  
+  bool bOpened = pDir->bOpen(sPath);
   
   mpTask->m_pDataStack->vPushInt(bOpened);
   

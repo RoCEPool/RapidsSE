@@ -200,11 +200,8 @@
   "../Sen" dir.changeCurrent
   dir.getCurrent "Current working directory now: %v" str.format .
 
-  // set path in the sen directory accessor
-  "." senDir dir.path!
-
   // open sen directory
-  senDir dir.open assert
+  "." senDir dir.open assert
 
   // open cpp file
   "../Munge/Task_AddMunged.cpp" OPEN_WRITE cppFile file.open assert

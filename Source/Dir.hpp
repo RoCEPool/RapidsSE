@@ -40,7 +40,7 @@ namespace System
     i8   iEntryType(void);
     bool bIsClosed(void);
     bool bIsOpen(void);
-    bool bOpen(void);
+    bool bOpen(Stz* aDirPath);
     StrVal&   sPath(void);
     void vPath(s256& sPath);
     bool bRead(void);

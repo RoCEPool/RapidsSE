@@ -36,7 +36,7 @@ bool Prompt::bPrompt_ls(SePrompt* pPrompt)
   }
   
   // open the current directory
-  if (!xDir.bOpen()) {
+  if (!xDir.bOpen(sDir)) {
     return false;
   }
   
