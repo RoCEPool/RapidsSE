@@ -68,7 +68,7 @@ Thread::Thread(void)
   m_aStackBase   = nullptr;
   m_iStackSize   = 0;
   
-  m_xLock.vInitLock(LK_THREAD);
+  m_oLock.vInitLock(LK_THREAD);
   m_eThreadState = TC_NONE;
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
@@ -210,7 +210,7 @@ void Thread::vLoop(void)
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
   
-  vMutexLock();
+  voLockMutexLock();
   
   ++gpAttachMap->m_ziThreads;
   
@@ -293,8 +293,8 @@ void Thread::vContentDump(void) const
 /*----------------------------------------------------------------------------*/
 void Thread::vDropLock(void)
 {
-  ASSERT(m_xLock.bIsLocked());
-  m_xLock.vDropWrite();
+  ASSERT(m_oLock.bIsLocked());
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -333,7 +333,7 @@ bool Thread::bGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool b = m_pSemaphore->bMutexLock();
+  bool b = m_pSemaphore->boLockMutexLock();
 
   ASSERT( ! b || m_pSemaphore->bMutexIsLocked() );
   
@@ -659,11 +659,11 @@ bool Thread::bMutexIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* lock a threads mutex (blocking)                                            */
 /*----------------------------------------------------------------------------*/
-void Thread::vMutexLock(void)
+void Thread::voLockMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pSemaphore->vMutexLock();
+  m_pSemaphore->voLockMutexLock();
   
   ASSERT(m_pSemaphore->bMutexIsLocked());
 }
@@ -671,11 +671,11 @@ void Thread::vMutexLock(void)
 /*----------------------------------------------------------------------------*/
 /* try and lock a threads mutex (non-blocking)                                */
 /*----------------------------------------------------------------------------*/
-bool Thread::bMutexLock(void)
+bool Thread::boLockMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool b = m_pSemaphore->bMutexLock();
+  bool b = m_pSemaphore->boLockMutexLock();
   
   ASSERT( ! b || m_pSemaphore->bMutexIsLocked() );
   

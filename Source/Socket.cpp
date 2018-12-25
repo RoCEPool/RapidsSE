@@ -56,7 +56,7 @@ Socket::Socket(void)
   
   m_iSocketId = -1;
   m_bBlocking = true;
-  m_xLock.vInitLock(LK_SOCKET);
+  m_oLock.vInitLock(LK_SOCKET);
   
   m_aLowBuff = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
   
@@ -77,7 +77,7 @@ Socket::Socket(int iSocketId)
   
   m_iSocketId = iSocketId;
   m_bBlocking = true;
-  m_xLock.vInitLock(LK_SOCKET);
+  m_oLock.vInitLock(LK_SOCKET);
   
   m_aLowBuff = MemLib::aMallocBlock(C_SIZE_POOL_BUFFER);
 }
@@ -344,7 +344,7 @@ void Socket::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  m_xLock.vGrabWrite();
+  m_oLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -354,7 +354,7 @@ void Socket::vDropWrite(void)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
-  m_xLock.vDropWrite();
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

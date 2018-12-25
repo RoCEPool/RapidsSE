@@ -35,7 +35,7 @@ namespace Transactions
              public CollectionNode_t<Tx>
   {
   private:
-    Lock   m_xLock;      // lock
+    Lock   m_oLock;      // lock
     i8     m_iLocalTxId; // local transaction id
     i8     m_iDistTxId;  // distributed transaction id
     eTP    m_ePhase;     // phase (executing, committing, ...)

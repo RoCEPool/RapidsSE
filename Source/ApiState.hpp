@@ -30,7 +30,7 @@ namespace StorageEngine
   {
   public:
   
-    Lock m_xLock;
+    Lock m_oLock;
     i8   m_nSessionsSoFar;
     i8   m_iFirstFree;
   

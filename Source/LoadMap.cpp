@@ -261,7 +261,7 @@ void LoadMap::vEolOffset(i8 iEolOffset)
 
   m_zLock.vGrabWrite();
   
-  ++gpAttachMap->m_xLockTracker.m_ziWorkUnits[LK_LOAD_MAP];
+  ++gpAttachMap->m_oLockTracker.m_ziWorkUnits[LK_LOAD_MAP];
   
   m_iEolOffset[m_iEntries++] = iEolOffset;
 

@@ -43,7 +43,7 @@ ThreadVector::ThreadVector(void)
 {
   _precondition_(_MAGIC_,CN_THREADVECTOR,_FOOTER_);
   
-  m_xLock.vInitLock(LK_THREAD_VECTOR);
+  m_oLock.vInitLock(LK_THREAD_VECTOR);
   
   _checkInitialised_(CN_THREADVECTOR);
   
@@ -65,7 +65,7 @@ void ThreadVector::vDropLock(void)
 {
   _precondition_(_MAGIC_,CN_THREADVECTOR,_FOOTER_);
   
-  m_xLock.vDropWrite();
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +75,7 @@ void ThreadVector::vGrabLock(void)
 {
   _precondition_(_MAGIC_,CN_THREADVECTOR,_FOOTER_);
   
-  m_xLock.vGrabWrite();
+  m_oLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -50,7 +50,7 @@ ApiState::ApiState(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  m_xLock.vInitLock(LK_API_STATE);
+  m_oLock.vInitLock(LK_API_STATE);
   m_nSessionsSoFar = 0;
   m_iFirstFree = 0;
 
@@ -103,7 +103,7 @@ i8 ApiState::iAllocState(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
 
-  m_xLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   
   RASSERT(-1 != m_iFirstFree);
   
@@ -117,7 +117,7 @@ i8 ApiState::iAllocState(Session* pSession)
 
   m_nSessionsSoFar++;
   
-  m_xLock.vDropWrite();
+  m_oLock.vDropWrite();
 
   return i_Session;
 }
@@ -215,7 +215,7 @@ void ApiState::vFreeState(i8 i_Session)
     vTrace("**************************************************\n"_Stz);
   }
   
-  m_xLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   aState->m_pSession = nullptr;
   
   aState->m_eApiCall   = AC_NONE;
@@ -235,7 +235,7 @@ void ApiState::vFreeState(i8 i_Session)
 
   m_iFirstFree = i_Session;
   
-  m_xLock.vDropWrite();
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +287,7 @@ void ApiState::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  m_xLock.vGrabRead();
+  m_oLock.vGrabRead();
 
   vTrace("ApiState %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
 
@@ -343,7 +343,7 @@ void ApiState::vDump(void)
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
   vTrace("  DdlLock %llx\n"_Stz,gpAttachMap->m_xDdlLock.uLockWord());
 
-  m_xLock.vDropRead();
+  m_oLock.vDropRead();
 }
 
 

@@ -236,7 +236,7 @@ bool Semaphore::bMutexIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* try and lock a threads mutex (non-blocking)                                */
 /*----------------------------------------------------------------------------*/
-bool Semaphore::bMutexLock(void)
+bool Semaphore::boLockMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
@@ -264,7 +264,7 @@ bool Semaphore::bMutexLock(void)
 /*----------------------------------------------------------------------------*/
 /* lock a threads mutex (blocking)                                            */
 /*----------------------------------------------------------------------------*/
-void Semaphore::vMutexLock(void)
+void Semaphore::voLockMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
@@ -275,7 +275,7 @@ void Semaphore::vMutexLock(void)
   
   // this is a blocking call
   i8 rCode = pthread_mutex_lock(&m_xMutex);
-  //vTrace("MutexLock %p\n"_Stz,this);
+  //vTrace("oLockMutexLock %p\n"_Stz,this);
   
   if (0 == rCode) {
     RASSERT(! m_bLocked);

@@ -98,7 +98,7 @@ TablePtn::TablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_xLock.vInitLock(LK_PARTITION);
+  m_oLock.vInitLock(LK_PARTITION);
   m_iPartitionId = -1;
   
   m_nSubLoadersDone  = 0;
@@ -162,7 +162,7 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  ASSERT(m_xLock.bIsLocked());
+  ASSERT(m_oLock.bIsLocked());
   
   // compute the total number of subloaders in the grid
   i8 nSubLoadersInGrid = gpAttachMap->m_nSubLoaders;
@@ -255,8 +255,8 @@ void TablePtn::vDropRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  ASSERT(m_xLock.bIsLocked());
-  m_xLock.vDropRead();
+  ASSERT(m_oLock.bIsLocked());
+  m_oLock.vDropRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -266,8 +266,8 @@ void TablePtn::vDropWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  ASSERT(m_xLock.bIsLocked());
-  m_xLock.vDropWrite();
+  ASSERT(m_oLock.bIsLocked());
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -297,7 +297,7 @@ bool TablePtn::bGrabRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
 
-  return m_xLock.bGrabRead();
+  return m_oLock.bGrabRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,7 +307,7 @@ bool TablePtn::bGrabWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  return m_xLock.bGrabWrite();
+  return m_oLock.bGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -371,7 +371,7 @@ bool TablePtn::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  return m_xLock.bIsLocked();
+  return m_oLock.bIsLocked();
 }
 
 /*----------------------------------------------------------------------------*/

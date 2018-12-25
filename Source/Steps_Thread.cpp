@@ -21,7 +21,7 @@ void Step::vAddSteps_Thread(void)
   vAddStep("thread.dump"_Stz,            &Step::vThreadDump);
   vAddStep("threa::enableRealtime"_Stz,  &Step::vThreadEnableRealtime);
   vAddStep("thread.id"_Stz,              &Step::vThreadId);
-  vAddStep("thread.mutexLock"_Stz,       &Step::vThreadMutexLock);
+  vAddStep("thread.muteoLock"_Stz,       &Step::vThreadoLockMutexLock);
   vAddStep("thread.mutexUnlock"_Stz,     &Step::vThreadMutexUnlock);
   vAddStep("thread.sleep_s"_Stz,         &Step::vThreadSleep_s);
   vAddStep("thread.sleep_ms"_Stz,        &Step::vThreadSleep_ms);
@@ -222,20 +222,20 @@ ENTRY("vThreadId"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.mutexLock -- acquire a threads mutex lock                           */
+/* thread.muteoLock -- acquire a threads mutex lock                           */
 /*----------------------------------------------------------------------------*/
-void Step::vThreadMutexLock(MP_Task mpTask)
+void Step::vThreadoLockMutexLock(MP_Task mpTask)
 {
-ENTRY("vThreadMutexLock"_Stz);
+ENTRY("vThreadoLockMutexLock"_Stz);
   
   Object* pThreadObject;
   if ( ! mpTask->m_pDataStack->bPop(pThreadObject) )
-    THROW_INVALID_DSTACK("thread.mutexLock"_Stz);
+    THROW_INVALID_DSTACK("thread.muteoLock"_Stz);
   
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pSemaphore->vMutexLock();
+  pThread->m_pSemaphore->voLockMutexLock();
 
   EXIT();
 }

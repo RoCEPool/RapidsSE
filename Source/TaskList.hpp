@@ -13,7 +13,7 @@ namespace Tasks
   class TaskList : public Object
   {
   private:
-    Lock            m_xLock;
+    Lock            m_oLock;
     //SkipList*       m_pTaskSkipList;
     ListNL_t<Task>* m_pListTasks;
   

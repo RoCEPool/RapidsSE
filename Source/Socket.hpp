@@ -10,7 +10,7 @@ namespace System
   public:
     int   m_iSocketId;
     bool  m_bBlocking;
-    Lock  m_xLock;
+    Lock  m_oLock;
   
     void* m_aLowBuff; // low memory read area
 

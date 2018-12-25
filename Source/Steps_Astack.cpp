@@ -343,9 +343,9 @@ void Step::vAstackTransfer(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK(">auxStack"_Stz);
   
-  pThatTask->m_xLock.vGrabWrite();
+  pThatTask->m_oLock.vGrabWrite();
   pThatTask->m_pAuxStack->vPushValWrk(xValWrk);
-  pThatTask->m_xLock.vDropWrite();
+  pThatTask->m_oLock.vDropWrite();
   
   EXIT();
 }

@@ -9,7 +9,7 @@ namespace Threads
   {
   private:
     
-    Lock m_xLock;
+    Lock m_oLock;
     
     // must be last
     Footer m_xFooter;    

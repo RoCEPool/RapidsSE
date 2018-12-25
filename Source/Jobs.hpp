@@ -21,7 +21,7 @@ namespace JobsModel
   {
   private:
     eJL       m_eJobsList;     // which job list
-    Lock      m_xLock;         // lock
+    Lock      m_oLock;         // lock
     i8        m_iNextJobId;    // next job id
     SkipList* m_pJobsSkipList; // skip list of jobs
   

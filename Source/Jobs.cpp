@@ -50,7 +50,7 @@ Jobs::Jobs(cmpFun fCompare, eJL eJobsList)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
   m_eJobsList = eJobsList;
-  m_xLock.vInitLock(LK_JOBS);
+  m_oLock.vInitLock(LK_JOBS);
   m_iNextJobId = gpAttachMap->m_pGrid->iThisNode() << 48;
   m_pJobsSkipList = new SkipList(true, fCompare);
   
@@ -91,7 +91,7 @@ void Jobs::vDropLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
-  m_xLock.vDropWrite();
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,7 +101,7 @@ Job* Jobs::pFindJob(Job* pFindJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
-  ASSERT(m_xLock.bIsLocked());
+  ASSERT(m_oLock.bIsLocked());
   
   Job* pJob = reinterpret_cast<Job*>(m_pJobsSkipList->pFind((void*)pFindJob));
   
@@ -132,7 +132,7 @@ void Jobs::vGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
-  m_xLock.vGrabWrite();
+  m_oLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +142,7 @@ bool Jobs::bGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
-  return m_xLock.bGrabWrite();
+  return m_oLock.bGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,7 +152,7 @@ bool Jobs::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
-  return m_xLock.bIsLocked();
+  return m_oLock.bIsLocked();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,7 +180,7 @@ Job* Jobs::pPopJob(void)
   bool bRemoved;
   Job* pJob = nullptr;
   
-  ASSERT(m_xLock.bIsLocked());
+  ASSERT(m_oLock.bIsLocked());
   
   SkipNode* pNode = m_pJobsSkipList->pFirst(0);
   if (pNode) {
@@ -201,7 +201,7 @@ bool Jobs::bRemoveJob(Job* pJob)
   
   bool bRemoved;
   
-  ASSERT(m_xLock.bIsLocked());
+  ASSERT(m_oLock.bIsLocked());
   
   //vTrace("removing job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
   bRemoved = m_pJobsSkipList->bRemove(pJob);

@@ -14,7 +14,7 @@ namespace Tasks
   class TaskQueue : public Object
   {
   private:
-    Lock      m_xLock;
+    Lock      m_oLock;
     SkipList* m_pTaskSkipList;
     
     // must be last

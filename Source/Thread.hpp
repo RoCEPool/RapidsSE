@@ -72,7 +72,7 @@ namespace Threads
     void*        m_aStackBase;   // stack base address
     i8           m_iStackSize;   // stack size
   
-    Lock         m_xLock;        // thread lock
+    Lock         m_oLock;        // thread lock
     eTC          m_eThreadState; // thread state
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore
@@ -133,8 +133,8 @@ namespace Threads
     void  vCondTimedWait(i8 iNanoSeconds);
     void  vHandlerTimedWait(void);
     bool  bMutexIsLocked(void);
-    bool  bMutexLock(void);
-    void  vMutexLock(void);
+    bool  boLockMutexLock(void);
+    void  voLockMutexLock(void);
     void  vMutexUnlock(void);
     void  vSignalThread(void);
  

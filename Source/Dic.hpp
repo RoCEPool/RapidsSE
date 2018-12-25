@@ -15,7 +15,7 @@ namespace Dictionaries
     bool   m_bFrozen;      // no more words can be added?
     Atomic m_ziRefCount;    // reference count
 
-    Lock   m_xLock;        // lock over:
+    Lock   m_oLock;        // lock over:
     Word*  m_pLastWord;    //   last word in dictionary
     i8     m_nWords;       //   number of words in dictionary
     

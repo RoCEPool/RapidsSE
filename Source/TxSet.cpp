@@ -86,7 +86,7 @@ TxSet::TxSet(i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  m_xLock.vInitLock(LK_TX_SET);
+  m_oLock.vInitLock(LK_TX_SET);
   m_iNodeNo = iNodeNo;
   m_iNextTxId = iNodeNo << 48;
   m_pLocalTxList = new SkipList(true,bTxSetCompareLocal);
@@ -104,7 +104,7 @@ void TxSet::vAddLocalTx(Tx* pTx)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  m_xLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   
   i8 iTxId = m_iNextTxId++;
   
@@ -114,7 +114,7 @@ void TxSet::vAddLocalTx(Tx* pTx)
   m_pLocalTxList->bInsert(pTx);
   m_pDistTxList->bInsert(pTx);
   
-  m_xLock.vDropWrite();
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,7 +139,7 @@ void TxSet::vDumpAll(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  m_xLock.vGrabRead();
+  m_oLock.vGrabRead();
   
 //  SkipCursor xCursor;
 //  
@@ -156,7 +156,7 @@ void TxSet::vDumpAll(void)
     pTx->vContentDump();
   }
   
-  m_xLock.vDropRead();
+  m_oLock.vDropRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,11 +166,11 @@ Tx* TxSet::pFindTx(i8 iTxId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  m_xLock.vGrabRead();
+  m_oLock.vGrabRead();
   
   Tx* pTxFound = pFindTx_NL(iTxId);
   
-  m_xLock.vDropRead();
+  m_oLock.vDropRead();
   
   return pTxFound;
 }
@@ -182,7 +182,7 @@ Tx* TxSet::pFindTx_NL(i8 iTxId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  ASSERT(m_xLock.bIsLocked());
+  ASSERT(m_oLock.bIsLocked());
   
   Tx* pTxFind = new Tx(false);
   
@@ -214,13 +214,13 @@ void TxSet::vRemoveTx(Tx* pTx)
   
   bool bRemoved;
   
-  m_xLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   
   bRemoved = m_pLocalTxList->bRemove(pTx);
   
   bRemoved = m_pDistTxList->bRemove(pTx);
   
-  m_xLock.vDropWrite();
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,7 +232,7 @@ i8 TxSet::iOldestActiveId(void)
   
   i8 iOldestActiveId = -1;
   
-  m_xLock.vGrabRead();
+  m_oLock.vGrabRead();
   
   for (SkipNode* pNode = m_pLocalTxList->pFirst(0);
        pNode;
@@ -246,7 +246,7 @@ i8 TxSet::iOldestActiveId(void)
     }
   }
   
-  m_xLock.vDropRead();
+  m_oLock.vDropRead();
   
   return iOldestActiveId;
 }
@@ -258,7 +258,7 @@ void TxSet::vRemoveTx_NL(Tx* pTx)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  ASSERT(m_xLock.bIsLocked());
+  ASSERT(m_oLock.bIsLocked());
   
   bool bRemoved;
   
@@ -274,7 +274,7 @@ void TxSet::vGrabWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  m_xLock.vGrabWrite();
+  m_oLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -284,7 +284,7 @@ void TxSet::vDropWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXSET,_FOOTER_);
   
-  m_xLock.vDropWrite();
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

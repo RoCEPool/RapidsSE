@@ -45,12 +45,12 @@ void Debugging::vInfo(Stz* aFormat, ...)
 /*---------------------------------------------------------------------------*/
 void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
 {
-  static Lock xLock(LK_TRACE);
+  static Lock oLock(LK_TRACE);
   
   bool bLock = (gpAttachMap ? true : false);
   
   if (bLock)
-    xLock.vGrabWrite();
+    oLock.vGrabWrite();
   
   i8 iLen = 0;
   char* s = gxTraceWorkspace;
@@ -78,7 +78,7 @@ void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
   }
 
   if (bLock)
-    xLock.vDropWrite();
+    oLock.vDropWrite();
 }
 
 /*---------------------------------------------------------------------------*/

@@ -30,8 +30,8 @@ namespace System
     void vCondWait_Mutex(void);
     void vCondTimedWait(i8 iMicroSeconds);
     bool bMutexIsLocked(void);
-    bool bMutexLock(void);
-    void vMutexLock(void);
+    bool boLockMutexLock(void);
+    void voLockMutexLock(void);
     void vMutexUnlock(void);
   
     void vSignalThread(void);

@@ -141,7 +141,7 @@ bool Lock::bGrabRead(void)
   ASSERT(m_eLockKind);
   
   ++m_ziReadGrabs;
-  ++gpAttachMap->m_xLockTracker.m_ziReadGrabs[m_eLockKind];
+  ++gpAttachMap->m_oLockTracker.m_ziReadGrabs[m_eLockKind];
   
   i8 rCode = Synch::iLockGrabRead(&m_uLockWord);
   if (rCode) {
@@ -150,7 +150,7 @@ bool Lock::bGrabRead(void)
   }
   
   ++m_ziReadCollisions;
-  ++gpAttachMap->m_xLockTracker.m_ziReadCollisions[m_eLockKind];
+  ++gpAttachMap->m_oLockTracker.m_ziReadCollisions[m_eLockKind];
   
   return false;
 }
@@ -165,7 +165,7 @@ void Lock::vGrabRead(void)
   ASSERT(m_eLockKind);
   
   ++m_ziReadGrabs;
-  ++gpAttachMap->m_xLockTracker.m_ziReadGrabs[m_eLockKind];
+  ++gpAttachMap->m_oLockTracker.m_ziReadGrabs[m_eLockKind];
   
   i8 rCode = Synch::iLockGrabRead(&m_uLockWord);
   if (rCode) {
@@ -174,7 +174,7 @@ void Lock::vGrabRead(void)
   }
   
   ++m_ziReadCollisions;
-  ++gpAttachMap->m_xLockTracker.m_ziReadCollisions[m_eLockKind];
+  ++gpAttachMap->m_oLockTracker.m_ziReadCollisions[m_eLockKind];
   
   Timer oTimer;
   oTimer.vStart();
@@ -259,7 +259,7 @@ bool Lock::bGrabWrite(void)
   ASSERT(m_eLockKind);
 
   ++m_ziWriteGrabs;
-  ++gpAttachMap->m_xLockTracker.m_ziWriteGrabs[m_eLockKind];
+  ++gpAttachMap->m_oLockTracker.m_ziWriteGrabs[m_eLockKind];
 
   i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
   if (rCode) {
@@ -268,7 +268,7 @@ bool Lock::bGrabWrite(void)
   }
   
   ++m_ziWriteCollisions;
-  ++gpAttachMap->m_xLockTracker.m_ziWriteCollisions[m_eLockKind];
+  ++gpAttachMap->m_oLockTracker.m_ziWriteCollisions[m_eLockKind];
   
   return false;
 }
@@ -287,7 +287,7 @@ void Lock::vGrabWrite(void)
 //         m_aName ? m_aName : "<noName>"_Stz);
 
   ++m_ziWriteGrabs;
-  ++gpAttachMap->m_xLockTracker.m_ziWriteGrabs[m_eLockKind];
+  ++gpAttachMap->m_oLockTracker.m_ziWriteGrabs[m_eLockKind];
   
   i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
   if (rCode) {
@@ -296,7 +296,7 @@ void Lock::vGrabWrite(void)
   }
   
   ++m_ziWriteCollisions;
-  ++gpAttachMap->m_xLockTracker.m_ziWriteCollisions[m_eLockKind];
+  ++gpAttachMap->m_oLockTracker.m_ziWriteCollisions[m_eLockKind];
   
   Timer oTimer;
   oTimer.vStart();
