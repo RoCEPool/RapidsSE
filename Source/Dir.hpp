@@ -42,7 +42,6 @@ namespace System
     bool bIsOpen(void);
     bool bOpen(Stz* aDirPath);
     StrVal&   sPath(void);
-    void vPath(s256& sPath);
     bool bRead(void);
     void vRewind(void);
     void vSeek(i8 iPosition);
