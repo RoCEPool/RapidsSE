@@ -69,8 +69,6 @@ Dir::Dir(void)
 Dir::~Dir(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
-  
-  vInit();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,19 +122,6 @@ bool Dir::bGetCurrent(s256& rPath)
   
   m_oSysCall.vSuccess();
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* init                                                                       */
-/*----------------------------------------------------------------------------*/
-void Dir::vInit(void)
-{
-  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
-  
-  m_oSysCall.vSetMagic();
-  
-  m_sDirPath = ""_Stz;
-  m_oSysCall.vClear();
 }
 
 /*----------------------------------------------------------------------------*/

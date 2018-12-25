@@ -29,7 +29,6 @@ namespace System
     bool bChangeCurrent(s256& rPath);
     bool bExists(s256& rPath);
     bool bGetCurrent(s256& rPath);
-    void vInit(void);
     bool bMake(s256& rPath);
     bool bRemove(s256& rPath);
     
