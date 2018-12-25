@@ -176,13 +176,13 @@ void Lock::vGrabRead(void)
   ++m_ziReadCollisions;
   ++gpAttachMap->m_xLockTracker.m_ziReadCollisions[m_eLockKind];
   
-  Timer xTimer;
-  xTimer.vStart();
+  Timer oTimer;
+  oTimer.vStart();
   bool bReported = false;
   
   do {
-    xTimer.vUpdate();
-    if (xTimer.iMilliseconds() > 100 && ! bReported) {
+    oTimer.vUpdate();
+    if (oTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
       vWarn("Lock::vGrabRead -- Unable to grab read lock %p %s %p\n"_Stz,
              this,
@@ -298,13 +298,13 @@ void Lock::vGrabWrite(void)
   ++m_ziWriteCollisions;
   ++gpAttachMap->m_xLockTracker.m_ziWriteCollisions[m_eLockKind];
   
-  Timer xTimer;
-  xTimer.vStart();
+  Timer oTimer;
+  oTimer.vStart();
   bool bReported = false;
   
   do {
-    xTimer.vUpdate();
-    if (xTimer.iMilliseconds() > 100 && ! bReported) {
+    oTimer.vUpdate();
+    if (oTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
       ActivityMap::vMark(0,"Lock::vGrabWrite -- Unable to grab write lock %p %s %p\n"_Stz,
                          this,

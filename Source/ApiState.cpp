@@ -70,7 +70,7 @@ ApiState::ApiState(void)
     aState->m_bRunning   = false;
     aState->m_bSignalled = false;
     aState->m_iPosition  = 0;
-    aState->m_xTimer.vInit();
+    aState->m_oTimer.vInit();
     aState->m_iTotalMicroSecs = 0;
 
     aState->m_iNextFree = i_Session + 1;
@@ -141,7 +141,7 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   aState->m_bSignalled = false;
   aState->m_iPosition  = 0;
   
-  aState->m_xTimer.vStart();
+  aState->m_oTimer.vStart();
   
   pSession->m_nApiCalls++;
 }
@@ -157,9 +157,9 @@ void ApiState::vApiError(Session* pSession, eEC eError)
   aState->m_bRunning = false;
   aState->m_eError   = eError;
   
-  aState->m_xTimer.vUpdate();
+  aState->m_oTimer.vUpdate();
   
-  aState->m_iTotalMicroSecs += aState->m_xTimer.iMicroseconds();
+  aState->m_iTotalMicroSecs += aState->m_oTimer.iMicroseconds();
 
   pSession->m_nApiErrors++;
 }
@@ -189,14 +189,14 @@ void ApiState::vApiReturn(Session* pSession)
   SessionState* aState = &m_xSessionState[i_Session];
 
   aState->m_bRunning = false;
-  aState->m_xTimer.vUpdate();
-  aState->m_iTotalMicroSecs += aState->m_xTimer.iMicroseconds();
+  aState->m_oTimer.vUpdate();
+  aState->m_iTotalMicroSecs += aState->m_oTimer.iMicroseconds();
 
 //  if (xState[i_Session].m_eApiCall == AC_FetchNextBuffer)
 //    vTrace("Timer start: %lld; Timer update: %lld Time: %lldus\n"_Stz,
-//           aState->m_xTimer.iStart(),
-//           aState->m_xTimer.iUpdate(),
-//           aState->m_xTimer.iMicroseconds());
+//           aState->m_oTimer.iStart(),
+//           aState->m_oTimer.iUpdate(),
+//           aState->m_oTimer.iMicroseconds());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,7 +228,7 @@ void ApiState::vFreeState(i8 i_Session)
   aState->m_bSignalled = false;
   aState->m_iPosition  = 0;
 
-  aState->m_xTimer.vReset();
+  aState->m_oTimer.vReset();
   aState->m_iTotalMicroSecs = 0;
 
   aState->m_iNextFree = m_iFirstFree;
@@ -300,7 +300,7 @@ void ApiState::vDump(void)
       Session* pSession = aState->m_pSession;
       
       if (aState->m_bRunning)
-        aState->m_xTimer.vUpdate();
+        aState->m_oTimer.vUpdate();
       
       i8 nBytes;
       
@@ -326,7 +326,7 @@ void ApiState::vDump(void)
              aState->m_bRunning ? "running" : "completed",
              aState->m_bSignalled ? "signalled" : "not signalled",
              aState->m_iPosition,
-             aState->m_xTimer.iMicroseconds(),
+             aState->m_oTimer.iMicroseconds(),
              aState->m_iTotalMicroSecs,
              pSession->m_nApiCalls,
              pSession->m_nApiErrors,

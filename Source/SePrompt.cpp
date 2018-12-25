@@ -58,7 +58,7 @@ SePrompt::SePrompt(void)
 
   m_pJob = nullptr;
 
-  // m_xTimer
+  // m_oTimer
   
   m_bTimed   = false;
   m_bTraced  = false;
@@ -209,7 +209,7 @@ void SePrompt::vCheckTimed(void)
   m_bTimed = true;
   vCutToken(0);
 
-  m_xTimer.vStart();
+  m_oTimer.vStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -518,9 +518,9 @@ void SePrompt::vReportTime(void)
   if (! m_bTimed)
     return;
   
-  m_xTimer.vUpdate();
+  m_oTimer.vUpdate();
   
-  vTrace("time %lldms\n"_Stz,m_xTimer.iMilliseconds());
+  vTrace("time %lldms\n"_Stz,m_oTimer.iMilliseconds());
   
   m_bTimed = false;
 }

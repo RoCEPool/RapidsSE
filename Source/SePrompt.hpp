@@ -22,7 +22,7 @@ namespace Prompt
   private:
     bool     m_bContinue;  // continue processing commands?
     Session* m_pSession;   // rapidsse session
-    Timer    m_xTimer;     // the timer
+    Timer    m_oTimer;     // the timer
     bool     m_bTimed;     // command is being timed
     bool     m_bTraced;    // command is being traced
     bool     m_bNoWait;    // dont wait for command

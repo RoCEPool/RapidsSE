@@ -33,25 +33,25 @@ void Prefetch::vTest(void)
   
   vTrace("Prefetch Utility\n"_Stz);
   
-  Timer xTimer;
+  Timer oTimer;
   
   vTrace("Allocating %lld chunk\n"_Stz,iSize);
   i8* aWord = (i8*)MemLib::aMallocBlock(iSize);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fill all words
-  xTimer.vStart();
+  oTimer.vStart();
   vFill(aWord,nWords);
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   
   vTrace("Time to fill: total %lldns; perWord %lldns\n"_Stz,
-         xTimer.iNanoseconds(),
-         xTimer.iNanoseconds() / nWords
+         oTimer.iNanoseconds(),
+         oTimer.iNanoseconds() / nWords
          );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sum randomly
-  xTimer.vStart();
+  oTimer.vStart();
 
   iSum = 0;
   
@@ -60,27 +60,27 @@ void Prefetch::vTest(void)
     iSum += aWord[i_Word];
   }
 
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   vTrace("Time to randomly sum: total %lldns; perWord %lldns (sum %lld)\n"_Stz,
-         xTimer.iNanoseconds(),
-         xTimer.iNanoseconds() / nWords,
+         oTimer.iNanoseconds(),
+         oTimer.iNanoseconds() / nWords,
          iSum
          );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fill all words
-  xTimer.vStart();
+  oTimer.vStart();
   vFill(aWord,nWords);
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   
   vTrace("Time to fill: total %lldns; perWord %lldns\n"_Stz,
-         xTimer.iNanoseconds(),
-         xTimer.iNanoseconds() / nWords
+         oTimer.iNanoseconds(),
+         oTimer.iNanoseconds() / nWords
          );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sum randomly with prefetch
-  xTimer.vStart();
+  oTimer.vStart();
   
   iSum = 0;
   i8 i_Word = Random::iRandom(nWords);
@@ -92,27 +92,27 @@ void Prefetch::vTest(void)
     i_Word = i_Word2;
   }
   
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   vTrace("Time to randomly sum with prefetch: total %lldns; perWord %lldns (sum %lld)\n"_Stz,
-         xTimer.iNanoseconds(),
-         xTimer.iNanoseconds() / nWords,
+         oTimer.iNanoseconds(),
+         oTimer.iNanoseconds() / nWords,
          iSum
          );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fill all words
-  xTimer.vStart();
+  oTimer.vStart();
   vFill(aWord,nWords);
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   
   vTrace("Time to fill: total %lldns; perWord %lldns\n"_Stz,
-         xTimer.iNanoseconds(),
-         xTimer.iNanoseconds() / nWords
+         oTimer.iNanoseconds(),
+         oTimer.iNanoseconds() / nWords
          );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sum linearily
-  xTimer.vStart();
+  oTimer.vStart();
   
   iSum = 0;
   for (i8 i_WordNo = 0; i_WordNo < nWords; i_WordNo++) {
@@ -121,27 +121,27 @@ void Prefetch::vTest(void)
     iSum += aWord[i_Word];
   }
   
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   vTrace("Time to linearily sum(a): total %lldns; perWord %lldns (sum %lld)\n"_Stz,
-         xTimer.iNanoseconds(),
-         xTimer.iNanoseconds() / nWords,
+         oTimer.iNanoseconds(),
+         oTimer.iNanoseconds() / nWords,
          iSum
          );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // fill all words
-  xTimer.vStart();
+  oTimer.vStart();
   vFill(aWord,nWords);
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   
   vTrace("Time to fill: total %lldns; perWord %lldns\n"_Stz,
-         xTimer.iNanoseconds(),
-         xTimer.iNanoseconds() / nWords
+         oTimer.iNanoseconds(),
+         oTimer.iNanoseconds() / nWords
          );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sum linearily
-  xTimer.vStart();
+  oTimer.vStart();
   
   iSum = 0;
   for (i8 i_WordNo = 0; i_WordNo < nWords; i_WordNo++) {
@@ -149,10 +149,10 @@ void Prefetch::vTest(void)
     iSum += aWord[i_Word];
   }
   
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   vTrace("Time to linearily sum(b): total %lldns; perWord %lldns (sum %lld)\n"_Stz,
-         xTimer.iNanoseconds(),
-         xTimer.iNanoseconds() / nWords,
+         oTimer.iNanoseconds(),
+         oTimer.iNanoseconds() / nWords,
          iSum
          );
   

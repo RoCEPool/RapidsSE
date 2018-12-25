@@ -738,8 +738,8 @@ void BPA::vWriteHeap(Heap* pHeap, File* pFile)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
-  Timer xTimer;
-  xTimer.vStart();
+  Timer oTimer;
+  oTimer.vStart();
   
   pHeap->vGrabLock();
   
@@ -756,8 +756,8 @@ void BPA::vWriteHeap(Heap* pHeap, File* pFile)
   
   pHeap->vDropLock();
   
-  xTimer.vUpdate();
-  vTrace("duration %lldms\n"_Stz,xTimer.iMilliseconds());
+  oTimer.vUpdate();
+  vTrace("duration %lldms\n"_Stz,oTimer.iMilliseconds());
 }
 
 /*----------------------------------------------------------------------------*/

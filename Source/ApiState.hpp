@@ -20,7 +20,7 @@ namespace StorageEngine
     bool     m_bRunning;   // call still running
     bool     m_bSignalled; // calling thread has been signalled?
     i8       m_iPosition;  // last reported position in SEN
-    Timer    m_xTimer;     // call timer
+    Timer    m_oTimer;     // call timer
     i8       m_iTotalMicroSecs; // total time in us
     
     i8       m_iNextFree;

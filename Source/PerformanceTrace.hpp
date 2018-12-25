@@ -9,7 +9,7 @@ namespace Measurement
   {
     private:
   
-    Timer  m_xTimer; // timer to compute time delta's
+    Timer  m_oTimer; // timer to compute time delta's
   
     PerformanceBuffer* m_pFirstBuffer;  // first buffer of performance entries in trace sequence
     PerformanceBuffer* m_pCurrentBuffer;// last buffer of performance entries in trace sequence

@@ -13,20 +13,20 @@ void vTest1(void)
   File oFile;
   i8 iChunk = C_32KB;
   char buffer[iChunk];
-  Timer xTimer;
+  Timer oTimer;
   
   vTrace("Reading lineitem.tbl in chunks of %lld\n"_Stz, iChunk);
   bool b = oFile.bOpen("/Volumes/Data/Users/alkayamarti/tpch_SF10/lineitem.tbl"_Stz,C_OPEN_READ);
   ASSERT(b);
   
-  xTimer.vStart();
+  oTimer.vStart();
   i8 iBytesRead = oFile.iReadBytes(buffer,iChunk);
   
   while (iBytesRead) {
     iBytesRead = oFile.iReadBytes(buffer,iChunk);
   }
-  xTimer.vUpdate();
-  vTrace("duration %lldms\n"_Stz,xTimer.iMilliseconds());
+  oTimer.vUpdate();
+  vTrace("duration %lldms\n"_Stz,oTimer.iMilliseconds());
   
   oFile.vClose();
 }
@@ -42,12 +42,12 @@ void vTest1(void)
 //  vInfo("TestAndSet %s u = %lld\n"_Stz,b ? "true"_Stz : "false"_Stz,u);
 
 
-//  Timer xTimer;
-//  xTimer.vStart();
+//  Timer oTimer;
+//  oTimer.vStart();
 //  PosixThread::vSleepMicro(500);
-//  xTimer.vUpdate();
+//  oTimer.vUpdate();
 //
-//  vInfo("Timert %lld\n"_Stz,xTimer.iMicroseconds());
+//  vInfo("Timert %lld\n"_Stz,oTimer.iMicroseconds());
 
 /*----------------------------------------------------------------------------*/
 /* test2                                                                      */
@@ -192,16 +192,16 @@ void vTest5(void)
   for (i8 i_Int = 0; i_Int < nINTS; i_Int++)
     aArray[i_Int] = i_Int;
   
-  Timer xTimer;
-  xTimer.vStart();
+  Timer oTimer;
+  oTimer.vStart();
   
   i8 iSum = 0;
   for (i8 i_Times = 0; i_Times < 1000; i_Times++)
     for (i8 i_Int = 0; i_Int < nINTS; i_Int++)
       iSum += aArray[i_Int];
 
-  xTimer.vUpdate();
-  vTrace("duration %lldms %lld\n"_Stz,xTimer.iMilliseconds(),iSum);
+  oTimer.vUpdate();
+  vTrace("duration %lldms %lld\n"_Stz,oTimer.iMilliseconds(),iSum);
 }
 
 /*----------------------------------------------------------------------------*/

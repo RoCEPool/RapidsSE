@@ -1156,8 +1156,8 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  Timer xTimer;
-  xTimer.vStart();
+  Timer oTimer;
+  oTimer.vStart();
   
   ASSERT(pFirstL0Buffer == nullptr || 0 == pFirstL0Buffer->iBufferLevel());
   ASSERT(sizeof(i8) == sizeof(Id));
@@ -1212,10 +1212,10 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   }
 #endif
   
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   
   s32 sTimeMagnitude;
-  Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
+  Magnitudes::vTimeMag(oTimer.iNanoseconds(),sTimeMagnitude);
   
   if (gxArguments.m_bVerbose)
     vTrace("vPopulateSortArray for index %s took %s\n"_Stz,
@@ -1537,8 +1537,8 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  Timer xTimer;
-  xTimer.vStart();
+  Timer oTimer;
+  oTimer.vStart();
 
   Index* pIndex = pNewIndexTree->pIndex();
   eIF eIndexForm = pIndex->eIndexForm();
@@ -1557,10 +1557,10 @@ void Table::vSortTheArray(char* aSortArray, i8 nElements, i8 nElmSize,
 #else
     qsort_r(aSortArray,nElements,nElmSize,iQsort_complex,(void*)pNewIndexTree);
 #endif
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   
   s32 sTimeMagnitude;
-  Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
+  Magnitudes::vTimeMag(oTimer.iNanoseconds(),sTimeMagnitude);
   
   if (gxArguments.m_bVerbose) {
     Index* pIndex = pNewIndexTree->pIndex();
@@ -1673,8 +1673,8 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  Timer xTimer;
-  xTimer.vStart();
+  Timer oTimer;
+  oTimer.vStart();
   
   if (gxArguments.m_bVerbose)
     vTrace("-- Build New Index --------------\n"_Stz);
@@ -1734,10 +1734,10 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
   if (gxArguments.m_bVerbose)
     vTrace("---------------------------------\n"_Stz);
   
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   
   s32 sTimeMagnitude;
-  Magnitudes::vTimeMag(xTimer.iNanoseconds(),sTimeMagnitude);
+  Magnitudes::vTimeMag(oTimer.iNanoseconds(),sTimeMagnitude);
   
   if (gxArguments.m_bVerbose) {
     Index* pIndex = pNewIndexTree->pIndex();

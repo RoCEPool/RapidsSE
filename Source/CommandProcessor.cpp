@@ -343,9 +343,9 @@ bool CommandProcessor::bSpawnJob(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  Timer xTimer;
+  Timer oTimer;
   
-  xTimer.vStart();
+  oTimer.vStart();
   
   pTknVec()->vSetTokens();
   
@@ -357,7 +357,7 @@ bool CommandProcessor::bSpawnJob(Session* pSession)
   if (pTknVec()->bDetachedRequest())
     return bResult;
   
-  xTimer.vUpdate();
+  oTimer.vUpdate();
   
   return bResult;
 }
