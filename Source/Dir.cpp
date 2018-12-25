@@ -80,9 +80,9 @@ Dir::~Dir(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Dir::bChangeCurrent(Stz* aDirPath)
 {
-  i8 iCode = chdir(aDirPath->aChar());
+  i8 iResult = chdir(aDirPath->aChar());
   
-  if (iCode) {
+  if (iResult) {
     vWarn("chdir() error; errno=%d\n"_Stz,errno);
     return false;
   }
@@ -112,12 +112,12 @@ bool Dir::bExists(Stz* aDirPath)
 {
   struct stat xStat;
   
-  int iCode = stat(aDirPath->aChar(),&xStat);
+  int iResult = stat(aDirPath->aChar(),&xStat);
   
-  if (0 == iCode && (xStat.st_mode & S_IFDIR))
+  if (0 == iResult && (xStat.st_mode & S_IFDIR))
     return true;
   
-  if (iCode && ENOENT == errno)
+  if (iResult && ENOENT == errno)
     return false;
     
   vError("Dir::bExists: stat(%s) error; errno=%d"_Stz,aDirPath->aChar(),errno);
@@ -147,9 +147,9 @@ bool Dir::bRemove(Stz* aDirPath)
 {
   char* aPath = aDirPath->aChar();
   
-  int rCode = rmdir(aPath);
+  int iResult = rmdir(aPath);
   
-  if (-1 == rCode) {
+  if (-1 == iResult) {
     vWarn("Dir::bRemove: rmdir() error; errno=%d"_Stz,errno);
     return false;
   }
@@ -157,10 +157,10 @@ bool Dir::bRemove(Stz* aDirPath)
   return true;
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
 
 /*----------------------------------------------------------------------------*/
 /* close an open directory                                                    */
@@ -186,7 +186,7 @@ void Dir::vClose(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get entry name                                                             */
+/* get dir entry name                                                         */
 /*----------------------------------------------------------------------------*/
 StrVal& Dir::sEntryName(void)
 {
@@ -196,7 +196,7 @@ StrVal& Dir::sEntryName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get entry type                                                             */
+/* get dir entry type                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Dir::iEntryType(void)
 {
@@ -327,7 +327,7 @@ void Dir::vSeek(i8 iPosition)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tell direcrtory position                                                  */
+/* tell directory position                                                    */
 /*----------------------------------------------------------------------------*/
 i8 Dir::iTell(void)
 {
