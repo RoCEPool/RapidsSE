@@ -53,7 +53,6 @@ namespace System
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, File* pFile);
     void operator delete(void* pFileAddress);
   
     File(void);
