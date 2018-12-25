@@ -51,49 +51,12 @@ Pipe::~Pipe(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create pipe                                                                */
 /*----------------------------------------------------------------------------*/
-bool Pipe::bCreate(void)
-{
-  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
-  
-  m_oSysCall.vClear();
-  
-  i8 iResult = mkfifo(m_sPipePath.aChar(),0777);
-  
-  if (iResult) {
-    m_oSysCall.vError(errno);
-    vWarn("Pipe::bCreate: mkfifo() error; errno=%d"_Stz,errno);
-    return false;
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create pipe                                                                */
-/*----------------------------------------------------------------------------*/
 bool Pipe::bCreate(Stz* sPipePath)
 {
-  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
-  
-  m_sPipePath = sPipePath;
-  
-  return bCreate();
-}
-
-/*----------------------------------------------------------------------------*/
-/* remove pipe                                                                */
-/*----------------------------------------------------------------------------*/
-bool Pipe::bRemove(void)
-{
-  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
-  
-  m_oSysCall.vClear();
-  
-  i8 iResult = remove(m_sPipePath.aChar());
+  i8 iResult = mkfifo(sPipePath->aChar(),0777);
   
   if (iResult) {
-    m_oSysCall.vError(errno);
-    vWarn("Pipe::bRemove: remove() error; errno=%d\n"_Stz,errno);
+    vWarn("Pipe::bCreate: mkfifo() error; errno=%d"_Stz,errno);
     return false;
   }
   
@@ -105,11 +68,14 @@ bool Pipe::bRemove(void)
 /*----------------------------------------------------------------------------*/
 bool Pipe::bRemove(Stz* sPipePath)
 {
-  _precondition_(_MAGIC_,CN_PIPE,_FOOTER_);
+  i8 iResult = remove(sPipePath->aChar());
   
-  m_sPipePath = sPipePath;
+  if (iResult) {
+    vWarn("Pipe::bRemove: remove() error; errno=%d\n"_Stz,errno);
+    return false;
+  }
   
-  return bRemove();
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

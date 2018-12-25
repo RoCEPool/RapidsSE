@@ -21,18 +21,16 @@ PromptNote mPromptNote_rmpipe (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_rmpipe(SePrompt* pPrompt)
 {
-  s256 sPipe;
-  
-  Pipe xPipe;
+  s256 sPipePath;
   
   TokenVec* pTokenVec = pPrompt->pTknVec();
 
   ASSERT((*pTokenVec)[0]->bSame("rmpipe"_Stz));
   
-  sPipe = (*pTokenVec)[1]->aText();
+  sPipePath = (*pTokenVec)[1]->aText();
   
-  if (! xPipe.bRemove(sPipe)) {
-    vTrace("Failed to remove pipe: %s\n"_Stz,sPipe.aChar());
+  if (! Pipe::bRemove(sPipePath)) {
+    vTrace("Failed to remove pipe: %s\n"_Stz,sPipePath.aChar());
     return false;
   }
   

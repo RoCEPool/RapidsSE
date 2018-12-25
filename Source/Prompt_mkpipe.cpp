@@ -21,18 +21,16 @@ PromptNote mPromptNote_mkpipe (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_mkpipe(SePrompt* pPrompt)
 {
-  s256 sPipe;
-  
-  Pipe xPipe;
+  s256 sPipePath;
   
   TokenVec* pTokenVec = pPrompt->pTknVec();
 
   ASSERT((*pTokenVec)[0]->bSame("mkpipe"_Stz));
   
-  sPipe = (*pTokenVec)[1]->aText();
+  sPipePath = (*pTokenVec)[1]->aText();
   
-  if (! xPipe.bCreate(sPipe)) {
-    vTrace("Filed to created pipe: %s\n"_Stz,sPipe.aChar());
+  if (! Pipe::bCreate(sPipePath)) {
+    vTrace("Filed to created pipe: %s\n"_Stz,sPipePath.aChar());
     return false;
   }
   
