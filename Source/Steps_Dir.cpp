@@ -58,14 +58,12 @@ void Step::vDirExists(MP_Task mpTask)
 {
 ENTRY("vDirExists"_Stz);
   
-  s256 sPath;
-  
-  if ( ! mpTask->m_pDataStack->bPop(sPath) )
+  s256 sDirPath;
+  if ( ! mpTask->m_pDataStack->bPop(sDirPath) )
     THROW_INVALID_DSTACK("dir.exists"_Stz);
   
-  Dir xDir;
+  i8 iResult = Dir::bExists(sDirPath);
   
-  i8 iResult = xDir.bExists(sPath);
   mpTask->m_pDataStack->vPushInt(iResult);
   
   EXIT();

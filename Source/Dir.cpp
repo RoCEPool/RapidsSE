@@ -72,6 +72,30 @@ Dir::~Dir(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* test if directory path exists                                              */
+/*----------------------------------------------------------------------------*/
+bool Dir::bExists(Stz* aDirPath)
+{
+  struct stat xStat;
+  
+  int iCode = stat(aDirPath->aChar(),&xStat);
+  
+  if (0 == iCode && (xStat.st_mode & S_IFDIR))
+    return true;
+  
+  if (iCode && ENOENT == errno)
+    return false;
+    
+  vError("Dir::bExists: stat(%s) error; errno=%d"_Stz,aDirPath->aChar(),errno);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -93,36 +117,6 @@ bool Dir::bChangeCurrent(Stz* aDirPath)
   
   m_oSysCall.vSuccess();
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if directory path exists                                              */
-/*----------------------------------------------------------------------------*/
-bool Dir::bExists(Stz* aDirPath)
-{
-  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
-  
-  m_oSysCall.vClear();
-  
-  struct stat xStat;
-
-  int iCode = stat(aDirPath->aChar(),&xStat);
-
-  if (0 == iCode && (xStat.st_mode & S_IFDIR)) {
-    m_oSysCall.vSuccess();
-    return true;
-  }
-
-  if (iCode && ENOENT == errno) {
-    m_oSysCall.vSuccess();
-    return false;
-  }
-
-  m_oSysCall.vError(errno);
-  
-  vError("Dir::bExists: stat(%s) error; errno=%d"_Stz,aDirPath->aChar(),errno);
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -26,8 +26,9 @@ namespace System
     Dir(void);
    ~Dir(void) noexcept(false);
 
+    static bool bExists(Stz* aDirPath);
+  
     bool bChangeCurrent(Stz* aDirPath);
-    bool bExists(Stz* aDirPath);
     bool bGetCurrent(Stz* aDirPath);
     bool bMake(Stz* aDirPath);
     bool bRemove(Stz* aDirPath);
