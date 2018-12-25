@@ -12,10 +12,10 @@ namespace JobsModel
                        public JobFileName
   {
   public:
-    s256  m_sPipeName; // pipe name
+  s256  m_sPipePath;   // pipe path
   
     File  m_oFile;     // the file
-    File  m_xPipe;     // the pipe
+    File  m_oPipe;     // the pipe
 
     WspFxd<C_REPEATER_WSP> m_xWsp; // workspace
   
