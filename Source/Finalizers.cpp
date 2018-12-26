@@ -83,7 +83,6 @@ pFINALIZE *gpFinalize[]
   /* 51 */ &Index::vFinalize,             // CN_INDEX
   /* 52 */ &Finalize::vUndefined,         // CN_INDEXTREE
   /* 53 */ &Finalize::vUndefined,         // CN_INDEXTREEVEC
-  /*    */ &Finalize::vUndefined,         // CN_INGESTCHUNK
   /* 54 */ &Finalize::vUndefined,         // CN_IDXCOLVEC
   /* 55 */ &Finalize::vUndefined,         // CN_IDXVEC
   /* 56 */ &Finalize::vUndefined,         // CN_INDEXLEVELS
@@ -218,6 +217,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_QUEUES
   
   /* 97 */ &Finalize::vUndefined,         // CN_RBCURSOR
+  /*    */ &Finalize::vUndefined,         // CN_RECORDINGESTOR
   /*    */ &Finalize::vUndefined,         // CN_REGFRAME
   /*    */ &Finalize::vUndefined,         // CN_RESOURCETRACKER
   /*101 */ &Finalize::vUndefined,         // CN_RING

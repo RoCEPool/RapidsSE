@@ -109,7 +109,7 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   
   m_pTable = nullptr;
   
-  m_pIngestChunk  = new IngestChunk(&gpAttachMap->m_xFormatters);
+  m_pRecordIngestor  = new RecordIngestor(&gpAttachMap->m_xFormatters);
   m_aRecord      = nullptr;
   m_nBytes = 0;
   
@@ -125,7 +125,7 @@ Job_Ingest::~Job_Ingest(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  delete m_pIngestChunk;
+  delete m_pRecordIngestor;
 }
 
 
@@ -254,21 +254,21 @@ void Job_Ingest::vIngest(void)
  vTrace("Ingesting data into %s from %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
   
-  m_pIngestChunk->vOpenRead(m_sFileName);
-//  bool bOpened = m_pIngestChunk->bOpenFile(m_sFileName);
+  m_pRecordIngestor->vOpenRead(m_sFileName);
+//  bool bOpened = m_pRecordIngestor->bOpenFile(m_sFileName);
 //  if (! bOpened) {
 //    vTrace("Unable to open pipe: %s\n"_Stz,m_sFileName.aStr());
 //    return;
 //  }
   
-  while (m_pIngestChunk->bGetRecord(&m_aRecord,m_nBytes)) {
+  while (m_pRecordIngestor->bGetRecord(&m_aRecord,m_nBytes)) {
     
     if (! bProcessRecord(m_pSession, m_iJobId, m_pTable,
                          &gpAttachMap->m_xFormatters,  m_aRecord, m_nBytes))
       break;
   }
 
-  m_pIngestChunk->vCloseFile();
+  m_pRecordIngestor->vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/

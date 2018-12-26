@@ -86,7 +86,6 @@ pDUMPFUN *gpDump[]
   /* 51 */ &Dump::vDummy,           // CN_INDEX
   /* 52 */ &Dump::vDummy,           // CN_INDEXTREE
   /* 53 */ &Dump::vDummy,           // CN_INDEXTREEVEC
-  /*    */ &Dump::vDummy,           // CN_INGESTCHUNK
   /* 54 */ &Dump::vDummy,           // CN_IDXCOLVEC
   /* 55 */ &Dump::vDummy,           // CN_IDXVEC
   /* 56 */ &Dump::vDummy,           // CN_INDEXLEVELS
@@ -223,6 +222,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_QUEUES
 
   /* 97 */ &Dump::vUndefined,       // CN_RBCURSOR
+  /*    */ &Dump::vDummy,           // CN_RECORDINGESTOR
   /*    */ &RegFrame::vDump,        // CN_REGFRAME
   /*    */ &RegFrame::vDump,        // CN_RESOURCETRACKER
   /*101 */ &Dump::vUndefined,       // CN_RING
@@ -361,7 +361,6 @@ i8 giClassSize[]
   /* 51 */ sizeof(Index),              // CN_INDEX
   /* 52 */ sizeof(IndexTree),          // CN_INDEXTREE
   /* 53 */ sizeof(IndexTreeVec),       // CN_INDEXTREEVEC
-  /*    */ sizeof(IngestChunk),        // CN_INGESTCHUNK
   /* 54 */ sizeof(IdxColVec),          // CN_IDXCOLVEC
   /* 55 */ sizeof(IdxVec),             // CN_IDXVEC
   /* 56 */ 0,                          // CN_INDEXLEVELS
@@ -497,6 +496,7 @@ i8 giClassSize[]
   /*    */ sizeof(Queues),             // CN_QUEUES
   
   /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
+  /*    */ sizeof(RecordIngestor),     // CN_RECORDINGESTOR
   /*    */ sizeof(RegFrame),           // CN_REGFRAME
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*101 */ sizeof(Ring),               // CN_RING
@@ -635,7 +635,6 @@ eHT geWhichHeap[]
   /* 51 */ HT_INVALID,           // CN_INDEX
   /* 52 */ HT_TRANSIENT_SMALL,   // CN_INDEXTREE
   /* 53 */ HT_TRANSIENT_MEDIUM,  // CN_INDEXTREEVEC
-  /*    */ HT_TRANSIENT_LARGE,   // CN_INGESTCHUNK
   /* 54 */ HT_TRANSIENT_MEDIUM,  // CN_IDXCOLVEC
   /* 55 */ HT_TRANSIENT_MEDIUM,  // CN_IDXVEC
   /* 56 */ HT_TRANSIENT_MEDIUM,  // CN_INDEXLEVELS
@@ -771,6 +770,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_QUEUES
   
   /* 97 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
+  /*    */ HT_TRANSIENT_LARGE,   // CN_RECORDINGESTOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
   /*    */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
 

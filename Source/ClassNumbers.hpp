@@ -86,7 +86,6 @@ enum eCN : u2 // Class Number
   /*  55 */ CN_INDEX,
   /*  56 */ CN_INDEXTREE,
   /*  57 */ CN_INDEXTREEVEC,
-  /*     */ CN_INGESTCHUNK,
   /*  58 */ CN_IDXCOLVEC,
   /*  59 */ CN_IDXVEC,
   /*  60 */ CN_INDEXLEVELS,
@@ -219,6 +218,7 @@ enum eCN : u2 // Class Number
   /* 160 */ CN_QUEUES,
   
   /* 161 */ CN_RBCURSOR,
+  /*     */ CN_RECORDINGESTOR,
   /* 162 */ CN_REGFRAME,
   /*     */ CN_RESOURCETRACKER,
   /* 163 */ CN_RING,
@@ -356,7 +356,6 @@ static Stz* aCN[]
   /*  55 */ "INDEX"_Stz,               // CN_INDEX
   /*  56 */ "INDEXTREE"_Stz,           // CN_INDEXTREE
   /*  57 */ "INDEXTREEVEC"_Stz,        // CN_INDEXTREEVEC
-  /*     */ "INGESTCHUNK"_Stz,         // CN_INGESTCHUNK
   /*  58 */ "IDXCOLVEC"_Stz,           // CN_IDXCOLVEC
   /*  59 */ "IDXVEC"_Stz,              // CN_IDXVEC
   /*  60 */ "INDEXLEVELS"_Stz,         // CN_INDEXLEVELS
@@ -489,6 +488,7 @@ static Stz* aCN[]
   /* 160 */ "QUEUES"_Stz,              // CN_QUEUES
   
   /* 161 */ "RBCURSOR"_Stz,            // CN_RBCURSOR
+  /*     */ "RECORDINGESTOR"_Stz,      // CN_RECORDINGESTOR
   /* 162 */ "REGFRAME"_Stz,            // CN_REGFRAME
   /*     */ "RESOURCETRACK"_Stz,       // CN_RESOURCETRACKER
   /* 163 */ "RING"_Stz,                // CN_RING

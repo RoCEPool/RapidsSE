@@ -130,7 +130,7 @@ bool RecordExtractor::bReadChunk(void)
   
   vCopyDown();
   
-  i8   nAsMuchAs = C_INGEST_CHUNK - m_nBytesRemaining;
+  i8   nAsMuchAs = C_DATA_CHUNK - m_nBytesRemaining;
   Stz* aIntoAddr = pAdd<Stz*>(m_aStartChunk,m_nBytesRemaining);
   
   i8 nBytesRead = m_oFile.iReadBytes(aIntoAddr,nAsMuchAs);
@@ -184,7 +184,7 @@ void RecordExtractor::vCopyDown(void)
   if (! m_nBytesRemaining)
     return;
   
-  MemLib::vCopy(m_aStartChunk,m_aNextRecord,m_nBytesRemaining,CN_INGESTCHUNK);
+  MemLib::vCopy(m_aStartChunk,m_aNextRecord,m_nBytesRemaining,eClass());
 }
 
 /*----------------------------------------------------------------------------*/
