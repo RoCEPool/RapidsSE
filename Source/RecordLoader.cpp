@@ -44,18 +44,9 @@ void RecordLoader::operator delete(void* pRecordLoaderAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RecordLoader::RecordLoader(Formatters* pFormatters)
-: FileChunk(CN_RECORDLOADER)
+: RecordExtractor(CN_RECORDLOADER,pFormatters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER,_FOOTER_);
-
-  m_pFormatters = pFormatters;
-  
-  m_xWsp.vFill(0xEF,CN_RECORDLOADER);
-    
-  vReset();
-  
-  ASSERT(! m_aEndChunk);
-  ASSERT(! m_aNextRecord);
  
   _checkInitialised_(CN_RECORDLOADER);
   
