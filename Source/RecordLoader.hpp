@@ -36,7 +36,7 @@ namespace Chunks
     
     void  vCloseFile(void);
     i8    iNextRecord(void);
-    Stz*  aNextRecord(i8& iRecordBytes, Formatters* pFormatters);
+    bool  bGetRecord(Stz** aaRecord, i8& iRecordBytes);
     void  vOpenFile(s256& sPath);
     void  vReadChunk(i8 iSeek, i8 nBytes);
     

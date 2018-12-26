@@ -97,7 +97,7 @@ void RecordLoader::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 /* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
-Stz* RecordLoader::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
+bool RecordLoader::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER,_FOOTER_);
   
@@ -111,30 +111,27 @@ Stz* RecordLoader::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
   
   // have we exhausted the chunk?
   if (m_aNextRecord > m_aEndChunk) {
-    iRecordBytes = 0;
+    *aaRecord = nullptr;
+    nRecordBytes = 0;
     vReset();
-    return nullptr;
+    return false;
   }
   
   // get start address of next record
-  Stz* pRecord = m_aNextRecord;
-  
-  // find end of next record
-  //while (C_NL != *((char*)m_aNextRecord) &&
-  //       C_CR != *((char*)m_aNextRecord))
-  //  m_aNextRecord++;
-  //*m_aNextRecord = '\0';
-  
-  vAdvanceRecordEnd((char**)&m_aNextRecord, pFormatters);
+  Stz* aRecord = m_aNextRecord;
+    
+  vAdvanceRecordEnd((char**)&m_aNextRecord, m_pFormatters);
 
   // compute the number of bytes
-  m_nRecordBytes = m_aNextRecord - pRecord;
-  iRecordBytes = m_nRecordBytes;
+  m_nRecordBytes = m_aNextRecord - aRecord;
+  nRecordBytes = m_nRecordBytes;
   
   // advance to beginning of next record for next time
   m_aNextRecord++;
   
-  return pRecord;
+  *aaRecord = aRecord;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

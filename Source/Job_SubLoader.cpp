@@ -108,8 +108,8 @@ Job_SubLoader::Job_SubLoader(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
   m_pJob_LoadTable = nullptr;
+  m_pRecordLoader  = nullptr;
   
-  m_pRecordLoader  = new RecordLoader(&m_pJob_LoadTable->m_xFormatters);
   m_bMoreChunks = false;
   
   _checkInitialised_(CN_JOB_SUBLOADER);
@@ -165,6 +165,8 @@ void Job_SubLoader::vJob_LoadTable(Job_LoadTable* pJob_LoadTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
   m_pJob_LoadTable = pJob_LoadTable;
+  
+  m_pRecordLoader  = new RecordLoader(&m_pJob_LoadTable->m_xFormatters);
 }
 
 
@@ -222,9 +224,9 @@ bool Job_SubLoader::bFetchRecord(void)
   while (true) {
     
     // fetch next record from current chunk
-    aRawData = m_pRecordLoader->aNextRecord(iLength,pFormatters);
+    bool bGotRecord  = m_pRecordLoader->bGetRecord(&aRawData,iLength);
     
-    if (! aRawData) {
+    if (! bGotRecord) {
       // read next chunk
       m_bMoreChunks = bReadChunk();
       if (! m_bMoreChunks)
