@@ -30,10 +30,12 @@ namespace Chunks
     bool  bReadChunk(void);
     void  vReadChunk(i8 iSeek, i8 nBytes);
 
+  protected:
+    void  vReset(void);
+
   private:
     void  vCopyDown(void);
     bool  bFindRecordEnd(char** aaRecordEnd);
-    void  vReset(void);
   };
   
   RecordExtractor* _pRecordExtractor(void* aAddr);

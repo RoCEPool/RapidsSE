@@ -29,7 +29,6 @@ namespace Chunks
     
   private:
     bool  bFindRecordEnd(char** aaRecordEnd);
-    void  vReset(void);
   
     Footer* aFooter(void);
   };
