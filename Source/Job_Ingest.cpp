@@ -254,11 +254,12 @@ void Job_Ingest::vIngest(void)
  vTrace("Ingesting data into %s from %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
   
-  bool bOpened = m_pIngestChunk->bOpenFile(m_sFileName);
-  if (! bOpened) {
-    vTrace("Unable to open pipe: %s\n"_Stz,m_sFileName.aStr());
-    return;
-  }
+  m_pIngestChunk->vOpenRead(m_sFileName);
+//  bool bOpened = m_pIngestChunk->bOpenFile(m_sFileName);
+//  if (! bOpened) {
+//    vTrace("Unable to open pipe: %s\n"_Stz,m_sFileName.aStr());
+//    return;
+//  }
   
   while (m_pIngestChunk->bGetRecord(&m_aRecord,m_nBytes)) {
     
