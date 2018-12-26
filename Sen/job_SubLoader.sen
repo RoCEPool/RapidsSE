@@ -13,7 +13,7 @@
   0 locals| pJobLoadTable_Participant |
 
   // process all the records
-  pJob_SubLoader job_subLoader.processRecords
+  pJob_SubLoader job_subLoader.LoadRecords
 
   // get the job_loader from subLoader
   pJob_SubLoader job_subLoader.jobLoadTable@ to pJobLoadTable_Participant

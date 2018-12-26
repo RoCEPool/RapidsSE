@@ -38,7 +38,7 @@ namespace JobModel
     void vEnd(void);
   
     bool bFetchRecord(void);
-    bool bProcessRecords(void);
+    void vLoadRecords(void);
     bool bReadChunk(void);
   
     void vShow(void);

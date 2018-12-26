@@ -16,7 +16,7 @@ void Step::vAddSteps_JobSubLoader(void)
   vAddStep("job_subLoader.begin"_Stz,         &Step::vJob_SubLoaderBegin);
   vAddStep("job_subLoader.end"_Stz,           &Step::vJob_SubLoaderEnd);
   vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Step::vJob_SubLoaderJobLoadTableFetch);
-  vAddStep("Job_subLoader.processRecords"_Stz,&Step::vJob_SubLoaderProcessRecords);
+  vAddStep("Job_subLoader.loadRecords"_Stz,   &Step::vJob_SubLoaderLoadRecords);
   vAddStep("Job_subLoader.spawnLastBuffers"_Stz,&Step::vJob_SubLoaderSpawnLastBuffers);
   vAddStep("Job_subLoader.recordsInvalid"_Stz,&Step::vJob_SubLoaderRecordsInvalid);
 
@@ -115,22 +115,22 @@ void Step::vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_subLoader.processRecords -- read & process rows till buffer full / eof */
+/* job_subLoader.loadRecords -- read & process rows till buffer full / eof    */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderProcessRecords(MP_Task mpTask)
+void Step::vJob_SubLoaderLoadRecords(MP_Task mpTask)
 {
-  ENTRY("vJob_SubLoaderProcessRecords"_Stz);
+  ENTRY("vJob_SubLoaderLoadRecords"_Stz);
   
   Object* pPtrJob_SubLoader;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("job_subLoader.processRecords"_Stz);
+    THROW_INVALID_DSTACK("job_subLoader.loadRecords"_Stz);
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
   
 //  bool bTargetBufferFull = pJob_SubLoader->bProcessRecords();
 //
 //  mpTask->m_pDataStack->vPushInt(bTargetBufferFull);
   
-  pJob_SubLoader->bProcessRecords();
+  pJob_SubLoader->vLoadRecords();
   
   EXIT();
 }

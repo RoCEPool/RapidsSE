@@ -257,9 +257,9 @@ bool Job_SubLoader::bFetchRecord(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* process records                                                            */
+/* load records                                                               */
 /*----------------------------------------------------------------------------*/
-bool Job_SubLoader::bProcessRecords(void)
+void Job_SubLoader::vLoadRecords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
@@ -275,11 +275,9 @@ bool Job_SubLoader::bProcessRecords(void)
     // was there an error ?
     if (eErrorCode != EC_NONE) {
       vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
-      return false;
+      return;
     }
   }
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
