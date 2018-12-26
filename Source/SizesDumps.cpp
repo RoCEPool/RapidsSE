@@ -188,9 +188,8 @@ pDUMPFUN *gpDump[]
   
   /* 65 */ &Heap::vDump,            // CN_LARGEPERSISTENT
   /* 66 */ &Heap::vDump,            // CN_LARGETRANSIENT
-  /* 67 */ &LoadChunk::vDump,       // CN_LINEITEM
+  /* 67 */ &Dump::vDummy,           // CN_LINEITEM
   /*    */ &Dump::vInvalid,         // CN_LIST
-  /* 68 */ &LoadChunk::vDump,       // CN_LOADCHUNK
   /* 71 */ &LoadMap::vDump,         // CN_LOADMAP
   /* 72 */ &Dump::vInvalid,         // CN_LOCK
   
@@ -223,6 +222,7 @@ pDUMPFUN *gpDump[]
 
   /* 97 */ &Dump::vUndefined,       // CN_RBCURSOR
   /*    */ &Dump::vDummy,           // CN_RECORDINGESTOR
+  /* 68 */ &Dump::vDummy,           // CN_RECORDLOADER
   /*    */ &RegFrame::vDump,        // CN_REGFRAME
   /*    */ &RegFrame::vDump,        // CN_RESOURCETRACKER
   /*101 */ &Dump::vUndefined,       // CN_RING
@@ -465,7 +465,6 @@ i8 giClassSize[]
   /* 66 */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
   /* 67 */ sizeof(LineItem),           // CN_LINEITEM
   /*    */ sizeof(ListNL_t<Task>),     // CN_LIST
-  /* 68 */ sizeof(LoadChunk),          // CN_LOADCHUNK
   /* 71 */ sizeof(LoadMap),            // CN_LOADMAP
   /* 72 */ sizeof(Lock),               // CN_LOCK
   
@@ -497,6 +496,7 @@ i8 giClassSize[]
   
   /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
   /*    */ sizeof(RecordIngestor),     // CN_RECORDINGESTOR
+  /* 68 */ sizeof(RecordLoader),       // CN_RECORDLOADER
   /*    */ sizeof(RegFrame),           // CN_REGFRAME
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*101 */ sizeof(Ring),               // CN_RING
@@ -739,7 +739,6 @@ eHT geWhichHeap[]
   /* 66 */ HT_INVALID,           // CN_LARGETRANSIENT
   /* 67 */ HT_INVALID,           // CN_LINEITEM
   /*    */ HT_TRANSIENT_SMALL,   // CN_LIST
-  /* 68 */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
   /* 71 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
   /* 72 */ HT_INVALID,           // CN_LOCK
   
@@ -771,9 +770,9 @@ eHT geWhichHeap[]
   
   /* 97 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_RECORDINGESTOR
+  /*    */ HT_TRANSIENT_LARGE,   // CN_RECORDLOADER
   /*    */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
   /*    */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
-
   /*101 */ HT_INVALID,           // CN_RING
   /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROARRAY
   /*103 */ HT_INVALID,           // CN_ROWBUFFER

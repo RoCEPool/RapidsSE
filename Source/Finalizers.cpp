@@ -186,7 +186,6 @@ pFINALIZE *gpFinalize[]
   /* 66 */ &Finalize::vUndefined,         // CN_LARGETRANSIENT
   /* 67 */ &Finalize::vUndefined,         // CN_LINEITEM
   /*    */ &Finalize::vUndefined,         // CN_LIST
-  /* 68 */ &Finalize::vUndefined,         // CN_LOADCHUNK
   /* 71 */ &Finalize::vUndefined,         // CN_LOADMAP
   /* 72 */ &Finalize::vUndefined,         // CN_LOCK
   
@@ -218,6 +217,7 @@ pFINALIZE *gpFinalize[]
   
   /* 97 */ &Finalize::vUndefined,         // CN_RBCURSOR
   /*    */ &Finalize::vUndefined,         // CN_RECORDINGESTOR
+  /* 68 */ &Finalize::vUndefined,         // CN_RECORDLOADER
   /*    */ &Finalize::vUndefined,         // CN_REGFRAME
   /*    */ &Finalize::vUndefined,         // CN_RESOURCETRACKER
   /*101 */ &Finalize::vUndefined,         // CN_RING

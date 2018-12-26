@@ -14,7 +14,7 @@ namespace JobModel
   public:
     Job_LoadTable* m_pJob_LoadTable;
 
-    LoadChunk* m_pLoadChunk; // chunk loading buffer
+    RecordLoader* m_pRecordLoader; // chunk loading buffer
     bool m_bMoreChunks; // continue while there are more chunks
 
     // must be last

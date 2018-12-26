@@ -22,9 +22,9 @@ using namespace Chunks;
 
 #include "IoChunk.hpp"
 #include "IoCopy.hpp"
-#include "LoadChunk.hpp"
 #include "LoadMap.hpp"
 #include "RecordIngestor.hpp"
+#include "RecordLoader.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

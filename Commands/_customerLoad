@@ -17,7 +17,7 @@ CREATE INDEX customer_idx1 ON customer(c_custkey);
 CREATE INDEX customer_idx2 ON customer(c_nationkey);
 
 print "loading customer.tbl..." ;
-ld customer "/TPCH/SF1/customer.tbl" field_delimiter "|";
+ld customer "/TPCHSF1/customer.tbl" ;
 
 pwf ;
 lf ;

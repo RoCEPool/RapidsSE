@@ -109,7 +109,7 @@ Job_SubLoader::Job_SubLoader(Interface::Session* pSession)
   
   m_pJob_LoadTable = nullptr;
   
-  m_pLoadChunk  = new LoadChunk;
+  m_pRecordLoader  = new RecordLoader;
   m_bMoreChunks = false;
   
   _checkInitialised_(CN_JOB_SUBLOADER);
@@ -124,8 +124,8 @@ Job_SubLoader::~Job_SubLoader(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
-  if (m_pLoadChunk)
-    delete m_pLoadChunk;
+  if (m_pRecordLoader)
+    delete m_pRecordLoader;
 }
 
 
@@ -179,7 +179,7 @@ void Job_SubLoader::vBegin(void)
   sPath = m_pJob_LoadTable->m_sFileName;
   
   // open the chunked file
-  m_pLoadChunk->vOpenFile(sPath);
+  m_pRecordLoader->vOpenFile(sPath);
   
   // read first chunk
   m_bMoreChunks = bReadChunk();
@@ -197,7 +197,7 @@ void Job_SubLoader::vEnd(void)
   //}
   
   // close the file being loaded
-  m_pLoadChunk->vCloseFile();
+  m_pRecordLoader->vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,7 +222,7 @@ bool Job_SubLoader::bFetchRecord(void)
   while (true) {
     
     // fetch next record from current chunk
-    aRawData = m_pLoadChunk->aNextRecord(iLength,pFormatters);
+    aRawData = m_pRecordLoader->aNextRecord(iLength,pFormatters);
     
     if (! aRawData) {
       // read next chunk
@@ -320,7 +320,7 @@ bool Job_SubLoader::bReadChunk(void)
   }
   
   // read the chunk
-  m_pLoadChunk->vReadChunk(iSeek,nBytes);
+  m_pRecordLoader->vReadChunk(iSeek,nBytes);
   
   return true;
 }
