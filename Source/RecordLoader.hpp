@@ -12,9 +12,11 @@ namespace Chunks
   {
   private:
     File m_oFile;        // file being loaded
+  
     Stz* m_aEndChunk;    // last byte of where chunk ends
+  
     Stz* m_aNextRecord;  // first byte of next record
-    i8   m_iRecordBytes; // size of record
+    i8   m_nRecordBytes; // size of record
   
     WspFxd<C_LOAD_CHUNK> m_xWsp; // workspace
   

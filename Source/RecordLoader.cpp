@@ -126,8 +126,8 @@ Stz* RecordLoader::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
   vAdvanceRecordEnd((char**)&m_aNextRecord, pFormatters);
 
   // compute the number of bytes
-  m_iRecordBytes = m_aNextRecord - pRecord;
-  iRecordBytes = m_iRecordBytes;
+  m_nRecordBytes = m_aNextRecord - pRecord;
+  iRecordBytes = m_nRecordBytes;
   
   // advance to beginning of next record for next time
   m_aNextRecord++;
@@ -254,7 +254,7 @@ void RecordLoader::vReset(void)
   
   m_aEndChunk    = nullptr;
   m_aNextRecord  = nullptr;
-  m_iRecordBytes = 0;
+  m_nRecordBytes = 0;
 }
 
 /*----------------------------------------------------------------------------*/
