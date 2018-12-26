@@ -44,7 +44,7 @@ void IngestChunk::operator delete(void* pIngestChunkAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IngestChunk::IngestChunk(Formatters* pFormatters)
-: FileChunk(CN_INGESTCHUNK)
+: RecordExtractor(CN_INGESTCHUNK,pFormatters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
 

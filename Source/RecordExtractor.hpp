@@ -8,7 +8,7 @@ namespace Chunks
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class RecordExtractor : public FileChunk
   {
-  private:
+  protected:
     Formatters* m_pFormatters; // using these formatters
   
     Stz* m_aStartChunk;            // first byte of chunk

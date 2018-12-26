@@ -15,8 +15,6 @@ RecordExtractor* Chunks::_pRecordExtractor(void* aAddr)
 {
   RecordExtractor* pRecordExtractor = reinterpret_cast<RecordExtractor*>(aAddr);
   
-  RASSERT_TYPE(pRecordExtractor,CN_INGESTCHUNK);
-  
   return pRecordExtractor;
 }
 
@@ -35,8 +33,6 @@ RecordExtractor::RecordExtractor(eCN eClassNo, Formatters* pFormatters)
   vReset();
   
   m_nBytesRemaining = 0;
-  
-  _checkInitialised_(CN_INGESTCHUNK);
   
   _postcondition_(_ADDRESS_,_MAGIC_);
 }
