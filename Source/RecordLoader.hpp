@@ -11,6 +11,8 @@ namespace Chunks
   class RecordLoader : public Object
   {
   private:
+    Formatters* m_pFormatters; // using these formatters
+  
     File m_oFile;        // file being loaded
   
     Stz* m_aEndChunk;    // last byte of where chunk ends
@@ -27,7 +29,7 @@ namespace Chunks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    RecordLoader(void);
+    RecordLoader(Formatters* pFormatters);
     ~RecordLoader(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

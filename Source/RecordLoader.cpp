@@ -43,11 +43,13 @@ void RecordLoader::operator delete(void* pRecordLoaderAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RecordLoader::RecordLoader(void)
+RecordLoader::RecordLoader(Formatters* pFormatters)
 : Object(CN_RECORDLOADER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER,_FOOTER_);
 
+  m_pFormatters = pFormatters;
+  
   m_xWsp.vFill(0xEF,CN_RECORDLOADER);
     
   vReset();
@@ -73,9 +75,9 @@ RecordLoader::~RecordLoader(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void RecordLoader::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  RecordLoader* pRecordLoader = _pRecordLoader(pObject);
+  //RecordLoader* pRecordLoader = _pRecordLoader(pObject);
   
-  vTrace("\n"_Stz);
+  //vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

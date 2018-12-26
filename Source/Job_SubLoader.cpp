@@ -109,7 +109,7 @@ Job_SubLoader::Job_SubLoader(Interface::Session* pSession)
   
   m_pJob_LoadTable = nullptr;
   
-  m_pRecordLoader  = new RecordLoader;
+  m_pRecordLoader  = new RecordLoader(&m_pJob_LoadTable->m_xFormatters);
   m_bMoreChunks = false;
   
   _checkInitialised_(CN_JOB_SUBLOADER);
