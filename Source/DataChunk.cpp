@@ -74,6 +74,18 @@ void DataChunk::vCopy(DataChunk* pSource)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get data area of wsp                                                       */
+/*----------------------------------------------------------------------------*/
+char* DataChunk::aDataArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  char* aArea = m_xWsp.aArea();
+  
+  return aArea;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get wsp as string pointer                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* DataChunk::aStr(void)

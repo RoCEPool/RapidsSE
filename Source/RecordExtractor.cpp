@@ -28,11 +28,9 @@ RecordExtractor::RecordExtractor(eCN eClassNo, Formatters* pFormatters)
 
   m_pFormatters = pFormatters;
   
-  m_aStartChunk = (Stz*)m_xWsp.aArea();
-    
   vReset();
   
-  m_nBytesRemaining = 0;
+  m_nRemainingBytes = 0;
   
   _postcondition_(_ADDRESS_,_MAGIC_);
 }
@@ -102,7 +100,7 @@ bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
   
   // advance to beginning of next record for next time
   m_aNextRecord = aEndRecord + 1;
-  m_nBytesRemaining -= m_nRecordBytes;
+  m_nRemainingBytes -= m_nRecordBytes;
   
   *aaRecord = aStartRecord;
   
@@ -130,20 +128,19 @@ bool RecordExtractor::bReadChunk(void)
   
   vCopyDown();
   
-  i8   nAsMuchAs = C_DATA_CHUNK - m_nBytesRemaining;
-  Stz* aIntoAddr = pAdd<Stz*>(m_aStartChunk,m_nBytesRemaining);
-  
+  Stz* aStartArea = (Stz*)aDataArea();
+  Stz* aIntoAddr  = pAdd<Stz*>(aStartArea,m_nRemainingBytes);
+  i8   nAsMuchAs  = C_DATA_CHUNK - m_nRemainingBytes;
+
   i8 nBytesRead = m_oFile.iReadBytes(aIntoAddr,nAsMuchAs);
   
   if (! nBytesRead)
     return false;
   
-  m_nBytesRemaining += nBytesRead;
-
-  //((char*)m_aStartChunk)[m_nBytesRemaining] = '\0';
+  m_nRemainingBytes += nBytesRead;
   
-  m_aEndChunk   = &(m_aStartChunk)[m_nBytesRemaining - 1];
-  m_aNextRecord = m_aStartChunk;
+  m_aEndChunk   = &(aStartArea)[m_nRemainingBytes - 1];
+  m_aNextRecord = aStartArea;
   
   return true;
 }
@@ -160,14 +157,15 @@ void RecordExtractor::vReadChunk(i8 iSeek, i8 nBytes)
   m_oFile.vSeek(iSeek);
   
   //MemLib::vHexDump(m_xWsp.aStr(),nBytes+16);
-  i8 iBytesRead = m_oFile.iReadBytes(m_aStartChunk,nBytes);
+  Stz* aStartArea = (Stz*)aDataArea();
+  i8 iBytesRead = m_oFile.iReadBytes(aStartArea,nBytes);
 
   //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
   ((char*)m_xWsp.aStr())[iBytesRead] = '\0';                       //! show Alka
   //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
   
   m_aEndChunk   = &m_xWsp.aStr()[iBytesRead - 1];
-  m_aNextRecord = m_xWsp.aStr();
+  m_aNextRecord = aStartArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,10 +179,12 @@ void RecordExtractor::vCopyDown(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (! m_nBytesRemaining)
+  if (! m_nRemainingBytes)
     return;
   
-  MemLib::vCopy(m_aStartChunk,m_aNextRecord,m_nBytesRemaining,eClass());
+  Stz* aStartArea = (Stz*)aDataArea();
+  
+  MemLib::vCopy(aStartArea,m_aNextRecord,m_nRemainingBytes,eClass());
 }
 
 /*----------------------------------------------------------------------------*/

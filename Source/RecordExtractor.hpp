@@ -11,12 +11,11 @@ namespace Chunks
   protected:
     Formatters* m_pFormatters; // using these formatters
   
-    Stz* m_aStartChunk;            // first byte of chunk
-    Stz* m_aEndChunk;              // last byte of where chunk ends
-    i8   m_nBytesRemaining;        // bytes remaining
+    Stz* m_aEndChunk;          // last byte of where chunk ends
+    i8   m_nRemainingBytes;    // bytes remaining
 
-    Stz* m_aNextRecord;  // first byte of next record
-    i8   m_nRecordBytes; // size of record
+    Stz* m_aNextRecord;        // first byte of next record
+    i8   m_nRecordBytes;       // size of record
   
   public:    
     RecordExtractor(eCN eClassNo, Formatters* pFormatters);

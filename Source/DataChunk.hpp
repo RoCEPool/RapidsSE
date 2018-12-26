@@ -23,6 +23,7 @@ namespace Chunks
     ~DataChunk(void) noexcept(false);
   
     void  vCopy(DataChunk* pSource);
+    char* aDataArea(void);
     Stz*  aStr(void);
   };
   
