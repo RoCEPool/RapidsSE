@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* RecordExtractor.hpp -- Record Extractor                                    */
+/*============================================================================*/
+#pragma once
+
+namespace Chunks
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  class RecordExtractor : public FileChunk
+  {
+  private:
+    Formatters* m_pFormatters; // using these formatters
+  
+    Stz* m_aStartChunk;            // first byte of chunk
+    Stz* m_aEndChunk;              // last byte of where chunk ends
+    i8   m_nBytesRemaining;        // bytes remaining
+
+    Stz* m_aNextRecord;  // first byte of next record
+    i8   m_nRecordBytes; // size of record
+  
+  public:    
+    RecordExtractor(eCN eClassNo, Formatters* pFormatters);
+    ~RecordExtractor(void) noexcept(false);
+
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    
+    void  vCloseFile(void);
+    bool  bGetRecord(Stz** aaRecord, i8& nRecordBytes);
+    i8    iNextRecord(void);
+    bool  bOpenFile(s256& sPath);
+    bool  bReadChunk(void);
+    void  vReadChunk(i8 iSeek, i8 nBytes);
+
+  private:
+    void  vCopyDown(void);
+    bool  bFindRecordEnd(char** aRecordEnd);
+    void  vReset(void);
+  };
+  
+  RecordExtractor* _pRecordExtractor(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

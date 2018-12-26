@@ -18,6 +18,8 @@ using namespace Chunks;
 
 #include "DataChunk.hpp"
 #include "FileChunk.hpp"
+#include "RecordExtractor.hpp"
+
 #include "IoChunk.hpp"
 #include "IoCopy.hpp"
 #include "IngestChunk.hpp"
