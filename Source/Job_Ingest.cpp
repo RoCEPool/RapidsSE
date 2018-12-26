@@ -260,27 +260,14 @@ void Job_Ingest::vIngest(void)
     return;
   }
   
-  bool bResult = bIngestPipe();
-  RASSERT(bResult);
-  
-  m_pIngestChunk->vCloseFile();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ingest pipe of records                                                     */
-/*----------------------------------------------------------------------------*/
-bool Job_Ingest::bIngestPipe(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
   while (m_pIngestChunk->bGetRecord(&m_aRecord,m_nBytes)) {
     
     if (! bProcessRecord(m_pSession, m_iJobId, m_pTable,
                          &gpAttachMap->m_xFormatters,  m_aRecord, m_nBytes))
-      return false;
+      break;
   }
-  
-  return true;
+
+  m_pIngestChunk->vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/

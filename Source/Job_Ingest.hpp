@@ -35,7 +35,6 @@ namespace JobModel
     void vShow(void);
   
     void   vIngest(void);
-    bool   bIngestPipe(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
 
