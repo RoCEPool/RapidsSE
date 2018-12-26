@@ -181,7 +181,8 @@ void Job_SubLoader::vBegin(void)
   sPath = m_pJob_LoadTable->m_sFileName;
   
   // open the chunked file
-  m_pRecordLoader->vOpenFile(sPath);
+  bool bOpened = m_pRecordLoader->bOpenFile(sPath);
+  ASSERT(bOpened);
   
   // read first chunk
   m_bMoreChunks = bReadChunk();

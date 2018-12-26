@@ -24,9 +24,7 @@ namespace Chunks
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    void  vCloseFile(void);
     bool  bGetRecord(Stz** aaRecord, i8& iRecordBytes);
-    void  vOpenFile(s256& sPath);
     void  vReadChunk(i8 iSeek, i8 nBytes);
     
   private:

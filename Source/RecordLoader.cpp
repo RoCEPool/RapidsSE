@@ -76,16 +76,6 @@ void RecordLoader::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* close file                                                                 */
-/*----------------------------------------------------------------------------*/
-void RecordLoader::vCloseFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER,_FOOTER_);
-  
-  m_oFile.vClose();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
 bool RecordLoader::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
@@ -124,24 +114,6 @@ bool RecordLoader::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
   *aaRecord = aRecord;
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* open file                                                                  */
-/*----------------------------------------------------------------------------*/
-void RecordLoader::vOpenFile(s256& sPath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER,_FOOTER_);
-  
-  // open the file
-  bool b = m_oFile.bOpen(sPath,C_OPEN_READ);
-  RASSERT(b);
-  
-  // set buffer
-  //m_oFile.vBuffer(C_1MB);
-  
-  // set no buffering (WHY??)
-  m_oFile.vSetBuffering(C_NO_BUFFERING);
 }
 
 /*----------------------------------------------------------------------------*/
