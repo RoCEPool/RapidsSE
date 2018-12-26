@@ -117,29 +117,6 @@ bool RecordLoader::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read given chunk                                                           */
-/*----------------------------------------------------------------------------*/
-void RecordLoader::vReadChunk(i8 iSeek, i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER,_FOOTER_);
-  
-  //vTrace("vReadChunk: seek %lld bytes %lld\n"_Stz,iSeek,nBytes);
-
-  m_oFile.vSeek(iSeek);
-  
-  //MemLib::vHexDump(m_xWsp.aStr(),nBytes+16);
-  Stz* aStartArea = (Stz*)aDataArea();
-  i8 iBytesRead = m_oFile.iReadBytes(aStartArea,nBytes);
-
-  //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
-  ((char*)m_xWsp.aStr())[iBytesRead] = '\0';                       //! show Alka
-  //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
-  
-  m_aEndChunk   = &m_xWsp.aStr()[iBytesRead - 1];
-  m_aNextRecord = aStartArea;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
