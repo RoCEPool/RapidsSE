@@ -102,11 +102,6 @@ Stz* RecordLoader::aNextRecord(i8& iRecordBytes, Formatters* pFormatters)
   ASSERT(m_aEndChunk);
   ASSERT(m_aNextRecord);
   
-  if (m_bHaveRecord) {
-    m_aNextRecord = pAdd<Stz*>(m_aNextRecord,- (m_iRecordBytes + 1));
-    m_bHaveRecord = false;
-  }
-  
   //
   // At this point, m_aNextRecord is the address of the next record
   // in the chunk.
@@ -156,16 +151,6 @@ void RecordLoader::vOpenFile(s256& sPath)
   
   // set no buffering (WHY??)
   m_oFile.vSetBuffering(C_NO_BUFFERING);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push record back into sequence                                             */
-/*----------------------------------------------------------------------------*/
-void RecordLoader::vPushBack(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER,_FOOTER_);
-  
-  m_bHaveRecord = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -270,7 +255,6 @@ void RecordLoader::vReset(void)
   m_aEndChunk    = nullptr;
   m_aNextRecord  = nullptr;
   m_iRecordBytes = 0;
-  m_bHaveRecord  = false;
 }
 
 /*----------------------------------------------------------------------------*/

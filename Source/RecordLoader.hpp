@@ -15,7 +15,6 @@ namespace Chunks
     Stz* m_aEndChunk;    // last byte of where chunk ends
     Stz* m_aNextRecord;  // first byte of next record
     i8   m_iRecordBytes; // size of record
-    bool m_bHaveRecord;  // record in work space?
   
     WspFxd<C_LOAD_CHUNK> m_xWsp; // workspace
   
@@ -35,7 +34,6 @@ namespace Chunks
     i8    iNextRecord(void);
     Stz*  aNextRecord(i8& iRecordBytes, Formatters* pFormatters);
     void  vOpenFile(s256& sPath);
-    void  vPushBack(void);
     void  vReadChunk(i8 iSeek, i8 nBytes);
     
   private:
