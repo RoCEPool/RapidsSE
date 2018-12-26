@@ -72,7 +72,7 @@ bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   if (! m_aNextRecord) {
-    if (! bReadChunk()) {
+    if (! bReadNextChunk()) {
       *aaRecord = nullptr;
       return false;
     }
@@ -84,7 +84,7 @@ bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
   
   bool bFound = bFindRecordEnd((char**)&aEndRecord);
   if (! bFound) {
-    if (! bReadChunk())
+    if (! bReadNextChunk())
       return false;
     aStartRecord = m_aNextRecord;
     aEndRecord   = m_aNextRecord;
@@ -122,7 +122,7 @@ bool RecordExtractor::bOpenFile(s256& sPath)
 /*----------------------------------------------------------------------------*/
 /* read next chunk from file                                                  */
 /*----------------------------------------------------------------------------*/
-bool RecordExtractor::bReadChunk(void)
+bool RecordExtractor::bReadNextChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -148,7 +148,7 @@ bool RecordExtractor::bReadChunk(void)
 /*----------------------------------------------------------------------------*/
 /* read given chunk from file                                                 */
 /*----------------------------------------------------------------------------*/
-void RecordExtractor::vReadChunk(i8 iSeek, i8 nBytes)
+void RecordExtractor::vReadSpecificChunk(i8 iSeek, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

@@ -27,7 +27,6 @@ namespace Chunks
     bool  bGetRecord(Stz** aaRecord, i8& iRecordBytes);
     
   private:
-    bool  bFindRecordEnd(char** aaRecordEnd);
   
     Footer* aFooter(void);
   };

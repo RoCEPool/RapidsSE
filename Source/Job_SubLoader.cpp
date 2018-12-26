@@ -321,7 +321,7 @@ bool Job_SubLoader::bReadChunk(void)
   }
   
   // read the chunk
-  m_pRecordLoader->vReadChunk(iSeek,nBytes);
+  m_pRecordLoader->vReadSpecificChunk(iSeek,nBytes);
   
   return true;
 }
