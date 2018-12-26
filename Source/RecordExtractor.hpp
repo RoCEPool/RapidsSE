@@ -26,14 +26,13 @@ namespace Chunks
     
     void  vCloseFile(void);
     bool  bGetRecord(Stz** aaRecord, i8& nRecordBytes);
-    i8    iNextRecord(void);
     bool  bOpenFile(s256& sPath);
     bool  bReadChunk(void);
     void  vReadChunk(i8 iSeek, i8 nBytes);
 
   private:
     void  vCopyDown(void);
-    bool  bFindRecordEnd(char** aRecordEnd);
+    bool  bFindRecordEnd(char** aaRecordEnd);
     void  vReset(void);
   };
   

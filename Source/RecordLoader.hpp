@@ -35,13 +35,12 @@ namespace Chunks
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     void  vCloseFile(void);
-    i8    iNextRecord(void);
     bool  bGetRecord(Stz** aaRecord, i8& iRecordBytes);
     void  vOpenFile(s256& sPath);
     void  vReadChunk(i8 iSeek, i8 nBytes);
     
   private:
-    void  vAdvanceRecordEnd(char** aSrc, Formatters* pFormatters);
+    bool  bFindRecordEnd(char** aaRecordEnd);
     void  vReset(void);
   
     Footer* aFooter(void);

@@ -120,7 +120,8 @@ bool RecordLoader::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
   // get start address of next record
   Stz* aRecord = m_aNextRecord;
     
-  vAdvanceRecordEnd((char**)&m_aNextRecord, m_pFormatters);
+  bool bFound = bFindRecordEnd((char**)&m_aNextRecord);
+  ASSERT(bFound);
 
   // compute the number of bytes
   m_nRecordBytes = m_aNextRecord - aRecord;
@@ -181,11 +182,11 @@ void RecordLoader::vReadChunk(i8 iSeek, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* advance to last character of record ( \n or \r )                           */
 /*----------------------------------------------------------------------------*/
-void RecordLoader::vAdvanceRecordEnd(char** aaSrc, Formatters* pFormatters)
+bool RecordLoader::bFindRecordEnd(char** aaSrc)
 {
   // test for explicit record ends
   
-  switch (pFormatters->m_eRecordEnds) {
+  switch (m_pFormatters->m_eRecordEnds) {
       
     case RE_NL: // advance to next \n
       for (;;) {
@@ -193,14 +194,16 @@ void RecordLoader::vAdvanceRecordEnd(char** aaSrc, Formatters* pFormatters)
         while (C_NL != **aaSrc)
           (*aaSrc)++;
         // if there is no record terminator we have found ending \n
-        if (! pFormatters->m_cRecordTerminator)
+        if (! m_pFormatters->m_cRecordTerminator)
           break;
         // we found the next \n if prior character is the record terminator
-        if (pFormatters->m_cRecordTerminator == *(*aaSrc-1))
+        if (m_pFormatters->m_cRecordTerminator == *(*aaSrc-1))
           break;
         (*aaSrc)++;
       }
       ASSERT(C_NL == **aaSrc);
+      return true;
+      
       break;
       
     case RE_CR: // advance to next \r
@@ -209,14 +212,16 @@ void RecordLoader::vAdvanceRecordEnd(char** aaSrc, Formatters* pFormatters)
         while (C_CR != **aaSrc)
           (*aaSrc)++;
         // if there is no record terminator we have found ending \r
-        if (! pFormatters->m_cRecordTerminator)
+        if (! m_pFormatters->m_cRecordTerminator)
           break;
         // we found the next \r if prior character is the record terminator
-        if (pFormatters->m_cRecordTerminator == *(*aaSrc-1))
+        if (m_pFormatters->m_cRecordTerminator == *(*aaSrc-1))
           break;
         (*aaSrc)++;
       }
       ASSERT(C_CR == **aaSrc);
+      return true;
+      
       break;
       
     case RE_CRNL: // advance to next \r\n
@@ -225,10 +230,10 @@ void RecordLoader::vAdvanceRecordEnd(char** aaSrc, Formatters* pFormatters)
         while (C_CR != **aaSrc && C_NL != *(*aaSrc+1))
           (*aaSrc)++;
         // if there is no record terminator we have found ending \r\n
-        if (! pFormatters->m_cRecordTerminator)
+        if (! m_pFormatters->m_cRecordTerminator)
           break;
         // we found the next \r\n if prior character is the record terminator
-        if (pFormatters->m_cRecordTerminator == *(*aaSrc-1))
+        if (m_pFormatters->m_cRecordTerminator == *(*aaSrc-1))
           break;
         (*aaSrc)++;
       }
@@ -236,6 +241,8 @@ void RecordLoader::vAdvanceRecordEnd(char** aaSrc, Formatters* pFormatters)
       ASSERT(C_CR == **aaSrc);
       (*aaSrc)++;
       ASSERT(C_NL == **aaSrc);
+      return true;
+      
       break;
       
     default:

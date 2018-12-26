@@ -67,7 +67,7 @@ void RecordExtractor::vCloseFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next record                                                            */
+/* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
 bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 {
@@ -87,14 +87,14 @@ bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
   bool bFound = bFindRecordEnd((char**)&aEndRecord);
   if (! bFound) {
     if (! bReadChunk())
-      return nullptr;
+      return false;
     aStartRecord = m_aNextRecord;
     aEndRecord   = m_aNextRecord;
     bFound = bFindRecordEnd((char**)&aEndRecord);
   }
   
   if (! bFound)
-    return nullptr;
+    return false;
   
   // compute the number of bytes
   m_nRecordBytes = aEndRecord - aStartRecord + 1;
