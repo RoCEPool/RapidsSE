@@ -20,9 +20,6 @@
 
   // get the valid/invalid rows loaded from subloader
   pJob_SubLoader job_subLoader.recordsInvalid pJobLoadTable_Participant job_loadTable.addInvalidRows
-
-  // spawn last buffers for each partition
-  pJob_SubLoader job_subLoader.spawnLastBuffers
 ;
 
 /*----------------------------------------------------------------------------*/

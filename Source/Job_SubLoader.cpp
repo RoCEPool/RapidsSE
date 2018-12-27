@@ -199,6 +199,10 @@ void Job_SubLoader::vEnd(void)
   //  ASSERT(! m_pWorkingBuffer[i_Partition]);
   //}
   
+  vHandleDanglingBuffers(m_pSession, m_pJob_LoadTable->m_pTable,
+                         DS_LOAD, m_pJob_LoadTable->m_iJobId);
+  
+
   // close the file being loaded
   m_pRecordLoader->vCloseFile();
 }
