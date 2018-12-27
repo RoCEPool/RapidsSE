@@ -10,16 +10,12 @@
 : SubLoader_process ( pJob_SubLoader -- )
 
   params| pJob_SubLoader |
-  //0 locals| pJobLoadTable_Participant |
 
-  // process all the records
+  pJob_SubLoader job_subLoader.begin
+
   pJob_SubLoader job_subLoader.LoadRecords
 
-  // get the job_loader from subLoader
-  //pJob_SubLoader job_subLoader.jobLoadTable@ to pJobLoadTable_Participant
-
-  // get the valid/invalid rows loaded from subloader
-  //pJob_SubLoader job_subLoader.recordsInvalid pJobLoadTable_Participant job_loadTable.addInvalidRows
+  pJob_SubLoader job_subLoader.end
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -29,29 +25,13 @@
 
   >>am <SEED_RUN>
 
-  0 locals| pThisTask |
-  0 locals| pJob_SubLoader |
+  task::this locals| pThisTask |
+  job::this  locals| pJob_SubLoader |
 
-  tp: SubLoader
-  //"SubLoader running" .
+  pJob_SubLoader SubLoader_process
 
-  // get the task
-  task::this to pThisTask
-  //pThisTask "subLoader_run task: %v" fmt.print
-
-  // get the sub-loader job from the task
-  pThisTask task.job@ to pJob_SubLoader
-
-  pJob_SubLoader job_subLoader.begin
-
-  pJob_SubLoader job_subLoader.LoadRecords
-
-  pJob_SubLoader job_subLoader.end
-
-  // null the job in the task
+  // null the job in the task and delete ended job
   nullptr pThisTask task.job!
-
-  // now delete the ended job
   pJob_SubLoader job.delete
 
   <DONE_RUN>
