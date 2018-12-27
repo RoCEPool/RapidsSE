@@ -195,14 +195,16 @@ void Job_SubLoader::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
-  //for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
-  //  ASSERT(! m_pWorkingBuffer[i_Partition]);
-  //}
-  
+
+  // handle any dangling buffers
   vHandleDanglingBuffers(m_pSession, m_pJob_LoadTable->m_pTable,
                          DS_LOAD, m_pJob_LoadTable->m_iJobId);
   
-
+  // add invalid rows into parent load table job
+  i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
+  i8 iRowsInvalid = *m_xNode[i_Node].m_ziRowsInvalid;
+  m_pJob_LoadTable->m_xNode[i_Node].m_ziRowsInvalid += iRowsInvalid;
+  
   // close the file being loaded
   m_pRecordLoader->vCloseFile();
 }
