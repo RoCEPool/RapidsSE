@@ -280,6 +280,9 @@ void Job_Ingest::vIngest(void)
     }
   }
   
+  // spawn the last buffers
+  vHandleDanglingBuffers(m_pSession, m_pTable, DS_INGEST, -1);
+  
   m_pRecordIngestor->vCloseFile();
 }
 
