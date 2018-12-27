@@ -263,32 +263,30 @@ void Job_Ingest::vBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ingest data for table                                                      */
+/* ingest data for table (return true if function is to be called again)      */
 /*----------------------------------------------------------------------------*/
 bool Job_Ingest::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  if (m_pRecordIngestor->bReadNextChunk()) {
-
-    for (;;) {
-      
-      bool bGotRecord = m_pRecordIngestor->bGetRecord(&m_aRecord,m_nBytes);
-      
-      if (! bGotRecord) {
-        if (m_pRecordIngestor->bReadNextChunk())
-          continue;
-        else
-          break;
-      }
-      
-      if (! bProcessRecord(m_pSession, m_iJobId, m_pTable,
-                           &gpAttachMap->m_xFormatters,  m_aRecord, m_nBytes))
-        break;
-    }
+  // read the next chunk
+  if (! m_pRecordIngestor->bReadNextChunk())
+    return false;
+  
+  // process the records in the chunk
+  for (;;) {
+    
+    bool bHaveRecord = m_pRecordIngestor->bGetRecord(&m_aRecord,m_nBytes);
+    
+    if (! bHaveRecord)
+      return true;
+    
+    if (! bProcessRecord(m_pSession, m_iJobId, m_pTable,
+                         &gpAttachMap->m_xFormatters,  m_aRecord, m_nBytes))
+      return false;
   }
   
-  return false;
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
