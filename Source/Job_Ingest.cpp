@@ -280,9 +280,20 @@ bool Job_Ingest::bChunk(void)
     if (! bHaveRecord)
       return true;
     
-    if (! bProcessRecord(m_pSession, m_iJobId, m_pTable,
-                         &gpAttachMap->m_xFormatters,  m_aRecord, m_nBytes))
-      return false;
+    eEC eError = eProcessRecord(m_pSession, m_iJobId, m_pTable,
+                                &gpAttachMap->m_xFormatters,
+                                m_aRecord, m_nBytes);
+    
+    if (EC_NONE == eError)
+      continue;
+    
+    if (EC_BLANKLINE == eError)
+      continue;
+    
+    if (EC_MAX_ROW_LENGTH == eError)
+      continue;
+    
+    return false;
   }
   
   NEVER_REACH

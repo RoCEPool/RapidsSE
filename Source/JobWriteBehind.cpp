@@ -169,7 +169,7 @@ eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource
 /*----------------------------------------------------------------------------*/
 /* process record                                                             */
 /*----------------------------------------------------------------------------*/
-bool JobWriteBehind::bProcessRecord(Interface::Session* pSession,
+eEC JobWriteBehind::eProcessRecord(Interface::Session* pSession,
                                      i8 iParentJobId,
                                      Table* pTable,
                                      Formatters* pFormatters,
@@ -178,19 +178,30 @@ bool JobWriteBehind::bProcessRecord(Interface::Session* pSession,
 {
   bool bBlankLine = false;
   
-  bool bFormat = bFormatRow(pTable, pFormatters, aRecord, nBytes, bBlankLine);
-  RASSERT( ! bBlankLine );
-  
-  // attempt to add record into a write-behind buffer
-  eEC eErrorCode = eInsertRow(pSession, pTable, DS_INGEST, iParentJobId);
-  
-  // was there an error ?
-  if (eErrorCode != EC_NONE) {
-    vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
-    return false;
+  if (nBytes > C_MAX_RECORD) {
+    if ( ! gpAttachMap->m_bMetadata ) {
+      vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
+            aRecord,
+            C_MAX_RECORD);
+    }
+    return EC_MAX_ROW_LENGTH;
   }
 
-  return true;
+  bool bFormat = bFormatRow(pTable, pFormatters, aRecord, nBytes, bBlankLine);
+  
+  if (bBlankLine)
+    return EC_BLANKLINE;
+  
+  // attempt to add record into a write-behind buffer
+  eEC eError = eInsertRow(pSession, pTable, DS_INGEST, iParentJobId);
+  
+  // was there an error ?
+  if (eError != EC_NONE) {
+    vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eError]);
+    return eError;
+  }
+
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
