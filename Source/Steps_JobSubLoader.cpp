@@ -15,11 +15,7 @@ void Step::vAddSteps_JobSubLoader(void)
   
   vAddStep("job_subLoader.begin"_Stz,         &Step::vJob_SubLoaderBegin);
   vAddStep("job_subLoader.end"_Stz,           &Step::vJob_SubLoaderEnd);
-  vAddStep("Job_subLoader.jobLoadTable@"_Stz, &Step::vJob_SubLoaderJobLoadTableFetch);
   vAddStep("Job_subLoader.loadRecords"_Stz,   &Step::vJob_SubLoaderLoadRecords);
-  vAddStep("Job_subLoader.recordsInvalid"_Stz,&Step::vJob_SubLoaderRecordsInvalid);
-
-  vAddStep("Job_subLoader.workingBuffer"_Stz, &Step::vJob_SubLoaderWorkingBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,23 +93,6 @@ void Step::vJob_SubLoaderEnd(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_subLoader.jobLoadTable@ -- fetch the job load table                    */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderJobLoadTableFetch(MP_Task mpTask)
-{
-  ENTRY("vJob_SubLoaderJobLoadTableFetch"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_subLoader.jobLoadTable@"_Stz);
-  Job_SubLoader* pJob = _pJob_SubLoader(pJobPtr);
-  
-  mpTask->m_pDataStack->vPushObject(pJob->m_pJob_LoadTable);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job_subLoader.loadRecords -- read & process rows till buffer full / eof    */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubLoaderLoadRecords(MP_Task mpTask)
@@ -134,46 +113,6 @@ void Step::vJob_SubLoaderLoadRecords(MP_Task mpTask)
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* subLoader.recordsInvalid -- return no of invalid records fetched by sub    */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderRecordsInvalid(MP_Task mpTask)
-{
-  ENTRY("vJob_SubLoaderRecordsInvalid"_Stz);
-  
-  Object* pPtrJob_SubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("job_subLoader.recordsInvalid"_Stz);
-  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
-  
-  i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
-  mpTask->m_pDataStack->vPushInt(*(pJob_SubLoader->m_xNode[i_Node].m_ziRowsInvalid));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* subLoader.workingBuffer -- get a working buffer                            */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_SubLoaderWorkingBuffer(MP_Task mpTask)
-{
-  ENTRY("vJob_SubLoaderWorkingBuffer"_Stz);
-  
-  Object* pPtrJob_SubLoader;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubLoader) )
-    THROW_INVALID_DSTACK("job_subLoader.workingBuffer"_Stz);
-  Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
-  
-  i8 iPartition;
-  if ( ! mpTask->m_pDataStack->bPop(iPartition) )
-    THROW_INVALID_DSTACK("job_subLoader.workingBuffer"_Stz);
-
-  WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];
-  
-  mpTask->m_pDataStack->vPushObject(pWorkingBuffer);
-  
-  EXIT();
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -603,12 +603,9 @@
   // Job subLoader
   static void vJob_SubLoaderBegin(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderEnd(Tasks::MP_Task mpTask);
-  static void vJob_SubLoaderJobLoadTableFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubLoaderLoadRecords(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderSpawn(Tasks::MP_Task mpTask);
 
-  static void vJob_SubLoaderLoadRecords(Tasks::MP_Task mpTask);
-  static void vJob_SubLoaderRecordsInvalid(Tasks::MP_Task mpTask);
-  static void vJob_SubLoaderWorkingBuffer(Tasks::MP_Task mpTask);
 
   // job subPurge
   static void vJob_SubPurgeSlotFetch(Tasks::MP_Task mpTask);
