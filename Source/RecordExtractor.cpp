@@ -70,14 +70,7 @@ void RecordExtractor::vCloseFile(void)
 bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (! m_aNextRecord) {
-    if (! bReadNextChunk()) {
-      *aaRecord = nullptr;
-      return false;
-    }
-  }
-  
+    
   // get start address of next record
   Stz* aStartRecord = m_aNextRecord;
   Stz* aEndRecord   = m_aNextRecord;

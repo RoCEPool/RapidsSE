@@ -111,6 +111,7 @@ bool RecordLoader::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 
   // advance to beginning of next record for next time
   m_aNextRecord = aEndRecord + 1;
+  m_nRemainingBytes -= m_nRecordBytes;
 
   *aaRecord = aStartRecord;
   

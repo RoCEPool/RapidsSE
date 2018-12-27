@@ -261,13 +261,20 @@ void Job_Ingest::vIngest(void)
 //    return;
 //  }
   
-  while (m_pRecordIngestor->bGetRecord(&m_aRecord,m_nBytes)) {
-    
-    if (! bProcessRecord(m_pSession, m_iJobId, m_pTable,
-                         &gpAttachMap->m_xFormatters,  m_aRecord, m_nBytes))
-      break;
-  }
+  if (m_pRecordIngestor->bReadNextChunk()) {
 
+    for (;;) {
+      
+      bool bGotRecord = m_pRecordIngestor->bGetRecord(&m_aRecord,m_nBytes);
+      if (! bGotRecord)
+        break;
+      
+      if (! bProcessRecord(m_pSession, m_iJobId, m_pTable,
+                           &gpAttachMap->m_xFormatters,  m_aRecord, m_nBytes))
+        break;
+    }
+  }
+  
   m_pRecordIngestor->vCloseFile();
 }
 
