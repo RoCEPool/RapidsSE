@@ -295,7 +295,7 @@ void LoadMap::vDone(bool bDone)
 /*----------------------------------------------------------------------------*/
 /* subordinate takes next read-chunk                                          */
 /*----------------------------------------------------------------------------*/
-bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes, i8& iChunk, i8& nChunks)
+bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes, i8& i_Chunk, i8& nChunks)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
 
@@ -316,7 +316,7 @@ bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes, i8& iChunk, i8& nChunks)
   
   // a subsequent subordinate calling this func will get the next entry
   // save m_iNext before incrementing
-  iChunk  = m_iNext++;
+  i_Chunk  = m_iNext++;
   
   // now ok to drop the lock
   m_zLock.vDropWrite();
@@ -325,13 +325,13 @@ bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes, i8& iChunk, i8& nChunks)
   nChunks = m_iEntries;
   
   // calculate starting seek offset of next read-chunk
-  if (0 == iChunk)
+  if (0 == i_Chunk)
     iSeek = 0;
   else
-    iSeek = m_iEolOffset[iChunk - 1] + 1;
+    iSeek = m_iEolOffset[i_Chunk - 1] + 1;
   
   // calculate the number of bytes in the read-chunk
-  i8 iEnd = m_iEolOffset[iChunk];
+  i8 iEnd = m_iEolOffset[i_Chunk];
   nBytes  = iEnd - iSeek + 1;
   
   return true;

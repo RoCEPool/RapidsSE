@@ -184,8 +184,16 @@ void Job_SubLoader::vBegin(void)
   bool bOpened = m_pRecordLoader->bOpenFile(sPath);
   ASSERT(bOpened);
   
+  i8 i_Seek;
+  i8 nBytes;
+
   // read first chunk
-  m_bMoreChunks = bReadChunk();
+  m_bMoreChunks = bNextChunkInfo(i_Seek,nBytes);
+  if (! m_bMoreChunks)
+    return ;
+  
+  m_pRecordLoader->vReadSpecificChunk(i_Seek,nBytes);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -248,6 +256,9 @@ bool Job_SubLoader::bFetchRecord(void)
   bool bBlankLine;
   i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
   
+  i8 i_Seek;
+  i8 nBytes;
+  
   Formatters* pFormatters = &m_pJob_LoadTable->m_xFormatters;
   Table* pTable = m_pJob_LoadTable->m_pTable;
   
@@ -261,9 +272,11 @@ bool Job_SubLoader::bFetchRecord(void)
     
     if (! bGotRecord) {
       // read next chunk
-      m_bMoreChunks = bReadChunk();
+      m_bMoreChunks = bNextChunkInfo(i_Seek,nBytes);
       if (! m_bMoreChunks)
         return false;
+      
+      m_pRecordLoader->vReadSpecificChunk(i_Seek,nBytes);
       continue;
     }
     
@@ -292,15 +305,13 @@ bool Job_SubLoader::bFetchRecord(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read next chunk from file                                                  */
+/* get next chunk information                                                 */
 /*----------------------------------------------------------------------------*/
-bool Job_SubLoader::bReadChunk(void)
+bool Job_SubLoader::bNextChunkInfo(i8& i_Seek, i8& nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
-  i8 iSeek;
-  i8 nBytes;
-  i8 iChunk;
+  i8 i_Chunk;
   i8 nChunks;
   
   LoadMap* pLoadMap = m_pJob_LoadTable->m_pLoadMap;
@@ -310,7 +321,7 @@ bool Job_SubLoader::bReadChunk(void)
     
     bool bMapLoaded = pLoadMap->bDone();
     
-    bool bMoreChunks = pLoadMap->bNextChunk(iSeek,nBytes,iChunk,nChunks);
+    bool bMoreChunks = pLoadMap->bNextChunk(i_Seek,nBytes,i_Chunk,nChunks);
     
     if (bMapLoaded && ! bMoreChunks)
       return false;
@@ -322,14 +333,11 @@ bool Job_SubLoader::bReadChunk(void)
   }
   
   if (gpAttachMap->m_bProgress) {
-    if (0 == iChunk % 100) {
-      vInfo("read chunk %lld of %lld        \r"_Stz,iChunk,nChunks);
+    if (0 == i_Chunk % 100) {
+      vInfo("read chunk %lld of %lld        \r"_Stz,i_Chunk,nChunks);
       fflush(stdout);
     }
   }
-  
-  // read the chunk
-  m_pRecordLoader->vReadSpecificChunk(iSeek,nBytes);
   
   return true;
 }

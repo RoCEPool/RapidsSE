@@ -39,8 +39,9 @@ namespace JobModel
     void vEnd(void);
   
     bool bFetchRecord(void);
-    bool bReadChunk(void);
-  
+
+    bool bNextChunkInfo(i8& i_Seek, i8& nBytes);
+
     void vShow(void);
     Footer* aFooter(void);
 
