@@ -12,8 +12,8 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_JobIngest(void)
 {
   vAddStep("Job_Ingest.begin"_Stz,      &Step::vJob_IngestBegin);
+  vAddStep("job_ingest.chunk"_Stz,      &Step::vJob_IngestChunk);
   vAddStep("Job_Ingest.end"_Stz,        &Step::vJob_IngestEnd);
-  vAddStep("job_ingest.ingest"_Stz,     &Step::vJob_IngestIngest);
   vAddStep("job_ingest.table!"_Stz,     &Step::vJob_IngestTableStore);
 }
 
@@ -35,7 +35,24 @@ void Step::vJob_IngestBegin(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Ingest.end -- end loading                                           */
+/* job_ingest.chunk -- ingest a chunk of data into a table                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_IngestChunk(MP_Task mpTask)
+{
+  ENTRY("vJob_IngestChunk"_Stz);
+  
+  Object* pPtrJobIngest;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobIngest) )
+    THROW_INVALID_DSTACK("job_ingest.chunk"_Stz);
+  Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJobIngest);
+  
+  pJob_Ingest->vChunk();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Ingest.end -- end loading                                              */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_IngestEnd(MP_Task mpTask)
 {
@@ -47,23 +64,6 @@ void Step::vJob_IngestEnd(MP_Task mpTask)
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
   pJob_Ingest->vEnd();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_ingest.ingest -- ingest data into a table                              */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_IngestIngest(MP_Task mpTask)
-{
-  ENTRY("vJob_IngestIngest"_Stz);
-  
-  Object* pPtrJobIngest;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJobIngest) )
-    THROW_INVALID_DSTACK("job_ingest.ingest"_Stz);
-  Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJobIngest);
-  
-  pJob_Ingest->vIngest();
   
   EXIT();
 }

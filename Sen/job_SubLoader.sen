@@ -13,7 +13,7 @@
 
   pJob_SubLoader job_subLoader.begin
 
-  pJob_SubLoader job_subLoader.LoadRecords
+  pJob_SubLoader job_subLoader.chunk
 
   pJob_SubLoader job_subLoader.end
 ;

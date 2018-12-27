@@ -35,8 +35,8 @@ namespace JobModel
     void vShow(void);
   
     void   vBegin(void);
+    void   vChunk(void);
     void   vEnd(void);
-    void   vIngest(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
 

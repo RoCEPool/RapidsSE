@@ -541,8 +541,8 @@
 
   // job ingest
   static void vJob_IngestBegin(Tasks::MP_Task mpTask);
+  static void vJob_IngestChunk(Tasks::MP_Task mpTask);
   static void vJob_IngestEnd(Tasks::MP_Task mpTask);
-  static void vJob_IngestIngest(Tasks::MP_Task mpTask);
   static void vJob_IngestTableStore(Tasks::MP_Task mpTask);
 
   // job insertRows
@@ -602,8 +602,8 @@
 
   // Job subLoader
   static void vJob_SubLoaderBegin(Tasks::MP_Task mpTask);
+  static void vJob_SubLoaderChunk(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderEnd(Tasks::MP_Task mpTask);
-  static void vJob_SubLoaderLoadRecords(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderSpawn(Tasks::MP_Task mpTask);
 
 

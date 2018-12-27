@@ -257,30 +257,17 @@ void Job_Ingest::vBegin(void)
   //    vTrace("Unable to open pipe: %s\n"_Stz,m_sFileName.aStr());
   //    return;
   //  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* end ingesting                                                              */
-/*----------------------------------------------------------------------------*/
-void Job_Ingest::vEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  // spawn the last buffers
-  vHandleDanglingBuffers(m_pSession, m_pTable, DS_INGEST, -1);
-  
-  m_pRecordIngestor->vCloseFile();
+  vTrace("Ingesting data into %s from %s\n"_Stz,
+         m_sObjectName.aStr(), m_sFileName.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
 /* ingest data for table                                                      */
 /*----------------------------------------------------------------------------*/
-void Job_Ingest::vIngest(void)
+void Job_Ingest::vChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
-  vTrace("Ingesting data into %s from %s\n"_Stz,
-         m_sObjectName.aStr(), m_sFileName.aStr());
   
   if (m_pRecordIngestor->bReadNextChunk()) {
 
@@ -301,6 +288,19 @@ void Job_Ingest::vIngest(void)
     }
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* end ingesting                                                              */
+/*----------------------------------------------------------------------------*/
+void Job_Ingest::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  
+  // spawn the last buffers
+  vHandleDanglingBuffers(m_pSession, m_pTable, DS_INGEST, -1);
+  
+  m_pRecordIngestor->vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/
