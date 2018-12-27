@@ -245,21 +245,42 @@ void JobModel::vJob_Ingest_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* begin ingesting                                                            */
+/*----------------------------------------------------------------------------*/
+void Job_Ingest::vBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  
+  m_pRecordIngestor->vOpenRead(m_sFileName);
+  //  bool bOpened = m_pRecordIngestor->bOpenFile(m_sFileName);
+  //  if (! bOpened) {
+  //    vTrace("Unable to open pipe: %s\n"_Stz,m_sFileName.aStr());
+  //    return;
+  //  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* end ingesting                                                              */
+/*----------------------------------------------------------------------------*/
+void Job_Ingest::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  
+  // spawn the last buffers
+  vHandleDanglingBuffers(m_pSession, m_pTable, DS_INGEST, -1);
+  
+  m_pRecordIngestor->vCloseFile();
+}
+
+/*----------------------------------------------------------------------------*/
 /* ingest data for table                                                      */
 /*----------------------------------------------------------------------------*/
 void Job_Ingest::vIngest(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
- vTrace("Ingesting data into %s from %s\n"_Stz,
+  vTrace("Ingesting data into %s from %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
-  
-  m_pRecordIngestor->vOpenRead(m_sFileName);
-//  bool bOpened = m_pRecordIngestor->bOpenFile(m_sFileName);
-//  if (! bOpened) {
-//    vTrace("Unable to open pipe: %s\n"_Stz,m_sFileName.aStr());
-//    return;
-//  }
   
   if (m_pRecordIngestor->bReadNextChunk()) {
 
@@ -280,10 +301,6 @@ void Job_Ingest::vIngest(void)
     }
   }
   
-  // spawn the last buffers
-  vHandleDanglingBuffers(m_pSession, m_pTable, DS_INGEST, -1);
-  
-  m_pRecordIngestor->vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/

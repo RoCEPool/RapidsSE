@@ -11,8 +11,44 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobIngest(void)
 {
+  vAddStep("Job_Ingest.begin"_Stz,      &Step::vJob_IngestBegin);
+  vAddStep("Job_Ingest.end"_Stz,        &Step::vJob_IngestEnd);
   vAddStep("job_ingest.ingest"_Stz,     &Step::vJob_IngestIngest);
   vAddStep("job_ingest.table!"_Stz,     &Step::vJob_IngestTableStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Ingest.begin -- begin loading                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_IngestBegin(MP_Task mpTask)
+{
+  ENTRY("vJob_IngestBegin"_Stz);
+  
+  Object* pPtrJob_Ingest;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_Ingest) )
+    THROW_INVALID_DSTACK("Job_Ingest.begin"_Stz);
+  Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
+  
+  pJob_Ingest->vBegin();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job_Ingest.end -- end loading                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_IngestEnd(MP_Task mpTask)
+{
+  ENTRY("vJob_IngestEnd"_Stz);
+  
+  Object* pPtrJob_Ingest;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_Ingest) )
+    THROW_INVALID_DSTACK("Job_Ingest.end"_Stz);
+  Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
+  
+  pJob_Ingest->vEnd();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

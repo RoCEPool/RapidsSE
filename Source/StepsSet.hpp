@@ -540,6 +540,8 @@
   static void vJob__ExecutedRowsSkippedStore(Tasks::MP_Task mpTask);
 
   // job ingest
+  static void vJob_IngestBegin(Tasks::MP_Task mpTask);
+  static void vJob_IngestEnd(Tasks::MP_Task mpTask);
   static void vJob_IngestIngest(Tasks::MP_Task mpTask);
   static void vJob_IngestTableStore(Tasks::MP_Task mpTask);
 
