@@ -5,6 +5,16 @@
 " job_Ingest.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* read records from file, create working buffers, send to node               */
+/*----------------------------------------------------------------------------*/
+: Ingest_process ( pJob_Ingest -- )
+
+  params| pJob_Ingest |
+
+  pJob_Ingest job_ingest.ingest
+;
+
+/*----------------------------------------------------------------------------*/
 /* Job_Ingest request (on command node)                                       */
 /*----------------------------------------------------------------------------*/
 : Ingest_req (  -- <R> )
@@ -47,7 +57,7 @@
   sTableNm find execute to pTable
   pTable pJob_Ingest job_ingest.table!
 
-  pJob_Ingest job_ingest.ingest
+  pJob_Ingest Ingest_process
 
   //----------------------------------------------------------------------------
 
