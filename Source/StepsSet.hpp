@@ -554,7 +554,6 @@
   static void vJob_InsertRowSpawnJobWriteRow(Tasks::MP_Task mpTask);
 
   // job LoadTable
-  static void vJob_LoadTableAddInvalidRows(Tasks::MP_Task mpTask);
   static void vJob_LoadTableAddValidRows(Tasks::MP_Task mpTask);
   static void vJob_LoadTableChunkFile(Tasks::MP_Task mpTask);
   static void vJob_LoadTableDumpMap(Tasks::MP_Task mpTask);

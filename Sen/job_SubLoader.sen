@@ -44,7 +44,7 @@
 
   pJob_SubLoader job_subLoader.begin
 
-  pJob_SubLoader SubLoader_process
+  pJob_SubLoader job_subLoader.LoadRecords
 
   pJob_SubLoader job_subLoader.end
 
