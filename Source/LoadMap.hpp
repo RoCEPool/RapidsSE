@@ -43,6 +43,7 @@ namespace Chunks
     bool bDone(void);
     void vDone(bool bDone);
     bool bNextChunk(i8& iSeek, i8& nBytes, i8& iChunk, i8& nChunks);
+    bool bNextChunkInfo(i8& i_Seek, i8& nBytes);
     void vChunkTest(void);
     
     void vStats(void);

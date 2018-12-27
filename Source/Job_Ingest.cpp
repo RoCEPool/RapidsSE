@@ -269,17 +269,21 @@ bool Job_Ingest::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  // read the next chunk
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read next sequential chunk
   if (! m_pRecordIngestor->bReadNextChunk())
     return false;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process the records in the chunk
   for (;;) {
     
+    // fetch next record from current chunk
     bool bHaveRecord = m_pRecordIngestor->bGetRecord(&m_aRecord,m_nBytes);
     if (! bHaveRecord)
       return true;
     
+    // process that record into write behind
     eEC eError = eProcessRecord(m_pSession, m_iJobId, m_pTable,
                                 &gpAttachMap->m_xFormatters,
                                 m_aRecord, m_nBytes, DS_INGEST);
@@ -306,9 +310,10 @@ void Job_Ingest::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  // spawn the last buffers
+  // handle any dangling buffers
   vHandleDanglingBuffers(m_pSession, m_pTable, DS_INGEST, -1);
   
+  // close the file being loaded
   m_pRecordIngestor->vCloseFile();
 }
 

@@ -338,6 +338,39 @@ bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes, i8& i_Chunk, i8& nChunks)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next chunk information                                                 */
+/*----------------------------------------------------------------------------*/
+bool LoadMap::bNextChunkInfo(i8& i_Seek, i8& nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
+
+  i8 i_Chunk;
+  i8 nChunks;
+  
+  // get information about next chunk
+  for (;;) {
+    
+    bool bMoreChunks = bNextChunk(i_Seek,nBytes,i_Chunk,nChunks);
+    
+    if (m_bDone && ! bMoreChunks)
+      return false;
+    
+    if (bMoreChunks)
+      break;
+    
+    //vTrace("Waiting for map\n"_Stz);
+  }
+  
+  if (gpAttachMap->m_bProgress) {
+    if (0 == i_Chunk % 100) {
+      vInfo("read chunk %lld of %lld        \r"_Stz,i_Chunk,nChunks);
+      fflush(stdout);
+    }
+  }
+  
+  return true;
+}
+/*----------------------------------------------------------------------------*/
 /* stats                                                                      */
 /*----------------------------------------------------------------------------*/
 void LoadMap::vStats(void)

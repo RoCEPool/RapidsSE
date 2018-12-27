@@ -204,13 +204,15 @@ bool Job_SubLoader::bChunk(void)
   Stz* aRecord;
   i8 nRecordBytes;
 
-  // read first chunk
-  m_bMoreChunks = bNextChunkInfo(i_Seek,nChunkBytes);
-  if (! m_bMoreChunks)
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read next mapped chunk
+  if (! m_pJob_LoadTable->m_pLoadMap->bNextChunkInfo(i_Seek,nChunkBytes))
     return false;
   
   m_pRecordLoader->vReadSpecificChunk(i_Seek,nChunkBytes);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process the records in the chunk
   for (;;) {
     
     // fetch next record from current chunk
@@ -218,6 +220,7 @@ bool Job_SubLoader::bChunk(void)
     if (! bHaveRecord)
       return true;
     
+    // process that record into write behind
     eEC eError = eProcessRecord(pSession, iParentJobId, pTable,
                                 pFormatters,
                                 aRecord, nRecordBytes, DS_LOAD);
@@ -258,44 +261,6 @@ void Job_SubLoader::vEnd(void)
   
   // close the file being loaded
   m_pRecordLoader->vCloseFile();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next chunk information                                                 */
-/*----------------------------------------------------------------------------*/
-bool Job_SubLoader::bNextChunkInfo(i8& i_Seek, i8& nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
-  
-  i8 i_Chunk;
-  i8 nChunks;
-  
-  LoadMap* pLoadMap = m_pJob_LoadTable->m_pLoadMap;
-  
-  // get information about next chunk
-  for (;;) {
-    
-    bool bMapLoaded = pLoadMap->bDone();
-    
-    bool bMoreChunks = pLoadMap->bNextChunk(i_Seek,nBytes,i_Chunk,nChunks);
-    
-    if (bMapLoaded && ! bMoreChunks)
-      return false;
-    
-    if (bMoreChunks)
-      break;
-    
-    //vTrace("Waiting for map\n"_Stz);
-  }
-  
-  if (gpAttachMap->m_bProgress) {
-    if (0 == i_Chunk % 100) {
-      vInfo("read chunk %lld of %lld        \r"_Stz,i_Chunk,nChunks);
-      fflush(stdout);
-    }
-  }
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
