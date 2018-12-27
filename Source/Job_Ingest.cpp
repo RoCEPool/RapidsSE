@@ -266,8 +266,13 @@ void Job_Ingest::vIngest(void)
     for (;;) {
       
       bool bGotRecord = m_pRecordIngestor->bGetRecord(&m_aRecord,m_nBytes);
-      if (! bGotRecord)
-        break;
+      
+      if (! bGotRecord) {
+        if (m_pRecordIngestor->bReadNextChunk())
+          continue;
+        else
+          break;
+      }
       
       if (! bProcessRecord(m_pSession, m_iJobId, m_pTable,
                            &gpAttachMap->m_xFormatters,  m_aRecord, m_nBytes))

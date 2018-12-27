@@ -70,19 +70,12 @@ void RecordExtractor::vCloseFile(void)
 bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-    
+  
   // get start address of next record
   Stz* aStartRecord = m_aNextRecord;
   Stz* aEndRecord   = m_aNextRecord;
   
   bool bFound = bFindRecordEnd((char**)&aEndRecord);
-  if (! bFound) {
-    if (! bReadNextChunk())
-      return false;
-    aStartRecord = m_aNextRecord;
-    aEndRecord   = m_aNextRecord;
-    bFound = bFindRecordEnd((char**)&aEndRecord);
-  }
   
   if (! bFound)
     return false;
