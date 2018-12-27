@@ -8,21 +8,23 @@ namespace Debugging
   enum eEC // error code
   {
   /*  0 */ EC_NONE=0,
+  
   /*  1 */ EC_ASSERT,
   
+  /*  2 */ EC_BLANKLINE,
+
   /*    */ EC_CATALOG_EXISTS,
-  
   /*  4 */ EC_CLUSTER_NOT_STARTED,
   /*  5 */ EC_CLUSTER_PARTITIONS_MISMATCH,
   /*  6 */ EC_CLUSTER_SIZE_MISMATCH,
   
   /*  7 */ EC_DUPLICATE_COLUMN,
   /*  8 */ EC_DUPLICATE_KEY,
+  
   /*  9 */ EC_FOLDER_IN_USE,
   /* 10 */ EC_FOLDER_NOT_EMPTY,
   
   /* 11 */ EC_INDEX_EXISTS,
-    
   /* 12 */ EC_INVALID_CLASS,
   /* 13 */ EC_INVALID_COLUMN,
   /* 14 */ EC_INVALID_COLUMNS_UNIQUE_INDEX,
@@ -45,7 +47,6 @@ namespace Debugging
   /*    */ EC_MAX_ROW_LENGTH,
 
   /* 25 */ EC_NO_COLUMNS_DIC,
-  
   /* 26 */ EC_NO_SUCH_CATALOG,
   /* 27 */ EC_NO_SUCH_DIRECTORY,
   /* 28 */ EC_NO_SUCH_FOLDER,
@@ -54,14 +55,12 @@ namespace Debugging
   /* 31 */ EC_NO_SUCH_TABLE,
   /* 32 */ EC_NO_SUCH_TENANT,
   /* 33 */ EC_NO_SUCH_WORD,
-  
   /* 34 */ EC_NOT_A_CATALOG,
   /* 35 */ EC_NOT_A_FOLDER,
   /* 36 */ EC_NOT_AN_INDEX,
   /* 37 */ EC_NOT_A_SCHEMA,
   /* 38 */ EC_NOT_A_TABLE,
   /* 39 */ EC_NOT_A_TENANT,
-  
   /* 40 */ EC_NOT_IN_CATALOGS,
   /* 41 */ EC_NOT_IN_COLUMNS,
   /* 42 */ EC_NOT_IN_INDEXES,
@@ -70,11 +69,11 @@ namespace Debugging
   /* 45 */ EC_NOT_IN_TABLE,
   /* 46 */ EC_NOT_IN_TABLES,
   /* 47 */ EC_NOT_IN_TENANTS,
-  
   /* 48 */ EC_NULL_INTERFACE,
   /* 49 */ EC_NULLPTR,
   
   /* 50 */ EC_RESPONSE_PENDING,
+  
   /* 51 */ EC_SCHEMA_EXISTS,
   /* 52 */ EC_SE_NOT_RUNNING,
   /* 53 */ EC_SE_UNKNOWN_ERROR,
@@ -85,7 +84,6 @@ namespace Debugging
   /* 56 */ EC_TABLE_NOT_EMPTY,
   /* 57 */ EC_TABLE_IN_USE,
   /* 58 */ EC_TENANT_EXISTS,
-  
   /*    */ EC_TX_BEGIN_FAILED,
   /*    */ EC_TX_COMMIT_FAILED,
   /*    */ EC_TX_END_FAILED,
@@ -93,13 +91,17 @@ namespace Debugging
     
   /* 59 */ EC_VALIDATION_FAILURE,
   /* 60 */ EC_VERSION_MISMATCH,
+  
   /* 61 */ EC_ENUMS
   };
   
   static Stz* aEC[]
   {
   /*  0 */ "none"_Stz,
+  
   /*  1 */ "assert"_Stz,
+  /*  2 */ "blank line"_Stz,
+  
   /*    */ "catalog exists"_Stz,
   /*  4 */ "cluster not started"_Stz,
   /*  5 */ "cluster partitions per node mismatch"_Stz,
@@ -107,11 +109,11 @@ namespace Debugging
   
   /*  7 */ "duplicate column"_Stz,
   /*  8 */ "duplicate key"_Stz,
+  
   /*  9 */ "folder in use"_Stz,
   /* 10 */ "folder not empty"_Stz,
   
   /* 11 */ "index exists"_Stz,
-    
   /* 12 */ "invalid class"_Stz,
   /* 13 */ "invalid column"_Stz,
   /* 14 */ "invalid columns for unique index (include all partitioning columns)"_Stz,
@@ -128,12 +130,12 @@ namespace Debugging
   /* 22 */ "invalid value"_Stz,
   
   /* 23 */ "low buffers"_Stz,
+  
   /* 24 */ "max allowed indexes already created"_Stz,
   /*    */ "max 150 columns supported in a table"_Stz,
   /*    */ "max row length allowed is 16k bytes"_Stz,
 
   /* 25 */ "no columns dictionary"_Stz,
-  
   /* 26 */ "no such catalog"_Stz,
   /* 27 */ "no such directory"_Stz,
   /* 28 */ "no such folder"_Stz,
@@ -142,14 +144,12 @@ namespace Debugging
   /* 31 */ "no such table"_Stz,
   /* 32 */ "no such tenant"_Stz,
   /* 33 */ "no such word"_Stz,
-  
   /* 34 */ "not a catalog"_Stz,
   /* 35 */ "not a folder"_Stz,
   /* 36 */ "not an index"_Stz,
   /* 37 */ "not a schema"_Stz,
   /* 38 */ "not a table"_Stz,
   /* 39 */ "not a tenant"_Stz,
-    
   /* 40 */ "not in catalogs"_Stz,
   /* 41 */ "not in columns"_Stz,
   /* 42 */ "not in indexes"_Stz,
@@ -158,7 +158,6 @@ namespace Debugging
   /* 45 */ "not in table"_Stz,
   /* 46 */ "not in tables"_Stz,
   /* 47 */ "not in tenants"_Stz,
-  
   /* 48 */ "null interface"_Stz,
   /* 49 */ "nullptr"_Stz,
 
@@ -168,6 +167,7 @@ namespace Debugging
   /* 52 */ "SE is not running"_Stz,
   /* 53 */ "SE unknown error"_Stz,
   /* 54 */ "send failure"_Stz,
+  
   /*    */ "table already loaded"_Stz,
   /* 55 */ "table exists"_Stz,
   /* 56 */ "table not empty"_Stz,
