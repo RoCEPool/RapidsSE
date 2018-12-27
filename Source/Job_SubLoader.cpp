@@ -189,6 +189,32 @@ void Job_SubLoader::vBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* chunk records                                                               */
+/*----------------------------------------------------------------------------*/
+bool Job_SubLoader::bChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
+  
+  Session* pSession = m_pJob_LoadTable->m_pSession;
+  Table* pTable = m_pJob_LoadTable->m_pTable;
+  i8 iParentJobId = m_pJob_LoadTable->m_iJobId;
+  
+  while (bFetchRecord()) {
+    
+    // attempt to add record into a buffer
+    eEC eErrorCode = eInsertRow(pSession, pTable, DS_LOAD, iParentJobId);
+    
+    // was there an error ?
+    if (eErrorCode != EC_NONE) {
+      vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
+      return false;
+    }
+  }
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* end loading                                                                */
 /*----------------------------------------------------------------------------*/
 void Job_SubLoader::vEnd(void)
@@ -263,30 +289,6 @@ bool Job_SubLoader::bFetchRecord(void)
   }
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* load records                                                               */
-/*----------------------------------------------------------------------------*/
-void Job_SubLoader::vLoadRecords(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
-  
-  Session* pSession = m_pJob_LoadTable->m_pSession;
-  Table* pTable = m_pJob_LoadTable->m_pTable;
-  i8 iParentJobId = m_pJob_LoadTable->m_iJobId;
-  
-  while (bFetchRecord()) {
-      
-    // attempt to add record into a buffer
-    eEC eErrorCode = eInsertRow(pSession, pTable, DS_LOAD, iParentJobId);
-  
-    // was there an error ?
-    if (eErrorCode != EC_NONE) {
-      vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
-      return;
-    }
-  }
 }
 
 /*----------------------------------------------------------------------------*/

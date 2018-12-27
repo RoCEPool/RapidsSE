@@ -35,7 +35,7 @@ namespace JobModel
     void vShow(void);
   
     void   vBegin(void);
-    void   vChunk(void);
+    bool   bChunk(void);
     void   vEnd(void);
     Table* pTable(void);
     void   vTable(Table* pTable);

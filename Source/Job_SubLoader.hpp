@@ -35,10 +35,10 @@ namespace JobModel
     void vJob_LoadTable(Job_LoadTable* pJob_LoadTable);
 
     void vBegin(void);
+    bool bChunk(void);
     void vEnd(void);
   
     bool bFetchRecord(void);
-    void vLoadRecords(void);
     bool bReadChunk(void);
   
     void vShow(void);

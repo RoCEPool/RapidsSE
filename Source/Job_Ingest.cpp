@@ -265,7 +265,7 @@ void Job_Ingest::vBegin(void)
 /*----------------------------------------------------------------------------*/
 /* ingest data for table                                                      */
 /*----------------------------------------------------------------------------*/
-void Job_Ingest::vChunk(void)
+bool Job_Ingest::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
@@ -288,6 +288,7 @@ void Job_Ingest::vChunk(void)
     }
   }
   
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

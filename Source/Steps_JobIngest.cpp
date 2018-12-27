@@ -46,8 +46,10 @@ void Step::vJob_IngestChunk(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_ingest.chunk"_Stz);
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJobIngest);
   
-  pJob_Ingest->vChunk();
+  bool bCallAgain = pJob_Ingest->bChunk();
   
+  mpTask->m_pDataStack->vPushInt((i8)bCallAgain);
+
   EXIT();
 }
 

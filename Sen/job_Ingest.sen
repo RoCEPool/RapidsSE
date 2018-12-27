@@ -13,7 +13,7 @@
 
   pJob_Ingest job_ingest.begin
 
-  pJob_Ingest job_ingest.chunk
+  begin pJob_Ingest job_ingest.chunk while repeat
 
   pJob_Ingest job_ingest.end
 ;
