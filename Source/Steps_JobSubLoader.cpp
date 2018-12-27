@@ -156,29 +156,33 @@ void Step::vJob_SubLoaderSpawnLastBuffers(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn a write buffer job for insert for each partition
   i8 iParentJobId = pJob_LoadTable->iJobId();
-  Stz* sTableName = pJob_SubLoader->m_sObjectName;
+//  Stz* sTableName = pJob_SubLoader->m_sObjectName;
+//
+//  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
+//
+//    if ( ! pJob_SubLoader->m_pWorkingBuffer[iPartition] )
+//      pJob_SubLoader->vNewWorkingBuffer(pJob_LoadTable->m_pTable, iPartition);
+//
+//    // get the working buffer
+//    WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];
+//    pJob_SubLoader->m_pWorkingBuffer[iPartition] = nullptr;
+//
+//    i8 nWriteBehindBuffers = pJob_SubLoader->m_nWriteBehindBuffers[iPartition];
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // create a write buffer job for load
+//    Job_WriteBuffer::vSpawnJobWriteBuffer(
+//          pSession, sTableName, DS_LOAD,
+//          pWorkingBuffer, iParentJobId, iPartition,
+//          true, nWriteBehindBuffers);
+//  }
   
-  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
-    
-    if ( ! pJob_SubLoader->m_pWorkingBuffer[iPartition] )
-      pJob_SubLoader->vNewWorkingBuffer(pJob_LoadTable->m_pTable, iPartition);
-    
-    // get the working buffer
-    WorkingBuffer* pWorkingBuffer = pJob_SubLoader->m_pWorkingBuffer[iPartition];
-    pJob_SubLoader->m_pWorkingBuffer[iPartition] = nullptr;
-    
-    i8 nWriteBehindBuffers = pJob_SubLoader->m_nWriteBehindBuffers[iPartition];
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // create a write buffer job for load
-    Job_WriteBuffer::vSpawnJobWriteBuffer(
-          pSession, sTableName, DS_LOAD,
-          pWorkingBuffer, iParentJobId, iPartition,
-          true, nWriteBehindBuffers);
-  }
+  pJob_SubLoader->vHandleDanglingBuffers(pSession, pJob_LoadTable->m_pTable,
+                                         DS_LOAD, iParentJobId);
   
   EXIT();
 }
+
 /*----------------------------------------------------------------------------*/
 /* subLoader.recordsInvalid -- return no of invalid records fetched by sub    */
 /*----------------------------------------------------------------------------*/

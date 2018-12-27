@@ -55,28 +55,31 @@ void Step::vJob_InsertTableSpawnLastBuffers(MP_Task mpTask)
   // get the session
   Session* pSession = pJob_InsertRows->m_pSession;
   
-  
   i8 iParentJobId = pJob_InsertTable->iJobId();
-  Stz* pTableName = pJob_InsertRows->m_sObjectName;
+//  Stz* pTableName = pJob_InsertRows->m_sObjectName;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn a write buffer job for insert for each partition
-  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
-    
-    // get the working buffer
-    if ( ! pJob_InsertRows->m_pWorkingBuffer[iPartition] )
-      pJob_InsertRows->vNewWorkingBuffer(pJob_InsertRows->m_pTable, iPartition);
-    
-    WorkingBuffer* pWorkingBuffer = pJob_InsertRows->m_pWorkingBuffer[iPartition];
-    pJob_InsertRows->m_pWorkingBuffer[iPartition] = nullptr;
-    
-    i8 nWriteBehindBuffers = pJob_InsertRows->m_nWriteBehindBuffers[iPartition];
-    
-    Job_WriteBuffer::vSpawnJobWriteBuffer(
-                                          pSession, pTableName, DS_INSERT,
-                                          pWorkingBuffer, iParentJobId, iPartition,
-                                          true, nWriteBehindBuffers);
-  }
+//  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
+//
+//    // get the working buffer
+//    if ( ! pJob_InsertRows->m_pWorkingBuffer[iPartition] )
+//      pJob_InsertRows->vNewWorkingBuffer(pJob_InsertRows->m_pTable, iPartition);
+//
+//    WorkingBuffer* pWorkingBuffer = pJob_InsertRows->m_pWorkingBuffer[iPartition];
+//    pJob_InsertRows->m_pWorkingBuffer[iPartition] = nullptr;
+//
+//    i8 nWriteBehindBuffers = pJob_InsertRows->m_nWriteBehindBuffers[iPartition];
+//
+//    Job_WriteBuffer::vSpawnJobWriteBuffer(
+//                                          pSession, pTableName, DS_INSERT,
+//                                          pWorkingBuffer, iParentJobId, iPartition,
+//                                          true, nWriteBehindBuffers);
+//  }
+//
+  
+  pJob_InsertRows->vHandleDanglingBuffers(pSession, pJob_InsertRows->m_pTable,
+                                          DS_INSERT, iParentJobId);
   
   EXIT();
 }

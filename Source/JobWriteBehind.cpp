@@ -7,6 +7,8 @@
 #include "JobModel.h"
 #include "StorageEngine.h"
 
+extern AttachMap* gpAttachMap;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -71,6 +73,31 @@ bool JobWriteBehind::bFormatRow(Table* pTable, Formatters* pFormatters,
                                 false /* allowNonPrintable */);
   
   return bValid;
+}
+/*----------------------------------------------------------------------------*/
+/* handle dangling buffers                                                    */
+/*----------------------------------------------------------------------------*/
+void JobWriteBehind::vHandleDanglingBuffers(Interface::Session* pSession, Table* pTable,
+                                            eDS eDataSource, i8 iParentJobId)
+{
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
+    
+    if ( ! m_pWorkingBuffer[iPartition] )
+      vNewWorkingBuffer(pTable, iPartition);
+    
+    // get the working buffer
+    WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[iPartition];
+    m_pWorkingBuffer[iPartition] = nullptr;
+    
+    i8 nWriteBehindBuffers = m_nWriteBehindBuffers[iPartition];
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // create a write buffer job for load
+    Job_WriteBuffer::vSpawnJobWriteBuffer(
+                                          pSession, pTable->aTableName(), eDataSource,
+                                          pWorkingBuffer, iParentJobId, iPartition,
+                                          true, nWriteBehindBuffers);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

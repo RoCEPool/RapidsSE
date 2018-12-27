@@ -26,6 +26,9 @@ namespace JobModel
     bool bFormatRow(Table* pTable, Formatters* pFormatters,
                     Stz* aRecord, i8 nBytes, bool &bBlankLine);
   
+    void vHandleDanglingBuffers(Interface::Session* pSession, Table* pTable,
+                                eDS eDataSource, i8 iParentJobId);
+    
     eEC  eInsertRow(Interface::Session* pSession, Table* pTable,
                     eDS eDataSource, i8 iParentJobId);
   
