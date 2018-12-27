@@ -200,7 +200,7 @@ bool Job_SubLoader::bChunk(void)
 
   i8 i_Seek;
   i8 nBytes;
-  Stz* aRawData;
+  Stz* aRecord;
   i8 iLength;
   bool bValid = false;
   bool bBlankLine;
@@ -214,47 +214,29 @@ bool Job_SubLoader::bChunk(void)
   
   for (;;) {
     
+    // fetch next record from current chunk
+    bool bHaveRecord = m_pRecordLoader->bGetRecord(&aRecord,iLength);
+    if (! bHaveRecord)
+      return true;
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (iLength > C_MAX_RECORD) {
+      m_xNode[i_Node].m_ziRowsInvalid.iInc();
+      if ( ! gpAttachMap->m_bMetadata ) {
+        vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
+              aRecord,
+              C_MAX_RECORD);
+      }
+      continue;
+    }
     
-        
-    while (true) {
-      
-      // fetch next record from current chunk
-      bool bGotRecord  = m_pRecordLoader->bGetRecord(&aRawData,iLength);
-      
-      if (! bGotRecord) {
-        // read next chunk
-        m_bMoreChunks = bNextChunkInfo(i_Seek,nBytes);
-        if (! m_bMoreChunks)
-          return false;
-        
-        m_pRecordLoader->vReadSpecificChunk(i_Seek,nBytes);
-        continue;
-      }
-      
-      if (iLength > C_MAX_RECORD) {
-        m_xNode[i_Node].m_ziRowsInvalid.iInc();
-        if ( ! gpAttachMap->m_bMetadata ) {
-          vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
-                aRawData,
-                C_MAX_RECORD);
-        }
-        return false;
-      }
-      
-      bValid = bFormatRow(pTable, pFormatters, aRawData, iLength, bBlankLine);
-      if (bValid)
-        break;
-      
+    bValid = bFormatRow(pTable, pFormatters, aRecord, iLength, bBlankLine);
+    if (! bValid) {
+    
       if ( ! bBlankLine )
         m_xNode[i_Node].m_ziRowsInvalid.iInc();
+      continue;
     }
-
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- 
-
     // attempt to add record into a buffer
     eEC eErrorCode = eInsertRow(pSession, pTable, DS_LOAD, iParentJobId);
     
@@ -263,9 +245,10 @@ bool Job_SubLoader::bChunk(void)
       vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
       return false;
     }
+    
   }
-  
-  return false;
+
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/

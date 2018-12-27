@@ -277,7 +277,6 @@ bool Job_Ingest::bChunk(void)
   for (;;) {
     
     bool bHaveRecord = m_pRecordIngestor->bGetRecord(&m_aRecord,m_nBytes);
-    
     if (! bHaveRecord)
       return true;
     
