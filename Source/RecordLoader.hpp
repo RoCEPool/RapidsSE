@@ -23,9 +23,7 @@ namespace Chunks
     ~RecordLoader(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
-    bool  bGetRecord(Stz** aaRecord, i8& iRecordBytes);
-    
+        
   private:
   
     Footer* aFooter(void);
