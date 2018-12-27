@@ -82,8 +82,8 @@ bool RecordLoader::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER,_FOOTER_);
   
-  ASSERT(m_aEndChunk);
-  ASSERT(m_aNextRecord);
+  //ASSERT(m_aEndChunk);
+  //ASSERT(m_aNextRecord);
   
   //
   // At this point, m_aNextRecord is the address of the next record
@@ -91,19 +91,21 @@ bool RecordLoader::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
   //
   
   // have we exhausted the chunk?
-  if (m_aNextRecord > m_aEndChunk) {
-    *aaRecord = nullptr;
-    nRecordBytes = 0;
-    vReset();
-    return false;
-  }
+//  if (m_aNextRecord > m_aEndChunk) {
+//    *aaRecord = nullptr;
+//    nRecordBytes = 0;
+//    vReset();
+//    return false;
+//  }
   
   // get start address of next record
   Stz* aStartRecord = m_aNextRecord;
   Stz* aEndRecord   = m_aNextRecord;
 
   bool bFound = bFindRecordEnd((char**)&aEndRecord);
-  ASSERT(bFound);
+
+  if (! bFound)
+    return false;
 
   // compute the number of bytes
   m_nRecordBytes = aEndRecord - aStartRecord + 1;
