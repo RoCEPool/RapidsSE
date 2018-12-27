@@ -183,17 +183,6 @@ void Job_SubLoader::vBegin(void)
   // open the chunked file
   bool bOpened = m_pRecordLoader->bOpenFile(sPath);
   ASSERT(bOpened);
-  
-  i8 i_Seek;
-  i8 nBytes;
-
-  // read first chunk
-  m_bMoreChunks = bNextChunkInfo(i_Seek,nBytes);
-  if (! m_bMoreChunks)
-    return ;
-  
-  m_pRecordLoader->vReadSpecificChunk(i_Seek,nBytes);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,8 +196,74 @@ bool Job_SubLoader::bChunk(void)
   Table* pTable = m_pJob_LoadTable->m_pTable;
   i8 iParentJobId = m_pJob_LoadTable->m_iJobId;
   
-  while (bFetchRecord()) {
+  i8 i_Seek;
+  i8 nBytes;
+  
+  // read first chunk
+  m_bMoreChunks = bNextChunkInfo(i_Seek,nBytes);
+  if (! m_bMoreChunks)
+    return false;
+  
+  m_pRecordLoader->vReadSpecificChunk(i_Seek,nBytes);
+  
+  for (;;) {
     
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+    
+    Stz* aRawData;
+    i8 iLength;
+    bool bValid = false;
+    bool bBlankLine;
+    i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
+    
+    i8 i_Seek;
+    i8 nBytes;
+    
+    Formatters* pFormatters = &m_pJob_LoadTable->m_xFormatters;
+    Table* pTable = m_pJob_LoadTable->m_pTable;
+    
+    if (! m_bMoreChunks)
+      return false;
+    
+    while (true) {
+      
+      // fetch next record from current chunk
+      bool bGotRecord  = m_pRecordLoader->bGetRecord(&aRawData,iLength);
+      
+      if (! bGotRecord) {
+        // read next chunk
+        m_bMoreChunks = bNextChunkInfo(i_Seek,nBytes);
+        if (! m_bMoreChunks)
+          return false;
+        
+        m_pRecordLoader->vReadSpecificChunk(i_Seek,nBytes);
+        continue;
+      }
+      
+      if (iLength > C_MAX_RECORD) {
+        m_xNode[i_Node].m_ziRowsInvalid.iInc();
+        if ( ! gpAttachMap->m_bMetadata ) {
+          vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
+                aRawData,
+                C_MAX_RECORD);
+        }
+        return false;
+      }
+      
+      bValid = bFormatRow(pTable, pFormatters, aRawData, iLength, bBlankLine);
+      if (bValid)
+        break;
+      
+      if ( ! bBlankLine )
+        m_xNode[i_Node].m_ziRowsInvalid.iInc();
+    }
+
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 
+
     // attempt to add record into a buffer
     eEC eErrorCode = eInsertRow(pSession, pTable, DS_LOAD, iParentJobId);
     
@@ -241,67 +296,6 @@ void Job_SubLoader::vEnd(void)
   
   // close the file being loaded
   m_pRecordLoader->vCloseFile();
-}
-
-/*----------------------------------------------------------------------------*/
-/* fetch next record from buffer, read next chunk if necessary                */
-/*----------------------------------------------------------------------------*/
-bool Job_SubLoader::bFetchRecord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
-  
-  Stz* aRawData;
-  i8 iLength;
-  bool bValid = false;
-  bool bBlankLine;
-  i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
-  
-  i8 i_Seek;
-  i8 nBytes;
-  
-  Formatters* pFormatters = &m_pJob_LoadTable->m_xFormatters;
-  Table* pTable = m_pJob_LoadTable->m_pTable;
-  
-  if (! m_bMoreChunks)
-    return false;
-  
-  while (true) {
-    
-    // fetch next record from current chunk
-    bool bGotRecord  = m_pRecordLoader->bGetRecord(&aRawData,iLength);
-    
-    if (! bGotRecord) {
-      // read next chunk
-      m_bMoreChunks = bNextChunkInfo(i_Seek,nBytes);
-      if (! m_bMoreChunks)
-        return false;
-      
-      m_pRecordLoader->vReadSpecificChunk(i_Seek,nBytes);
-      continue;
-    }
-    
-    if (iLength > C_MAX_RECORD) {
-      m_xNode[i_Node].m_ziRowsInvalid.iInc();
-      if ( ! gpAttachMap->m_bMetadata ) {
-        vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
-              aRawData,
-              C_MAX_RECORD);
-      }
-      return false;
-    }
-    
-    bValid = bFormatRow(pTable, pFormatters, aRawData, iLength, bBlankLine);
-    
-    if (bValid) {
-      //m_xNode[i_Node].m_ziRowsValid.iInc();
-      return bValid;
-    }
-    
-    if ( ! bBlankLine )
-      m_xNode[i_Node].m_ziRowsInvalid.iInc();
-  }
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/
