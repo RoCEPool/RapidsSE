@@ -152,19 +152,19 @@ void RecordExtractor::vReadSpecificChunk(i8 iSeek, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  //vTrace("vReadChunk: seek %lld bytes %lld\n"_Stz,iSeek,nBytes);
-
   m_oFile.vSeek(iSeek);
   
-  //MemLib::vHexDump(m_xWsp.aStr(),nBytes+16);
   Stz* aStartArea = (Stz*)aDataArea();
-  i8 iBytesRead = m_oFile.iReadBytes(aStartArea,nBytes);
+  Stz* aIntoAddr  = aStartArea;
+  i8   nAsMuchAs  = nBytes;
 
-  //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
-  ((char*)m_xWsp.aStr())[iBytesRead] = '\0';                       //! show Alka
-  //MemLib::vHexDump(m_xWsp.aStr(), iBytesRead+16);
+  i8 nBytesRead = m_oFile.iReadBytes(aIntoAddr,nAsMuchAs);
+
+  RASSERT(nBytesRead == nAsMuchAs);
   
-  m_aEndChunk   = &m_xWsp.aStr()[iBytesRead - 1];
+  m_nRemainingBytes = nBytesRead;
+
+  m_aEndChunk   =  &(aStartArea)[m_nRemainingBytes - 1];
   m_aNextRecord = aStartArea;
 }
 

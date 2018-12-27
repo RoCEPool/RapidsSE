@@ -99,19 +99,20 @@ bool RecordLoader::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
   }
   
   // get start address of next record
-  Stz* aRecord = m_aNextRecord;
-    
-  bool bFound = bFindRecordEnd((char**)&m_aNextRecord);
+  Stz* aStartRecord = m_aNextRecord;
+  Stz* aEndRecord   = m_aNextRecord;
+
+  bool bFound = bFindRecordEnd((char**)&aEndRecord);
   ASSERT(bFound);
 
   // compute the number of bytes
-  m_nRecordBytes = m_aNextRecord - aRecord;
+  m_nRecordBytes = aEndRecord - aStartRecord + 1;
   nRecordBytes = m_nRecordBytes;
-  
+
   // advance to beginning of next record for next time
-  m_aNextRecord++;
-  
-  *aaRecord = aRecord;
+  m_aNextRecord = aEndRecord + 1;
+
+  *aaRecord = aStartRecord;
   
   return true;
 }
