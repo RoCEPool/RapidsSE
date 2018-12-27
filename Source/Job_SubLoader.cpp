@@ -199,53 +199,41 @@ bool Job_SubLoader::bChunk(void)
   Formatters* pFormatters = &m_pJob_LoadTable->m_xFormatters;
 
   i8 i_Seek;
-  i8 nBytes;
+  i8 nChunkBytes;
+  
   Stz* aRecord;
-  i8 iLength;
-  bool bValid = false;
-  bool bBlankLine;
+  i8 nRecordBytes;
 
   // read first chunk
-  m_bMoreChunks = bNextChunkInfo(i_Seek,nBytes);
+  m_bMoreChunks = bNextChunkInfo(i_Seek,nChunkBytes);
   if (! m_bMoreChunks)
     return false;
   
-  m_pRecordLoader->vReadSpecificChunk(i_Seek,nBytes);
+  m_pRecordLoader->vReadSpecificChunk(i_Seek,nChunkBytes);
   
   for (;;) {
     
     // fetch next record from current chunk
-    bool bHaveRecord = m_pRecordLoader->bGetRecord(&aRecord,iLength);
+    bool bHaveRecord = m_pRecordLoader->bGetRecord(&aRecord,nRecordBytes);
     if (! bHaveRecord)
       return true;
     
-    if (iLength > C_MAX_RECORD) {
-      m_xNode[i_Node].m_ziRowsInvalid.iInc();
-      if ( ! gpAttachMap->m_bMetadata ) {
-        vWarn("Skipping row %.20s... - record in file > %lld bytes\n"_Stz,
-              aRecord,
-              C_MAX_RECORD);
-      }
+    eEC eError = eProcessRecord(pSession, iParentJobId, pTable,
+                                pFormatters,
+                                aRecord, nRecordBytes, DS_LOAD);
+    
+    if (EC_NONE == eError)
       continue;
-    }
     
-    bValid = bFormatRow(pTable, pFormatters, aRecord, iLength, bBlankLine);
-    if (! bValid) {
-    
-      if ( ! bBlankLine )
-        m_xNode[i_Node].m_ziRowsInvalid.iInc();
+    if (EC_BLANKLINE == eError)
       continue;
-    }
+
+    m_xNode[i_Node].m_ziRowsInvalid.iInc();
     
-    // attempt to add record into a buffer
-    eEC eErrorCode = eInsertRow(pSession, pTable, DS_LOAD, iParentJobId);
+    if (EC_MAX_ROW_LENGTH == eError)
+      continue;
     
-    // was there an error ?
-    if (eErrorCode != EC_NONE) {
-      vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eErrorCode]);
-      return false;
-    }
-    
+    return false;
   }
 
   NEVER_REACH

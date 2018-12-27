@@ -37,7 +37,8 @@ namespace JobModel
                         Table* pTable,
                         Formatters* pFormatters,
                         Stz* aRecord,
-                        i8 nBytes);
+                        i8 nBytes,
+                        eDS eDataSource);
   
   //private:
     void vNewWorkingBuffer(Table* pTable, i8 iPartition);

@@ -282,7 +282,7 @@ bool Job_Ingest::bChunk(void)
     
     eEC eError = eProcessRecord(m_pSession, m_iJobId, m_pTable,
                                 &gpAttachMap->m_xFormatters,
-                                m_aRecord, m_nBytes);
+                                m_aRecord, m_nBytes, DS_INGEST);
     
     if (EC_NONE == eError)
       continue;
