@@ -192,13 +192,19 @@ bool Job_SubLoader::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
+  i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
   Session* pSession = m_pJob_LoadTable->m_pSession;
   Table* pTable = m_pJob_LoadTable->m_pTable;
   i8 iParentJobId = m_pJob_LoadTable->m_iJobId;
-  
+  Formatters* pFormatters = &m_pJob_LoadTable->m_xFormatters;
+
   i8 i_Seek;
   i8 nBytes;
-  
+  Stz* aRawData;
+  i8 iLength;
+  bool bValid = false;
+  bool bBlankLine;
+
   // read first chunk
   m_bMoreChunks = bNextChunkInfo(i_Seek,nBytes);
   if (! m_bMoreChunks)
@@ -211,22 +217,7 @@ bool Job_SubLoader::bChunk(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
-    
-    Stz* aRawData;
-    i8 iLength;
-    bool bValid = false;
-    bool bBlankLine;
-    i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
-    
-    i8 i_Seek;
-    i8 nBytes;
-    
-    Formatters* pFormatters = &m_pJob_LoadTable->m_xFormatters;
-    Table* pTable = m_pJob_LoadTable->m_pTable;
-    
-    if (! m_bMoreChunks)
-      return false;
-    
+        
     while (true) {
       
       // fetch next record from current chunk
