@@ -11,7 +11,7 @@
 
   params| pJob_Ingest |
 
-  pJob_Ingest job_ingest.begin
+  pJob_Ingest job_ingest.begin not if exit then
 
   begin pJob_Ingest job_ingest.chunk while repeat
 

@@ -29,7 +29,9 @@ void Step::vJob_IngestBegin(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_Ingest.begin"_Stz);
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
-  pJob_Ingest->bBegin();
+  bool bBegun = pJob_Ingest->bBegin();
+  
+  mpTask->m_pDataStack->vPushInt((i8)bBegun);
   
   EXIT();
 }

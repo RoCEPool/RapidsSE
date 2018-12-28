@@ -11,7 +11,7 @@
 
   params| pJob_SubLoader |
 
-  pJob_SubLoader job_subLoader.begin
+  pJob_SubLoader job_subLoader.begin not if exit then
 
   begin pJob_SubLoader job_subLoader.chunk while repeat
 

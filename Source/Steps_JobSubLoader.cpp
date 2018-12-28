@@ -70,7 +70,9 @@ void Step::vJob_SubLoaderBegin(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subLoader.begin"_Stz);
   Job_SubLoader* pJob_SubLoader = _pJob_SubLoader(pPtrJob_SubLoader);
 
-  pJob_SubLoader->bBegin();
+  bool bBegun = pJob_SubLoader->bBegin();
+  
+  mpTask->m_pDataStack->vPushInt((i8)bBegun);
   
   EXIT();
 }
