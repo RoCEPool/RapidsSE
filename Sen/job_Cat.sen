@@ -5,6 +5,16 @@
 " job_Cat.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* read chunks from input, write them to output                               */
+/*----------------------------------------------------------------------------*/
+: Cat_process ( pJob_Cat -- )
+
+  params| pJob_Cat |
+
+  pJob_Cat job_cat.cat
+;
+
+/*----------------------------------------------------------------------------*/
 /* Job_Cat request (on command node)                                          */
 /*----------------------------------------------------------------------------*/
 : Cat_req (  -- <R> )
@@ -13,7 +23,7 @@
 
   job::this locals| pJob_Cat |
 
-  pJob_Cat job_cat.cat
+  pJob_Cat Cat_process
 
   <<am <DONE_REQ>
 ;

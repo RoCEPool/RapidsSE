@@ -5,6 +5,16 @@
 " job_Repeater.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* read chunks from input, write them to output                               */
+/*----------------------------------------------------------------------------*/
+: Repeater_process ( pJob_Repeater -- )
+
+  params| pJob_Repeater |
+
+  pJob_Repeater job_repeater.repeat
+;
+
+/*----------------------------------------------------------------------------*/
 /* Job_Repeater request (on command node)                                     */
 /*----------------------------------------------------------------------------*/
 : Repeater_req (  -- <R> )
@@ -13,7 +23,7 @@
 
   job::this locals| pJob_Repeater |
 
-  pJob_Repeater job_repeater.repeat
+  pJob_Repeater Repeater_process
 
   <<am <DONE_REQ>
 ;

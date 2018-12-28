@@ -5,6 +5,16 @@
 " job_Sink.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* read chunks from input, write them to output                               */
+/*----------------------------------------------------------------------------*/
+: Sink_process ( pJob_Sink -- )
+
+  params| pJob_Sink |
+
+  pJob_Sink job_sink.sink
+;
+
+/*----------------------------------------------------------------------------*/
 /* Job_Sink request (on command node)                                         */
 /*----------------------------------------------------------------------------*/
 : Sink_req (  -- <R> )
@@ -13,7 +23,7 @@
 
   job::this locals| pJob_Sink |
 
-  pJob_Sink job_sink.sink
+  pJob_Sink Sink_process
 
   <<am <DONE_REQ>
 ;
