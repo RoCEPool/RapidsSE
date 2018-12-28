@@ -619,10 +619,10 @@ void JobModel::vJob_LoadTable_post(Interface::Session* pSession, Job* pJob)
     }
     if (iRowsInvalid || iRowsSkipped)
       vTrace("error: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-             iRowsProcessed,iRowsInvalid,iRowsSkipped);
+             iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
     else
       vTrace("success: %lld rows loaded (%lld invalid rows %lld skipped rows)\n"_Stz,
-           iRowsProcessed,iRowsInvalid,iRowsSkipped);
+           iRowsProcessed-iRowsSkipped,iRowsInvalid,iRowsSkipped);
   }
 }
 

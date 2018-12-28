@@ -183,24 +183,25 @@ bool Job_WriteBuffer::bInsertRows(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Loading ?
   if (m_eDataSource == DS_LOAD) {
-    Job__Find* pFindJob = new Job__Find;
-    pFindJob->m_iJobId = m_iParentJobId;
-    
-    gpAttachMap->m_pParticipatingJobs->vGrabLock();
-    Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-    gpAttachMap->m_pParticipatingJobs->vDropLock();
-    
-    delete pFindJob;
-    
-    Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
-  
-    // add the number of rows into rows processed
-    i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_LoadTable->m_xNode[iThisNode].m_ziRowsProcessed += m_nRows;
+//    Job__Find* pFindJob = new Job__Find;
+//    pFindJob->m_iJobId = m_iParentJobId;
+//
+//    gpAttachMap->m_pParticipatingJobs->vGrabLock();
+//    Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+//    gpAttachMap->m_pParticipatingJobs->vDropLock();
+//
+//    delete pFindJob;
+//
+//    Job_LoadTable* pJob_LoadTable = static_cast<Job_LoadTable*>(pJob);
+//
+//    // add the number of rows into rows processed
+//    i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
+//    pJob_LoadTable->m_xNode[iThisNode].m_ziRowsProcessed += m_nRows;
     
     if (C_UNKNOWN != m_nWriteBehindBuffers)
       pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
   }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Insering ?
   else if (m_eDataSource == DS_INSERT) {

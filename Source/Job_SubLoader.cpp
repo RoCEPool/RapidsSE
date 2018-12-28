@@ -225,8 +225,10 @@ bool Job_SubLoader::bChunk(void)
                                 pFormatters,
                                 aRecord, nRecordBytes, DS_LOAD);
     
-    if (EC_NONE == eError)
+    if (EC_NONE == eError) {
+      m_xNode[i_Node].m_ziRowsProcessed.iInc();
       continue;
+    }
     
     if (EC_BLANKLINE == eError)
       continue;
@@ -262,6 +264,10 @@ void Job_SubLoader::vEnd(void)
   // add invalid rows into parent load table job
   i8 iRowsInvalid = *m_xNode[i_Node].m_ziRowsInvalid;
   m_pJob_LoadTable->m_xNode[i_Node].m_ziRowsInvalid += iRowsInvalid;
+  
+  // add processed rows into parent load table job
+  i8 iRowsProcessed = *m_xNode[i_Node].m_ziRowsProcessed;
+  m_pJob_LoadTable->m_xNode[i_Node].m_ziRowsProcessed += iRowsProcessed;
   
   // close the file being loaded
   m_pRecordLoader->vCloseFile();
