@@ -272,13 +272,9 @@ bool Job_Cat::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
-  vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputPath.aStr());
+  bool bCallAgain = m_pIoCopy->bCopyChunk();
   
-  while (m_pIoCopy->bCopyChunk())
-    {;}
-  
-  
-  return false;
+  return bCallAgain;
 }
 
 /*----------------------------------------------------------------------------*/

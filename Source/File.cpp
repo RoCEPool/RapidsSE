@@ -129,8 +129,8 @@ void File::vClose(void)
 
   m_oSysCall.vClear();
 
-  // never close stdin
-  if (bIsStdin()) {
+  // never close stdin or stdout
+  if (bIsStdin() || bIsStdout()) {
     vReset();
     return;
   }
@@ -276,7 +276,17 @@ bool File::bIsStdout(void)
 bool File::bOpen(Stz* aFilePath, Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  if (aFilePath->bSame("stdin"_Stz)) {
+    vUseStdin();
+    return true;
+  }
 
+  if (aFilePath->bSame("stdout"_Stz)) {
+    vUseStdout();
+    return true;
+  }
+  
   if (m_aFile) {
     vWarn("File::bOpen: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
     vClose();
@@ -377,10 +387,8 @@ void File::vReset(void)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
-  if (m_aFile) {
+  if (m_aFile && ! bIsStdin() && ! bIsStdout())
     vWarn("File::vReset: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
-    vClose();
-  }
 
   m_oSysCall.vClear();
   
@@ -535,6 +543,25 @@ void File::vUseStdin(void)
   m_sFilePath   = "stdin"_Stz;
   m_sOpenMode   = C_OPEN_READ;
   m_aFile       = stdin;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use stdout                                                                 */
+/*----------------------------------------------------------------------------*/
+void File::vUseStdout(void)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  if (m_aFile) {
+    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sFilePath.aChar());
+    vClose();
+  }
+  
+  m_oSysCall.vClear();
+  
+  m_sFilePath   = "stdout"_Stz;
+  m_sOpenMode   = C_OPEN_WRITE;
+  m_aFile       = stdout;
 }
 
 /*----------------------------------------------------------------------------*/
