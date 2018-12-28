@@ -3795,7 +3795,7 @@ void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
   for (Item* pItem = pFirstItem();
        pItem != nullptr;
        pItem = pNextItem(pItem))
-    ;
+    {;}
   
   for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,0);
        pTestEntry;
