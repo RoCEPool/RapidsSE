@@ -153,6 +153,31 @@ void Job_LoadTable::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* begin loading                                                             */
+/*----------------------------------------------------------------------------*/
+bool Job_LoadTable::bBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find next chunk in file being loaded                                       */
+/*----------------------------------------------------------------------------*/
+bool Job_LoadTable::bChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  if (! m_pLoadMap)
+    m_pLoadMap = new LoadMap(m_sFileName);
+  
+  bool bCallAgain = m_pLoadMap->bFindChunk();
+  
+  return bCallAgain;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump the load map                                                          */
 /*----------------------------------------------------------------------------*/
 void Job_LoadTable::vDumpMap(void)
@@ -165,18 +190,11 @@ void Job_LoadTable::vDumpMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find next chunk in file being loaded                                       */
+/* end loading                                                                */
 /*----------------------------------------------------------------------------*/
-bool Job_LoadTable::bFindChunk(void)
+void Job_LoadTable::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
-  
-  if (! m_pLoadMap)
-    m_pLoadMap = new LoadMap(m_sFileName);
-  
-  bool b = m_pLoadMap->bFindChunk();
-  
-  return b;
 }
 
 /*----------------------------------------------------------------------------*/

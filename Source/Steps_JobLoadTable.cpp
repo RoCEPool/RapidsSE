@@ -11,10 +11,31 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobLoadTable(void)
 {
+  vAddStep("job_loadTable.begin"_Stz,         &Step::vJob_LoadTableBegin);
   vAddStep("job_loadTable.chunk"_Stz,         &Step::vJob_LoadTableChunk);
   vAddStep("job_loadTable.dumpMap"_Stz,       &Step::vJob_LoadTableDumpMap);
+  vAddStep("job_loadTable.end"_Stz,           &Step::vJob_LoadTableEnd);
   vAddStep("job_loadTable.filePath@"_Stz,     &Step::vJob_LoadTableFilePathFetch);
   vAddStep("job_loadTable.table!"_Stz,        &Step::vJob_LoadTableTableStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* loadTable.begin -- begin load of file                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_LoadTableBegin(MP_Task mpTask)
+{
+  ENTRY("vJob_LoadTableBegin"_Stz);
+  
+  Object* pPtrJob_LoadTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
+    THROW_INVALID_DSTACK("job_loadTable.begin"_Stz);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
+  
+  bool bBegun = pJob_LoadTable->bBegin();
+  
+  mpTask->m_pDataStack->vPushInt((i8)bBegun);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +53,7 @@ void Step::vJob_LoadTableChunk(MP_Task mpTask)
   bool bFoundChunk = false;
   
   do {
-    bFoundChunk = pJob_LoadTable->bFindChunk();
+    bFoundChunk = pJob_LoadTable->bChunk();
   } while (bFoundChunk);
   
   EXIT();
@@ -52,6 +73,23 @@ void Step::vJob_LoadTableDumpMap(MP_Task mpTask)
 
   pJob_LoadTable->vDumpMap();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loadTable.end -- end load of file                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_LoadTableEnd(MP_Task mpTask)
+{
+  ENTRY("vJob_LoadTableEnd"_Stz);
+  
+  Object* pPtrJob_LoadTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
+    THROW_INVALID_DSTACK("job_loadTable.end"_Stz);
+  Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
+  
+  pJob_LoadTable->vEnd();
+
   EXIT();
 }
 

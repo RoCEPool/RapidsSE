@@ -29,8 +29,10 @@ namespace JobModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    bool bBegin(void);
+    bool bChunk(void);
     void vDumpMap(void);
-    bool bFindChunk(void);
+    void vEnd(void);
     bool bPopulateJob(TokenVec* pTokenVec);
   
     Table* pTable(void);
