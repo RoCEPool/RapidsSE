@@ -268,19 +268,16 @@ bool Job_Sink::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
-  for (;;) {
+  i8 nBytesRead = m_pIoChunk->nReadBytes(-1);
+  if (! nBytesRead)
+    return false;
   
-    i8 nBytesRead = m_pIoChunk->nReadBytes(-1);
-    if (! nBytesRead)
-      break;
-    
-    //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStr());
-    
-    if (m_pByteRate)
-      m_pByteRate->vAddBytes(nBytesRead);
-  }
+  //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStr());
   
-  return false;
+  if (m_pByteRate)
+    m_pByteRate->vAddBytes(nBytesRead);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
