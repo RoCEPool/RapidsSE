@@ -5,8 +5,6 @@
 
 namespace JobModel
 {
-  static const i8 C_MAX_RECORD = C_16KB;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_SubLoader : public Job,
                         public JobWriteBehind
@@ -37,8 +35,6 @@ namespace JobModel
     bool bChunk(void);
     void vEnd(void);
   
-    bool bNextChunkInfo(i8& i_Seek, i8& nBytes);
-
     void vShow(void);
     Footer* aFooter(void);
 
