@@ -243,21 +243,30 @@ void JobModel::vJob_Sink_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* sink data                                                                  */
+/* begin sink                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Job_Sink::bChunk(void)
+bool Job_Sink::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
   vTrace("Sink data from %s\n"_Stz,m_sFileName.aStr());
   
   bool bOpened = m_pIoChunk->bOpenRead(m_sFileName);
-  ASSERT(bOpened);
   
   if (m_pByteRate) {
     m_pByteRate->vSetReporting("  sink : "_Stz,C_1GB * 10);
     m_pByteRate->vBeginTiming();
   }
+  
+  return bOpened;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sink data                                                                  */
+/*----------------------------------------------------------------------------*/
+bool Job_Sink::bChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
   for (;;) {
   
@@ -270,13 +279,21 @@ bool Job_Sink::bChunk(void)
     if (m_pByteRate)
       m_pByteRate->vAddBytes(nBytesRead);
   }
+  
+  return false;
+}
 
+/*----------------------------------------------------------------------------*/
+/* end sink                                                                   */
+/*----------------------------------------------------------------------------*/
+void Job_Sink::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
+  
   if (m_pByteRate)
     m_pByteRate->vEndTiming();
   
   m_pIoChunk->vCloseFile();
-  
-  return false;
 }
 
 /*============================================================================*/

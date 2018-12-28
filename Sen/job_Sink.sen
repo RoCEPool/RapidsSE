@@ -11,7 +11,11 @@
 
   params| pJob_Sink |
 
+  pJob_Sink job_sink.begin not if exit then
+
   begin pJob_Sink job_sink.chunk while repeat
+
+  pJob_Sink job_sink.end
 ;
 
 /*----------------------------------------------------------------------------*/
