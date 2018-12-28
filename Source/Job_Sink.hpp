@@ -29,7 +29,9 @@ namespace JobModel
   public:
     void vShow(void);
   
-    void   vSink(void);
+    bool bBegin(void);
+    bool bChunk(void);
+    void vEnd(void);
 
   public:
     Footer* aFooter(void);

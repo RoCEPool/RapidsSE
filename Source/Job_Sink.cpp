@@ -245,7 +245,7 @@ void JobModel::vJob_Sink_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* sink data                                                                  */
 /*----------------------------------------------------------------------------*/
-void Job_Sink::vSink(void)
+bool Job_Sink::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
@@ -275,6 +275,8 @@ void Job_Sink::vSink(void)
     m_pByteRate->vEndTiming();
   
   m_pIoChunk->vCloseFile();
+  
+  return false;
 }
 
 /*============================================================================*/

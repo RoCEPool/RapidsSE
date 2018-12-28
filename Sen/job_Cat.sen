@@ -11,7 +11,7 @@
 
   params| pJob_Cat |
 
-  pJob_Cat job_cat.cat
+  begin pJob_Cat job_cat.chunk while repeat
 ;
 
 /*----------------------------------------------------------------------------*/

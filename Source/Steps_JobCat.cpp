@@ -11,22 +11,22 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobCat(void)
 {
-  vAddStep("job_cat.cat"_Stz,     &Step::vJob_CatCat);
+  vAddStep("job_cat.chunk"_Stz,     &Step::vJob_CatChunk);
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_cat.cat -- cat data from pipe                                          */
+/* job_cat.chunk -- cat data from pipe                                        */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_CatCat(MP_Task mpTask)
+void Step::vJob_CatChunk(MP_Task mpTask)
 {
-  ENTRY("vJob_CatCat"_Stz);
+  ENTRY("vJob_CatChunk"_Stz);
   
   Object* pPtrJobCat;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJobCat) )
-    THROW_INVALID_DSTACK("job_cat.cat"_Stz);
+    THROW_INVALID_DSTACK("job_cat.chunk"_Stz);
   Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
   
-  pJob_Cat->vCat();
+  bool bCallAgain = pJob_Cat->bChunk();
   
   EXIT();
 }

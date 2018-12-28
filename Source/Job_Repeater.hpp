@@ -33,7 +33,9 @@ namespace JobModel
   public:
     void vShow(void);
   
-    void vRepeat(void);
+    bool bBegin(void);
+    bool bChunk(void);
+    void vEnd(void);
 
   public:
     Footer* aFooter(void);

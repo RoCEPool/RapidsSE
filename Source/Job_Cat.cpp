@@ -247,7 +247,7 @@ void JobModel::vJob_Cat_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* copy from input to output                                                  */
 /*----------------------------------------------------------------------------*/
-void Job_Cat::vCat(void)
+bool Job_Cat::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
@@ -263,6 +263,8 @@ void Job_Cat::vCat(void)
     {;}
   
   m_pIoCopy->vCloseBoth();
+  
+  return false;
 }
 
 /*============================================================================*/

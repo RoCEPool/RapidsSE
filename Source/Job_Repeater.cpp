@@ -252,7 +252,7 @@ void JobModel::vJob_Repeater_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* repeatedly copy from input to output                                       */
 /*----------------------------------------------------------------------------*/
-void Job_Repeater::vRepeat(void)
+bool Job_Repeater::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   

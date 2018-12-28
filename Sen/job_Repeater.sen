@@ -11,7 +11,7 @@
 
   params| pJob_Repeater |
 
-  pJob_Repeater job_repeater.repeat
+  begin pJob_Repeater job_repeater.chunk while repeat
 ;
 
 /*----------------------------------------------------------------------------*/

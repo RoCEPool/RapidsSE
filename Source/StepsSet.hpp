@@ -501,7 +501,7 @@
   static void vJob_AnalyzeTableIsDetailed(Tasks::MP_Task mpTask);
 
   // job cat
-  static void vJob_CatCat(Tasks::MP_Task mpTask);
+  static void vJob_CatChunk(Tasks::MP_Task mpTask);
 
   // job CreateIndex
   static void vJob_CreateIndexIsUniqueFetch(Tasks::MP_Task mpTask);
@@ -570,10 +570,6 @@
   // job NodeInfo
   static void vJob_NodeInfoNodeNameFetch(Tasks::MP_Task mpTask);
 
-  // job subPublish
-  static void vJob_SubPublishSlotFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubPublishPublishJobIdFetch(Tasks::MP_Task mpTask);
-
   // job publish
   static void vJob_PublishPublish(Tasks::MP_Task mpTask);
   static void vJob_PublishSpawnSub(Tasks::MP_Task mpTask);
@@ -591,14 +587,14 @@
   static void vJob_ReceiverNodeStore(Tasks::MP_Task mpTask);
 
   // job repeater
-  static void vJob_RepeaterRepeat(Tasks::MP_Task mpTask);
+  static void vJob_RepeaterChunk(Tasks::MP_Task mpTask);
 
   // job SelectTable
   static void vJob_SelectTablePartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_SelectTableTableStore(Tasks::MP_Task mpTask);
 
   // job sink
-  static void vJob_SinkSink(Tasks::MP_Task mpTask);
+  static void vJob_SinkChunk(Tasks::MP_Task mpTask);
 
   // Job subLoader
   static void vJob_SubLoaderBegin(Tasks::MP_Task mpTask);
@@ -606,6 +602,9 @@
   static void vJob_SubLoaderEnd(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderSpawn(Tasks::MP_Task mpTask);
 
+  // job subPublish
+  static void vJob_SubPublishSlotFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubPublishPublishJobIdFetch(Tasks::MP_Task mpTask);
 
   // job subPurge
   static void vJob_SubPurgeSlotFetch(Tasks::MP_Task mpTask);

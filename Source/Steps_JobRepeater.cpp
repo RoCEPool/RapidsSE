@@ -11,22 +11,22 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobRepeater(void)
 {
-  vAddStep("job_repeater.repeat"_Stz,     &Step::vJob_RepeaterRepeat);
+  vAddStep("job_repeater.chunk"_Stz,     &Step::vJob_RepeaterChunk);
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_repeater.repeat -- indefinietly copy file into pipe                    */
+/* job_repeater.chunk -- indefinietly copy file into pipe                    */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_RepeaterRepeat(MP_Task mpTask)
+void Step::vJob_RepeaterChunk(MP_Task mpTask)
 {
-  ENTRY("vJob_RepeaterRepeat"_Stz);
+  ENTRY("vJob_RepeaterChunk"_Stz);
   
   Object* pPtrJobRepeater;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJobRepeater) )
-    THROW_INVALID_DSTACK("job_repeater.repeat"_Stz);
+    THROW_INVALID_DSTACK("job_repeater.chunk"_Stz);
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pPtrJobRepeater);
   
-  pJob_Repeater->vRepeat();
+  bool bCallAgain = pJob_Repeater->bChunk();
   
   EXIT();
 }
