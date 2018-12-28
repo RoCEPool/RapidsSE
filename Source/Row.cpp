@@ -56,18 +56,18 @@ Row::~Row(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Row::bFormatRow(ColumnVec* pColVec,
                      Formatters* pFormatters,
-                     Stz* aRawData, i8 iRawLength,
-                     Stz* aRowData, i8& iRowLength,
+                     Stz* aRecord, i8 nRecordBytes,
+                     Stz* aRow, i8& nRowBytes,
                      bool &bBlankLine,
                      bool bAllowNonPrintable)
 {
-  char* aSrc = aRawData->aChar();
+  char* aSrc = aRecord->aChar();
   bBlankLine = false;
   i8 nColumns = pColVec->nItems() - 1;
   
-  Stz* pOffset = aRowData;
+  Stz* pOffset = aRow;
   Stz* aDst = pOffset + C_COLUMN_OFFSET_SIZE * nColumns;
-  iRowLength = C_COLUMN_OFFSET_SIZE * nColumns;
+  nRowBytes = C_COLUMN_OFFSET_SIZE * nColumns;
   
   char* aStart = aSrc;
   
@@ -125,7 +125,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
       if ( ! gpAttachMap->m_bMetadata ) {
         vWarn("Skipping row - invalid field %s in record: "_Stz,
               pColumn->sColumnName().aChar());
-        for (char* a = (char*)aRawData; *a && '\n' != *a && '\r' != *a; a++)
+        for (char* a = (char*)aRecord; *a && '\n' != *a && '\r' != *a; a++)
           vTrace("%c"_Stz,*a);
         vTrace("\n"_Stz);
       }
@@ -133,7 +133,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     }
     
     // save offset
-    *((u2*)pOffset->aChar()) = iRowLength;
+    *((u2*)pOffset->aChar()) = nRowBytes;
     
     i8 iColumnLength;
     
@@ -149,7 +149,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     pOffset += C_COLUMN_OFFSET_SIZE;
     
     // increment row length
-    iRowLength += iColumnLength;
+    nRowBytes += iColumnLength;
     
     // move to next column location
     aDst += iColumnLength;
@@ -165,18 +165,18 @@ bool Row::bFormatRow(ColumnVec* pColVec,
 /*----------------------------------------------------------------------------*/
 bool Row::bFormatRow(ColumnVec* pColVec,
                      Formatters* pFormatters,
-                     Stz* aRawData, i8 iRawLength,
-                     Stz* aRowData, i8& iRowLength,
+                     Stz* aRecord, i8 nRecordBytes,
+                     Stz* aRow, i8& aRowBytes,
                      bool &bBlankLine,
                      bool bAllowNonPrintable)
 {
-  char* aSrc = aRawData->aChar();
+  char* aSrc = aRecord->aChar();
   bBlankLine = false;
   i8 nColumns = pColVec->nItems() - 1;
   
-  Stz* pOffset = aRowData;
+  Stz* pOffset = aRow;
   Stz* aDst = pOffset + C_COLUMN_OFFSET_SIZE * nColumns;
-  iRowLength = C_COLUMN_OFFSET_SIZE * nColumns;
+  aRowBytes = C_COLUMN_OFFSET_SIZE * nColumns;
   
   char* aStart = aSrc;
   
@@ -221,7 +221,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
       if ( ! gpAttachMap->m_bMetadata ) {
         vWarn("Skipping row - invalid field %s in record: "_Stz,
               pColumn->sColumnName().aChar());
-        for (char* a = (char*)aRawData; *a && '\n' != *a && '\r' != *a; a++)
+        for (char* a = (char*)aRecord; *a && '\n' != *a && '\r' != *a; a++)
           vTrace("%c"_Stz,*a);
         vTrace("\n"_Stz);
       }
@@ -229,7 +229,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     }
     
     // save offset
-    *((u2*)pOffset->aChar()) = iRowLength;
+    *((u2*)pOffset->aChar()) = aRowBytes;
     
     i8 iColumnLength = DtmLib::iSize(eDatumType, aDst->aChar());
     
@@ -237,7 +237,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
     pOffset += C_COLUMN_OFFSET_SIZE;
     
     // increment row length
-    iRowLength += iColumnLength;
+    aRowBytes += iColumnLength;
     
     // move to next column location
     aDst += iColumnLength;
