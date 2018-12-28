@@ -245,6 +245,27 @@ void JobModel::vJob_Cat_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* begin cat                                                                  */
+/*----------------------------------------------------------------------------*/
+bool Job_Cat::bBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
+  
+  if (! m_pIoCopy->bOpenRead(m_sFileName))
+    return false;
+  
+  if (! m_pIoCopy->bOpenWrite(m_sOutputPath))
+    return false;
+  
+  if (m_bStatistics)
+    m_pIoCopy->vWithStatistics("  cat : "_Stz);
+
+  vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputPath.aStr());
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy from input to output                                                  */
 /*----------------------------------------------------------------------------*/
 bool Job_Cat::bChunk(void)
@@ -253,18 +274,21 @@ bool Job_Cat::bChunk(void)
   
   vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputPath.aStr());
   
-  m_pIoCopy->bOpenRead(m_sFileName);
-  m_pIoCopy->bOpenWrite(m_sOutputPath);
-  
-  if (m_bStatistics)
-    m_pIoCopy->vWithStatistics("  cat : "_Stz);
-  
   while (m_pIoCopy->bCopyChunk())
     {;}
   
-  m_pIoCopy->vCloseBoth();
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end cat                                                                    */
+/*----------------------------------------------------------------------------*/
+void Job_Cat::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
+  
+   m_pIoCopy->vCloseBoth();
 }
 
 /*============================================================================*/

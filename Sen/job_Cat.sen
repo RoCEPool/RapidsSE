@@ -11,7 +11,11 @@
 
   params| pJob_Cat |
 
+  pJob_Cat job_cat.begin not if exit then
+
   begin pJob_Cat job_cat.chunk while repeat
+
+  pJob_Cat job_cat.end
 ;
 
 /*----------------------------------------------------------------------------*/
