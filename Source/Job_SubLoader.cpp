@@ -171,7 +171,7 @@ void Job_SubLoader::vJob_LoadTable(Job_LoadTable* pJob_LoadTable)
 /*----------------------------------------------------------------------------*/
 /* begin loading                                                              */
 /*----------------------------------------------------------------------------*/
-void Job_SubLoader::vBegin(void)
+bool Job_SubLoader::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
@@ -180,7 +180,8 @@ void Job_SubLoader::vBegin(void)
   
   // open the chunked file
   bool bOpened = m_pRecordLoader->bOpenFile(sPath);
-  ASSERT(bOpened);
+  
+  return bOpened;
 }
 
 /*----------------------------------------------------------------------------*/

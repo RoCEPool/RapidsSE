@@ -251,7 +251,8 @@ void Job_Sink::vSink(void)
   
   vTrace("Sink data from %s\n"_Stz,m_sFileName.aStr());
   
-  m_pIoChunk->vOpenRead(m_sFileName);
+  bool bOpened = m_pIoChunk->bOpenRead(m_sFileName);
+  ASSERT(bOpened);
   
   if (m_pByteRate) {
     m_pByteRate->vSetReporting("  sink : "_Stz,C_1GB * 10);

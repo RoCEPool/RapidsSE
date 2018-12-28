@@ -18,7 +18,7 @@ void Step::vAddSteps_JobIngest(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Ingest.begin -- begin loading                                       */
+/* Job_Ingest.begin -- begin ingesting                                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_IngestBegin(MP_Task mpTask)
 {
@@ -29,7 +29,7 @@ void Step::vJob_IngestBegin(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_Ingest.begin"_Stz);
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
-  pJob_Ingest->vBegin();
+  pJob_Ingest->bBegin();
   
   EXIT();
 }
@@ -54,7 +54,7 @@ void Step::vJob_IngestChunk(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Job_Ingest.end -- end loading                                              */
+/* Job_Ingest.end -- end ingesting                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_IngestEnd(MP_Task mpTask)
 {

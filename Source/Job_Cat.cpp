@@ -253,8 +253,8 @@ void Job_Cat::vCat(void)
   
   vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputPath.aStr());
   
-  m_pIoCopy->vOpenRead(m_sFileName);
-  m_pIoCopy->vOpenWrite(m_sOutputPath);
+  m_pIoCopy->bOpenRead(m_sFileName);
+  m_pIoCopy->bOpenWrite(m_sOutputPath);
   
   if (m_bStatistics)
     m_pIoCopy->vWithStatistics("  cat : "_Stz);

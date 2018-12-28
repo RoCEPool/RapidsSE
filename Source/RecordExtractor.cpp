@@ -100,9 +100,9 @@ bool RecordExtractor::bOpenFile(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  FileChunk::vOpenRead(sPath);
+  bool bOpened = FileChunk::bOpenRead(sPath);
   
-  return true;
+  return bOpened;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -52,7 +52,7 @@ Row::~Row(void) noexcept(false)
 
 #ifdef _VLQ
 /*----------------------------------------------------------------------------*/
-/* extract row from given raw record                                          */
+/* create a row from given record                                             */
 /*----------------------------------------------------------------------------*/
 bool Row::bFormatRow(ColumnVec* pColVec,
                      Formatters* pFormatters,
@@ -161,7 +161,7 @@ bool Row::bFormatRow(ColumnVec* pColVec,
 }
 #else
 /*----------------------------------------------------------------------------*/
-/* extract row from given raw record                                          */
+/* create a row from given record                                             */
 /*----------------------------------------------------------------------------*/
 bool Row::bFormatRow(ColumnVec* pColVec,
                      Formatters* pFormatters,

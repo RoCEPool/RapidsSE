@@ -26,8 +26,8 @@ namespace Chunks
   
     void  vCloseBoth(void);
     bool  bCopyChunk(void);
-    void  vOpenRead(s256& sPath);
-    void  vOpenWrite(s256& sPath);
+    bool  bOpenRead(s256& sPath);
+    bool  bOpenWrite(s256& sPath);
     void  vRewindInput(void);
     void  vWithStatistics(Stz* aPrefix);
   

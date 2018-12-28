@@ -114,21 +114,25 @@ bool IoCopy::bCopyChunk(void)
 /*----------------------------------------------------------------------------*/
 /* open input file                                                            */
 /*----------------------------------------------------------------------------*/
-void IoCopy::vOpenRead(s256& sPath)
+bool IoCopy::bOpenRead(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCOPY,_FOOTER_);
   
-  m_pInChunk->vOpenRead(sPath);
+  bool bOpened = m_pInChunk->bOpenRead(sPath);
+  
+  return bOpened;
 }
 
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-void IoCopy::vOpenWrite(s256& sPath)
+bool IoCopy::bOpenWrite(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCOPY,_FOOTER_);
   
-  m_pOutChunk->vOpenWrite(sPath);
+  bool bOpened = m_pOutChunk->bOpenWrite(sPath);
+  
+  return bOpened;
 }
 
 /*----------------------------------------------------------------------------*/

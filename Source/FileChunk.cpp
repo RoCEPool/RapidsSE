@@ -76,31 +76,27 @@ void FileChunk::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-void FileChunk::vOpenRead(s256& sPath)
+bool FileChunk::bOpenRead(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   // open the file
-  bool b = m_oFile.bOpen(sPath,C_OPEN_READ);
-  RASSERT(b);
+  bool bOpened = m_oFile.bOpen(sPath,C_OPEN_READ);
   
-  // set buffering
-  //m_oFile.vSetBuffering(C_1MB);
+  return bOpened;
 }
 
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-void FileChunk::vOpenWrite(s256& sPath)
+bool FileChunk::bOpenWrite(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   // open the file
-  bool b = m_oFile.bOpen(sPath,C_OPEN_WRITE);
-  RASSERT(b);
+  bool bOpened = m_oFile.bOpen(sPath,C_OPEN_WRITE);
   
-  // set buffering
-  //m_oFile.vSetBuffering(C_1MB);
+  return bOpened;
 }
 
 /*----------------------------------------------------------------------------*/

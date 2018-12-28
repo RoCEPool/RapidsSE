@@ -258,8 +258,8 @@ void Job_Repeater::vRepeat(void)
   
   vTrace("Repeat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputPath.aStr());
   
-  m_pIoCopy->vOpenRead(m_sFileName);
-  m_pIoCopy->vOpenWrite(m_sOutputPath);
+  bool bOpened = m_pIoCopy->bOpenRead(m_sFileName);
+  bOpened = m_pIoCopy->bOpenWrite(m_sOutputPath);
   
   if (m_bStatistics)
     m_pIoCopy->vWithStatistics("  repeat : "_Stz);

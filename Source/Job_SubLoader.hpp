@@ -31,7 +31,7 @@ namespace JobModel
     Job_LoadTable* pJob_LoadTable(void);
     void vJob_LoadTable(Job_LoadTable* pJob_LoadTable);
 
-    void vBegin(void);
+    bool bBegin(void);
     bool bChunk(void);
     void vEnd(void);
   

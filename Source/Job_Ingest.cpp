@@ -245,11 +245,11 @@ void JobModel::vJob_Ingest_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* begin ingesting                                                            */
 /*----------------------------------------------------------------------------*/
-void Job_Ingest::vBegin(void)
+bool Job_Ingest::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  m_pRecordIngestor->vOpenRead(m_sFileName);
+  bool bOpened = m_pRecordIngestor->bOpenRead(m_sFileName);
   //  bool bOpened = m_pRecordIngestor->bOpenFile(m_sFileName);
   //  if (! bOpened) {
   //    vTrace("Unable to open pipe: %s\n"_Stz,m_sFileName.aStr());
@@ -258,6 +258,8 @@ void Job_Ingest::vBegin(void)
   
   vTrace("Ingesting data into %s from %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
+  
+  return bOpened;
 }
 
 /*----------------------------------------------------------------------------*/
