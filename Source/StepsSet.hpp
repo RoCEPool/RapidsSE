@@ -558,13 +558,10 @@
   static void vJob_InsertRowSpawnJobWriteRow(Tasks::MP_Task mpTask);
 
   // job LoadTable
-  static void vJob_LoadTableAddValidRows(Tasks::MP_Task mpTask);
-  static void vJob_LoadTableChunkFile(Tasks::MP_Task mpTask);
+  static void vJob_LoadTableChunk(Tasks::MP_Task mpTask);
   static void vJob_LoadTableDumpMap(Tasks::MP_Task mpTask);
   static void vJob_LoadTableFilePathFetch(Tasks::MP_Task mpTask);
   static void vJob_LoadTableTableStore(Tasks::MP_Task mpTask);
-  static void vJob_LoadTableTaskFetch(Tasks::MP_Task mpTask);
-  static void vJob_LoadTableTaskStore(Tasks::MP_Task mpTask);
 
   // job NetHog
   static void vJob_NetHogHogNoFetch(Tasks::MP_Task mpTask);

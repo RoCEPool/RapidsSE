@@ -9,6 +9,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* read chunks from input, write them to output                               */
+/*----------------------------------------------------------------------------*/
+: LoadTable_process ( pJob_LoadTable -- )
+
+  params| pJob_LoadTable |
+
+  pJob_LoadTable Job_LoadTable.chunk
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute load table on this participant node (same as originator)           */
 /*----------------------------------------------------------------------------*/
 : LoadTable_executeLoad ( pJob_LoadTable --  )
@@ -37,7 +47,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // chunk the file being loaded
 
-  pJob_LoadTable Job_LoadTable.chunkFile
+  pJob_LoadTable LoadTable_process
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn and wait for sub-loaders

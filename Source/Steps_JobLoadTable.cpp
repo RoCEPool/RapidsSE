@@ -11,22 +11,22 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobLoadTable(void)
 {
-  vAddStep("job_loadTable.chunkFile"_Stz,     &Step::vJob_LoadTableChunkFile);
+  vAddStep("job_loadTable.chunk"_Stz,         &Step::vJob_LoadTableChunk);
   vAddStep("job_loadTable.dumpMap"_Stz,       &Step::vJob_LoadTableDumpMap);
   vAddStep("job_loadTable.filePath@"_Stz,     &Step::vJob_LoadTableFilePathFetch);
   vAddStep("job_loadTable.table!"_Stz,        &Step::vJob_LoadTableTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
-/* loadTable.chunkFile -- chunk the file                                      */
+/* loadTable.chunk -- chunk the file                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJob_LoadTableChunkFile(MP_Task mpTask)
+void Step::vJob_LoadTableChunk(MP_Task mpTask)
 {
-  ENTRY("vJob_LoadTableChunkFile"_Stz);
+  ENTRY("vJob_LoadTableChunk"_Stz);
   
   Object* pPtrJob_LoadTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_LoadTable) )
-    THROW_INVALID_DSTACK("job_loadTable.addValidRows"_Stz);
+    THROW_INVALID_DSTACK("job_loadTable.chunk"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
   bool bFoundChunk = false;
