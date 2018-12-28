@@ -277,17 +277,16 @@ bool Job_Repeater::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
-  for (;;) {
-    while (m_pIoCopy->bCopyChunk())
-      {;}
+  if (! m_pIoCopy->bCopyChunk()) {
     m_pIoCopy->vRewindInput();
+    return m_pIoCopy->bCopyChunk();
   }
   
-  NEVER_REACH;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* end repeater                                                                    */
+/* end repeater                                                               */
 /*----------------------------------------------------------------------------*/
 void Job_Repeater::vEnd(void)
 {
