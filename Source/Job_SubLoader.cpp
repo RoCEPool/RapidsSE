@@ -231,7 +231,10 @@ bool Job_SubLoader::bChunk(void)
     if (EC_BLANKLINE == eError)
       continue;
 
-    m_xNode[i_Node].m_ziRowsInvalid.iInc();
+    if (EC_INVALID_VALUE == eError) {
+      m_xNode[i_Node].m_ziRowsInvalid.iInc();
+      continue;
+    }
     
     if (EC_MAX_ROW_LENGTH == eError)
       continue;
@@ -254,8 +257,9 @@ void Job_SubLoader::vEnd(void)
   vHandleDanglingBuffers(m_pSession, m_pJob_LoadTable->m_pTable,
                          DS_LOAD, m_pJob_LoadTable->m_iJobId);
   
-  // add invalid rows into parent load table job
   i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
+  
+  // add invalid rows into parent load table job
   i8 iRowsInvalid = *m_xNode[i_Node].m_ziRowsInvalid;
   m_pJob_LoadTable->m_xNode[i_Node].m_ziRowsInvalid += iRowsInvalid;
   

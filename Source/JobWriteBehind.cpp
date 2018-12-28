@@ -193,6 +193,9 @@ eEC JobWriteBehind::eProcessRecord(Interface::Session* pSession,
   if (bBlankLine)
     return EC_BLANKLINE;
   
+  if ( ! bFormat )
+    return EC_INVALID_VALUE;
+  
   // attempt to add record into a write-behind buffer
   eEC eError = eInsertRow(pSession, pTable, eDataSource, iParentJobId);
   
