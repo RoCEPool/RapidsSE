@@ -11,7 +11,11 @@
 
   params| pJob_Repeater |
 
+  pJob_Repeater job_repeater.begin not if exit then
+
   begin pJob_Repeater job_repeater.chunk while repeat
+
+  pJob_Repeater job_repeater.end
 ;
 
 /*----------------------------------------------------------------------------*/

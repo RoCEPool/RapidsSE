@@ -17,7 +17,7 @@ void Step::vAddSteps_JobCat(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_cat.begin -- cat data from pipe                                        */
+/* job_cat.begin -- begin cat                                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_CatBegin(MP_Task mpTask)
 {
@@ -49,20 +49,22 @@ void Step::vJob_CatChunk(MP_Task mpTask)
   
   bool bCallAgain = pJob_Cat->bChunk();
   
+  mpTask->m_pDataStack->vPushInt((i8)bCallAgain);
+  
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_cat.end -- cat data from pipe                                        */
+/* job_cat.end -- end cat                                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_CatEnd(MP_Task mpTask)
 {
   ENTRY("vJob_CatEnd"_Stz);
   
-  Object* pPtrJobCat;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrJobCat) )
+  Object* pPtrJob_Cat;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_Cat) )
     THROW_INVALID_DSTACK("job_cat.end"_Stz);
-  Job_Cat* pJob_Cat = _pJob_Cat(pPtrJobCat);
+  Job_Cat* pJob_Cat = _pJob_Cat(pPtrJob_Cat);
   
   pJob_Cat->vEnd();
   

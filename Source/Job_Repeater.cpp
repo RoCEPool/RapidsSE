@@ -250,19 +250,32 @@ void JobModel::vJob_Repeater_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* repeatedly copy from input to output                                       */
+/* begin repeater                                                             */
 /*----------------------------------------------------------------------------*/
-bool Job_Repeater::bChunk(void)
+bool Job_Repeater::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
   vTrace("Repeat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputPath.aStr());
   
-  bool bOpened = m_pIoCopy->bOpenRead(m_sFileName);
-  bOpened = m_pIoCopy->bOpenWrite(m_sOutputPath);
+  if (! m_pIoCopy->bOpenRead(m_sFileName))
+    return false;
+  
+  if (! m_pIoCopy->bOpenWrite(m_sOutputPath))
+    return false;
   
   if (m_bStatistics)
     m_pIoCopy->vWithStatistics("  repeat : "_Stz);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* repeatedly copy from input to output                                       */
+/*----------------------------------------------------------------------------*/
+bool Job_Repeater::bChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
   for (;;) {
     while (m_pIoCopy->bCopyChunk())
@@ -271,6 +284,16 @@ bool Job_Repeater::bChunk(void)
   }
   
   NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end repeater                                                                    */
+/*----------------------------------------------------------------------------*/
+void Job_Repeater::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
+  
+  m_pIoCopy->vCloseBoth();
 }
 
 /*============================================================================*/
