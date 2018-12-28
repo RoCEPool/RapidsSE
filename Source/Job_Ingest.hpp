@@ -13,10 +13,7 @@ namespace JobModel
   public:
     Table*  m_pTable;  // table being ingested
   
-    RecordIngestor* m_pRecordIngestor;  // chunk of pipe being ingested
-  
-    Stz*         m_aRecord;       // next record
-    i8           m_nBytes;        // of n bytes
+    RecordIngestor* m_pRecordIngestor;  // chunked stream being ingested
   
     // must be last
     Footer m_xFooter;

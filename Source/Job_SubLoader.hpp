@@ -15,8 +15,7 @@ namespace JobModel
     Job_LoadTable* m_pJob_LoadTable;
 
     RecordLoader* m_pRecordLoader; // chunk loading buffer
-    bool m_bMoreChunks; // continue while there are more chunks
-
+ 
     // must be last
     Footer m_xFooter;
   

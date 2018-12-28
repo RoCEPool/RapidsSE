@@ -110,8 +110,6 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   m_pTable = nullptr;
   
   m_pRecordIngestor  = new RecordIngestor(&gpAttachMap->m_xFormatters);
-  m_aRecord      = nullptr;
-  m_nBytes = 0;
   
   _checkInitialised_(CN_JOB_INGEST);
   
@@ -269,6 +267,9 @@ bool Job_Ingest::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
+  Stz* aRecord;
+  i8   nRecordBytes;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read next sequential chunk
   if (! m_pRecordIngestor->bReadNextChunk())
@@ -279,14 +280,14 @@ bool Job_Ingest::bChunk(void)
   for (;;) {
     
     // fetch next record from current chunk
-    bool bHaveRecord = m_pRecordIngestor->bGetRecord(&m_aRecord,m_nBytes);
+    bool bHaveRecord = m_pRecordIngestor->bGetRecord(&aRecord,nRecordBytes);
     if (! bHaveRecord)
       return true;
     
     // process that record into write behind
     eEC eError = eProcessRecord(m_pSession, m_iJobId, m_pTable,
                                 &gpAttachMap->m_xFormatters,
-                                m_aRecord, m_nBytes, DS_INGEST);
+                                aRecord, nRecordBytes, DS_INGEST);
     
     if (EC_NONE == eError)
       continue;

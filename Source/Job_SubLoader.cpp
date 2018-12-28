@@ -110,8 +110,6 @@ Job_SubLoader::Job_SubLoader(Interface::Session* pSession)
   m_pJob_LoadTable = nullptr;
   m_pRecordLoader  = nullptr;
   
-  m_bMoreChunks = false;
-  
   _checkInitialised_(CN_JOB_SUBLOADER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
