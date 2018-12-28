@@ -153,6 +153,20 @@ void Job_InsertRows::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* end inserting                                                              */
+/*----------------------------------------------------------------------------*/
+void Job_InsertRows::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE,_FOOTER_);
+  
+  // insertTable job is the parent
+  i8 iParentJobId = m_pJob_InsertTable->iJobId();
+  
+  vHandleDanglingBuffers(m_pSession, m_pTable, DS_INSERT, iParentJobId);
+}
+
 /*----------------------------------------------------------------------------*/
 /* fromat a row                                                               */
 /*----------------------------------------------------------------------------*/

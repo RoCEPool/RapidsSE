@@ -27,8 +27,6 @@ namespace JobModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
-    bool bAllLoaded(void);
-    void vNewWorkingBuffer(void);
     void vShow(void);
     
   private:

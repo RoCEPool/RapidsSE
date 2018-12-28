@@ -30,6 +30,7 @@ namespace JobModel
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
   public:
+    void vEnd(void);
     bool bFormatRow(Stz* aRawData, i8 iRawLength);
     bool bPopulateJob(TokenVec* pTokenVec);
 
