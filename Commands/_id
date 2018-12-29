@@ -12,32 +12,32 @@ startCluster;
 
 print "";
 print "=====================================================================";
-print "creating customer table...";
+print "creating lineitem table...";
 print "=====================================================================";
-_customer;
+_lineitem;
 
 print "";
 print "=====================================================================";
 print "removing the pipe...";
 print "=====================================================================";
-rmpipe "/tmp/customer.pipe";
+rmpipe "/tmp/lineitem.pipe";
 
 print "";
 print "=====================================================================";
 print "making the pipe...";
 print "=====================================================================";
-mkpipe "/tmp/customer.pipe";
+mkpipe "/tmp/lineitem.pipe";
 
 print "";
 print "=====================================================================";
-print "ingesting customer table...";
+print "ingesting lineitem table...";
 print "=====================================================================";
 // purge customer;
 //nowait ingest customer "/tmp/customer.pipe" ;
 //nowait sink "/tmp/customer.pipe" stats;
 //nowait repeater "/tpchSF1/customer.tbl" "/tmp/customer.pipe" ;
 
-ingest customer "/tpchSF10/customer.tbl" stats ;
+ingest lineitem "/tpchSF10/lineitem.tbl" stats ;
 
 print "";
 print "=====================================================================";
