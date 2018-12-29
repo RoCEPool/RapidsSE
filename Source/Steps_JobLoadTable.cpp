@@ -50,13 +50,9 @@ void Step::vJob_LoadTableChunk(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_loadTable.chunk"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
 
-  bool bFoundChunk = false;
+  bool bCallAgain = pJob_LoadTable->bChunk();
   
-  do {
-    bFoundChunk = pJob_LoadTable->bChunk();
-  } while (bFoundChunk);
-  
-  mpTask->m_pDataStack->vPushInt((i8)bFoundChunk);
+  mpTask->m_pDataStack->vPushInt((i8)bCallAgain);
   
  EXIT();
 }
