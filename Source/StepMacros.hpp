@@ -4,44 +4,43 @@
 #pragma once
 
 
-#ifdef __ENTRY_EXIT
-    
 /*----------------------------------------------------------------------------*/
 /*-- when __ENTRY_EXIT is defined --------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+#ifdef __ENTRY_EXIT
+
 /*----------------------------------------------------------------------------*/
 /* step entry macro                                                           */
 /*----------------------------------------------------------------------------*/
-#define ENTRY(aStepNm) { \
+#define ENTRY(aStepNm) \
   \
-  static StepAccum* pStepAccum = nullptr; \
+  static StepAccum* _pStepAccum = nullptr; \
   i8 _iEnterCycles = 0; \
   i8 _iEnterMisses = 0; \
   \
   if (gpAttachMap->m_pStepTracker) { \
-    if (! pStepAccum) { \
+    if (! _pStepAccum) { \
       StepTracker* pStepTracker = gpAttachMap->m_pStepTracker; \
       pStepTracker->vGrabWrite(); \
-      if (! pStepAccum) \
-        pStepAccum = pStepTracker->pAllocAccum(aStepNm); \
+      if (! _pStepAccum) \
+        _pStepAccum = pStepTracker->pAllocAccum(aStepNm); \
       pStepTracker->vDropWrite(); \
     } \
-    pStepAccum->vEnter(_iEnterCycles,_iEnterMisses); \
+    _pStepAccum->vEnter(_iEnterCycles,_iEnterMisses); \
   } \
   \
   if (C_TRACE_STEPS && mpTask->m_iTracing) \
-    mpTask->vTraceStep(aStepNm); \
-}
+    mpTask->vTraceStep(aStepNm);
 
 /*----------------------------------------------------------------------------*/
 /* step exit macro                                                            */
 /*----------------------------------------------------------------------------*/
-#define EXIT() { \
+#define EXIT() \
   \
-  if (pStepAccum) \
-    pStepAccum->vExit(_iEnterCycles,_iEnterMisses); \
-}
+  if (_pStepAccum) \
+    _pStepAccum->vExit(_iEnterCycles,_iEnterMisses);
+
 
 /*----------------------------------------------------------------------------*/
 /*-- when __ENTRY_EXIT is not defined ----------------------------------------*/
@@ -49,7 +48,7 @@
 
 #else
 
-#define ENTRY(p1)
+#define ENTRY(aStepNm)
 
 #define EXIT()
 

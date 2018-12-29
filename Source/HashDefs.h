@@ -23,7 +23,7 @@
   #define __MEMORY_ZERO     // initialise wsp etc to all 0's
   #define __MAGIC_CHECK     // magic marker check in header
 #else
-  //#define __ENTRY_EXIT      // entry exit macros
+  #define __ENTRY_EXIT      // entry exit macros
 #endif
 
 #define VERBOSE_TRACE
