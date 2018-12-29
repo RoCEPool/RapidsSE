@@ -604,9 +604,7 @@ void RapidsSE::vStartSystem(void)
     vInfo("\n*\n* System Init\n*\n"_Stz);
   
   ASSERT( ! gpAttachMap->m_xMainDic.bHasWords() );
-  
-  //new StepTracker;
-  
+    
   gpAttachMap->m_pQueues = new Queues;
   
   // create the plan list here

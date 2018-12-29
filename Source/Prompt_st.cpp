@@ -30,31 +30,31 @@ bool Prompt::bPrompt_st(SePrompt* pPrompt)
   
   // start step tracker
   if ( (*pTokenVec)[1]->bSame("start"_Stz) ) {
-    if (gpAttachMap->m_pStepTracker) {
-      vTrace("Step tracker already exists\n"_Stz);
+    if (gpAttachMap->m_pStepTiming) {
+      vTrace("Step timing already exists\n"_Stz);
       return true;
     }
-    gpAttachMap->m_pStepTracker = new StepTracker;
+    gpAttachMap->m_pStepTiming = new StepTiming;
     return true;
   }
   
   // reset step tracker
   if ( (*pTokenVec)[1]->bSame("reset"_Stz) ) {
-    if (! gpAttachMap->m_pStepTracker) {
+    if (! gpAttachMap->m_pStepTiming) {
       vTrace("No step tracker\n"_Stz);
       return true;
     }
-    gpAttachMap->m_pStepTracker->vReset();
+    gpAttachMap->m_pStepTiming->vReset();
     return true;
   }
   
   // write step tracker contents to file
   if ( (*pTokenVec)[1]->bSame("write"_Stz) ) {
-    if (! gpAttachMap->m_pStepTracker) {
+    if (! gpAttachMap->m_pStepTiming) {
       vTrace("No step tracker\n"_Stz);
       return true;
     }
-    gpAttachMap->m_pStepTracker->vWrite();
+    gpAttachMap->m_pStepTiming->vWrite();
     return true;
   }
   

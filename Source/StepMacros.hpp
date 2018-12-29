@@ -19,13 +19,13 @@
   i8 _iEnterCycles = 0; \
   i8 _iEnterMisses = 0; \
   \
-  if (gpAttachMap->m_pStepTracker) { \
+  if (gpAttachMap->m_pStepTiming) { \
     if (! _pStepAccum) { \
-      StepTracker* pStepTracker = gpAttachMap->m_pStepTracker; \
-      pStepTracker->vGrabWrite(); \
+      StepTiming* pStepTiming = gpAttachMap->m_pStepTiming; \
+      pStepTiming->vGrabWrite(); \
       if (! _pStepAccum) \
-        _pStepAccum = pStepTracker->pAllocAccum(aStepNm); \
-      pStepTracker->vDropWrite(); \
+        _pStepAccum = pStepTiming->pAllocAccum(aStepNm); \
+      pStepTiming->vDropWrite(); \
     } \
     _pStepAccum->vEnter(_iEnterCycles,_iEnterMisses); \
   } \

@@ -33,9 +33,9 @@
 
 : llc test::test0 ;
 
-: stepTimingReset stepTracker::reset ;
-: stepTimingStart stepTracker::start ;
-: stepTimingWrite stepTracker::write ;
+: stepTimingReset StepTiming::reset ;
+: stepTimingStart StepTiming::start ;
+: stepTimingWrite StepTiming::write ;
 
 /*============================================================================*/
 /* end                                                                        */

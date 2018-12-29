@@ -134,7 +134,7 @@ namespace Steps
     static void vAddSteps_Shell(void);
     static void vAddSteps_Slots(void);
     static void vAddSteps_Socket(void);
-    static void vAddSteps_StepTracker(void);
+    static void vAddSteps_StepTiming(void);
     static void vAddSteps_Str(void);
   
     static void vAddSteps_Table(void);

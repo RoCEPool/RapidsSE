@@ -317,7 +317,7 @@ void Axioms::vAddConstants(void)
   /* 66 */ vAddConstant("CN_SOCKET"_Stz,       CN_SOCKET);
   /* 67 */ vAddConstant("CN_STACK"_Stz,        CN_STACK);
   /* 68 */ vAddConstant("CN_STEPACCUM"_Stz,    CN_STEPACCUM);
-  /* 69 */ vAddConstant("CN_STEPTRACKER"_Stz,  CN_STEPTRACKER);
+  /* 69 */ vAddConstant("CN_STEPTIMING"_Stz,  CN_STEPTIMING);
   /* 70 */ vAddConstant("CN_SYSCALL"_Stz,      CN_SYSCALL);
 
   /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);
@@ -548,7 +548,7 @@ void Axioms::vAddConstants(void)
   /* 52 */ vAddConstant("SIZEOF_SOCKET"_Stz,       sizeof(Socket));
   /* 53 */ vAddConstant("SIZEOF_STACK"_Stz,        sizeof(Stack));
   /* 54 */ vAddConstant("SIZEOF_STEPACCUM"_Stz,    sizeof(StepAccum));
-  /* 55 */ vAddConstant("SIZEOF_STEPTRACKER"_Stz,  sizeof(StepTracker));
+  /* 55 */ vAddConstant("SIZEOF_STEPTIMING"_Stz,   sizeof(StepTiming));
   /* 56 */ vAddConstant("SIZEOF_SYSCALL"_Stz,      sizeof(SysCall));
   /* 57 */ vAddConstant("SIZEOF_TABLE"_Stz,        sizeof(Table));
   /* 58 */ vAddConstant("SIZEOF_TASK"_Stz,         sizeof(Task));

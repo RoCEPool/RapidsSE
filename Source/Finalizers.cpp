@@ -246,7 +246,7 @@ pFINALIZE *gpFinalize[]
   /*125 */ &Finalize::vUndefined,         // CN_SOCKET
   /*126 */ &Finalize::vUndefined,         // CN_STACK
   /*127 */ &Finalize::vUndefined,         // CN_STEPACCUM
-  /*128 */ &Finalize::vUndefined,         // CN_STEPTRACKER
+  /*128 */ &Finalize::vUndefined,         // CN_STEPTIMING
   /*129 */ &Finalize::vUndefined,         // CN_SYSCALL
   
   /*130 */ &Table::vFinalize,             // CN_TABLE
