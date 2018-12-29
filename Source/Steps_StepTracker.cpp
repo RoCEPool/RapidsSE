@@ -23,34 +23,61 @@ void Step::vStepTrackerReset(MP_Task mpTask)
 {
   ENTRY("vStepTrackerReset"_Stz);
   
+#ifndef __ENTRY_EXIT
+  
+  vTrace("WARNING: __ENTRY_EXIT not defined\n"_Stz);
+  return;
+  
+#else
+  
   if (gpAttachMap->m_pStepTracker)
     gpAttachMap->m_pStepTracker->vReset();
   
+#endif
+
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* stepTracker::start -- start step tracking                                        */
+/* stepTracker::start -- start step tracking                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vStepTrackerStart(MP_Task mpTask)
 {
   ENTRY("vStepTrackerStart"_Stz);
   
+#ifndef __ENTRY_EXIT
+  
+  vTrace("WARNING: __ENTRY_EXIT not defined\n"_Stz);
+  return;
+  
+#else
+  
   if (! gpAttachMap->m_pStepTracker)
     gpAttachMap->m_pStepTracker = new StepTracker;
   
+#endif
+
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* stepTracker::write -- write steps                                                */
+/* stepTracker::write -- write steps                                          */
 /*----------------------------------------------------------------------------*/
 void Step::vStepTrackerWrite(MP_Task mpTask)
 {
   ENTRY("vStepTrackerWritevStepTrackerWrite"_Stz);
 
+#ifndef __ENTRY_EXIT
+  
+  vTrace("WARNING: __ENTRY_EXIT not defined\n"_Stz);
+  return;
+  
+#else
+  
   if (gpAttachMap->m_pStepTracker)
     gpAttachMap->m_pStepTracker->vWrite();
+  
+#endif
   
   EXIT();
 }
