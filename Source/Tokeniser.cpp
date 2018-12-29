@@ -55,16 +55,10 @@ Tokeniser::Tokeniser(void)
   m_sToken  = ""_Stz;
   m_eToken  = TN_NONE;
   
-  m_sPrompt.vSprint("[N%lld %lld%s] se %s%c"_Stz,
+  m_sPrompt.vSprint("[N%lld %lld] se %s%c"_Stz,
                     
                     gxArguments.m_iThisNode,
                     Process::iGetPid(),
-#ifdef __ENTRY_EXIT
-                    (gpAttachMap->m_pStepTracker ?
-                      " CURRENTLY TIMING"_Stz : " __ENTRY_EXIT"_Stz),
-#else
-                    ""_Stz,
-#endif
                     
                     RAPIDSSE_VERSION_STRING,
 #ifdef _DEBUG
