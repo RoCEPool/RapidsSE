@@ -37,7 +37,7 @@ print "=====================================================================";
 //nowait sink "/tmp/customer.pipe" stats;
 //nowait repeater "/tpchSF1/customer.tbl" "/tmp/customer.pipe" ;
 
-ingest customer "/tpchSF1/customer.tbl" ;
+ingest customer "/tpchSF10/customer.tbl" stats ;
 
 print "";
 print "=====================================================================";

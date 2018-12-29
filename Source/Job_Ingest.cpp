@@ -111,6 +111,8 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   
   m_pRecordIngestor  = new RecordIngestor(&gpAttachMap->m_xFormatters);
   
+  m_pByteRate = nullptr;
+
   _checkInitialised_(CN_JOB_INGEST);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
@@ -124,6 +126,7 @@ Job_Ingest::~Job_Ingest(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
   delete m_pRecordIngestor;
+  delete m_pByteRate;
 }
 
 
@@ -193,10 +196,13 @@ Job* JobModel::pJob_Ingest_pre(Interface::Session* pSession)
   pJob_Ingest->m_sObjectName = pTknVec->pGet(1)->aText();
 
   // set the file name
-  if (pTknVec->pGet(2)->sText().bSame("pipe"_Stz))
-    pJob_Ingest->m_sFileName = pTknVec->pGet(3)->aText();
-  else
-    pJob_Ingest->m_sFileName = pTknVec->pGet(2)->aText();
+  pJob_Ingest->m_sFileName = pTknVec->pGet(2)->aText();
+  
+  // is the last token the stats option?
+  i8 i_Last = nTokens - 1;
+  if (pTknVec->pGet(i_Last)->sText().bSame("stats"_Stz) ||
+      pTknVec->pGet(i_Last)->sText().bSame("statistics"_Stz))
+    pJob_Ingest->m_pByteRate = new ByteRate;
 
   return pJob_Ingest;
 }
@@ -249,16 +255,16 @@ bool Job_Ingest::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  bool bOpened = m_pRecordIngestor->bOpenRead(m_sFileName);
-  //  bool bOpened = m_pRecordIngestor->bOpenFile(m_sFileName);
-  //  if (! bOpened) {
-  //    vTrace("Unable to open pipe: %s\n"_Stz,m_sFileName.aStr());
-  //    return;
-  //  }
-  
   vTrace("Ingesting data into %s from %s\n"_Stz,
          m_sObjectName.aStr(), m_sFileName.aStr());
   
+  bool bOpened = m_pRecordIngestor->bOpenRead(m_sFileName);
+  
+  if (m_pByteRate) {
+    m_pByteRate->vSetReporting("  ingest : "_Stz,C_1GB * 10);
+    m_pByteRate->vBeginTiming();
+  }
+
   return bOpened;
 }
 
@@ -286,6 +292,9 @@ bool Job_Ingest::bChunk(void)
     if (! bHaveRecord)
       return true;
     
+    if (m_pByteRate)
+      m_pByteRate->vAddBytes(nRecordBytes);
+
     // process that record into write behind
     eEC eError = eProcessRecord(m_pSession, m_iJobId, m_pTable,
                                 &gpAttachMap->m_xFormatters,
@@ -315,6 +324,9 @@ void Job_Ingest::vEnd(void)
   
   // handle any dangling buffers
   vHandleDanglingBuffers(m_pSession, m_pTable, DS_INGEST, -1);
+  
+  if (m_pByteRate)
+    m_pByteRate->vEndTiming();
   
   // close the file being loaded
   m_pRecordIngestor->vCloseFile();

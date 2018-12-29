@@ -15,6 +15,8 @@ namespace JobModel
   
     RecordIngestor* m_pRecordIngestor;  // chunked stream being ingested
   
+    ByteRate* m_pByteRate;
+
     // must be last
     Footer m_xFooter;
   
