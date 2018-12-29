@@ -26,7 +26,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  "WriteBuffer.insert :" .verbose
+  //"WriteBuffer.insert :" .verbose
   //pJob_WriteBuffer job.show
 
   // get table name
@@ -158,7 +158,7 @@
 
   job::this locals| pJob_WriteBuffer  |
 
-  "pJob_WriteBuffer :" .verbose
+  //"pJob_WriteBuffer :" .verbose
 
   // simply forward this job to kid node
   pJob_WriteBuffer writeBuffer.forward

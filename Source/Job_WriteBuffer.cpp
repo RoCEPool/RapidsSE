@@ -165,11 +165,11 @@ bool Job_WriteBuffer::bInsertRows(void)
 
   RASSERT_TYPE(m_pCurrentBuffer,CN_WORKINGBUFFER);
 
-  if (gpAttachMap->m_bVerbose)
-    vTrace("Job_WriteBuffer %lld %lld %s\n"_Stz,
-           m_pCurrentBuffer->nWorkingRows(),
-           m_nRows,
-           m_pCurrentBuffer->bIsLast() ? "IsLast" : "");
+//  if (gpAttachMap->m_bVerbose)
+//    vTrace("Job_WriteBuffer %lld %lld %s\n"_Stz,
+//           m_pCurrentBuffer->nWorkingRows(),
+//           m_nRows,
+//           m_pCurrentBuffer->bIsLast() ? "IsLast" : "");
   i8 iTxId = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
