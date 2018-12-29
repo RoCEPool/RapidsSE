@@ -59,9 +59,9 @@ LoadMap::LoadMap(Stz* aFilePath)
     m_iEolOffset[i_Entry] = -1;
 
   //m_oChunkFile
-  m_iChunkNext = 0;
+  m_iNextChunk = 0;
   _memZero_(m_xBlockTest,C_LOADMAP_BLOCK,CN_LOADMAP);
-  m_iChunkTell = 0;
+  m_iSeekEof = 0;
   
   _checkInitialised_(CN_LOADMAP);
   
@@ -121,30 +121,20 @@ bool LoadMap::bFindChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
   
-  // open the file 
-  if (! m_oChunkFile.bIsOpen()) {
-    bool b = m_oChunkFile.bOpen(m_sFilePath,C_OPEN_READ);
-    if (! b)
-      return false;
-    
-    m_oChunkFile.vSeekEnd();
-    m_iChunkTell = m_oChunkFile.iTell();
-  }
-  
-  if (m_iChunkNext >= m_iChunkTell) {
+  if (m_iNextChunk >= m_iSeekEof) {
     vDone(true);
     //vChunkTest();
     //m_oChunkFile.vClose();
     return false;
   }
   
-  i8 iTestSeek = m_iChunkNext + C_LOAD_CHUNK - C_LOADMAP_BLOCK;
+  i8 iTestSeek = m_iNextChunk + C_LOAD_CHUNK - C_LOADMAP_BLOCK;
   
-  if (iTestSeek > m_iChunkTell) {
-    iTestSeek = m_iChunkTell - 1;
+  if (iTestSeek > m_iSeekEof) {
+    iTestSeek = m_iSeekEof - 1;
     vEolOffset(iTestSeek);
     vDone(true);
-    m_oChunkFile.vClose();
+    //m_oChunkFile.vClose();
     return false;
   }
   
@@ -166,13 +156,13 @@ bool LoadMap::bFindChunk(void)
   //vTrace("EolOffset %lld\n"_Stz,iEolOffset);
   vEolOffset(iEolOffset);
   
-  m_iChunkNext = iEolOffset + 1;
+  m_iNextChunk = iEolOffset + 1;
   
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* close file                                                                 */
+/* open file                                                                  */
 /*----------------------------------------------------------------------------*/
 bool LoadMap::bOpenFile(void)
 {
@@ -183,7 +173,7 @@ bool LoadMap::bOpenFile(void)
     return false;
   
   m_oChunkFile.vSeekEnd();
-  m_iChunkTell = m_oChunkFile.iTell();
+  m_iSeekEof = m_oChunkFile.iTell();
   
   return true;
 }

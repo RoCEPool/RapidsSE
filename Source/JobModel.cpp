@@ -4,11 +4,14 @@
 
 #include "JobModel.h"
 
+extern eHT geWhichHeap[];
+
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
 void JobModel::vCheckAssumptions(void)
 {
+  RASSERT(HT_TRANSIENT_JUMBO == geWhichHeap[CN_LOADMAP]);
 }
 
 /*============================================================================*/
