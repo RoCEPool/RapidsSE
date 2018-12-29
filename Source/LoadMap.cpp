@@ -44,7 +44,7 @@ void LoadMap::operator delete(void* pLoadMapAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LoadMap::LoadMap(Stz* aFilePath)
-: Object(CN_LOADMAP)
+: Chunks::DataChunk(CN_LOADMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
@@ -60,7 +60,6 @@ LoadMap::LoadMap(Stz* aFilePath)
 
   //m_oChunkFile
   m_iNextChunk = 0;
-  _memZero_(m_xBlockTest,C_LOADMAP_BLOCK,CN_LOADMAP);
   m_iSeekEof = 0;
   
   _checkInitialised_(CN_LOADMAP);
@@ -140,17 +139,19 @@ bool LoadMap::bFindChunk(void)
   
   m_oChunkFile.vSeek(iTestSeek);
   
-  i8 iBytesRead = m_oChunkFile.iReadBytes(m_xBlockTest,C_LOADMAP_BLOCK);
+  char* aDst = aDataArea();
   
-  const char *z = &m_xBlockTest[iBytesRead - 1];
+  i8 iBytesRead = m_oChunkFile.iReadBytes(aDst,C_LOADMAP_BLOCK);
   
-  bool bFoundEol = StrLib::bBackward(&z,m_xBlockTest,'\n');
+  const char *z = &aDst[iBytesRead - 1];
+  
+  bool bFoundEol = StrLib::bBackward(&z,aDst,'\n');
   if (!bFoundEol)
-    bFoundEol = StrLib::bBackward(&z,m_xBlockTest,'\r');
+    bFoundEol = StrLib::bBackward(&z,aDst,'\r');
   
   RASSERT(bFoundEol);
   
-  i8 nBytes = Base::nSub((void*)z,m_xBlockTest) + 1;
+  i8 nBytes = Base::nSub((void*)z,aDst) + 1;
   
   i8 iEolOffset = iTestSeek + nBytes - 1;
   //vTrace("EolOffset %lld\n"_Stz,iEolOffset);
@@ -190,6 +191,8 @@ void LoadMap::vChunkTest(void)
   i8 iChunk;
   i8 nChunks;
   
+  char* aDst = aDataArea();
+
   while (bNextChunk(iSeek,nBytes,iChunk,nChunks)) {
     
     if (gpAttachMap->m_bProgress) {
@@ -203,15 +206,15 @@ void LoadMap::vChunkTest(void)
     
     if (iSeek) {
       m_oChunkFile.vSeek(iSeek - 1);
-      i8 iBytesRead = m_oChunkFile.iReadBytes(m_xBlockTest,1);
+      i8 iBytesRead = m_oChunkFile.iReadBytes(aDst,1);
       ASSERT(1 == iBytesRead);
-      ASSERT('\n' == m_xBlockTest[0]);
+      ASSERT('\n' == aDst[0]);
     }
     
     m_oChunkFile.vSeek(iSeek + nBytes - 1);
-    i8 iBytesRead = m_oChunkFile.iReadBytes(m_xBlockTest,1);
+    i8 iBytesRead = m_oChunkFile.iReadBytes(aDst,1);
     ASSERT(1 == iBytesRead);
-    ASSERT('\n' == m_xBlockTest[0]);
+    ASSERT('\n' == aDst[0]);
     
   }
 }

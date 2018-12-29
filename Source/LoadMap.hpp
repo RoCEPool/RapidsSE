@@ -10,10 +10,10 @@ namespace Chunks
   //
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class LoadMap : public Object
+  class LoadMap : public DataChunk
   {
     static const i8 C_LOADMAP_BLOCK   = 2048;
-    static const i8 C_LOADMAP_ENTRIES = (C_1MB * 15) / sizeof(i8);
+    static const i8 C_LOADMAP_ENTRIES = (C_1MB * 1);
  
   private:
     i8   m_iEntries;    // logical limit of m_iEnd
@@ -22,7 +22,6 @@ namespace Chunks
     s256 m_sFilePath;   // file path
     File m_oChunkFile;  // from which file
     i8   m_iNextChunk;  // seek before next read
-    char m_xBlockTest[C_LOADMAP_BLOCK];
     i8   m_iSeekEof;    //
     
     Lock m_zLock;      // subordinate lock
