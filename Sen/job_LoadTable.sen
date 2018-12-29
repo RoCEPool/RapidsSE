@@ -15,7 +15,11 @@
 
   params| pJob_LoadTable |
 
-  pJob_LoadTable Job_LoadTable.chunk
+  pJob_LoadTable job_loadTable.begin not if exit then
+
+  begin pJob_LoadTable job_loadTable.chunk while repeat
+
+  pJob_LoadTable job_loadTable.end
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -56,7 +56,9 @@ void Step::vJob_LoadTableChunk(MP_Task mpTask)
     bFoundChunk = pJob_LoadTable->bChunk();
   } while (bFoundChunk);
   
-  EXIT();
+  mpTask->m_pDataStack->vPushInt((i8)bFoundChunk);
+  
+ EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

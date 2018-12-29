@@ -159,7 +159,11 @@ bool Job_LoadTable::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
-  return true;
+  m_pLoadMap = new LoadMap(m_sFileName);
+  
+  bool bOpened = m_pLoadMap->bOpenFile();
+  
+  return bOpened;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,9 +172,6 @@ bool Job_LoadTable::bBegin(void)
 bool Job_LoadTable::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
-  
-  if (! m_pLoadMap)
-    m_pLoadMap = new LoadMap(m_sFileName);
   
   bool bCallAgain = m_pLoadMap->bFindChunk();
   
@@ -195,6 +196,8 @@ void Job_LoadTable::vDumpMap(void)
 void Job_LoadTable::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
+  
+  m_pLoadMap->vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/

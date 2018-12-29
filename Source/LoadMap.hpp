@@ -15,7 +15,7 @@ namespace Chunks
     bool m_bDone;      // is map complete?
     
     s256 m_sFilePath;  // file path
-    File m_xChunkFile; // from which file
+    File m_oChunkFile; // from which file
     i8   m_iChunkNext; // seek before next read
     char m_xBlockTest[C_LOADMAP_BLOCK];
     i8   m_iChunkTell; //
@@ -37,8 +37,10 @@ namespace Chunks
   
     void vDumpMap(void);
      
+    void vCloseFile(void);
     bool bFindChunk(void);
-    
+    bool bOpenFile(void);
+
     void vEolOffset(i8 iEolOffset);
     bool bDone(void);
     void vDone(bool bDone);
