@@ -180,15 +180,21 @@ bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
 {
   // test for explicit record ends
   
+  char* aRecordStart;
+  
   switch (m_pFormatters->m_eRecordEnds) {
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case RE_NL: // advance to next \n
+    case RE_NL: // advance to next [<opt-terminator>]\n
+      
+      // debug
+      aRecordStart = *aaRecordEnd;
       
       for (;;) {
         
         // find next \n
-        while (*aaRecordEnd <= (char*)m_aEndChunk && C_NL != **aaRecordEnd)
+        while (*aaRecordEnd <= (char*)m_aEndChunk
+               && C_NL != **aaRecordEnd)
           (*aaRecordEnd)++;
         
         if (*aaRecordEnd > (char*)m_aEndChunk)
@@ -211,42 +217,70 @@ bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
       break;
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case RE_CR: // advance to next \r
+    case RE_CR: // advance to next [<opt-terminator>]\r
+      
+      // debug
+      aRecordStart = *aaRecordEnd;
+      
       for (;;) {
+        
         // find next \r
-        while (C_CR != **aaRecordEnd)
+        while (*aaRecordEnd <= (char*)m_aEndChunk
+               && C_CR != **aaRecordEnd)
           (*aaRecordEnd)++;
+        
+        if (*aaRecordEnd > (char*)m_aEndChunk)
+          return false;
+        
         // if there is no record terminator we have found ending \r
         if (! m_pFormatters->m_cRecordTerminator)
           break;
+        
         // we found the next \r if prior character is the record terminator
         if (m_pFormatters->m_cRecordTerminator == *(*aaRecordEnd-1))
           break;
+        
         (*aaRecordEnd)++;
       }
+      
       ASSERT(C_CR == **aaRecordEnd);
       return true;
+      
       break;
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case RE_CRNL: // advance to next \r\n
+    case RE_CRNL: // advance to next [<opt-terminator>]\r\n
+      
+      // debug
+      aRecordStart = *aaRecordEnd;
+      
       for (;;) {
+        
         // find next \r\n
-        while (C_CR != **aaRecordEnd && C_NL != *(*aaRecordEnd+1))
+        while (*aaRecordEnd + 1 <= (char*)m_aEndChunk
+               && C_CR != **aaRecordEnd && C_NL != *(*aaRecordEnd+1))
           (*aaRecordEnd)++;
+        
+        if (*aaRecordEnd + 1 > (char*)m_aEndChunk)
+          return false;
+        
         // if there is no record terminator we have found ending \r\n
         if (! m_pFormatters->m_cRecordTerminator)
           break;
+        
         // we found the next \r\n if prior character is the record terminator
         if (m_pFormatters->m_cRecordTerminator == *(*aaRecordEnd-1))
           break;
+        
         (*aaRecordEnd)++;
       }
+      
       // skip over \r to be on the \n
       ASSERT(C_CR == **aaRecordEnd);
       (*aaRecordEnd)++;
       ASSERT(C_NL == **aaRecordEnd);
       return true;
+      
       break;
       
     default:
