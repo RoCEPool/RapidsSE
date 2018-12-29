@@ -7,7 +7,7 @@
 
 extern AttachMap* gpAttachMap;
 
-const Stz* C_StepTiming_FILE = "/Rapids/StepTiming.csv"_Stz;
+const Stz* C_StepTiming_FILE = "../StepTimings/StepTiming %s.csv"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -122,8 +122,14 @@ void StepTiming::vReset(void)
 void StepTiming::vWrite(void)
 {
   File oFile;
+  
+  Now oNow;
+  
+  s256 sFileName;
+  
+  sFileName.vSprint((Stz*)C_StepTiming_FILE,oNow.sFormatted()->aChar());
 
-  bool bOpened = oFile.bOpen((Stz*)C_StepTiming_FILE,C_OPEN_WRITE);
+  bool bOpened = oFile.bOpen(sFileName.aStr(),C_OPEN_WRITE);
   if (! bOpened) {
     vTrace("Unable to open StepTiming file: %s\n"_Stz,oFile.sFilePath().aStr());
     return;
