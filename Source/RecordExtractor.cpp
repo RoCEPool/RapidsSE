@@ -174,7 +174,7 @@ void RecordExtractor::vCopyDown(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* advance to last character of record ( \n or \r )                           */
+/* find the last character of next record within chunk (a '\r' or '\n')       */
 /*----------------------------------------------------------------------------*/
 bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
 {
@@ -182,32 +182,35 @@ bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
   
   char* aRecordStart;
   
-  switch (m_pFormatters->m_eRecordEnds) {
+  // which record end are we looking for?
+  switch (m_pFormatters->m_eRecordEnd) {
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case RE_NL: // advance to next [<opt-terminator>]\n
+    case RE_NL: // advance to next [<terminator>]\n
       
       // debug
       aRecordStart = *aaRecordEnd;
       
       for (;;) {
         
-        // find next \n
+        // find next \n within chunk
         while (*aaRecordEnd <= (char*)m_aEndChunk
                && C_NL != **aaRecordEnd)
           (*aaRecordEnd)++;
         
+        // have we gone past end of chunk?
         if (*aaRecordEnd > (char*)m_aEndChunk)
           return false;
         
-        // if there is no record terminator we have found ending \n
+        // if no record terminator we have found record end (ie. \n)
         if (! m_pFormatters->m_cRecordTerminator)
           break;
         
-        // we found the next \n if prior character is the record terminator
+        // we have found ending \n if prior character is the record terminator
         if (m_pFormatters->m_cRecordTerminator == *(*aaRecordEnd-1))
           break;
         
+        // did not see [terminator>\n... move on
         (*aaRecordEnd)++;
       }
       
@@ -217,29 +220,31 @@ bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
       break;
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case RE_CR: // advance to next [<opt-terminator>]\r
+    case RE_CR: // advance to next [<terminator>]\r
       
       // debug
       aRecordStart = *aaRecordEnd;
       
       for (;;) {
         
-        // find next \r
+        // find next \r within chunk
         while (*aaRecordEnd <= (char*)m_aEndChunk
                && C_CR != **aaRecordEnd)
           (*aaRecordEnd)++;
         
+        // have we gone past end of chunk?
         if (*aaRecordEnd > (char*)m_aEndChunk)
           return false;
         
-        // if there is no record terminator we have found ending \r
+        // if no record terminator we have found record end (ie. \r)
         if (! m_pFormatters->m_cRecordTerminator)
           break;
         
-        // we found the next \r if prior character is the record terminator
+        // we have found ending \r if prior character is the record terminator
         if (m_pFormatters->m_cRecordTerminator == *(*aaRecordEnd-1))
           break;
         
+        // did not see [terminator>\r... move on
         (*aaRecordEnd)++;
       }
       
@@ -249,29 +254,31 @@ bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
       break;
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case RE_CRNL: // advance to next [<opt-terminator>]\r\n
+    case RE_CRNL: // advance to next [terminator>]\r\n
       
       // debug
       aRecordStart = *aaRecordEnd;
       
       for (;;) {
         
-        // find next \r\n
+        // find next \r\n within chunk
         while (*aaRecordEnd + 1 <= (char*)m_aEndChunk
                && C_CR != **aaRecordEnd && C_NL != *(*aaRecordEnd+1))
           (*aaRecordEnd)++;
         
+        // have we gone past end of chunk?
         if (*aaRecordEnd + 1 > (char*)m_aEndChunk)
           return false;
         
-        // if there is no record terminator we have found ending \r\n
+        // if no record terminator we have found record end (ie. \r\n)
         if (! m_pFormatters->m_cRecordTerminator)
           break;
         
-        // we found the next \r\n if prior character is the record terminator
+        // we have found ending \r\n if prior character is the record terminator
         if (m_pFormatters->m_cRecordTerminator == *(*aaRecordEnd-1))
           break;
         
+        // did not see [terminator>\r\n... move on
         (*aaRecordEnd)++;
       }
       
@@ -279,15 +286,13 @@ bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
       ASSERT(C_CR == **aaRecordEnd);
       (*aaRecordEnd)++;
       ASSERT(C_NL == **aaRecordEnd);
+      
       return true;
       
       break;
-      
-    default:
-      NEVER_REACH;
-      break;
   }
   
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

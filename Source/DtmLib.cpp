@@ -781,7 +781,7 @@ bool DtmLib::bValidFieldEnd(char* aSrc, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bValidRecordEnd(char* aSrc, Formatters* pFormatters)
 {
-  switch (pFormatters->m_eRecordEnds) {
+  switch (pFormatters->m_eRecordEnd) {
       
     case RE_NL: // test for \n
       if (C_NL == *aSrc)

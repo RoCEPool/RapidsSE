@@ -251,17 +251,17 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
           return false;
         }
         else if (cRecordEnds == '\n') {
-          m_xFormatters.m_eRecordEnds = RE_NL;
+          m_xFormatters.m_eRecordEnd = RE_NL;
         }
         else if (cRecordEnds == '\r') {
-          m_xFormatters.m_eRecordEnds = RE_CR;
+          m_xFormatters.m_eRecordEnd = RE_CR;
         }
       }
       // record_ends is 2 characters
       else if (pTokenVec->pGet(i_Token)->iLength() == 2) {
         
         if (pTokenVec->pGet(i_Token)->bSame("\r\n"_Stz)) {
-          m_xFormatters.m_eRecordEnds = RE_CRNL;
+          m_xFormatters.m_eRecordEnd = RE_CRNL;
         }
         else {
           vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);

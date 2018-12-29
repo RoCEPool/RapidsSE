@@ -43,7 +43,7 @@ Formatters::Formatters(void)
   m_cEscapeChar = '\\';
   m_cFieldDelimiter = ',';
   m_cRecordTerminator = '\0';
-  m_eRecordEnds = RE_NL;
+  m_eRecordEnd = RE_NL;
   
   m_eDateComponent[0] = DC_YYYY;  // default is YYYY=MM-DD
   m_eDateComponent[1] = DC_MM;
@@ -86,7 +86,7 @@ void Formatters::vReset(Formatters* pDefaults)
   m_cEscapeChar       = pDefaults->m_cEscapeChar;
   m_cFieldDelimiter   = pDefaults->m_cFieldDelimiter;
   m_cRecordTerminator = pDefaults->m_cRecordTerminator;
-  m_eRecordEnds       = pDefaults->m_eRecordEnds;
+  m_eRecordEnd       = pDefaults->m_eRecordEnd;
   
   m_eDateComponent[0] = pDefaults->m_eDateComponent[0];
   m_eDateComponent[1] = pDefaults->m_eDateComponent[1];
@@ -108,7 +108,7 @@ void Formatters::vShow(void)
   vTrace("escape_char %c\n"_Stz, m_cEscapeChar ? m_cEscapeChar : '0');
   vTrace("delimiter %c\n"_Stz, m_cFieldDelimiter ? m_cFieldDelimiter : '0');
   vTrace("record_terminator %c\n"_Stz, m_cRecordTerminator ? m_cRecordTerminator : '0');
-  vTrace("record_ends %s\n"_Stz, aRE[m_eRecordEnds]);
+  vTrace("record_end %s\n"_Stz, aRE[m_eRecordEnd]);
   
   vTrace("date component 0 %s\n"_Stz, aDC[m_eDateComponent[0]]);
   vTrace("date component 1 %s\n"_Stz, aDC[m_eDateComponent[1]]);

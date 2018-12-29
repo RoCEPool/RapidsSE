@@ -28,7 +28,7 @@ namespace Datums
     char m_cEscapeChar;          // escape char
     char m_cFieldDelimiter;      // field delimiter
     char m_cRecordTerminator;    // record terminator
-    eRE  m_eRecordEnds;          // record end sequence
+    eRE  m_eRecordEnd;          // record end sequence
     eDC  m_eDateComponent[3];    // date component order
     char m_cDateSeparator;       // date separater
   
