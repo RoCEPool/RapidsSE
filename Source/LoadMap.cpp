@@ -44,24 +44,22 @@ void LoadMap::operator delete(void* pLoadMapAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LoadMap::LoadMap(Stz* aFilePath)
-: Chunks::DataChunk(CN_LOADMAP)
+: FileChunk(CN_LOADMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
-  m_iEntries = 0;
-  m_bDone    = false;
-  
   m_sFilePath = aFilePath;
+  m_iChunkOffset = 0;
+  m_iEofOffset = 0;
+  m_bMappingDone = false;
+
+  m_zEolLock.vInitLock(LK_LOAD_MAP);
   
-  m_zLock.vInitLock(LK_LOAD_MAP);
-  m_iNext    = 0;
   for (i8 i_Entry = 0; i_Entry < C_LOADMAP_ENTRIES; i_Entry++)
     m_iEolOffset[i_Entry] = -1;
+  m_nEntries = 0;
+  m_iNext = 0;
 
-  //m_oChunkFile
-  m_iNextChunk = 0;
-  m_iSeekEof = 0;
-  
   _checkInitialised_(CN_LOADMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
@@ -80,9 +78,9 @@ LoadMap::~LoadMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void LoadMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  LoadMap* pSeekMap = _pLoadMap(pObject);
+  //LoadMap* pSeekMap = _pLoadMap(pObject);
   
-  vTrace("\n"_Stz);
+  //vTrace("\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +94,7 @@ void LoadMap::vCloseFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
   
-  m_oChunkFile.vClose();
+  FileChunk::vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,7 +102,7 @@ void LoadMap::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 void LoadMap::vDumpMap(void)
 {
-  for (i8 i_Entry = 0; i_Entry < m_iEntries; i_Entry++) {
+  for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
     if (i_Entry && 0 == i_Entry % 8)
       vTrace("\n"_Stz);
     vTrace("%ld "_Stz,m_iEolOffset[i_Entry]);
@@ -114,34 +112,31 @@ void LoadMap::vDumpMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch next chunk from file                                                 */
+/* map next chunk in file                                                     */
 /*----------------------------------------------------------------------------*/
-bool LoadMap::bFindChunk(void)
+bool LoadMap::bMapChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
   
-  if (m_iNextChunk >= m_iSeekEof) {
-    vDone(true);
-    //vChunkTest();
-    //m_oChunkFile.vClose();
+  if (m_iChunkOffset >= m_iEofOffset) {
+    vMappingDone(true);
     return false;
   }
   
-  i8 iTestSeek = m_iNextChunk + C_LOAD_CHUNK - C_LOADMAP_BLOCK;
+  i8 iTestSeek = m_iChunkOffset + C_LOAD_CHUNK - C_LOADMAP_BLOCK;
   
-  if (iTestSeek > m_iSeekEof) {
-    iTestSeek = m_iSeekEof - 1;
+  if (iTestSeek > m_iEofOffset) {
+    iTestSeek = m_iEofOffset - 1;
     vEolOffset(iTestSeek);
-    vDone(true);
-    //m_oChunkFile.vClose();
+    vMappingDone(true);
     return false;
   }
   
-  m_oChunkFile.vSeek(iTestSeek);
+  m_oFile.vSeek(iTestSeek);
   
   char* aDst = aDataArea();
   
-  i8 iBytesRead = m_oChunkFile.iReadBytes(aDst,C_LOADMAP_BLOCK);
+  i8 iBytesRead = m_oFile.iReadBytes(aDst,C_LOADMAP_BLOCK);
   
   const char *z = &aDst[iBytesRead - 1];
   
@@ -154,10 +149,9 @@ bool LoadMap::bFindChunk(void)
   i8 nBytes = Base::nSub((void*)z,aDst) + 1;
   
   i8 iEolOffset = iTestSeek + nBytes - 1;
-  //vTrace("EolOffset %lld\n"_Stz,iEolOffset);
   vEolOffset(iEolOffset);
   
-  m_iNextChunk = iEolOffset + 1;
+  m_iChunkOffset = iEolOffset + 1;
   
   return true;
 }
@@ -169,12 +163,12 @@ bool LoadMap::bOpenFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
   
-  bool bOpened = m_oChunkFile.bOpen(m_sFilePath,C_OPEN_READ);
+  bool bOpened = bOpenRead(m_sFilePath);
   if (! bOpened)
     return false;
   
-  m_oChunkFile.vSeekEnd();
-  m_iSeekEof = m_oChunkFile.iTell();
+  m_oFile.vSeekEnd();
+  m_iEofOffset = m_oFile.iTell();
   
   return true;
 }
@@ -205,21 +199,19 @@ void LoadMap::vChunkTest(void)
     //vTrace("Test Seek %lld Bytes %lld\n"_Stz,iSeek,nBytes);
     
     if (iSeek) {
-      m_oChunkFile.vSeek(iSeek - 1);
-      i8 iBytesRead = m_oChunkFile.iReadBytes(aDst,1);
-      ASSERT(1 == iBytesRead);
+      m_oFile.vSeek(iSeek - 1);
+      i8 nBytesRead = nReadBytes(1);
+      ASSERT(1 == nBytesRead);
       ASSERT('\n' == aDst[0]);
     }
     
-    m_oChunkFile.vSeek(iSeek + nBytes - 1);
-    i8 iBytesRead = m_oChunkFile.iReadBytes(aDst,1);
-    ASSERT(1 == iBytesRead);
+    m_oFile.vSeek(iSeek + nBytes - 1);
+    i8 nBytesRead = nReadBytes(1);
+    ASSERT(1 == nBytesRead);
     ASSERT('\n' == aDst[0]);
     
   }
 }
-
-
 
 
 
@@ -233,37 +225,37 @@ void LoadMap::vEolOffset(i8 iEolOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
 
-  m_zLock.vGrabWrite();
+  m_zEolLock.vGrabWrite();
   
   ++gpAttachMap->m_oLockTracker.m_ziWorkUnits[LK_LOAD_MAP];
   
-  m_iEolOffset[m_iEntries++] = iEolOffset;
+  m_iEolOffset[m_nEntries++] = iEolOffset;
 
-  m_zLock.vDropWrite();
+  m_zEolLock.vDropWrite();
   
-  RASSERT(m_iEntries < C_LOADMAP_ENTRIES);
+  RASSERT(m_nEntries < C_LOADMAP_ENTRIES);
 }
 
 /*----------------------------------------------------------------------------*/
 /* has the parent completed this map yet?                                     */
 /*----------------------------------------------------------------------------*/
-bool LoadMap::bDone(void)
+bool LoadMap::bMappingDone(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
-  return m_bDone;
+  return m_bMappingDone;
 }
 
 /*----------------------------------------------------------------------------*/
 /* the parent has completed this map                                          */
 /*----------------------------------------------------------------------------*/
-void LoadMap::vDone(bool bDone)
+void LoadMap::vMappingDone(bool bMappingDone)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
-  m_bDone = bDone;
+  m_bMappingDone = bMappingDone;
   
-  //vTrace("LoadMap closed with %lld entries\n"_Stz,m_iEntries);
+  //vTrace("LoadMap closed with %lld entries\n"_Stz,m_nEntries);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,29 +266,29 @@ bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes, i8& i_Chunk, i8& nChunks)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
 
   // is there another entry available yet?
-  if (m_iNext == m_iEntries) {
+  if (m_iNext == m_nEntries) {
     return false;
   }
   
   // subordinates compete for next entries
-  m_zLock.vGrabWrite();
+  m_zEolLock.vGrabWrite();
  
   // is there another entry available yet?
-  if (m_iNext == m_iEntries) {
-    m_zLock.vDropWrite();
+  if (m_iNext == m_nEntries) {
+    m_zEolLock.vDropWrite();
     return false;
   }
-  ASSERT(m_iNext < m_iEntries);
+  ASSERT(m_iNext < m_nEntries);
   
   // a subsequent subordinate calling this func will get the next entry
   // save m_iNext before incrementing
   i_Chunk  = m_iNext++;
   
   // now ok to drop the lock
-  m_zLock.vDropWrite();
+  m_zEolLock.vDropWrite();
   
   // - a seekmap holds ending offsets only
-  nChunks = m_iEntries;
+  nChunks = m_nEntries;
   
   // calculate starting seek offset of next read-chunk
   if (0 == i_Chunk)
@@ -326,7 +318,7 @@ bool LoadMap::bNextChunkInfo(i8& i_Seek, i8& nBytes)
     
     bool bMoreChunks = bNextChunk(i_Seek,nBytes,i_Chunk,nChunks);
     
-    if (m_bDone && ! bMoreChunks)
+    if (m_bMappingDone && ! bMoreChunks)
       return false;
     
     if (bMoreChunks)
@@ -352,8 +344,8 @@ void LoadMap::vStats(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
   vTrace("LoadMap: lock writes %lld write collisions %lld\n"_Stz,
-         m_zLock.iWriteGrabs(),
-         m_zLock.iWriteCollisions());
+         m_zEolLock.iWriteGrabs(),
+         m_zEolLock.iWriteCollisions());
 }
 
 /*----------------------------------------------------------------------------*/

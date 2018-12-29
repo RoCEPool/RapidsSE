@@ -173,7 +173,7 @@ bool Job_LoadTable::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
-  bool bCallAgain = m_pLoadMap->bFindChunk();
+  bool bCallAgain = m_pLoadMap->bMapChunk();
   
   return bCallAgain;
 }
