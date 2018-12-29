@@ -190,20 +190,20 @@ eEC JobWriteBehind::eProcessRecord(Interface::Session* pSession,
 
   bool bFormat = bFormatRow(pTable, pFormatters, aRecord, nBytes, bBlankLine);
   
-  if (bBlankLine)
-    return EC_BLANKLINE;
-  
-  if ( ! bFormat )
-    return EC_INVALID_VALUE;
-  
-  // attempt to add record into a write-behind buffer
-  eEC eError = eInsertRow(pSession, pTable, eDataSource, iParentJobId);
-  
-  // was there an error ?
-  if (eError != EC_NONE) {
-    vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eError]);
-    return eError;
-  }
+//  if (bBlankLine)
+//    return EC_BLANKLINE;
+//  
+//  if ( ! bFormat )
+//    return EC_INVALID_VALUE;
+//  
+//  // attempt to add record into a write-behind buffer
+//  eEC eError = eInsertRow(pSession, pTable, eDataSource, iParentJobId);
+//  
+//  // was there an error ?
+//  if (eError != EC_NONE) {
+//    vTrace("Inserting row into buffer got error %s\n"_Stz, aEC[eError]);
+//    return eError;
+//  }
 
   return EC_NONE;
 }
