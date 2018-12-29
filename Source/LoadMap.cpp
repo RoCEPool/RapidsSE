@@ -49,16 +49,16 @@ LoadMap::LoadMap(Stz* aFilePath)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
   m_sFilePath = aFilePath;
-  m_iChunkOffset = 0;
-  m_iEofOffset = 0;
+  m_i_StartChunk = 0;
+  m_i_EofOffset = 0;
   m_bMappingDone = false;
 
-  m_zEolLock.vInitLock(LK_LOAD_MAP);
+  m_zChunksLock.vInitLock(LK_LOAD_MAP);
   
   for (i8 i_Entry = 0; i_Entry < C_LOADMAP_ENTRIES; i_Entry++)
-    m_iEolOffset[i_Entry] = -1;
-  m_nEntries = 0;
-  m_iNext = 0;
+    m_xChunks.iaOffset[i_Entry] = -1;
+  m_xChunks.nEntries = 0;
+  m_xChunks.i_Entry = 0;
 
   _checkInitialised_(CN_LOADMAP);
   
@@ -88,89 +88,21 @@ void LoadMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* close file                                                                 */
+/* parent adds the offset of the end of a read-chunk                          */
 /*----------------------------------------------------------------------------*/
-void LoadMap::vCloseFile(void)
+void LoadMap::vAddOffset(i8 i_Offset)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
-  FileChunk::vCloseFile();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump load map                                                              */
-/*----------------------------------------------------------------------------*/
-void LoadMap::vDumpMap(void)
-{
-  for (i8 i_Entry = 0; i_Entry < m_nEntries; i_Entry++) {
-    if (i_Entry && 0 == i_Entry % 8)
-      vTrace("\n"_Stz);
-    vTrace("%ld "_Stz,m_iEolOffset[i_Entry]);
-  }
-
-  vTrace("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* map next chunk in file                                                     */
-/*----------------------------------------------------------------------------*/
-bool LoadMap::bMapChunk(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
+  m_zChunksLock.vGrabWrite();
   
-  if (m_iChunkOffset >= m_iEofOffset) {
-    vMappingDone(true);
-    return false;
-  }
+  ++gpAttachMap->m_oLockTracker.m_ziWorkUnits[LK_LOAD_MAP];
   
-  i8 iTestSeek = m_iChunkOffset + C_LOAD_CHUNK - C_LOADMAP_BLOCK;
+  m_xChunks.iaOffset[m_xChunks.nEntries++] = i_Offset;
   
-  if (iTestSeek > m_iEofOffset) {
-    iTestSeek = m_iEofOffset - 1;
-    vEolOffset(iTestSeek);
-    vMappingDone(true);
-    return false;
-  }
+  m_zChunksLock.vDropWrite();
   
-  m_oFile.vSeek(iTestSeek);
-  
-  char* aDst = aDataArea();
-  
-  i8 iBytesRead = m_oFile.iReadBytes(aDst,C_LOADMAP_BLOCK);
-  
-  const char *z = &aDst[iBytesRead - 1];
-  
-  bool bFoundEol = StrLib::bBackward(&z,aDst,'\n');
-  if (!bFoundEol)
-    bFoundEol = StrLib::bBackward(&z,aDst,'\r');
-  
-  RASSERT(bFoundEol);
-  
-  i8 nBytes = Base::nSub((void*)z,aDst) + 1;
-  
-  i8 iEolOffset = iTestSeek + nBytes - 1;
-  vEolOffset(iEolOffset);
-  
-  m_iChunkOffset = iEolOffset + 1;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* open file                                                                  */
-/*----------------------------------------------------------------------------*/
-bool LoadMap::bOpenFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
-  
-  bool bOpened = bOpenRead(m_sFilePath);
-  if (! bOpened)
-    return false;
-  
-  m_oFile.vSeekEnd();
-  m_iEofOffset = m_oFile.iTell();
-  
-  return true;
+  RASSERT(m_xChunks.nEntries < C_LOADMAP_ENTRIES);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +118,7 @@ void LoadMap::vChunkTest(void)
   i8 nChunks;
   
   char* aDst = aDataArea();
-
+  
   while (bNextChunk(iSeek,nBytes,iChunk,nChunks)) {
     
     if (gpAttachMap->m_bProgress) {
@@ -213,27 +145,73 @@ void LoadMap::vChunkTest(void)
   }
 }
 
-
-
-
-
-
 /*----------------------------------------------------------------------------*/
-/* parent adds the offset of the end of a read-chunk                          */
+/* close file                                                                 */
 /*----------------------------------------------------------------------------*/
-void LoadMap::vEolOffset(i8 iEolOffset)
+void LoadMap::vCloseFile(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
+  
+  FileChunk::vCloseFile();
+}
 
-  m_zEolLock.vGrabWrite();
-  
-  ++gpAttachMap->m_oLockTracker.m_ziWorkUnits[LK_LOAD_MAP];
-  
-  m_iEolOffset[m_nEntries++] = iEolOffset;
+/*----------------------------------------------------------------------------*/
+/* dump load map                                                              */
+/*----------------------------------------------------------------------------*/
+void LoadMap::vDumpMap(void)
+{
+  for (i8 i_Entry = 0; i_Entry < m_xChunks.nEntries; i_Entry++) {
+    if (i_Entry && 0 == i_Entry % 8)
+      vTrace("\n"_Stz);
+    vTrace("%ld "_Stz,m_xChunks.iaOffset[i_Entry]);
+  }
 
-  m_zEolLock.vDropWrite();
+  vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* map next chunk in file                                                     */
+/*----------------------------------------------------------------------------*/
+bool LoadMap::bMapChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
   
-  RASSERT(m_nEntries < C_LOADMAP_ENTRIES);
+  if (m_i_StartChunk >= m_i_EofOffset) {
+    vMappingDone(true);
+    return false;
+  }
+  
+  i8 i_StartBlock = m_i_StartChunk + C_LOAD_CHUNK - C_LOADMAP_BLOCK;
+  
+  if (i_StartBlock > m_i_EofOffset) {
+    vAddOffset(m_i_EofOffset - 1);
+    vMappingDone(true);
+    return false;
+  }
+  
+  m_oFile.vSeek(i_StartBlock);
+  
+  char* aDst = aDataArea();
+  
+  i8 iBytesRead = m_oFile.iReadBytes(aDst,C_LOADMAP_BLOCK);
+  
+  const char *z = &aDst[iBytesRead - 1];
+  
+  bool bFoundEol = StrLib::bBackward(&z,aDst,'\n');
+  if (!bFoundEol)
+    bFoundEol = StrLib::bBackward(&z,aDst,'\r');
+  
+  RASSERT(bFoundEol);
+  
+  i8 nBytes = Base::nSub((void*)z,aDst) + 1;
+  
+  i8 i_EndChunk = i_StartBlock + nBytes - 1;
+  vAddOffset(i_EndChunk);
+  
+  // position to start of next chunk
+  m_i_StartChunk = i_EndChunk + 1;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -255,7 +233,24 @@ void LoadMap::vMappingDone(bool bMappingDone)
   
   m_bMappingDone = bMappingDone;
   
-  //vTrace("LoadMap closed with %lld entries\n"_Stz,m_nEntries);
+  //vTrace("LoadMap closed with %lld entries\n"_Stz,m_xChunks.nEntries);
+}
+
+/*----------------------------------------------------------------------------*/
+/* open file                                                                  */
+/*----------------------------------------------------------------------------*/
+bool LoadMap::bOpenFile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
+  
+  bool bOpened = bOpenRead(m_sFilePath);
+  if (! bOpened)
+    return false;
+  
+  m_oFile.vSeekEnd();
+  m_i_EofOffset = m_oFile.iTell();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -266,38 +261,37 @@ bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes, i8& i_Chunk, i8& nChunks)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
 
   // is there another entry available yet?
-  if (m_iNext == m_nEntries) {
+  if (m_xChunks.i_Entry == m_xChunks.nEntries)
     return false;
-  }
   
   // subordinates compete for next entries
-  m_zEolLock.vGrabWrite();
+  m_zChunksLock.vGrabWrite();
  
   // is there another entry available yet?
-  if (m_iNext == m_nEntries) {
-    m_zEolLock.vDropWrite();
+  if (m_xChunks.i_Entry == m_xChunks.nEntries) {
+    m_zChunksLock.vDropWrite();
     return false;
   }
-  ASSERT(m_iNext < m_nEntries);
+  ASSERT(m_xChunks.i_Entry < m_xChunks.nEntries);
   
   // a subsequent subordinate calling this func will get the next entry
-  // save m_iNext before incrementing
-  i_Chunk  = m_iNext++;
+  // save m_xChunks.i_Entry before incrementing
+  i_Chunk  = m_xChunks.i_Entry++;
   
   // now ok to drop the lock
-  m_zEolLock.vDropWrite();
+  m_zChunksLock.vDropWrite();
   
   // - a seekmap holds ending offsets only
-  nChunks = m_nEntries;
+  nChunks = m_xChunks.nEntries;
   
   // calculate starting seek offset of next read-chunk
   if (0 == i_Chunk)
     iSeek = 0;
   else
-    iSeek = m_iEolOffset[i_Chunk - 1] + 1;
+    iSeek = m_xChunks.iaOffset[i_Chunk - 1] + 1;
   
   // calculate the number of bytes in the read-chunk
-  i8 iEnd = m_iEolOffset[i_Chunk];
+  i8 iEnd = m_xChunks.iaOffset[i_Chunk];
   nBytes  = iEnd - iSeek + 1;
   
   return true;
@@ -336,6 +330,7 @@ bool LoadMap::bNextChunkInfo(i8& i_Seek, i8& nBytes)
   
   return true;
 }
+
 /*----------------------------------------------------------------------------*/
 /* stats                                                                      */
 /*----------------------------------------------------------------------------*/
@@ -344,8 +339,8 @@ void LoadMap::vStats(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
   vTrace("LoadMap: lock writes %lld write collisions %lld\n"_Stz,
-         m_zEolLock.iWriteGrabs(),
-         m_zEolLock.iWriteCollisions());
+         m_zChunksLock.iWriteGrabs(),
+         m_zChunksLock.iWriteCollisions());
 }
 
 /*----------------------------------------------------------------------------*/

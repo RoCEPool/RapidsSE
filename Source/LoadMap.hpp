@@ -16,17 +16,18 @@ namespace Chunks
     static const i8 C_LOADMAP_ENTRIES = (C_1MB * 1);
  
   private:
-    s256 m_sFilePath;    // file path
-    i8   m_iChunkOffset; // seek location of next chunk
-    i8   m_iEofOffset;   // eof location of eof
+    s256 m_sFilePath;    // file to be mapped
+    i8   m_i_StartChunk; // seek location for the start of next chunk
+    i8   m_i_EofOffset;  // eof location of eof
     bool m_bMappingDone; // is mapping of chunks in file complete?
   
-    Lock m_zEolLock;    // lock over the offset information
-    
-    i8   m_iEolOffset[C_LOADMAP_ENTRIES]; // array of ending '\n' offsets
-    i8   m_nEntries;    // logical limit of m_iEnd
-    i8   m_iNext;       // which read-chunk to be taken by next subordinate
-
+    Lock m_zChunksLock;  // lock over the chunks information
+    struct {
+      i8   iaOffset[C_LOADMAP_ENTRIES]; // array of ending '\n' offsets
+      i8   nEntries;     // logical limit of iaOffset[]
+      i8   i_Entry;      // which read-chunk to be taken by next subordinate
+    } m_xChunks;
+  
     Footer m_xFooter;
     
   public:
@@ -38,19 +39,17 @@ namespace Chunks
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-    void vDumpMap(void);
-     
+    void vAddOffset(i8 i_Offset);
+    void vChunkTest(void);
     void vCloseFile(void);
+    void vDumpMap(void);
     bool bMapChunk(void);
-    bool bOpenFile(void);
-
-    void vEolOffset(i8 iEolOffset);
     bool bMappingDone(void);
     void vMappingDone(bool bMappingDone);
     bool bNextChunk(i8& iSeek, i8& nBytes, i8& iChunk, i8& nChunks);
     bool bNextChunkInfo(i8& i_Seek, i8& nBytes);
-    void vChunkTest(void);
-    
+    bool bOpenFile(void);
+
     void vStats(void);
     
     Footer* aFooter(void);
