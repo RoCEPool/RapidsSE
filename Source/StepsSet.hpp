@@ -902,9 +902,9 @@
   static void vSocketSendObject(Tasks::MP_Task mpTask);
 
   // steps
-  static void vStepsReset(Tasks::MP_Task mpTask);
-  static void vStepsStart(Tasks::MP_Task mpTask);
-  static void vStepsWrite(Tasks::MP_Task mpTask);
+  static void vStepTrackerReset(Tasks::MP_Task mpTask);
+  static void vStepTrackerStart(Tasks::MP_Task mpTask);
+  static void vStepTrackerWrite(Tasks::MP_Task mpTask);
 
   // string
   static void vStrAlgebra(Tasks::MP_Task mpTask);
