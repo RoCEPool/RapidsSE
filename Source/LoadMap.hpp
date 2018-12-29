@@ -18,7 +18,7 @@ namespace Chunks
   private:
     s256 m_sFilePath;    // file to be mapped
     i8   m_i_StartChunk; // seek location for the start of next chunk
-    i8   m_i_EofOffset;  // eof location of eof
+    i8   m_i_EofOffset;  // eof location of file
     bool m_bMappingDone; // is mapping of chunks in file complete?
   
     Lock m_zChunksLock;  // lock over the chunks information

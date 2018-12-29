@@ -98,7 +98,9 @@ void LoadMap::vAddOffset(i8 i_Offset)
   
   ++gpAttachMap->m_oLockTracker.m_ziWorkUnits[LK_LOAD_MAP];
   
-  m_xChunks.iaOffset[m_xChunks.nEntries++] = i_Offset;
+  m_xChunks.iaOffset[m_xChunks.nEntries] = i_Offset;
+  
+  m_xChunks.nEntries++;
   
   m_zChunksLock.vDropWrite();
   
