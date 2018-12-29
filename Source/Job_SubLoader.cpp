@@ -205,7 +205,7 @@ bool Job_SubLoader::bChunk(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read next mapped chunk
-  if (! m_pJob_LoadTable->m_pLoadMap->bNextChunkInfo(i_Seek,nChunkBytes))
+  if (! m_pJob_LoadTable->m_pLoadMap->bNextChunk(i_Seek,nChunkBytes))
     return false;
   
   m_pRecordLoader->vReadSpecificChunk(i_Seek,nChunkBytes);
