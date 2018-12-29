@@ -3,20 +3,13 @@
 /*============================================================================*/
 startCluster;
 
-create table j1000 (
-j1000_key   INTEGER NOT NULL,
-j1000_name  VARCHAR(32) NOT NULL,
-j1000_j100  INTEGER NOT NULL,
-j1000_j10   INTEGER NOT NULL
+create table NATION (
+n_nationkey INTEGER NOT NULL,
+n_name VARCHAR(25),
+n_regionkey INTEGER NOT NULL,
+n_comment VARCHAR(152)
 );
-
-create index idx on j1000 (j1000_key);
-
-insert into j10 values (10,'abcd',30,40);
-
-insert into j1000 values (10,'abcd',30,40);
-insert into j1000 values (11,'efgh',31,41);
-fetch j1000;
+ld NATION "/DATA/Load/nation.csv" record_ends "\r\n";
 
 //*============================================================================*/
 /* end                                                                        */
