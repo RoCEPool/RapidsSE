@@ -91,7 +91,7 @@ void GroupBy::vApplyBuffer(EntryBuffer* pEntryBuffer)
     LineItem* pLineItem = (LineItem*)pEntry->aRowData();
     
     //    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Stz,
-    //           pEntry,pLineItem,pLineItem->aStr(),pLineItem->aStr());
+    //           pEntry,pLineItem,pLineItem->aStz(),pLineItem->aStz());
     //    MemLib::vHexDump(pEntry,512);
     //    vTrace("\n"_Stz);
     
@@ -133,7 +133,7 @@ void GroupBy::vApplyEntry(Entry* pLineItemEntry)
   LineItem* pLineItem = (LineItem*)pLineItemEntry->aRowData();
   
   //    vTrace("\nEntry: %p LineItem: %p String: %p \n>>%s<<\n"_Stz,
-  //           pEntry,pLineItem,pLineItem->aStr(),pLineItem->aStr());
+  //           pEntry,pLineItem,pLineItem->aStz(),pLineItem->aStz());
   //    MemLib::vHexDump(pEntry,512);
   //    vTrace("\n"_Stz);
   

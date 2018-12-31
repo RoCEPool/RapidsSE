@@ -24,7 +24,7 @@ namespace Chunks
   
     void  vCopy(DataChunk* pSource);
     char* aDataArea(void);
-    Stz*  aStr(void);
+    Stz*  aStz(void);
   };
   
   DataChunk* _pDataChunk(void* aAddr);

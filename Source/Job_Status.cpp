@@ -221,7 +221,7 @@ void JobModel::vJob_Status_post(Interface::Session* pSession, Job* pJob)
   }
   else {
     if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_Status->m_sMetadata.aStr());
+      vTrace("metadata: %s\n"_Stz, pJob_Status->m_sMetadata.aStz());
     }
     
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {

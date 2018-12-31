@@ -103,9 +103,9 @@ void AttachMap::vPrintAttachMap(void)
 {
   vInfo("\n****ATTACH MAP****\n\n"_Stz);
   vInfo("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
-  vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_sUTC.aStr());
+  vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_sUTC.aStz());
   
-  vInfo("RegionName : %s \n"_Stz,     gpAttachMap->m_sRegionName.aStr());
+  vInfo("RegionName : %s \n"_Stz,     gpAttachMap->m_sRegionName.aStz());
   vInfo("RegionSize : %lld \n"_Stz,   gpAttachMap->m_iRegionSize);
   vInfo("JumboSize  : %lld \n"_Stz,   gpAttachMap->m_iJumboSize);
   vInfo("SubLoaders : %lld \n"_Stz,   gpAttachMap->m_nSubLoaders);

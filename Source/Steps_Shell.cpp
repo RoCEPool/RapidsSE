@@ -28,7 +28,7 @@ void Step::vShellExecute(MP_Task mpTask)
   
   SysCall oSysCall;
   
-  i8 iExitStatus = Shell::iExecute(_pStrVal(xCommand.pNestedValueSelf())->aStr(),oSysCall);
+  i8 iExitStatus = Shell::iExecute(_pStrVal(xCommand.pNestedValueSelf())->aStz(),oSysCall);
   
   mpTask->m_pDataStack->vPushInt(iExitStatus);
   

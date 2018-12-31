@@ -138,7 +138,7 @@ Word* DicStack::pFindWord(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  Word* pWord = pFindWord(sName.aStr());
+  Word* pWord = pFindWord(sName.aStz());
   
   return pWord;
 }

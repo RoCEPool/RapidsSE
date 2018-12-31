@@ -240,7 +240,7 @@ void Job_Publish::vPublish(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PUBLISH,_FOOTER_);
   
   vTrace("Publishing table %s\n"_Stz,
-         m_sObjectName.aStr());
+         m_sObjectName.aStz());
   
 }
 

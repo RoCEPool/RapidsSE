@@ -256,7 +256,7 @@ bool Job_Repeater::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
-  vTrace("Repeat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputPath.aStr());
+  vTrace("Repeat data from %s to %s\n"_Stz,m_sFileName.aStz(),m_sOutputPath.aStz());
   
   if (! m_pIoCopy->bOpenRead(m_sFileName))
     return false;

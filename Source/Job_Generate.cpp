@@ -731,11 +731,11 @@ void Job_Generate::vGenerate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
   vTrace("Generating data for %s into %s\n"_Stz,
-         m_sObjectName.aStr(), m_sFileName.aStr());
+         m_sObjectName.aStz(), m_sFileName.aStz());
   
-  bool bOpened = m_oFile.bOpen(m_sFileName.aStr(), C_OPEN_WRITE);
+  bool bOpened = m_oFile.bOpen(m_sFileName.aStz(), C_OPEN_WRITE);
   if (! bOpened) {
-    vTrace("Unable to open file: %s\n"_Stz,m_sFileName.aStr());
+    vTrace("Unable to open file: %s\n"_Stz,m_sFileName.aStz());
     return;
   }
   

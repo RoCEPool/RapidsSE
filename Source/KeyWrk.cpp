@@ -84,7 +84,7 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters)
   StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   
   char* pDst = aLatter();
-  char* pSrc = (char*)pStrVal->aStr();
+  char* pSrc = (char*)pStrVal->aStz();
   
   switch(pCol->eDatumType()) {
       
@@ -168,7 +168,7 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
   char* pSrc;
   
   if (DM_VCH == pCol->eDatumType())
-    pSrc = (char*)(_pStrVal(xValWrk.pNestedValueSelf())->aStr());
+    pSrc = (char*)(_pStrVal(xValWrk.pNestedValueSelf())->aStz());
   else
     pSrc = pAdd<char*>(xValWrk.pNestedValueSelf(),sizeof(Value));
   

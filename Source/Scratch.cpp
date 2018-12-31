@@ -86,7 +86,7 @@ Stz* Scratch::aWspStr(void)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
   
-  return m_xWsp.aStr();
+  return m_xWsp.aStz();
 }
 
 /*----------------------------------------------------------------------------*/

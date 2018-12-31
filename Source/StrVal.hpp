@@ -4,7 +4,7 @@
 #pragma once
 
 #ifdef STRING_LENGTH_TEST
-  #define STRLEN_TEST() ASSERT(nAreaSize() == StrLib::iLength(aStr() + 1));
+  #define STRLEN_TEST() ASSERT(nAreaSize() == StrLib::iLength(aStz() + 1));
 #else
   #define STRLEN_TEST() ;
 #endif
@@ -68,7 +68,7 @@ namespace Values
     bool  bSame(Stz* aArg);
     i8    nSize(void);
     void  vSprint(Stz* aFormat, ...);
-    Stz*  aStr(void);
+    Stz*  aStz(void);
     i8    iToI8(void);
     void  vToLower(void);
     void  vToString(Stz* aStr);

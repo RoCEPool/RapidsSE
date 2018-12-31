@@ -210,7 +210,7 @@ bool Job_WriteRow::bFormatRow(Table* pTable, Stz* aRawData, i8 nRawDataBytes)
   bool bValid = Row::bFormatRow(pTable->pColumnVec(),
                                 &m_xFormatters,
                                 aRawData, nRawDataBytes,
-                                m_aRecord.aStr(),
+                                m_aRecord.aStz(),
                                 m_nRecordBytes,
                                 bBlankLine,
                                 false /* allowNonPrintable */);

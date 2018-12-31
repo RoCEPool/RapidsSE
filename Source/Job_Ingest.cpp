@@ -256,7 +256,7 @@ bool Job_Ingest::bBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
   vTrace("Ingesting data into %s from %s\n"_Stz,
-         m_sObjectName.aStr(), m_sFileName.aStr());
+         m_sObjectName.aStz(), m_sFileName.aStz());
   
   bool bOpened = m_pRecordIngestor->bOpenRead(m_sFileName);
   

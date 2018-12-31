@@ -64,13 +64,13 @@ void DataChunk::vCopy(DataChunk* pSource)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   MemLib::vCopy(m_xWsp.aArea(),
-                pSource->aStr(),
+                pSource->aStz(),
                 pSource->m_nDataBytes,
                 eClass());
   
   m_nDataBytes = pSource->m_nDataBytes;
   
-  m_aLastDataByte = &m_xWsp.aStr()[m_nDataBytes - 1];
+  m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,11 +88,11 @@ char* DataChunk::aDataArea(void)
 /*----------------------------------------------------------------------------*/
 /* get wsp as string pointer                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* DataChunk::aStr(void)
+Stz* DataChunk::aStz(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  return m_xWsp.aStr();
+  return m_xWsp.aStz();
 }
 
 /*============================================================================*/

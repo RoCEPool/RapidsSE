@@ -234,7 +234,7 @@ void JobModel::vJob_AnalyzeIndex_post(Interface::Session* pSession, Job* pJob)
   }
   else {
     if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_AnalyzeIndex->m_sMetadata.aStr());
+      vTrace("metadata: %s\n"_Stz, pJob_AnalyzeIndex->m_sMetadata.aStz());
     }
     
     i8 iRowsProcessed = 0;

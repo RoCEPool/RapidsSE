@@ -124,8 +124,8 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
   
   //vTrace("vCreateColumnVec: index %s column %s %s\n"_Stz,
   //        m_sIndexName.s(),
-  //         sColumnNm.aStr(),
-  //         sColumnDefn.aStr());
+  //         sColumnNm.aStz(),
+  //         sColumnDefn.aStz());
   
   Column* pColumn = nullptr;
   

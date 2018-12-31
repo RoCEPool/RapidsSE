@@ -412,7 +412,7 @@ void JobModel::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
   }
   
   if (gpAttachMap->m_bMetadata) {
-    vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.aStr());
+    vTrace("metadata: %s\n"_Stz, pJob_FetchRows->m_sMetadata.aStz());
   }
   
   while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {

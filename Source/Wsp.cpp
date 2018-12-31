@@ -91,7 +91,7 @@ i8 Wsp::nSize(void)
 /*----------------------------------------------------------------------------*/
 /* get address of byte area                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* Wsp::aStr(void)
+Stz* Wsp::aStz(void)
 {
   return reinterpret_cast<Stz*>(this);
 }

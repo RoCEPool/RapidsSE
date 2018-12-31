@@ -240,7 +240,7 @@ void Job_Purge::vPurge(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PURGE,_FOOTER_);
   
   vTrace("Purging table %s\n"_Stz,
-         m_sObjectName.aStr());
+         m_sObjectName.aStz());
   
 }
 

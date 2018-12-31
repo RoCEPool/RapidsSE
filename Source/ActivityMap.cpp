@@ -192,8 +192,8 @@ void ActivityMap::vOpenBySE(void)
   
   ActivityMap::vMark(0,"hw: %lld cores; %s memory; %s clock frequency"_Stz,
                      Hardware::iCoreCount(),
-                     sMem.aStr(),
-                     sClock.aStr()
+                     sMem.aStz(),
+                     sClock.aStz()
                      );
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

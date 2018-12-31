@@ -506,7 +506,7 @@ ENTRY("vTableInsert"_Stz);
   /*
   pTable->vInsertRow(iPartition,
                      pTx,
-                     _pStrVal(&xRow)->aStr(),
+                     _pStrVal(&xRow)->aStz(),
                      _pStrVal(&xRow)->nAreaSize());
    */
   

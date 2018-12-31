@@ -66,11 +66,11 @@ bool Prompt::bPrompt_shell(SePrompt* pPrompt)
   // concat a terminating semicolon (needed??)
   sCommand.vConcat(";"_Stz);
 
-  vTrace("Shell:: %s\n"_Stz,sCommand.aStr());
+  vTrace("Shell:: %s\n"_Stz,sCommand.aStz());
   
   SysCall oSysCall;
   
-  i8 iExitStatus = Shell::iExecute(sCommand.aStr(),oSysCall);
+  i8 iExitStatus = Shell::iExecute(sCommand.aStz(),oSysCall);
   
   return iExitStatus ? true : false;
 }

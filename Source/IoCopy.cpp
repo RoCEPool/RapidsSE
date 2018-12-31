@@ -99,7 +99,7 @@ bool IoCopy::bCopyChunk(void)
   if (! nBytesRead)
     return false;
   
-  //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pInChunk->aStr());
+  //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pInChunk->aStz());
   
   m_pOutChunk->vCopy(m_pInChunk);
   

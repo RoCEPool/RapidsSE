@@ -154,7 +154,7 @@ void KeyTest::vTest(void)
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     sKey = Random::sRandomString(7);
     
-    Stz* ptr = sKey.aStr();
+    Stz* ptr = sKey.aStz();
     
     xValWrk = ptr;
     pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
@@ -175,7 +175,7 @@ void KeyTest::vTest(void)
 
   // generate a random key value to find
   sKey = Random::sRandomString(7);
-  Stz* ptr = sKey.aStr();
+  Stz* ptr = sKey.aStz();
   vTrace("Find Key value < %s\n"_Stz, ptr);
   
   xValWrk = ptr;
@@ -212,7 +212,7 @@ void KeyTest::vTest(void)
   
   // generate a random key value to find
   sKey = Random::sRandomString(7);
-  ptr = sKey.aStr();
+  ptr = sKey.aStz();
   vTrace("Find Key value >= %s\n"_Stz, ptr);
   
   xValWrk = ptr;
@@ -401,7 +401,7 @@ void KeyTest::vTest(void)
       //xKeyWrk.vShow();
       
       sKey = Random::sRandomString(7);
-      Stz* ptr = sKey.aStr();
+      Stz* ptr = sKey.aStz();
       xValWrk = ptr;
       pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
       xKeyWrk.vAddDatum(xValWrk, pCol1);
@@ -425,14 +425,14 @@ void KeyTest::vTest(void)
   xKeyWrk.vReset();
   xKeyWrk.vAddDatum(xValWrk, pCol0);
   sKey = Random::sRandomString(7);
-  ptr = sKey.aStr();
+  ptr = sKey.aStz();
   xValWrk = ptr;
   pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
   xKeyWrk.vAddDatum(xValWrk, pCol1);
   
   pKeyValFind = new KeyVal(xKeyWrk);
   
-  vTrace("Find Key value >= 2,%s\n"_Stz, pStrVal->aStr());
+  vTrace("Find Key value >= 2,%s\n"_Stz, pStrVal->aStz());
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
@@ -453,11 +453,11 @@ void KeyTest::vTest(void)
     //aCursor = pKeyVal->m_xKey.aWspArea();
     //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
     pKeyVal->vShow(pColVec);
-    vTrace("( >= 2,%s)\n"_Stz, pStrVal->aStr());
+    vTrace("( >= 2,%s)\n"_Stz, pStrVal->aStz());
   }
   
   
-  vTrace("Find Key value <= 2,%s\n"_Stz, pStrVal->aStr());
+  vTrace("Find Key value <= 2,%s\n"_Stz, pStrVal->aStz());
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_LESS_EQUAL);
@@ -478,7 +478,7 @@ void KeyTest::vTest(void)
     //aCursor = pKeyVal->m_xKey.aWspArea();
     //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
     pKeyVal->vShow(pColVec);
-    vTrace("( <= 2,%s)\n"_Stz, pStrVal->aStr());
+    vTrace("( <= 2,%s)\n"_Stz, pStrVal->aStz());
   }
 
   vTrace("\n\nEnd KeyTest**********************************************\n"_Stz);

@@ -260,7 +260,7 @@ bool Job_Cat::bBegin(void)
   if (m_bStatistics)
     m_pIoCopy->vWithStatistics("  cat : "_Stz);
 
-  vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStr(),m_sOutputPath.aStr());
+  vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStz(),m_sOutputPath.aStz());
 
   return true;
 }

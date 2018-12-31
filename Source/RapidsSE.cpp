@@ -143,7 +143,7 @@ void RapidsSE::vChangeDirectory(void)
 
   s256 sCurrent;
   if (Dir::bGetCurrent(sCurrent) && gxArguments.m_bVerbose)
-    vInfo("CURRENT WORKING DIRECTORY: %s\n"_Stz,sCurrent.aStr());
+    vInfo("CURRENT WORKING DIRECTORY: %s\n"_Stz,sCurrent.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -466,7 +466,7 @@ void RapidsSE::vPrintWelcome(void)
         );
 
   if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus)
-    vInfo("%s\n"_Stz,gxArguments.m_sWelcome.aStr());
+    vInfo("%s\n"_Stz,gxArguments.m_sWelcome.aStz());
   
   if (gxArguments.m_bVerbose) {
 #ifdef MUNGE

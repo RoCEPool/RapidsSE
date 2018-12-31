@@ -644,7 +644,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
     vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,aLiteral);
   }
   
-  //vTrace("%s)\n"_Stz, sKeyString.aStr());
+  //vTrace("%s)\n"_Stz, sKeyString.aStz());
 }
 #else
 void Key::vShow(IdxColVec* pIdxColVec)
@@ -667,7 +667,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
     vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,aLiteral);
   }
 
-  //vTrace("%s)\n"_Stz, sKeyString.aStr());
+  //vTrace("%s)\n"_Stz, sKeyString.aStz());
 }
 #endif
 

@@ -133,12 +133,12 @@ void ByteRate::vReportStatistics(void)
   Magnitudes::vByteMag(iExtrapolatedPerDay,2,sDayMag);
 
   vTrace("%s%s %llds: %s/s (%s/day)\n"_Stz,
-         m_sReportPrefix.aStr(),
-         sSumMag.aStr(),
+         m_sReportPrefix.aStz(),
+         sSumMag.aStz(),
          m_xElapsedTimer.iSeconds(),
          
-         sAvgMag.aStr(),
-         sDayMag.aStr());
+         sAvgMag.aStz(),
+         sDayMag.aStz());
   
   m_nNextReport += m_iReportQuantum;
 }

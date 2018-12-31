@@ -117,9 +117,9 @@ i8 FileChunk::nReadBytes(i8 nBytes)
   if (! m_nDataBytes)
     return 0;
   
-  ((char*)m_xWsp.aStr())[m_nDataBytes] = '\0';
+  ((char*)m_xWsp.aStz())[m_nDataBytes] = '\0';
   
-  m_aLastDataByte = &m_xWsp.aStr()[m_nDataBytes - 1];
+  m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
   
   return m_nDataBytes;
 }
@@ -148,11 +148,11 @@ void FileChunk::vWriteData(void)
 /*----------------------------------------------------------------------------*/
 /* get wsp as string pointer                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* FileChunk::aStr(void)
+Stz* FileChunk::aStz(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_xWsp.aStr();
+  return m_xWsp.aStz();
 }
 
 /*============================================================================*/

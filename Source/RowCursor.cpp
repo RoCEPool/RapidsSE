@@ -149,7 +149,7 @@ Stz* RowCursor::aRowAsStr(void)
 //  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->aRow());
 //  
 //  if (pStrVal)
-//    return pStrVal->aStr();
+//    return pStrVal->aStz();
 //  else
 //    return nullptr;
   

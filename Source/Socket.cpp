@@ -260,7 +260,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
   xAddrInfo.ai_flags    = AI_PASSIVE;
   
   s256 sPort;
-  StrLib::vSprint(sPort.aStr(), "%lld"_Stz, iPort);
+  StrLib::vSprint(sPort.aStz(), "%lld"_Stz, iPort);
   
   i8 iReturn = getaddrinfo(sAddr->aChar(), sPort.aChar(), &xAddrInfo, &pAddrInfo);
   if (iReturn != 0) {

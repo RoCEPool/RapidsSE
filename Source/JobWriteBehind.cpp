@@ -67,7 +67,7 @@ bool JobWriteBehind::bFormatRow(Table* pTable, Formatters* pFormatters,
   bool bValid = Row::bFormatRow(pTable->pColumnVec(),
                                 pFormatters,
                                 aRecord, nBytes,
-                                m_aRecord.aStr(),
+                                m_aRecord.aStz(),
                                 m_nRecordBytes,
                                 bBlankLine,
                                 false /* allowNonPrintable */);

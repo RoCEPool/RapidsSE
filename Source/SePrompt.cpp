@@ -444,7 +444,7 @@ void SePrompt::vMarkCommand(void)
 
   pTknVec->vToString(sCommand);
   
-  ActivityMap::vMark(0,"Prompt command: %s"_Stz,sCommand.aStr());
+  ActivityMap::vMark(0,"Prompt command: %s"_Stz,sCommand.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

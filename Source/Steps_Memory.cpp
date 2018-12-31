@@ -73,47 +73,47 @@ void Step::vMemoryList(MP_Task mpTask)
   s32 sMagnitude;
   
   Magnitudes::vByteMag(gpAttachMap->m_iMemCopyBytes, sMagnitude);
-  vTrace("MemCopyBytes %s\n"_Stz,sMagnitude.aStr());
+  vTrace("MemCopyBytes %s\n"_Stz,sMagnitude.aStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gpAttachMap->m_xMemCopy[i_Class]) {
       Magnitudes::vByteMag(gpAttachMap->m_xMemCopy[i_Class], sMagnitude);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStr());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStz());
     }
   }
   
   Magnitudes::vByteMag(gpAttachMap->m_iMemMoveBytes, sMagnitude);
-  vTrace("MemMoveBytes %s\n"_Stz,sMagnitude.aStr());
+  vTrace("MemMoveBytes %s\n"_Stz,sMagnitude.aStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gpAttachMap->m_xMemMove[i_Class]) {
       Magnitudes::vByteMag(gpAttachMap->m_xMemMove[i_Class], sMagnitude);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStr());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStz());
     }
   }
 
   Magnitudes::vByteMag(gpAttachMap->m_iMemScribbleBytes, sMagnitude);
-  vTrace("MemScribbleBytes %s\n"_Stz,sMagnitude.aStr());
+  vTrace("MemScribbleBytes %s\n"_Stz,sMagnitude.aStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gpAttachMap->m_xMemScribble[i_Class]) {
       Magnitudes::vByteMag(gpAttachMap->m_xMemScribble[i_Class], sMagnitude);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStr());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStz());
     }
   }
   
   Magnitudes::vByteMag(gpAttachMap->m_iMemSetBytes, sMagnitude);
-  vTrace("MemSetBytes %s\n"_Stz,sMagnitude.aStr());
+  vTrace("MemSetBytes %s\n"_Stz,sMagnitude.aStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gpAttachMap->m_xMemSet[i_Class]) {
       Magnitudes::vByteMag(gpAttachMap->m_xMemSet[i_Class], sMagnitude);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStr());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStz());
     }
   }
   
   Magnitudes::vByteMag(gpAttachMap->m_iMemZeroBytes, sMagnitude);
-  vTrace("MemZeroBytes %s\n"_Stz,sMagnitude.aStr());
+  vTrace("MemZeroBytes %s\n"_Stz,sMagnitude.aStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
     if (gpAttachMap->m_xMemZero[i_Class]) {
       Magnitudes::vByteMag(gpAttachMap->m_xMemZero[i_Class], sMagnitude);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStr());
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sMagnitude.aStz());
     }
   }
   

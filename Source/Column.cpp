@@ -428,7 +428,7 @@ void Column::vShow(void)
   
   vTrace("Column %02lld %s type %s length %lld scale %lld datum %s %s %s\n"_Stz,
          m_iColumnNo,
-         m_sColumnName.aStr(),
+         m_sColumnName.aStz(),
          aCT[m_eColumnType],
          m_iColumnLength,
          m_iColumnScale,

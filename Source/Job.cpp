@@ -326,7 +326,7 @@ void Job::vShow(s48K& s)
   
   vTrace("%s: %s"_Stz,
          m_pJobClass ? (Stz*)m_pJobClass->m_aName : "<no jobClass>"_Stz,
-         s.aStr());
+         s.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

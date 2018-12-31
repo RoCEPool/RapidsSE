@@ -67,7 +67,7 @@ bool Prompt::bPrompt_helpJobs(SePrompt* pPrompt)
       sCmd.vConcat(pJobClass->m_aCommand2);
     }
 
-    vTrace("  %14s -- %s\n"_Stz,sCmd.aStr(),pJobClass->m_aComment);
+    vTrace("  %14s -- %s\n"_Stz,sCmd.aStz(),pJobClass->m_aComment);
   }
 
   vTrace("\n"_Stz);

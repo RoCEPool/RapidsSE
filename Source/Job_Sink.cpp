@@ -249,7 +249,7 @@ bool Job_Sink::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
-  vTrace("Sink data from %s\n"_Stz,m_sFileName.aStr());
+  vTrace("Sink data from %s\n"_Stz,m_sFileName.aStz());
   
   bool bOpened = m_pIoChunk->bOpenRead(m_sFileName);
   
@@ -272,7 +272,7 @@ bool Job_Sink::bChunk(void)
   if (! nBytesRead)
     return false;
   
-  //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStr());
+  //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pIoChunk->aStz());
   
   if (m_pByteRate)
     m_pByteRate->vAddBytes(nBytesRead);

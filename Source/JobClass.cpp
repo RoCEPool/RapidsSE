@@ -149,18 +149,18 @@ void JobClass::vJobCat(void)
          aCN[m_eClass],
          giClassSize[m_eClass],
          m_aName,
-         sFunctions.aStr(),
+         sFunctions.aStz(),
          aJK[m_eKind],
          m_aComment,
          
          m_bResources ? "chk/rel"_Stz : "-"_Stz,
          
-         sSeedRun.aStr(),
-         sSeedReq.aStr(),
-         sSeedRcv.aStr(),
-         sSeedExe.aStr(),
-         sSeedEnd.aStr(),
-         sSeedCan.aStr()
+         sSeedRun.aStz(),
+         sSeedReq.aStz(),
+         sSeedRcv.aStz(),
+         sSeedExe.aStz(),
+         sSeedEnd.aStz(),
+         sSeedCan.aStz()
          );
   
 }
@@ -194,11 +194,11 @@ void JobClass::vJobCatHeader(void)
   vTrace("%20s %10s %20s %10s %10s %20s : "
          "%10s %20s %20s %20s %20s %20s %20s\n"_Stz,
          
-         sBar20.aStr(),sBar10.aStr(),sBar20.aStr(),sBar10.aStr(),
-         sBar10.aStr(),sBar20.aStr(),sBar10.aStr(),
+         sBar20.aStz(),sBar10.aStz(),sBar20.aStz(),sBar10.aStz(),
+         sBar10.aStz(),sBar20.aStz(),sBar10.aStz(),
          
-         sBar20.aStr(),sBar20.aStr(),sBar20.aStr(),
-         sBar20.aStr(),sBar20.aStr(),sBar20.aStr()
+         sBar20.aStz(),sBar20.aStz(),sBar20.aStz(),
+         sBar20.aStz(),sBar20.aStz(),sBar20.aStz()
          );
   
 }

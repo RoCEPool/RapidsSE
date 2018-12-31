@@ -38,7 +38,7 @@ bool Prompt::bPrompt_ssn(SePrompt* pPrompt)
 
   s32 sNumber;
   sNumber.vConcat(pArg1->aText());
-  vTrace("Session: %s\n"_Stz,sNumber.aStr());
+  vTrace("Session: %s\n"_Stz,sNumber.aStz());
 
   i8 iNumber = sNumber.iToI8();
   

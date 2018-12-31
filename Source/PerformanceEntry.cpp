@@ -87,7 +87,7 @@ i8 PerformanceEntry::iTicks(void)
 /*----------------------------------------------------------------------------*/
 Stz* PerformanceEntry::aWord(void)
 {
-  return (Stz*)m_sWord.aStr();
+  return (Stz*)m_sWord.aStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,7 +95,7 @@ Stz* PerformanceEntry::aWord(void)
 /*----------------------------------------------------------------------------*/
 Stz* PerformanceEntry::aNote(void)
 {
-  return (Stz*)m_sNote.aStr();
+  return (Stz*)m_sNote.aStz();
 }
 
 /*----------------------------------------------------------------------------*/

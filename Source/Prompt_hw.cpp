@@ -32,8 +32,8 @@ bool Prompt::bPrompt_hw(SePrompt* pPrompt)
 
   vTrace("hw: %lld cores; %s memory; %s clock frequency\n"_Stz,
          Hardware::iCoreCount(),
-         sMem.aStr(),
-         sClock.aStr()
+         sMem.aStz(),
+         sClock.aStz()
          );
   
   return true;

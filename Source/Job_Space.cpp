@@ -222,7 +222,7 @@ void JobModel::vJob_Space_post(Interface::Session* pSession, Job* pJob)
   }
   else {
     if (gpAttachMap->m_bMetadata) {
-      vTrace("metadata: %s\n"_Stz, pJob_Space->m_sMetadata.aStr());
+      vTrace("metadata: %s\n"_Stz, pJob_Space->m_sMetadata.aStz());
     }
     
     i8 iRowsProcessed = 0;

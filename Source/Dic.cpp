@@ -167,7 +167,7 @@ Word* Dic::pFindWord(Stz* aName)
       m_oLock.vDropRead();
 
       if (aName->bSame("whereAmI"_Stz))
-        vTrace(": %s is in dictionary %s ---\n"_Stz,aName,m_sName.aStr());
+        vTrace(": %s is in dictionary %s ---\n"_Stz,aName,m_sName.aStz());
 
       return pWord;
     }

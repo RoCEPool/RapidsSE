@@ -40,7 +40,7 @@ Stz* Now::sFormatted(void)
 {
   _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
   
-  return m_sFormatted.aStr();
+  return m_sFormatted.aStz();
 }
 
 

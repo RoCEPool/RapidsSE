@@ -171,7 +171,7 @@ void StrVal::operator =(StrVal* pArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vCopy(pArg->aStr());
+  vCopy(pArg->aStz());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -458,7 +458,7 @@ void StrVal::vSprint(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* get adddress of Stz area                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* StrVal::aStr(void)
+Stz* StrVal::aStz(void)
 {
   char* aAddr = pAdd<char*>(this,sizeof(StrVal));
   
@@ -486,9 +486,9 @@ void StrVal::vToLower(void)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void StrVal::vToString(Stz* aStr)
+void StrVal::vToString(Stz* aStz)
 {
-  StrLib::vCopy(aStr->aChar(),aChar());
+  StrLib::vCopy(aStz->aChar(),aChar());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -70,10 +70,10 @@ bool Prompt::bPrompt_se(SePrompt* pPrompt)
   // concat a terminating semicolon (needed??)
   sCommand.vConcat(";"_Stz);
 
-  vTrace("SE:: %s\n"_Stz,sCommand.aStr());
+  vTrace("SE:: %s\n"_Stz,sCommand.aStz());
   
   // call se to execute command
-  Job* pJob = RapidsSE_pExecCmdStr(sCommand.aStr(),pPrompt->pSession(),true,true);
+  Job* pJob = RapidsSE_pExecCmdStr(sCommand.aStz(),pPrompt->pSession(),true,true);
   
   if (pJob) {
     delete pJob;

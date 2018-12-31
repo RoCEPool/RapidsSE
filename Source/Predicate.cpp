@@ -168,8 +168,8 @@ void Predicate::vShow(void)
 {
   vTrace("  Predicate: %s : %s %s %s\n"_Stz,
          aPK[m_ePredicate],
-         m_pArg1 ? (char*)m_pArg1->sArgVal().aStr() : "<none>",
-         m_pArg2 ? (char*)m_pArg2->sArgVal().aStr() : "<none>",
+         m_pArg1 ? (char*)m_pArg1->sArgVal().aStz() : "<none>",
+         m_pArg2 ? (char*)m_pArg2->sArgVal().aStz() : "<none>",
          m_pOp ? (char*)aRO[m_pOp->eOpKind()] : "<none>"
          );
 }
