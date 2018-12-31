@@ -237,8 +237,10 @@ bool Job_SubLoader::bChunk(void)
       continue;
     }
     
-    if (EC_MAX_ROW_LENGTH == eError)
+    if (EC_MAX_ROW_LENGTH == eError) {
+      m_xNode[i_Node].m_ziRowsInvalid.iInc();
       continue;
+    }
     
     return false;
   }
