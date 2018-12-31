@@ -91,6 +91,8 @@ void vApiReturn(Session* pSession);
 void vDeleteJobs(Session* pSession);
 void vSpawnJobAndWait(Session* pSession, Job* pJob);
 
+#ifdef __DEBUG
+
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
 /*----------------------------------------------------------------------------*/
@@ -270,6 +272,26 @@ void vSpawnJobAndWait(Session* pSession, Job* pJob);
       return EC_VALIDATION_FAILURE; \
     } \
   }
+#else
+
+#define TRACE_ENTRY_P0()
+#define TRACE_ENTRY_P1(p1)
+#define TRACE_ENTRY_P2(p1, p2)
+#define TRACE_ENTRY_P3(p1, p2, p3)
+#define TRACE_ENTRY_P4(p1, p2, p3, p4)
+#define TRACE_INSERT(aMarker, sRow)
+#define TRACE_ERROR(aMarker, eErrorCode)
+#define TRACE_EXIT(aMarker)
+#define VALIDATE_JOB(aMarker)
+#define VALIDATE_INDEX(aMarker)
+#define VALIDATE_NOINDEX(aMarker)
+#define VALIDATE_PARAM(aMarker, pParameter)
+#define VALIDATE_REFPOINTER(aMarker, pRefPointer)
+#define VALIDATE_SESSION(aMarker)
+#define CHECK_RESULT(aMarker)
+#define VALIDATE_POOL()
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* trace API call entry                                                       */
