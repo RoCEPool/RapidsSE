@@ -108,6 +108,7 @@ Job_Purge::Job_Purge(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PURGE,_FOOTER_);
   
   m_pTable = nullptr;
+  m_nSecondsOld = 0;
   
   _checkInitialised_(CN_JOB_PURGE);
   
@@ -181,12 +182,14 @@ Job* JobModel::pJob_Purge_pre(Interface::Session* pSession)
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();
 
-  // there should be 2 tokens
-  if (nTokens < 2)
+  // there should be 3 tokens
+  if (nTokens < 3)
     return pJob_Purge;
 
   // set the table name
   pJob_Purge->m_sObjectName = pTknVec->pGet(1)->aText();
+
+  pJob_Purge->m_nSecondsOld = pTknVec->pGet(2)->iToI8();
 
   return pJob_Purge;
 }

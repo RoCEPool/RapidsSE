@@ -11,13 +11,13 @@ extern AttachMap* gpAttachMap;
 
 JobClass xJobClass_SubPurger =
 {
-  "Job_SubPurger"_Stz,     // name of the job class
-  CN_JOB_SUBPURGER,        // class enum
+  "Job_SubPurger"_Stz,    // name of the job class
+  CN_JOB_SUBPURGER,       // class enum
   JK_CHILD,               // job kind
-  "table sub-purge"_Stz,  // comment about the job
+  "table sub-purger"_Stz, // comment about the job
   nullptr,                // the prompt command
   nullptr,                // the second word
-  "subPurge_run"_Stz,     // the _run task seed
+  "subPurger_run"_Stz,    // the _run task seed
   nullptr,                // the _req task seed
   nullptr,                // the _rcv task seed
   nullptr,                // the _exe task seed
@@ -27,13 +27,13 @@ JobClass xJobClass_SubPurger =
   false,                  // detached job?
   false,                  // buffer attached?
   JT_NONE,                // job trace
-  pJob_SubPurger_pre,      // prompt pre-process function
-  vJob_SubPurger_post,     // prompt post-process function
-  nullptr,                   // job new function
-  vJob_SubPurger_delete,   // job delete function
-  nullptr,                   // job pre-send function
-  nullptr,                   // job post-receive function
-  vJob_SubPurger_show,     // job show function
+  pJob_SubPurger_pre,     // prompt pre-process function
+  vJob_SubPurger_post,    // prompt post-process function
+  nullptr,                // job new function
+  vJob_SubPurger_delete,  // job delete function
+  nullptr,                // job pre-send function
+  nullptr,                // job post-receive function
+  vJob_SubPurger_show,    // job show function
   
   // help and example
   false,
