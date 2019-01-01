@@ -611,9 +611,9 @@
   static void vJob_SubPublishSlotFetch(Tasks::MP_Task mpTask);
   static void vJob_SubPublishPublishJobIdFetch(Tasks::MP_Task mpTask);
 
-  // job subPurge
-  static void vJob_SubPurgeSlotFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubPurgePurgeJobIdFetch(Tasks::MP_Task mpTask);
+  // job subPurger
+  static void vJob_SubPurgerSlotFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubPurgerPurgeJobIdFetch(Tasks::MP_Task mpTask);
 
   // Job subTruncate
   static void vJob_SubTruncateSlotFetch(Tasks::MP_Task mpTask);

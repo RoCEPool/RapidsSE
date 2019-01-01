@@ -30,6 +30,11 @@ namespace JobModel
   public:
     void vShow(void);
   
+    bool bBegin(void);
+    bool bChunk(void);
+    void vEnd(void);
+
+  
     void   vPurge(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
