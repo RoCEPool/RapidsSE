@@ -107,6 +107,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_JobSelectTable();
   Step::vAddSteps_JobSink();
   Step::vAddSteps_JobSubLoader();
+  Step::vAddSteps_JobSubPurger();
   Step::vAddSteps_JobTruncateTable();
   Step::vAddSteps_JobWriteBuffer();
   Step::vAddSteps_JobWriteRow();
