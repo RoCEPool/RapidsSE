@@ -12,6 +12,9 @@ namespace JobModel
    
     i8 m_iPurgeJobId;    // job id of the purge job that spawned this sub purge
     i8 m_iSlot;          // slot this sub purge truncates
+  
+    Job_Purge* m_pJob_Purge;
+    Table* m_pTable;
     
     // must be last
     Footer m_xFooter;

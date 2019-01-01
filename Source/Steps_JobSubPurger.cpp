@@ -48,6 +48,13 @@ void Step::vJob_SubPurgerChunk(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrJobSubPurger) )
     THROW_INVALID_DSTACK("job_subPurger.chunk"_Stz);
   Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pPtrJobSubPurger);
+
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+  THROW_INVALID_DSTACK("job_subPurger.chunk"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+
+  pJob_SubPurger->m_pTable = pTable;
   
   bool bCallAgain = pJob_SubPurger->bChunk();
   

@@ -496,6 +496,22 @@
   static void vJobWorkingBufferFetch(Tasks::MP_Task mpTask);
   static void vJobWorkingBufferStore(Tasks::MP_Task mpTask);
 
+  // job generic
+  static void vJob__BegunErrorFetch(Tasks::MP_Task mpTask);
+  static void vJob__BegunErrorStore(Tasks::MP_Task mpTask);
+  static void vJob__CancelledErrorFetch(Tasks::MP_Task mpTask);
+  static void vJob__CancelledErrorStore(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedErrorFetch(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedErrorStore(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedResponseFetch(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedResponseStore(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedRowsInvalidFetch(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedRowsInvalidStore(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedRowsProcessedFetch(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedRowsProcessedStore(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedRowsSkippedFetch(Tasks::MP_Task mpTask);
+  static void vJob__ExecutedRowsSkippedStore(Tasks::MP_Task mpTask);
+
   // job analyzeIndex
   static void vJob_AnalyzeIndexIsDetailed(Tasks::MP_Task mpTask);
   static void vJob_AnalyzeTableIsDetailed(Tasks::MP_Task mpTask);
@@ -516,30 +532,9 @@
   static void vJob_FetchRowsTableStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsWhereFetch(Tasks::MP_Task mpTask);
 
-  static void vJob_SubFetchBufferQueueFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubFetchPhraseFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubFetchPlannerFetch(Tasks::MP_Task mpTask);
-  static void vJob_SubFetchSlotFetch(Tasks::MP_Task mpTask);
-
   // job genData
   static void vJob_GenerateGenerate(Tasks::MP_Task mpTask);
   static void vJob_GenerateTableStore(Tasks::MP_Task mpTask);
-
-  // job generic
-  static void vJob__BegunErrorFetch(Tasks::MP_Task mpTask);
-  static void vJob__BegunErrorStore(Tasks::MP_Task mpTask);
-  static void vJob__CancelledErrorFetch(Tasks::MP_Task mpTask);
-  static void vJob__CancelledErrorStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedErrorFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedErrorStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedResponseFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedResponseStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsInvalidFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsInvalidStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsProcessedFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsProcessedStore(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsSkippedFetch(Tasks::MP_Task mpTask);
-  static void vJob__ExecutedRowsSkippedStore(Tasks::MP_Task mpTask);
 
   // job ingest
   static void vJob_IngestBegin(Tasks::MP_Task mpTask);
@@ -604,6 +599,12 @@
   static void vJob_SinkBegin(Tasks::MP_Task mpTask);
   static void vJob_SinkChunk(Tasks::MP_Task mpTask);
   static void vJob_SinkEnd(Tasks::MP_Task mpTask);
+
+  // Job subFetch
+  static void vJob_SubFetchBufferQueueFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubFetchPhraseFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubFetchPlannerFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubFetchSlotFetch(Tasks::MP_Task mpTask);
 
   // Job subLoader
   static void vJob_SubLoaderBegin(Tasks::MP_Task mpTask);
@@ -859,7 +860,6 @@
   static void vRstack7(Tasks::MP_Task mpTask);
   static void vRstack8(Tasks::MP_Task mpTask);
   static void vRstack9(Tasks::MP_Task mpTask);
-
 
   // session
   static void vSessionCommandProcessor(Tasks::MP_Task mpTask);

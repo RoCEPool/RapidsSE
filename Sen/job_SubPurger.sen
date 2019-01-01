@@ -13,6 +13,12 @@
 
   locals| iSlot |
 
+  pJob_SubPurger job_subPurger.begin not if exit then
+
+  begin pTable pJob_SubPurger job_subPurger.chunk while repeat
+
+  pJob_SubPurger job_subPurger.end
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the slot this sub purge is supposed to work on
   pJob_SubPurger job_subPurger.slot@ to iSlot
