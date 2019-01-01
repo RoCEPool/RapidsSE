@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
+#include "Test.hpp"
 
 extern AttachMap* gpAttachMap;
 
@@ -51,6 +52,8 @@ void Step::vTestTest1(MP_Task mpTask)
 void Step::vTestTest2(MP_Task mpTask)
 {
   ENTRY("vTestTest2"_Stz);
+  
+  vTest2();
   
   EXIT();
 }

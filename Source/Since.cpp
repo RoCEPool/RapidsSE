@@ -128,6 +128,48 @@ void Since::vSet(i8 iSeconds, i8 iMicroseconds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* subtract given since argument                                              */
+/*----------------------------------------------------------------------------*/
+Ivl Since::wSubtract(Since& oArg)
+{
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  
+  Ivl wDiff;
+  
+  Since* pGreater;
+  Since* pSmaller;
+
+  i8 iSeconds;
+  i8 iMicroseconds;
+  i8 iMilliseconds;
+  
+  if (m_iSeconds < oArg.m_iSeconds ||
+       (m_iSeconds == oArg.m_iSeconds &&
+        m_iMicroseconds < oArg.m_iMicroseconds)) {
+    pGreater = &oArg;
+    pSmaller = this;
+  }
+  else {
+    pGreater = this;
+    pSmaller = &oArg;
+  }
+  
+  if (pSmaller->m_iMicroseconds > pGreater->m_iMicroseconds) {
+    iMicroseconds = 1000000 + pGreater->m_iMicroseconds - pSmaller->m_iMicroseconds;
+    iSeconds = pGreater->m_iSeconds - 1 - pSmaller->m_iSeconds;
+  }
+  else {
+    iMicroseconds = pGreater->m_iMicroseconds - pSmaller->m_iMicroseconds;
+    iSeconds = pGreater->m_iSeconds - pSmaller->m_iSeconds;
+  }
+  
+  iMilliseconds = iMicroseconds / C_1K;
+  wDiff.vSet(iSeconds,iMilliseconds);
+
+  return wDiff;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of seconds                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Since::iSeconds()

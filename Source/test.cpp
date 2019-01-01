@@ -3,7 +3,7 @@
 /*============================================================================*/
   
 #include "StorageEngine.h"
-#include "Test.h"
+#include "Test.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* test1                                                                      */
@@ -38,19 +38,19 @@ void vTest2(void)
 {
   vTrace("-------------------------vTest2--------------------------\n"_Stz);
 
-  Ivl xIvl1;
-  Ivl xIvl2;
+  Since oStart;
+  Since oEnd;
   
-  xIvl1.vSet(0,0);
-  xIvl2.vSet(1,0);
-  assert(xIvl1 < xIvl2);
-  assert( ! (xIvl2 < xIvl1) );
+  oStart.vSet();
+  PosixThread::vSleepMilli(3500);
+  oEnd.vSet();
+  
+  //Ivl wDiff = oEnd.wSubtract(oStart);
+  //Ivl wDiff = oStart.wSubtract(oEnd);
+  //Ivl wDiff = oStart.wSubtract(oStart);
+  Ivl wDiff = oEnd.wSubtract(oEnd);
 
-  xIvl1.vSet(1,0);
-  xIvl2.vSet(1,1);
-  assert(xIvl1 < xIvl2);
-  assert( ! (xIvl2 < xIvl1) );
-  
+  vTrace("Diff: %llds%lldus\n"_Stz,wDiff.iSecond(),wDiff.iMilli());
   
   vTrace("-----------------------End vTest2------------------------\n"_Stz);
 }
