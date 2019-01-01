@@ -11,12 +11,12 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobSubPurger(void)
 {
-  vAddStep("job_subPurge.purgeJobId@"_Stz,&Step::vJob_SubPurgePurgeJobIdFetch);
-  vAddStep("job_subPurge.slot@"_Stz,      &Step::vJob_SubPurgeSlotFetch);
+  vAddStep("job_subPurger.purgeJobId@"_Stz,&Step::vJob_SubPurgePurgeJobIdFetch);
+  vAddStep("job_subPurger.slot@"_Stz,      &Step::vJob_SubPurgeSlotFetch);
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_subPurge.purgeJobId@ -- fetch the purge job id                         */
+/* job_subPurger.purgeJobId@ -- fetch the purge job id                        */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubPurgePurgeJobIdFetch(MP_Task mpTask)
 {
@@ -24,7 +24,7 @@ void Step::vJob_SubPurgePurgeJobIdFetch(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_subPurge.purgeJobId@"_Stz);
+    THROW_INVALID_DSTACK("job_subPurger.purgeJobId@"_Stz);
   Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iPurgeJobId);
@@ -33,7 +33,7 @@ void Step::vJob_SubPurgePurgeJobIdFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_subPurge.slot@ -- fetch the job slot                                   */
+/* job_subPurger.slot@ -- fetch the job slot                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubPurgeSlotFetch(MP_Task mpTask)
 {
@@ -41,7 +41,7 @@ void Step::vJob_SubPurgeSlotFetch(MP_Task mpTask)
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job_subPurge.slot@"_Stz);
+    THROW_INVALID_DSTACK("job_subPurger.slot@"_Stz);
   Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iSlot);

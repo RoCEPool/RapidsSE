@@ -787,15 +787,15 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of job_SubPurge.sen
+  // munge of job_subPurger.sen
   sDefinition =
     "\""
-    "\\\"munged job_SubPurge.sen \\\" .verbose \n"
+    "\\\"munged job_subPurger.sen \\\" .verbose \n"
     "/*============================================================================*/\n"
-    "/* job_SubPurge.sen -- Job SubPurge                                           */\n"
+    "/* job_subPurger.sen -- Job SubPurge                                           */\n"
     "/*============================================================================*/\n"
     "\""
-  " CONSTANT job_SubPurge.sen"_Stz
+  " CONSTANT job_subPurger.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);

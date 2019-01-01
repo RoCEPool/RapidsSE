@@ -1,0 +1,96 @@
+/*============================================================================*/
+/* job_subPurger.sen -- Job SubPurge                                          */
+/*============================================================================*/
+
+" job_subPurger.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* SubPurger (on each node)                                                   */
+/*----------------------------------------------------------------------------*/
+: SubPurger_run ( -- <R> )
+
+  >>am <SEED_RUN>
+
+  0 0 locals| pJob_SubPurger pTask |
+  0 0 0 locals| iSlot pTable sTableNm |
+  0 0 locals| iPurgeJobId pJob_Purge |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the task
+  task::this to pTask
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the job from the task
+  pTask task.job@ to pJob_SubPurger
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // grab a ddl lock
+  //ddlLock::grabWrite
+
+  // get purge job
+  pJob_SubPurger job_subPurger.purgeJobId@ to iPurgeJobId
+  pJob_SubPurger iPurgeJobId job::waitParticipant to pJob_Purge
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // first check if the job is executing SS_SEED_EXE
+  // then get the task that is executing it
+  begin
+    pJob_Purge job.IsExecuting
+  not while
+    1 thread.sleep_ms
+  repeat
+
+  pJob_Purge job.executingTask@ locals| pTask_Purge |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for acks to be set in the purge task
+  begin
+    pTask_Purge task.IsAckSet
+  not while
+    1 thread.sleep_ms
+  repeat
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set dictionary stack from purge (sub has no session)
+  pTask_Purge task.job@ getPath
+  dicStack.set
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push table
+  pJob_SubPurger job.objectName@ to sTableNm
+  sTableNm pushTable assert
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the table
+  sTableNm find execute to pTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the slot this sub purge is supposed to work on
+  pJob_SubPurger job_subPurger.slot@ to iSlot
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // purge table for iSlot
+  iSlot pTable table.purge
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop table
+  popTable
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // notify the purge job
+  pTask_Purge task.grabLock
+  pTask_Purge task.dropLock
+  pTask_Purge task.ack
+
+  // null the job in the task
+  nullptr pTask task.job!
+
+  // now delete the ended job
+  pJob_SubPurger job.delete
+
+  <DONE_RUN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

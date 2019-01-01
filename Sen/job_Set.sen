@@ -83,7 +83,7 @@
 "job_Status.sen" include
 "job_SubFetch.sen" include
 "job_subPublish.sen" include
-"job_SubPurge.sen" include
+"job_subPurger.sen" include
 "job_SubLoader.sen" include
 "job_SubTruncate.sen" include
 
