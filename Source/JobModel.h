@@ -117,7 +117,7 @@ using namespace JobModel;
 #include "Job_SubFetch.hpp"
 #include "Job_SubLoader.hpp"
 #include "Job_SubPublish.hpp"
-#include "Job_SubPurge.hpp"
+#include "Job_SubPurger.hpp"
 #include "Job_SubTruncate.hpp"
 
 #include "Job_TableSizes.hpp"

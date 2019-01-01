@@ -20,7 +20,7 @@ void Step::vAddSteps_JobPublish(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_subPurge.purgeJobId@ -- fetch the purge job id                         */
+/* job_subPublish.publishJobId@ -- fetch the publish job id                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubPublishPublishJobIdFetch(MP_Task mpTask)
 {

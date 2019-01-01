@@ -165,7 +165,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vDummy,           // CN_JOB_SUBFETCH
   /*    */ &Dump::vDummy,           // CN_JOB_SUBLOADER
   /*    */ &Dump::vDummy,           // CN_JOB_SUBPUBLISH
-  /*    */ &Dump::vDummy,           // CN_JOB_SUBPURGE
+  /*    */ &Dump::vDummy,           // CN_JOB_SUBPURGER
   /*    */ &Dump::vDummy,           // CN_JOB_SUBTRUNCATE
   /*    */ &Dump::vDummy,           // CN_JOB_TABLESIZES
   /*    */ &Dump::vDummy,           // CN_JOB_TRUNCATETABLE
@@ -440,7 +440,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_SubFetch),       // CN_JOB_SUBFETCH
   /*    */ sizeof(Job_SubLoader),      // CN_JOB_SUBLOADER
   /*    */ sizeof(Job_SubPublish),     // CN_JOB_SUBPUBLISH
-  /*    */ sizeof(Job_SubPurge),       // CN_JOB_SUBPURGE
+  /*    */ sizeof(Job_SubPurger),      // CN_JOB_SUBPURGER
   /*    */ sizeof(Job_SubTruncate),    // CN_JOB_SUBTRUNCATE
   /*    */ sizeof(Job_TableSizes),     // CN_JOB_TABLESIZES
   /*    */ sizeof(Job_TruncateTable),  // CN_JOB_TRUNCATETABLE
@@ -714,7 +714,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBFETCH
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBLOADER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBPUBLISH
-  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBPURGE
+  /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBPURGER
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_SUBTRUNCATE
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_TABLESIZES
   /*    */ HT_TRANSIENT_LARGE,   // CN_JOB_TRUNCATETABLE

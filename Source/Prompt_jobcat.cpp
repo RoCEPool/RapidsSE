@@ -114,7 +114,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJobs(CN_JOB_SUBLOADER);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SUBFETCH);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SUBPUBLISH);
-  nJobs++; JobClass::vTraceJobs(CN_JOB_SUBPURGE);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_SUBPURGER);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SUBTRUNCATE);
   
   // grankid

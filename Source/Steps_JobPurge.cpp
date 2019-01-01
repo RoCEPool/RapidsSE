@@ -52,20 +52,20 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
   Session* pSession = pJob_Purge->m_pSession;
   i8 iPurgeJobId = pJob_Purge->m_iJobId;
   
-  JobClass* pJobClass_SubPurge = JobClass::pFind(CN_JOB_SUBPURGE);
+  JobClass* pJobClass_SubPurger = JobClass::pFind(CN_JOB_SUBPURGER);
   
-  Job_SubPurge* pJob_SubPurge =
-  static_cast<Job_SubPurge*>(pJobClass_SubPurge->pPreJob(nullptr));
+  Job_SubPurger* pJob_SubPurger =
+  static_cast<Job_SubPurger*>(pJobClass_SubPurger->pPreJob(nullptr));
   
-  pJob_SubPurge->vSeed(SS_SEED_RUN);
+  pJob_SubPurger->vSeed(SS_SEED_RUN);
   
-  pJob_SubPurge->m_iPurgeJobId = iPurgeJobId;
-  pJob_SubPurge->m_sObjectName = pJob_Purge->m_sObjectName;
-  pJob_SubPurge->m_iSlot = iSlot;
+  pJob_SubPurger->m_iPurgeJobId = iPurgeJobId;
+  pJob_SubPurger->m_sObjectName = pJob_Purge->m_sObjectName;
+  pJob_SubPurger->m_iSlot = iSlot;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RapidsSE_bSpawnJob(pJob_SubPurge,SS_SEED_RUN,nullptr);
+  RapidsSE_bSpawnJob(pJob_SubPurger,SS_SEED_RUN,nullptr);
 
   EXIT();
 }

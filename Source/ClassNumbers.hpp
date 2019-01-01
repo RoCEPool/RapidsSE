@@ -164,7 +164,7 @@ enum eCN : u2 // Class Number
   /* 118 */ CN_JOB_SUBFETCH,
   /* 119 */ CN_JOB_SUBLOADER,
   /*     */ CN_JOB_SUBPUBLISH,
-  /* 120 */ CN_JOB_SUBPURGE,
+  /* 120 */ CN_JOB_SUBPURGER,
   /* 120 */ CN_JOB_SUBTRUNCATE,
   /* 121 */ CN_JOB_TABLESIZES,
   /* 122 */ CN_JOB_TRUNCATETABLE,
@@ -434,7 +434,7 @@ static Stz* aCN[]
   /* 118 */ "JOB_SUBFETCH"_Stz,        // CN_JOB_SUBFETCH
   /* 119 */ "JOB_SUBLOADER"_Stz,       // CN_JOB_SUBLOADER
   /*     */ "JOB_SUBPUBLISH"_Stz,      // CN_JOB_SUBPUBLISH
-  /* 120 */ "JOB_SUBPURGE"_Stz,        // CN_JOB_SUBPURGE
+  /* 120 */ "JOB_SUBPURGEF"_Stz,       // CN_JOB_SUBPURGER
   /* 120 */ "JOB_SUBTRUNCATE"_Stz,     // CN_JOB_SUBTRUNCATE
   /* 121 */ "JOB_TABLESIZES"_Stz,      // CN_JOB_TABLESIZES
   /* 122 */ "JOB_TRUNCATETABLE"_Stz,   // CN_JOB_TRUNCATETABLE

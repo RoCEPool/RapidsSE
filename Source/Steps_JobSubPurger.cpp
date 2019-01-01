@@ -25,7 +25,7 @@ void Step::vJob_SubPurgePurgeJobIdFetch(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job_subPurge.purgeJobId@"_Stz);
-  Job_SubPurge* pJob = _pJob_SubPurge(pJobPtr);
+  Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iPurgeJobId);
   
@@ -42,7 +42,7 @@ void Step::vJob_SubPurgeSlotFetch(MP_Task mpTask)
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
     THROW_INVALID_DSTACK("job_subPurge.slot@"_Stz);
-  Job_SubPurge* pJob = _pJob_SubPurge(pJobPtr);
+  Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iSlot);
   
