@@ -1100,7 +1100,7 @@ void IndexTree::vPublish(void)
 /*----------------------------------------------------------------------------*/
 /* purge the index buffers                                                    */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vPurge(void)
+bool IndexTree::bPurge(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -1108,7 +1108,7 @@ void IndexTree::vPurge(void)
   RASSERT(m_pIndex->bIsHidden());
   
   if ( ! m_pRootBuffer)
-    return;
+    return false;
   
   m_zLock.vGrabWrite();
   
@@ -1122,13 +1122,17 @@ void IndexTree::vPurge(void)
   m_pRootBuffer = m_pRootBuffer->pNextBuffer();
   
   // set prev pointer to null
-  ASSERT(pEntryBuffer ==  m_pRootBuffer->pPrevBuffer());
-  m_pRootBuffer->vPrevBuffer(nullptr);
+  if (m_pRootBuffer) {
+    ASSERT(pEntryBuffer ==  m_pRootBuffer->pPrevBuffer());
+    m_pRootBuffer->vPrevBuffer(nullptr);
+  }
   
   // delete the roor buffer
   delete pEntryBuffer;
   
   m_zLock.vDropWrite();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
