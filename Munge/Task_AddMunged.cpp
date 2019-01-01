@@ -176,6 +176,19 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
+  // munge of job_SubPurger.sen
+  sDefinition =
+    "\""
+    "\\\"munged job_SubPurger.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* job_subPurger.sen -- Job SubPurge                                          */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT job_SubPurger.sen"_Stz
+  ;
+
+  vCompileConstant(sDefinition);
+
   // munge of Op_aggregate.sen
   sDefinition =
     "\""
@@ -783,19 +796,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT test_gGen.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of job_subPurger.sen
-  sDefinition =
-    "\""
-    "\\\"munged job_subPurger.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* job_subPurger.sen -- Job SubPurge                                           */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT job_subPurger.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
