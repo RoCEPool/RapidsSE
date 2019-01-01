@@ -208,11 +208,11 @@ void Slots::vPublishIndex(i8 iPartitionNO, i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* purge partition buffers                                                    */
 /*----------------------------------------------------------------------------*/
-void Slots::vPurgeIndex(i8 iPartitionNO, i8 iIndexNo)
+void Slots::vPurgeIndex(i8 iPartitionNo, i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
-  m_pTablePtnVec->pGet(iPartitionNO)->pIndexTree(iIndexNo)->vPurge();
+  m_pTablePtnVec->pGet(iPartitionNo)->pIndexTree(iIndexNo)->vPurge();
 }
 
 /*----------------------------------------------------------------------------*/

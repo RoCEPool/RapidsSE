@@ -1121,6 +1121,10 @@ void IndexTree::vPurge(void)
   // get next entry buffer
   m_pRootBuffer = m_pRootBuffer->pNextBuffer();
   
+  // set prev pointer to null
+  ASSERT(pEntryBuffer ==  m_pRootBuffer->pPrevBuffer());
+  m_pRootBuffer->vPrevBuffer(nullptr);
+  
   // delete the roor buffer
   delete pEntryBuffer;
   
