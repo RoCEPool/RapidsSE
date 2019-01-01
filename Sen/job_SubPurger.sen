@@ -5,6 +5,24 @@
 " job_subPurger.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* subpurger logic                                                            */
+/*----------------------------------------------------------------------------*/
+: SubPurger_process ( pTable pJob_SubPurger -- )
+
+  params| pJob_SubPurger pTable |
+
+  locals| iSlot |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the slot this sub purge is supposed to work on
+  pJob_SubPurger job_subPurger.slot@ to iSlot
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // purge table for iSlot
+  iSlot pTable table.purge
+;
+
+/*----------------------------------------------------------------------------*/
 /* SubPurger (on each node)                                                   */
 /*----------------------------------------------------------------------------*/
 : SubPurger_run ( -- <R> )
@@ -12,7 +30,7 @@
   >>am <SEED_RUN>
 
   0 0 locals| pJob_SubPurger pTask |
-  0 0 0 locals| iSlot pTable sTableNm |
+  0 0 locals| pTable sTableNm |
   0 0 locals| iPurgeJobId pJob_Purge |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,12 +83,7 @@
   sTableNm find execute to pTable
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the slot this sub purge is supposed to work on
-  pJob_SubPurger job_subPurger.slot@ to iSlot
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // purge table for iSlot
-  iSlot pTable table.purge
+  pTable pJob_SubPurger SubPurger_process
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
