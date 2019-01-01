@@ -42,6 +42,8 @@ namespace DBobjects
   
     Entry*     m_pLazyChain;  // first lazy entry
   
+    Since      m_oWhenNewed;  // when was this buffer created?
+  
     // must be last
     Footer m_xFooter;
   

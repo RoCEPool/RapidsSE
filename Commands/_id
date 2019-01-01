@@ -38,7 +38,7 @@ print "=====================================================================";
 //nowait repeater "/tpchSF1/customer.tbl" "/tmp/customer.pipe" ;
 
 docol stepTimingStart;
-ingest lineitem "/tpchSF10/lineitem.tbl" stats ;
+ingest lineitem "/tpchSF1/lineitem.tbl" stats ;
 docol stepTimingWrite;
 
 print "";

@@ -88,6 +88,8 @@ EntryBuffer::EntryBuffer(void)
   
   m_pLazyChain  = nullptr;
   
+  m_oWhenNewed.vSet();
+  
   vHeadEntryNew();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
