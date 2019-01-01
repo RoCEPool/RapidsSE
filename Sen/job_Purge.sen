@@ -5,6 +5,26 @@
 " job_Purge.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* purge logic                                                                */
+/*----------------------------------------------------------------------------*/
+: Purge_process ( pJob_Purge -- )
+
+  params| pJob_Purge |
+
+  grid::slots task::acks!
+
+  grid::slots 0
+  do
+    //I "Creating Job_SubPurge %v" fmt.print
+    I pJob_purge job_purge.spawnSub
+  loop
+
+  "purge ack waiting" .
+  task::wait
+  "purge acked" .
+;
+
+/*----------------------------------------------------------------------------*/
 /* purge request (on originating node)                                        */
 /*----------------------------------------------------------------------------*/
 : purge_req ( -- <R> )
@@ -66,18 +86,8 @@
   pThisTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the acks
-  grid::slots task::acks!
 
-  grid::slots 0
-  do
-  //I "Creating Job_SubPurge %v" fmt.print
-  I pJob_purge job_purge.spawnSub
-  loop
-
-  "purge ack waiting" .
-  task::wait
-  "purge acked" .
+  pJob_purge Purge_process
 
   pJob_purge job.notice
 
