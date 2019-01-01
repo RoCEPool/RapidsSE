@@ -21,11 +21,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the slot this sub purge is supposed to work on
-  pJob_SubPurger job_subPurger.slot@ to iSlot
+  //pJob_SubPurger job_subPurger.slot@ to iSlot
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // purge table for iSlot
-  iSlot pTable table.purge
+  //iSlot pTable table.purge
 ;
 
 /*----------------------------------------------------------------------------*/

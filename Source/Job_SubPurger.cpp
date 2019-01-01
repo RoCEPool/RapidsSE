@@ -193,6 +193,8 @@ bool Job_SubPurger::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
   
+  m_pTable->vPurge(m_iSlot);
+
   return false;
 }
 
