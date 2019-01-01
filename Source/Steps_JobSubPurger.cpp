@@ -11,8 +11,66 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobSubPurger(void)
 {
+  vAddStep("job_subPurger.begin"_Stz,      &Step::vJob_SubPurgerBegin);
+  vAddStep("job_subPurger.chunk"_Stz,      &Step::vJob_SubPurgerChunk);
+  vAddStep("job_subPurger.end"_Stz,        &Step::vJob_SubPurgerEnd);
   vAddStep("job_subPurger.purgeJobId@"_Stz,&Step::vJob_SubPurgerPurgeJobIdFetch);
   vAddStep("job_subPurger.slot@"_Stz,      &Step::vJob_SubPurgerSlotFetch);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subPurger.begin -- begin subpurger                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubPurgerBegin(MP_Task mpTask)
+{
+  ENTRY("vJob_SubPurgerBegin"_Stz);
+  
+  Object* pPtrJobSubPurger;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobSubPurger) )
+    THROW_INVALID_DSTACK("job_subPurger.begin"_Stz);
+  Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pPtrJobSubPurger);
+  
+  bool bBegun = pJob_SubPurger->bBegin();
+  
+  mpTask->m_pDataStack->vPushInt((i8)bBegun);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subPurger.chunk -- chunk subpurger                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubPurgerChunk(MP_Task mpTask)
+{
+  ENTRY("vJob_SubPurgerChunk"_Stz);
+  
+  Object* pPtrJobSubPurger;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobSubPurger) )
+    THROW_INVALID_DSTACK("job_subPurger.chunk"_Stz);
+  Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pPtrJobSubPurger);
+  
+  bool bCallAgain = pJob_SubPurger->bChunk();
+  
+  mpTask->m_pDataStack->vPushInt((i8)bCallAgain);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subPurger.end -- end subpurger                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubPurgerEnd(MP_Task mpTask)
+{
+  ENTRY("vJob_SubPurgerEnd"_Stz);
+  
+  Object* pPtrJobSubPurger;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJobSubPurger) )
+    THROW_INVALID_DSTACK("job_subPurger.end"_Stz);
+  Job_SubPurger* pJob_SubPurger = _pJob_SubPurger(pPtrJobSubPurger);
+  
+  pJob_SubPurger->vEnd();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

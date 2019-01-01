@@ -577,6 +577,10 @@
   static void vJob_PublishTableStore(Tasks::MP_Task mpTask);
 
   // job purge
+  static void vJob_PurgeBegin(Tasks::MP_Task mpTask);
+  static void vJob_PurgeChunk(Tasks::MP_Task mpTask);
+  static void vJob_PurgeEnd(Tasks::MP_Task mpTask);
+
   static void vJob_PurgePurge(Tasks::MP_Task mpTask);
   static void vJob_PurgeSpawnSub(Tasks::MP_Task mpTask);
   static void vJob_PurgeTableStore(Tasks::MP_Task mpTask);
@@ -612,6 +616,10 @@
   static void vJob_SubPublishPublishJobIdFetch(Tasks::MP_Task mpTask);
 
   // job subPurger
+  static void vJob_SubPurgerBegin(Tasks::MP_Task mpTask);
+  static void vJob_SubPurgerChunk(Tasks::MP_Task mpTask);
+  static void vJob_SubPurgerEnd(Tasks::MP_Task mpTask);
+
   static void vJob_SubPurgerSlotFetch(Tasks::MP_Task mpTask);
   static void vJob_SubPurgerPurgeJobIdFetch(Tasks::MP_Task mpTask);
 
