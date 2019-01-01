@@ -41,9 +41,9 @@ void vTest2(void)
   Since oStart;
   Since oEnd;
   
-  oStart.vSet();
+  oStart.vNow();
   PosixThread::vSleepMilli(3500);
-  oEnd.vSet();
+  oEnd.vNow();
   
   //Ivl wDiff = oEnd.wSubtract(oStart);
   //Ivl wDiff = oStart.wSubtract(oEnd);

@@ -88,7 +88,7 @@ EntryBuffer::EntryBuffer(void)
   
   m_pLazyChain  = nullptr;
   
-  m_oWhenNewed.vSet();
+  m_oWhenNewed.vNow();
   
   vHeadEntryNew();
   

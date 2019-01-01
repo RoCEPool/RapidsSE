@@ -191,7 +191,7 @@ void Semaphore::vCondTimedWait(i8 iMicroSeconds)
 
   Since oSince;
   
-  oSince.vSet();
+  oSince.vNow();
   
   oSince.vAdd(iMicroSeconds);
   

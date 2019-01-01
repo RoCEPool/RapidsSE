@@ -78,9 +78,9 @@ i8 Since::iGetAsMicroseconds(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get                                                                        */
+/* set this since as at now                                                   */
 /*----------------------------------------------------------------------------*/
-void Since::vSet(void)
+void Since::vNow(void)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   

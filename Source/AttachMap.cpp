@@ -180,7 +180,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
     vTrace("[[mainThread]] Recording globals...\n"_Stz);
   
   m_iPid = Process::iGetPid();
-  m_oSince.vSet();
+  m_oSince.vNow();
   m_oTime.vSet(&m_oSince);
   m_oTime.vUTC(m_sUTC);
   

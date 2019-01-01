@@ -350,7 +350,8 @@ inline void vTraceError(i8 iTraceLevel, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* validate the SE session                                                    */
 /*----------------------------------------------------------------------------*/
-inline eEC eValidateSession(Session* pSession, Stz* aApiCall, i8 iTraceLevel) {
+inline eEC eValidateSession(Session* pSession, Stz* aApiCall, i8 iTraceLevel)
+{
   
   // pSession cannot be null
   if (pSession == nullptr) {

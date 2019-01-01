@@ -620,7 +620,7 @@ void Task::vSleep(i8 iMicroseconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_xWakeupTime.vSet();
+  m_xWakeupTime.vNow();
   m_xWakeupTime.vAdd(iMicroseconds);
 }
 
@@ -915,7 +915,7 @@ bool Task::bWakeupNow(void)
 
   Since oSince;
   
-  oSince.vSet();
+  oSince.vNow();
   
   i8 iTimeNow = oSince.iGetAsMicroseconds();
 
