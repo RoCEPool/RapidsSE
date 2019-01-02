@@ -6,7 +6,8 @@
 namespace Chunks
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class IngestChunk : public DataChunk
+  class IngestChunk : public DataChunk,
+                      public ListNode_t<IngestChunk>
   {
   protected:
   

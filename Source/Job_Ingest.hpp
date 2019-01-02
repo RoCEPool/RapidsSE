@@ -8,7 +8,8 @@ namespace JobModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Ingest : public Job,
                      public JobFileName,
-                     public JobWriteBehind
+                     public JobWriteBehind,
+                     public List_t<IngestChunk>
   {
   public:
     Table*  m_pTable;  // table being ingested
