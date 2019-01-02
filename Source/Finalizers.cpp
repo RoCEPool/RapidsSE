@@ -86,6 +86,7 @@ pFINALIZE *gpFinalize[]
   /* 54 */ &Finalize::vUndefined,         // CN_IDXCOLVEC
   /* 55 */ &Finalize::vUndefined,         // CN_IDXVEC
   /* 56 */ &Finalize::vUndefined,         // CN_INDEXLEVELS
+  /*    */ &Finalize::vUndefined,         // CN_INGESTCHUNK
   /*    */ &Finalize::vUndefined,         // CN_IOCHUNK
   /*    */ &Finalize::vUndefined,         // CN_IOCOPY
   /* 57 */ &Finalize::vUndefined,         // CN_ITEM
