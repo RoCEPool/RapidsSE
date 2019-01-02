@@ -58,8 +58,14 @@ void Step::vJob_SubPurgerChunk(MP_Task mpTask)
   
   bool bCallAgain = pJob_SubPurger->bChunk();
   
-  mpTask->m_pDataStack->vPushInt((i8)bCallAgain);
+  mpTask->m_pDataStack->vPushInt((i8)true);
   
+  if (! bCallAgain) {
+    // sleep for 10 seconds
+    mpTask->vSleep(C_1M * 10);
+    mpTask->vState(TS_SLEEPING);
+  }
+    
   EXIT();
 }
 
