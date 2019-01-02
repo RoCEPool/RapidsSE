@@ -469,7 +469,7 @@ void Step::vJobExecutingTaskFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job::findOriginator -- find job from originator job set                     */
+/* job::findOriginator -- find job from originator job set                    */
 /*----------------------------------------------------------------------------*/
 void Step::vJobFindOriginator(MP_Task mpTask)
 {
@@ -508,7 +508,7 @@ void Step::vJobFindOriginator(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job::findParticipant -- find job from participant job set                   */
+/* job::findParticipant -- find job from participant job set                  */
 /*----------------------------------------------------------------------------*/
 void Step::vJobFindParticipant(MP_Task mpTask)
 {

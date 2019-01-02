@@ -162,6 +162,7 @@ enum eCN : u2 // Class Number
   /* 116 */ CN_JOB_STARTCLUSTER,
   /* 117 */ CN_JOB_STATUS,
   /* 118 */ CN_JOB_SUBFETCH,
+  /*     */ CN_JOB_SUBINGESTER,
   /* 119 */ CN_JOB_SUBLOADER,
   /*     */ CN_JOB_SUBPUBLISH,
   /* 120 */ CN_JOB_SUBPURGER,
@@ -432,6 +433,7 @@ static Stz* aCN[]
   /* 116 */ "JOB_STARTCLUSTER"_Stz,    // CN_JOB_STARTCLUSTER
   /* 117 */ "JOB_STATUS"_Stz,          // CN_JOB_STATUS
   /* 118 */ "JOB_SUBFETCH"_Stz,        // CN_JOB_SUBFETCH
+  /*     */ "JOB_SUBINGESTER"_Stz,     // CN_JOB_SUBINGESTER
   /* 119 */ "JOB_SUBLOADER"_Stz,       // CN_JOB_SUBLOADER
   /*     */ "JOB_SUBPUBLISH"_Stz,      // CN_JOB_SUBPUBLISH
   /* 120 */ "JOB_SUBPURGEF"_Stz,       // CN_JOB_SUBPURGER
