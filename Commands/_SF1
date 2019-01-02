@@ -25,7 +25,7 @@ create table lineitem (
 print "creating index on l_partkey...";
 CREATE INDEX idx ON lineitem(l_partkey);
 
-print "loading lineitem.tbl..." ;
+print "loading lineitem.csv..." ;
 
 timerStart;
 ld lineitem "/tpch/SF1/lineitem.csv" ;

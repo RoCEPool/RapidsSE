@@ -43,7 +43,7 @@ create table lineitem (
 print "creating index idx1..." ;
 create index idx1 on lineitem (L_ORDERKEY);
 
-print "loading lineitem.tbl..." ;
+print "loading lineitem.csv..." ;
 //docol stepsReset;
 //docol memoryReset;
 //docol schedulerReset;

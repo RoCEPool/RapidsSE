@@ -11,7 +11,7 @@ create table j10 (
 );
 create index idx on j10(j10_key);
 
-print "loading j10.tbl..." ;
+print "loading j10.csv..." ;
 ld j1 "../JTEST/j10.csv" ;
 ld j10 "../JTEST/j10.csv" ;
 

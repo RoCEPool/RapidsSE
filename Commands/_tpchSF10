@@ -103,28 +103,28 @@ create table supplier (
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-//print "loading customer.tbl..." ;
+//print "loading customer.csv..." ;
 //ld customer "/tpch/SF10/customer.csv" ;
 
-print "loading lineitem.tbl..." ;
+print "loading lineitem.csv..." ;
 ld lineitem "/tpch/SF10/lineitem.csv" ;
 
-//print "loading nation.tbl..." ;
+//print "loading nation.csv..." ;
 //ld nation   "/tpch/SF10/nation.csv" ;
 
-//print "loading orders.tbl..." ;
+//print "loading orders.csv..." ;
 //ld orders   "/tpch/SF10/orders.csv" ;
 
-//print "loading part.tbl..." ;
+//print "loading part.csv..." ;
 //ld part     "/tpch/SF10/part.csv" ;
 
-//print "loading partsupp.tbl..." ;
+//print "loading partsupp.csv..." ;
 //ld partsupp "/tpch/SF10/partsupp.csv" ;
 
-//print "loading region.tbl..." ;
+//print "loading region.csv..." ;
 //ld region   "/tpch/SF10/region.csv" ;
 
-//print "loading supplier.tbl..." ;
+//print "loading supplier.csv..." ;
 //ld supplier "/tpch/SF10/supplier.csv" ;
 
 //ex customer "/tmp/customer.txt" ;

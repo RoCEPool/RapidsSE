@@ -22,7 +22,7 @@ mkpipe "/tmp/c.pipe";
 
 print "";
 print "=====================================================================";
-print "piping lineitem.tbl...";
+print "piping lineitem.csv...";
 print "=====================================================================";
 
 nowait cat "/tpch/SF100/lineitem.csv" "/tmp/a.pipe" ;

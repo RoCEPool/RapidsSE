@@ -26,7 +26,7 @@ create index idx_100values on k100 (j100_100values);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-print "loading k100.tbl..." ;
+print "loading k100.csv..." ;
 ld k100 "../JTEST/k100.csv" ;
 
 fetch k100 ;

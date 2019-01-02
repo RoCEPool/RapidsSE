@@ -24,7 +24,7 @@ create table supplier (
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-print "loading supplier.tbl..." ;
+print "loading supplier.csv..." ;
 ld supplier "/tpch/SF10/supplier.csv" ;
 
 pwf ;

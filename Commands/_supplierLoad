@@ -14,7 +14,7 @@ create table supplier (
 CREATE INDEX supplier_idx1 ON supplier(s_suppkey);
 CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
 
-print "loading supplier.tbl..." ;
+print "loading supplier.csv..." ;
 
 //docol stepsReset;
 ld supplier "/tpch/SF1/supplier.csv" ;

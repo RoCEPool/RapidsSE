@@ -7,7 +7,7 @@ create table j1 (
   j1_name  VARCHAR(32) NOT NULL
 );
 
-print "loading j1.tbl..." ;
+print "loading j1.csv..." ;
 create index idx on j1 (j1_key);
 ld j1 "../JTEST/j1.csv" ;
 

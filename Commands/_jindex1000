@@ -9,7 +9,7 @@ create table j1000 (
   j1000_name  VARCHAR(32) NOT NULL
 );
 
-print "loading j1000.tbl..." ;
+print "loading j1000.csv..." ;
 create index idx on j1000 (j1000_key);
 ld j1000 "../JTEST/j1000.csv" ;
 

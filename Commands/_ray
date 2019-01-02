@@ -17,7 +17,7 @@ create table customer (
   C_COMMENT       VARCHAR(117) NOT NULL
 );
 
-print "loading customer.tbl..." ;
+print "loading customer.csv..." ;
 ld customer "/tpch/SF1/customer.csv" ;
 
 antbl customer;

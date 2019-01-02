@@ -91,59 +91,59 @@ create table supplier (
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-print "loading customer.tbl..." ;
+print "loading customer.csv..." ;
 ld customer "/tpch/SF1/customer.csv" ;
-print "loading lineitem.tbl..." ;
+print "loading lineitem.csv..." ;
 ld lineitem "/tpch/SF1/lineitem.csv" ;
-print "loading nation.tbl..." ;
+print "loading nation.csv..." ;
 ld nation "/tpch/SF1/nation.csv" ;
-print "loading orders.tbl..." ;
+print "loading orders.csv..." ;
 ld orders "/tpch/SF1/orders.csv" ;
-print "loading part.tbl..." ;
+print "loading part.csv..." ;
 ld part "/tpch/SF1/part.csv" ;
-print "loading partsupp.tbl..." ;
+print "loading partsupp.csv..." ;
 ld partsupp "/tpch/SF1/partsupp.csv" ;
-print "loading region.tbl..." ;
+print "loading region.csv..." ;
 ld region "/tpch/SF1/region.csv" ;
-print "loading supplier.tbl..." ;
+print "loading supplier.csv..." ;
 ld supplier "/tpch/SF1/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-print "fetching customer.tbl..." ;
+print "fetching customer.csv..." ;
 fetch customer displayOff ;
-print "fetching lineitem.tbl..." ;
+print "fetching lineitem.csv..." ;
 fetch lineitem displayOff ;
-print "fetching nation.tbl..." ;
+print "fetching nation.csv..." ;
 fetch nation displayOff ;
-print "fetching orders.tbl..." ;
+print "fetching orders.csv..." ;
 fetch orders displayOff ;
-print "fetching part.tbl..." ;
+print "fetching part.csv..." ;
 fetch part displayOff ;
-print "fetching partsupp.tbl..." ;
+print "fetching partsupp.csv..." ;
 fetch partsupp displayOff ;
-print "fetching region.tbl..." ;
+print "fetching region.csv..." ;
 fetch region displayOff ;
-print "fetching supplier.tbl..." ;
+print "fetching supplier.csv..." ;
 fetch supplier displayOff ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-print "dropping customer.tbl..." ;
+print "dropping customer.csv..." ;
 drop table customer ;
-print "dropping lineitem.tbl..." ;
+print "dropping lineitem.csv..." ;
 drop table lineitem ;
-print "dropping nation.tbl..." ;
+print "dropping nation.csv..." ;
 drop table nation ;
-print "dropping orders.tbl..." ;
+print "dropping orders.csv..." ;
 drop table orders ;
-print "dropping part.tbl..." ;
+print "dropping part.csv..." ;
 drop table part ;
-print "dropping partsupp.tbl..." ;
+print "dropping partsupp.csv..." ;
 drop table partsupp ;
-print "dropping region.tbl..." ;
+print "dropping region.csv..." ;
 drop table region ;
-print "dropping supplier.tbl..." ;
+print "dropping supplier.csv..." ;
 drop table supplier ;
 
 /*============================================================================*/

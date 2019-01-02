@@ -9,7 +9,7 @@ create table nation (
 	 N_COMMENT         VARCHAR(152)
 );
 
-print "loading nation.tbl..." ;
+print "loading nation.csv..." ;
 ld nation "/tpch/SF1/nation.csv" ;
 
 pwf ;

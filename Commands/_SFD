@@ -27,7 +27,7 @@ space;
 print "creating index on l_orderkey...";
 CREATE INDEX idx ON lineitem(l_orderkey);
 
-print "loading lineitem.tbl..." ;
+print "loading lineitem.csv..." ;
 
 timerStart;
 dpld lineitem "/home/rapids/sf10000_current/lineitem.csv" field_delimiter "|";

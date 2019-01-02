@@ -10,7 +10,7 @@ create table j100 (
   j100_j10   INTEGER NOT NULL
 );
 
-print "loading j100.tbl..." ;
+print "loading j100.csv..." ;
 ld j100 "../JTEST/j100.csv" ;
 
 pwf ;

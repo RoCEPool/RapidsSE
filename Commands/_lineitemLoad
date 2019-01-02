@@ -46,7 +46,7 @@ create table lineitem (
 //CREATE INDEX lineitem_idx2 ON lineitem(l_shipdate);
 //CREATE INDEX lineitem_idx3 ON lineitem(l_suppkey);
 
-print "loading lineitem.tbl..." ;
+print "loading lineitem.csv..." ;
 
 //docol stepsReset;
 //docol locksReset;
@@ -287,7 +287,7 @@ Args:
 --node NODE1 127.0.0.1 5005
 --partitionsPerNode 1
 _[N0 17550] se 0.3.1r> lineitemLoad
-loading lineitem.tbl...
+loading lineitem.csv...
 
 duration 156718ms
 
@@ -407,7 +407,7 @@ Args:
 --node NODE1 127.0.0.1 5005
 --partitionsPerNode 4
 [N0 17559] se 0.3.1r> _lineitemLoad
-loading lineitem.tbl...
+loading lineitem.csv...
 
 duration 29493ms
 
@@ -535,7 +535,7 @@ Args:
 --node NODE1 127.0.0.1 5005
 --partitionsPerNode 1
 [N0 11854] se 0.3.1r> _lineitemLoad
-loading lineitem.tbl...
+loading lineitem.csv...
 
 duration 9647ms
 
@@ -649,7 +649,7 @@ Args:
 --node NODE1 127.0.0.1 5005
 --partitionsPerNode 4
 [N0 11884] se 0.3.1r> _lineitemLoad
-loading lineitem.tbl...
+loading lineitem.csv...
 
 duration 7883ms
 
@@ -778,7 +778,7 @@ duration 412960ms
  --node NODE1 127.0.0.1 5005
  --partitionsPerNode 4
  [N0 6919] se 0.4.1r> _lineitemLoad
- loading lineitem.tbl...
+ loading lineitem.csv...
  
  duration 32578ms
  
@@ -910,7 +910,7 @@ duration 412960ms
  --node NODE1 127.0.0.1 5005
  --partitionsPerNode 4
  [N0 8589] se 0.4.1r> _lineitemLoad
- loading lineitem.tbl...
+ loading lineitem.csv...
  
  duration 10623ms
  
@@ -1138,7 +1138,7 @@ duration 412960ms
  --node NODE1 127.0.0.1 5005
  --partitionsPerNode 1
  [N0 8652] se 0.4.1r> _lineitemLoad
- loading lineitem.tbl...
+ loading lineitem.csv...
  
  duration 33974ms
  

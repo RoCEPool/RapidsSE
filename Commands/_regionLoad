@@ -8,7 +8,7 @@ create table region (
 	 R_COMMENT         VARCHAR(152)
 );
 
-print "loading region.tbl..." ;
+print "loading region.csv..." ;
 ld region "/tpch/region.csv" ;
 
 pwf ;
