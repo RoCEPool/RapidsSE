@@ -479,27 +479,29 @@ void Step::vJobFindOriginator(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
     THROW_INVALID_DSTACK("job::findOriginator"_Stz);
   
-  Job__Find* pFindJob = new Job__Find;
-  pFindJob->m_iJobId = iJobId;
+//  Job__Find* pFindJob = new Job__Find;
+//  pFindJob->m_iJobId = iJobId;
+//
+//  gpAttachMap->m_pOriginatingJobs->vGrabLock();
+//  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
+//  gpAttachMap->m_pOriginatingJobs->vDropLock();
+//
+//  if (  JOB_TRACE || ! pJobFound ) {
+//    vTrace("------------------------------------\n"_Stz);
+//    vTrace("Looking for JobId %lld in originator\n"_Stz,iJobId);
+//    vTrace("------------------------------------\n"_Stz);
+//
+//    gpAttachMap->m_pOriginatingJobs->vGrabLock();
+//    gpAttachMap->m_pOriginatingJobs->vContentDump();
+//    Job* pJob = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
+//    gpAttachMap->m_pOriginatingJobs->vDropLock();
+//  }
+//
+//  delete pFindJob;
   
-  gpAttachMap->m_pOriginatingJobs->vGrabLock();
-  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
-  gpAttachMap->m_pOriginatingJobs->vDropLock();
-  
-  if (  JOB_TRACE || ! pJobFound ) {
-    vTrace("------------------------------------\n"_Stz);
-    vTrace("Looking for JobId %lld in originator\n"_Stz,iJobId);
-    vTrace("------------------------------------\n"_Stz);
-    
-    gpAttachMap->m_pOriginatingJobs->vGrabLock();
-    gpAttachMap->m_pOriginatingJobs->vContentDump();
-    Job* pJob = gpAttachMap->m_pOriginatingJobs->pFindJob(pFindJob);
-    gpAttachMap->m_pOriginatingJobs->vDropLock();
-  }
-  
-  delete pFindJob;
-  
+  Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(iJobId);
   RASSERT(pJobFound);
+  
   mpTask->m_pDataStack->vPushObject(pJobFound);
   
   EXIT();
@@ -522,27 +524,29 @@ void Step::vJobFindParticipant(MP_Task mpTask)
   
   Job* pCallingJob = _pJob(pJobObject);
   
-  Job__Find* pFindJob = new Job__Find;
-  pFindJob->m_iJobId = iJobId;
-
-  gpAttachMap->m_pParticipatingJobs->vGrabLock();
-  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-  gpAttachMap->m_pParticipatingJobs->vDropLock();
+//  Job__Find* pFindJob = new Job__Find;
+//  pFindJob->m_iJobId = iJobId;
+//
+//  gpAttachMap->m_pParticipatingJobs->vGrabLock();
+//  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+//  gpAttachMap->m_pParticipatingJobs->vDropLock();
+//
+//  if ( JOB_TRACE || ! pJobFound ) {
+//    vTrace("------------------------------------\n"_Stz);
+//    vTrace("%s Looking for JobId %lld in participant\n"_Stz, aCN[pCallingJob->eClass()],iJobId);
+//    vTrace("------------------------------------\n"_Stz);
+//
+//    gpAttachMap->m_pParticipatingJobs->vGrabLock();
+//    gpAttachMap->m_pParticipatingJobs->vContentDump();
+//    Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+//    gpAttachMap->m_pParticipatingJobs->vDropLock();
+//  }
+//
+//  delete pFindJob;
   
-  if ( JOB_TRACE || ! pJobFound ) {
-    vTrace("------------------------------------\n"_Stz);
-    vTrace("%s Looking for JobId %lld in participant\n"_Stz, aCN[pCallingJob->eClass()],iJobId);
-    vTrace("------------------------------------\n"_Stz);
-    
-    gpAttachMap->m_pParticipatingJobs->vGrabLock();
-    gpAttachMap->m_pParticipatingJobs->vContentDump();
-    Job* pJob = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-    gpAttachMap->m_pParticipatingJobs->vDropLock();
-  }
-  
-  delete pFindJob;
-  
+  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(iJobId);
   RASSERT(pJobFound);
+  
   mpTask->m_pDataStack->vPushObject(pJobFound);
   
   EXIT();
@@ -1519,20 +1523,22 @@ void Step::vJobWaitParticipant(MP_Task mpTask)
   
   Job* pCallingJob = _pJob(pJobObject);
   
-  Job__Find* pFindJob = new Job__Find;
-  pFindJob->m_iJobId = iJobId;
+//  Job__Find* pFindJob = new Job__Find;
+//  pFindJob->m_iJobId = iJobId;
+//
+//  Job* pJobFound = nullptr;
+//
+//  while ( ! pJobFound ) {
+//    gpAttachMap->m_pParticipatingJobs->vGrabLock();
+//    pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+//    gpAttachMap->m_pParticipatingJobs->vDropLock();
+//  }
+//
+//  delete pFindJob;
   
-  Job* pJobFound = nullptr;
-  
-  while ( ! pJobFound ) {
-    gpAttachMap->m_pParticipatingJobs->vGrabLock();
-    pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-    gpAttachMap->m_pParticipatingJobs->vDropLock();
-  }
-  
-  delete pFindJob;
-  
+  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(iJobId);
   RASSERT(pJobFound);
+  
   mpTask->m_pDataStack->vPushObject(pJobFound);
   
   EXIT();

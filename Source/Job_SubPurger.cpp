@@ -159,26 +159,27 @@ bool Job_SubPurger::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
   
-  Job__Find* pFindJob = new Job__Find;
-  pFindJob->m_iJobId = m_iPurgeJobId;
+//  Job__Find* pFindJob = new Job__Find;
+//  pFindJob->m_iJobId = m_iPurgeJobId;
+//
+//  gpAttachMap->m_pParticipatingJobs->vGrabLock();
+//  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+//  gpAttachMap->m_pParticipatingJobs->vDropLock();
+//
+//  if ( JOB_TRACE || ! pJobFound ) {
+//    vTrace("------------------------------------\n"_Stz);
+//    vTrace("%s Looking for JobId %lld in participant\n"_Stz, aCN[eClass()],m_iPurgeJobId);
+//    vTrace("------------------------------------\n"_Stz);
+//
+//    gpAttachMap->m_pParticipatingJobs->vGrabLock();
+//    gpAttachMap->m_pParticipatingJobs->vContentDump();
+//    pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+//    gpAttachMap->m_pParticipatingJobs->vDropLock();
+//  }
+//
+//  delete pFindJob;
   
-  gpAttachMap->m_pParticipatingJobs->vGrabLock();
-  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-  gpAttachMap->m_pParticipatingJobs->vDropLock();
-  
-  if ( JOB_TRACE || ! pJobFound ) {
-    vTrace("------------------------------------\n"_Stz);
-    vTrace("%s Looking for JobId %lld in participant\n"_Stz, aCN[eClass()],m_iPurgeJobId);
-    vTrace("------------------------------------\n"_Stz);
-    
-    gpAttachMap->m_pParticipatingJobs->vGrabLock();
-    gpAttachMap->m_pParticipatingJobs->vContentDump();
-    pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-    gpAttachMap->m_pParticipatingJobs->vDropLock();
-  }
-  
-  delete pFindJob;
-  
+  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(m_iPurgeJobId);
   RASSERT(pJobFound);
   
   m_pJob_Purge = _pJob_Purge(pJobFound);
