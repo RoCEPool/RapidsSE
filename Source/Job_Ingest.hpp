@@ -39,6 +39,10 @@ namespace JobModel
     void   vEnd(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
+  
+    void vAppendIngestChunk(IngestChunk* pIngestChunk);
+    i8 nIngestChunks(void);
+    IngestChunk* pPopIngestChunk(void);
 
   public:
     Footer* aFooter(void);

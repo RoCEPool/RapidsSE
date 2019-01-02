@@ -352,6 +352,45 @@ void Job_Ingest::vTable(Table* pTable)
   m_pTable = pTable;
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append ingest chunk to queue                                               */
+/*----------------------------------------------------------------------------*/
+void Job_Ingest::vAppendIngestChunk(IngestChunk* pIngestChunk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  
+  vAppend(pIngestChunk);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of ingest chunks in queue                                       */
+/*----------------------------------------------------------------------------*/
+i8 Job_Ingest::nIngestChunks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  
+  i8 nChunks = iCount();
+  
+  return nChunks;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop next ingest chunk from queue                                           */
+/*----------------------------------------------------------------------------*/
+IngestChunk* Job_Ingest::pPopIngestChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+  
+  IngestChunk* pIngestChunk = npPop();
+  
+  return pIngestChunk;
+}
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
