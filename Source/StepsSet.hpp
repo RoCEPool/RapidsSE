@@ -601,6 +601,12 @@
   static void vJob_SubFetchPlannerFetch(Tasks::MP_Task mpTask);
   static void vJob_SubFetchSlotFetch(Tasks::MP_Task mpTask);
 
+  // Job subIngester
+  static void vJob_SubIngesterBegin(Tasks::MP_Task mpTask);
+  static void vJob_SubIngesterChunk(Tasks::MP_Task mpTask);
+  static void vJob_SubIngesterEnd(Tasks::MP_Task mpTask);
+  static void vJob_SubIngesterSpawn(Tasks::MP_Task mpTask);
+
   // Job subLoader
   static void vJob_SubLoaderBegin(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderChunk(Tasks::MP_Task mpTask);
