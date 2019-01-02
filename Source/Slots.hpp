@@ -33,7 +33,7 @@ namespace DBobjects
     bool       bPopulateIndex(i8 iIndexNo);
     PtnColVec* pPtnColVec(void);
     void       vPublishIndex(i8 iPartitionNo, i8 iIndexNo);
-    bool       bPurgeIndex(i8 iPartitionNo, i8 iIndexNo);
+    bool       bPurgeIndex(i8 iPartitionNo, i8 iIndexNo, i8 iOlderThanSeconds);
     void       vShowColumnVec(void);
     Dic*       pSubDic(void);
     void       vTable(Table* pTable);

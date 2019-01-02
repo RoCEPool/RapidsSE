@@ -66,7 +66,7 @@ namespace DBobjects
     EntryBuffer* pPopSubList(EntryBuffer** ppSubList);
     EntryBuffer* pPositionLevel(KeyWrk& xKeyWrk, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     void         vPublish(void);
-    bool         bPurge(void);
+    bool         bPurge(i8 iOlderThanSeconds);
     EntryBuffer* pRoot(void);
     void         vTidyUp(void);
     void         vTruncate(void);

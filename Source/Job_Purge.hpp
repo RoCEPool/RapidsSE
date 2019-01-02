@@ -12,7 +12,7 @@ namespace JobModel
   public:
     Table*  m_pTable;  // table being purged
   
-    i8      m_nSecondsOld; // purge buffers when they are this old
+    i8      m_iOlderThanSeconds; // purge buffers when they are this old
   
     // must be last
     Footer m_xFooter;

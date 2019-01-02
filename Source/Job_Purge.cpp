@@ -108,7 +108,7 @@ Job_Purge::Job_Purge(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PURGE,_FOOTER_);
   
   m_pTable = nullptr;
-  m_nSecondsOld = 0;
+  m_iOlderThanSeconds = 0;
   
   _checkInitialised_(CN_JOB_PURGE);
   
@@ -217,7 +217,7 @@ Job* JobModel::pJob_Purge_pre(Interface::Session* pSession)
   // set the table name
   pJob_Purge->m_sObjectName = pTknVec->pGet(1)->aText();
 
-  pJob_Purge->m_nSecondsOld = pTknVec->pGet(2)->iToI8();
+  pJob_Purge->m_iOlderThanSeconds = pTknVec->pGet(2)->iToI8();
 
   return pJob_Purge;
 }

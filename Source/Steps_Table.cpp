@@ -568,18 +568,20 @@ void Step::vTablePurge(MP_Task mpTask)
   ENTRY("vTablePurge"_Stz);
   
   Object* pPtrTable;
-  i8 iSlot;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.purge"_Stz);
-  
   Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
   
+  i8 iSlot;
   if ( ! mpTask->m_pDataStack->bPopAsInt(iSlot) )
     THROW_INVALID_DSTACK("table.purge"_Stz);
   
-  bool bPurged = pTable->bPurge(iSlot);
+  i8 iOlderThanSeconds;
+  if ( ! mpTask->m_pDataStack->bPopAsInt(iOlderThanSeconds) )
+  THROW_INVALID_DSTACK("table.purge"_Stz);
+  
+  bool bPurged = pTable->bPurge(iSlot,iOlderThanSeconds);
   
   EXIT();
 }

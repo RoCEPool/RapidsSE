@@ -208,7 +208,7 @@ void Slots::vPublishIndex(i8 iPartitionNO, i8 iIndexNo)
 /*----------------------------------------------------------------------------*/
 /* purge partition buffers                                                    */
 /*----------------------------------------------------------------------------*/
-bool Slots::bPurgeIndex(i8 iPartitionNo, i8 iIndexNo)
+bool Slots::bPurgeIndex(i8 iPartitionNo, i8 iIndexNo, i8 iOlderThanSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
@@ -216,7 +216,7 @@ bool Slots::bPurgeIndex(i8 iPartitionNo, i8 iIndexNo)
   
   IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
   
-  bool bPurged = pIndexTree->bPurge();
+  bool bPurged = pIndexTree->bPurge(iOlderThanSeconds);
   
   return bPurged;
 }

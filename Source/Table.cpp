@@ -706,7 +706,7 @@ void Table::vPublish(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* purge rows/buffers                                                         */
 /*----------------------------------------------------------------------------*/
-bool Table::bPurge(i8 iPartition)
+bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -714,8 +714,10 @@ bool Table::bPurge(i8 iPartition)
   
   // purge all other indices
   for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
+    
     Index* pIndex = m_pIdxVec->pGet(iIndexNo);
-    bool bPurged = m_xSlots.bPurgeIndex(iPartition, pIndex->iIndexNo());
+    
+    bool bPurged = m_xSlots.bPurgeIndex(iPartition, pIndex->iIndexNo(), iOlderThanSeconds);
     
     if (! bPurged)
       return false;

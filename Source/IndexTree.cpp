@@ -1100,7 +1100,7 @@ void IndexTree::vPublish(void)
 /*----------------------------------------------------------------------------*/
 /* purge the index buffers                                                    */
 /*----------------------------------------------------------------------------*/
-bool IndexTree::bPurge(void)
+bool IndexTree::bPurge(i8 iOlderThanSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
