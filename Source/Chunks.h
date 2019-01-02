@@ -20,6 +20,7 @@ using namespace Chunks;
 #include "FileChunk.hpp"
 #include "RecordExtractor.hpp"
 
+#include "IngestChunk.hpp"
 #include "IoChunk.hpp"
 #include "IoCopy.hpp"
 #include "LoadMap.hpp"

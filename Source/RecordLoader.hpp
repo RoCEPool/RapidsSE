@@ -25,7 +25,6 @@ namespace Chunks
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
         
   private:
-  
     Footer* aFooter(void);
   };
   
