@@ -9,7 +9,7 @@ create table region (
 );
 
 print "loading region.tbl..." ;
-ld region   "/tpch/region.tbl" ;
+ld region "/tpch/region.csv" ;
 
 pwf ;
 lf ;

@@ -53,8 +53,8 @@ print "loading lineitem.tbl..." ;
 
 space;
 timerStart;
-ld lineitem "/tpch/lineitem.tbl" ;
-//ld lineitem "/tpch/SF10/lineitem.tbl" ;
+ld lineitem "/tpch/SF1/lineitem.csv" ;
+//ld lineitem "/tpch/SF10/lineitem.csv" ;
 timerEnd;
 
 //print "lazily building lineitem_idx2 on l_shipdate" ;

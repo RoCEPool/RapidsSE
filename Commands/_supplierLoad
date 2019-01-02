@@ -17,7 +17,7 @@ CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
 print "loading supplier.tbl..." ;
 
 //docol stepsReset;
-ld supplier "/tpch/supplier.tbl" ;
+ld supplier "/tpch/SF1/supplier.csv" ;
 //docol stepsList;
 
 pwf ;

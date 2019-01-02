@@ -18,7 +18,7 @@ create table part (
 CREATE INDEX part_idx1 ON part(p_brand);
 
 print "loading part.tbl..." ;
-ld part     "/tpch/part.tbl" ;
+ld part "/tpch/SF1/part.csv" ;
 
 pwf ;
 lf ;

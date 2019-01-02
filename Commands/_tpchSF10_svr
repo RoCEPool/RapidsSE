@@ -106,28 +106,28 @@ CREATE INDEX supplier_idx2 ON supplier(s_nationkey);
 
 
 print "Loading nation ...";
-ld nation   "/mnt/ssd/tpch/tpch_sf10/nation.tbl" ;
+ld nation   "/mnt/ssd/tpch/tpch_sf10/nation.csv" ;
 
 print "Loading orders ...";
-ld orders   "/mnt/ssd/tpch/tpch_sf10/orders.tbl" ;
+ld orders   "/mnt/ssd/tpch/tpch_sf10/orders.csv" ;
 
 print "Loading supplier ...";
-ld supplier "/mnt/ssd/tpch/tpch_sf10/supplier.tbl" ;
+ld supplier "/mnt/ssd/tpch/tpch_sf10/supplier.csv" ;
 
 print "Loading region ...";
-ld region   "/mnt/ssd/tpch/tpch_sf10/region.tbl" ;
+ld region   "/mnt/ssd/tpch/tpch_sf10/region.csv" ;
 
 print "Loading lineitem ...";
-ld lineitem "/mnt/ssd/tpch/tpch_sf10/lineitem.tbl" ;
+ld lineitem "/mnt/ssd/tpch/tpch_sf10/lineitem.csv" ;
 
 print "Loading part ...";
-ld part     "/mnt/ssd/tpch/tpch_sf10/part.tbl" ;
+ld part     "/mnt/ssd/tpch/tpch_sf10/part.csv" ;
 
 print "Loading partsupp ...";
-ld partsupp "/mnt/ssd/tpch/tpch_sf10/partsupp.tbl" ;
+ld partsupp "/mnt/ssd/tpch/tpch_sf10/partsupp.csv" ;
 
 print "Loading custome ...";
-ld customer "/mnt/ssd/tpch/tpch_sf10/customer.tbl" ;
+ld customer "/mnt/ssd/tpch/tpch_sf10/customer.csv" ;
 
 print "ALL DONE";
 

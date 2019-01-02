@@ -99,9 +99,9 @@ create table supplier (
 pwf ;
 lf ;
 
-//lds lineitem "/tpch/lineitem.tbl" ;
+//lds lineitem "/tpch/SF1/lineitem.csv" ;
 lds lineitem "/tpch/SF10/lineitem.pipe" ;
-//lds nation "/tpch/nation.tbl" ;
+//lds nation "/tpch/SF1/nation.csv" ;
 
 /*============================================================================*/
 /* end                                                                        */

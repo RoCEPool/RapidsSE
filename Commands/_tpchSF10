@@ -104,28 +104,28 @@ create table supplier (
 );
 
 //print "loading customer.tbl..." ;
-//ld customer "/tpch/SF10/customer.tbl" ;
+//ld customer "/tpch/SF10/customer.csv" ;
 
 print "loading lineitem.tbl..." ;
-ld lineitem "/tpch/SF10/lineitem.tbl" ;
+ld lineitem "/tpch/SF10/lineitem.csv" ;
 
 //print "loading nation.tbl..." ;
-//ld nation   "/tpch/SF10/nation.tbl" ;
+//ld nation   "/tpch/SF10/nation.csv" ;
 
 //print "loading orders.tbl..." ;
-//ld orders   "/tpch/SF10/orders.tbl" ;
+//ld orders   "/tpch/SF10/orders.csv" ;
 
 //print "loading part.tbl..." ;
-//ld part     "/tpch/SF10/part.tbl" ;
+//ld part     "/tpch/SF10/part.csv" ;
 
 //print "loading partsupp.tbl..." ;
-//ld partsupp "/tpch/SF10/partsupp.tbl" ;
+//ld partsupp "/tpch/SF10/partsupp.csv" ;
 
 //print "loading region.tbl..." ;
-//ld region   "/tpch/SF10/region.tbl" ;
+//ld region   "/tpch/SF10/region.csv" ;
 
 //print "loading supplier.tbl..." ;
-//ld supplier "/tpch/SF10/supplier.tbl" ;
+//ld supplier "/tpch/SF10/supplier.csv" ;
 
 //ex customer "/tmp/customer.txt" ;
 //ex lineitem "/tmp/lineitem.txt" ;

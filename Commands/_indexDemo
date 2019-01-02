@@ -18,7 +18,7 @@ create index idx1 on supplier (S_SUPPKEY);
 create index idx2 on supplier (S_NAME);
 
 print "loading supplier.tbl..." ;
-ld supplier "/tpch/supplier.tbl" ;
+ld supplier "/tpch/SF1/supplier.csv" ;
 print "loaded supplier.tbl..." ;
 
 pwf ;

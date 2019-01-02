@@ -330,7 +330,7 @@ success
 create table limitRow (col0 VARCHAR(20000));
 success
 
-//ld limitRow "../Seth/tests/Load/largeRow1.tbl";
+//ld limitRow "../Seth/tests/Load/largeRow1.csv";
 //success
 
 //fetch limitRow;

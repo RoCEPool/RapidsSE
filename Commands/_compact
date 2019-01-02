@@ -24,7 +24,7 @@ create table lineitem (
 create index idx1 ON lineitem(L_ORDERKEY);
 
 print "loading lineitem.tbl..." ;
-ld lineitem "/tpch/SF10/lineitem.tbl" ;
+ld lineitem "/tpch/SF10/lineitem.csv" ;
 
 vfyidx lineitem idx1;
 visidx lineitem idx1;
@@ -68,7 +68,7 @@ create table lineitem (
 create index idx1 ON lineitem(L_ORDERKEY);
 
 print "loading lineitem.tbl..." ;
-ld lineitem "/tpch/SF10/lineitem.tbl" ;
+ld lineitem "/tpch/SF10/lineitem.csv" ;
 
 vfyidx lineitem idx1;
 visidx lineitem idx1;
@@ -185,7 +185,7 @@ create table supplier (
 CREATE INDEX idx1 ON supplier(s_suppkey);
 
 print "loading supplier.tbl..." ;
-ld supplier "/tpch/supplier.tbl" ;
+ld supplier "/tpch/SF1/supplier.csv" ;
 
 vfyidx supplier idx1;
 visidx supplier idx1;

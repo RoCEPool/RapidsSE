@@ -43,7 +43,7 @@ print "";
 print "=====================================================================";
 print "loading table lineitem";
 print "=====================================================================";
-ld lineitem "/tpch/lineitem.tbl" ;
+ld lineitem "/tpch/SF1/lineitem.csv" ;
 
 docol epochDump;
 

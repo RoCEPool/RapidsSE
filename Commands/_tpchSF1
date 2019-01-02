@@ -92,21 +92,21 @@ create table supplier (
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 print "loading customer.tbl..." ;
-ld customer "/tpch/SF1/customer.tbl" ;
+ld customer "/tpch/SF1/customer.csv" ;
 print "loading lineitem.tbl..." ;
-ld lineitem "/tpch/SF1/lineitem.tbl" ;
+ld lineitem "/tpch/SF1/lineitem.csv" ;
 print "loading nation.tbl..." ;
-ld nation "/tpch/SF1/nation.tbl" ;
+ld nation "/tpch/SF1/nation.csv" ;
 print "loading orders.tbl..." ;
-ld orders "/tpch/SF1/orders.tbl" ;
+ld orders "/tpch/SF1/orders.csv" ;
 print "loading part.tbl..." ;
-ld part "/tpch/SF1/part.tbl" ;
+ld part "/tpch/SF1/part.csv" ;
 print "loading partsupp.tbl..." ;
-ld partsupp "/tpch/SF1/partsupp.tbl" ;
+ld partsupp "/tpch/SF1/partsupp.csv" ;
 print "loading region.tbl..." ;
-ld region "/tpch/SF1/region.tbl" ;
+ld region "/tpch/SF1/region.csv" ;
 print "loading supplier.tbl..." ;
-ld supplier "/tpch/SF1/supplier.tbl" ;
+ld supplier "/tpch/SF1/supplier.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

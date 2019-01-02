@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 
 /* example:
  
- ld lineitem "/tpch/lineitem.tbl" ;
+ ld lineitem "/tpch/SF1/lineitem.csv" ;
  
  */
 

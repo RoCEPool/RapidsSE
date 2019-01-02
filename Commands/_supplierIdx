@@ -31,7 +31,7 @@ create index idx2 on supplier (S_NAME);
 create index idx4 on supplier (S_COMMENT);
 
 print "loading supplier.tbl..." ;
-ld supplier "/tpch/supplier.tbl" ;
+ld supplier "/tpch/SF1/supplier.csv" ;
 print "loaded supplier.tbl..." ;
 
 print "\nSelecting rows from supplier (idx1) where S_SUPPKEY == 22 ...\n" ;

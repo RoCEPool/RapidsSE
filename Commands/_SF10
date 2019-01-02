@@ -28,7 +28,7 @@ CREATE INDEX idx ON lineitem(l_partkey);
 print "loading lineitem.tbl..." ;
 
 timerStart;
-ld lineitem "/tpch/SF10/lineitem.tbl" field_delimiter "|" record_ends "|" ;
+ld lineitem "/tpch/SF10/lineitem.csv" field_delimiter "|" record_ends "|" ;
 timerEnd;
 
 anidx lineitem hidden;

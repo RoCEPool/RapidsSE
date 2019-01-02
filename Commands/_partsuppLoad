@@ -13,7 +13,7 @@ CREATE INDEX partsupp_idx1 ON partsupp(ps_suppkey);
 
 
 print "loading partsupp.tbl..." ;
-ld partsupp "/tpch/partsupp.tbl" ;
+ld partsupp "/tpch/SF1/partsupp.csv" ;
 
 pwf ;
 lf ;
