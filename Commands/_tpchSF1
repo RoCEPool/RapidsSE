@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _tpchSF1-- tpc-h creation, load, fetch and drop for scale factor 1         */
+/* _tpch/SF1-- tpc-h creation, load, fetch and drop for scale factor 1         */
 /*============================================================================*/
 
 startCluster;
@@ -92,21 +92,21 @@ create table supplier (
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 print "loading customer.tbl..." ;
-ld customer "/tpchSF1/customer.tbl" ;
+ld customer "/tpch/SF1/customer.tbl" ;
 print "loading lineitem.tbl..." ;
-ld lineitem "/tpchSF1/lineitem.tbl" ;
+ld lineitem "/tpch/SF1/lineitem.tbl" ;
 print "loading nation.tbl..." ;
-ld nation "/tpchSF1/nation.tbl" ;
+ld nation "/tpch/SF1/nation.tbl" ;
 print "loading orders.tbl..." ;
-ld orders "/tpchSF1/orders.tbl" ;
+ld orders "/tpch/SF1/orders.tbl" ;
 print "loading part.tbl..." ;
-ld part "/tpchSF1/part.tbl" ;
+ld part "/tpch/SF1/part.tbl" ;
 print "loading partsupp.tbl..." ;
-ld partsupp "/tpchSF1/partsupp.tbl" ;
+ld partsupp "/tpch/SF1/partsupp.tbl" ;
 print "loading region.tbl..." ;
-ld region "/tpchSF1/region.tbl" ;
+ld region "/tpch/SF1/region.tbl" ;
 print "loading supplier.tbl..." ;
-ld supplier "/tpchSF1/supplier.tbl" ;
+ld supplier "/tpch/SF1/supplier.tbl" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

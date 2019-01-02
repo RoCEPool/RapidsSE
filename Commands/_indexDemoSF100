@@ -25,7 +25,7 @@ create index idx2 on supplier (S_NAME);
 /*----------------------------------------------------------------------------*/
 print "----------------------------------------------------------------------";
 print "Loading table..." ;
-ld supplier "/tpchSF100/supplier.tbl" ;
+ld supplier "/tpch/SF100/supplier.tbl" ;
 print "loaded supplier.tbl..." ;
 
 pwf ;

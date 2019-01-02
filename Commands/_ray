@@ -18,7 +18,7 @@ create table customer (
 );
 
 print "loading customer.tbl..." ;
-ld customer "/TPCHSF1/customer.tbl" ;
+ld customer "/tpch/SF1/customer.tbl" ;
 
 antbl customer;
 

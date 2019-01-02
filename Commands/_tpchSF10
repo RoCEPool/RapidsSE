@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* _tpchSF10-- tpc h creation and load etc                                   */
+/* _tpch/SF10-- tpc h creation and load etc                                   */
 /*============================================================================*/
 
 ping ;
@@ -104,28 +104,28 @@ create table supplier (
 );
 
 //print "loading customer.tbl..." ;
-//ld customer "/tpchSF10/customer.tbl" ;
+//ld customer "/tpch/SF10/customer.tbl" ;
 
 print "loading lineitem.tbl..." ;
-ld lineitem "/tpchSF10/lineitem.tbl" ;
+ld lineitem "/tpch/SF10/lineitem.tbl" ;
 
 //print "loading nation.tbl..." ;
-//ld nation   "/tpchSF10/nation.tbl" ;
+//ld nation   "/tpch/SF10/nation.tbl" ;
 
 //print "loading orders.tbl..." ;
-//ld orders   "/tpchSF10/orders.tbl" ;
+//ld orders   "/tpch/SF10/orders.tbl" ;
 
 //print "loading part.tbl..." ;
-//ld part     "/tpchSF10/part.tbl" ;
+//ld part     "/tpch/SF10/part.tbl" ;
 
 //print "loading partsupp.tbl..." ;
-//ld partsupp "/tpchSF10/partsupp.tbl" ;
+//ld partsupp "/tpch/SF10/partsupp.tbl" ;
 
 //print "loading region.tbl..." ;
-//ld region   "/tpchSF10/region.tbl" ;
+//ld region   "/tpch/SF10/region.tbl" ;
 
 //print "loading supplier.tbl..." ;
-//ld supplier "/tpchSF10/supplier.tbl" ;
+//ld supplier "/tpch/SF10/supplier.tbl" ;
 
 //ex customer "/tmp/customer.txt" ;
 //ex lineitem "/tmp/lineitem.txt" ;

@@ -25,7 +25,7 @@ print "=====================================================================";
 print "piping lineitem.tbl...";
 print "=====================================================================";
 
-nowait cat "/tpchsf100/lineitem.tbl" "/tmp/a.pipe" ;
+nowait cat "/tpch/SF100/lineitem.tbl" "/tmp/a.pipe" ;
 nowait cat "/tmp/a.pipe" "/tmp/b.pipe" ;
 nowait cat "/tmp/b.pipe" "/tmp/c.pipe" ;
 nowait sink "/tmp/c.pipe" stats ;

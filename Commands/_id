@@ -35,10 +35,10 @@ print "=====================================================================";
 // purge customer;
 //nowait ingest customer "/tmp/customer.pipe" ;
 //nowait sink "/tmp/customer.pipe" stats;
-//nowait repeater "/tpchSF1/customer.tbl" "/tmp/customer.pipe" ;
+//nowait repeater "/tpch/SF1/customer.tbl" "/tmp/customer.pipe" ;
 
 docol stepTimingStart;
-ingest lineitem "/tpchSF1/lineitem.tbl" stats ;
+ingest lineitem "/tpch/SF1/lineitem.tbl" stats ;
 docol stepTimingWrite;
 
 print "";

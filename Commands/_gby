@@ -47,7 +47,7 @@ print "loading lineitem.tbl..." ;
 //docol stepsReset;
 //docol memoryReset;
 //docol schedulerReset;
-ld lineitem "/tpchSF10/lineitem.tbl" ;
+ld lineitem "/tpch/SF10/lineitem.tbl" ;
 //sleep 10 ;
 //space;
 //docol schedulerList;
