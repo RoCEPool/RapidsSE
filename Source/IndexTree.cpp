@@ -1112,6 +1112,13 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
   
   m_zLock.vGrabWrite();
   
+  i8 iAge = m_pRootBuffer->iAgeInSeconds();
+  
+  if (iAge <= iOlderThanSeconds) {
+    m_zLock.vDropWrite();
+    return false;
+  }
+  
   // is currentBuffer same as rootBuffer ?
   if (m_pCurrentBuffer == m_pRootBuffer)
     m_pCurrentBuffer = nullptr;

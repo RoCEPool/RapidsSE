@@ -22,6 +22,8 @@ ld customer "/TPCHSF1/customer.tbl" ;
 
 antbl customer;
 
+sleep 40;
+
 purge customer 30;
 
 antbl customer;
