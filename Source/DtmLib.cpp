@@ -85,23 +85,26 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
                       DBobjects::Column* pColumn, bool bLastColumn,
                       bool bAllowNonPrintable, Formatters* pFormatters)
 {
-  bool b = false;
+//  bool b = false;
+//
+//  switch (eDatum) {
+//    case DM_BCD: b = Bcd::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+//    case DM_BOL: b = Bol::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+//    case DM_CHR: b = Vch::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+//    case DM_DTE: b = Dte::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+//    case DM_FLT: b = Flt::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+//    case DM_INT: b = Int::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+//    case DM_IVL: b = Ivl::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+//    case DM_TME: b = Tme::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+//    case DM_TSP: b = Tsp::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+//    case DM_VCH: b = Vch::bExtract2(aaSrc,aDst,pColumn,pFormatters,bAllowNonPrintable); break;
+//    default:
+//      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
+//             eDatum);
+//  }
   
-  switch (eDatum) {
-    case DM_BCD: b = Bcd::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-    case DM_BOL: b = Bol::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-    case DM_CHR: b = Vch::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-    case DM_DTE: b = Dte::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-    case DM_FLT: b = Flt::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-    case DM_INT: b = Int::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-    case DM_IVL: b = Ivl::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-    case DM_TME: b = Tme::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-    case DM_TSP: b = Tsp::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-    case DM_VCH: b = Vch::bExtract2(aaSrc,aDst,pColumn,pFormatters,bAllowNonPrintable); break;
-    default:
-      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
-             eDatum);
-  }
+  // invoke the dataum types extract function
+  bool b = pColumn->bExtract(aaSrc,aDst,pFormatters);
   
   // move past the field delimiter
   //   (but not past the record terminator or record ends)
