@@ -157,6 +157,25 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get age of buffer in seconds                                               */
+/*----------------------------------------------------------------------------*/
+i8 EntryBuffer::iAgeInSeconds(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  Since oSince;
+  oSince.vNow();
+  
+  Ivl wDiff;
+  
+  wDiff = oSince.wSubtract(m_oWhenNewed);
+
+  i8 iAge = wDiff.iSecond();
+
+  return iAge;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set buffer level                                                           */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vBufferLevel(i8 iBufferLevel)

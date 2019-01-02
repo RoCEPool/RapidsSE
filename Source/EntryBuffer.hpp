@@ -63,6 +63,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // simple member functions
   
+    i8           iAgeInSeconds(void);
     void         vBufferLevel(i8 iBufferLevel);
     i8           iBufferLevel(void);
     EntryBuffer* pHigherBuffer(void);
