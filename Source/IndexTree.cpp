@@ -1098,7 +1098,7 @@ void IndexTree::vPublish(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* purge the index buffers                                                    */
+/* attempt to purge first buffer of index tree                                */
 /*----------------------------------------------------------------------------*/
 bool IndexTree::bPurge(i8 iOlderThanSeconds)
 {
@@ -1107,7 +1107,7 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
   // only allowing purging of hidden index
   RASSERT(m_pIndex->bIsHidden());
   
-  if ( ! m_pRootBuffer)
+  if (! m_pRootBuffer)
     return false;
   
   m_zLock.vGrabWrite();
@@ -1134,10 +1134,10 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
     m_pRootBuffer->vPrevBuffer(nullptr);
   }
   
+  m_zLock.vDropWrite();
+  
   // delete the roor buffer
   delete pEntryBuffer;
-  
-  m_zLock.vDropWrite();
   
   return true;
 }

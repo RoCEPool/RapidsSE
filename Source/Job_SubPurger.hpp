@@ -38,7 +38,6 @@ namespace JobModel
 
   public:
     Footer* aFooter(void);
-  
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
