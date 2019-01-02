@@ -62,7 +62,7 @@ void Step::vJob_SubPurgerChunk(MP_Task mpTask)
   
   if (! bCallAgain) {
     // sleep for 10 seconds
-    mpTask->vSleep(C_1M * 10);
+    mpTask->vSleepUs(C_1M * 10);
     mpTask->vState(TS_SLEEPING);
   }
     
