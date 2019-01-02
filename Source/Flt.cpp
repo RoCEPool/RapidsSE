@@ -177,8 +177,10 @@ void Flt::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a float field from csv substr                                      */
 /*----------------------------------------------------------------------------*/
-bool Flt::bExtract(char** aaSrc, Flt* aFlt, Column* pColumn, Formatters* pFormatters)
+bool Flt::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
+  Flt* aFlt = (Flt*)aDst;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   

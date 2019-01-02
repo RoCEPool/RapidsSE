@@ -40,7 +40,7 @@ namespace Datums
     static i8   nCopyVLQ(void* aDst, void* aSrc);
     static void vCopy(void* aDst, void* aSrc);
 
-    static bool bExtract(char** aaSrc, Bcd* aBcd,
+    static bool bExtract(char** aaSrc, Stz* aDst,
                          DBobjects::Column* pColumn, Formatters* pFormatters);
     static void vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn);
     static void vSprintVLQ(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn);

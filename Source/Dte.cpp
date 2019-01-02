@@ -204,9 +204,11 @@ void Dte::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a date field from csv substr                           yyyy-mo-ddZ */
 /*----------------------------------------------------------------------------*/
-bool Dte::bExtract(char** aaSrc, Dte* aDte, Column* pColumn, Formatters* pFormatters)
+bool Dte::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Dte* aDte = (Dte*)aDst;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing

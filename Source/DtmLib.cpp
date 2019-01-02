@@ -88,16 +88,16 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
   bool b = false;
   
   switch (eDatum) {
-    case DM_BCD: b = Bcd::bExtract(aaSrc,(Bcd*)aDst,pColumn,pFormatters); break;
-    case DM_BOL: b = Bol::bExtract(aaSrc,(Bol*)aDst,pColumn,pFormatters); break;
-    case DM_CHR: b = Vch::bExtract(aaSrc,(Vch*)aDst,pColumn,pFormatters); break;                                
-    case DM_DTE: b = Dte::bExtract(aaSrc,(Dte*)aDst,pColumn,pFormatters); break;
-    case DM_FLT: b = Flt::bExtract(aaSrc,(Flt*)aDst,pColumn,pFormatters); break;
-    case DM_INT: b = Int::bExtract(aaSrc,(Int*)aDst,pColumn,pFormatters); break;
-    case DM_IVL: b = Ivl::bExtract(aaSrc,(Ivl*)aDst,pColumn,pFormatters); break;
-    case DM_TME: b = Tme::bExtract(aaSrc,(Tme*)aDst,pColumn,pFormatters); break;
-    case DM_TSP: b = Tsp::bExtract(aaSrc,(Tsp*)aDst,pColumn,pFormatters); break;
-    case DM_VCH: b = Vch::bExtract2(aaSrc,(Vch*)aDst,pColumn,pFormatters,bAllowNonPrintable); break;
+    case DM_BCD: b = Bcd::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+    case DM_BOL: b = Bol::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+    case DM_CHR: b = Vch::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+    case DM_DTE: b = Dte::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+    case DM_FLT: b = Flt::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+    case DM_INT: b = Int::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+    case DM_IVL: b = Ivl::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+    case DM_TME: b = Tme::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+    case DM_TSP: b = Tsp::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
+    case DM_VCH: b = Vch::bExtract2(aaSrc,aDst,pColumn,pFormatters,bAllowNonPrintable); break;
     default:
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
              eDatum);

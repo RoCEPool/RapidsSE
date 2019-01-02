@@ -251,8 +251,10 @@ void Int::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an integer field from csv substr                                   */
 /*----------------------------------------------------------------------------*/
-bool Int::bExtract(char** aaSrc, Int* aInt, Column* pColumn, Formatters* pFormatters)
+bool Int::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
+  Int* aInt = (Int*)aDst;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   

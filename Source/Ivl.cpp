@@ -203,8 +203,9 @@ void Ivl::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract an interval field from csv substr                                  */
 /*----------------------------------------------------------------------------*/
-bool Ivl::bExtract(char** aaSrc, Ivl* aIvl, Column* pColumn, Formatters* pFormatters)
+bool Ivl::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
+  Ivl* aIvl = (Ivl*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   

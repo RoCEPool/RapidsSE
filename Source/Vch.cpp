@@ -235,11 +235,13 @@ void Vch::vCopy(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Vch::bExtract(char** aaSrc, Vch* aVch,
+bool Vch::bExtract(char** aaSrc, Stz* aDst,
                    Column* pColumn, Formatters* pFormatters)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
+  
+  Vch* aVch = (Vch*)aDst;
   
   bool bValidNull = false;
   if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull,false)) {
@@ -279,10 +281,12 @@ bool Vch::bExtract(char** aaSrc, Vch* aVch,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Vch::bExtract2(char** aaSrc, Vch* aVch,
+bool Vch::bExtract2(char** aaSrc, Stz* aDst,
                     Column* pColumn, Formatters* pFormatters,
                     bool bAllowNonPrintable)
 {
+  Vch* aVch = (Vch*)aDst;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
   

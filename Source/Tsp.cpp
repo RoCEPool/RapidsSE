@@ -240,9 +240,11 @@ void Tsp::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Tsp::bExtract(char** aaSrc, Tsp* aTsp, Column* pColumn, Formatters* pFormatters)
+bool Tsp::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Tsp* aTsp = (Tsp*)aDst;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing

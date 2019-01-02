@@ -189,8 +189,10 @@ void Bcd::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a decimal field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Bcd::bExtract(char** aaSrc, Bcd* aBcd, DBobjects::Column* pColumn, Formatters* pFormatters)
+bool Bcd::bExtract(char** aaSrc, Stz* aDst, DBobjects::Column* pColumn, Formatters* pFormatters)
 {
+  Bcd* aBcd = (Bcd*)aDst;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   

@@ -232,8 +232,10 @@ void Bol::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a boolean field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Bol::bExtract(char** aaSrc, Bol* aBol, Column* pColumn, Formatters* pFormatters)
+bool Bol::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
+  Bol* aBol = (Bol*)aDst;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   

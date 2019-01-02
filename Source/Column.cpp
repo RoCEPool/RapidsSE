@@ -60,6 +60,7 @@ Column::Column(void)
   
   m_fGreaterEqual = nullptr;
   m_fGreaterThan  = nullptr;
+  m_fExtract      = nullptr;
   
   _checkInitialised_(CN_COLUMN);
   
@@ -85,6 +86,7 @@ Column::Column(Stz* aName)
 
   m_fGreaterEqual = nullptr;
   m_fGreaterThan  = nullptr;
+  m_fExtract      = Int::bExtract;
   
   _checkInitialised_(CN_COLUMN);
   
@@ -110,6 +112,7 @@ Column::Column(Stz* aName, Stz* aDefinition)
 
   m_fGreaterEqual = nullptr;
   m_fGreaterThan  = nullptr;
+  m_fExtract      = nullptr;
   
   vSet(aDefinition);
   
@@ -137,6 +140,7 @@ Column::Column(JobModel::Job_CreateTable* pJob, i8 iColumnNo)
   
   m_fGreaterEqual = nullptr;
   m_fGreaterThan  = nullptr;
+  
   
   _checkInitialised_(CN_COLUMN);
   

@@ -213,10 +213,11 @@ void Tme::vCopy(void* aDst, void* aSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a time field from csv substr                         hh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Tme::bExtract(char** aaSrc, Tme* aTme, Column* pColumn, Formatters* pFormatters)
+bool Tme::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
+  Tme* aTme = (Tme*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // head processing
   

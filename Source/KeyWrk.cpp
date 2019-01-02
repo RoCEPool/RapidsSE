@@ -90,21 +90,21 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters)
       
     case DM_BCD: {
       Bcd xBcd;
-      bool b = Bcd::bExtract(&pSrc,&xBcd,pCol,pFormatters);
+      bool b = Bcd::bExtract(&pSrc,(Stz*)&xBcd,pCol,pFormatters);
       nBytes = Bcd::nCopy((char*)pDst,(char*)&xBcd);
       break;
     }
       
     case DM_BOL: {
       Bol xBol;
-      bool b = Bol::bExtract(&pSrc,&xBol,pCol,pFormatters);
+      bool b = Bol::bExtract(&pSrc,(Stz*)&xBol,pCol,pFormatters);
       nBytes = Bol::nCopy((char*)pDst,(char*)&xBol);
       break;
     }
       
     case DM_DTE: {
       Dte xDte;
-      bool b = Dte::bExtract(&pSrc,&xDte,pCol,pFormatters);
+      bool b = Dte::bExtract(&pSrc,(Stz*)&xDte,pCol,pFormatters);
       nBytes = Dte::nCopy((char*)pDst,(char*)&xDte);
       break;
     }
@@ -117,28 +117,28 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters)
       
     case DM_IVL: {
       Ivl xInterval;
-      bool b = Ivl::bExtract(&pSrc,&xInterval,pCol,pFormatters);
+      bool b = Ivl::bExtract(&pSrc,(Stz*)&xInterval,pCol,pFormatters);
       nBytes = Ivl::nCopy(pDst,(void*)&xInterval);
       break;
     }
       
     case DM_FLT: {
       Flt xFloat;
-      bool b = Flt::bExtract(&pSrc,&xFloat,pCol,pFormatters);
+      bool b = Flt::bExtract(&pSrc,(Stz*)&xFloat,pCol,pFormatters);
       nBytes = Flt::nCopy(pDst,(void*)&xFloat);
       break;
     }
       
     case DM_TME: {
       Tme xTime;
-      bool b = Tme::bExtract(&pSrc,&xTime,pCol,pFormatters);
+      bool b = Tme::bExtract(&pSrc,(Stz*)&xTime,pCol,pFormatters);
       nBytes = Tme::nCopy((char*)pDst,(char*)&xTime);
       break;
     }
       
     case DM_TSP: {
       Tsp xTimestamp;
-      bool b = Tsp::bExtract(&pSrc,&xTimestamp,pCol,pFormatters);
+      bool b = Tsp::bExtract(&pSrc,(Stz*)&xTimestamp,pCol,pFormatters);
       nBytes = Tsp::nCopy((char*)pDst,(char*)&xTimestamp);
       break;
     }

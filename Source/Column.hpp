@@ -68,6 +68,9 @@ namespace DBobjects
     bool  (*m_fGreaterEqual)(char* aArgA, char* aArgB);
     bool  (*m_fGreaterThan)(char* aArgA, char* aArgB);
   
+    bool  (*m_fExtract)(char** aaSrc, Stz* aDst,
+                        DBobjects::Column* pColumn, Formatters* pFormatters);
+    
     // must be last
     Footer m_xFooter;
     
