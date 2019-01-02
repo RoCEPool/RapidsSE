@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* read chunks from input, write them to output                               */
+/* read chunks from input, and write each record behind                       */
 /*----------------------------------------------------------------------------*/
 : LoadTable_process ( pJob_LoadTable -- )
 
@@ -20,6 +20,25 @@
   begin pJob_LoadTable job_loadTable.chunk while repeat
 
   pJob_LoadTable job_loadTable.end
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn sub-loaders                                                          */
+/*----------------------------------------------------------------------------*/
+: LoadTable_spawnSubs ( pJob_LoadTable -- )
+
+  params| pJob_LoadTable |
+
+  task::this task.grabLock
+
+  grid::slots task::acks!
+
+  args.subLoaders 0
+  do
+    pJob_LoadTable job_subLoader::spawn
+  loop
+
+  task::wait
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -56,16 +75,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn and wait for sub-loaders
 
-  task::this task.grabLock
-
-  grid::slots task::acks!
-
-  args.subLoaders 0
-  do
-    pJob_LoadTable job_subLoader::spawn
-  loop
-
-  task::wait
+  pJob_LoadTable LoadTable_spawnSubs
 ;
 
 /*----------------------------------------------------------------------------*/
