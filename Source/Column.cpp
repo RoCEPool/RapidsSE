@@ -575,6 +575,16 @@ bool Column::bEqualTo(char* aArgA, char* aArgB)
 }
 
 /*----------------------------------------------------------------------------*/
+/* greater equal                                                              */
+/*----------------------------------------------------------------------------*/
+bool Column::bExtract(char** aaSrc, Stz* aDst, Formatters* pFormatters)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  return m_fExtract(aaSrc, aDst, this, pFormatters);
+}
+
+/*----------------------------------------------------------------------------*/
 /* not equal to                                                               */
 /*----------------------------------------------------------------------------*/
 bool Column::bNotEqual(char* aArgA, char* aArgB)

@@ -122,7 +122,8 @@ namespace DBobjects
     bool bNotEqual(char* aArgA, char* aArgB);
     bool bGreaterEqual(char* aArgA, char* aArgB);
     bool bGreaterThan(char* aArgA, char* aArgB);
-  
+    bool bExtract(char** aaSrc, Stz* aDst,Formatters* pFormatters);
+    
     i8 iCmp(char* aArgA, char* aArgB);
 
     bool bCmp(eRO eRelOp, char* aArgA, char* aArgB);
