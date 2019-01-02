@@ -19,6 +19,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* spawn sub-ingesters                                                        */
+/*----------------------------------------------------------------------------*/
+: Ingest_spawnSubs ( pJob_Ingest -- )
+
+  params| pJob_Ingest |
+
+  task::this task.grabLock
+
+  args.subIngesters task::acks!
+
+  args.subIngesters 0
+  do
+    pJob_Ingest job_subIngester::spawn
+  loop
+
+  task::wait
+;
+
+/*----------------------------------------------------------------------------*/
 /* Job_Ingest request (on command node)                                       */
 /*----------------------------------------------------------------------------*/
 : Ingest_req (  -- <R> )
