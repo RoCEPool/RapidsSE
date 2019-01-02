@@ -11,11 +11,12 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobSubIngester(void)
 {
-  vAddStep("Job_subIngester::spawn"_Stz,  &Step::vJob_SubIngesterSpawn);
+  vAddStep("Job_subIngester::spawn"_Stz,    &Step::vJob_SubIngesterSpawn);
   
-  vAddStep("job_subIngester.begin"_Stz,   &Step::vJob_SubIngesterBegin);
-  vAddStep("Job_subIngester.chunk"_Stz,   &Step::vJob_SubIngesterChunk);
-  vAddStep("job_subIngester.end"_Stz,     &Step::vJob_SubIngesterEnd);
+  vAddStep("job_subIngester.begin"_Stz,     &Step::vJob_SubIngesterBegin);
+  vAddStep("Job_subIngester.chunk"_Stz,     &Step::vJob_SubIngesterChunk);
+  vAddStep("job_subIngester.end"_Stz,       &Step::vJob_SubIngesterEnd);
+  vAddStep("job_subIngester.jobIngest"_Stz, &Step::vJob_SubIngesterJobIngest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +36,7 @@ void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
   Session* pSession = pJob_Ingest->m_pSession;
   
   //! this needs to be optimised
-  JobClass* pJobClass_SubIngester = JobClass::pFind(CN_JOB_SUBLOADER);
+  JobClass* pJobClass_SubIngester = JobClass::pFind(CN_JOB_SUBINGESTER);
   
   Job_SubIngester* pJob_SubIngester =
   static_cast<Job_SubIngester*>(pJobClass_SubIngester->pPreJob(pSession));
@@ -51,7 +52,6 @@ void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
   
   EXIT();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -109,6 +109,23 @@ void Step::vJob_SubIngesterEnd(MP_Task mpTask)
   
   pJob_SubIngester->vEnd();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subLoader.jobIngest -- get job_ingest                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubIngesterJobIngest(MP_Task mpTask)
+{
+  ENTRY("vJob_SubIngesterJobIngest"_Stz);
+  
+  Object* pPtrJob_SubIngester;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubIngester) )
+  THROW_INVALID_DSTACK("subLoader.end"_Stz);
+  Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
+  
+  mpTask->m_pDataStack->vPushObject(pJob_SubIngester->m_pJob_Ingest);
+
   EXIT();
 }
 

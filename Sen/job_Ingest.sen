@@ -80,6 +80,8 @@
   sTableNm find execute to pTable
   pTable pJob_Ingest job_ingest.table!
 
+  pJob_Ingest Ingest_spawnSubs
+
   pJob_Ingest Ingest_process
 
   //----------------------------------------------------------------------------

@@ -605,6 +605,7 @@
   static void vJob_SubIngesterBegin(Tasks::MP_Task mpTask);
   static void vJob_SubIngesterChunk(Tasks::MP_Task mpTask);
   static void vJob_SubIngesterEnd(Tasks::MP_Task mpTask);
+  static void vJob_SubIngesterJobIngest(Tasks::MP_Task mpTask);
   static void vJob_SubIngesterSpawn(Tasks::MP_Task mpTask);
 
   // Job subLoader

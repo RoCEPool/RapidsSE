@@ -48,7 +48,7 @@ JobClass xJobClass_SubIngester =
 /*----------------------------------------------------------------------------*/
 JobClass* JobModel::pJob_SubIngester_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_SubPublish_class;
+  *pNextFun = (pFUN*)pJob_SubLoader_class;
   
   return &xJobClass_SubIngester;
 }

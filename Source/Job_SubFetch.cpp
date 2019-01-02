@@ -48,7 +48,7 @@ JobClass xJobClass_SubFetch =
 /*----------------------------------------------------------------------------*/
 JobClass* JobModel::pJob_SubFetch_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_SubLoader_class;
+  *pNextFun = (pFUN*)pJob_SubIngester_class;
   
   return &xJobClass_SubFetch;
 }

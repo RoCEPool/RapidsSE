@@ -37,9 +37,9 @@ print "=====================================================================";
 //nowait sink "/tmp/customer.pipe" stats;
 //nowait repeater "/tpch/SF1/customer.csv" "/tmp/customer.pipe" ;
 
-docol stepTimingStart;
+//docol stepTimingStart;
 ingest lineitem "/tpch/SF1/lineitem.csv" stats ;
-docol stepTimingWrite;
+//docol stepTimingWrite;
 
 print "";
 print "=====================================================================";
