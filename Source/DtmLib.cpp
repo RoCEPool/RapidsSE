@@ -133,10 +133,7 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
       b = false;
   }
   
-  if (!b)
-    return b;
-  else
-    return b;
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/

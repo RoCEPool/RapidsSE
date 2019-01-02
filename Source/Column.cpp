@@ -141,6 +141,21 @@ Column::Column(JobModel::Job_CreateTable* pJob, i8 iColumnNo)
   m_fGreaterEqual = nullptr;
   m_fGreaterThan  = nullptr;
   
+  switch (m_eDatumType) {
+      case DM_BCD: m_fExtract = Bcd::bExtract; break;
+      case DM_BOL: m_fExtract = Bol::bExtract; break;
+      case DM_CHR: m_fExtract = Vch::bExtract; break;
+      case DM_DTE: m_fExtract = Int::bExtract; break;
+      case DM_FLT: m_fExtract = Flt::bExtract; break;
+      case DM_INT: m_fExtract = Int::bExtract; break;
+      case DM_IVL: m_fExtract = Ivl::bExtract; break;
+      case DM_TME: m_fExtract = Tme::bExtract; break;
+      case DM_TSP: m_fExtract = Tsp::bExtract; break;
+      case DM_VCH: m_fExtract = Vch::bExtract; break;
+    default:
+      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
+             m_eDatumType);
+  }
   
   _checkInitialised_(CN_COLUMN);
   
