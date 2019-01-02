@@ -11,7 +11,6 @@ namespace Chunks
   protected:
     Formatters* m_pFormatters; // using these formatters
   
-    Stz* m_aEndChunk;          // last byte of where chunk ends
     i8   m_nRemainingBytes;    // bytes remaining
 
     Stz* m_aNextRecord;        // first byte of next record

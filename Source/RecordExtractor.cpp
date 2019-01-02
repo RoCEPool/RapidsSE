@@ -125,8 +125,8 @@ bool RecordExtractor::bReadNextChunk(void)
   
   m_nRemainingBytes += nBytesRead;
   
-  m_aEndChunk   = &(aStartArea)[m_nRemainingBytes - 1];
-  m_aNextRecord = aStartArea;
+  m_aLastDataByte = &(aStartArea)[m_nRemainingBytes - 1];
+  m_aNextRecord   = aStartArea;
   
   return true;
 }
@@ -150,8 +150,8 @@ void RecordExtractor::vReadSpecificChunk(i8 iSeek, i8 nBytes)
   
   m_nRemainingBytes = nBytesRead;
 
-  m_aEndChunk   =  &(aStartArea)[m_nRemainingBytes - 1];
-  m_aNextRecord = aStartArea;
+  m_aLastDataByte =  &(aStartArea)[m_nRemainingBytes - 1];
+  m_aNextRecord   = aStartArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,12 +194,12 @@ bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
       for (;;) {
         
         // find next \n within chunk
-        while (*aaRecordEnd <= (char*)m_aEndChunk
+        while (*aaRecordEnd <= (char*)m_aLastDataByte
                && C_NL != **aaRecordEnd)
           (*aaRecordEnd)++;
         
         // have we gone past end of chunk?
-        if (*aaRecordEnd > (char*)m_aEndChunk)
+        if (*aaRecordEnd > (char*)m_aLastDataByte)
           return false;
         
         // if no record terminator we have found record end (ie. \n)
@@ -228,12 +228,12 @@ bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
       for (;;) {
         
         // find next \r within chunk
-        while (*aaRecordEnd <= (char*)m_aEndChunk
+        while (*aaRecordEnd <= (char*)m_aLastDataByte
                && C_CR != **aaRecordEnd)
           (*aaRecordEnd)++;
         
         // have we gone past end of chunk?
-        if (*aaRecordEnd > (char*)m_aEndChunk)
+        if (*aaRecordEnd > (char*)m_aLastDataByte)
           return false;
         
         // if no record terminator we have found record end (ie. \r)
@@ -262,12 +262,12 @@ bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
       for (;;) {
         
         // find next \r\n within chunk
-        while (*aaRecordEnd + 1 <= (char*)m_aEndChunk
+        while (*aaRecordEnd + 1 <= (char*)m_aLastDataByte
                && C_CR != **aaRecordEnd && C_NL != *(*aaRecordEnd+1))
           (*aaRecordEnd)++;
         
         // have we gone past end of chunk?
-        if (*aaRecordEnd + 1 > (char*)m_aEndChunk)
+        if (*aaRecordEnd + 1 > (char*)m_aLastDataByte)
           return false;
         
         // if no record terminator we have found record end (ie. \r\n)
@@ -302,7 +302,7 @@ void RecordExtractor::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_aEndChunk    = nullptr;
+  m_aLastDataByte  = nullptr;
   m_aNextRecord  = nullptr;
   m_nRecordBytes = 0;
 }
