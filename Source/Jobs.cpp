@@ -97,15 +97,46 @@ void Jobs::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 /* find a job in the jobs skip list                                           */
 /*----------------------------------------------------------------------------*/
-Job* Jobs::pFindJob(Job* pFindJob)
+Job* Jobs::pFindJob(i8 iJobId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
+  
+  Job__Find* pJob__Find = new Job__Find;
+  pJob__Find->m_iJobId = iJobId;
+  
+  vGrabLock();
+  Job* pJobFound = pFindJob(pJob__Find);
+  vDropLock();
+  
+  if (JOB_TRACE || ! pJobFound) {
+    
+    vTrace("------------------------------------\n"_Stz);
+    vTrace("Looking for JobId %lld in %s\n"_Stz,iJobId,aJL[m_eJobsList]);
+    vTrace("------------------------------------\n"_Stz);
+    
+    vGrabLock();
+    vContentDump();
+    pJobFound = pFindJob(pJob__Find);
+    vDropLock();
+  }
+  
+  delete pJob__Find;
+
+  return pJobFound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find a job in the jobs skip list                                           */
+/*----------------------------------------------------------------------------*/
+Job* Jobs::pFindJob(Job* pJob__Find)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
   ASSERT(m_oLock.bIsLocked());
   
-  Job* pJob = reinterpret_cast<Job*>(m_pJobsSkipList->pFind((void*)pFindJob));
+  Job* pJobFound = reinterpret_cast<Job*>(m_pJobsSkipList->pFind((void*)pJob__Find));
   
-  return pJob;
+  return pJobFound;
 }
 
 /*----------------------------------------------------------------------------*/
