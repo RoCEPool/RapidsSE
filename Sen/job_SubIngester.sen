@@ -1,0 +1,42 @@
+/*============================================================================*/
+/* job_SubIngester.sen -- Job Table SubIngester                               */
+/*============================================================================*/
+
+" job_SubIngester.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* read records from file, create working buffers, send to node               */
+/*----------------------------------------------------------------------------*/
+: SubIngester_process ( pJob_SubIngester -- )
+
+  params| pJob_SubIngester |
+
+  pJob_SubIngester job_subLoader.begin not if exit then
+
+  begin pJob_SubIngester job_subLoader.chunk while repeat
+
+  pJob_SubIngester job_subLoader.end
+;
+
+/*----------------------------------------------------------------------------*/
+/* SubIngester seed                                                             */
+/*----------------------------------------------------------------------------*/
+: subLoader_run ( -- )
+
+  >>am <SEED_RUN>
+
+  task::this locals| pThisTask |
+  job::this  locals| pJob_SubIngester |
+
+  pJob_SubIngester SubIngester_process
+
+  // null the job in the task and delete ended job
+  nullptr pThisTask task.job!
+  pJob_SubIngester job.delete
+
+  <DONE_RUN>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
