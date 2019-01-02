@@ -115,6 +115,7 @@ using namespace JobModel;
 #include "Job_StartCluster.hpp"
 #include "Job_Status.hpp"
 #include "Job_SubFetch.hpp"
+#include "Job_SubIngester.hpp"
 #include "Job_SubLoader.hpp"
 #include "Job_SubPublish.hpp"
 #include "Job_SubPurger.hpp"

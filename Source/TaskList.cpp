@@ -217,39 +217,6 @@ void TaskList::vContentDump(void)
 void TaskList::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   
-  /*
-  TaskList* pTaskQueue = _pTaskList(pObject);
-  
-  SkipList* pSkipList = pTaskQueue->m_pTaskSkipList;
-  vTrace("HEIGHT %lld HEAD 0x%llx ITEMS %lld\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead, pSkipList->m_nObjects);
-  i8 iLevel = pSkipList->m_iHeight;
-  do {
-    //vTrace("LEVEL %lld\n"_Stz, iLevel);
-    
-    SkipNode* pNode = pSkipList->pFirst(iLevel);
-    while (pNode) {
-      i8 i = (i8)pNode->m_pObject;
-      Task* pTask = (Task*)(pNode->m_pObject);
-      vTrace("Task %p %s id %lld (L%lld) Node %p\n"_Stz,
-             pTask,
-             aCN[pTask->eClass()],
-             pTask->iQueueOrder(),
-             pNode->m_nRight,
-             pNode);
-      
-      pNode = pSkipList->pNext(pNode, iLevel);
-    }
-  } while (--iLevel >= 0);
-  
-  vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
-  
-  vTrace("\n"_Stz);
-  //pTaskQueue->List_t<Task>::vContentDump("TaskList::"_Stz, aTab);
-  
-  vTrace("====================================\n"_Stz);
-  vTrace("\n"_Stz);
-  */
 }
 
 /*----------------------------------------------------------------------------*/
