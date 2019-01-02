@@ -64,20 +64,21 @@ namespace StorageEngine
     bool m_bProgress;   // print initialisation progress
     bool m_bReload;     // relaod from checkpoint files
     bool m_bRestart;    // restart if system already started
-    i8   m_nSubLoaders; // number of subloaders
-    i8   m_iThisNode;   // this node no in the m_xNode list              //! FIX
-    i8   m_nThreads;    // number of general threads
+    i8   m_nSubIngesters; // number of subloaders
+    i8   m_nSubLoaders;   // number of subloaders
+    i8   m_iThisNode;     // this node no in the m_xNode list              //! FIX
+    i8   m_nThreads;      // number of general threads
     i8   m_nDummyThreads; // number of dummy threads
-    i8   m_nDummySleep; // sleep period for dummy threads
-    i8   m_nDummyLoop;  // loop count for dummy threads
+    i8   m_nDummySleep;   // sleep period for dummy threads
+    i8   m_nDummyLoop;    // loop count for dummy threads
     i8   m_nPeriodicSleep; // sleep period for periodic job
-    bool m_bTouch;      // touch all shm pages during region create
-    bool m_bTracepoint; // print tracepoint
-    bool m_bTracing;    // tracing
-    bool m_bVerbose;    // print extra stuff
-    bool m_bWelcome;    // print banner
-    bool m_bActivityMap; // use activity map
-    s256 m_sAmPath;     // activity map path
+    bool m_bTouch;         // touch all shm pages during region create
+    bool m_bTracepoint;    // print tracepoint
+    bool m_bTracing;       // tracing
+    bool m_bVerbose;       // print extra stuff
+    bool m_bWelcome;       // print banner
+    bool m_bActivityMap;   // use activity map
+    s256 m_sAmPath;        // activity map path
     i8   m_nActivityMarks; // number of activity marks
 
     // working

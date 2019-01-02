@@ -81,6 +81,7 @@ Arguments::Arguments(void)
   m_bProgress    = false;
   m_bReload      = false;
   m_bRestart     = true;
+  m_nSubIngesters = 4;
   m_nSubLoaders  = 4;
   m_iThisNode    = -1;
   m_nThreads     = 12;
@@ -277,6 +278,18 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--periodicSleep"_Stz)) {
       m_nPeriodicSleep = argv[++i_Arg]->iToI8();
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--subIngesters"_Stz)) {
+      m_nSubIngesters = argv[++i_Arg]->iToI8();
+      if (m_nThreads > C_THREADS) {
+        vError("Maximum number of subIngesters allowed is %lld\n"_Stz,
+               C_THREADS);
+        return false;
+      }
+      
       continue;
     }
     
@@ -806,11 +819,11 @@ void Arguments::vSanityCheck(void)
   }
   
   i8 iRequiredThreads =
-    1               // 1 thread for socket answer
-    + m_nNodes      // n threads for socket receiver
-    + m_nSubLoaders // a threaad per subloader
-    + 1             // a thread for table loader
-    + 1             // 1 for the pot
+    1                 // 1 thread for socket answer
+    + m_nNodes        // n threads for socket receiver
+    + m_nSubLoaders   // a threaad per subloader
+    + 1               // a thread for table loader
+    + 1               // 1 for the pot
   ;
   
 //RJH  if (m_nThreads < iRequiredThreads) {

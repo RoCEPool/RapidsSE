@@ -31,13 +31,14 @@ bool Prompt::bPrompt_config(SePrompt* pPrompt)
   s32 sFreeSpace;
   Magnitudes::vByteMag(gpBufferPool->iFreeSpace(), sFreeSpace);
   
-  vTrace("  Node %s Shm %s Free %s Nodes %lld Slots %lld Threads %lld SubLoaders %lld : %s\n"_Stz,
+  vTrace("  Node %s Shm %s Free %s Nodes %lld Slots %lld Threads %lld SubIngesters %lld SubLoaders %lld : %s\n"_Stz,
          gxArguments.m_sNodeName.aChar(),
          sShmSize.aChar(),
          sFreeSpace.aChar(),
          gxArguments.m_nNodes,
          gxArguments.m_nSlots,
          gxArguments.m_nThreads,
+         gxArguments.m_nSubIngesters,
          gxArguments.m_nSubLoaders,
          gpAttachMap->m_pGrid->m_bHasStarted ? "cluster started"
                                             : "cluster not started"

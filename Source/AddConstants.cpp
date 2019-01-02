@@ -89,6 +89,7 @@ void Axioms::vAddConstants(void)
   vAddConstant("args.start"_Stz,             gxArguments.m_bStart);
   vAddConstant("args.status"_Stz,            gxArguments.m_bStatus);
   vAddConstant("args.stop"_Stz,              gxArguments.m_bStop);
+  vAddConstant("args.subIngesters"_Stz,      gxArguments.m_nSubIngesters);
   vAddConstant("args.subLoaders"_Stz,        gxArguments.m_nSubLoaders);
   vAddConstant("args.threads"_Stz,           gxArguments.m_nThreads);
   vAddConstant("args.touch"_Stz,             gxArguments.m_bTouch);

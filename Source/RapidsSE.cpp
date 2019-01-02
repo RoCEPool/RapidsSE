@@ -654,6 +654,7 @@ void RapidsSE::vStartSystem(void)
   gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,
                               gxArguments.m_iJumboSize,
+                              gxArguments.m_nSubIngesters,
                               gxArguments.m_nSubLoaders);
   
   // get the trace file

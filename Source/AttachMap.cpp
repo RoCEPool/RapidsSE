@@ -105,10 +105,11 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
   vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_sUTC.aStz());
   
-  vInfo("RegionName : %s \n"_Stz,     gpAttachMap->m_sRegionName.aStz());
-  vInfo("RegionSize : %lld \n"_Stz,   gpAttachMap->m_iRegionSize);
-  vInfo("JumboSize  : %lld \n"_Stz,   gpAttachMap->m_iJumboSize);
-  vInfo("SubLoaders : %lld \n"_Stz,   gpAttachMap->m_nSubLoaders);
+  vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->m_sRegionName.aStz());
+  vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->m_iRegionSize);
+  vInfo("JumboSize    : %lld \n"_Stz,   gpAttachMap->m_iJumboSize);
+  vInfo("SubIngesters : %lld \n"_Stz,   gpAttachMap->m_nSubIngesters);
+  vInfo("SubLoaders   : %lld \n"_Stz,   gpAttachMap->m_nSubLoaders);
 
   vInfo("\n"_Stz);
   vInfo("Epoch          : %lld \n"_Stz, gpAttachMap->m_iEpoch);
@@ -171,8 +172,9 @@ void AttachMap::vPrintAttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed globals                                              */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
-                               i8 iJumboSize, i8 nSubLoaders)
+void AttachMap::vRecordGlobals(Stz* aRegionName,
+                               i8 iRegionSize, i8 iJumboSize,
+                               i8 nSubIngesters, i8 nSubLoaders)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
@@ -184,11 +186,12 @@ void AttachMap::vRecordGlobals(Stz* aRegionName, i8 iRegionSize,
   m_oTime.vSet(&m_oSince);
   m_oTime.vUTC(m_sUTC);
   
-  m_sRegionName = aRegionName;
-  m_iRegionSize = iRegionSize;
-  m_iJumboSize  = iJumboSize;
-  m_nSubLoaders = nSubLoaders;
-  
+  m_sRegionName   = aRegionName;
+  m_iRegionSize   = iRegionSize;
+  m_iJumboSize    = iJumboSize;
+  m_nSubIngesters = nSubIngesters;
+  m_nSubLoaders   = nSubLoaders;
+
   m_pBufferPool = gpBufferPool;
   
   m_iEpoch      = 0;
