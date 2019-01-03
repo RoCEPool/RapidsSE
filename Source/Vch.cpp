@@ -371,7 +371,7 @@ bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for enclosed
-  bool bSawEnclosedLeading = DtmLib::bIsEnclosed(aaSrc,pFormatters);
+  //bool bSawEnclosedLeading = DtmLib::bIsEnclosed(aaSrc,pFormatters);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // varchar field processing
@@ -379,7 +379,7 @@ bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
   i8 iColumnLength = pColumn->iColumnLength();
   if ( ! StrLib::bExtractVarchar2(aaSrc,(char*)aVch,
                                   iColumnLength,
-                                  bSawEnclosedLeading,
+                                  false,
                                   pFormatters->m_cEnclosedBy_Leading,
                                   pFormatters->m_cEnclosedBy_Trailing,
                                   pFormatters->m_cEscapeChar,
@@ -392,10 +392,14 @@ bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
-  bool bSawEnclosedTrailing =
-  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
-  if (! bSawEnclosedTrailing)
-    return false;
+  //bool bSawEnclosedTrailing =
+  //StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  //if (! bSawEnclosedTrailing)
+  //  return false;
+  
+  // skip any blanks
+  while (' ' == **aaSrc)
+    (*aaSrc)++;
   
   // should see a valid field end
   if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
