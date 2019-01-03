@@ -71,6 +71,9 @@ namespace DBobjects
     bool  (*m_fExtract)(char** aaSrc, Stz* aDst,
                         DBobjects::Column* pColumn, Formatters* pFormatters);
     
+    bool  (*m_fExtractDefault)(char** aaSrc, Stz* aDst,
+                               DBobjects::Column* pColumn, Formatters* pFormatters);
+    
     // must be last
     Footer m_xFooter;
     
