@@ -738,7 +738,8 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
 /* test for null token                                                        */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bTestForNullDefault(char** aaSrc, DBobjects::Column* pColumn,
-                          Formatters* pFormatters, bool& bValidNull)
+                                 Formatters* pFormatters, bool& bValidNull,
+                                 bool bSkipTrailingSpaces)
 {
   /*
    * This function scans aaSrc and attempts to identify the text form of a null.
@@ -795,6 +796,9 @@ bool DtmLib::bTestForNullDefault(char** aaSrc, DBobjects::Column* pColumn,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
+  // optionally skip trailing spaces
+  if (bSkipTrailingSpaces)
+    StrLib::vSkipSpaces(aaSrc);
   // check it was "null" only
   if (! bValidFieldEndDefault(*aaSrc,pFormatters)) {
     // no well formed null detected
