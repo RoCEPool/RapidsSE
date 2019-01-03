@@ -21,18 +21,17 @@ PromptNote mPromptNote_memory (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_memory(SePrompt* pPrompt)
 {
+  bool bReset = false;
+  
   TokenVec* pTokenVec = pPrompt->pTknVec();
-
   i8 iNumTokens = pTokenVec->nItems();
-  if (2 != iNumTokens)
-    return false;
+  if (3 == iNumTokens)
+    bReset = pTokenVec->pGet(2)->bSame("reset"_Stz);
+
+  MemLib::vList();
   
-  //if (pTokenVec->pGet(1)->eToken() != TN_INTEGER)
-  //  return false;
-    
-  void* aAddress = reinterpret_cast<void*>(pTokenVec->pGet(1)->iToI8());
-  
-  MemLib::vHexDump(aAddress,C_1KB);
+  //if (bReset)
+  //  MemLib::vReset()
   
   return true;
 }
