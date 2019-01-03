@@ -241,17 +241,17 @@ void AttachMap::vRecordGlobals(Stz* aRegionName,
   ASSERT( ! m_iSchGetTask );
   ASSERT( ! m_iSchGetTaskWait );
   
-  //m_iMemCopyBytes );
-  //m_iMemMoveBytes );
-  //m_iMemScribbleBytes );
-  //m_iMemSetBytes );
-  //m_iMemZeroBytes );
+  //m_iMemCopyTotal );
+  //m_iMemMoveTotal );
+  //m_iMemScribbleTotal );
+  //m_iMemSetTotal );
+  //m_iMemZeroTotal );
 
-  //m_xMemCopy[CN_ENUMS];
-  //m_xMemMove[CN_ENUMS];
+  //m_iaMemCopy[CN_ENUMS];
+  //m_iaMemMove[CN_ENUMS];
   //m_xMemScribbl/e[CN_ENUMS];
-  //m_xMemSet[CN_ENUMS];
-  //m_xMemZero[CN_ENUMS];
+  //m_iaMemSet[CN_ENUMS];
+  //m_iaMemZero[CN_ENUMS];
   
   m_bMarkApiAll = true;
   m_bMarkJobAll = true;

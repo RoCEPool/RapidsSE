@@ -6,6 +6,8 @@
 
 #include "StorageEngine.h"
 
+extern AttachMap* gpAttachMap;
+
 extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
@@ -141,6 +143,7 @@ void File::vClose(void)
     return;
   }
   
+  if (gpAttachMap) gpAttachMap->m_nFileCloses++;
   i8 iResult = fclose(m_aFile);
   
   if ((char)EOF == iResult) {
@@ -190,6 +193,7 @@ void File::vFlush(void)
 
   m_oSysCall.vClear();
   
+  gpAttachMap->m_nFileFlushes++;
   i8 iResult = fflush(m_aFile);
 
   if ((char)EOF == iResult) {
@@ -211,6 +215,7 @@ char File::cGetChar(void)
   if ( ! m_aFile )
     return 0;
 
+  gpAttachMap->m_nFileGetcs++;
   char cChar = getc(m_aFile);
   if ((char)EOF == cChar)
     cChar = 0;
@@ -297,6 +302,7 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   m_sFilePath   = aFilePath;
   m_sOpenMode   = aOpenMode;
 
+  if (gpAttachMap) gpAttachMap->m_nFileOpens++;
   m_aFile = fopen(m_sFilePath.aChar(),m_sOpenMode.aChar());
   
   if ( ! m_aFile ) {
@@ -347,7 +353,9 @@ void File::vPrint(Stz* aFormat, ...)
   va_list args;
 
   va_start(args,aFormat);
+  if (gpAttachMap) gpAttachMap->m_nFilePrints++;
   i8 nPrinted = vfprintf(m_aFile,aFormat->aChar(),args);
+  if (gpAttachMap) gpAttachMap->m_nFilePrintBytes += nPrinted;
   va_end(args);
 
   if (-1 == nPrinted) {
@@ -368,8 +376,10 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
 
   m_oSysCall.vClear();
   
+  gpAttachMap->m_nFileReads++;
   i8 nBytesRead = fread(aDst,1,nBytes,m_aFile);
-  
+  gpAttachMap->m_nFileReadBytes += nBytesRead;
+
   return nBytesRead;
 }
 
@@ -386,6 +396,7 @@ bool File::bReadLine(Stz* aDst)
   
   *y = '\0';
   for (;;) {
+    gpAttachMap->m_nFileGetcs++;
     char c = getc(m_aFile);
     if ('\n' == c || (char)EOF ==c) {
       break;
@@ -430,6 +441,7 @@ void File::vSeek(i8 iOffset)
 
   m_oSysCall.vClear();
   
+  gpAttachMap->m_nFileSeeks++;
   i8 iResult = fseeko(m_aFile,iOffset,SEEK_SET);
   
   if (iResult) {
@@ -450,6 +462,7 @@ void File::vSeekStart(void)
   
   m_oSysCall.vClear();
   
+  gpAttachMap->m_nFileSeeks++;
   i8 iResult = fseeko(m_aFile,0,SEEK_SET);
   
   if (iResult) {
@@ -470,6 +483,7 @@ void File::vSeekEnd(void)
 
   m_oSysCall.vClear();
   
+  gpAttachMap->m_nFileSeeks++;
   i8 iResult = fseeko(m_aFile,0,SEEK_END);
   
   if (iResult) {
@@ -521,6 +535,7 @@ i8 File::iTell(void)
   
   m_oSysCall.vClear();
   
+  gpAttachMap->m_nFileTells++;
   i8 iResult = ftello(m_aFile);
   
   if (-1 == iResult) {
@@ -544,6 +559,7 @@ void File::vUngetChar(char cChar)
   if ( ! m_aFile )
     return;
   
+  gpAttachMap->m_nFileUngetcs++;
   i8 iResult = ungetc(cChar,m_aFile);
   
   if ((char)EOF == iResult)
@@ -589,7 +605,7 @@ void File::vUseStdout(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set trace level                                                            */
+/* write bytes to file                                                        */
 /*----------------------------------------------------------------------------*/
 bool File::bWriteBytes(void* pBuffer, i8 nBytes)
 {
@@ -597,9 +613,11 @@ bool File::bWriteBytes(void* pBuffer, i8 nBytes)
   
   m_oSysCall.vClear();
   
-  i8 iResult = fwrite(pBuffer , 1, nBytes, m_aFile);
-  
-  if (iResult != nBytes) {
+  gpAttachMap->m_nFileWrites++;
+  i8 nBytesWritten = fwrite(pBuffer , 1, nBytes, m_aFile);
+  gpAttachMap->m_nFileWriteBytes += nBytesWritten;
+
+  if (nBytesWritten != nBytes) {
     vWarn("File::vWriteBytes: fwrite(%s) error; errno=%d\n"_Stz,
           m_sFilePath.aChar(),errno);
     m_oSysCall.vError(errno);

@@ -100,18 +100,33 @@ namespace StorageEngine
     i8            m_iSchGetTask;
     i8            m_iSchGetTaskWait;
 
-    i8            m_iMemCopyBytes;
-    i8            m_iMemMoveBytes;
-    i8            m_iMemScribbleBytes;
-    i8            m_iMemSetBytes;
-    i8            m_iMemZeroBytes;
+    i8            m_iMemCopyTotal;
+    i8            m_iMemMoveTotal;
+    i8            m_iMemScribbleTotal;
+    i8            m_iMemSetTotal;
+    i8            m_iMemZeroTotal;
     
-    i8            m_xMemCopy[CN_ENUMS];
-    i8            m_xMemMove[CN_ENUMS];
-    i8            m_xMemScribble[CN_ENUMS];
-    i8            m_xMemSet[CN_ENUMS];
-    i8            m_xMemZero[CN_ENUMS];
-  
+    i8            m_iaMemCopy[CN_ENUMS];
+    i8            m_iaMemMove[CN_ENUMS];
+    i8            m_iaMemScribble[CN_ENUMS];
+    i8            m_iaMemSet[CN_ENUMS];
+    i8            m_iaMemZero[CN_ENUMS];
+
+    i8            m_nFileCloses;
+    i8            m_nFileFlushes;
+    i8            m_nFileGetcs;
+    i8            m_nFileOpens;
+    i8            m_nFilePrints;
+    i8            m_nFileReads;
+    i8            m_nFileWrites;
+    i8            m_nFileSeeks;
+    i8            m_nFileTells;
+    i8            m_nFileUngetcs;
+
+    i8            m_nFileReadBytes;
+    i8            m_nFilePrintBytes;
+    i8            m_nFileWriteBytes;
+
     // must be last
     Footer m_xFooter;
     
