@@ -154,7 +154,7 @@ Column::Column(JobModel::Job_CreateTable* pJob, i8 iColumnNo)
       case DM_IVL: m_fExtract = Ivl::bExtract; m_fExtractDefault = Ivl::bExtract; break;
       case DM_TME: m_fExtract = Tme::bExtract; m_fExtractDefault = Tme::bExtract; break;
       case DM_TSP: m_fExtract = Tsp::bExtract; m_fExtractDefault = Tsp::bExtract; break;
-      case DM_VCH: m_fExtract = Vch::bExtract2; m_fExtractDefault = Vch::bExtract2; break;
+      case DM_VCH: m_fExtract = Vch::bExtract2; m_fExtractDefault = Vch::bExtractDefault2; break;
     default:
       vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
              m_eDatumType);

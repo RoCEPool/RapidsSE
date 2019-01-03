@@ -290,6 +290,15 @@ bool Vch::bExtract2(char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
+bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
+                    Column* pColumn, Formatters* pFormatters)
+{
+  return bExtract2(aaSrc, aDst, pColumn, pFormatters, false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a varchar field from csv substr                                    */
+/*----------------------------------------------------------------------------*/
 bool Vch::bExtract2(char** aaSrc, Stz* aDst,
                     Column* pColumn, Formatters* pFormatters,
                     bool bAllowNonPrintable)
@@ -331,6 +340,60 @@ bool Vch::bExtract2(char** aaSrc, Stz* aDst,
   
   bool bSawEnclosedTrailing =
     StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
+  if (! bSawEnclosedTrailing)
+    return false;
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extract a varchar field from csv substr                                    */
+/*----------------------------------------------------------------------------*/
+bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
+                    Column* pColumn, Formatters* pFormatters,
+                    bool bAllowNonPrintable)
+{
+  Vch* aVch = (Vch*)aDst;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for null
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull,false)) {
+    if ( ! bValidNull )
+      return false;
+    aVch->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for enclosed
+  bool bSawEnclosedLeading = DtmLib::bIsEnclosed(aaSrc,pFormatters);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // varchar field processing
+  
+  i8 iColumnLength = pColumn->iColumnLength();
+  if ( ! StrLib::bExtractVarchar2(aaSrc,(char*)aVch,
+                                  iColumnLength,
+                                  bSawEnclosedLeading,
+                                  pFormatters->m_cEnclosedBy_Leading,
+                                  pFormatters->m_cEnclosedBy_Trailing,
+                                  pFormatters->m_cEscapeChar,
+                                  pFormatters->m_cFieldDelimiter,
+                                  pFormatters->m_cRecordTerminator,
+                                  bAllowNonPrintable
+                                  ) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  bool bSawEnclosedTrailing =
+  StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
   if (! bSawEnclosedTrailing)
     return false;
   
