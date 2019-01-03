@@ -312,6 +312,30 @@ bool File::bOpen(Stz* aFilePath, Stz* aOpenMode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* open file for read                                                         */
+/*----------------------------------------------------------------------------*/
+bool File::bOpenRead(Stz* aFilePath)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  bool bOpened = bOpen(aFilePath,C_OPEN_READ);
+  
+  returned bOpened;
+}
+
+/*----------------------------------------------------------------------------*/
+/* open file for write                                                        */
+/*----------------------------------------------------------------------------*/
+bool File::bOpenWrite(Stz* aFilePath)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  bool bOpened = bOpen(aFilePath,C_OPEN_WRITE);
+  
+  returned bOpened;
+}
+
+/*----------------------------------------------------------------------------*/
 /* formatted print                                                            */
 /*----------------------------------------------------------------------------*/
 void File::vPrint(Stz* aFormat, ...)

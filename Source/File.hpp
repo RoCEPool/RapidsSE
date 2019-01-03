@@ -69,6 +69,8 @@ namespace System
     bool bIsStdin(void);
     bool bIsStdout(void);
     bool bOpen(Stz* aFilePath, Stz* aOpenMode);
+    bool bOpenRead(Stz* aFilePath);
+    bool bOpenWrite(Stz* aFilePath);
     void vPrint(Stz* aFormat,...);
     i8   nReadBytes(void* aDst, i8 nBytes);
     bool bReadLine(Stz* aDst);
