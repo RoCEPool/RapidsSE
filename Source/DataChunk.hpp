@@ -10,7 +10,7 @@ namespace Chunks
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class DataChunk : public Object
   {
-  protected:
+  public:
     i8   m_nDataBytes;      // current number of bytes of actual data
     Stz* m_aLastDataByte;   // last data byte of where data chunk ends
     i8   m_nRemainingBytes; // bytes remaining
@@ -24,7 +24,9 @@ namespace Chunks
     DataChunk(eCN eClass);
     ~DataChunk(void) noexcept(false);
   
+    i8    nCompleteBytes(void);
     void  vCopy(DataChunk* pSource);
+    void  vCopyPartial(DataChunk* pSource, i8 nBytes);
     char* aDataArea(void);
     Stz*  aStz(void);
   };

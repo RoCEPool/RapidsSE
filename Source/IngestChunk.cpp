@@ -41,11 +41,13 @@ void IngestChunk::operator delete(void* pIngestChunkAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IngestChunk::IngestChunk(void)
+IngestChunk::IngestChunk(i8 iChunkNo)
 : DataChunk(CN_INGESTCHUNK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
 
+  m_iChunkNo = iChunkNo;
+  
   //m_oFile
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);

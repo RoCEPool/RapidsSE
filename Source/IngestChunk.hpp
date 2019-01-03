@@ -9,7 +9,8 @@ namespace Chunks
   class IngestChunk : public DataChunk,
                       public ListNode_t<IngestChunk>
   {
-  protected:
+  public:
+    i8 m_iChunkNo;
   
     // must be last
     Footer m_xFooter;
@@ -18,7 +19,7 @@ namespace Chunks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IngestChunk(void);
+    IngestChunk(i8 iChunkNo);
     ~IngestChunk(void) noexcept(false);
   
     Stz*  aStz(void);

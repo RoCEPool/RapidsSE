@@ -90,8 +90,22 @@ void Step::vJob_SubIngesterChunk(MP_Task mpTask)
   
   bool bCallAgain = pJob_SubIngester->bChunk();
   
-  mpTask->m_pDataStack->vPushInt((i8)bCallAgain);
-
+  if (bCallAgain) {
+    mpTask->m_pDataStack->vPushInt((i8)true);
+  }
+  else {
+    if ( 0 == pJob_SubIngester->m_pJob_Ingest->nIngestChunks() &&
+        -1 != pJob_SubIngester->m_pJob_Ingest->m_iLastChunk) {
+      mpTask->m_pDataStack->vPushInt((i8)false);
+    }
+    else {
+      // sleep for 0.010 second
+      mpTask->vSleepUs(C_1K * 10);
+      mpTask->vState(TS_SLEEPING);
+      mpTask->m_pDataStack->vPushInt((i8)true);
+    }
+  }
+  
   EXIT();
 }
 

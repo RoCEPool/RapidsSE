@@ -8,7 +8,7 @@ namespace Chunks
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class RecordExtractor : public FileChunk
   {
-  protected:
+  public:
     Formatters* m_pFormatters; // using these formatters
   
     Stz* m_aNextRecord;        // first byte of next record
@@ -26,12 +26,12 @@ namespace Chunks
     bool  bReadNextChunk(void);
     void  vReadSpecificChunk(i8 iSeek, i8 nBytes);
 
+    void  vCopyDown(void);
   protected:
     bool  bFindRecordEnd(char** aaRecordEnd);
     void  vReset(void);
 
   private:
-    void  vCopyDown(void);
   };
   
   RecordExtractor* _pRecordExtractor(void* aAddr);

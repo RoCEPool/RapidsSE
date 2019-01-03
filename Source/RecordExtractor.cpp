@@ -169,8 +169,12 @@ void RecordExtractor::vCopyDown(void)
     return;
   
   Stz* aStartArea = (Stz*)aDataArea();
+  Stz* aFromChar  = pAdd<Stz*>(aStartArea,m_nDataBytes - m_nRemainingBytes);
   
-  MemLib::vCopy(aStartArea,m_aNextRecord,m_nRemainingBytes,eClass());
+  MemLib::vCopy(aStartArea,
+                aFromChar,
+                m_nRemainingBytes,
+                eClass());
 }
 
 /*----------------------------------------------------------------------------*/

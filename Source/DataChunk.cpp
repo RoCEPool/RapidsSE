@@ -58,12 +58,35 @@ DataChunk::~DataChunk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* compute the number of bytes which constitute complete records              */
+/*----------------------------------------------------------------------------*/
+i8 DataChunk::nCompleteBytes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 nBytes = 0;
+  
+  char* aLastByte = &(aDataArea()[m_nDataBytes - 1]);
+                      
+  const char *aFinalEol = aLastByte;
+  
+  bool bFoundEol = StrLib::bBackward(&aFinalEol,aLastByte,'\n');
+  if (!bFoundEol)
+    bFoundEol = StrLib::bBackward(&aFinalEol,aLastByte,'\r');
+  RASSERT(bFoundEol);
+
+  nBytes = nSub((void*)aFinalEol,(void*)aDataArea()) + 1;
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy source data chunk into this data chunk                                */
 /*----------------------------------------------------------------------------*/
 void DataChunk::vCopy(DataChunk* pSource)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
+
   MemLib::vCopy(m_xWsp.aArea(),
                 pSource->aStz(),
                 pSource->m_nDataBytes,
@@ -71,6 +94,24 @@ void DataChunk::vCopy(DataChunk* pSource)
   
   m_nDataBytes = pSource->m_nDataBytes;
   m_nRemainingBytes = m_nDataBytes;
+  
+  m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy source data chunk into this data chunk                                */
+/*----------------------------------------------------------------------------*/
+void DataChunk::vCopyPartial(DataChunk* pSource, i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  MemLib::vCopy(m_xWsp.aArea() + m_nRemainingBytes,
+                pSource->aStz(),
+                nBytes,
+                eClass());
+  
+  m_nRemainingBytes += nBytes;
+  m_nDataBytes = m_nRemainingBytes;
   
   m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
 }

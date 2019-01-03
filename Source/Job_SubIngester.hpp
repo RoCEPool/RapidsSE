@@ -12,6 +12,7 @@ namespace JobModel
   public:
     Job_Ingest* m_pJob_Ingest;
 
+    RecordIngestor* m_pRecordIngestor;  // chunked stream being ingested
  
     // must be last
     Footer m_xFooter;

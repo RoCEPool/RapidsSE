@@ -112,6 +112,9 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   m_pRecordIngestor  = new RecordIngestor(&gpAttachMap->m_xFormatters);
   
   m_pByteRate = nullptr;
+  
+  m_nChunksSoFar = 0;
+  m_iLastChunk = -1;
 
   _checkInitialised_(CN_JOB_INGEST);
   
@@ -260,8 +263,13 @@ bool Job_Ingest::bBegin(void)
   
   bool bOpened = m_pRecordIngestor->bOpenRead(m_sFileName);
   
+  s256 sPrefix;
+  
+  sPrefix.vSprint("  ingest (%lld subIngesters) : "_Stz,
+                  gpAttachMap->m_nSubIngesters);
+  
   if (m_pByteRate) {
-    m_pByteRate->vSetReporting("  ingest : "_Stz,C_1GB * 10);
+    m_pByteRate->vSetReporting(sPrefix,C_1GB * 10);
     m_pByteRate->vBeginTiming();
   }
 
@@ -275,57 +283,70 @@ bool Job_Ingest::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  Stz* aRecord;
-  i8   nRecordBytes;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read next sequential chunk
-  if (! m_pRecordIngestor->bReadNextChunk())
+  if (! m_pRecordIngestor->bReadNextChunk()) {
+    m_iLastChunk = m_nChunksSoFar;
     return false;
+  }
   
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   // temp test
   
-  IngestChunk* pIngestChunk = new IngestChunk;
+  IngestChunk* pIngestChunk = new IngestChunk(++m_nChunksSoFar);
   
-  pIngestChunk->vCopy(m_pRecordIngestor);
+  i8 nBytes = m_pRecordIngestor->nCompleteBytes();
+  
+  pIngestChunk->vCopyPartial(m_pRecordIngestor,nBytes);
+  
+  while (nIngestChunks() > 10)
+    PosixThread::vSleepMilli(10);
   
   vAppendIngestChunk(pIngestChunk);
   
-  //pIngestChunk = pPopIngestChunk();
-  
-  //delete pIngestChunk;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process the records in the chunk
-  for (;;) {
-    
-    // fetch next record from current chunk
-    bool bHaveRecord = m_pRecordIngestor->bGetRecord(&aRecord,nRecordBytes);
-    if (! bHaveRecord)
-      return true;
-    
-    if (m_pByteRate)
-      m_pByteRate->vAddBytes(nRecordBytes);
+  m_pRecordIngestor->m_nRemainingBytes -= nBytes;
+  m_pRecordIngestor->vCopyDown();
 
-    // process that record into write behind
-    eEC eError = eProcessRecord(m_pSession, m_iJobId, m_pTable,
-                                &gpAttachMap->m_xFormatters,
-                                aRecord, nRecordBytes, DS_INGEST);
-    
-    if (EC_NONE == eError)
-      continue;
-    
-    if (EC_BLANKLINE == eError)
-      continue;
-    
-    if (EC_MAX_ROW_LENGTH == eError)
-      continue;
-    
-    return false;
-  }
+  //vTrace("Job_Ingest: Appended IngestChunk %lld\n"_Stz,m_nChunksSoFar);
   
-  NEVER_REACH
+  if (m_pByteRate)
+    m_pByteRate->vAddBytes(nBytes);
+
+  return true;
+  
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Stz* aRecord;
+//  i8   nRecordBytes;
+//
+//  // process the records in the chunk
+//  for (;;) {
+//
+//    // fetch next record from current chunk
+//    bool bHaveRecord = m_pRecordIngestor->bGetRecord(&aRecord,nRecordBytes);
+//    if (! bHaveRecord)
+//      return true;
+//
+//    if (m_pByteRate)
+//      m_pByteRate->vAddBytes(nRecordBytes);
+//
+//    // process that record into write behind
+//    eEC eError = eProcessRecord(m_pSession, m_iJobId, m_pTable,
+//                                &gpAttachMap->m_xFormatters,
+//                                aRecord, nRecordBytes, DS_INGEST);
+//
+//    if (EC_NONE == eError)
+//      continue;
+//
+//    if (EC_BLANKLINE == eError)
+//      continue;
+//
+//    if (EC_MAX_ROW_LENGTH == eError)
+//      continue;
+//
+//    return false;
+//  }
+//
+//  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/

@@ -42,9 +42,9 @@
   task::this locals| pThisTask |
   job::this  locals| pJob_SubIngester |
 
-  pJob_SubIngester SubIngester_ackParent
-
   pJob_SubIngester SubIngester_process
+
+  pJob_SubIngester SubIngester_ackParent
 
   // null the job in the task and delete ended job
   nullptr pThisTask task.job!
