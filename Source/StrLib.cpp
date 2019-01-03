@@ -501,12 +501,10 @@ bool StrLib::bEscapeConvert(const char cArg,
 /*----------------------------------------------------------------------------*/
 bool StrLib::bEscapeConvertDefault(const char cArg,
                             char cEscapeChar,
-                            char cDelimiter,
-                            char cTerminator)
+                            char cDelimiter)
 {
   if (cEscapeChar == cArg) return true;
   if (cDelimiter == cArg) return true;
-  if (cTerminator == cArg) return true;
   
   if ('b' == cArg) return true;
   if ('f' == cArg) return true;
@@ -1808,7 +1806,6 @@ bool StrLib::bExtractVarcharDefault2(char** aaSrc,
                               char* aVarChar, i8 iMaxLength,
                               char cEscapeChar,
                               char cFieldSeparator,
-                              char cRecordTerminator,
                               bool bAllowNonPrintable)
 {
   i8 iLength = 0;
@@ -1841,10 +1838,7 @@ bool StrLib::bExtractVarcharDefault2(char** aaSrc,
     // test for normal end
     
     // test for field separator (because its not enclosed)
-    if (cFieldSeparator && cSrc == cFieldSeparator)
-      break;
-    // test for record terminator (because its not enclosed)
-    else if (cRecordTerminator && cSrc == cRecordTerminator)
+    if (cSrc == cFieldSeparator)
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1853,7 +1847,7 @@ bool StrLib::bExtractVarcharDefault2(char** aaSrc,
     if (cSrc == cEscapeChar) {
       
       if (StrLib::bEscapeConvertDefault( *((*aaSrc)+1),
-                                 cEscapeChar, cFieldSeparator, cRecordTerminator)) {
+                                 cEscapeChar, cFieldSeparator)) {
         
         // skip the escape character
         (*aaSrc)++;

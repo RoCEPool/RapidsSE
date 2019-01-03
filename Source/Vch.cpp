@@ -362,7 +362,7 @@ bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
   // test for null
   
   bool bValidNull = false;
-  if (DtmLib::bTestForNull(aaSrc,pColumn,pFormatters,bValidNull,false)) {
+  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
     if ( ! bValidNull )
       return false;
     aVch->vSetNull();
@@ -381,7 +381,6 @@ bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
                                   iColumnLength,
                                   pFormatters->m_cEscapeChar,
                                   pFormatters->m_cFieldDelimiter,
-                                  pFormatters->m_cRecordTerminator,
                                   bAllowNonPrintable
                                   ) )
     return false;

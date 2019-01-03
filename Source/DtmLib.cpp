@@ -735,6 +735,89 @@ bool DtmLib::bTestForNull(char** aaSrc, DBobjects::Column* pColumn,
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for null token                                                        */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bTestForNullDefault(char** aaSrc, DBobjects::Column* pColumn,
+                          Formatters* pFormatters, bool& bValidNull)
+{
+  /*
+   * This function scans aaSrc and attempts to identify the text form of a null.
+   * There are three text forms of null: null, \N or '\N'.
+   * If a null (and only a null) is detected and
+   *  a) the column is nullable, then bValidNull is set to true and the
+   *     function returns true; or
+   *  b) the column is not nullable, then bValidNull is set to false and the
+   *     function returns true.
+   * If no form of null is detected then bValidNull is set to false and the
+   * function returns false.
+   * Importantly a valid null is one of the three forms of null -- there can be
+   * no further characters after it. Eg: "nulla" or "null a" are not
+   * correct forms of null.
+   */
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test if there is any field data
+  
+  if ( ! DtmLib::bIsThereFieldData(*aaSrc, pFormatters)) {
+    if ( ! pColumn->bIsNullable() ) {
+      // a null was detected in a non-nullable column
+      bValidNull = false;
+      return true;
+    }
+    // a null was detected in a nullable column
+    bValidNull = true;
+    return true;
+  }
+  
+  //if ( ! DtmLib::bIsThereFieldData(*aaSrc, pFormatters))
+  //  return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for null, \N, '\N' or [\N]
+  
+  char* aStart = *aaSrc;
+  
+  if ( (**aaSrc == 'N' || **aaSrc == 'n') && (0 == StrLib::iCompare(*aaSrc+1, "ULL", 3, C_NO_CASE)) ) {
+    // skip over token null
+    *aaSrc = (*aaSrc) + 4;
+  }
+  else if (**aaSrc     == pFormatters->m_cEscapeChar &&
+           *(*aaSrc+1) == 'N') {
+    // skip over \N
+    *aaSrc = (*aaSrc) + 2;
+  }
+  else {
+    // no null detected
+    bValidNull = false; // no null, so neither valid or invalid
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  // check it was "null" only
+  if (! bValidFieldEnd(*aaSrc,pFormatters)) {
+    // no well formed null detected
+    *(aaSrc) = aStart;
+    bValidNull = false; // no null, so neither valid or invalid
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // check the column is nullable
+  
+  if ( ! pColumn->bIsNullable() ) {
+    // a null was detected in a non-nullable column
+    bValidNull = false;
+    return true;
+  }
+  
+  // a null was detected in a nullable column
+  bValidNull = true;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for valid field end                                                   */
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bValidFieldEnd(char* aSrc, Formatters* pFormatters)

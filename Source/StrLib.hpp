@@ -80,7 +80,7 @@ namespace Base
                                 char cEnclosedBy_Leading, char cEnclosedBy_Trailing,
                                 char cEscapeChar, char cDelimiter, char cTerminator);
     static bool  bEscapeConvertDefault(const char cArg,
-                                char cEscapeChar, char cDelimiter, char cTerminator);
+                                char cEscapeChar, char cDelimiter);
     static char  cEscapeConvert(const char cArg);
     static char  cEscapeInverse(const char cArg);
     static char  cEscapeProcessing(char** aaSrc, char cEscapeChar);
@@ -131,7 +131,6 @@ namespace Base
                                   char* aVarchar, i8 iMaxLength,
                                   char cEscapeChar,
                                   char cFieldSeparator,
-                                  char cRecordTerminator,
                                   bool bAllowNonPrintable);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);

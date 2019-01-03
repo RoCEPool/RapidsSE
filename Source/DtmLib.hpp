@@ -53,6 +53,10 @@ namespace Datums
                              Formatters* pFormatters,
                              bool& bValidNull,
                              bool bSkipTrailingSpaces=true);
+    static bool bTestForNullDefault(char** aaSrc,
+                             DBobjects::Column* pColumn,
+                             Formatters* pFormatters,
+                             bool& bValidNull);
     static bool bValidFieldEnd(char* aSrc, Formatters* pFormatters);
     static bool bValidRecordEnd(char* aSrc, Formatters* pFormatters);
 
