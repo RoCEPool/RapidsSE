@@ -11,8 +11,6 @@ namespace Chunks
   protected:
     Formatters* m_pFormatters; // using these formatters
   
-    i8   m_nRemainingBytes;    // bytes remaining
-
     Stz* m_aNextRecord;        // first byte of next record
     i8   m_nRecordBytes;       // size of record
   

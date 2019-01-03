@@ -36,9 +36,11 @@ DataChunk::DataChunk(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
-  m_nDataBytes = 0;
-  m_aLastDataByte = nullptr;
+  m_nDataBytes      = 0;
+  m_aLastDataByte   = nullptr;
+  m_nRemainingBytes = 0;
   
+
   m_xWsp.vFill(0xEF,eClassNo);
  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);

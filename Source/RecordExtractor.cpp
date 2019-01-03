@@ -30,9 +30,7 @@ RecordExtractor::RecordExtractor(eCN eClassNo, Formatters* pFormatters)
   
   vReset();
   
-  m_nRemainingBytes = 0;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_);
+   _postcondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/

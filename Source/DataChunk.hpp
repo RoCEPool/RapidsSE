@@ -11,9 +11,11 @@ namespace Chunks
   class DataChunk : public Object
   {
   protected:
-    i8   m_nDataBytes;     // current number of bytes of actual data
-    Stz* m_aLastDataByte;  // last data byte of where data chunk ends
+    i8   m_nDataBytes;      // current number of bytes of actual data
+    Stz* m_aLastDataByte;   // last data byte of where data chunk ends
+    i8   m_nRemainingBytes; // bytes remaining
   
+
     WspFxd<C_DATA_CHUNK> m_xWsp; // workspace
   
   public:
