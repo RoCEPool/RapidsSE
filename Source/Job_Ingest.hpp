@@ -14,12 +14,21 @@ namespace JobModel
   public:
     Table*  m_pTable;  // table being ingested
   
+    File    m_oFile;   // input file
+  
     RecordIngestor* m_pRecordIngestor;  // chunked stream being ingested
+  
+  
+    IngestChunk* m_pQuantaChunk;
+    IngestChunk* m_pRemainderChunk;
+  
   
     ByteRate* m_pByteRate;
   
     i8 m_nChunksSoFar;
     i8 m_iLastChunk;
+  
+  i8 m_nWaits;
 
     // must be last
     Footer m_xFooter;

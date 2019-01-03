@@ -111,10 +111,15 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   
   m_pRecordIngestor  = new RecordIngestor(&gpAttachMap->m_xFormatters);
   
+  m_pQuantaChunk  = nullptr;
+  m_pRemainderChunk = nullptr;
+
+  
   m_pByteRate = nullptr;
   
   m_nChunksSoFar = 0;
   m_iLastChunk = -1;
+  m_nWaits = 0;
 
   _checkInitialised_(CN_JOB_INGEST);
   
@@ -261,7 +266,7 @@ bool Job_Ingest::bBegin(void)
   vTrace("Ingesting data into %s from %s\n"_Stz,
          m_sObjectName.aStz(), m_sFileName.aStz());
   
-  bool bOpened = m_pRecordIngestor->bOpenRead(m_sFileName);
+  bool bOpened = m_oFile.bOpen(m_sFileName,C_OPEN_READ);
   
   s256 sPrefix;
   
@@ -275,6 +280,28 @@ bool Job_Ingest::bBegin(void)
 
   return bOpened;
 }
+/*----------------------------------------------------------------------------*/
+//bool Job_Ingest::bBegin(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+//
+//  vTrace("Ingesting data into %s from %s\n"_Stz,
+//         m_sObjectName.aStz(), m_sFileName.aStz());
+//
+//  bool bOpened = m_pRecordIngestor->bOpenRead(m_sFileName);
+//
+//  s256 sPrefix;
+//
+//  sPrefix.vSprint("  ingest (%lld subIngesters) : "_Stz,
+//                  gpAttachMap->m_nSubIngesters);
+//
+//  if (m_pByteRate) {
+//    m_pByteRate->vSetReporting(sPrefix,C_1GB * 10);
+//    m_pByteRate->vBeginTiming();
+//  }
+//
+//  return bOpened;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* ingest data for table (return true if function is to be called again)      */
@@ -283,71 +310,117 @@ bool Job_Ingest::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
+  if (! m_pQuantaChunk)
+    m_pQuantaChunk  = new IngestChunk(0);
+  
+  if (! m_pRemainderChunk)
+    m_pRemainderChunk = new IngestChunk(0);
+
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // read next sequential chunk
-  if (! m_pRecordIngestor->bReadNextChunk()) {
+  // read next chunk, adjusting for any carry over from last chunk
+  
+  i8 nCarryOverBytes = m_pQuantaChunk->m_nDataBytes;
+  
+  void* aReadDst = pAdd<void*>(m_pQuantaChunk->aDataArea(),nCarryOverBytes);
+  
+  i8 nBytesToRead = C_1M - nCarryOverBytes;
+  
+  i8 nBytesRead = m_oFile.iReadBytes(aReadDst,nBytesToRead);
+  
+  if  (! nBytesRead) {
     m_iLastChunk = m_nChunksSoFar;
     return false;
   }
   
-  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  // temp test
+  m_pQuantaChunk->m_nDataBytes = nCarryOverBytes + nBytesRead;
   
-  IngestChunk* pIngestChunk = new IngestChunk(++m_nChunksSoFar);
+  m_pQuantaChunk->m_nRemainingBytes = m_pQuantaChunk->m_nDataBytes;
   
-  i8 nBytes = m_pRecordIngestor->nCompleteBytes();
   
-  pIngestChunk->vCopyPartial(m_pRecordIngestor,nBytes);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // identify the set of whole records and move remainder into next chunk
   
-  while (nIngestChunks() > 10)
-    PosixThread::vSleepMilli(10);
-  
-  vAppendIngestChunk(pIngestChunk);
-  
-  m_pRecordIngestor->m_nRemainingBytes -= nBytes;
-  m_pRecordIngestor->vCopyDown();
+  i8 nQuantumBytes = m_pQuantaChunk->nCompleteBytes();
 
-  //vTrace("Job_Ingest: Appended IngestChunk %lld\n"_Stz,m_nChunksSoFar);
+  i8 nRemainingBytes = m_pQuantaChunk->m_nDataBytes - nQuantumBytes;
+
+  void* aCopyFrom = pAdd<void*>(m_pQuantaChunk->aDataArea(),nQuantumBytes);
+  void* aCopyInto = m_pRemainderChunk->aDataArea();
   
+  //MemLib::vHexDump((char*)aCopyFrom-16,nRemainingBytes+16);
+  
+  MemLib::vCopy(aCopyInto,aCopyFrom,nRemainingBytes,CN_JOB_INGEST);
+  
+  m_pQuantaChunk->m_nDataBytes = nQuantumBytes;
+  m_pQuantaChunk->m_nRemainingBytes = m_pQuantaChunk->m_nDataBytes;
+  
+  m_pRemainderChunk->m_nDataBytes = nRemainingBytes;
+  m_pRemainderChunk->m_nRemainingBytes = m_pRemainderChunk->m_nDataBytes;
+
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // queue the read quantum for processing by a sub-ingester
+  
+  if (nIngestChunks() > 32) {
+    m_nWaits++;
+    while (nIngestChunks() > 32)
+      PosixThread::vSleepMilli(1);
+  }
+  
+  m_pQuantaChunk->m_iChunkNo = ++m_nChunksSoFar;
+  
+  vAppendIngestChunk(m_pQuantaChunk);
+  m_pQuantaChunk = nullptr;
+
   if (m_pByteRate)
-    m_pByteRate->vAddBytes(nBytes);
+    m_pByteRate->vAddBytes(nBytesRead);
 
-  return true;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set quanta for next read
+  
+  m_pQuantaChunk = m_pRemainderChunk;
+  m_pRemainderChunk = nullptr;
+  
+  return true;
+}
+/*----------------------------------------------------------------------------*/
+//bool Job_Ingest::bChunk(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+//
 //  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  Stz* aRecord;
-//  i8   nRecordBytes;
-//
-//  // process the records in the chunk
-//  for (;;) {
-//
-//    // fetch next record from current chunk
-//    bool bHaveRecord = m_pRecordIngestor->bGetRecord(&aRecord,nRecordBytes);
-//    if (! bHaveRecord)
-//      return true;
-//
-//    if (m_pByteRate)
-//      m_pByteRate->vAddBytes(nRecordBytes);
-//
-//    // process that record into write behind
-//    eEC eError = eProcessRecord(m_pSession, m_iJobId, m_pTable,
-//                                &gpAttachMap->m_xFormatters,
-//                                aRecord, nRecordBytes, DS_INGEST);
-//
-//    if (EC_NONE == eError)
-//      continue;
-//
-//    if (EC_BLANKLINE == eError)
-//      continue;
-//
-//    if (EC_MAX_ROW_LENGTH == eError)
-//      continue;
-//
+//  // read next sequential chunk
+//  if (! m_pRecordIngestor->bReadNextChunk()) {
+//    m_iLastChunk = m_nChunksSoFar;
 //    return false;
 //  }
 //
-//  NEVER_REACH
-}
+//  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+//  // temp test
+//
+//  IngestChunk* pIngestChunk = new IngestChunk(++m_nChunksSoFar);
+//
+//  i8 nBytes = m_pRecordIngestor->nCompleteBytes();
+//
+//  pIngestChunk->vCopyPartial(m_pRecordIngestor,nBytes);
+//
+//  while (nIngestChunks() > 10)
+//  PosixThread::vSleepMilli(10);
+//
+//  vAppendIngestChunk(pIngestChunk);
+//
+//  m_pRecordIngestor->m_nRemainingBytes -= nBytes;
+//  m_pRecordIngestor->vCopyDown();
+//
+//  //vTrace("Job_Ingest: Appended IngestChunk %lld\n"_Stz,m_nChunksSoFar);
+//
+//  if (m_pByteRate)
+//  m_pByteRate->vAddBytes(nBytes);
+//
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* end ingesting                                                              */
@@ -363,8 +436,24 @@ void Job_Ingest::vEnd(void)
     m_pByteRate->vEndTiming();
   
   // close the file being loaded
-  m_pRecordIngestor->vCloseFile();
+  m_oFile.vClose();
+  
+  vTrace("Job_Ingest : %lld waits\n"_Stz,m_nWaits);
 }
+/*----------------------------------------------------------------------------*/
+//void Job_Ingest::vEnd(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
+//
+//  // handle any dangling buffers
+//  vHandleDanglingBuffers(m_pSession, m_pTable, DS_INGEST, -1);
+//
+//  if (m_pByteRate)
+//  m_pByteRate->vEndTiming();
+//
+//  // close the file being loaded
+//  m_pRecordIngestor->vCloseFile();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get table                                                                  */
