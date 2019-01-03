@@ -250,6 +250,51 @@ bool Ivl::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract an interval field from csv substr                                  */
+/*----------------------------------------------------------------------------*/
+bool Ivl::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+{
+  Ivl* aIvl = (Ivl*)aDst;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aIvl->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // interval field processing
+  
+  i8 iSecond, iMilli;
+  
+  if ( ! StrLib::bExtractInterval(aaSrc, iSecond, iMilli) )
+    return false;
+  
+  aIvl->x.m_uSecond = iSecond;
+  aIvl->x.m_uMilli  = iMilli;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint ivl datum                                                           */
 /*----------------------------------------------------------------------------*/
 void Ivl::vSprint(Stz* aDst, Stz* aSrc)

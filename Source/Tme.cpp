@@ -265,6 +265,56 @@ bool Tme::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract a time field from csv substr                         hh:mi:ss.fffZ */
+/*----------------------------------------------------------------------------*/
+bool Tme::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Tme* aTme = (Tme*)aDst;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aTme->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // time field processing
+  
+  i8 iHour, iMinute, iSecond, iMicro;
+  
+  if ( ! StrLib::bExtractTime(aaSrc, iHour, iMinute, iSecond, iMicro) )
+    return false;
+  
+  aTme->x.m_uHour   = iHour;
+  aTme->x.m_uMinute = iMinute;
+  aTme->x.m_uSecond = iSecond;
+  aTme->x.m_uMicro  = iMicro;
+  aTme->x.m_uSpare  = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint tme datum                                                           */
 /*----------------------------------------------------------------------------*/
 void Tme::vSprint(Stz* aDst, Stz* aSrc)

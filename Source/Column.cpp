@@ -151,8 +151,8 @@ Column::Column(JobModel::Job_CreateTable* pJob, i8 iColumnNo)
       case DM_DTE: m_fExtract = Int::bExtract; m_fExtractDefault = Int::bExtractDefault; break;
       case DM_FLT: m_fExtract = Flt::bExtract; m_fExtractDefault = Flt::bExtractDefault; break;
       case DM_INT: m_fExtract = Int::bExtract; m_fExtractDefault = Int::bExtractDefault; break;
-      case DM_IVL: m_fExtract = Ivl::bExtract; m_fExtractDefault = Ivl::bExtract; break;
-      case DM_TME: m_fExtract = Tme::bExtract; m_fExtractDefault = Tme::bExtract; break;
+      case DM_IVL: m_fExtract = Ivl::bExtract; m_fExtractDefault = Ivl::bExtractDefault; break;
+      case DM_TME: m_fExtract = Tme::bExtract; m_fExtractDefault = Tme::bExtractDefault; break;
       case DM_TSP: m_fExtract = Tsp::bExtract; m_fExtractDefault = Tsp::bExtractDefault; break;
       case DM_VCH: m_fExtract = Vch::bExtract2; m_fExtractDefault = Vch::bExtractDefault2; break;
     default:

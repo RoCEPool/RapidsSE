@@ -26,8 +26,8 @@ namespace Base
   /* 3 */ "DD"_Stz
   };
   
-  static u8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
-  static u8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
+  static i8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
+  static i8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
   
   static const int C_NO_CASE = 0;
   static const int C_CASE    = 1;
