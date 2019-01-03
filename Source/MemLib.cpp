@@ -234,6 +234,15 @@ void MemLib::vList(void)
       vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
     }
   }
+  
+  i8 iGrandTotal = gpAttachMap->m_iMemCopyBytes
+                 + gpAttachMap->m_iMemMoveBytes
+                 + gpAttachMap->m_iMemScribbleBytes
+                 + gpAttachMap->m_iMemSetBytes
+                 + gpAttachMap->m_iMemZeroBytes
+                 ;
+  Magnitudes::vByteMag(iGrandTotal, sByteMag);
+  vTrace("Grand Total %s\n"_Stz,sByteMag.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -258,6 +267,26 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
   if (gpAttachMap) {
     gpAttachMap->m_iMemMoveBytes += nBytes;
     gpAttachMap->m_xMemMove[eClassNo] += nBytes;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset memory statistics                                                    */
+/*----------------------------------------------------------------------------*/
+void MemLib::vReset(void)
+{
+  gpAttachMap->m_iMemCopyBytes = 0;
+  gpAttachMap->m_iMemMoveBytes = 0;
+  gpAttachMap->m_iMemScribbleBytes = 0;
+  gpAttachMap->m_iMemSetBytes  = 0;
+  gpAttachMap->m_iMemZeroBytes = 0;
+  
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    gpAttachMap->m_xMemCopy[i_Class] = 0;
+    gpAttachMap->m_xMemMove[i_Class] = 0;
+    gpAttachMap->m_xMemScribble[i_Class] = 0;
+    gpAttachMap->m_xMemSet[i_Class] = 0;
+    gpAttachMap->m_xMemZero[i_Class] = 0;
   }
 }
 

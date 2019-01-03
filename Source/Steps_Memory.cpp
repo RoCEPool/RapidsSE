@@ -46,20 +46,8 @@ void Step::vMemoryReset(MP_Task mpTask)
 {
   ENTRY("vMemoryReset"_Stz);
   
-  gpAttachMap->m_iMemCopyBytes = 0;
-  gpAttachMap->m_iMemMoveBytes = 0;
-  gpAttachMap->m_iMemScribbleBytes = 0;
-  gpAttachMap->m_iMemSetBytes  = 0;
-  gpAttachMap->m_iMemZeroBytes = 0;
-  
-  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    gpAttachMap->m_xMemCopy[i_Class] = 0;
-    gpAttachMap->m_xMemMove[i_Class] = 0;
-    gpAttachMap->m_xMemScribble[i_Class] = 0;
-    gpAttachMap->m_xMemSet[i_Class] = 0;
-    gpAttachMap->m_xMemZero[i_Class] = 0;
-  }
-  
+  MemLib::vReset();
+    
   EXIT();
 }
 

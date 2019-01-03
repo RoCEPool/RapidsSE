@@ -42,6 +42,7 @@ namespace Base
     static void  vList(void);
     static void* aMallocBlock(i8 nBytes);
     static void  vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
+    static void  vReset(void);
     static void  vScribble(void* aAddress, i8 nBytes, eCN eClassNo);
     static void  vSet(void* pDst, char bByte, i8 iTimes, eCN eClassNo);
     static void  vWordDump(void *aAddress, i8 iSize, i8 iHighlightWord=-1);

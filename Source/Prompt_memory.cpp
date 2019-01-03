@@ -30,8 +30,8 @@ bool Prompt::bPrompt_memory(SePrompt* pPrompt)
 
   MemLib::vList();
   
-  //if (bReset)
-  //  MemLib::vReset()
+  if (bReset)
+    MemLib::vReset();
   
   return true;
 }
