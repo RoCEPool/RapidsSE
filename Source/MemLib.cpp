@@ -104,7 +104,7 @@ i8 MemLib::iGetTotalMemory(void)
 /*----------------------------------------------------------------------------*/
 /* dump given bytes of memory at given address                                */
 /*----------------------------------------------------------------------------*/
-void MemLib::vHexDump(void *aAddress, i8 iBytes)
+void MemLib::vHexDump(void *aAddress, i8 nBytes)
 {
   
   i8 iOffset = 0;
@@ -112,13 +112,17 @@ void MemLib::vHexDump(void *aAddress, i8 iBytes)
   
   // dump a header
   vTrace("\n%18s %8s %49s %16s\n"_Stz,
-         "MemLib address"_Stz, "Offset"_Stz, "Hex dump"_Stz, "Context"_Stz);
+         "MemLib address"_Stz,
+         "Offset"_Stz,
+         "(0a is \\n ; 0d is \\r)                    Hex dump"_Stz,
+         "Context"_Stz);
+  
   vTrace("%18s %8s %49s %16s\n"_Stz,
          "------------------"_Stz, "--------"_Stz,
          "-------------------------------------------------"_Stz, "----------------"_Stz);
   
   // dump the memory
-  for (i8 i = 0; i < iBytes; i++) {
+  for (i8 i = 0; i < nBytes; i++) {
     
     // beginning of line, dump the address
     if (iByte == 0) {
