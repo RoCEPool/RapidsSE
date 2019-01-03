@@ -706,9 +706,6 @@ bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
   
   u8 uSubField;
   
-  u8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
-  u8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
-  
   iYear = iMonth = iDay = 0;
   
   // extract year
@@ -2691,9 +2688,6 @@ char* StrLib::zTerminator(char* s)
 /*----------------------------------------------------------------------------*/
 bool StrLib::bValidateMonth(i8 iDay, i8 iMonth, i8 iYear)
 {
-  i8 iDaysPerMonth[12]     = { 31,28,31,30,31,30,31,31,30,31,30,31};
-  i8 iDaysPerMonthLeap[12] = { 31,29,31,30,31,30,31,31,30,31,30,31};
-  
   // assume a leap year
   bool bLeapYear = true;
   if (iYear % 4 == 0) {
