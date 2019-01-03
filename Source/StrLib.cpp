@@ -1667,22 +1667,26 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
   
   bool bSawTrailingEnclosed = false;
   
-  while (**aaSrc) {
+  char cSrc = **aaSrc;
+  
+  while (cSrc) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // special case of double enclosedBy
     
     if (cEnclosedBy_Trailing == cEnclosedBy_Leading) {
-      if (**aaSrc == cEnclosedBy_Leading && *(*aaSrc+1) == cEnclosedBy_Leading) {
+      if (cSrc == cEnclosedBy_Leading && *(*aaSrc+1) == cEnclosedBy_Leading) {
         
         // skip the first enclosed character
         (*aaSrc)++;
        
         // append one instance of the enclosedBy character
         if (iLength++ < iMaxLength)
-          *aDst++ = *(*aaSrc)++;
-        else
-          (*aaSrc)++;
+          *aDst++ = cSrc;
+      
+        (*aaSrc)++;
+
+        cSrc = **aaSrc;
         
         continue;
       }
@@ -1705,7 +1709,7 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
     // space, form-feed ('\f'), newline ('\n'), carriage return ('\r'), horizontal tab ('\t'),
     // and vertical tab ('\v').
       
-    if (! bAllowNonPrintable && isspace(**aaSrc) && (**aaSrc != ' ') )
+    if (! bAllowNonPrintable && isspace(cSrc) && (cSrc != ' ') )
         break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1713,23 +1717,23 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
     
     if (bSawLeadingEnclosed) {
       // we saw a leading enclodedBy so test for trailing enclosedBy
-      if (**aaSrc == cEnclosedBy_Trailing) {
+      if (cSrc == cEnclosedBy_Trailing) {
         bSawTrailingEnclosed = true;
         break;
       }
       //falls thru if not trailing enclosedBy
     }
     // test for field separator (because its not enclosed)
-    else if (cFieldSeparator && **aaSrc == cFieldSeparator)
+    else if (cFieldSeparator && cSrc == cFieldSeparator)
       break;
     // test for record terminator (because its not enclosed)
-    else if (cRecordTerminator && **aaSrc == cRecordTerminator)
+    else if (cRecordTerminator && cSrc == cRecordTerminator)
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for the escape character
     
-    if (**aaSrc == cEscapeChar) {
+    if (cSrc == cEscapeChar) {
       
       if (StrLib::bEscapeConvert( *((*aaSrc)+1),
                                  cEnclosedBy_Leading, cEnclosedBy_Trailing,
@@ -1744,10 +1748,12 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
         else
           (*aaSrc)++;
         
+        cSrc = **aaSrc;
         continue;
       }
       else {
         (*aaSrc)++;
+        cSrc = **aaSrc;
       }
     }
     
@@ -1756,9 +1762,10 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
     
     // append the normal character
     if (iLength++ < iMaxLength)
-      *aDst++ = *(*aaSrc)++;
-    else
-      (*aaSrc)++;
+      *aDst++ = cSrc;
+    
+    (*aaSrc)++;
+    cSrc = **aaSrc;
   }
   
   // terminate
