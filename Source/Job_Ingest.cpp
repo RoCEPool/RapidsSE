@@ -283,6 +283,19 @@ bool Job_Ingest::bChunk(void)
   if (! m_pRecordIngestor->bReadNextChunk())
     return false;
   
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  // temp test
+  
+  IngestChunk* pIngestChunk = new IngestChunk;
+  
+  pIngestChunk->vCopy(m_pRecordIngestor);
+  
+  vAppendIngestChunk(pIngestChunk);
+  
+  //pIngestChunk = pPopIngestChunk();
+  
+  //delete pIngestChunk;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process the records in the chunk
   for (;;) {

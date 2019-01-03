@@ -40,7 +40,6 @@ DataChunk::DataChunk(eCN eClassNo)
   m_aLastDataByte   = nullptr;
   m_nRemainingBytes = 0;
   
-
   m_xWsp.vFill(0xEF,eClassNo);
  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
@@ -71,6 +70,7 @@ void DataChunk::vCopy(DataChunk* pSource)
                 eClass());
   
   m_nDataBytes = pSource->m_nDataBytes;
+  m_nRemainingBytes = m_nDataBytes;
   
   m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
 }
