@@ -79,6 +79,8 @@ namespace Base
     static bool  bEscapeConvert(const char cArg,
                                 char cEnclosedBy_Leading, char cEnclosedBy_Trailing,
                                 char cEscapeChar, char cDelimiter, char cTerminator);
+    static bool  bEscapeConvertDefault(const char cArg,
+                                char cEscapeChar, char cDelimiter, char cTerminator);
     static char  cEscapeConvert(const char cArg);
     static char  cEscapeInverse(const char cArg);
     static char  cEscapeProcessing(char** aaSrc, char cEscapeChar);
@@ -121,6 +123,12 @@ namespace Base
                                   bool bIsEnclosed,
                                   char cEnclosedBy_Leading,
                                   char cEnclosedBy_Trailing,
+                                  char cEscapeChar,
+                                  char cFieldSeparator,
+                                  char cRecordTerminator,
+                                  bool bAllowNonPrintable);
+    static bool  bExtractVarcharDefault2(char** ps,
+                                  char* aVarchar, i8 iMaxLength,
                                   char cEscapeChar,
                                   char cFieldSeparator,
                                   char cRecordTerminator,

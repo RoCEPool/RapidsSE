@@ -585,9 +585,9 @@ bool Column::bExtract(char** aaSrc, Stz* aDst, Formatters* pFormatters)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   if (pFormatters->m_bDefault)
-    return m_fExtract(aaSrc, aDst, this, pFormatters);
-  else
     return m_fExtractDefault(aaSrc, aDst, this, pFormatters);
+  else
+    return m_fExtract(aaSrc, aDst, this, pFormatters);
 }
 
 /*----------------------------------------------------------------------------*/

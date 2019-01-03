@@ -497,6 +497,27 @@ bool StrLib::bEscapeConvert(const char cArg,
 }
 
 /*----------------------------------------------------------------------------*/
+/* bEscapeConvert: test if cArg is an escape character                        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bEscapeConvertDefault(const char cArg,
+                            char cEscapeChar,
+                            char cDelimiter,
+                            char cTerminator)
+{
+  if (cEscapeChar == cArg) return true;
+  if (cDelimiter == cArg) return true;
+  if (cTerminator == cArg) return true;
+  
+  if ('b' == cArg) return true;
+  if ('f' == cArg) return true;
+  if ('n' == cArg) return true;
+  if ('r' == cArg) return true;
+  if ('t' == cArg) return true;
+  if ('Z' == cArg) return true;
+  
+  return false;
+}
+/*----------------------------------------------------------------------------*/
 /* cEscapeConvert: convert an escaped character to actual special character   */
 /*----------------------------------------------------------------------------*/
 char StrLib::cEscapeConvert(const char cArg)
@@ -1775,6 +1796,96 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
   // see the trailing enclosedBy
   if (bSawLeadingEnclosed)
     return bSawTrailingEnclosed;
+  
+  // its not an enclosed varchar so we consider it to be valid
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bExtractVarchar: extract a varchar from substr                             */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bExtractVarcharDefault2(char** aaSrc,
+                              char* aVarChar, i8 iMaxLength,
+                              char cEscapeChar,
+                              char cFieldSeparator,
+                              char cRecordTerminator,
+                              bool bAllowNonPrintable)
+{
+  i8 iLength = 0;
+  char *aDst = (char*)aVarChar;
+  
+  char cSrc = **aaSrc;
+  
+  while (cSrc) {
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for a non-printable character (e.g. \n or \r)
+    
+    // Alka: Changed check from ! isprint (not-printable) to isspace and then allowing space
+    // this ways we allow for UTF-8 characters to pass this test
+    // I think there is more to supporting UTF-8 but this will let us allow for UTF-8 characters to
+    // be loaded from files.
+    
+    //if (! bAllowNonPrintable && ! isprint(**aaSrc) )
+    
+    // isprint: checks for any printable character including space.
+    
+    // isspace : checks for white-space characters. In the C and POSIX locales, these are:
+    // space, form-feed ('\f'), newline ('\n'), carriage return ('\r'), horizontal tab ('\t'),
+    // and vertical tab ('\v').
+    
+    if (! bAllowNonPrintable && isspace(cSrc) && (cSrc != ' ') )
+      break;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for normal end
+    
+    // test for field separator (because its not enclosed)
+    if (cFieldSeparator && cSrc == cFieldSeparator)
+      break;
+    // test for record terminator (because its not enclosed)
+    else if (cRecordTerminator && cSrc == cRecordTerminator)
+      break;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for the escape character
+    
+    if (cSrc == cEscapeChar) {
+      
+      if (StrLib::bEscapeConvertDefault( *((*aaSrc)+1),
+                                 cEscapeChar, cFieldSeparator, cRecordTerminator)) {
+        
+        // skip the escape character
+        (*aaSrc)++;
+        
+        // append the escaped character
+        if (iLength++ < iMaxLength)
+          *aDst++ = StrLib::cEscapeConvert(*(*aaSrc)++);
+        else
+          (*aaSrc)++;
+        
+        cSrc = **aaSrc;
+        continue;
+      }
+      else {
+        (*aaSrc)++;
+        cSrc = **aaSrc;
+      }
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // normal character
+    
+    // append the normal character
+    if (iLength++ < iMaxLength)
+      *aDst++ = cSrc;
+    
+    (*aaSrc)++;
+    cSrc = **aaSrc;
+  }
+  
+  // terminate
+  *aDst++ = '\0';
   
   // its not an enclosed varchar so we consider it to be valid
   return true;
