@@ -184,6 +184,59 @@ void MemLib::vHexDump(void *aAddress, i8 iBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* trace memory statistics                                                    */
+/*----------------------------------------------------------------------------*/
+void MemLib::vList(void)
+{
+  s32 sByteMag;
+  
+  Magnitudes::vByteMag(gpAttachMap->m_iMemCopyBytes, sByteMag);
+  vTrace("MemLib::vCopy() total %s\n"_Stz,sByteMag.aStz());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gpAttachMap->m_xMemCopy[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_xMemCopy[i_Class], sByteMag);
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+    }
+  }
+  
+  Magnitudes::vByteMag(gpAttachMap->m_iMemMoveBytes, sByteMag);
+  vTrace("MemLib::vMove() total %s\n"_Stz,sByteMag.aStz());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gpAttachMap->m_xMemMove[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_xMemMove[i_Class], sByteMag);
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+    }
+  }
+  
+  Magnitudes::vByteMag(gpAttachMap->m_iMemScribbleBytes, sByteMag);
+  vTrace("MemLib::vScribble() total %s\n"_Stz,sByteMag.aStz());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gpAttachMap->m_xMemScribble[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_xMemScribble[i_Class], sByteMag);
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+    }
+  }
+  
+  Magnitudes::vByteMag(gpAttachMap->m_iMemSetBytes, sByteMag);
+  vTrace("MemLib::vSet() total %s\n"_Stz,sByteMag.aStz());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gpAttachMap->m_xMemSet[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_xMemSet[i_Class], sByteMag);
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+    }
+  }
+  
+  Magnitudes::vByteMag(gpAttachMap->m_iMemZeroBytes, sByteMag);
+  vTrace("MemLib::vZero() total %s\n"_Stz,sByteMag.aStz());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gpAttachMap->m_xMemZero[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_xMemZero[i_Class], sByteMag);
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate a block of memory                                                 */
 /*----------------------------------------------------------------------------*/
 void* MemLib::aMallocBlock(i8 nBytes)
