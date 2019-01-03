@@ -300,6 +300,64 @@ bool Tsp::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract a timestamp field from csv substr         yyyy-mo-ddThh:mi:ss.fffZ */
+/*----------------------------------------------------------------------------*/
+bool Tsp::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Tsp* aTsp = (Tsp*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aTsp->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // timestamp field processing
+  
+  i8 iYear, iMonth, iDay;
+  i8 iHour, iMinute, iSecond, iMicro;
+  
+  if ( ! StrLib::bExtractTimestamp2(aaSrc, iYear, iMonth, iDay,
+                                    iHour, iMinute, iSecond, iMicro,
+                                    pFormatters->m_eDateComponent,
+                                    pFormatters->m_cDateSeparator) )
+    return false;
+  
+  aTsp->x.m_uYear   = iYear;
+  aTsp->x.m_uMonth  = iMonth;
+  aTsp->x.m_uDay    = iDay;
+  aTsp->x.m_uHour   = iHour;
+  aTsp->x.m_uMinute = iMinute;
+  aTsp->x.m_uSecond = iSecond;
+  aTsp->x.m_uMicro  = iMicro;
+  aTsp->x.m_uSpare  = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint tsp datum                                                           */
 /*----------------------------------------------------------------------------*/
 void Tsp::vSprint(Stz* aDst, Stz* aSrc)
