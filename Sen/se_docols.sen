@@ -37,6 +37,9 @@
 : stepTimingStart StepTiming::start ;
 : stepTimingWrite StepTiming::write ;
 
+: memoryList  memory::list ;
+: memoryReset memory::reset ;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
