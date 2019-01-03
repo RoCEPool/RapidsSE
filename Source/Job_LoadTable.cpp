@@ -237,6 +237,8 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
       m_xFormatters.m_cRecordTerminator = *pTokenVec->pGet(++i_Token)->sText().aChar();
       if (m_xFormatters.m_cRecordTerminator == '0')
         m_xFormatters.m_cRecordTerminator = '\0';
+      else
+        m_xFormatters.m_bDefault = false;
     }
     
     // - - - - - - - - - - - - - - - - - - - - -
@@ -254,6 +256,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
           m_xFormatters.m_eRecordEnd = RE_NL;
         }
         else if (cRecordEnds == '\r') {
+          m_xFormatters.m_bDefault = false;
           m_xFormatters.m_eRecordEnd = RE_CR;
         }
       }
@@ -261,6 +264,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
       else if (pTokenVec->pGet(i_Token)->iLength() == 2) {
         
         if (pTokenVec->pGet(i_Token)->bSame("\r\n"_Stz)) {
+          m_xFormatters.m_bDefault = false;
           m_xFormatters.m_eRecordEnd = RE_CRNL;
         }
         else {
@@ -284,7 +288,8 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
       else
         m_xFormatters.m_cFieldDelimiter = *sFieldDelimiter.aChar();
       if (m_xFormatters.m_cFieldDelimiter == '0')
-      m_xFormatters.m_cFieldDelimiter = '\0';
+        m_xFormatters.m_cFieldDelimiter = '\0';
+      m_xFormatters.m_bDefault = false;
     }
     
     // - - - - - - - - - - - - - - - - - - - - -
@@ -294,6 +299,8 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
       *pTokenVec->pGet(++i_Token)->sText().aChar();
       if (m_xFormatters.m_cEnclosedBy_Leading == '0')
         m_xFormatters.m_cEnclosedBy_Leading = '\0';
+      
+      m_xFormatters.m_bDefault = false;
       
       // default set trailing same as leading
       m_xFormatters.m_cEnclosedBy_Trailing =
@@ -314,6 +321,8 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
       *pTokenVec->pGet(++i_Token)->sText().aChar();
       if (m_xFormatters.m_cEnclosedBy_Trailing == '0')
         m_xFormatters.m_cEnclosedBy_Trailing = '\0';
+      
+      m_xFormatters.m_bDefault = false;
     }
     //
     //    DATE_FORMAT='YYYY.MM.DD’
@@ -328,6 +337,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
         vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         return false;
       }
+      m_xFormatters.m_bDefault = false;
     }
     
     // - - - - - - - - - - - - - - - - - - - - -
@@ -336,6 +346,8 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
       m_xFormatters.m_cEscapeChar = *pTokenVec->pGet(++i_Token)->sText().aChar();
       if (m_xFormatters.m_cEscapeChar == '0')
         m_xFormatters.m_cEscapeChar = '\0';
+      
+      m_xFormatters.m_bDefault = false;
     }
     else {
       return false;

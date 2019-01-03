@@ -110,6 +110,7 @@ Job_InsertRows::Job_InsertRows(Interface::Session* pSession)
   m_pTable = nullptr;
   
   // set the enclosined_by to be a '
+  m_xFormatters.m_bDefault = false;
   m_xFormatters.m_cEnclosedBy_Leading = '\'';
   m_xFormatters.m_cEnclosedBy_Trailing = '\'';
   
