@@ -398,7 +398,7 @@ bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
     (*aaSrc)++;
   
   // should see a valid field end
-  if ( ! DtmLib::bValidFieldEnd(*aaSrc,pFormatters) )
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
     return false;
   
   return true;
