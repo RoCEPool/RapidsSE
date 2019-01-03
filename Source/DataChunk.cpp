@@ -38,7 +38,7 @@ DataChunk::DataChunk(eCN eClassNo)
 
   m_nDataBytes      = 0;
   m_aLastDataByte   = nullptr;
-  m_nRemainingBytes = 0;
+  m_nUnprocessedBytes = 0;
   
   m_xWsp.vFill(0xEF,eClassNo);
  
@@ -93,7 +93,7 @@ void DataChunk::vCopy(DataChunk* pSource)
                 eClass());
   
   m_nDataBytes = pSource->m_nDataBytes;
-  m_nRemainingBytes = m_nDataBytes;
+  m_nUnprocessedBytes = m_nDataBytes;
   
   m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
 }
@@ -105,13 +105,13 @@ void DataChunk::vCopyPartial(DataChunk* pSource, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  MemLib::vCopy(m_xWsp.aArea() + m_nRemainingBytes,
+  MemLib::vCopy(m_xWsp.aArea() + m_nUnprocessedBytes,
                 pSource->aStz(),
                 nBytes,
                 eClass());
   
-  m_nRemainingBytes += nBytes;
-  m_nDataBytes = m_nRemainingBytes;
+  m_nUnprocessedBytes += nBytes;
+  m_nDataBytes = m_nUnprocessedBytes;
   
   m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
 }

@@ -84,7 +84,7 @@ bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
   
   // advance to beginning of next record for next time
   m_aNextRecord = aEndRecord + 1;
-  m_nRemainingBytes -= m_nRecordBytes;
+  m_nUnprocessedBytes -= m_nRecordBytes;
   
   *aaRecord = aStartRecord;
   
@@ -113,16 +113,16 @@ bool RecordExtractor::bReadNextChunk(void)
   vCopyDown();
   
   Stz* aStartArea = (Stz*)aDataArea();
-  Stz* aIntoAddr  = pAdd<Stz*>(aStartArea,m_nRemainingBytes);
-  i8   nAsMuchAs  = C_DATA_CHUNK - m_nRemainingBytes;
+  Stz* aIntoAddr  = pAdd<Stz*>(aStartArea,m_nUnprocessedBytes);
+  i8   nAsMuchAs  = C_DATA_CHUNK - m_nUnprocessedBytes;
 
   i8 nBytesRead = m_oFile.nReadBytes(aIntoAddr,nAsMuchAs);
   
   if (! nBytesRead)
     return false;
   
-  m_nRemainingBytes += nBytesRead;
-  m_nDataBytes = m_nRemainingBytes;
+  m_nUnprocessedBytes += nBytesRead;
+  m_nDataBytes = m_nUnprocessedBytes;
   
   m_aLastDataByte = &(aStartArea)[m_nDataBytes - 1];
   m_aNextRecord   = aStartArea;
@@ -147,8 +147,8 @@ void RecordExtractor::vReadSpecificChunk(i8 iSeek, i8 nBytes)
 
   RASSERT(nBytesRead == nAsMuchAs);
   
-  m_nRemainingBytes = nBytesRead;
-  m_nDataBytes = m_nRemainingBytes;
+  m_nUnprocessedBytes = nBytesRead;
+  m_nDataBytes = m_nUnprocessedBytes;
 
   m_aLastDataByte =  &(aStartArea)[m_nDataBytes - 1];
   m_aNextRecord   = aStartArea;
@@ -165,15 +165,15 @@ void RecordExtractor::vCopyDown(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  if (! m_nRemainingBytes)
+  if (! m_nUnprocessedBytes)
     return;
   
   Stz* aStartArea = (Stz*)aDataArea();
-  Stz* aFromChar  = pAdd<Stz*>(aStartArea,m_nDataBytes - m_nRemainingBytes);
+  Stz* aFromChar  = pAdd<Stz*>(aStartArea,m_nDataBytes - m_nUnprocessedBytes);
   
   MemLib::vCopy(aStartArea,
                 aFromChar,
-                m_nRemainingBytes,
+                m_nUnprocessedBytes,
                 eClass());
 }
 
