@@ -220,6 +220,47 @@ bool Flt::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract a float field from csv substr                                      */
+/*----------------------------------------------------------------------------*/
+bool Flt::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+{
+  Flt* aFlt = (Flt*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aFlt->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // float field processing
+  
+  if ( ! StrLib::bExtractFloat(aaSrc,aFlt->m_dFlt) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint flt datum                                                           */
 /*----------------------------------------------------------------------------*/
 void Flt::vSprint(Stz* aDst, Stz* aSrc)
