@@ -122,8 +122,9 @@ bool RecordExtractor::bReadNextChunk(void)
     return false;
   
   m_nRemainingBytes += nBytesRead;
+  m_nDataBytes = m_nRemainingBytes;
   
-  m_aLastDataByte = &(aStartArea)[m_nRemainingBytes - 1];
+  m_aLastDataByte = &(aStartArea)[m_nDataBytes - 1];
   m_aNextRecord   = aStartArea;
   
   return true;
@@ -147,8 +148,9 @@ void RecordExtractor::vReadSpecificChunk(i8 iSeek, i8 nBytes)
   RASSERT(nBytesRead == nAsMuchAs);
   
   m_nRemainingBytes = nBytesRead;
+  m_nDataBytes = m_nRemainingBytes;
 
-  m_aLastDataByte =  &(aStartArea)[m_nRemainingBytes - 1];
+  m_aLastDataByte =  &(aStartArea)[m_nDataBytes - 1];
   m_aNextRecord   = aStartArea;
 }
 
