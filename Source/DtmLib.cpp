@@ -796,7 +796,7 @@ bool DtmLib::bTestForNullDefault(char** aaSrc, DBobjects::Column* pColumn,
   // tail processing
   
   // check it was "null" only
-  if (! bValidFieldEnd(*aaSrc,pFormatters)) {
+  if (! bValidFieldEndDefault(*aaSrc,pFormatters)) {
     // no well formed null detected
     *(aaSrc) = aStart;
     bValidNull = false; // no null, so neither valid or invalid
@@ -854,6 +854,33 @@ bool DtmLib::bValidFieldEnd(char* aSrc, Formatters* pFormatters)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for explicit record ends
 
+  bool bValidEnd = bValidRecordEnd(aSrc,pFormatters);
+  
+  return bValidEnd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for valid field end                                                   */
+/*----------------------------------------------------------------------------*/
+bool DtmLib::bValidFieldEndDefault(char* aSrc, Formatters* pFormatters)
+{
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for end of data
+  
+  // valid field end if we've run out of data
+  if (! *aSrc)
+    return true;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for explicit field separator
+  
+  // valid field end if we've encounter the field delimiter
+  if (*aSrc == pFormatters->m_cFieldDelimiter)
+    return true;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // test for explicit record ends
+  
   bool bValidEnd = bValidRecordEnd(aSrc,pFormatters);
   
   return bValidEnd;
