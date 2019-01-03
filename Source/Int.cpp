@@ -303,6 +303,56 @@ bool Int::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract an integer field from csv substr                                   */
+/*----------------------------------------------------------------------------*/
+bool Int::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+{
+  Int* aInt = (Int*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aInt->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // integer field processing
+  
+  if ( ! StrLib::bExtractInteger(aaSrc,&aInt->m_iInt,
+                                 true/*bWithSign*/) )
+    return false;
+  
+  // ignore any trailing digits (after optional '.')
+  if ('.' == **aaSrc) {
+    
+    // skip the '.' and any digits
+    (*aaSrc)++;
+    StrLib::vSkipDigits(aaSrc);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint vlq int datum                                                       */
 /*----------------------------------------------------------------------------*/
 void Int::vSprintVLQ(Stz* aDst, Stz* aSrc)
