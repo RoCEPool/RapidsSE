@@ -1805,8 +1805,7 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
 bool StrLib::bExtractVarcharDefault2(char** aaSrc,
                               char* aVarChar, i8 iMaxLength,
                               char cEscapeChar,
-                              char cFieldSeparator,
-                              bool bAllowNonPrintable)
+                              char cFieldSeparator)
 {
   i8 iLength = 0;
   char *aDst = (char*)aVarChar;
@@ -1831,7 +1830,7 @@ bool StrLib::bExtractVarcharDefault2(char** aaSrc,
     // space, form-feed ('\f'), newline ('\n'), carriage return ('\r'), horizontal tab ('\t'),
     // and vertical tab ('\v').
     
-    if (! bAllowNonPrintable && isspace(cSrc) && (cSrc != ' ') )
+    if (isspace(cSrc) && (cSrc != ' ') )
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

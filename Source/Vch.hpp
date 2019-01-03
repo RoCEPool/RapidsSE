@@ -42,14 +42,11 @@ namespace Datums
                          DBobjects::Column* pColumn, Formatters* pFormatters);
     static bool bExtract2(char** aaSrc, Stz* aDst,
                           DBobjects::Column* pColumn, Formatters* pFormatters);
-    static bool bExtractDefault2(char** aaSrc, Stz* aDst,
-                          DBobjects::Column* pColumn, Formatters* pFormatters);
     static bool bExtract2(char** aaSrc, Stz* aDst,
                          DBobjects::Column* pColumn, Formatters* pFormatters,
                           bool bAllowNonPrintable);
     static bool bExtractDefault2(char** aaSrc, Stz* aDst,
-                          DBobjects::Column* pColumn, Formatters* pFormatters,
-                          bool bAllowNonPrintable);
+                          DBobjects::Column* pColumn, Formatters* pFormatters);
     static bool bLessThan(char* aArgA, char* aArgB);
     static bool bLessEqual(char* aArgA, char* aArgB);
     static bool bEqualTo(char* aArgA, char* aArgB);

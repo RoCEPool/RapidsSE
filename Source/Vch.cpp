@@ -290,15 +290,6 @@ bool Vch::bExtract2(char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
-                    Column* pColumn, Formatters* pFormatters)
-{
-  return bExtractDefault2(aaSrc, aDst, pColumn, pFormatters, false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a varchar field from csv substr                                    */
-/*----------------------------------------------------------------------------*/
 bool Vch::bExtract2(char** aaSrc, Stz* aDst,
                     Column* pColumn, Formatters* pFormatters,
                     bool bAllowNonPrintable)
@@ -354,8 +345,7 @@ bool Vch::bExtract2(char** aaSrc, Stz* aDst,
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
 bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
-                    Column* pColumn, Formatters* pFormatters,
-                    bool bAllowNonPrintable)
+                    Column* pColumn, Formatters* pFormatters)
 {
   Vch* aVch = (Vch*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -380,9 +370,7 @@ bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
   if ( ! StrLib::bExtractVarcharDefault2(aaSrc,(char*)aVch,
                                   iColumnLength,
                                   pFormatters->m_cEscapeChar,
-                                  pFormatters->m_cFieldDelimiter,
-                                  bAllowNonPrintable
-                                  ) )
+                                  pFormatters->m_cFieldDelimiter) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

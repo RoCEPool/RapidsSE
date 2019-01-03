@@ -130,8 +130,7 @@ namespace Base
     static bool  bExtractVarcharDefault2(char** ps,
                                   char* aVarchar, i8 iMaxLength,
                                   char cEscapeChar,
-                                  char cFieldSeparator,
-                                  bool bAllowNonPrintable);
+                                  char cFieldSeparator);
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
     static bool  bExtractYear(char** ps, i8& iYear);
