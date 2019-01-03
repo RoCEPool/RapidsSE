@@ -58,7 +58,8 @@ namespace System
     
     static bool bExists(Stz *aFilePath);
     static bool bRemove(Stz* aFilePath);
-
+    static void vStatistics(void);
+  
     void vClose(void);
     char cGetChar(void);
     void vFileDump(void);
@@ -79,7 +80,7 @@ namespace System
     void vSeekStart(void);
     void vSeekEnd(void);
     void vSetBuffering(i8 nBytes);
-    SysCall& oSysCall(void);
+   SysCall& oSysCall(void);
     i8   iTell(void);
     void vUngetChar(char cChar);
     void vUseStdin(void);

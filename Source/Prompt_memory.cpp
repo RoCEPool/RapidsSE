@@ -33,6 +33,8 @@ bool Prompt::bPrompt_memory(SePrompt* pPrompt)
   if (bReset)
     MemLib::vReset();
   
+  File::vStatistics();
+  
   return true;
 }
 

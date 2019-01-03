@@ -117,6 +117,32 @@ bool File::bRemove(Stz* aFilePath)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* print file statistics                                                      */
+/*----------------------------------------------------------------------------*/
+void File::vStatistics(void)
+{
+  s32 sByteMag;
+  
+  vTrace("  nFileCloses  %lld\n"_Stz,gpAttachMap->m_nFileCloses);
+  vTrace("  nFileFlushes %lld\n"_Stz,gpAttachMap->m_nFileFlushes);
+  vTrace("  nFileGetcs   %lld\n"_Stz,gpAttachMap->m_nFileGetcs);
+  vTrace("  nFileOpens   %lld\n"_Stz,gpAttachMap->m_nFileOpens);
+  vTrace("  nFilePrints  %lld\n"_Stz,gpAttachMap->m_nFilePrints);
+  vTrace("  nFileReads   %lld\n"_Stz,gpAttachMap->m_nFileReads);
+  vTrace("  nFileWrites  %lld\n"_Stz,gpAttachMap->m_nFileWrites);
+  vTrace("  nFileSeeks   %lld\n"_Stz,gpAttachMap->m_nFileSeeks);
+  vTrace("  nFileTells   %lld\n"_Stz,gpAttachMap->m_nFileTells);
+  vTrace("  nFileUngetcs %lld\n"_Stz,gpAttachMap->m_nFileUngetcs);
+
+  Magnitudes::vByteMag(gpAttachMap->m_nFileReadBytes,  sByteMag);
+  vTrace("  nFileReadBytes %s\n"_Stz,sByteMag.aStz());
+  Magnitudes::vByteMag(gpAttachMap->m_nFilePrintBytes, sByteMag);
+  vTrace("  nFilePrintBytes %s\n"_Stz,sByteMag.aStz());
+  Magnitudes::vByteMag(gpAttachMap->m_nFileWriteBytes, sByteMag);
+  vTrace("  nFileWriteBytes %s\n"_Stz,sByteMag.aStz());
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
