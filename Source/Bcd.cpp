@@ -233,6 +233,48 @@ bool Bcd::bExtract(char** aaSrc, Stz* aDst, DBobjects::Column* pColumn, Formatte
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract a decimal field from csv substr                                    */
+/*----------------------------------------------------------------------------*/
+bool Bcd::bExtractDefault(char** aaSrc, Stz* aDst, DBobjects::Column* pColumn, Formatters* pFormatters)
+{
+  Bcd* aBcd = (Bcd*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aBcd->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // decimal field processing
+  
+  if ( ! StrLib::bExtractDecimal(aaSrc,aBcd->m_iBcd,
+                                 pColumn->iColumnLength(),pColumn->iColumnScale()) )
+    return false;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint bcd datum                                                           */
 /*----------------------------------------------------------------------------*/
 void Bcd::vSprint(Stz* aDst, Stz* aSrc, DBobjects::Column* pColumn)

@@ -376,14 +376,12 @@ bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tail processing
   
+  StrLib::vSkipSpaces(aaSrc);
+  
   //bool bSawEnclosedTrailing =
   //StrLib::bSkipTrailing(aaSrc,bSawEnclosedLeading,pFormatters->m_cEnclosedBy_Trailing);
   //if (! bSawEnclosedTrailing)
   //  return false;
-  
-  // skip any blanks
-  while (' ' == **aaSrc)
-    (*aaSrc)++;
   
   // should see a valid field end
   if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )

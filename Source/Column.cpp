@@ -145,7 +145,7 @@ Column::Column(JobModel::Job_CreateTable* pJob, i8 iColumnNo)
   m_fGreaterThan  = nullptr;
   
   switch (m_eDatumType) {
-      case DM_BCD: m_fExtract = Bcd::bExtract; m_fExtractDefault = Bcd::bExtract; break;
+      case DM_BCD: m_fExtract = Bcd::bExtract; m_fExtractDefault = Bcd::bExtractDefault; break;
       case DM_BOL: m_fExtract = Bol::bExtract; m_fExtractDefault = Bol::bExtract; break;
       case DM_CHR: m_fExtract = Vch::bExtract2; m_fExtractDefault = Vch::bExtractDefault2; break;
       case DM_DTE: m_fExtract = Int::bExtract; m_fExtractDefault = Int::bExtract; break;
