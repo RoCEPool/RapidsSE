@@ -35,6 +35,7 @@ Formatters::Formatters(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
 
+  m_bDefault = true;
   m_cEnclosedBy_Leading  = '\0';
   m_cEnclosedBy_Trailing = m_cEnclosedBy_Leading;
   //m_cEnclosedBy_Leading  = '{';
@@ -79,6 +80,8 @@ void Formatters::vReset(void)
 void Formatters::vReset(Formatters* pDefaults)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+  
+  m_bDefault = true;
   
   m_cEnclosedBy_Leading  = pDefaults->m_cEnclosedBy_Leading;
   m_cEnclosedBy_Trailing = pDefaults->m_cEnclosedBy_Trailing;

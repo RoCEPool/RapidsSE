@@ -23,12 +23,13 @@ namespace Datums
   {
   public:
   
+    bool m_bDefault;             // default formatters
     char m_cEnclosedBy_Leading;  // enclosed by
     char m_cEnclosedBy_Trailing; // enclosed by
     char m_cEscapeChar;          // escape char
     char m_cFieldDelimiter;      // field delimiter
     char m_cRecordTerminator;    // record terminator
-    eRE  m_eRecordEnd;          // record end sequence
+    eRE  m_eRecordEnd;           // record end sequence
     eDC  m_eDateComponent[3];    // date component order
     char m_cDateSeparator;       // date separater
   
