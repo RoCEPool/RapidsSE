@@ -141,7 +141,7 @@ bool LoadMap::bMapChunk(void)
   // read final block of the chunk
   char* aFinalBlock = aDataArea();
   m_oFile.vSeek(i_FinalBlockLoc);
-  i8 nBytesRead = m_oFile.iReadBytes(aFinalBlock,C_LOADMAP_BLOCK);
+  i8 nBytesRead = m_oFile.nReadBytes(aFinalBlock,C_LOADMAP_BLOCK);
   
   // compute last actual byte of final block just read in
   const char *aLastByte = &aFinalBlock[nBytesRead - 1];

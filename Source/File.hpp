@@ -70,7 +70,7 @@ namespace System
     bool bIsStdout(void);
     bool bOpen(Stz* aFilePath, Stz* aOpenMode);
     void vPrint(Stz* aFormat,...);
-    i8   iReadBytes(void* aDst, i8 nBytes);
+    i8   nReadBytes(void* aDst, i8 nBytes);
     bool bReadLine(Stz* aDst);
     void vReset(void);
     void vSeek(i8 iOffset);

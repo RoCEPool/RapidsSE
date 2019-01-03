@@ -20,10 +20,10 @@ void vTest1(void)
   ASSERT(b);
   
   oTimer.vStart();
-  i8 iBytesRead = oFile.iReadBytes(buffer,iChunk);
+  i8 nBytesRead = oFile.nReadBytes(buffer,iChunk);
   
-  while (iBytesRead) {
-    iBytesRead = oFile.iReadBytes(buffer,iChunk);
+  while (nBytesRead) {
+    nBytesRead = oFile.nReadBytes(buffer,iChunk);
   }
   oTimer.vUpdate();
   vTrace("duration %lldms\n"_Stz,oTimer.iMilliseconds());

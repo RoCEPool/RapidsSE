@@ -551,8 +551,8 @@ void BPA::vReadBuffers(Stz* sFilePath)
   Buffer* pBuffer = new Buffer(CN_HEAPBUFFER);
   
   while (true) {
-    i8 iBytes = pFile->iReadBytes(pBuffer, C_SIZE_POOL_BUFFER);
-    if (iBytes != C_SIZE_POOL_BUFFER)
+    i8 nBytes = pFile->nReadBytes(pBuffer, C_SIZE_POOL_BUFFER);
+    if (nBytes != C_SIZE_POOL_BUFFER)
       break;
     
     vBufferDump(pBuffer);

@@ -326,7 +326,7 @@ bool Job_Ingest::bChunk(void)
   
   i8 nBytesToRead = C_1M - nCarryOverBytes;
   
-  i8 nBytesRead = m_oFile.iReadBytes(aReadDst,nBytesToRead);
+  i8 nBytesRead = m_oFile.nReadBytes(aReadDst,nBytesToRead);
   
   if  (! nBytesRead) {
     m_iLastChunk = m_nChunksSoFar;

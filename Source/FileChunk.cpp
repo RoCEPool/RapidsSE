@@ -112,7 +112,7 @@ i8 FileChunk::nReadBytes(i8 nBytes)
   if (nBytes == C_DATA_CHUNK)
     nBytes -= 1;
   
-  m_nDataBytes = m_oFile.iReadBytes(m_xWsp.aArea(),nBytes);
+  m_nDataBytes = m_oFile.nReadBytes(m_xWsp.aArea(),nBytes);
 
   if (! m_nDataBytes)
     return 0;

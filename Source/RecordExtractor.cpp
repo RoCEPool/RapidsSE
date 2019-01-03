@@ -116,7 +116,7 @@ bool RecordExtractor::bReadNextChunk(void)
   Stz* aIntoAddr  = pAdd<Stz*>(aStartArea,m_nRemainingBytes);
   i8   nAsMuchAs  = C_DATA_CHUNK - m_nRemainingBytes;
 
-  i8 nBytesRead = m_oFile.iReadBytes(aIntoAddr,nAsMuchAs);
+  i8 nBytesRead = m_oFile.nReadBytes(aIntoAddr,nAsMuchAs);
   
   if (! nBytesRead)
     return false;
@@ -143,7 +143,7 @@ void RecordExtractor::vReadSpecificChunk(i8 iSeek, i8 nBytes)
   Stz* aIntoAddr  = aStartArea;
   i8   nAsMuchAs  = nBytes;
 
-  i8 nBytesRead = m_oFile.iReadBytes(aIntoAddr,nAsMuchAs);
+  i8 nBytesRead = m_oFile.nReadBytes(aIntoAddr,nAsMuchAs);
 
   RASSERT(nBytesRead == nAsMuchAs);
   

@@ -338,15 +338,15 @@ void File::vPrint(Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* read bytes                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 File::iReadBytes(void* aDst, i8 nBytes)
+i8 File::nReadBytes(void* aDst, i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   m_oSysCall.vClear();
   
-  i8 iBytesRead = fread(aDst,1,nBytes,m_aFile);
+  i8 nBytesRead = fread(aDst,1,nBytes,m_aFile);
   
-  return iBytesRead;
+  return nBytesRead;
 }
 
 /*----------------------------------------------------------------------------*/
