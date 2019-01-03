@@ -23,7 +23,7 @@ void Step::vLockTrackerList(MP_Task mpTask)
 ENTRY("vLockTrackerList"_Stz);
 
   File oFile;
-  oFile.bOpen("locks.csv"_Stz, C_OPEN_WRITE);
+  oFile.bOpenWrite("locks.csv"_Stz);
   
   gpAttachMap->m_oLockTracker.vList(oFile);
   

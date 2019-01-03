@@ -81,7 +81,7 @@ bool FileChunk::bOpenRead(s256& sPath)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   // open the file
-  bool bOpened = m_oFile.bOpen(sPath,C_OPEN_READ);
+  bool bOpened = m_oFile.bOpenRead(sPath);
   
   return bOpened;
 }
@@ -94,7 +94,7 @@ bool FileChunk::bOpenWrite(s256& sPath)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   // open the file
-  bool bOpened = m_oFile.bOpen(sPath,C_OPEN_WRITE);
+  bool bOpened = m_oFile.bOpenWrite(sPath);
   
   return bOpened;
 }

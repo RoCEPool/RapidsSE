@@ -733,7 +733,7 @@ void Job_Generate::vGenerate(void)
   vTrace("Generating data for %s into %s\n"_Stz,
          m_sObjectName.aStz(), m_sFileName.aStz());
   
-  bool bOpened = m_oFile.bOpen(m_sFileName.aStz(), C_OPEN_WRITE);
+  bool bOpened = m_oFile.bOpenWrite(m_sFileName.aStz());
   if (! bOpened) {
     vTrace("Unable to open file: %s\n"_Stz,m_sFileName.aStz());
     return;

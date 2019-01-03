@@ -402,7 +402,7 @@ void RapidsSE::vOpenTraceFile(void)
 {
   gpTraceFile = new File;
   
-  bool bOpened = gpTraceFile->bOpen("/tmp/se_trace.txt"_Stz, C_OPEN_WRITE);
+  bool bOpened = gpTraceFile->bOpenWrite("/tmp/se_trace.txt"_Stz);
   RASSERT(bOpened);
   
   if (gxArguments.m_bVerbose)
@@ -738,7 +738,7 @@ void RapidsSE::vWriteRegionName(void)
   // used by shell script to start se prompt
   if (gxArguments.m_bStart) {
     File oFile;
-    bool b = oFile.bOpen("./se.region"_Stz,C_OPEN_READ_WRITE_CREATE);
+    bool b = oFile.bOpenMode("./se.region"_Stz,C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
     oFile.vPrint("%s\n"_Stz,gxArguments.m_sRegionName.aChar());
     oFile.vClose();

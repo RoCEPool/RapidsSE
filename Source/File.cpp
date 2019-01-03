@@ -273,7 +273,7 @@ bool File::bIsStdout(void)
 /*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-bool File::bOpen(Stz* aFilePath, Stz* aOpenMode)
+bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
@@ -318,9 +318,9 @@ bool File::bOpenRead(Stz* aFilePath)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  bool bOpened = bOpen(aFilePath,C_OPEN_READ);
+  bool bOpened = bOpenMode(aFilePath,C_OPEN_READ);
   
-  returned bOpened;
+  return bOpened;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -330,9 +330,9 @@ bool File::bOpenWrite(Stz* aFilePath)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
-  bool bOpened = bOpen(aFilePath,C_OPEN_WRITE);
+  bool bOpened = bOpenMode(aFilePath,C_OPEN_WRITE);
   
-  returned bOpened;
+  return bOpened;
 }
 
 /*----------------------------------------------------------------------------*/

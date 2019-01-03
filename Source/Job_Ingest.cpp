@@ -266,7 +266,7 @@ bool Job_Ingest::bBegin(void)
   vTrace("Ingesting data into %s from %s\n"_Stz,
          m_sObjectName.aStz(), m_sFileName.aStz());
   
-  bool bOpened = m_oFile.bOpen(m_sFileName,C_OPEN_READ);
+  bool bOpened = m_oFile.bOpenRead(m_sFileName);
   
   s256 sPrefix;
   

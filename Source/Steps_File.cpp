@@ -97,7 +97,7 @@ ENTRY("vFileOpen"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("file.open"_Stz);
   
-  bool bOpened = pFile->bOpen(sPath,sMode);
+  bool bOpened = pFile->bOpenMode(sPath,sMode);
   
   mpTask->m_pDataStack->vPushInt(bOpened);
   

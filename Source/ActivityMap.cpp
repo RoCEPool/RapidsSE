@@ -342,7 +342,7 @@ void ActivityMap::vDumpMap(void)
   
   s256 sAmPath = gxArguments.m_sAmPath;
   
-  bool bOpened = pActivityFile->bOpen(sAmPath,C_OPEN_WRITE);
+  bool bOpened = pActivityFile->bOpenWrite(sAmPath);
   
   if (! bOpened) {
     vTrace("Unable to open activity file: %s\n"_Stz,sAmPath.aChar());
@@ -390,7 +390,7 @@ void ActivityMap::vDumpMap(void)
 //
 //  s256 sAmPath = gxArguments.m_sAmPath;
 //
-//  bool bOpened = pActivityFile->bOpen(sAmPath,C_OPEN_WRITE);
+//  bool bOpened = pActivityFile->bOpenWrite(sAmPath);
 //
 //  if (! bOpened) {
 //    vTrace("Unable to open activity file: %s\n"_Stz,sAmPath.aChar());

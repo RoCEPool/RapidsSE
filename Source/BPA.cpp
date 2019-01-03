@@ -546,7 +546,7 @@ void BPA::vReadBuffers(Stz* sFilePath)
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   File* pFile = new File();
-  pFile->bOpen(sFilePath, C_OPEN_READ);
+  pFile->bOpenRead(sFilePath);
   
   Buffer* pBuffer = new Buffer(CN_HEAPBUFFER);
   
@@ -702,7 +702,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   File* pFile = new File();
-  pFile->bOpen(sFilePath, C_OPEN_WRITE);
+  pFile->bOpenWrite(sFilePath);
   
   i8 iStart  = Synch::iTicks();
   bn nBuffer;
@@ -768,7 +768,7 @@ void BPA::vWritePersistentHeapMem(Stz* sFilePath)
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   File* pFile = new File();
-  pFile->bOpen(sFilePath, C_OPEN_WRITE);
+  pFile->bOpenWrite(sFilePath);
   
   vTrace("Writing persistent small heap\n"_Stz);
   vWriteHeap(gpAttachMap->m_xHeapMem.Persistent.m_pSmall,pFile);
