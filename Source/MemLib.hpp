@@ -22,15 +22,17 @@ namespace Base
   static const u8 C_MEMORY_MARKERD   = 0x070605040302010d;
   static const u8 C_MEMORY_MARKERE   = 0x070605040302010e;
   static const u8 C_MEMORY_MARKERF   = 0x070605040302010f;
-  
+
+  static const i8 C_BYTES_PER_LINE   = 16;
+
   class MemLib
   {
   private:
     static const u1 C_ASCII_MIN = 32;
     static const u1 C_ASCII_MAX = 127;
-    static const i8 C_BYTES_PER_LINE = 16;
     static const i8 C_SIZEOF_WORD = static_cast<i8>(sizeof(i8));
     
+  
   public:
     static void* pAddBytes(void* aAddress, i8 iBytes);
     static void  vCheckInitialised(void* aAddress, eCN eClass);

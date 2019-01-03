@@ -348,7 +348,7 @@ bool Job_Ingest::bChunk(void)
   void* aCopyFrom = pAdd<void*>(m_pQuantaChunk->aDataArea(),nQuantumBytes);
   void* aCopyInto = m_pRemainderChunk->aDataArea();
   
-  //MemLib::vHexDump((char*)aCopyFrom-16,nRemainingBytes+16);
+  //MemLib::vHexDump((char*)aCopyFrom-C_BYTES_PER_LINE,nRemainingBytes+C_BYTES_PER_LINE);
   
   MemLib::vCopy(aCopyInto,aCopyFrom,nRemainingBytes,CN_JOB_INGEST);
   
