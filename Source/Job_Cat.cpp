@@ -124,6 +124,7 @@ Job_Cat::~Job_Cat(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
   delete m_pIoCopy;
+  delete m_pByteRate;
 }
 
 
@@ -258,8 +259,12 @@ bool Job_Cat::bBegin(void)
   if (! m_pIoCopy->bOpenWrite(m_sOutputPath))
     return false;
   
-  if (m_bStatistics)
-    m_pIoCopy->vWithStatistics("  cat : "_Stz);
+  if (m_bStatistics) {
+    m_pByteRate = new ByteRate;
+    m_pByteRate->vSetReporting("  cat : "_Stz, C_1GB * 1);
+    m_pByteRate->vBeginTiming();
+
+  }
 
   vTrace("Cat data from %s to %s\n"_Stz,m_sFileName.aStz(),m_sOutputPath.aStz());
 
@@ -275,10 +280,13 @@ bool Job_Cat::bChunk(void)
 
   i8 nBytesCopied = m_pIoCopy->nCopyChunk();
 
-  if (nBytesCopied)
+  if (nBytesCopied) {
+    if (m_pByteRate)
+      m_pByteRate->vAddBytes(nBytesCopied);
     return true;
-  else
-    return false;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -288,6 +296,9 @@ void Job_Cat::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
+  if (m_pByteRate)
+    m_pByteRate->vEndTiming();
+
    m_pIoCopy->vCloseBoth();
 }
 
