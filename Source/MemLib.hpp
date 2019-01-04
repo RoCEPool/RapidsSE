@@ -41,12 +41,12 @@ namespace Base
     static void  vFreeBlock(void* aBlock, i8 nBytes);
     static i8    iGetTotalMemory(void);
     static void  vHexDump(void *aAddress, i8 nBytes);
-    static void  vList(void);
     static void* aMallocBlock(i8 nBytes);
     static void  vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);
     static void  vReset(void);
     static void  vScribble(void* aAddress, i8 nBytes, eCN eClassNo);
     static void  vSet(void* pDst, char bByte, i8 iTimes, eCN eClassNo);
+    static void  vStatistics(void);
     static void  vWordDump(void *aAddress, i8 iSize, i8 iHighlightWord=-1);
     static void  vZero(void* pDst, i8 iBytes, eCN eClassNo);
     

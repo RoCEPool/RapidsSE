@@ -12,8 +12,8 @@ extern AttachMap* gpAttachMap;
 void Step::vAddSteps_Memory(void)
 {
   vAddStep("memory.byteDump"_Stz,   &Step::vMemoryByteDump);
-  vAddStep("memory::list"_Stz,       &Step::vMemoryList);
-  vAddStep("memory::reset"_Stz,      &Step::vMemoryReset);
+  vAddStep("memory::reset"_Stz,     &Step::vMemoryReset);
+  vAddStep("memory::statistics"_Stz,&Step::vMemoryStatistics);
   vAddStep("memory.wordDump"_Stz,   &Step::vMemoryWordDump);
 }
 
@@ -52,13 +52,13 @@ void Step::vMemoryReset(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* memory.list-- trace memory statistics                                      */
+/* memory.statistics-- trace memory statistics                                */
 /*----------------------------------------------------------------------------*/
-void Step::vMemoryList(MP_Task mpTask)
+void Step::vMemoryStatistics(MP_Task mpTask)
 {
-  ENTRY("vMemoryList"_Stz);
+  ENTRY("vMemoryStatistics"_Stz);
 
-  MemLib::vList();
+  MemLib::vStatistics();
   
   EXIT();
 }

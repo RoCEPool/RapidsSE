@@ -188,68 +188,6 @@ void MemLib::vHexDump(void *aAddress, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* trace memory statistics                                                    */
-/*----------------------------------------------------------------------------*/
-void MemLib::vList(void)
-{
-  s32 sByteMag;
-  
-  Magnitudes::vByteMag(gpAttachMap->m_iMemCopyTotal, sByteMag);
-  vTrace("MemLib::vCopy() total %s\n"_Stz,sByteMag.aStz());
-  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (gpAttachMap->m_iaMemCopy[i_Class]) {
-      Magnitudes::vByteMag(gpAttachMap->m_iaMemCopy[i_Class], sByteMag);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
-    }
-  }
-  
-  Magnitudes::vByteMag(gpAttachMap->m_iMemMoveTotal, sByteMag);
-  vTrace("MemLib::vMove() total %s\n"_Stz,sByteMag.aStz());
-  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (gpAttachMap->m_iaMemMove[i_Class]) {
-      Magnitudes::vByteMag(gpAttachMap->m_iaMemMove[i_Class], sByteMag);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
-    }
-  }
-  
-  Magnitudes::vByteMag(gpAttachMap->m_iMemScribbleTotal, sByteMag);
-  vTrace("MemLib::vScribble() total %s\n"_Stz,sByteMag.aStz());
-  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (gpAttachMap->m_iaMemScribble[i_Class]) {
-      Magnitudes::vByteMag(gpAttachMap->m_iaMemScribble[i_Class], sByteMag);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
-    }
-  }
-  
-  Magnitudes::vByteMag(gpAttachMap->m_iMemSetTotal, sByteMag);
-  vTrace("MemLib::vSet() total %s\n"_Stz,sByteMag.aStz());
-  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (gpAttachMap->m_iaMemSet[i_Class]) {
-      Magnitudes::vByteMag(gpAttachMap->m_iaMemSet[i_Class], sByteMag);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
-    }
-  }
-  
-  Magnitudes::vByteMag(gpAttachMap->m_iMemZeroTotal, sByteMag);
-  vTrace("MemLib::vZero() total %s\n"_Stz,sByteMag.aStz());
-  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (gpAttachMap->m_iaMemZero[i_Class]) {
-      Magnitudes::vByteMag(gpAttachMap->m_iaMemZero[i_Class], sByteMag);
-      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
-    }
-  }
-  
-  i8 iGrandTotal = gpAttachMap->m_iMemCopyTotal
-                 + gpAttachMap->m_iMemMoveTotal
-                 + gpAttachMap->m_iMemScribbleTotal
-                 + gpAttachMap->m_iMemSetTotal
-                 + gpAttachMap->m_iMemZeroTotal
-                 ;
-  Magnitudes::vByteMag(iGrandTotal, sByteMag);
-  vTrace("Grand Total %s\n"_Stz,sByteMag.aStz());
-}
-
-/*----------------------------------------------------------------------------*/
 /* allocate a block of memory                                                 */
 /*----------------------------------------------------------------------------*/
 void* MemLib::aMallocBlock(i8 nBytes)
@@ -322,6 +260,68 @@ void MemLib::vSet(void* pDst, char iByte, i8 nBytes, eCN eClassNo)
     gpAttachMap->m_iMemSetTotal += nBytes;
     gpAttachMap->m_iaMemSet[eClassNo] += nBytes;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace memory statistics                                                    */
+/*----------------------------------------------------------------------------*/
+void MemLib::vStatistics(void)
+{
+  s32 sByteMag;
+  
+  Magnitudes::vByteMag(gpAttachMap->m_iMemCopyTotal, sByteMag);
+  vTrace("MemLib::vCopy() total %s\n"_Stz,sByteMag.aStz());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gpAttachMap->m_iaMemCopy[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_iaMemCopy[i_Class], sByteMag);
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+    }
+  }
+  
+  Magnitudes::vByteMag(gpAttachMap->m_iMemMoveTotal, sByteMag);
+  vTrace("MemLib::vMove() total %s\n"_Stz,sByteMag.aStz());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gpAttachMap->m_iaMemMove[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_iaMemMove[i_Class], sByteMag);
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+    }
+  }
+  
+  Magnitudes::vByteMag(gpAttachMap->m_iMemScribbleTotal, sByteMag);
+  vTrace("MemLib::vScribble() total %s\n"_Stz,sByteMag.aStz());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gpAttachMap->m_iaMemScribble[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_iaMemScribble[i_Class], sByteMag);
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+    }
+  }
+  
+  Magnitudes::vByteMag(gpAttachMap->m_iMemSetTotal, sByteMag);
+  vTrace("MemLib::vSet() total %s\n"_Stz,sByteMag.aStz());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gpAttachMap->m_iaMemSet[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_iaMemSet[i_Class], sByteMag);
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+    }
+  }
+  
+  Magnitudes::vByteMag(gpAttachMap->m_iMemZeroTotal, sByteMag);
+  vTrace("MemLib::vZero() total %s\n"_Stz,sByteMag.aStz());
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (gpAttachMap->m_iaMemZero[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_iaMemZero[i_Class], sByteMag);
+      vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
+    }
+  }
+  
+  i8 iGrandTotal = gpAttachMap->m_iMemCopyTotal
+                    + gpAttachMap->m_iMemMoveTotal
+                    + gpAttachMap->m_iMemScribbleTotal
+                    + gpAttachMap->m_iMemSetTotal
+                    + gpAttachMap->m_iMemZeroTotal
+                    ;
+  Magnitudes::vByteMag(iGrandTotal, sByteMag);
+  vTrace("Grand Total %s\n"_Stz,sByteMag.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

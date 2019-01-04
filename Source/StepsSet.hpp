@@ -687,8 +687,8 @@
 
   // memory
   static void vMemoryByteDump(Tasks::MP_Task mpTask);
-  static void vMemoryList(Tasks::MP_Task mpTask);
   static void vMemoryReset(Tasks::MP_Task mpTask);
+  static void vMemoryStatistics(Tasks::MP_Task mpTask);
   static void vMemoryWordDump(Tasks::MP_Task mpTask);
 
   // node (of grid)

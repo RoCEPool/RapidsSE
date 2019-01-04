@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Prompt_memory.cpp -- memory dump                                           */
+/* Prompt_memory.cpp -- memory statistics                                     */
 /*============================================================================*/
 
 #include "Prompt.h"
@@ -28,12 +28,10 @@ bool Prompt::bPrompt_memory(SePrompt* pPrompt)
   if (3 == iNumTokens)
     bReset = pTokenVec->pGet(2)->bSame("reset"_Stz);
 
-  MemLib::vList();
+  MemLib::vStatistics();
   
   if (bReset)
     MemLib::vReset();
-  
-  File::vStatistics();
   
   return true;
 }
