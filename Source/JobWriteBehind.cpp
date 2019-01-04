@@ -46,7 +46,11 @@ JobWriteBehind::JobWriteBehind(void)
 /*----------------------------------------------------------------------------*/
 JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 {
-
+  // Assert we don't have any dangling buffers
+  for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
+    RASSERT( ! m_pWorkingBuffer[iPartition] );
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
