@@ -109,12 +109,9 @@ Job_Ingest::Job_Ingest(Interface::Session* pSession)
   
   m_pTable = nullptr;
   
-  m_pRecordIngestor  = new RecordIngestor(&gpAttachMap->m_xFormatters);
-  
   m_pQuantaChunk  = nullptr;
   m_pRemainderChunk = nullptr;
 
-  
   m_pByteRate = nullptr;
   
   m_nChunksSoFar = 0;
@@ -133,7 +130,6 @@ Job_Ingest::~Job_Ingest(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
-  delete m_pRecordIngestor;
   delete m_pByteRate;
 }
 

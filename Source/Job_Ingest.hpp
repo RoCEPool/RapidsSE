@@ -16,12 +16,8 @@ namespace JobModel
   
     File    m_oFile;   // input file
   
-    RecordIngestor* m_pRecordIngestor;  // chunked stream being ingested
-  
-  
     IngestChunk* m_pQuantaChunk;
     IngestChunk* m_pRemainderChunk;
-  
   
     ByteRate* m_pByteRate;
   
