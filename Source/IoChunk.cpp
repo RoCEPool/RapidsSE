@@ -43,8 +43,8 @@ void IoChunk::operator delete(void* pIoChunkAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-IoChunk::IoChunk(void)
-: FileChunk(CN_IOCHUNK)
+IoChunk::IoChunk(Formatters* pFormatters)
+: FileChunk(CN_IOCHUNK, pFormatters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCHUNK,_FOOTER_);
   

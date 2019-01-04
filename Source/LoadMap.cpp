@@ -44,7 +44,7 @@ void LoadMap::operator delete(void* pLoadMapAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LoadMap::LoadMap(Stz* aFilePath)
-: FileChunk(CN_LOADMAP)
+: FileChunk(CN_LOADMAP,&gpAttachMap->m_xFormatters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   

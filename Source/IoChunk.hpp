@@ -17,7 +17,7 @@ namespace Chunks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IoChunk(void);
+    IoChunk(Formatters* pFormatters);
     ~IoChunk(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

@@ -3,6 +3,10 @@
 /*============================================================================*/
 
 #include "Chunks.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -48,8 +52,8 @@ IoCopy::IoCopy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCOPY,_FOOTER_);
 
-  m_pInChunk  = new IoChunk;
-  m_pOutChunk = new IoChunk;
+  m_pInChunk  = new IoChunk(&gpAttachMap->m_xFormatters);
+  m_pOutChunk = new IoChunk(&gpAttachMap->m_xFormatters);
 
   m_pByteRate = nullptr;
   

@@ -179,7 +179,7 @@ bool Job_SubLoader::bBegin(void)
   sPath = m_pJob_LoadTable->m_sFileName;
   
   // open the chunked file
-  bool bOpened = m_pRecordLoader->bOpenFile(sPath);
+  bool bOpened = m_pRecordLoader->bOpenRead(sPath);
   
   return bOpened;
 }

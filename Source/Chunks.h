@@ -17,8 +17,8 @@ using namespace Chunks;
 //------------------------------------------------------------------------------
 
 #include "DataChunk.hpp"
-#include "FileChunk.hpp"
 #include "RecordExtractor.hpp"
+#include "FileChunk.hpp"
 
 #include "IngestChunk.hpp"
 #include "IoChunk.hpp"

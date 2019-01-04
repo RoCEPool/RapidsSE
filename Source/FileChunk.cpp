@@ -41,8 +41,8 @@ void FileChunk::operator delete(void* pFileChunkAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-FileChunk::FileChunk(eCN eClassNo)
-: DataChunk(eClassNo)
+FileChunk::FileChunk(eCN eClassNo, Formatters* pFormatters)
+: RecordExtractor_NEW(eClassNo,pFormatters)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -122,6 +122,30 @@ i8 FileChunk::nReadBytes(i8 nBytes)
   m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
   
   return m_nDataBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* read given chunk from file                                                 */
+/*----------------------------------------------------------------------------*/
+void FileChunk::vReadSpecificChunk(i8 iSeek, i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_oFile.vSeek(iSeek);
+  
+  Stz* aStartArea = (Stz*)aDataArea();
+  Stz* aIntoAddr  = aStartArea;
+  i8   nAsMuchAs  = nBytes;
+  
+  i8 nBytesRead = m_oFile.nReadBytes(aIntoAddr,nAsMuchAs);
+  
+  RASSERT(nBytesRead == nAsMuchAs);
+  
+  m_nUnprocessedBytes = nBytesRead;
+  m_nDataBytes = m_nUnprocessedBytes;
+  
+  m_aLastDataByte =  &(aStartArea)[m_nDataBytes - 1];
+  m_aNextRecord   = aStartArea;
 }
 
 /*----------------------------------------------------------------------------*/
