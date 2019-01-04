@@ -39,6 +39,8 @@ using namespace Prompt;
 
 #include "Prompt_errno.hpp"
 
+#include "Prompt_file.hpp"
+
 #include "Prompt_giveMem.hpp"
 
 #include "Prompt_hashDefs.hpp"

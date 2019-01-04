@@ -134,9 +134,10 @@ void File::vStatistics(void)
   vTrace("  nFileSeeks   %lld\n"_Stz,gpAttachMap->m_nFileSeeks);
   vTrace("  nFileTells   %lld\n"_Stz,gpAttachMap->m_nFileTells);
   vTrace("  nFileUngetcs %lld\n"_Stz,gpAttachMap->m_nFileUngetcs);
+  vTrace("\n"_Stz);
 
   Magnitudes::vByteMag(gpAttachMap->m_nFileReadBytes,  sByteMag);
-  vTrace("  nFileReadBytes %s\n"_Stz,sByteMag.aStz());
+  vTrace("  nFileReadBytes  %s\n"_Stz,sByteMag.aStz());
   Magnitudes::vByteMag(gpAttachMap->m_nFilePrintBytes, sByteMag);
   vTrace("  nFilePrintBytes %s\n"_Stz,sByteMag.aStz());
   Magnitudes::vByteMag(gpAttachMap->m_nFileWriteBytes, sByteMag);
