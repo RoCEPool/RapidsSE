@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RecordExtractor_NEW.cpp -- Record Extractor                                */
+/* RecordExtractor.cpp -- Record Extractor                                */
 /*============================================================================*/
 
 #include "Chunks.h"
@@ -11,17 +11,17 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RecordExtractor_NEW* Chunks::_pRecordExtractor_NEW(void* aAddr)
+RecordExtractor* Chunks::_pRecordExtractor(void* aAddr)
 {
-  RecordExtractor_NEW* pRecordExtractor_NEW = reinterpret_cast<RecordExtractor_NEW*>(aAddr);
+  RecordExtractor* pRecordExtractor = reinterpret_cast<RecordExtractor*>(aAddr);
   
-  return pRecordExtractor_NEW;
+  return pRecordExtractor;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RecordExtractor_NEW::RecordExtractor_NEW(eCN eClassNo, Formatters* pFormatters)
+RecordExtractor::RecordExtractor(eCN eClassNo, Formatters* pFormatters)
 : DataChunk(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
@@ -36,7 +36,7 @@ RecordExtractor_NEW::RecordExtractor_NEW(eCN eClassNo, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RecordExtractor_NEW::~RecordExtractor_NEW(void) noexcept(false)
+RecordExtractor::~RecordExtractor(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 }
@@ -44,7 +44,7 @@ RecordExtractor_NEW::~RecordExtractor_NEW(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump SubLoader                                                             */
 /*----------------------------------------------------------------------------*/
-void RecordExtractor_NEW::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void RecordExtractor::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
 }
 
@@ -55,7 +55,7 @@ void RecordExtractor_NEW::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
-bool RecordExtractor_NEW::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
+bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -88,7 +88,7 @@ bool RecordExtractor_NEW::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 /*----------------------------------------------------------------------------*/
 /* find the last character of next record within chunk (a '\r' or '\n')       */
 /*----------------------------------------------------------------------------*/
-bool RecordExtractor_NEW::bFindRecordEnd(char** aaRecordEnd)
+bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
 {
   // test for explicit record ends
   

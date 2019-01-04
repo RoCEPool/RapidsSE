@@ -6,7 +6,7 @@
 namespace Chunks
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class RecordExtractor_NEW : public DataChunk
+  class RecordExtractor : public DataChunk
   {
   public:
     Formatters* m_pFormatters; // using these formatters
@@ -15,8 +15,8 @@ namespace Chunks
     i8   m_nRecordBytes;       // size of record
   
   public:
-    RecordExtractor_NEW(eCN eClassNo, Formatters* pFormatters);
-    ~RecordExtractor_NEW(void) noexcept(false);
+    RecordExtractor(eCN eClassNo, Formatters* pFormatters);
+    ~RecordExtractor(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
@@ -28,7 +28,7 @@ namespace Chunks
   private:
   };
   
-  RecordExtractor_NEW* _pRecordExtractor_NEW(void* aAddr);
+  RecordExtractor* _pRecordExtractor(void* aAddr);
 }
 
 /*============================================================================*/

@@ -6,7 +6,7 @@
 namespace Chunks
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class IngestChunk : public RecordExtractor_NEW,
+  class IngestChunk : public RecordExtractor,
                       public ListNode_t<IngestChunk>
   {
   public:
