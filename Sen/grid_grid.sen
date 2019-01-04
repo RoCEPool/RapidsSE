@@ -31,6 +31,8 @@
   " --regionPrefix " str.cat args.regionPrefix str.cat
   " --partitionsPerNode " str.cat args.partitionsPerNode >str str.cat
   " --name  " str.cat nodeName str.cat
+  " --subLoaders " str.cat args.subLoaders >str str.cat
+
   //" --partitionsPerNode " str.cat grid::slots >str str.cat
 
   args.tracepoint  if " --tracepoint "  str.cat then
