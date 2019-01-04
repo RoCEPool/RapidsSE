@@ -35,7 +35,7 @@ print "---------------------------------------------------------------------";
 
 nowait purge lineitem 1;
 
-nowait repeater "/tpch/SF10/lineitem.csv" "/tmp/lineitem.pipe" ;
+nowait repeater "/tpch/SF10/lineitem.csv" "/tmp/lineitem.pipe" stats ;
 
 ingest lineitem "/tmp/lineitem.pipe" stats ;
 

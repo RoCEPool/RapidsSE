@@ -267,8 +267,11 @@ bool Job_Repeater::bBegin(void)
   if (! m_pIoCopy->bOpenWrite(m_sOutputPath))
     return false;
   
-  if (m_bStatistics)
-    m_pIoCopy->vWithStatistics("  repeat : "_Stz);
+  if (m_bStatistics) {
+    m_pByteRate = new ByteRate;
+    m_pByteRate->vSetReporting("  repeat : "_Stz, C_1GB * 1);
+    m_pByteRate->vBeginTiming();
+  }
   
   return true;
 }
@@ -282,9 +285,13 @@ bool Job_Repeater::bChunk(void)
   
   i8 nBytesCopied = m_pIoCopy->nCopyChunk();
 
+  if (m_pByteRate && nBytesCopied)
+    m_pByteRate->vAddBytes(nBytesCopied);
+
   if (nBytesCopied)
     return true;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   m_nRepeats++;
   vTrace("Repeating %s times %lld\n"_Stz,
           m_sFileName.aChar(),m_nRepeats);
@@ -295,8 +302,10 @@ bool Job_Repeater::bChunk(void)
   m_pIoCopy->vRewindInput();
   nBytesCopied = m_pIoCopy->nCopyChunk();
 
-  if (nBytesCopied)
+  if (m_pByteRate && nBytesCopied) {
+    m_pByteRate->vAddBytes(nBytesCopied);
     return true;
+  }
   
   return false;
 }
