@@ -294,35 +294,16 @@ bool Job_Ingest::bChunk(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read next chunk, adjusting for any carry over from last chunk
   
-//  i8 nCarryOverBytes = m_pQuantaChunk->m_nDataBytes;
-//
-//  void* aReadDst = pAdd<void*>(m_pQuantaChunk->aDataArea(),nCarryOverBytes);
-//
-//  i8 nBytesToRead = C_1M - nCarryOverBytes;
-//
-//  i8 nBytesRead = m_oFile.nReadBytes(aReadDst,nBytesToRead);
-//
-//  if  (! nBytesRead) {
-//    m_iLastChunk = m_nChunksSoFar;
-//    return false;
-//  }
-//
-//  m_pQuantaChunk->m_nDataBytes = nCarryOverBytes + nBytesRead;
-//
-//  m_pQuantaChunk->m_nUnprocessedBytes = m_pQuantaChunk->m_nDataBytes;
-  
   i8 nBytesRead = m_pQuantaChunk->nReadMore(m_oFile);
   if  (! nBytesRead) {
     m_iLastChunk = m_nChunksSoFar;
     return false;
   }
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // identify the set of whole records and move remainder into next chunk
   
-  i8 nQuantumBytes = m_pQuantaChunk->nQuantumBytes();
-
+  i8 nQuantumBytes   = m_pQuantaChunk->nQuantumBytes();
   i8 nRemainingBytes = m_pQuantaChunk->m_nDataBytes - nQuantumBytes;
 
   void* aCopyFrom = pAdd<void*>(m_pQuantaChunk->aDataArea(),nQuantumBytes);
@@ -331,8 +312,6 @@ bool Job_Ingest::bChunk(void)
   //MemLib::vHexDump((char*)aCopyFrom-C_BYTES_PER_LINE,nRemainingBytes+C_BYTES_PER_LINE);
   
   MemLib::vCopy(aCopyInto,aCopyFrom,nRemainingBytes,CN_JOB_INGEST);
-  
-  m_pQuantaChunk->m_aNextRecord = (Stz*)m_pQuantaChunk->aDataArea();
   
   m_pQuantaChunk->vSetBytes(nQuantumBytes);  
   m_pRemainderChunk->vSetBytes(nRemainingBytes);

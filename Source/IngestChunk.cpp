@@ -80,13 +80,12 @@ i8 IngestChunk::nReadMore(File& oFile)
   
   i8 nBytesRead = oFile.nReadBytes(aReadDst,nBytesToRead);
   
-  if  (! nBytesRead) {
+  vSetBytes(nCarryOverBytes + nBytesRead);
+  
+  m_aNextRecord = (Stz*)aDataArea();
+  
+  if (! nBytesRead)
     return 0;
-  }
-  
-  m_nDataBytes = nCarryOverBytes + nBytesRead;
-  
-  m_nUnprocessedBytes = m_nDataBytes;
 
   return nBytesRead;
 }
