@@ -87,6 +87,32 @@ void ByteRate::vBeginTiming(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* calculate current byte rate per day                                        */
+/*----------------------------------------------------------------------------*/
+i8 ByteRate::nBytesPerDay(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
+  
+  i8 iAvgBytesPerSec = nBytesPerSec();
+  
+  i8 iAvgBytesPerDay = iAvgBytesPerSec * 60 * 60 * 24;
+
+  return iAvgBytesPerDay;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calculate current byte rate per sec                                        */
+/*----------------------------------------------------------------------------*/
+i8 ByteRate::nBytesPerSec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
+  
+  i8 iAvgBytesPerSec = DIV(m_nBytesSoFar,m_xElapsedTimer.iSeconds());
+  
+  return iAvgBytesPerSec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* end timing                                                                 */
 /*----------------------------------------------------------------------------*/
 void ByteRate::vEndTiming(void)
@@ -125,14 +151,14 @@ void ByteRate::vReportStatistics(void)
 
   Now oNow;
   
-  m_xElapsedTimer.vUpdate();
+  vUpdateTimer();
   
-  i8 iAvgBytesPerSec = DIV(m_nBytesSoFar,m_xElapsedTimer.iSeconds());
-  i8 iExtrapolatedPerDay = iAvgBytesPerSec * 60 * 60 * 24;
+  i8 iAvgBytesPerSec = nBytesPerSec();
+  i8 iAvgBytesPerDay = nBytesPerDay();
 
   Magnitudes::vByteMag(iAvgBytesPerSec,2,sAvgMag);
-  Magnitudes::vByteMag(m_nBytesSoFar,2,sSumMag);
-  Magnitudes::vByteMag(iExtrapolatedPerDay,2,sDayMag);
+  Magnitudes::vByteMag(m_nBytesSoFar,  2,sSumMag);
+  Magnitudes::vByteMag(iAvgBytesPerDay,2,sDayMag);
 
   vTrace("%s %s%s %llds: %s/s (%s/day)\n"_Stz,
          oNow.sFormatted()->aChar(),
@@ -144,6 +170,16 @@ void ByteRate::vReportStatistics(void)
          sDayMag.aStz());
   
   m_nNextReport += m_iReportQuantum;
+}
+
+/*----------------------------------------------------------------------------*/
+/* update timer                                                               */
+/*----------------------------------------------------------------------------*/
+void ByteRate::vUpdateTimer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
+  
+  m_xElapsedTimer.vUpdate();
 }
 
 

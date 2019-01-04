@@ -29,9 +29,12 @@ namespace Measurement
   
     void vAddBytes(i8 nBytes);
     void vBeginTiming(void);
+    i8   nBytesPerDay(void);
+    i8   nBytesPerSec(void);
     void vEndTiming(void);
     void vSetReporting(Stz* sPrefix, i8 iReportQuantum);
-  
+    void vUpdateTimer(void);
+
   private:
     void vReportStatistics(void);
 
