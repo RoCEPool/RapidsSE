@@ -352,11 +352,10 @@ bool Job_Ingest::bChunk(void)
   
   MemLib::vCopy(aCopyInto,aCopyFrom,nRemainingBytes,CN_JOB_INGEST);
   
-  m_pQuantaChunk->m_nDataBytes = nQuantumBytes;
-  m_pQuantaChunk->m_nUnprocessedBytes = m_pQuantaChunk->m_nDataBytes;
+  m_pQuantaChunk->m_aNextRecord = (Stz*)m_pQuantaChunk->aDataArea();
   
-  m_pRemainderChunk->m_nDataBytes = nRemainingBytes;
-  m_pRemainderChunk->m_nUnprocessedBytes = m_pRemainderChunk->m_nDataBytes;
+  m_pQuantaChunk->vSetBytes(nQuantumBytes);  
+  m_pRemainderChunk->vSetBytes(nRemainingBytes);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

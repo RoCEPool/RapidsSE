@@ -184,28 +184,19 @@ bool Job_SubIngester::bChunk(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);
   
   IngestChunk* pIngestChunk = m_pJob_Ingest->pPopIngestChunk();
-  
-  if (! pIngestChunk) {
+  if (! pIngestChunk)
     return false;
-  }
   
   //vTrace("Job_SubIngester: got IngestChunk %lld\n"_Stz,pIngestChunk->m_iChunkNo);
   
-  m_pRecordIngestor->vCopy(pIngestChunk);
-  
-  m_pRecordIngestor->m_aNextRecord = (Stz*)m_pRecordIngestor->aDataArea();
-  
-  delete pIngestChunk;
 
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process the records in the chunk
-  
+  // process the records in the ingest chunk
   
   Stz* aRecord;
   i8   nRecordBytes;
 
-  while (m_pRecordIngestor->bGetRecord(&aRecord,nRecordBytes)) {
+  while (pIngestChunk->bGetRecord(&aRecord,nRecordBytes)) {
     
     // process that record into write behind
     eEC eError = eProcessRecord(m_pJob_Ingest->m_pSession,
@@ -223,11 +214,14 @@ bool Job_SubIngester::bChunk(void)
     if (EC_MAX_ROW_LENGTH == eError)
       continue;
     
+    delete pIngestChunk;
     return false;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // finished processing the ingest chunk
   
+  delete pIngestChunk;
   return true;
 }
 /*----------------------------------------------------------------------------*/

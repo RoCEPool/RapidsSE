@@ -129,6 +129,19 @@ char* DataChunk::aDataArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set members                                                                */
+/*----------------------------------------------------------------------------*/
+void DataChunk::vSetBytes(i8 nDataBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_nDataBytes = nDataBytes;
+  m_nUnprocessedBytes = m_nDataBytes;
+
+  m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
+}
+
+/*----------------------------------------------------------------------------*/
 /* get wsp as string pointer                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* DataChunk::aStz(void)

@@ -28,6 +28,9 @@ namespace Chunks
     void  vCopy(DataChunk* pSource);
     void  vCopyPartial(DataChunk* pSource, i8 nBytes);
     char* aDataArea(void);
+  
+    void  vSetBytes(i8 nDataBytes);
+  
     Stz*  aStz(void);
   };
   

@@ -116,6 +116,8 @@ Stz* IngestChunk::aStz(void)
 /*----------------------------------------------------------------------------*/
 bool IngestChunk::bFindRecordEnd(char** aaRecordEnd)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
+  
   // test for explicit record ends
   
   char* aRecordStart;
