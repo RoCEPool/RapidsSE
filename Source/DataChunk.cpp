@@ -71,10 +71,7 @@ void DataChunk::vCopy(DataChunk* pSource)
                 pSource->m_nDataBytes,
                 eClass());
   
-  m_nDataBytes = pSource->m_nDataBytes;
-  m_nUnprocessedBytes = m_nDataBytes;
-  
-  m_aLastDataByte = &m_xWsp.aStz()[m_nDataBytes - 1];
+  vSetBytes(pSource->m_nDataBytes);
 }
 
 /*----------------------------------------------------------------------------*/

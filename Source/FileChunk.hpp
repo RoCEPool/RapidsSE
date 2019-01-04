@@ -26,7 +26,6 @@ namespace Chunks
     void  vRewindFile(void);
     i8    nWriteBytes(i8 nBytes);
     void  vWriteData(void);
-    Stz*  aStz(void);
   };
   
   FileChunk* _pFileChunk(void* aAddr);
