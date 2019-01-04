@@ -735,6 +735,19 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
+  // munge of job_SubIngester.sen
+  sDefinition =
+    "\""
+    "\\\"munged job_SubIngester.sen \\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* job_SubIngester.sen -- Job Table SubIngester                               */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT job_SubIngester.sen"_Stz
+  ;
+
+  vCompileConstant(sDefinition);
+
   // munge of Op_write.sen
   sDefinition =
     "\""
