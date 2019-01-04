@@ -109,8 +109,6 @@ Job_SubIngester::Job_SubIngester(Interface::Session* pSession)
   
   m_pJob_Ingest = nullptr;
   
-  m_pRecordIngestor = new RecordIngestor(&gpAttachMap->m_xFormatters);
-  
   _checkInitialised_(CN_JOB_SUBINGESTER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);
@@ -122,8 +120,6 @@ Job_SubIngester::Job_SubIngester(Interface::Session* pSession)
 Job_SubIngester::~Job_SubIngester(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);
-  
-  delete m_pRecordIngestor;
 }
 
 
