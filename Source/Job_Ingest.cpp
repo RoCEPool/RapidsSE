@@ -311,10 +311,10 @@ bool Job_Ingest::bChunk(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
   if (! m_pQuantaChunk)
-    m_pQuantaChunk  = new IngestChunk(0);
+    m_pQuantaChunk  = new IngestChunk(&gpAttachMap->m_xFormatters);
   
   if (! m_pRemainderChunk)
-    m_pRemainderChunk = new IngestChunk(0);
+    m_pRemainderChunk = new IngestChunk(&gpAttachMap->m_xFormatters);
 
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

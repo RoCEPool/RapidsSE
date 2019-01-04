@@ -230,6 +230,58 @@ bool Job_SubIngester::bChunk(void)
   
   return true;
 }
+/*----------------------------------------------------------------------------*/
+//bool Job_SubIngester::bChunk(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);
+//
+//  IngestChunk* pIngestChunk = m_pJob_Ingest->pPopIngestChunk();
+//
+//  if (! pIngestChunk) {
+//    return false;
+//  }
+//
+//  //vTrace("Job_SubIngester: got IngestChunk %lld\n"_Stz,pIngestChunk->m_iChunkNo);
+//
+//  m_pRecordIngestor->vCopy(pIngestChunk);
+//
+//  m_pRecordIngestor->m_aNextRecord = (Stz*)m_pRecordIngestor->aDataArea();
+//
+//  delete pIngestChunk;
+//
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // process the records in the chunk
+//
+//
+//  Stz* aRecord;
+//  i8   nRecordBytes;
+//
+//  while (m_pRecordIngestor->bGetRecord(&aRecord,nRecordBytes)) {
+//
+//    // process that record into write behind
+//    eEC eError = eProcessRecord(m_pJob_Ingest->m_pSession,
+//                                m_pJob_Ingest->m_iJobId,
+//                                m_pJob_Ingest->m_pTable,
+//                                &gpAttachMap->m_xFormatters,
+//                                aRecord, nRecordBytes, DS_INGEST);
+//
+//    if (EC_NONE == eError)
+//      continue;
+//
+//    if (EC_BLANKLINE == eError)
+//      continue;
+//
+//    if (EC_MAX_ROW_LENGTH == eError)
+//      continue;
+//
+//    return false;
+//  }
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* end sub-ingesting                                                          */

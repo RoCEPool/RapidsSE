@@ -10,6 +10,8 @@ namespace Chunks
                       public ListNode_t<IngestChunk>
   {
   public:
+    Formatters* m_pFormatters; // using these formatters
+
     i8 m_iChunkNo;
   
     // must be last
@@ -19,7 +21,7 @@ namespace Chunks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    IngestChunk(i8 iChunkNo);
+    IngestChunk(Formatters* pFormatters);
     ~IngestChunk(void) noexcept(false);
   
     Stz*  aStz(void);
