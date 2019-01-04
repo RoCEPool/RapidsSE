@@ -55,7 +55,6 @@ IoCopy::IoCopy(void)
   m_pInChunk  = new IoChunk(&gpAttachMap->m_xFormatters);
   m_pOutChunk = new IoChunk(&gpAttachMap->m_xFormatters);
 
-  m_pByteRate = nullptr;
   
   _checkInitialised_(CN_IOCOPY);
   
@@ -71,7 +70,6 @@ IoCopy::~IoCopy(void) noexcept(false)
   
   delete m_pInChunk;
   delete m_pOutChunk;
-  delete m_pByteRate;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,9 +83,6 @@ void IoCopy::vCloseBoth(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCOPY,_FOOTER_);
   
-  if (m_pByteRate)
-    m_pByteRate->vEndTiming();
-
   m_pInChunk->vCloseFile();
   m_pOutChunk->vCloseFile();
 }
@@ -106,9 +101,6 @@ i8 IoCopy::nCopyChunk(void)
   //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pInChunk->aStz());
   
   m_pOutChunk->vCopy(m_pInChunk);
-  
-  if (m_pByteRate)
-    m_pByteRate->vAddBytes(nBytesRead);
   
   m_pOutChunk->vWriteData();
 
@@ -147,19 +139,6 @@ void IoCopy::vRewindInput(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCOPY,_FOOTER_);
   
   m_pInChunk->vRewindFile();
-}
-
-/*----------------------------------------------------------------------------*/
-/* write data                                                                 */
-/*----------------------------------------------------------------------------*/
-void IoCopy::vWithStatistics(Stz* aPrefix)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_IOCOPY,_FOOTER_);
-
-  m_pByteRate = new ByteRate;
-  
-  m_pByteRate->vSetReporting(aPrefix,C_1GB * 10);
-  m_pByteRate->vBeginTiming();
 }
 
 /*----------------------------------------------------------------------------*/

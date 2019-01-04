@@ -11,8 +11,6 @@ namespace Chunks
   private:
     IoChunk*  m_pInChunk;
     IoChunk*  m_pOutChunk;
-
-    ByteRate* m_pByteRate;
   
     // must be last
     Footer m_xFooter;
@@ -29,7 +27,6 @@ namespace Chunks
     bool  bOpenRead(s256& sPath);
     bool  bOpenWrite(s256& sPath);
     void  vRewindInput(void);
-    void  vWithStatistics(Stz* aPrefix);
   
   private:
     Footer* aFooter(void);
