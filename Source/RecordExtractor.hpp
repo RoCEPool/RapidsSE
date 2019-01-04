@@ -22,7 +22,7 @@ namespace Chunks
   
     bool  bGetRecord(Stz** aaRecord, i8& nRecordBytes);
   
-    protected:
+  protected:
     bool  bFindRecordEnd(char** aaRecordEnd);
   
   private:

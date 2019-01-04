@@ -15,7 +15,6 @@ namespace Chunks
     Stz* m_aLastDataByte;     // last data byte of where data chunk ends
     i8   m_nUnprocessedBytes; // bytes yet to be processed
   
-
     WspFxd<C_DATA_CHUNK> m_xWsp; // workspace
   
   public:
@@ -24,14 +23,10 @@ namespace Chunks
     DataChunk(eCN eClass);
     ~DataChunk(void) noexcept(false);
   
-    i8    nCompleteBytes(void);
     void  vCopy(DataChunk* pSource);
-    void  vCopyPartial(DataChunk* pSource, i8 nBytes);
     char* aDataArea(void);
-  
+    i8    nQuantumBytes(void);
     void  vSetBytes(i8 nDataBytes);
-  
-    Stz*  aStz(void);
   };
   
   DataChunk* _pDataChunk(void* aAddr);

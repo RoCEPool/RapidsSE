@@ -22,8 +22,6 @@ namespace Chunks
     IngestChunk(Formatters* pFormatters);
     ~IngestChunk(void) noexcept(false);
   
-    Stz*  aStz(void);
- 
   private:
     Footer* aFooter(void);
   };
