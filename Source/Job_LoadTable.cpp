@@ -163,7 +163,12 @@ bool Job_LoadTable::bBegin(void)
   
   bool bOpened = m_pLoadMap->bOpenFile();
   
-  return bOpened;
+  if (! bOpened)
+    return false;
+  
+  m_pLoadMap->vGetEof();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

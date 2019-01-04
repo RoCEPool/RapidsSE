@@ -39,8 +39,8 @@ namespace Chunks
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-    void vCloseFile(void);
     void vDumpMap(void);
+    void vGetEof(void);
     bool bMapChunk(void);
     bool bMappingDone(void);
     void vMappingDone(bool bMappingDone);

@@ -88,16 +88,6 @@ void LoadMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* close file                                                                 */
-/*----------------------------------------------------------------------------*/
-void LoadMap::vCloseFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
-  
-  FileChunk::vCloseFile();
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump load map                                                              */
 /*----------------------------------------------------------------------------*/
 void LoadMap::vDumpMap(void)
@@ -109,6 +99,18 @@ void LoadMap::vDumpMap(void)
   }
   
   vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get eof location                                                           */
+/*----------------------------------------------------------------------------*/
+void LoadMap::vGetEof(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
+  
+  // get the end-of-file location
+  m_oFile.vSeekEnd();
+  m_i_EofLoc = m_oFile.iTell();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,10 +200,6 @@ bool LoadMap::bOpenFile(void)
   bool bOpened = bOpenRead(m_sFilePath);
   if (! bOpened)
     return false;
-  
-  // get the end-of-file location
-  m_oFile.vSeekEnd();
-  m_i_EofLoc = m_oFile.iTell();
   
   return true;
 }
