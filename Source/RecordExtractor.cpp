@@ -28,7 +28,6 @@ RecordExtractor::RecordExtractor(eCN eClassNo, Formatters* pFormatters)
 
   m_pFormatters  = pFormatters;
   m_aNextRecord  = nullptr;
-  m_nRecordBytes = 0;
 
    _postcondition_(_ADDRESS_,_MAGIC_);
 }
@@ -69,12 +68,11 @@ bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
     return false;
   
   // compute the number of bytes
-  m_nRecordBytes = aEndRecord - aStartRecord + 1;
-  nRecordBytes = m_nRecordBytes;
+  nRecordBytes = aEndRecord - aStartRecord + 1;
   
   // advance to beginning of next record for next time
   m_aNextRecord = aEndRecord + 1;
-  m_nUnprocessedBytes -= m_nRecordBytes;
+  m_nUnprocessedBytes -= nRecordBytes;
   
   *aaRecord = aStartRecord;
   

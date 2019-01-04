@@ -11,8 +11,7 @@ namespace Chunks
   public:
     Formatters* m_pFormatters; // using these formatters
   
-    Stz* m_aNextRecord;        // first byte of next record
-    i8   m_nRecordBytes;       // size of record
+    Stz* m_aNextRecord; // first byte of next record
   
   public:
     RecordExtractor(eCN eClassNo, Formatters* pFormatters);
