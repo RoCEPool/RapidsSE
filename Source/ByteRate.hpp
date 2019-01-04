@@ -13,7 +13,7 @@ namespace Measurement
   s32   m_sReportPrefix;  // report prefix
   i8    m_iReportQuantum; // how often to report at
   
-  Timer m_xElapsedTimer;  // timer
+  Timer m_oElapsedTimer;  // timer
   i8    m_nBytesSoFar;    // number of bytes read/written so far
   i8    m_nNextReport;    // next byte quantity to report at
 
@@ -30,7 +30,8 @@ namespace Measurement
     void vAddBytes(i8 nBytes);
     void vBeginTiming(void);
     i8   nBytesPerDay(void);
-    i8   nBytesPerSec(void);
+    i8   nBytesPerMilliSecond(void);
+    i8   nBytesPerSecond(void);
     void vEndTiming(void);
     void vSetReporting(Stz* sPrefix, i8 iReportQuantum);
     void vUpdateTimer(void);

@@ -46,7 +46,7 @@ ByteRate::ByteRate(void)
   m_sReportPrefix  = "<none>"_Stz;
   m_iReportQuantum = 0;
   
-  //m_xElapsedTimer
+  //m_oElapsedTimer
   m_nBytesSoFar = 0;
   m_nNextReport = 0;
   
@@ -83,7 +83,7 @@ void ByteRate::vBeginTiming(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
 
-  m_xElapsedTimer.vStart();
+  m_oElapsedTimer.vStart();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,24 +93,41 @@ i8 ByteRate::nBytesPerDay(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
   
-  i8 iAvgBytesPerSec = nBytesPerSec();
+  i8 iAvgBytesPerMilliSec = nBytesPerMilliSecond();
   
-  i8 iAvgBytesPerDay = iAvgBytesPerSec * 60 * 60 * 24;
+  i8 iAvgBytesPerDay = iAvgBytesPerMilliSec * 1000 * 60 * 60 * 24;
 
   return iAvgBytesPerDay;
 }
 
 /*----------------------------------------------------------------------------*/
-/* calculate current byte rate per sec                                        */
+/* calculate current byte rate per millisec                                   */
 /*----------------------------------------------------------------------------*/
-i8 ByteRate::nBytesPerSec(void)
+i8 ByteRate::nBytesPerMilliSecond(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
   
-  i8 iAvgBytesPerSec = DIV(m_nBytesSoFar,m_xElapsedTimer.iSeconds());
+  i8 nMilliSeconds = m_oElapsedTimer.iMilliseconds();
+  
+  i8 iAvgBytesPerMilliSec = DIV(m_nBytesSoFar,nMilliSeconds);
+  
+  return iAvgBytesPerMilliSec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calculate current byte rate per sec                                        */
+/*----------------------------------------------------------------------------*/
+i8 ByteRate::nBytesPerSecond(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
+  
+  i8 nSeconds = m_oElapsedTimer.iSeconds();
+  
+  i8 iAvgBytesPerSec = DIV(m_nBytesSoFar,nSeconds);
   
   return iAvgBytesPerSec;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* end timing                                                                 */
@@ -145,28 +162,34 @@ void ByteRate::vReportStatistics(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
   
-  s32 sAvgMag;
   s32 sSumMag;
+  s32 sMilMag;
+  s32 sSecMag;
   s32 sDayMag;
 
   Now oNow;
   
   vUpdateTimer();
   
-  i8 iAvgBytesPerSec = nBytesPerSec();
+  i8 iElapsedSeconds = m_oElapsedTimer.iSeconds();
+  i8 iAvgBytesPerMil = nBytesPerMilliSecond();
+  i8 iAvgBytesPerSec = nBytesPerSecond();
   i8 iAvgBytesPerDay = nBytesPerDay();
 
-  Magnitudes::vByteMag(iAvgBytesPerSec,2,sAvgMag);
   Magnitudes::vByteMag(m_nBytesSoFar,  2,sSumMag);
+  Magnitudes::vByteMag(iAvgBytesPerMil,2,sMilMag);
+  Magnitudes::vByteMag(iAvgBytesPerSec,2,sSecMag);
   Magnitudes::vByteMag(iAvgBytesPerDay,2,sDayMag);
 
-  vTrace("%s %s%s %llds: %s/s (%s/day)\n"_Stz,
+  vTrace("%s %s %llds: sum %s %s/ms %s/s %s/day\n"_Stz,
+         
          oNow.sFormatted()->aChar(),
          m_sReportPrefix.aStz(),
-         sSumMag.aStz(),
-         m_xElapsedTimer.iSeconds(),
+         iElapsedSeconds,
          
-         sAvgMag.aStz(),
+         sSumMag.aStz(),
+         sMilMag.aStz(),
+         sSecMag.aStz(),
          sDayMag.aStz());
   
   m_nNextReport += m_iReportQuantum;
@@ -179,7 +202,7 @@ void ByteRate::vUpdateTimer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
   
-  m_xElapsedTimer.vUpdate();
+  m_oElapsedTimer.vUpdate();
 }
 
 
