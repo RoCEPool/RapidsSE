@@ -218,7 +218,6 @@ enum eCN : u2 // Class Number
   /* 160 */ CN_QUEUES,
   
   /* 161 */ CN_RBCURSOR,
-  /*     */ CN_RECORDINGESTOR,
   /* 137 */ CN_RECORDLOADER,
   /* 162 */ CN_REGFRAME,
   /*     */ CN_RESOURCETRACKER,
@@ -489,7 +488,6 @@ static Stz* aCN[]
   /* 160 */ "QUEUES"_Stz,              // CN_QUEUES
   
   /* 161 */ "RBCURSOR"_Stz,            // CN_RBCURSOR
-  /*     */ "RECORDINGESTOR"_Stz,      // CN_RECORDINGESTOR
   /* 137 */ "RECORDLOADER"_Stz,        // CN_RECORDLOADER
   /* 162 */ "REGFRAME"_Stz,            // CN_REGFRAME
   /*     */ "RESOURCETRACK"_Stz,       // CN_RESOURCETRACKER
@@ -519,7 +517,7 @@ static Stz* aCN[]
   /* 184 */ "SOCKET"_Stz,              // CN_SOCKET
   /* 185 */ "STACK"_Stz,               // CN_STACK
   /* 186 */ "STEPACCUM"_Stz,           // CN_STEPACCUM
-  /* 187 */ "StepTiming"_Stz,         // CN_STEPTIMING
+  /* 187 */ "STEPTIMING"_Stz,          // CN_STEPTIMING
   /* 188 */ "SYSCALL"_Stz,             // CN_SYSCALL
   
   /* 189 */ "TABLE"_Stz,               // CN_TABLE

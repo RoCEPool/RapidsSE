@@ -222,7 +222,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_QUEUES
 
   /* 97 */ &Dump::vUndefined,       // CN_RBCURSOR
-  /*    */ &Dump::vDummy,           // CN_RECORDINGESTOR
   /* 68 */ &Dump::vDummy,           // CN_RECORDLOADER
   /*    */ &RegFrame::vDump,        // CN_REGFRAME
   /*    */ &RegFrame::vDump,        // CN_RESOURCETRACKER
@@ -497,7 +496,6 @@ i8 giClassSize[]
   /*    */ sizeof(Queues),             // CN_QUEUES
   
   /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
-  /*    */ sizeof(RecordIngestor),     // CN_RECORDINGESTOR
   /* 68 */ sizeof(RecordLoader),       // CN_RECORDLOADER
   /*    */ sizeof(RegFrame),           // CN_REGFRAME
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
@@ -772,7 +770,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_QUEUES
   
   /* 97 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
-  /*    */ HT_TRANSIENT_LARGE,   // CN_RECORDINGESTOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_RECORDLOADER
   /*    */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
   /*    */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
