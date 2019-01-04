@@ -29,6 +29,7 @@ namespace System
     ~Socket() noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static void vStatistics(void);
 
     void vAddrInit(sockaddr_in* aAddr, int iPort);
     void vAddrInit(sockaddr_in* aAddr, Stz* sAddr, int iPort);

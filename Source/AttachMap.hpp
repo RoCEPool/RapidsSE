@@ -127,6 +127,19 @@ namespace StorageEngine
     i8            m_nFilePrintBytes;
     i8            m_nFileWriteBytes;
 
+    i8            m_nSocketAccepts;
+    i8            m_nSocketCloses;
+    i8            m_nSocketConnects;
+    i8            m_nSocketListens;
+    i8            m_nSocketPeeks;
+    i8            m_nSocketRecvs;
+    i8            m_nSocketRecvFroms;
+    i8            m_nSocketSends;
+    i8            m_nSocketSendTos;
+
+    i8            m_nSocketRecvBytes;
+    i8            m_nSocketSendBytes;
+  
     // must be last
     Footer m_xFooter;
     
