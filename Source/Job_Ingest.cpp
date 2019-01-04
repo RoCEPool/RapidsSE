@@ -285,7 +285,7 @@ bool Job_Ingest::bChunk(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
   if (! m_pQuantaChunk)
-    m_pQuantaChunk  = new IngestChunk(&gpAttachMap->m_xFormatters);
+    m_pQuantaChunk = new IngestChunk(&gpAttachMap->m_xFormatters);
   
   if (! m_pRemainderChunk)
     m_pRemainderChunk = new IngestChunk(&gpAttachMap->m_xFormatters);
@@ -294,23 +294,29 @@ bool Job_Ingest::bChunk(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // read next chunk, adjusting for any carry over from last chunk
   
-  i8 nCarryOverBytes = m_pQuantaChunk->m_nDataBytes;
+//  i8 nCarryOverBytes = m_pQuantaChunk->m_nDataBytes;
+//
+//  void* aReadDst = pAdd<void*>(m_pQuantaChunk->aDataArea(),nCarryOverBytes);
+//
+//  i8 nBytesToRead = C_1M - nCarryOverBytes;
+//
+//  i8 nBytesRead = m_oFile.nReadBytes(aReadDst,nBytesToRead);
+//
+//  if  (! nBytesRead) {
+//    m_iLastChunk = m_nChunksSoFar;
+//    return false;
+//  }
+//
+//  m_pQuantaChunk->m_nDataBytes = nCarryOverBytes + nBytesRead;
+//
+//  m_pQuantaChunk->m_nUnprocessedBytes = m_pQuantaChunk->m_nDataBytes;
   
-  void* aReadDst = pAdd<void*>(m_pQuantaChunk->aDataArea(),nCarryOverBytes);
-  
-  i8 nBytesToRead = C_1M - nCarryOverBytes;
-  
-  i8 nBytesRead = m_oFile.nReadBytes(aReadDst,nBytesToRead);
-  
+  i8 nBytesRead = m_pQuantaChunk->nReadMore(m_oFile);
   if  (! nBytesRead) {
     m_iLastChunk = m_nChunksSoFar;
     return false;
   }
-  
-  m_pQuantaChunk->m_nDataBytes = nCarryOverBytes + nBytesRead;
-  
-  m_pQuantaChunk->m_nUnprocessedBytes = m_pQuantaChunk->m_nDataBytes;
-  
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // identify the set of whole records and move remainder into next chunk

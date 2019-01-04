@@ -22,6 +22,8 @@ namespace Chunks
     IngestChunk(Formatters* pFormatters);
     ~IngestChunk(void) noexcept(false);
   
+    i8 nReadMore(File& oFile);
+  
   private:
     Footer* aFooter(void);
   };

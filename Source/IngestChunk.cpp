@@ -66,6 +66,32 @@ IngestChunk::~IngestChunk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+i8 IngestChunk::nReadMore(File& oFile)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK);
+  
+  i8 nCarryOverBytes = m_nDataBytes;
+  
+  void* aReadDst = pAdd<void*>(aDataArea(),nCarryOverBytes);
+  
+  i8 nBytesToRead = C_DATA_CHUNK - nCarryOverBytes;
+  
+  i8 nBytesRead = oFile.nReadBytes(aReadDst,nBytesToRead);
+  
+  if  (! nBytesRead) {
+    return 0;
+  }
+  
+  m_nDataBytes = nCarryOverBytes + nBytesRead;
+  
+  m_nUnprocessedBytes = m_nDataBytes;
+
+  return nBytesRead;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Protected ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
