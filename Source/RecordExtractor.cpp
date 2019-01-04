@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RecordExtractor.cpp -- Record Extractor                                    */
+/* RecordExtractor_NEW.cpp -- Record Extractor                                */
 /*============================================================================*/
 
 #include "Chunks.h"
@@ -11,32 +11,32 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RecordExtractor* Chunks::_pRecordExtractor(void* aAddr)
+RecordExtractor_NEW* Chunks::_pRecordExtractor_NEW(void* aAddr)
 {
-  RecordExtractor* pRecordExtractor = reinterpret_cast<RecordExtractor*>(aAddr);
+  RecordExtractor_NEW* pRecordExtractor_NEW = reinterpret_cast<RecordExtractor_NEW*>(aAddr);
   
-  return pRecordExtractor;
+  return pRecordExtractor_NEW;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RecordExtractor::RecordExtractor(eCN eClassNo, Formatters* pFormatters)
-: FileChunk(eClassNo)
+RecordExtractor_NEW::RecordExtractor_NEW(eCN eClassNo, Formatters* pFormatters)
+: DataChunk(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  m_pFormatters = pFormatters;
-  
-  vReset();
-  
+  m_pFormatters  = pFormatters;
+  m_aNextRecord  = nullptr;
+  m_nRecordBytes = 0;
+
    _postcondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RecordExtractor::~RecordExtractor(void) noexcept(false)
+RecordExtractor_NEW::~RecordExtractor_NEW(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 }
@@ -44,7 +44,7 @@ RecordExtractor::~RecordExtractor(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump SubLoader                                                             */
 /*----------------------------------------------------------------------------*/
-void RecordExtractor::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void RecordExtractor_NEW::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
 }
 
@@ -53,19 +53,9 @@ void RecordExtractor::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* close file                                                                 */
-/*----------------------------------------------------------------------------*/
-void RecordExtractor::vCloseFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  FileChunk::vCloseFile();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
-bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
+bool RecordExtractor_NEW::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -92,95 +82,13 @@ bool RecordExtractor::bGetRecord(Stz** aaRecord, i8& nRecordBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* open file                                                                  */
-/*----------------------------------------------------------------------------*/
-bool RecordExtractor::bOpenFile(s256& sPath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  bool bOpened = FileChunk::bOpenRead(sPath);
-  
-  return bOpened;
-}
-
-/*----------------------------------------------------------------------------*/
-/* read next chunk from file                                                  */
-/*----------------------------------------------------------------------------*/
-bool RecordExtractor::bReadNextChunk(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  vCopyDown();
-  
-  Stz* aStartArea = (Stz*)aDataArea();
-  Stz* aIntoAddr  = pAdd<Stz*>(aStartArea,m_nUnprocessedBytes);
-  i8   nAsMuchAs  = C_DATA_CHUNK - m_nUnprocessedBytes;
-
-  i8 nBytesRead = m_oFile.nReadBytes(aIntoAddr,nAsMuchAs);
-  
-  if (! nBytesRead)
-    return false;
-  
-  m_nUnprocessedBytes += nBytesRead;
-  m_nDataBytes = m_nUnprocessedBytes;
-  
-  m_aLastDataByte = &(aStartArea)[m_nDataBytes - 1];
-  m_aNextRecord   = aStartArea;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* read given chunk from file                                                 */
-/*----------------------------------------------------------------------------*/
-void RecordExtractor::vReadSpecificChunk(i8 iSeek, i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_oFile.vSeek(iSeek);
-  
-  Stz* aStartArea = (Stz*)aDataArea();
-  Stz* aIntoAddr  = aStartArea;
-  i8   nAsMuchAs  = nBytes;
-
-  i8 nBytesRead = m_oFile.nReadBytes(aIntoAddr,nAsMuchAs);
-
-  RASSERT(nBytesRead == nAsMuchAs);
-  
-  m_nUnprocessedBytes = nBytesRead;
-  m_nDataBytes = m_nUnprocessedBytes;
-
-  m_aLastDataByte =  &(aStartArea)[m_nDataBytes - 1];
-  m_aNextRecord   = aStartArea;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* copy any remainder to beginning of workspace                               */
-/*----------------------------------------------------------------------------*/
-void RecordExtractor::vCopyDown(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  if (! m_nUnprocessedBytes)
-    return;
-  
-  Stz* aStartArea = (Stz*)aDataArea();
-  Stz* aFromChar  = pAdd<Stz*>(aStartArea,m_nDataBytes - m_nUnprocessedBytes);
-  
-  MemLib::vCopy(aStartArea,
-                aFromChar,
-                m_nUnprocessedBytes,
-                eClass());
-}
-
-/*----------------------------------------------------------------------------*/
 /* find the last character of next record within chunk (a '\r' or '\n')       */
 /*----------------------------------------------------------------------------*/
-bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
+bool RecordExtractor_NEW::bFindRecordEnd(char** aaRecordEnd)
 {
   // test for explicit record ends
   
@@ -297,18 +205,6 @@ bool RecordExtractor::bFindRecordEnd(char** aaRecordEnd)
   }
   
   NEVER_REACH;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset to initial position (no data)                                        */
-/*----------------------------------------------------------------------------*/
-void RecordExtractor::vReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_aLastDataByte  = nullptr;
-  m_aNextRecord  = nullptr;
-  m_nRecordBytes = 0;
 }
 
 /*============================================================================*/
