@@ -206,7 +206,7 @@ void Slots::vPublishIndex(i8 iPartitionNO, i8 iIndexNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* purge partition buffers                                                    */
+/* attempt to purge oldest buffer                                             */
 /*----------------------------------------------------------------------------*/
 bool Slots::bPurgeIndex(i8 iPartitionNo, i8 iIndexNo, i8 iOlderThanSeconds)
 {

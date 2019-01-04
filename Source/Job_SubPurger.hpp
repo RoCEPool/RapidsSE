@@ -15,6 +15,8 @@ namespace JobModel
   
     Job_Purge* m_pJob_Purge;
     Table* m_pTable;
+  
+    i8 m_nPurgeCount;    // number of buffers purged
     
     // must be last
     Footer m_xFooter;

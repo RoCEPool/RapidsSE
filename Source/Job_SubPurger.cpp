@@ -112,6 +112,7 @@ Job_SubPurger::Job_SubPurger(Interface::Session* pSession)
   
   m_pJob_Purge  = nullptr;
   m_pTable      = nullptr;
+  m_nPurgeCount = 0;
   
   _checkInitialised_(CN_JOB_SUBPURGER);
   
@@ -159,26 +160,6 @@ bool Job_SubPurger::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
   
-//  Job__Find* pFindJob = new Job__Find;
-//  pFindJob->m_iJobId = m_iPurgeJobId;
-//
-//  gpAttachMap->m_pParticipatingJobs->vGrabLock();
-//  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-//  gpAttachMap->m_pParticipatingJobs->vDropLock();
-//
-//  if ( JOB_TRACE || ! pJobFound ) {
-//    vTrace("------------------------------------\n"_Stz);
-//    vTrace("%s Looking for JobId %lld in participant\n"_Stz, aCN[eClass()],m_iPurgeJobId);
-//    vTrace("------------------------------------\n"_Stz);
-//
-//    gpAttachMap->m_pParticipatingJobs->vGrabLock();
-//    gpAttachMap->m_pParticipatingJobs->vContentDump();
-//    pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-//    gpAttachMap->m_pParticipatingJobs->vDropLock();
-//  }
-//
-//  delete pFindJob;
-  
   Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(m_iPurgeJobId);
   RASSERT(pJobFound);
   
@@ -188,7 +169,7 @@ bool Job_SubPurger::bBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* chunk sub purger                                                           */
+/* attempt to purge oldest buffer                                             */
 /*----------------------------------------------------------------------------*/
 bool Job_SubPurger::bChunk(void)
 {
@@ -197,6 +178,14 @@ bool Job_SubPurger::bChunk(void)
   i8 iOlderThanSeconds = m_pJob_Purge->m_iOlderThanSeconds;
   
   bool bPurged = m_pTable->bPurge(m_iSlot,iOlderThanSeconds);
+  
+  if (bPurged) {
+    m_nPurgeCount++;
+    if (0 == m_nPurgeCount % 100) {
+      vTrace("SubPurger %lld: Purged %lld buffers from %s\n"_Stz,
+             m_iSlot,m_nPurgeCount,m_pTable->aTableName()->aChar());
+    }
+  }
 
   return bPurged;
 }

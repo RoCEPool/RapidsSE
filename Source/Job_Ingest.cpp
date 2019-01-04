@@ -270,7 +270,7 @@ bool Job_Ingest::bBegin(void)
                   gpAttachMap->m_nSubIngesters);
   
   if (m_pByteRate) {
-    m_pByteRate->vSetReporting(sPrefix,C_1GB * 10);
+    m_pByteRate->vSetReporting(sPrefix,C_1GB * 1);
     m_pByteRate->vBeginTiming();
   }
 

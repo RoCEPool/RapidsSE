@@ -704,15 +704,15 @@ void Table::vPublish(i8 iPartition)
 }
 
 /*----------------------------------------------------------------------------*/
-/* purge rows/buffers                                                         */
+/* attempt to purge oldest buffer                                             */
 /*----------------------------------------------------------------------------*/
 bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  vTrace("Purging table %s\n"_Stz, m_sTableName.aChar());
+  //vTrace("Purging table %s\n"_Stz, m_sTableName.aChar());
   
-  // purge all other indices
+  // purge all other indexes
   for (i8 iIndexNo = 0; iIndexNo < m_pIdxVec->nItems(); iIndexNo++) {
     
     Index* pIndex = m_pIdxVec->pGet(iIndexNo);

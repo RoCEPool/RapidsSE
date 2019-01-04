@@ -1098,7 +1098,7 @@ void IndexTree::vPublish(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt to purge first buffer of index tree                                */
+/* attempt to purge oldest buffer of index tree                               */
 /*----------------------------------------------------------------------------*/
 bool IndexTree::bPurge(i8 iOlderThanSeconds)
 {

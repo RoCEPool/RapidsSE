@@ -38,7 +38,10 @@ print "=====================================================================";
 //nowait repeater "/tpch/SF1/customer.csv" "/tmp/customer.pipe" ;
 
 //docol stepTimingStart;
-ingest lineitem "/tpch/SF1/lineitem.csv" stats ;
+nowait purge lineitem 1;
+
+ingest lineitem "/tpch/SF10/lineitem.csv" stats ;
+
 //docol stepTimingWrite;
 
 print "";
