@@ -188,6 +188,7 @@ enum eCN : u2 // Class Number
   /* 135 */ CN_LARGETRANSIENT,
   /* 136 */ CN_LINEITEM,
   /*     */ CN_LIST,
+  /*     */ CN_LOADCHUNK,
   /* 140 */ CN_LOADMAP,
   /* 141 */ CN_LOCK,
   
@@ -218,7 +219,6 @@ enum eCN : u2 // Class Number
   /* 160 */ CN_QUEUES,
   
   /* 161 */ CN_RBCURSOR,
-  /* 137 */ CN_RECORDLOADER,
   /* 162 */ CN_REGFRAME,
   /*     */ CN_RESOURCETRACKER,
   /* 163 */ CN_RING,
@@ -458,6 +458,7 @@ static Stz* aCN[]
   /* 135 */ "LARGETRANSIENT"_Stz,      // CN_LARGETRANSIENT
   /* 136 */ "LINEITEM"_Stz,            // CN_LINEITEM
   /*     */ "LIST"_Stz,                // CN_LIST
+  /*     */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
   /* 140 */ "LOADMAP"_Stz,             // CN_LOADMAP
   /* 141 */ "LOCK"_Stz,                // CN_LOCK
   
@@ -488,7 +489,6 @@ static Stz* aCN[]
   /* 160 */ "QUEUES"_Stz,              // CN_QUEUES
   
   /* 161 */ "RBCURSOR"_Stz,            // CN_RBCURSOR
-  /* 137 */ "RECORDLOADER"_Stz,        // CN_RECORDLOADER
   /* 162 */ "REGFRAME"_Stz,            // CN_REGFRAME
   /*     */ "RESOURCETRACK"_Stz,       // CN_RESOURCETRACKER
   /* 163 */ "RING"_Stz,                // CN_RING

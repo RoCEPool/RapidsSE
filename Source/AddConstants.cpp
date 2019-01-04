@@ -277,6 +277,7 @@ void Axioms::vAddConstants(void)
   
   /* 31 */ vAddConstant("CN_KEYWRK"_Stz,       CN_KEYWRK);
   
+  /*    */ vAddConstant("CN_LOADCHUNK"_Stz,    CN_LOADCHUNK);
   /* 35 */ vAddConstant("CN_LOADMAP"_Stz,      CN_LOADMAP);
   /* 36 */ vAddConstant("CN_LOCK"_Stz,         CN_LOCK);
   
@@ -296,7 +297,6 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_QUEUES"_Stz,       CN_QUEUES);
   
   /*    */ vAddConstant("CN_RBCURSOR"_Stz,     CN_RBCURSOR);
-  /*    */ vAddConstant("CN_RECORDLOADER"_Stz, CN_RECORDLOADER);
   /* 47 */ vAddConstant("CN_REGFRAME"_Stz,     CN_REGFRAME);
   /* 48 */ vAddConstant("CN_RING"_Stz,         CN_RING);
   /* 50 */ vAddConstant("CN_ROWBUFFER"_Stz,    CN_ROWBUFFER);

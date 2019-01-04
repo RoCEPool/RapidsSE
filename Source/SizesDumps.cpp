@@ -191,6 +191,7 @@ pDUMPFUN *gpDump[]
   /* 66 */ &Heap::vDump,            // CN_LARGETRANSIENT
   /* 67 */ &Dump::vDummy,           // CN_LINEITEM
   /*    */ &Dump::vInvalid,         // CN_LIST
+  /*    */ &Dump::vDummy,           // CN_LOADCHUNK
   /* 71 */ &LoadMap::vDump,         // CN_LOADMAP
   /* 72 */ &Dump::vInvalid,         // CN_LOCK
   
@@ -222,7 +223,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_QUEUES
 
   /* 97 */ &Dump::vUndefined,       // CN_RBCURSOR
-  /* 68 */ &Dump::vDummy,           // CN_RECORDLOADER
   /*    */ &RegFrame::vDump,        // CN_REGFRAME
   /*    */ &RegFrame::vDump,        // CN_RESOURCETRACKER
   /*101 */ &Dump::vUndefined,       // CN_RING
@@ -466,6 +466,7 @@ i8 giClassSize[]
   /* 66 */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
   /* 67 */ sizeof(LineItem),           // CN_LINEITEM
   /*    */ sizeof(ListNL_t<Task>),     // CN_LIST
+  /*    */ sizeof(LoadChunk),          // CN_LOADCHUNK
   /* 71 */ sizeof(LoadMap),            // CN_LOADMAP
   /* 72 */ sizeof(Lock),               // CN_LOCK
   
@@ -496,7 +497,6 @@ i8 giClassSize[]
   /*    */ sizeof(Queues),             // CN_QUEUES
   
   /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
-  /* 68 */ sizeof(LoadChunk),          // CN_RECORDLOADER
   /*    */ sizeof(RegFrame),           // CN_REGFRAME
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*101 */ sizeof(Ring),               // CN_RING
@@ -740,6 +740,7 @@ eHT geWhichHeap[]
   /* 66 */ HT_INVALID,           // CN_LARGETRANSIENT
   /* 67 */ HT_INVALID,           // CN_LINEITEM
   /*    */ HT_TRANSIENT_SMALL,   // CN_LIST
+  /*    */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
   /* 71 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
   /* 72 */ HT_INVALID,           // CN_LOCK
   
@@ -770,7 +771,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_QUEUES
   
   /* 97 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
-  /*    */ HT_TRANSIENT_LARGE,   // CN_RECORDLOADER
   /*    */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
   /*    */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
   /*101 */ HT_INVALID,           // CN_RING

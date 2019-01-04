@@ -15,7 +15,7 @@ LoadChunk* Chunks::_pLoadChunk(void* aAddr)
 {
   LoadChunk* pLoadChunk = reinterpret_cast<LoadChunk*>(aAddr);
   
-  RASSERT_TYPE(pLoadChunk,CN_RECORDLOADER);
+  RASSERT_TYPE(pLoadChunk,CN_LOADCHUNK);
   
   return pLoadChunk;
 }
@@ -25,7 +25,7 @@ LoadChunk* Chunks::_pLoadChunk(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* LoadChunk::operator new(size_t)
 {
-  LoadChunk* pLoadChunk = (LoadChunk*)HeapMem::pAllocate(CN_RECORDLOADER);
+  LoadChunk* pLoadChunk = (LoadChunk*)HeapMem::pAllocate(CN_LOADCHUNK);
   
   return pPoolCheck<void*>(pLoadChunk);
 }
@@ -44,13 +44,13 @@ void LoadChunk::operator delete(void* pLoadChunkAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LoadChunk::LoadChunk(Formatters* pFormatters)
-: FileChunk(CN_RECORDLOADER,pFormatters)
+: FileChunk(CN_LOADCHUNK,pFormatters)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
  
-  _checkInitialised_(CN_RECORDLOADER);
+  _checkInitialised_(CN_LOADCHUNK);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +58,7 @@ LoadChunk::LoadChunk(Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 LoadChunk::~LoadChunk(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +80,7 @@ void LoadChunk::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 Footer* LoadChunk::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDLOADER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK);
   
   return &m_xFooter;
 }
