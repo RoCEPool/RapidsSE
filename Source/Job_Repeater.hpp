@@ -16,6 +16,8 @@ namespace JobModel
   
     IoCopy*   m_pIoCopy;
     bool      m_bStatistics;
+  
+    i8        m_nRepeats;
 
     // must be last
     Footer m_xFooter;

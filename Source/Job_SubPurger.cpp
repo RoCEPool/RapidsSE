@@ -181,7 +181,7 @@ bool Job_SubPurger::bChunk(void)
   
   if (bPurged) {
     m_nPurgeCount++;
-    if (0 == m_nPurgeCount % 100) {
+    if (0 == m_nPurgeCount % 250) {
       vTrace("SubPurger %lld: Purged %lld buffers from %s\n"_Stz,
              m_iSlot,m_nPurgeCount,m_pTable->aTableName()->aChar());
     }

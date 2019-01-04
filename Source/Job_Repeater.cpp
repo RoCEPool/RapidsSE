@@ -111,6 +111,8 @@ Job_Repeater::Job_Repeater(Interface::Session* pSession)
   
   m_pIoCopy = new IoCopy;
   m_bStatistics = false;
+  
+  m_nRepeats = 0;
 
   _checkInitialised_(CN_JOB_REPEATER);
   
@@ -278,6 +280,9 @@ bool Job_Repeater::bChunk(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
   if (! m_pIoCopy->bCopyChunk()) {
+    m_nRepeats++;
+    vTrace("Repeating %s times %lld\n"_Stz,
+           m_sFileName.aChar(),m_nRepeats);
     m_pIoCopy->vRewindInput();
     return m_pIoCopy->bCopyChunk();
   }

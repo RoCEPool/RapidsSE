@@ -123,6 +123,8 @@ void ByteRate::vReportStatistics(void)
   s32 sSumMag;
   s32 sDayMag;
 
+  Now oNow;
+  
   m_xElapsedTimer.vUpdate();
   
   i8 iAvgBytesPerSec = DIV(m_nBytesSoFar,m_xElapsedTimer.iSeconds());
@@ -132,7 +134,8 @@ void ByteRate::vReportStatistics(void)
   Magnitudes::vByteMag(m_nBytesSoFar,2,sSumMag);
   Magnitudes::vByteMag(iExtrapolatedPerDay,2,sDayMag);
 
-  vTrace("%s%s %llds: %s/s (%s/day)\n"_Stz,
+  vTrace("%s %s%s %llds: %s/s (%s/day)\n"_Stz,
+         oNow.sFormatted()->aChar(),
          m_sReportPrefix.aStz(),
          sSumMag.aStz(),
          m_xElapsedTimer.iSeconds(),
