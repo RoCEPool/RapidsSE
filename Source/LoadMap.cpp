@@ -43,12 +43,11 @@ void LoadMap::operator delete(void* pLoadMapAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LoadMap::LoadMap(Stz* aFilePath)
+LoadMap::LoadMap(void)
 : FileChunk(CN_LOADMAP,&gpAttachMap->m_xFormatters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
-  m_sFilePath = aFilePath;
   m_i_EofLoc = 0;
   m_i_ChunkLoc = 0;
   m_bMappingDone = false;
@@ -188,20 +187,6 @@ void LoadMap::vMappingDone(bool bMappingDone)
   m_bMappingDone = bMappingDone;
   
   //vTrace("Mapping done with %lld entries\n"_Stz,m_xMap.nEntries);
-}
-
-/*----------------------------------------------------------------------------*/
-/* open file                                                                  */
-/*----------------------------------------------------------------------------*/
-bool LoadMap::bOpenFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
-  
-  bool bOpened = bOpenRead(m_sFilePath);
-  if (! bOpened)
-    return false;
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

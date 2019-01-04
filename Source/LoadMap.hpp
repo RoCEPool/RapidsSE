@@ -16,7 +16,6 @@ namespace Chunks
     static const i8 C_LOADMAP_ENTRIES = (C_1MB * 1);
  
   private:
-    s256 m_sFilePath;    // file to be mapped
     i8   m_i_EofLoc;     // eof location of file
     i8   m_i_ChunkLoc;   // seek location for the start of next chunk
     bool m_bMappingDone; // is mapping of chunks in file complete?
@@ -34,7 +33,7 @@ namespace Chunks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    LoadMap(Stz* aFilePath);
+    LoadMap(void);
     ~LoadMap(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -45,7 +44,6 @@ namespace Chunks
     bool bMappingDone(void);
     void vMappingDone(bool bMappingDone);
     bool bNextChunk(i8& i_Seek, i8& nBytes);
-    bool bOpenFile(void);
     void vStats(void);
   
   private:

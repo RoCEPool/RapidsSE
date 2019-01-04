@@ -159,10 +159,9 @@ bool Job_LoadTable::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
-  m_pLoadMap = new LoadMap(m_sFileName);
+  m_pLoadMap = new LoadMap;
   
-  bool bOpened = m_pLoadMap->bOpenFile();
-  
+  bool bOpened = m_pLoadMap->bOpenRead(m_sFileName);
   if (! bOpened)
     return false;
   
