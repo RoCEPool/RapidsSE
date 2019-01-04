@@ -46,8 +46,10 @@ IngestChunk::IngestChunk(Formatters* pFormatters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INGESTCHUNK,_FOOTER_);
 
-  m_pFormatters = pFormatters;
-  m_iChunkNo = 0;
+  m_pFormatters  = pFormatters;
+  m_iChunkNo     = 0;
+  m_aNextRecord  = nullptr;
+  m_nRecordBytes = 0;
   
   //m_oFile
   

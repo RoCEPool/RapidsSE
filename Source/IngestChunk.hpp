@@ -13,7 +13,10 @@ namespace Chunks
     Formatters* m_pFormatters; // using these formatters
 
     i8 m_iChunkNo;
-  
+
+    Stz* m_aNextRecord;        // first byte of next record
+    i8   m_nRecordBytes;       // size of record
+
     // must be last
     Footer m_xFooter;
   
