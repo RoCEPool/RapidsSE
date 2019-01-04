@@ -109,7 +109,8 @@ Job_Repeater::Job_Repeater(Interface::Session* pSession)
   
   m_sOutputPath = "<none>"_Stz;
   
-  m_pIoCopy = new IoCopy;
+  m_pIoCopy     = new IoCopy;
+  m_pByteRate   = nullptr;
   m_bStatistics = false;
   
   m_nRepeats = 0;
@@ -279,15 +280,25 @@ bool Job_Repeater::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
-  if (! m_pIoCopy->bCopyChunk()) {
-    m_nRepeats++;
-    vTrace("Repeating %s times %lld\n"_Stz,
-           m_sFileName.aChar(),m_nRepeats);
-    m_pIoCopy->vRewindInput();
-    return m_pIoCopy->bCopyChunk();
-  }
+  i8 nBytesCopied = m_pIoCopy->nCopyChunk();
+
+  if (nBytesCopied)
+    return true;
   
-  return true;
+  m_nRepeats++;
+  vTrace("Repeating %s times %lld\n"_Stz,
+          m_sFileName.aChar(),m_nRepeats);
+
+  //SysCall oSysCall;
+  //Shell::iExecute("purge"_Stz,oSysCall);
+
+  m_pIoCopy->vRewindInput();
+  nBytesCopied = m_pIoCopy->nCopyChunk();
+
+  if (nBytesCopied)
+    return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

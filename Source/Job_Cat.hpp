@@ -13,6 +13,7 @@ namespace JobModel
     s256 m_sOutputPath; // output file name
 
     IoCopy*   m_pIoCopy;
+    ByteRate* m_pByteRate;
     bool      m_bStatistics;
   
     // must be last

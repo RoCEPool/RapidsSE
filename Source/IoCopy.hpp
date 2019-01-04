@@ -25,7 +25,7 @@ namespace Chunks
     ~IoCopy(void) noexcept(false);
   
     void  vCloseBoth(void);
-    bool  bCopyChunk(void);
+    i8    nCopyChunk(void);
     bool  bOpenRead(s256& sPath);
     bool  bOpenWrite(s256& sPath);
     void  vRewindInput(void);

@@ -95,13 +95,13 @@ void IoCopy::vCloseBoth(void)
 /*----------------------------------------------------------------------------*/
 /* copy one chunk from input to output                                        */
 /*----------------------------------------------------------------------------*/
-bool IoCopy::bCopyChunk(void)
+i8 IoCopy::nCopyChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCOPY,_FOOTER_);
   
   i8 nBytesRead = m_pInChunk->nReadBytes(-1);
   if (! nBytesRead)
-    return false;
+    return 0;
   
   //vTrace("[[chunk]]\n%s\n[[end-chunk]]\n"_Stz,m_pInChunk->aStz());
   
@@ -112,7 +112,7 @@ bool IoCopy::bCopyChunk(void)
   
   m_pOutChunk->vWriteData();
 
-  return true;
+  return nBytesRead;
 }
 
 /*----------------------------------------------------------------------------*/

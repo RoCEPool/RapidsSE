@@ -11,17 +11,17 @@ i8 Shell::iExecute(Stz* sCommand, SysCall& oSysCall)
 {
   oSysCall.vClear();
 
-  i8 iExit = system(sCommand->aChar());
+  i8 iResult = system(sCommand->aChar());
   
-  if (-1 == iExit || 127 == iExit) {
+  if (-1 == iResult || 127 == iResult) {
     oSysCall.vError(errno);
     vWarn("Shell::iExecute : system() error; errno=%lld"_Stz,errno);
-    return iExit;
+    return iResult;
   }
   
   oSysCall.vSuccess();
   
-  return iExit;
+  return iResult;
 }
 
 /*===========================================================================*/

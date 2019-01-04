@@ -107,7 +107,8 @@ Job_Cat::Job_Cat(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
   
-  m_pIoCopy = new IoCopy;
+  m_pIoCopy     = new IoCopy;
+  m_pByteRate   = nullptr;
   m_bStatistics = false;
   
   _checkInitialised_(CN_JOB_CAT);
@@ -271,10 +272,13 @@ bool Job_Cat::bBegin(void)
 bool Job_Cat::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
-  
-  bool bCallAgain = m_pIoCopy->bCopyChunk();
-  
-  return bCallAgain;
+
+  i8 nBytesCopied = m_pIoCopy->nCopyChunk();
+
+  if (nBytesCopied)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/

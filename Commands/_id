@@ -33,7 +33,7 @@ print "---------------------------------------------------------------------";
 print "ingesting lineitem table...";
 print "---------------------------------------------------------------------";
 
-nowait purge lineitem 20;
+nowait purge lineitem 1;
 
 nowait repeater "/tpch/SF10/lineitem.csv" "/tmp/lineitem.pipe" ;
 

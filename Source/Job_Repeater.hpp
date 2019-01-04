@@ -15,8 +15,8 @@ namespace JobModel
     s256  m_sOutputPath;  // pipe path
   
     IoCopy*   m_pIoCopy;
+    ByteRate* m_pByteRate;
     bool      m_bStatistics;
-  
     i8        m_nRepeats;
 
     // must be last
