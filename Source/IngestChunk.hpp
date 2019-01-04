@@ -27,8 +27,13 @@ namespace Chunks
     IngestChunk(Formatters* pFormatters);
     ~IngestChunk(void) noexcept(false);
   
+    bool  bGetRecord(Stz** aaRecord, i8& nRecordBytes);
+
     Stz*  aStz(void);
-  
+ 
+  protected:
+    bool  bFindRecordEnd(char** aaRecordEnd);
+
   private:
     Footer* aFooter(void);
   };
