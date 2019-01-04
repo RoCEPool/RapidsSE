@@ -108,7 +108,7 @@ Job_SubLoader::Job_SubLoader(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
   m_pJob_LoadTable = nullptr;
-  m_pRecordLoader  = nullptr;
+  m_pLoadChunk  = nullptr;
   
   _checkInitialised_(CN_JOB_SUBLOADER);
   
@@ -122,8 +122,8 @@ Job_SubLoader::~Job_SubLoader(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
-  if (m_pRecordLoader)
-    delete m_pRecordLoader;
+  if (m_pLoadChunk)
+    delete m_pLoadChunk;
 }
 
 
@@ -164,7 +164,7 @@ void Job_SubLoader::vJob_LoadTable(Job_LoadTable* pJob_LoadTable)
   
   m_pJob_LoadTable = pJob_LoadTable;
   
-  m_pRecordLoader  = new RecordLoader(&m_pJob_LoadTable->m_xFormatters);
+  m_pLoadChunk  = new LoadChunk(&m_pJob_LoadTable->m_xFormatters);
 }
 
 
@@ -179,7 +179,7 @@ bool Job_SubLoader::bBegin(void)
   sPath = m_pJob_LoadTable->m_sFileName;
   
   // open the chunked file
-  bool bOpened = m_pRecordLoader->bOpenRead(sPath);
+  bool bOpened = m_pLoadChunk->bOpenRead(sPath);
   
   return bOpened;
 }
@@ -208,14 +208,14 @@ bool Job_SubLoader::bChunk(void)
   if (! m_pJob_LoadTable->m_pLoadMap->bNextChunk(i_Seek,nChunkBytes))
     return false;
   
-  m_pRecordLoader->vReadSpecificChunk(i_Seek,nChunkBytes);
+  m_pLoadChunk->vReadSpecificChunk(i_Seek,nChunkBytes);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // process the records in the chunk
   for (;;) {
     
     // fetch next record from current chunk
-    bool bHaveRecord = m_pRecordLoader->bGetRecord(&aRecord,nRecordBytes);
+    bool bHaveRecord = m_pLoadChunk->bGetRecord(&aRecord,nRecordBytes);
     if (! bHaveRecord)
       return true;
     
@@ -271,7 +271,7 @@ void Job_SubLoader::vEnd(void)
   m_pJob_LoadTable->m_xNode[i_Node].m_ziRowsProcessed += iRowsProcessed;
   
   // close the file being loaded
-  m_pRecordLoader->vCloseFile();
+  m_pLoadChunk->vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/

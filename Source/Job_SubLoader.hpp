@@ -12,7 +12,7 @@ namespace JobModel
   public:
     Job_LoadTable* m_pJob_LoadTable;
 
-    RecordLoader* m_pRecordLoader; // chunk loading buffer
+    LoadChunk* m_pLoadChunk; // chunk loading buffer
  
     // must be last
     Footer m_xFooter;

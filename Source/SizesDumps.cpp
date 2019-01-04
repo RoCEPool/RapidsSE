@@ -496,7 +496,7 @@ i8 giClassSize[]
   /*    */ sizeof(Queues),             // CN_QUEUES
   
   /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
-  /* 68 */ sizeof(RecordLoader),       // CN_RECORDLOADER
+  /* 68 */ sizeof(LoadChunk),          // CN_RECORDLOADER
   /*    */ sizeof(RegFrame),           // CN_REGFRAME
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*101 */ sizeof(Ring),               // CN_RING

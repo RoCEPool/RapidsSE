@@ -23,8 +23,8 @@ using namespace Chunks;
 #include "IngestChunk.hpp"
 #include "IoChunk.hpp"
 #include "IoCopy.hpp"
+#include "LoadChunk.hpp"
 #include "LoadMap.hpp"
-#include "RecordLoader.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
