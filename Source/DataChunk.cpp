@@ -40,8 +40,10 @@ DataChunk::DataChunk(eCN eClassNo)
   m_aLastDataByte   = nullptr;
   m_nUnprocessedBytes = 0;
   
+#ifdef __DEBUG_CHECKS
   m_xWsp.vFill(0xEF,eClassNo);
- 
+#endif
+  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);
 }
 

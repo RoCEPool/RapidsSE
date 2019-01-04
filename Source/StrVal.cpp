@@ -60,7 +60,11 @@ StrVal::StrVal(eCN eClassNo, i8 nBytes)
   
   m_xWsp.vUsed(nBytes);
   
+#ifdef __DEBUG_CHECKS
   m_xWsp.vZero(eClassNo);
+#endif
+  
+  *m_xWsp.aArea() = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,8 +92,12 @@ StrVal::StrVal(StrVal* pThis, i8 nBytes)
   
   m_xWsp.vUsed(nBytes);
   
+#ifdef __DEBUG_CHECKS
   m_xWsp.vZero(CN_STRVAL);
+#endif
   
+  *m_xWsp.aArea() = '\0';
+
   _checkInitialised_(CN_STRVAL);
 }
 
