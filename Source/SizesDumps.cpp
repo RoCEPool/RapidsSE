@@ -226,7 +226,7 @@ pDUMPFUN *gpDump[]
   /*    */ &RegFrame::vDump,        // CN_REGFRAME
   /*    */ &RegFrame::vDump,        // CN_RESOURCETRACKER
   /*101 */ &Dump::vUndefined,       // CN_RING
-  /*102 */ &Dump::vUndefined,       // CN_ROARRAY
+  /*102 */ &Dump::vUndefined,       // CN_ROWAGG
   /*103 */ &Dump::vUndefined,       // CN_ROWBUFFER
   /*104 */ &Dump::vUndefined,       // CN_ROWCURSOR
   /*105 */ &Dump::vUndefined,       // CN_ROWONCE
@@ -774,7 +774,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
   /*    */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
   /*101 */ HT_INVALID,           // CN_RING
-  /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROARRAY
+  /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROWAGG
   /*103 */ HT_INVALID,           // CN_ROWBUFFER
   /*104 */ HT_TRANSIENT_SMALL,   // CN_ROWCURSOR
   /*105 */ HT_TRANSIENT_SMALL,   // CN_ROWONCE

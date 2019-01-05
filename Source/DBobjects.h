@@ -54,7 +54,7 @@ using namespace DBobjects;
 
 #include "Column.hpp"
 
-typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
+typedef Array<CN_ROWAGG,eRO,1024> RelOpAry;
 
 #include "Id.hpp"
 #include "EntWrk.hpp"
@@ -64,7 +64,9 @@ typedef Array<CN_ROARRAY,eRO,1024> RelOpAry;
 #include "KeyVal.hpp"
 #include "KeyTest.hpp"
 #include "Row.hpp"
+#include "RowAgg.hpp"
 #include "RowWrk.hpp"
+
 #include "Entry.hpp"
 #include "EntryBuffer.hpp"
 #include "IndexTree.hpp"

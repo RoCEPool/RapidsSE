@@ -125,6 +125,8 @@ Job_SubPurger::Job_SubPurger(Interface::Session* pSession)
 Job_SubPurger::~Job_SubPurger(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
+  
+  vTrace("Sub_Purger %lld ~destructor\n"_Stz,m_iSlot);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,6 +198,8 @@ bool Job_SubPurger::bChunk(void)
 void Job_SubPurger::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPURGER,_FOOTER_);
+  
+  vTrace("Sub_Purger %lld ends\n"_Stz,m_iSlot);
 }
 
 /*----------------------------------------------------------------------------*/
