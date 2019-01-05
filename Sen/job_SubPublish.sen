@@ -5,6 +5,20 @@
 " Job_SubPublish.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: SubPublish_process ( pJob_SubPublish -- )
+
+  params| pJob_SubPublish |
+
+  pJob_SubPublish job_subPublish.begin not if exit then
+
+  begin pJob_SubPublish job_subPublish.chunk while repeat
+
+  pJob_SubPublish job_subPublish.end
+;
+
+/*----------------------------------------------------------------------------*/
 /* SubPublish (on each node)                                                  */
 /*----------------------------------------------------------------------------*/
 : SubPublish_run ( -- <R> )
