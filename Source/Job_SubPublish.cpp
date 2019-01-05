@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_SubPublish.cpp -- Sub Purge Job                                          */
+/* Job_SubPublish.cpp -- Sub-Publish Job                                      */
 /*============================================================================*/
 
 // Job Short: SubPublish
@@ -27,13 +27,13 @@ JobClass xJobClass_SubPublish =
   false,                  // detached job?
   false,                  // buffer attached?
   JT_NONE,                // job trace
-  pJob_SubPublish_pre,      // prompt pre-process function
-  vJob_SubPublish_post,     // prompt post-process function
+  pJob_SubPublish_pre,    // prompt pre-process function
+  vJob_SubPublish_post,   // prompt post-process function
   nullptr,                // job new function
-  vJob_SubPublish_delete,   // job delete function
+  vJob_SubPublish_delete, // job delete function
   nullptr,                // job pre-send function
   nullptr,                // job post-receive function
-  vJob_SubPublish_show,     // job show function
+  vJob_SubPublish_show,   // job show function
   
   // help and example
   false,
@@ -108,7 +108,10 @@ Job_SubPublish::Job_SubPublish(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
     
   m_iPublishJobId = -1;
-  m_iSlot       = -1;
+  m_iSlot         = -1;
+  
+  m_pEntryBuffer  = nullptr;
+  m_pRowAgg       = new RowAgg;
   
   _checkInitialised_(CN_JOB_SUBPUBLISH);
   
@@ -121,6 +124,8 @@ Job_SubPublish::Job_SubPublish(Interface::Session* pSession)
 Job_SubPublish::~Job_SubPublish(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
+  
+  delete m_pRowAgg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,6 +145,34 @@ void Job_SubPublish::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* begin sub-publish                                                          */
+/*----------------------------------------------------------------------------*/
+bool Job_SubPublish::bBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* chunk rows                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Job_SubPublish::bChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end sub-publish                                                            */
+/*----------------------------------------------------------------------------*/
+void Job_SubPublish::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
+}
 
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */

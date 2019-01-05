@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* pJob_SubPublish.hpp -- Sub Publish Job                                     */
+/* pJob_SubPublish.hpp -- Sub-Publish Job                                     */
 /*============================================================================*/
 #pragma once
 
@@ -9,9 +9,11 @@ namespace JobModel
   class Job_SubPublish : public Job
   {
   public:
-   
-    i8 m_iPublishJobId;  // job id of the publish job that spawned this sub publish
-    i8 m_iSlot;          // slot this sub publish truncates
+    i8 m_iPublishJobId; // job id of publish job that spawned this sub-publish
+    i8 m_iSlot;         // slot this sub-publish is processes
+  
+    EntryBuffer* m_pEntryBuffer; // the buffer being aggregated
+    RowAgg*      m_pRowAgg;      // the row aggregator
     
     // must be last
     Footer m_xFooter;
@@ -25,8 +27,11 @@ namespace JobModel
     ~Job_SubPublish(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+  
+    bool bBegin(void);
+    bool bChunk(void);
+    void vEnd(void);
 
-  public:
     void vShow(void);
   
   public:
