@@ -110,7 +110,7 @@ Job_Repeater::Job_Repeater(Interface::Session* pSession)
   m_sOutputPath = "<none>"_Stz;
   
   m_pIoCopy     = new IoCopy;
-  m_pByteRate   = nullptr;
+  m_pByteRate   = new ByteRate;
   m_bStatistics = false;
   
   m_nRepeats = 0;
@@ -270,11 +270,10 @@ bool Job_Repeater::bBegin(void)
     return false;
   
   if (m_bStatistics) {
-    m_pByteRate = new ByteRate;
     m_pByteRate->vSetReporting("  repeat : "_Stz, C_1GB * 1);
-    m_pByteRate->vBeginTiming();
   }
-  
+  m_pByteRate->vBeginTiming();
+
   return true;
 }
 
@@ -285,15 +284,32 @@ bool Job_Repeater::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
-  i8 nBytesCopied = m_pIoCopy->nCopyChunk();
-
-  if (m_pByteRate && nBytesCopied)
-    m_pByteRate->vAddBytes(nBytesCopied);
-
-  if (nBytesCopied)
-    return true;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // throttle to 10TB +3% per day
+  
+//  i8 iThreshold = ((C_10TB * 103) / 100);
+//  
+//  for (;;) {
+//    m_pByteRate->vUpdateTimer();
+//    i8 nBytesPerDay = m_pByteRate->nBytesPerDay();
+//    if (nBytesPerDay < iThreshold)
+//      break;
+//    PosixThread::vSleepMilli(1);
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy next chunk
+  
+  i8 nBytesCopied = m_pIoCopy->nCopyChunk();
+
+  if (nBytesCopied) {
+    m_pByteRate->vAddBytes(nBytesCopied);
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // file exhausted, rewind and start again
+  
   m_nRepeats++;
   vTrace("Repeating %s times %lld\n"_Stz,
           m_sFileName.aChar(),m_nRepeats);
@@ -304,7 +320,7 @@ bool Job_Repeater::bChunk(void)
   m_pIoCopy->vRewindInput();
   nBytesCopied = m_pIoCopy->nCopyChunk();
 
-  if (m_pByteRate && nBytesCopied) {
+  if (nBytesCopied) {
     m_pByteRate->vAddBytes(nBytesCopied);
     return true;
   }
@@ -319,8 +335,7 @@ void Job_Repeater::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_CAT,_FOOTER_);
 
-  if (m_pByteRate)
-    m_pByteRate->vEndTiming();
+  m_pByteRate->vEndTiming();
 
   m_pIoCopy->vCloseBoth();
 }
