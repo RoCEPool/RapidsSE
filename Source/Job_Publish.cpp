@@ -22,7 +22,7 @@ JobClass xJobClass_Publish =
   "publish_beg"_Stz,     // the _rcv task seed
   "publish_exe"_Stz,     // the _exe task seed
   "publish_end"_Stz,     // the _end task seed
-  "publish_can"_Stz,          // the _can task seed
+  "publish_can"_Stz,     // the _can task seed
   false,                 // check resources?
   false,                 // detached job?
   false,                 // buffer attached?
@@ -233,15 +233,13 @@ void JobModel::vJob_Publish_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* ingest data for table                                                      */
+/* publish data for table                                                     */
 /*----------------------------------------------------------------------------*/
 void Job_Publish::vPublish(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PUBLISH,_FOOTER_);
   
-  vTrace("Publishing table %s\n"_Stz,
-         m_sObjectName.aStz());
-  
+  vTrace("Publishing table %s\n"_Stz, m_sObjectName.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
