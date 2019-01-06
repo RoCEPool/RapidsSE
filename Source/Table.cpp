@@ -727,6 +727,22 @@ bool Table::bPurge(i8 iPartition, i8 iOlderThanSeconds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get root buffer of given index                                             */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* Table::pRootBuffer(i8 i_Slot, i8 i_Index)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  TablePtn* pTblPtn = pPartition(i_Slot);
+  
+  IndexTree* pIdxTree = pTblPtn->pIndexTree(i_Index); // assume 0 is hidden index
+  
+  EntryBuffer* pRootBuffer = pIdxTree->pRoot();
+  
+  return pRootBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* hash the first field of row return partition                               */
 /*----------------------------------------------------------------------------*/
 i8 Table::iRowPartition(Stz* pRow)

@@ -77,6 +77,7 @@ namespace DBobjects
     PtnColVec*  pPtnColVec(void);
     void vPublish(i8 iPartitionNo);
     bool bPurge(i8 iPartitionNo, i8 iOlderThanSeconds);
+    EntryBuffer* pRootBuffer(i8 i_Slot, i8 i_Index);
     i8   iRowPartition(Stz* pRow);
 
     void vShowColumnVec(void);
