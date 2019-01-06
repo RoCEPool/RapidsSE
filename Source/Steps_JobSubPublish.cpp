@@ -55,10 +55,10 @@ void Step::vJob_SubPublishChunk(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushInt((i8)bCallAgain);
   
-//  if (! bCallAgain) {
-//    mpTask->vSleepUs(C_1M);
-//    mpTask->vState(TS_SLEEPING);
-//  }
+  if (! bCallAgain) {
+    mpTask->vSleepUs(C_100K);
+    mpTask->vState(TS_SLEEPING);
+  }
   
   EXIT();
 }

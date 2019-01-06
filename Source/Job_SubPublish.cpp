@@ -164,7 +164,34 @@ bool Job_SubPublish::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
   
-  return false;
+  if (! m_pEntryBuffer) {
+    m_pEntryBuffer = m_pTable->pRootBuffer(m_iSlot,0);
+    if (! m_pEntryBuffer)
+      return false;
+  }
+  else {
+    if (! m_pEntryBuffer->pNextBuffer())
+      return false;
+    m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
+  }
+ 
+  s48K sRowString;
+  
+  // publish the current buffer (last buffer that was added)
+  for (Entry* pEntry = m_pEntryBuffer->pFirstEntry();
+       pEntry != nullptr;
+       pEntry = m_pEntryBuffer->pNextEntry(pEntry, 0)) {
+    
+    Row* pRow = pEntry->aRow();
+    pRow->vAsBinaryStringVLQ(sRowString, m_pTable->pColumnVec());
+    
+    vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+  }
+  
+  vTrace("Slot %lld: published %lld rows\n"_Stz,
+         m_iSlot, m_pEntryBuffer->nItems());
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

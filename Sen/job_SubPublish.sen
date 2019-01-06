@@ -91,7 +91,7 @@
   // publish table for iSlot
   pJob_SubPublish SubPublish_process
 
-  iSlot pTable table.publish
+  // iSlot pTable table.publish
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop table
