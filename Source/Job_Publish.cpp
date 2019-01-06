@@ -181,13 +181,16 @@ Job* JobModel::pJob_Publish_pre(Interface::Session* pSession)
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();
 
-  // there should be 2 tokens
-  if (nTokens < 2)
+  // there should be 3 tokens
+  if (nTokens < 3)
     return pJob_Publish;
 
   // set the table name
   pJob_Publish->m_sObjectName = pTknVec->pGet(1)->aText();
 
+  // set the output file name
+  pJob_Publish->m_sFileName = pTknVec->pGet(2)->sText();
+  
   return pJob_Publish;
 }
 

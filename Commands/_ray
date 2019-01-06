@@ -8,7 +8,7 @@ _lineItem
 
 ld lineitem "/tpch/SF1/lineitem.csv" ;
 
-publish lineitem ;
+publish lineitem "/tmp/lineitem.rowAgg" ;
 
 /*============================================================================*/
 /* end                                                                        */
