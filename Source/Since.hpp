@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Since.hpp - seconds.microseconds since January 1, 1970                     */
+/* Since.hpp - seconds.microseconds since Posix Epoch January 1, 1970         */
 /*============================================================================*/
 #pragma once
 

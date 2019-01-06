@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Since.cpp - seconds.microseconds since January 1, 1970                     */
+/* Since.cpp - seconds.microseconds since Posix Epoch January 1, 1970         */
 /*============================================================================*/
 
 #include "System.h"

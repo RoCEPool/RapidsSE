@@ -142,7 +142,7 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   // temp trace
   
   Time oTime;
-  oTime.vSet(&pEntryBuffer->oWhenNewed());
+  oTime.vSetLocal(&pEntryBuffer->oWhenNewed());
   s32 sTime;
   char* z = sTime.aChar();
   oTime.vAppendUtc(&z);

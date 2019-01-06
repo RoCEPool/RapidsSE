@@ -46,69 +46,8 @@ Time::~Time(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vSet: set time using since                                                 */
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Time::vSet(Since* pSince)
-{
-  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
-
-  struct tm xTimeResult;
-  
-  time_t iSeconds = pSince->iSeconds();
-  
-  void* aTimeResult = gmtime_r(&iSeconds,&xTimeResult);
-  
-  if ( ! aTimeResult )
-    vError("gmtime_r() error; errno=%d"_Stz,errno);
-  
-  m_iYear   = xTimeResult.tm_year;
-  m_iMonth  = xTimeResult.tm_mon+1;
-  m_iDay    = xTimeResult.tm_mday;
-  m_iHour   = xTimeResult.tm_hour;
-  m_iMinute = xTimeResult.tm_min;
-  m_iSecond = xTimeResult.tm_sec;
-  m_iMicro  = (int)pSince->iMicroseconds();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set as current local time                                                  */
-/*----------------------------------------------------------------------------*/
-void Time::vSetNowLocal(void)
-{
-  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
-  
-  time_t t1 = time(0);   // get time now
-  struct tm* aLocalTime = localtime( & t1 );
-  
-  m_iYear   = aLocalTime->tm_year;
-  m_iMonth  = aLocalTime->tm_mon+1;
-  m_iDay    = aLocalTime->tm_mday;
-  m_iHour   = aLocalTime->tm_hour;
-  m_iMinute = aLocalTime->tm_min;
-  m_iSecond = aLocalTime->tm_sec;
-  m_iMicro  = 0;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* set as current UTC time                                                    */
-/*----------------------------------------------------------------------------*/
-void Time::vSetNowUTC(void)
-{
-  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
-  
-  time_t t1 = time(0);   // get time now
-  struct tm* aLocalTime = localtime( & t1 );
-  
-  m_iYear   = aLocalTime->tm_year;
-  m_iMonth  = aLocalTime->tm_mon+1;
-  m_iDay    = aLocalTime->tm_mday;
-  m_iHour   = aLocalTime->tm_hour;
-  m_iMinute = aLocalTime->tm_min;
-  m_iSecond = aLocalTime->tm_sec;
-  m_iMicro  = 0;
-
-}
 
 /*----------------------------------------------------------------------------*/
 /* vAppendLocal: append given time into workspace                             */
@@ -146,14 +85,14 @@ void Time::vAppendLocal(char** pz)
   if (m_iSecond < 10) StrLib::vAppendChar(&z,'0');
   StrLib::vAppendDecimal(&z,m_iSecond);
   
-//  StrLib::vAppendChar(&z,'.');
-//  if (iMilli < 100) StrLib::vAppendChar(&z,'0');
-//  if (iMilli < 10)  StrLib::vAppendChar(&z,'0');
-//  StrLib::vAppendDecimal(&z,iMilli);
-//  StrLib::vAppendChar(&z,'Z');
+  //  StrLib::vAppendChar(&z,'.');
+  //  if (iMilli < 100) StrLib::vAppendChar(&z,'0');
+  //  if (iMilli < 10)  StrLib::vAppendChar(&z,'0');
+  //  StrLib::vAppendDecimal(&z,iMilli);
+  //  StrLib::vAppendChar(&z,'Z');
   
   StrLib::vAppendString(&z," (local)");
-
+  
   *z = '\0';
   
   *pz = z;
@@ -165,7 +104,7 @@ void Time::vAppendLocal(char** pz)
 void Time::vAppendUtc(char** pz)
 {
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
-
+  
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   char* z = *pz;
@@ -212,7 +151,7 @@ void Time::vAppendUtc(char** pz)
 bool Time::bExtractUTC(char** ps)
 {
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
-
+  
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   if ( ! *ps )
@@ -257,16 +196,109 @@ bool Time::bExtractUTC(char** ps)
   m_iSecond = (unsigned int)v;
   
   if ('.' == **ps)
-  {
+    {
     (*ps)++;
     if ( StrLib::bExtractInteger(ps,&v) )
       m_iMicro  = (unsigned int)(v*1000);
-  }
+    }
   
   if ('Z' == **ps)
     (*ps)++;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* vSet: set time using since                                                 */
+/*----------------------------------------------------------------------------*/
+void Time::vSetLocal(Since* pSincePosixEpoch)
+{
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+  
+  struct tm xCalendarDateTime_Local;
+  
+  time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
+  
+  // convert secondsSince into a tm structure for local time zone
+  void* aResult = localtime_r(&iSecondsSincePosixEpoch,&xCalendarDateTime_Local);
+  
+  if ( ! aResult )
+    vError("localtime_r() error; errno=%d"_Stz,errno);
+  
+  m_iYear   = xCalendarDateTime_Local.tm_year;
+  m_iMonth  = xCalendarDateTime_Local.tm_mon+1;
+  m_iDay    = xCalendarDateTime_Local.tm_mday;
+  m_iHour   = xCalendarDateTime_Local.tm_hour;
+  m_iMinute = xCalendarDateTime_Local.tm_min;
+  m_iSecond = xCalendarDateTime_Local.tm_sec;
+  m_iMicro  = (int)pSincePosixEpoch->iMicroseconds();
+}
+
+/*----------------------------------------------------------------------------*/
+/* vSet: set time using since                                                 */
+/*----------------------------------------------------------------------------*/
+void Time::vSetUTC(Since* pSincePosixEpoch)
+{
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+  
+  struct tm xCalendarDateTime_UTC;
+  
+  time_t iSecondsSincePosixEpoch = pSincePosixEpoch->iSeconds();
+  
+  // convert secondsSince into a tm structure for UTC/GMT time zone
+  void* aResult = gmtime_r(&iSecondsSincePosixEpoch,&xCalendarDateTime_UTC);
+  
+  if ( ! aResult )
+    vError("gmtime_r() error; errno=%d"_Stz,errno);
+  
+  m_iYear   = xCalendarDateTime_UTC.tm_year;
+  m_iMonth  = xCalendarDateTime_UTC.tm_mon+1;
+  m_iDay    = xCalendarDateTime_UTC.tm_mday;
+  m_iHour   = xCalendarDateTime_UTC.tm_hour;
+  m_iMinute = xCalendarDateTime_UTC.tm_min;
+  m_iSecond = xCalendarDateTime_UTC.tm_sec;
+  m_iMicro  = (int)pSincePosixEpoch->iMicroseconds();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set as current local time                                                  */
+/*----------------------------------------------------------------------------*/
+void Time::vSetNowLocal(void)
+{
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+  
+  time_t iSecondsSincePosixEpoch = time(0);   // get time now
+  
+  struct tm* xCalendarDateTime_Local = localtime(&iSecondsSincePosixEpoch);
+  
+  m_iYear   = xCalendarDateTime_Local->tm_year;
+  m_iMonth  = xCalendarDateTime_Local->tm_mon+1;
+  m_iDay    = xCalendarDateTime_Local->tm_mday;
+  m_iHour   = xCalendarDateTime_Local->tm_hour;
+  m_iMinute = xCalendarDateTime_Local->tm_min;
+  m_iSecond = xCalendarDateTime_Local->tm_sec;
+  m_iMicro  = 0;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* set as current UTC time                                                    */
+/*----------------------------------------------------------------------------*/
+void Time::vSetNowUTC(void)
+{
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+  
+  time_t t1 = time(0);   // get time now
+  
+  struct tm* xCalendarDateTime_UTC = gmtime( & t1 );
+  
+  m_iYear   = xCalendarDateTime_UTC->tm_year;
+  m_iMonth  = xCalendarDateTime_UTC->tm_mon+1;
+  m_iDay    = xCalendarDateTime_UTC->tm_mday;
+  m_iHour   = xCalendarDateTime_UTC->tm_hour;
+  m_iMinute = xCalendarDateTime_UTC->tm_min;
+  m_iSecond = xCalendarDateTime_UTC->tm_sec;
+  m_iMicro  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
