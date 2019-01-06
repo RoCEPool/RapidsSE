@@ -27,7 +27,6 @@ namespace JobModel
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-  public:
     void vShow(void);
   
     Table* pTable(void);

@@ -87,6 +87,8 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // publish table for iSlot
+  pJob_SubPublish SubPublish_process
+
   iSlot pTable table.publish
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

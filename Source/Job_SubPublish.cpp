@@ -110,6 +110,7 @@ Job_SubPublish::Job_SubPublish(Interface::Session* pSession)
   m_iPublishJobId = -1;
   m_iSlot         = -1;
   
+  m_pTable        = nullptr;
   m_pEntryBuffer  = nullptr;
   m_pRowAgg       = new RowAgg;
   
@@ -180,6 +181,26 @@ void Job_SubPublish::vEnd(void)
 void Job_SubPublish::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* Job_SubPublish::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
+  
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table                                                                  */
+/*----------------------------------------------------------------------------*/
+void Job_SubPublish::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
+  
+  m_pTable = pTable;
 }
 
 /*----------------------------------------------------------------------------*/

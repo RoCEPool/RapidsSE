@@ -17,8 +17,8 @@
 
   grid::slots 0
   do
-  //I "Creating Job_Subpublish %v" fmt.print
-  I pJob_publish job_publish.spawnSub
+    //I "Creating Job_Subpublish %v" fmt.print
+    I pJob_publish job_publish.spawnSub
   loop
 
   "publish ack waiting" .
