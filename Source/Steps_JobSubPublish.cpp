@@ -17,6 +17,7 @@ void Step::vAddSteps_JobSubPublish(void)
   
   vAddStep("job_subPublish.publishJobId@"_Stz,&Step::vJob_SubPublishPublishJobIdFetch);
   vAddStep("job_subPublish.slot@"_Stz,        &Step::vJob_SubPublishSlotFetch);
+  vAddStep("job_subPublish.table!"_Stz,       &Step::vJob_SubPublishTableStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,12 +53,12 @@ void Step::vJob_SubPublishChunk(MP_Task mpTask)
   
   bool bCallAgain = pJob_SubPupublish->bChunk();
   
-  mpTask->m_pDataStack->vPushInt((i8)true);
+  mpTask->m_pDataStack->vPushInt((i8)bCallAgain);
   
-  if (! bCallAgain) {
-    mpTask->vSleepUs(C_1M);
-    mpTask->vState(TS_SLEEPING);
-  }
+//  if (! bCallAgain) {
+//    mpTask->vSleepUs(C_1M);
+//    mpTask->vState(TS_SLEEPING);
+//  }
   
   EXIT();
 }
@@ -110,6 +111,27 @@ void Step::vJob_SubPublishSlotFetch(MP_Task mpTask)
   Job_SubPublish* pJob = _pJob_SubPublish(pJobPtr);
   
   mpTask->m_pDataStack->vPushInt(pJob->m_iSlot);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_subPublish.table! -- store table into job subPublish                   */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_SubPublishTableStore(MP_Task mpTask)
+{
+  ENTRY("vJob_SubPublishTableStore"_Stz);
+  
+  Object* pPtrTable;
+  Object* pPtrJob_SubPublish;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubPublish,pPtrTable) )
+    THROW_INVALID_DSTACK("job_subPublish.table!"_Stz);
+  
+  Job_SubPublish* pJob_SubPublish = _pJob_SubPublish(pPtrJob_SubPublish);
+  
+  Table* pTable = _pTable(pPtrTable);
+  
+  pJob_SubPublish->vTable(pTable);
   
   EXIT();
 }

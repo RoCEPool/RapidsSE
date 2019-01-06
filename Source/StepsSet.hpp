@@ -619,6 +619,7 @@
   static void vJob_SubPublishChunk(Tasks::MP_Task mpTask);
   static void vJob_SubPublishEnd(Tasks::MP_Task mpTask);
   static void vJob_SubPublishSlotFetch(Tasks::MP_Task mpTask);
+  static void vJob_SubPublishTableStore(Tasks::MP_Task mpTask);
   static void vJob_SubPublishPublishJobIdFetch(Tasks::MP_Task mpTask);
 
   // job subPurger

@@ -81,6 +81,8 @@
   // find the table
   sTableNm find execute to pTable
 
+  pTable pJob_SubPublish Job_SubPublish.table!
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the slot this sub publish is supposed to work on
   pJob_SubPublish Job_SubPublish.slot@ to iSlot

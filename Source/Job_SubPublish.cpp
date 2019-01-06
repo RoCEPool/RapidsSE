@@ -164,7 +164,7 @@ bool Job_SubPublish::bChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
   
-  return true;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
