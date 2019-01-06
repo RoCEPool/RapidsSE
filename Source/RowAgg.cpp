@@ -140,6 +140,15 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
     m_iaAvgVal[i_AggCol] = m_iaSumVal[i_AggCol] / m_nRows;
   
   // temp trace
+  
+  Time oTime;
+  oTime.vSet(&pEntryBuffer->oWhenNewed());
+  s32 sTime;
+  char* z = sTime.aChar();
+  oTime.vAppendUtc(&z);
+  
+  vTrace("%s\n"_Stz,sTime.aChar());
+  
   for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
     pAggColumn = m_pAggColVec->pGet(i_AggCol);
     vTrace("AggCol %s: min: %lld %lld; max: %lld %lld; avg: %lld\n"_Stz,

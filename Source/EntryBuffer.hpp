@@ -118,6 +118,7 @@ namespace DBobjects
     void         vTruncate(void);
     EntryBuffer* pUnlinkSubList(void);
     bool         bVerify(void);
+    Since&       oWhenNewed(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
