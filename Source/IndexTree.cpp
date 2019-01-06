@@ -1091,7 +1091,7 @@ void IndexTree::vPublish(void)
        pEntry = m_pCurrentBuffer->pNextEntry(pEntry, 0)) {
     Row* pRow = pEntry->aRow();
     pRow->vAsBinaryStringVLQ(sRowString, m_pIndex->pTable()->pColumnVec());
-    //vTrace("row: (%s)\n"_Stz, sRowString.aChar());
+    vTrace("row: (%s)\n"_Stz, sRowString.aChar());
   }
   vTrace("Partition%lld: published %lld rows\n"_Stz,m_iPartitionNo, m_pCurrentBuffer->nItems());
   m_zLock.vDropWrite();

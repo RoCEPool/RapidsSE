@@ -198,11 +198,15 @@ PtnColVec* Slots::pPtnColVec(void)
 /*----------------------------------------------------------------------------*/
 /* publish partition buffers                                                  */
 /*----------------------------------------------------------------------------*/
-void Slots::vPublishIndex(i8 iPartitionNO, i8 iIndexNo)
+void Slots::vPublishIndex(i8 iPartitionNo, i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
-  m_pTablePtnVec->pGet(iPartitionNO)->pIndexTree(iIndexNo)->vPublish();
+  TablePtn* pTablePtn = m_pTablePtnVec->pGet(iPartitionNo);
+  
+  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+  
+  pIndexTree->vPublish();
 }
 
 /*----------------------------------------------------------------------------*/
