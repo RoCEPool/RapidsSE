@@ -18,11 +18,13 @@ namespace System
     Since();
     ~Since() noexcept(false);
     
+    static void vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& SysCall);
+  
     void  vAdd(i8 iMicroseconds);
     void  vGet(i8& iSeconds, i8& iMicroseconds);
     i8    iGetAsMicroseconds(void);
     void  vNow(void);
-    void  vSet(Time* pTime);
+    void  vSetUTC(Time* pTime);
     void  vSet(i8 iSeconds, i8 iMicroseconds);
     Ivl   wSubtract(Since& oArg);
 
@@ -31,10 +33,6 @@ namespace System
     
     void  vToTime(Time* pTime);
     
-    //-------------------------------------------------------------------------
-    
-    static void vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& SysCall);
-
     Footer* aFooter(void);
   };
 }

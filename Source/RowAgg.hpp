@@ -16,7 +16,6 @@ namespace DBobjects
     Column*    m_pKeyColumn; // the key column
     ColumnVec* m_pAggColVec; // columns being aggregated
   
-
     Since m_oSince;  // since of buffer
     i8    m_nRows;
   

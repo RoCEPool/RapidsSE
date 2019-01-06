@@ -99,6 +99,8 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   
   vReset();
   
+  m_oSince = pEntryBuffer->oWhenNewed();
+  
   // aggregate the buffer
   for (Entry* pEntry = pEntryBuffer->pFirstEntry();
        pEntry != nullptr;
@@ -141,13 +143,13 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   
   // temp trace
   
-  Time oTime;
-  oTime.vSetLocal(&pEntryBuffer->oWhenNewed());
-  s32 sTime;
-  char* z = sTime.aChar();
-  oTime.vAppendUtc(&z);
+  Time oDateTime;
+  oDateTime.vSetLocal(&m_oSince);
+  s32 sDateTime;
+  char* z = sDateTime.aChar();
+  oDateTime.vAppendLocal(&z);
   
-  vTrace("%s\n"_Stz,sTime.aChar());
+  vTrace("%s\n"_Stz,sDateTime.aChar());
   
   for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
     pAggColumn = m_pAggColVec->pGet(i_AggCol);

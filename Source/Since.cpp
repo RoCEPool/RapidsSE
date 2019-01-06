@@ -31,6 +31,40 @@ Since::~Since(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get time of day (current realtime clock)                                   */
+/*----------------------------------------------------------------------------*/
+void Since::vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& oSysCall)
+{
+  struct timeval xTimeVal;
+  
+  oSysCall.vClear();
+  
+  // get seconds&microseconds sine Posix Epoch January 1, 1970
+  i8 rCode = gettimeofday(&xTimeVal,NULL);
+  
+  if (rCode) {
+    oSysCall.vError(errno);
+    vError("gettimeofday() error; errno=%d"_Stz,errno);
+    return;
+  }
+  
+  oSysCall.vSuccess();
+  
+  iSeconds      = xTimeVal.tv_sec;
+  iMicroseconds = xTimeVal.tv_usec;
+  
+  ASSERT(iMicroseconds < C_1M); // logic check
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* add                                                                        */
 /*----------------------------------------------------------------------------*/
 void Since::vAdd(i8 iMicroseconds)
@@ -92,25 +126,27 @@ void Since::vNow(void)
 /*----------------------------------------------------------------------------*/
 /* vSet: set realtime clock                                                   */
 /*----------------------------------------------------------------------------*/
-void Since::vSet(Time* pTime)
+void Since::vSetUTC(Time* pTime)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  struct tm xTM;
+  struct tm xCalendarDateTime_UTC;
   
-  xTM.tm_year   = pTime->m_iYearDelta;
-  xTM.tm_mon    = pTime->m_iMonth-1;
-  xTM.tm_mday   = pTime->m_iDay;
-  xTM.tm_hour   = pTime->m_iHour;
-  xTM.tm_min    = pTime->m_iMinute;
-  xTM.tm_sec    = pTime->m_iSecond;
-  xTM.tm_isdst  = 0;
-  xTM.tm_gmtoff = 0;
-  xTM.tm_wday   = 0;
-  xTM.tm_yday   = 0;
-  xTM.tm_zone   = nullptr;
+  xCalendarDateTime_UTC.tm_year   = pTime->m_iYearDelta;
+  xCalendarDateTime_UTC.tm_mon    = pTime->m_iMonth - 1;
+  xCalendarDateTime_UTC.tm_mday   = pTime->m_iDay;
+  xCalendarDateTime_UTC.tm_hour   = pTime->m_iHour;
+  xCalendarDateTime_UTC.tm_min    = pTime->m_iMinute;
+  xCalendarDateTime_UTC.tm_sec    = pTime->m_iSecond;
+  xCalendarDateTime_UTC.tm_isdst  = 0;
+  xCalendarDateTime_UTC.tm_gmtoff = 0;
+  xCalendarDateTime_UTC.tm_wday   = 0;
+  xCalendarDateTime_UTC.tm_yday   = 0;
+  xCalendarDateTime_UTC.tm_zone   = nullptr;
   
-  m_iSeconds = timegm(&xTM);
+  // convert UTC:date&time into seconds since Posix Epoch
+  m_iSeconds = timegm(&xCalendarDateTime_UTC);
+  
   m_iMicroseconds = pTime->m_iMicro;
 }
 
@@ -196,53 +232,23 @@ void Since::vToTime(Time* pTime)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  struct tm xTimeResult;
+  time_t iSecondsSincePosixEpoch = m_iSeconds;
   
-  time_t iSeconds = m_iSeconds;
+  // convert secondsSince into a tm structure for UTC/GMT time zone
+  struct tm* aCalendarDateTime_UTC = gmtime(&iSecondsSincePosixEpoch);
+
+  if ( ! aCalendarDateTime_UTC )
+    vError("gmtime() error; errno=%d"_Stz,errno);
   
-  void* aTimeResult = gmtime_r(&iSeconds,&xTimeResult);
-  
-  if ( ! aTimeResult )
-    vError("gmtime_r() error; errno=%d"_Stz,errno);
-  
-  pTime->m_iYearDelta = xTimeResult.tm_year;
-  pTime->m_iMonth     = xTimeResult.tm_mon+1;
-  pTime->m_iDay       = xTimeResult.tm_mday;
-  pTime->m_iHour      = xTimeResult.tm_hour;
-  pTime->m_iMinute    = xTimeResult.tm_min;
-  pTime->m_iSecond    = xTimeResult.tm_sec;
+  pTime->m_iYearDelta = aCalendarDateTime_UTC->tm_year;
+  pTime->m_iMonth     = aCalendarDateTime_UTC->tm_mon + 1;
+  pTime->m_iDay       = aCalendarDateTime_UTC->tm_mday;
+  pTime->m_iHour      = aCalendarDateTime_UTC->tm_hour;
+  pTime->m_iMinute    = aCalendarDateTime_UTC->tm_min;
+  pTime->m_iSecond    = aCalendarDateTime_UTC->tm_sec;
   pTime->m_iMicro     = (int)m_iMicroseconds;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get time of day (current realtime clock)                                   */
-/*----------------------------------------------------------------------------*/
-void Since::vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& oSysCall)
-{
-  struct timeval xTimeVal;
-  
-  oSysCall.vClear();
-  
-  i8 rCode = gettimeofday(&xTimeVal,NULL);
-  
-  if (rCode) {
-    oSysCall.vError(errno);
-    vError("gettimeofday() error; errno=%d"_Stz,errno);
-    return;
-  }
-  
-  oSysCall.vSuccess();
-  
-  iSeconds      = xTimeVal.tv_sec;
-  iMicroseconds = xTimeVal.tv_usec;
-  
-  ASSERT(iMicroseconds < C_1M); // logic check
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
