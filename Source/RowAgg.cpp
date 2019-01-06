@@ -72,6 +72,9 @@ RowAgg::~RowAgg(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
   
+  //clear all pointers back to the columns of the original table
+  m_pAggColVec->vClear();
+  
   delete m_pAggColVec;
 }
 
@@ -149,17 +152,16 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   char* z = sDateTime.aChar();
   oDateTime.vAppendLocal(&z);
   
-  vTrace("%s\n"_Stz,sDateTime.aChar());
-  
-  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
-    pAggColumn = m_pAggColVec->pGet(i_AggCol);
-    vTrace("AggCol %s: min: %lld %lld; max: %lld %lld; avg: %lld\n"_Stz,
-           pAggColumn->sColumnName().aChar(),
-           m_iaMinKey[i_AggCol], m_iaMinVal[i_AggCol],
-           m_iaMaxKey[i_AggCol], m_iaMaxVal[i_AggCol],
-           m_iaAvgVal[i_AggCol]
-           );
-  }
+//  vTrace("%s\n"_Stz,sDateTime.aChar());
+//  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+//    pAggColumn = m_pAggColVec->pGet(i_AggCol);
+//    vTrace("AggCol %s: min: %lld %lld; max: %lld %lld; avg: %lld\n"_Stz,
+//           pAggColumn->sColumnName().aChar(),
+//           m_iaMinKey[i_AggCol], m_iaMinVal[i_AggCol],
+//           m_iaMaxKey[i_AggCol], m_iaMaxVal[i_AggCol],
+//           m_iaAvgVal[i_AggCol]
+//           );
+//  }
   
   
   //vTrace("Slot %lld: published %lld rows\n"_Stz,
@@ -214,6 +216,7 @@ void RowAgg::vDiscoverColumns(void)
     if (CT_INTEGER != pColumn->eColumnType())
       continue;
     
+    // keep a pointer to the oroginal table column
     m_pAggColVec->vAdd(pColumn);
   }
   
