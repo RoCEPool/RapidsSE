@@ -156,6 +156,14 @@ bool Job_SubPublish::bBegin(void)
   
   m_pRowAgg->vTable(m_pTable);
   
+  Job_Publish* pJob_Publish =
+    _pJob_Publish(gpAttachMap->m_pParticipatingJobs->pFindJob(m_iPublishJobId));
+  
+  Stz* szFileName = pJob_Publish->m_sFileName.aStz();
+  
+  bool bOpened = m_oOutputFile.bOpenWrite(szFileName);
+  ASSERT(bOpened);
+  
   return true;
 }
 
@@ -179,7 +187,7 @@ bool Job_SubPublish::bChunk(void)
  
   m_pRowAgg->vAggregate(m_iSlot, m_pEntryBuffer);
   
-  m_pRowAgg->vOutput();
+  m_pRowAgg->vOutput(m_oOutputFile);
   
   return true;
 }
@@ -190,6 +198,8 @@ bool Job_SubPublish::bChunk(void)
 void Job_SubPublish::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
+  
+  m_oOutputFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/

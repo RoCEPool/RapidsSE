@@ -39,7 +39,7 @@ namespace DBobjects
     ~RowAgg(void) noexcept(false);
   
     void vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer);
-    void vOutput(void);
+    void vOutput(File& oOutputFile);
     void vTable(Table* pTable);
   
   private:

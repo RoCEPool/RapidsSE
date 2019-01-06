@@ -15,6 +15,8 @@ namespace JobModel
     Table*       m_pTable;       // table
     EntryBuffer* m_pEntryBuffer; // the buffer being aggregated
     RowAgg*      m_pRowAgg;      // the row aggregator
+  
+    File         m_oOutputFile;  // output file
     
     // must be last
     Footer m_xFooter;

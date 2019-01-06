@@ -172,9 +172,12 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* output the aggregation                                                     */
 /*----------------------------------------------------------------------------*/
-void RowAgg::vOutput(void)
+void RowAgg::vOutput(File& oOutputFile)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  bool bWritten = oOutputFile.bWriteBytes(this,sizeof(RowAgg));
+  ASSERT(bWritten);
 }
 
 /*----------------------------------------------------------------------------*/
