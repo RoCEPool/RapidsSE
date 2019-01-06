@@ -492,7 +492,7 @@ static Stz* aCN[]
   /* 162 */ "REGFRAME"_Stz,            // CN_REGFRAME
   /*     */ "RESOURCETRACK"_Stz,       // CN_RESOURCETRACKER
   /* 163 */ "RING"_Stz,                // CN_RING
-  /* 164 */ "ROWAGG"_Stz,             // CN_ROWAGG
+  /* 164 */ "ROWAGG"_Stz,              // CN_ROWAGG
   /* 165 */ "ROWBUFFER"_Stz,           // CN_ROWBUFFER
   /* 166 */ "ROWCURSOR"_Stz,           // CN_ROWCURSOR
   /* 167 */ "ROWONCE"_Stz,             // CN_ROWONCE

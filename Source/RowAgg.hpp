@@ -16,8 +16,8 @@ namespace DBobjects
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, RowAgg*);
-    
+    void  operator delete(void*);
+
     RowAgg(void);
     ~RowAgg(void) noexcept(false);
   

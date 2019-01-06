@@ -500,7 +500,7 @@ i8 giClassSize[]
   /*    */ sizeof(RegFrame),           // CN_REGFRAME
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*101 */ sizeof(Ring),               // CN_RING
-  /*102 */ 0,                          // CN_ROWARRAY
+  /*102 */ sizeof(RowAgg),             // CN_ROWAGG
   /*103 */ 0,                          // CN_ROWBUFFER
   /*104 */ sizeof(RowCursor),          // CN_ROWCURSOR
   /*105 */ sizeof(RowOnce),            // CN_ROWONCE

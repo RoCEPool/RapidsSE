@@ -34,9 +34,9 @@ void* Column::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Column::operator delete(void* pDataAddress)
+void Column::operator delete(void* pAddress)
 {
-  Column* pColumn = reinterpret_cast<Column*>(pDataAddress);
+  Column* pColumn = reinterpret_cast<Column*>(pAddress);
   
   HeapMem::vFree(pColumn);
 }

@@ -5,6 +5,28 @@
 " job_Publish.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: Publish_process ( pJob_Publish -- )
+
+  params| pJob_Publish |
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the acks
+  grid::slots task::acks!
+
+  grid::slots 0
+  do
+  //I "Creating Job_Subpublish %v" fmt.print
+  I pJob_publish job_publish.spawnSub
+  loop
+
+  "publish ack waiting" .
+  task::wait
+  "publish acked" .
+;
+
+/*----------------------------------------------------------------------------*/
 /* publish request (on originating node)                                      */
 /*----------------------------------------------------------------------------*/
 : publish_req ( -- <R> )
@@ -66,18 +88,8 @@
   pThisTask task.grabLock
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set the acks
-  grid::slots task::acks!
 
-  grid::slots 0
-  do
-  //I "Creating Job_Subpublish %v" fmt.print
-  I pJob_publish job_publish.spawnSub
-  loop
-
-  "publish ack waiting" .
-  task::wait
-  "publish acked" .
+  pJob_publish Publish_process
 
   pJob_publish job.notice
 

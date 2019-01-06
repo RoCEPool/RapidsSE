@@ -4,29 +4,9 @@
 
 startCluster;
 
-startCluster;
+_nationLoad
 
-create table customer (
-  C_CUSTKEY       INTEGER NOT NULL,
-  C_NAME          VARCHAR(25) NOT NULL,
-  C_ADDRESS       VARCHAR(40) NOT NULL,
-  C_NATIONKEY     INTEGER NOT NULL,
-  C_PHONE         CHAR(15) NOT NULL,
-  C_ACCTBAL       DECIMAL(15,2) NOT NULL,
-  C_MKTSEGMENT    CHAR(10) NOT NULL,
-  C_COMMENT       VARCHAR(117) NOT NULL
-);
-
-print "loading customer.csv..." ;
-ld customer "/tpch/SF1/customer.csv" ;
-
-antbl customer;
-
-//sleep 40;
-
-purge customer 30;
-
-antbl customer;
+publish nation ;
 
 /*============================================================================*/
 /* end                                                                        */

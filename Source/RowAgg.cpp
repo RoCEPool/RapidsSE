@@ -11,26 +11,51 @@
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+RowAgg* DBobjects::_pRowAgg(void* aAddr)
+{
+  RowAgg* pRowAgg = reinterpret_cast<RowAgg*>(aAddr);
+  
+  if (pRowAgg && CN_ROWAGG != pRowAgg->eClass())
+    vTrace("_pRowAgg got class %s\n"_Stz,aCN[pRowAgg->eClass()]);
+  
+  RASSERT_TYPE(pRowAgg,CN_TABLE);
+  
+  return pRowAgg;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* RowAgg::operator new(size_t)
 {
-  vFatal("fatal: EntWrk class cannot be new'd\n"_Stz);
+  void* pObject = HeapMem::pAllocate(CN_ROWAGG);
   
-  NEVER_REACH;
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void RowAgg::operator delete(void* pAddress)
+{
+  RowAgg* pRowAgg = reinterpret_cast<RowAgg*>(pAddress);
+  
+  HeapMem::vFree(pRowAgg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowAgg::RowAgg(void)
-: Object(CN_ROWWRK)
+: Object(CN_ROWAGG)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWWRK);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG);
   
   _checkInitialisedSize_(sizeof(RowAgg));
   
-  _postcondition_(_MAGIC_,CN_ROWWRK,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_ROWAGG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,7 +63,7 @@ RowAgg::RowAgg(void)
 /*----------------------------------------------------------------------------*/
 RowAgg::~RowAgg(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWWRK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +79,7 @@ RowAgg::~RowAgg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Footer* RowAgg::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWWRK);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG);
   
   return &m_xFooter;
 }
