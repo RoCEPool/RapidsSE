@@ -20,14 +20,14 @@ namespace DBobjects
     Since m_oSince;  // since of buffer
     i8    m_nRows;
   
-    i8    m_iMinKey[C_MAX_COLAGG];
+    i8    m_iaMinKey[C_MAX_COLAGG];
     i8    m_iaMinVal[C_MAX_COLAGG];
+  
+    i8    m_iaMaxKey[C_MAX_COLAGG];
+    i8    m_iaMaxVal[C_MAX_COLAGG];
   
     i8    m_iaSumVal[C_MAX_COLAGG];
     i8    m_iaAvgVal[C_MAX_COLAGG];
-
-    i8    m_iMaxKey[C_MAX_COLAGG];
-    i8    m_iaMaxVal[C_MAX_COLAGG];
 
     // must be last
     Footer m_xFooter;

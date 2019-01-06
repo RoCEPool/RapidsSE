@@ -6,7 +6,7 @@ startCluster;
 
 _lineItem
 
-ld lineitem "/tpch/SF1/lineitem1k.csv" ;
+ld lineitem "/tpch/SF1/lineitem.csv" ;
 
 publish lineitem ;
 
