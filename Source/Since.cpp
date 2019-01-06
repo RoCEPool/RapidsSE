@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Since.cpp - seconds.microseconds since Posix Epoch January 1, 1970         */
+/* Since.cpp - seconds&microseconds since Posix Epoch January 1, 1970         */
 /*============================================================================*/
 
 #include "System.h"
@@ -98,7 +98,7 @@ void Since::vSet(Time* pTime)
   
   struct tm xTM;
   
-  xTM.tm_year   = pTime->m_iYear;
+  xTM.tm_year   = pTime->m_iYearDelta;
   xTM.tm_mon    = pTime->m_iMonth-1;
   xTM.tm_mday   = pTime->m_iDay;
   xTM.tm_hour   = pTime->m_iHour;
@@ -205,13 +205,13 @@ void Since::vToTime(Time* pTime)
   if ( ! aTimeResult )
     vError("gmtime_r() error; errno=%d"_Stz,errno);
   
-  pTime->m_iYear   = xTimeResult.tm_year;
-  pTime->m_iMonth  = xTimeResult.tm_mon+1;
-  pTime->m_iDay    = xTimeResult.tm_mday;
-  pTime->m_iHour   = xTimeResult.tm_hour;
-  pTime->m_iMinute = xTimeResult.tm_min;
-  pTime->m_iSecond = xTimeResult.tm_sec;
-  pTime->m_iMicro  = (int)m_iMicroseconds;
+  pTime->m_iYearDelta = xTimeResult.tm_year;
+  pTime->m_iMonth     = xTimeResult.tm_mon+1;
+  pTime->m_iDay       = xTimeResult.tm_mday;
+  pTime->m_iHour      = xTimeResult.tm_hour;
+  pTime->m_iMinute    = xTimeResult.tm_min;
+  pTime->m_iSecond    = xTimeResult.tm_sec;
+  pTime->m_iMicro     = (int)m_iMicroseconds;
 }
 
 
