@@ -154,6 +154,8 @@ bool Job_SubPublish::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBPUBLISH,_FOOTER_);
   
+  m_pRowAgg->vTable(m_pTable);
+  
   return true;
 }
 
@@ -175,22 +177,10 @@ bool Job_SubPublish::bChunk(void)
     m_pEntryBuffer = m_pEntryBuffer->pNextBuffer();
   }
  
-  s48K sRowString;
+  m_pRowAgg->vAggregate(m_iSlot, m_pEntryBuffer);
   
-  // publish the current buffer (last buffer that was added)
-  for (Entry* pEntry = m_pEntryBuffer->pFirstEntry();
-       pEntry != nullptr;
-       pEntry = m_pEntryBuffer->pNextEntry(pEntry, 0)) {
-    
-    Row* pRow = pEntry->aRow();
-    pRow->vAsBinaryStringVLQ(sRowString, m_pTable->pColumnVec());
-    
-    vTrace("row: (%s)\n"_Stz, sRowString.aChar());
-  }
+  m_pRowAgg->vOutput();
   
-  vTrace("Slot %lld: published %lld rows\n"_Stz,
-         m_iSlot, m_pEntryBuffer->nItems());
-
   return true;
 }
 

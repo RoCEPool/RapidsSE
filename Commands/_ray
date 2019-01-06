@@ -4,9 +4,11 @@
 
 startCluster;
 
-_nationLoad
+_lineItem
 
-publish nation ;
+ld lineitem "/tpch/SF1/lineitem1k.csv" ;
+
+publish lineitem ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -5,12 +5,30 @@
 
 namespace DBobjects
 {
-  class Entry;
+  class Table;
   
   class RowAgg : public Object
   {
+  static const i8 C_MAX_COLAGG = 16;
+
   private:
+    Table*     m_pTable;     // which table
+    Column*    m_pKeyColumn; // the key column
+    ColumnVec* m_pAggColVec; // columns being aggregated
   
+
+    Since m_oSince;  // since of buffer
+    i8    m_nRows;
+  
+    i8    m_iMinKey[C_MAX_COLAGG];
+    i8    m_iaMinVal[C_MAX_COLAGG];
+  
+    i8    m_iaSumVal[C_MAX_COLAGG];
+    i8    m_iaAvgVal[C_MAX_COLAGG];
+
+    i8    m_iMaxKey[C_MAX_COLAGG];
+    i8    m_iaMaxVal[C_MAX_COLAGG];
+
     // must be last
     Footer m_xFooter;
   
@@ -21,8 +39,16 @@ namespace DBobjects
     RowAgg(void);
     ~RowAgg(void) noexcept(false);
   
+    void vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer);
+    void vOutput(void);
+    void vTable(Table* pTable);
+  
   private:
     Footer* aFooter(void);
+  
+    void vDiscoverColumns(void);
+  
+    void vReset(void);
   };
   
   RowAgg* _pRowAgg(void* aAddr);

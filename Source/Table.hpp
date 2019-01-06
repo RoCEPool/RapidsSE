@@ -33,7 +33,7 @@ namespace DBobjects
     Index* m_pHiddenIndex; // hidden index
     
     IdxVec*    m_pIdxVec;    // index vector
-    ColumnVec* m_pColumnVec; // colummn vector
+    ColumnVec* m_pColumnVec; // column vector
 
     Atomic     m_ziSubLoaders[C_SLOTS_PER_NODE];  // subloader*slot count
     bool       m_bIsLoading;   // data is loading
