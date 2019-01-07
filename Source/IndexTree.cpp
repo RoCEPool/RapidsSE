@@ -999,6 +999,7 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   static i8 iMaxAge = 0;
+  static i8 nMaxBuffers = 0;
   
   // only allowing purging of hidden index
   RASSERT(m_pIndex->bIsHidden());
@@ -1026,6 +1027,13 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
     iMaxAge = iAge;
     vTrace("Purge: max age now %llds\n"_Stz,iMaxAge);
   }
+  
+  i8 iLengthList = m_pRootBuffer->iLengthList();
+  if (iLengthList > nMaxBuffers) {
+    nMaxBuffers = iLengthList;
+    vTrace("Purge: max buffer chain now %lld buffers\n"_Stz,nMaxBuffers);
+  }
+
   
   if (iAge <= iOlderThanSeconds) {
     m_zLock.vDropWrite();
