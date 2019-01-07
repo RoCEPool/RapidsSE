@@ -83,7 +83,7 @@ namespace Threads
     void vDumpSleepingQueue(void);
     void vDumpWaitingSet(void);
     
-    Thread* pGrabIdleThread(void);
+    Thread* pFindIdleThread(void);
 
     Task* pInspectReadyQueue(Thread* pCallingThread);
     Task* pInspectReadySendQueue(Thread* pCallingThread);

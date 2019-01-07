@@ -485,7 +485,7 @@ void Queues::vDumpWaitingSet(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to find idle thread                                                */
 /*----------------------------------------------------------------------------*/
-Thread* Queues::pGrabIdleThread(void)
+Thread* Queues::pFindIdleThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -1039,7 +1039,7 @@ void Queues::vScheduleReadyTask(Task* pTask)
   
   RASSERT(TS_READY == pTask->eState());
   
-  Thread* pIdleThread = pGrabIdleThread();
+  Thread* pIdleThread = pFindIdleThread();
 
   if (pIdleThread) {
     ASSERT(pIdleThread->bMutexIsLocked());
@@ -1062,7 +1062,7 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
   
   RASSERT(TS_READY == pTask->eState());
   
-  Thread* pIdleThread = pGrabIdleThread();
+  Thread* pIdleThread = pFindIdleThread();
   
   if (pIdleThread) {
     ASSERT(pIdleThread->bMutexIsLocked());
