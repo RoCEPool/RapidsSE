@@ -75,7 +75,7 @@ void Step::vTaskAcksStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(nAcksRequired) )
     THROW_INVALID_DSTACK("task.acks!"_Stz);
   
-  ASSERT(0 == pGivenTask->m_xAcksRemaining.iPrintOnlyValue());
+  ASSERT(0 == pGivenTask->m_oAcksRemaining.iPrintOnlyValue());
 
   RASSERT(pGivenTask->bIsLocked());
   
@@ -89,7 +89,7 @@ void Step::vTaskAcksStore(MP_Task mpTask)
     gpAttachMap->m_pOriginatingJobs->vMarkContents(pJob->m_iJobId);
   }
   
-  pGivenTask->m_xAcksRemaining.vSetRemaining(nAcksRequired);
+  pGivenTask->m_oAcksRemaining.vSetRemaining(nAcksRequired);
 
   EXIT();
 }
@@ -188,7 +188,7 @@ void Step::vTaskIsAckSet(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.isAckSet"_Stz);
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
-  i8 iIsAckSet = pTaskBeingAcked->m_xAcksRemaining.bIsSet();
+  i8 iIsAckSet = pTaskBeingAcked->m_oAcksRemaining.bIsSet();
   Job* pJob = pTaskBeingAcked->m_pJob;
   
   if (pJob && pJob->m_bMark) {

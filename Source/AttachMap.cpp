@@ -289,7 +289,7 @@ void AttachMap::vPrintStartupInfo(void)
 /*----------------------------------------------------------------------------*/
 /* find api which matches given name                                          */
 /*----------------------------------------------------------------------------*/
-eAC AttachMap::eFindApi(Base::Stz *aApiNm)
+eAC AttachMap::eFindApi(Base::Stz* aApiNm)
 {
   _precondition_(_MAGIC_,CN_ATTACHMAP,_FOOTER_);
   

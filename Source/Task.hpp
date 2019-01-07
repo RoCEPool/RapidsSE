@@ -70,8 +70,8 @@ namespace Tasks
     eQR     m_eQueue;       // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
     Lock    m_oLock;        // lock for this task
-    Decider m_xAcksRemaining;        // number of acks still waiting for
-    Since   m_xWakeupTime;  // wakeup time
+    Decider m_oAcksRemaining;        // number of acks still waiting for
+    Since   m_oWakeupTime;  // wakeup time
 
     i8      m_iPartition;   // which partition if a partition task
     i8      m_iDdlLocked;   // ? has the ddl lock?
@@ -172,7 +172,7 @@ namespace Tasks
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);
-    void vTraceStep(Stz *aStepNm);
+    void vTraceStep(Stz* aStepNm);
     bool bWakeupNow(void);
     i8   iWakeupTime(void);
     Since& oWakeupTime(void);

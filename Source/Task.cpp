@@ -76,7 +76,7 @@ Task::Task(Job* pJob)
   
   m_eState       = TS_NONE;
   m_eQueue       = QR_NONE;
-  m_xAcksRemaining.vCheckInit();
+  m_oAcksRemaining.vCheckInit();
   m_pThread      = nullptr;
   
   m_pDataStack   = nullptr;
@@ -218,7 +218,7 @@ bool Task::bAckAndDecide(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  bool bAmDecider = m_xAcksRemaining.bDecAndDecide();
+  bool bAmDecider = m_oAcksRemaining.bDecAndDecide();
   
   return bAmDecider;
 }
@@ -620,8 +620,8 @@ void Task::vSleepUs(i8 iMicroseconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_xWakeupTime.vNow();
-  m_xWakeupTime.vAdd(iMicroseconds);
+  m_oWakeupTime.vNow();
+  m_oWakeupTime.vAdd(iMicroseconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -797,7 +797,7 @@ void Task::vTracePoint(Stz* aMark)
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
          gpAttachMap->m_pGrid->iThisNode(),
          aJobName(),
-         m_xAcksRemaining.iPrintOnlyValue(),
+         m_oAcksRemaining.iPrintOnlyValue(),
          
          sRoutine.aChar(),
          aMark,
@@ -932,7 +932,7 @@ i8 Task::iWakeupTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iMicroseconds = m_xWakeupTime.iGetAsMicroseconds();
+  i8 iMicroseconds = m_oWakeupTime.iGetAsMicroseconds();
   
   return iMicroseconds;
 }
@@ -944,7 +944,7 @@ Since& Task::oWakeupTime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
     
-  return m_xWakeupTime;
+  return m_oWakeupTime;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -955,7 +955,7 @@ void Task::vWakeupTask(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   // clear the wakeup time
-  m_xWakeupTime.vSet(0,0);
+  m_oWakeupTime.vSet(0,0);
 
   m_eState = TS_READY;
 }

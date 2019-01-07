@@ -56,7 +56,7 @@ namespace System
     File(void);
    ~File() noexcept(false);
     
-    static bool bExists(Stz *aFilePath);
+    static bool bExists(Stz* aFilePath);
     static bool bRemove(Stz* aFilePath);
     static void vStatistics(void);
   
