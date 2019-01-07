@@ -194,9 +194,7 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
 
   public:
-    static bool   bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, Job_FetchRows* pJob_FetchRows);
     static bool   bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, Job_FetchRows* pJob_FetchRows);
-    //static bool   bInsertRow(EntryBuffer* pIndexBuffer, Entry* pEntry, Interface::Session* pSession);
     
     /*------------------------------------------------------------------------*/
     

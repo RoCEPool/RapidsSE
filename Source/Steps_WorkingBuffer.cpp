@@ -121,29 +121,6 @@ void Step::vWorkingBufferToWorkingBuffer(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* append a row to a working buffer                                           */
 /*----------------------------------------------------------------------------*/
-bool Task::bAppendRow(WorkingBuffer* pWorkingBuffer, Entry* pEntry, Job_FetchRows* pJob_FetchRows)
-{
-  
-  Id xId = pEntry->xId();
-  
-  if (pJob_FetchRows && pJob_FetchRows->bRowSeen(xId)) {
-    // row already inserted
-    //vTrace("Row already inserted %p \n"_Stz, pEntry);
-    return true;
-  }
-  
-  Row* aRow = pEntry->aRow();
-  i8 nRowSize = pEntry->nRowSize();
-  
-  if (pWorkingBuffer->bAppendRow(aRow, nRowSize))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append a row to a working buffer                                           */
-/*----------------------------------------------------------------------------*/
 bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, Job_FetchRows* pJob_FetchRows)
 {
   
