@@ -269,8 +269,6 @@ enum eCN : u2 // Class Number
   
   /* 204 */ CN_WILDERNESS,
   /* 205 */ CN_WORD,
-  /* 206 */ CN_WORKINGBUFFER,
-  /* 207 */ CN_WORKINGROW,
   
   /* 208 */ CN_ZSMALL_,
   /* 209 */ CN_ZMEDIUM_,
@@ -539,8 +537,6 @@ static Stz* aCN[]
   
   /* 204 */ "WILDERNESS"_Stz,          // CN_WILDERNESS
   /* 205 */ "WORD"_Stz,                // CN_WORD
-  /* 206 */ "WORKINGBUFFER"_Stz,       // CN_WORKINGBUFFER
-  /* 207 */ "WORKINGROW"_Stz,          // CN_WORKINGROW
   
   /* 208 */ "ZSMALL_"_Stz,             // CN_ZSMALL_
   /* 209 */ "ZMEDIUM_"_Stz,            // CN_ZMEDIUM_

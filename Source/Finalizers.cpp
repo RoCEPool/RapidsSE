@@ -268,8 +268,6 @@ pFINALIZE *gpFinalize[]
   
   /*149 */ &Finalize::vUndefined,         // CN_WILDERNESS
   /*150 */ &Finalize::vUndefined,         // CN_WORD
-  /*    */ &Finalize::vUndefined,         // CN_WORKINGBUFFER
-  /*    */ &Finalize::vUndefined,         // CN_WORKINGROW
   
   /*151 */ &Finalize::vUndefined,         // CN_ZSMALL_
   /*152 */ &Finalize::vUndefined,         // CN_ZMEDIUM_
