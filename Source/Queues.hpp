@@ -85,10 +85,10 @@ namespace Threads
     
     Thread* pFindIdleThread(void);
 
-    bool bIsReadyQueue(i8 iRRqueue);
-    bool bIsReadySendQueue(i8 iRRqueue);
-    bool bIsReadySlotQueue(i8 iRRqueue);
-    bool bIsSleepingQueue(i8 iRRqueue);
+    bool bIsReadyQueue(i8 i_RRqueue);
+    bool bIsReadySendQueue(i8 i_RRqueue);
+    bool bIsReadySlotQueue(i8 i_RRqueue);
+    bool bIsSleepingQueue(i8 i_RRqueue);
   
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
 
@@ -120,8 +120,6 @@ namespace Threads
     i8 nTasksRedySlot(i8 iSlot);
     i8 nTasksSleeping(void);
     i8 nTasksWaiting(void);
-  
-    ThreadVector* pThreadVector(void);
   
     i8 i_ToReadySendQueue(i8 i_RRqueue);
     i8 i_ToReadySlotQueue(i8 i_RRqueue);

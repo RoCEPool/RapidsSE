@@ -864,59 +864,6 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get no of tasks in the executing queue                                     */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nTasksExecuting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pExecutingSet->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the ready queue                                         */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nTasksReady(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pReadyQueue->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the ready slot queue                                    */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nTasksRedySlot(i8 iSlot)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pReadySlotQueues[iSlot]->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the sleeping queue                                      */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nTasksSleeping(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pSleepingQueue->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the waiting queue                                       */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nTasksWaiting(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pWaitingSet->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /* get the first queue                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Queues::i_QueueFirst(void)
@@ -1230,13 +1177,53 @@ void Queues::vScheduleYieldedTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the thread vector                                                      */
+/* get no of tasks in the executing set                                       */
 /*----------------------------------------------------------------------------*/
-ThreadVector* Queues::pThreadVector(void)
+i8 Queues::nTasksExecuting(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  return m_pThreadVector;
+  return m_pExecutingSet->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the ready queue                                         */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nTasksReady(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pReadyQueue->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the ready slot queue                                    */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nTasksRedySlot(i8 iSlot)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pReadySlotQueues[iSlot]->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the sleeping queue                                      */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nTasksSleeping(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pSleepingQueue->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the waiting set                                         */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nTasksWaiting(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pWaitingSet->nTasks();
 }
 
 /*----------------------------------------------------------------------------*/
