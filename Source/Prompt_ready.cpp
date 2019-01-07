@@ -1,0 +1,35 @@
+/*============================================================================*/
+/* Prompt_ready.cpp -- ready queue report                                     */
+/*============================================================================*/
+
+#include "Prompt.h"
+#include "StorageEngine.h"
+
+PromptNote mPromptNote_ready (
+  "Prompt_ready"_Stz,     // name of the prompt function
+  "comment"_Stz,          // comment about the functopm
+  "ready"_Stz,            // the prompt command
+  nullptr,                // the second word
+  bPrompt_ready,          // prompt function
+  true,                   // enabled
+
+  true,                   // visible
+  "fun help"_Stz          // help
+);
+
+extern Arguments   gxArguments;
+extern AttachMap*  gpAttachMap;
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool Prompt::bPrompt_ready(SePrompt* pPrompt)
+{
+  gpAttachMap->m_pQueues->vDumpReadyQueue();
+
+  return true;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

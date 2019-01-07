@@ -175,6 +175,7 @@ namespace Tasks
     void vTraceStep(Stz *aStepNm);
     bool bWakeupNow(void);
     i8   iWakeupTime(void);
+    Since& oWakeupTime(void);
     void vWakeupTask(void);
     eQR  eWhichQueue(void);
 

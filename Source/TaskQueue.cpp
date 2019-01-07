@@ -207,25 +207,34 @@ void TaskQueue::vDump(eCN eClass, Object* pObject, Stz* aTab)
   TaskQueue* pTaskQueue = _pTaskQueue(pObject);
   
   SkipList* pSkipList = pTaskQueue->m_pTaskSkipList;
-  vTrace("HEIGHT %lld HEAD 0x%llx ITEMS %lld\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead, pSkipList->m_nObjects);
-  i8 iLevel = pSkipList->m_iHeight;
-  do {
-    //vTrace("LEVEL %lld\n"_Stz, iLevel);
+  
+//  vTrace("HEIGHT %lld HEAD 0x%llx ITEMS %lld\n"_Stz,
+//         pSkipList->m_iHeight,pSkipList->m_pHead, pSkipList->m_nObjects);
+  
+  for (SkipNode* pNode = pSkipList->pFirst(0);
+       pNode;
+       pNode = pSkipList->pNext(pNode,0)) {
+
+    Task* pTask = (Task*)(pNode->m_pObject);
     
-    SkipNode* pNode = pSkipList->pFirst(iLevel);
-    while (pNode) {
-      i8 i = (i8)pNode->m_pObject;
-      Task* pTask = (Task*)(pNode->m_pObject);
-      vTrace("Task %p %s id %lld (L%lld) Node %p\n"_Stz,
+    if (TS_SLEEPING == pTask->eState()) {
+      Time oDateTime;
+      oDateTime.vSetLocal(&pTask->oWakeupTime());
+      s32 sDateTime;
+      char* z = sDateTime.aChar();
+      oDateTime.vAppendLocal(&z);
+      vTrace("Task %p %s wakeup %s\n"_Stz,
              pTask,
-             aCN[pTask->eClass()],
-             pTask->iQueueOrder(),
-             pNode->m_nRight,
-             pNode);
-      
-      pNode = pSkipList->pNext(pNode, iLevel);
+             aCN[pTask->pJob()->eClass()],
+             sDateTime.aChar());
+   }
+    else {
+      vTrace("Task %p %s order %lld\n"_Stz,
+             pTask,
+             aCN[pTask->pJob()->eClass()],
+             pTask->iQueueOrder());
     }
-  } while (--iLevel >= 0);
+  }
   
 }
 
