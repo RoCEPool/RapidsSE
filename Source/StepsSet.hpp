@@ -1173,13 +1173,6 @@
   static void vWordTypeGet(Tasks::MP_Task mpTask);
   static void vWordTypeSet(Tasks::MP_Task mpTask);
 
-  // working buffer
-  static void vWorkingBufferIsLastFetch(Tasks::MP_Task mpTask);
-  static void vWorkingBufferIsLastStore(Tasks::MP_Task mpTask);
-  static void vWorkingBufferRows(Tasks::MP_Task mpTask);
-  static void vWorkingBufferShow(Tasks::MP_Task mpTask);
-  static void vWorkingBufferToWorkingBuffer(Tasks::MP_Task mpTask);
-
   // zero
   static void vZeroLess(Tasks::MP_Task mpTask);
   static void vZeroLessEqual(Tasks::MP_Task mpTask);
