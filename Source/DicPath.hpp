@@ -5,6 +5,8 @@
 
 namespace Dictionaries
 {
+  static const i8 C_DIC_STACK = 16;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class DicPath : public Object
   {

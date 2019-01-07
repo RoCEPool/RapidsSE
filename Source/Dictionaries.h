@@ -20,7 +20,6 @@ namespace Dictionaries
 namespace Dictionaries
 {
   void vCheckAssumptions(void);
-  static const i8 C_DIC_STACK = 16;
 }
 
 using namespace Dictionaries;
