@@ -168,7 +168,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Vector();
   
   Step::vAddSteps_Word();
-  Step::vAddSteps_WorkingBuffer();
   
   Step::vAddSteps_Zero();
 }

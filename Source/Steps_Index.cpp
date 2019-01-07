@@ -1731,6 +1731,32 @@ void Step::vIndexVisualize(MP_Task mpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/*    PRIVATE                                                                 */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append a row to a working buffer                                           */
+/*----------------------------------------------------------------------------*/
+bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, Job_FetchRows* pJob_FetchRows)
+{
+  
+  Id xId = pEntry->xId();
+  
+  if (pJob_FetchRows && pJob_FetchRows->bRowSeen(xId)) {
+    // row already inserted
+    //vTrace("Row already inserted %p \n"_Stz, pEntry);
+    return true;
+  }
+  
+  Row* aRow = pEntry->aRow();
+  
+  if (pFetchBuffer->bAppendRow(aRow))
+    return true;
+  else
+    return false;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
