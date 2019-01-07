@@ -110,6 +110,7 @@ namespace DBobjects
     
     void         vReset(void);
     void         vRestore(void);
+    void         vRestoreIndex(Index* pIndex);
     void         vShow(Entry* pMarkEntry = nullptr);
     void         vShowShort(void);
     void         vShowSubList(void);

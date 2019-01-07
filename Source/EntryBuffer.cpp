@@ -1261,8 +1261,69 @@ void EntryBuffer::vRestore(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  vHeadEntryRestore();
-  vItemCountRestore();
+  RASSERT( ! m_pHigherBuffer );
+  RASSERT( ! m_pNextBuffer );
+  RASSERT( ! m_pPrevBuffer );
+  
+  // set the index to nullptr (this pointer is not valid any more)
+  m_pIndex = nullptr;
+  
+  // get the original buffer address
+  Buffer* pOriginalBuffer =
+  reinterpret_cast<Buffer*>(BITWISE_AND((u8)m_pHeadEntry,C_OBJECT_TO_BUFFER_MASK));
+  
+  // get this buffer address
+  Buffer* pThisBuffer =
+  reinterpret_cast<Buffer*>(BITWISE_AND((u8)this,C_OBJECT_TO_BUFFER_MASK));
+  
+  // calculate offset for m_pRowEntryOffset and set it
+  i8 iOffset = nSub(m_pRowEntryOffset, pOriginalBuffer);
+  m_pRowEntryOffset = reinterpret_cast<i4*>(BITWISE_OR((i8)pThisBuffer,iOffset));
+  
+  // calculate offset for m_pHeadEntry and set it
+  iOffset = nSub(m_pHeadEntry, pOriginalBuffer);
+  m_pHeadEntry = reinterpret_cast<Entry*>(BITWISE_OR((i8)pThisBuffer,iOffset));
+  
+  // calculate offset for m_pLastEntry and set it
+  if (m_pLastEntry) {
+    iOffset = nSub(m_pLastEntry, pOriginalBuffer);
+    m_pLastEntry = reinterpret_cast<Entry*>(BITWISE_OR((i8)pThisBuffer,iOffset));
+  }
+  
+  // calculate offset for m_pFirstFree and set it
+  if (m_pFirstFree) {
+    iOffset = nSub(m_pFirstFree, pOriginalBuffer);
+    m_pFirstFree = reinterpret_cast<FreeEntry*>(BITWISE_OR((i8)pThisBuffer,iOffset));
+  }
+  
+  // calculate offset for m_pLazyChain and set it
+  if (m_pLazyChain) {
+    iOffset = nSub(m_pLazyChain, pOriginalBuffer);
+    m_pLazyChain = reinterpret_cast<Entry*>(BITWISE_OR((i8)pThisBuffer,iOffset));
+  }
+  
+  // get the buffer no
+  bn nBuffer = nBufferNo();
+  
+  // now restore the row id's to point to this buffer no
+  for (Entry* pEntry = pFirstEntry(); pEntry != nullptr;
+       pEntry = pNextEntry(pEntry, 0)) {
+    
+    Id xId(*nBuffer, pEntry->iRow());
+    pEntry->vId(xId);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore the index of the index buffer                                      */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vRestoreIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  RASSERT( ! m_pIndex );
+  m_pIndex = pIndex;
 }
 
 /*----------------------------------------------------------------------------*/

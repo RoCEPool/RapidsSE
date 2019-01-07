@@ -163,7 +163,7 @@ bool Job_AnalyzeTable::bPopulateJob(TokenVec* pTokenVec)
   m_sObjectName = pTokenVec->pGet(1)->aText();
   
   if (iNumTokens == 3)
-    m_bIsDetailed = pTokenVec->pGet(2)->aText()->iToI8();
+    m_bIsDetailed = pTokenVec->pGet(2)->bSame("true"_Stz) == 1 ? true : false;
   
   return true;
 }
