@@ -958,7 +958,7 @@ void Queues::vRemoveThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* remove task from executing queue                                           */
 /*----------------------------------------------------------------------------*/
-void Queues::vRemoveFromExecutingQueue(Task* pTask)
+void Queues::vRemoveFromExecutingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -972,7 +972,7 @@ void Queues::vRemoveFromExecutingQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* remove task from waiting queue                                             */
 /*----------------------------------------------------------------------------*/
-void Queues::vRemoveFromWaitingQueue(Task* pTask)
+void Queues::vRemoveFromWaitingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -1002,7 +1002,7 @@ void Queues::vScheduleAckedTask(Task* pTaskToBeAcked)
   
   pTaskToBeAcked->vDropLock();
   
-  vRemoveFromWaitingQueue(pTaskToBeAcked);
+  vRemoveFromWaitingSet(pTaskToBeAcked);
 
   RASSERT(QR_NONE == pTaskToBeAcked->eQueue());
   

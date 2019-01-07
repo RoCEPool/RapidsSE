@@ -106,11 +106,10 @@ namespace Threads
     i8 i_QueueFirst(void);
     i8 i_QueueLast(void);
   
-    void vRemoveFromQueue(Task* pTask); //! RAY TO COMPLETE
     void vRemoveThread(Thread* pThread);
   
-    void vRemoveFromExecutingQueue(Task* pTask);
-    void vRemoveFromWaitingQueue(Task* pTask);
+    void vRemoveFromExecutingSet(Task* pTask);
+    void vRemoveFromWaitingSet(Task* pTask);
   
     void vScheduleAckedTask(Task* pTask);
     void vScheduleExitedTask(Task* pTask);

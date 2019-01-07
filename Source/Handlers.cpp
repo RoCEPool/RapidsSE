@@ -91,7 +91,7 @@ void Handlers::vThreadLoopHandler(NP_Task* pNpTask)
   *pNpTask = nullptr;
   
   // first remove this task from the running queue
-  pQueues->vRemoveFromExecutingQueue(pTask);
+  pQueues->vRemoveFromExecutingSet(pTask);
   
   // now add the task to another appropriate queue depending on its state
   switch (pTask->eState()) {
