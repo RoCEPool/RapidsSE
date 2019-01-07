@@ -1261,6 +1261,13 @@ void EntryBuffer::vRestore(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  RASSERT( ! m_pHigherBuffer );
+  RASSERT( ! m_pNextBuffer );
+  RASSERT( ! m_pPrevBuffer );
+  
+  // set the index to nullptr (this pointer is not valid any more)
+  m_pIndex = nullptr;
+  
   // get the original buffer address
   Buffer* pOriginalBuffer =
   reinterpret_cast<Buffer*>(BITWISE_AND((u8)m_pHeadEntry,C_OBJECT_TO_BUFFER_MASK));
@@ -1306,9 +1313,17 @@ void EntryBuffer::vRestore(void)
     pEntry->vId(xId);
   }
   
-  // set the index to nullptr (this pointer is not valid any more)
-  m_pIndex = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* restore the index of the index buffer                                      */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vRestoreIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  RASSERT( ! m_pIndex );
+  m_pIndex = pIndex;
 }
 
 /*----------------------------------------------------------------------------*/
