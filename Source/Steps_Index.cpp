@@ -1221,8 +1221,6 @@ void Step::vIndexScan(MP_Task mpTask)
     // insert row from entry in FetchBuffer
     if ( ! pFetchBuffer->bAppendRow(aRow)) {
       
-      //pWorkingBuffer->vShow();
-      
       // Buffer is Full
       // put this FetchBuffer in session bufferQueue
       xValWrk = (Object*)pFetchBuffer;
@@ -1260,7 +1258,6 @@ void Step::vIndexScan(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // mark this buffer as the last buffer
   pFetchBuffer->vIsLast(true);
-  //pWorkingBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue

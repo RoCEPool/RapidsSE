@@ -334,7 +334,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     }
 
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-    //       pWorkingBuffer,eClass,aCN[eClass],nObjectSize);
+    //       pEntryBuffer,eClass,aCN[eClass],nObjectSize);
     
     // restore the entryBuffer pointets (m_pHeadEntry etc)
     pEntryBuffer->vRestore();
@@ -363,7 +363,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   
   i8 nFreeBuffer = gpBufferPool->iFreeCount();
   
-  bool bDiscardWorkingBuffer = false;
+  bool bDiscardEntryBuffer = false;
   
   Object* pSocketPtr;
   if ( ! mpTask->m_pDataStack->bPop(pSocketPtr) )
@@ -417,7 +417,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     Job_WriteBuffer* pJob_WriteBuffer =
       static_cast<Job_WriteBuffer*>(aLowBuff);
 
-    bDiscardWorkingBuffer = pJob_WriteBuffer->m_pCurrentBuffer ? true : false;
+    bDiscardEntryBuffer = pJob_WriteBuffer->m_pCurrentBuffer ? true : false;
 
     pJob_WriteBuffer->m_bLowMem = true;
     
@@ -436,7 +436,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
       pJob_WriteBuffer->m_pCurrentBuffer = nullptr;
     }
 
-    if (bDiscardWorkingBuffer) {
+    if (bDiscardEntryBuffer) {
 
       bResult = pSocket->bRecvBytes(aLowBuff,sizeof(EntryBuffer),oSysCall);
       vTrace("Discarded EntryBuffer under low mem\n"_Stz);
@@ -499,7 +499,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     }
     
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
-    //       pWorkingBuffer,eClass,aCN[eClass],nObjectSize);
+    //       pEntryBuffer,eClass,aCN[eClass],nObjectSize);
     
     mpTask->m_pDataStack->vPushObject(pEntryBuffer);
     mpTask->m_pDataStack->vPushInt((i8)1);
