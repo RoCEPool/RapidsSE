@@ -51,11 +51,11 @@ void Step::vJob_SubPublishChunk(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subPublish.chunk"_Stz);
   Job_SubPublish* pJob_SubPupublish = _pJob_SubPublish(pPtrJobSubPublish);
   
-  bool bCallAgain = pJob_SubPupublish->bChunk();
+  bool bBufferPublished = pJob_SubPupublish->bChunk();
   
-  mpTask->m_pDataStack->vPushInt((i8)bCallAgain);
+  mpTask->m_pDataStack->vPushInt((i8)true);
   
-  if (! bCallAgain) {
+  if (! bBufferPublished) {
     mpTask->vSleepUs(C_100K);
     mpTask->vState(TS_SLEEPING);
   }

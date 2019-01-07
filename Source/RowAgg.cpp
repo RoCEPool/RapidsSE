@@ -97,6 +97,7 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   byte* aSrc;
   Column* pAggColumn;
   i8 i_Col;
+  Row* pRow;
   
   i8 nAggColumns = m_pAggColVec->nItems();
   
@@ -109,7 +110,7 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
        pEntry != nullptr;
        pEntry = pEntryBuffer->pNextEntry(pEntry, 0)) {
     
-    Row* pRow = pEntry->aRow();
+    pRow = pEntry->aRow();
     
     //pRow->vAsBinaryStringVLQ(sRowString, m_pTable->pColumnVec());
     //vTrace("row: (%s)\n"_Stz, sRowString.aChar());
@@ -146,11 +147,11 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   
   // temp trace
   
-  Time oDateTime;
-  oDateTime.vSetLocal(&m_oSince);
-  s32 sDateTime;
-  char* z = sDateTime.aChar();
-  oDateTime.vAppendLocal(&z);
+//  Time oDateTime;
+//  oDateTime.vSetLocal(&m_oSince);
+//  s32 sDateTime;
+//  char* z = sDateTime.aChar();
+//  oDateTime.vAppendLocal(&z);
   
 //  vTrace("%s\n"_Stz,sDateTime.aChar());
 //  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {

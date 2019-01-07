@@ -56,7 +56,7 @@ Queues::Queues(void)
   
   m_pSleepingQueue = new TaskQueue(bTaskCompareWakeupTime);
   
-  m_pReadyQueue     = new TaskList;
+  m_pReadyQueue    = new TaskList;
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_pReadySlotQueues[i_Slot] = nullptr;
@@ -70,7 +70,7 @@ Queues::Queues(void)
   
   m_pExecutingSet  = new TaskList;
 
-  m_pWaitingSet  = new TaskList;
+  m_pWaitingSet    = new TaskList;
 
   _checkInitialised_(CN_QUEUES);
   
@@ -86,7 +86,7 @@ Queues::~Queues(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Statis ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -140,6 +140,9 @@ void Queues::vAddThread(Thread* pThread)
   m_pThreadVector->vAdd(pThread);
   m_pThreadVector->vDropLock();
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* add task to executing queue                                                */
@@ -223,6 +226,9 @@ void Queues::vAddToWaitingQueue(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* add task to executing queue                                                */
 /*----------------------------------------------------------------------------*/
 void Queues::vAddToExecutingQueue_NL(Task* pTask)
@@ -235,6 +241,10 @@ void Queues::vAddToExecutingQueue_NL(Task* pTask)
   pTask->vQueueOrder(++m_ziQueueOrder);
   
   m_pExecutingSet->vAddTask(pTask);
+  
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,6 +260,10 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   pTask->vQueue(QR_READY_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
   m_pReadyQueue->vAddTask(pTask);
+  
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,6 +286,10 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   pTask->vQueueOrder(++m_ziQueueOrder);
   
   m_pReadySlotQueues[iSlot]->vAddTask(pTask);
+  
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,6 +309,10 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
   pTask->vQueueOrder(++m_ziQueueOrder);
   
   m_pReadySendQueues[iSendNode]->vAddTask(pTask);
+  
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -305,6 +327,10 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
   pTask->vQueue(QR_SLEEPING_QUEUE);
   
   m_pSleepingQueue->vAddTask(pTask);
+  
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -332,7 +358,14 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
   
   // drop task lock
   pTask->vDropLock();
+  
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* add task to ready queue                                                    */
@@ -447,54 +480,7 @@ void Queues::vDumpWaitingQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get no of tasks in the executing queue                                     */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nExecutingQueueTasks(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pExecutingSet->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the ready queue                                         */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nReadyQueueTasks(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pReadyQueue->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the ready slot queue                                    */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nReadySlotQueueTasks(i8 iSlot)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pReadySlotQueues[iSlot]->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the sleeping queue                                      */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nSleepingQueueTasks(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pSleepingQueue->nTasks();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get no of tasks in the waiting queue                                       */
-/*----------------------------------------------------------------------------*/
-i8 Queues::nQWaitingQueueTasks(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  return m_pWaitingSet->nTasks();
-}
 
 /*----------------------------------------------------------------------------*/
 /* attempt to find idle thread                                                */
@@ -539,6 +525,9 @@ Thread* Queues::pGrabIdleThread(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* inspect the ready queue                                                    */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pInspectReadyQueue(Thread* pCallingThread)
@@ -573,6 +562,10 @@ Task* Queues::pInspectReadyQueue(Thread* pCallingThread)
   pPoppedTask->vQueue(QR_NONE);
   
   RASSERT( ! pPoppedTask->bIsPartitioned());
+  
+  if (pPoppedTask->pJob()->m_bMark) {
+    //mark
+  }
   
   // return the task popped from the ready queue
   return pPoppedTask;
@@ -619,6 +612,10 @@ Task* Queues::pInspectReadySendQueue(Thread* pCallingThread)
   
   RASSERT(pPoppedTask->pSendNode() != nullptr);
   
+  if (pPoppedTask->pJob()->m_bMark) {
+    //mark
+  }
+  
   // return the task popped from the slot queue
   return pPoppedTask;
 }
@@ -663,6 +660,10 @@ Task* Queues::pInspectReadySlotQueue(Thread* pCallingThread)
   pPoppedTask->vQueue(QR_NONE);
   
   RASSERT(pPoppedTask->bIsPartitioned());
+  
+  if (pPoppedTask->pJob()->m_bMark) {
+    //mark
+  }
   
   // return the task popped from the slot queue
   return pPoppedTask;
@@ -719,9 +720,16 @@ Task* Queues::pInspectSleepingQueue(Thread* pCallingThread)
   // clear wakeup time of the task
   pPoppedTask->vWakeupTask();
   
+  if (pPoppedTask->pJob()->m_bMark) {
+    //mark
+  }
+  
   // return the task popped from the sleeping queue
   return pPoppedTask;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* is iRRqueue refering to the ready queue ?                                  */
@@ -791,6 +799,9 @@ bool Queues::bIsSleepingQueue(i8 iRRqueue)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* pop next queued task in round robin fashion                                */
 /*----------------------------------------------------------------------------*/
 bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
@@ -850,6 +861,62 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the executing queue                                     */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nQueuedExecutingTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pExecutingSet->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the ready queue                                         */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nQueuedReadyTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pReadyQueue->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the ready slot queue                                    */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nQueuedReadySlotTasks(i8 iSlot)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pReadySlotQueues[iSlot]->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the sleeping queue                                      */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nQueuedSleepingTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pSleepingQueue->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get no of tasks in the waiting queue                                       */
+/*----------------------------------------------------------------------------*/
+i8 Queues::nQueuedWaitingTasks(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  return m_pWaitingSet->nTasks();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* get the first queue                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Queues::i_QueueFirst(void)
@@ -872,6 +939,9 @@ i8 Queues::i_QueueLast(void)
   
   return i_Last;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* remove thread from thread vector                                           */
@@ -912,6 +982,9 @@ void Queues::vRemoveFromWaitingQueue(Task* pTask)
   
   pTask->vQueue(QR_NONE);
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* schedule a fully acked task                                                */
@@ -1033,6 +1106,10 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   
   Thread* pCallingThread = Thread::pThisTLSThread();
   
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
+  
   pCallingThread->vReExecuteTask(pTask);
 }
 
@@ -1150,6 +1227,9 @@ void Queues::vScheduleYieldedTask(Task* pTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* get the thread vector                                                      */
 /*----------------------------------------------------------------------------*/
 ThreadVector* Queues::pThreadVector(void)
@@ -1160,9 +1240,12 @@ ThreadVector* Queues::pThreadVector(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* convert iRRqueue to a ready send queue subscript                           */
 /*----------------------------------------------------------------------------*/
-i8 Queues::i_ToReadySendQueue(i8 iRRqueue)
+i8 Queues::i_ToReadySendQueue(i8 i_RRqueue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -1179,7 +1262,7 @@ i8 Queues::i_ToReadySendQueue(i8 iRRqueue)
    
    */
   
-  i8 i_ReadySendQueue = iRRqueue - gxArguments.m_nSlots;
+  i8 i_ReadySendQueue = i_RRqueue - gxArguments.m_nSlots;
   
   RASSERT(i_ReadySendQueue >= 0 and i_ReadySendQueue < gxArguments.m_nNodes);
   
@@ -1189,11 +1272,11 @@ i8 Queues::i_ToReadySendQueue(i8 iRRqueue)
 /*----------------------------------------------------------------------------*/
 /* convert iRRqueue to a ready slot queue subscript                           */
 /*----------------------------------------------------------------------------*/
-i8 Queues::i_ToReadySlotQueue(i8 iRRqueue)
+i8 Queues::i_ToReadySlotQueue(i8 i_RRqueue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  i8 i_ReadySlotQueue = iRRqueue;
+  i8 i_ReadySlotQueue = i_RRqueue;
   
   RASSERT(i_ReadySlotQueue >= 0 and i_ReadySlotQueue < gxArguments.m_nSlots);
   

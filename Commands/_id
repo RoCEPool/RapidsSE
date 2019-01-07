@@ -33,13 +33,13 @@ print "---------------------------------------------------------------------";
 print "ingesting lineitem table...";
 print "---------------------------------------------------------------------";
 
-nowait purge lineitem 10;
+nowait purge lineitem 60;
 
 nowait publish lineitem "/tmp/lineitem.rowAgg" ;
 
 nowait repeater "/tpch/SF10/lineitem.csv" "/tmp/lineitem.pipe" stats ;
 
-ingest lineitem "/tmp/lineitem.pipe" stats ;
+nowait ingest lineitem "/tmp/lineitem.pipe" stats ;
 
 //docol stepTimingStart;
 //docol stepTimingWrite;

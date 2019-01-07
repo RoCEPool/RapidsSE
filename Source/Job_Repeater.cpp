@@ -287,15 +287,15 @@ bool Job_Repeater::bChunk(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // throttle to 10TB +3% per day
   
-//  i8 iThreshold = ((C_10TB * 103) / 100);
-//  
-//  for (;;) {
-//    m_pByteRate->vUpdateTimer();
-//    i8 nBytesPerDay = m_pByteRate->nBytesPerDay();
-//    if (nBytesPerDay < iThreshold)
-//      break;
-//    PosixThread::vSleepMilli(1);
-//  }
+  i8 iThreshold = ((C_10TB * 103) / 100);
+  
+  for (;;) {
+    m_pByteRate->vUpdateTimer();
+    i8 nBytesPerDay = m_pByteRate->nBytesPerDay();
+    if (nBytesPerDay < iThreshold)
+      break;
+    PosixThread::vSleepMilli(1);
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy next chunk

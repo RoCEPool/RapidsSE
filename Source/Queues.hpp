@@ -83,12 +83,6 @@ namespace Threads
     void vDumpSleepingQueue(void);
     void vDumpWaitingQueue(void);
     
-    i8   nExecutingQueueTasks(void);
-    i8   nReadyQueueTasks(void);
-    i8   nReadySlotQueueTasks(i8 iSlot);
-    i8   nSleepingQueueTasks(void);
-    i8   nQWaitingQueueTasks(void);
-    
     Thread* pGrabIdleThread(void);
 
     Task* pInspectReadyQueue(Thread* pCallingThread);
@@ -96,15 +90,21 @@ namespace Threads
     Task* pInspectReadySlotQueue(Thread* pCallingThread);
     Task* pInspectSleepingQueue(Thread* pCallingThread);
 
-    bool  bIsReadyQueue(i8 iRRqueue);
-    bool  bIsReadySendQueue(i8 iRRqueue);
-    bool  bIsReadySlotQueue(i8 iRRqueue);
-    bool  bIsSleepingQueue(i8 iRRqueue);
+    bool bIsReadyQueue(i8 iRRqueue);
+    bool bIsReadySendQueue(i8 iRRqueue);
+    bool bIsReadySlotQueue(i8 iRRqueue);
+    bool bIsSleepingQueue(i8 iRRqueue);
   
-    bool  bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
+    bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
 
-    i8    i_QueueFirst(void);
-    i8    i_QueueLast(void);
+    i8 nQueuedExecutingTasks(void);
+    i8 nQueuedReadyTasks(void);
+    i8 nQueuedReadySlotTasks(i8 iSlot);
+    i8 nQueuedSleepingTasks(void);
+    i8 nQueuedWaitingTasks(void);
+  
+    i8 i_QueueFirst(void);
+    i8 i_QueueLast(void);
   
     void vRemoveFromQueue(Task* pTask); //! RAY TO COMPLETE
     void vRemoveThread(Thread* pThread);
@@ -124,8 +124,8 @@ namespace Threads
  
     ThreadVector* pThreadVector(void);
   
-    i8   i_ToReadySendQueue(i8 iRRqueue);
-    i8   i_ToReadySlotQueue(i8 iRRqueue);
+    i8 i_ToReadySendQueue(i8 i_RRqueue);
+    i8 i_ToReadySlotQueue(i8 i_RRqueue);
   
     Footer* aFooter(void);
   };

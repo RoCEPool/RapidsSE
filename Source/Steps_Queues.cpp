@@ -31,7 +31,7 @@ void Step::vQueuesExecutingLength(MP_Task mpTask)
     THROW_INVALID_DSTACK("queues::QueuesExecutingLength"_Stz);
   
   Queues* pQueues = gpAttachMap->m_pQueues;
-  mpTask->m_pDataStack->vPushInt(pQueues->nExecutingQueueTasks());
+  mpTask->m_pDataStack->vPushInt(pQueues->nQueuedExecutingTasks());
   
   EXIT();
 }
@@ -49,7 +49,7 @@ void Step::vQueuesReadyLength(MP_Task mpTask)
     THROW_INVALID_DSTACK("queues::QueuesReadyLength"_Stz);
   
   Queues* pQueues = gpAttachMap->m_pQueues;
-  mpTask->m_pDataStack->vPushInt(pQueues->nReadyQueueTasks());
+  mpTask->m_pDataStack->vPushInt(pQueues->nQueuedReadyTasks());
   
   EXIT();
 }
@@ -67,7 +67,7 @@ void Step::vQueuesReadySlotLength(MP_Task mpTask)
     THROW_INVALID_DSTACK("queues::QueuesReadySlotLength"_Stz);
   
   Queues* pQueues = gpAttachMap->m_pQueues;
-  mpTask->m_pDataStack->vPushInt(pQueues->nReadySlotQueueTasks(iSlot));
+  mpTask->m_pDataStack->vPushInt(pQueues->nQueuedReadySlotTasks(iSlot));
   
   EXIT();
 }
@@ -80,7 +80,7 @@ void Step::vQueuesSleepingLength(MP_Task mpTask)
   ENTRY("vQueuesSleepingLength"_Stz);
   
   Queues* pQueues = gpAttachMap->m_pQueues;
-  mpTask->m_pDataStack->vPushInt(pQueues->nSleepingQueueTasks());
+  mpTask->m_pDataStack->vPushInt(pQueues->nQueuedSleepingTasks());
   
   EXIT();
 }
@@ -93,7 +93,7 @@ void Step::vQueuesWaitingLength(MP_Task mpTask)
   ENTRY("vQueuesWaitingLength"_Stz);
   
   Queues* pQueues = gpAttachMap->m_pQueues;
-  mpTask->m_pDataStack->vPushInt(pQueues->nQWaitingQueueTasks());
+  mpTask->m_pDataStack->vPushInt(pQueues->nQueuedWaitingTasks());
   
   EXIT();
 }
