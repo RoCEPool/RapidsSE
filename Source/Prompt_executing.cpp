@@ -25,7 +25,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_executing(SePrompt* pPrompt)
 {
-  gpAttachMap->m_pQueues->vDumpExecutingQueue();
+  gpAttachMap->m_pQueues->vDumpExecutingSet();
 
   return true;
 }

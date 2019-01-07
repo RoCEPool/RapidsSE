@@ -76,12 +76,12 @@ namespace Threads
     void vAddToSleepingQueue_NL(Task* pTask);
     void vAddToWaitingQueue_NL(Task* pTask);
   
-    void vDumpExecutingQueue(void);
+    void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
     void vDumpReadySendQueues(void);
     void vDumpReadySlotQueues(void);
     void vDumpSleepingQueue(void);
-    void vDumpWaitingQueue(void);
+    void vDumpWaitingSet(void);
     
     Thread* pGrabIdleThread(void);
 

@@ -368,14 +368,14 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* dump the executing queue                                                   */
+/* dump the executing set                                                     */
 /*----------------------------------------------------------------------------*/
-void Queues::vDumpExecutingQueue(void)
+void Queues::vDumpExecutingSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Executing Queue: %p\n"_Stz, m_pExecutingSet);
+  vTrace("Executing Set: %p\n"_Stz, m_pExecutingSet);
   vTrace("------------------------------------\n"_Stz);
   m_pExecutingSet->vGrabLock();
   m_pExecutingSet->vContentDump();
@@ -451,7 +451,7 @@ void Queues::vDumpSleepingQueue(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("SleepingQueue: %p\n"_Stz, m_pSleepingQueue);
+  vTrace("Sleeping Queue: %p\n"_Stz, m_pSleepingQueue);
   vTrace("------------------------------------\n"_Stz);
   m_pSleepingQueue->vGrabLock();
   m_pSleepingQueue->vContentDump();
@@ -462,14 +462,14 @@ void Queues::vDumpSleepingQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump waiting queue                                                         */
+/* dump waiting set                                                           */
 /*----------------------------------------------------------------------------*/
-void Queues::vDumpWaitingQueue(void)
+void Queues::vDumpWaitingSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("Waiting Queue: %p\n"_Stz, m_pWaitingSet);
+  vTrace("Waiting Set: %p\n"_Stz, m_pWaitingSet);
   vTrace("------------------------------------\n"_Stz);
   m_pWaitingSet->vGrabLock();
   m_pWaitingSet->vContentDump();

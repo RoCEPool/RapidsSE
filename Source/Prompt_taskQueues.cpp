@@ -26,12 +26,12 @@ extern AttachMap*  gpAttachMap;
 bool Prompt::bPrompt_taskQueues(SePrompt* pPrompt)
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
-  pQueues->vDumpExecutingQueue();
+  pQueues->vDumpExecutingSet();
   pQueues->vDumpReadyQueue();
   pQueues->vDumpReadySendQueues();
   pQueues->vDumpReadySlotQueues();
   pQueues->vDumpSleepingQueue();
-  pQueues->vDumpWaitingQueue();
+  pQueues->vDumpWaitingSet();
   
   return true;
 }
