@@ -140,6 +140,11 @@ namespace StorageEngine
     i8            m_nSocketRecvBytes;
     i8            m_nSocketSendBytes;
   
+    // temporary/working debug
+    struct {
+      IndexTree*  m_paIndexTree[16];
+    } m_xPurgeDebug;
+  
     // must be last
     Footer m_xFooter;
     

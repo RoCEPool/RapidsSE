@@ -1008,6 +1008,14 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
   
   m_zLock.vGrabWrite();
   
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  // record the index tree for debugging purposes
+  
+  if (! gpAttachMap->m_xPurgeDebug.m_paIndexTree[m_iPartitionNo])
+    gpAttachMap->m_xPurgeDebug.m_paIndexTree[m_iPartitionNo] = this;
+  
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
   i8 iAge = m_pRootBuffer->iAgeInSeconds();
   
 //  if (iAge <= 1) {
