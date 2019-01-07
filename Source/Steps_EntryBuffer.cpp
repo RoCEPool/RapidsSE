@@ -163,36 +163,6 @@ void Step::vEntryBufferIndexStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* entryBuffer.insertRow -- insert a row entry into the index buffer          */
-/*----------------------------------------------------------------------------*/
-//void Step::vEntryBufferInsertRow(MP_Task mpTask)
-//{
-//  ENTRY("vEntryBufferInsertRow"_Stz);
-//
-//  Object* pPtrOldEntry = nullptr;
-//  Object* pPtrIndexBuffer;
-//
-//  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-//    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
-//
-//  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-//
-//  if ( ! mpTask->m_pDataStack->bPop(pPtrOldEntry) )
-//    THROW_INVALID_DSTACK("entryBuffer.insertRow"_Stz);
-//
-//  Entry* pOldEntry = _pEntry(pPtrOldEntry);
-//  ASSERT(CN_ENTRY == pOldEntry->eClass());
-//
-//  bool bInserted = bInsertRow(pIndexBuffer, pOldEntry, mpTask->m_pSession);
-//  if (bInserted)
-//    mpTask->m_pDataStack->vPushInt(1);
-//  else
-//    mpTask->m_pDataStack->vPushInt(0);
-//
-//  EXIT();
-//}
-
-/*----------------------------------------------------------------------------*/
 /* entryBuffer.isLast@ -- get if buffer is last                               */
 /*----------------------------------------------------------------------------*/
 void Step::vEntryBufferIsLastFetch(MP_Task mpTask)
