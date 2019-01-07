@@ -38,6 +38,7 @@ using namespace Prompt;
 #include "Prompt_date.hpp"
 
 #include "Prompt_errno.hpp"
+#include "Prompt_executing.hpp"
 
 #include "Prompt_file.hpp"
 
@@ -76,6 +77,7 @@ using namespace Prompt;
 #include "Prompt_question.hpp"
 
 #include "Prompt_rassert.hpp"
+#include "Prompt_ready.hpp"
 #include "Prompt_resources.hpp"
 #include "Prompt_rmpipe.hpp"
 
@@ -83,6 +85,7 @@ using namespace Prompt;
 #include "Prompt_shell.hpp"
 #include "Prompt_sizes.hpp"
 #include "Prompt_sleep.hpp"
+#include "Prompt_sleeping.hpp"
 #include "Prompt_socket.hpp"
 #include "Prompt_ssn.hpp"
 #include "Prompt_st.hpp"
@@ -94,6 +97,9 @@ using namespace Prompt;
 #include "Prompt_timerStart.hpp"
 
 #include "Prompt_version.hpp"
+
+#include "Prompt_waiting.hpp"
+
 
 /*============================================================================*/
 /* end                                                                        */
