@@ -547,7 +547,7 @@ i8 giClassSize[]
 
   /*149 */ sizeof(Wilderness),         // CN_WILDERNESS
   /*150 */ sizeof(Word),               // CN_WORD
-  /*    */ sizeof(WorkingBuffer),      // CN_WORKINGBUFFER
+  /*    */ 0,                          // CN_WORKINGBUFFER
   /*100 */ 0,                          // CN_WORKINGROW
   
   /*151 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_

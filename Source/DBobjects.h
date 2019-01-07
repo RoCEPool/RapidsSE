@@ -74,9 +74,6 @@ typedef Array<CN_ROWAGG,eRO,1024> RelOpAry;
 
 #include "FetchBuffer.hpp"
 
-#include "WorkingRow.hpp"
-#include "WorkingBuffer.hpp"
-
 #include "TablePtn.hpp"
 
 #include "Slots.hpp"
@@ -86,13 +83,10 @@ typedef Array<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "Table.hpp"
 #include "Index.hpp"
 
-
 #include "RbCursor.hpp"
 #include "SelCursor.hpp"
 #include "RowCursor.hpp"
 #include "RowOnce.hpp"
-
-
 
 #include "User.hpp"
 
