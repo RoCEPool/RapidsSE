@@ -368,14 +368,14 @@ void Queues::vAddToWaitingQueue_NL(Task* pTask)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add task to ready queue                                                    */
+/* dump the executing queue                                                   */
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpExecutingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("ExecutingList: %p\n"_Stz, m_pExecutingSet);
+  vTrace("Executing Queue: %p\n"_Stz, m_pExecutingSet);
   vTrace("------------------------------------\n"_Stz);
   m_pExecutingSet->vGrabLock();
   m_pExecutingSet->vContentDump();
@@ -386,14 +386,14 @@ void Queues::vDumpExecutingQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to ready queue                                                    */
+/* dump the ready queue                                                       */
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpReadyQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("ReadyQueue: %p\n"_Stz, m_pReadyQueue);
+  vTrace("Ready Queue: %p\n"_Stz, m_pReadyQueue);
   vTrace("------------------------------------\n"_Stz);
   m_pReadyQueue->vGrabLock();
   m_pReadyQueue->vContentDump();
@@ -404,7 +404,7 @@ void Queues::vDumpReadyQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to ready queue                                                    */
+/* dump the ready send queues                                                 */
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpReadySendQueues(void)
 {
@@ -412,7 +412,7 @@ void Queues::vDumpReadySendQueues(void)
   
   for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++ ) {
     vTrace("------------------------------------\n"_Stz);
-    vTrace("ReadySendQueue: %p\n"_Stz, m_pReadySendQueues[i_Node]);
+    vTrace("Ready Send Queue: %p\n"_Stz, m_pReadySendQueues[i_Node]);
     vTrace("------------------------------------\n"_Stz);
     m_pReadySendQueues[i_Node]->vGrabLock();
     m_pReadySendQueues[i_Node]->vContentDump();
@@ -424,7 +424,7 @@ void Queues::vDumpReadySendQueues(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to ready queue                                                    */
+/* dump ready slot queues                                                     */
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpReadySlotQueues(void)
 {
@@ -432,7 +432,7 @@ void Queues::vDumpReadySlotQueues(void)
   
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++ ) {
     vTrace("------------------------------------\n"_Stz);
-    vTrace("ReadySlotQueue: %p\n"_Stz, m_pReadySlotQueues[i_Slot]);
+    vTrace("Ready Slot Queue: %p\n"_Stz, m_pReadySlotQueues[i_Slot]);
     vTrace("------------------------------------\n"_Stz);
     m_pReadySlotQueues[i_Slot]->vGrabLock();
     m_pReadySlotQueues[i_Slot]->vContentDump();
@@ -444,7 +444,7 @@ void Queues::vDumpReadySlotQueues(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to ready queue                                                    */
+/* dump sleeping queue                                                        */
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpSleepingQueue(void)
 {
@@ -462,14 +462,14 @@ void Queues::vDumpSleepingQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add task to ready queue                                                    */
+/* dump waiting queue                                                         */
 /*----------------------------------------------------------------------------*/
 void Queues::vDumpWaitingQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   vTrace("------------------------------------\n"_Stz);
-  vTrace("WaitingList: %p\n"_Stz, m_pWaitingSet);
+  vTrace("Waiting Queue: %p\n"_Stz, m_pWaitingSet);
   vTrace("------------------------------------\n"_Stz);
   m_pWaitingSet->vGrabLock();
   m_pWaitingSet->vContentDump();
