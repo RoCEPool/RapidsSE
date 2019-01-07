@@ -11,7 +11,6 @@ namespace DBobjects
   class Table;
   class TablePtn;
   class Index;
-  class WorkingBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -378,7 +378,6 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, EntryBuffer* pEntryBuffer)
   
   // if buffer has 0 entries (only head) then should be last buffer
   if (pEntryBuffer->nItems() == 0) {
-    // ASSERT(pWorkingBuffer->bIsLast());
     delete pEntryBuffer;
     return;
   }

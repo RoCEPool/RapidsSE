@@ -23,9 +23,6 @@ namespace Values
     DBobjects::EntryBuffer*   m_pRowBuffer;
     i8  m_iRowBufferBytes;
     
-    DBobjects::WorkingBuffer* m_pWorkingBuffer;
-    i8  m_iWorkingBufferBytes;
-    
     char m_wWorkspace[C_VALSET_DATAAREA];
     
   public:
@@ -38,17 +35,17 @@ namespace Values
     bool bExtractValue(Stz*& pCursor, Value*& pValue);
     bool bExtractValue(Stz*& pCursor, eCN& eClassNo, Value*& pValue);
     DBobjects::EntryBuffer* pGetRowBuffer();
-    DBobjects::WorkingBuffer* pGetWorkingBuffer();
+    //DBobjects::WorkingBuffer* pGetWorkingBuffer();
     bool bHasRowBuffer(void);
-    bool bHasWorkingBuffer(void);
+    //bool bHasWorkingBuffer(void);
     DBobjects::EntryBuffer* pRowBuffer(void);
     void vRowBuffer(DBobjects::EntryBuffer* pRowBuffer);
     bool bSetRowBuffer(DBobjects::EntryBuffer* pRowBuffer);
-    bool bSetWorkingBuffer(DBobjects::WorkingBuffer* pWorkingBuffer);
+    //bool bSetWorkingBuffer(DBobjects::WorkingBuffer* pWorkingBuffer);
     i8   nSize(void);
     void vToString(Stz* aWorkspace);
-    DBobjects::WorkingBuffer* pWorkingBuffer(void);
-    void vWorkingBuffer(DBobjects::WorkingBuffer* pWorkingBuffer);
+    //DBobjects::WorkingBuffer* pWorkingBuffer(void);
+    //void vWorkingBuffer(DBobjects::WorkingBuffer* pWorkingBuffer);
 
   private:
     Stz* aFirstByte(void);
