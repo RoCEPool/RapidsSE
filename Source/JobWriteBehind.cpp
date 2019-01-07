@@ -36,7 +36,7 @@ JobWriteBehind::JobWriteBehind(void)
   m_nRecordBytes = 0;
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
-    m_pWorkingBuffer[i_Partition]   = nullptr;
+    m_pEntryBuffer[i_Partition]   = nullptr;
     m_nWriteBehindBuffers[i_Partition] = 0;
   }
 }
@@ -48,7 +48,7 @@ JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 {
   // Assert we don't have any dangling buffers
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
-    RASSERT( ! m_pWorkingBuffer[iPartition] );
+    RASSERT( ! m_pEntryBuffer[iPartition] );
   }
   
 }
@@ -78,6 +78,7 @@ bool JobWriteBehind::bFormatRow(Table* pTable, Formatters* pFormatters,
   
   return bValid;
 }
+
 /*----------------------------------------------------------------------------*/
 /* handle dangling buffers                                                    */
 /*----------------------------------------------------------------------------*/
@@ -86,12 +87,12 @@ void JobWriteBehind::vHandleDanglingBuffers(Interface::Session* pSession, Table*
 {
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
     
-    if ( ! m_pWorkingBuffer[iPartition] )
-      vNewWorkingBuffer(pTable, iPartition);
+    if ( ! m_pEntryBuffer[iPartition] )
+      vNewEntryBuffer(pTable, iPartition);
     
-    // get the working buffer
-    WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[iPartition];
-    m_pWorkingBuffer[iPartition] = nullptr;
+    // get the entry buffer
+    EntryBuffer* pEntryBuffer = m_pEntryBuffer[iPartition];
+    m_pEntryBuffer[iPartition] = nullptr;
     
     i8 nWriteBehindBuffers = m_nWriteBehindBuffers[iPartition];
     
@@ -99,7 +100,7 @@ void JobWriteBehind::vHandleDanglingBuffers(Interface::Session* pSession, Table*
     // create a write buffer job for load
     Job_WriteBuffer::vSpawnJobWriteBuffer(
                                           pSession, pTable->aTableName(), eDataSource,
-                                          pWorkingBuffer, iParentJobId, iPartition,
+                                          pEntryBuffer, iParentJobId, iPartition,
                                           true, nWriteBehindBuffers);
   }
 }
@@ -121,12 +122,12 @@ eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check for working buffer
-    if (! m_pWorkingBuffer[iPartition]) {
+    if (! m_pEntryBuffer[iPartition]) {
       
       // create a new working buffer for this partition
-      vNewWorkingBuffer(pTable, iPartition);
+      vNewEntryBuffer(pTable, iPartition);
       
-      if (! m_pWorkingBuffer[iPartition]) {
+      if (! m_pEntryBuffer[iPartition]) {
         vTrace("EntryBuffer allocation failed\n"_Stz);
         eErrorCode = EC_LOW_BUFFERS;
         return eErrorCode;
@@ -134,8 +135,8 @@ eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the working buffer
-    WorkingBuffer* pWorkingBuffer = m_pWorkingBuffer[iPartition];
+    // get the entry buffer for the partition
+    EntryBuffer* pEntryBuffer = m_pEntryBuffer[iPartition];
     
     // get the tx id
     //Session* pSession = m_pLoadTable->pSession();
@@ -151,19 +152,19 @@ eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
-    bool bAppended = pWorkingBuffer->bAppendRow(xRowWrk);
+    Entry* pEntry = pEntryBuffer->pAppendRow(xRowWrk);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // appended ?
-    if (bAppended)
+    if (pEntry)
       return eErrorCode;
       
-    m_pWorkingBuffer[iPartition] = nullptr;
+    m_pEntryBuffer[iPartition] = nullptr;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn a write buffer job 
     Job_WriteBuffer::vSpawnJobWriteBuffer(pSession, pTable->aTableName(), eDataSource,
-                                          pWorkingBuffer, iParentJobId,
+                                          pEntryBuffer, iParentJobId,
                                           iPartition, false, 0);
   }
   
@@ -219,11 +220,14 @@ eEC JobWriteBehind::eProcessRecord(Interface::Session* pSession,
 /*----------------------------------------------------------------------------*/
 /* create a new working buffer                                                */
 /*----------------------------------------------------------------------------*/
-void JobWriteBehind::vNewWorkingBuffer(Table* pTable, i8 iPartition)
+void JobWriteBehind::vNewEntryBuffer(Table* pTable, i8 iPartition)
 {
-  m_pWorkingBuffer[iPartition] =
-    new WorkingBuffer(pTable,iPartition);
+  m_pEntryBuffer[iPartition] = new EntryBuffer();
   
+  m_pEntryBuffer[iPartition]->vIndex(pTable->pHiddenIndex());
+  m_pEntryBuffer[iPartition]->vBufferLevel(0);
+  m_pEntryBuffer[iPartition]->vPartitionNo(iPartition);
+
   m_nWriteBehindBuffers[iPartition]++;
 }
 

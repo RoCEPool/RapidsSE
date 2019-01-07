@@ -366,7 +366,7 @@ bool Table::bAppendBuffer(i8 iPartition, EntryBuffer* pEntryBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert entries from a row buffer into the table (hidden and other indexes) */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertEntries(i8 iTxId, i8 iSlot, WorkingBuffer* pWorkingBuffer)
+void Table::vInsertEntries(i8 iTxId, i8 iSlot, EntryBuffer* pEntryBuffer)
 { //# indexTuning
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -377,8 +377,9 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, WorkingBuffer* pWorkingBuffer)
   ASSERT(iSlot < gpAttachMap->m_pGrid->m_nSlots);
   
   // if buffer has 0 entries (only head) then should be last buffer
-  if (pWorkingBuffer->nWorkingRows() == 0) {
+  if (pEntryBuffer->nItems() == 0) {
     // ASSERT(pWorkingBuffer->bIsLast());
+    delete pEntryBuffer;
     return;
   }
   
@@ -387,9 +388,9 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, WorkingBuffer* pWorkingBuffer)
   TablePtn* pPartition = this->pPartition(iSlot);
   IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
   
-  EntryBuffer* pFirstBuffer;
-  Entry* pFirstEntry;
-  pHiddenIndexTree->vAppendEntriesFromBuffer(iTxId, pWorkingBuffer, &pFirstBuffer, &pFirstEntry);
+  //----------------------------------------------------------------------------
+  // append the buffer to the hidden index tree
+  pHiddenIndexTree->vAppendBuffer(pEntryBuffer);
   
   //----------------------------------------------------------------------------
   // (2) insert entries from hidden index pFirstBuffer starting at pFirstEntry
@@ -410,22 +411,24 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, WorkingBuffer* pWorkingBuffer)
     if (pIndex->bIsHidden())
       continue;
     
-    EntryBuffer* pHiddenEntryBuffer = pFirstBuffer;
-    Entry* pEntry = pFirstEntry;
+    Entry* pFirstEntry = pEntryBuffer->pFirstEntry();
     
     //pHiddenEntryBuffer->vDump();
     
-    // iterate through all the buffers of the hidden index starting from pFirstEntry
-    // in pFirstBuffer and insert corresponding entries in other indexes
-    while (pHiddenEntryBuffer) {
-      
-      pNewIndexTree->vInsertEntriesFromBuffer(pHiddenEntryBuffer, pEntry);
-      pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
-      
-      // get the next buffer and first entry in it
-      if (pHiddenEntryBuffer)
-        pEntry = pHiddenEntryBuffer->pFirstEntry();
-    }
+    // insert entries from EntryBuffer into the index
+    pNewIndexTree->vInsertEntriesFromBuffer(pEntryBuffer, pFirstEntry);
+    
+//    // iterate through all the buffers of the hidden index starting from pFirstEntry
+//    // in pFirstBuffer and insert corresponding entries in other indexes
+//    while (pHiddenEntryBuffer) {
+//
+//      pNewIndexTree->vInsertEntriesFromBuffer(pHiddenEntryBuffer, pEntry);
+//      pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
+//
+//      // get the next buffer and first entry in it
+//      if (pHiddenEntryBuffer)
+//        pEntry = pHiddenEntryBuffer->pFirstEntry();
+//    }
   }
 }
 

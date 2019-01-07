@@ -41,6 +41,9 @@
   sTableNm find execute locals| pTable |
   pTable pJob_WriteBuffer Job_WriteBuffer.table!
 
+  // set the index in the entryBuffer of writeBuffer
+  pTable table.hiddenIndex@ pJob_WriteBuffer Job_WriteBuffer.Index!
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the parent job (participant node)
   // parent jo can be EndInsert of LoadTable

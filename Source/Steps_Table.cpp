@@ -26,7 +26,6 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
   vAddStep("table.init"_Stz,               &Step::vTableInit);
   vAddStep("table.insert"_Stz,             &Step::vTableInsert);
-  vAddStep("table.insertEntries"_Stz,      &Step::vTableInsertEntries);
   vAddStep("table.isLoading!"_Stz,         &Step::vTableIsLoadingStore);
   vAddStep("table.isValidIndexColumns"_Stz,&Step::vTableIsValidIndexColumns);
   vAddStep("table.lazyBuildIndexes"_Stz,   &Step::vTableLazyBuildIndexes);
@@ -94,46 +93,6 @@ void Step::vTableAnalyze(MP_Task mpTask)
 
   mpTask->m_pDataStack->vPushS48K(sAnalysis);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.insertEntries -- insert entries from buffer into table (from session)*/
-/*----------------------------------------------------------------------------*/
-void Step::vTableInsertEntries(MP_Task mpTask)
-{
-  ENTRY("vTableInsertEntries"_Stz);
-  i8 iSlot;
-  i8 iTxId;
-  s48K sString;
-  
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.insertEntries"_Stz);
-  
-  Table* pTable = reinterpret_cast<Table*>(sString.iToI8());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.insertEntries"_Stz);
-  
-  WorkingBuffer* pWorkingBuffer = reinterpret_cast<WorkingBuffer*>(sString.iToI8());
-  ASSERT(CN_WORKINGBUFFER == pWorkingBuffer->eClass());
-  
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.insertEntries"_Stz);
-  
-  iSlot = sString.iToI8();
-  
-  if ( ! mpTask->m_pDataStack->bPop(sString) )
-    THROW_INVALID_DSTACK("table.insertEntries"_Stz);
-  
-  iTxId = sString.iToI8();
-  
-  pTable->vInsertEntries(iTxId, iSlot, pWorkingBuffer);
-  
-  // now delete the temporary buffer
-  delete pWorkingBuffer;
-  
   EXIT();
 }
 

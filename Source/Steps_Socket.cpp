@@ -279,7 +279,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
 
-  RASSERT(_bIsValidJob(eClass) || CN_WORKINGBUFFER == eClass);
+  RASSERT(_bIsValidJob(eClass) || CN_ENTRYBUFFER == eClass);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of job
@@ -317,14 +317,14 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of working buffer
   
-  if (eClass == CN_WORKINGBUFFER) {
+  if (eClass == CN_ENTRYBUFFER) {
     
-    WorkingBuffer* pWorkingBuffer = new WorkingBuffer(nullptr, -1);
+    EntryBuffer* pEntryBuffer = new EntryBuffer();
     
-    MemLib::vCopy(pWorkingBuffer,pObject,sizeof(Object),CN_WORKINGBUFFER);
+    MemLib::vCopy(pEntryBuffer,pObject,sizeof(Object),CN_ENTRYBUFFER);
 
-    void* aBody = pAdd<void*>(pWorkingBuffer,sizeof(Object));
-    i8 nRemainingBytes = giClassSize[CN_WORKINGBUFFER] - sizeof(Object);
+    void* aBody = pAdd<void*>(pEntryBuffer,sizeof(Object));
+    i8 nRemainingBytes = giClassSize[CN_ENTRYBUFFER] - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
@@ -336,7 +336,10 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pWorkingBuffer,eClass,aCN[eClass],nObjectSize);
     
-    mpTask->m_pDataStack->vPushObject(pWorkingBuffer);
+    // restore the entryBuffer pointets (m_pHeadEntry etc)
+    pEntryBuffer->vRestore();
+    
+    mpTask->m_pDataStack->vPushObject(pEntryBuffer);
     mpTask->m_pDataStack->vPushInt((i8)1);
     EXIT();
     return;
@@ -390,7 +393,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
   
-  RASSERT(_bIsValidJob(eClass) || CN_WORKINGBUFFER == eClass);
+  RASSERT(_bIsValidJob(eClass) || CN_ENTRYBUFFER == eClass);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the specific case of job_writeBuffer under low memory condition
@@ -435,8 +438,8 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
 
     if (bDiscardWorkingBuffer) {
 
-      bResult = pSocket->bRecvBytes(aLowBuff,sizeof(WorkingBuffer),oSysCall);
-      vTrace("Discarded WorkingBuffer under low mem\n"_Stz);
+      bResult = pSocket->bRecvBytes(aLowBuff,sizeof(EntryBuffer),oSysCall);
+      vTrace("Discarded EntryBuffer under low mem\n"_Stz);
     }
     
     mpTask->m_pDataStack->vPushObject(pJob_WriteBuffer);
@@ -479,14 +482,14 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receive rest of working buffer
   
-  if (eClass == CN_WORKINGBUFFER) {
+  if (eClass == CN_ENTRYBUFFER) {
     
-    WorkingBuffer* pWorkingBuffer = new WorkingBuffer(nullptr, -1);
+    EntryBuffer* pEntryBuffer = new EntryBuffer();
     
-    MemLib::vCopy(pWorkingBuffer,pObject,sizeof(Object),CN_WORKINGBUFFER);
+    MemLib::vCopy(pEntryBuffer,pObject,sizeof(Object),CN_ENTRYBUFFER);
     
-    void* aBody = pAdd<void*>(pWorkingBuffer,sizeof(Object));
-    i8 nRemainingBytes = giClassSize[CN_WORKINGBUFFER] - sizeof(Object);
+    void* aBody = pAdd<void*>(pEntryBuffer,sizeof(Object));
+    i8 nRemainingBytes = giClassSize[CN_ENTRYBUFFER] - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
@@ -498,7 +501,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pWorkingBuffer,eClass,aCN[eClass],nObjectSize);
     
-    mpTask->m_pDataStack->vPushObject(pWorkingBuffer);
+    mpTask->m_pDataStack->vPushObject(pEntryBuffer);
     mpTask->m_pDataStack->vPushInt((i8)1);
     EXIT();
     return;
@@ -542,7 +545,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
                          aCN[eClass],pSocket);
   }
 
-  RASSERT(_bIsValidJob(eClass) || CN_WORKINGBUFFER == eClass);
+  RASSERT(_bIsValidJob(eClass) || CN_ENTRYBUFFER == eClass);
     
   SysCall oSysCall;
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);

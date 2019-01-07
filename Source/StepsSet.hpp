@@ -448,7 +448,7 @@
   static void vJobFindOriginator(Tasks::MP_Task mpTask);
   static void vJobFindParticipant(Tasks::MP_Task mpTask);
   static void vJobHasError(Tasks::MP_Task mpTask);
-  static void vJobHasWorkingBuffer(Tasks::MP_Task mpTask);
+  static void vJobHasEntryBuffer(Tasks::MP_Task mpTask);
   static void vJobIdFetch(Tasks::MP_Task mpTask);
   static void vJobIndexNameFetch(Tasks::MP_Task mpTask);
   static void vJobIsExecuting(Tasks::MP_Task mpTask);
@@ -493,8 +493,8 @@
   static void vJobTraceStore(Tasks::MP_Task mpTask);
   static void vJobTraceFetch(Tasks::MP_Task mpTask);
   static void vJobWaitParticipant(Tasks::MP_Task mpTask);
-  static void vJobWorkingBufferFetch(Tasks::MP_Task mpTask);
-  static void vJobWorkingBufferStore(Tasks::MP_Task mpTask);
+  static void vJobEntryBufferFetch(Tasks::MP_Task mpTask);
+  static void vJobEntryBufferStore(Tasks::MP_Task mpTask);
 
   // job generic
   static void vJob__BegunErrorFetch(Tasks::MP_Task mpTask);
@@ -638,6 +638,7 @@
   static void vJob_TruncateTableSpawnSub(Tasks::MP_Task mpTask);
 
   // Job WriteBuffer
+  static void vJob_WriteBufferIndexStore(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferParentJobIdFetch(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferInsertRows(Tasks::MP_Task mpTask);
   static void vJob_WriteBufferIsIngesting(Tasks::MP_Task mpTask);
@@ -960,7 +961,6 @@
   static void vTableIndexCount(Tasks::MP_Task mpTask);
   static void vTableInit(Tasks::MP_Task mpTask);
   static void vTableInsert(Tasks::MP_Task mpTask);
-  static void vTableInsertEntries(Tasks::MP_Task mpTask);
   static void vTableIsLoadingStore(Tasks::MP_Task mpTask);
   static void vTableLazyBuildIndexes(Tasks::MP_Task mpTask);
   static void vTableList(Tasks::MP_Task mpTask);

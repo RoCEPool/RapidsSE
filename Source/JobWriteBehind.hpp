@@ -13,7 +13,7 @@ namespace JobModel
     s48K m_aRecord;         // formatted row
     i8   m_nRecordBytes;    // length of record
     
-    WorkingBuffer* m_pWorkingBuffer[C_MAX_PARTITIONS]; // working row buffers
+    EntryBuffer* m_pEntryBuffer[C_MAX_PARTITIONS];     // entry buffers
     i8 m_nWriteBehindBuffers[C_MAX_PARTITIONS];        // how many buffers
     
   public:
@@ -41,7 +41,7 @@ namespace JobModel
                         eDS eDataSource);
   
   //private:
-    void vNewWorkingBuffer(Table* pTable, i8 iPartition);
+    void vNewEntryBuffer(Table* pTable, i8 iPartition);
   };
 }
 

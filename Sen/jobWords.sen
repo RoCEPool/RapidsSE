@@ -332,9 +332,9 @@
 
     pJob pSocket socket.sendObject drop
 
-    pJob job.hasWorkingBuffer if
-      //"job.send: Job has working buffer" .
-       pJob job.workingBuffer@ pSocket socket.sendObject drop
+    pJob job.hasEntryBuffer if
+      //"job.send: Job has entry buffer" .
+       pJob job.entryBuffer@ pSocket socket.sendObject drop
     then
 
   task::socketUnlock

@@ -132,12 +132,15 @@ Job_WriteBuffer::~Job_WriteBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEBUFFER,_FOOTER_);
   
-  delete m_pCurrentBuffer;
-  m_pCurrentBuffer = nullptr;
+  if ( m_pCurrentBuffer ) {
+    delete m_pCurrentBuffer;
+    m_pCurrentBuffer = nullptr;
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert rows from working buffer into table                                 */
+/* insert rows from entry buffer into table                                   */
 /*----------------------------------------------------------------------------*/
 bool Job_WriteBuffer::bInsertRows(void)
 {
@@ -163,7 +166,7 @@ bool Job_WriteBuffer::bInsertRows(void)
   TablePtn* pPartition = m_pTable->pPartition(iSlot);
   RASSERT_TYPE(pPartition,CN_TABLEPTN);
 
-  RASSERT_TYPE(m_pCurrentBuffer,CN_WORKINGBUFFER);
+  RASSERT_TYPE(m_pCurrentBuffer,CN_ENTRYBUFFER);
 
 //  if (gpAttachMap->m_bVerbose)
 //    vTrace("Job_WriteBuffer %lld %lld %s\n"_Stz,
@@ -175,7 +178,11 @@ bool Job_WriteBuffer::bInsertRows(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the working buffer
   m_pTable->vInsertEntries(iTxId, iSlot, m_pCurrentBuffer);
-
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null the current buffer as its been appended to the table
+  m_pCurrentBuffer = nullptr;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // we inserted one additional buffer
   pPartition->vIncBuffersWritten();
@@ -318,7 +325,7 @@ void Job_WriteBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
                                                      Stz* sTableName,
                                                      eDS eDataSource,
-                                                     WorkingBuffer* pWorkingBuffer,
+                                                     EntryBuffer* pEntryBuffer,
                                                      i8 iParentJobId,
                                                      i8 iPartition,
                                                      bool bFinal,
@@ -343,8 +350,8 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   pJob_WriteBuffer->m_iParentJobId  = iParentJobId;
   pJob_WriteBuffer->m_sObjectName   = sTableName;
   pJob_WriteBuffer->m_iPartitionId  = iPartition;
-  pJob_WriteBuffer->m_pCurrentBuffer = pWorkingBuffer;
-  pJob_WriteBuffer->m_nRows = pWorkingBuffer->nWorkingRows();
+  pJob_WriteBuffer->m_pCurrentBuffer = pEntryBuffer;
+  pJob_WriteBuffer->m_nRows = pEntryBuffer->nItems();
   
   if (bFinal) {
     ASSERT(C_UNKNOWN != nWriteBehindBuffers);

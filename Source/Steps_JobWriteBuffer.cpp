@@ -11,13 +11,36 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobWriteBuffer(void)
 {
-  vAddStep("job_writeBuffer.parentJobId@"_Stz,  &Step::vJob_WriteBufferParentJobIdFetch);
-  vAddStep("job_writeBuffer.InsertRows"_Stz,    &Step::vJob_WriteBufferInsertRows);
-  vAddStep("job_writeBuffer.isIngesting"_Stz,   &Step::vJob_WriteBufferIsIngesting);
-  vAddStep("job_writeBuffer.isInserting"_Stz,   &Step::vJob_WriteBufferIsInserting);
-  vAddStep("job_writeBuffer.isLoading"_Stz,     &Step::vJob_WriteBufferIsLoading);
-  vAddStep("job_writeBuffer.partition@"_Stz,    &Step::vJob_WriteBufferPartitionFetch);
-  vAddStep("job_writeBuffer.table!"_Stz,        &Step::vJob_WriteBufferTableStore);
+  vAddStep("job_WriteBuffer.index!"_Stz,        &Step::vJob_WriteBufferIndexStore);
+  vAddStep("job_WriteBuffer.parentJobId@"_Stz,  &Step::vJob_WriteBufferParentJobIdFetch);
+  vAddStep("job_WriteBuffer.insertRows"_Stz,    &Step::vJob_WriteBufferInsertRows);
+  vAddStep("job_WriteBuffer.isIngesting"_Stz,   &Step::vJob_WriteBufferIsIngesting);
+  vAddStep("job_WriteBuffer.isInserting"_Stz,   &Step::vJob_WriteBufferIsInserting);
+  vAddStep("job_WriteBuffer.isLoading"_Stz,     &Step::vJob_WriteBufferIsLoading);
+  vAddStep("job_WriteBuffer.partition@"_Stz,    &Step::vJob_WriteBufferPartitionFetch);
+  vAddStep("job_WriteBuffer.table!"_Stz,        &Step::vJob_WriteBufferTableStore);
+}
+
+/*----------------------------------------------------------------------------*/
+/* job_WriteBuffer.index! -- store hidden index in entryBuffer     */
+/*----------------------------------------------------------------------------*/
+void Step::vJob_WriteBufferIndexStore(MP_Task mpTask)
+{
+  ENTRY("vJob_WriteBufferIndexStore"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("job_WriteBuffer.index!"_Stz);
+  Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
+  
+  Object* pIndexPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pIndexPtr) )
+    THROW_INVALID_DSTACK("job_WriteBuffer.index!"_Stz);
+  Index* pHiddenIndex = _pIndex(pIndexPtr);
+  
+  pJob_WriteBuffer->m_pCurrentBuffer->vRestoreIndex(pHiddenIndex);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +65,7 @@ void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_WriteBuffer.insertRows -- insert rows from working buffer into table  */
+/* job_WriteBuffer.insertRows -- insert rows from working buffer into table   */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferInsertRows(MP_Task mpTask)
 {

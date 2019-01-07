@@ -116,7 +116,7 @@ namespace JobModel
     i8  m_iParticipantNode;    // participant node no
     Decider m_xAcksRemaining;  // acks remaining
   
-    WorkingBuffer* m_pCurrentBuffer; // working buffer
+    EntryBuffer* m_pCurrentBuffer; // entry buffer
   
     eJS m_eState; // cond wait state
     pthread_mutex_t     m_xThreadMutex;     // connector thread mutex variable

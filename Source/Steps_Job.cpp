@@ -36,7 +36,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.executingTask@"_Stz,   &Step::vJobExecutingTaskFetch);
   
   vAddStep("job.hasError"_Stz,         &Step::vJobHasError);
-  vAddStep("job.hasWorkingBuffer"_Stz, &Step::vJobHasWorkingBuffer);
+  vAddStep("job.hasEntryBuffer"_Stz,   &Step::vJobHasEntryBuffer);
   vAddStep("job.id@"_Stz,              &Step::vJobIdFetch);
   vAddStep("job.indexName@"_Stz,       &Step::vJobIndexNameFetch);
   
@@ -80,8 +80,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.trace!"_Stz,           &Step::vJobTraceStore);
   vAddStep("job.trace@"_Stz,           &Step::vJobTraceFetch);
   vAddStep("job::waitParticipant"_Stz, &Step::vJobWaitParticipant);
-  vAddStep("job.workingBuffer@"_Stz,   &Step::vJobWorkingBufferFetch);
-  vAddStep("job.workingBuffer!"_Stz,   &Step::vJobWorkingBufferStore);
+  vAddStep("job.entryBuffer@"_Stz,     &Step::vJobEntryBufferFetch);
+  vAddStep("job.entryBuffer!"_Stz,     &Step::vJobEntryBufferStore);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -570,15 +570,15 @@ void Step::vJobHasError(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.hasWorkingBuffer -- return true if job has a working buffer            */
+/* job.hasEntryBuffer -- return true if job has a entry buffer                */
 /*----------------------------------------------------------------------------*/
-void Step::vJobHasWorkingBuffer(MP_Task mpTask)
+void Step::vJobHasEntryBuffer(MP_Task mpTask)
 {
-  ENTRY("vJobHasWorkingBuffer"_Stz);
+  ENTRY("vJobHasEntryBuffer"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.hasWorkingBuffer"_Stz);
+    THROW_INVALID_DSTACK("job.hasEntryBuffer"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
   
@@ -1545,40 +1545,40 @@ void Step::vJobWaitParticipant(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.workingBuffer! -- store working buffer in the job                      */
+/* job.entryBuffer@ -- fetch entry buffer from job                            */
 /*----------------------------------------------------------------------------*/
-void Step::vJobWorkingBufferStore(MP_Task mpTask)
+void Step::vJobEntryBufferFetch(MP_Task mpTask)
 {
-  ENTRY("vJobWorkingBufferStore"_Stz);
+  ENTRY("vJobEntryBufferFetch"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-    THROW_INVALID_DSTACK("job.WorkingBuffer!"_Stz);
+  THROW_INVALID_DSTACK("job.entryBuffer@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  Object* pWorkingBufferPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pWorkingBufferPtr) )
-    THROW_INVALID_DSTACK("job.WorkingBuffer!"_Stz);
-  WorkingBuffer* pWorkingBuffer = _pWorkingBuffer(pWorkingBufferPtr);
-
-  pJob->m_pCurrentBuffer = pWorkingBuffer;
+  mpTask->m_pDataStack->vPushObject(pJob->m_pCurrentBuffer);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* job.workingBuffer@ -- fetch working buffer from job                        */
+/* job.entryBuffer! -- store entry buffer in the job                          */
 /*----------------------------------------------------------------------------*/
-void Step::vJobWorkingBufferFetch(MP_Task mpTask)
+void Step::vJobEntryBufferStore(MP_Task mpTask)
 {
-  ENTRY("vJobWorkingBufferStore"_Stz);
+  ENTRY("vJobEntryBufferStore"_Stz);
   
   Object* pJobPtr;
   if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-  THROW_INVALID_DSTACK("job.WorkingBuffer@"_Stz);
+    THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushObject(pJob->m_pCurrentBuffer);
+  Object* pEntryBufferPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pEntryBufferPtr) )
+    THROW_INVALID_DSTACK("job.entryBuffer!"_Stz);
+  EntryBuffer* pEntryBuffer = _pEntryBuffer(pEntryBufferPtr);
+  
+  pJob->m_pCurrentBuffer = pEntryBuffer;
   
   EXIT();
 }
