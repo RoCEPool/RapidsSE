@@ -97,12 +97,6 @@ namespace Threads
     Task* pPopReadySlotQueue(Thread* pCallingThread);
     Task* pPopSleepingQueue(Thread* pCallingThread);
   
-    i8 nQueuedExecutingTasks(void);
-    i8 nQueuedReadyTasks(void);
-    i8 nQueuedReadySlotTasks(i8 iSlot);
-    i8 nQueuedSleepingTasks(void);
-    i8 nQueuedWaitingTasks(void);
-  
     i8 i_QueueFirst(void);
     i8 i_QueueLast(void);
   
@@ -121,6 +115,12 @@ namespace Threads
     void vScheduleWaitingTask(Task* pTask);
     void vScheduleYieldedTask(Task* pTask);
  
+    i8 nTasksExecuting(void);
+    i8 nTasksReady(void);
+    i8 nTasksRedySlot(i8 iSlot);
+    i8 nTasksSleeping(void);
+    i8 nTasksWaiting(void);
+  
     ThreadVector* pThreadVector(void);
   
     i8 i_ToReadySendQueue(i8 i_RRqueue);

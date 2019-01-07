@@ -866,7 +866,7 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the executing queue                                     */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nQueuedExecutingTasks(void)
+i8 Queues::nTasksExecuting(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -876,7 +876,7 @@ i8 Queues::nQueuedExecutingTasks(void)
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the ready queue                                         */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nQueuedReadyTasks(void)
+i8 Queues::nTasksReady(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -886,7 +886,7 @@ i8 Queues::nQueuedReadyTasks(void)
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the ready slot queue                                    */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nQueuedReadySlotTasks(i8 iSlot)
+i8 Queues::nTasksRedySlot(i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -896,7 +896,7 @@ i8 Queues::nQueuedReadySlotTasks(i8 iSlot)
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the sleeping queue                                      */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nQueuedSleepingTasks(void)
+i8 Queues::nTasksSleeping(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -906,7 +906,7 @@ i8 Queues::nQueuedSleepingTasks(void)
 /*----------------------------------------------------------------------------*/
 /* get no of tasks in the waiting queue                                       */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nQueuedWaitingTasks(void)
+i8 Queues::nTasksWaiting(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
