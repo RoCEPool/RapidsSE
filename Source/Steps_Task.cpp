@@ -118,7 +118,7 @@ void Step::vTaskDicStack(MP_Task mpTask)
   Task* pThatTask = _pTask(pPtrTask);
   ASSERT(CN_TASK == pThatTask->eClass());
   
-  Object* pPtrDicStack = &pThatTask->m_xPathStack;
+  Object* pPtrDicStack = &pThatTask->m_oPathStack;
   
   mpTask->m_pDataStack->vPushObject(pPtrDicStack);
   

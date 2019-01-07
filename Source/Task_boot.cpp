@@ -238,8 +238,8 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   //vTrace("CompileColon: %s\n"_Stz,m_sToken.aChar());
   
   Dic* pDic;
-  if (m_xPathStack.iCount())
-    pDic = m_xPathStack.pTop();
+  if (m_oPathStack.iCount())
+    pDic = m_oPathStack.pTop();
   else
     pDic = &gpAttachMap->m_xMainDic;
 
@@ -265,7 +265,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
         break;
         
       case TN_NAME:
-        pCalledWord = m_xPathStack.pFindWord(m_pCompiler->m_pTokeniser->sToken());
+        pCalledWord = m_oPathStack.pFindWord(m_pCompiler->m_pTokeniser->sToken());
         if (WT_PRIMITIVE == pCalledWord->eWordType()) {
           pStep = pCalledWord->pEntryStep();
           if (pCalledWord->bImmediate())

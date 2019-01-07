@@ -782,7 +782,7 @@ void Task::vTracePoint(Stz* aMark)
   
   Cell* pCell = IP.m_pCell;
   
-  Word* pLocatedWord = m_xPathStack.pLocate(pCell);
+  Word* pLocatedWord = m_oPathStack.pLocate(pCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();
   else
@@ -825,7 +825,7 @@ void Task::vTraceStep(Stz* aStepNm)
   s256 sRoutine;
   
   Cell* pCell = IP.m_pCell;
-  Word* pLocatedWord = m_xPathStack.pLocate(pCell);
+  Word* pLocatedWord = m_oPathStack.pLocate(pCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();
   else

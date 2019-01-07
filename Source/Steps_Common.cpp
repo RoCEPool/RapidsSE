@@ -85,7 +85,7 @@ ENTRY("vCommonSlash"_Stz);
     sDicName = mpTask->m_pCompiler->m_pTokeniser->sToken();
     
     // test for that dictionary
-    Word* pWordDic = mpTask->m_xPathStack.pFindWord(sDicName);
+    Word* pWordDic = mpTask->m_oPathStack.pFindWord(sDicName);
     if (pWordDic) {
       // use that dictionary
       pSubDic = _pDic(pWordDic->aBodyArea());
@@ -141,7 +141,7 @@ ENTRY("vCommonToCommon"_Stz);
   // get name of common
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();
 
-  Word* pWordCommon = mpTask->m_xPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
+  Word* pWordCommon = mpTask->m_oPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   ASSERT(pWordCommon);
  
   ValWrk xValWrk;
@@ -169,7 +169,7 @@ void Step::vOpFrameDrop(MP_Task mpTask)
   mpTask->m_pOpFrame = nullptr; // mpTask->m_pOpFrame->pNext();
   
   // discard op dic
-  mpTask->m_xPathStack.vDiscard();
+  mpTask->m_oPathStack.vDiscard();
 
   EXIT();
 }
@@ -192,7 +192,7 @@ void Step::vOpFramePush(MP_Task mpTask)
 
   // push op dictionary
   Dic* pOpDic = pOpFrame->pOpDic();
-  mpTask->m_xPathStack.vPush(pOpDic);
+  mpTask->m_oPathStack.vPush(pOpDic);
 
   EXIT();
 }
