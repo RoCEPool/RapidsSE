@@ -10,16 +10,16 @@
 LOG 'Running lineitemEntry test with varying indexEntries per buffer.';
 
 //------------------------------------------------------------------------------
-indexEntries 2000;
-affected: 0
-
-LOG 'Entries per buffer: 2000';
-INCLUDE 'lineitemEntry.test';
-
-//------------------------------------------------------------------------------
 indexEntries 3000;
 affected: 0
 
 LOG 'Entries per buffer: 3000';
+INCLUDE 'lineitemEntry.test';
+
+//------------------------------------------------------------------------------
+indexEntries 4000;
+affected: 0
+
+LOG 'Entries per buffer: 4000';
 INCLUDE 'lineitemEntry.test';
 
