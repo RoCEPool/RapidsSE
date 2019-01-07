@@ -410,12 +410,10 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, EntryBuffer* pEntryBuffer)
     if (pIndex->bIsHidden())
       continue;
     
-    Entry* pFirstEntry = pEntryBuffer->pFirstEntry();
-    
     //pHiddenEntryBuffer->vDump();
     
     // insert entries from EntryBuffer into the index
-    pNewIndexTree->vInsertEntriesFromBuffer(pEntryBuffer, pFirstEntry);
+    pNewIndexTree->vInsertEntriesFromBuffer(pEntryBuffer);
     
 //    // iterate through all the buffers of the hidden index starting from pFirstEntry
 //    // in pFirstBuffer and insert corresponding entries in other indexes
@@ -449,8 +447,6 @@ void Table::vInsertRow(i8 iTxId, i8 iSlot, Stz* aRow, i8 iRowLength)
   TablePtn* pPartition = this->pPartition(iSlot);
   IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
   
-  EntryBuffer* pFirstBuffer;
-  Entry* pFirstEntry;
   Entry* pEntry = pHiddenIndexTree->pAppendRow(iTxId, aRow, iRowLength);
   
   //----------------------------------------------------------------------------

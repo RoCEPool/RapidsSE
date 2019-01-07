@@ -875,8 +875,7 @@ Entry* IndexTree::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
 /*----------------------------------------------------------------------------*/
 /* insert entries from entryBuffer into this index at level 0                 */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer,
-                                         Entry* pRowEntry)
+void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
@@ -884,7 +883,7 @@ void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer,
   
   //pEntryBuffer->vShow();
   
-  for ( Entry* pEntry = pRowEntry ;
+  for ( Entry* pEntry = pEntryBuffer->pFirstEntry() ;
        pEntry;
        pEntry = pEntryBuffer->pNextEntry(pEntry, 0)) {
     
