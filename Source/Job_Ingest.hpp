@@ -24,7 +24,7 @@ namespace JobModel
     i8 m_nChunksSoFar;
     i8 m_iLastChunk;
   
-   i8 m_nWaits;
+    i8 m_nWaits;
 
     // must be last
     Footer m_xFooter;

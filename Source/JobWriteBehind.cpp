@@ -38,6 +38,8 @@ JobWriteBehind::JobWriteBehind(eDS eDataSource)
   m_pParentJob = nullptr;
   m_eDataSource = eDataSource;
   
+  m_pFormatters = nullptr;
+  
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pEntryBuffer[i_Partition]   = nullptr;
     m_nWriteBehindBuffers[i_Partition] = 0;
@@ -177,8 +179,7 @@ eEC JobWriteBehind::eInsertRow(void)
 /*----------------------------------------------------------------------------*/
 /* process record                                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eProcessRecord(Formatters* pFormatters,
-                                   Stz* aRecord,
+eEC JobWriteBehind::eProcessRecord(Stz* aRecord,
                                    i8 nBytes,
                                    eDS eDataSource)
 {
@@ -193,7 +194,7 @@ eEC JobWriteBehind::eProcessRecord(Formatters* pFormatters,
     return EC_MAX_ROW_LENGTH;
   }
 
-  bool bFormat = bFormatRow(pFormatters, aRecord, nBytes, bBlankLine);
+  bool bFormat = bFormatRow(m_pFormatters, aRecord, nBytes, bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;

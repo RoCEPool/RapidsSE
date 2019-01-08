@@ -15,6 +15,7 @@ namespace JobModel
     eDS  m_eDataSource;     // data source of this writeBehind
     s48K m_aRecord;         // formatted row
     i8   m_nRecordBytes;    // length of record
+    Formatters* m_pFormatters;
     
     EntryBuffer* m_pEntryBuffer[C_MAX_PARTITIONS];     // entry buffers
     i8 m_nWriteBehindBuffers[C_MAX_PARTITIONS];        // how many buffers
@@ -33,8 +34,7 @@ namespace JobModel
     
     eEC  eInsertRow(void);
   
-    eEC  eProcessRecord(Formatters* pFormatters,
-                        Stz* aRecord,
+    eEC  eProcessRecord(Stz* aRecord,
                         i8 nBytes,
                         eDS eDataSource);
   

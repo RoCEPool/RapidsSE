@@ -172,6 +172,7 @@ bool Job_SubIngester::bBegin(void)
   // set the table and parentJob in the writeBehind Job
   JobWriteBehind::m_pTable = m_pJob_Ingest->m_pTable;
   JobWriteBehind::m_pParentJob = m_pJob_Ingest;
+  JobWriteBehind::m_pFormatters = &gpAttachMap->m_xFormatters;
   
   return true;
 }
@@ -199,8 +200,7 @@ bool Job_SubIngester::bChunk(void)
   while (pIngestChunk->bGetRecord(&aRecord,nRecordBytes)) {
     
     // process that record into write behind
-    eEC eError = eProcessRecord(&gpAttachMap->m_xFormatters,
-                                aRecord, nRecordBytes, DS_INGEST);
+    eEC eError = eProcessRecord(aRecord, nRecordBytes, DS_INGEST);
     
     if (EC_NONE == eError)
       continue;
