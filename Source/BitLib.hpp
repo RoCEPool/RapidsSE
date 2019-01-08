@@ -32,7 +32,18 @@ namespace Base
 }
 
 /*----------------------------------------------------------------------------*/
-/* bitwise-and of address with mask                                           */
+/* bitwise-and of non-object address with mask                                */
+/*----------------------------------------------------------------------------*/
+template <class CAST>
+static CAST aBitAnd(void* aAddress, u8 uMask)
+{
+  u8 uNewAddress = BITWISE_AND((u8)aAddress,uMask);
+  
+  return reinterpret_cast<CAST>(uNewAddress);
+}
+
+/*----------------------------------------------------------------------------*/
+/* bitwise-and of object address with mask                                    */
 /*----------------------------------------------------------------------------*/
 template <class CAST>
 static CAST pBitAnd(void* aAddress, u8 uMask)
@@ -43,7 +54,18 @@ static CAST pBitAnd(void* aAddress, u8 uMask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bitwise-or of address with mask                                            */
+/* bitwise-or of non-object address with mask                                 */
+/*----------------------------------------------------------------------------*/
+template <class CAST>
+static CAST aBitOr(void* aAddress, u8 uMask)
+{
+  u8 uNewAddress = BITWISE_OR((u8)aAddress,uMask);
+  
+  return reinterpret_cast<CAST>(uNewAddress);
+}
+
+/*----------------------------------------------------------------------------*/
+/* bitwise-or of object address with mask                                     */
 /*----------------------------------------------------------------------------*/
 template <class CAST>
 static CAST pBitOr(void* aAddress, u8 uMask)

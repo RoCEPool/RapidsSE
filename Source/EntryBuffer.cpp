@@ -1269,37 +1269,35 @@ void EntryBuffer::vRestore(void)
   m_pIndex = nullptr;
   
   // get the original buffer address
-  Buffer* pOriginalBuffer =
-  reinterpret_cast<Buffer*>(BITWISE_AND((u8)m_pHeadEntry,C_OBJECT_TO_BUFFER_MASK));
+  Buffer* pOriginalBuffer = pBitAnd<Buffer*>(m_pHeadEntry,C_OBJECT_TO_BUFFER_MASK);
   
   // get this buffer address
-  Buffer* pThisBuffer =
-  reinterpret_cast<Buffer*>(BITWISE_AND((u8)this,C_OBJECT_TO_BUFFER_MASK));
+  Buffer* pThisBuffer = pBitAnd<Buffer*>(this,C_OBJECT_TO_BUFFER_MASK);
   
   // calculate offset for m_pRowEntryOffset and set it
-  i8 iOffset = nSub(m_pRowEntryOffset, pOriginalBuffer);
-  m_pRowEntryOffset = reinterpret_cast<i4*>(BITWISE_OR((i8)pThisBuffer,iOffset));
+  u8 uOffset = nSub(m_pRowEntryOffset, pOriginalBuffer);
+  m_pRowEntryOffset = aBitOr<i4*>(pThisBuffer,uOffset);
   
   // calculate offset for m_pHeadEntry and set it
-  iOffset = nSub(m_pHeadEntry, pOriginalBuffer);
-  m_pHeadEntry = reinterpret_cast<Entry*>(BITWISE_OR((i8)pThisBuffer,iOffset));
+  uOffset = nSub(m_pHeadEntry, pOriginalBuffer);
+  m_pHeadEntry = pBitOr<Entry*>(pThisBuffer,uOffset);
   
   // calculate offset for m_pLastEntry and set it
   if (m_pLastEntry) {
-    iOffset = nSub(m_pLastEntry, pOriginalBuffer);
-    m_pLastEntry = reinterpret_cast<Entry*>(BITWISE_OR((i8)pThisBuffer,iOffset));
+    uOffset = nSub(m_pLastEntry, pOriginalBuffer);
+    m_pLastEntry = pBitOr<Entry*>(pThisBuffer,uOffset);
   }
   
   // calculate offset for m_pFirstFree and set it
   if (m_pFirstFree) {
-    iOffset = nSub(m_pFirstFree, pOriginalBuffer);
-    m_pFirstFree = reinterpret_cast<FreeEntry*>(BITWISE_OR((i8)pThisBuffer,iOffset));
+    uOffset = nSub(m_pFirstFree, pOriginalBuffer);
+    m_pFirstFree = pBitOr<FreeEntry*>(pThisBuffer,uOffset);
   }
   
   // calculate offset for m_pLazyChain and set it
   if (m_pLazyChain) {
-    iOffset = nSub(m_pLazyChain, pOriginalBuffer);
-    m_pLazyChain = reinterpret_cast<Entry*>(BITWISE_OR((i8)pThisBuffer,iOffset));
+    uOffset = nSub(m_pLazyChain, pOriginalBuffer);
+    m_pLazyChain = pBitOr<Entry*>(pThisBuffer,uOffset);
   }
   
   // get the buffer no
