@@ -30,15 +30,19 @@ void* JobWriteBehind::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobWriteBehind::JobWriteBehind(void)
+JobWriteBehind::JobWriteBehind(eDS eDataSource)
 {
   //m_aRecord
   m_nRecordBytes = 0;
+  m_pTable = nullptr;
+  m_pParentJob = nullptr;
+  m_eDataSource = eDataSource;
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pEntryBuffer[i_Partition]   = nullptr;
     m_nWriteBehindBuffers[i_Partition] = 0;
   }
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,13 +178,10 @@ eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource
 /*----------------------------------------------------------------------------*/
 /* process record                                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eProcessRecord(Interface::Session* pSession,
-                                     i8 iParentJobId,
-                                     Table* pTable,
-                                     Formatters* pFormatters,
-                                     Stz* aRecord,
-                                     i8 nBytes,
-                                     eDS eDataSource)
+eEC JobWriteBehind::eProcessRecord(Formatters* pFormatters,
+                                   Stz* aRecord,
+                                   i8 nBytes,
+                                   eDS eDataSource)
 {
   bool bBlankLine = false;
   
@@ -193,7 +194,7 @@ eEC JobWriteBehind::eProcessRecord(Interface::Session* pSession,
     return EC_MAX_ROW_LENGTH;
   }
 
-  bool bFormat = bFormatRow(pTable, pFormatters, aRecord, nBytes, bBlankLine);
+  bool bFormat = bFormatRow(m_pTable, pFormatters, aRecord, nBytes, bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;
@@ -202,7 +203,7 @@ eEC JobWriteBehind::eProcessRecord(Interface::Session* pSession,
     return EC_INVALID_VALUE;
 
   // attempt to add record into a write-behind buffer
-  eEC eError = eInsertRow(pSession, pTable, eDataSource, iParentJobId);
+  eEC eError = eInsertRow(m_pParentJob->m_pSession, m_pTable, eDataSource, m_pParentJob->iJobId());
 
   // was there an error ?
   if (eError != EC_NONE) {

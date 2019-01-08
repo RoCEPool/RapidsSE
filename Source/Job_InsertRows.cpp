@@ -103,7 +103,7 @@ void Job_InsertRows::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_InsertRows::Job_InsertRows(Interface::Session* pSession)
-: Job(CN_JOB_INSERTROWS, pSession)
+: Job(CN_JOB_INSERTROWS, pSession), JobWriteBehind(DS_INSERT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
   
@@ -156,11 +156,23 @@ void Job_InsertRows::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* begin inserting                                                            */
+/*----------------------------------------------------------------------------*/
+void Job_InsertRows::vBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
+  
+  // set the table and parentJob in the writeBehind Job
+  JobWriteBehind::m_pTable = this->m_pTable;
+  JobWriteBehind::m_pParentJob = (Job*)m_pJob_InsertTable;
+}
+
+/*----------------------------------------------------------------------------*/
 /* end inserting                                                              */
 /*----------------------------------------------------------------------------*/
 void Job_InsertRows::vEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
   
   // insertTable job is the parent
   i8 iParentJobId = m_pJob_InsertTable->iJobId();

@@ -103,7 +103,7 @@ void Job_SubIngester::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubIngester::Job_SubIngester(Interface::Session* pSession)
-: Job(CN_JOB_SUBINGESTER, pSession)
+: Job(CN_JOB_SUBINGESTER, pSession) , JobWriteBehind(DS_INGEST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);
   
@@ -169,6 +169,10 @@ bool Job_SubIngester::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);
   
+  // set the table and parentJob in the writeBehind Job
+  JobWriteBehind::m_pTable = m_pJob_Ingest->m_pTable;
+  JobWriteBehind::m_pParentJob = m_pJob_Ingest;
+  
   return true;
 }
 
@@ -195,10 +199,7 @@ bool Job_SubIngester::bChunk(void)
   while (pIngestChunk->bGetRecord(&aRecord,nRecordBytes)) {
     
     // process that record into write behind
-    eEC eError = eProcessRecord(m_pJob_Ingest->m_pSession,
-                                m_pJob_Ingest->m_iJobId,
-                                m_pJob_Ingest->m_pTable,
-                                &gpAttachMap->m_xFormatters,
+    eEC eError = eProcessRecord(&gpAttachMap->m_xFormatters,
                                 aRecord, nRecordBytes, DS_INGEST);
     
     if (EC_NONE == eError)

@@ -10,6 +10,9 @@ namespace JobModel
   class JobWriteBehind
   {
   public:
+    Job* m_pParentJob;      // paremt job
+    Table* m_pTable;        // table
+    eDS  m_eDataSource;     // data source of this writeBehind
     s48K m_aRecord;         // formatted row
     i8   m_nRecordBytes;    // length of record
     
@@ -19,7 +22,7 @@ namespace JobModel
   public:
     void* operator new(size_t);
   
-    JobWriteBehind(void);
+    JobWriteBehind(eDS eDataSource);
     ~JobWriteBehind(void) noexcept(false);
     
   public:
@@ -32,10 +35,7 @@ namespace JobModel
     eEC  eInsertRow(Interface::Session* pSession, Table* pTable,
                     eDS eDataSource, i8 iParentJobId);
   
-    eEC  eProcessRecord(Interface::Session* m_pSession,
-                        i8 iParentJobId,
-                        Table* pTable,
-                        Formatters* pFormatters,
+    eEC  eProcessRecord(Formatters* pFormatters,
                         Stz* aRecord,
                         i8 nBytes,
                         eDS eDataSource);

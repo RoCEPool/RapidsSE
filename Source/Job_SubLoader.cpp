@@ -103,7 +103,7 @@ void Job_SubLoader::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubLoader::Job_SubLoader(Interface::Session* pSession)
-: Job(CN_JOB_SUBLOADER, pSession)
+: Job(CN_JOB_SUBLOADER, pSession), JobWriteBehind(DS_LOAD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
@@ -181,6 +181,10 @@ bool Job_SubLoader::bBegin(void)
   // open the chunked file
   bool bOpened = m_pLoadChunk->bOpenRead(sPath);
   
+  // set the table and parentJob in the writeBehind Job
+  JobWriteBehind::m_pTable = m_pJob_LoadTable->m_pTable;
+  JobWriteBehind::m_pParentJob = (Job*)m_pJob_LoadTable;
+  
   return bOpened;
 }
 
@@ -220,8 +224,7 @@ bool Job_SubLoader::bChunk(void)
       return true;
     
     // process that record into write behind
-    eEC eError = eProcessRecord(pSession, iParentJobId, pTable,
-                                pFormatters,
+    eEC eError = eProcessRecord(pFormatters,
                                 aRecord, nRecordBytes, DS_LOAD);
     
     if (EC_NONE == eError) {
