@@ -16,7 +16,7 @@ void Prefetch::vFill(i8* aWord, i8 nWords)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write to all words
-  i8 iRndValue = Random::iRandom();
+  i8 iRndValue = Random::iInteger();
   for (i8 i_Word = 0; i_Word < nWords; i_Word++) {
     aWord[i_Word] = iRndValue;
   }
@@ -56,7 +56,7 @@ void Prefetch::vTest(void)
   iSum = 0;
   
   for (i8 i_WordNo = 0; i_WordNo < nWords; i_WordNo++) {
-    i8 i_Word = Random::iRandom(nWords);
+    i8 i_Word = Random::iInteger(nWords);
     iSum += aWord[i_Word];
   }
 
@@ -83,9 +83,9 @@ void Prefetch::vTest(void)
   oTimer.vStart();
   
   iSum = 0;
-  i8 i_Word = Random::iRandom(nWords);
+  i8 i_Word = Random::iInteger(nWords);
   for (i8 i_WordNo = 0; i_WordNo < nWords; i_WordNo++) {
-    i8 i_Word2 = Random::iRandom(nWords);
+    i8 i_Word2 = Random::iInteger(nWords);
     __builtin_prefetch(&aWord[i_Word2]);
     //vPrefetch((void*)(&aWord[i_Word2]));
     iSum += aWord[i_Word];
@@ -116,7 +116,7 @@ void Prefetch::vTest(void)
   
   iSum = 0;
   for (i8 i_WordNo = 0; i_WordNo < nWords; i_WordNo++) {
-    Random::iRandom(nWords);
+    Random::iInteger(nWords);
     i8 i_Word = i_WordNo;
     iSum += aWord[i_Word];
   }

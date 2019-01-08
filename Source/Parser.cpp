@@ -838,7 +838,6 @@ void Parser::vReadLineStdin(void)
 #ifdef __ENTRY_EXIT
           (gpAttachMap->m_pStepTiming ?
            " *STEPTIMING*" : " __ENTRY_EXIT")
-          ""
 #else
           ""
 #endif

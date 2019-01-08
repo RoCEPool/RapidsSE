@@ -8,17 +8,17 @@ namespace System
   class Random
   {
   public:
-    static i8 iRandom(void);
-    static i8 iRandom(i8 iMax);
-    static i8 iRandom(i8 iLow, i8 iHigh);
+    static i8 iInteger(void);
+    static i8 iInteger(i8 iMax);
+    static i8 iInteger(i8 iLow, i8 iHigh);
     
-    static u8 uRandom(void);
-    static u8 uRandom(u8 uMax);
-    static u8 uRandom(u8 uLow, u8 uHigh);
+    static u8 uInteger(void);
+    static u8 uInteger(u8 uMax);
+    static u8 uInteger(u8 uLow, u8 uHigh);
     
-    static void vRandomString(StrVal& sStr, i8 iLength);
-  
     static i8 iLogLevel(i8 nLevels, i8 iFrequency);
+  
+    static void vString(StrVal& sStr, i8 iLength);
   };
 }
 

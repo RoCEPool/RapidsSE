@@ -803,7 +803,7 @@ void Task::vThread(Threads::Thread* pThread)
 void Task::vTracePoint(Stz* aMark)
 {
   if (gxArguments.m_nNodes > 1) {
-    i8 iPause = Random::iRandom(999,99999);
+    i8 iPause = Random::iInteger(999,99999);
     PosixThread::vSleepMicro(iPause);
   }
   

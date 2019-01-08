@@ -4,30 +4,30 @@
 
 #include "System.h"
 
-/*---------------------------------------------------------------------------*/
-/* generate a random number                                                  */
-/*---------------------------------------------------------------------------*/
-i8 Random::iRandom(void)
+/*----------------------------------------------------------------------------*/
+/* generate a random number                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Random::iInteger(void)
 {
   i8 iRand = ThirdParty::genrand64_int63();
   
   return iRand;
 }
 
-/*---------------------------------------------------------------------------*/
-/* generate a random number                                                  */
-/*---------------------------------------------------------------------------*/
-i8 Random::iRandom(i8 iMax)
+/*----------------------------------------------------------------------------*/
+/* generate a random number                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Random::iInteger(i8 iMax)
 {
   i8 iRand = ThirdParty::genrand64_int63() % iMax;
   
   return iRand;
 }
 
-/*---------------------------------------------------------------------------*/
-/* iRandom: generate a random number between low and high (inclusive)        */
-/*---------------------------------------------------------------------------*/
-i8 Random::iRandom(i8 iLow, i8 iHigh)
+/*----------------------------------------------------------------------------*/
+/* generate a random number between low and high (inclusive)                  */
+/*----------------------------------------------------------------------------*/
+i8 Random::iInteger(i8 iLow, i8 iHigh)
 {
   i8 r = ThirdParty::genrand64_int63();
   
@@ -41,30 +41,30 @@ i8 Random::iRandom(i8 iLow, i8 iHigh)
   return n;
 }
 
-/*---------------------------------------------------------------------------*/
-/* generate a random number                                                  */
-/*---------------------------------------------------------------------------*/
-u8 Random::uRandom(void)
+/*----------------------------------------------------------------------------*/
+/* generate a random number                                                   */
+/*----------------------------------------------------------------------------*/
+u8 Random::uInteger(void)
 {
   u8 iRand = ThirdParty::genrand64_int64();
   
   return iRand;
 }
 
-/*---------------------------------------------------------------------------*/
-/* generate a random number                                                  */
-/*---------------------------------------------------------------------------*/
-u8 Random::uRandom(u8 uMax)
+/*----------------------------------------------------------------------------*/
+/* generate a random number                                                   */
+/*----------------------------------------------------------------------------*/
+u8 Random::uInteger(u8 uMax)
 {
   u8 uRand = ThirdParty::genrand64_int64() % uMax;
   
   return uRand;
 }
 
-/*---------------------------------------------------------------------------*/
-/* uRandom: generate a random number between low and high (inclusive)        */
-/*---------------------------------------------------------------------------*/
-u8 Random::uRandom(u8 uLow, u8 uHigh)
+/*----------------------------------------------------------------------------*/
+/* generate a random number between low and high (inclusive)                  */
+/*----------------------------------------------------------------------------*/
+u8 Random::uInteger(u8 uLow, u8 uHigh)
 {
   u8 r = ThirdParty::genrand64_int64();
   
@@ -76,26 +76,6 @@ u8 Random::uRandom(u8 uLow, u8 uHigh)
   assert (n <= uHigh);
   
   return n;
-}
-
-/*---------------------------------------------------------------------------*/
-/* sRandomString: generate a random string of given length                   */
-/*---------------------------------------------------------------------------*/
-void Random::vRandomString(StrVal& sStr, i8 iLength)
-{
-  static char caCharSet[68] =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-#?!";
-  // 0123456789012345678901234567890123456789012345678901234567890123456
-  // 0         1         2         3         4         5         6     6
-  
-  
-  sStr = ""_Stz;
-  for (i8 i = 0; i < iLength; i++) {
-    i8 i_Char = iRandom(67);
-    sStr.vAppend(caCharSet[i_Char]);
-  }
-  
-  sStr.vAppend('\0');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,7 +116,7 @@ i8 Random::iLogLevel(i8 nLevels, i8 iFrequency)
     
     // if all bits used from the random bit pattern, generate a new pattern
     if (0 == nSubsetsLeft) {
-      uRandomPattern = Random::uRandom();
+      uRandomPattern = Random::uInteger();
       nSubsetsLeft = nLevels / iFrequency;
     }
 
@@ -153,6 +133,26 @@ i8 Random::iLogLevel(i8 nLevels, i8 iFrequency)
                 : nAllZeroSubsets;
   
   return iLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate a random string of given length                                   */
+/*----------------------------------------------------------------------------*/
+void Random::vString(StrVal& sStr, i8 iLength)
+{
+  static char caCharSet[69] = // 68 actual chars + the '\0'
+    "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-#?!";
+  // 01234567890123456789012345678901234567890123456789012345678901234567
+  // 0         1         2         3         4         5         6      6
+  
+  sStr = ""_Stz;
+  for (i8 i = 0; i < iLength; i++) {
+    i8 i_Char = iInteger(68);
+    char cRandom = caCharSet[i_Char];
+    sStr.vAppend(cRandom);
+  }
+  
+  sStr.vAppend('\0');
 }
 
 /*============================================================================*/

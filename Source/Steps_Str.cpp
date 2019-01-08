@@ -357,7 +357,7 @@ void Step::vStrRandom(MP_Task mpTask)
   
   s48K sRnd;
   
-  Random::vRandomString(sRnd,iLength);
+  Random::vString(sRnd,iLength);
   
   mpTask->m_pDataStack->vPushS48K(sRnd);
   

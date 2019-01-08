@@ -438,7 +438,7 @@ i8 SkipList::iRandomLevel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
-  i8 iRandomBits = Random::iRandom(256*256-1);
+  i8 iRandomBits = Random::iInteger(256*256-1);
   i8 _BitsInRandom = 16;
   i8 iRandomsLeft = _BitsInRandom/2;
   
@@ -450,7 +450,7 @@ i8 SkipList::iRandomLevel(void)
     if (!b) level++;
     iRandomBits>>=2;
     if (--iRandomsLeft == 0) {
-      iRandomBits = (int)Random::iRandom(256*256-1);
+      iRandomBits = (int)Random::iInteger(256*256-1);
       iRandomsLeft = _BitsInRandom/2;
     }
   } while (!b);

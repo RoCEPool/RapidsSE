@@ -121,7 +121,7 @@ void LlcTest::vAnIteration(i8 iIteration, i8 nStepLength, i8 nMissRatio)
       nIterations++;
       
       // our pseudo step - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      i8 i_Random = Random::iRandom(C_ELEMENTS);
+      i8 i_Random = Random::iInteger(C_ELEMENTS);
       iRandomSum += xArray[i_Random];
       if (i_Element % nStepLength != 0)
         continue;

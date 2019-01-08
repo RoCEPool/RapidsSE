@@ -661,13 +661,13 @@ void Job_Generate::vCreateDataRecord(void)
   
   m_sRecord = ""_Stz;
   
-  i8 iSensor      = Random::iRandom(1,10000);
-  i8 iTemperature = Random::iRandom(100,500);
-  i8 iPressure    = Random::iRandom(10,25);
-  i8 iVolume      = Random::iRandom(1,1000);
+  i8 iSensor      = Random::iInteger(1,10000);
+  i8 iTemperature = Random::iInteger(100,500);
+  i8 iPressure    = Random::iInteger(10,25);
+  i8 iVolume      = Random::iInteger(1,1000);
 
   s256 sComment;
-  Random::vRandomString(sComment,78);
+  Random::vString(sComment,78);
   
   m_sRecord.vSprint("%lld,%lld,%lld,%lld,%s"_Stz,
                     iSensor,
