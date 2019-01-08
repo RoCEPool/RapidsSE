@@ -26,7 +26,7 @@ namespace JobModel
     ~JobWriteBehind(void) noexcept(false);
     
   public:
-    bool bFormatRow(Table* pTable, Formatters* pFormatters,
+    bool bFormatRow(Formatters* pFormatters,
                     Stz* aRecord, i8 nBytes, bool &bBlankLine);
   
     void vHandleDanglingBuffers(void);

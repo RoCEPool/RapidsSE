@@ -68,11 +68,11 @@ JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-bool JobWriteBehind::bFormatRow(Table* pTable, Formatters* pFormatters,
+bool JobWriteBehind::bFormatRow(Formatters* pFormatters,
                                  Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   // format the raw data into a row
-  bool bValid = Row::bFormatRow(pTable->pColumnVec(),
+  bool bValid = Row::bFormatRow(m_pTable->pColumnVec(),
                                 pFormatters,
                                 aRecord, nBytes,
                                 m_aRecord.aStz(),
@@ -193,7 +193,7 @@ eEC JobWriteBehind::eProcessRecord(Formatters* pFormatters,
     return EC_MAX_ROW_LENGTH;
   }
 
-  bool bFormat = bFormatRow(m_pTable, pFormatters, aRecord, nBytes, bBlankLine);
+  bool bFormat = bFormatRow(pFormatters, aRecord, nBytes, bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;
