@@ -100,6 +100,8 @@ namespace Tasks
 
     Compiler* m_pCompiler;  // word compiler
   
+    s256  m_sMark;          // mark buffer
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // can these be removed ?
   
@@ -131,6 +133,7 @@ namespace Tasks
     void vContentDump(void);
     void vDropLock(void);
     void vException(StrVal& sFile, StrVal& eException);
+    void vFormMark(void);
     void vGrabLock(void);
     bool bIsLocked(void);
     bool bIsNonPartitioned(void);
@@ -178,6 +181,7 @@ namespace Tasks
     Since& oWakeupTime(void);
     void vWakeupTask(void);
     eQR  eWhichQueue(void);
+    void vWriteMark(Stz* aPrefix);
 
     /*------------------------------------------------------------------------*/
 

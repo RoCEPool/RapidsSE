@@ -303,6 +303,20 @@ void Task::vException(StrVal& sFile, StrVal& eException)
 }
 
 /*----------------------------------------------------------------------------*/
+/*form activity mark                                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vFormMark(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
+  m_sMark.vSprint("Task %p %s %s"_Stz,
+                  this,
+                  aCN[m_pJob->eClass()],
+                  aTS[m_eState]
+                  );
+}
+
+/*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vGrabLock(void)
@@ -990,6 +1004,18 @@ eQR Task::eWhichQueue(void)  //! RAY TO FINISH
   }
   
   return QR_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* write a mark about this task                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vWriteMark(Stz* aPrefix)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vFormMark();
+  
+  vTrace("MARK: %s %s\n"_Stz,aPrefix,m_sMark.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
