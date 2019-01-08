@@ -79,7 +79,7 @@ EntryBuffer::EntryBuffer(void)
   m_iBufferNo     = *nBufferNo();
   m_iBufferLevel  = 0;
   
-  m_pRowEntryOffset  = nullptr;
+  m_aEntryOffsets = nullptr;
   m_i_FreeOffsetHead = C_ENTRY_NONE;
   
   m_pHeadEntry  = nullptr;
@@ -225,7 +225,7 @@ void EntryBuffer::vIndex(Index* pIndex)
   if (! m_pIndex->bIsHidden())
     return;
   
-  m_pRowEntryOffset  =
+  m_aEntryOffsets  =
     reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_L0));
   
   m_i_FreeOffsetHead = C_ENTRY_NONE;
@@ -464,7 +464,7 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
   
   i4 iEntryOffset = iToOffset(pRowEntry);
   RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
-  m_pRowEntryOffset[i_RowNo] = iEntryOffset;
+  m_aEntryOffsets[i_RowNo] = iEntryOffset;
   
   if (m_pLastEntry)
     m_pLastEntry->vNEO(0,iEntryOffset);
@@ -765,7 +765,7 @@ Entry* EntryBuffer::pGetEntryRowNo(i8 i_RowNo)
     return nullptr;
   
   RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
-  i4 iOffset = m_pRowEntryOffset[i_RowNo];
+  i4 iOffset = m_aEntryOffsets[i_RowNo];
   
   char* aAddress = pAdd<char*>(aDataArea(), iOffset);
   
@@ -1237,7 +1237,7 @@ void EntryBuffer::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT(nullptr == m_pRowEntryOffset);
+  RASSERT(nullptr == m_aEntryOffsets);
   RASSERT(! m_pIndex->bIsHidden());
   RASSERT(1 == m_iBufferLevel);
   
@@ -1274,9 +1274,9 @@ void EntryBuffer::vRestore(void)
   // get this buffer address
   Buffer* pThisBuffer = pBitAnd<Buffer*>(this,C_OBJECT_TO_BUFFER_MASK);
   
-  // calculate offset for m_pRowEntryOffset and set it
-  u8 uOffset = nSub(m_pRowEntryOffset, pOriginalBuffer);
-  m_pRowEntryOffset = aBitOr<i4*>(pThisBuffer,uOffset);
+  // calculate offset for m_aEntryOffsets and set it
+  u8 uOffset = nSub(m_aEntryOffsets, pOriginalBuffer);
+  m_aEntryOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
   
   // calculate offset for m_pHeadEntry and set it
   uOffset = nSub(m_pHeadEntry, pOriginalBuffer);
@@ -1352,7 +1352,7 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
          m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_nPartitionNo,m_iBufferLevel);
   
   vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
-         m_pRowEntryOffset,m_i_FreeOffsetHead);
+         m_aEntryOffsets,m_i_FreeOffsetHead);
 
   vTrace("  headEntry: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
          m_pHeadEntry,m_pHeadEntry ? m_pHeadEntry->iNEO(0) : 0,
@@ -1385,9 +1385,9 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
     vTrace("Free Entry Chain:\n"_Stz);
     for (i4 i_RowNo = m_i_FreeOffsetHead;
          i_RowNo != C_ENTRY_NONE;
-         i_RowNo = - m_pRowEntryOffset[i_RowNo]) {
+         i_RowNo = - m_aEntryOffsets[i_RowNo]) {
       vTrace("  %lld: %lld\n"_Stz,
-             i_RowNo,m_pRowEntryOffset[i_RowNo]);
+             i_RowNo,m_aEntryOffsets[i_RowNo]);
     }
   }
   
@@ -2359,11 +2359,11 @@ void EntryBuffer::vFreeChains(void)
   // L0 free chain
   for (i4 i_RowNo = 0; i_RowNo < (L_ENTRIES_0 - 1); i_RowNo++) {
     RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
-    m_pRowEntryOffset[i_RowNo] = - (i_RowNo+1);
+    m_aEntryOffsets[i_RowNo] = - (i_RowNo+1);
   }
   
   RASSERT((L_ENTRIES_0 - 1) >= 0 && (L_ENTRIES_0 - 1) < C_ENTRIES_L0);
-  m_pRowEntryOffset[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
+  m_aEntryOffsets[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
   
   m_i_FreeOffsetHead = 0;
 }
@@ -2427,7 +2427,7 @@ i4 EntryBuffer::iGetFreeRowEntry(void)
   i4 i_FreeEntry = m_i_FreeOffsetHead;
   
   RASSERT(i_FreeEntry < C_ENTRIES_L0);
-  m_i_FreeOffsetHead = - m_pRowEntryOffset[i_FreeEntry];
+  m_i_FreeOffsetHead = - m_aEntryOffsets[i_FreeEntry];
   
   return i_FreeEntry;
 }
@@ -4250,7 +4250,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
   for (i8 i_RowNo = 0; i_RowNo < gpAttachMap->m_nIndexEntries; i_RowNo++) {
 
     RASSERT(i_RowNo < C_ENTRIES_L0);
-    i8 i_RowEntryOffset = m_pRowEntryOffset[i_RowNo];
+    i8 i_RowEntryOffset = m_aEntryOffsets[i_RowNo];
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // validate free offset element
@@ -4262,7 +4262,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
         continue;
       
       // get the next offset in free chain
-      i8 i_NextRowEntryOffset = m_pRowEntryOffset[ - i_RowEntryOffset ];
+      i8 i_NextRowEntryOffset = m_aEntryOffsets[ - i_RowEntryOffset ];
       
       // next offset should be free (or end of free chain)
       if (i_NextRowEntryOffset >= 0) {
