@@ -224,8 +224,7 @@ bool Job_SubLoader::bChunk(void)
       return true;
     
     // process that record into write behind
-    eEC eError = eProcessRecord(pSession, iParentJobId, pTable,
-                                pFormatters,
+    eEC eError = eProcessRecord(pFormatters,
                                 aRecord, nRecordBytes, DS_LOAD);
     
     if (EC_NONE == eError) {

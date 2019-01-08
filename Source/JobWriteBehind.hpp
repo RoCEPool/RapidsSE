@@ -34,10 +34,7 @@ namespace JobModel
     eEC  eInsertRow(Interface::Session* pSession, Table* pTable,
                     eDS eDataSource, i8 iParentJobId);
   
-    eEC  eProcessRecord(Interface::Session* m_pSession,
-                        i8 iParentJobId,
-                        Table* pTable,
-                        Formatters* pFormatters,
+    eEC  eProcessRecord(Formatters* pFormatters,
                         Stz* aRecord,
                         i8 nBytes,
                         eDS eDataSource);
