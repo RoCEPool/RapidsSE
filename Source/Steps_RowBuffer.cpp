@@ -46,7 +46,7 @@ void Step::vRowBufferNew(MP_Task mpTask)
   ENTRY("vRowBufferNew"_Stz);
   
   EntryBuffer* pRowBuffer = new EntryBuffer;
-  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  ASSERT(CN_ENTRYBUFFER == pRowBuffer->eClass());
   
   mpTask->m_pDataStack->vPushObject(pRowBuffer);
   

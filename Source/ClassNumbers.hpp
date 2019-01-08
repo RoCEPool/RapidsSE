@@ -223,7 +223,6 @@ enum eCN : u2 // Class Number
   /*     */ CN_RESOURCETRACKER,
   /* 163 */ CN_RING,
   /* 164 */ CN_ROWAGG,
-  /* 165 */ CN_ROWBUFFER,
   /* 166 */ CN_ROWCURSOR,
   /* 167 */ CN_ROWONCE,
   /* 168 */ CN_ROWWRK,
@@ -491,7 +490,6 @@ static Stz* aCN[]
   /*     */ "RESOURCETRACK"_Stz,       // CN_RESOURCETRACKER
   /* 163 */ "RING"_Stz,                // CN_RING
   /* 164 */ "ROWAGG"_Stz,              // CN_ROWAGG
-  /* 165 */ "ROWBUFFER"_Stz,           // CN_ROWBUFFER
   /* 166 */ "ROWCURSOR"_Stz,           // CN_ROWCURSOR
   /* 167 */ "ROWONCE"_Stz,             // CN_ROWONCE
   /* 168 */ "ROWWRK"_Stz,              // CN_ROWWRK
