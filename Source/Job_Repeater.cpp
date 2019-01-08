@@ -15,40 +15,6 @@ JobClass xJobClass_Repeater =
   CN_JOB_REPEATER,       // class enum
   JK_LOCAL,              // job kind
   "repeat data"_Stz,     // comment about the job
-  "repeater"_Stz,        // the prompt command
-  nullptr,               // the second word
-  nullptr,               // the _run task seed
-  "repeater_req"_Stz,    // the _req task seed
-  nullptr,               // the _rcv task seed
-  nullptr,               // the _exe task seed
-  nullptr,               // the _end task seed
-  nullptr,               // the _can task seed
-  false,                 // check resources?
-  false,                 // detached job?
-  false,                 // buffer attached?
-  JT_NONE,               // job trace
-  pJob_Repeater_pre,     // prompt pre-process function
-  vJob_Repeater_post,    // prompt post-process function
-  pJob_Repeater_new,     // job new function
-  vJob_Repeater_delete,  // job delete function
-  nullptr,               // job pre-send function
-  nullptr,               // job post-receive function
-  vJob_Repeater_show,    // job show function
-  
-  // help and example
-  true,
-  "repeater <fileNm> <pipeNm>"_Stz,
-  "repeater \"/rapids/SensorPipe\" \"/rapids/SensorPipe\";"_Stz,
-
-  { 0, 0, 0, 0 ,0, 0 } // seeds spawned
-};
-
-JobClass xJobClass_Repeater2 =
-{
-  "Job_Repeater"_Stz,    // name of the job class
-  CN_JOB_REPEATER,       // class enum
-  JK_LOCAL,              // job kind
-  "repeat data"_Stz,     // comment about the job
   "pipeData"_Stz,        // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
@@ -73,7 +39,7 @@ JobClass xJobClass_Repeater2 =
   true,
   "repeater <fileNm> <pipeNm>"_Stz,
   "repeater \"/rapids/SensorPipe\" \"/rapids/SensorPipe\";"_Stz,
-  
+
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
 
@@ -321,14 +287,14 @@ bool Job_Repeater::bChunk(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // throttle to 10TB +3% per day
   
-  i8 iThreshold = ((C_10TB * 103) / 100);
+  i8 iThreshold = ((C_1TB * 15 * 103) / 100);
   
   for (;;) {
     m_pByteRate->vUpdateTimer();
     i8 nBytesPerDay = m_pByteRate->nBytesPerDay();
-    if (nBytesPerDay < iThreshold)
+    if (nBytesPerDay <= iThreshold)
       break;
-    PosixThread::vSleepMilli(1);
+    PosixThread::vSleepMicro(500);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

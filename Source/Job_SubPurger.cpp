@@ -188,6 +188,11 @@ bool Job_SubPurger::bChunk(void)
              m_iSlot,m_nPurgeCount,m_pTable->aTableName()->aChar());
     }
   }
+  
+  if (! bPurged) {
+    PosixThread::vSleepMilli(10);
+    return true;
+  }
 
   return bPurged;
 }

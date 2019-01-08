@@ -5,11 +5,11 @@
 startCluster;
 
 create table sensorEvents (
-	S_SENSOR        INTEGER NOT NULL,
-	S_TEMPERATURE   INTEGER NOT NULL,
+  S_SENSOR INTEGER NOT NULL,
+  S_TEMPERATURE   INTEGER NOT NULL,
   S_PRESSURE      INTEGER NOT NULL,
   S_VOLUME        INTEGER NOT NULL,
-	S_COMMENT       VARCHAR(80)
+  S_COMMENT       VARCHAR(80)
 );
 
 //generate sensorEvents file "/rapids/sensorEvents.csv" 1000000 ;

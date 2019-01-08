@@ -25,7 +25,7 @@ i8 Hardware::iClockFrequency(void)
   len = sizeof clockrate;
   sysctl(mib, 2, &clockrate, &len, NULL, 0);
 
-  vTrace("Kern ClockRate %d\n"_Stz,clockrate.hz);
+  //vTrace("Kern ClockRate %d\n"_Stz,clockrate.hz);
 
   // - - -
 
