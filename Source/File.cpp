@@ -411,7 +411,7 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read next line                                                             */
+/* read next line (terminated by \n or EOF)                                   */
 /*----------------------------------------------------------------------------*/
 bool File::bReadLine(Stz* aDst)
 {
@@ -419,27 +419,48 @@ bool File::bReadLine(Stz* aDst)
 
   m_oSysCall.vClear();
   
+  // collect by y
   char *y = aDst->aChar();
   
-  *y = '\0';
+  // collect chars till \n or EOF
   for (;;) {
+    
+    // get next char
+    char cNextChar = getc(m_aFile);
     gpAttachMap->m_nFileGetcs++;
-    char c = getc(m_aFile);
-    if ('\n' == c || (char)EOF ==c) {
-      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for \n
+    if ('\n' == cNextChar) {
+      
+      *y = '\0';
+      
+      m_oSysCall.vSuccess();
+      return true;
     }
-    *y++ = c;
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // test for EOF
+    if ((char)EOF == cNextChar) {
+      
+      *y = '\0';
+      
+      // did we collect any chars?
+      if (*aDst->aChar()) {
+        m_oSysCall.vSuccess();
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // collect any other char
+    *y++ = cNextChar;
+
   }
   
-  *y = '\0';
-  
-  if (*aDst->aChar()) {
-    m_oSysCall.vSuccess();
-    return true;
-  }
-  else {
-    return false;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
