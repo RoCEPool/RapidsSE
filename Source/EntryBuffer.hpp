@@ -33,11 +33,11 @@ namespace DBobjects
     i2      m_iBufferLevel; // index buffer level
   
     i4*     m_aEntryOffsets;    // array of row entry offsets
-    i4      m_i_FreeOffsetHead; // head of free entry offset chain
+    i4      m_i_FreeOffsetChain; // head of free entry offset chain
   
     Entry*     m_pHeadEntry;  // head entry
     Entry*     m_pLastEntry;  // last entry in buffer
-    FreeEntry* m_pFirstFree;  // head of free entry list
+    FreeEntry* m_pFreeEntryList;  // head of free entry list
   
     Entry*     m_pLazyChain;  // first lazy entry
   
@@ -139,7 +139,6 @@ namespace DBobjects
     void         vDumpPriorVec(Entry* pPriorVec[]);
     FreeEntry*   pFirstFree(void);
     Item*        pFirstItem(void);
-    void         vFreeChains(void);
     Entry*       pGetEntryOffset(i8 iOffset);
     Entry*       pGetEntrySplit(i8 iSplitEntryNo, Entry** ppPriorEntry);
     i4           iGetFreeRowEntry(void);
@@ -152,6 +151,7 @@ namespace DBobjects
     Entry*       pHeadEntry(void);
     void         vHeadEntryNew(void);
     void         vHeadEntryRestore(void);
+    void         vInitFreeChain(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
     Entry*       pInsertKeyAbsLazy(KeyWrk& xKeyWrk);
