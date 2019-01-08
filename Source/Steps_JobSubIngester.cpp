@@ -20,7 +20,7 @@ void Step::vAddSteps_JobSubIngester(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_subLoader::spawn -- spawn a new subloader                              */
+/* job_subIngesterr::spawn -- spawn a new subIngester                         */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
 {
@@ -28,7 +28,7 @@ void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
   
   Object* pPtrJob_Ingest;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_Ingest) )
-    THROW_INVALID_DSTACK("job_subLoader::spawn"_Stz);
+    THROW_INVALID_DSTACK("job_subIngester::spawn"_Stz);
   Job_Ingest* pJob_Ingest = _pJob_Ingest(pPtrJob_Ingest);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,7 +58,7 @@ void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* job_subLoader.begin -- begin loading                                       */
+/* job_subIngester.begin -- begin ingesting                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubIngesterBegin(MP_Task mpTask)
 {
@@ -66,7 +66,7 @@ void Step::vJob_SubIngesterBegin(MP_Task mpTask)
   
   Object* pPtrJob_SubIngester;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubIngester) )
-    THROW_INVALID_DSTACK("job_subLoader.begin"_Stz);
+    THROW_INVALID_DSTACK("job_job_subIngester.begin"_Stz);
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
 
   bool bBegun = pJob_SubIngester->bBegin();
@@ -77,7 +77,7 @@ void Step::vJob_SubIngesterBegin(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_subLoader.chunk -- read & process rows till buffer full / eof          */
+/* job_subIngester.chunk -- read & process rows till buffer full / eof        */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubIngesterChunk(MP_Task mpTask)
 {
@@ -85,7 +85,7 @@ void Step::vJob_SubIngesterChunk(MP_Task mpTask)
   
   Object* pPtrJob_SubIngester;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubIngester) )
-    THROW_INVALID_DSTACK("job_subLoader.chunk"_Stz);
+    THROW_INVALID_DSTACK("job_subIngester.chunk"_Stz);
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   
   bool bCallAgain = pJob_SubIngester->bChunk();
@@ -110,7 +110,7 @@ void Step::vJob_SubIngesterChunk(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_subLoader.end -- end loading                                           */
+/* job_subIngester.end -- end ingesting                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_SubIngesterEnd(MP_Task mpTask)
 {
@@ -118,7 +118,7 @@ void Step::vJob_SubIngesterEnd(MP_Task mpTask)
   
   Object* pPtrJob_SubIngester;
   if ( ! mpTask->m_pDataStack->bPop(pPtrJob_SubIngester) )
-    THROW_INVALID_DSTACK("subLoader.end"_Stz);
+    THROW_INVALID_DSTACK("job_subIngester.end"_Stz);
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   
   pJob_SubIngester->vEnd();

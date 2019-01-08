@@ -181,6 +181,10 @@ bool Job_SubLoader::bBegin(void)
   // open the chunked file
   bool bOpened = m_pLoadChunk->bOpenRead(sPath);
   
+  // set the table and parentJob in the writeBehind Job
+  JobWriteBehind::m_pTable = m_pJob_LoadTable->m_pTable;
+  JobWriteBehind::m_pParentJob = (Job*)m_pJob_LoadTable;
+  
   return bOpened;
 }
 

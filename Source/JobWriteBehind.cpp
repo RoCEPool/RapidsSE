@@ -39,6 +39,9 @@ JobWriteBehind::JobWriteBehind(void)
     m_pEntryBuffer[i_Partition]   = nullptr;
     m_nWriteBehindBuffers[i_Partition] = 0;
   }
+  m_pTable = nullptr;
+  m_pParentJob = nullptr;
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,6 +186,9 @@ eEC JobWriteBehind::eProcessRecord(Interface::Session* pSession,
                                      eDS eDataSource)
 {
   bool bBlankLine = false;
+  
+  RASSERT(iParentJobId == m_pParentJob->iJobId());
+  RASSERT(pTable == m_pTable);
   
   if (nBytes > C_MAX_RECORD) {
     if ( ! gpAttachMap->m_bMetadata ) {

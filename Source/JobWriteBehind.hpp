@@ -10,6 +10,8 @@ namespace JobModel
   class JobWriteBehind
   {
   public:
+    Job* m_pParentJob;      // paremt job
+    Table* m_pTable;        // table
     s48K m_aRecord;         // formatted row
     i8   m_nRecordBytes;    // length of record
     
