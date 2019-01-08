@@ -62,19 +62,19 @@ namespace Threads
   
     void vAddThread(Thread* pThread);
     
-    void vAddToExecutingQueue(Task* pTask);
+    void vAddToExecutingSet(Task* pTask);
     void vAddToReadyQueue(Task* pTask);
     void vAddToReadySlotQueue(Task* pTask);
     void vAddToSendQueue(Task* pTask);
     void vAddToSleepingQueue(Task* pTask);
-    void vAddToWaitingQueue(Task* pTask);
+    void vAddToWaitingSet(Task* pTask);
   
-    void vAddToExecutingQueue_NL(Task* pTask);
+    void vAddToExecutingSet_NL(Task* pTask);
     void vAddToReadyQueue_NL(Task* pTask);
     void vAddToReadySlotQueue_NL(Task* pTask);
     void vAddToSendQueue_NL(Task* pTask);
     void vAddToSleepingQueue_NL(Task* pTask);
-    void vAddToWaitingQueue_NL(Task* pTask);
+    void vAddToWaitingSet_NL(Task* pTask);
   
     void vDumpExecutingSet(void);
     void vDumpReadyQueue(void);
@@ -117,7 +117,7 @@ namespace Threads
  
     i8 nTasksExecuting(void);
     i8 nTasksReady(void);
-    i8 nTasksRedySlot(i8 iSlot);
+    i8 nTasksReadySlot(i8 iSlot);
     i8 nTasksSleeping(void);
     i8 nTasksWaiting(void);
   

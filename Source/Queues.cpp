@@ -147,12 +147,12 @@ void Queues::vAddThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 /* add task to executing queue                                                */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToExecutingQueue(Task* pTask)
+void Queues::vAddToExecutingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   m_pExecutingSet->vGrabLock();
-  vAddToExecutingQueue_NL(pTask);
+  vAddToExecutingSet_NL(pTask);
   m_pExecutingSet->vDropLock();
 }
 
@@ -216,12 +216,12 @@ void Queues::vAddToSleepingQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to waiting queue                                                  */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToWaitingQueue(Task* pTask)
+void Queues::vAddToWaitingSet(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   m_pWaitingSet->vGrabLock();
-  vAddToWaitingQueue_NL(pTask);
+  vAddToWaitingSet_NL(pTask);
   m_pWaitingSet->vDropLock();
 }
 
@@ -231,7 +231,7 @@ void Queues::vAddToWaitingQueue(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to executing queue                                                */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToExecutingQueue_NL(Task* pTask)
+void Queues::vAddToExecutingSet_NL(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -336,7 +336,7 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* add task to waiting queue                                                  */
 /*----------------------------------------------------------------------------*/
-void Queues::vAddToWaitingQueue_NL(Task* pTask)
+void Queues::vAddToWaitingSet_NL(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -530,11 +530,11 @@ Thread* Queues::pFindIdleThread(void)
 /*----------------------------------------------------------------------------*/
 /* is iRRqueue refering to the ready queue ?                                  */
 /*----------------------------------------------------------------------------*/
-bool Queues::bIsReadyQueue(i8 iRRqueue)
+bool Queues::bIsReadyQueue(i8 i_RRqueue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  if (iRRqueue == QR_READY_QUEUE)
+  if (i_RRqueue == QR_READY_QUEUE)
     return true;
   
   return false;
@@ -543,7 +543,7 @@ bool Queues::bIsReadyQueue(i8 iRRqueue)
 /*----------------------------------------------------------------------------*/
 /* is iRRqueue refering to a ready send queue ?                               */
 /*----------------------------------------------------------------------------*/
-bool Queues::bIsReadySendQueue(i8 iRRqueue)
+bool Queues::bIsReadySendQueue(i8 i_RRqueue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
 
@@ -560,8 +560,8 @@ bool Queues::bIsReadySendQueue(i8 iRRqueue)
    
    */
   
-  if (iRRqueue >= gxArguments.m_nSlots &&
-      iRRqueue <  gxArguments.m_nSlots + gxArguments.m_nNodes)
+  if (i_RRqueue >= gxArguments.m_nSlots &&
+      i_RRqueue <  gxArguments.m_nSlots + gxArguments.m_nNodes)
     return true;
   
   return false;
@@ -570,12 +570,12 @@ bool Queues::bIsReadySendQueue(i8 iRRqueue)
 /*----------------------------------------------------------------------------*/
 /* is iRRqueue refering to a ready slot queue ?                               */
 /*----------------------------------------------------------------------------*/
-bool Queues::bIsReadySlotQueue(i8 iRRqueue)
+bool Queues::bIsReadySlotQueue(i8 i_RRqueue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  if (iRRqueue >= QR_READY_QUEUE + 1 &&
-      iRRqueue <  gxArguments.m_nSlots)
+  if (i_RRqueue >= QR_READY_QUEUE + 1 &&
+      i_RRqueue <  gxArguments.m_nSlots)
     return true;
   
   return false;
@@ -584,11 +584,11 @@ bool Queues::bIsReadySlotQueue(i8 iRRqueue)
 /*----------------------------------------------------------------------------*/
 /* is iRRqueue refering to the sleeping queue ?                               */
 /*----------------------------------------------------------------------------*/
-bool Queues::bIsSleepingQueue(i8 iRRqueue)
+bool Queues::bIsSleepingQueue(i8 i_RRqueue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  if (iRRqueue == QR_SLEEPING_QUEUE)
+  if (i_RRqueue == QR_SLEEPING_QUEUE)
     return true;
   
   return false;
@@ -660,13 +660,13 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* inspect the ready queue                                                    */
+/* pop task from the ready queue                                              */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopReadyQueue(Thread* pCallingThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  Task* pPoppedTask;
+  Task* pTask;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock queue and check for task
@@ -679,38 +679,40 @@ Task* Queues::pPopReadyQueue(Thread* pCallingThread)
   }
   
   // pop task off the general queue
-  pPoppedTask = m_pReadyQueue->pPopTask();
-  
+  pTask = m_pReadyQueue->pPopTask();
+ 
+  // task no longer in any queue/set
+  if (pTask)
+    pTask->vQueue(QR_NONE);
+
   // drop the lock
   m_pReadyQueue->vDropLock();
   
   // is there a task to run?
-  if (! pPoppedTask)
+  if (! pTask)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // task no longer in queue
-  pPoppedTask->vQueue(QR_NONE);
   
-  RASSERT( ! pPoppedTask->bIsPartitioned());
+  RASSERT( ! pTask->bIsPartitioned());
   
-  if (pPoppedTask->pJob()->m_bMark) {
+  if (pTask->pJob()->m_bMark) {
     //mark
   }
   
   // return the task popped from the ready queue
-  return pPoppedTask;
+  return pTask;
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect a ready send queue                                                 */
+/* pop task from ready send queue                                             */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopReadySendQueue(Thread* pCallingThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  Task* pPoppedTask;
+  Task* pTask;
   
   i8 i_Queue = i_ToReadySendQueue(pCallingThread->m_iLastRRqueue);
   
@@ -727,39 +729,40 @@ Task* Queues::pPopReadySendQueue(Thread* pCallingThread)
   }
   
   // pop a task off the partition queues
-  pPoppedTask = pReadySendQueue->pPopTask();
+  pTask = pReadySendQueue->pPopTask();
   
-  // drop lock on the queue
+  // task no longer in any queue/set
+  if (pTask)
+    pTask->vQueue(QR_NONE);
+  
+ // drop lock on the queue
   pReadySendQueue->vDropLock();
   
   // is there a task to run?
-  if (! pPoppedTask)
+  if (! pTask)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there is a task to run
   
-  // task no longer in queue
-  pPoppedTask->vQueue(QR_NONE);
+  RASSERT(pTask->pSendNode() != nullptr);
   
-  RASSERT(pPoppedTask->pSendNode() != nullptr);
-  
-  if (pPoppedTask->pJob()->m_bMark) {
+  if (pTask->pJob()->m_bMark) {
     //mark
   }
   
   // return the task popped from the slot queue
-  return pPoppedTask;
+  return pTask;
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect a ready slot queue                                                 */
+/* pop task from a ready slot queue                                           */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopReadySlotQueue(Thread* pCallingThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  Task* pPoppedTask;
+  Task* pTask;
   
   i8 i_Queue = i_ToReadySlotQueue(pCallingThread->m_iLastRRqueue);
   
@@ -776,40 +779,40 @@ Task* Queues::pPopReadySlotQueue(Thread* pCallingThread)
   }
   
   // pop a task off the partition queues
-  pPoppedTask = pReadySlotQueue->pPopTask();
+  pTask = pReadySlotQueue->pPopTask();
   
+  // task no longer in any queue/set
+  if (pTask)
+    pTask->vQueue(QR_NONE);
+
   // drop lock on the queue
   pReadySlotQueue->vDropLock();
   
   // is there a task to run?
-  if (! pPoppedTask)
+  if (! pTask)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // there is a task to run
   
-  // task no longer in queue
-  pPoppedTask->vQueue(QR_NONE);
+  RASSERT(pTask->bIsPartitioned());
   
-  RASSERT(pPoppedTask->bIsPartitioned());
-  
-  if (pPoppedTask->pJob()->m_bMark) {
+  if (pTask->pJob()->m_bMark) {
     //mark
   }
   
   // return the task popped from the slot queue
-  return pPoppedTask;
+  return pTask;
 }
 
 /*----------------------------------------------------------------------------*/
-/* inspect the sleeping queue                                                 */
+/* pop task from sleeping queue                                               */
 /*----------------------------------------------------------------------------*/
 Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  Task* pPeekedTask;
-  Task* pPoppedTask;
+  Task* pTask;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // lock queue and peek at task
@@ -822,10 +825,10 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
   }
   
   // peek at the first task in the sleeping queue
-  pPeekedTask = m_pSleepingQueue->pPeekTask();
+  pTask = m_pSleepingQueue->pPeekTask();
   
   // check if peeked task's wakeup time is after now
-  if (! pPeekedTask || ! pPeekedTask->bWakeupNow()) {
+  if (! pTask || ! pTask->bWakeupNow()) {
     
     // - peeked task is to be woken up in the future
     
@@ -840,24 +843,23 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
   // peeked task can be be woken up
   
   // pop the task off the sleeping queue
-  pPoppedTask = m_pSleepingQueue->pPopTask();
-  ASSERT(pPoppedTask == pPeekedTask);
+  pTask = m_pSleepingQueue->pPopTask();
+  
+  // task no longer in any queue/set
+  pTask->vQueue(QR_NONE);
   
   // drop lock on sleeping queue
   m_pSleepingQueue->vDropLock();
   
-  // task no longer in queue
-  pPoppedTask->vQueue(QR_NONE);
-  
   // clear wakeup time of the task
-  pPoppedTask->vWakeupTask();
+  pTask->vWakeupTask();
   
-  if (pPoppedTask->pJob()->m_bMark) {
+  if (pTask->pJob()->m_bMark) {
     //mark
   }
   
   // return the task popped from the sleeping queue
-  return pPoppedTask;
+  return pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -903,6 +905,9 @@ void Queues::vRemoveThread(Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* remove task from executing queue                                           */
 /*----------------------------------------------------------------------------*/
 void Queues::vRemoveFromExecutingSet(Task* pTask)
@@ -913,7 +918,12 @@ void Queues::vRemoveFromExecutingSet(Task* pTask)
   m_pExecutingSet->vRemoveTask(pTask);
   m_pExecutingSet->vDropLock();
   
+  // task no longer in any queue/set
   pTask->vQueue(QR_NONE);
+  
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -927,7 +937,12 @@ void Queues::vRemoveFromWaitingSet(Task* pTask)
   m_pWaitingSet->vRemoveTask(pTask);
   m_pWaitingSet->vDropLock();
   
+  // task no longer in any queue/set
   pTask->vQueue(QR_NONE);
+  
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -936,29 +951,33 @@ void Queues::vRemoveFromWaitingSet(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* schedule a fully acked task                                                */
 /*----------------------------------------------------------------------------*/
-void Queues::vScheduleAckedTask(Task* pTaskToBeAcked)
+void Queues::vScheduleAckedTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  pTaskToBeAcked->vGrabLock();
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
+
+  pTask->vGrabLock();
 
   // having got the lock, the task should be TS_WAITING and QR_WAITING_QUEUE
 
-  RASSERT(TS_WAITING == pTaskToBeAcked->eState());
-  RASSERT(QR_WAITING_QUEUE == pTaskToBeAcked->eQueue());
+  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(QR_WAITING_QUEUE == pTask->eQueue());
   
-  pTaskToBeAcked->vDropLock();
+  pTask->vDropLock();
   
-  vRemoveFromWaitingSet(pTaskToBeAcked);
+  vRemoveFromWaitingSet(pTask);
 
-  RASSERT(QR_NONE == pTaskToBeAcked->eQueue());
+  RASSERT(QR_NONE == pTask->eQueue());
   
-  pTaskToBeAcked->vState(TS_READY);
+  pTask->vState(TS_READY);
   
-  if (pTaskToBeAcked->bIsNonPartitioned())
-    vScheduleReadyTask(pTaskToBeAcked);
+  if (pTask->bIsNonPartitioned())
+    vScheduleReadyTask(pTask);
   else
-    vScheduleReadySlotTask(pTaskToBeAcked);
+    vScheduleReadySlotTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -970,7 +989,7 @@ void Queues::vScheduleExitedTask(Task* pTask)
 
   RASSERT(TS_EXITED == pTask->eState());
   
-  ASSERT( ! pTask->bWordBody() );
+  ASSERT(! pTask->bWordBody());
   
   //vTrace("Exited Task %p\n"_Stz,pTask);
   
@@ -985,6 +1004,10 @@ void Queues::vScheduleReadyTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   RASSERT(TS_READY == pTask->eState());
+  
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
   
   Thread* pIdleThread = pFindIdleThread();
 
@@ -1009,6 +1032,10 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
   
   RASSERT(TS_READY == pTask->eState());
   
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
+  
   Thread* pIdleThread = pFindIdleThread();
   
   if (pIdleThread) {
@@ -1028,6 +1055,10 @@ void Queues::vScheduleSendTask(Task* pTask)
   
   RASSERT(TS_SEND == pTask->eState());
   
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
+  
   // add task to send queue
   vAddToSendQueue(pTask);
 }
@@ -1040,6 +1071,10 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   RASSERT(TS_SLEEPING == pTask->eState());
+  
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
   
   // is the task still actually sleeping
   if (! pTask->bWakeupNow()) {
@@ -1071,6 +1106,10 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
   
   pTask->vState(TS_READY);
   
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
+  
   eQR eQueue = pTask->eWhichQueue();
   RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlots);
   
@@ -1088,7 +1127,11 @@ void Queues::vScheduleWaitingTask(Task* pTask)
   
   RASSERT(TS_WAITING == pTask->eState());
   
-  vAddToWaitingQueue(pTask);
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
+  
+  vAddToWaitingSet(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1099,6 +1142,10 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   Thread* pCallingThread = Thread::pThisTLSThread();
+  
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // non-partitioned task yield
@@ -1111,7 +1158,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
     //   Otherwise we add the task to the ready queue
     
     m_pReadyQueue->vGrabLock();
-    i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
+    i8 iLengthReadyQueue = nTasksReady();
     if (0 == iLengthReadyQueue) {
       m_pReadyQueue->vDropLock();
       pCallingThread->vReExecuteTask(pTask);
@@ -1139,14 +1186,14 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   i8 i_Slot = pTask->iSlot();
 
   // first check if any tasks in ready queue
-  i8 iLengthReadyQueue = m_pReadyQueue->nTasks();
+  i8 iLengthReadyQueue = nTasksReady();
   vTrace("ReadyQ %lld\n"_Stz, i_Slot, iLengthReadyQueue);
   
   if (0 == iLengthReadyQueue) {
     
     // now check if any ready tasks in ready slot queue
     m_pReadySlotQueues[i_Slot]->vGrabLock();
-    i8 iLengthReadySlotQueue = m_pReadySlotQueues[i_Slot]->nTasks();
+    i8 iLengthReadySlotQueue = nTasksReadySlot(i_Slot);
     
     vTrace("SlotQ[%lld] %lld\n"_Stz, i_Slot, iLengthReadySlotQueue);
     
@@ -1169,7 +1216,6 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   vAddToReadySlotQueue_NL(pTask);
   m_pReadySlotQueues[i_Slot]->vDropLock();
   
-
   return;
 }
 
@@ -1197,9 +1243,9 @@ i8 Queues::nTasksReady(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get no of tasks in the ready slot queue                                    */
+/* get no of tasks in a ready slot queue                                      */
 /*----------------------------------------------------------------------------*/
-i8 Queues::nTasksRedySlot(i8 iSlot)
+i8 Queues::nTasksReadySlot(i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   

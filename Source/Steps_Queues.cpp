@@ -67,7 +67,7 @@ void Step::vQueuesReadySlotLength(MP_Task mpTask)
     THROW_INVALID_DSTACK("queues::QueuesReadySlotLength"_Stz);
   
   Queues* pQueues = gpAttachMap->m_pQueues;
-  mpTask->m_pDataStack->vPushInt(pQueues->nTasksRedySlot(iSlot));
+  mpTask->m_pDataStack->vPushInt(pQueues->nTasksReadySlot(iSlot));
   
   EXIT();
 }

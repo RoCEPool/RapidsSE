@@ -577,7 +577,7 @@ void Thread::vTaskCall(void)
   }
   
   // add this task to the executing task queue
-  gpAttachMap->m_pQueues->vAddToExecutingQueue(*m_npTask);
+  gpAttachMap->m_pQueues->vAddToExecutingSet(*m_npTask);
   
   // record time of call
   // ...
