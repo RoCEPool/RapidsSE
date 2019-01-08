@@ -103,7 +103,7 @@ void Job_Ingest::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Ingest::Job_Ingest(Interface::Session* pSession)
-: Job(CN_JOB_INGEST, pSession)
+: Job(CN_JOB_INGEST, pSession), JobWriteBehind(DS_INGEST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   

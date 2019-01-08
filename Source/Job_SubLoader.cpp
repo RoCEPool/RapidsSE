@@ -103,7 +103,7 @@ void Job_SubLoader::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_SubLoader::Job_SubLoader(Interface::Session* pSession)
-: Job(CN_JOB_SUBLOADER, pSession)
+: Job(CN_JOB_SUBLOADER, pSession), JobWriteBehind(DS_LOAD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   

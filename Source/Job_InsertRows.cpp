@@ -103,7 +103,7 @@ void Job_InsertRows::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_InsertRows::Job_InsertRows(Interface::Session* pSession)
-: Job(CN_JOB_INSERTROWS, pSession)
+: Job(CN_JOB_INSERTROWS, pSession), JobWriteBehind(DS_INSERT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
   
