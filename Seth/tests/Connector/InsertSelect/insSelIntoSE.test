@@ -14,7 +14,7 @@ insert into rapidsse.public.TABLE7 select * from MOXE.TABLE7 ;
 
 insert into rapidsse.public.TABLE8 select * from MOXE.TABLE8 ;
 
-insert into rapidsse.public.TABLE9 select * from MOXE.TABLE9' ;
+insert into rapidsse.public.TABLE9 select * from MOXE.TABLE9 ;
 
 insert into rapidsse.public.ORDERS select * from MOXE.ORDERS ;
 

@@ -27,19 +27,19 @@
 
   //------------------------------------------------------------------------------
   //LOG 'Dropping SE schema';
-  //INCLUDE 'schemaDropSE.test';
+  INCLUDE 'schemaDropSE.test';
 
   //------------------------------------------------------------------------------
   //LOG 'Creating SE schema';
-  //INCLUDE 'schemaCreateSE.test';
+  INCLUDE 'schemaCreateSE.test';
 
   //------------------------------------------------------------------------------
   //LOG 'InsertSelecting from MOXE into SE';
-  //INCLUDE 'insSelIntoSE.test';
+  INCLUDE 'insSelIntoSE.test';
 
   //------------------------------------------------------------------------------
   //LOG 'Selecting from SE';
-  //INCLUDE 'selCountSE.test';
+  INCLUDE 'selCountSE.test';
 
   //------------------------------------------------------------------------------
   LOG 'Creating SE schema2';
