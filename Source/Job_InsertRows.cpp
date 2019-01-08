@@ -177,7 +177,7 @@ void Job_InsertRows::vEnd(void)
   // insertTable job is the parent
   i8 iParentJobId = m_pJob_InsertTable->iJobId();
   
-  vHandleDanglingBuffers(m_pSession, m_pTable, DS_INSERT, iParentJobId);
+  vHandleDanglingBuffers();
 }
 
 /*----------------------------------------------------------------------------*/

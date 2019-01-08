@@ -353,7 +353,7 @@ void Job_Ingest::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
   // handle any dangling buffers
-  vHandleDanglingBuffers(m_pSession, m_pTable, DS_INGEST, -1);
+  vHandleDanglingBuffers();
   
   if (m_pByteRate)
     m_pByteRate->vEndTiming();

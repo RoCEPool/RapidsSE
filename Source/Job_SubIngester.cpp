@@ -281,10 +281,7 @@ void Job_SubIngester::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINGESTER,_FOOTER_);
   
-  vHandleDanglingBuffers(m_pJob_Ingest->m_pSession,
-                         m_pJob_Ingest->m_pTable,
-                         DS_INGEST,
-                         m_pJob_Ingest->m_iJobId);
+  vHandleDanglingBuffers();
 }
 
 /*----------------------------------------------------------------------------*/

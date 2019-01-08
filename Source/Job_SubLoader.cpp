@@ -260,8 +260,7 @@ void Job_SubLoader::vEnd(void)
   
 
   // handle any dangling buffers
-  vHandleDanglingBuffers(m_pSession, m_pJob_LoadTable->m_pTable,
-                         DS_LOAD, m_pJob_LoadTable->m_iJobId);
+  vHandleDanglingBuffers();
   
   i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
   

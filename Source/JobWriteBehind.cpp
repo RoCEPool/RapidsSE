@@ -86,13 +86,12 @@ bool JobWriteBehind::bFormatRow(Table* pTable, Formatters* pFormatters,
 /*----------------------------------------------------------------------------*/
 /* handle dangling buffers                                                    */
 /*----------------------------------------------------------------------------*/
-void JobWriteBehind::vHandleDanglingBuffers(Interface::Session* pSession, Table* pTable,
-                                            eDS eDataSource, i8 iParentJobId)
+void JobWriteBehind::vHandleDanglingBuffers(void)
 {
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
     
     if ( ! m_pEntryBuffer[iPartition] )
-      vNewEntryBuffer(pTable, iPartition);
+      vNewEntryBuffer(m_pTable, iPartition);
     
     // get the entry buffer
     EntryBuffer* pEntryBuffer = m_pEntryBuffer[iPartition];
@@ -103,8 +102,8 @@ void JobWriteBehind::vHandleDanglingBuffers(Interface::Session* pSession, Table*
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a write buffer job for load
     Job_WriteBuffer::vSpawnJobWriteBuffer(
-                                          pSession, pTable->aTableName(), eDataSource,
-                                          pEntryBuffer, iParentJobId, iPartition,
+                                          m_pParentJob->m_pSession, m_pTable->aTableName(), m_eDataSource,
+                                          pEntryBuffer, m_pParentJob->iJobId(), iPartition,
                                           true, nWriteBehindBuffers);
   }
 }
