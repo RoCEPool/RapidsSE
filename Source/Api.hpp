@@ -91,7 +91,7 @@ void vApiReturn(Session* pSession);
 void vDeleteJobs(Session* pSession);
 void vSpawnJobAndWait(Session* pSession, Job* pJob);
 
-#ifdef __DEBUG
+#ifdef _DEBUG
 
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
