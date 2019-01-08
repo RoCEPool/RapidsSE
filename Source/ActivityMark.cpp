@@ -105,15 +105,17 @@ void ActivityMark::vWrite(i8 iJobId, char* aMark)
   
   StrLib::vCopyLen(m_aNode,
                    gpAttachMap->m_pGrid->m_pThisNode->aNodeName()->aChar(),
-                   sizeof(m_aNode));
+                   sizeof(m_aNode) - 1);
   m_aNode[sizeof(m_aNode) - 1] = '\0';
   
   m_iJobId = iJobId;
 
   StrLib::vCopyLen(m_aMark,
                    aMark,
-                   sizeof(m_aMark));
+                   sizeof(m_aMark) - 1);
   m_aMark[sizeof(m_aMark) - 1] = '\0';
+  
+  _postcondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

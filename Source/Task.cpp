@@ -309,11 +309,26 @@ void Task::vFormMark(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  m_sMark.vSprint("Task %p %s %s"_Stz,
-                  this,
-                  aCN[m_pJob->eClass()],
-                  aTS[m_eState]
-                  );
+  if (TS_SLEEPING == m_eState) {
+    Time oDateTime;
+    oDateTime.vSetLocal(&m_oWakeupTime);
+    s32 sDateTime;
+    char* z = sDateTime.aChar();
+    oDateTime.vAppendLocal(&z);
+    m_sMark.vSprint("Task %p %s %s wakeup %s"_Stz,
+                    this,
+                    aCN[m_pJob->eClass()],
+                    aTS[m_eState],
+                    sDateTime.aChar()
+                    );
+  }
+  else {
+    m_sMark.vSprint("Task %p %s %s"_Stz,
+                    this,
+                    aCN[m_pJob->eClass()],
+                    aTS[m_eState]
+                    );
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1015,7 +1030,12 @@ void Task::vWriteMark(Stz* aPrefix)
   
   vFormMark();
   
-  vTrace("MARK: %s %s\n"_Stz,aPrefix,m_sMark.aChar());
+  //vTrace("MARK: %s %s\n"_Stz,aPrefix,m_sMark.aChar());
+  
+  ActivityMap::vMark(m_pJob->m_iJobId,
+                     "%s %s"_Stz,
+                     aPrefix,
+                     m_sMark.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
