@@ -11,7 +11,7 @@ namespace Base
 }
 
 /*----------------------------------------------------------------------------*/
-/* pAdd: add bytes to given address                                           */
+/* add bytes to given address                                                 */
 /*----------------------------------------------------------------------------*/
 template <class CAST>
 static CAST pAdd(void* aAddress, i8 nBytes)

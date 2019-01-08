@@ -31,6 +31,28 @@ namespace Base
   };
 }
 
+/*----------------------------------------------------------------------------*/
+/* bitwise-and of address with mask                                           */
+/*----------------------------------------------------------------------------*/
+template <class CAST>
+static CAST pBitAnd(void* aAddress, u8 uMask)
+{
+  u8 uNewAddress = BITWISE_AND((u8)aAddress,uMask);
+  
+  return reinterpret_cast<CAST>(uNewAddress);
+}
+
+/*----------------------------------------------------------------------------*/
+/* bitwise-or of address with mask                                            */
+/*----------------------------------------------------------------------------*/
+template <class CAST>
+static CAST pBitOr(void* aAddress, u8 uMask)
+{
+  u8 uNewAddress = BITWISE_OR((u8)aAddress,uMask);
+  
+  return reinterpret_cast<CAST>(uNewAddress);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
