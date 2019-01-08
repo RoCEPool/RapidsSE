@@ -60,8 +60,6 @@ Column::Column(void)
   
   m_fGreaterEqual = nullptr;
   m_fGreaterThan  = nullptr;
-  m_fExtract      = nullptr;
-  m_fExtractDefault = nullptr;
   
   _checkInitialised_(CN_COLUMN);
   
@@ -87,8 +85,6 @@ Column::Column(Stz* aName)
 
   m_fGreaterEqual = nullptr;
   m_fGreaterThan  = nullptr;
-  m_fExtract      = Int::bExtract;
-  m_fExtractDefault = Int::bExtract;
   
   _checkInitialised_(CN_COLUMN);
   
@@ -114,8 +110,6 @@ Column::Column(Stz* aName, Stz* aDefinition)
 
   m_fGreaterEqual = nullptr;
   m_fGreaterThan  = nullptr;
-  m_fExtract      = nullptr;
-  m_fExtractDefault = nullptr;
   
   vSet(aDefinition);
   
@@ -143,22 +137,6 @@ Column::Column(JobModel::Job_CreateTable* pJob, i8 iColumnNo)
   
   m_fGreaterEqual = nullptr;
   m_fGreaterThan  = nullptr;
-  
-  switch (m_eDatumType) {
-      case DM_BCD: m_fExtract = Bcd::bExtract; m_fExtractDefault = Bcd::bExtractDefault; break;
-      case DM_BOL: m_fExtract = Bol::bExtract; m_fExtractDefault = Bol::bExtractDefault; break;
-      case DM_CHR: m_fExtract = Vch::bExtract2; m_fExtractDefault = Vch::bExtractDefault2; break;
-      case DM_DTE: m_fExtract = Int::bExtract; m_fExtractDefault = Int::bExtractDefault; break;
-      case DM_FLT: m_fExtract = Flt::bExtract; m_fExtractDefault = Flt::bExtractDefault; break;
-      case DM_INT: m_fExtract = Int::bExtract; m_fExtractDefault = Int::bExtractDefault; break;
-      case DM_IVL: m_fExtract = Ivl::bExtract; m_fExtractDefault = Ivl::bExtractDefault; break;
-      case DM_TME: m_fExtract = Tme::bExtract; m_fExtractDefault = Tme::bExtractDefault; break;
-      case DM_TSP: m_fExtract = Tsp::bExtract; m_fExtractDefault = Tsp::bExtractDefault; break;
-      case DM_VCH: m_fExtract = Vch::bExtract2; m_fExtractDefault = Vch::bExtractDefault2; break;
-    default:
-      vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
-             m_eDatumType);
-  }
   
   _checkInitialised_(CN_COLUMN);
   
@@ -575,19 +553,6 @@ bool Column::bEqualTo(char* aArgA, char* aArgB)
   bool bEqualTo = DtmLib::bEqualTo(m_eDatumType,aArgA,aArgB);
   
   return bEqualTo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* greater equal                                                              */
-/*----------------------------------------------------------------------------*/
-bool Column::bExtract(char** aaSrc, Stz* aDst, Formatters* pFormatters)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
-  
-  if (pFormatters->m_bDefault)
-    return m_fExtractDefault(aaSrc, aDst, this, pFormatters);
-  else
-    return m_fExtract(aaSrc, aDst, this, pFormatters);
 }
 
 /*----------------------------------------------------------------------------*/

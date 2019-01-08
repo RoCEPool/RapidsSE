@@ -236,7 +236,7 @@ void vSpawnJobAndWait(Session* pSession, Job* pJob);
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_SESSION(aMarker) \
   { \
-    eResult = eValidateSession(pSession, aApiCall, iTraceLevel); \
+    eResult = eValidateSession(pSession, iTraceLevel); \
     if (eResult != EC_NONE) { \
         TRACE_ERROR(aMarker, EC_INVALID_INTERFACE); \
         return eResult; \

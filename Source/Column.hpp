@@ -67,12 +67,6 @@ namespace DBobjects
   
     bool  (*m_fGreaterEqual)(char* aArgA, char* aArgB);
     bool  (*m_fGreaterThan)(char* aArgA, char* aArgB);
-  
-    bool  (*m_fExtract)(char** aaSrc, Stz* aDst,
-                        DBobjects::Column* pColumn, Formatters* pFormatters);
-    
-    bool  (*m_fExtractDefault)(char** aaSrc, Stz* aDst,
-                               DBobjects::Column* pColumn, Formatters* pFormatters);
     
     // must be last
     Footer m_xFooter;
@@ -125,7 +119,6 @@ namespace DBobjects
     bool bNotEqual(char* aArgA, char* aArgB);
     bool bGreaterEqual(char* aArgA, char* aArgB);
     bool bGreaterThan(char* aArgA, char* aArgB);
-    bool bExtract(char** aaSrc, Stz* aDst,Formatters* pFormatters);
     
     i8 iCmp(char* aArgA, char* aArgB);
 
