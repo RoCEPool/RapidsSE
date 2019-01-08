@@ -240,11 +240,11 @@ void Queues::vAddToExecutingSet_NL(Task* pTask)
   pTask->vQueue(QR_EXECUTING_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
   
-  m_pExecutingSet->vAddTask(pTask);
-  
   if (pTask->pJob()->m_bMark) {
     //mark
   }
+  
+  m_pExecutingSet->vAddTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,11 +259,12 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   
   pTask->vQueue(QR_READY_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
-  m_pReadyQueue->vAddTask(pTask);
   
   if (pTask->pJob()->m_bMark) {
     //mark
   }
+  
+  m_pReadyQueue->vAddTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,11 +286,11 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   pTask->vQueue((eQR)iSlot);
   pTask->vQueueOrder(++m_ziQueueOrder);
   
-  m_pReadySlotQueues[iSlot]->vAddTask(pTask);
-  
   if (pTask->pJob()->m_bMark) {
     //mark
   }
+
+  m_pReadySlotQueues[iSlot]->vAddTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -308,11 +309,11 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
   pTask->vQueue((eQR)(C_SLOTS_PER_NODE + iSendNode));
   pTask->vQueueOrder(++m_ziQueueOrder);
   
-  m_pReadySendQueues[iSendNode]->vAddTask(pTask);
-  
   if (pTask->pJob()->m_bMark) {
     //mark
   }
+
+  m_pReadySendQueues[iSendNode]->vAddTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -326,11 +327,11 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
   
   pTask->vQueue(QR_SLEEPING_QUEUE);
   
-  m_pSleepingQueue->vAddTask(pTask);
-  
   if (pTask->pJob()->m_bMark) {
     //mark
   }
+  
+  m_pSleepingQueue->vAddTask(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -353,15 +354,15 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   pTask->vQueue(QR_WAITING_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
   
+  if (pTask->pJob()->m_bMark) {
+    //mark
+  }
+  
   // put task inyo the waiting queue
   m_pWaitingSet->vAddTask(pTask);
   
   // drop task lock
   pTask->vDropLock();
-  
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -693,8 +694,7 @@ Task* Queues::pPopReadyQueue(Thread* pCallingThread)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  
+    
   RASSERT( ! pTask->bIsPartitioned());
   
   if (pTask->pJob()->m_bMark) {
