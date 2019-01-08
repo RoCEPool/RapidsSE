@@ -253,8 +253,8 @@ void AttachMap::vRecordGlobals(Stz* aRegionName,
   //m_iaMemSet[CN_ENUMS];
   //m_iaMemZero[CN_ENUMS];
   
-  m_bMarkApiAll = true;
-  m_bMarkJobAll = true;
+  m_bMarkApiAll = false;
+  m_bMarkJobAll = false;
 }
 
 /*----------------------------------------------------------------------------*/

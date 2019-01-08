@@ -240,9 +240,8 @@ void Queues::vAddToExecutingSet_NL(Task* pTask)
   pTask->vQueue(QR_EXECUTING_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vAddToExecutingSet()"_Stz);
   
   m_pExecutingSet->vAddTask(pTask);
 }
@@ -260,9 +259,8 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   pTask->vQueue(QR_READY_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vAddToReadyQueue()"_Stz);
   
   m_pReadyQueue->vAddTask(pTask);
 }
@@ -286,9 +284,8 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   pTask->vQueue((eQR)iSlot);
   pTask->vQueueOrder(++m_ziQueueOrder);
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vAddToReadySlotQueue()"_Stz);
 
   m_pReadySlotQueues[iSlot]->vAddTask(pTask);
 }
@@ -309,9 +306,8 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
   pTask->vQueue((eQR)(C_SLOTS_PER_NODE + iSendNode));
   pTask->vQueueOrder(++m_ziQueueOrder);
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vAddToSendQueue()"_Stz);
 
   m_pReadySendQueues[iSendNode]->vAddTask(pTask);
 }
@@ -327,9 +323,8 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
   
   pTask->vQueue(QR_SLEEPING_QUEUE);
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("AddToSleepingQueue()"_Stz);
   
   m_pSleepingQueue->vAddTask(pTask);
 }
@@ -354,9 +349,8 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   pTask->vQueue(QR_WAITING_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vAddToWaitingSet()"_Stz);
   
   // put task inyo the waiting queue
   m_pWaitingSet->vAddTask(pTask);
@@ -694,12 +688,11 @@ Task* Queues::pPopReadyQueue(Thread* pCallingThread)
     return nullptr;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
+  
   RASSERT( ! pTask->bIsPartitioned());
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("pPopReadyQueue()"_Stz);
   
   // return the task popped from the ready queue
   return pTask;
@@ -747,9 +740,8 @@ Task* Queues::pPopReadySendQueue(Thread* pCallingThread)
   
   RASSERT(pTask->pSendNode() != nullptr);
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("pPopReadySendQueue()"_Stz);
   
   // return the task popped from the slot queue
   return pTask;
@@ -797,9 +789,8 @@ Task* Queues::pPopReadySlotQueue(Thread* pCallingThread)
   
   RASSERT(pTask->bIsPartitioned());
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("pPopReadySlotQueue()"_Stz);
   
   // return the task popped from the slot queue
   return pTask;
@@ -854,9 +845,8 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
   // clear wakeup time of the task
   pTask->vWakeupTask();
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("pPopSleepingQueue()"_Stz);
   
   // return the task popped from the sleeping queue
   return pTask;
@@ -921,9 +911,8 @@ void Queues::vRemoveFromExecutingSet(Task* pTask)
   // task no longer in any queue/set
   pTask->vQueue(QR_NONE);
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob() && pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vRemoveFromExecutingSet()"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -940,9 +929,8 @@ void Queues::vRemoveFromWaitingSet(Task* pTask)
   // task no longer in any queue/set
   pTask->vQueue(QR_NONE);
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vRemoveFromWaitingSet()"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -955,9 +943,8 @@ void Queues::vScheduleAckedTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vScheduleAckedTask()"_Stz);
 
   pTask->vGrabLock();
 
@@ -1005,9 +992,8 @@ void Queues::vScheduleReadyTask(Task* pTask)
   
   RASSERT(TS_READY == pTask->eState());
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vScheduleReadyTask()"_Stz);
   
   Thread* pIdleThread = pFindIdleThread();
 
@@ -1032,9 +1018,8 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
   
   RASSERT(TS_READY == pTask->eState());
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vScheduleReadySlotTask()"_Stz);
   
   Thread* pIdleThread = pFindIdleThread();
   
@@ -1055,9 +1040,8 @@ void Queues::vScheduleSendTask(Task* pTask)
   
   RASSERT(TS_SEND == pTask->eState());
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vScheduleSendTask()"_Stz);
   
   // add task to send queue
   vAddToSendQueue(pTask);
@@ -1072,9 +1056,8 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   
   RASSERT(TS_SLEEPING == pTask->eState());
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vScheduleSleepingTask()"_Stz);
   
   // is the task still actually sleeping
   if (! pTask->bWakeupNow()) {
@@ -1087,10 +1070,6 @@ void Queues::vScheduleSleepingTask(Task* pTask)
   pTask->vWakeupTask();
   
   Thread* pCallingThread = Thread::pThisTLSThread();
-  
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
   
   pCallingThread->vReExecuteTask(pTask);
 }
@@ -1106,9 +1085,8 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
   
   pTask->vState(TS_READY);
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vScheduleSpawnedTask()"_Stz);
   
   eQR eQueue = pTask->eWhichQueue();
   RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlots);
@@ -1127,9 +1105,8 @@ void Queues::vScheduleWaitingTask(Task* pTask)
   
   RASSERT(TS_WAITING == pTask->eState());
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vScheduleWaitingTask()"_Stz);
   
   vAddToWaitingSet(pTask);
 }
@@ -1143,9 +1120,8 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   
   Thread* pCallingThread = Thread::pThisTLSThread();
   
-  if (pTask->pJob()->m_bMark) {
-    //mark
-  }
+  if (pTask->pJob()->m_bMark)
+    pTask->vWriteMark("vScheduleYieldedTask()"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // non-partitioned task yield
