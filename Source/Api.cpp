@@ -873,7 +873,7 @@ eEC RapidsSE_InsertRows(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTrac
     i8 iParentJobId = pJob_InsertRows->m_pJob_InsertTable->m_iJobId;
     
     // insert row into a working buffer in job InsertRow
-    eErrorCode = pJob_InsertRows->eInsertRow(pSession, pTable, DS_INSERT, iParentJobId);
+    eErrorCode = pJob_InsertRows->eInsertRow();
     
     // was there an error ?
     if ( eErrorCode != EC_NONE ) {

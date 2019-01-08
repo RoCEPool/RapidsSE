@@ -111,7 +111,7 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource, i8 iParentJobId)
+eEC JobWriteBehind::eInsertRow(void)
 {
   
   eEC eErrorCode = EC_NONE;
@@ -121,14 +121,14 @@ eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
-    i8 iPartition = pTable->iRowPartition(m_aRecord);
+    i8 iPartition = m_pTable->iRowPartition(m_aRecord);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check for working buffer
     if (! m_pEntryBuffer[iPartition]) {
       
       // create a new working buffer for this partition
-      vNewEntryBuffer(pTable, iPartition);
+      vNewEntryBuffer(m_pTable, iPartition);
       
       if (! m_pEntryBuffer[iPartition]) {
         vTrace("EntryBuffer allocation failed\n"_Stz);
@@ -166,8 +166,8 @@ eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn a write buffer job 
-    Job_WriteBuffer::vSpawnJobWriteBuffer(pSession, pTable->aTableName(), eDataSource,
-                                          pEntryBuffer, iParentJobId,
+    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession, m_pTable->aTableName(), m_eDataSource,
+                                          pEntryBuffer, m_pParentJob->iJobId(),
                                           iPartition, false, 0);
   }
   
@@ -202,7 +202,7 @@ eEC JobWriteBehind::eProcessRecord(Formatters* pFormatters,
     return EC_INVALID_VALUE;
 
   // attempt to add record into a write-behind buffer
-  eEC eError = eInsertRow(m_pParentJob->m_pSession, m_pTable, eDataSource, m_pParentJob->iJobId());
+  eEC eError = eInsertRow();
 
   // was there an error ?
   if (eError != EC_NONE) {

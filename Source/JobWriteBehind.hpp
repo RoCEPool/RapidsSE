@@ -31,8 +31,7 @@ namespace JobModel
   
     void vHandleDanglingBuffers(void);
     
-    eEC  eInsertRow(Interface::Session* pSession, Table* pTable,
-                    eDS eDataSource, i8 iParentJobId);
+    eEC  eInsertRow(void);
   
     eEC  eProcessRecord(Formatters* pFormatters,
                         Stz* aRecord,
