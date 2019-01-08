@@ -184,6 +184,7 @@ bool Job_SubLoader::bBegin(void)
   // set the table and parentJob in the writeBehind Job
   JobWriteBehind::m_pTable = m_pJob_LoadTable->m_pTable;
   JobWriteBehind::m_pParentJob = (Job*)m_pJob_LoadTable;
+  JobWriteBehind::m_pFormatters = &m_pJob_LoadTable->m_xFormatters;
   
   return bOpened;
 }
@@ -224,8 +225,7 @@ bool Job_SubLoader::bChunk(void)
       return true;
     
     // process that record into write behind
-    eEC eError = eProcessRecord(pFormatters,
-                                aRecord, nRecordBytes, DS_LOAD);
+    eEC eError = eProcessRecord(aRecord, nRecordBytes, DS_LOAD);
     
     if (EC_NONE == eError) {
       m_xNode[i_Node].m_ziRowsProcessed.iInc();
@@ -260,8 +260,7 @@ void Job_SubLoader::vEnd(void)
   
 
   // handle any dangling buffers
-  vHandleDanglingBuffers(m_pSession, m_pJob_LoadTable->m_pTable,
-                         DS_LOAD, m_pJob_LoadTable->m_iJobId);
+  vHandleDanglingBuffers();
   
   i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
   

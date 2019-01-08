@@ -165,6 +165,7 @@ void Job_InsertRows::vBegin(void)
   // set the table and parentJob in the writeBehind Job
   JobWriteBehind::m_pTable = this->m_pTable;
   JobWriteBehind::m_pParentJob = (Job*)m_pJob_InsertTable;
+  JobWriteBehind::m_pFormatters = &m_xFormatters;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -174,10 +175,7 @@ void Job_InsertRows::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
   
-  // insertTable job is the parent
-  i8 iParentJobId = m_pJob_InsertTable->iJobId();
-  
-  vHandleDanglingBuffers(m_pSession, m_pTable, DS_INSERT, iParentJobId);
+  vHandleDanglingBuffers();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -189,8 +187,8 @@ bool Job_InsertRows::bFormatRow(Stz* aRawData, i8 iRawLength)
   
   bool bBlankLine;
   
-  bool bValid = JobWriteBehind::bFormatRow(
-                  m_pTable, &m_xFormatters, aRawData, iRawLength, bBlankLine);
+  bool bValid = JobWriteBehind::bFormatRow(&m_xFormatters,
+                                           aRawData, iRawLength, bBlankLine);
   
   return bValid;
 }

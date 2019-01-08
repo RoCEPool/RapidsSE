@@ -38,6 +38,8 @@ JobWriteBehind::JobWriteBehind(eDS eDataSource)
   m_pParentJob = nullptr;
   m_eDataSource = eDataSource;
   
+  m_pFormatters = nullptr;
+  
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pEntryBuffer[i_Partition]   = nullptr;
     m_nWriteBehindBuffers[i_Partition] = 0;
@@ -68,11 +70,11 @@ JobWriteBehind::~JobWriteBehind(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-bool JobWriteBehind::bFormatRow(Table* pTable, Formatters* pFormatters,
+bool JobWriteBehind::bFormatRow(Formatters* pFormatters,
                                  Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
   // format the raw data into a row
-  bool bValid = Row::bFormatRow(pTable->pColumnVec(),
+  bool bValid = Row::bFormatRow(m_pTable->pColumnVec(),
                                 pFormatters,
                                 aRecord, nBytes,
                                 m_aRecord.aStz(),
@@ -86,13 +88,12 @@ bool JobWriteBehind::bFormatRow(Table* pTable, Formatters* pFormatters,
 /*----------------------------------------------------------------------------*/
 /* handle dangling buffers                                                    */
 /*----------------------------------------------------------------------------*/
-void JobWriteBehind::vHandleDanglingBuffers(Interface::Session* pSession, Table* pTable,
-                                            eDS eDataSource, i8 iParentJobId)
+void JobWriteBehind::vHandleDanglingBuffers(void)
 {
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
     
     if ( ! m_pEntryBuffer[iPartition] )
-      vNewEntryBuffer(pTable, iPartition);
+      vNewEntryBuffer(m_pTable, iPartition);
     
     // get the entry buffer
     EntryBuffer* pEntryBuffer = m_pEntryBuffer[iPartition];
@@ -103,8 +104,8 @@ void JobWriteBehind::vHandleDanglingBuffers(Interface::Session* pSession, Table*
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // create a write buffer job for load
     Job_WriteBuffer::vSpawnJobWriteBuffer(
-                                          pSession, pTable->aTableName(), eDataSource,
-                                          pEntryBuffer, iParentJobId, iPartition,
+                                          m_pParentJob->m_pSession, m_pTable->aTableName(), m_eDataSource,
+                                          pEntryBuffer, m_pParentJob->iJobId(), iPartition,
                                           true, nWriteBehindBuffers);
   }
 }
@@ -112,7 +113,7 @@ void JobWriteBehind::vHandleDanglingBuffers(Interface::Session* pSession, Table*
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource, i8 iParentJobId)
+eEC JobWriteBehind::eInsertRow(void)
 {
   
   eEC eErrorCode = EC_NONE;
@@ -122,14 +123,14 @@ eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
-    i8 iPartition = pTable->iRowPartition(m_aRecord);
+    i8 iPartition = m_pTable->iRowPartition(m_aRecord);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check for working buffer
     if (! m_pEntryBuffer[iPartition]) {
       
       // create a new working buffer for this partition
-      vNewEntryBuffer(pTable, iPartition);
+      vNewEntryBuffer(m_pTable, iPartition);
       
       if (! m_pEntryBuffer[iPartition]) {
         vTrace("EntryBuffer allocation failed\n"_Stz);
@@ -167,8 +168,8 @@ eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn a write buffer job 
-    Job_WriteBuffer::vSpawnJobWriteBuffer(pSession, pTable->aTableName(), eDataSource,
-                                          pEntryBuffer, iParentJobId,
+    Job_WriteBuffer::vSpawnJobWriteBuffer(m_pParentJob->m_pSession, m_pTable->aTableName(), m_eDataSource,
+                                          pEntryBuffer, m_pParentJob->iJobId(),
                                           iPartition, false, 0);
   }
   
@@ -178,8 +179,7 @@ eEC JobWriteBehind::eInsertRow(Session* pSession, Table* pTable, eDS eDataSource
 /*----------------------------------------------------------------------------*/
 /* process record                                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eProcessRecord(Formatters* pFormatters,
-                                   Stz* aRecord,
+eEC JobWriteBehind::eProcessRecord(Stz* aRecord,
                                    i8 nBytes,
                                    eDS eDataSource)
 {
@@ -194,7 +194,7 @@ eEC JobWriteBehind::eProcessRecord(Formatters* pFormatters,
     return EC_MAX_ROW_LENGTH;
   }
 
-  bool bFormat = bFormatRow(m_pTable, pFormatters, aRecord, nBytes, bBlankLine);
+  bool bFormat = bFormatRow(m_pFormatters, aRecord, nBytes, bBlankLine);
   
   if (bBlankLine)
     return EC_BLANKLINE;
@@ -203,7 +203,7 @@ eEC JobWriteBehind::eProcessRecord(Formatters* pFormatters,
     return EC_INVALID_VALUE;
 
   // attempt to add record into a write-behind buffer
-  eEC eError = eInsertRow(m_pParentJob->m_pSession, m_pTable, eDataSource, m_pParentJob->iJobId());
+  eEC eError = eInsertRow();
 
   // was there an error ?
   if (eError != EC_NONE) {
