@@ -1025,13 +1025,13 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
   
   if (iAge > iMaxAge) {
     iMaxAge = iAge;
-    vTrace("Purge: max age now %llds\n"_Stz,iMaxAge);
+//    vTrace("Purge: max age now %llds\n"_Stz,iMaxAge);
   }
   
   i8 iLengthList = m_pRootBuffer->iLengthList();
   if (iLengthList > nMaxBuffers) {
     nMaxBuffers = iLengthList;
-    vTrace("Purge: max buffer chain now %lld buffers\n"_Stz,nMaxBuffers);
+    //vTrace("Purge: max buffer chain now %lld buffers\n"_Stz,nMaxBuffers);
   }
 
   

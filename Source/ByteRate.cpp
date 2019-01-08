@@ -72,7 +72,7 @@ void ByteRate::vAddBytes(i8 nBytes)
 
   m_nBytesSoFar += nBytes;
   
-  if (m_nBytesSoFar >= m_nNextReport)
+  if (m_iReportQuantum && m_nBytesSoFar >= m_nNextReport)
     vReportStatistics();
 }
 
@@ -181,6 +181,7 @@ void ByteRate::vReportStatistics(void)
   Magnitudes::vByteMag(iAvgBytesPerSec,2,sSecMag);
   Magnitudes::vByteMag(iAvgBytesPerDay,2,sDayMag);
 
+  m_nNextReport += m_iReportQuantum;
   vTrace("%s %s %llds: sum %s %s/ms %s/s %s/day\n"_Stz,
          
          oNow.sFormatted()->aChar(),
@@ -192,7 +193,6 @@ void ByteRate::vReportStatistics(void)
          sSecMag.aStz(),
          sDayMag.aStz());
   
-  m_nNextReport += m_iReportQuantum;
 }
 
 /*----------------------------------------------------------------------------*/

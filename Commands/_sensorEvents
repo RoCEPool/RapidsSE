@@ -2,6 +2,8 @@
 /* _sensorEvents - create sensor events table                                 */
 /*============================================================================*/
 
+startCluster;
+
 create table sensorEvents (
 	S_SENSOR        INTEGER NOT NULL,
 	S_TEMPERATURE   INTEGER NOT NULL,
@@ -9,6 +11,8 @@ create table sensorEvents (
   S_VOLUME        INTEGER NOT NULL,
 	S_COMMENT       VARCHAR(80)
 );
+
+//generate sensorEvents file "/rapids/sensorEvents.csv" 1000000 ;
 
 /*============================================================================*/
 /* end                                                                        */

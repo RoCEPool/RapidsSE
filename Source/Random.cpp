@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Random.cpp -- generate random number                                       */
+/* Random.cpp -- generate random number/string                                */
 /*============================================================================*/
 
 #include "System.h"
@@ -81,25 +81,21 @@ u8 Random::uRandom(u8 uLow, u8 uHigh)
 /*---------------------------------------------------------------------------*/
 /* sRandomString: generate a random string of given length                   */
 /*---------------------------------------------------------------------------*/
-s48K Random::sRandomString(i8 iLength) {
+void Random::vRandomString(StrVal& sStr, i8 iLength)
+{
+  static char caCharSet[68] =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-#?!";
+  // 0123456789012345678901234567890123456789012345678901234567890123456
+  // 0         1         2         3         4         5         6     6
   
-  s256 sCharSet =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-#?!"_Stz;
   
-  s48K sRandomString;
-  
-  ASSERT(iLength < static_cast<i8>(sizeof(s48K)));
-  
-  i8 iCharSetSize = sCharSet.iLength() - 1;
-  
+  sStr = ""_Stz;
   for (i8 i = 0; i < iLength; i++) {
-    i8 iKey = iRandom(iCharSetSize);
-    sRandomString.vAppend(sCharSet.aChar()[iKey]);
+    i8 i_Char = iRandom(67);
+    sStr.vAppend(caCharSet[i_Char]);
   }
   
-  sRandomString.vAppend('\0');
-
-  return sRandomString;
+  sStr.vAppend('\0');
 }
 
 /*----------------------------------------------------------------------------*/

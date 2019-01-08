@@ -266,9 +266,10 @@ bool Job_Ingest::bBegin(void)
   
   s256 sPrefix;
   
-  sPrefix.vSprint("  ingest (%lld subIngesters) : "_Stz,
-                  gpAttachMap->m_nSubIngesters);
-  
+  sPrefix.vSprint("  ingest : "_Stz);
+//  sPrefix.vSprint("  ingest (%lld subIngesters) : "_Stz,
+//                  gpAttachMap->m_nSubIngesters);
+
   if (m_pByteRate) {
     m_pByteRate->vSetReporting(sPrefix,C_1GB * 1);
     m_pByteRate->vBeginTiming();

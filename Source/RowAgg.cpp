@@ -221,16 +221,16 @@ void RowAgg::vDiscoverColumns(void)
     m_pAggColVec->vAdd(pColumn);
   }
   
-  i8 nAggColumns = m_pAggColVec->nItems();
-  for (i8 i_Col = 1; i_Col < nAggColumns; i_Col++) {
-    
-    Column* pColumn = m_pAggColVec->pGet(i_Col);
-   
-    vTrace("Column: %lld %s %s\n"_Stz,
-           pColumn->iColumnNo(),
-           pColumn->sColumnName().aChar(),
-           aCT[pColumn->eColumnType()]);
-  }
+//  i8 nAggColumns = m_pAggColVec->nItems();
+//  for (i8 i_Col = 1; i_Col < nAggColumns; i_Col++) {
+//    
+//    Column* pColumn = m_pAggColVec->pGet(i_Col);
+//   
+//    vTrace("Column: %lld %s %s\n"_Stz,
+//           pColumn->iColumnNo(),
+//           pColumn->sColumnName().aChar(),
+//           aCT[pColumn->eColumnType()]);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/

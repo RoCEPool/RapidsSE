@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Random.hpp -- random number generator                                      */
+/* Random.hpp -- random number/string generator                               */
 /*============================================================================*/
 #pragma once
 
@@ -16,10 +16,9 @@ namespace System
     static u8 uRandom(u8 uMax);
     static u8 uRandom(u8 uLow, u8 uHigh);
     
-    static s48K sRandomString(i8 iLength);
+    static void vRandomString(StrVal& sStr, i8 iLength);
   
     static i8 iLogLevel(i8 nLevels, i8 iFrequency);
-  
   };
 }
 

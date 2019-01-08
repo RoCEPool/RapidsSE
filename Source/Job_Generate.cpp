@@ -661,12 +661,28 @@ void Job_Generate::vCreateDataRecord(void)
   
   m_sRecord = ""_Stz;
   
-  vAppendLeads();
+  i8 iSensor      = Random::iRandom(1,10000);
+  i8 iTemperature = Random::iRandom(100,500);
+  i8 iPressure    = Random::iRandom(10,25);
+  i8 iVolume      = Random::iRandom(1,1000);
+
+  s256 sComment;
+  Random::vRandomString(sComment,78);
   
-  for (i8 i_CareCol = 0; i_CareCol < m_nCareColumns; i_CareCol++)
-    vAppendData(i_CareCol);
+  m_sRecord.vSprint("%lld,%lld,%lld,%lld,%s"_Stz,
+                    iSensor,
+                    iTemperature,
+                    iPressure,
+                    iVolume,
+                    sComment.aChar()
+                    );
   
-  vAppendTails();
+//  vAppendLeads();
+//
+//  for (i8 i_CareCol = 0; i_CareCol < m_nCareColumns; i_CareCol++)
+//    vAppendData(i_CareCol);
+//
+//  vAppendTails();
 }
 
 /*----------------------------------------------------------------------------*/

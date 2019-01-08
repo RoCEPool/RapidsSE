@@ -21,9 +21,9 @@
     I pJob_publish job_publish.spawnSub
   loop
 
-  "publish ack waiting" .
+  //"publish ack waiting" .
   task::wait
-  "publish acked" .
+  //"publish acked" .
 ;
 
 /*----------------------------------------------------------------------------*/

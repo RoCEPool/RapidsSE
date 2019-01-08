@@ -152,7 +152,7 @@ void KeyTest::vTest(void)
   
   // generate random keyVal's and add to keyVec
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
-    sKey = Random::sRandomString(7);
+    Random::vRandomString(sKey,7);
     
     Stz* ptr = sKey.aStz();
     
@@ -174,7 +174,7 @@ void KeyTest::vTest(void)
   }
 
   // generate a random key value to find
-  sKey = Random::sRandomString(7);
+  Random::vRandomString(sKey,7);
   Stz* ptr = sKey.aStz();
   vTrace("Find Key value < %s\n"_Stz, ptr);
   
@@ -211,7 +211,7 @@ void KeyTest::vTest(void)
   }
   
   // generate a random key value to find
-  sKey = Random::sRandomString(7);
+  Random::vRandomString(sKey,7);
   ptr = sKey.aStz();
   vTrace("Find Key value >= %s\n"_Stz, ptr);
   
@@ -400,7 +400,7 @@ void KeyTest::vTest(void)
       xKeyWrk.vAddDatum(xValWrk, pCol0);
       //xKeyWrk.vShow();
       
-      sKey = Random::sRandomString(7);
+      Random::vRandomString(sKey,7);
       Stz* ptr = sKey.aStz();
       xValWrk = ptr;
       pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
@@ -424,7 +424,7 @@ void KeyTest::vTest(void)
   xValWrk = (i8)2;
   xKeyWrk.vReset();
   xKeyWrk.vAddDatum(xValWrk, pCol0);
-  sKey = Random::sRandomString(7);
+  Random::vRandomString(sKey,7);
   ptr = sKey.aStz();
   xValWrk = ptr;
   pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
