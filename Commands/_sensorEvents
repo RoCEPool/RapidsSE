@@ -7,7 +7,7 @@ create table sensorEvents (
 	S_TEMPERATURE   INTEGER NOT NULL,
   S_PRESSURE      INTEGER NOT NULL,
   S_VOLUME        INTEGER NOT NULL,
-	S_COMMENT       VARCHAR(32)
+	S_COMMENT       VARCHAR(80)
 );
 
 /*============================================================================*/
