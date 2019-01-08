@@ -258,6 +258,58 @@ bool Dte::bExtract(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormat
 }
 
 /*----------------------------------------------------------------------------*/
+/* extract a date field from csv substr                           yyyy-mo-ddZ */
+/*----------------------------------------------------------------------------*/
+bool Dte::bExtractDefault(char** aaSrc, Stz* aDst, Column* pColumn, Formatters* pFormatters)
+{
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
+  Dte* aDte = (Dte*)aDst;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // head processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // null processing
+  
+  bool bValidNull = false;
+  if (DtmLib::bTestForNullDefault(aaSrc,pColumn,pFormatters,bValidNull)) {
+    if ( ! bValidNull )
+      return false;
+    aDte->vSetNull();
+    return true;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // date field processing
+  
+  i8 iYear, iMonth, iDay;
+  
+  if ( ! StrLib::bExtractDate2(aaSrc, iYear, iMonth, iDay,
+                               pFormatters->m_eDateComponent,
+                               pFormatters->m_cDateSeparator) )
+    return false;
+  
+  aDte->x.m_uYear   = iYear;
+  aDte->x.m_uMonth  = iMonth;
+  aDte->x.m_uDay    = iDay;
+  aDte->x.m_uSpare  = 0;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tail processing
+  
+  StrLib::vSkipSpaces(aaSrc);
+  
+  // should see a valid field end
+  if ( ! DtmLib::bValidFieldEndDefault(*aaSrc,pFormatters) )
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sprint dte datum                                                           */
 /*----------------------------------------------------------------------------*/
 void Dte::vSprint(Stz* aDst, Stz* aSrc)
