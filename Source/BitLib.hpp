@@ -4,6 +4,17 @@
 
 #pragma once
 
+const u1 C_1_BIT  = 1;
+const u1 C_2_BITS = 3;
+const u1 C_3_BITS = 7;
+const u1 C_4_BITS = 15;
+const u1 C_5_BITS = 31;
+const u1 C_6_BITS = 63;
+const u1 C_7_BITS = 127;
+const u1 C_8_BITS = 255;
+
+/*----------------------------------------------------------------------------*/
+
 namespace Base
 {
   class BitLib
