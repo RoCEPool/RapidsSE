@@ -33,6 +33,9 @@ print "---------------------------------------------------------------------";
 print "ingesting lineitem table...";
 print "---------------------------------------------------------------------";
 
+markjob _subpurger on;
+markjob;
+
 nowait purge lineitem 3;
 
 nowait publish lineitem "/tmp/lineitem.rowAgg" ;

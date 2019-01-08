@@ -15,7 +15,7 @@ JobClass xJobClass_SubPublish =
   CN_JOB_SUBPUBLISH,      // class enum
   JK_CHILD,               // job kind
   "table sub-publish"_Stz,// comment about the job
-  nullptr,                // the prompt command
+  "_SUBPUBLISH"_Stz,      // the prompt command
   nullptr,                // the second word
   "subPublish_run"_Stz,   // the _run task seed
   nullptr,                // the _req task seed
@@ -36,7 +36,7 @@ JobClass xJobClass_SubPublish =
   vJob_SubPublish_show,   // job show function
   
   // help and example
-  false,
+  true,
   "<none>"_Stz,
   "<none>"_Stz,
 
