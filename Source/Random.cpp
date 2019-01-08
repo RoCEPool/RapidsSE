@@ -145,14 +145,12 @@ void Random::vString(StrVal& sStr, i8 iLength)
   // 01234567890123456789012345678901234567890123456789012345678901234567
   // 0         1         2         3         4         5         6      6
   
-  sStr = ""_Stz;
-  for (i8 i = 0; i < iLength; i++) {
-    i8 i_Char = iInteger(68);
-    char cRandom = caCharSet[i_Char];
-    sStr.vAppend(cRandom);
-  }
+  char* z = sStr.aChar();
   
-  sStr.vAppend('\0');
+  for (i8 i = 0; i < iLength; i++)
+    *z++ = caCharSet[iInteger(68)];
+  
+  *z = '\0';
 }
 
 /*============================================================================*/
