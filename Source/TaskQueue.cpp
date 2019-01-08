@@ -223,15 +223,17 @@ void TaskQueue::vDump(eCN eClass, Object* pObject, Stz* aTab)
       s32 sDateTime;
       char* z = sDateTime.aChar();
       oDateTime.vAppendLocal(&z);
-      vTrace("Task %p %s wakeup %s\n"_Stz,
+      vTrace("Task %p %s %s wakeup %s\n"_Stz,
              pTask,
              aCN[pTask->pJob()->eClass()],
+             aTS[pTask->eState()],
              sDateTime.aChar());
    }
     else {
-      vTrace("Task %p %s order %lld\n"_Stz,
+      vTrace("Task %p %s %s order %lld\n"_Stz,
              pTask,
              aCN[pTask->pJob()->eClass()],
+             aTS[pTask->eState()],
              pTask->iQueueOrder());
     }
   }
