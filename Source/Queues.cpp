@@ -243,6 +243,7 @@ void Queues::vAddToExecutingSet_NL(Task* pTask)
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vAddToExecutingSet()"_Stz);
   
+  ASSERT(m_pExecutingSet->bIsLocked());
   m_pExecutingSet->vAddTask(pTask);
 }
 
@@ -262,6 +263,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vAddToReadyQueue()"_Stz);
   
+  ASSERT(m_pReadyQueue->bIsLocked());
   m_pReadyQueue->vAddTask(pTask);
 }
 
@@ -287,6 +289,7 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vAddToReadySlotQueue()"_Stz);
 
+  ASSERT(m_pReadySlotQueues[iSlot]->bIsLocked());
   m_pReadySlotQueues[iSlot]->vAddTask(pTask);
 }
 
@@ -309,6 +312,7 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vAddToSendQueue()"_Stz);
 
+  ASSERT(m_pReadySendQueues[iSendNode]->bIsLocked());
   m_pReadySendQueues[iSendNode]->vAddTask(pTask);
 }
 
@@ -326,6 +330,7 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("AddToSleepingQueue()"_Stz);
   
+  ASSERT(m_pSleepingQueue->bIsLocked());
   m_pSleepingQueue->vAddTask(pTask);
 }
 
@@ -352,7 +357,8 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vAddToWaitingSet()"_Stz);
   
-  // put task inyo the waiting queue
+  // put task into the waiting queue
+  ASSERT(m_pWaitingSet->bIsLocked());
   m_pWaitingSet->vAddTask(pTask);
   
   // drop task lock
@@ -816,6 +822,7 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
   }
   
   // peek at the first task in the sleeping queue
+  ASSERT(m_pSleepingQueue->bIsLocked());
   pTask = m_pSleepingQueue->pPeekTask();
   
   // check if peeked task's wakeup time is after now
@@ -834,6 +841,7 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
   // peeked task can be be woken up
   
   // pop the task off the sleeping queue
+  ASSERT(m_pSleepingQueue->bIsLocked());
   pTask = m_pSleepingQueue->pPopTask();
   
   // task no longer in any queue/set

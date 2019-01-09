@@ -233,6 +233,9 @@ void Thread::vLoop(void)
     // call the task
     vTaskCall();
     
+    if (m_npTask->pJob() && m_npTask->pJob()->m_bMark)
+      m_npTask->vWriteMark("Return from task call:"_Stz);
+    
     // handle thread level event
     Handlers::vThreadLoopHandler(&m_npTask);
   }

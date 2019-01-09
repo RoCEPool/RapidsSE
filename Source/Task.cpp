@@ -633,7 +633,7 @@ void Task::vRenderPortrait(void)
                         );
   }
   else if (QR_NONE != m_eQueue) {
-    m_sPortrait.vSprint("Task %p %s %s order %lld\n"_Stz,
+    m_sPortrait.vSprint("Task %p %s %s order %lld"_Stz,
                         this,
                         aCN[m_pJob->eClass()],
                         aTS[m_eState],
