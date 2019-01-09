@@ -13,7 +13,7 @@ namespace Steps
   class Step;
 }
 
-namespace Dictionaries
+namespace Forth
 {
   class Cell;
 }
@@ -25,7 +25,7 @@ namespace DBobjects
 
 //------------------------------------------------------------------------------
 
-namespace Dictionaries
+namespace Forth
 {
   static const i8 C_STACK_LENGTH = C_SIZE_LARGE_OBJECT - C_1KB;
   //static const i8 C_STACK_LENGTH = C_SIZE_SMALL_OBJECT;
@@ -66,7 +66,7 @@ namespace Dictionaries
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    bool bPop(Dictionaries::Cell*& pCell);
+    bool bPop(Forth::Cell*& pCell);
     bool bPop(eCN& eArg1);
     bool bPop(i8& iArg1);
     bool bPop(i8& iArg1, i8& iArg2);
@@ -98,7 +98,7 @@ namespace Dictionaries
     bool bPopAsInt_Quick(i8& iArg1);
     i8   iPop(void);
   
-    void vPushCell(Dictionaries::Cell* pCell);
+    void vPushCell(Forth::Cell* pCell);
     void vPushEntry(DBobjects::Entry* aEntry);
     void vPushInt(i8 iInt);
     void vPushObject(Object* pObject);

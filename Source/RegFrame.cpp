@@ -2,12 +2,12 @@
 /* RegFrame.cpp -- Register Frame                                             */
 /*============================================================================*/
 
-#include "Tasks.h"
+#include "Forth.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RegFrame* Dictionaries::_pRegFrame(void* aAddr)
+RegFrame* Forth::_pRegFrame(void* aAddr)
 {
   RegFrame* pRegFrame = reinterpret_cast<RegFrame*>(aAddr);
   

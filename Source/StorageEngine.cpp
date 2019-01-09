@@ -29,7 +29,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Measurement::vCheckAssumptions();
   Parsing::vCheckAssumptions();
   Transactions::vCheckAssumptions();
-  Dictionaries::vCheckAssumptions();
+  Forth::vCheckAssumptions();
   DBobjects::vCheckAssumptions();
   Chunks::vCheckAssumptions();
   Plans::vCheckAssumptions();

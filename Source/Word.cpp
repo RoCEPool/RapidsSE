@@ -2,9 +2,7 @@
 /* Word.cpp -- Word in Dictionary                                             */
 /*============================================================================*/
 
-#include "Dictionaries.h"
-
-#include "Tasks.h" // needed for Task::vEnter
+#include "Forth.h"
 
 #include "StorageEngine.h"
 
@@ -13,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Word* Dictionaries::_pWord(void* aAddr)
+Word* Forth::_pWord(void* aAddr)
 {
   Word* pWord = reinterpret_cast<Word*>(aAddr);
   

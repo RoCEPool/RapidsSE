@@ -13,7 +13,7 @@ namespace Steps
   class Step
   {
   friend class Tasks::Task;
-  friend class Dictionaries::Word;
+  friend class Forth::Word;
   
   public:
     static void vAddSteps(void);

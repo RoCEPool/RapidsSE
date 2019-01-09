@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Dictionaries
+namespace Forth
 {
   static const i8 C_DIC_STACK = 16;
   

@@ -2,7 +2,7 @@
 /* DicStack.cpp - dictionary stack                                            */
 /*============================================================================*/
 
-#include "Dictionaries.h"
+#include "Forth.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

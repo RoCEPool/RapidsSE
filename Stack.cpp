@@ -2,9 +2,7 @@
 /* Stack.cpp -- Push/Pop Stack of Values                                      */
 /*============================================================================*/
 
-#include "Structures.h"
-
-#include "Dictionaries.h"
+#include "Forth.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -172,7 +170,7 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 /*----------------------------------------------------------------------------*/
 /* pop cell from data stack                                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Dictionaries::Cell*& pCell)
+bool Stack::bPop(Forth::Cell*& pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

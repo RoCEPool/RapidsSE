@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Dictionaries
+namespace Forth
 {
   class Word;
   

@@ -9,7 +9,7 @@ namespace Tasks {
   typedef MP<Task,CN_TASK> MP_Task;
 }
 
-namespace Dictionaries {
+namespace Forth {
   class Cell;
   class Word;
   class WrdVal;

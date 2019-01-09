@@ -2,12 +2,12 @@
 /* Dic.cpp - dictionary of words                                              */
 /*============================================================================*/
 
-#include "Dictionaries.h"
+#include "Forth.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Dic* Dictionaries::_pDic(void* aAddr)
+Dic* Forth::_pDic(void* aAddr)
 {
   Dic* pDic = reinterpret_cast<Dic*>(aAddr);
   

@@ -8,7 +8,7 @@ namespace StorageEngine
   class AttachMap;
 }
 
-namespace Dictionaries
+namespace Forth
 {
   enum eWT // word type
   {

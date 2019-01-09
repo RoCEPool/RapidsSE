@@ -5,7 +5,6 @@
 
 namespace DBobjects
 {
-  
   class Slots : public Object
   {
   private:

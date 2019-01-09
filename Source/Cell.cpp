@@ -2,12 +2,12 @@
 /* Cell.hpp - a cell in the body of a word                                    */
 /*============================================================================*/
 
-#include "Dictionaries.h"
+#include "Forth.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Cell* Dictionaries::_pCell(void* aAddr)
+Cell* Forth::_pCell(void* aAddr)
 {
   Cell* pCell = reinterpret_cast<Cell*>(aAddr);
   

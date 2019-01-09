@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Dictionaries
+namespace Forth
 {
   class Cell;
 }
@@ -13,17 +13,17 @@ namespace Values
   class IpVal : public Value
   {
   private:
-    Dictionaries::Cell* m_pPtr;
+    Forth::Cell* m_pPtr;
         
   public:
     void* operator new(size_t);
     
     IpVal(void);
     
-    void operator =(Dictionaries::Cell* pPtr);
+    void operator =(Forth::Cell* pPtr);
     
     i8      nSize(void) const;
-    Dictionaries::Cell* pIpPtr(void) const;
+    Forth::Cell* pIpPtr(void) const;
     
     void vToString(Stz* aWorkspace);
   };
