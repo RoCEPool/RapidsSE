@@ -54,7 +54,6 @@ TaskList::TaskList(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
   m_oLock.vInitLock(LK_TASK_QUEUE);
-  //m_pTaskSkipList = new SkipList(true, fCompare);
   
   m_pListTasks = new ListNL_t<Task>;
   

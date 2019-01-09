@@ -24,19 +24,20 @@ namespace Tasks
     void* operator new(size_t, TaskQueue* pTaskQueue);
     void  operator delete(void*);
     
-    TaskQueue(cmpFun fCompare);
+    TaskQueue(bool bUniqueKey, cmpFun fCompare);
     ~TaskQueue(void) noexcept(false);
     
-    void   vAddTask(Task* pTask);
-    void   vDropLock(void);
+    void  vAddTask(Task* pTask);
+    void  vAssertItems(i8 nItems);
+    void  vDropLock(void);
     void  vContentDump(void);
-    void   vGrabLock(void);
-    bool   bGrabLock(void);
-    bool   bIsLocked(void);
-    Task*  pPeekTask(void);
-    Task*  pPopTask(void);
-    void   vRemoveTask(Task* pTask);
-    i8     nTasks(void);
+    void  vGrabLock(void);
+    bool  bGrabLock(void);
+    bool  bIsLocked(void);
+    Task* pPeekTask(void);
+    Task* pPopTask(void);
+    void  vRemoveTask(Task* pTask);
+    i8    nTasks(void);
   
     Footer* aFooter(void);
   };

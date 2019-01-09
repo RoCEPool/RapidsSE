@@ -54,7 +54,7 @@ Queues::Queues(void)
   m_pThreadVector  = new ThreadVector;
   m_ziQueueOrder   = 0;
   
-  m_pSleepingQueue = new TaskQueue(bTaskCompareWakeupTime);
+  m_pSleepingQueue = new TaskQueue(C_NON_UNQIUE_KEY,bTaskCompareWakeupTime);
   
   m_pReadyQueue    = new TaskList;
   
@@ -331,7 +331,11 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
     pTask->vWriteMark("AddToSleepingQueue()"_Stz);
   
   ASSERT(m_pSleepingQueue->bIsLocked());
+  
+  i8 nPriorItems = m_pSleepingQueue->nTasks();
+  m_pSleepingQueue->vAssertItems(nPriorItems);
   m_pSleepingQueue->vAddTask(pTask);
+  m_pSleepingQueue->vAssertItems(nPriorItems + 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -842,8 +846,11 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
   
   // pop the task off the sleeping queue
   ASSERT(m_pSleepingQueue->bIsLocked());
+  i8 nPriorItems = m_pSleepingQueue->nTasks();
+  m_pSleepingQueue->vAssertItems(nPriorItems);
   pTask = m_pSleepingQueue->pPopTask();
-  
+  m_pSleepingQueue->vAssertItems(nPriorItems - 1);
+
   // task no longer in any queue/set
   pTask->vQueue(QR_NONE);
   

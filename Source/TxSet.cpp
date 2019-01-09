@@ -89,8 +89,8 @@ TxSet::TxSet(i8 iNodeNo)
   m_oLock.vInitLock(LK_TX_SET);
   m_iNodeNo = iNodeNo;
   m_iNextTxId = iNodeNo << 48;
-  m_pLocalTxList = new SkipList(true,bTxSetCompareLocal);
-  m_pDistTxList  = new SkipList(true,bTxSetCompareDist);
+  m_pLocalTxList = new SkipList(C_UNQIUE_KEY,bTxSetCompareLocal);
+  m_pDistTxList  = new SkipList(C_UNQIUE_KEY,bTxSetCompareDist);
   
   _checkInitialised_(CN_TXSET);
   

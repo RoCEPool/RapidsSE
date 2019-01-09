@@ -7,6 +7,9 @@ namespace Structures
 {
   typedef bool (*cmpFun)(void* pSearchEntry, void* pListEntry, bool& bMatch);
   
+  static const bool C_UNQIUE_KEY     = true;
+  static const bool C_NON_UNQIUE_KEY = false;
+  
   class SkipList : public Object
   {
   public:
@@ -40,6 +43,7 @@ namespace Structures
     SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
     SkipNode* pNth(i8 iNth);
     i8    nObjects(void);
+    i8    nRecount(void);
     bool  bRemove(void* pObject);
   
   private:

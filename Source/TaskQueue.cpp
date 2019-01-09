@@ -49,13 +49,13 @@ void TaskQueue::operator delete(void* pTaskQueueAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TaskQueue::TaskQueue(cmpFun fCompare)
+TaskQueue::TaskQueue(bool bUniqueKey, cmpFun fCompare)
 : Object(CN_TASKQUEUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   m_oLock.vInitLock(LK_TASK_QUEUE);
-  m_pTaskSkipList = new SkipList(true, fCompare);
+  m_pTaskSkipList = new SkipList(bUniqueKey, fCompare);
   
   _checkInitialised_(CN_TASKQUEUE);
 
@@ -83,7 +83,22 @@ void TaskQueue::vAddTask(Task* pTask)
   
   ASSERT(m_oLock.bIsLocked());
 
-  m_pTaskSkipList->bInsert(pTask);
+  bool bInserted = m_pTaskSkipList->bInsert(pTask);
+  ASSERT(bInserted);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert number of items in task queue                                       */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vAssertItems(i8 nItems)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
+  
+  ASSERT(m_oLock.bIsLocked());
+  
+  ASSERT(nItems == m_pTaskSkipList->nObjects());
+  
+  ASSERT(nItems == m_pTaskSkipList->nRecount());
 }
 
 /*----------------------------------------------------------------------------*/

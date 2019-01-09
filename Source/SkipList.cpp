@@ -279,6 +279,24 @@ i8 SkipList::nObjects(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* recount number of objects in list                                          */
+/*----------------------------------------------------------------------------*/
+i8 SkipList::nRecount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
+  i8 nCount = 0;
+  
+  for (SkipNode* pNode = m_pHead->m_pRight[0];
+       pNode;
+       pNode = pNode->m_pRight[0])
+    nCount++;
+  
+  ASSERT(nCount == m_nObjects);
+  return nCount;
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove object from list                                                    */
 /*----------------------------------------------------------------------------*/
 bool SkipList::bRemove(void* pObjectRemove)
@@ -520,7 +538,7 @@ void Structures::vSkipListTest(void)
   vTrace("SkipList Tests\n"_Stz);
   vTrace("\n"_Stz);
 
-  SkipList* pSkipList = new SkipList(true,bI8Compare);
+  SkipList* pSkipList = new SkipList(C_UNQIUE_KEY,bI8Compare);
   
   pSkipList->bInsert((void*)3); vSkipListDump(pSkipList);
   pSkipList->bInsert((void*)1); vSkipListDump(pSkipList);

@@ -52,7 +52,7 @@ Jobs::Jobs(cmpFun fCompare, eJL eJobsList)
   m_eJobsList = eJobsList;
   m_oLock.vInitLock(LK_JOBS);
   m_iNextJobId = gpAttachMap->m_pGrid->iThisNode() << 48;
-  m_pJobsSkipList = new SkipList(true, fCompare);
+  m_pJobsSkipList = new SkipList(C_UNQIUE_KEY, fCompare);
   
   _checkInitialised_(CN_JOBS);
   
