@@ -24,6 +24,66 @@ Value::Value(eCN eClass)
   _checkInitialisedSize_(sizeof(Value));
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get size (in bytes) of value                                               */
+/*----------------------------------------------------------------------------*/
+i8 Value::nSize(void)
+{
+  i8 nBytes = 0;
+  
+  eCN eClass = this->eClass();
+  
+  switch (eClass) {
+      
+    case CN_BINVAL: {
+      BinVal* pBinVal = _pBinVal(this);
+      nBytes = pBinVal->nSize();
+      break;
+    }
+      
+    case CN_INTVAL: {
+      IntVal* pIntVal = _pIntVal(this);
+      nBytes = pIntVal->nSize();
+      break;
+    }
+      
+    case CN_IPVAL: {
+      IpVal* pIpVal = _pIpVal(this);
+      nBytes = pIpVal->nSize();
+      break;
+    }
+      
+    case CN_PTRVAL: {
+      PtrVal* pPtrVal = _pPtrVal(this);
+      nBytes = pPtrVal->nSize();
+      break;
+    }
+      
+    case CN_STRVAL: {
+      StrVal* pStrVal = _pStrVal(this);
+      nBytes = pStrVal->nSize();
+      break;
+    }
+      
+    case CN_VALSET: {
+      ValSet* pValSet = _pValSet(this);
+      nBytes = pValSet->nSize();
+      break;
+    }
+      
+    default:
+      vTrace("Value::nSize -- invalid eClass %lld"_Stz,eClass);
+      NEVER_REACH;
+      break;
+  }
+  
+  return nBytes;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

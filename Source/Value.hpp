@@ -30,7 +30,9 @@ namespace Values
   public:
     void* operator new(size_t);
     
-    Value(eCN eClass);        
+    Value(eCN eClass);
+  
+    i8 nSize(void);
   };
 }
 
