@@ -84,6 +84,64 @@ i8 Value::nSize(void)
   return nBytes;
 }
 
+/*----------------------------------------------------------------------------*/
+/* convert to string                                                          */
+/*----------------------------------------------------------------------------*/
+void Value::vToString(Stz* aString)
+{
+  eCN eClass = this->eClass();
+  
+  switch (eClass) {
+      
+    case CN_BINVAL: {
+      BinVal* pBinVal = _pBinVal(this);
+      pBinVal->vToString(aString);
+      break;
+    }
+      
+    case CN_INTVAL: {
+      IntVal* pIntVal = _pIntVal(this);
+      pIntVal->vToString(aString);
+      break;
+    }
+      
+    case CN_IPVAL: {
+      IpVal* pIpVal = _pIpVal(this);
+      pIpVal->vToString(aString);
+      break;
+    }
+      
+    case CN_PTRVAL: {
+      PtrVal* pPtrVal = _pPtrVal(this);
+      pPtrVal->vToString(aString);
+      break;
+    }
+      
+    case CN_STRVAL: {
+      StrVal* pStrVal = _pStrVal(this);
+      pStrVal->vToString(aString);
+      break;
+    }
+      
+    case CN_VALSET: {
+      ValSet* pValSet = _pValSet(this);
+      pValSet->vToString(aString);
+      break;
+    }
+      
+    case CN_VALWRK: {
+      ValWrk* pValWrk = _pValWrk(this);
+      pValWrk->vToString(aString);
+      break;
+    }
+      
+    default:
+      vTrace("Value::vToString -- invalid eClass %lld"_Stz,eClass);
+      NEVER_REACH;
+      break;
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

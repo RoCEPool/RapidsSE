@@ -32,7 +32,8 @@ namespace Values
     
     Value(eCN eClass);
   
-    i8 nSize(void);
+    i8   nSize(void);
+    void vToString(Stz* aString);
   };
 }
 
