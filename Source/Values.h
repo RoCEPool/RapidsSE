@@ -38,8 +38,6 @@ using namespace Values;
 
 #include "ValSet.hpp"
 
-#include "ValLib.hpp"
-
 typedef StrVar<32>     s32;
 typedef StrVar<256>    s256;
 typedef StrVar<C_4K>   s4K;   // note this is 4K not 48KB
