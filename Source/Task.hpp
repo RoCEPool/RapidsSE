@@ -156,6 +156,8 @@ namespace Tasks
     void vPushStr(s48K& sStr);
     eQR  eQueue(void);
     void vQueue(eQR eQueue);
+    void vQueueOrder(i8 iTaskOrder);
+    i8   iQueueOrder(void);
     void vRefindJobClass(void);
     void vRenderPortrait(void);
     void vRetry(void);
@@ -171,8 +173,6 @@ namespace Tasks
     eTS  eState(void);
     void vState(eTS eState);
     void vTaskLoop(void);
-    void vQueueOrder(i8 iTaskOrder);
-    i8   iQueueOrder(void);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);

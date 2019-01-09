@@ -425,6 +425,48 @@ void Task::vNewStacks(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get partiton this tasks nelongs to                                         */
+/*----------------------------------------------------------------------------*/
+i8 Task::iPartition(void)
+{
+  return m_iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace performance point                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vPerformancePoint(Stz* aWordName, Stz* aPointNote)
+{
+  if ( ! m_pSession ) {
+    vWarn("No session for Performance Point: %s %s\n"_Stz,aWordName,aPointNote);
+    return;
+  }
+  
+  PerformanceTrace* pPerformanceTrace = m_pSession->pPerformanceTrace();
+  
+  if ( ! pPerformanceTrace ) {
+    pPerformanceTrace = new PerformanceTrace;
+    m_pSession->vPerformanceTrace(pPerformanceTrace);
+  }
+  
+  pPerformanceTrace->vAdd(aWordName,aPointNote);
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace performance print                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vPerformancePrint(void)
+{
+  PerformanceTrace* pPerformanceTrace = m_pSession->pPerformanceTrace();
+  if ( ! pPerformanceTrace )
+    return;
+  
+  pPerformanceTrace->vPrint();
+  
+  pPerformanceTrace->vReset();
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop int                                                                    */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopInt(i8& iInt)
@@ -461,6 +503,14 @@ bool Task::bPopStr(s48K& sStr)
     return false;
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace performance print                                                    */
+/*----------------------------------------------------------------------------*/
+s256& Task::sPortrait(void)
+{
+  return m_sPortrait;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -523,6 +573,26 @@ void Task::vQueue(eQR eQueue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_eQueue = eQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get task order no                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Task::iQueueOrder(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_iQueueOrder;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set task order no                                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vQueueOrder(i8 iQueueOrder)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_iQueueOrder = iQueueOrder;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -880,76 +950,6 @@ void Task::vTraceStep(Stz* aStepNm)
   s48K sStackContents;
   vStackContents(m_pDataStack, sStackContents);
   vTrace("%s\n"_Stz,sStackContents.aChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partiton this tasks nelongs to                                         */
-/*----------------------------------------------------------------------------*/
-i8 Task::iPartition(void)
-{
-  return m_iPartition;
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace performance point                                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vPerformancePoint(Stz* aWordName, Stz* aPointNote)
-{
-  if ( ! m_pSession ) {
-    vWarn("No session for Performance Point: %s %s\n"_Stz,aWordName,aPointNote);
-    return;
-  }
-  
-  PerformanceTrace* pPerformanceTrace = m_pSession->pPerformanceTrace();
-  
-  if ( ! pPerformanceTrace ) {
-    pPerformanceTrace = new PerformanceTrace;
-    m_pSession->vPerformanceTrace(pPerformanceTrace);
-  }
-  
-  pPerformanceTrace->vAdd(aWordName,aPointNote);
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace performance print                                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vPerformancePrint(void)
-{
-  PerformanceTrace* pPerformanceTrace = m_pSession->pPerformanceTrace();
-  if ( ! pPerformanceTrace )
-    return;
-  
-  pPerformanceTrace->vPrint();
-  
-  pPerformanceTrace->vReset();
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace performance print                                                    */
-/*----------------------------------------------------------------------------*/
-s256& Task::sPortrait(void)
-{
-  return m_sPortrait;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get task order no                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Task::iQueueOrder(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_iQueueOrder;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set task order no                                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vQueueOrder(i8 iQueueOrder)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_iQueueOrder = iQueueOrder;
 }
 
 /*----------------------------------------------------------------------------*/
