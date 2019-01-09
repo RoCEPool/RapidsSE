@@ -1521,23 +1521,23 @@ void Step::vJobWaitParticipant(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pJobObject) )
     THROW_INVALID_DSTACK("job::vJobWaitParticipant"_Stz);
   
-  Job* pCallingJob = _pJob(pJobObject);
+  //Job* pCallingJob = _pJob(pJobObject);
   
-//  Job__Find* pFindJob = new Job__Find;
-//  pFindJob->m_iJobId = iJobId;
-//
-//  Job* pJobFound = nullptr;
-//
-//  while ( ! pJobFound ) {
-//    gpAttachMap->m_pParticipatingJobs->vGrabLock();
-//    pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
-//    gpAttachMap->m_pParticipatingJobs->vDropLock();
-//  }
-//
-//  delete pFindJob;
+  Job__Find* pFindJob = new Job__Find;
+  pFindJob->m_iJobId = iJobId;
+
+  Job* pJobFound = nullptr;
+
+  while ( ! pJobFound ) {
+    gpAttachMap->m_pParticipatingJobs->vGrabLock();
+    pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(pFindJob);
+    gpAttachMap->m_pParticipatingJobs->vDropLock();
+  }
+
+  delete pFindJob;
   
-  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(iJobId);
-  RASSERT(pJobFound);
+//  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(iJobId);
+//  RASSERT(pJobFound);
   
   mpTask->m_pDataStack->vPushObject(pJobFound);
   

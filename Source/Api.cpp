@@ -79,10 +79,10 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     // validate the job
     VALIDATE_JOB("b"_Stz);
     
-    // get the insertRow job
+    // get the insertRows job
     Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pJobPtr);
     
-    // get the insertTable job from the insertRow job
+    // get the insertTable job from the insertRows job
     Job_InsertTable* pJob_InsertTable = pJob_InsertRows->m_pJob_InsertTable;
     
     // push the InsertTable job onto the jobstack
