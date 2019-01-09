@@ -12,7 +12,7 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 /* ack task handler                                                           */
 /*----------------------------------------------------------------------------*/
-void Handlers::vAckTaskHandler(Task* pTaskBeingAcked, Task* pTaskAcking)
+void Handlers::vAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 {
   //
   // this handler is called from Task::vTaskAck()
@@ -63,7 +63,7 @@ void Handlers::vAckTaskHandler(Task* pTaskBeingAcked, Task* pTaskAcking)
 /*----------------------------------------------------------------------------*/
 /* spawned handler                                                            */
 /*----------------------------------------------------------------------------*/
-void Handlers::vSpawnedTaskHandler(Task* pTask)
+void Handlers::vSpawnedTask(Task* pTask)
 {
   //
   // this handler is called from session::bSpawnJob()
@@ -78,7 +78,7 @@ void Handlers::vSpawnedTaskHandler(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* thread loop handler                                                        */
 /*----------------------------------------------------------------------------*/
-void Handlers::vThreadLoopHandler(NP_Task* pNpTask)
+void Handlers::vThreadLoop(NP_Task* pNpTask)
 {
   //
   // this handler is called from Thread::vLoop()

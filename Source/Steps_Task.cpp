@@ -54,7 +54,7 @@ void Step::vTaskAck(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.ack"_Stz);
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
-  Handlers::vAckTaskHandler(pTaskBeingAcked,*mpTask);
+  Handlers::vAckTask(pTaskBeingAcked,*mpTask);
       
   EXIT();
 }

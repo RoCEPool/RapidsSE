@@ -1349,7 +1349,7 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession)
   
   pNewTask->vSession(pSession);
   
-  Handlers::vSpawnedTaskHandler(pNewTask);
+  Handlers::vSpawnedTask(pNewTask);
   
   return true;
 }

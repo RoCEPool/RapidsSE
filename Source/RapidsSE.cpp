@@ -591,8 +591,7 @@ void RapidsSE::vSpawnJobStart(void)
   
   Task* pStartTask = new Task(pJob_Start);
   
-  
-  Handlers::vSpawnedTaskHandler(pStartTask);
+  Handlers::vSpawnedTask(pStartTask);
 }
 
 /*----------------------------------------------------------------------------*/

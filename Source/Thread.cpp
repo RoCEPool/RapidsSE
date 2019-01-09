@@ -237,7 +237,7 @@ void Thread::vLoop(void)
       m_npTask->vWriteMark("Return from task call:"_Stz);
     
     // handle thread level event
-    Handlers::vThreadLoopHandler(&m_npTask);
+    Handlers::vThreadLoop(&m_npTask);
   }
   
   NEVER_REACH;
