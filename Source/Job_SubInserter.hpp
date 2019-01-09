@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_InsertRow.hpp -- Insert Row Job                                        */
+/* Job_SubInserter.hpp -- Sub Insert Row Job                                  */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@ namespace JobModel
   class Job_InsertTable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_InsertRows : public Job,
+  class Job_SubInserter : public Job,
                          public JobWriteBehind
   {
   public:
@@ -23,8 +23,8 @@ namespace JobModel
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
   
-    Job_InsertRows(Interface::Session* pSession);
-    ~Job_InsertRows(void) noexcept(false);
+    Job_SubInserter(Interface::Session* pSession);
+    ~Job_SubInserter(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
@@ -45,15 +45,15 @@ namespace JobModel
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  Job_InsertRows* _pJob_InsertRows(void* aAddr);
+  Job_SubInserter* _pJob_SubInserter(void* aAddr);
   
-  Job* pJob_InsertRows_pre(Interface::Session* pSession);
-  void vJob_InsertRows_post(Interface::Session* pSession, Job* pJob);
-  Job* pJob_InsertRows_new(Job* pArg);
-  void vJob_InsertRows_delete(Interface::Session* pSession, Job* pJob);
-  void vJob_InsertRows_show(Job* pJob);
+  Job* pJob_SubInserter_pre(Interface::Session* pSession);
+  void vJob_SubInserter_post(Interface::Session* pSession, Job* pJob);
+  Job* pJob_SubInserter_new(Job* pArg);
+  void vJob_SubInserter_delete(Interface::Session* pSession, Job* pJob);
+  void vJob_SubInserter_show(Job* pJob);
   
-  JobClass* pJob_InsertRows_class(pFUN** aaFun);
+  JobClass* pJob_SubInserter_class(pFUN** aaFun);
 }
 
 /*============================================================================*/

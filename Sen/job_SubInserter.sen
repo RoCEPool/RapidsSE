@@ -1,60 +1,60 @@
 /*============================================================================*/
-/* job_InsertRows.sen -- Job Insert Rows                                      */
+/* Job_SubInserter.sen -- Job Insert Rows                                      */
 /*============================================================================*/
 
-" job_InsertRows.sen" .verbose
+" Job_SubInserter.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* job_InsertRow request (on originating node)                                */
 /*----------------------------------------------------------------------------*/
-: InsertRows_req (  -- <R> )
+: SubInserter_req (  -- <R> )
 
   >>am <SEED_REQ>
 
   0 locals| pThisTask |
-  0 0 0 locals| pJob_InsertRows sTableNm pTable |
+  0 0 0 locals| pJob_SubInserter sTableNm pTable |
 
-  tp: InsertRow_req
+  tp: SubInserter_req
 
   // get the task
   task::this to pThisTask
 
   // get the job from the task
-  pThisTask task.job@ to pJob_InsertRows
-  //pJob_InsertRows pThisTask "InsertRow_req task: %v job_InsertRow %v" fmt.print
+  pThisTask task.job@ to pJob_SubInserter
+  //pJob_SubInserter pThisTask "InsertRow_req task: %v job_InsertRow %v" fmt.print
 
   // distribute the job
   //Job_InsertRow job.distribute
 
-  pJob_InsertRows job.objectName@ to sTableNm
+  pJob_SubInserter job.objectName@ to sTableNm
 
   // push table dictionary
-  pJob_InsertRows getPath dicStack.set
+  pJob_SubInserter getPath dicStack.set
   sTableNm pushTable assert
   //pathDump
 
   sTableNm find execute locals| pTable |
 
-  pTable pJob_InsertRows job_insertRows.begin
+  pTable pJob_SubInserter Job_SubInserter.begin
 
   // add job to originator jobs
-  //pJob_InsertRows job.addOriginator
+  //pJob_SubInserter job.addOriginator
 
   <<am <DONE_REQ>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_InsertRows job check resources                                 */
+/* execute Job_SubInserter job check resources                                 */
 /*----------------------------------------------------------------------------*/
-: insertRows.checkResources ( pJob_InsertRows -- )
+: SubInserter.checkResources ( pJob_SubInserter -- )
 
   >>am <Check_Resources>
 
-  params| pJob_InsertRows  |
+  params| pJob_SubInserter  |
 
-  pJob_InsertRows job.objectName@ locals| sTableNm |
+  pJob_SubInserter job.objectName@ locals| sTableNm |
 
-  tp: insertRows.checkResources
+  tp: SubInserter.checkResources
   //checkResources received" .
 
   //----------------------------------------------------------------------------
@@ -65,11 +65,11 @@
   // path checks
 
   // set dictionary stack
-  pJob_InsertRows getPath dicStack.set
+  pJob_SubInserter getPath dicStack.set
   //pathDump
 
   // there should be a table folder
-  sTableNm checkIsTableFolder not if pJob_InsertRows <ERROR_JOB> !!am exit then
+  sTableNm checkIsTableFolder not if pJob_SubInserter <ERROR_JOB> !!am exit then
   //sTableNm "In table folder: %v" fmt.print
 
   // push table dictionary
@@ -77,7 +77,7 @@
   //pathDump
 
   // check it is a table
-  sTableNm checkIsTable not if popTable pJob_InsertRows <ERROR_JOB> !!am exit then
+  sTableNm checkIsTable not if popTable pJob_SubInserter <ERROR_JOB> !!am exit then
   drop
 
   // pop table dictionary
@@ -87,21 +87,21 @@
   //----------------------------------------------------------------------------
   // check if we have enough buffers
 
-  node::checkEnoughBuffers not if pJob_InsertRows <ERROR_JOB> !!am exit then
+  node::checkEnoughBuffers not if pJob_SubInserter <ERROR_JOB> !!am exit then
 
   <<am <Resources_Checked>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute Job_InsertRows job release resources                               */
+/* execute Job_SubInserter job release resources                               */
 /*----------------------------------------------------------------------------*/
-: insertRows.releaseResources ( pJob_InsertRows -- )
+: SubInserter.releaseResources ( pJob_SubInserter -- )
 
   >>am <Release_Resources>
 
-  params| pJob_InsertRows  |
+  params| pJob_SubInserter  |
 
-  tp: insertRows.releaseResources
+  tp: SubInserter.releaseResources
   //releaseResources received" .
 
   <<am <Resources_Released>

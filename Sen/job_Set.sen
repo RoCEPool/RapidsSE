@@ -46,7 +46,6 @@
 
 "job_Ingest.sen" include
 "job_InsertRow.sen" include
-"job_InsertRows.sen" include
 "job_InsertTable.sen" include
 
 "Job_Lf.sen" include
@@ -83,6 +82,7 @@
 "job_Status.sen" include
 "job_SubFetch.sen" include
 "job_SubIngester.sen" include
+"Job_SubInserter.sen" include
 "job_subPublish.sen" include
 "job_subPurger.sen" include
 "job_SubLoader.sen" include

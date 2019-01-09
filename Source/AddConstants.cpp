@@ -227,7 +227,6 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_EXPORT"_Stz,         CN_JOB_EXPORT);
   /*    */ vAddConstant("CN_JOB_FETCHROWS"_Stz,      CN_JOB_FETCHROWS);
   /*    */ vAddConstant("CN_JOB_INSERTROW"_Stz,      CN_JOB_INSERTROW);
-  /*    */ vAddConstant("CN_JOB_INSERTROWS"_Stz,     CN_JOB_INSERTROWS);
   /*    */ vAddConstant("CN_JOB_INSERTTABLE"_Stz,    CN_JOB_INSERTTABLE);
   /*    */ vAddConstant("CN_JOB_LF"_Stz,             CN_JOB_LF);
   /*    */ vAddConstant("CN_JOB_LISTCATALOGS"_Stz,   CN_JOB_LISTCATALOGS);
@@ -261,6 +260,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_STATUS"_Stz,         CN_JOB_STATUS);
   /*    */ vAddConstant("CN_JOB_SUBFETCH"_Stz,       CN_JOB_SUBFETCH);
   /*    */ vAddConstant("CN_JOB_SUBINGESTER"_Stz,    CN_JOB_SUBINGESTER);
+  /*    */ vAddConstant("CN_JOB_SUBINSERTER"_Stz,    CN_JOB_SUBINSERTER);
   /*    */ vAddConstant("CN_JOB_SUBLOADER"_Stz,      CN_JOB_SUBLOADER);
   /*    */ vAddConstant("CN_JOB_SUBPUBLISH"_Stz,     CN_JOB_SUBPUBLISH);
   /*    */ vAddConstant("CN_JOB_SUBPURGER"_Stz,      CN_JOB_SUBPURGER);

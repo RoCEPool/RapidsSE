@@ -48,7 +48,7 @@ JobClass xJobClass_InsertRow =
 /*----------------------------------------------------------------------------*/
 JobClass* JobModel::pJob_InsertRow_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_InsertRows_class;
+  *pNextFun = (pFUN*)pJob_InsertTable_class;
   
   return &xJobClass_InsertRow;
 }

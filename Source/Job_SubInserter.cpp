@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Job_InsertRows.cpp -- Insert Row Job                                        */
+/* Job_SubInserter.cpp -- SubInserter Job                                     */
 /*============================================================================*/
 
-// Job Short: InsertRow
+// Job Short: SubInserter
 
 #include "JobModel.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
 
-JobClass xJobClass_InsertRows =
+JobClass xJobClass_SubInserter =
 {
-  "Job_InsertRows"_Stz,   // name of the job class
-  CN_JOB_INSERTROWS,      // class enum
+  "Job_SubInserter"_Stz,    // name of the job class
+  CN_JOB_SUBINSERTER,       // class enum
   JK_LOCAL,               // job kind
   "insert rows into tableNm"_Stz, // comment about the job
   "insert"_Stz,           // the prompt command
   "rows"_Stz,             // the second word
   nullptr,                // the _run task seed
-  "insertRows_req"_Stz,   // the _req task seed
+  "SubInserter_req"_Stz,    // the _req task seed
   nullptr,                // the _rcv task seed
   nullptr,                // the _exe task seed
   nullptr,                // the _end task seed
@@ -27,13 +27,13 @@ JobClass xJobClass_InsertRows =
   false,                  // detached job?
   false,                  // buffer attached?
   JT_NONE,                // job trace
-  pJob_InsertRows_pre,    // prompt pre-process function
-  vJob_InsertRows_post,    // prompt post-process function
-  pJob_InsertRows_new,     // job new function
-  vJob_InsertRows_delete,  // job delete function
+  pJob_SubInserter_pre,    // prompt pre-process function
+  vJob_SubInserter_post,    // prompt post-process function
+  pJob_SubInserter_new,     // job new function
+  vJob_SubInserter_delete,  // job delete function
   nullptr,                // job pre-send function
   nullptr,                // job post-receive function
-  vJob_InsertRows_show,    // job show function
+  vJob_SubInserter_show,    // job show function
   
   // help and example
   true,
@@ -46,11 +46,11 @@ JobClass xJobClass_InsertRows =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_InsertRows_class(pFUN** pNextFun)
+JobClass* JobModel::pJob_SubInserter_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_InsertTable_class;
+  *pNextFun = (pFUN*)pJob_SubLoader_class;
   
-  return &xJobClass_InsertRows;
+  return &xJobClass_SubInserter;
 }
 
 
@@ -61,22 +61,22 @@ JobClass* JobModel::pJob_InsertRows_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_InsertRows* JobModel::_pJob_InsertRows(void* aAddress)
+Job_SubInserter* JobModel::_pJob_SubInserter(void* aAddress)
 {
-  Job_InsertRows* pJob_InsertRows = reinterpret_cast<Job_InsertRows*>(aAddress);
+  Job_SubInserter* pJob_SubInserter = reinterpret_cast<Job_SubInserter*>(aAddress);
   
-  RASSERT_TYPE(pJob_InsertRows,CN_JOB_INSERTROWS);
+  RASSERT_TYPE(pJob_SubInserter,CN_JOB_SUBINSERTER);
   
-  return pJob_InsertRows;
+  return pJob_SubInserter;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
-void* Job_InsertRows::operator new(size_t)
+void* Job_SubInserter::operator new(size_t)
 {
-  Job_InsertRows* pJob_LoadTable =
-    static_cast<Job_InsertRows*>(HeapMem::pAllocate(CN_JOB_INSERTROWS));
+  Job_SubInserter* pJob_LoadTable =
+    static_cast<Job_SubInserter*>(HeapMem::pAllocate(CN_JOB_SUBINSERTER));
   
   return pJob_LoadTable;
 }
@@ -84,7 +84,7 @@ void* Job_InsertRows::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* perform new of entry buffer for given address                              */
 /*----------------------------------------------------------------------------*/
-void* Job_InsertRows::operator new(size_t, void* aAddress)
+void* Job_SubInserter::operator new(size_t, void* aAddress)
 {
   return aAddress;
 }
@@ -92,20 +92,20 @@ void* Job_InsertRows::operator new(size_t, void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* free an entry buffer back to the heap                                      */
 /*----------------------------------------------------------------------------*/
-void Job_InsertRows::operator delete(void* aAddress)
+void Job_SubInserter::operator delete(void* aAddress)
 {
-  Job_InsertRows* pJob_InsertRows = static_cast<Job_InsertRows*>(aAddress);
+  Job_SubInserter* pJob_SubInserter = static_cast<Job_SubInserter*>(aAddress);
   
-  HeapMem::vFree(pJob_InsertRows);
+  HeapMem::vFree(pJob_SubInserter);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Job_InsertRows::Job_InsertRows(Interface::Session* pSession)
-: Job(CN_JOB_INSERTROWS, pSession), JobWriteBehind(DS_INSERT)
+Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
+: Job(CN_JOB_SUBINSERTER, pSession), JobWriteBehind(DS_INSERT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
   // set the enclosined_by to be a '
   m_xFormatters.m_bDefault = false;
@@ -119,19 +119,19 @@ Job_InsertRows::Job_InsertRows(Interface::Session* pSession)
   static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
   
   // set insertRowJob in the insertTable job
-  m_pJob_InsertTable->m_pJobInsertRows = this;
+  m_pJob_InsertTable->m_pJobSubInserter = this;
   
-  _checkInitialised_(CN_JOB_INSERTROWS);
+  _checkInitialised_(CN_JOB_SUBINSERTER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Job_InsertRows::~Job_InsertRows(void) noexcept(false)
+Job_SubInserter::~Job_SubInserter(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
 }
 
 
@@ -142,11 +142,11 @@ Job_InsertRows::~Job_InsertRows(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_InsertRows::vDump(eCN eClass, Object* pObject, Stz* aTab)
+void Job_SubInserter::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
-  Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pObject);
+  Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pObject);
 
-  pJob_InsertRows->vShow();
+  pJob_SubInserter->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,9 +156,9 @@ void Job_InsertRows::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* begin inserting                                                            */
 /*----------------------------------------------------------------------------*/
-void Job_InsertRows::vBegin(Table* pTable)
+void Job_SubInserter::vBegin(Table* pTable)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
   // set the table and parentJob in the writeBehind Job
   //RASSERT(pTable == this->m_pTable);
@@ -170,9 +170,9 @@ void Job_InsertRows::vBegin(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* end inserting                                                              */
 /*----------------------------------------------------------------------------*/
-void Job_InsertRows::vEnd(void)
+void Job_SubInserter::vEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
   vHandleDanglingBuffers();
 }
@@ -180,9 +180,9 @@ void Job_InsertRows::vEnd(void)
 /*----------------------------------------------------------------------------*/
 /* fromat a row                                                               */
 /*----------------------------------------------------------------------------*/
-bool Job_InsertRows::bFormatRow(Stz* aRawData, i8 iRawLength)
+bool Job_SubInserter::bFormatRow(Stz* aRawData, i8 iRawLength)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
   bool bBlankLine;
   
@@ -194,9 +194,9 @@ bool Job_InsertRows::bFormatRow(Stz* aRawData, i8 iRawLength)
 /*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
-bool Job_InsertRows::bPopulateJob(TokenVec* pTokenVec)
+bool Job_SubInserter::bPopulateJob(TokenVec* pTokenVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
   ASSERT(pTokenVec->pGet(0)->bSame("insert"_Stz));
   ASSERT(pTokenVec->pGet(1)->bSame("rows"_Stz));
@@ -217,9 +217,9 @@ bool Job_InsertRows::bPopulateJob(TokenVec* pTokenVec)
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */
 /*----------------------------------------------------------------------------*/
-void Job_InsertRows::vShow(void)
+void Job_SubInserter::vShow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,9 +229,9 @@ void Job_InsertRows::vShow(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Job_InsertRows::aFooter(void)
+Footer* Job_SubInserter::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTROWS);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER);
   
   return &m_xFooter;
 }
@@ -247,34 +247,34 @@ Footer* Job_InsertRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_InsertRows_pre(Interface::Session* pSession)
+Job* JobModel::pJob_SubInserter_pre(Interface::Session* pSession)
 {
-  Job_InsertRows* pJob_InsertRows = new Job_InsertRows(pSession);
+  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession);
   
   TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
   
-  bool bResult = pJob_InsertRows->bPopulateJob(pTokenVec);
+  bool bResult = pJob_SubInserter->bPopulateJob(pTokenVec);
   
   if ( !bResult) {
     i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_InsertRows->m_bHasError = true;
-    pJob_InsertRows->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+    pJob_SubInserter->m_bHasError = true;
+    pJob_SubInserter->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
   }
   
-  return pJob_InsertRows;
+  return pJob_SubInserter;
 }
 
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_InsertRows_post(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_SubInserter_post(Interface::Session* pSession, Job* pJob)
 {
-  Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pJob);
+  Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJob);
   
-  if ( pJob_InsertRows->m_bHasError ) {
+  if ( pJob_SubInserter->m_bHasError ) {
     
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_InsertRows->m_xNode[i_Node].m_eErrorCode]);
+      vTrace("error: (node%lld) %s\n"_Stz, i_Node, aEC[pJob_SubInserter->m_xNode[i_Node].m_eErrorCode]);
     }
     
   }
@@ -283,32 +283,32 @@ void JobModel::vJob_InsertRows_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_InsertRows_new(Job* pArg)
+Job* JobModel::pJob_SubInserter_new(Job* pArg)
 {
-  Job_InsertRows* pJob_InsertRows = new Job_InsertRows(nullptr);
+  Job_SubInserter* pJob_SubInserter = new Job_SubInserter(nullptr);
   
-  return pJob_InsertRows;
+  return pJob_SubInserter;
 }
 
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_InsertRows_delete(Interface::Session* pSession, Job* pJob)
+void JobModel::vJob_SubInserter_delete(Interface::Session* pSession, Job* pJob)
 {
-  Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pJob);
+  Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJob);
   
   //vTrace("DELETING INSERTROW\n"_Stz);
-  delete pJob_InsertRows;
+  delete pJob_SubInserter;
 }
 
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_InsertRows_show(Job* pJob)
+void JobModel::vJob_SubInserter_show(Job* pJob)
 {
-  Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pJob);
+  Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJob);
 
-  pJob_InsertRows->vShow();
+  pJob_SubInserter->vShow();
 }
 
 /*============================================================================*/

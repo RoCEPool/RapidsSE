@@ -5,13 +5,13 @@
 
 namespace JobModel
 {
-  class Job_InsertTable;
+  class Job_SubInserter;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_InsertTable : public Job
   {
   public:
-    Job_InsertRows* m_pJobInsertRows;                  // insert row job
+    Job_SubInserter* m_pJobSubInserter;                  // insert row job
     
     // must be last
     Footer m_xFooter;

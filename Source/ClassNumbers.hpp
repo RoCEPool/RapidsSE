@@ -129,8 +129,7 @@ enum eCN : u2 // Class Number
   /*     */ CN_JOB_GENERATE,
   /*     */ CN_JOB_INGEST,
   /*  93 */ CN_JOB_INSERTROW,
-  /*  93 */ CN_JOB_INSERTROWS,
-  /*  90 */ CN_JOB_INSERTTABLE,
+  /*     */ CN_JOB_INSERTTABLE,
   /*  94 */ CN_JOB_LF,
   /*  95 */ CN_JOB_LISTCATALOGS,
   /*  96 */ CN_JOB_LISTCOLUMNS,
@@ -163,6 +162,7 @@ enum eCN : u2 // Class Number
   /* 117 */ CN_JOB_STATUS,
   /* 118 */ CN_JOB_SUBFETCH,
   /*     */ CN_JOB_SUBINGESTER,
+  /*     */ CN_JOB_SUBINSERTER,
   /* 119 */ CN_JOB_SUBLOADER,
   /*     */ CN_JOB_SUBPUBLISH,
   /* 120 */ CN_JOB_SUBPURGER,
@@ -396,8 +396,7 @@ static Stz* aCN[]
   /*     */ "JOB_GENDATA"_Stz,         // CN_JOB_GENERATE
   /*     */ "JOB_INGEST"_Stz,          // CN_JOB_INGEST
   /*  93 */ "JOB_INSERTROW"_Stz,       // CN_JOB_INSERTROW
-  /*  93 */ "JOB_INSERTROWS"_Stz,      // CN_JOB_INSERTROWS
-  /*  90 */ "Job_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
+  /*     */ "Job_INSERTTABLE"_Stz,     // CN_JOB_INSERTTABLE
   /*  94 */ "JOB_LF"_Stz,              // CN_JOB_LF
   /*  95 */ "JOB_LISTCATALOGS"_Stz,    // CN_JOB_LISTCATALOGS
   /*  96 */ "JOB_LISTCOLUMNS"_Stz,     // CN_JOB_LISTCOLUMNS
@@ -430,6 +429,7 @@ static Stz* aCN[]
   /* 117 */ "JOB_STATUS"_Stz,          // CN_JOB_STATUS
   /* 118 */ "JOB_SUBFETCH"_Stz,        // CN_JOB_SUBFETCH
   /*     */ "JOB_SUBINGESTER"_Stz,     // CN_JOB_SUBINGESTER
+  /*     */ "Job_SubInserter"_Stz,       // CN_JOB_SUBINSERTER
   /* 119 */ "JOB_SUBLOADER"_Stz,       // CN_JOB_SUBLOADER
   /*     */ "JOB_SUBPUBLISH"_Stz,      // CN_JOB_SUBPUBLISH
   /* 120 */ "JOB_SUBPURGER"_Stz,       // CN_JOB_SUBPURGER

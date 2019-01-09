@@ -57,7 +57,6 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   nJobs++; JobClass::vTraceJobs(CN_JOB_SINK);
   nJobs++; JobClass::vTraceJobs(CN_JOB_CAT);
   nJobs++; JobClass::vTraceJobs(CN_JOB_INSERTROW);
-  nJobs++; JobClass::vTraceJobs(CN_JOB_INSERTROWS);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LISTTENANTS);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LISTCATALOGS);
   nJobs++; JobClass::vTraceJobs(CN_JOB_LISTSCHEMAS);
@@ -113,6 +112,7 @@ bool Prompt::bPrompt_jobcat(SePrompt* pPrompt)
   // child
   nJobs++; JobClass::vTraceJobs(CN_JOB_SUBFETCH);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SUBINGESTER);
+  nJobs++; JobClass::vTraceJobs(CN_JOB_SUBINSERTER);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SUBLOADER);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SUBPUBLISH);
   nJobs++; JobClass::vTraceJobs(CN_JOB_SUBPURGER);

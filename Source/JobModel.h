@@ -77,7 +77,6 @@ using namespace JobModel;
 
 #include "Job_Ingest.hpp"
 #include "Job_InsertRow.hpp"
-#include "Job_InsertRows.hpp"
 #include "Job_InsertTable.hpp"
 
 #include "Job_Lf.hpp"
@@ -114,8 +113,10 @@ using namespace JobModel;
 #include "Job_Start.hpp"
 #include "Job_StartCluster.hpp"
 #include "Job_Status.hpp"
+
 #include "Job_SubFetch.hpp"
 #include "Job_SubIngester.hpp"
+#include "Job_SubInserter.hpp"
 #include "Job_SubLoader.hpp"
 #include "Job_SubPublish.hpp"
 #include "Job_SubPurger.hpp"

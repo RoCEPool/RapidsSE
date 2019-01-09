@@ -80,10 +80,10 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     VALIDATE_JOB("b"_Stz);
     
     // get the insertRows job
-    Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pJobPtr);
+    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
     
     // get the insertTable job from the insertRows job
-    Job_InsertTable* pJob_InsertTable = pJob_InsertRows->m_pJob_InsertTable;
+    Job_InsertTable* pJob_InsertTable = pJob_SubInserter->m_pJob_InsertTable;
     
     // push the InsertTable job onto the jobstack
     pSession->m_pJobStack->vPushObject(pJob_InsertTable);
@@ -838,7 +838,7 @@ eEC RapidsSE_InsertRows(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTrac
     VALIDATE_JOB("b"_Stz);
   
     // get the insertRow job
-    Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pJobPtr);
+    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
     
     // get the length of the record
     i8 iRawDataLength = StrLib::iSize(sRecord->aChar());
@@ -854,7 +854,7 @@ eEC RapidsSE_InsertRows(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTrac
     }
     
     // format the row
-    bool bValid = pJob_InsertRows->bFormatRow(sRecord, iRawDataLength);
+    bool bValid = pJob_SubInserter->bFormatRow(sRecord, iRawDataLength);
     
     // is the record invalid ?
     if (! bValid) {
@@ -869,11 +869,11 @@ eEC RapidsSE_InsertRows(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTrac
     
     eEC eErrorCode = EC_NONE;
 
-    Table* pTable   = pJob_InsertRows->m_pTable;
-    i8 iParentJobId = pJob_InsertRows->m_pJob_InsertTable->m_iJobId;
+    Table* pTable   = pJob_SubInserter->m_pTable;
+    i8 iParentJobId = pJob_SubInserter->m_pJob_InsertTable->m_iJobId;
     
     // insert row into a working buffer in job InsertRow
-    eErrorCode = pJob_InsertRows->eInsertRow();
+    eErrorCode = pJob_SubInserter->eInsertRow();
     
     // was there an error ?
     if ( eErrorCode != EC_NONE ) {

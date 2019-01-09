@@ -10,14 +10,14 @@
 : InsertTable_sendLast ( pJob_InsertTable -- )
 
   params| pJob_InsertTable  |
-  0 0 0 locals| pThisTask iInsertRowJobId pJob_InsertRows |
+  0 0 locals| pThisTask pJob_SubInserter |
 
   task::this to pThisTask
 
   // calculate total partitions in the cluster
   grid::slots grid::nodes * locals| nTotalPartitions |
 
-  pJob_InsertTable job_InsertTable.insertRowsJob@ to pJob_InsertRows
+  pJob_InsertTable job_InsertTable.SubInserterJob@ to pJob_SubInserter
   //pJob_InsertRowss .
 
   // grab this task's lock
@@ -25,7 +25,7 @@
 
   grid::slots task::acks!
 
-  pJob_InsertRows Job_InsertRows.end
+  pJob_SubInserter Job_SubInserter.end
 
   //"InsertTable_sendLast ack waiting" .verbose
   task::wait
