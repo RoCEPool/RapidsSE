@@ -547,8 +547,6 @@
   static void vJob_InsertRowsBegin(Tasks::MP_Task mpTask);
   static void vJob_InsertRowsEnd(Tasks::MP_Task mpTask);
 
-  static void vJob_InsertRowsTableStore(Tasks::MP_Task mpTask);
-
   static void vJob_InsertRowPartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_InsertRowNewJobWriteRow(Tasks::MP_Task mpTask);
   static void vJob_InsertRowSpawnJobWriteRow(Tasks::MP_Task mpTask);

@@ -34,9 +34,8 @@
   //pathDump
 
   sTableNm find execute locals| pTable |
-  pTable pJob_InsertRows job_insertRows.table!
 
-  pJob_InsertRows job_insertRows.begin
+  pTable pJob_InsertRows job_insertRows.begin
 
   // add job to originator jobs
   //pJob_InsertRows job.addOriginator

@@ -13,7 +13,6 @@ void Step::vAddSteps_JobInsertRows(void)
 {
   vAddStep("Job_InsertRows.begin"_Stz,              &Step::vJob_InsertRowsBegin);
   vAddStep("Job_InsertRows.end"_Stz,                &Step::vJob_InsertRowsEnd);
-  vAddStep("job_insertRows.table!"_Stz,             &Step::vJob_InsertRowsTableStore);
   vAddStep("Job_InsertTable.insertRowsJob@"_Stz,    &Step::vJob_InsertTableInsertRowsJobFetch);
 
   vAddStep("job_insertRow.partition@"_Stz,          &Step::vJob_InsertRowPartitionFetch);
@@ -33,7 +32,12 @@ void Step::vJob_InsertRowsBegin(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_InsertRows.begin"_Stz);
   Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pPtrInsertRows);
   
-  pJob_InsertRows->vBegin();
+  Object* pPtrTable;
+  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
+     THROW_INVALID_DSTACK("Job_InsertRows.begin"_Stz);
+  Table* pTable = _pTable(pPtrTable);
+  
+  pJob_InsertRows->vBegin(pTable);
   
   EXIT();
 }
@@ -51,28 +55,6 @@ void Step::vJob_InsertRowsEnd(MP_Task mpTask)
   Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pPtrInsertRows);
   
   pJob_InsertRows->vEnd();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* job_InsertRows.table! -- store table into job_insertRows                   */
-/*----------------------------------------------------------------------------*/
-void Step::vJob_InsertRowsTableStore(MP_Task mpTask)
-{
-  ENTRY("vJobInsertRowsTableStore"_Stz);
-  
-  Object* pJobPtr;
-  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
-  THROW_INVALID_DSTACK("job_InsertRows.table!"_Stz);
-  Job_InsertRows* pJob_InsertRows = _pJob_InsertRows(pJobPtr);
-  
-  Object* pTablePtr;
-  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
-  THROW_INVALID_DSTACK("job_InsertRows.table!"_Stz);
-  Table* pTable = _pTable(pTablePtr);
-  
-  pJob_InsertRows->m_pTable = pTable;
   
   EXIT();
 }
