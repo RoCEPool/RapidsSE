@@ -33,13 +33,7 @@ i8 ValLib::iSize(Value* aValue)
       nBytes = pIpVal->nSize();
       break;
     }
-      
-    case CN_OBJVAL: {
-      ObjVal* pObjVal = _pObjVal(aValue);
-      nBytes = pObjVal->nSize();
-      break;
-    }
-      
+            
     case CN_PTRVAL: {
       PtrVal* pPtrVal = _pPtrVal(aValue);
       nBytes = pPtrVal->nSize();

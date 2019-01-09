@@ -22,6 +22,7 @@ PromptNote mPromptNote_sizes (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
 {
+  vTrace("  sizeof(Header) = %lu; \n"_Stz, sizeof(Header));
   vTrace("  sizeof(Object) = %lu; \n"_Stz, sizeof(Object));
   vTrace("  sizeof(Footer) = %lu; \n"_Stz, sizeof(Footer));
 
@@ -35,7 +36,6 @@ bool Prompt::bPrompt_sizes(SePrompt* pPrompt)
   vTrace("  sizeof(FltVal) = %lu; \n"_Stz, sizeof(FltVal));
   vTrace("  sizeof(IntVal) = %lu; \n"_Stz, sizeof(IntVal));
   vTrace("  sizeof(IvlVal) = %lu; \n"_Stz, sizeof(IvlVal));
-  vTrace("  sizeof(ObjVal) = %lu; \n"_Stz, sizeof(ObjVal));
   vTrace("  sizeof(PtrVal) = %lu; \n"_Stz, sizeof(PtrVal));
   vTrace("  sizeof(StrVal) = %lu; \n"_Stz, sizeof(StrVal));
   vTrace("  sizeof(TmeVal) = %lu; \n"_Stz, sizeof(TmeVal));

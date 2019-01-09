@@ -496,7 +496,6 @@ void Axioms::vAddConstants(void)
   // SIZEOF_ : C++ class sizes
   /*  1 */ vAddConstant("SIZEOF_INTVAL"_Stz, sizeof(IntVal));
   /*  2 */ vAddConstant("SIZEOF_IPVAL"_Stz,  sizeof(IpVal));
-  /*  3 */ vAddConstant("SIZEOF_OBJVAL"_Stz, sizeof(ObjVal));
   /*  4 */ vAddConstant("SIZEOF_PTRVAL"_Stz, sizeof(PtrVal));
   /*  5 */ vAddConstant("SIZEOF_STRVAL"_Stz, sizeof(StrVal));
   /*  6 */ vAddConstant("SIZEOF_VALSET"_Stz, sizeof(ValWrk)); // correct
