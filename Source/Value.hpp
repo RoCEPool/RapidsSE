@@ -22,7 +22,6 @@ namespace Values
   class IpVal;
   class PtrVal;
   class StrVal;
-  class ValAcc;
   class ValSet;
   class ValWrk;
   
@@ -33,6 +32,26 @@ namespace Values
     
     Value(eCN eClass);        
   };
+
+  /*--------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------*/
+  /*--------------------------------------------------------------------------*/
+
+  class Value2
+  {
+  private:
+    union {
+      u4   m_uMagic;
+      char m_sMagic[4];
+    };
+    eCN  m_eClass;
+
+  public:
+    void* operator new(size_t);
+  
+    Value2(eCN eClass);
+  };
+
 }
 
 /*============================================================================*/
