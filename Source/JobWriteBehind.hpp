@@ -38,7 +38,7 @@ namespace JobModel
                         eDS eDataSource);
   
   //private:
-    void vNewEntryBuffer(Table* pTable, i8 iPartition);
+    void vNewEntryBuffer(i8 iPartition);
   };
 }
 

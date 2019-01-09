@@ -92,7 +92,7 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
   for (i8 iPartition = 0; iPartition < gpAttachMap->m_pGrid->m_nPartitions; iPartition++) {
     
     if ( ! m_pEntryBuffer[iPartition] )
-      vNewEntryBuffer(m_pTable, iPartition);
+      vNewEntryBuffer(iPartition);
     
     // get the entry buffer
     EntryBuffer* pEntryBuffer = m_pEntryBuffer[iPartition];
@@ -129,7 +129,7 @@ eEC JobWriteBehind::eInsertRow(void)
     if (! m_pEntryBuffer[iPartition]) {
       
       // create a new working buffer for this partition
-      vNewEntryBuffer(m_pTable, iPartition);
+      vNewEntryBuffer(iPartition);
       
       if (! m_pEntryBuffer[iPartition]) {
         vTrace("EntryBuffer allocation failed\n"_Stz);
@@ -220,11 +220,11 @@ eEC JobWriteBehind::eProcessRecord(Stz* aRecord,
 /*----------------------------------------------------------------------------*/
 /* create a new working buffer                                                */
 /*----------------------------------------------------------------------------*/
-void JobWriteBehind::vNewEntryBuffer(Table* pTable, i8 iPartition)
+void JobWriteBehind::vNewEntryBuffer( i8 iPartition)
 {
   m_pEntryBuffer[iPartition] = new EntryBuffer();
   
-  m_pEntryBuffer[iPartition]->vIndex(pTable->pHiddenIndex());
+  m_pEntryBuffer[iPartition]->vIndex(m_pTable->pHiddenIndex());
   m_pEntryBuffer[iPartition]->vBufferLevel(0);
   m_pEntryBuffer[iPartition]->vPartitionNo(iPartition);
 
