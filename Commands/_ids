@@ -37,7 +37,7 @@ nowait purge sensorEvents 3;
 
 nowait publish sensorEvents "/tmp/sensorEvents.rowAgg" ;
 
-nowait pipeData "/rapids/sensorEvents.csv" "/tmp/sensorEvents.pipe" ;
+nowait repeater "/rapids/sensorEvents.csv" "/tmp/sensorEvents.pipe" ;
 
 nowait ingest sensorEvents "/tmp/sensorEvents.pipe" stats ;
 

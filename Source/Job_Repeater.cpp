@@ -15,7 +15,7 @@ JobClass xJobClass_Repeater =
   CN_JOB_REPEATER,       // class enum
   JK_LOCAL,              // job kind
   "repeat data"_Stz,     // comment about the job
-  "pipeData"_Stz,        // the prompt command
+  "repeater"_Stz,        // the prompt command
   nullptr,               // the second word
   nullptr,               // the _run task seed
   "repeater_req"_Stz,    // the _req task seed
@@ -285,17 +285,17 @@ bool Job_Repeater::bChunk(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPEATER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // throttle to 10TB +3% per day
+  // throttle to 15TB +3% per day
   
-  i8 iThreshold = ((C_1TB * 15 * 103) / 100);
-  
-  for (;;) {
-    m_pByteRate->vUpdateTimer();
-    i8 nBytesPerDay = m_pByteRate->nBytesPerDay();
-    if (nBytesPerDay <= iThreshold)
-      break;
-    PosixThread::vSleepMicro(500);
-  }
+//  i8 iThreshold = ((C_1TB * 15 * 103) / 100);
+//  
+//  for (;;) {
+//    m_pByteRate->vUpdateTimer();
+//    i8 nBytesPerDay = m_pByteRate->nBytesPerDay();
+//    if (nBytesPerDay <= iThreshold)
+//      break;
+//    PosixThread::vSleepMicro(500);
+//  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy next chunk
