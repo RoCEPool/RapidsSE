@@ -15,7 +15,6 @@ namespace JobModel
     i8     m_iParentJobId;    // parent (InsertRow) job id
     s48K   m_aRecord;         // formatted row
     i8     m_nRecordBytes;    // length of record
-    Formatters m_xFormatters; // formatters
     
     // must be last
     Footer m_xFooter;
