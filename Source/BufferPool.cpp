@@ -648,7 +648,7 @@ void BufferPool::vVerifyPool(void)
     
     FreeBuffer* pBufferVerify = pToFreeBuffer(nBuffer);
     
-    RASSERT(C_MAGIC == pBufferVerify->iMagic());
+    RASSERT(pBufferVerify->bValidMagic());
     RASSERT(CN_FREEBUFFER == pBufferVerify->eClass());
     
     nBuffer = pBufferVerify->nNextFree();

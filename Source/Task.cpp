@@ -798,7 +798,7 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
                                     pTask->aJobName());
         }
         else {
-          if (pPtr->iMagic() == C_MAGIC && pPtr->eClass() < CN_ENUMS)
+          if (pPtr->bValidMagic() && pPtr->eClass() < CN_ENUMS)
             sStackContents.vCatSprint("^%s=%p"_Stz,
                                       aCN[ePtrClass],
                                       pPtr);

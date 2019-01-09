@@ -30,7 +30,6 @@ namespace CorrectnessAlgebra
     i8  iBufferNo(void);
     Pool::bn nBufferNo(void);
   
-    i8    iMagic(void) const;
     bool  bValidMagic(void);
   
     Stz* aClass(void);
@@ -163,7 +162,7 @@ namespace CorrectnessAlgebra
 /* check the object has a magic marker as its first word                    */
 /*--------------------------------------------------------------------------*/
 #ifdef __MAGIC_CHECK
-#define _magic_() ASSERT(iMagic() == C_MAGIC);
+#define _magic_() ASSERT(bValidMagic());
 #else
 #define _magic_()
 #endif
