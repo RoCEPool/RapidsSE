@@ -75,7 +75,7 @@ void Step::vPushValue(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushValue(pValue);
   
-  mpTask->vAdjustNext(ValLib::iSize(pValue));
+  mpTask->vAdjustNext(pValue->nSize());
   
   EXIT();
 }

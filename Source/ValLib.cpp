@@ -6,61 +6,6 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
-/* get size (in bytes) of value                                               */
-/*----------------------------------------------------------------------------*/
-i8 ValLib::iSize(Value* aValue)
-{
-  i8 nBytes = 0;
-  
-  eCN eClass = aValue->eClass();
-  
-  switch (eClass) {
-      
-    case CN_BINVAL: {
-      BinVal* pBinVal = _pBinVal(aValue);
-      nBytes = pBinVal->nSize();
-      break;
-    }
-      
-    case CN_INTVAL: {
-      IntVal* pIntVal = _pIntVal(aValue);
-      nBytes = pIntVal->nSize();
-      break;
-    }
-      
-    case CN_IPVAL: {
-      IpVal* pIpVal = _pIpVal(aValue);
-      nBytes = pIpVal->nSize();
-      break;
-    }
-            
-    case CN_PTRVAL: {
-      PtrVal* pPtrVal = _pPtrVal(aValue);
-      nBytes = pPtrVal->nSize();
-      break;
-    }
-      
-    case CN_STRVAL: {
-      StrVal* pStrVal = _pStrVal(aValue);
-      nBytes = pStrVal->nSize();
-      break;
-    }
-      
-    case CN_VALSET: {
-      ValSet* pValSet = _pValSet(aValue);
-      nBytes = pValSet->nSize();
-      break;
-    }
-      
-    default:
-      THROW("ValLib::iSize -- invalid eClass %lld"_Stz,eClass);
-      break;
-  }
-  
-  return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
 void ValLib::vToString(Value* aValue, Stz* aString)

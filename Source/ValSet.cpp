@@ -71,7 +71,7 @@ ValSet::~ValSet(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void ValSet::vAppend(Stz*& pCursor, Value* pValue)
 {
-  i8 iSize = ValLib::iSize(pValue);
+  i8 iSize = pValue->nSize();
   
   ASSERT(m_iBytes + iSize < C_VALSET_DATAAREA);
   
@@ -135,7 +135,7 @@ bool ValSet::bExtractValue(Stz*& pCursor, Value*& pValue)
   pValue = (Value*)pCursor;
   //vTrace("ValSet::bExtractValue: %lld %s\n"_Stz,pValue->eClass(),aCN[pValue->eClass()]);
   
-  i8 iSize = ValLib::iSize(pValue);
+  i8 iSize = pValue->nSize();
   
   pCursor += iSize;
   
@@ -187,7 +187,7 @@ bool ValSet::bExtractValue(Stz*& pCursor, eCN& eClassNo, Value*& pValue)
   
   pValue = (Value*)pCursor;
   
-  i8 iSize = ValLib::iSize(pValue);
+  i8 iSize = pValue->nSize();
   
   pCursor += iSize;
   

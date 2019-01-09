@@ -723,7 +723,7 @@ void Step::vSee(MP_Task mpTask)
         vTrace(" %s\n"_Stz,sWorkspace.aChar());
       }
       
-      i8 iBytes = ValLib::iSize(pValue);
+      i8 iBytes = pValue->nSize();
       pDoesCell = pAdd<Cell*>(pDoesCell,iBytes);
       
       continue;

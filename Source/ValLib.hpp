@@ -10,7 +10,6 @@ namespace Values
   private:
 
   public:
-    static i8   iSize(Value* pObject);
     static void vToString(Value* pObject, Stz* aCharArray);
   };
 }
