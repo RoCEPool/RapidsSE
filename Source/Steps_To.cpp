@@ -123,7 +123,8 @@ void Step::vToStr(MP_Task mpTask)
     THROW_INVALID_DSTACK(">str"_Stz);
   
   s48K sString;
-  ValLib::vToString(xVal.pNestedValueSelf(),sString);
+  
+  xVal.pNestedValueSelf()->vToString(sString);
   
   mpTask->m_pDataStack->vPushS48K(sString);
   

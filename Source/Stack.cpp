@@ -1001,15 +1001,14 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
   
   ValWrk xValWrk;
   
-  s48K sWorkspace;
+  s48K sString;
   
   i8 nValues = iValues();
   for (i8 iVal = 0; iVal < nValues; iVal++) {
     
     vPeekValWrk(iVal,xValWrk);
     
-    ValLib::vToString(&xValWrk,sWorkspace);
-    Stz* aClass = xValWrk.aClass();
+    xValWrk.vToString(sString);
     
     Value* pNestedValue = xValWrk.pNestedValue();
     eCN eClass = pNestedValue->eClass();
@@ -1034,7 +1033,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
         Object* pObject = pPtrVal->pPtr();
         eCN ePtdClass   = pObject->eClass();
         vTrace("[%s] [%2lld] [%s] %s (%s)\n"_Stz,
-               aPrefix,iVal,aCN[eClass],sWorkspace.aChar(),aCN[ePtdClass]);
+               aPrefix,iVal,aCN[eClass],sString.aChar(),aCN[ePtdClass]);
         break;
       }
         
@@ -1046,7 +1045,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
         
       default: {
         vTrace("[%s] [%2lld] [%s]  %s (%s)\n"_Stz,
-               aPrefix,iVal,aCN[eClass],sWorkspace.aChar(),aCN[eClass]);
+               aPrefix,iVal,aCN[eClass],sString.aChar(),aCN[eClass]);
         break;
       }
         

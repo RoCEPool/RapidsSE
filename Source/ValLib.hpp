@@ -10,7 +10,7 @@ namespace Values
   private:
 
   public:
-    static void vToString(Value* pObject, Stz* aCharArray);
+//    static void vToString(Value* pObject, Stz* aCharArray);
   };
 }
 

@@ -669,7 +669,7 @@ void Step::vSee(MP_Task mpTask)
 {
   ENTRY("vSee"_Stz);
   
-  s48K sWorkspace;
+  s48K sString;
   
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   
@@ -719,8 +719,8 @@ void Step::vSee(MP_Task mpTask)
         vTrace(" \"%s\"\n"_Stz,_pStrVal(pValue)->aChar());
       }
       else {
-        ValLib::vToString(pValue,sWorkspace);
-        vTrace(" %s\n"_Stz,sWorkspace.aChar());
+        pValue->vToString(sString);
+        vTrace(" %s\n"_Stz,sString.aChar());
       }
       
       i8 iBytes = pValue->nSize();

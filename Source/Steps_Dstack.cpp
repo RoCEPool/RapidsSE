@@ -185,8 +185,8 @@ void Step::vDstackDump(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("dump"_Stz);
   
-  s48K sWorkspace;
-  ValLib::vToString(&xValWrk,sWorkspace);
+  s48K sString;
+  xValWrk.vToString(sString);
   Stz* aClass = xValWrk.aClass();
   
   eCN eClass = xValWrk.eClass();
@@ -197,7 +197,7 @@ void Step::vDstackDump(MP_Task mpTask)
     eCN ePtdClass   = pObject->eClass();
     vTrace("[%s] %s (%s %s)\n"_Stz,
            mpTask->aJobName(),
-           sWorkspace.aChar(),
+           sString.aChar(),
            aClass,
            aCN[ePtdClass]);
   }
@@ -210,7 +210,7 @@ void Step::vDstackDump(MP_Task mpTask)
   else {
     vTrace("[%s] %s (%s)\n"_Stz,
            mpTask->aJobName(),
-           sWorkspace.aChar(),
+           sString.aChar(),
            aClass);
   }
   

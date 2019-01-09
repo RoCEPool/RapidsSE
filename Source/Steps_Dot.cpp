@@ -24,18 +24,18 @@ void Step::vDot(MP_Task mpTask)
 {
   ENTRY("vDot"_Stz);
   
-  s48K sWorkspace;
+  s48K sString;
   
   ValWrk xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("."_Stz);
   
-  ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
+  xValWrk.pNestedValueSelf()->vToString(sString);
 
   vTrace("[%s %s] %s\n"_Stz,
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
          mpTask->m_pJob ? (Stz*)mpTask->aJobName() : "<no job>"_Stz,
-         sWorkspace.aChar()
+         sString.aChar()
          );
 
   
@@ -49,14 +49,14 @@ void Step::vDotPut(MP_Task mpTask)
 {
   ENTRY("vDotPut"_Stz);
   
-  s48K sWorkspace;
+  s48K sString;
   
   ValWrk xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK(".put"_Stz);
   
-  ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
-  vTrace("%s"_Stz,sWorkspace.aChar());
+  xValWrk.pNestedValueSelf()->vToString(sString);
+  vTrace("%s"_Stz,sString.aChar());
   
   EXIT();
 }
@@ -80,18 +80,18 @@ void Step::vDotVerbose(MP_Task mpTask)
 {
   ENTRY("vDotVerbose"_Stz);
   
-  s48K sWorkspace;
+  s48K sString;
   
   ValWrk xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK(".verbose"_Stz);
   
   if (gpAttachMap->m_bVerbose) {
-    ValLib::vToString(xValWrk.pNestedValueSelf(),sWorkspace);
+    xValWrk.pNestedValueSelf()->vToString(sString);
     vTrace("[%p %s] %s\n"_Stz,
            *mpTask,
            mpTask->aJobName(),
-           sWorkspace.aChar());
+           sString.aChar());
   }
   
   EXIT();
