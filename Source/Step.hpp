@@ -153,8 +153,6 @@ namespace Steps
   
     static void vAddSteps_Utility(void);
   
-    static void vAddSteps_Vector(void);
-  
     static void vAddSteps_Word(void);
   
     static void vAddSteps_Zero(void);
