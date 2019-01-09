@@ -147,13 +147,6 @@ namespace Tasks
     void vPerformancePoint(Stz* aWordName, Stz* aPointNote);
     void vPerformancePrint(void);
     s256& sPortrait(void);
-    bool bPopInt(i8& iInt);
-    bool bPopObject(Object*& pObject);
-    bool bPopStr(s48K& sStr);
-    void vPushInt(i8 iInt);
-    void vPushObject(Object* pObject);
-    void vPushStr(Stz* aStr);
-    void vPushStr(s48K& sStr);
     eQR  eQueue(void);
     void vQueue(eQR eQueue);
     void vQueueOrder(i8 iTaskOrder);

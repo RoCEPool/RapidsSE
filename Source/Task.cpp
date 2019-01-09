@@ -466,44 +466,6 @@ void Task::vPerformancePrint(void)
   pPerformanceTrace->vReset();
 }
 
-/*----------------------------------------------------------------------------*/
-/* pop int                                                                    */
-/*----------------------------------------------------------------------------*/
-bool Task::bPopInt(i8& iInt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if ( ! m_pDataStack->bPop(iInt) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop ptr to object                                                          */
-/*----------------------------------------------------------------------------*/
-bool Task::bPopObject(Object*& pObject)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if ( ! m_pDataStack->bPop(pObject) )
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop str                                                                    */
-/*----------------------------------------------------------------------------*/
-bool Task::bPopStr(s48K& sStr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if ( ! m_pDataStack->bPop(sStr) )
-    return false;
-  
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* trace performance print                                                    */
@@ -511,48 +473,6 @@ bool Task::bPopStr(s48K& sStr)
 s256& Task::sPortrait(void)
 {
   return m_sPortrait;
-}
-
-/*----------------------------------------------------------------------------*/
-/* push int                                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vPushInt(i8 iInt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pDataStack->vPushInt(iInt);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push object                                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vPushObject(Object* pObject)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pDataStack->vPushObject(pObject);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push str                                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vPushStr(Stz* aStr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  s48K sStr = aStr;
-  
-  m_pDataStack->vPushS48K(sStr);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push str                                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vPushStr(s48K& sStr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pDataStack->vPushS48K(sStr);
 }
 
 /*----------------------------------------------------------------------------*/
