@@ -868,9 +868,6 @@ eEC RapidsSE_InsertRows(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTrac
     
     
     eEC eErrorCode = EC_NONE;
-
-    Table* pTable   = pJob_SubInserter->m_pTable;
-    i8 iParentJobId = pJob_SubInserter->m_pJob_InsertTable->m_iJobId;
     
     // insert row into a working buffer in job InsertRow
     eErrorCode = pJob_SubInserter->eInsertRow();
