@@ -10,7 +10,7 @@ namespace JobModel
   class JobWriteBehind
   {
   public:
-    Job* m_pParentJob;      // paremt job
+    Job* m_pParentJob;      // parent job
     Table* m_pTable;        // table
     eDS  m_eDataSource;     // data source of this writeBehind
     s48K m_aRecord;         // formatted row
@@ -28,15 +28,11 @@ namespace JobModel
     
   public:
     bool bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
-  
     void vHandleDanglingBuffers(void);
-    
     eEC  eInsertRow(void);
+    eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);
   
-    eEC  eProcessRecord(Stz* aRecord,
-                        i8 nBytes);
-  
-  //private:
+  private:
     void vNewEntryBuffer(i8 iPartition);
   };
 }
