@@ -18,7 +18,6 @@ using namespace CorrectnessAlgebra;
 
 #include "Footer.hpp"
 #include "Object.hpp"
-#include "Object2.hpp"
 #include "Wsp.hpp"
 #include "WspFxd.hpp"
 #include "WspVbl.hpp"
