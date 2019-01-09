@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Values::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(Object) == sizeof(Value));
+  ASSERT(8 == sizeof(Value));
   
   ASSERT(sizeof(Value) + sizeof(i8) + 8 == sizeof(BinVal));
   ASSERT(sizeof(Value) + sizeof(i8)     == sizeof(IntVal));

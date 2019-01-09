@@ -11,7 +11,6 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-
   // parse the command line arguments
   if ( ! gxArguments.bParse(argc,(Stz**)argv) )
     exit(EXIT_FAILURE);
