@@ -12,8 +12,7 @@ namespace JobModel
                          public JobWriteBehind
   {
   public:
-    Job_InsertTable* m_pJob_InsertTable;                   // insert table job
-    Table*           m_pTable;                             // table pointer
+    Job_InsertTable* m_pJob_InsertTable;                   // insert table job                           
     Formatters       m_xFormatters;                        // record formatters
     
     // must be last
