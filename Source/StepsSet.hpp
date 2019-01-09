@@ -1058,7 +1058,6 @@
   static void vTimerUpdate(Tasks::MP_Task mpTask);
 
   // to
-  static void vToBinVal(Tasks::MP_Task mpTask);
   static void vToBody(Tasks::MP_Task mpTask);
   static void vToInt(Tasks::MP_Task mpTask);
   static void vToObject(Tasks::MP_Task mpTask);

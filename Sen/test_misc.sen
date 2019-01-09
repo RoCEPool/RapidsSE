@@ -101,41 +101,6 @@ traceon
 ;
 
 /*----------------------------------------------------------------------------*/
-/* plan list testing                                                          */
-/*----------------------------------------------------------------------------*/
-: pl_test
-
-  plan::new locals| plan |
-
-  "plan#1" plan plan.name!
-
-  plan plan.show
-
-  plan stk >binval stk >object stk drop
-
-  plan planList::addPlan
-
-  planList::show
-
-  plan planList::removePlan
-
-  planList::show
-
-  plan::new planList::addPlan
-  plan::new planList::addPlan
-  plan::new planList::addPlan
-
-  planList::show
-
-  1 planList::findPlan .
-
-  3 planList::findPlan . .
-
-3 planList::findPlan if planList::removePlan then planList::show
-
-;
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 : whereAmI
 

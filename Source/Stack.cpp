@@ -770,20 +770,6 @@ bool Stack::bPopBinary(Object*& pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* push binary Object onto data stack                                         */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushBinary(Object* pObject)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  ValWrk xBinVal;
-  xBinVal.vAssignBinary(pObject);
-
-  vPushValWrk(xBinVal);
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* push Cell* onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushCell(Cell* pCell)
@@ -926,11 +912,11 @@ void Stack::vPushValue(Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValue(ValReg* pValue)
+void Stack::vPushValReg(ValReg* pValReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(pValue);
+  vPushVal(pValReg);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }

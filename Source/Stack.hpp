@@ -98,7 +98,6 @@ namespace Structures
     bool bPopAsInt_Quick(i8& iArg1);
     i8   iPop(void);
   
-    void vPushBinary(Object* pObject);
     void vPushCell(Dictionaries::Cell* pCell);
     void vPushEntry(DBobjects::Entry* aEntry);
     void vPushInt(i8 iInt);
@@ -109,7 +108,7 @@ namespace Structures
     void vPushS4K(s4K& s4K);
     void vPushS16KB(s16KB& s16KB);
     void vPushValue(Value* pValue);
-    void vPushValue(ValReg* pValue);
+    void vPushValReg(ValReg* pValue);
     void vPushValWrk(ValWrk* pValue);
     void vPushValue(Value& xValue);
     void vPushValSet(ValSet& xValSet);

@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_To(void)
 {
-  vAddStep(">binval"_Stz,     &Step::vToBinVal);
   vAddStep(">body"_Stz,       &Step::vToBody);
   vAddStep(">digitName"_Stz,  &Step::vToDigitName);
   vAddStep(">int"_Stz,        &Step::vToInt);
@@ -19,22 +18,6 @@ void Step::vAddSteps_To(void)
   vAddStep(">ptr"_Stz,        &Step::vToPtr);
   vAddStep(">str"_Stz,        &Step::vToStr);
   vAddStep(">task"_Stz,       &Step::vToTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* >binval -- change object to binval                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vToBinVal(MP_Task mpTask)
-{
-  ENTRY("vToBinVal"_Stz);
-  
-  Object* pObject;
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_RSTACK(">BinVal"_Stz);
-  
-  mpTask->m_pDataStack->vPushBinary(pObject);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
