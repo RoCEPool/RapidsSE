@@ -184,7 +184,7 @@ void Step::vRowCursorRow(MP_Task mpTask)
   RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  mpTask->m_pDataStack->vPushObject(pRowCursor->pRow());
+  mpTask->m_pDataStack->vPushEntry(pRowCursor->pRow());
   
   EXIT();
 }

@@ -18,6 +18,11 @@ namespace Dictionaries
   class Cell;
 }
 
+namespace DBobjects
+{
+  class Entry;
+}
+
 //------------------------------------------------------------------------------
 
 namespace Structures
@@ -95,6 +100,7 @@ namespace Structures
   
     void vPushBinary(Object* pObject);
     void vPushCell(Dictionaries::Cell* pCell);
+    void vPushEntry(DBobjects::Entry* aEntry);
     void vPushInt(i8 iInt);
     void vPushObject(Object* pObject);
     void vPushS32(s32& s32);

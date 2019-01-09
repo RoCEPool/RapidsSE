@@ -853,7 +853,7 @@ void Step::vIndexPosition(MP_Task mpTask)
   eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
   Entry* pEntry = pIndexBuffer->pPositionQuery(xKeyWrk.aKey(), eRelnOp);
   
-  mpTask->m_pDataStack->vPushObject(pEntry);
+  mpTask->m_pDataStack->vPushEntry(pEntry);
   
   EXIT();
 }

@@ -5,7 +5,7 @@
 
 namespace Structures
 {
-  class Item : public Object
+  class Item : public Header
   {
   protected:
     i4  m_nSizeItem; // size of this item

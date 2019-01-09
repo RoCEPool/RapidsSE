@@ -21,25 +21,6 @@ PerformanceEntry* Measurement::_pPerformanceEntry(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-void* PerformanceEntry::operator new(size_t, PerformanceEntry* pPeformanceEntry)
-{
-  MemLib::vZero(pPeformanceEntry,sizeof(PerformanceEntry),CN_PERFORMANCEENTRY);
-  return pPeformanceEntry;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void PerformanceEntry::operator delete(void* pAddress)
-{
-  PerformanceEntry* pPerformanceTrace = reinterpret_cast<PerformanceEntry*>(pAddress);
-  
-  HeapMem::vFree(pPerformanceTrace);
-}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PerformanceEntry::PerformanceEntry(void)

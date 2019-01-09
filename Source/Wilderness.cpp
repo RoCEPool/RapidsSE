@@ -44,8 +44,7 @@ void* Wilderness::operator new(size_t, Wilderness* pWilderness)
 Wilderness::Wilderness(void)
 : Item(CN_WILDERNESS,sizeof(Wilderness))
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WILDERNESS);
-
+  ASSERT(bValidWilderness());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +52,7 @@ Wilderness::Wilderness(void)
 /*----------------------------------------------------------------------------*/
 Wilderness::~Wilderness(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WILDERNESS);
+  ASSERT(bValidWilderness());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,16 +60,14 @@ Wilderness::~Wilderness(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Wilderness::vAssertWilderness(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WILDERNESS);
+  ASSERT(bValidWilderness());
 }
 
 /*----------------------------------------------------------------------------*/
 /* test for valid wilderness                                                  */
 /*----------------------------------------------------------------------------*/
 bool Wilderness::bValidWilderness(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WILDERNESS);
-  
+{ 
   if (! bValidMagic())
     return false;
   

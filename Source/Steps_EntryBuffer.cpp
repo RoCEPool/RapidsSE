@@ -109,9 +109,9 @@ void Step::vEntryBufferFirstEntry(MP_Task mpTask)
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
   if (pIndexBuffer)
-    mpTask->m_pDataStack->vPushObject(pIndexBuffer->pFirstEntry());
+    mpTask->m_pDataStack->vPushEntry(pIndexBuffer->pFirstEntry());
   else
-    mpTask->m_pDataStack->vPushObject(nullptr);
+    mpTask->m_pDataStack->vPushEntry(nullptr);
   
   EXIT();
 }
@@ -356,7 +356,7 @@ void Step::vEntryBufferNextEntry(MP_Task mpTask)
     pNextEntry = pIndexBuffer->pFirstEntry();
   }
   
-  mpTask->m_pDataStack->vPushObject(pNextEntry);
+  mpTask->m_pDataStack->vPushEntry(pNextEntry);
   
   EXIT();
 }

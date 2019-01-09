@@ -34,10 +34,8 @@ void* Item::operator new(size_t, Item* pItem)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Item::Item(eCN eClassNo, i8 nSizeItem)
-: Object(eClassNo)
+: Header(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
-  
   m_nSizeItem = static_cast<i4>(nSizeItem);
 }
 
@@ -46,7 +44,6 @@ Item::Item(eCN eClassNo, i8 nSizeItem)
 /*----------------------------------------------------------------------------*/
 Item::~Item(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,8 +51,6 @@ Item::~Item(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 i8 Item::nSizeItem(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_); 
-  
   return (i8)m_nSizeItem;
 }
 
@@ -63,9 +58,7 @@ i8 Item::nSizeItem(void)
 /* get address after this item                                                */
 /*----------------------------------------------------------------------------*/
 char* Item::aAddressAfter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
+{  
   char* aAfter = pAdd<char*>(this,(i8)m_nSizeItem);
   
   return aAfter;

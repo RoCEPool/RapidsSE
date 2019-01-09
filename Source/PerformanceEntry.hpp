@@ -17,10 +17,7 @@ namespace Measurement
     Footer m_xFooter;
     
     public:
-    
-    void* operator new(size_t, PerformanceEntry*);
-    void  operator delete(void*);
-    
+        
     PerformanceEntry(void);
     ~PerformanceEntry(void) noexcept(false);
   

@@ -798,6 +798,18 @@ void Stack::vPushCell(Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push entry onto data stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushEntry(DBobjects::Entry* aEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  vPushEntry(aEntry);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push i8 onto data stack                                                    */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushInt(i8 iArg1)
