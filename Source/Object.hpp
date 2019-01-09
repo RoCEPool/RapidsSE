@@ -10,16 +10,9 @@ namespace Pool
 
 namespace CorrectnessAlgebra
 {
-  class Object
+  class Object : public Header
   {
-  protected:
-    union {
-      u4   m_uMagic;
-      char m_sMagic[4];
-    };
   private:
-    eCN  m_eClass;
-    bool m_bWordBody;
   
   public:
     Object(eCN eClass);
@@ -27,39 +20,10 @@ namespace CorrectnessAlgebra
     i8  iBufferNo(void);
     Pool::bn nBufferNo(void);
   
-    bool  bValidMagic(void);
-  
-    Stz* aClass(void);
-  
     bool bWordBody(void);
     void vWordBody(bool bIsWordBody);
     
     Footer* aFooter(void);
-  
-  /*--------------------------------------------------------------------------*/
-  /* get class                                                                */
-  /*--------------------------------------------------------------------------*/
-  inline eCN eClass(void)
-  {
-    return m_eClass;
-  }
-  
-  /*----------------------------------------------------------------------------*/
-  /* set class                                                                  */
-  /*----------------------------------------------------------------------------*/
-  inline void vSetClass(eCN eClass)
-  {
-    m_eClass = eClass;
-  }
-  
-  /*----------------------------------------------------------------------------*/
-  /* set magic                                                                  */
-  /*----------------------------------------------------------------------------*/
-  inline void vSetMagic(void)
-  {
-    m_uMagic = C_MAGIC;
-  }
-  
   };
 }
 

@@ -10,10 +10,8 @@
 /* initialize object                                                          */
 /*----------------------------------------------------------------------------*/
 Object::Object(eCN eClassNo)
+: Header(eClassNo)
 {
-  vSetMagic();
-  vSetClass(eClassNo);
-  
   m_bWordBody = false;
   
   _precondition_(_MAGIC_,eClassNo);
@@ -46,17 +44,6 @@ Pool::bn Object::nBufferNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for valid magic                                                       */
-/*----------------------------------------------------------------------------*/
-bool Object::bValidMagic(void)
-{
-  if (C_MAGIC == m_uMagic)
-    return true;
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set is word body                                                           */
 /*----------------------------------------------------------------------------*/
 void Object::vWordBody(bool bWordBody)
@@ -74,14 +61,6 @@ bool Object::bWordBody(void)
   _precondition_(_MAGIC_);
   
   return m_bWordBody;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get class name                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Object::aClass(void)
-{
-  return aCN[eClass()];
 }
 
 /*----------------------------------------------------------------------------*/

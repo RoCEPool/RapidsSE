@@ -15,7 +15,6 @@ namespace CorrectnessAlgebra
       u4   m_uMagic;
       char m_sMagic[4];
     };
-  private:
     eCN  m_eClass;
     bool m_bWordBody;
   
@@ -25,11 +24,6 @@ namespace CorrectnessAlgebra
     bool  bValidMagic(void);
   
     Stz* aClass(void);
-  
-    bool bWordBody(void);
-    void vWordBody(bool bIsWordBody);
-    
-    Footer* aFooter(void);
   
   /*--------------------------------------------------------------------------*/
   /* get class                                                                */
