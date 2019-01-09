@@ -5,7 +5,7 @@
 
 namespace DBobjects
 {
-  class EntWrk : public Object
+  class EntWrk : public Value
   {
   friend class Entry;
   friend class Table;

@@ -8,52 +8,52 @@
 /*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
 /*----------------------------------------------------------------------------*/
-i8 ValLib::iSize(Object* pObject)
+i8 ValLib::iSize(Value* aValue)
 {
   i8 nBytes = 0;
   
-  eCN eClass = pObject->eClass();
+  eCN eClass = aValue->eClass();
   
   switch (eClass) {
       
     case CN_BINVAL: {
-      BinVal* pBinVal = _pBinVal(pObject);
+      BinVal* pBinVal = _pBinVal(aValue);
       nBytes = pBinVal->nSize();
       break;
     }
       
     case CN_INTVAL: {
-      IntVal* pIntVal = _pIntVal(pObject);
+      IntVal* pIntVal = _pIntVal(aValue);
       nBytes = pIntVal->nSize();
       break;
     }
       
     case CN_IPVAL: {
-      IpVal* pIpVal = _pIpVal(pObject);
+      IpVal* pIpVal = _pIpVal(aValue);
       nBytes = pIpVal->nSize();
       break;
     }
       
     case CN_OBJVAL: {
-      ObjVal* pObjVal = _pObjVal(pObject);
+      ObjVal* pObjVal = _pObjVal(aValue);
       nBytes = pObjVal->nSize();
       break;
     }
       
     case CN_PTRVAL: {
-      PtrVal* pPtrVal = _pPtrVal(pObject);
+      PtrVal* pPtrVal = _pPtrVal(aValue);
       nBytes = pPtrVal->nSize();
       break;
     }
       
     case CN_STRVAL: {
-      StrVal* pStrVal = _pStrVal(pObject);
+      StrVal* pStrVal = _pStrVal(aValue);
       nBytes = pStrVal->nSize();
       break;
     }
       
     case CN_VALSET: {
-      ValSet* pValSet = _pValSet(pObject);
+      ValSet* pValSet = _pValSet(aValue);
       nBytes = pValSet->nSize();
       break;
     }
@@ -69,50 +69,50 @@ i8 ValLib::iSize(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void ValLib::vToString(Object* pObject, Stz* aString)
+void ValLib::vToString(Value* aValue, Stz* aString)
 {
-  eCN eClass = pObject->eClass();
+  eCN eClass = aValue->eClass();
   
   switch (eClass) {
       
     case CN_BINVAL: {
-      BinVal* pBinVal = _pBinVal(pObject);
+      BinVal* pBinVal = _pBinVal(aValue);
       pBinVal->vToString(aString);
       break;
     }
       
     case CN_INTVAL: {
-      IntVal* pIntVal = _pIntVal(pObject);
+      IntVal* pIntVal = _pIntVal(aValue);
       pIntVal->vToString(aString);
       break;
     }
       
     case CN_IPVAL: {
-      IpVal* pIpVal = _pIpVal(pObject);
+      IpVal* pIpVal = _pIpVal(aValue);
       pIpVal->vToString(aString);
       break;
     }
       
     case CN_PTRVAL: {
-      PtrVal* pPtrVal = _pPtrVal(pObject);
+      PtrVal* pPtrVal = _pPtrVal(aValue);
       pPtrVal->vToString(aString);
       break;
     }
       
     case CN_STRVAL: {
-      StrVal* pStrVal = _pStrVal(pObject);
+      StrVal* pStrVal = _pStrVal(aValue);
       pStrVal->vToString(aString);
       break;
     }
       
     case CN_VALSET: {
-      ValSet* pValSet = _pValSet(pObject);
+      ValSet* pValSet = _pValSet(aValue);
       pValSet->vToString(aString);
       break;
     }
     
     case CN_VALWRK: {
-      ValWrk* pValWrk = _pValWrk(pObject);
+      ValWrk* pValWrk = _pValWrk(aValue);
       pValWrk->vToString(aString);
       break;
     }

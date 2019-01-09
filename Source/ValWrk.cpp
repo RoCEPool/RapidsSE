@@ -30,7 +30,7 @@ void* ValWrk::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ValWrk::ValWrk(void)
-: Object(CN_VALWRK)
+: Value(CN_VALWRK)
 {
   _precondition_(_MAGIC_,CN_VALWRK);                    //! need to add _FOOTER_
   
@@ -136,6 +136,20 @@ void ValWrk::operator =(Ivl iIvl)
 /* assign/copy a pointer into workspace                                       */
 /*----------------------------------------------------------------------------*/
 void ValWrk::operator =(Object* pPtr)
+{
+  PtrVal* pNestedPtrVal = (PtrVal*)pNestedValue();
+  
+  // set nested class
+  pNestedPtrVal->vSetClass(CN_PTRVAL);
+  
+  // assign ptr into the nested ptrval
+  *pNestedPtrVal = pPtr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign/copy a pointer into workspace                                       */
+/*----------------------------------------------------------------------------*/
+void ValWrk::operator =(Value* pPtr)
 {
   PtrVal* pNestedPtrVal = (PtrVal*)pNestedValue();
   

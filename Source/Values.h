@@ -17,7 +17,6 @@ using namespace Values;
 
 //-----------------------------------------------------------------------------
 
-#include "ValLib.hpp"
 
 #include "Value.hpp"
 #include "ValWrk.hpp"
@@ -39,6 +38,8 @@ using namespace Values;
 #include "TspVal.hpp"
 
 #include "ValSet.hpp"
+
+#include "ValLib.hpp"
 
 typedef StrVar<32>     s32;
 typedef StrVar<256>    s256;

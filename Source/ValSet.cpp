@@ -37,7 +37,7 @@ void ValSet::operator delete(void* pValSetAddress)
 {
   ValSet* pValSet = reinterpret_cast<ValSet*>(pValSetAddress);
   
-  HeapMem::vFree(pValSet);
+  //HeapMem::vFree(pValSet);
 }
 
 /*----------------------------------------------------------------------------*/

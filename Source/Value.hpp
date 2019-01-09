@@ -25,7 +25,7 @@ namespace Values
   class ValSet;
   class ValWrk;
   
-  class Value : public Object
+  class Value : public Header
   {
   public:
     void* operator new(size_t);

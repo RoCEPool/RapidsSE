@@ -19,7 +19,7 @@ namespace Values
     };
   };
   
-  class ValWrk : public Object
+  class ValWrk : public Value
   {
   private:
     union {
@@ -40,6 +40,7 @@ namespace Values
     void operator =(i8 iInt);
     void operator =(Ivl xIvl);
     void operator =(Object* pObject);
+    void operator =(Value* aValue);
     void operator =(Stz* aStr);
     void operator =(Tme xTme);
     void operator =(Tsp xTsp);
