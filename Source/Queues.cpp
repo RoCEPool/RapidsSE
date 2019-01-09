@@ -1065,7 +1065,8 @@ void Queues::vScheduleSleepingTask(Task* pTask)
     return;
   }
   
-  // - tasks wake up time has arrived. run it
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tasks wake up time has already arrived. run it
   
   pTask->vWakeupTask();
   

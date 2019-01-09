@@ -106,7 +106,7 @@ i8 Since::iGetAsMicroseconds(void)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
-  i8 iMicroseconds = m_iSeconds*C_1M + m_iMicroseconds;
+  i8 iMicroseconds = (m_iSeconds * C_1M) + m_iMicroseconds;
   
   return iMicroseconds;
 }

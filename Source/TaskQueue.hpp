@@ -10,7 +10,6 @@ namespace Threads
 
 namespace Tasks
 {
-  
   class TaskQueue : public Object
   {
   private:
@@ -30,6 +29,7 @@ namespace Tasks
     
     void   vAddTask(Task* pTask);
     void   vDropLock(void);
+    void  vContentDump(void);
     void   vGrabLock(void);
     bool   bGrabLock(void);
     bool   bIsLocked(void);
@@ -38,10 +38,6 @@ namespace Tasks
     void   vRemoveTask(Task* pTask);
     i8     nTasks(void);
   
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
-    void vContentDump(void);
-    
     Footer* aFooter(void);
   };
   

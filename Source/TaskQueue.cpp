@@ -71,14 +71,55 @@ TaskQueue::~TaskQueue(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* add task to the queue                                                      */
 /*----------------------------------------------------------------------------*/
 void TaskQueue::vAddTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  ASSERT(m_pTaskSkipList->eClass() == CN_SKIPLIST);
+  ASSERT(m_oLock.bIsLocked());
+
   m_pTaskSkipList->bInsert(pTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void TaskQueue::vContentDump(void)
+{
+  //  vTrace("HEIGHT %lld HEAD 0x%llx ITEMS %lld\n"_Stz,
+  //         pSkipList->m_iHeight,pSkipList->m_pHead, pSkipList->m_nObjects);
+  
+  for (SkipNode* pNode = m_pTaskSkipList->pFirst(0);
+       pNode;
+       pNode = m_pTaskSkipList->pNext(pNode,0)) {
+    
+    Task* pTask = _pTask(pNode->m_pObject);
+    
+    if (TS_SLEEPING == pTask->eState()) {
+      Time oDateTime;
+      oDateTime.vSetLocal(&pTask->oWakeupTime());
+      s32 sDateTime;
+      char* z = sDateTime.aChar();
+      oDateTime.vAppendLocal(&z);
+      vTrace("Task %p %s %s wakeup %s\n"_Stz,
+             pTask,
+             aCN[pTask->pJob()->eClass()],
+             aTS[pTask->eState()],
+             sDateTime.aChar());
+    }
+    else {
+      vTrace("Task %p %s %s order %lld\n"_Stz,
+             pTask,
+             aCN[pTask->pJob()->eClass()],
+             aTS[pTask->eState()],
+             pTask->iQueueOrder());
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +171,7 @@ Task* TaskQueue::pPeekTask(void)
   
   Task* pTask = nullptr;
   
-   ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_oLock.bIsLocked());
   
   SkipNode* pNode = m_pTaskSkipList->pFirst(0);
   if (pNode)
@@ -189,55 +230,6 @@ i8 TaskQueue::nTasks(void)
   i8 nTasks = m_pTaskSkipList->nObjects();
   
   return nTasks;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void TaskQueue::vContentDump(void)
-{
-  vDump(CN_TASKQUEUE, this, aSingleTab());
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void TaskQueue::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  TaskQueue* pTaskQueue = _pTaskQueue(pObject);
-  
-  SkipList* pSkipList = pTaskQueue->m_pTaskSkipList;
-  
-//  vTrace("HEIGHT %lld HEAD 0x%llx ITEMS %lld\n"_Stz,
-//         pSkipList->m_iHeight,pSkipList->m_pHead, pSkipList->m_nObjects);
-  
-  for (SkipNode* pNode = pSkipList->pFirst(0);
-       pNode;
-       pNode = pSkipList->pNext(pNode,0)) {
-
-    Task* pTask = (Task*)(pNode->m_pObject);
-    
-    if (TS_SLEEPING == pTask->eState()) {
-      Time oDateTime;
-      oDateTime.vSetLocal(&pTask->oWakeupTime());
-      s32 sDateTime;
-      char* z = sDateTime.aChar();
-      oDateTime.vAppendLocal(&z);
-      vTrace("Task %p %s %s wakeup %s\n"_Stz,
-             pTask,
-             aCN[pTask->pJob()->eClass()],
-             aTS[pTask->eState()],
-             sDateTime.aChar());
-   }
-    else {
-      vTrace("Task %p %s %s order %lld\n"_Stz,
-             pTask,
-             aCN[pTask->pJob()->eClass()],
-             aTS[pTask->eState()],
-             pTask->iQueueOrder());
-    }
-  }
-  
 }
 
 /*----------------------------------------------------------------------------*/
