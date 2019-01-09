@@ -179,8 +179,7 @@ eEC JobWriteBehind::eInsertRow(void)
 /* process record                                                             */
 /*----------------------------------------------------------------------------*/
 eEC JobWriteBehind::eProcessRecord(Stz* aRecord,
-                                   i8 nBytes,
-                                   eDS eDataSource)
+                                   i8 nBytes)
 {
   bool bBlankLine = false;
   

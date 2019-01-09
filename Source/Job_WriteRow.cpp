@@ -201,14 +201,14 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Interface::Session* pSession,
 /*----------------------------------------------------------------------------*/
 /* fromat a row                                                               */
 /*----------------------------------------------------------------------------*/
-bool Job_WriteRow::bFormatRow(Table* pTable, Stz* aRawData, i8 nRawDataBytes)
+bool Job_WriteRow::bFormatRow(Stz* aRawData, i8 nRawDataBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
   
   bool bBlankLine;
   
   // format the raw data into a row
-  bool bValid = Row::bFormatRow(pTable->pColumnVec(),
+  bool bValid = Row::bFormatRow(m_pTable->pColumnVec(),
                                 &m_xFormatters,
                                 aRawData, nRawDataBytes,
                                 m_aRecord.aStz(),

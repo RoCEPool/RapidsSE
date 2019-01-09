@@ -200,7 +200,7 @@ bool Job_SubIngester::bChunk(void)
   while (pIngestChunk->bGetRecord(&aRecord,nRecordBytes)) {
     
     // process that record into write behind
-    eEC eError = eProcessRecord(aRecord, nRecordBytes, DS_INGEST);
+    eEC eError = eProcessRecord(aRecord, nRecordBytes);
     
     if (EC_NONE == eError)
       continue;

@@ -62,7 +62,7 @@ void Step::vJob_WriteRowHashRow(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first format the row
-  bool bResult = pJob_WriteRow->bFormatRow(pTable, pJob_InsertRow->m_aRawData, pJob_InsertRow->m_nRawDataBytes);
+  bool bResult = pJob_WriteRow->bFormatRow(pJob_InsertRow->m_aRawData, pJob_InsertRow->m_nRawDataBytes);
   
   if ( ! bResult )
     mpTask->m_pDataStack->vPushInt(0);

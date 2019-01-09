@@ -34,8 +34,7 @@ namespace JobModel
     eEC  eInsertRow(void);
   
     eEC  eProcessRecord(Stz* aRecord,
-                        i8 nBytes,
-                        eDS eDataSource);
+                        i8 nBytes);
   
   //private:
     void vNewEntryBuffer(i8 iPartition);

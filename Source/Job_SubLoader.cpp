@@ -225,7 +225,7 @@ bool Job_SubLoader::bChunk(void)
       return true;
     
     // process that record into write behind
-    eEC eError = eProcessRecord(aRecord, nRecordBytes, DS_LOAD);
+    eEC eError = eProcessRecord(aRecord, nRecordBytes);
     
     if (EC_NONE == eError) {
       m_xNode[i_Node].m_ziRowsProcessed.iInc();

@@ -35,7 +35,7 @@ namespace JobModel
                                          i8 iParentJobId);
     
   public:
-    bool bFormatRow(Table* pTable, Stz* aRawData, i8 nRawDataBytes);
+    bool bFormatRow(Stz* aRawData, i8 nRawDataBytes);
     void vInsertRow(void);
     void vShow(void);
     
