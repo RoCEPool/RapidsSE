@@ -100,7 +100,7 @@ namespace Tasks
 
     Compiler* m_pCompiler;  // word compiler
   
-    s256  m_sMark;          // mark buffer
+    s256  m_sPortrait;      // short text description of task
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // can these be removed ?
@@ -133,7 +133,6 @@ namespace Tasks
     void vContentDump(void);
     void vDropLock(void);
     void vException(StrVal& sFile, StrVal& eException);
-    void vFormMark(void);
     void vGrabLock(void);
     bool bIsLocked(void);
     bool bIsNonPartitioned(void);
@@ -157,6 +156,7 @@ namespace Tasks
     eQR  eQueue(void);
     void vQueue(eQR eQueue);
     void vRefindJobClass(void);
+    void vRenderPortrait(void);
     void vRetry(void);
     bool bSeeded(void);
     void vSeedJob(void);

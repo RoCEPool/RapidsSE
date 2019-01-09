@@ -303,35 +303,6 @@ void Task::vException(StrVal& sFile, StrVal& eException)
 }
 
 /*----------------------------------------------------------------------------*/
-/*form activity mark                                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vFormMark(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  if (TS_SLEEPING == m_eState) {
-    Time oDateTime;
-    oDateTime.vSetLocal(&m_oWakeupTime);
-    s32 sDateTime;
-    char* z = sDateTime.aChar();
-    oDateTime.vAppendLocal(&z);
-    m_sMark.vSprint("Task %p %s %s wakeup %s"_Stz,
-                    this,
-                    aCN[m_pJob->eClass()],
-                    aTS[m_eState],
-                    sDateTime.aChar()
-                    );
-  }
-  else {
-    m_sMark.vSprint("Task %p %s %s"_Stz,
-                    this,
-                    aCN[m_pJob->eClass()],
-                    aTS[m_eState]
-                    );
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* grab lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vGrabLock(void)
@@ -567,6 +538,35 @@ void Task::vRefindJobClass(void)
   m_pJob->m_pJobClass = pJobClass;
   
   //m_pJob->m_pJobClass->vJobCat();
+}
+
+/*----------------------------------------------------------------------------*/
+/* render text portrait of task                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vRenderPortrait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (TS_SLEEPING == m_eState) {
+    Time oDateTime;
+    oDateTime.vSetLocal(&m_oWakeupTime);
+    s32 sDateTime;
+    char* z = sDateTime.aChar();
+    oDateTime.vAppendLocal(&z);
+    m_sPortrait.vSprint("Task %p %s %s wakeup %s"_Stz,
+                        this,
+                        aCN[m_pJob->eClass()],
+                        aTS[m_eState],
+                        sDateTime.aChar()
+                        );
+  }
+  else {
+    m_sPortrait.vSprint("Task %p %s %s"_Stz,
+                        this,
+                        aCN[m_pJob->eClass()],
+                        aTS[m_eState]
+                        );
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1028,14 +1028,14 @@ void Task::vWriteMark(Stz* aPrefix)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vFormMark();
+  vRenderPortrait();
   
-  //vTrace("MARK: %s %s\n"_Stz,aPrefix,m_sMark.aChar());
+  //vTrace("MARK: %s %s\n"_Stz,aPrefix,m_sPortrait.aChar());
   
   ActivityMap::vMark(m_pJob->m_iJobId,
                      "%s %s"_Stz,
                      aPrefix,
-                     m_sMark.aChar());
+                     m_sPortrait.aChar());
 }
 
 /*----------------------------------------------------------------------------*/
