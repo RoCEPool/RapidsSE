@@ -187,8 +187,7 @@ bool Job_InsertRows::bFormatRow(Stz* aRawData, i8 iRawLength)
   
   bool bBlankLine;
   
-  bool bValid = JobWriteBehind::bFormatRow(&m_xFormatters,
-                                           aRawData, iRawLength, bBlankLine);
+  bool bValid = JobWriteBehind::bFormatRow(aRawData, iRawLength, bBlankLine);
   
   return bValid;
 }
