@@ -31,7 +31,6 @@ namespace CorrectnessAlgebra
     Pool::bn nBufferNo(void);
   
     i8    iMagic(void) const;
-    void  vAssertMagic(void);
     bool  bValidMagic(void);
   
     Stz* aClass(void);

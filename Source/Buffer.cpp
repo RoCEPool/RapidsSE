@@ -7,6 +7,22 @@
 extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Buffer* Pool::_pBuffer(void* aAddr)
+{
+  Buffer* pBuffer = reinterpret_cast<Buffer*>(aAddr);
+  
+  //RASSERT_TYPE(pTask,???);
+  
+  return pBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Buffer::operator new(size_t)
@@ -64,10 +80,7 @@ Buffer::~Buffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Buffer* Buffer::pGetBuffer(Object* pObject)
 {
-  Buffer* pBuffer =
-    reinterpret_cast<Buffer*>(BITWISE_AND((u8)pObject,C_OBJECT_TO_BUFFER_MASK));
-  
-  pBuffer->vAssertMagic();
+  Buffer* pBuffer = _pBuffer(pBitAnd<Buffer*>(pObject,C_OBJECT_TO_BUFFER_MASK));
   
   return pBuffer;
 }

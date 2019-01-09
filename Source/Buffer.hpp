@@ -32,6 +32,7 @@ namespace Pool
     Footer* aFooter(void);
   };
   
+  Buffer* _pBuffer(void* aAddr);
 }
 
 /*============================================================================*/
