@@ -99,26 +99,10 @@ void TaskQueue::vContentDump(void)
        pNode = m_pTaskSkipList->pNext(pNode,0)) {
     
     Task* pTask = _pTask(pNode->m_pObject);
+ 
+    pTask->vRenderPortrait();
     
-    if (TS_SLEEPING == pTask->eState()) {
-      Time oDateTime;
-      oDateTime.vSetLocal(&pTask->oWakeupTime());
-      s32 sDateTime;
-      char* z = sDateTime.aChar();
-      oDateTime.vAppendLocal(&z);
-      vTrace("Task %p %s %s wakeup %s\n"_Stz,
-             pTask,
-             aCN[pTask->pJob()->eClass()],
-             aTS[pTask->eState()],
-             sDateTime.aChar());
-    }
-    else {
-      vTrace("Task %p %s %s order %lld\n"_Stz,
-             pTask,
-             aCN[pTask->pJob()->eClass()],
-             aTS[pTask->eState()],
-             pTask->iQueueOrder());
-    }
+    vTrace("%s\n"_Stz,pTask->sPortrait().aChar());
   }
 }
 

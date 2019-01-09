@@ -146,6 +146,7 @@ namespace Tasks
     i8   iPartition(void);
     void vPerformancePoint(Stz* aWordName, Stz* aPointNote);
     void vPerformancePrint(void);
+    s256& sPortrait(void);
     bool bPopInt(i8& iInt);
     bool bPopObject(Object*& pObject);
     bool bPopStr(s48K& sStr);

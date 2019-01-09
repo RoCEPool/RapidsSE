@@ -548,17 +548,26 @@ void Task::vRenderPortrait(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (TS_SLEEPING == m_eState) {
+
     Time oDateTime;
     oDateTime.vSetLocal(&m_oWakeupTime);
     s32 sDateTime;
     char* z = sDateTime.aChar();
     oDateTime.vAppendLocal(&z);
+
     m_sPortrait.vSprint("Task %p %s %s wakeup %s"_Stz,
                         this,
                         aCN[m_pJob->eClass()],
                         aTS[m_eState],
                         sDateTime.aChar()
                         );
+  }
+  else if (QR_NONE != m_eQueue) {
+    m_sPortrait.vSprint("Task %p %s %s order %lld\n"_Stz,
+                        this,
+                        aCN[m_pJob->eClass()],
+                        aTS[m_eState],
+                        m_iQueueOrder);
   }
   else {
     m_sPortrait.vSprint("Task %p %s %s"_Stz,
@@ -913,6 +922,14 @@ void Task::vPerformancePrint(void)
   pPerformanceTrace->vPrint();
   
   pPerformanceTrace->vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace performance print                                                    */
+/*----------------------------------------------------------------------------*/
+s256& Task::sPortrait(void)
+{
+  return m_sPortrait;
 }
 
 /*----------------------------------------------------------------------------*/
