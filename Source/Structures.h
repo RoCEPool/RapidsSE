@@ -39,8 +39,6 @@ using namespace Structures;
 #include "SkipCursor.hpp"
 #include "SkipList.hpp"
 
-#include "Stack.hpp"
-
 #include "Array.hpp"
 #include "BitArray.hpp"
 #include "BitMap.hpp"

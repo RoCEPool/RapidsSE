@@ -30,6 +30,8 @@ using namespace Dictionaries;
 #include "Dic.hpp"
 #include "DicPath.hpp"
 #include "DicStack.hpp"
+#include "Stack.hpp"
+
 #include "Word.hpp"
 
 #include "RegFrame.hpp"
