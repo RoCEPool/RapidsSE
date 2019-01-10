@@ -145,10 +145,10 @@ void Step::vFileRead(MP_Task mpTask)
   
   if (bResult) {
     mpTask->m_pDataStack->vPushS48K(sLine);
-    mpTask->m_pDataStack->vPushBool(1);
+    mpTask->m_pDataStack->vPushBool(true);
   }
   else {
-    mpTask->m_pDataStack->vPushBool(0);
+    mpTask->m_pDataStack->vPushBool(false);
   }
 
   EXIT();

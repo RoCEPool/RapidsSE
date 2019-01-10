@@ -52,10 +52,10 @@ void Step::vPlanListFindPlan(MP_Task mpTask)
   
   if (pPlan) {
     mpTask->m_pDataStack->vPushObject(pPlan);
-    mpTask->m_pDataStack->vPushBool(1);
+    mpTask->m_pDataStack->vPushBool(true);
   }
   else {
-    mpTask->m_pDataStack->vPushBool(0);
+    mpTask->m_pDataStack->vPushBool(false);
   }
   
   EXIT();

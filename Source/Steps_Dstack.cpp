@@ -167,7 +167,7 @@ void Step::vDstackDupNonZero(MP_Task mpTask)
     mpTask->m_pDataStack->vPushGenVar(xValA);
   }
   else
-    mpTask->m_pDataStack->vPushBool(0);
+    mpTask->m_pDataStack->vPushBool(false);
   
   EXIT();
 }
