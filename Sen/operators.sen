@@ -22,16 +22,13 @@
 "op_next.sen" include
 "op_print.sen" include
 "op_project.sen" include
-"op_range.sen" include
 "op_read.sen" include
 "op_recv.sen" include
 "op_response.sen" include
-"op_scan.sen" include
 "op_send.sen" include
 "op_sink.sen" include
 "op_sort.sen" include
 "op_tee.sen" include
-"op_triggerRange.sen" include
 "op_write.sen" include
 
 
