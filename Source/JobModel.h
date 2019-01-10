@@ -31,6 +31,7 @@ using namespace JobModel;
 #include "JobFileName.hpp"
 #include "JobObjectName.hpp"
 #include "JobResult.hpp"
+#include "JobRow.hpp"
 #include "Job.hpp"
 #include "JobWriteBehind.hpp"
 
