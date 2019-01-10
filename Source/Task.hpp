@@ -89,8 +89,7 @@ namespace Tasks
 
     union {                 // instruction pointer
       Cell*   m_pCell;      // points to cell inside a word
-      Value*  m_pValue;     // points to an embedded value within a word
-      Object* m_pObject;    // points to an embedded object within a word
+      Value*  m_aEmbValue;  // points to an embedded value within a word
     } IP;
     TaskStep* m_pEntryCell; // points to does arg (entry cell of word)
   

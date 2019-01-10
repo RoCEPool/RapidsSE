@@ -71,11 +71,11 @@ void Step::vPushValue(MP_Task mpTask)
     ASSERT(mpTask->m_iTracing);
   }
   
-  Value* pValue = mpTask->IP.m_pValue;
+  Value* aValue = mpTask->IP.m_aEmbValue;
   
-  mpTask->m_pDataStack->vPushValue(pValue);
+  mpTask->m_pDataStack->vPushValue(aValue);
   
-  mpTask->vAdjustNext(pValue->nSize());
+  mpTask->vAdjustNext(aValue->nSize());
   
   EXIT();
 }
