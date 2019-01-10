@@ -243,8 +243,6 @@
   static void vDstackRotInv(Tasks::MP_Task mpTask);
   static void vDstackStk(Tasks::MP_Task mpTask);
   static void vDstackSwap(Tasks::MP_Task mpTask);
-  static void vDstackToValSet(Tasks::MP_Task mpTask);
-  static void vDstackToValues(Tasks::MP_Task mpTask);
   static void vDstackTransfer(Tasks::MP_Task mpTask);
   static void vDstackTuck(Tasks::MP_Task mpTask);
 

@@ -28,8 +28,6 @@ void Step::vAddSteps_Dstack(void)
   vAddStep("-rot"_Stz,            &Step::vDstackRotInv);
   vAddStep("stk"_Stz,             &Step::vDstackStk);
   vAddStep("swap"_Stz,            &Step::vDstackSwap);
-  vAddStep("valset>"_Stz,         &Step::vDstackToValues);
-  vAddStep(">valset"_Stz,         &Step::vDstackToValSet);
   vAddStep(">DStack"_Stz,         &Step::vDstackTransfer);
   vAddStep("tuck"_Stz,            &Step::vDstackTuck);
   
@@ -453,83 +451,6 @@ void Step::vDstackSwap(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushValWrk(xValA);
   mpTask->m_pDataStack->vPushValWrk(xValB);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >valset -- collapse values on dstack to a valset                           */
-/*----------------------------------------------------------------------------*/
-void Step::vDstackToValSet(MP_Task mpTask)
-{
-  ENTRY("vDstackToValSet"_Stz);
-  
-  i8 nValues;
-  
-  if ( ! mpTask->m_pDataStack->bPop(nValues) )
-    THROW_INVALID_DSTACK(">valset"_Stz);
-  
-  if ( ! mpTask->m_pDataStack->bGuard(nValues) )
-    THROW_INVALID_DSTACK(">valset"_Stz);
-  
-  Stz* pCursor = nullptr;
-  ValSet xValSet;
-  
-  GenVar xVariable;
-  for (i8 iValue = 0; iValue < nValues; iValue++) {
-    
-    if ( ! mpTask->m_pDataStack->bPop(xVariable) )
-      THROW_INVALID_DSTACK(">valset"_Stz);
-    
-    if (xVariable.pNestedValue()->eClass() == CN_PTRVAL) {
-      PtrVal* pPtrVal = _pPtrVal(xVariable.pNestedValue());
-      Object* pObject = pPtrVal->pPtr();
-      eCN eObjectClass = pObject->eClass();
-      
-      if (eObjectClass == CN_PLAN)
-        xVariable.vAssignBinary(pObject);
-      
-      if ( _bIsValidJob(eObjectClass) )
-        xVariable.vAssignBinary(pObject);
-    }
-    
-    xValSet.vAppend(pCursor,xVariable.pNestedValueSelf());
-  }
-  
-  //  vTrace("ValSet %lld bytes\n"_Stz,xValSet.nSize());
-  
-  mpTask->m_pDataStack->vPushValSet(xValSet);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* valset> -- expand valset to values on dstack                               */
-/*----------------------------------------------------------------------------*/
-void Step::vDstackToValues(MP_Task mpTask)
-{
-  ENTRY("vDstackToValues"_Stz);
-  
-  ValSet xValSet;
-  
-  if ( ! mpTask->m_pDataStack->bPop(xValSet) )
-    THROW_INVALID_DSTACK(">values"_Stz);
-  
-  i8 nVal = 0;
-  Value* pValue[128];
-  
-  Stz* pCursor = nullptr;
-  while (xValSet.bExtractValue(pCursor,pValue[nVal]))
-    nVal++;
-  
-  for (i8 iVal = nVal - 1; iVal >= 0; iVal--) {
-//    vTrace("Step::vDstackToValues: %lld %s\n"_Stz,
-//           pValue[iVal]->eClass(),
-//           aCN[pValue[iVal]->eClass()]);
-    mpTask->m_pDataStack->vPushValue(pValue[iVal]);
-  }
-  
-  mpTask->m_pDataStack->vPushInt(nVal);
   
   EXIT();
 }
