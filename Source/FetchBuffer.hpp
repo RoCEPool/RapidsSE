@@ -7,13 +7,15 @@ namespace DBobjects
 {
   class FetchBuffer : public Object
   {
+    static const i8 C_FETCHBUFFER_WSP = C_SIZE_LARGE_OBJECT - C_4KB;
+  
   protected:
     i8     m_nFetchedRows; // number of Fetched rows in this buffer
     bool   m_bIsLast;      // is this the last buffer in its sequence?
     i8     m_iPartition;   // partition this result buffer came from
     Table* m_pTable;       // table which describes the rows
 
-    WspFxd<C_SIZE_LARGE_OBJECT - C_1KB*4> m_xWsp;
+    WspFxd<C_FETCHBUFFER_WSP> m_xWsp;
 
     // must be last
     Footer m_xFooter;

@@ -126,7 +126,7 @@ bool LoadMap::bMapChunk(void)
   }
   
   // compute the location of the final block of the current chunk
-  i8 i_FinalBlockLoc = m_i_ChunkLoc + C_LOAD_CHUNK - C_LOADMAP_BLOCK;
+  i8 i_FinalBlockLoc = m_i_ChunkLoc + C_DATACHUNK_WSP - C_LOADMAP_BLOCK;
   
   // the final block will be past the eof if the chunk is
   // less than maximum chunk size

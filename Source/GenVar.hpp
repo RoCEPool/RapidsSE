@@ -8,7 +8,7 @@ namespace Forth
   // the nested value inspector
   class ValSee
   {
-    Header    m_xHeader;    // header
+    Header   m_xHeader;     // header
     union {
       struct {
         i8   m_nSize;       // size of str
@@ -21,10 +21,12 @@ namespace Forth
   
   class GenVar : public Object
   {
+    static const i8 C_GENVAR_WSP = C_64K;
+  
   private:
     union {
-      WspFxd<C_64K> m_xWsp;         // workspace
-      ValSee        m_xNestedValue; // inspector
+      WspFxd<C_GENVAR_WSP> m_xWsp;         // workspace
+      ValSee m_xNestedValue; // inspector
     };
   
     // must be last

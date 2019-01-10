@@ -30,10 +30,13 @@ namespace Forth
     /*  5 */ "ENUMS"_Stz,
   };
   
+  static const i8 C_WORD_WSP = C_SIZE_MEDIUM_OBJECT - C_1KB;
+  
   class Word : public Object
   {
     friend class Dic;
     
+  
   private:
     s32      m_sName;        // the name of this word
     eWT      m_eWordType;    // type of word
@@ -55,7 +58,7 @@ namespace Forth
                              //   for primitives this will be null
     // ..data..
   
-    WspFxd<C_SIZE_MEDIUM_OBJECT - C_1KB> m_xBody;
+    WspFxd<C_WORD_WSP> m_xBody;
   
   Footer m_xFooter;
   

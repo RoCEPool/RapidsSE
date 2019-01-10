@@ -76,7 +76,7 @@ i8 IngestChunk::nReadMore(File& oFile)
   
   void* aReadDst = pAdd<void*>(aDataArea(),nCarryOverBytes);
   
-  i8 nBytesToRead = C_DATA_CHUNK - nCarryOverBytes;
+  i8 nBytesToRead = C_DATACHUNK_WSP - nCarryOverBytes;
   
   i8 nBytesRead = oFile.nReadBytes(aReadDst,nBytesToRead);
   
