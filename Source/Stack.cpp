@@ -766,7 +766,7 @@ void Stack::vPushCell(Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push entry onto value stack                                                */
+/* push buffer entry onto value stack                                         */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushEntry(DBobjects::Entry* aEntry)
 {

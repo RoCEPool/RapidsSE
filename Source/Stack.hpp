@@ -3,25 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-namespace Tasks
-{
-  class Task;
-}
-
-namespace Steps
-{
-  class Step;
-}
-
-namespace Forth
-{
-  class Cell;
-}
-
-namespace DBobjects
-{
-  class Entry;
-}
+// forward declarations
+namespace Tasks { class Task; }
+namespace Steps { class Step; }
+namespace DBobjects { class Entry; }
 
 //------------------------------------------------------------------------------
 
@@ -183,10 +168,7 @@ namespace Forth
   return true;
   }
 
-  
 }
-
-
 
 /*============================================================================*/
 /* end                                                                        */
