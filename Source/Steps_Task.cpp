@@ -378,7 +378,7 @@ ENTRY("vTaskSeed"_Stz);
   GenVar xVariable;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
     mpTask->m_pDataStack->vPeekValWrk(iTaskArg,xVariable);
-    pThatTask->m_pDataStack->vPushValWrk(xVariable);
+    pThatTask->m_pDataStack->vPushGenVar(xVariable);
   }
   
   // discard original task arguments

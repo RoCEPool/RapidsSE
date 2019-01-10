@@ -205,6 +205,36 @@ bool Stack::bPop(eCN& iArg1)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop value from data stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPop(GenVar* pArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  vPopVal(pArg1->pNestedValueSelf());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from data stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPop(GenVar& xArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  vPopVal(xArg1.pNestedValueSelf());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop i8 from data stack                                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(i8& iArg1)
@@ -419,6 +449,21 @@ bool Stack::bPop(Object*& pObject, GenVar& xVariable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop register from data stack                                               */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPop(Register* pArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  vPopVal(pArg1);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop s from data stack                                                      */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(s32& sArg1)
@@ -580,51 +625,6 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop register from data stack                                               */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPop(Register* pArg1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  vPopVal(pArg1);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from data stack                                                  */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar* pArg1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  vPopVal(pArg1->pNestedValueSelf());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from data stack                                                  */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar& xArg1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  vPopVal(xArg1.pNestedValueSelf());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop value, value from data stack                                           */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(GenVar& pValue1, GenVar& pValue2)
@@ -761,6 +761,30 @@ void Stack::vPushEntry(DBobjects::Entry* aEntry)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push value onto data stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushGenVar(GenVar* pValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  vPushVal(pValue->pNestedValueSelf());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push value onto data stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushGenVar(GenVar& xVariable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  vPushVal(xVariable.pNestedValue());
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push i8 onto data stack                                                    */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushInt(i8 iArg1)
@@ -788,6 +812,18 @@ void Stack::vPushObject(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push value onto data stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushRegister(Register* pRegister)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  vPushVal(pRegister);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push s32 onto data stack                                                   */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushS32(s32& sArg1)
@@ -797,7 +833,7 @@ void Stack::vPushS32(s32& sArg1)
   GenVar xStrVal1;
   xStrVal1 = sArg1;
   
-  vPushValWrk(xStrVal1);
+  vPushGenVar(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -810,20 +846,7 @@ void Stack::vPushS256(s256& sArg1)
   GenVar xStrVal1;
   xStrVal1 = sArg1;
   
-  vPushValWrk(xStrVal1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push s48K onto data stack                                                  */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushS48K(s48K& sArg1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  GenVar xStrVal1;
-  xStrVal1 = sArg1;
-  
-  vPushValWrk(xStrVal1);
+  vPushGenVar(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -836,7 +859,20 @@ void Stack::vPushS4K(s4K& sArg1)
   GenVar xStrVal1;
   xStrVal1 = sArg1;
   
-  vPushValWrk(xStrVal1);
+  vPushGenVar(xStrVal1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push s48K onto data stack                                                  */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushS48K(s48K& sArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  GenVar xStrVal1;
+  xStrVal1 = sArg1;
+  
+  vPushGenVar(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -849,7 +885,7 @@ void Stack::vPushS16KB(s16KB& sArg1)
   GenVar xStrVal1;
   xStrVal1 = sArg1;
   
-  vPushValWrk(xStrVal1);
+  vPushGenVar(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -870,42 +906,6 @@ void Stack::vPushValue(Value* pValue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   vPushVal(pValue);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto data stack                                                 */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushRegister(Register* pRegister)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushVal(pRegister);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto data stack                                                 */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushValWrk(GenVar* pValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushVal(pValue->pNestedValueSelf());
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto data stack                                                 */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushValWrk(GenVar& xVariable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushVal(xVariable.pNestedValue());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }

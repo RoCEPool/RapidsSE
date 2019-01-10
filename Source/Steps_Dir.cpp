@@ -81,7 +81,7 @@ void Step::vDirGetCurrent(MP_Task mpTask)
   
   if (Dir::bGetCurrent(sDirPath)) {
     xStrVal = sDirPath;
-    mpTask->m_pDataStack->vPushValWrk(xStrVal);
+    mpTask->m_pDataStack->vPushGenVar(xStrVal);
   }
   else {
     THROW("Unable to get current directory"_Stz);

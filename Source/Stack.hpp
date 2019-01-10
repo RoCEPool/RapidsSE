@@ -68,6 +68,10 @@ namespace Forth
     
     bool bPop(Forth::Cell*& pCell);
     bool bPop(eCN& eArg1);
+    bool bPop(GenVar* pArg1);
+    bool bPop(GenVar& xArg1);
+    bool bPop(GenVar& xArg1, GenVar& xArg2);
+    bool bPop(GenVar& xArg1, GenVar& xArg2, GenVar& xArg3);
     bool bPop(i8& iArg1);
     bool bPop(i8& iArg1, i8& iArg2);
     bool bPop(i8& iArg1, Object*& pObject);
@@ -79,14 +83,10 @@ namespace Forth
     bool bPop(Object*& pObject1, Object*& pObject2);
     bool bPop(Object*& pObject, GenVar& xVariable);
     bool bPop(Register* pArg1);
-    bool bPop(GenVar* pArg1);
-    bool bPop(GenVar& xArg1);
-    bool bPop(GenVar& xArg1, GenVar& xArg2);
-    bool bPop(GenVar& xArg1, GenVar& xArg2, GenVar& xArg3);
     bool bPop(s32&  sArg1);
     bool bPop(s256& sArg1);
-    bool bPop(s16KB& sArg1);
     bool bPop(s4K&  sArg1);
+    bool bPop(s16KB& sArg1);
     bool bPop(s48K& sArg1);
     bool bPop(s48K& sArg1, i8& iArg2);
     bool bPop(s48K& sArg1, i8& iArg2, i8& iArg3);
@@ -98,18 +98,18 @@ namespace Forth
   
     void vPushCell(Forth::Cell* pCell);
     void vPushEntry(DBobjects::Entry* aEntry);
+    void vPushGenVar(GenVar* pVariable);
+    void vPushGenVar(GenVar& xVariable);
     void vPushInt(i8 iInt);
     void vPushObject(Object* pObject);
+    void vPushRegister(Register* pValue);
     void vPushS32(s32& s32);
     void vPushS256(s256& s256);
-    void vPushS48K(s48K& s48K);
     void vPushS4K(s4K& s4K);
     void vPushS16KB(s16KB& s16KB);
+    void vPushS48K(s48K& s48K);
     void vPushValue(Value* pValue);
-    void vPushRegister(Register* pValue);
-    void vPushValWrk(GenVar* pValue);
     void vPushValue(Value& xValue);
-    void vPushValWrk(GenVar& xVariable);
   
     //-------------------------------------------------------------------------
     

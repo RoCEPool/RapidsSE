@@ -28,7 +28,7 @@ void Step::vCursorFetch(MP_Task mpTask)
   
   mpTask->m_pReturnStack->vPeekValWrk(iPeek,xCursorWsp);
   
-  mpTask->m_pDataStack->vPushValWrk(xCursorWsp);
+  mpTask->m_pDataStack->vPushGenVar(xCursorWsp);
   
   EXIT();
 }

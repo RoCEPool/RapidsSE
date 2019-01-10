@@ -91,7 +91,7 @@ void Step::vObjectFetch(MP_Task mpTask)
   
   mpTask->m_pReturnStack->vPeekValWrk(iPick,xObjectWsp);
   
-  mpTask->m_pDataStack->vPushValWrk(xObjectWsp);
+  mpTask->m_pDataStack->vPushGenVar(xObjectWsp);
   
   EXIT();
 }

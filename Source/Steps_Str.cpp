@@ -270,7 +270,7 @@ void Step::vStrPad(MP_Task mpTask)
   // adjust area size
   _pStrVal(xStringA.pNestedValueSelf())->vAreaSize();
   
-  mpTask->m_pDataStack->vPushValWrk(xStringA);
+  mpTask->m_pDataStack->vPushGenVar(xStringA);
   
   EXIT();
 }

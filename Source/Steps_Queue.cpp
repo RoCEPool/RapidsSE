@@ -152,7 +152,7 @@ void Step::vQueuePop(MP_Task mpTask)
   ASSERT(pQueue);
   
   if (pQueue->bPop(&xVariable)) {
-    mpTask->m_pDataStack->vPushValWrk(xVariable);
+    mpTask->m_pDataStack->vPushGenVar(xVariable);
     mpTask->m_pDataStack->vPushInt((i8)1);
   }
   else

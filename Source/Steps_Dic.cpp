@@ -179,7 +179,7 @@ ENTRY("vDicName"_Stz);
   GenVar sName;
   sName = pDic->sName();
   
-  mpTask->m_pDataStack->vPushValWrk(sName);
+  mpTask->m_pDataStack->vPushGenVar(sName);
   
   EXIT();
 }
