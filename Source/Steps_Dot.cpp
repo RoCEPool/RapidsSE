@@ -26,11 +26,11 @@ void Step::vDot(MP_Task mpTask)
   
   s48K sString;
   
-  GenVar xValWrk;
-  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+  GenVar xVariable;
+  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK("."_Stz);
   
-  xValWrk.pNestedValueSelf()->vToString(sString);
+  xVariable.pNestedValueSelf()->vToString(sString);
 
   vTrace("[%s %s] %s\n"_Stz,
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
@@ -51,11 +51,11 @@ void Step::vDotPut(MP_Task mpTask)
   
   s48K sString;
   
-  GenVar xValWrk;
-  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+  GenVar xVariable;
+  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK(".put"_Stz);
   
-  xValWrk.pNestedValueSelf()->vToString(sString);
+  xVariable.pNestedValueSelf()->vToString(sString);
   vTrace("%s"_Stz,sString.aChar());
   
   EXIT();
@@ -82,12 +82,12 @@ void Step::vDotVerbose(MP_Task mpTask)
   
   s48K sString;
   
-  GenVar xValWrk;
-  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+  GenVar xVariable;
+  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK(".verbose"_Stz);
   
   if (gpAttachMap->m_bVerbose) {
-    xValWrk.pNestedValueSelf()->vToString(sString);
+    xVariable.pNestedValueSelf()->vToString(sString);
     vTrace("[%p %s] %s\n"_Stz,
            *mpTask,
            mpTask->aJobName(),

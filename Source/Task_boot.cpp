@@ -225,7 +225,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   Word* pNewWord;
   TaskStep  pStep;
   Word* pCalledWord;
-  GenVar xValWrk;
+  GenVar xVariable;
   
   m_pCompiler->m_pTokeniser->vUseString(sDefinition);
   
@@ -260,8 +260,8 @@ Word* Task::pCompileColon(StrVal& sDefinition)
     switch (m_pCompiler->m_pTokeniser->eToken()) {
         
       case TN_INTEGER:
-        xValWrk = m_pCompiler->m_pTokeniser->sToken().iToI8();
-        pNewWord->vEncode("pushValue"_Stz,&xValWrk);
+        xVariable = m_pCompiler->m_pTokeniser->sToken().iToI8();
+        pNewWord->vEncode("pushValue"_Stz,&xVariable);
         break;
         
       case TN_NAME:
@@ -284,8 +284,8 @@ Word* Task::pCompileColon(StrVal& sDefinition)
         break;
         
       case TN_STRING: {
-        xValWrk = m_pCompiler->m_pTokeniser->sToken();
-        pNewWord->vEncode("pushValue"_Stz,&xValWrk);
+        xVariable = m_pCompiler->m_pTokeniser->sToken();
+        pNewWord->vEncode("pushValue"_Stz,&xVariable);
         break;
       }
         

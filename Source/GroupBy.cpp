@@ -241,8 +241,8 @@ Entry* GroupBy::pToLineItemEntry(Index* pIndex, Entry* pEntry)
   
   // form the hidden index key using the row id from the entry
   KeyWrk xKeyWrk;
-  GenVar xValWrk;
-  xValWrk = xId.iRow();
+  GenVar xVariable;
+  xVariable = xId.iRow();
   
   // hiddenIndex should have only one column
   ASSERT(pHiddenIndex->pIdxColVec()->nItems() == 1);
@@ -252,7 +252,7 @@ Entry* GroupBy::pToLineItemEntry(Index* pIndex, Entry* pEntry)
   ASSERT(pColumn->iColumnNo() == -1);
   
   // add the rowId to the key
-  xKeyWrk.vAddDatum(xValWrk, pColumn);
+  xKeyWrk.vAddDatum(xVariable, pColumn);
   
   // position in the entry buffer at the row id key
   Entry* pLineItemEntry = pEntryBuffer->pPositionQuery(xKeyWrk.aKey(), 1, JC_AFTER);

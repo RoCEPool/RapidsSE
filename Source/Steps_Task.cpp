@@ -375,15 +375,15 @@ ENTRY("vTaskSeed"_Stz);
     THROW_INVALID_DSTACK("task.seed"_Stz);
   
   // copy task arguments to given task (preserving stack order)
-  GenVar xValWrk;
+  GenVar xVariable;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    mpTask->m_pDataStack->vPeekValWrk(iTaskArg,xValWrk);
-    pThatTask->m_pDataStack->vPushValWrk(xValWrk);
+    mpTask->m_pDataStack->vPeekValWrk(iTaskArg,xVariable);
+    pThatTask->m_pDataStack->vPushValWrk(xVariable);
   }
   
   // discard original task arguments
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    bool bPopped = mpTask->m_pDataStack->bPop(xValWrk);
+    bool bPopped = mpTask->m_pDataStack->bPop(xVariable);
     ASSERT(bPopped);
   }
   

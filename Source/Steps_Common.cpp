@@ -76,7 +76,7 @@ ENTRY("vCommonSlash"_Stz);
   
   //Word* pCurrentWord = mpTask->m_pCurrentWord;
   
-  GenVar xValWrk;
+  GenVar xVariable;
   
 //  for (;;) {
     
@@ -114,8 +114,8 @@ ENTRY("vCommonSlash"_Stz);
     pWordCommon->vVariable(mpTask->m_pCompiler->m_nVariables);
     
     // encode the word
-    xValWrk = mpTask->m_pCompiler->m_nVariables;
-    pWordCommon->vEncode("pushValue"_Stz,&xValWrk);
+    xVariable = mpTask->m_pCompiler->m_nVariables;
+    pWordCommon->vEncode("pushValue"_Stz,&xVariable);
     pWordCommon->vEncode("common.fetch"_Stz);
     pWordCommon->vEncode("exit"_Stz);
     
@@ -144,10 +144,10 @@ ENTRY("vCommonToCommon"_Stz);
   Word* pWordCommon = mpTask->m_oPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   ASSERT(pWordCommon);
  
-  GenVar xValWrk;
-  xValWrk = pWordCommon->iVariable();
+  GenVar xVariable;
+  xVariable = pWordCommon->iVariable();
   
-  pCurrentWord->vEncode("pushValue"_Stz,&xValWrk);
+  pCurrentWord->vEncode("pushValue"_Stz,&xVariable);
   pCurrentWord->vEncode("common.store"_Stz);
 
   EXIT();

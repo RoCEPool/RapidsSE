@@ -75,13 +75,13 @@ void KeyWrk::vAddDatum(char* aDatum)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(GenVar& xValWrk, Column* pCol, Formatters* pFormatters)
+void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
   i8 nBytes;
   
-  StrVal* pStrVal = _pStrVal(xValWrk.pNestedValueSelf());
+  StrVal* pStrVal = _pStrVal(xVariable.pNestedValueSelf());
   
   char* pDst = aLatter();
   char* pSrc = (char*)pStrVal->aStz();
@@ -158,7 +158,7 @@ void KeyWrk::vAddDatum(GenVar& xValWrk, Column* pCol, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(GenVar& xValWrk, Column* pCol)
+void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
@@ -168,9 +168,9 @@ void KeyWrk::vAddDatum(GenVar& xValWrk, Column* pCol)
   char* pSrc;
   
   if (DM_VCH == pCol->eDatumType())
-    pSrc = (char*)(_pStrVal(xValWrk.pNestedValueSelf())->aStz());
+    pSrc = (char*)(_pStrVal(xVariable.pNestedValueSelf())->aStz());
   else
-    pSrc = pAdd<char*>(xValWrk.pNestedValueSelf(),sizeof(Value));
+    pSrc = pAdd<char*>(xVariable.pNestedValueSelf(),sizeof(Value));
   
   
   nBytes = DtmLib::nCopy(pCol->eDatumType(),pDst,pSrc);

@@ -88,7 +88,7 @@ void ValSet::vAppend(Stz*& pCursor, Value* pValue)
       m_pRowBuffer = (EntryBuffer*)pPtrVal->pPtr();
       m_iRowBufferBytes = m_pRowBuffer->nUsedBytes();
       
-      //xValWrk = (Object*)C_ENTRYBUFFER_MARKER;
+      //xVariable = (Object*)C_ENTRYBUFFER_MARKER;
       PtrVal xPtrVal;
       xPtrVal = (Object*)C_ENTRYBUFFER_MARKER;
       MemLib::vCopy(pCursor,&xPtrVal,sizeof(xPtrVal),CN_VALSET);
@@ -99,7 +99,7 @@ void ValSet::vAppend(Stz*& pCursor, Value* pValue)
 //      m_pWorkingBuffer = (WorkingBuffer*)pPtrVal->pPtr();
 //      m_iWorkingBufferBytes = m_pWorkingBuffer->nUsedBytes();
 //
-//      //xValWrk = (Object*)C_ENTRYBUFFER_MARKER;
+//      //xVariable = (Object*)C_ENTRYBUFFER_MARKER;
 //      PtrVal xPtrVal;
 //      xPtrVal = (Object*)C_WORKINGBUFFER_MARKER;
 //      MemLib::vCopy(pCursor,&xPtrVal,sizeof(xPtrVal),CN_VALSET);

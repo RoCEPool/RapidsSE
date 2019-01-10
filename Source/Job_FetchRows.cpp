@@ -396,7 +396,7 @@ void JobModel::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   
-  GenVar xValWrk;
+  GenVar xVariable;
   i8 nRowsProcessed = 0;
   i8 nLastBuffersScanned = 0;
   
@@ -418,11 +418,11 @@ void JobModel::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
   while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
     
     // attempt to pop buffer off the buffer queue
-    if ( ! pJob_FetchRows->m_pBufferQueue->bPop(&xValWrk) ) {
+    if ( ! pJob_FetchRows->m_pBufferQueue->bPop(&xVariable) ) {
       PosixThread::vSleepMilli(1);
       continue;
     }
-    PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+    PtrVal* pPtrVal = xVariable.pNestedPtrVal();
     pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
     
     if (pJob_FetchRows->m_bDisplay) {

@@ -77,7 +77,7 @@ namespace Forth
     bool bPop(Object*& pObject);
     bool bPop(Object*& pObject, i8& iArg);
     bool bPop(Object*& pObject1, Object*& pObject2);
-    bool bPop(Object*& pObject, GenVar& xValWrk);
+    bool bPop(Object*& pObject, GenVar& xVariable);
     bool bPop(Register* pArg1);
     bool bPop(GenVar* pArg1);
     bool bPop(GenVar& xArg1);
@@ -112,7 +112,7 @@ namespace Forth
     void vPushValWrk(GenVar* pValue);
     void vPushValue(Value& xValue);
     void vPushValSet(ValSet& xValSet);
-    void vPushValWrk(GenVar& xValWrk);
+    void vPushValWrk(GenVar& xVariable);
   
     //-------------------------------------------------------------------------
     
@@ -120,9 +120,9 @@ namespace Forth
     void   vContentDump(Stz* aPrefix, Stz* aTitle);
     Value* pPeekValue(void);
     Value* pPeekValue(i8 iNthValue);
-    void   vPeekValWrk(i8 iNthValue, GenVar& xValWrk);
+    void   vPeekValWrk(i8 iNthValue, GenVar& xVariable);
     bool   bPeekZero(void);
-    void   vPokeValWrk(i8 iNthValue, GenVar& xValWrk);
+    void   vPokeValWrk(i8 iNthValue, GenVar& xVariable);
     void   vRetry(void);
     void   vRetryPoint(void);
     i8     iValues(void);

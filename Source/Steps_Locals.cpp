@@ -74,7 +74,7 @@ ENTRY("vLocalsBar"_Stz);
   
   Dic* pDic = mpTask->m_oPathStack.pPick(0);
 
-  GenVar xValWrk;
+  GenVar xVariable;
   
   for (;;) {
     
@@ -106,13 +106,13 @@ ENTRY("vLocalsBar"_Stz);
     pWordLocal->vVariable(mpTask->m_pCompiler->m_nVariables);
     
     // encode the word
-    xValWrk = mpTask->m_pCompiler->m_nVariables;
-    pWordLocal->vEncode("pushValue"_Stz,&xValWrk);
+    xVariable = mpTask->m_pCompiler->m_nVariables;
+    pWordLocal->vEncode("pushValue"_Stz,&xVariable);
     pWordLocal->vEncode("local.fetch"_Stz);
     pWordLocal->vEncode("exit"_Stz);
 
     // initialise the local from dstack
-    pCurrentWord->vEncode("pushValue"_Stz,&xValWrk);
+    pCurrentWord->vEncode("pushValue"_Stz,&xVariable);
     pCurrentWord->vEncode("local.store"_Stz);
     
     mpTask->m_pCompiler->m_nVariables++;
@@ -174,10 +174,10 @@ ENTRY("vLocalsTo"_Stz);
     mpTask->m_oPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   ASSERT(pWordVariable);
  
-  GenVar xValWrk;
-  xValWrk = pWordVariable->iVariable();
+  GenVar xVariable;
+  xVariable = pWordVariable->iVariable();
   
-  pCurrentWord->vEncode("pushValue"_Stz,&xValWrk);
+  pCurrentWord->vEncode("pushValue"_Stz,&xVariable);
   pCurrentWord->vEncode("local.store"_Stz);
 
   EXIT();

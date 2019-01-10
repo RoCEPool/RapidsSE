@@ -502,7 +502,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
-  GenVar xValWrk;
+  GenVar xVariable;
   
   Row* aThisRow = aRow();
   i8 nCols = pIdxColVec->nItems();
@@ -522,13 +522,13 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case DM_BOL: {
         Bol xBol = *((Bol*)pDst);
-        xValWrk = xBol;
+        xVariable = xBol;
         break;
       }
         
       case DM_DTE: {
         Dte xDte = *((Dte*)pDst);
-        xValWrk = xDte;
+        xVariable = xDte;
         break;
       }
         
@@ -536,18 +536,18 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 #ifdef _VLQ
         i8 iInt = IntLib::iVlqToInt((byte*)pDst);
         Bcd xBcd = *((Bcd*)&iInt);
-        xValWrk = xBcd;
+        xVariable = xBcd;
         break;
 #else
         Bcd xBcd = *((Bcd*)pDst);
-        xValWrk = xBcd;
+        xVariable = xBcd;
         break;
 #endif
       }
         
       case DM_FLT: {
         Flt xFlt = *((Flt*)pDst);
-        xValWrk = xFlt.dAsD8();
+        xVariable = xFlt.dAsD8();
         break;
       }
         
@@ -555,11 +555,11 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 #ifdef _VLQ
         i8 iInt = IntLib::iVlqToInt((byte*)pDst);
         Int xInt = *((Int*)&iInt);
-        xValWrk = xInt.iAsI8();
+        xVariable = xInt.iAsI8();
         break;
 #else
         Int xInt = *((Int*)pDst);
-        xValWrk = xInt.iAsI8();
+        xVariable = xInt.iAsI8();
         break;
 #endif
 
@@ -567,7 +567,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         
       case DM_IVL: {
         Ivl xIvl = *((Ivl*)pDst);
-        xValWrk = xIvl;
+        xVariable = xIvl;
         break;
       }
         
@@ -575,7 +575,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         Tme xTme = *((Tme*)pDst);
         //bool b = Tme::bExtract(pDst,&xTme,iLength,pColumn);
         //ASSERT(b);
-        xValWrk = xTme;
+        xVariable = xTme;
         break;
       }
         
@@ -583,7 +583,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
         Tsp xTsp = *((Tsp*)pDst);
         //bool b = Tsp::bExtract(pDst,&xTsp,iLength,pColumn);
         //ASSERT(b);
-        xValWrk = xTsp;
+        xVariable = xTsp;
         break;
       }
         
@@ -595,7 +595,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       case DM_VCH: {
         s17KB s;
         s = (Stz*)pDst;
-        xValWrk = s;
+        xVariable = s;
         break;
       }
         
@@ -604,7 +604,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
     }
     
     // add the column value to the key
-    xKeyWrk.vAddDatum(xValWrk, pColumn);
+    xKeyWrk.vAddDatum(xVariable, pColumn);
   }
   
 }

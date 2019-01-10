@@ -705,7 +705,7 @@ i8 Table::iRowPartition(Stz* pRow)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   i8 nCols = m_xSlots.pPtnColVec()->nItems();
-  GenVar xValWrk;
+  GenVar xVariable;
   s256 s;
   i8 iHash = 0;
   

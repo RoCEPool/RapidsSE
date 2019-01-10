@@ -70,11 +70,11 @@ void Step::vDstackClass(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(nTh) )
     THROW_INVALID_DSTACK("stack.class"_Stz);
   
-  GenVar xValWrk;
+  GenVar xVariable;
   
-  mpTask->m_pDataStack->vPeekValWrk(nTh,xValWrk);
+  mpTask->m_pDataStack->vPeekValWrk(nTh,xVariable);
   
-  eCN eClass = xValWrk.pNestedValue()->eClass();
+  eCN eClass = xVariable.pNestedValue()->eClass();
   
   mpTask->m_pDataStack->vPushInt(eClass);
   
@@ -181,18 +181,18 @@ void Step::vDstackDump(MP_Task mpTask)
 {
   ENTRY("vDstackDump"_Stz);
   
-  GenVar xValWrk;
-  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+  GenVar xVariable;
+  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK("dump"_Stz);
   
   s48K sString;
-  xValWrk.vToString(sString);
-  Stz* aClass = xValWrk.aClass();
+  xVariable.vToString(sString);
+  Stz* aClass = xVariable.aClass();
   
-  eCN eClass = xValWrk.eClass();
+  eCN eClass = xVariable.eClass();
   
   if (CN_PTRVAL == eClass) {
-    PtrVal* pPtrVal = _pPtrVal(&xValWrk);
+    PtrVal* pPtrVal = _pPtrVal(&xVariable);
     Object* pObject = pPtrVal->pPtr();
     eCN ePtdClass   = pObject->eClass();
     vTrace("[%s] %s (%s %s)\n"_Stz,
@@ -202,7 +202,7 @@ void Step::vDstackDump(MP_Task mpTask)
            aCN[ePtdClass]);
   }
   else if (CN_IPVAL == eClass) {                                         //RAY??
-    IpVal* pIpVal = _pIpVal(&xValWrk);
+    IpVal* pIpVal = _pIpVal(&xVariable);
     Cell* pCell = pIpVal->pIpPtr();
     vTrace("[%s] nullptr\n"_Stz,
            mpTask->aJobName());    //RAY: should trace pIpVal
@@ -244,11 +244,11 @@ void Step::vDstackOver(MP_Task mpTask)
   
   // could do this directly on stack
   
-  GenVar xValWrk;
+  GenVar xVariable;
   
-  mpTask->m_pDataStack->vPeekValWrk(1,xValWrk);
+  mpTask->m_pDataStack->vPeekValWrk(1,xVariable);
   
-  mpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xVariable);
   
   EXIT();
 }
@@ -266,11 +266,11 @@ void Step::vDstackPick(MP_Task mpTask)
   
   // could do this directly on stack
   
-  GenVar xValWrk;
+  GenVar xVariable;
   
-  mpTask->m_pDataStack->vPeekValWrk(iPick,xValWrk);
+  mpTask->m_pDataStack->vPeekValWrk(iPick,xVariable);
   
-  mpTask->m_pDataStack->vPushValWrk(xValWrk);
+  mpTask->m_pDataStack->vPushValWrk(xVariable);
   
   EXIT();
 }
@@ -475,25 +475,25 @@ void Step::vDstackToValSet(MP_Task mpTask)
   Stz* pCursor = nullptr;
   ValSet xValSet;
   
-  GenVar xValWrk;
+  GenVar xVariable;
   for (i8 iValue = 0; iValue < nValues; iValue++) {
     
-    if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+    if ( ! mpTask->m_pDataStack->bPop(xVariable) )
       THROW_INVALID_DSTACK(">valset"_Stz);
     
-    if (xValWrk.pNestedValue()->eClass() == CN_PTRVAL) {
-      PtrVal* pPtrVal = _pPtrVal(xValWrk.pNestedValue());
+    if (xVariable.pNestedValue()->eClass() == CN_PTRVAL) {
+      PtrVal* pPtrVal = _pPtrVal(xVariable.pNestedValue());
       Object* pObject = pPtrVal->pPtr();
       eCN eObjectClass = pObject->eClass();
       
       if (eObjectClass == CN_PLAN)
-        xValWrk.vAssignBinary(pObject);
+        xVariable.vAssignBinary(pObject);
       
       if ( _bIsValidJob(eObjectClass) )
-        xValWrk.vAssignBinary(pObject);
+        xVariable.vAssignBinary(pObject);
     }
     
-    xValSet.vAppend(pCursor,xValWrk.pNestedValueSelf());
+    xValSet.vAppend(pCursor,xVariable.pNestedValueSelf());
   }
   
   //  vTrace("ValSet %lld bytes\n"_Stz,xValSet.nSize());

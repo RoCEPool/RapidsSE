@@ -377,8 +377,8 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
     }
     
     // pop an entryBuffer off the queue
-    GenVar xValWrk;
-    while (!pJob_FetchRows->m_pBufferQueue->bPop(&xValWrk)) {
+    GenVar xVariable;
+    while (!pJob_FetchRows->m_pBufferQueue->bPop(&xVariable)) {
       //vTrace("SLEEPING\n"_Stz);
       PosixThread::vSleepMilli(1);
     }
@@ -388,7 +388,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
     *piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
     
     // get entry buffer
-    PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+    PtrVal* pPtrVal = xVariable.pNestedPtrVal();
     pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
     //vTrace("Expected rows per buffer %lld %lld\n"_Stz, rowsPerBuffer, pJob_FetchRows->m_pFetchBuffer->nFetchedRows());
     //vTrace("Got buffer %p %lld\n"_Stz, pJob_FetchRows->m_pFetchBuffer, pJob_FetchRows->m_iPartition);
@@ -1428,8 +1428,8 @@ void vDeleteJobs(Session* pSession)
       while (pJob_FetchRows->m_nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers) {
         // pop an entryBuffer off the queue
         vApiLocation(pSession,300);
-        GenVar xValWrk;
-        while (!pJob_FetchRows->m_pBufferQueue->bPop(&xValWrk)) {
+        GenVar xVariable;
+        while (!pJob_FetchRows->m_pBufferQueue->bPop(&xVariable)) {
           PosixThread::vSleepMilli(1);
           vApiLocation(pSession,400);
           continue;
@@ -1437,7 +1437,7 @@ void vDeleteJobs(Session* pSession)
         
         vApiLocation(pSession,500);
         
-        PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+        PtrVal* pPtrVal = xVariable.pNestedPtrVal();
         pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
         
         if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {

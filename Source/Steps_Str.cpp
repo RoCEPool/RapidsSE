@@ -69,8 +69,8 @@ void Step::vStrAlgebra(MP_Task mpTask)
   // declaring a fixed length string
   s32 xString("A test"_Stz);
   
-  GenVar xValWrk;
-  StrVal* pStrVal = _pStrVal(&xValWrk);
+  GenVar xVariable;
+  StrVal* pStrVal = _pStrVal(&xVariable);
   
   
   

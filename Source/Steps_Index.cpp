@@ -282,7 +282,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Entry* pEntry     = nullptr;
   
-  GenVar xValWrk;
+  GenVar xVariable;
   Session* pSession = mpTask->m_pSession;
   FetchBuffer* pFetchBuffer;
   
@@ -302,7 +302,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
-  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK("index.exactKey"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -328,7 +328,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
   KeyWrk xKeyWrk;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_xFormatters;
-  xKeyWrk.vAddDatum(xValWrk,pColumn0,pFormatters);
+  xKeyWrk.vAddDatum(xVariable,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -371,8 +371,8 @@ void Step::vIndexExactKey(MP_Task mpTask)
         
         // Buffer is Full
         // put this FetchBuffer in session bufferQueue
-        xValWrk = (Object*)pFetchBuffer;
-        pQueue->bAppend(xValWrk.pNestedValue());
+        xVariable = (Object*)pFetchBuffer;
+        pQueue->bAppend(xVariable.pNestedValue());
         
         // create another fetchBuffer for the results
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
@@ -410,8 +410,8 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  xValWrk = (Object*)pFetchBuffer;
-  pQueue->bAppend(xValWrk.pNestedValue());
+  xVariable = (Object*)pFetchBuffer;
+  pQueue->bAppend(xVariable.pNestedValue());
   
   EXIT();
 }
@@ -623,7 +623,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   FetchBuffer* pFetchBuffer;
   
-  GenVar xValWrk;
+  GenVar xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
@@ -641,7 +641,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
-  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK("index.lowerBound"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -668,7 +668,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_xFormatters;
-  xKeyWrkLower.vAddDatum(xValWrk,pColumn0,pFormatters);
+  xKeyWrkLower.vAddDatum(xVariable,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -716,8 +716,8 @@ void Step::vIndexLowerBound(MP_Task mpTask)
       
       // Buffer is Full;
       // put this tempEntryBuffer in session bufferQueue
-      xValWrk = (Object*)pFetchBuffer;
-      pQueue->bAppend(xValWrk.pNestedValue());
+      xVariable = (Object*)pFetchBuffer;
+      pQueue->bAppend(xVariable.pNestedValue());
       
       // create another fetchBuffer for the results
       pFetchBuffer = new FetchBuffer(pTable, iSlot);
@@ -753,8 +753,8 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  xValWrk = (Object*)pFetchBuffer;
-  pQueue->bAppend(xValWrk.pNestedValue());
+  xVariable = (Object*)pFetchBuffer;
+  pQueue->bAppend(xVariable.pNestedValue());
   
   EXIT();
 }
@@ -817,7 +817,7 @@ void Step::vIndexPosition(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Object* pPtrPlanner = nullptr;
   Object* pPtrIndexBuffer = nullptr;
-  GenVar xValWrk;
+  GenVar xVariable;
   i8 i_Phrase;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
@@ -840,13 +840,13 @@ void Step::vIndexPosition(MP_Task mpTask)
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
-  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK("index.position"_Stz);
   
   KeyWrk xKeyWrk;
   Column* pColumn = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_xFormatters;
-  xKeyWrk.vAddDatum(xValWrk, pColumn, pFormatters);
+  xKeyWrk.vAddDatum(xVariable, pColumn, pFormatters);
   //xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
 
   // position at key in the entry buffer
@@ -866,7 +866,7 @@ void Step::vIndexPositionFirst(MP_Task mpTask)
   ENTRY("vIndexFirst"_Stz);
   
   Object* pPtrIndex = nullptr;
-  GenVar xValWrk;
+  GenVar xVariable;
   i8 iPartition;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -901,7 +901,7 @@ void Step::vIndexRange(MP_Task mpTask)
   
   GenVar xValWrkLwr;
   GenVar xValWrkUpr;
-  GenVar xValWrk;
+  GenVar xVariable;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
@@ -1093,8 +1093,8 @@ void Step::vIndexRange(MP_Task mpTask)
         
         // Buffer is Full
         // put this fetchBuffer in session bufferQueue
-        xValWrk = (Object*)pFetchBuffer;
-        pQueue->bAppend(xValWrk.pNestedValue());
+        xVariable = (Object*)pFetchBuffer;
+        pQueue->bAppend(xVariable.pNestedValue());
 
         // create another fetchBbuffer for the results
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
@@ -1139,8 +1139,8 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  xValWrk = (Object*)pFetchBuffer;
-  pQueue->bAppend(xValWrk.pNestedValue());
+  xVariable = (Object*)pFetchBuffer;
+  pQueue->bAppend(xVariable.pNestedValue());
   
   EXIT();
 }
@@ -1155,7 +1155,7 @@ void Step::vIndexScan(MP_Task mpTask)
   Session* pSession = mpTask->m_pSession;
   Object* pPtrIndex = nullptr;
   FetchBuffer* pFetchBuffer;
-  GenVar xValWrk;
+  GenVar xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
@@ -1198,8 +1198,8 @@ void Step::vIndexScan(MP_Task mpTask)
     pFetchBuffer->vIsLast(true);
     
     // put the buffer in the session bufferQueue
-    xValWrk = (Object*)pFetchBuffer;
-    pQueue->bAppend(xValWrk.pNestedValue());
+    xVariable = (Object*)pFetchBuffer;
+    pQueue->bAppend(xVariable.pNestedValue());
 
     EXIT();
     return;
@@ -1223,8 +1223,8 @@ void Step::vIndexScan(MP_Task mpTask)
       
       // Buffer is Full
       // put this FetchBuffer in session bufferQueue
-      xValWrk = (Object*)pFetchBuffer;
-      pQueue->bAppend(xValWrk.pNestedValue());
+      xVariable = (Object*)pFetchBuffer;
+      pQueue->bAppend(xVariable.pNestedValue());
       
       // create another FetchBuffer for the results
       pFetchBuffer = new FetchBuffer(pTable, iSlot);
@@ -1261,8 +1261,8 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  xValWrk = (Object*)pFetchBuffer;
-  pQueue->bAppend(xValWrk.pNestedValue());
+  xVariable = (Object*)pFetchBuffer;
+  pQueue->bAppend(xVariable.pNestedValue());
   
   EXIT();
 }
@@ -1429,7 +1429,7 @@ void Step::vIndexUpper(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Object* pPtrEntry = nullptr;
 
-  GenVar xValWrk;
+  GenVar xVariable;
   i8 iPartition;
   i8 i_Phrase;
   
@@ -1457,14 +1457,14 @@ void Step::vIndexUpper(MP_Task mpTask)
   Entry* pEntry = _pEntry(pPtrEntry);
   ASSERT(CN_ENTRY == pEntry->eClass());
   
-  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK("index.upper"_Stz);
   
   // assuming non-complex key
   //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   KeyWrk xKeyWrk;
   Formatters* pFormatters = &gpAttachMap->m_xFormatters;
-  xKeyWrk.vAddDatum(xValWrk, pIndex->pIdxColVec()->pGet(0),pFormatters);
+  xKeyWrk.vAddDatum(xVariable, pIndex->pIdxColVec()->pGet(0),pFormatters);
   
   eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
   bool bIsEqual = false;
@@ -1485,7 +1485,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   
   Object* pPtrIndex = nullptr;
   Session* pSession = mpTask->m_pSession;
-  GenVar xValWrk;
+  GenVar xVariable;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
@@ -1503,7 +1503,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   ASSERT(CN_JOB_SUBFETCH == pJob_SubFetch->eClass());
   
   // get the key
-  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK("index.upperBound"_Stz);
   
   FetchBuffer* pFetchBuffer;
@@ -1541,7 +1541,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   KeyWrk xKeyWrkUpper;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
   Formatters* pFormatters = &gpAttachMap->m_xFormatters;
-  xKeyWrkUpper.vAddDatum(xValWrk,pColumn0,pFormatters);
+  xKeyWrkUpper.vAddDatum(xVariable,pColumn0,pFormatters);
   //xKeyWrkUpper.vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1632,8 +1632,8 @@ void Step::vIndexUpperBound(MP_Task mpTask)
         
         // Buffer is full
         // put this tempEntryBuffer in session bufferQueue
-        xValWrk = (Object*)pFetchBuffer;
-        pQueue->bAppend(xValWrk.pNestedValue());
+        xVariable = (Object*)pFetchBuffer;
+        pQueue->bAppend(xVariable.pNestedValue());
         
         // create another result buffer for the results
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
@@ -1673,8 +1673,8 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  xValWrk = (Object*)pFetchBuffer;
-  pQueue->bAppend(xValWrk.pNestedValue());
+  xVariable = (Object*)pFetchBuffer;
+  pQueue->bAppend(xVariable.pNestedValue());
   
   EXIT();
 }

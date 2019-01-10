@@ -129,11 +129,11 @@ void Step::vComma(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  GenVar xValWrk;
-  if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
+  GenVar xVariable;
+  if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK("comma"_Stz);
   
-  pCurrentWord->vEncode("pushValue"_Stz,&xValWrk);
+  pCurrentWord->vEncode("pushValue"_Stz,&xVariable);
   
   // I replaced this with POSTPONE exit where needed -ray
   //pCurrentWord->vEncode("exit"_Stz);

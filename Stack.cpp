@@ -403,7 +403,7 @@ bool Stack::bPop(Object*& pObject1, Object*& pObject2)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from data stack                                                */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Object*& pObject, GenVar& xValWrk)
+bool Stack::bPop(Object*& pObject, GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -415,7 +415,7 @@ bool Stack::bPop(Object*& pObject, GenVar& xValWrk)
   
   pObject = xPtrVal1.pPtr();
   
-  return bPop(xValWrk);
+  return bPop(xVariable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -944,11 +944,11 @@ void Stack::vPushValSet(ValSet& xValSet)
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValWrk(GenVar& xValWrk)
+void Stack::vPushValWrk(GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(xValWrk.pNestedValue());
+  vPushVal(xVariable.pNestedValue());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -983,18 +983,18 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
 {
   vTrace("[%s]%s:\n"_Stz,aPrefix,aTitle);
   
-  GenVar xValWrk;
+  GenVar xVariable;
   
   s48K sString;
   
   i8 nValues = iValues();
   for (i8 iVal = 0; iVal < nValues; iVal++) {
     
-    vPeekValWrk(iVal,xValWrk);
+    vPeekValWrk(iVal,xVariable);
     
-    xValWrk.vToString(sString);
+    xVariable.vToString(sString);
     
-    Value* pNestedValue = xValWrk.pNestedValue();
+    Value* pNestedValue = xVariable.pNestedValue();
     eCN eClass = pNestedValue->eClass();
     
     switch(eClass) {
@@ -1007,13 +1007,13 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
       }
         
       case CN_INTVAL: {
-        i8 iIntVal = xValWrk.iNestedAsInt();
+        i8 iIntVal = xVariable.iNestedAsInt();
         vTrace("[%s] [%2lld] [%s] %lld\n"_Stz,aPrefix,iVal,aCN[eClass],iIntVal);
         break;
       }
         
       case CN_PTRVAL: {
-        PtrVal* pPtrVal = xValWrk.pNestedPtrVal();
+        PtrVal* pPtrVal = xVariable.pNestedPtrVal();
         Object* pObject = pPtrVal->pPtr();
         eCN ePtdClass   = pObject->eClass();
         vTrace("[%s] [%2lld] [%s] %s (%s)\n"_Stz,
@@ -1061,7 +1061,7 @@ Value* Stack::pPeekValue(i8 iNthValue)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekValWrk(i8 iNthValue, GenVar& xValWrk)
+void Stack::vPeekValWrk(i8 iNthValue, GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -1071,21 +1071,21 @@ void Stack::vPeekValWrk(i8 iNthValue, GenVar& xValWrk)
 
   //vTrace("Peek: %lld %p %lld\n"_Stz,iNthValue,pPeekedValue,iSize);
   
-  MemLib::vCopy(xValWrk.pNestedValueSelf(),pPeekedValue,iSize,CN_STACK);
+  MemLib::vCopy(xVariable.pNestedValueSelf(),pPeekedValue,iSize,CN_STACK);
 }
 
 /*----------------------------------------------------------------------------*/
 /* poke at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeValWrk(i8 iNthValue, GenVar& xValWrk)
+void Stack::vPokeValWrk(i8 iNthValue, GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  i8 iSize = xValWrk.pNestedValueSelf()->nSize();
+  i8 iSize = xVariable.pNestedValueSelf()->nSize();
   
   Value* pPokeAddress = pPeekValue(iNthValue);
   
-  MemLib::vCopy(pPokeAddress,xValWrk.pNestedValueSelf(),iSize,CN_STACK);
+  MemLib::vCopy(pPokeAddress,xVariable.pNestedValueSelf(),iSize,CN_STACK);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -28,16 +28,16 @@ void Step::vQueueAppend(MP_Task mpTask)
 ENTRY("vQueueAppend"_Stz);
   
   Object* pObject;
-  GenVar xValWrk;
+  GenVar xVariable;
   
-  if ( ! mpTask->m_pDataStack->bPop(pObject,xValWrk) )
+  if ( ! mpTask->m_pDataStack->bPop(pObject,xVariable) )
     THROW_INVALID_DSTACK("queue.append"_Stz);
   
   Queue* pQueue = static_cast<Queue*>(pObject);
   ASSERT(pQueue);
   ASSERT(CN_QUEUE == pObject->eClass());
   
-  pQueue->bAppend(xValWrk.pNestedValue());
+  pQueue->bAppend(xVariable.pNestedValue());
   
   EXIT();
 }
@@ -140,7 +140,7 @@ void Step::vQueuePop(MP_Task mpTask)
   ENTRY("vQueuePop"_Stz);
   
   Object* pObject;
-  GenVar xValWrk;
+  GenVar xVariable;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("queue.pop"_Stz);
@@ -151,8 +151,8 @@ void Step::vQueuePop(MP_Task mpTask)
   Queue* pQueue = static_cast<Queue*>(pObject);
   ASSERT(pQueue);
   
-  if (pQueue->bPop(&xValWrk)) {
-    mpTask->m_pDataStack->vPushValWrk(xValWrk);
+  if (pQueue->bPop(&xVariable)) {
+    mpTask->m_pDataStack->vPushValWrk(xVariable);
     mpTask->m_pDataStack->vPushInt((i8)1);
   }
   else
