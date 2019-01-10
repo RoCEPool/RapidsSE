@@ -7,15 +7,11 @@ namespace JobModel
 {
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class JobWriteBehind
+  class JobWriteBehind : public JobRow
   {
   public:
     Job* m_pParentJob;      // parent job
-    Table* m_pTable;        // table
     eDS  m_eDataSource;     // data source of this writeBehind
-    s48K m_aRecord;         // formatted row
-    i8   m_nRecordBytes;    // length of record
-    Formatters* m_pFormatters;
     
     EntryBuffer* m_pEntryBuffer[C_MAX_PARTITIONS];     // entry buffers
     i8 m_nWriteBehindBuffers[C_MAX_PARTITIONS];        // how many buffers
@@ -27,7 +23,6 @@ namespace JobModel
     ~JobWriteBehind(void) noexcept(false);
     
   public:
-    bool bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
     void vHandleDanglingBuffers(void);
     eEC  eInsertRow(void);
     eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);

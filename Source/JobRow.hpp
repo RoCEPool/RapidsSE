@@ -9,10 +9,10 @@ namespace JobModel
   class JobRow
   {
   public:
-  Table*      m_pTable;          // table pointer
-  s48K        m_aRecord;         // formatted row
-  i8          m_nRecordBytes;    // length of formatted row
-  Formatters* m_pFormatters;     // formatters
+    Table*      m_pTable;          // table pointer
+    s48K        m_aRecord;         // formatted row
+    i8          m_nRecordBytes;    // length of formatted row
+    Formatters* m_pFormatters;     // formatters
     
   public:
     void* operator new(size_t);
