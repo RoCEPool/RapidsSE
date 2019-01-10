@@ -84,7 +84,6 @@ Task::Task(Job* pJob)
   m_pAuxStack    = nullptr;
   
   m_pLocalsFrame = nullptr;
-  m_pOpFrame     = nullptr;
   
   IP.m_pCell     = nullptr;
   m_pEntryCell   = nullptr;

@@ -70,7 +70,7 @@ namespace Tasks
     eQR     m_eQueue;       // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
     Lock    m_oLock;        // lock for this task
-    Decider m_oAcksRemaining;        // number of acks still waiting for
+    Decider m_oAcksRemaining; // number of acks still waiting for
     Since   m_oWakeupTime;  // wakeup time
 
     i8      m_iPartition;   // which partition if a partition task
@@ -85,7 +85,6 @@ namespace Tasks
     DicStack m_oPathStack;   // dictionary stack
     
     RegFrame* m_pLocalsFrame; // local register frame chain
-    RegFrame* m_pOpFrame;     // op frame chain
 
     union {                 // instruction pointer
       Cell*   m_pCell;      // points to cell inside a word
@@ -178,10 +177,6 @@ namespace Tasks
     Word* pCompileColon(s48K& sDefinition);
     void  vCompileConstant(s48K& sDefinition);
 
-    /*------------------------------------------------------------------------*/
-
-//#include "StepsSet.hpp"
-  
     /*------------------------------------------------------------------------*/
 
   public:
