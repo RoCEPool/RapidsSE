@@ -113,10 +113,8 @@ namespace Forth
     void vRetry(void);
     void vRetryPoint(void);
   
-    Value* pTopValue(void);
+    i8 iValues(void);
   
-    i8     iValues(void);
-    
   private:
     void   vPushBy(i8 iBytes);
     void   vPopBy(i8 iBytes);

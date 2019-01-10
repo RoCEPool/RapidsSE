@@ -178,7 +178,7 @@ Value* Stack::pGetValue(i8 iNthValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* pValue = pTopValue();
+  Value* pValue = pPeekValue();
   while (iNthValue--) {
     char* aAddress = reinterpret_cast<char*>(pValue);
     i8 iSize = pValue->nSize();
@@ -272,7 +272,9 @@ Value* Stack::pPeekValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  return pTopValue();
+  Value* pValue = reinterpret_cast<Value*>(m_pTop);
+  
+  return pValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -823,7 +825,7 @@ bool Stack::bPopAsInt_Quick(i8& iArg1)
     return false;
   
   // get pointer to value on the top of the stack
-  Value* pTop = pTopValue();
+  Value* pTop = pPeekValue();
 
   // discard the value
   vDiscard();
@@ -1090,18 +1092,6 @@ void Stack::vRetryPoint(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of value on top of value stack                                 */
-/*----------------------------------------------------------------------------*/
-Value* Stack::pTopValue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  Value* pValue = reinterpret_cast<Value*>(m_pTop);
-  
-  return pValue;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of values currentl on value stack                               */
 /*----------------------------------------------------------------------------*/
 i8 Stack::iValues(void)
@@ -1118,7 +1108,7 @@ bool Stack::bPeekZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  Value* pValue = pTopValue();
+  Value* pValue = pPeekValue();
   
   if (CN_INTVAL == pValue->eClass() && 0 == _pIntVal(pValue)->iInt())
     return true;
@@ -1155,7 +1145,7 @@ void Stack::vPopVal(Value* pValue)
   //m_xHazard.vAssertFooter();
   _hazard_();
   
-  i8 iSize = pTopValue()->nSize();
+  i8 iSize = pPeekValue()->nSize();
   
   MemLib::vCopy(pValue,m_pTop,iSize,CN_STACK);
   vPopBy(iSize);

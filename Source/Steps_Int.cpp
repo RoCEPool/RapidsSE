@@ -45,13 +45,13 @@ void Step::vIntAdd(MP_Task mpTask)
   */
   
   // get pointer to value on the top of the stack
-  Value* j = mpTask->m_pDataStack->pTopValue();
+  Value* j = mpTask->m_pDataStack->pPeekValue();
   
   // discard the value
   mpTask->m_pDataStack->vDiscard();
   
   // get pointer to value on the top of the stack
-  Value* i = mpTask->m_pDataStack->pTopValue();
+  Value* i = mpTask->m_pDataStack->pPeekValue();
   
   // add the two values and leave the result on the stack
   *_pIntVal(i) = _pIntVal(j)->iInt() + _pIntVal(i)->iInt();
