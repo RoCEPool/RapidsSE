@@ -30,8 +30,8 @@ using namespace Forth;
 #include "Dic.hpp"
 #include "DicPath.hpp"
 #include "DicStack.hpp"
+#include "ValReg.hpp"
 #include "Stack.hpp"
-
 #include "Word.hpp"
 
 #include "RegFrame.hpp"

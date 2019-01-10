@@ -16,7 +16,6 @@ void Values::vCheckAssumptions(void)
   ASSERT(sizeof(Value) + sizeof(void*)  == sizeof(IpVal));
   ASSERT(sizeof(Value) + sizeof(void*)  == sizeof(PtrVal));
   ASSERT(sizeof(Value) + sizeof(i8)     == sizeof(StrVal));
-  ASSERT(sizeof(Value) + C_8KB          == sizeof(ValReg));
   ASSERT(sizeof(Value) + C_64K + 16     == sizeof(ValWrk));
   
   ASSERT(sizeof(Value) + sizeof(i8)*2 + sizeof(void*) + (C_1K*63)

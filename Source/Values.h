@@ -20,7 +20,6 @@ using namespace Values;
 
 #include "Value.hpp"
 #include "ValWrk.hpp"
-#include "ValReg.hpp"
 
 #include "BcdVal.hpp"
 #include "BinVal.hpp"
