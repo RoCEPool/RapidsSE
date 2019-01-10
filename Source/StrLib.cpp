@@ -3,6 +3,9 @@
 /*============================================================================*/
 
 #include "Base.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* wAllocate: allocate a workspace/string of given size                       */
@@ -1617,11 +1620,13 @@ bool StrLib::bExtractVarchar(char** aaSrc,
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bExtractVarcharDefault(char** aaSrc,
-                              char* aVarChar, i8 iMaxLength,
-                              char cEscapeChar,
-                              char cFieldSeparator)
+                                    char* aVarChar, i8 iMaxLength)
 {
   i8 iLength = 0;
+  
+  char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
+  char cFieldDelimiter = gpAttachMap->m_xFormatters.m_cFieldDelimiter;
+  
   char *aDst = (char*)aVarChar;
   
   char cSrc = **aaSrc;
@@ -1651,7 +1656,7 @@ bool StrLib::bExtractVarcharDefault(char** aaSrc,
     // test for normal end
     
     // test for field separator (because its not enclosed)
-    if (cSrc == cFieldSeparator)
+    if (cSrc == cFieldDelimiter)
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1660,7 +1665,7 @@ bool StrLib::bExtractVarcharDefault(char** aaSrc,
     if (cSrc == cEscapeChar) {
       
       if (StrLib::bEscapeConvertDefault( *((*aaSrc)+1),
-                                 cEscapeChar, cFieldSeparator)) {
+                                 cEscapeChar, cFieldDelimiter)) {
         
         // skip the escape character
         (*aaSrc)++;

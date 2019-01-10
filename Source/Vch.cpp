@@ -312,9 +312,7 @@ bool Vch::bExtractDefault(char** aaSrc, Stz* aDst,
   
   i8 iColumnLength = pColumn->iColumnLength();
   if ( ! StrLib::bExtractVarcharDefault(aaSrc,(char*)aVch,
-                                  iColumnLength,
-                                  pFormatters->m_cEscapeChar,
-                                  pFormatters->m_cFieldDelimiter) )
+                                  iColumnLength) )
     return false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
