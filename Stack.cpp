@@ -306,7 +306,7 @@ bool Stack::bPop(i8& iArg1, s48K& sArg2)
   GenVar xValWrk2;
   vPopVal(xValWrk2.pNestedValueSelf());
   
-  sArg2 = _pStrVal(&xValWrk2);
+  sArg2 = _pStrVal(&xValWrk2)->aStz();
   
   return true;
 }
@@ -431,7 +431,7 @@ bool Stack::bPop(s32& sArg1)
   GenVar xValWrk1;
   vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf())->aStz();
   
   return true;
 }
@@ -449,7 +449,7 @@ bool Stack::bPop(s256& sArg1)
   GenVar xValWrk1;
   vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf())->aStz();
   
   return true;
 }
@@ -467,7 +467,7 @@ bool Stack::bPop(s4K& sArg1)
   GenVar xValWrk1;
   vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf())->aStz();
   
   return true;
 }
@@ -485,7 +485,7 @@ bool Stack::bPop(s16KB& sArg1)
   GenVar xValWrk1;
   vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf())->aStz();
   
   return true;
 }
@@ -503,7 +503,7 @@ bool Stack::bPop(s48K& sArg1)
   GenVar xValWrk1;
   vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf())->aStz();
   
   return true;
 }
@@ -521,7 +521,7 @@ bool Stack::bPop(s48K& sArg1, i8& iArg2)
   GenVar xValWrk1;
   vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf())->aStz();
   
   IntVal xIntVal2;
   vPopVal(&xIntVal2);
@@ -543,7 +543,7 @@ bool Stack::bPop(s48K& sArg1, i8& iArg2, i8& iArg3)
   
   GenVar xValWrk1;
   vPopVal(xValWrk1.pNestedValueSelf());
-  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf())->aStz();
   
   IntVal xIntVal2;
   vPopVal(&xIntVal2);
@@ -569,12 +569,12 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
   GenVar xValWrk1;
   vPopVal(xValWrk1.pNestedValueSelf());
   
-  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf());
+  sArg1 = _pStrVal(xValWrk1.pNestedValueSelf())->aStz();
   
   GenVar xValWrk2;
   vPopVal(xValWrk2.pNestedValueSelf());
   
-  sArg2 = _pStrVal(xValWrk2.pNestedValueSelf());
+  sArg2 = _pStrVal(xValWrk2.pNestedValueSelf())->aStz();
   
   return true;
 }

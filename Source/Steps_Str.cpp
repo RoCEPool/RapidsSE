@@ -299,7 +299,7 @@ void Step::vStrPrepend(MP_Task mpTask)
     xStrA = xString;
   }
   else {
-    xStrA = _pStrVal(xValA.pNestedValueSelf());                          //! need to simplify this
+    xStrA = _pStrVal(xValA.pNestedValueSelf())->aStz();                          //! need to simplify this
   }
   
   // If received INTEGER convert to STRING
@@ -309,7 +309,7 @@ void Step::vStrPrepend(MP_Task mpTask)
     xStrB = xString;
   }
   else {
-    xStrB = _pStrVal(xValB.pNestedValueSelf());
+    xStrB = _pStrVal(xValB.pNestedValueSelf())->aStz();
   }
   
   xStrR = xStrB;
