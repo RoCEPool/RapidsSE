@@ -1485,7 +1485,7 @@ bool StrLib::bExtractU8(char** ps, u8* aU8, i8 iDigits)
 /*----------------------------------------------------------------------------*/
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractVarchar2(char** aaSrc,
+bool StrLib::bExtractVarchar(char** aaSrc,
                               char* aVarChar, i8 iMaxLength,
                               bool bSawLeadingEnclosed,
                               char cEnclosedBy_Leading,
@@ -1616,7 +1616,7 @@ bool StrLib::bExtractVarchar2(char** aaSrc,
 /*----------------------------------------------------------------------------*/
 /* bExtractVarchar: extract a varchar from substr                             */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bExtractVarcharDefault2(char** aaSrc,
+bool StrLib::bExtractVarcharDefault(char** aaSrc,
                               char* aVarChar, i8 iMaxLength,
                               char cEscapeChar,
                               char cFieldSeparator)

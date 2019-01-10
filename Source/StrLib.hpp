@@ -112,7 +112,7 @@ namespace Base
     static bool  bExtractU8(char** ps, u8* u);
     static bool  bExtractU8(char** ps, u8* u, i8 iDigits);
     
-    static bool  bExtractVarchar2(char** ps,
+    static bool  bExtractVarchar(char** ps,
                                   char* aVarchar, i8 iMaxLength,
                                   bool bIsEnclosed,
                                   char cEnclosedBy_Leading,
@@ -121,7 +121,7 @@ namespace Base
                                   char cFieldSeparator,
                                   char cRecordTerminator,
                                   bool bAllowNonPrintable);
-    static bool  bExtractVarcharDefault2(char** ps,
+    static bool  bExtractVarcharDefault(char** ps,
                                   char* aVarchar, i8 iMaxLength,
                                   char cEscapeChar,
                                   char cFieldSeparator);

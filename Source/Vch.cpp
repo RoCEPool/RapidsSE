@@ -258,7 +258,7 @@ bool Vch::bExtract2(char** aaSrc, Stz* aDst,
   // varchar field processing
   
   i8 iColumnLength = pColumn->iColumnLength();
-  if ( ! StrLib::bExtractVarchar2(aaSrc,(char*)aVch,
+  if ( ! StrLib::bExtractVarchar(aaSrc,(char*)aVch,
                                   iColumnLength,
                                   bSawEnclosedLeading,
                                   pFormatters->m_cEnclosedBy_Leading,
@@ -311,7 +311,7 @@ bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
   // varchar field processing
   
   i8 iColumnLength = pColumn->iColumnLength();
-  if ( ! StrLib::bExtractVarcharDefault2(aaSrc,(char*)aVch,
+  if ( ! StrLib::bExtractVarcharDefault(aaSrc,(char*)aVch,
                                   iColumnLength,
                                   pFormatters->m_cEscapeChar,
                                   pFormatters->m_cFieldDelimiter) )
