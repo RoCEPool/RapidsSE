@@ -71,7 +71,7 @@ void Step::vJob_SubIngesterBegin(MP_Task mpTask)
 
   bool bBegun = pJob_SubIngester->bBegin();
   
-  mpTask->m_pDataStack->vPushI8((i8)bBegun);
+  mpTask->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -91,18 +91,18 @@ void Step::vJob_SubIngesterChunk(MP_Task mpTask)
   bool bCallAgain = pJob_SubIngester->bChunk();
   
   if (bCallAgain) {
-    mpTask->m_pDataStack->vPushI8((i8)true);
+    mpTask->m_pDataStack->vPushBool(true);
   }
   else {
     if ( 0 == pJob_SubIngester->m_pJob_Ingest->nIngestChunks() &&
         -1 != pJob_SubIngester->m_pJob_Ingest->m_iLastChunk) {
-      mpTask->m_pDataStack->vPushI8((i8)false);
+      mpTask->m_pDataStack->vPushBool(false);
     }
     else {
       // sleep for 0.010 second
       mpTask->vSleepUs(C_1K * 10);
       mpTask->vState(TS_SLEEPING);
-      mpTask->m_pDataStack->vPushI8((i8)true);
+      mpTask->m_pDataStack->vPushBool(true);
     }
   }
   

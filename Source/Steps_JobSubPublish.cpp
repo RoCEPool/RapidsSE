@@ -34,7 +34,7 @@ void Step::vJob_SubPublishBegin(MP_Task mpTask)
   
   bool bBegun = pJob_SubPupublish->bBegin();
   
-  mpTask->m_pDataStack->vPushI8((i8)bBegun);
+  mpTask->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -53,7 +53,7 @@ void Step::vJob_SubPublishChunk(MP_Task mpTask)
   
   bool bBufferPublished = pJob_SubPupublish->bChunk();
   
-  mpTask->m_pDataStack->vPushI8((i8)true);
+  mpTask->m_pDataStack->vPushBool(true);
   
   if (! bBufferPublished) {
     mpTask->vSleepUs(C_100K);

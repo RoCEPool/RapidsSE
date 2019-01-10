@@ -96,6 +96,7 @@ namespace Forth
     bool bPopAsInt_Quick(i8& iArg1);
     i8   iPop(void);
   
+    void vPushBool(bool bBool);
     void vPushCell(Forth::Cell* pCell);
     void vPushEntry(DBobjects::Entry* aEntry);
     void vPushGenVar(GenVar* pVariable);

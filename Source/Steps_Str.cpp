@@ -458,7 +458,7 @@ void Step::vStrTailInt(MP_Task mpTask)
   
   // return false if not a digit
   if ( ! StrLib::bIsDigit(*aLast) ) {
-    mpTask->m_pDataStack->vPushI8((i8)0);
+    mpTask->m_pDataStack->vPushBool(0);
     return;
   }
   
@@ -475,7 +475,7 @@ void Step::vStrTailInt(MP_Task mpTask)
   
   // return ( int true )
   mpTask->m_pDataStack->vPushI8(iInt);
-  mpTask->m_pDataStack->vPushI8((i8)1);
+  mpTask->m_pDataStack->vPushBool(1);
   
   EXIT();
 }

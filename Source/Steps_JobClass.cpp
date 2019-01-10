@@ -59,7 +59,7 @@ void Step::vJobClassBuffer(MP_Task mpTask)
   
   bool bBuffer = pJobClass->m_bBuffer;
   
-  mpTask->m_pDataStack->vPushI8((i8)bBuffer);
+  mpTask->m_pDataStack->vPushBool(bBuffer);
   
   EXIT();
 }

@@ -72,7 +72,7 @@ void Step::vJob_SubLoaderBegin(MP_Task mpTask)
 
   bool bBegun = pJob_SubLoader->bBegin();
   
-  mpTask->m_pDataStack->vPushI8((i8)bBegun);
+  mpTask->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -91,7 +91,7 @@ void Step::vJob_SubLoaderChunk(MP_Task mpTask)
   
   bool bCallAgain = pJob_SubLoader->bChunk();
   
-  mpTask->m_pDataStack->vPushI8((i8)bCallAgain);
+  mpTask->m_pDataStack->vPushBool(bCallAgain);
 
   EXIT();
 }

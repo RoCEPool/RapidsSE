@@ -30,7 +30,7 @@ void Step::vJob_SinkBegin(MP_Task mpTask)
   
   bool bBegun = pJob_Sink->bBegin();
   
-  mpTask->m_pDataStack->vPushI8((i8)bBegun);
+  mpTask->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -49,7 +49,7 @@ void Step::vJob_SinkChunk(MP_Task mpTask)
   
   bool bCallAgain = pJob_Sink->bChunk();
   
-  mpTask->m_pDataStack->vPushI8((i8)bCallAgain);
+  mpTask->m_pDataStack->vPushBool(bCallAgain);
   
   EXIT();
 }

@@ -32,7 +32,7 @@ void Step::vJob_SubPurgerBegin(MP_Task mpTask)
   
   bool bBegun = pJob_SubPurger->bBegin();
   
-  mpTask->m_pDataStack->vPushI8((i8)bBegun);
+  mpTask->m_pDataStack->vPushBool(bBegun);
   
   EXIT();
 }
@@ -58,7 +58,7 @@ void Step::vJob_SubPurgerChunk(MP_Task mpTask)
   
   bool bCallAgain = pJob_SubPurger->bChunk();
   
-  mpTask->m_pDataStack->vPushI8((i8)true);
+  mpTask->m_pDataStack->vPushBool(true);
   
   if (! bCallAgain) {
     i8 iOlderThanSeconds = pJob_SubPurger->m_pJob_Purge->m_iOlderThanSeconds;
