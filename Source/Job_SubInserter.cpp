@@ -109,6 +109,7 @@ Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
   
   // set the enclosined_by to be a '
   m_xFormatters.m_bDefault = false;
+  m_xFormatters.m_bAllowNonPrintable = true;
   m_xFormatters.m_cEnclosedBy_Leading = '\'';
   m_xFormatters.m_cEnclosedBy_Trailing = '\'';
   
