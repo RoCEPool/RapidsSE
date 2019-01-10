@@ -120,7 +120,7 @@ void Step::vFlowJumpFalse(MP_Task mpTask)
   
   // get pointer to value on the top of the stack
   Stack* pDataStack = mpTask->m_pDataStack;
-  Value* pTop = reinterpret_cast<Value*>(pDataStack->m_pTop);
+  Value* pTop = reinterpret_cast<Value*>(pDataStack->m_aTop);
 
   eCN eClassNo = pTop->eClass(); // inline
   

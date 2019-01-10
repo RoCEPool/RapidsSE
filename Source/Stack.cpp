@@ -48,11 +48,11 @@ Stack::Stack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_pTop    = pStackBase();
+  m_aTop    = pStackBase();
   m_nValues = 0;
   
-  m_pRetryTop    = pStackBase();
-  m_iRetryValues = 0;
+  m_aRetryTop    = pStackBase();
+  m_nRetryValues = 0;
   
 #ifdef __DEBUG_CHECKS
   m_xWsp.vFill(0x00,CN_STACK);
@@ -83,7 +83,7 @@ void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("values %lld top %p\n"_Stz,
          pStack->m_nValues,
-         pStack->m_pTop);
+         pStack->m_aTop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,7 +161,7 @@ void Stack::vDiscard(void)
   //m_xHazard.vAssertFooter();
   _hazard_();
   
-  Value* pValue = reinterpret_cast<Value*>(m_pTop);
+  Value* pValue = reinterpret_cast<Value*>(m_aTop);
   i8 iSize = pValue->nSize();
   
   vPopBy(iSize);
@@ -272,7 +272,7 @@ Value* Stack::pPeekValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* pValue = reinterpret_cast<Value*>(m_pTop);
+  Value* pValue = reinterpret_cast<Value*>(m_aTop);
   
   return pValue;
 }
@@ -857,7 +857,7 @@ i8 Stack::iPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 iArg = _pIntVal(m_pTop)->iInt();
+  i8 iArg = _pIntVal(m_aTop)->iInt();
   
   vPopBy(sizeof(IntVal));
 
@@ -1076,8 +1076,8 @@ void Stack::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  m_pTop    = m_pRetryTop;
-  m_nValues = m_iRetryValues;
+  m_aTop    = m_aRetryTop;
+  m_nValues = m_nRetryValues;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1087,8 +1087,8 @@ void Stack::vRetryPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  m_pRetryTop    = m_pTop;
-  m_iRetryValues = m_nValues;
+  m_aRetryTop    = m_aTop;
+  m_nRetryValues = m_nValues;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1131,7 +1131,7 @@ void Stack::vPopVal(Value* pValue)
   
   i8 iSize = pPeekValue()->nSize();
   
-  MemLib::vCopy(pValue,m_pTop,iSize,CN_STACK);
+  MemLib::vCopy(pValue,m_aTop,iSize,CN_STACK);
   vPopBy(iSize);
   m_nValues--;
   
@@ -1146,13 +1146,13 @@ void Stack::vPushBy(i8 iBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* pTop = reinterpret_cast<char*>(m_pTop);
+  char* pTop = reinterpret_cast<char*>(m_aTop);
   
   pTop -= iBytes;
   
   ASSERT(pTop >= (char*)pStackLimit());
   
-  m_pTop = reinterpret_cast<Value*>(pTop);
+  m_aTop = reinterpret_cast<Value*>(pTop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1169,7 +1169,7 @@ void Stack::vPushVal(Value* pValue)
   i8 iSize = pValue->nSize();
   
   vPushBy(iSize);
-  MemLib::vCopy(m_pTop,pValue,iSize,CN_STACK);
+  MemLib::vCopy(m_aTop,pValue,iSize,CN_STACK);
   m_nValues++;
   
   //m_xHazard.vAssertFooter();

@@ -23,11 +23,11 @@ namespace Forth
   private:
   
   private:
+    Value* m_aTop;    // current top of stack
     i8     m_nValues; // number of values currently on stack
-    Value* m_pTop;    // current top of stack
 
-    Value* m_pRetryTop;    // reset to this top of stack
-    i8     m_iRetryValues; // reset with this many values on stack
+    Value* m_aRetryTop;    // reset to this top of stack
+    i8     m_nRetryValues; // reset with this many values on stack
     
     Footer m_xHazard;
     
@@ -134,11 +134,11 @@ namespace Forth
   {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* pTop = reinterpret_cast<char*>(m_pTop);
+  char* pTop = reinterpret_cast<char*>(m_aTop);
   
   pTop += iBytes;
   
-  m_pTop = reinterpret_cast<Value*>(pTop);
+  m_aTop = reinterpret_cast<Value*>(pTop);
   }
   
   /*----------------------------------------------------------------------------*/
@@ -151,13 +151,13 @@ namespace Forth
   if ( ! bGuard(1) )
     return false;
   
-  eCN eClassNo = m_pTop->eClass(); // inline
+  eCN eClassNo = m_aTop->eClass(); // inline
   
   if (CN_INTVAL == eClassNo)
-    iArg = _pIntVal(m_pTop)->iInt(); // inline
+    iArg = _pIntVal(m_aTop)->iInt(); // inline
   else
     if (CN_PTRVAL == eClassNo)
-      iArg = _pPtrVal(m_pTop)->pPtr() ? 1 : 0; // inline
+      iArg = _pPtrVal(m_aTop)->pPtr() ? 1 : 0; // inline
     else {
       iArg = -1;
       NEVER_REACH;
