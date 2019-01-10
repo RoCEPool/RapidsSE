@@ -59,7 +59,7 @@ namespace Forth
     
     Value* aPeekValue(void);
     Value* aPeekValue(i8 iNthValue);
-    void vPeekValWrk(i8 iNthValue, GenVar& xVariable);
+    void vPeekValue(i8 iNthValue, GenVar& xVariable);
     bool bPeekZero(void);
   
     bool bPop(Forth::Cell*& pCell);

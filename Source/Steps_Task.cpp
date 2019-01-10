@@ -377,7 +377,7 @@ ENTRY("vTaskSeed"_Stz);
   // copy task arguments to given task (preserving stack order)
   GenVar xVariable;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
-    mpTask->m_pDataStack->vPeekValWrk(iTaskArg,xVariable);
+    mpTask->m_pDataStack->vPeekValue(iTaskArg,xVariable);
     pThatTask->m_pDataStack->vPushGenVar(xVariable);
   }
   

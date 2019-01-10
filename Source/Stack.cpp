@@ -104,7 +104,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
   i8 nValues = this->nValues();
   for (i8 iVal = 0; iVal < nValues; iVal++) {
     
-    vPeekValWrk(iVal,xVariable);
+    vPeekValue(iVal,xVariable);
     
     xVariable.vToString(sString);
     
@@ -290,7 +290,7 @@ Value* Stack::aPeekValue(i8 iNthValue)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekValWrk(i8 iNthValue, GenVar& xVariable)
+void Stack::vPeekValue(i8 iNthValue, GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -1195,9 +1195,9 @@ Value* Stack::aStackLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* pLimit = &m_xWsp.aArea()[0];
+  char* aLimit = &m_xWsp.aArea()[0];
   
-  return pPoolCheck<Value*>(pLimit);
+  return pPoolCheck<Value*>(aLimit);
 }
 
 /*----------------------------------------------------------------------------*/
