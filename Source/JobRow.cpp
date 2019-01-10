@@ -29,9 +29,8 @@ JobRow::JobRow(void)
   m_pTable = nullptr;
   
   //m_aRecord;
-  
   m_nRecordBytes = 0;
-  m_pFormatters  = nullptr;
+  //m_xFormatters;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +63,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   m_nRecordBytes = C_COLUMN_OFFSET_SIZE * nColumns;
   
   // skip leading spaces
-  if (m_pFormatters->m_cRecordTerminator) {
+  if (m_xFormatters.m_cRecordTerminator) {
     //while (' ' == *aSrc || C_NL == *aSrc || C_CR == *aSrc)
     //  aSrc++;
     StrLib::vSkipWhite(&aSrc);
@@ -74,7 +73,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   }
   
   // skip blank lines
-  if (! DtmLib::bIsThereRecordData(aSrc,m_pFormatters) ) {
+  if (! DtmLib::bIsThereRecordData(aSrc,&m_xFormatters) ) {
     bBlankLine = true;
     return false;
   }
@@ -101,13 +100,13 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
       bValid = DtmLib::bExtract(eDatumType, (Stz*)&iInt, &aSrc,
                                 pColumn, bLastColumn,
                                 false,
-                                m_pFormatters);
+                                &m_xFormatters);
     }
     else {
       bValid = DtmLib::bExtract(eDatumType, aDst, &aSrc,
                                 pColumn, bLastColumn,
                                 false,
-                                m_pFormatters);
+                                &m_xFormatters);
     }
     
     // is the datum valid ?

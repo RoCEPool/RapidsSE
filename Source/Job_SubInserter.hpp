@@ -13,7 +13,6 @@ namespace JobModel
   {
   public:
     Job_InsertTable* m_pJob_InsertTable;                   // insert table job                           
-    Formatters       m_xFormatters;                        // record formatters
     
     // must be last
     Footer m_xFooter;

@@ -89,6 +89,11 @@ void Step::vJob_InsertRowNewJobWriteRow(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_InsertRow.newJobWriteRow"_Stz);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
+  Object* pTablePtr;
+  if ( ! mpTask->m_pDataStack->bPop(pTablePtr) )
+    THROW_INVALID_DSTACK("job_InsertRow.newJobWriteRow"_Stz);
+  Table* pTable = _pTable(pTablePtr);
+  
   Session* pSession = pJob_InsertRow->m_pSession;
   Stz* sTableName = pJob_InsertRow->m_sObjectName;
   i8 iParentJobId = pJob_InsertRow->iJobId();
@@ -97,6 +102,7 @@ void Step::vJob_InsertRowNewJobWriteRow(MP_Task mpTask)
   
   Job_WriteRow* pJob_WriteRow = Job_WriteRow::pNewJobWriteRow(pSession,
                                                               sTableName,
+                                                              pTable,
                                                               iParentJobId);
   
   mpTask->m_pDataStack->vPushObject(pJob_WriteRow);

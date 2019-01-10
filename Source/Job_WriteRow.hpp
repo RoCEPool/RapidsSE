@@ -7,14 +7,12 @@ namespace JobModel
 {
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_WriteRow : public Job
+  class Job_WriteRow : public Job,
+                       public JobRow
   {
   public:
-    Table* m_pTable;          // table pointer
-    i8     m_iPartitionId;    // partition id
-    i8     m_iParentJobId;    // parent (InsertRow) job id
-    s48K   m_aRecord;         // formatted row
-    i8     m_nRecordBytes;    // length of record
+    i8         m_iPartitionId;    // partition id
+    i8         m_iParentJobId;    // parent (InsertRow) job id
     
     // must be last
     Footer m_xFooter;
@@ -31,10 +29,10 @@ namespace JobModel
     
     static Job_WriteRow* pNewJobWriteRow(Interface::Session* pSession,
                                          Stz* sTableName,
+                                         Table* pTable,
                                          i8 iParentJobId);
     
   public:
-    bool bFormatRow(Table* pTable, Stz* aRawData, i8 nRawDataBytes);
     void vInsertRow(void);
     void vShow(void);
     

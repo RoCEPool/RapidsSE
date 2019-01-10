@@ -184,7 +184,7 @@ bool Job_SubLoader::bBegin(void)
   // set the table and parentJob in the writeBehind Job
   JobWriteBehind::m_pTable = m_pJob_LoadTable->m_pTable;
   JobWriteBehind::m_pParentJob = (Job*)m_pJob_LoadTable;
-  JobWriteBehind::m_pFormatters = &m_pJob_LoadTable->m_xFormatters;
+  JobWriteBehind::m_xFormatters.vSet(&m_pJob_LoadTable->m_xFormatters);
   
   return bOpened;
 }

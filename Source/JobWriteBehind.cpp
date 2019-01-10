@@ -32,13 +32,8 @@ void* JobWriteBehind::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 JobWriteBehind::JobWriteBehind(eDS eDataSource)
 {
-  //m_aRecord
-  m_nRecordBytes = 0;
-  m_pTable = nullptr;
   m_pParentJob = nullptr;
   m_eDataSource = eDataSource;
-  
-  m_pFormatters = nullptr;
   
   for (i8 i_Partition = 0; i_Partition < C_MAX_PARTITIONS; i_Partition++) {
     m_pEntryBuffer[i_Partition]   = nullptr;

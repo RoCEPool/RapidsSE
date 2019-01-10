@@ -12,7 +12,7 @@ namespace JobModel
     Table*      m_pTable;          // table pointer
     s48K        m_aRecord;         // formatted row
     i8          m_nRecordBytes;    // length of formatted row
-    Formatters* m_pFormatters;     // formatters
+    Formatters  m_xFormatters;     // formatters
     
   public:
     void* operator new(size_t);

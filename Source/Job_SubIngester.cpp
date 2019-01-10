@@ -172,7 +172,6 @@ bool Job_SubIngester::bBegin(void)
   // set the table and parentJob in the writeBehind Job
   JobWriteBehind::m_pTable = m_pJob_Ingest->m_pTable;
   JobWriteBehind::m_pParentJob = m_pJob_Ingest;
-  JobWriteBehind::m_pFormatters = &gpAttachMap->m_xFormatters;
   
   return true;
 }
