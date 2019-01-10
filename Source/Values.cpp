@@ -11,13 +11,10 @@ void Values::vCheckAssumptions(void)
 {
   ASSERT(8 == sizeof(Value));
   
-  ASSERT(sizeof(Value) + sizeof(i8) + 8 == sizeof(BinVal));
   ASSERT(sizeof(Value) + sizeof(i8)     == sizeof(IntVal));
   ASSERT(sizeof(Value) + sizeof(void*)  == sizeof(IpVal));
   ASSERT(sizeof(Value) + sizeof(void*)  == sizeof(PtrVal));
   ASSERT(sizeof(Value) + sizeof(i8)     == sizeof(StrVal));
-  
-
 
   ASSERT(sizeof(Value) + sizeof(WspVbl) == sizeof(StrVal));
   

@@ -91,7 +91,6 @@ namespace Forth
     bool bPop(s48K& sArg1, i8& iArg2);
     bool bPop(s48K& sArg1, i8& iArg2, i8& iArg3);
     bool bPop(s48K& sArg1, s48K& sArg2);
-    bool bPopBinary(Object*& pObject);
     bool bPopAsInt(i8& iArg1);
     bool bPopAsI8_Inline(i8& iArg1);
     bool bPopAsInt_Quick(i8& iArg1);

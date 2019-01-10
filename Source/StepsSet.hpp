@@ -1054,7 +1054,6 @@
   // to
   static void vToBody(Tasks::MP_Task mpTask);
   static void vToInt(Tasks::MP_Task mpTask);
-  static void vToObject(Tasks::MP_Task mpTask);
   static void vToPtr(Tasks::MP_Task mpTask);
   static void vToStr(Tasks::MP_Task mpTask);
   static void vToTask(Tasks::MP_Task mpTask);

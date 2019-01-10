@@ -682,13 +682,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     
     eCN eClass = pValue->eClass();
     
-    if (CN_BINVAL == eClass) {
-      Object* pObject = _pBinVal(pValue)->pNewObject();
-      sStackContents.vCatSprint("(BINVAL)^%s=%p"_Stz,
-                                aCN[pObject->eClass()],
-                                pObject);
-    }
-    else if (CN_INTVAL == eClass) {
+    if (CN_INTVAL == eClass) {
       sStackContents.vCatSprint("%lld"_Stz,_pIntVal(pValue)->iInt());
     }
     else if (CN_PTRVAL == eClass) {
@@ -704,7 +698,6 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
                                     pPtr,
                                     ((Word*)pPtr)->sName().aChar());
         else if (CN_QUEUE == ePtrClass) {
-          Queue* pQueue = _pQueue(pPtr);
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
                                     aCN[ePtrClass],
                                     pPtr,

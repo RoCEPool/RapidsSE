@@ -202,23 +202,6 @@ void GenVar::operator =(Tsp xTsp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy a string into workspace                                        */
-/*----------------------------------------------------------------------------*/
-void GenVar::vAssignBinary(Object* pObject)
-{
-  _precondition_(_MAGIC_,CN_VALWRK);
-  
-  eCN eClassNo = pObject->eClass();
-  
-  BinVal* pNestedBinVal = (BinVal*)pNestedValue();
-  
-  // set nested class
-  pNestedBinVal->vSetClass(CN_BINVAL);
-  
-  *pNestedBinVal = pObject;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get wsp area                                                               */
 /*----------------------------------------------------------------------------*/
 char* GenVar::aWspArea(void)
@@ -248,18 +231,6 @@ Value* GenVar::pNestedValueSelf(void)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get value in the wsp area                                                  */
-/*----------------------------------------------------------------------------*/
-BinVal* GenVar::pNestedBinVal(void)
-{
-  _precondition_(_MAGIC_);
-  
-  BinVal* pNestedBinVal = reinterpret_cast<BinVal*>(pNestedValue());
-  
-  return pNestedBinVal;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get integer (ignoring type)                                                */

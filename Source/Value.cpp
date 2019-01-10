@@ -39,12 +39,6 @@ i8 Value::nSize(void)
   
   switch (eClass) {
       
-    case CN_BINVAL: {
-      BinVal* pBinVal = _pBinVal(this);
-      nBytes = pBinVal->nSize();
-      break;
-    }
-      
     case CN_INTVAL: {
       IntVal* pIntVal = _pIntVal(this);
       nBytes = pIntVal->nSize();
@@ -86,13 +80,7 @@ void Value::vToString(Stz* aString)
   eCN eClass = this->eClass();
   
   switch (eClass) {
-      
-    case CN_BINVAL: {
-      BinVal* pBinVal = _pBinVal(this);
-      pBinVal->vToString(aString);
-      break;
-    }
-      
+            
     case CN_INTVAL: {
       IntVal* pIntVal = _pIntVal(this);
       pIntVal->vToString(aString);

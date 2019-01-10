@@ -731,24 +731,6 @@ i8 Stack::iPop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop binary from data stack                                                 */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPopBinary(Object*& pObject)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_BINVAL) )
-    return false;
-
-  GenVar xBinVal;
-  vPopVal(xBinVal.pNestedValueSelf());
-  
-  pObject = _pBinVal(&xBinVal)->pNewObject();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -17,12 +17,10 @@ namespace Forth {
 
 namespace Values
 {
-  class BinVal;
   class IntVal;
   class IpVal;
   class PtrVal;
   class StrVal;
-  class ValSet;
   
   class Value : public Header
   {

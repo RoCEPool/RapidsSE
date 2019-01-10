@@ -14,7 +14,6 @@ void Step::vAddSteps_To(void)
   vAddStep(">body"_Stz,       &Step::vToBody);
   vAddStep(">digitName"_Stz,  &Step::vToDigitName);
   vAddStep(">int"_Stz,        &Step::vToInt);
-  vAddStep(">object"_Stz,     &Step::vToObject);
   vAddStep(">ptr"_Stz,        &Step::vToPtr);
   vAddStep(">str"_Stz,        &Step::vToStr);
   vAddStep(">task"_Stz,       &Step::vToTask);
@@ -56,22 +55,6 @@ void Step::vToInt(MP_Task mpTask)
   i8 i = sInt.iToI8();
   
   mpTask->m_pDataStack->vPushInt(i);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >object -- change binval to object                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vToObject(MP_Task mpTask)
-{
-  ENTRY("vToObject"_Stz);
-  
-  Object* pObject;
-  if ( ! mpTask->m_pDataStack->bPopBinary(pObject) )
-    THROW_INVALID_RSTACK(">Object"_Stz);
-  
-  mpTask->m_pDataStack->vPushObject(pObject);
   
   EXIT();
 }

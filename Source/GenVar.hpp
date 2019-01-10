@@ -46,13 +46,11 @@ namespace Forth
     void operator =(Stz* aStr);
     void operator =(Tme xTme);
     void operator =(Tsp xTsp);
-    void vAssignBinary(Object* pObject);
     
     char*  aWspArea(void);
     Value* pNestedValue(void);
     Value* pNestedValueSelf(void);
   
-    BinVal* pNestedBinVal(void);
     i8      iNestedAsInt(void);
     IntVal* pNestedIntVal(void);
     PtrVal* pNestedPtrVal(void);

@@ -288,8 +288,8 @@ i8 giClassSize[]
 {
   /*  0 */ 0,                          // CN_NONE
   
-  /*  1 */ 0,                          // CN_BCDVAL
-  /*  2 */ sizeof(BinVal),             // CN_BINVAL
+  /*  1 */ sizeof(BcdVal),             // CN_BCDVAL
+  /*  2 */ 0,                          // CN_BINVAL
   /*  3 */ sizeof(BolVal),             // CN_BOLVAL
   /*  4 */ sizeof(DteVal),             // CN_DTEVAL
   /*  5 */ 0,                          // CN_ENTWRK
