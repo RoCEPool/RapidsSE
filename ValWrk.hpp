@@ -8,7 +8,7 @@ namespace Forth
   // the nested value inspector
   class ValSee
   {
-    Value    m_xValue;      // the Value header
+    Header    m_xHeader;    // header
     union {
       struct {
         i8   m_nSize;       // size of str
@@ -19,14 +19,16 @@ namespace Forth
     };
   };
   
-  class ValWrk : public Value
+  class ValWrk : public Object
   {
   private:
     union {
       WspFxd<C_64K> m_xWsp;         // workspace
       ValSee        m_xNestedValue; // inspector
     };
-    Footer          m_xFooter;
+  
+    // must be last
+    Footer m_xFooter;
     
     public:
     void* operator new(size_t);

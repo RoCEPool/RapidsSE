@@ -30,7 +30,7 @@ void* ValWrk::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ValWrk::ValWrk(void)
-: Value(CN_VALWRK)
+: Object(CN_VALWRK)
 {
   _precondition_(_MAGIC_,CN_VALWRK);                    //! need to add _FOOTER_
   
