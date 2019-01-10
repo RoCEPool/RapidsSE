@@ -1227,7 +1227,7 @@ Footer* Stack::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* get location of hazard                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Stack::pHazard(void)
+Footer* Stack::aHazard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK);
   

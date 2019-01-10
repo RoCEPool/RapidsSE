@@ -40,7 +40,7 @@ namespace CorrectnessAlgebra
 /*--------------------------------------------------------------------------*/
 #ifdef __FOOTER_CHECK
   #define _footer_() aFooter()->vAssertFooter();
-  #define _hazard_() m_xHazard.vAssertFooter();
+  #define _hazard_() aHazard()->vAssertFooter();
   #define _setFooter_() aFooter()->vSetFooter();
 #else
   #define _footer_()

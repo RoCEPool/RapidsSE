@@ -117,8 +117,6 @@ namespace Forth
   
     i8     iValues(void);
     
-  
-  
   private:
     void   vPushBy(i8 iBytes);
     void   vPopBy(i8 iBytes);
@@ -128,7 +126,7 @@ namespace Forth
     Value* pStackLimit(void);
     
     Footer* aFooter(void);
-    Footer* pHazard(void);
+    Footer* aHazard(void);
   };
   
   /*----------------------------------------------------------------------------*/
