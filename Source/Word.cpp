@@ -409,7 +409,7 @@ void Word::vEncode(Stz* aWord, Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWord, ValWrk* pValWrk)
+void Word::vEncode(Stz* aWord, GenVar* pValWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

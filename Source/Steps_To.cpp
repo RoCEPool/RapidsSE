@@ -101,7 +101,7 @@ void Step::vToStr(MP_Task mpTask)
 {
   ENTRY("vToStr"_Stz);
   
-  ValWrk xVal;
+  GenVar xVal;
   if ( ! mpTask->m_pDataStack->bPop(xVal) )
     THROW_INVALID_DSTACK(">str"_Stz);
   

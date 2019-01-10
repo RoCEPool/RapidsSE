@@ -24,7 +24,7 @@ namespace Values
     void operator =(Stz* aArg);
     void operator =(StrVal& xArg);
     void operator =(StrVal* pArg);
-    //void operator =(ValWrk& rArg);
+    //void operator =(GenVar& rArg);
   
     void vTest(void);
   
@@ -155,7 +155,7 @@ void StrVar<SIZE>::operator =(StrVal* pArg)
 ///* assignment operator                                                        */
 ///*----------------------------------------------------------------------------*/
 //template <int SIZE>
-//void StrVar<SIZE>::operator =(ValWrk& rArg)
+//void StrVar<SIZE>::operator =(GenVar& rArg)
 //{
 //  _precondition_(_MAGIC_,_FOOTER_);
 //  

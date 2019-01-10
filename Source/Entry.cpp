@@ -502,7 +502,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   Row* aThisRow = aRow();
   i8 nCols = pIdxColVec->nItems();

@@ -69,7 +69,7 @@ void Step::vStrAlgebra(MP_Task mpTask)
   // declaring a fixed length string
   s32 xString("A test"_Stz);
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   StrVal* pStrVal = _pStrVal(&xValWrk);
   
   
@@ -142,8 +142,8 @@ void Step::vStrEqual(MP_Task mpTask)
 {
   ENTRY("vStrEql"_Stz);
   
-  ValWrk xStringA;
-  ValWrk xStringB;
+  GenVar xStringA;
+  GenVar xStringB;
   
   // get the arguments
   if ( ! mpTask->m_pDataStack->bPop(xStringB,xStringA) )
@@ -282,7 +282,7 @@ void Step::vStrPad(MP_Task mpTask)
   
   i8 iLength;
   
-  ValWrk xStringA;
+  GenVar xStringA;
   
   // get the arguments
   if ( ! mpTask->m_pDataStack->bPop(iLength,xStringA) )
@@ -309,8 +309,8 @@ void Step::vStrPrepend(MP_Task mpTask)
   s48K xStrB;
   s48K xStrA;
   
-  ValWrk xValA;
-  ValWrk xValB;
+  GenVar xValA;
+  GenVar xValB;
   
   if ( ! mpTask->m_pDataStack->bPop(xValB,xValA) )
     THROW_INVALID_DSTACK("str.prepend"_Stz);

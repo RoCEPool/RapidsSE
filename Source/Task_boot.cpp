@@ -225,7 +225,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   Word* pNewWord;
   TaskStep  pStep;
   Word* pCalledWord;
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   m_pCompiler->m_pTokeniser->vUseString(sDefinition);
   

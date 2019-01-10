@@ -28,7 +28,7 @@ void Step::vQueueAppend(MP_Task mpTask)
 ENTRY("vQueueAppend"_Stz);
   
   Object* pObject;
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject,xValWrk) )
     THROW_INVALID_DSTACK("queue.append"_Stz);
@@ -140,7 +140,7 @@ void Step::vQueuePop(MP_Task mpTask)
   ENTRY("vQueuePop"_Stz);
   
   Object* pObject;
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("queue.pop"_Stz);

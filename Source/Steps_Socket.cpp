@@ -89,7 +89,7 @@ void Step::vSocketConnect(MP_Task mpTask)
   SysCall oSysCall;
   Socket* pSocket;
   Object* pObject;
-  ValWrk xNode;
+  GenVar xNode;
   
   i8 iPort;
   

@@ -71,18 +71,18 @@ namespace Forth
     bool bPop(i8& iArg1);
     bool bPop(i8& iArg1, i8& iArg2);
     bool bPop(i8& iArg1, Object*& pObject);
-    bool bPop(i8& iArg1, ValWrk& xArg1);
+    bool bPop(i8& iArg1, GenVar& xArg1);
     bool bPop(i8& iArg1, s48K& sArg2);
     bool bPop(i8& iArg1, i8& iArg2, Value& xArg3);
     bool bPop(Object*& pObject);
     bool bPop(Object*& pObject, i8& iArg);
     bool bPop(Object*& pObject1, Object*& pObject2);
-    bool bPop(Object*& pObject, ValWrk& xValWrk);
+    bool bPop(Object*& pObject, GenVar& xValWrk);
     bool bPop(Register* pArg1);
-    bool bPop(ValWrk* pArg1);
-    bool bPop(ValWrk& xArg1);
-    bool bPop(ValWrk& xArg1, ValWrk& xArg2);
-    bool bPop(ValWrk& xArg1, ValWrk& xArg2, ValWrk& xArg3);
+    bool bPop(GenVar* pArg1);
+    bool bPop(GenVar& xArg1);
+    bool bPop(GenVar& xArg1, GenVar& xArg2);
+    bool bPop(GenVar& xArg1, GenVar& xArg2, GenVar& xArg3);
     bool bPop(ValSet& xArg1);
     bool bPop(s32&  sArg1);
     bool bPop(s256& sArg1);
@@ -109,10 +109,10 @@ namespace Forth
     void vPushS16KB(s16KB& s16KB);
     void vPushValue(Value* pValue);
     void vPushRegister(Register* pValue);
-    void vPushValWrk(ValWrk* pValue);
+    void vPushValWrk(GenVar* pValue);
     void vPushValue(Value& xValue);
     void vPushValSet(ValSet& xValSet);
-    void vPushValWrk(ValWrk& xValWrk);
+    void vPushValWrk(GenVar& xValWrk);
   
     //-------------------------------------------------------------------------
     
@@ -120,9 +120,9 @@ namespace Forth
     void   vContentDump(Stz* aPrefix, Stz* aTitle);
     Value* pPeekValue(void);
     Value* pPeekValue(i8 iNthValue);
-    void   vPeekValWrk(i8 iNthValue, ValWrk& xValWrk);
+    void   vPeekValWrk(i8 iNthValue, GenVar& xValWrk);
     bool   bPeekZero(void);
-    void   vPokeValWrk(i8 iNthValue, ValWrk& xValWrk);
+    void   vPokeValWrk(i8 iNthValue, GenVar& xValWrk);
     void   vRetry(void);
     void   vRetryPoint(void);
     i8     iValues(void);

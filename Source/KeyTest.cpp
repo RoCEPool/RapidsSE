@@ -13,7 +13,7 @@ void KeyTest::vTest(void)
   vTrace("\n\nKeyTest:*************************************************\n"_Stz);
 
   KeyWrk xKeyWrk;
-  ValWrk xValWrk;
+  GenVar xValWrk;
   KeyVal* pKeyVal;
   
   /*-----------------------------------------------------------------------*/
@@ -509,7 +509,7 @@ void KeyTest::vTestA(void)
   pOpAry->vAdd(RO_LESS_THAN);
   
   KeyWrk xKeyWrk;
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   xKeyWrk.vReset();
   xValWrk = (i8)1;

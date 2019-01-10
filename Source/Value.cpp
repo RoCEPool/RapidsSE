@@ -129,12 +129,6 @@ void Value::vToString(Stz* aString)
       break;
     }
       
-    case CN_VALWRK: {
-      ValWrk* pValWrk = _pValWrk(this);
-      pValWrk->vToString(aString);
-      break;
-    }
-      
     default:
       vTrace("Value::vToString -- invalid eClass %lld"_Stz,eClass);
       NEVER_REACH;

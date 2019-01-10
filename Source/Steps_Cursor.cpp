@@ -24,7 +24,7 @@ void Step::vCursorFetch(MP_Task mpTask)
   
   i8 iPeek = 1;
   
-  ValWrk xCursorWsp;
+  GenVar xCursorWsp;
   
   mpTask->m_pReturnStack->vPeekValWrk(iPeek,xCursorWsp);
   
@@ -42,7 +42,7 @@ void Step::vCursorStore(MP_Task mpTask)
   
   i8 iPoke = 1;
   
-  ValWrk xCursorWsp;
+  GenVar xCursorWsp;
   
   if ( ! mpTask->m_pDataStack->bPop(xCursorWsp) )
     THROW_INVALID_DSTACK("cursor!"_Stz);

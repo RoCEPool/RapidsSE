@@ -375,7 +375,7 @@ ENTRY("vTaskSeed"_Stz);
     THROW_INVALID_DSTACK("task.seed"_Stz);
   
   // copy task arguments to given task (preserving stack order)
-  ValWrk xValWrk;
+  GenVar xValWrk;
   for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
     mpTask->m_pDataStack->vPeekValWrk(iTaskArg,xValWrk);
     pThatTask->m_pDataStack->vPushValWrk(xValWrk);

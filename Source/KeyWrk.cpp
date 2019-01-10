@@ -75,7 +75,7 @@ void KeyWrk::vAddDatum(char* aDatum)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters)
+void KeyWrk::vAddDatum(GenVar& xValWrk, Column* pCol, Formatters* pFormatters)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
@@ -158,7 +158,7 @@ void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters)
 /*----------------------------------------------------------------------------*/
 /* add element to key                                                         */
 /*----------------------------------------------------------------------------*/
-void KeyWrk::vAddDatum(ValWrk& xValWrk, Column* pCol)
+void KeyWrk::vAddDatum(GenVar& xValWrk, Column* pCol)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   

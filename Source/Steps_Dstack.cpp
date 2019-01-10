@@ -70,7 +70,7 @@ void Step::vDstackClass(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(nTh) )
     THROW_INVALID_DSTACK("stack.class"_Stz);
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pDataStack->vPeekValWrk(nTh,xValWrk);
   
@@ -104,7 +104,7 @@ void Step::vDstackDrop(MP_Task mpTask)
   
   // should just discard on stack
   
-  ValWrk xValA;
+  GenVar xValA;
   if ( ! mpTask->m_pDataStack->bPop(xValA) )
     THROW_INVALID_DSTACK("drop"_Stz);
   
@@ -120,8 +120,8 @@ void Step::vDstackDropTwo(MP_Task mpTask)
   
   // should just discard on stack
   
-  ValWrk xValA;
-  ValWrk xValB;
+  GenVar xValA;
+  GenVar xValB;
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB) )
     THROW_INVALID_DSTACK("2drop"_Stz);
   
@@ -141,7 +141,7 @@ void Step::vDstackDup(MP_Task mpTask)
 
   // could just copy from stack back into stack
   
-  ValWrk xValA;
+  GenVar xValA;
   if ( ! mpTask->m_pDataStack->bPop(xValA) )
     THROW_INVALID_DSTACK("dup"_Stz);
   
@@ -160,7 +160,7 @@ void Step::vDstackDupNonZero(MP_Task mpTask)
   
   // could just copy from stack back into stack
   
-  ValWrk xValA;
+  GenVar xValA;
   if ( ! mpTask->m_pDataStack->bPop(xValA) )
     THROW_INVALID_DSTACK("?dup"_Stz);
   
@@ -181,7 +181,7 @@ void Step::vDstackDump(MP_Task mpTask)
 {
   ENTRY("vDstackDump"_Stz);
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("dump"_Stz);
   
@@ -224,8 +224,8 @@ void Step::vDstackNip(MP_Task mpTask)
 {
   ENTRY("vDstackNip"_Stz);
   
-  ValWrk xValA;
-  ValWrk xValB;
+  GenVar xValA;
+  GenVar xValB;
   
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB) )
     THROW_INVALID_DSTACK("nip"_Stz);
@@ -244,7 +244,7 @@ void Step::vDstackOver(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pDataStack->vPeekValWrk(1,xValWrk);
   
@@ -266,7 +266,7 @@ void Step::vDstackPick(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pDataStack->vPeekValWrk(iPick,xValWrk);
   
@@ -282,16 +282,16 @@ void Step::vDstackReverse(MP_Task mpTask)
 {
   ENTRY("vDstackReverse"_Stz);
   
-  ValWrk xVal0;
-  ValWrk xVal1;
-  ValWrk xVal2;
-  ValWrk xVal3;
-  ValWrk xVal4;
-  ValWrk xVal5;
-  ValWrk xVal6;
-  ValWrk xVal7;
+  GenVar xVal0;
+  GenVar xVal1;
+  GenVar xVal2;
+  GenVar xVal3;
+  GenVar xVal4;
+  GenVar xVal5;
+  GenVar xVal6;
+  GenVar xVal7;
   
-  ValWrk* apValWrk[8] = {
+  GenVar* apValWrk[8] = {
     &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
   };
   
@@ -316,8 +316,8 @@ void Step::vDstackRoll(MP_Task mpTask)
 {
   ENTRY("vDstackRoll"_Stz);
   
-  ValWrk xValA;
-  ValWrk xValX;
+  GenVar xValA;
+  GenVar xValX;
   
   i8 nValues;
   if ( ! mpTask->m_pDataStack->bPop(nValues) )
@@ -352,8 +352,8 @@ void Step::vDstackRollInv(MP_Task mpTask)
 {
   ENTRY("vDstackRollInv"_Stz);
   
-  ValWrk xValZ;
-  ValWrk xValX;
+  GenVar xValZ;
+  GenVar xValX;
   
   i8 nValues;
   if ( ! mpTask->m_pDataStack->bPop(nValues) )
@@ -389,9 +389,9 @@ void Step::vDstackRot(MP_Task mpTask)
 {
   ENTRY("vDstackRot"_Stz);
   
-  ValWrk xValA;
-  ValWrk xValB;
-  ValWrk xValC;
+  GenVar xValA;
+  GenVar xValB;
+  GenVar xValC;
   
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB,xValC) )
     THROW_INVALID_DSTACK("rot"_Stz);
@@ -410,9 +410,9 @@ void Step::vDstackRotInv(MP_Task mpTask)
 {
   ENTRY("vDstackRotInv"_Stz);
   
-  ValWrk xValA;
-  ValWrk xValB;
-  ValWrk xValC;
+  GenVar xValA;
+  GenVar xValB;
+  GenVar xValC;
   
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB,xValC) )
     THROW_INVALID_DSTACK("-rot"_Stz);
@@ -445,8 +445,8 @@ void Step::vDstackSwap(MP_Task mpTask)
 {
   ENTRY("vDstackSwap"_Stz);
   
-  ValWrk xValA;
-  ValWrk xValB;
+  GenVar xValA;
+  GenVar xValB;
   
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB) )
     THROW_INVALID_DSTACK("swap"_Stz);
@@ -475,7 +475,7 @@ void Step::vDstackToValSet(MP_Task mpTask)
   Stz* pCursor = nullptr;
   ValSet xValSet;
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   for (i8 iValue = 0; iValue < nValues; iValue++) {
     
     if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
@@ -541,8 +541,8 @@ void Step::vDstackTuck(MP_Task mpTask)
 {
   ENTRY("vDstackTuck"_Stz);
   
-  ValWrk xValA;
-  ValWrk xValB;
+  GenVar xValA;
+  GenVar xValB;
   
   if ( ! mpTask->m_pDataStack->bPop(xValA,xValB) )
     THROW_INVALID_DSTACK("tuck"_Stz);

@@ -199,7 +199,7 @@ void StrVal::operator =(Stz* aStr)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-//void StrVal::operator =(ValWrk& rArg)
+//void StrVal::operator =(GenVar& rArg)
 //{
 //  _precondition_(_MAGIC_,_FOOTER_);
 //  

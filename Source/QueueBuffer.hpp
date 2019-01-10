@@ -5,7 +5,7 @@
 
 namespace Forth
 {
-  class ValWrk;
+  class GenVar;
 }
 
 namespace Structures
@@ -35,7 +35,7 @@ namespace Structures
     void     vContentDump(Stz* aTab);
     QueueBuffer* pNext(void);
     void     vNext(QueueBuffer* pQbuffer);
-    bool     bPop(Forth::ValWrk* pValWrk, bool& bDiscard);
+    bool     bPop(Forth::GenVar* pValWrk, bool& bDiscard);
     bool     bPop(ValSet* pValSet, bool& bDiscard);
 
   private:

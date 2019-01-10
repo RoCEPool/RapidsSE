@@ -49,7 +49,7 @@ void Step::vAstackClass(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(nTh) )
     THROW_INVALID_DSTACK("astack.class"_Stz);
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(nTh,xValWrk);
   
@@ -83,7 +83,7 @@ void Step::vAstackDrop(MP_Task mpTask)
   
   // should just discard on stack
   
-  ValWrk xValA;
+  GenVar xValA;
   if ( ! mpTask->m_pAuxStack->bPop(xValA) )
     THROW_INVALID_ASTACK("adrop"_Stz);
   
@@ -99,7 +99,7 @@ void Step::vAstackDup(MP_Task mpTask)
   
   // could just copy from stack back into stack
   
-  ValWrk xValA;
+  GenVar xValA;
   if ( ! mpTask->m_pAuxStack->bPop(xValA) )
   THROW_INVALID_DSTACK("adup"_Stz);
   
@@ -118,7 +118,7 @@ void Step::vAstackFetch(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(0,xValWrk);
   
@@ -134,8 +134,8 @@ void Step::vAstackNip(MP_Task mpTask)
 {
   ENTRY("vAstackNip"_Stz);
   
-  ValWrk xValA;
-  ValWrk xValB;
+  GenVar xValA;
+  GenVar xValB;
   
   if ( ! mpTask->m_pAuxStack->bPop(xValA,xValB) )
   THROW_INVALID_ASTACK("anip"_Stz);
@@ -158,7 +158,7 @@ void Step::vAstackPick(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(iPick,xValWrk);
   
@@ -174,16 +174,16 @@ void Step::vAstackReverse(MP_Task mpTask)
 {
   ENTRY("vAstackReverse"_Stz);
   
-  ValWrk xVal0;
-  ValWrk xVal1;
-  ValWrk xVal2;
-  ValWrk xVal3;
-  ValWrk xVal4;
-  ValWrk xVal5;
-  ValWrk xVal6;
-  ValWrk xVal7;
+  GenVar xVal0;
+  GenVar xVal1;
+  GenVar xVal2;
+  GenVar xVal3;
+  GenVar xVal4;
+  GenVar xVal5;
+  GenVar xVal6;
+  GenVar xVal7;
   
-  ValWrk* apValWrk[8] = {
+  GenVar* apValWrk[8] = {
     &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
   };
   
@@ -222,8 +222,8 @@ void Step::vAstackSwap(MP_Task mpTask)
 {
   ENTRY("vAstackSwap"_Stz);
   
-  ValWrk xValA;
-  ValWrk xValB;
+  GenVar xValA;
+  GenVar xValB;
   
   if ( ! mpTask->m_pAuxStack->bPop(xValA,xValB) )
   THROW_INVALID_ASTACK("aswap"_Stz);
@@ -252,7 +252,7 @@ void Step::vAstackToValSet(MP_Task mpTask)
   Stz* pCursor = nullptr;
   ValSet xValSet;
   
-  ValWrk xVal;
+  GenVar xVal;
   for (i8 iVal = 0; iVal < nVal; iVal++) {
     
     if ( ! mpTask->m_pAuxStack->bPop(xVal) )
@@ -302,7 +302,7 @@ void Step::vAstackToA(MP_Task mpTask)
 {
   ENTRY("vAstackToA"_Stz);
   
-  ValWrk xValOpaque;
+  GenVar xValOpaque;
   if ( ! mpTask->m_pDataStack->bPop(xValOpaque) )
     THROW_INVALID_DSTACK(">a"_Stz);
   
@@ -318,7 +318,7 @@ void Step::vAstackToP(MP_Task mpTask)
 {
   ENTRY("vAstackToP"_Stz);
   
-  ValWrk xVal;
+  GenVar xVal;
   if ( ! mpTask->m_pAuxStack->bPop(xVal) )
     THROW_INVALID_ASTACK("a>"_Stz);
   
@@ -339,7 +339,7 @@ void Step::vAstackTransfer(MP_Task mpTask)
     THROW_INVALID_DSTACK(">auxStack"_Stz);
   Task* pThatTask = _pTask(pPtrTask);
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK(">auxStack"_Stz);
   
@@ -359,7 +359,7 @@ void Step::vAstack0(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(0,xValWrk);
   
@@ -377,7 +377,7 @@ void Step::vAstack1(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(1,xValWrk);
   
@@ -395,7 +395,7 @@ void Step::vAstack2(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(2,xValWrk);
   
@@ -413,7 +413,7 @@ void Step::vAstack3(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(3,xValWrk);
   
@@ -431,7 +431,7 @@ void Step::vAstack4(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(4,xValWrk);
   
@@ -449,7 +449,7 @@ void Step::vAstack5(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(5,xValWrk);
   
@@ -467,7 +467,7 @@ void Step::vAstack6(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(6,xValWrk);
   
@@ -485,7 +485,7 @@ void Step::vAstack7(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(7,xValWrk);
   
@@ -503,7 +503,7 @@ void Step::vAstack8(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(8,xValWrk);
   
@@ -521,7 +521,7 @@ void Step::vAstack9(MP_Task mpTask)
   
   // could do this directly on stack
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   mpTask->m_pAuxStack->vPeekValWrk(9,xValWrk);
   

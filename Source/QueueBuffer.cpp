@@ -147,7 +147,7 @@ void QueueBuffer::vNext(QueueBuffer* pQbuffer)
 /*----------------------------------------------------------------------------*/
 /* pop value from this queue (there may not be any)                           */
 /*----------------------------------------------------------------------------*/
-bool QueueBuffer::bPop(Forth::ValWrk* pValWrk, bool& bDiscardable)
+bool QueueBuffer::bPop(Forth::GenVar* pValWrk, bool& bDiscardable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
 

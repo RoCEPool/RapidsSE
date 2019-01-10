@@ -46,7 +46,7 @@ void ValSet::operator delete(void* pValSetAddress)
 ValSet::ValSet(void)
 : Value(CN_VALSET)
 {
-  ASSERT(sizeof(ValSet) <= sizeof(ValWrk));
+  ASSERT(sizeof(ValSet) <= sizeof(GenVar));
   
   _memZero_(m_wWorkspace,C_VALSET_DATAAREA,CN_VALSET);
   
@@ -463,11 +463,11 @@ Stz* ValSet::aLastByte(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert cursor to ValWrk*                                                  */
+/* convert cursor to GenVar*                                                  */
 /*----------------------------------------------------------------------------*/
-//ValWrk* ValSet::pToValWrk(Stz* pCursor)
+//GenVar* ValSet::pToValWrk(Stz* pCursor)
 //{
-//  return reinterpret_cast<ValWrk*>(pCursor);
+//  return reinterpret_cast<GenVar*>(pCursor);
 //}
 
 /*============================================================================*/

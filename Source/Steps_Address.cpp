@@ -23,8 +23,8 @@ void Step::vAddressEqual(MP_Task mpTask)
 {
   ENTRY("vAddressEql"_Stz);
   
-  ValWrk xAddressA;
-  ValWrk xAddressB;
+  GenVar xAddressA;
+  GenVar xAddressB;
   
   if ( ! mpTask->m_pDataStack->bPop(xAddressA,xAddressB) )
     THROW_INVALID_DSTACK("eql"_Stz);
@@ -50,7 +50,7 @@ void Step::vAddressFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("@"_Stz);
   
-  ValWrk xValFetched;
+  GenVar xValFetched;
   
   eCN eClass = pObject->eClass();
   
@@ -93,7 +93,7 @@ void Step::vAddressStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("!"_Stz);
   
-  ValWrk xValStored;
+  GenVar xValStored;
   if ( ! mpTask->m_pDataStack->bPop(xValStored) )
     THROW_INVALID_DSTACK("!"_Stz);
   

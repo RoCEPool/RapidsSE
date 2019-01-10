@@ -241,7 +241,7 @@ Entry* GroupBy::pToLineItemEntry(Index* pIndex, Entry* pEntry)
   
   // form the hidden index key using the row id from the entry
   KeyWrk xKeyWrk;
-  ValWrk xValWrk;
+  GenVar xValWrk;
   xValWrk = xId.iRow();
   
   // hiddenIndex should have only one column

@@ -176,7 +176,7 @@ ENTRY("vDicName"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
 
-  ValWrk sName;
+  GenVar sName;
   sName = pDic->sName();
   
   mpTask->m_pDataStack->vPushValWrk(sName);

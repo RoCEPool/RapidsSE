@@ -30,10 +30,11 @@ using namespace Forth;
 #include "Dic.hpp"
 #include "DicPath.hpp"
 #include "DicStack.hpp"
+#include "GenVar.hpp"
 #include "Register.hpp"
-#include "ValWrk.hpp"
-#include "Stack.hpp"
 #include "Word.hpp"
+
+#include "Stack.hpp"
 
 #include "RegFrame.hpp"
 

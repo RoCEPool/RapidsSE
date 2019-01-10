@@ -87,7 +87,7 @@ void Step::vObjectFetch(MP_Task mpTask)
   
   i8 iPick = 0;
   
-  ValWrk xObjectWsp;
+  GenVar xObjectWsp;
   
   mpTask->m_pReturnStack->vPeekValWrk(iPick,xObjectWsp);
   
@@ -121,7 +121,7 @@ void Step::vObjectStore(MP_Task mpTask)
   
   i8 iPeek = 0;
   
-  ValWrk xObjectWsp;
+  GenVar xObjectWsp;
   
   if ( ! mpTask->m_pDataStack->bPop(xObjectWsp) )
     THROW_INVALID_DSTACK("object!"_Stz);

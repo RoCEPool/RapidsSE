@@ -377,7 +377,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
     }
     
     // pop an entryBuffer off the queue
-    ValWrk xValWrk;
+    GenVar xValWrk;
     while (!pJob_FetchRows->m_pBufferQueue->bPop(&xValWrk)) {
       //vTrace("SLEEPING\n"_Stz);
       PosixThread::vSleepMilli(1);
@@ -1428,7 +1428,7 @@ void vDeleteJobs(Session* pSession)
       while (pJob_FetchRows->m_nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers) {
         // pop an entryBuffer off the queue
         vApiLocation(pSession,300);
-        ValWrk xValWrk;
+        GenVar xValWrk;
         while (!pJob_FetchRows->m_pBufferQueue->bPop(&xValWrk)) {
           PosixThread::vSleepMilli(1);
           vApiLocation(pSession,400);

@@ -21,7 +21,7 @@ void Step::vShellExecute(MP_Task mpTask)
 {
   ENTRY("vShellExecute"_Stz);
   
-  ValWrk xCommand;
+  GenVar xCommand;
   
   if ( ! mpTask->m_pDataStack->bPop(xCommand) )
     THROW_INVALID_DSTACK("shell.execute"_Stz);

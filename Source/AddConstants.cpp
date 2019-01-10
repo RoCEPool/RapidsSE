@@ -28,7 +28,7 @@ void Axioms::vAddConstant(Stz* aName, Stz* aValue)
 {
   Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
   
-  ValWrk xWspStr;
+  GenVar xWspStr;
   xWspStr = aValue;
   
   pNewWord->vEncode("pushValue"_Stz,&xWspStr);
@@ -498,8 +498,8 @@ void Axioms::vAddConstants(void)
   /*  2 */ vAddConstant("SIZEOF_IPVAL"_Stz,  sizeof(IpVal));
   /*  4 */ vAddConstant("SIZEOF_PTRVAL"_Stz, sizeof(PtrVal));
   /*  5 */ vAddConstant("SIZEOF_STRVAL"_Stz, sizeof(StrVal));
-  /*  6 */ vAddConstant("SIZEOF_VALSET"_Stz, sizeof(ValWrk)); // correct
-  /*  7 */ vAddConstant("SIZEOF_ValWrk"_Stz, sizeof(ValWrk)); // correct
+  /*  6 */ vAddConstant("SIZEOF_VALSET"_Stz, sizeof(GenVar)); // correct
+  /*  7 */ vAddConstant("SIZEOF_ValWrk"_Stz, sizeof(GenVar)); // correct
   
   /*  8 */ vAddConstant("SIZEOF_ARGUMENTS"_Stz,    sizeof(Arguments));
   /*  9 */ vAddConstant("SIZEOF_ATOMIC"_Stz,       sizeof(Atomic));

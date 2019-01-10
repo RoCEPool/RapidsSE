@@ -396,7 +396,7 @@ void JobModel::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   i8 nRowsProcessed = 0;
   i8 nLastBuffersScanned = 0;
   

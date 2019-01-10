@@ -19,8 +19,8 @@ namespace DBobjects
     ~KeyWrk(void) noexcept(false);
     
     void vAddDatum(char* aDatum);
-    void vAddDatum(ValWrk& xValWrk, Column* pCol);
-    void vAddDatum(ValWrk& xValWrk, Column* pCol, Formatters* pFormatters);
+    void vAddDatum(GenVar& xValWrk, Column* pCol);
+    void vAddDatum(GenVar& xValWrk, Column* pCol, Formatters* pFormatters);
     void vAddKey(Key* aKey, IdxColVec* pColVec);
     void vAddWord(w8 wWord);
     Key* aKey(void);

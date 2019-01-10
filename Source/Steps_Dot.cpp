@@ -26,7 +26,7 @@ void Step::vDot(MP_Task mpTask)
   
   s48K sString;
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("."_Stz);
   
@@ -51,7 +51,7 @@ void Step::vDotPut(MP_Task mpTask)
   
   s48K sString;
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK(".put"_Stz);
   
@@ -82,7 +82,7 @@ void Step::vDotVerbose(MP_Task mpTask)
   
   s48K sString;
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK(".verbose"_Stz);
   

@@ -442,7 +442,7 @@ ENTRY("vTableInsert"_Stz);
  
   Object* pPtrTable;
   Object* pPtrTx;
-  ValWrk xRow;
+  GenVar xRow;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.insert"_Stz);

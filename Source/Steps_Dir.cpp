@@ -75,7 +75,7 @@ void Step::vDirGetCurrent(MP_Task mpTask)
 {
   ENTRY("vDirGetCurrent"_Stz);
   
-  ValWrk xStrVal;
+  GenVar xStrVal;
   
   s256 sDirPath;
   

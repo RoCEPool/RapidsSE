@@ -129,7 +129,7 @@ void Step::vComma(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   if ( ! mpTask->m_pDataStack->bPop(xValWrk) )
     THROW_INVALID_DSTACK("comma"_Stz);
   
@@ -445,7 +445,7 @@ void Step::vHashHashColon(MP_Task mpTask)
 {
   ENTRY("vHashHashColon"_Stz);
   
-  ValWrk xWsp;
+  GenVar xWsp;
   Cell* pOpFrameJumpArg = nullptr;
   Cell* pToColonJumpArg = nullptr;
 

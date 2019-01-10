@@ -305,7 +305,7 @@ i8 giClassSize[]
   /* 15 */ sizeof(TspVal),             // CN_TSPVAL
   /* 16 */ sizeof(Register),           // CN_VALREG
   /* 17 */ sizeof(ValSet),             // CN_VALSET
-  /* 18 */ sizeof(ValWrk),             // CN_VALWRK
+  /* 18 */ sizeof(GenVar),             // CN_VALWRK
   
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
   /* 20 */ sizeof(Accum),              // CN_ACCUM

@@ -328,7 +328,7 @@ void Step::vEncodePushValue(MP_Task mpTask)
 {
   ENTRY("vEncodePushValue"_Stz);
   
-  ValWrk xValA;
+  GenVar xValA;
   if ( ! mpTask->m_pDataStack->bPop(xValA) )
     THROW_INVALID_DSTACK("encodePushValue"_Stz);
   

@@ -282,7 +282,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Entry* pEntry     = nullptr;
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   Session* pSession = mpTask->m_pSession;
   FetchBuffer* pFetchBuffer;
   
@@ -623,7 +623,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   FetchBuffer* pFetchBuffer;
   
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get members from subFetch
@@ -817,7 +817,7 @@ void Step::vIndexPosition(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Object* pPtrPlanner = nullptr;
   Object* pPtrIndexBuffer = nullptr;
-  ValWrk xValWrk;
+  GenVar xValWrk;
   i8 i_Phrase;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrPlanner) )
@@ -866,7 +866,7 @@ void Step::vIndexPositionFirst(MP_Task mpTask)
   ENTRY("vIndexFirst"_Stz);
   
   Object* pPtrIndex = nullptr;
-  ValWrk xValWrk;
+  GenVar xValWrk;
   i8 iPartition;
   
   if ( ! mpTask->m_pDataStack->bPop(pPtrIndex) )
@@ -899,9 +899,9 @@ void Step::vIndexRange(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Session* pSession = mpTask->m_pSession;
   
-  ValWrk xValWrkLwr;
-  ValWrk xValWrkUpr;
-  ValWrk xValWrk;
+  GenVar xValWrkLwr;
+  GenVar xValWrkUpr;
+  GenVar xValWrk;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
@@ -1155,7 +1155,7 @@ void Step::vIndexScan(MP_Task mpTask)
   Session* pSession = mpTask->m_pSession;
   Object* pPtrIndex = nullptr;
   FetchBuffer* pFetchBuffer;
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive
@@ -1429,7 +1429,7 @@ void Step::vIndexUpper(MP_Task mpTask)
   Object* pPtrIndex = nullptr;
   Object* pPtrEntry = nullptr;
 
-  ValWrk xValWrk;
+  GenVar xValWrk;
   i8 iPartition;
   i8 i_Phrase;
   
@@ -1485,7 +1485,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   
   Object* pPtrIndex = nullptr;
   Session* pSession = mpTask->m_pSession;
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get parameters for the primitive

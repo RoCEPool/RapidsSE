@@ -95,7 +95,7 @@ namespace Forth
     void  vEncode(Stz* aWord, Cell* pCell);
     void  vEncode(Stz* aWord, Word* pWord);
     void  vEncode(Stz* aWord, Value* pValue);
-    void  vEncode(Stz* aWord, ValWrk* pValWrk);
+    void  vEncode(Stz* aWord, GenVar* pValWrk);
     void  vEncode(TaskStep* ppEntryStep);
     Cell* pFirstCell(void);
     bool  bHasCell(Cell* pCell);

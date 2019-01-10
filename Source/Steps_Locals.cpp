@@ -74,7 +74,7 @@ ENTRY("vLocalsBar"_Stz);
   
   Dic* pDic = mpTask->m_oPathStack.pPick(0);
 
-  ValWrk xValWrk;
+  GenVar xValWrk;
   
   for (;;) {
     
@@ -174,7 +174,7 @@ ENTRY("vLocalsTo"_Stz);
     mpTask->m_oPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
   ASSERT(pWordVariable);
  
-  ValWrk xValWrk;
+  GenVar xValWrk;
   xValWrk = pWordVariable->iVariable();
   
   pCurrentWord->vEncode("pushValue"_Stz,&xValWrk);
