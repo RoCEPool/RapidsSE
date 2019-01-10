@@ -176,10 +176,10 @@ ENTRY("vDicName"_Stz);
   
   Dic* pDic = _pDic(pPtrDic);
 
-  GenVar sName;
+  s32 sName;
   sName = pDic->sName();
   
-  mpTask->m_pDataStack->vPushGenVar(sName);
+  mpTask->m_pDataStack->vPushS32(sName);
   
   EXIT();
 }
