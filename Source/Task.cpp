@@ -294,7 +294,7 @@ void Task::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 /* set exception                                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vException(StrVal& sFile, StrVal& eException)
+void Task::vException(s256& sFile, s256& eException)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -665,7 +665,7 @@ i8 Task::iSlot(void)
 /*----------------------------------------------------------------------------*/
 /* stack contents as string                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
+void Task::vStackContents(Stack* pStack, s48K& sStackContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

@@ -31,7 +31,7 @@ namespace StorageEngine
     Time          m_oTime;
     s32           m_sUTC;
     
-    s256          m_sRegionName;
+    s32           m_sRegionName;
     i8            m_iRegionSize;
     i8            m_iJumboSize;
     i8            m_nSubIngesters;

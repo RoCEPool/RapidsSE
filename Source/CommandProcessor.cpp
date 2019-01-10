@@ -228,7 +228,9 @@ void CommandProcessor::vGetCommandArgument(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  m_pTokeniser->vUseString(gxArguments.m_sCommand);
+  s48K sCommand(gxArguments.m_sCommand);
+  
+  m_pTokeniser->vUseString(sCommand);
   
   pTknVec()->vReset();
   
@@ -406,7 +408,7 @@ void CommandProcessor::vTokenise(Stz* aCommand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
-  s4K sCommand(aCommand);
+  s48K sCommand(aCommand);
   
   m_pTokeniser->vPush();
   m_pTokeniser->vUseString(sCommand);

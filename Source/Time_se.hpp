@@ -40,7 +40,7 @@ namespace System
     void vSetUTC(Since* pSince);
     void vSetNowLocal(void);
     void vSetNowUTC(void);  
-    void vUTC(StrVal& sUTC);
+    void vUTC(s32& sUTC);
     
     Footer* aFooter(void);
   };

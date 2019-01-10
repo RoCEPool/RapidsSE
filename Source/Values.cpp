@@ -23,10 +23,10 @@ void Values::vCheckAssumptions(void)
 
   ASSERT(sizeof(Value) + sizeof(WspVbl) == sizeof(StrVal));
   
-  ASSERT(sizeof(StrVal) + sizeof(Footer) + 32    == sizeof(s32));
-  ASSERT(sizeof(StrVal) + sizeof(Footer) + 256   == sizeof(s256));
-  ASSERT(sizeof(StrVal) + sizeof(Footer) + C_48K == sizeof(s48K));
-  ASSERT(sizeof(StrVal) + sizeof(Footer) + C_1M  == sizeof(s1M));
+//  ASSERT(sizeof(StrVal) + sizeof(Footer) + 32    == sizeof(s32));
+//  ASSERT(sizeof(StrVal) + sizeof(Footer) + 256   == sizeof(s256));
+//  ASSERT(sizeof(StrVal) + sizeof(Footer) + C_48K == sizeof(s48K));
+//  ASSERT(sizeof(StrVal) + sizeof(Footer) + C_1M  == sizeof(s1M));
 }
 
 /*============================================================================*/

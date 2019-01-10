@@ -938,8 +938,6 @@
   static void vStrSub(Tasks::MP_Task mpTask);
   static void vStrTailInt(Tasks::MP_Task mpTask);
 
-  static void vS256Init(Tasks::MP_Task mpTask);
-
   // sub loader
   static void vSubLoaderDelete(Tasks::MP_Task mpTask);
 

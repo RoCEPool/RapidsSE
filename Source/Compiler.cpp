@@ -42,7 +42,7 @@ Compiler::Compiler(void)
 
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();
-  s32 sString(""_Stz);
+  s48K sString(""_Stz);
   m_pTokeniser->vUseString(sString);
 
   _checkInitialised_(CN_COMPILER);

@@ -489,11 +489,11 @@ void Word::vImmediate(bool bImmediate)
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Word::bIsName(StrVal& sName)
+bool Word::bIsName(s32& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  bool b = m_sName.bIsEqual(sName,C_NO_CASE);
+  bool b = m_sName.bSame(sName);
   
   return b;
 }
@@ -533,7 +533,7 @@ Cell* Word::pLastCell(void)
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-StrVal& Word::sName(void)
+s32& Word::sName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

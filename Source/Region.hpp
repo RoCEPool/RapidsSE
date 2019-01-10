@@ -8,16 +8,16 @@ namespace StorageEngine
   class Region
   {
   public:
-    static bool bAttach(StrVal& sRegionName, bool bWecome);
-    static void vCreate(StrVal& sRegionName, i8 iRegionSize,
+    static bool bAttach(s32& sRegionName, bool bWecome);
+    static void vCreate(s32& sRegionName, i8 iRegionSize,
                         i8 iJumboTook, bool bTouch, bool bLock, bool bRestart,
                         bool bDontFree, bool bFreeRB);
-    static bool bTest(StrVal& sRegionName);
-    static void vUnlink(StrVal& sRegionName);
+    static bool bTest(s32& sRegionName);
+    static void vUnlink(s32& sRegionName);
     
     ////////////////////////////////////////////////////////////////////////////
 
-    static void* pOpen(StrVal& sRegionName, int& iFD);
+    static void* pOpen(s32& sRegionName, int& iFD);
     static void  vClose(void* aRegion, int iFD);
   };
 }

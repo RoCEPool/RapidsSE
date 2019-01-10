@@ -146,7 +146,7 @@ void KeyTest::vTest(void)
   // create the key vector
   pKeyVec = new KeyVec;
   
-  s48K sKey;
+  s256 sKey;
   
   StrVal* pStrVal;
   

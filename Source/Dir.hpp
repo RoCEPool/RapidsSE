@@ -33,12 +33,12 @@ namespace System
     static bool bRemove(Stz* aDirPath);
     
     void vClose(void);
-    StrVal& sEntryName(void);
+    s256& sEntryName(void);
     i8   iEntryType(void);
     bool bIsClosed(void);
     bool bIsOpen(void);
     bool bOpen(Stz* aDirPath);
-    StrVal& sPath(void);
+    s256& sPath(void);
     bool bRead(void);
     void vRewind(void);
     void vSeek(i8 iPosition);

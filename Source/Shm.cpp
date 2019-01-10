@@ -14,7 +14,7 @@ extern ResourceTracker gxResourceTracker;
 /*----------------------------------------------------------------------------*/
 /* attach/open to an existing shared memory region                            */
 /*----------------------------------------------------------------------------*/
-bool Shm::bAttach(StrVal& sRegionName, int& iFD, SysCall& oSysCall)
+bool Shm::bAttach(s32& sRegionName, int& iFD, SysCall& oSysCall)
 {
   oSysCall.vClear();
     
@@ -57,7 +57,7 @@ bool Shm::bClose(int iFD, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* create/open a new shared memory region                                     */
 /*----------------------------------------------------------------------------*/
-bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
+bool Shm::bCreate(s32& sRegionName, i8 iSize, int& iFD,
                     bool bRecreate, SysCall& oSysCall)
 {
   int rCode;
@@ -169,8 +169,6 @@ void* Shm::aMap(int iFd, void* aAddress, i8 iBytes, bool bShared,
                | (bHugeTlb ? MAP_HUGETLB | MAP_ANONYMOUS : 0);
 #endif
   
-  size_t x;
-  
   //if (gxArguments.m_bVerbose)
   //  vTrace("Shm::pMap C\n"_Stz);
   
@@ -221,7 +219,7 @@ bool Shm::bUnmap(void *aAddress, i8 iBytes, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* unlink an existing memory region                                           */
 /*----------------------------------------------------------------------------*/
-bool Shm::bUnlink(StrVal& sRegionName, SysCall& oSysCall)
+bool Shm::bUnlink(s32& sRegionName, SysCall& oSysCall)
 {
   oSysCall.vClear();
   

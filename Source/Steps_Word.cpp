@@ -430,7 +430,11 @@ ENTRY("vForget"_Stz);
   if ( ! pWord )
     THROW("No such word: %s"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
   
-  Word* pRemovedWord = mpTask->m_oPathStack.pRemoveWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
+  s32 sName;
+  
+  sName = mpTask->m_pCompiler->m_pTokeniser->sToken();
+  
+  Word* pRemovedWord = mpTask->m_oPathStack.pRemoveWord(sName);
   ASSERT(pRemovedWord);
   
   delete pRemovedWord;

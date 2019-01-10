@@ -29,7 +29,7 @@ bool ActivityMap::bCreateNewShm(void)
 {
   int iFD;
   SysCall oSysCall;
-  s256 sRegionName;
+  s32 sRegionName;
   
   sRegionName = *C_ACTIVITY_REGION;
   
@@ -79,7 +79,7 @@ bool ActivityMap::bOpenExistingShm(void)
 {
   int iFD;
   SysCall oSysCall;
-  s256 sRegionName;
+  s32 sRegionName;
   
   sRegionName = *C_ACTIVITY_REGION;
   

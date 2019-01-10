@@ -188,7 +188,7 @@ void Dir::vClose(void)
 /*----------------------------------------------------------------------------*/
 /* get dir entry name                                                         */
 /*----------------------------------------------------------------------------*/
-StrVal& Dir::sEntryName(void)
+s256& Dir::sEntryName(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
@@ -260,7 +260,7 @@ bool Dir::bOpen(Stz* aDirPath)
 /*----------------------------------------------------------------------------*/
 /* get directory path                                                         */
 /*----------------------------------------------------------------------------*/
-StrVal& Dir::sPath(void)
+s256& Dir::sPath(void)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   

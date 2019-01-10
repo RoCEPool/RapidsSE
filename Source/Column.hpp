@@ -100,7 +100,7 @@ namespace DBobjects
     eDM  eDatumType(void);
     void vDatumType(eDM eDatumType);
   
-    bool bIsName(s32 sName);
+    bool bIsName(s32& sName);
   
     bool bIsNullable(void);
     void vIsNullable(bool bIsNullable);

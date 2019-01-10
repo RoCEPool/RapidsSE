@@ -138,7 +138,7 @@ i8 Random::iLogLevel(i8 nLevels, i8 iFrequency)
 /*----------------------------------------------------------------------------*/
 /* generate a random string of given length                                   */
 /*----------------------------------------------------------------------------*/
-void Random::vString(StrVal& sStr, i8 iLength)
+void Random::vString(s256& sStr, i8 iLength)
 {
   static char caCharSet[69] = // 68 actual chars + the '\0'
     "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-#?!";

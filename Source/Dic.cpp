@@ -256,11 +256,11 @@ void Dic::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Dic::bIsName(StrVal& sName)
+bool Dic::bIsName(s32& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  bool b = m_sName.bIsEqual(sName,C_NO_CASE);
+  bool b = m_sName.bSame(sName);
   
   return b;
 }
@@ -278,7 +278,7 @@ Word* Dic::pLastWord(void)
 /*----------------------------------------------------------------------------*/
 /* get name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-StrVal& Dic::sName(void)
+s32& Dic::sName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
@@ -334,7 +334,7 @@ bool Dic::bRefOut(void)
 /*----------------------------------------------------------------------------*/
 /* forget a word given name                                                   */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pRemoveWord(StrVal& sName)
+Word* Dic::pRemoveWord(s32& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   

@@ -33,7 +33,7 @@ namespace StorageEngine
     static void vMainEntry(void);
     static void vOpenActivityMap(void);
     static void vOpenPool(void);
-    static bool bOpenPool(StrVal& sPoolName);
+    static bool bOpenPool(s32& sPoolName);
     static void vOpenTraceFile(void);
     static void vPrintExit(void);
     static void vPrintStatus(void);

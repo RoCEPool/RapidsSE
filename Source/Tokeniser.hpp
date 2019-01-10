@@ -32,8 +32,9 @@ namespace Parsing
     ~Tokeniser(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static TokenVec* pTokenise(StrVal& sString);
-  
+    static TokenVec* pTokenise(s4K& sString);
+    static TokenVec* pTokenise(s48K& sString);
+
     void vCollectStatement(void);
     i8   iDepth(void);
     bool bEOF(void);
@@ -44,16 +45,17 @@ namespace Parsing
     void vNextToken(void);
     void vNormal(bool bNormal);
     bool bPop(void);
-    void vPrompt(StrVal& sPrompt);
+    void vPrompt(s256& sPrompt);
     void vPush(void);
     bool bStdin(void);
     TokenVec* pTknVec(void);
     eTN  eToken(void);
     s48K& sToken(void);
     void vUseEnd(void);
-    bool bUseFile(StrVal& sPath);
+    bool bUseFile(s256& sPath);
     void vUseStdin(void);
-    void vUseString(StrVal& sString);
+    void vUseString(s4K& sString);
+    void vUseString(s48K& sString);
  
   private:
     eTN  eNextNormal(char* aToken);

@@ -104,7 +104,7 @@ void Parser::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* set user prompt                                                            */
 /*----------------------------------------------------------------------------*/
-void Parser::vPrompt(StrVal& sPrompt)
+void Parser::vPrompt(s256& sPrompt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -128,7 +128,7 @@ void Parser::vLineMode(bool bLineMode)
 /*----------------------------------------------------------------------------*/
 /* use given file for parsing                                                 */
 /*----------------------------------------------------------------------------*/
-bool Parser::bUseFile(StrVal& sPath)
+bool Parser::bUseFile(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -159,7 +159,21 @@ void Parser::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 /* use given string for parsing                                               */
 /*----------------------------------------------------------------------------*/
-void Parser::vUseString(StrVal& sString)
+void Parser::vUseString(s4K& sString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  
+  vResetParser();
+  
+  m_sRawLine = sString;
+  m_eSource = IS_STRING;
+  m_bEOF = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use given string for parsing                                               */
+/*----------------------------------------------------------------------------*/
+void Parser::vUseString(s48K& sString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   

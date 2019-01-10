@@ -29,11 +29,11 @@ namespace Forth
     i8    iCount(void);
     void  vContentDump(void);
     void  vDiscard(void);
-    Word* pFindWord(StrVal& sName);
+    Word* pFindWord(s32& sName);
     Word* pFindWord(Stz* aName);
     Word* pFindInCurrent(Stz* aName);
     Word* pFindStep(TaskStep pStep);
-    Word* pRemoveWord(StrVal& sName);
+    Word* pRemoveWord(s32& sName);
     Word* pLocate(Cell* pCell);
     Dic*  pPick(i8 iDic);
     void  vPop(void);

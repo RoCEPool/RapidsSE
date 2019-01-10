@@ -257,7 +257,7 @@ void RapidsSE::vKillPrev(void)
   // an assumption is that regions will be /SE_<node>
   
   void* pRegion;
-  s256 sRegionName;
+  s32 sRegionName;
   int iFD;
   bool b;
   
@@ -385,7 +385,7 @@ void RapidsSE::vOpenPool(void)
 /*----------------------------------------------------------------------------*/
 /* attach or create the shm region                                            */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE::bOpenPool(StrVal& sPoolName)
+bool RapidsSE::bOpenPool(s32& sPoolName)
 {
   bool bResult = Region::bAttach(sPoolName, gxArguments.m_bWelcome);
   if (!bResult)

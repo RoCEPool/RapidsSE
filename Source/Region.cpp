@@ -14,7 +14,7 @@ extern void* C_ADDR_POOL;
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
 /*----------------------------------------------------------------------------*/
-bool Region::bAttach(StrVal& sRegionName, bool bWecome)
+bool Region::bAttach(s32& sRegionName, bool bWecome)
 {
   int iFD;
   SysCall oSysCall;
@@ -90,7 +90,7 @@ bool Region::bAttach(StrVal& sRegionName, bool bWecome)
 /*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
-void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
+void Region::vCreate(s32& sRegionName, i8 iRegionSize, i8 iJumboTook,
                      bool bTouch, bool bLock, bool bRestart,
                      bool bDontFree, bool bFreeRB)
 {
@@ -182,7 +182,7 @@ void Region::vCreate(StrVal& sRegionName, i8 iRegionSize, i8 iJumboTook,
 /*----------------------------------------------------------------------------*/
 /* test for region                                                            */
 /*----------------------------------------------------------------------------*/
-bool Region::bTest(StrVal& sRegionName)
+bool Region::bTest(s32& sRegionName)
 {
   int iFD;
   SysCall oSysCall;
@@ -200,7 +200,7 @@ bool Region::bTest(StrVal& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* unlink region                                                              */
 /*----------------------------------------------------------------------------*/
-void Region::vUnlink(StrVal& sRegionName)
+void Region::vUnlink(s32& sRegionName)
 {
   SysCall oSysCall;
   
@@ -218,7 +218,7 @@ void Region::vUnlink(StrVal& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* attempt to open a pool                                                     */
 /*----------------------------------------------------------------------------*/
-void* Region::pOpen(StrVal& sRegionName, int& iFD)
+void* Region::pOpen(s32& sRegionName, int& iFD)
 {
   SysCall oSysCall;
   bool bResult;

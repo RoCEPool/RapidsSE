@@ -218,7 +218,7 @@ void Task::vAddRoutines(void)
 /*----------------------------------------------------------------------------*/
 /* compile given : routine                                                    */
 /*----------------------------------------------------------------------------*/
-Word* Task::pCompileColon(StrVal& sDefinition)
+Word* Task::pCompileColon(s48K& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -308,7 +308,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
 /*----------------------------------------------------------------------------*/
 /* compile a constant definition                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vCompileConstant(StrVal& sDefinition)
+void Task::vCompileConstant(s48K& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

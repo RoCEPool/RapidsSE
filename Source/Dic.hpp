@@ -38,14 +38,14 @@ namespace Forth
     void  vDicKind(Word* pDicKind);
     Word* pFindWord(Stz* aName);
     Word* pFindStep(TaskStep pStep);
-    Word* pRemoveWord(StrVal& sName);
+    Word* pRemoveWord(s32& sName);
     bool  bFrozen(void);
     void  vFrozen(bool bFrozen);
     bool  bHasWords(void);
     void  vInit(void);
-    bool  bIsName(StrVal& sName);
+    bool  bIsName(s32& sName);
     Word* pLastWord(void);
-    StrVal&    sName(void);
+    s32&  sName(void);
     void  vName(Stz* aName);
     void  vRefDec(void);
     void  vRefInc(void);

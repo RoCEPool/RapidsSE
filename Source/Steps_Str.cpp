@@ -11,8 +11,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Str(void)
 {
-  vAddStep("s256.init"_Stz,    &Step::vS256Init);
-  
   vAddStep("str::algebra"_Stz, &Step::vStrAlgebra);
   vAddStep("strAlgebra"_Stz,   &Step::vStrAlgebra);
   
@@ -31,27 +29,6 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.right"_Stz,    &Step::vStrRight);
   vAddStep("str.sub"_Stz,      &Step::vStrSub);
   vAddStep("str.tailInt"_Stz,  &Step::vStrTailInt);
-}
-
-/*----------------------------------------------------------------------------*/
-/* s256.init -- initialise an s256                                            */
-/*----------------------------------------------------------------------------*/
-void Step::vS256Init(MP_Task mpTask)
-{
-  ENTRY("vS256Init"_Stz);
-  
-  Object* pPtrStrVal;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrStrVal) )
-    THROW_INVALID_DSTACK("s256.init"_Stz);
-  
-  s256* ps256 = (s256*)_pStrVar(pPtrStrVal);
-  
-  ASSERT(CN_STRVAR == ps256->eClass());
-  
-  new(ps256) s256(ps256);
-  
-  EXIT();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -355,11 +332,11 @@ void Step::vStrRandom(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iLength) )
     THROW_INVALID_DSTACK("str.random"_Stz);
   
-  s48K sRnd;
+  s256 sRnd;
   
   Random::vString(sRnd,iLength);
   
-  mpTask->m_pDataStack->vPushS48K(sRnd);
+  mpTask->m_pDataStack->vPushS256(sRnd);
   
   EXIT();
 }

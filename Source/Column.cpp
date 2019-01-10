@@ -278,7 +278,7 @@ void Column::vDatumType(eDM eDatumType)
 /*----------------------------------------------------------------------------*/
 /* is column the given name?                                                  */
 /*----------------------------------------------------------------------------*/
-bool Column::bIsName(s32 sName)
+bool Column::bIsName(s32& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   

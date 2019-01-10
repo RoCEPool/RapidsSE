@@ -997,7 +997,7 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
     TRACE_ENTRY_P1(pInstanceName);
     
     // open the pool
-    s256 sPoolName;
+    s32 sPoolName;
     
     sPoolName = (Stz*)pInstanceName;
     bool bResult = RapidsSE::bOpenPool(sPoolName);

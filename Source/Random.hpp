@@ -18,7 +18,7 @@ namespace System
     
     static i8 iLogLevel(i8 nLevels, i8 iFrequency);
   
-    static void vString(StrVal& sStr, i8 iLength);
+    static void vString(s256& sStr, i8 iLength);
   };
 }
 

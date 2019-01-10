@@ -100,12 +100,12 @@ namespace Forth
     Cell* pFirstCell(void);
     bool  bHasCell(Cell* pCell);
     bool  bImmediate(void);
-    bool  bIsName(StrVal& sName);
+    bool  bIsName(s32& sName);
     void  vImmediate(bool bImmediate);
     Word* pKind(void);
     void  vKind(Word* pKind);
     Cell* pLastCell(void);
-    StrVal&    sName(void);
+    s32&  sName(void);
     void  vObjectDump(Stz* aTab);
     void  vParams(i8 iParams);
     i8    iParams(void);

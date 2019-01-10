@@ -309,7 +309,7 @@ void Time::vSetNowUTC(void)
 /*----------------------------------------------------------------------------*/
 /* put time into sUTC as utc string                  yyyy-mm-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-void Time::vUTC(StrVal& sUTC)
+void Time::vUTC(s32& sUTC)
 {
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
 

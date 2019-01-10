@@ -17,7 +17,7 @@ namespace StorageEngine
     i8    m_nJumboBuffers; // number of jumbo buffers
     s256  m_sNodeName;     // this node name
     void* m_aRegionAddr;   // use this address for region
-    s256  m_sRegionName;   // name of shared memory region
+    s32   m_sRegionName;   // name of shared memory region
     s256  m_sRegionPrefix; // prefix of the shared memory region name
     i8    m_iRegionSize;   // size of region in bytes
     s256  m_sSenDir;       // sen dir

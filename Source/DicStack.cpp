@@ -134,7 +134,7 @@ void DicStack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pFindWord(StrVal& sName)
+Word* DicStack::pFindWord(s32& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
@@ -276,7 +276,7 @@ void DicStack::vPush(Dic* pDic)
 /*----------------------------------------------------------------------------*/
 /* forget word in stack of dictionaries                                       */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pRemoveWord(StrVal& sName)
+Word* DicStack::pRemoveWord(s32& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   

@@ -132,7 +132,7 @@ namespace Tasks
     static void vDebug(void);
     void vContentDump(void);
     void vDropLock(void);
-    void vException(StrVal& sFile, StrVal& eException);
+    void vException(s256& sFile, s256& eException);
     void vGrabLock(void);
     bool bIsLocked(void);
     bool bIsNonPartitioned(void);
@@ -162,7 +162,7 @@ namespace Tasks
     void vSleepUs(i8 iMicroSeconds);
     i8   iSlot(void);
     void vSprint(s48K& sFormat, s48K& sString);
-    void vStackContents(Stack* pStack, StrVal& sStackContents);
+    void vStackContents(Stack* pStack, s48K& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);
     void vTaskLoop(void);
@@ -182,8 +182,8 @@ namespace Tasks
     void vAddBaseWords(void);
     void vAddMunged(MP_Task mpTask);
     void vAddRoutines(void);
-    Word* pCompileColon(StrVal& sDefinition);
-    void  vCompileConstant(StrVal& sDefinition);
+    Word* pCompileColon(s48K& sDefinition);
+    void  vCompileConstant(s48K& sDefinition);
 
     /*------------------------------------------------------------------------*/
 
