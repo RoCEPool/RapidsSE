@@ -237,142 +237,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_print.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_print.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_print.sen -- print rows on console                                       */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_print.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* frame common variables for write                                           */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "common/ print nFetchPartitions /\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* print rows from row buffer                                                 */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": printRb subDic print\n"
-    "\n"
-    "  // record the plan and profile\n"
-    "  0 0 locals| pIndexBuffer pBufferQueue bFetchStarted thePlan profile pSession |\n"
-    "\n"
-    "  \\\"tenants\\\" 1 dicStack.set\n"
-    "\n"
-    "  // [0] push thePlan's dictionary onto path stack\n"
-    "  thePlan plan.dic pathPush\n"
-    "\n"
-    "  // push the op frame for this writeOp\n"
-    "  profile thePlan plan.opFrame? opFrame.push\n"
-    "\n"
-    "  //----------------------------------------------------------------------------\n"
-    "  // has fetch just started ?\n"
-    "  bFetchStarted not if\n"
-    "\n"
-    "    pSession >str \\\"Appending buffers to bufferQueue of session %v\\\" str.format .\n"
-    "\n"
-    "    // create the buffer queue in the session\n"
-    "    \\\"selectTask.queue\\\" queue::new to pBufferQueue\n"
-    "\n"
-    "    //pBufferQueue pSession session.bufferQueue!\n"
-    "\n"
-    "    // set the no of fetch tasks in nFetchPartitions\n"
-    "    $$nPartitions toCommon nFetchPartitions\n"
-    "    //nFetchPartitions \\\"setting nFetchPartitions %v\\\" str.format .\n"
-    "\n"
-    "    // mark fetch as started\n"
-    "    1 to bFetchStarted\n"
-    "  else\n"
-    "    //pSession session.bufferQueue@ to pBufferQueue\n"
-    "  then\n"
-    "\n"
-    "  ( [ rowBuffer ] )\n"
-    "\n"
-    "  // write or close file & sink plan?\n"
-    "  if ( [ rowBuffer ] )\n"
-    "\n"
-    "     to pIndexBuffer\n"
-    "\n"
-    "     if ( bIsLast )\n"
-    "        pIndexBuffer entryBuffer.isLast!\n"
-    "     then\n"
-    "\n"
-    "     //pSession >str \\\"appending rowBuffer to session %v queue\\\" str.format .\n"
-    "     pIndexBuffer pBufferQueue queue.append\n"
-    "\n"
-    "  else\n"
-    "     // didn't get a rowBuffer, this fetch partition has ended\n"
-    "     nFetchPartitions 1- toCommon nFetchPartitions\n"
-    "\n"
-    "     //pSession session.fetchTaskEnded\n"
-    "\n"
-    "     // have all the fetch tasks ended ?\n"
-    "     nFetchPartitions 0 == if\n"
-    "\n"
-    "       // << $$nextProfile thePlan >> -->> $$nextOp\n"
-    "       //<< pSession $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue\n"
-    "\n"
-    "       // mark fetch as not started so next fetch can execute\n"
-    "       0 to bFetchStarted\n"
-    "    then\n"
-    "  then\n"
-    "\n"
-    "  opFrame.drop\n"
-    "\n"
-    "  // first pop the plan dic as plan may have gotten deleted\n"
-    "  dicStack.pop\n"
-    "\n"
-    "  dicStack.clear\n"
-    "\n"
-    "  // return fetch started\n"
-    "  bFetchStarted\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* print operator loop                                                        */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": printOp operator ( -- NEVER )\n"
-    "\n"
-    "  0 locals| bFetchStarted |\n"
-    "\n"
-    "  begin\n"
-    "\n"
-    "    depth 0 != if \\\"stack of task has grown\\\" . debug::trap then\n"
-    "\n"
-    "    // wait for next job\n"
-    "    //jobQueue> ( valset )\n"
-    "\n"
-    "    // unpack it\n"
-    "    valset> ( profile planId nValues )\n"
-    "    drop ( profile planId )\n"
-    "\n"
-    "    // find plan using planId\n"
-    "    planList::findPlan ( profile plan true )\n"
-    "\n"
-    "    assert ( profile plan )\n"
-    "\n"
-    "    // print row buffer rows\n"
-    "    bFetchStarted ( pSession profile plan bFetchStarted )\n"
-    "    printRb ( bFetchStarted )\n"
-    "\n"
-    "    // set fetch started\n"
-    "    to bFetchStarted\n"
-    "\n"
-    "  again\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_print.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of job_AnalyzeIndex.sen
   sDefinition =
     "\""
@@ -1570,32 +1434,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_read.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_read.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_read.sen -- read records from file operator                              */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_read.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* file read                                                                 */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": readOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_read.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of operators.sen
   sDefinition =
     "\""
@@ -1608,29 +1446,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "\\\"operator.sen\\\" include\n"
     "\n"
-    "\\\"symbolicArgs.sen\\\" include\n"
-    "\n"
-    "\\\"op_aggregate.sen\\\" include\n"
-    "\\\"op_decider.sen\\\" include\n"
-    "\\\"op_distinct.sen\\\" include\n"
-    "\\\"op_emit.sen\\\" include\n"
-    "\\\"op_fan.sen\\\" include\n"
-    "\\\"op_fetch.sen\\\" include\n"
-    "\\\"op_filter.sen\\\" include\n"
-    "\\\"op_join.sen\\\" include\n"
-    "\\\"op_limit.sen\\\" include\n"
-    "\\\"op_mark.sen\\\" include\n"
-    "\\\"op_merge.sen\\\" include\n"
-    "\\\"op_next.sen\\\" include\n"
-    "\\\"op_print.sen\\\" include\n"
-    "\\\"op_project.sen\\\" include\n"
-    "\\\"op_read.sen\\\" include\n"
-    "\\\"op_recv.sen\\\" include\n"
-    "\\\"op_response.sen\\\" include\n"
-    "\\\"op_send.sen\\\" include\n"
-    "\\\"op_sink.sen\\\" include\n"
-    "\\\"op_sort.sen\\\" include\n"
-    "\\\"op_tee.sen\\\" include\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
@@ -1766,32 +1581,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_aggregate.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_aggregate.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_aggregate.sen -- row aggregate by operator                              */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_aggregate.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* row aggregate operator                                                     */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": aggregateOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_aggregate.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of job_Ingest.sen
   sDefinition =
     "\""
@@ -1897,32 +1686,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job_Ingest.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_merge.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_merge.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_merge.sen -- row merge operator                                          */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_merge.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* row merge operator                                                         */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": mergeOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_merge.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -2672,58 +2435,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job_SubTruncate.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_sort.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_sort.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_sort.sen -- row sort operator                                            */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_sort.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* row sort operator                                                          */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": sortOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_sort.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_fetch.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_fetch.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_fetch.sen -- table fetch (by-key) select operator                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_fetch.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* table fetch (by key) select                                                */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": fetchOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_fetch.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -3840,32 +3551,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_fan.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_fan.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_fan.sen -- row fan out operator                                          */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_fan.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* row fan out                                                                */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": fanOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_fan.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of job_Connector.sen
   sDefinition =
     "\""
@@ -4331,58 +4016,11 @@ void Task::vAddMunged(MP_Task mpTask)
     "  tick opKind word::this word.kind!\n"
     " ;\n"
     "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* define a symbolic argument                                                 */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": symArg:\n"
-    "\n"
-    "  // create a word in the dic which is on top of path stack\n"
-    "  // using the next token in the compile stream as its name\n"
-    "  // this new word becomes the current word\n"
-    "  create\n"
-    "\n"
-    "  // push the name of the word\n"
-    "  word::this word.name\n"
-    "\n"
-    "  // append the name of the word as a pushValue in the symbolic arg\n"
-    "  encodePushValue\n"
-    "\n"
-    "  tick find compile,\n"
-    "  tick execute compile,\n"
-    "  tick exit compile,\n"
-    " ;\n"
-    "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"
     "/*============================================================================*/\n"
     "\""
   " CONSTANT operator.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_extract.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_extract.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_extract.sen -- extract keys operator                                     */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_extract.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* extract keys                                                               */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": extractOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_extract.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -5473,32 +5111,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_next.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_next.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_next.sen -- flow next operator                                           */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_next.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* flow next operator                                                         */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": nextOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_next.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of test_unit.sen
   sDefinition =
     "\""
@@ -5875,32 +5487,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_decider.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_decider.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_decider.sen -- flow decider operator                                    */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_decider.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* flow decider operator                                                      */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": deciderOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_decider.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of test_iData.sen
   sDefinition =
     "\""
@@ -6137,32 +5723,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_mark.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_mark.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_mark.sen -- mark operator                                                */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_mark.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* mark operator                                                              */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": markOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_mark.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of jobModel.sen
   sDefinition =
     "\""
@@ -6253,32 +5813,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT test_gGen.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_send.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_send.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_send.sen -- send records to socket operator                              */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_send.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* socket send                                                                */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": sendOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_send.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -6681,68 +6215,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job_ListColumns.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_sink.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_sink.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_sink.sen -- sink operator                                                */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_sink.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* sink the plan                                                              */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": sinkPlan ( pSession profile plan -- )\n"
-    "\n"
-    "  // record the plan and profile\n"
-    "  locals| thePlan profile pSession |\n"
-    "\n"
-    "  thePlan planList::removePlan\n"
-    "\n"
-    "  //\\\"sinking plan\\\" .\n"
-    "  thePlan plan.delete\n"
-    "\n"
-    "  //\\\"removed & deleted plan\\\" .\n"
-    "  //planList::show\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* sink operator loop                                                         */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": sinkOp operator ( -- NEVER )\n"
-    "\n"
-    "  begin\n"
-    "\n"
-    "    depth 0 != if \\\"stack of task has grown\\\" . debug::trap then\n"
-    "\n"
-    "    // wait for next job\n"
-    "    //jobQueue> ( valset )\n"
-    "\n"
-    "    // unpack it\n"
-    "    valset> ( profile planId nValues )\n"
-    "    drop ( profile planId )\n"
-    "\n"
-    "    // find plan using planId\n"
-    "    planList::findPlan ( pSession profile plan true )\n"
-    "    assert ( pSession profile plan )\n"
-    "\n"
-    "    // sink the plan\n"
-    "    sinkPlan ( )\n"
-    "\n"
-    "  again\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_sink.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -8348,58 +7820,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_upper.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_upper.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_upper.sen -- table upper bound select operator                           */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_range.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* table upper bound select                                                   */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": upperOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_upper.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_distinct.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_distinct.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_distinct.sen -- row distinct operator                                    */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_distinct.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* row distinct operator                                                      */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": distinctOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_distinct.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of test_dData.sen
   sDefinition =
     "\""
@@ -8949,39 +8369,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of symbolicArgs.sen
-  sDefinition =
-    "\""
-    "\\\"munged symbolicArgs.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* symbolicArgs.sen -- symbolic operator arguments                            */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" symbolicArgs.sen\\\" .verbose\n"
-    "\n"
-    "//: $$tableNm \\\"$$tableNm\\\" find execute ;\n"
-    "\n"
-    "symArg: $$fileNm  \n"
-    "symArg: $$nStreams\n"
-    "symArg: $$nPartitions\n"
-    "symArg: $$partition\n"
-    "symArg: $$tableNm\n"
-    "symArg: $$schemaNm\n"
-    "symArg: $$catalogNm\n"
-    "symArg: $$where\n"
-    "\n"
-    "symArg: $$nextOp\n"
-    "symArg: $$nextProfile\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT symbolicArgs.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of job__Execute.sen
   sDefinition =
     "\""
@@ -9068,32 +8455,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job__Execute.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_filter.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_filter.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_filter.sen -- row filter operator                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_filter.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* row filter                                                                 */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": filterOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_filter.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -9326,32 +8687,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT db_schema.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_join.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_join.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_join.sen -- row join operator                                            */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_join.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* pipeline join                                                              */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": joinOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_join.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -13369,32 +12704,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_lower.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_lower.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_lower.sen -- table lower bound select operator                           */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_lower.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* table lower bound select                                                   */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": lowerOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_lower.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of job_WaitCluster.sen
   sDefinition =
     "\""
@@ -13506,32 +12815,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "\n"
     "\""
   " CONSTANT job_WaitCluster.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_emit.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_emit.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_emit.sen -- row emit operator                                            */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_emit.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* row emit                                                                   */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": emitOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_emit.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14166,32 +13449,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_tee.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_tee.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_tee.sen -- row tee operator                                              */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_tee.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* row tee                                                                    */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": teeOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_tee.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of job_SubInserter.sen
   sDefinition =
     "\""
@@ -14310,32 +13567,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job_SubInserter.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_project.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_project.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_project.sen -- row project operator                                      */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_project.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* row project                                                                */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": projectOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_project.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -14680,32 +13911,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_recv.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_recv.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_recv.sen -- receive records from socket operator                         */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_read.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* socket recv                                                                */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": recvOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_recv.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of job_NetHog.sen
   sDefinition =
     "\""
@@ -15032,32 +14237,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of Op_limit.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_limit.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_limit.sen -- row limit operator                                          */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_limit.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* row limit                                                                  */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": limitOp operator\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_limit.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of job_CreateTenant.sen
   sDefinition =
     "\""
@@ -15274,79 +14453,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT job_CreateTenant.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of Op_response.sen
-  sDefinition =
-    "\""
-    "\\\"munged Op_response.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* op_response.sen -- response operator                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" op_response.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* respond                                                                    */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": respondSession ( pSession profile plan -- )\n"
-    "\n"
-    "  // record the plan and profile\n"
-    "  0 locals| pTask thePlan profile pSession |\n"
-    "\n"
-    "  // get the executing task\n"
-    "  thePlan plan.executingTask@ to pTask\n"
-    "\n"
-    "  // push the op frame for this writeOp\n"
-    "  profile thePlan plan.opFrame? opFrame.push\n"
-    "\n"
-    "  //\\\"DONE\\\" .\n"
-    "\n"
-    "  // << profile plan >> -->> nextOp\n"
-    "  //<< pSession $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue\n"
-    "\n"
-    "  opFrame.drop\n"
-    "\n"
-    "  //\\\"ResponseOP acking the plan's executing task\\\" .\n"
-    "\n"
-    "  // ack the plan's executing task\n"
-    "  //pTask >str \\\"acking task %v\\\" str.format .\n"
-    "  pTask task.ack\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* response                                                                   */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": responseOp operator ( -- NEVER )\n"
-    "\n"
-    "  begin\n"
-    "\n"
-    "    depth 0 != if \\\"stack of task has grown\\\" . debug::trap then\n"
-    "\n"
-    "    // wait for next job\n"
-    "    //jobQueue> ( valset )\n"
-    "\n"
-    "    // unpack it\n"
-    "    valset> ( profile planId nValues )\n"
-    "    drop ( profile planId )\n"
-    "\n"
-    "    // find plan using planId\n"
-    "    planList::findPlan ( pSession profile plan true )\n"
-    "    assert ( pSession profile plan )\n"
-    "\n"
-    "    // respond to session\n"
-    "    respondSession ( )\n"
-    "\n"
-    "  again\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT Op_response.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);

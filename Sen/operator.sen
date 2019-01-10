@@ -17,27 +17,6 @@
   tick opKind word::this word.kind!
 ;
 
-/*----------------------------------------------------------------------------*/
-/* define a symbolic argument                                                 */
-/*----------------------------------------------------------------------------*/
-: symArg:
-
-  // create a word in the dic which is on top of path stack
-  // using the next token in the compile stream as its name
-  // this new word becomes the current word
-  create
-
-  // push the name of the word
-  word::this word.name
-
-  // append the name of the word as a pushValue in the symbolic arg
-  encodePushValue
-
-  tick find compile,
-  tick execute compile,
-  tick exit compile,
-;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
