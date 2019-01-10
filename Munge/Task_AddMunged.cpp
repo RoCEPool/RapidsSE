@@ -1434,28 +1434,6 @@ void Task::vAddMunged(MP_Task mpTask)
 
   vCompileConstant(sDefinition);
 
-  // munge of operators.sen
-  sDefinition =
-    "\""
-    "\\\"munged operators.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* operators.sen -- the operators                                             */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\"-operators.sen\\\" .verbose\n"
-    "\n"
-    "\\\"operator.sen\\\" include\n"
-    "\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT operators.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
   // munge of job_SubPurger.sen
   sDefinition =
     "\""
@@ -3989,38 +3967,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT wordSet_corePlus.sen"_Stz
-  ;
-
-  vCompileConstant(sDefinition);
-
-  // munge of operator.sen
-  sDefinition =
-    "\""
-    "\\\"munged operator.sen \\\" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* operator.sen -- operator modifier                                          */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\\\" operator.sen\\\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* operator kind                                                              */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": opKind ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* set the word currently being compiled to be an opKind                      */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": operator immediate\n"
-    "\n"
-    "  tick opKind word::this word.kind!\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\""
-  " CONSTANT operator.sen"_Stz
   ;
 
   vCompileConstant(sDefinition);
@@ -10107,7 +10053,6 @@ void Task::vAddMunged(MP_Task mpTask)
     "\\\"tasks.sen\\\" include\n"
     "\\\"gridModel.sen\\\" include\n"
     "\\\"dbObjects.sen\\\" include\n"
-    "\\\"operators.sen\\\" include\n"
     "\\\"jobModel.sen\\\" include\n"
     "\\\"testing.sen\\\" include\n"
     "\n"
