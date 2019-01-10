@@ -69,12 +69,6 @@ i8 Value::nSize(void)
       break;
     }
       
-    case CN_VALSET: {
-      ValSet* pValSet = _pValSet(this);
-      nBytes = pValSet->nSize();
-      break;
-    }
-      
     default:
       vTrace("Value::nSize -- invalid eClass %lld"_Stz,eClass);
       NEVER_REACH;
@@ -122,13 +116,7 @@ void Value::vToString(Stz* aString)
       pStrVal->vToString(aString);
       break;
     }
-      
-    case CN_VALSET: {
-      ValSet* pValSet = _pValSet(this);
-      pValSet->vToString(aString);
-      break;
-    }
-      
+            
     default:
       vTrace("Value::vToString -- invalid eClass %lld"_Stz,eClass);
       NEVER_REACH;

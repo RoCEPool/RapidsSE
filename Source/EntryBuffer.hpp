@@ -7,6 +7,7 @@ namespace DBobjects
 {
   class Index;
   class Table;
+  class EntryBuffer;
   class FreeEntry;
   
   static const i8 C_ENTRIES_L0 = C_8KB;

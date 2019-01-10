@@ -5,6 +5,7 @@
 
 namespace DBobjects
 {
+  class EntryBuffer;
   class Key;
   
   class KeyWrk : public EntWrk

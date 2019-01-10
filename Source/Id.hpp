@@ -6,7 +6,8 @@
 namespace DBobjects
 {
   class Entry;
-  
+  class EntryBuffer;
+
   class Id
   {
   private:

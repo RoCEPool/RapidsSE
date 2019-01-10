@@ -17,6 +17,7 @@
 
 namespace DBobjects
 {
+  class EntryBuffer;
   class EntWrk;
   class Index;
   

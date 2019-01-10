@@ -32,7 +32,6 @@ using namespace Values;
 #include "StrVal.hpp"
 #include "TmeVal.hpp"
 #include "TspVal.hpp"
-#include "ValSet.hpp"
 
 
 /*============================================================================*/
