@@ -24,8 +24,6 @@ void Step::vAddSteps_Astack(void)
   vAddStep("a>"_Stz,              &Step::vAstackToP);
   vAddStep(">auxStack"_Stz,       &Step::vAstackTransfer);
   vAddStep("aswap"_Stz,           &Step::vAstackSwap);
-  vAddStep("avalset>"_Stz,        &Step::vAstackToValues);
-  vAddStep(">avalset"_Stz,        &Step::vAstackToValSet);
   vAddStep("a0"_Stz,              &Step::vAstack0);
   vAddStep("a1"_Stz,              &Step::vAstack1);
   vAddStep("a2"_Stz,              &Step::vAstack2);
@@ -230,67 +228,6 @@ void Step::vAstackSwap(MP_Task mpTask)
   
   mpTask->m_pAuxStack->vPushValWrk(xValA);
   mpTask->m_pAuxStack->vPushValWrk(xValB);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >avalset -- collapse values on aux stack to a valset                       */
-/*----------------------------------------------------------------------------*/
-void Step::vAstackToValSet(MP_Task mpTask)
-{
-  ENTRY("vAstackToValSet"_Stz);
-  
-  i8 nVal;
-  
-  if ( ! mpTask->m_pAuxStack->bPop(nVal) )
-  THROW_INVALID_ASTACK(">avalset"_Stz);
-  
-  if ( ! mpTask->m_pAuxStack->bGuard(nVal) )
-  THROW_INVALID_ASTACK(">avalset"_Stz);
-  
-  Stz* pCursor = nullptr;
-  ValSet xValSet;
-  
-  GenVar xVal;
-  for (i8 iVal = 0; iVal < nVal; iVal++) {
-    
-    if ( ! mpTask->m_pAuxStack->bPop(xVal) )
-    THROW_INVALID_ASTACK(">avalset"_Stz);
-    
-    xValSet.vAppend(pCursor,xVal.pNestedValueSelf());
-  }
-  
-  //  vTrace("ValSet %lld bytes\n"_Stz,xValSet.nSize());
-  
-  mpTask->m_pAuxStack->vPushValSet(xValSet);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >avalues -- expand valset to values on aux stack                           */
-/*----------------------------------------------------------------------------*/
-void Step::vAstackToValues(MP_Task mpTask)
-{
-  ENTRY("vDstackToValues"_Stz);
-  
-  ValSet xValSet;
-  
-  if ( ! mpTask->m_pAuxStack->bPop(xValSet) )
-    THROW_INVALID_ASTACK(">avalues"_Stz);
-  
-  i8 nVal = 0;
-  Value* pValue[128];
-  
-  Stz* pCursor = nullptr;
-  while (xValSet.bExtractValue(pCursor,pValue[nVal]))
-    nVal++;
-  
-  for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
-    mpTask->m_pAuxStack->vPushValue(pValue[iVal]);
-  
-  mpTask->m_pAuxStack->vPushInt(nVal);
   
   EXIT();
 }

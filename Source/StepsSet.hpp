@@ -75,8 +75,6 @@
   static void vAstackSwap(Tasks::MP_Task mpTask);
   static void vAstackToA(Tasks::MP_Task mpTask);
   static void vAstackToP(Tasks::MP_Task mpTask);
-  static void vAstackToValSet(Tasks::MP_Task mpTask);
-  static void vAstackToValues(Tasks::MP_Task mpTask);
   static void vAstackTransfer(Tasks::MP_Task mpTask);
   static void vAstack0(Tasks::MP_Task mpTask);
   static void vAstack1(Tasks::MP_Task mpTask);
