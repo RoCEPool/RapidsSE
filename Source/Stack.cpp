@@ -172,24 +172,6 @@ void Stack::vDiscard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of given value on value stack                                  */
-/*----------------------------------------------------------------------------*/
-Value* Stack::pGetValue(i8 iNthValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  Value* pValue = aPeekValue();
-  while (iNthValue--) {
-    char* aAddress = reinterpret_cast<char*>(pValue);
-    i8 iSize = pValue->nSize();
-    aAddress += iSize;
-    pValue = reinterpret_cast<Value*>(aAddress);
-  }
-  
-  return pValue;
-}
-
-/*----------------------------------------------------------------------------*/
 /* guard value stack                                                          */
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuard(i8 iCount)
@@ -284,7 +266,15 @@ Value* Stack::aPeekValue(i8 iNthValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  return pGetValue(iNthValue);
+  Value* pValue = aPeekValue();
+  while (iNthValue--) {
+    char* aAddress = reinterpret_cast<char*>(pValue);
+    i8 iSize = pValue->nSize();
+    aAddress += iSize;
+    pValue = reinterpret_cast<Value*>(aAddress);
+  }
+  
+  return pValue;
 }
 
 /*----------------------------------------------------------------------------*/

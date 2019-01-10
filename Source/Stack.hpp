@@ -50,8 +50,6 @@ namespace Forth
   
     void vDiscard(void);
   
-    Value* pGetValue(i8 iValue);
-  
     bool bGuard(i8 iCount);
     bool bGuard(eCN eClass0);
     bool bGuard(eCN eClass0, eCN eClass1);
