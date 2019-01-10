@@ -118,6 +118,11 @@ Job_WriteRow::Job_WriteRow(Interface::Session* pSession)
   //m_aRecord
   m_nRecordBytes = false;
   
+  // set the enclosed_by to be a '
+  m_xFormatters.m_bDefault = false;
+  m_xFormatters.m_cEnclosedBy_Leading = '\'';
+  m_xFormatters.m_cEnclosedBy_Trailing = '\'';
+  
   _checkInitialised_(CN_JOB_WRITEROW);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
@@ -169,6 +174,7 @@ void Job_WriteRow::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Interface::Session* pSession,
                                    Stz* sTableName,
+                                   Table* pTable,
                                    i8 iParentJobId)
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -184,6 +190,7 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Interface::Session* pSession,
 
   pJob_WriteRow->m_iParentJobId = iParentJobId;
   pJob_WriteRow->m_sObjectName  = sTableName;
+  pJob_WriteRow->m_pTable      = pTable;
   pJob_WriteRow->m_iPartitionId = C_UNKNOWN;
 
   return pJob_WriteRow;
@@ -192,33 +199,6 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Interface::Session* pSession,
 /*----------------------------------------------------------------------------*/
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* fromat a row                                                               */
-/*----------------------------------------------------------------------------*/
-bool Job_WriteRow::bFormatRow(Table* pTable, Stz* aRawData, i8 nRawDataBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_WRITEROW,_FOOTER_);
-  
-  bool bBlankLine;
-  Formatters xFormatters;
-  
-  // set the enclosed_by to be a '
-  xFormatters.m_bDefault = false;
-  xFormatters.m_cEnclosedBy_Leading = '\'';
-  xFormatters.m_cEnclosedBy_Trailing = '\'';
-  
-  // format the raw data into a row
-  bool bValid = Row::bFormatRow(pTable->pColumnVec(),
-                                &xFormatters,
-                                aRawData, nRawDataBytes,
-                                m_aRecord.aStz(),
-                                m_nRecordBytes,
-                                bBlankLine,
-                                false /* allowNonPrintable */);
-
-  return bValid;
-}
 
 /*----------------------------------------------------------------------------*/
 /* show                                                                       */

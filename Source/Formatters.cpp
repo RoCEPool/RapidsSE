@@ -70,32 +70,44 @@ Formatters::~Formatters(void) noexcept(false)
 void Formatters::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
+
+  m_cEnclosedBy_Leading  = gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
+  m_cEnclosedBy_Trailing = gpAttachMap->m_xFormatters.m_cEnclosedBy_Trailing;
   
-  vReset(&gpAttachMap->m_xFormatters);
+  m_cEscapeChar       = gpAttachMap->m_xFormatters.m_cEscapeChar;
+  m_cFieldDelimiter   = gpAttachMap->m_xFormatters.m_cFieldDelimiter;
+  m_cRecordTerminator = gpAttachMap->m_xFormatters.m_cRecordTerminator;
+  m_eRecordEnd        = gpAttachMap->m_xFormatters.m_eRecordEnd;
+  
+  m_eDateComponent[0] = gpAttachMap->m_xFormatters.m_eDateComponent[0];
+  m_eDateComponent[1] = gpAttachMap->m_xFormatters.m_eDateComponent[1];
+  m_eDateComponent[2] = gpAttachMap->m_xFormatters.m_eDateComponent[2];
+  
+  m_cDateSeparator    = gpAttachMap->m_xFormatters.m_cDateSeparator;
 }
 
 /*----------------------------------------------------------------------------*/
 /* reset the formatters to given set of defaults                              */
 /*----------------------------------------------------------------------------*/
-void Formatters::vReset(Formatters* pDefaults)
+void Formatters::vSet(Formatters* pFormatters)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
   
-  m_bDefault = true;
+  m_bDefault = false;
   
-  m_cEnclosedBy_Leading  = pDefaults->m_cEnclosedBy_Leading;
-  m_cEnclosedBy_Trailing = pDefaults->m_cEnclosedBy_Trailing;
+  m_cEnclosedBy_Leading  = pFormatters->m_cEnclosedBy_Leading;
+  m_cEnclosedBy_Trailing = pFormatters->m_cEnclosedBy_Trailing;
   
-  m_cEscapeChar       = pDefaults->m_cEscapeChar;
-  m_cFieldDelimiter   = pDefaults->m_cFieldDelimiter;
-  m_cRecordTerminator = pDefaults->m_cRecordTerminator;
-  m_eRecordEnd       = pDefaults->m_eRecordEnd;
+  m_cEscapeChar       = pFormatters->m_cEscapeChar;
+  m_cFieldDelimiter   = pFormatters->m_cFieldDelimiter;
+  m_cRecordTerminator = pFormatters->m_cRecordTerminator;
+  m_eRecordEnd        = pFormatters->m_eRecordEnd;
   
-  m_eDateComponent[0] = pDefaults->m_eDateComponent[0];
-  m_eDateComponent[1] = pDefaults->m_eDateComponent[1];
-  m_eDateComponent[2] = pDefaults->m_eDateComponent[2];
+  m_eDateComponent[0] = pFormatters->m_eDateComponent[0];
+  m_eDateComponent[1] = pFormatters->m_eDateComponent[1];
+  m_eDateComponent[2] = pFormatters->m_eDateComponent[2];
   
-  m_cDateSeparator    = pDefaults->m_cDateSeparator;
+  m_cDateSeparator    = pFormatters->m_cDateSeparator;
 }
 
 /*----------------------------------------------------------------------------*/

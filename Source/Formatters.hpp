@@ -44,7 +44,7 @@ namespace Datums
     ~Formatters(void) noexcept(false);
   
     void vReset(void);
-    void vReset(Formatters* pDefaults);
+    void vSet(Formatters* pFormatters);
     void vShow(void);
     
     Footer* aFooter(void);
