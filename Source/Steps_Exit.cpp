@@ -28,7 +28,7 @@ void Step::vExit(MP_Task mpTask)
   
   if (mpTask->m_pLocalsFrame &&
       mpTask->m_pLocalsFrame->pStackPtr() ==
-      (void*)mpTask->m_pReturnStack->pPeekValue())
+      (void*)mpTask->m_pReturnStack->aPeekValue())
     mpTask->vLocalsPop();
   
   Cell* pCell;

@@ -149,7 +149,7 @@ ENTRY("vLocalsPush"_Stz);
   
   RegFrame* pLocalsFrame = new RegFrame;
   
-  pLocalsFrame->vStackPtr(mpTask->m_pReturnStack->pPeekValue());
+  pLocalsFrame->vStackPtr(mpTask->m_pReturnStack->aPeekValue());
   
   pLocalsFrame->vNext(mpTask->m_pLocalsFrame);
   

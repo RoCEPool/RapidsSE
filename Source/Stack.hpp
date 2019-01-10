@@ -57,8 +57,8 @@ namespace Forth
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    Value* pPeekValue(void);
-    Value* pPeekValue(i8 iNthValue);
+    Value* aPeekValue(void);
+    Value* aPeekValue(i8 iNthValue);
     void vPeekValWrk(i8 iNthValue, GenVar& xVariable);
     bool bPeekZero(void);
   
@@ -120,8 +120,8 @@ namespace Forth
     void vPopVal(Value* pValue);
     void vPushBy(i8 iBytes);
     void vPushVal(Value* pValue);
-    Value* pStackBase(void);
-    Value* pStackLimit(void);
+    Value* aStackBase(void);
+    Value* aStackLimit(void);
     
     Footer* aFooter(void);
     Footer* aHazard(void);

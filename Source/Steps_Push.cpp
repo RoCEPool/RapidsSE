@@ -24,7 +24,7 @@ void Step::vPushI(MP_Task mpTask)
 {
   ENTRY("vPushI"_Stz);
   
-  Value* aLoopIndex_I = mpTask->m_pReturnStack->pPeekValue();
+  Value* aLoopIndex_I = mpTask->m_pReturnStack->aPeekValue();
   
   mpTask->m_pDataStack->vPushValue(aLoopIndex_I);
   
@@ -38,7 +38,7 @@ void Step::vPushJ(MP_Task mpTask)
 {
   ENTRY("vPushJ"_Stz);
   
-  Value* aLoopIndex_J = mpTask->m_pReturnStack->pPeekValue(3);
+  Value* aLoopIndex_J = mpTask->m_pReturnStack->aPeekValue(3);
   
   mpTask->m_pDataStack->vPushValue(aLoopIndex_J);
   
