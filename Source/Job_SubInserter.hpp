@@ -9,7 +9,7 @@ namespace JobModel
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_SubInserter : public Job,
-                         public JobWriteBehind
+                          public JobWriteBehind
   {
   public:
     Job_InsertTable* m_pJob_InsertTable;                   // insert table job                           
@@ -30,7 +30,6 @@ namespace JobModel
   public:
     void vBegin(Table* pTable);
     void vEnd(void);
-    bool bFormatRow(Stz* aRawData, i8 iRawLength);
     bool bPopulateJob(TokenVec* pTokenVec);
 
     void vShow(void);

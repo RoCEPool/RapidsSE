@@ -177,20 +177,6 @@ void Job_SubInserter::vEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fromat a row                                                               */
-/*----------------------------------------------------------------------------*/
-bool Job_SubInserter::bFormatRow(Stz* aRawData, i8 iRawLength)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
-  
-  bool bBlankLine;
-  
-  bool bValid = JobWriteBehind::bFormatRow(aRawData, iRawLength, bBlankLine);
-  
-  return bValid;
-}
-
-/*----------------------------------------------------------------------------*/
 /* populate the job                                                           */
 /*----------------------------------------------------------------------------*/
 bool Job_SubInserter::bPopulateJob(TokenVec* pTokenVec)

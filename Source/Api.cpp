@@ -854,7 +854,8 @@ eEC RapidsSE_InsertRows(Session* pSession, void* pJobPtr, Stz* sRecord, i8 iTrac
     }
     
     // format the row
-    bool bValid = pJob_SubInserter->bFormatRow(sRecord, iRawDataLength);
+    bool bBlankLine;
+    bool bValid = pJob_SubInserter->bFormatRow(sRecord, iRawDataLength, bBlankLine);
     
     // is the record invalid ?
     if (! bValid) {
