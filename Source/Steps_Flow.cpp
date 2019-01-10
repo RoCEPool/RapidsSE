@@ -46,22 +46,22 @@ void Step::vFlowExecute(MP_Task mpTask)
   Object* pWordObject;
   if ( ! mpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("execute"_Stz);
-  mpTask->m_pWord = _pWord(pWordObject);
+  Word* pWord = _pWord(pWordObject);
   
-  if (WT_PRIMITIVE == mpTask->m_pWord->eWordType()) {
-    TaskStep pTaskStep = mpTask->m_pWord->pEntryStep();
+  if (WT_PRIMITIVE == pWord->eWordType()) {
+    TaskStep pTaskStep = pWord->pEntryStep();
     (pTaskStep)(mpTask);
   }
-  else if (WT_OBJECT == mpTask->m_pWord->eWordType()) {
+  else if (WT_OBJECT == pWord->eWordType()) {
     mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_pCell);
-    mpTask->IP.m_pCell = mpTask->m_pWord->pEntryCell();
+    mpTask->IP.m_pCell = pWord->pEntryCell();
     
-    Object* pObject = (Object*)mpTask->m_pWord->pFirstCell();
+    Object* pObject = (Object*)pWord->pFirstCell();
     mpTask->m_pDataStack->vPushPointer(pObject);
   }
-  else if (WT_ROUTINE == mpTask->m_pWord->eWordType()){
+  else if (WT_ROUTINE == pWord->eWordType()){
     mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_pCell);
-    mpTask->IP.m_pCell = mpTask->m_pWord->pEntryCell();
+    mpTask->IP.m_pCell = pWord->pEntryCell();
   }
   else {
     NEVER_REACH;

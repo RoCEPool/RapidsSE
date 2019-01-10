@@ -100,12 +100,7 @@ namespace Tasks
     Compiler* m_pCompiler;  // word compiler
   
     s256  m_sPortrait;      // short text description of task
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // can these be removed ?
-  
-    Word* m_pWord;
- 
+   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // remove
   

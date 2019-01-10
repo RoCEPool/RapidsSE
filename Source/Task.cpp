@@ -91,7 +91,6 @@ Task::Task(Job* pJob)
   
   m_pCompiler    = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
   
-  m_pWord        = nullptr;
   m_iTracing     = C_TRACE_NONE;
   
   m_pSession     = nullptr;
