@@ -56,11 +56,11 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // new a writeRow job
-  pJob_InsertRow job_insertRow.NewJobWriteRow locals| pJob_WriteRow |
+  pTable pJob_InsertRow job_insertRow.NewJobWriteRow locals| pJob_WriteRow |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // hash the row
-  pTable pJob_InsertRow pJob_WriteRow job_writeRow.HashRow locals| bResult |
+  pJob_InsertRow pJob_WriteRow job_writeRow.HashRow locals| bResult |
 
   bResult not if EC_INVALID_VALUE pJob_InsertRow <ERROR_JOB> !!am <DONE_REQ> then
 

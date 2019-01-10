@@ -48,6 +48,7 @@ JobRow::~JobRow(void) noexcept(false)
 /*-- Member Functions --------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+#ifdef _VLQ
 /*----------------------------------------------------------------------------*/
 /* Format the row                                                             */
 /*----------------------------------------------------------------------------*/
@@ -146,6 +147,90 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   
   return true;
 }
+
+#else
+/*----------------------------------------------------------------------------*/
+/* create a row from given record                                             */
+/*----------------------------------------------------------------------------*/
+bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes,  bool &bBlankLine)
+{
+  char* aSrc = aRecord->aChar();
+  bBlankLine = false;
+  ColumnVec* pColVec = m_pTable->pColumnVec();
+  i8 nColumns = pColVec->nItems() - 1;
+  
+  Stz* pOffset = m_aRecord.aStz();;
+  Stz* aDst = pOffset + C_COLUMN_OFFSET_SIZE * nColumns;
+  aRowBytes = C_COLUMN_OFFSET_SIZE * nColumns;
+  
+  char* aStart = aSrc;
+  
+  // skip leading spaces
+  if (m_xFormatters.m_cRecordTerminator) {
+    //while (' ' == *aSrc || C_NL == *aSrc || C_CR == *aSrc)
+    //  aSrc++;
+    StrLib::vSkipWhite(&aSrc);
+  }
+  else {
+    StrLib::vSkipSpaces(&aSrc);
+  }
+  
+  // skip blank lines
+  if (! DtmLib::bIsThereRecordData(aSrc,&m_xFormatters) ) {
+    bBlankLine = true;
+    return false;
+  }
+  
+  // reset back to start
+  //aSrc = aStart;
+  
+  //vTrace("RawData: ]%256s[\n"_Stz,aRawData);
+  
+  //MemLib::vHexDump(aRawData,256);
+  for (i8 i_Column = 0; i_Column < nColumns; i_Column++) {
+    
+    Column* pColumn = pColVec->pGet(i_Column);
+    
+    // extract datum type
+    eDM eDatumType = pColumn->eDatumType();
+    bool bLastColumn = (i_Column + 1 == nColumns) ? true : false;
+    bool bValid = DtmLib::bExtract(eDatumType, aDst, &aSrc,
+                                   pColumn, bLastColumn,
+                                   false,
+                                   &m_xFormatters);
+    
+    // is the datum valid ?
+    if ( ! bValid ) {
+      if ( ! gpAttachMap->m_bMetadata ) {
+        vWarn("Skipping row - invalid field %s in record: "_Stz,
+              pColumn->sColumnName().aChar());
+        for (char* a = (char*)aRecord; *a && '\n' != *a && '\r' != *a; a++)
+          vTrace("%c"_Stz,*a);
+        vTrace("\n"_Stz);
+      }
+      return false;
+    }
+    
+    // save offset
+    *((u2*)pOffset->aChar()) = m_nRecordBytes;
+    
+    i8 iColumnLength = DtmLib::iSize(eDatumType, aDst->aChar());
+    
+    // move to next offset location
+    pOffset += C_COLUMN_OFFSET_SIZE;
+    
+    // increment row length
+    m_nRecordBytes += iColumnLength;
+    
+    // move to next column location
+    aDst += iColumnLength;
+  }
+  
+  //vDump(aRowData, pColVec); // keep as debug
+  
+  return true;
+}
+#endif
 
 /*============================================================================*/
 /* end                                                                        */

@@ -4852,11 +4852,11 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     char* aRowData = (char*)xRowWrk.aRow();
     iRecLength = sRecData.iLength();
     
-    bFormatted = Row::bFormatRow(pColVec,pFormatters,
-                                 sRecData,iRecLength,
-                                 (Stz*)aRowData,iRowLength,
-                                 bBlankLine,
-                                 false /* allowNonPrintable */);
+//    bFormatted = Row::bFormatRow(pColVec,pFormatters,
+//                                 sRecData,iRecLength,
+//                                 (Stz*)aRowData,iRowLength,
+//                                 bBlankLine,
+//                                 false /* allowNonPrintable */);
     
     xRowWrk.vRowSize(iRowLength);
     xRowWrk.vTxId(0);

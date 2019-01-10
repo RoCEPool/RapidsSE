@@ -20,13 +20,6 @@ namespace DBobjects
     Row(void);
     ~Row(void) noexcept(false);
   
-    static bool bFormatRow(ColumnVec* pColVec,
-                           Formatters* pFormatters,
-                           Stz* aRecord, i8 nRecordBytes,
-                           Stz* aRow, i8& nRowBytes,
-                           bool& bBlankLine,
-                           bool bAllowNonPrintable);
-  
     void vAsBinaryString(s48K& sDataString, ColumnVec* pColVec);
     void vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec);
     void vAsEscapedString(s48K& sDataString, ColumnVec* pColVec);
