@@ -215,39 +215,6 @@ bool Queue::bPop(Forth::GenVar* pValWrk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value set from this queue (there may not be any)                       */
-/*----------------------------------------------------------------------------*/
-bool Queue::bPop(ValSet* pValSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
-  
-  m_zLock.vGrabWrite();
-  
-  if ( ! m_pTopBuffer ) {
-    ASSERT( ! m_iCount );
-    m_zLock.vDropWrite();
-    return false;
-  }
-  
-  bool bDiscardable;
-  bool bPopped = m_pTopBuffer->bPop(pValSet,bDiscardable);
-  
-  if (bDiscardable) {
-    ASSERT(bPopped);
-    vDiscard();
-  }
-  
-  if (bPopped)
-    m_iCount--;
-
-  ASSERT(m_iCount >= 0);
-  
-  m_zLock.vDropWrite();
-  
-  return bPopped;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

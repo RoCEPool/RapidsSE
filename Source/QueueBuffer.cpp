@@ -181,42 +181,6 @@ bool QueueBuffer::bPop(Forth::GenVar* pValWrk, bool& bDiscardable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value set from this queue (there may not be any)                       */
-/*----------------------------------------------------------------------------*/
-bool QueueBuffer::bPop(ValSet* pValSet, bool& bDiscardable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
- 
-  bDiscardable = false;
-  
-  if (0 == m_nValues) {
-    //ASSERT(m_pTopValue == m_pNextFree);
-    return false;
-  }
-  
-  i8 nBytes = m_pTopValue->nSize();
-  
-  MemLib::vCopy(pValSet,m_pTopValue,nBytes,CN_QUEUEBUFFER);
-  
-  //m_pTopValue = pNextValue(m_pTopValue);
-  m_pTopValue = pAdd<Value*>(m_pTopValue,nBytes);
-  
-  m_nValues--;
-  
-  if (0 == m_nValues) {
-    if (m_pNext) {
-      bDiscardable = true;
-    }
-    else {
-      m_pTopValue = pFirstValue();
-      m_pNextFree = m_pTopValue;
-    }
-  }
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
