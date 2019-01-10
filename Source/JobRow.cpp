@@ -100,13 +100,11 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
       
       bValid = DtmLib::bExtract(eDatumType, (Stz*)&iInt, &aSrc,
                                 pColumn, bLastColumn,
-                                false,
                                 &m_xFormatters);
     }
     else {
       bValid = DtmLib::bExtract(eDatumType, aDst, &aSrc,
                                 pColumn, bLastColumn,
-                                false,
                                 &m_xFormatters);
     }
     

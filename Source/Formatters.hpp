@@ -24,6 +24,7 @@ namespace Datums
   public:
   
     bool m_bDefault;             // default formatters
+    bool m_bAllowNonPrintable;   // allow non-printable
     char m_cEnclosedBy_Leading;  // enclosed by
     char m_cEnclosedBy_Trailing; // enclosed by
     char m_cEscapeChar;          // escape char

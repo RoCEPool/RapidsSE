@@ -36,6 +36,7 @@ Formatters::Formatters(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
 
   m_bDefault = true;
+  m_bAllowNonPrintable = false;
   m_cEnclosedBy_Leading  = '\0';
   m_cEnclosedBy_Trailing = m_cEnclosedBy_Leading;
   //m_cEnclosedBy_Leading  = '{';
@@ -71,6 +72,9 @@ void Formatters::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FORMATTERS);
 
+  m_bDefault = true;
+  
+  m_bAllowNonPrintable   = gpAttachMap->m_xFormatters.m_bAllowNonPrintable;
   m_cEnclosedBy_Leading  = gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
   m_cEnclosedBy_Trailing = gpAttachMap->m_xFormatters.m_cEnclosedBy_Trailing;
   
@@ -95,6 +99,7 @@ void Formatters::vSet(Formatters* pFormatters)
   
   m_bDefault = false;
   
+  m_bAllowNonPrintable   = pFormatters->m_bAllowNonPrintable;
   m_cEnclosedBy_Leading  = pFormatters->m_cEnclosedBy_Leading;
   m_cEnclosedBy_Trailing = pFormatters->m_cEnclosedBy_Trailing;
   

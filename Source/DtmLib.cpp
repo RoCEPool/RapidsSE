@@ -83,7 +83,7 @@ i8 DtmLib::nCopyVLQ(eDM eDatum, void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
                       DBobjects::Column* pColumn, bool bLastColumn,
-                      bool bAllowNonPrintable, Formatters* pFormatters)
+                      Formatters* pFormatters)
 {
   bool b = false;
 
@@ -115,7 +115,7 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
       case DM_IVL: b = Ivl::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_TME: b = Tme::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_TSP: b = Tsp::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-      case DM_VCH: b = Vch::bExtract2(aaSrc,aDst,pColumn,pFormatters,bAllowNonPrintable); break;
+      case DM_VCH: b = Vch::bExtract2(aaSrc,aDst,pColumn,pFormatters); break;
       default:
         vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
                eDatum);

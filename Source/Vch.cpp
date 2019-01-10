@@ -284,16 +284,6 @@ bool Vch::bExtract(char** aaSrc, Stz* aDst,
 bool Vch::bExtract2(char** aaSrc, Stz* aDst,
                     Column* pColumn, Formatters* pFormatters)
 {
-  return bExtract2(aaSrc, aDst, pColumn, pFormatters, false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* extract a varchar field from csv substr                                    */
-/*----------------------------------------------------------------------------*/
-bool Vch::bExtract2(char** aaSrc, Stz* aDst,
-                    Column* pColumn, Formatters* pFormatters,
-                    bool bAllowNonPrintable)
-{
   Vch* aVch = (Vch*)aDst;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for null
@@ -322,7 +312,7 @@ bool Vch::bExtract2(char** aaSrc, Stz* aDst,
                                   pFormatters->m_cEscapeChar,
                                   pFormatters->m_cFieldDelimiter,
                                   pFormatters->m_cRecordTerminator,
-                                  bAllowNonPrintable
+                                  pFormatters->m_bAllowNonPrintable
                                  ) )
     return false;
   
