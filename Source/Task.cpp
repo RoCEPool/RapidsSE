@@ -671,7 +671,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
   
   sStackContents = ""_Stz;
   
-  i8 iParamValues = pStack->iValues();
+  i8 iParamValues = pStack->nValues();
   
   sStackContents.vCatSprint("("_Stz);
   for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
@@ -809,9 +809,9 @@ void Task::vTracePoint(Stz* aMark)
   else
     sRoutine = "<unknown>"_Stz;
   
-  i8 iAuxValues    = m_pAuxStack->iValues();
-  i8 iDataValues   = m_pDataStack->iValues();
-  i8 iReturnValues = m_pReturnStack->iValues();
+  i8 iAuxValues    = m_pAuxStack->nValues();
+  i8 iDataValues   = m_pDataStack->nValues();
+  i8 iReturnValues = m_pReturnStack->nValues();
   
   vTrace("[%s(N%d):%8s\\%lld %-11s] %-16s : a%2lld="_Stz,
         
@@ -852,8 +852,8 @@ void Task::vTraceStep(Stz* aStepNm)
   else
     sRoutine = "<unknown>"_Stz;
   
-  i8 iDataValues  = m_pDataStack->iValues();
-  i8 iReturnValues = m_pReturnStack->iValues();
+  i8 iDataValues  = m_pDataStack->nValues();
+  i8 iReturnValues = m_pReturnStack->nValues();
   vTrace("%-15s %15s : r%lld ; d%2d="_Stz,
          sRoutine.aChar(),
          aStepNm,

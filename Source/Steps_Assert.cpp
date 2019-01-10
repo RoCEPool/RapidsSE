@@ -216,7 +216,7 @@ void Step::vAssertStack_0(MP_Task mpTask)
 {
 ENTRY("vAssertStack_0"_Stz);
 
-  i8 iStackValues = mpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->nValues();
   
   if ( ! (0 == iStackValues)  )
     THROW("assert::stack_0 in word %s"_Stz, mpTask->m_pWord ? mpTask->m_pWord->sName().aChar() : "NULL");
@@ -231,7 +231,7 @@ void Step::vAssertStack_0more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_0more"_Stz);
   
-  i8 iStackValues = mpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->nValues();
   
   if ( ! (0 <= iStackValues) )
     THROW("assert::stack_0+ in word %s"_Stz, mpTask->m_pWord ? mpTask->m_pWord->sName().aChar() : "NULL");
@@ -246,7 +246,7 @@ void Step::vAssertStack_1(MP_Task mpTask)
 {
 ENTRY("vAssertStack_1"_Stz);
   
-  i8 iStackValues = mpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->nValues();
   
   if ( ! (1 == iStackValues)  )
     THROW("assert::stack_1 in word %s"_Stz, mpTask->m_pWord ? mpTask->m_pWord->sName().aChar() : "NULL");
@@ -261,7 +261,7 @@ void Step::vAssertStack_1more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_1more"_Stz);
   
-  i8 iStackValues = mpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->nValues();
   
   if ( ! (1 <= iStackValues) )
     THROW("assert::stack_1+ in word %s"_Stz, mpTask->m_pWord ? mpTask->m_pWord->sName().aChar() : "NULL");
@@ -276,7 +276,7 @@ void Step::vAssertStack_2(MP_Task mpTask)
 {
 ENTRY("vAssertStack_2"_Stz);
   
-  i8 iStackValues = mpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->nValues();
   
   if ( ! (2 == iStackValues)  )
     THROW("assert::stack_2 in word %s"_Stz, mpTask->m_pWord ? mpTask->m_pWord->sName().aChar() : "NULL");
@@ -291,7 +291,7 @@ void Step::vAssertStack_2more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_2more"_Stz);
   
-  i8 iStackValues = mpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->nValues();
   
   if ( ! (2 <= iStackValues) )
     THROW("assert::stack_2+ in word %s"_Stz, mpTask->m_pWord ? mpTask->m_pWord->sName().aChar() : "NULL");
@@ -306,7 +306,7 @@ void Step::vAssertStack_3(MP_Task mpTask)
 {
 ENTRY("vAssertStack_3"_Stz);
   
-  i8 iStackValues = mpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->nValues();
   
   if ( ! (3 == iStackValues)  )
     THROW("assert::stack_3 in word %s"_Stz, mpTask->m_pWord ? mpTask->m_pWord->sName().aChar() : "NULL");
@@ -321,7 +321,7 @@ void Step::vAssertStack_3more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_3more"_Stz);
   
-  i8 iStackValues = mpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->nValues();
   
   if ( ! (3 <= iStackValues) )
     THROW("assert::stack_3+ in word %s"_Stz, mpTask->m_pWord ? mpTask->m_pWord->sName().aChar() : "NULL");
@@ -336,7 +336,7 @@ void Step::vAssertStack_4(MP_Task mpTask)
 {
 ENTRY("vAssertStack_4"_Stz);
   
-  i8 iStackValues = mpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->nValues();
   
   if ( ! (4 == iStackValues)  )
     THROW("assert::stack_4 in word %s"_Stz, mpTask->m_pWord ? mpTask->m_pWord->sName().aChar() : "NULL");
@@ -351,7 +351,7 @@ void Step::vAssertStack_4more(MP_Task mpTask)
 {
 ENTRY("vAssertStack_4more"_Stz);
   
-  i8 iStackValues = mpTask->m_pDataStack->iValues();
+  i8 iStackValues = mpTask->m_pDataStack->nValues();
   
   if ( ! (4 <= iStackValues) )
     THROW("assert::stack_4+ in word %s"_Stz, mpTask->m_pWord ? mpTask->m_pWord->sName().aChar() : "NULL");

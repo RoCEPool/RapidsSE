@@ -138,7 +138,7 @@ void Step::vFlowJumpFalse(MP_Task mpTask)
   }
   
   pDataStack->vPopBy(sizeof(IntVal)); // inline
-  pDataStack->m_iValues--;
+  pDataStack->m_nValues--;
   
   // n.b. the IP points to the jump arg
   

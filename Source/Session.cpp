@@ -113,7 +113,7 @@ Session::~Session(void) noexcept(false)
 
   gpAttachMap->m_pApiState->vFreeState(m_iApiState);
   
-  RASSERT(0 == m_pJobStack->iValues());
+  RASSERT(0 == m_pJobStack->nValues());
   
   delete m_pJobStack;
 }

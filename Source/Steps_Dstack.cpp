@@ -86,7 +86,7 @@ void Step::vDstackDepth(MP_Task mpTask)
 {
   ENTRY("vDstackDepth"_Stz);
   
-  i8 iDepth = mpTask->m_pDataStack->iValues();
+  i8 iDepth = mpTask->m_pDataStack->nValues();
   
   mpTask->m_pDataStack->vPushI8(iDepth);
   

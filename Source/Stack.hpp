@@ -23,7 +23,7 @@ namespace Forth
   private:
   
   private:
-    i8     m_iValues; // number of values currently on stack
+    i8     m_nValues; // number of values currently on stack
     Value* m_pTop;    // current top of stack
 
     Value* m_pRetryTop;    // reset to this top of stack
@@ -113,13 +113,13 @@ namespace Forth
     void vRetry(void);
     void vRetryPoint(void);
   
-    i8 iValues(void);
+    i8 nValues(void);
   
   private:
-    void   vPushBy(i8 iBytes);
-    void   vPopBy(i8 iBytes);
-    void   vPopVal(Value* pValue);
-    void   vPushVal(Value* pValue);
+    void vPopBy(i8 iBytes);
+    void vPopVal(Value* pValue);
+    void vPushBy(i8 iBytes);
+    void vPushVal(Value* pValue);
     Value* pStackBase(void);
     Value* pStackLimit(void);
     
@@ -164,7 +164,7 @@ namespace Forth
     }
   
   vPopBy(sizeof(IntVal)); // inline
-  m_iValues--;
+  m_nValues--;
   
   return true;
   }
