@@ -91,6 +91,105 @@ void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* dump contents of the value stack                                           */
+/*----------------------------------------------------------------------------*/
+void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
+{
+  vTrace("[%s]%s:\n"_Stz,aPrefix,aTitle);
+  
+  GenVar xVariable;
+  
+  s48K sString;
+  
+  i8 nValues = iValues();
+  for (i8 iVal = 0; iVal < nValues; iVal++) {
+    
+    vPeekValWrk(iVal,xVariable);
+    
+    xVariable.vToString(sString);
+    
+    Value* pNestedValue = xVariable.pNestedValue();
+    eCN eClass = pNestedValue->eClass();
+    
+    switch(eClass) {
+        
+      case CN_IPVAL: {
+        IpVal* pIpVal = _pIpVal(pNestedValue);
+        Cell* pCell = pIpVal->pIpPtr();
+        vTrace("[%s] [%2lld] [%s] %p\n"_Stz,aPrefix,iVal,aCN[eClass],pCell);
+        break;
+      }
+        
+      case CN_INTVAL: {
+        i8 iIntVal = xVariable.iNestedAsInt();
+        vTrace("[%s] [%2lld] [%s] %lld\n"_Stz,aPrefix,iVal,aCN[eClass],iIntVal);
+        break;
+      }
+        
+      case CN_PTRVAL: {
+        PtrVal* pPtrVal = xVariable.pNestedPtrVal();
+        Object* pObject = pPtrVal->pPtr();
+        eCN ePtdClass   = pObject->eClass();
+        vTrace("[%s] [%2lld] [%s] %s (%s)\n"_Stz,
+               aPrefix,iVal,aCN[eClass],sString.aChar(),aCN[ePtdClass]);
+        break;
+      }
+        
+      case CN_STRVAL: {
+        StrVal* pStrVal = _pStrVal(pNestedValue);
+        vTrace("[%s] [%2lld] [%s] %s\n"_Stz,aPrefix,iVal,aCN[eClass],pStrVal->aChar());
+        break;
+      }
+        
+      default: {
+        vTrace("[%s] [%2lld] [%s]  %s (%s)\n"_Stz,
+               aPrefix,iVal,aCN[eClass],sString.aChar(),aCN[eClass]);
+        break;
+      }
+        
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* discard value on top of value stack                                        */
+/*----------------------------------------------------------------------------*/
+void Stack::vDiscard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  //m_xHazard.vAssertFooter();
+  _hazard_();
+  
+  Value* pValue = reinterpret_cast<Value*>(m_pTop);
+  i8 iSize = pValue->nSize();
+  
+  vPopBy(iSize);
+  m_iValues--;
+  
+  //m_xHazard.vAssertFooter();
+  _hazard_();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of given value on value stack                                  */
+/*----------------------------------------------------------------------------*/
+Value* Stack::pGetValue(i8 iNthValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  Value* pValue = pTopValue();
+  while (iNthValue--) {
+    char* aAddress = reinterpret_cast<char*>(pValue);
+    i8 iSize = pValue->nSize();
+    aAddress += iSize;
+    pValue = reinterpret_cast<Value*>(aAddress);
+  }
+  
+  return pValue;
+}
+
+/*----------------------------------------------------------------------------*/
 /* guard value stack                                                          */
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuard(i8 iCount)
@@ -167,9 +266,40 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* peek at value on top of value stack                                        */
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+Value* Stack::pPeekValue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  return pTopValue();
+}
 
+/*----------------------------------------------------------------------------*/
+/* peek at given value on value stack                                         */
+/*----------------------------------------------------------------------------*/
+Value* Stack::pPeekValue(i8 iNthValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  return pGetValue(iNthValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* peek at given value on value stack                                         */
+/*----------------------------------------------------------------------------*/
+void Stack::vPeekValWrk(i8 iNthValue, GenVar& xVariable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  Value* pPeekedValue = pPeekValue(iNthValue);
+  
+  i8 iSize = pPeekedValue->nSize();
+  
+  //vTrace("Peek: %lld %p %lld\n"_Stz,iNthValue,pPeekedValue,iSize);
+  
+  MemLib::vCopy(xVariable.pNestedValueSelf(),pPeekedValue,iSize,CN_STACK);
+}
 
 /*----------------------------------------------------------------------------*/
 /* pop cell from value stack                                                  */
@@ -735,8 +865,18 @@ i8 Stack::iPop(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* poke at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+void Stack::vPokeValWrk(i8 iNthValue, GenVar& xVariable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  i8 iSize = xVariable.pNestedValueSelf()->nSize();
+  
+  Value* pPokeAddress = pPeekValue(iNthValue);
+  
+  MemLib::vCopy(pPokeAddress,xVariable.pNestedValueSelf(),iSize,CN_STACK);
+}
 
 /*----------------------------------------------------------------------------*/
 /* push bool onto value stack                                                 */
@@ -928,141 +1068,6 @@ void Stack::vPushValue(Value* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* discard value on top of value stack                                        */
-/*----------------------------------------------------------------------------*/
-void Stack::vDiscard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  //m_xHazard.vAssertFooter();
-  _hazard_();
-
-  Value* pValue = reinterpret_cast<Value*>(m_pTop);
-  i8 iSize = pValue->nSize();
-  
-  vPopBy(iSize);
-  m_iValues--;
-  
-  //m_xHazard.vAssertFooter();
-  _hazard_();
-}
-
-/*----------------------------------------------------------------------------*/
-/* stk -- dump the value stack                                                */
-/*----------------------------------------------------------------------------*/
-void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
-{
-  vTrace("[%s]%s:\n"_Stz,aPrefix,aTitle);
-  
-  GenVar xVariable;
-  
-  s48K sString;
-  
-  i8 nValues = iValues();
-  for (i8 iVal = 0; iVal < nValues; iVal++) {
-    
-    vPeekValWrk(iVal,xVariable);
-    
-    xVariable.vToString(sString);
-    
-    Value* pNestedValue = xVariable.pNestedValue();
-    eCN eClass = pNestedValue->eClass();
-    
-    switch(eClass) {
-        
-      case CN_IPVAL: {
-        IpVal* pIpVal = _pIpVal(pNestedValue);
-        Cell* pCell = pIpVal->pIpPtr();
-        vTrace("[%s] [%2lld] [%s] %p\n"_Stz,aPrefix,iVal,aCN[eClass],pCell);
-        break;
-      }
-        
-      case CN_INTVAL: {
-        i8 iIntVal = xVariable.iNestedAsInt();
-        vTrace("[%s] [%2lld] [%s] %lld\n"_Stz,aPrefix,iVal,aCN[eClass],iIntVal);
-        break;
-      }
-        
-      case CN_PTRVAL: {
-        PtrVal* pPtrVal = xVariable.pNestedPtrVal();
-        Object* pObject = pPtrVal->pPtr();
-        eCN ePtdClass   = pObject->eClass();
-        vTrace("[%s] [%2lld] [%s] %s (%s)\n"_Stz,
-               aPrefix,iVal,aCN[eClass],sString.aChar(),aCN[ePtdClass]);
-        break;
-      }
-        
-      case CN_STRVAL: {
-        StrVal* pStrVal = _pStrVal(pNestedValue);
-        vTrace("[%s] [%2lld] [%s] %s\n"_Stz,aPrefix,iVal,aCN[eClass],pStrVal->aChar());
-        break;
-      }
-        
-      default: {
-        vTrace("[%s] [%2lld] [%s]  %s (%s)\n"_Stz,
-               aPrefix,iVal,aCN[eClass],sString.aChar(),aCN[eClass]);
-        break;
-      }
-        
-    }
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* peek at value on top of value stack                                        */
-/*----------------------------------------------------------------------------*/
-Value* Stack::pPeekValue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  return pTopValue();
-}
-
-/*----------------------------------------------------------------------------*/
-/* peek at given value on value stack                                         */
-/*----------------------------------------------------------------------------*/
-Value* Stack::pPeekValue(i8 iNthValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  return pGetValue(iNthValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* peek at given value on value stack                                         */
-/*----------------------------------------------------------------------------*/
-void Stack::vPeekValWrk(i8 iNthValue, GenVar& xVariable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  Value* pPeekedValue = pPeekValue(iNthValue);
-  
-  i8 iSize = pPeekedValue->nSize();
-
-  //vTrace("Peek: %lld %p %lld\n"_Stz,iNthValue,pPeekedValue,iSize);
-  
-  MemLib::vCopy(xVariable.pNestedValueSelf(),pPeekedValue,iSize,CN_STACK);
-}
-
-/*----------------------------------------------------------------------------*/
-/* poke at given value on fort stack                                          */
-/*----------------------------------------------------------------------------*/
-void Stack::vPokeValWrk(i8 iNthValue, GenVar& xVariable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-
-  i8 iSize = xVariable.pNestedValueSelf()->nSize();
-  
-  Value* pPokeAddress = pPeekValue(iNthValue);
-  
-  MemLib::vCopy(pPokeAddress,xVariable.pNestedValueSelf(),iSize,CN_STACK);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set stack back to retry point                                              */
 /*----------------------------------------------------------------------------*/
 void Stack::vRetry(void)
@@ -1082,6 +1087,18 @@ void Stack::vRetryPoint(void)
   
   m_pRetryTop    = m_pTop;
   m_iRetryValues = m_iValues;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of value on top of value stack                                 */
+/*----------------------------------------------------------------------------*/
+Value* Stack::pTopValue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  Value* pValue = reinterpret_cast<Value*>(m_pTop);
+  
+  return pValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1109,27 +1126,9 @@ bool Stack::bPeekZero(void)
   return false;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
 /*----------------------------------------------------------------------------*/
-/* get address of given value on value stack                                  */
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Value* Stack::pGetValue(i8 iNthValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  Value* pValue = pTopValue();
-  while (iNthValue--) {
-    char* aAddress = reinterpret_cast<char*>(pValue);
-    i8 iSize = pValue->nSize();
-    aAddress += iSize;
-    pValue = reinterpret_cast<Value*>(aAddress);
-  }
-  
-  return pValue;
-}
 
 /*----------------------------------------------------------------------------*/
 /* push top by given bytes                                                    */
@@ -1209,18 +1208,6 @@ Value* Stack::pStackLimit(void)
   char* pLimit = &m_xWsp.aArea()[0];
   
   return pPoolCheck<Value*>(pLimit);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of value on top of value stack                                 */
-/*----------------------------------------------------------------------------*/
-Value* Stack::pTopValue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  Value* pValue = reinterpret_cast<Value*>(m_pTop);
-  
-  return pValue;
 }
 
 /*----------------------------------------------------------------------------*/

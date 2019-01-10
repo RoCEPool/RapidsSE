@@ -46,11 +46,22 @@ namespace Forth
     static Stack* _pStack(void* aAddr);
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
+    void vContentDump(Stz* aPrefix, Stz* aTitle);
+  
+    void vDiscard(void);
+  
+    Value* pGetValue(i8 iValue);
+  
     bool bGuard(i8 iCount);
     bool bGuard(eCN eClass0);
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
+    Value* pPeekValue(void);
+    Value* pPeekValue(i8 iNthValue);
+    void vPeekValWrk(i8 iNthValue, GenVar& xVariable);
+    bool bPeekZero(void);
+  
     bool bPop(Forth::Cell*& pCell);
     bool bPop(eCN& eArg1);
     bool bPop(GenVar* pArg1);
@@ -81,6 +92,8 @@ namespace Forth
     bool bPopAsInt_Quick(i8& iArg1);
     i8   iPop(void);
   
+    void  vPokeValWrk(i8 iNthValue, GenVar& xVariable);
+  
     void vPushBool(bool bBool);
     void vPushCell(Forth::Cell* pCell);
     void vPushEntry(DBobjects::Entry* aEntry);
@@ -97,23 +110,15 @@ namespace Forth
     void vPushValue(Value* pValue);
     void vPushValue(Value& xValue);
   
-    //-------------------------------------------------------------------------
-    
-    void   vDiscard(void);
-    void   vContentDump(Stz* aPrefix, Stz* aTitle);
-    Value* pPeekValue(void);
-    Value* pPeekValue(i8 iNthValue);
-    void   vPeekValWrk(i8 iNthValue, GenVar& xVariable);
-    bool   bPeekZero(void);
-    void   vPokeValWrk(i8 iNthValue, GenVar& xVariable);
-    void   vRetry(void);
-    void   vRetryPoint(void);
+    void vRetry(void);
+    void vRetryPoint(void);
+  
+    Value* pTopValue(void);
+  
     i8     iValues(void);
     
-    Value* pTopValue(void);
-    
-    Value* pGetValue(i8 iValue);
-    
+  
+  
   private:
     void   vPushBy(i8 iBytes);
     void   vPopBy(i8 iBytes);
