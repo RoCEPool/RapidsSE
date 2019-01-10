@@ -35,7 +35,6 @@ namespace Structures
     void  vInitialize(void);
     void  vLockName(Stz* aName);
     bool  bPop(Forth::GenVar* pValWrk);
-    bool  bPop(ValSet* pValSet);
     
   private:
     void vExpand(void);

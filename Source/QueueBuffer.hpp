@@ -36,7 +36,6 @@ namespace Structures
     QueueBuffer* pNext(void);
     void     vNext(QueueBuffer* pQbuffer);
     bool     bPop(Forth::GenVar* pValWrk, bool& bDiscard);
-    bool     bPop(ValSet* pValSet, bool& bDiscard);
 
   private:
     Value*   pFirstValue(void);
