@@ -14,7 +14,7 @@ namespace Forth
     RegFrame* m_pNext;              // nest frame in stack / list
     void*     m_pStackPtr;          // discard point (when in call stack)
     Dic*      m_pOpDic;             // operator dic associated with this frame
-    Register  m_xValReg[C_VALREGS]; // set of registers
+    Register  m_xRegister[C_VALREGS]; // set of registers
     
     // must be last
     Footer m_xFooter;
@@ -40,7 +40,7 @@ namespace Forth
     Dic*      pOpDic(void);
     void      vOpDic(Dic* pOpDic);
     
-    Register* pValReg(i8 iReg);
+    Register* pRegister(i8 iReg);
     
     Footer* aFooter(void);
   };

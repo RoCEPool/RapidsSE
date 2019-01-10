@@ -48,7 +48,7 @@ RegFrame::RegFrame(void)
   m_pNext     = nullptr;
   m_pStackPtr = nullptr;
   m_pOpDic    = nullptr;
-  //m_xValReg
+  //m_xRegister
   
   _checkInitialised_(CN_REGFRAME);
   
@@ -160,13 +160,13 @@ void RegFrame::vOpDic(Dic* pOpDic)
 /*----------------------------------------------------------------------------*/
 /* get address of value register                                              */
 /*----------------------------------------------------------------------------*/
-Register* RegFrame::pValReg(i8 iReg)
+Register* RegFrame::pRegister(i8 iReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
   
   ASSERT(iReg >= 0 && iReg < C_VALREGS);
   
-  return &m_xValReg[iReg];
+  return &m_xRegister[iReg];
 }
 
 /*----------------------------------------------------------------------------*/

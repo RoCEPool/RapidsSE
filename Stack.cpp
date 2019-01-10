@@ -910,11 +910,11 @@ void Stack::vPushValue(Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushRegister(Register* pValReg)
+void Stack::vPushRegister(Register* pRegister)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(pValReg);
+  vPushVal(pRegister);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }

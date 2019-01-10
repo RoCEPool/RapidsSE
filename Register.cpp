@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* ValReg.hpp -- Workspace for Cached Values                                  */
+/* Register.hpp -- Workspace for Cached Values                                  */
 /*============================================================================*/
 
 #include "Forth.h"
@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 Register* Forth::_pRegister(void* aAddr)
 {
-  Register* pValReg = reinterpret_cast<Register*>(aAddr);
+  Register* pRegister = reinterpret_cast<Register*>(aAddr);
   
-  RASSERT_TYPE(pValReg,CN_VALREG);
+  RASSERT_TYPE(pRegister,CN_VALREG);
   
-  return pValReg;
+  return pRegister;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -21,7 +21,7 @@ Register* Forth::_pRegister(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Register::operator new(size_t)
 {
-  vFatal("fatal: ValReg class cannot be new'd\n"_Stz);
+  vFatal("fatal: Register class cannot be new'd\n"_Stz);
   
   NEVER_REACH;
 }

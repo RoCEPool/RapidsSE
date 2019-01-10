@@ -35,9 +35,9 @@ void Step::vLocalFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iLocal) )
     THROW_INVALID_DSTACK("local.fetch"_Stz);
   
-  Register* pValReg = mpTask->m_pLocalsFrame->pValReg(iLocal);
+  Register* pRegister = mpTask->m_pLocalsFrame->pRegister(iLocal);
   
-  mpTask->m_pDataStack->vPushValue(pValReg);
+  mpTask->m_pDataStack->vPushValue(pRegister);
   
   EXIT();
 }
@@ -56,9 +56,9 @@ void Step::vLocalStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iLocal) )
     THROW_INVALID_DSTACK("localStore"_Stz);
   
-  Register* pValReg = mpTask->m_pLocalsFrame->pValReg(iLocal);
+  Register* pRegister = mpTask->m_pLocalsFrame->pRegister(iLocal);
   
-  mpTask->m_pDataStack->bPop(pValReg);
+  mpTask->m_pDataStack->bPop(pRegister);
   
   EXIT();
 }
