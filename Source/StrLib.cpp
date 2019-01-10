@@ -759,11 +759,11 @@ bool StrLib::bExtractDate(char** aaSrc, i8& iYear, i8& iMonth, i8& iDay)
   if ( ! StrLib::bExtractU8(aaSrc,&uSubField,2) )
     return false;
   if (bLeapYear) {
-    if (uSubField > iDaysPerMonthLeap[iMonth-1])
+    if ((i8)uSubField > iDaysPerMonthLeap[iMonth-1])
       return false;
   }
   else {
-    if (uSubField > iDaysPerMonth[iMonth-1])
+    if ((i8)uSubField > iDaysPerMonth[iMonth-1])
       return false;
   }
   iDay = uSubField;
@@ -2809,11 +2809,11 @@ bool StrLib::bValidateMonth(i8 iDay, i8 iMonth, i8 iYear)
   }
 
   if (bLeapYear) {
-    if (iDay > iDaysPerMonthLeap[iMonth-1])
+    if (iDay > (i8)iDaysPerMonthLeap[iMonth-1])
       return false;
   }
   else {
-    if (iDay > iDaysPerMonth[iMonth-1])
+    if (iDay > (i8)iDaysPerMonth[iMonth-1])
       return false;
   }
 
