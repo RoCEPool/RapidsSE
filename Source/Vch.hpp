@@ -38,8 +38,6 @@ namespace Datums
     static void vSprintEscaped(Stz* aDst, Stz* aSrc);
     static bool bIsValidSize(i8 iSize);
     
-    static bool bExtract(char** aaSrc, Stz* aDst,
-                         DBobjects::Column* pColumn, Formatters* pFormatters);
     static bool bExtract2(char** aaSrc, Stz* aDst,
                           DBobjects::Column* pColumn, Formatters* pFormatters);
     static bool bExtractDefault2(char** aaSrc, Stz* aDst,
