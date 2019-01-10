@@ -164,7 +164,7 @@ Register* RegFrame::pRegister(i8 iReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
   
-  ASSERT(iReg >= 0 && iReg < C_VALREGS);
+  ASSERT(iReg >= 0 && iReg < C_REGISTERS);
   
   return &m_xRegister[iReg];
 }

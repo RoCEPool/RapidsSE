@@ -5,7 +5,7 @@
 
 namespace Forth
 {
-  static const i8 C_VALREGS = 32;
+  static const i8 C_REGISTERS = 32;
   
   class RegFrame : public Object
   {
@@ -14,7 +14,7 @@ namespace Forth
     RegFrame* m_pNext;              // nest frame in stack / list
     void*     m_pStackPtr;          // discard point (when in call stack)
     Dic*      m_pOpDic;             // operator dic associated with this frame
-    Register  m_xRegister[C_VALREGS]; // set of registers
+    Register  m_xRegister[C_REGISTERS]; // set of registers
     
     // must be last
     Footer m_xFooter;
