@@ -135,23 +135,12 @@
   // comment
   static void vComment(Tasks::MP_Task mpTask);
 
-  // common
-  static void vCommonFetch(Tasks::MP_Task mpTask);
-  static void vCommonStore(Tasks::MP_Task mpTask);
-  static void vCommonSlash(Tasks::MP_Task mpTask);
-  static void vCommonToCommon(Tasks::MP_Task mpTask);
-
-  static void vOpFrameDrop(Tasks::MP_Task mpTask);
-  static void vOpFramePush(Tasks::MP_Task mpTask);
-
-
   // cpu
   static void vCpuRdtscp(Tasks::MP_Task mpTask);
 
   // cursor
   static void vCursorFetch(Tasks::MP_Task mpTask);
   static void vCursorStore(Tasks::MP_Task mpTask);
-
 
   // diclock
   static void vDicLockDropWrite(Tasks::MP_Task mpTask);

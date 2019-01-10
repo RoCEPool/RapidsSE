@@ -52,7 +52,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
   Step::vAddSteps_Comment();
-  Step::vAddSteps_Common();
   Step::vAddSteps_CoreWords();
   Step::vAddSteps_Cpu();
   Step::vAddSteps_Cursor();
