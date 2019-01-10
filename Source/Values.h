@@ -30,18 +30,19 @@ using namespace Values;
 #include "IpVal.hpp"
 #include "PtrVal.hpp"
 #include "StrVal.hpp"
-#include "StrVar.hpp"
 #include "TmeVal.hpp"
 #include "TspVal.hpp"
 #include "ValSet.hpp"
 
-typedef StrVar<32>     s32;
-typedef StrVar<256>    s256;
-typedef StrVar<C_4K>   s4K;   // note this is 4K not 48KB
-typedef StrVar<C_16KB> s16KB; // note this is 16KB
-typedef StrVar<C_17KB> s17KB; // note this is 17KB
-typedef StrVar<C_48K>  s48K;  // note this is 48K not 48KB
-typedef StrVar<C_1M>   s1M;   // note this is 1M not 1MB
+#include "String_t.hpp"
+
+typedef String_t<32>     s32;
+typedef String_t<256>    s256;
+typedef String_t<C_4K>   s4K;   // note this is 4K not 48KB
+typedef String_t<C_16KB> s16KB; // note this is 16KB
+typedef String_t<C_17KB> s17KB; // note this is 17KB
+typedef String_t<C_48K>  s48K;  // note this is 48K not 48KB
+typedef String_t<C_1M>   s1M;   // note this is 1M not 1MB
 
 /*============================================================================*/
 /* end                                                                        */
