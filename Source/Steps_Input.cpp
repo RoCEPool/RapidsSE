@@ -47,7 +47,7 @@ ENTRY("vInputDepth"_Stz);
   
   i8 iDepth = mpTask->m_pCompiler->m_pTokeniser->iDepth();
   
-  mpTask->m_pDataStack->vPushInt(iDepth);
+  mpTask->m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }
@@ -175,7 +175,7 @@ ENTRY("vInputType"_Stz);
   
   eTN eTokenType = mpTask->m_pCompiler->m_pTokeniser->eToken();
   
-  mpTask->m_pDataStack->vPushInt(eTokenType);
+  mpTask->m_pDataStack->vPushI8(eTokenType);
   
   EXIT();
 }

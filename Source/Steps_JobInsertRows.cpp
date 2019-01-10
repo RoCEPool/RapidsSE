@@ -122,7 +122,7 @@ void Step::vJob_InsertRowPartitionFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_InsertRow.partition@"_Stz);
   Job_InsertRow* pJob_InsertRow = _pJob_InsertRow(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob_InsertRow->m_iPartitionId);
+  mpTask->m_pDataStack->vPushI8(pJob_InsertRow->m_iPartitionId);
   
   EXIT();
 }

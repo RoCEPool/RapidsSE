@@ -219,7 +219,7 @@ void Step::vJobColumnCountFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.columnCount@"_Stz);
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob_CreateTable->m_iColumns);
+  mpTask->m_pDataStack->vPushI8(pJob_CreateTable->m_iColumns);
   
   EXIT();
 }
@@ -240,7 +240,7 @@ void Step::vJobColumnIsPartKey(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iColumnNo) )
     THROW_INVALID_DSTACK("job.columnIsPartKey@"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(pJob_CreateTable->m_xColumns[iColumnNo].m_bIsPartitionKey);
+  mpTask->m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].m_bIsPartitionKey);
   
   EXIT();
 }
@@ -282,7 +282,7 @@ void Step::vJobColumnTypeFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iColumnNo) )
     THROW_INVALID_DSTACK("job.columnType@"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(pJob_CreateTable->m_xColumns[iColumnNo].m_eColumnType);
+  mpTask->m_pDataStack->vPushI8(pJob_CreateTable->m_xColumns[iColumnNo].m_eColumnType);
   
   EXIT();
 }
@@ -301,7 +301,7 @@ void Step::vJobClass(MP_Task mpTask)
   
   eCN eClass = pJob->eClass();
   
-  mpTask->m_pDataStack->vPushInt(eClass);
+  mpTask->m_pDataStack->vPushI8(eClass);
   
   EXIT();
 }
@@ -345,7 +345,7 @@ void Step::vJobDecAcksRemaining(MP_Task mpTask)
   
   bool bAmDecider = pJob->m_xAcksRemaining.bDecAndDecide();
   
-  mpTask->m_pDataStack->vPushInt(bAmDecider);
+  mpTask->m_pDataStack->vPushI8(bAmDecider);
   
   EXIT();
 }
@@ -383,7 +383,7 @@ void Step::vJobErrorFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iNode) )
     THROW_INVALID_DSTACK("job.error@"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(pJob->m_xNode[iNode].m_eErrorCode);
+  mpTask->m_pDataStack->vPushI8(pJob->m_xNode[iNode].m_eErrorCode);
   
   EXIT();
 }
@@ -564,7 +564,7 @@ void Step::vJobHasError(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.hasError"_Stz);
   Job_Space* pJob = _pJob_Space(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob->m_bHasError);
+  mpTask->m_pDataStack->vPushI8(pJob->m_bHasError);
   
   EXIT();
 }
@@ -586,7 +586,7 @@ void Step::vJobHasEntryBuffer(MP_Task mpTask)
   if (pJob->m_pJobClass->m_eClass == CN_JOB_WRITEBUFFER)
     int iDebug = 1;
   
-  mpTask->m_pDataStack->vPushInt(bHas);
+  mpTask->m_pDataStack->vPushI8(bHas);
   
   EXIT();
 }
@@ -603,7 +603,7 @@ void Step::vJobIdFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.id@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob->m_iJobId);
+  mpTask->m_pDataStack->vPushI8(pJob->m_iJobId);
   
   EXIT();
 }
@@ -638,7 +638,7 @@ void Step::vJobIsExecuting(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   i8 iIsExecuting = pJob->m_eSeed == SS_SEED_EXE ? 1 : 0;
-  mpTask->m_pDataStack->vPushInt(iIsExecuting);
+  mpTask->m_pDataStack->vPushI8(iIsExecuting);
   
   EXIT();
 }
@@ -657,7 +657,7 @@ void Step::vJobJobClass(MP_Task mpTask)
   
   i8 iJobClass_p = (i8)pJob->m_pJobClass;
   
-  mpTask->m_pDataStack->vPushInt(iJobClass_p);
+  mpTask->m_pDataStack->vPushI8(iJobClass_p);
   
   EXIT();
 }
@@ -913,7 +913,7 @@ void Step::vJobOriginatorFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iJobId) )
     THROW_INVALID_DSTACK("job::originator@@"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(Job::iOriginatorNode(iJobId));
+  mpTask->m_pDataStack->vPushI8(Job::iOriginatorNode(iJobId));
   
   EXIT();
 }
@@ -930,7 +930,7 @@ void Step::vJobParticipantFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.partcipant@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob->m_iParticipantNode);
+  mpTask->m_pDataStack->vPushI8(pJob->m_iParticipantNode);
   
   EXIT();
 }
@@ -968,7 +968,7 @@ void Step::vJobPartitionsFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.partitions@"_Stz);
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob_Sanity->m_iPartitions);
+  mpTask->m_pDataStack->vPushI8(pJob_Sanity->m_iPartitions);
   
   EXIT();
 }
@@ -1136,7 +1136,7 @@ void Step::vJobRegionSizeFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.regionSize@"_Stz);
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob_Sanity->m_iRegionSize);
+  mpTask->m_pDataStack->vPushI8(pJob_Sanity->m_iRegionSize);
   
   EXIT();
 }
@@ -1204,7 +1204,7 @@ void Step::vJobRowsInvalidFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.rowsInvalid@"_Stz);
   
   i8 iRowsInvalid = *pJob->m_xNode[iNode].m_ziRowsInvalid;
-  mpTask->m_pDataStack->vPushInt(iRowsInvalid);
+  mpTask->m_pDataStack->vPushI8(iRowsInvalid);
   
   EXIT();
 }
@@ -1251,7 +1251,7 @@ void Step::vJobRowsProcessedFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.rowsProcessed@"_Stz);
   
   i8 iRowsProcessed = *pJob->m_xNode[iNode].m_ziRowsProcessed;
-  mpTask->m_pDataStack->vPushInt(iRowsProcessed);
+  mpTask->m_pDataStack->vPushI8(iRowsProcessed);
   
   EXIT();
 }
@@ -1299,7 +1299,7 @@ void Step::vJobRowsSkippedFetch(MP_Task mpTask)
  
   i8 iRowsSkipped = *pJob->m_xNode[iNode].m_ziRowsSkipped;
 
-  mpTask->m_pDataStack->vPushInt(iRowsSkipped);
+  mpTask->m_pDataStack->vPushI8(iRowsSkipped);
   
   EXIT();
 }
@@ -1480,7 +1480,7 @@ void Step::vJobTraceFetch(MP_Task mpTask)
   
   eJT eJobTrace = pJob->eJobTrace();
   
-  mpTask->m_pDataStack->vPushInt(eJobTrace);
+  mpTask->m_pDataStack->vPushI8(eJobTrace);
   
   EXIT();
 }

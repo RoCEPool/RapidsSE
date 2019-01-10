@@ -34,7 +34,7 @@ void Step::vJob_SubPublishBegin(MP_Task mpTask)
   
   bool bBegun = pJob_SubPupublish->bBegin();
   
-  mpTask->m_pDataStack->vPushInt((i8)bBegun);
+  mpTask->m_pDataStack->vPushI8((i8)bBegun);
   
   EXIT();
 }
@@ -53,7 +53,7 @@ void Step::vJob_SubPublishChunk(MP_Task mpTask)
   
   bool bBufferPublished = pJob_SubPupublish->bChunk();
   
-  mpTask->m_pDataStack->vPushInt((i8)true);
+  mpTask->m_pDataStack->vPushI8((i8)true);
   
   if (! bBufferPublished) {
     mpTask->vSleepUs(C_100K);
@@ -93,7 +93,7 @@ void Step::vJob_SubPublishPublishJobIdFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subPublish.publishJobId@"_Stz);
   Job_SubPublish* pJob = _pJob_SubPublish(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob->m_iPublishJobId);
+  mpTask->m_pDataStack->vPushI8(pJob->m_iPublishJobId);
   
   EXIT();
 }
@@ -110,7 +110,7 @@ void Step::vJob_SubPublishSlotFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subPublish.slot@"_Stz);
   Job_SubPublish* pJob = _pJob_SubPublish(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob->m_iSlot);
+  mpTask->m_pDataStack->vPushI8(pJob->m_iSlot);
   
   EXIT();
 }

@@ -73,7 +73,7 @@ void Step::vIntDivide(MP_Task mpTask)
   
   r = DIV(i,j);
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -92,7 +92,7 @@ void Step::vIntEqual(MP_Task mpTask)
   
   r = i == j;
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -111,7 +111,7 @@ void Step::vIntGreater(MP_Task mpTask)
   
   r = i > j;
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -130,7 +130,7 @@ void Step::vIntGreaterEqual(MP_Task mpTask)
   
   r = i >= j;
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -150,7 +150,7 @@ void Step::vIntHash(MP_Task mpTask)
   
   i8 iHash = XXH32(sString.aChar(),iLength,0);
   
-  mpTask->m_pDataStack->vPushInt(iHash);
+  mpTask->m_pDataStack->vPushI8(iHash);
   
   EXIT();
 }
@@ -166,7 +166,7 @@ void Step::vIntHo16(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(i) )
     THROW_INVALID_DSTACK(">="_Stz);
   
-  mpTask->m_pDataStack->vPushInt(i >> 48);
+  mpTask->m_pDataStack->vPushI8(i >> 48);
   
   EXIT();
 }
@@ -185,7 +185,7 @@ void Step::vIntLess(MP_Task mpTask)
   
   r = i < j;
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -204,7 +204,7 @@ void Step::vIntLessEqual(MP_Task mpTask)
   
   r = i <= j;
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -223,7 +223,7 @@ void Step::vIntModulo(MP_Task mpTask)
   
   r = MOD(i,j);
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -242,7 +242,7 @@ void Step::vIntMultiply(MP_Task mpTask)
   
   r = i * j;
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -261,7 +261,7 @@ void Step::vIntNeg(MP_Task mpTask)
   
   r = -1 * i;
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -280,7 +280,7 @@ void Step::vIntNotEqual(MP_Task mpTask)
   
   r = i != j;
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }
@@ -299,7 +299,7 @@ void Step::vIntSubtract(MP_Task mpTask)
   
   r = i - j;
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }

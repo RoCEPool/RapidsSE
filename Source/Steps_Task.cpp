@@ -197,7 +197,7 @@ void Step::vTaskIsAckSet(MP_Task mpTask)
                        iIsAckSet);
   }
   
-  mpTask->m_pDataStack->vPushInt(iIsAckSet);
+  mpTask->m_pDataStack->vPushI8(iIsAckSet);
 
   EXIT();
 }
@@ -274,7 +274,7 @@ void Step::vTaskPartitionFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.name!"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
-  mpTask->m_pDataStack->vPushInt(pThatTask->m_iPartition);
+  mpTask->m_pDataStack->vPushI8(pThatTask->m_iPartition);
   
   EXIT();
 }
@@ -521,7 +521,7 @@ ENTRY("vTaskStateFetch"_Stz);
   
   eTS eState = pThatTask->m_eState;
   
-  mpTask->m_pDataStack->vPushInt((i8)eState);
+  mpTask->m_pDataStack->vPushI8((i8)eState);
   
   EXIT();
 }

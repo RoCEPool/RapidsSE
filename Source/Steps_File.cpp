@@ -99,7 +99,7 @@ ENTRY("vFileOpen"_Stz);
   
   bool bOpened = pFile->bOpenMode(sPath,sMode);
   
-  mpTask->m_pDataStack->vPushInt(bOpened);
+  mpTask->m_pDataStack->vPushI8(bOpened);
   
   EXIT();
 }
@@ -145,10 +145,10 @@ void Step::vFileRead(MP_Task mpTask)
   
   if (bResult) {
     mpTask->m_pDataStack->vPushS48K(sLine);
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
   }
   else {
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
   }
 
   EXIT();

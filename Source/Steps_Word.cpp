@@ -86,7 +86,7 @@ void Step::vCell(MP_Task mpTask)
   
   i8 nBytes = sizeof(void*);
   
-  mpTask->m_pDataStack->vPushInt(nBytes);
+  mpTask->m_pDataStack->vPushI8(nBytes);
   
   EXIT();
 }
@@ -559,7 +559,7 @@ void Step::vLocate(MP_Task mpTask)
   }
   else {
     i8 iZero = 0;
-    mpTask->m_pDataStack->vPushInt(iZero);
+    mpTask->m_pDataStack->vPushI8(iZero);
   }
   
   EXIT();
@@ -903,7 +903,7 @@ void Step::vWordImmediateGet(MP_Task mpTask)
   
   i8 iImmediate = pWord->bImmediate();
   
-  mpTask->m_pDataStack->vPushInt(iImmediate);
+  mpTask->m_pDataStack->vPushI8(iImmediate);
   
   EXIT();
 }
@@ -946,7 +946,7 @@ void Step::vWordIsImmediate(MP_Task mpTask)
   
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
   
-  mpTask->m_pDataStack->vPushInt(iIsImmediate);
+  mpTask->m_pDataStack->vPushI8(iIsImmediate);
   
   EXIT();
 }
@@ -965,7 +965,7 @@ void Step::vWordIsPrimitive(MP_Task mpTask)
   
   i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
   
-  mpTask->m_pDataStack->vPushInt(iIsPrimitive);
+  mpTask->m_pDataStack->vPushI8(iIsPrimitive);
   
   EXIT();
 }
@@ -1076,7 +1076,7 @@ void Step::vWordTypeGet(MP_Task mpTask)
   
   eWT eWordType = pWord->eWordType();
   
-  mpTask->m_pDataStack->vPushInt(eWordType);
+  mpTask->m_pDataStack->vPushI8(eWordType);
   
   EXIT();
 }

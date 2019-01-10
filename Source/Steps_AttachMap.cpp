@@ -33,10 +33,10 @@ void Step::vAttachMapFetch(MP_Task mpTask)
   
   switch (eAttachMap) {
     case AM_INDEXENTRIES:
-      mpTask->m_pDataStack->vPushInt(gpAttachMap->m_nIndexEntries);
+      mpTask->m_pDataStack->vPushI8(gpAttachMap->m_nIndexEntries);
       break;
     case AM_INDEXLEVELS:
-      mpTask->m_pDataStack->vPushInt(gpAttachMap->m_nIndexLevels);
+      mpTask->m_pDataStack->vPushI8(gpAttachMap->m_nIndexLevels);
       break;
     default:
       THROW_INVALID_DSTACK("attachmap::attachmap@"_Stz);

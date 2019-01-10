@@ -29,7 +29,7 @@ void Step::vJob_AnalyzeIndexIsDetailed(MP_Task mpTask)
   Job_AnalyzeIndex* pJoAnalyzeIndex = _pJob_AnalyzeIndex(pJobPtr);
   ASSERT(pJoAnalyzeIndex->eClass() == CN_JOB_ANALYZEINDEX);
   
-  mpTask->m_pDataStack->vPushInt(pJoAnalyzeIndex->m_bIsDetailed);
+  mpTask->m_pDataStack->vPushI8(pJoAnalyzeIndex->m_bIsDetailed);
   
   EXIT();
 }
@@ -48,7 +48,7 @@ void Step::vJob_AnalyzeTableIsDetailed(MP_Task mpTask)
   Job_AnalyzeTable* pJoAnalyzeTable = _pJob_AnalyzeTable(pJobPtr);
   ASSERT(pJoAnalyzeTable->eClass() == CN_JOB_ANALYZETABLE);
   
-  mpTask->m_pDataStack->vPushInt(pJoAnalyzeTable->m_bIsDetailed);
+  mpTask->m_pDataStack->vPushI8(pJoAnalyzeTable->m_bIsDetailed);
   
   EXIT();
 }

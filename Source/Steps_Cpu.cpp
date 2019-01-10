@@ -23,7 +23,7 @@ void Step::vCpuRdtscp(MP_Task mpTask)
   
   i8 iTscp = Synch::iTicks();
   
-  mpTask->m_pDataStack->vPushInt(iTscp);
+  mpTask->m_pDataStack->vPushI8(iTscp);
   
   EXIT();
 }

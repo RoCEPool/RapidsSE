@@ -130,7 +130,7 @@ void Step::vStrEqual(MP_Task mpTask)
                                _pStrVal(xStringB.pNestedValueSelf())->aChar(),
                                C_NO_CASE);
   
-  mpTask->m_pDataStack->vPushInt(iEqual);
+  mpTask->m_pDataStack->vPushI8(iEqual);
   
   EXIT();
 }
@@ -245,7 +245,7 @@ void Step::vStrLength(MP_Task mpTask)
   
   iLength = sString.iLength();
   
-  mpTask->m_pDataStack->vPushInt(iLength);
+  mpTask->m_pDataStack->vPushI8(iLength);
   
   EXIT();
 }
@@ -458,7 +458,7 @@ void Step::vStrTailInt(MP_Task mpTask)
   
   // return false if not a digit
   if ( ! StrLib::bIsDigit(*aLast) ) {
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
     return;
   }
   
@@ -474,8 +474,8 @@ void Step::vStrTailInt(MP_Task mpTask)
     iInt = (iInt * 10) + (*aDigit++ - '0');
   
   // return ( int true )
-  mpTask->m_pDataStack->vPushInt(iInt);
-  mpTask->m_pDataStack->vPushInt((i8)1);
+  mpTask->m_pDataStack->vPushI8(iInt);
+  mpTask->m_pDataStack->vPushI8((i8)1);
   
   EXIT();
 }

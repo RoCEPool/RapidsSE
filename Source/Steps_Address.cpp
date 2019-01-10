@@ -34,7 +34,7 @@ void Step::vAddressEqual(MP_Task mpTask)
   
   i8 r = iA == iB;
   
-  mpTask->m_pDataStack->vPushInt(r);
+  mpTask->m_pDataStack->vPushI8(r);
   
   EXIT();
 }

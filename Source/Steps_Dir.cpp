@@ -63,7 +63,7 @@ ENTRY("vDirExists"_Stz);
   
   i8 iResult = Dir::bExists(sDirPath);
   
-  mpTask->m_pDataStack->vPushInt(iResult);
+  mpTask->m_pDataStack->vPushI8(iResult);
   
   EXIT();
 }
@@ -103,7 +103,7 @@ ENTRY("vDirMake"_Stz);
   
   i8 iResult = Dir::bMake(sPath);
   
-  mpTask->m_pDataStack->vPushInt(iResult);
+  mpTask->m_pDataStack->vPushI8(iResult);
   
   EXIT();
 }
@@ -121,7 +121,7 @@ ENTRY("vDirRemove"_Stz);
   
   i8 iResult = Dir::bRemove(sPath);
   
-  mpTask->m_pDataStack->vPushInt(iResult);
+  mpTask->m_pDataStack->vPushI8(iResult);
   
   EXIT();
 }
@@ -205,7 +205,7 @@ ENTRY("vDirEntryType"_Stz);
   
   iEntryType = pDir->iEntryType();
   
-  mpTask->m_pDataStack->vPushInt(iEntryType);
+  mpTask->m_pDataStack->vPushI8(iEntryType);
   
   EXIT();
 }
@@ -226,7 +226,7 @@ ENTRY("vDirIsClosed"_Stz);
   
   bool bIsClosed = pDir->bIsClosed();
   
-  mpTask->m_pDataStack->vPushInt(bIsClosed);
+  mpTask->m_pDataStack->vPushI8(bIsClosed);
   
   EXIT();
 }
@@ -247,7 +247,7 @@ ENTRY("vDirIsOpen"_Stz);
   
   bool bIsOpen = pDir->bIsOpen();
   
-  mpTask->m_pDataStack->vPushInt(bIsOpen);
+  mpTask->m_pDataStack->vPushI8(bIsOpen);
   
   EXIT();
 }
@@ -288,7 +288,7 @@ ENTRY("vDirOpen"_Stz);
   
   bool bOpened = pDir->bOpen(sPath);
   
-  mpTask->m_pDataStack->vPushInt(bOpened);
+  mpTask->m_pDataStack->vPushI8(bOpened);
   
   EXIT();
 }
@@ -333,7 +333,7 @@ ENTRY("vDirRead"_Stz);
   
   bool bRead  = pDir->bRead();
   
-  mpTask->m_pDataStack->vPushInt(bRead);
+  mpTask->m_pDataStack->vPushI8(bRead);
   
   EXIT();
 }
@@ -396,7 +396,7 @@ ENTRY("vDirTell"_Stz);
   
   i8 iPosition = pDir->iTell();
   
-  mpTask->m_pDataStack->vPushInt(iPosition);
+  mpTask->m_pDataStack->vPushI8(iPosition);
   
   EXIT();
 }

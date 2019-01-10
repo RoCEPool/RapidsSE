@@ -30,7 +30,7 @@ void Step::vShellExecute(MP_Task mpTask)
   
   i8 iExitStatus = Shell::iExecute(_pStrVal(xCommand.pNestedValueSelf())->aStz(),oSysCall);
   
-  mpTask->m_pDataStack->vPushInt(iExitStatus);
+  mpTask->m_pDataStack->vPushI8(iExitStatus);
   
   EXIT();
 }

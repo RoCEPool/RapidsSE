@@ -26,7 +26,7 @@ void Step::vCastInt(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtr) )
     THROW_INVALID_DSTACK("(int)"_Stz);
   
-  mpTask->m_pDataStack->vPushInt((i8)pPtr);
+  mpTask->m_pDataStack->vPushI8((i8)pPtr);
   
   EXIT();
 }

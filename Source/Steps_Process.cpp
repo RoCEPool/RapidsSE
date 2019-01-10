@@ -25,7 +25,7 @@ ENTRY("vProcessGetPid"_Stz);
   
   i8 iPid = Process::iGetPid();
   
-  mpTask->m_pDataStack->vPushInt(iPid);
+  mpTask->m_pDataStack->vPushI8(iPid);
   
   EXIT();
 }
@@ -57,7 +57,7 @@ ENTRY("vProcessTestPid"_Stz);
   
   i8 iExists = Process::bTestPid(iPid);
   
-  mpTask->m_pDataStack->vPushInt(iExists);
+  mpTask->m_pDataStack->vPushI8(iExists);
   
   EXIT();
 }

@@ -27,7 +27,7 @@ void Step::vJob_SelectTablePartitionFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_fetchRows.partition@"_Stz);
   Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(pJobPtr);
 
-  mpTask->m_pDataStack->vPushInt(pJob_SelectTable->m_iPartition);
+  mpTask->m_pDataStack->vPushI8(pJob_SelectTable->m_iPartition);
   
   EXIT();
 }

@@ -114,7 +114,7 @@ void Step::vIndexColumnCountFetch(MP_Task mpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  mpTask->m_pDataStack->vPushInt(pIndex->pIdxColVec()->nItems());
+  mpTask->m_pDataStack->vPushI8(pIndex->pIdxColVec()->nItems());
   
   EXIT();
 }
@@ -452,7 +452,7 @@ void Step::vIndexIsHiddenFetch(MP_Task mpTask)
   
   bool bIsHidden = pIndex->bIsHidden();
   
-  mpTask->m_pDataStack->vPushInt(bIsHidden);
+  mpTask->m_pDataStack->vPushI8(bIsHidden);
   
   EXIT();
 }
@@ -498,7 +498,7 @@ void Step::vIndexIsPrimaryKeyFetch(MP_Task mpTask)
   
   bool bIsPrimaryKey = pIndex->bIsPrimaryKey();
   
-  mpTask->m_pDataStack->vPushInt(bIsPrimaryKey);
+  mpTask->m_pDataStack->vPushI8(bIsPrimaryKey);
   
   EXIT();
 }
@@ -544,7 +544,7 @@ void Step::vIndexIsUniqueFetch(MP_Task mpTask)
   
   bool bIsUnique = pIndex->bIsUnique();
   
-  mpTask->m_pDataStack->vPushInt(bIsUnique);
+  mpTask->m_pDataStack->vPushI8(bIsUnique);
   
   EXIT();
 }
@@ -607,7 +607,7 @@ void Step::vIndexIsValidUniqueIndex(MP_Task mpTask)
     }
   }
   
-  mpTask->m_pDataStack->vPushInt(bValid ? 1 : 0);
+  mpTask->m_pDataStack->vPushI8(bValid ? 1 : 0);
   
   EXIT();
 }
@@ -803,7 +803,7 @@ void Step::vIndexPopulate(MP_Task mpTask)
   
   bool bPopulated = pTable->bPopulateIndex(iIndexNo);
   
-  mpTask->m_pDataStack->vPushInt(bPopulated ? 1 : 0);
+  mpTask->m_pDataStack->vPushI8(bPopulated ? 1 : 0);
   
   EXIT();
 }
@@ -1318,7 +1318,7 @@ void Step::vIndexSpace(MP_Task mpTask)
   
   i8 iBuffers = pIndex->pTable()->nIndexBuffers(pIndex->iIndexNo());
   i8 iSpace = iBuffers * C_SIZE_POOL_BUFFER;
-  mpTask->m_pDataStack->vPushInt(iSpace);
+  mpTask->m_pDataStack->vPushI8(iSpace);
   
   EXIT();
 }
@@ -1471,7 +1471,7 @@ void Step::vIndexUpper(MP_Task mpTask)
   bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
                                                pIndex->pIdxColVec(), 1,
                                                bIsEqual, eRelnOp);
-  mpTask->m_pDataStack->vPushInt(bBefore ? 1 : 0);
+  mpTask->m_pDataStack->vPushI8(bBefore ? 1 : 0);
   
   EXIT();
 }

@@ -108,7 +108,7 @@ ENTRY("vThreadCpu"_Stz);
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  mpTask->m_pDataStack->vPushInt(pThread->iCpu());
+  mpTask->m_pDataStack->vPushI8(pThread->iCpu());
   
   EXIT();
 }
@@ -125,7 +125,7 @@ void Step::vThreadDedicatedFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("thread.dedicated@"_Stz);
   Thread* pThread = _pThread(pThreadObject);
   
-  mpTask->m_pDataStack->vPushInt(pThread->m_eDedicated);
+  mpTask->m_pDataStack->vPushI8(pThread->m_eDedicated);
 
   EXIT();
 }
@@ -216,7 +216,7 @@ ENTRY("vThreadId"_Stz);
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  mpTask->m_pDataStack->vPushInt(pThread->m_pPosixThread->m_iOpSysThreadId);
+  mpTask->m_pDataStack->vPushI8(pThread->m_pPosixThread->m_iOpSysThreadId);
   
   EXIT();
 }

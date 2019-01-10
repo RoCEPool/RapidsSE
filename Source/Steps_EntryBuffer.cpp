@@ -177,7 +177,7 @@ void Step::vEntryBufferIsLastFetch(MP_Task mpTask)
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
-  mpTask->m_pDataStack->vPushInt(pIndexBuffer->bIsLast());
+  mpTask->m_pDataStack->vPushI8(pIndexBuffer->bIsLast());
   
   EXIT();
 }
@@ -376,7 +376,7 @@ void Step::vEntryBufferPartitionFetch(MP_Task mpTask)
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
-  mpTask->m_pDataStack->vPushInt(pIndexBuffer->nPartitionNo());
+  mpTask->m_pDataStack->vPushI8(pIndexBuffer->nPartitionNo());
   
   EXIT();
 }

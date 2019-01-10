@@ -35,7 +35,7 @@ void Step::vTablePtnAttemptGrabRead(MP_Task mpTask)
   // attempt to grab the read lock
   bool bSuccess = pTablePtn->bGrabRead();
   
-  mpTask->m_pDataStack->vPushInt(bSuccess);
+  mpTask->m_pDataStack->vPushI8(bSuccess);
   
   EXIT();
 }
@@ -55,7 +55,7 @@ void Step::vTablePtnAttemptGrabWrite(MP_Task mpTask)
   // attempt to grab the write lock
   bool bSuccess = pTablePtn->bGrabWrite();
   
-  mpTask->m_pDataStack->vPushInt(bSuccess);
+  mpTask->m_pDataStack->vPushI8(bSuccess);
   
   EXIT();
 }
@@ -90,7 +90,7 @@ void Step::vTablePtnDump(MP_Task mpTask)
     THROW_INVALID_DSTACK("tablePtn.dump"_Stz);
   TablePtn* pTablePtn = _pTablePtn(pPtrTablePtn);
   
-  mpTask->m_pDataStack->vPushInt(pTablePtn->iPartitionId());
+  mpTask->m_pDataStack->vPushI8(pTablePtn->iPartitionId());
   
   EXIT();
 }
@@ -127,7 +127,7 @@ void Step::vTablePtnIsLocked(MP_Task mpTask)
   
   bool bIsLocked = pTablePtn->bIsLocked();
   
-  mpTask->m_pDataStack->vPushInt(bIsLocked);
+  mpTask->m_pDataStack->vPushI8(bIsLocked);
 
   EXIT();
 }

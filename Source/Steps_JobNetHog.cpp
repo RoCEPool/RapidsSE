@@ -26,7 +26,7 @@ void Step::vJob_NetHogHogNoFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_nethog.hogNo@"_Stz);
   Job_NetHog* pJob_NetHog = _pJob_NetHog(pPtrJob_NetHog);
   
-  mpTask->m_pDataStack->vPushInt(pJob_NetHog->m_iHogNo);
+  mpTask->m_pDataStack->vPushI8(pJob_NetHog->m_iHogNo);
   
   EXIT();
 }

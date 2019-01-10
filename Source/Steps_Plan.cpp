@@ -148,7 +148,7 @@ void Step::vPlanIdFetch(MP_Task mpTask)
   
   i8 iId = pPlan->iPlanId();
   
-  mpTask->m_pDataStack->vPushInt(iId);
+  mpTask->m_pDataStack->vPushI8(iId);
   
   EXIT();
 }

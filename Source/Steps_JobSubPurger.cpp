@@ -32,7 +32,7 @@ void Step::vJob_SubPurgerBegin(MP_Task mpTask)
   
   bool bBegun = pJob_SubPurger->bBegin();
   
-  mpTask->m_pDataStack->vPushInt((i8)bBegun);
+  mpTask->m_pDataStack->vPushI8((i8)bBegun);
   
   EXIT();
 }
@@ -58,7 +58,7 @@ void Step::vJob_SubPurgerChunk(MP_Task mpTask)
   
   bool bCallAgain = pJob_SubPurger->bChunk();
   
-  mpTask->m_pDataStack->vPushInt((i8)true);
+  mpTask->m_pDataStack->vPushI8((i8)true);
   
   if (! bCallAgain) {
     i8 iOlderThanSeconds = pJob_SubPurger->m_pJob_Purge->m_iOlderThanSeconds;
@@ -101,7 +101,7 @@ void Step::vJob_SubPurgerPurgeJobIdFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subPurger.purgeJobId@"_Stz);
   Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob->m_iPurgeJobId);
+  mpTask->m_pDataStack->vPushI8(pJob->m_iPurgeJobId);
   
   EXIT();
 }
@@ -118,7 +118,7 @@ void Step::vJob_SubPurgerSlotFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subPurger.slot@"_Stz);
   Job_SubPurger* pJob = _pJob_SubPurger(pJobPtr);
   
-  mpTask->m_pDataStack->vPushInt(pJob->m_iSlot);
+  mpTask->m_pDataStack->vPushI8(pJob->m_iSlot);
   
   EXIT();
 }

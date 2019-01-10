@@ -39,7 +39,7 @@ ENTRY("vDicFrozenGet"_Stz);
   
   bool bFrozen = pDic->bFrozen();
   
-  mpTask->m_pDataStack->vPushInt(bFrozen);
+  mpTask->m_pDataStack->vPushI8(bFrozen);
   
   EXIT();
 }
@@ -200,7 +200,7 @@ void Step::vDicRef(MP_Task mpTask)
 
   bool bRef = pDic->bRefOut();
   
-  mpTask->m_pDataStack->vPushInt(bRef);
+  mpTask->m_pDataStack->vPushI8(bRef);
   
   EXIT();
 }
@@ -221,7 +221,7 @@ void Step::vDicWordCount(MP_Task mpTask)
   
   i8 nWords = pDic->nWords();
   
-  mpTask->m_pDataStack->vPushInt(nWords);
+  mpTask->m_pDataStack->vPushI8(nWords);
   
   EXIT();
 }

@@ -115,7 +115,7 @@ void Step::vTableIsValidIndexColumns(MP_Task mpTask)
   Job_CreateIndex* pJob_CreateIndex = _pJob_CreateIndex(pPtrJob);
   ASSERT(CN_JOB_CREATEINDEX == pJob_CreateIndex->eClass());
   
-  mpTask->m_pDataStack->vPushInt(pTable->bIsValidIndexColumns(pJob_CreateIndex));
+  mpTask->m_pDataStack->vPushI8(pTable->bIsValidIndexColumns(pJob_CreateIndex));
   
   EXIT();
 }
@@ -210,7 +210,7 @@ void Step::vTableColumnCountFetch(MP_Task mpTask)
   ColumnVec* pColVec = pTable->pColumnVec();
   i8 nColumns = pColVec->nItems();
   
-  mpTask->m_pDataStack->vPushInt(nColumns);
+  mpTask->m_pDataStack->vPushI8(nColumns);
   
   EXIT();
 }
@@ -409,7 +409,7 @@ void Step::vTableIndexCount(MP_Task mpTask)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass())
   
-  mpTask->m_pDataStack->vPushInt(pTable->pIdxVec()->nItems());
+  mpTask->m_pDataStack->vPushI8(pTable->pIdxVec()->nItems());
   
   EXIT();
 }

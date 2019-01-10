@@ -30,7 +30,7 @@ void Step::vJob_CatBegin(MP_Task mpTask)
   
   bool bBegun = pJob_Cat->bBegin();
   
-  mpTask->m_pDataStack->vPushInt((i8)bBegun);
+  mpTask->m_pDataStack->vPushI8((i8)bBegun);
   
   EXIT();
 }
@@ -49,7 +49,7 @@ void Step::vJob_CatChunk(MP_Task mpTask)
   
   bool bCallAgain = pJob_Cat->bChunk();
   
-  mpTask->m_pDataStack->vPushInt((i8)bCallAgain);
+  mpTask->m_pDataStack->vPushI8((i8)bCallAgain);
   
   EXIT();
 }

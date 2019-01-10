@@ -108,7 +108,7 @@ ENTRY("vSelCursorFirst"_Stz);
   
   i8 bRow = pSelCursor->pRow() ? 1 : 0;
   
-  mpTask->m_pDataStack->vPushInt(bRow);
+  mpTask->m_pDataStack->vPushI8(bRow);
   
   EXIT();
 }
@@ -152,7 +152,7 @@ void Step::vSelCursorHasRow(MP_Task mpTask)
   
   i8 bRow = pSelCursor->pRow() ? 1 : 0;
   
-  mpTask->m_pDataStack->vPushInt(bRow);
+  mpTask->m_pDataStack->vPushI8(bRow);
   
   EXIT();
 }
@@ -209,7 +209,7 @@ ENTRY("vSelCursorNext"_Stz);
   
   i8 bRow = pSelCursor->pRow() ? 1 : 0;
   
-  mpTask->m_pDataStack->vPushInt(bRow);
+  mpTask->m_pDataStack->vPushI8(bRow);
   
   EXIT();
 }

@@ -130,7 +130,7 @@ ENTRY("vNodeNo"_Stz);
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
   
-  mpTask->m_pDataStack->vPushInt(pNode->iNodeNo());
+  mpTask->m_pDataStack->vPushI8(pNode->iNodeNo());
   
   EXIT();
 }
@@ -142,7 +142,7 @@ void Step::vNodePartitions(MP_Task mpTask)
 {
   ENTRY("vNodePartitions"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_pGrid->m_nSlots);
+  mpTask->m_pDataStack->vPushI8(gpAttachMap->m_pGrid->m_nSlots);
   
   EXIT();
 }
@@ -159,7 +159,7 @@ void Step::vNodePort(MP_Task mpTask)
     THROW_INVALID_DSTACK("node.port"_Stz);
   Node* pNode = _pNode(pPtrNode);
   
-  mpTask->m_pDataStack->vPushInt(pNode->iNodePortNo());
+  mpTask->m_pDataStack->vPushI8(pNode->iNodePortNo());
   
   EXIT();
 }
@@ -253,7 +253,7 @@ void Step::vNodeSize(MP_Task mpTask)
 {
   ENTRY("vNodeSize"_Stz);
   
-  mpTask->m_pDataStack->vPushInt(gpAttachMap->m_iRegionSize);
+  mpTask->m_pDataStack->vPushI8(gpAttachMap->m_iRegionSize);
   
   EXIT();
 }

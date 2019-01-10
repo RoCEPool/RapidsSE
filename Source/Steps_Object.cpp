@@ -33,7 +33,7 @@ void Step::vObjectClassFetch(MP_Task mpTask)
   eCN eClassNo;
   eClassNo = pObject->eClass();
   
-  mpTask->m_pDataStack->vPushInt(eClassNo);
+  mpTask->m_pDataStack->vPushI8(eClassNo);
   
   EXIT();
 }

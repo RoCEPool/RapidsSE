@@ -32,7 +32,7 @@ void Step::vDicPathDepth(MP_Task mpTask)
   
   i8 iDepth = pDicPath->m_iDicDepth;
   
-  mpTask->m_pDataStack->vPushInt(iDepth);
+  mpTask->m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }

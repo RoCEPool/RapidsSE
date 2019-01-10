@@ -59,7 +59,7 @@ void Step::vJob_WriteBufferParentJobIdFetch(MP_Task mpTask)
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
   RASSERT(DS_INGEST== eDataSource || C_UNKNOWN != iParentJobId);
-  mpTask->m_pDataStack->vPushInt(iParentJobId);
+  mpTask->m_pDataStack->vPushI8(iParentJobId);
   
   EXIT();
 }
@@ -78,7 +78,7 @@ void Step::vJob_WriteBufferInsertRows(MP_Task mpTask)
   
   bool bAllBuffersWritten = pJob_WriteBuffer->bInsertRows();
   
-  mpTask->m_pDataStack->vPushInt(bAllBuffersWritten);
+  mpTask->m_pDataStack->vPushI8(bAllBuffersWritten);
   
   EXIT();
 }
@@ -97,7 +97,7 @@ void Step::vJob_WriteBufferIsIngesting(MP_Task mpTask)
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
-  mpTask->m_pDataStack->vPushInt(eDataSource == DS_INGEST ? true : false);
+  mpTask->m_pDataStack->vPushI8(eDataSource == DS_INGEST ? true : false);
   
   EXIT();
 }
@@ -116,7 +116,7 @@ void Step::vJob_WriteBufferIsInserting(MP_Task mpTask)
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
-  mpTask->m_pDataStack->vPushInt(eDataSource == DS_INSERT ? true : false);
+  mpTask->m_pDataStack->vPushI8(eDataSource == DS_INSERT ? true : false);
   
   EXIT();
 }
@@ -135,7 +135,7 @@ void Step::vJob_WriteBufferIsLoading(MP_Task mpTask)
   
   eDS eDataSource = pJob_WriteBuffer->m_eDataSource;
   
-  mpTask->m_pDataStack->vPushInt(eDataSource == DS_LOAD ? true : false);
+  mpTask->m_pDataStack->vPushI8(eDataSource == DS_LOAD ? true : false);
   
   EXIT();
 }
@@ -153,7 +153,7 @@ void Step::vJob_WriteBufferPartitionFetch(MP_Task mpTask)
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJobPtr);
   
   i8 i_Partition = pJob_WriteBuffer->m_iPartitionId;
-  mpTask->m_pDataStack->vPushInt(i_Partition);
+  mpTask->m_pDataStack->vPushI8(i_Partition);
   
   EXIT();
 }

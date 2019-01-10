@@ -267,7 +267,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
 
   bool bResult = pSocket->bRecvBytes(xObjectHeader,nObjectBytes, oSysCall);
   if (! bResult) {
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
     EXIT();
     return;
   }
@@ -296,7 +296,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
 
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
-      mpTask->m_pDataStack->vPushInt((i8)0);
+      mpTask->m_pDataStack->vPushI8((i8)0);
       EXIT();
       return;
     }
@@ -309,7 +309,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
                          aCN[eClass],pSocket);
                          
     mpTask->m_pDataStack->vPushObject(pJob);
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
     EXIT();
     return;
   }
@@ -328,7 +328,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
-      mpTask->m_pDataStack->vPushInt((i8)0);
+      mpTask->m_pDataStack->vPushI8((i8)0);
       EXIT();
       return;
     }
@@ -340,7 +340,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     pEntryBuffer->vRestore();
     
     mpTask->m_pDataStack->vPushObject(pEntryBuffer);
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
     EXIT();
     return;
   }
@@ -349,7 +349,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   // unknown object
   
   vTrace("socket.recvObject: unknown object; class %lld\n"_Stz,eClass);
-  mpTask->m_pDataStack->vPushInt((i8)0);
+  mpTask->m_pDataStack->vPushI8((i8)0);
   
   EXIT();
 }
@@ -381,7 +381,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   
   bool bResult = pSocket->bRecvBytes(xObjectHeader,nObjectBytes, oSysCall);
   if (! bResult) {
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
     EXIT();
     return;
   }
@@ -409,7 +409,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     
     bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);
     if (! bResult) {
-      mpTask->m_pDataStack->vPushInt((i8)0);
+      mpTask->m_pDataStack->vPushI8((i8)0);
       EXIT();
       return;
     }
@@ -443,7 +443,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     }
     
     mpTask->m_pDataStack->vPushObject(pJob_WriteBuffer);
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
     EXIT();
     return;
 
@@ -465,7 +465,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
-      mpTask->m_pDataStack->vPushInt((i8)0);
+      mpTask->m_pDataStack->vPushI8((i8)0);
       EXIT();
       return;
     }
@@ -474,7 +474,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     //       pJob,eClass,aCN[eClass],nObjectSize);
     
     mpTask->m_pDataStack->vPushObject(pJob);
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
     EXIT();
     return;
   }
@@ -493,7 +493,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
-      mpTask->m_pDataStack->vPushInt((i8)0);
+      mpTask->m_pDataStack->vPushI8((i8)0);
       EXIT();
       return;
     }
@@ -502,7 +502,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     //       pEntryBuffer,eClass,aCN[eClass],nObjectSize);
     
     mpTask->m_pDataStack->vPushObject(pEntryBuffer);
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
     EXIT();
     return;
   }
@@ -511,7 +511,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   // unknown object
   
   vTrace("socket.recvObject: unknown object; class %lld\n"_Stz,eClass);
-  mpTask->m_pDataStack->vPushInt((i8)0);
+  mpTask->m_pDataStack->vPushI8((i8)0);
   
   EXIT();
 }
@@ -550,7 +550,7 @@ void Step::vSocketSendObject(MP_Task mpTask)
   SysCall oSysCall;
   bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
 
-  mpTask->m_pDataStack->vPushInt((i8)bResult);
+  mpTask->m_pDataStack->vPushI8((i8)bResult);
 
   EXIT();
 }

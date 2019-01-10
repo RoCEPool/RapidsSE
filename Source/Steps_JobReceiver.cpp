@@ -30,7 +30,7 @@ void Step::vJob_ReceiverConnNoFetch(MP_Task mpTask)
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   i8 iConnNo = pJob_Receiver->iConnNo();
-  mpTask->m_pDataStack->vPushInt(iConnNo);
+  mpTask->m_pDataStack->vPushI8(iConnNo);
   
   EXIT();
 }

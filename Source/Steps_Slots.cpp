@@ -30,7 +30,7 @@ void Step::vSlotsColumnCount(MP_Task mpTask)
   Slots* pSlots = _pSlots(pPtrSlots);
   ASSERT(CN_SLOTS == pSlots->eClass());
   
-  mpTask->m_pDataStack->vPushInt(pSlots->pPtnColVec()->nItems());
+  mpTask->m_pDataStack->vPushI8(pSlots->pPtnColVec()->nItems());
   
   EXIT();
 }

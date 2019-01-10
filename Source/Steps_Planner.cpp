@@ -108,7 +108,7 @@ void Step::vPlannerFetchTechniqueFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("planner.fetchTechnique@"_Stz);
   eAT eFetchTechnique = mpPlanner->pChosenPath(i_Phrase)->eAccess();
   
-  mpTask->m_pDataStack->vPushInt(eFetchTechnique);
+  mpTask->m_pDataStack->vPushI8(eFetchTechnique);
   
   EXIT();
 }
@@ -314,7 +314,7 @@ void Step::vPlannerPhrasesFetch(MP_Task mpTask)
   
   i8 nPhrases = mpPlanner->nPhrases();
   
-  mpTask->m_pDataStack->vPushInt(nPhrases);
+  mpTask->m_pDataStack->vPushI8(nPhrases);
   
   EXIT();
 }

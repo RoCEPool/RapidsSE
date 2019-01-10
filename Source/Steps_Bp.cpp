@@ -163,7 +163,7 @@ void Step::vFreeBuffers(MP_Task mpTask)
   
   i8 iFreeBuffers = gpBufferPool->iFreeCount();
   
-  mpTask->m_pDataStack->vPushInt(iFreeBuffers);
+  mpTask->m_pDataStack->vPushI8(iFreeBuffers);
   
   EXIT();
 }
@@ -177,7 +177,7 @@ void Step::vFreePercent(MP_Task mpTask)
   
   i8 iFreePercent = gpBufferPool->iFreePercent();
   
-  mpTask->m_pDataStack->vPushInt(iFreePercent);
+  mpTask->m_pDataStack->vPushI8(iFreePercent);
   
   EXIT();
 }
@@ -192,7 +192,7 @@ void Step::vFreeSpace(MP_Task mpTask)
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   i8 iFreeSpaceInPool = BPA::iPoolFree();
 
-  mpTask->m_pDataStack->vPushInt(iFreeSpace + iFreeSpaceInPool);
+  mpTask->m_pDataStack->vPushI8(iFreeSpace + iFreeSpaceInPool);
   
   EXIT();
 }
@@ -209,7 +209,7 @@ void Step::vInUseSpace(MP_Task mpTask)
                      - gpBufferPool->iFreeSpace()
                      - BPA::iPoolFree();
   
-  mpTask->m_pDataStack->vPushInt(iInUseSpace);
+  mpTask->m_pDataStack->vPushI8(iInUseSpace);
   
   EXIT();
 }
@@ -247,9 +247,9 @@ void Step::vSnapshot(MP_Task mpTask)
   gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->vAnalyse(iCountObjects);
   
   for (i8 index = 0; index < CN_ENUMS; index++)
-    mpTask->m_pDataStack->vPushInt(iCountObjects[index]);
+    mpTask->m_pDataStack->vPushI8(iCountObjects[index]);
   
-  mpTask->m_pDataStack->vPushInt(CN_ENUMS);
+  mpTask->m_pDataStack->vPushI8(CN_ENUMS);
   
   EXIT();
 }
@@ -263,7 +263,7 @@ void Step::vTotalSpace(MP_Task mpTask)
   
   i8 iTotalSpace = gpAttachMap->m_iRegionSize - gpAttachMap->m_iJumboSize;
   
-  mpTask->m_pDataStack->vPushInt(iTotalSpace);
+  mpTask->m_pDataStack->vPushI8(iTotalSpace);
   
   EXIT();
 }

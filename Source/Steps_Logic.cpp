@@ -33,7 +33,7 @@ void Step::vLogicAnd(MP_Task mpTask)
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
-  mpTask->m_pDataStack->vPushInt(iArgR);
+  mpTask->m_pDataStack->vPushI8(iArgR);
   
   EXIT();
 }
@@ -51,7 +51,7 @@ void Step::vLogicNot(MP_Task mpTask)
   
   i8 iNotA = iValA ? 0 : 1;
   
-  mpTask->m_pDataStack->vPushInt(iNotA);
+  mpTask->m_pDataStack->vPushI8(iNotA);
   
   EXIT();
 }
@@ -73,7 +73,7 @@ void Step::vLogicOr(MP_Task mpTask)
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   
-  mpTask->m_pDataStack->vPushInt(iArgR);
+  mpTask->m_pDataStack->vPushI8(iArgR);
   
   EXIT();
 }

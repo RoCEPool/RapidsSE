@@ -33,7 +33,7 @@ void Step::vJob_WriteRowParentJobIdFetch(MP_Task mpTask)
   i8 iParentJobId = pJob_WriteRow->m_iParentJobId;
   RASSERT(C_UNKNOWN != iParentJobId);
   
-  mpTask->m_pDataStack->vPushInt(iParentJobId);
+  mpTask->m_pDataStack->vPushI8(iParentJobId);
   
   EXIT();
 }
@@ -63,14 +63,14 @@ void Step::vJob_WriteRowHashRow(MP_Task mpTask)
                                            bBlankLine);
   
   if ( ! bResult )
-    mpTask->m_pDataStack->vPushInt(0);
+    mpTask->m_pDataStack->vPushI8(0);
   else {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
     pJob_WriteRow->m_iPartitionId = pJob_WriteRow->m_pTable->iRowPartition(pJob_WriteRow->m_aRecord);
     pJob_InsertRow->m_iPartitionId  = pJob_WriteRow->m_iPartitionId ;
     
-    mpTask->m_pDataStack->vPushInt(1);
+    mpTask->m_pDataStack->vPushI8(1);
   }
   EXIT();
 }
@@ -105,7 +105,7 @@ void Step::vJob_WriteRowPartitionFetch(MP_Task mpTask)
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   i8 i_Partition = pJob_WriteRow->m_iPartitionId;
-  mpTask->m_pDataStack->vPushInt(i_Partition);
+  mpTask->m_pDataStack->vPushI8(i_Partition);
   
   EXIT();
 }

@@ -87,7 +87,7 @@ void Step::vAccumCountFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("accum.count@"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
-  mpTask->m_pDataStack->vPushInt(pAccum->m_iCount);
+  mpTask->m_pDataStack->vPushI8(pAccum->m_iCount);
   
   EXIT();
 }
@@ -125,7 +125,7 @@ void Step::vAccumGroupFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("accum.group@"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
-  mpTask->m_pDataStack->vPushInt(pAccum->m_iGroup);
+  mpTask->m_pDataStack->vPushI8(pAccum->m_iGroup);
   
   EXIT();
 }
@@ -163,7 +163,7 @@ void Step::vAccumMaxFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("accum.max@"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
-  mpTask->m_pDataStack->vPushInt(pAccum->m_iMax);
+  mpTask->m_pDataStack->vPushI8(pAccum->m_iMax);
   
   EXIT();
 }
@@ -201,7 +201,7 @@ void Step::vAccumMinFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("accum.min@"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
-  mpTask->m_pDataStack->vPushInt(pAccum->m_iMin);
+  mpTask->m_pDataStack->vPushI8(pAccum->m_iMin);
   
   EXIT();
 }
@@ -239,7 +239,7 @@ void Step::vAccumSumFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("accum.sum@"_Stz);
   Accum* pAccum = _pAccum(pPtrAccum);
   
-  mpTask->m_pDataStack->vPushInt(pAccum->m_iSum);
+  mpTask->m_pDataStack->vPushI8(pAccum->m_iSum);
   
   EXIT();
 }

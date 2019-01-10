@@ -52,10 +52,10 @@ void Step::vPlanListFindPlan(MP_Task mpTask)
   
   if (pPlan) {
     mpTask->m_pDataStack->vPushObject(pPlan);
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
   }
   else {
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
   }
   
   EXIT();

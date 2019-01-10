@@ -54,7 +54,7 @@ void Step::vToInt(MP_Task mpTask)
   
   i8 i = sInt.iToI8();
   
-  mpTask->m_pDataStack->vPushInt(i);
+  mpTask->m_pDataStack->vPushI8(i);
   
   EXIT();
 }

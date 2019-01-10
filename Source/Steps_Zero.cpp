@@ -31,9 +31,9 @@ void Step::vZeroLess(MP_Task mpTask)
     THROW_INVALID_DSTACK("0<"_Stz);
   
   if (iZero < 0)
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
   else
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
   
   EXIT();
 }
@@ -50,9 +50,9 @@ void Step::vZeroLessEqual(MP_Task mpTask)
     THROW_INVALID_DSTACK("0<="_Stz);
   
   if (iZero <= 0)
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
   else
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
   
   EXIT();
 }
@@ -69,9 +69,9 @@ void Step::vZeroEqual(MP_Task mpTask)
     THROW_INVALID_DSTACK("0=="_Stz);
   
   if (iZero == 0)
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
   else
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
   
   EXIT();
 }
@@ -88,9 +88,9 @@ void Step::vZeroNotEqual(MP_Task mpTask)
     THROW_INVALID_DSTACK("0!="_Stz);
   
   if (iZero != 0)
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
   else
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
   
   EXIT();
 }
@@ -107,9 +107,9 @@ void Step::vZeroGreaterEqual(MP_Task mpTask)
     THROW_INVALID_DSTACK("0>="_Stz);
   
   if (iZero >= 0)
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
   else
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
   
   EXIT();
 }
@@ -126,9 +126,9 @@ void Step::vZeroGreater(MP_Task mpTask)
     THROW_INVALID_DSTACK("0>"_Stz);
   
   if (iZero > 0)
-    mpTask->m_pDataStack->vPushInt((i8)1);
+    mpTask->m_pDataStack->vPushI8((i8)1);
   else
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
   
   EXIT();
 }

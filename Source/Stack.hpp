@@ -100,7 +100,7 @@ namespace Forth
     void vPushEntry(DBobjects::Entry* aEntry);
     void vPushGenVar(GenVar* pVariable);
     void vPushGenVar(GenVar& xVariable);
-    void vPushInt(i8 iInt);
+    void vPushI8(i8 iInt);
     void vPushObject(Object* pObject);
     void vPushRegister(Register* pValue);
     void vPushS32(s32& s32);

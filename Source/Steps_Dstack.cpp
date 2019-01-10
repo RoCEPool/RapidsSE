@@ -50,7 +50,7 @@ void Step::vDstackTransfer(MP_Task mpTask)
   THROW_INVALID_DSTACK(">DStack"_Stz);
   
   pThatTask->m_oLock.vGrabWrite();
-  pThatTask->m_pDataStack->vPushInt(iVal);
+  pThatTask->m_pDataStack->vPushI8(iVal);
   pThatTask->m_oLock.vDropWrite();
   
   EXIT();
@@ -74,7 +74,7 @@ void Step::vDstackClass(MP_Task mpTask)
   
   eCN eClass = xVariable.pNestedValue()->eClass();
   
-  mpTask->m_pDataStack->vPushInt(eClass);
+  mpTask->m_pDataStack->vPushI8(eClass);
   
   EXIT();
 }
@@ -88,7 +88,7 @@ void Step::vDstackDepth(MP_Task mpTask)
   
   i8 iDepth = mpTask->m_pDataStack->iValues();
   
-  mpTask->m_pDataStack->vPushInt(iDepth);
+  mpTask->m_pDataStack->vPushI8(iDepth);
   
   EXIT();
 }
@@ -167,7 +167,7 @@ void Step::vDstackDupNonZero(MP_Task mpTask)
     mpTask->m_pDataStack->vPushGenVar(xValA);
   }
   else
-    mpTask->m_pDataStack->vPushInt((i8)0);
+    mpTask->m_pDataStack->vPushI8((i8)0);
   
   EXIT();
 }
