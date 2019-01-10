@@ -160,7 +160,7 @@ void RegFrame::vOpDic(Dic* pOpDic)
 /*----------------------------------------------------------------------------*/
 /* get address of value register                                              */
 /*----------------------------------------------------------------------------*/
-ValReg* RegFrame::pValReg(i8 iReg)
+Register* RegFrame::pValReg(i8 iReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
   

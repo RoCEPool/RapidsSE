@@ -78,7 +78,7 @@ namespace Forth
     bool bPop(Object*& pObject, i8& iArg);
     bool bPop(Object*& pObject1, Object*& pObject2);
     bool bPop(Object*& pObject, ValWrk& xValWrk);
-    bool bPop(ValReg* pArg1);
+    bool bPop(Register* pArg1);
     bool bPop(ValWrk* pArg1);
     bool bPop(ValWrk& xArg1);
     bool bPop(ValWrk& xArg1, ValWrk& xArg2);
@@ -108,7 +108,7 @@ namespace Forth
     void vPushS4K(s4K& s4K);
     void vPushS16KB(s16KB& s16KB);
     void vPushValue(Value* pValue);
-    void vPushValReg(ValReg* pValue);
+    void vPushRegister(Register* pValue);
     void vPushValWrk(ValWrk* pValue);
     void vPushValue(Value& xValue);
     void vPushValSet(ValSet& xValSet);

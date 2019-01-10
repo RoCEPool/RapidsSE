@@ -580,9 +580,9 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from data stack                                                  */
+/* pop register from data stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(ValReg* pArg1)
+bool Stack::bPop(Register* pArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -910,7 +910,7 @@ void Stack::vPushValue(Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* push value onto data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushValReg(ValReg* pValReg)
+void Stack::vPushRegister(Register* pValReg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

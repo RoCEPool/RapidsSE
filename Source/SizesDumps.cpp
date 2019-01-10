@@ -303,7 +303,7 @@ i8 giClassSize[]
   /* 13 */ sizeof(s32),                // CN_STRVAR
   /* 14 */ sizeof(TmeVal),             // CN_TMEVAL
   /* 15 */ sizeof(TspVal),             // CN_TSPVAL
-  /* 16 */ sizeof(ValReg),             // CN_VALREG
+  /* 16 */ sizeof(Register),           // CN_VALREG
   /* 17 */ sizeof(ValSet),             // CN_VALSET
   /* 18 */ sizeof(ValWrk),             // CN_VALWRK
   

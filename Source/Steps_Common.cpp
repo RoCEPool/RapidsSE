@@ -34,7 +34,7 @@ void Step::vCommonFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iCommon) )
     THROW_INVALID_DSTACK("common.fetch"_Stz);
   
-  ValReg* pValReg = mpTask->m_pOpFrame->pValReg(iCommon);
+  Register* pValReg = mpTask->m_pOpFrame->pValReg(iCommon);
   
   mpTask->m_pDataStack->vPushValue(pValReg);
   
@@ -55,7 +55,7 @@ void Step::vCommonStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iCommon) )
     THROW_INVALID_DSTACK("commonStore"_Stz);
   
-  ValReg* pValReg = mpTask->m_pOpFrame->pValReg(iCommon);
+  Register* pValReg = mpTask->m_pOpFrame->pValReg(iCommon);
   
   mpTask->m_pDataStack->bPop(pValReg);
   

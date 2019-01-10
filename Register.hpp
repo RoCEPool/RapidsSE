@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* ValReg.hpp -- Workspace for Register Values                                */
+/* Register.hpp -- Forth Register                                             */
 /*============================================================================*/
 #pragma once
 
-namespace Values
+namespace Forth
 {
-  class ValReg : public Value
+  class Register : public Value
   {
     static const i8 C_VALREG_WORKSPACE = C_8KB;
     
@@ -14,13 +14,13 @@ namespace Values
     
   public:
     void* operator new(size_t);
-    ValReg(void);
+    Register(void);
     
     void operator =(i8 iInt);
     void operator =(Object* pPtr);
   };
   
-  ValReg* _pValReg(void* aAddr);
+  Register* _pRegister(void* aAddr);
 }
 
 /*============================================================================*/

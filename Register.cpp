@@ -2,14 +2,14 @@
 /* ValReg.hpp -- Workspace for Cached Values                                  */
 /*============================================================================*/
 
-#include "Values.h"
+#include "Forth.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ValReg* Values::_pValReg(void* aAddr)
+Register* Forth::_pRegister(void* aAddr)
 {
-  ValReg* pValReg = reinterpret_cast<ValReg*>(aAddr);
+  Register* pValReg = reinterpret_cast<Register*>(aAddr);
   
   RASSERT_TYPE(pValReg,CN_VALREG);
   
@@ -19,7 +19,7 @@ ValReg* Values::_pValReg(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ValReg::operator new(size_t)
+void* Register::operator new(size_t)
 {
   vFatal("fatal: ValReg class cannot be new'd\n"_Stz);
   
@@ -29,7 +29,7 @@ void* ValReg::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-ValReg::ValReg(void)
+Register::Register(void)
 : Value(CN_VALREG)
 {
   _memZero_(m_wWorkspace,C_VALREG_WORKSPACE,CN_VALREG);
@@ -46,7 +46,7 @@ ValReg::ValReg(void)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a pointer into workspace                                       */
 /*----------------------------------------------------------------------------*/
-void ValReg::operator =(i8 iInt)
+void Register::operator =(i8 iInt)
 {
   vSetClass(CN_INTVAL);
   
@@ -56,7 +56,7 @@ void ValReg::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a pointer into workspace                                       */
 /*----------------------------------------------------------------------------*/
-void ValReg::operator =(Object* pPtr)
+void Register::operator =(Object* pPtr)
 {
   vSetClass(CN_PTRVAL);
   
@@ -70,7 +70,7 @@ void ValReg::operator =(Object* pPtr)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-//Footer* ValReg::aFooter(void)
+//Footer* Register::aFooter(void)
 //{
 //  return &m_xFooter;
 //}
