@@ -993,8 +993,6 @@
   static void vTaskThis(Tasks::MP_Task mpTask);
   static void vTaskPartitionFetch(Tasks::MP_Task mpTask);
   static void vTaskPartitionStore(Tasks::MP_Task mpTask);
-  static void vTaskPlanFetch(Tasks::MP_Task mpTask);
-  static void vTaskPlanStore(Tasks::MP_Task mpTask);
   static void vTaskSeed(Tasks::MP_Task mpTask);
   static void vTaskSessionFetch(Tasks::MP_Task mpTask);
   static void vTaskSessionStore(Tasks::MP_Task mpTask);
@@ -1133,17 +1131,13 @@
   static void vCreateFromPersistent(Tasks::MP_Task mpTask);
   static void vCreatePersistent(Tasks::MP_Task mpTask);
   static void vCreateTenants(Tasks::MP_Task mpTask);
-  static void vDicWhich(Tasks::MP_Task mpTask);
   static void vDoes(Tasks::MP_Task mpTask);
   static void vDoes_RT(Tasks::MP_Task mpTask);
   static void vFind(Tasks::MP_Task mpTask);
   static void vFindInCurrent(Tasks::MP_Task mpTask);
   static void vForget(Tasks::MP_Task mpTask);
-  static void vHashHashColon(Tasks::MP_Task mpTask);
   static void vImmediate(Tasks::MP_Task mpTask);
   static void vLocate(Tasks::MP_Task mpTask);
-  static void vOpDic(Tasks::MP_Task mpTask);
-  static void vPlanDicTask(Tasks::MP_Task mpTask);
   static void vPostpone(Tasks::MP_Task mpTask);
   static void vSee(Tasks::MP_Task mpTask);
   static void vSemicolon(Tasks::MP_Task mpTask);

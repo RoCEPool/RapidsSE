@@ -26,8 +26,6 @@ void Step::vAddSteps_Task(void)
   vAddStep("task.name@"_Stz,     &Step::vTaskNameFetch);
   vAddStep("task.partition@"_Stz,&Step::vTaskPartitionFetch);
   vAddStep("task.partition!"_Stz,&Step::vTaskPartitionStore);
-  vAddStep("task.plan@"_Stz,     &Step::vTaskPlanFetch);
-  vAddStep("task.plan!"_Stz,     &Step::vTaskPlanStore);
   vAddStep("task.seed"_Stz,      &Step::vTaskSeed);
   vAddStep("task.session@"_Stz,  &Step::vTaskSessionFetch);
   vAddStep("task.session!"_Stz,  &Step::vTaskSessionStore);
@@ -296,51 +294,6 @@ void Step::vTaskPartitionStore(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.partition!"_Stz);
   
   pThatTask->m_iPartition = iPartition;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.plan@ -- fetch plan of task onto data stack                           */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskPlanFetch(MP_Task mpTask)
-{
-  ENTRY("vTaskPlanFetch"_Stz);
-  
-  Object* pObject;
-  if ( ! mpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_DSTACK("task.plan@"_Stz);
-  Task* pThatTask = _pTask(pObject);
-  
-  Plan* pPlan = pThatTask->m_pPlan;
-  
-  Object* pPtrPlan= pPlan;
-  
-  mpTask->m_pDataStack->vPushPointer(pPtrPlan);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.plan! -- store plan on data stack into task on data stack             */
-/*----------------------------------------------------------------------------*/
-void Step::vTaskPlanStore(MP_Task mpTask)
-{
-  ENTRY("vTaskPlanStore"_Stz);
-  
-  Object* pTaskObject;
-  if ( ! mpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.plan!"_Stz);
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Object* pPtrPlan;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("task.plan!"_Stz);
-  
-  Plan* pPlan = _pPlan(pPtrPlan);
-  
-  pThatTask->m_pPlan = pPlan;
   
   EXIT();
 }

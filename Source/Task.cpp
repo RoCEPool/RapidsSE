@@ -96,8 +96,6 @@ Task::Task(Job* pJob)
   
   m_pSession     = nullptr;
   
-  m_pPlan        = nullptr;
-  
   m_iDdlLocked   = 0;
   
   m_pSendNode    = nullptr;
@@ -110,8 +108,6 @@ Task::Task(Job* pJob)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   _checkInitialised_(CN_TASK);
-  
-  Task* pTask = this;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }

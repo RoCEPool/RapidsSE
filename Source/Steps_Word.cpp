@@ -24,18 +24,14 @@ void Step::vAddSteps_Word(void)
   vAddStep(">createInMain"_Stz,   &Step::vCreateFromInMain);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,&Step::vCreatePersistent);
-  vAddStep("dic?"_Stz,            &Step::vDicWhich);
   vAddStep("does>"_Stz,           &Step::vDoes,             true );
   vAddStep("does_rt"_Stz,         &Step::vDoes_RT);
   vAddStep("find"_Stz,            &Step::vFind);
   vAddStep("findInCurrent"_Stz,   &Step::vFindInCurrent);
   vAddStep("forget"_Stz,          &Step::vForget);
-  vAddStep("##:"_Stz,             &Step::vHashHashColon,    true );
   vAddStep("immediate"_Stz,       &Step::vImmediate,        true );
   vAddStep("locate"_Stz,          &Step::vLocate);
 
-  vAddStep("opDic"_Stz,           &Step::vOpDic,            true );
-  vAddStep("planDic"_Stz,         &Step::vPlanDicTask,      true );
   vAddStep("postpone"_Stz,        &Step::vPostpone,         true );
   vAddStep("see"_Stz,             &Step::vSee);
   vAddStep(";"_Stz,               &Step::vSemicolon,        true );
@@ -311,36 +307,6 @@ void Step::vCreateTenants(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dic? -- test & push which sub dic a colon defn is to be compiled into      */
-/*----------------------------------------------------------------------------*/
-void Step::vDicWhich(MP_Task mpTask)
-{
-  ENTRY("vDicWhich"_Stz);
-  
-  // get current plan
-  Plan* pPlan = mpTask->m_pPlan;
-  if ( ! pPlan )
-    THROW("dic?: no current plan in task"_Stz);
-  
-  // sub dic is either latest op dic (if there is one), or the plan dic
-  Dic* pSubDic;
-  if (pPlan->pRegFrameTop())
-    pSubDic = pPlan->pRegFrameTop()->pOpDic();
-  else
-    pSubDic = pPlan->pDic();
-  
-  // push the sub dic onto the path stack
-  mpTask->m_oPathStack.vPush(pSubDic);
-  
-  // by incrementing m_nSubDic we are indicating to the ; word that
-  // there is another temporary sub dic on the path stack
-  // which needs to be discarded
-  mpTask->m_pCompiler->m_nSubDic++;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* does> -- routine does                                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vDoes(MP_Task mpTask)
@@ -443,84 +409,6 @@ ENTRY("vForget"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* ##: -- encode paste of abstract colon defn into plan lambda text immediate */
-/*----------------------------------------------------------------------------*/
-void Step::vHashHashColon(MP_Task mpTask)
-{
-  ENTRY("vHashHashColon"_Stz);
-  
-  GenVar xWsp;
-  Cell* pOpFrameJumpArg = nullptr;
-  Cell* pToColonJumpArg = nullptr;
-
-  // get word currently being compiled
-  Word* pW = mpTask->m_pCompiler->m_pCurrentWord;
-  
-  // get the name of the symbolic argument
-  s32 sSymbolicArg;
-  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
-  sSymbolicArg = mpTask->m_pCompiler->m_pTokeniser->sToken();
-  
-  // encode what to execute at runtime
-  
-  // at runtime the dstack will be ( plan value )
-  
-                                  // at runtime we synthesise by:
-  pW->vEncode("dup"_Stz);             //   ( value plan plan )
-  pW->vEncode("-rot"_Stz);            //   ( plan value plan )
-  
-  pW->vEncode("plan.opFrame0"_Stz);   //   get top opframe of plan
-  pW->vEncode("dup"_Stz);             //   dup
-  pW->vEncode("jumpTrue"_Stz);        //   forward jump if we have an opFrame
-  pOpFrameJumpArg = (Cell*)pW->pAppend((Cell*)nullptr);
-  
-  // we dont have an opFrame, only a plan
-  pW->vEncode("drop"_Stz);            //   drop the null opFrame pointer
-  xWsp = "planDic "_Stz;
-  pW->vEncode("pushValue"_Stz,&xWsp); //   push "planDic "
-
-  pW->vEncode("jump"_Stz);            //   forward jump to colon etc
-  pToColonJumpArg = (Cell*)pW->pAppend((Cell*)nullptr);
-
-  // we have an opFrame
-  pOpFrameJumpArg->m_pJumpTo = pW->pLastCell();
-  
-  pW->vEncode("opFrame.name"_Stz);    //   get name of opframe
-  xWsp = "opDic "_Stz;
-  pW->vEncode("pushValue"_Stz,&xWsp); //   push "opDic "
-  pW->vEncode("str.prepend"_Stz);     //   form "opDic <opDicNm>"
-  
-  // we have an opFrame
-  pToColonJumpArg->m_pJumpTo = pW->pLastCell();
-  
-  xWsp = " : "_Stz;
-  pW->vEncode("pushValue"_Stz,&xWsp); //   push " : "
-  pW->vEncode("str.cat"_Stz);         //   form "opDic <opDicNm> : "
-  
-  xWsp = sSymbolicArg;
-  pW->vEncode("pushValue"_Stz,&xWsp); //   push "<symNm>"
-  pW->vEncode("str.cat"_Stz);         //   form "opDic <opDicNm> : <symNm>"
-  
-  xWsp = " %V ; "_Stz;
-  pW->vEncode("pushValue"_Stz,&xWsp); //   push " %V ; "
-  pW->vEncode("str.cat"_Stz);         //   form "opDic <opDicNm> : <symNm> %V ; "
-  
-  pW->vEncode("str.format"_Stz);      //   replace %V to yield concrete defn
-  
-  // at runtime this should produce a code text of the form:
-  //      "planDic : <symNm> <value> ; "
-  //   or
-  //      "opDic <opDicNm> : <symNm> <value> ; "
-  
-  pW->vEncode("swap"_Stz);               //   dstack is ( codeText plan )
-  pW->vEncode("plan.lambda+"_Stz);       //   append to lambda text
-  
-  // at runtime the dstack will be ( )
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* immediate -- make the most recent definition an immediate word             */
 /*----------------------------------------------------------------------------*/
 void Step::vImmediate(MP_Task mpTask)
@@ -561,65 +449,6 @@ void Step::vLocate(MP_Task mpTask)
     i8 iZero = 0;
     mpTask->m_pDataStack->vPushI8(iZero);
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* opDic -- search for named op frame and push op dictionary onto path stack  */
-/*----------------------------------------------------------------------------*/
-void Step::vOpDic(MP_Task mpTask)
-{
-  ENTRY("vOpDic"_Stz);
-  
-  Dic* pOpDic = nullptr;
-
-  s32 sNameOpFrame;
-  
-  mpTask->m_pCompiler->m_pTokeniser->vNextToken();
-  sNameOpFrame = mpTask->m_pCompiler->m_pTokeniser->sToken();
-  
-  RegFrame* pOpFrame = mpTask->m_pPlan->pRegFrameFind(sNameOpFrame);
-  //if ( ! pOpFrame )
-  //  THROW("No such op frame: %s",sNameOpFrame.aChar());
-  
-  if ( pOpFrame ) {
-    pOpDic = pOpFrame->pOpDic();
-  }
-  else {
-    // create the frame
-    pOpFrame = new RegFrame;
-    pOpFrame->vName(sNameOpFrame);
-    mpTask->m_pPlan->vRegFramePush(pOpFrame);
-    
-    // create a op dictionary
-    s32 sNameDic;
-    sNameDic.vSprint("<%s>"_Stz,sNameOpFrame.aChar());
-    
-    pOpDic = new Dic;
-    pOpDic->vName(sNameDic);
-    pOpFrame->vOpDic(pOpDic);
-  }
-  
-  mpTask->m_oPathStack.vPush(pOpDic);
-  
-  mpTask->m_pCompiler->m_nSubDic++;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* planDic -- push plan dictionary onto path stack                            */
-/*----------------------------------------------------------------------------*/
-void Step::vPlanDicTask(MP_Task mpTask)
-{
-  ENTRY("vPlanDicTask"_Stz);
-  
-  Dic* pPlanDic = mpTask->m_pPlan->pDic();
-  
-  mpTask->m_oPathStack.vPush(pPlanDic);
-  
-  mpTask->m_pCompiler->m_nSubDic++;
   
   EXIT();
 }

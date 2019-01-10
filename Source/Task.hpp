@@ -110,7 +110,6 @@ namespace Tasks
     // remove
   
     Interface::Session* m_pSession; // the session for this task
-    Plan*   m_pPlan;                // the plan associated with task
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // always last
