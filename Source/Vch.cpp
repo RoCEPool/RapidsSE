@@ -235,7 +235,7 @@ void Vch::vCopy(void* pDst, void* pSrc)
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Vch::bExtract2(char** aaSrc, Stz* aDst,
+bool Vch::bExtract(char** aaSrc, Stz* aDst,
                     Column* pColumn, Formatters* pFormatters)
 {
   Vch* aVch = (Vch*)aDst;
@@ -288,7 +288,7 @@ bool Vch::bExtract2(char** aaSrc, Stz* aDst,
 /*----------------------------------------------------------------------------*/
 /* extract a varchar field from csv substr                                    */
 /*----------------------------------------------------------------------------*/
-bool Vch::bExtractDefault2(char** aaSrc, Stz* aDst,
+bool Vch::bExtractDefault(char** aaSrc, Stz* aDst,
                     Column* pColumn, Formatters* pFormatters)
 {
   Vch* aVch = (Vch*)aDst;

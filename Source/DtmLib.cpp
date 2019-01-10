@@ -91,14 +91,14 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
     switch (eDatum) {
       case DM_BCD: b = Bcd::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_BOL: b = Bol::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
-      case DM_CHR: b = Vch::bExtractDefault2(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_CHR: b = Vch::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_DTE: b = Dte::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_FLT: b = Flt::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_INT: b = Int::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_IVL: b = Ivl::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_TME: b = Tme::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_TSP: b = Tsp::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
-      case DM_VCH: b = Vch::bExtractDefault2(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_VCH: b = Vch::bExtractDefault(aaSrc,aDst,pColumn,pFormatters); break;
       default:
         vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
                eDatum);
@@ -108,14 +108,14 @@ bool DtmLib::bExtract(eDM eDatum, Stz* aDst, char** aaSrc,
     switch (eDatum) {
       case DM_BCD: b = Bcd::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_BOL: b = Bol::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-      case DM_CHR: b = Vch::bExtract2(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_CHR: b = Vch::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_DTE: b = Dte::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_FLT: b = Flt::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_INT: b = Int::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_IVL: b = Ivl::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_TME: b = Tme::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
       case DM_TSP: b = Tsp::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
-      case DM_VCH: b = Vch::bExtract2(aaSrc,aDst,pColumn,pFormatters); break;
+      case DM_VCH: b = Vch::bExtract(aaSrc,aDst,pColumn,pFormatters); break;
       default:
         vFatal("DtmLib::bValid: Invalid aDatum argument: %lld\n"_Stz,
                eDatum);
