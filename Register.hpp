@@ -10,8 +10,8 @@ namespace Forth
     static const i8 C_VALREG_WORKSPACE = C_8KB;
     
   private:
-    char m_wWorkspace[C_VALREG_WORKSPACE];
-    
+    WspFxd<C_VALREG_WORKSPACE> m_xWsp; // workspace
+
   public:
     void* operator new(size_t);
     Register(void);
