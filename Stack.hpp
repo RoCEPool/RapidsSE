@@ -83,7 +83,6 @@ namespace Forth
     bool bPop(GenVar& xArg1);
     bool bPop(GenVar& xArg1, GenVar& xArg2);
     bool bPop(GenVar& xArg1, GenVar& xArg2, GenVar& xArg3);
-    bool bPop(ValSet& xArg1);
     bool bPop(s32&  sArg1);
     bool bPop(s256& sArg1);
     bool bPop(s16KB& sArg1);
@@ -111,7 +110,6 @@ namespace Forth
     void vPushRegister(Register* pValue);
     void vPushValWrk(GenVar* pValue);
     void vPushValue(Value& xValue);
-    void vPushValSet(ValSet& xValSet);
     void vPushValWrk(GenVar& xVariable);
   
     //-------------------------------------------------------------------------

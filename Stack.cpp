@@ -661,21 +661,6 @@ bool Stack::bPop(GenVar& pValue1, GenVar& pValue2, GenVar& pValue3)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from data stack                                                  */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPop(ValSet& xArg1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(1) )
-    return false;
-  
-  vPopVal(&xArg1);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop value from data stack  as integer                                      */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopAsInt(i8& iArg1)
@@ -929,16 +914,6 @@ void Stack::vPushValWrk(GenVar* pValue)
   vPushVal(pValue->pNestedValueSelf());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto data stack                                                 */
-/*----------------------------------------------------------------------------*/
-void Stack::vPushValSet(ValSet& xValSet)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  vPushVal(&xValSet);
 }
 
 /*----------------------------------------------------------------------------*/
