@@ -32,7 +32,6 @@
 "op_sort.sen" include
 "op_tee.sen" include
 "op_triggerRange.sen" include
-"op_triggerScan.sen" include
 "op_write.sen" include
 
 

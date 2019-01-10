@@ -128,65 +128,6 @@ tp: >>jobQueue_otherNode
   then
 ;
 
-/*----------------------------------------------------------------------------*/
-/* compile the plan                                                           */
-/*----------------------------------------------------------------------------*/
-: compilePlan ( plan -- )
-
-  dup task::this task.plan!
-
-  dup ( plan plan )
-
-  plan.dic task::this task.dicStack dicStack.push ( plan )
-  //pathDump
-
-  //plan.lambda@ .
-  plan.lambda@ >:
-
-  task::this task.dicStack dicStack.drop
-
-  0 task::this task.plan!
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute the plan                                                           */
-/*----------------------------------------------------------------------------*/
-: executeDexPlan ( nextOp plan -- )
-
-  // record the plan and profile
-  0 locals| pSession thePlan sNextOp |
-
-  // trigger triggerOp by piping the plan to it
-  //<< "triggerOp" thePlan >>
-  //"triggerOp.task" find execute >jobQueue
-
-  task::this task.session@ to pSession
-  //<< pSession "triggerScanOp" thePlan plan.id@ "triggerScanOp.task" >>jobQueue
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute the plan                                                           */
-/*----------------------------------------------------------------------------*/
-: executeDfetchPlan ( nextOp plan -- )
-
-tp: executeDfetchPlan
-
-  // record the plan and profile
-  0 locals| pSession thePlan sNextOp |
-
-  // trigger triggerOp by piping the plan to it
-  //<< "triggerOp" thePlan >>
-  //"triggerOp.task" find execute >jobQueue
-
-  task::this task.session@ to pSession
-  pSession >str "dfetch request tasks session : %v" str.format .
-
-  //grid::partitions >str "setting nLastBuffers to %v" str.format .
-  //grid::partitions pSession session.lastBuffers!
-
-  //<< pSession "triggerRangeOp" thePlan plan.id@ "triggerRangeOp.task" >>jobQueue
-;
-
 
 /*============================================================================*/
 /* end                                                                        */

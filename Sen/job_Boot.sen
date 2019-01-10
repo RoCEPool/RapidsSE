@@ -9,7 +9,6 @@
 "gridModel.sen" include
 "dbObjects.sen" include
 "operators.sen" include
-"planners.sen" include
 "jobModel.sen" include
 "testing.sen" include
 
