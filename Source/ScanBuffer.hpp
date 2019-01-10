@@ -7,12 +7,12 @@ namespace Structures
 {
   class ScanBuffer : public Object
   {
-    static const i8 C_SCAN_WSP = C_1M; // note this is 1M not 1MB
+    static const i8 C_WSP_SCAN = C_1M; // note this is 1M not 1MB
   private:
     Stz* m_aNextMsg;  // address where next message starts
     Stz* m_aEndData;  // address where data ends
   
-    WspFxd<C_SCAN_WSP> m_xWsp;
+    WspFxd<C_WSP_SCAN> m_xWsp;
   
     // must be last
     Footer m_xFooter;

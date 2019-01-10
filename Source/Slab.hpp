@@ -7,11 +7,11 @@ namespace Pool
 {
   class Slab : public Object
   {
-    static const i8 C_SLAB_WSP = C_SIZE_LARGE_OBJECT - C_4KB;
+    static const i8 C_WSP_SLAB = C_SIZE_LARGE_OBJECT - C_4KB;
   private:
     Slab* m_pNextSlab; // next slab in slab chain
   
-    WspFxd<C_SLAB_WSP> m_xWsp;
+    WspFxd<C_WSP_SLAB> m_xWsp;
   
     // must be last
     Footer m_xFooter;

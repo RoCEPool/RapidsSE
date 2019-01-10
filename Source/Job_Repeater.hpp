@@ -5,8 +5,6 @@
 
 namespace JobModel
 {
-  static const i8 C_REPEATER_WSP = C_256KB;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Repeater : public Job,
                        public JobFileName

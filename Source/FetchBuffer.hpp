@@ -7,7 +7,7 @@ namespace DBobjects
 {
   class FetchBuffer : public Object
   {
-    static const i8 C_FETCHBUFFER_WSP = C_SIZE_LARGE_OBJECT - C_4KB;
+    static const i8 C_WSP_FETCHBUFFER = C_SIZE_LARGE_OBJECT - C_4KB;
   
   protected:
     i8     m_nFetchedRows; // number of Fetched rows in this buffer
@@ -15,7 +15,7 @@ namespace DBobjects
     i8     m_iPartition;   // partition this result buffer came from
     Table* m_pTable;       // table which describes the rows
 
-    WspFxd<C_FETCHBUFFER_WSP> m_xWsp;
+    WspFxd<C_WSP_FETCHBUFFER> m_xWsp;
 
     // must be last
     Footer m_xFooter;

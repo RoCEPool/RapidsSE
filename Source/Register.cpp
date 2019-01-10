@@ -32,7 +32,7 @@ void* Register::operator new(size_t)
 Register::Register(void)
 : Value(CN_VALREG)
 {
-  _memZero_(m_xWsp.aArea(),C_REGISTER_WSP,CN_VALREG);
+  _memZero_(m_xWsp.aArea(),C_WSP_REGISTER,CN_VALREG);
   
   *(this) = (i8)0;
   

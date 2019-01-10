@@ -30,7 +30,7 @@ void Step::vEnterObject(MP_Task mpTask)
   Word* pWord = pAdd<Word*>(mpTask->m_pEntryCell,
                             -( sizeof(Word)
                                - sizeof(Cell*)
-                               - sizeof(WspFxd<C_WORD_WSP>)
+                               - sizeof(WspFxd<C_WSP_WORD>)
                                - sizeof(Footer)
                              )
                             );

@@ -107,9 +107,9 @@ i8 FileChunk::nReadBytes(i8 nBytes)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   if (-1 == nBytes)
-    nBytes = C_DATACHUNK_WSP - 1;
+    nBytes = C_WSP_DATACHUNK - 1;
   else
-  if (nBytes == C_DATACHUNK_WSP)
+  if (nBytes == C_WSP_DATACHUNK)
     nBytes -= 1;
   
   m_nDataBytes = m_oFile.nReadBytes(m_xWsp.aArea(),nBytes);

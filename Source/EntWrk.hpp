@@ -10,7 +10,7 @@ namespace DBobjects
   friend class Entry;
   friend class Table;
   
-  static const i8 C_ENTWRK_WSP = C_17KB;
+  static const i8 C_WSP_ENTWRK = C_17KB;
   
   private:
     Id    m_xId;       // id of row, or referenced entry in another buffer
@@ -23,7 +23,7 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key and row workspace
-    WspFxd<C_ENTWRK_WSP> m_xEmbeddedWsp; // embedded object workspace
+    WspFxd<C_WSP_ENTWRK> m_xEmbeddedWsp; // embedded object workspace
   
     Footer m_xFooter;
   

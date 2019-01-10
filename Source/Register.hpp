@@ -7,10 +7,10 @@ namespace Forth
 {
   class Register : public Value
   {
-    static const i8 C_REGISTER_WSP = C_8KB;
+    static const i8 C_WSP_REGISTER = C_8KB;
     
   private:
-    WspFxd<C_REGISTER_WSP> m_xWsp; // workspace
+    WspFxd<C_WSP_REGISTER> m_xWsp; // workspace
 
   public:
     void* operator new(size_t);

@@ -1173,7 +1173,7 @@ Value* Stack::aStackBase(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* pBase = &m_xWsp.aArea()[C_STACK_WSP - 1];
+  char* pBase = &m_xWsp.aArea()[C_WSP_STACK - 1];
   
   return pPoolCheck<Value*>(pBase);
 }

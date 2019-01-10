@@ -25,7 +25,6 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_constants(SePrompt* pPrompt)
 {
-  vTrace("  C_DATACHUNK_WSP     = %lld\n"_Stz,C_DATACHUNK_WSP);
   vTrace("  C_LOW_BUFFERS       = %lld\n"_Stz,C_LOW_BUFFERS);
   vTrace("  C_MAX_PRECISION_BCD = %lld\n"_Stz,C_MAX_PRECISION_BCD);
   vTrace("  C_MAX_COLUMNS       = %lld\n"_Stz,C_MAX_COLUMNS);
@@ -37,7 +36,8 @@ bool Prompt::bPrompt_constants(SePrompt* pPrompt)
   vTrace("  C_MEMORY_PERCENT    = %lld\n"_Stz,C_MEMORY_PERCENT);
   vTrace("  C_PATH_MAX          = %lld\n"_Stz,C_PATH_MAX);
   vTrace("  C_SLOTS_PER_NODE    = %lld\n"_Stz,C_SLOTS_PER_NODE);
-  vTrace("  C_STACK_WSP         = %lld\n"_Stz,C_STACK_WSP);
+  vTrace("  C_WSP_DATACHUNK     = %lld\n"_Stz,C_WSP_DATACHUNK);
+  vTrace("  C_WSP_STACK         = %lld\n"_Stz,C_WSP_STACK);
   vTrace("  C_TOKENS            = %lld\n"_Stz,C_TOKENS);
   vTrace("\n"_Stz);
 

@@ -7,12 +7,12 @@ namespace Structures
 {
   class ItemBuffer : public Object
   {
-    static const i8 C_ITEMBUFFER_WSP = C_SIZE_LARGE_OBJECT - C_1KB;
+    static const i8 C_WSP_ITEMBUFFER = C_SIZE_LARGE_OBJECT - C_1KB;
   
   protected:
     i8 m_nItems; // number of items in this buffer
 
-    WspFxd<C_ITEMBUFFER_WSP> m_xWsp;
+    WspFxd<C_WSP_ITEMBUFFER> m_xWsp;
   
   public:
     ItemBuffer(eCN eClassNo);

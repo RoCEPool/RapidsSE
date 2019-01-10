@@ -7,10 +7,10 @@ namespace System
 {
   class Scratch : public Object
   {
-    static const i8 C_SCRATCH_WSP = C_8KB;
+    static const i8 C_WSP_SCRATCH = C_8KB;
   
   private:
-    WspFxd<C_SCRATCH_WSP> m_xWsp;
+    WspFxd<C_WSP_SCRATCH> m_xWsp;
   
     // must be last
     Footer m_xFooter;

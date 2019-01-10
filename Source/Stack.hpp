@@ -12,8 +12,8 @@ namespace DBobjects { class Entry; }
 
 namespace Forth
 {
-  static const i8 C_STACK_WSP = C_SIZE_LARGE_OBJECT - C_1KB;
-  //static const i8 C_STACK_WSP = C_SIZE_SMALL_OBJECT;
+  static const i8 C_WSP_STACK = C_SIZE_LARGE_OBJECT - C_1KB;
+  //static const i8 C_WSP_STACK = C_SIZE_SMALL_OBJECT;
 
   class Stack: public Object
   {
@@ -31,7 +31,7 @@ namespace Forth
     
     Footer m_xHazard;
     
-    WspFxd<C_STACK_WSP> m_xWsp;
+    WspFxd<C_WSP_STACK> m_xWsp;
     
     // must be last
     Footer m_xFooter;

@@ -21,11 +21,11 @@ namespace Forth
   
   class GenVar : public Object
   {
-    static const i8 C_GENVAR_WSP = C_64K;
+    static const i8 C_WSP_GENVAR = C_64K;
   
   private:
     union {
-      WspFxd<C_GENVAR_WSP> m_xWsp;         // workspace
+      WspFxd<C_WSP_GENVAR> m_xWsp;         // workspace
       ValSee m_xNestedValue; // inspector
     };
   
