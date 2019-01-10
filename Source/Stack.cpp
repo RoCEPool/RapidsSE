@@ -5,6 +5,10 @@
 #include "Forth.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- Lifecycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 Stack* Stack::_pStack(void* aAddr)
@@ -71,7 +75,7 @@ Stack::~Stack(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump grid                                                                  */
+/* dump value stack                                                           */
 /*----------------------------------------------------------------------------*/
 void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
@@ -83,11 +87,11 @@ void Stack::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* guard data stack                                                           */
+/* guard value stack                                                          */
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuard(i8 iCount)
 {
@@ -100,7 +104,7 @@ bool Stack::bGuard(i8 iCount)
 }
 
 /*----------------------------------------------------------------------------*/
-/* guard data stack 1                                                         */
+/* guard value stack 1                                                        */
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuard(eCN eClass0)
 {
@@ -117,7 +121,7 @@ bool Stack::bGuard(eCN eClass0)
 }
 
 /*----------------------------------------------------------------------------*/
-/* guard data stack 2                                                         */
+/* guard value stack 2                                                        */
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuard(eCN eClass0, eCN eClass1)
 {
@@ -138,7 +142,7 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* guard data stack 3                                                         */
+/* guard value stack 3                                                        */
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 {
@@ -168,7 +172,7 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 
 
 /*----------------------------------------------------------------------------*/
-/* pop cell from data stack                                                   */
+/* pop cell from value stack                                                  */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(Forth::Cell*& pCell)
 {
@@ -187,7 +191,7 @@ bool Stack::bPop(Forth::Cell*& pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop eCN from data stack                                                    */
+/* pop eCN from value stack                                                   */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(eCN& iArg1)
 {
@@ -205,7 +209,7 @@ bool Stack::bPop(eCN& iArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from data stack                                                  */
+/* pop value from value stack                                                 */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(GenVar* pArg1)
 {
@@ -220,7 +224,7 @@ bool Stack::bPop(GenVar* pArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from data stack                                                  */
+/* pop value from value stack                                                 */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(GenVar& xArg1)
 {
@@ -235,7 +239,7 @@ bool Stack::bPop(GenVar& xArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop i8 from data stack                                                     */
+/* pop i8 from value stack                                                    */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(i8& iArg1)
 {
@@ -253,7 +257,7 @@ bool Stack::bPop(i8& iArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop i8,i8 from data stack                                                  */
+/* pop i8,i8 from value stack                                                 */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(i8& iArg1, i8& iArg2)
 {
@@ -276,7 +280,7 @@ bool Stack::bPop(i8& iArg1, i8& iArg2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop i8,val from data stack                                                 */
+/* pop i8,val from value stack                                                */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(i8& iArg1, Object*& pArg2)
 {
@@ -299,7 +303,7 @@ bool Stack::bPop(i8& iArg1, Object*& pArg2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop i8,val from data stack                                                 */
+/* pop i8,val from value stack                                                */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(i8& iArg1, GenVar& xArg2)
 {
@@ -319,7 +323,7 @@ bool Stack::bPop(i8& iArg1, GenVar& xArg2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop i8,s from data stack                                                   */
+/* pop i8,s from value stack                                                  */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(i8& iArg1, s48K& sArg2)
 {
@@ -342,7 +346,7 @@ bool Stack::bPop(i8& iArg1, s48K& sArg2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop i8,i8,val from data stack                                              */
+/* pop i8,i8,val from value stack                                             */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(i8& iArg1, i8& iArg2, Value& xArg3)
 {
@@ -367,7 +371,7 @@ bool Stack::bPop(i8& iArg1, i8& iArg2, Value& xArg3)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop Object* from data stack                                                */
+/* pop Object* from value stack                                               */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(Object*& pObject)
 {
@@ -385,7 +389,7 @@ bool Stack::bPop(Object*& pObject)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop Object*, i8 from data stack                                            */
+/* pop Object*, i8 from value stack                                           */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(Object*& pObject, i8& iArg)
 {
@@ -408,7 +412,7 @@ bool Stack::bPop(Object*& pObject, i8& iArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop Object*, Object* from data stack                                       */
+/* pop Object*, Object* from value stack                                      */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(Object*& pObject1, Object*& pObject2)
 {
@@ -431,7 +435,7 @@ bool Stack::bPop(Object*& pObject1, Object*& pObject2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop Object* from data stack                                                */
+/* pop Object* from value stack                                               */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(Object*& pObject, GenVar& xVariable)
 {
@@ -449,7 +453,7 @@ bool Stack::bPop(Object*& pObject, GenVar& xVariable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop register from data stack                                               */
+/* pop register from value stack                                              */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(Register* pArg1)
 {
@@ -464,7 +468,7 @@ bool Stack::bPop(Register* pArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop s from data stack                                                      */
+/* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(s32& sArg1)
 {
@@ -482,7 +486,7 @@ bool Stack::bPop(s32& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop s from data stack                                                      */
+/* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(s256& sArg1)
 {
@@ -500,7 +504,7 @@ bool Stack::bPop(s256& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop s from data stack                                                      */
+/* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(s4K& sArg1)
 {
@@ -518,7 +522,7 @@ bool Stack::bPop(s4K& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop s from data stack                                                      */
+/* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(s16KB& sArg1)
 {
@@ -536,7 +540,7 @@ bool Stack::bPop(s16KB& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop s from data stack                                                      */
+/* pop s from value stack                                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(s48K& sArg1)
 {
@@ -554,7 +558,7 @@ bool Stack::bPop(s48K& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop s,i8 from data stack                                                   */
+/* pop s,i8 from value stack                                                  */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(s48K& sArg1, i8& iArg2)
 {
@@ -577,7 +581,7 @@ bool Stack::bPop(s48K& sArg1, i8& iArg2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop s,i8,i8 from data stack                                                */
+/* pop s,i8,i8 from value stack                                               */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(s48K& sArg1, i8& iArg2, i8& iArg3)
 {
@@ -602,7 +606,7 @@ bool Stack::bPop(s48K& sArg1, i8& iArg2, i8& iArg3)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop s,s from data stack                                                    */
+/* pop s,s from value stack                                                   */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(s48K& sArg1, s48K& sArg2)
 {
@@ -625,7 +629,7 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value, value from data stack                                           */
+/* pop value, value from value stack                                          */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(GenVar& pValue1, GenVar& pValue2)
 {
@@ -642,7 +646,7 @@ bool Stack::bPop(GenVar& pValue1, GenVar& pValue2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value, value, value from data stack                                    */
+/* pop value, value, value from value stack                                   */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(GenVar& pValue1, GenVar& pValue2, GenVar& pValue3)
 {
@@ -661,7 +665,7 @@ bool Stack::bPop(GenVar& pValue1, GenVar& pValue2, GenVar& pValue3)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from data stack  as integer                                      */
+/* pop value from value stack  as integer                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopAsInt(i8& iArg1)
 {
@@ -679,7 +683,7 @@ bool Stack::bPopAsInt(i8& iArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from data stack  as integer                                      */
+/* pop value from value stack  as integer                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopAsInt_Quick(i8& iArg1)
 {
@@ -735,7 +739,7 @@ i8 Stack::iPop(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* push bool onto data stack                                                  */
+/* push bool onto value stack                                                 */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushBool(bool bArg1)
 {
@@ -748,7 +752,7 @@ void Stack::vPushBool(bool bArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push Cell* onto data stack                                                 */
+/* push Cell* onto value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushCell(Cell* pCell)
 {
@@ -762,7 +766,7 @@ void Stack::vPushCell(Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push entry onto data stack                                                 */
+/* push entry onto value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushEntry(DBobjects::Entry* aEntry)
 {
@@ -774,7 +778,7 @@ void Stack::vPushEntry(DBobjects::Entry* aEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push value onto data stack                                                 */
+/* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushGenVar(GenVar* pValue)
 {
@@ -786,7 +790,7 @@ void Stack::vPushGenVar(GenVar* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push value onto data stack                                                 */
+/* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushGenVar(GenVar& xVariable)
 {
@@ -798,7 +802,7 @@ void Stack::vPushGenVar(GenVar& xVariable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push i8 onto data stack                                                    */
+/* push i8 onto value stack                                                   */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushI8(i8 iArg1)
 {
@@ -811,7 +815,7 @@ void Stack::vPushI8(i8 iArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push pointer to proper object onto data stack                              */
+/* push pointer to proper object onto value stack                             */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushPointer(Object* pObject)
 {
@@ -825,7 +829,7 @@ void Stack::vPushPointer(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push value onto data stack                                                 */
+/* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushRegister(Register* pRegister)
 {
@@ -837,7 +841,7 @@ void Stack::vPushRegister(Register* pRegister)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push s32 onto data stack                                                   */
+/* push s32 onto value stack                                                  */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushS32(s32& sArg1)
 {
@@ -850,7 +854,7 @@ void Stack::vPushS32(s32& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push s256 onto data stack                                                  */
+/* push s256 onto value stack                                                 */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushS256(s256& sArg1)
 {
@@ -863,7 +867,7 @@ void Stack::vPushS256(s256& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push s4K onto data stack                                                   */
+/* push s4K onto value stack                                                  */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushS4K(s4K& sArg1)
 {
@@ -876,7 +880,7 @@ void Stack::vPushS4K(s4K& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push s48K onto data stack                                                  */
+/* push s48K onto value stack                                                 */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushS48K(s48K& sArg1)
 {
@@ -889,7 +893,7 @@ void Stack::vPushS48K(s48K& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push s16KB onto data stack                                                 */
+/* push s16KB onto value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushS16KB(s16KB& sArg1)
 {
@@ -902,7 +906,7 @@ void Stack::vPushS16KB(s16KB& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push value onto data stack                                                 */
+/* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushValue(Value& xVal1)
 {
@@ -912,7 +916,7 @@ void Stack::vPushValue(Value& xVal1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push value onto data stack                                                 */
+/* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushValue(Value* pValue)
 {
@@ -928,7 +932,7 @@ void Stack::vPushValue(Value* pValue)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* discard value on top of stack                                              */
+/* discard value on top of value stack                                        */
 /*----------------------------------------------------------------------------*/
 void Stack::vDiscard(void)
 {
@@ -947,7 +951,7 @@ void Stack::vDiscard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* stk -- dump the data stack                                                 */
+/* stk -- dump the value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
 {
@@ -1009,7 +1013,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
 }
 
 /*----------------------------------------------------------------------------*/
-/* peek at value on top of stack                                              */
+/* peek at value on top of value stack                                        */
 /*----------------------------------------------------------------------------*/
 Value* Stack::pPeekValue(void)
 {
@@ -1019,7 +1023,7 @@ Value* Stack::pPeekValue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* peek at given value on stack                                               */
+/* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
 Value* Stack::pPeekValue(i8 iNthValue)
 {
@@ -1029,7 +1033,7 @@ Value* Stack::pPeekValue(i8 iNthValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* peek at given value on stack                                               */
+/* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
 void Stack::vPeekValWrk(i8 iNthValue, GenVar& xVariable)
 {
@@ -1045,7 +1049,7 @@ void Stack::vPeekValWrk(i8 iNthValue, GenVar& xVariable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* poke at given value on stack                                               */
+/* poke at given value on fort stack                                          */
 /*----------------------------------------------------------------------------*/
 void Stack::vPokeValWrk(i8 iNthValue, GenVar& xVariable)
 {
@@ -1081,7 +1085,7 @@ void Stack::vRetryPoint(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of values on stack                                              */
+/* get number of values currentl on value stack                               */
 /*----------------------------------------------------------------------------*/
 i8 Stack::iValues(void)
 {
@@ -1110,7 +1114,7 @@ bool Stack::bPeekZero(void)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* get address of given value on stack                                        */
+/* get address of given value on value stack                                  */
 /*----------------------------------------------------------------------------*/
 Value* Stack::pGetValue(i8 iNthValue)
 {
@@ -1144,7 +1148,7 @@ void Stack::vPushBy(i8 iBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from stack                                                       */
+/* pop value from value stack                                                 */
 /*----------------------------------------------------------------------------*/
 void Stack::vPopVal(Value* pValue)
 {
@@ -1163,7 +1167,7 @@ void Stack::vPopVal(Value* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push value onto stack                                                      */
+/* push value onto value stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushVal(Value* pValue)
 {
@@ -1184,7 +1188,7 @@ void Stack::vPushVal(Value* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* base of this stack                                                         */
+/* base of this value stack                                                   */
 /*----------------------------------------------------------------------------*/
 Value* Stack::pStackBase(void)
 {
@@ -1196,7 +1200,7 @@ Value* Stack::pStackBase(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* limit of this stack                                                        */
+/* limit of this value stack                                                  */
 /*----------------------------------------------------------------------------*/
 Value* Stack::pStackLimit(void)
 {
@@ -1208,7 +1212,7 @@ Value* Stack::pStackLimit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of value on top of stack                                       */
+/* get address of value on top of value stack                                 */
 /*----------------------------------------------------------------------------*/
 Value* Stack::pTopValue(void)
 {
