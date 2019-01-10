@@ -811,9 +811,9 @@ void Stack::vPushI8(i8 iArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push Object* onto data stack                                               */
+/* push pointer to proper object onto data stack                              */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushObject(Object* pObject)
+void Stack::vPushPointer(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

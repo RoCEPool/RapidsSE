@@ -69,7 +69,7 @@ void Step::vJob_ReceiverNodeFetch(MP_Task mpTask)
   Job_Receiver* pJob_Receiver = _pJob_Receiver(pJobPtr);
   
   Node* pNode = pJob_Receiver->pNode();
-  mpTask->m_pDataStack->vPushObject(pNode);
+  mpTask->m_pDataStack->vPushPointer(pNode);
   
   EXIT();
 }

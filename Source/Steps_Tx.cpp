@@ -41,7 +41,7 @@ void Step::vTxBegin(MP_Task mpTask)
 //         pTx->iDistTxNode(), pTx->iDistTxNo(),
 //         pTx->aDecode());
   
-  mpTask->m_pDataStack->vPushObject(pTx);
+  mpTask->m_pDataStack->vPushPointer(pTx);
   
   EXIT();
 }
@@ -319,7 +319,7 @@ void Step::vTxTestDist(MP_Task mpTask)
 //         pTx->iDistTxNode(), pTx->iDistTxNo(),
 //         pTx->aDecode());
   
-  mpTask->m_pDataStack->vPushObject(pTx);
+  mpTask->m_pDataStack->vPushPointer(pTx);
   
   EXIT();
 }

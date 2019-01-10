@@ -102,7 +102,7 @@ void Step::vJobClassNew(MP_Task mpTask)
 
   Job* pJob = pJobClass->pNewJob(pArg);
   
-  mpTask->m_pDataStack->vPushObject(pJob);
+  mpTask->m_pDataStack->vPushPointer(pJob);
   
   EXIT();
 }

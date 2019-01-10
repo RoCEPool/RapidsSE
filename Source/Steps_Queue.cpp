@@ -127,7 +127,7 @@ void Step::vQueueNew(MP_Task mpTask)
   
   //pQueue->vLockName(sQueueName);
   
-  mpTask->m_pDataStack->vPushObject(pQueue);
+  mpTask->m_pDataStack->vPushPointer(pQueue);
   
   EXIT();
 }

@@ -188,7 +188,7 @@ void Step::vJob_SubFetchBufferQueueFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subFetch.bufferQueue@"_Stz);
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
-  mpTask->m_pDataStack->vPushObject(pJob->m_pBufferQueue);
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pBufferQueue);
   
   EXIT();
 }
@@ -222,7 +222,7 @@ void Step::vJob_SubFetchPlannerFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_subFetch.planner@"_Stz);
   Job_SubFetch* pJob = _pJob_SubFetch(pJobPtr);
   
-  mpTask->m_pDataStack->vPushObject(pJob->m_pPlanner);
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pPlanner);
   
   EXIT();
 }

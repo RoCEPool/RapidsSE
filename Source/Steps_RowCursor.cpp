@@ -142,7 +142,7 @@ ENTRY("vRowCursorNew"_Stz);
   RowCursor* pRowCursor = new RowCursor;
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  mpTask->m_pDataStack->vPushObject(pRowCursor);
+  mpTask->m_pDataStack->vPushPointer(pRowCursor);
   
   EXIT();
 }
@@ -206,7 +206,7 @@ void Step::vRowCursorEntryBufferFetch(MP_Task mpTask)
   EntryBuffer* pRowBuffer;
   pRowBuffer = pRowCursor->pRowBuffer();
   
-  mpTask->m_pDataStack->vPushObject(pRowBuffer);
+  mpTask->m_pDataStack->vPushPointer(pRowBuffer);
   
   EXIT();
 }
@@ -252,7 +252,7 @@ ENTRY("vRowCursorTableFetch"_Stz);
   
   Object* pPtrTable = pRowCursor->pTable();
   
-  mpTask->m_pDataStack->vPushObject(pPtrTable);
+  mpTask->m_pDataStack->vPushPointer(pPtrTable);
   
   EXIT();
 }

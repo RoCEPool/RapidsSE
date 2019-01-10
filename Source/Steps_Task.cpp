@@ -120,7 +120,7 @@ void Step::vTaskDicStack(MP_Task mpTask)
   
   Object* pPtrDicStack = &pThatTask->m_oPathStack;
   
-  mpTask->m_pDataStack->vPushObject(pPtrDicStack);
+  mpTask->m_pDataStack->vPushPointer(pPtrDicStack);
   
   EXIT();
 }
@@ -216,7 +216,7 @@ void Step::vTaskJobFetch(MP_Task mpTask)
   
   Job* pJob = pThatTask->m_pJob;
   
-  mpTask->m_pDataStack->vPushObject(pJob);
+  mpTask->m_pDataStack->vPushPointer(pJob);
   
   EXIT();
 }
@@ -316,7 +316,7 @@ void Step::vTaskPlanFetch(MP_Task mpTask)
   
   Object* pPtrPlan= pPlan;
   
-  mpTask->m_pDataStack->vPushObject(pPtrPlan);
+  mpTask->m_pDataStack->vPushPointer(pPtrPlan);
   
   EXIT();
 }
@@ -404,7 +404,7 @@ void Step::vTaskSessionFetch(MP_Task mpTask)
   
   Session* pSession = pThatTask->m_pSession;
   
-  mpTask->m_pDataStack->vPushObject(pSession);
+  mpTask->m_pDataStack->vPushPointer(pSession);
   
   EXIT();
 }
@@ -462,7 +462,7 @@ void Step::vTaskSendNodeFetch(MP_Task mpTask)
   
   Object* pPtrSendNode = pSendNode;
   
-  mpTask->m_pDataStack->vPushObject(pPtrSendNode);
+  mpTask->m_pDataStack->vPushPointer(pPtrSendNode);
   
   EXIT();
 }
@@ -562,7 +562,7 @@ ENTRY("vTaskThis"_Stz);
   
   Object* pTask = *mpTask;
   
-  mpTask->m_pDataStack->vPushObject(pTask);
+  mpTask->m_pDataStack->vPushPointer(pTask);
   
   EXIT();
 }
@@ -580,7 +580,7 @@ void Step::vTaskThread(MP_Task mpTask)
   Task* pThatTask = _pTask(pTaskObject);
 
   Thread* pThread = pThatTask->m_pThread;
-  mpTask->m_pDataStack->vPushObject(pThread);
+  mpTask->m_pDataStack->vPushPointer(pThread);
   ASSERT(pThread);
   
   EXIT();

@@ -51,7 +51,7 @@ void Step::vPlanListFindPlan(MP_Task mpTask)
   Plan* pPlan = gpAttachMap->m_pPlanList->pFind((u8)iPlanId);
   
   if (pPlan) {
-    mpTask->m_pDataStack->vPushObject(pPlan);
+    mpTask->m_pDataStack->vPushPointer(pPlan);
     mpTask->m_pDataStack->vPushBool(true);
   }
   else {

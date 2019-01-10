@@ -94,7 +94,7 @@ void Step::vAttachMapTenantsFetch(MP_Task mpTask)
 {
   ENTRY("vAttachMapTenantsFetch"_Stz);
   
-  mpTask->m_pDataStack->vPushObject(gpAttachMap->m_pTenants);
+  mpTask->m_pDataStack->vPushPointer(gpAttachMap->m_pTenants);
 }
 
 /*============================================================================*/

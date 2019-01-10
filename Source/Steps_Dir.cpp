@@ -264,7 +264,7 @@ ENTRY("vDirNew"_Stz);
   Object* pPtrDir;
   pPtrDir = (Object*)pDir;
   
-  mpTask->m_pDataStack->vPushObject(pPtrDir);
+  mpTask->m_pDataStack->vPushPointer(pPtrDir);
   
   EXIT();
 }

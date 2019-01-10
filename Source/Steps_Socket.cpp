@@ -50,7 +50,7 @@ void Step::vSocketAccept(MP_Task mpTask)
   // return the new socket
   Socket* pNewSocket = new Socket(iSocketId);
   
-  mpTask->m_pDataStack->vPushObject(pNewSocket);
+  mpTask->m_pDataStack->vPushPointer(pNewSocket);
   
   EXIT();
 }
@@ -141,7 +141,7 @@ void Step::vSocketConnect(MP_Task mpTask)
   
   // return the socket object
   Object* pPtrSocket = pSocket;
-  mpTask->m_pDataStack->vPushObject(pPtrSocket);
+  mpTask->m_pDataStack->vPushPointer(pPtrSocket);
   
   EXIT();
 }
@@ -208,7 +208,7 @@ void Step::vSocketListen(MP_Task mpTask)
   
   // return new socket
   Object* pPtrSocket = pSocket;
-  mpTask->m_pDataStack->vPushObject(pPtrSocket);
+  mpTask->m_pDataStack->vPushPointer(pPtrSocket);
   
   EXIT();
 }
@@ -230,7 +230,7 @@ void Step::vSocketOpen(MP_Task mpTask)
     THROW("Unable to create socket: Errno %d!"_Stz, oSysCall.iError());
   
   Object* pPtrSocket = pSocket;
-  mpTask->m_pDataStack->vPushObject(pPtrSocket);
+  mpTask->m_pDataStack->vPushPointer(pPtrSocket);
   
   EXIT();
 }
@@ -308,7 +308,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
       ActivityMap::vMark(pJob->m_iJobId,"recv %s from socket %llx"_Stz,
                          aCN[eClass],pSocket);
                          
-    mpTask->m_pDataStack->vPushObject(pJob);
+    mpTask->m_pDataStack->vPushPointer(pJob);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();
     return;
@@ -339,7 +339,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     // restore the entryBuffer pointets (m_pHeadEntry etc)
     pEntryBuffer->vRestore();
     
-    mpTask->m_pDataStack->vPushObject(pEntryBuffer);
+    mpTask->m_pDataStack->vPushPointer(pEntryBuffer);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();
     return;
@@ -442,7 +442,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
       vTrace("Discarded EntryBuffer under low mem\n"_Stz);
     }
     
-    mpTask->m_pDataStack->vPushObject(pJob_WriteBuffer);
+    mpTask->m_pDataStack->vPushPointer(pJob_WriteBuffer);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();
     return;
@@ -473,7 +473,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pJob,eClass,aCN[eClass],nObjectSize);
     
-    mpTask->m_pDataStack->vPushObject(pJob);
+    mpTask->m_pDataStack->vPushPointer(pJob);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();
     return;
@@ -501,7 +501,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     //vTrace("vSocketRecvObject: recv %p %lld %s %lld bytes\n"_Stz,
     //       pEntryBuffer,eClass,aCN[eClass],nObjectSize);
     
-    mpTask->m_pDataStack->vPushObject(pEntryBuffer);
+    mpTask->m_pDataStack->vPushPointer(pEntryBuffer);
     mpTask->m_pDataStack->vPushBool(true);
     EXIT();
     return;

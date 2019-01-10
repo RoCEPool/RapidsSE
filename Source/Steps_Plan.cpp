@@ -65,7 +65,7 @@ void Step::vPlanDic(MP_Task mpTask)
   
   Dic* pPlanDic = pPlan->pDic();
   
-  mpTask->m_pDataStack->vPushObject(pPlanDic);
+  mpTask->m_pDataStack->vPushPointer(pPlanDic);
   
   EXIT();
 }
@@ -86,7 +86,7 @@ void Step::vPlanExecutingTaskFetch(MP_Task mpTask)
   
   Task* pTask = pPlan->pExecutingTask();
   
-  mpTask->m_pDataStack->vPushObject(pTask);
+  mpTask->m_pDataStack->vPushPointer(pTask);
   
   EXIT();
 }
@@ -271,7 +271,7 @@ void Step::vPlanNew(MP_Task mpTask)
   
   Plan* pPlan = new Plan;
   
-  mpTask->m_pDataStack->vPushObject(pPlan);
+  mpTask->m_pDataStack->vPushPointer(pPlan);
   
   EXIT();
 }
@@ -309,7 +309,7 @@ void Step::vPlanOpFrameAdd(MP_Task mpTask)
   pRegFrame->vOpDic(pOpDic);
   
   // push regFrame onto dstack
-  mpTask->m_pDataStack->vPushObject(pRegFrame);
+  mpTask->m_pDataStack->vPushPointer(pRegFrame);
   
   EXIT();
 }
@@ -338,7 +338,7 @@ void Step::vPlanOpFrameFind(MP_Task mpTask)
   
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sName);
   
-  mpTask->m_pDataStack->vPushObject(pRegFrame);
+  mpTask->m_pDataStack->vPushPointer(pRegFrame);
   
   EXIT();
 }
@@ -357,7 +357,7 @@ void Step::vPlanOpFrameTop(MP_Task mpTask)
     
   RegFrame* pRegFrame = pPlan->pRegFrameTop();
   
-  mpTask->m_pDataStack->vPushObject(pRegFrame);
+  mpTask->m_pDataStack->vPushPointer(pRegFrame);
   
   EXIT();
 }

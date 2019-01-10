@@ -31,7 +31,7 @@ void Step::vOpFrameDic(MP_Task mpTask)
   
   Dic* pOpDic = pOpFrame->pOpDic();
   
-  mpTask->m_pDataStack->vPushObject(pOpDic);
+  mpTask->m_pDataStack->vPushPointer(pOpDic);
   
   EXIT();
 }

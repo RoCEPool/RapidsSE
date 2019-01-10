@@ -57,7 +57,7 @@ void Step::vFlowExecute(MP_Task mpTask)
     mpTask->IP.m_pCell = mpTask->m_pWord->pEntryCell();
     
     Object* pObject = (Object*)mpTask->m_pWord->pFirstCell();
-    mpTask->m_pDataStack->vPushObject(pObject);
+    mpTask->m_pDataStack->vPushPointer(pObject);
   }
   else if (WT_ROUTINE == mpTask->m_pWord->eWordType()){
     mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_pCell);

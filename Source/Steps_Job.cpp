@@ -362,7 +362,7 @@ void Step::vJobDicPath(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.dicPath"_Stz);
   Job* pJob = _pJob(pJobPtr);
 
-  mpTask->m_pDataStack->vPushObject(&pJob->m_xDicPath);
+  mpTask->m_pDataStack->vPushPointer(&pJob->m_xDicPath);
   
   EXIT();
 }
@@ -463,7 +463,7 @@ void Step::vJobExecutingTaskFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.exectingTask@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushObject(pJob->m_pExecutingTask);
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pExecutingTask);
   
   EXIT();
 }
@@ -502,7 +502,7 @@ void Step::vJobFindOriginator(MP_Task mpTask)
   Job* pJobFound = gpAttachMap->m_pOriginatingJobs->pFindJob(iJobId);
   RASSERT(pJobFound);
   
-  mpTask->m_pDataStack->vPushObject(pJobFound);
+  mpTask->m_pDataStack->vPushPointer(pJobFound);
   
   EXIT();
 }
@@ -547,7 +547,7 @@ void Step::vJobFindParticipant(MP_Task mpTask)
   Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(iJobId);
   RASSERT(pJobFound);
   
-  mpTask->m_pDataStack->vPushObject(pJobFound);
+  mpTask->m_pDataStack->vPushPointer(pJobFound);
   
   EXIT();
 }
@@ -701,7 +701,7 @@ void Step::vJobNewBegun(MP_Task mpTask)
   JobClass* pJobClass__Begun = JobClass::pFind(CN_JOB__BEGUN);
   pJobBegun->m_pJobClass = pJobClass__Begun;
   
-  mpTask->m_pDataStack->vPushObject(pJobBegun);
+  mpTask->m_pDataStack->vPushPointer(pJobBegun);
   
   EXIT();
 }
@@ -724,7 +724,7 @@ void Step::vJobNewCancel(MP_Task mpTask)
   JobClass* pJobClass__Cancel = JobClass::pFind(CN_JOB__CANCEL);
   pJobCancel->m_pJobClass = pJobClass__Cancel;
   
-  mpTask->m_pDataStack->vPushObject(pJobCancel);
+  mpTask->m_pDataStack->vPushPointer(pJobCancel);
   
   EXIT();
 }
@@ -747,7 +747,7 @@ void Step::vJobNewCancelled(MP_Task mpTask)
   JobClass* pJobClass__Cancelled = JobClass::pFind(CN_JOB__CANCELLED);
   pJobCancelled->m_pJobClass = pJobClass__Cancelled;
   
-  mpTask->m_pDataStack->vPushObject(pJobCancelled);
+  mpTask->m_pDataStack->vPushPointer(pJobCancelled);
   
   EXIT();
 }
@@ -770,7 +770,7 @@ void Step::vJobNewEnd(MP_Task mpTask)
   JobClass* pJobClass__End = JobClass::pFind(CN_JOB__END);
   pJobEnd->m_pJobClass = pJobClass__End;
   
-  mpTask->m_pDataStack->vPushObject(pJobEnd);
+  mpTask->m_pDataStack->vPushPointer(pJobEnd);
   
   EXIT();
 }
@@ -793,7 +793,7 @@ void Step::vJobNewEnded(MP_Task mpTask)
   JobClass* pJobClass__Ended = JobClass::pFind(CN_JOB__ENDED);
   pJobEnded->m_pJobClass = pJobClass__Ended;
   
-  mpTask->m_pDataStack->vPushObject(pJobEnded);
+  mpTask->m_pDataStack->vPushPointer(pJobEnded);
   
   EXIT();
 }
@@ -816,7 +816,7 @@ void Step::vJobNewExecute(MP_Task mpTask)
   JobClass* pJobClass__Execute = JobClass::pFind(CN_JOB__EXECUTE);
   pJobExecute->m_pJobClass = pJobClass__Execute;
   
-  mpTask->m_pDataStack->vPushObject(pJobExecute);
+  mpTask->m_pDataStack->vPushPointer(pJobExecute);
   
   EXIT();
 }
@@ -840,7 +840,7 @@ void Step::vJobNewExecuted(MP_Task mpTask)
   JobClass* pJobClass__Executed = JobClass::pFind(CN_JOB__EXECUTED);
   pJobExecuted->m_pJobClass = pJobClass__Executed;
   
-  mpTask->m_pDataStack->vPushObject(pJobExecuted);
+  mpTask->m_pDataStack->vPushPointer(pJobExecuted);
   
   EXIT();
 }
@@ -874,7 +874,7 @@ void Step::vJobOriginatingTaskFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.originatingTask@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushObject(pJob->m_pOriginatingTask);
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pOriginatingTask);
   
   EXIT();
 }
@@ -1461,7 +1461,7 @@ void Step::vJobThis(MP_Task mpTask)
   
   Job* pJob = mpTask->m_pJob;
   
-  mpTask->m_pDataStack->vPushObject(pJob);
+  mpTask->m_pDataStack->vPushPointer(pJob);
 
   EXIT();
 }
@@ -1539,7 +1539,7 @@ void Step::vJobWaitParticipant(MP_Task mpTask)
 //  Job* pJobFound = gpAttachMap->m_pParticipatingJobs->pFindJob(iJobId);
 //  RASSERT(pJobFound);
   
-  mpTask->m_pDataStack->vPushObject(pJobFound);
+  mpTask->m_pDataStack->vPushPointer(pJobFound);
   
   EXIT();
 }
@@ -1556,7 +1556,7 @@ void Step::vJobEntryBufferFetch(MP_Task mpTask)
   THROW_INVALID_DSTACK("job.entryBuffer@"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  mpTask->m_pDataStack->vPushObject(pJob->m_pCurrentBuffer);
+  mpTask->m_pDataStack->vPushPointer(pJob->m_pCurrentBuffer);
   
   EXIT();
 }

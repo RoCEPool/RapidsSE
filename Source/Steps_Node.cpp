@@ -88,7 +88,7 @@ ENTRY("vNodeNew"_Stz);
                          gxArguments.m_xNodes[iNodeNo].m_iPortNo);
   ASSERT(CN_NODE == pNode->eClass());
 
-  mpTask->m_pDataStack->vPushObject(pNode);
+  mpTask->m_pDataStack->vPushPointer(pNode);
   
   EXIT();
 }
@@ -200,7 +200,7 @@ void Step::vNodeRecvSocketFetch(MP_Task mpTask)
   
   Socket* pSocket = pNode->pRecvSocket();
   
-  mpTask->m_pDataStack->vPushObject(pSocket);
+  mpTask->m_pDataStack->vPushPointer(pSocket);
   
   EXIT();
 }
@@ -241,7 +241,7 @@ void Step::vNodeSendSocketFetch(MP_Task mpTask)
   
   Socket* pSocket = pNode->pSendSocket();
   
-  mpTask->m_pDataStack->vPushObject(pSocket);
+  mpTask->m_pDataStack->vPushPointer(pSocket);
   
   EXIT();
 }

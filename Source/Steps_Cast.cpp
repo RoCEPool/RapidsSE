@@ -42,7 +42,7 @@ void Step::vCastPtr(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iInt) )
     THROW_INVALID_DSTACK("(ptr)"_Stz);
   
-  mpTask->m_pDataStack->vPushObject((Object*)iInt);
+  mpTask->m_pDataStack->vPushPointer((Object*)iInt);
   
   EXIT();
 }

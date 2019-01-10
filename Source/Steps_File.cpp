@@ -71,7 +71,7 @@ ENTRY("vFileNew"_Stz);
   Object* pPtrFile;
   pPtrFile = (Object*)pFile;
   
-  mpTask->m_pDataStack->vPushObject(pPtrFile);
+  mpTask->m_pDataStack->vPushPointer(pPtrFile);
   
   EXIT();
 }

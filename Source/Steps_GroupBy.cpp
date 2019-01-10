@@ -130,7 +130,7 @@ void Step::vGroupByNew(MP_Task mpTask)
   
   GroupBy* pGroupBy = new GroupBy;
   
-  mpTask->m_pDataStack->vPushObject(pGroupBy);
+  mpTask->m_pDataStack->vPushPointer(pGroupBy);
   
   EXIT();
 }

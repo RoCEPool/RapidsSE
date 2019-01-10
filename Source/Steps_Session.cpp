@@ -35,7 +35,7 @@ void Step::vSessionCommandProcessor(MP_Task mpTask)
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pDataStack->vPushObject(pSession->m_pCommandProcessor);
+  mpTask->m_pDataStack->vPushPointer(pSession->m_pCommandProcessor);
   
   EXIT();
 }
@@ -54,7 +54,7 @@ void Step::vSessionDicStack(MP_Task mpTask)
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pDataStack->vPushObject(pSession->pPathStack());
+  mpTask->m_pDataStack->vPushPointer(pSession->pPathStack());
   
   EXIT();
 }
@@ -149,7 +149,7 @@ void Step::vSessionTxFetch(MP_Task mpTask)
   
   Tx* pTx = pSession->pTx();
   
-  mpTask->m_pDataStack->vPushObject(pTx);
+  mpTask->m_pDataStack->vPushPointer(pTx);
   
   EXIT();
 }

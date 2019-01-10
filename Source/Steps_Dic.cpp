@@ -103,7 +103,7 @@ void Step::vDicKindGet(MP_Task mpTask)
   Object* pPtrKind;
   pPtrKind = pDic->pDicKind();
   
-  mpTask->m_pDataStack->vPushObject(pPtrKind);
+  mpTask->m_pDataStack->vPushPointer(pPtrKind);
   
   EXIT();
 }
@@ -146,7 +146,7 @@ ENTRY("vDicLastWord"_Stz);
   
   Word* pLastWord = pDic->pLastWord();
   
-  mpTask->m_pDataStack->vPushObject(pLastWord);
+  mpTask->m_pDataStack->vPushPointer(pLastWord);
   
   EXIT();
 }
@@ -158,7 +158,7 @@ void Step::vDicMain(MP_Task mpTask)
 {
 ENTRY("vDicMain"_Stz);
   
-  mpTask->m_pDataStack->vPushObject(&gpAttachMap->m_xMainDic);
+  mpTask->m_pDataStack->vPushPointer(&gpAttachMap->m_xMainDic);
   
   EXIT();
 }

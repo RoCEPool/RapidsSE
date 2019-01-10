@@ -138,7 +138,7 @@ void Step::vJob_SubIngesterJobIngest(MP_Task mpTask)
   THROW_INVALID_DSTACK("subLoader.end"_Stz);
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pPtrJob_SubIngester);
   
-  mpTask->m_pDataStack->vPushObject(pJob_SubIngester->m_pJob_Ingest);
+  mpTask->m_pDataStack->vPushPointer(pJob_SubIngester->m_pJob_Ingest);
 
   EXIT();
 }

@@ -42,7 +42,7 @@ void Step::vGridFindNode(MP_Task mpTask)
   
   Node* pNode = gpAttachMap->m_pGrid->pFindNode(sNodeNm);
   
-  mpTask->m_pDataStack->vPushObject(pNode);
+  mpTask->m_pDataStack->vPushPointer(pNode);
   
   EXIT();
 }
@@ -60,7 +60,7 @@ void Step::vGridNode(MP_Task mpTask)
   
   Node* pNode = gpAttachMap->m_pGrid->pGetNode(iNode);
   
-  mpTask->m_pDataStack->vPushObject(pNode);
+  mpTask->m_pDataStack->vPushPointer(pNode);
   
   EXIT();
 }

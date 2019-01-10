@@ -102,7 +102,7 @@ namespace Forth
     void vPushGenVar(GenVar* pVariable);
     void vPushGenVar(GenVar& xVariable);
     void vPushI8(i8 iInt);
-    void vPushObject(Object* pObject);
+    void vPushPointer(Object* pObject);
     void vPushRegister(Register* pValue);
     void vPushS32(s32& s32);
     void vPushS256(s256& s256);

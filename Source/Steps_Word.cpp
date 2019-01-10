@@ -389,7 +389,7 @@ ENTRY("vFind"_Stz);
   
   Word* pWord = mpTask->m_oPathStack.pFindWord(sName);
   
-  mpTask->m_pDataStack->vPushObject(pWord);
+  mpTask->m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }
@@ -411,7 +411,7 @@ void Step::vFindInCurrent(MP_Task mpTask)
   
   Word* pWord = mpTask->m_oPathStack.pFindInCurrent(sName);
   
-  mpTask->m_pDataStack->vPushObject(pWord);
+  mpTask->m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }
@@ -837,7 +837,7 @@ void Step::vTick(MP_Task mpTask)
     pCurrentWord->vEncode("pushValue"_Stz,pWord);
   }
   else {
-    mpTask->m_pDataStack->vPushObject(pWord);
+    mpTask->m_pDataStack->vPushPointer(pWord);
   }
   
   EXIT();
@@ -984,7 +984,7 @@ ENTRY("vWordKindGet"_Stz);
   
   Word* pWordKind = pWord->pKind();
   
-  mpTask->m_pDataStack->vPushObject(pWordKind);
+  mpTask->m_pDataStack->vPushPointer(pWordKind);
   
   EXIT();
 }
@@ -1043,7 +1043,7 @@ void Step::vWordPrev(MP_Task mpTask)
   
   Word* pPrevWord = pWord->pPrevWord();
   
-  mpTask->m_pDataStack->vPushObject(pPrevWord);
+  mpTask->m_pDataStack->vPushPointer(pPrevWord);
   
   EXIT();
 }
@@ -1057,7 +1057,7 @@ ENTRY("vWordThis"_Stz);
   
   Word* pWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  mpTask->m_pDataStack->vPushObject(pWord);
+  mpTask->m_pDataStack->vPushPointer(pWord);
   
   EXIT();
 }

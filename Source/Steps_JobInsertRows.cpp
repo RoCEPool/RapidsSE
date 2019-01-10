@@ -72,7 +72,7 @@ void Step::vJob_InsertTableSubInserterJobFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("Job_InsertTable.SubInsertJob@"_Stz);
   Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJobPtr);
   
-  mpTask->m_pDataStack->vPushObject(pJob_InsertTable->m_pJobSubInserter);
+  mpTask->m_pDataStack->vPushPointer(pJob_InsertTable->m_pJobSubInserter);
   
   EXIT();
 }
@@ -105,7 +105,7 @@ void Step::vJob_InsertRowNewJobWriteRow(MP_Task mpTask)
                                                               pTable,
                                                               iParentJobId);
   
-  mpTask->m_pDataStack->vPushObject(pJob_WriteRow);
+  mpTask->m_pDataStack->vPushPointer(pJob_WriteRow);
   
   EXIT();
 }

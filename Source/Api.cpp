@@ -86,7 +86,7 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     Job_InsertTable* pJob_InsertTable = pJob_SubInserter->m_pJob_InsertTable;
     
     // push the InsertTable job onto the jobstack
-    pSession->m_pJobStack->vPushObject(pJob_InsertTable);
+    pSession->m_pJobStack->vPushPointer(pJob_InsertTable);
     
     vApiJob(pSession,pJob_InsertTable);
     vApiLocation(pSession,105);
@@ -286,7 +286,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
           TRACE_ERROR("eb"_Stz, eError);
           vApiError(pSession,pJob->m_xNode[i_Node].m_eErrorCode);                                 // API ERROR
           vApiLocation(pSession,812);
-          pSession->m_pJobStack->vPushObject(pJob);
+          pSession->m_pJobStack->vPushPointer(pJob);
           ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
           return eError;
         }
@@ -302,7 +302,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
     vApiLocation(pSession,240);
 
     // push the job on the sessions job stack
-    pSession->m_pJobStack->vPushObject(pJob);
+    pSession->m_pJobStack->vPushPointer(pJob);
     
     TRACE_EXIT("ec"_Stz);
 
@@ -738,7 +738,7 @@ eEC RapidsSE_InsertRow(Session* pSession, Stz* sTableName, Stz* sRecord, i8 iTra
       static_cast<Job_InsertRow*>(pJobClass_InsertRow->pPreJob(pSession));
     
     // push the InsertTable job onto the jobstack
-    pSession->m_pJobStack->vPushObject(pJob_InsertRow);
+    pSession->m_pJobStack->vPushPointer(pJob_InsertRow);
     vApiJob(pSession,pJob_InsertRow);
     
     // get the length of the record

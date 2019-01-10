@@ -51,7 +51,7 @@ void Step::vAccessPathTableFetch(MP_Task mpTask)
   
   Table* pTable = pAccessPath->pTable();
   
-  mpTask->m_pDataStack->vPushObject(pTable);
+  mpTask->m_pDataStack->vPushPointer(pTable);
   
   EXIT();
 }

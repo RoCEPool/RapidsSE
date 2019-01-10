@@ -36,7 +36,7 @@ void Step::vToBody(MP_Task mpTask)
   
   Object* pPtrBody = reinterpret_cast<Object*>(pBody);
   
-  mpTask->m_pDataStack->vPushObject(pPtrBody);
+  mpTask->m_pDataStack->vPushPointer(pPtrBody);
   
   EXIT();
 }
@@ -72,7 +72,7 @@ void Step::vToPtr(MP_Task mpTask)
   
   Object* pPtr = (Object*)iPtr;
   
-  mpTask->m_pDataStack->vPushObject(pPtr);
+  mpTask->m_pDataStack->vPushPointer(pPtr);
   
   EXIT();
 }
@@ -110,7 +110,7 @@ void Step::vToTask(MP_Task mpTask)
   
   Object* pPtrTask = _pTask(iVal);
   
-  mpTask->m_pDataStack->vPushObject(pPtrTask);
+  mpTask->m_pDataStack->vPushPointer(pPtrTask);
   
   EXIT();
 }

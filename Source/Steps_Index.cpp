@@ -96,7 +96,7 @@ void Step::vIndexColumnFetch(MP_Task mpTask)
   ASSERT(iColumnNo < pIndex->pIdxColVec()->nItems());
   Column* pColumn = pIndex->pIdxColVec()->pGet(iColumnNo);
   
-  mpTask->m_pDataStack->vPushObject(pColumn);
+  mpTask->m_pDataStack->vPushPointer(pColumn);
   
   EXIT();
 }
@@ -884,7 +884,7 @@ void Step::vIndexPositionFirst(MP_Task mpTask)
   TablePtn* pPartition = pTable->pPartition(iPartition);
   IndexTree* pIndexTree = pPartition->pIndexTree(iIndexNo);
   
-  mpTask->m_pDataStack->vPushObject(pIndexTree->pFirstL0Buffer());
+  mpTask->m_pDataStack->vPushPointer(pIndexTree->pFirstL0Buffer());
   
   EXIT();
 }
@@ -1339,7 +1339,7 @@ void Step::vIndexSubDic(MP_Task mpTask)
   
   Dic* pDic = pIndex->pSubDic();
   
-  mpTask->m_pDataStack->vPushObject(pDic);
+  mpTask->m_pDataStack->vPushPointer(pDic);
   
   EXIT();
 }
@@ -1362,7 +1362,7 @@ void Step::vIndexTableFetch(MP_Task mpTask)
   Table* pTable = pIndex->pTable();
   ASSERT(CN_TABLE == pTable->eClass());
   
-  mpTask->m_pDataStack->vPushObject(pTable);
+  mpTask->m_pDataStack->vPushPointer(pTable);
   
   EXIT();
 }

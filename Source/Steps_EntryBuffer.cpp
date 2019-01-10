@@ -50,7 +50,7 @@ void Step::vEntryBufferCreate(MP_Task mpTask)
   pEntryBuffer->vIndex(pIndex->pTable()->pHiddenIndex());
   pEntryBuffer->vPartitionNo(nPartitionNo);
   
-  mpTask->m_pDataStack->vPushObject(pEntryBuffer);
+  mpTask->m_pDataStack->vPushPointer(pEntryBuffer);
   
   EXIT();
 }
@@ -131,7 +131,7 @@ void Step::vEntryBufferIndexFetch(MP_Task mpTask)
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
-  mpTask->m_pDataStack->vPushObject(pIndexBuffer->pIndex());
+  mpTask->m_pDataStack->vPushPointer(pIndexBuffer->pIndex());
   
   EXIT();
 }
@@ -322,7 +322,7 @@ void Step::vEntryBufferNextBuffer(MP_Task mpTask)
     bn nBuffer = pIndexBuffer->pNextBuffer()->nBufferNo();
   }
   
-  mpTask->m_pDataStack->vPushObject(pIndexBuffer->pNextBuffer());
+  mpTask->m_pDataStack->vPushPointer(pIndexBuffer->pNextBuffer());
   
   EXIT();
 }
@@ -419,7 +419,7 @@ void Step::vEntryBufferToEntryBuffer(MP_Task mpTask)
   
   EntryBuffer* pEntryBuffer = _pEntryBuffer((void*)sString.iToI8());
   
-  mpTask->m_pDataStack->vPushObject(pEntryBuffer);
+  mpTask->m_pDataStack->vPushPointer(pEntryBuffer);
   
   EXIT();
 }

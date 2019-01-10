@@ -53,7 +53,7 @@ void Step::vAccumNew(MP_Task mpTask)
   
   Accum* pAccum = new Accum;
   
-  mpTask->m_pDataStack->vPushObject(pAccum);
+  mpTask->m_pDataStack->vPushPointer(pAccum);
   
   EXIT();
 }

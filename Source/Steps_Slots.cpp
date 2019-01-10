@@ -94,7 +94,7 @@ void Step::vSlotsSubDic(MP_Task mpTask)
   
   Dic* pDic = pSlots->pSubDic();
   
-  mpTask->m_pDataStack->vPushObject(pDic);
+  mpTask->m_pDataStack->vPushPointer(pDic);
   
   EXIT();
 }
