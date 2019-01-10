@@ -31,6 +31,7 @@ using namespace Forth;
 #include "DicPath.hpp"
 #include "DicStack.hpp"
 #include "Register.hpp"
+#include "ValWrk.hpp"
 #include "Stack.hpp"
 #include "Word.hpp"
 

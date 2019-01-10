@@ -23,7 +23,6 @@ namespace Values
   class PtrVal;
   class StrVal;
   class ValSet;
-  class ValWrk;
   
   class Value : public Header
   {

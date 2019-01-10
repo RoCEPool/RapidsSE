@@ -199,14 +199,14 @@ void StrVal::operator =(Stz* aStr)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void StrVal::operator =(ValWrk& rArg)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  vCopy((Stz*)rArg.aWspArea());
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
+//void StrVal::operator =(ValWrk& rArg)
+//{
+//  _precondition_(_MAGIC_,_FOOTER_);
+//  
+//  vCopy((Stz*)rArg.aWspArea());
+//  
+//  _postcondition_(_MAGIC_,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* append given char                                                          */

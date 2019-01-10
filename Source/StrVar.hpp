@@ -24,7 +24,7 @@ namespace Values
     void operator =(Stz* aArg);
     void operator =(StrVal& xArg);
     void operator =(StrVal* pArg);
-    void operator =(ValWrk& rArg);
+    //void operator =(ValWrk& rArg);
   
     void vTest(void);
   
@@ -151,18 +151,18 @@ void StrVar<SIZE>::operator =(StrVal* pArg)
   vCopy(pArg->aStz());
 }
 
-/*----------------------------------------------------------------------------*/
-/* assignment operator                                                        */
-/*----------------------------------------------------------------------------*/
-template <int SIZE>
-void StrVar<SIZE>::operator =(ValWrk& rArg)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  vCopy(rArg.aWspArea());
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
+///*----------------------------------------------------------------------------*/
+///* assignment operator                                                        */
+///*----------------------------------------------------------------------------*/
+//template <int SIZE>
+//void StrVar<SIZE>::operator =(ValWrk& rArg)
+//{
+//  _precondition_(_MAGIC_,_FOOTER_);
+//  
+//  vCopy(rArg.aWspArea());
+//  
+//  _postcondition_(_MAGIC_,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* test Stz                                                                   */

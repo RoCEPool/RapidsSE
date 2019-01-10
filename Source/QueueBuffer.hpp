@@ -3,6 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+namespace Forth
+{
+  class ValWrk;
+}
+
 namespace Structures
 {
   class QueueBuffer : public Buffer
@@ -30,7 +35,7 @@ namespace Structures
     void     vContentDump(Stz* aTab);
     QueueBuffer* pNext(void);
     void     vNext(QueueBuffer* pQbuffer);
-    bool     bPop(ValWrk* pValWrk, bool& bDiscard);
+    bool     bPop(Forth::ValWrk* pValWrk, bool& bDiscard);
     bool     bPop(ValSet* pValSet, bool& bDiscard);
 
   private:

@@ -184,7 +184,7 @@ void Queue::vLockName(Stz* aName)
 /*----------------------------------------------------------------------------*/
 /* pop value from this queue (there may not be any)                           */
 /*----------------------------------------------------------------------------*/
-bool Queue::bPop(ValWrk* pValWrk)
+bool Queue::bPop(Forth::ValWrk* pValWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
 

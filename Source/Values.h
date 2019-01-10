@@ -19,7 +19,6 @@ using namespace Values;
 
 
 #include "Value.hpp"
-#include "ValWrk.hpp"
 
 #include "BcdVal.hpp"
 #include "BinVal.hpp"
@@ -34,7 +33,6 @@ using namespace Values;
 #include "StrVar.hpp"
 #include "TmeVal.hpp"
 #include "TspVal.hpp"
-
 #include "ValSet.hpp"
 
 typedef StrVar<32>     s32;

@@ -11,6 +11,7 @@ void Forth::vCheckAssumptions(void)
 {
   ASSERT(sizeof(Dic) < C_SIZE_SMALL_OBJECT);
   ASSERT(sizeof(Value) + C_8KB          == sizeof(Register));
+  ASSERT(sizeof(Value) + C_64K + 16     == sizeof(ValWrk));
 }
 
 /*============================================================================*/

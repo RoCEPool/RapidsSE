@@ -465,10 +465,10 @@ Stz* ValSet::aLastByte(void)
 /*----------------------------------------------------------------------------*/
 /* convert cursor to ValWrk*                                                  */
 /*----------------------------------------------------------------------------*/
-ValWrk* ValSet::pToValWrk(Stz* pCursor)
-{
-  return reinterpret_cast<ValWrk*>(pCursor);
-}
+//ValWrk* ValSet::pToValWrk(Stz* pCursor)
+//{
+//  return reinterpret_cast<ValWrk*>(pCursor);
+//}
 
 /*============================================================================*/
 /* end                                                                        */

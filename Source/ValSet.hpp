@@ -50,7 +50,7 @@ namespace Values
   private:
     Stz* aFirstByte(void);
     Stz* aLastByte(void);
-    ValWrk* pToValWrk(Stz* pCursor);
+    //ValWrk* pToValWrk(Stz* pCursor);
   };
   
   ValSet* _pValSet(void* aAddr);
