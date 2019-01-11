@@ -39,8 +39,6 @@ void* StrVal::operator new(size_t)
 StrVal::StrVal(void)
 : Value(CN_STRVAL)
 {
-  _precondition_(_MAGIC_);
-  
   vFatal("fatal: StrVal class cannot be a local variable\n"_Stz);
 }
 
@@ -49,8 +47,6 @@ StrVal::StrVal(void)
 /*----------------------------------------------------------------------------*/
 StrVal::operator Stz*(void)
 {
-  _precondition_(_MAGIC_);
-  
   // return address to char byte area
   return reinterpret_cast<Stz*>(pAdd<char*>(this,sizeof(StrVal)));
 }
@@ -60,8 +56,6 @@ StrVal::operator Stz*(void)
 /*----------------------------------------------------------------------------*/
 StrVal::operator Stz&(void)
 {
-  _precondition_(_MAGIC_);
-  
   // return reference to char byte area
   return reinterpret_cast<Stz&>(*(pAdd<char*>(this,sizeof(StrVal))));
 }
@@ -76,8 +70,6 @@ StrVal::operator Stz&(void)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::nAreaSize(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
-  
   i8 nBytes = m_xWsp.nUsed();
   
   return nBytes;
@@ -88,8 +80,6 @@ i8 StrVal::nAreaSize(void)
 /*----------------------------------------------------------------------------*/
 void StrVal::vAreaSize(void)
 {
-  //_precondition_(_MAGIC_,_FOOTER_);
-  
   i8 nBytes = StrLib::iSize(aChar());
   
   m_xWsp.vUsed(nBytes);
@@ -100,8 +90,6 @@ void StrVal::vAreaSize(void)
 /*----------------------------------------------------------------------------*/
 void StrVal::vAssign(Stz* aStr)
 {
-  //ASSERT(m_nAreaSize);
-  
   StrLib::vCopy(aChar(),aStr->aChar());
 
   vAreaSize();
@@ -138,20 +126,28 @@ Stz* StrVal::aStz(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert to string                                                          */
+/*----------------------------------------------------------------------------*/
+void StrVal::vToString(Stz* aStz)
+{
+  StrLib::vCopy(aStz->aChar(),aChar());
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* StrVal::aFooter(void)
-{
-  _precondition_(_MAGIC_);
-  
-  Footer* aFooter = pAdd<Footer*>(this,sizeof(StrVal) + m_xWsp.nUsed());
-  
-  return aFooter;
-}
+//Footer* StrVal::aFooter(void)
+//{
+//  _precondition_(_MAGIC_);
+//
+//  Footer* aFooter = pAdd<Footer*>(this,sizeof(StrVal) + m_xWsp.nUsed());
+//
+//  return aFooter;
+//}
 
 /*============================================================================*/
 /* end                                                                        */

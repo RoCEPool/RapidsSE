@@ -39,9 +39,10 @@ namespace Values
     char* aChar(void);
     i8    nSize(void);
     Stz*  aStz(void);
-
+    void  vToString(Stz* aStz);
+  
   private:
-    Footer* aFooter(void);
+    //Footer* aFooter(void);
   };
 
   StrVal* _aStrVal(void* aAddr);
