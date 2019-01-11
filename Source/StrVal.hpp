@@ -33,16 +33,12 @@ namespace Values
     operator Stz&(void);
     operator Stz*(void);
   
-    i8    nAreaSize(void);
     void  vAreaSize(void);
     void  vAssign(Stz* aStr);
     char* aChar(void);
     i8    nSize(void);
     Stz*  aStz(void);
     void  vToString(Stz* aStz);
-  
-  private:
-    //Footer* aFooter(void);
   };
 
   StrVal* _aStrVal(void* aAddr);
