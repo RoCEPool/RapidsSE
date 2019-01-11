@@ -36,7 +36,6 @@ namespace Values
     i8    nAreaSize(void);
     void  vAreaSize(void);
     void  vAssign(Stz* aStr);
-    void  vAssign(Stz* aStr, i8 iLength);
     void  vCat(Stz* aStr, ...);
     void  vCatSprint(Stz* aFormat, ...);
     void  vConcat(Stz* aStr);

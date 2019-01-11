@@ -166,84 +166,11 @@ void StrVal::vAssign(Stz* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign str of given length                                                 */
-/*----------------------------------------------------------------------------*/
-void StrVal::vAssign(Stz* aStr, i8 iLength)
-{
-  //ASSERT(m_nAreaSize);
-  
-  StrLib::vCopyLen(aChar(),aStr->aChar(),iLength);
-  
-  aChar()[iLength] = '\0';
-  
-  m_xWsp.vUsed(iLength);
-}
-
-/*----------------------------------------------------------------------------*/
-/* cat given variable sequence of Str's                                       */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCat(Stz* aStr, ...)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,aStr);
-
-  StrLib::vConcat(aChar(),aStr->aChar());
-  
-  while (Stz* aArg = va_arg(xVarArgs,Stz*))
-    StrLib::vConcat(aChar(),aArg->aChar());
-  
-  va_end(xVarArgs);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* vCatSprint: formatted concatenated sprint                                  */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCatSprint(Stz* aFormat, ...)
-{
-  va_list args;
-  
-  char* aEnd = pAdd<char*>(aChar(),iLength());
-  
-  va_start(args,aFormat);
-  vsprintf(aEnd,(char*)aFormat,args);
-  va_end(args);
-}
-
-/*----------------------------------------------------------------------------*/
-/* concat given Stz                                                           */
-/*----------------------------------------------------------------------------*/
-void StrVal::vConcat(Stz* aStr)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  StrLib::vConcat(aChar(),aStr->aChar());
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* bContains: test if arg is in substr                                        */
 /*----------------------------------------------------------------------------*/
 bool StrVal::bContains(Stz* aArg)
 {
   return StrLib::bContains(aChar(),aArg->aChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy given Stz, then concat variable sequence of Str's                     */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCopyTill(Stz* aSrc, char cTill)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  StrLib::vCopyTill(aChar(),aSrc->aChar(),cTill);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

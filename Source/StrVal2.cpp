@@ -167,20 +167,6 @@ void StrVal2::vAssign(Stz* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign str of given length                                                 */
-/*----------------------------------------------------------------------------*/
-void StrVal2::vAssign(Stz* aStr, i8 iLength)
-{
-  //ASSERT(m_nAreaSize);
-  
-  StrLib::vCopyLen(aChar(),aStr->aChar(),iLength);
-  
-  aChar()[iLength] = '\0';
-  
-  m_xWsp.vUsed(iLength);
-}
-
-/*----------------------------------------------------------------------------*/
 /* cat given variable sequence of Str's                                       */
 /*----------------------------------------------------------------------------*/
 void StrVal2::vCat(Stz* aStr, ...)
