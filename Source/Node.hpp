@@ -10,8 +10,8 @@ namespace GridModel
   {
   private:
     i8    m_iNodeNo;    // node number
-    s256  m_sNodeName;  // name of the node
-    s256  m_sNodeIP;    // ip address of node
+    s32   m_sNodeName;  // name of the node
+    s32   m_sNodeIP;    // ip address of node
     i8    m_iPortNo;    // port number of node
     Socket* m_pRecvSocket;  // socket used for receiving from node
     Socket* m_pSendSocket;  // socket used for sending to node

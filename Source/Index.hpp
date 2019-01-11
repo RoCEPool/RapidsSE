@@ -43,7 +43,7 @@ namespace DBobjects
   {
   private:
     i8           m_iIndexNo;      //
-    s256         m_sIndexName;    //
+    s32          m_sIndexName;    //
     eIT          m_eIndexType;    //
     bool         m_bIsPrimaryKey; //
     bool         m_bIsUnique;     //
@@ -80,7 +80,7 @@ namespace DBobjects
     
     eIF    eIndexForm(void);
     Stz*   aIndexName(void);
-    s256   sIndexName(void);
+    s32    sIndexName(void);
     void   vIndexNo(i8 iIndexNo);
     i8     iIndexNo(void);
     bool   bIsHidden(void);

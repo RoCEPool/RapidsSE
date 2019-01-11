@@ -278,7 +278,7 @@ Stz* Index::aIndexName(void)
 /*----------------------------------------------------------------------------*/
 /* get the index name                                                         */
 /*----------------------------------------------------------------------------*/
-s256 Index::sIndexName(void)
+s32 Index::sIndexName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   

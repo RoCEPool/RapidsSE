@@ -23,7 +23,7 @@ namespace Pool
     bool    m_bDontFree; // dont actually free objects back to heap
     bool    m_bFreeRB;   // but actually free RowBuffers back to heap
 
-    s256 m_sShmName;    // shared memory region name
+    s32  m_sShmName;    // shared memory region name
     int  m_iShmFD;      // shared memory file descriptor
     
     // free chain

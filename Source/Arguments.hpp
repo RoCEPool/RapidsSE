@@ -15,10 +15,10 @@ namespace StorageEngine
     // configuration
     s256  m_sCommandsDir;  // commands dir
     i8    m_nJumboBuffers; // number of jumbo buffers
-    s256  m_sNodeName;     // this node name
+    s32   m_sNodeName;     // this node name
     void* m_aRegionAddr;   // use this address for region
     s32   m_sRegionName;   // name of shared memory region
-    s256  m_sRegionPrefix; // prefix of the shared memory region name
+    s32   m_sRegionPrefix; // prefix of the shared memory region name
     i8    m_iRegionSize;   // size of region in bytes
     s256  m_sSenDir;       // sen dir
     i8    m_nSlots;        // partitions per node
@@ -26,8 +26,8 @@ namespace StorageEngine
     // node configuration
     i8    m_nNodes;
     struct {
-      s256 m_sNodeName;    // name of node
-      s256 m_sIPAddress;   // ip address of node
+      s32 m_sNodeName;     // name of node
+      s32 m_sIPAddress;    // ip address of node
       i8   m_iPortNo;      // port number
     } m_xNodes[C_MAX_NODES];
   

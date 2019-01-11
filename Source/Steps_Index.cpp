@@ -774,9 +774,9 @@ void Step::vIndexNameFetch(MP_Task mpTask)
   Index* pIndex = _pIndex(pPtrIndex);
   ASSERT(CN_INDEX == pIndex->eClass());
   
-  s256 sIndexName = pIndex->sIndexName();
+  s32 sIndexName = pIndex->sIndexName();
   
-  mpTask->m_pDataStack->vPushS256(sIndexName);
+  mpTask->m_pDataStack->vPushS32(sIndexName);
   
   EXIT();
 }
