@@ -27,7 +27,6 @@ typedef Vector<CN_PATHVEC,AccessPath,CN_ACCESSPATH,128,u8> PathVec;
 
 #include "Plan.hpp"
 #include "Planner.hpp"
-#include "PlanList.hpp"
 
 
 /*============================================================================*/

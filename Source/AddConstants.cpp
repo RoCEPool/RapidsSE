@@ -289,7 +289,6 @@ void Axioms::vAddConstants(void)
   /* 40 */ vAddConstant("CN_PARSER"_Stz,       CN_PARSER);
   /* 41 */ vAddConstant("CN_TABLEPTN"_Stz,     CN_TABLEPTN);
   /*    */ vAddConstant("CN_PLAN"_Stz,         CN_PLAN);
-  /*    */ vAddConstant("CN_PLANLIST"_Stz,     CN_PLANLIST);
   
   /* 45 */ vAddConstant("CN_QUEUE"_Stz,        CN_QUEUE);
   /* 46 */ vAddConstant("CN_QUEUEBUFFER"_Stz,  CN_QUEUEBUFFER);

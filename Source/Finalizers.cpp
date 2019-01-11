@@ -207,7 +207,6 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_PIPE
   /* 86 */ &Finalize::vUndefined,         // CN_PLAN
   /* 87 */ &Finalize::vUndefined,         // CN_PLANNER
-  /* 88 */ &Finalize::vUndefined,         // CN_PLANLIST
   /* 89 */ &Finalize::vUndefined,         // CN_POSIXTHREAD
   /* 90 */ &Finalize::vUndefined,         // CN_PREDICATE
   /* 91 */ &Finalize::vUndefined,         // CN_PREDICATEVEC

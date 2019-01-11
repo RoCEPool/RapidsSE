@@ -211,7 +211,6 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vInvalid,         // CN_PIPE
   /* 86 */ &Plan::vDump,            // CN_PLAN
   /* 87 */ &Dump::vUndefined,       // CN_PLANNER
-  /* 88 */ &PlanList::vDump,        // CN_PLANLIST
   /* 89 */ &Dump::vUndefined,       // CN_PREDICATE
   /* 90 */ &Dump::vUndefined,       // CN_PREDVEC
   /* 91 */ &Dump::vUndefined,       // CN_POSIXTHREAD
@@ -483,7 +482,6 @@ i8 giClassSize[]
   /*    */ sizeof(Pipe),               // CN_PIPE
   /* 86 */ sizeof(Plan),               // CN_PLAN
   /* 87 */ sizeof(Planner),            // CN_PLANNER
-  /* 88 */ sizeof(PlanList),           // CN_PLANLIST
   /* 89 */ sizeof(PosixThread),        // CN_POSIXTHREAD
   /* 90 */ sizeof(Predicate),          // CN_PREDICATE
   /* 91 */ sizeof(PredicateVec),       // CN_PREDICATEVEC
@@ -754,7 +752,6 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_PIPE
   /* 86 */ HT_TRANSIENT_MEDIUM,  // CN_PLAN
   /* 87 */ HT_TRANSIENT_MEDIUM,  // CN_PLANNER
-  /* 88 */ HT_TRANSIENT_SMALL,   // CN_PLANLIST
   /* 89 */ HT_TRANSIENT_SMALL,   // CN_PREDICATE
   /* 90 */ HT_TRANSIENT_MEDIUM,  // CN_PREDICATEVEC
   /* 91 */ HT_TRANSIENT_SMALL,   // CN_POSIXTHREAD
