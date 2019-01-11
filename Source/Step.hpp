@@ -113,7 +113,6 @@ namespace Steps
   
     static void vAddSteps_PartitionScheduler(void);
     static void vAddSteps_Persistence(void);
-    static void vAddSteps_Plan(void);
     static void vAddSteps_PlanList(void);
     static void vAddSteps_Planner(void);
     static void vAddSteps_Process(void);
