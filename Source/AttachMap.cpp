@@ -216,7 +216,6 @@ void AttachMap::vRecordGlobals(Stz* aRegionName,
   ASSERT(m_pWord);
 
 
-  ASSERT(m_pPlanList);  
   //ASSERT(m_pStepTiming);
     
   m_nIndexLevels  = 3;

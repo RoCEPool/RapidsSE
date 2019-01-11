@@ -66,10 +66,6 @@ PlanList::PlanList(void)
 PlanList::~PlanList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLANLIST,_FOOTER_);
-  
-  //ASSERT( ! gpAttachMap->m_pPlanList );
-  
-  //gpPlanList = this;
 }
 
 /*----------------------------------------------------------------------------*/

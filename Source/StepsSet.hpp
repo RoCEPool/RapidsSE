@@ -704,11 +704,6 @@
   static void vObjectStore(Tasks::MP_Task mpTask);
   static void vObjectWordBodySet(Tasks::MP_Task mpTask);
 
-  // opFrame
-  static void vOpFrameDic(Tasks::MP_Task mpTask);
-  static void vOpFrameName(Tasks::MP_Task mpTask);
-
-
   // persistence
   static void vPersistenceCheckpoint(Tasks::MP_Task mpTask);
   static void vPersistenceReload(Tasks::MP_Task mpTask);
@@ -727,16 +722,7 @@
   static void vPlanNew(Tasks::MP_Task mpTask);
   static void vPlanNameFetch(Tasks::MP_Task mpTask);
   static void vPlanNameStore(Tasks::MP_Task mpTask);
-  static void vPlanOpFrameAdd(Tasks::MP_Task mpTask);
-  static void vPlanOpFrameFind(Tasks::MP_Task mpTask);
-  static void vPlanOpFrameTop(Tasks::MP_Task mpTask);
   static void vPlanShow(Tasks::MP_Task mpTask);
-
-  // plan list
-  static void vPlanListAddPlan(Tasks::MP_Task mpTask);
-  static void vPlanListFindPlan(Tasks::MP_Task mpTask);
-  static void vPlanListRemovePlan(Tasks::MP_Task mpTask);
-  static void vPlanListShow(Tasks::MP_Task mpTask);
 
   // planner
   static void vPlannerChoosePaths(Tasks::MP_Task mpTask);

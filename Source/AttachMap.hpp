@@ -54,7 +54,6 @@ namespace StorageEngine
     Word*         m_pWord;
     Word*         m_pTenants;
   
-    PlanList*     m_pPlanList;
     Atomic        m_ziThreads;
   
     Queues*       m_pQueues;

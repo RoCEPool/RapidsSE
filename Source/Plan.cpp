@@ -36,8 +36,6 @@ Plan* Plans::_pPlan(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 void* Plan::operator new(size_t)
 {
-  ASSERT(gpAttachMap->m_pPlanList);
-  
   Plan* pPlan = reinterpret_cast<Plan*>(HeapMem::pAllocate(CN_PLAN));
   
   return pPlan;
@@ -48,8 +46,6 @@ void* Plan::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* Plan::operator new(size_t, Plan* pPlan)
 {
-  ASSERT(gpAttachMap->m_pPlanList);
-  
   return pPlan;
 }
 
@@ -70,17 +66,10 @@ Plan::Plan(void)
 : Object(CN_PLAN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
-
-  ASSERT(gpAttachMap->m_pPlanList);
   
   vInit();
     
   _checkInitialised_(CN_PLAN);
-  
-//  Plan* pPlan = this;
-//  gpAttachMap->m_pPlanList->vAppend(pPlan);
-
-  //gpAttachMap->m_pPlanList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
 }
@@ -108,9 +97,6 @@ void Plan::vInit(void)
 Plan::~Plan(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
-  
-  Plan* pPlan = this;
-  gpAttachMap->m_pPlanList->vRemove(pPlan);
 }
 
 /*----------------------------------------------------------------------------*/
