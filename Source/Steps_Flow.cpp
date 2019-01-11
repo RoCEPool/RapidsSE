@@ -130,7 +130,7 @@ void Step::vFlowJumpFalse(MP_Task mpTask)
   }
   else
   if (CN_PTRVAL == eClassNo) {
-    iVal = _pPtrVal(pTop)->pPtr() ? 1 : 0; // inline
+    iVal = _pPtrVal(pTop)->pObj() ? 1 : 0; // inline
   }
   else {
     iVal = -1;

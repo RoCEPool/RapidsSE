@@ -423,7 +423,7 @@ void JobModel::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
       continue;
     }
     PtrVal* pPtrVal = xVariable.pNestedPtrVal();
-    pFetchBuffer = (FetchBuffer*)(pPtrVal->pPtr());
+    pFetchBuffer = (FetchBuffer*)(pPtrVal->pObj());
     
     if (pJob_FetchRows->m_bDisplay) {
       vIterateBuffer(pJob_FetchRows, pFetchBuffer);      

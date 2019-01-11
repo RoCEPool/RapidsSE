@@ -9,7 +9,7 @@ namespace Values
   {
   private:
     union {
-      Object* m_pPtr;
+      Object* m_pObj;
       Value*  m_aValue;
     };
 
@@ -22,10 +22,10 @@ namespace Values
     void operator =(Value* aValue);
 
     i8      nSize(void) const;
-    Object* pPtr(void) const;
+    Object* pObj(void) const;
     i8      iAsInt(void);
   
-    void vToString(Stz* aWorkspace);
+    void vToString(Stz* aStz);
   };
   
   PtrVal* _pPtrVal(void* aAddr);

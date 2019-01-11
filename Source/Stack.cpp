@@ -128,7 +128,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
         
       case CN_PTRVAL: {
         PtrVal* pPtrVal = xVariable.pNestedPtrVal();
-        Object* pObject = pPtrVal->pPtr();
+        Object* pObject = pPtrVal->pObj();
         eCN ePtdClass   = pObject->eClass();
         vTrace("[%s] [%2lld] [%s] %s (%s)\n"_Stz,
                aPrefix,iVal,aCN[eClass],sString.aChar(),aCN[ePtdClass]);
@@ -470,7 +470,7 @@ bool Stack::bPop(i8& iArg, Object*& pObject)
   PtrVal xPtrVal;
   vPopVal(&xPtrVal);
   
-  pObject = xPtrVal.pPtr();
+  pObject = xPtrVal.pObj();
   
   return true;
 }
@@ -556,7 +556,7 @@ bool Stack::bPop(Object*& pObject)
   PtrVal xPtrVal;
   vPopVal(&xPtrVal);
   
-  pObject = xPtrVal.pPtr();
+  pObject = xPtrVal.pObj();
   
   return true;
 }
@@ -574,7 +574,7 @@ bool Stack::bPop(Object*& pObject, i8& iArg)
   PtrVal xPtrVal;
   vPopVal(&xPtrVal);
   
-  pObject = xPtrVal.pPtr();
+  pObject = xPtrVal.pObj();
   
   IntVal xIntVal;
   vPopVal(&xIntVal);
@@ -597,12 +597,12 @@ bool Stack::bPop(Object*& pObject1, Object*& pObject2)
   PtrVal xPtrVal1;
   vPopVal(&xPtrVal1);
   
-  pObject1 = xPtrVal1.pPtr();
+  pObject1 = xPtrVal1.pObj();
   
   PtrVal xPtrVal2;
   vPopVal(&xPtrVal2);
   
-  pObject2 = xPtrVal2.pPtr();
+  pObject2 = xPtrVal2.pObj();
   
   return true;
 }
@@ -620,7 +620,7 @@ bool Stack::bPop(Object*& pObject, GenVar& xGenVar)
   PtrVal xPtrVal1;
   vPopVal(&xPtrVal1);
   
-  pObject = xPtrVal1.pPtr();
+  pObject = xPtrVal1.pObj();
   
   return bPop(xGenVar);
 }
@@ -844,7 +844,7 @@ bool Stack::bPopAsInt_Quick(i8& iArg)
       return true;
       
     case Base::CN_PTRVAL:
-      iArg = _pPtrVal(pTop)->pPtr() ? 1 : 0;
+      iArg = _pPtrVal(pTop)->pObj() ? 1 : 0;
       return true;
       
     default:

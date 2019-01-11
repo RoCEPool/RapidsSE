@@ -66,7 +66,7 @@ void Step::vAddressFetch(MP_Task mpTask)
       break;
       
     case CN_PTRVAL:
-      xValFetched = _pPtrVal(pValue)->pPtr();
+      xValFetched = _pPtrVal(pValue)->pObj();
       break;
       
     case CN_IPVAL:
@@ -112,7 +112,7 @@ void Step::vAddressStore(MP_Task mpTask)
       break;
       
     case CN_PTRVAL:
-      *_pPtrVal(pValue) = _pPtrVal(xValStored.pNestedValue())->pPtr();
+      *_pPtrVal(pValue) = _pPtrVal(xValStored.pNestedValue())->pObj();
       break;
       
     case CN_IPVAL:

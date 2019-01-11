@@ -33,7 +33,7 @@ void* PtrVal::operator new(size_t)
 PtrVal::PtrVal(void)
 : Value(CN_PTRVAL)
 {
-  m_pPtr = nullptr;
+  m_pObj = nullptr;
   
   _checkInitialised_(CN_PTRVAL);
 }
@@ -43,7 +43,7 @@ PtrVal::PtrVal(void)
 /*----------------------------------------------------------------------------*/
 void PtrVal::operator =(Object* pObject)
 {
-  m_pPtr = pObject;
+  m_pObj = pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ void PtrVal::operator =(Value* aValue)
 /*----------------------------------------------------------------------------*/
 i8 PtrVal::iAsInt(void)
 {
-  return (i8)m_pPtr;
+  return (i8)m_pObj;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,11 +71,11 @@ i8 PtrVal::nSize(void) const
 }
 
 /*----------------------------------------------------------------------------*/
-/* as pointer to in memory pool object                                        */
+/* get pointer to proper object                                               */
 /*----------------------------------------------------------------------------*/
-Object* PtrVal::pPtr(void) const
+Object* PtrVal::pObj(void) const
 {
-  return pPoolCheck<Object*>(m_pPtr);
+  return pPoolCheck<Object*>(m_pObj);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +83,7 @@ Object* PtrVal::pPtr(void) const
 /*----------------------------------------------------------------------------*/
 void PtrVal::vToString(Stz* aWorkspace)
 {
-  *aWorkspace = reinterpret_cast<void*>(m_pPtr);
+  *aWorkspace = reinterpret_cast<void*>(m_pObj);
 }
 
 /*============================================================================*/

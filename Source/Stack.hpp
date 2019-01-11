@@ -157,7 +157,7 @@ namespace Forth
     iArg = _pIntVal(m_aTop)->iInt(); // inline
   else
     if (CN_PTRVAL == eClassNo)
-      iArg = _pPtrVal(m_aTop)->pPtr() ? 1 : 0; // inline
+      iArg = _pPtrVal(m_aTop)->pObj() ? 1 : 0; // inline
     else {
       iArg = -1;
       NEVER_REACH;
