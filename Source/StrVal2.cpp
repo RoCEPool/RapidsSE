@@ -34,14 +34,6 @@ void* StrVal2::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
-//void* StrVal2::operator new(size_t, StrVal2* aThis)
-//{
-//  return aThis;
-//}
-
-/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StrVal2::StrVal2(void)
@@ -51,74 +43,6 @@ StrVal2::StrVal2(void)
   
   vFatal("fatal: StrVal2 class cannot be a local variable\n"_Stz);
 }
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-//StrVal2::StrVal2(eCN eClassNo)
-//: Value(eClassNo)
-//{
-//  _precondition_(_MAGIC_);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-//StrVal2::StrVal2(eCN eClassNo, i8 nBytes)
-//: Value(eClassNo)
-//{
-//  _precondition_(_MAGIC_,eClassNo);
-//
-//  m_xWsp.vUsed(nBytes);
-//
-//#ifdef __DEBUG_CHECKS
-//  m_xWsp.vZero(eClassNo);
-//#endif
-//
-//  *m_xWsp.aArea() = '\0';
-//}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-//StrVal2::StrVal2(StrVal2* aThis)
-//: Value(CN_STRVAL)
-//{
-//  _precondition_(_MAGIC_,CN_STRVAL);
-//
-//  ASSERT(this == aThis);
-//
-//  _checkInitialised_(CN_STRVAL);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-//StrVal2::StrVal2(StrVal2* aThis, i8 nBytes)
-//: Value(CN_STRVAL)
-//{
-//  _precondition_(_MAGIC_,CN_STRVAL);
-//
-//  ASSERT(this == aThis);
-//
-//  m_xWsp.vUsed(nBytes);
-//
-//#ifdef __DEBUG_CHECKS
-//  m_xWsp.vZero(CN_STRVAL);
-//#endif
-//
-//  *m_xWsp.aArea() = '\0';
-//
-//  _checkInitialised_(CN_STRVAL);
-//}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-//StrVal2::~StrVal2(void) noexcept(false)
-//{
-//  _precondition_(_MAGIC_,_FOOTER_);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get address of Stz area                                                    */
@@ -142,7 +66,6 @@ StrVal2::operator Stz&(void)
   // return reference to char byte area
   return reinterpret_cast<Stz&>(*(pAdd<char*>(this,sizeof(StrVal2))));
 }
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -206,18 +129,6 @@ void StrVal2::operator =(Stz* aStr)
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
-
-/*----------------------------------------------------------------------------*/
-/* assignment operator                                                        */
-/*----------------------------------------------------------------------------*/
-//void StrVal2::operator =(GenVar& rArg)
-//{
-//  _precondition_(_MAGIC_,_FOOTER_);
-//  
-//  vCopy((Stz*)rArg.aWspArea());
-//  
-//  _postcondition_(_MAGIC_,_FOOTER_);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* append given char                                                          */

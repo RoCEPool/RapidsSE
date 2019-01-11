@@ -27,15 +27,8 @@ namespace Values
   
   public:
     void* operator new(size_t);
-    //void* operator new(size_t, StrVal* aThis);
   
     StrVal(void);
-    //StrVal(eCN eClassNo);
-    //StrVal(eCN eClass, i8 nBytes);
-    //StrVal(StrVal* aThis);
-    //StrVal(StrVal* aThis, i8 nBytes);
-  
-    //~StrVal(void) noexcept(false);
   
     operator Stz&(void);
     operator Stz*(void);
@@ -46,7 +39,6 @@ namespace Values
     void operator =(StrVal& rArg);
     void operator =(StrVal* aArg);
     void operator =(Stz*);
-    //void operator =(GenVar& rArg);
   
     void  vAppend(const char cChar);
     i8    nAreaSize(void);
