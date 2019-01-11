@@ -60,25 +60,32 @@ Row::~Row(void) noexcept(false)
 void Row::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
 {
   Stz* aData;
+  s17KB sDst;
   
+  // get no of columns
   i8 nColumns = pColVec->nItems();
   
+  // for each column
   for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
     
+    // get the column at index
     Column* pColumn = pColVec->pGet(i_Column);
     
+    // not the first column
     if (i_Column != 0)
       sDataString.vConcat(","_Stz);
     
-    // move to column data
+    // get the column data pointer
     aData = (Stz*)aColumnDatum(i_Column);
     
-    s17KB s;
-    DtmLib::vSprintQuotesVLQ(pColumn->eDatumType(), s, aData, pColumn);
+    // copy the data for the column into aDst
+    DtmLib::vSprintQuotesVLQ(pColumn->eDatumType(), sDst, aData, pColumn);
+    
+    // now copy the data for the column from aDst to aDataString
     if (i_Column == 0)
-      sDataString.vCopy(s);
+      sDataString.vCopy(sDst);
     else
-      sDataString.vConcat(s);
+      sDataString.vConcat(sDst);
   }
   
 }
@@ -89,25 +96,32 @@ void Row::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
 void Row::vAsEscapedString(s48K& sDataString, ColumnVec* pColVec)
 {
   Stz* aData;
+  s17KB sDst;
   
+  // get no of columns
   i8 nColumns = pColVec->nItems();
   
+  // for each column
   for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
     
+    // get the column at index
     Column* pColumn = pColVec->pGet(i_Column);
     
+    // not the first column
     if (i_Column != 0)
       sDataString.vConcat(","_Stz);
     
     // move to column data
     aData = (Stz*)aColumnDatum(i_Column);
     
-    s17KB s;
-    DtmLib::vSprintEscapedVLQ(pColumn->eDatumType(), s, aData, pColumn);
+    // copy the data for the column into aDst
+    DtmLib::vSprintEscapedVLQ(pColumn->eDatumType(), sDst, aData, pColumn);
+    
+    // now copy the data for the column from aDst to aDataString
     if (i_Column == 0)
-      sDataString.vCopy(s);
+      sDataString.vCopy(sDst);
     else
-      sDataString.vConcat(s);
+      sDataString.vConcat(sDst);
   }
   
 }
@@ -134,15 +148,14 @@ void Row::vDump(ColumnVec* pColVec)
   vTrace("RowData: "_Stz);
   
   Stz* aData;
-
+  s17KB sDst;
+  
   // get no of columns
   i8 nColumns = pColVec->nItems();
 
-  // for each column except hidden column, dump teh offsets
+  // for each column except hidden column, dump the offsets
   for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
-
     u2 iOffset = iColumnOffset(i_Column);
-
     vTrace("%lld|"_Stz, iOffset);
   }
 
@@ -156,9 +169,8 @@ void Row::vDump(ColumnVec* pColVec)
     aData = (Stz*)aColumnDatum(i_Column);
 
     // dump the column value
-    s17KB s;
-    DtmLib::vSprintVLQ(pColumn->eDatumType(), s, aData, pColumn);
-    vTrace("%s|"_Stz, s.aChar());
+    DtmLib::vSprintVLQ(pColumn->eDatumType(), sDst, aData, pColumn);
+    vTrace("%s|"_Stz, sDst.aChar());
   }
 
   vTrace("\n"_Stz);
