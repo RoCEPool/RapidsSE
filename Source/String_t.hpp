@@ -17,7 +17,6 @@ namespace CorrectnessAlgebra
   public:    
     String_t(void);
     String_t(Stz* aArg);
-    String_t(String_t* pThis);
    ~String_t(void) noexcept(false);
   
     operator Stz*(void);
@@ -65,6 +64,8 @@ String_t<SIZE>::String_t(void)
   
 #ifdef __DEBUG_CHECKS
   MemLib::vZero(m_cArea,SIZE,CN_STRVAR);
+#else
+  m_cArea[0] = '\0';
 #endif
 
   _checkInitialisedSize_(SIZE);
@@ -92,6 +93,10 @@ String_t<SIZE>::~String_t(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_STRVAR,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get address of Stz area                                                    */
