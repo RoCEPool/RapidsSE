@@ -38,8 +38,8 @@ namespace Structures
     bool     bPop(Forth::GenVar* pValWrk, bool& bDiscard);
 
   private:
-    Value*   pFirstValue(void);
-    Value*   pNextValue(Value* pValue);
+    Value*   aFirstValue(void);
+    Value*   aNextValue(Value* pValue);
     void     vVerify(void);
   };
   

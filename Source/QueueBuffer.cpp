@@ -46,7 +46,7 @@ QueueBuffer::QueueBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   m_nValues   = 0;
-  m_pTopValue = pFirstValue();
+  m_pTopValue = aFirstValue();
   m_pNextFree = m_pTopValue;
   m_pNext     = nullptr;
   
@@ -172,7 +172,7 @@ bool QueueBuffer::bPop(Forth::GenVar* pValWrk, bool& bDiscardable)
       bDiscardable = true;
     }
     else {
-      m_pTopValue = pFirstValue();
+      m_pTopValue = aFirstValue();
       m_pNextFree = m_pTopValue;
     }
   }
@@ -187,28 +187,28 @@ bool QueueBuffer::bPop(Forth::GenVar* pValWrk, bool& bDiscardable)
 /*----------------------------------------------------------------------------*/
 /* first value in this qbuffer                                                */
 /*----------------------------------------------------------------------------*/
-Value* QueueBuffer::pFirstValue(void)
+Value* QueueBuffer::aFirstValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  Value* pFirstValue = pAdd<Value*>(this,sizeof(QueueBuffer));
+  Value* aFirstValue = pAdd<Value*>(this,sizeof(QueueBuffer));
   
-  return pFirstValue;
+  return aFirstValue;
 }
 
 /*----------------------------------------------------------------------------*/
 /* next value in this qbuffer                                                 */
 /*----------------------------------------------------------------------------*/
-Value* QueueBuffer::pNextValue(Value* pValue)
+Value* QueueBuffer::aNextValue(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   i8 nBytes = pValue->nSize();
   
-  Value* pNextValue = pAdd<Value*>(pValue,nBytes);
+  Value* aNextValue = pAdd<Value*>(pValue,nBytes);
   
-  if (pNextValue < m_pNextFree)
-    return pNextValue;
+  if (aNextValue < m_pNextFree)
+    return aNextValue;
   else
     return nullptr;
 }
@@ -221,7 +221,7 @@ void QueueBuffer::vVerify(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   i8 iCount = 0;
-  for (Value* pValue = pFirstValue(); pValue; pValue = pNextValue(pValue))
+  for (Value* aValue = aFirstValue(); aValue; aValue = aNextValue(aValue))
     iCount++;
   
   ASSERT(iCount == m_nValues);
