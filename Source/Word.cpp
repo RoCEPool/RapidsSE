@@ -128,24 +128,24 @@ char* Word::aAllot(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* append a pointer to cell                                                   */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(Cell* pCell)
+void Word::vAppend(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  void* aAddress = aAppend(pCell);
+  void* aAddress = aAppend(aCell);
   ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append a pointer to cell                                                   */
 /*----------------------------------------------------------------------------*/
-void* Word::aAppend(Cell* pCell)
+void* Word::aAppend(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pAllottedCell = (Cell*)aAllot(sizeof(pCell));
+  Cell* pAllottedCell = (Cell*)aAllot(sizeof(aCell));
   
-  pAllottedCell->m_pJumpTo = pCell;
+  pAllottedCell->m_pJumpTo = aCell;
   
   return pAllottedCell;
 }
@@ -337,11 +337,11 @@ Cell* Word::pEntryCell(void)
 /*----------------------------------------------------------------------------*/
 /* set which cell to start executing from                                     */
 /*----------------------------------------------------------------------------*/
-void Word::vEntryCell(Cell* pCell)
+void Word::vEntryCell(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pEntryCell = pCell;
+  m_pEntryCell = aCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -385,13 +385,13 @@ void Word::vEncode(Stz* aWordNm)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a cell* argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWordNm, Cell* pCell)
+void Word::vEncode(Stz* aWordNm, Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   vEncode(aWordNm);
   
-  vAppend(pCell);
+  vAppend(aCell);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -456,11 +456,11 @@ Cell* Word::pFirstCell(void)
 /*----------------------------------------------------------------------------*/
 /* does this word have given cell?                                            */
 /*----------------------------------------------------------------------------*/
-bool Word::bHasCell(Cell* pCell)
+bool Word::bHasCell(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  if (pCell >= pFirstCell() && pCell <= pLastCell())
+  if (aCell >= pFirstCell() && aCell <= pLastCell())
     return true;
   
   return false;

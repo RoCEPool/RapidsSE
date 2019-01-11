@@ -7,11 +7,11 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Cell* Forth::_pCell(void* aAddr)
+Cell* Forth::_aCell(void* aAddr)
 {
-  Cell* pCell = reinterpret_cast<Cell*>(aAddr);
+  Cell* aCell = reinterpret_cast<Cell*>(aAddr);
   
-  return pCell;
+  return aCell;
 }
 
 /*============================================================================*/

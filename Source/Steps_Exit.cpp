@@ -31,11 +31,11 @@ void Step::vExit(MP_Task mpTask)
       (void*)mpTask->m_pReturnStack->aPeekValue())
     mpTask->vLocalsPop();
   
-  Cell* pCell;
-  if ( ! mpTask->m_pReturnStack->bPop(pCell) )
+  Cell* aCell;
+  if ( ! mpTask->m_pReturnStack->bPop(aCell) )
     THROW_INVALID_RSTACK("exit"_Stz);
   
-  mpTask->IP.m_pCell = pCell;
+  mpTask->IP.m_aCell = aCell;
   
   EXIT();
 }

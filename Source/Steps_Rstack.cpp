@@ -88,8 +88,8 @@ void Step::vRstackCsRoll(MP_Task mpTask)
     mpTask->m_pReturnStack->vPushGenVar(xValMid);
   }
   
-  Cell* pCellZ;
-  if ( ! mpTask->m_pDataStack->bPop(pCellZ) )
+  Cell* aCellZ;
+  if ( ! mpTask->m_pDataStack->bPop(aCellZ) )
     THROW_INVALID_DSTACK("cs-roll"_Stz);
   
   for (i8 i_Count = 0; i_Count < nValues; i_Count++) {
@@ -99,7 +99,7 @@ void Step::vRstackCsRoll(MP_Task mpTask)
     mpTask->m_pDataStack->vPushGenVar(xValMid);
   }
 
-  mpTask->m_pDataStack->vPushCell(pCellZ);
+  mpTask->m_pDataStack->vPushCell(aCellZ);
   
   
   EXIT();

@@ -201,7 +201,7 @@ void Step::vDstackDump(MP_Task mpTask)
   }
   else if (CN_IPVAL == eClass) {                                         //RAY??
     IpVal* pIpVal = _pIpVal(&xVariable);
-    Cell* pCell = pIpVal->pIpPtr();
+    Cell* aCell = pIpVal->pIpPtr();
     vTrace("[%s] nullptr\n"_Stz,
            mpTask->aJobName());    //RAY: should trace pIpVal
   }

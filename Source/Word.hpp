@@ -73,8 +73,8 @@ namespace Forth
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     char* aAllot(i8 iBytes);
-    void* aAppend(Cell* pCell);
-    void  vAppend(Cell* pCell);
+    void* aAppend(Cell* aCell);
+    void  vAppend(Cell* aCell);
     void* aAppend(i8 iInt);
     void  vAppend(i8 iInt);
     void* aAppend(TaskStep* aTaskStep);
@@ -89,19 +89,19 @@ namespace Forth
   
     Dic*  pDic(void);
     i8    iEpoch(void);
-    void  vEntryCell(Cell* pCell);
+    void  vEntryCell(Cell* aCell);
     Cell* pEntryCell(void);
     void  vEntryStep(TaskStep pStep);
     TaskStep pEntryStep(void);
     TaskStep* ppEntryStep(void);
     void  vEncode(Stz* aWordNm);
-    void  vEncode(Stz* aWordNm, Cell* pCell);
+    void  vEncode(Stz* aWordNm, Cell* aCell);
     void  vEncode(Stz* aWordNm, Word* pWord);
     void  vEncode(Stz* aWordNm, Value* aValue);
     void  vEncode(Stz* aWordNm, GenVar* pGenVar);
     void  vEncode(TaskStep* ppEntryStep);
     Cell* pFirstCell(void);
-    bool  bHasCell(Cell* pCell);
+    bool  bHasCell(Cell* aCell);
     bool  bImmediate(void);
     bool  bIsName(s32& sName);
     void  vImmediate(bool bImmediate);

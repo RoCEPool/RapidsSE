@@ -205,9 +205,9 @@ Word* DicStack::pFindStep(TaskStep pStep)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locate word in stack of dictionaries                                       */
+/* locate word in stack of dictionaries that has given cell                   */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pLocate(Cell* pCell)
+Word* DicStack::pLocateWord(Cell* aHasCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 
@@ -215,11 +215,11 @@ Word* DicStack::pLocate(Cell* pCell)
   
   for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
     for (pWord = m_pDic[i_Dic]->pLastWord(); pWord; pWord = pWord->pPrevWord())
-      if (pWord->bHasCell(pCell))
+      if (pWord->bHasCell(aHasCell))
         return pWord;
 
   for (pWord = gpAttachMap->m_xMainDic.pLastWord(); pWord; pWord = pWord->pPrevWord())
-    if (pWord->bHasCell(pCell))
+    if (pWord->bHasCell(aHasCell))
       return pWord;
   
   return nullptr;

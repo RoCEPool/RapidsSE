@@ -333,7 +333,7 @@ void Step::vDoes_RT(MP_Task mpTask)
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
   pCurrentWord->vEntryStep(&Step::vEnterObject);
-  pCurrentWord->vEntryCell(mpTask->IP.m_pCell+1);
+  pCurrentWord->vEntryCell(mpTask->IP.m_aCell+1);
   
   EXIT();
 }
@@ -435,10 +435,10 @@ void Step::vLocate(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPopAsInt(iAddrAsInt) )
     THROW_INVALID_DSTACK("locate"_Stz);
   
-  void* pCellVoid = (void*)iAddrAsInt;
-  Cell* pCell = _pCell(pCellVoid);
+  void* aCellVoid = (void*)iAddrAsInt;
+  Cell* aHasCell = _aCell(aCellVoid);
   
-  Word* pLocatedWord = mpTask->m_oPathStack.pLocate(pCell);
+  Word* pLocatedWord = mpTask->m_oPathStack.pLocateWord(aHasCell);
   
   if (pLocatedWord) {
     s32 sName;

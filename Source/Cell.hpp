@@ -23,7 +23,7 @@ namespace Forth
     };
   };
   
-  Cell* _pCell(void* aAddr);
+  Cell* _aCell(void* aAddr);
 }
 
 /*============================================================================*/

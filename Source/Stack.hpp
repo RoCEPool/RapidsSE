@@ -60,7 +60,7 @@ namespace Forth
     void vPeekValue(i8 i_Value, GenVar& xGenVar);
     bool bPeekZero(void);
   
-    bool bPop(Cell*& pCell);
+    bool bPop(Cell*& aCell);
     bool bPop(eCN& eClassNo);
     bool bPop(GenVar* pGenVar);
     bool bPop(GenVar& xGenVar);
@@ -93,7 +93,7 @@ namespace Forth
     void vPokeGenVar(i8 i_Value, GenVar& xGenVar);
   
     void vPushBool(bool bBool);
-    void vPushCell(Cell* pCell);
+    void vPushCell(Cell* aCell);
     void vPushEntry(DBobjects::Entry* aEntry);
     void vPushGenVar(GenVar* pGenVar);
     void vPushGenVar(GenVar& xGenVar);

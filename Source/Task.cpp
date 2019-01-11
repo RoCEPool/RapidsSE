@@ -85,7 +85,7 @@ Task::Task(Job* pJob)
   
   m_pLocalsFrame = nullptr;
   
-  IP.m_pCell     = nullptr;
+  IP.m_aCell     = nullptr;
   m_pEntryCell   = nullptr;
   
   m_pCompiler    = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
@@ -148,13 +148,13 @@ void Task::vTaskLoop(void)
   
   while (TS_EXECUTING == m_eState) {
     
-    TaskStep pTaskStep = *IP.m_pCell->m_ppEntryStep;
+    TaskStep pTaskStep = *IP.m_aCell->m_ppEntryStep;
     
-    m_pEntryCell = IP.m_pCell->m_ppEntryStep + 1;
+    m_pEntryCell = IP.m_aCell->m_ppEntryStep + 1;
     
     //vTrace("pTaskStep %p\n"_Stz,pTaskStep);
     
-    IP.m_pCell++;
+    IP.m_aCell++;
     
     try {
       (pTaskStep)(this);
@@ -224,7 +224,7 @@ void Task::vAdjustNext(i8 iBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  IP.m_pCell = pAdd<Cell*>(IP.m_pCell,iBytes);
+  IP.m_aCell = pAdd<Cell*>(IP.m_aCell,iBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -234,7 +234,7 @@ Object* Task::pArgObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Object* pObject = reinterpret_cast<Object*>(IP.m_pCell);
+  Object* pObject = reinterpret_cast<Object*>(IP.m_aCell);
   
   return pObject;
 }
@@ -569,7 +569,7 @@ void Task::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  IP.m_pCell = m_pCompiler->m_pRetryIP;
+  IP.m_aCell = m_pCompiler->m_pRetryIP;
   m_pCompiler->m_pBeginIP = nullptr;
   
   m_pCompiler->m_pTokeniser->sToken() = ""_Stz;
@@ -585,7 +585,7 @@ bool Task::bSeeded(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (IP.m_pCell)
+  if (IP.m_aCell)
     return true;
   else
     return false;
@@ -602,7 +602,7 @@ void Task::vSeedJob(void)
   
   Word* pWord = gpAttachMap->m_xMainDic.pFindWord(sSeed);
   
-  IP.m_pCell = pWord->pFirstCell();
+  IP.m_aCell = pWord->pFirstCell();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -795,9 +795,9 @@ void Task::vTracePoint(Stz* aMark)
   
   s256 sRoutine;
   
-  Cell* pCell = IP.m_pCell;
+  Cell* aHasCell = IP.m_aCell;
   
-  Word* pLocatedWord = m_oPathStack.pLocate(pCell);
+  Word* pLocatedWord = m_oPathStack.pLocateWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();
   else
@@ -839,8 +839,8 @@ void Task::vTraceStep(Stz* aStepNm)
   
   s256 sRoutine;
   
-  Cell* pCell = IP.m_pCell;
-  Word* pLocatedWord = m_oPathStack.pLocate(pCell);
+  Cell* aHasCell = IP.m_aCell;
+  Word* pLocatedWord = m_oPathStack.pLocateWord(aHasCell);
   if (pLocatedWord)
     sRoutine = pLocatedWord->sName();
   else

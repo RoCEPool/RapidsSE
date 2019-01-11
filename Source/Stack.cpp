@@ -115,8 +115,8 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
         
       case CN_IPVAL: {
         IpVal* pIpVal = _pIpVal(pNestedValue);
-        Cell* pCell = pIpVal->pIpPtr();
-        vTrace("[%s] [%2lld] [%s] %p\n"_Stz,aPrefix,iVal,aCN[eClass],pCell);
+        Cell* aCell = pIpVal->pIpPtr();
+        vTrace("[%s] [%2lld] [%s] %p\n"_Stz,aPrefix,iVal,aCN[eClass],aCell);
         break;
       }
         
@@ -309,9 +309,9 @@ bool Stack::bPeekZero(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop pCell from value stack                                                 */
+/* pop aCell from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Cell*& pCell)
+bool Stack::bPop(Cell*& aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -322,7 +322,7 @@ bool Stack::bPop(Cell*& pCell)
   
   vPopVal(&xIpVal);
   
-  pCell = xIpVal.pIpPtr();
+  aCell = xIpVal.pIpPtr();
   
   return true;
 }
@@ -901,13 +901,13 @@ void Stack::vPushBool(bool bArg)
 /*----------------------------------------------------------------------------*/
 /* push Cell* onto value stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushCell(Cell* pCell)
+void Stack::vPushCell(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   IpVal xIpVal;
   
-  xIpVal = pCell;
+  xIpVal = aCell;
   
   vPushValue(xIpVal);
 }

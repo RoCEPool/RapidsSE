@@ -199,20 +199,20 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   //Word* pTenants = gpAttachMap->m_xMainDic.pFindWord("tenants"_Stz);
   Word* pTenants = gpAttachMap->m_pTenants;
   ASSERT(pTenants);
-  Cell* pCell = pTenants->pFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+  Cell* aCell = pTenants->pFirstCell();
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
 
   // /tenants/boray
   Word* pTenant = m_xPathStack.pFindInCurrent("boray"_Stz);
   ASSERT(pTenant);
-  pCell = pTenant->pFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+  aCell = pTenant->pFirstCell();
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   // /tenants/boray/catalogs
   Word* pCatalogs = m_xPathStack.pFindInCurrent("catalogs"_Stz);
   ASSERT(pCatalogs);
-  pCell = pCatalogs->pFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+  aCell = pCatalogs->pFirstCell();
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
 
   if ( ! pCatalogName)
     return EC_NONE;
@@ -222,14 +222,14 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   if ( ! pCatalog)
     return EC_NO_SUCH_CATALOG;
   
-  pCell = pCatalog->pFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+  aCell = pCatalog->pFirstCell();
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   // /tenants/boray/catalogs/rapidsse/schemas
   Word* pSchemas = m_xPathStack.pFindInCurrent("schemas"_Stz);
   ASSERT(pSchemas);
-  pCell = pSchemas->pFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+  aCell = pSchemas->pFirstCell();
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   if ( ! pSchemaName )
     return EC_NONE;
@@ -239,15 +239,15 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   if ( ! pSchema)
     return EC_NO_SUCH_SCHEMA;
   
-  pCell = pSchema->pFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+  aCell = pSchema->pFirstCell();
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
 
   // /tenants/boray/catalogs/rapidsse/schemas/public/tables
   Word* pTables = m_xPathStack.pFindInCurrent("tables"_Stz);
   ASSERT(pTables);
   
-  pCell = pTables->pFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
+  aCell = pTables->pFirstCell();
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   return EC_NONE;
 }

@@ -22,8 +22,8 @@ void Step::vEnterObject(MP_Task mpTask)
 {
   ENTRY("vEnterObject"_Stz);
   
-  mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_pCell);
-  mpTask->IP.m_pCell = *(Cell**)mpTask->m_pEntryCell;
+  mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_aCell);
+  mpTask->IP.m_aCell = *(Cell**)mpTask->m_pEntryCell;
   
   //  Word* pWord = pAdd<Word*>(mpTask->m_pEntryCell,-(sizeof(Word)-sizeof(Cell*)));
 
@@ -50,8 +50,8 @@ void Step::vEnterRoutine(MP_Task mpTask)
 {
   ENTRY("vEnterRoutine"_Stz);
   
-  mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_pCell);
-  mpTask->IP.m_pCell = *(Cell**)mpTask->m_pEntryCell;
+  mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_aCell);
+  mpTask->IP.m_aCell = *(Cell**)mpTask->m_pEntryCell;
  
    if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
     mpTask->vTracePoint(">"_Stz);
