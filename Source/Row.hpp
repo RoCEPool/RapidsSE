@@ -26,6 +26,9 @@ namespace DBobjects
     char* aColumnDatum(i8 iColumnNo);
     void vDump(ColumnVec* pColVec);
     void vShow(ColumnVec* pColVec, bool bCompressed);
+    
+  public:
+    u2 iColumnOffset(i8 iColumnNo);
   };
   
   Row* _pRow(void* aAddr);
