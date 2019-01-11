@@ -9,10 +9,17 @@
  
  */
 
+namespace Values
+{
+  class StrVal;
+}
+
 namespace CorrectnessAlgebra
 {
   class WspVbl
   {
+  friend class Values::StrVal;
+  
   private:
     i8   m_nAreaUsed;
     // ..dataArea..

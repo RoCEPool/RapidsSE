@@ -68,13 +68,13 @@ StrVal::operator Stz&(void)
 /*----------------------------------------------------------------------------*/
 /* assign given str                                                           */
 /*----------------------------------------------------------------------------*/
-void StrVal::vAssign(Stz* aStr)
+void StrVal::vAssign(Stz* aStz)
 {
-  StrLib::vCopy(aChar(),aStr->aChar());
+  StrLib::vCopy(aChar(),aStz->aChar());
 
   i8 nBytes = StrLib::iSize(aChar());
   
-  m_xWsp.vUsed(nBytes);
+  m_xWsp.m_nAreaUsed = nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,7 +82,7 @@ void StrVal::vAssign(Stz* aStr)
 /*----------------------------------------------------------------------------*/
 char* StrVal::aChar(void)
 {
-  char* aArea = m_xWsp.aArea();
+  char* aArea = pAdd<char*>(&m_xWsp.m_nAreaUsed,sizeof(m_xWsp.m_nAreaUsed));
   
   return aArea;
 }
@@ -92,7 +92,7 @@ char* StrVal::aChar(void)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::nSize(void)
 {
-  i8 nBytes = sizeof(StrVal) + m_xWsp.nUsed();
+  i8 nBytes = sizeof(StrVal) + m_xWsp.m_nAreaUsed;
   
   return nBytes;
 }
