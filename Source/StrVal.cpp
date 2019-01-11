@@ -108,28 +108,6 @@ void StrVal::vAssign(Stz* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is equal to given argument? (same case)                                    */
-/*----------------------------------------------------------------------------*/
-bool StrVal::bEqual(Stz* aArg)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  bool b = StrLib::bEqualTo(aChar(),(const char*)aArg);
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get length of str in data area                                             */
-/*----------------------------------------------------------------------------*/
-i8 StrVal::iLength(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  return StrLib::iLength(aChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* get char*                                                                  */
 /*----------------------------------------------------------------------------*/
 char* StrVal::aChar(void)
@@ -137,18 +115,6 @@ char* StrVal::aChar(void)
   char* aArea = m_xWsp.aArea();
   
   return aArea;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is same as given argument?  (ignores case)                                 */
-/*----------------------------------------------------------------------------*/
-bool StrVal::bSame(Stz* aArg)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  bool b = StrLib::bSame(aChar(),(const char*)aArg);
-  
-  return b;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,18 +161,6 @@ void StrVal::vToLower(void)
 void StrVal::vToString(Stz* aStz)
 {
   StrLib::vCopy(aStz->aChar(),aChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* is equal to given argument?                                                */
-/*----------------------------------------------------------------------------*/
-bool StrVal::bIsNumeric(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  bool b = StrLib::bIsNumeric(aChar());
-  
-  return b;
 }
 
 /*----------------------------------------------------------------------------*/

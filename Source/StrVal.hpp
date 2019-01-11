@@ -36,18 +36,12 @@ namespace Values
     i8    nAreaSize(void);
     void  vAreaSize(void);
     void  vAssign(Stz* aStr);
-    bool  bEqual(Stz* aArg);
-
-    i8    iLength(void);
     char* aChar(void);
-    bool  bSame(Stz* aArg);
     i8    nSize(void);
     Stz*  aStz(void);
     i8    iToI8(void);
     void  vToLower(void);
     void  vToString(Stz* aStr);
-  
-    bool  bIsNumeric(void);
 
   private:
     Footer* aFooter(void);
