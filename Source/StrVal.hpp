@@ -33,7 +33,7 @@ namespace Values
     operator Stz&(void);
     operator Stz*(void);
   
-    void  vAreaSize(void);
+  public:
     void  vAssign(Stz* aStr);
     char* aChar(void);
     i8    nSize(void);

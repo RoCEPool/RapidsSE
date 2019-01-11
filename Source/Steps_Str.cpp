@@ -22,7 +22,6 @@ void Step::vAddSteps_Str(void)
   vAddStep("str.format"_Stz,   &Step::vStrFormat);
   vAddStep("str.left"_Stz,     &Step::vStrLeft);
   vAddStep("str.length"_Stz,   &Step::vStrLength);
-  vAddStep("str.pad"_Stz,      &Step::vStrPad);
   vAddStep("str.prepend"_Stz,  &Step::vStrPrepend);
   vAddStep("str.random"_Stz,   &Step::vStrRandom);
   vAddStep("str.replace"_Stz,  &Step::vStrReplace);
@@ -244,31 +243,6 @@ void Step::vStrLength(MP_Task mpTask)
   iLength = sString.iLength();
   
   mpTask->m_pDataStack->vPushI8(iLength);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* str.pad -- pad string to given length                                      */
-/*----------------------------------------------------------------------------*/
-void Step::vStrPad(MP_Task mpTask)
-{
-  ENTRY("vStringPad"_Stz);
-  
-  i8 iLength;
-  
-  GenVar xStringA;
-  
-  // get the arguments
-  if ( ! mpTask->m_pDataStack->bPop(iLength,xStringA) )
-    THROW_INVALID_DSTACK("str.pad"_Stz);
-  
-  StrLib::vPad(_aStrVal(xStringA.aNestedValue())->aChar(),iLength,' ');
-  
-  // adjust area size
-  _aStrVal(xStringA.aNestedValue())->vAreaSize();
-  
-  mpTask->m_pDataStack->vPushGenVar(xStringA);
   
   EXIT();
 }

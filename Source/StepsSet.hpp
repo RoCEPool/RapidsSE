@@ -900,7 +900,6 @@
   static void vStrFormat(Tasks::MP_Task mpTask);
   static void vStrLeft(Tasks::MP_Task mpTask);
   static void vStrLength(Tasks::MP_Task mpTask);
-  static void vStrPad(Tasks::MP_Task mpTask);
   static void vStrPrepend(Tasks::MP_Task mpTask);
   static void vStrRandom(Tasks::MP_Task mpTask);
   static void vStrReplace(Tasks::MP_Task mpTask);
