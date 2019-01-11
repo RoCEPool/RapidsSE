@@ -10,11 +10,11 @@
 /*----------------------------------------------------------------------------*/
 PtrVal* Values::_aPtrVal(void* aAddr)
 {
-  PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(aAddr);
+  PtrVal* aPtrVal = reinterpret_cast<PtrVal*>(aAddr);
   
-  RASSERT_TYPE(pPtrVal,CN_PTRVAL);
+  RASSERT_TYPE(aPtrVal,CN_PTRVAL);
   
-  return pPtrVal;
+  return aPtrVal;
 }
 
 /*----------------------------------------------------------------------------*/

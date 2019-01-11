@@ -145,20 +145,13 @@ Stz* RowCursor::aRowAsStr(void)
   
   if (! m_pRow)
     return nullptr;
-  
-//  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->aRow());
-//  
-//  if (pStrVal)
-//    return pStrVal->aStz();
-//  else
-//    return nullptr;
-  
+    
   s48K sRow;
   ColumnVec* pColVec = m_pTable->pColumnVec();
   Row* aRow = m_pRow->aRow();
   aRow->vAsBinaryStringVLQ(sRow,pColVec);
   
-  return sRow;
+  return sRow;                       //! We are returning a local variable --RAY
 }
 
 /*----------------------------------------------------------------------------*/

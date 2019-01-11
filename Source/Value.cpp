@@ -52,14 +52,14 @@ i8 Value::nSize(void)
     }
       
     case CN_PTRVAL: {
-      PtrVal* pPtrVal = _aPtrVal(this);
-      nBytes = pPtrVal->nSize();
+      PtrVal* aPtrVal = _aPtrVal(this);
+      nBytes = aPtrVal->nSize();
       break;
     }
       
     case CN_STRVAL: {
-      StrVal* pStrVal = _aStrVal(this);
-      nBytes = pStrVal->nSize();
+      StrVal* aStrVal = _aStrVal(this);
+      nBytes = aStrVal->nSize();
       break;
     }
       

@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 IvlVal* Values::_aIvlVal(void* aAddr)
 {
-  IvlVal* pIvlVal = reinterpret_cast<IvlVal*>(aAddr);
+  IvlVal* aIvlVal = reinterpret_cast<IvlVal*>(aAddr);
   
-  RASSERT_TYPE(pIvlVal,CN_IVLVAL);
+  RASSERT_TYPE(aIvlVal,CN_IVLVAL);
   
-  return pIvlVal;
+  return aIvlVal;
 }
 
 /*----------------------------------------------------------------------------*/

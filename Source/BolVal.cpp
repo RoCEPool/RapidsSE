@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 BolVal* Values::_aBolVal(void* aAddr)
 {
-  BolVal* pBolVal = reinterpret_cast<BolVal*>(aAddr);
+  BolVal* aBolVal = reinterpret_cast<BolVal*>(aAddr);
   
-  RASSERT_TYPE(pBolVal,CN_BOLVAL);
+  RASSERT_TYPE(aBolVal,CN_BOLVAL);
   
-  return pBolVal;
+  return aBolVal;
 }
 
 /*----------------------------------------------------------------------------*/

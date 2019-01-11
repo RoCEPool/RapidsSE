@@ -14,7 +14,7 @@ void KeyTest::vTest(void)
 
   KeyWrk xKeyWrk;
   GenVar xVariable;
-  KeyVal* pKeyVal;
+  KeyVal* aKeyVal;
   
   /*-----------------------------------------------------------------------*/
   vTrace("\n\n--------------- Single Element Key : INTEGER ---------------\n"_Stz);
@@ -41,9 +41,9 @@ void KeyTest::vTest(void)
     xKeyWrk.vAddDatum(xVariable, pCol);
     //xKeyWrk.vShow();
     
-    pKeyVal = new KeyVal(xKeyWrk);
+    aKeyVal = new KeyVal(xKeyWrk);
     
-    pKeyVec->vAdd(pKeyVal);
+    pKeyVec->vAdd(aKeyVal);
   }
   
   i8 v;
@@ -52,46 +52,46 @@ void KeyTest::vTest(void)
   
   // dump the key vector
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
-    pKeyVal = pKeyVec->pGet(i_Key);
-    pKeyVal->vShow(pColVec);
+    aKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal->vShow(pColVec);
   }
 
   // asserts that keyval(n) < keyval(n+1)
-  KeyVal* pKeyValA = pKeyVec->pGet(0);
+  KeyVal* aKeyValA = pKeyVec->pGet(0);
   for (i8 i_Key = 1; i_Key < 10; i_Key++) {
     
-    KeyVal* pKeyValB = pKeyVec->pGet(i_Key);
-    ASSERT(pKeyValA->bLessThan(pKeyValB,pColVec));
+    KeyVal* aKeyValB = pKeyVec->pGet(i_Key);
+    ASSERT(aKeyValA->bLessThan(aKeyValB,pColVec));
     
-    ASSERT(pKeyValA->iCmp(pKeyValB,pColVec) < 0);
+    ASSERT(aKeyValA->iCmp(aKeyValB,pColVec) < 0);
     
-    pKeyValA = pKeyValB;
+    aKeyValA = aKeyValB;
   }
   
   // scan the key vector for key value: >= 3
   xVariable = (i8)3;
   xKeyWrk.vReset();
   xKeyWrk.vAddDatum(xVariable, pCol);
-  KeyVal* pKeyValFind = new KeyVal(xKeyWrk);
+  KeyVal* aKeyValFind = new KeyVal(xKeyWrk);
   vTrace("Find Key value >= 3\n"_Stz);
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
-  pKeyVal = nullptr;
+  aKeyVal = nullptr;
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
 
-    pKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal = pKeyVec->pGet(i_Key);
     
-    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    if (aKeyVal->bMatches(aKeyValFind,pColVec,pOpAryFind))
       break;
     
-    pKeyVal = nullptr;
+    aKeyVal = nullptr;
   }
   
-  if (pKeyVal) {
-    aCursor = pKeyVal->m_xKey.aWspArea();
-    v = *(i8*)pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
+  if (aKeyVal) {
+    aCursor = aKeyVal->m_xKey.aWspArea();
+    v = *(i8*)aKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
     vTrace("( %lld >= 3)\n"_Stz,v);
   }
@@ -105,20 +105,20 @@ void KeyTest::vTest(void)
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_LESS_THAN);
   
-  pKeyVal = nullptr;
+  aKeyVal = nullptr;
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal = pKeyVec->pGet(i_Key);
     
-    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    if (aKeyVal->bMatches(aKeyValFind,pColVec,pOpAryFind))
       break;
     
-    pKeyVal = nullptr;
+    aKeyVal = nullptr;
   }
   
-  if (pKeyVal) {
-    aCursor = pKeyVal->m_xKey.aWspArea();
-    v = *(i8*)pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
+  if (aKeyVal) {
+    aCursor = aKeyVal->m_xKey.aWspArea();
+    v = *(i8*)aKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
     vTrace("( %lld < 7 )\n"_Stz,v);
   }
@@ -163,14 +163,14 @@ void KeyTest::vTest(void)
     xKeyWrk.vAddDatum(xVariable, pCol);
     //xKeyWrk.vShow();
     
-    pKeyVal = new KeyVal(xKeyWrk);
-    pKeyVec->vAdd(pKeyVal);
+    aKeyVal = new KeyVal(xKeyWrk);
+    pKeyVec->vAdd(aKeyVal);
   }
   
   // dump the key vector
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
-    pKeyVal = pKeyVec->pGet(i_Key);
-    pKeyVal->vShow(pColVec);
+    aKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal->vShow(pColVec);
   }
 
   // generate a random key value to find
@@ -183,31 +183,31 @@ void KeyTest::vTest(void)
   
   xKeyWrk.vReset();
   xKeyWrk.vAddDatum(xVariable, pCol);
-  pKeyValFind = new KeyVal(xKeyWrk);
+  aKeyValFind = new KeyVal(xKeyWrk);
   
-  // scan the key vector for key value: >= pKeyValFind
+  // scan the key vector for key value: >= aKeyValFind
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_LESS_THAN);
   
-  pKeyVal = nullptr;
+  aKeyVal = nullptr;
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal = pKeyVec->pGet(i_Key);
     
-    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    if (aKeyVal->bMatches(aKeyValFind,pColVec,pOpAryFind))
       break;
     
-    pKeyVal = nullptr;
+    aKeyVal = nullptr;
   }
   
-  if (pKeyVal) {
-    aCursor = pKeyVal->m_xKey.aWspArea();
-    char* p = pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
+  if (aKeyVal) {
+    aCursor = aKeyVal->m_xKey.aWspArea();
+    char* p = aKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
-    vTrace("( %s < %s)\n"_Stz,p,pKeyValFind->m_xKey.aWspArea());
+    vTrace("( %s < %s)\n"_Stz,p,aKeyValFind->m_xKey.aWspArea());
   }
   else {
-    vTrace("Found nothing < %s\n"_Stz,pKeyValFind->m_xKey.aWspArea());
+    vTrace("Found nothing < %s\n"_Stz,aKeyValFind->m_xKey.aWspArea());
   }
   
   // generate a random key value to find
@@ -220,31 +220,31 @@ void KeyTest::vTest(void)
   
   xKeyWrk.vReset();
   xKeyWrk.vAddDatum(xVariable, pCol);
-  pKeyValFind = new KeyVal(xKeyWrk);
+  aKeyValFind = new KeyVal(xKeyWrk);
   
-  // scan the key vector for key value: < pKeyValFind
+  // scan the key vector for key value: < aKeyValFind
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
-  pKeyVal = nullptr;
+  aKeyVal = nullptr;
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal = pKeyVec->pGet(i_Key);
     
-    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    if (aKeyVal->bMatches(aKeyValFind,pColVec,pOpAryFind))
       break;
     
-    pKeyVal = nullptr;
+    aKeyVal = nullptr;
   }
   
-  if (pKeyVal) {
-    aCursor = pKeyVal->m_xKey.aWspArea();
-    char* p = pKeyVal->aEachDatum(pCol,nBytes,&aCursor);
+  if (aKeyVal) {
+    aCursor = aKeyVal->m_xKey.aWspArea();
+    char* p = aKeyVal->aEachDatum(pCol,nBytes,&aCursor);
     
-    vTrace("( %s >= %s)\n"_Stz,p,pKeyValFind->m_xKey.aWspArea());
+    vTrace("( %s >= %s)\n"_Stz,p,aKeyValFind->m_xKey.aWspArea());
   }
   else {
-    vTrace("Found nothing >= %s)\n"_Stz,pKeyValFind->m_xKey.aWspArea());
+    vTrace("Found nothing >= %s)\n"_Stz,aKeyValFind->m_xKey.aWspArea());
   }
 
   delete pKeyVec;
@@ -285,8 +285,8 @@ void KeyTest::vTest(void)
       xVariable = j;
       xKeyWrk.vAddDatum(xVariable, pCol1);
       //xKeyWrk.vShow();
-      pKeyVal = new KeyVal(xKeyWrk);
-      pKeyVec->vAdd(pKeyVal);
+      aKeyVal = new KeyVal(xKeyWrk);
+      pKeyVec->vAdd(aKeyVal);
     }    
     
   }
@@ -294,8 +294,8 @@ void KeyTest::vTest(void)
   // dump the key vector
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i_Key);
-    pKeyVal->vShow(pColVec);
+    aKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal->vShow(pColVec);
     
     //vTrace("%lld: %lld %lld\n"_Stz,i_Key,v, v2);
   }
@@ -306,7 +306,7 @@ void KeyTest::vTest(void)
   xKeyWrk.vAddDatum(xVariable, pCol0);
   xVariable = (i8)10;
   xKeyWrk.vAddDatum(xVariable, pCol1);
-  pKeyValFind = new KeyVal(xKeyWrk);
+  aKeyValFind = new KeyVal(xKeyWrk);
   
   vTrace("Find Key value >= 2,10\n"_Stz);
   
@@ -314,21 +314,21 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
-  pKeyVal = nullptr;
+  aKeyVal = nullptr;
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal = pKeyVec->pGet(i_Key);
     
-    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    if (aKeyVal->bMatches(aKeyValFind,pColVec,pOpAryFind))
     break;
     
-    pKeyVal = nullptr;
+    aKeyVal = nullptr;
   }
   
-  if (pKeyVal) {
-    //aCursor = pKeyVal->m_xKey.aWspArea();
-    //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
-    pKeyVal->vShow(pColVec);
+  if (aKeyVal) {
+    //aCursor = aKeyVal->m_xKey.aWspArea();
+    //v = *(i8*)aKeyVal->aElement(pCol,nBytes,&aCursor);
+    aKeyVal->vShow(pColVec);
     vTrace("( >= 2,10)\n"_Stz);
   }
   
@@ -338,7 +338,7 @@ void KeyTest::vTest(void)
   xKeyWrk.vAddDatum(xVariable, pCol0);
   xVariable = (i8)30;
   xKeyWrk.vAddDatum(xVariable, pCol1);
-  pKeyValFind = new KeyVal(xKeyWrk);
+  aKeyValFind = new KeyVal(xKeyWrk);
   
   vTrace("Find Key value elem1 >= 2, elem2 < 30\n"_Stz);
   
@@ -346,21 +346,21 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   pOpAryFind->vAdd(RO_LESS_THAN);
   
-  pKeyVal = nullptr;
+  aKeyVal = nullptr;
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal = pKeyVec->pGet(i_Key);
     
-    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    if (aKeyVal->bMatches(aKeyValFind,pColVec,pOpAryFind))
     break;
     
-    pKeyVal = nullptr;
+    aKeyVal = nullptr;
   }
   
-  if (pKeyVal) {
-    //aCursor = pKeyVal->m_xKey.aWspArea();
-    //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
-    pKeyVal->vShow(pColVec);
+  if (aKeyVal) {
+    //aCursor = aKeyVal->m_xKey.aWspArea();
+    //v = *(i8*)aKeyVal->aElement(pCol,nBytes,&aCursor);
+    aKeyVal->vShow(pColVec);
     vTrace("( elem1 >= 2, elem2 < 30)\n"_Stz);
   }
 
@@ -407,17 +407,17 @@ void KeyTest::vTest(void)
       xKeyWrk.vAddDatum(xVariable, pCol1);
       //xKeyWrk.vShow();
       
-      pKeyVal = new KeyVal(xKeyWrk);
+      aKeyVal = new KeyVal(xKeyWrk);
       
-      pKeyVec->vAdd(pKeyVal);
+      pKeyVec->vAdd(aKeyVal);
     }
     
   }
   
   // dump the key vector
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
-    pKeyVal = pKeyVec->pGet(i_Key);
-    pKeyVal->vShow(pColVec);
+    aKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal->vShow(pColVec);
   }
 
   // scan the key vector for key value: >= 2,10
@@ -430,7 +430,7 @@ void KeyTest::vTest(void)
   pStrVal = _aStrVal(xVariable.aNestedValue());
   xKeyWrk.vAddDatum(xVariable, pCol1);
   
-  pKeyValFind = new KeyVal(xKeyWrk);
+  aKeyValFind = new KeyVal(xKeyWrk);
   
   vTrace("Find Key value >= 2,%s\n"_Stz, pStrVal->aStz());
   
@@ -438,21 +438,21 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
   
-  pKeyVal = nullptr;
+  aKeyVal = nullptr;
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal = pKeyVec->pGet(i_Key);
     
-    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    if (aKeyVal->bMatches(aKeyValFind,pColVec,pOpAryFind))
     break;
     
-    pKeyVal = nullptr;
+    aKeyVal = nullptr;
   }
   
-  if (pKeyVal) {
-    //aCursor = pKeyVal->m_xKey.aWspArea();
-    //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
-    pKeyVal->vShow(pColVec);
+  if (aKeyVal) {
+    //aCursor = aKeyVal->m_xKey.aWspArea();
+    //v = *(i8*)aKeyVal->aElement(pCol,nBytes,&aCursor);
+    aKeyVal->vShow(pColVec);
     vTrace("( >= 2,%s)\n"_Stz, pStrVal->aStz());
   }
   
@@ -463,21 +463,21 @@ void KeyTest::vTest(void)
   pOpAryFind->vAdd(RO_LESS_EQUAL);
   pOpAryFind->vAdd(RO_LESS_EQUAL);
   
-  pKeyVal = nullptr;
+  aKeyVal = nullptr;
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
     
-    pKeyVal = pKeyVec->pGet(i_Key);
+    aKeyVal = pKeyVec->pGet(i_Key);
     
-    if (pKeyVal->bMatches(pKeyValFind,pColVec,pOpAryFind))
+    if (aKeyVal->bMatches(aKeyValFind,pColVec,pOpAryFind))
     break;
     
-    pKeyVal = nullptr;
+    aKeyVal = nullptr;
   }
   
-  if (pKeyVal) {
-    //aCursor = pKeyVal->m_xKey.aWspArea();
-    //v = *(i8*)pKeyVal->aElement(pCol,nBytes,&aCursor);
-    pKeyVal->vShow(pColVec);
+  if (aKeyVal) {
+    //aCursor = aKeyVal->m_xKey.aWspArea();
+    //v = *(i8*)aKeyVal->aElement(pCol,nBytes,&aCursor);
+    aKeyVal->vShow(pColVec);
     vTrace("( <= 2,%s)\n"_Stz, pStrVal->aStz());
   }
 
@@ -516,31 +516,31 @@ void KeyTest::vTestA(void)
   xKeyWrk.vAddDatum(xVariable, pColVec->pGet(0));
   xVariable = (i8)10;
   xKeyWrk.vAddDatum(xVariable, pColVec->pGet(1));
-  KeyVal* pKeyValThis = new KeyVal(xKeyWrk);
+  KeyVal* aKeyValThis = new KeyVal(xKeyWrk);
   
   xKeyWrk.vReset();
   xVariable = (i8)1;
   xKeyWrk.vAddDatum(xVariable, pColVec->pGet(0));
   xVariable = (i8)20;
   xKeyWrk.vAddDatum(xVariable, pColVec->pGet(1));
-  KeyVal* pKeyValThat = new KeyVal(xKeyWrk);
+  KeyVal* aKeyValThat = new KeyVal(xKeyWrk);
   
   // [ ColA <= 1 , ColB < 10 ] should be before (2,20)
-  b = BndLib::bIsBefore(pKeyValThis->xKey(),
-                        pKeyValThat->xKey(),
+  b = BndLib::bIsBefore(aKeyValThis->xKey(),
+                        aKeyValThat->xKey(),
                         *pOpAry,
                         *pColVec);
   assert(b);
   
   // [ ColA <= 2 , ColB < 20 ] should not be before (1,10)
-  b = BndLib::bIsBefore(pKeyValThat->xKey(),
-                        pKeyValThis->xKey(),
+  b = BndLib::bIsBefore(aKeyValThat->xKey(),
+                        aKeyValThis->xKey(),
                         *pOpAry,
                         *pColVec);
   assert(!b);
   
-  delete pKeyValThis;
-  delete pKeyValThat;
+  delete aKeyValThis;
+  delete aKeyValThat;
   
   vTrace("\n\nEnd KeyTest A++++++++++++++++++++++++++++++++++++++++++++\n"_Stz);
 }

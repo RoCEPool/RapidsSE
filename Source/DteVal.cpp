@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 DteVal* Values::_aDteVal(void* aAddr)
 {
-  DteVal* pDteVal = reinterpret_cast<DteVal*>(aAddr);
+  DteVal* aDteVal = reinterpret_cast<DteVal*>(aAddr);
   
-  RASSERT_TYPE(pDteVal,CN_DTEVAL);
+  RASSERT_TYPE(aDteVal,CN_DTEVAL);
   
-  return pDteVal;
+  return aDteVal;
 }
 
 /*----------------------------------------------------------------------------*/

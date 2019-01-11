@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 BcdVal* Values::_aBcdVal(void* aAddr)
 {
-  BcdVal* pBcdVal = reinterpret_cast<BcdVal*>(aAddr);
+  BcdVal* aBcdVal = reinterpret_cast<BcdVal*>(aAddr);
   
-  RASSERT_TYPE(pBcdVal,CN_BCDVAL);
+  RASSERT_TYPE(aBcdVal,CN_BCDVAL);
   
-  return pBcdVal;
+  return aBcdVal;
 }
 
 /*----------------------------------------------------------------------------*/

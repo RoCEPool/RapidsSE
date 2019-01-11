@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 FltVal* Values::_aFltVal(void* aAddr)
 {
-  FltVal* pFltVal = reinterpret_cast<FltVal*>(aAddr);
+  FltVal* aFltVal = reinterpret_cast<FltVal*>(aAddr);
   
-  RASSERT_TYPE(pFltVal,CN_FLTVAL);
+  RASSERT_TYPE(aFltVal,CN_FLTVAL);
   
-  return pFltVal;
+  return aFltVal;
 }
 
 /*----------------------------------------------------------------------------*/

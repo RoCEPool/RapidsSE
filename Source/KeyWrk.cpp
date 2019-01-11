@@ -81,10 +81,10 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters)
   
   i8 nBytes;
   
-  StrVal* pStrVal = _aStrVal(xVariable.aNestedValue());
+  StrVal* aStrVal = _aStrVal(xVariable.aNestedValue());
   
   char* pDst = aLatter();
-  char* pSrc = (char*)pStrVal->aStz();
+  char* pSrc = (char*)aStrVal->aStz();
   
   switch(pCol->eDatumType()) {
       

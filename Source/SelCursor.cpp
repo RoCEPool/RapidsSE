@@ -177,9 +177,9 @@ Stz* SelCursor::aRowAsStr(void)
   Row* aRow = m_pRow->aRow();
   aRow->vAsEscapedString(sRow,pColVec);
   
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->aRowData());
+  StrVal* aStrVal = reinterpret_cast<StrVal*>(m_pRow->aRowData());
   
-  return sRow;
+  return sRow;                       //! We are returning a local variable --RAY
 }
 
 /*----------------------------------------------------------------------------*/

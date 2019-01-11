@@ -53,13 +53,13 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Bcd xBcd)
 {
-  BcdVal* pNestedBcdVal = (BcdVal*)aNestedValue();
+  BcdVal* aNestedBcdVal = (BcdVal*)aNestedValue();
   
   // set nested class
-  pNestedBcdVal->vSetClass(CN_BCDVAL);
+  aNestedBcdVal->vSetClass(CN_BCDVAL);
   
   // assign int into the nested intval
-  *pNestedBcdVal = xBcd;
+  *aNestedBcdVal = xBcd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,13 +67,13 @@ void GenVar::operator =(Bcd xBcd)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Bol xBol)
 {
-  BolVal* pNestedBolVal = (BolVal*)aNestedValue();
+  BolVal* aNestedBolVal = (BolVal*)aNestedValue();
   
   // set nested class
-  pNestedBolVal->vSetClass(CN_BOLVAL);
+  aNestedBolVal->vSetClass(CN_BOLVAL);
   
   // assign int into the nested intval
-  *pNestedBolVal = xBol;
+  *aNestedBolVal = xBol;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,13 +81,13 @@ void GenVar::operator =(Bol xBol)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Dte xDte)
 {
-  DteVal* pNestedDteVal = (DteVal*)aNestedValue();
+  DteVal* aNestedDteVal = (DteVal*)aNestedValue();
   
   // set nested class
-  pNestedDteVal->vSetClass(CN_DTEVAL);
+  aNestedDteVal->vSetClass(CN_DTEVAL);
   
   // assign int into the nested intval
-  *pNestedDteVal = xDte;
+  *aNestedDteVal = xDte;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,13 +95,13 @@ void GenVar::operator =(Dte xDte)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(d8 dFlt)
 {
-  FltVal* pNestedFltVal = (FltVal*)aNestedValue();
+  FltVal* aNestedFltVal = (FltVal*)aNestedValue();
   
   // set nested class
-  pNestedFltVal->vSetClass(CN_FLTVAL);
+  aNestedFltVal->vSetClass(CN_FLTVAL);
   
   // assign flt into the nested fltval
-  *pNestedFltVal = dFlt;
+  *aNestedFltVal = dFlt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,13 +109,13 @@ void GenVar::operator =(d8 dFlt)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(i8 iInt)
 {
-  IntVal* pNestedIntVal = (IntVal*)aNestedValue();
+  IntVal* aNestedIntVal = (IntVal*)aNestedValue();
   
   // set nested class
-  pNestedIntVal->vSetClass(CN_INTVAL);
+  aNestedIntVal->vSetClass(CN_INTVAL);
   
   // assign int into the nested intval
-  *pNestedIntVal = iInt;
+  *aNestedIntVal = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -123,13 +123,13 @@ void GenVar::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Ivl iIvl)
 {
-  IvlVal* pNestedIvlVal = (IvlVal*)aNestedValue();
+  IvlVal* aNestedIvlVal = (IvlVal*)aNestedValue();
   
   // set nested class
-  pNestedIvlVal->vSetClass(CN_IVLVAL);
+  aNestedIvlVal->vSetClass(CN_IVLVAL);
   
   // assign int into the nested intval
-  *pNestedIvlVal = iIvl;
+  *aNestedIvlVal = iIvl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,13 +137,13 @@ void GenVar::operator =(Ivl iIvl)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Object* pPtr)
 {
-  PtrVal* pNestedPtrVal = (PtrVal*)aNestedValue();
+  PtrVal* aNestedPtrVal = (PtrVal*)aNestedValue();
   
   // set nested class
-  pNestedPtrVal->vSetClass(CN_PTRVAL);
+  aNestedPtrVal->vSetClass(CN_PTRVAL);
   
   // assign ptr into the nested ptrval
-  *pNestedPtrVal = pPtr;
+  *aNestedPtrVal = pPtr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,12 +165,12 @@ void GenVar::operator =(Value* aPtr)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Stz* pStr)
 {
-  StrVal* pNestedStrVal = (StrVal*)aNestedValue();
+  StrVal* aNestedStrVal = (StrVal*)aNestedValue();
   
   // set nested class
-  pNestedStrVal->vSetClass(CN_STRVAL);
+  aNestedStrVal->vSetClass(CN_STRVAL);
   
-  pNestedStrVal->vAssign(pStr);
+  aNestedStrVal->vAssign(pStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -178,13 +178,13 @@ void GenVar::operator =(Stz* pStr)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Tme xTme)
 {
-  TmeVal* pNestedTmeVal = (TmeVal*)aNestedValue();
+  TmeVal* aNestedTmeVal = (TmeVal*)aNestedValue();
   
   // set nested class
-  pNestedTmeVal->vSetClass(CN_TMEVAL);
+  aNestedTmeVal->vSetClass(CN_TMEVAL);
   
   // assign tme into the nested intval
-  *pNestedTmeVal = xTme;
+  *aNestedTmeVal = xTme;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,13 +192,13 @@ void GenVar::operator =(Tme xTme)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Tsp xTsp)
 {
-  TspVal* pNestedTspVal = (TspVal*)aNestedValue();
+  TspVal* aNestedTspVal = (TspVal*)aNestedValue();
   
   // set nested class
-  pNestedTspVal->vSetClass(CN_TSPVAL);
+  aNestedTspVal->vSetClass(CN_TSPVAL);
   
   // assign tsp into the nested intval
-  *pNestedTspVal = xTsp;
+  *aNestedTspVal = xTsp;
 }
 
 /*----------------------------------------------------------------------------*/

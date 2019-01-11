@@ -13,14 +13,14 @@
 /*----------------------------------------------------------------------------*/
 StrVal* Values::_aStrVal(void* aAddr)
 {
-  StrVal* psRefactor = reinterpret_cast<StrVal*>(aAddr);
+  StrVal* aStrVal = reinterpret_cast<StrVal*>(aAddr);
   
-  RASSERT( ! psRefactor
-          || CN_STRVAL == psRefactor->eClass()
-          || CN_STRVAR == psRefactor->eClass()
+  RASSERT( ! aStrVal
+          || CN_STRVAL == aStrVal->eClass()
+          || CN_STRVAR == aStrVal->eClass()
           );  
   
-  return psRefactor;
+  return aStrVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,9 +36,9 @@ void* StrVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StrVal::operator new(size_t, StrVal* pThis)
+void* StrVal::operator new(size_t, StrVal* aThis)
 {
-  return pThis;
+  return aThis;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,12 +70,12 @@ StrVal::StrVal(eCN eClassNo, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(StrVal* pThis)
+StrVal::StrVal(StrVal* aThis)
 : Value(CN_STRVAL)
 {
   _precondition_(_MAGIC_,CN_STRVAL);
   
-  ASSERT(this == pThis);
+  ASSERT(this == aThis);
   
   _checkInitialised_(CN_STRVAL);
 }
@@ -83,12 +83,12 @@ StrVal::StrVal(StrVal* pThis)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(StrVal* pThis, i8 nBytes)
+StrVal::StrVal(StrVal* aThis, i8 nBytes)
 : Value(CN_STRVAL)
 {
   _precondition_(_MAGIC_,CN_STRVAL);
   
-  ASSERT(this == pThis);
+  ASSERT(this == aThis);
   
   m_xWsp.vUsed(nBytes);
   
@@ -175,11 +175,11 @@ void StrVal::operator =(StrVal& rArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void StrVal::operator =(StrVal* pArg)
+void StrVal::operator =(StrVal* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vCopy(pArg->aStz());
+  vCopy(aArg->aStz());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }

@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 TspVal* Values::_aTspVal(void* aAddr)
 {
-  TspVal* pTspVal = reinterpret_cast<TspVal*>(aAddr);
+  TspVal* aTspVal = reinterpret_cast<TspVal*>(aAddr);
   
-  RASSERT_TYPE(pTspVal,CN_TSPVAL);
+  RASSERT_TYPE(aTspVal,CN_TSPVAL);
   
-  return pTspVal;
+  return aTspVal;
 }
 
 /*----------------------------------------------------------------------------*/
