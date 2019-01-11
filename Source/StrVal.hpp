@@ -33,8 +33,6 @@ namespace Values
     operator Stz&(void);
     operator Stz*(void);
 
-    static i8 nBytesRequired(i8 iLength);
-  
     void operator =(i8);
     void operator =(StrVal& rArg);
     void operator =(StrVal* aArg);
@@ -45,7 +43,6 @@ namespace Values
     void  vAssign(Stz* aStr);
     bool  bContains(Stz* aArg);
     void  vCopy(Stz* aStr);
-    void  vCopyCat(Stz* aStr, ...);
     bool  bEnds(Stz* aSuffix);
     bool  bIsEqual(StrVal& sArg, i8 iCase);
     bool  bEqual(Stz* aArg);
@@ -54,7 +51,6 @@ namespace Values
     char* aChar(void);
     bool  bSame(Stz* aArg);
     i8    nSize(void);
-    void  vSprint(Stz* aFormat, ...);
     Stz*  aStz(void);
     i8    iToI8(void);
     void  vToLower(void);

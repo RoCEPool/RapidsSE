@@ -55,7 +55,6 @@ StrVal::operator Stz*(void)
   return reinterpret_cast<Stz*>(pAdd<char*>(this,sizeof(StrVal)));
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* get reference to Stz area                                                  */
 /*----------------------------------------------------------------------------*/
@@ -67,19 +66,6 @@ StrVal::operator Stz&(void)
   return reinterpret_cast<Stz&>(*(pAdd<char*>(this,sizeof(StrVal))));
 }
 
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* calculate number of bytes required to hold str of given length             */
-/*----------------------------------------------------------------------------*/
-i8 StrVal::nBytesRequired(i8 iStrLength)
-{
-  i8 nBytes = sizeof(StrVal) + iStrLength + 1;
-  
-  return nBytes;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -186,27 +172,6 @@ void StrVal::vCopy(Stz* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy given Stz, then concat variable sequence of Str's                     */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCopyCat(Stz* aStr, ...)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  va_list xVarArgs;
-  
-  va_start(xVarArgs,aStr);
-  
-  StrLib::vCopyLen(aChar(),aStr->aChar(),m_xWsp.nSize()-1);
-
-  while (Stz* aArg = va_arg(xVarArgs,Stz*))
-    StrLib::vConcat(aChar(),aArg->aChar());
-  
-  va_end(xVarArgs);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if string ends with given suffix                                      */
 /*----------------------------------------------------------------------------*/
 bool StrVal::bEnds(Stz* aSuffix)
@@ -282,19 +247,6 @@ i8 StrVal::nSize(void)
   i8 nBytes = sizeof(StrVal) + m_xWsp.nUsed();
   
   return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* vSprint: formatted sprint                                                  */
-/*----------------------------------------------------------------------------*/
-void StrVal::vSprint(Stz* aFormat, ...)
-{
-  va_list args;
-  va_start(args,aFormat);
-  
-  vsprintf(aChar(),aFormat->aChar(),args);
-  
-  va_end(args);
 }
 
 /*----------------------------------------------------------------------------*/
