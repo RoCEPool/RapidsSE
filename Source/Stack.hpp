@@ -60,7 +60,7 @@ namespace Forth
     void vPeekValue(i8 iNthValue, GenVar& xVariable);
     bool bPeekZero(void);
   
-    bool bPop(Forth::Cell*& pCell);
+    bool bPop(Cell*& pCell);
     bool bPop(eCN& eArg1);
     bool bPop(GenVar* pArg1);
     bool bPop(GenVar& xArg1);
@@ -93,7 +93,7 @@ namespace Forth
     void  vPokeValWrk(i8 iNthValue, GenVar& xVariable);
   
     void vPushBool(bool bBool);
-    void vPushCell(Forth::Cell* pCell);
+    void vPushCell(Cell* pCell);
     void vPushEntry(DBobjects::Entry* aEntry);
     void vPushGenVar(GenVar* pVariable);
     void vPushGenVar(GenVar& xVariable);
@@ -105,7 +105,7 @@ namespace Forth
     void vPushS4K(s4K& s4K);
     void vPushS16KB(s16KB& s16KB);
     void vPushS48K(s48K& s48K);
-    void vPushValue(Value* pValue);
+    void vPushValue(Value* aValue);
     void vPushValue(Value& xValue);
   
     void vRetry(void);
@@ -114,30 +114,16 @@ namespace Forth
     i8 nValues(void);
   
   private:
-    void vPopBy(i8 iBytes);
-    void vPopVal(Value* pValue);
-    void vPushBy(i8 iBytes);
-    void vPushVal(Value* pValue);
+    void vPopBy(i8 nBytes);
+    void vPopVal(Value* aValue);
+    void vPushBy(i8 nBytes);
+    void vPushVal(Value* aValue);
     Value* aStackBase(void);
     Value* aStackLimit(void);
     
     Footer* aFooter(void);
     Footer* aHazard(void);
   };
-  
-  /*----------------------------------------------------------------------------*/
-  /* pop top by given bytes                                                     */
-  /*----------------------------------------------------------------------------*/
-  inline void Stack::vPopBy(i8 iBytes)
-  {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  char* pTop = reinterpret_cast<char*>(m_aTop);
-  
-  pTop += iBytes;
-  
-  m_aTop = reinterpret_cast<Value*>(pTop);
-  }
   
   /*----------------------------------------------------------------------------*/
   /* pop value from data stack  as integer                                      */
