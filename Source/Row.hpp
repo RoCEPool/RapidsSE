@@ -20,7 +20,6 @@ namespace DBobjects
     Row(void);
     ~Row(void) noexcept(false);
   
-    void vAsBinaryString(s48K& sDataString, ColumnVec* pColVec);
     void vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec);
     void vAsEscapedString(s48K& sDataString, ColumnVec* pColVec);
     char* aColumnDatum(i8 iColumnNo);

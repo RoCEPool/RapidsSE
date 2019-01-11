@@ -50,41 +50,9 @@ Row::~Row(void) noexcept(false)
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-
-
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* convert row to binary string                                               */
-/*----------------------------------------------------------------------------*/
-void Row::vAsBinaryString(s48K& sDataString, ColumnVec* pColVec)
-{
-  Stz* aData;
-  
-  i8 nColumns = pColVec->nItems();
-  
-  for (i8 i_Column = 0; i_Column < nColumns - 1; i_Column++) {
-    
-    Column* pColumn = pColVec->pGet(i_Column);
-    
-    if (i_Column != 0)
-      sDataString.vConcat(","_Stz);
-    
-    // move to column data
-    aData = (Stz*)aColumnDatum(i_Column);
-    
-    s17KB s;
-    DtmLib::vSprintQuotes(pColumn->eDatumType(), s, aData, pColumn);
-    if (i_Column == 0)
-      sDataString.vCopy(s);
-    else
-      sDataString.vConcat(s);
-  }
-  
-}
 
 /*----------------------------------------------------------------------------*/
 /* convert row to binary string                                               */
@@ -112,7 +80,6 @@ void Row::vAsBinaryStringVLQ(s48K& sDataString, ColumnVec* pColVec)
     else
       sDataString.vConcat(s);
   }
-  
   
 }
 

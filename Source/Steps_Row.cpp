@@ -11,42 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Row(void)
 {
-  vAddStep("row.asString"_Stz,         &Step::vRowString);
   vAddStep("row.asEscapedString"_Stz,  &Step::vRowEscapedString);
-}
-
-/*----------------------------------------------------------------------------*/
-/* return row as a string                                                     */
-/*----------------------------------------------------------------------------*/
-void Step::vRowString(MP_Task mpTask)
-{
-  ENTRY("vRowString"_Stz);
-  
-  ASSERT(0);
-  
-  /*
-  Object* pPtrRow;
-  Object* pPtrTable;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrRow) )
-    THROW_INVALID_DSTACK("row.asString"_Stz);
-  
-  Entry* pRow = _pEntry(pPtrRow);
-  ASSERT(CN_ENTRY == pRow->eClass());
-         
-  if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-     THROW_INVALID_DSTACK("row.asString"_Stz);
- 
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  s48K sRow;
-  Row* aRow = pRow->aRow();
-  aRow->vAsBinaryString(sRow,pTable->pColumnVec());
-  
-  mpTask->m_pDataStack->vPushS48K(sRow);
-  */
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

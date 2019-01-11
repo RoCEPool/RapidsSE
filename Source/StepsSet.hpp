@@ -790,7 +790,6 @@
   static void vRbCursorTableStore(Tasks::MP_Task mpTask);
 
   // row
-  static void vRowString(Tasks::MP_Task mpTask);
   static void vRowEscapedString(Tasks::MP_Task mpTask);
 
   // rowBuffer
