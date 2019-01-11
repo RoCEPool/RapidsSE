@@ -35,9 +35,9 @@ i8 Value::nSize(void)
 {
   i8 nBytes = 0;
   
-  eCN eClass = this->eClass();
+  eCN eClassNo = this->eClass();
   
-  switch (eClass) {
+  switch (eClassNo) {
       
     case CN_INTVAL: {
       IntVal* aIntVal = _aIntVal(this);
@@ -64,7 +64,8 @@ i8 Value::nSize(void)
     }
       
     default:
-      vTrace("Value::nSize -- invalid eClass %lld"_Stz,eClass);
+      vTrace("Value::nSize -- invalid eClass %lld %s\n"_Stz,
+             eClassNo,aCN[eClassNo]);
       NEVER_REACH;
       break;
   }
