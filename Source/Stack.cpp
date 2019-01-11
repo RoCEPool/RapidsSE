@@ -1111,20 +1111,6 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* pop top by given bytes                                                     */
-/*----------------------------------------------------------------------------*/
-inline void Stack::vPopBy(i8 nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  char* aTop = reinterpret_cast<char*>(m_aTop);
-  
-  aTop += nBytes;
-  
-  m_aTop = reinterpret_cast<Value*>(aTop);
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop value from value stack                                                 */
 /*----------------------------------------------------------------------------*/
 void Stack::vPopVal(Value* aValue)

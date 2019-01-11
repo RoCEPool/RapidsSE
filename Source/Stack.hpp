@@ -113,8 +113,9 @@ namespace Forth
   
     i8 nValues(void);
   
-  private:
+  public:
     void vPopBy(i8 nBytes);
+  private:
     void vPopVal(Value* aValue);
     void vPushBy(i8 nBytes);
     void vPushVal(Value* aValue);
@@ -124,6 +125,20 @@ namespace Forth
     Footer* aFooter(void);
     Footer* aHazard(void);
   };
+  
+  /*----------------------------------------------------------------------------*/
+  /* pop top by given bytes                                                     */
+  /*----------------------------------------------------------------------------*/
+  inline void Stack::vPopBy(i8 nBytes)
+  {
+    _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+    
+    char* aTop = reinterpret_cast<char*>(m_aTop);
+    
+    aTop += nBytes;
+    
+    m_aTop = reinterpret_cast<Value*>(aTop);
+  }
   
   /*----------------------------------------------------------------------------*/
   /* pop value from data stack  as integer                                      */
