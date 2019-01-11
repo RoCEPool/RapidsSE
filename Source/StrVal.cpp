@@ -36,78 +36,89 @@ void* StrVal::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StrVal::operator new(size_t, StrVal* aThis)
-{
-  return aThis;
-}
+//void* StrVal::operator new(size_t, StrVal* aThis)
+//{
+//  return aThis;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(eCN eClassNo)
-: Value(eClassNo)
+StrVal::StrVal(void)
+: Value(CN_STRVAL)
 {
   _precondition_(_MAGIC_);
+  
+  vFatal("fatal: StrVal class cannot be a local variable\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(eCN eClassNo, i8 nBytes)
-: Value(eClassNo)
-{
-  _precondition_(_MAGIC_,eClassNo);
-  
-  m_xWsp.vUsed(nBytes);
-  
-#ifdef __DEBUG_CHECKS
-  m_xWsp.vZero(eClassNo);
-#endif
-  
-  *m_xWsp.aArea() = '\0';
-}
+//StrVal::StrVal(eCN eClassNo)
+//: Value(eClassNo)
+//{
+//  _precondition_(_MAGIC_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(StrVal* aThis)
-: Value(CN_STRVAL)
-{
-  _precondition_(_MAGIC_,CN_STRVAL);
-  
-  ASSERT(this == aThis);
-  
-  _checkInitialised_(CN_STRVAL);
-}
+//StrVal::StrVal(eCN eClassNo, i8 nBytes)
+//: Value(eClassNo)
+//{
+//  _precondition_(_MAGIC_,eClassNo);
+//
+//  m_xWsp.vUsed(nBytes);
+//
+//#ifdef __DEBUG_CHECKS
+//  m_xWsp.vZero(eClassNo);
+//#endif
+//
+//  *m_xWsp.aArea() = '\0';
+//}
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(StrVal* aThis, i8 nBytes)
-: Value(CN_STRVAL)
-{
-  _precondition_(_MAGIC_,CN_STRVAL);
-  
-  ASSERT(this == aThis);
-  
-  m_xWsp.vUsed(nBytes);
-  
-#ifdef __DEBUG_CHECKS
-  m_xWsp.vZero(CN_STRVAL);
-#endif
-  
-  *m_xWsp.aArea() = '\0';
+//StrVal::StrVal(StrVal* aThis)
+//: Value(CN_STRVAL)
+//{
+//  _precondition_(_MAGIC_,CN_STRVAL);
+//
+//  ASSERT(this == aThis);
+//
+//  _checkInitialised_(CN_STRVAL);
+//}
 
-  _checkInitialised_(CN_STRVAL);
-}
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+//StrVal::StrVal(StrVal* aThis, i8 nBytes)
+//: Value(CN_STRVAL)
+//{
+//  _precondition_(_MAGIC_,CN_STRVAL);
+//
+//  ASSERT(this == aThis);
+//
+//  m_xWsp.vUsed(nBytes);
+//
+//#ifdef __DEBUG_CHECKS
+//  m_xWsp.vZero(CN_STRVAL);
+//#endif
+//
+//  *m_xWsp.aArea() = '\0';
+//
+//  _checkInitialised_(CN_STRVAL);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-StrVal::~StrVal(void) noexcept(false)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-}
+//StrVal::~StrVal(void) noexcept(false)
+//{
+//  _precondition_(_MAGIC_,_FOOTER_);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get address of Stz area                                                    */
