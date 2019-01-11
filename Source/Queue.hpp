@@ -28,7 +28,7 @@ namespace Structures
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    bool  bAppend(Value* pValue);
+    bool  bAppend(Value* aValue);
     i8    iCount(void);
     void  vContentDump(Stz* aTab);
     void  vFinalize(void);

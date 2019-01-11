@@ -73,7 +73,7 @@ Queue::~Queue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append value to this queue                                                 */
 /*----------------------------------------------------------------------------*/
-bool Queue::bAppend(Value* pValue)
+bool Queue::bAppend(Value* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
@@ -86,11 +86,11 @@ bool Queue::bAppend(Value* pValue)
   }
 
   // atempt to add into
-  bool bAppended = m_pEndBuffer->bAppend(pValue);
+  bool bAppended = m_pEndBuffer->bAppend(aValue);
   
   if ( ! bAppended ) {
     vExpand();
-    bool b = m_pEndBuffer->bAppend(pValue);
+    bool b = m_pEndBuffer->bAppend(aValue);
     ASSERT(b);
   }
   

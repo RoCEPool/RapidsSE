@@ -30,7 +30,7 @@ namespace Structures
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    bool     bAppend(Value* pValue);
+    bool     bAppend(Value* aValue);
     i8       iCount(void);
     void     vContentDump(Stz* aTab);
     QueueBuffer* pNext(void);
@@ -39,7 +39,7 @@ namespace Structures
 
   private:
     Value*   aFirstValue(void);
-    Value*   aNextValue(Value* pValue);
+    Value*   aNextValue(Value* aValue);
     void     vVerify(void);
   };
   

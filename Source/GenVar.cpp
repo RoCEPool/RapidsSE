@@ -149,15 +149,15 @@ void GenVar::operator =(Object* pPtr)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a pointer into workspace                                       */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Value* pPtr)
+void GenVar::operator =(Value* aPtr)
 {
-  PtrVal* pNestedPtrVal = (PtrVal*)aNestedValue();
+  PtrVal* aNestedPtrVal = (PtrVal*)aNestedValue();
   
   // set nested class
-  pNestedPtrVal->vSetClass(CN_PTRVAL);
+  aNestedPtrVal->vSetClass(CN_PTRVAL);
   
   // assign ptr into the nested ptrval
-  *pNestedPtrVal = pPtr;
+  *aNestedPtrVal = aPtr;
 }
 
 /*----------------------------------------------------------------------------*/

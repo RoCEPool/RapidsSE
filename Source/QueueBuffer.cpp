@@ -66,18 +66,18 @@ QueueBuffer::~QueueBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append value to this queue                                                 */
 /*----------------------------------------------------------------------------*/
-bool QueueBuffer::bAppend(Value* pValue)
+bool QueueBuffer::bAppend(Value* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  i8 nBytes = pValue->nSize();
+  i8 nBytes = aValue->nSize();
   
   Stz* aFinalByteOfValue = pAdd<Stz*>(m_aNextFree,nBytes-1);
   
   if (aFinalByteOfValue > Buffer::aLastUsableByte())
     return false;
   
-  MemLib::vCopy(m_aNextFree,pValue,nBytes,CN_QUEUEBUFFER);
+  MemLib::vCopy(m_aNextFree,aValue,nBytes,CN_QUEUEBUFFER);
   
   m_aNextFree = pAdd<Value*>(m_aNextFree,nBytes);
   
@@ -199,13 +199,13 @@ Value* QueueBuffer::aFirstValue(void)
 /*----------------------------------------------------------------------------*/
 /* next value in this qbuffer                                                 */
 /*----------------------------------------------------------------------------*/
-Value* QueueBuffer::aNextValue(Value* pValue)
+Value* QueueBuffer::aNextValue(Value* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  i8 nBytes = pValue->nSize();
+  i8 nBytes = aValue->nSize();
   
-  Value* aNextValue = pAdd<Value*>(pValue,nBytes);
+  Value* aNextValue = pAdd<Value*>(aValue,nBytes);
   
   if (aNextValue < m_aNextFree)
     return aNextValue;
