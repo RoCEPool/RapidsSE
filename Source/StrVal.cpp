@@ -15,10 +15,7 @@ StrVal* Values::_aStrVal(void* aAddr)
 {
   StrVal* aStrVal = reinterpret_cast<StrVal*>(aAddr);
   
-  RASSERT( ! aStrVal
-          || CN_STRVAL == aStrVal->eClass()
-          || CN_STRVAR == aStrVal->eClass()
-          );  
+  RASSERT( ! aStrVal || CN_STRVAL == aStrVal->eClass() );
   
   return aStrVal;
 }
