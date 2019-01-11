@@ -4,6 +4,12 @@
 
 #include "Forth.h"
 
+
+// Note: to optimise stack operations look at directly using pDataStack->m_aTop
+//       refer to Step::vFlowJumpFalse
+ 
+ 
+
 /*----------------------------------------------------------------------------*/
 /*-- Lifecycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -161,8 +167,8 @@ void Stack::vDiscard(void)
   //m_xHazard.vAssertFooter();
   _hazard_();
   
-  Value* pValue = reinterpret_cast<Value*>(m_aTop);
-  i8 iSize = pValue->nSize();
+  Value* aValue = reinterpret_cast<Value*>(m_aTop);
+  i8 iSize = aValue->nSize();
   
   vPopBy(iSize);
   m_nValues--;
@@ -194,8 +200,8 @@ bool Stack::bGuard(eCN eClass0)
   if (nValues() < 1)
     return false;
   
-  Value* pValue0 = aPeekValue(0);
-  if (eClass0 != pValue0->eClass())
+  Value* aValue0 = aPeekValue(0);
+  if (eClass0 != aValue0->eClass())
     return false;
   
   return true;
@@ -211,12 +217,12 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
   if (nValues() < 2)
     return false;
   
-  Value* pValue0 = aPeekValue(0);
-  if (eClass0 != pValue0->eClass())
+  Value* aValue0 = aPeekValue(0);
+  if (eClass0 != aValue0->eClass())
     return false;
   
-  Value* pValue1 = aPeekValue(1);
-  if (eClass1 != pValue1->eClass())
+  Value* aValue1 = aPeekValue(1);
+  if (eClass1 != aValue1->eClass())
     return false;
   
   return true;
@@ -232,16 +238,16 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
   if (nValues() < 3)
     return false;
   
-  Value* pValue0 = aPeekValue(0);
-  if (eClass0 != pValue0->eClass())
+  Value* aValue0 = aPeekValue(0);
+  if (eClass0 != aValue0->eClass())
     return false;
   
-  Value* pValue1 = aPeekValue(1);
-  if (eClass1 != pValue1->eClass())
+  Value* aValue1 = aPeekValue(1);
+  if (eClass1 != aValue1->eClass())
     return false;
   
-  Value* pValue2 = aPeekValue(2);
-  if (eClass2 != pValue2->eClass())
+  Value* aValue2 = aPeekValue(2);
+  if (eClass2 != aValue2->eClass())
     return false;
   
   return true;
@@ -254,9 +260,9 @@ Value* Stack::aPeekValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* pValue = reinterpret_cast<Value*>(m_aTop);
+  Value* aValue = reinterpret_cast<Value*>(m_aTop);
   
-  return pValue;
+  return aValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -266,15 +272,15 @@ Value* Stack::aPeekValue(i8 i_Value)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* pValue = aPeekValue();
+  Value* aValue = aPeekValue();
   while (i_Value--) {
-    char* aAddress = reinterpret_cast<char*>(pValue);
-    i8 iSize = pValue->nSize();
+    char* aAddress = reinterpret_cast<char*>(aValue);
+    i8 iSize = aValue->nSize();
     aAddress += iSize;
-    pValue = reinterpret_cast<Value*>(aAddress);
+    aValue = reinterpret_cast<Value*>(aAddress);
   }
   
-  return pValue;
+  return aValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -284,13 +290,13 @@ void Stack::vPeekValue(i8 i_Value, GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* pPeekedValue = aPeekValue(i_Value);
+  Value* aPeekedValue = aPeekValue(i_Value);
   
-  i8 iSize = pPeekedValue->nSize();
+  i8 iSize = aPeekedValue->nSize();
   
   //vTrace("Peek: %lld %p %lld\n"_Stz,iNthValue,pPeekedValue,iSize);
   
-  MemLib::vCopy(xVariable.aNestedValue(),pPeekedValue,iSize,CN_STACK);
+  MemLib::vCopy(xVariable.aNestedValue(),aPeekedValue,iSize,CN_STACK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -300,9 +306,9 @@ bool Stack::bPeekZero(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* pValue = aPeekValue();
+  Value* aValue = aPeekValue();
   
-  if (CN_INTVAL == pValue->eClass() && 0 == _aIntVal(pValue)->iInt())
+  if (CN_INTVAL == aValue->eClass() && 0 == _aIntVal(aValue)->iInt())
     return true;
   
   return false;
@@ -830,21 +836,21 @@ bool Stack::bPopAsInt_Quick(i8& iArg)
     return false;
   
   // get pointer to value on the top of the stack
-  Value* pTop = aPeekValue();
+  Value* aTopValue = aPeekValue();
 
   // discard the value
   vDiscard();
 
-  eCN eClassNo = pTop->eClass();
+  eCN eClassNo = aTopValue->eClass();
   
   switch (eClassNo) {
       
     case Base::CN_INTVAL:
-      iArg = _aIntVal(pTop)->iInt();
+      iArg = _aIntVal(aTopValue)->iInt();
       return true;
       
     case Base::CN_PTRVAL:
-      iArg = _aPtrVal(pTop)->pObj() ? 1 : 0;
+      iArg = _aPtrVal(aTopValue)->pObj() ? 1 : 0;
       return true;
       
     default:
@@ -880,9 +886,9 @@ void Stack::vPokeGenVar(i8 i_Value, GenVar& xGenVar)
   
   i8 iSize = xGenVar.aNestedValue()->nSize();
   
-  Value* pPokeAddress = aPeekValue(i_Value);
+  Value* aPokeAddress = aPeekValue(i_Value);
   
-  MemLib::vCopy(pPokeAddress,xGenVar.aNestedValue(),iSize,CN_STACK);
+  MemLib::vCopy(aPokeAddress,xGenVar.aNestedValue(),iSize,CN_STACK);
 }
 
 /*----------------------------------------------------------------------------*/

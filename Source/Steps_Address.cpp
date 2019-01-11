@@ -54,23 +54,23 @@ void Step::vAddressFetch(MP_Task mpTask)
   
   eCN eClass = pObject->eClass();
   
-  Value* pValue = reinterpret_cast<Value*>(pObject);
+  Value* aValue = reinterpret_cast<Value*>(pObject);
   
   switch (eClass) {
     case CN_INTVAL:
-      xValFetched = _aIntVal(pValue)->iInt();
+      xValFetched = _aIntVal(aValue)->iInt();
       break;
       
     case CN_STRVAL:
-      xValFetched = _aStrVal(pValue);
+      xValFetched = _aStrVal(aValue);
       break;
       
     case CN_PTRVAL:
-      xValFetched = _aPtrVal(pValue)->pObj();
+      xValFetched = _aPtrVal(aValue)->pObj();
       break;
       
     case CN_IPVAL:
-      xValFetched = (Object*)_aIpVal(pValue)->aIpPtr();
+      xValFetched = (Object*)_aIpVal(aValue)->aIpPtr();
       break;
   
     default:
@@ -97,26 +97,26 @@ void Step::vAddressStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xValStored) )
     THROW_INVALID_DSTACK("!"_Stz);
   
-  Value* pValue = reinterpret_cast<Value*>(pObject);
+  Value* aValue = reinterpret_cast<Value*>(pObject);
   
   eCN eClass = pObject->eClass();
   
   switch (eClass) {
     case CN_INTVAL:
-      *_aIntVal(pValue) = _aIntVal(xValStored.aNestedValue())->iInt();
+      *_aIntVal(aValue) = _aIntVal(xValStored.aNestedValue())->iInt();
       break;
       
     case CN_STRVAR:
     case CN_STRVAL:
-      _aStrVal(pValue)->vAssign( _aStrVal(xValStored.aNestedValue())->aStz() );
+      _aStrVal(aValue)->vAssign( _aStrVal(xValStored.aNestedValue())->aStz() );
       break;
       
     case CN_PTRVAL:
-      *_aPtrVal(pValue) = _aPtrVal(xValStored.aNestedValue())->pObj();
+      *_aPtrVal(aValue) = _aPtrVal(xValStored.aNestedValue())->pObj();
       break;
       
     case CN_IPVAL:
-      *_aIpVal(pValue) = _aIpVal(xValStored.aNestedValue())->aIpPtr();
+      *_aIpVal(aValue) = _aIpVal(xValStored.aNestedValue())->aIpPtr();
       break;
   
     default:

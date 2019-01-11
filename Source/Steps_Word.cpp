@@ -546,17 +546,17 @@ void Step::vSee(MP_Task mpTask)
       
       aDoesCell++;
       
-      Value* pValue = reinterpret_cast<Value*>(aDoesCell);
+      Value* aValue = reinterpret_cast<Value*>(aDoesCell);
       
-      if (CN_STRVAL == pValue->eClass()) {
-        vTrace(" \"%s\"\n"_Stz,_aStrVal(pValue)->aChar());
+      if (CN_STRVAL == aValue->eClass()) {
+        vTrace(" \"%s\"\n"_Stz,_aStrVal(aValue)->aChar());
       }
       else {
-        pValue->vToString(sString);
+        aValue->vToString(sString);
         vTrace(" %s\n"_Stz,sString.aChar());
       }
       
-      i8 iBytes = pValue->nSize();
+      i8 iBytes = aValue->nSize();
       aDoesCell = pAdd<Cell*>(aDoesCell,iBytes);
       
       continue;
