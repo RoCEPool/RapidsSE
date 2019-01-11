@@ -19,16 +19,16 @@ namespace DBobjects
   
     char* aEachDatum (Column* pColumn, i8& nBytes, char** aaCursor);
  
-    bool bLessThan(KeyVal* pKeyVal, IdxColVec* pColVec);
-    bool bLessEqual(KeyVal* pKeyVal, IdxColVec* pColVec);
-    bool bEqualTo(KeyVal* pKeyVal, IdxColVec* pColVec);
-    bool bNotEqual(KeyVal* pKeyVal, IdxColVec* pColVec);
-    bool bGreaterEqual(KeyVal* pKeyVal, IdxColVec* pColVec);
-    bool bGreaterThan(KeyVal* pKeyVal, IdxColVec* pColVec);
+    bool bLessThan(KeyVal* aKeyVal, IdxColVec* pColVec);
+    bool bLessEqual(KeyVal* aKeyVal, IdxColVec* pColVec);
+    bool bEqualTo(KeyVal* aKeyVal, IdxColVec* pColVec);
+    bool bNotEqual(KeyVal* aKeyVal, IdxColVec* pColVec);
+    bool bGreaterEqual(KeyVal* aKeyVal, IdxColVec* pColVec);
+    bool bGreaterThan(KeyVal* aKeyVal, IdxColVec* pColVec);
   
-    i8 iCmp(KeyVal* pKeyVal, IdxColVec* pColVec);
+    i8 iCmp(KeyVal* aKeyVal, IdxColVec* pColVec);
   
-    bool bMatches(KeyVal* pKeyVal, IdxColVec* pColVec, RelOpAry* pOpAry);
+    bool bMatches(KeyVal* aKeyVal, IdxColVec* pColVec, RelOpAry* pOpAry);
     void vShow(IdxColVec* pColVec);
   
     Key& xKey(void);

@@ -148,7 +148,7 @@ void KeyTest::vTest(void)
   
   s256 sKey;
   
-  StrVal* pStrVal;
+  StrVal* aStrVal;
   
   // generate random keyVal's and add to keyVec
   for (i8 i_Key = 0; i_Key < 10; i_Key++) {
@@ -157,7 +157,7 @@ void KeyTest::vTest(void)
     Stz* ptr = sKey.aStz();
     
     xVariable = ptr;
-    pStrVal = _aStrVal(xVariable.aNestedValue());
+    aStrVal = _aStrVal(xVariable.aNestedValue());
     
     xKeyWrk.vReset();
     xKeyWrk.vAddDatum(xVariable, pCol);
@@ -179,7 +179,7 @@ void KeyTest::vTest(void)
   vTrace("Find Key value < %s\n"_Stz, ptr);
   
   xVariable = ptr;
-  pStrVal = _aStrVal(xVariable.aNestedValue());
+  aStrVal = _aStrVal(xVariable.aNestedValue());
   
   xKeyWrk.vReset();
   xKeyWrk.vAddDatum(xVariable, pCol);
@@ -216,7 +216,7 @@ void KeyTest::vTest(void)
   vTrace("Find Key value >= %s\n"_Stz, ptr);
   
   xVariable = ptr;
-  pStrVal = _aStrVal(xVariable.aNestedValue());
+  aStrVal = _aStrVal(xVariable.aNestedValue());
   
   xKeyWrk.vReset();
   xKeyWrk.vAddDatum(xVariable, pCol);
@@ -403,7 +403,7 @@ void KeyTest::vTest(void)
       Random::vString(sKey,7);
       Stz* ptr = sKey.aStz();
       xVariable = ptr;
-      pStrVal = _aStrVal(xVariable.aNestedValue());
+      aStrVal = _aStrVal(xVariable.aNestedValue());
       xKeyWrk.vAddDatum(xVariable, pCol1);
       //xKeyWrk.vShow();
       
@@ -427,12 +427,12 @@ void KeyTest::vTest(void)
   Random::vString(sKey,7);
   ptr = sKey.aStz();
   xVariable = ptr;
-  pStrVal = _aStrVal(xVariable.aNestedValue());
+  aStrVal = _aStrVal(xVariable.aNestedValue());
   xKeyWrk.vAddDatum(xVariable, pCol1);
   
   aKeyValFind = new KeyVal(xKeyWrk);
   
-  vTrace("Find Key value >= 2,%s\n"_Stz, pStrVal->aStz());
+  vTrace("Find Key value >= 2,%s\n"_Stz, aStrVal->aStz());
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_GREATER_EQUAL);
@@ -453,11 +453,11 @@ void KeyTest::vTest(void)
     //aCursor = aKeyVal->m_xKey.aWspArea();
     //v = *(i8*)aKeyVal->aElement(pCol,nBytes,&aCursor);
     aKeyVal->vShow(pColVec);
-    vTrace("( >= 2,%s)\n"_Stz, pStrVal->aStz());
+    vTrace("( >= 2,%s)\n"_Stz, aStrVal->aStz());
   }
   
   
-  vTrace("Find Key value <= 2,%s\n"_Stz, pStrVal->aStz());
+  vTrace("Find Key value <= 2,%s\n"_Stz, aStrVal->aStz());
   
   pOpAryFind->vClear();
   pOpAryFind->vAdd(RO_LESS_EQUAL);
@@ -478,7 +478,7 @@ void KeyTest::vTest(void)
     //aCursor = aKeyVal->m_xKey.aWspArea();
     //v = *(i8*)aKeyVal->aElement(pCol,nBytes,&aCursor);
     aKeyVal->vShow(pColVec);
-    vTrace("( <= 2,%s)\n"_Stz, pStrVal->aStz());
+    vTrace("( <= 2,%s)\n"_Stz, aStrVal->aStz());
   }
 
   vTrace("\n\nEnd KeyTest**********************************************\n"_Stz);

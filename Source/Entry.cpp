@@ -472,20 +472,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
 void Entry::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
-  
-//  StrVal* pStr = (StrVal*)aVblData();
-//  
-//  vTrace("Entry %p: ThisBytes %lld %s (%lld bytes) %s\n"_Stz,
-//         this,
-//         //m_iTxId,
-//         m_nThisBytes,
-//         aVblData(),
-//         StrLib::iSize(aVblData()),
-//         pStr->s()
-//         );
-  
-  //StrVal* pStrVal = reinterpret_cast<StrVal*>(aRow());
-  
+    
   vTrace("Entry %p: ThisBytes %lld %p (%lld bytes) \n"_Stz,
          this,
          //m_iTxId,

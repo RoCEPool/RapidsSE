@@ -47,7 +47,7 @@ void Step::vStrAlgebra(MP_Task mpTask)
   s32 xString("A test"_Stz);
   
   GenVar xVariable;
-  StrVal* pStrVal = _aStrVal(&xVariable);
+  StrVal* aStrVal = _aStrVal(&xVariable);
   
   EXIT();
 }

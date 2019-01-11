@@ -190,8 +190,8 @@ void Step::vDstackDump(MP_Task mpTask)
   eCN eClass = xVariable.eClass();
   
   if (CN_PTRVAL == eClass) {
-    PtrVal* pPtrVal = _aPtrVal(&xVariable);
-    Object* pObject = pPtrVal->pObj();
+    PtrVal* aPtrVal = _aPtrVal(&xVariable);
+    Object* pObject = aPtrVal->pObj();
     eCN ePtdClass   = pObject->eClass();
     vTrace("[%s] %s (%s %s)\n"_Stz,
            mpTask->aJobName(),
