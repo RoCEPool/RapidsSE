@@ -32,16 +32,10 @@ namespace Values
   
     operator Stz&(void);
     operator Stz*(void);
-
-    void operator =(i8);
-    void operator =(StrVal& rArg);
-    void operator =(StrVal* aArg);
-    void operator =(Stz*);
   
     i8    nAreaSize(void);
     void  vAreaSize(void);
     void  vAssign(Stz* aStr);
-    void  vCopy(Stz* aStr);
     bool  bEqual(Stz* aArg);
 
     i8    iLength(void);

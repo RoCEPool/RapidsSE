@@ -72,50 +72,6 @@ StrVal::operator Stz&(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* = operator                                                                 */
-/*----------------------------------------------------------------------------*/
-void StrVal::operator =(i8 iArg)
-{
-  StrLib::wToString(iArg,aChar());
-}
-
-/*----------------------------------------------------------------------------*/
-/* assignment operator                                                        */
-/*----------------------------------------------------------------------------*/
-void StrVal::operator =(StrVal& rArg)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  vCopy(rArg);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* assignment operator                                                        */
-/*----------------------------------------------------------------------------*/
-void StrVal::operator =(StrVal* aArg)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  vCopy(aArg->aStz());
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* assignment operator                                                        */
-/*----------------------------------------------------------------------------*/
-void StrVal::operator =(Stz* aStr)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  vCopy(aStr);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size of data area                                                      */
 /*----------------------------------------------------------------------------*/
 i8 StrVal::nAreaSize(void)
@@ -147,20 +103,8 @@ void StrVal::vAssign(Stz* aStr)
   //ASSERT(m_nAreaSize);
   
   StrLib::vCopy(aChar(),aStr->aChar());
-  
-  vAreaSize();
-}
 
-/*----------------------------------------------------------------------------*/
-/* copy given Stz                                                             */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCopy(Stz* aStr)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  StrLib::vCopyLen(aChar(),aStr->aChar(),m_xWsp.nSize()-1);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
+  vAreaSize();
 }
 
 /*----------------------------------------------------------------------------*/

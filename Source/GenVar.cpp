@@ -168,6 +168,7 @@ void GenVar::operator =(Stz* pStr)
   StrVal* aNestedStrVal = (StrVal*)aNestedValue();
   
   // set nested class
+  aNestedStrVal->vSetMagic();
   aNestedStrVal->vSetClass(CN_STRVAL);
   
   aNestedStrVal->vAssign(pStr);
