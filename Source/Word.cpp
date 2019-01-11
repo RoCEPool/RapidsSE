@@ -112,7 +112,7 @@ Word::~Word(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot data space                                                           */
 /*----------------------------------------------------------------------------*/
-char* Word::pAllot(i8 nBytes)
+char* Word::aAllot(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -132,18 +132,18 @@ void Word::vAppend(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  void* aAddress = pAppend(pCell);
+  void* aAddress = aAppend(pCell);
   ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append a pointer to cell                                                   */
 /*----------------------------------------------------------------------------*/
-void* Word::pAppend(Cell* pCell)
+void* Word::aAppend(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pAllottedCell = (Cell*)pAllot(sizeof(pCell));
+  Cell* pAllottedCell = (Cell*)aAllot(sizeof(pCell));
   
   pAllottedCell->m_pJumpTo = pCell;
   
@@ -157,74 +157,74 @@ void Word::vAppend(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  void* aAddress = pAppend(iInt);
+  void* aAddress = aAppend(iInt);
   ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append an i8 integer                                                       */
 /*----------------------------------------------------------------------------*/
-void* Word::pAppend(i8 iInt)
+void* Word::aAppend(i8 iInt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  i8* pAllottedInt = (i8*)pAllot(sizeof(i8));
+  i8* aAllottedInt = (i8*)aAllot(sizeof(i8));
   
-  *pAllottedInt = iInt;
+  *aAllottedInt = iInt;
   
-  return pAllottedInt;
+  return aAllottedInt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(Value* pValue)
+void Word::vAppend(Value* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  void* aAddress = pAppend(pValue);
+  void* aAddress = aAppend(aValue);
   ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
-void* Word::pAppend(Value* pValue)
+void* Word::aAppend(Value* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  i8 iSize = pValue->nSize();
+  i8 iSize = aValue->nSize();
   
-  char* pValueAddress = pAllot(iSize);
+  char* aValueAddress = aAllot(iSize);
   
-  MemLib::vCopy(pValueAddress,pValue,iSize,CN_WORD);
+  MemLib::vCopy(aValueAddress,aValue,iSize,CN_WORD);
   
-  return pValueAddress;
+  return aValueAddress;
 }
 
 /*----------------------------------------------------------------------------*/
 /* append address of pointer to task step                                     */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(TaskStep* ppCalledWord)
+void Word::vAppend(TaskStep* aTaskStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  void* aAddress = pAppend(ppCalledWord);
+  void* aAddress = aAppend(aTaskStep);
   ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append address of pointer to task step                                     */
 /*----------------------------------------------------------------------------*/
-void* Word::pAppend(TaskStep* ppCalledWord)
+void* Word::aAppend(TaskStep* aTaskStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  TaskStep** pppCalledWord = (TaskStep**)pAllot(sizeof(TaskStep*));
+  TaskStep** aaTaskStep = (TaskStep**)aAllot(sizeof(TaskStep*));
 
-  *pppCalledWord = ppCalledWord;
+  *aaTaskStep = aTaskStep;
 
-  return pppCalledWord;
+  return aaTaskStep;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -372,11 +372,11 @@ void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word                                                  */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWord)
+void Word::vEncode(Stz* aWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Word* pCalledWord = gpAttachMap->m_xMainDic.pFindWord(aWord);
+  Word* pCalledWord = gpAttachMap->m_xMainDic.pFindWord(aWordNm);
   ASSERT(pCalledWord);
   
   vAppend(pCalledWord->ppEntryStep());
@@ -385,11 +385,11 @@ void Word::vEncode(Stz* aWord)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a cell* argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWord, Cell* pCell)
+void Word::vEncode(Stz* aWordNm, Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vEncode(aWord);
+  vEncode(aWordNm);
   
   vAppend(pCell);
 }
@@ -397,38 +397,38 @@ void Word::vEncode(Stz* aWord, Cell* pCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWord, Value* pValue)
+void Word::vEncode(Stz* aWordNm, Value* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  vEncode(aWord);
+  vEncode(aWordNm);
     
-  vAppend(pValue);
+  vAppend(aValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWord, GenVar* pValWrk)
+void Word::vEncode(Stz* aWordNm, GenVar* pGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vEncode(aWord);
+  vEncode(aWordNm);
   
-  vAppend(pValWrk->pNestedValue());
+  vAppend(pGenVar->pNestedValue());
 }
 
 /*----------------------------------------------------------------------------*/
 /* encode call to named word which has a word* argument                       */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(Stz* aWord, Word* pWord)
+void Word::vEncode(Stz* aWordNm, Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   PtrVal xPtrWord;
   xPtrWord = pWord;
   
-  vEncode(aWord,&xPtrWord);
+  vEncode(aWordNm,&xPtrWord);
 }
 
 /*----------------------------------------------------------------------------*/

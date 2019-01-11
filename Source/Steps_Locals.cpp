@@ -64,7 +64,7 @@ void Step::vLocalStore(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locals| -- declare set of locals                                immediate  */
+/* locals| -- declare set of local variables                       immediate  */
 /*----------------------------------------------------------------------------*/
 void Step::vLocalsBar(MP_Task mpTask)
 {
@@ -78,7 +78,7 @@ ENTRY("vLocalsBar"_Stz);
   
   for (;;) {
     
-    // get name of local
+    // get name of local variable
     mpTask->m_pCompiler->m_pTokeniser->vNextToken();
     
     // end of locals declaration?
@@ -97,7 +97,7 @@ ENTRY("vLocalsBar"_Stz);
       pCurrentWord->vEncode("locals.push"_Stz);
     }
     
-    // create new word for local in current dictionary
+    // create new word for local variable in current dictionary
     Word* pWordLocal = new(pDic) Word(mpTask->m_pCompiler->m_pTokeniser->sToken());
     // ** do not set as current word **
     

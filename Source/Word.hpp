@@ -72,15 +72,15 @@ namespace Forth
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
-    char* pAllot(i8 iBytes);
-    void* pAppend(Cell* pCell);
+    char* aAllot(i8 iBytes);
+    void* aAppend(Cell* pCell);
     void  vAppend(Cell* pCell);
-    void* pAppend(i8 iInt);
+    void* aAppend(i8 iInt);
     void  vAppend(i8 iInt);
-    void* pAppend(TaskStep* ppStep);
-    void  vAppend(TaskStep* ppStep);
-    void* pAppend(Value* pValue);
-    void  vAppend(Value* pValue);
+    void* aAppend(TaskStep* aTaskStep);
+    void  vAppend(TaskStep* aTaskStep);
+    void* aAppend(Value* aValue);
+    void  vAppend(Value* aValue);
     void  vContentDump(void);
   
     char* aBodyArea(void);
@@ -94,11 +94,11 @@ namespace Forth
     void  vEntryStep(TaskStep pStep);
     TaskStep pEntryStep(void);
     TaskStep* ppEntryStep(void);
-    void  vEncode(Stz* aWord);
-    void  vEncode(Stz* aWord, Cell* pCell);
-    void  vEncode(Stz* aWord, Word* pWord);
-    void  vEncode(Stz* aWord, Value* pValue);
-    void  vEncode(Stz* aWord, GenVar* pValWrk);
+    void  vEncode(Stz* aWordNm);
+    void  vEncode(Stz* aWordNm, Cell* pCell);
+    void  vEncode(Stz* aWordNm, Word* pWord);
+    void  vEncode(Stz* aWordNm, Value* aValue);
+    void  vEncode(Stz* aWordNm, GenVar* pGenVar);
     void  vEncode(TaskStep* ppEntryStep);
     Cell* pFirstCell(void);
     bool  bHasCell(Cell* pCell);
