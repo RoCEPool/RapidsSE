@@ -124,7 +124,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Node();
   
   Step::vAddSteps_Object();
-  Step::vAddSteps_OpFrame();
   
   Step::vAddSteps_Persistence();
   Step::vAddSteps_PlanList();

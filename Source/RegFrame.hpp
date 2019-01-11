@@ -13,7 +13,6 @@ namespace Forth
     s32       m_sName;              // name of the reg frame
     RegFrame* m_pNext;              // nest frame in stack / list
     void*     m_pStackPtr;          // discard point (when in call stack)
-    Dic*      m_pOpDic;             // operator dic associated with this frame
     Register  m_xRegister[C_REGISTERS]; // set of registers
     
     // must be last
@@ -36,9 +35,6 @@ namespace Forth
 
     void*     pStackPtr(void);
     void      vStackPtr(void* pStackPtr);
-
-    Dic*      pOpDic(void);
-    void      vOpDic(Dic* pOpDic);
     
     Register* pRegister(i8 iReg);
     

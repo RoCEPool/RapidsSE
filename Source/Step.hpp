@@ -109,7 +109,6 @@ namespace Steps
     static void vAddSteps_Node(void);
   
     static void vAddSteps_Object(void);
-    static void vAddSteps_OpFrame(void);
   
     static void vAddSteps_PartitionScheduler(void);
     static void vAddSteps_Persistence(void);
