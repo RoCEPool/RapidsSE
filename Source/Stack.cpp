@@ -172,7 +172,7 @@ void Stack::vDiscard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* guard value stack                                                          */
+/* guard value stack has nValues on it                                        */
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuard(i8 iCount)
 {
@@ -185,7 +185,7 @@ bool Stack::bGuard(i8 iCount)
 }
 
 /*----------------------------------------------------------------------------*/
-/* guard value stack 1                                                        */
+/* guard top value on value stack has given class                             */
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuard(eCN eClass0)
 {
@@ -202,7 +202,7 @@ bool Stack::bGuard(eCN eClass0)
 }
 
 /*----------------------------------------------------------------------------*/
-/* guard value stack 2                                                        */
+/* guard top 2 values on value stack have given classes                       */
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuard(eCN eClass0, eCN eClass1)
 {
@@ -223,7 +223,7 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* guard value stack 3                                                        */
+/* guard top 3 values on value stack have given classes                       */
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 {
@@ -262,12 +262,12 @@ Value* Stack::aPeekValue(void)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
-Value* Stack::aPeekValue(i8 iNthValue)
+Value* Stack::aPeekValue(i8 i_Value)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   Value* pValue = aPeekValue();
-  while (iNthValue--) {
+  while (i_Value--) {
     char* aAddress = reinterpret_cast<char*>(pValue);
     i8 iSize = pValue->nSize();
     aAddress += iSize;
@@ -280,11 +280,11 @@ Value* Stack::aPeekValue(i8 iNthValue)
 /*----------------------------------------------------------------------------*/
 /* peek at given value on value stack                                         */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeekValue(i8 iNthValue, GenVar& xVariable)
+void Stack::vPeekValue(i8 i_Value, GenVar& xVariable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* pPeekedValue = aPeekValue(iNthValue);
+  Value* pPeekedValue = aPeekValue(i_Value);
   
   i8 iSize = pPeekedValue->nSize();
   
@@ -330,17 +330,32 @@ bool Stack::bPop(Cell*& pCell)
 /*----------------------------------------------------------------------------*/
 /* pop eCN from value stack                                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(eCN& iArg1)
+bool Stack::bPop(eCN& eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_INTVAL) )
     return false;
   
-  IntVal xIntVal1;
-  vPopVal(&xIntVal1);
+  IntVal xIntVal;
+  vPopVal(&xIntVal);
   
-  iArg1 = static_cast<eCN>(xIntVal1.iInt());
+  eClassNo = static_cast<eCN>(xIntVal.iInt());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from value stack into given variable                             */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPop(GenVar* pVariable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  vPopVal(pVariable->pNestedValueSelf());
   
   return true;
 }
@@ -348,29 +363,50 @@ bool Stack::bPop(eCN& iArg1)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar* pArg1)
+bool Stack::bPop(GenVar& xVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
     return false;
   
-  vPopVal(pArg1->pNestedValueSelf());
+  vPopVal(xVar.pNestedValueSelf());
   
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value from value stack                                                 */
+/* pop value, value from value stack                                          */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar& xArg1)
+bool Stack::bPop(GenVar& xVar1, GenVar& xVar2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuard(1) )
+  if ( ! bGuard(2) )
     return false;
   
-  vPopVal(xArg1.pNestedValueSelf());
+  vPopVal(xVar1.pNestedValueSelf());
+  
+  vPopVal(xVar2.pNestedValueSelf());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value, value, value from value stack                                   */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPop(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(3) )
+    return false;
+  
+  vPopVal(xVar1.pNestedValueSelf());
+  
+  vPopVal(xVar2.pNestedValueSelf());
+  
+  vPopVal(xVar3.pNestedValueSelf());
   
   return true;
 }
@@ -766,42 +802,6 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop value, value from value stack                                          */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar& pValue1, GenVar& pValue2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(2) )
-    return false;
-  
-  vPopVal(pValue1.pNestedValueSelf());
-  
-  vPopVal(pValue2.pNestedValueSelf());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value, value, value from value stack                                   */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPop(GenVar& pValue1, GenVar& pValue2, GenVar& pValue3)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(3) )
-    return false;
-  
-  vPopVal(pValue1.pNestedValueSelf());
-  
-  vPopVal(pValue2.pNestedValueSelf());
-  
-  vPopVal(pValue3.pNestedValueSelf());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop value from value stack  as integer                                     */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPopAsInt(i8& iArg1)
@@ -976,7 +976,7 @@ void Stack::vPushPointer(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push value onto value stack                                                */
+/* push pointer to register onto value stack                                  */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushRegister(Register* pRegister)
 {

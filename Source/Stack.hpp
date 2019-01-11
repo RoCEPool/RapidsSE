@@ -50,22 +50,22 @@ namespace Forth
   
     void vDiscard(void);
   
-    bool bGuard(i8 iCount);
+    bool bGuard(i8 nValues);
     bool bGuard(eCN eClass0);
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
     Value* aPeekValue(void);
-    Value* aPeekValue(i8 iNthValue);
-    void vPeekValue(i8 iNthValue, GenVar& xVariable);
+    Value* aPeekValue(i8 i_Value);
+    void vPeekValue(i8 i_Value, GenVar& xVariable);
     bool bPeekZero(void);
   
     bool bPop(Cell*& pCell);
-    bool bPop(eCN& eArg1);
-    bool bPop(GenVar* pArg1);
-    bool bPop(GenVar& xArg1);
-    bool bPop(GenVar& xArg1, GenVar& xArg2);
-    bool bPop(GenVar& xArg1, GenVar& xArg2, GenVar& xArg3);
+    bool bPop(eCN& eClassNo);
+    bool bPop(GenVar* pVariable);
+    bool bPop(GenVar& xVariable);
+    bool bPop(GenVar& xVar1, GenVar& xVar2);
+    bool bPop(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
     bool bPop(i8& iArg1);
     bool bPop(i8& iArg1, i8& iArg2);
     bool bPop(i8& iArg1, Object*& pObject);
@@ -116,8 +116,8 @@ namespace Forth
   public:
     void vPopBy(i8 nBytes);
   private:
-    void vPopVal(Value* aValue);
     void vPopReg(Register* aRegister);
+    void vPopVal(Value* aValue);
     void vPushBy(i8 nBytes);
     void vPushVal(Value* aValue);
     Value* aStackBase(void);
