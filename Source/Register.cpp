@@ -30,7 +30,7 @@ void* Register::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Register::Register(void)
-: Object(CN_VALREG)
+: Value(CN_VALREG)
 {
   _memZero_(m_xWsp.aArea(),C_WSP_REGISTER,CN_VALREG);
   

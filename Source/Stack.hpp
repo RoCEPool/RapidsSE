@@ -99,7 +99,7 @@ namespace Forth
     void vPushGenVar(GenVar& xVariable);
     void vPushI8(i8 iInt);
     void vPushPointer(Object* pObject);
-    void vPushRegister(Register* pValue);
+    void vPushRegister(Register* pRegister);
     void vPushS32(s32& s32);
     void vPushS256(s256& s256);
     void vPushS4K(s4K& s4K);
@@ -117,6 +117,7 @@ namespace Forth
     void vPopBy(i8 nBytes);
   private:
     void vPopVal(Value* aValue);
+    void vPopReg(Register* aRegister);
     void vPushBy(i8 nBytes);
     void vPushVal(Value* aValue);
     Value* aStackBase(void);

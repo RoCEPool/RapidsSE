@@ -37,7 +37,7 @@ void Step::vLocalFetch(MP_Task mpTask)
   
   Register* pRegister = mpTask->m_pLocalsFrame->pRegister(iLocal);
   
-  mpTask->m_pDataStack->vPushRegister(pRegister);
+  mpTask->m_pDataStack->vPushValue(pRegister);
   
   EXIT();
 }

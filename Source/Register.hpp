@@ -5,7 +5,7 @@
 
 namespace Forth
 {
-  class Register : public Object
+  class Register : public Value
   {
     static const i8 C_WSP_REGISTER = C_8KB;
     
@@ -13,7 +13,7 @@ namespace Forth
     WspFxd<C_WSP_REGISTER> m_xWsp; // workspace
 
     // must be last
-    Footer m_xFooter;
+    //Footer m_xFooter;
   
   public:
     void* operator new(size_t);
@@ -23,7 +23,7 @@ namespace Forth
     void operator =(Object* pPtr);
   
   private:
-    Footer* aFooter(void);
+    //Footer* aFooter(void);
   };
   
   Register* _pRegister(void* aAddr);

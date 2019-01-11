@@ -599,11 +599,8 @@ bool Stack::bPop(Register*& pRegister)
   if ( ! bGuard(1) )
     return false;
   
-  PtrVal xPtrVal;
-  vPopVal(&xPtrVal);
+  vPopReg(pRegister);
   
-  pRegister = (Register*)xPtrVal.pPtr();
-
   return true;
 }
 
@@ -1116,6 +1113,25 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* pop value from value stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Stack::vPopReg(Register* aRegister)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  //m_xHazard.vAssertFooter();
+  _hazard_();
+  
+  i8 iSize = aPeekValue()->nSize();
+  
+  MemLib::vCopy(aRegister,m_aTop,iSize,CN_STACK);
+  vPopBy(iSize);
+  m_nValues--;
+  
+  //m_xHazard.vAssertFooter();
+  _hazard_();
+}
 
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack                                                 */
