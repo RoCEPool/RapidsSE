@@ -114,8 +114,8 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
     switch(eClass) {
         
       case CN_IPVAL: {
-        IpVal* pIpVal = _pIpVal(pNestedValue);
-        Cell* aCell = pIpVal->pIpPtr();
+        IpVal* aIpVal = _aIpVal(pNestedValue);
+        Cell* aCell = aIpVal->aIpPtr();
         vTrace("[%s] [%2lld] [%s] %p\n"_Stz,aPrefix,iVal,aCN[eClass],aCell);
         break;
       }
@@ -322,7 +322,7 @@ bool Stack::bPop(Cell*& aCell)
   
   vPopVal(&xIpVal);
   
-  aCell = xIpVal.pIpPtr();
+  aCell = xIpVal.aIpPtr();
   
   return true;
 }

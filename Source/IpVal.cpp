@@ -57,7 +57,7 @@ i8 IpVal::nSize(void) const
 /*----------------------------------------------------------------------------*/
 /* get pVal                                                                   */
 /*----------------------------------------------------------------------------*/
-Cell* IpVal::pIpPtr(void) const
+Cell* IpVal::aIpPtr(void) const
 {
   return pPoolCheck<Cell*>(m_pPtr);
 }
