@@ -41,10 +41,7 @@ namespace Values
     i8    nAreaSize(void);
     void  vAreaSize(void);
     void  vAssign(Stz* aStr);
-    bool  bContains(Stz* aArg);
     void  vCopy(Stz* aStr);
-    bool  bEnds(Stz* aSuffix);
-    bool  bIsEqual(StrVal& sArg, i8 iCase);
     bool  bEqual(Stz* aArg);
 
     i8    iLength(void);

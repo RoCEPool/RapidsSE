@@ -152,14 +152,6 @@ void StrVal::vAssign(Stz* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bContains: test if arg is in substr                                        */
-/*----------------------------------------------------------------------------*/
-bool StrVal::bContains(Stz* aArg)
-{
-  return StrLib::bContains(aChar(),aArg->aChar());
-}
-
-/*----------------------------------------------------------------------------*/
 /* copy given Stz                                                             */
 /*----------------------------------------------------------------------------*/
 void StrVal::vCopy(Stz* aStr)
@@ -169,30 +161,6 @@ void StrVal::vCopy(Stz* aStr)
   StrLib::vCopyLen(aChar(),aStr->aChar(),m_xWsp.nSize()-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if string ends with given suffix                                      */
-/*----------------------------------------------------------------------------*/
-bool StrVal::bEnds(Stz* aSuffix)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  bool b = StrLib::bEnds(aChar(),aSuffix->aChar());
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is equal to given argument?                                                */
-/*----------------------------------------------------------------------------*/
-bool StrVal::bIsEqual(StrVal& sArg, i8 iCase)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  bool b = StrLib::bEqualTo(aChar(),sArg.aChar(),iCase);
-  
-  return b;
 }
 
 /*----------------------------------------------------------------------------*/
