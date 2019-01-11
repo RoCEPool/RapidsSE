@@ -5,19 +5,25 @@
 
 namespace Forth
 {
-  class Register : public Value
+  class Register : public Object
   {
     static const i8 C_WSP_REGISTER = C_8KB;
     
   private:
     WspFxd<C_WSP_REGISTER> m_xWsp; // workspace
 
+    // must be last
+    Footer m_xFooter;
+  
   public:
     void* operator new(size_t);
     Register(void);
     
     void operator =(i8 iInt);
     void operator =(Object* pPtr);
+  
+  private:
+    Footer* aFooter(void);
   };
   
   Register* _pRegister(void* aAddr);

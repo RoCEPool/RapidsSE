@@ -76,7 +76,7 @@ namespace Forth
     bool bPop(Object*& pObject, i8& iArg);
     bool bPop(Object*& pObject1, Object*& pObject2);
     bool bPop(Object*& pObject, GenVar& xVariable);
-    bool bPop(Register* pArg1);
+    bool bPop(Register*& pRegister);
     bool bPop(s32&  sArg1);
     bool bPop(s256& sArg1);
     bool bPop(s4K&  sArg1);

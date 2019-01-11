@@ -592,15 +592,18 @@ bool Stack::bPop(Object*& pObject, GenVar& xVariable)
 /*----------------------------------------------------------------------------*/
 /* pop register from value stack                                              */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Register* pArg1)
+bool Stack::bPop(Register*& pRegister)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
     return false;
   
-  vPopVal(pArg1);
+  PtrVal xPtrVal;
+  vPopVal(&xPtrVal);
   
+  pRegister = (Register*)xPtrVal.pPtr();
+
   return true;
 }
 
@@ -982,8 +985,12 @@ void Stack::vPushRegister(Register* pRegister)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(pRegister);
+  PtrVal xPtrObject;
   
+  xPtrObject = pRegister;
+  
+  vPushValue(xPtrObject);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
