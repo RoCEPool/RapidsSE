@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* translate environment variable                                             */
 /*----------------------------------------------------------------------------*/
-bool Env::bGet(s256& sName, s256& sValue)
+bool Env::bGet(s32& sName, s256& sValue)
 {
   char* aValue = getenv(sName.aChar());
   if ( ! aValue )

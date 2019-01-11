@@ -8,7 +8,7 @@ namespace System {
   class Env
   {
   public:
-    static bool bGet(s256& sName, s256& sValue);
+    static bool bGet(s32& sName, s256& sValue);
   };
 
 }

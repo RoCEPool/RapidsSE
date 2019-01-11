@@ -116,7 +116,7 @@ Arguments::~Arguments(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Arguments::vEnvironmentVariables(void)
 {
-  s256 sVarName;
+  s32  sVarName;
   s256 sRegionName;
   s256 sRegionSize;
   s256 sPartitions;

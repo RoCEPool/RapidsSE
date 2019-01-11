@@ -21,7 +21,7 @@ void Step::vEnvGet(MP_Task mpTask)
 {
   ENTRY("vEnvGet"_Stz);
   
-  s256 sEnvName;
+  s32 sEnvName;
   
   if ( ! mpTask->m_pDataStack->bPop(sEnvName) )
     THROW_INVALID_DSTACK("env@"_Stz);
