@@ -24,11 +24,11 @@ void Step::vCursorFetch(MP_Task mpTask)
   
   i8 iPeek = 1;
   
-  GenVar xCursorWsp;
+  GenVar xCursorVar;
   
-  mpTask->m_pReturnStack->vPeekValue(iPeek,xCursorWsp);
+  mpTask->m_pReturnStack->vPeekValue(iPeek,xCursorVar);
   
-  mpTask->m_pDataStack->vPushGenVar(xCursorWsp);
+  mpTask->m_pDataStack->vPushGenVar(xCursorVar);
   
   EXIT();
 }
@@ -42,12 +42,11 @@ void Step::vCursorStore(MP_Task mpTask)
   
   i8 iPoke = 1;
   
-  GenVar xCursorWsp;
-  
-  if ( ! mpTask->m_pDataStack->bPop(xCursorWsp) )
+  GenVar xCursorVar;
+  if ( ! mpTask->m_pDataStack->bPop(xCursorVar) )
     THROW_INVALID_DSTACK("cursor!"_Stz);
   
-  mpTask->m_pReturnStack->vPokeValWrk(iPoke,xCursorWsp);
+  mpTask->m_pReturnStack->vPokeGenVar(iPoke,xCursorVar);
   
   EXIT();
 }

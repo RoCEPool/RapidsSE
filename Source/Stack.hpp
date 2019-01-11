@@ -90,7 +90,7 @@ namespace Forth
     bool bPopAsInt_Quick(i8& iArg1);
     i8   iPop(void);
   
-    void  vPokeValWrk(i8 iNthValue, GenVar& xGenVar);
+    void  vPokeGenVar(i8 i_Value, GenVar& xGenVar);
   
     void vPushBool(bool bBool);
     void vPushCell(Cell* pCell);

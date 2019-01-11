@@ -872,9 +872,9 @@ i8 Stack::iPop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* poke at given value on value stack                                         */
+/* poke given value into value stack                                          */
 /*----------------------------------------------------------------------------*/
-void Stack::vPokeValWrk(i8 i_Value, GenVar& xGenVar)
+void Stack::vPokeGenVar(i8 i_Value, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

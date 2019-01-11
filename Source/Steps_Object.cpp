@@ -87,11 +87,11 @@ void Step::vObjectFetch(MP_Task mpTask)
   
   i8 iPick = 0;
   
-  GenVar xObjectWsp;
+  GenVar xObjectVar;
   
-  mpTask->m_pReturnStack->vPeekValue(iPick,xObjectWsp);
+  mpTask->m_pReturnStack->vPeekValue(iPick,xObjectVar);
   
-  mpTask->m_pDataStack->vPushGenVar(xObjectWsp);
+  mpTask->m_pDataStack->vPushGenVar(xObjectVar);
   
   EXIT();
 }
@@ -121,12 +121,12 @@ void Step::vObjectStore(MP_Task mpTask)
   
   i8 iPeek = 0;
   
-  GenVar xObjectWsp;
+  GenVar xObjectVar;
   
-  if ( ! mpTask->m_pDataStack->bPop(xObjectWsp) )
+  if ( ! mpTask->m_pDataStack->bPop(xObjectVar) )
     THROW_INVALID_DSTACK("object!"_Stz);
   
-  mpTask->m_pReturnStack->vPokeValWrk(iPeek,xObjectWsp);
+  mpTask->m_pReturnStack->vPokeGenVar(iPeek,xObjectVar);
   
   EXIT();
 }
