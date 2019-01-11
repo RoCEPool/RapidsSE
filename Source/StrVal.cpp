@@ -74,7 +74,7 @@ void StrVal::vAssign(Stz* aStz)
 
   i8 nBytes = StrLib::iSize(aChar());
   
-  m_xWsp.m_nAreaUsed = nBytes;
+  m_nAreaUsed = nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,7 +82,7 @@ void StrVal::vAssign(Stz* aStz)
 /*----------------------------------------------------------------------------*/
 char* StrVal::aChar(void)
 {
-  char* aArea = pAdd<char*>(&m_xWsp.m_nAreaUsed,sizeof(m_xWsp.m_nAreaUsed));
+  char* aArea = pAdd<char*>(&m_nAreaUsed,sizeof(m_nAreaUsed));
   
   return aArea;
 }
@@ -92,7 +92,7 @@ char* StrVal::aChar(void)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::nSize(void)
 {
-  i8 nBytes = sizeof(StrVal) + m_xWsp.m_nAreaUsed;
+  i8 nBytes = sizeof(StrVal) + m_nAreaUsed;
   
   return nBytes;
 }

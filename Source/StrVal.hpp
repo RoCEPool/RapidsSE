@@ -23,8 +23,8 @@ namespace Values
   class StrVal : public Value
   {
   protected:
-    WspVbl m_xWsp;
-  
+    i8     m_nAreaUsed;
+
   public:
     void* operator new(size_t);
   
