@@ -57,25 +57,25 @@ namespace Forth
     
     Value* aPeekValue(void);
     Value* aPeekValue(i8 i_Value);
-    void vPeekValue(i8 i_Value, GenVar& xVariable);
+    void vPeekValue(i8 i_Value, GenVar& xGenVar);
     bool bPeekZero(void);
   
     bool bPop(Cell*& pCell);
     bool bPop(eCN& eClassNo);
-    bool bPop(GenVar* pVariable);
-    bool bPop(GenVar& xVariable);
+    bool bPop(GenVar* pGenVar);
+    bool bPop(GenVar& xGenVar);
     bool bPop(GenVar& xVar1, GenVar& xVar2);
     bool bPop(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3);
-    bool bPop(i8& iArg1);
+    bool bPop(i8& iArg);
     bool bPop(i8& iArg1, i8& iArg2);
-    bool bPop(i8& iArg1, Object*& pObject);
-    bool bPop(i8& iArg1, GenVar& xArg1);
-    bool bPop(i8& iArg1, s48K& sArg2);
-    bool bPop(i8& iArg1, i8& iArg2, Value& xArg3);
+    bool bPop(i8& iArg1, i8& iArg2, GenVar& xGenVar);
+    bool bPop(i8& iArg, Object*& pObject);
+    bool bPop(i8& iArg, GenVar& xGenVar);
+    bool bPop(i8& iArg, s48K& sArg);
     bool bPop(Object*& pObject);
     bool bPop(Object*& pObject, i8& iArg);
     bool bPop(Object*& pObject1, Object*& pObject2);
-    bool bPop(Object*& pObject, GenVar& xVariable);
+    bool bPop(Object*& pObject, GenVar& xGenVar);
     bool bPop(Register*& pRegister);
     bool bPop(s32&  sArg1);
     bool bPop(s256& sArg1);
@@ -90,13 +90,13 @@ namespace Forth
     bool bPopAsInt_Quick(i8& iArg1);
     i8   iPop(void);
   
-    void  vPokeValWrk(i8 iNthValue, GenVar& xVariable);
+    void  vPokeValWrk(i8 iNthValue, GenVar& xGenVar);
   
     void vPushBool(bool bBool);
     void vPushCell(Cell* pCell);
     void vPushEntry(DBobjects::Entry* aEntry);
-    void vPushGenVar(GenVar* pVariable);
-    void vPushGenVar(GenVar& xVariable);
+    void vPushGenVar(GenVar* pGenVar);
+    void vPushGenVar(GenVar& xGenVar);
     void vPushI8(i8 iInt);
     void vPushPointer(Object* pObject);
     void vPushRegister(Register* pRegister);
