@@ -11,19 +11,12 @@
 
 namespace Values
 {
-  // the strval inspector
-  class StrSee
-  {
-    Value  m_xValue;      // the Value header
-    i8     m_nSize;       // size of str
-    char   m_cChr[256];   // str contents
-  };
-
   // the strval class
   class StrVal : public Value
   {
   protected:
-    i8     m_nAreaUsed;
+    i8 m_nBytesFollowing;
+    // ..bytes..
 
   public:
     void* operator new(size_t);
@@ -42,6 +35,15 @@ namespace Values
   };
 
   StrVal* _aStrVal(void* aAddr);
+  
+  // the strval inspector
+  class StrValSee
+  {
+  Value  m_xValue;      // the Value header
+  i8     m_nSize;       // size of stz
+  char   m_caStz[256];  // stz contents
+  };
+  
 }
 
 /*============================================================================*/
