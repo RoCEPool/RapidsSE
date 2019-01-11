@@ -45,7 +45,7 @@ StrVal::StrVal(void)
 StrVal::operator Stz*(void)
 {
   // return address to char byte area
-  return reinterpret_cast<Stz*>(pAdd<char*>(this,sizeof(StrVal)));
+  return aStz();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +54,7 @@ StrVal::operator Stz*(void)
 StrVal::operator Stz&(void)
 {
   // return reference to char byte area
-  return reinterpret_cast<Stz&>(*(pAdd<char*>(this,sizeof(StrVal))));
+  return reinterpret_cast<Stz&>(*aStz());
 }
 
 
@@ -99,7 +99,7 @@ i8 StrVal::nSize(void)
 /*----------------------------------------------------------------------------*/
 Stz* StrVal::aStz(void)
 {
-  char* aAddr = pAdd<char*>(this,sizeof(StrVal));
+  char* aAddr = aChar();
   
   return reinterpret_cast<Stz*>(aAddr);
 }
