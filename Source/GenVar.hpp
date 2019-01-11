@@ -8,14 +8,15 @@ namespace Forth
   // the nested value inspector
   class ValSee
   {
-    Header   m_xHeader;     // header
+    Header   m_xHeader;    // header
     union {
       struct {
-        i8   m_nSize;       // size of str
-        char m_cChr[256];   // str contents
-      } m_xStr;             // value contents as xStr
-      i8     m_iInt;        // value contents as iInt
-      Value* m_pPtr;        // value contents as pPtr
+        i8    m_nSize;     // size of str
+        char  m_cChr[256]; // str contents
+      } m_xStr;            // value contents as xStr
+      i8      m_iInt;      // value contents as iInt
+      Object* m_pObj;      // value contents as pPtr
+      Value*  m_aVal;      // value contents as pPtr
     };
   };
   

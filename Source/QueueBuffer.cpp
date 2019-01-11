@@ -46,8 +46,8 @@ QueueBuffer::QueueBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   m_nValues   = 0;
-  m_pTopValue = aFirstValue();
-  m_pNextFree = m_pTopValue;
+  m_aTopValue = aFirstValue();
+  m_aNextFree = m_aTopValue;
   m_pNext     = nullptr;
   
   _checkInitialised_(CN_QUEUEBUFFER);
@@ -72,14 +72,14 @@ bool QueueBuffer::bAppend(Value* pValue)
   
   i8 nBytes = pValue->nSize();
   
-  Stz* aFinalByteOfValue = pAdd<Stz*>(m_pNextFree,nBytes-1);
+  Stz* aFinalByteOfValue = pAdd<Stz*>(m_aNextFree,nBytes-1);
   
   if (aFinalByteOfValue > Buffer::aLastUsableByte())
     return false;
   
-  MemLib::vCopy(m_pNextFree,pValue,nBytes,CN_QUEUEBUFFER);
+  MemLib::vCopy(m_aNextFree,pValue,nBytes,CN_QUEUEBUFFER);
   
-  m_pNextFree = pAdd<Value*>(m_pNextFree,nBytes);
+  m_aNextFree = pAdd<Value*>(m_aNextFree,nBytes);
   
   m_nValues++;
   
@@ -107,8 +107,8 @@ void QueueBuffer::vContentDump(Stz* aTab)
          aTab,
          this,
          m_nValues,
-         m_pTopValue,
-         m_pNextFree);
+         m_aTopValue,
+         m_aNextFree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,8 +120,8 @@ void QueueBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
   
   vTrace("values %lld top %p next %p\n"_Stz,
          pQueueBuffer->m_nValues,
-         pQueueBuffer->m_pTopValue,
-         pQueueBuffer->m_pNextFree);
+         pQueueBuffer->m_aTopValue,
+         pQueueBuffer->m_aNextFree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,16 +154,16 @@ bool QueueBuffer::bPop(Forth::GenVar* pValWrk, bool& bDiscardable)
   bDiscardable = false;
   
   if (0 == m_nValues) {
-    //ASSERT(m_pTopValue == m_pNextFree);
+    //ASSERT(m_aTopValue == m_aNextFree);
     return false;
   }
   
-  i8 nBytes = m_pTopValue->nSize();
+  i8 nBytes = m_aTopValue->nSize();
 
-  MemLib::vCopy(pValWrk->aNestedValue(),m_pTopValue,nBytes,CN_QUEUEBUFFER);
+  MemLib::vCopy(pValWrk->aNestedValue(),m_aTopValue,nBytes,CN_QUEUEBUFFER);
   
-  //m_pTopValue = pNextValue(m_pTopValue);
-  m_pTopValue = pAdd<Value*>(m_pTopValue,nBytes);
+  //m_aTopValue = pNextValue(m_aTopValue);
+  m_aTopValue = pAdd<Value*>(m_aTopValue,nBytes);
   
   m_nValues--;
   
@@ -172,8 +172,8 @@ bool QueueBuffer::bPop(Forth::GenVar* pValWrk, bool& bDiscardable)
       bDiscardable = true;
     }
     else {
-      m_pTopValue = aFirstValue();
-      m_pNextFree = m_pTopValue;
+      m_aTopValue = aFirstValue();
+      m_aNextFree = m_aTopValue;
     }
   }
   
@@ -207,7 +207,7 @@ Value* QueueBuffer::aNextValue(Value* pValue)
   
   Value* aNextValue = pAdd<Value*>(pValue,nBytes);
   
-  if (aNextValue < m_pNextFree)
+  if (aNextValue < m_aNextFree)
     return aNextValue;
   else
     return nullptr;
