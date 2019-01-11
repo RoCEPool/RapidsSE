@@ -160,7 +160,7 @@ bool QueueBuffer::bPop(Forth::GenVar* pValWrk, bool& bDiscardable)
   
   i8 nBytes = m_pTopValue->nSize();
 
-  MemLib::vCopy(pValWrk->pNestedValue(),m_pTopValue,nBytes,CN_QUEUEBUFFER);
+  MemLib::vCopy(pValWrk->aNestedValue(),m_pTopValue,nBytes,CN_QUEUEBUFFER);
   
   //m_pTopValue = pNextValue(m_pTopValue);
   m_pTopValue = pAdd<Value*>(m_pTopValue,nBytes);

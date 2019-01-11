@@ -37,7 +37,7 @@ ENTRY("vQueueAppend"_Stz);
   ASSERT(pQueue);
   ASSERT(CN_QUEUE == pObject->eClass());
   
-  pQueue->bAppend(xVariable.pNestedValue());
+  pQueue->bAppend(xVariable.aNestedValue());
   
   EXIT();
 }

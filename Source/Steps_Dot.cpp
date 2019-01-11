@@ -30,7 +30,7 @@ void Step::vDot(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK("."_Stz);
   
-  xVariable.pNestedValue()->vToString(sString);
+  xVariable.aNestedValue()->vToString(sString);
 
   vTrace("[%s %s] %s\n"_Stz,
          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
@@ -55,7 +55,7 @@ void Step::vDotPut(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK(".put"_Stz);
   
-  xVariable.pNestedValue()->vToString(sString);
+  xVariable.aNestedValue()->vToString(sString);
   vTrace("%s"_Stz,sString.aChar());
   
   EXIT();
@@ -87,7 +87,7 @@ void Step::vDotVerbose(MP_Task mpTask)
     THROW_INVALID_DSTACK(".verbose"_Stz);
   
   if (gpAttachMap->m_bVerbose) {
-    xVariable.pNestedValue()->vToString(sString);
+    xVariable.aNestedValue()->vToString(sString);
     vTrace("[%p %s] %s\n"_Stz,
            *mpTask,
            mpTask->aJobName(),

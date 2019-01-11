@@ -105,7 +105,7 @@ void Step::vSocketConnect(MP_Task mpTask)
     THROW_INVALID_DSTACK("socket.connect"_Stz);
   
   // get address of node
-  Stz* sAddr = reinterpret_cast<Stz*>(_aStrVal(xNodeVar.pNestedValue())->aChar());
+  Stz* sAddr = reinterpret_cast<Stz*>(_aStrVal(xNodeVar.aNestedValue())->aChar());
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);

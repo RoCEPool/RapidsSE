@@ -72,7 +72,7 @@ void Step::vDstackClass(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPeekValue(nTh,xVariable);
   
-  eCN eClass = xVariable.pNestedValue()->eClass();
+  eCN eClass = xVariable.aNestedValue()->eClass();
   
   mpTask->m_pDataStack->vPushI8(eClass);
   
@@ -303,7 +303,7 @@ void Step::vDstackReverse(MP_Task mpTask)
   }
 
   for (i8 i = 0; i < nValues; i++) {
-    mpTask->m_pDataStack->vPushValue(apValWrk[i]->pNestedValue());
+    mpTask->m_pDataStack->vPushValue(apValWrk[i]->aNestedValue());
   }
 }
 

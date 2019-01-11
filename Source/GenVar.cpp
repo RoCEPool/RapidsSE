@@ -53,7 +53,7 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Bcd xBcd)
 {
-  BcdVal* pNestedBcdVal = (BcdVal*)pNestedValue();
+  BcdVal* pNestedBcdVal = (BcdVal*)aNestedValue();
   
   // set nested class
   pNestedBcdVal->vSetClass(CN_BCDVAL);
@@ -67,7 +67,7 @@ void GenVar::operator =(Bcd xBcd)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Bol xBol)
 {
-  BolVal* pNestedBolVal = (BolVal*)pNestedValue();
+  BolVal* pNestedBolVal = (BolVal*)aNestedValue();
   
   // set nested class
   pNestedBolVal->vSetClass(CN_BOLVAL);
@@ -81,7 +81,7 @@ void GenVar::operator =(Bol xBol)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Dte xDte)
 {
-  DteVal* pNestedDteVal = (DteVal*)pNestedValue();
+  DteVal* pNestedDteVal = (DteVal*)aNestedValue();
   
   // set nested class
   pNestedDteVal->vSetClass(CN_DTEVAL);
@@ -95,7 +95,7 @@ void GenVar::operator =(Dte xDte)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(d8 dFlt)
 {
-  FltVal* pNestedFltVal = (FltVal*)pNestedValue();
+  FltVal* pNestedFltVal = (FltVal*)aNestedValue();
   
   // set nested class
   pNestedFltVal->vSetClass(CN_FLTVAL);
@@ -109,7 +109,7 @@ void GenVar::operator =(d8 dFlt)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(i8 iInt)
 {
-  IntVal* pNestedIntVal = (IntVal*)pNestedValue();
+  IntVal* pNestedIntVal = (IntVal*)aNestedValue();
   
   // set nested class
   pNestedIntVal->vSetClass(CN_INTVAL);
@@ -123,7 +123,7 @@ void GenVar::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Ivl iIvl)
 {
-  IvlVal* pNestedIvlVal = (IvlVal*)pNestedValue();
+  IvlVal* pNestedIvlVal = (IvlVal*)aNestedValue();
   
   // set nested class
   pNestedIvlVal->vSetClass(CN_IVLVAL);
@@ -137,7 +137,7 @@ void GenVar::operator =(Ivl iIvl)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Object* pPtr)
 {
-  PtrVal* pNestedPtrVal = (PtrVal*)pNestedValue();
+  PtrVal* pNestedPtrVal = (PtrVal*)aNestedValue();
   
   // set nested class
   pNestedPtrVal->vSetClass(CN_PTRVAL);
@@ -151,7 +151,7 @@ void GenVar::operator =(Object* pPtr)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Value* pPtr)
 {
-  PtrVal* pNestedPtrVal = (PtrVal*)pNestedValue();
+  PtrVal* pNestedPtrVal = (PtrVal*)aNestedValue();
   
   // set nested class
   pNestedPtrVal->vSetClass(CN_PTRVAL);
@@ -165,7 +165,7 @@ void GenVar::operator =(Value* pPtr)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Stz* pStr)
 {
-  StrVal* pNestedStrVal = (StrVal*)pNestedValue();
+  StrVal* pNestedStrVal = (StrVal*)aNestedValue();
   
   // set nested class
   pNestedStrVal->vSetClass(CN_STRVAL);
@@ -178,7 +178,7 @@ void GenVar::operator =(Stz* pStr)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Tme xTme)
 {
-  TmeVal* pNestedTmeVal = (TmeVal*)pNestedValue();
+  TmeVal* pNestedTmeVal = (TmeVal*)aNestedValue();
   
   // set nested class
   pNestedTmeVal->vSetClass(CN_TMEVAL);
@@ -192,7 +192,7 @@ void GenVar::operator =(Tme xTme)
 /*----------------------------------------------------------------------------*/
 void GenVar::operator =(Tsp xTsp)
 {
-  TspVal* pNestedTspVal = (TspVal*)pNestedValue();
+  TspVal* pNestedTspVal = (TspVal*)aNestedValue();
   
   // set nested class
   pNestedTspVal->vSetClass(CN_TSPVAL);
@@ -212,7 +212,7 @@ char* GenVar::aWspArea(void)
 /*----------------------------------------------------------------------------*/
 /* get value in the wsp area                                                  */
 /*----------------------------------------------------------------------------*/
-Value* GenVar::pNestedValue(void)
+Value* GenVar::aNestedValue(void)
 {
   _precondition_(_MAGIC_);
   
@@ -229,9 +229,9 @@ i8 GenVar::iNestedAsInt(void)
 {
   _precondition_(_MAGIC_);
   
-  IntVal* pNestedIntVal = reinterpret_cast<IntVal*>(pNestedValue());
+  IntVal* aNestedIntVal = reinterpret_cast<IntVal*>(aNestedValue());
   
-  i8 i = pNestedIntVal->iInt();
+  i8 i = aNestedIntVal->iInt();
   
   return i;
 }
@@ -239,45 +239,45 @@ i8 GenVar::iNestedAsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get value in the wsp area                                                  */
 /*----------------------------------------------------------------------------*/
-IntVal* GenVar::pNestedIntVal(void)
+IntVal* GenVar::aNestedIntVal(void)
 {
   _precondition_(_MAGIC_);
   
-  IntVal* pNestedIntVal = reinterpret_cast<IntVal*>(pNestedValue());
+  IntVal* aNestedIntVal = reinterpret_cast<IntVal*>(aNestedValue());
   
-  return pNestedIntVal;
+  return aNestedIntVal;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get value in the wsp area                                                  */
 /*----------------------------------------------------------------------------*/
-PtrVal* GenVar::pNestedPtrVal(void)
+PtrVal* GenVar::aNestedPtrVal(void)
 {
   _precondition_(_MAGIC_);
   
-  PtrVal* pNestedPtrVal = reinterpret_cast<PtrVal*>(pNestedValue());
+  PtrVal* aNestedPtrVal = reinterpret_cast<PtrVal*>(aNestedValue());
   
-  return pNestedPtrVal;
+  return aNestedPtrVal;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get value in the wsp area                                                  */
 /*----------------------------------------------------------------------------*/
-StrVal* GenVar::pNestedStrVal(void)
+StrVal* GenVar::aNestedStrVal(void)
 {
   _precondition_(_MAGIC_);
   
-  StrVal* pNestedStrVal = reinterpret_cast<StrVal*>(pNestedValue());
+  StrVal* aNestedStrVal = reinterpret_cast<StrVal*>(aNestedValue());
   
-  return pNestedStrVal;
+  return aNestedStrVal;
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void GenVar::vToString(Stz* aWorkspace)
+void GenVar::vToString(Stz* aStz)
 {
-  *aWorkspace = reinterpret_cast<void*>(pNestedValue());
+  *aStz = reinterpret_cast<void*>(aNestedValue());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -103,20 +103,20 @@ void Step::vAddressStore(MP_Task mpTask)
   
   switch (eClass) {
     case CN_INTVAL:
-      *_aIntVal(pValue) = _aIntVal(xValStored.pNestedValue())->iInt();
+      *_aIntVal(pValue) = _aIntVal(xValStored.aNestedValue())->iInt();
       break;
       
     case CN_STRVAR:
     case CN_STRVAL:
-      _aStrVal(pValue)->vAssign( _aStrVal(xValStored.pNestedValue())->aStz() );
+      _aStrVal(pValue)->vAssign( _aStrVal(xValStored.aNestedValue())->aStz() );
       break;
       
     case CN_PTRVAL:
-      *_aPtrVal(pValue) = _aPtrVal(xValStored.pNestedValue())->pObj();
+      *_aPtrVal(pValue) = _aPtrVal(xValStored.aNestedValue())->pObj();
       break;
       
     case CN_IPVAL:
-      *_aIpVal(pValue) = _aIpVal(xValStored.pNestedValue())->aIpPtr();
+      *_aIpVal(pValue) = _aIpVal(xValStored.aNestedValue())->aIpPtr();
       break;
   
     default:

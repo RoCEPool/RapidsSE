@@ -157,7 +157,7 @@ void KeyTest::vTest(void)
     Stz* ptr = sKey.aStz();
     
     xVariable = ptr;
-    pStrVal = _aStrVal(xVariable.pNestedValue());
+    pStrVal = _aStrVal(xVariable.aNestedValue());
     
     xKeyWrk.vReset();
     xKeyWrk.vAddDatum(xVariable, pCol);
@@ -179,7 +179,7 @@ void KeyTest::vTest(void)
   vTrace("Find Key value < %s\n"_Stz, ptr);
   
   xVariable = ptr;
-  pStrVal = _aStrVal(xVariable.pNestedValue());
+  pStrVal = _aStrVal(xVariable.aNestedValue());
   
   xKeyWrk.vReset();
   xKeyWrk.vAddDatum(xVariable, pCol);
@@ -216,7 +216,7 @@ void KeyTest::vTest(void)
   vTrace("Find Key value >= %s\n"_Stz, ptr);
   
   xVariable = ptr;
-  pStrVal = _aStrVal(xVariable.pNestedValue());
+  pStrVal = _aStrVal(xVariable.aNestedValue());
   
   xKeyWrk.vReset();
   xKeyWrk.vAddDatum(xVariable, pCol);
@@ -403,7 +403,7 @@ void KeyTest::vTest(void)
       Random::vString(sKey,7);
       Stz* ptr = sKey.aStz();
       xVariable = ptr;
-      pStrVal = _aStrVal(xVariable.pNestedValue());
+      pStrVal = _aStrVal(xVariable.aNestedValue());
       xKeyWrk.vAddDatum(xVariable, pCol1);
       //xKeyWrk.vShow();
       
@@ -427,7 +427,7 @@ void KeyTest::vTest(void)
   Random::vString(sKey,7);
   ptr = sKey.aStz();
   xVariable = ptr;
-  pStrVal = _aStrVal(xVariable.pNestedValue());
+  pStrVal = _aStrVal(xVariable.aNestedValue());
   xKeyWrk.vAddDatum(xVariable, pCol1);
   
   pKeyValFind = new KeyVal(xKeyWrk);

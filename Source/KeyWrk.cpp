@@ -81,7 +81,7 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol, Formatters* pFormatters)
   
   i8 nBytes;
   
-  StrVal* pStrVal = _aStrVal(xVariable.pNestedValue());
+  StrVal* pStrVal = _aStrVal(xVariable.aNestedValue());
   
   char* pDst = aLatter();
   char* pSrc = (char*)pStrVal->aStz();
@@ -168,9 +168,9 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
   char* pSrc;
   
   if (DM_VCH == pCol->eDatumType())
-    pSrc = (char*)(_aStrVal(xVariable.pNestedValue())->aStz());
+    pSrc = (char*)(_aStrVal(xVariable.aNestedValue())->aStz());
   else
-    pSrc = pAdd<char*>(xVariable.pNestedValue(),sizeof(Value));
+    pSrc = pAdd<char*>(xVariable.aNestedValue(),sizeof(Value));
   
   
   nBytes = DtmLib::nCopy(pCol->eDatumType(),pDst,pSrc);

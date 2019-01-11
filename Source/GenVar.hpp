@@ -50,13 +50,13 @@ namespace Forth
     void operator =(Tsp xTsp);
     
     char*  aWspArea(void);
-    Value* pNestedValue(void);
+    Value* aNestedValue(void);
   
     i8      iNestedAsInt(void);
-    IntVal* pNestedIntVal(void);
-    PtrVal* pNestedPtrVal(void);
-    StrVal* pNestedStrVal(void);
-    void    vToString(Stz* aWorkspace);
+    IntVal* aNestedIntVal(void);
+    PtrVal* aNestedPtrVal(void);
+    StrVal* aNestedStrVal(void);
+    void    vToString(Stz* aStz);
     
     Footer* aFooter(void);
   };

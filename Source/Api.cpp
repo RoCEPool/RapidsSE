@@ -388,8 +388,8 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
     *piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
     
     // get entry buffer
-    PtrVal* pPtrVal = xVariable.pNestedPtrVal();
-    pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pObj());
+    PtrVal* aPtrVal = xVariable.aNestedPtrVal();
+    pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(aPtrVal->pObj());
     //vTrace("Expected rows per buffer %lld %lld\n"_Stz, rowsPerBuffer, pJob_FetchRows->m_pFetchBuffer->nFetchedRows());
     //vTrace("Got buffer %p %lld\n"_Stz, pJob_FetchRows->m_pFetchBuffer, pJob_FetchRows->m_iPartition);
     
@@ -1438,8 +1438,8 @@ void vDeleteJobs(Session* pSession)
         
         vApiLocation(pSession,500);
         
-        PtrVal* pPtrVal = xVariable.pNestedPtrVal();
-        pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(pPtrVal->pObj());
+        PtrVal* aPtrVal = xVariable.aNestedPtrVal();
+        pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(aPtrVal->pObj());
         
         if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
           pJob_FetchRows->m_nLastBuffersScanned++;
