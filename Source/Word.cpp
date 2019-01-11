@@ -415,7 +415,7 @@ void Word::vEncode(Stz* aWord, GenVar* pValWrk)
   
   vEncode(aWord);
   
-  vAppend(pValWrk->pNestedValueSelf());
+  vAppend(pValWrk->pNestedValue());
 }
 
 /*----------------------------------------------------------------------------*/

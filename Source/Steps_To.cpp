@@ -90,7 +90,7 @@ void Step::vToStr(MP_Task mpTask)
   
   s48K sString;
   
-  xVal.pNestedValueSelf()->vToString(sString);
+  xVal.pNestedValue()->vToString(sString);
   
   mpTask->m_pDataStack->vPushS48K(sString);
   

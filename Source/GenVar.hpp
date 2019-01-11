@@ -51,7 +51,6 @@ namespace Forth
     
     char*  aWspArea(void);
     Value* pNestedValue(void);
-    Value* pNestedValueSelf(void);
   
     i8      iNestedAsInt(void);
     IntVal* pNestedIntVal(void);

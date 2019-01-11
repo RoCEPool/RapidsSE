@@ -303,7 +303,7 @@ void Step::vDstackReverse(MP_Task mpTask)
   }
 
   for (i8 i = 0; i < nValues; i++) {
-    mpTask->m_pDataStack->vPushValue(apValWrk[i]->pNestedValueSelf());
+    mpTask->m_pDataStack->vPushValue(apValWrk[i]->pNestedValue());
   }
 }
 

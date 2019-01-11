@@ -290,7 +290,7 @@ void Stack::vPeekValue(i8 i_Value, GenVar& xVariable)
   
   //vTrace("Peek: %lld %p %lld\n"_Stz,iNthValue,pPeekedValue,iSize);
   
-  MemLib::vCopy(xVariable.pNestedValueSelf(),pPeekedValue,iSize,CN_STACK);
+  MemLib::vCopy(xVariable.pNestedValue(),pPeekedValue,iSize,CN_STACK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -355,7 +355,7 @@ bool Stack::bPop(GenVar* pVariable)
   if ( ! bGuard(1) )
     return false;
   
-  vPopVal(pVariable->pNestedValueSelf());
+  vPopVal(pVariable->pNestedValue());
   
   return true;
 }
@@ -370,7 +370,7 @@ bool Stack::bPop(GenVar& xVar)
   if ( ! bGuard(1) )
     return false;
   
-  vPopVal(xVar.pNestedValueSelf());
+  vPopVal(xVar.pNestedValue());
   
   return true;
 }
@@ -385,9 +385,9 @@ bool Stack::bPop(GenVar& xVar1, GenVar& xVar2)
   if ( ! bGuard(2) )
     return false;
   
-  vPopVal(xVar1.pNestedValueSelf());
+  vPopVal(xVar1.pNestedValue());
   
-  vPopVal(xVar2.pNestedValueSelf());
+  vPopVal(xVar2.pNestedValue());
   
   return true;
 }
@@ -402,11 +402,11 @@ bool Stack::bPop(GenVar& xVar1, GenVar& xVar2, GenVar& xVar3)
   if ( ! bGuard(3) )
     return false;
   
-  vPopVal(xVar1.pNestedValueSelf());
+  vPopVal(xVar1.pNestedValue());
   
-  vPopVal(xVar2.pNestedValueSelf());
+  vPopVal(xVar2.pNestedValue());
   
-  vPopVal(xVar3.pNestedValueSelf());
+  vPopVal(xVar3.pNestedValue());
   
   return true;
 }
@@ -490,7 +490,7 @@ bool Stack::bPop(i8& iArg, GenVar& xGenVar)
   
   iArg = xIntVal.iInt();
   
-  vPopVal(xGenVar.pNestedValueSelf());
+  vPopVal(xGenVar.pNestedValue());
   
   return true;
 }
@@ -511,7 +511,7 @@ bool Stack::bPop(i8& iArg, s48K& sArg)
   iArg = xIntVal.iInt();
   
   GenVar xGenVar;
-  vPopVal(xGenVar.pNestedValueSelf());
+  vPopVal(xGenVar.pNestedValue());
   
   sArg = _pStrVal(&xGenVar)->aStz();
   
@@ -538,7 +538,7 @@ bool Stack::bPop(i8& iArg1, i8& iArg2, GenVar& xGenVar)
   
   iArg2 = xIntVal2.iInt();
   
-  vPopVal(xGenVar.pNestedValueSelf());
+  vPopVal(xGenVar.pNestedValue());
 
   return true;
 }
@@ -651,9 +651,9 @@ bool Stack::bPop(s32& sArg)
     return false;
   
   GenVar xGenVar;
-  vPopVal(xGenVar.pNestedValueSelf());
+  vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValueSelf())->aStz();
+  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
   
   return true;
 }
@@ -669,9 +669,9 @@ bool Stack::bPop(s256& sArg)
     return false;
   
   GenVar xGenVar;
-  vPopVal(xGenVar.pNestedValueSelf());
+  vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValueSelf())->aStz();
+  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
   
   return true;
 }
@@ -687,9 +687,9 @@ bool Stack::bPop(s4K& sArg)
     return false;
   
   GenVar xGenVar;
-  vPopVal(xGenVar.pNestedValueSelf());
+  vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValueSelf())->aStz();
+  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
   
   return true;
 }
@@ -705,9 +705,9 @@ bool Stack::bPop(s16KB& sArg)
     return false;
   
   GenVar xGenVar;
-  vPopVal(xGenVar.pNestedValueSelf());
+  vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValueSelf())->aStz();
+  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
   
   return true;
 }
@@ -723,9 +723,9 @@ bool Stack::bPop(s48K& sArg)
     return false;
   
   GenVar xGenVar;
-  vPopVal(xGenVar.pNestedValueSelf());
+  vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValueSelf())->aStz();
+  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
   
   return true;
 }
@@ -741,9 +741,9 @@ bool Stack::bPop(s48K& sArg, i8& iArg)
     return false;
   
   GenVar xGenVar;
-  vPopVal(xGenVar.pNestedValueSelf());
+  vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValueSelf())->aStz();
+  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
   
   IntVal xIntVal;
   vPopVal(&xIntVal);
@@ -764,8 +764,8 @@ bool Stack::bPop(s48K& sArg, i8& iArg1, i8& iArg2)
     return false;
   
   GenVar xGenVar;
-  vPopVal(xGenVar.pNestedValueSelf());
-  sArg = _pStrVal(xGenVar.pNestedValueSelf())->aStz();
+  vPopVal(xGenVar.pNestedValue());
+  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
   
   IntVal xIntVal1;
   vPopVal(&xIntVal1);
@@ -789,14 +789,14 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
     return false;
   
   GenVar xGenVar1;
-  vPopVal(xGenVar1.pNestedValueSelf());
+  vPopVal(xGenVar1.pNestedValue());
   
-  sArg1 = _pStrVal(xGenVar1.pNestedValueSelf())->aStz();
+  sArg1 = _pStrVal(xGenVar1.pNestedValue())->aStz();
   
   GenVar xGenVar2;
-  vPopVal(xGenVar2.pNestedValueSelf());
+  vPopVal(xGenVar2.pNestedValue());
   
-  sArg2 = _pStrVal(xGenVar2.pNestedValueSelf())->aStz();
+  sArg2 = _pStrVal(xGenVar2.pNestedValue())->aStz();
   
   return true;
 }
@@ -812,7 +812,7 @@ bool Stack::bPopAsInt(i8& iArg)
     return false;
   
   GenVar xGenVar;
-  vPopVal(xGenVar.pNestedValueSelf());
+  vPopVal(xGenVar.pNestedValue());
   
   iArg = xGenVar.iNestedAsInt();
   
@@ -878,11 +878,11 @@ void Stack::vPokeGenVar(i8 i_Value, GenVar& xGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 iSize = xGenVar.pNestedValueSelf()->nSize();
+  i8 iSize = xGenVar.pNestedValue()->nSize();
   
   Value* pPokeAddress = aPeekValue(i_Value);
   
-  MemLib::vCopy(pPokeAddress,xGenVar.pNestedValueSelf(),iSize,CN_STACK);
+  MemLib::vCopy(pPokeAddress,xGenVar.pNestedValue(),iSize,CN_STACK);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -931,7 +931,7 @@ void Stack::vPushGenVar(GenVar* pGenVar)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPushVal(pGenVar->pNestedValueSelf());
+  vPushVal(pGenVar->pNestedValue());
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }

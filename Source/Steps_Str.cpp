@@ -126,8 +126,8 @@ void Step::vStrEqual(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal"_Stz);
   
-  i8 iEqual = StrLib::bEqualTo(_pStrVal(xStringA.pNestedValueSelf())->aChar(),
-                               _pStrVal(xStringB.pNestedValueSelf())->aChar(),
+  i8 iEqual = StrLib::bEqualTo(_pStrVal(xStringA.pNestedValue())->aChar(),
+                               _pStrVal(xStringB.pNestedValue())->aChar(),
                                C_NO_CASE);
   
   mpTask->m_pDataStack->vPushI8(iEqual);
@@ -265,10 +265,10 @@ void Step::vStrPad(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iLength,xStringA) )
     THROW_INVALID_DSTACK("str.pad"_Stz);
   
-  StrLib::vPad(_pStrVal(xStringA.pNestedValueSelf())->aChar(),iLength,' ');
+  StrLib::vPad(_pStrVal(xStringA.pNestedValue())->aChar(),iLength,' ');
   
   // adjust area size
-  _pStrVal(xStringA.pNestedValueSelf())->vAreaSize();
+  _pStrVal(xStringA.pNestedValue())->vAreaSize();
   
   mpTask->m_pDataStack->vPushGenVar(xStringA);
   
@@ -299,7 +299,7 @@ void Step::vStrPrepend(MP_Task mpTask)
     xStrA = xString;
   }
   else {
-    xStrA = _pStrVal(xValA.pNestedValueSelf())->aStz();                          //! need to simplify this
+    xStrA = _pStrVal(xValA.pNestedValue())->aStz();                          //! need to simplify this
   }
   
   // If received INTEGER convert to STRING
@@ -309,7 +309,7 @@ void Step::vStrPrepend(MP_Task mpTask)
     xStrB = xString;
   }
   else {
-    xStrB = _pStrVal(xValB.pNestedValueSelf())->aStz();
+    xStrB = _pStrVal(xValB.pNestedValue())->aStz();
   }
   
   xStrR = xStrB;
