@@ -29,7 +29,6 @@ using namespace Values;
 #include "IpVal.hpp"
 #include "PtrVal.hpp"
 #include "StrVal.hpp"
-#include "StrVal2.hpp"
 #include "TmeVal.hpp"
 #include "TspVal.hpp"
 

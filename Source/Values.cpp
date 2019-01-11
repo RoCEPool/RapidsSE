@@ -15,8 +15,6 @@ void Values::vCheckAssumptions(void)
   ASSERT(sizeof(Value) + sizeof(void*)  == sizeof(IpVal));
   ASSERT(sizeof(Value) + sizeof(void*)  == sizeof(PtrVal));
   ASSERT(sizeof(Value) + sizeof(i8)     == sizeof(StrVal));
-
-  ASSERT(sizeof(Value) + sizeof(WspVbl) == sizeof(StrVal));
   
 //  ASSERT(sizeof(StrVal) + sizeof(Footer) + 32    == sizeof(s32));
 //  ASSERT(sizeof(StrVal) + sizeof(Footer) + 256   == sizeof(s256));
