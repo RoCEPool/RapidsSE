@@ -30,7 +30,7 @@ namespace Values
     void vNullValue(void);
   };
   
-  BolVal* _pBolVal(void* aAddr);
+  BolVal* _aBolVal(void* aAddr);
 }
 
 /*============================================================================*/

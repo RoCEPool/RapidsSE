@@ -30,7 +30,7 @@ namespace Values
     void vNullValue(void);
   };
   
-  IvlVal* _pIvlVal(void* aAddr);
+  IvlVal* _aIvlVal(void* aAddr);
 }
 
 /*============================================================================*/

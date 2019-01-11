@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-FltVal* Values::_pFltVal(void* aAddr)
+FltVal* Values::_aFltVal(void* aAddr)
 {
   FltVal* pFltVal = reinterpret_cast<FltVal*>(aAddr);
   

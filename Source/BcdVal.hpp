@@ -30,7 +30,7 @@ namespace Values
     void vNullValue(void);
   };
   
-  BcdVal* _pBcdVal(void* aAddr);
+  BcdVal* _aBcdVal(void* aAddr);
 }
 
 /*============================================================================*/

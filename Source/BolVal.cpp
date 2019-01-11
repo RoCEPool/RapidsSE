@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-BolVal* Values::_pBolVal(void* aAddr)
+BolVal* Values::_aBolVal(void* aAddr)
 {
   BolVal* pBolVal = reinterpret_cast<BolVal*>(aAddr);
   

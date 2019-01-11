@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StrVal* Values::_pStrVal(void* aAddr)
+StrVal* Values::_aStrVal(void* aAddr)
 {
   StrVal* psRefactor = reinterpret_cast<StrVal*>(aAddr);
   

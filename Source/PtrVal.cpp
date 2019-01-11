@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-PtrVal* Values::_pPtrVal(void* aAddr)
+PtrVal* Values::_aPtrVal(void* aAddr)
 {
   PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(aAddr);
   

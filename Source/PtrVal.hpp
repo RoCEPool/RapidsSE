@@ -28,7 +28,7 @@ namespace Values
     void vToString(Stz* aStz);
   };
   
-  PtrVal* _pPtrVal(void* aAddr);
+  PtrVal* _aPtrVal(void* aAddr);
 }
 
 /*============================================================================*/

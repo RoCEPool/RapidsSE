@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-DteVal* Values::_pDteVal(void* aAddr)
+DteVal* Values::_aDteVal(void* aAddr)
 {
   DteVal* pDteVal = reinterpret_cast<DteVal*>(aAddr);
   

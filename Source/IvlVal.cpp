@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IvlVal* Values::_pIvlVal(void* aAddr)
+IvlVal* Values::_aIvlVal(void* aAddr)
 {
   IvlVal* pIvlVal = reinterpret_cast<IvlVal*>(aAddr);
   

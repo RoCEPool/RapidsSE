@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-BcdVal* Values::_pBcdVal(void* aAddr)
+BcdVal* Values::_aBcdVal(void* aAddr)
 {
   BcdVal* pBcdVal = reinterpret_cast<BcdVal*>(aAddr);
   

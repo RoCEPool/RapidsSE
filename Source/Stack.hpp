@@ -154,10 +154,10 @@ namespace Forth
   eCN eClassNo = m_aTop->eClass(); // inline
   
   if (CN_INTVAL == eClassNo)
-    iArg = _pIntVal(m_aTop)->iInt(); // inline
+    iArg = _aIntVal(m_aTop)->iInt(); // inline
   else
     if (CN_PTRVAL == eClassNo)
-      iArg = _pPtrVal(m_aTop)->pObj() ? 1 : 0; // inline
+      iArg = _aPtrVal(m_aTop)->pObj() ? 1 : 0; // inline
     else {
       iArg = -1;
       NEVER_REACH;

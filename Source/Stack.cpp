@@ -136,7 +136,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
       }
         
       case CN_STRVAL: {
-        StrVal* pStrVal = _pStrVal(pNestedValue);
+        StrVal* pStrVal = _aStrVal(pNestedValue);
         vTrace("[%s] [%2lld] [%s] %s\n"_Stz,aPrefix,iVal,aCN[eClass],pStrVal->aChar());
         break;
       }
@@ -302,7 +302,7 @@ bool Stack::bPeekZero(void)
   
   Value* pValue = aPeekValue();
   
-  if (CN_INTVAL == pValue->eClass() && 0 == _pIntVal(pValue)->iInt())
+  if (CN_INTVAL == pValue->eClass() && 0 == _aIntVal(pValue)->iInt())
     return true;
   
   return false;
@@ -513,7 +513,7 @@ bool Stack::bPop(i8& iArg, s48K& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(&xGenVar)->aStz();
+  sArg = _aStrVal(&xGenVar)->aStz();
   
   return true;
 }
@@ -653,7 +653,7 @@ bool Stack::bPop(s32& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.pNestedValue())->aStz();
   
   return true;
 }
@@ -671,7 +671,7 @@ bool Stack::bPop(s256& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.pNestedValue())->aStz();
   
   return true;
 }
@@ -689,7 +689,7 @@ bool Stack::bPop(s4K& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.pNestedValue())->aStz();
   
   return true;
 }
@@ -707,7 +707,7 @@ bool Stack::bPop(s16KB& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.pNestedValue())->aStz();
   
   return true;
 }
@@ -725,7 +725,7 @@ bool Stack::bPop(s48K& sArg)
   GenVar xGenVar;
   vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.pNestedValue())->aStz();
   
   return true;
 }
@@ -743,7 +743,7 @@ bool Stack::bPop(s48K& sArg, i8& iArg)
   GenVar xGenVar;
   vPopVal(xGenVar.pNestedValue());
   
-  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.pNestedValue())->aStz();
   
   IntVal xIntVal;
   vPopVal(&xIntVal);
@@ -765,7 +765,7 @@ bool Stack::bPop(s48K& sArg, i8& iArg1, i8& iArg2)
   
   GenVar xGenVar;
   vPopVal(xGenVar.pNestedValue());
-  sArg = _pStrVal(xGenVar.pNestedValue())->aStz();
+  sArg = _aStrVal(xGenVar.pNestedValue())->aStz();
   
   IntVal xIntVal1;
   vPopVal(&xIntVal1);
@@ -791,12 +791,12 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
   GenVar xGenVar1;
   vPopVal(xGenVar1.pNestedValue());
   
-  sArg1 = _pStrVal(xGenVar1.pNestedValue())->aStz();
+  sArg1 = _aStrVal(xGenVar1.pNestedValue())->aStz();
   
   GenVar xGenVar2;
   vPopVal(xGenVar2.pNestedValue());
   
-  sArg2 = _pStrVal(xGenVar2.pNestedValue())->aStz();
+  sArg2 = _aStrVal(xGenVar2.pNestedValue())->aStz();
   
   return true;
 }
@@ -840,11 +840,11 @@ bool Stack::bPopAsInt_Quick(i8& iArg)
   switch (eClassNo) {
       
     case Base::CN_INTVAL:
-      iArg = _pIntVal(pTop)->iInt();
+      iArg = _aIntVal(pTop)->iInt();
       return true;
       
     case Base::CN_PTRVAL:
-      iArg = _pPtrVal(pTop)->pObj() ? 1 : 0;
+      iArg = _aPtrVal(pTop)->pObj() ? 1 : 0;
       return true;
       
     default:
@@ -862,7 +862,7 @@ i8 Stack::iPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 iArg = _pIntVal(m_aTop)->iInt();
+  i8 iArg = _aIntVal(m_aTop)->iInt();
   
   vPopBy(sizeof(IntVal));
 

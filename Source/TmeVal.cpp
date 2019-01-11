@@ -7,13 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-TmeVal* Values::_pTmeVal(void* aAddr)
+TmeVal* Values::_aTmeVal(void* aAddr)
 {
-  TmeVal* pTmeVal = reinterpret_cast<TmeVal*>(aAddr);
+  TmeVal* aTmeVal = reinterpret_cast<TmeVal*>(aAddr);
   
-  RASSERT_TYPE(pTmeVal,CN_TMEVAL);
+  RASSERT_TYPE(aTmeVal,CN_TMEVAL);
   
-  return pTmeVal;
+  return aTmeVal;
 }
 
 /*----------------------------------------------------------------------------*/

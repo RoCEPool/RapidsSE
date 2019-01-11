@@ -677,14 +677,14 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     eCN eClass = pValue->eClass();
     
     if (CN_INTVAL == eClass) {
-      sStackContents.vCatSprint("%lld"_Stz,_pIntVal(pValue)->iInt());
+      sStackContents.vCatSprint("%lld"_Stz,_aIntVal(pValue)->iInt());
     }
     else if (CN_PTRVAL == eClass) {
-      if (_pPtrVal(pValue)->pObj()) {
+      if (_aPtrVal(pValue)->pObj()) {
         
-        Object* pPtr = _pPtrVal(pValue)->pObj();
+        Object* pPtr = _aPtrVal(pValue)->pObj();
         
-        eCN ePtrClass = _pPtrVal(pValue)->pObj()->eClass();
+        eCN ePtrClass = _aPtrVal(pValue)->pObj()->eClass();
         
         if (CN_WORD == ePtrClass)
           sStackContents.vCatSprint("^%s=%p:%s"_Stz,
@@ -717,7 +717,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
       else
         sStackContents.vCatSprint("^%s=%p"_Stz,
                                   pValue->aClass(),
-                                  _pPtrVal(pValue)->pObj());
+                                  _aPtrVal(pValue)->pObj());
     }
     else if (CN_IPVAL == eClass) {                                      
       sStackContents.vCatSprint("%p"_Stz,
@@ -725,7 +725,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     }
     else if (CN_STRVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,
-                                _pStrVal(pValue)->aChar());
+                                _aStrVal(pValue)->aChar());
     }
     else if (CN_VALSET == eClass) {
       sStackContents.vCatSprint("<%s>=%p"_Stz,

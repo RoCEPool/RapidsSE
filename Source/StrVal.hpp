@@ -79,7 +79,7 @@ namespace Values
     Footer* aFooter(void);
   };
 
-  StrVal* _pStrVal(void* aAddr);
+  StrVal* _aStrVal(void* aAddr);
 }
 
 /*============================================================================*/
