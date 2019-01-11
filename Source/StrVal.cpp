@@ -130,20 +130,6 @@ void StrVal::operator =(Stz* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append given char                                                          */
-/*----------------------------------------------------------------------------*/
-void StrVal::vAppend(const char cChar)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  // limit???
-  
-  StrLib::vConcat(aChar(),cChar);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size of data area                                                      */
 /*----------------------------------------------------------------------------*/
 i8 StrVal::nAreaSize(void)

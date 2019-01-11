@@ -40,7 +40,6 @@ namespace Values
     void operator =(StrVal* aArg);
     void operator =(Stz*);
   
-    void  vAppend(const char cChar);
     i8    nAreaSize(void);
     void  vAreaSize(void);
     void  vAssign(Stz* aStr);
