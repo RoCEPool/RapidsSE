@@ -602,7 +602,7 @@ void Task::vSeedJob(void)
   
   Word* pWord = gpAttachMap->m_xMainDic.pFindWord(sSeed);
   
-  IP.m_aCell = pWord->pFirstCell();
+  IP.m_aCell = pWord->aFirstCell();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -721,7 +721,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
     }
     else if (CN_IPVAL == eClass) {                                      
       sStackContents.vCatSprint("%p"_Stz,
-                                _pIpVal(pValue)->pIpPtr());
+                                _aIpVal(pValue)->aIpPtr());
     }
     else if (CN_STRVAL == eClass) {
       sStackContents.vCatSprint("\"%lls\""_Stz,

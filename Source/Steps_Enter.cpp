@@ -37,7 +37,7 @@ void Step::vEnterObject(MP_Task mpTask)
 
   ASSERT(WT_OBJECT == pWord->eWordType());
   
-  Object* pObject = (Object*)pWord->pFirstCell();
+  Object* pObject = (Object*)pWord->aFirstCell();
   mpTask->m_pDataStack->vPushPointer(pObject);
   
   EXIT();

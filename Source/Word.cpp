@@ -83,7 +83,7 @@ Word::Word(Stz* sName)
   _setFooter_();
   
   m_pEntryStep   = &Steps::Step::vEnterRoutine;
-  m_pEntryCell   = pFirstCell();
+  m_aEntryCell   = aFirstCell();
 
   _checkInitialised_(CN_WORD);
   
@@ -143,11 +143,11 @@ void* Word::aAppend(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pAllottedCell = (Cell*)aAllot(sizeof(aCell));
+  Cell* aAllottedCell = (Cell*)aAllot(sizeof(aCell));
   
-  pAllottedCell->m_pJumpTo = aCell;
+  aAllottedCell->m_pJumpTo = aCell;
   
-  return pAllottedCell;
+  return aAllottedCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -246,7 +246,7 @@ void Word::vContentDump(void)
          m_xBody.nUsed(),
          m_pEntryStep,
          pStepWord ? pStepWord->sName().aChar() : "<not-found>",
-         pFirstCell()
+         aFirstCell()
          );
 }
 
@@ -327,11 +327,11 @@ i8 Word::nBodyUsed(void)
 /*----------------------------------------------------------------------------*/
 /* get which cell to start executing from                                     */
 /*----------------------------------------------------------------------------*/
-Cell* Word::pEntryCell(void)
+Cell* Word::aEntryCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_pEntryCell;
+  return m_aEntryCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,7 +341,7 @@ void Word::vEntryCell(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pEntryCell = aCell;
+  m_aEntryCell = aCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -444,13 +444,13 @@ void Word::vEncode(TaskStep* ppEntryStep)
 /*----------------------------------------------------------------------------*/
 /* get pointer to first cell in data area                                     */
 /*----------------------------------------------------------------------------*/
-Cell* Word::pFirstCell(void)
+Cell* Word::aFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pFirst = reinterpret_cast<Cell*>(m_xBody.aArea());
+  Cell* aFirst = reinterpret_cast<Cell*>(m_xBody.aArea());
   
-  return pPoolCheck<Cell*>(pFirst);
+  return pPoolCheck<Cell*>(aFirst);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -460,7 +460,7 @@ bool Word::bHasCell(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  if (aCell >= pFirstCell() && aCell <= pLastCell())
+  if (aCell >= aFirstCell() && aCell <= aLastCell())
     return true;
   
   return false;
@@ -521,13 +521,13 @@ void Word::vKind(Word* pKind)
 /*----------------------------------------------------------------------------*/
 /* get pointer to last cell                                                   */
 /*----------------------------------------------------------------------------*/
-Cell* Word::pLastCell(void)
+Cell* Word::aLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pLast = reinterpret_cast<Cell*>(m_xBody.aLatter());
+  Cell* aLast = reinterpret_cast<Cell*>(m_xBody.aLatter());
   
-  return pPoolCheck<Cell*>(pLast);
+  return pPoolCheck<Cell*>(aLast);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -556,7 +556,7 @@ void Word::vObjectDump(Stz* aTab)
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
          m_xBody.nUsed(),
          m_pEntryStep,
-         pFirstCell()
+         aFirstCell()
          );
 }
 

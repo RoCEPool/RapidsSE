@@ -20,15 +20,15 @@ namespace Values
     
     IpVal(void);
     
-    void operator =(Forth::Cell* pPtr);
+    void operator =(Forth::Cell* aPtr);
     
     i8      nSize(void) const;
-    Forth::Cell* pIpPtr(void) const;
+    Forth::Cell* aIpPtr(void) const;
     
     void vToString(Stz* aWorkspace);
   };
   
-  IpVal* _pIpVal(void* aAddr);
+  IpVal* _aIpVal(void* aAddr);
 }
 
 /*============================================================================*/

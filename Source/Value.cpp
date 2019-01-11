@@ -46,8 +46,8 @@ i8 Value::nSize(void)
     }
       
     case CN_IPVAL: {
-      IpVal* pIpVal = _pIpVal(this);
-      nBytes = pIpVal->nSize();
+      IpVal* aIpVal = _aIpVal(this);
+      nBytes = aIpVal->nSize();
       break;
     }
       
@@ -88,8 +88,8 @@ void Value::vToString(Stz* aString)
     }
       
     case CN_IPVAL: {
-      IpVal* pIpVal = _pIpVal(this);
-      pIpVal->vToString(aString);
+      IpVal* aIpVal = _aIpVal(this);
+      aIpVal->vToString(aString);
       break;
     }
       

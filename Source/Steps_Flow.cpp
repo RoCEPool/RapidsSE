@@ -54,14 +54,14 @@ void Step::vFlowExecute(MP_Task mpTask)
   }
   else if (WT_OBJECT == pWord->eWordType()) {
     mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_aCell);
-    mpTask->IP.m_aCell = pWord->pEntryCell();
+    mpTask->IP.m_aCell = pWord->aEntryCell();
     
-    Object* pObject = (Object*)pWord->pFirstCell();
+    Object* pObject = (Object*)pWord->aFirstCell();
     mpTask->m_pDataStack->vPushPointer(pObject);
   }
   else if (WT_ROUTINE == pWord->eWordType()){
     mpTask->m_pReturnStack->vPushCell(mpTask->IP.m_aCell);
-    mpTask->IP.m_aCell = pWord->pEntryCell();
+    mpTask->IP.m_aCell = pWord->aEntryCell();
   }
   else {
     NEVER_REACH;

@@ -50,7 +50,7 @@ namespace Forth
     Word*    m_pPrevWord;    // previous word in dictionary
     i8       m_iVariable;    // variable number
     TaskStep m_pEntryStep;   // entry step for this word
-    Cell*    m_pEntryCell;   // the cell to start executing from
+    Cell*    m_aEntryCell;   // the cell to start executing from
                              //   for normal words this will be the first cell
                              //     in the data area
                              //   for objects this will be the cell after
@@ -90,7 +90,7 @@ namespace Forth
     Dic*  pDic(void);
     i8    iEpoch(void);
     void  vEntryCell(Cell* aCell);
-    Cell* pEntryCell(void);
+    Cell* aEntryCell(void);
     void  vEntryStep(TaskStep pStep);
     TaskStep pEntryStep(void);
     TaskStep* ppEntryStep(void);
@@ -100,14 +100,14 @@ namespace Forth
     void  vEncode(Stz* aWordNm, Value* aValue);
     void  vEncode(Stz* aWordNm, GenVar* pGenVar);
     void  vEncode(TaskStep* ppEntryStep);
-    Cell* pFirstCell(void);
+    Cell* aFirstCell(void);
     bool  bHasCell(Cell* aCell);
     bool  bImmediate(void);
     bool  bIsName(s32& sName);
     void  vImmediate(bool bImmediate);
     Word* pKind(void);
     void  vKind(Word* pKind);
-    Cell* pLastCell(void);
+    Cell* aLastCell(void);
     s32&  sName(void);
     void  vObjectDump(Stz* aTab);
     void  vParams(i8 iParams);

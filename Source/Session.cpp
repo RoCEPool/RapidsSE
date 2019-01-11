@@ -199,19 +199,19 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   //Word* pTenants = gpAttachMap->m_xMainDic.pFindWord("tenants"_Stz);
   Word* pTenants = gpAttachMap->m_pTenants;
   ASSERT(pTenants);
-  Cell* aCell = pTenants->pFirstCell();
+  Cell* aCell = pTenants->aFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
 
   // /tenants/boray
   Word* pTenant = m_xPathStack.pFindInCurrent("boray"_Stz);
   ASSERT(pTenant);
-  aCell = pTenant->pFirstCell();
+  aCell = pTenant->aFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   // /tenants/boray/catalogs
   Word* pCatalogs = m_xPathStack.pFindInCurrent("catalogs"_Stz);
   ASSERT(pCatalogs);
-  aCell = pCatalogs->pFirstCell();
+  aCell = pCatalogs->aFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
 
   if ( ! pCatalogName)
@@ -222,13 +222,13 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   if ( ! pCatalog)
     return EC_NO_SUCH_CATALOG;
   
-  aCell = pCatalog->pFirstCell();
+  aCell = pCatalog->aFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   // /tenants/boray/catalogs/rapidsse/schemas
   Word* pSchemas = m_xPathStack.pFindInCurrent("schemas"_Stz);
   ASSERT(pSchemas);
-  aCell = pSchemas->pFirstCell();
+  aCell = pSchemas->aFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   if ( ! pSchemaName )
@@ -239,14 +239,14 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   if ( ! pSchema)
     return EC_NO_SUCH_SCHEMA;
   
-  aCell = pSchema->pFirstCell();
+  aCell = pSchema->aFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
 
   // /tenants/boray/catalogs/rapidsse/schemas/public/tables
   Word* pTables = m_xPathStack.pFindInCurrent("tables"_Stz);
   ASSERT(pTables);
   
-  aCell = pTables->pFirstCell();
+  aCell = pTables->aFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   return EC_NONE;

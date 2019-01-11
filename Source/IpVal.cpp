@@ -8,13 +8,13 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-IpVal* Values::_pIpVal(void* aAddr)
+IpVal* Values::_aIpVal(void* aAddr)
 {
-  IpVal* pIpVal = reinterpret_cast<IpVal*>(aAddr);
+  IpVal* aIpVal = reinterpret_cast<IpVal*>(aAddr);
   
-  RASSERT_TYPE(pIpVal,CN_IPVAL);
+  RASSERT_TYPE(aIpVal,CN_IPVAL);
   
-  return pIpVal;
+  return aIpVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,9 +41,9 @@ IpVal::IpVal(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void IpVal::operator =(Cell* pPtr)
+void IpVal::operator =(Cell* aPtr)
 {
-  m_pPtr = pPtr;
+  m_pPtr = aPtr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +51,7 @@ void IpVal::operator =(Cell* pPtr)
 /*----------------------------------------------------------------------------*/
 i8 IpVal::nSize(void) const
 {
-  return sizeof(PtrVal);
+  return sizeof(IpVal);
 }
 
 /*----------------------------------------------------------------------------*/
