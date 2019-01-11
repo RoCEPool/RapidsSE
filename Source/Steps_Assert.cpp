@@ -64,8 +64,8 @@ void Step::vAssertClass(MP_Task mpTask)
   eCN eClassNo = aValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _aPtrVal(aValue);
-    eClassNo = pPtrVal->pObj()->eClass();
+    PtrVal* aPtrVal = _aPtrVal(aValue);
+    eClassNo = aPtrVal->pObj()->eClass();
   }
   
   if ( eClassNo != eAssertClassNo )
@@ -91,8 +91,8 @@ void Step::vAssertClass_0(MP_Task mpTask)
   eCN eClassNo = aValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _aPtrVal(aValue);
-    eClassNo = pPtrVal->pObj()->eClass();
+    PtrVal* aPtrVal = _aPtrVal(aValue);
+    eClassNo = aPtrVal->pObj()->eClass();
   }
   
   if ( eClassNo != eAssertClassNo )
@@ -118,8 +118,8 @@ void Step::vAssertClass_1(MP_Task mpTask)
   eCN eClassNo = aValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _aPtrVal(aValue);
-    eClassNo = pPtrVal->pObj()->eClass();
+    PtrVal* aPtrVal = _aPtrVal(aValue);
+    eClassNo = aPtrVal->pObj()->eClass();
   }
   
   if ( eClassNo != eAssertClassNo )
@@ -145,8 +145,8 @@ void Step::vAssertClass_2(MP_Task mpTask)
   eCN eClassNo = aValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _aPtrVal(aValue);
-    eClassNo = pPtrVal->pObj()->eClass();
+    PtrVal* aPtrVal = _aPtrVal(aValue);
+    eClassNo = aPtrVal->pObj()->eClass();
   }
   
   if ( eClassNo != eAssertClassNo )
@@ -172,8 +172,8 @@ void Step::vAssertClass_3(MP_Task mpTask)
   eCN eClassNo = aValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _aPtrVal(aValue);
-    eClassNo = pPtrVal->pObj()->eClass();
+    PtrVal* aPtrVal = _aPtrVal(aValue);
+    eClassNo = aPtrVal->pObj()->eClass();
   }
   
   if ( eClassNo != eAssertClassNo )
@@ -199,8 +199,8 @@ void Step::vAssertClass_4(MP_Task mpTask)
   eCN eClassNo = aValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _aPtrVal(aValue);
-    eClassNo = pPtrVal->pObj()->eClass();
+    PtrVal* aPtrVal = _aPtrVal(aValue);
+    eClassNo = aPtrVal->pObj()->eClass();
   }
   
   if ( eClassNo != eAssertClassNo )

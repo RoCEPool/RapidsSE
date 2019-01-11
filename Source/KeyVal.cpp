@@ -25,19 +25,19 @@ KeyVal* DBobjects::_aKeyVal(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* KeyVal::operator new(size_t)
 {
-  KeyVal* pKeyVal = reinterpret_cast<KeyVal*>(HeapMem::pAllocate(CN_KEYVAL));
+  KeyVal* aKeyVal = reinterpret_cast<KeyVal*>(HeapMem::pAllocate(CN_KEYVAL));
   
-  return pKeyVal;
+  return aKeyVal;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void KeyVal::operator delete(void* pKeyValAddress)
+void KeyVal::operator delete(void* aKeyValAddress)
 {
-  KeyVal* pKeyVal = reinterpret_cast<KeyVal*>(pKeyValAddress);
+  KeyVal* aKeyVal = reinterpret_cast<KeyVal*>(aKeyValAddress);
   
-  HeapMem::vFree(pKeyVal);
+  HeapMem::vFree(aKeyVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,64 +69,64 @@ char* KeyVal::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 /*----------------------------------------------------------------------------*/
 /* if this key less than given key?                                           */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bLessThan(KeyVal* pKeyValThat, IdxColVec* pColVec)
+bool KeyVal::bLessThan(KeyVal* aKeyValThat, IdxColVec* pColVec)
 {
-  return m_xKey.bLessThan(&pKeyValThat->m_xKey, pColVec);
+  return m_xKey.bLessThan(&aKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* if this key less than or equal to given key?                               */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bLessEqual(KeyVal* pKeyValThat, IdxColVec* pColVec)
+bool KeyVal::bLessEqual(KeyVal* aKeyValThat, IdxColVec* pColVec)
 {
-  return m_xKey.bLessEqual(&pKeyValThat->m_xKey, pColVec);
+  return m_xKey.bLessEqual(&aKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* if this key equal to given key?                                            */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bEqualTo(KeyVal* pKeyValThat, IdxColVec* pColVec)
+bool KeyVal::bEqualTo(KeyVal* aKeyValThat, IdxColVec* pColVec)
 {
-  return m_xKey.bEqualTo(&pKeyValThat->m_xKey, pColVec);
+  return m_xKey.bEqualTo(&aKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* if this key not equal to given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bNotEqual(KeyVal* pKeyValThat, IdxColVec* pColVec)
+bool KeyVal::bNotEqual(KeyVal* aKeyValThat, IdxColVec* pColVec)
 {
-  return m_xKey.bNotEqual(&pKeyValThat->m_xKey, pColVec);
+  return m_xKey.bNotEqual(&aKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* if this key greater than or equal to given key?                            */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bGreaterEqual(KeyVal* pKeyValThat, IdxColVec* pColVec)
+bool KeyVal::bGreaterEqual(KeyVal* aKeyValThat, IdxColVec* pColVec)
 {
-  return m_xKey.bGreaterEqual(&pKeyValThat->m_xKey, pColVec);
+  return m_xKey.bGreaterEqual(&aKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* if this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bGreaterThan(KeyVal* pKeyValThat, IdxColVec* pColVec)
+bool KeyVal::bGreaterThan(KeyVal* aKeyValThat, IdxColVec* pColVec)
 {
-  return m_xKey.bGreaterThan(&pKeyValThat->m_xKey, pColVec);}
+  return m_xKey.bGreaterThan(&aKeyValThat->m_xKey, pColVec);}
 
 /*----------------------------------------------------------------------------*/
 /* if this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-i8 KeyVal::iCmp(KeyVal* pKeyValThat, IdxColVec* pColVec)
+i8 KeyVal::iCmp(KeyVal* aKeyValThat, IdxColVec* pColVec)
 {
-  return m_xKey.iCmp(&pKeyValThat->m_xKey, pColVec);
+  return m_xKey.iCmp(&aKeyValThat->m_xKey, pColVec);
 }
 
 /*----------------------------------------------------------------------------*/
 /* does this keyval match the given arguments                                 */
 /*----------------------------------------------------------------------------*/
-bool KeyVal::bMatches(KeyVal* pKeyValThat, IdxColVec* pColVec, RelOpAry* pRelOpAry)
+bool KeyVal::bMatches(KeyVal* aKeyValThat, IdxColVec* pColVec, RelOpAry* pRelOpAry)
 {
-  return m_xKey.bMatches(&pKeyValThat->m_xKey, pColVec, pRelOpAry);
+  return m_xKey.bMatches(&aKeyValThat->m_xKey, pColVec, pRelOpAry);
 }
 
 /*----------------------------------------------------------------------------*/
