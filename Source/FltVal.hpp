@@ -29,7 +29,7 @@ namespace Values
     void vNullValue(void);
   };
   
-  FltVal* _pFltVal(void* aAddr);
+  FltVal* _aFltVal(void* aAddr);
 }
 
 /*============================================================================*/

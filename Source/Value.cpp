@@ -40,8 +40,8 @@ i8 Value::nSize(void)
   switch (eClass) {
       
     case CN_INTVAL: {
-      IntVal* pIntVal = _pIntVal(this);
-      nBytes = pIntVal->nSize();
+      IntVal* aIntVal = _aIntVal(this);
+      nBytes = aIntVal->nSize();
       break;
     }
       
@@ -52,13 +52,13 @@ i8 Value::nSize(void)
     }
       
     case CN_PTRVAL: {
-      PtrVal* pPtrVal = _pPtrVal(this);
+      PtrVal* pPtrVal = _aPtrVal(this);
       nBytes = pPtrVal->nSize();
       break;
     }
       
     case CN_STRVAL: {
-      StrVal* pStrVal = _pStrVal(this);
+      StrVal* pStrVal = _aStrVal(this);
       nBytes = pStrVal->nSize();
       break;
     }
@@ -82,8 +82,8 @@ void Value::vToString(Stz* aString)
   switch (eClass) {
             
     case CN_INTVAL: {
-      IntVal* pIntVal = _pIntVal(this);
-      pIntVal->vToString(aString);
+      IntVal* aIntVal = _aIntVal(this);
+      aIntVal->vToString(aString);
       break;
     }
       
@@ -94,14 +94,14 @@ void Value::vToString(Stz* aString)
     }
       
     case CN_PTRVAL: {
-      PtrVal* pPtrVal = _pPtrVal(this);
-      pPtrVal->vToString(aString);
+      PtrVal* aPtrVal = _aPtrVal(this);
+      aPtrVal->vToString(aString);
       break;
     }
       
     case CN_STRVAL: {
-      StrVal* pStrVal = _pStrVal(this);
-      pStrVal->vToString(aString);
+      StrVal* aStrVal = _aStrVal(this);
+      aStrVal->vToString(aString);
       break;
     }
             

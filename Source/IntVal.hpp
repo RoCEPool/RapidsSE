@@ -29,18 +29,16 @@ namespace Values
     void vNullValue(void);
   };
   
-  IntVal* _pIntVal(void* aAddr);
-  
   /*----------------------------------------------------------------------------*/
   /* safe cast                                                                  */
   /*----------------------------------------------------------------------------*/
-  inline IntVal* _pIntVal(void* aAddr)
+  inline IntVal* _aIntVal(void* aAddr)
   {
-  IntVal* pIntVal = reinterpret_cast<IntVal*>(aAddr);
+    IntVal* aIntVal = reinterpret_cast<IntVal*>(aAddr);
   
-  ASSERT( !pIntVal || CN_INTVAL == pIntVal->eClass() );
+    ASSERT( !aIntVal || CN_INTVAL == aIntVal->eClass() );
   
-  return pIntVal;
+    return aIntVal;
   }
   
 }

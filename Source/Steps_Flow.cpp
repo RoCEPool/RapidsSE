@@ -126,11 +126,11 @@ void Step::vFlowJumpFalse(MP_Task mpTask)
   
   i8 iVal;
   if (CN_INTVAL == eClassNo) {
-    iVal = _pIntVal(pTop)->iInt(); // inline
+    iVal = _aIntVal(pTop)->iInt(); // inline
   }
   else
   if (CN_PTRVAL == eClassNo) {
-    iVal = _pPtrVal(pTop)->pObj() ? 1 : 0; // inline
+    iVal = _aPtrVal(pTop)->pObj() ? 1 : 0; // inline
   }
   else {
     iVal = -1;

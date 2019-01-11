@@ -64,7 +64,7 @@ void Step::vAssertClass(MP_Task mpTask)
   eCN eClassNo = pValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _pPtrVal(pValue);
+    PtrVal* pPtrVal = _aPtrVal(pValue);
     eClassNo = pPtrVal->pObj()->eClass();
   }
   
@@ -91,7 +91,7 @@ void Step::vAssertClass_0(MP_Task mpTask)
   eCN eClassNo = pValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _pPtrVal(pValue);
+    PtrVal* pPtrVal = _aPtrVal(pValue);
     eClassNo = pPtrVal->pObj()->eClass();
   }
   
@@ -118,7 +118,7 @@ void Step::vAssertClass_1(MP_Task mpTask)
   eCN eClassNo = pValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _pPtrVal(pValue);
+    PtrVal* pPtrVal = _aPtrVal(pValue);
     eClassNo = pPtrVal->pObj()->eClass();
   }
   
@@ -145,7 +145,7 @@ void Step::vAssertClass_2(MP_Task mpTask)
   eCN eClassNo = pValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _pPtrVal(pValue);
+    PtrVal* pPtrVal = _aPtrVal(pValue);
     eClassNo = pPtrVal->pObj()->eClass();
   }
   
@@ -172,7 +172,7 @@ void Step::vAssertClass_3(MP_Task mpTask)
   eCN eClassNo = pValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _pPtrVal(pValue);
+    PtrVal* pPtrVal = _aPtrVal(pValue);
     eClassNo = pPtrVal->pObj()->eClass();
   }
   
@@ -199,7 +199,7 @@ void Step::vAssertClass_4(MP_Task mpTask)
   eCN eClassNo = pValue->eClass();
   
   if (CN_PTRVAL == eClassNo && eAssertClassNo != CN_PTRVAL) {
-    PtrVal* pPtrVal = _pPtrVal(pValue);
+    PtrVal* pPtrVal = _aPtrVal(pValue);
     eClassNo = pPtrVal->pObj()->eClass();
   }
   

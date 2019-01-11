@@ -54,7 +54,7 @@ void Step::vIntAdd(MP_Task mpTask)
   Value* i = mpTask->m_pDataStack->aPeekValue();
   
   // add the two values and leave the result on the stack
-  *_pIntVal(i) = _pIntVal(j)->iInt() + _pIntVal(i)->iInt();
+  *_aIntVal(i) = _aIntVal(j)->iInt() + _aIntVal(i)->iInt();
   
   EXIT();
 }

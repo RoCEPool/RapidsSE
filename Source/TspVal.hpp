@@ -30,7 +30,7 @@ namespace Values
     void vNullValue(void);
   };
   
-  TspVal* _pTspVal(void* aAddr);
+  TspVal* _aTspVal(void* aAddr);
 }
 
 /*============================================================================*/

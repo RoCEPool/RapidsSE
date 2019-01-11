@@ -50,7 +50,7 @@ void Register::operator =(i8 iInt)
 {
   vSetClass(CN_INTVAL);
   
-  *_pIntVal(this) = iInt;
+  *_aIntVal(this) = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ void Register::operator =(Object* pPtr)
 {
   vSetClass(CN_PTRVAL);
   
-  *_pPtrVal(this) = pPtr;
+  *_aPtrVal(this) = pPtr;
 }
 
 /*----------------------------------------------------------------------------*/

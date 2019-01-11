@@ -58,15 +58,15 @@ void Step::vAddressFetch(MP_Task mpTask)
   
   switch (eClass) {
     case CN_INTVAL:
-      xValFetched = _pIntVal(pValue)->iInt();
+      xValFetched = _aIntVal(pValue)->iInt();
       break;
       
     case CN_STRVAL:
-      xValFetched = _pStrVal(pValue);
+      xValFetched = _aStrVal(pValue);
       break;
       
     case CN_PTRVAL:
-      xValFetched = _pPtrVal(pValue)->pObj();
+      xValFetched = _aPtrVal(pValue)->pObj();
       break;
       
     case CN_IPVAL:
@@ -103,16 +103,16 @@ void Step::vAddressStore(MP_Task mpTask)
   
   switch (eClass) {
     case CN_INTVAL:
-      *_pIntVal(pValue) = _pIntVal(xValStored.pNestedValue())->iInt();
+      *_aIntVal(pValue) = _aIntVal(xValStored.pNestedValue())->iInt();
       break;
       
     case CN_STRVAR:
     case CN_STRVAL:
-      _pStrVal(pValue)->vAssign( _pStrVal(xValStored.pNestedValue())->aStz() );
+      _aStrVal(pValue)->vAssign( _aStrVal(xValStored.pNestedValue())->aStz() );
       break;
       
     case CN_PTRVAL:
-      *_pPtrVal(pValue) = _pPtrVal(xValStored.pNestedValue())->pObj();
+      *_aPtrVal(pValue) = _aPtrVal(xValStored.pNestedValue())->pObj();
       break;
       
     case CN_IPVAL:
