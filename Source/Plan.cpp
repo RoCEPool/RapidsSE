@@ -246,22 +246,6 @@ void Plan::vNullifyPointers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find register frame                                                        */
-/*----------------------------------------------------------------------------*/
-RegFrame* Plan::pRegFrameFind(s32& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
- 
-  RegFrame* pRegFrame = nullptr;
-  
-  for (pRegFrame = m_pRegList; pRegFrame; pRegFrame = pRegFrame->pNext())
-    if (pRegFrame->sName().bSame(sName))
-      break;
-  
-  return pRegFrame;
-}
-
-/*----------------------------------------------------------------------------*/
 /* push register frame                                                        */
 /*----------------------------------------------------------------------------*/
 void Plan::vRegFramePush(RegFrame* pRegFrame)
@@ -299,7 +283,6 @@ void Plan::vShow(void)
   RegFrame* pRegFrame = m_pRegList;
   
   while(pRegFrame) {
-    vTrace("%s"_Stz, pRegFrame->m_sName.aChar());
     pRegFrame = pRegFrame->m_pNext;
     if (pRegFrame)
       vTrace("<-"_Stz);

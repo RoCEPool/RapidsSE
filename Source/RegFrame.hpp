@@ -10,8 +10,7 @@ namespace Forth
   class RegFrame : public Object
   {
   public:
-    s32       m_sName;              // name of the reg frame
-    RegFrame* m_pNext;              // nest frame in stack / list
+    RegFrame* m_pNext;              // nest frame in chain
     void*     m_pStackPtr;          // discard point (when in call stack)
     Register  m_xRegister[C_REGISTERS]; // set of registers
     
@@ -30,9 +29,6 @@ namespace Forth
     RegFrame* pNext(void);
     void      vNext(RegFrame* pRegFrame);
     
-    s32&      sName(void);
-    void      vName(s32& sName);
-
     void*     pStackPtr(void);
     void      vStackPtr(void* pStackPtr);
     
