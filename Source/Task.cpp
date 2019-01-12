@@ -727,11 +727,6 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
       sStackContents.vCatSprint("\"%lls\""_Stz,
                                 _aStrVal(aValue)->aChar());
     }
-    else if (CN_VALSET == eClass) {
-      sStackContents.vCatSprint("<%s>=%p"_Stz,
-                                aValue->aClass(),
-                                aValue);
-    }
     else {
       sStackContents.vCatSprint("<unknown:class=%lld>"_Stz,
                                 aValue->eClass());

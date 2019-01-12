@@ -162,7 +162,6 @@ void Axioms::vAddConstants(void)
   /*  1 */ vAddConstant("CN_SnnVAR"_Stz,       CN_SnnVAR);
   /*  8 */ vAddConstant("CN_STRVAL"_Stz,       CN_STRVAL);
   /*  9 */ vAddConstant("CN_VALREG"_Stz,       CN_VALREG);
-  /* 10 */ vAddConstant("CN_VALSET"_Stz,       CN_VALSET);
   /* 11 */ vAddConstant("CN_GENVAR"_Stz,       CN_GENVAR);
   
   /* 12 */ vAddConstant("CN_ARGUMENTS"_Stz,    CN_ARGUMENTS);

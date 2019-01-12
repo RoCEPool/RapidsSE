@@ -29,7 +29,6 @@ pFINALIZE *gpFinalize[]
   /* 14 */ &Finalize::vUndefined,         // CN_TMEVAL
   /* 15 */ &Finalize::vUndefined,         // CN_TSPVAL
   /* 16 */ &Finalize::vUndefined,         // CN_VALREG
-  /* 17 */ &Finalize::vUndefined,         // CN_VALSET
   /* 18 */ &Finalize::vUndefined,         // CN_GENVAR
   
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
