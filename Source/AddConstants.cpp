@@ -155,8 +155,9 @@ void Axioms::vAddConstants(void)
   /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
 
   /*    */ vAddConstant("CN_BINVAL"_Stz,       CN_BINVAL);
+  /*  5 */ vAddConstant("CN_FIPVAL"_Stz,       CN_FIPVAL);
+  /*  4 */ vAddConstant("CN_FLTVAL"_Stz,       CN_FLTVAL);
   /*  4 */ vAddConstant("CN_INTVAL"_Stz,       CN_INTVAL);
-  /*  5 */ vAddConstant("CN_IPVAL"_Stz,        CN_IPVAL);
   /*  6 */ vAddConstant("CN_OBJVAL"_Stz,       CN_OBJVAL);
   /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
   /*  8 */ vAddConstant("CN_STRVAL"_Stz,       CN_STRVAL);

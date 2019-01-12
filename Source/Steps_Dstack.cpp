@@ -199,7 +199,7 @@ void Step::vDstackDump(MP_Task mpTask)
            aClass,
            aCN[ePtdClass]);
   }
-  else if (CN_IPVAL == eClass) {                                         //RAY??
+  else if (CN_FIPVAL == eClass) {                                         //RAY??
     IpVal* aIpVal = _aIpVal(&xVariable);
     Cell* aCell = aIpVal->aIpPtr();
     vTrace("[%s] nullptr\n"_Stz,

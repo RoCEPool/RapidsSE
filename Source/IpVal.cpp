@@ -12,7 +12,7 @@ IpVal* Values::_aIpVal(void* aAddr)
 {
   IpVal* aIpVal = reinterpret_cast<IpVal*>(aAddr);
   
-  RASSERT_TYPE(aIpVal,CN_IPVAL);
+  RASSERT_TYPE(aIpVal,CN_FIPVAL);
   
   return aIpVal;
 }
@@ -31,11 +31,11 @@ void* IpVal::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IpVal::IpVal(void)
-: Value(CN_IPVAL)
+: Value(CN_FIPVAL)
 {
   m_pPtr = nullptr;
   
-  _checkInitialised_(CN_IPVAL);
+  _checkInitialised_(CN_FIPVAL);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -119,7 +119,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
     
     switch(eClass) {
         
-      case CN_IPVAL: {
+      case CN_FIPVAL: {
         IpVal* aIpVal = _aIpVal(aNestedValue);
         Cell* aCell = aIpVal->aIpPtr();
         vTrace("[%s] [%2lld] [%s] %p\n"_Stz,aPrefix,iVal,aCN[eClass],aCell);
@@ -321,7 +321,7 @@ bool Stack::bPop(Cell*& aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuard(CN_IPVAL) )
+  if ( ! bGuard(CN_FIPVAL) )
     return false;
   
   IpVal xIpVal;

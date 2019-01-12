@@ -45,7 +45,7 @@ i8 Value::nSize(void)
       break;
     }
       
-    case CN_IPVAL: {
+    case CN_FIPVAL: {
       IpVal* aIpVal = _aIpVal(this);
       nBytes = aIpVal->nSize();
       break;
@@ -88,7 +88,7 @@ void Value::vToString(Stz* aString)
       break;
     }
       
-    case CN_IPVAL: {
+    case CN_FIPVAL: {
       IpVal* aIpVal = _aIpVal(this);
       aIpVal->vToString(aString);
       break;

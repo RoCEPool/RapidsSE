@@ -719,7 +719,7 @@ void Task::vStackContents(Stack* pStack, s48K& sStackContents)
                                   aValue->aClass(),
                                   _aPtrVal(aValue)->pObj());
     }
-    else if (CN_IPVAL == eClass) {                                      
+    else if (CN_FIPVAL == eClass) {                                      
       sStackContents.vCatSprint("%p"_Stz,
                                 _aIpVal(aValue)->aIpPtr());
     }
