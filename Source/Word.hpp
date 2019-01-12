@@ -71,7 +71,8 @@ namespace Forth
     ~Word(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
+    static Word* pToWord(void* aAddrInsideWsp);
+
     char* aAllot(i8 iBytes);
     void* aAppend(Cell* aCell);
     void  vAppend(Cell* aCell);
@@ -82,11 +83,6 @@ namespace Forth
     void* aAppend(Value* aValue);
     void  vAppend(Value* aValue);
     void  vContentDump(void);
-  
-    char* aBodyArea(void);
-    char* aBodyLatter(void);
-    i8    nBodyUsed(void);
-  
     Dic*  pDic(void);
     i8    iEpoch(void);
     void  vEntryCell(Cell* aCell);
@@ -120,9 +116,10 @@ namespace Forth
     void  vVariable(i8 iVariable);
     eWT   eWordType(void);
     void  vWordType(eWT eWordType);
-    
-    static Word* pToWord(void* pData);
-    
+    char* aWspArea(void);
+    char* aWspLatter(void);
+    i8    nWspUsed(void);
+  
     Footer* aFooter(void);
   };
   

@@ -32,7 +32,7 @@ void Step::vToBody(MP_Task mpTask)
   Word* pWord = _pWord(pWordObject);
   
   //  char* pBody = pAdd<char*>(pWord,sizeof(Word));
-  char* pBody = pWord->aBodyArea();
+  char* pBody = pWord->aWspArea();
   
   Object* pPtrBody = reinterpret_cast<Object*>(pBody);
   

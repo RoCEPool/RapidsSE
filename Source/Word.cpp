@@ -102,7 +102,7 @@ Word::~Word(void) noexcept(false)
   
   // invoke the finalize function for embedded objects
   if (m_eWordType == WT_OBJECT) {
-    Object* pPtrBody = reinterpret_cast<Object*>(aBodyArea());
+    Object* pPtrBody = reinterpret_cast<Object*>(aWspArea());
     eCN eClass = pPtrBody->eClass();
     pFINALIZE* pFinalizeFun = gpFinalize[eClass];
     (pFinalizeFun)(eClass, pPtrBody);
@@ -293,7 +293,7 @@ void Word::vEntryStep(StepFp pStep)
 /*----------------------------------------------------------------------------*/
 /* get ptr to data area                                                       */
 /*----------------------------------------------------------------------------*/
-char* Word::aBodyArea(void)
+char* Word::aWspArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -305,7 +305,7 @@ char* Word::aBodyArea(void)
 /*----------------------------------------------------------------------------*/
 /* get latter part (current logical end) of body                              */
 /*----------------------------------------------------------------------------*/
-char* Word::aBodyLatter(void)
+char* Word::aWspLatter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -317,7 +317,7 @@ char* Word::aBodyLatter(void)
 /*----------------------------------------------------------------------------*/
 /* get number of data bytes                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Word::nBodyUsed(void)
+i8 Word::nWspUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

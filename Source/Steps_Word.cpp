@@ -632,7 +632,7 @@ void Step::vSubDic(MP_Task mpTask)
   if ( ! pWordSubDic )
     THROW("No such subDic: %s"_Stz,sNameSubDic.aChar());
   
-  Dic* pDic = _pDic(pWordSubDic->aBodyArea());
+  Dic* pDic = _pDic(pWordSubDic->aWspArea());
   
   mpTask->m_oPathStack.vPush(pDic);
 
