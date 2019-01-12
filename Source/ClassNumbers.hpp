@@ -33,7 +33,7 @@ enum eCN : u2 // Class Number
   /*  15 */ CN_TSPVAL,
   /*  16 */ CN_VALREG,
   /*  17 */ CN_VALSET,
-  /*  18 */ CN_VALWRK,
+  /*  18 */ CN_GENVAR,
   
   /*  19 */ CN_ACCESSPATH,
   /*  20 */ CN_ACCUM,
@@ -299,7 +299,7 @@ static Stz* aCN[]
   /*  15 */ "TSPVAL"_Stz,              // CN_TSPVAL
   /*  16 */ "VALREG"_Stz,              // CN_VALREG
   /*  17 */ "VALSET"_Stz,              // CN_VALSET
-  /*  18 */ "VALWRK"_Stz,              // CN_VALWRK
+  /*  18 */ "VALWRK"_Stz,              // CN_GENVAR
   
   /*  19 */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
   /*  20 */ "ACCUM"_Stz,               // CN_ACCUM

@@ -1183,7 +1183,7 @@ void Stack::vPushVal(Value* aValue)
 
   _hazard_();
   
-  ASSERT(CN_VALWRK != aValue->eClass());
+  ASSERT(CN_GENVAR != aValue->eClass());
   
   i8 iSize = aValue->nSize();
   

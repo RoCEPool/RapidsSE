@@ -11,7 +11,7 @@ GenVar* Forth::_pGenVar(void* aAddr)
 {
   GenVar* pValWrk = reinterpret_cast<GenVar*>(aAddr);
   
-  RASSERT_TYPE(pValWrk,CN_VALWRK);
+  RASSERT_TYPE(pValWrk,CN_GENVAR);
   
   return pValWrk;
 }
@@ -30,11 +30,11 @@ void* GenVar::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 GenVar::GenVar(void)
-: Object(CN_VALWRK)
+: Object(CN_GENVAR)
 {
-  _precondition_(_MAGIC_,CN_VALWRK);                    //! need to add _FOOTER_
+  _precondition_(_MAGIC_,CN_GENVAR);                    //! need to add _FOOTER_
   
-  _postcondition_(_MAGIC_,CN_VALWRK);
+  _postcondition_(_MAGIC_,CN_GENVAR);
 }
 
 /*----------------------------------------------------------------------------*/
