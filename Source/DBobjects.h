@@ -70,6 +70,8 @@ typedef Array<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "IndexTree.hpp"
 #include "FreeEntry.hpp"
 
+#include "RecordBuffer.hpp"
+
 #include "FetchBuffer.hpp"
 
 #include "TablePtn.hpp"

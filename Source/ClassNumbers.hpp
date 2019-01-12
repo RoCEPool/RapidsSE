@@ -205,6 +205,7 @@ enum eCN : u2 // Class Number
   /* 160 */ CN_QUEUES,
   
   /* 161 */ CN_RBCURSOR,
+  /*     */ CN_RECORDBUFFER,
   /* 162 */ CN_REGFRAME,
   /*     */ CN_REGISTER,
   /*     */ CN_RESOURCETRACKER,
@@ -460,6 +461,7 @@ static Stz* aCN[]
   /* 160 */ "QUEUES"_Stz,              // CN_QUEUES
   
   /* 161 */ "RBCURSOR"_Stz,            // CN_RBCURSOR
+  /*     */ "RECORDBUFFER"_Stz,        // CN_RECORDBUFFER
   /* 162 */ "REGFRAME"_Stz,            // CN_REGFRAME
   /*     */ "REGISTER"_Stz,            // CN_REGISTER
   /*     */ "RESOURCETRACK"_Stz,       // CN_RESOURCETRACKER

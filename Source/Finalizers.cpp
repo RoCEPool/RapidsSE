@@ -204,6 +204,7 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_QUEUES
   
   /* 97 */ &Finalize::vUndefined,         // CN_RBCURSOR
+  /*    */ &Finalize::vUndefined,         // CN_RECORDBUFFER
   /*    */ &Finalize::vUndefined,         // CN_REGFRAME
   /*    */ &Finalize::vUndefined,         // CN_REGISTER
   /*    */ &Finalize::vUndefined,         // CN_RESOURCETRACKER

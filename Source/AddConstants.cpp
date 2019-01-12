@@ -291,6 +291,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_QUEUES"_Stz,       CN_QUEUES);
   
   /*    */ vAddConstant("CN_RBCURSOR"_Stz,     CN_RBCURSOR);
+  /*    */ vAddConstant("CN_RECORDBUFFER"_Stz, CN_RECORDBUFFER);
   /* 47 */ vAddConstant("CN_REGFRAME"_Stz,     CN_REGFRAME);
   /*    */ vAddConstant("CN_REGISTER"_Stz,     CN_REGISTER);
   /* 48 */ vAddConstant("CN_RING"_Stz,         CN_RING);
