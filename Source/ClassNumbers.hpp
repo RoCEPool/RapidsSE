@@ -17,7 +17,6 @@ enum eCN : u2 // Class Number
 {
   /*   0 */ CN_NONE,
   /*   1 */ CN_BCDVAL,
-  /*   2 */ CN_BINVAL,
   /*   3 */ CN_BOLVAL,
   /*   4 */ CN_DTEVAL,
   /*     */ CN_FIPVAL,
@@ -281,12 +280,11 @@ static Stz* aCN[]
 {
   /*   0 */ "NONE"_Stz,                // CN_NONE
   /*   1 */ "BCDVAL"_Stz,              // CN_BCDVAL
-  /*   2 */ "BINVAL"_Stz,              // CN_BINVAL
   /*   3 */ "BOLVAL"_Stz,              // CN_BOLVAL
   /*   4 */ "DTEVAL"_Stz,              // CN_DTEVAL
+  /*   8 */ "FIPVAL"_Stz,              // CN_FIPVAL
   /*   6 */ "FLTVAL"_Stz,              // CN_FLTVAL
   /*   7 */ "INTVAL"_Stz,              // CN_INTVAL
-  /*   8 */ "IPVAL"_Stz,               // CN_FIPVAL
   /*   9 */ "IVLVAL"_Stz,              // CN_IVLVAL
   /*  10 */ "OBJVAL"_Stz,              // CN_OBJVAL
   /*  11 */ "PTRVAL"_Stz,              // CN_PTRVAL

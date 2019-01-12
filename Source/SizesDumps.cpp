@@ -17,7 +17,6 @@ pDUMPFUN *gpDump[]
   /*  0 */ &Dump::vInvalid,         // CN_NONE
   
   /*  1 */ &Dump::vInvalid,         // CN_BCDVAL
-  /*  2 */ &Dump::vInvalid,         // CN_BINVAL
   /*  3 */ &Dump::vInvalid,         // CN_BOLVAL
   /*  4 */ &Dump::vInvalid,         // CN_DTEVAL
   /*    */ &Dump::vInvalid,         // CN_FIPVAL
@@ -286,10 +285,9 @@ i8 giClassSize[]
   /*  0 */ 0,                          // CN_NONE
   
   /*  1 */ sizeof(BcdVal),             // CN_BCDVAL
-  /*  2 */ 0,                          // CN_BINVAL
   /*  3 */ sizeof(BolVal),             // CN_BOLVAL
   /*  4 */ sizeof(DteVal),             // CN_DTEVAL
-  /*    */ sizeof(FipVal),              // CN_FIPVAL
+  /*    */ sizeof(FipVal),             // CN_FIPVAL
   /*  6 */ sizeof(FltVal),             // CN_FLTVAL
   /*  7 */ sizeof(IntVal),             // CN_INTVAL
   /*  9 */ sizeof(IvlVal),             // CN_IVLVAL
@@ -554,7 +552,6 @@ eHT geWhichHeap[]
   /*  0 */ HT_INVALID,           // CN_NONE
   
   /*  1 */ HT_INVALID,           // CN_BCDVAL
-  /*  2 */ HT_INVALID,           // CN_BINVAL
   /*  3 */ HT_INVALID,           // CN_BOLVAL
   /*  4 */ HT_INVALID,           // CN_DTEVAL
   /*  8 */ HT_INVALID,           // CN_FIPVAL

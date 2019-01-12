@@ -14,7 +14,6 @@ pFINALIZE *gpFinalize[]
   /*  0 */ &Finalize::vUndefined,         // CN_NONE
   
   /*  1 */ &Finalize::vUndefined,         // CN_BCDVAL
-  /*  2 */ &Finalize::vUndefined,         // CN_BINVAL
   /*  3 */ &Finalize::vUndefined,         // CN_BOLVAL
   /*  4 */ &Finalize::vUndefined,         // CN_DTEVAL
   /*    */ &Finalize::vUndefined,         // CN_FIPVAL

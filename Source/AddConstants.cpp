@@ -154,7 +154,6 @@ void Axioms::vAddConstants(void)
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE"_Stz,         CN_NONE);
 
-  /*    */ vAddConstant("CN_BINVAL"_Stz,       CN_BINVAL);
   /*  5 */ vAddConstant("CN_FIPVAL"_Stz,       CN_FIPVAL);
   /*  4 */ vAddConstant("CN_FLTVAL"_Stz,       CN_FLTVAL);
   /*  4 */ vAddConstant("CN_INTVAL"_Stz,       CN_INTVAL);
