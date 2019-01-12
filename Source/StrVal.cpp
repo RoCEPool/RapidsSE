@@ -89,7 +89,9 @@ char* StrVal::aChar(void)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::nSize(void)
 {
-  i8 nBytes = sizeof(StrVal) + m_nBytesFollowing;
+  i8 nBytes = sizeof(StrVal)
+                - sizeof(m_caByteGlass)
+                + m_nBytesFollowing;
   
   return nBytes;
 }
