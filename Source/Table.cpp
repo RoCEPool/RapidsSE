@@ -1613,7 +1613,6 @@ void Table::vBuildNewIndex(char* aSortArray, i8 nElements, i8 nElmSize,
     vTrace("-- Build New Index --------------\n"_Stz);
   
   KeyWrk xKeyWrk;
-  EntryVec xPriorVec;
   IdxColVec* pIdxColVec = pNewIndexTree->pIndex()->pIdxColVec();
   bool bUniqueIndex = pNewIndexTree->pIndex()->bIsUnique();
   

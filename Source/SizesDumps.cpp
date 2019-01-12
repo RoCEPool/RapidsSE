@@ -323,7 +323,7 @@ i8 giClassSize[]
   
   /* 36 */ sizeof(Entry),              // CN_ENTRY
   /* 37 */ sizeof(EntryBuffer),        // CN_ENTRYBUFFER
-  /* 38 */ sizeof(EntryVec),           // CN_ENTRYVEC
+  /* 38 */ 0,                          // CN_ENTRYVEC
   
   /*    */ sizeof(FetchBuffer),        // CN_FETCHBUFFER
   /* 39 */ sizeof(File),               // CN_FILE

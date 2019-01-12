@@ -794,7 +794,6 @@ Entry* IndexTree::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  EntryVec xPriorVec;
   Entry* pNewEntry;
   
   m_zLock.vGrabWrite();

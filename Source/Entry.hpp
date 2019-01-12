@@ -150,11 +150,6 @@ namespace DBobjects
     return aKey;
   }
 
-  /*--------------------------------------------------------------------------*/
-  /* EntryVec -- Entry Vector                                                 */
-  /*--------------------------------------------------------------------------*/
-  typedef Vector<CN_ENTRYVEC,Entry,CN_ENTRY,C_FLAT_LEVELS_MAX,i8> EntryVec;
-
 }
 #pragma pack(pop)
 
