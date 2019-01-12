@@ -30,13 +30,15 @@ void* Register::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Register::Register(void)
-: Value(CN_REGISTER)
+: Object(CN_REGISTER)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGISTER,_FOOTER_);
+  
   _memZero_(m_xWsp.aArea(),C_WSP_REGISTER,CN_REGISTER);
   
-  *(this) = (i8)0;
-  
  _checkInitialised_(CN_REGISTER);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_REGISTER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,23 +46,15 @@ Register::Register(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy a pointer into workspace                                       */
+/* get address of value nested in the wsp                                     */
 /*----------------------------------------------------------------------------*/
-void Register::operator =(i8 iInt)
+Value* Register::aNestedValue(void)
 {
-  vSetClass(CN_INTVAL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGISTER,_FOOTER_);
   
-  *_aIntVal(this) = iInt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* assign/copy a pointer into workspace                                       */
-/*----------------------------------------------------------------------------*/
-void Register::operator =(Object* pPtr)
-{
-  vSetClass(CN_PTRVAL);
+  Value* aValue = reinterpret_cast<Value*>(m_xWsp.aArea());
   
-  *_aPtrVal(this) = pPtr;
+  return aValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,10 +64,12 @@ void Register::operator =(Object* pPtr)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-//Footer* Register::aFooter(void)
-//{
-//  return &m_xFooter;
-//}
+Footer* Register::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGISTER);
+  
+  return &m_xFooter;
+}
 
 /*============================================================================*/
 /* end                                                                        */

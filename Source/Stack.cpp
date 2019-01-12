@@ -988,11 +988,9 @@ void Stack::vPushRegister(Register* pRegister)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  PtrVal xPtrObject;
+  Value* aValue = pRegister->aNestedValue();
   
-  xPtrObject = pRegister;
-  
-  vPushValue(xPtrObject);
+  vPushValue(aValue);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
@@ -1131,7 +1129,7 @@ void Stack::vPopReg(Register* aRegister)
   
   i8 iSize = aPeekValue()->nSize();
   
-  MemLib::vCopy(aRegister,m_aTop,iSize,CN_STACK);
+  MemLib::vCopy(aRegister->aNestedValue(),m_aTop,iSize,CN_STACK);
   vPopBy(iSize);
   m_nValues--;
   
