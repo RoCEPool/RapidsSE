@@ -10,15 +10,15 @@ namespace Forth
   public:
     union {
       
-      TaskStep* m_ppEntryStep; // pointer to the Word::m_pEntryStep that
-                               // contains the address of the task step which
-                               // enters a word.
-                               // that step will be:
-                               //   - Task::vEnterRoutine for normal words
-                               //   - Task::vEnterObject for objects
-                               //   - Task::vXyz for primitives
+      StepFp* m_afpEntryStep; // address of a Word::m_pEntryStep that
+                              // contains a function pointer to the step which
+                              // enters a word.
+                              // that step will be:
+                              //   - Task::vEnterRoutine for normal words
+                              //   - Task::vEnterObject for objects
+                              //   - Task::vXyz for primitives
       
-      Cell*     m_pJumpTo;     // pointer to another cell within same routine
+      Cell*   m_pJumpTo;      // pointer to another cell within same routine
       
     };
   };

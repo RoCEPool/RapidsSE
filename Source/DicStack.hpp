@@ -32,7 +32,7 @@ namespace Forth
     Word* pFindWord(s32& sName);
     Word* pFindWord(Stz* aName);
     Word* pFindInCurrent(Stz* aName);
-    Word* pFindStep(TaskStep pStep);
+    Word* pFindStep(StepFp pStep);
     Word* pRemoveWord(s32& sName);
     Word* pLocateWord(Cell* aHasCell);
     Dic*  pPick(i8 iDic);

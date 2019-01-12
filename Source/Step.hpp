@@ -19,7 +19,7 @@ namespace Steps
     static void vAddSteps(void);
   
   private:
-    static void vAddStep(Stz* aName, TaskStep pStep, bool bImmediate=false);
+    static void vAddStep(Stz* aName, StepFp pStep, bool bImmediate=false);
 
     static void vAddSteps_AccessPath(void);
     static void vAddSteps_Accum(void);

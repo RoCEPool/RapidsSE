@@ -148,16 +148,16 @@ void Task::vTaskLoop(void)
   
   while (TS_EXECUTING == m_eState) {
     
-    TaskStep pTaskStep = *FIP.m_aCell->m_ppEntryStep;
+    StepFp pStepFp = *FIP.m_aCell->m_afpEntryStep;
     
-    m_pEntryCell = FIP.m_aCell->m_ppEntryStep + 1;
+    m_pEntryCell = FIP.m_aCell->m_afpEntryStep + 1;
     
-    //vTrace("pTaskStep %p\n"_Stz,pTaskStep);
+    //vTrace("pStepFp %p\n"_Stz,pStepFp);
     
     FIP.m_aCell++;
     
     try {
-      (pTaskStep)(this);
+      (pStepFp)(this);
     }
     
     catch (i8 iException) {

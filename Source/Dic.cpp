@@ -181,7 +181,7 @@ Word* Dic::pFindWord(Stz* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given function                                                 */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pFindStep(TaskStep pStep)
+Word* Dic::pFindStep(StepFp pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   

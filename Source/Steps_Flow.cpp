@@ -49,8 +49,8 @@ void Step::vFlowExecute(MP_Task mpTask)
   Word* pWord = _pWord(pWordObject);
   
   if (WT_PRIMITIVE == pWord->eWordType()) {
-    TaskStep pTaskStep = pWord->pEntryStep();
-    (pTaskStep)(mpTask);
+    StepFp pStepFp = pWord->pEntryStep();
+    (pStepFp)(mpTask);
   }
   else if (WT_OBJECT == pWord->eWordType()) {
     mpTask->m_pReturnStack->vPushCell(mpTask->FIP.m_aCell);

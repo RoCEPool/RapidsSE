@@ -223,7 +223,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   Word* pNewWord;
-  TaskStep  pStep;
+  StepFp  pStep;
   Word* pCalledWord;
   GenVar xVariable;
   
@@ -275,7 +275,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
           }
         }
         else if (WT_ROUTINE == pCalledWord->eWordType()) {
-          TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
+          StepFp* ppCalledEntryStep = pCalledWord->ppEntryStep();
           pNewWord->vEncode(ppCalledEntryStep);
         }
         else {

@@ -151,7 +151,7 @@ void Step::vCompileComma(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
+  StepFp* ppCalledEntryStep = pCalledWord->ppEntryStep();
   
   pCurrentWord->vEncode(ppCalledEntryStep);
   
@@ -475,7 +475,7 @@ void Step::vPostpone(MP_Task mpTask)
     // put call to immediate word into this current definition
     
     // get indirect pointer to entry step of called word
-    TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
+    StepFp* ppCalledEntryStep = pCalledWord->ppEntryStep();
     
     // copy indirect pointer into the current word
     pCurrentWord->vEncode(ppCalledEntryStep);
@@ -521,12 +521,12 @@ void Step::vSee(MP_Task mpTask)
   
   while (aDoesCell < pDoesWord->aLastCell()) {
     
-    Word* pCallsWord = mpTask->m_oPathStack.pFindStep(*aDoesCell->m_ppEntryStep);
+    Word* pCallsWord = mpTask->m_oPathStack.pFindStep(*aDoesCell->m_afpEntryStep);
     
     // jumps
-    if (*aDoesCell->m_ppEntryStep == Step::vFlowJump ||
-        *aDoesCell->m_ppEntryStep == Step::vFlowJumpFalse ||
-        *aDoesCell->m_ppEntryStep == Step::vFlowJumpTrue ) {
+    if (*aDoesCell->m_afpEntryStep == Step::vFlowJump ||
+        *aDoesCell->m_afpEntryStep == Step::vFlowJumpFalse ||
+        *aDoesCell->m_afpEntryStep == Step::vFlowJumpTrue ) {
       
       vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->sName().aChar());
       
@@ -540,7 +540,7 @@ void Step::vSee(MP_Task mpTask)
     }
     
     // push
-    if ( *aDoesCell->m_ppEntryStep == Step::vPushValue ) {
+    if ( *aDoesCell->m_afpEntryStep == Step::vPushValue ) {
       
       vTrace("%p: %s"_Stz,aDoesCell,pCallsWord->sName().aChar());
       
@@ -563,9 +563,9 @@ void Step::vSee(MP_Task mpTask)
     }
     
     // enterRoutine
-    if ( *aDoesCell->m_ppEntryStep == Step::vEnterRoutine ) {
+    if ( *aDoesCell->m_afpEntryStep == Step::vEnterRoutine ) {
       
-      Word* pCallsWord = (Word*)( ((u8)aDoesCell->m_ppEntryStep & (u8)~0xFFFF)
+      Word* pCallsWord = (Word*)( ((u8)aDoesCell->m_afpEntryStep & (u8)~0xFFFF)
                                  + sizeof(HeapBuffer));
       
       vTrace("%p: %s\n"_Stz,aDoesCell,pCallsWord->sName().aChar());

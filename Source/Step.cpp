@@ -11,7 +11,7 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vAddStep(Stz* aName, TaskStep pStep, bool bImmediate)
+void Step::vAddStep(Stz* aName, StepFp pStep, bool bImmediate)
 {
   RASSERT(aName->nSize() <= 32);
   

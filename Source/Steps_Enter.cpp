@@ -25,8 +25,6 @@ void Step::vEnterObject(MP_Task mpTask)
   mpTask->m_pReturnStack->vPushCell(mpTask->FIP.m_aCell);
   mpTask->FIP.m_aCell = *(Cell**)mpTask->m_pEntryCell;
   
-  //  Word* pWord = pAdd<Word*>(mpTask->m_pEntryCell,-(sizeof(Word)-sizeof(Cell*)));
-
   Word* pWord = pAdd<Word*>(mpTask->m_pEntryCell,
                             -( sizeof(Word)
                                - sizeof(Cell*)

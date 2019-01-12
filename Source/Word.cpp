@@ -205,26 +205,26 @@ void* Word::aAppend(Value* aValue)
 /*----------------------------------------------------------------------------*/
 /* append address of pointer to task step                                     */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(TaskStep* aTaskStep)
+void Word::vAppend(StepFp* aStepFp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  void* aAddress = aAppend(aTaskStep);
+  void* aAddress = aAppend(aStepFp);
   ASSERT(aAddress);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append address of pointer to task step                                     */
 /*----------------------------------------------------------------------------*/
-void* Word::aAppend(TaskStep* aTaskStep)
+void* Word::aAppend(StepFp* aStepFp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  TaskStep** aaTaskStep = (TaskStep**)aAllot(sizeof(TaskStep*));
+  StepFp** aaStepFp = (StepFp**)aAllot(sizeof(StepFp*));
 
-  *aaTaskStep = aTaskStep;
+  *aaStepFp = aStepFp;
 
-  return aaTaskStep;
+  return aaStepFp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,7 +273,7 @@ i8 Word::iEpoch(void)
 /*----------------------------------------------------------------------------*/
 /* get entry step                                                             */
 /*----------------------------------------------------------------------------*/
-TaskStep Word::pEntryStep(void)
+StepFp Word::pEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -283,7 +283,7 @@ TaskStep Word::pEntryStep(void)
 /*----------------------------------------------------------------------------*/
 /* set entry step                                                             */
 /*----------------------------------------------------------------------------*/
-void Word::vEntryStep(TaskStep pStep)
+void Word::vEntryStep(StepFp pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -347,7 +347,7 @@ void Word::vEntryCell(Cell* aCell)
 /*----------------------------------------------------------------------------*/
 /* get address of this words entry step                                       */
 /*----------------------------------------------------------------------------*/
-TaskStep* Word::ppEntryStep(void)
+StepFp* Word::ppEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -434,7 +434,7 @@ void Word::vEncode(Stz* aWordNm, Word* pWord)
 /*----------------------------------------------------------------------------*/
 /* encode call of entry step                                                  */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(TaskStep* ppEntryStep)
+void Word::vEncode(StepFp* ppEntryStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

@@ -186,7 +186,7 @@ Word* DicStack::pFindInCurrent(Stz* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given step                                                     */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pFindStep(TaskStep pStep)
+Word* DicStack::pFindStep(StepFp pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   

@@ -49,7 +49,7 @@ namespace Forth
     i8       m_iParams;      // number of parameters
     Word*    m_pPrevWord;    // previous word in dictionary
     i8       m_iVariable;    // variable number
-    TaskStep m_pEntryStep;   // entry step for this word
+    StepFp m_pEntryStep;   // entry step for this word
     Cell*    m_aEntryCell;   // the cell to start executing from
                              //   for normal words this will be the first cell
                              //     in the data area
@@ -77,8 +77,8 @@ namespace Forth
     void  vAppend(Cell* aCell);
     void* aAppend(i8 iInt);
     void  vAppend(i8 iInt);
-    void* aAppend(TaskStep* aTaskStep);
-    void  vAppend(TaskStep* aTaskStep);
+    void* aAppend(StepFp* aStepFp);
+    void  vAppend(StepFp* aStepFp);
     void* aAppend(Value* aValue);
     void  vAppend(Value* aValue);
     void  vContentDump(void);
@@ -91,15 +91,15 @@ namespace Forth
     i8    iEpoch(void);
     void  vEntryCell(Cell* aCell);
     Cell* aEntryCell(void);
-    void  vEntryStep(TaskStep pStep);
-    TaskStep pEntryStep(void);
-    TaskStep* ppEntryStep(void);
+    void  vEntryStep(StepFp pStep);
+    StepFp pEntryStep(void);
+    StepFp* ppEntryStep(void);
     void  vEncode(Stz* aWordNm);
     void  vEncode(Stz* aWordNm, Cell* aCell);
     void  vEncode(Stz* aWordNm, Word* pWord);
     void  vEncode(Stz* aWordNm, Value* aValue);
     void  vEncode(Stz* aWordNm, GenVar* pGenVar);
-    void  vEncode(TaskStep* ppEntryStep);
+    void  vEncode(StepFp* ppEntryStep);
     Cell* aFirstCell(void);
     bool  bHasCell(Cell* aCell);
     bool  bImmediate(void);

@@ -14,7 +14,7 @@ namespace Tasks
 
 namespace Forth
 {
-  typedef void (*TaskStep)(Tasks::MP_Task);
+  typedef void (*StepFp)(Tasks::MP_Task);
 }
 
 namespace Forth
