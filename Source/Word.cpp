@@ -82,7 +82,7 @@ Word::Word(Stz* sName)
   
   _setFooter_();
   
-  m_pEntryStep   = &Steps::Step::vEnterRoutine;
+  m_fpEntryStep   = &Steps::Step::vEnterRoutine;
   m_aEntryCell   = aFirstCell();
 
   _checkInitialised_(CN_WORD);
@@ -234,7 +234,7 @@ void Word::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Word* pStepWord = gpAttachMap->m_xMainDic.pFindStep(m_pEntryStep);
+  Word* pStepWord = gpAttachMap->m_xMainDic.pFindStep(m_fpEntryStep);
   
   vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "_Stz
          "Step %p %s ..Data.. %p\n"_Stz,
@@ -244,7 +244,7 @@ void Word::vContentDump(void)
          m_pKind->m_sName.aChar(),
          m_bImmediate,
          m_xBody.nUsed(),
-         m_pEntryStep,
+         m_fpEntryStep,
          pStepWord ? pStepWord->sName().aChar() : "<not-found>",
          aFirstCell()
          );
@@ -277,7 +277,7 @@ StepFp Word::pEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_pEntryStep;
+  return m_fpEntryStep;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +287,7 @@ void Word::vEntryStep(StepFp pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pEntryStep = pStep;
+  m_fpEntryStep = pStep;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,7 +351,7 @@ StepFp* Word::ppEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return &m_pEntryStep;
+  return &m_fpEntryStep;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -555,7 +555,7 @@ void Word::vObjectDump(Stz* aTab)
          aWT[m_eWordType]->aChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
          m_xBody.nUsed(),
-         m_pEntryStep,
+         m_fpEntryStep,
          aFirstCell()
          );
 }

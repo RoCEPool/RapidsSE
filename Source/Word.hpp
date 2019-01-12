@@ -49,7 +49,7 @@ namespace Forth
     i8       m_iParams;      // number of parameters
     Word*    m_pPrevWord;    // previous word in dictionary
     i8       m_iVariable;    // variable number
-    StepFp   m_pEntryStep;   // entry step for this word
+    StepFp   m_fpEntryStep;  // entry step function ∫for this word
     Cell*    m_aEntryCell;   // the cell to start executing from
                              //   for normal words this will be the first cell
                              //     in the data area
