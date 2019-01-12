@@ -8,7 +8,6 @@ namespace JobModel
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Ingest : public Job,
                      public JobFileName,
-                     public JobWriteBehind,
                      public List_t<IngestChunk>
   {
   public:
@@ -16,8 +15,8 @@ namespace JobModel
   
     File    m_oFile;   // input file
   
-    IngestChunk* m_pQuantaChunk;
-    IngestChunk* m_pRemainderChunk;
+    IngestChunk* m_pQuantaChunk;     // read into this chunk
+    IngestChunk* m_pRemainderChunk;  // remainder is put into this chunk
   
     ByteRate* m_pByteRate;
   

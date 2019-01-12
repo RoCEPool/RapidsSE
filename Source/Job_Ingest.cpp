@@ -103,7 +103,7 @@ void Job_Ingest::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Job_Ingest::Job_Ingest(Interface::Session* pSession)
-: Job(CN_JOB_INGEST, pSession), JobWriteBehind(DS_INGEST)
+: Job(CN_JOB_INGEST, pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
@@ -351,10 +351,7 @@ bool Job_Ingest::bChunk(void)
 void Job_Ingest::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
-  
-  // handle any dangling buffers
-  vHandleDanglingBuffers();
-  
+    
   if (m_pByteRate)
     m_pByteRate->vEndTiming();
   
