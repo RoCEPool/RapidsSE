@@ -173,8 +173,6 @@ pFINALIZE *gpFinalize[]
   /* 60 */ &Finalize::vUndefined,         // CN_JUMBOTRANSIENT
   
   /* 61 */ &Finalize::vUndefined,         // CN_KEY
-  /* 62 */ &Finalize::vUndefined,         // CN_KEYVAL
-  /* 63 */ &Finalize::vUndefined,         // CN_KEYVEC
   /* 64 */ &Finalize::vUndefined,         // CN_KEYWRK
   
   /* 65 */ &Finalize::vUndefined,         // CN_LARGEPERSISTENT

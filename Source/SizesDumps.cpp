@@ -177,8 +177,6 @@ pDUMPFUN *gpDump[]
   /* 60 */ &Heap::vDump,            // CN_JUMBOTRANSIENT
   
   /* 61 */ &Dump::vDummy,           // CN_KEY
-  /* 62 */ &Dump::vDummy,           // CN_KEYVAL
-  /* 63 */ &Dump::vDummy,           // CN_KEYVEC
   /* 64 */ &Dump::vInvalid,         // CN_KEYWRK
   
   /* 65 */ &Heap::vDump,            // CN_LARGEPERSISTENT
@@ -443,9 +441,7 @@ i8 giClassSize[]
   /* 59 */ sizeof(Heap), // correct    // CN_JUMBOPERSISTENT
   /* 60 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
   
-  /* 61 */ 0,                          // CN_KEY
-  /* 62 */ 0,                          // CN_KEYVAL
-  /* 63 */ 0,                          // CN_KEYVEC
+  /* 61 */ sizeof(Key),                // CN_KEY
   /* 64 */ sizeof(KeyWrk),             // CN_KEYWRK
   
   /* 65 */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
@@ -710,8 +706,6 @@ eHT geWhichHeap[]
   /* 60 */ HT_INVALID,           // CN_JUMBOTRANSIENT
   
   /* 61 */ HT_INVALID,           // CN_KEY
-  /* 62 */ HT_TRANSIENT_SMALL,   // CN_KEYVAL
-  /* 63 */ HT_TRANSIENT_MEDIUM,  // CN_KEYVEC
   /* 64 */ HT_INVALID,           // CN_KEYWRK
 
   /* 65 */ HT_INVALID,           // CN_LARGEPERSISTENT

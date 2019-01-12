@@ -174,8 +174,6 @@ enum eCN : u2 // Class Number
   /* 129 */ CN_JUMBOTRANSIENT,
   
   /* 130 */ CN_KEY,
-  /* 131 */ CN_KEYVAL,
-  /* 132 */ CN_KEYVEC,
   /* 133 */ CN_KEYWRK,
   
   /* 134 */ CN_LARGEPERSISTENT,
@@ -436,8 +434,6 @@ static Stz* aCN[]
   /* 129 */ "JUMBOTRANSIENT"_Stz,      // CN_JUMBOTRANSIENT
   
   /* 130 */ "KEY"_Stz,                 // CN_KEY
-  /* 131 */ "KEYVAL"_Stz,              // CN_KEYVAL
-  /* 132 */ "KEYVEC"_Stz,              // CN_KEYVEC
   /* 133 */ "KEYWRK"_Stz,              // CN_KEYWRK
   
   /* 134 */ "LARGEPERSISTENT"_Stz,     // CN_LARGEPERSISTENT
