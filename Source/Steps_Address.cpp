@@ -106,7 +106,6 @@ void Step::vAddressStore(MP_Task mpTask)
       *_aIntVal(aValue) = _aIntVal(xValStored.aNestedValue())->iInt();
       break;
       
-    case CN_STRVAR:
     case CN_STRVAL:
       _aStrVal(aValue)->vAssign( _aStrVal(xValStored.aNestedValue())->aStz() );
       break;

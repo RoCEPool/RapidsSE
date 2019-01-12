@@ -25,7 +25,7 @@ pFINALIZE *gpFinalize[]
   /* 10 */ &Finalize::vUndefined,         // CN_OBJVAL
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
   /* 12 */ &Finalize::vUndefined,         // CN_STRVAL
-  /* 13 */ &Finalize::vUndefined,         // CN_STRVAR
+  /* 13 */ &Finalize::vUndefined,         // CN_SnnVAR
   /* 14 */ &Finalize::vUndefined,         // CN_TMEVAL
   /* 15 */ &Finalize::vUndefined,         // CN_TSPVAL
   /* 16 */ &Finalize::vUndefined,         // CN_VALREG

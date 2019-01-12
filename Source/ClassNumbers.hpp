@@ -28,7 +28,7 @@ enum eCN : u2 // Class Number
   /*  10 */ CN_OBJVAL,
   /*  11 */ CN_PTRVAL,
   /*  12 */ CN_STRVAL,
-  /*  13 */ CN_STRVAR,
+  /*  13 */ CN_SnnVAR,
   /*  14 */ CN_TMEVAL,
   /*  15 */ CN_TSPVAL,
   /*  16 */ CN_VALREG,
@@ -294,7 +294,7 @@ static Stz* aCN[]
   /*  10 */ "OBJVAL"_Stz,              // CN_OBJVAL
   /*  11 */ "PTRVAL"_Stz,              // CN_PTRVAL
   /*  12 */ "STRVAL"_Stz,              // CN_STRVAL
-  /*  13 */ "STRVAR"_Stz,              // CN_STRVAR
+  /*  13 */ "STRVAR"_Stz,              // CN_SnnVAR
   /*  14 */ "TMEVAL"_Stz,              // CN_TMEVAL
   /*  15 */ "TSPVAL"_Stz,              // CN_TSPVAL
   /*  16 */ "VALREG"_Stz,              // CN_VALREG
