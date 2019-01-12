@@ -55,7 +55,6 @@ pFINALIZE *gpFinalize[]
   
   /* 36 */ &Finalize::vUndefined,         // CN_ENTRY
   /* 37 */ &Finalize::vUndefined,         // CN_ENTRYBUFFER
-  /* 38 */ &Finalize::vUndefined,         // CN_ENTRYVEC
   
   /*    */ &Finalize::vUndefined,         // CN_FETCHBUFFER
   /* 39 */ &Finalize::vUndefined,         // CN_FILE
