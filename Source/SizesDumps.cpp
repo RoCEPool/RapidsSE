@@ -29,7 +29,6 @@ pDUMPFUN *gpDump[]
   /* 12 */ &Dump::vInvalid,         // CN_STRVAL
   /* 14 */ &Dump::vInvalid,         // CN_TMEVAL
   /* 15 */ &Dump::vInvalid,         // CN_TSPVAL
-  /* 18 */ &Dump::vInvalid,         // CN_GENVAR
   
   /* 19 */ &Dump::vInvalid,         // CN_ACCESSPATH
   /* 20 */ &Dump::vInvalid,         // CN_ACCUM
@@ -71,6 +70,7 @@ pDUMPFUN *gpDump[]
   /* 43 */ &Dump::vDummy,           // CN_FREEDNOT
   /* 44 */ &Dump::vDummy,           // CN_FREEENTRY
   
+  /*    */ &Dump::vInvalid,         // CN_GENVAR
   /* 45 */ &Graph::vDump,           // CN_GRAPH
   /* 46 */ &GraphCursor::vDump,     // CN_GRAPHCURSOR
   /* 47 */ &GraphNode::vDump,       // CN_GRAPHNODE
@@ -298,7 +298,6 @@ i8 giClassSize[]
   /* 12 */ sizeof(StrVal),             // CN_STRVAL
   /* 14 */ sizeof(TmeVal),             // CN_TMEVAL
   /* 15 */ sizeof(TspVal),             // CN_TSPVAL
-  /* 18 */ sizeof(GenVar),             // CN_GENVAR
   
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
   /* 20 */ sizeof(Accum),              // CN_ACCUM
@@ -340,6 +339,7 @@ i8 giClassSize[]
   /* 43 */ 0,                          // CN_FREEDNOT
   /* 44 */ 0,                          // CN_FREEENTRY
   
+  /*    */ sizeof(GenVar),             // CN_GENVAR
   /* 45 */ sizeof(Graph),              // CN_GRAPH
   /* 46 */ sizeof(GraphCursor),        // CN_GRAPHCURSOR
   /* 47 */ sizeof(GraphNode),          // CN_GRAPHNODE
@@ -566,7 +566,6 @@ eHT geWhichHeap[]
   /* 12 */ HT_INVALID,           // CN_STRVAL
   /* 14 */ HT_INVALID,           // CN_TMEVAL
   /* 15 */ HT_INVALID,           // CN_TSPVAL
-  /* 18 */ HT_INVALID,           // CN_GENVAR
   
   /* 19 */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
   /* 20 */ HT_TRANSIENT_SMALL,   // CN_ACCUM
@@ -608,6 +607,7 @@ eHT geWhichHeap[]
   /* 43 */ HT_INVALID,           // CN_FREEDNOT
   /* 44 */ HT_INVALID,           // CN_FREEENTRY
   
+  /*    */ HT_INVALID,           // CN_GENVAR
   /* 45 */ HT_TRANSIENT_SMALL,   // CN_GRAPH
   /* 46 */ HT_TRANSIENT_SMALL,   // CN_GRAPHCURSOR
   /* 47 */ HT_TRANSIENT_SMALL,   // CN_GRAPHNODE

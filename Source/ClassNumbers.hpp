@@ -29,7 +29,6 @@ enum eCN : u2 // Class Number
   /*  12 */ CN_STRVAL,
   /*  14 */ CN_TMEVAL,
   /*  15 */ CN_TSPVAL,
-  /*  18 */ CN_GENVAR,
   
   /*  19 */ CN_ACCESSPATH,
   /*  20 */ CN_ACCUM,
@@ -71,6 +70,7 @@ enum eCN : u2 // Class Number
   /*  47 */ CN_FREEDNOT,
   /*  48 */ CN_FREEENTRY,
   
+  /*     */ CN_GENVAR,
   /*  49 */ CN_GRAPH,
   /*  50 */ CN_GRAPHCURSOR,
   /*  51 */ CN_GRAPHNODE,
@@ -293,7 +293,6 @@ static Stz* aCN[]
   /*  12 */ "STRVAL"_Stz,              // CN_STRVAL
   /*  14 */ "TMEVAL"_Stz,              // CN_TMEVAL
   /*  15 */ "TSPVAL"_Stz,              // CN_TSPVAL
-  /*  18 */ "VALWRK"_Stz,              // CN_GENVAR
   
   /*  19 */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
   /*  20 */ "ACCUM"_Stz,               // CN_ACCUM
@@ -335,6 +334,7 @@ static Stz* aCN[]
   /*  47 */ "FREEDNOT"_Stz,            // CN_FREEDNOT
   /*  48 */ "FREEENTRY"_Stz,           // CN_FREEENTRY
   
+  /*     */ "GENVAR"_Stz,              // CN_GENVAR
   /*  49 */ "GRAPH"_Stz,               // CN_GRAPH
   /*  50 */ "GRAPHCURSOR"_Stz,         // CN_GRAPHCURSOR
   /*  51 */ "GRAPHNODE"_Stz,           // CN_GRAPHNODE

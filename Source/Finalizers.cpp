@@ -26,7 +26,6 @@ pFINALIZE *gpFinalize[]
   /* 12 */ &Finalize::vUndefined,         // CN_STRVAL
   /* 14 */ &Finalize::vUndefined,         // CN_TMEVAL
   /* 15 */ &Finalize::vUndefined,         // CN_TSPVAL
-  /* 18 */ &Finalize::vUndefined,         // CN_GENVAR
   
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
   /* 20 */ &Finalize::vUndefined,         // CN_ACCUM
@@ -68,6 +67,7 @@ pFINALIZE *gpFinalize[]
   /* 43 */ &Finalize::vUndefined,         // CN_FREEDNOT
   /* 44 */ &Finalize::vUndefined,         // CN_FREEENTRY
   
+  /*    */ &Finalize::vUndefined,         // CN_GENVAR
   /* 45 */ &Finalize::vUndefined,         // CN_GRAPH
   /* 46 */ &Finalize::vUndefined,         // CN_GRAPH
   /* 47 */ &Finalize::vUndefined,         // CN_GRAPHNODE

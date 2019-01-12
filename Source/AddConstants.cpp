@@ -160,7 +160,6 @@ void Axioms::vAddConstants(void)
   /*  6 */ vAddConstant("CN_OBJVAL"_Stz,       CN_OBJVAL);
   /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
   /*  8 */ vAddConstant("CN_STRVAL"_Stz,       CN_STRVAL);
-  /* 11 */ vAddConstant("CN_GENVAR"_Stz,       CN_GENVAR);
   
   /* 12 */ vAddConstant("CN_ARGUMENTS"_Stz,    CN_ARGUMENTS);
   /* 13 */ vAddConstant("CN_ATOMIC"_Stz,       CN_ATOMIC);
@@ -180,6 +179,7 @@ void Axioms::vAddConstants(void)
   /* 15 */ vAddConstant("CN_FREEBUFFER"_Stz,   CN_FREEBUFFER);
   /* 22 */ vAddConstant("CN_FREECHUNK"_Stz,    CN_FREECHUNK);
   
+  /*    */ vAddConstant("CN_GENVAR"_Stz,       CN_GENVAR);
   /* 23 */ vAddConstant("CN_GRAPH"_Stz,        CN_GRAPH);
   /* 24 */ vAddConstant("CN_GRAPHCURSOR"_Stz,  CN_GRAPHCURSOR);
   /* 25 */ vAddConstant("CN_GRAPHNODE"_Stz,    CN_GRAPHNODE);
