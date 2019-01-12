@@ -27,7 +27,6 @@ enum eCN : u2 // Class Number
   /*  10 */ CN_OBJVAL,
   /*  11 */ CN_PTRVAL,
   /*  12 */ CN_STRVAL,
-  /*  13 */ CN_SnnVAR,
   /*  14 */ CN_TMEVAL,
   /*  15 */ CN_TSPVAL,
   /*  18 */ CN_GENVAR,
@@ -244,6 +243,7 @@ enum eCN : u2 // Class Number
   /* 185 */ CN_STACK,
   /* 186 */ CN_STEPACCUM,
   /* 187 */ CN_STEPTIMING,
+  /*  13 */ CN_STRING_T,
   /* 188 */ CN_SYSCALL,
   
   /* 189 */ CN_TABLE,
@@ -291,7 +291,6 @@ static Stz* aCN[]
   /*  10 */ "OBJVAL"_Stz,              // CN_OBJVAL
   /*  11 */ "PTRVAL"_Stz,              // CN_PTRVAL
   /*  12 */ "STRVAL"_Stz,              // CN_STRVAL
-  /*  13 */ "SnnVAR"_Stz,              // CN_SnnVAR
   /*  14 */ "TMEVAL"_Stz,              // CN_TMEVAL
   /*  15 */ "TSPVAL"_Stz,              // CN_TSPVAL
   /*  18 */ "VALWRK"_Stz,              // CN_GENVAR
@@ -423,7 +422,7 @@ static Stz* aCN[]
   /* 117 */ "JOB_STATUS"_Stz,          // CN_JOB_STATUS
   /* 118 */ "JOB_SUBFETCH"_Stz,        // CN_JOB_SUBFETCH
   /*     */ "JOB_SUBINGESTER"_Stz,     // CN_JOB_SUBINGESTER
-  /*     */ "Job_SubInserter"_Stz,       // CN_JOB_SUBINSERTER
+  /*     */ "Job_SUBINSERTER"_Stz,     // CN_JOB_SUBINSERTER
   /* 119 */ "JOB_SUBLOADER"_Stz,       // CN_JOB_SUBLOADER
   /*     */ "JOB_SUBPUBLISH"_Stz,      // CN_JOB_SUBPUBLISH
   /* 120 */ "JOB_SUBPURGER"_Stz,       // CN_JOB_SUBPURGER
@@ -508,6 +507,7 @@ static Stz* aCN[]
   /* 185 */ "STACK"_Stz,               // CN_STACK
   /* 186 */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* 187 */ "STEPTIMING"_Stz,          // CN_STEPTIMING
+  /*  13 */ "STRING_T"_Stz,            // CN_STRING_T
   /* 188 */ "SYSCALL"_Stz,             // CN_SYSCALL
   
   /* 189 */ "TABLE"_Stz,               // CN_TABLE

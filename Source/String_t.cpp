@@ -11,7 +11,7 @@ void* CorrectnessAlgebra::_pStrVar(void* aAddr)
 {
   Object* pStrVar = reinterpret_cast<Object*>(aAddr);
   
-  RASSERT_TYPE(pStrVar,CN_SnnVAR);
+  RASSERT_TYPE(pStrVar,CN_STRING_T);
   
   return pStrVar;
 }

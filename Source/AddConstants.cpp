@@ -159,7 +159,6 @@ void Axioms::vAddConstants(void)
   /*  5 */ vAddConstant("CN_IPVAL"_Stz,        CN_IPVAL);
   /*  6 */ vAddConstant("CN_OBJVAL"_Stz,       CN_OBJVAL);
   /*  7 */ vAddConstant("CN_PTRVAL"_Stz,       CN_PTRVAL);
-  /*  1 */ vAddConstant("CN_SnnVAR"_Stz,       CN_SnnVAR);
   /*  8 */ vAddConstant("CN_STRVAL"_Stz,       CN_STRVAL);
   /* 11 */ vAddConstant("CN_GENVAR"_Stz,       CN_GENVAR);
   
@@ -300,7 +299,7 @@ void Axioms::vAddConstants(void)
   
   /* 54 */ vAddConstant("CN_SCANBUFFER"_Stz,   CN_SCANBUFFER);
   /* 55 */ vAddConstant("CN_SCRATCH"_Stz,      CN_SCRATCH);
-  /* 57 */ vAddConstant("CN_SESSION"_Stz,        CN_SESSION);
+  /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
   /*    */ vAddConstant("CN_SELCURSOR"_Stz,    CN_SELCURSOR);
   /* 60 */ vAddConstant("CN_SEMAPHORE"_Stz,    CN_SEMAPHORE);
   /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
@@ -314,7 +313,8 @@ void Axioms::vAddConstants(void)
   /* 66 */ vAddConstant("CN_SOCKET"_Stz,       CN_SOCKET);
   /* 67 */ vAddConstant("CN_STACK"_Stz,        CN_STACK);
   /* 68 */ vAddConstant("CN_STEPACCUM"_Stz,    CN_STEPACCUM);
-  /* 69 */ vAddConstant("CN_STEPTIMING"_Stz,  CN_STEPTIMING);
+  /* 69 */ vAddConstant("CN_STEPTIMING"_Stz,   CN_STEPTIMING);
+  /*  1 */ vAddConstant("CN_STRING_T"_Stz,       CN_STRING_T);
   /* 70 */ vAddConstant("CN_SYSCALL"_Stz,      CN_SYSCALL);
 
   /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);

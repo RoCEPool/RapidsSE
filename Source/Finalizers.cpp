@@ -24,7 +24,6 @@ pFINALIZE *gpFinalize[]
   /* 10 */ &Finalize::vUndefined,         // CN_OBJVAL
   /* 11 */ &Finalize::vUndefined,         // CN_PTRVAL
   /* 12 */ &Finalize::vUndefined,         // CN_STRVAL
-  /* 13 */ &Finalize::vUndefined,         // CN_SnnVAR
   /* 14 */ &Finalize::vUndefined,         // CN_TMEVAL
   /* 15 */ &Finalize::vUndefined,         // CN_TSPVAL
   /* 18 */ &Finalize::vUndefined,         // CN_GENVAR
@@ -243,6 +242,7 @@ pFINALIZE *gpFinalize[]
   /*126 */ &Finalize::vUndefined,         // CN_STACK
   /*127 */ &Finalize::vUndefined,         // CN_STEPACCUM
   /*128 */ &Finalize::vUndefined,         // CN_STEPTIMING
+  /* 13 */ &Finalize::vUndefined,         // CN_STRING_T
   /*129 */ &Finalize::vUndefined,         // CN_SYSCALL
   
   /*130 */ &Table::vFinalize,             // CN_TABLE

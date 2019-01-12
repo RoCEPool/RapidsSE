@@ -27,7 +27,6 @@ pDUMPFUN *gpDump[]
   /* 10 */ &Dump::vInvalid,         // CN_OBJVAL
   /* 11 */ &Dump::vInvalid,         // CN_PTRVAL
   /* 12 */ &Dump::vInvalid,         // CN_STRVAL
-  /* 13 */ &Dump::vInvalid,         // CN_SnnVAR
   /* 14 */ &Dump::vInvalid,         // CN_TMEVAL
   /* 15 */ &Dump::vInvalid,         // CN_TSPVAL
   /* 18 */ &Dump::vInvalid,         // CN_GENVAR
@@ -248,6 +247,7 @@ pDUMPFUN *gpDump[]
   /*126 */ &Stack::vDump,           // CN_STACK
   /*127 */ &Dump::vInvalid,         // CN_STEPACCUM
   /*128 */ &StepTiming::vDump,      // CN_STEPTIMING
+  /* 13 */ &Dump::vInvalid,         // CN_STRING_T
   /*129 */ &Dump::vInvalid,         // CN_SYSCALL
 
   /*130 */ &Table::vDump,           // CN_TABLE
@@ -296,7 +296,6 @@ i8 giClassSize[]
   /* 10 */ 0,                          // CN_OBJVAL
   /* 11 */ sizeof(PtrVal),             // CN_PTRVAL
   /* 12 */ sizeof(StrVal),             // CN_STRVAL
-  /* 13 */ sizeof(s32),                // CN_SnnVAR
   /* 14 */ sizeof(TmeVal),             // CN_TMEVAL
   /* 15 */ sizeof(TspVal),             // CN_TSPVAL
   /* 18 */ sizeof(GenVar),             // CN_GENVAR
@@ -515,7 +514,8 @@ i8 giClassSize[]
   /*125 */ sizeof(Socket),             // CN_SOCKET
   /*126 */ sizeof(Stack),              // CN_STACK
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
-  /*128 */ sizeof(StepTiming),        // CN_STEPTIMING
+  /*128 */ sizeof(StepTiming),         // CN_STEPTIMING
+  /* 13 */ sizeof(s32),                // CN_STRING_T
   /*129 */ sizeof(SysCall),            // CN_SYSCALL
 
   /*130 */ sizeof(Table),              // CN_TABLE
@@ -564,7 +564,6 @@ eHT geWhichHeap[]
   /* 10 */ HT_INVALID,           // CN_OBJVAL
   /* 11 */ HT_INVALID,           // CN_PTRVAL
   /* 12 */ HT_INVALID,           // CN_STRVAL
-  /* 13 */ HT_INVALID,           // CN_SnnVAR
   /* 14 */ HT_INVALID,           // CN_TMEVAL
   /* 15 */ HT_INVALID,           // CN_TSPVAL
   /* 18 */ HT_INVALID,           // CN_GENVAR
@@ -784,6 +783,7 @@ eHT geWhichHeap[]
   /*126 */ HT_TRANSIENT_LARGE,   // CN_STACK
   /*127 */ HT_INVALID,           // CN_STEPACCUM
   /*128 */ HT_TRANSIENT_LARGE,   // CN_STEPTIMING
+  /* 13 */ HT_INVALID,           // CN_STRING_T
   /*129 */ HT_INVALID,           // CN_SYSCALL
   
   /*130 */ HT_INVALID,           // CN_TABLE

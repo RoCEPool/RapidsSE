@@ -58,12 +58,12 @@ using namespace CorrectnessAlgebra;
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 String_t<SIZE>::String_t(void)
-: Object(CN_SnnVAR)
+: Object(CN_STRING_T)
 {
-  _precondition_(_MAGIC_,CN_SnnVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
 #ifdef __DEBUG_CHECKS
-  MemLib::vZero(m_cArea,SIZE,CN_SnnVAR);
+  MemLib::vZero(m_cArea,SIZE,CN_STRING_T);
 #else
   m_cArea[0] = '\0';
 #endif
@@ -76,9 +76,9 @@ String_t<SIZE>::String_t(void)
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 String_t<SIZE>::String_t(Stz* aArg)
-: Object(CN_SnnVAR)
+: Object(CN_STRING_T)
 {
-  _precondition_(_MAGIC_,CN_SnnVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
   StrLib::vCopyLen(m_cArea,aArg->aChar(),SIZE-1);
   
@@ -91,7 +91,7 @@ String_t<SIZE>::String_t(Stz* aArg)
 template <int SIZE>
 String_t<SIZE>::~String_t(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_SnnVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,7 +104,7 @@ String_t<SIZE>::~String_t(void) noexcept(false)
 template <int SIZE>
 String_t<SIZE>::operator Stz*(void)
 {
-  _precondition_(_MAGIC_,CN_SnnVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
   return (Stz*)m_cArea;
 }
@@ -115,7 +115,7 @@ String_t<SIZE>::operator Stz*(void)
 template <int SIZE>
 void String_t<SIZE>::operator =(i8 iArg)
 {
-  _precondition_(_MAGIC_,CN_SnnVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
   StrLib::wToString(iArg,m_cArea);
 }
@@ -126,7 +126,7 @@ void String_t<SIZE>::operator =(i8 iArg)
 template <int SIZE>
 void String_t<SIZE>::operator =(Stz* aArg)
 {
-  _precondition_(_MAGIC_,CN_SnnVAR,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
   StrLib::vCopyLen(m_cArea,aArg->aChar(),SIZE-1);
 }
@@ -387,7 +387,7 @@ void String_t<SIZE>::vToLower(void)
 template <int SIZE>
 Footer* String_t<SIZE>::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_SnnVAR);
+  _precondition_(_MAGIC_,CN_STRING_T);
   
   return &m_xFooter;
 }
