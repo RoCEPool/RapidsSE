@@ -12,7 +12,7 @@
 namespace CorrectnessAlgebra
 {
   template<int LENGTH>
-  class Wsp_t : public Wsp
+  class Wsp_t
   {
   private:
     char m_cArea[LENGTH]; // fixed byte area
@@ -31,6 +31,7 @@ namespace CorrectnessAlgebra
     char* aLatter(void);
     i8    nLength(void);
     i8    nSize(void);
+    Stz*  aStz(void);
     void  vTake(i8 nBytes);
     i8    nUsed(void);
     void  vUsed(i8 nBytes);
@@ -92,7 +93,7 @@ void Wsp_t<LENGTH>::vAppend(void* aSrc, i8 nBytes, eCN eClassNo)
 template<int LENGTH>
 char* Wsp_t<LENGTH>::aArea(void)
 {
-  char* aArea = Wsp::aArea();
+  char* aArea = m_cArea;
   
   return aArea;
 }
@@ -103,7 +104,9 @@ char* Wsp_t<LENGTH>::aArea(void)
 template<int LENGTH>
 void Wsp_t<LENGTH>::vFill(char cByte, eCN eClassNo)
 {
-  Wsp::vFill(cByte,LENGTH,eClassNo);
+  void* aDst = aArea();
+  
+  MemLib::vSet(aDst,cByte,LENGTH,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -144,6 +147,17 @@ template<int LENGTH>
 i8 Wsp_t<LENGTH>::nSize(void)
 {
   return sizeof(Wsp_t<LENGTH>);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of byte area                                                   */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+Stz* Wsp_t<LENGTH>::aStz(void)
+{
+  char* aArea = m_cArea;
+  
+ return reinterpret_cast<Stz*>(aArea);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,7 +208,9 @@ i8 Wsp_t<LENGTH>::nUsed(void)
 template<int LENGTH>
 void Wsp_t<LENGTH>::vZero(eCN eClassNo)
 {
-  Wsp::vZero(LENGTH,eClassNo);
+  void* aDst = aArea();
+  
+  MemLib::vZero(aDst,LENGTH,eClassNo);
 }
 
 /*============================================================================*/
