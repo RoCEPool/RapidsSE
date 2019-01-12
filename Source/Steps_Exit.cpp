@@ -35,7 +35,7 @@ void Step::vExit(MP_Task mpTask)
   if ( ! mpTask->m_pReturnStack->bPop(aCell) )
     THROW_INVALID_RSTACK("exit"_Stz);
   
-  mpTask->IP.m_aCell = aCell;
+  mpTask->FIP.m_aCell = aCell;
   
   EXIT();
 }

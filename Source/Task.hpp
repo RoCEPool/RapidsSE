@@ -86,10 +86,10 @@ namespace Tasks
     
     RegFrame* m_pLocalsFrame; // local register frame chain
 
-    union {                 // instruction pointer
+    union {                 // forth instruction pointer
       Cell*   m_aCell;      // points to cell inside a word
       Value*  m_aEmbValue;  // points to an embedded value within a word
-    } IP;
+    } FIP;
     TaskStep* m_pEntryCell; // points to does arg (entry cell of word)
   
     // exception

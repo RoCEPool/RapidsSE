@@ -485,7 +485,7 @@ i8 giClassSize[]
   /*102 */ sizeof(RowAgg),             // CN_ROWAGG
   /*104 */ sizeof(RowCursor),          // CN_ROWCURSOR
   /*105 */ sizeof(RowOnce),            // CN_ROWONCE
-  /*106 */ 0,                          // CN_ROWWRK
+  /*106 */ sizeof(RowWrk),             // CN_ROWWRK
   
   /*107 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
   /*    */ sizeof(SchemaTest),         // CN_SCHEMATEST
@@ -498,7 +498,7 @@ i8 giClassSize[]
   /*117 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
   /*118 */ sizeof(SkipList),           // CN_SKIPLIST
   /*119 */ sizeof(SkipNode),           // CN_SKIPNODE
-  /*120 */ 0,                          // CN_SLAB
+  /*120 */ sizeof(Slab),               // CN_SLAB
   /*121 */ sizeof(SlabAllocator),      // CN_SLABALLOCATOR
   /*122 */ sizeof(Slots),              // CN_SLOTS
   /*123 */ sizeof(Heap), // correct    // SN_SMALLPERSISTENT
