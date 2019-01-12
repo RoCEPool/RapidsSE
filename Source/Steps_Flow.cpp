@@ -89,7 +89,7 @@ void Step::vFlowJump(MP_Task mpTask)
 {
   ENTRY("vJump"_Stz);
   
-  mpTask->FIP.m_aCell = mpTask->FIP.m_aCell->m_pJumpTo;
+  mpTask->FIP.m_aCell = mpTask->FIP.m_aCell->m_aJumpTo;
   
   EXIT();
 }
@@ -147,7 +147,7 @@ void Step::vFlowJumpFalse(MP_Task mpTask)
     mpTask->FIP.m_aCell++;
   else
     // jump to location
-    mpTask->FIP.m_aCell = mpTask->FIP.m_aCell->m_pJumpTo;
+    mpTask->FIP.m_aCell = mpTask->FIP.m_aCell->m_aJumpTo;
   
   EXIT();
 }
@@ -169,7 +169,7 @@ void Step::vFlowJumpFalse(MP_Task mpTask)
     mpTask->FIP.m_aCell++;
   else
     // jump to location
-    mpTask->FIP.m_aCell = mpTask->FIP.m_aCell->m_pJumpTo;
+    mpTask->FIP.m_aCell = mpTask->FIP.m_aCell->m_aJumpTo;
   
   EXIT();
 }
@@ -190,7 +190,7 @@ void Step::vFlowJumpTrue(MP_Task mpTask)
   
   if (iVal)
     // jump to location
-    mpTask->FIP.m_aCell = mpTask->FIP.m_aCell->m_pJumpTo;
+    mpTask->FIP.m_aCell = mpTask->FIP.m_aCell->m_aJumpTo;
   else
     // do not jump, skip over argument
     mpTask->FIP.m_aCell++;

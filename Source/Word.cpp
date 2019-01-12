@@ -145,7 +145,7 @@ void* Word::aAppend(Cell* aCell)
   
   Cell* aAllottedCell = (Cell*)aAllot(sizeof(aCell));
   
-  aAllottedCell->m_pJumpTo = aCell;
+  aAllottedCell->m_aJumpTo = aCell;
   
   return aAllottedCell;
 }

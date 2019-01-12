@@ -18,7 +18,7 @@ namespace Forth
                               //   - Task::vEnterObject for objects
                               //   - Task::vXyz for primitives
       
-      Cell*   m_pJumpTo;      // pointer to another cell within same routine
+      Cell*   m_aJumpTo;      // pointer to another cell within same routine
       
     };
   };

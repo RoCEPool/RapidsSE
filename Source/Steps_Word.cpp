@@ -532,7 +532,7 @@ void Step::vSee(MP_Task mpTask)
       
       aDoesCell++;
       
-      vTrace(" %p\n"_Stz,aDoesCell->m_pJumpTo);
+      vTrace(" %p\n"_Stz,aDoesCell->m_aJumpTo);
       
       aDoesCell++;
       

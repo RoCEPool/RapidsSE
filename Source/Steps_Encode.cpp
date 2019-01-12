@@ -224,7 +224,7 @@ void Step::vEncodeLoop(MP_Task mpTask)
     // cstack: pop destination address of backward jump
     if ( ! mpTask->m_pDataStack->bPop(pDoLimitTest) )
       THROW_INVALID_DSTACK("loop"_Stz);
-    pDoLimitTest->m_pJumpTo = pCurrentWord->aLastCell();
+    pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
   
   pCurrentWord->vEncode("2r@"_Stz); // copy index limit to dstack
@@ -272,7 +272,7 @@ void Step::vEncodeLoopPlus(MP_Task mpTask)
     // cstack: pop destination address of backward jump
     if ( ! mpTask->m_pDataStack->bPop(pDoLimitTest) )
       THROW_INVALID_DSTACK("loop"_Stz);
-    pDoLimitTest->m_pJumpTo = pCurrentWord->aLastCell();
+    pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   }
   
   pCurrentWord->vEncode("2r@"_Stz); // copy index limit to dstack
@@ -309,7 +309,7 @@ void Step::vEncodeNext(MP_Task mpTask)
   // cstack: pop destination address of backward jump
   if ( ! mpTask->m_pDataStack->bPop(pDoLimitTest) )
     THROW_INVALID_DSTACK("loop"_Stz);
-  pDoLimitTest->m_pJumpTo = pCurrentWord->aLastCell();
+  pDoLimitTest->m_aJumpTo = pCurrentWord->aLastCell();
   
   pCurrentWord->vEncode("r@"_Stz); // copy index limit to dstack
   
@@ -354,7 +354,7 @@ void Step::vEncodeThen(MP_Task mpTask)
     THROW_INVALID_DSTACK("then"_Stz);
   
   // resolve forward branch to this point in routine
-  pUnknownOrigin->m_pJumpTo = pCurrentWord->aLastCell();
+  pUnknownOrigin->m_aJumpTo = pCurrentWord->aLastCell();
   
   EXIT();
 }
