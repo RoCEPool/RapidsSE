@@ -28,7 +28,7 @@ namespace DBobjects
     Footer m_xFooter;
   
   public:
-  EntWrk(eCN eClass);
+     EntWrk(eCN eClass);
     ~EntWrk(void) noexcept(false);
   
     char*  aEmbedded(void);

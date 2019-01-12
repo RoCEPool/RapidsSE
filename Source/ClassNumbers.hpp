@@ -20,7 +20,6 @@ enum eCN : u2 // Class Number
   /*   2 */ CN_BINVAL,
   /*   3 */ CN_BOLVAL,
   /*   4 */ CN_DTEVAL,
-  /*   5 */ CN_ENTWRK,
   /*   6 */ CN_FLTVAL,
   /*   7 */ CN_INTVAL,
   /*   8 */ CN_IPVAL,
@@ -285,7 +284,6 @@ static Stz* aCN[]
   /*   2 */ "BINVAL"_Stz,              // CN_BINVAL
   /*   3 */ "BOLVAL"_Stz,              // CN_BOLVAL
   /*   4 */ "DTEVAL"_Stz,              // CN_DTEVAL
-  /*   5 */ "ENTWRK"_Stz,              // CN_ENTWRK
   /*   6 */ "FLTVAL"_Stz,              // CN_FLTVAL
   /*   7 */ "INTVAL"_Stz,              // CN_INTVAL
   /*   8 */ "IPVAL"_Stz,               // CN_IPVAL
@@ -293,7 +291,7 @@ static Stz* aCN[]
   /*  10 */ "OBJVAL"_Stz,              // CN_OBJVAL
   /*  11 */ "PTRVAL"_Stz,              // CN_PTRVAL
   /*  12 */ "STRVAL"_Stz,              // CN_STRVAL
-  /*  13 */ "STRVAR"_Stz,              // CN_SnnVAR
+  /*  13 */ "SnnVAR"_Stz,              // CN_SnnVAR
   /*  14 */ "TMEVAL"_Stz,              // CN_TMEVAL
   /*  15 */ "TSPVAL"_Stz,              // CN_TSPVAL
   /*  16 */ "VALREG"_Stz,              // CN_VALREG
