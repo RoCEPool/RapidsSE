@@ -22,7 +22,6 @@ namespace Steps
     static void vAddStep(Stz* aName, StepFp pStep, bool bImmediate=false);
 
     static void vAddSteps_AccessPath(void);
-    static void vAddSteps_Accum(void);
     static void vAddSteps_ActivityMap(void);
     static void vAddSteps_Address(void);
     static void vAddSteps_Args(void);
@@ -63,7 +62,6 @@ namespace Steps
     static void vAddSteps_Flow(void);
   
     static void vAddSteps_Grid(void);
-    static void vAddSteps_GroupBy(void);
   
     static void vAddSteps_Handler(void);
   

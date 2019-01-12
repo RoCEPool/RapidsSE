@@ -29,8 +29,6 @@ enum eCN : u2 // Class Number
   /*  15 */ CN_TSPVAL,
   
   /*  19 */ CN_ACCESSPATH,
-  /*  20 */ CN_ACCUM,
-  /*  21 */ CN_ACCUMVEC,
   /*  21 */ CN_ACTIVITYMARK,
   /*     */ CN_APISTATE,
   /*  22 */ CN_ARG,
@@ -72,7 +70,6 @@ enum eCN : u2 // Class Number
   /*  50 */ CN_GRAPHCURSOR,
   /*  51 */ CN_GRAPHNODE,
   /*  52 */ CN_GRID,
-  /*  53 */ CN_GROUPBY,
   
   /*  54 */ CN_HEAPBUFFER,
   
@@ -177,7 +174,6 @@ enum eCN : u2 // Class Number
   
   /* 134 */ CN_LARGEPERSISTENT,
   /* 135 */ CN_LARGETRANSIENT,
-  /* 136 */ CN_LINEITEM,
   /*     */ CN_LIST,
   /*     */ CN_LOADCHUNK,
   /* 140 */ CN_LOADMAP,
@@ -288,8 +284,6 @@ static Stz* aCN[]
   /*  15 */ "TSPVAL"_Stz,              // CN_TSPVAL
   
   /*  19 */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
-  /*  20 */ "ACCUM"_Stz,               // CN_ACCUM
-  /*  21 */ "ACCUMVEC"_Stz,            // CN_ACCUMVEC
   /*  21 */ "ACTIVITYMARK"_Stz,        // CN_ACTIVITYMARK
   /*     */ "APISTATE"_Stz,            // CN_APISTATE
   /*  22 */ "ARG"_Stz,                 // CN_ARG
@@ -331,7 +325,6 @@ static Stz* aCN[]
   /*  50 */ "GRAPHCURSOR"_Stz,         // CN_GRAPHCURSOR
   /*  51 */ "GRAPHNODE"_Stz,           // CN_GRAPHNODE
   /*  52 */ "GRID"_Stz,                // CN_GRID
-  /*  53 */ "GROUPBY"_Stz,             // CN_GROUPBY
   
   /*  54 */ "HEAPBUFFER"_Stz,          // CN_HEAPBUFFER
   
@@ -436,7 +429,6 @@ static Stz* aCN[]
   
   /* 134 */ "LARGEPERSISTENT"_Stz,     // CN_LARGEPERSISTENT
   /* 135 */ "LARGETRANSIENT"_Stz,      // CN_LARGETRANSIENT
-  /* 136 */ "LINEITEM"_Stz,            // CN_LINEITEM
   /*     */ "LIST"_Stz,                // CN_LIST
   /*     */ "LOADCHUNK"_Stz,           // CN_LOADCHUNK
   /* 140 */ "LOADMAP"_Stz,             // CN_LOADMAP

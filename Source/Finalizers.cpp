@@ -26,8 +26,6 @@ pFINALIZE *gpFinalize[]
   /* 15 */ &Finalize::vUndefined,         // CN_TSPVAL
   
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
-  /* 20 */ &Finalize::vUndefined,         // CN_ACCUM
-  /* 21 */ &Finalize::vUndefined,         // CN_ACCUMVEC
   /*    */ &Finalize::vUndefined,         // CN_ACTIVITYMARK
   /*    */ &Finalize::vUndefined,         // CN_APISTATE
   /* 22 */ &Finalize::vUndefined,         // CN_ARG
@@ -69,7 +67,6 @@ pFINALIZE *gpFinalize[]
   /* 46 */ &Finalize::vUndefined,         // CN_GRAPH
   /* 47 */ &Finalize::vUndefined,         // CN_GRAPHNODE
   /* 48 */ &Finalize::vUndefined,         // CN_GRID
-  /* 49 */ &Finalize::vUndefined,         // CN_GROUPBY
   
   /* 50 */ &Finalize::vUndefined,         // CN_HEAPBUFFER
   
@@ -176,7 +173,6 @@ pFINALIZE *gpFinalize[]
   
   /* 65 */ &Finalize::vUndefined,         // CN_LARGEPERSISTENT
   /* 66 */ &Finalize::vUndefined,         // CN_LARGETRANSIENT
-  /* 67 */ &Finalize::vUndefined,         // CN_LINEITEM
   /*    */ &Finalize::vUndefined,         // CN_LIST
   /*    */ &Finalize::vUndefined,         // CN_LOADCHUNK
   /* 71 */ &Finalize::vUndefined,         // CN_LOADMAP

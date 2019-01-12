@@ -34,7 +34,6 @@ void StorageEngine::vCheckAllAssumptions(void)
   Chunks::vCheckAssumptions();
   Plans::vCheckAssumptions();
   JobModel::vCheckAssumptions();
-  MockEE::vCheckAssumptions();
   Utilities::vCheckAssumptions();
   Steps::vCheckAssumptions();
   Tasks::vCheckAssumptions();

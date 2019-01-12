@@ -29,8 +29,6 @@ pDUMPFUN *gpDump[]
   /* 15 */ &Dump::vInvalid,         // CN_TSPVAL
   
   /* 19 */ &Dump::vInvalid,         // CN_ACCESSPATH
-  /* 20 */ &Dump::vInvalid,         // CN_ACCUM
-  /* 21 */ &Dump::vInvalid,         // CN_ACCUMVEC
   /*    */ &Dump::vDummy,           // CN_ACTIVITYMARK
   /* 21 */ &Dump::vInvalid,         // CN_APISTATE
   /* 22 */ &Dump::vInvalid,         // CN_ARG
@@ -72,7 +70,6 @@ pDUMPFUN *gpDump[]
   /* 46 */ &GraphCursor::vDump,     // CN_GRAPHCURSOR
   /* 47 */ &GraphNode::vDump,       // CN_GRAPHNODE
   /* 48 */ &Grid::vDump,            // CN_GRID
-  /* 49 */ &Dump::vDummy,           // CN_GROUPBY
 
   /* 50 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
   
@@ -180,7 +177,6 @@ pDUMPFUN *gpDump[]
   
   /* 65 */ &Heap::vDump,            // CN_LARGEPERSISTENT
   /* 66 */ &Heap::vDump,            // CN_LARGETRANSIENT
-  /* 67 */ &Dump::vDummy,           // CN_LINEITEM
   /*    */ &Dump::vInvalid,         // CN_LIST
   /*    */ &Dump::vDummy,           // CN_LOADCHUNK
   /* 71 */ &LoadMap::vDump,         // CN_LOADMAP
@@ -293,8 +289,6 @@ i8 giClassSize[]
   /* 15 */ sizeof(TspVal),             // CN_TSPVAL
   
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
-  /* 20 */ sizeof(Accum),              // CN_ACCUM
-  /* 21 */ sizeof(AccumVec),           // CN_ACCUMVEC
   /*    */ sizeof(ActivityMark),       // CN_ACTIVITYMARK
   /*    */ sizeof(ApiState),           // CN_APISTATE
   /* 22 */ sizeof(Arg),                // CN_ARG
@@ -336,7 +330,6 @@ i8 giClassSize[]
   /* 46 */ sizeof(GraphCursor),        // CN_GRAPHCURSOR
   /* 47 */ sizeof(GraphNode),          // CN_GRAPHNODE
   /* 48 */ sizeof(Grid),               // CN_GRID
-  /* 49 */ sizeof(GroupBy),            // CN_GROUPBY
   
   /* 50 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   
@@ -444,7 +437,6 @@ i8 giClassSize[]
   
   /* 65 */ sizeof(Heap), // correct    // CN_LARGEPERSISTENT
   /* 66 */ sizeof(Heap), // correct    // CN_LARGETRANSIENT
-  /* 67 */ sizeof(LineItem),           // CN_LINEITEM
   /*    */ sizeof(ListNL_t<Task>),     // CN_LIST
   /*    */ sizeof(LoadChunk),          // CN_LOADCHUNK
   /* 71 */ sizeof(LoadMap),            // CN_LOADMAP
@@ -556,8 +548,6 @@ eHT geWhichHeap[]
   /* 15 */ HT_INVALID,           // CN_TSPVAL
   
   /* 19 */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
-  /* 20 */ HT_TRANSIENT_SMALL,   // CN_ACCUM
-  /* 21 */ HT_TRANSIENT_MEDIUM,  // CN_ACCUMVEC
   /*    */ HT_INVALID,           // CN_ACTIVITYMARK
   /*    */ HT_TRANSIENT_LARGE,   // CN_APISTATE
   /* 22 */ HT_TRANSIENT_SMALL,   // CN_ARG
@@ -599,7 +589,6 @@ eHT geWhichHeap[]
   /* 46 */ HT_TRANSIENT_SMALL,   // CN_GRAPHCURSOR
   /* 47 */ HT_TRANSIENT_SMALL,   // CN_GRAPHNODE
   /* 48 */ HT_TRANSIENT_LARGE,   // CN_GRID
-  /* 49 */ HT_TRANSIENT_SMALL,   // CN_GROUPBY
 
   /* 50 */ HT_INVALID,           // CN_HEAPBUFFER
   
@@ -707,7 +696,6 @@ eHT geWhichHeap[]
 
   /* 65 */ HT_INVALID,           // CN_LARGEPERSISTENT
   /* 66 */ HT_INVALID,           // CN_LARGETRANSIENT
-  /* 67 */ HT_INVALID,           // CN_LINEITEM
   /*    */ HT_TRANSIENT_SMALL,   // CN_LIST
   /*    */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
   /* 71 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP

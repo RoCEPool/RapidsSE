@@ -19,7 +19,6 @@ void Step::vAddSteps_EntryBuffer(void)
   vAddStep("entryBuffer.index!"_Stz,      &Step::vEntryBufferIndexStore);
   vAddStep("entryBuffer.isLast@"_Stz,     &Step::vEntryBufferIsLastFetch);
   vAddStep("entryBuffer.isLast!"_Stz,     &Step::vEntryBufferIsLastStore);
-  vAddStep("entryBuffer.iterate"_Stz,     &Step::vEntryBufferIterate);
   vAddStep("entryBuffer.nextEntry"_Stz,   &Step::vEntryBufferNextEntry);
   vAddStep("entryBuffer.nextBuffer"_Stz,  &Step::vEntryBufferNextBuffer);
   vAddStep("entryBuffer.partition@"_Stz,  &Step::vEntryBufferPartitionFetch);
@@ -198,107 +197,6 @@ void Step::vEntryBufferIsLastStore(MP_Task mpTask)
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
   pIndexBuffer->vIsLast(true);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* entryBuffer.iterate -- iterate entry sequence                              */
-/*----------------------------------------------------------------------------*/
-void Step::vEntryBufferIterate(MP_Task mpTask)
-{
-  ENTRY("vEntryBufferIiterate"_Stz);
-  
-  Object* pPtrIndexBuffer;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrIndexBuffer) )
-    THROW_INVALID_DSTACK("entryBuffer.iterate"_Stz);
-  EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
-  
-  Object* pPtrEntry = nullptr;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entryBuffer.iterate"_Stz);
-  Entry* pUpperIndexEntry = _pEntry(pPtrEntry);
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
-    THROW_INVALID_DSTACK("entryBuffer.iterate"_Stz);
-  Entry* pLowerIndexEntry = _pEntry(pPtrEntry);
-  
-  Object* pPtrGroupBy = nullptr;
-  if ( ! mpTask->m_pDataStack->bPop(pPtrGroupBy) )
-    THROW_INVALID_DSTACK("entryBuffer.iterate"_Stz);
-  GroupBy* pGroupByOp = _pGroupBy(pPtrGroupBy);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // iterate all entries from lower to upper
-  
-  if (! pIndexBuffer)
-    return;
-  
-  Index* pIndex = pIndexBuffer->pIndex();
-  
-  i8 nRows = 0;
-  Entry* pIndexEntry = pLowerIndexEntry;
-  while (pIndexBuffer && pIndexEntry) {
-   
-    // apply
-    //Entry* pLineItemEntry = GroupBy::pToLineItemEntry(pIndex,pIndexEntry);
-    //pGroupByOp->vApplyEntry(pLineItemEntry);
-    pGroupByOp->vApplyEntry(pIndexEntry);
-    
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // set bit on
-    
-//    Id xId = pIndexEntry->xId();
-//    
-//    bn nBufferNo = xId.iBuffer();
-//    i8 iRow = xId.iRow();
-//    
-//    EntryBuffer* pDataBuffer = _pEntryBuffer(gpBufferPool->pToBuffer(nBufferNo));
-//    ASSERT(pDataBuffer);
-//    
-//    BitArray* pBitArray = pDataBuffer->pBitArray();
-//    ASSERT(pBitArray);
-//    pBitArray->vSetOn(iRow);
-
-    //gpAttachMap->m_pBitMap->vSetOn(*nBufferNo,iRow);
-    
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-
-    nRows++;
-    
-    // test for end
-    //if (pIndexEntry == pUpperIndexEntry)
-    //  break;
-    
-    // move to next entry
-    pIndexEntry = pIndexBuffer->pNextEntry(pIndexEntry, 0);
-    if (! pIndexEntry) {
-      pIndexBuffer = pIndexBuffer->pNextBuffer();
-      if (! pIndexBuffer)
-        break;
-      pIndexEntry = pIndexBuffer->pFirstEntry();
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-//  Table* pTable = pIndex->pTable();
-//  Slots* pSlots = pTable->pSlots();
-//  Partition* pPartition = pSlots->pPartition(0);
-//  IndexTree* pIndexTree = pPartition->pHiddenIndexTree();
-//  
-//  EntryBuffer* pRowBuffer = pIndexTree->pFirstL0Buffer();
-//  
-//  while ( (pRowBuffer = pRowBuffer->pNextBuffer()) ) {
-//    BitArray* pBitArray = pRowBuffer->pBitArray();
-//    //vTrace("BitArray: %lld bits on\n"_Stz,pBitArray->nBitsOn());
-//    Entry* pRowEntry = pRowBuffer->pFirstEntry();
-//    while ( (pRowEntry = pRowBuffer->pNextEntry(pRowEntry)) ) {
-//      pGroupByOp->vApplyEntry(pRowEntry);
-//    }
-//  }
-  
-  vTrace("Rows processed: %lld\n"_Stz,nRows);
   
   EXIT();
 }

@@ -269,7 +269,6 @@
   static void vEntryBufferIndexStore(Tasks::MP_Task mpTask);
   static void vEntryBufferIsLastFetch(Tasks::MP_Task mpTask);
   static void vEntryBufferIsLastStore(Tasks::MP_Task mpTask);
-  static void vEntryBufferIterate(Tasks::MP_Task mpTask);
   static void vEntryBufferNextBuffer(Tasks::MP_Task mpTask);
   static void vEntryBufferNextEntry(Tasks::MP_Task mpTask);
   static void vEntryBufferPartitionFetch(Tasks::MP_Task mpTask);
