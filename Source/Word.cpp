@@ -9,6 +9,10 @@
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 Word* Forth::_pWord(void* aAddr)
@@ -108,6 +112,48 @@ Word::~Word(void) noexcept(false)
     (pFinalizeFun)(eClass, pPtrBody);
   }
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump dictionary                                                            */
+/*----------------------------------------------------------------------------*/
+void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+  Word* pWord = _pWord(pObject);
+  
+  // dump only the objects
+  if (WT_OBJECT == pWord->m_eWordType)
+    pWord->vObjectDump(aTab);
+  
+  //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
+  //  pWord->vDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the outer word of this data ptr                                        */
+/*----------------------------------------------------------------------------*/
+Word* Word::pToWord(void* pBody)
+{
+  // static function
+  
+  Word* pWord = pAdd<Word*>(pBody,
+                            -( sizeof(Word)
+                              - sizeof(Wsp_t<C_WSP_WORD>)
+                              - sizeof(Footer)
+                              )
+                            );
+  
+  ASSERT(pWord->eClass() == CN_WORD);
+  
+  return pWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* allot data space                                                           */
@@ -291,40 +337,6 @@ void Word::vEntryStep(StepFp pStep)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ptr to data area                                                       */
-/*----------------------------------------------------------------------------*/
-char* Word::aWspArea(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  char* aBody = m_xWsp.aArea();
-  
-  return pPoolCheck<char*>((void*)aBody);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get latter part (current logical end) of body                              */
-/*----------------------------------------------------------------------------*/
-char* Word::aWspLatter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  char* aLatter = m_xWsp.aLatter();
-  
-  return pPoolCheck<char*>((void*)aLatter);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of data bytes                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Word::nWspUsed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_xWsp.nUsed();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get which cell to start executing from                                     */
 /*----------------------------------------------------------------------------*/
 Cell* Word::aEntryCell(void)
@@ -352,21 +364,6 @@ StepFp* Word::ppEntryStep(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   return &m_fpEntryStep;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump dictionary                                                            */
-/*----------------------------------------------------------------------------*/
-void Word::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-  Word* pWord = _pWord(pObject);
-  
-  // dump only the objects
-  if (WT_OBJECT == pWord->m_eWordType)
-    pWord->vObjectDump(aTab);
-  
-  //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
-  //  pWord->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -641,26 +638,37 @@ void Word::vWordType(eWT eWordType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get ptr to data area                                                       */
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+char* Word::aWspArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  char* aBody = m_xWsp.aArea();
+  
+  return pPoolCheck<char*>((void*)aBody);
+}
 
 /*----------------------------------------------------------------------------*/
-/* get the outer word of this data ptr                                        */
+/* get latter part (current logical end) of body                              */
 /*----------------------------------------------------------------------------*/
-Word* Word::pToWord(void* pBody)
+char* Word::aWspLatter(void)
 {
-  // static function
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Word* pWord = pAdd<Word*>(pBody,
-                            -( sizeof(Word)
-                              - sizeof(Wsp_t<C_WSP_WORD>)
-                              - sizeof(Footer)
-                              )
-                            );
+  char* aLatter = m_xWsp.aLatter();
   
-  ASSERT(pWord->eClass() == CN_WORD);
+  return pPoolCheck<char*>((void*)aLatter);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of data bytes                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Word::nWspUsed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return pWord;
+  return m_xWsp.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/
