@@ -444,7 +444,7 @@ i8 giClassSize[]
   /* 60 */ sizeof(Heap), // correct    // CN_JUMBOTRANSIENT
   
   /* 61 */ 0,                          // CN_KEY
-  /* 62 */ sizeof(KeyVal),             // CN_KEYVAL
+  /* 62 */ 0,                          // CN_KEYVAL
   /* 63 */ 0,                          // CN_KEYVEC
   /* 64 */ sizeof(KeyWrk),             // CN_KEYWRK
   

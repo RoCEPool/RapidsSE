@@ -61,7 +61,6 @@ typedef Array<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "KeyWrk.hpp"
 #include "RightVec.hpp"
 #include "Key.hpp"
-#include "KeyVal.hpp"
 #include "Row.hpp"
 #include "RowAgg.hpp"
 #include "RowWrk.hpp"
