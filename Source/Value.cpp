@@ -46,8 +46,8 @@ i8 Value::nSize(void)
     }
       
     case CN_FIPVAL: {
-      IpVal* aIpVal = _aIpVal(this);
-      nBytes = aIpVal->nSize();
+      FipVal* aFipVal = _aFipVal(this);
+      nBytes = aFipVal->nSize();
       break;
     }
       
@@ -82,15 +82,15 @@ void Value::vToString(Stz* aString)
   
   switch (eClass) {
             
-    case CN_INTVAL: {
-      IntVal* aIntVal = _aIntVal(this);
-      aIntVal->vToString(aString);
+    case CN_FIPVAL: {
+      FipVal* aFipVal = _aFipVal(this);
+      aFipVal->vToString(aString);
       break;
     }
       
-    case CN_FIPVAL: {
-      IpVal* aIpVal = _aIpVal(this);
-      aIpVal->vToString(aString);
+    case CN_INTVAL: {
+      IntVal* aIntVal = _aIntVal(this);
+      aIntVal->vToString(aString);
       break;
     }
       

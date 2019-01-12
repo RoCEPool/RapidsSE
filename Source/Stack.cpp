@@ -120,8 +120,8 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
     switch(eClass) {
         
       case CN_FIPVAL: {
-        IpVal* aIpVal = _aIpVal(aNestedValue);
-        Cell* aCell = aIpVal->aIpPtr();
+        FipVal* aFipVal = _aFipVal(aNestedValue);
+        Cell* aCell = aFipVal->aIpPtr();
         vTrace("[%s] [%2lld] [%s] %p\n"_Stz,aPrefix,iVal,aCN[eClass],aCell);
         break;
       }
@@ -324,11 +324,11 @@ bool Stack::bPop(Cell*& aCell)
   if ( ! bGuard(CN_FIPVAL) )
     return false;
   
-  IpVal xIpVal;
+  FipVal xFipVal;
   
-  vPopVal(&xIpVal);
+  vPopVal(&xFipVal);
   
-  aCell = xIpVal.aIpPtr();
+  aCell = xFipVal.aIpPtr();
   
   return true;
 }
@@ -911,11 +911,11 @@ void Stack::vPushCell(Cell* aCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  IpVal xIpVal;
+  FipVal xFipVal;
   
-  xIpVal = aCell;
+  xFipVal = aCell;
   
-  vPushValue(xIpVal);
+  vPushValue(xFipVal);
 }
 
 /*----------------------------------------------------------------------------*/

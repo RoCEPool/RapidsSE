@@ -18,7 +18,7 @@ namespace Forth {
 namespace Values
 {
   class IntVal;
-  class IpVal;
+  class FipVal;
   class PtrVal;
   class StrVal;
   

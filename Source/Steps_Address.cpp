@@ -70,7 +70,7 @@ void Step::vAddressFetch(MP_Task mpTask)
       break;
       
     case CN_FIPVAL:
-      xValFetched = (Object*)_aIpVal(aValue)->aIpPtr();
+      xValFetched = (Object*)_aFipVal(aValue)->aIpPtr();
       break;
   
     default:
@@ -115,7 +115,7 @@ void Step::vAddressStore(MP_Task mpTask)
       break;
       
     case CN_FIPVAL:
-      *_aIpVal(aValue) = _aIpVal(xValStored.aNestedValue())->aIpPtr();
+      *_aFipVal(aValue) = _aFipVal(xValStored.aNestedValue())->aIpPtr();
       break;
   
     default:
