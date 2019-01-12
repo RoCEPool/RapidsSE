@@ -27,7 +27,6 @@ pFINALIZE *gpFinalize[]
   /* 13 */ &Finalize::vUndefined,         // CN_SnnVAR
   /* 14 */ &Finalize::vUndefined,         // CN_TMEVAL
   /* 15 */ &Finalize::vUndefined,         // CN_TSPVAL
-  /* 16 */ &Finalize::vUndefined,         // CN_VALREG
   /* 18 */ &Finalize::vUndefined,         // CN_GENVAR
   
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
@@ -216,6 +215,7 @@ pFINALIZE *gpFinalize[]
   
   /* 97 */ &Finalize::vUndefined,         // CN_RBCURSOR
   /*    */ &Finalize::vUndefined,         // CN_REGFRAME
+  /*    */ &Finalize::vUndefined,         // CN_REGISTER
   /*    */ &Finalize::vUndefined,         // CN_RESOURCETRACKER
   /*101 */ &Finalize::vUndefined,         // CN_RING
   /*102 */ &Finalize::vUndefined,         // CN_ROWAGG

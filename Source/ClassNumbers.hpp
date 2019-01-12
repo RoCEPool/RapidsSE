@@ -30,7 +30,6 @@ enum eCN : u2 // Class Number
   /*  13 */ CN_SnnVAR,
   /*  14 */ CN_TMEVAL,
   /*  15 */ CN_TSPVAL,
-  /*  16 */ CN_VALREG,
   /*  18 */ CN_GENVAR,
   
   /*  19 */ CN_ACCESSPATH,
@@ -217,6 +216,7 @@ enum eCN : u2 // Class Number
   
   /* 161 */ CN_RBCURSOR,
   /* 162 */ CN_REGFRAME,
+  /*     */ CN_REGISTER,
   /*     */ CN_RESOURCETRACKER,
   /* 163 */ CN_RING,
   /* 164 */ CN_ROWAGG,
@@ -294,7 +294,6 @@ static Stz* aCN[]
   /*  13 */ "SnnVAR"_Stz,              // CN_SnnVAR
   /*  14 */ "TMEVAL"_Stz,              // CN_TMEVAL
   /*  15 */ "TSPVAL"_Stz,              // CN_TSPVAL
-  /*  16 */ "VALREG"_Stz,              // CN_VALREG
   /*  18 */ "VALWRK"_Stz,              // CN_GENVAR
   
   /*  19 */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
@@ -481,6 +480,7 @@ static Stz* aCN[]
   
   /* 161 */ "RBCURSOR"_Stz,            // CN_RBCURSOR
   /* 162 */ "REGFRAME"_Stz,            // CN_REGFRAME
+  /*     */ "REGISTER"_Stz,            // CN_REGISTER
   /*     */ "RESOURCETRACK"_Stz,       // CN_RESOURCETRACKER
   /* 163 */ "RING"_Stz,                // CN_RING
   /* 164 */ "ROWAGG"_Stz,              // CN_ROWAGG

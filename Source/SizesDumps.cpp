@@ -30,7 +30,6 @@ pDUMPFUN *gpDump[]
   /* 13 */ &Dump::vInvalid,         // CN_SnnVAR
   /* 14 */ &Dump::vInvalid,         // CN_TMEVAL
   /* 15 */ &Dump::vInvalid,         // CN_TSPVAL
-  /* 16 */ &Dump::vInvalid,         // CN_VALREG
   /* 18 */ &Dump::vInvalid,         // CN_GENVAR
   
   /* 19 */ &Dump::vInvalid,         // CN_ACCESSPATH
@@ -221,6 +220,7 @@ pDUMPFUN *gpDump[]
 
   /* 97 */ &Dump::vUndefined,       // CN_RBCURSOR
   /*    */ &RegFrame::vDump,        // CN_REGFRAME
+  /*    */ &Dump::vInvalid,         // CN_REGISTER
   /*    */ &RegFrame::vDump,        // CN_RESOURCETRACKER
   /*101 */ &Dump::vUndefined,       // CN_RING
   /*102 */ &Dump::vUndefined,       // CN_ROWAGG
@@ -299,7 +299,6 @@ i8 giClassSize[]
   /* 13 */ sizeof(s32),                // CN_SnnVAR
   /* 14 */ sizeof(TmeVal),             // CN_TMEVAL
   /* 15 */ sizeof(TspVal),             // CN_TSPVAL
-  /* 16 */ sizeof(Register),           // CN_VALREG
   /* 18 */ sizeof(GenVar),             // CN_GENVAR
   
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
@@ -489,6 +488,7 @@ i8 giClassSize[]
   
   /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
   /*    */ sizeof(RegFrame),           // CN_REGFRAME
+  /*    */ sizeof(Register),           // CN_REGISTER
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*101 */ sizeof(Ring),               // CN_RING
   /*102 */ sizeof(RowAgg),             // CN_ROWAGG
@@ -567,7 +567,6 @@ eHT geWhichHeap[]
   /* 13 */ HT_INVALID,           // CN_SnnVAR
   /* 14 */ HT_INVALID,           // CN_TMEVAL
   /* 15 */ HT_INVALID,           // CN_TSPVAL
-  /* 16 */ HT_INVALID,           // CN_VALREG
   /* 18 */ HT_INVALID,           // CN_GENVAR
   
   /* 19 */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
@@ -757,6 +756,7 @@ eHT geWhichHeap[]
   
   /* 97 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_REGFRAME
+  /*    */ HT_INVALID,           // CN_REGISTER
   /*    */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
   /*101 */ HT_INVALID,           // CN_RING
   /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROWAGG

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Register.hpp -- Workspace for Cached Values                                  */
+/* Register.hpp -- Register Values                                            */
 /*============================================================================*/
 
 #include "Forth.h"
@@ -11,7 +11,7 @@ Register* Forth::_pRegister(void* aAddr)
 {
   Register* pRegister = reinterpret_cast<Register*>(aAddr);
   
-  RASSERT_TYPE(pRegister,CN_VALREG);
+  RASSERT_TYPE(pRegister,CN_REGISTER);
   
   return pRegister;
 }
@@ -30,13 +30,13 @@ void* Register::operator new(size_t)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Register::Register(void)
-: Value(CN_VALREG)
+: Value(CN_REGISTER)
 {
-  _memZero_(m_xWsp.aArea(),C_WSP_REGISTER,CN_VALREG);
+  _memZero_(m_xWsp.aArea(),C_WSP_REGISTER,CN_REGISTER);
   
   *(this) = (i8)0;
   
- _checkInitialised_(CN_VALREG);
+ _checkInitialised_(CN_REGISTER);
 }
 
 /*----------------------------------------------------------------------------*/
