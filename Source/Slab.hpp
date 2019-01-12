@@ -11,7 +11,7 @@ namespace Pool
   private:
     Slab* m_pNextSlab; // next slab in slab chain
   
-    WspFxd<C_WSP_SLAB> m_xWsp;
+    Wsp_t<C_WSP_SLAB> m_xWsp;
   
     // must be last
     Footer m_xFooter;

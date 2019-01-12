@@ -10,7 +10,7 @@ namespace Forth
     static const i8 C_WSP_REGISTER = C_8KB;
     
   private:
-    WspFxd<C_WSP_REGISTER> m_xWsp; // workspace
+    Wsp_t<C_WSP_REGISTER> m_xWsp; // workspace
 
     // must be last
     //Footer m_xFooter;

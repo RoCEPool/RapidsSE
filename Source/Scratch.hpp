@@ -10,7 +10,7 @@ namespace System
     static const i8 C_WSP_SCRATCH = C_8KB;
   
   private:
-    WspFxd<C_WSP_SCRATCH> m_xWsp;
+    Wsp_t<C_WSP_SCRATCH> m_xWsp;
   
     // must be last
     Footer m_xFooter;

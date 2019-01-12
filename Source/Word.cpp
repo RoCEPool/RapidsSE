@@ -653,7 +653,7 @@ Word* Word::pToWord(void* pBody)
   
   Word* pWord = pAdd<Word*>(pBody,
                             -( sizeof(Word)
-                              - sizeof(WspFxd<C_WSP_WORD>)
+                              - sizeof(Wsp_t<C_WSP_WORD>)
                               - sizeof(Footer)
                               )
                             );

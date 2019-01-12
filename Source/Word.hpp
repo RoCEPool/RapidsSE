@@ -58,7 +58,7 @@ namespace Forth
                              //   for primitives this will be null
     // ..data..
   
-    WspFxd<C_WSP_WORD> m_xBody;
+    Wsp_t<C_WSP_WORD> m_xBody;
   
   Footer m_xFooter;
   

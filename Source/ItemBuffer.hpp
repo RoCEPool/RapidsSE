@@ -12,7 +12,7 @@ namespace Structures
   protected:
     i8 m_nItems; // number of items in this buffer
 
-    WspFxd<C_WSP_ITEMBUFFER> m_xWsp;
+    Wsp_t<C_WSP_ITEMBUFFER> m_xWsp;
   
   public:
     ItemBuffer(eCN eClassNo);

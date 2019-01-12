@@ -15,7 +15,7 @@ namespace DBobjects
     i8     m_iPartition;   // partition this result buffer came from
     Table* m_pTable;       // table which describes the rows
 
-    WspFxd<C_WSP_FETCHBUFFER> m_xWsp;
+    Wsp_t<C_WSP_FETCHBUFFER> m_xWsp;
 
     // must be last
     Footer m_xFooter;

@@ -26,7 +26,7 @@ namespace Forth
   
   private:
     union {
-      WspFxd<C_WSP_GENVAR> m_xWsp;         // workspace
+      Wsp_t<C_WSP_GENVAR> m_xWsp;         // workspace
       ValSee m_xNestedValue; // inspector
     };
   

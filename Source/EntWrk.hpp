@@ -23,7 +23,7 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key and row workspace
-    WspFxd<C_WSP_ENTWRK> m_xEmbeddedWsp; // embedded object workspace
+    Wsp_t<C_WSP_ENTWRK> m_xEmbeddedWsp; // embedded object workspace
   
     Footer m_xFooter;
   

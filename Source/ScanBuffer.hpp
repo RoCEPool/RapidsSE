@@ -12,7 +12,7 @@ namespace Structures
     Stz* m_aNextMsg;  // address where next message starts
     Stz* m_aEndData;  // address where data ends
   
-    WspFxd<C_WSP_SCAN> m_xWsp;
+    Wsp_t<C_WSP_SCAN> m_xWsp;
   
     // must be last
     Footer m_xFooter;

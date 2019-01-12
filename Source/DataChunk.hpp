@@ -15,7 +15,7 @@ namespace Chunks
     Stz* m_aLastDataByte;     // last data byte of where data chunk ends
     i8   m_nUnprocessedBytes; // bytes yet to be processed
   
-    WspFxd<C_WSP_DATACHUNK> m_xWsp; // workspace
+    Wsp_t<C_WSP_DATACHUNK> m_xWsp; // workspace
   
   public:
     void* operator new(size_t);

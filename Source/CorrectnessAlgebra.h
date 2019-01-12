@@ -20,7 +20,7 @@ using namespace CorrectnessAlgebra;
 #include "Header.hpp"
 #include "Object.hpp"
 #include "Wsp.hpp"
-#include "WspFxd.hpp"
+#include "Wsp_t.hpp"
 
 #include "NP.hpp"
 #include "MP.hpp"

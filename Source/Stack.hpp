@@ -31,7 +31,7 @@ namespace Forth
     
     Footer m_xHazard;
     
-    WspFxd<C_WSP_STACK> m_xWsp;
+    Wsp_t<C_WSP_STACK> m_xWsp;
     
     // must be last
     Footer m_xFooter;
