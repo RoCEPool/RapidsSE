@@ -15,8 +15,8 @@ namespace Forth
     /*  0 */ WT_NONE=0,     // none
     /*  1 */ WT_OBJECT,     // word is an object
     /*  2 */ WT_PRIMITIVE,  // word is a primitive (eg +, return)
-    /*  3 */ WT_ROUTINE,    // word is a subroutine
-    /*  4 */ WT_VARIABLE,      // word ia a local
+    /*  3 */ WT_ROUTINE,    // word is a routine
+    /*  4 */ WT_VARIABLE,   // word ia a local
     /*  5 */ WT_ENUMS
   };
   
@@ -35,8 +35,7 @@ namespace Forth
   class Word : public Object
   {
     friend class Dic;
-    
-  
+
   private:
     s32      m_sName;        // the name of this word
     eWT      m_eWordType;    // type of word
@@ -58,9 +57,10 @@ namespace Forth
                              //   for primitives this will be null
     // ..data..
   
-    Wsp_t<C_WSP_WORD> m_xBody;
+    Wsp_t<C_WSP_WORD> m_xWsp;
   
-  Footer m_xFooter;
+    // must be last
+    Footer m_xFooter;
   
    public:
     void* operator new(size_t, Dic* pDic);

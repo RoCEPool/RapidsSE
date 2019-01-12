@@ -78,7 +78,7 @@ Word::Word(Stz* sName)
   m_pPrevWord     = nullptr;
   m_iVariable     = 0;
 
-  m_xBody.vZero(CN_WORD);
+  m_xWsp.vZero(CN_WORD);
   
   _setFooter_();
   
@@ -116,7 +116,7 @@ char* Word::aAllot(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aAddress = m_xBody.aAllot(nBytes);
+  char* aAddress = m_xWsp.aAllot(nBytes);
   
   _setFooter_();
   
@@ -243,7 +243,7 @@ void Word::vContentDump(void)
          aWT[m_eWordType]->aChar(),
          m_pKind->m_sName.aChar(),
          m_bImmediate,
-         m_xBody.nUsed(),
+         m_xWsp.nUsed(),
          m_fpEntryStep,
          pStepWord ? pStepWord->sName().aChar() : "<not-found>",
          aFirstCell()
@@ -297,7 +297,7 @@ char* Word::aBodyArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aBody = m_xBody.aArea();
+  char* aBody = m_xWsp.aArea();
   
   return pPoolCheck<char*>((void*)aBody);
 }
@@ -309,7 +309,7 @@ char* Word::aBodyLatter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* aLatter = m_xBody.aLatter();
+  char* aLatter = m_xWsp.aLatter();
   
   return pPoolCheck<char*>((void*)aLatter);
 }
@@ -321,7 +321,7 @@ i8 Word::nBodyUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_xBody.nUsed();
+  return m_xWsp.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -448,7 +448,7 @@ Cell* Word::aFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aFirst = reinterpret_cast<Cell*>(m_xBody.aArea());
+  Cell* aFirst = reinterpret_cast<Cell*>(m_xWsp.aArea());
   
   return pPoolCheck<Cell*>(aFirst);
 }
@@ -525,7 +525,7 @@ Cell* Word::aLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* aLast = reinterpret_cast<Cell*>(m_xBody.aLatter());
+  Cell* aLast = reinterpret_cast<Cell*>(m_xWsp.aLatter());
   
   return pPoolCheck<Cell*>(aLast);
 }
@@ -554,7 +554,7 @@ void Word::vObjectDump(Stz* aTab)
          m_pDic ? m_pDic->sName().aChar() : "<none>",
          aWT[m_eWordType]->aChar(),
          m_bImmediate ? "Immediate"_Stz : "Not Immediate"_Stz,
-         m_xBody.nUsed(),
+         m_xWsp.nUsed(),
          m_fpEntryStep,
          aFirstCell()
          );
