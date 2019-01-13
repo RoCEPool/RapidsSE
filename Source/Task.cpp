@@ -148,16 +148,17 @@ void Task::vTaskLoop(void)
   
   while (TS_EXECUTING == m_eState) {
     
-    StepFp pStepFp = *FIP.m_aCell->m_afpEntryStep;
+    // get the step function to be called
+    StepFp fpStep = *(FIP.m_aCell->m_afpEntryStep);
     
+    // the does step is the next member in word
+    //   -- not a great piece of coding Ray ;(
     m_afpEntryCell = FIP.m_aCell->m_afpEntryStep + 1;
-    
-    //vTrace("pStepFp %p\n"_Stz,pStepFp);
     
     FIP.m_aCell++;
     
     try {
-      (pStepFp)(this);
+      (fpStep)(this);
     }
     
     catch (i8 iException) {
