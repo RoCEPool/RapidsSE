@@ -126,7 +126,7 @@ Task::~Task(void) noexcept(false)
   
   while (m_pLocalsFrame) {
 
-    RegFrame* pLocalsFrame = m_pLocalsFrame;
+    LocalSet* pLocalsFrame = m_pLocalsFrame;
     m_pLocalsFrame = m_pLocalsFrame->pNext();
   
     delete pLocalsFrame;
@@ -386,7 +386,7 @@ void Task::vLocalsPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  RegFrame* pLocalsframe = m_pLocalsFrame;
+  LocalSet* pLocalsframe = m_pLocalsFrame;
   
   m_pLocalsFrame = m_pLocalsFrame->pNext();
   
@@ -398,7 +398,7 @@ void Task::vLocalsPop(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsPush(void)
 {
-  RegFrame* pLocalsframe = new RegFrame;
+  LocalSet* pLocalsframe = new LocalSet;
   
   pLocalsframe->vNext(m_pLocalsFrame);
   

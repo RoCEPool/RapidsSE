@@ -76,7 +76,7 @@ namespace Forth
     bool bPop(Object*& pObject, i8& iArg);
     bool bPop(Object*& pObject1, Object*& pObject2);
     bool bPop(Object*& pObject, GenVar& xGenVar);
-    bool bPop(Register*& pRegister);
+    bool bPop(Local*& pLocal);
     bool bPop(s32&  sArg1);
     bool bPop(s256& sArg1);
     bool bPop(s4K&  sArg1);
@@ -99,7 +99,7 @@ namespace Forth
     void vPushGenVar(GenVar& xGenVar);
     void vPushI8(i8 iInt);
     void vPushPointer(Object* pObject);
-    void vPushRegister(Register* pRegister);
+    void vPushLocal(Local* pLocal);
     void vPushS32(s32& s32);
     void vPushS256(s256& s256);
     void vPushS4K(s4K& s4K);
@@ -116,7 +116,7 @@ namespace Forth
   public:
     void vPopBy(i8 nBytes);
   private:
-    void vPopReg(Register* aRegister);
+    void vPopReg(Local* aLocal);
     void vPopVal(Value* aValue);
     void vPushBy(i8 nBytes);
     void vPushVal(Value* aValue);

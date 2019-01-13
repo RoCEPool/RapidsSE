@@ -35,9 +35,9 @@ void Step::vLocalFetch(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iLocal) )
     THROW_INVALID_DSTACK("local.fetch"_Stz);
   
-  Register* pRegister = mpTask->m_pLocalsFrame->pRegister(iLocal);
+  Local* pLocal = mpTask->m_pLocalsFrame->pLocal(iLocal);
   
-  mpTask->m_pDataStack->vPushRegister(pRegister);
+  mpTask->m_pDataStack->vPushLocal(pLocal);
   
   EXIT();
 }
@@ -56,9 +56,9 @@ void Step::vLocalStore(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iLocal) )
     THROW_INVALID_DSTACK("localStore"_Stz);
   
-  Register* pRegister = mpTask->m_pLocalsFrame->pRegister(iLocal);
+  Local* pLocal = mpTask->m_pLocalsFrame->pLocal(iLocal);
   
-  mpTask->m_pDataStack->bPop(pRegister);
+  mpTask->m_pDataStack->bPop(pLocal);
   
   EXIT();
 }
@@ -128,7 +128,7 @@ void Step::vLocalsPop(MP_Task mpTask)
 {
 ENTRY("vLocalsPop"_Stz);
   
-  RegFrame* pLocalsFrame = mpTask->m_pLocalsFrame;
+  LocalSet* pLocalsFrame = mpTask->m_pLocalsFrame;
   
   if ( ! pLocalsFrame )
     THROW_INVALID_DSTACK("locals.pop"_Stz);
@@ -147,7 +147,7 @@ void Step::vLocalsPush(MP_Task mpTask)
 {
 ENTRY("vLocalsPush"_Stz);
   
-  RegFrame* pLocalsFrame = new RegFrame;
+  LocalSet* pLocalsFrame = new LocalSet;
   
   pLocalsFrame->vStackPtr(mpTask->m_pReturnStack->aPeekValue());
   

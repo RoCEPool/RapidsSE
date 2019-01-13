@@ -205,8 +205,8 @@ pFINALIZE *gpFinalize[]
   
   /* 97 */ &Finalize::vUndefined,         // CN_RBCURSOR
   /*    */ &Finalize::vUndefined,         // CN_RECORDBUFFER
-  /*    */ &Finalize::vUndefined,         // CN_REGFRAME
-  /*    */ &Finalize::vUndefined,         // CN_REGISTER
+  /*    */ &Finalize::vUndefined,         // CN_LOCALSET
+  /*    */ &Finalize::vUndefined,         // CN_LOCAL
   /*    */ &Finalize::vUndefined,         // CN_RESOURCETRACKER
   /*101 */ &Finalize::vUndefined,         // CN_RING
   /*102 */ &Finalize::vUndefined,         // CN_ROWAGG

@@ -31,12 +31,12 @@ using namespace Forth;
 #include "DicPath.hpp"
 #include "DicStack.hpp"
 #include "GenVar.hpp"
-#include "Register.hpp"
+#include "Local.hpp"
 #include "Word.hpp"
 
 #include "Stack.hpp"
 
-#include "RegFrame.hpp"
+#include "LocalSet.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

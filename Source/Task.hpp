@@ -84,7 +84,7 @@ namespace Tasks
     Stack*   m_pAuxStack;    // auxiliary stack
     DicStack m_oPathStack;   // dictionary stack
     
-    RegFrame* m_pLocalsFrame; // local register frame chain
+    LocalSet* m_pLocalsFrame; // local register frame chain
 
     union {                 // forth instruction pointer
       Cell*   m_aCell;      // points to cell inside a word

@@ -194,10 +194,10 @@ void Plan::vFinished(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
   while (m_pRegList) {
-    RegFrame* pRegFrame = m_pRegList;
+    LocalSet* pLocalSet = m_pRegList;
     m_pRegList = m_pRegList->pNext();
     
-    delete pRegFrame;
+    delete pLocalSet;
   }  
 }
 
@@ -234,19 +234,19 @@ void Plan::vNullifyPointers(void)
 /*----------------------------------------------------------------------------*/
 /* push register frame                                                        */
 /*----------------------------------------------------------------------------*/
-void Plan::vRegFramePush(RegFrame* pRegFrame)
+void Plan::vLocalSetPush(LocalSet* pLocalSet)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
-  pRegFrame->vNext(m_pRegList);
+  pLocalSet->vNext(m_pRegList);
   
-  m_pRegList = pRegFrame;
+  m_pRegList = pLocalSet;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get top register frame                                                     */
 /*----------------------------------------------------------------------------*/
-RegFrame* Plan::pRegFrameTop(void)
+LocalSet* Plan::pLocalSetTop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
     
@@ -266,11 +266,11 @@ void Plan::vShow(void)
          m_iPlanId & 0x00FFFFFFFFFFFFFF,
          m_sName.aChar());
   
-  RegFrame* pRegFrame = m_pRegList;
+  LocalSet* pLocalSet = m_pRegList;
   
-  while(pRegFrame) {
-    pRegFrame = pRegFrame->m_pNext;
-    if (pRegFrame)
+  while(pLocalSet) {
+    pLocalSet = pLocalSet->m_pNext;
+    if (pLocalSet)
       vTrace("<-"_Stz);
   }
   vTrace("\n"_Stz);

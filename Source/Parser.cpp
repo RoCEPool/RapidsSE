@@ -257,7 +257,7 @@ char Parser::cGet(bool bStripComments)
   
   // do we have any chars in the regs?
   if (! m_nLoaded)
-    vLoadRegisters(bStripComments);
+    vLoadLocals(bStripComments);
   
   if (! m_nLoaded)
     return '\0';
@@ -276,7 +276,7 @@ void Parser::vUnget(char cParsed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  vRewindRegisters(cParsed);
+  vRewindLocals(cParsed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,7 +351,7 @@ void Parser::vResetParser(void)
 /*----------------------------------------------------------------------------*/
 /* clear character registers                                                  */
 /*----------------------------------------------------------------------------*/
-void Parser::vClearRegisters(void)
+void Parser::vClearLocals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -434,7 +434,7 @@ void Parser::vLoadFirst(void)
 /*----------------------------------------------------------------------------*/
 /* load first (and maybe) second register from input stream, strip comments   */
 /*----------------------------------------------------------------------------*/
-void Parser::vLoadRegisters(bool bStripComments)
+void Parser::vLoadLocals(bool bStripComments)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -473,7 +473,7 @@ void Parser::vLoadSecond(void)
 /*----------------------------------------------------------------------------*/
 /* rewind registers by one character                                          */
 /*----------------------------------------------------------------------------*/
-void Parser::vRewindRegisters(char cParsed)
+void Parser::vRewindLocals(char cParsed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -497,12 +497,12 @@ void Parser::vStripComment(void)
       
     case CT_BLOCK:
       vBlockCommentSkip();
-      vRewindRegisters(' ');
+      vRewindLocals(' ');
       break;
       
     case CT_LINE:
       vLineCommentSkip();
-      vRewindRegisters(' ');
+      vRewindLocals(' ');
       break;
       
     default:
@@ -535,7 +535,7 @@ void Parser::vBlockCommentSkip(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  vClearRegisters();
+  vClearLocals();
   
   vLoadBoth();
   
@@ -553,7 +553,7 @@ void Parser::vBlockCommentSkip(void)
       break;
   }
   
-  vClearRegisters();
+  vClearLocals();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -624,7 +624,7 @@ void Parser::vLineCommentSkip(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  vClearRegisters();
+  vClearLocals();
   
   vLoadFirst();
   

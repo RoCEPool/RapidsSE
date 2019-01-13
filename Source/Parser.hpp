@@ -79,14 +79,14 @@ namespace Parsing
     void vResetParser(void);
     
     // Character Processing
-    void vClearRegisters(void);
+    void vClearLocals(void);
     char cConsumeFirst(void);
     void vDiscardFirst(void);
     void vLoadBoth(void);
     void vLoadFirst(void);
-    void vLoadRegisters(bool bStripComments);
+    void vLoadLocals(bool bStripComments);
     void vLoadSecond(void);
-    void vRewindRegisters(char c);
+    void vRewindLocals(char c);
     
     // Comment Processing
     bool bBlockCommentEnd(void);

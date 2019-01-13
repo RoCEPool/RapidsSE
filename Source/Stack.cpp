@@ -634,14 +634,14 @@ bool Stack::bPop(Object*& pObject, GenVar& xGenVar)
 /*----------------------------------------------------------------------------*/
 /* pop register from value stack                                              */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(Register*& pRegister)
+bool Stack::bPop(Local*& pLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(1) )
     return false;
   
-  vPopReg(pRegister);
+  vPopReg(pLocal);
   
   return true;
 }
@@ -984,11 +984,11 @@ void Stack::vPushPointer(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* push pointer to register onto value stack                                  */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushRegister(Register* pRegister)
+void Stack::vPushLocal(Local* pLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  Value* aValue = pRegister->aNestedValue();
+  Value* aValue = pLocal->aNestedValue();
   
   vPushValue(aValue);
 
@@ -1121,7 +1121,7 @@ i8 Stack::nValues(void)
 /*----------------------------------------------------------------------------*/
 /* pop value from value stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPopReg(Register* aRegister)
+void Stack::vPopReg(Local* aLocal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   //m_xHazard.vAssertFooter();
@@ -1129,7 +1129,7 @@ void Stack::vPopReg(Register* aRegister)
   
   i8 iSize = aPeekValue()->nSize();
   
-  MemLib::vCopy(aRegister->aNestedValue(),m_aTop,iSize,CN_STACK);
+  MemLib::vCopy(aLocal->aNestedValue(),m_aTop,iSize,CN_STACK);
   vPopBy(iSize);
   m_nValues--;
   
