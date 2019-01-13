@@ -113,54 +113,6 @@ void vTest3(void)
 /*----------------------------------------------------------------------------*/
 void vTest4(void)
 {
-  char cBitAry[128];
-  
-  assert(! BitLib::bAnyOn(0));
-  assert(BitLib::bAnyOn(1));
-  
-  assert(1 == BitLib::uBitMask(0));
-  assert(2 == BitLib::uBitMask(1));
-  
-  BitLib::vDump(0,cBitAry);
-  vTrace("BitMap: %s\n"_Stz,cBitAry);
-  
-  BitLib::vDump(1,cBitAry);
-  vTrace("BitMap: %s\n"_Stz,cBitAry);
-  
-  u8 uBitMap = 0xFEDCBA;
-  BitLib::vDump(uBitMap,cBitAry);
-  vTrace("BitMap: %s\n"_Stz,cBitAry);
-  
-  i8 iBit = -1;
-  while (BitLib::bEachBit(uBitMap,iBit))
-    vTrace("BitOn: %lld\n"_Stz,iBit);
-
-  vTrace("Highest Bit: %lld\n"_Stz,BitLib::iHighestBit(uBitMap));
-  
-  vTrace("Bit 6 is %s\n"_Stz,BitLib::bIsOn(uBitMap,6) ? "on" : "off");
-  vTrace("Bit 23 is %s\n"_Stz,BitLib::bIsOn(uBitMap,23) ? "on" : "off");
-  
-  
-  uBitMap = BitLib::uSetOn(uBitMap,6);
-  vTrace("Bit 6 is now %s\n"_Stz,BitLib::bIsOn(uBitMap,6) ? "on" : "off");
-  
-  uBitMap = BitLib::uShuffleRight(uBitMap,2);
-  BitLib::vDump(uBitMap,cBitAry);
-  vTrace("BitMap: %s\n"_Stz,cBitAry);
-  
-  uBitMap = BitLib::uShuffleLeft(uBitMap,8);
-  BitLib::vDump(uBitMap,cBitAry);
-  vTrace("BitMap: %s\n"_Stz,cBitAry);
-  
-  uBitMap = BitLib::uShuffleRight(uBitMap,8);
-  u8 uCut = BitLib::uCutRight(uBitMap,3);
-  BitLib::vDump(uBitMap,cBitAry);
-  
-  vTrace("BitMap: %s\n"_Stz,cBitAry);
-  BitLib::vDump(uCut,cBitAry);
-  vTrace("Cut: %s\n"_Stz,cBitAry);
-  
- 
 }
 
 /*----------------------------------------------------------------------------*/
