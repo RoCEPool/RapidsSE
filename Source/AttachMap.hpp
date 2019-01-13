@@ -78,9 +78,7 @@ namespace StorageEngine
     
     Lock          m_xDdlLock;
     Lock          m_xDicLock;
-    
-    BitMap*       m_pBitMap;
-    
+       
     Atomic        m_ziPlanId;
     
     Formatters    m_xFormatters; // record formatters

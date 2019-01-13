@@ -24,7 +24,6 @@ namespace Structures
     
     void    vAppend(OBJECT* mpNode);
     i8      iCount(void);
-    void    vContentDump(Stz* aTitle, Stz* aTab);
     OBJECT* npPop(void);
     void    vPush(OBJECT* mpNode);
     void    vRemove(OBJECT* mpNode);
@@ -39,9 +38,11 @@ namespace Structures
   };
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Structures;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -104,37 +105,6 @@ template <class OBJECT>
 i8 List_t<OBJECT>::iCount(void)
 {
   return m_nCount;
-}
-/*----------------------------------------------------------------------------*/
-/* dump each object in list                                                   */
-/*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void List_t<OBJECT>::vContentDump(Stz* aTitle, Stz* aTab)
-{
-  //vReadLock();
-  
-  ListCursor_t<OBJECT> xCursor(this);
-  
-  
-  xCursor.vBegin();
-  
-  vTrace("%s%s %p: %lld tasks; head %p tail %p\n"_Stz,
-         aTab,
-         aTitle,
-         this,
-         iCount(),
-         pHead(),
-         pTail());
-  
-  for (xCursor.vFirst(); xCursor.pObject(); xCursor.vNext()) {
-    OBJECT* pObject = xCursor.pObject();
-    pObject->vContentDump();
-  }
-  xCursor.vEnd();
-  vTrace("\n"_Stz);
-  
-  //vReadUnlock();
-  
 }
 
 /*----------------------------------------------------------------------------*/

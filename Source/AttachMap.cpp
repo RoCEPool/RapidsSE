@@ -228,10 +228,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName,
   
   //m_xDdlLock.vInitLock(LK_DDL);
   //m_xDicLock.vInitLock(LK_DIC);
-  
-  // not used yet
-  //m_pBitMap = new BitMap;
-  
+    
   // initialize the plan number
   m_ziPlanId = m_pGrid->iThisNode() << 48;
 
