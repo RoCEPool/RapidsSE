@@ -184,48 +184,48 @@ Word* DicStack::pFindInCurrent(Stz* aName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a word given step                                                     */
-/*----------------------------------------------------------------------------*/
-Word* DicStack::pFindStep(StepFp fpStep)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
-  
-  Word* pWord;
-  
-  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
-    for (pWord = m_pDic[i_Dic]->pLastWord(); pWord; pWord = pWord->pPrevWord())
-      if (WT_PRIMITIVE == pWord->eWordType() && fpStep == pWord->fpEntryStep())
-        return pWord;
-
-  for (pWord = gpAttachMap->m_xMainDic.pLastWord();
-       pWord;
-       pWord = pWord->pPrevWord())
-    if (WT_PRIMITIVE == pWord->eWordType() && fpStep == pWord->fpEntryStep())
-      return pWord;
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* locate word in stack of dictionaries that has given cell                   */
 /*----------------------------------------------------------------------------*/
 Word* DicStack::pLocateWord(Cell* aHasCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
-
+  
   Word* pWord;
   
   for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
     for (pWord = m_pDic[i_Dic]->pLastWord(); pWord; pWord = pWord->pPrevWord())
       if (pWord->bHasCell(aHasCell))
         return pWord;
-
+  
   for (pWord = gpAttachMap->m_xMainDic.pLastWord(); pWord; pWord = pWord->pPrevWord())
     if (pWord->bHasCell(aHasCell))
       return pWord;
   
   return nullptr;
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* locate word that has given step                                            */
+/*----------------------------------------------------------------------------*/
+Word* DicStack::pLocateWord(StepFp fpHasStep)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  Word* pWord;
+  
+  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
+    for (pWord = m_pDic[i_Dic]->pLastWord(); pWord; pWord = pWord->pPrevWord())
+      if (WT_PRIMITIVE == pWord->eWordType() && fpHasStep == pWord->fpEntryStep())
+        return pWord;
+  
+  for (pWord = gpAttachMap->m_xMainDic.pLastWord();
+       pWord;
+       pWord = pWord->pPrevWord())
+    if (WT_PRIMITIVE == pWord->eWordType() && fpHasStep == pWord->fpEntryStep())
+      return pWord;
+  
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

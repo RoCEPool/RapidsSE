@@ -521,7 +521,9 @@ void Step::vSee(MP_Task mpTask)
   
   while (aDoesCell < pDoesWord->aLastCell()) {
     
-    Word* pCallsWord = mpTask->m_oPathStack.pFindStep(*aDoesCell->m_afpStep);
+    StepFp fpHasStep = *aDoesCell->m_afpStep;
+    
+    Word* pCallsWord = mpTask->m_oPathStack.pLocateWord(fpHasStep);
     
     // jumps
     if (*aDoesCell->m_afpStep == Step::vFlowJump ||
