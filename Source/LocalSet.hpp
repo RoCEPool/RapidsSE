@@ -1,18 +1,18 @@
 /*============================================================================*/
-/* LocalSet.hpp -- Local Frame                                             */
+/* LocalSet.hpp -- Local Set                                                  */
 /*============================================================================*/
 #pragma once
 
 namespace Forth
 {
-  static const i8 C_REGISTERS = 32;
+  static const i8 C_LOCALS = 32;
   
   class LocalSet : public Object
   {
   public:
-    LocalSet* m_pNext;                // nest frame in chain
-    void*     m_pStackPtr;            // discard point (when in call stack)
-    Local     m_xLocal[C_REGISTERS];  // set of registers
+    LocalSet* m_pNext;             // nest frame in chain
+    Value*    m_aDiscardPoint;     // discard point (when in call stack)
+    Local     m_xLocal[C_LOCALS];  // set of local values
     
     // must be last
     Footer m_xFooter;
@@ -29,11 +29,12 @@ namespace Forth
     LocalSet* pNext(void);
     void      vNext(LocalSet* pLocalSet);
     
-    void*     pStackPtr(void);
-    void      vStackPtr(void* pStackPtr);
+    Value*    aDiscardPoint(void);
+    void      vDiscardPoint(Value* aDiscardPoint);
     
-    Local* pLocal(i8 iReg);
-    
+    Local*    pLocal(i8 i_Local);
+  
+    // must be last
     Footer* aFooter(void);
   };
   

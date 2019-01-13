@@ -149,7 +149,7 @@ ENTRY("vLocalsPush"_Stz);
   
   LocalSet* pLocalsFrame = new LocalSet;
   
-  pLocalsFrame->vStackPtr(mpTask->m_pReturnStack->aPeekValue());
+  pLocalsFrame->vDiscardPoint(mpTask->m_pReturnStack->aPeekValue());
   
   pLocalsFrame->vNext(mpTask->m_pLocalsFrame);
   

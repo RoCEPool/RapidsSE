@@ -23,9 +23,9 @@ EntWrk::EntWrk(eCN eClassNo)
   
   m_nOffsets = -1;
   
-  m_xEmbeddedWsp.vInit();
+  m_xWsp.vInit();
   
-  m_aEmbedded = m_xEmbeddedWsp.aArea();
+  m_aEmbedded = m_xWsp.aArea();
   
   _checkInitialisedSize_(sizeof(EntWrk));
   
@@ -51,7 +51,7 @@ char* EntWrk::aEmbedded(void)
 {  
   _precondition_(_MAGIC_,_FOOTER_);
   
-//  char* aData = m_xEmbeddedWsp.aArea();
+//  char* aData = m_xWsp.aArea();
 //  
 //  return aData;
   
@@ -107,7 +107,7 @@ void EntWrk::vId(Id& xId)
 /*----------------------------------------------------------------------------*/
 char* EntWrk::aLatter(void)
 {
-  return m_xEmbeddedWsp.aLatter();
+  return m_xWsp.aLatter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +165,7 @@ void EntWrk::vReset(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_aEmbedded = m_xEmbeddedWsp.aArea();
+  m_aEmbedded = m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,7 +175,7 @@ void EntWrk::vTake(i8 iSize)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xEmbeddedWsp.vTake(iSize);
+  m_xWsp.vTake(iSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,7 +209,7 @@ i8 EntWrk::nEmbeddedSize(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return m_xEmbeddedWsp.nUsed();
+  return m_xWsp.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,7 +219,7 @@ void EntWrk::vEmbeddedSize(i8 iSize)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_xEmbeddedWsp.vUsed(iSize);
+  m_xWsp.vUsed(iSize);
 }
 
 /*----------------------------------------------------------------------------*/

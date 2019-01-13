@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LocalSet.cpp -- Local Frame                                                */
+/* LocalSet.cpp -- Local Set                                                  */
 /*============================================================================*/
 
 #include "Forth.h"
@@ -44,8 +44,8 @@ LocalSet::LocalSet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSET,_FOOTER_);
 
-  m_pNext     = nullptr;
-  m_pStackPtr = nullptr;
+  m_pNext         = nullptr;
+  m_aDiscardPoint = nullptr;
   //m_xLocal
   
   _checkInitialised_(CN_LOCALSET);
@@ -76,7 +76,7 @@ void LocalSet::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get next register frame                                                    */
+/* get next set of locals                                                     */
 /*----------------------------------------------------------------------------*/
 LocalSet* LocalSet::pNext(void)
 {
@@ -86,7 +86,7 @@ LocalSet* LocalSet::pNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set next register frame                                                    */
+/* set next set of locals                                                     */
 /*----------------------------------------------------------------------------*/
 void LocalSet::vNext(LocalSet* pNext)
 {
@@ -96,35 +96,35 @@ void LocalSet::vNext(LocalSet* pNext)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stack pointer                                                          */
+/* get return point where this local set should be discarded                  */
 /*----------------------------------------------------------------------------*/
-void* LocalSet::pStackPtr(void)
+Value* LocalSet::aDiscardPoint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSET,_FOOTER_);
   
-  return m_pStackPtr;
+  return m_aDiscardPoint;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set stack pointer                                                          */
+/* set return point where this local set should be discarded                  */
 /*----------------------------------------------------------------------------*/
-void LocalSet::vStackPtr(void* pStackPtr)
+void LocalSet::vDiscardPoint(Value* aDiscardPoint)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSET,_FOOTER_);
   
-  m_pStackPtr = pStackPtr;
+  m_aDiscardPoint = aDiscardPoint;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of value register                                              */
+/* get given local                                                            */
 /*----------------------------------------------------------------------------*/
-Local* LocalSet::pLocal(i8 iReg)
+Local* LocalSet::pLocal(i8 i_Local)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCALSET,_FOOTER_);
   
-  ASSERT(iReg >= 0 && iReg < C_REGISTERS);
+  ASSERT(i_Local >= 0 && i_Local < C_LOCALS);
   
-  return &m_xLocal[iReg];
+  return &m_xLocal[i_Local];
 }
 
 /*----------------------------------------------------------------------------*/

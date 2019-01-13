@@ -18,12 +18,12 @@ namespace DBobjects
     i8    m_nOffsets;  // number of offsets (0..3)
   
     char* m_aEmbedded; // address of embedded object. this may be different
-                       // from m_xEmbeddedWsp.aArea() to allow for the object
+                       // from m_xWsp.aArea() to allow for the object
                        // not to have to be copied into the wsp
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key and row workspace
-    Wsp_t<C_WSP_ENTWRK> m_xEmbeddedWsp; // embedded object workspace
+    Wsp_t<C_WSP_ENTWRK> m_xWsp; // embedded object workspace
   
     Footer m_xFooter;
   
