@@ -33,8 +33,6 @@ using namespace Structures;
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"
 
-#include "ScanBuffer.hpp"
-
 #include "SkipNode.hpp"
 #include "SkipCursor.hpp"
 #include "SkipList.hpp"
