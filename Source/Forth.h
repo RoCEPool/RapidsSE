@@ -32,11 +32,12 @@ using namespace Forth;
 #include "DicStack.hpp"
 #include "GenVar.hpp"
 #include "Local.hpp"
+#include "LocalSet.hpp"
+#include "Routine.hpp"
 #include "Word.hpp"
 
 #include "Stack.hpp"
 
-#include "LocalSet.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
