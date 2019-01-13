@@ -35,13 +35,11 @@ namespace Structures
     void  vCheck(void);
     void  vContents(void (*fvDump)(void* pObject));
     bool  bDeleteAll(void);
-    void* pEach(SkipCursor* pCursor);
     bool  bExists(void* pObject);
     void* pFind(void* pObject);
     SkipNode* pFirst(i8 iLevel);
     bool  bInsert(void* pObject);
     SkipNode* pNext(SkipNode* pPrev, i8 iLevel);
-    SkipNode* pNth(i8 iNth);
     i8    nObjects(void);
     i8    nRecount(void);
     bool  bRemove(void* pObject);
