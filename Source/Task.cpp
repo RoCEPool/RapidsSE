@@ -86,7 +86,6 @@ Task::Task(Job* pJob)
   m_pLocalsFrame = nullptr;
   
   FIP.m_aCell    = nullptr;
-  m_afpEntryCell = nullptr;
   
   m_pCompiler    = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
   
@@ -151,12 +150,10 @@ void Task::vTaskLoop(void)
     // get the step function to be called
     StepFp fpStep = *(FIP.m_aCell->m_afpEntryStep);
     
-    // the does step is the next member in word
-    //   -- not a great piece of coding Ray ;(
-    m_afpEntryCell = FIP.m_aCell->m_afpEntryStep + 1;
-    
+    // advance instruction pointer to next cell in word routine
     FIP.m_aCell++;
     
+    // call the step function
     try {
       (fpStep)(this);
     }

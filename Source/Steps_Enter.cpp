@@ -22,10 +22,12 @@ void Step::vEnterObject(MP_Task mpTask)
 {
   ENTRY("vEnterObject"_Stz);
   
+  StepFp* afpEntryCell = (mpTask->FIP.m_aCell - 1)->m_afpEntryStep + 1;
+
   mpTask->m_pReturnStack->vPushCell(mpTask->FIP.m_aCell);
-  mpTask->FIP.m_aCell = *(Cell**)mpTask->m_afpEntryCell;
+  mpTask->FIP.m_aCell = *(Cell**)afpEntryCell;
   
-  Word* pWord = pAdd<Word*>(mpTask->m_afpEntryCell,
+  Word* pWord = pAdd<Word*>(afpEntryCell,
                             -( sizeof(Word)
                                - sizeof(Cell*)
                                - sizeof(Wsp_t<C_WSP_WORD>)
@@ -48,9 +50,11 @@ void Step::vEnterRoutine(MP_Task mpTask)
 {
   ENTRY("vEnterRoutine"_Stz);
   
+  StepFp* afpEntryCell = (mpTask->FIP.m_aCell - 1)->m_afpEntryStep + 1;
+  
   mpTask->m_pReturnStack->vPushCell(mpTask->FIP.m_aCell);
-  mpTask->FIP.m_aCell = *(Cell**)mpTask->m_afpEntryCell;
- 
+  mpTask->FIP.m_aCell = *(Cell**)afpEntryCell;
+
    if ( (mpTask->m_iTracing & C_TRACE_ROUTINES) )
     mpTask->vTracePoint(">"_Stz);
   
