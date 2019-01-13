@@ -274,6 +274,8 @@ void Axioms::vAddConstants(void)
   
   /*    */ vAddConstant("CN_LOADCHUNK"_Stz,    CN_LOADCHUNK);
   /* 35 */ vAddConstant("CN_LOADMAP"_Stz,      CN_LOADMAP);
+  /*    */ vAddConstant("CN_LOCAL"_Stz,        CN_LOCAL);
+  /* 47 */ vAddConstant("CN_LOCALSET"_Stz,     CN_LOCALSET);
   /* 36 */ vAddConstant("CN_LOCK"_Stz,         CN_LOCK);
   
   /*    */ vAddConstant("CN_MEDIUMPERSISTENT"_Stz, CN_MEDIUMPERSISTENT);
@@ -292,8 +294,6 @@ void Axioms::vAddConstants(void)
   
   /*    */ vAddConstant("CN_RBCURSOR"_Stz,     CN_RBCURSOR);
   /*    */ vAddConstant("CN_RECORDBUFFER"_Stz, CN_RECORDBUFFER);
-  /* 47 */ vAddConstant("CN_LOCALSET"_Stz,     CN_LOCALSET);
-  /*    */ vAddConstant("CN_LOCAL"_Stz,     CN_LOCAL);
   /* 48 */ vAddConstant("CN_RING"_Stz,         CN_RING);
   /* 51 */ vAddConstant("CN_ROWCURSOR"_Stz,    CN_ROWCURSOR);
   

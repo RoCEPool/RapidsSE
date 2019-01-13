@@ -180,6 +180,8 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vInvalid,         // CN_LIST
   /*    */ &Dump::vDummy,           // CN_LOADCHUNK
   /* 71 */ &LoadMap::vDump,         // CN_LOADMAP
+  /*    */ &Dump::vInvalid,         // CN_LOCAL
+  /*    */ &LocalSet::vDump,        // CN_LOCALSET
   /* 72 */ &Dump::vInvalid,         // CN_LOCK
   
   /* 73 */ &Heap::vDump,            // CN_MEDIUMPERSISTENT
@@ -210,8 +212,6 @@ pDUMPFUN *gpDump[]
 
   /* 97 */ &Dump::vUndefined,       // CN_RBCURSOR
   /*    */ &Dump::vUndefined,       // CN_RECORDBUFFER
-  /*    */ &LocalSet::vDump,        // CN_LOCALSET
-  /*    */ &Dump::vInvalid,         // CN_LOCAL
   /*    */ &LocalSet::vDump,        // CN_RESOURCETRACKER
   /*101 */ &Dump::vUndefined,       // CN_RING
   /*102 */ &Dump::vUndefined,       // CN_ROWAGG
@@ -441,6 +441,8 @@ i8 giClassSize[]
   /*    */ sizeof(ListNL_t<Task>),     // CN_LIST
   /*    */ sizeof(LoadChunk),          // CN_LOADCHUNK
   /* 71 */ sizeof(LoadMap),            // CN_LOADMAP
+  /*    */ sizeof(Local),              // CN_LOCAL
+  /*    */ sizeof(LocalSet),           // CN_LOCALSET
   /* 72 */ sizeof(Lock),               // CN_LOCK
   
   /* 73 */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
@@ -470,8 +472,6 @@ i8 giClassSize[]
   
   /* 97 */ sizeof(RbCursor),           // CN_RBCURSOR
   /*    */ sizeof(RecordBuffer),       // CN_RECORDBUFFER
-  /*    */ sizeof(LocalSet),           // CN_LOCALSET
-  /*    */ sizeof(Local),           // CN_LOCAL
   /*    */ sizeof(ResourceTracker),    // CN_RESOURCETRACKER
   /*101 */ sizeof(Ring),               // CN_RING
   /*102 */ sizeof(RowAgg),             // CN_ROWAGG
@@ -701,6 +701,8 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_LIST
   /*    */ HT_TRANSIENT_LARGE,   // CN_LOADCHUNK
   /* 71 */ HT_TRANSIENT_JUMBO,   // CN_LOADMAP
+  /*    */ HT_INVALID,           // CN_LOCAL
+  /*    */ HT_TRANSIENT_LARGE,   // CN_LOCALSET
   /* 72 */ HT_INVALID,           // CN_LOCK
   
   /* 73 */ HT_INVALID,           // CN_MEDIUMPERSISTENT
@@ -730,8 +732,6 @@ eHT geWhichHeap[]
   
   /* 97 */ HT_TRANSIENT_SMALL,   // CN_RBCURSOR
   /*    */ HT_TRANSIENT_LARGE,   // CN_RECORDBUFFER
-  /*    */ HT_TRANSIENT_LARGE,   // CN_LOCALSET
-  /*    */ HT_INVALID,           // CN_LOCAL
   /*    */ HT_TRANSIENT_SMALL,   // CN_RESOURCETRACKER
   /*101 */ HT_INVALID,           // CN_RING
   /*102 */ HT_TRANSIENT_MEDIUM,  // CN_ROWAGG

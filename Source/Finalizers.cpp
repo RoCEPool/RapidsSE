@@ -176,6 +176,8 @@ pFINALIZE *gpFinalize[]
   /*    */ &Finalize::vUndefined,         // CN_LIST
   /*    */ &Finalize::vUndefined,         // CN_LOADCHUNK
   /* 71 */ &Finalize::vUndefined,         // CN_LOADMAP
+  /*    */ &Finalize::vUndefined,         // CN_LOCAL
+  /*    */ &Finalize::vUndefined,         // CN_LOCALSET
   /* 72 */ &Finalize::vUndefined,         // CN_LOCK
   
   /* 73 */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
@@ -205,8 +207,6 @@ pFINALIZE *gpFinalize[]
   
   /* 97 */ &Finalize::vUndefined,         // CN_RBCURSOR
   /*    */ &Finalize::vUndefined,         // CN_RECORDBUFFER
-  /*    */ &Finalize::vUndefined,         // CN_LOCALSET
-  /*    */ &Finalize::vUndefined,         // CN_LOCAL
   /*    */ &Finalize::vUndefined,         // CN_RESOURCETRACKER
   /*101 */ &Finalize::vUndefined,         // CN_RING
   /*102 */ &Finalize::vUndefined,         // CN_ROWAGG
