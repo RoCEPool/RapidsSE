@@ -93,7 +93,7 @@ namespace Forth
     void  vEncode(Stz* aWordNm, Word* pWord);
     void  vEncode(Stz* aWordNm, Value* aValue);
     void  vEncode(Stz* aWordNm, GenVar* pGenVar);
-    void  vEncode(StepFp* ppEntryStep);
+    void  vEncode(StepFp* afpEntryStep);
     Cell* aFirstCell(void);
     bool  bHasCell(Cell* aCell);
     bool  bImmediate(void);
@@ -115,9 +115,7 @@ namespace Forth
     eWT   eWordType(void);
     void  vWordType(eWT eWordType);
     char* aWspArea(void);
-    char* aWspLatter(void);
-    i8    nWspUsed(void);
-  
+
     Footer* aFooter(void);
   };
   

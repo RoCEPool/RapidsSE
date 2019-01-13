@@ -106,10 +106,10 @@ Word::~Word(void) noexcept(false)
   
   // invoke the finalize function for embedded objects
   if (m_eWordType == WT_OBJECT) {
-    Object* pPtrBody = reinterpret_cast<Object*>(aWspArea());
-    eCN eClass = pPtrBody->eClass();
+    Object* pEmbObject = reinterpret_cast<Object*>(m_xRoutine.aArea());
+    eCN eClass = pEmbObject->eClass();
     pFINALIZE* pFinalizeFun = gpFinalize[eClass];
-    (pFinalizeFun)(eClass, pPtrBody);
+    (pFinalizeFun)(eClass, pEmbObject);
   }
 }
 
@@ -647,28 +647,6 @@ char* Word::aWspArea(void)
   char* aBody = m_xRoutine.aArea();
   
   return pPoolCheck<char*>((void*)aBody);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get latter part (current logical end) of body                              */
-/*----------------------------------------------------------------------------*/
-char* Word::aWspLatter(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  char* aLatter = m_xRoutine.aLatter();
-  
-  return pPoolCheck<char*>((void*)aLatter);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of data bytes                                                   */
-/*----------------------------------------------------------------------------*/
-i8 Word::nWspUsed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_xRoutine.nUsed();
 }
 
 /*----------------------------------------------------------------------------*/
