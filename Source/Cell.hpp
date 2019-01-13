@@ -20,7 +20,7 @@ namespace Forth
       //   - Step::vXyz for primitives
       //
       
-      StepFp* m_afpEntryStep; // address of the Word::m_pEntryStep
+      StepFp* m_afpStep; // address of the member which has StepFp
       
       //
       // additionally cells can be a argument to the previous cell/stepfun

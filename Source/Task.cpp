@@ -148,7 +148,7 @@ void Task::vTaskLoop(void)
   while (TS_EXECUTING == m_eState) {
     
     // get the step function to be called
-    StepFp fpStep = *(FIP.m_aCell->m_afpEntryStep);
+    StepFp fpStep = *(FIP.m_aCell->m_afpStep);
     
     // advance instruction pointer to next cell in word routine
     FIP.m_aCell++;

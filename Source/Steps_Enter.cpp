@@ -22,7 +22,7 @@ void Step::vEnterObject(MP_Task mpTask)
 {
   ENTRY("vEnterObject"_Stz);
   
-  StepFp* afpEntryCell = (mpTask->FIP.m_aCell - 1)->m_afpEntryStep + 1;
+  StepFp* afpEntryCell = (mpTask->FIP.m_aCell - 1)->m_afpStep + 1;
 
   mpTask->m_pReturnStack->vPushCell(mpTask->FIP.m_aCell);
   mpTask->FIP.m_aCell = *(Cell**)afpEntryCell;
@@ -50,7 +50,7 @@ void Step::vEnterRoutine(MP_Task mpTask)
 {
   ENTRY("vEnterRoutine"_Stz);
   
-  StepFp* afpEntryCell = (mpTask->FIP.m_aCell - 1)->m_afpEntryStep + 1;
+  StepFp* afpEntryCell = (mpTask->FIP.m_aCell - 1)->m_afpStep + 1;
   
   mpTask->m_pReturnStack->vPushCell(mpTask->FIP.m_aCell);
   mpTask->FIP.m_aCell = *(Cell**)afpEntryCell;
