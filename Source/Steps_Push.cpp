@@ -71,7 +71,7 @@ void Step::vPushValue(MP_Task mpTask)
     ASSERT(mpTask->m_iTracing);
   }
   
-  Value* aValue = mpTask->FIP.m_aEmbValue;
+  Value* aValue = &mpTask->FIP.m_aCell->m_xEmbValue;
   
   mpTask->m_pDataStack->vPushValue(aValue);
   

@@ -88,7 +88,6 @@ namespace Tasks
 
     union {                 // forth instruction pointer
       Cell*   m_aCell;      // points to cell inside a word
-      Value*  m_aEmbValue;  // points to an embedded value within a word
     } FIP;
   
     // exception
