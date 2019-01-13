@@ -216,13 +216,13 @@ bool Task::bAckAndDecide(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* adjust next pointer                                                        */
+/* adjust forth instruction pointer                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vAdjustNext(i8 iBytes)
+void Task::vAdjustFIP(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  FIP.m_aCell = pAdd<Cell*>(FIP.m_aCell,iBytes);
+  FIP.m_aCell = pAdd<Cell*>(FIP.m_aCell,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/

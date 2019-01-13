@@ -118,7 +118,7 @@ namespace Tasks
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
     bool bAckAndDecide(void);
-    void vAdjustNext(i8 iBytes);
+    void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);
     static void vDebug(void);
     void vContentDump(void);
