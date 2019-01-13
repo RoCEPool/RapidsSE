@@ -86,7 +86,7 @@ Task::Task(Job* pJob)
   m_pLocalsFrame = nullptr;
   
   FIP.m_aCell    = nullptr;
-  m_pEntryCell   = nullptr;
+  m_afpEntryCell = nullptr;
   
   m_pCompiler    = (CN_JOB_BOOT == pJob->eClass()) ? new Compiler : nullptr;
   
@@ -150,7 +150,7 @@ void Task::vTaskLoop(void)
     
     StepFp pStepFp = *FIP.m_aCell->m_afpEntryStep;
     
-    m_pEntryCell = FIP.m_aCell->m_afpEntryStep + 1;
+    m_afpEntryCell = FIP.m_aCell->m_afpEntryStep + 1;
     
     //vTrace("pStepFp %p\n"_Stz,pStepFp);
     

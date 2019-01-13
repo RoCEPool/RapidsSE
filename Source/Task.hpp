@@ -90,7 +90,7 @@ namespace Tasks
       Cell*   m_aCell;      // points to cell inside a word
       Value*  m_aEmbValue;  // points to an embedded value within a word
     } FIP;
-    StepFp* m_pEntryCell; // points to does arg (entry cell of word)
+    StepFp* m_afpEntryCell; // points to does arg (entry cell of word)
   
     // exception
     s256  m_sFile;
