@@ -219,7 +219,6 @@ pDUMPFUN *gpDump[]
   /*106 */ &Dump::vUndefined,       // CN_ROWWRK
   
   /*    */ &Dump::vUndefined,       // CN_SCHEMATEST
-  /*108 */ &Dump::vUndefined,       // CN_SCRATCH
   /*113 */ &Dump::vUndefined,       // CN_SELCURSOR
   /*114 */ &Dump::vUndefined,       // CN_SEMAPHORE
   /*115 */ &SePrompt::vDump,        // CN_SEPROMPT
@@ -477,7 +476,6 @@ i8 giClassSize[]
   /*106 */ sizeof(RowWrk),             // CN_ROWWRK
   
   /*    */ sizeof(SchemaTest),         // CN_SCHEMATEST
-  /*108 */ sizeof(Scratch),            // CN_SCRATCH
   /*113 */ sizeof(SelCursor),          // CN_SELCURSOR
   /*114 */ sizeof(Semaphore),          // CN_SEMAPHORE
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
@@ -735,7 +733,6 @@ eHT geWhichHeap[]
   /*106 */ HT_INVALID,           // CN_ROWWRK
   
   /*107 */ HT_TRANSIENT_LARGE,   // CN_SCHEMATEST
-  /*108 */ HT_TRANSIENT_LARGE,   // CN_SCRATCH
   /*113 */ HT_TRANSIENT_SMALL,   // CN_SELCURSOR
   /*114 */ HT_TRANSIENT_SMALL,   // CN_SEMAPHORE
   /*115 */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT

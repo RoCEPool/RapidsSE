@@ -215,7 +215,6 @@ enum eCN : u2 // Class Number
   /* 168 */ CN_ROWWRK,
   
   /*     */ CN_SCHEMATEST,
-  /* 170 */ CN_SCRATCH,
   /* 171 */ CN_SELCURSOR,
   /* 172 */ CN_SEMAPHORE,
   /* 173 */ CN_SEPROMPT,
@@ -469,7 +468,6 @@ static Stz* aCN[]
   /* 168 */ "ROWWRK"_Stz,              // CN_ROWWRK
   
   /*     */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST
-  /* 170 */ "SCRATCH"_Stz,             // CN_SCRATCH
   /* 171 */ "SELCURSOR"_Stz,           // CN_SELCURSOR
   /* 172 */ "SEMAPHORE"_Stz,           // CN_SEMAPHORE
   /* 173 */ "SEPROMPT"_Stz,            // CN_SEPROMPT

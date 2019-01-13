@@ -214,7 +214,6 @@ pFINALIZE *gpFinalize[]
   /*106 */ &Finalize::vUndefined,         // CN_ROWWRK
   
   /*    */ &Finalize::vUndefined,         // CN_SCHEMATEST
-  /*108 */ &Finalize::vUndefined,         // CN_SCRATCH
   /*113 */ &SelCursor::vFinalize,         // CN_SELCURSOR
   /*114 */ &Finalize::vUndefined,         // CN_SEMAPHORE
   /*115 */ &Finalize::vUndefined,         // CN_SEPROMPT

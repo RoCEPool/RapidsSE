@@ -5,6 +5,8 @@
 
 namespace System
 {
+  class Time;
+  
   class Since : public Object
   {
   public:
