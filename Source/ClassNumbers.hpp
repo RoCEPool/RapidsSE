@@ -220,7 +220,6 @@ enum eCN : u2 // Class Number
   /* 173 */ CN_SEPROMPT,
   /* 174 */ CN_SESSION,
   /* 175 */ CN_SINCE,
-  /* 176 */ CN_SKIPCURSOR,
   /* 177 */ CN_SKIPLIST,
   /* 178 */ CN_SKIPNODE,
   /* 179 */ CN_SLAB,
@@ -473,7 +472,6 @@ static Stz* aCN[]
   /* 173 */ "SEPROMPT"_Stz,            // CN_SEPROMPT
   /* 174 */ "SESSION"_Stz,             // CN_SESSION
   /* 175 */ "SINCE"_Stz,               // CN_SINCE
-  /* 176 */ "SKIPCURSOR"_Stz,          // CN_SKIPCURSOR
   /* 177 */ "SKIPLIST"_Stz,            // CN_SKIPLIST
   /* 178 */ "SKIPNODE"_Stz,            // CN_SKIPNODE
   /* 179 */ "SLAB"_Stz,                // CN_SLAB

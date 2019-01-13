@@ -302,7 +302,6 @@ void Axioms::vAddConstants(void)
   /* 60 */ vAddConstant("CN_SEMAPHORE"_Stz,    CN_SEMAPHORE);
   /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
   /* 61 */ vAddConstant("CN_SINCE"_Stz,        CN_SINCE);
-  /* 62 */ vAddConstant("CN_SKIPCURSOR"_Stz,   CN_SKIPCURSOR);
   /* 63 */ vAddConstant("CN_SKIPLIST"_Stz,     CN_SKIPLIST);
   /* 64 */ vAddConstant("CN_SKIPNODE"_Stz,     CN_SKIPNODE);
   /*    */ vAddConstant("CN_SLOTS"_Stz,        CN_SLOTS);
@@ -532,7 +531,6 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("SIZEOF_SEMAPHORE"_Stz,    sizeof(Semaphore));
   /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
   /* 47 */ vAddConstant("SIZEOF_SINCE"_Stz,        sizeof(Since));
-  /* 48 */ vAddConstant("SIZEOF_SKIPCURSOR"_Stz,   sizeof(SkipCursor));
   /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipList));
   /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Stz,     sizeof(SkipNode));
   /*    */ vAddConstant("SIZEOF_SLOTS"_Stz,        sizeof(Slots));

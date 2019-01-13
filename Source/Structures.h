@@ -34,7 +34,6 @@ using namespace Structures;
 #include "Queue.hpp"
 
 #include "SkipNode.hpp"
-#include "SkipCursor.hpp"
 #include "SkipList.hpp"
 
 #include "Array.hpp"
