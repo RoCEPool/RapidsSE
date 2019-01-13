@@ -54,10 +54,8 @@ namespace Forth
                              //     in the data area
                              //   for objects this will be the cell after
                              //     does in the defining word
-                             //   for primitives this will be null
-    // ..data..
-  
-    Wsp_t<C_WSP_WORD> m_xWsp;
+                             //   for primitives this will be null  
+    Routine  m_xRoutine;
   
     // must be last
     Footer m_xFooter;
