@@ -37,7 +37,7 @@ namespace Forth
     Word* pDicKind(void);
     void  vDicKind(Word* pDicKind);
     Word* pFindWord(Stz* aName);
-    Word* pFindStep(StepFp pStep);
+    Word* pFindStep(StepFp fpStep);
     Word* pRemoveWord(s32& sName);
     bool  bFrozen(void);
     void  vFrozen(bool bFrozen);

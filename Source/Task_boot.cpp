@@ -223,7 +223,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   Word* pNewWord;
-  StepFp  pStep;
+  StepFp  fpStep;
   Word* pCalledWord;
   GenVar xVariable;
   
@@ -267,16 +267,16 @@ Word* Task::pCompileColon(s48K& sDefinition)
       case TN_NAME:
         pCalledWord = m_oPathStack.pFindWord(m_pCompiler->m_pTokeniser->sToken());
         if (WT_PRIMITIVE == pCalledWord->eWordType()) {
-          pStep = pCalledWord->pEntryStep();
+          fpStep = pCalledWord->fpEntryStep();
           if (pCalledWord->bImmediate())
-            (*pStep)(this);
+            (*fpStep)(this);
           else {
-            pNewWord->vAppend(pCalledWord->ppEntryStep());
+            pNewWord->vAppend(pCalledWord->afpEntryStep());
           }
         }
         else if (WT_ROUTINE == pCalledWord->eWordType()) {
-          StepFp* ppCalledEntryStep = pCalledWord->ppEntryStep();
-          pNewWord->vEncode(ppCalledEntryStep);
+          StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
+          pNewWord->vEncode(afpCalledEntryStep);
         }
         else {
           THROW("Invalid eWordType %lld"_Stz,pCalledWord->eWordType());

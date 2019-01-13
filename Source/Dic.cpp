@@ -179,16 +179,16 @@ Word* Dic::pFindWord(Stz* aName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find a word given function                                                 */
+/* find a word given pointer to step function                                 */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pFindStep(StepFp pStep)
+Word* Dic::pFindStep(StepFp fpStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_oLock.vGrabRead();
   
   for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
-    if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep()) {
+    if (WT_PRIMITIVE == pWord->eWordType() && fpStep == pWord->fpEntryStep()) {
       m_oLock.vDropRead();
       return pWord;
     }

@@ -186,7 +186,7 @@ Word* DicStack::pFindInCurrent(Stz* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given step                                                     */
 /*----------------------------------------------------------------------------*/
-Word* DicStack::pFindStep(StepFp pStep)
+Word* DicStack::pFindStep(StepFp fpStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
@@ -194,11 +194,13 @@ Word* DicStack::pFindStep(StepFp pStep)
   
   for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
     for (pWord = m_pDic[i_Dic]->pLastWord(); pWord; pWord = pWord->pPrevWord())
-      if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
+      if (WT_PRIMITIVE == pWord->eWordType() && fpStep == pWord->fpEntryStep())
         return pWord;
 
-  for (pWord = gpAttachMap->m_xMainDic.pLastWord(); pWord; pWord = pWord->pPrevWord())
-    if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
+  for (pWord = gpAttachMap->m_xMainDic.pLastWord();
+       pWord;
+       pWord = pWord->pPrevWord())
+    if (WT_PRIMITIVE == pWord->eWordType() && fpStep == pWord->fpEntryStep())
       return pWord;
   
   return nullptr;

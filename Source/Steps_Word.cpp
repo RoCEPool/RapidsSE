@@ -151,9 +151,9 @@ void Step::vCompileComma(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  StepFp* ppCalledEntryStep = pCalledWord->ppEntryStep();
+  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
-  pCurrentWord->vEncode(ppCalledEntryStep);
+  pCurrentWord->vEncode(afpCalledEntryStep);
   
   EXIT();
 }
@@ -475,10 +475,10 @@ void Step::vPostpone(MP_Task mpTask)
     // put call to immediate word into this current definition
     
     // get indirect pointer to entry step of called word
-    StepFp* ppCalledEntryStep = pCalledWord->ppEntryStep();
+    StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
     
     // copy indirect pointer into the current word
-    pCurrentWord->vEncode(ppCalledEntryStep);
+    pCurrentWord->vEncode(afpCalledEntryStep);
   }
   else {
   

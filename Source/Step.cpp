@@ -11,7 +11,7 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 /* add primitive word into main dictionary                                    */
 /*----------------------------------------------------------------------------*/
-void Step::vAddStep(Stz* aName, StepFp pStep, bool bImmediate)
+void Step::vAddStep(Stz* aName, StepFp fpStep, bool bImmediate)
 {
   RASSERT(aName->nSize() <= 32);
   
@@ -20,7 +20,7 @@ void Step::vAddStep(Stz* aName, StepFp pStep, bool bImmediate)
   //m_pCompiler->m_pCurrentWord = pNewWord;
   
   pNewWord->vWordType(WT_PRIMITIVE);
-  pNewWord->vEntryStep(pStep);
+  pNewWord->vEntryStep(fpStep);
   pNewWord->vImmediate(bImmediate);
 }
 

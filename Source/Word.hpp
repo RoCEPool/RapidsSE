@@ -76,8 +76,8 @@ namespace Forth
     void  vAppend(Cell* aCell);
     void* aAppend(i8 iInt);
     void  vAppend(i8 iInt);
-    void* aAppend(StepFp* aStepFp);
-    void  vAppend(StepFp* aStepFp);
+    void* aAppend(StepFp* afpStep);
+    void  vAppend(StepFp* afpStep);
     void* aAppend(Value* aValue);
     void  vAppend(Value* aValue);
     void  vContentDump(void);
@@ -85,9 +85,9 @@ namespace Forth
     i8    iEpoch(void);
     void  vEntryCell(Cell* aCell);
     Cell* aEntryCell(void);
-    void  vEntryStep(StepFp pStep);
-    StepFp pEntryStep(void);
-    StepFp* ppEntryStep(void);
+    void  vEntryStep(StepFp fpStep);
+    StepFp fpEntryStep(void);
+    StepFp* afpEntryStep(void);
     void  vEncode(Stz* aWordNm);
     void  vEncode(Stz* aWordNm, Cell* aCell);
     void  vEncode(Stz* aWordNm, Word* pWord);

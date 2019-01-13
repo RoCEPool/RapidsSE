@@ -80,9 +80,9 @@ void Step::vEncodeCallPrimitive(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  StepFp* ppCalledEntryStep = pCalledWord->ppEntryStep();
+  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
-  pCurrentWord->vAppend(ppCalledEntryStep);
+  pCurrentWord->vAppend(afpCalledEntryStep);
   
   EXIT();
 }
@@ -102,10 +102,9 @@ void Step::vEncodeCallRoutine(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  StepFp* ppCalledEntryStep;
-  ppCalledEntryStep = pCalledWord->ppEntryStep();
+  StepFp* afpCalledEntryStep = pCalledWord->afpEntryStep();
   
-  pCurrentWord->vEncode(ppCalledEntryStep);
+  pCurrentWord->vEncode(afpCalledEntryStep);
   
   EXIT();
 }
