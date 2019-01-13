@@ -49,13 +49,11 @@ void TaskList::operator delete(void* pTaskQueueAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TaskList::TaskList(void)
-: Object(CN_TASKLIST)
+: ListNL_t<Task>(CN_TASKLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
   m_oLock.vInitLock(LK_TASK_QUEUE);
-  
-  m_pListTasks = new ListNL_t<Task>;
   
   _checkInitialised_(CN_TASKLIST);
 
@@ -68,8 +66,6 @@ TaskList::TaskList(void)
 TaskList::~TaskList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
-  
-  delete m_pListTasks;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,10 +75,7 @@ void TaskList::vAddTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  //ASSERT(m_pTaskSkipList->eClass() == CN_SKIPLIST);
-  //m_pTaskSkipList->bInsert(pTask);
-  
-  m_pListTasks->vAppend(pTask);
+  ListNL_t<Task>::vAppend(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,16 +125,11 @@ Task* TaskList::pPeekTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  Task* pTask = nullptr;
-  
+ 
   ASSERT(m_oLock.bIsLocked());
   
-  //SkipNode* pNode = m_pTaskSkipList->pFirst(0);
-  //if (pNode)
-  //  pTask = _pTask(pNode->m_pObject);
-  
-  pTask = m_pListTasks->pHead();
-  
+  Task* pTask = ListNL_t<Task>::pHead();
+
   return pTask;
 }
 
@@ -152,15 +140,10 @@ Task* TaskList::pPopTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  //RJH vTrace("pPopTask\n"_Stz);
-  
-  //bool bRemoved;
-  Task* pTask = nullptr;
-  
   ASSERT(m_oLock.bIsLocked());
   
-  pTask = m_pListTasks->pPop();
-  
+  Task* pTask = ListNL_t<Task>::pPop();
+
   return pTask;
 }
 
@@ -171,7 +154,7 @@ void TaskList::vRemoveTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  m_pListTasks->vRemove(pTask);
+  ListNL_t<Task>::vRemove(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -181,8 +164,7 @@ i8 TaskList::nTasks(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
 
-  //i8 nTasks = m_pTaskSkipList->nObjects();
-  i8 nTasks = m_pListTasks->nObjects();
+  i8 nTasks = ListNL_t<Task>::nObjects();
 
   return nTasks;
 }
@@ -194,12 +176,13 @@ void TaskList::vContentDump(void)
 {
   //vDump(CN_TASKLIST, this, aSingleTab());
   
-  // list is locked
   ASSERT(m_oLock.bIsLocked());
 
-  vTrace("ITEMS %lld\n"_Stz,m_pListTasks->nObjects());
+  vTrace("ITEMS %lld\n"_Stz,ListNL_t<Task>::nObjects());
   
-  for (Task* pTask = m_pListTasks->pHead(); pTask; pTask = pTask->pNextNode()) {
+  for (Task* pTask = ListNL_t<Task>::pHead();
+       pTask;
+       pTask = pTask->pNextNode()) {
     
     vTrace("Task %p %s %s order %lld\n"_Stz,
            pTask,

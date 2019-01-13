@@ -20,7 +20,7 @@ namespace Structures
     void* operator new(size_t);
     void  operator delete(void*);
 
-    ListNL_t(void);
+    ListNL_t(eCN eClassNo);
     
     void    vAppend(OBJECT* pNode);
     OBJECT* pHead(void);
@@ -34,9 +34,14 @@ namespace Structures
   };
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
 using namespace Structures;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -64,10 +69,10 @@ void ListNL_t<OBJECT>::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-ListNL_t<OBJECT>::ListNL_t(void)
-: Object(CN_LIST)
+ListNL_t<OBJECT>::ListNL_t(eCN eClassNo)
+: Object(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
  m_nCount = 0;
   m_pHead  = nullptr;
@@ -75,8 +80,12 @@ ListNL_t<OBJECT>::ListNL_t(void)
   
   _checkInitialisedSize_(sizeof(ListNL_t<OBJECT>));
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* append object to end of list                                               */
@@ -84,7 +93,7 @@ ListNL_t<OBJECT>::ListNL_t(void)
 template <class OBJECT>
 void ListNL_t<OBJECT>::vAppend(OBJECT* pNode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   ASSERT(NULL == pNode->pPrevNode());
   ASSERT(NULL == pNode->pNextNode());
@@ -109,7 +118,7 @@ void ListNL_t<OBJECT>::vAppend(OBJECT* pNode)
 template <class OBJECT>
 OBJECT* ListNL_t<OBJECT>::pHead(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_pHead;
 }
@@ -120,7 +129,7 @@ OBJECT* ListNL_t<OBJECT>::pHead(void)
 template <class OBJECT>
 i8 ListNL_t<OBJECT>::nObjects(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_nCount;
 }
@@ -131,7 +140,7 @@ i8 ListNL_t<OBJECT>::nObjects(void)
 template <class OBJECT>
 OBJECT* ListNL_t<OBJECT>::pPop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   if ( ! m_pHead ) {
     ASSERT( ! m_nCount );
@@ -168,7 +177,7 @@ OBJECT* ListNL_t<OBJECT>::pPop(void)
 template <class OBJECT>
 void ListNL_t<OBJECT>::vPush(OBJECT* pNode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   ASSERT(NULL == pNode->pPrevNode());
   ASSERT(NULL == pNode->pNextNode());
@@ -221,7 +230,7 @@ void ListNL_t<OBJECT>::vRemove(OBJECT* pNode)
 template <class OBJECT>
 OBJECT* ListNL_t<OBJECT>::pTail(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_pTail;
 }
@@ -236,7 +245,7 @@ OBJECT* ListNL_t<OBJECT>::pTail(void)
 template <class OBJECT>
 Footer* ListNL_t<OBJECT>::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LIST);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return &m_xFooter;
 }

@@ -10,12 +10,10 @@ namespace Threads
 
 namespace Tasks
 {
-  class TaskList : public Object
+  class TaskList : public ListNL_t<Task>
   {
   private:
-    Lock            m_oLock;
-    //SkipList*       m_pTaskSkipList;
-    ListNL_t<Task>* m_pListTasks;
+    Lock m_oLock;
   
     // must be last
     Footer m_xFooter;
