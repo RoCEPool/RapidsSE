@@ -173,7 +173,6 @@ pFINALIZE *gpFinalize[]
   
   /* 65 */ &Finalize::vUndefined,         // CN_LARGEPERSISTENT
   /* 66 */ &Finalize::vUndefined,         // CN_LARGETRANSIENT
-  /*    */ &Finalize::vUndefined,         // CN_LIST
   /*    */ &Finalize::vUndefined,         // CN_LOADCHUNK
   /* 71 */ &Finalize::vUndefined,         // CN_LOADMAP
   /*    */ &Finalize::vUndefined,         // CN_LOCAL
