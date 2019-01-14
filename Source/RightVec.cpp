@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RightVec.hpp -- array of level pointers/references/offsets                 */
+/* RightVec.cpp -- Right vector (array of offsets)                            */
 /*============================================================================*/
 
 #include "DBobjects.h"

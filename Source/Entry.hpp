@@ -129,7 +129,7 @@ namespace DBobjects
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */
   /*--------------------------------------------------------------------------*/
-  inline Entry* _pEntry(void* aAddr)
+  inline Entry* _aEntry(void* aAddr)
   {
     Entry* aEntry = reinterpret_cast<Entry*>(aAddr);
     

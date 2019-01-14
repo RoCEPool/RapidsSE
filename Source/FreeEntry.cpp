@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-FreeEntry* DBobjects::_pFreeEntry(void* aAddr)
+FreeEntry* DBobjects::_aFreeEntry(void* aAddr)
 {
   FreeEntry* aFreeEntry = reinterpret_cast<FreeEntry*>(aAddr);
   

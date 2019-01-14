@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Levels.hpp -- array of level pointers/references/offsets                   */
+/* RightVec.hpp -- Right vector (array of offsets)                            */
 /*============================================================================*/
 #pragma once
 

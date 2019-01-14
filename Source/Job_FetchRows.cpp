@@ -454,16 +454,17 @@ void JobModel::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer) {
-  Row** ppRow = nullptr;
+void JobModel::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer)
+{
+  Row** aaRow = nullptr;
   s48K sRowString;
   
-  ppRow = pFetchBuffer->pFirstRowPtr();
-  while (ppRow) {
-    Row* pRow = *ppRow;
+  aaRow = pFetchBuffer->aaFirstRowPtr();
+  while (aaRow) {
+    Row* pRow = *aaRow;
     pRow->vAsBinaryStringVLQ(sRowString, pJob_FetchRows->m_pTable->pColumnVec());
     vTrace("row: (%s)\n"_Stz, sRowString.aChar());
-    ppRow = pFetchBuffer->pNextRowPtr(ppRow);
+    aaRow = pFetchBuffer->aaNextRowPtr(aaRow);
   }
 }
 

@@ -30,23 +30,23 @@ namespace DBobjects
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public:
-    bool         bAppendRow(Row* pRow);
-    Row**        pAllotRowPtr(i8 nBytes);
-    char*        aDataArea(void);
-    i8           nFetchedRows(void);
-    Row**        pFirstRowPtr(void);
-    void         vIsLast(bool bIsLast);
-    bool         bIsLast(void);
-    Row**        pNextRowPtr(Row** ppRow);
-    i8           nPartitionNo(void);
-    void         vRestore(void);
-    void         vShow(bool bCompressed);
-    i8           nUsedBytes(void);
+    bool  bAppendRow(Row* pRow);
+    Row** aaAllotRowPtr(i8 nBytes);
+    char* aDataArea(void);
+    i8    nFetchedRows(void);
+    Row** aaFirstRowPtr(void);
+    void  vIsLast(bool bIsLast);
+    bool  bIsLast(void);
+    Row** aaNextRowPtr(Row** ppRow);
+    i8    nPartitionNo(void);
+    void  vRestore(void);
+    void  vShow(bool bCompressed);
+    i8    nUsedBytes(void);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   private:
-    i8          nFreeBytes(void);
-    void        vItemCountRestore(void);
+    i8    nFreeBytes(void);
+    void  vItemCountRestore(void);
   
     Footer* aFooter(void);
   };

@@ -33,7 +33,7 @@ namespace DBobjects
     Footer* aFooter(void);
 };
   
-  FreeEntry* _pFreeEntry(void* aAddr);
+  FreeEntry* _aFreeEntry(void* aAddr);
 }
 
 /*============================================================================*/

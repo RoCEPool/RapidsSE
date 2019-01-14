@@ -1083,7 +1083,7 @@ Entry* EntryBuffer::aNextEntry(Entry* aCurrent, i8 i_Offset)
   //if (CN_ENTRY != pItem->eClass())
   //  vShow();
   
-  Entry* aEntry = _pEntry(aAddress);
+  Entry* aEntry = _aEntry(aAddress);
 
   return aEntry;
 }
@@ -1855,7 +1855,7 @@ void EntryBuffer::vCompact(void)
       eCN eClass = aScanItem->eClass();
       
       if (CN_FREEENTRY == eClass) {
-        aFreeEntry = _pFreeEntry(aScanItem);
+        aFreeEntry = _aFreeEntry(aScanItem);
         break;
       }
     }
@@ -4318,7 +4318,7 @@ bool EntryBuffer::bVerifyItems(void)
     switch (eClass) {
       
       case CN_ENTRY: {
-        Entry* aEntry = _pEntry(aItem);
+        Entry* aEntry = _aEntry(aItem);
         if (! aEntry->bValidEntry()) {
           vShow();
           vVerifyFault();
@@ -4329,7 +4329,7 @@ bool EntryBuffer::bVerifyItems(void)
       }
       
       case CN_FREEENTRY: {
-        FreeEntry* aFreeEntry = _pFreeEntry(aItem);
+        FreeEntry* aFreeEntry = _aFreeEntry(aItem);
         if (! aFreeEntry->bValidFreeEntry()) {
           vShow();
           vVerifyFault();
