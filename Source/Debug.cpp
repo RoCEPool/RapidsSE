@@ -58,8 +58,8 @@ void Debugging::vAssertType(void* aObject, eCN eExpectingClass)
   printf("  Expecting class %d; Got %d\n",eExpectingClass,eGotClass);
   
   if (CN_FREECHUNK == eGotClass) {
-    FreeChunk* pFreeChunk = static_cast<FreeChunk*>(aObject);
-    eCN eWasClass = pFreeChunk->eWasClass();
+    FreeChunk* aFreeChunk = static_cast<FreeChunk*>(aObject);
+    eCN eWasClass = aFreeChunk->eWasClass();
     
     printf("  FreeChunk was %d\n",eWasClass);
   }

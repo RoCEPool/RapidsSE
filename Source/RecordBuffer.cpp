@@ -75,7 +75,7 @@ RecordBuffer::~RecordBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append record                                                              */
 /*----------------------------------------------------------------------------*/
-bool RecordBuffer::bAppendRecord(char* pSrcRecord, i8 nRecordSize)
+bool RecordBuffer::bAppendRecord(char* aSrcRecord, i8 nRecordSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDBUFFER,_FOOTER_);
   
@@ -87,13 +87,13 @@ bool RecordBuffer::bAppendRecord(char* pSrcRecord, i8 nRecordSize)
     return false;
   
   // allocate space
-  char* pDstRecord = pAllotSpace(nTotalRecordSize);
+  char* aDstRecord = aAllotSpace(nTotalRecordSize);
   
   // copy the size of the row
-  MemLib::vCopy(pDstRecord,&iRecordSize,C_SIZEOF_RECORDSIZE,CN_RECORDBUFFER);
+  MemLib::vCopy(aDstRecord,&iRecordSize,C_SIZEOF_RECORDSIZE,CN_RECORDBUFFER);
   
   // copy the compressed row to working row in uncompressed form
-  MemLib::vCopy(pDstRecord+C_SIZEOF_RECORDSIZE, pSrcRecord,
+  MemLib::vCopy(aDstRecord+C_SIZEOF_RECORDSIZE, aSrcRecord,
                 nRecordSize, CN_RECORDBUFFER);
   
   return true;
@@ -102,16 +102,16 @@ bool RecordBuffer::bAppendRecord(char* pSrcRecord, i8 nRecordSize)
 /*----------------------------------------------------------------------------*/
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
-char* RecordBuffer::pFirstRecord(void)
+char* RecordBuffer::aFirstRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDBUFFER,_FOOTER_);
   
   if (m_nFreeBytes == 0)
     return nullptr;
   
-  char* pFirst = &m_cArea[0];
+  char* aFirst = &m_cArea[0];
   
-  return pFirst;
+  return aFirst;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,13 +131,13 @@ void RecordBuffer::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
-char* RecordBuffer::pNextRecord(char* pCurrentRecord)
+char* RecordBuffer::aNextRecord(char* aCurrentRecord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDBUFFER,_FOOTER_);
   
-  i4 nBytes = *((i4*)pCurrentRecord);
+  i4 nBytes = *((i4*)aCurrentRecord);
   
-  char* aNext = aAdd<char*>(pCurrentRecord,nBytes+C_SIZEOF_RECORDSIZE);
+  char* aNext = aAdd<char*>(aCurrentRecord,nBytes+C_SIZEOF_RECORDSIZE);
   
   if ((char*)aNext >= (char*)&m_cArea[C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes])
     return nullptr;
@@ -166,14 +166,14 @@ void RecordBuffer::vShow(void)
          this,
          m_nRecords);
   
-  char* pRecord;
+  char* aRecord;
   int i = 0;
-  for (pRecord = pFirstRecord();
-       pRecord;
-       pRecord = pNextRecord(pRecord)) {
+  for (aRecord = aFirstRecord();
+       aRecord;
+       aRecord = aNextRecord(aRecord)) {
     
-    u4 iSize = *((u4*)(pRecord));
-    vTrace("R%lld: %lld %s\n"_Stz, i++, iSize, aAdd<char*>(pRecord, C_SIZEOF_RECORDSIZE));
+    u4 iSize = *((u4*)(aRecord));
+    vTrace("R%lld: %lld %s\n"_Stz, i++, iSize, aAdd<char*>(aRecord, C_SIZEOF_RECORDSIZE));
   }
 }
 
@@ -197,7 +197,7 @@ i8 RecordBuffer::nUsedBytes(void)
 /*----------------------------------------------------------------------------*/
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-char* RecordBuffer::pAllotSpace(i8 nBytes)
+char* RecordBuffer::aAllotSpace(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDBUFFER,_FOOTER_);
   
@@ -205,12 +205,12 @@ char* RecordBuffer::pAllotSpace(i8 nBytes)
   if (m_nFreeBytes < nBytes)
     return nullptr;
   
-  char* pRecord = &m_cArea[C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes];
+  char* aRecord = &m_cArea[C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes];
   
   m_nRecords++;
   m_nFreeBytes -= nBytes;
   
-  return pRecord;
+  return aRecord;
 }
 
 /*----------------------------------------------------------------------------*/

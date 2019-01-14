@@ -27,17 +27,17 @@ namespace DBobjects
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   public:
-    bool  bAppendRecord(char* pSrcRecord, i8 nRecordSize);
-    char* pFirstRecord(void);
+    bool  bAppendRecord(char* aSrcRecord, i8 nRecordSize);
+    char* aFirstRecord(void);
     void  vInit(void);
-    char* pNextRecord(char* pCurrentRecord);
+    char* aNextRecord(char* aCurrentRecord);
     i8    nRecords(void);
     void  vShow(void);
     i8    nUsedBytes(void);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   private:
-    char* pAllotSpace(i8 nBytes);
+    char* aAllotSpace(i8 nBytes);
     i8    nFreeBytes(void);
   
     Footer* aFooter(void);

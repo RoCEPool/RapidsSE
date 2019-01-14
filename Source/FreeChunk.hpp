@@ -12,7 +12,7 @@ namespace Pool
     eCN        m_eWasClass; // what was the class
   
   public:
-    void* operator new(size_t, FreeChunk* pFreeChunk);
+    void* operator new(size_t, FreeChunk* aFreeChunk);
     void  operator delete(void*);
 
     FreeChunk(void);

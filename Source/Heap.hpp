@@ -60,7 +60,7 @@ namespace Pool
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
-    void    vAddFree(FreeChunk* pFreeChunk);
+    void    vAddFree(FreeChunk* aFreeChunk);
     i8      iAllocCount(void);
     Object* pAllocObject(eCN eClass);
     Object* pAllocObject(eCN eClass, i8 iMaxSize);
@@ -78,9 +78,9 @@ namespace Pool
   private:
     bool bExtendHeap(void);
     FreeChunk* pPopFree(void);
-    void vPushFree(FreeChunk* pFreeChunk, eCN eWasClass);
+    void vPushFree(FreeChunk* aFreeChunk, eCN eWasClass);
     void vVerify(void);
-    void vValidFree(FreeChunk* pFreeChunk);
+    void vValidFree(FreeChunk* aFreeChunk);
     
     Footer* aFooter(void);
   };

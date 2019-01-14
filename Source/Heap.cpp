@@ -126,7 +126,7 @@ void Heap::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* add free chunk onto free chain                                             */
 /*----------------------------------------------------------------------------*/
-void Heap::vAddFree(FreeChunk* pFreeChunk)
+void Heap::vAddFree(FreeChunk* aFreeChunk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
@@ -134,7 +134,7 @@ void Heap::vAddFree(FreeChunk* pFreeChunk)
   
   m_iBufferCount++;
   
-  vPushFree(pFreeChunk,CN_NONE);
+  vPushFree(aFreeChunk,CN_NONE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -368,14 +368,14 @@ bool Heap::bExtendHeap(void)
   m_iBufferCount++;
   
   // now add all new free chunks into free chain
-  FreeChunk* pFreeChunk;
-  for (pFreeChunk = pHeapBuffer->pFirstChunk();
-       pFreeChunk;
-       pFreeChunk = pHeapBuffer->pNextChunk(pFreeChunk,m_iObjectSize)) {
-    //pFreeChunk->vSetMagic();
-    new(pFreeChunk) FreeChunk;
-    vPushFree(pFreeChunk,CN_NONE);
-    //vTrace("bExtendHeap %p : %p\n"_Stz,pHeapBuffer,pFreeChunk);
+  FreeChunk* aFreeChunk;
+  for (aFreeChunk = pHeapBuffer->pFirstChunk();
+       aFreeChunk;
+       aFreeChunk = pHeapBuffer->pNextChunk(aFreeChunk,m_iObjectSize)) {
+    //aFreeChunk->vSetMagic();
+    new(aFreeChunk) FreeChunk;
+    vPushFree(aFreeChunk,CN_NONE);
+    //vTrace("bExtendHeap %p : %p\n"_Stz,pHeapBuffer,aFreeChunk);
   }
   
   return true;
@@ -391,45 +391,45 @@ FreeChunk* Heap::pPopFree(void)
   // free chain must exist
   ASSERT(m_pFreeHead);
   
-  FreeChunk* pFreeChunk = m_pFreeHead;
-  m_pFreeHead = pFreeChunk->pNextFree();
+  FreeChunk* aFreeChunk = m_pFreeHead;
+  m_pFreeHead = aFreeChunk->pNextFree();
   
-  ASSERT(CN_FREECHUNK == pFreeChunk->eClass());
+  ASSERT(CN_FREECHUNK == aFreeChunk->eClass());
   
   m_iFreeCount--;
   
   if (m_iObjectSize <= C_1MB) {
-    vValidFree(pFreeChunk);
+    vValidFree(aFreeChunk);
     if (m_pFreeHead)
       vValidFree(m_pFreeHead);
   }
     
-  return pFreeChunk;
+  return aFreeChunk;
 }
 
 /*----------------------------------------------------------------------------*/
 /* push free chunk onto free chain                                            */
 /*----------------------------------------------------------------------------*/
-void Heap::vPushFree(FreeChunk* pFreeChunk, eCN eWasClass)
+void Heap::vPushFree(FreeChunk* aFreeChunk, eCN eWasClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   if (m_iObjectSize <= C_1MB)
-    vValidFree(pFreeChunk);
+    vValidFree(aFreeChunk);
   
   if (m_iObjectSize <= C_1MB && m_pFreeHead)
     vValidFree(m_pFreeHead);
   
-  pFreeChunk->vSetClass(CN_FREECHUNK);
-  pFreeChunk->vNextFree(m_pFreeHead);
+  aFreeChunk->vSetClass(CN_FREECHUNK);
+  aFreeChunk->vNextFree(m_pFreeHead);
   
 #ifdef __DEBUG_CHECKS
   i8 nBytes = m_iObjectSize - sizeof(FreeChunk);
-  void* aAddress = aAdd<void*>(pFreeChunk,sizeof(FreeChunk));
+  void* aAddress = aAdd<void*>(aFreeChunk,sizeof(FreeChunk));
   MemLib::vScribble(aAddress,nBytes,CN_FREECHUNK);
 #endif
   
-  m_pFreeHead = pFreeChunk;
+  m_pFreeHead = aFreeChunk;
   
   m_iFreeCount++;
 }
@@ -437,15 +437,15 @@ void Heap::vPushFree(FreeChunk* pFreeChunk, eCN eWasClass)
 /*----------------------------------------------------------------------------*/
 /* push free chunk onto free chain                                            */
 /*----------------------------------------------------------------------------*/
-void Heap::vValidFree(FreeChunk* pFreeChunk)
+void Heap::vValidFree(FreeChunk* aFreeChunk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  HeapBuffer* pHeapBuffer = (HeapBuffer*)((u8)pFreeChunk & (u8)~0xFFFFF);
+  HeapBuffer* pHeapBuffer = (HeapBuffer*)((u8)aFreeChunk & (u8)~0xFFFFF);
   
   ASSERT(pHeapBuffer->eClass() == CN_HEAPBUFFER);
   
-  u8 uSize = (u8)pFreeChunk & (u8)0xFF;
+  u8 uSize = (u8)aFreeChunk & (u8)0xFF;
 
   u8 uSizeHeapBuffer = sizeof(HeapBuffer);
   

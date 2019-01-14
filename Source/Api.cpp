@@ -761,14 +761,14 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, void* pRecordBufferP
     RecordBuffer* pRecordBuffer = _pRecordBuffer(pRecordBufferPtr);
     
     // for each record in the record buffer
-    char* pRecord = nullptr;
+    char* aRecord = nullptr;
     
-    for (pRecord = pRecordBuffer->pFirstRecord();
-         pRecord;
-         pRecord = pRecordBuffer->pNextRecord(pRecord)) {
+    for (aRecord = pRecordBuffer->aFirstRecord();
+         aRecord;
+         aRecord = pRecordBuffer->aNextRecord(aRecord)) {
     
       // get the length of the record
-      i8 iRawDataLength = StrLib::iSize(pRecord);
+      i8 iRawDataLength = StrLib::iSize(aRecord);
       
       // check length of record
       if (iRawDataLength > C_MAX_RECORD) {
@@ -782,7 +782,7 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, void* pRecordBufferP
       
       // format the row
       bool bBlankLine;
-      bool bValid = pJob_SubInserter->bFormatRow((Stz*)pRecord, iRawDataLength, bBlankLine);
+      bool bValid = pJob_SubInserter->bFormatRow((Stz*)aRecord, iRawDataLength, bBlankLine);
       
       // is the record invalid ?
       if (! bValid) {

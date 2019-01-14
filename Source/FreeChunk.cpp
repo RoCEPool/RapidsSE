@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* FreeChunk::operator new(size_t, FreeChunk* pFreeChunk)
+void* FreeChunk::operator new(size_t, FreeChunk* aFreeChunk)
 {
-  return pFreeChunk;
+  return aFreeChunk;
 }
 
 /*----------------------------------------------------------------------------*/
