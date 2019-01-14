@@ -56,8 +56,8 @@ FreeEntry::FreeEntry(i8 nSizeItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY);
   
-  m_pNextFree = nullptr;
-  m_pPrevFree = nullptr;
+  m_aNextFree = nullptr;
+  m_aPrevFree = nullptr;
   
   aFooter()->vSetFooter();
   
@@ -112,7 +112,7 @@ FreeEntry* FreeEntry::aNextFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
-  return m_pNextFree;
+  return m_aNextFree;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,7 +122,7 @@ void FreeEntry::vNextFree(FreeEntry* aNextFree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
-  m_pNextFree = aNextFree;
+  m_aNextFree = aNextFree;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +132,7 @@ FreeEntry* FreeEntry::aPrevFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
-  return m_pPrevFree;
+  return m_aPrevFree;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +142,7 @@ void FreeEntry::vPrevFree(FreeEntry* aPrevFree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
-  m_pPrevFree = aPrevFree;
+  m_aPrevFree = aPrevFree;
 }
 
 /*----------------------------------------------------------------------------*/

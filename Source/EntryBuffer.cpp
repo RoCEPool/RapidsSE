@@ -618,7 +618,7 @@ i8 EntryBuffer::iDecile(void)
 /*----------------------------------------------------------------------------*/
 /* delete the given entry                                                     */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDeleteEntry(Entry** ppEntry)
+void EntryBuffer::vDeleteEntry(Entry** aaEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -627,7 +627,7 @@ void EntryBuffer::vDeleteEntry(Entry** ppEntry)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Entry* aEntry = *ppEntry;
+  Entry* aEntry = *aaEntry;
   
   Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
 
@@ -640,7 +640,7 @@ void EntryBuffer::vDeleteEntry(Entry** ppEntry)
   vAddFreeList(aEntry);
   
   // entry no longer exists, set the pointer to be null
-  *ppEntry = nullptr;
+  *aaEntry = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -872,7 +872,7 @@ Entry* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
 /*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (L0 chain only)           */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry)
+Entry* EntryBuffer::aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** aaPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -913,7 +913,7 @@ Entry* EntryBuffer::aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry)
   
   i4 iOffset = iToOffset(aKeyEntry);
   
-  (*ppPriorEntry)->vNEO(0,iOffset);
+  (*aaPriorEntry)->vNEO(0,iOffset);
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // for the moment we set L1 & L2 offsets in prior entry to -1
@@ -924,7 +924,7 @@ Entry* EntryBuffer::aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry)
   
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
   
-  *ppPriorEntry = aKeyEntry;
+  *aaPriorEntry = aKeyEntry;
   
   return aKeyEntry;
 }
@@ -1380,72 +1380,7 @@ void EntryBuffer::vShow(Entry* aMarkEntry)
     
     iOffset = aEntry->iNEO(0);
   }
-  
-  /*
-  if (gpAttachMap->m_nIndexEntries) {
-    vTrace("\n"_Stz);
-    vTrace("Free Entry Chain:\n"_Stz);
-    for (i4 i_RowNo = m_i_FreeOffsetChain;
-         i_RowNo != C_ENTRY_NONE;
-         i_RowNo = - m_aEntryOffsets[i_RowNo]) {
-      vTrace("  %lld: %lld\n"_Stz,
-             i_RowNo,m_aEntryOffsets[i_RowNo]);
-    }
-  }
-  
-  if (m_aFreeEntryList) {
-    vTrace("\n"_Stz);
-    vTrace("FreeEntries:\n"_Stz);
-    for (FreeEntry* aFreeEntry = pFirstFree();
-         pFreeEntry != nullptr;
-         pFreeEntry = pFreeEntry->pNextFree()) {
-      vTrace("  %p bytes: %lld next: %p prev: %p offset %lld\n"_Stz,
-             pFreeEntry,pFreeEntry->nSizeItem(),
-             pFreeEntry->pNextFree(),pFreeEntry->pPrevFree(),
-             iToOffset(pFreeEntry));
-    }
-  }
-  
-  vTrace("\n"_Stz);
-  vTrace("By item:\n"_Stz);
-  for (Item* pItem = pFirstItem();
-       pItem != nullptr;
-       pItem = pNextItem(pItem)) {
     
-    i8 iItemOffset = iToOffset(pItem);
-    
-    vTrace(" %lld: %p: "_Stz,iItemOffset,pItem);
-    eCN eClass = pItem->eClass();
-    i8 iSize;
-    
-    switch (eClass) {
-      case CN_ENTRY: {
-        Entry* aEntryItem = static_cast<Entry*>(pItem);
-        iSize = pEntryItem->nSizeEntry() + pEntryItem->iNEOsize();
-        vTrace("Entry %lld bytes"_Stz,iSize);
-        break;
-      }
-        
-      case CN_FREEENTRY: {
-        FreeEntry* aFreeEntryItem = static_cast<FreeEntry*>(pItem);
-        iSize = pFreeEntryItem->nSizeItem();
-        vTrace("FreeEntry %lld bytes"_Stz,iSize);
-        break;
-      }
-        
-      case CN_WILDERNESS:
-        iSize = nFreeBytes();
-        vTrace("Wilderness (%lld bytes free)"_Stz,iSize);
-        break;
-        
-      default:
-        vTrace("Unknown (class is %lld)"_Stz,eClass);
-        break;
-    }
-    vTrace("\n"_Stz);
-  }
-  */
-  
   vTrace("\n"_Stz);
   vTrace("=================================================="
          "==================================================\n"_Stz);
@@ -2364,7 +2299,7 @@ Entry* EntryBuffer::aGetEntryOffset(i8 iOffset)
 /*----------------------------------------------------------------------------*/
 /* get split entry by split number                                            */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Entry** ppPriorEntry)
+Entry* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Entry** aaPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2376,7 +2311,7 @@ Entry* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Entry** ppPriorEntry)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  *ppPriorEntry = nullptr;
+  *aaPriorEntry = nullptr;
   
   i8 iEntryNo = 0;
   for (Entry* aSplitEntry = aNextEntry(m_aHeadEntry,0);
@@ -2387,7 +2322,7 @@ Entry* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Entry** ppPriorEntry)
     if (iEntryNo++ == iSplitEntryNo)
       return aSplitEntry;
     
-    *ppPriorEntry = aSplitEntry;
+    *aaPriorEntry = aSplitEntry;
   }
   
   return nullptr;

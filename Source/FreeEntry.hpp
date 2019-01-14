@@ -8,8 +8,8 @@ namespace DBobjects
   class FreeEntry : public Item
   {
   protected:
-    FreeEntry* m_pNextFree;  // next free
-    FreeEntry* m_pPrevFree;  // previous free
+    FreeEntry* m_aNextFree;  // next free
+    FreeEntry* m_aPrevFree;  // previous free
 
   public:
     void* operator new(size_t);

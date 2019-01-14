@@ -87,7 +87,7 @@ namespace DBobjects
     void         vBufferCount(i8& nBufferCount);
     void         vBuildSkipListSorted(void);
     i8           iDecile(void);
-    void         vDeleteEntry(Entry** ppEntry);
+    void         vDeleteEntry(Entry** aaEntry);
     bool         bDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer);
     void         vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
@@ -95,7 +95,7 @@ namespace DBobjects
     Entry*       aGetEntryRowNo(i8 i_RowNo);
     bool         bHasSpace(i8 nBytes);
     Entry*       aInsertKeyAbs(KeyWrk& xKeyWrk);
-    Entry*       aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry);
+    Entry*       aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** aaPriorEntry);
     static Entry* aInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
     Entry*       aLastEntry(void);
@@ -172,13 +172,13 @@ namespace DBobjects
     Entry*       aPopLazyChain(void);
     EntryBuffer* pPositionPriorBuffer(Key* aFindKey);
     Entry*       pPositionPriorEntry(Key* aFindKey);
-    void         vPositionPriorVecEntry(Key* aFindKey, Entry** pPriorVec,
+    void         vPositionPriorVecEntry(Key* aFindKey, Entry** aaPriorVec,
                                         Entry* aFindEntry);
-    void         vPositionPriorVecBuffer(Key* aFindKey, Entry** pPriorVec,
+    void         vPositionPriorVecBuffer(Key* aFindKey, Entry** aaPriorVec,
                                          EntryBuffer* pToBuffer);
-    void         vPositionPriorVecBuffer2(Key* aFindKey, Entry** pPriorVec,
+    void         vPositionPriorVecBuffer2(Key* aFindKey, Entry** aaPriorVec,
                                           EntryBuffer* pToBuffer);
-    void         vPositionPriorVecBuffer3(Key* aFindKey, Entry** pPriorVec,
+    void         vPositionPriorVecBuffer3(Key* aFindKey, Entry** aaPriorVec,
                                           EntryBuffer* pToBuffer);
     EntryBuffer* pSplit(void);
     EntryBuffer* pSplit2(void);
