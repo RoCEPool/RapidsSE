@@ -331,12 +331,12 @@ void Table::vInsertEntries(i8 iTxId, i8 iSlot, EntryBuffer* pEntryBuffer)
 //    // in pFirstBuffer and insert corresponding entries in other indexes
 //    while (pHiddenEntryBuffer) {
 //
-//      pNewIndexTree->vInsertEntriesFromBuffer(pHiddenEntryBuffer, pEntry);
+//      pNewIndexTree->vInsertEntriesFromBuffer(pHiddenEntryBuffer, aEntry);
 //      pHiddenEntryBuffer = pHiddenEntryBuffer->pNextBuffer();
 //
 //      // get the next buffer and first entry in it
 //      if (pHiddenEntryBuffer)
-//        pEntry = pHiddenEntryBuffer->pFirstEntry();
+//        aEntry = pHiddenEntryBuffer->pFirstEntry();
 //    }
   }
 }
@@ -359,7 +359,7 @@ void Table::vInsertRow(i8 iTxId, i8 iSlot, Stz* aRow, i8 iRowLength)
   TablePtn* pPartition = this->pPartition(iSlot);
   IndexTree* pHiddenIndexTree = pPartition->pHiddenIndexTree();
   
-  Entry* pEntry = pHiddenIndexTree->pAppendRow(iTxId, aRow, iRowLength);
+  Entry* aEntry = pHiddenIndexTree->pAppendRow(iTxId, aRow, iRowLength);
   
   //----------------------------------------------------------------------------
   // (2) insert entry into all other indexes of the table
@@ -382,7 +382,7 @@ void Table::vInsertRow(i8 iTxId, i8 iSlot, Stz* aRow, i8 iRowLength)
     //pHiddenEntryBuffer->vDump();
     
     // insert entry into other indexes
-    bool bResult = pNewIndexTree->bInsertEntry(pEntry);
+    bool bResult = pNewIndexTree->bInsertEntry(aEntry);
     RASSERT(bResult);
   }
 }
@@ -1056,7 +1056,7 @@ void Table::vNewIndexLoad(i8 iPartition, IndexTree* pNewIndexTree,
   KeyWrk xKeyWrk;
   for (EntryBuffer* pEB = pHiddenIndexTree->pRoot(); pEB; pEB = pEB->pNextBuffer()) {
     
-    for ( Entry* pRow = pEB->pFirstEntry() ; pRow; pRow = pEB->pNextEntry(pRow, 0)) {
+    for ( Entry* aRow = pEB->pFirstEntry() ; pRow; pRow = pEB->pNextEntry(pRow, 0)) {
       pNewIndexTree->bInsertEntry(pRow);
     }
   }
@@ -1107,7 +1107,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   KeyWrk xKeyWrk;
   for (EntryBuffer* pEB = pFirstL0Buffer; pEB; pEB = pEB->pNextBuffer()) {
     
-    //Entry* pRow = pEB->pHeadEntry();
+    //Entry* aRow = pEB->pHeadEntry();
     //pRow = pEB->pNextEntry(pRow, 0);
     
     //if (gxArguments.m_bVerbose)
@@ -1127,7 +1127,7 @@ void Table::vPopulateSortArray(char* aSortArray, i8 nElements, i8 iSortElmSize,
   }
 
 #else
-  for ( Entry* pRow = pEB->pFirstEntry() ; pRow; pRow = pEB->pNextEntry(pRow, 0)) {
+  for ( Entry* aRow = pEB->pFirstEntry() ; pRow; pRow = pEB->pNextEntry(pRow, 0)) {
 
       // get the key datum for this index
       xKeyWrk.vReset();

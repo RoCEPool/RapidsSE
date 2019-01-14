@@ -17,9 +17,9 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 FreeEntry* DBobjects::_pFreeEntry(void* aAddr)
 {
-  FreeEntry* pFreeEntry = reinterpret_cast<FreeEntry*>(aAddr);
+  FreeEntry* aFreeEntry = reinterpret_cast<FreeEntry*>(aAddr);
   
-  return pFreeEntry;
+  return aFreeEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,17 +35,17 @@ void* FreeEntry::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* FreeEntry::operator new(size_t, Entry* pEntry)
+void* FreeEntry::operator new(size_t, Entry* aEntry)
 {
-  return reinterpret_cast<FreeEntry*>(pEntry);
+  return reinterpret_cast<FreeEntry*>(aEntry);
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* FreeEntry::operator new(size_t, FreeEntry* pFreeEntry)
+void* FreeEntry::operator new(size_t, FreeEntry* aFreeEntry)
 {
-  return pFreeEntry;
+  return aFreeEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,7 +108,7 @@ bool FreeEntry::bValidFreeEntry(void)
 /*----------------------------------------------------------------------------*/
 /* get next free entry                                                        */
 /*----------------------------------------------------------------------------*/
-FreeEntry* FreeEntry::pNextFree(void)
+FreeEntry* FreeEntry::aNextFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
@@ -118,17 +118,17 @@ FreeEntry* FreeEntry::pNextFree(void)
 /*----------------------------------------------------------------------------*/
 /* set next free entry                                                        */
 /*----------------------------------------------------------------------------*/
-void FreeEntry::vNextFree(FreeEntry* pNextFree)
+void FreeEntry::vNextFree(FreeEntry* aNextFree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
-  m_pNextFree = pNextFree;
+  m_pNextFree = aNextFree;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get prev free entry                                                        */
 /*----------------------------------------------------------------------------*/
-FreeEntry* FreeEntry::pPrevFree(void)
+FreeEntry* FreeEntry::aPrevFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
@@ -138,11 +138,11 @@ FreeEntry* FreeEntry::pPrevFree(void)
 /*----------------------------------------------------------------------------*/
 /* set prev free entry                                                        */
 /*----------------------------------------------------------------------------*/
-void FreeEntry::vPrevFree(FreeEntry* pPrevFree)
+void FreeEntry::vPrevFree(FreeEntry* aPrevFree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
-  m_pPrevFree = pPrevFree;
+  m_pPrevFree = aPrevFree;
 }
 
 /*----------------------------------------------------------------------------*/

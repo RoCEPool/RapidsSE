@@ -141,14 +141,14 @@ Entry* Id::pRow(void)
 {
   EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(m_uBuffer));
   
-  Entry* pRow = pRowBuffer->pFirstEntry();
+  Entry* aRow = pRowBuffer->pFirstEntry();
   u8 uRowNo = 0;
   while (m_uRow != uRowNo) {
-    pRow = pRowBuffer->pNextEntry(pRow, 0);
+    aRow = pRowBuffer->pNextEntry(aRow, 0);
     uRowNo++;
   }
-  ASSERT(pRow);
-  return pRow;
+  ASSERT(aRow);
+  return aRow;
 }
 
 /*----------------------------------------------------------------------------*/

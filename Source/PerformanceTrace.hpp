@@ -29,7 +29,7 @@ namespace Measurement
     void vPrint(void);
     void vReset(void);
   
-    PerformanceEntry* newPerformanceEntry(void);
+    PerformanceEntry* aNewPerformanceEntry(void);
   
     Footer* aFooter(void);
   };

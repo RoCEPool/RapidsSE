@@ -73,11 +73,11 @@ PerformanceTrace::~PerformanceTrace(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void PerformanceTrace::vAdd(Stz* aWord, Stz* aNote)
 {
-  PerformanceEntry* pPerformanceEntry = newPerformanceEntry();
+  PerformanceEntry* aPerformanceEntry = aNewPerformanceEntry();
 
   m_oTimer.vUpdate();
   i8 iTickDelta = m_oTimer.iTicks();
-  pPerformanceEntry->vSet(iTickDelta,aWord,aNote);
+  aPerformanceEntry->vSet(iTickDelta,aWord,aNote);
   
 //  vTrace("Performance Add: %lld %s %s\n"_Stz,
 //         m_oTimer.iMicroseconds(),
@@ -101,13 +101,13 @@ void PerformanceTrace::vAdd(Stz* aWord, Stz* aNote)
 //       pEntryBuffer;
 //       pEntryBuffer = pEntryBuffer->pNextBuffer()) {
 //
-//    for (PerformanceEntry* pEntry =
+//    for (PerformanceEntry* aEntry =
 //           reinterpret_cast<PerformanceEntry*>(pEntryBuffer->pHead());
-//         pEntry;
-//         pEntry =
-//           reinterpret_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(pEntry))) {
+//         aEntry;
+//         aEntry =
+//           reinterpret_cast<PerformanceEntry*>(pEntryBuffer->pNextEntry(aEntry))) {
 //      
-//      i8 iEntryTicks = pEntry->iTicks();
+//      i8 iEntryTicks = aEntry->iTicks();
 //      iTicksUpdate += iEntryTicks;
 //      oTimerElapsed.vSet(iTicksStart,iTicksUpdate);
 //      oTimerDelta.vSet(0,iEntryTicks);
@@ -115,8 +115,8 @@ void PerformanceTrace::vAdd(Stz* aWord, Stz* aNote)
 //      vTrace("Performance Entry: %lldus %lldus %s %s\n"_Stz,
 //             oTimerElapsed.iMicroseconds(),
 //             oTimerDelta.iMicroseconds(),
-//             pEntry->aWord(),
-//             pEntry->aNote()
+//             aEntry->aWord(),
+//             aEntry->aNote()
 //             );
 //    }
 //    
@@ -127,8 +127,8 @@ void PerformanceTrace::vPrint(void)
 {
   Timer oTimerDelta;
   Timer oTimerElapsed;
-  PerformanceEntry* pPrevEntry  = nullptr;
-  PerformanceEntry* pFirstEntry = nullptr;
+  PerformanceEntry* aPrevEntry  = nullptr;
+  PerformanceEntry* aFirstEntry = nullptr;
   
   i8 iEntryNumber = 0;
   
@@ -136,17 +136,17 @@ void PerformanceTrace::vPrint(void)
        pPerfBuffer;
        pPerfBuffer = pPerfBuffer->pNextBuffer()) {
     
-    for (PerformanceEntry* pEntry =
+    for (PerformanceEntry* aEntry =
          reinterpret_cast<PerformanceEntry*>(pPerfBuffer->pFirstEntry());
-         pEntry;
-         pEntry =
-         reinterpret_cast<PerformanceEntry*>(pPerfBuffer->pNextEntry(pEntry))) {
+         aEntry;
+         aEntry =
+         reinterpret_cast<PerformanceEntry*>(pPerfBuffer->pNextEntry(aEntry))) {
   
-      i8 iEntryTicks = pEntry->iTicks();
+      i8 iEntryTicks = aEntry->iTicks();
       oTimerElapsed.vSet(0,iEntryTicks);
       
-      if (pPrevEntry) {
-        i8 iPrevEntryTicks = pPrevEntry->iTicks();
+      if (aPrevEntry) {
+        i8 iPrevEntryTicks = aPrevEntry->iTicks();
         oTimerDelta.vSet(iPrevEntryTicks,iEntryTicks);
       }
       else {
@@ -157,11 +157,11 @@ void PerformanceTrace::vPrint(void)
              iEntryNumber++,
              oTimerElapsed.iMicroseconds(),
              oTimerDelta.iMicroseconds(),
-             pEntry->aWord(),
-             pEntry->aNote()
+             aEntry->aWord(),
+             aEntry->aNote()
              );
       
-      pPrevEntry = pEntry;
+      aPrevEntry = aEntry;
     }
   }
   
@@ -187,9 +187,9 @@ void PerformanceTrace::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* create a new performance entry                                             */
 /*----------------------------------------------------------------------------*/
-PerformanceEntry* PerformanceTrace::newPerformanceEntry(void)
+PerformanceEntry* PerformanceTrace::aNewPerformanceEntry(void)
 {
-  PerformanceEntry* pPerformanceEntry = nullptr;
+  PerformanceEntry* aPerformanceEntry = nullptr;
   
   if ( ! m_pCurrentBuffer ) {
     m_pFirstBuffer = new PerformanceBuffer;
@@ -198,10 +198,10 @@ PerformanceEntry* PerformanceTrace::newPerformanceEntry(void)
     m_oTimer.vStart();
   }
   
-  pPerformanceEntry = m_pCurrentBuffer->pAllotEntry();
+  aPerformanceEntry = m_pCurrentBuffer->pAllotEntry();
   
-  if (pPerformanceEntry)
-    return pPerformanceEntry;
+  if (aPerformanceEntry)
+    return aPerformanceEntry;
   
   PerformanceBuffer* pNewBuffer = new PerformanceBuffer;
   
@@ -209,9 +209,9 @@ PerformanceEntry* PerformanceTrace::newPerformanceEntry(void)
   pNewBuffer->vPrevBuffer(m_pCurrentBuffer);
   m_pCurrentBuffer = pNewBuffer;
   
-  pPerformanceEntry = m_pCurrentBuffer->pAllotEntry();
+  aPerformanceEntry = m_pCurrentBuffer->pAllotEntry();
   
-  return pPerformanceEntry;
+  return aPerformanceEntry;
 }
 
 /*----------------------------------------------------------------------------*/

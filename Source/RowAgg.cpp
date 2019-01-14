@@ -106,11 +106,11 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   m_oSince = pEntryBuffer->oWhenNewed();
   
   // aggregate the buffer
-  for (Entry* pEntry = pEntryBuffer->pFirstEntry();
-       pEntry != nullptr;
-       pEntry = pEntryBuffer->pNextEntry(pEntry, 0)) {
+  for (Entry* aEntry = pEntryBuffer->pFirstEntry();
+       aEntry != nullptr;
+       aEntry = pEntryBuffer->pNextEntry(aEntry, 0)) {
     
-    pRow = pEntry->aRow();
+    pRow = aEntry->aRow();
     
     //pRow->vAsBinaryStringVLQ(sRowString, m_pTable->pColumnVec());
     //vTrace("row: (%s)\n"_Stz, sRowString.aChar());

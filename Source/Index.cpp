@@ -189,12 +189,12 @@ void Index::vDump(void)
   while (pIndexBuffer) {
     pIndexBuffer->vShow();
     
-    EntrySeq* pEntry = pIndexBuffer->pFirstEntry();
+    EntrySeq* aEntry = pIndexBuffer->pFirstEntry();
     
-    while (pEntry) {
-      pEntry->vContentDump();
+    while (aEntry) {
+      aEntry->vContentDump();
       
-      pEntry = pIndexBuffer->pNextEntry(pEntry);
+      aEntry = pIndexBuffer->pNextEntry(aEntry);
     }
     pIndexBuffer = pIndexBuffer->pNextBuffer();
   }

@@ -143,7 +143,7 @@ Row** FetchBuffer::pFirstRowPtr(void)
   //EntryBuffer* pEntryBuffer = xId.pReferencedEntryBuffer();
   
   // get the row entry
-  //Entry* pRowEntry = pEntryBuffer->pGetEntryRowNo(xId.iRow());
+  //Entry* aRowEntry = pEntryBuffer->pGetEntryRowNo(xId.iRow());
   
   return ppFirstRow;
 }

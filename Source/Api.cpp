@@ -734,6 +734,8 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, void* pRecordBufferP
   vApiCall(pSession,AC_InsertRows);                                   // API CALL
   vApiLocation(pSession,100);
   
+  eEC eResult;
+  
   eEC eErrorCode = EC_NONE;
   
   try {
@@ -747,7 +749,7 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, void* pRecordBufferP
     VALIDATE_SESSION("a"_Stz);
     
     // validate parameter
-    VALIDATE_PARAM("b"_Stz, pRecordBuffer);
+    VALIDATE_PARAM("b"_Stz, pRecordBufferPtr);
     
     // validate the job
     VALIDATE_JOB("b"_Stz);
@@ -1202,7 +1204,7 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
     
     //*piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
     
-    Entry* pEntry = nullptr;
+    Entry* aEntry = nullptr;
     EntryBuffer* pEntryBuffer = nullptr;
     
     // do we have a buffer ?
@@ -1217,10 +1219,10 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
         *ppRow = nullptr;
         
       } else {
-        pEntry = pEntryBuffer->pFirstEntry();
-        *ppEntry = pEntry;
+        aEntry = pEntryBuffer->pFirstEntry();
+        *ppEntry = aEntry;
         *ppEntryBuffer = pEntryBuffer;
-        *ppRow = pEntry->aRow();
+        *ppRow = aEntry->aRow();
       }
       
       TRACE_EXIT("ea"_Stz);
@@ -1232,32 +1234,32 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
     pEntryBuffer = *((EntryBuffer**)(ppEntryBuffer));
     
     // we should have an entry
-    pEntry = *((Entry**)(ppEntry));
-    RASSERT(pEntry);
+    aEntry = *((Entry**)(ppEntry));
+    RASSERT(aEntry);
     
     // get the next entry
-    pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
+    aEntry = pEntryBuffer->pNextEntry(aEntry, 0);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // did we find an entry ?
-    if ( ! pEntry ) {
+    if ( ! aEntry ) {
       vTrace("didn't get next entry\n"_Stz);
       // get next buffer from the current indexBuffer
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer ) {
         vTrace("got next buffer %p\n"_Stz, pEntryBuffer);
-        pEntry = pEntryBuffer->pFirstEntry();
+        aEntry = pEntryBuffer->pFirstEntry();
 
       }
     }
     
-    if (pEntry) {
+    if (aEntry) {
       TRACE_EXIT("eb"_Stz);
       *ppEntryBuffer = pEntryBuffer;
-      *ppEntry = pEntry;
-      *ppRow = pEntry->aRow();
-      //vTrace("Returning rowEntry %p\n"_Stz, pEntry);
+      *ppEntry = aEntry;
+      *ppRow = aEntry->aRow();
+      //vTrace("Returning rowEntry %p\n"_Stz, aEntry);
     }
     else {
       TRACE_EXIT("ec"_Stz);

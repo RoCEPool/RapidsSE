@@ -134,11 +134,11 @@ eEC JobWriteBehind::eInsertRow(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
-    Entry* pEntry = pEntryBuffer->pAppendRow(xRowWrk);
+    Entry* aEntry = pEntryBuffer->pAppendRow(xRowWrk);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // appended ?
-    if (pEntry)
+    if (aEntry)
       return eErrorCode;
       
     m_pEntryBuffer[iPartition] = nullptr;

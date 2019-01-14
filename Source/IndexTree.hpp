@@ -56,7 +56,7 @@ namespace DBobjects
     Index*       pIndex(void);
     i8           nEntryBuffers(void);
     
-    bool         bInsertEntry(Entry* pRow);
+    bool         bInsertEntry(Entry* aRow);
     void         vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer);
     void         vLazyBuild(void);
     EntryBuffer* pPopSubList(EntryBuffer** ppSubList);

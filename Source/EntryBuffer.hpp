@@ -96,13 +96,13 @@ namespace DBobjects
     bool         bHasSpace(i8 nBytes);
     Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk);
     Entry*       pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry);
-    static Entry* pInsertKeyTree(KeyWrk& xKeyWrk,
+    static Entry* aInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
     Entry*       pLastEntry(void);
     void         vLazyBuild(void);
     i8           iLengthList(void);
     i8           iLengthSubList(void);
-    Entry*       pNextEntry(Entry* pEntry, i8 i_Offset);
+    Entry*       pNextEntry(Entry* aEntry, i8 i_Offset);
   
     Entry*       pPositionQuery(Key* aGivenKey, eRO eRelOp);
     Entry*       pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
@@ -111,7 +111,7 @@ namespace DBobjects
     void         vReset(void);
     void         vRestore(void);
     void         vRestoreIndex(Index* pIndex);
-    void         vShow(Entry* pMarkEntry = nullptr);
+    void         vShow(Entry* aMarkEntry = nullptr);
     void         vShowShort(void);
     void         vShowSubList(void);
     void         vShowTree(bool bDumpBuffer=false);
@@ -126,28 +126,28 @@ namespace DBobjects
     
     Entry*       aAllotEntry(i8 nBytes);
     NEO*         aAllotNEO(i8 nBytes);
-    void         vAddFreeList(Entry* pEntry);
+    void         vAddFreeList(Entry* aEntry);
     void         vBuildOffsetL0(void);
     void         vBuildSkipList(void);
     void         vCompact(void);
     void         vCompactLeft(void);
     void         vCompactLeft2(void);
-    void         vCutEntry(Entry* pEntry, Entry* pPriorVec[]);
+    void         vCutEntry(Entry* aEntry, Entry* aPriorVec[]);
     void         vDeleteUpwards(Key* aDeleteKey,
                                 EntryBuffer** ppRootKeyBuffer);
     void         vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
                                 EntryBuffer** ppRootKeyBuffer);
-    void         vDumpPriorVec(Entry* pPriorVec[]);
+    void         vDumpPriorVec(Entry* aPriorVec[]);
     FreeEntry*   aFirstFree(void);
     Item*        aFirstItem(void);
     Entry*       aGetEntryOffset(i8 iOffset);
     Entry*       aGetEntrySplit(i8 iSplitEntryNo, Entry** aaPriorEntry);
     i4           iGetFreeRowEntry(void);
-    void         vHandleFirstInsert(Entry* pInsertedKeyEntry,
-                                    Entry* pOriginalFirstEntry,
+    void         vHandleFirstInsert(Entry* aInsertedKeyEntry,
+                                    Entry* aOriginalFirstEntry,
                                     EntryBuffer** ppRootKeyBuffer);
-    void         vHandleLeftInsert(Entry* pInsertedKeyEntry,
-                                   Entry* pOriginalFirstEntry,
+    void         vHandleLeftInsert(Entry* aInsertedKeyEntry,
+                                   Entry* aOriginalFirstEntry,
                                    EntryBuffer** ppRootKeyBuffer);
     Entry*       aHeadEntry(void);
     void         vHeadEntryNew(void);
@@ -156,7 +156,7 @@ namespace DBobjects
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
     Entry*       aInsertKeyAbsLazy(KeyWrk& xKeyWrk);
-    void         vInsertKeySkip(Entry* pKeyEntry);
+    void         vInsertKeySkip(Entry* aKeyEntry);
     Entry*       aInsertKeyBuffer(KeyWrk& xKeyWrk,
                                   EntryBuffer** ppRootKeyBuffer);
     Entry*       aInsertKeyUpwards(KeyWrk& xKeyWrk,
@@ -173,7 +173,7 @@ namespace DBobjects
     EntryBuffer* pPositionPriorBuffer(Key* aFindKey);
     Entry*       pPositionPriorEntry(Key* aFindKey);
     void         vPositionPriorVecEntry(Key* aFindKey, Entry** pPriorVec,
-                                        Entry* pFindEntry);
+                                        Entry* aFindEntry);
     void         vPositionPriorVecBuffer(Key* aFindKey, Entry** pPriorVec,
                                          EntryBuffer* pToBuffer);
     void         vPositionPriorVecBuffer2(Key* aFindKey, Entry** pPriorVec,
@@ -186,11 +186,11 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // verify functions
   
-    bool         bCheckPriorVec(Entry* pPriorVec[]);
+    bool         bCheckPriorVec(Entry* aPriorVec[]);
     void         vNumberEntries(void);
   
-    void         vQuickVerify(Entry* pSeeEntry=nullptr);
-    bool         bQuickVerify(Entry* pNotSeeEntry);
+    void         vQuickVerify(Entry* aSeeEntry=nullptr);
+    bool         bQuickVerify(Entry* aNotSeeEntry);
   
     bool         bVerifyL0Hidden(void);
     bool         bVerifyL0Other(void);

@@ -77,7 +77,7 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // data entry
-    Entry* pDataEntry(void);
+    Entry* aDataEntry(void);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // embedded object area
@@ -131,11 +131,11 @@ namespace DBobjects
   /*--------------------------------------------------------------------------*/
   inline Entry* _pEntry(void* aAddr)
   {
-    Entry* pEntry = reinterpret_cast<Entry*>(aAddr);
+    Entry* aEntry = reinterpret_cast<Entry*>(aAddr);
     
-    //RASSERT_TYPE(pEntry,CN_ENTRY);
+    //RASSERT_TYPE(aEntry,CN_ENTRY);
     
-    return pEntry;
+    return aEntry;
   }
   
   /*--------------------------------------------------------------------------*/

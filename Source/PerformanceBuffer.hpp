@@ -31,7 +31,7 @@ namespace Measurement
     void               vPrevBuffer(PerformanceBuffer* pPrevBuffer);
   
     PerformanceEntry*  pFirstEntry(void);
-    PerformanceEntry*  pNextEntry(PerformanceEntry* pCurrentEntry);
+    PerformanceEntry*  pNextEntry(PerformanceEntry* aCurrentEntry);
   
     Footer* aFooter(void);
   };

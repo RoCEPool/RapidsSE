@@ -13,11 +13,11 @@
 /*----------------------------------------------------------------------------*/
 PerformanceEntry* Measurement::_pPerformanceEntry(void* aAddr)
 {
-  PerformanceEntry* pPerformanceTrace = reinterpret_cast<PerformanceEntry*>(aAddr);
+  PerformanceEntry* aPerformanceTrace = reinterpret_cast<PerformanceEntry*>(aAddr);
   
-  RASSERT_TYPE(pPerformanceTrace,CN_PERFORMANCEENTRY);
+  RASSERT_TYPE(aPerformanceTrace,CN_PERFORMANCEENTRY);
   
-  return pPerformanceTrace;
+  return aPerformanceTrace;
 }
 
 /*----------------------------------------------------------------------------*/

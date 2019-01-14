@@ -25,9 +25,9 @@ void* Entry::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Entry::operator new(size_t, Entry* pEntry)
+void* Entry::operator new(size_t, Entry* aEntry)
 {
-  return pEntry;
+  return aEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,7 +272,7 @@ i8 Entry::nRowSize(void)
 /*----------------------------------------------------------------------------*/
 /* get the dataRow entry matching entry from the tables hidden index          */
 /*----------------------------------------------------------------------------*/
-Entry* Entry::pDataEntry(void)
+Entry* Entry::aDataEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
 
@@ -280,9 +280,9 @@ Entry* Entry::pDataEntry(void)
   EntryBuffer* pEntryBuffer = pReferencedEntryBuffer();
   
   // get the row entry
-  Entry* pRowEntry = pEntryBuffer->pGetEntryRowNo(m_xId.iRow());
+  Entry* aRowEntry = pEntryBuffer->pGetEntryRowNo(m_xId.iRow());
   
-  return pRowEntry;
+  return aRowEntry;
 }
 
 /*----------------------------------------------------------------------------*/

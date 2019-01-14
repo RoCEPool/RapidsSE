@@ -280,7 +280,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
   ENTRY("vIndexExactKey"_Stz);
   
   Object* pPtrIndex = nullptr;
-  Entry* pEntry     = nullptr;
+  Entry* aEntry     = nullptr;
   
   GenVar xVariable;
   Session* pSession = mpTask->m_pSession;
@@ -340,30 +340,30 @@ void Step::vIndexExactKey(MP_Task mpTask)
   if (pIndexBuffer) {
     // position in the index buffer at the key
     eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
-    pEntry = pIndexBuffer->pPositionQuery(xKeyWrk.aKey(), eRelnOp);
+    aEntry = pIndexBuffer->pPositionQuery(xKeyWrk.aKey(), eRelnOp);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry ?
-  if ( ! pEntry) {
+  if ( ! aEntry) {
     goto LastBuffer;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries
-  while (pEntry) {
+  while (aEntry) {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if entry matches key
     bool bIsEqual = false;
-    bool bSame = pEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(),
+    bool bSame = aEntry->aKey()->bJuxtaCompare(JC_SAME, xKeyWrk.aKey(),
                                                pIndex->pIdxColVec(), 1, bIsEqual);
     
     if (bSame) {
       
       // get the dataRow from the hidden index
-      Entry* pDataRowEntry = pEntry->pDataEntry();
-      Row* aRow = pDataRowEntry->aRow();
+      Entry* aDataRowEntry = aEntry->aDataEntry();
+      Row* aRow = aDataRowEntry->aRow();
     
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // insert row from entry in tempEntryBuffer
@@ -378,28 +378,28 @@ void Step::vIndexExactKey(MP_Task mpTask)
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in fetchBuffer
-        bool bResult = Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
+        bool bResult = Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows);
         RASSERT(bResult);
       }
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next entry in the buffer
-    pEntry = pIndexBuffer->pNextEntry(pEntry, 0);
+    aEntry = pIndexBuffer->pNextEntry(aEntry, 0);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if ( ! pEntry ) {
+    if ( ! aEntry ) {
       // get next buffer from the current indexBuffer
       pIndexBuffer = pIndexBuffer->pNextBuffer();
       
       if ( pIndexBuffer )
-        pEntry = pIndexBuffer->pFirstEntry();
+        aEntry = pIndexBuffer->pFirstEntry();
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if session exiting
     if (pSession->m_bSessionExiting)
-      pEntry = nullptr;
+      aEntry = nullptr;
     
   }
   
@@ -652,8 +652,8 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   Planner* pPlanner = pJob_SubFetch->m_pPlanner;
   Queue* pQueue = pJob_SubFetch->m_pBufferQueue;
   
-  EntryBuffer* pLowerEntryBuffer;
-  Entry* pLowerEntry = nullptr;
+  EntryBuffer* aLowerEntryBuffer;
+  Entry* aLowerEntry = nullptr;
   eRO eLowerRelnOp;
   i8 iIndexNo = pIndex->iIndexNo();
   Table* pTable = pIndex->pTable();
@@ -673,26 +673,26 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  pLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
+  aLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
-  if (pLowerEntryBuffer) {
+  if (aLowerEntryBuffer) {
     // position in the index buffer at the lower key
-    pLowerEntry = pLowerEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
+    aLowerEntry = aLowerEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // loop till we get an entry
-  while ( ! pLowerEntry) {
-    if (pLowerEntryBuffer && pLowerEntryBuffer->pNextBuffer()) {
+  while ( ! aLowerEntry) {
+    if (aLowerEntryBuffer && aLowerEntryBuffer->pNextBuffer()) {
       
       // move to the next buffer
-      pLowerEntryBuffer = pLowerEntryBuffer->pNextBuffer();
+      aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
       
       // position in the index buffer at the lower key
-      pLowerEntry = pLowerEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
+      aLowerEntry = aLowerEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
     }
     else
       break;
@@ -700,19 +700,19 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get a lower entry ?
-  if ( ! pLowerEntry) {
+  if ( ! aLowerEntry) {
     goto LastBuffer;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries
-  while (pLowerEntry) {
+  while (aLowerEntry) {
     
     // get the dataRow from the hidden index
-    Entry* pDataRowEntry = pLowerEntry->pDataEntry();
+    Entry* aDataRowEntry = aLowerEntry->aDataEntry();
     
     // insert row from entry in fetchBuffer
-    if ( ! Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows)) {
+    if ( ! Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows)) {
       
       // Buffer is Full;
       // put this tempEntryBuffer in session bufferQueue
@@ -723,26 +723,26 @@ void Step::vIndexLowerBound(MP_Task mpTask)
       pFetchBuffer = new FetchBuffer(pTable, iSlot);
       
       // insert row from entry in fetchBuffer
-      bool bResult = Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
+      bool bResult = Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows);
       RASSERT(bResult);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     // move to next entry in the buffer
-    pLowerEntry = pLowerEntryBuffer->pNextEntry(pLowerEntry, 0);
+    aLowerEntry = aLowerEntryBuffer->pNextEntry(aLowerEntry, 0);
     
-    if ( ! pLowerEntry ) {
+    if ( ! aLowerEntry ) {
       // get next buffer from the current indexBuffer
-      pLowerEntryBuffer = pLowerEntryBuffer->pNextBuffer();
+      aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
       
-      if ( pLowerEntryBuffer )
-        pLowerEntry = pLowerEntryBuffer->pFirstEntry();
+      if ( aLowerEntryBuffer )
+        aLowerEntry = aLowerEntryBuffer->pFirstEntry();
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if session exiting
     if (pSession->m_bSessionExiting)
-      pLowerEntry = nullptr;
+      aLowerEntry = nullptr;
   }
   
 LastBuffer:
@@ -851,9 +851,9 @@ void Step::vIndexPosition(MP_Task mpTask)
 
   // position at key in the entry buffer
   eRO eRelnOp = pPlanner->eGetFirstLowerPredicateRO(i_Phrase);
-  Entry* pEntry = pIndexBuffer->pPositionQuery(xKeyWrk.aKey(), eRelnOp);
+  Entry* aEntry = pIndexBuffer->pPositionQuery(xKeyWrk.aKey(), eRelnOp);
   
-  mpTask->m_pDataStack->vPushEntry(pEntry);
+  mpTask->m_pDataStack->vPushEntry(aEntry);
   
   EXIT();
 }
@@ -927,11 +927,11 @@ void Step::vIndexRange(MP_Task mpTask)
     THROW_INVALID_DSTACK("index.range"_Stz);
   
   FetchBuffer* pFetchBuffer;
-  EntryBuffer* pLowerEntryBuffer;
-  EntryBuffer* pUpperEntryBuffer;
+  EntryBuffer* aLowerEntryBuffer;
+  EntryBuffer* aUpperEntryBuffer;
   
-  Entry* pLowerEntry = nullptr;
-  Entry* pUpperEntry = nullptr;
+  Entry* aLowerEntry = nullptr;
+  Entry* aUpperEntry = nullptr;
   
   eRO eUpperRelnOp;
   eRO eLowerRelnOp;
@@ -983,26 +983,26 @@ void Step::vIndexRange(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // first position at a level 0 buffer with keyLower
-  pLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
+  aLowerEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkLower, 1, JC_AFTER, 0);
   eLowerRelnOp = pPlanner->eGetFirstLowerPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
-  if (pLowerEntryBuffer) {
+  if (aLowerEntryBuffer) {
     // position in the index buffer at the lower key
-    pLowerEntry = pLowerEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
+    aLowerEntry = aLowerEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // loop till we get an entry
-  while ( ! pLowerEntry) {
-    if (pLowerEntryBuffer && pLowerEntryBuffer->pNextBuffer()) {
+  while ( ! aLowerEntry) {
+    if (aLowerEntryBuffer && aLowerEntryBuffer->pNextBuffer()) {
       
       // move to the next buffer
-      pLowerEntryBuffer = pLowerEntryBuffer->pNextBuffer();
+      aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
       
       // position in the index buffer at the lower key
-      pLowerEntry = pLowerEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
+      aLowerEntry = aLowerEntryBuffer->pPositionQuery(xKeyWrkLower.aKey(), eLowerRelnOp);
     }
     else
       break;
@@ -1010,32 +1010,32 @@ void Step::vIndexRange(MP_Task mpTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we find a lower entry ?
-  if (! pLowerEntry )
+  if (! aLowerEntry )
     goto LastBuffer;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer with keyUpper
-  pUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
+  aUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   
-  //pUpperEntryBuffer->vShow();
+  //aUpperEntryBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
-  if (pUpperEntryBuffer) {
-    pUpperEntry = pUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
+  if (aUpperEntryBuffer) {
+    aUpperEntry = aUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // loop till we get an upper entry
-  while ( ! pUpperEntry) {
-    if ( pUpperEntryBuffer && pUpperEntryBuffer->pNextBuffer() ) {
+  while ( ! aUpperEntry) {
+    if ( aUpperEntryBuffer && aUpperEntryBuffer->pNextBuffer() ) {
       
       // move to the next buffer
-      pUpperEntryBuffer = pUpperEntryBuffer->pNextBuffer();
+      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
       
       // position in the index buffer at the upper key
-      pUpperEntry = pUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
+      aUpperEntry = aUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
     }
     else
       break;
@@ -1043,12 +1043,12 @@ void Step::vIndexRange(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now find the correct upper entry
-  while (pUpperEntry) {
+  while (aUpperEntry) {
     
-    //pUpperEntry->vShow(0,pIndex,true);
+    //aUpperEntry->vShow(0,pIndex,true);
     
     bool bIsEqual = false;
-    bool bBefore = pUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+    bool bBefore = aUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
                                                  pIndex->pIdxColVec(), 1,
                                                  bIsEqual, eUpperRelnOp);
     
@@ -1056,40 +1056,40 @@ void Step::vIndexRange(MP_Task mpTask)
       break;
     
     // move to next entry in the buffer
-    pUpperEntry = pUpperEntryBuffer->pNextEntry(pUpperEntry, 0);
+    aUpperEntry = aUpperEntryBuffer->pNextEntry(aUpperEntry, 0);
     
-    if ( ! pUpperEntry ) {
+    if ( ! aUpperEntry ) {
       // get next buffer from the current indexBuffer
-      pUpperEntryBuffer = pUpperEntryBuffer->pNextBuffer();
+      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
       
-      if ( pUpperEntryBuffer )
-        pUpperEntry = pUpperEntryBuffer->pFirstEntry();
+      if ( aUpperEntryBuffer )
+        aUpperEntry = aUpperEntryBuffer->pFirstEntry();
     }
   }
   
-  //pUpperEntry->vShow(0,pIndex,true);
+  //aUpperEntry->vShow(0,pIndex,true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffers till no more entries starting from
-  while (pLowerEntry) {
+  while (aLowerEntry) {
     
     // check against the upper bound
     bIsEqual = false;
     
-    //bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+    //bool bBefore = aEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
     //                                             pIndex->pIdxColVec(), 1,
     //                                             bIsEqual, eRelnOp);
     
-    bBefore = (pLowerEntry == pUpperEntry) ? false : true;
+    bBefore = (aLowerEntry == aUpperEntry) ? false : true;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // if pLowerEntry is before pUpperEntry then append to result buffer
+    // if aLowerEntry is before aUpperEntry then append to result buffer
     if (bBefore) {
       // get the dataRow from the hidden index
-      Entry* pDataRowEntry = pLowerEntry->pDataEntry();
+      Entry* aDataRowEntry = aLowerEntry->aDataEntry();
       
       // insert row from entry in tempEntryBuffer
-      if ( ! Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows)) {
+      if ( ! Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows)) {
         
         // Buffer is Full
         // put this fetchBuffer in session bufferQueue
@@ -1100,35 +1100,35 @@ void Step::vIndexRange(MP_Task mpTask)
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
-        bool bResult = Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
+        bool bResult = Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows);
         RASSERT(bResult);
       }
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to next entry in the buffer
-      pLowerEntry = pLowerEntryBuffer->pNextEntry(pLowerEntry, 0);
+      aLowerEntry = aLowerEntryBuffer->pNextEntry(aLowerEntry, 0);
       
-      if ( ! pLowerEntry ) {
+      if ( ! aLowerEntry ) {
         // get next buffer from the current indexBuffer
-        pLowerEntryBuffer = pLowerEntryBuffer->pNextBuffer();
+        aLowerEntryBuffer = aLowerEntryBuffer->pNextBuffer();
         
-        if ( pLowerEntryBuffer )
-          pLowerEntry = pLowerEntryBuffer->pFirstEntry();
+        if ( aLowerEntryBuffer )
+          aLowerEntry = aLowerEntryBuffer->pFirstEntry();
       }
       else {
         // check if session exiting
         if (pSession->m_bSessionExiting)
-          pLowerEntry = nullptr;
+          aLowerEntry = nullptr;
       }
     }
     else {
-      pLowerEntry = nullptr;
+      aLowerEntry = nullptr;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if session exiting
     if (pSession->m_bSessionExiting)
-      pLowerEntry = nullptr;
+      aLowerEntry = nullptr;
   }
 
 LastBuffer:
@@ -1207,13 +1207,13 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first entry in the buffer
-  Entry* pEntry = pEntryBuffer->pFirstEntry();
+  Entry* aEntry = pEntryBuffer->pFirstEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffer till no more entries
-  while (pEntry) {
+  while (aEntry) {
     
-    Row* aRow = pEntry->aRow();
+    Row* aRow = aEntry->aRow();
     //aRow->vShow(pTable->pColumnVec(), true);
     //vTrace("\n"_Stz);
 
@@ -1236,23 +1236,23 @@ void Step::vIndexScan(MP_Task mpTask)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next entry in the buffer
-    pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
+    aEntry = pEntryBuffer->pNextEntry(aEntry, 0);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // did we find an entry ?
-    if ( ! pEntry ) {
+    if ( ! aEntry ) {
       
       // get next buffer from the current indexBuffer
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer )
-        pEntry = pEntryBuffer->pFirstEntry();
+        aEntry = pEntryBuffer->pFirstEntry();
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if session exiting
     if (pSession->m_bSessionExiting)
-      pEntry = nullptr;
+      aEntry = nullptr;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1454,8 +1454,8 @@ void Step::vIndexUpper(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(pPtrEntry) )
     THROW_INVALID_DSTACK("index.upper"_Stz);
   
-  Entry* pEntry = _pEntry(pPtrEntry);
-  ASSERT(CN_ENTRY == pEntry->eClass());
+  Entry* aEntry = _pEntry(pPtrEntry);
+  ASSERT(CN_ENTRY == aEntry->eClass());
   
   if ( ! mpTask->m_pDataStack->bPop(xVariable) )
     THROW_INVALID_DSTACK("index.upper"_Stz);
@@ -1468,7 +1468,7 @@ void Step::vIndexUpper(MP_Task mpTask)
   
   eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
   bool bIsEqual = false;
-  bool bBefore = pEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
+  bool bBefore = aEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrk.aKey(),
                                                pIndex->pIdxColVec(), 1,
                                                bIsEqual, eRelnOp);
   mpTask->m_pDataStack->vPushI8(bBefore ? 1 : 0);
@@ -1508,10 +1508,10 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   
   FetchBuffer* pFetchBuffer;
   EntryBuffer* pEntryBuffer;
-  EntryBuffer* pUpperEntryBuffer;
+  EntryBuffer* aUpperEntryBuffer;
   
-  Entry* pUpperEntry = nullptr;
-  Entry* pEntry      = nullptr;
+  Entry* aUpperEntry = nullptr;
+  Entry* aEntry      = nullptr;
   
   eRO eUpperRelnOp;
   bool bBefore;
@@ -1556,44 +1556,44 @@ void Step::vIndexUpperBound(MP_Task mpTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the first entry in the buffer
-  pEntry = pEntryBuffer->pFirstEntry();
+  aEntry = pEntryBuffer->pFirstEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now position at a level 0 buffer for the upper key
-  pUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
+  aUpperEntryBuffer = pIndexTree->pPositionLevel(xKeyWrkUpper, 1, JC_AFTER, 0);
   eUpperRelnOp = pPlanner->eGetFirstUpperPredicateRO(iPhrase);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // did we get an entry buffer ?
-  if (pUpperEntryBuffer) {
-    pUpperEntry = pUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
+  if (aUpperEntryBuffer) {
+    aUpperEntry = aUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // loop till we get an upper entry
-  while ( ! pUpperEntry) {
-    if ( pUpperEntryBuffer && pUpperEntryBuffer->pNextBuffer() ) {
+  while ( ! aUpperEntry) {
+    if ( aUpperEntryBuffer && aUpperEntryBuffer->pNextBuffer() ) {
       
       // move to the next buffer
-      pUpperEntryBuffer = pUpperEntryBuffer->pNextBuffer();
+      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
       
       // position in the index buffer at the upper key
-      pUpperEntry = pUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
+      aUpperEntry = aUpperEntryBuffer->pPositionQuery(xKeyWrkUpper.aKey(), eUpperRelnOp);
     }
     else
       break;
   }
   
-  //pUpperEntryBuffer->vShow();
+  //aUpperEntryBuffer->vShow();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now find the correct upper entry
-  while (pUpperEntry) {
+  while (aUpperEntry) {
     
-    //pUpperEntry->vShow(0,pIndex,true);
+    //aUpperEntry->vShow(0,pIndex,true);
     
     bIsEqual = false;
-    bBefore = pUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
+    bBefore = aUpperEntry->aKey()->bJuxtaCompare(JC_BEFORE, xKeyWrkUpper.aKey(),
                                                  pIdxColVec, 1,
                                                  bIsEqual, eUpperRelnOp);
     
@@ -1602,33 +1602,33 @@ void Step::vIndexUpperBound(MP_Task mpTask)
     }
     
     // move to next entry in the buffer
-    pUpperEntry = pUpperEntryBuffer->pNextEntry(pUpperEntry, 0);
+    aUpperEntry = aUpperEntryBuffer->pNextEntry(aUpperEntry, 0);
     
-    if ( ! pUpperEntry ) {
+    if ( ! aUpperEntry ) {
       // get next buffer from the current indexBuffer
-      pUpperEntryBuffer = pUpperEntryBuffer->pNextBuffer();
+      aUpperEntryBuffer = aUpperEntryBuffer->pNextBuffer();
       
-      if ( pUpperEntryBuffer )
-        pUpperEntry = pUpperEntryBuffer->pFirstEntry();
+      if ( aUpperEntryBuffer )
+        aUpperEntry = aUpperEntryBuffer->pFirstEntry();
     }
   }
   
-  //pUpperEntry->vShow(0,pIndex,true);
+  //aUpperEntry->vShow(0,pIndex,true);
   
   //---------------------------------------------------------------------------
   // iterate thru the buffers till no more entries starting from
-  while (pEntry) {
+  while (aEntry) {
     
     bIsEqual = false;
 
-    bBefore = (pEntry == pUpperEntry) ? false : true;
+    bBefore = (aEntry == aUpperEntry) ? false : true;
     
     if (bBefore) {
       // get the dataRow from the hidden index
-      Entry* pDataRowEntry = pEntry->pDataEntry();
+      Entry* aDataRowEntry = aEntry->aDataEntry();
       
       // insert row from entry in tempEntryBuffer
-      if ( ! Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows)) {
+      if ( ! Task::bAppendRow(pFetchBuffer,aDataRowEntry, pJob_FetchRows)) {
         
         // Buffer is full
         // put this tempEntryBuffer in session bufferQueue
@@ -1639,30 +1639,30 @@ void Step::vIndexUpperBound(MP_Task mpTask)
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
         // insert row from entry in temporary buffer
-        bool bResult = Task::bAppendRow(pFetchBuffer, pDataRowEntry, pJob_FetchRows);
+        bool bResult = Task::bAppendRow(pFetchBuffer, aDataRowEntry, pJob_FetchRows);
         RASSERT(bResult);
       }
       
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // move to next entry in the buffer
-      pEntry = pEntryBuffer->pNextEntry(pEntry, 0);
+      aEntry = pEntryBuffer->pNextEntry(aEntry, 0);
       
-      if ( ! pEntry ) {
+      if ( ! aEntry ) {
         // get next buffer from the current indexBuffer
         pEntryBuffer = pEntryBuffer->pNextBuffer();
         
         if ( pEntryBuffer )
-          pEntry = pEntryBuffer->pFirstEntry();
+          aEntry = pEntryBuffer->pFirstEntry();
       }
     }
     else {
-      pEntry = nullptr;
+      aEntry = nullptr;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check if session exiting
     if (pSession->m_bSessionExiting)
-      pEntry = nullptr;
+      aEntry = nullptr;
   }
   
 LastBuffer:
@@ -1735,18 +1735,18 @@ void Step::vIndexVisualize(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* append a row to a working buffer                                           */
 /*----------------------------------------------------------------------------*/
-bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Entry* pEntry, Job_FetchRows* pJob_FetchRows)
+bool Task::bAppendRow(FetchBuffer* pFetchBuffer, Entry* aEntry, Job_FetchRows* pJob_FetchRows)
 {
   
-  Id xId = pEntry->xId();
+  Id xId = aEntry->xId();
   
   if (pJob_FetchRows && pJob_FetchRows->bRowSeen(xId)) {
     // row already inserted
-    //vTrace("Row already inserted %p \n"_Stz, pEntry);
+    //vTrace("Row already inserted %p \n"_Stz, aEntry);
     return true;
   }
   
-  Row* aRow = pEntry->aRow();
+  Row* aRow = aEntry->aRow();
   
   if (pFetchBuffer->bAppendRow(aRow))
     return true;

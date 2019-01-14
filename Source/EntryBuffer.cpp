@@ -374,11 +374,11 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   // recursively dump the lower level buffers
   if (m_iBufferLevel != 0) {
     
-    for (Entry* pEntry = pFirstEntry(); pEntry != nullptr;
-         pEntry = pNextEntry(pEntry, 0)) {
+    for (Entry* aEntry = pFirstEntry(); aEntry != nullptr;
+         aEntry = pNextEntry(aEntry, 0)) {
       
       // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = pEntry->pReferencedEntryBuffer();
+      EntryBuffer* pEntryBuffer = aEntry->pReferencedEntryBuffer();
       
       ASSERT(pEntryBuffer);
       ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
@@ -399,7 +399,7 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
   
   ASSERT(iBufferLevel() == 0);
   
-  Entry* pRowEntry;
+  Entry* aRowEntry;
 
   // rows only ever have one next offset
   xRowWrk.vOffsets(1);
@@ -447,38 +447,38 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer for the row and offsets
   
-  pRowEntry = aAllotEntry(nEntryBytes);
-  ASSERT(pRowEntry);
+  aRowEntry = aAllotEntry(nEntryBytes);
+  ASSERT(aRowEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   ASSERT(aNEO);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the buffer entry
-  pRowEntry->vSetEntry(xRowWrk);
+  aRowEntry->vSetEntry(xRowWrk);
   
   //pRowEntry->vShow(0, m_pIndex, false);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set entry offsets
   
-  i4 iEntryOffset = iToOffset(pRowEntry);
+  i4 iEntryOffset = iToOffset(aRowEntry);
   RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
   m_aEntryOffsets[i_RowNo] = iEntryOffset;
   
   if (m_aLastEntry)
     m_aLastEntry->vNEO(0,iEntryOffset);
-  pRowEntry->vNEO(0,-1);
+  aRowEntry->vNEO(0,-1);
   
-  m_aLastEntry = pRowEntry;
+  m_aLastEntry = aRowEntry;
   
   // set head entry offset
   if (m_aHeadEntry->iNEO(0) == -1)
     m_aHeadEntry->vNEO(0, iEntryOffset);
   
-  RASSERT(pRowEntry->bValidEntry());
+  RASSERT(aRowEntry->bValidEntry());
   
-  return pRowEntry;
+  return aRowEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -516,11 +516,11 @@ void EntryBuffer::vBufferCount(i8& nBuffers)
   // recursively dump the lower level buffers
   if (m_iBufferLevel != 0) {
     
-    for (Entry* pEntry = pFirstEntry(); pEntry != nullptr;
-         pEntry = pNextEntry(pEntry, 0)) {
+    for (Entry* aEntry = pFirstEntry(); aEntry != nullptr;
+         aEntry = pNextEntry(aEntry, 0)) {
       
       // get the index buffer from the entry
-      pNextBuffer = pEntry->pReferencedEntryBuffer();
+      pNextBuffer = aEntry->pReferencedEntryBuffer();
       
       ASSERT(pNextBuffer);
       ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
@@ -549,16 +549,16 @@ void EntryBuffer::vBuildSkipListSorted(void)
    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
    // temp: clear out all l1 and l2 offsets for testing purpoes
    
-   for (Entry* pEntry = m_aHeadEntry;
-   pEntry != nullptr;
-   pEntry = pNextEntry(pEntry, 0)) {
+   for (Entry* aEntry = m_aHeadEntry;
+   aEntry != nullptr;
+   aEntry = pNextEntry(aEntry, 0)) {
    
    // get the number of offsets for this entry
-   i8 nOffsets = pEntry->nOffsets();
+   i8 nOffsets = aEntry->nOffsets();
    
    // connect the dots
    for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++)
-   pEntry->vNEO(i_Offset,-1);
+   aEntry->vNEO(i_Offset,-1);
    }
    vShow();
    */
@@ -575,15 +575,15 @@ void EntryBuffer::vBuildSkipListSorted(void)
   // go through each entry in L0 order and
   //   correct the prior offset to that entry for each level
   
-  for (Entry* pEntry = pFirstEntry();
-       pEntry != nullptr;
-       pEntry = pNextEntry(pEntry, 0)) {
+  for (Entry* aEntry = pFirstEntry();
+       aEntry != nullptr;
+       aEntry = pNextEntry(aEntry, 0)) {
     
     // where is this entry in the buffer (offset-wise)?
-    i4 iEntryOffset = iToOffset(pEntry);
+    i4 iEntryOffset = iToOffset(aEntry);
     
     // get the number of offsets for this entry
-    i8 nOffsets = pEntry->nOffsets();
+    i8 nOffsets = aEntry->nOffsets();
     
     // connect the dots
     for (i8 i_Offset = 1; i_Offset < nOffsets; i_Offset++) {
@@ -592,7 +592,7 @@ void EntryBuffer::vBuildSkipListSorted(void)
       xPrevVec[i_Offset]->vNEO(i_Offset,iEntryOffset);
       
       // the previous entry at this level now becomes this entry
-      xPrevVec[i_Offset] = pEntry;
+      xPrevVec[i_Offset] = aEntry;
     }
   }
 }
@@ -626,17 +626,17 @@ void EntryBuffer::vDeleteEntry(Entry** ppEntry)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Entry* pEntry = *ppEntry;
+  Entry* aEntry = *ppEntry;
   
   Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
 
-  Key* aKey = pEntry->aKey();
+  Key* aKey = aEntry->aKey();
   
-  vPositionPriorVecEntry(aKey, xPriorVec, pEntry);
+  vPositionPriorVecEntry(aKey, xPriorVec, aEntry);
   
-  vCutEntry(pEntry,xPriorVec);
+  vCutEntry(aEntry,xPriorVec);
   
-  vAddFreeList(pEntry);
+  vAddFreeList(aEntry);
   
   // entry no longer exists, set the pointer to be null
   *ppEntry = nullptr;
@@ -659,24 +659,24 @@ bool EntryBuffer::bDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer)
   
   vPositionPriorVecBuffer3(aDeleteKey,xPriorVec,pToBuffer);
   
-  Entry* pPriorEntry = xPriorVec[0];
+  Entry* aPriorEntry = xPriorVec[0];
   
-  Entry* pEntryToBeDeleted = pNextEntry(pPriorEntry,0);
-  if (!pEntryToBeDeleted)
+  Entry* aEntryToBeDeleted = pNextEntry(aPriorEntry,0);
+  if (!aEntryToBeDeleted)
     return false;
   
   //vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
   //       *nBufferNo(),
   //       pEntryToBeDeleted->aKey()->iGetInt());
   
-  Key* aDeleteEntryKey = pEntryToBeDeleted->aKey();
+  Key* aDeleteEntryKey = aEntryToBeDeleted->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   //if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
   //  return;
   RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
-  RASSERT(pToBuffer == pEntryToBeDeleted->pReferencedEntryBuffer());
+  RASSERT(pToBuffer == aEntryToBeDeleted->pReferencedEntryBuffer());
   
-  vDeleteEntry(&pEntryToBeDeleted);
+  vDeleteEntry(&aEntryToBeDeleted);
   
   return true;
 }
@@ -694,12 +694,12 @@ void EntryBuffer::vDump(void)
   // recursively dump the lower level buffers
   if (m_iBufferLevel != 0) {
     
-    for (Entry* pEntry = pFirstEntry();
-         pEntry != nullptr;
-         pEntry = pNextEntry(pEntry, 0)) {
+    for (Entry* aEntry = pFirstEntry();
+         aEntry != nullptr;
+         aEntry = pNextEntry(aEntry, 0)) {
       
       // get the index buffer from the entry
-      EntryBuffer* pEntryBuffer = pEntry->pReferencedEntryBuffer();
+      EntryBuffer* pEntryBuffer = aEntry->pReferencedEntryBuffer();
       
       ASSERT(pEntryBuffer);
       ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
@@ -723,8 +723,8 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
   //  vBuildSkipList();
 #endif
   
-  Entry* pFirstEntry = this->pFirstEntry();
-  EntryBuffer* pChildEntryBuffer = pFirstEntry->pReferencedEntryBuffer();
+  Entry* aFirstEntry = this->pFirstEntry();
+  EntryBuffer* pChildEntryBuffer = aFirstEntry->pReferencedEntryBuffer();
   
   return pChildEntryBuffer;
 }
@@ -743,9 +743,9 @@ Entry* EntryBuffer::pFirstEntry(void)
   //  vBuildSkipList();
 #endif
   
-  Entry* pFirst = pNextEntry(m_aHeadEntry,0);
+  Entry* aFirst = pNextEntry(m_aHeadEntry,0);
   
-  return pFirst;
+  return aFirst;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -769,9 +769,9 @@ Entry* EntryBuffer::pGetEntryRowNo(i8 i_RowNo)
   
   char* aAddress = aAdd<char*>(aDataArea(), iOffset);
   
-  Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
+  Entry* aEntry = reinterpret_cast<Entry*>(aAddress);
   
-  return pEntry;
+  return aEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -811,13 +811,13 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  Entry* pKeyEntry;
+  Entry* aKeyEntry;
   
 #ifdef EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (! m_iBufferLevel) {
-      pKeyEntry = aInsertKeyAbsLazy(xKeyWrk);
-      return pKeyEntry;
+      aKeyEntry = aInsertKeyAbsLazy(xKeyWrk);
+      return aKeyEntry;
     }
   }
 #endif
@@ -844,8 +844,8 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  pKeyEntry = aAllotEntry(nEntryBytes);
-  ASSERT(pKeyEntry);
+  aKeyEntry = aAllotEntry(nEntryBytes);
+  ASSERT(aKeyEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   ASSERT(aNEO);
@@ -853,19 +853,19 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  pKeyEntry->vSetEntry(xKeyWrk);
+  aKeyEntry->vSetEntry(xKeyWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the key entry into the skip list
   
-  vInsertKeySkip(pKeyEntry);
+  vInsertKeySkip(aKeyEntry);
   
   //if (! m_pIndex->bIsHidden() && m_iBufferLevel)
   //  bVerifyAdjacent();
   
   //vShow();
   
-  return pKeyEntry;
+  return aKeyEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -896,8 +896,8 @@ Entry* EntryBuffer::pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  Entry* pKeyEntry = aAllotEntry(nEntryBytes);
-  ASSERT(pKeyEntry);
+  Entry* aKeyEntry = aAllotEntry(nEntryBytes);
+  ASSERT(aKeyEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   ASSERT(aNEO);
@@ -905,33 +905,33 @@ Entry* EntryBuffer::pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  pKeyEntry->vSetEntry(xKeyWrk);
+  aKeyEntry->vSetEntry(xKeyWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append to prior entry at L0 only
   
-  i4 iOffset = iToOffset(pKeyEntry);
+  i4 iOffset = iToOffset(aKeyEntry);
   
   (*ppPriorEntry)->vNEO(0,iOffset);
   
   // + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   // for the moment we set L1 & L2 offsets in prior entry to -1
   
-  i8 nPriorOffsets = pKeyEntry->nOffsets();
+  i8 nPriorOffsets = aKeyEntry->nOffsets();
   for (i8 i_Offset = 0; i_Offset < nPriorOffsets; i_Offset++)
-    pKeyEntry->vNEO(i_Offset,-1);
+    aKeyEntry->vNEO(i_Offset,-1);
   
   // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
   
-  *ppPriorEntry = pKeyEntry;
+  *ppPriorEntry = aKeyEntry;
   
-  return pKeyEntry;
+  return aKeyEntry;
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree                                  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
+Entry* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
                                   EntryBuffer** ppRootKeyBuffer)
 {
   // ** note: this is a static function **
@@ -976,7 +976,7 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
   // insert into the tree
   
 
-  Entry* pInsertedKeyEntry =
+  Entry* aInsertedKeyEntry =
     pPositionedBuffer->aInsertKeyUpwards(xKeyWrk,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -990,7 +990,7 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
   }
 #endif
   
-  return pInsertedKeyEntry;
+  return aInsertedKeyEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1007,16 +1007,16 @@ Entry* EntryBuffer::pLastEntry(void)
   //  vBuildSkipList();
 #endif
   
-  Entry* pLast = m_aHeadEntry;
+  Entry* aLast = m_aHeadEntry;
   
   for (;;) {
-    Entry* pNext = pNextEntry(pLast,0);
-    if (! pNext)
+    Entry* aNext = pNextEntry(aLast,0);
+    if (! aNext)
       break;
-    pLast = pNext;
+    aLast = aNext;
   }
   
-  return pLast;
+  return aLast;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1059,7 +1059,7 @@ i8 EntryBuffer::iLengthSubList(void)
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
+Entry* EntryBuffer::pNextEntry(Entry* aCurrent, i8 i_Offset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1068,10 +1068,10 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
   //#endif
   
 #ifdef _DEBUG
-  pCurrent->vAssertEntry();
+  aCurrent->vAssertEntry();
 #endif
   
-  i4 iOffset = pCurrent->iNEO(i_Offset);
+  i4 iOffset = aCurrent->iNEO(i_Offset);
   
   if (-1 == iOffset)
     return nullptr;
@@ -1082,9 +1082,9 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
   //if (CN_ENTRY != pItem->eClass())
   //  vShow();
   
-  Entry* pEntry = _pEntry(aAddress);
+  Entry* aEntry = _pEntry(aAddress);
 
-  return pEntry;
+  return aEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1105,7 +1105,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols,
   EntryBuffer* pEntryBuffer = this;
   
   i8 iBufferLevel;
-  Entry* pEntry;
+  Entry* aEntry;
   
   while (true) {
     iBufferLevel = pEntryBuffer->iBufferLevel();
@@ -1114,11 +1114,11 @@ EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols,
       break;
     
     // get the entry
-    pEntry = pEntryBuffer->pPositionQuery(aGivenKey, nKeyCols, eJuxtaCompare);
-    ASSERT(pEntry);
+    aEntry = pEntryBuffer->pPositionQuery(aGivenKey, nKeyCols, eJuxtaCompare);
+    ASSERT(aEntry);
     
     // get the index buffer of the entry
-    pEntryBuffer = pEntry->pReferencedEntryBuffer();
+    pEntryBuffer = aEntry->pReferencedEntryBuffer();
     ASSERT(pEntryBuffer);
     ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
   }
@@ -1141,22 +1141,22 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
 #endif
   
   bool bIsEqual;
-  Entry* pIndexEntry = pPositionQuery(aGivenKey, 1, JC_AFTER);
+  Entry* aIndexEntry = pPositionQuery(aGivenKey, 1, JC_AFTER);
   
   bool bAfter;
-  if (pIndexEntry) {
+  if (aIndexEntry) {
     do {
       bool bIsEqual = false;
-      bAfter = pIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, aGivenKey,
+      bAfter = aIndexEntry->aKey()->bJuxtaCompare(JC_AFTER, aGivenKey,
                                                   m_pIndex->pIdxColVec(), 1,
                                                   bIsEqual, eRelnOp);
       if (! bAfter) {
-        pIndexEntry = pNextEntry(pIndexEntry, iBufferLevel());
+        aIndexEntry = pNextEntry(aIndexEntry, iBufferLevel());
       }
-    } while (pIndexEntry && ! bAfter);
+    } while (aIndexEntry && ! bAfter);
   }
   
-  return pIndexEntry;
+  return aIndexEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1185,15 +1185,15 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
   bool bIsJuxta;
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  Entry* pScanEntry_sl = m_aHeadEntry;
+  Entry* aScanEntry_sl = m_aHeadEntry;
   bool bIsEqual;
   
   for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
     
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
-    while (pNextEntry_sl) {
+    Entry* aNextEntry_sl = pNextEntry(aScanEntry_sl,i_ScanOffset);
+    while (aNextEntry_sl) {
       
-      Key* aNextKey = pNextEntry_sl->aKey();
+      Key* aNextKey = aNextEntry_sl->aKey();
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aGivenKey->vShow(pIdxColVec); vTrace("\n"_Stz);
@@ -1204,7 +1204,7 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
       // have we found to key during a query?
       if (bIsEqual) {
         if (0 == i_ScanOffset)
-          return pNextEntry_sl;
+          return aNextEntry_sl;
         else
           break;
       }
@@ -1213,21 +1213,21 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
       if (! bIsJuxta)
         break;
       
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = pNextEntry(aNextEntry_sl,i_ScanOffset);
     }
     //pPriorVec[*i_ScanOffset] = pScanEntry_sl;
   }
   
-  if (pScanEntry_sl == aHeadEntry()) {
-    pScanEntry_sl = pNextEntry(pScanEntry_sl, 0);
+  if (aScanEntry_sl == aHeadEntry()) {
+    aScanEntry_sl = pNextEntry(aScanEntry_sl, 0);
     // we currently think it should be null
     // RASSERT( ! pScanEntry_sl );
   }
   
   // JC_SAME : return the entry which is same as given key
   // JC_AFTER: return the entry which the given key would be inserted after
-  return pScanEntry_sl;
+  return aScanEntry_sl;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1304,11 +1304,11 @@ void EntryBuffer::vRestore(void)
   bn nBuffer = nBufferNo();
   
   // now restore the row id's to point to this buffer no
-  for (Entry* pEntry = pFirstEntry(); pEntry != nullptr;
-       pEntry = pNextEntry(pEntry, 0)) {
+  for (Entry* aEntry = pFirstEntry(); aEntry != nullptr;
+       aEntry = pNextEntry(aEntry, 0)) {
     
-    Id xId(*nBuffer, pEntry->iRow());
-    pEntry->vId(xId);
+    Id xId(*nBuffer, aEntry->iRow());
+    aEntry->vId(xId);
   }
   
 }
@@ -1327,7 +1327,7 @@ void EntryBuffer::vRestoreIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* show contents of buffer                                                    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vShow(Entry* pMarkEntry)
+void EntryBuffer::vShow(Entry* aMarkEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1370,13 +1370,13 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
  
   i8 iOffset = m_aHeadEntry->iNEO(0);
   while (iOffset > -1) {
-    Entry* pEntry = aGetEntryOffset(iOffset);
-    pEntry->vShow(iOffset,m_pIndex,true);
-    if (pMarkEntry == pEntry)
+    Entry* aEntry = aGetEntryOffset(iOffset);
+    aEntry->vShow(iOffset,m_pIndex,true);
+    if (aMarkEntry == aEntry)
       vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
              "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n"_Stz);
     
-    iOffset = pEntry->iNEO(0);
+    iOffset = aEntry->iNEO(0);
   }
   
   /*
@@ -1394,7 +1394,7 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
   if (m_aFreeEntryList) {
     vTrace("\n"_Stz);
     vTrace("FreeEntries:\n"_Stz);
-    for (FreeEntry* pFreeEntry = pFirstFree();
+    for (FreeEntry* aFreeEntry = pFirstFree();
          pFreeEntry != nullptr;
          pFreeEntry = pFreeEntry->pNextFree()) {
       vTrace("  %p bytes: %lld next: %p prev: %p offset %lld\n"_Stz,
@@ -1418,14 +1418,14 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
     
     switch (eClass) {
       case CN_ENTRY: {
-        Entry* pEntryItem = static_cast<Entry*>(pItem);
+        Entry* aEntryItem = static_cast<Entry*>(pItem);
         iSize = pEntryItem->nSizeEntry() + pEntryItem->iNEOsize();
         vTrace("Entry %lld bytes"_Stz,iSize);
         break;
       }
         
       case CN_FREEENTRY: {
-        FreeEntry* pFreeEntryItem = static_cast<FreeEntry*>(pItem);
+        FreeEntry* aFreeEntryItem = static_cast<FreeEntry*>(pItem);
         iSize = pFreeEntryItem->nSizeItem();
         vTrace("FreeEntry %lld bytes"_Stz,iSize);
         break;
@@ -1462,17 +1462,17 @@ void EntryBuffer::vShowShort(void)
   
   i8 iOffset = aHeadEntry()->iNEO(0);
   while (iOffset > -1) {
-    Entry* pEntry = aGetEntryOffset(iOffset);
+    Entry* aEntry = aGetEntryOffset(iOffset);
     
-    Key* aKey = pEntry->aKey();
+    Key* aKey = aEntry->aKey();
     i8 iVal = aKey->iGetInt();
     
     if (m_iBufferLevel)
-      vTrace("%lld(%lld)"_Stz,iVal,*pEntry->pReferencedEntryBuffer()->nBufferNo());
+      vTrace("%lld(%lld)"_Stz,iVal,*aEntry->pReferencedEntryBuffer()->nBufferNo());
     else
-      vTrace("%lld|%lld|"_Stz,iVal,*pEntry->pReferencedEntryBuffer()->nBufferNo());
+      vTrace("%lld|%lld|"_Stz,iVal,*aEntry->pReferencedEntryBuffer()->nBufferNo());
     
-    iOffset = pEntry->iNEO(0);
+    iOffset = aEntry->iNEO(0);
     if (iOffset > -1)
       vTrace(","_Stz);
   }
@@ -1545,12 +1545,12 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
   if ( ! m_iBufferLevel )
     return;
   
-  Entry* pFirstEntry = this->pFirstEntry();
-  if (! pFirstEntry)
+  Entry* aFirstEntry = this->pFirstEntry();
+  if (! aFirstEntry)
     return;
   
   Id xId;
-  xId = pFirstEntry->xId();
+  xId = aFirstEntry->xId();
   bn nBuffer = xId.iBuffer();
   
   HeapBuffer* pHeapBuffer =
@@ -1621,11 +1621,11 @@ void EntryBuffer::vTruncate(void)
   if (m_iBufferLevel != 0) {
     
     // recursively delete the lower level buffers
-    for (Entry* pEntry = pFirstEntry(); pEntry != nullptr;
-         pEntry = pNextEntry(pEntry, 0)) {
+    for (Entry* aEntry = pFirstEntry(); aEntry != nullptr;
+         aEntry = pNextEntry(aEntry, 0)) {
       
       // get the index buffer from the entry
-      pNextBuffer = pEntry->pReferencedEntryBuffer();
+      pNextBuffer = aEntry->pReferencedEntryBuffer();
       
       ASSERT(pNextBuffer);
       ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
@@ -1753,15 +1753,15 @@ Entry* EntryBuffer::aAllotEntry(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Entry* pEntry = reinterpret_cast<Entry*>(pAllotItem(nBytes));
-  if ( ! pEntry )
+  Entry* aEntry = reinterpret_cast<Entry*>(pAllotItem(nBytes));
+  if ( ! aEntry )
     return nullptr;
   
-  new(pEntry) Entry(CN_ENTRY,nBytes,0);
+  new(aEntry) Entry(CN_ENTRY,nBytes,0);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return pEntry;
+  return aEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1781,7 +1781,7 @@ NEO* EntryBuffer::aAllotNEO(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* add given entry to free list                                               */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vAddFreeList(Entry* pEntry)
+void EntryBuffer::vAddFreeList(Entry* aEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -1789,26 +1789,26 @@ void EntryBuffer::vAddFreeList(Entry* pEntry)
   // add entry to head of free entry list
   
   /*
-  i8 nSizeEntry = pEntry->nSizeEntry();
-  i8 nSizeNEO   = pEntry->iNEOsize();
+  i8 nSizeEntry = aEntry->nSizeEntry();
+  i8 nSizeNEO   = aEntry->iNEOsize();
   i8 nSizeFree  = nSizeEntry + nSizeNEO;
   
-  FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeFree);
+  FreeEntry* aFreeEntry = new(aEntry) FreeEntry(nSizeFree);
   */
   
-  FreeEntry* pFreeEntry = aMakeFreeEntry(pEntry);
+  FreeEntry* aFreeEntry = aMakeFreeEntry(aEntry);
   
-  //  if (! bQuickVerify(pEntry)) {
+  //  if (! bQuickVerify(aEntry)) {
   //    vDumpPriorVec(xPriorVec);
   //    vQuickVerify();
   //  }
   
   if (m_aFreeEntryList) {
-    m_aFreeEntryList->vPrevFree(pFreeEntry);
-    pFreeEntry->vNextFree(m_aFreeEntryList);
+    m_aFreeEntryList->vPrevFree(aFreeEntry);
+    aFreeEntry->vNextFree(m_aFreeEntryList);
   }
   
-  m_aFreeEntryList = pFreeEntry;
+  m_aFreeEntryList = aFreeEntry;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decement the number of items in buffer
@@ -1826,8 +1826,8 @@ void EntryBuffer::vBuildOffsetL0(void)
   
   ASSERT(! pFirstEntry());
   
-  Entry* pTailEntry = m_aHeadEntry;
-  while (Entry* pPoppedEntry = aPopLazyChain())
+  Entry* aTailEntry = m_aHeadEntry;
+  while (Entry* aPoppedEntry = aPopLazyChain())
     {;}
 }
 
@@ -1841,30 +1841,30 @@ void EntryBuffer::vBuildSkipList(void)
   if (! m_aLazyChain )
     return;
   
-  Entry* pOriginalFirstEntry = pNextEntry(m_aHeadEntry,0);
+  Entry* aOriginalFirstEntry = pNextEntry(m_aHeadEntry,0);
   
   static i8 nBuild = 0;
   //vTrace("vBuildSkipList %lld (%lld items)\n"_Stz,++nBuild,nItems());
   
-  Entry* pLazyChain = m_aLazyChain;
+  Entry* aLazyChain = m_aLazyChain;
   m_aLazyChain = nullptr;
   
-  while (pLazyChain) {
+  while (aLazyChain) {
     
-    Entry* pKeyEntry = pLazyChain;
+    Entry* aKeyEntry = aLazyChain;
     
-    i8 iNextOffset = pKeyEntry->iNEO(0);
+    i8 iNextOffset = aKeyEntry->iNEO(0);
     if (-1 == iNextOffset)
-      pLazyChain = nullptr;
+      aLazyChain = nullptr;
     else
-      pLazyChain = aGetEntryOffset(iNextOffset);
+      aLazyChain = aGetEntryOffset(iNextOffset);
     
-    vInsertKeySkip(pKeyEntry);
+    vInsertKeySkip(aKeyEntry);
   }
   
-  Entry* pInsertedKeyEntry = pNextEntry(m_aHeadEntry,0);
+  Entry* aInsertedKeyEntry = pNextEntry(m_aHeadEntry,0);
   
-  vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,nullptr);
+  vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1883,8 +1883,8 @@ void EntryBuffer::vCompact(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  FreeEntry* pFreeEntry;
-  Entry*     pMoveEntry;
+  FreeEntry* aFreeEntry;
+  Entry*     aMoveEntry;
   Entry*     xPriorVec[gpAttachMap->m_nIndexOffsets];
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
@@ -1896,7 +1896,7 @@ void EntryBuffer::vCompact(void)
   m_aFreeEntryList = nullptr;
   
   // scan item is the working pointer
-  Item* pScanItem = pFirstItem();
+  Item* aScanItem = pFirstItem();
   
   // loop while we can still reclaim more space
   for (;;) {
@@ -1909,100 +1909,100 @@ void EntryBuffer::vCompact(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // find the next free entry in buffer
     
-    pFreeEntry = nullptr;
+    aFreeEntry = nullptr;
     for (;
-         pScanItem != nullptr;
-         pScanItem = pNextItem(pScanItem)) {
+         aScanItem != nullptr;
+         aScanItem = pNextItem(aScanItem)) {
       
-      eCN eClass = pScanItem->eClass();
+      eCN eClass = aScanItem->eClass();
       
       if (CN_FREEENTRY == eClass) {
-        pFreeEntry = _pFreeEntry(pScanItem);
+        aFreeEntry = _pFreeEntry(aScanItem);
         break;
       }
     }
     
     // return if no more free entries
-    if (! pFreeEntry)
+    if (! aFreeEntry)
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // find the next entry in buffer after the free entry
     
-    pMoveEntry = nullptr;
-    for (Item* pItem = pNextItem(pFreeEntry);
-         pItem != nullptr;
-         pItem = pNextItem(pItem)) {
+    aMoveEntry = nullptr;
+    for (Item* aItem = pNextItem(aFreeEntry);
+         aItem != nullptr;
+         aItem = pNextItem(aItem)) {
       
-      eCN eClass = pItem->eClass();
+      eCN eClass = aItem->eClass();
       
       if (CN_ENTRY == eClass) {
-        pMoveEntry = static_cast<Entry*>(pItem);
+        aMoveEntry = static_cast<Entry*>(aItem);
         break;
       }
     }
     
     // return if no more entries after the free entry
-    if (! pMoveEntry)
+    if (! aMoveEntry)
       break;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the prior vector to the entry being moved
     
-    Key* aMoveKey = pMoveEntry->aKey();
+    Key* aMoveKey = aMoveEntry->aKey();
     //aKey->vShow(pIdxColVec);
     //vTrace("\n"_Stz);
     
-    vPositionPriorVecEntry(aMoveKey, xPriorVec, pMoveEntry);
+    vPositionPriorVecEntry(aMoveKey, xPriorVec, aMoveEntry);
     
     if (m_iBufferLevel) {
       //vDumpPriorVec(xPriorVec);
       int iDebug = 1;
     }
     
-    i4 iWasOffset = iToOffset(pMoveEntry);
-    i4 iNowOffset = iToOffset(pFreeEntry);
+    i4 iWasOffset = iToOffset(aMoveEntry);
+    i4 iNowOffset = iToOffset(aFreeEntry);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // now copy move entry left onto free entry
     
     // calculate the number of bytes to copy
-    i8 nCopyBytes = pMoveEntry->nSizeEntry() + pMoveEntry->iNEOsize();
+    i8 nCopyBytes = aMoveEntry->nSizeEntry() + aMoveEntry->iNEOsize();
     
     // copy the move entry over the free entry
-    MemLib::vMove(pFreeEntry, pMoveEntry, nCopyBytes, CN_ENTRYBUFFER);
+    MemLib::vMove(aFreeEntry, aMoveEntry, nCopyBytes, CN_ENTRYBUFFER);
     
     // give the reclaimed space back to the buffer
-    i8 nReclaimedBytes = nSub(pMoveEntry,pFreeEntry);
+    i8 nReclaimedBytes = nSub(aMoveEntry,aFreeEntry);
     //vGiveSpace(nReclaimedBytes);
     
     // convert the moved entry to a free entry
-    FreeEntry* pOpenedFreeEntry = aAdd<FreeEntry*>(pFreeEntry,nCopyBytes);
-    new(pOpenedFreeEntry) FreeEntry(nReclaimedBytes);
+    FreeEntry* aOpenedFreeEntry = aAdd<FreeEntry*>(aFreeEntry,nCopyBytes);
+    new(aOpenedFreeEntry) FreeEntry(nReclaimedBytes);
     
-    Entry* pCheckEntry = reinterpret_cast<Entry*>(pFreeEntry);
+    Entry* aCheckEntry = reinterpret_cast<Entry*>(aFreeEntry);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the prior vector to the entry being moved
     
     //vDumpPriorVec(xPriorVec);
     for (i8 i_Offset = 0; i_Offset < 3; i_Offset++) {
-      Entry* pPriorEntry = xPriorVec[i_Offset];
-      i4 iPriorOffset = pPriorEntry->iNEO(i_Offset);
+      Entry* aPriorEntry = xPriorVec[i_Offset];
+      i4 iPriorOffset = aPriorEntry->iNEO(i_Offset);
       if (iWasOffset == iPriorOffset)
-        pPriorEntry->vNEO(i_Offset,iNowOffset);
+        aPriorEntry->vNEO(i_Offset,iNowOffset);
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move scan
     
-    pScanItem = pFreeEntry;
+    aScanItem = aFreeEntry;
     
   } // for
   
-  ASSERT(CN_FREEENTRY == pScanItem->eClass());
+  ASSERT(CN_FREEENTRY == aScanItem->eClass());
   
-  vResetUsed(pScanItem);
+  vResetUsed(aScanItem);
   
   vSetWilderness();
   
@@ -2036,50 +2036,50 @@ void EntryBuffer::vCompactLeft(void)
   //
   
   // go through each entry in L0 order
-  Entry* pLastEntry = nullptr;
+  Entry* aLastEntry = nullptr;
   
-  for (Entry* pThisEntry = m_aHeadEntry;
-       pThisEntry != nullptr;
-       pThisEntry = pNextEntry(pThisEntry, 0)) {
+  for (Entry* aThisEntry = m_aHeadEntry;
+       aThisEntry != nullptr;
+       aThisEntry = pNextEntry(aThisEntry, 0)) {
     
-    pLastEntry = pThisEntry;
+    aLastEntry = aThisEntry;
     
     // get the address after this entry
-    char* aAfterAddr = pThisEntry->aAddressAfter();
+    char* aAfterAddr = aThisEntry->aAddressAfter();
     
     // get the address of the next entry
-    Entry* pNextEntry = this->pNextEntry(pThisEntry,0);
+    Entry* aNextEntry = this->pNextEntry(aThisEntry,0);
     
-    if (! pNextEntry)
+    if (! aNextEntry)
       break;
     
     // if next entry is contiguous with this entry then skip this
-    if ((char*)pNextEntry == aAfterAddr)
+    if ((char*)aNextEntry == aAfterAddr)
       continue;
     
     // - there is a gap between this entry and next entry
     
     // calculate the number of bytes to copy
-    i8 nCopyBytes = pNextEntry->nSizeEntry() + pNextEntry->iNEOsize();
+    i8 nCopyBytes = aNextEntry->nSizeEntry() + aNextEntry->iNEOsize();
     
     vTrace("ThisEntry %p AfterAddr %p NextEntry %p CopyBytes %lld\n"_Stz,
-           pThisEntry,aAfterAddr,pNextEntry,nCopyBytes);
+           aThisEntry,aAfterAddr,aNextEntry,nCopyBytes);
            
     // copy the next entry so its adjacent to this entry
-    MemLib::vMove(aAfterAddr, pNextEntry, nCopyBytes, CN_ENTRYBUFFER);
+    MemLib::vMove(aAfterAddr, aNextEntry, nCopyBytes, CN_ENTRYBUFFER);
     
     // reset the L0 offset in this entry
     i4 iRevisedNextOffset = iToOffset((Entry*)aAfterAddr);
-    pThisEntry->vNEO(0,iRevisedNextOffset);
+    aThisEntry->vNEO(0,iRevisedNextOffset);
     
     //vResetUsed(pAdd<Item*>(pLastEntry,nCopyBytes));
   }
   
   // reset the wilderness
   
-  Item* pNewWilderness = aAdd<Item*>(pLastEntry,pLastEntry->nSizeEntry() + pLastEntry->iNEOsize());
+  Item* aNewWilderness = aAdd<Item*>(aLastEntry,aLastEntry->nSizeEntry() + aLastEntry->iNEOsize());
   
-  vResetUsed(pNewWilderness);
+  vResetUsed(aNewWilderness);
   
   vSetWilderness();
   
@@ -2109,17 +2109,17 @@ void EntryBuffer::vCompactLeft2(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Entry* pPriorEntry = pTempBuffer->aHeadEntry();
+  Entry* aPriorEntry = pTempBuffer->aHeadEntry();
   
-  for (Entry* pThisEntry = pThisBuffer->pFirstEntry();
-       pThisEntry != nullptr;
-       pThisEntry = pThisBuffer->pNextEntry(pThisEntry, 0)) {
+  for (Entry* aThisEntry = pThisBuffer->pFirstEntry();
+       aThisEntry != nullptr;
+       aThisEntry = pThisBuffer->pNextEntry(aThisEntry, 0)) {
     
-    i8 iTxId = pThisEntry->iTxId();
-    Id xId = pThisEntry->xId();
-    Key* aKey = pThisEntry->aKey();
+    i8 iTxId = aThisEntry->iTxId();
+    Id xId = aThisEntry->xId();
+    Key* aKey = aThisEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = pThisEntry->nOffsets();
+    i8 nOffsets = aThisEntry->nOffsets();
     
     xKeyWrk.vTxId(iTxId);
     xKeyWrk.vId(xId);
@@ -2127,7 +2127,7 @@ void EntryBuffer::vCompactLeft2(void)
     xKeyWrk.vKeySize(nKeySize);
     xKeyWrk.vOffsets(nOffsets);
     
-    pTempBuffer->pInsertKeyAbsL0(xKeyWrk,&pPriorEntry);
+    pTempBuffer->pInsertKeyAbsL0(xKeyWrk,&aPriorEntry);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2144,17 +2144,17 @@ void EntryBuffer::vCompactLeft2(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pPriorEntry = pThisBuffer->aHeadEntry();
+  aPriorEntry = pThisBuffer->aHeadEntry();
   
-  for (Entry* pTempEntry = pTempBuffer->pFirstEntry();
-       pTempEntry != nullptr;
-       pTempEntry = pTempBuffer->pNextEntry(pTempEntry, 0)) {
+  for (Entry* aTempEntry = pTempBuffer->pFirstEntry();
+       aTempEntry != nullptr;
+       aTempEntry = pTempBuffer->pNextEntry(aTempEntry, 0)) {
     
-    i8 iTxId = pTempEntry->iTxId();
-    Id xId = pTempEntry->xId();
-    Key* aKey = pTempEntry->aKey();
+    i8 iTxId = aTempEntry->iTxId();
+    Id xId = aTempEntry->xId();
+    Key* aKey = aTempEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = pTempEntry->nOffsets();
+    i8 nOffsets = aTempEntry->nOffsets();
     
     xKeyWrk.vTxId(iTxId);
     xKeyWrk.vId(xId);
@@ -2162,7 +2162,7 @@ void EntryBuffer::vCompactLeft2(void)
     xKeyWrk.vKeySize(nKeySize);
     xKeyWrk.vOffsets(nOffsets);
     
-    pThisBuffer->pInsertKeyAbsL0(xKeyWrk,&pPriorEntry);
+    pThisBuffer->pInsertKeyAbsL0(xKeyWrk,&aPriorEntry);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2177,15 +2177,15 @@ void EntryBuffer::vCompactLeft2(void)
 /*----------------------------------------------------------------------------*/
 /* cut entry from skip list                                                   */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vCutEntry(Entry* pEntry, Entry* pPriorVec[])
+void EntryBuffer::vCutEntry(Entry* aEntry, Entry* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  i8 nOffsets = pEntry->nOffsets();
+  i8 nOffsets = aEntry->nOffsets();
   
   for (i8 i_Offset = 0; i_Offset < nOffsets; i_Offset++) {
-    i4 iNEO = pEntry->iNEO(i_Offset);
-    pPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
+    i4 iNEO = aEntry->iNEO(i_Offset);
+    aPriorVec[i_Offset]->vNEO(i_Offset,iNEO);
   }
 }
 
@@ -2216,19 +2216,19 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Entry* pPriorEntry = pPositionPriorEntry(aDeleteKey);
-  if (!pPriorEntry)
+  Entry* aPriorEntry = pPositionPriorEntry(aDeleteKey);
+  if (!aPriorEntry)
     return;
   
-  Entry* pEntryToBeDeleted = pNextEntry(pPriorEntry,0);
-  if (!pEntryToBeDeleted)
+  Entry* aEntryToBeDeleted = pNextEntry(aPriorEntry,0);
+  if (!aEntryToBeDeleted)
     return;
 
 //  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
 //         *nBufferNo(),
 //         pEntryToBeDeleted->aKey()->iGetInt());
   
-  Key* aDeleteEntryKey = pEntryToBeDeleted->aKey();
+  Key* aDeleteEntryKey = aEntryToBeDeleted->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   if ( ! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec) ) {
@@ -2249,11 +2249,11 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
   }
   //RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
   
-  Entry* pFirstEntry = this->pFirstEntry();
-  if (pEntryToBeDeleted == pFirstEntry && m_pHigherBuffer)
+  Entry* aFirstEntry = this->pFirstEntry();
+  if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer)
     m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
 
-  vDeleteEntry(&pEntryToBeDeleted);
+  vDeleteEntry(&aEntryToBeDeleted);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2274,51 +2274,51 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
 
   vPositionPriorVecBuffer(aDeleteKey,xPriorVec,pToBuffer);
   
-  Entry* pPriorEntry = xPriorVec[0];
+  Entry* aPriorEntry = xPriorVec[0];
 
-  Entry* pEntryToBeDeleted = pNextEntry(pPriorEntry,0);
-  if (!pEntryToBeDeleted)
+  Entry* aEntryToBeDeleted = pNextEntry(aPriorEntry,0);
+  if (! aEntryToBeDeleted)
     return;
   
   //  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
   //         *nBufferNo(),
   //         pEntryToBeDeleted->aKey()->iGetInt());
   
-  Key* aDeleteEntryKey = pEntryToBeDeleted->aKey();
+  Key* aDeleteEntryKey = aEntryToBeDeleted->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   //if (! aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec))
   //  return;
   RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
-  RASSERT(pToBuffer == pEntryToBeDeleted->pReferencedEntryBuffer());
+  RASSERT(pToBuffer == aEntryToBeDeleted->pReferencedEntryBuffer());
   
-  Entry* pFirstEntry = this->pFirstEntry();
-  if (pEntryToBeDeleted == pFirstEntry && m_pHigherBuffer)
+  Entry* aFirstEntry = this->pFirstEntry();
+  if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer)
     m_pHigherBuffer->vDeleteUpwards(aDeleteKey,this,ppRootKeyBuffer);
   
-  vDeleteEntry(&pEntryToBeDeleted);
+  vDeleteEntry(&aEntryToBeDeleted);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump the given prior vector                                                */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
+void EntryBuffer::vDumpPriorVec(Entry* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   vTrace("Prior Vector\n"_Stz);
   
   vTrace("  0:%p 1:%p 2:%p\n"_Stz,
-         pPriorVec[0],pPriorVec[1],pPriorVec[2]);
+         aPriorVec[0],aPriorVec[1],aPriorVec[2]);
   
   for (i8 i = 0; i < 3; i++) {
-    Entry* pEntry = pPriorVec[i];
-    for (i8 i_Offset = 0; i_Offset < pEntry->nOffsets(); i_Offset++) {
+    Entry* aEntry = aPriorVec[i];
+    for (i8 i_Offset = 0; i_Offset < aEntry->nOffsets(); i_Offset++) {
       vTrace("  i : %lld Entry : %p i_Offset : %lld offset : %lld pointsTo : %p\n"_Stz,
              i,
-             pEntry,
+             aEntry,
              i_Offset,
-             pEntry->iNEO(i_Offset),
-             aGetEntryOffset(pEntry->iNEO(i_Offset)));
+             aEntry->iNEO(i_Offset),
+             aGetEntryOffset(aEntry->iNEO(i_Offset)));
     }
   }
 }
@@ -2353,9 +2353,9 @@ Entry* EntryBuffer::aGetEntryOffset(i8 iOffset)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   char* aAddress = aAdd<char*>(aDataArea(), iOffset);
-  Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
+  Entry* aEntry = reinterpret_cast<Entry*>(aAddress);
   
-  return pEntry;
+  return aEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2376,15 +2376,15 @@ Entry* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Entry** ppPriorEntry)
   *ppPriorEntry = nullptr;
   
   i8 iEntryNo = 0;
-  for (Entry* pSplitEntry = pNextEntry(m_aHeadEntry,0);
-       pSplitEntry;
-       pSplitEntry = pNextEntry(pSplitEntry,0)) {
+  for (Entry* aSplitEntry = pNextEntry(m_aHeadEntry,0);
+       aSplitEntry;
+       aSplitEntry = pNextEntry(aSplitEntry,0)) {
     
     // found split point?
     if (iEntryNo++ == iSplitEntryNo)
-      return pSplitEntry;
+      return aSplitEntry;
     
-    *ppPriorEntry = pSplitEntry;
+    *ppPriorEntry = aSplitEntry;
   }
   
   return nullptr;
@@ -2412,29 +2412,29 @@ i4 EntryBuffer::iGetFreeRowEntry(void)
 /*----------------------------------------------------------------------------*/
 /* handle the insert of a first key                                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vHandleFirstInsert(Entry* pInsertedKeyEntry,
-                                     Entry* pOriginalFirstEntry,
+void EntryBuffer::vHandleFirstInsert(Entry* aInsertedKeyEntry,
+                                     Entry* aOriginalFirstEntry,
                                      EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  if (pFirstEntry() != pInsertedKeyEntry)
+  if (pFirstEntry() != aInsertedKeyEntry)
     return;
     
-  if (pOriginalFirstEntry) {
-    Key* aOriginalFirstKey = pOriginalFirstEntry->aKey();
-    Key* aInsertedFirstKey = pInsertedKeyEntry->aKey();
+  if (aOriginalFirstEntry) {
+    Key* aOriginalFirstKey = aOriginalFirstEntry->aKey();
+    Key* aInsertedFirstKey = aInsertedKeyEntry->aKey();
     
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
     
     if (aInsertedFirstKey->bNotEqual(aOriginalFirstKey,pIdxColVec))
-      vHandleLeftInsert(pInsertedKeyEntry,
-                        pOriginalFirstEntry,
+      vHandleLeftInsert(aInsertedKeyEntry,
+                        aOriginalFirstEntry,
                         ppRootKeyBuffer);
   }
   else {
-    vHandleLeftInsert(pInsertedKeyEntry,
-                      pOriginalFirstEntry,
+    vHandleLeftInsert(aInsertedKeyEntry,
+                      aOriginalFirstEntry,
                       ppRootKeyBuffer);
   }
 }
@@ -2442,8 +2442,8 @@ void EntryBuffer::vHandleFirstInsert(Entry* pInsertedKeyEntry,
 /*----------------------------------------------------------------------------*/
 /* handle the insert of a left most key                                       */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vHandleLeftInsert(Entry* pInsertedKeyEntry,
-                                    Entry* pOriginalFirstEntry,
+void EntryBuffer::vHandleLeftInsert(Entry* aInsertedKeyEntry,
+                                    Entry* aOriginalFirstEntry,
                                     EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -2468,21 +2468,21 @@ void EntryBuffer::vHandleLeftInsert(Entry* pInsertedKeyEntry,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  if (pOriginalFirstEntry) {
-    Key* aDeleteKey = pOriginalFirstEntry->aKey();
+  if (aOriginalFirstEntry) {
+    Key* aDeleteKey = aOriginalFirstEntry->aKey();
     m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
     //(*ppRootKeyBuffer)->vShowTree();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Key* aInsertKey = pInsertedKeyEntry->aKey();
+  Key* aInsertKey = aInsertedKeyEntry->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   Id xInsertId(*nBufferNo(),0);
   i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
-  i8 nInsertOffsets = pInsertedKeyEntry->nOffsets();
+  i8 nInsertOffsets = aInsertedKeyEntry->nOffsets();
   
-  i8 iTxId = pInsertedKeyEntry->iTxId();
+  i8 iTxId = aInsertedKeyEntry->iTxId();
   
   KeyWrk xKeyWrkIns;
   xKeyWrkIns.vTxId(iTxId);
@@ -2646,8 +2646,8 @@ Entry* EntryBuffer::aInsertKeyAbsLazy(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  Entry* pKeyEntry = aAllotEntry(nEntryBytes);
-  ASSERT(pKeyEntry);
+  Entry* aKeyEntry = aAllotEntry(nEntryBytes);
+  ASSERT(aKeyEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
   ASSERT(aNEO);
@@ -2655,28 +2655,28 @@ Entry* EntryBuffer::aInsertKeyAbsLazy(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set the key entry
   
-  pKeyEntry->vSetEntry(xKeyWrk);
+  aKeyEntry->vSetEntry(xKeyWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form lazy chain
   
   if (m_aLazyChain) {
     i4 iLazyOffset = iToOffset(m_aLazyChain);
-    pKeyEntry->vNEO(0,iLazyOffset);
+    aKeyEntry->vNEO(0,iLazyOffset);
   }
   else {
-    pKeyEntry->vNEO(0,-1);
+    aKeyEntry->vNEO(0,-1);
   }
 
-  m_aLazyChain = pKeyEntry;
+  m_aLazyChain = aKeyEntry;
   
-  return pKeyEntry;
+  return aKeyEntry;
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert key entry into skip list of this buffer                             */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry)
+void EntryBuffer::vInsertKeySkip(Entry* aKeyEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2685,12 +2685,12 @@ void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry)
   
   Entry* xPriorVec[gpAttachMap->m_nIndexOffsets];
   
-  Key* aKey = pKeyEntry->aKey();
+  Key* aKey = aKeyEntry->aKey();
   
   if (0 == m_iBufferLevel)
     vPositionPriorVecEntry(aKey, xPriorVec, nullptr);
   else {
-    EntryBuffer* pToBuffer = pKeyEntry->pReferencedEntryBuffer();
+    EntryBuffer* pToBuffer = aKeyEntry->pReferencedEntryBuffer();
     vPositionPriorVecBuffer(aKey, xPriorVec, pToBuffer);
   }
   
@@ -2699,12 +2699,12 @@ void EntryBuffer::vInsertKeySkip(Entry* pKeyEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set prior offsets
   
-  i4 iKeyEntryOffset = iToOffset(pKeyEntry);
+  i4 iKeyEntryOffset = iToOffset(aKeyEntry);
   
-  i8 nOffsets = pKeyEntry->nOffsets();
+  i8 nOffsets = aKeyEntry->nOffsets();
   for (i8 iNextOffset = 0; iNextOffset < nOffsets; iNextOffset++) {
     i4 iPriorOffset = xPriorVec[iNextOffset]->iNEO(iNextOffset);
-    pKeyEntry->vNEO(iNextOffset,iPriorOffset);
+    aKeyEntry->vNEO(iNextOffset,iPriorOffset);
     xPriorVec[iNextOffset]->vNEO(iNextOffset,iKeyEntryOffset);
   }
   
@@ -2735,14 +2735,14 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // record orginal first entry incase we insert a new first entry
   
-  Entry* pOriginalFirstEntry = pFirstEntry();
+  Entry* aOriginalFirstEntry = pFirstEntry();
   if (!pOriginalFirstEntry)
     pOriginalFirstEntry = pFirstEntry();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the key
   
-  Entry* pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
+  Entry* aInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the insert of a left most key
@@ -2777,31 +2777,31 @@ Entry* EntryBuffer::aInsertKeyBuffer(KeyWrk& xKeyWrk,
   }
 #endif
   
-  Entry* pInsertedKeyEntry;
+  Entry* aInsertedKeyEntry;
 
 #ifdef EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (m_iBufferLevel) {
-      Entry* pOriginalFirstEntry = pFirstEntry();
-      pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
-      vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootKeyBuffer);
+      Entry* aOriginalFirstEntry = pFirstEntry();
+      aInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
+      vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootKeyBuffer);
     }
     else {
-      pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
+      aInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
     }
   }
   else {
-    Entry* pOriginalFirstEntry = pFirstEntry();
-    pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
-    vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootKeyBuffer);
+    Entry* aOriginalFirstEntry = pFirstEntry();
+    aInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
+    vHandleFirstInsert(aInsertedKeyEntry,aOriginalFirstEntry,ppRootKeyBuffer);
   }
 #else
-  Entry* pOriginalFirstEntry = pFirstEntry();
+  Entry* aOriginalFirstEntry = pFirstEntry();
   pInsertedKeyEntry = pInsertKeyAbs(xKeyWrk);
   vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootKeyBuffer);
 #endif
   
-  return pInsertedKeyEntry;
+  return aInsertedKeyEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2831,13 +2831,13 @@ Entry* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Entry* pInsertedKeyEntry =
+  Entry* aInsertedKeyEntry =
     pInsertIntoBuffer->aInsertKeyBuffer(xKeyWrk,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pInsertIntoBuffer->m_iBufferLevel) {
-    Id xId = pInsertedKeyEntry->xId();
+    Id xId = aInsertedKeyEntry->xId();
     i8 nBuffer = xId.iBuffer();
     
     HeapBuffer* pHeapBuffer =
@@ -2853,7 +2853,7 @@ Entry* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
     }
   }
   
-  return pInsertedKeyEntry;
+  return aInsertedKeyEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2864,7 +2864,7 @@ void EntryBuffer::vItemCountRestore(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_nItems = 0;
-  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry, 0))
+  for (Entry* aEntry = pFirstEntry(); aEntry; aEntry = pNextEntry(aEntry, 0))
     m_nItems++;
 }
 
@@ -2875,8 +2875,8 @@ bool EntryBuffer::bKeyBeforeBuffer(Key* aKeyTest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  Entry* pFirstEntry = this->pFirstEntry();
-  Key* aFirstKey = pFirstEntry->aKey();
+  Entry* aFirstEntry = this->pFirstEntry();
+  Key* aFirstKey = aFirstEntry->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
   
@@ -2912,17 +2912,17 @@ void EntryBuffer::vLazyBuild(void)
 /*----------------------------------------------------------------------------*/
 /* convert given entry into free entry                                        */
 /*----------------------------------------------------------------------------*/
-FreeEntry* EntryBuffer::aMakeFreeEntry(Entry* pEntry)
+FreeEntry* EntryBuffer::aMakeFreeEntry(Entry* aEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  i8 nSizeEntry = pEntry->nSizeEntry();
-  i8 nSizeNEO   = pEntry->iNEOsize();
+  i8 nSizeEntry = aEntry->nSizeEntry();
+  i8 nSizeNEO   = aEntry->iNEOsize();
   i8 nSizeFree  = nSizeEntry + nSizeNEO;
   
-  FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeFree);
+  FreeEntry* aFreeEntry = new(aEntry) FreeEntry(nSizeFree);
 
-  return pFreeEntry;
+  return aFreeEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2997,13 +2997,13 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   // insert the first key of left buffer into higher buffer
   
   if ( ! pHigherBuffer->nItems() ) {
-    Entry* pFirstKeyLeft  = pLeftBuffer->pFirstEntry();
+    Entry* aFirstKeyLeft  = pLeftBuffer->pFirstEntry();
     
     Id xIdLeft(*pLeftBuffer->nBufferNo(),0);
-    i8 iTxIdLeft = pFirstKeyLeft->iTxId();
-    Key* aKeyLeft = pFirstKeyLeft->aKey();
+    i8 iTxIdLeft = aFirstKeyLeft->iTxId();
+    Key* aKeyLeft = aFirstKeyLeft->aKey();
     i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
-    i8 nOffsetsLeft = pFirstKeyLeft->nOffsets();
+    i8 nOffsetsLeft = aFirstKeyLeft->nOffsets();
     
     
     KeyWrk xKeyWrkLeft;
@@ -3014,20 +3014,20 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
     xKeyWrkLeft.vOffsets(nOffsetsLeft);
     
     
-    Entry* pNewKeyLeft =
+    Entry* aNewKeyLeft =
     pHigherBuffer->aInsertKeyUpwards(xKeyWrkLeft,ppRootKeyBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // insert the first key of right buffer into higher buffer
   
-  Entry* pFirstKeyRight = pRightBuffer->pFirstEntry();
+  Entry* aFirstKeyRight = pRightBuffer->pFirstEntry();
   
   Id xIdRight(*pRightBuffer->nBufferNo(),0);
-  i8 iTxIdRight = pFirstKeyRight->iTxId();
-  Key* aKeyRight = pFirstKeyRight->aKey();
+  i8 iTxIdRight = aFirstKeyRight->iTxId();
+  Key* aKeyRight = aFirstKeyRight->aKey();
   i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
-  i8 nOffsetsRight = pFirstKeyRight->nOffsets();
+  i8 nOffsetsRight = aFirstKeyRight->nOffsets();
   
   
   KeyWrk xKeyWrkRight;
@@ -3038,7 +3038,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   xKeyWrkRight.vOffsets(nOffsetsRight);
   
   
-  Entry* pNewKeyRight =
+  Entry* aNewKeyRight =
   pHigherBuffer->aInsertKeyUpwards(xKeyWrkRight,ppRootKeyBuffer);
   
   
@@ -3092,14 +3092,14 @@ Item* EntryBuffer::aNextItem(Item* pCurrent)
   
   switch (eClass) {
     case CN_ENTRY: {
-      Entry* pEntryCurr = static_cast<Entry*>(pCurrent);
-      pItemNext = reinterpret_cast<Item*>(pEntryCurr->aAddressAfter());
+      Entry* aEntryCurr = static_cast<Entry*>(pCurrent);
+      pItemNext = reinterpret_cast<Item*>(aEntryCurr->aAddressAfter());
       break;
     }
       
     case CN_FREEENTRY: {
-      FreeEntry* pFreeEntryCurr = static_cast<FreeEntry*>(pCurrent);
-      pItemNext = reinterpret_cast<Item*>(pFreeEntryCurr->aAddressAfter());
+      FreeEntry* aFreeEntryCurr = static_cast<FreeEntry*>(pCurrent);
+      pItemNext = reinterpret_cast<Item*>(aFreeEntryCurr->aAddressAfter());
       break;
     }
       
@@ -3125,16 +3125,16 @@ Entry* EntryBuffer::aPopLazyChain(void)
   if (! m_aLazyChain )
     return nullptr;
   
-  Entry* pPoppedLazyEntry = m_aLazyChain;
+  Entry* aPoppedLazyEntry = m_aLazyChain;
   
-  i8 iNextLazyOffset = pPoppedLazyEntry->iNEO(0);
+  i8 iNextLazyOffset = aPoppedLazyEntry->iNEO(0);
   
   if (-1 == iNextLazyOffset)
     m_aLazyChain = nullptr;
   else
     m_aLazyChain = aGetEntryOffset(iNextLazyOffset);
   
-  return pPoppedLazyEntry;
+  return aPoppedLazyEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3164,16 +3164,16 @@ EntryBuffer* EntryBuffer::pPositionPriorBuffer(Key* aFindKey)
     }
     
     // get the entry before the given insert key
-    Entry* pEntryPrior = pEntryBuffer->pPositionPriorEntry(aFindKey);
-    ASSERT(pEntryPrior);
-    if (pEntryPrior == pEntryBuffer->aHeadEntry())
-      pEntryPrior = pEntryBuffer->pNextEntry(pEntryPrior,0);
-    ASSERT(pEntryPrior);
+    Entry* aEntryPrior = pEntryBuffer->pPositionPriorEntry(aFindKey);
+    ASSERT(aEntryPrior);
+    if (aEntryPrior == pEntryBuffer->aHeadEntry())
+      aEntryPrior = pEntryBuffer->pNextEntry(aEntryPrior,0);
+    ASSERT(aEntryPrior);
     
     // get the index buffer of the entry
     //pEntryBuffer->vShow();
-    ASSERT(pEntryBuffer != pEntryPrior->pReferencedEntryBuffer());
-    pEntryBuffer = pEntryPrior->pReferencedEntryBuffer();
+    ASSERT(pEntryBuffer != aEntryPrior->pReferencedEntryBuffer());
+    pEntryBuffer = aEntryPrior->pReferencedEntryBuffer();
     ASSERT(pEntryBuffer);
     pEntryBuffer->vAssertEntryBuffer();
   }
@@ -3200,7 +3200,7 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
   
-  Entry* pScanEntry_sl = m_aHeadEntry;
+  Entry* aScanEntry_sl = m_aHeadEntry;
   
   bool bKeyIsGreaterEqual;
   
@@ -3208,10 +3208,10 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
        i_ScanOffset >= 0;
        i_ScanOffset--) {
     
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
-    while (pNextEntry_sl) {
+    Entry* aNextEntry_sl = pNextEntry(aScanEntry_sl,i_ScanOffset);
+    while (aNextEntry_sl) {
       
-      Key* aNextKey = pNextEntry_sl->aKey();
+      Key* aNextKey = aNextEntry_sl->aKey();
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
@@ -3230,20 +3230,20 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
       if (bKeyIsGreaterEqual)
         break;
       
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = pNextEntry(aNextEntry_sl,i_ScanOffset);
     }
   }
   
-  return pScanEntry_sl;
+  return aScanEntry_sl;
 }
 
 /*----------------------------------------------------------------------------*/
 /* compute prior vector for find key, such that next of priorVec[0] is        */
 /* specifically the given find entry                                          */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
-                                         Entry* pFindEntry)
+void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* aPriorVec[],
+                                         Entry* aFindEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -3256,7 +3256,7 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    pPriorVec[i_Offset] = m_aHeadEntry;
+    aPriorVec[i_Offset] = m_aHeadEntry;
   
   if (nItems() == 0)
     return;
@@ -3265,21 +3265,21 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  i8 iFindLevels = pFindEntry ? pFindEntry->nOffsets() - 1 : 2;
+  i8 iFindLevels = aFindEntry ? aFindEntry->nOffsets() - 1 : 2;
   
   bool bIsJuxta;
-  Entry* pScanEntry_sl = m_aHeadEntry;
+  Entry* aScanEntry_sl = m_aHeadEntry;
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
        i_ScanOffset--) {
     
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
-    while (pNextEntry_sl) {
+    Entry* aNextEntry_sl = pNextEntry(aScanEntry_sl,i_ScanOffset);
+    while (aNextEntry_sl) {
       
-      if (pFindEntry == pNextEntry_sl)
+      if (aFindEntry == aNextEntry_sl)
         break;
       
-      Key* aNextKey = pNextEntry_sl->aKey();
+      Key* aNextKey = aNextEntry_sl->aKey();
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
@@ -3299,17 +3299,17 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
 #endif
       
       if (bIsJuxta) {
-        if (! pFindEntry || pNextEntry_sl == pFindEntry)
+        if (! aFindEntry || aNextEntry_sl == aFindEntry)
           break;
         
         if (i_ScanOffset > iFindLevels)
           break;
       }
       
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = pNextEntry(aNextEntry_sl,i_ScanOffset);
     }
-    pPriorVec[i_ScanOffset] = pScanEntry_sl;
+    aPriorVec[i_ScanOffset] = aScanEntry_sl;
   }
 }
 
@@ -3317,7 +3317,7 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
+void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* aPriorVec[],
                                           EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -3331,7 +3331,7 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    pPriorVec[i_Offset] = m_aHeadEntry;
+    aPriorVec[i_Offset] = m_aHeadEntry;
   
   if (nItems() == 0)
     return;
@@ -3340,16 +3340,16 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   bool bNextKeyIsGreater;
-  Entry* pScanEntry_sl = m_aHeadEntry;
+  Entry* aScanEntry_sl = m_aHeadEntry;
   
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
        i_ScanOffset--) {
     
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
-    while (pNextEntry_sl) {
+    Entry* aNextEntry_sl = pNextEntry(aScanEntry_sl,i_ScanOffset);
+    while (aNextEntry_sl) {
       
-      Key* aNextKey = pNextEntry_sl->aKey();
+      Key* aNextKey = aNextEntry_sl->aKey();
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
@@ -3371,14 +3371,14 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
       if (0 == i_ScanOffset) {
         bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
         if (bKeysAreEqual &&
-            (pToBuffer == pNextEntry_sl->pReferencedEntryBuffer()->pPrevBuffer()))
+            (pToBuffer == aNextEntry_sl->pReferencedEntryBuffer()->pPrevBuffer()))
           break;
       }
       
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = pNextEntry(aNextEntry_sl,i_ScanOffset);
     }
-    pPriorVec[i_ScanOffset] = pScanEntry_sl;
+    aPriorVec[i_ScanOffset] = aScanEntry_sl;
   }
 }
 
@@ -3386,7 +3386,7 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorVecBuffer2(Key* aFindKey, Entry* pPriorVec[],
+void EntryBuffer::vPositionPriorVecBuffer2(Key* aFindKey, Entry* aPriorVec[],
                                            EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -3400,7 +3400,7 @@ void EntryBuffer::vPositionPriorVecBuffer2(Key* aFindKey, Entry* pPriorVec[],
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    pPriorVec[i_Offset] = m_aHeadEntry;
+    aPriorVec[i_Offset] = m_aHeadEntry;
   
   if (nItems() == 0)
     return;
@@ -3409,16 +3409,16 @@ void EntryBuffer::vPositionPriorVecBuffer2(Key* aFindKey, Entry* pPriorVec[],
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   bool bNextKeyIsGreaterEqual;
-  Entry* pScanEntry_sl = m_aHeadEntry;
+  Entry* aScanEntry_sl = m_aHeadEntry;
   
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
        i_ScanOffset--) {
     
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
-    while (pNextEntry_sl) {
+    Entry* aNextEntry_sl = pNextEntry(aScanEntry_sl,i_ScanOffset);
+    while (aNextEntry_sl) {
       
-      Key* aNextKey = pNextEntry_sl->aKey();
+      Key* aNextKey = aNextEntry_sl->aKey();
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
@@ -3431,14 +3431,14 @@ void EntryBuffer::vPositionPriorVecBuffer2(Key* aFindKey, Entry* pPriorVec[],
       if (0 == i_ScanOffset) {
         bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
         if (bKeysAreEqual &&
-            (pToBuffer == pNextEntry_sl->pReferencedEntryBuffer()->pPrevBuffer()))
+            (pToBuffer == aNextEntry_sl->pReferencedEntryBuffer()->pPrevBuffer()))
           break;
       }
       
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = pNextEntry(aNextEntry_sl,i_ScanOffset);
     }
-    pPriorVec[i_ScanOffset] = pScanEntry_sl;
+    aPriorVec[i_ScanOffset] = aScanEntry_sl;
   }
 }
 
@@ -3446,7 +3446,7 @@ void EntryBuffer::vPositionPriorVecBuffer2(Key* aFindKey, Entry* pPriorVec[],
 /* compute prior vec for find key, such that next of priorVec[0] is the next  */
 /* buffer after find keys toBuffer (ie nextBuffer->prevBuffer == toBuffer)    */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPositionPriorVecBuffer3(Key* aFindKey, Entry* pPriorVec[],
+void EntryBuffer::vPositionPriorVecBuffer3(Key* aFindKey, Entry* aPriorVec[],
                                            EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -3460,7 +3460,7 @@ void EntryBuffer::vPositionPriorVecBuffer3(Key* aFindKey, Entry* pPriorVec[],
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    pPriorVec[i_Offset] = m_aHeadEntry;
+    aPriorVec[i_Offset] = m_aHeadEntry;
   
   if (nItems() == 0)
     return;
@@ -3469,16 +3469,16 @@ void EntryBuffer::vPositionPriorVecBuffer3(Key* aFindKey, Entry* pPriorVec[],
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   bool bNextKeyIsGreaterEqual;
-  Entry* pScanEntry_sl = m_aHeadEntry;
+  Entry* aScanEntry_sl = m_aHeadEntry;
   
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
        i_ScanOffset--) {
     
-    Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_ScanOffset);
-    while (pNextEntry_sl) {
+    Entry* aNextEntry_sl = pNextEntry(aScanEntry_sl,i_ScanOffset);
+    while (aNextEntry_sl) {
       
-      Key* aNextKey = pNextEntry_sl->aKey();
+      Key* aNextKey = aNextEntry_sl->aKey();
       
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
@@ -3488,22 +3488,22 @@ void EntryBuffer::vPositionPriorVecBuffer3(Key* aFindKey, Entry* pPriorVec[],
       if (0 == i_ScanOffset) {
         bool bKeysAreEqual = aNextKey->bEqualTo(aFindKey,pIdxColVec);
         if (bKeysAreEqual &&
-            (pToBuffer == pNextEntry_sl->pReferencedEntryBuffer()))
+            (pToBuffer == aNextEntry_sl->pReferencedEntryBuffer()))
           break;
       }
       
       if (bNextKeyIsGreaterEqual)
         break;
       
-      pScanEntry_sl = pNextEntry_sl;
-      pNextEntry_sl = pNextEntry(pNextEntry_sl,i_ScanOffset);
+      aScanEntry_sl = aNextEntry_sl;
+      aNextEntry_sl = pNextEntry(aNextEntry_sl,i_ScanOffset);
     }
-    pPriorVec[i_ScanOffset] = pScanEntry_sl;
+    aPriorVec[i_ScanOffset] = aScanEntry_sl;
   }
   
-  Entry* pToBeDelete = pNextEntry(pPriorVec[0],0);
+  Entry* aToBeDelete = pNextEntry(aPriorVec[0],0);
   
-  RASSERT(pToBuffer == pToBeDelete->pReferencedEntryBuffer());
+  RASSERT(pToBuffer == aToBeDelete->pReferencedEntryBuffer());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3532,9 +3532,9 @@ EntryBuffer* EntryBuffer::pSplit(void)
   // find split entry. every entry from split entry and to the right of it
   // will be moved to the new right buffer
   
-  Entry* pPriorEntry;
+  Entry* aPriorEntry;
   i8 iSplitAtEntry = m_nItems/2;
-  Entry* pSplitEntry = aGetEntrySplit(iSplitAtEntry,&pPriorEntry);
+  Entry* aSplitEntry = aGetEntrySplit(iSplitAtEntry,&aPriorEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the prior vector to the split entry
@@ -3565,21 +3565,21 @@ EntryBuffer* EntryBuffer::pSplit(void)
   
   KeyWrk xKeyWrk;
   
-  Entry* pNextEntry;
-  for (Entry* pMoveEntry = pSplitEntry;
-       pMoveEntry;
-       pMoveEntry = pNextEntry) {
+  Entry* aNextEntry;
+  for (Entry* aMoveEntry = aSplitEntry;
+       aMoveEntry;
+       aMoveEntry = aNextEntry) {
   
     ASSERT(! m_iBufferLevel ||
-           pMoveEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
+           aMoveEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
 
-    pNextEntry = this->pNextEntry(pMoveEntry,0);
+    aNextEntry = this->pNextEntry(aMoveEntry,0);
 
-    i8 iTxId = pMoveEntry->iTxId();
-    Id xId = pMoveEntry->xId();
-    Key* aKey = pMoveEntry->aKey();
+    i8 iTxId = aMoveEntry->iTxId();
+    Id xId = aMoveEntry->xId();
+    Key* aKey = aMoveEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = pMoveEntry->nOffsets();
+    i8 nOffsets = aMoveEntry->nOffsets();
     
     xKeyWrk.vTxId(iTxId);
     xKeyWrk.vId(xId);
@@ -3587,10 +3587,10 @@ EntryBuffer* EntryBuffer::pSplit(void)
     xKeyWrk.vKeySize(nKeySize);
     xKeyWrk.vOffsets(nOffsets);
     
-    Entry* pNewEntry = pNewRightBuffer->pInsertKeyAbs(xKeyWrk);
+    Entry* aNewEntry = pNewRightBuffer->pInsertKeyAbs(xKeyWrk);
     
     ASSERT(! m_iBufferLevel ||
-           pNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
+           aNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
     
     i8 nBuffer = xId.iBuffer();
     HeapBuffer* pHeapBuffer =
@@ -3600,9 +3600,9 @@ EntryBuffer* EntryBuffer::pSplit(void)
       reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
     
     ASSERT(pChildBuffer->m_pHigherBuffer ==
-           pNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
+           aNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
     
-    vDeleteEntry(&pMoveEntry);
+    vDeleteEntry(&aMoveEntry);
   }
   
   //pThisLeftBuffer->vShow();
@@ -3614,11 +3614,11 @@ EntryBuffer* EntryBuffer::pSplit(void)
   
   Id xId;
   if (m_iBufferLevel != 0)  {
-    for (Entry* pMovedEntry = pNewRightBuffer->pFirstEntry();
-         pMovedEntry;
-         pMovedEntry = pNewRightBuffer->pNextEntry(pMovedEntry, 0)) {
+    for (Entry* aMovedEntry = pNewRightBuffer->pFirstEntry();
+         aMovedEntry;
+         aMovedEntry = pNewRightBuffer->pNextEntry(aMovedEntry, 0)) {
       
-      xId = pMovedEntry->xId();
+      xId = aMovedEntry->xId();
       i8 nBuffer = xId.iBuffer();
       
       HeapBuffer* pHeapBuffer =
@@ -3628,7 +3628,7 @@ EntryBuffer* EntryBuffer::pSplit(void)
         reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
       
       ASSERT(pChildBuffer->m_pHigherBuffer ==
-             pMovedEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
+             aMovedEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
       
       
       if (pChildBuffer->m_pHigherBuffer != pThisLeftBuffer) {
@@ -3681,37 +3681,37 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   // find split entry. every entry from split entry and to the right of it
   // will be moved to the new right buffer
   
-  Entry* pPriorEntry;
+  Entry* aPriorEntry;
   //i8 iSplitAtEntry = m_nItems/2;
   i8 iSplitAtEntry = (m_nItems * iSplitRatio) / 100;
-  Entry* pSplitEntry = aGetEntrySplit(iSplitAtEntry,&pPriorEntry);
+  Entry* aSplitEntry = aGetEntrySplit(iSplitAtEntry,&aPriorEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy split right entries to a new right buffer
   
   KeyWrk xKeyWrk;
-  Entry* pCopyEntry;
-  Entry* pNextEntry;
+  Entry* aCopyEntry;
+  Entry* aNextEntry;
   
-  Entry* pLastEntryRight = pNewRightBuffer->aHeadEntry();
+  Entry* aLastEntryRight = pNewRightBuffer->aHeadEntry();
  
   i8 nEntriesCopied = 0;
-  for (pCopyEntry = pSplitEntry;
-       pCopyEntry;
-       pCopyEntry = pNextEntry) {
+  for (aCopyEntry = aSplitEntry;
+       aCopyEntry;
+       aCopyEntry = aNextEntry) {
     
     ASSERT(! m_iBufferLevel ||
-           pCopyEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
+           aCopyEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
     
     nEntriesCopied++;
     
-    pNextEntry = this->pNextEntry(pCopyEntry,0);
+    aNextEntry = this->pNextEntry(aCopyEntry,0);
     
-    i8 iTxId = pCopyEntry->iTxId();
-    Id xId = pCopyEntry->xId();
-    Key* aKey = pCopyEntry->aKey();
+    i8 iTxId = aCopyEntry->iTxId();
+    Id xId = aCopyEntry->xId();
+    Key* aKey = aCopyEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
-    i8 nOffsets = pCopyEntry->nOffsets();
+    i8 nOffsets = aCopyEntry->nOffsets();
     
     xKeyWrk.vTxId(iTxId);
     xKeyWrk.vId(xId);
@@ -3719,16 +3719,16 @@ EntryBuffer* EntryBuffer::pSplit2(void)
     xKeyWrk.vKeySize(nKeySize);
     xKeyWrk.vOffsets(nOffsets);
     
-    Entry* pNewEntry = pNewRightBuffer->pInsertKeyAbsL0(xKeyWrk,&pLastEntryRight);
+    Entry* aNewEntry = pNewRightBuffer->pInsertKeyAbsL0(xKeyWrk,&aLastEntryRight);
     
     //.pNewRightBuffer->vShow();
     
     // make the moved entry in the left buffer to be a free entry
-    FreeEntry* pFreeEntry = aMakeFreeEntry(pCopyEntry);
+    FreeEntry* aFreeEntry = aMakeFreeEntry(aCopyEntry);
     
     // these can be commented
     ASSERT(! m_iBufferLevel ||
-           pNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
+           aNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer == pThisLeftBuffer);
     
     i8 nBuffer = xId.iBuffer();
     HeapBuffer* pHeapBuffer =
@@ -3738,15 +3738,15 @@ EntryBuffer* EntryBuffer::pSplit2(void)
       reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
     
     ASSERT(pChildBuffer->m_pHigherBuffer ==
-           pNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
+           aNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
     
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cut off right entries at L0
   
-  ASSERT(this->pNextEntry(pPriorEntry,0) == pSplitEntry);
-  pPriorEntry->vNEO(0,-1);
+  ASSERT(this->pNextEntry(aPriorEntry,0) == aSplitEntry);
+  aPriorEntry->vNEO(0,-1);
   
   // adjust the number of items in the buffer
   i8 nItemsOriginally = pThisLeftBuffer->nItems();
@@ -3772,11 +3772,11 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   
   Id xId;
   if (m_iBufferLevel != 0)  {
-    for (Entry* pMovedEntry = pNewRightBuffer->pFirstEntry();
-         pMovedEntry;
-         pMovedEntry = pNewRightBuffer->pNextEntry(pMovedEntry, 0)) {
+    for (Entry* aMovedEntry = pNewRightBuffer->pFirstEntry();
+         aMovedEntry;
+         aMovedEntry = pNewRightBuffer->pNextEntry(aMovedEntry, 0)) {
       
-      xId = pMovedEntry->xId();
+      xId = aMovedEntry->xId();
       i8 nBuffer = xId.iBuffer();
       
       HeapBuffer* pHeapBuffer =
@@ -3786,7 +3786,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
       reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
       
       ASSERT(pChildBuffer->m_pHigherBuffer ==
-             pMovedEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
+             aMovedEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
       
       
       if (pChildBuffer->m_pHigherBuffer != pThisLeftBuffer) {
@@ -3814,36 +3814,36 @@ EntryBuffer* EntryBuffer::pSplit2(void)
 /*----------------------------------------------------------------------------*/
 #ifdef _DEBUG
 
-bool EntryBuffer::bCheckPriorVec(Entry* pPriorVec[])
+bool EntryBuffer::bCheckPriorVec(Entry* aPriorVec[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   vNumberEntries();
   
-  Entry* pPriorEntry_0 = pPriorVec[0];
-  Entry* pPriorEntry_1 = pPriorVec[1];
-  Entry* pPriorEntry_2 = pPriorVec[2];
+  Entry* aPriorEntry_0 = aPriorVec[0];
+  Entry* aPriorEntry_1 = aPriorVec[1];
+  Entry* aPriorEntry_2 = aPriorVec[2];
   
-  Entry* pNextEntry_0  = pNextEntry(pPriorEntry_0,0);
-  Entry* pNextEntry_1  = pNextEntry(pPriorEntry_1,1);
-  Entry* pNextEntry_2  = pNextEntry(pPriorEntry_2,2);
+  Entry* aNextEntry_0  = pNextEntry(aPriorEntry_0,0);
+  Entry* aNextEntry_1  = pNextEntry(aPriorEntry_1,1);
+  Entry* aNextEntry_2  = pNextEntry(aPriorEntry_2,2);
   
-  if (pNextEntry_0 && pNextEntry_1) {
-    if (pNextEntry_0->m_iEntryNo > pNextEntry_1->m_iEntryNo) {
+  if (aNextEntry_0 && aNextEntry_1) {
+    if (aNextEntry_0->m_iEntryNo > aNextEntry_1->m_iEntryNo) {
       vVerifyFault();
       return false;
     }
   }
   
-  if (pNextEntry_1 && pNextEntry_2) {
-    if (pNextEntry_1->m_iEntryNo > pNextEntry_2->m_iEntryNo) {
+  if (aNextEntry_1 && aNextEntry_2) {
+    if (aNextEntry_1->m_iEntryNo > aNextEntry_2->m_iEntryNo) {
       vVerifyFault();
       return false;
     }
   }
   
-  if (pNextEntry_0 && pNextEntry_2) {
-    if (pNextEntry_0->m_iEntryNo > pNextEntry_2->m_iEntryNo) {
+  if (aNextEntry_0 && aNextEntry_2) {
+    if (aNextEntry_0->m_iEntryNo > aNextEntry_2->m_iEntryNo) {
       vVerifyFault();
       return false;
     }
@@ -3865,11 +3865,11 @@ void EntryBuffer::vNumberEntries(void)
   
   i8 iEntryNo = 0;
   
-  for (Entry* pTestEntry_0 = pNextEntry(m_aHeadEntry,0);
-       pTestEntry_0;
-       pTestEntry_0 = pNextEntry(pTestEntry_0,0))
+  for (Entry* aTestEntry_0 = pNextEntry(m_aHeadEntry,0);
+       aTestEntry_0;
+       aTestEntry_0 = pNextEntry(aTestEntry_0,0))
     
-    pTestEntry_0->m_iEntryNo = iEntryNo++;
+    aTestEntry_0->m_iEntryNo = iEntryNo++;
   
 }
 #endif
@@ -3877,7 +3877,7 @@ void EntryBuffer::vNumberEntries(void)
 /*----------------------------------------------------------------------------*/
 /* quick verify                                                               */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
+void EntryBuffer::vQuickVerify(Entry* aSeeEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 
@@ -3886,24 +3886,24 @@ void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
        pItem = pNextItem(pItem))
     {;}
   
-  for (Entry* pTestEntry = pNextEntry(m_aHeadEntry,0);
-       pTestEntry;
-       pTestEntry = pNextEntry(pTestEntry,0)) {
+  for (Entry* aTestEntry = pNextEntry(m_aHeadEntry,0);
+       aTestEntry;
+       aTestEntry = pNextEntry(aTestEntry,0)) {
   
-    if (pSeeEntry)
-      pTestEntry->vShow(iToOffset(pTestEntry),m_pIndex,true);
+    if (aSeeEntry)
+      aTestEntry->vShow(iToOffset(aTestEntry),m_pIndex,true);
     
-    if (pTestEntry == pSeeEntry)
+    if (aTestEntry == aSeeEntry)
       int iDebug = 1;
     
-    for (i8 i_ScanOffset = pTestEntry->nOffsets()-1; i_ScanOffset >= 0; i_ScanOffset--) {
-      Entry* pCheckEntry = pNextEntry(pTestEntry,i_ScanOffset);
-      if (!pCheckEntry)
+    for (i8 i_ScanOffset = aTestEntry->nOffsets()-1; i_ScanOffset >= 0; i_ScanOffset--) {
+      Entry* aCheckEntry = pNextEntry(aTestEntry,i_ScanOffset);
+      if (! aCheckEntry)
         continue;
       
-      if (CN_ENTRY != pCheckEntry->eClass())
+      if (CN_ENTRY != aCheckEntry->eClass())
         vShow();
-      ASSERT(CN_ENTRY == pCheckEntry->eClass());
+      ASSERT(CN_ENTRY == aCheckEntry->eClass());
     }
  
   }
@@ -3911,7 +3911,7 @@ void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
 //  ln i_ScanOffset;
 //  for (i_ScanOffset = 2; *i_ScanOffset >= 0; i_ScanOffset--) {
 //
-//    for (Entry* pTestEntry = pNextEntry(m_aHeadEntry,*i_ScanOffset);
+//    for (Entry* aTestEntry = pNextEntry(m_aHeadEntry,*i_ScanOffset);
 //         pTestEntry;
 //         pTestEntry = pNextEntry(pTestEntry,*i_ScanOffset)) {
 //      
@@ -3934,27 +3934,27 @@ void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
 /*----------------------------------------------------------------------------*/
 /* quick verify                                                               */
 /*----------------------------------------------------------------------------*/
-bool EntryBuffer::bQuickVerify(Entry* pNotSeeEntry)
+bool EntryBuffer::bQuickVerify(Entry* aNotSeeEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  for (Entry* pTestEntry = pNextEntry(m_aHeadEntry,0);
-       pTestEntry;
-       pTestEntry = pNextEntry(pTestEntry,0)) {
+  for (Entry* aTestEntry = pNextEntry(m_aHeadEntry,0);
+       aTestEntry;
+       aTestEntry = pNextEntry(aTestEntry,0)) {
     
-    for (i8 i_ScanOffset = pTestEntry->nOffsets()-1; i_ScanOffset >= 0; i_ScanOffset--) {
+    for (i8 i_ScanOffset = aTestEntry->nOffsets()-1; i_ScanOffset >= 0; i_ScanOffset--) {
       
-      Entry* pCheckEntry = pNextEntry(pTestEntry,i_ScanOffset);
-      if (!pCheckEntry)
+      Entry* aCheckEntry = pNextEntry(aTestEntry,i_ScanOffset);
+      if (! aCheckEntry)
         continue;
       
-      if (pCheckEntry == pNotSeeEntry) {
-        pTestEntry->vShow(iToOffset(pTestEntry),m_pIndex,true);
-        pCheckEntry->vShow(iToOffset(pCheckEntry),m_pIndex,true);
+      if (aCheckEntry == aNotSeeEntry) {
+        aTestEntry->vShow(iToOffset(aTestEntry),m_pIndex,true);
+        aCheckEntry->vShow(iToOffset(aCheckEntry),m_pIndex,true);
         return false;
       }
       
-      if (CN_ENTRY != pCheckEntry->eClass())
+      if (CN_ENTRY != aCheckEntry->eClass())
         return false;
     }
   }
@@ -4125,9 +4125,9 @@ bool EntryBuffer::bVerifyLnAny(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // verify the contents of child buffers
   
-  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+  for (Entry* aEntry = pFirstEntry(); aEntry; aEntry = pNextEntry(aEntry,0)) {
     
-    EntryBuffer* pRefEntBuf = pEntry->pReferencedEntryBuffer();
+    EntryBuffer* pRefEntBuf = aEntry->pReferencedEntryBuffer();
     if (pRefEntBuf->m_iBufferLevel) {
       bValid = pRefEntBuf->bVerifyLnAny();
     }
@@ -4164,17 +4164,17 @@ bool EntryBuffer::bVerifyAdjacent(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+  for (Entry* aEntry = pFirstEntry(); aEntry; aEntry = pNextEntry(aEntry,0)) {
     
     // get the buffer that this entry references
-    EntryBuffer* pChildEntryBuffer = pEntry->pReferencedEntryBuffer();
+    EntryBuffer* pChildEntryBuffer = aEntry->pReferencedEntryBuffer();
     
     // get the adjacent entry
-    Entry* pAdjacentEntry = pNextEntry(pEntry,0);
+    Entry* aAdjacentEntry = pNextEntry(aEntry,0);
     
-    if (pAdjacentEntry) {
+    if (aAdjacentEntry) {
       // get the buffer that the adjacent entry references
-      EntryBuffer* pAdjacentChildEntryBuffer = pAdjacentEntry->pReferencedEntryBuffer();
+      EntryBuffer* pAdjacentChildEntryBuffer = aAdjacentEntry->pReferencedEntryBuffer();
       
       // the two child buffers should not be the same
      if ( pChildEntryBuffer == pAdjacentChildEntryBuffer) {
@@ -4202,9 +4202,9 @@ bool EntryBuffer::bVerifyBufferRefs(void)
   
   RASSERT(m_iBufferLevel >= 1);
   
-  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+  for (Entry* aEntry = pFirstEntry(); aEntry; aEntry = pNextEntry(aEntry,0)) {
     
-    EntryBuffer* pChildEntBuf = pEntry->pReferencedEntryBuffer();
+    EntryBuffer* pChildEntBuf = aEntry->pReferencedEntryBuffer();
     
     if ( ! pChildEntBuf->bValidEntryBuffer() ) {
       vVerifyFault();
@@ -4275,8 +4275,8 @@ bool EntryBuffer::bVerifyEntryOffset(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // validate offset element which is the offset to an entry
     
-    Entry* pEntry = aGetEntryOffset(i_RowEntryOffset);
-    if (! pEntry->bValidEntry())
+    Entry* aEntry = aGetEntryOffset(i_RowEntryOffset);
+    if (! aEntry->bValidEntry())
       return false;
   }
   
@@ -4301,20 +4301,20 @@ bool EntryBuffer::bVerifyFirstKeys(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+  for (Entry* aEntry = pFirstEntry(); aEntry; aEntry = pNextEntry(aEntry,0)) {
     
     // get the entry buffer that this entry references
-    EntryBuffer* pChildEntryBuffer = pEntry->pReferencedEntryBuffer();
+    EntryBuffer* pChildEntryBuffer = aEntry->pReferencedEntryBuffer();
     
     //pChildEntryBuffer->vShow();
 
     
     // get the first entry of the child buffer
-    Entry* pChildFirstEntry = pChildEntryBuffer->pFirstEntry();
+    Entry* aChildFirstEntry = pChildEntryBuffer->pFirstEntry();
 
     // get keys of the two entries
-    Key* pKeyParent = pEntry->aKey();
-    Key* pKeyChild  = pChildFirstEntry->aKey();
+    Key* pKeyParent = aEntry->aKey();
+    Key* pKeyChild  = aChildFirstEntry->aKey();
    
     // the two keys should match
     bool bEqual = pKeyChild->bEqualTo(pKeyParent,pIdxColVec);
@@ -4339,11 +4339,11 @@ bool EntryBuffer::bVerifyFreeList(void)
       of FreeEntry's.  No other class is permited.
    */
   
-  for (FreeEntry* pFreeEntry = aFirstFree();
-       pFreeEntry != nullptr;
-       pFreeEntry = pFreeEntry->pNextFree()) {
+  for (FreeEntry* aFreeEntry = aFirstFree();
+       aFreeEntry != nullptr;
+       aFreeEntry = aFreeEntry->aNextFree()) {
     
-    if (! pFreeEntry->bValidFreeEntry()) {
+    if (! aFreeEntry->bValidFreeEntry()) {
       vVerifyFault();
       return false;
     }
@@ -4380,8 +4380,8 @@ bool EntryBuffer::bVerifyItems(void)
     switch (eClass) {
       
       case CN_ENTRY: {
-        Entry* pEntry = _pEntry(pItem);
-        if (! pEntry->bValidEntry()) {
+        Entry* aEntry = _pEntry(pItem);
+        if (! aEntry->bValidEntry()) {
           vShow();
           vVerifyFault();
           return false;
@@ -4391,8 +4391,8 @@ bool EntryBuffer::bVerifyItems(void)
       }
       
       case CN_FREEENTRY: {
-        FreeEntry* pFreeEntry = _pFreeEntry(pItem);
-        if (! pFreeEntry->bValidFreeEntry()) {
+        FreeEntry* aFreeEntry = _pFreeEntry(pItem);
+        if (! aFreeEntry->bValidFreeEntry()) {
           vShow();
           vVerifyFault();
           return false;
@@ -4441,20 +4441,20 @@ bool EntryBuffer::bVerifyKeyBufferOrder(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+  for (Entry* aEntry = pFirstEntry(); aEntry; aEntry = pNextEntry(aEntry,0)) {
     
     // get next entry
-    Entry* pNextEntry = this->pNextEntry(pEntry,0);
-    if (! pNextEntry)
+    Entry* aNextEntry = this->pNextEntry(aEntry,0);
+    if (! aNextEntry)
       break;
     
     // get the child entry buffers
-    EntryBuffer* pChildBufferA = pEntry->pReferencedEntryBuffer();
-    EntryBuffer* pChildBufferB = pNextEntry->pReferencedEntryBuffer();
+    EntryBuffer* pChildBufferA = aEntry->pReferencedEntryBuffer();
+    EntryBuffer* pChildBufferB = aNextEntry->pReferencedEntryBuffer();
     
     // child A should point to child B
     if (pChildBufferA->pNextBuffer() != pChildBufferB) {
-      vShow(pEntry);
+      vShow(aEntry);
       vVerifyFault();
       return false;
     }
@@ -4483,16 +4483,16 @@ bool EntryBuffer::bVerifyKeyOrder(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+  for (Entry* aEntry = pFirstEntry(); aEntry; aEntry = pNextEntry(aEntry,0)) {
     
     // get next entry
-    Entry* pNextEntry = this->pNextEntry(pEntry,0);
-    if (! pNextEntry)
+    Entry* aNextEntry = this->pNextEntry(aEntry,0);
+    if (! aNextEntry)
       break;
     
     // get keys of the two entries
-    Key* pKeyA = pEntry->aKey();
-    Key* pKeyB = pNextEntry->aKey();
+    Key* pKeyA = aEntry->aKey();
+    Key* pKeyB = aNextEntry->aKey();
 
     // next keyB should be greater than or equal to keyA
     bool bGreaterEqual = pKeyB->bGreaterEqual(pKeyA,pIdxColVec);
@@ -4565,7 +4565,7 @@ bool EntryBuffer::bVerifyRows(void)                        //# discuss with Alka
   RASSERT(0 == m_iBufferLevel);
   RASSERT(m_pIndex->bIsHidden());
   
-  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+  for (Entry* aEntry = pFirstEntry(); aEntry; aEntry = pNextEntry(aEntry,0)) {
   }
   
   return true;
@@ -4586,10 +4586,10 @@ bool EntryBuffer::bVerifyRowRefs(void)
   RASSERT(0 == m_iBufferLevel);
   RASSERT(! m_pIndex->bIsHidden());
   
-  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry,0)) {
+  for (Entry* aEntry = pFirstEntry(); aEntry; aEntry = pNextEntry(aEntry,0)) {
     
     // get the entry buffer that this L0 key leaf references
-    EntryBuffer* pEntryBuffer = pEntry->pReferencedEntryBuffer();
+    EntryBuffer* pEntryBuffer = aEntry->pReferencedEntryBuffer();
     
     // that referenced entry buffer should be an L0 buffer
     if (0 != pEntryBuffer->iBufferLevel()) {
@@ -4604,11 +4604,11 @@ bool EntryBuffer::bVerifyRowRefs(void)
     }
     
     // get the row entry from referenced entry buffer
-    i8 i_Row = pEntry->iRow();
-    Entry* pRowEntry = pEntryBuffer->pGetEntryRowNo(i_Row);
+    i8 i_Row = aEntry->iRow();
+    Entry* aRowEntry = pEntryBuffer->pGetEntryRowNo(i_Row);
     
     // validate the row entry                                          //# more?
-    if (1 != pRowEntry->nOffsets()) {
+    if (1 != aRowEntry->nOffsets()) {
       vVerifyFault();
       return false;
     }
@@ -4631,9 +4631,9 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  Entry* pNextEntry2;
-  Entry* pNextEntry1;
-  Entry* pNextEntry0;
+  Entry* aNextEntry2;
+  Entry* aNextEntry1;
+  Entry* aNextEntry0;
   
   for (i8 i_ScanLevel = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanLevel >= 0;
@@ -4642,30 +4642,30 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
     if (bShowKeys)
       vTrace("i_ScanLevel %lld\n"_Stz,i_ScanLevel);
     
-    Entry* pTestEntry_sl = pNextEntry(m_aHeadEntry,i_ScanLevel);
-    while (pTestEntry_sl) {
+    Entry* aTestEntry_sl = pNextEntry(m_aHeadEntry,i_ScanLevel);
+    while (aTestEntry_sl) {
       
-      if (CN_ENTRY != pTestEntry_sl->eClass()) {
+      if (CN_ENTRY != aTestEntry_sl->eClass()) {
         vVerifyFault();
         return false;
       }
       
       switch (i_ScanLevel) {
         case 2:
-          pNextEntry2 = pNextEntry(pTestEntry_sl,2);
-          if (pNextEntry2 && CN_ENTRY != pNextEntry2->eClass()) {
+          aNextEntry2 = pNextEntry(aTestEntry_sl,2);
+          if (aNextEntry2 && CN_ENTRY != aNextEntry2->eClass()) {
             vVerifyFault();
             return false;
           }
         case 1:
-          pNextEntry1 = pNextEntry(pTestEntry_sl,1);
-          if (pNextEntry1 && CN_ENTRY != pNextEntry1->eClass()) {
+          aNextEntry1 = pNextEntry(aTestEntry_sl,1);
+          if (aNextEntry1 && CN_ENTRY != aNextEntry1->eClass()) {
             vVerifyFault();
             return false;
           }
         case 0:
-          pNextEntry0 = pNextEntry(pTestEntry_sl,0);
-          if (pNextEntry0 && CN_ENTRY != pNextEntry0->eClass()) {
+          aNextEntry0 = pNextEntry(aTestEntry_sl,0);
+          if (aNextEntry0 && CN_ENTRY != aNextEntry0->eClass()) {
             vVerifyFault();
             return false;
           }
@@ -4673,13 +4673,13 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
       }
       
       if (bShowKeys) {
-        Key* aTestKey = pTestEntry_sl->aKey();
-        vTrace("Test %p: "_Stz,pTestEntry_sl);
+        Key* aTestKey = aTestEntry_sl->aKey();
+        vTrace("Test %p: "_Stz,aTestEntry_sl);
         aTestKey->vShow(pIdxColVec);
         vTrace("\n"_Stz);
       }
       
-      pTestEntry_sl = pNextEntry(pTestEntry_sl,i_ScanLevel);
+      aTestEntry_sl = pNextEntry(aTestEntry_sl,i_ScanLevel);
     }
   }
   
@@ -4710,13 +4710,13 @@ bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
   vNumberEntries();
   
   // run through all entries at level 0
-  Entry* pTestEntry_0 = pNextEntry(m_aHeadEntry,0);
-  while (pTestEntry_0) {
+  Entry* aTestEntry_0 = pNextEntry(m_aHeadEntry,0);
+  while (aTestEntry_0) {
     
     // check if scan entry has more than one offset
-    i8 nOffsets = pTestEntry_0->nOffsets();
+    i8 nOffsets = aTestEntry_0->nOffsets();
     if (1 == nOffsets) {
-      pTestEntry_0 = pNextEntry(pTestEntry_0,0);
+      aTestEntry_0 = pNextEntry(aTestEntry_0,0);
       continue;
     }
     
@@ -4725,33 +4725,33 @@ bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
          i_SkipLevel > 0;
          i_SkipLevel--) {
       
-      Entry* pScanEntry_sl = pNextEntry(m_aHeadEntry,i_SkipLevel);
-      while (pScanEntry_sl) {
+      Entry* aScanEntry_sl = pNextEntry(m_aHeadEntry,i_SkipLevel);
+      while (aScanEntry_sl) {
         
-        if (pScanEntry_sl == pTestEntry_0)
+        if (aScanEntry_sl == aTestEntry_0)
           break;
         
-        Entry* pNextEntry_sl = pNextEntry(pScanEntry_sl,i_SkipLevel);
+        Entry* aNextEntry_sl = pNextEntry(aScanEntry_sl,i_SkipLevel);
         
         // check we dont go backwwards
-        if (pNextEntry_sl->m_iEntryNo < pScanEntry_sl->m_iEntryNo) {
-          vShow(pScanEntry_sl);
+        if (aNextEntry_sl->m_iEntryNo < aScanEntry_sl->m_iEntryNo) {
+          vShow(aScanEntry_sl);
           vVerifyFault();
           return false;
         }
         
-        pScanEntry_sl = pNextEntry_sl;
+        aScanEntry_sl = aNextEntry_sl;
       }
       
-      if (pScanEntry_sl != pTestEntry_0) {
-        vShow(pTestEntry_0);
+      if (aScanEntry_sl != aTestEntry_0) {
+        vShow(aTestEntry_0);
         vVerifyFault();
         return false;
       }
       
     }
     
-    pTestEntry_0 = pNextEntry(pTestEntry_0,0);
+    aTestEntry_0 = pNextEntry(aTestEntry_0,0);
   }
   
   return true;
@@ -4863,23 +4863,23 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
     //((Row*)aRowData)->vDump(pColVec);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    Entry* pRowEntry = pLastRowBuffer->pAppendRow(xRowWrk);
+    Entry* aRowEntry = pLastRowBuffer->pAppendRow(xRowWrk);
     
-    if ( ! pRowEntry ) {
+    if ( ! aRowEntry ) {
       pLastRowBuffer = pLastRowBuffer->pNewNextBuffer();
-      pRowEntry = pLastRowBuffer->pAppendRow(xRowWrk);
+      aRowEntry = pLastRowBuffer->pAppendRow(xRowWrk);
     }
   
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     xKeyWrk.vReset();
-    pRowEntry->vExtractIndexKey(xKeyWrk,pIdxColVec1);
+    aRowEntry->vExtractIndexKey(xKeyWrk,pIdxColVec1);
     //xKeyWrk.vShow(pIdxColVec1);
     
     xKeyWrk.vTxId(0);
-    xKeyWrk.vId(pRowEntry->xId());
+    xKeyWrk.vId(aRowEntry->xId());
     
-    Entry* pKeyEntry =
-      EntryBuffer::pInsertKeyTree(xKeyWrk,&pRootKeyBuffer);
+    Entry* aKeyEntry =
+      EntryBuffer::aInsertKeyTree(xKeyWrk,&pRootKeyBuffer);
     
     vTrace("\nInserted record: %s\n"_Stz,sRecData.aChar());
     pRootKeyBuffer->vShowTree(false);

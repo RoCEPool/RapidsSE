@@ -22,11 +22,11 @@ namespace DBobjects
     void vAssertFreeEntry(void);
     bool bValidFreeEntry(void);
   
-    FreeEntry* pNextFree(void);
-    void       vNextFree(FreeEntry* pNextFree);
+    FreeEntry* aNextFree(void);
+    void       vNextFree(FreeEntry* aNextFree);
   
-    FreeEntry* pPrevFree(void);
-    void       vPrevFree(FreeEntry* pPrevFree);
+    FreeEntry* aPrevFree(void);
+    void       vPrevFree(FreeEntry* aPrevFree);
   
     char* aAddressAfter(void);
   
