@@ -25,11 +25,11 @@ namespace Structures
   /*----------------------------------------------------------------------------*/
   /* safe cast                                                                  */
   /*----------------------------------------------------------------------------*/
-  inline Item* _pItem(void* aAddr)
+  inline Item* _aItem(void* aAddr)
   {
-    Item* pItem = reinterpret_cast<Item*>(aAddr);
+    Item* aItem = reinterpret_cast<Item*>(aAddr);
     
-    return pItem;
+    return aItem;
   }
   
 }

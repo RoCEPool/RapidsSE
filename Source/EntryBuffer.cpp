@@ -1078,7 +1078,7 @@ Entry* EntryBuffer::aNextEntry(Entry* aCurrent, i8 i_Offset)
     return nullptr;
   
   char* aAddress = aAdd<char*>(aDataArea(), iOffset);
-  //Item* pItem = _pItem(aAddress);
+  //Item* aItem = _pItem(aAddress);
   
   //if (CN_ENTRY != pItem->eClass())
   //  vShow();
@@ -1691,7 +1691,7 @@ Entry* EntryBuffer::aAllotEntry(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Entry* aEntry = reinterpret_cast<Entry*>(pAllotItem(nBytes));
+  Entry* aEntry = reinterpret_cast<Entry*>(aAllotItem(nBytes));
   if ( ! aEntry )
     return nullptr;
   
@@ -1834,7 +1834,7 @@ void EntryBuffer::vCompact(void)
   m_aFreeEntryList = nullptr;
   
   // scan item is the working pointer
-  Item* aScanItem = pFirstItem();
+  Item* aScanItem = aFirstItem();
   
   // loop while we can still reclaim more space
   for (;;) {
@@ -1850,7 +1850,7 @@ void EntryBuffer::vCompact(void)
     aFreeEntry = nullptr;
     for (;
          aScanItem != nullptr;
-         aScanItem = pNextItem(aScanItem)) {
+         aScanItem = aNextItem(aScanItem)) {
       
       eCN eClass = aScanItem->eClass();
       
@@ -1868,9 +1868,9 @@ void EntryBuffer::vCompact(void)
     // find the next entry in buffer after the free entry
     
     aMoveEntry = nullptr;
-    for (Item* aItem = pNextItem(aFreeEntry);
+    for (Item* aItem = aNextItem(aFreeEntry);
          aItem != nullptr;
-         aItem = pNextItem(aItem)) {
+         aItem = aNextItem(aItem)) {
       
       eCN eClass = aItem->eClass();
       
@@ -2070,10 +2070,10 @@ void EntryBuffer::vCompactLeft2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Item* pThisWilderness = aAdd<Item*>(m_aHeadEntry,
+  Item* aThisWilderness = aAdd<Item*>(m_aHeadEntry,
                                       m_aHeadEntry->nSizeEntry() +
                                       m_aHeadEntry->iNEOsize());
-  vResetUsed(pThisWilderness);
+  vResetUsed(aThisWilderness);
   vSetWilderness();
   vItems(0);
 
@@ -2278,9 +2278,9 @@ Item* EntryBuffer::aFirstItem(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  Item* pFirstItem = pNextItem(m_aHeadEntry);
+  Item* aFirstItem = aNextItem(m_aHeadEntry);
   
-  return pFirstItem;
+  return aFirstItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3020,24 +3020,24 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get next item in buffer (could be entry, free entry, wilderness)           */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::aNextItem(Item* pCurrent)
+Item* EntryBuffer::aNextItem(Item* aCurrent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  Item* pItemNext = nullptr;
+  Item* aItemNext = nullptr;
   
-  eCN eClass = pCurrent->eClass();
+  eCN eClass = aCurrent->eClass();
   
   switch (eClass) {
     case CN_ENTRY: {
-      Entry* aEntryCurr = static_cast<Entry*>(pCurrent);
-      pItemNext = reinterpret_cast<Item*>(aEntryCurr->aAddressAfter());
+      Entry* aEntryCurr = static_cast<Entry*>(aCurrent);
+      aItemNext = reinterpret_cast<Item*>(aEntryCurr->aAddressAfter());
       break;
     }
       
     case CN_FREEENTRY: {
-      FreeEntry* aFreeEntryCurr = static_cast<FreeEntry*>(pCurrent);
-      pItemNext = reinterpret_cast<Item*>(aFreeEntryCurr->aAddressAfter());
+      FreeEntry* aFreeEntryCurr = static_cast<FreeEntry*>(aCurrent);
+      aItemNext = reinterpret_cast<Item*>(aFreeEntryCurr->aAddressAfter());
       break;
     }
       
@@ -3050,7 +3050,7 @@ Item* EntryBuffer::aNextItem(Item* pCurrent)
       break;
   }
   
-  return pItemNext;
+  return aItemNext;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3819,9 +3819,9 @@ void EntryBuffer::vQuickVerify(Entry* aSeeEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
 
-  for (Item* pItem = pFirstItem();
-       pItem != nullptr;
-       pItem = pNextItem(pItem))
+  for (Item* aItem = aFirstItem();
+       aItem != nullptr;
+       aItem = aNextItem(aItem))
     {;}
   
   for (Entry* aTestEntry = aNextEntry(m_aHeadEntry,0);
@@ -4307,18 +4307,18 @@ bool EntryBuffer::bVerifyItems(void)
   
   i8 nEntryItems = 0;
   
-  for (Item* pItem = pFirstItem();
-       pItem != nullptr;
-       pItem = pNextItem(pItem)) {
+  for (Item* aItem = aFirstItem();
+       aItem != nullptr;
+       aItem = aNextItem(aItem)) {
     
     //vTrace("Verify item %p\n"_Stz,pItem);
     
-    eCN eClass = pItem->eClass();
+    eCN eClass = aItem->eClass();
     
     switch (eClass) {
       
       case CN_ENTRY: {
-        Entry* aEntry = _pEntry(pItem);
+        Entry* aEntry = _pEntry(aItem);
         if (! aEntry->bValidEntry()) {
           vShow();
           vVerifyFault();
@@ -4329,7 +4329,7 @@ bool EntryBuffer::bVerifyItems(void)
       }
       
       case CN_FREEENTRY: {
-        FreeEntry* aFreeEntry = _pFreeEntry(pItem);
+        FreeEntry* aFreeEntry = _pFreeEntry(aItem);
         if (! aFreeEntry->bValidFreeEntry()) {
           vShow();
           vVerifyFault();
@@ -4339,7 +4339,7 @@ bool EntryBuffer::bVerifyItems(void)
       }
         
       case CN_WILDERNESS: {
-        Wilderness* pWilderness = _pWilderness(pItem);
+        Wilderness* pWilderness = _pWilderness(aItem);
         if (! pWilderness->bValidWilderness()) {
           vShow();
           vVerifyFault();

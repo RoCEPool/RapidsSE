@@ -18,19 +18,19 @@ namespace Structures
     ItemBuffer(eCN eClassNo);
    ~ItemBuffer(void) noexcept(false);
   
-    Item*  pAllotItem(i8 nBytes);
+    Item*  aAllotItem(i8 nBytes);
     char*  aAllotSpace(i8 nBytes);
     char*  aDataArea(void);
     void   vDecItems(void);
-    Item*  pFirstItem(void);
+    Item*  aFirstItem(void);
     i8     nFreeBytes(void);
     void   vGiveSpace(i8 nBytes);
     i8     nItems(void);
     void   vItems(i8 nItems);
-    Item*  pNextItem(Item* pCurrentItem);
+    Item*  aNextItem(Item* aCurrentItem);
     void   vResetUsed(void);
-    void   vResetUsed(Item* pUptil);
-    i4     iToOffset(Item* pItem);
+    void   vResetUsed(Item* aUptil);
+    i4     iToOffset(Item* aItem);
     i8     nUsedBytes(void);
   
   //private:

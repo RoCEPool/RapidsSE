@@ -80,7 +80,7 @@ PerformanceEntry* PerformanceBuffer::pAllotEntry(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
   
   PerformanceEntry* aEntry =
-    reinterpret_cast<PerformanceEntry*>(pAllotItem(sizeof(PerformanceEntry)));
+    reinterpret_cast<PerformanceEntry*>(aAllotItem(sizeof(PerformanceEntry)));
   
   if ( ! aEntry )
     return nullptr;
@@ -137,7 +137,7 @@ PerformanceEntry* PerformanceBuffer::pFirstEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  PerformanceEntry* aFirst = reinterpret_cast<PerformanceEntry*>(pFirstItem());
+  PerformanceEntry* aFirst = reinterpret_cast<PerformanceEntry*>(aFirstItem());
   
   return aFirst;
 }
@@ -149,7 +149,7 @@ PerformanceEntry* PerformanceBuffer::pNextEntry(PerformanceEntry* aCurrentEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PERFORMANCEBUFFER,_FOOTER_);
   
-  PerformanceEntry* aNext = reinterpret_cast<PerformanceEntry*>(pNextItem(aCurrentEntry));
+  PerformanceEntry* aNext = reinterpret_cast<PerformanceEntry*>(aNextItem(aCurrentEntry));
   
   return aNext;
 }

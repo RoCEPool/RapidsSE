@@ -51,18 +51,18 @@ ItemBuffer::~ItemBuffer(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot an item of nBytes in this buffer                                     */
 /*----------------------------------------------------------------------------*/
-Item* ItemBuffer::pAllotItem(i8 nBytes)
+Item* ItemBuffer::aAllotItem(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Item* pItem = reinterpret_cast<Item*>(aAllotSpace(nBytes));
+  Item* aItem = reinterpret_cast<Item*>(aAllotSpace(nBytes));
   
-  if ( ! pItem )
+  if (! aItem)
     return nullptr;
   
   m_nItems++;
   
-  return pItem;
+  return aItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,16 +108,16 @@ void ItemBuffer::vDecItems(void)
 /*----------------------------------------------------------------------------*/
 /* first item                                                                 */
 /*----------------------------------------------------------------------------*/
-Item* ItemBuffer::pFirstItem(void)
+Item* ItemBuffer::aFirstItem(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   if ( m_nItems == 0 )
     return nullptr;
   
-  Item* pFirst = reinterpret_cast<Item*>(m_xWsp.aArea());
+  Item* aFirst = reinterpret_cast<Item*>(m_xWsp.aArea());
   
-  return pFirst;
+  return aFirst;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,18 +165,18 @@ void ItemBuffer::vItems(i8 nItems)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
-Item* ItemBuffer::pNextItem(Item* pCurrentItem)
+Item* ItemBuffer::aNextItem(Item* aCurrentItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 nBytes = pCurrentItem->nSizeItem();
+  i8 nBytes = aCurrentItem->nSizeItem();
   
-  Item* pNext = aAdd<Item*>(pCurrentItem,nBytes);
+  Item* aNext = aAdd<Item*>(aCurrentItem,nBytes);
   
-  if ((char*)pNext >= (char*)m_xWsp.aLatter())
+  if ((char*)aNext >= (char*)m_xWsp.aLatter())
     return nullptr;
     
-  return pNext;
+  return aNext;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,11 +194,11 @@ void ItemBuffer::vResetUsed(void)
 /*----------------------------------------------------------------------------*/
 /* reset used space                                                           */
 /*----------------------------------------------------------------------------*/
-void ItemBuffer::vResetUsed(Item* pUptil)
+void ItemBuffer::vResetUsed(Item* aUptil)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
-  i8 nUsedBytes = nSub(pUptil,aDataArea());
+  i8 nUsedBytes = nSub(aUptil,aDataArea());
   
   m_xWsp.vUsed(nUsedBytes);
 }
@@ -206,11 +206,11 @@ void ItemBuffer::vResetUsed(Item* pUptil)
 /*----------------------------------------------------------------------------*/
 /* calculate the absolute offset within workspace for given item              */
 /*----------------------------------------------------------------------------*/
-i4 ItemBuffer::iToOffset(Item* pItem)
+i4 ItemBuffer::iToOffset(Item* aItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i4 iOffset = static_cast<i4>(nSub(pItem,m_xWsp.aArea()));
+  i4 iOffset = static_cast<i4>(nSub(aItem,m_xWsp.aArea()));
   
   ASSERT(iOffset >= 0 && iOffset < m_xWsp.nSize());
   
