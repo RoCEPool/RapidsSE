@@ -11,13 +11,13 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Wilderness* Structures::_pWilderness(void* aAddr)
+Wilderness* Structures::_aWilderness(void* aAddr)
 {
-  Wilderness* pWilderness = reinterpret_cast<Wilderness*>(aAddr);
+  Wilderness* aWilderness = reinterpret_cast<Wilderness*>(aAddr);
   
-  RASSERT_TYPE(pWilderness,CN_WILDERNESS);
+  RASSERT_TYPE(aWilderness,CN_WILDERNESS);
   
-  return pWilderness;
+  return aWilderness;
 }
 
 /*----------------------------------------------------------------------------*/

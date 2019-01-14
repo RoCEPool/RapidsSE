@@ -4339,8 +4339,8 @@ bool EntryBuffer::bVerifyItems(void)
       }
         
       case CN_WILDERNESS: {
-        Wilderness* pWilderness = _pWilderness(aItem);
-        if (! pWilderness->bValidWilderness()) {
+        Wilderness* aWilderness = _aWilderness(aItem);
+        if (! aWilderness->bValidWilderness()) {
           vShow();
           vVerifyFault();
           return false;

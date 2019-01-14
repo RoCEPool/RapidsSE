@@ -19,7 +19,7 @@ namespace Structures
     bool bValidWilderness(void);
   };
   
-  Wilderness* _pWilderness(void* aAddr);
+  Wilderness* _aWilderness(void* aAddr);
 }
 
 /*============================================================================*/

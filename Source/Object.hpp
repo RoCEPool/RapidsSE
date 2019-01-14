@@ -37,14 +37,12 @@ namespace CorrectnessAlgebra
 #define GET_MACRO(_1,_2,_3,_4,NAME,...) NAME
 
 #define _precondition_(...) \
-  GET_MACRO(__VA_ARGS__, \
-    _precondition4_, _precondition3_, \
-    _precondition2_, _precondition1_)(__VA_ARGS__)
+  GET_MACRO(__VA_ARGS__, _precondition4_, _precondition3_, \
+                         _precondition2_, _precondition1_)(__VA_ARGS__)
 
 #define _postcondition_(...) \
-  GET_MACRO(__VA_ARGS__, \
-    _precondition4_, _precondition3_, \
-    _precondition2_, _precondition1_)(__VA_ARGS__)
+  GET_MACRO(__VA_ARGS__, _precondition4_, _precondition3_, \
+                         _precondition2_, _precondition1_)(__VA_ARGS__)
 
 #ifdef __DEBUG_CHECKS
 
