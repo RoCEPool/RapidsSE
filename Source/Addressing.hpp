@@ -14,12 +14,25 @@ namespace Base
 /* add bytes to given address                                                 */
 /*----------------------------------------------------------------------------*/
 template <class CAST>
-static CAST pAdd(void* aAddress, i8 nBytes)
+static CAST aAdd(void* aAddress, i8 nBytes)
 {
   char* aAddr0 = reinterpret_cast<char*>(aAddress);
   
   char* aAddr1 = aAddr0 + nBytes;
 
+  return reinterpret_cast<CAST>(aAddr1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add bytes to given address                                                 */
+/*----------------------------------------------------------------------------*/
+template <class CAST>
+static CAST pAdd(void* aAddress, i8 nBytes)
+{
+  char* aAddr0 = reinterpret_cast<char*>(aAddress);
+  
+  char* aAddr1 = aAddr0 + nBytes;
+  
   return reinterpret_cast<CAST>(aAddr1);
 }
 
