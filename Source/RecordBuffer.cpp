@@ -54,9 +54,7 @@ RecordBuffer::RecordBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDBUFFER,_FOOTER_);
 
-  m_nRecords   = 0;
-  m_nFreeBytes = C_SIZE_LARGE_OBJECT - C_1KB;
-  //m_cArea
+  vInit();
   
   //_checkInitialised_(CN_RECORDBUFFER);
 }
@@ -114,6 +112,20 @@ char* RecordBuffer::pFirstRecord(void)
   char* pFirst = &m_cArea[0];
   
   return pFirst;
+}
+
+/*----------------------------------------------------------------------------*/
+/* init                                                                       */
+/*----------------------------------------------------------------------------*/
+void RecordBuffer::vInit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDBUFFER,_FOOTER_);
+  
+  m_nRecords   = 0;
+  m_nFreeBytes = C_SIZE_LARGE_OBJECT - C_1KB;
+  //m_cArea
+  
+  //_checkInitialised_(CN_RECORDBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/
