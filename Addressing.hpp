@@ -27,6 +27,23 @@ static CAST aAdd(void* aAddress, i8 nBytes)
 /* add bytes to given address                                                 */
 /*----------------------------------------------------------------------------*/
 template <class CAST>
+static CAST ahAdd(Header* aHeader, i8 nBytes)
+{
+  char* aAddr0 = reinterpret_cast<char*>(aHeader);
+  
+  char* aAddr1 = aAddr0 + nBytes;
+  
+  CAST aOtherHeader = reinterpret_cast<CAST>(aAddr1);
+  
+  ASSERT(aOtherHeader->bValidMagic());
+  
+  return aOtherHeader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add bytes to given address                                                 */
+/*----------------------------------------------------------------------------*/
+template <class CAST>
 static CAST pAdd(Object* pObject, i8 nBytes)
 {
   char* aAddr0 = reinterpret_cast<char*>(pObject);

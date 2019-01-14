@@ -2560,7 +2560,7 @@ void EntryBuffer::vHeadEntryRestore(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_pHeadEntry = aAdd<Entry *>(aDataArea(),sizeof(i4) * C_ENTRIES_L0);
+  m_pHeadEntry = aAdd<Entry*>(aDataArea(),sizeof(i4) * C_ENTRIES_L0);
 }
 
 /*----------------------------------------------------------------------------*/

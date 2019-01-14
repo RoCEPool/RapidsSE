@@ -273,7 +273,7 @@ void RapidsSE::vKillPrev(void)
     if ( ! (aRegion = Region::pOpen(sRegionName,iFD)) )
       continue;
     
-    AttachMap* pAttachMap = (AttachMap*)aAdd<void*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
+    AttachMap* pAttachMap = (AttachMap*)ahAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
     
     if (pAttachMap->m_iPid &&
         pAttachMap->m_iPid != Process::iGetPid() &&

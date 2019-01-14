@@ -125,12 +125,12 @@ char* RecordBuffer::pNextRecord(char* pCurrentRecord)
   
   i4 nBytes = *((i4*)pCurrentRecord);
   
-  char* pNext = aAdd<char*>(pCurrentRecord,nBytes+C_SIZEOF_RECORDSIZE);
+  char* aNext = aAdd<char*>(pCurrentRecord,nBytes+C_SIZEOF_RECORDSIZE);
   
-  if ((char*)pNext >= (char*)&m_cArea[C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes])
+  if ((char*)aNext >= (char*)&m_cArea[C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes])
     return nullptr;
   
-  return pNext;
+  return aNext;
 }
 
 /*----------------------------------------------------------------------------*/

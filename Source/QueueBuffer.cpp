@@ -205,7 +205,7 @@ Value* QueueBuffer::aNextValue(Value* aValue)
   
   i8 nBytes = aValue->nSize();
   
-  Value* aNextValue = aAdd<Value*>(aValue,nBytes);
+  Value* aNextValue = ahAdd<Value*>(aValue,nBytes);
   
   if (aNextValue < m_aNextFree)
     return aNextValue;

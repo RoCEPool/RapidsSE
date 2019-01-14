@@ -164,19 +164,18 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
   
   i8 nBytes;
   
-  char* pDst = aLatter();
-  char* pSrc;
+  char* aDst = aLatter();
+  char* aSrc;
   
   if (DM_VCH == pCol->eDatumType())
-    pSrc = (char*)(_aStrVal(xVariable.aNestedValue())->aStz());
+    aSrc = (char*)(_aStrVal(xVariable.aNestedValue())->aStz());
   else
-    pSrc = aAdd<char*>(xVariable.aNestedValue(),sizeof(Value));
+    aSrc = aAdd<char*>(xVariable.aNestedValue(),sizeof(Value));
   
   
-  nBytes = DtmLib::nCopy(pCol->eDatumType(),pDst,pSrc);
+  nBytes = DtmLib::nCopy(pCol->eDatumType(),aDst,aSrc);
   
   vTake(nBytes);
-  
 }
 
 /*----------------------------------------------------------------------------*/
