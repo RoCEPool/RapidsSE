@@ -713,12 +713,12 @@ i8 PosixThread::iStackSize(void)
 /*----------------------------------------------------------------------------*/
 /* create a tls slot                                                          */
 /*----------------------------------------------------------------------------*/
-bool PosixThread::bTlsCreate(pthread_key_t* pTlsKey)
+bool PosixThread::bTlsCreate(pthread_key_t* aTlsKey)
 {
-  i8 iResult = pthread_key_create(pTlsKey,nullptr);
+  i8 iResult = pthread_key_create(aTlsKey,nullptr);
   
   if (0 == iResult) {
-    RASSERT(-1 != (int)*pTlsKey);
+    RASSERT(-1 != (int)*aTlsKey);
     return true;
   }
   

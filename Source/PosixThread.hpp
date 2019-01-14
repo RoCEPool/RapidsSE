@@ -48,7 +48,7 @@ namespace System
     static void* aStackBase(void);
     static void* aStackPointer(void);
     static i8    iStackSize(void);
-    static bool  bTlsCreate(pthread_key_t* pTlsKey);
+    static bool  bTlsCreate(pthread_key_t* aTlsKey);
     static void* pTlsGet(pthread_key_t iTlsKey);
     static void  vTlsSet(pthread_key_t iTlsKey, void* pArg);
   
