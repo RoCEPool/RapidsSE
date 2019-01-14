@@ -54,7 +54,7 @@ using namespace DBobjects;
 
 #include "Column.hpp"
 
-typedef Array<CN_ROWAGG,eRO,1024> RelOpAry;
+typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 
 #include "Id.hpp"
 #include "EntWrk.hpp"

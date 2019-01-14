@@ -16,7 +16,7 @@ using namespace Structures;
 
 //-----------------------------------------------------------------------------
 
-#include "Array.hpp"
+#include "ArrayNL_t.hpp"
 
 #include "CollectionCursor_t.hpp"
 #include "CollectionNode_t.hpp"
