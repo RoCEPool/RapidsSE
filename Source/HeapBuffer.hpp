@@ -27,8 +27,8 @@ namespace Pool
     HeapBuffer* pPrevBuffer(void);
     void        vPrevBuffer(HeapBuffer* pPrevSegment);
     
-    FreeChunk*  pFirstChunk(void);
-    FreeChunk*  pNextChunk(FreeChunk* pChunk, i8 nBytes);
+    FreeChunk*  aFirstChunk(void);
+    FreeChunk*  aNextChunk(FreeChunk* aChunk, i8 nBytes);
     
     void vVerify(i8 iChunkSize);
     

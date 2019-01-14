@@ -1494,7 +1494,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
     reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
   
   EntryBuffer* pChildBuffer =
-    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+    reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
   
   pChildBuffer->vShowTree(bDumpBuffer);
 }
@@ -2782,7 +2782,7 @@ Entry* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
     reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
     
     EntryBuffer* pChildBuffer =
-    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+    reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
     
     if (pChildBuffer->m_pHigherBuffer != pInsertIntoBuffer) {
       //(*ppRootKeyBuffer)->vShowTree();
@@ -3535,7 +3535,7 @@ EntryBuffer* EntryBuffer::pSplit(void)
       reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
     
     EntryBuffer* pChildBuffer =
-      reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+      reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
     
     ASSERT(pChildBuffer->m_pHigherBuffer ==
            aNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
@@ -3563,7 +3563,7 @@ EntryBuffer* EntryBuffer::pSplit(void)
         reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
       
       EntryBuffer* pChildBuffer =
-        reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+        reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
       
       ASSERT(pChildBuffer->m_pHigherBuffer ==
              aMovedEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
@@ -3673,7 +3673,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
       reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
     
     EntryBuffer* pChildBuffer =
-      reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+      reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
     
     ASSERT(pChildBuffer->m_pHigherBuffer ==
            aNewEntry->pReferencedEntryBuffer()->m_pHigherBuffer);
@@ -3721,7 +3721,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
       reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
       
       EntryBuffer* pChildBuffer =
-      reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+      reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
       
       ASSERT(pChildBuffer->m_pHigherBuffer ==
              aMovedEntry->pReferencedEntryBuffer()->m_pHigherBuffer);

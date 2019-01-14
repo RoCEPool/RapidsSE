@@ -70,11 +70,11 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
  
   i8 iChunk = 0;
-  for (FreeChunk* pChunk = pFirstChunk();
-       pChunk;
-       pChunk = pNextChunk(pChunk,nBytes), iChunk++) {
+  for (FreeChunk* aChunk = aFirstChunk();
+       aChunk;
+       aChunk = aNextChunk(aChunk,nBytes), iChunk++) {
 
-    eCN eClass = pChunk->eClass();
+    eCN eClass = aChunk->eClass();
     //vTrace("Analyse %p : %p %lld\n"_Stz,this,pChunk,eClass);
     
     if (CN_FREECHUNK == eClass)
@@ -142,7 +142,7 @@ void HeapBuffer::vPrevBuffer(HeapBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* calculate address of first chunk in this heap buffer                       */
 /*----------------------------------------------------------------------------*/
-FreeChunk* HeapBuffer::pFirstChunk(void)
+FreeChunk* HeapBuffer::aFirstChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
@@ -154,12 +154,12 @@ FreeChunk* HeapBuffer::pFirstChunk(void)
 /*----------------------------------------------------------------------------*/
 /* calculate address of next free chunk in this heap buffer                   */
 /*----------------------------------------------------------------------------*/
-FreeChunk* HeapBuffer::pNextChunk(FreeChunk* pChunk, i8 nBytes)
+FreeChunk* HeapBuffer::aNextChunk(FreeChunk* aChunk, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   // calculate address of next buffer
-  FreeChunk* aNextChunk = aAdd<FreeChunk*>(pChunk,nBytes);
+  FreeChunk* aNextChunk = aAdd<FreeChunk*>(aChunk,nBytes);
 
   // check next buffer ends within this segment
   if (aChunkEnd(aNextChunk,nBytes) > m_aLastByte)
@@ -176,9 +176,9 @@ void HeapBuffer::vVerify(i8 iChunkSize)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   i8 iChunk = 0;
-  for (FreeChunk* aChunk = pFirstChunk();
+  for (FreeChunk* aChunk = aFirstChunk();
        aChunk;
-       aChunk = pNextChunk(aChunk,iChunkSize), iChunk++) {
+       aChunk = aNextChunk(aChunk,iChunkSize), iChunk++) {
     
     eCN eClass = aChunk->eClass();
     ASSERT(eClass < CN_ENUMS);
