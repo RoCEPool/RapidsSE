@@ -4814,7 +4814,7 @@ void EntryBuffer::vUnitTest_c(Table* pTable)
   Index* pIndex1 = pIdxVec->pGet(1);
   IdxColVec* pIdxColVec1 = pIndex1->pIdxColVec();
   
-  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   
   EntryBuffer* pFirstRowBuffer = new EntryBuffer;
   EntryBuffer* pLastRowBuffer = pFirstRowBuffer;

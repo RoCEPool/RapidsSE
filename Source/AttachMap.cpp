@@ -147,24 +147,24 @@ void AttachMap::vPrintAttachMap(void)
   
   vInfo("\n"_Stz);
   vInfo("Enclosed_by_Leading  : %c\n"_Stz,
-        gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading ? gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading : '0');
+        gpAttachMap->m_oFormatters.m_cEnclosedBy_Leading ? gpAttachMap->m_oFormatters.m_cEnclosedBy_Leading : '0');
   vInfo("Enclosed_by_trailing : %c\n"_Stz,
-        gpAttachMap->m_xFormatters.m_cEnclosedBy_Trailing ? gpAttachMap->m_xFormatters.m_cEnclosedBy_Trailing : '0');
+        gpAttachMap->m_oFormatters.m_cEnclosedBy_Trailing ? gpAttachMap->m_oFormatters.m_cEnclosedBy_Trailing : '0');
   
   vInfo("Escape_char          : %c\n"_Stz,
-        gpAttachMap->m_xFormatters.m_cEscapeChar ? gpAttachMap->m_xFormatters.m_cEscapeChar : '0');
+        gpAttachMap->m_oFormatters.m_cEscapeChar ? gpAttachMap->m_oFormatters.m_cEscapeChar : '0');
   vInfo("Delimiter            : %c\n"_Stz,
-        gpAttachMap->m_xFormatters.m_cFieldDelimiter ? gpAttachMap->m_xFormatters.m_cFieldDelimiter : '0');
+        gpAttachMap->m_oFormatters.m_cFieldDelimiter ? gpAttachMap->m_oFormatters.m_cFieldDelimiter : '0');
   vInfo("Record_terminator    : %c\n"_Stz,
-        gpAttachMap->m_xFormatters.m_cRecordTerminator ? gpAttachMap->m_xFormatters.m_cRecordTerminator : '0');
-  vInfo("Record_end           : %s\n"_Stz, aRE[gpAttachMap->m_xFormatters.m_eRecordEnd]);
+        gpAttachMap->m_oFormatters.m_cRecordTerminator ? gpAttachMap->m_oFormatters.m_cRecordTerminator : '0');
+  vInfo("Record_end           : %s\n"_Stz, aRE[gpAttachMap->m_oFormatters.m_eRecordEnd]);
   
-  vInfo("Date component 0     : %s\n"_Stz, aDC[gpAttachMap->m_xFormatters.m_eDateComponent[0]]);
-  vInfo("Date component 1     : %s\n"_Stz, aDC[gpAttachMap->m_xFormatters.m_eDateComponent[1]]);
-  vInfo("Date component 2     : %s\n"_Stz, aDC[gpAttachMap->m_xFormatters.m_eDateComponent[2]]);
+  vInfo("Date component 0     : %s\n"_Stz, aDC[gpAttachMap->m_oFormatters.m_eDateComponent[0]]);
+  vInfo("Date component 1     : %s\n"_Stz, aDC[gpAttachMap->m_oFormatters.m_eDateComponent[1]]);
+  vInfo("Date component 2     : %s\n"_Stz, aDC[gpAttachMap->m_oFormatters.m_eDateComponent[2]]);
   
   vInfo("Date_separator       : %c\n"_Stz,
-        gpAttachMap->m_xFormatters.m_cDateSeparator ? gpAttachMap->m_xFormatters.m_cDateSeparator : '0');
+        gpAttachMap->m_oFormatters.m_cDateSeparator ? gpAttachMap->m_oFormatters.m_cDateSeparator : '0');
 
   vInfo("\n****ATTACH MAP END****\n\n"_Stz);
 }

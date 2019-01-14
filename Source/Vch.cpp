@@ -360,9 +360,9 @@ void Vch::vSprint(Stz* aDst, Stz* aSrc)
   }
   
   // get the formatters
-  char cEnclosedBy_Leading  = gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
-  char cEnclosedBy_Trailing = gpAttachMap->m_xFormatters.m_cEnclosedBy_Trailing;
-  char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
+  char cEnclosedBy_Leading  = gpAttachMap->m_oFormatters.m_cEnclosedBy_Leading;
+  char cEnclosedBy_Trailing = gpAttachMap->m_oFormatters.m_cEnclosedBy_Trailing;
+  char cEscapeChar = gpAttachMap->m_oFormatters.m_cEscapeChar;
   
   char* aDstChar = (char*)aDst;
   char* aSrcChar = (char*)aSrc;
@@ -458,9 +458,9 @@ void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
   }
   
   // get the formatters
-  char cEnclosedBy_Leading  = '\''; //gpAttachMap->m_xFormatters.m_cEnclosedBy_Leading;
-  char cEnclosedBy_Trailing = '\''; //gpAttachMap->m_xFormatters.m_cEnclosedBy_Trailing;
-  char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
+  char cEnclosedBy_Leading  = '\''; //gpAttachMap->m_oFormatters.m_cEnclosedBy_Leading;
+  char cEnclosedBy_Trailing = '\''; //gpAttachMap->m_oFormatters.m_cEnclosedBy_Trailing;
+  char cEscapeChar = gpAttachMap->m_oFormatters.m_cEscapeChar;
   
   char* aDstChar = (char*)aDst;
   char* aSrcChar = (char*)aSrc;
@@ -515,7 +515,7 @@ void Vch::vSprintEscaped(Stz* aDst, Stz* aSrc)
   }
   
   // get the formatters
-  char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
+  char cEscapeChar = gpAttachMap->m_oFormatters.m_cEscapeChar;
   
   char* aDstChar = (char*)aDst;
   char* aSrcChar = (char*)aSrc;

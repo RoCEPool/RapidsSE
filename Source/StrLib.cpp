@@ -1624,8 +1624,8 @@ bool StrLib::bExtractVarcharDefault(char** aaSrc,
 {
   i8 iLength = 0;
   
-  char cEscapeChar = gpAttachMap->m_xFormatters.m_cEscapeChar;
-  char cFieldDelimiter = gpAttachMap->m_xFormatters.m_cFieldDelimiter;
+  char cEscapeChar = gpAttachMap->m_oFormatters.m_cEscapeChar;
+  char cFieldDelimiter = gpAttachMap->m_oFormatters.m_cFieldDelimiter;
   
   char *aDst = (char*)aVarChar;
   

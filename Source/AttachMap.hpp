@@ -81,7 +81,7 @@ namespace StorageEngine
        
     Atomic        m_ziPlanId;
     
-    Formatters    m_xFormatters; // record formatters
+    Formatters    m_oFormatters; // record formatters
   
     ActivityMap*  m_aActivityMap;   // there is an activity map
     i8            m_nActivityMarks; // number of activity marks

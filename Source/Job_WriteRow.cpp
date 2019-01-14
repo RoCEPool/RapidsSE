@@ -119,9 +119,9 @@ Job_WriteRow::Job_WriteRow(Interface::Session* pSession)
   m_nRecordBytes = false;
   
   // set the enclosed_by to be a '
-  m_xFormatters.m_bDefault = false;
-  m_xFormatters.m_cEnclosedBy_Leading = '\'';
-  m_xFormatters.m_cEnclosedBy_Trailing = '\'';
+  m_oFormatters.m_bDefault = false;
+  m_oFormatters.m_cEnclosedBy_Leading = '\'';
+  m_oFormatters.m_cEnclosedBy_Trailing = '\'';
   
   _checkInitialised_(CN_JOB_WRITEROW);
   

@@ -164,7 +164,7 @@ void Job_SubLoader::vJob_LoadTable(Job_LoadTable* pJob_LoadTable)
   
   m_pJob_LoadTable = pJob_LoadTable;
   
-  m_pLoadChunk  = new LoadChunk(&m_pJob_LoadTable->m_xFormatters);
+  m_pLoadChunk  = new LoadChunk(&m_pJob_LoadTable->m_oFormatters);
 }
 
 
@@ -184,7 +184,7 @@ bool Job_SubLoader::bBegin(void)
   // set the table and parentJob in the writeBehind Job
   JobWriteBehind::m_pTable = m_pJob_LoadTable->m_pTable;
   JobWriteBehind::m_pParentJob = (Job*)m_pJob_LoadTable;
-  JobWriteBehind::m_xFormatters.vSet(&m_pJob_LoadTable->m_xFormatters);
+  JobWriteBehind::m_oFormatters.vSet(&m_pJob_LoadTable->m_oFormatters);
   
   return bOpened;
 }
@@ -200,7 +200,7 @@ bool Job_SubLoader::bChunk(void)
   Session* pSession = m_pJob_LoadTable->m_pSession;
   Table* pTable = m_pJob_LoadTable->m_pTable;
   i8 iParentJobId = m_pJob_LoadTable->m_iJobId;
-  Formatters* pFormatters = &m_pJob_LoadTable->m_xFormatters;
+  Formatters* pFormatters = &m_pJob_LoadTable->m_oFormatters;
 
   i8 i_Seek;
   i8 nChunkBytes;

@@ -52,8 +52,8 @@ IoCopy::IoCopy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_IOCOPY,_FOOTER_);
 
-  m_pInChunk  = new IoChunk(&gpAttachMap->m_xFormatters);
-  m_pOutChunk = new IoChunk(&gpAttachMap->m_xFormatters);
+  m_pInChunk  = new IoChunk(&gpAttachMap->m_oFormatters);
+  m_pOutChunk = new IoChunk(&gpAttachMap->m_oFormatters);
 
   
   _checkInitialised_(CN_IOCOPY);

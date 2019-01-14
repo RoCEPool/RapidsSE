@@ -114,7 +114,7 @@ Job_LoadTable::Job_LoadTable(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
   m_pTable        = nullptr;
-  m_xFormatters.vReset(); // reset to defaults in attachmap
+  m_oFormatters.vReset(); // reset to defaults in attachmap
   
   m_pLoadMap      = nullptr;
   
@@ -238,11 +238,11 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     // - - - - - - - - - - - - - - - - - - - - -
     // C_RECORD_TERMINATOR
     if (pTokenVec->pGet(i_Token)->bSame(C_RECORD_TERMINATOR)) {
-      m_xFormatters.m_cRecordTerminator = *pTokenVec->pGet(++i_Token)->sText().aChar();
-      if (m_xFormatters.m_cRecordTerminator == '0')
-        m_xFormatters.m_cRecordTerminator = '\0';
+      m_oFormatters.m_cRecordTerminator = *pTokenVec->pGet(++i_Token)->sText().aChar();
+      if (m_oFormatters.m_cRecordTerminator == '0')
+        m_oFormatters.m_cRecordTerminator = '\0';
       else
-        m_xFormatters.m_bDefault = false;
+        m_oFormatters.m_bDefault = false;
     }
     
     // - - - - - - - - - - - - - - - - - - - - -
@@ -257,19 +257,19 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
           return false;
         }
         else if (cRecordEnds == '\n') {
-          m_xFormatters.m_eRecordEnd = RE_NL;
+          m_oFormatters.m_eRecordEnd = RE_NL;
         }
         else if (cRecordEnds == '\r') {
-          m_xFormatters.m_bDefault = false;
-          m_xFormatters.m_eRecordEnd = RE_CR;
+          m_oFormatters.m_bDefault = false;
+          m_oFormatters.m_eRecordEnd = RE_CR;
         }
       }
       // record_ends is 2 characters
       else if (pTokenVec->pGet(i_Token)->iLength() == 2) {
         
         if (pTokenVec->pGet(i_Token)->bSame("\r\n"_Stz)) {
-          m_xFormatters.m_bDefault = false;
-          m_xFormatters.m_eRecordEnd = RE_CRNL;
+          m_oFormatters.m_bDefault = false;
+          m_oFormatters.m_eRecordEnd = RE_CRNL;
         }
         else {
           vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
@@ -288,27 +288,27 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
       s32 sFieldDelimiter;
       sFieldDelimiter = pTokenVec->pGet(++i_Token)->sText();
       if (sFieldDelimiter.bSame("\\t"_Stz))
-        m_xFormatters.m_cFieldDelimiter = '\t';
+        m_oFormatters.m_cFieldDelimiter = '\t';
       else
-        m_xFormatters.m_cFieldDelimiter = *sFieldDelimiter.aChar();
-      if (m_xFormatters.m_cFieldDelimiter == '0')
-        m_xFormatters.m_cFieldDelimiter = '\0';
-      m_xFormatters.m_bDefault = false;
+        m_oFormatters.m_cFieldDelimiter = *sFieldDelimiter.aChar();
+      if (m_oFormatters.m_cFieldDelimiter == '0')
+        m_oFormatters.m_cFieldDelimiter = '\0';
+      m_oFormatters.m_bDefault = false;
     }
     
     // - - - - - - - - - - - - - - - - - - - - -
     // C_ENCLOSED_BY_LEADING
     else if (pTokenVec->pGet(i_Token)->bSame(C_ENCLOSED_BY_LEADING)) {
-      m_xFormatters.m_cEnclosedBy_Leading =
+      m_oFormatters.m_cEnclosedBy_Leading =
       *pTokenVec->pGet(++i_Token)->sText().aChar();
-      if (m_xFormatters.m_cEnclosedBy_Leading == '0')
-        m_xFormatters.m_cEnclosedBy_Leading = '\0';
+      if (m_oFormatters.m_cEnclosedBy_Leading == '0')
+        m_oFormatters.m_cEnclosedBy_Leading = '\0';
       
-      m_xFormatters.m_bDefault = false;
+      m_oFormatters.m_bDefault = false;
       
       // default set trailing same as leading
-      m_xFormatters.m_cEnclosedBy_Trailing =
-      m_xFormatters.m_cEnclosedBy_Leading;
+      m_oFormatters.m_cEnclosedBy_Trailing =
+      m_oFormatters.m_cEnclosedBy_Leading;
     }
     
     // - - - - - - - - - - - - - - - - - - - - -
@@ -316,17 +316,17 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
     else if (pTokenVec->pGet(i_Token)->bSame(C_ENCLOSED_BY_TRAILING)) {
       
       // if trailing is specified, leading should also have been specified
-      if (m_xFormatters.m_cEnclosedBy_Leading == '\0') {
+      if (m_oFormatters.m_cEnclosedBy_Leading == '\0') {
         if ( ! gpAttachMap->m_bMetadata)
         vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         return false;
       }
-      m_xFormatters.m_cEnclosedBy_Trailing =
+      m_oFormatters.m_cEnclosedBy_Trailing =
       *pTokenVec->pGet(++i_Token)->sText().aChar();
-      if (m_xFormatters.m_cEnclosedBy_Trailing == '0')
-        m_xFormatters.m_cEnclosedBy_Trailing = '\0';
+      if (m_oFormatters.m_cEnclosedBy_Trailing == '0')
+        m_oFormatters.m_cEnclosedBy_Trailing = '\0';
       
-      m_xFormatters.m_bDefault = false;
+      m_oFormatters.m_bDefault = false;
     }
     //
     //    DATE_FORMAT='YYYY.MM.DD’
@@ -341,17 +341,17 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
         vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
         return false;
       }
-      m_xFormatters.m_bDefault = false;
+      m_oFormatters.m_bDefault = false;
     }
     
     // - - - - - - - - - - - - - - - - - - - - -
     // C_ESCAPE_CHAR
     else if (pTokenVec->pGet(i_Token)->bSame(C_ESCAPE_CHAR)) {
-      m_xFormatters.m_cEscapeChar = *pTokenVec->pGet(++i_Token)->sText().aChar();
-      if (m_xFormatters.m_cEscapeChar == '0')
-        m_xFormatters.m_cEscapeChar = '\0';
+      m_oFormatters.m_cEscapeChar = *pTokenVec->pGet(++i_Token)->sText().aChar();
+      if (m_oFormatters.m_cEscapeChar == '0')
+        m_oFormatters.m_cEscapeChar = '\0';
       
-      m_xFormatters.m_bDefault = false;
+      m_oFormatters.m_bDefault = false;
     }
     else {
       return false;
@@ -430,7 +430,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
     
     // extract format separator
     Stz* pSeparator= dateFormat + iIndex++;
-    m_xFormatters.m_cDateSeparator = *pSeparator->aChar();
+    m_oFormatters.m_cDateSeparator = *pSeparator->aChar();
     
     // is next character 'M' ?
     if (*(dateFormat + iIndex)->aChar() == 'M') {
@@ -442,7 +442,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
       // expect DD
@@ -450,9 +450,9 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
           (*(dateFormat + iIndex++)->aChar() != 'D') )
       return false;
       
-      m_xFormatters.m_eDateComponent[0] = DC_YYYY;
-      m_xFormatters.m_eDateComponent[1] = DC_MM;
-      m_xFormatters.m_eDateComponent[2] = DC_DD;
+      m_oFormatters.m_eDateComponent[0] = DC_YYYY;
+      m_oFormatters.m_eDateComponent[1] = DC_MM;
+      m_oFormatters.m_eDateComponent[2] = DC_DD;
       
       
     }
@@ -464,7 +464,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
       // expect MM
@@ -472,9 +472,9 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
           (*(dateFormat + iIndex++)->aChar() != 'M') )
       return false;
       
-      m_xFormatters.m_eDateComponent[0] = DC_YYYY;
-      m_xFormatters.m_eDateComponent[1] = DC_DD;
-      m_xFormatters.m_eDateComponent[2] = DC_MM;
+      m_oFormatters.m_eDateComponent[0] = DC_YYYY;
+      m_oFormatters.m_eDateComponent[1] = DC_DD;
+      m_oFormatters.m_eDateComponent[2] = DC_MM;
       
     }
   }
@@ -488,7 +488,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
     
     // extract format separator
     Stz* pSeparator= dateFormat + iIndex++;
-    m_xFormatters.m_cDateSeparator = *pSeparator->aChar();
+    m_oFormatters.m_cDateSeparator = *pSeparator->aChar();
     
     // is next character 'Y' ?
     if (*(dateFormat + iIndex)->aChar() == 'Y') {
@@ -502,7 +502,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
       // expect DD
@@ -510,9 +510,9 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
           (*(dateFormat + iIndex++)->aChar() != 'D') )
       return false;
       
-      m_xFormatters.m_eDateComponent[0] = DC_MM;
-      m_xFormatters.m_eDateComponent[1] = DC_YYYY;
-      m_xFormatters.m_eDateComponent[2] = DC_DD;
+      m_oFormatters.m_eDateComponent[0] = DC_MM;
+      m_oFormatters.m_eDateComponent[1] = DC_YYYY;
+      m_oFormatters.m_eDateComponent[2] = DC_DD;
     }
     else {
       // FORMAT should be MM-DD-YYYY
@@ -522,7 +522,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
       // expect YYYY
@@ -532,9 +532,9 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
           (*(dateFormat + iIndex++)->aChar() != 'Y') )
       return false;
       
-      m_xFormatters.m_eDateComponent[0] = DC_MM;
-      m_xFormatters.m_eDateComponent[1] = DC_DD;
-      m_xFormatters.m_eDateComponent[2] = DC_YYYY;
+      m_oFormatters.m_eDateComponent[0] = DC_MM;
+      m_oFormatters.m_eDateComponent[1] = DC_DD;
+      m_oFormatters.m_eDateComponent[2] = DC_YYYY;
       
     }
   }
@@ -548,7 +548,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
     
     // extract format separator
     Stz* pSeparator= dateFormat + iIndex++;
-    m_xFormatters.m_cDateSeparator = *pSeparator->aChar();
+    m_oFormatters.m_cDateSeparator = *pSeparator->aChar();
     
     // is next character 'M' ?
     if (*(dateFormat + iIndex)->aChar() == 'M') {
@@ -560,7 +560,7 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
       // expect YYYY
@@ -570,9 +570,9 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
           (*(dateFormat + iIndex++)->aChar() != 'Y') )
       return false;
       
-      m_xFormatters.m_eDateComponent[0] = DC_DD;
-      m_xFormatters.m_eDateComponent[1] = DC_MM;
-      m_xFormatters.m_eDateComponent[2] = DC_YYYY;
+      m_oFormatters.m_eDateComponent[0] = DC_DD;
+      m_oFormatters.m_eDateComponent[1] = DC_MM;
+      m_oFormatters.m_eDateComponent[2] = DC_YYYY;
       
     }
     else {
@@ -585,16 +585,16 @@ bool Job_LoadTable::bExtractDateFormat(Stz* dateFormat)
       return false;
       
       // expect format separator
-      if ( (*(dateFormat + iIndex++)->aChar() != m_xFormatters.m_cDateSeparator) )
+      if ( (*(dateFormat + iIndex++)->aChar() != m_oFormatters.m_cDateSeparator) )
       return false;
       
       if ( (*(dateFormat + iIndex++)->aChar() != 'M') ||
           (*(dateFormat + iIndex++)->aChar() != 'M'))
       return false;
       
-      m_xFormatters.m_eDateComponent[0] = DC_DD;
-      m_xFormatters.m_eDateComponent[1] = DC_YYYY;
-      m_xFormatters.m_eDateComponent[2] = DC_MM;
+      m_oFormatters.m_eDateComponent[0] = DC_DD;
+      m_oFormatters.m_eDateComponent[1] = DC_YYYY;
+      m_oFormatters.m_eDateComponent[2] = DC_MM;
       
     }
   }

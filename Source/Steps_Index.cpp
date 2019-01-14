@@ -327,7 +327,7 @@ void Step::vIndexExactKey(MP_Task mpTask)
   // form the key
   KeyWrk xKeyWrk;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrk.vAddDatum(xVariable,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
@@ -667,7 +667,7 @@ void Step::vIndexLowerBound(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrkLower.vAddDatum(xVariable,pColumn0,pFormatters);
   //xKeyWrk.vShow();
   
@@ -845,7 +845,7 @@ void Step::vIndexPosition(MP_Task mpTask)
   
   KeyWrk xKeyWrk;
   Column* pColumn = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrk.vAddDatum(xVariable, pColumn, pFormatters);
   //xKeyWrk.aKey()->vShow(pIndex->pIdxColVec());
 
@@ -960,7 +960,7 @@ void Step::vIndexRange(MP_Task mpTask)
   // make the lower key
   KeyWrk xKeyWrkLower;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrkLower.vAddDatum(xValWrkLwr,pColumn0,pFormatters);
   //xKeyWrkLower.vShow();
   
@@ -1463,7 +1463,7 @@ void Step::vIndexUpper(MP_Task mpTask)
   // assuming non-complex key
   //ASSERT(1 == pIndex->pIdxColVec()->nItems());
   KeyWrk xKeyWrk;
-  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrk.vAddDatum(xVariable, pIndex->pIdxColVec()->pGet(0),pFormatters);
   
   eRO eRelnOp = pPlanner->eGetFirstUpperPredicateRO(i_Phrase);
@@ -1540,7 +1540,7 @@ void Step::vIndexUpperBound(MP_Task mpTask)
   // make the upper key
   KeyWrk xKeyWrkUpper;
   Column* pColumn0 = pIndex->pIdxColVec()->pGet(0);
-  Formatters* pFormatters = &gpAttachMap->m_xFormatters;
+  Formatters* pFormatters = &gpAttachMap->m_oFormatters;
   xKeyWrkUpper.vAddDatum(xVariable,pColumn0,pFormatters);
   //xKeyWrkUpper.vShow();
   

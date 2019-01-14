@@ -108,10 +108,10 @@ Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
   // set the enclosined_by to be a '
-  m_xFormatters.m_bDefault = false;
-  m_xFormatters.m_bAllowNonPrintable = true;
-  m_xFormatters.m_cEnclosedBy_Leading = '\'';
-  m_xFormatters.m_cEnclosedBy_Trailing = '\'';
+  m_oFormatters.m_bDefault = false;
+  m_oFormatters.m_bAllowNonPrintable = true;
+  m_oFormatters.m_cEnclosedBy_Leading = '\'';
+  m_oFormatters.m_cEnclosedBy_Trailing = '\'';
   
   // create Job_InsertTable
   JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);

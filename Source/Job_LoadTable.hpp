@@ -11,7 +11,7 @@ namespace JobModel
   {
   public:
     Table*     m_pTable;       // table being load
-    Formatters m_xFormatters;  // record formatters
+    Formatters m_oFormatters;  // record formatters
   
     LoadMap*   m_pLoadMap;     // load map
   
