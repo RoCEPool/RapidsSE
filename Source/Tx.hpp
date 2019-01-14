@@ -31,8 +31,7 @@ namespace Transactions
     /* 8 */ "ENUMS"_Stz
   };
   
-  class Tx : public Object,
-             public CollectionNode_t<Tx>
+  class Tx : public Object
   {
   private:
     Lock   m_oLock;      // lock
