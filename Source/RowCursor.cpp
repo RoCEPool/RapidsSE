@@ -106,7 +106,7 @@ void RowCursor::vFirst(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   if (m_pRowBuffer)
-    m_pRow = m_pRowBuffer->pFirstEntry();
+    m_pRow = m_pRowBuffer->aFirstEntry();
   else
     m_pRow = nullptr;
 }
@@ -121,7 +121,7 @@ void RowCursor::vNext(void)
   ASSERT(m_pRow);
   
   if (m_pRowBuffer)
-    m_pRow = m_pRowBuffer->pNextEntry(m_pRow, 0);
+    m_pRow = m_pRowBuffer->aNextEntry(m_pRow, 0);
   else
     m_pRow = nullptr;
 }

@@ -1219,7 +1219,7 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
         *ppRow = nullptr;
         
       } else {
-        aEntry = pEntryBuffer->pFirstEntry();
+        aEntry = pEntryBuffer->aFirstEntry();
         *ppEntry = aEntry;
         *ppEntryBuffer = pEntryBuffer;
         *ppRow = aEntry->aRow();
@@ -1238,7 +1238,7 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
     RASSERT(aEntry);
     
     // get the next entry
-    aEntry = pEntryBuffer->pNextEntry(aEntry, 0);
+    aEntry = pEntryBuffer->aNextEntry(aEntry, 0);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // did we find an entry ?
@@ -1249,7 +1249,7 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
       
       if ( pEntryBuffer ) {
         vTrace("got next buffer %p\n"_Stz, pEntryBuffer);
-        aEntry = pEntryBuffer->pFirstEntry();
+        aEntry = pEntryBuffer->aFirstEntry();
 
       }
     }

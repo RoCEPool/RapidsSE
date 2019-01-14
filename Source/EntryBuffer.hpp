@@ -83,7 +83,7 @@ namespace DBobjects
     // complex functions
   
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
-    Entry*       pAppendRow(RowWrk& xRowWrk);
+    Entry*       aAppendRow(RowWrk& xRowWrk);
     void         vBufferCount(i8& nBufferCount);
     void         vBuildSkipListSorted(void);
     i8           iDecile(void);
@@ -91,21 +91,21 @@ namespace DBobjects
     bool         bDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer);
     void         vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
-    Entry*       pFirstEntry(void);
-    Entry*       pGetEntryRowNo(i8 i_RowNo);
+    Entry*       aFirstEntry(void);
+    Entry*       aGetEntryRowNo(i8 i_RowNo);
     bool         bHasSpace(i8 nBytes);
-    Entry*       pInsertKeyAbs(KeyWrk& xKeyWrk);
-    Entry*       pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry);
+    Entry*       aInsertKeyAbs(KeyWrk& xKeyWrk);
+    Entry*       aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry);
     static Entry* aInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
-    Entry*       pLastEntry(void);
+    Entry*       aLastEntry(void);
     void         vLazyBuild(void);
     i8           iLengthList(void);
     i8           iLengthSubList(void);
-    Entry*       pNextEntry(Entry* aEntry, i8 i_Offset);
+    Entry*       aNextEntry(Entry* aEntry, i8 i_Offset);
   
-    Entry*       pPositionQuery(Key* aGivenKey, eRO eRelOp);
-    Entry*       pPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
+    Entry*       aPositionQuery(Key* aGivenKey, eRO eRelOp);
+    Entry*       aPositionQuery(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare);
     EntryBuffer* pPositionLevel(Key* aGivenKey, i8 nKeyCols, eJC eJuxtaCompare, i8 iLevel);
     
     void         vReset(void);

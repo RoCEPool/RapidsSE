@@ -40,7 +40,7 @@ namespace DBobjects
 
     void  vId(Id& xId);
     
-    Entry*  pRow(void);
+    Entry*  aRow(void);
   
     EntryBuffer* pReferencedEntryBuffer(void);
   

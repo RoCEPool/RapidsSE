@@ -280,7 +280,7 @@ Entry* Entry::aDataEntry(void)
   EntryBuffer* pEntryBuffer = pReferencedEntryBuffer();
   
   // get the row entry
-  Entry* aRowEntry = pEntryBuffer->pGetEntryRowNo(m_xId.iRow());
+  Entry* aRowEntry = pEntryBuffer->aGetEntryRowNo(m_xId.iRow());
   
   return aRowEntry;
 }

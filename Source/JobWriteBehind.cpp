@@ -134,7 +134,7 @@ eEC JobWriteBehind::eInsertRow(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
-    Entry* aEntry = pEntryBuffer->pAppendRow(xRowWrk);
+    Entry* aEntry = pEntryBuffer->aAppendRow(xRowWrk);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // appended ?

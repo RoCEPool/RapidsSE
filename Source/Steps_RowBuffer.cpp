@@ -28,11 +28,11 @@ void Step::vRowBufferDump(MP_Task mpTask)
     THROW_INVALID_DSTACK("rowbuffer.dump"_Stz);
   EntryBuffer* pRowBuffer = (EntryBuffer*)_pEntryBuffer(pPtrRowBuffer);
 
-  Entry* aRow = pRowBuffer->pFirstEntry();
+  Entry* aRow = pRowBuffer->aFirstEntry();
   
   while (aRow) {
     aRow->vContentDump();
-    aRow = pRowBuffer->pNextEntry(aRow, 0);
+    aRow = pRowBuffer->aNextEntry(aRow, 0);
   }
   
   EXIT();

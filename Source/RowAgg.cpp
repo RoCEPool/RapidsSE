@@ -106,9 +106,9 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
   m_oSince = pEntryBuffer->oWhenNewed();
   
   // aggregate the buffer
-  for (Entry* aEntry = pEntryBuffer->pFirstEntry();
+  for (Entry* aEntry = pEntryBuffer->aFirstEntry();
        aEntry != nullptr;
-       aEntry = pEntryBuffer->pNextEntry(aEntry, 0)) {
+       aEntry = pEntryBuffer->aNextEntry(aEntry, 0)) {
     
     pRow = aEntry->aRow();
     
