@@ -693,7 +693,7 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
     eDM eDatum = pColumn->eDatumType();
     
     char* aDatum = aWspCursor;
-    aWspCursor = pAdd<char*>(aWspCursor,sizeof(w8));
+    aWspCursor = aAdd<char*>(aWspCursor,sizeof(w8));
     
     if (DM_VCH == eDatum)
       aDatum = *((char**)aDatum);

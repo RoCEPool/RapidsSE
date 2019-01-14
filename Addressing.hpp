@@ -27,13 +27,15 @@ static CAST aAdd(void* aAddress, i8 nBytes)
 /* add bytes to given address                                                 */
 /*----------------------------------------------------------------------------*/
 template <class CAST>
-static CAST pAdd(void* aAddress, i8 nBytes)
+static CAST pAdd(Object* pObject, i8 nBytes)
 {
-  char* aAddr0 = reinterpret_cast<char*>(aAddress);
+  char* aAddr0 = reinterpret_cast<char*>(pObject);
   
   char* aAddr1 = aAddr0 + nBytes;
   
-  return reinterpret_cast<CAST>(aAddr1);
+  CAST pOtherObject = reinterpret_cast<CAST>(aAddr1);
+  
+  return pOtherObject;
 }
 
 /*============================================================================*/

@@ -245,9 +245,9 @@ char* Entry::aRowData(void)                   //! this function just seems wrong
   
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets());
 
-  char* aKey = pAdd<char*>(aEmbeddedObject(),nOffsetBytes);
+  char* aKey = aAdd<char*>(aEmbeddedObject(),nOffsetBytes);
   // assuming key is CT_INTEGER for hidden index
-  char* aRow = pAdd<char*>(aKey, sizeof(i8));                        //ALKA-TODO
+  char* aRow = aAdd<char*>(aKey, sizeof(i8));                        //ALKA-TODO
   
   return aRow;
 }
@@ -296,7 +296,7 @@ char* Entry::aEmbeddedObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
   
-  char* aEmbObj = pAdd<char*>(this,sizeof(Entry));
+  char* aEmbObj = aAdd<char*>(this,sizeof(Entry));
   
   return pPoolCheck<char*>(aEmbObj);
 }
@@ -744,7 +744,7 @@ char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
     
     // add the column word to the element
     MemLib::vCopy(aElement, &wColumnWord, sizeof(w8), CN_TABLE);
-    aElement = pAdd<char*>(aElement,sizeof(w8));
+    aElement = aAdd<char*>(aElement,sizeof(w8));
   }
   
   return aElement;
@@ -799,7 +799,7 @@ NEO* Entry::aNEO(void)
   
   //NEO* aNEO = pAdd<NEO*>(aFooter,sizeof(Footer));
   
-  NEO* aNEO = pAdd<NEO*>(this, nSizeItem());
+  NEO* aNEO = aAdd<NEO*>(this, nSizeItem());
   
   return aNEO;
 }
@@ -817,7 +817,7 @@ i4 Entry::iNEO(i8 iOffset)
   
   //i4 iNEO = aNEO->m_iOffset[iOffset];
   
-  i4 iNEO = *(pAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset));
+  i4 iNEO = *(aAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset));
   
   return iNEO;
 }
@@ -835,7 +835,7 @@ void Entry::vNEO(i8 iOffset, i4 iNEO)
   
   //aNEO->m_iOffset[iOffset] = iNEO;
   
-  *(pAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset)) = iNEO;
+  *(aAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset)) = iNEO;
   
 }
 
@@ -881,7 +881,7 @@ char* Entry::aAddressAfter(void)
   
   i8 nEntryPlusNEO = nEntryBytes + nSizeNEO;
   
-  char* aAfter = pAdd<char*>(this,nEntryPlusNEO);
+  char* aAfter = aAdd<char*>(this,nEntryPlusNEO);
   
   return aAfter;
 }

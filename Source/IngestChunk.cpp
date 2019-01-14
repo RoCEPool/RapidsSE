@@ -74,7 +74,7 @@ i8 IngestChunk::nReadMore(File& oFile)
   
   i8 nCarryOverBytes = m_nDataBytes;
   
-  void* aReadDst = pAdd<void*>(aDataArea(),nCarryOverBytes);
+  void* aReadDst = aAdd<void*>(aDataArea(),nCarryOverBytes);
   
   i8 nBytesToRead = C_WSP_DATACHUNK - nCarryOverBytes;
   

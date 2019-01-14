@@ -514,7 +514,7 @@ char* Column::aValue(i8& nBytes, char** aaCursor)
   else
     nBytes = sizeof(i8);
   
-  *aaCursor = pAdd<char*>(aValue,nBytes);
+  *aaCursor = aAdd<char*>(aValue,nBytes);
   
   return aValue;
 }

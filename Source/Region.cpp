@@ -45,7 +45,7 @@ bool Region::bAttach(s32& sRegionName, bool bWecome)
   }
   
   // overlay attach map onto 2nd buffer (buffer #1)
-  gpAttachMap = pAdd<AttachMap*>(mpRegion,C_SIZE_POOL_BUFFER);
+  gpAttachMap = pAdd<AttachMap*>((Object*)mpRegion,C_SIZE_POOL_BUFFER);
   
   // get the actual size
   i8 iRegionSize = gpAttachMap->m_iRegionSize;

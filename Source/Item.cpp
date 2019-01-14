@@ -59,7 +59,7 @@ i8 Item::nSizeItem(void)
 /*----------------------------------------------------------------------------*/
 char* Item::aAddressAfter(void)
 {  
-  char* aAfter = pAdd<char*>(this,(i8)m_nSizeItem);
+  char* aAfter = aAdd<char*>(this,(i8)m_nSizeItem);
   
   return aAfter;
 }

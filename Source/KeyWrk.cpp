@@ -170,7 +170,7 @@ void KeyWrk::vAddDatum(GenVar& xVariable, Column* pCol)
   if (DM_VCH == pCol->eDatumType())
     pSrc = (char*)(_aStrVal(xVariable.aNestedValue())->aStz());
   else
-    pSrc = pAdd<char*>(xVariable.aNestedValue(),sizeof(Value));
+    pSrc = aAdd<char*>(xVariable.aNestedValue(),sizeof(Value));
   
   
   nBytes = DtmLib::nCopy(pCol->eDatumType(),pDst,pSrc);

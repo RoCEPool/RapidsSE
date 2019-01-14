@@ -220,7 +220,7 @@ void VectorNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vInsert(ITEM* pItem)
   if (nItemNo) {
     char* aSrc = reinterpret_cast<char*>(&m_pItem[0]);
     char* aDst = reinterpret_cast<char*>(&m_pItem[1]);
-    char* aLst = pAdd<char*>(&m_pItem[nItemNo],sizeof(ITEM*));
+    char* aLst = aAdd<char*>(&m_pItem[nItemNo],sizeof(ITEM*));
     i8 nBytes = nSub(aLst,aDst);
     
     MemLib::vMove(aDst,aSrc,nBytes,VEC_CN);
@@ -292,7 +292,7 @@ void VectorNL_t<VEC_CN,ITEM,ITEM_CN,MAX_ITEMS,SUB>::vRemove(ITEM* pItem)
   // move array up
   char* aSrc = reinterpret_cast<char*>(&m_pItem[nItemNo+1]);
   char* aDst = reinterpret_cast<char*>(&m_pItem[nItemNo]);
-  char* aLst = pAdd<char*>(&m_pItem[m_nItems-1],sizeof(ITEM*));
+  char* aLst = aAdd<char*>(&m_pItem[m_nItems-1],sizeof(ITEM*));
   i8 nBytes = nSub(aLst,aDst);
   
   MemLib::vMove(aDst,aSrc,nBytes,VEC_CN);

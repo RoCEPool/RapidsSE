@@ -139,12 +139,12 @@ Word* Word::pToWord(void* pBody)
 {
   // static function
   
-  Word* pWord = pAdd<Word*>(pBody,
-                            -( sizeof(Word)
-                              - sizeof(Wsp_t<C_WSP_WORD>)
-                              - sizeof(Footer)
-                              )
-                            );
+  Word* pWord = (Word*)aAdd<Word*>(pBody,
+                                   -( sizeof(Word)
+                                      - sizeof(Wsp_t<C_WSP_WORD>)
+                                      - sizeof(Footer)
+                                    )
+                                  );
   
   ASSERT(pWord->eClass() == CN_WORD);
   

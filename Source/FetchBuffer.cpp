@@ -175,7 +175,7 @@ Row** FetchBuffer::pNextRowPtr(Row** ppCurrentRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FETCHBUFFER,_FOOTER_);
   
-  Row** ppNextRow = pAdd<Row**>(ppCurrentRow,sizeof(Row*));
+  Row** ppNextRow = aAdd<Row**>(ppCurrentRow,sizeof(Row*));
   
   if ((char**)ppNextRow >= (char**)m_xWsp.aLatter())
     return nullptr;

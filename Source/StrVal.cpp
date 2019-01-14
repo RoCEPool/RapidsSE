@@ -79,7 +79,7 @@ void StrVal::vAssign(Stz* aStz)
 /*----------------------------------------------------------------------------*/
 char* StrVal::aChar(void)
 {
-  char* aArea = pAdd<char*>(&m_nBytesFollowing,sizeof(m_nBytesFollowing));
+  char* aArea = aAdd<char*>(&m_nBytesFollowing,sizeof(m_nBytesFollowing));
   
   return aArea;
 }

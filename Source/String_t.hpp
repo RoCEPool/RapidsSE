@@ -181,7 +181,7 @@ void String_t<SIZE>::vCatSprint(Stz* aFormat, ...)
   _precondition_(_MAGIC_,_FOOTER_);
   va_list args;
   
-  char* aEnd = pAdd<char*>(aChar(),iLength());
+  char* aEnd = aAdd<char*>(aChar(),iLength());
   
   va_start(args,aFormat);
   vsprintf(aEnd,(char*)aFormat,args);

@@ -159,13 +159,13 @@ FreeChunk* HeapBuffer::pNextChunk(FreeChunk* pChunk, i8 nBytes)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   // calculate address of next buffer
-  FreeChunk* pNextChunk = pAdd<FreeChunk*>(pChunk,nBytes);
+  FreeChunk* aNextChunk = aAdd<FreeChunk*>(pChunk,nBytes);
 
   // check next buffer ends within this segment
-  if (aChunkEnd(pNextChunk,nBytes) > m_aLastByte)
+  if (aChunkEnd(aNextChunk,nBytes) > m_aLastByte)
     return nullptr;
   
-  return pNextChunk;
+  return aNextChunk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,11 +176,11 @@ void HeapBuffer::vVerify(i8 iChunkSize)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   i8 iChunk = 0;
-  for (FreeChunk* pChunk = pFirstChunk();
-       pChunk;
-       pChunk = pNextChunk(pChunk,iChunkSize), iChunk++) {
+  for (FreeChunk* aChunk = pFirstChunk();
+       aChunk;
+       aChunk = pNextChunk(aChunk,iChunkSize), iChunk++) {
     
-    eCN eClass = pChunk->eClass();
+    eCN eClass = aChunk->eClass();
     ASSERT(eClass < CN_ENUMS);
   }
 }
@@ -196,7 +196,7 @@ Stz* HeapBuffer::aChunkEnd(FreeChunk* pChunk, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
-  Stz* aChunkEnd = pAdd<Stz*>(pChunk,nBytes - 1);
+  Stz* aChunkEnd = aAdd<Stz*>(pChunk,nBytes - 1);
   
   return aChunkEnd;
 }

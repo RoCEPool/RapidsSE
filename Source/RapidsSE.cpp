@@ -72,7 +72,7 @@ void RapidsSE::vMainEntry(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vAttachRegion(void)
 {
-  gpAttachMap = pAdd<AttachMap*>(mpRegion,C_SIZE_POOL_BUFFER);
+  gpAttachMap = pAdd<AttachMap*>((Object*)mpRegion,C_SIZE_POOL_BUFFER);
   
   // get pointers to global objects from attach map
   gpAttachMap->vGetGlobals();
@@ -256,7 +256,7 @@ void RapidsSE::vKillPrev(void)
   
   // an assumption is that regions will be /SE_<node>
   
-  void* pRegion;
+  void* aRegion;
   s32 sRegionName;
   int iFD;
   bool b;
@@ -270,10 +270,10 @@ void RapidsSE::vKillPrev(void)
     if ( ! Region::bTest(sRegionName) )
       continue;
     
-    if ( ! (pRegion = Region::pOpen(sRegionName,iFD)) )
+    if ( ! (aRegion = Region::pOpen(sRegionName,iFD)) )
       continue;
     
-    AttachMap* pAttachMap = pAdd<AttachMap*>(pRegion,C_SIZE_POOL_BUFFER);
+    AttachMap* pAttachMap = pAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
     
     if (pAttachMap->m_iPid &&
         pAttachMap->m_iPid != Process::iGetPid() &&
@@ -286,7 +286,7 @@ void RapidsSE::vKillPrev(void)
         vTrace("vKillPrev: process %lld not killed\n"_Stz,pAttachMap->m_iPid);
     }
     
-    Region::vClose(pRegion,iFD);
+    Region::vClose(aRegion,iFD);
     
     Region::vUnlink(sRegionName);
   }

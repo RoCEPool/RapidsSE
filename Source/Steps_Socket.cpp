@@ -404,7 +404,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     
     MemLib::vCopy(aLowBuff,pObject,sizeof(Object),eClass);
     
-    void* aLowBody = pAdd<void*>(aLowBuff,sizeof(Object));
+    void* aLowBody = aAdd<void*>(aLowBuff,sizeof(Object));
     i8 nRemainingBytes = sizeof(Job_WriteBuffer) - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aLowBody,nRemainingBytes,oSysCall);

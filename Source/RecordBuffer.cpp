@@ -125,7 +125,7 @@ char* RecordBuffer::pNextRecord(char* pCurrentRecord)
   
   i4 nBytes = *((i4*)pCurrentRecord);
   
-  char* pNext = pAdd<char*>(pCurrentRecord,nBytes+C_SIZEOF_RECORDSIZE);
+  char* pNext = aAdd<char*>(pCurrentRecord,nBytes+C_SIZEOF_RECORDSIZE);
   
   if ((char*)pNext >= (char*)&m_cArea[C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes])
     return nullptr;
@@ -161,7 +161,7 @@ void RecordBuffer::vShow(void)
        pRecord = pNextRecord(pRecord)) {
     
     u4 iSize = *((u4*)(pRecord));
-    vTrace("R%lld: %lld %s\n"_Stz, i++, iSize, pAdd<char*>(pRecord, C_SIZEOF_RECORDSIZE));
+    vTrace("R%lld: %lld %s\n"_Stz, i++, iSize, aAdd<char*>(pRecord, C_SIZEOF_RECORDSIZE));
   }
 }
 

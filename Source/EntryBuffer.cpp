@@ -767,7 +767,7 @@ Entry* EntryBuffer::pGetEntryRowNo(i8 i_RowNo)
   RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
   i4 iOffset = m_aEntryOffsets[i_RowNo];
   
-  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
+  char* aAddress = aAdd<char*>(aDataArea(), iOffset);
   
   Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
   
@@ -1076,7 +1076,7 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
   if (-1 == iOffset)
     return nullptr;
   
-  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
+  char* aAddress = aAdd<char*>(aDataArea(), iOffset);
   //Item* pItem = _pItem(aAddress);
   
   //if (CN_ENTRY != pItem->eClass())
@@ -1978,7 +1978,7 @@ void EntryBuffer::vCompact(void)
     //vGiveSpace(nReclaimedBytes);
     
     // convert the moved entry to a free entry
-    FreeEntry* pOpenedFreeEntry = pAdd<FreeEntry*>(pFreeEntry,nCopyBytes);
+    FreeEntry* pOpenedFreeEntry = aAdd<FreeEntry*>(pFreeEntry,nCopyBytes);
     new(pOpenedFreeEntry) FreeEntry(nReclaimedBytes);
     
     Entry* pCheckEntry = reinterpret_cast<Entry*>(pFreeEntry);
@@ -2078,7 +2078,7 @@ void EntryBuffer::vCompactLeft(void)
   
   // reset the wilderness
   
-  Item* pNewWilderness = pAdd<Item*>(pLastEntry,pLastEntry->nSizeEntry() + pLastEntry->iNEOsize());
+  Item* pNewWilderness = aAdd<Item*>(pLastEntry,pLastEntry->nSizeEntry() + pLastEntry->iNEOsize());
   
   vResetUsed(pNewWilderness);
   
@@ -2133,7 +2133,7 @@ void EntryBuffer::vCompactLeft2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Item* pThisWilderness = pAdd<Item*>(m_pHeadEntry,
+  Item* pThisWilderness = aAdd<Item*>(m_pHeadEntry,
                                       m_pHeadEntry->nSizeEntry() +
                                       m_pHeadEntry->iNEOsize());
   vResetUsed(pThisWilderness);
@@ -2353,7 +2353,7 @@ Entry* EntryBuffer::pGetEntryOffset(i8 iOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  char* aAddress = pAdd<char*>(aDataArea(), iOffset);
+  char* aAddress = aAdd<char*>(aDataArea(), iOffset);
   Entry* pEntry = reinterpret_cast<Entry*>(aAddress);
   
   return pEntry;
@@ -2560,7 +2560,7 @@ void EntryBuffer::vHeadEntryRestore(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_pHeadEntry = pAdd<Entry *>(aDataArea(),sizeof(i4) * C_ENTRIES_L0);
+  m_pHeadEntry = aAdd<Entry *>(aDataArea(),sizeof(i4) * C_ENTRIES_L0);
 }
 
 /*----------------------------------------------------------------------------*/

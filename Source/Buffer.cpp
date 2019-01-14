@@ -113,7 +113,7 @@ void* Buffer::aDataArea(void)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   // last byte in buffer
-  void* aDataArea = pAdd<void*>((char*)this,sizeof(Buffer));
+  void* aDataArea = aAdd<void*>((char*)this,sizeof(Buffer));
   
   return aDataArea;
 }

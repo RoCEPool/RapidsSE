@@ -222,7 +222,7 @@ void Task::vAdjustFIP(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  FIP.m_aCell = pAdd<Cell*>(FIP.m_aCell,nBytes);
+  FIP.m_aCell = aAdd<Cell*>(FIP.m_aCell,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/

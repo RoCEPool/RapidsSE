@@ -72,14 +72,14 @@ bool QueueBuffer::bAppend(Value* aValue)
   
   i8 nBytes = aValue->nSize();
   
-  Stz* aFinalByteOfValue = pAdd<Stz*>(m_aNextFree,nBytes-1);
+  Stz* aFinalByteOfValue = aAdd<Stz*>(m_aNextFree,nBytes-1);
   
   if (aFinalByteOfValue > Buffer::aLastUsableByte())
     return false;
   
   MemLib::vCopy(m_aNextFree,aValue,nBytes,CN_QUEUEBUFFER);
   
-  m_aNextFree = pAdd<Value*>(m_aNextFree,nBytes);
+  m_aNextFree = aAdd<Value*>(m_aNextFree,nBytes);
   
   m_nValues++;
   
@@ -163,7 +163,7 @@ bool QueueBuffer::bPop(Forth::GenVar* pValWrk, bool& bDiscardable)
   MemLib::vCopy(pValWrk->aNestedValue(),m_aTopValue,nBytes,CN_QUEUEBUFFER);
   
   //m_aTopValue = pNextValue(m_aTopValue);
-  m_aTopValue = pAdd<Value*>(m_aTopValue,nBytes);
+  m_aTopValue = aAdd<Value*>(m_aTopValue,nBytes);
   
   m_nValues--;
   
@@ -205,7 +205,7 @@ Value* QueueBuffer::aNextValue(Value* aValue)
   
   i8 nBytes = aValue->nSize();
   
-  Value* aNextValue = pAdd<Value*>(aValue,nBytes);
+  Value* aNextValue = aAdd<Value*>(aValue,nBytes);
   
   if (aNextValue < m_aNextFree)
     return aNextValue;

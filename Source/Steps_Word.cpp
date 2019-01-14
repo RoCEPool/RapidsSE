@@ -559,7 +559,7 @@ void Step::vSee(MP_Task mpTask)
       }
       
       i8 iBytes = aValue->nSize();
-      aDoesCell = pAdd<Cell*>(aDoesCell,iBytes);
+      aDoesCell = aAdd<Cell*>(aDoesCell,iBytes);
       
       continue;
     }

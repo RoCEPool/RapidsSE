@@ -154,7 +154,7 @@ char* FreeEntry::aAddressAfter(void)
   
   i8 nFreeEntryBytes = nSizeItem();
   
-  char* aAfter = pAdd<char*>(this,nFreeEntryBytes);
+  char* aAfter = aAdd<char*>(this,nFreeEntryBytes);
   
   return aAfter;
 }
@@ -172,7 +172,7 @@ Footer* FreeEntry::aFooter(void)
   
   i8 iFooterOffset = nSizeItem() - sizeof(Footer);
   
-  Footer* aFooter = pAdd<Footer*>(this,iFooterOffset);
+  Footer* aFooter = aAdd<Footer*>(this,iFooterOffset);
   
   return aFooter;
 }
