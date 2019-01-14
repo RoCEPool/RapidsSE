@@ -179,9 +179,6 @@ void Axioms::vAddConstants(void)
   /* 22 */ vAddConstant("CN_FREECHUNK"_Stz,    CN_FREECHUNK);
   
   /*    */ vAddConstant("CN_GENVAR"_Stz,       CN_GENVAR);
-  /* 23 */ vAddConstant("CN_GRAPH"_Stz,        CN_GRAPH);
-  /* 24 */ vAddConstant("CN_GRAPHCURSOR"_Stz,  CN_GRAPHCURSOR);
-  /* 25 */ vAddConstant("CN_GRAPHNODE"_Stz,    CN_GRAPHNODE);
   /* 26 */ vAddConstant("CN_GRID"_Stz,         CN_GRID);
   
   /* 27 */ vAddConstant("CN_HEAPBUFFER"_Stz,   CN_HEAPBUFFER);

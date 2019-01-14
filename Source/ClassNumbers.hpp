@@ -64,9 +64,6 @@ enum eCN : u2 // Class Number
   /*  48 */ CN_FREEENTRY,
   
   /*     */ CN_GENVAR,
-  /*  49 */ CN_GRAPH,
-  /*  50 */ CN_GRAPHCURSOR,
-  /*  51 */ CN_GRAPHNODE,
   /*  52 */ CN_GRID,
   
   /*  54 */ CN_HEAPBUFFER,
@@ -314,9 +311,6 @@ static Stz* aCN[]
   /*  48 */ "FREEENTRY"_Stz,           // CN_FREEENTRY
   
   /*     */ "GENVAR"_Stz,              // CN_GENVAR
-  /*  49 */ "GRAPH"_Stz,               // CN_GRAPH
-  /*  50 */ "GRAPHCURSOR"_Stz,         // CN_GRAPHCURSOR
-  /*  51 */ "GRAPHNODE"_Stz,           // CN_GRAPHNODE
   /*  52 */ "GRID"_Stz,                // CN_GRID
   
   /*  54 */ "HEAPBUFFER"_Stz,          // CN_HEAPBUFFER

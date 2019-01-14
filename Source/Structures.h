@@ -39,11 +39,6 @@ using namespace Structures;
 
 #include "Wilderness.hpp"
 
-#include "GraphNode.hpp"
-#include "Graph.hpp"
-#include "GraphCursor.hpp"
-
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

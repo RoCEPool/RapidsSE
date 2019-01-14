@@ -64,9 +64,6 @@ pDUMPFUN *gpDump[]
   /* 44 */ &Dump::vDummy,           // CN_FREEENTRY
   
   /*    */ &Dump::vInvalid,         // CN_GENVAR
-  /* 45 */ &Graph::vDump,           // CN_GRAPH
-  /* 46 */ &GraphCursor::vDump,     // CN_GRAPHCURSOR
-  /* 47 */ &GraphNode::vDump,       // CN_GRAPHNODE
   /* 48 */ &Grid::vDump,            // CN_GRID
 
   /* 50 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
@@ -319,9 +316,6 @@ i8 giClassSize[]
   /* 44 */ 0,                          // CN_FREEENTRY
   
   /*    */ sizeof(GenVar),             // CN_GENVAR
-  /* 45 */ sizeof(Graph),              // CN_GRAPH
-  /* 46 */ sizeof(GraphCursor),        // CN_GRAPHCURSOR
-  /* 47 */ sizeof(GraphNode),          // CN_GRAPHNODE
   /* 48 */ sizeof(Grid),               // CN_GRID
   
   /* 50 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
@@ -573,9 +567,6 @@ eHT geWhichHeap[]
   /* 44 */ HT_INVALID,           // CN_FREEENTRY
   
   /*    */ HT_INVALID,           // CN_GENVAR
-  /* 45 */ HT_TRANSIENT_SMALL,   // CN_GRAPH
-  /* 46 */ HT_TRANSIENT_SMALL,   // CN_GRAPHCURSOR
-  /* 47 */ HT_TRANSIENT_SMALL,   // CN_GRAPHNODE
   /* 48 */ HT_TRANSIENT_LARGE,   // CN_GRID
 
   /* 50 */ HT_INVALID,           // CN_HEAPBUFFER

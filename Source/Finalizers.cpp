@@ -61,9 +61,6 @@ pFINALIZE *gpFinalize[]
   /* 44 */ &Finalize::vUndefined,         // CN_FREEENTRY
   
   /*    */ &Finalize::vUndefined,         // CN_GENVAR
-  /* 45 */ &Finalize::vUndefined,         // CN_GRAPH
-  /* 46 */ &Finalize::vUndefined,         // CN_GRAPH
-  /* 47 */ &Finalize::vUndefined,         // CN_GRAPHNODE
   /* 48 */ &Finalize::vUndefined,         // CN_GRID
   
   /* 50 */ &Finalize::vUndefined,         // CN_HEAPBUFFER
