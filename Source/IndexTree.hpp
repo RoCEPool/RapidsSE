@@ -83,7 +83,7 @@ namespace DBobjects
   // allow for maximum 1025 indexes per table
   static const i8 C_INDEXES_PER_TABLE = 1025;
   
-  typedef Vector<CN_INDEXTREEVEC,IndexTree,CN_INDEXTREE,C_INDEXES_PER_TABLE,u8> IndexTreeVec;
+  typedef VectorNL_t<CN_INDEXTREEVEC,IndexTree,CN_INDEXTREE,C_INDEXES_PER_TABLE,u8> IndexTreeVec;
 }
 
 /*============================================================================*/

@@ -132,17 +132,17 @@ namespace DBobjects
   /*--------------------------------------------------------------------------*/
   /* ColumnVec -- Column Vector                                               */
   /*--------------------------------------------------------------------------*/
-  typedef Vector<CN_COLUMNVEC,Column,CN_COLUMN,1024,u8> ColumnVec;
+  typedef VectorNL_t<CN_COLUMNVEC,Column,CN_COLUMN,1024,u8> ColumnVec;
   
   /*--------------------------------------------------------------------------*/
   /* IdxColVec -- Index Column Vector                                         */
   /*--------------------------------------------------------------------------*/
-  typedef Vector<CN_IDXCOLVEC,Column,CN_COLUMN,1024,u8> IdxColVec;
+  typedef VectorNL_t<CN_IDXCOLVEC,Column,CN_COLUMN,1024,u8> IdxColVec;
   
   /*--------------------------------------------------------------------------*/
   /* PtnColVec -- Partition Column Vector                                     */
   /*--------------------------------------------------------------------------*/
-  typedef Vector<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
+  typedef VectorNL_t<CN_PTNCOLVEC,Column,CN_COLUMN,1024,u8> PtnColVec;
 
 }
 

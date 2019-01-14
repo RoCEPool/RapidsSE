@@ -5,7 +5,7 @@
 
 namespace Parsing
 {
-  class PredicateVec : public Vector<CN_PREDICATEVEC,Predicate,CN_PREDICATE,16,u8>
+  class PredicateVec : public VectorNL_t<CN_PREDICATEVEC,Predicate,CN_PREDICATE,16,u8>
   {
   private:
     i8   m_nMatchedPredicates; // number of matched columns

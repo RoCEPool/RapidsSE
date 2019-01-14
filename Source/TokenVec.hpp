@@ -5,7 +5,7 @@
 
 namespace Parsing
 {
-  class TokenVec : public Vector<CN_TOKENVEC,Token,CN_TOKEN,C_TOKENS,u8>
+  class TokenVec : public VectorNL_t<CN_TOKENVEC,Token,CN_TOKEN,C_TOKENS,u8>
   {
   private:
   

@@ -23,7 +23,7 @@ using namespace Plans;
 
 
 #include "AccessPath.hpp"
-typedef Vector<CN_PATHVEC,AccessPath,CN_ACCESSPATH,128,u8> PathVec;
+typedef VectorNL_t<CN_PATHVEC,AccessPath,CN_ACCESSPATH,128,u8> PathVec;
 
 #include "Plan.hpp"
 #include "Planner.hpp"

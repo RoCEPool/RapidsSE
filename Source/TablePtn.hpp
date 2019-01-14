@@ -75,7 +75,7 @@ namespace DBobjects
   /*--------------------------------------------------------------------------*/
   /* TablePtnVec -- Table Partition Vector                                    */
   /*--------------------------------------------------------------------------*/
-  typedef Vector<CN_TABLEPTNVEC,TablePtn,CN_TABLEPTN,C_SLOTS_PER_NODE,u8> TablePtnVec;
+  typedef VectorNL_t<CN_TABLEPTNVEC,TablePtn,CN_TABLEPTN,C_SLOTS_PER_NODE,u8> TablePtnVec;
 }
 
 /*============================================================================*/
