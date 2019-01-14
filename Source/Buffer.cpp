@@ -166,7 +166,7 @@ Footer* Buffer::aFooter(void)
   // Note: cannot check _FOOTER_ here
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Footer* aFooter = pAdd<Footer*>(this,C_SIZE_POOL_BUFFER-sizeof(Footer));
+  Footer* aFooter = aAdd<Footer*>(this,C_SIZE_POOL_BUFFER-sizeof(Footer));
   
   return aFooter;
 }

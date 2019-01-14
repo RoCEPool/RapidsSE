@@ -291,7 +291,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
 
     MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
     
-    void* aBody = pAdd<void*>(pJob,sizeof(Object));
+    void* aBody = aAdd<void*>(pJob,sizeof(Object));
     i8 nRemainingBytes = nObjectSize - sizeof(Object);
 
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
@@ -323,7 +323,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
     
     MemLib::vCopy(pEntryBuffer,pObject,sizeof(Object),CN_ENTRYBUFFER);
 
-    void* aBody = pAdd<void*>(pEntryBuffer,sizeof(Object));
+    void* aBody = aAdd<void*>(pEntryBuffer,sizeof(Object));
     i8 nRemainingBytes = giClassSize[CN_ENTRYBUFFER] - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
@@ -460,7 +460,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     
     MemLib::vCopy(pJob,pObject,sizeof(Object),eClass);
     
-    void* aBody = pAdd<void*>(pJob,sizeof(Object));
+    void* aBody = aAdd<void*>(pJob,sizeof(Object));
     i8 nRemainingBytes = giClassSize[eClass] - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);
@@ -488,7 +488,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
     
     MemLib::vCopy(pEntryBuffer,pObject,sizeof(Object),CN_ENTRYBUFFER);
     
-    void* aBody = pAdd<void*>(pEntryBuffer,sizeof(Object));
+    void* aBody = aAdd<void*>(pEntryBuffer,sizeof(Object));
     i8 nRemainingBytes = giClassSize[CN_ENTRYBUFFER] - sizeof(Object);
     
     bResult = pSocket->bRecvBytes(aBody,nRemainingBytes,oSysCall);

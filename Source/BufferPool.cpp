@@ -38,8 +38,8 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
                  - iJumboTook;
   
   m_pBase  = reinterpret_cast<Buffer*>(this);
-  m_pLimit = pAdd<Buffer*>(m_pBase,iRegionSize);
-  m_pJumbo = pAdd<Buffer*>(m_pLimit,-(iJumboTook * C_SIZE_POOL_BUFFER));
+  m_pLimit = (Buffer*)aAdd<void*>(m_pBase,iRegionSize);
+  m_pJumbo = (Buffer*)aAdd<void*>(m_pLimit,-(iJumboTook * C_SIZE_POOL_BUFFER));
   m_bDontFree = bDontFree;
   m_bFreeRB = bFreeRB;
   
@@ -522,7 +522,7 @@ Buffer* BufferPool::pNextJumbo(Buffer* pPrev)
     pJumbo = m_pJumbo;
   }
   else {
-    pJumbo = pAdd<Buffer*>(pPrev,C_SIZE_POOL_BUFFER*C_JUMBO_RATIO);
+    pJumbo = (Buffer*)aAdd<void*>(pPrev,C_SIZE_POOL_BUFFER*C_JUMBO_RATIO);
     if (pJumbo >= m_pLimit)
       pJumbo = nullptr;
   }

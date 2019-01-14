@@ -842,7 +842,7 @@ void Arguments::vScribble(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
-  byte* aDst = pAdd<byte*>(this,sizeof(Object));
+  byte* aDst = aAdd<byte*>(this,sizeof(Object));
   
   i8 nBytes = sizeof(Arguments) - sizeof(Object) - sizeof(Footer);
   

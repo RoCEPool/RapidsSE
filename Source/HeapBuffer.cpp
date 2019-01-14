@@ -146,7 +146,7 @@ FreeChunk* HeapBuffer::pFirstChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
-  FreeChunk* pFirstChunk = pAdd<FreeChunk*>(this,sizeof(HeapBuffer));
+  FreeChunk* pFirstChunk = (FreeChunk*)aAdd<void*>(this,sizeof(HeapBuffer));
   
   return pFirstChunk;
 }

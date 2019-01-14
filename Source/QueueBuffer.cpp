@@ -191,7 +191,7 @@ Value* QueueBuffer::aFirstValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  Value* aFirstValue = pAdd<Value*>(this,sizeof(QueueBuffer));
+  Value* aFirstValue = aAdd<Value*>(this,sizeof(QueueBuffer));
   
   return aFirstValue;
 }
