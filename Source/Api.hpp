@@ -17,24 +17,25 @@ enum eAC // api call kind
   /*  1 */ AC_CheckLibraryVersion,
   /*  2 */ AC_EndInsertJobs,
   /*  3 */ AC_EndJobs,
-  /*  4 */ AC_ExecCmdStr,
-  /*  5 */ AC_ExecuteCommand,
-  /*  6 */ AC_FetchNextBuffer,
+  /*  4 */ AC_ExecuteCommand,
+  /*  5 */ AC_FetchNextBuffer,
+  /*  6 */ AC_GetBuffer,
   /*  7 */ AC_GetErrorMessage,
   /*  8 */ AC_GetRow,
   /*  9 */ AC_GetRowCount,
   /* 10 */ AC_GetRowCountTableColumn,
   /* 11 */ AC_GetRowTableColumn,
-  /* 12 */ AC_InsertRow,
-  /* 13 */ AC_InsertRows,
-  /* 14 */ AC_LoadResult,
-  /* 15 */ AC_PoolOpen,
-  /* 16 */ AC_ScanNextRow,
-  /* 17 */ AC_SessionDelete,
-  /* 18 */ AC_SessionInvalid,
-  /* 19 */ AC_SessionNew,
+  /* 12 */ AC_InsertBuffer,
+  /* 13 */ AC_InsertRow,
+  /* 14 */ AC_InsertRows,
+  /* 15 */ AC_LoadResult,
+  /* 16 */ AC_PoolOpen,
+  /* 17 */ AC_ScanNextRow,
+  /* 18 */ AC_SessionDelete,
+  /* 19 */ AC_SessionInvalid,
+  /* 20 */ AC_SessionNew,
   
-  /* 19 */ AC_ENUMS
+  /* 21 */ AC_ENUMS
 };
 
 static Stz* aAC[]
@@ -44,34 +45,38 @@ static Stz* aAC[]
   /*  1 */ "RapidsSE_CheckLibraryVersion"_Stz,
   /*  2 */ "RapidsSE_EndInsertJobs"_Stz,
   /*  3 */ "RapidsSE_EndJobs"_Stz,
-  /*  4 */ "RapidsSE_pExecCmdStr"_Stz,
-  /*  5 */ "RapidsSE_ExecuteCommand"_Stz,
-  /*  6 */ "RapidsSE_FetchNextBuffer"_Stz,
+  /*  4 */ "RapidsSE_ExecuteCommand"_Stz,
+  /*  5 */ "RapidsSE_FetchNextBuffer"_Stz,
+  /*  6 */ "RapidsSE_GetBuffer"_Stz,
   /*  7 */ "RapidsSE_GetErrorMessage"_Stz,
   /*  8 */ "RapidsSE_GetRow"_Stz,
   /*  9 */ "RapidsSE_GetRowCount"_Stz,
   /* 10 */ "RapidsSE_GetRowCountTableColumn"_Stz,
   /* 11 */ "RapidsSE_GetRowTableColumn"_Stz,
-  /* 12 */ "RapidsSE_InsertRow"_Stz,
-  /* 13 */ "RapidsSE_LoadResult"_Stz,
-  /* 14 */ "RapidsSE_PoolOpen"_Stz,
-  /* 15 */ "RapidsSE_SessionDelete"_Stz,
-  /* 16 */ "RapidsSE_SessionInvalid"_Stz,
-  /* 17 */ "RapidsSE_SessionNew"_Stz
-  /* 18 */ "ENUMS"_Stz};
+  /* 12 */ "RapidsSE_InsertBuffer"_Stz,
+  /* 13 */ "RapidsSE_InsertRow"_Stz,
+  /* 14 */ "RapidsSE_InsertRows"_Stz,
+  /* 15 */ "RapidsSE_LoadResult"_Stz,
+  /* 16 */ "RapidsSE_PoolOpen"_Stz,
+  /* 17 */ "RapidsSE_ScanNextRow"_Stz,
+  /* 18 */ "RapidsSE_SessionDelete"_Stz,
+  /* 19 */ "RapidsSE_SessionInvalid"_Stz,
+  /* 20 */ "RapidsSE_SessionNew"_Stz
+  /* 21 */ "ENUMS"_Stz};
 
 extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel);
-extern "C" Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool bFromPrompt);
 extern "C" eEC  RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand, Stz* sCatalogName, Stz* sSchemaName,
                                         void** ppJob, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_FetchNextBuffer(Session* pSession, void* pJob, void** ppFetchBuffer, i8* piExepectedRows, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_GetBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8* pRowCount, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_InsertBuffer(Session* pSession, void* pJob, void* pRecordBuffer, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_InsertRow(Session* pSession, Stz* pTable, Stz* sRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_InsertRows(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInvalidRows, i8* piSkippedRows, i8 iTraceLevel);
@@ -81,6 +86,7 @@ extern "C" eEC  RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel);
 extern "C" bool RapidsSE_SessionInvalid(int eError, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel);
 
+Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool bFromPrompt);
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession);
 
 void vApiCall(Session* pSession, eAC eApiCall);

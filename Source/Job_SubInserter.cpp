@@ -122,6 +122,8 @@ Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
   // set insertRowJob in the insertTable job
   m_pJob_InsertTable->m_pJobSubInserter = this;
   
+  m_pRecordBuffer = new RecordBuffer;
+  
   _checkInitialised_(CN_JOB_SUBINSERTER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
@@ -133,6 +135,8 @@ Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
 Job_SubInserter::~Job_SubInserter(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
+  delete m_pRecordBuffer;
+  
 }
 
 

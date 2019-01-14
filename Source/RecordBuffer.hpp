@@ -29,6 +29,7 @@ namespace DBobjects
   public:
     bool  bAppendRecord(char* pSrcRecord, i8 nRecordSize);
     char* pFirstRecord(void);
+    void  vInit(void);
     char* pNextRecord(char* pCurrentRecord);
     i8    nRecords(void);
     void  vShow(void);
