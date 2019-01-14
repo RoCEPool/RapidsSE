@@ -16,6 +16,8 @@ using namespace Structures;
 
 //-----------------------------------------------------------------------------
 
+#include "Array.hpp"
+
 #include "CollectionCursor_t.hpp"
 #include "CollectionNode_t.hpp"
 #include "Collection_t.hpp"
@@ -23,7 +25,6 @@ using namespace Structures;
 #include "Item.hpp"
 #include "ItemBuffer.hpp"
 #include "Wilderness.hpp"
-
 
 #include "ListNode_t.hpp"
 #include "List_t.hpp"
@@ -35,8 +36,6 @@ using namespace Structures;
 #include "SkipNode.hpp"
 #include "SkipList.hpp"
 
-#include "Array.hpp"
-#include "BitArray.hpp"
 #include "Vector.hpp"
 
 #include "GraphNode.hpp"

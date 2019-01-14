@@ -36,8 +36,6 @@ pDUMPFUN *gpDump[]
   /* 24 */ &Dump::vInvalid,         // CN_ATOMIC
   /* 25 */ &AttachMap::vDump,       // CN_ATTACHMAP
 
-  /* 26 */ &Dump::vDummy,           // CN_BITARRAY
-  /* 27 */ &Dump::vDummy,           // CN_BITMAP
   /* 29 */ &Dump::vInvalid,         // CN_BPA
   /* 28 */ &Dump::vInvalid,         // CN_BUFFERPOOL
   /*    */ &Dump::vInvalid,         // CN_BYTERATE
@@ -293,8 +291,6 @@ i8 giClassSize[]
   /* 24 */ sizeof(Atomic),             // CN_ATOMIC
   /* 25 */ sizeof(AttachMap),          // CN_ATTACHMAP
   
-  /* 26 */ sizeof(BitArray),           // CN_BITARRAY
-  /* 27 */ sizeof(BitArray),           // CN_BITMAP
   /* 29 */ sizeof(BPA),                // CN_BPA
   /* 28 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 28 */ sizeof(ByteRate),           // CN_BYTERATE
@@ -549,8 +545,6 @@ eHT geWhichHeap[]
   /* 24 */ HT_INVALID,           // CN_ATOMIC
   /* 25 */ HT_INVALID,           // CN_ATTACHMAP
   
-  /* 26 */ HT_TRANSIENT_SMALL,   // CN_BITARRAY
-  /* 27 */ HT_TRANSIENT_LARGE,   // CN_BITMAP
   /* 29 */ HT_INVALID,           // CN_BPA
   /* 28 */ HT_INVALID,           // CN_BUFFERPOOL
   /* 29 */ HT_TRANSIENT_SMALL,   // CN_BYTERATE

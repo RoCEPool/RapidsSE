@@ -36,8 +36,6 @@ enum eCN : u2 // Class Number
   /*  24 */ CN_ATOMIC,
   /*  25 */ CN_ATTACHMAP,
   
-  /*  26 */ CN_BITARRAY,
-  /*  27 */ CN_BITMAP,
   /*  29 */ CN_BPA,
   /*  28 */ CN_BUFFERPOOL,
   /*     */ CN_BYTERATE,
@@ -288,8 +286,6 @@ static Stz* aCN[]
   /*  24 */ "ATOMIC"_Stz,              // CN_ATOMIC
   /*  25 */ "ATTACHMAP"_Stz,           // CN_ATTACHMAP
   
-  /*  26 */ "BITARRAY"_Stz,            // CN_BITARRAY
-  /*  27 */ "BITMAP"_Stz,              // CN_BITMAP
   /*  29 */ "BPA"_Stz,                 // CN_BPA
   /*  28 */ "BUFFERPOOL"_Stz,          // CN_BUFFERPOOL
   /*  28 */ "BYTERATE"_Stz,            // CN_BYTERATE
