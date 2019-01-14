@@ -10,7 +10,7 @@ namespace Measurement
   class StepTiming : public Object
   {
   public:
-    Lock      m_zLock;
+    Lock      m_oLock;
     i8        m_iNext;
     StepAccum m_xStepAccum[C_STEPS];
     

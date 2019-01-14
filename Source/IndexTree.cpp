@@ -85,7 +85,7 @@ IndexTree::IndexTree(Index* pIndex, i8 iPartitionNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  m_zLock.vInitLock(LK_INDEX_TREE);
+  m_oLock.vInitLock(LK_INDEX_TREE);
   m_pIndex = pIndex;
   m_iPartitionNo = iPartitionNo;
   m_pPartition   = nullptr;
@@ -770,7 +770,7 @@ void IndexTree::vAppendBuffer(EntryBuffer* pEntryBuffer)
   // we should be appending buffers only for hidden index
   ASSERT(m_pIndex->bIsHidden());
   
-  m_zLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   
   if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
@@ -784,7 +784,7 @@ void IndexTree::vAppendBuffer(EntryBuffer* pEntryBuffer)
   
   m_pCurrentBuffer = pEntryBuffer;
   
-  m_zLock.vDropWrite();
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -796,7 +796,7 @@ Entry* IndexTree::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
   
   Entry* pNewEntry;
   
-  m_zLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   
   if (m_pRootBuffer == nullptr) {
     ASSERT( ! m_pCurrentBuffer )
@@ -833,7 +833,7 @@ Entry* IndexTree::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
     pNewEntry = m_pCurrentBuffer->pAppendRow(xRowWrk);
     ASSERT(pNewEntry);
   }
-  m_zLock.vDropWrite();
+  m_oLock.vDropWrite();
       
   return pNewEntry;
 }
@@ -845,7 +845,7 @@ void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  //m_zLock.vGrabWrite();
+  //m_oLock.vGrabWrite();
   
   //pEntryBuffer->vShow();
   
@@ -858,7 +858,7 @@ void IndexTree::vInsertEntriesFromBuffer(EntryBuffer* pEntryBuffer)
     ASSERT(bInserted);
   }
   
-  //m_zLock.vDropWrite();
+  //m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -868,7 +868,7 @@ bool IndexTree::bInsertEntry(Entry* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  m_zLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   
   //static i8 nInserts = 0;
   
@@ -899,7 +899,7 @@ bool IndexTree::bInsertEntry(Entry* pRow)
                                 &m_pRootBuffer);
   ASSERT(pKeyEntry);
   
-  m_zLock.vDropWrite();
+  m_oLock.vDropWrite();
   
   //if ( ! bVerify() ) {
   //  vTrace("Inserting row that caused verify to fail:\n"_Stz);
@@ -971,7 +971,7 @@ void IndexTree::vPublish(void)
   if ( ! m_pRootBuffer)
     return;
   
-  m_zLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   
   // is there a current buffer ?
   if ( ! m_pCurrentBuffer)
@@ -987,7 +987,7 @@ void IndexTree::vPublish(void)
     vTrace("row: (%s)\n"_Stz, sRowString.aChar());
   }
   vTrace("Partition%lld: published %lld rows\n"_Stz,m_iPartitionNo, m_pCurrentBuffer->nItems());
-  m_zLock.vDropWrite();
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1006,7 +1006,7 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
   if (! m_pRootBuffer)
     return false;
   
-  m_zLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   // record the index tree for debugging purposes
@@ -1035,7 +1035,7 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
 
   
   if (iAge <= iOlderThanSeconds) {
-    m_zLock.vDropWrite();
+    m_oLock.vDropWrite();
     return false;
   }
   
@@ -1054,7 +1054,7 @@ bool IndexTree::bPurge(i8 iOlderThanSeconds)
     m_pRootBuffer->vPrevBuffer(nullptr);
   }
   
-  m_zLock.vDropWrite();
+  m_oLock.vDropWrite();
   
   // delete the roor buffer
   delete pEntryBuffer;
@@ -1089,7 +1089,7 @@ void IndexTree::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
-  m_zLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   
   if (m_pRootBuffer)
     m_pRootBuffer->vTruncate();
@@ -1097,7 +1097,7 @@ void IndexTree::vTruncate(void)
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
   
-  m_zLock.vDropWrite();
+  m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

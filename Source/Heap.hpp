@@ -39,7 +39,7 @@ namespace Pool
   
   private:
     i8          m_iObjectSize;   // size of each object (e.g. 1KB or 16KB)
-    Lock        m_zLock;         // lock over all segments and free chain
+    Lock        m_oLock;         // lock over all segments and free chain
     i8          m_iAllocCount;   // number of allocated objects
     i8          m_iBufferCount;  // number of buffers in the heap
     HeapBuffer* m_pFirstBuffer;  // first buffer in the heap

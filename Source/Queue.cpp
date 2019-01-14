@@ -77,7 +77,7 @@ bool Queue::bAppend(Value* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  m_zLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   
   if ( ! m_pEndBuffer ) {
     ASSERT(0 == m_iCount);
@@ -96,7 +96,7 @@ bool Queue::bAppend(Value* aValue)
   
   m_iCount++;
   
-  m_zLock.vDropWrite();
+  m_oLock.vDropWrite();
 
   return true;
 }
@@ -162,7 +162,7 @@ void Queue::vInitialize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  m_zLock.vInitLock(LK_QUEUE);
+  m_oLock.vInitLock(LK_QUEUE);
   
   m_iCount = 0;
   m_pTopBuffer = nullptr;
@@ -176,9 +176,9 @@ void Queue::vLockName(Stz* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  m_zLock.vInitLock(LK_QUEUE);
+  m_oLock.vInitLock(LK_QUEUE);
   ASSERT(0); // shouldnt be called
-  //m_zLock.vInit(aName);
+  //m_oLock.vInit(aName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -188,11 +188,11 @@ bool Queue::bPop(Forth::GenVar* pValWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
 
-  m_zLock.vGrabWrite();
+  m_oLock.vGrabWrite();
   
   if ( ! m_pTopBuffer ) {
     ASSERT( ! m_iCount );
-    m_zLock.vDropWrite();
+    m_oLock.vDropWrite();
     return false;
   }
   
@@ -209,7 +209,7 @@ bool Queue::bPop(Forth::GenVar* pValWrk)
   
   ASSERT(m_iCount >= 0);
   
-  m_zLock.vDropWrite();
+  m_oLock.vDropWrite();
 
   return bPopped;
 }
