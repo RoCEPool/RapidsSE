@@ -606,8 +606,8 @@ void RapidsSE::vStartSystem(void)
     
   gpAttachMap->m_pQueues = new Queues;
     
-  gpAttachMap->m_xDdlLock.vInitLock(LK_DDL);
-  gpAttachMap->m_xDicLock.vInitLock(LK_DIC);
+  gpAttachMap->m_oDdlLock.vInitLock(LK_DDL);
+  gpAttachMap->m_oDicLock.vInitLock(LK_DIC);
   
   //--------------------------------------------------------------------------
   

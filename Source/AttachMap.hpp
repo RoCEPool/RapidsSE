@@ -76,8 +76,8 @@ namespace StorageEngine
     
     LockTracker   m_oLockTracker;
     
-    Lock          m_xDdlLock;
-    Lock          m_xDicLock;
+    Lock          m_oDdlLock;
+    Lock          m_oDicLock;
        
     Atomic        m_ziPlanId;
     
