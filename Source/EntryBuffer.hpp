@@ -36,11 +36,11 @@ namespace DBobjects
     i4*     m_aEntryOffsets;    // array of row entry offsets
     i4      m_i_FreeOffsetChain; // head of free entry offset chain
   
-    Entry*     m_pHeadEntry;  // head entry
-    Entry*     m_pLastEntry;  // last entry in buffer
-    FreeEntry* m_pFreeEntryList;  // head of free entry list
+    Entry*     m_aHeadEntry;  // head entry
+    Entry*     m_aLastEntry;  // last entry in buffer
+    FreeEntry* m_aFreeEntryList;  // head of free entry list
   
-    Entry*     m_pLazyChain;  // first lazy entry
+    Entry*     m_aLazyChain;  // first lazy entry
   
     Since      m_oWhenNewed;  // when was this buffer created?
   
@@ -124,7 +124,7 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
     
-    Entry*       pAllotEntry(i8 nBytes);
+    Entry*       aAllotEntry(i8 nBytes);
     NEO*         aAllotNEO(i8 nBytes);
     void         vAddFreeList(Entry* pEntry);
     void         vBuildOffsetL0(void);
@@ -138,10 +138,10 @@ namespace DBobjects
     void         vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
                                 EntryBuffer** ppRootKeyBuffer);
     void         vDumpPriorVec(Entry* pPriorVec[]);
-    FreeEntry*   pFirstFree(void);
-    Item*        pFirstItem(void);
-    Entry*       pGetEntryOffset(i8 iOffset);
-    Entry*       pGetEntrySplit(i8 iSplitEntryNo, Entry** ppPriorEntry);
+    FreeEntry*   aFirstFree(void);
+    Item*        aFirstItem(void);
+    Entry*       aGetEntryOffset(i8 iOffset);
+    Entry*       aGetEntrySplit(i8 iSplitEntryNo, Entry** aaPriorEntry);
     i4           iGetFreeRowEntry(void);
     void         vHandleFirstInsert(Entry* pInsertedKeyEntry,
                                     Entry* pOriginalFirstEntry,
@@ -149,27 +149,27 @@ namespace DBobjects
     void         vHandleLeftInsert(Entry* pInsertedKeyEntry,
                                    Entry* pOriginalFirstEntry,
                                    EntryBuffer** ppRootKeyBuffer);
-    Entry*       pHeadEntry(void);
+    Entry*       aHeadEntry(void);
     void         vHeadEntryNew(void);
     void         vHeadEntryRestore(void);
     void         vInitFreeChain(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
-    Entry*       pInsertKeyAbsLazy(KeyWrk& xKeyWrk);
+    Entry*       aInsertKeyAbsLazy(KeyWrk& xKeyWrk);
     void         vInsertKeySkip(Entry* pKeyEntry);
-    Entry*       pInsertKeyBuffer(KeyWrk& xKeyWrk,
+    Entry*       aInsertKeyBuffer(KeyWrk& xKeyWrk,
                                   EntryBuffer** ppRootKeyBuffer);
-    Entry*       pInsertKeyUpwards(KeyWrk& xKeyWrk,
+    Entry*       aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
     void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(Key* aKey);
-    FreeEntry*   pMakeFreeEntry(Entry* pEntry);
+    FreeEntry*   aMakeFreeEntry(Entry* aEntry);
     EntryBuffer* pNewHigherBuffer(void);
     EntryBuffer* pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                   EntryBuffer** ppRootKeyBuffer);
     EntryBuffer* pNewNextBuffer(void);
-    Item*        pNextItem(Item* pItem);
-    Entry*       pPopLazyChain(void);
+    Item*        aNextItem(Item* aItem);
+    Entry*       aPopLazyChain(void);
     EntryBuffer* pPositionPriorBuffer(Key* aFindKey);
     Entry*       pPositionPriorEntry(Key* aFindKey);
     void         vPositionPriorVecEntry(Key* aFindKey, Entry** pPriorVec,

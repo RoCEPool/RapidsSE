@@ -82,11 +82,11 @@ EntryBuffer::EntryBuffer(void)
   m_aEntryOffsets = nullptr;
   m_i_FreeOffsetChain = C_ENTRY_NONE;
   
-  m_pHeadEntry  = nullptr;
-  m_pLastEntry  = nullptr;
-  m_pFreeEntryList  = nullptr;
+  m_aHeadEntry  = nullptr;
+  m_aLastEntry  = nullptr;
+  m_aFreeEntryList  = nullptr;
   
-  m_pLazyChain  = nullptr;
+  m_aLazyChain  = nullptr;
   
   m_oWhenNewed.vNow();
   
@@ -447,7 +447,7 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space in this buffer for the row and offsets
   
-  pRowEntry = pAllotEntry(nEntryBytes);
+  pRowEntry = aAllotEntry(nEntryBytes);
   ASSERT(pRowEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
@@ -466,15 +466,15 @@ Entry* EntryBuffer::pAppendRow(RowWrk& xRowWrk)
   RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
   m_aEntryOffsets[i_RowNo] = iEntryOffset;
   
-  if (m_pLastEntry)
-    m_pLastEntry->vNEO(0,iEntryOffset);
+  if (m_aLastEntry)
+    m_aLastEntry->vNEO(0,iEntryOffset);
   pRowEntry->vNEO(0,-1);
   
-  m_pLastEntry = pRowEntry;
+  m_aLastEntry = pRowEntry;
   
   // set head entry offset
-  if (m_pHeadEntry->iNEO(0) == -1)
-    m_pHeadEntry->vNEO(0, iEntryOffset);
+  if (m_aHeadEntry->iNEO(0) == -1)
+    m_aHeadEntry->vNEO(0, iEntryOffset);
   
   RASSERT(pRowEntry->bValidEntry());
   
@@ -549,7 +549,7 @@ void EntryBuffer::vBuildSkipListSorted(void)
    // ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?
    // temp: clear out all l1 and l2 offsets for testing purpoes
    
-   for (Entry* pEntry = m_pHeadEntry;
+   for (Entry* pEntry = m_aHeadEntry;
    pEntry != nullptr;
    pEntry = pNextEntry(pEntry, 0)) {
    
@@ -568,7 +568,7 @@ void EntryBuffer::vBuildSkipListSorted(void)
   Entry* xPrevVec[gpAttachMap->m_nIndexOffsets];
   
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    xPrevVec[i_Offset] = m_pHeadEntry;
+    xPrevVec[i_Offset] = m_aHeadEntry;
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -650,7 +650,7 @@ bool EntryBuffer::bDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -717,9 +717,9 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
   
-  //if (m_pLazyChain)
+  //if (m_aLazyChain)
   //  vBuildSkipList();
 #endif
   
@@ -737,13 +737,13 @@ Entry* EntryBuffer::pFirstEntry(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
   
-  //if (m_pLazyChain)
+  //if (m_aLazyChain)
   //  vBuildSkipList();
 #endif
   
-  Entry* pFirst = pNextEntry(m_pHeadEntry,0);
+  Entry* pFirst = pNextEntry(m_aHeadEntry,0);
   
   return pFirst;
 }
@@ -756,7 +756,7 @@ Entry* EntryBuffer::pGetEntryRowNo(i8 i_RowNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -816,7 +816,7 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
 #ifdef EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (! m_iBufferLevel) {
-      pKeyEntry = pInsertKeyAbsLazy(xKeyWrk);
+      pKeyEntry = aInsertKeyAbsLazy(xKeyWrk);
       return pKeyEntry;
     }
   }
@@ -844,7 +844,7 @@ Entry* EntryBuffer::pInsertKeyAbs(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  pKeyEntry = pAllotEntry(nEntryBytes);
+  pKeyEntry = aAllotEntry(nEntryBytes);
   ASSERT(pKeyEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
@@ -896,7 +896,7 @@ Entry* EntryBuffer::pInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** ppPriorEntry)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  Entry* pKeyEntry = pAllotEntry(nEntryBytes);
+  Entry* pKeyEntry = aAllotEntry(nEntryBytes);
   ASSERT(pKeyEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
@@ -977,7 +977,7 @@ Entry* EntryBuffer::pInsertKeyTree(KeyWrk& xKeyWrk,
   
 
   Entry* pInsertedKeyEntry =
-    pPositionedBuffer->pInsertKeyUpwards(xKeyWrk,ppRootKeyBuffer);
+    pPositionedBuffer->aInsertKeyUpwards(xKeyWrk,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #ifdef MB_WATCH
@@ -1001,13 +1001,13 @@ Entry* EntryBuffer::pLastEntry(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
   
-  //if (m_pLazyChain)
+  //if (m_aLazyChain)
   //  vBuildSkipList();
 #endif
   
-  Entry* pLast = m_pHeadEntry;
+  Entry* pLast = m_aHeadEntry;
   
   for (;;) {
     Entry* pNext = pNextEntry(pLast,0);
@@ -1064,7 +1064,7 @@ Entry* EntryBuffer::pNextEntry(Entry* pCurrent, i8 i_Offset)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   //#ifdef EB_LAZY_CHAIN
-  //RASSERT( ! m_pLazyChain );
+  //RASSERT( ! m_aLazyChain );
   //#endif
   
 #ifdef _DEBUG
@@ -1096,9 +1096,9 @@ EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
   
-  //if (m_pLazyChain)
+  //if (m_aLazyChain)
   //  vBuildSkipList();
 #endif
 
@@ -1134,9 +1134,9 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey, eRO eRelnOp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
   
-  //if (m_pLazyChain)
+  //if (m_aLazyChain)
   //  vBuildSkipList();
 #endif
   
@@ -1167,9 +1167,9 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
   
-  //if (m_pLazyChain)
+  //if (m_aLazyChain)
   //  vBuildSkipList();
 #endif
   
@@ -1185,7 +1185,7 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
   bool bIsJuxta;
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-  Entry* pScanEntry_sl = m_pHeadEntry;
+  Entry* pScanEntry_sl = m_aHeadEntry;
   bool bIsEqual;
   
   for (i8 i_ScanOffset = 2; i_ScanOffset >= 0; i_ScanOffset--) {
@@ -1219,7 +1219,7 @@ Entry* EntryBuffer::pPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
     //pPriorVec[*i_ScanOffset] = pScanEntry_sl;
   }
   
-  if (pScanEntry_sl == pHeadEntry()) {
+  if (pScanEntry_sl == aHeadEntry()) {
     pScanEntry_sl = pNextEntry(pScanEntry_sl, 0);
     // we currently think it should be null
     // RASSERT( ! pScanEntry_sl );
@@ -1245,11 +1245,11 @@ void EntryBuffer::vReset(void)
   
   m_i_FreeOffsetChain = C_ENTRY_NONE;
   
-  m_pHeadEntry  = nullptr;
-  m_pLastEntry  = nullptr;
-  m_pFreeEntryList  = nullptr;
+  m_aHeadEntry  = nullptr;
+  m_aLastEntry  = nullptr;
+  m_aFreeEntryList  = nullptr;
   
-  m_pLazyChain  = nullptr;
+  m_aLazyChain  = nullptr;
   
   vHeadEntryNew();
 }
@@ -1269,7 +1269,7 @@ void EntryBuffer::vRestore(void)
   m_pIndex = nullptr;
   
   // get the original buffer address
-  Buffer* pOriginalBuffer = pBitAnd<Buffer*>(m_pHeadEntry,C_OBJECT_TO_BUFFER_MASK);
+  Buffer* pOriginalBuffer = pBitAnd<Buffer*>(m_aHeadEntry,C_OBJECT_TO_BUFFER_MASK);
   
   // get this buffer address
   Buffer* pThisBuffer = pBitAnd<Buffer*>(this,C_OBJECT_TO_BUFFER_MASK);
@@ -1278,26 +1278,26 @@ void EntryBuffer::vRestore(void)
   u8 uOffset = nSub(m_aEntryOffsets, pOriginalBuffer);
   m_aEntryOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
   
-  // calculate offset for m_pHeadEntry and set it
-  uOffset = nSub(m_pHeadEntry, pOriginalBuffer);
-  m_pHeadEntry = pBitOr<Entry*>(pThisBuffer,uOffset);
+  // calculate offset for m_aHeadEntry and set it
+  uOffset = nSub(m_aHeadEntry, pOriginalBuffer);
+  m_aHeadEntry = pBitOr<Entry*>(pThisBuffer,uOffset);
   
-  // calculate offset for m_pLastEntry and set it
-  if (m_pLastEntry) {
-    uOffset = nSub(m_pLastEntry, pOriginalBuffer);
-    m_pLastEntry = pBitOr<Entry*>(pThisBuffer,uOffset);
+  // calculate offset for m_aLastEntry and set it
+  if (m_aLastEntry) {
+    uOffset = nSub(m_aLastEntry, pOriginalBuffer);
+    m_aLastEntry = pBitOr<Entry*>(pThisBuffer,uOffset);
   }
   
-  // calculate offset for m_pFreeEntryList and set it
-  if (m_pFreeEntryList) {
-    uOffset = nSub(m_pFreeEntryList, pOriginalBuffer);
-    m_pFreeEntryList = pBitOr<FreeEntry*>(pThisBuffer,uOffset);
+  // calculate offset for m_aFreeEntryList and set it
+  if (m_aFreeEntryList) {
+    uOffset = nSub(m_aFreeEntryList, pOriginalBuffer);
+    m_aFreeEntryList = pBitOr<FreeEntry*>(pThisBuffer,uOffset);
   }
   
-  // calculate offset for m_pLazyChain and set it
-  if (m_pLazyChain) {
-    uOffset = nSub(m_pLazyChain, pOriginalBuffer);
-    m_pLazyChain = pBitOr<Entry*>(pThisBuffer,uOffset);
+  // calculate offset for m_aLazyChain and set it
+  if (m_aLazyChain) {
+    uOffset = nSub(m_aLazyChain, pOriginalBuffer);
+    m_aLazyChain = pBitOr<Entry*>(pThisBuffer,uOffset);
   }
   
   // get the buffer no
@@ -1355,22 +1355,22 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
          m_aEntryOffsets,m_i_FreeOffsetChain);
 
   vTrace("  headEntry: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
-         m_pHeadEntry,m_pHeadEntry ? m_pHeadEntry->iNEO(0) : 0,
-                      m_pHeadEntry ? m_pHeadEntry->iNEO(1) : 0,
-                      m_pHeadEntry ? m_pHeadEntry->iNEO(2) : 0,
-         m_pLastEntry,m_pFreeEntryList);
+         m_aHeadEntry,m_aHeadEntry ? m_aHeadEntry->iNEO(0) : 0,
+                      m_aHeadEntry ? m_aHeadEntry->iNEO(1) : 0,
+                      m_aHeadEntry ? m_aHeadEntry->iNEO(2) : 0,
+         m_aLastEntry,m_aFreeEntryList);
   
   vTrace("--------------------------------------------------"
          "--------------------------------------------------\n"_Stz);
   
-  ASSERT(m_pHeadEntry);
+  ASSERT(m_aHeadEntry);
   
   vTrace("\n"_Stz);
   vTrace("Entries (by headEntry vector[0]):\n"_Stz);
  
-  i8 iOffset = m_pHeadEntry->iNEO(0);
+  i8 iOffset = m_aHeadEntry->iNEO(0);
   while (iOffset > -1) {
-    Entry* pEntry = pGetEntryOffset(iOffset);
+    Entry* pEntry = aGetEntryOffset(iOffset);
     pEntry->vShow(iOffset,m_pIndex,true);
     if (pMarkEntry == pEntry)
       vTrace("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
@@ -1391,7 +1391,7 @@ void EntryBuffer::vShow(Entry* pMarkEntry)
     }
   }
   
-  if (m_pFreeEntryList) {
+  if (m_aFreeEntryList) {
     vTrace("\n"_Stz);
     vTrace("FreeEntries:\n"_Stz);
     for (FreeEntry* pFreeEntry = pFirstFree();
@@ -1460,9 +1460,9 @@ void EntryBuffer::vShowShort(void)
          *nBufferNo(),
          pHigherBuffer() ? *pHigherBuffer()->nBufferNo() : 0);
   
-  i8 iOffset = pHeadEntry()->iNEO(0);
+  i8 iOffset = aHeadEntry()->iNEO(0);
   while (iOffset > -1) {
-    Entry* pEntry = pGetEntryOffset(iOffset);
+    Entry* pEntry = aGetEntryOffset(iOffset);
     
     Key* aKey = pEntry->aKey();
     i8 iVal = aKey->iGetInt();
@@ -1749,7 +1749,7 @@ Since& EntryBuffer::oWhenNewed(void)
 /*----------------------------------------------------------------------------*/
 /* allot an entry in this buffer                                              */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pAllotEntry(i8 nBytes)
+Entry* EntryBuffer::aAllotEntry(i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -1796,19 +1796,19 @@ void EntryBuffer::vAddFreeList(Entry* pEntry)
   FreeEntry* pFreeEntry = new(pEntry) FreeEntry(nSizeFree);
   */
   
-  FreeEntry* pFreeEntry = pMakeFreeEntry(pEntry);
+  FreeEntry* pFreeEntry = aMakeFreeEntry(pEntry);
   
   //  if (! bQuickVerify(pEntry)) {
   //    vDumpPriorVec(xPriorVec);
   //    vQuickVerify();
   //  }
   
-  if (m_pFreeEntryList) {
-    m_pFreeEntryList->vPrevFree(pFreeEntry);
-    pFreeEntry->vNextFree(m_pFreeEntryList);
+  if (m_aFreeEntryList) {
+    m_aFreeEntryList->vPrevFree(pFreeEntry);
+    pFreeEntry->vNextFree(m_aFreeEntryList);
   }
   
-  m_pFreeEntryList = pFreeEntry;
+  m_aFreeEntryList = pFreeEntry;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // decement the number of items in buffer
@@ -1826,10 +1826,9 @@ void EntryBuffer::vBuildOffsetL0(void)
   
   ASSERT(! pFirstEntry());
   
-  Entry* pTailEntry = m_pHeadEntry;
-  while (Entry* pPoppedEntry = pPopLazyChain()) {
-
-  }
+  Entry* pTailEntry = m_aHeadEntry;
+  while (Entry* pPoppedEntry = aPopLazyChain())
+    {;}
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1839,16 +1838,16 @@ void EntryBuffer::vBuildSkipList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  if (! m_pLazyChain )
+  if (! m_aLazyChain )
     return;
   
-  Entry* pOriginalFirstEntry = pNextEntry(m_pHeadEntry,0);
+  Entry* pOriginalFirstEntry = pNextEntry(m_aHeadEntry,0);
   
   static i8 nBuild = 0;
   //vTrace("vBuildSkipList %lld (%lld items)\n"_Stz,++nBuild,nItems());
   
-  Entry* pLazyChain = m_pLazyChain;
-  m_pLazyChain = nullptr;
+  Entry* pLazyChain = m_aLazyChain;
+  m_aLazyChain = nullptr;
   
   while (pLazyChain) {
     
@@ -1858,12 +1857,12 @@ void EntryBuffer::vBuildSkipList(void)
     if (-1 == iNextOffset)
       pLazyChain = nullptr;
     else
-      pLazyChain = pGetEntryOffset(iNextOffset);
+      pLazyChain = aGetEntryOffset(iNextOffset);
     
     vInsertKeySkip(pKeyEntry);
   }
   
-  Entry* pInsertedKeyEntry = pNextEntry(m_pHeadEntry,0);
+  Entry* pInsertedKeyEntry = pNextEntry(m_aHeadEntry,0);
   
   vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,nullptr);
 }
@@ -1876,9 +1875,9 @@ void EntryBuffer::vCompact(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  //RASSERT( ! m_pLazyChain );
+  //RASSERT( ! m_aLazyChain );
   
-  if (m_pLazyChain)
+  if (m_aLazyChain)
     vBuildSkipList();
 #endif
   
@@ -1890,11 +1889,11 @@ void EntryBuffer::vCompact(void)
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
   // we can only compact if there are free entries
-  if (! m_pFreeEntryList)
+  if (! m_aFreeEntryList)
     return;
   
   // loose the free list so vShow() works correctly
-  m_pFreeEntryList = nullptr;
+  m_aFreeEntryList = nullptr;
   
   // scan item is the working pointer
   Item* pScanItem = pFirstItem();
@@ -2018,9 +2017,9 @@ void EntryBuffer::vCompactLeft(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  //RASSERT( ! m_pLazyChain );
+  //RASSERT( ! m_aLazyChain );
   
-  if (m_pLazyChain)
+  if (m_aLazyChain)
     vBuildSkipList();
 #endif
   
@@ -2039,7 +2038,7 @@ void EntryBuffer::vCompactLeft(void)
   // go through each entry in L0 order
   Entry* pLastEntry = nullptr;
   
-  for (Entry* pThisEntry = m_pHeadEntry;
+  for (Entry* pThisEntry = m_aHeadEntry;
        pThisEntry != nullptr;
        pThisEntry = pNextEntry(pThisEntry, 0)) {
     
@@ -2098,7 +2097,7 @@ void EntryBuffer::vCompactLeft2(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT(! m_pLazyChain);
+  RASSERT(! m_aLazyChain);
 #endif
 
   EntryBuffer* pThisBuffer = this;
@@ -2110,7 +2109,7 @@ void EntryBuffer::vCompactLeft2(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Entry* pPriorEntry = pTempBuffer->pHeadEntry();
+  Entry* pPriorEntry = pTempBuffer->aHeadEntry();
   
   for (Entry* pThisEntry = pThisBuffer->pFirstEntry();
        pThisEntry != nullptr;
@@ -2133,19 +2132,19 @@ void EntryBuffer::vCompactLeft2(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Item* pThisWilderness = aAdd<Item*>(m_pHeadEntry,
-                                      m_pHeadEntry->nSizeEntry() +
-                                      m_pHeadEntry->iNEOsize());
+  Item* pThisWilderness = aAdd<Item*>(m_aHeadEntry,
+                                      m_aHeadEntry->nSizeEntry() +
+                                      m_aHeadEntry->iNEOsize());
   vResetUsed(pThisWilderness);
   vSetWilderness();
   vItems(0);
 
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    m_pHeadEntry->vNEO(i_Offset,-1);
+    m_aHeadEntry->vNEO(i_Offset,-1);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pPriorEntry = pThisBuffer->pHeadEntry();
+  pPriorEntry = pThisBuffer->aHeadEntry();
   
   for (Entry* pTempEntry = pTempBuffer->pFirstEntry();
        pTempEntry != nullptr;
@@ -2199,7 +2198,7 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2266,7 +2265,7 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2319,7 +2318,7 @@ void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
              pEntry,
              i_Offset,
              pEntry->iNEO(i_Offset),
-             pGetEntryOffset(pEntry->iNEO(i_Offset)));
+             aGetEntryOffset(pEntry->iNEO(i_Offset)));
     }
   }
 }
@@ -2327,21 +2326,21 @@ void EntryBuffer::vDumpPriorVec(Entry* pPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* get first free entry                                                       */
 /*----------------------------------------------------------------------------*/
-FreeEntry* EntryBuffer::pFirstFree(void)
+FreeEntry* EntryBuffer::aFirstFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return m_pFreeEntryList;
+  return m_aFreeEntryList;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get first item after head (could be entry, free entry or wilderness)       */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pFirstItem(void)
+Item* EntryBuffer::aFirstItem(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  Item* pFirstItem = pNextItem(m_pHeadEntry);
+  Item* pFirstItem = pNextItem(m_aHeadEntry);
   
   return pFirstItem;
 }
@@ -2349,7 +2348,7 @@ Item* EntryBuffer::pFirstItem(void)
 /*----------------------------------------------------------------------------*/
 /* get an entry by offset                                                     */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntryOffset(i8 iOffset)
+Entry* EntryBuffer::aGetEntryOffset(i8 iOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2362,14 +2361,14 @@ Entry* EntryBuffer::pGetEntryOffset(i8 iOffset)
 /*----------------------------------------------------------------------------*/
 /* get split entry by split number                                            */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pGetEntrySplit(i8 iSplitEntryNo,Entry** ppPriorEntry)
+Entry* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Entry** ppPriorEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  ASSERT(m_pHeadEntry);
+  ASSERT(m_aHeadEntry);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2377,7 +2376,7 @@ Entry* EntryBuffer::pGetEntrySplit(i8 iSplitEntryNo,Entry** ppPriorEntry)
   *ppPriorEntry = nullptr;
   
   i8 iEntryNo = 0;
-  for (Entry* pSplitEntry = pNextEntry(m_pHeadEntry,0);
+  for (Entry* pSplitEntry = pNextEntry(m_aHeadEntry,0);
        pSplitEntry;
        pSplitEntry = pNextEntry(pSplitEntry,0)) {
     
@@ -2492,17 +2491,17 @@ void EntryBuffer::vHandleLeftInsert(Entry* pInsertedKeyEntry,
   xKeyWrkIns.vKeySize(iInsertKeyLen);
   xKeyWrkIns.vOffsets(nInsertOffsets);
   
-  m_pHigherBuffer->pInsertKeyBuffer(xKeyWrkIns,ppRootKeyBuffer);
+  m_pHigherBuffer->aInsertKeyBuffer(xKeyWrkIns,ppRootKeyBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get head entry                                                             */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pHeadEntry(void)
+Entry* EntryBuffer::aHeadEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return m_pHeadEntry;
+  return m_aHeadEntry;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2514,7 +2513,7 @@ void EntryBuffer::vHeadEntryNew(void)
  
   RowWrk xHeadWrk;
   
-  ASSERT( ! m_pHeadEntry );
+  ASSERT( ! m_aHeadEntry );
   
   // the head entry always has 3 offsets
   xHeadWrk.vOffsets(3);
@@ -2532,24 +2531,24 @@ void EntryBuffer::vHeadEntryNew(void)
   
   xHeadWrk.xId().vBuffer(*nBufferNo());
   
-  m_pHeadEntry = reinterpret_cast<Entry*>(aAllotSpace(nEntryBytes));
-  ASSERT(m_pHeadEntry);
+  m_aHeadEntry = reinterpret_cast<Entry*>(aAllotSpace(nEntryBytes));
+  ASSERT(m_aHeadEntry);
   //char* aData = aDataArea();                                //! RAY to look at
   //char* aHead = pAdd<char *>(aData,sizeof(i4) * C_ENTRIES_0);
   
-  //ASSERT((char*)m_pHeadEntry == aHead);
+  //ASSERT((char*)m_aHeadEntry == aHead);
   
-  new(m_pHeadEntry) Entry(CN_ENTRY,nEntryBytes,0);
+  new(m_aHeadEntry) Entry(CN_ENTRY,nEntryBytes,0);
   
-  m_pHeadEntry->vSetEntry(0,xHeadWrk.xId(),3,nullptr,0);
-  //m_pHeadEntry->vSetEntry(xHeadWrk);
+  m_aHeadEntry->vSetEntry(0,xHeadWrk.xId(),3,nullptr,0);
+  //m_aHeadEntry->vSetEntry(xHeadWrk);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
-  m_pHeadEntry->vNEO(0,-1);
-  m_pHeadEntry->vNEO(1,-1);
-  m_pHeadEntry->vNEO(2,-1);
+  m_aHeadEntry->vNEO(0,-1);
+  m_aHeadEntry->vNEO(1,-1);
+  m_aHeadEntry->vNEO(2,-1);
   
-  //m_pHeadEntry->vNEOdump();
+  //m_aHeadEntry->vNEOdump();
   
 }
 
@@ -2560,7 +2559,7 @@ void EntryBuffer::vHeadEntryRestore(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_pHeadEntry = aAdd<Entry*>(aDataArea(),sizeof(i4) * C_ENTRIES_L0);
+  m_aHeadEntry = aAdd<Entry*>(aDataArea(),sizeof(i4) * C_ENTRIES_L0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2622,7 +2621,7 @@ EntryBuffer* EntryBuffer::pInsertableBuffer(KeyWrk& xKeyWrk,
 /*----------------------------------------------------------------------------*/
 /* insert a key entry specifically into this buffer (should be enough space)  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk)
+Entry* EntryBuffer::aInsertKeyAbsLazy(KeyWrk& xKeyWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2647,7 +2646,7 @@ Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate space for the key and next offsets in this buffer
   
-  Entry* pKeyEntry = pAllotEntry(nEntryBytes);
+  Entry* pKeyEntry = aAllotEntry(nEntryBytes);
   ASSERT(pKeyEntry);
   
   NEO* aNEO = aAllotNEO(nOffsetBytes);
@@ -2661,15 +2660,15 @@ Entry* EntryBuffer::pInsertKeyAbsLazy(KeyWrk& xKeyWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form lazy chain
   
-  if (m_pLazyChain) {
-    i4 iLazyOffset = iToOffset(m_pLazyChain);
+  if (m_aLazyChain) {
+    i4 iLazyOffset = iToOffset(m_aLazyChain);
     pKeyEntry->vNEO(0,iLazyOffset);
   }
   else {
     pKeyEntry->vNEO(0,-1);
   }
 
-  m_pLazyChain = pKeyEntry;
+  m_aLazyChain = pKeyEntry;
   
   return pKeyEntry;
 }
@@ -2761,7 +2760,7 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
 
 /*----------------------------------------------------------------------------*/
 
-Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
+Entry* EntryBuffer::aInsertKeyBuffer(KeyWrk& xKeyWrk,
                                      EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -2808,7 +2807,7 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
 /*----------------------------------------------------------------------------*/
 /* insert a new key entry into this key tree (handling ripple upwards)        */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pInsertKeyUpwards(KeyWrk& xKeyWrk,
+Entry* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
                                       EntryBuffer** ppRootKeyBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -2833,7 +2832,7 @@ Entry* EntryBuffer::pInsertKeyUpwards(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Entry* pInsertedKeyEntry =
-    pInsertIntoBuffer->pInsertKeyBuffer(xKeyWrk,ppRootKeyBuffer);
+    pInsertIntoBuffer->aInsertKeyBuffer(xKeyWrk,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -2913,7 +2912,7 @@ void EntryBuffer::vLazyBuild(void)
 /*----------------------------------------------------------------------------*/
 /* convert given entry into free entry                                        */
 /*----------------------------------------------------------------------------*/
-FreeEntry* EntryBuffer::pMakeFreeEntry(Entry* pEntry)
+FreeEntry* EntryBuffer::aMakeFreeEntry(Entry* pEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -3016,7 +3015,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
     
     
     Entry* pNewKeyLeft =
-    pHigherBuffer->pInsertKeyUpwards(xKeyWrkLeft,ppRootKeyBuffer);
+    pHigherBuffer->aInsertKeyUpwards(xKeyWrkLeft,ppRootKeyBuffer);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3040,7 +3039,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   
   
   Entry* pNewKeyRight =
-  pHigherBuffer->pInsertKeyUpwards(xKeyWrkRight,ppRootKeyBuffer);
+  pHigherBuffer->aInsertKeyUpwards(xKeyWrkRight,ppRootKeyBuffer);
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3083,7 +3082,7 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get next item in buffer (could be entry, free entry, wilderness)           */
 /*----------------------------------------------------------------------------*/
-Item* EntryBuffer::pNextItem(Item* pCurrent)
+Item* EntryBuffer::aNextItem(Item* pCurrent)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -3119,21 +3118,21 @@ Item* EntryBuffer::pNextItem(Item* pCurrent)
 /*----------------------------------------------------------------------------*/
 /* pop entry from lazy chain                                                  */
 /*----------------------------------------------------------------------------*/
-Entry* EntryBuffer::pPopLazyChain(void)
+Entry* EntryBuffer::aPopLazyChain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  if (! m_pLazyChain )
+  if (! m_aLazyChain )
     return nullptr;
   
-  Entry* pPoppedLazyEntry = m_pLazyChain;
+  Entry* pPoppedLazyEntry = m_aLazyChain;
   
   i8 iNextLazyOffset = pPoppedLazyEntry->iNEO(0);
   
   if (-1 == iNextLazyOffset)
-    m_pLazyChain = nullptr;
+    m_aLazyChain = nullptr;
   else
-    m_pLazyChain = pGetEntryOffset(iNextLazyOffset);
+    m_aLazyChain = aGetEntryOffset(iNextLazyOffset);
   
   return pPoppedLazyEntry;
 }
@@ -3160,14 +3159,14 @@ EntryBuffer* EntryBuffer::pPositionPriorBuffer(Key* aFindKey)
     }
     else {
 #ifdef EB_LAZY_CHAIN
-      RASSERT( ! m_pLazyChain );
+      RASSERT( ! m_aLazyChain );
 #endif
     }
     
     // get the entry before the given insert key
     Entry* pEntryPrior = pEntryBuffer->pPositionPriorEntry(aFindKey);
     ASSERT(pEntryPrior);
-    if (pEntryPrior == pEntryBuffer->pHeadEntry())
+    if (pEntryPrior == pEntryBuffer->aHeadEntry())
       pEntryPrior = pEntryBuffer->pNextEntry(pEntryPrior,0);
     ASSERT(pEntryPrior);
     
@@ -3190,18 +3189,18 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (nItems() == 0)
-    return m_pHeadEntry;
+    return m_aHeadEntry;
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   i8 nKeyCols = pIdxColVec->nItems();
   
-  Entry* pScanEntry_sl = m_pHeadEntry;
+  Entry* pScanEntry_sl = m_aHeadEntry;
   
   bool bKeyIsGreaterEqual;
   
@@ -3251,13 +3250,13 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
   //ASSERT(0 == m_iBufferLevel);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    pPriorVec[i_Offset] = m_pHeadEntry;
+    pPriorVec[i_Offset] = m_aHeadEntry;
   
   if (nItems() == 0)
     return;
@@ -3269,7 +3268,7 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* pPriorVec[],
   i8 iFindLevels = pFindEntry ? pFindEntry->nOffsets() - 1 : 2;
   
   bool bIsJuxta;
-  Entry* pScanEntry_sl = m_pHeadEntry;
+  Entry* pScanEntry_sl = m_aHeadEntry;
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
        i_ScanOffset--) {
@@ -3326,13 +3325,13 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
   ASSERT(0 != m_iBufferLevel);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    pPriorVec[i_Offset] = m_pHeadEntry;
+    pPriorVec[i_Offset] = m_aHeadEntry;
   
   if (nItems() == 0)
     return;
@@ -3341,7 +3340,7 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* pPriorVec[],
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   bool bNextKeyIsGreater;
-  Entry* pScanEntry_sl = m_pHeadEntry;
+  Entry* pScanEntry_sl = m_aHeadEntry;
   
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
@@ -3395,13 +3394,13 @@ void EntryBuffer::vPositionPriorVecBuffer2(Key* aFindKey, Entry* pPriorVec[],
   ASSERT(0 != m_iBufferLevel);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    pPriorVec[i_Offset] = m_pHeadEntry;
+    pPriorVec[i_Offset] = m_aHeadEntry;
   
   if (nItems() == 0)
     return;
@@ -3410,7 +3409,7 @@ void EntryBuffer::vPositionPriorVecBuffer2(Key* aFindKey, Entry* pPriorVec[],
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   bool bNextKeyIsGreaterEqual;
-  Entry* pScanEntry_sl = m_pHeadEntry;
+  Entry* pScanEntry_sl = m_aHeadEntry;
   
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
@@ -3455,13 +3454,13 @@ void EntryBuffer::vPositionPriorVecBuffer3(Key* aFindKey, Entry* pPriorVec[],
   ASSERT(0 != m_iBufferLevel);
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
-    pPriorVec[i_Offset] = m_pHeadEntry;
+    pPriorVec[i_Offset] = m_aHeadEntry;
   
   if (nItems() == 0)
     return;
@@ -3470,7 +3469,7 @@ void EntryBuffer::vPositionPriorVecBuffer3(Key* aFindKey, Entry* pPriorVec[],
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   bool bNextKeyIsGreaterEqual;
-  Entry* pScanEntry_sl = m_pHeadEntry;
+  Entry* pScanEntry_sl = m_aHeadEntry;
   
   for (i8 i_ScanOffset = gpAttachMap->m_nIndexOffsets - 1;
        i_ScanOffset >= 0;
@@ -3520,7 +3519,7 @@ EntryBuffer* EntryBuffer::pSplit(void)
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   EntryBuffer* pThisLeftBuffer = this;
@@ -3535,7 +3534,7 @@ EntryBuffer* EntryBuffer::pSplit(void)
   
   Entry* pPriorEntry;
   i8 iSplitAtEntry = m_nItems/2;
-  Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry,&pPriorEntry);
+  Entry* pSplitEntry = aGetEntrySplit(iSplitAtEntry,&pPriorEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the prior vector to the split entry
@@ -3668,7 +3667,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
 #ifdef EB_LAZY_CHAIN
-  RASSERT( ! m_pLazyChain );
+  RASSERT( ! m_aLazyChain );
 #endif
   
   EntryBuffer* pThisLeftBuffer = this;
@@ -3685,7 +3684,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   Entry* pPriorEntry;
   //i8 iSplitAtEntry = m_nItems/2;
   i8 iSplitAtEntry = (m_nItems * iSplitRatio) / 100;
-  Entry* pSplitEntry = pGetEntrySplit(iSplitAtEntry,&pPriorEntry);
+  Entry* pSplitEntry = aGetEntrySplit(iSplitAtEntry,&pPriorEntry);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // copy split right entries to a new right buffer
@@ -3694,7 +3693,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   Entry* pCopyEntry;
   Entry* pNextEntry;
   
-  Entry* pLastEntryRight = pNewRightBuffer->pHeadEntry();
+  Entry* pLastEntryRight = pNewRightBuffer->aHeadEntry();
  
   i8 nEntriesCopied = 0;
   for (pCopyEntry = pSplitEntry;
@@ -3725,7 +3724,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
     //.pNewRightBuffer->vShow();
     
     // make the moved entry in the left buffer to be a free entry
-    FreeEntry* pFreeEntry = pMakeFreeEntry(pCopyEntry);
+    FreeEntry* pFreeEntry = aMakeFreeEntry(pCopyEntry);
     
     // these can be commented
     ASSERT(! m_iBufferLevel ||
@@ -3866,7 +3865,7 @@ void EntryBuffer::vNumberEntries(void)
   
   i8 iEntryNo = 0;
   
-  for (Entry* pTestEntry_0 = pNextEntry(m_pHeadEntry,0);
+  for (Entry* pTestEntry_0 = pNextEntry(m_aHeadEntry,0);
        pTestEntry_0;
        pTestEntry_0 = pNextEntry(pTestEntry_0,0))
     
@@ -3887,7 +3886,7 @@ void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
        pItem = pNextItem(pItem))
     {;}
   
-  for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,0);
+  for (Entry* pTestEntry = pNextEntry(m_aHeadEntry,0);
        pTestEntry;
        pTestEntry = pNextEntry(pTestEntry,0)) {
   
@@ -3912,7 +3911,7 @@ void EntryBuffer::vQuickVerify(Entry* pSeeEntry)
 //  ln i_ScanOffset;
 //  for (i_ScanOffset = 2; *i_ScanOffset >= 0; i_ScanOffset--) {
 //
-//    for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,*i_ScanOffset);
+//    for (Entry* pTestEntry = pNextEntry(m_aHeadEntry,*i_ScanOffset);
 //         pTestEntry;
 //         pTestEntry = pNextEntry(pTestEntry,*i_ScanOffset)) {
 //      
@@ -3939,7 +3938,7 @@ bool EntryBuffer::bQuickVerify(Entry* pNotSeeEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  for (Entry* pTestEntry = pNextEntry(m_pHeadEntry,0);
+  for (Entry* pTestEntry = pNextEntry(m_aHeadEntry,0);
        pTestEntry;
        pTestEntry = pNextEntry(pTestEntry,0)) {
     
@@ -3970,7 +3969,7 @@ bool EntryBuffer::bVerifyL0Hidden(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  ASSERT(! m_pLazyChain);
+  ASSERT(! m_aLazyChain);
     
   RASSERT(0 == m_iBufferLevel);
   RASSERT(m_pIndex->bIsHidden());
@@ -4276,7 +4275,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // validate offset element which is the offset to an entry
     
-    Entry* pEntry = pGetEntryOffset(i_RowEntryOffset);
+    Entry* pEntry = aGetEntryOffset(i_RowEntryOffset);
     if (! pEntry->bValidEntry())
       return false;
   }
@@ -4340,7 +4339,7 @@ bool EntryBuffer::bVerifyFreeList(void)
       of FreeEntry's.  No other class is permited.
    */
   
-  for (FreeEntry* pFreeEntry = pFirstFree();
+  for (FreeEntry* pFreeEntry = aFirstFree();
        pFreeEntry != nullptr;
        pFreeEntry = pFreeEntry->pNextFree()) {
     
@@ -4643,7 +4642,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
     if (bShowKeys)
       vTrace("i_ScanLevel %lld\n"_Stz,i_ScanLevel);
     
-    Entry* pTestEntry_sl = pNextEntry(m_pHeadEntry,i_ScanLevel);
+    Entry* pTestEntry_sl = pNextEntry(m_aHeadEntry,i_ScanLevel);
     while (pTestEntry_sl) {
       
       if (CN_ENTRY != pTestEntry_sl->eClass()) {
@@ -4711,7 +4710,7 @@ bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
   vNumberEntries();
   
   // run through all entries at level 0
-  Entry* pTestEntry_0 = pNextEntry(m_pHeadEntry,0);
+  Entry* pTestEntry_0 = pNextEntry(m_aHeadEntry,0);
   while (pTestEntry_0) {
     
     // check if scan entry has more than one offset
@@ -4726,7 +4725,7 @@ bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
          i_SkipLevel > 0;
          i_SkipLevel--) {
       
-      Entry* pScanEntry_sl = pNextEntry(m_pHeadEntry,i_SkipLevel);
+      Entry* pScanEntry_sl = pNextEntry(m_aHeadEntry,i_SkipLevel);
       while (pScanEntry_sl) {
         
         if (pScanEntry_sl == pTestEntry_0)

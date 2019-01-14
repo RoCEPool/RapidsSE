@@ -171,11 +171,11 @@ Item* ItemBuffer::pNextItem(Item* pCurrentItem)
   
   i8 nBytes = pCurrentItem->nSizeItem();
   
-  Item* pNext = ahAdd<Item*>(pCurrentItem,nBytes);
+  Item* pNext = aAdd<Item*>(pCurrentItem,nBytes);
   
   if ((char*)pNext >= (char*)m_xWsp.aLatter())
     return nullptr;
-  
+    
   return pNext;
 }
 
