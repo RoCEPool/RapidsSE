@@ -19,6 +19,9 @@ using namespace CorrectnessAlgebra;
 #include "Footer.hpp"
 #include "Header.hpp"
 #include "Object.hpp"
+
+#include "Addressing.hpp"
+
 #include "Wsp.hpp"
 #include "Wsp_t.hpp"
 

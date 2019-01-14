@@ -21,7 +21,6 @@ using namespace Base;
 
 //-----------------------------------------------------------------------------
 
-#include "Addressing.hpp"
 #include "BitLib.hpp"
 #include "ByteLiterals.hpp"
 #include "ClassNumbers.hpp"
