@@ -22,7 +22,7 @@ void Step::vAddSteps_JobWriteBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job_WriteBuffer.index! -- store hidden index in entryBuffer     */
+/* job_WriteBuffer.index! -- store hidden index in entryBuffer                */
 /*----------------------------------------------------------------------------*/
 void Step::vJob_WriteBufferIndexStore(MP_Task mpTask)
 {

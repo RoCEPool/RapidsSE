@@ -122,6 +122,7 @@ void RecordBuffer::vInit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDBUFFER,_FOOTER_);
   
   m_nRecords   = 0;
+  m_nUsedBytes = 0;
   m_nFreeBytes = C_SIZE_LARGE_OBJECT - C_1KB;
   //m_cArea
   
@@ -139,7 +140,9 @@ char* RecordBuffer::aNextRecord(char* aCurrentRecord)
   
   char* aNext = aAdd<char*>(aCurrentRecord,nBytes+C_SIZEOF_RECORDSIZE);
   
-  if ((char*)aNext >= (char*)&m_cArea[C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes])
+  RASSERT(C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes == m_nUsedBytes);
+  
+  if ((char*)aNext >= (char*)&m_cArea[m_nUsedBytes])
     return nullptr;
   
   return aNext;
@@ -184,11 +187,10 @@ i8 RecordBuffer::nUsedBytes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 nBytes = C_SIZE_LARGE_OBJECT - m_nFreeBytes;
+  RASSERT(C_SIZE_LARGE_OBJECT -  - C_1KB - m_nFreeBytes == m_nUsedBytes);
   
-  return nBytes;
+  return m_nUsedBytes;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- private -----------------------------------------------------------------*/
@@ -205,10 +207,13 @@ char* RecordBuffer::aAllotSpace(i8 nBytes)
   if (m_nFreeBytes < nBytes)
     return nullptr;
   
-  char* aRecord = &m_cArea[C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes];
+  RASSERT(C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes == m_nUsedBytes);
+  
+  char* aRecord = &m_cArea[m_nUsedBytes];
   
   m_nRecords++;
   m_nFreeBytes -= nBytes;
+  m_nUsedBytes += nBytes;
   
   return aRecord;
 }
