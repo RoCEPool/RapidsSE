@@ -12,8 +12,8 @@ namespace Transactions
     Lock      m_oLock;        // lock for the set
     i8        m_iNodeNo;      // this node no
     i8        m_iNextTxId;    // next tx id
-    SkipList* m_pLocalTxList; // skip list of tx's by local tx id
-    SkipList* m_pDistTxList;  // skip list of tx's by distributed tx id
+    SkipListNL* m_pLocalTxList; // skip list of tx's by local tx id
+    SkipListNL* m_pDistTxList;  // skip list of tx's by distributed tx id
   
     // must be last
     Footer m_xFooter;

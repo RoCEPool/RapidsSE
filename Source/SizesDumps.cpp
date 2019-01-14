@@ -470,7 +470,7 @@ i8 giClassSize[]
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
   /*    */ sizeof(Session),            // CN_SESSION
   /*116 */ sizeof(Since),              // CN_SINCE
-  /*118 */ sizeof(SkipList),           // CN_SKIPLIST
+  /*118 */ sizeof(SkipListNL),           // CN_SKIPLIST
   /*119 */ sizeof(SkipNode),           // CN_SKIPNODE
   /*120 */ sizeof(Slab),               // CN_SLAB
   /*121 */ sizeof(SlabAllocator),      // CN_SLABALLOCATOR

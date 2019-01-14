@@ -528,7 +528,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("SIZEOF_SEMAPHORE"_Stz,    sizeof(Semaphore));
   /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
   /* 47 */ vAddConstant("SIZEOF_SINCE"_Stz,        sizeof(Since));
-  /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipList));
+  /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipListNL));
   /* 50 */ vAddConstant("SIZEOF_SKIPNODE"_Stz,     sizeof(SkipNode));
   /*    */ vAddConstant("SIZEOF_SLOTS"_Stz,        sizeof(Slots));
   /* 51 */ vAddConstant("SIZEOF_SMALLHEAP"_Stz,    sizeof(Heap));

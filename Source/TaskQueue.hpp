@@ -14,7 +14,7 @@ namespace Tasks
   {
   private:
     Lock      m_oLock;
-    SkipList* m_pTaskSkipList;
+    SkipListNL* m_pTaskSkipList;
     
     // must be last
     Footer m_xFooter;

@@ -45,7 +45,7 @@ RowOnce::RowOnce(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWONCE,_FOOTER_);
   
   m_oLock.vInitLock(LK_LIST);
-  m_pSkipList = new SkipList(C_UNQIUE_KEY,bI8Compare,true);
+  m_pSkipList = new SkipListNL(C_UNQIUE_KEY,bI8Compare,true);
   
   _checkInitialised_(CN_ROWONCE);
   

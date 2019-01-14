@@ -52,7 +52,7 @@ Jobs::Jobs(cmpFun fCompare, eJL eJobsList)
   m_eJobsList = eJobsList;
   m_oLock.vInitLock(LK_JOBS);
   m_iNextJobId = gpAttachMap->m_pGrid->iThisNode() << 48;
-  m_pJobsSkipList = new SkipList(C_UNQIUE_KEY, fCompare);
+  m_pJobsSkipList = new SkipListNL(C_UNQIUE_KEY, fCompare);
   
   _checkInitialised_(CN_JOBS);
   
@@ -269,7 +269,7 @@ void Jobs::vDump(eCN eClass, Object* pObject, Stz* aTab)
 {
   Jobs* pJobs = _pJobs(pObject);
   //vSkipListDump(pJobs->m_pJobsSkipList);
-  SkipList* pSkipList = pJobs->m_pJobsSkipList;
+  SkipListNL* pSkipList = pJobs->m_pJobsSkipList;
   //vTrace("HEIGHT %lld HEAD 0x%llx\n"_Stz,pSkipList->m_iHeight,pSkipList->m_pHead);
   i8 iLevel = pSkipList->m_iHeight;
   do {

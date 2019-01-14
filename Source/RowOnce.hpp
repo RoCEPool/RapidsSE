@@ -10,7 +10,7 @@ namespace DBobjects
   private:
   
     Lock      m_oLock;
-    SkipList* m_pSkipList; // skip list containing seen rowids
+    SkipListNL* m_pSkipList; // skip list containing seen rowids
   
     // must be last
     Footer m_xFooter;

@@ -55,7 +55,7 @@ TaskQueue::TaskQueue(bool bUniqueKey, cmpFun fCompare)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   m_oLock.vInitLock(LK_TASK_QUEUE);
-  m_pTaskSkipList = new SkipList(bUniqueKey, fCompare);
+  m_pTaskSkipList = new SkipListNL(bUniqueKey, fCompare);
   
   _checkInitialised_(CN_TASKQUEUE);
 

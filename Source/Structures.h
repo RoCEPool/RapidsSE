@@ -29,7 +29,7 @@ using namespace Structures;
 #include "Queue.hpp"
 
 #include "SkipNode.hpp"
-#include "SkipList.hpp"
+#include "SkipListNL.hpp"
 
 #include "VectorNL_t.hpp"
 

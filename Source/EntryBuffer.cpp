@@ -3755,7 +3755,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   pThisLeftBuffer->vItems(nRevisedItems);
   
   // - at this point the left buffer no longer has the right latter entries
-  //   and the SkipList is not valid (other than L0)
+  //   and the SkipListNL is not valid (other than L0)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // build the skip list of the right buffer
@@ -3763,7 +3763,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   pNewRightBuffer->vBuildSkipListSorted();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compact the left buffer and rebuild SkipList
+  // compact the left buffer and rebuild SkipListNL
   
   pThisLeftBuffer->vCompactLeft2();
   
