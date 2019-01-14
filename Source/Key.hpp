@@ -40,8 +40,8 @@ namespace DBobjects
     Key(KeyWrk& xKeyWrk);
     ~Key(void) noexcept(false);
   
-    bool operator <(Key* pKeyArg);
-    bool operator <=(Key* pKeyArg);
+    bool operator <(Key* aKeyArg);
+    bool operator <=(Key* aKeyArg);
     
     void  vShow(IdxColVec* pIdxColVec);
   
@@ -52,27 +52,27 @@ namespace DBobjects
     
     static char* aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor);
   
-    bool bLessThan(Key* pKey, IdxColVec* pIdxColVec);
-    bool bLessEqual(Key* pKey, IdxColVec* pIdxColVec);
-    bool bEqualTo(Key* pKey, IdxColVec* pIdxColVec);
-    bool bNotEqual(Key* pKey, IdxColVec* pIdxColVec);
-    bool bGreaterEqual(Key* pKey, IdxColVec* pIdxColVec);
-    bool bGreaterEqualSingle(Key* pKey, Index* pIndex);
-    bool bGreaterThan(Key* pKey, IdxColVec* pIdxColVec);
-    bool bGreaterThanSingle(Key* pKey, Index* pIndex);
+    bool bLessThan(Key* aKey, IdxColVec* pIdxColVec);
+    bool bLessEqual(Key* aKey, IdxColVec* pIdxColVec);
+    bool bEqualTo(Key* aKey, IdxColVec* pIdxColVec);
+    bool bNotEqual(Key* aKey, IdxColVec* pIdxColVec);
+    bool bGreaterEqual(Key* aKey, IdxColVec* pIdxColVec);
+    bool bGreaterEqualSingle(Key* aKey, Index* pIndex);
+    bool bGreaterThan(Key* aKey, IdxColVec* pIdxColVec);
+    bool bGreaterThanSingle(Key* aKey, Index* pIndex);
     
-    i8 iCmp(Key* pKey, IdxColVec* pIdxColVec);
+    i8 iCmp(Key* aKey, IdxColVec* pIdxColVec);
     
-    bool bMatches(Key* pKey, IdxColVec* pIdxColVec, RelOpAry* pOpAry);
+    bool bMatches(Key* aKey, IdxColVec* pIdxColVec, RelOpAry* pOpAry);
 
-    bool bJuxtaCompare(eJC eJuxtaCompare, Key* pKey,
+    bool bJuxtaCompare(eJC eJuxtaCompare, Key* aKey,
                        IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                        bool& bIsEqual, eRO eRelnOp=RO_NONE);
-    bool bJuxtaBefore(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+    bool bJuxtaBefore(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                       bool& bIsEqual, eRO eRelnOp=RO_NONE);
-    bool bJuxtaSame(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+    bool bJuxtaSame(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                     bool& bIsEqual);
-    bool bJuxtaAfter(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+    bool bJuxtaAfter(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                      bool& bIsEqual, eRO eRelnOp=RO_NONE);
   
     void vSprintSortKey(s48K& sBuff, IdxColVec* pIdxColVec);

@@ -31,9 +31,9 @@ void* Key::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Key::operator new(size_t, Key* pKey)
+void* Key::operator new(size_t, Key* aKey)
 {
-  return pKey;
+  return aKey;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,10 +58,10 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* operator <                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Key::operator <(Key* pKeyArg)
+bool Key::operator <(Key* aKeyArg)
 {
   i8 iDatumA = *(i8*)aWspArea();
-  i8 iDatumB = *(i8*)pKeyArg->aWspArea();
+  i8 iDatumB = *(i8*)aKeyArg->aWspArea();
   bool b = iDatumA < iDatumB;
   
   return b;
@@ -70,10 +70,10 @@ bool Key::operator <(Key* pKeyArg)
 /*----------------------------------------------------------------------------*/
 /* operator <=                                                                */
 /*----------------------------------------------------------------------------*/
-bool Key::operator <=(Key* pKeyArg)
+bool Key::operator <=(Key* aKeyArg)
 {
   i8 iDatumA = *(i8*)aWspArea();
-  i8 iDatumB = *(i8*)pKeyArg->aWspArea();
+  i8 iDatumB = *(i8*)aKeyArg->aWspArea();
   
   bool b = iDatumA <= iDatumB;
   
@@ -126,12 +126,12 @@ char* Key::aEachDatum(Column* pColumn, i8& nBytes, char** aaCursor)
 /*----------------------------------------------------------------------------*/
 /* if this key less than given key?                                           */
 /*----------------------------------------------------------------------------*/
-bool Key::bLessThan(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bLessThan(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bLessThan = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = aKeyThat->aWspArea();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -155,12 +155,12 @@ bool Key::bLessThan(Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* if this key less than or equal to given key?                               */
 /*----------------------------------------------------------------------------*/
-bool Key::bLessEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bLessEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bLessEqual = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = aKeyThat->aWspArea();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -184,12 +184,12 @@ bool Key::bLessEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* if this key equal to given key?                                            */
 /*----------------------------------------------------------------------------*/
-bool Key::bEqualTo(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bEqualTo(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bEqualTo = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = aKeyThat->aWspArea();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -213,12 +213,12 @@ bool Key::bEqualTo(Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* if this key not equal to given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool Key::bNotEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bNotEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bNotEqual = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = aKeyThat->aWspArea();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -241,12 +241,12 @@ bool Key::bNotEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* if this key greater than or equal to given key?                            */
 /*----------------------------------------------------------------------------*/
-bool Key::bGreaterEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bGreaterEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bGreaterEqual = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = aKeyThat->aWspArea();
   
   i8 nBytesThis;
   i8 nBytesThat;
@@ -269,10 +269,10 @@ bool Key::bGreaterEqual(Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* is this key greater than or equal to given key?                            */
 /*----------------------------------------------------------------------------*/
-bool Key::bGreaterEqualSingle(Key* pKeyThat, Index* pIndex)
+bool Key::bGreaterEqualSingle(Key* aKeyThat, Index* pIndex)
 {
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = aKeyThat->aWspArea();
 
   bool bGreaterEqual = pIndex->bGreaterEqual(aCursorThis,aCursorThat);
   
@@ -282,10 +282,10 @@ bool Key::bGreaterEqualSingle(Key* pKeyThat, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* is this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool Key::bGreaterThanSingle(Key* pKeyThat, Index* pIndex)
+bool Key::bGreaterThanSingle(Key* aKeyThat, Index* pIndex)
 {
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = aKeyThat->aWspArea();
   
   bool bGreaterThan = pIndex->bGreaterThan(aCursorThis,aCursorThat);
   
@@ -295,12 +295,12 @@ bool Key::bGreaterThanSingle(Key* pKeyThat, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /* if this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-bool Key::bGreaterThan(Key* pKeyThat, IdxColVec* pIdxColVec)
+bool Key::bGreaterThan(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bGreaterThan = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = aKeyThat->aWspArea();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -324,12 +324,12 @@ bool Key::bGreaterThan(Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* if this key greater than given key?                                        */
 /*----------------------------------------------------------------------------*/
-i8 Key::iCmp(Key* pKeyThat, IdxColVec* pIdxColVec)
+i8 Key::iCmp(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   i8 iCmp = 0;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = aKeyThat->aWspArea();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -352,10 +352,10 @@ i8 Key::iCmp(Key* pKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* does this keyval match the given arguments                                 */
 /*----------------------------------------------------------------------------*/
-bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
+bool Key::bMatches(Key* aKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 {
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pKeyThat->aWspArea();
+  char* aCursorThat = aKeyThat->aWspArea();
   
   bool bCmp = false;
   
@@ -385,7 +385,7 @@ bool Key::bMatches(Key* pKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 /*----------------------------------------------------------------------------*/
 /* juxta-compare this key with given key                                      */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat,
+bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* aKeyThat,
                         IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                         bool& bIsEqual, eRO eRelnOp)
 {
@@ -394,15 +394,15 @@ bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat,
   switch (eJuxtaCompare) {
       
     case JC_BEFORE:
-      bJuxtaResult = bJuxtaBefore(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
+      bJuxtaResult = bJuxtaBefore(aKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
       break;
       
     case JC_SAME:
-      bJuxtaResult = bJuxtaSame(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual);
+      bJuxtaResult = bJuxtaSame(aKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual);
       break;
       
     case JC_AFTER:
-      bJuxtaResult = bJuxtaAfter(pKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
+      bJuxtaResult = bJuxtaAfter(aKeyThat,pIdxColVec,nSearchKeyCols,bIsEqual,eRelnOp);
       break;
       
     default:
@@ -415,7 +415,7 @@ bool Key::bJuxtaCompare(eJC eJuxtaCompare, Key* pKeyThat,
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-before given search key?                                 */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaBefore(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+bool Key::bJuxtaBefore(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                        bool& bIsEqual,  eRO eRelnOp)
 {
   /*
@@ -447,7 +447,7 @@ bool Key::bJuxtaBefore(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols
   bIsEqual = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pSearchKey->aWspArea();
+  char* aCursorThat = aSearchKey->aWspArea();
   
   i8 iCmp = 0;
   
@@ -493,7 +493,7 @@ bool Key::bJuxtaBefore(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-same as given search key?                                */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaSame(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+bool Key::bJuxtaSame(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                      bool& bIsEqual)
 {
   /*
@@ -508,7 +508,7 @@ bool Key::bJuxtaSame(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
   bIsEqual = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pSearchKey->aWspArea();
+  char* aCursorThat = aSearchKey->aWspArea();
   
   i8 iCmp = 0;
   
@@ -545,7 +545,7 @@ bool Key::bJuxtaSame(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
 /*----------------------------------------------------------------------------*/
 /* is this key juxta-after given search key?                                  */
 /*----------------------------------------------------------------------------*/
-bool Key::bJuxtaAfter(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
+bool Key::bJuxtaAfter(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
                       bool& bIsEqual, eRO eRelnOp)
 {
   /*
@@ -577,7 +577,7 @@ bool Key::bJuxtaAfter(Key* pSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
   bIsEqual = false;
   
   char* aCursorThis = aWspArea();
-  char* aCursorThat = pSearchKey->aWspArea();
+  char* aCursorThat = aSearchKey->aWspArea();
   
   i8 iCmp = 0;
   

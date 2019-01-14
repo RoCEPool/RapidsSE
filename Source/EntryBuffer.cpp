@@ -4251,11 +4251,11 @@ bool EntryBuffer::bVerifyFirstKeys(void)
     Entry* aChildFirstEntry = pChildEntryBuffer->aFirstEntry();
 
     // get keys of the two entries
-    Key* pKeyParent = aEntry->aKey();
-    Key* pKeyChild  = aChildFirstEntry->aKey();
+    Key* aKeyParent = aEntry->aKey();
+    Key* aKeyChild  = aChildFirstEntry->aKey();
    
     // the two keys should match
-    bool bEqual = pKeyChild->bEqualTo(pKeyParent,pIdxColVec);
+    bool bEqual = aKeyChild->bEqualTo(aKeyParent,pIdxColVec);
     if (! bEqual) {
       vVerifyFault();
       return false;
@@ -4429,11 +4429,11 @@ bool EntryBuffer::bVerifyKeyOrder(void)
       break;
     
     // get keys of the two entries
-    Key* pKeyA = aEntry->aKey();
-    Key* pKeyB = aNextEntry->aKey();
+    Key* aKeyA = aEntry->aKey();
+    Key* aKeyB = aNextEntry->aKey();
 
     // next keyB should be greater than or equal to keyA
-    bool bGreaterEqual = pKeyB->bGreaterEqual(pKeyA,pIdxColVec);
+    bool bGreaterEqual = aKeyB->bGreaterEqual(aKeyA,pIdxColVec);
     if (! bGreaterEqual) {
       vVerifyFault();
       return false;
