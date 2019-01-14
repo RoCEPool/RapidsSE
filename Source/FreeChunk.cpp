@@ -24,7 +24,7 @@ void FreeChunk::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 FreeChunk::FreeChunk(void)
-: Object(CN_NONE)
+: Header(CN_NONE)
 {
   m_pNextFree = nullptr;
 }
@@ -44,8 +44,6 @@ FreeChunk::~FreeChunk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void FreeChunk::vInit(eCN eWasClass)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-
   vSetMagic();
   vSetClass(CN_FREECHUNK);
   m_eWasClass = eWasClass;
@@ -56,8 +54,6 @@ void FreeChunk::vInit(eCN eWasClass)
 /*----------------------------------------------------------------------------*/
 eCN FreeChunk::eWasClass(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   return m_eWasClass;
 }
 
@@ -66,8 +62,6 @@ eCN FreeChunk::eWasClass(void)
 /*----------------------------------------------------------------------------*/
 void FreeChunk::vWasClass(eCN eWasClass)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   m_eWasClass = eWasClass;
 }
 
@@ -76,8 +70,6 @@ void FreeChunk::vWasClass(eCN eWasClass)
 /*----------------------------------------------------------------------------*/
 FreeChunk* FreeChunk::pNextFree(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   return m_pNextFree;
 }
 
@@ -86,24 +78,8 @@ FreeChunk* FreeChunk::pNextFree(void)
 /*----------------------------------------------------------------------------*/
 void FreeChunk::vNextFree(FreeChunk* pNextFree)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
   m_pNextFree = pNextFree;
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-//Footer* FreeChunk::aFooter(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_);
-//  
-//  return &m_xFooter;
-//}
 
 /*============================================================================*/
 /* end                                                                        */

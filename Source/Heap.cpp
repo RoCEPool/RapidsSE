@@ -173,7 +173,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
     }
   }
 
-  Object* pObject = static_cast<Object*>(pPopFree());
+  Object* pObject = reinterpret_cast<Object*>(pPopFree());
   
   m_iAllocCount++;
 
@@ -287,7 +287,7 @@ void Heap::vFreeObject(Object* pObject)
 
   m_zLock.vGrabWrite();
   
-  vPushFree(static_cast<FreeChunk*>(pObject),pObject->eClass());
+  vPushFree(reinterpret_cast<FreeChunk*>(pObject),pObject->eClass());
   
   m_iAllocCount--;
 

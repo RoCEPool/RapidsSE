@@ -104,7 +104,7 @@ void BPA::vHeapDump(Heap* pHeap)
       
       vTrace("%s%p %-12s: "_Stz,aDoubleTab(),pHeap,aCN[eClass]);
 
-      (pDumpFun)(eClass, pChunk, aDoubleTab());
+      (pDumpFun)(eClass, (Object*)pChunk, aDoubleTab());
     }
   }
   
@@ -156,7 +156,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
       
       vTrace("%s%p %-12s: "_Stz,aDoubleTab(),pHeap,aCN[eClass]);
       
-      (pDumpFun)(eClass, pChunk, aDoubleTab());
+      (pDumpFun)(eClass, (Object*)pChunk, aDoubleTab());
     }
   }
   
