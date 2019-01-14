@@ -13,7 +13,7 @@ AttachMap *   gpAttachMap    = nullptr;
 File*         gpTraceFile    = nullptr;
 extern pthread_key_t giTLS_ThreadKey;
 
-void*         mpRegion       = nullptr;
+void*         maRegion       = nullptr;
 bool          gbSHM          = false;
 
 
@@ -72,7 +72,7 @@ void RapidsSE::vMainEntry(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vAttachRegion(void)
 {
-  gpAttachMap = pAdd<AttachMap*>((Object*)mpRegion,C_SIZE_POOL_BUFFER);
+  gpAttachMap = pAdd<AttachMap*>((Object*)maRegion,C_SIZE_POOL_BUFFER);
   
   // get pointers to global objects from attach map
   gpAttachMap->vGetGlobals();

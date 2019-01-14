@@ -5,7 +5,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern void*      mpRegion;
+extern void*      maRegion;
 
 extern Arguments gxArguments;
 
@@ -32,20 +32,20 @@ bool Region::bAttach(s32& sRegionName, bool bWecome)
   }
   
   // allocate a temporary extent of memory
-  mpRegion = Shm::aMap(iFD,
+  maRegion = Shm::aMap(iFD,
                        gxArguments.m_aRegionAddr,
                        10_MB,
                        C_SHARED_REGION,
                        false,
                        oSysCall);
-  if ( ! mpRegion )  {
+  if ( ! maRegion )  {
     vTrace("RapidsSE::vAttach failed to map\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     return false;
   }
   
   // overlay attach map onto 2nd buffer (buffer #1)
-  gpAttachMap = pAdd<AttachMap*>((Object*)mpRegion,C_SIZE_POOL_BUFFER);
+  gpAttachMap = pAdd<AttachMap*>((Object*)maRegion,C_SIZE_POOL_BUFFER);
   
   // get the actual size
   i8 iRegionSize = gpAttachMap->m_iRegionSize;
@@ -53,7 +53,7 @@ bool Region::bAttach(s32& sRegionName, bool bWecome)
   
   // close the temporary mapping
   bResult = Shm::bClose(iFD,oSysCall);
-  bResult = Shm::bUnmap(mpRegion,10_MB,oSysCall);
+  bResult = Shm::bUnmap(maRegion,10_MB,oSysCall);
   
   //--------------------------------------------------------------------------
   
@@ -66,23 +66,23 @@ bool Region::bAttach(s32& sRegionName, bool bWecome)
   }
   
   // allocate the full extent of memory required
-  mpRegion = Shm::aMap(iFD,
+  maRegion = Shm::aMap(iFD,
                        gxArguments.m_aRegionAddr,
                        iRegionSize,
                        C_SHARED_REGION,
                        false,
                        oSysCall);
-  if ( ! mpRegion )  {
+  if ( ! maRegion )  {
     vTrace("RapidsSE::vAttach failed to map\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     return false;
   }
   
   // overlay buffer pool onto 1st buffer (buffer #0)
-  gpBufferPool = reinterpret_cast<BufferPool*>(mpRegion);
+  gpBufferPool = reinterpret_cast<BufferPool*>(maRegion);
   
   if (gxArguments.m_bVerbose)
-    vTrace("Shm mapped at %p\n"_Stz,mpRegion);
+    vTrace("Shm mapped at %p\n"_Stz,maRegion);
   
   return true;
 }
@@ -126,7 +126,7 @@ void Region::vCreate(s32& sRegionName, i8 iRegionSize, i8 iJumboTook,
   }
   
   // allocate memory for the shm region
-  mpRegion = Shm::aMap(iFD,
+  maRegion = Shm::aMap(iFD,
                        gxArguments.m_aRegionAddr,
                        iRegionSize,
                        true,
@@ -134,9 +134,9 @@ void Region::vCreate(s32& sRegionName, i8 iRegionSize, i8 iJumboTook,
                        oSysCall);
   
   //if (gxArguments.m_bVerbose)
-  //  vTrace("Region::vCreate C; mpRegion=%p\n"_Stz,mpRegion);
+  //  vTrace("Region::vCreate C; maRegion=%p\n"_Stz,maRegion);
   
-  if ( ! mpRegion )  {
+  if ( ! maRegion )  {
     vTrace("RapidsSE::vCreate failed to map!\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     NEVER_REACH;
@@ -148,24 +148,24 @@ void Region::vCreate(s32& sRegionName, i8 iRegionSize, i8 iJumboTook,
   //vInfo("sleeping... \n"_Stz);
   //PosixThread::vSleepMilli(180000);
   
-  gpBufferPool = new(mpRegion) BufferPool(sRegionName, iRegionSize,
+  gpBufferPool = new(maRegion) BufferPool(sRegionName, iRegionSize,
                                           iJumboTook, bTouch, bDontFree, bFreeRB);
 
   //if (gxArguments.m_bVerbose)
   //  vTrace("Region::vCreate E\n"_Stz);
   
   if (gxArguments.m_bVerbose)
-    vTrace("Shm mapped at %p\n"_Stz,mpRegion);
+    vTrace("Shm mapped at %p\n"_Stz,maRegion);
   
   // lock the shared memory in
   if (bLock) {
-    bResult = Shm::bLock(mpRegion,
+    bResult = Shm::bLock(maRegion,
                          iRegionSize,
                          oSysCall);
   
     if ( ! bResult )  {
       vFatal("RapidsSE::vAttach failed to lock\n"_Stz);
-      bResult = Shm::bUnmap(mpRegion, iRegionSize, oSysCall);
+      bResult = Shm::bUnmap(maRegion, iRegionSize, oSysCall);
       if ( ! bResult )  {
         vFatal("RapidsSE::vAttach failed to unmap\n"_Stz);
       }

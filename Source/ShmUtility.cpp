@@ -13,7 +13,7 @@ char* maRegionAddress = nullptr;
 i8    miRegionSize = C_1GB;
 s32   msRegionName;
 
-void* maRegion;
+extern void* maRegion;
 
 /*----------------------------------------------------------------------------*/
 /* run shm utility                                                            */
