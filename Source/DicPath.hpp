@@ -30,6 +30,8 @@ namespace Forth
     void vDicName(i8 i_Dic, s32& sName);
   
     void vAsString(s256& sString);
+    void vAppendName(s32& sName);
+    void vSetPath(s256& sPath);
   
     Footer* aFooter(void);
   };

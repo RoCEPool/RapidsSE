@@ -111,6 +111,44 @@ void DicPath::vAsString(s256& sString)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append name to path                                                        */
+/*----------------------------------------------------------------------------*/
+void DicPath::vAppendName(s32& sName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
+ 
+  m_sDicName[m_nDicNames++] = sName;
+  
+  ASSERT (m_nDicNames <= C_DIC_PATHDEPTH);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set path from single string                                                */
+/*----------------------------------------------------------------------------*/
+void DicPath::vSetPath(s256& sPathString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
+  
+  m_nDicNames = 0;
+  
+  s32 sFolderNm;
+  s256 sRemainingPath;
+  
+  sRemainingPath = sPathString;
+  do {
+    
+    StrLib::vCopySplit(sFolderNm.aChar(),
+                       sRemainingPath.aChar(),
+                       sRemainingPath.aChar(),
+                       '.');
+    
+    vAppendName(sFolderNm);
+    
+  } while (*sRemainingPath.aChar());
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
