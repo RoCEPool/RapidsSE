@@ -37,7 +37,7 @@
   then
 
   ""
-  0 pathPick dic.lastWord dup iterate
+  pathDepth 1 - pathPick dic.lastWord dup iterate
   1 iCount + to iCount
   "row: ('" str.cat
 

@@ -71,7 +71,7 @@
   //"STACK IS a:" . stk
 
   //""
-  0 pathPick dic.lastWord dup
+  pathDepth 1 - pathPick dic.lastWord dup
   iterate
     1 iCount + to iCount
     grid::thisNodeName@ "row: ('%v', '" str.format

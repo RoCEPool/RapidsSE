@@ -13,7 +13,7 @@
 ;
 
 : withinTenants
-    0 pathPick dic.name "tenants" str.equal
+    pathDepth 1 - pathPick dic.name "tenants" str.equal
 ;
 
 : checkInTenants

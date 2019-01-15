@@ -16,7 +16,7 @@
 ;
 
 : withinSchemas
-    0 pathPick dic.name "schemas" str.equal
+    pathDepth 1 - pathPick dic.name "schemas" str.equal
 ;
 
 : checkInSchemas

@@ -35,7 +35,7 @@
     dup "MAKING TABLE DIC " swap str.cat " on NODE " str.cat grid::thisNode@ >str str.cat .
   then
 
-  0 pathPick
+  pathDepth 1 - pathPick
   :folder      ( )
 ;
 
@@ -80,7 +80,7 @@
 /*----------------------------------------------------------------------------*/
 : withinTables ( -- t|f )
 
-  0 pathPick dic.name "tables" str.equal
+  pathDepth 1 - pathPick dic.name "tables" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -112,7 +112,7 @@
   // assert dictionary path
   task::this task.dicStack dicStack.depth assert
 
-  0 pathPick dic.name str.equal
+  pathDepth 1 - pathPick dic.name str.equal
 ;
 
 /*----------------------------------------------------------------------------*/

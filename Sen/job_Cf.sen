@@ -9,6 +9,8 @@
 /*----------------------------------------------------------------------------*/
 : cf_req ( -- <R> )
 
+"cf_req" .
+
   >>am <SEED_REQ>
 
   0 0 0 0 locals| pCurrentFolder sFolderNm pJob_Cf pTask |
@@ -29,16 +31,22 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
+"CF A" .
   pJob_Cf getPath
+"CF B" .
   dicStack.set
+"CF C" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for a ".." which will go up one folder
 
   // pop up one folder, but not into tenants
   sFolderNm ".." str.equal if
-    0 pathPick dic.name "tenants" str.equal not if pathDrop then
+"CF D" .
+    pathDepth 1 - pathPick dic.name "tenants" str.equal not if pathDrop then
+"CF E" .
     savePath
+"CF F" .
     <<am <DONE_REQ>
     exit
   then
@@ -48,7 +56,7 @@
 
   // pop up to tenants
   sFolderNm "~" str.equal if
-    begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
+    begin pathDepth 1 - pathPick dic.name "tenants" str.equal not while pathDrop repeat
     savePath
     <<am <DONE_REQ>
     exit

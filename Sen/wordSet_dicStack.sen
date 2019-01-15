@@ -112,7 +112,7 @@
 /*----------------------------------------------------------------------------*/
 : words
 
-  0 pathPick dic.lastWord dup
+  pathDepth 1 - pathPick dic.lastWord dup
   iterate                        // iterate word cursor
     object@ word.name .          // print the name of the word
     object@ word.prev object!    // advance cursor backwards thru words
@@ -124,7 +124,7 @@
 /*----------------------------------------------------------------------------*/
 : symbols
 
-  0 pathPick dic.lastWord
+  pathDepth 1 - pathPick dic.lastWord
   begin dup while
     dup word.name .put " " .put dup word.kind@ word.name .put .\n
     word.prev
@@ -148,7 +148,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the row for each word
   ""                               // initial contents string
-  0 pathPick dic.lastWord dup
+  pathDepth 1 - pathPick dic.lastWord dup
   iterate                          // setup iteration of words
     1 iCount + to iCount
     "row: ('" str.cat
@@ -232,6 +232,8 @@
 
   0 do
 
+    dup "dicStack.set %v" fmt.print
+
     dup "<root>" str.equal if
       drop
       dic.root
@@ -245,10 +247,12 @@
         dup "tenants" str.equal if
           drop attachmap::tenants@ execute pathPush
         else
+
           find
           execute
           pathPush
         then
+
       then
 
     then

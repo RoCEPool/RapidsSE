@@ -13,7 +13,7 @@
 ;
 
 : withinCatalogs
-    0 pathPick dic.name "catalogs" str.equal
+    pathDepth 1 - pathPick dic.name "catalogs" str.equal
 ;
 
 : checkInCatalogs

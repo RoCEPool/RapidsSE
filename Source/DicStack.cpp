@@ -244,8 +244,9 @@ Dic* DicStack::pPick(i8 iPick)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  Dic* pDic = m_pDic[m_iTop - iPick];
-  
+  //Dic* pDic = m_pDic[m_iTop - iPick];
+  Dic* pDic = m_pDic[iPick];
+
   return pDic;
 }
 

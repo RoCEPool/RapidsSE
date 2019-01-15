@@ -23,7 +23,7 @@
 
   // copy the path from job dic path onto data stack
   pDicPathJob dicPath.depth 0 ?do
-    I pDicPathJob dicPath.pick
+    pDicPathJob dicPath.depth 1 - I - pDicPathJob dicPath.pick
   loop
 
   pDicPathJob dicPath.depth
@@ -44,7 +44,7 @@
 
   // copy the path from task dic stack onto data stack
   pDicStackTask dicStack.depth 0 ?do
-    I pDicStackTask dicStack.pick
+    pDicStackTask dicStack.depth 1 - I - pDicStackTask dicStack.pick
   loop
 
   // clear session dic stack

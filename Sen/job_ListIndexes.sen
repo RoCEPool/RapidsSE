@@ -14,7 +14,7 @@
   0 0 0 0 locals| iCount pIndex iColumns pTable |
 
   ""   // initial contents of the string
-  0 pathPick dic.lastWord dup
+  pathDepth 1 - pathPick dic.lastWord dup
   iterate                         // setup iteration of words
 
     // get the index ptr

@@ -16,7 +16,7 @@
 
   // pop path till we get to tenants
   begin
-    0 pathPick dic.name "tenants" str.equal not while pathDrop
+    pathDepth 1 - pathPick dic.name "tenants" str.equal not while pathDrop
   repeat
 
   // find the boray folder
