@@ -12,8 +12,10 @@ namespace JobModel
                           public JobWriteBehind
   {
   public:
-    Job_InsertTable* m_pJob_InsertTable;                   // insert table job
-    RecordBuffer*    m_pRecordBuffer;
+    Job_InsertTable* m_pJob_InsertTable;      // insert table job
+    RecordBuffer*    m_pRecordBuffer;         // record buffer
+    i8               m_nRecordBuffers;        // record buffers to copy
+    Atomic           m_ziCopiedBuffers;       // copied record buffers
     
     // must be last
     Footer m_xFooter;

@@ -12,7 +12,7 @@
   >>am <SEED_REQ>
 
   0 locals| pThisTask |
-  0 0 0 locals| pJob_CopyBuffer sTableNm pTable |
+  job::this locals| pJob_CopyBuffer |
 
   tp: Job_CopyBuffer_req
 
@@ -24,7 +24,13 @@
 
   pJob_CopyBuffer Job_CopyBuffer.copy
 
-  <<am <DONE_REQ>
+  // null the job in the task
+  nullptr pThisTask task.job!
+
+  // delete the job
+  pJob_CopyBuffer job.delete
+
+  <DONE_RUN>
 ;
 
 /*============================================================================*/

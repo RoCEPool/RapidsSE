@@ -185,6 +185,9 @@ void Job_CopyBuffer::vCopy(void)
     eEC eErrorCode = m_pJob_SubInserter->eInsertRow();
     RASSERT(eErrorCode == EC_NONE);
   }
+  
+  ++m_pJob_SubInserter->m_ziCopiedBuffers;
+  
 }
 
 /*----------------------------------------------------------------------------*/

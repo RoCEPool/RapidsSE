@@ -106,7 +106,7 @@ char* RecordBuffer::aFirstRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RECORDBUFFER,_FOOTER_);
   
-  if (m_nFreeBytes == 0)
+  if (m_nUsedBytes == 0)
     return nullptr;
   
   char* aFirst = &m_cArea[0];

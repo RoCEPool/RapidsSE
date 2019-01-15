@@ -82,6 +82,10 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     // get the insertRows job
     Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
     
+    // wait for all record buffers to be copied across
+    while (pJob_SubInserter->m_nRecordBuffers != *pJob_SubInserter->m_ziCopiedBuffers)
+      ;
+    
     // get the insertTable job from the insertRows job
     Job_InsertTable* pJob_InsertTable = pJob_SubInserter->m_pJob_InsertTable;
     
@@ -495,9 +499,12 @@ eEC RapidsSE_GetBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, i8 iTr
   // validate the reference pointer
   VALIDATE_REFPOINTER("c"_Stz, ppBuffer);
   
-  Job_SubInserter* pJob_SubInsert = _pJob_SubInserter(pJobPtr);
+  Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
   
-  *ppBuffer = pJob_SubInsert->m_pRecordBuffer;
+  if ( ! pJob_SubInserter->m_pRecordBuffer )
+    pJob_SubInserter->m_pRecordBuffer = new RecordBuffer();
+  
+  *ppBuffer = pJob_SubInserter->m_pRecordBuffer;
   
   // trace exit
   TRACE_EXIT("ea"_Stz);
@@ -736,8 +743,6 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
   vApiCall(pSession,AC_InsertRows);                                   // API CALL
   vApiLocation(pSession,100);
   
-  eEC eResult;
-  
   eEC eErrorCode = EC_NONE;
   
   try {
@@ -750,9 +755,6 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     // validate the session
     VALIDATE_SESSION("a"_Stz);
     
-    // validate parameter
-    VALIDATE_PARAM("b"_Stz, pJobPtr);
-    
     // validate the job
     VALIDATE_JOB("b"_Stz);
     
@@ -762,6 +764,8 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     // get the record buffer
     RecordBuffer* pRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
     
+    //pRecordBuffer->vShow();
+    
     // for each record in the record buffer
     char* aRecord = nullptr;
     
@@ -770,10 +774,10 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
          aRecord = pRecordBuffer->aNextRecord(aRecord)) {
     
       // get the length of the record
-      i8 iRawDataLength = StrLib::iSize(aRecord);
+      u4 uRecordLength = *((u4*)aRecord);
       
       // check length of record
-      if (iRawDataLength > C_MAX_RECORD) {
+      if (uRecordLength > C_MAX_RECORD) {
         eErrorCode = EC_MAX_ROW_LENGTH;
         TRACE_ERROR("d"_Stz, eErrorCode);
         vApiReturn(pSession);                                        // API RETURN
@@ -784,7 +788,9 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
       
       // format the row
       bool bBlankLine;
-      bool bValid = pJob_SubInserter->bFormatRow((Stz*)aRecord, iRawDataLength, bBlankLine);
+      Stz* aData = aAdd<Stz*>(aRecord, 4);
+      //vTrace("Inserting row %lld %s\n"_Stz, uRecordLength, aData);
+      bool bValid = pJob_SubInserter->bFormatRow(aData, uRecordLength, bBlankLine);
       
       // is the record invalid ?
       if (! bValid) {
@@ -812,6 +818,91 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     
     // reset the record buffer for further inserts
     pRecordBuffer->vInit();
+    
+    // trace exit
+    TRACE_EXIT("ea"_Stz);
+    vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,900);
+    ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+    return EC_NONE;
+    
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,800);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    vApiLocation(pSession,801);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert the record buffer into a table                                      */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_InsertBuffer2(Session* pSession, void* pJobPtr, i8 iTraceLevel)
+{
+  Stz* aApiCall = "RapidsSE_InsertBuffer"_Stz;
+  eAC  eApiCall = AC_InsertBuffer;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+  
+  vApiCall(pSession,AC_InsertRows);                                   // API CALL
+  vApiLocation(pSession,100);
+  
+  eEC eErrorCode = EC_NONE;
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    //TRACE_ROW();
+    
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
+    
+    // validate the job
+    VALIDATE_JOB("b"_Stz);
+    
+    // get the insertRow job
+    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
+    
+    if ( ! pJob_SubInserter->m_pRecordBuffer )
+      pJob_SubInserter->m_pRecordBuffer = new RecordBuffer;
+    
+    // get the record buffer
+    RecordBuffer* pRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
+    
+    // create Job_InsertTable
+    JobClass* pJobClass_CopyBuffer = JobClass::pFind(CN_JOB_COPYBUFFER);
+    ASSERT(pJobClass_CopyBuffer);
+    Job_CopyBuffer* pJob_CopyBuffer =
+    static_cast<Job_CopyBuffer*>(pJobClass_CopyBuffer->pPreJob(pSession));
+    
+    // set the pJob_SubInserter in the pJob_CopyBuffer
+    pJob_CopyBuffer->m_pJob_SubInserter = pJob_SubInserter;
+    
+    // move the recordBuffer from the subInsert into CopyBuffer
+    pJob_CopyBuffer->m_pRecordBuffer = pRecordBuffer;
+    pJob_SubInserter->m_nRecordBuffers++;
+    pJob_SubInserter->m_pRecordBuffer = nullptr;
+    
+    // push the InsertTable job onto the jobstack
+    //pSession->m_pJobStack->vPushPointer(pJob_CopyBuffer);
+    //vApiJob(pSession,pJob_CopyBuffer);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // spawn the job
+    //vTrace("Spawning copyBuffer job\n"_Stz);
+    RapidsSE_bSpawnJob(pJob_CopyBuffer, SS_SEED_REQ, pSession);
     
     // trace exit
     TRACE_EXIT("ea"_Stz);
