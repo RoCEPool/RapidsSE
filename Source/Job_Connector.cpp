@@ -48,7 +48,7 @@ JobClass xJobClass_Connector =
 /*----------------------------------------------------------------------------*/
 JobClass* JobModel::pJob_Connector_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_CreateCatalog_class;
+  *pNextFun = (pFUN*)pJob_CopyBuffer_class;
   
   return &xJobClass_Connector;
 }

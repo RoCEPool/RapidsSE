@@ -175,8 +175,8 @@ void RecordBuffer::vShow(void)
        aRecord;
        aRecord = aNextRecord(aRecord)) {
     
-    u4 iSize = *((u4*)(aRecord));
-    vTrace("R%lld: %lld %s\n"_Stz, i++, iSize, aAdd<char*>(aRecord, C_SIZEOF_RECORDSIZE));
+    u4 uSize = *((u4*)(aRecord));
+    vTrace("R%lld: (%p)%lld (%p) %s\n"_Stz, i++, aRecord, uSize, aRecord + 4, aAdd<char*>(aRecord, C_SIZEOF_RECORDSIZE));
   }
 }
 

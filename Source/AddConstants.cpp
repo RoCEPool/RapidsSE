@@ -204,6 +204,7 @@ void Axioms::vAddConstants(void)
   /*    */ vAddConstant("CN_JOB_COMPACTINDEX"_Stz,   CN_JOB_COMPACTINDEX);
   /*    */ vAddConstant("CN_JOB_CONNECTCLUSTER"_Stz, CN_JOB_CONNECTCLUSTER);
   /*    */ vAddConstant("CN_JOB_CONNECTOR"_Stz,      CN_JOB_CONNECTOR);
+  /*    */ vAddConstant("CN_JOB_COPYBUFFER"_Stz,     CN_JOB_COPYBUFFER);
   /*    */ vAddConstant("CN_JOB_CREATECATALOG"_Stz,  CN_JOB_CREATECATALOG);
   /*    */ vAddConstant("CN_JOB_CREATEINDEX"_Stz,    CN_JOB_CREATEINDEX);
   /*    */ vAddConstant("CN_JOB_CREATESCHEMA"_Stz,   CN_JOB_CREATESCHEMA);
