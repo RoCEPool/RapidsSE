@@ -200,7 +200,7 @@ i8 EntryBuffer::iBufferLevel(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDropWrite(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_oLock.vDropWrite();
 }
@@ -210,7 +210,7 @@ void EntryBuffer::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vGrabWrite(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   m_oLock.vGrabWrite();
 }

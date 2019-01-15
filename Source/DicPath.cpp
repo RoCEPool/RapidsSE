@@ -25,6 +25,7 @@ DicPath::DicPath(void)
 : Object(CN_DICPATH)
 {
   m_iDicDepth = -1;
+  
   for (i8 i_Depth = 0; i_Depth < C_DIC_STACK; i_Depth++)
     m_sDicPath[i_Depth] = ""_Stz;
 }
@@ -36,15 +37,53 @@ DicPath::~DicPath(void) noexcept(false)
 {
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* dump stack of dictionary paths                                             */
 /*----------------------------------------------------------------------------*/
 void DicPath::vContentDump(void)
 {
-  //_precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
   for (i8 i_Dic = m_iDicDepth; i_Dic >= 0; i_Dic--)
     vTrace("Dic %lld %s\n"_Stz,i_Dic,m_sDicPath[i_Dic].aChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of dictionary names in path                                     */
+/*----------------------------------------------------------------------------*/
+i8 DicPath::nDicNames(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
+  
+  return m_iDicDepth;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of given dictionary                                               */
+/*----------------------------------------------------------------------------*/
+s256& DicPath::sDicName(i8 i_Dic)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
+  
+  return m_sDicPath[i_Dic];
+}
+
+/*----------------------------------------------------------------------------*/
+/* set name of given dictionary                                               */
+/*----------------------------------------------------------------------------*/
+void DicPath::vDicName(i8 i_Dic, s256& sName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
+  
+  m_sDicPath[i_Dic] = sName;
+  
+  if (i_Dic + 1 > m_iDicDepth)
+    m_iDicDepth = i_Dic + 1;
 }
 
 /*============================================================================*/

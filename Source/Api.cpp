@@ -744,7 +744,8 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
   vApiLocation(pSession,100);
   
   eEC eErrorCode = EC_NONE;
-  
+  eEC eResult;
+
   try {
     
     // trace entry
@@ -858,7 +859,8 @@ eEC RapidsSE_InsertBuffer2(Session* pSession, void* pJobPtr, i8 iTraceLevel)
   vApiLocation(pSession,100);
   
   eEC eErrorCode = EC_NONE;
-  
+  eEC eResult;
+
   try {
     
     // trace entry

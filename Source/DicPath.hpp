@@ -21,6 +21,11 @@ namespace Forth
    ~DicPath(void) noexcept(false);
     
     void vContentDump(void);
+  
+    i8 nDicNames(void);
+  
+    s256& sDicName(i8 i_Dic);
+    void vDicName(i8 i_Dic, s256& sName);
   };
 }
 
