@@ -28,7 +28,7 @@ DicPath::DicPath(void)
   
   m_nDicNames = -1;
   
-  for (i8 i_Dic = 0; i_Dic < C_DIC_STACK; i_Dic++)
+  for (i8 i_Dic = 0; i_Dic < C_DIC_PATHDEPTH; i_Dic++)
     m_sDicName[i_Dic] = ""_Stz;
   
   _checkInitialised_(CN_DICPATH);

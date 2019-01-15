@@ -5,13 +5,13 @@
 
 namespace Forth
 {
-  static const i8 C_DIC_STACK = 16;
+  static const i8 C_DIC_PATHDEPTH = 16;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class DicPath : public Object
   {
-    i8  m_nDicNames;               // number of dic names in array
-    s32 m_sDicName[C_DIC_STACK];   // array of dictionary names
+    i8  m_nDicNames;                 // number of dic names in array
+    s32 m_sDicName[C_DIC_PATHDEPTH]; // array of dictionary names
   
     // must be last
     Footer m_xFooter;

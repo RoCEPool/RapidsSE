@@ -11,7 +11,7 @@ namespace Forth
     
   private:
     i8    m_iTop;
-    Dic*  m_pDic[C_DIC_STACK];
+    Dic*  m_pDic[C_DIC_PATHDEPTH];
     
     // must be last
     Footer m_xFooter;

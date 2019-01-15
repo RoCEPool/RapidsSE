@@ -47,7 +47,7 @@ DicStack::DicStack(void)
 
   m_iTop = -1;
 
-  for (i8 i_Dic = 0; i_Dic < C_DIC_STACK; i_Dic++)
+  for (i8 i_Dic = 0; i_Dic < C_DIC_PATHDEPTH; i_Dic++)
     m_pDic[i_Dic] = nullptr;
   
   _checkInitialised_(CN_DICSTACK);
@@ -95,7 +95,7 @@ void DicStack::vDiscard(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
-  ASSERT(m_iTop <  C_DIC_STACK);
+  ASSERT(m_iTop <  C_DIC_PATHDEPTH);
   
   Dic* pDic = m_pDic[m_iTop];
 
@@ -248,7 +248,7 @@ void DicStack::vPop(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
-  ASSERT(m_iTop <  C_DIC_STACK);
+  ASSERT(m_iTop <  C_DIC_PATHDEPTH);
   
   // just pop the top
   m_pDic[m_iTop] = nullptr;
@@ -264,7 +264,7 @@ void DicStack::vPush(Dic* pDic)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= -1);
-  ASSERT(m_iTop <  C_DIC_STACK - 1);
+  ASSERT(m_iTop <  C_DIC_PATHDEPTH - 1);
   
   ASSERT(CN_DIC == pDic->eClass());
   
@@ -302,7 +302,7 @@ Dic* DicStack::pTop(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 
   ASSERT(m_iTop >= 0);
-  ASSERT(m_iTop <  C_DIC_STACK);
+  ASSERT(m_iTop <  C_DIC_PATHDEPTH);
   
   Dic* pTop = m_pDic[m_iTop];
   
