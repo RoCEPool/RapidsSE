@@ -5,7 +5,7 @@
 
 namespace Forth
 {
-  static const i8 C_DIC_PATHDEPTH = 16;
+  static const i8 C_DIC_PATHDEPTH = 8; // 8 is probably enough
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class DicPath : public Object
@@ -28,6 +28,8 @@ namespace Forth
   
     s32& sDicName(i8 i_Dic);
     void vDicName(i8 i_Dic, s32& sName);
+  
+    void vAsString(s256& sString);
   
     Footer* aFooter(void);
   };

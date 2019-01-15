@@ -88,8 +88,26 @@ void DicPath::vDicName(i8 i_Dic, s32& sName)
   
   m_sDicName[i_Dic] = sName;
   
-  if (i_Dic + 1 > m_nDicNames)
+  if (i_Dic + 1 > m_nDicNames) {
     m_nDicNames = i_Dic + 1;
+    ASSERT (m_nDicNames <= C_DIC_PATHDEPTH);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get entire path as a single string                                         */
+/*----------------------------------------------------------------------------*/
+void DicPath::vAsString(s256& sString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
+  
+  sString = ""_Stz;
+
+  for (i8 i_Name = 0; i_Name < m_nDicNames; i_Name++) {
+    if (i_Name)
+      sString.vAppend('.');
+    sString.vConcat(m_sDicName[i_Name]);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
