@@ -577,10 +577,10 @@ void Axioms::vAddConstants(void)
 
   // WT_ : word type
   /*  0 */ vAddConstant("WT_NONE"_Stz,      WT_NONE);
+  /*  0 */ vAddConstant("WT_LOCAL"_Stz,     WT_LOCAL);
   /*  0 */ vAddConstant("WT_OBJECT"_Stz,    WT_OBJECT);
   /*  0 */ vAddConstant("WT_PRIMITIVE"_Stz, WT_PRIMITIVE);
   /*  0 */ vAddConstant("WT_ROUTINE"_Stz,   WT_ROUTINE);
-  /*  0 */ vAddConstant("WT_VARIABLE"_Stz,  WT_VARIABLE);
   /*  0 */ vAddConstant("WT_ENUMS"_Stz,     WT_ENUMS);
   
   // OPEN_ : file open argument
