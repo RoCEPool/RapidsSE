@@ -24,10 +24,16 @@ void* DicPath::operator new(size_t)
 DicPath::DicPath(void)
 : Object(CN_DICPATH)
 {
-  m_iDicDepth = -1;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
+  
+  m_nDicNames = -1;
   
   for (i8 i_Depth = 0; i_Depth < C_DIC_STACK; i_Depth++)
     m_sDicPath[i_Depth] = ""_Stz;
+  
+  _checkInitialised_(CN_DICPATH);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,7 +55,7 @@ void DicPath::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
-  for (i8 i_Dic = m_iDicDepth; i_Dic >= 0; i_Dic--)
+  for (i8 i_Dic = m_nDicNames; i_Dic >= 0; i_Dic--)
     vTrace("Dic %lld %s\n"_Stz,i_Dic,m_sDicPath[i_Dic].aChar());
 }
 
@@ -60,7 +66,7 @@ i8 DicPath::nDicNames(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
-  return m_iDicDepth;
+  return m_nDicNames;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,8 +88,22 @@ void DicPath::vDicName(i8 i_Dic, s256& sName)
   
   m_sDicPath[i_Dic] = sName;
   
-  if (i_Dic + 1 > m_iDicDepth)
-    m_iDicDepth = i_Dic + 1;
+  if (i_Dic + 1 > m_nDicNames)
+    m_nDicNames = i_Dic + 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* DicPath::aFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH);
+  
+  return &m_xFooter;
 }
 
 /*============================================================================*/

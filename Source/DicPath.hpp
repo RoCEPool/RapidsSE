@@ -10,9 +10,11 @@ namespace Forth
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class DicPath : public Object
   {
-  public:
-    i8   m_iDicDepth;               // depth of dictionary path
+    i8   m_nDicNames;               // depth of dictionary path
     s256 m_sDicPath[C_DIC_STACK];   // dictionary path
+  
+    // must be last
+    Footer m_xFooter;
   
   public:
     void* operator new(size_t);
@@ -26,6 +28,8 @@ namespace Forth
   
     s256& sDicName(i8 i_Dic);
     void vDicName(i8 i_Dic, s256& sName);
+  
+    Footer* aFooter(void);
   };
 }
 

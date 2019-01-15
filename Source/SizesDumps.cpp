@@ -301,7 +301,7 @@ i8 giClassSize[]
   
   /*    */ sizeof(Decider),            // CN_DECIDER
   /* 33 */ sizeof(Dic),                // CN_DIC
-  /* 34 */ sizeof(0),                  // CN_DICSTACK
+  /* 34 */ sizeof(DicPath),            // CN_DICPATH
   /* 34 */ sizeof(DicStack),           // CN_DICSTACK
   /* 35 */ sizeof(Dir),                // CN_DIR
   

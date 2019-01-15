@@ -30,7 +30,7 @@ void Step::vDicPathDepth(MP_Task mpTask)
   DicPath* pDicPath = (DicPath*)(pPtrDicPath);
   ASSERT(CN_DICPATH == pDicPath->eClass());
   
-  i8 iDepth = pDicPath->m_iDicDepth;
+  i8 iDepth = pDicPath->nDicNames();
   
   mpTask->m_pDataStack->vPushI8(iDepth);
   
@@ -74,7 +74,7 @@ void Step::vDicPathPick(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iDic) )
     THROW_INVALID_DSTACK("dicPath.pick"_Stz);
 
-  mpTask->m_pDataStack->vPushS256(pDicPath->m_sDicPath[iDic]);
+  mpTask->m_pDataStack->vPushS256(pDicPath->sDicName(iDic));
   
   EXIT();
 }
