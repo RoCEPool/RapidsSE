@@ -161,6 +161,7 @@
 /* check there is a table folder                                              */
 /*----------------------------------------------------------------------------*/
 : checkIsTableFolder  ( "<tableName>" -- )
+
   findInCurrent not if EC_NO_SUCH_TABLE false exit then
   true
 ;
@@ -169,6 +170,7 @@
 /* find the table folder and push it onto task dictionary                     */
 /*----------------------------------------------------------------------------*/
 : pushTable ( "<tableName>" -- )
+
   find execute pathPush
   true
 ;
@@ -177,6 +179,7 @@
 /* pop the table folder                                                       */
 /*----------------------------------------------------------------------------*/
 : popTable
+
   pathDrop
 ;
 
@@ -188,10 +191,7 @@
   "indexes" find execute pathPush
   "hidden" "sizeIndex" find execute  >str
   pathDrop
-
 ;
-
-
 
 /*============================================================================*/
 /* end                                                                        */

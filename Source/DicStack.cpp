@@ -192,17 +192,20 @@ Word* DicStack::pLocateWord(Cell* aHasCell)
   
   Word* pWord;
   
-  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
-    for (pWord = m_pDic[i_Dic]->pLastWord(); pWord; pWord = pWord->pPrevWord())
+  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--) {
+    
+    Dic* pDic = m_pDic[i_Dic];
+    
+    for (pWord = pDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
       if (pWord->bHasCell(aHasCell))
         return pWord;
+  }
   
   for (pWord = gpAttachMap->m_oRootDic.pLastWord(); pWord; pWord = pWord->pPrevWord())
     if (pWord->bHasCell(aHasCell))
       return pWord;
   
   return nullptr;
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,15 +217,21 @@ Word* DicStack::pLocateWord(StepFp fpHasStep)
   
   Word* pWord;
   
-  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
-    for (pWord = m_pDic[i_Dic]->pLastWord(); pWord; pWord = pWord->pPrevWord())
-      if (WT_PRIMITIVE == pWord->eWordType() && fpHasStep == pWord->fpEntryStep())
+  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--) {
+    
+    Dic* pDic = m_pDic[i_Dic];
+    
+    for (pWord = pDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
+      if (WT_PRIMITIVE == pWord->eWordType() &&
+          fpHasStep == pWord->fpEntryStep())
         return pWord;
+  }
   
   for (pWord = gpAttachMap->m_oRootDic.pLastWord();
        pWord;
        pWord = pWord->pPrevWord())
-    if (WT_PRIMITIVE == pWord->eWordType() && fpHasStep == pWord->fpEntryStep())
+    if (WT_PRIMITIVE == pWord->eWordType() &&
+        fpHasStep == pWord->fpEntryStep())
       return pWord;
   
   return nullptr;
@@ -284,9 +293,13 @@ Word* DicStack::pRemoveWord(s32& sName)
   
   Word* pRemovedWord = nullptr;
   
-  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--)
-    if ( (pRemovedWord = m_pDic[i_Dic]->pRemoveWord(sName)) )
+  for (i8 i_Dic = m_iTop; i_Dic >= 0; i_Dic--) {
+    
+    Dic* pDic = m_pDic[i_Dic];
+    
+    if ( (pRemovedWord = pDic->pRemoveWord(sName)) )
       return pRemovedWord;
+  }
   
   if ( (pRemovedWord = gpAttachMap->m_oRootDic.pRemoveWord(sName)) )
     return pRemovedWord;
