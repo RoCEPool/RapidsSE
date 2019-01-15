@@ -82,7 +82,7 @@ namespace Tasks
     Stack*   m_pDataStack;   // data stack
     Stack*   m_pReturnStack; // return stack
     Stack*   m_pAuxStack;    // auxiliary stack
-    DicStack m_oPathStack;   // dictionary stack
+    DicStack m_oDicStack;    // dictionary stack
     
     LocalSet* m_pLocalsFrame; // local register frame chain
 

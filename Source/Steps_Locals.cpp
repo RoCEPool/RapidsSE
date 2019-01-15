@@ -72,7 +72,7 @@ ENTRY("vLocalsBar"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  Dic* pDic = mpTask->m_oPathStack.pPick(0);
+  Dic* pDic = mpTask->m_oDicStack.pPick(0);
 
   GenVar xVariable;
   
@@ -91,7 +91,7 @@ ENTRY("vLocalsBar"_Stz);
       // create a locals dictionary
       pDic = new Dic;
       pDic->vName("<localsDic>"_Stz);
-      mpTask->m_oPathStack.vPush(pDic);
+      mpTask->m_oDicStack.vPush(pDic);
       
       // enocde locals frame push
       pCurrentWord->vEncode("locals.push"_Stz);
@@ -173,7 +173,7 @@ ENTRY("vLocalsTo"_Stz);
   s32 sLocalName(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
   // find the word describing the local
-  Word* pLocalWord = mpTask->m_oPathStack.pFindWord(sLocalName);
+  Word* pLocalWord = mpTask->m_oDicStack.pFindWord(sLocalName);
   ASSERT(pLocalWord);
  
   GenVar xVar_LocalNo;
