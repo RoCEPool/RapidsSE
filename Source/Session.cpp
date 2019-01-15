@@ -80,7 +80,7 @@ Session::Session(i8 iPartition)
 
   m_iPartition  = iPartition;
   
-  //m_xPathStack;
+  //m_oDicStack;
   m_sResponse       = ""_Stz;
   m_pJob            = nullptr;
   m_pTx             = nullptr;
@@ -187,11 +187,11 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  //m_xPathStack.vContentDump();
+  //m_oDicStack.vContentDump();
   
   // first discard whatever is there on the DicStack
-  for (i8 iCount = m_xPathStack.iCount(); iCount; iCount--)
-    m_xPathStack.vDiscard();
+  for (i8 iCount = m_oDicStack.iCount(); iCount; iCount--)
+    m_oDicStack.vDiscard();
   
   // set up initial default path
   
@@ -200,54 +200,54 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   Word* pTenants = gpAttachMap->m_pTenants;
   ASSERT(pTenants);
   Cell* aCell = pTenants->aFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
+  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
 
   // /tenants/boray
-  Word* pTenant = m_xPathStack.pFindInCurrent("boray"_Stz);
+  Word* pTenant = m_oDicStack.pFindInCurrent("boray"_Stz);
   ASSERT(pTenant);
   aCell = pTenant->aFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
+  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   // /tenants/boray/catalogs
-  Word* pCatalogs = m_xPathStack.pFindInCurrent("catalogs"_Stz);
+  Word* pCatalogs = m_oDicStack.pFindInCurrent("catalogs"_Stz);
   ASSERT(pCatalogs);
   aCell = pCatalogs->aFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
+  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
 
   if ( ! pCatalogName)
     return EC_NONE;
   
   // /tenants/boray/catalogs/rapidsse
-  Word* pCatalog = m_xPathStack.pFindInCurrent(pCatalogName);
+  Word* pCatalog = m_oDicStack.pFindInCurrent(pCatalogName);
   if ( ! pCatalog)
     return EC_NO_SUCH_CATALOG;
   
   aCell = pCatalog->aFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
+  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   // /tenants/boray/catalogs/rapidsse/schemas
-  Word* pSchemas = m_xPathStack.pFindInCurrent("schemas"_Stz);
+  Word* pSchemas = m_oDicStack.pFindInCurrent("schemas"_Stz);
   ASSERT(pSchemas);
   aCell = pSchemas->aFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
+  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   if ( ! pSchemaName )
     return EC_NONE;
   
   // /tenants/boray/catalogs/rapidsse/schemas/public
-  Word* pSchema = m_xPathStack.pFindInCurrent(pSchemaName);
+  Word* pSchema = m_oDicStack.pFindInCurrent(pSchemaName);
   if ( ! pSchema)
     return EC_NO_SUCH_SCHEMA;
   
   aCell = pSchema->aFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
+  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
 
   // /tenants/boray/catalogs/rapidsse/schemas/public/tables
-  Word* pTables = m_xPathStack.pFindInCurrent("tables"_Stz);
+  Word* pTables = m_oDicStack.pFindInCurrent("tables"_Stz);
   ASSERT(pTables);
   
   aCell = pTables->aFirstCell();
-  m_xPathStack.vPush(reinterpret_cast<Dic*>(aCell));
+  m_oDicStack.vPush(reinterpret_cast<Dic*>(aCell));
   
   return EC_NONE;
 }
@@ -269,7 +269,7 @@ DicStack* Session::pPathStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  return &m_xPathStack;
+  return &m_oDicStack;
 }
 
 /*----------------------------------------------------------------------------*/

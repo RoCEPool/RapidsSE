@@ -14,7 +14,7 @@ namespace Interface
   public:
     i8       m_iPid;             // process which created this session
     i8       m_iPartition;       // which partition this session connects to
-    DicStack m_xPathStack;       // dictionary stack
+    DicStack m_oDicStack;        // dictionary stack
     Job*     m_pJob;             // job session currently executing
     s48K     m_sResponse;        // response
     Tx*      m_pTx;              // current transaction
