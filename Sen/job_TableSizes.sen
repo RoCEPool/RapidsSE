@@ -62,7 +62,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_TableSizes job.pushPath
-  dicStack.set
+  task::dicStack.set
 
   //"hidden" find execute to pIndex
   //pIndex index.space 0 swap number.magnitude to iSize
@@ -140,7 +140,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_TableSizes job.pushPath
-  dicStack.set
+  task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // should be in the tables folder

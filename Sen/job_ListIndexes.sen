@@ -76,7 +76,7 @@
   //----------------------------------------------------------------------------
   // set dictionary stack
   pJob_ListIndexes job.pushPath
-  dicStack.set
+  task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab ddl read lock

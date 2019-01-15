@@ -33,7 +33,7 @@
   pJob_WriteRow job.objectName@ to sTableNm
 
   // push table dictionary
-  pJob_WriteRow job.pushPath dicStack.set
+  pJob_WriteRow job.pushPath task::dicStack.set
   sTableNm pushTable assert
   //pathDump
 

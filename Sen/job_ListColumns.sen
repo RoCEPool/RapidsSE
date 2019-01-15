@@ -71,7 +71,7 @@
   //----------------------------------------------------------------------------
   // set dictionary stack
   pJob_ListColumns job.pushPath
-  dicStack.set
+  task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab ddl read lock

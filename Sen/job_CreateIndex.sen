@@ -196,7 +196,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
   pJob_CreateIndex job.pushPath
-  dicStack.set
+  task::dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // make the index
@@ -233,7 +233,7 @@
   //----------------------------------------------------------------------------
   // set dictionary stack
   pJob_CreateIndex job.pushPath
-  dicStack.set
+  task::dicStack.set
 
   //----------------------------------------------------------------------------
   // check if we have enough buffers

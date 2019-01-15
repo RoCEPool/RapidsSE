@@ -57,7 +57,7 @@
   // initialise
 
   // set path
-  pJob_LoadTable job.pushPath dicStack.set
+  pJob_LoadTable job.pushPath task::dicStack.set
 
   // set table dictionary
   pJob_LoadTable job.objectName@ to sTableNm
@@ -177,7 +177,7 @@
   // path checks
 
   // set dictionary stack
-  pJob_LoadTable job.pushPath dicStack.set
+  pJob_LoadTable job.pushPath task::dicStack.set
   //pathDump
 
   // there should be a table folder

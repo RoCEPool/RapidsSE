@@ -34,7 +34,7 @@
 "CF A" .
   pJob_Cf job.pushPath
 "CF B" .
-  dicStack.set
+  task::dicStack.set
 "CF C" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -204,7 +204,7 @@
 /*----------------------------------------------------------------------------*/
 /* clear task dictionary stack                                                */
 /*----------------------------------------------------------------------------*/
-: dicStack.clear
+: task::dicStack.clear
 
   pathDepth 0 ?do
     pathDrop
@@ -226,20 +226,20 @@
 /*----------------------------------------------------------------------------*/
 /* set task dictionary stack                                                  */
 /*----------------------------------------------------------------------------*/
-: dicStack.set ( ... #dics -- )
+: task::dicStack.set ( ... #dics -- )
 
   // this word puts the folder path on the stack into task dictionary stack
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
-  tp: dicStack.set
+  tp: task::dicStack.set
 
-  dicStack.clear
+  task::dicStack.clear
 
   dup not if drop exit then
 
   0 do
 
-    dup "dicStack.set %v" fmt.print
+    dup "task::dicStack.set %v" fmt.print
 
     dup "<root>" str.equal if
       drop
