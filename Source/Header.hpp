@@ -20,11 +20,11 @@ namespace CorrectnessAlgebra
   
   public:
     Header(eCN eClass);
-  
-    bool  bValidMagic(void);
-  
-    Stz* aClass(void);
-  
+   ~Header(void) noexcept(false);
+
+    void vAssertHeader(void);
+    bool bValidMagic(void);
+    
   /*--------------------------------------------------------------------------*/
   /* get class                                                                */
   /*--------------------------------------------------------------------------*/

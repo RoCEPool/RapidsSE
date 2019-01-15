@@ -34,6 +34,11 @@ GenVar::GenVar(void)
 {
   _precondition_(_MAGIC_,CN_GENVAR);                    //! need to add _FOOTER_
   
+  Value* aNestedValue = this->aNestedValue();
+  
+  aNestedValue->vSetMagic();
+  aNestedValue->vSetClass(CN_NONE);
+  
   _postcondition_(_MAGIC_,CN_GENVAR);
 }
 

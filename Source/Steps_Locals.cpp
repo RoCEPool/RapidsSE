@@ -167,17 +167,19 @@ ENTRY("vLocalsTo"_Stz);
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  // get name of local
+  // get name of local from token stream
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();
 
-  Word* pWordVariable =
-    mpTask->m_oPathStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
-  ASSERT(pWordVariable);
- 
-  GenVar xVariable;
-  xVariable = pWordVariable->iVariable();
+  s32 sLocalName(mpTask->m_pCompiler->m_pTokeniser->sToken());
   
-  pCurrentWord->vEncode("pushValue"_Stz,&xVariable);
+  // find the word describing the local
+  Word* pLocalWord = mpTask->m_oPathStack.pFindWord(sLocalName);
+  ASSERT(pLocalWord);
+ 
+  GenVar xVar_LocalNo;
+  xVar_LocalNo = pLocalWord->iVariable();
+  
+  pCurrentWord->vEncode("pushValue"_Stz,&xVar_LocalNo);
   pCurrentWord->vEncode("local.store"_Stz);
 
   EXIT();

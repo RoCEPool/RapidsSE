@@ -185,7 +185,7 @@ void Step::vDstackDump(MP_Task mpTask)
   
   s48K sString;
   xVariable.vToString(sString);
-  Stz* aClass = xVariable.aClass();
+  Stz* aClass = aCN[xVariable.eClass()];
   
   eCN eClass = xVariable.eClass();
   

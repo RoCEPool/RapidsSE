@@ -428,10 +428,14 @@ bool Stack::bPop(i8& iArg)
     return false;
   
   IntVal xIntVal;
+  
+  xIntVal.vAssertHeader();
   vPopVal(&xIntVal);
-  
+  xIntVal.vAssertHeader();
+
   iArg = xIntVal.iInt();
-  
+  xIntVal.vAssertHeader();
+
   return true;
 }
 

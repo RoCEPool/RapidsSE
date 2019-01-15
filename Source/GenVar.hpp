@@ -17,7 +17,7 @@ namespace Forth
       i8      m_iInt;      // value contents as iInt
       Object* m_pObj;      // value contents as pPtr
       Value*  m_aVal;      // value contents as pPtr
-    };
+    } ;
   };
   
   class GenVar : public Object
@@ -26,15 +26,18 @@ namespace Forth
   
   private:
     union {
-      Wsp_t<C_WSP_GENVAR> m_xWsp;         // workspace
-      ValSee m_xNestedValue; // inspector
-    };
+      
+      Wsp_t<C_WSP_GENVAR> m_xWsp; // workspace
+      
+      ValSee m_xNestedValue;      // inspector
+    } ;
   
     // must be last
     Footer m_xFooter;
     
     public:
     void* operator new(size_t);
+  
     GenVar(void);
     ~GenVar(void) noexcept(false);
   
