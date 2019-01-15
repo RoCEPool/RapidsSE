@@ -61,7 +61,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pJob_TableSizes getPath
+  pJob_TableSizes job.pushPath
   dicStack.set
 
   //"hidden" find execute to pIndex
@@ -139,7 +139,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pJob_TableSizes getPath
+  pJob_TableSizes job.pushPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

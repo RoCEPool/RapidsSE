@@ -76,7 +76,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack from purge (sub has no session)
-  pTask_Purge task.job@ getPath
+  pTask_Purge task.job@ job.pushPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

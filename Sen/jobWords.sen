@@ -12,9 +12,9 @@
 5 constant SEED_CAN
 
 /*----------------------------------------------------------------------------*/
-/* copy dictionary path from job to datastack                                 */
+/* push dictionary path from job onto datastack                               */
 /*----------------------------------------------------------------------------*/
-: getPath ( pJob -- )
+: job.pushPath ( pJob -- )
 
   0 locals| pDicPathJob pJob |
 

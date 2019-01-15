@@ -195,7 +195,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
-  pJob_CreateIndex getPath
+  pJob_CreateIndex job.pushPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -232,7 +232,7 @@
 
   //----------------------------------------------------------------------------
   // set dictionary stack
-  pJob_CreateIndex getPath
+  pJob_CreateIndex job.pushPath
   dicStack.set
 
   //----------------------------------------------------------------------------

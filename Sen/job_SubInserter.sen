@@ -29,7 +29,7 @@
   pJob_SubInserter job.objectName@ to sTableNm
 
   // push table dictionary
-  pJob_SubInserter getPath dicStack.set
+  pJob_SubInserter job.pushPath dicStack.set
   sTableNm pushTable assert
   //pathDump
 
@@ -65,7 +65,7 @@
   // path checks
 
   // set dictionary stack
-  pJob_SubInserter getPath dicStack.set
+  pJob_SubInserter job.pushPath dicStack.set
   //pathDump
 
   // there should be a table folder

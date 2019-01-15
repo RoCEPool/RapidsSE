@@ -70,7 +70,7 @@
 
   //----------------------------------------------------------------------------
   // set dictionary stack
-  pJob_ListColumns getPath
+  pJob_ListColumns job.pushPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

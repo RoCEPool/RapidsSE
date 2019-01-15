@@ -69,7 +69,7 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack from publish (sub has no session)
-  pTask_Publish task.job@ getPath
+  pTask_Publish task.job@ job.pushPath
   dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -32,7 +32,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set dictionary stack
 "CF A" .
-  pJob_Cf getPath
+  pJob_Cf job.pushPath
 "CF B" .
   dicStack.set
 "CF C" .

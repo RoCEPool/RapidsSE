@@ -28,7 +28,7 @@
   pJob_InsertRow job.objectName@ locals| sTableNm |
 
   // push table dictionary
-  pJob_InsertRow getPath dicStack.set
+  pJob_InsertRow job.pushPath dicStack.set
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // grab a ddl lock
@@ -38,7 +38,7 @@
   // path checks
 
   // set dictionary stack
-  pJob_InsertRow getPath dicStack.set
+  pJob_InsertRow job.pushPath dicStack.set
 
   // there should be a table folder
   sTableNm checkIsTableFolder not if pJob_InsertRow <ERROR_JOB> !!am <DONE_REQ> then
@@ -131,7 +131,7 @@
   // path checks
 
   // set dictionary stack
-  pJob_InsertRow getPath dicStack.set
+  pJob_InsertRow job.pushPath dicStack.set
   //pathDump
 
   // there should be a table folder
