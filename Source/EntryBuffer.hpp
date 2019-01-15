@@ -21,6 +21,7 @@ namespace DBobjects
 
   protected:
   
+    Lock  m_oLock;       // lock
     bool  m_bIsLast;     // is this the last buffer in sequence
   
     EntryBuffer* m_pHigherBuffer; // higher level buffer that has entries
@@ -66,6 +67,8 @@ namespace DBobjects
     i8           iAgeInSeconds(void);
     void         vBufferLevel(i8 iBufferLevel);
     i8           iBufferLevel(void);
+    void         vDropWrite(void);
+    void         vGrabWrite(void);
     EntryBuffer* pHigherBuffer(void);
     void         vHigherBuffer(EntryBuffer* pHigherLevel);
     void         vIndex(Index* pIndex);

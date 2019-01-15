@@ -68,6 +68,8 @@ EntryBuffer::EntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
+  m_oLock.vInitLock(LK_ENTRYBUFFER_STATE);
+  
   m_bIsLast       = false;
   
   m_pHigherBuffer = nullptr;
@@ -191,6 +193,26 @@ void EntryBuffer::vBufferLevel(i8 iBufferLevel)
 i8 EntryBuffer::iBufferLevel(void)
 {
   return m_iBufferLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vDropWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  
+  m_oLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vGrabWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  
+  m_oLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
