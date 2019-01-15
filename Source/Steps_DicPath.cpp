@@ -74,7 +74,7 @@ void Step::vDicPathPick(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iDic) )
     THROW_INVALID_DSTACK("dicPath.pick"_Stz);
 
-  mpTask->m_pDataStack->vPushS256(pDicPath->sDicName(iDic));
+  mpTask->m_pDataStack->vPushS32(pDicPath->sDicName(iDic));
   
   EXIT();
 }

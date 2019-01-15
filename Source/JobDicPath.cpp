@@ -34,13 +34,13 @@ JobDicPath::JobDicPath(Interface::Session* pSession)
 {
   m_pSession = pSession;
   
-  s256 sDicPath;
+  s32 sDicName;
   
   if (pSession) {
     i8 nDicNames = pSession->m_xPathStack.iCount();
     for (i8 i_Dic = 0; i_Dic < nDicNames; i_Dic++) {
-      sDicPath = pSession->m_xPathStack.pPick(i_Dic)->sName();
-      m_xDicPath.vDicName(i_Dic,sDicPath);
+      sDicName = pSession->m_xPathStack.pPick(i_Dic)->sName();
+      m_xDicPath.vDicName(i_Dic,sDicName);
     }
   }
 

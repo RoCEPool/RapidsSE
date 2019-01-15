@@ -28,8 +28,8 @@ DicPath::DicPath(void)
   
   m_nDicNames = -1;
   
-  for (i8 i_Depth = 0; i_Depth < C_DIC_STACK; i_Depth++)
-    m_sDicPath[i_Depth] = ""_Stz;
+  for (i8 i_Dic = 0; i_Dic < C_DIC_STACK; i_Dic++)
+    m_sDicName[i_Dic] = ""_Stz;
   
   _checkInitialised_(CN_DICPATH);
 
@@ -56,7 +56,7 @@ void DicPath::vContentDump(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
   for (i8 i_Dic = m_nDicNames; i_Dic >= 0; i_Dic--)
-    vTrace("Dic %lld %s\n"_Stz,i_Dic,m_sDicPath[i_Dic].aChar());
+    vTrace("Dic %lld %s\n"_Stz,i_Dic,m_sDicName[i_Dic].aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,21 +72,21 @@ i8 DicPath::nDicNames(void)
 /*----------------------------------------------------------------------------*/
 /* get name of given dictionary                                               */
 /*----------------------------------------------------------------------------*/
-s256& DicPath::sDicName(i8 i_Dic)
+s32& DicPath::sDicName(i8 i_Dic)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
-  return m_sDicPath[i_Dic];
+  return m_sDicName[i_Dic];
 }
 
 /*----------------------------------------------------------------------------*/
 /* set name of given dictionary                                               */
 /*----------------------------------------------------------------------------*/
-void DicPath::vDicName(i8 i_Dic, s256& sName)
+void DicPath::vDicName(i8 i_Dic, s32& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
-  m_sDicPath[i_Dic] = sName;
+  m_sDicName[i_Dic] = sName;
   
   if (i_Dic + 1 > m_nDicNames)
     m_nDicNames = i_Dic + 1;
