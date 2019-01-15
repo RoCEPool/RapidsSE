@@ -63,7 +63,7 @@
 /* check within indexes folder                                                */
 /*----------------------------------------------------------------------------*/
 : withinIndexes
-  pathDepth 1 - pathPick dic.name "indexes" str.equal
+  pathCurrentFolder dic.name "indexes" str.equal
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -100,19 +100,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* set dictionary path                                                        */
+/* getcurrent folder                                                          */
 /*----------------------------------------------------------------------------*/
-: pathSet ( ... "<subFolder>" nFolders -- )
+: pathCurrentFolder ( -- )
 
-  //dicPath.set
+  // push the dic stack of this task
+  task::this task.dicStack
+
+  dicStack.depth 1 - pathPick
 ;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* list all words in the current dictionary                                   */
 /*----------------------------------------------------------------------------*/
 : words
 
-  pathDepth 1 - pathPick dic.lastWord dup
+  pathCurrentFolder dic.lastWord dup
   iterate                        // iterate word cursor
     object@ word.name .          // print the name of the word
     object@ word.prev object!    // advance cursor backwards thru words
@@ -124,7 +131,7 @@
 /*----------------------------------------------------------------------------*/
 : symbols
 
-  pathDepth 1 - pathPick dic.lastWord
+  pathCurrentFolder dic.lastWord
   begin dup while
     dup word.name .put " " .put dup word.kind@ word.name .put .\n
     word.prev
@@ -148,7 +155,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the row for each word
   ""                               // initial contents string
-  pathDepth 1 - pathPick dic.lastWord dup
+  pathCurrentFolder dic.lastWord dup
   iterate                          // setup iteration of words
     1 iCount + to iCount
     "row: ('" str.cat

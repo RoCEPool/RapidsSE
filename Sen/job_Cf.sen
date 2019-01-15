@@ -43,7 +43,7 @@
   // pop up one folder, but not into tenants
   sFolderNm ".." str.equal if
 "CF D" .
-    pathDepth 1 - pathPick dic.name "tenants" str.equal not if pathDrop then
+    pathCurrentFolder dic.name "tenants" str.equal not if pathDrop then
 "CF E" .
     savePath
 "CF F" .
@@ -56,7 +56,7 @@
 
   // pop up to tenants
   sFolderNm "~" str.equal if
-    begin pathDepth 1 - pathPick dic.name "tenants" str.equal not while pathDrop repeat
+    begin pathCurrentFolder dic.name "tenants" str.equal not while pathDrop repeat
     savePath
     <<am <DONE_REQ>
     exit

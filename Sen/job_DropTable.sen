@@ -56,7 +56,7 @@
 
   //----------------------------------------------------------------------------
   // iterate thru all indexes and tidyUp
-  pathDepth 1 - pathPick dic.lastWord dup
+  pathCurrentFolder dic.lastWord dup
   iterate                        // setup iteration of words
 
     object@ word.name to sIndexNm

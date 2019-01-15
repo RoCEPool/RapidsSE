@@ -16,7 +16,7 @@
 ;
 
 : withinSchemas
-    pathDepth 1 - pathPick dic.name "schemas" str.equal
+    pathCurrentFolder dic.name "schemas" str.equal
 ;
 
 : checkInSchemas
