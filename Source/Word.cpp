@@ -80,7 +80,7 @@ Word::Word(Stz* sName)
   m_bImmediate    = false;
   m_iParams       = 0;
   m_pPrevWord     = nullptr;
-  m_iVariable     = 0;
+  m_iLocalNo      = 0;
 
   m_xRoutine.vZero(CN_WORD);
   
@@ -528,6 +528,26 @@ Cell* Word::aLastCell(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get local  number                                                          */
+/*----------------------------------------------------------------------------*/
+i8 Word::iLocalNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_iLocalNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set local number                                                           */
+/*----------------------------------------------------------------------------*/
+void Word::vLocalNo(i8 iLocalNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_iLocalNo = iLocalNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
 s32& Word::sName(void)
@@ -595,26 +615,6 @@ void Word::vPrevWord(Word* pPrevWord)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_pPrevWord = pPrevWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get variable number                                                        */
-/*----------------------------------------------------------------------------*/
-i8 Word::iVariable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_iVariable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set variable number                                                        */
-/*----------------------------------------------------------------------------*/
-void Word::vVariable(i8 iVariable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_iVariable = iVariable;
 }
 
 /*----------------------------------------------------------------------------*/

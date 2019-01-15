@@ -751,7 +751,7 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     VALIDATE_SESSION("a"_Stz);
     
     // validate parameter
-    VALIDATE_PARAM("b"_Stz, pRecordBufferPtr);
+    VALIDATE_PARAM("b"_Stz, pJobPtr);
     
     // validate the job
     VALIDATE_JOB("b"_Stz);

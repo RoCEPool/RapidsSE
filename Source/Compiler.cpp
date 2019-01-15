@@ -35,7 +35,7 @@ Compiler::Compiler(void)
   m_bCompiling   = false;
   m_pCurrentWord = nullptr;
   m_nSubDic      = 0;
-  m_nVariables   = 0;
+  m_nLocals      = 0;
 
   m_pRetryIP     = nullptr;
   m_pBeginIP     = nullptr;

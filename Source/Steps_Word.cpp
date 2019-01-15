@@ -593,10 +593,10 @@ void Step::vSemicolon(MP_Task mpTask)
   
   Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;
   
-  if (mpTask->m_pCompiler->m_nVariables) {
+  if (mpTask->m_pCompiler->m_nLocals) {
     
     // reset the number of local variables
-    mpTask->m_pCompiler->m_nVariables = 0;
+    mpTask->m_pCompiler->m_nLocals = 0;
     
     // pop top dictionary
     mpTask->m_oPathStack.vDiscard();
