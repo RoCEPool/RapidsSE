@@ -22,7 +22,7 @@
   // get the job from the task
   pThisTask task.job@ to pJob_CopyBuffer
 
-  //pJob_CopyBuffer Job_CopyBuffer.copyBuffer
+  pJob_CopyBuffer Job_CopyBuffer.copy
 
   <<am <DONE_REQ>
 ;

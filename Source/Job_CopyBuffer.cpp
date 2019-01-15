@@ -23,7 +23,7 @@ JobClass xJobClass_CopyBuffer =
   nullptr,                  // the _exe task seed
   nullptr,                  // the _end task seed
   nullptr,                  // the _can task seed
-  true,                     // check resources?
+  false,                    // check resources?
   false,                    // detached job?
   false,                    // buffer attached?
   JT_NONE,                  // job trace
@@ -107,6 +107,7 @@ Job_CopyBuffer::Job_CopyBuffer(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COPYBUFFER,_FOOTER_);
   
+  m_pJob_SubInserter = nullptr;
   m_pRecordBuffer = nullptr;
   
   _checkInitialised_(CN_JOB_COPYBUFFER);
@@ -150,6 +151,40 @@ void Job_CopyBuffer::vCopy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COPYBUFFER,_FOOTER_);
   
+  // for each record in the record buffer
+  char* aRecord = nullptr;
+  
+  for (aRecord = m_pRecordBuffer->aFirstRecord();
+       aRecord;
+       aRecord = m_pRecordBuffer->aNextRecord(aRecord)) {
+    
+    // get the length of the record
+    u4 uRecordLength = *((u4*)aRecord);
+    
+    // check length of record
+    if (uRecordLength > C_MAX_RECORD) {
+      //eErrorCode = EC_MAX_ROW_LENGTH;
+      //return eErrorCode;
+      RASSERT(0);
+    }
+    
+    // format the row
+    bool bBlankLine;
+    Stz* aData = aAdd<Stz*>(aRecord, 4);
+    //vTrace("Inserting row %lld %s\n"_Stz, uRecordLength, aData);
+    bool bValid = m_pJob_SubInserter->bFormatRow(aData, uRecordLength, bBlankLine);
+    
+    // is the record invalid ?
+    if (! bValid) {
+      RASSERT(0);
+      //eErrorCode = EC_INVALID_VALUE;
+      //return eErrorCode;
+    }
+    
+    // insert row into a working buffer in job InsertRow
+    eEC eErrorCode = m_pJob_SubInserter->eInsertRow();
+    RASSERT(eErrorCode == EC_NONE);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

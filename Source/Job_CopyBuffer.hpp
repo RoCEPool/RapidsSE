@@ -5,11 +5,13 @@
 
 namespace JobModel
 {
+  class Job_SubInserter;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_CopyBuffer : public Job
   {
   public:
+    Job_SubInserter* m_pJob_SubInserter;
     RecordBuffer*    m_pRecordBuffer;
     
     // must be last
@@ -27,7 +29,6 @@ namespace JobModel
 
   public:
     void vCopy(void);
-
     void vShow(void);
     
   public:
