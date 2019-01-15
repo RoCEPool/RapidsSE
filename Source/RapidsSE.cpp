@@ -602,7 +602,7 @@ void RapidsSE::vStartSystem(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* System Init\n*\n"_Stz);
   
-  ASSERT( ! gpAttachMap->m_xMainDic.bHasWords() );
+  ASSERT( ! gpAttachMap->m_oRootDic.bHasWords() );
     
   gpAttachMap->m_pQueues = new Queues;
     
@@ -654,7 +654,7 @@ void RapidsSE::vStartSystem(void)
                               gxArguments.m_nSubLoaders);
   
   // get the trace file
-  //Word* pTraceFileWord = gpAttachMap->m_xMainDic.pFindWord("trace_file"_Stz);
+  //Word* pTraceFileWord = gpAttachMap->m_oRootDic.pFindWord("trace_file"_Stz);
   //gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
   
   //if (gpAttachMap->m_bVerbose)

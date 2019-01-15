@@ -105,7 +105,7 @@ void Step::vColon(MP_Task mpTask)
   if (mpTask->m_oDicStack.iCount())
     pDic = mpTask->m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_xMainDic;
+    pDic = &gpAttachMap->m_oRootDic;
   
   //vTrace(": %s\n"_Stz,sName.aChar());
   
@@ -171,7 +171,7 @@ ENTRY("vCreate"_Stz);
   if (mpTask->m_oDicStack.iCount())
     pDic = mpTask->m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_xMainDic;
+    pDic = &gpAttachMap->m_oRootDic;
   
   //vTrace(": %s\n"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
 
@@ -195,7 +195,7 @@ void Step::vCreatePersistent(MP_Task mpTask)
   if (mpTask->m_oDicStack.iCount())
     pDic = mpTask->m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_xMainDic;
+    pDic = &gpAttachMap->m_oRootDic;
   
   //vTrace(": %s\n"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
   
@@ -221,7 +221,7 @@ ENTRY("vCreateFrom"_Stz);
   if (mpTask->m_oDicStack.iCount())
     pDic = mpTask->m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_xMainDic;
+    pDic = &gpAttachMap->m_oRootDic;
   
   //vTrace(": %s\n"_Stz,sName.aChar());
   Word* pNewWord = new(pDic) Word(sName);
@@ -249,7 +249,7 @@ void Step::vCreateFromPersistent(MP_Task mpTask)
   if (mpTask->m_oDicStack.iCount())
     pDic = mpTask->m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_xMainDic;
+    pDic = &gpAttachMap->m_oRootDic;
   
   //vTrace(": %s\n"_Stz,sName.aChar());
   Word* pNewWord = new(pDic,true) Word(sName);
@@ -270,7 +270,7 @@ void Step::vCreateFromInMain(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK(">create"_Stz);
   
-  Dic* pDic = &gpAttachMap->m_xMainDic;
+  Dic* pDic = &gpAttachMap->m_oRootDic;
   
   //vTrace(": %s\n"_Stz,sName.aChar());
   Word* pNewWord = new(pDic) Word(sName);
@@ -293,7 +293,7 @@ void Step::vCreateTenants(MP_Task mpTask)
 //  if (mpTask->m_oDicStack.iCount())
 //    pDic = mpTask->m_oDicStack.pTop();
 //  else
-//    pDic = &gpAttachMap->m_xMainDic;
+//    pDic = &gpAttachMap->m_oRootDic;
   
   //vTrace(": %s\n"_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
   

@@ -196,7 +196,7 @@ eEC Session::eInit(Stz* pCatalogName, Stz* pSchemaName)
   // set up initial default path
   
   // /tenants
-  //Word* pTenants = gpAttachMap->m_xMainDic.pFindWord("tenants"_Stz);
+  //Word* pTenants = gpAttachMap->m_oRootDic.pFindWord("tenants"_Stz);
   Word* pTenants = gpAttachMap->m_pTenants;
   ASSERT(pTenants);
   Cell* aCell = pTenants->aFirstCell();

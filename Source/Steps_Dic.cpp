@@ -158,7 +158,7 @@ void Step::vDicMain(MP_Task mpTask)
 {
 ENTRY("vDicMain"_Stz);
   
-  mpTask->m_pDataStack->vPushPointer(&gpAttachMap->m_xMainDic);
+  mpTask->m_pDataStack->vPushPointer(&gpAttachMap->m_oRootDic);
   
   EXIT();
 }

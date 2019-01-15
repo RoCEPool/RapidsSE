@@ -598,7 +598,7 @@ void Task::vSeedJob(void)
   
   Stz* sSeed = m_pJob->sJobSeed();
   
-  Word* pWord = gpAttachMap->m_xMainDic.pFindWord(sSeed);
+  Word* pWord = gpAttachMap->m_oRootDic.pFindWord(sSeed);
   
   FIP.m_aCell = pWord->aFirstCell();
 }

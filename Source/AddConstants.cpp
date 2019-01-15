@@ -12,7 +12,7 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 void Axioms::vAddConstant(Stz* aName, i8 iVal)
 {
-  Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
+  Word* pNewWord = new(&gpAttachMap->m_oRootDic) Word(aName);
   
   IntVal xIntVal;
   xIntVal = iVal;
@@ -26,7 +26,7 @@ void Axioms::vAddConstant(Stz* aName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 void Axioms::vAddConstant(Stz* aName, Stz* aValue)
 {
-  Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
+  Word* pNewWord = new(&gpAttachMap->m_oRootDic) Word(aName);
   
   GenVar xWspStr;
   xWspStr = aValue;

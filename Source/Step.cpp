@@ -15,7 +15,7 @@ void Step::vAddStep(Stz* aName, StepFp fpStep, bool bImmediate)
 {
   RASSERT(aName->nSize() <= 32);
   
-  Word* pNewWord = new(&gpAttachMap->m_xMainDic) Word(aName);
+  Word* pNewWord = new(&gpAttachMap->m_oRootDic) Word(aName);
   
   //m_pCompiler->m_pCurrentWord = pNewWord;
   
@@ -33,7 +33,7 @@ void Step::vAddSteps(void)
     vTrace("[[mainThread]] Adding primitives...\n"_Stz);
   
   vAddStep("word"_Stz,            &Step::vWord);
-  gpAttachMap->m_pWord = gpAttachMap->m_xMainDic.pFindWord("word"_Stz);
+  gpAttachMap->m_pWord = gpAttachMap->m_oRootDic.pFindWord("word"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

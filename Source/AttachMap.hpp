@@ -46,7 +46,7 @@ namespace StorageEngine
   
     HeapMem       m_xHeapMem;
   
-    Dic           m_xMainDic;
+    Dic           m_oRootDic;   // the root dictionary
     TxSet*        m_pTxSet;
     Grid*         m_pGrid;
     ApiState*     m_pApiState;

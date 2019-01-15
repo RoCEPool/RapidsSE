@@ -5,7 +5,7 @@
 
 namespace Forth
 {
-  static const i8 C_DIC_PATHDEPTH = 8; // 8 is probably enough
+  static const i8 C_DIC_PATHDEPTH = 16;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class DicPath : public Object

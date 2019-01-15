@@ -241,7 +241,7 @@ Word* Task::pCompileColon(s48K& sDefinition)
   if (m_oDicStack.iCount())
     pDic = m_oDicStack.pTop();
   else
-    pDic = &gpAttachMap->m_xMainDic;
+    pDic = &gpAttachMap->m_oRootDic;
 
   pNewWord = new(pDic) Word(m_pCompiler->m_pTokeniser->sToken());
   

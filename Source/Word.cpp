@@ -280,7 +280,7 @@ void Word::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Word* pStepWord = gpAttachMap->m_xMainDic.pFindStep(m_fpEntryStep);
+  Word* pStepWord = gpAttachMap->m_oRootDic.pFindStep(m_fpEntryStep);
   
   vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "_Stz
          "Step %p %s ..Data.. %p\n"_Stz,
@@ -373,7 +373,7 @@ void Word::vEncode(Stz* aWordNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Word* pCalledWord = gpAttachMap->m_xMainDic.pFindWord(aWordNm);
+  Word* pCalledWord = gpAttachMap->m_oRootDic.pFindWord(aWordNm);
   ASSERT(pCalledWord);
   
   vAppend(pCalledWord->afpEntryStep());

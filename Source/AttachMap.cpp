@@ -52,7 +52,7 @@ AttachMap::AttachMap(void)
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
   
-  m_xMainDic.vName("<main>"_Stz);
+  m_oRootDic.vName("<main>"_Stz);
   
   // create the carry over (which records global pointers restored on restart)
   m_pCarryOver = new CarryOver;
