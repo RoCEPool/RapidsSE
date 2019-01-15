@@ -163,9 +163,9 @@
   static void vDicKindGet(Tasks::MP_Task mpTask);
   static void vDicKindSet(Tasks::MP_Task mpTask);
   static void vDicLastWord(Tasks::MP_Task mpTask);
-  static void vDicMain(Tasks::MP_Task mpTask);
   static void vDicName(Tasks::MP_Task mpTask);
   static void vDicRef(Tasks::MP_Task mpTask);
+  static void vDicRoot(Tasks::MP_Task mpTask);
   static void vDicWordCount(Tasks::MP_Task mpTask);
 
   // dicPath

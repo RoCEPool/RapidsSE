@@ -83,7 +83,7 @@
 
   // this word puts the dictionary path onto the stack as a series of names
   //   ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" 3 )
-  // note: it should not push "<main>"
+  // note: it should not push "<root>"
 
   pathDepth 0 ?do
 
@@ -232,9 +232,9 @@
 
   0 do
 
-    dup "<main>" str.equal if
+    dup "<root>" str.equal if
       drop
-      dic.main
+      dic.root
       pathPush
     else
 

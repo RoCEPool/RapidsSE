@@ -17,9 +17,9 @@ void Step::vAddSteps_Dic(void)
   vAddStep("dic.kind@"_Stz,       &Step::vDicKindGet);
   vAddStep("dic.kind!"_Stz,       &Step::vDicKindSet);
   vAddStep("dic.lastWord"_Stz,    &Step::vDicLastWord);
-  vAddStep("dic.main"_Stz,        &Step::vDicMain);
   vAddStep("dic.name"_Stz,        &Step::vDicName);
   vAddStep("dic.ref"_Stz,         &Step::vDicRef);
+  vAddStep("dic.root"_Stz,        &Step::vDicRoot);
   vAddStep("dic.wordCount"_Stz,   &Step::vDicWordCount);
 }
 
@@ -152,18 +152,6 @@ ENTRY("vDicLastWord"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dic.main -- push main dictionary onto stack                                */
-/*----------------------------------------------------------------------------*/
-void Step::vDicMain(MP_Task mpTask)
-{
-ENTRY("vDicMain"_Stz);
-  
-  mpTask->m_pDataStack->vPushPointer(&gpAttachMap->m_oRootDic);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* dic.name -- push name of dictionary onto stack                             */
 /*----------------------------------------------------------------------------*/
 void Step::vDicName(MP_Task mpTask)
@@ -201,6 +189,18 @@ void Step::vDicRef(MP_Task mpTask)
   bool bRef = pDic->bRefOut();
   
   mpTask->m_pDataStack->vPushI8(bRef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.root -- push root dictionary onto stack                                */
+/*----------------------------------------------------------------------------*/
+void Step::vDicRoot(MP_Task mpTask)
+{
+  ENTRY("vDicRoot"_Stz);
+  
+  mpTask->m_pDataStack->vPushPointer(&gpAttachMap->m_oRootDic);
   
   EXIT();
 }
