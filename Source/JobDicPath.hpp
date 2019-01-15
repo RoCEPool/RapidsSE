@@ -9,7 +9,7 @@ namespace JobModel
   class JobDicPath
   {
   public:
-    DicPath m_xDicPath; // dictionary path
+    DicPath m_oDicPath; // dictionary path
   
     Interface::Session* m_pSession;
   

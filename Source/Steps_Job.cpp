@@ -362,7 +362,7 @@ void Step::vJobDicPath(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.dicPath"_Stz);
   Job* pJob = _pJob(pJobPtr);
 
-  mpTask->m_pDataStack->vPushPointer(&pJob->m_xDicPath);
+  mpTask->m_pDataStack->vPushPointer(&pJob->m_oDicPath);
   
   EXIT();
 }

@@ -40,7 +40,7 @@ JobDicPath::JobDicPath(Interface::Session* pSession)
     i8 nDicNames = pSession->m_oDicStack.iCount();
     for (i8 i_Name = 0; i_Name < nDicNames; i_Name++) {
       sDicName = pSession->m_oDicStack.pPick(i_Name)->sName();
-      m_xDicPath.vDicName(i_Name,sDicName);
+      m_oDicPath.vDicName(i_Name,sDicName);
     }
   }
 
