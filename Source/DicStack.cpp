@@ -309,6 +309,30 @@ Word* DicStack::pRemoveWord(s32& sName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set dictionary stack from dictionary path                                  */
+/*----------------------------------------------------------------------------*/
+void DicStack::vSet(DicPath* pDicPath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  s32 sFolderNm;
+  
+  Dic* pDic = &gpAttachMap->m_oRootDic;
+  
+  i8 nFolders = pDicPath->nDicNames();
+  for (i8 i_Folder = 0; i_Folder < nFolders; i_Folder++) {
+    
+    sFolderNm = pDicPath->sDicName(i_Folder);
+    
+    Word* pWord = pDic->pFindWord(sFolderNm);
+    
+    Dic* pSubDic = _pDic(pWord->aWspArea());
+    
+    vPush(pSubDic);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get topmost dictionary                                                     */
 /*----------------------------------------------------------------------------*/
 Dic* DicStack::pTop(void)

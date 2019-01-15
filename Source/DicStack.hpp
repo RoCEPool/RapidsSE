@@ -38,6 +38,7 @@ namespace Forth
     Dic*  pPick(i8 iDic);
     void  vPop(void);
     void  vPush(Dic* pDic);
+    void  vSet(DicPath* pDicPath);
     Dic*  pTop(void);
     
     Footer* aFooter(void);
