@@ -69,7 +69,7 @@
   pTask task.job@ to pJob_ListColumns
 
   //----------------------------------------------------------------------------
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_ListColumns job.pushPath
   task::dicStack.set
 

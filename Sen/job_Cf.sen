@@ -30,7 +30,7 @@
   pJob_Cf job.objectName@ to sFolderNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
 "CF A" .
   pJob_Cf job.pushPath
 "CF B" .

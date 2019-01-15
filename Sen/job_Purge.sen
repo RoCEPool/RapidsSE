@@ -73,7 +73,7 @@
   task::this to pThisTask
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_Purge job.pushPath
   task::dicStack.set
 
@@ -114,7 +114,7 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_Purge job.pushPath
   task::dicStack.set
 

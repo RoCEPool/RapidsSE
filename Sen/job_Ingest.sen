@@ -50,7 +50,7 @@
   job::this locals| pJob_Ingest |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_Ingest job.pushPath
   task::dicStack.set
 

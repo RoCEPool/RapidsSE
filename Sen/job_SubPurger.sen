@@ -75,7 +75,7 @@
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack from purge (sub has no session)
+  // set task's dictionary stack from path in job from purge (sub has no session)
   pTask_Purge task.job@ job.pushPath
   task::dicStack.set
 

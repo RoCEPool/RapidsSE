@@ -71,7 +71,7 @@
   pTask task.job@ to pJob_UseSchema
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_UseSchema job.pushPath
   task::dicStack.set
 

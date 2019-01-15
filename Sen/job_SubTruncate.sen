@@ -54,7 +54,7 @@
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack from truncate (sub has no session)
+  // set task's dictionary stack from path in job from truncate (sub has no session)
   pTask_TruncateTable task.job@ job.pushPath
   task::dicStack.set
 

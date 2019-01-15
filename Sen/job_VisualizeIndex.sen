@@ -68,7 +68,7 @@
   CN_JOB_VISUALIZEINDEX pJob_VisualizeIndex object.assertClass
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_VisualizeIndex job.pushPath
   task::dicStack.set
 

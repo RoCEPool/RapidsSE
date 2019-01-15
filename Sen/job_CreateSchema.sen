@@ -92,7 +92,7 @@
   pJob_CreateSchema job.objectName@ to sSchemaNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_CreateSchema job.pushPath
   task::dicStack.set
 
@@ -124,7 +124,7 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_CreateSchema job.pushPath
   task::dicStack.set
 

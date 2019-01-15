@@ -74,7 +74,7 @@
   pTask task.job@ to pJob_ListIndexes
 
   //----------------------------------------------------------------------------
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_ListIndexes job.pushPath
   task::dicStack.set
 

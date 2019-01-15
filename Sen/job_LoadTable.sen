@@ -176,7 +176,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // path checks
 
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_LoadTable job.pushPath task::dicStack.set
   //pathDump
 

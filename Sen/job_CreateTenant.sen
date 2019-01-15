@@ -91,7 +91,7 @@
   pJob_CreateTenant job.objectName@ to sTenantNm
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_CreateTenant job.pushPath
   task::dicStack.set
 
@@ -123,7 +123,7 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_CreateTenant job.pushPath
   task::dicStack.set
 

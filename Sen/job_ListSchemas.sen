@@ -24,7 +24,7 @@
   pTask task.job@ to pJob_ListSchemas
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_ListSchemas job.pushPath
   task::dicStack.set
 

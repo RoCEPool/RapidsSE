@@ -68,7 +68,7 @@
   repeat
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack from publish (sub has no session)
+  // set task's dictionary stack from path in job from publish (sub has no session)
   pTask_Publish task.job@ job.pushPath
   task::dicStack.set
 

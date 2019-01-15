@@ -54,7 +54,7 @@
   //pJob_TruncateTable pThisTask "truncateTable_exe task: %v Job_TruncateTable %v" fmt.print
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_TruncateTable job.pushPath
   task::dicStack.set
 
@@ -105,7 +105,7 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_TruncateTable job.pushPath
   task::dicStack.set
 

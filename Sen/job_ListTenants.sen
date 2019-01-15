@@ -24,7 +24,7 @@
   pTask task.job@ to pJob_ListTenants
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_ListTenants job.pushPath
   task::dicStack.set
 

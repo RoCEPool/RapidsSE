@@ -68,7 +68,7 @@
   CN_JOB_DUMPINDEX pJob_DumpIndex object.assertClass
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_DumpIndex job.pushPath
   task::dicStack.set
 
@@ -120,7 +120,7 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_DumpIndex job.pushPath
   task::dicStack.set
 

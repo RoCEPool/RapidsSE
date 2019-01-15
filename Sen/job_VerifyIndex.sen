@@ -96,7 +96,7 @@
   CN_JOB_VERIFYINDEX pJob_VerifyIndex object.assertClass
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_VerifyIndex job.pushPath
   task::dicStack.set
 
@@ -150,7 +150,7 @@
   ddlLock::grabRead
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set dictionary stack
+  // set task's dictionary stack from path in job
   pJob_VerifyIndex job.pushPath
   task::dicStack.set
 
