@@ -17,7 +17,7 @@ namespace StorageEngine
     
     ////////////////////////////////////////////////////////////////////////////
 
-    static void* pOpen(s32& sRegionName, int& iFD);
+    static void* aOpen(s32& sRegionName, int& iFD);
     static void  vClose(void* aRegion, int iFD);
   };
 }

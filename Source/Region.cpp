@@ -218,7 +218,7 @@ void Region::vUnlink(s32& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* attempt to open a pool                                                     */
 /*----------------------------------------------------------------------------*/
-void* Region::pOpen(s32& sRegionName, int& iFD)
+void* Region::aOpen(s32& sRegionName, int& iFD)
 {
   SysCall oSysCall;
   bool bResult;
@@ -235,32 +235,32 @@ void* Region::pOpen(s32& sRegionName, int& iFD)
   }
   
   // allocate a temporary extent of memory
-  void* pRegion = Shm::aMap(iFD,
+  void* aRegion = Shm::aMap(iFD,
                             gxArguments.m_aRegionAddr,
                             10_MB,
                             C_SHARED_REGION,
                             false,
                             oSysCall);
-  if ( ! pRegion )  {
+  if ( ! aRegion )  {
     vTrace("Region::pOpen failed to map\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     return nullptr;
   }
   
-  return pRegion;
+  return aRegion;
 }
 
 /*----------------------------------------------------------------------------*/
 /* close region                                                               */
 /*----------------------------------------------------------------------------*/
-void Region::vClose(void* pRegion, int iFD)
+void Region::vClose(void* aRegion, int iFD)
 {
   bool bResult;
   SysCall oSysCall;
   
   // close the temporary mapping
   bResult = Shm::bClose(iFD,oSysCall);
-  bResult = Shm::bUnmap(pRegion,10_MB,oSysCall);
+  bResult = Shm::bUnmap(aRegion,10_MB,oSysCall);
 }
 
 /*============================================================================*/

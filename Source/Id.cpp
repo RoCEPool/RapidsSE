@@ -162,7 +162,7 @@ EntryBuffer* Id::pReferencedEntryBuffer(void)
     reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
   
   EntryBuffer* pEntryBuffer =
-    reinterpret_cast<EntryBuffer*>(pHeapBuffer->pFirstChunk());
+    reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
   
   ASSERT(pEntryBuffer);
   ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);

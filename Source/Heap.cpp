@@ -369,9 +369,9 @@ bool Heap::bExtendHeap(void)
   
   // now add all new free chunks into free chain
   FreeChunk* aFreeChunk;
-  for (aFreeChunk = pHeapBuffer->pFirstChunk();
+  for (aFreeChunk = pHeapBuffer->aFirstChunk();
        aFreeChunk;
-       aFreeChunk = pHeapBuffer->pNextChunk(aFreeChunk,m_iObjectSize)) {
+       aFreeChunk = pHeapBuffer->aNextChunk(aFreeChunk,m_iObjectSize)) {
     //aFreeChunk->vSetMagic();
     new(aFreeChunk) FreeChunk;
     vPushFree(aFreeChunk,CN_NONE);

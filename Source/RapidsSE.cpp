@@ -270,7 +270,7 @@ void RapidsSE::vKillPrev(void)
     if ( ! Region::bTest(sRegionName) )
       continue;
     
-    if ( ! (aRegion = Region::pOpen(sRegionName,iFD)) )
+    if ( ! (aRegion = Region::aOpen(sRegionName,iFD)) )
       continue;
     
     AttachMap* pAttachMap = (AttachMap*)ahAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);

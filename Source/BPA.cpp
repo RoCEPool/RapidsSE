@@ -83,17 +83,17 @@ void BPA::vHeapDump(Heap* pHeap)
   for (pHeapBuffer = pHeap->pFirstBuffer();
        pHeapBuffer;
        pHeapBuffer = pHeapBuffer->pNextBuffer()) {
-    for (FreeChunk* pChunk = pHeapBuffer->pFirstChunk();
-         pChunk;
-         pChunk = pHeapBuffer->pNextChunk(pChunk,pHeap->iObjectSize())) {
+    for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
+         aChunk;
+         aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->iObjectSize())) {
       
-      eCN eClass = pChunk->eClass();
+      eCN eClass = aChunk->eClass();
       
       if (CN_FREECHUNK == eClass)
         continue;
       
       if (CN_WORD == eClass) {
-        Word* pWord = _pWord(pChunk);
+        Word* pWord = _pWord(aChunk);
       
         // dump only the objects
         if (WT_OBJECT != pWord->eWordType())
@@ -104,7 +104,7 @@ void BPA::vHeapDump(Heap* pHeap)
       
       vTrace("%s%p %-12s: "_Stz,aDoubleTab(),pHeap,aCN[eClass]);
 
-      (pDumpFun)(eClass, (Object*)pChunk, aDoubleTab());
+      (pDumpFun)(eClass, (Object*)aChunk, aDoubleTab());
     }
   }
   
@@ -130,11 +130,11 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
   for (pHeapBuffer = pHeap->pFirstBuffer();
        pHeapBuffer;
        pHeapBuffer = pHeapBuffer->pNextBuffer()) {
-    for (FreeChunk* pChunk = pHeapBuffer->pFirstChunk();
-         pChunk;
-         pChunk = pHeapBuffer->pNextChunk(pChunk,pHeap->iObjectSize())) {
+    for (FreeChunk* aChunk = pHeapBuffer->aFirstChunk();
+         aChunk;
+         aChunk = pHeapBuffer->aNextChunk(aChunk,pHeap->iObjectSize())) {
       
-      eCN eClass = pChunk->eClass();
+      eCN eClass = aChunk->eClass();
       
       if (CN_FREECHUNK == eClass)
         continue;
@@ -142,7 +142,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
       if (CN_WORD != eClass)
         continue;
       
-      Word* pWord = _pWord(pChunk);
+      Word* pWord = _pWord(aChunk);
       
       // dump only the objects
       if (WT_OBJECT != pWord->eWordType())
@@ -156,7 +156,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
       
       vTrace("%s%p %-12s: "_Stz,aDoubleTab(),pHeap,aCN[eClass]);
       
-      (pDumpFun)(eClass, (Object*)pChunk, aDoubleTab());
+      (pDumpFun)(eClass, (Object*)aChunk, aDoubleTab());
     }
   }
   
