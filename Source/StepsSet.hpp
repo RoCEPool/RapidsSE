@@ -1102,7 +1102,7 @@
   static void vCompileComma(Tasks::MP_Task mpTask);
   static void vCreate(Tasks::MP_Task mpTask);
   static void vCreateFrom(Tasks::MP_Task mpTask);
-  static void vCreateFromInMain(Tasks::MP_Task mpTask);
+  static void vCreateFromInRoot(Tasks::MP_Task mpTask);
   static void vCreateFromPersistent(Tasks::MP_Task mpTask);
   static void vCreatePersistent(Tasks::MP_Task mpTask);
   static void vCreateTenants(Tasks::MP_Task mpTask);

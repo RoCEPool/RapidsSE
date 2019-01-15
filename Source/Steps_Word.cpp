@@ -21,7 +21,7 @@ void Step::vAddSteps_Word(void)
   vAddStep("create"_Stz,          &Step::vCreate);
   vAddStep("createTenants"_Stz,   &Step::vCreateTenants);
   vAddStep(">create"_Stz,         &Step::vCreateFrom);
-  vAddStep(">createInMain"_Stz,   &Step::vCreateFromInMain);
+  vAddStep(">createInRoot"_Stz,   &Step::vCreateFromInRoot);
   vAddStep(">createPersistent"_Stz, &Step::vCreateFromPersistent);
   vAddStep("createPersistent"_Stz,&Step::vCreatePersistent);
   vAddStep("does>"_Stz,           &Step::vDoes,             true );
@@ -260,15 +260,15 @@ void Step::vCreateFromPersistent(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >createInMain -- create word in main dictionary using string on stack      */
+/* >createInRoot -- create word in root dictionary using string on stack      */
 /*----------------------------------------------------------------------------*/
-void Step::vCreateFromInMain(MP_Task mpTask)
+void Step::vCreateFromInRoot(MP_Task mpTask)
 {
-  ENTRY("vCreateFrom"_Stz);
+  ENTRY("vCreateFromInRoot"_Stz);
   
   s32 sName;
   if ( ! mpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK(">create"_Stz);
+    THROW_INVALID_DSTACK(">createInRoot"_Stz);
   
   Dic* pDic = &gpAttachMap->m_oRootDic;
   
