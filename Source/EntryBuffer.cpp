@@ -68,7 +68,7 @@ EntryBuffer::EntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_oLock.vInitLock(LK_ENTRYBUFFER_STATE);
+  m_oLock.vInitLock(LK_ENTRYBUFFER);
   
   m_bIsLast       = false;
   
