@@ -9,7 +9,7 @@ create table rapidsse.public.tsp (
 );
 success
 
-create index idx on tsp (tsp_key);
+create index idx on rapidsse.public.tsp (tsp_key);
 success
 
 //------------------------------------------------------------------------------
@@ -188,52 +188,52 @@ success
 ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-MM-DD.csv' , node='NODE1'  ;
 failure contains: 'Success'
 
-create index idx on tsp (tsp_key);
+create index idx on rapidsse.public.tsp (tsp_key);
 success
 
-select * from tsp;
+select * from rapidsse.public.tsp;
 rows: 26
 
-select * from tsp where tsp_key = 8;
+select * from rapidsse.public.tsp where tsp_key = 8;
 rows:
 (8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-select * from tsp where tsp_key = 9;
+select * from rapidsse.public.tsp where tsp_key = 9;
 rows:
 (9, TIMESTAMP '1909-10-11 09:09:09')
 
-select * from tsp where tsp_key = 10;
+select * from rapidsse.public.tsp where tsp_key = 10;
 rows:
 (10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-select * from tsp where tsp_key = 15;
+select * from rapidsse.public.tsp where tsp_key = 15;
 rows:
 (15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-select * from tsp where tsp_key = 16;
+select * from rapidsse.public.tsp where tsp_key = 16;
 rows:
 (16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-select * from tsp where tsp_key = 17;
+select * from rapidsse.public.tsp where tsp_key = 17;
 rows:
 (17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-select * from tsp where tsp_key = 18;
+select * from rapidsse.public.tsp where tsp_key = 18;
 rows:
 (18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-select * from tsp where tsp_key = 26;
+select * from rapidsse.public.tsp where tsp_key = 26;
 rows:
 (26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
-drop table tsp;
+drop table rapidsse.public.tsp;
 success
 
 //------------------------------------------------------------------------------
 // load data into the table with default formatter settings
 
 // create the tables
-create table tsp (
+create table rapidsse.public.tsp (
   tsp_key    INTEGER     NOT NULL,
   tsp_tsp    TIMESTAMP   NOT NULL
 );
@@ -243,52 +243,52 @@ success
 ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-MM-DD.csv' , DATE_FORMAT='YYYY-MM-DD', node='NODE1' ;
 failure contains: 'Success'
 
-create index idx on tsp (tsp_key);
+create index idx on rapidsse.public.tsp (tsp_key);
 success
 
 select * from tsp;
 rows: 26
 
-select * from tsp where tsp_key = 8;
+select * from rapidsse.public.tsp where tsp_key = 8;
 rows:
 (8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-select * from tsp where tsp_key = 9;
+select * from rapidsse.public.tsp where tsp_key = 9;
 rows:
 (9, TIMESTAMP '1909-10-11 09:09:09')
 
-select * from tsp where tsp_key = 10;
+select * from rapidsse.public.tsp where tsp_key = 10;
 rows:
 (10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-select * from tsp where tsp_key = 15;
+select * from rapidsse.public.tsp where tsp_key = 15;
 rows:
 (15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-select * from tsp where tsp_key = 16;
+select * from rapidsse.public.tsp where tsp_key = 16;
 rows:
 (16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-select * from tsp where tsp_key = 17;
+select * from rapidsse.public.tsp where tsp_key = 17;
 rows:
 (17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-select * from tsp where tsp_key = 18;
+select * from rapidsse.public.tsp where tsp_key = 18;
 rows:
 (18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-select * from tsp where tsp_key = 26;
+select * from rapidsse.public.tsp where tsp_key = 26;
 rows:
 (26, TIMESTAMP '2016-07-08 16:09:10.123456')
 
-drop table tsp;
+drop table rapidsse.public.tsp;
 success
 
 //------------------------------------------------------------------------------
 // load data into the table with DATE FORMAT YYYY-DD-MM
 // create the tables
 
-create table tsp (
+create table rapidsse.public.tsp (
   tsp_key    INTEGER     NOT NULL,
   tsp_tsp    TIMESTAMP   NOT NULL
 );
@@ -297,41 +297,41 @@ success
 ESCAPE CONNECTOR se 'load tsp' with file='/DATA/Load/tsp_YYYY-DD-MM.csv', DATE_FORMAT='YYYY-DD-MM' , node='NODE1'  ;
 failure contains: 'Success'
 
-create index idx on tsp (tsp_key);
+create index idx on rapidsse.public.tsp (tsp_key);
 success
 
-select * from tsp;
+select * from rapidsse.public.tsp;
 rows: 26
 
-select * from tsp where tsp_key = 8;
+select * from rapidsse.public.tsp where tsp_key = 8;
 rows:
 (8, TIMESTAMP '1908-09-10 08:08:08.000001')
 
-select * from tsp where tsp_key = 9;
+select * from rapidsse.public.tsp where tsp_key = 9;
 rows:
 (9, TIMESTAMP '1909-10-11 09:09:09')
 
-select * from tsp where tsp_key = 10;
+select * from rapidsse.public.tsp where tsp_key = 10;
 rows:
 (10, TIMESTAMP '1910-01-02 10:03:04.1')
 
-select * from tsp where tsp_key = 15;
+select * from rapidsse.public.tsp where tsp_key = 15;
 rows:
 (15, TIMESTAMP '1915-06-07 15:08:09.123456')
 
-select * from tsp where tsp_key = 16;
+select * from rapidsse.public.tsp where tsp_key = 16;
 rows:
 (16, TIMESTAMP '1916-07-08 16:09:10.123456')
 
-select * from tsp where tsp_key = 17;
+select * from rapidsse.public.tsp where tsp_key = 17;
 rows:
 (17, TIMESTAMP '1909-11-25 09:09:09.999')
 
-select * from tsp where tsp_key = 18;
+select * from rapidsse.public.tsp where tsp_key = 18;
 rows:
 (18, TIMESTAMP '1909-12-26 09:09:09.998')
 
-select * from tsp where tsp_key = 26;
+select * from rapidsse.public.tsp where tsp_key = 26;
 rows:
 (26, TIMESTAMP '2016-07-08 16:09:10.123456')
 drop table tsp;
