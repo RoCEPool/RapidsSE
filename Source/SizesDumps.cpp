@@ -553,8 +553,8 @@ eHT geWhichHeap[]
 
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECIDER
   /* 33 */ HT_TRANSIENT_MEDIUM,  // CN_DIC
-  /*    */ HT_INVALID,           // CN_DICPATH
-  /* 34 */ HT_INVALID,           // CN_DICSTACK
+  /*    */ HT_TRANSIENT_SMALL,   // CN_DICPATH
+  /* 34 */ HT_TRANSIENT_SMALL,   // CN_DICSTACK
   /* 35 */ HT_TRANSIENT_SMALL,   // CN_DIR
 
   /* 36 */ HT_INVALID,           // CN_ENTRY

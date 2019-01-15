@@ -117,6 +117,11 @@ Table::~Table(void) noexcept(false)
   vTidyUp();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* dump table                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -138,6 +143,24 @@ void Table::vFinalize(eCN eClass, Object* pObject)
   ASSERT(pTable->bWordBody());
   
   pTable->vTidyUp();
+}
+
+/*----------------------------------------------------------------------------*/
+/* find table                                                                 */
+/*----------------------------------------------------------------------------*/
+Table* Table::pFindTable(DicStack* pDicStack, s32& sTableNm)
+{
+  Dic* pDic = pDicStack->pTop();
+  
+  Word* pTableDicWord = pDic->pFindWord(sTableNm);
+  
+  Dic* pTableDic = _pDic(pTableDicWord->aWspArea());
+
+  Word* pTableWord = pTableDic->pFindWord(sTableNm);
+  
+  Table* pTable = _pTable(pTableWord->aWspArea());
+  
+  return pTable;
 }
 
 /*----------------------------------------------------------------------------*/

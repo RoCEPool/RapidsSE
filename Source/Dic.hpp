@@ -45,6 +45,7 @@ namespace Forth
     void  vInit(void);
     bool  bIsName(s32& sName);
     Word* pLastWord(void);
+    void  vListWords(void);
     s32&  sName(void);
     void  vName(Stz* aName);
     void  vRefDec(void);

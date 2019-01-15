@@ -276,6 +276,25 @@ Word* Dic::pLastWord(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find a word given name                                                     */
+/*----------------------------------------------------------------------------*/
+void Dic::vListWords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  m_oLock.vGrabRead();
+  
+  for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
+    
+    vTrace(": %s (dictionary %s)"_Stz,
+           pWord->sName().aChar(),
+           m_sName.aStz());
+  }
+  
+  m_oLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
 s32& Dic::sName(void)

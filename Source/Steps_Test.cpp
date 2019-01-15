@@ -65,6 +65,8 @@ void Step::vTestTest3(MP_Task mpTask)
 {
   ENTRY("vTestTest3"_Stz);
   
+  vTest3();
+
   EXIT();
 }
 
@@ -75,6 +77,8 @@ void Step::vTestTest4(MP_Task mpTask)
 {
   ENTRY("vTestTest4"_Stz);
   
+  vTest4();
+
   EXIT();
 }
 
@@ -84,6 +88,8 @@ void Step::vTestTest4(MP_Task mpTask)
 void Step::vTestTest5(MP_Task mpTask)
 {
   ENTRY("vTestTest5"_Stz);
+  
+  vTest5();
   
   EXIT();
 }
@@ -95,6 +101,8 @@ void Step::vTestTest6(MP_Task mpTask)
 {
   ENTRY("vTestTest6"_Stz);
   
+  vTest6();
+  
   EXIT();
 }
 
@@ -104,6 +112,8 @@ void Step::vTestTest6(MP_Task mpTask)
 void Step::vTestTest7(MP_Task mpTask)
 {
   ENTRY("vTestTest7"_Stz);
+  
+  vTest7();
   
   EXIT();
 }
@@ -115,6 +125,8 @@ void Step::vTestTest8(MP_Task mpTask)
 {
   ENTRY("vTestTest8"_Stz);
   
+  vTest8();
+  
   EXIT();
 }
 
@@ -124,6 +136,8 @@ void Step::vTestTest8(MP_Task mpTask)
 void Step::vTestTest9(MP_Task mpTask)
 {
   ENTRY("vTestTest9 "_Stz);
+  
+  //vTest9();
   
   EXIT();
 }

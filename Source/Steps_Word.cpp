@@ -285,7 +285,7 @@ void Step::vCreateFromInRoot(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void Step::vCreateTenants(MP_Task mpTask)
 {
-  ENTRY("vCreateTenant"_Stz);
+  ENTRY("vCreateTenants"_Stz);
   
   mpTask->m_pCompiler->m_pTokeniser->vNextToken();
   

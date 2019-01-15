@@ -13,9 +13,19 @@
 /*----------------------------------------------------------------------------*/
 void* DicPath::operator new(size_t)
 {
-  vFatal("fatal: DicPath class cannot be new'd\n"_Stz);
+  DicPath* pDicPath = (DicPath*)(HeapMem::pAllocate(CN_DICPATH));
   
-  NEVER_REACH;
+  return pDicPath;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void DicPath::operator delete(void* pDicAddress) 
+{
+  DicPath* pDicPath = reinterpret_cast<DicPath*>(pDicAddress);
+  
+  HeapMem::vFree(pDicPath);
 }
 
 /*----------------------------------------------------------------------------*/

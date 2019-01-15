@@ -24,17 +24,19 @@ DicStack* DicStack::_pDicStack(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* DicStack::operator new(size_t)
 {
-  vFatal("fatal: DicStack class cannot be new'd"_Stz);
+  DicStack* pDicStack = (DicStack*)(HeapMem::pAllocate(CN_DICSTACK));
   
-  NEVER_REACH;
+  return pDicStack;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void DicStack::operator delete(void*)
+void DicStack::operator delete(void* pDicAddress)
 {
-  vFatal("fatal: DicStack class cannot be deleted"_Stz);
+  DicStack* pDicStack = reinterpret_cast<DicStack*>(pDicAddress);
+  
+  HeapMem::vFree(pDicStack);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -317,18 +319,24 @@ void DicStack::vSet(DicPath* pDicPath)
   
   s32 sFolderNm;
   
-  Dic* pDic = &gpAttachMap->m_oRootDic;
+  Dic* pDic = _pDic(gpAttachMap->m_pTenants->aWspArea());
   
   i8 nFolders = pDicPath->nDicNames();
   for (i8 i_Folder = 0; i_Folder < nFolders; i_Folder++) {
     
     sFolderNm = pDicPath->sDicName(i_Folder);
     
+    if (sFolderNm.bSame("tenants"_Stz))
+      continue;
+    
+    pDic->vListWords();
     Word* pWord = pDic->pFindWord(sFolderNm);
     
     Dic* pSubDic = _pDic(pWord->aWspArea());
     
     vPush(pSubDic);
+    
+    pDic = pSubDic;
   }
 }
 

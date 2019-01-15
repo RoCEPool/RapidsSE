@@ -18,7 +18,8 @@ namespace Forth
   
   public:
     void* operator new(size_t);
-  
+    void operator delete(void* pDicAddress);
+
     DicPath(void);
    ~DicPath(void) noexcept(false);
     
