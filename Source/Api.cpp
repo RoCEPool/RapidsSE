@@ -252,6 +252,8 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
     Job* pJob = RapidsSE_pExecCmdStr(aCommand, pSession, false, false);
     vApiLocation(pSession,220);
 
+    vApiJob(pSession,pJob);                                             // API JOB
+
     // check if job had an error
     if (pJob->m_bHasError) {
       for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
@@ -467,7 +469,7 @@ eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, 
 /*----------------------------------------------------------------------------*/
 /* get buffer from the job                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, void** ppBuffer, i8 iTraceLevel)
+eEC RapidsSE_GetBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_GetBuffer"_Stz;
   eAC  eApiCall = AC_GetBuffer;
@@ -725,7 +727,7 @@ eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void**
 /*----------------------------------------------------------------------------*/
 /* insert the record buffer into a table                                      */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, void* pRecordBufferPtr, i8 iTraceLevel)
+eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 {
   Stz* aApiCall = "RapidsSE_InsertBuffer"_Stz;
   eAC  eApiCall = AC_InsertBuffer;
@@ -758,7 +760,7 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, void* pRecordBufferP
     Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
     
     // get the record buffer
-    RecordBuffer* pRecordBuffer = _pRecordBuffer(pRecordBufferPtr);
+    RecordBuffer* pRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
     
     // for each record in the record buffer
     char* aRecord = nullptr;
