@@ -1,0 +1,32 @@
+/*============================================================================*/
+/* Job_CopyBuffer.sen -- Job Copy buffer                                      */
+/*============================================================================*/
+
+" Job_CopyBuffer.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* Job_CopyBuffer request (on originating node)                                */
+/*----------------------------------------------------------------------------*/
+: Job_CopyBuffer_req (  -- <R> )
+
+  >>am <SEED_REQ>
+
+  0 locals| pThisTask |
+  0 0 0 locals| pJob_CopyBuffer sTableNm pTable |
+
+  tp: Job_CopyBuffer_req
+
+  // get the task
+  task::this to pThisTask
+
+  // get the job from the task
+  pThisTask task.job@ to pJob_CopyBuffer
+
+  //pJob_CopyBuffer Job_CopyBuffer.copyBuffer
+
+  <<am <DONE_REQ>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

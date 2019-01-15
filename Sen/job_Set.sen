@@ -24,6 +24,7 @@
 "job_Cf.sen" include
 "job_CompactIndex.sen" include
 "job_ConnectCluster.sen" include
+"Job_CopyBuffer.sen" include
 "job_CreateCatalog.sen" include
 "job_CreateIndex.sen" include
 "job_CreateSchema.sen" include
