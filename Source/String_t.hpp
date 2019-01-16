@@ -41,6 +41,7 @@ namespace CorrectnessAlgebra
     void vNullValue(void);
     bool bSame(Stz* aArg);
     void vSprint(Stz* aFormat, ...);
+    void vSprintCat(Stz* aFormat, ...);
     Stz* aStz(void);
     i8   iToI8(void);
     void vToLower(void);
@@ -339,10 +340,22 @@ template <int SIZE>
 void String_t<SIZE>::vSprint(Stz* aFormat, ...)
 {
   va_list args;
+  
   va_start(args,aFormat);
+  StrLib::vSprint(aChar(),args,aFormat->aChar());
+  va_end(args);
+}
+
+/*----------------------------------------------------------------------------*/
+/* formatted sprint concat                                                    */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+void String_t<SIZE>::vSprintCat(Stz* aFormat, ...)
+{
+  va_list args;
   
-  vsprintf(aChar(),aFormat->aChar(),args);
-  
+  va_start(args,aFormat);
+  StrLib::vSprintCat(aChar(),aFormat->aChar(),args);
   va_end(args);
 }
 
