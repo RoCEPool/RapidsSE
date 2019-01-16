@@ -14,6 +14,8 @@ namespace JobModel
     bool   m_bNamedFile; // named output file or stdout?
     File*  m_pOutFile;   // output file
   
+    i8     m_iTakeNo;    // take number
+  
     // must be last
     Footer m_xFooter;
   

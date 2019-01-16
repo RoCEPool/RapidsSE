@@ -881,8 +881,10 @@ void Queues::vPortrait(s48K& sPortrait)
   
   s48K sTasksPortrait;
   
-  sPortrait = "Queues Portrait:\n"_Stz;
-  
+  sPortrait = ""_Stz;
+  sPortrait.vConcat("Queues:\n"_Stz);
+  sPortrait.vConcat("------------------------\n"_Stz);
+
   m_pExecutingSet->vPortrait(sTasksPortrait);
   sPortrait.vConcat(sTasksPortrait);
   

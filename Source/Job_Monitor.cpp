@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Job_Monitor.cpp -- Cat Job                                                     */
+/* Job_Monitor.cpp -- Monitor Job                                             */
 /*============================================================================*/
 
 // Job Short: Cat
@@ -12,7 +12,7 @@ extern AttachMap* gpAttachMap;
 JobClass xJobClass_Monitor =
 {
   "Job_Monitor"_Stz,    // name of the job class
-  CN_JOB_MONITOR,           // class enum
+  CN_JOB_MONITOR,       // class enum
   JK_LOCAL,             // job kind
   "monitor system"_Stz, // comment about the job
   "monitor"_Stz,        // the prompt command
@@ -110,6 +110,8 @@ Job_Monitor::Job_Monitor(Interface::Session* pSession)
   m_iInterval  = 10;
   m_bNamedFile = false;
   m_pOutFile   = nullptr;
+  
+  m_iTakeNo    = 0;
   
   _checkInitialised_(CN_JOB_MONITOR);
   
@@ -268,10 +270,16 @@ bool Job_Monitor::bTake(void)
   //vTrace("Monitor...\n"_Stz);
   
   s48K sPortrait;
+  s48K sRapidsPortrait;
+
+  sPortrait.vSprint("System Portrait %lld\n"_Stz,m_iTakeNo);
   
-  RapidsSE::vPortrait(sPortrait);
+  RapidsSE::vPortrait(sRapidsPortrait);
+  sPortrait.vConcat(sRapidsPortrait);
   
   m_pOutFile->vPrint("%s"_Stz,sPortrait.aStz());
+  
+  m_iTakeNo++;
   
   return true;
 }

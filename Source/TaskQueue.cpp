@@ -213,7 +213,7 @@ void TaskQueue::vPortrait(s48K& sPortrait)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE);
   
-  sPortrait = "TaskQueue Portrait\n"_Stz;
+  sPortrait.vSprint("%s Portrait\n"_Stz,aQK[m_eKind]);
 }
 
 /*----------------------------------------------------------------------------*/
