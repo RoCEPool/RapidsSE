@@ -213,13 +213,42 @@ void TaskQueue::vPortrait(s48K& sPortrait)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE);
   
-  sPortrait.vSprint("%s Portrait\n"_Stz,aQK[m_eKind]);
+  sPortrait.vSprint("%15 Portrait\n"_Stz,aQK[m_eKind]);
   
   vGrabLock();
   
   sPortrait.vSprintCat("%lld tasks\n"_Stz,nTasks());
   
   vDropLock();
+  
+  
+  s48K sTaskPortrait;
+  
+  sPortrait.vSprint("%15s"_Stz,aQK[m_eKind]);
+  
+  vGrabLock();
+  
+  sPortrait.vSprintCat(" %lld "_Stz,m_pTaskSkipList->nObjects());
+  
+  for (SkipNode* pNode = m_pTaskSkipList->pFirst(0);
+       pNode;
+       pNode = m_pTaskSkipList->pNext(pNode,0)) {
+    
+    Task* pTask = _pTask(pNode->m_pObject);
+    
+    if (pNode == m_pTaskSkipList->pFirst(0))
+      sPortrait.vConcat(": "_Stz);
+    else
+      sPortrait.vConcat(" "_Stz);
+    
+    pTask->vMonitorPortrait(sTaskPortrait);
+    
+    sPortrait.vConcat(sTaskPortrait);
+  }
+  sPortrait.vConcat("\n"_Stz);
+  
+  vDropLock();
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -130,6 +130,7 @@ namespace Tasks
     Stz* aJobName(void);
     void vLocalsPop(void);
     void vLocalsPush(void);
+    void vMonitorPortrait(s48K& sPortrait);
     void vNewStacks(void);
     i8   iPartition(void);
     void vPerformancePoint(Stz* aWordName, Stz* aPointNote);

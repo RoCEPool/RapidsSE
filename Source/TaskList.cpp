@@ -156,12 +156,27 @@ void TaskList::vPortrait(s48K& sPortrait)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST);
 
-  sPortrait.vSprint("%s Portrait\n"_Stz,aQK[m_eKind]);
+  s48K sTaskPortrait;
+  
+  sPortrait.vSprint("%15s"_Stz,aQK[m_eKind]);
   
   vGrabLock();
   
-  sPortrait.vSprintCat("%lld tasks\n"_Stz,nObjects());
+  sPortrait.vSprintCat(" %lld "_Stz,nObjects());
   
+  for (Task* pTask = pHead(); pTask; pTask = pTask->pNextNode()) {
+    
+    if (pTask == pHead())
+      sPortrait.vConcat(": "_Stz);
+    else
+      sPortrait.vConcat(" "_Stz);
+    
+    pTask->vMonitorPortrait(sTaskPortrait);
+    
+    sPortrait.vConcat(sTaskPortrait);
+  }
+  sPortrait.vConcat("\n"_Stz);
+
   vDropLock();
 }
 
