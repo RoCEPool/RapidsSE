@@ -127,6 +127,7 @@ enum eCN : u2 // Class Number
   /* 102 */ CN_JOB_LISTTABLES,
   /* 103 */ CN_JOB_LISTTENANTS,
   /* 105 */ CN_JOB_LOADTABLE,
+  /*     */ CN_JOB_MONITOR,
   /*     */ CN_JOB_NETHOG,
   /*     */ CN_JOB_NODEINFO,
   /*     */ CN_JOB_PERIODIC,
@@ -375,6 +376,7 @@ static Stz* aCN[]
   /* 102 */ "JOB_LISTTABLES"_Stz,      // CN_JOB_LISTTABLES
   /* 103 */ "JOB_LISTTENANTS"_Stz,     // CN_JOB_LISTTENANTS
   /* 105 */ "JOB_LOADTABLE"_Stz,       // CN_JOB_LOADTABLE
+  /*     */ "JOB_MONITOR"_Stz,         // CN_JOB_MONITOR
   /*     */ "JOB_NETHOG"_Stz,          // CN_JOB_NETHOG
   /*     */ "JOB_NODEINFO"_Stz,        // CN_JOB_NODEINFO
   /*     */ "JOB_PERIODIC"_Stz,        // CN_JOB_PERIODIC
