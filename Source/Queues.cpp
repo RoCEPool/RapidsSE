@@ -873,6 +873,33 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
 /*----------------------------------------------------------------------------*/
 /* get the first queue                                                        */
 /*----------------------------------------------------------------------------*/
+void Queues::vPortrait(s48K& sPortrait)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  s48K sTasksPortrait;
+  
+  sPortrait = "Queues Portrait:\n"_Stz;
+  
+  m_pExecutingSet->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+  
+  m_pReadyQueue->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+  
+  m_pWaitingSet->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+  
+  m_pSleepingQueue->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the first queue                                                        */
+/*----------------------------------------------------------------------------*/
 i8 Queues::i_QueueFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);

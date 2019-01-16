@@ -97,6 +97,8 @@ namespace Threads
     Task* pPopReadySlotQueue(Thread* pCallingThread);
     Task* pPopSleepingQueue(Thread* pCallingThread);
   
+    void vPortrait(s48K& sPortrait);
+
     i8 i_QueueFirst(void);
     i8 i_QueueLast(void);
   

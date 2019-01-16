@@ -265,7 +265,13 @@ bool Job_Monitor::bTake(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_MONITOR,_FOOTER_);
   
-  vTrace("Monitor...\n"_Stz);
+  //vTrace("Monitor...\n"_Stz);
+  
+  s48K sPortrait;
+  
+  RapidsSE::vPortrait(sPortrait);
+  
+  m_pOutFile->vPrint("%s"_Stz,sPortrait.aStz());
   
   return true;
 }

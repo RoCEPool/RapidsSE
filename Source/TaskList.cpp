@@ -148,6 +148,16 @@ Task* TaskList::pPopTask(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the first queue                                                        */
+/*----------------------------------------------------------------------------*/
+void TaskList::vPortrait(s48K& sPortrait)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST);
+  
+  sPortrait = "TaskList Portrait\n"_Stz;
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove task from list                                                      */
 /*----------------------------------------------------------------------------*/
 void TaskList::vRemoveTask(Task* pTask)

@@ -9,11 +9,6 @@ namespace StorageEngine
 {
   class RapidsSE
   {
-  private:
-
-    // must be last
-    Footer m_xFooter;
-
   public:
   
     static void vAttachRegion(void);
@@ -33,6 +28,7 @@ namespace StorageEngine
     static void vOpenPool(void);
     static bool bOpenPool(s32& sPoolName);
     static void vOpenTraceFile(void);
+    static void vPortrait(s48K& sPortrait);
     static void vPrintExit(void);
     static void vPrintStatus(void);
     static void vPrintWelcome(void);
@@ -47,8 +43,6 @@ namespace StorageEngine
     static void vUnlinkSystem(void);
     static void vWaitStop(void);
     static void vWriteRegionName(void);
-
-    Footer* aFooter(void);
   };
 }
 

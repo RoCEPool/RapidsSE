@@ -412,6 +412,18 @@ void RapidsSE::vOpenTraceFile(void)
 /*----------------------------------------------------------------------------*/
 /* print exit                                                                 */
 /*----------------------------------------------------------------------------*/
+void RapidsSE::vPortrait(s48K& sPortrait)
+{
+  s48K sQueuesPortrait;
+  
+  gpAttachMap->m_pQueues->vPortrait(sQueuesPortrait);
+  
+  sPortrait.vConcat(sQueuesPortrait.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* print exit                                                                 */
+/*----------------------------------------------------------------------------*/
 void RapidsSE::vPrintExit(void)
 {
   if (gxArguments.m_bVerbose)
