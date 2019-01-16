@@ -54,23 +54,25 @@ Queues::Queues(void)
   m_pThreadVector  = new ThreadVector;
   m_ziQueueOrder   = 0;
   
-  m_pSleepingQueue = new TaskQueue(C_NON_UNQIUE_KEY,bTaskCompareWakeupTime);
+  m_pSleepingQueue = new TaskQueue(QK_SLEEPING_QUEUE,
+                                   C_NON_UNQIUE_KEY,
+                                   bTaskCompareWakeupTime);
   
-  m_pReadyQueue    = new TaskList;
+  m_pReadyQueue    = new TaskList(QK_READY_QUEUE);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_pReadySlotQueues[i_Slot] = nullptr;
   for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
-    m_pReadySlotQueues[i_Slot] = new TaskList;
+    m_pReadySlotQueues[i_Slot] = new TaskList(QK_READY_SLOT_QUEUE);
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_pReadySendQueues[i_Node] = nullptr;
   for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++)
-    m_pReadySendQueues[i_Node] = new TaskList;
+    m_pReadySendQueues[i_Node] = new TaskList(QK_READY_SEND_QUEUE);
   
-  m_pExecutingSet  = new TaskList;
+  m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
 
-  m_pWaitingSet    = new TaskList;
+  m_pWaitingSet    = new TaskList(QK_WAITING_SET);
 
   _checkInitialised_(CN_QUEUES);
   

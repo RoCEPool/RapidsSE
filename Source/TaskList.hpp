@@ -13,7 +13,8 @@ namespace Tasks
   class TaskList : public ListNL_t<Task>
   {
   private:
-    Lock m_oLock;
+   eQK  m_eKind;
+   Lock m_oLock;
   
     // must be last
     Footer m_xFooter;
@@ -23,7 +24,7 @@ namespace Tasks
     void* operator new(size_t, TaskList* pTaskQueue);
     void  operator delete(void*);
     
-    TaskList(void);
+    TaskList(eQK eKind);
     ~TaskList(void) noexcept(false);
     
     void   vAddTask(Task* pTask);

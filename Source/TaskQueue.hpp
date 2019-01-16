@@ -13,6 +13,7 @@ namespace Tasks
   class TaskQueue : public Object
   {
   private:
+    eQK         m_eKind;
     Lock        m_oLock;
     SkipListNL* m_pTaskSkipList;
     
@@ -24,7 +25,7 @@ namespace Tasks
     void* operator new(size_t, TaskQueue* pTaskQueue);
     void  operator delete(void*);
     
-    TaskQueue(bool bUniqueKey, cmpFun fCompare);
+    TaskQueue(eQK eKind, bool bUniqueKey, cmpFun fCompare);
     ~TaskQueue(void) noexcept(false);
     
     void  vAddTask(Task* pTask);

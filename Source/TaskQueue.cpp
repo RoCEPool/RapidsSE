@@ -49,11 +49,12 @@ void TaskQueue::operator delete(void* pTaskQueueAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TaskQueue::TaskQueue(bool bUniqueKey, cmpFun fCompare)
+TaskQueue::TaskQueue(eQK eKind, bool bUniqueKey, cmpFun fCompare)
 : Object(CN_TASKQUEUE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
+  m_eKind = eKind;
   m_oLock.vInitLock(LK_TASK_QUEUE);
   m_pTaskSkipList = new SkipListNL(bUniqueKey, fCompare);
   

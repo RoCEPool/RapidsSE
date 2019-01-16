@@ -48,10 +48,12 @@ void TaskList::operator delete(void* pTaskQueueAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TaskList::TaskList(void)
+TaskList::TaskList(eQK eKind)
 : ListNL_t<Task>(CN_TASKLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  
+  m_eKind = eKind;
   
   m_oLock.vInitLock(LK_TASK_QUEUE);
   
