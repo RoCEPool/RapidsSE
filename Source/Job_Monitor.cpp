@@ -107,9 +107,9 @@ Job_Monitor::Job_Monitor(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_MONITOR,_FOOTER_);
 
-  m_iInterval = 10;
-  m_bOutFile = false;
-  m_pOutFile = nullptr;
+  m_iInterval  = 10;
+  m_bNamedFile = false;
+  m_pOutFile   = nullptr;
   
   _checkInitialised_(CN_JOB_MONITOR);
   
@@ -189,8 +189,10 @@ Job* JobModel::pJob_Monitor_pre(Interface::Session* pSession)
     pJob_Monitor->m_iInterval = pTknVec->pGet(1)->iToI8();
   
   // set the output file name
-  if (3 <= nTokens)
+  if (3 <= nTokens) {
+    pJob_Monitor->m_bNamedFile = true;
     pJob_Monitor->m_sFileName = pTknVec->pGet(2)->sText();
+  }
   
   return pJob_Monitor;
 }
@@ -237,7 +239,7 @@ void JobModel::vJob_Monitor_show(Job* pJob)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* begin cat                                                                  */
+/* begin monitor                                                              */
 /*----------------------------------------------------------------------------*/
 bool Job_Monitor::bBegin(void)
 {
@@ -245,7 +247,7 @@ bool Job_Monitor::bBegin(void)
   
   m_pOutFile = new File;
   
-  if (m_bOutFile) {
+  if (m_bNamedFile) {
     if (! m_pOutFile->bOpenWrite(m_sFileName))
       return false;
   }
@@ -259,7 +261,7 @@ bool Job_Monitor::bBegin(void)
 /*----------------------------------------------------------------------------*/
 /* write a portrait of the queues to output                                   */
 /*----------------------------------------------------------------------------*/
-bool Job_Monitor::bChunk(void)
+bool Job_Monitor::bTake(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_MONITOR,_FOOTER_);
   
@@ -267,7 +269,7 @@ bool Job_Monitor::bChunk(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end cat                                                                    */
+/* end monitor                                                                */
 /*----------------------------------------------------------------------------*/
 void Job_Monitor::vEnd(void)
 {

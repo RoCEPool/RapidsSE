@@ -10,9 +10,9 @@ namespace JobModel
                       public JobFileName
   {
   public:
-    i8     m_iInterval;
-    bool   m_bOutFile;
-    File*  m_pOutFile; // optional output file
+    i8     m_iInterval;  // time between monitor takes
+    bool   m_bNamedFile; // named output file or stdout?
+    File*  m_pOutFile;   // output file
   
     // must be last
     Footer m_xFooter;
@@ -31,7 +31,7 @@ namespace JobModel
     void vShow(void);
   
     bool bBegin(void);
-    bool bChunk(void);
+    bool bTake(void);
     void vEnd(void);
 
   public:
