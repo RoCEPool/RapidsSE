@@ -239,7 +239,7 @@
 
   0 do
 
-    dup "task::dicStack.set %v" fmt.print
+    // dup "task::dicStack.set %v" fmt.print
 
     dup "<root>" str.equal if
       drop
