@@ -271,9 +271,16 @@ bool Job_Monitor::bTake(void)
   
   s48K sPortrait;
   s48K sRapidsPortrait;
-
-  sPortrait.vSprint("System Portrait %lld\n"_Stz,m_iTakeNo);
   
+  Now oNow;
+
+  //sPortrait = "\n"_Stz;
+  
+  //sPortrait.vConcat("------------------------------------------------\n"_Stz);
+  sPortrait.vSprint("\nSystem Monitor %lld %s\n"_Stz,
+                    m_iTakeNo,oNow.sFormatted());
+  sPortrait.vConcat("--------------------------------------------------\n"_Stz);
+
   RapidsSE::vPortrait(sRapidsPortrait);
   sPortrait.vConcat(sRapidsPortrait);
   
