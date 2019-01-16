@@ -265,7 +265,9 @@ bool Job_Monitor::bTake(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_MONITOR,_FOOTER_);
   
-  return false;
+  vTrace("Monitor...\n"_Stz);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

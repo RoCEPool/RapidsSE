@@ -546,6 +546,11 @@
   static void vJob_LoadTableFilePathFetch(Tasks::MP_Task mpTask);
   static void vJob_LoadTableTableStore(Tasks::MP_Task mpTask);
 
+  // job Monitor
+  static void vJob_MonitorBegin(Tasks::MP_Task mpTask);
+  static void vJob_MonitorTake(Tasks::MP_Task mpTask);
+  static void vJob_MonitorEnd(Tasks::MP_Task mpTask);
+
   // job NetHog
   static void vJob_NetHogHogNoFetch(Tasks::MP_Task mpTask);
 

@@ -61,6 +61,8 @@
 "Job_ListTenants.sen" include
 "Job_LoadTable.sen" include
 
+"Job_Monitor.sen" include
+
 "Job_NetHog.sen" include
 
 "Job_Periodic.sen" include
