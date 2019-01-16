@@ -156,14 +156,11 @@ void TaskList::vPortrait(s48K& sPortrait)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST);
 
-  s48K sWork;
-  
   sPortrait.vSprint("%s Portrait\n"_Stz,aQK[m_eKind]);
   
   vGrabLock();
   
-  sWork.vSprint("%lld tasks\n"_Stz,nObjects());
-  sPortrait.vConcat(sWork);
+  sPortrait.vSprintCat("%lld tasks\n"_Stz,nObjects());
   
   vDropLock();
 }

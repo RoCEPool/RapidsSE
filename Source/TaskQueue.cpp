@@ -213,14 +213,11 @@ void TaskQueue::vPortrait(s48K& sPortrait)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE);
   
-  s48K sWork;
-  
   sPortrait.vSprint("%s Portrait\n"_Stz,aQK[m_eKind]);
   
   vGrabLock();
   
-  sWork.vSprint("%lld tasks\n"_Stz,m_pTaskSkipList->nObjects());
-  sPortrait.vConcat(sWork);
+  sPortrait.vSprintCat("%lld tasks\n"_Stz,nTasks());
   
   vDropLock();
 }

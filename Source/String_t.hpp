@@ -355,7 +355,7 @@ void String_t<SIZE>::vSprintCat(Stz* aFormat, ...)
   va_list args;
   
   va_start(args,aFormat);
-  StrLib::vSprintCat(aChar(),aFormat->aChar(),args);
+  StrLib::vSprintCat(aChar(),args,aFormat->aChar());
   va_end(args);
 }
 
