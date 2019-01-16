@@ -20,15 +20,15 @@ print "";
 print "---------------------------------------------------------------------";
 print "removing the pipes...";
 print "---------------------------------------------------------------------";
-rmpipe "/tmp/sensorEvents.pipe";
-rmpipe "/tmp/sensorEvents.viaKafka";
+rmpipe "/tmp/sensorEvents.toKafka";
+rmpipe "/tmp/sensorEvents.toSE";
 
 print "";
 print "---------------------------------------------------------------------";
 print "making the pipe...";
 print "---------------------------------------------------------------------";
-mkpipe "/tmp/sensorEvents.pipe";
-mkpipe "/tmp/sensorEvents.viaKafka";
+mkpipe "/tmp/sensorEvents.toKafka";
+mkpipe "/tmp/sensorEvents.toSE";
 
 print "";
 print "---------------------------------------------------------------------";
@@ -39,9 +39,9 @@ nowait purge sensorEvents 3;
 
 nowait publish sensorEvents "/tmp/sensorEvents.rowAgg" ;
 
-nowait repeater "/rapids/sensorEvents.csv" "/tmp/sensorEvents.viaKafka" ;
+nowait repeater "/rapids/sensorEvents.csv" "/tmp/sensorEvents.toKafka" ;
 
-nowait ingest sensorEvents "/tmp/sensorEvents.pipe" stats ;
+nowait ingest sensorEvents "/tmp/sensorEvents.toSE" stats ;
 
 /*============================================================================*/
 /* end                                                                        */
