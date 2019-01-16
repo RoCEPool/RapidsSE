@@ -266,6 +266,19 @@ bool StrLib::bContains(char* s, const char* sArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy src into dst, return bytes copied including '\0' terminator           */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::nCopy(char* psDst, const char* psSrc)
+{
+  i8 nBytes = 0;
+  
+  while ( (*psDst++ = *psSrc++))
+    nBytes++;
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* vCopy: copy src into dst                                                   */
 /*----------------------------------------------------------------------------*/
 void StrLib::vCopy(char* psDst, const char* psSrc)
