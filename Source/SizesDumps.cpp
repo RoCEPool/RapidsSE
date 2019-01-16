@@ -382,7 +382,7 @@ i8 giClassSize[]
   /*    */ sizeof(Job_ListTables),     // CN_JOB_LISTTABLES
   /*    */ sizeof(Job_ListTenants),    // CN_JOB_LISTTENANTS
   /*    */ sizeof(Job_LoadTable),      // CN_JOB_LOADTABLE
-  /*    */ sizeof(Job_NetHog),         // CN_JOB_MONITOR
+  /*    */ sizeof(Job_Monitor),        // CN_JOB_MONITOR
   /*    */ sizeof(Job_NetHog),         // CN_JOB_NETHOG
   /*    */ sizeof(Job_NodeInfo),       // CN_JOB_NODEINFO
   /*    */ sizeof(Job_Periodic),       // CN_JOB_PERIODIC

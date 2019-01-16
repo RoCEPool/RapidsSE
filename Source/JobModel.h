@@ -93,6 +93,8 @@ using namespace JobModel;
 #include "Job_ListTenants.hpp"
 #include "Job_LoadTable.hpp"
 
+#include "Job_Monitor.hpp"
+
 #include "Job_NetHog.hpp"
 #include "Job_NodeInfo.hpp"
 
