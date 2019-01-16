@@ -148,6 +148,7 @@ create table j10 (
   j10_key   INTEGER NOT NULL,
   j10_name  VARCHAR(32) NOT NULL
 );
+test::test7
 
 print "";
 print "=====================================================================";

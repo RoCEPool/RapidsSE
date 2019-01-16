@@ -313,7 +313,7 @@ Word* DicStack::pRemoveWord(s32& sName)
 /*----------------------------------------------------------------------------*/
 /* set dictionary stack from dictionary path                                  */
 /*----------------------------------------------------------------------------*/
-void DicStack::vSet(DicPath* pDicPath)
+void DicStack::vSetStack(DicPath* pDicPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   

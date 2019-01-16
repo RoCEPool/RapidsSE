@@ -1,0 +1,48 @@
+/*============================================================================*/
+/* _idk -- ingest testing (sensorEvents via Kafka)                            */
+/*============================================================================*/
+
+am "Running script: _idk";
+
+print "";
+print "---------------------------------------------------------------------";
+print "starting the cluster...";
+print "---------------------------------------------------------------------";
+startCluster;
+
+print "";
+print "---------------------------------------------------------------------";
+print "creating sensorEvents table...";
+print "---------------------------------------------------------------------";
+_sensorEvents;
+
+print "";
+print "---------------------------------------------------------------------";
+print "removing the pipes...";
+print "---------------------------------------------------------------------";
+rmpipe "/tmp/sensorEvents.toKafka";
+rmpipe "/tmp/sensorEvents.toSE";
+
+print "";
+print "---------------------------------------------------------------------";
+print "making the pipe...";
+print "---------------------------------------------------------------------";
+mkpipe "/tmp/sensorEvents.toKafka";
+mkpipe "/tmp/sensorEvents.toSE";
+
+print "";
+print "---------------------------------------------------------------------";
+print "ingesting sensoreEvents table...";
+print "---------------------------------------------------------------------";
+
+nowait purge sensorEvents 3;
+
+nowait publish sensorEvents "/tmp/sensorEvents.rowAgg" ;
+
+nowait repeater "/rapids/sensorEvents.csv" "/tmp/sensorEvents.toKafka" ;
+
+nowait ingest sensorEvents "/tmp/sensorEvents.toSE" stats ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
