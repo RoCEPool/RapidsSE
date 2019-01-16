@@ -154,6 +154,22 @@ void vTest6(void)
 /*----------------------------------------------------------------------------*/
 void vTest7(void)
 {
+  DicPath* pDicPath = new DicPath;
+
+  DicStack* pDicStack = new DicStack;
+
+  s32 sTableNm("j10"_Stz);
+  
+  s256 sDicPath("tenants.boray.catalogs.rapidsse.schemas.public.tables"_Stz);
+  
+  pDicPath->vSetPath(sDicPath);
+  pDicStack->vSetStack(pDicPath);
+  
+  Table* pTable = Table::pFindTable(pDicStack,sTableNm);
+  
+  delete pDicStack;
+  
+  delete pDicPath;
 }
 
 /*----------------------------------------------------------------------------*/

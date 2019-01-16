@@ -31,22 +31,16 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set task's dictionary stack from path in job
-"CF A" .
   pJob_Cf job.pushPath
-"CF B" .
   task::dicStack.set
-"CF C" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test for a ".." which will go up one folder
 
   // pop up one folder, but not into tenants
   sFolderNm ".." str.equal if
-"CF D" .
     pathCurrentFolder dic.name "tenants" str.equal not if pathDrop then
-"CF E" .
     savePath
-"CF F" .
     <<am <DONE_REQ>
     exit
   then
