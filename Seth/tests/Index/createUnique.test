@@ -69,7 +69,7 @@ failure contains: 'no such table'
 
 pwf;
 rows:
-  ('/tenants/boray/catalogs/rapidsse/schemas/public/tables/')
+  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
 
 // check existence of index
 lsidx T1;
@@ -81,7 +81,7 @@ failure contains: 'invalid index column'
 
 pwf;
 rows:
-  ('/tenants/boray/catalogs/rapidsse/schemas/public/tables/')
+  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
 
 // check existence of index
 lsidx T1;

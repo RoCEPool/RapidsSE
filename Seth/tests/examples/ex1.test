@@ -11,7 +11,7 @@ success
 // Example of expecting a single row with a single column to be returned.
 pwf;
 rows:
-  ('/tenants/boray/catalogs/rapidsse/schemas/public/tables/')
+  ('/tables/public/schemas/rapidsse/catalogs/boray/tenants/')
 
 // Example where we expect zero rows to be returned.
 lstbl;
