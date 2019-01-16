@@ -25,7 +25,6 @@ using namespace CorrectnessAlgebra;
 #include "Wsp.hpp"
 #include "Wsp_t.hpp"
 
-#include "NP.hpp"
 #include "MP.hpp"
 
 #include "String_t.hpp"

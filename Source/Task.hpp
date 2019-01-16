@@ -49,8 +49,6 @@ namespace Tasks
     /* 8 */ "ENUMS"_Stz,
   };
   
-  typedef NP<Task,CN_TASK> NP_Task;
-  
   class Task : public Object,
                public ListNode_t<Task>
   {

@@ -7,8 +7,6 @@
 
 namespace StorageEngine
 {
-  typedef NP<Task,CN_TASK> NP_Task;
-  
   class RapidsSE
   {
   private:

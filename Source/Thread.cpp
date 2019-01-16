@@ -73,7 +73,7 @@ Thread::Thread(void)
   m_pPosixThread = new PosixThread;
   m_pSemaphore   = new Semaphore;
 
-  m_npTask       = nullptr;
+  m_pTask       = nullptr;
 
   Thread* pThread = this;
   
@@ -217,27 +217,27 @@ void Thread::vLoop(void)
   for (;;) {
     
     // get next task
-    if (! *m_npTask && ! bQueuePeek()) {
+    if (! m_pTask && ! bQueuePeek()) {
       
       // wait upto 5ms to be given a signal
       vHandlerTimedWait();
       
       // attempt again if no task
-      if ( ! *m_npTask)
+      if ( ! m_pTask)
         continue;
     }
     
     // will have a task
-    ASSERT(*m_npTask);
+    ASSERT(*m_pTask);
     
     // call the task
     vTaskCall();
     
-    if (m_npTask->pJob() && m_npTask->pJob()->m_bMark)
-      m_npTask->vWriteMark("Return from task call:"_Stz);
+    if (m_pTask->pJob() && m_pTask->pJob()->m_bMark)
+      m_pTask->vWriteMark("Return from task call:"_Stz);
     
     // handle thread level event
-    Handlers::vThreadLoop(&m_npTask);
+    Handlers::vThreadLoop(&m_pTask);
   }
   
   NEVER_REACH;
@@ -318,10 +318,10 @@ void Thread::vExecuteTask(Task* pTask)
   RASSERT(TC_RUNNING == m_eThreadState);
   
   // thread should have no task
-  RASSERT(! *m_npTask);
+  RASSERT(! m_pTask);
   
   // set task to be executed
-  m_npTask = pTask;
+  m_pTask = pTask;
   
   //m_eThreadState = TC_RUNNING;
   
@@ -354,7 +354,7 @@ void Thread::vHandlerTimedWait(void)
   // under mutex lock
   
   // will not have a task
-  ASSERT(! *m_npTask);
+  ASSERT(! *m_pTask);
   
   // this thread's mutex should be locked
   ASSERT(m_pSemaphore->bMutexIsLocked());
@@ -373,9 +373,9 @@ void Thread::vHandlerTimedWait(void)
   ASSERT(m_pSemaphore->bMutexIsLocked());
   
   // will have a task
-  //ASSERT(*m_npTask);
+  //ASSERT(*m_pTask);
   
-  if (*m_npTask)
+  if (m_pTask)
     m_eThreadState = TC_RUNNING;
 }
 
@@ -436,7 +436,7 @@ bool Thread::bQueuePeek(void)
   Task* pPoppedTask;
   bool bPopped = gpAttachMap->m_pQueues->bPopQueuedTask(&pPoppedTask,this);
   
-  m_npTask = pPoppedTask;
+  m_pTask = pPoppedTask;
   return bPopped;
 }
 
@@ -455,10 +455,10 @@ void Thread::vReExecuteTask(Task* pTask)
   RASSERT(TC_RUNNING == m_eThreadState);
   
   // thread should have no task
-  RASSERT(! *m_npTask);
+  RASSERT(! m_pTask);
   
   // set task to be executed
-  m_npTask = pTask;
+  m_pTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -553,7 +553,7 @@ void Thread::vTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_npTask = pTask;
+  m_pTask = pTask;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -564,28 +564,28 @@ void Thread::vTaskCall(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_eThreadState = TC_RUNNING;
-  ASSERT(*m_npTask);
+  ASSERT(*m_pTask);
   
-  PosixThread::vTlsSet(giTLS_TaskKey,*m_npTask);
+  PosixThread::vTlsSet(giTLS_TaskKey,m_pTask);
   ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
   
-  m_npTask->vState(TS_EXECUTING);
-  m_npTask->vThread(this);
+  m_pTask->vState(TS_EXECUTING);
+  m_pTask->vThread(this);
   
   // TODO: shouldn't have to refind it everytime!!!
-  m_npTask->vRefindJobClass();
+  m_pTask->vRefindJobClass();
   
-  if ( ! m_npTask->bSeeded() ) {
-    m_npTask->vSeedJob();
+  if ( ! m_pTask->bSeeded() ) {
+    m_pTask->vSeedJob();
   }
   
   // add this task to the executing task queue
-  gpAttachMap->m_pQueues->vAddToExecutingSet(*m_npTask);
+  gpAttachMap->m_pQueues->vAddToExecutingSet(m_pTask);
   
   // record time of call
   // ...
   
-  m_npTask->vTaskLoop();
+  m_pTask->vTaskLoop();
 
   // record time of return & calculate running total times
   // ...

@@ -78,7 +78,7 @@ void Handlers::vSpawnedTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 /* thread loop handler                                                        */
 /*----------------------------------------------------------------------------*/
-void Handlers::vThreadLoop(NP_Task* pNpTask)
+void Handlers::vThreadLoop(Task** ppTask)
 {
   //
   // this handler is called from Thread::vLoop()
@@ -87,8 +87,8 @@ void Handlers::vThreadLoop(NP_Task* pNpTask)
   
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  Task* pTask = **pNpTask;
-  *pNpTask = nullptr;
+  Task* pTask = *ppTask;
+  *ppTask = nullptr;
   
   // first remove this task from the running queue
   pQueues->vRemoveFromExecutingSet(pTask);

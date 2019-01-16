@@ -10,7 +10,7 @@ namespace Threads
   public:
     static void vAckTask(Task* pTaskBeingAcked, Task* pTaskAcking);
     static void vSpawnedTask(Task* pTask);
-    static void vThreadLoop(NP_Task* pNpTask);
+    static void vThreadLoop(Task** ppTask);
   };
 }
 

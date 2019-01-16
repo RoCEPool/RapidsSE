@@ -76,7 +76,7 @@ namespace Threads
     eTC          m_eThreadState; // thread state
     PosixThread* m_pPosixThread; // its posix structure
     Semaphore*   m_pSemaphore;   // this threads semaphore
-    NP_Task      m_npTask;       // task current being executed
+    Task*        m_pTask;        // task current being executed
                                  //   note that while task is being exected
                                  //   its not in task set
   
