@@ -83,8 +83,9 @@ eEC RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
     
     // wait for all record buffers to be copied across
-    while (pJob_SubInserter->m_nRecordBuffers != *pJob_SubInserter->m_ziCopiedBuffers)
-      ;
+    while (*pJob_SubInserter->m_ziRecordBuffers != *pJob_SubInserter->m_ziCopiedBuffers) {
+      //vTrace("Waiting %lld %lld\n"_Stz, *pJob_SubInserter->m_ziRecordBuffers, *pJob_SubInserter->m_ziCopiedBuffers);
+    }
     
     // get the insertTable job from the insertRows job
     Job_InsertTable* pJob_InsertTable = pJob_SubInserter->m_pJob_InsertTable;
@@ -765,7 +766,7 @@ eEC RapidsSE_InsertBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     // get the record buffer
     RecordBuffer* pRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
     
-    //pRecordBuffer->vShow();
+    pRecordBuffer->vShow();
     
     // for each record in the record buffer
     char* aRecord = nullptr;
@@ -877,11 +878,13 @@ eEC RapidsSE_InsertBuffer2(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     // get the insertRow job
     Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
     
-    if ( ! pJob_SubInserter->m_pRecordBuffer )
-      pJob_SubInserter->m_pRecordBuffer = new RecordBuffer;
-    
     // get the record buffer
     RecordBuffer* pRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
+    
+    if ( ! pRecordBuffer ) {
+      TRACE_EXIT("ea"_Stz);
+      return EC_NONE;
+    }
     
     // create Job_InsertTable
     JobClass* pJobClass_CopyBuffer = JobClass::pFind(CN_JOB_COPYBUFFER);
@@ -894,7 +897,7 @@ eEC RapidsSE_InsertBuffer2(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     
     // move the recordBuffer from the subInsert into CopyBuffer
     pJob_CopyBuffer->m_pRecordBuffer = pRecordBuffer;
-    pJob_SubInserter->m_nRecordBuffers++;
+    ++pJob_SubInserter->m_ziRecordBuffers;
     pJob_SubInserter->m_pRecordBuffer = nullptr;
     
     // push the InsertTable job onto the jobstack
@@ -907,7 +910,7 @@ eEC RapidsSE_InsertBuffer2(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     RapidsSE_bSpawnJob(pJob_CopyBuffer, SS_SEED_REQ, pSession);
     
     // trace exit
-    TRACE_EXIT("ea"_Stz);
+    TRACE_EXIT("eb"_Stz);
     vApiReturn(pSession);                                          // API RETURN
     vApiLocation(pSession,900);
     ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);

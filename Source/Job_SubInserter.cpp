@@ -107,6 +107,8 @@ Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
+  m_oLock.vInitLock(LK_ENTRYBUFFER);
+  
   // set the enclosined_by to be a '
   m_oFormatters.m_bDefault = false;
   m_oFormatters.m_bAllowNonPrintable = true;
@@ -123,8 +125,8 @@ Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
   m_pJob_InsertTable->m_pJobSubInserter = this;
   
   m_pRecordBuffer = nullptr;
-  m_nRecordBuffers = 0;
   
+  m_ziRecordBuffers.vCheckInit();
   m_ziCopiedBuffers.vCheckInit();
   
   _checkInitialised_(CN_JOB_SUBINSERTER);
@@ -174,6 +176,16 @@ void Job_SubInserter::vBegin(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void Job_SubInserter::vDropWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
+  
+  m_oLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* end inserting                                                              */
 /*----------------------------------------------------------------------------*/
 void Job_SubInserter::vEnd(void)
@@ -181,6 +193,16 @@ void Job_SubInserter::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
   vHandleDanglingBuffers();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock for write                                                        */
+/*----------------------------------------------------------------------------*/
+void Job_SubInserter::vGrabWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
+  
+  m_oLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/

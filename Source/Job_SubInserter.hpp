@@ -14,7 +14,8 @@ namespace JobModel
   public:
     Job_InsertTable* m_pJob_InsertTable;      // insert table job
     RecordBuffer*    m_pRecordBuffer;         // record buffer
-    i8               m_nRecordBuffers;        // record buffers to copy
+    Lock             m_oLock;                 // lock
+    Atomic           m_ziRecordBuffers;       // record buffers to copy
     Atomic           m_ziCopiedBuffers;       // copied record buffers
     
     // must be last
@@ -32,7 +33,9 @@ namespace JobModel
 
   public:
     void vBegin(Table* pTable);
+    void vDropWrite(void);
     void vEnd(void);
+    void vGrabWrite(void);
     bool bPopulateJob(TokenVec* pTokenVec);
 
     void vShow(void);

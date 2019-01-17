@@ -151,6 +151,9 @@ void Job_CopyBuffer::vCopy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_COPYBUFFER,_FOOTER_);
   
+  //m_pRecordBuffer->vShow();
+  //MemLib::vHexDump(m_pRecordBuffer, 500);
+  
   // for each record in the record buffer
   char* aRecord = nullptr;
   
@@ -165,25 +168,31 @@ void Job_CopyBuffer::vCopy(void)
     if (uRecordLength > C_MAX_RECORD) {
       //eErrorCode = EC_MAX_ROW_LENGTH;
       //return eErrorCode;
-      RASSERT(0);
+      //RASSERT(0);
+      continue;
     }
     
     // format the row
     bool bBlankLine;
     Stz* aData = aAdd<Stz*>(aRecord, 4);
-    //vTrace("Inserting row %lld %s\n"_Stz, uRecordLength, aData);
+    
+    m_pJob_SubInserter->vGrabWrite();
     bool bValid = m_pJob_SubInserter->bFormatRow(aData, uRecordLength, bBlankLine);
     
     // is the record invalid ?
     if (! bValid) {
-      RASSERT(0);
+      vTrace("Error inserting row %lld %s\n"_Stz, uRecordLength, aData);
+      //RASSERT(0);
       //eErrorCode = EC_INVALID_VALUE;
       //return eErrorCode;
+      m_pJob_SubInserter->vDropWrite();
+      continue;
     }
     
     // insert row into a working buffer in job InsertRow
     eEC eErrorCode = m_pJob_SubInserter->eInsertRow();
     RASSERT(eErrorCode == EC_NONE);
+    m_pJob_SubInserter->vDropWrite();
   }
   
   ++m_pJob_SubInserter->m_ziCopiedBuffers;
