@@ -59,7 +59,7 @@ namespace Forth
     StrVal* aNestedStrVal(void);
     Value*  aNestedValue(void);
 
-    void    vToString(Stz* aStz);
+    void    vGetString(Stz* aStz);
     char*   aWspArea(void);
   
     Footer* aFooter(void);

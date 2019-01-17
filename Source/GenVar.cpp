@@ -282,7 +282,7 @@ Value* GenVar::aNestedValue(void)
 /*----------------------------------------------------------------------------*/
 /* get string                                                                 */
 /*----------------------------------------------------------------------------*/
-void GenVar::vToString(Stz* zxStz)
+void GenVar::vGetString(Stz* zxStz)
 {
   *zxStz = reinterpret_cast<void*>(aNestedValue());
 }

@@ -112,7 +112,7 @@ void Stack::vContentDump(Stz* aPrefix, Stz* aTitle)
     
     vPeekValue(iVal,xVariable);
     
-    xVariable.vToString(sString);
+    xVariable.vGetString(sString);
     
     Value* aNestedValue = xVariable.aNestedValue();
     eCN eClass = aNestedValue->eClass();
