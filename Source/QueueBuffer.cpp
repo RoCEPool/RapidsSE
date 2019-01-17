@@ -6,6 +6,10 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 QueueBuffer* Structures::_pQueueBuffer(void* aAddr)
@@ -64,12 +68,21 @@ QueueBuffer::~QueueBuffer(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value to this queue                                                 */
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-bool QueueBuffer::bAppend(Value* aValue)
+
+/*----------------------------------------------------------------------------*/
+/* attempt to append object pointer to this queue buffer                      */
+/*----------------------------------------------------------------------------*/
+bool QueueBuffer::bAppend(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
+  PtrVal xPtrVal;
+  xPtrVal = pObject;
+  
+  Value* aValue = &xPtrVal;
+
   i8 nBytes = aValue->nSize();
   
   Stz* aFinalByteOfValue = aAdd<Stz*>(m_aNextFree,nBytes-1);
@@ -147,20 +160,22 @@ void QueueBuffer::vNext(QueueBuffer* pQbuffer)
 /*----------------------------------------------------------------------------*/
 /* pop value from this queue (there may not be any)                           */
 /*----------------------------------------------------------------------------*/
-bool QueueBuffer::bPop(Forth::GenVar* pValWrk, bool& bDiscardable)
+Object* QueueBuffer::pPop(bool& bDiscardable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
-
+  
   bDiscardable = false;
   
   if (0 == m_nValues) {
     //ASSERT(m_aTopValue == m_aNextFree);
-    return false;
+    return nullptr;
   }
   
   i8 nBytes = m_aTopValue->nSize();
-
-  MemLib::vCopy(pValWrk->aNestedValue(),m_aTopValue,nBytes,CN_QUEUEBUFFER);
+  ASSERT(nBytes == sizeof(PtrVal));
+  
+  //MemLib::vCopy(pValWrk->aNestedValue(),m_aTopValue,nBytes,CN_QUEUEBUFFER);
+  Object* pObject = _aPtrVal(m_aTopValue)->pObj();
   
   //m_aTopValue = pNextValue(m_aTopValue);
   m_aTopValue = aAdd<Value*>(m_aTopValue,nBytes);
@@ -177,11 +192,11 @@ bool QueueBuffer::bPop(Forth::GenVar* pValWrk, bool& bDiscardable)
     }
   }
   
-  return true;
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/

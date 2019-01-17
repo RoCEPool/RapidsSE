@@ -18,7 +18,7 @@ namespace Structures
     i8     m_nValues;     // number of values in the queue
     Value* m_aTopValue;   // the top value
     Value* m_aNextFree;   // free space pointer
-    QueueBuffer* m_pNext; // next buffer
+    QueueBuffer* m_pNext; // next buffer in chain
     // ..data..
     
   public:
@@ -30,12 +30,12 @@ namespace Structures
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
-    bool     bAppend(Value* aValue);
+    bool     bAppend(Object* pObject);
     i8       iCount(void);
     void     vContentDump(Stz* aTab);
     QueueBuffer* pNext(void);
     void     vNext(QueueBuffer* pQbuffer);
-    bool     bPop(Forth::GenVar* pValWrk, bool& bDiscard);
+    Object*  pPop(bool& bDiscard);
 
   private:
     Value*   aFirstValue(void);

@@ -85,9 +85,6 @@ void Queue::vAppend(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  PtrVal xPtrVal;
-  xPtrVal = pObject;
-  
   m_oLock.vGrabWrite();
   
   if ( ! m_pEndBuffer ) {
@@ -97,11 +94,11 @@ void Queue::vAppend(Object* pObject)
   }
   
   // atempt to add into
-  bool bAppended = m_pEndBuffer->bAppend(&xPtrVal);
+  bool bAppended = m_pEndBuffer->bAppend(pObject);
   
   if ( ! bAppended ) {
     vExpand();
-    bool b = m_pEndBuffer->bAppend(&xPtrVal);
+    bool b = m_pEndBuffer->bAppend(pObject);
     ASSERT(b);
   }
   
@@ -234,27 +231,21 @@ Object* Queue::pPop(void)
   // attempt to pop a pointer from top buffer,
   // buffer may be empty
   bool bDiscardable;
-  bool bPopped = m_pTopBuffer->bPop(&xValWrk,bDiscardable);
-  
+  Object* pObject = m_pTopBuffer->pPop(bDiscardable);
+
   // is the top buffer discardable?
   if (bDiscardable) {
-    ASSERT(bPopped);
+    ASSERT(pObject);
     vDiscard();
   }
   
   // a pointer was popped from a buffer,
   // therefore reduce the total number of object pointers in the queue
-  if (bPopped)
+  if (pObject)
     m_iCount--;
   ASSERT(m_iCount >= 0);
   
   m_oLock.vDropWrite();
-  
-  // return the object pointer popped from the top buffer
-  if (! bPopped)
-    return nullptr;
-  
-  Object* pObject = xValWrk.aNestedPtrVal()->pObj();
   
   return pObject;
 }
