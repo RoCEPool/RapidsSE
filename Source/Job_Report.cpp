@@ -37,8 +37,8 @@ JobClass xJobClass_Report =
   
   // help and example
   true,
-  "report <inPipeNm> <outPipeNm>"_Stz,
-  "report \"/rapids/SensorPipe\" \"/rapids/Stage1Pipe\";"_Stz,
+  "[report <tableNm> <inPipeNm> [<outPipeNm>]"_Stz,
+  "report sensorEvents\"/rapids/SensorPipe\" \"/rapids/Stage1Pipe\";"_Stz,
 
   { 0, 0, 0, 0 ,0, 0 } // seeds spawned
 };
@@ -188,17 +188,20 @@ Job* JobModel::pJob_Report_pre(Interface::Session* pSession)
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();
 
-  // there should be at least 2 tokens
-  if (nTokens < 2)
+  // there should be at least 3 tokens
+  if (nTokens < 3)
     return pJob_Report;
 
+  // set the table name
+  pJob_Report->m_sObjectName = pTknVec->pGet(1)->aText();
+
   // set the input file name
-  pJob_Report->m_sFileName = pTknVec->pGet(1)->sText();
+  pJob_Report->m_sFileName = pTknVec->pGet(2)->sText();
   
   // set the output file name
   if (3 <= nTokens) {
     pJob_Report->m_bNamedOut = true;
-    pJob_Report->m_sOutputPath = pTknVec->pGet(2)->sText();
+    pJob_Report->m_sOutputPath = pTknVec->pGet(3)->sText();
   }
   
   return pJob_Report;
