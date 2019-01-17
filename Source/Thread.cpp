@@ -228,7 +228,7 @@ void Thread::vLoop(void)
     }
     
     // will have a task
-    ASSERT(*m_pTask);
+    ASSERT(m_pTask);
     
     // call the task
     vTaskCall();
@@ -354,7 +354,7 @@ void Thread::vHandlerTimedWait(void)
   // under mutex lock
   
   // will not have a task
-  ASSERT(! *m_pTask);
+  ASSERT(! m_pTask);
   
   // this thread's mutex should be locked
   ASSERT(m_pSemaphore->bMutexIsLocked());
@@ -564,7 +564,7 @@ void Thread::vTaskCall(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_eThreadState = TC_RUNNING;
-  ASSERT(*m_pTask);
+  ASSERT(m_pTask);
   
   PosixThread::vTlsSet(giTLS_TaskKey,m_pTask);
   ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
