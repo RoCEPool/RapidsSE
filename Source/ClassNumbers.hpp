@@ -137,6 +137,7 @@ enum eCN : u2 // Class Number
   /* 108 */ CN_JOB_PWF,
   /* 109 */ CN_JOB_RECEIVER,
   /*     */ CN_JOB_REPEATER,
+  /*     */ CN_JOB_REPORT,
   /* 110 */ CN_JOB_SANITY,
   /*     */ CN_JOB_SELECTTABLE,
   /* 111 */ CN_JOB_SHOWCLUSTER,
@@ -386,6 +387,7 @@ static Stz* aCN[]
   /* 108 */ "JOB_PWF"_Stz,             // CN_JOB_PWF
   /* 109 */ "JOB_RECEIVER"_Stz,        // CN_JOB_RECEIVER
   /*     */ "JOB_REPEATER"_Stz,        // CN_JOB_REPEATER
+  /*     */ "JOB_REPORT"_Stz,          // CN_JOB_REPORT
   /* 110 */ "JOB_SELECTTABLE"_Stz,     // CN_JOB_SELECTTABLE
   /*     */ "JOB_SANITY"_Stz,          // CN_JOB_SANITY
   /* 111 */ "JOB_SHOWCLUSTER"_Stz,     // CN_JOB_SHOWCLUSTER
