@@ -78,19 +78,14 @@ bool QueueBuffer::bAppend(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  PtrVal xPtrVal;
-  xPtrVal = pObject;
-  
-  Value* aValue = &xPtrVal;
-
-  i8 nBytes = aValue->nSize();
+  i8 nBytes = sizeof(Object*);
   
   Stz* aFinalByteOfValue = aAdd<Stz*>(m_aNextFree,nBytes-1);
   
   if (aFinalByteOfValue > Buffer::aLastUsableByte())
     return false;
   
-  MemLib::vCopy(m_aNextFree,aValue,nBytes,CN_QUEUEBUFFER);
+  * (Value**)m_aNextFree = (Value*)pObject;
   
   m_aNextFree = aAdd<Value*>(m_aNextFree,nBytes);
   
@@ -98,6 +93,31 @@ bool QueueBuffer::bAppend(Object* pObject)
   
   return true;
 }
+/*----------------------------------------------------------------------------*/
+//bool QueueBuffer::bAppend(Object* pObject)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
+//
+//  PtrVal xPtrVal;
+//  xPtrVal = pObject;
+//
+//  Value* aValue = &xPtrVal;
+//
+//  i8 nBytes = aValue->nSize();
+//
+//  Stz* aFinalByteOfValue = aAdd<Stz*>(m_aNextFree,nBytes-1);
+//
+//  if (aFinalByteOfValue > Buffer::aLastUsableByte())
+//    return false;
+//
+//  MemLib::vCopy(m_aNextFree,aValue,nBytes,CN_QUEUEBUFFER);
+//
+//  m_aNextFree = aAdd<Value*>(m_aNextFree,nBytes);
+//
+//  m_nValues++;
+//
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get number of values in queue                                              */
@@ -171,22 +191,23 @@ Object* QueueBuffer::pPop(bool& bDiscardable)
     return nullptr;
   }
   
-  i8 nBytes = m_aTopValue->nSize();
-  ASSERT(nBytes == sizeof(PtrVal));
+  i8 nBytes = sizeof(Object*);
   
-  //MemLib::vCopy(pValWrk->aNestedValue(),m_aTopValue,nBytes,CN_QUEUEBUFFER);
-  Object* pObject = _aPtrVal(m_aTopValue)->pObj();
+  Object* pObject = * (Object**)m_aTopValue;
   
-  //m_aTopValue = pNextValue(m_aTopValue);
   m_aTopValue = aAdd<Value*>(m_aTopValue,nBytes);
   
   m_nValues--;
   
   if (0 == m_nValues) {
+    
+    // are the more queue buffers in the chain?
     if (m_pNext) {
+      // yes, therefore have this top buffer discarded
       bDiscardable = true;
     }
     else {
+      // no, therefore reuse this queue buffer
       m_aTopValue = aFirstValue();
       m_aNextFree = m_aTopValue;
     }
@@ -194,6 +215,41 @@ Object* QueueBuffer::pPop(bool& bDiscardable)
   
   return pObject;
 }
+/*----------------------------------------------------------------------------*/
+//Object* QueueBuffer::pPop(bool& bDiscardable)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
+//
+//  bDiscardable = false;
+//
+//  if (0 == m_nValues) {
+//    //ASSERT(m_aTopValue == m_aNextFree);
+//    return nullptr;
+//  }
+//
+//  i8 nBytes = m_aTopValue->nSize();
+//  ASSERT(nBytes == sizeof(PtrVal));
+//
+//  //MemLib::vCopy(pValWrk->aNestedValue(),m_aTopValue,nBytes,CN_QUEUEBUFFER);
+//  Object* pObject = _aPtrVal(m_aTopValue)->pObj();
+//
+//  //m_aTopValue = pNextValue(m_aTopValue);
+//  m_aTopValue = aAdd<Value*>(m_aTopValue,nBytes);
+//
+//  m_nValues--;
+//
+//  if (0 == m_nValues) {
+//    if (m_pNext) {
+//      bDiscardable = true;
+//    }
+//    else {
+//      m_aTopValue = aFirstValue();
+//      m_aNextFree = m_aTopValue;
+//    }
+//  }
+//
+//  return pObject;
+//}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
