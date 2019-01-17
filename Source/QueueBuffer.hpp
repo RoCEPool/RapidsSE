@@ -1,12 +1,7 @@
 /*============================================================================*/
-/* QueueBuffer.hpp -- Queue Buffer of Values                                  */
+/* QueueBuffer.hpp -- Queue Buffer of Object Pointers                         */
 /*============================================================================*/
 #pragma once
-
-namespace Forth
-{
-  class GenVar;
-}
 
 namespace Structures
 {
@@ -15,12 +10,12 @@ namespace Structures
     friend class Queue;
     
   private:
-    i8     m_nValues;     // number of values in the queue
-    Value* m_aTopValue;   // the top value
-    Value* m_aNextFree;   // free space pointer
-    QueueBuffer* m_pNext; // next buffer in chain
-    // ..data..
-    
+    i8       m_nPointers;     // number of pointers in this buffer
+    Object** m_ppTopObject;   // the top Object*
+    Object** m_ppNextFree;    // free space pointer
+  
+    QueueBuffer* m_pNext;     // next buffer in chain
+  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -38,8 +33,8 @@ namespace Structures
     Object*  pPop(bool& bDiscard);
 
   private:
-    Value*   aFirstValue(void);
-    Value*   aNextValue(Value* aValue);
+    Object** ppFirstPointer(void);
+    Object** ppNextPointer(Object** ppPointer);
     void     vVerify(void);
   };
   

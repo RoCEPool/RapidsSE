@@ -49,10 +49,10 @@ QueueBuffer::QueueBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  m_nValues   = 0;
-  m_aTopValue = aFirstValue();
-  m_aNextFree = m_aTopValue;
-  m_pNext     = nullptr;
+  m_nPointers     = 0;
+  m_ppTopObject = ppFirstPointer();
+  m_ppNextFree  = m_ppTopObject;
+  m_pNext       = nullptr;
   
   _checkInitialised_(CN_QUEUEBUFFER);
   
@@ -80,16 +80,16 @@ bool QueueBuffer::bAppend(Object* pObject)
   
   i8 nBytes = sizeof(Object*);
   
-  Stz* aFinalByteOfValue = aAdd<Stz*>(m_aNextFree,nBytes-1);
+  Stz* aFinalByteOfValue = aAdd<Stz*>(m_ppNextFree,nBytes-1);
   
   if (aFinalByteOfValue > Buffer::aLastUsableByte())
     return false;
   
-  * (Value**)m_aNextFree = (Value*)pObject;
+  * m_ppNextFree = pObject;
   
-  m_aNextFree = aAdd<Value*>(m_aNextFree,nBytes);
+  m_ppNextFree = aAdd<Object**>(m_ppNextFree,nBytes);
   
-  m_nValues++;
+  m_nPointers++;
   
   return true;
 }
@@ -114,7 +114,7 @@ bool QueueBuffer::bAppend(Object* pObject)
 //
 //  m_aNextFree = aAdd<Value*>(m_aNextFree,nBytes);
 //
-//  m_nValues++;
+//  m_nPointers++;
 //
 //  return true;
 //}
@@ -126,7 +126,7 @@ i8 QueueBuffer::iCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  return m_nValues;
+  return m_nPointers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,12 +136,12 @@ void QueueBuffer::vContentDump(Stz* aTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  vTrace("%sQueueBuffer: %p Count %lld TopValue %p NextFree %p\n"_Stz,
+  vTrace("%sQueueBuffer: %p Count %lld TopObject %p NextFree %p\n"_Stz,
          aTab,
          this,
-         m_nValues,
-         m_aTopValue,
-         m_aNextFree);
+         m_nPointers,
+         m_ppTopObject,
+         m_ppNextFree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,9 +152,9 @@ void QueueBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
   QueueBuffer* pQueueBuffer = _pQueueBuffer(pObject);
   
   vTrace("values %lld top %p next %p\n"_Stz,
-         pQueueBuffer->m_nValues,
-         pQueueBuffer->m_aTopValue,
-         pQueueBuffer->m_aNextFree);
+         pQueueBuffer->m_nPointers,
+         pQueueBuffer->m_ppTopObject,
+         pQueueBuffer->m_ppNextFree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,20 +186,20 @@ Object* QueueBuffer::pPop(bool& bDiscardable)
   
   bDiscardable = false;
   
-  if (0 == m_nValues) {
+  if (0 == m_nPointers) {
     //ASSERT(m_aTopValue == m_aNextFree);
     return nullptr;
   }
   
   i8 nBytes = sizeof(Object*);
   
-  Object* pObject = * (Object**)m_aTopValue;
+  Object* pObject = * m_ppTopObject;
   
-  m_aTopValue = aAdd<Value*>(m_aTopValue,nBytes);
+  m_ppTopObject = aAdd<Object**>(m_ppTopObject,nBytes);
   
-  m_nValues--;
+  m_nPointers--;
   
-  if (0 == m_nValues) {
+  if (0 == m_nPointers) {
     
     // are the more queue buffers in the chain?
     if (m_pNext) {
@@ -208,8 +208,8 @@ Object* QueueBuffer::pPop(bool& bDiscardable)
     }
     else {
       // no, therefore reuse this queue buffer
-      m_aTopValue = aFirstValue();
-      m_aNextFree = m_aTopValue;
+      m_ppTopObject = ppFirstPointer();
+      m_ppNextFree  = m_ppTopObject;
     }
   }
   
@@ -222,7 +222,7 @@ Object* QueueBuffer::pPop(bool& bDiscardable)
 //
 //  bDiscardable = false;
 //
-//  if (0 == m_nValues) {
+//  if (0 == m_nPointers) {
 //    //ASSERT(m_aTopValue == m_aNextFree);
 //    return nullptr;
 //  }
@@ -236,9 +236,9 @@ Object* QueueBuffer::pPop(bool& bDiscardable)
 //  //m_aTopValue = pNextValue(m_aTopValue);
 //  m_aTopValue = aAdd<Value*>(m_aTopValue,nBytes);
 //
-//  m_nValues--;
+//  m_nPointers--;
 //
-//  if (0 == m_nValues) {
+//  if (0 == m_nPointers) {
 //    if (m_pNext) {
 //      bDiscardable = true;
 //    }
@@ -258,28 +258,28 @@ Object* QueueBuffer::pPop(bool& bDiscardable)
 /*----------------------------------------------------------------------------*/
 /* first value in this qbuffer                                                */
 /*----------------------------------------------------------------------------*/
-Value* QueueBuffer::aFirstValue(void)
+Object** QueueBuffer::ppFirstPointer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  Value* aFirstValue = aAdd<Value*>(this,sizeof(QueueBuffer));
+  Object** ppFirstPointer = aAdd<Object**>(this,sizeof(QueueBuffer));
   
-  return aFirstValue;
+  return ppFirstPointer;
 }
 
 /*----------------------------------------------------------------------------*/
 /* next value in this qbuffer                                                 */
 /*----------------------------------------------------------------------------*/
-Value* QueueBuffer::aNextValue(Value* aValue)
+Object** QueueBuffer::ppNextPointer(Object** ppPointer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  i8 nBytes = aValue->nSize();
+  i8 nBytes = sizeof(Object*);
   
-  Value* aNextValue = ahAdd<Value*>(aValue,nBytes);
+  Object** ppNextPointer = aAdd<Object**>(ppPointer,nBytes);
   
-  if (aNextValue < m_aNextFree)
-    return aNextValue;
+  if (ppNextPointer < m_ppNextFree)
+    return ppNextPointer;
   else
     return nullptr;
 }
@@ -292,10 +292,12 @@ void QueueBuffer::vVerify(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   i8 iCount = 0;
-  for (Value* aValue = aFirstValue(); aValue; aValue = aNextValue(aValue))
+  for (Object** ppObject = ppFirstPointer();
+       ppObject;
+       ppObject = ppNextPointer(ppObject))
     iCount++;
   
-  ASSERT(iCount == m_nValues);
+  ASSERT(iCount == m_nPointers);
 }
 
 /*============================================================================*/
