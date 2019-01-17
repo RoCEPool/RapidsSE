@@ -74,7 +74,7 @@ Queue::~Queue(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append object pointer to this queue                                        */
 /*----------------------------------------------------------------------------*/
-bool Queue::bAppend(Object* pObject)
+void Queue::vAppend(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
@@ -101,8 +101,6 @@ bool Queue::bAppend(Object* pObject)
   m_iCount++;
   
   m_oLock.vDropWrite();
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,13 +210,13 @@ void Queue::vInitialize(void)
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
 //
 //  m_oLock.vGrabWrite();
-//  
+//
 //  if ( ! m_pTopBuffer ) {
 //    ASSERT( ! m_iCount );
 //    m_oLock.vDropWrite();
 //    return false;
 //  }
-//  
+//
 //  bool bDiscardable;
 //  bool bPopped = m_pTopBuffer->bPop(pValWrk,bDiscardable);
 //
@@ -226,12 +224,12 @@ void Queue::vInitialize(void)
 //    ASSERT(bPopped);
 //    vDiscard();
 //  }
-//  
+//
 //  if (bPopped)
 //    m_iCount--;
-//  
+//
 //  ASSERT(m_iCount >= 0);
-//  
+//
 //  m_oLock.vDropWrite();
 //
 //  return bPopped;
