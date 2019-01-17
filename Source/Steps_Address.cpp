@@ -102,22 +102,22 @@ void Step::vAddressStore(MP_Task mpTask)
   eCN eClass = pObject->eClass();
   
   switch (eClass) {
-    case CN_INTVAL:
-      *_aIntVal(aValue) = _aIntVal(xValStored.aNestedValue())->iInt();
+    case CN_FIPVAL:
+      *_aFipVal(aValue) = _aFipVal(xValStored.aNestedValue())->aIpPtr();
       break;
       
-    case CN_STRVAL:
-      _aStrVal(aValue)->vAssign( _aStrVal(xValStored.aNestedValue())->aStz() );
+    case CN_INTVAL:
+      *_aIntVal(aValue) = _aIntVal(xValStored.aNestedValue())->iInt();
       break;
       
     case CN_PTRVAL:
       *_aPtrVal(aValue) = _aPtrVal(xValStored.aNestedValue())->pObj();
       break;
       
-    case CN_FIPVAL:
-      *_aFipVal(aValue) = _aFipVal(xValStored.aNestedValue())->aIpPtr();
+   case CN_STRVAL:
+      _aStrVal(aValue)->vAssign( _aStrVal(xValStored.aNestedValue())->aStz() );
       break;
-  
+      
     default:
       THROW("Invalid eClass %lld"_Stz,eClass);
   }

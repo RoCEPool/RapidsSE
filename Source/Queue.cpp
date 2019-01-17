@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Structures.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -68,6 +69,40 @@ Queue::~Queue(void) noexcept(false)
   
   ASSERT( ! m_pEndBuffer );
   ASSERT( ! m_pTopBuffer );
+}
+
+/*----------------------------------------------------------------------------*/
+/* append object pointer to this queue                                        */
+/*----------------------------------------------------------------------------*/
+bool Queue::bAppend(Object* pObject)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  
+  PtrVal xPtrVal;
+  xPtrVal = pObject;
+  
+  m_oLock.vGrabWrite();
+  
+  if ( ! m_pEndBuffer ) {
+    ASSERT(0 == m_iCount);
+    // need to add first buffer
+    vExpand();
+  }
+  
+  // atempt to add into
+  bool bAppended = m_pEndBuffer->bAppend(&xPtrVal);
+  
+  if ( ! bAppended ) {
+    vExpand();
+    bool b = m_pEndBuffer->bAppend(&xPtrVal);
+    ASSERT(b);
+  }
+  
+  m_iCount++;
+  
+  m_oLock.vDropWrite();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,6 +247,52 @@ bool Queue::bPop(Forth::GenVar* pValWrk)
   m_oLock.vDropWrite();
 
   return bPopped;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from this queue (there may not be any)                           */
+/*----------------------------------------------------------------------------*/
+Object* Queue::pPop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  
+  Forth::GenVar xValWrk;
+  
+  m_oLock.vGrabWrite();
+  
+  // are there queue buffers?
+  if (! m_pTopBuffer) {
+    ASSERT(! m_iCount);
+    m_oLock.vDropWrite();
+    return nullptr;
+  }
+  
+  // attempt to pop a pointer from top buffer,
+  // buffer may be empty
+  bool bDiscardable;
+  bool bPopped = m_pTopBuffer->bPop(&xValWrk,bDiscardable);
+  
+  // is the top buffer discardable?
+  if (bDiscardable) {
+    ASSERT(bPopped);
+    vDiscard();
+  }
+  
+  // a pointer was popped from a buffer,
+  // therefore reduce the total number of object pointers in the queue
+  if (bPopped)
+    m_iCount--;
+  ASSERT(m_iCount >= 0);
+  
+  m_oLock.vDropWrite();
+  
+  // return the object pointer popped from the top buffer
+  if (! bPopped)
+    return nullptr;
+  
+  Object* pObject = xValWrk.aNestedPtrVal()->pObj();
+  
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
