@@ -230,25 +230,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pop buffer off the buffer queue                                            */
-/*----------------------------------------------------------------------------*/
-: popBuffer ( ^pBufferQueue --  )
-
-  locals| pBufferQueue |
-
-  begin
-    pBufferQueue queue.pop ( value true | false )
-
-    // try again if no value
-    not while
-      //REQUST_LOOP2
-      //task.yield
-      //"waiting".
-      1 thread.sleep_ms
-  repeat
-;
-
-/*----------------------------------------------------------------------------*/
 /* get size of index                                                          */
 /*----------------------------------------------------------------------------*/
 : sizeIndex ( "<indexNm>" -- "<size>" )

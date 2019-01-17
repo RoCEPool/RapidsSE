@@ -371,9 +371,10 @@ void Step::vIndexExactKey(MP_Task mpTask)
         
         // Buffer is Full
         // put this FetchBuffer in session bufferQueue
-        xVariable = (Object*)pFetchBuffer;
-        pQueue->bAppend(xVariable.aNestedValue());
-        
+        //Q: xVariable = (Object*)pFetchBuffer;
+        //Q: pQueue->bAppend(xVariable.aNestedValue());
+        pQueue->bAppend(pFetchBuffer);
+
         // create another fetchBuffer for the results
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
@@ -410,9 +411,10 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  xVariable = (Object*)pFetchBuffer;
-  pQueue->bAppend(xVariable.aNestedValue());
-  
+  //Q: xVariable = (Object*)pFetchBuffer;
+  //Q: pQueue->bAppend(xVariable.aNestedValue());
+  pQueue->bAppend(pFetchBuffer);
+
   EXIT();
 }
 
@@ -716,9 +718,10 @@ void Step::vIndexLowerBound(MP_Task mpTask)
       
       // Buffer is Full;
       // put this tempEntryBuffer in session bufferQueue
-      xVariable = (Object*)pFetchBuffer;
-      pQueue->bAppend(xVariable.aNestedValue());
-      
+      //Q: xVariable = (Object*)pFetchBuffer;
+      //Q: pQueue->bAppend(xVariable.aNestedValue());
+      pQueue->bAppend(pFetchBuffer);
+
       // create another fetchBuffer for the results
       pFetchBuffer = new FetchBuffer(pTable, iSlot);
       
@@ -753,9 +756,10 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  xVariable = (Object*)pFetchBuffer;
-  pQueue->bAppend(xVariable.aNestedValue());
-  
+  //Q: xVariable = (Object*)pFetchBuffer;
+  //Q: pQueue->bAppend(xVariable.aNestedValue());
+  pQueue->bAppend(pFetchBuffer);
+
   EXIT();
 }
 
@@ -1093,8 +1097,9 @@ void Step::vIndexRange(MP_Task mpTask)
         
         // Buffer is Full
         // put this fetchBuffer in session bufferQueue
-        xVariable = (Object*)pFetchBuffer;
-        pQueue->bAppend(xVariable.aNestedValue());
+        //Q: xVariable = (Object*)pFetchBuffer;
+        //Q: pQueue->bAppend(xVariable.aNestedValue());
+        pQueue->bAppend(pFetchBuffer);
 
         // create another fetchBbuffer for the results
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
@@ -1139,9 +1144,10 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  xVariable = (Object*)pFetchBuffer;
-  pQueue->bAppend(xVariable.aNestedValue());
-  
+  //Q: xVariable = (Object*)pFetchBuffer;
+  //Q: pQueue->bAppend(xVariable.aNestedValue());
+  pQueue->bAppend(pFetchBuffer);
+
   EXIT();
 }
 
@@ -1198,8 +1204,9 @@ void Step::vIndexScan(MP_Task mpTask)
     pFetchBuffer->vIsLast(true);
     
     // put the buffer in the session bufferQueue
-    xVariable = (Object*)pFetchBuffer;
-    pQueue->bAppend(xVariable.aNestedValue());
+    //Q: xVariable = (Object*)pFetchBuffer;
+    //Q: pQueue->bAppend(xVariable.aNestedValue());
+    pQueue->bAppend(pFetchBuffer);
 
     EXIT();
     return;
@@ -1223,9 +1230,10 @@ void Step::vIndexScan(MP_Task mpTask)
       
       // Buffer is Full
       // put this FetchBuffer in session bufferQueue
-      xVariable = (Object*)pFetchBuffer;
-      pQueue->bAppend(xVariable.aNestedValue());
-      
+      //Q: xVariable = (Object*)pFetchBuffer;
+      //Q: pQueue->bAppend(xVariable.aNestedValue());
+      pQueue->bAppend(pFetchBuffer);
+
       // create another FetchBuffer for the results
       pFetchBuffer = new FetchBuffer(pTable, iSlot);
       
@@ -1261,9 +1269,10 @@ void Step::vIndexScan(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  xVariable = (Object*)pFetchBuffer;
-  pQueue->bAppend(xVariable.aNestedValue());
-  
+  //Q: xVariable = (Object*)pFetchBuffer;
+  //Q: pQueue->bAppend(xVariable.aNestedValue());
+  pQueue->bAppend(pFetchBuffer);
+
   EXIT();
 }
 
@@ -1632,9 +1641,10 @@ void Step::vIndexUpperBound(MP_Task mpTask)
         
         // Buffer is full
         // put this tempEntryBuffer in session bufferQueue
-        xVariable = (Object*)pFetchBuffer;
-        pQueue->bAppend(xVariable.aNestedValue());
-        
+        //Q: xVariable = (Object*)pFetchBuffer;
+        //Q: pQueue->bAppend(xVariable.aNestedValue());
+        pQueue->bAppend(pFetchBuffer);
+
         // create another result buffer for the results
         pFetchBuffer = new FetchBuffer(pTable, iSlot);
         
@@ -1673,9 +1683,10 @@ LastBuffer:
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // put the buffer in the session bufferQueue
-  xVariable = (Object*)pFetchBuffer;
-  pQueue->bAppend(xVariable.aNestedValue());
-  
+  //Q: xVariable = (Object*)pFetchBuffer;
+  //Q: pQueue->bAppend(xVariable.aNestedValue());
+  pQueue->bAppend(pFetchBuffer);
+
   EXIT();
 }
 

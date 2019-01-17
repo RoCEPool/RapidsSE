@@ -108,33 +108,33 @@ bool Queue::bAppend(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* append value to this queue                                                 */
 /*----------------------------------------------------------------------------*/
-bool Queue::bAppend(Value* aValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
-  
-  m_oLock.vGrabWrite();
-  
-  if ( ! m_pEndBuffer ) {
-    ASSERT(0 == m_iCount);
-    // need to add first buffer
-    vExpand();
-  }
-
-  // atempt to add into
-  bool bAppended = m_pEndBuffer->bAppend(aValue);
-  
-  if ( ! bAppended ) {
-    vExpand();
-    bool b = m_pEndBuffer->bAppend(aValue);
-    ASSERT(b);
-  }
-  
-  m_iCount++;
-  
-  m_oLock.vDropWrite();
-
-  return true;
-}
+//bool Queue::bAppend(Value* aValue)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+//
+//  m_oLock.vGrabWrite();
+//
+//  if ( ! m_pEndBuffer ) {
+//    ASSERT(0 == m_iCount);
+//    // need to add first buffer
+//    vExpand();
+//  }
+//
+//  // atempt to add into
+//  bool bAppended = m_pEndBuffer->bAppend(aValue);
+//
+//  if ( ! bAppended ) {
+//    vExpand();
+//    bool b = m_pEndBuffer->bAppend(aValue);
+//    ASSERT(b);
+//  }
+//
+//  m_iCount++;
+//
+//  m_oLock.vDropWrite();
+//
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get number of values in queue                                              */
@@ -207,36 +207,36 @@ void Queue::vInitialize(void)
 /*----------------------------------------------------------------------------*/
 /* pop value from this queue (there may not be any)                           */
 /*----------------------------------------------------------------------------*/
-bool Queue::bPop(Forth::GenVar* pValWrk)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
-
-  m_oLock.vGrabWrite();
-  
-  if ( ! m_pTopBuffer ) {
-    ASSERT( ! m_iCount );
-    m_oLock.vDropWrite();
-    return false;
-  }
-  
-  bool bDiscardable;
-  bool bPopped = m_pTopBuffer->bPop(pValWrk,bDiscardable);
-
-  if (bDiscardable) {
-    ASSERT(bPopped);
-    vDiscard();
-  }
-  
-  if (bPopped)
-    m_iCount--;
-  
-  ASSERT(m_iCount >= 0);
-  
-  m_oLock.vDropWrite();
-
-  return bPopped;
-}
-
+//bool Queue::bPopX(Forth::GenVar* pValWrk)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+//
+//  m_oLock.vGrabWrite();
+//  
+//  if ( ! m_pTopBuffer ) {
+//    ASSERT( ! m_iCount );
+//    m_oLock.vDropWrite();
+//    return false;
+//  }
+//  
+//  bool bDiscardable;
+//  bool bPopped = m_pTopBuffer->bPop(pValWrk,bDiscardable);
+//
+//  if (bDiscardable) {
+//    ASSERT(bPopped);
+//    vDiscard();
+//  }
+//  
+//  if (bPopped)
+//    m_iCount--;
+//  
+//  ASSERT(m_iCount >= 0);
+//  
+//  m_oLock.vDropWrite();
+//
+//  return bPopped;
+//}
+//
 /*----------------------------------------------------------------------------*/
 /* pop value from this queue (there may not be any)                           */
 /*----------------------------------------------------------------------------*/

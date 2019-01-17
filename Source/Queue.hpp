@@ -29,13 +29,13 @@ namespace Structures
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
 
     bool  bAppend(Object* pObject);
-    bool  bAppend(Value* aValue);
+    //bool  bAppend(Value* aValue);
     i8    iCount(void);
     void  vContentDump(Stz* aTab);
     void  vFinalize(void);
     void  vInitialize(void);
     Object* pPop(void);
-    bool  bPop(Forth::GenVar* pValWrk);
+    //bool  bPopX(Forth::GenVar* pValWrk);
     
   private:
     void vExpand(void);

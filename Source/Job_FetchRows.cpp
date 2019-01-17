@@ -418,12 +418,18 @@ void JobModel::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
   while ( nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers ) {
     
     // attempt to pop buffer off the buffer queue
-    if ( ! pJob_FetchRows->m_pBufferQueue->bPop(&xVariable) ) {
+//    if ( ! pJob_FetchRows->m_pBufferQueue->bPop(&xVariable) ) {
+//      PosixThread::vSleepMilli(1);
+//      continue;
+//    }
+//    PtrVal* aPtrVal = xVariable.aNestedPtrVal();
+//    pFetchBuffer = (FetchBuffer*)(aPtrVal->pObj());
+    
+    pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
+    if (! pFetchBuffer) {
       PosixThread::vSleepMilli(1);
       continue;
     }
-    PtrVal* aPtrVal = xVariable.aNestedPtrVal();
-    pFetchBuffer = (FetchBuffer*)(aPtrVal->pObj());
     
     if (pJob_FetchRows->m_bDisplay) {
       vIterateBuffer(pJob_FetchRows, pFetchBuffer);      
