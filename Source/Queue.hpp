@@ -34,7 +34,6 @@ namespace Structures
     void  vContentDump(Stz* aTab);
     void  vFinalize(void);
     void  vInitialize(void);
-    void  vLockName(Stz* aName);
     Object* pPop(void);
     bool  bPop(Forth::GenVar* pValWrk);
     

@@ -104,9 +104,6 @@ ENTRY("vQueueInit"_Stz);
   new(pQueue) Queue;
   
   Word* pQueueWord = Word::pToWord(pQueue);
-    
-  //pQueue->vLockName(pQueueWord->sName().aStz());
-
   
   EXIT();
 }
@@ -124,8 +121,6 @@ void Step::vQueueNew(MP_Task mpTask)
     THROW_INVALID_DSTACK("queue::new"_Stz);
   
   Queue* pQueue = new Queue();
-  
-  //pQueue->vLockName(sQueueName);
   
   mpTask->m_pDataStack->vPushPointer(pQueue);
   

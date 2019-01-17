@@ -205,18 +205,6 @@ void Queue::vInitialize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rename the lock                                                            */
-/*----------------------------------------------------------------------------*/
-void Queue::vLockName(Stz* aName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
-  
-  m_oLock.vInitLock(LK_QUEUE);
-  ASSERT(0); // shouldnt be called
-  //m_oLock.vInit(aName);
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop value from this queue (there may not be any)                           */
 /*----------------------------------------------------------------------------*/
 bool Queue::bPop(Forth::GenVar* pValWrk)
