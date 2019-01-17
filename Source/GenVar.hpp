@@ -44,24 +44,24 @@ namespace Forth
     void operator =(Bcd xBcd);
     void operator =(Bol xBol);
     void operator =(Dte xDte);
-    void operator =(d8 dFlt);
-    void operator =(i8 iInt);
-    void operator =(Ivl xIvl);
+    void operator =(d8  dFlt);
+    void operator =(i8  iInt);
+    void operator =(Ivl wIvl);
     void operator =(Object* pObject);
-    void operator =(Value* aValue);
+    void operator =(Value*  aValue);
     void operator =(Stz* aStr);
-    void operator =(Tme xTme);
-    void operator =(Tsp xTsp);
+    void operator =(Tme wTme);
+    void operator =(Tsp wTsp);
     
-    char*  aWspArea(void);
-    Value* aNestedValue(void);
-  
     i8      iNestedAsInt(void);
     IntVal* aNestedIntVal(void);
     PtrVal* aNestedPtrVal(void);
     StrVal* aNestedStrVal(void);
+    Value*  aNestedValue(void);
+
     void    vToString(Stz* aStz);
-    
+    char*   aWspArea(void);
+  
     Footer* aFooter(void);
   };
   

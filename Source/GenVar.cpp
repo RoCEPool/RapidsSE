@@ -5,6 +5,10 @@
 #include "Forth.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 GenVar* Forth::_pGenVar(void* aAddr)
@@ -56,43 +60,43 @@ GenVar::~GenVar(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a bcd into workspace                                           */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Bcd xBcd)
+void GenVar::operator =(Bcd wBcd)
 {
   BcdVal* aNestedBcdVal = (BcdVal*)aNestedValue();
   
   // set nested class
   aNestedBcdVal->vSetClass(CN_BCDVAL);
   
-  // assign int into the nested intval
-  *aNestedBcdVal = xBcd;
+  // put the bcd word into the nested bcdval
+  *aNestedBcdVal = wBcd;
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy a boolean into workspace                                       */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Bol xBol)
+void GenVar::operator =(Bol wBol)
 {
   BolVal* aNestedBolVal = (BolVal*)aNestedValue();
   
   // set nested class
   aNestedBolVal->vSetClass(CN_BOLVAL);
   
-  // assign int into the nested intval
-  *aNestedBolVal = xBol;
+  // put the bol word into the nested bolval
+  *aNestedBolVal = wBol;
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy a date into workspace                                          */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Dte xDte)
+void GenVar::operator =(Dte wDte)
 {
   DteVal* aNestedDteVal = (DteVal*)aNestedValue();
   
   // set nested class
   aNestedDteVal->vSetClass(CN_DTEVAL);
   
-  // assign int into the nested intval
-  *aNestedDteVal = xDte;
+  // put the dte word into the nested dteval
+  *aNestedDteVal = wDte;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +109,7 @@ void GenVar::operator =(d8 dFlt)
   // set nested class
   aNestedFltVal->vSetClass(CN_FLTVAL);
   
-  // assign flt into the nested fltval
+  // put the flt word into the nested fltval
   *aNestedFltVal = dFlt;
 }
 
@@ -119,110 +123,92 @@ void GenVar::operator =(i8 iInt)
   // set nested class
   aNestedIntVal->vSetClass(CN_INTVAL);
   
-  // assign int into the nested intval
+  // put the int word into the nested intval
   *aNestedIntVal = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy an interval into workspace                                     */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Ivl iIvl)
+void GenVar::operator =(Ivl wIvl)
 {
   IvlVal* aNestedIvlVal = (IvlVal*)aNestedValue();
   
   // set nested class
   aNestedIvlVal->vSetClass(CN_IVLVAL);
   
-  // assign int into the nested intval
-  *aNestedIvlVal = iIvl;
+  // put the ivl word into the nested ivlval
+  *aNestedIvlVal = wIvl;
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy a pointer into workspace                                       */
+/* assign/copy a pointer to a proper object into workspace                    */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Object* pPtr)
+void GenVar::operator =(Object* pObject)
 {
   PtrVal* aNestedPtrVal = (PtrVal*)aNestedValue();
   
   // set nested class
   aNestedPtrVal->vSetClass(CN_PTRVAL);
   
-  // assign ptr into the nested ptrval
-  *aNestedPtrVal = pPtr;
+  // put the pointer into the nested ptrval
+  *aNestedPtrVal = pObject;
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy a pointer into workspace                                       */
+/* assign/copy the address of a non-proper object instance into workspace     */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Value* aPtr)
+void GenVar::operator =(Value* aValue)
 {
   PtrVal* aNestedPtrVal = (PtrVal*)aNestedValue();
   
   // set nested class
   aNestedPtrVal->vSetClass(CN_PTRVAL);
   
-  // assign ptr into the nested ptrval
-  *aNestedPtrVal = aPtr;
+  // put the address into the nested ptrval
+  *aNestedPtrVal = aValue;
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy a string into workspace                                        */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Stz* pStr)
+void GenVar::operator =(Stz* aStz)
 {
   StrVal* aNestedStrVal = (StrVal*)aNestedValue();
   
   // set nested class
-  aNestedStrVal->vSetMagic();
   aNestedStrVal->vSetClass(CN_STRVAL);
   
-  aNestedStrVal->vAssign(pStr);
+  // copy the stz into the nested ptrval
+  aNestedStrVal->vAssign(aStz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign/copy an time into workspace                                         */
+/* assign/copy a time into workspace                                          */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Tme xTme)
+void GenVar::operator =(Tme wTme)
 {
   TmeVal* aNestedTmeVal = (TmeVal*)aNestedValue();
   
   // set nested class
   aNestedTmeVal->vSetClass(CN_TMEVAL);
   
-  // assign tme into the nested intval
-  *aNestedTmeVal = xTme;
+  // put the tme word into the nested tmeval
+  *aNestedTmeVal = wTme;
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign/copy an timestamp into workspace                                    */
 /*----------------------------------------------------------------------------*/
-void GenVar::operator =(Tsp xTsp)
+void GenVar::operator =(Tsp wTsp)
 {
   TspVal* aNestedTspVal = (TspVal*)aNestedValue();
   
   // set nested class
   aNestedTspVal->vSetClass(CN_TSPVAL);
   
-  // assign tsp into the nested intval
-  *aNestedTspVal = xTsp;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get wsp area                                                               */
-/*----------------------------------------------------------------------------*/
-char* GenVar::aWspArea(void)
-{
-  return m_xWsp.aArea();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get value in the wsp area                                                  */
-/*----------------------------------------------------------------------------*/
-Value* GenVar::aNestedValue(void)
-{
-  _precondition_(_MAGIC_);
-  
-  return (Value*)m_xWsp.aArea();
+  // put the tsp word into the nested tmeval
+  *aNestedTspVal = wTsp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,13 +223,13 @@ i8 GenVar::iNestedAsInt(void)
   
   IntVal* aNestedIntVal = reinterpret_cast<IntVal*>(aNestedValue());
   
-  i8 i = aNestedIntVal->iInt();
+  i8 iInt = aNestedIntVal->iInt();
   
-  return i;
+  return iInt;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get value in the wsp area                                                  */
+/* get address of the intval in the wsp area                                  */
 /*----------------------------------------------------------------------------*/
 IntVal* GenVar::aNestedIntVal(void)
 {
@@ -255,7 +241,7 @@ IntVal* GenVar::aNestedIntVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get value in the wsp area                                                  */
+/* get address of the ptrval in the wsp area                                  */
 /*----------------------------------------------------------------------------*/
 PtrVal* GenVar::aNestedPtrVal(void)
 {
@@ -267,7 +253,7 @@ PtrVal* GenVar::aNestedPtrVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get value in the wsp area                                                  */
+/* get address of the strval in the wsp area                                  */
 /*----------------------------------------------------------------------------*/
 StrVal* GenVar::aNestedStrVal(void)
 {
@@ -279,11 +265,34 @@ StrVal* GenVar::aNestedStrVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert to string                                                          */
+/* get address of the value in the wsp area                                   */
 /*----------------------------------------------------------------------------*/
-void GenVar::vToString(Stz* aStz)
+Value* GenVar::aNestedValue(void)
 {
-  *aStz = reinterpret_cast<void*>(aNestedValue());
+  _precondition_(_MAGIC_);
+ 
+  Value* aNestedValue = reinterpret_cast<Value*>(m_xWsp.aArea());
+
+  return aNestedValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get string                                                                 */
+/*----------------------------------------------------------------------------*/
+void GenVar::vToString(Stz* zxStz)
+{
+  *zxStz = reinterpret_cast<void*>(aNestedValue());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of wsp area                                                    */
+/*----------------------------------------------------------------------------*/
+char* GenVar::aWspArea(void)
+{
+  return m_xWsp.aArea();
 }
 
 /*----------------------------------------------------------------------------*/
