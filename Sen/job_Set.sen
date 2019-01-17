@@ -72,6 +72,7 @@
 "Job_Pwf.sen" include
 
 "Job_Repeater.sen" include
+"Job_Report.sen" include
 
 "Job_Sanity.sen" include
 "Job_SelectTable.sen" include
