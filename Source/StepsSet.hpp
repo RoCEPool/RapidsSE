@@ -500,7 +500,7 @@
   static void vJob_AnalyzeIndexIsDetailed(Tasks::MP_Task mpTask);
   static void vJob_AnalyzeTableIsDetailed(Tasks::MP_Task mpTask);
 
-  // job cat
+  // job Cat
   static void vJob_CatBegin(Tasks::MP_Task mpTask);
   static void vJob_CatChunk(Tasks::MP_Task mpTask);
   static void vJob_CatEnd(Tasks::MP_Task mpTask);
@@ -516,17 +516,17 @@
   static void vJob_FetchRowsTableStore(Tasks::MP_Task mpTask);
   static void vJob_FetchRowsWhereFetch(Tasks::MP_Task mpTask);
 
-  // job genData
+  // job GenData
   static void vJob_GenerateGenerate(Tasks::MP_Task mpTask);
   static void vJob_GenerateTableStore(Tasks::MP_Task mpTask);
 
-  // job ingest
+  // job Ingest
   static void vJob_IngestBegin(Tasks::MP_Task mpTask);
   static void vJob_IngestChunk(Tasks::MP_Task mpTask);
   static void vJob_IngestEnd(Tasks::MP_Task mpTask);
   static void vJob_IngestTableStore(Tasks::MP_Task mpTask);
 
-  // job insertRows
+  // job InsertRows
   static void vJob_CopyBufferCopy(Tasks::MP_Task mpTask);
 
   static void vJob_InsertRowPartitionFetch(Tasks::MP_Task mpTask);
@@ -562,50 +562,55 @@
   static void vJob_PublishSpawnSub(Tasks::MP_Task mpTask);
   static void vJob_PublishTableStore(Tasks::MP_Task mpTask);
 
-  // job purge
+  // job Purge
   static void vJob_PurgeSpawnSub(Tasks::MP_Task mpTask);
   static void vJob_PurgeTableStore(Tasks::MP_Task mpTask);
 
-  // job receiver
+  // job Receiver
   static void vJob_ReceiverConnNoFetch(Tasks::MP_Task mpTask);
   static void vJob_ReceiverConnNoStore(Tasks::MP_Task mpTask);
   static void vJob_ReceiverNodeFetch(Tasks::MP_Task mpTask);
   static void vJob_ReceiverNodeStore(Tasks::MP_Task mpTask);
 
-  // job repeater
+  // job Repeater
   static void vJob_RepeaterBegin(Tasks::MP_Task mpTask);
   static void vJob_RepeaterChunk(Tasks::MP_Task mpTask);
   static void vJob_RepeaterEnd(Tasks::MP_Task mpTask);
+
+  // job Report
+  static void vJob_ReportBegin(Tasks::MP_Task mpTask);
+  static void vJob_ReportTake(Tasks::MP_Task mpTask);
+  static void vJob_ReportEnd(Tasks::MP_Task mpTask);
 
   // job SelectTable
   static void vJob_SelectTablePartitionFetch(Tasks::MP_Task mpTask);
   static void vJob_SelectTableTableStore(Tasks::MP_Task mpTask);
 
-  // job sink
+  // job Sink
   static void vJob_SinkBegin(Tasks::MP_Task mpTask);
   static void vJob_SinkChunk(Tasks::MP_Task mpTask);
   static void vJob_SinkEnd(Tasks::MP_Task mpTask);
 
-  // Job subFetch
+  // job SubFetch
   static void vJob_SubFetchBufferQueueFetch(Tasks::MP_Task mpTask);
   static void vJob_SubFetchPhraseFetch(Tasks::MP_Task mpTask);
   static void vJob_SubFetchPlannerFetch(Tasks::MP_Task mpTask);
   static void vJob_SubFetchSlotFetch(Tasks::MP_Task mpTask);
 
-  // Job subIngester
+  // job SubIngester
   static void vJob_SubIngesterBegin(Tasks::MP_Task mpTask);
   static void vJob_SubIngesterChunk(Tasks::MP_Task mpTask);
   static void vJob_SubIngesterEnd(Tasks::MP_Task mpTask);
   static void vJob_SubIngesterJobIngest(Tasks::MP_Task mpTask);
   static void vJob_SubIngesterSpawn(Tasks::MP_Task mpTask);
 
-  // Job subLoader
+  // job SubLoader
   static void vJob_SubLoaderBegin(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderChunk(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderEnd(Tasks::MP_Task mpTask);
   static void vJob_SubLoaderSpawn(Tasks::MP_Task mpTask);
 
-  // job subPublish
+  // job SubPublish
   static void vJob_SubPublishBegin(Tasks::MP_Task mpTask);
   static void vJob_SubPublishChunk(Tasks::MP_Task mpTask);
   static void vJob_SubPublishEnd(Tasks::MP_Task mpTask);
@@ -613,7 +618,7 @@
   static void vJob_SubPublishTableStore(Tasks::MP_Task mpTask);
   static void vJob_SubPublishPublishJobIdFetch(Tasks::MP_Task mpTask);
 
-  // job subPurger
+  // job SubPurger
   static void vJob_SubPurgerBegin(Tasks::MP_Task mpTask);
   static void vJob_SubPurgerChunk(Tasks::MP_Task mpTask);
   static void vJob_SubPurgerEnd(Tasks::MP_Task mpTask);
@@ -621,11 +626,11 @@
   static void vJob_SubPurgerSlotFetch(Tasks::MP_Task mpTask);
   static void vJob_SubPurgerPurgeJobIdFetch(Tasks::MP_Task mpTask);
 
-  // Job subTruncate
+  // Job SubTruncate
   static void vJob_SubTruncateSlotFetch(Tasks::MP_Task mpTask);
   static void vJob_SubTruncateTruncateJobIdFetch(Tasks::MP_Task mpTask);
 
-  // Job truncate
+  // Job Truncate
   static void vJob_TruncateTableSpawnSub(Tasks::MP_Task mpTask);
 
   // Job WriteBuffer
