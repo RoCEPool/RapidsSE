@@ -53,8 +53,12 @@ Queue::Queue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  vInitialize();
+  m_oLock.vInitLock(LK_QUEUE);
   
+  m_iCount = 0;
+  m_pTopBuffer = nullptr;
+  m_pEndBuffer = nullptr;
+
   _checkInitialised_(CN_QUEUE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
@@ -67,6 +71,9 @@ Queue::~Queue(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
+  while (m_pTopBuffer)
+    vDiscard();
+    
   ASSERT( ! m_pEndBuffer );
   ASSERT( ! m_pTopBuffer );
 }
@@ -171,35 +178,6 @@ void Queue::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pQueue->m_iCount,
          pQueue->m_pTopBuffer,
          pQueue->m_pEndBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* finalize this queue                                                        */
-/*----------------------------------------------------------------------------*/
-void Queue::vFinalize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
-  
-  while (m_pTopBuffer)
-    vDiscard();
-  
-  ASSERT(!m_pTopBuffer);
-  ASSERT(!m_pEndBuffer);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* intialize this queue                                                       */
-/*----------------------------------------------------------------------------*/
-void Queue::vInitialize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
-  
-  m_oLock.vInitLock(LK_QUEUE);
-  
-  m_iCount = 0;
-  m_pTopBuffer = nullptr;
-  m_pEndBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

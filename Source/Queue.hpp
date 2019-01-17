@@ -32,8 +32,6 @@ namespace Structures
     //bool  bAppend(Value* aValue);
     i8    iCount(void);
     void  vContentDump(Stz* aTab);
-    void  vFinalize(void);
-    void  vInitialize(void);
     Object* pPop(void);
     //bool  bPopX(Forth::GenVar* pValWrk);
     

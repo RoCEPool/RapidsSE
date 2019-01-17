@@ -130,7 +130,7 @@ Job_FetchRows::~Job_FetchRows(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_FETCHROWS,_FOOTER_);
   
-  m_pBufferQueue->vFinalize();
+  //m_pBufferQueue->vFinalize();
   delete m_pBufferQueue;
   
   // in case excepton , we may not have deleted buffer
