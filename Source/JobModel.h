@@ -106,6 +106,7 @@ using namespace JobModel;
 
 #include "Job_Receiver.hpp"
 #include "Job_Repeater.hpp"
+#include "Job_Report.hpp"
 
 #include "Job_Sanity.hpp"
 #include "Job_SelectTable.hpp"

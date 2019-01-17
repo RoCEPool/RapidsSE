@@ -48,7 +48,7 @@ JobClass xJobClass_Repeater =
 /*----------------------------------------------------------------------------*/
 JobClass* JobModel::pJob_Repeater_class(pFUN** pNextFun)
 {
-  *pNextFun = (pFUN*)pJob_Sanity_class;
+  *pNextFun = (pFUN*)pJob_Report_class;
   
   return &xJobClass_Repeater;
 }
