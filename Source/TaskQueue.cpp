@@ -230,23 +230,45 @@ void TaskQueue::vPortrait(s48K& sPortrait)
   
   sPortrait.vSprintCat(" %lld "_Stz,m_pTaskSkipList->nObjects());
   
+  eCN eJobPrev = CN_NONE;
+  i8  nPrev = 0;
+  
   for (SkipNode* pNode = m_pTaskSkipList->pFirst(0);
        pNode;
        pNode = m_pTaskSkipList->pNext(pNode,0)) {
     
     Task* pTask = _pTask(pNode->m_pObject);
     
-    if (pNode == m_pTaskSkipList->pFirst(0))
-      sPortrait.vConcat(": "_Stz);
-    else
-      sPortrait.vConcat(" "_Stz);
+    if (pTask == _pTask(m_pTaskSkipList->pFirst(0)->m_pObject)) {
+      sPortrait.vConcat("- "_Stz);
+      pTask->vMonitorPortrait(sTaskPortrait);
+      sPortrait.vConcat(sTaskPortrait);
+      eJobPrev = pTask->pJob()->eClass();
+      nPrev = 0;
+      continue;
+    }
     
+    if (pTask->pJob()->eClass() == eJobPrev) {
+      nPrev++;
+      continue;
+    }
+    
+    if (nPrev) {
+      sPortrait.vSprintCat("+%lld"_Stz,nPrev);
+      nPrev = 0;
+    }
+    
+    sPortrait.vConcat(" "_Stz);
     pTask->vMonitorPortrait(sTaskPortrait);
-    
     sPortrait.vConcat(sTaskPortrait);
+    eJobPrev = pTask->pJob()->eClass();
   }
-  sPortrait.vConcat("\n"_Stz);
   
+  if (nPrev)
+    sPortrait.vSprintCat("+%lld"_Stz,nPrev);
+  
+  sPortrait.vConcat("\n"_Stz);
+
   vDropLock();
 
 }

@@ -33,6 +33,8 @@ print "---------------------------------------------------------------------";
 print "ingesting sensoreEvents table...";
 print "---------------------------------------------------------------------";
 
+nowait monitor;
+
 nowait purge sensorEvents 3;
 
 nowait publish sensorEvents "/tmp/sensorEvents.rowAgg" ;

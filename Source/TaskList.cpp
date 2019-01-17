@@ -164,17 +164,39 @@ void TaskList::vPortrait(s48K& sPortrait)
   
   sPortrait.vSprintCat(" %lld "_Stz,nObjects());
   
+  eCN eJobPrev = CN_NONE;
+  i8  nPrev = 0;
+  
   for (Task* pTask = pHead(); pTask; pTask = pTask->pNextNode()) {
     
-    if (pTask == pHead())
-      sPortrait.vConcat(": "_Stz);
-    else
-      sPortrait.vConcat(" "_Stz);
+    if (pTask == pHead()) {
+      sPortrait.vConcat("- "_Stz);
+      pTask->vMonitorPortrait(sTaskPortrait);
+      sPortrait.vConcat(sTaskPortrait);
+      eJobPrev = pTask->pJob()->eClass();
+      nPrev = 0;
+      continue;
+    }
+
+    if (pTask->pJob()->eClass() == eJobPrev) {
+      nPrev++;
+      continue;
+    }
     
+    if (nPrev) {
+      sPortrait.vSprintCat("+%lld"_Stz,nPrev);
+      nPrev = 0;
+    }
+    
+    sPortrait.vConcat(" "_Stz);
     pTask->vMonitorPortrait(sTaskPortrait);
-    
     sPortrait.vConcat(sTaskPortrait);
+    eJobPrev = pTask->pJob()->eClass();
   }
+  
+  if (nPrev)
+    sPortrait.vSprintCat("+%lld"_Stz,nPrev);
+
   sPortrait.vConcat("\n"_Stz);
 
   vDropLock();
