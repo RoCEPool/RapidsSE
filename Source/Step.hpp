@@ -116,7 +116,6 @@ namespace Steps
     static void vAddSteps_Process(void);
     static void vAddSteps_Push(void);
   
-    static void vAddSteps_Queue(void);
     static void vAddSteps_Queues(void);
   
     static void vAddSteps_RbCursor(void);

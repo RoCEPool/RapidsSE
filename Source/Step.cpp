@@ -130,7 +130,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Process();
   Step::vAddSteps_Push();
   
-  Step::vAddSteps_Queue();
   Step::vAddSteps_Queues();
   
   Step::vAddSteps_RbCursor();
