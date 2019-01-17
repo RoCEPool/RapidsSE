@@ -228,7 +228,7 @@ void TaskQueue::vPortrait(s48K& sPortrait)
   
   vGrabLock();
   
-  sPortrait.vSprintCat(" %lld "_Stz,m_pTaskSkipList->nObjects());
+  sPortrait.vSprintCat(" %2lld "_Stz,m_pTaskSkipList->nObjects());
   
   eCN eJobPrev = CN_NONE;
   i8  nPrev = 0;

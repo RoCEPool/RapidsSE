@@ -162,7 +162,7 @@ void TaskList::vPortrait(s48K& sPortrait)
   
   vGrabLock();
   
-  sPortrait.vSprintCat(" %lld "_Stz,nObjects());
+  sPortrait.vSprintCat(" %2lld "_Stz,nObjects());
   
   eCN eJobPrev = CN_NONE;
   i8  nPrev = 0;
