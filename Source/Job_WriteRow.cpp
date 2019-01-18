@@ -115,9 +115,6 @@ Job_WriteRow::Job_WriteRow(Interface::Session* pSession)
   m_iPartitionId = C_UNKNOWN;
   m_iParentJobId = C_UNKNOWN;
   
-  //m_aRecord
-  m_nRecordBytes = false;
-  
   // set the enclosed_by to be a '
   m_oFormatters.m_bDefault = false;
   m_oFormatters.m_cEnclosedBy_Leading = '\'';
@@ -152,7 +149,7 @@ void Job_WriteRow::vInsertRow(void)
 
   i8 iTxId = 0;
 
-  m_pTable->vInsertRow(iTxId, iSlot, m_aRecord, m_nRecordBytes);
+  m_pTable->vInsertRow(iTxId, iSlot, m_aRow, m_nRowBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -190,7 +187,7 @@ Job_WriteRow* Job_WriteRow::pNewJobWriteRow(Interface::Session* pSession,
 
   pJob_WriteRow->m_iParentJobId = iParentJobId;
   pJob_WriteRow->m_sObjectName  = sTableName;
-  pJob_WriteRow->m_pTable      = pTable;
+  pJob_WriteRow->m_pTable       = pTable;
   pJob_WriteRow->m_iPartitionId = C_UNKNOWN;
 
   return pJob_WriteRow;

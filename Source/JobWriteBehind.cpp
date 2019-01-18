@@ -100,7 +100,7 @@ eEC JobWriteBehind::eInsertRow(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
-    i8 iPartition = m_pTable->iRowPartition(m_aRecord);
+    i8 iPartition = m_pTable->iRowPartition(m_aRow);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check for working buffer
@@ -129,8 +129,8 @@ eEC JobWriteBehind::eInsertRow(void)
     RowWrk xRowWrk;
     
     xRowWrk.vTxId(iDistTxId);
-    xRowWrk.vEmbedded(m_aRecord.aChar());
-    xRowWrk.vRowSize(m_nRecordBytes);
+    xRowWrk.vEmbedded(m_aRow.aChar());
+    xRowWrk.vRowSize(m_nRowBytes);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer

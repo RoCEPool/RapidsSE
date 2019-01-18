@@ -29,7 +29,7 @@ JobRow::JobRow(void)
   m_pTable = nullptr;
   
   //m_aRecord;
-  m_nRecordBytes = 0;
+  m_nRowBytes = 0;
   //m_oFormatters;
 }
 
@@ -59,9 +59,9 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
   ColumnVec* pColVec = m_pTable->pColumnVec();
   i8 nColumns = m_pTable->pColumnVec()->nItems() - 1;
   
-  Stz* pOffset = m_aRecord.aStz();
+  Stz* pOffset = m_aRow.aStz();
   Stz* aDst = pOffset + C_COLUMN_OFFSET_SIZE * nColumns;
-  m_nRecordBytes = C_COLUMN_OFFSET_SIZE * nColumns;
+  m_nRowBytes = C_COLUMN_OFFSET_SIZE * nColumns;
   
   // skip leading spaces
   if (m_oFormatters.m_cRecordTerminator) {
@@ -121,7 +121,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     }
     
     // save offset
-    *((u2*)pOffset->aChar()) = m_nRecordBytes;
+    *((u2*)pOffset->aChar()) = m_nRowBytes;
     
     i8 iColumnLength;
     
@@ -137,7 +137,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     pOffset += C_COLUMN_OFFSET_SIZE;
     
     // increment row length
-    m_nRecordBytes += iColumnLength;
+    m_nRowBytes += iColumnLength;
     
     // move to next column location
     aDst += iColumnLength;
