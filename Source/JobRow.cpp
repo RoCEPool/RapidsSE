@@ -54,12 +54,21 @@ JobRow::~JobRow(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
 {
+  // format into subInserters m_aRow
+  return bFormatRow(aRecord, nBytes, m_aRow, m_nRowBytes, bBlankLine);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Format the row                                                             */
+/*----------------------------------------------------------------------------*/
+bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine)
+{
   char* aSrc = aRecord->aChar();
   bBlankLine = false;
   ColumnVec* pColVec = m_pTable->pColumnVec();
   i8 nColumns = m_pTable->pColumnVec()->nItems() - 1;
   
-  Stz* pOffset = m_aRow.aStz();
+  Stz* pOffset = aDstRow;
   Stz* aDst = pOffset + C_COLUMN_OFFSET_SIZE * nColumns;
   m_nRowBytes = C_COLUMN_OFFSET_SIZE * nColumns;
   
@@ -121,7 +130,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     }
     
     // save offset
-    *((u2*)pOffset->aChar()) = m_nRowBytes;
+    *((u2*)pOffset->aChar()) = nDstRowBytes;
     
     i8 iColumnLength;
     
@@ -137,7 +146,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine)
     pOffset += C_COLUMN_OFFSET_SIZE;
     
     // increment row length
-    m_nRowBytes += iColumnLength;
+    nDstRowBytes += iColumnLength;
     
     // move to next column location
     aDst += iColumnLength;

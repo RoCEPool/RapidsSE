@@ -8,7 +8,8 @@ namespace JobModel
   class Job_SubInserter;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class Job_CopyBuffer : public Job
+  class Job_CopyBuffer : public Job,
+                         public JobRow
   {
   public:
     Job_SubInserter* m_pJob_SubInserter;

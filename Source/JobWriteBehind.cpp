@@ -92,6 +92,14 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 /*----------------------------------------------------------------------------*/
 eEC JobWriteBehind::eInsertRow(void)
 {
+  return eInsertRow(m_aRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert row into working buffer                                             */
+/*----------------------------------------------------------------------------*/
+eEC JobWriteBehind::eInsertRow(Stz* aRow)
+{
   
   eEC eErrorCode = EC_NONE;
   
@@ -100,7 +108,7 @@ eEC JobWriteBehind::eInsertRow(void)
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // hash the record to a partition
-    i8 iPartition = m_pTable->iRowPartition(m_aRow);
+    i8 iPartition = m_pTable->iRowPartition(aRow);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // check for working buffer
@@ -129,7 +137,7 @@ eEC JobWriteBehind::eInsertRow(void)
     RowWrk xRowWrk;
     
     xRowWrk.vTxId(iDistTxId);
-    xRowWrk.vEmbedded(m_aRow.aChar());
+    xRowWrk.vEmbedded(aRow->aChar());
     xRowWrk.vRowSize(m_nRowBytes);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

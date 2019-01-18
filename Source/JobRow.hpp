@@ -21,6 +21,7 @@ namespace JobModel
    ~JobRow(void) noexcept(false);
     
   public:
+    bool bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes, bool &bBlankLine);
     bool bFormatRow(Stz* aRecord, i8 nBytes, bool &bBlankLine);
   };
 }

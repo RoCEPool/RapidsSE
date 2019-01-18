@@ -25,6 +25,7 @@ namespace JobModel
   public:
     void vHandleDanglingBuffers(void);
     eEC  eInsertRow(void);
+    eEC  eInsertRow(Stz* aRow);
     eEC  eProcessRecord(Stz* aRecord,  i8 nBytes);
   
   private:
