@@ -656,8 +656,8 @@ void RapidsSE::vStartSystem(void)
   
   //--------------------------------------------------------------------------
   
-  gpAttachMap->m_pOriginatingJobs   = new Jobs(bJobCompare,JL_ORIGINATING);
-  gpAttachMap->m_pParticipatingJobs = new Jobs(bJobCompare,JL_PARTICIPATING);
+  gpAttachMap->m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
+  gpAttachMap->m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
   
   gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,

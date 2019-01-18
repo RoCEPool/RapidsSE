@@ -155,7 +155,7 @@ static Stz* aJL[]
 #include "Job_WriteBuffer.hpp"
 #include "Job_WriteRow.hpp"
 
-#include "Jobs.hpp"
+#include "JobList.hpp"
 
 #include "JobClass.hpp"
 
