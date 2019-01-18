@@ -60,8 +60,8 @@ Key::~Key(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool Key::operator <(Key* aKeyArg)
 {
-  i8 iDatumA = *(i8*)aWspArea();
-  i8 iDatumB = *(i8*)aKeyArg->aWspArea();
+  i8 iDatumA = *(i8*)aByteSequence();
+  i8 iDatumB = *(i8*)aKeyArg->aByteSequence();
   bool b = iDatumA < iDatumB;
   
   return b;
@@ -72,8 +72,8 @@ bool Key::operator <(Key* aKeyArg)
 /*----------------------------------------------------------------------------*/
 bool Key::operator <=(Key* aKeyArg)
 {
-  i8 iDatumA = *(i8*)aWspArea();
-  i8 iDatumB = *(i8*)aKeyArg->aWspArea();
+  i8 iDatumA = *(i8*)aByteSequence();
+  i8 iDatumB = *(i8*)aKeyArg->aByteSequence();
   
   bool b = iDatumA <= iDatumB;
   
@@ -85,7 +85,7 @@ bool Key::operator <=(Key* aKeyArg)
 /*----------------------------------------------------------------------------*/
 void Key::vKey(KeyWrk& xKeyWrk)
 {
-  char* aDst = aWspArea();
+  char* aDst = aByteSequence();
   char* aSrc = (char*)xKeyWrk.aKey();
   i8 nBytes  = xKeyWrk.nKeySize();
   
@@ -100,7 +100,7 @@ i8 Key::nKeySize(IdxColVec* pIdxColVec)
   i8 nCols = pIdxColVec->nItems();
   i8 nKeySize = 0;
   i8 nBytes;
-  char* aCursor = aWspArea();
+  char* aCursor = aByteSequence();
   
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     Column* pColumn = pIdxColVec->pGet(i_Column);
@@ -130,8 +130,8 @@ bool Key::bLessThan(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bLessThan = false;
   
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aKeyThat->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aKeyThat->aByteSequence();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -159,8 +159,8 @@ bool Key::bLessEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bLessEqual = false;
   
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aKeyThat->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aKeyThat->aByteSequence();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -188,8 +188,8 @@ bool Key::bEqualTo(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bEqualTo = false;
   
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aKeyThat->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aKeyThat->aByteSequence();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -217,8 +217,8 @@ bool Key::bNotEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bNotEqual = false;
   
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aKeyThat->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aKeyThat->aByteSequence();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -245,8 +245,8 @@ bool Key::bGreaterEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bGreaterEqual = false;
   
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aKeyThat->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aKeyThat->aByteSequence();
   
   i8 nBytesThis;
   i8 nBytesThat;
@@ -271,8 +271,8 @@ bool Key::bGreaterEqual(Key* aKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 bool Key::bGreaterEqualSingle(Key* aKeyThat, Index* pIndex)
 {
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aKeyThat->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aKeyThat->aByteSequence();
 
   bool bGreaterEqual = pIndex->bGreaterEqual(aCursorThis,aCursorThat);
   
@@ -284,8 +284,8 @@ bool Key::bGreaterEqualSingle(Key* aKeyThat, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 bool Key::bGreaterThanSingle(Key* aKeyThat, Index* pIndex)
 {
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aKeyThat->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aKeyThat->aByteSequence();
   
   bool bGreaterThan = pIndex->bGreaterThan(aCursorThis,aCursorThat);
   
@@ -299,8 +299,8 @@ bool Key::bGreaterThan(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   bool bGreaterThan = false;
   
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aKeyThat->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aKeyThat->aByteSequence();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -328,8 +328,8 @@ i8 Key::iCmp(Key* aKeyThat, IdxColVec* pIdxColVec)
 {
   i8 iCmp = 0;
   
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aKeyThat->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aKeyThat->aByteSequence();
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -354,8 +354,8 @@ i8 Key::iCmp(Key* aKeyThat, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 bool Key::bMatches(Key* aKeyThat, IdxColVec* pIdxColVec, RelOpAry* pRelOpAry)
 {
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aKeyThat->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aKeyThat->aByteSequence();
   
   bool bCmp = false;
   
@@ -446,8 +446,8 @@ bool Key::bJuxtaBefore(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols
   
   bIsEqual = false;
   
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aSearchKey->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aSearchKey->aByteSequence();
   
   i8 iCmp = 0;
   
@@ -507,8 +507,8 @@ bool Key::bJuxtaSame(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
   
   bIsEqual = false;
   
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aSearchKey->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aSearchKey->aByteSequence();
   
   i8 iCmp = 0;
   
@@ -576,8 +576,8 @@ bool Key::bJuxtaAfter(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
   
   bIsEqual = false;
   
-  char* aCursorThis = aWspArea();
-  char* aCursorThat = aSearchKey->aWspArea();
+  char* aCursorThis = aByteSequence();
+  char* aCursorThat = aSearchKey->aByteSequence();
   
   i8 iCmp = 0;
   
@@ -629,7 +629,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
   i8 nBytes;
   i8 iKey;
   Stz* pKey;
-  char* aCursor = aWspArea();
+  char* aCursor = aByteSequence();
   
   char aLiteral[64];
   
@@ -652,7 +652,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
   i8 nBytes;
   i8 iKey;
   Stz* pKey;
-  char* aCursor = aWspArea();
+  char* aCursor = aByteSequence();
   
   char aLiteral[64];
   
@@ -678,7 +678,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
 void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
 {
   i8 nBytes;
-  char* aWspCursor = aWspArea();
+  char* aWspCursor = aByteSequence();
 
   sVar = ""_Stz;
   
@@ -707,7 +707,7 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
 void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
 {
   i8 nBytes;
-  char* aWspCursor = aWspArea();
+  char* aWspCursor = aByteSequence();
   
   sVar = ""_Stz;
   
@@ -738,7 +738,7 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 i8 Key::iGetInt(void)
 {
-  i8 iVal = *(i8*)m_xWsp.aArea();
+  i8 iVal = *(i8*)aByteSequence();
   
   return iVal;
 }

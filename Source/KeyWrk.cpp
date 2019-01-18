@@ -185,7 +185,7 @@ void KeyWrk::vAddKey(Key* aKey, IdxColVec* pColVec)
 {
   _precondition_(_MAGIC_,CN_KEYWRK);
   
-  char* aCursor = aKey->aWspArea();
+  char* aCursor = aKey->aByteSequence();
   i8 nBytes;
   for (i8 iColumn = 0; iColumn < pColVec->nItems(); iColumn++) {
     Column* pColumn = pColVec->pGet(iColumn);

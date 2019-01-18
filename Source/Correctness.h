@@ -19,14 +19,10 @@ using namespace Correctness;
 #include "Footer.hpp"
 #include "Header.hpp"
 #include "Object.hpp"
-
-#include "Addressing.hpp"
-
-#include "Wsp.hpp"
 #include "Wsp_t.hpp"
 
+#include "Addressing.hpp"
 #include "MP.hpp"
-
 #include "String_t.hpp"
 
 typedef String_t<32>     s32;

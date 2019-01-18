@@ -16,8 +16,8 @@ bool BndLib::bIsBefore(Key& xKeyThis, Key& xKeyThat,
   i8 nBytesThis;
   i8 nBytesThat;
  
-  char* aCursorThis = xKeyThis.aWspArea();
-  char* aCursorThat = xKeyThat.aWspArea();
+  char* aCursorThis = xKeyThis.aByteSequence();
+  char* aCursorThat = xKeyThat.aByteSequence();
   
   for (i8 i_Column = 0; i_Column < nCols; i_Column++) {
     
@@ -50,8 +50,8 @@ bool BndLib::bPassesFilter(Key& xKeyThis, Key& xKeyThat,
   i8 nBytesThis;
   i8 nBytesThat;
   
-  char* aCursorThis = xKeyThis.aWspArea();
-  char* aCursorThat = xKeyThat.aWspArea();
+  char* aCursorThis = xKeyThis.aByteSequence();
+  char* aCursorThat = xKeyThat.aByteSequence();
   
   for (i8 iColumn = 0; iColumn < nCols; iColumn++) {
     

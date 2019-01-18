@@ -31,7 +31,7 @@ namespace DBobjects
   {
   private:
   //i8  m_nSize;
-  Wsp m_xWsp;
+  //Wsp m_xWsp;
     
   public:
     void* operator new(size_t);
@@ -81,9 +81,9 @@ namespace DBobjects
     /*----------------------------------------------------------------------------*/
     /* get wsp area                                                               */
     /*----------------------------------------------------------------------------*/
-    inline char* aWspArea(void)
+    inline char* aByteSequence(void)
     {
-      return m_xWsp.aArea();
+      return reinterpret_cast<char*>(this);
     }
     i8 iGetInt(void);
     
