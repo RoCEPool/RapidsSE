@@ -299,6 +299,7 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
 {
   s48K sPortrait;
   
+  sPortrait = ""_Stz;
   gpAttachMap->m_pQueues->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
@@ -316,6 +317,10 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
   
   sPortrait = ""_Stz;
   gxResourceTracker.vMonitorPortrait(sPortrait);
+  sRapidsPortrait.vConcat(sPortrait.aStz());
+  
+  sPortrait = ""_Stz;
+  gpAttachMap->m_pQueues->vMonitorThread(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
 }
 

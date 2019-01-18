@@ -91,7 +91,8 @@ namespace Threads
     bool bIsSleepingQueue(i8 i_RRqueue);
   
     void vMonitorPortrait(s48K& sPortrait);
-  
+    void vMonitorThread(s48K& sPortrait);
+
     bool bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread);
 
     Task* pPopReadyQueue(Thread* pCallingThread);

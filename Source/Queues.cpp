@@ -627,6 +627,40 @@ void Queues::vMonitorPortrait(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a portrait of the threads                                              */
+/*----------------------------------------------------------------------------*/
+void Queues::vMonitorThread(s48K& sPortrait)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  i8 nIdle = 0;
+  i8 nRunning = 0;
+  i8 nDedicated = 0;
+  
+  m_pThreadVector->vGrabLock();
+  
+  i8 nThreads = m_pThreadVector->nItems();
+  for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
+    
+    Thread* pThread = m_pThreadVector->pGet(i_Thread);
+    
+    if (TC_IDLE == pThread->eThreadState())
+      nIdle++;
+    else
+      if (TC_RUNNING == pThread->eThreadState())
+        nRunning++;
+
+    if (CN_NONE != pThread->m_eDedicated)
+      nDedicated++;
+  }
+  
+  m_pThreadVector->vDropLock();
+  
+  sPortrait.vSprint("Threads: running %lld (dedicated %lld) idle %lld\n"_Stz,
+                    nThreads, nDedicated, nIdle);
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
