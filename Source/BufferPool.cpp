@@ -11,6 +11,10 @@ extern BufferPool* gpBufferPool;
 extern Arguments   gxArguments;
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
 void* BufferPool::operator new(size_t, void* pRegion)
@@ -48,8 +52,8 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
   
   m_zFreeLock.vInitLock(LK_BUFFER_POOL);
   
-  m_iAllocCount   = 0;
-  m_iFreeCount    = 0;
+  m_nAllocCount   = 0;
+  m_nFreeCount    = 0;
   m_nFreeHead     = bn::nNil();
   
   vInitialise(bTouch);
@@ -70,7 +74,7 @@ BufferPool::~BufferPool(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -84,9 +88,9 @@ void BufferPool::vReport(void)
   
   i8  iSum = C_SIZE_POOL_BUFFER
              +
-             gpBufferPool->m_iAllocCount * C_SIZE_POOL_BUFFER
+             gpBufferPool->m_nAllocCount * C_SIZE_POOL_BUFFER
              +
-             gpBufferPool->m_iFreeCount  * C_SIZE_POOL_BUFFER;
+             gpBufferPool->m_nFreeCount  * C_SIZE_POOL_BUFFER;
 
   s32 sSum;
   Magnitudes::vByteMag(iSum, sSum);
@@ -95,14 +99,18 @@ void BufferPool::vReport(void)
          gpBufferPool,
          sRegionSize.aChar(),
          gpBufferPool->m_nBuffers,
-         gpBufferPool->m_iAllocCount,
-         gpBufferPool->m_iFreeCount,
+         gpBufferPool->m_nAllocCount,
+         gpBufferPool->m_nFreeCount,
          sSum.aChar()
          );
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate the attachMap buffer from free chain in pool                      */
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* allocate the one attachMap buffer from free chain in pool                  */
 /*----------------------------------------------------------------------------*/
 Buffer* BufferPool::pAllocAttachMapBuffer(void)
 {
@@ -116,8 +124,8 @@ Buffer* BufferPool::pAllocAttachMapBuffer(void)
   ASSERT(bn::nNil() != m_nFreeHead);
   
   // adjust counts
-  m_iFreeCount--;
-  m_iAllocCount++;
+  m_nFreeCount--;
+  m_nAllocCount++;
   
   //vVerifyPool();
   
@@ -144,7 +152,7 @@ Buffer* BufferPool::pAllocBuffer(void)
 //  if ((bn::nNil() == m_nFreeHead) || (nAllocs % 5000 == 0)) {
 //    
 //    vWarn("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
-//          nAllocs, m_nBuffers, m_iAllocCount, *m_nFreeHead, m_iFreeCount);
+//          nAllocs, m_nBuffers, m_nAllocCount, *m_nFreeHead, m_nFreeCount);
 //
 //    vTrace("   Transient SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
 //           sMagSmall.aChar(),
@@ -198,7 +206,7 @@ Buffer* BufferPool::pAllocBuffer(void)
   
   // test for empty free chain
   if (bn::nNil() == m_nFreeHead) {
-    ASSERT( ! m_iFreeCount );
+    ASSERT( ! m_nFreeCount );
     vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
     vWarn("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
     m_zFreeLock.vDropWrite();
@@ -210,8 +218,8 @@ Buffer* BufferPool::pAllocBuffer(void)
   m_nFreeHead = pAllocatedBuffer->nNextFree();
   
   // adjust counts
-  m_iFreeCount--;
-  m_iAllocCount++;
+  m_nFreeCount--;
+  m_nAllocCount++;
   
   //vVerifyPool();
  
@@ -221,9 +229,19 @@ Buffer* BufferPool::pAllocBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get buffer count                                                           */
+/* get current number of allocated buffers                                    */
 /*----------------------------------------------------------------------------*/
-i8 BufferPool::nBuffers(void)
+i8 BufferPool::nAllocCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  return m_nAllocCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of buffers in pool                                              */
+/*----------------------------------------------------------------------------*/
+i8 BufferPool::nBufferCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
@@ -350,10 +368,10 @@ void BufferPool::vFree(Buffer* pBuffer)
   
   // test for existing free list
   if (bn::nNil() != m_nFreeHead) {
-    ASSERT( m_iFreeCount > 0 );
+    ASSERT( m_nFreeCount > 0 );
   }
   else {
-    ASSERT( ! m_iFreeCount );
+    ASSERT( ! m_nFreeCount );
   }
   
   // free buffer by pushing onto free chain
@@ -362,8 +380,8 @@ void BufferPool::vFree(Buffer* pBuffer)
   m_nFreeHead = pBuffer->nBufferNo();
   
   // adjust counts
-  m_iFreeCount++;
-  m_iAllocCount--;
+  m_nFreeCount++;
+  m_nAllocCount--;
   
   //vVerifyPool();
   
@@ -371,13 +389,13 @@ void BufferPool::vFree(Buffer* pBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* return number of free buffers                                              */
+/* get number of currently free buffers                                       */
 /*----------------------------------------------------------------------------*/
-i8 BufferPool::iFreeCount(void)
+i8 BufferPool::nFreeCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  return m_iFreeCount;
+  return m_nFreeCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -409,7 +427,7 @@ i8 BufferPool::iFreeSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  i8 iFreeSpace = m_iFreeCount * C_SIZE_POOL_BUFFER;
+  i8 iFreeSpace = m_nFreeCount * C_SIZE_POOL_BUFFER;
   
   return iFreeSpace;
 }
@@ -435,9 +453,9 @@ void BufferPool::vInitialise(bool bTouch)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  m_iAllocCount = 0;
-  //m_iFreeCount  = m_nBuffers;
-  m_iFreeCount  = 0;
+  m_nAllocCount = 0;
+  //m_nFreeCount  = m_nBuffers;
+  m_nFreeCount  = 0;
   m_nFreeHead   = nBufferFirst();
   
   //vTrace("FirstBuffer %lld LastBuffer %lld\n"_Stz,*nBufferFirst(),*nBufferLast());
@@ -475,7 +493,7 @@ void BufferPool::vInitialise(bool bTouch)
     nBuffer = nBufferNext(nBuffer);
     pFreeBuffer->vNextFree(nBuffer);
     
-    m_iFreeCount++;
+    m_nFreeCount++;
 }
   
   FreeBuffer* pLastBuffer = pToFreeBuffer(nBufferLast());
@@ -504,7 +522,7 @@ bool BufferPool::bLowMemory(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  bool bLow = iFreeCount() < C_LOW_BUFFERS ? true : false;
+  bool bLow = nFreeCount() < C_LOW_BUFFERS ? true : false;
   
   return bLow;
 }
@@ -545,8 +563,8 @@ void BufferPool::vPoolDump(void)
          m_nBuffers,
          m_pBase,
          m_pLimit,
-         m_iAllocCount,
-         m_iFreeCount,
+         m_nAllocCount,
+         m_nFreeCount,
          *m_nFreeHead
          );
   

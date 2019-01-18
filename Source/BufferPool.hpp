@@ -28,8 +28,8 @@ namespace Pool
     
     // free chain
     Lock m_zFreeLock;   // lock over free chain
-    i8   m_iAllocCount; //   number of buffers currently in use
-    i8   m_iFreeCount;  //   number of buffers in free chain
+    i8   m_nAllocCount; //   number of buffers currently in use
+    i8   m_nFreeCount;  //   number of buffers in free chain
     bn   m_nFreeHead;   //   head of free chain
     
     // must be last
@@ -45,9 +45,10 @@ namespace Pool
   
     static void vReport(void);
     
-    Buffer* pAllocBuffer(void);
     Buffer* pAllocAttachMapBuffer(void);
-    i8   nBuffers(void);
+    Buffer* pAllocBuffer(void);
+    i8   nAllocCount(void);
+    i8   nBufferCount(void);
     bn   nBufferFirst(void);
     bn   nBufferLast(void);
     bn   nBufferNext(bn nBuffer);
@@ -57,7 +58,7 @@ namespace Pool
     bool bDetachPool(void);
     bool bDontFree(void);
     void vFree(Buffer* pBuffer);
-    i8   iFreeCount(void);
+    i8   nFreeCount(void);
     i8   iFreePercent(void);
     bool bFreeRB(void);
     i8   iFreeSpace(void);

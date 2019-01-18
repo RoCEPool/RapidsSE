@@ -361,7 +361,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
 {
   ENTRY("vSocketRecvObject_LowMem"_Stz);
   
-  i8 nFreeBuffer = gpBufferPool->iFreeCount();
+  i8 nFreeBuffer = gpBufferPool->nFreeCount();
   
   bool bDiscardEntryBuffer = false;
   

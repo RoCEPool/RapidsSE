@@ -586,8 +586,8 @@ void BPA::vRegionSummary()
   vTrace("  BufferPool (%4s) buffers %-6lld alloc %-6lld free %-6lld \n"_Stz,
          sMagLarge.aChar(),
          gpBufferPool->m_nBuffers,
-         gpBufferPool->m_iAllocCount,
-         gpBufferPool->m_iFreeCount
+         gpBufferPool->m_nAllocCount,
+         gpBufferPool->m_nFreeCount
          );
   
   vTrace("   Transient SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,

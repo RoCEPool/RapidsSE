@@ -161,9 +161,9 @@ void Step::vFreeBuffers(MP_Task mpTask)
 {
   ENTRY("vFreeBuffers"_Stz);
   
-  i8 iFreeBuffers = gpBufferPool->iFreeCount();
+  i8 nFreeBuffers = gpBufferPool->nFreeCount();
   
-  mpTask->m_pDataStack->vPushI8(iFreeBuffers);
+  mpTask->m_pDataStack->vPushI8(nFreeBuffers);
   
   EXIT();
 }
@@ -226,7 +226,7 @@ void Step::vSnapshot(MP_Task mpTask)
     iCountObjects[index] = 0;
   
   bn nBuffer = 0;
-  bn nBufferCount = gpBufferPool->nBuffers() - 1;
+  bn nBufferCount = gpBufferPool->nBufferCount() - 1;
   
   for (bn nBuffer = gpBufferPool->nBufferFirst();
        nBuffer <= nBufferCount;
