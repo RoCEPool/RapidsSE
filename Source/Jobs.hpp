@@ -8,10 +8,10 @@ namespace JobModel
   class Jobs : public Object
   {
   private:
-    eJL       m_eJobsList;     // which job list
-    Lock      m_oLock;         // lock
-    i8        m_iNextJobId;    // next job id
-    SkipListNL* m_pJobsSkipList; // skip list of jobs
+    eJL       m_eJobsList;       // which job list
+    Lock      m_oLock;           // lock
+    i8        m_iNextJobId;      // next job id
+    SkipListNL* m_pJobsSkipList; // skip list of jobs (ordered by job id)
   
     // must be last
     Footer m_xFooter;
