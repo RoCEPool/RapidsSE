@@ -181,13 +181,13 @@ void RowAgg::vPrintOut(File& oOutputFile)
   
   i8 nAggColumns = m_pAggColVec->nItems();
 
-  Time oDateTime;
-  oDateTime.vSetLocal(&m_oSince);
-  s32 sDateTime;
-  char* z = sDateTime.aChar();
-  oDateTime.vAppendLocal(&z);
+//  Time oDateTime;
+//  oDateTime.vSetLocal(&m_oSince);
+//  s32 sDateTime;
+//  char* z = sDateTime.aChar();
+//  oDateTime.vAppendLocal(&z);
 
-  vTrace("%s\n"_Stz,sDateTime.aChar());
+  vTrace("%s\n"_Stz,m_oSince.sFormatted());
   for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
     
     Column* pAggColumn = m_pAggColVec->pGet(i_AggCol);

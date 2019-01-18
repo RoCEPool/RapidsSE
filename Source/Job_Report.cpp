@@ -281,7 +281,7 @@ bool Job_Report::bTake(void)
   vTrace("Report...\n"_Stz);
   m_pRowAgg->vReadIn(m_oInFile);
   
-  //m_pRowAgg->vPrintOut(m_oOutFile);
+  m_pRowAgg->vPrintOut(m_oOutFile);
 
   return true;
 }
