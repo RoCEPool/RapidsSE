@@ -65,6 +65,7 @@ namespace Pool
     bool bHasDataSpace(void);
     void vInitialise(bool bTouch);
     bool bLowMemory(void);
+    void vMonitorPortrait(s48K& sPortrait);
     Buffer* pNextJumbo(Buffer* pPrev);
     void vPoolDump(void);
     Buffer* pToBuffer(bn nBuffer);

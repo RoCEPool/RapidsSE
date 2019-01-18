@@ -72,6 +72,7 @@ namespace Pool
     i8      iFreeCount(void);
     void    vFreeObject(Object* pObject);
     void    vGrabLock(void);
+    void    vMonitorPortrait(s48K& sPortrait);
     HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      iObjectSize(void);
         

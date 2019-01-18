@@ -281,10 +281,10 @@ bool Job_Monitor::bTake(void)
                     m_iTakeNo,oNow.sFormatted());
   sPortrait.vConcat("--------------------------------------------------\n"_Stz);
 
-  RapidsSE::vPortrait(sRapidsPortrait);
+  RapidsSE::vMonitorPortrait(sRapidsPortrait);
   sPortrait.vConcat(sRapidsPortrait);
   
-  m_pOutFile->vPrint("%s"_Stz,sPortrait.aStz());
+  m_pOutFile->vPrint("%s\n"_Stz,sPortrait.aStz());
   
   m_iTakeNo++;
   

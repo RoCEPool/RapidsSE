@@ -24,11 +24,11 @@ namespace StorageEngine
     static void vErrorHandler(Error* pError);
     static void vKillPrev(void);
     static void vMainEntry(void);
+    static void vMonitorPortrait(s48K& sRapidsPortrait);
     static void vOpenActivityMap(void);
     static void vOpenPool(void);
     static bool bOpenPool(s32& sPoolName);
     static void vOpenTraceFile(void);
-    static void vPortrait(s48K& sPortrait);
     static void vPrintExit(void);
     static void vPrintStatus(void);
     static void vPrintWelcome(void);

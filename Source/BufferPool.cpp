@@ -528,6 +528,15 @@ bool BufferPool::bLowMemory(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* monitor portrait                                                           */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vMonitorPortrait(s48K& sPortrait)
+{
+  sPortrait.vSprint("Pool: %lld buffers %lld allocated %lld free %lld\n"_Stz,
+            m_nBuffers,m_nAllocCount,m_nFreeCount);
+}
+
+/*----------------------------------------------------------------------------*/
 /* next jumbo pointer                                                         */
 /*----------------------------------------------------------------------------*/
 Buffer* BufferPool::pNextJumbo(Buffer* pPrev)

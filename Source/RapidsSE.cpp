@@ -293,6 +293,29 @@ void RapidsSE::vKillPrev(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get monitor portrait of system                                             */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
+{
+  s48K sPortrait;
+  
+  gpAttachMap->m_pQueues->vMonitorPortrait(sPortrait);
+  sRapidsPortrait.vConcat(sPortrait.aStz());
+  
+  sPortrait = ""_Stz;
+  gpAttachMap->m_oLockTracker.vMonitorPortrait(sPortrait);
+  sRapidsPortrait.vConcat(sPortrait.aStz());
+  
+  sPortrait = ""_Stz;
+  gpAttachMap->m_pBufferPool->vMonitorPortrait(sPortrait);
+  sRapidsPortrait.vConcat(sPortrait.aStz());
+  
+  sPortrait = ""_Stz;
+  gpAttachMap->m_xHeapMem.vMonitorPortrait(sPortrait);
+  sRapidsPortrait.vConcat(sPortrait.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
 /* create or open the ActivityMap                                             */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vOpenActivityMap(void)
@@ -407,21 +430,6 @@ void RapidsSE::vOpenTraceFile(void)
   
   if (gxArguments.m_bVerbose)
     vInfo("** trace file opened: /tmp/se_trace.txt\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print exit                                                                 */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vPortrait(s48K& sRapidsPortrait)
-{
-  s48K sPortrait;
-  
-  gpAttachMap->m_pQueues->vPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  gpAttachMap->m_oLockTracker.vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

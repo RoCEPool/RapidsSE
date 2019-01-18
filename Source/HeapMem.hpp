@@ -26,11 +26,11 @@ namespace Pool
 
   public:
     void vInit(void);
-  
+    void vMonitorPortrait(s48K& sPortrait);
+
     static Object* pAllocate(eCN eClass, bool bPersistent=false);
     static void vFree(Object* pObject, bool bPersistent=false);
     static void vFree_NonObject(Buffer* pBuffer);
-  
     static void vReport(void);
     static void vSearchFree(void);
     static void vValidateEnums(void);

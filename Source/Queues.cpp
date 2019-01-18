@@ -602,6 +602,34 @@ bool Queues::bIsSleepingQueue(i8 i_RRqueue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a portrait of the queues                                               */
+/*----------------------------------------------------------------------------*/
+void Queues::vMonitorPortrait(s48K& sPortrait)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  s48K sTasksPortrait;
+  
+  sPortrait = ""_Stz;
+  sPortrait.vConcat("Task Queues:\n"_Stz);
+  
+  m_pExecutingSet->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+  
+  m_pReadyQueue->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+  
+  m_pWaitingSet->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+  
+  m_pSleepingQueue->vPortrait(sTasksPortrait);
+  sPortrait.vConcat(sTasksPortrait);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -867,34 +895,6 @@ Task* Queues::pPopSleepingQueue(Thread* pCallingThread)
   
   // return the task popped from the sleeping queue
   return pTask;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get the first queue                                                        */
-/*----------------------------------------------------------------------------*/
-void Queues::vPortrait(s48K& sPortrait)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
-  s48K sTasksPortrait;
-  
-  sPortrait = ""_Stz;
-  sPortrait.vConcat("Task Queues:\n"_Stz);
-
-  m_pExecutingSet->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-  
-  m_pReadyQueue->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-  
-  m_pWaitingSet->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
-  
-  m_pSleepingQueue->vPortrait(sTasksPortrait);
-  sPortrait.vConcat(sTasksPortrait);
 }
 
 /*----------------------------------------------------------------------------*/

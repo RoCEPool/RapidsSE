@@ -36,7 +36,7 @@ bool Prompt::bPrompt_takeMem(SePrompt* pPrompt)
     nSpare = pTokenVec->pGet(1)->iToI8();
   }
   
-  while (gpBufferPool->iFreeCount() >= C_LOW_BUFFERS + nSpare) {
+  while (gpBufferPool->nFreeCount() >= C_LOW_BUFFERS + nSpare) {
 
     Buffer* p2ndBuffer  = gpTakenBuffers;
     gpTakenBuffers = gpBufferPool->pAllocBuffer();
