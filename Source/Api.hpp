@@ -19,7 +19,7 @@ enum eAC // api call kind
   /*  3 */ AC_EndJobs,
   /*  4 */ AC_ExecuteCommand,
   /*  5 */ AC_FetchNextBuffer,
-  /*  6 */ AC_GetBuffer,
+  /*  6 */ AC_GetRecordBuffer,
   /*  7 */ AC_GetErrorMessage,
   /*  8 */ AC_GetRow,
   /*  9 */ AC_GetRowCount,
@@ -47,7 +47,7 @@ static Stz* aAC[]
   /*  3 */ "RapidsSE_EndJobs"_Stz,
   /*  4 */ "RapidsSE_ExecuteCommand"_Stz,
   /*  5 */ "RapidsSE_FetchNextBuffer"_Stz,
-  /*  6 */ "RapidsSE_GetBuffer"_Stz,
+  /*  6 */ "RapidsSE_GetRecordBuffer"_Stz,
   /*  7 */ "RapidsSE_GetErrorMessage"_Stz,
   /*  8 */ "RapidsSE_GetRow"_Stz,
   /*  9 */ "RapidsSE_GetRowCount"_Stz,
@@ -71,7 +71,7 @@ extern "C" eEC  RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand, Stz* s
                                         void** ppJob, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_FetchNextBuffer(Session* pSession, void* pJob, void** ppFetchBuffer, i8* piExepectedRows, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_GetBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_GetRecordBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);

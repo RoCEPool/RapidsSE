@@ -75,10 +75,10 @@ Job_SubInserter* JobModel::_pJob_SubInserter(void* aAddress)
 /*----------------------------------------------------------------------------*/
 void* Job_SubInserter::operator new(size_t)
 {
-  Job_SubInserter* pJob_LoadTable =
+  Job_SubInserter* pJob_SubInserter =
     static_cast<Job_SubInserter*>(HeapMem::pAllocate(CN_JOB_SUBINSERTER));
   
-  return pJob_LoadTable;
+  return pJob_SubInserter;
 }
 
 /*----------------------------------------------------------------------------*/

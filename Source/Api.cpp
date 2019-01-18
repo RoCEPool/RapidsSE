@@ -495,15 +495,15 @@ eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, 
 }
 
 /*----------------------------------------------------------------------------*/
-/* get buffer from the job                                                    */
+/* get record buffer from the job                                             */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, i8 iTraceLevel)
+eEC RapidsSE_GetRecordBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, i8 iTraceLevel)
 {
-  Stz* aApiCall = "RapidsSE_GetBuffer"_Stz;
-  eAC  eApiCall = AC_GetBuffer;
+  Stz* aApiCall = "RapidsSE_GetRecordBuffer"_Stz;
+  eAC  eApiCall = AC_GetRecordBuffer;
   ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
   
-  vApiCall(pSession,AC_GetBuffer);                                      // API CALL
+  vApiCall(pSession,AC_GetRecordBuffer);                                      // API CALL
   vApiLocation(pSession,100);
   
   eEC eResult;
@@ -525,8 +525,8 @@ eEC RapidsSE_GetBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, i8 iTr
   
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
   
-  if ( ! pJob_SubInserter->m_pRecordBuffer )
-    pJob_SubInserter->m_pRecordBuffer = new RecordBuffer();
+  RASSERT( ! pJob_SubInserter->m_pRecordBuffer );
+  pJob_SubInserter->m_pRecordBuffer = new RecordBuffer();
   
   *ppBuffer = pJob_SubInserter->m_pRecordBuffer;
   
