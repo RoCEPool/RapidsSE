@@ -4,7 +4,7 @@
 
 // Job Short: Boot
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Boot =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Boot_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Boot_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Cat_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Boot_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Boot* JobModel::_pJob_Boot(void* aAddress)
+Job_Boot* Jobs::_pJob_Boot(void* aAddress)
 {
   Job_Boot* pJob_Boot = reinterpret_cast<Job_Boot*>(aAddress);
   
@@ -168,7 +168,7 @@ Footer* Job_Boot::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Boot_new(Job* pArg)
+Job* Jobs::pJob_Boot_new(Job* pArg)
 {
   Job_Boot* pJob_Boot = new Job_Boot(nullptr);
   
@@ -178,7 +178,7 @@ Job* JobModel::pJob_Boot_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Boot_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Boot_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Boot* pJob_Boot = _pJob_Boot(pJob);
   
@@ -188,7 +188,7 @@ void JobModel::vJob_Boot_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Boot_show(Job* pJob)
+void Jobs::vJob_Boot_show(Job* pJob)
 {
   Job_Boot* pJob_Boot = _pJob_Boot(pJob);
 

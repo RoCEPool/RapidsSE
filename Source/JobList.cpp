@@ -2,7 +2,7 @@
 /* JobList.cpp -- Job List (originating or participant)                       */
 /*============================================================================*/
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -14,7 +14,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobList* JobModel::_pJobs(void* aAddr)
+JobList* Jobs::_pJobs(void* aAddr)
 {
   JobList* pJobs = reinterpret_cast<JobList*>(aAddr);
   

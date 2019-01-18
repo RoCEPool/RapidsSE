@@ -4,7 +4,7 @@
 
 // Job Short: _Cancel
 
-#include "JobModel.h"
+#include "Jobs.h"
 
 JobClass xJobClass__Cancel =
 {
@@ -41,7 +41,7 @@ JobClass xJobClass__Cancel =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob__Cancel_class(pFUN** pNextFun)
+JobClass* Jobs::pJob__Cancel_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob__Cancelled_class;
   
@@ -56,7 +56,7 @@ JobClass* JobModel::pJob__Cancel_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job__Cancel* JobModel::_pJob__Cancel(void* aAddress)
+Job__Cancel* Jobs::_pJob__Cancel(void* aAddress)
 {
   Job__Cancel* pJob__Cancel = reinterpret_cast<Job__Cancel*>(aAddress);
   
@@ -163,7 +163,7 @@ Footer* Job__Cancel::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob__Cancel_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob__Cancel_delete(Interface::Session* pSession, Job* pJob)
 {
   Job__Cancel* pJob__Cancel = _pJob__Cancel(pJob);
   

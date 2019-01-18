@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace JobModel
+namespace Jobs
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_SubLoader : public Job,

@@ -4,7 +4,7 @@
 
 // Job Short: ListCatalogs
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_ListCatalogs =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_ListCatalogs_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_ListCatalogs_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_ListColumns_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_ListCatalogs_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_ListCatalogs* JobModel::_pJob_ListCatalogs(void* aAddress)
+Job_ListCatalogs* Jobs::_pJob_ListCatalogs(void* aAddress)
 {
   Job_ListCatalogs* pJob_ListCatalogs = reinterpret_cast<Job_ListCatalogs*>(aAddress);
   
@@ -192,7 +192,7 @@ Footer* Job_ListCatalogs::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_ListCatalogs_pre(Interface::Session* pSession)
+Job* Jobs::pJob_ListCatalogs_pre(Interface::Session* pSession)
 {
   Job_ListCatalogs* pJob_ListCatalogs = new Job_ListCatalogs(pSession);
   
@@ -212,7 +212,7 @@ Job* JobModel::pJob_ListCatalogs_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_ListCatalogs_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ListCatalogs_post(Interface::Session* pSession, Job* pJob)
 {
   Job_ListCatalogs* pJob_ListCatalogs = _pJob_ListCatalogs(pJob);
   
@@ -241,7 +241,7 @@ void JobModel::vJob_ListCatalogs_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_ListCatalogs_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ListCatalogs_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_ListCatalogs* pJob_ListCatalogs = _pJob_ListCatalogs(pJob);
   
@@ -251,7 +251,7 @@ void JobModel::vJob_ListCatalogs_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_ListCatalogs_show(Job* pJob)
+void Jobs::vJob_ListCatalogs_show(Job* pJob)
 {
   Job_ListCatalogs* pJob_ListCatalogs = _pJob_ListCatalogs(pJob);
 

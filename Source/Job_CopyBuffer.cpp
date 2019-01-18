@@ -4,7 +4,7 @@
 
 // Job Short: SubInserter
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_CopyBuffer =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_CopyBuffer_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_CopyBuffer_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CreateCatalog_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_CopyBuffer_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_CopyBuffer* JobModel::_pJob_CopyBuffer(void* aAddress)
+Job_CopyBuffer* Jobs::_pJob_CopyBuffer(void* aAddress)
 {
   Job_CopyBuffer* pJob_CopyBuffer = reinterpret_cast<Job_CopyBuffer*>(aAddress);
   
@@ -235,7 +235,7 @@ Footer* Job_CopyBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_CopyBuffer_pre(Interface::Session* pSession)
+Job* Jobs::pJob_CopyBuffer_pre(Interface::Session* pSession)
 {
   Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(pSession);
   
@@ -245,7 +245,7 @@ Job* JobModel::pJob_CopyBuffer_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_CopyBuffer_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_CopyBuffer_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CopyBuffer* pJob_CopyBuffer = _pJob_CopyBuffer(pJob);
   
@@ -261,7 +261,7 @@ void JobModel::vJob_CopyBuffer_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_CopyBuffer_new(Job* pArg)
+Job* Jobs::pJob_CopyBuffer_new(Job* pArg)
 {
   Job_CopyBuffer* pJob_CopyBuffer = new Job_CopyBuffer(nullptr);
   
@@ -271,7 +271,7 @@ Job* JobModel::pJob_CopyBuffer_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_CopyBuffer_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_CopyBuffer_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CopyBuffer* pJob_CopyBuffer = _pJob_CopyBuffer(pJob);
   
@@ -282,7 +282,7 @@ void JobModel::vJob_CopyBuffer_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_CopyBuffer_show(Job* pJob)
+void Jobs::vJob_CopyBuffer_show(Job* pJob)
 {
   Job_CopyBuffer* pJob_CopyBuffer = _pJob_CopyBuffer(pJob);
 

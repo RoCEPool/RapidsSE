@@ -4,7 +4,7 @@
 
 // Job Short: AnalyzeTable
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_AnalyzeTable =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_AnalyzeTable_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_AnalyzeTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Answer_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_AnalyzeTable_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_AnalyzeTable* JobModel::_pJob_AnalyzeTable(void* aAddress)
+Job_AnalyzeTable* Jobs::_pJob_AnalyzeTable(void* aAddress)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = reinterpret_cast<Job_AnalyzeTable*>(aAddress);
   
@@ -197,7 +197,7 @@ Footer* Job_AnalyzeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_AnalyzeTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_AnalyzeTable_pre(Interface::Session* pSession)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = new Job_AnalyzeTable(pSession);
   
@@ -217,7 +217,7 @@ Job* JobModel::pJob_AnalyzeTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_AnalyzeTable_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_AnalyzeTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pJob);
   
@@ -247,7 +247,7 @@ void JobModel::vJob_AnalyzeTable_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_AnalyzeTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_AnalyzeTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pJob);
   
@@ -257,7 +257,7 @@ void JobModel::vJob_AnalyzeTable_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_AnalyzeTable_show(Job* pJob)
+void Jobs::vJob_AnalyzeTable_show(Job* pJob)
 {
   Job_AnalyzeTable* pJob_AnalyzeTable = _pJob_AnalyzeTable(pJob);
 

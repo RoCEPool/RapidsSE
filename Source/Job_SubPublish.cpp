@@ -4,7 +4,7 @@
 
 // Job Short: SubPublish
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_SubPublish =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_SubPublish_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_SubPublish_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SubPurger_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_SubPublish_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_SubPublish* JobModel::_pJob_SubPublish(void* aAddress)
+Job_SubPublish* Jobs::_pJob_SubPublish(void* aAddress)
 {
   Job_SubPublish* pJob_SubPublish = reinterpret_cast<Job_SubPublish*>(aAddress);
   
@@ -256,7 +256,7 @@ Footer* Job_SubPublish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_SubPublish_pre(Interface::Session* pSession)
+Job* Jobs::pJob_SubPublish_pre(Interface::Session* pSession)
 {
   Job_SubPublish* pJob_SubPublish = new Job_SubPublish(pSession);
   
@@ -266,7 +266,7 @@ Job* JobModel::pJob_SubPublish_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SubPublish_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubPublish_post(Interface::Session* pSession, Job* pJob)
 {
   Job_SubPublish* pJob_SubPublish = _pJob_SubPublish(pJob);
   
@@ -282,7 +282,7 @@ void JobModel::vJob_SubPublish_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SubPublish_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubPublish_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SubPublish* pJob_SubPublish = _pJob_SubPublish(pJob);
   
@@ -292,7 +292,7 @@ void JobModel::vJob_SubPublish_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SubPublish_show(Job* pJob)
+void Jobs::vJob_SubPublish_show(Job* pJob)
 {
   Job_SubPublish* pJob_SubPublish = _pJob_SubPublish(pJob);
 

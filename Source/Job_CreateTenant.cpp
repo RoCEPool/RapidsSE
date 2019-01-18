@@ -4,7 +4,7 @@
 
 // Job Short: CreateTenant
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_CreateTenant =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_CreateTenant_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_CreateTenant_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Docol_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_CreateTenant_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_CreateTenant* JobModel::_pJob_CreateTenant(void* aAddress)
+Job_CreateTenant* Jobs::_pJob_CreateTenant(void* aAddress)
 {
   Job_CreateTenant* pJob_CreateTenant = reinterpret_cast<Job_CreateTenant*>(aAddress);
   
@@ -194,7 +194,7 @@ Footer* Job_CreateTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_CreateTenant_pre(Interface::Session* pSession)
+Job* Jobs::pJob_CreateTenant_pre(Interface::Session* pSession)
 {
   Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSession);
   
@@ -214,7 +214,7 @@ Job* JobModel::pJob_CreateTenant_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_CreateTenant_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_CreateTenant_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
   
@@ -233,7 +233,7 @@ void JobModel::vJob_CreateTenant_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_CreateTenant_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_CreateTenant_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
   
@@ -243,7 +243,7 @@ void JobModel::vJob_CreateTenant_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_CreateTenant_show(Job* pJob)
+void Jobs::vJob_CreateTenant_show(Job* pJob)
 {
   Job_CreateTenant* pJob_CreateTenant = _pJob_CreateTenant(pJob);
 

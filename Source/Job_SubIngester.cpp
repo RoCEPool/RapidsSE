@@ -4,7 +4,7 @@
 
 // Job Short: SubIngester
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_SubIngester =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_SubIngester_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_SubIngester_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SubInserter_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_SubIngester_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_SubIngester* JobModel::_pJob_SubIngester(void* aAddress)
+Job_SubIngester* Jobs::_pJob_SubIngester(void* aAddress)
 {
   Job_SubIngester* pJob_SubIngester = reinterpret_cast<Job_SubIngester*>(aAddress);
   
@@ -312,7 +312,7 @@ Footer* Job_SubIngester::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::vJob_SubIngester_pre(Interface::Session* pSession)
+Job* Jobs::vJob_SubIngester_pre(Interface::Session* pSession)
 {
   Job_SubIngester* pJob_SubIngester = new Job_SubIngester(pSession);
   
@@ -322,7 +322,7 @@ Job* JobModel::vJob_SubIngester_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_SubIngester_new(Job* pArg)
+Job* Jobs::pJob_SubIngester_new(Job* pArg)
 {
   Job_SubIngester* pJob_SubIngester = new Job_SubIngester(nullptr);
   
@@ -332,7 +332,7 @@ Job* JobModel::pJob_SubIngester_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SubIngester_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubIngester_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pJob);
   
@@ -342,7 +342,7 @@ void JobModel::vJob_SubIngester_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SubIngester_show(Job* pJob)
+void Jobs::vJob_SubIngester_show(Job* pJob)
 {
   Job_SubIngester* pJob_SubIngester = _pJob_SubIngester(pJob);
 

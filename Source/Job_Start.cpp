@@ -4,7 +4,7 @@
 
 // Job Short: Start
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Start =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Start_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Start_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_StartCluster_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Start_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Start* JobModel::_pJob_Start(void* aAddress)
+Job_Start* Jobs::_pJob_Start(void* aAddress)
 {
   Job_Start* pJob_Start = reinterpret_cast<Job_Start*>(aAddress);
   
@@ -168,7 +168,7 @@ Footer* Job_Start::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Start_new(Job* pArg)
+Job* Jobs::pJob_Start_new(Job* pArg)
 {
   Job_Start* pJob_Start = new Job_Start(nullptr);
   
@@ -178,7 +178,7 @@ Job* JobModel::pJob_Start_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Start_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Start_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Start* pJob_Start = _pJob_Start(pJob);
   
@@ -188,7 +188,7 @@ void JobModel::vJob_Start_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Start_show(Job* pJob)
+void Jobs::vJob_Start_show(Job* pJob)
 {
   Job_Start* pJob_Start = _pJob_Start(pJob);
 

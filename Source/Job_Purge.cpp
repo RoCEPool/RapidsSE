@@ -4,7 +4,7 @@
 
 // Job Short: Ingest
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Purge =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Purge_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Purge_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Pwf_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Purge_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Purge* JobModel::_pJob_Purge(void* aAddress)
+Job_Purge* Jobs::_pJob_Purge(void* aAddress)
 {
   Job_Purge* pJob_Purge = reinterpret_cast<Job_Purge*>(aAddress);
   
@@ -171,7 +171,7 @@ Footer* Job_Purge::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Purge_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Purge_pre(Interface::Session* pSession)
 {
   i8 nTokens;
 
@@ -197,14 +197,14 @@ Job* JobModel::pJob_Purge_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Purge_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Purge_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Purge_new(Job* pArg)
+Job* Jobs::pJob_Purge_new(Job* pArg)
 {
   Job_Purge* pJob_Purge = new Job_Purge(nullptr);
   
@@ -214,7 +214,7 @@ Job* JobModel::pJob_Purge_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Purge_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Purge_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Purge* pJob_Purge = _pJob_Purge(pJob);
   
@@ -224,7 +224,7 @@ void JobModel::vJob_Purge_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Purge_show(Job* pJob)
+void Jobs::vJob_Purge_show(Job* pJob)
 {
   Job_Purge* pJob_Purge = _pJob_Purge(pJob);
 

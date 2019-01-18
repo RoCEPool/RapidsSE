@@ -4,7 +4,7 @@
 
 // Job Short: VerifyIndex
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_VerifyIndex =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_VerifyIndex_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_VerifyIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_VisualizeIndex_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_VerifyIndex_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_VerifyIndex* JobModel::_pJob_VerifyIndex(void* aAddress)
+Job_VerifyIndex* Jobs::_pJob_VerifyIndex(void* aAddress)
 {
   Job_VerifyIndex* pJob_VerifyIndex = reinterpret_cast<Job_VerifyIndex*>(aAddress);
   
@@ -197,7 +197,7 @@ Footer* Job_VerifyIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_VerifyIndex_pre(Interface::Session* pSession)
+Job* Jobs::pJob_VerifyIndex_pre(Interface::Session* pSession)
 {
   Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSession);
   
@@ -217,7 +217,7 @@ Job* JobModel::pJob_VerifyIndex_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_VerifyIndex_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_VerifyIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pJob);
   
@@ -242,7 +242,7 @@ void JobModel::vJob_VerifyIndex_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_VerifyIndex_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_VerifyIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pJob);
   
@@ -252,7 +252,7 @@ void JobModel::vJob_VerifyIndex_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_VerifyIndex_show(Job* pJob)
+void Jobs::vJob_VerifyIndex_show(Job* pJob)
 {
   Job_VerifyIndex* pJob_VerifyIndex = _pJob_VerifyIndex(pJob);
 

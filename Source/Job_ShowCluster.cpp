@@ -4,7 +4,7 @@
 
 // Job Short: ShowCluster
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_ShowCluster =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_ShowCluster_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_ShowCluster_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Sink_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_ShowCluster_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_ShowCluster* JobModel::_pJob_ShowCluster(void* aAddress)
+Job_ShowCluster* Jobs::_pJob_ShowCluster(void* aAddress)
 {
   Job_ShowCluster* pJob_ShowCluster = reinterpret_cast<Job_ShowCluster*>(aAddress);
   
@@ -192,7 +192,7 @@ Footer* Job_ShowCluster::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_ShowCluster_pre(Interface::Session* pSession)
+Job* Jobs::pJob_ShowCluster_pre(Interface::Session* pSession)
 {
   Job_ShowCluster* pJob_ShowCluster = new Job_ShowCluster(pSession);
   
@@ -202,7 +202,7 @@ Job* JobModel::pJob_ShowCluster_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_ShowCluster_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ShowCluster_post(Interface::Session* pSession, Job* pJob)
 {
   //Job_ShowCluster* pJob_ShowCluster = _pJob_ShowCluster(pJob);
   
@@ -211,7 +211,7 @@ void JobModel::vJob_ShowCluster_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_ShowCluster_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_ShowCluster_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_ShowCluster* pJob_ShowCluster = _pJob_ShowCluster(pJob);
   
@@ -221,7 +221,7 @@ void JobModel::vJob_ShowCluster_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_ShowCluster_show(Job* pJob)
+void Jobs::vJob_ShowCluster_show(Job* pJob)
 {
   Job_ShowCluster* pJob_ShowCluster = _pJob_ShowCluster(pJob);
 

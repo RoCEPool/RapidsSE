@@ -4,7 +4,7 @@
 
 // Job Short: Cat
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Cat =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Cat_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Cat_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Cf_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Cat_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Cat* JobModel::_pJob_Cat(void* aAddress)
+Job_Cat* Jobs::_pJob_Cat(void* aAddress)
 {
   Job_Cat* pJob_Cat = reinterpret_cast<Job_Cat*>(aAddress);
   
@@ -175,7 +175,7 @@ Footer* Job_Cat::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Cat_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Cat_pre(Interface::Session* pSession)
 {
   i8 nTokens;
 
@@ -208,14 +208,14 @@ Job* JobModel::pJob_Cat_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Cat_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Cat_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Cat_new(Job* pArg)
+Job* Jobs::pJob_Cat_new(Job* pArg)
 {
   Job_Cat* pJob_Cat = new Job_Cat(nullptr);
   
@@ -225,7 +225,7 @@ Job* JobModel::pJob_Cat_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Cat_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Cat_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Cat* pJob_Cat = _pJob_Cat(pJob);
   
@@ -235,7 +235,7 @@ void JobModel::vJob_Cat_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Cat_show(Job* pJob)
+void Jobs::vJob_Cat_show(Job* pJob)
 {
   Job_Cat* pJob_Cat = _pJob_Cat(pJob);
 

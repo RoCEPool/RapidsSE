@@ -4,7 +4,7 @@
 
 // Job Short: _Executed
 
-#include "JobModel.h"
+#include "Jobs.h"
 
 JobClass xJobClass__Executed =
 {
@@ -41,7 +41,7 @@ JobClass xJobClass__Executed =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob__Executed_class(pFUN** pNextFun)
+JobClass* Jobs::pJob__Executed_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Alarm_class;
   
@@ -56,7 +56,7 @@ JobClass* JobModel::pJob__Executed_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job__Executed* JobModel::_pJob__Executed(void* aAddress)
+Job__Executed* Jobs::_pJob__Executed(void* aAddress)
 {
   Job__Executed* pJob__Executed = reinterpret_cast<Job__Executed*>(aAddress);
   
@@ -169,7 +169,7 @@ Footer* Job__Executed::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob__Executed_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob__Executed_delete(Interface::Session* pSession, Job* pJob)
 {
   Job__Executed* pJob__Executed = _pJob__Executed(pJob);
   

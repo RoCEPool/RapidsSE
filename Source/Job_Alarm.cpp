@@ -4,7 +4,7 @@
 
 // Job Short: Alarm
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Alarm =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Alarm_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Alarm_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_AnalyzeIndex_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Alarm_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Alarm* JobModel::_pJob_Alarm(void* aAddress)
+Job_Alarm* Jobs::_pJob_Alarm(void* aAddress)
 {
   Job_Alarm* pJob_Alarm = reinterpret_cast<Job_Alarm*>(aAddress);
   
@@ -169,7 +169,7 @@ Footer* Job_Alarm::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Alarm_new(Job* pArg)
+Job* Jobs::pJob_Alarm_new(Job* pArg)
 {
   Job_Alarm* pJob_Alarm = new Job_Alarm(nullptr);
   
@@ -179,7 +179,7 @@ Job* JobModel::pJob_Alarm_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Alarm_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Alarm_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Alarm* pJob_Alarm = _pJob_Alarm(pJob);
   
@@ -189,7 +189,7 @@ void JobModel::vJob_Alarm_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Alarm_show(Job* pJob)
+void Jobs::vJob_Alarm_show(Job* pJob)
 {
   Job_Alarm* pJob_Alarm = _pJob_Alarm(pJob);
 

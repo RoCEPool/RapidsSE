@@ -4,7 +4,7 @@
 
 // Job Short: Ingest
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Publish =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Publish_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Publish_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Purge_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Publish_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Publish* JobModel::_pJob_Publish(void* aAddress)
+Job_Publish* Jobs::_pJob_Publish(void* aAddress)
 {
   Job_Publish* pJob_Publish = reinterpret_cast<Job_Publish*>(aAddress);
   
@@ -174,7 +174,7 @@ Footer* Job_Publish::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Publish_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Publish_pre(Interface::Session* pSession)
 {
   i8 nTokens;
 
@@ -201,14 +201,14 @@ Job* JobModel::pJob_Publish_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Publish_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Publish_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Publish_new(Job* pArg)
+Job* Jobs::pJob_Publish_new(Job* pArg)
 {
   Job_Publish* pJob_Publish = new Job_Publish(nullptr);
   
@@ -218,7 +218,7 @@ Job* JobModel::pJob_Publish_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Publish_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Publish_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Publish* pJob_Publish = _pJob_Publish(pJob);
   
@@ -228,7 +228,7 @@ void JobModel::vJob_Publish_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Publish_show(Job* pJob)
+void Jobs::vJob_Publish_show(Job* pJob)
 {
   Job_Publish* pJob_Publish = _pJob_Publish(pJob);
 

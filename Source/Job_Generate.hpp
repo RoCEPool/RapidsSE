@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace JobModel
+namespace Jobs
 {
   static const i8 C_GEN_MIN = 1; // generate a min value
   static const i8 C_GEN_MID = 2; // generate a mid value

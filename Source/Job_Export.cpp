@@ -4,7 +4,7 @@
 
 // Job Short: Export
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Export =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Export_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Export_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_FetchRows_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Export_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Export* JobModel::_pJob_Export(void* aAddress)
+Job_Export* Jobs::_pJob_Export(void* aAddress)
 {
   Job_Export* pJob_Export = reinterpret_cast<Job_Export*>(aAddress);
   
@@ -178,7 +178,7 @@ Footer* Job_Export::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Export_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Export_pre(Interface::Session* pSession)
 {
   Job_Export* pJob_Export = new Job_Export(pSession);
   
@@ -188,7 +188,7 @@ Job* JobModel::pJob_Export_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Export_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Export_post(Interface::Session* pSession, Job* pJob)
 {
   //Job_Export* pJob_Export = _pJob_Export(pJob);
   
@@ -198,7 +198,7 @@ void JobModel::vJob_Export_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Export_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Export_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Export* pJob_Export = _pJob_Export(pJob);
   
@@ -209,7 +209,7 @@ void JobModel::vJob_Export_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Export_show(Job* pJob)
+void Jobs::vJob_Export_show(Job* pJob)
 {
   Job_Export* pJob_Export = _pJob_Export(pJob);
 

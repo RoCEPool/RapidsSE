@@ -4,7 +4,7 @@
 
 // Job Short: SizeIndex
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_SizeIndex =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_SizeIndex_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_SizeIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SizeTable_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_SizeIndex_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_SizeIndex* JobModel::_pJob_SizeIndex(void* aAddress)
+Job_SizeIndex* Jobs::_pJob_SizeIndex(void* aAddress)
 {
   Job_SizeIndex* pJob_SizeIndex = reinterpret_cast<Job_SizeIndex*>(aAddress);
   
@@ -197,7 +197,7 @@ Footer* Job_SizeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_SizeIndex_pre(Interface::Session* pSession)
+Job* Jobs::pJob_SizeIndex_pre(Interface::Session* pSession)
 {
   Job_SizeIndex* pJob_SizeIndex = new Job_SizeIndex(pSession);
   
@@ -217,7 +217,7 @@ Job* JobModel::pJob_SizeIndex_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SizeIndex_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SizeIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_SizeIndex* pJob_SizeIndex = _pJob_SizeIndex(pJob);
   
@@ -246,7 +246,7 @@ void JobModel::vJob_SizeIndex_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SizeIndex_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SizeIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SizeIndex* pJob_SizeTable = _pJob_SizeIndex(pJob);
   
@@ -256,7 +256,7 @@ void JobModel::vJob_SizeIndex_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SizeIndex_show(Job* pJob)
+void Jobs::vJob_SizeIndex_show(Job* pJob)
 {
   Job_SizeIndex* pJob_SizeIndex = _pJob_SizeIndex(pJob);
 

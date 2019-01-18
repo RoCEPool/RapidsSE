@@ -4,7 +4,7 @@
 
 // Job Short: _Begun
 
-#include "JobModel.h"
+#include "Jobs.h"
 
 JobClass xJobClass__Begun =
 {
@@ -41,7 +41,7 @@ JobClass xJobClass__Begun =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob__Begun_class(pFUN** pNextFun)
+JobClass* Jobs::pJob__Begun_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob__Cancel_class;
   
@@ -56,7 +56,7 @@ JobClass* JobModel::pJob__Begun_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job__Begun* JobModel::_pJob__Begun(void* aAddress)
+Job__Begun* Jobs::_pJob__Begun(void* aAddress)
 {
   Job__Begun* pJob__Begun = reinterpret_cast<Job__Begun*>(aAddress);
   
@@ -165,7 +165,7 @@ Footer* Job__Begun::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob__Begun_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob__Begun_delete(Interface::Session* pSession, Job* pJob)
 {
   Job__Begun* pJob__Begun = _pJob__Begun(pJob);
   

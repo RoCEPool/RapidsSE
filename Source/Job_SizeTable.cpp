@@ -4,7 +4,7 @@
 
 // Job Short: SizeTable
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_SizeTable =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_SizeTable_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_SizeTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Space_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_SizeTable_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_SizeTable* JobModel::_pJob_SizeTable(void* aAddress)
+Job_SizeTable* Jobs::_pJob_SizeTable(void* aAddress)
 {
   Job_SizeTable* pJob_SizeTable = reinterpret_cast<Job_SizeTable*>(aAddress);
   
@@ -192,7 +192,7 @@ Footer* Job_SizeTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_SizeTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_SizeTable_pre(Interface::Session* pSession)
 {
   Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession);
   
@@ -212,7 +212,7 @@ Job* JobModel::pJob_SizeTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SizeTable_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SizeTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_SizeTable* pJob_SizeTable = _pJob_SizeTable(pJob);
   
@@ -241,7 +241,7 @@ void JobModel::vJob_SizeTable_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SizeTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SizeTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SizeTable* pJob_SizeTable = _pJob_SizeTable(pJob);
   
@@ -251,7 +251,7 @@ void JobModel::vJob_SizeTable_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SizeTable_show(Job* pJob)
+void Jobs::vJob_SizeTable_show(Job* pJob)
 {
   Job_SizeTable* pJob_SizeTable = _pJob_SizeTable(pJob);
 

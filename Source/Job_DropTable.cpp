@@ -4,7 +4,7 @@
 
 // Job Short: DropTable
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_DropTable =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_DropTable_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_DropTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_DropTenant_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_DropTable_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_DropTable* JobModel::_pJob_DropTable(void* aAddress)
+Job_DropTable* Jobs::_pJob_DropTable(void* aAddress)
 {
   Job_DropTable* pJob_DropTable = reinterpret_cast<Job_DropTable*>(aAddress);
   
@@ -193,7 +193,7 @@ Footer* Job_DropTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_DropTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_DropTable_pre(Interface::Session* pSession)
 {
   Job_DropTable* pJob_DropTable = new Job_DropTable(pSession);
   
@@ -213,7 +213,7 @@ Job* JobModel::pJob_DropTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_DropTable_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_DropTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_DropTable* pJob_DropTable = _pJob_DropTable(pJob);
   
@@ -232,7 +232,7 @@ void JobModel::vJob_DropTable_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_DropTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_DropTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_DropTable* pJob_DropTable = _pJob_DropTable(pJob);
   
@@ -242,7 +242,7 @@ void JobModel::vJob_DropTable_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_DropTable_show(Job* pJob)
+void Jobs::vJob_DropTable_show(Job* pJob)
 {
   Job_DropTable* pJob_DropTable = _pJob_DropTable(pJob);
 

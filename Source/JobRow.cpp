@@ -2,7 +2,7 @@
 /* JobRow.cpp -- Row part for a Job                                           */
 /*============================================================================*/
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;

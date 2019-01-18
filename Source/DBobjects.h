@@ -6,7 +6,7 @@
 
 #include "Forth.h"
 
-namespace JobModel
+namespace Jobs
 {
   class Job_CreateTable;
   class Job_CreateIndex;

@@ -148,7 +148,7 @@ void Index::vCreateColumnVec(s32& sColumnNm, s48K& sColumnDefn)
 /*----------------------------------------------------------------------------*/
 /* create column vector                                                       */
 /*----------------------------------------------------------------------------*/
-void Index::vCreateColumnVec(JobModel::Job_CreateIndex* pJob)
+void Index::vCreateColumnVec(Jobs::Job_CreateIndex* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
 

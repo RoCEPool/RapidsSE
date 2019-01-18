@@ -4,7 +4,7 @@
 
 // Job Short: Cat
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Monitor =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Monitor_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Monitor_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_NetHog_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Monitor_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Monitor* JobModel::_pJob_Monitor(void* aAddress)
+Job_Monitor* Jobs::_pJob_Monitor(void* aAddress)
 {
   Job_Monitor* pJob_Monitor = reinterpret_cast<Job_Monitor*>(aAddress);
   
@@ -176,7 +176,7 @@ Footer* Job_Monitor::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Monitor_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Monitor_pre(Interface::Session* pSession)
 {
   i8 nTokens;
 
@@ -202,14 +202,14 @@ Job* JobModel::pJob_Monitor_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Monitor_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Monitor_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Monitor_new(Job* pArg)
+Job* Jobs::pJob_Monitor_new(Job* pArg)
 {
   Job_Monitor* pJob_Monitor = new Job_Monitor(nullptr);
   
@@ -219,7 +219,7 @@ Job* JobModel::pJob_Monitor_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Monitor_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Monitor_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Monitor* pJob_Monitor = _pJob_Monitor(pJob);
   
@@ -229,7 +229,7 @@ void JobModel::vJob_Monitor_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Monitor_show(Job* pJob)
+void Jobs::vJob_Monitor_show(Job* pJob)
 {
   Job_Monitor* pJob_Monitor = _pJob_Monitor(pJob);
 

@@ -4,7 +4,7 @@
 
 // Job Short: CreateTable
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -55,7 +55,7 @@ JobClass xJobClass_CreateTable =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_CreateTable_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_CreateTable_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_CreateTenant_class;
   
@@ -70,7 +70,7 @@ JobClass* JobModel::pJob_CreateTable_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_CreateTable* JobModel::_pJob_CreateTable(void* aAddress)
+Job_CreateTable* Jobs::_pJob_CreateTable(void* aAddress)
 {
   Job_CreateTable* pJob_CreateTable = reinterpret_cast<Job_CreateTable*>(aAddress);
   
@@ -618,7 +618,7 @@ Footer* Job_CreateTable::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_CreateTable_pre(Interface::Session* pSession)
+Job* Jobs::pJob_CreateTable_pre(Interface::Session* pSession)
 {
   Job_CreateTable* pJob_CreateTable = new Job_CreateTable(pSession);
   
@@ -637,7 +637,7 @@ Job* JobModel::pJob_CreateTable_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_CreateTable_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_CreateTable_post(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
   
@@ -656,7 +656,7 @@ void JobModel::vJob_CreateTable_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_CreateTable_new(Job* pArg)
+Job* Jobs::pJob_CreateTable_new(Job* pArg)
 {
   Job_CreateTable* pJob_CreateTable = new Job_CreateTable(nullptr);
   
@@ -666,7 +666,7 @@ Job* JobModel::pJob_CreateTable_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_CreateTable_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_CreateTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
   
@@ -684,7 +684,7 @@ void JobModel::vJob_CreateTable_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_CreateTable_show(Job* pJob)
+void Jobs::vJob_CreateTable_show(Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
 

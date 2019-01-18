@@ -4,7 +4,7 @@
 
 // Job Short: Sink
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Sink =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Sink_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Sink_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SizeIndex_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Sink_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Sink* JobModel::_pJob_Sink(void* aAddress)
+Job_Sink* Jobs::_pJob_Sink(void* aAddress)
 {
   Job_Sink* pJob_Sink = reinterpret_cast<Job_Sink*>(aAddress);
   
@@ -174,7 +174,7 @@ Footer* Job_Sink::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Sink_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Sink_pre(Interface::Session* pSession)
 {
   i8 nTokens;
 
@@ -204,14 +204,14 @@ Job* JobModel::pJob_Sink_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Sink_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Sink_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Sink_new(Job* pArg)
+Job* Jobs::pJob_Sink_new(Job* pArg)
 {
   Job_Sink* pJob_Sink = new Job_Sink(nullptr);
   
@@ -221,7 +221,7 @@ Job* JobModel::pJob_Sink_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Sink_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Sink_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Sink* pJob_Sink = _pJob_Sink(pJob);
   
@@ -231,7 +231,7 @@ void JobModel::vJob_Sink_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Sink_show(Job* pJob)
+void Jobs::vJob_Sink_show(Job* pJob)
 {
   Job_Sink* pJob_Sink = _pJob_Sink(pJob);
 

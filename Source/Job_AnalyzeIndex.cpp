@@ -4,7 +4,7 @@
 
 // Job Short: AnalyzeIndex
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_AnalyzeIndex =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_AnalyzeIndex_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_AnalyzeIndex_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_AnalyzeTable_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_AnalyzeIndex_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_AnalyzeIndex* JobModel::_pJob_AnalyzeIndex(void* aAddress)
+Job_AnalyzeIndex* Jobs::_pJob_AnalyzeIndex(void* aAddress)
 {
   Job_AnalyzeIndex* pJob_AnalyzeTable = reinterpret_cast<Job_AnalyzeIndex*>(aAddress);
   
@@ -201,7 +201,7 @@ Footer* Job_AnalyzeIndex::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_AnalyzeIndex_pre(Interface::Session* pSession)
+Job* Jobs::pJob_AnalyzeIndex_pre(Interface::Session* pSession)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(pSession);
   
@@ -221,7 +221,7 @@ Job* JobModel::pJob_AnalyzeIndex_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_AnalyzeIndex_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_AnalyzeIndex_post(Interface::Session* pSession, Job* pJob)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = _pJob_AnalyzeIndex(pJob);
   
@@ -252,7 +252,7 @@ void JobModel::vJob_AnalyzeIndex_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_AnalyzeIndex_new(Job* pArg)
+Job* Jobs::pJob_AnalyzeIndex_new(Job* pArg)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(nullptr);
   
@@ -262,7 +262,7 @@ Job* JobModel::pJob_AnalyzeIndex_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_AnalyzeIndex_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_AnalyzeIndex_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = _pJob_AnalyzeIndex(pJob);
   
@@ -272,7 +272,7 @@ void JobModel::vJob_AnalyzeIndex_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_AnalyzeIndex_show(Job* pJob)
+void Jobs::vJob_AnalyzeIndex_show(Job* pJob)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = _pJob_AnalyzeIndex(pJob);
 

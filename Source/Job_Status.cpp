@@ -4,7 +4,7 @@
 
 // Job Short: Status
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Status =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Status_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Status_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SubFetch_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Status_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Status* JobModel::_pJob_Status(void* aAddress)
+Job_Status* Jobs::_pJob_Status(void* aAddress)
 {
   Job_Status* pJob_Status = reinterpret_cast<Job_Status*>(aAddress);
   
@@ -190,7 +190,7 @@ Footer* Job_Status::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Status_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Status_pre(Interface::Session* pSession)
 {
   Job_Status* pJob_Status = new Job_Status(pSession);
   
@@ -210,7 +210,7 @@ Job* JobModel::pJob_Status_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Status_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Status_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Status* pJob_Status = _pJob_Status(pJob);
   
@@ -234,7 +234,7 @@ void JobModel::vJob_Status_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Status_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Status_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Status* pJob_Status = _pJob_Status(pJob);
   
@@ -245,7 +245,7 @@ void JobModel::vJob_Status_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Status_show(Job* pJob)
+void Jobs::vJob_Status_show(Job* pJob)
 {
   Job_Status* pJob_Status = _pJob_Status(pJob);
 

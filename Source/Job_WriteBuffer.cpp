@@ -2,7 +2,7 @@
 /* Job_WriteBuffer.cpp -- write buffer Job                                    */
 /*============================================================================*/
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -50,7 +50,7 @@ JobClass xJobClass_WriteBuffer =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_WriteBuffer_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_WriteBuffer_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_WriteRow_class;
   
@@ -65,7 +65,7 @@ JobClass* JobModel::pJob_WriteBuffer_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_WriteBuffer* JobModel::_pJob_WriteBuffer(void* aAddress)
+Job_WriteBuffer* Jobs::_pJob_WriteBuffer(void* aAddress)
 {
   Job_WriteBuffer* pJob_WriteBuffer = reinterpret_cast<Job_WriteBuffer*>(aAddress);
   
@@ -401,7 +401,7 @@ Footer* Job_WriteBuffer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_WriteBuffer_pre(Interface::Session* pSession)
+Job* Jobs::pJob_WriteBuffer_pre(Interface::Session* pSession)
 {
   Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(pSession);
   
@@ -411,7 +411,7 @@ Job* JobModel::pJob_WriteBuffer_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_WriteBuffer_new(Job* pArg)
+Job* Jobs::pJob_WriteBuffer_new(Job* pArg)
 {
   Job_WriteBuffer* pJob_WriteBuffer = new Job_WriteBuffer(nullptr);
   
@@ -421,7 +421,7 @@ Job* JobModel::pJob_WriteBuffer_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_WriteBuffer_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_WriteBuffer_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJob);
   
@@ -432,7 +432,7 @@ void JobModel::vJob_WriteBuffer_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_WriteBuffer_show(Job* pJob)
+void Jobs::vJob_WriteBuffer_show(Job* pJob)
 {
   Job_WriteBuffer* pJob_WriteBuffer = _pJob_WriteBuffer(pJob);
 

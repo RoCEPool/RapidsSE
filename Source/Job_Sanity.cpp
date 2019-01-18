@@ -5,7 +5,7 @@
 // Job Short: Sanity
 
 #include "StorageEngine.h"
-#include "JobModel.h"
+#include "Jobs.h"
 
 extern AttachMap*      gpAttachMap;
 
@@ -46,7 +46,7 @@ JobClass xJobClass_Sanity =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Sanity_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Sanity_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SelectTable_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Sanity_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Sanity* JobModel::_pJob_Sanity(void* aAddress)
+Job_Sanity* Jobs::_pJob_Sanity(void* aAddress)
 {
   Job_Sanity* pJob_Sanity = reinterpret_cast<Job_Sanity*>(aAddress);
   
@@ -194,7 +194,7 @@ Footer* Job_Sanity::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Sanity_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Sanity_pre(Interface::Session* pSession)
 {
   Job_Sanity* pJob_Sanity = new Job_Sanity(pSession);
   
@@ -214,7 +214,7 @@ Job* JobModel::pJob_Sanity_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Sanity_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Sanity_post(Interface::Session* pSession, Job* pJob)
 {
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
   
@@ -241,7 +241,7 @@ void JobModel::vJob_Sanity_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Sanity_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Sanity_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
   
@@ -251,7 +251,7 @@ void JobModel::vJob_Sanity_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Sanity_show(Job* pJob)
+void Jobs::vJob_Sanity_show(Job* pJob)
 {
   Job_Sanity* pJob_Sanity = _pJob_Sanity(pJob);
 

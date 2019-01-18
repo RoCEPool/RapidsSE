@@ -4,7 +4,7 @@
 
 // Job Short: UseSchema
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_UseSchema =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_UseSchema_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_UseSchema_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_VerifyIndex_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_UseSchema_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_UseSchema* JobModel::_pJob_UseSchema(void* aAddress)
+Job_UseSchema* Jobs::_pJob_UseSchema(void* aAddress)
 {
   Job_UseSchema* pJob_UseSchema = reinterpret_cast<Job_UseSchema*>(aAddress);
   
@@ -198,7 +198,7 @@ Footer* Job_UseSchema::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_UseSchema_pre(Interface::Session* pSession)
+Job* Jobs::pJob_UseSchema_pre(Interface::Session* pSession)
 {
   Job_UseSchema* pJob_UseSchema = new Job_UseSchema(pSession);
   
@@ -218,7 +218,7 @@ Job* JobModel::pJob_UseSchema_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_UseSchema_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_UseSchema_post(Interface::Session* pSession, Job* pJob)
 {
   Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pJob);
   
@@ -235,7 +235,7 @@ void JobModel::vJob_UseSchema_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_UseSchema_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_UseSchema_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pJob);
   
@@ -245,7 +245,7 @@ void JobModel::vJob_UseSchema_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_UseSchema_show(Job* pJob)
+void Jobs::vJob_UseSchema_show(Job* pJob)
 {
   Job_UseSchema* pJob_UseSchema = _pJob_UseSchema(pJob);
 

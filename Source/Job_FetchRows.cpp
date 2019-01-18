@@ -4,7 +4,7 @@
 
 // Job Short: FetchRows
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_FetchRows =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_FetchRows_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_FetchRows_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Generate_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_FetchRows_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_FetchRows* JobModel::_pJob_FetchRows(void* aAddress)
+Job_FetchRows* Jobs::_pJob_FetchRows(void* aAddress)
 {
   Job_FetchRows* pJob_FetchRows = reinterpret_cast<Job_FetchRows*>(aAddress);
   
@@ -372,7 +372,7 @@ Footer* Job_FetchRows::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_FetchRows_pre(Interface::Session* pSession)
+Job* Jobs::pJob_FetchRows_pre(Interface::Session* pSession)
 {
   Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSession);
   
@@ -392,7 +392,7 @@ Job* JobModel::pJob_FetchRows_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   
@@ -450,7 +450,7 @@ void JobModel::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
   
@@ -460,7 +460,7 @@ void JobModel::vJob_FetchRows_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer)
+void Jobs::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetchBuffer)
 {
   Row** aaRow = nullptr;
   s48K sRowString;
@@ -477,7 +477,7 @@ void JobModel::vIterateBuffer(Job_FetchRows* pJob_FetchRows, FetchBuffer* pFetch
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_FetchRows_show(Job* pJob)
+void Jobs::vJob_FetchRows_show(Job* pJob)
 {
   Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJob);
 

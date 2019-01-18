@@ -33,7 +33,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   DBobjects::vCheckAssumptions();
   Chunks::vCheckAssumptions();
   Plans::vCheckAssumptions();
-  JobModel::vCheckAssumptions();
+  Jobs::vCheckAssumptions();
   Utilities::vCheckAssumptions();
   Steps::vCheckAssumptions();
   Tasks::vCheckAssumptions();

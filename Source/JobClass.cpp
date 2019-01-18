@@ -2,7 +2,7 @@
 /* JobClass.cpp -- a description of a job class                               */
 /*============================================================================*/
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -10,7 +10,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::_pJobClass(i8 iAddr)
+JobClass* Jobs::_pJobClass(i8 iAddr)
 {
   JobClass* pJobClass = reinterpret_cast<JobClass*>(iAddr);
   
@@ -20,7 +20,7 @@ JobClass* JobModel::_pJobClass(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::_pJobClass(void* aAddr)
+JobClass* Jobs::_pJobClass(void* aAddr)
 {
   JobClass* pJobClass = reinterpret_cast<JobClass*>(aAddr);
   

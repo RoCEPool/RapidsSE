@@ -4,7 +4,7 @@
 
 // Job Short: SubInserter
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_SubInserter =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_SubInserter_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_SubInserter_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_SubLoader_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_SubInserter_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_SubInserter* JobModel::_pJob_SubInserter(void* aAddress)
+Job_SubInserter* Jobs::_pJob_SubInserter(void* aAddress)
 {
   Job_SubInserter* pJob_SubInserter = reinterpret_cast<Job_SubInserter*>(aAddress);
   
@@ -261,7 +261,7 @@ Footer* Job_SubInserter::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_SubInserter_pre(Interface::Session* pSession)
+Job* Jobs::pJob_SubInserter_pre(Interface::Session* pSession)
 {
   Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession);
   
@@ -281,7 +281,7 @@ Job* JobModel::pJob_SubInserter_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SubInserter_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubInserter_post(Interface::Session* pSession, Job* pJob)
 {
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJob);
   
@@ -297,7 +297,7 @@ void JobModel::vJob_SubInserter_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_SubInserter_new(Job* pArg)
+Job* Jobs::pJob_SubInserter_new(Job* pArg)
 {
   Job_SubInserter* pJob_SubInserter = new Job_SubInserter(nullptr);
   
@@ -307,7 +307,7 @@ Job* JobModel::pJob_SubInserter_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SubInserter_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_SubInserter_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJob);
   
@@ -318,7 +318,7 @@ void JobModel::vJob_SubInserter_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_SubInserter_show(Job* pJob)
+void Jobs::vJob_SubInserter_show(Job* pJob)
 {
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJob);
 

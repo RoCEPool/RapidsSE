@@ -4,7 +4,7 @@
 
 // Job Short: DropTenant
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_DropTenant =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_DropTenant_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_DropTenant_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_DumpIndex_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_DropTenant_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_DropTenant* JobModel::_pJob_DropTenant(void* aAddress)
+Job_DropTenant* Jobs::_pJob_DropTenant(void* aAddress)
 {
   Job_DropTenant* pJob_DropTenant = reinterpret_cast<Job_DropTenant*>(aAddress);
   
@@ -196,7 +196,7 @@ Footer* Job_DropTenant::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_DropTenant_pre(Interface::Session* pSession)
+Job* Jobs::pJob_DropTenant_pre(Interface::Session* pSession)
 {
   Job_DropTenant* pJob_DropTenant = new Job_DropTenant(pSession);
   
@@ -216,7 +216,7 @@ Job* JobModel::pJob_DropTenant_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_DropTenant_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_DropTenant_post(Interface::Session* pSession, Job* pJob)
 {
   Job_DropTenant* pJob_DropTenant = _pJob_DropTenant(pJob);
   
@@ -235,7 +235,7 @@ void JobModel::vJob_DropTenant_post(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_DropTenant_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_DropTenant_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_DropTenant* pJob_DropTenant = _pJob_DropTenant(pJob);
   
@@ -245,7 +245,7 @@ void JobModel::vJob_DropTenant_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_DropTenant_show(Job* pJob)
+void Jobs::vJob_DropTenant_show(Job* pJob)
 {
   Job_DropTenant* pJob_DropTenant = _pJob_DropTenant(pJob);
 

@@ -4,7 +4,7 @@
 
 // Job Short: Answer
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Answer =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Answer_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Answer_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Boot_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Answer_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Answer* JobModel::_pJob_Answer(void* aAddress)
+Job_Answer* Jobs::_pJob_Answer(void* aAddress)
 {
   Job_Answer* pJob_Answer = reinterpret_cast<Job_Answer*>(aAddress);
   
@@ -168,7 +168,7 @@ Footer* Job_Answer::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Answer_new(Job* pArg)
+Job* Jobs::pJob_Answer_new(Job* pArg)
 {
   Job_Answer* pJob_Answer = new Job_Answer(nullptr);
   
@@ -178,7 +178,7 @@ Job* JobModel::pJob_Answer_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Answer_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Answer_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Answer* pJob_Answer = _pJob_Answer(pJob);
   
@@ -188,7 +188,7 @@ void JobModel::vJob_Answer_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Answer_show(Job* pJob)
+void Jobs::vJob_Answer_show(Job* pJob)
 {
   Job_Answer* pJob_Answer = _pJob_Answer(pJob);
 

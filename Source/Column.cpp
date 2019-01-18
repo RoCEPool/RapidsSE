@@ -121,7 +121,7 @@ Column::Column(Stz* aName, Stz* aDefinition)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Column::Column(JobModel::Job_CreateTable* pJob, i8 iColumnNo)
+Column::Column(Jobs::Job_CreateTable* pJob, i8 iColumnNo)
 : Object(CN_COLUMN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);

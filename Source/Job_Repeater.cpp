@@ -4,7 +4,7 @@
 
 // Job Short: Repeater
 
-#include "JobModel.h"
+#include "Jobs.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -46,7 +46,7 @@ JobClass xJobClass_Repeater =
 /*----------------------------------------------------------------------------*/
 /* next function                                                              */
 /*----------------------------------------------------------------------------*/
-JobClass* JobModel::pJob_Repeater_class(pFUN** pNextFun)
+JobClass* Jobs::pJob_Repeater_class(pFUN** pNextFun)
 {
   *pNextFun = (pFUN*)pJob_Report_class;
   
@@ -61,7 +61,7 @@ JobClass* JobModel::pJob_Repeater_class(pFUN** pNextFun)
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Job_Repeater* JobModel::_pJob_Repeater(void* aAddress)
+Job_Repeater* Jobs::_pJob_Repeater(void* aAddress)
 {
   Job_Repeater* pJob_Repeater = reinterpret_cast<Job_Repeater*>(aAddress);
   
@@ -179,7 +179,7 @@ Footer* Job_Repeater::aFooter(void)
 /*----------------------------------------------------------------------------*/
 /* prompt pre execute function                                                */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Repeater_pre(Interface::Session* pSession)
+Job* Jobs::pJob_Repeater_pre(Interface::Session* pSession)
 {
   i8 nTokens;
 
@@ -216,14 +216,14 @@ Job* JobModel::pJob_Repeater_pre(Interface::Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* prompt post execute function                                               */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Repeater_post(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Repeater_post(Interface::Session* pSession, Job* pJob)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* job new function                                                           */
 /*----------------------------------------------------------------------------*/
-Job* JobModel::pJob_Repeater_new(Job* pArg)
+Job* Jobs::pJob_Repeater_new(Job* pArg)
 {
   Job_Repeater* pJob_Repeater = new Job_Repeater(nullptr);
   
@@ -233,7 +233,7 @@ Job* JobModel::pJob_Repeater_new(Job* pArg)
 /*----------------------------------------------------------------------------*/
 /* job delete function                                                        */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Repeater_delete(Interface::Session* pSession, Job* pJob)
+void Jobs::vJob_Repeater_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pJob);
   
@@ -243,7 +243,7 @@ void JobModel::vJob_Repeater_delete(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* show job function                                                          */
 /*----------------------------------------------------------------------------*/
-void JobModel::vJob_Repeater_show(Job* pJob)
+void Jobs::vJob_Repeater_show(Job* pJob)
 {
   Job_Repeater* pJob_Repeater = _pJob_Repeater(pJob);
 
