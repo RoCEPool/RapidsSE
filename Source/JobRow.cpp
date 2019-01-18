@@ -70,7 +70,7 @@ bool JobRow::bFormatRow(Stz* aRecord, i8 nBytes, Stz* aDstRow, i8 &nDstRowBytes,
   
   Stz* pOffset = aDstRow;
   Stz* aDst = pOffset + C_COLUMN_OFFSET_SIZE * nColumns;
-  m_nRowBytes = C_COLUMN_OFFSET_SIZE * nColumns;
+  nDstRowBytes = C_COLUMN_OFFSET_SIZE * nColumns;
   
   // skip leading spaces
   if (m_oFormatters.m_cRecordTerminator) {

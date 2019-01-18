@@ -178,8 +178,8 @@ void Job_CopyBuffer::vCopy(void)
     
     m_pJob_SubInserter->vGrabWrite();
     bool bValid = m_pJob_SubInserter->bFormatRow(aData, uRecordLength,
-                                                 m_pJob_SubInserter->m_aRow,
-                                                 m_pJob_SubInserter->m_nRowBytes,
+                                                 m_aRow,
+                                                 m_nRowBytes,
                                                  bBlankLine);
     
     // is the record invalid ?
@@ -193,7 +193,7 @@ void Job_CopyBuffer::vCopy(void)
     }
     
     // insert row into a working buffer in job InsertRow
-    eEC eErrorCode = m_pJob_SubInserter->eInsertRow(m_pJob_SubInserter->m_aRow);
+    eEC eErrorCode = m_pJob_SubInserter->eInsertRow(m_aRow, m_nRowBytes);
     RASSERT(eErrorCode == EC_NONE);
     m_pJob_SubInserter->vDropWrite();
   }

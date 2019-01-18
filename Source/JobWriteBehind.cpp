@@ -92,13 +92,13 @@ void JobWriteBehind::vHandleDanglingBuffers(void)
 /*----------------------------------------------------------------------------*/
 eEC JobWriteBehind::eInsertRow(void)
 {
-  return eInsertRow(m_aRow);
+  return eInsertRow(m_aRow, m_nRowBytes);
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobWriteBehind::eInsertRow(Stz* aRow)
+eEC JobWriteBehind::eInsertRow(Stz* aRow, i8 nRowBytes)
 {
   
   eEC eErrorCode = EC_NONE;
@@ -138,7 +138,7 @@ eEC JobWriteBehind::eInsertRow(Stz* aRow)
     
     xRowWrk.vTxId(iDistTxId);
     xRowWrk.vEmbedded(aRow->aChar());
-    xRowWrk.vRowSize(m_nRowBytes);
+    xRowWrk.vRowSize(nRowBytes);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // insert row into working buffer
