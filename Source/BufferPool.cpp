@@ -532,8 +532,8 @@ bool BufferPool::bLowMemory(void)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vMonitorPortrait(s48K& sPortrait)
 {
-  sPortrait.vSprint("Pool: %lld buffers %lld allocated %lld free %lld\n"_Stz,
-            m_nBuffers,m_nAllocCount,m_nFreeCount);
+  sPortrait.vSprint("Pool: buffers %lld allocated %lld free %lld\n"_Stz,
+                    m_nBuffers,m_nAllocCount,m_nFreeCount);
 }
 
 /*----------------------------------------------------------------------------*/
