@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CorrectnessAlgebra
+namespace Correctness
 {
   static const u8 C_MAGIC   = 0x4B696A4D; // MjiK
                               //K i j M

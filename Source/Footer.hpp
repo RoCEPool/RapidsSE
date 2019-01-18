@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CorrectnessAlgebra
+namespace Correctness
 {
   static const u8 C_FOOTER = 0x245245544F4F4624; // $C_FOOTER$
 

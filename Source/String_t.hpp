@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CorrectnessAlgebra
+namespace Correctness
 {
   template <int SIZE>
   class String_t : public Object
@@ -52,7 +52,7 @@ namespace CorrectnessAlgebra
   void* _pStrVar(void* aAddr);
 }
 
-using namespace CorrectnessAlgebra;
+using namespace Correctness;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

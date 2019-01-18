@@ -2,7 +2,7 @@
 /* Header.cpp -- Header for instances needing magic & class                   */
 /*============================================================================*/
 
-#include "CorrectnessAlgebra.h"
+#include "Correctness.h"
 
 #include "StorageEngine.h"
 

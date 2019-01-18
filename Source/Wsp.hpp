@@ -9,7 +9,7 @@
  
  */
 
-namespace CorrectnessAlgebra
+namespace Correctness
 {
   class Wsp
   {

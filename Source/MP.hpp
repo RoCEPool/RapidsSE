@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace CorrectnessAlgebra
+namespace Correctness
 {
   
   template <class OBJECT, eCN eClassNo>

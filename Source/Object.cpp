@@ -2,7 +2,7 @@
 /* Object.cpp - root class for objects in buffer pool                         */
 /*============================================================================*/
 
-#include "CorrectnessAlgebra.h"
+#include "Correctness.h"
 
 #include "StorageEngine.h"
 

@@ -8,7 +8,7 @@ namespace Pool
   class bn;
 }
 
-namespace CorrectnessAlgebra
+namespace Correctness
 {
   class Object : public Header
   {

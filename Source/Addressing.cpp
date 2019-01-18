@@ -2,7 +2,7 @@
 /* Addressing.cpp -- Functions for Manipulating Addresses                     */
 /*============================================================================*/
 
-#include "CorrectnessAlgebra.h"
+#include "Correctness.h"
 
 /*----------------------------------------------------------------------------*/
 /* compute byte difference between two addresses                              */

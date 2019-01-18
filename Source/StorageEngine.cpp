@@ -19,7 +19,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Base::vCheckAssumptions();
   Debugging::vCheckAssumptions();
   // third party??
-  CorrectnessAlgebra::vCheckAssumptions();
+  Correctness::vCheckAssumptions();
   Datums::vCheckAssumptions();
   Values::vCheckAssumptions();
   Values::vCheckAssumptions();

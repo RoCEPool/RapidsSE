@@ -9,7 +9,7 @@
  
  */
 
-namespace CorrectnessAlgebra
+namespace Correctness
 {
   template<int LENGTH>
   class Wsp_t
@@ -39,7 +39,7 @@ namespace CorrectnessAlgebra
   };
 }
 
-using namespace CorrectnessAlgebra;
+using namespace Correctness;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
