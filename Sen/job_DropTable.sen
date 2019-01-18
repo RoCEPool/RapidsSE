@@ -39,7 +39,7 @@
 
   tp: removeTable
 
-  test::test7
+  //test::test7
 
   params| sTableNm |
   0 0 locals| sIndexNm pTable |
