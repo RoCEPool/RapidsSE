@@ -57,10 +57,10 @@ namespace StorageEngine
     Atomic        m_ziThreads;
   
     Queues*       m_pQueues;
-    JobList*         m_pOriginatingJobs;
-    JobList*         m_pParticipatingJobs;
+    JobList*      m_pOriginatingJobs;
+    JobList*      m_pParticipatingJobs;
   
-    StepTiming*  m_pStepTiming;
+    StepTiming*   m_pStepTiming;
     
     bool          m_bVerbose;
     bool          m_bTracepoint;

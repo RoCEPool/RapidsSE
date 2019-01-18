@@ -412,7 +412,7 @@ void Task::vLocalsPush(void)
 /*----------------------------------------------------------------------------*/
 /* monitor portrait                                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vMonitorPortrait(s48K &sPortrait)
+void Task::vMonitorPortrait(s48K& sPortrait)
 {
   if (JL_NONE == m_pJob->m_eJobList)
     sPortrait.vSprint("%s"_Stz,aCN[m_pJob->eClass()]);

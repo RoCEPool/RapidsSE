@@ -412,13 +412,16 @@ void RapidsSE::vOpenTraceFile(void)
 /*----------------------------------------------------------------------------*/
 /* print exit                                                                 */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vPortrait(s48K& sPortrait)
+void RapidsSE::vPortrait(s48K& sRapidsPortrait)
 {
-  s48K sQueuesPortrait;
+  s48K sPortrait;
   
-  gpAttachMap->m_pQueues->vPortrait(sQueuesPortrait);
+  gpAttachMap->m_pQueues->vPortrait(sPortrait);
+  sRapidsPortrait.vConcat(sPortrait.aStz());
   
-  sPortrait.vConcat(sQueuesPortrait.aStz());
+  sPortrait = ""_Stz;
+  gpAttachMap->m_oLockTracker.vMonitorPortrait(sPortrait);
+  sRapidsPortrait.vConcat(sPortrait.aStz());
 }
 
 /*----------------------------------------------------------------------------*/

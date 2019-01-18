@@ -19,6 +19,7 @@ namespace Measurement
     Atomic m_ziWriteCollisions[LK_ENUMS]; // number of write collisions
   
     void vList(File& oFile);
+    void vMonitorPortrait(s48K& sPortrait);
     void vReport(void);
     void vReset(void);
   };
