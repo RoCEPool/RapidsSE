@@ -278,10 +278,10 @@ bool Job_Report::bTake(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
   
-  vTrace("Report...\n"_Stz);
+  //vTrace("Report...\n"_Stz);
   m_pRowAgg->vReadIn(m_oInFile);
   
-  m_pRowAgg->vPrintOut(m_oOutFile);
+  //m_pRowAgg->vPrintOut(m_oOutFile);
 
   return true;
 }
