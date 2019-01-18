@@ -46,7 +46,8 @@ namespace Measurement
     i8 nThreadOpen(void);
   
     void vReport(void);
-  
+    void vMonitorPortrait(s48K& sPortrait);
+
     Footer* aFooter(void);
   };
 }

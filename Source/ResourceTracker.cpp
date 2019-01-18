@@ -203,6 +203,26 @@ i8 ResourceTracker::nThreadOpen(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* monitor portrait                                                           */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vMonitorPortrait(s48K& sPortrait)
+{
+  s48K s;
+  
+  s = ""_Stz;
+
+  sPortrait.vSprintCat("Resources: "_Stz);
+  sPortrait.vSprintCat("dir %lld file %lld malloc %lld "
+                       "shm %lld socket %lld thread %lld\n"_Stz,
+                       nDirOpen(),
+                       nFileOpen(),
+                       nMallocAmt(),
+                       nShmOpen(),
+                       nSocketOpen(),
+                       nThreadOpen());
+}
+
+/*----------------------------------------------------------------------------*/
 /* report                                                                     */
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vReport(void)

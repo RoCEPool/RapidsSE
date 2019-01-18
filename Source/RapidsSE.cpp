@@ -313,6 +313,10 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
   sPortrait = ""_Stz;
   gpAttachMap->m_xHeapMem.vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
+  
+  sPortrait = ""_Stz;
+  gxResourceTracker.vMonitorPortrait(sPortrait);
+  sRapidsPortrait.vConcat(sPortrait.aStz());
 }
 
 /*----------------------------------------------------------------------------*/
