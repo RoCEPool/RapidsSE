@@ -346,7 +346,7 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
 void Queues::vAddToWaitingSet_NL(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
-  
+    
   // task must be in the waiting state
   RASSERT(TS_WAITING == pTask->eState());
   

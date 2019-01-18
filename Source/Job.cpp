@@ -140,6 +140,7 @@ void Job::vInit(void)
   m_iJobId   = C_UNKNOWN;
   m_iJobSeq  = ++gzJobSeq;
   m_iSession = C_UNKNOWN;
+  m_eJobList = JL_NONE;
   
   m_pJobClass = nullptr;
   m_eSeed     = SS_ENUMS;
@@ -342,6 +343,7 @@ void JobModel::vJob_send(Job* pJob)
 void JobModel::vJob_recv(Job* pJob)
 {
   pJob->m_pExecutingTask = nullptr;
+  pJob->m_eJobList = JL_NONE;
 }
 
 /*============================================================================*/

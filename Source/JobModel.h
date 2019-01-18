@@ -27,6 +27,22 @@ using namespace JobModel;
 
 //-----------------------------------------------------------------------------
 
+enum eJL // jobs list
+{
+  /* 0 */ JL_NONE=0,
+  /* 1 */ JL_ORIGINATING,
+  /* 2 */ JL_PARTICIPATING
+};
+
+static Stz* aJL[]
+{
+  /* 0 */ "None"_Stz,
+  /* 1 */ "Originating"_Stz,
+  /* 2 */ "Participating"_Stz
+};
+
+//-----------------------------------------------------------------------------
+
 #include "JobDicPath.hpp"
 #include "JobFileName.hpp"
 #include "JobObjectName.hpp"

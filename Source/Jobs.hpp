@@ -5,18 +5,6 @@
 
 namespace JobModel
 {
-  enum eJL // jobs list
-  {
-  /* 0 */ JL_ORIGINATING=0,
-  /* 1 */ JL_PARTICIPATING
-  };
-  
-  static Stz* aJL[]
-  {
-  /* 0 */ "Originating"_Stz,
-  /* 1 */ "Participating"_Stz
-  };
-
   class Jobs : public Object
   {
   private:

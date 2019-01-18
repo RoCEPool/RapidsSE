@@ -169,6 +169,9 @@ void TaskList::vPortrait(s48K& sPortrait)
   
   for (Task* pTask = pHead(); pTask; pTask = pTask->pNextNode()) {
     
+    if (! pTask->pJob())
+      continue;
+    
     if (pTask == pHead()) {
       sPortrait.vConcat("- "_Stz);
       pTask->vMonitorPortrait(sTaskPortrait);
@@ -178,7 +181,7 @@ void TaskList::vPortrait(s48K& sPortrait)
       continue;
     }
 
-    if (pTask->pJob()->eClass() == eJobPrev) {
+    if (pTask->pJob() && pTask->pJob()->eClass() == eJobPrev) {
       nPrev++;
       continue;
     }

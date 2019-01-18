@@ -81,6 +81,10 @@ void Jobs::vAddJob(Job* pJob)
   ASSERT(bIsLocked());
   
   //vTrace("inserting job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
+  
+  ASSERT(JL_NONE == pJob->m_eJobList);
+  pJob->m_eJobList = m_eJobsList;
+  
   m_pJobsSkipList->bInsert(pJob);
 }
 
@@ -208,6 +212,8 @@ Job* Jobs::pPopJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBS,_FOOTER_);
   
+  NEVER_REACH;
+  
   bool bRemoved;
   Job* pJob = nullptr;
   
@@ -235,8 +241,13 @@ bool Jobs::bRemoveJob(Job* pJob)
   ASSERT(m_oLock.bIsLocked());
   
   //vTrace("removing job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
-  bRemoved = m_pJobsSkipList->bRemove(pJob);
   
+  ASSERT(m_eJobsList == pJob->m_eJobList);
+  
+  bRemoved = m_pJobsSkipList->bRemove(pJob);
+  ASSERT(bRemoved);
+  pJob->m_eJobList = JL_NONE;
+
   return bRemoved;
 }
 
