@@ -303,6 +303,18 @@ bool File::bIsStdout(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* open file for append                                                       */
+/*----------------------------------------------------------------------------*/
+bool File::bOpenAppend(Stz* aFilePath)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  bool bOpened = bOpenMode(aFilePath,C_OPEN_APPEND);
+  
+  return bOpened;
+}
+
+/*----------------------------------------------------------------------------*/
 /* open file                                                                  */
 /*----------------------------------------------------------------------------*/
 bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
@@ -662,7 +674,7 @@ bool File::bWriteBytes(void* pBuffer, i8 nBytes)
   m_oSysCall.vClear();
   
   gpAttachMap->m_nFileWrites++;
-  i8 nBytesWritten = fwrite(pBuffer , 1, nBytes, m_aFile);
+  i8 nBytesWritten = fwrite(pBuffer, 1, nBytes, m_aFile);
   gpAttachMap->m_nFileWriteBytes += nBytesWritten;
 
   if (nBytesWritten != nBytes) {

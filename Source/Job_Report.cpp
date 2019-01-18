@@ -197,7 +197,7 @@ Job* JobModel::pJob_Report_pre(Interface::Session* pSession)
   pJob_Report->m_sFileName = pTknVec->pGet(2)->sText();
   
   // set the output file name
-  if (3 <= nTokens) {
+  if (4 <= nTokens) {
     pJob_Report->m_bNamedOut = true;
     pJob_Report->m_sOutputPath = pTknVec->pGet(3)->sText();
   }
@@ -281,7 +281,7 @@ bool Job_Report::bTake(void)
   vTrace("Report...\n"_Stz);
   m_pRowAgg->vReadIn(m_oInFile);
   
-  m_pRowAgg->vPrintOut(m_oOutFile);
+  //m_pRowAgg->vPrintOut(m_oOutFile);
 
   return true;
 }

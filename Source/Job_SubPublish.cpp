@@ -110,6 +110,7 @@ Job_SubPublish::Job_SubPublish(Interface::Session* pSession)
   m_iPublishJobId = -1;
   m_iSlot         = -1;
   
+  m_pJob_Publish  = nullptr;
   m_pTable        = nullptr;
   m_pEntryBuffer  = nullptr;
   m_pRowAgg       = new RowAgg;
@@ -156,12 +157,12 @@ bool Job_SubPublish::bBegin(void)
   
   m_pRowAgg->vTable(m_pTable);
   
-  Job_Publish* pJob_Publish =
+  m_pJob_Publish =
     _pJob_Publish(gpAttachMap->m_pParticipatingJobs->pFindJob(m_iPublishJobId));
   
-  Stz* szFileName = pJob_Publish->m_sFileName.aStz();
+  Stz* szFileName = m_pJob_Publish->m_sFileName.aStz();
   
-  bool bOpened = m_oOutputFile.bOpenWrite(szFileName);
+  bool bOpened = m_oOutputFile.bOpenAppend(szFileName);
   ASSERT(bOpened);
   
   return true;
@@ -187,8 +188,10 @@ bool Job_SubPublish::bChunk(void)
  
   m_pRowAgg->vAggregate(m_iSlot, m_pEntryBuffer);
   
+  m_pJob_Publish->m_oLock.vGrabWrite();
   m_pRowAgg->vWriteOut(m_oOutputFile);
-  
+  m_pJob_Publish->m_oLock.vDropWrite();
+
   return true;
 }
 

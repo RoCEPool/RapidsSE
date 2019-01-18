@@ -210,6 +210,8 @@ void RowAgg::vReadIn(File& oInFile)
   
   i8 nBytesRead = oInFile.nReadBytes(this,sizeof(RowAgg));
   ASSERT(nBytesRead == sizeof(RowAgg));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -233,6 +235,10 @@ void RowAgg::vWriteOut(File& oOutputFile)
   
   bool bWritten = oOutputFile.bWriteBytes(this,sizeof(RowAgg));
   ASSERT(bWritten);
+  
+  oOutputFile.vFlush();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

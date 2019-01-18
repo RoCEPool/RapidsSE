@@ -12,6 +12,8 @@ namespace JobModel
   public:
     Table*  m_pTable;  // table being purged
   
+    Lock    m_oLock;   // lock on output pipe (subpublish contention)
+  
     // must be last
     Footer m_xFooter;
   

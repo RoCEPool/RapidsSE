@@ -12,6 +12,9 @@ namespace JobModel
     i8 m_iPublishJobId; // job id of publish job that spawned this sub-publish
     i8 m_iSlot;         // slot this sub-publish is processes
   
+    Job_Publish* m_pJob_Publish;
+  
+
     Table*       m_pTable;       // table
     EntryBuffer* m_pEntryBuffer; // the buffer being aggregated
     RowAgg*      m_pRowAgg;      // the row aggregator

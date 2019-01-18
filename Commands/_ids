@@ -20,12 +20,14 @@ print "";
 print "---------------------------------------------------------------------";
 print "removing the pipe...";
 print "---------------------------------------------------------------------";
+rmpipe "/tmp/sensorEvents.rowAgg";
 rmpipe "/tmp/sensorEvents.pipe";
 
 print "";
 print "---------------------------------------------------------------------";
 print "making the pipe...";
 print "---------------------------------------------------------------------";
+mkpipe "/tmp/sensorEvents.rowAgg";
 mkpipe "/tmp/sensorEvents.pipe";
 
 print "";
@@ -35,9 +37,11 @@ print "---------------------------------------------------------------------";
 
 nowait monitor;
 
-nowait purge sensorEvents 3;
+nowait purge sensorEvents 30;
 
 nowait publish sensorEvents "/tmp/sensorEvents.rowAgg" ;
+
+nowait report sensorEvents "/tmp/sensorEvents.rowAgg" ;
 
 nowait repeater "/rapids/sensorEvents.csv" "/tmp/sensorEvents.pipe" ;
 

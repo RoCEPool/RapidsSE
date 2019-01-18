@@ -55,8 +55,15 @@ void Debugging::vAssertType(void* aObject, eCN eExpectingClass)
   Object* pObject = static_cast<Object*>(aObject);
   eCN eGotClass = pObject->eClass();
   
-  printf("  Expecting class %d; Got %d\n",eExpectingClass,eGotClass);
-  
+  if (eGotClass >= CN_NONE && eGotClass < CN_ENUMS)
+    printf("  Expecting class %d %s; Got %d %s\n",
+           eExpectingClass, aCN[eExpectingClass]->aChar(),
+           eGotClass,       aCN[eGotClass]->aChar());
+  else
+    printf("  Expecting class %d %s; Got %d\n",
+           eExpectingClass, aCN[eExpectingClass]->aChar(),
+           eGotClass);
+
   if (CN_FREECHUNK == eGotClass) {
     FreeChunk* aFreeChunk = static_cast<FreeChunk*>(aObject);
     eCN eWasClass = aFreeChunk->eWasClass();

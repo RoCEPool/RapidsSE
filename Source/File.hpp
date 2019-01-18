@@ -69,6 +69,7 @@ namespace System
     bool bIsOpen(void);
     bool bIsStdin(void);
     bool bIsStdout(void);
+    bool bOpenAppend(Stz* aFilePath);
     bool bOpenMode(Stz* aFilePath, Stz* aOpenMode);
     bool bOpenRead(Stz* aFilePath);
     bool bOpenWrite(Stz* aFilePath);

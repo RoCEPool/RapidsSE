@@ -109,6 +109,8 @@ Job_Publish::Job_Publish(Interface::Session* pSession)
   
   m_pTable = nullptr;
   
+  m_oLock.vInitLock(LK_PIPE);
+  
   _checkInitialised_(CN_JOB_PUBLISH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_PUBLISH,_FOOTER_);
