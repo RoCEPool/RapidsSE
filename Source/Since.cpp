@@ -89,6 +89,26 @@ void Since::vAdd(i8 iMicroseconds)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get delta between now and this since                                       */
+/*----------------------------------------------------------------------------*/
+i8 Since::iDeltaNowMicroseconds(void)
+{
+  i8 iThisSinceUs = iGetAsMicroseconds();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Since oNow;
+  oNow.vNow();
+
+  i8 iNowUs = oNow.iGetAsMicroseconds();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 iDeltaUs = iThisSinceUs - iNowUs;
+  
+  return iDeltaUs;
+}
+
+/*----------------------------------------------------------------------------*/
 /* formatted                                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* Since::sFormatted(void)

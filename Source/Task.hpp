@@ -159,6 +159,7 @@ namespace Tasks
     void vThread(Threads::Thread* pThread);
     void vTracePoint(Stz* aMark);
     void vTraceStep(Stz* aStepNm);
+    i8   iWakeupInUsec(void);
     bool bWakeupNow(void);
     i8   iWakeupTime(void);
     Since& oWakeupTime(void);

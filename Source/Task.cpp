@@ -880,6 +880,18 @@ void Task::vTraceStep(Stz* aStepNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* how long before task can be woken up (in microseconds)                     */
+/*----------------------------------------------------------------------------*/
+i8 Task::iWakeupInUsec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  i8 iInUsec = m_oWakeupTime.iDeltaNowMicroseconds();
+  
+  return iInUsec;
+}
+
+/*----------------------------------------------------------------------------*/
 /* can task to be woken?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Task::bWakeupNow(void)
