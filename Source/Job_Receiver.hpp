@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace GridModel
+namespace Grids
 {
   class Node;
 }
@@ -15,7 +15,7 @@ namespace Jobs
   {
   private:
     i8      m_iConnNo;  // which logical connection
-    GridModel::Node* m_pNode; // the peer node on the other side of the socket
+    Grids::Node* m_pNode; // the peer node on the other side of the socket
   
      // must be last
     Footer m_xFooter;
@@ -34,8 +34,8 @@ namespace Jobs
     i8 iConnNo(void);
     void vConnNo(i8 iConnNo);
 
-    GridModel::Node* pNode(void);
-    void vNode(GridModel::Node* pNode);
+    Grids::Node* pNode(void);
+    void vNode(Grids::Node* pNode);
   
     void vShow(void);
     Footer* aFooter(void);

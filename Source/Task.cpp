@@ -633,7 +633,7 @@ void Task::vSeedJob(void)
 /*----------------------------------------------------------------------------*/
 /* seed task to run ::enter                                                   */
 /*----------------------------------------------------------------------------*/
-GridModel::Node* Task::pSendNode(void)
+Grids::Node* Task::pSendNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

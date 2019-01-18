@@ -1,19 +1,14 @@
 /*============================================================================*/
-/* CorrectnessAlgebra.cpp -- Correctness Algebra namespace functions          */
+/* Grids.cpp -- Grids namespace functions                                     */
 /*============================================================================*/
 
-#include "CorrectnessAlgebra.h"
+#include "Grids.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void CorrectnessAlgebra::vCheckAssumptions(void)
+void Grids::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(u2)  == sizeof(eCN));
-    
-  ASSERT(8 == sizeof(Header));
-  ASSERT(8 == sizeof(Object));
-  ASSERT(8 == sizeof(Footer));
 }
 
 /*============================================================================*/

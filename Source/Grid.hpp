@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace GridModel
+namespace Grids
 {
   class Grid : public Object
   {

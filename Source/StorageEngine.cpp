@@ -38,7 +38,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Steps::vCheckAssumptions();
   Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
-  GridModel::vCheckAssumptions();
+  Grids::vCheckAssumptions();
   Interface::vCheckAssumptions();
   Prompt::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();

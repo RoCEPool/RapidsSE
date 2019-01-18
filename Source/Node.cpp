@@ -2,12 +2,12 @@
 /* Node.cpp -- Node                                                           */
 /*============================================================================*/
 
-#include "GridModel.h"
+#include "Grids.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Node* GridModel::_pNode(void* aAddr)
+Node* Grids::_pNode(void* aAddr)
 {
   Node* pNode = reinterpret_cast<Node*>(aAddr);
   

@@ -164,7 +164,7 @@ void Job_Receiver::vConnNo(i8 iConnNo)
 /*----------------------------------------------------------------------------*/
 /* get node                                                                   */
 /*----------------------------------------------------------------------------*/
-GridModel::Node* Job_Receiver::pNode(void)
+Grids::Node* Job_Receiver::pNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
   
@@ -174,7 +174,7 @@ GridModel::Node* Job_Receiver::pNode(void)
 /*----------------------------------------------------------------------------*/
 /* set node                                                                   */
 /*----------------------------------------------------------------------------*/
-void Job_Receiver::vNode(GridModel::Node* pNode)
+void Job_Receiver::vNode(Grids::Node* pNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_RECEIVER,_FOOTER_);
   

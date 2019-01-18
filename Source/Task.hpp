@@ -10,7 +10,7 @@ namespace Interface
   class Session;
 }
 
-namespace GridModel
+namespace Grids
 {
   class Node;
 }
@@ -75,7 +75,7 @@ namespace Tasks
     i8      m_iDdlLocked;   // ? has the ddl lock?
     i8      m_iTracing;     // tracing mask
 
-    GridModel::Node* m_pSendNode; // node to send to
+    Grids::Node* m_pSendNode; // node to send to
 
     Stack*   m_pDataStack;   // data stack
     Stack*   m_pReturnStack; // return stack
@@ -145,7 +145,7 @@ namespace Tasks
     void vRetry(void);
     bool bSeeded(void);
     void vSeedJob(void);
-    GridModel::Node* pSendNode(void);
+    Grids::Node* pSendNode(void);
     Interface::Session* pSession(void);
     void vSession(Interface::Session* pSession);
     void vSleepUs(i8 iMicroSeconds);

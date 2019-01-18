@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace GridModel
+namespace Grids
 {
   class Node : public Object,
                public ListNode_t<Node>

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* GridModel -- Grid Model                                                    */
+/* Grids -- Grid Model                                                    */
 /*============================================================================*/
 
-#include "GridModel.h"
+#include "Grids.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Grid* GridModel::_pGrid(void* aAddr)
+Grid* Grids::_pGrid(void* aAddr)
 {
   Grid* pGrid = reinterpret_cast<Grid*>(aAddr);
   
@@ -39,7 +39,7 @@ void* Grid::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Grid::operator delete(void*)
 {
-  vFatal("fatal: GridModel class cannot be deleted"_Stz);
+  vFatal("fatal: Grids class cannot be deleted"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
