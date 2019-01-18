@@ -358,7 +358,13 @@ Job* Task::pJob(void)
 void Task::vJob(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-    
+  
+  if (pJob && pJob->eClass() == CN_JOB_PUBLISH) {
+    int iDebug = 1;
+    vTrace("Task::vJob: CN_JOB_PUBLISH task %p job %p\n"_Stz,
+           this,pJob);
+  }
+
   m_pJob = pJob;
 }
 
@@ -408,10 +414,20 @@ void Task::vLocalsPush(void)
 /*----------------------------------------------------------------------------*/
 void Task::vMonitorPortrait(s48K &sPortrait)
 {
-  sPortrait.vSprint("%s %p"_Stz,
-                    aCN[m_pJob->eClass()],
-                    m_pJob
-                    );
+  if (JL_NONE == m_pJob->m_eJobList)
+    sPortrait.vSprint("%s"_Stz,aCN[m_pJob->eClass()]);
+  else
+  if (JL_ORIGINATING == m_pJob->m_eJobList)
+    sPortrait.vSprint("%s:o"_Stz,aCN[m_pJob->eClass()]);
+  else
+  if (JL_PARTICIPATING == m_pJob->m_eJobList)
+    sPortrait.vSprint("%s:p"_Stz,aCN[m_pJob->eClass()]);
+
+
+//  sPortrait.vSprint("%s %p"_Stz,
+//                    aCN[m_pJob->eClass()],
+//                    m_pJob
+//                    );
 }
 
 /*----------------------------------------------------------------------------*/

@@ -107,6 +107,8 @@ Job_Publish::Job_Publish(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_PUBLISH,_FOOTER_);
   
+  vTrace("::Job_Publish: job %p\n"_Stz,this);
+
   m_pTable = nullptr;
   
   m_oLock.vInitLock(LK_PIPE);

@@ -103,6 +103,7 @@ namespace JobModel
     i8  m_iJobId;           // job id
     i8  m_iJobSeq;          // sequence number
     i8  m_iSession;         // which session
+    eJL m_eJobList;         // which job list is job currently in?
   
     JobClass* m_pJobClass;  // job class
     eSS  m_eSeed;           // task seed
