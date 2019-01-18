@@ -408,8 +408,9 @@ void Task::vLocalsPush(void)
 /*----------------------------------------------------------------------------*/
 void Task::vMonitorPortrait(s48K &sPortrait)
 {
-  sPortrait.vSprint("%s"_Stz,
-                    aCN[m_pJob->eClass()]
+  sPortrait.vSprint("%s %p"_Stz,
+                    aCN[m_pJob->eClass()],
+                    m_pJob
                     );
 }
 

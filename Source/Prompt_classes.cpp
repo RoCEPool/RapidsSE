@@ -20,6 +20,8 @@ PromptNote mPromptNote_classes (
 extern Arguments   gxArguments;
 extern AttachMap*  gpAttachMap;
 
+extern eHT geWhichHeap[];
+
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
@@ -46,8 +48,19 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
         vTrace("\n"_Stz);
     }
     
-    vTrace("    /* %3lld */ CN_%s,\n"_Stz,
-           i_Class,aCN[i_Class]);
+    eHT eHeap = geWhichHeap[i_Class];
+    
+    char cHeap = '?';
+         if (HT_INVALID          == eHeap) cHeap = 'I';
+    else if (HT_TRANSIENT_JUMBO  == eHeap) cHeap = 'J';
+    else if (HT_TRANSIENT_LARGE  == eHeap) cHeap = 'L';
+    else if (HT_TRANSIENT_MEDIUM == eHeap) cHeap = 'M';
+    else if (HT_TRANSIENT_SMALL  == eHeap) cHeap = 'S';
+
+    vTrace("    /* %3lld 0x%02X %8lldB Heap:%c */ CN_%s,\n"_Stz,
+           i_Class,i_Class,giClassSize[i_Class],
+           cHeap,
+           aCN[i_Class]);
     
     if ('~' != cGroup)
       cGroup = cFirst;
@@ -81,8 +94,8 @@ bool Prompt::bPrompt_classes(SePrompt* pPrompt)
     sName.vConcat(aCN[i_Class]);
     sName.vConcat("\"_Stz,"_Stz);
     
-    vTrace("    /* %3lld */ %-26s // CN_%s\n"_Stz,
-           i_Class,sName.aChar(),aCN[i_Class]);
+    vTrace("    /* %3lld 0x%02X */ %-26s // CN_%s\n"_Stz,
+           i_Class,i_Class,sName.aChar(),aCN[i_Class]);
     
     if ('~' != cGroup)
       cGroup = cFirst;

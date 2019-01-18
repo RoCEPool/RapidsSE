@@ -15,6 +15,10 @@
 /*----------------------------------------------------------------------------*/
 Header::Header(eCN eClassNo)
 {
+  if (CN_JOB_PUBLISH == eClassNo) {
+    int iDebug = 1;
+  }
+  
   vSetMagic();
   vSetClass(eClassNo);
   
