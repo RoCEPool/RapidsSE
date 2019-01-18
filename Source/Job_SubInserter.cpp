@@ -107,7 +107,7 @@ Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
-  m_oLock.vInitLock(LK_ENTRYBUFFER);
+  m_oLock.vInitLock(LK_SUBINSERTER);
   
   // set the enclosined_by to be a '
   m_oFormatters.m_bDefault = false;
