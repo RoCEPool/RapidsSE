@@ -51,10 +51,10 @@ void Step::vJob_ReportTake(MP_Task mpTask)
   
   mpTask->m_pDataStack->vPushBool(bCallAgain);
   
-  if (bCallAgain) {
-    mpTask->vSleepUs(C_1M);
-    mpTask->vState(TS_SLEEPING);
-  }
+//  if (bCallAgain) {
+//    mpTask->vSleepUs(C_1M);
+//    mpTask->vState(TS_SLEEPING);
+//  }
   
   EXIT();
 }

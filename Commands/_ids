@@ -35,7 +35,7 @@ print "---------------------------------------------------------------------";
 print "ingesting sensoreEvents table...";
 print "---------------------------------------------------------------------";
 
-nowait monitor;
+nowait monitor 1;
 
 nowait purge sensorEvents 30;
 
