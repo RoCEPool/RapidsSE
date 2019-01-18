@@ -10,11 +10,13 @@ namespace JobModel
                      public JobFileName
   {
   public:
-    File* m_pInFile;     // output file
+    File  m_oInFile;     // input file
 
     bool  m_bNamedOut;   // named output file or stdout?
     s256  m_sOutputPath; // output file name
-    File* m_pOutFile;    // output file
+    File  m_oOutFile;    // output file
+  
+    RowAgg* m_pRowAgg;   // row aggregator
   
     // must be last
     Footer m_xFooter;

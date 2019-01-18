@@ -107,11 +107,10 @@ Job_Report::Job_Report(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
   
-  m_pInFile = nullptr;
-  
   m_bNamedOut = false;
   m_sOutputPath = "stdout"_Stz;
-  m_pOutFile = nullptr;
+  
+  m_pRowAgg = nullptr;
   
   _checkInitialised_(CN_JOB_REPORT);
   
@@ -125,8 +124,7 @@ Job_Report::~Job_Report(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
   
-  delete m_pInFile;
-  delete m_pOutFile;
+  delete m_pRowAgg;
 }
 
 
@@ -255,16 +253,18 @@ bool Job_Report::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
   
-  if (! m_pInFile->bOpenRead(m_sFileName))
+  if (! m_oInFile.bOpenRead(m_sFileName))
     return false;
   
   if (m_bNamedOut) {
-     if (! m_pOutFile->bOpenWrite(m_sOutputPath))
+     if (! m_oOutFile.bOpenWrite(m_sOutputPath))
        return false;
   }
   else {
-    m_pOutFile->vUseStdout();
+    m_oOutFile.vUseStdout();
   }
+  
+  m_pRowAgg = new RowAgg;
   
   vTrace("Reporting from %s to %s\n"_Stz,m_sFileName.aStz(),m_sOutputPath.aStz());
 
@@ -279,7 +279,10 @@ bool Job_Report::bTake(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
   
   vTrace("Report...\n"_Stz);
+  m_pRowAgg->vReadIn(m_oInFile);
   
+  m_pRowAgg->vPrintOut(m_oOutFile);
+
   return true;
 }
 
@@ -290,8 +293,8 @@ void Job_Report::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
   
-  m_pInFile->vClose();
-  m_pOutFile->vClose();
+  m_oInFile.vClose();
+  m_oOutFile.vClose();
 }
 
 /*============================================================================*/

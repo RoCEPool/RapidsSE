@@ -187,7 +187,7 @@ bool Job_SubPublish::bChunk(void)
  
   m_pRowAgg->vAggregate(m_iSlot, m_pEntryBuffer);
   
-  m_pRowAgg->vOutput(m_oOutputFile);
+  m_pRowAgg->vWriteOut(m_oOutputFile);
   
   return true;
 }

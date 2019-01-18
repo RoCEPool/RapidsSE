@@ -173,14 +173,43 @@ void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* output the aggregation                                                     */
+/* print this aggregation out                                                 */
 /*----------------------------------------------------------------------------*/
-void RowAgg::vOutput(File& oOutputFile)
+void RowAgg::vPrintOut(File& oOutputFile)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
   
-  bool bWritten = oOutputFile.bWriteBytes(this,sizeof(RowAgg));
-  ASSERT(bWritten);
+  i8 nAggColumns = m_pAggColVec->nItems();
+
+  Time oDateTime;
+  oDateTime.vSetLocal(&m_oSince);
+  s32 sDateTime;
+  char* z = sDateTime.aChar();
+  oDateTime.vAppendLocal(&z);
+
+  vTrace("%s\n"_Stz,sDateTime.aChar());
+  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+    
+    Column* pAggColumn = m_pAggColVec->pGet(i_AggCol);
+    vTrace("AggCol %s: min: %lld %lld; max: %lld %lld; avg: %lld\n"_Stz,
+           pAggColumn->sColumnName().aChar(),
+           m_iaMinKey[i_AggCol], m_iaMinVal[i_AggCol],
+           m_iaMaxKey[i_AggCol], m_iaMaxVal[i_AggCol],
+           m_iaAvgVal[i_AggCol]
+           );
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* wread into this aggregation                                                */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vReadIn(File& oInFile)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  i8 nBytesRead = oInFile.nReadBytes(this,sizeof(RowAgg));
+  ASSERT(nBytesRead == sizeof(RowAgg));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,6 +222,17 @@ void RowAgg::vTable(Table* pTable)
   m_pTable = pTable;
   
   vDiscoverColumns();
+}
+
+/*----------------------------------------------------------------------------*/
+/* write this aggregation out                                                 */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vWriteOut(File& oOutputFile)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  bool bWritten = oOutputFile.bWriteBytes(this,sizeof(RowAgg));
+  ASSERT(bWritten);
 }
 
 /*----------------------------------------------------------------------------*/
