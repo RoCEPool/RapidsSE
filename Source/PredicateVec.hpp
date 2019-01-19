@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Parsing
+namespace Plans
 {
   class PredicateVec : public VectorNL_t<CN_PREDICATEVEC,Predicate,CN_PREDICATE,16,u8>
   {
