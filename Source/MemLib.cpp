@@ -75,8 +75,8 @@ void MemLib::vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
   memcpy(pDst,pSrc,nBytes);
   
   if (gpAttachMap) {
-    gpAttachMap->m_iMemCopyTotal += nBytes;
-    gpAttachMap->m_iaMemCopy[eClassNo] += nBytes;
+    gpAttachMap->m_oStatistics.m_iMemCopyTotal += nBytes;
+    gpAttachMap->m_oStatistics.m_iaMemCopy[eClassNo] += nBytes;
   }
 }
 
@@ -207,8 +207,8 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
   memmove(pDst,pSrc,nBytes);
   
   if (gpAttachMap) {
-    gpAttachMap->m_iMemMoveTotal += nBytes;
-    gpAttachMap->m_iaMemMove[eClassNo] += nBytes;
+    gpAttachMap->m_oStatistics.m_iMemMoveTotal += nBytes;
+    gpAttachMap->m_oStatistics.m_iaMemMove[eClassNo] += nBytes;
   }
 }
 
@@ -217,18 +217,18 @@ void MemLib::vMove(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 void MemLib::vReset(void)
 {
-  gpAttachMap->m_iMemCopyTotal = 0;
-  gpAttachMap->m_iMemMoveTotal = 0;
-  gpAttachMap->m_iMemScribbleTotal = 0;
-  gpAttachMap->m_iMemSetTotal  = 0;
-  gpAttachMap->m_iMemZeroTotal = 0;
+  gpAttachMap->m_oStatistics.m_iMemCopyTotal = 0;
+  gpAttachMap->m_oStatistics.m_iMemMoveTotal = 0;
+  gpAttachMap->m_oStatistics.m_iMemScribbleTotal = 0;
+  gpAttachMap->m_oStatistics.m_iMemSetTotal  = 0;
+  gpAttachMap->m_oStatistics.m_iMemZeroTotal = 0;
   
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    gpAttachMap->m_iaMemCopy[i_Class] = 0;
-    gpAttachMap->m_iaMemMove[i_Class] = 0;
-    gpAttachMap->m_iaMemScribble[i_Class] = 0;
-    gpAttachMap->m_iaMemSet[i_Class] = 0;
-    gpAttachMap->m_iaMemZero[i_Class] = 0;
+    gpAttachMap->m_oStatistics.m_iaMemCopy[i_Class] = 0;
+    gpAttachMap->m_oStatistics.m_iaMemMove[i_Class] = 0;
+    gpAttachMap->m_oStatistics.m_iaMemScribble[i_Class] = 0;
+    gpAttachMap->m_oStatistics.m_iaMemSet[i_Class] = 0;
+    gpAttachMap->m_oStatistics.m_iaMemZero[i_Class] = 0;
   }
 }
 
@@ -244,8 +244,8 @@ void MemLib::vScribble(void* aAddress, i8 nBytes, eCN eClassNo)
     *pMchWord++ = C_SCRIBBLE_PATTERN;
   
   if (gpAttachMap) {
-    gpAttachMap->m_iMemScribbleTotal += nBytes;
-    gpAttachMap->m_iaMemScribble[eClassNo] += nBytes;
+    gpAttachMap->m_oStatistics.m_iMemScribbleTotal += nBytes;
+    gpAttachMap->m_oStatistics.m_iaMemScribble[eClassNo] += nBytes;
   }
 }
 
@@ -257,8 +257,8 @@ void MemLib::vSet(void* pDst, char iByte, i8 nBytes, eCN eClassNo)
   memset(pDst,iByte,nBytes);
   
   if (gpAttachMap) {
-    gpAttachMap->m_iMemSetTotal += nBytes;
-    gpAttachMap->m_iaMemSet[eClassNo] += nBytes;
+    gpAttachMap->m_oStatistics.m_iMemSetTotal += nBytes;
+    gpAttachMap->m_oStatistics.m_iaMemSet[eClassNo] += nBytes;
   }
 }
 
@@ -269,56 +269,56 @@ void MemLib::vStatistics(void)
 {
   s32 sByteMag;
   
-  Magnitudes::vByteMag(gpAttachMap->m_iMemCopyTotal, sByteMag);
+  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_iMemCopyTotal, sByteMag);
   vTrace("MemLib::vCopy() total %s\n"_Stz,sByteMag.aStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (gpAttachMap->m_iaMemCopy[i_Class]) {
-      Magnitudes::vByteMag(gpAttachMap->m_iaMemCopy[i_Class], sByteMag);
+    if (gpAttachMap->m_oStatistics.m_iaMemCopy[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_iaMemCopy[i_Class], sByteMag);
       vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
     }
   }
   
-  Magnitudes::vByteMag(gpAttachMap->m_iMemMoveTotal, sByteMag);
+  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_iMemMoveTotal, sByteMag);
   vTrace("MemLib::vMove() total %s\n"_Stz,sByteMag.aStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (gpAttachMap->m_iaMemMove[i_Class]) {
-      Magnitudes::vByteMag(gpAttachMap->m_iaMemMove[i_Class], sByteMag);
+    if (gpAttachMap->m_oStatistics.m_iaMemMove[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_iaMemMove[i_Class], sByteMag);
       vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
     }
   }
   
-  Magnitudes::vByteMag(gpAttachMap->m_iMemScribbleTotal, sByteMag);
+  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_iMemScribbleTotal, sByteMag);
   vTrace("MemLib::vScribble() total %s\n"_Stz,sByteMag.aStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (gpAttachMap->m_iaMemScribble[i_Class]) {
-      Magnitudes::vByteMag(gpAttachMap->m_iaMemScribble[i_Class], sByteMag);
+    if (gpAttachMap->m_oStatistics.m_iaMemScribble[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_iaMemScribble[i_Class], sByteMag);
       vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
     }
   }
   
-  Magnitudes::vByteMag(gpAttachMap->m_iMemSetTotal, sByteMag);
+  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_iMemSetTotal, sByteMag);
   vTrace("MemLib::vSet() total %s\n"_Stz,sByteMag.aStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (gpAttachMap->m_iaMemSet[i_Class]) {
-      Magnitudes::vByteMag(gpAttachMap->m_iaMemSet[i_Class], sByteMag);
+    if (gpAttachMap->m_oStatistics.m_iaMemSet[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_iaMemSet[i_Class], sByteMag);
       vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
     }
   }
   
-  Magnitudes::vByteMag(gpAttachMap->m_iMemZeroTotal, sByteMag);
+  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_iMemZeroTotal, sByteMag);
   vTrace("MemLib::vZero() total %s\n"_Stz,sByteMag.aStz());
   for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
-    if (gpAttachMap->m_iaMemZero[i_Class]) {
-      Magnitudes::vByteMag(gpAttachMap->m_iaMemZero[i_Class], sByteMag);
+    if (gpAttachMap->m_oStatistics.m_iaMemZero[i_Class]) {
+      Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_iaMemZero[i_Class], sByteMag);
       vTrace("  %s %s\n"_Stz,aCN[i_Class],sByteMag.aStz());
     }
   }
   
-  i8 iGrandTotal = gpAttachMap->m_iMemCopyTotal
-                    + gpAttachMap->m_iMemMoveTotal
-                    + gpAttachMap->m_iMemScribbleTotal
-                    + gpAttachMap->m_iMemSetTotal
-                    + gpAttachMap->m_iMemZeroTotal
+  i8 iGrandTotal = gpAttachMap->m_oStatistics.m_iMemCopyTotal
+                    + gpAttachMap->m_oStatistics.m_iMemMoveTotal
+                    + gpAttachMap->m_oStatistics.m_iMemScribbleTotal
+                    + gpAttachMap->m_oStatistics.m_iMemSetTotal
+                    + gpAttachMap->m_oStatistics.m_iMemZeroTotal
                     ;
   Magnitudes::vByteMag(iGrandTotal, sByteMag);
   vTrace("Grand Total %s\n"_Stz,sByteMag.aStz());
@@ -441,8 +441,8 @@ void MemLib::vZero(void* pDst, i8 nBytes, eCN eClassNo)
   vSet(pDst,(char)0,nBytes,eClassNo);
   
   if (gpAttachMap) {
-    gpAttachMap->m_iMemZeroTotal += nBytes;
-    gpAttachMap->m_iaMemZero[eClassNo] += nBytes;
+    gpAttachMap->m_oStatistics.m_iMemZeroTotal += nBytes;
+    gpAttachMap->m_oStatistics.m_iaMemZero[eClassNo] += nBytes;
   }
 }
 

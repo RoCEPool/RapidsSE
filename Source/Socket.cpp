@@ -120,8 +120,8 @@ void Socket::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Socket::vMonitorPortrait(s48K& sPortrait)
 {
-  s32 sRecvMag; Magnitudes::vByteMag(gpAttachMap->m_nSocketRecvBytes, sRecvMag);
-  s32 sSendMag; Magnitudes::vByteMag(gpAttachMap->m_nSocketSendBytes, sSendMag);
+  s32 sRecvMag; Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_nSocketRecvBytes, sRecvMag);
+  s32 sSendMag; Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_nSocketSendBytes, sSendMag);
 
   sPortrait.vSprint("Socket: "
                     "accepts %lld "
@@ -136,17 +136,17 @@ void Socket::vMonitorPortrait(s48K& sPortrait)
                     "sendTos %lld (%s)"
                     "\n"_Stz,
                     
-                    gpAttachMap->m_nSocketAccepts,
-                    gpAttachMap->m_nSocketCloses,
-                    gpAttachMap->m_nSocketConnects,
-                    gpAttachMap->m_nSocketListens,
-                    gpAttachMap->m_nSocketPeeks,
+                    gpAttachMap->m_oStatistics.m_nSocketAccepts,
+                    gpAttachMap->m_oStatistics.m_nSocketCloses,
+                    gpAttachMap->m_oStatistics.m_nSocketConnects,
+                    gpAttachMap->m_oStatistics.m_nSocketListens,
+                    gpAttachMap->m_oStatistics.m_nSocketPeeks,
                     
-                    gpAttachMap->m_nSocketRecvs,
-                    gpAttachMap->m_nSocketRecvFroms,
+                    gpAttachMap->m_oStatistics.m_nSocketRecvs,
+                    gpAttachMap->m_oStatistics.m_nSocketRecvFroms,
                     sRecvMag.aStz(),
-                    gpAttachMap->m_nSocketSends,
-                    gpAttachMap->m_nSocketSendTos,
+                    gpAttachMap->m_oStatistics.m_nSocketSends,
+                    gpAttachMap->m_oStatistics.m_nSocketSendTos,
                     sSendMag.aStz()
                     );
 }
@@ -158,19 +158,19 @@ void Socket::vStatistics(void)
 {
   s32 sByteMag;
   
-  vTrace("  nSocketAccepts    %lld\n"_Stz,gpAttachMap->m_nSocketAccepts);
-  vTrace("  nSocketCloses     %lld\n"_Stz,gpAttachMap->m_nSocketCloses);
-  vTrace("  nSocketConnects   %lld\n"_Stz,gpAttachMap->m_nSocketConnects);
-  vTrace("  nSocketListens    %lld\n"_Stz,gpAttachMap->m_nSocketListens);
-  vTrace("  nSocketPeeks      %lld\n"_Stz,gpAttachMap->m_nSocketPeeks);
-  vTrace("  nSocketRecvs      %lld\n"_Stz,gpAttachMap->m_nSocketRecvs);
-  vTrace("  nSocketRecvFroms  %lld\n"_Stz,gpAttachMap->m_nSocketRecvFroms);
-  vTrace("  nSocketSends      %lld\n"_Stz,gpAttachMap->m_nSocketSends);
-  vTrace("  nSocketSendTos    %lld\n"_Stz,gpAttachMap->m_nSocketSendTos);
+  vTrace("  nSocketAccepts    %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nSocketAccepts);
+  vTrace("  nSocketCloses     %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nSocketCloses);
+  vTrace("  nSocketConnects   %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nSocketConnects);
+  vTrace("  nSocketListens    %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nSocketListens);
+  vTrace("  nSocketPeeks      %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nSocketPeeks);
+  vTrace("  nSocketRecvs      %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nSocketRecvs);
+  vTrace("  nSocketRecvFroms  %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nSocketRecvFroms);
+  vTrace("  nSocketSends      %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nSocketSends);
+  vTrace("  nSocketSendTos    %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nSocketSendTos);
 
-  Magnitudes::vByteMag(gpAttachMap->m_nSocketRecvBytes,  sByteMag);
+  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_nSocketRecvBytes,  sByteMag);
   vTrace("  nSocketRecvBytes  %s\n"_Stz,sByteMag.aStz());
-  Magnitudes::vByteMag(gpAttachMap->m_nSocketSendBytes,  sByteMag);
+  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_nSocketSendBytes,  sByteMag);
   vTrace("  nSocketSendBytes  %s\n"_Stz,sByteMag.aStz());
 }
 
@@ -243,7 +243,7 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
   
   socklen_t iSize = sizeof(struct sockaddr_in);
   
-  gpAttachMap->m_nSocketAccepts++;
+  gpAttachMap->m_oStatistics.m_nSocketAccepts++;
   iSocketId = accept(m_iSocketId
                          ,(struct sockaddr*)&xClientAddr
                          ,&iSize
@@ -275,7 +275,7 @@ bool Socket::bClose(SysCall& SysCall)
     return false;
   }
   
-  gpAttachMap->m_nSocketCloses++;
+  gpAttachMap->m_oStatistics.m_nSocketCloses++;
   iError = close(m_iSocketId);
   if (iError) {
     SysCall.vError(errno);
@@ -339,7 +339,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
     vTrace("getaddrinfo: error %lld"_Stz, iReturn);
   }
 
-  gpAttachMap->m_nSocketConnects++;
+  gpAttachMap->m_oStatistics.m_nSocketConnects++;
   iResult = connect(m_iSocketId,(struct sockaddr*)pAddrInfo->ai_addr,sizeof(struct sockaddr));
   
   if (iResult != 0) {
@@ -398,7 +398,7 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
     return false;
   }
   
-  gpAttachMap->m_nSocketListens++;
+  gpAttachMap->m_oStatistics.m_nSocketListens++;
   iResult = listen(m_iSocketId,4);
   if (iResult != 0) {
     SysCall.vError(errno);
@@ -453,7 +453,7 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
   {
     pSoFar = (char*)pWS + nSoFar;
     
-    gpAttachMap->m_nSocketRecvs++;
+    gpAttachMap->m_oStatistics.m_nSocketRecvs++;
     i8 nRecvBytes = recv(m_iSocketId,pSoFar,nMore,0);
     
     if (-1 == nRecvBytes) {
@@ -469,7 +469,7 @@ bool Socket::bRecvBytes(void* pWS, i8 nBytes, SysCall& SysCall)
     
     nSoFar += nRecvBytes;
     nMore -= nRecvBytes;
-    gpAttachMap->m_nSocketRecvBytes += nRecvBytes;
+    gpAttachMap->m_oStatistics.m_nSocketRecvBytes += nRecvBytes;
 
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
   }
@@ -487,14 +487,14 @@ bool Socket::bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall)
   
   SysCall.vClear();
   
-  gpAttachMap->m_nSocketSends++;
+  gpAttachMap->m_oStatistics.m_nSocketSends++;
   i8 nSentBytes = send(m_iSocketId,pBuffer,nBytes,0);
   if (-1 == nSentBytes) {
     SysCall.vError(errno);
     return false;
   }
   
-  gpAttachMap->m_nSocketSendBytes += nSentBytes;
+  gpAttachMap->m_oStatistics.m_nSocketSendBytes += nSentBytes;
   if (nSentBytes == nBytes) {
     SysCall.vSuccess();
     return true;
@@ -548,7 +548,7 @@ bool Socket::bTestForData(SysCall& SysCall)
   SysCall.vClear();
   
   char cc;
-  gpAttachMap->m_nSocketPeeks++;
+  gpAttachMap->m_oStatistics.m_nSocketPeeks++;
   i8 nRecv = recv(m_iSocketId,&cc,1,MSG_PEEK);
   
   if (-1 == nRecv && EAGAIN == errno) {
@@ -577,13 +577,13 @@ bool Socket::bWriteVch(Stz* aChar, SysCall& SysCall)
   
   i8 nBytes = aChar->iLength();
   
-  gpAttachMap->m_nSocketSends++;
+  gpAttachMap->m_oStatistics.m_nSocketSends++;
   i8 nSent = send(m_iSocketId, aChar->aChar(), nBytes,0);
   
   if (nSent != nBytes)
     return false;
   
-  gpAttachMap->m_nSocketSendBytes += nSent;
+  gpAttachMap->m_oStatistics.m_nSocketSendBytes += nSent;
   SysCall.vSuccess();
   return true;
 }
@@ -767,7 +767,7 @@ bool Socket::bSendTo(void* pBuffer, i8 nBytes, SysCall& SysCall)
     RASSERT(nBytes == 0);
   }
   
-  gpAttachMap->m_nSocketSendTos++;
+  gpAttachMap->m_oStatistics.m_nSocketSendTos++;
   i8 nBytesSent = sendto(m_iSocketId
                        ,pBuffer
                        ,nBytes
@@ -788,7 +788,7 @@ bool Socket::bSendTo(void* pBuffer, i8 nBytes, SysCall& SysCall)
     return false;
   }
   
-  gpAttachMap->m_nSocketSendBytes += nBytesSent;
+  gpAttachMap->m_oStatistics.m_nSocketSendBytes += nBytesSent;
   
   if (nBytesSent < nBytes)
   {
@@ -816,7 +816,7 @@ bool Socket::bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall)
   
   SysCall.vClear();
   
-  gpAttachMap->m_nSocketRecvFroms++;
+  gpAttachMap->m_oStatistics.m_nSocketRecvFroms++;
   i8 nBytesRecv = recvfrom(m_iSocketId
                          ,pBuffer
                          ,nBytes
@@ -831,7 +831,7 @@ bool Socket::bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall)
     return false;
   }
   
-  gpAttachMap->m_nSocketRecvBytes += nBytesRecv;
+  gpAttachMap->m_oStatistics.m_nSocketRecvBytes += nBytesRecv;
   
   *pRecv = nBytesRecv;
   
