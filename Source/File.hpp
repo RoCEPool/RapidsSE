@@ -57,6 +57,7 @@ namespace System
    ~File() noexcept(false);
     
     static bool bExists(Stz* aFilePath);
+    static void vMonitorPortrait(s48K& sPortrait);
     static bool bRemove(Stz* aFilePath);
     static void vStatistics(void);
   

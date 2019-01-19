@@ -103,6 +103,50 @@ bool File::bExists(Stz* aFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
+/* monitor profile                                                            */
+/*----------------------------------------------------------------------------*/
+void File::vMonitorPortrait(s48K& sPortrait)
+{
+  s32 sReadMag;  Magnitudes::vByteMag(gpAttachMap->m_nFileReadBytes,  sReadMag);
+  s32 sWriteMag; Magnitudes::vByteMag(gpAttachMap->m_nFileWriteBytes, sWriteMag);
+  s32 sPrintMag; Magnitudes::vByteMag(gpAttachMap->m_nFilePrintBytes, sPrintMag);
+
+  sPortrait.vSprint("File : "
+                    "opens %lld "
+                    "closes %lld "
+                    "seeks %lld "
+                    "tells %lld "
+                    "flushes %lld\n"
+                    "       "
+                    "reads %lld (%s) "
+                    "writes %lld (%s) "
+                    "prints %lld (%s)\n"
+                    "       "
+                    "getcs %lld "
+                    "ungetcs %lld "
+                    "\n"_Stz,
+                   
+                    gpAttachMap->m_nFileOpens,
+                    gpAttachMap->m_nFileCloses,
+                    gpAttachMap->m_nFileSeeks,
+                    gpAttachMap->m_nFileTells,
+                    gpAttachMap->m_nFileFlushes,
+                    
+                    gpAttachMap->m_nFileReads,
+                      sReadMag.aStz(),
+                    gpAttachMap->m_nFileWrites,
+                      sWriteMag.aStz(),
+                    gpAttachMap->m_nFilePrints,
+                      sPrintMag.aStz(),
+
+                    gpAttachMap->m_nFileGetcs,
+                    gpAttachMap->m_nFileUngetcs
+                   );
+  
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* remove given file from file system                                         */
 /*----------------------------------------------------------------------------*/
 bool File::bRemove(Stz* aFilePath)
