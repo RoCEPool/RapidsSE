@@ -52,7 +52,7 @@ LoadMap::LoadMap(void)
   m_i_ChunkLoc = 0;
   m_bMappingDone = false;
 
-  m_zMapLock.vInitLock(LK_LOAD_MAP);
+  m_oMapLock.vInitLock(LK_LOAD_MAP);
   
   for (i8 i_Entry = 0; i_Entry < C_LOADMAP_ENTRIES; i_Entry++)
     m_xMap.iaEndLoc[i_Entry] = -1;
@@ -237,8 +237,8 @@ void LoadMap::vStats(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
   vTrace("LoadMap: lock writes %lld write collisions %lld\n"_Stz,
-         m_zMapLock.iWriteGrabs(),
-         m_zMapLock.iWriteCollisions());
+         m_oMapLock.iWriteGrabs(),
+         m_oMapLock.iWriteCollisions());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -252,7 +252,7 @@ void LoadMap::vAddEntry(i8 i_ChunkEndLoc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
-  m_zMapLock.vGrabWrite();
+  m_oMapLock.vGrabWrite();
   
   ++gpAttachMap->m_oLockTracker.m_ziWorkUnits[LK_LOAD_MAP];
   
@@ -260,7 +260,7 @@ void LoadMap::vAddEntry(i8 i_ChunkEndLoc)
   
   m_xMap.nEntries++;
   
-  m_zMapLock.vDropWrite();
+  m_oMapLock.vDropWrite();
   
   RASSERT(m_xMap.nEntries < C_LOADMAP_ENTRIES);
 }
@@ -273,11 +273,11 @@ bool LoadMap::bGetNextMapping(i8& iSeek, i8& nBytes, i8& i_Entry)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
   // subLoaders compete for next entries
-  m_zMapLock.vGrabWrite();
+  m_oMapLock.vGrabWrite();
   
   // is there another entry available yet?
   if (m_xMap.i_Entry == m_xMap.nEntries) {
-    m_zMapLock.vDropWrite();
+    m_oMapLock.vDropWrite();
     return false;
   }
   ASSERT(m_xMap.i_Entry < m_xMap.nEntries);
@@ -286,7 +286,7 @@ bool LoadMap::bGetNextMapping(i8& iSeek, i8& nBytes, i8& i_Entry)
   i_Entry = m_xMap.i_Entry++;
   
   // ok to drop the lock
-  m_zMapLock.vDropWrite();
+  m_oMapLock.vDropWrite();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -50,14 +50,14 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
   m_sShmName = aRegionName;
   m_iShmFD   = 0;
   
-  m_zFreeLock.vInitLock(LK_BUFFER_POOL);
+  m_oFreeLock.vInitLock(LK_BUFFER_POOL);
   
   m_nAllocCount  = 0;
   m_nFreeCount   = 0;
   m_nFreeHead    = bn::nNil();
  
-  m_izHeapBuffers.vCheckInit();
-  m_izOtherBuffers.vCheckInit();
+  m_ixHeapBuffers.vCheckInit();
+  m_ixOtherBuffers.vCheckInit();
 
   vInitialise(bTouch);
   
@@ -121,7 +121,7 @@ Buffer* BufferPool::pAllocAttachMapBuffer(void)
   
   FreeBuffer* pAllocatedBuffer = pPopFreeBuffer_NL();
   
-  ++m_izOtherBuffers;
+  ++m_ixOtherBuffers;
   
   return _pBuffer(pAllocatedBuffer);
 }
@@ -145,7 +145,7 @@ Buffer* BufferPool::pAllocHeapBuffer(void)
   
   FreeBuffer* pAllocatedBuffer = pPopFreeBuffer();
   
-  ++m_izHeapBuffers;
+  ++m_ixHeapBuffers;
   
   return _pBuffer(pAllocatedBuffer);
 }
@@ -159,7 +159,7 @@ Buffer* BufferPool::pAllocOtherBuffer(void)
   
   FreeBuffer* pAllocatedBuffer = pPopFreeBuffer();
   
-  ++m_izOtherBuffers;
+  ++m_ixOtherBuffers;
 
   return _pBuffer(pAllocatedBuffer);
 }
@@ -288,7 +288,7 @@ void BufferPool::vFree(Buffer* pBuffer)
   
   FreeBuffer* pFreeBuffer = pToFreeBuffer(pBuffer);
   
-  m_zFreeLock.vGrabWrite();
+  m_oFreeLock.vGrabWrite();
   
   //vVerifyPool();
   
@@ -311,7 +311,7 @@ void BufferPool::vFree(Buffer* pBuffer)
   
   //vVerifyPool();
   
-  m_zFreeLock.vDropWrite();
+  m_oFreeLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -461,8 +461,8 @@ void BufferPool::vMonitorPortrait(s48K& sPortrait)
   sPortrait.vSprint("Pool: buffers %lld allocated %lld (heap %lld other %lld) free %lld\n"_Stz,
                     m_nBuffers,
                     m_nAllocCount,
-                      *m_izHeapBuffers,
-                      *m_izOtherBuffers,
+                      *m_ixHeapBuffers,
+                      *m_ixOtherBuffers,
                     m_nFreeCount
                     );
 }
@@ -621,14 +621,14 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  m_zFreeLock.vGrabWrite();
+  m_oFreeLock.vGrabWrite();
 
   // test for empty free chain
   if (bn::nNil() == m_nFreeHead) {
     ASSERT( ! m_nFreeCount );
     vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
     vWarn("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
-    m_zFreeLock.vDropWrite();
+    m_oFreeLock.vDropWrite();
     return nullptr;
   }
 
@@ -640,7 +640,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
   m_nFreeCount--;
   m_nAllocCount++;
   
-  m_zFreeLock.vDropWrite();
+  m_oFreeLock.vDropWrite();
 
   //vVerifyPool();
   
@@ -677,7 +677,7 @@ void BufferPool::vPrintProgress(void)
   static s32 sMagLarge;  Magnitudes::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
   static s32 sMagJumbo;  Magnitudes::vByteMag(C_SIZE_JUMBO_OBJECT, sMagJumbo);
   
-  m_zFreeLock.vGrabWrite();
+  m_oFreeLock.vGrabWrite();
   
   vTrace("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
         m_nAllocCount, m_nBuffers, m_nAllocCount, *m_nFreeHead, m_nFreeCount);
@@ -742,7 +742,7 @@ void BufferPool::vPrintProgress(void)
   
   //vVerifyPool();
   
-  m_zFreeLock.vDropWrite();
+  m_oFreeLock.vDropWrite();
 }
 
 

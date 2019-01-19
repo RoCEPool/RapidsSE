@@ -27,13 +27,13 @@ namespace Pool
     int  m_iShmFD;      // shared memory file descriptor
     
     // free chain
-    Lock m_zFreeLock;    // lock over free chain
+    Lock m_oFreeLock;    // lock over free chain
     i8   m_nAllocCount;  //   number of buffers currently in use
     i8   m_nFreeCount;   //   number of buffers in free chain
     bn   m_nFreeHead;    //   head of free chain
 
-    Atomic  m_izHeapBuffers; //
-    Atomic  m_izOtherBuffers; //
+    Atomic  m_ixHeapBuffers; //
+    Atomic  m_ixOtherBuffers; //
 
     // must be last
     Footer m_xFooter;

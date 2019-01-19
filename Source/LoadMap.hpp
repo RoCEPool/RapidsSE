@@ -20,7 +20,7 @@ namespace Chunks
     i8   m_i_ChunkLoc;   // seek location for the start of next chunk
     bool m_bMappingDone; // is mapping of chunks in file complete?
   
-    Lock m_zMapLock;     // lock over the following map information
+    Lock m_oMapLock;     // lock over the following map information
     struct {
       i8   iaEndLoc[C_LOADMAP_ENTRIES]; // array of chunk end file locations
       i8   nEntries;     // logical limit of iaEndLoc[]
