@@ -347,7 +347,13 @@ void RapidsSE::vMonitorProfile(s48K& sPortrait)
 
   i8 iPercentFree =gpAttachMap->m_pBufferPool->iFreePercent();
   
-  sPortrait.vSprint("Profile: node %s region %s free %lld%% uptime %llds \n"_Stz,
+  sPortrait.vSprint("Profile (%s): node %s region %s free %lld%% uptime %llds \n"_Stz,
+#ifdef _DEBUG
+                    "debug"_Stz,
+#else
+                    "release"_Stz,
+#endif
+
                     gpAttachMap->m_pGrid->pGetNode(gxArguments.m_iThisNode)->aNodeName(),
                     sRegionMag.aStz(),
                     iPercentFree,
