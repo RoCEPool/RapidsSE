@@ -116,6 +116,42 @@ void Socket::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* monitor profile                                                            */
+/*----------------------------------------------------------------------------*/
+void Socket::vMonitorPortrait(s48K& sPortrait)
+{
+  s32 sRecvMag; Magnitudes::vByteMag(gpAttachMap->m_nSocketRecvBytes, sRecvMag);
+  s32 sSendMag; Magnitudes::vByteMag(gpAttachMap->m_nSocketSendBytes, sSendMag);
+
+  sPortrait.vSprint("Socket: "
+                    "accepts %lld "
+                    "closes %lld "
+                    "connects %lld "
+                    "listens %lld "
+                    "peeks %lld\n"
+                    "        "
+                    "recvs %lld+"
+                    "recvFroms %lld (%s) "
+                    "sends %lld+"
+                    "sendTos %lld (%s)"
+                    "\n"_Stz,
+                    
+                    gpAttachMap->m_nSocketAccepts,
+                    gpAttachMap->m_nSocketCloses,
+                    gpAttachMap->m_nSocketConnects,
+                    gpAttachMap->m_nSocketListens,
+                    gpAttachMap->m_nSocketPeeks,
+                    
+                    gpAttachMap->m_nSocketRecvs,
+                    gpAttachMap->m_nSocketRecvFroms,
+                    sRecvMag.aStz(),
+                    gpAttachMap->m_nSocketSends,
+                    gpAttachMap->m_nSocketSendTos,
+                    sSendMag.aStz()
+                    );
+}
+
+/*----------------------------------------------------------------------------*/
 /* statistics                                                                 */
 /*----------------------------------------------------------------------------*/
 void Socket::vStatistics(void)

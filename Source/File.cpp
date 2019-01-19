@@ -111,17 +111,17 @@ void File::vMonitorPortrait(s48K& sPortrait)
   s32 sWriteMag; Magnitudes::vByteMag(gpAttachMap->m_nFileWriteBytes, sWriteMag);
   s32 sPrintMag; Magnitudes::vByteMag(gpAttachMap->m_nFilePrintBytes, sPrintMag);
 
-  sPortrait.vSprint("File : "
+  sPortrait.vSprint("File: "
                     "opens %lld "
                     "closes %lld "
                     "seeks %lld "
                     "tells %lld "
                     "flushes %lld\n"
-                    "       "
+                    "      "
                     "reads %lld (%s) "
                     "writes %lld (%s) "
                     "prints %lld (%s)\n"
-                    "       "
+                    "      "
                     "getcs %lld "
                     "ungetcs %lld "
                     "\n"_Stz,
