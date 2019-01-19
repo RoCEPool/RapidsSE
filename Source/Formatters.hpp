@@ -22,7 +22,6 @@ namespace Datums
   class Formatters : public Object
   {
   public:
-  
     bool m_bDefault;             // default formatters
     bool m_bAllowNonPrintable;   // allow non-printable
     char m_cEnclosedBy_Leading;  // enclosed by
@@ -50,6 +49,8 @@ namespace Datums
     
     Footer* aFooter(void);
   };
+  
+  static Formatters* _pFormatters(void* aAddr);
 }
 
 /*============================================================================*/

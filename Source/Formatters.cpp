@@ -8,13 +8,29 @@
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/*-- Lifecycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Formatters* Datums::_pFormatters(void* aAddr)
+{
+  Formatters* pFormatters = reinterpret_cast<Formatters*>(aAddr);
+  
+  RASSERT_TYPE(pFormatters,CN_FORMATTERS);
+  
+  return pFormatters;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Formatters::operator new(size_t)
 {
-  Formatters* pFormatters = (Formatters*)gpBufferPool->pAllocBuffer();
+  void* pFormatters = HeapMem::pAllocate(CN_FORMATTERS);
   
-  return pPoolCheck<void*>(pFormatters);
+  return pFormatters;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,9 +38,9 @@ void* Formatters::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Formatters::operator delete(void* pFormattersAddress)
 {
-  Formatters* pFormatters = static_cast<Formatters*>(pFormattersAddress);
+  Formatters* pFormatters = _pFormatters(pFormattersAddress);
   
-  gpBufferPool->vFree((Buffer*)pFormatters);
+  HeapMem::vFree(pFormatters);
 }
 
 /*----------------------------------------------------------------------------*/
