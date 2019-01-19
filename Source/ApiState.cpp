@@ -253,8 +253,6 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
   
   m_oLock.vGrabRead();
   
-  vTrace("ApiState %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
-  
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
     SessionState* aSessionState = &m_xSessionState[i_Session];

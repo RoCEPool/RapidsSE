@@ -300,6 +300,10 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
   s48K sPortrait;
   
   sPortrait = ""_Stz;
+  vMonitorProfile(sPortrait);
+  sRapidsPortrait.vConcat(sPortrait.aStz());
+  
+  sPortrait = ""_Stz;
   gpAttachMap->m_pQueues->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
@@ -326,6 +330,29 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
   sPortrait = ""_Stz;
   gpAttachMap->m_pApiState->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get monitor portrait profile of system                                     */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vMonitorProfile(s48K& sPortrait)
+{
+  Since oSince;
+  oSince.vNow();
+  
+  i8 iUpTime = oSince.iSeconds() - gpAttachMap->m_oSince.iSeconds();
+  
+  s32 sRegionMag;
+  Magnitudes::vByteMag(gpAttachMap->m_iRegionSize,sRegionMag);
+
+  i8 iPercentFree =gpAttachMap->m_pBufferPool->iFreePercent();
+  
+  sPortrait.vSprint("Profile: node %s region %s free %lld%% uptime %llds \n"_Stz,
+                    gpAttachMap->m_pGrid->pGetNode(gxArguments.m_iThisNode)->aNodeName(),
+                    sRegionMag.aStz(),
+                    iPercentFree,
+                    iUpTime
+                    );
 }
 
 /*----------------------------------------------------------------------------*/
