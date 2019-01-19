@@ -41,6 +41,8 @@ static const i8 C_LOW_BUFFERS           = 128;
 #include "Slab.hpp"
 #include "SlabAllocator.hpp"
 
+#include "Region.hpp"
+
 extern BufferPool* gpBufferPool;
 
 /*---------------------------------------------------------------------------*/

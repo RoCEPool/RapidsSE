@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace StorageEngine
+namespace Interface
 {
   struct SessionState {
     

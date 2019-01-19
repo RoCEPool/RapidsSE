@@ -2,6 +2,7 @@
 /* ApiState.cpp - ApiState                                                    */
 /*============================================================================*/
 
+#include "Interface.h"
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -13,7 +14,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ApiState* StorageEngine::_pApiState(void* aAddr)
+ApiState* Interface::_pApiState(void* aAddr)
 {
   ApiState* pApiState = reinterpret_cast<ApiState*>(aAddr);
   
