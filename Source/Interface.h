@@ -22,6 +22,7 @@ using namespace Interface;
 #include "CommandProcessor.hpp"
 #include "Session.hpp"
 #include "Api.hpp"
+#include "ApiState.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

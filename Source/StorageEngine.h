@@ -19,7 +19,6 @@ using namespace StorageEngine;
 
 //-----------------------------------------------------------------------------
 
-#include "ApiState.hpp"
 #include "Arguments.hpp"
 #include "CarryOver.hpp"
 #include "AttachMap.hpp"
