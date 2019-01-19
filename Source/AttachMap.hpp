@@ -91,6 +91,8 @@ namespace StorageEngine
     bool          m_bMarkJobAll;
     bool          m_bMarkJob[CN_ENUMS];
 
+    Statistics    m_oStatistics;
+  
     // statistics counters
     i8            m_iSchEnqueueTask;
     i8            m_iSchEnqueueTaskWait;
