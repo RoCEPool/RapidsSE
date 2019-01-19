@@ -244,7 +244,7 @@ void ApiState::vFreeState(i8 i_Session)
 /*----------------------------------------------------------------------------*/
 void ApiState::vMonitorPortrait(s48K& sPortrait)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE);
   
   s48K sTasksPortrait;
   

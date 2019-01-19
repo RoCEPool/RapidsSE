@@ -27,11 +27,14 @@ namespace Pool
     int  m_iShmFD;      // shared memory file descriptor
     
     // free chain
-    Lock m_zFreeLock;   // lock over free chain
-    i8   m_nAllocCount; //   number of buffers currently in use
-    i8   m_nFreeCount;  //   number of buffers in free chain
-    bn   m_nFreeHead;   //   head of free chain
-    
+    Lock m_zFreeLock;    // lock over free chain
+    i8   m_nAllocCount;  //   number of buffers currently in use
+    i8   m_nFreeCount;   //   number of buffers in free chain
+    bn   m_nFreeHead;    //   head of free chain
+
+    Atomic  m_izHeapBuffers; //
+    Atomic  m_izOtherBuffers; //
+
     // must be last
     Footer m_xFooter;
     
@@ -46,8 +49,9 @@ namespace Pool
     static void vReport(void);
     
     Buffer* pAllocAttachMapBuffer(void);
-    Buffer* pAllocBuffer(void);
-    i8   nAllocCount(void);
+    i8      nAllocCount(void);
+    Buffer* pAllocHeapBuffer(void);
+    Buffer* pAllocOtherBuffer(void);
     i8   nBufferCount(void);
     bn   nBufferFirst(void);
     bn   nBufferLast(void);
@@ -74,7 +78,12 @@ namespace Pool
     bool bValidAddress(const void* aAddress);
     bool bVerifyBoundaries(bool bTrace);
     void vVerifyPool(void);
-    
+  
+  private:
+    FreeBuffer* pPopFreeBuffer(void);
+    FreeBuffer* pPopFreeBuffer_NL(void);
+    void vPrintProgress(void);
+
     Footer* aFooter(void);
    };
 }

@@ -21,7 +21,7 @@ HeapBuffer* Pool::_pHeapBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* HeapBuffer::operator new(size_t)
 {
-  HeapBuffer* pHeapBuffer = (HeapBuffer*)gpBufferPool->pAllocBuffer();
+  HeapBuffer* pHeapBuffer = (HeapBuffer*)gpBufferPool->pAllocHeapBuffer();
   
   return pPoolCheck<void*>(pHeapBuffer);
 }

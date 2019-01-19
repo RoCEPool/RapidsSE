@@ -24,7 +24,7 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* Heap::operator new(size_t)
 {
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  Buffer* pBuffer = gpBufferPool->pAllocOtherBuffer();
   
   return pPoolCheck<void*>(pBuffer);
 }

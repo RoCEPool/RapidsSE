@@ -39,7 +39,7 @@ bool Prompt::bPrompt_takeMem(SePrompt* pPrompt)
   while (gpBufferPool->nFreeCount() >= C_LOW_BUFFERS + nSpare) {
 
     Buffer* p2ndBuffer  = gpTakenBuffers;
-    gpTakenBuffers = gpBufferPool->pAllocBuffer();
+    gpTakenBuffers = gpBufferPool->pAllocOtherBuffer();
     
     Buffer** ppNextBuffer = (Buffer**)gpTakenBuffers->aDataArea();
     *ppNextBuffer = p2ndBuffer;

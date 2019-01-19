@@ -26,7 +26,7 @@ QueueBuffer* Structures::_pQueueBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* QueueBuffer::operator new(size_t)
 {
-  QueueBuffer* pQueueBuffer = (QueueBuffer*)gpBufferPool->pAllocBuffer();
+  QueueBuffer* pQueueBuffer = (QueueBuffer*)gpBufferPool->pAllocOtherBuffer();
   
   return pPoolCheck<void*>(pQueueBuffer);
 }

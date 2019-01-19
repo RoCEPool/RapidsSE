@@ -11,7 +11,7 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* CarryOver::operator new(size_t)
 {
-  CarryOver* pCarryOver = (CarryOver*)gpBufferPool->pAllocBuffer();
+  CarryOver* pCarryOver = (CarryOver*)gpBufferPool->pAllocOtherBuffer();
   
   return pPoolCheck<void*>(pCarryOver);
 }

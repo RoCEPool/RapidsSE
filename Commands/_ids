@@ -37,7 +37,7 @@ print "---------------------------------------------------------------------";
 
 nowait monitor 10;
 
-nowait purge sensorEvents 30;
+//nowait purge sensorEvents 30;
 
 nowait publish sensorEvents "/tmp/sensorEvents.rowAgg" ;
 

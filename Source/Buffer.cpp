@@ -27,7 +27,8 @@ Buffer* Pool::_pBuffer(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Buffer::operator new(size_t)
 {
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  RASSERT(0);
+  Buffer* pBuffer = gpBufferPool->pAllocOtherBuffer();
   
   return pBuffer;
 }
@@ -37,6 +38,7 @@ void* Buffer::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void Buffer::operator delete(void* pBufferAddress)
 {
+  RASSERT(0);
   Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
   
   gpBufferPool->vFree(pBuffer);

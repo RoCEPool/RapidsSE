@@ -52,10 +52,13 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
   
   m_zFreeLock.vInitLock(LK_BUFFER_POOL);
   
-  m_nAllocCount   = 0;
-  m_nFreeCount    = 0;
-  m_nFreeHead     = bn::nNil();
-  
+  m_nAllocCount  = 0;
+  m_nFreeCount   = 0;
+  m_nFreeHead    = bn::nNil();
+ 
+  m_izHeapBuffers.vCheckInit();
+  m_izOtherBuffers.vCheckInit();
+
   vInitialise(bTouch);
   
   _checkInitialised_(CN_BUFFERPOOL);
@@ -116,116 +119,11 @@ Buffer* BufferPool::pAllocAttachMapBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  // allocate buffer by popping head off free chain
-  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_nFreeHead);
-  m_nFreeHead = pAllocatedBuffer->nNextFree();
+  FreeBuffer* pAllocatedBuffer = pPopFreeBuffer_NL();
   
-  // must have free buffers at this stage
-  ASSERT(bn::nNil() != m_nFreeHead);
+  ++m_izOtherBuffers;
   
-  // adjust counts
-  m_nFreeCount--;
-  m_nAllocCount++;
-  
-  //vVerifyPool();
-  
-  return pPoolCheck<FreeBuffer*>(pAllocatedBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate a buffer from free chain in pool                                  */
-/*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pAllocBuffer(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  static i8 nAllocs = 0;
-  static s32 sMagSmall;  Magnitudes::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
-  static s32 sMagMedium; Magnitudes::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
-  static s32 sMagLarge;  Magnitudes::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
-  static s32 sMagJumbo;  Magnitudes::vByteMag(C_SIZE_JUMBO_OBJECT, sMagJumbo);
-  
-  m_zFreeLock.vGrabWrite();
-  
-  nAllocs++;
-  
-//  if ((bn::nNil() == m_nFreeHead) || (nAllocs % 5000 == 0)) {
-//    
-//    vWarn("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
-//          nAllocs, m_nBuffers, m_nAllocCount, *m_nFreeHead, m_nFreeCount);
-//
-//    vTrace("   Transient SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//           sMagSmall.aChar(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pSmall->iBufferCount(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pSmall->iAllocCount(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount());
-//    
-//    vTrace("  Transient MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//           sMagMedium.aChar(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pMedium->iBufferCount(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pMedium->iAllocCount(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount());
-//    
-//    vTrace("   Transient LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//           sMagLarge.aChar(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pLarge->iBufferCount(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pLarge->iAllocCount(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount());
-//    
-//    vTrace("   Transient JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//           sMagJumbo.aChar(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iBufferCount(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iAllocCount(),
-//           gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iFreeCount());
-//    
-//    vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//           sMagSmall.aChar(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iBufferCount(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iAllocCount(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iFreeCount());
-//    
-//    vTrace("  Persistent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//           sMagMedium.aChar(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iBufferCount(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iAllocCount(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iFreeCount());
-//    
-//    vTrace("   Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//           sMagJumbo.aChar(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iBufferCount(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iAllocCount(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iFreeCount());
-//    
-//    vTrace("   Persistent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
-//           sMagJumbo.aChar(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iBufferCount(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iAllocCount(),
-//           gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iFreeCount());
-//  }
-  //vVerifyPool();
-  
-  // test for empty free chain
-  if (bn::nNil() == m_nFreeHead) {
-    ASSERT( ! m_nFreeCount );
-    vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
-    vWarn("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
-    m_zFreeLock.vDropWrite();
-    return nullptr;
-  }
-  
-  // allocate buffer by popping head off free chain
-  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_nFreeHead);
-  m_nFreeHead = pAllocatedBuffer->nNextFree();
-  
-  // adjust counts
-  m_nFreeCount--;
-  m_nAllocCount++;
-  
-  //vVerifyPool();
- 
-  m_zFreeLock.vDropWrite();
-  
-  return pPoolCheck<FreeBuffer*>(pAllocatedBuffer);
+  return _pBuffer(pAllocatedBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -236,6 +134,34 @@ i8 BufferPool::nAllocCount(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   return m_nAllocCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a buffer for a HeapBuffer from free chain in pool                 */
+/*----------------------------------------------------------------------------*/
+Buffer* BufferPool::pAllocHeapBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  FreeBuffer* pAllocatedBuffer = pPopFreeBuffer();
+  
+  ++m_izHeapBuffers;
+  
+  return _pBuffer(pAllocatedBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a buffer from free chain in pool                                  */
+/*----------------------------------------------------------------------------*/
+Buffer* BufferPool::pAllocOtherBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  FreeBuffer* pAllocatedBuffer = pPopFreeBuffer();
+  
+  ++m_izOtherBuffers;
+
+  return _pBuffer(pAllocatedBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -532,8 +458,14 @@ bool BufferPool::bLowMemory(void)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vMonitorPortrait(s48K& sPortrait)
 {
-  sPortrait.vSprint("Pool: buffers %lld allocated %lld free %lld\n"_Stz,
-                    m_nBuffers,m_nAllocCount,m_nFreeCount);
+  sPortrait.vSprint("Pool: buffers %lld allocated %lld free %lld; heap %lld other %lld\n"_Stz,
+                    m_nBuffers,
+                    m_nAllocCount,
+                    m_nFreeCount,
+                    
+                    *m_izHeapBuffers,
+                    *m_izOtherBuffers
+                    );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -684,6 +616,138 @@ void BufferPool::vVerifyPool(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop a free buffer from the free chain                                      */
+/*----------------------------------------------------------------------------*/
+FreeBuffer* BufferPool::pPopFreeBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  m_zFreeLock.vGrabWrite();
+
+  // test for empty free chain
+  if (bn::nNil() == m_nFreeHead) {
+    ASSERT( ! m_nFreeCount );
+    vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
+    vWarn("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
+    m_zFreeLock.vDropWrite();
+    return nullptr;
+  }
+
+  // allocate buffer by popping head off free chain
+  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_nFreeHead);
+  m_nFreeHead = pAllocatedBuffer->nNextFree();
+  
+  // adjust counts
+  m_nFreeCount--;
+  m_nAllocCount++;
+  
+  m_zFreeLock.vDropWrite();
+
+  //vVerifyPool();
+  
+  return pPoolCheck<FreeBuffer*>(pAllocatedBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop a free buffer from the free chain                                      */
+/*----------------------------------------------------------------------------*/
+FreeBuffer* BufferPool::pPopFreeBuffer_NL(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  // allocate buffer by popping head off free chain
+  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_nFreeHead);
+  m_nFreeHead = pAllocatedBuffer->nNextFree();
+  
+  // adjust counts
+  m_nFreeCount--;
+  m_nAllocCount++;
+  
+  return pPoolCheck<FreeBuffer*>(pAllocatedBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate a buffer from free chain in pool                                  */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vPrintProgress(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  static s32 sMagSmall;  Magnitudes::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
+  static s32 sMagMedium; Magnitudes::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
+  static s32 sMagLarge;  Magnitudes::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
+  static s32 sMagJumbo;  Magnitudes::vByteMag(C_SIZE_JUMBO_OBJECT, sMagJumbo);
+  
+  m_zFreeLock.vGrabWrite();
+  
+  vTrace("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
+        m_nAllocCount, m_nBuffers, m_nAllocCount, *m_nFreeHead, m_nFreeCount);
+
+  vTrace("   Transient SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagSmall.aChar(),
+         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pSmall->iFreeCount());
+
+  vTrace("  Transient MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagMedium.aChar(),
+         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pMedium->iFreeCount());
+
+  vTrace("   Transient LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagLarge.aChar(),
+         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pLarge->iFreeCount());
+
+  vTrace("   Transient JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagJumbo.aChar(),
+         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Transient.m_pJumbo->iFreeCount());
+
+  vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagSmall.aChar(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pSmall->iFreeCount());
+
+  vTrace("  Persistent MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagMedium.aChar(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pMedium->iFreeCount());
+
+  vTrace("   Persistent LargeHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagJumbo.aChar(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pLarge->iFreeCount());
+
+  vTrace("   Persistent JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagJumbo.aChar(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iBufferCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iAllocCount(),
+         gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iFreeCount());
+  //vVerifyPool();
+  
+  
+  // allocate buffer by popping head off free chain
+  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_nFreeHead);
+  m_nFreeHead = pAllocatedBuffer->nNextFree();
+  
+  // adjust counts
+  m_nFreeCount--;
+  m_nAllocCount++;
+  
+  //vVerifyPool();
+  
+  m_zFreeLock.vDropWrite();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -705,6 +769,7 @@ void Base::vCheckAddress(void *aAddress)
   if (gpBufferPool)
     gpBufferPool->vCheckAddress(aAddress);
 }
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
