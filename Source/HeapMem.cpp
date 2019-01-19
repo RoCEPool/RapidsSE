@@ -37,7 +37,7 @@ void HeapMem::vInit(void)
   Persistent.m_pJumbo  = new Heap(CN_JUMBOPERSISTENT,  C_SIZE_JUMBO_OBJECT);
   Persistent.m_pLarge  = new Heap(CN_LARGEPERSISTENT,  C_SIZE_LARGE_OBJECT);
   Persistent.m_pMedium = new Heap(CN_MEDIUMPERSISTENT, C_SIZE_MEDIUM_OBJECT);
-  Persistent.m_pMedium  = new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
+  Persistent.m_pSmall  = new Heap(CN_SMALLPERSISTENT,  C_SIZE_SMALL_OBJECT);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,10 +47,10 @@ void HeapMem::vMonitorPortrait(s48K& sPortrait)
 {
   s48K s;
   
-  s = ""_Stz; Persistent.m_pSmall->vMonitorPortrait(s);  sPortrait.vConcat(s);
-  s = ""_Stz; Persistent.m_pMedium->vMonitorPortrait(s); sPortrait.vConcat(s);
-  s = ""_Stz; Persistent.m_pLarge->vMonitorPortrait(s);  sPortrait.vConcat(s);
-  s = ""_Stz; Persistent.m_pJumbo->vMonitorPortrait(s);  sPortrait.vConcat(s);
+  s = ""_Stz; Transient.m_pSmall->vMonitorPortrait(s);  sPortrait.vConcat(s);
+  s = ""_Stz; Transient.m_pMedium->vMonitorPortrait(s); sPortrait.vConcat(s);
+  s = ""_Stz; Transient.m_pLarge->vMonitorPortrait(s);  sPortrait.vConcat(s);
+  s = ""_Stz; Transient.m_pJumbo->vMonitorPortrait(s);  sPortrait.vConcat(s);
 }
 
 /*----------------------------------------------------------------------------*/

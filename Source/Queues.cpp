@@ -657,7 +657,9 @@ void Queues::vMonitorThread(s48K& sPortrait)
   m_pThreadVector->vDropLock();
   
   sPortrait.vSprint("Threads: running %lld (dedicated %lld) idle %lld\n"_Stz,
-                    nThreads, nDedicated, nIdle);
+                    nThreads,
+                      nDedicated,
+                    nIdle);
 }
 
 /*----------------------------------------------------------------------------*/
