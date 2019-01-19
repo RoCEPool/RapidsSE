@@ -120,8 +120,10 @@ void Socket::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 void Socket::vMonitorPortrait(s48K& sPortrait)
 {
-  s32 sRecvMag; Magnitudes::vByteMag(gpAttachMap->m_oStatistics.Socket.m_nRecvBytes, sRecvMag);
-  s32 sSendMag; Magnitudes::vByteMag(gpAttachMap->m_oStatistics.Socket.m_nSendBytes, sSendMag);
+  Statistics* pStat = &gpAttachMap->m_oStatistics;
+  
+  s32 sRecvMag; Magnitudes::vByteMag(pStat->Socket.m_nRecvBytes, sRecvMag);
+  s32 sSendMag; Magnitudes::vByteMag(pStat->Socket.m_nSendBytes, sSendMag);
 
   sPortrait.vSprint("Socket: "
                     "accepts %lld "
@@ -136,18 +138,18 @@ void Socket::vMonitorPortrait(s48K& sPortrait)
                     "sendTos %lld (%s)"
                     "\n"_Stz,
                     
-                    gpAttachMap->m_oStatistics.Socket.m_nAccepts,
-                    gpAttachMap->m_oStatistics.Socket.m_nCloses,
-                    gpAttachMap->m_oStatistics.Socket.m_nConnects,
-                    gpAttachMap->m_oStatistics.Socket.m_nListens,
-                    gpAttachMap->m_oStatistics.Socket.m_nPeeks,
+                    pStat->Socket.m_nAccepts,
+                    pStat->Socket.m_nCloses,
+                    pStat->Socket.m_nConnects,
+                    pStat->Socket.m_nListens,
+                    pStat->Socket.m_nPeeks,
                     
-                    gpAttachMap->m_oStatistics.Socket.m_nRecvs,
-                    gpAttachMap->m_oStatistics.Socket.m_nRecvFroms,
-                    sRecvMag.aStz(),
-                    gpAttachMap->m_oStatistics.Socket.m_nSends,
-                    gpAttachMap->m_oStatistics.Socket.m_nSendTos,
-                    sSendMag.aStz()
+                    pStat->Socket.m_nRecvs,
+                    pStat->Socket.m_nRecvFroms,
+                      sRecvMag.aStz(),
+                    pStat->Socket.m_nSends,
+                    pStat->Socket.m_nSendTos,
+                      sSendMag.aStz()
                     );
 }
 

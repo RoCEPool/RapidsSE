@@ -74,6 +74,8 @@ namespace Measurement
     Statistics(void);
     ~Statistics() noexcept(false);
   
+    static void vMemoryPortrait(s48K& sPortrait);
+
   private:
   
     Footer* aFooter(void);

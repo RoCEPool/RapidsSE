@@ -3,6 +3,9 @@
 /*============================================================================*/
 
 #include "Measurement.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -55,6 +58,31 @@ Statistics::~Statistics(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STATISTICS,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* memory monitor profile                                                     */
+/*----------------------------------------------------------------------------*/
+void Statistics::vMemoryPortrait(s48K& sPortrait)
+{
+  Statistics* pStat = &gpAttachMap->m_oStatistics;
+
+  s32 sCopyMag; Magnitudes::vByteMag(pStat->Mem.m_iCopyTotal,     sCopyMag);
+  s32 sMoveMag; Magnitudes::vByteMag(pStat->Mem.m_iMoveTotal,     sMoveMag);
+  s32 sSribMag; Magnitudes::vByteMag(pStat->Mem.m_iScribbleTotal, sSribMag);
+  s32 sSetMag;  Magnitudes::vByteMag(pStat->Mem.m_iSetTotal,      sSetMag);
+  s32 sZeroMag; Magnitudes::vByteMag(pStat->Mem.m_iZeroTotal,     sZeroMag);
+
+  sPortrait.vSprint("Memory: copy %s move %s scribble %s set %s zero %s\n"_Stz,
+                    sCopyMag.aStz(),
+                    sMoveMag.aStz(),
+                    sSribMag.aStz(),
+                    sSetMag.aStz(),
+                    sZeroMag.aStz()
+                    );
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
