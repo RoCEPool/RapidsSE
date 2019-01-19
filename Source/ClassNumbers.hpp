@@ -227,6 +227,7 @@ enum eCN : u2 // Class Number
   /* 190 0xBE      232B Heap:I */ CN_SMALLTRANSIENT,
   /* 191 0xBF      176B Heap:S */ CN_SOCKET,
   /* 192 0xC0  1043520B Heap:L */ CN_STACK,
+  /*                           */ CN_STATISTICS,
   /* 193 0xC1       64B Heap:I */ CN_STEPACCUM,
   /* 194 0xC2   131224B Heap:L */ CN_STEPTIMING,
   /* 195 0xC3       48B Heap:I */ CN_STRING_T,
@@ -477,6 +478,7 @@ static Stz* aCN[]
   /* 190 0xBE */ "SMALLTRANSIENT"_Stz,      // CN_SMALLTRANSIENT
   /* 191 0xBF */ "SOCKET"_Stz,              // CN_SOCKET
   /* 192 0xC0 */ "STACK"_Stz,               // CN_STACK
+  /* 193 0xC1 */ "STATISTICS"_Stz,          // CN_STATISTICS
   /* 193 0xC1 */ "STEPACCUM"_Stz,           // CN_STEPACCUM
   /* 194 0xC2 */ "STEPTIMING"_Stz,          // CN_STEPTIMING
   /* 195 0xC3 */ "STRING_T"_Stz,            // CN_STRING_T

@@ -226,6 +226,7 @@ pFINALIZE *gpFinalize[]
   /*124 */ &Finalize::vUndefined,         // SN_SMALLTRANSIENT
   /*125 */ &Finalize::vUndefined,         // CN_SOCKET
   /*126 */ &Finalize::vUndefined,         // CN_STACK
+  /*    */ &Finalize::vUndefined,         // CN_STATISTICS
   /*127 */ &Finalize::vUndefined,         // CN_STEPACCUM
   /*128 */ &Finalize::vUndefined,         // CN_STEPTIMING
   /* 13 */ &Finalize::vUndefined,         // CN_STRING_T

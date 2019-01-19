@@ -309,6 +309,7 @@ void Axioms::vAddConstants(void)
   /* 65 */ vAddConstant("CN_SMALLTRANSIENT"_Stz, CN_SMALLTRANSIENT);
   /* 66 */ vAddConstant("CN_SOCKET"_Stz,       CN_SOCKET);
   /* 67 */ vAddConstant("CN_STACK"_Stz,        CN_STACK);
+  /* 68 */ vAddConstant("CN_STATISTICS"_Stz,   CN_STATISTICS);
   /* 68 */ vAddConstant("CN_STEPACCUM"_Stz,    CN_STEPACCUM);
   /* 69 */ vAddConstant("CN_STEPTIMING"_Stz,   CN_STEPTIMING);
   /*  1 */ vAddConstant("CN_STRING_T"_Stz,       CN_STRING_T);
