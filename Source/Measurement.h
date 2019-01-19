@@ -28,6 +28,7 @@ using namespace Measurement;
 
 #include "ResourceTracker.hpp"
 
+#include "Statistics.hpp"
 #include "StepAccum.hpp"
 #include "StepTiming.hpp"
 

@@ -477,7 +477,7 @@ i8 giClassSize[]
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
   /*    */ sizeof(Session),            // CN_SESSION
   /*116 */ sizeof(Since),              // CN_SINCE
-  /*118 */ sizeof(SkipListNL),           // CN_SKIPLIST
+  /*118 */ sizeof(SkipListNL),         // CN_SKIPLIST
   /*119 */ sizeof(SkipNode),           // CN_SKIPNODE
   /*120 */ sizeof(Slab),               // CN_SLAB
   /*121 */ sizeof(SlabAllocator),      // CN_SLABALLOCATOR
@@ -486,7 +486,7 @@ i8 giClassSize[]
   /*124 */ sizeof(Heap), // correct    // SN_SMALLTRANSIENT
   /*125 */ sizeof(Socket),             // CN_SOCKET
   /*126 */ sizeof(Stack),              // CN_STACK
-  /*    */ 0,                          // CN_STATISTICS
+  /*    */ sizeof(Statistics),         // CN_STATISTICS
   /*127 */ sizeof(StepAccum),          // CN_STEPACCUM
   /*128 */ sizeof(StepTiming),         // CN_STEPTIMING
   /* 13 */ sizeof(s32),                // CN_STRING_T
@@ -800,7 +800,7 @@ void Dump::vEnums(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* inavlid dump                                                               */
+/* invalid dump                                                               */
 /*----------------------------------------------------------------------------*/
 void Dump::vInvalid(eCN eClass, Object* pObject, Stz* aTab)
 {
