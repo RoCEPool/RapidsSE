@@ -107,9 +107,11 @@ bool File::bExists(Stz* aFilePath)
 /*----------------------------------------------------------------------------*/
 void File::vMonitorPortrait(s48K& sPortrait)
 {
-  s32 sReadMag;  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_nFileReadBytes,  sReadMag);
-  s32 sWriteMag; Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_nFileWriteBytes, sWriteMag);
-  s32 sPrintMag; Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_nFilePrintBytes, sPrintMag);
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  
+  s32 sReadMag;  Magnitudes::vByteMag(pStats->File.m_nReadBytes,  sReadMag);
+  s32 sWriteMag; Magnitudes::vByteMag(pStats->File.m_nWriteBytes, sWriteMag);
+  s32 sPrintMag; Magnitudes::vByteMag(pStats->File.m_nPrintBytes, sPrintMag);
 
   sPortrait.vSprint("File: "
                     "opens %lld "
@@ -126,21 +128,21 @@ void File::vMonitorPortrait(s48K& sPortrait)
                     "ungetcs %lld "
                     "\n"_Stz,
                    
-                    gpAttachMap->m_oStatistics.m_nFileOpens,
-                    gpAttachMap->m_oStatistics.m_nFileCloses,
-                    gpAttachMap->m_oStatistics.m_nFileSeeks,
-                    gpAttachMap->m_oStatistics.m_nFileTells,
-                    gpAttachMap->m_oStatistics.m_nFileFlushes,
+                    pStats->File.m_nOpens,
+                    pStats->File.m_nCloses,
+                    pStats->File.m_nSeeks,
+                    pStats->File.m_nTells,
+                    pStats->File.m_nFlushes,
                     
-                    gpAttachMap->m_oStatistics.m_nFileReads,
+                    pStats->File.m_nReads,
                       sReadMag.aStz(),
-                    gpAttachMap->m_oStatistics.m_nFileWrites,
+                    pStats->File.m_nWrites,
                       sWriteMag.aStz(),
-                    gpAttachMap->m_oStatistics.m_nFilePrints,
+                    pStats->File.m_nPrints,
                       sPrintMag.aStz(),
 
-                    gpAttachMap->m_oStatistics.m_nFileGetcs,
-                    gpAttachMap->m_oStatistics.m_nFileUngetcs
+                    pStats->File.m_nGetcs,
+                    pStats->File.m_nUngetcs
                    );
   
   
@@ -166,25 +168,27 @@ bool File::bRemove(Stz* aFilePath)
 /*----------------------------------------------------------------------------*/
 void File::vStatistics(void)
 {
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+
   s32 sByteMag;
   
-  vTrace("  nFileCloses  %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nFileCloses);
-  vTrace("  nFileFlushes %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nFileFlushes);
-  vTrace("  nFileGetcs   %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nFileGetcs);
-  vTrace("  nFileOpens   %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nFileOpens);
-  vTrace("  nFilePrints  %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nFilePrints);
-  vTrace("  nFileReads   %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nFileReads);
-  vTrace("  nFileWrites  %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nFileWrites);
-  vTrace("  nFileSeeks   %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nFileSeeks);
-  vTrace("  nFileTells   %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nFileTells);
-  vTrace("  nFileUngetcs %lld\n"_Stz,gpAttachMap->m_oStatistics.m_nFileUngetcs);
+  vTrace("  nFileCloses  %lld\n"_Stz,pStats->File.m_nCloses);
+  vTrace("  nFileFlushes %lld\n"_Stz,pStats->File.m_nFlushes);
+  vTrace("  nFileGetcs   %lld\n"_Stz,pStats->File.m_nGetcs);
+  vTrace("  nFileOpens   %lld\n"_Stz,pStats->File.m_nOpens);
+  vTrace("  nFilePrints  %lld\n"_Stz,pStats->File.m_nPrints);
+  vTrace("  nFileReads   %lld\n"_Stz,pStats->File.m_nReads);
+  vTrace("  nFileWrites  %lld\n"_Stz,pStats->File.m_nWrites);
+  vTrace("  nFileSeeks   %lld\n"_Stz,pStats->File.m_nSeeks);
+  vTrace("  nFileTells   %lld\n"_Stz,pStats->File.m_nTells);
+  vTrace("  nFileUngetcs %lld\n"_Stz,pStats->File.m_nUngetcs);
   vTrace("\n"_Stz);
 
-  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_nFileReadBytes,  sByteMag);
+  Magnitudes::vByteMag(pStats->File.m_nReadBytes,  sByteMag);
   vTrace("  nFileReadBytes  %s\n"_Stz,sByteMag.aStz());
-  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_nFilePrintBytes, sByteMag);
+  Magnitudes::vByteMag(pStats->File.m_nPrintBytes, sByteMag);
   vTrace("  nFilePrintBytes %s\n"_Stz,sByteMag.aStz());
-  Magnitudes::vByteMag(gpAttachMap->m_oStatistics.m_nFileWriteBytes, sByteMag);
+  Magnitudes::vByteMag(pStats->File.m_nWriteBytes, sByteMag);
   vTrace("  nFileWriteBytes %s\n"_Stz,sByteMag.aStz());
 }
 
@@ -214,7 +218,7 @@ void File::vClose(void)
     return;
   }
   
-  if (gpAttachMap) gpAttachMap->m_oStatistics.m_nFileCloses++;
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nCloses++;
   i8 iResult = fclose(m_aFile);
   
   if ((char)EOF == iResult) {
@@ -264,7 +268,7 @@ void File::vFlush(void)
 
   m_oSysCall.vClear();
   
-  gpAttachMap->m_oStatistics.m_nFileFlushes++;
+  gpAttachMap->m_oStatistics.File.m_nFlushes++;
   i8 iResult = fflush(m_aFile);
 
   if ((char)EOF == iResult) {
@@ -286,7 +290,7 @@ char File::cGetChar(void)
   if ( ! m_aFile )
     return 0;
 
-  gpAttachMap->m_oStatistics.m_nFileGetcs++;
+  gpAttachMap->m_oStatistics.File.m_nGetcs++;
   char cChar = getc(m_aFile);
   if ((char)EOF == cChar)
     cChar = 0;
@@ -385,7 +389,7 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
   m_sFilePath   = aFilePath;
   m_sOpenMode   = aOpenMode;
 
-  if (gpAttachMap) gpAttachMap->m_oStatistics.m_nFileOpens++;
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nOpens++;
   m_aFile = fopen(m_sFilePath.aChar(),m_sOpenMode.aChar());
   
   if ( ! m_aFile ) {
@@ -436,9 +440,9 @@ void File::vPrint(Stz* aFormat, ...)
   va_list args;
 
   va_start(args,aFormat);
-  if (gpAttachMap) gpAttachMap->m_oStatistics.m_nFilePrints++;
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrints++;
   i8 nPrinted = vfprintf(m_aFile,aFormat->aChar(),args);
-  if (gpAttachMap) gpAttachMap->m_oStatistics.m_nFilePrintBytes += nPrinted;
+  if (gpAttachMap) gpAttachMap->m_oStatistics.File.m_nPrintBytes += nPrinted;
   va_end(args);
 
   if (-1 == nPrinted) {
@@ -459,9 +463,9 @@ i8 File::nReadBytes(void* aDst, i8 nBytes)
 
   m_oSysCall.vClear();
   
-  gpAttachMap->m_oStatistics.m_nFileReads++;
+  gpAttachMap->m_oStatistics.File.m_nReads++;
   i8 nBytesRead = fread(aDst,1,nBytes,m_aFile);
-  gpAttachMap->m_oStatistics.m_nFileReadBytes += nBytesRead;
+  gpAttachMap->m_oStatistics.File.m_nReadBytes += nBytesRead;
 
   return nBytesRead;
 }
@@ -483,7 +487,7 @@ bool File::bReadLine(Stz* aDst)
     
     // get next char
     char cNextChar = getc(m_aFile);
-    gpAttachMap->m_oStatistics.m_nFileGetcs++;
+    gpAttachMap->m_oStatistics.File.m_nGetcs++;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // test for \n
@@ -545,7 +549,7 @@ void File::vSeek(i8 iOffset)
 
   m_oSysCall.vClear();
   
-  gpAttachMap->m_oStatistics.m_nFileSeeks++;
+  gpAttachMap->m_oStatistics.File.m_nSeeks++;
   i8 iResult = fseeko(m_aFile,iOffset,SEEK_SET);
   
   if (iResult) {
@@ -566,7 +570,7 @@ void File::vSeekStart(void)
   
   m_oSysCall.vClear();
   
-  gpAttachMap->m_oStatistics.m_nFileSeeks++;
+  gpAttachMap->m_oStatistics.File.m_nSeeks++;
   i8 iResult = fseeko(m_aFile,0,SEEK_SET);
   
   if (iResult) {
@@ -587,7 +591,7 @@ void File::vSeekEnd(void)
 
   m_oSysCall.vClear();
   
-  gpAttachMap->m_oStatistics.m_nFileSeeks++;
+  gpAttachMap->m_oStatistics.File.m_nSeeks++;
   i8 iResult = fseeko(m_aFile,0,SEEK_END);
   
   if (iResult) {
@@ -639,7 +643,7 @@ i8 File::iTell(void)
   
   m_oSysCall.vClear();
   
-  gpAttachMap->m_oStatistics.m_nFileTells++;
+  gpAttachMap->m_oStatistics.File.m_nTells++;
   i8 iResult = ftello(m_aFile);
   
   if (-1 == iResult) {
@@ -663,7 +667,7 @@ void File::vUngetChar(char cChar)
   if ( ! m_aFile )
     return;
   
-  gpAttachMap->m_oStatistics.m_nFileUngetcs++;
+  gpAttachMap->m_oStatistics.File.m_nUngetcs++;
   i8 iResult = ungetc(cChar,m_aFile);
   
   if ((char)EOF == iResult)
@@ -717,9 +721,9 @@ bool File::bWriteBytes(void* pBuffer, i8 nBytes)
   
   m_oSysCall.vClear();
   
-  gpAttachMap->m_oStatistics.m_nFileWrites++;
+  gpAttachMap->m_oStatistics.File.m_nWrites++;
   i8 nBytesWritten = fwrite(pBuffer, 1, nBytes, m_aFile);
-  gpAttachMap->m_oStatistics.m_nFileWriteBytes += nBytesWritten;
+  gpAttachMap->m_oStatistics.File.m_nWriteBytes += nBytesWritten;
 
   if (nBytesWritten != nBytes) {
     vWarn("File::vWriteBytes: fwrite(%s) error; errno=%d\n"_Stz,
