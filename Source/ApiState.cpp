@@ -240,6 +240,54 @@ void ApiState::vFreeState(i8 i_Session)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a portrait of the queues                                               */
+/*----------------------------------------------------------------------------*/
+void ApiState::vMonitorPortrait(s48K& sPortrait)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
+  
+  s48K sTasksPortrait;
+  
+  sPortrait = ""_Stz;
+  sPortrait.vConcat("ApiState:\n"_Stz);
+  
+  m_oLock.vGrabRead();
+  
+  vTrace("ApiState %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
+  
+  for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
+    
+    SessionState* aSessionState = &m_xSessionState[i_Session];
+    if (! aSessionState->m_pSession)
+      continue;
+
+    Session* pSession = aSessionState->m_pSession;
+
+    if (aSessionState->m_bRunning)
+      aSessionState->m_oTimer.vUpdate();
+
+    sPortrait.vCatSprint("  [%2lld] #calls %lld job %s call %s (%s); "
+                         "loc %lld seq %lld pos %lld\n"_Stz,
+                        
+                         i_Session,
+                         
+                         pSession->m_nApiCalls,
+                         aCN[aSessionState->m_eJobClass],
+                         aAC[aSessionState->m_eApiCall],
+                         aSessionState->m_bRunning ? "running" : "completed",
+
+                         aSessionState->m_iLocation,
+                         aSessionState->m_iJobSeq,
+                         aSessionState->m_iPosition
+
+                         );
+  }
+  
+  m_oLock.vDropRead();
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* set last location                                                          */
 /*----------------------------------------------------------------------------*/
 void ApiState::vSetLocation(Session* pSession, i8 iLocation)
@@ -294,41 +342,41 @@ void ApiState::vDump(void)
 
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
-    SessionState* aState = &m_xSessionState[i_Session];
+    SessionState* aSessionState = &m_xSessionState[i_Session];
     
-    if (aState->m_pSession) {
+    if (aSessionState->m_pSession) {
       
-      Session* pSession = aState->m_pSession;
+      Session* pSession = aSessionState->m_pSession;
       
-      if (aState->m_bRunning)
-        aState->m_oTimer.vUpdate();
+      if (aSessionState->m_bRunning)
+        aSessionState->m_oTimer.vUpdate();
       
       i8 nBytes;
       
-      if (aState->m_aStackBase >= aState->m_aStackPtr)
-        nBytes = nSub(aState->m_aStackBase,aState->m_aStackPtr);
+      if (aSessionState->m_aStackBase >= aSessionState->m_aStackPtr)
+        nBytes = nSub(aSessionState->m_aStackBase,aSessionState->m_aStackPtr);
       else
-        nBytes = nSub(aState->m_aStackPtr,aState->m_aStackBase);
+        nBytes = nSub(aSessionState->m_aStackPtr,aSessionState->m_aStackBase);
 
       vTrace("  %lld: session %p, call %s, base %llx, ptr %llx (%lldB), loc %lld, job %s seq %lld\n"
              "     error %s, %s, %s, pos %lld, time %lldus total %lldus\n"
              "     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
              i_Session,
              pSession,
-             aAC[aState->m_eApiCall],
-             aState->m_aStackBase,
-             aState->m_aStackPtr,
+             aAC[aSessionState->m_eApiCall],
+             aSessionState->m_aStackBase,
+             aSessionState->m_aStackPtr,
              nBytes,
 
-             aState->m_iLocation,
-             aCN[aState->m_eJobClass],
-             aState->m_iJobSeq,
-             aEC[aState->m_eError],
-             aState->m_bRunning ? "running" : "completed",
-             aState->m_bSignalled ? "signalled" : "not signalled",
-             aState->m_iPosition,
-             aState->m_oTimer.iMicroseconds(),
-             aState->m_iTotalMicroSecs,
+             aSessionState->m_iLocation,
+             aCN[aSessionState->m_eJobClass],
+             aSessionState->m_iJobSeq,
+             aEC[aSessionState->m_eError],
+             aSessionState->m_bRunning ? "running" : "completed",
+             aSessionState->m_bSignalled ? "signalled" : "not signalled",
+             aSessionState->m_iPosition,
+             aSessionState->m_oTimer.iMicroseconds(),
+             aSessionState->m_iTotalMicroSecs,
              pSession->m_nApiCalls,
              pSession->m_nApiErrors,
              pSession->m_nJobNew,

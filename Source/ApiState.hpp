@@ -52,6 +52,7 @@ namespace Interface
     void vApiJob(Session* pSession, Job* pJob);
     void vApiReturn(Session* pSession);
     void vFreeState(i8 i_State);
+    void vMonitorPortrait(s48K& sPortrait);
     void vSetLocation(Session* pSession, i8 iLocation);
     void vSetPosition(Session* pSession, i8 iPosition);
     void vSetSignalled(Job* pJob);
