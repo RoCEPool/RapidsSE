@@ -5,24 +5,6 @@
 
 namespace StorageEngine
 {
-  
-  enum eAM // attach map
-  {
-    /* 0 */ AM_NONE=0,
-    /* 1 */ AM_INDEXENTRIES,
-    /* 2 */ AM_INDEXLEVELS,
-    /* 3 */ AM_ENUMS
-  };
-  
-  static Stz* aAM[]
-  {
-    /* 0 */ "none"_Stz,
-    /* 1 */ "indexentries"_Stz,
-    /* 2 */ "indexlevels"_Stz,
-    /* 3 */ "indexspace"_Stz,
-    /* 4 */ "enums"_Stz
-  };
-  
   class AttachMap : public Buffer
   {
   public:
