@@ -92,12 +92,7 @@ namespace StorageEngine
     bool          m_bMarkJob[CN_ENUMS];
 
     Statistics    m_oStatistics;
-  
-    // temporary/working debug
-    struct {
-      IndexTree*  m_paIndexTree[16];
-    } m_xPurgeDebug;
-  
+    
     // must be last
     Footer m_xFooter;
     
