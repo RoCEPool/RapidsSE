@@ -106,6 +106,28 @@ Semaphore::~Semaphore(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get monotor portrait of semaphore activity                                 */
+/*----------------------------------------------------------------------------*/
+void Semaphore::vMonitorPortrait(s48K& sPortrait)
+{
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  sPortrait.vSprint("Semaphore: broadcast %lld signals %lld "
+                                "waits %lld timedwaits %lld "
+                                "unblocks %lld timeouts %lld\n"_Stz,
+                    pStats->Semaphore.m_nBroadcasts,
+                    pStats->Semaphore.m_nSignals,
+                    pStats->Semaphore.m_nWaits,
+                    pStats->Semaphore.m_nTimedWaits,
+                    pStats->Semaphore.m_nUnblocks,
+                    pStats->Semaphore.m_nTimeOuts
+                    );
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

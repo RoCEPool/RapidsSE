@@ -25,6 +25,8 @@ namespace System
     Semaphore(void);
     ~Semaphore(void) noexcept(false);
   
+    static void vMonitorPortrait(s48K& sPortrait);
+  
     void vCondBroadcast(void);
     void vCondSignal(void);
     void vCondWait_Mutex(void);
