@@ -254,11 +254,18 @@ void ActivityMap::vMonitorPortrait(s48K& sPortrait)
   gpAttachMap->m_aActivityMap->vUnlockMutex();
   
   i8 iMapSize = iSize();
-  s32 sShmMag; Magnitudes::vByteMag(iMapSize, sShmMag);
+  s32 sShmMag;
+  Magnitudes::vByteMag(iMapSize, sShmMag);
   
-  sPortrait.vSprint("ActivityMap: %lld%% full; Shm %s\n"_Stz,
-                    iPercentFull,
-                    sShmMag.aStz());
+  s32 sArrayMag;
+  Magnitudes::vUnitMag(gpAttachMap->m_aActivityMap->m_nMarks, sArrayMag);
+
+  sPortrait.vSprint("ActivityMap: shm %s array %s marks %lld; %lld%% full;\n"_Stz,
+                    sShmMag.aStz(),
+                    sArrayMag.aStz(),
+                    gpAttachMap->m_aActivityMap->m_i_Mark,
+                    iPercentFull
+                     );
 }
 
 /*----------------------------------------------------------------------------*/

@@ -56,15 +56,15 @@ SchemaTest::SchemaTest(Stz* sStream)
   m_sStream = sStream;
 
 #ifdef ST_SETH
-  m_sFileNm = "../Seth/schemaTest"_Stz;
+  m_sFilePath = "../Seth/schemaTest"_Stz;
   if (*m_sStream.aChar()) {
-    m_sFileNm.vConcat("_"_Stz);
-    m_sFileNm.vConcat(m_sStream);
+    m_sFilePath.vConcat("_"_Stz);
+    m_sFilePath.vConcat(m_sStream);
   }
-  m_sFileNm.vConcat(".test"_Stz);
+  m_sFilePath.vConcat(".test"_Stz);
 #else
-  m_sFileNm = "../Commands/_schemaTest"_Stz;
-  m_sFileNm.vConcat(m_sStream);
+  m_sFilePath = "../Commands/_schemaTest"_Stz;
+  m_sFilePath.vConcat(m_sStream);
 #endif
 
   m_sTableNm  = "<none>"_Stz;
@@ -602,7 +602,7 @@ void SchemaTest::vForPattern(i8 nX, i8 nC, i8 nZ)
 /*----------------------------------------------------------------------------*/
 void SchemaTest::vOpenFile(void)
 {
-  bool bOpened = m_oFile.bOpenWrite(m_sFileNm);
+  bool bOpened = m_oFile.bOpenWrite(m_sFilePath);
   RASSERT(bOpened);
 }
 

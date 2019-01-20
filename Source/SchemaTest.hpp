@@ -12,7 +12,7 @@ namespace Utilities
   private:
     i8   m_nTests;    // number of tests generated
   
-    s256 m_sFileNm;   // file name
+    s256 m_sFilePath; // file name
     File m_oFile;     // file to write to
   
     s32  m_sStream;   // stream prefix

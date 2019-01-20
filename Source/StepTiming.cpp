@@ -125,11 +125,11 @@ void StepTiming::vWrite(void)
   
   Now oNow;
   
-  s256 sFileName;
+  s256 sFilePath;
   
-  sFileName.vSprint((Stz*)C_StepTiming_FILE,oNow.sFormatted()->aChar());
+  sFilePath.vSprint((Stz*)C_StepTiming_FILE,oNow.sFormatted()->aChar());
 
-  bool bOpened = oFile.bOpenWrite(sFileName.aStz());
+  bool bOpened = oFile.bOpenWrite(sFilePath.aStz());
   if (! bOpened) {
     vTrace("Unable to open StepTiming file: %s\n"_Stz,oFile.sFilePath().aStz());
     return;
