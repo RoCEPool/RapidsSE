@@ -194,7 +194,7 @@ Job* Jobs::pJob_Report_pre(Interface::Session* pSession)
   pJob_Report->m_sObjectName = pTknVec->pGet(1)->aText();
 
   // set the input file name
-  pJob_Report->m_sFileName = pTknVec->pGet(2)->sText();
+  pJob_Report->m_sFilePath = pTknVec->pGet(2)->sText();
   
   // set the output file name
   if (4 <= nTokens) {
@@ -253,7 +253,7 @@ bool Job_Report::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_REPORT,_FOOTER_);
   
-  if (! m_oInFile.bOpenRead(m_sFileName))
+  if (! m_oInFile.bOpenRead(m_sFilePath))
     return false;
   
   if (m_bNamedOut) {
@@ -266,7 +266,7 @@ bool Job_Report::bBegin(void)
   
   m_pRowAgg = new RowAgg;
   
-  vTrace("Reporting from %s to %s\n"_Stz,m_sFileName.aStz(),m_sOutputPath.aStz());
+  vTrace("Reporting from %s to %s\n"_Stz,m_sFilePath.aStz(),m_sOutputPath.aStz());
 
   return true;
 }

@@ -176,7 +176,7 @@ bool Job_SubLoader::bBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBLOADER,_FOOTER_);
   
   s256 sPath;
-  sPath = m_pJob_LoadTable->m_sFileName;
+  sPath = m_pJob_LoadTable->m_sFilePath;
   
   // open the chunked file
   bool bOpened = m_pLoadChunk->bOpenRead(sPath);

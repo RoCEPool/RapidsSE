@@ -103,7 +103,7 @@ void Step::vJob_LoadTableFilePathFetch(MP_Task mpTask)
     THROW_INVALID_DSTACK("job_LoadTable.filePath@"_Stz);
   Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pPtrJob_LoadTable);
   
-  s256 sFilePath = pJob_LoadTable->m_sFileName;
+  s256 sFilePath = pJob_LoadTable->m_sFilePath;
   mpTask->m_pDataStack->vPushS256(sFilePath);
   
   EXIT();

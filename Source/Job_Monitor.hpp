@@ -7,7 +7,7 @@ namespace Jobs
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Monitor : public Job,
-                      public JobFileName
+                      public JobFilePath
   {
   public:
     i8     m_iInterval;  // time between monitor takes

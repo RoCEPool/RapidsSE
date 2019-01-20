@@ -200,7 +200,7 @@ Job* Jobs::pJob_Ingest_pre(Interface::Session* pSession)
   pJob_Ingest->m_sObjectName = pTknVec->pGet(1)->aText();
 
   // set the file name
-  pJob_Ingest->m_sFileName = pTknVec->pGet(2)->aText();
+  pJob_Ingest->m_sFilePath = pTknVec->pGet(2)->aText();
   
   // is the last token the stats option?
   i8 i_Last = nTokens - 1;
@@ -260,9 +260,9 @@ bool Job_Ingest::bBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INGEST,_FOOTER_);
   
   vTrace("Ingesting data into %s from %s\n"_Stz,
-         m_sObjectName.aStz(), m_sFileName.aStz());
+         m_sObjectName.aStz(), m_sFilePath.aStz());
   
-  bool bOpened = m_oFile.bOpenRead(m_sFileName);
+  bool bOpened = m_oFile.bOpenRead(m_sFilePath);
   
   s256 sPrefix;
   

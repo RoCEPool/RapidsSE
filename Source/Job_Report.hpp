@@ -7,7 +7,7 @@ namespace Jobs
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Report : public Job,
-                     public JobFileName
+                     public JobFilePath
   {
   public:
     File  m_oInFile;     // input file

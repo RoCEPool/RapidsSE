@@ -161,7 +161,7 @@ bool Job_LoadTable::bBegin(void)
   
   m_pLoadMap = new LoadMap;
   
-  bool bOpened = m_pLoadMap->bOpenRead(m_sFileName);
+  bool bOpened = m_pLoadMap->bOpenRead(m_sFilePath);
   if (! bOpened)
     return false;
   
@@ -189,7 +189,7 @@ void Job_LoadTable::vDumpMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
-  vTrace("Load Map for: %s:\n"_Stz,m_sFileName.aStz());
+  vTrace("Load Map for: %s:\n"_Stz,m_sFilePath.aStz());
   
   m_pLoadMap->vDumpMap();
 }
@@ -224,7 +224,7 @@ bool Job_LoadTable::bPopulateJob(TokenVec* pTokenVec)
   m_sObjectName = pTokenVec->pGet(1)->aText();
   
   // set the file name
-  m_sFileName = pTokenVec->pGet(2)->aText();
+  m_sFilePath = pTokenVec->pGet(2)->aText();
   
   i8 i_Token = 3;
   

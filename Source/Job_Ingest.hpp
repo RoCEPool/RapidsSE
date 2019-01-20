@@ -7,7 +7,7 @@ namespace Jobs
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Ingest : public Job,
-                     public JobFileName,
+                     public JobFilePath,
                      public List_t<IngestChunk>
   {
   public:

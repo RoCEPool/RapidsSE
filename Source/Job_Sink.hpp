@@ -7,7 +7,7 @@ namespace Jobs
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Sink : public Job,
-                   public JobFileName
+                   public JobFilePath
   {
   public:
     IoChunk*  m_pIoChunk;

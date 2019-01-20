@@ -7,7 +7,7 @@ namespace Jobs
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Repeater : public Job,
-                       public JobFileName
+                       public JobFilePath
   {
   public:
     s256  m_sOutputPath;  // pipe path

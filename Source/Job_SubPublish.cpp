@@ -160,9 +160,9 @@ bool Job_SubPublish::bBegin(void)
   m_pJob_Publish =
     _pJob_Publish(gpAttachMap->m_pParticipatingJobs->pFindJob(m_iPublishJobId));
   
-  Stz* szFileName = m_pJob_Publish->m_sFileName.aStz();
+  s256 aFilePath = m_pJob_Publish->m_sFilePath;
   
-  bool bOpened = m_oOutputFile.bOpenAppend(szFileName);
+  bool bOpened = m_oOutputFile.bOpenAppend(aFilePath);
   ASSERT(bOpened);
   
   return true;

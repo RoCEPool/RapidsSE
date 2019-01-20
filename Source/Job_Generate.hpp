@@ -12,7 +12,7 @@ namespace Jobs
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Job_Generate : public Job,
-                       public JobFileName
+                       public JobFilePath
   {
   public:
     Table*  m_pTable;      // table having data generate

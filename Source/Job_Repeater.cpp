@@ -198,10 +198,10 @@ Job* Jobs::pJob_Repeater_pre(Interface::Session* pSession)
   if (nTokens < 3)
     return pJob_Repeater;
   
-  // set the input file name
-  pJob_Repeater->m_sFileName = pTknVec->pGet(1)->sText();
+  // set the input file path
+  pJob_Repeater->m_sFilePath = pTknVec->pGet(1)->sText();
   
-  // set the output file name
+  // set the output file path
   pJob_Repeater->m_sOutputPath = pTknVec->pGet(2)->sText();
   
   // is the last token the print option
@@ -263,7 +263,7 @@ bool Job_Repeater::bBegin(void)
   
   //vTrace("Repeat data from %s to %s\n"_Stz,m_sFileName.aStz(),m_sOutputPath.aStz());
   
-  if (! m_pIoCopy->bOpenRead(m_sFileName))
+  if (! m_pIoCopy->bOpenRead(m_sFilePath))
     return false;
   
   if (! m_pIoCopy->bOpenWrite(m_sOutputPath))

@@ -193,7 +193,7 @@ Job* Jobs::pJob_Publish_pre(Interface::Session* pSession)
   pJob_Publish->m_sObjectName = pTknVec->pGet(1)->aText();
 
   // set the output file name
-  pJob_Publish->m_sFileName = pTknVec->pGet(2)->sText();
+  pJob_Publish->m_sFilePath = pTknVec->pGet(2)->sText();
   
   return pJob_Publish;
 }

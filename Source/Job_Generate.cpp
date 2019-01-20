@@ -291,12 +291,12 @@ Job* Jobs::pJob_Generate_pre(Interface::Session* pSession)
   // set the file name
   if (pTknVec->pGet(2)->sText().bSame("file"_Stz)) {
     pJob_Generate->m_bIndefinite = false;
-    pJob_Generate->m_sFileName = pTknVec->pGet(3)->aText();
+    pJob_Generate->m_sFilePath = pTknVec->pGet(3)->aText();
   }
   else
   if (pTknVec->pGet(2)->sText().bSame("pipe"_Stz)) {
     pJob_Generate->m_bIndefinite = true;
-    pJob_Generate->m_sFileName = pTknVec->pGet(3)->aText();
+    pJob_Generate->m_sFilePath = pTknVec->pGet(3)->aText();
   }
   
   if (5 == nTokens) {
@@ -747,11 +747,11 @@ void Job_Generate::vGenerate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_GENERATE,_FOOTER_);
   
   vTrace("Generating data for %s into %s\n"_Stz,
-         m_sObjectName.aStz(), m_sFileName.aStz());
+         m_sObjectName.aStz(), m_sFilePath.aStz());
   
-  bool bOpened = m_oFile.bOpenWrite(m_sFileName.aStz());
+  bool bOpened = m_oFile.bOpenWrite(m_sFilePath.aStz());
   if (! bOpened) {
-    vTrace("Unable to open file: %s\n"_Stz,m_sFileName.aStz());
+    vTrace("Unable to open file: %s\n"_Stz,m_sFilePath.aStz());
     return;
   }
   

@@ -190,7 +190,7 @@ Job* Jobs::pJob_Sink_pre(Interface::Session* pSession)
     return pJob_Sink;
 
   // set the file name
-  pJob_Sink->m_sFileName = pTknVec->pGet(1)->sText();
+  pJob_Sink->m_sFilePath = pTknVec->pGet(1)->sText();
   
   // is the last token the stats option?
   i8 i_Last = nTokens - 1;
@@ -249,9 +249,9 @@ bool Job_Sink::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SINK,_FOOTER_);
   
-  vTrace("Sink data from %s\n"_Stz,m_sFileName.aStz());
+  vTrace("Sink data from %s\n"_Stz,m_sFilePath.aStz());
   
-  bool bOpened = m_pIoChunk->bOpenRead(m_sFileName);
+  bool bOpened = m_pIoChunk->bOpenRead(m_sFilePath);
   
   if (m_pByteRate) {
     m_pByteRate->vSetReporting("  sink : "_Stz,C_1GB * 10);
