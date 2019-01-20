@@ -88,8 +88,6 @@
   static void vAstack9(Tasks::MP_Task mpTask);
 
   // attachmap
-  static void vAttachMapFetch(Tasks::MP_Task mpTask);
-  static void vAttachMapStore(Tasks::MP_Task mpTask);
   static void vAttachMapTenantsFetch(Tasks::MP_Task mpTask);
 
   // bp
