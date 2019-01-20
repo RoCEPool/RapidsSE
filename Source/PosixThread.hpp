@@ -21,7 +21,9 @@ namespace System
 
     PosixThread(void);
     ~PosixThread(void) noexcept(false);
-    
+  
+    static void vMonitorPortrait(s48K& sPortrait);
+  
     bool bBindThread(i8 i_Core);
     void vDisableRealtime(void);
     void vEnableRealtime(void);

@@ -113,7 +113,8 @@ namespace Tasks
     ~Task(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    
+    static void vMonitorProfile_stats(s48K& sPortrait);
+  
     bool bAckAndDecide(void);
     void vAdjustFIP(i8 nBytes);
     Object* pArgObject(void);

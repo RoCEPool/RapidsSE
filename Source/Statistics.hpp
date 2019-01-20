@@ -39,14 +39,7 @@ namespace Measurement
     i8 m_iSetTotal;
     i8 m_iZeroTotal;
   } Memory;
-  
-  struct {
-    i8 m_iEnqueueTask;
-    i8 m_iEnqueueTaskWait;
-    i8 m_iGetTask;
-    i8 m_iGetTaskWait;
-  } Sch;
-  
+    
   struct {
     i8 m_nBroadcasts;
     i8 m_nSignals;
@@ -70,6 +63,16 @@ namespace Measurement
     i8 m_nRecvBytes;
     i8 m_nSendBytes;
   } Socket;
+  
+  struct {
+    i8 m_nAcks;
+    i8 m_nWaits;
+    i8 m_nYields;
+  } Task;
+  
+  struct {
+    i8 m_nSleeps;
+  } Thread;
   
   private:
 

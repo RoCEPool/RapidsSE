@@ -231,11 +231,6 @@ void AttachMap::vRecordGlobals(Stz* aRegionName,
     
   // initialize the plan number
   m_ziPlanId = m_pGrid->iThisNode() << 48;
-
-  ASSERT( ! m_iSchEnqueueTask );
-  ASSERT( ! m_iSchEnqueueTaskWait );
-  ASSERT( ! m_iSchGetTask );
-  ASSERT( ! m_iSchGetTaskWait );
     
   m_bMarkApiAll = false;
   m_bMarkJobAll = false;

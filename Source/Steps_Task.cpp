@@ -52,8 +52,11 @@ void Step::vTaskAck(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.ack"_Stz);
   Task* pTaskBeingAcked = _pTask(pTaskObject);
   
-  Handlers::vAckTask(pTaskBeingAcked,*mpTask);
-      
+  bool bWasQueued = Handlers::bAckTask(pTaskBeingAcked,*mpTask);
+  
+  if (bWasQueued)
+    gpAttachMap->m_oStatistics.Task.m_nAcks++;
+
   EXIT();
 }
 
@@ -546,8 +549,10 @@ void Step::vTaskWait(MP_Task mpTask)
 {
   ENTRY("vTaskWait"_Stz);
   
-  // ..tbd..
+  mpTask->vState(TS_WAITING);
   
+  gpAttachMap->m_oStatistics.Task.m_nWaits++;
+
   EXIT();
 }
 
@@ -557,6 +562,8 @@ void Step::vTaskWait(MP_Task mpTask)
 void Step::vTaskYield(MP_Task mpTask)
 {
   ENTRY("vTaskYield"_Stz);
+  
+  gpAttachMap->m_oStatistics.Task.m_nYields++;
   
   mpTask->vState(TS_YIELDED);
   

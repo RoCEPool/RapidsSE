@@ -11,6 +11,7 @@
   #include <mach/thread_policy.h>
 #endif
 
+extern AttachMap* gpAttachMap;
 extern ResourceTracker gxResourceTracker;
 
 extern pthread_key_t giTLS_TaskKey;
@@ -73,6 +74,20 @@ PosixThread::PosixThread()
 /*----------------------------------------------------------------------------*/
 PosixThread::~PosixThread(void) noexcept(false)
 {
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set standard scheduling policy for thread                                  */
+/*----------------------------------------------------------------------------*/
+void PosixThread::vMonitorPortrait(s48K& sPortrait)
+{
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  sPortrait.vSprint("Pthread: sleeps %lld\n"_Stz,
+                    pStats->Thread.m_nSleeps);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -567,6 +582,8 @@ void PosixThread::vSleepMicro(i8 nMicroSeconds)
     xReq.tv_sec  = 0;
   }
   
+  gpAttachMap->m_oStatistics.Thread.m_nSleeps++;
+  
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
@@ -590,6 +607,8 @@ void PosixThread::vSleepMilli(i8 nMilliSeconds)
     xReq.tv_nsec = nMilliSeconds * C_1M;
     xReq.tv_sec  = 0;
   }
+  
+  gpAttachMap->m_oStatistics.Thread.m_nSleeps++;
   
   i8 rCode = nanosleep(&xReq,&xRem);
   
@@ -615,6 +634,8 @@ void PosixThread::vSleepNano(i8 nNanoSeconds)
     xReq.tv_sec  = 0;
   }
   
+  gpAttachMap->m_oStatistics.Thread.m_nSleeps++;
+  
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
@@ -627,6 +648,8 @@ void PosixThread::vSleepNano(i8 nNanoSeconds)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vSleepSec(i8 nSeconds)
 {
+  gpAttachMap->m_oStatistics.Thread.m_nSleeps++;
+  
   sleep((unsigned)nSeconds);
 }
 

@@ -12,7 +12,7 @@ extern Arguments  gxArguments;
 /*----------------------------------------------------------------------------*/
 /* ack task handler                                                           */
 /*----------------------------------------------------------------------------*/
-void Handlers::vAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
+bool Handlers::bAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
 {
   //
   // this handler is called from Task::vTaskAck()
@@ -58,6 +58,8 @@ void Handlers::vAckTask(Task* pTaskBeingAcked, Task* pTaskAcking)
   
   if (bAmDecider)
     pQueues->vScheduleAckedTask(pTaskBeingAcked);
+  
+  return bAmDecider;
 }
 
 /*----------------------------------------------------------------------------*/
