@@ -64,7 +64,10 @@ void ActivityMap::operator delete(void* aAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ActivityMap::ActivityMap(void)
+: Object(CN_ACTIVITYMAP)
 {
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+
   if (0 != gpAttachMap->m_pGrid->m_iThisNode || PosixThread::bIsJavaThread() )
     return;
   
@@ -89,6 +92,10 @@ ActivityMap::ActivityMap(void)
     ActivityMark* aActivityMark = &m_xActivity[i_Mark];
     aActivityMark->vInit();
   }
+  
+  _checkInitialised_(CN_ACTIVITYMAP);
+  
+  _postcondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,6 +103,7 @@ ActivityMap::ActivityMap(void)
 /*----------------------------------------------------------------------------*/
 ActivityMap::~ActivityMap(void) noexcept(false)
 {
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -353,6 +361,8 @@ i8 ActivityMap::iSize(void)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
 {
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+
   char aMark[1024];
   
   vsnprintf(aMark,sizeof(aMark)-1,aFormat->aChar(),xArgs);
@@ -370,6 +380,8 @@ void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vDumpMap(void)
 {
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+
   i8 iTotalDelta = 0;
   
   File* pActivityFile = new File();
@@ -455,6 +467,8 @@ void ActivityMap::vDumpMap(void)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vFindRange(i8& i_MinMark, i8& i_MaxMark)
 {
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+
   // should be a quicker way to do this
   
   i_MinMark = C_I8_MAX;
@@ -478,6 +492,8 @@ void ActivityMap::vFindRange(i8& i_MinMark, i8& i_MaxMark)
 /*----------------------------------------------------------------------------*/
 i8 ActivityMap::iPercentFull_NL(void)
 {
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+
   i8 nMarksInUse = 0;
   i8 iPercent = 0;
   
@@ -516,6 +532,8 @@ i8 ActivityMap::iPercentFull_NL(void)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vLockMutex(void)
 {
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+
   i8 rCode = pthread_mutex_lock(&m_xMutex);
   if (0 != rCode)
     vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
@@ -526,6 +544,8 @@ void ActivityMap::vLockMutex(void)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vUnlockMutex(void)
 {
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+
   i8 rCode = pthread_mutex_unlock(&m_xMutex);
   if (0 != rCode)
     vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
@@ -536,6 +556,8 @@ void ActivityMap::vUnlockMutex(void)
 /*----------------------------------------------------------------------------*/
 ActivityMark* ActivityMap::aNewActivityMark(void)
 {
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+
   vLockMutex();
   
   ActivityMark* aActivityMark = &m_xActivity[m_i_Mark % m_nMarks];
@@ -547,6 +569,20 @@ ActivityMark* ActivityMap::aNewActivityMark(void)
   vUnlockMutex();
   
   return aActivityMark;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* ActivityMap::aFooter(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP);
+  
+  return &m_xFooter;
 }
 
 /*============================================================================*/

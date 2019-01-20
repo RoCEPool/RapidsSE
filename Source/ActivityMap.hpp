@@ -8,7 +8,7 @@ namespace Measurement
   static const i8    C_ACTIVITY_MARKS  = C_1M * 10;
   static const char* C_ACTIVITY_REGION = "/SE_ActivityMap";
 
-  class ActivityMap //: public Object
+  class ActivityMap : public Object
   {
   private:
     pthread_mutex_t     m_xMutex;     // mutex variable
@@ -17,6 +17,9 @@ namespace Measurement
     i8 m_i_Mark;  // current mark subscript
     i8 m_nMarks;  // number of marks in array
     ActivityMark m_xActivity[C_ACTIVITY_MARKS];
+  
+    // must be last
+    Footer m_xFooter;
 
   public:
     void* operator new(size_t);
@@ -52,6 +55,8 @@ namespace Measurement
     void vUnlockMutex(void);
   
     ActivityMark* aNewActivityMark(void);
+  
+    Footer* aFooter(void);
   };
   
 }
