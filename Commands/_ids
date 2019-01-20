@@ -32,7 +32,7 @@ mkpipe "/tmp/sensorEvents.pipe";
 
 print "";
 print "---------------------------------------------------------------------";
-print "ingesting sensoreEvents table...";
+print "ingesting sensorEvents table...";
 print "---------------------------------------------------------------------";
 
 nowait monitor 10;
