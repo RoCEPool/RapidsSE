@@ -25,6 +25,7 @@ namespace Correctness
     void operator =(Stz* aArg);
   
     void vAppend(const char cChar);
+    bool bBreak(i8 iBreakAt, i8& iPrevBreak);
     void vCat(Stz* aStr, ...);
     void vCatSprint(Stz* aFormat, ...);
     char* aChar(void);
@@ -149,6 +150,24 @@ void String_t<SIZE>::vAppend(const char cChar)
   StrLib::vConcat(m_cArea,cChar);
   
   _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* break at this length                                                       */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+bool String_t<SIZE>::bBreak(i8 iBreakAt, i8& iPrevBreak)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  i8 iLen = iLength();
+  
+  i8 iBreak = iLen / iBreakAt;
+  if (iBreak == iPrevBreak)
+    return false;
+  
+  iPrevBreak = iBreak;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

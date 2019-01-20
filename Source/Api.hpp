@@ -99,7 +99,7 @@ void vApiReturn(Session* pSession);
 void vDeleteJobs(Session* pSession);
 void vSpawnJobAndWait(Session* pSession, Job* pJob);
 
-void vMonitorPortrait(s48K& sPortrait);
+void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 
 #ifdef _DEBUG
 
