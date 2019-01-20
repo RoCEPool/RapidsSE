@@ -41,7 +41,7 @@ void ByteRate::operator delete(void*)
 ByteRate::ByteRate(void)
 : Object(CN_BYTERATE)
 {
-  _precondition_(_MAGIC_,CN_BYTERATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
   
   m_sReportPrefix  = "<none>"_Stz;
   m_iReportQuantum = 0;
@@ -52,7 +52,7 @@ ByteRate::ByteRate(void)
   
   _checkInitialised_(CN_BYTERATE);
 
-  _postcondition_(_MAGIC_,CN_BYTERATE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@ ByteRate::ByteRate(void)
 /*----------------------------------------------------------------------------*/
 ByteRate::~ByteRate(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_BYTERATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,7 +215,7 @@ void ByteRate::vUpdateTimer(void)
 /*----------------------------------------------------------------------------*/
 Footer* ByteRate::aFooter(void)
 {
-  _precondition_(_MAGIC_,CN_BYTERATE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BYTERATE);
   
   return &m_xFooter;
 }

@@ -135,12 +135,6 @@ void Axioms::vAddConstants(void)
   vAddConstant("C_MAX_RECORD"_Stz,        C_MAX_RECORD);
   vAddConstant("C_PATH_MAX"_Stz,          C_PATH_MAX);
   vAddConstant("C_SIZE_POOL_BUFFER"_Stz,  C_SIZE_POOL_BUFFER);
-
-  // AM_ : attach map numbers
-  /*  0 */ vAddConstant("AM_NONE"_Stz,         AM_NONE);
-  /*  1 */ vAddConstant("AM_INDEXENTRIES"_Stz, AM_INDEXENTRIES);
-  /*  2 */ vAddConstant("AM_INDEXLEVELS"_Stz,  AM_INDEXLEVELS);
-  /*  3 */ vAddConstant("AM_ENUMS"_Stz,        AM_ENUMS);
   
   // AT_ : fetch techniques
   /*  0 */ vAddConstant("AT_NONE"_Stz,  AT_NONE);
