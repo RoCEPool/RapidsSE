@@ -8,6 +8,8 @@
 
 extern pthread_key_t giTLS_ThreadKey;
 
+extern AttachMap* gpAttachMap;
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -116,6 +118,8 @@ void Semaphore::vCondBroadcast(void)
   
   i8 rCode = pthread_cond_broadcast(&m_xCond);
   
+  gpAttachMap->m_oStatistics.Semaphore.m_nBroadcasts++;
+  
   if (0 == rCode)
     return;
   
@@ -139,6 +143,8 @@ void Semaphore::vCondSignal(void)
   
   i8 rCode = pthread_cond_signal(&m_xCond);
   
+  gpAttachMap->m_oStatistics.Semaphore.m_nSignals++;
+
   if (0 == rCode)
     return;
   
@@ -167,8 +173,12 @@ void Semaphore::vCondWait_Mutex(void)
   // clear this threads tracking of the mutex
   m_bLocked = false;
   
+  gpAttachMap->m_oStatistics.Semaphore.m_nWaits++;
+  
   i8 rCode = pthread_cond_wait(&m_xCond,&m_xMutex);
   
+  gpAttachMap->m_oStatistics.Semaphore.m_nUnblocks++;
+
   if (0 == rCode) {
     RASSERT(! m_bLocked);
     m_bLocked = true;
@@ -202,15 +212,24 @@ void Semaphore::vCondTimedWait(i8 iMicroSeconds)
   // clear this threads tracking of the mutex
   m_bLocked = false;
   
+  gpAttachMap->m_oStatistics.Semaphore.m_nTimedWaits++;
+  
   // this is a time limited blocking call
   i8 rCode = pthread_cond_timedwait(&m_xCond,&m_xMutex,&xTimeSpec);
   
-  if (0 == rCode || ETIMEDOUT == rCode) {
+  if (0 == rCode) {
     RASSERT(! m_bLocked);
+    gpAttachMap->m_oStatistics.Semaphore.m_nUnblocks++;
     m_bLocked = true;
     return;
   }
-  
+  if (ETIMEDOUT == rCode) {
+    RASSERT(! m_bLocked);
+    gpAttachMap->m_oStatistics.Semaphore.m_nTimeOuts++;
+   m_bLocked = true;
+    return;
+  }
+
   vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 }
 
@@ -320,6 +339,7 @@ void Semaphore::vSignalThread(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
   
   ASSERT(bMutexIsLocked());
+  
   vCondSignal();
   vMutexUnlock();
 }

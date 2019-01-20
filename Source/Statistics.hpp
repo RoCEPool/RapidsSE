@@ -38,7 +38,7 @@ namespace Measurement
     i8 m_iScribbleTotal;
     i8 m_iSetTotal;
     i8 m_iZeroTotal;
-  } Mem;
+  } Memory;
   
   struct {
     i8 m_iEnqueueTask;
@@ -46,6 +46,15 @@ namespace Measurement
     i8 m_iGetTask;
     i8 m_iGetTaskWait;
   } Sch;
+  
+  struct {
+    i8 m_nBroadcasts;
+    i8 m_nSignals;
+    i8 m_nTimedWaits;
+    i8 m_nTimeOuts;
+    i8 m_nUnblocks;
+    i8 m_nWaits;
+  } Semaphore;
   
   struct {
     i8 m_nAccepts;
