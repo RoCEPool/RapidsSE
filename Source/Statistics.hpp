@@ -89,6 +89,12 @@ namespace Measurement
   } Socket;
   
   struct {
+    i8 m_nCreates;
+    i8 m_nDrops;
+    i8 m_nLoads;
+  } Table;
+  
+  struct {
     i8 m_nAcks;
     i8 m_nExecuting;
     i8 m_nExited;

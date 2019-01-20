@@ -481,7 +481,7 @@ void Step::vTableName(MP_Task mpTask)
   
   Object* pPtrTable;
   if ( ! mpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.init"_Stz);
+    THROW_INVALID_DSTACK("table.name"_Stz);
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());

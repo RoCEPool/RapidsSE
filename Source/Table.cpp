@@ -62,6 +62,8 @@ Table::Table(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  gpAttachMap->m_oStatistics.Table.m_nCreates++;
+  
   Word* pWord = Word::pToWord(this);
   
   m_sTableName = pWord->sName();
@@ -102,6 +104,8 @@ Table::Table(Stz* pTableName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
+  gpAttachMap->m_oStatistics.Table.m_nCreates++;
+  
   m_sTableName = pTableName;
   
   _class_(CN_TABLE);
@@ -113,6 +117,8 @@ Table::Table(Stz* pTableName)
 Table::~Table(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  gpAttachMap->m_oStatistics.Table.m_nDrops++;
   
   vTidyUp();
 }
@@ -161,6 +167,20 @@ Table* Table::pFindTable(DicStack* pDicStack, s32& sTableNm)
   Table* pTable = _pTable(pTableWord->aWspArea());
   
   return pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* monitor portrait                                                           */
+/*----------------------------------------------------------------------------*/
+void Table::vMonitorPortrait(s48K& sPortrait)
+{
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  
+  sPortrait.vSprint("Table: creates %lld drops %lld loads %lld\n"_Stz,
+                    pStats->Table.m_nCreates,
+                    pStats->Table.m_nDrops,
+                    pStats->Table.m_nLoads
+                    );
 }
 
 /*----------------------------------------------------------------------------*/

@@ -159,6 +159,8 @@ bool Job_LoadTable::bBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_LOADTABLE,_FOOTER_);
   
+  gpAttachMap->m_oStatistics.Table.m_nLoads++;
+
   m_pLoadMap = new LoadMap;
   
   bool bOpened = m_pLoadMap->bOpenRead(m_sFilePath);
