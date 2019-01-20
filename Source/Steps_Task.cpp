@@ -550,8 +550,6 @@ void Step::vTaskWait(MP_Task mpTask)
   ENTRY("vTaskWait"_Stz);
   
   mpTask->vState(TS_WAITING);
-  
-  gpAttachMap->m_oStatistics.Task.m_nWaits++;
 
   EXIT();
 }
@@ -562,8 +560,6 @@ void Step::vTaskWait(MP_Task mpTask)
 void Step::vTaskYield(MP_Task mpTask)
 {
   ENTRY("vTaskYield"_Stz);
-  
-  gpAttachMap->m_oStatistics.Task.m_nYields++;
   
   mpTask->vState(TS_YIELDED);
   

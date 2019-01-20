@@ -66,8 +66,13 @@ namespace Measurement
   
   struct {
     i8 m_nAcks;
-    i8 m_nWaits;
-    i8 m_nYields;
+    i8 m_nExecuting;
+    i8 m_nExited;
+    i8 m_nReady;
+    i8 m_nSend;
+    i8 m_nSleeping;
+    i8 m_nWaiting;
+    i8 m_nYielded;
   } Task;
   
   struct {
