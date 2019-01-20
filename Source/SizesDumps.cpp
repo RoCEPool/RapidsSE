@@ -29,6 +29,7 @@ pDUMPFUN *gpDump[]
   /* 15 */ &Dump::vInvalid,         // CN_TSPVAL
   
   /* 19 */ &Dump::vInvalid,         // CN_ACCESSPATH
+  /*    */ &Dump::vDummy,           // CN_ACTIVITYMAP
   /*    */ &Dump::vDummy,           // CN_ACTIVITYMARK
   /* 21 */ &Dump::vInvalid,         // CN_APISTATE
   /* 22 */ &Dump::vInvalid,         // CN_ARG
@@ -285,6 +286,7 @@ i8 giClassSize[]
   /* 15 */ sizeof(TspVal),             // CN_TSPVAL
   
   /* 19 */ sizeof(AccessPath),         // CN_ACCESSPATH
+  /*    */ sizeof(ActivityMark),       // CN_ACTIVITYMAP
   /*    */ sizeof(ActivityMark),       // CN_ACTIVITYMARK
   /*    */ sizeof(ApiState),           // CN_APISTATE
   /* 22 */ sizeof(Arg),                // CN_ARG
@@ -540,6 +542,7 @@ eHT geWhichHeap[]
   /* 15 */ HT_INVALID,           // CN_TSPVAL
   
   /* 19 */ HT_TRANSIENT_MEDIUM,  // CN_ACCESSPATH
+  /*    */ HT_INVALID,           // CN_ACTIVITYMAP
   /*    */ HT_INVALID,           // CN_ACTIVITYMARK
   /*    */ HT_TRANSIENT_LARGE,   // CN_APISTATE
   /* 22 */ HT_TRANSIENT_SMALL,   // CN_ARG

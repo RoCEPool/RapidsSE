@@ -29,6 +29,7 @@ enum eCN : u2 // Class Number
   /*  11 0x0B       16B Heap:I */ CN_TSPVAL,
   
   /*  12 0x0C       80B Heap:M */ CN_ACCESSPATH,
+  /*                           */ CN_ACTIVITYMAP,
   /*  13 0x0D      200B Heap:I */ CN_ACTIVITYMARK,
   /*  14 0x0E   123040B Heap:L */ CN_APISTATE,
   /*  15 0x0F      296B Heap:S */ CN_ARG,
@@ -280,6 +281,7 @@ static Stz* aCN[]
   /*  11 0x0B */ "TSPVAL"_Stz,              // CN_TSPVAL
   
   /*  12 0x0C */ "ACCESSPATH"_Stz,          // CN_ACCESSPATH
+  /*          */ "ACTIVITYMAP"_Stz,         // CN_ACTIVITYMAP
   /*  13 0x0D */ "ACTIVITYMARK"_Stz,        // CN_ACTIVITYMARK
   /*  14 0x0E */ "APISTATE"_Stz,            // CN_APISTATE
   /*  15 0x0F */ "ARG"_Stz,                 // CN_ARG

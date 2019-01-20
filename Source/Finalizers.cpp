@@ -26,6 +26,7 @@ pFINALIZE *gpFinalize[]
   /* 15 */ &Finalize::vUndefined,         // CN_TSPVAL
   
   /* 19 */ &Finalize::vUndefined,         // CN_ACCESSPATH
+  /*    */ &Finalize::vUndefined,         // CN_ACTIVITYMAP
   /*    */ &Finalize::vUndefined,         // CN_ACTIVITYMARK
   /*    */ &Finalize::vUndefined,         // CN_APISTATE
   /* 22 */ &Finalize::vUndefined,         // CN_ARG
