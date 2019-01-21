@@ -29,6 +29,10 @@ int main(int argc, const char* argv[])
  
  ./SE --start --killPrev --verbose --subloaders 1 --size 10GB --name NODE1 --node NODE1 127.0.0.1 5441
  
+ to run prompt:
+
+ ./SE --prompt --name NODE1
+ 
  */
 
 /*============================================================================*/

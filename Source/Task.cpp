@@ -812,19 +812,17 @@ void Task::vState(eTS eState)
   
   switch (eState) {
     case TS_EXECUTING: pStats->Task.m_nExecuting++; break;
-    case TS_EXITED:    pStats->Task.m_nExited++; break;
-    case TS_READY:     pStats->Task.m_nReady++; break;
-    case TS_SEND:      pStats->Task.m_nSend++; break;
-    case TS_SLEEPING:  pStats->Task.m_nSleeping++; break;
-    case TS_WAITING:   pStats->Task.m_nWaiting++; break;
-    case TS_YIELDED:   pStats->Task.m_nYielded++; break;
+    case TS_EXITED:    pStats->Task.m_nExited++;    break;
+    case TS_READY:     pStats->Task.m_nReady++;     break;
+    case TS_SEND:      pStats->Task.m_nSend++;      break;
+    case TS_SLEEPING:  pStats->Task.m_nSleeping++;  break;
+    case TS_WAITING:   pStats->Task.m_nWaiting++;   break;
+    case TS_YIELDED:   pStats->Task.m_nYielded++;   break;
     default:
       NEVER_REACH;
   }
   
-  //m_oLock.vGrabWrite();
   m_eState = eState;
-  //m_oLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

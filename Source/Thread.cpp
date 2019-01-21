@@ -311,7 +311,7 @@ void Thread::vExecuteTask(Task* pTask)
   
   // task should be ready
   RASSERT(TS_READY == pTask->eState());
-  pTask->vState(TS_EXECUTING);
+  //pTask->vState(TS_EXECUTING);
   
   // thread should be idle
   //RASSERT(TC_IDLE == m_eThreadState);
@@ -436,20 +436,27 @@ bool Thread::bQueuePeek(void)
   Task* pPoppedTask;
   bool bPopped = gpAttachMap->m_pQueues->bPopQueuedTask(&pPoppedTask,this);
   
+  if (! bPopped)
+    return false;
+
+  if (TS_READY != pPoppedTask->eState())
+    pPoppedTask->vState(TS_READY);
+  
   m_pTask = pPoppedTask;
+
   return bPopped;
 }
 
 /*----------------------------------------------------------------------------*/
-/* re-excute same task                                                        */
+/* re-execute same task (tried to sleep or yield but could continue)          */
 /*----------------------------------------------------------------------------*/
 void Thread::vReExecuteTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  // task should be ready
+  // task should be ready or yielded
   RASSERT(TS_READY == pTask->eState() || TS_YIELDED == pTask->eState());
-  pTask->vState(TS_EXECUTING);
+  //pTask->vState(TS_EXECUTING);
   
   // thread should be idle
   RASSERT(TC_RUNNING == m_eThreadState);
@@ -559,6 +566,7 @@ void Thread::vTaskCall(void)
   PosixThread::vTlsSet(giTLS_TaskKey,m_pTask);
   ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
   
+  RASSERT(TS_READY == m_pTask->eState() || TS_YIELDED == m_pTask->eState());
   m_pTask->vState(TS_EXECUTING);
   m_pTask->vThread(this);
   
