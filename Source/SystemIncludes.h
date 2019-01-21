@@ -45,6 +45,7 @@
 #ifdef __APPLE__
   #include "mach/thread_act.h"
   #include <libkern/OSAtomic.h>
+  #include "mach/vm_map.h"
 #endif
 
 #include <netinet/in.h>

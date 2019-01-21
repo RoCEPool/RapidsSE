@@ -49,7 +49,8 @@ namespace Base
     static void  vStatistics(void);
     static void  vWordDump(void *aAddress, i8 iSize, i8 iHighlightWord=-1);
     static void  vZero(void* pDst, i8 iBytes, eCN eClassNo);
-    
+  
+    static void  vMemoryMap(void);
   private:
     template <class T>
     static void vPrintColor(Stz* pFmt, const T& Value, Stz* pColour);

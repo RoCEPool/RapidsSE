@@ -9,16 +9,16 @@
 extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
-/* attach to an existing shared memory region                                 */
+/* attach to an existing shared memory sement                                 */
 /*----------------------------------------------------------------------------*/
-bool Shm::bAttach(s32& sRegionName, int& iFD, SysCall& oSysCall)
+bool Shm::bAttach(s32& sRegionName, int& iShmSegFd, SysCall& oSysCall)
 {
   oSysCall.vClear();
     
-  // open shared memory region and get a fd
-  iFD = shm_open(sRegionName.aChar(), O_RDWR, S_IRUSR | S_IWUSR);
+  // open shared memory region and get a file descriptor
+  iShmSegFd = shm_open(sRegionName.aChar(), O_RDWR, S_IRUSR | S_IWUSR);
   
-  if (iFD == -1) {
+  if (iShmSegFd == -1) {
     oSysCall.vError(errno);
     //vWarn("Shm::bAttach: shm_open() error; errno=%d %s\n"_Stz,errno, strerror(errno));
     return false;
@@ -30,13 +30,13 @@ bool Shm::bAttach(s32& sRegionName, int& iFD, SysCall& oSysCall)
 }
 
 /*----------------------------------------------------------------------------*/
-/* close an existing memory region                                            */
+/* close an existing shared memory segment                                    */
 /*----------------------------------------------------------------------------*/
-bool Shm::bClose(int iFD, SysCall& oSysCall)
+bool Shm::bClose(int iShmSegFd, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
-  int rCode = close(iFD);
+  int rCode = close(iShmSegFd);
   
   if (0 != rCode) {
     oSysCall.vError(errno);
@@ -61,23 +61,13 @@ bool Shm::bCreate(s32& sRegionName, i8 iSize, bool bRecreate,
   
   oSysCall.vClear();
   
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Shm::bCreate A\n"_Stz);
-  
   // unlink the shm region (in case created earlier; this needs work)
   if (bRecreate)
     rCode = shm_unlink(sRegionName.aChar());
-  
-  // we ignore the error
-
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Shm::bCreate B\n"_Stz);
+  // we ignore any error
   
   // open shared memory region and get a fd
   iFD = shm_open(sRegionName.aChar(), O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
-  
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Shm::bCreate C\n"_Stz);
   
   if (iFD == -1) {
     oSysCall.vError(errno);
@@ -85,24 +75,12 @@ bool Shm::bCreate(s32& sRegionName, i8 iSize, bool bRecreate,
     return false;
   }
   
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Shm::bCreate D\n"_Stz);
-  
   gxResourceTracker.vIncShmOpen();
 
-  // fill with 0's
-  rCode = ftruncate(iFD, iSize);
+  // extend and fill with 0's
+  bool bExtended = bExtend(iFD, iSize, oSysCall);
   
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Shm::bCreate E\n"_Stz);
-  
-  if (rCode == -1) {
-    
-    //if (gxArguments.m_bVerbose)
-    //  vTrace("Shm::bCreate F\n"_Stz);
-   
-    oSysCall.vError(errno);
-    vTrace("Shm::bCreate: ftruncate() error; errno=%d %s\n"_Stz,errno,strerror(errno));
+  if (! bExtended) {
     
     int rCode = shm_unlink(sRegionName.aChar());
     
@@ -115,8 +93,24 @@ bool Shm::bCreate(s32& sRegionName, i8 iSize, bool bRecreate,
     return false;
   }
   
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Shm::bCreate G\n"_Stz);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extend newely created shared memory segment to given size                  */
+/*----------------------------------------------------------------------------*/
+bool Shm::bExtend(int iShmSegFd, i8 iSize, SysCall& oSysCall)
+{
+  // extend segment to given length (will be filled with zero's)
+  int rCode = ftruncate(iShmSegFd, iSize);
+  
+  if (rCode == -1) {
+    
+    oSysCall.vError(errno);
+    vTrace("Shm::bZeroFill: ftruncate() error; errno=%d %s\n"_Stz,errno,strerror(errno));
+    
+    return false;
+  }
   
   return true;
 }
@@ -127,7 +121,6 @@ bool Shm::bCreate(s32& sRegionName, i8 iSize, bool bRecreate,
 bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
 {
   SysCall.vClear();
-  
   
   if (mlock(pAddress,iBytes) != 0) {
     SysCall.vError(errno);
@@ -140,21 +133,61 @@ bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
 }
 
 /*----------------------------------------------------------------------------*/
-/* map a new region of memory (private or shared)                             */
+/* create and open a new shared memory segment                                */
+/*----------------------------------------------------------------------------*/
+bool Shm::bOpenCreate(s32& sRegionName, int& iShmSegFd, SysCall& oSysCall)
+{
+  oSysCall.vClear();
+  
+  // open shared memory region and get a file descriptor
+  int    iFlags = O_CREAT | O_EXCL | O_RDWR;
+  mode_t iMode  = S_IRUSR | S_IWUSR;
+  iShmSegFd = shm_open(sRegionName.aChar(),iFlags,iMode);
+
+  if (iShmSegFd == -1) {
+    oSysCall.vError(errno);
+    //vWarn("Shm::bAttach: shm_open() error; errno=%d %s\n"_Stz,errno, strerror(errno));
+    return false;
+  }
+  
+  gxResourceTracker.vIncShmOpen();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* open an existing shared memory sement                                      */
+/*----------------------------------------------------------------------------*/
+bool Shm::bOpenExisting(s32& sRegionName, int& iShmSegFd, SysCall& oSysCall)
+{
+  oSysCall.vClear();
+  
+  // open shared memory region and get a file descriptor
+  int    iFlags = O_RDWR;
+  mode_t iMode  = S_IRUSR | S_IWUSR;
+  iShmSegFd = shm_open(sRegionName.aChar(), iFlags, iMode);
+  
+  if (iShmSegFd == -1) {
+    oSysCall.vError(errno);
+    //vWarn("Shm::bAttach: shm_open() error; errno=%d %s\n"_Stz,errno, strerror(errno));
+    return false;
+  }
+  
+  gxResourceTracker.vIncShmOpen();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* map address onto a shared memory segment                                   */
 /*----------------------------------------------------------------------------*/
 void* Shm::aMap(int iFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& SysCall)
 {
-  bool bShared = true;
-  
   SysCall.vClear();
   
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Shm::pMap A\n"_Stz);
+  bool bShared = true;
   
   int iProt = PROT_READ | PROT_WRITE;
-
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Shm::pMap B\n"_Stz);
   
 #ifdef __APPLE__
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE | MAP_ANONYMOUS)
@@ -166,10 +199,7 @@ void* Shm::aMap(int iFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& SysC
                | (bHugeTlb ? MAP_HUGETLB | MAP_ANONYMOUS : 0);
 #endif
   
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Shm::pMap C\n"_Stz);
-  
-  void* pRegion = mmap(aAddress, // starting address
+  void* aRegion = mmap(aAddress, // starting address
                        iBytes,   // length of the region
                        iProt,    // region protection
                        iFlags,   // mapping flags
@@ -177,18 +207,16 @@ void* Shm::aMap(int iFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& SysC
                        0         // no offset in file
                        );
   
-  if (MAP_FAILED == pRegion) {
+  if (MAP_FAILED == aRegion) {
     SysCall.vError(errno);
-    vWarn("Shm::pMap: mmap() error; errno=%d %s line=%d\n"_Stz,errno,strerror(errno), __LINE__);
+    vWarn("Shm::aMap: mmap() error; errno=%d %s line=%d\n"_Stz,
+          errno,strerror(errno), __LINE__);
     return nullptr;
   }
   
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Shm::pMap D\n"_Stz);
-  
   SysCall.vSuccess();
   
-  return pRegion;
+  return aRegion;
 }
 
 /*----------------------------------------------------------------------------*/
