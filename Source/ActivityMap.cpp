@@ -20,23 +20,25 @@ ActivityMap* gpActivityMap = nullptr;
 /*----------------------------------------------------------------------------*/
 void* ActivityMap::operator new(size_t)
 {
-  RASSERT( ! gpActivityMap );
+  RASSERT(! gpActivityMap);
   
   bool bResult;
   if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart) {
-    bResult = ActivityMap::bCreateNewShm();
+    bResult = ActivityMap::bCreateNew();
     RASSERT(bResult);
     if (gpAttachMap->m_bVerbose)
-      vTrace("ActivityMap %s : created new map (size %lldB, max %lld marks)\n\n"_Stz,
+      vTrace("ActivityMap %s : "
+             "created new map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
              sizeof(ActivityMap),
              gpAttachMap->m_nActivityMarks);
   }
   else {
-    bResult = ActivityMap::bOpenExistingShm();
+    bResult = ActivityMap::bAttachExisting();
     RASSERT(bResult);
     if (gpAttachMap->m_bVerbose)
-      vTrace("ActivityMap %s : opened existing map (size %lldB, max %lld marks)\n\n"_Stz,
+      vTrace("ActivityMap %s : "
+             "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
              sizeof(ActivityMap),
              gpAttachMap->m_nActivityMarks);
@@ -53,10 +55,10 @@ void ActivityMap::operator delete(void* aAddress)
   ActivityMap* aActivity = static_cast<ActivityMap*>(aAddress);
   
   if (0 == gpAttachMap->m_pGrid->m_iThisNode) {
-    aActivity->bCloseShm();
+    //aActivity->bCloseShm();
   }
   else {
-    aActivity->bCloseShm();
+    //aActivity->bCloseShm();
   }
 }
 
@@ -111,64 +113,9 @@ ActivityMap::~ActivityMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* close ActivityMap                                                          */
+/* attach to existing shm region containing the ActivityMap                   */
 /*----------------------------------------------------------------------------*/
-bool ActivityMap::bCloseShm(void)
-{
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new ActivityMap shared memory segment                             */
-/*----------------------------------------------------------------------------*/
-bool ActivityMap::bCreateNewShm(void)
-{
-  int iFD;
-  SysCall oSysCall;
-  s32 sRegionName;
-  bool bResult;
-  
-  sRegionName = *C_ACTIVITY_REGION;
-  
-  // unlink any previous segment
-  IGNORE_RETURN( Shm::bUnlink(sRegionName,oSysCall) );
-
-  // create a new shm region
-  bResult  = Shm::bCreate(sRegionName,
-                          sizeof(ActivityMap),
-                          false,
-                          iFD,
-                          oSysCall);
-  if ( ! bResult ) {
-    vTrace("ActivityMap::bCreateNewShm: failed to create region %s\n"_Stz,
-           sRegionName.aChar());
-    NEVER_REACH;
-  }
-
-  // allocate memory for the shm region
-  void* aAddr = Shm::aMap(iFD,
-                          nullptr,
-                          sizeof(ActivityMap),
-                          C_NO_HUGE_PAGES,
-                          oSysCall);
-  if ( ! aAddr )  {
-    vTrace("ActivityMap::bCreateNewShm: failed to map!\n"_Stz);
-    Shm::bClose(iFD,oSysCall);
-    NEVER_REACH;
-  }
-
-  gpActivityMap = static_cast<ActivityMap*>(aAddr);
-  
-  gpAttachMap->m_aActivityMap   = gpActivityMap;
-  gpAttachMap->m_nActivityMarks = gxArguments.m_nActivityMarks;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* open existing ActivityMap                                                  */
-/*----------------------------------------------------------------------------*/
-bool ActivityMap::bOpenExistingShm(void)
+bool ActivityMap::bAttachExisting(void)
 {
   int iFD;
   SysCall oSysCall;
@@ -177,26 +124,70 @@ bool ActivityMap::bOpenExistingShm(void)
   sRegionName = *C_ACTIVITY_REGION;
   
   // open existing shm region
-  bool bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
-  if ( ! bResult ) {
-    vTrace("ActivityMap::bOpenExistingShm: failed to open region: %s\n"_Stz,
+  bool bResult = Shm::bOpenExisting(sRegionName,iFD,oSysCall);
+  if (! bResult) {
+    vTrace("ActivityMap::bAttachExisting: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
     return false;
   }
 
-  // allocate memory for the shm region
-  void* aAddr = Shm::aMap(iFD,
-                          nullptr,
-                          sizeof(ActivityMap),
-                          C_NO_HUGE_PAGES,
-                          oSysCall);
-  if ( ! aAddr )  {
-    vTrace("ActivityMap::bOpenExistingShm: failed to map!\n"_Stz);
+  // map the shm region into a vm segment within this process address space
+  void* aSegment = Shm::aMap(iFD,
+                             nullptr,
+                             sizeof(ActivityMap),
+                             C_NO_HUGE_PAGES,
+                             oSysCall);
+  if (! aSegment)  {
+    vTrace("ActivityMap::bAttachExisting: failed to map!\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     NEVER_REACH;
   }
   
-  gpActivityMap = static_cast<ActivityMap*>(aAddr);
+  gpActivityMap = static_cast<ActivityMap*>(aSegment);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new ActivityMap shared memory segment                             */
+/*----------------------------------------------------------------------------*/
+bool ActivityMap::bCreateNew(void)
+{
+  int iRegionFd;
+  SysCall oSysCall;
+  s32 sRegionName;
+  bool bResult;
+  
+  sRegionName = *C_ACTIVITY_REGION;
+  
+  // unlink the name of any previous segment
+  IGNORE_RETURN( Shm::bUnlink(sRegionName,oSysCall) );
+  
+  // open a new shm region which will contain the activity map
+  bResult = Shm::bOpenCreate(sRegionName,iRegionFd,oSysCall);
+  if (! bResult)
+    vFatal("ActivityMap::bCreateNewShm: failed to create region %s\n"_Stz,
+           sRegionName.aChar());
+  
+  // extend the shm region
+  bResult = Shm::bExtend(iRegionFd,sizeof(ActivityMap),oSysCall);
+  if (! bResult)
+    vFatal("ActivityMap::bCreateNewShm: failed to extend region %s\n"_Stz,
+           sRegionName.aChar());
+  
+  // map the shm region into a vm segment within this process address space
+  void* aSegment = Shm::aMap(iRegionFd,
+                             nullptr,
+                             sizeof(ActivityMap),
+                             C_NO_HUGE_PAGES,
+                             oSysCall);
+  if (! aSegment)
+    vFatal("ActivityMap::bCreateNewShm: failed to map region!\n"_Stz);
+  
+  gpActivityMap = static_cast<ActivityMap*>(aSegment);
+  
+  gpAttachMap->m_aActivityMap   = gpActivityMap;
+  gpAttachMap->m_nActivityMarks = gxArguments.m_nActivityMarks;
   
   return true;
 }

@@ -31,9 +31,8 @@ namespace Measurement
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   private:
-    static bool bCloseShm(void);
-    static bool bCreateNewShm(void);
-    static bool bOpenExistingShm(void);
+    static bool bAttachExisting(void);
+    static bool bCreateNew(void);
   
   public:
     static void vMark(i8 iJobId, Stz* aFormat, ...);
