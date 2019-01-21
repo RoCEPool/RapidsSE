@@ -14,7 +14,7 @@ extern ActivityMap* gpActivityMap;
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 {
-  gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
+  //gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
   
   Stz* aApiCall = "RapidsSE_CheckLibraryVersion"_Stz;
   eAC  eApiCall = AC_CheckLibraryVersion;
@@ -678,7 +678,7 @@ eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTr
 /*----------------------------------------------------------------------------*/
 /* get row count table column                                                 */
 /*----------------------------------------------------------------------------*/
-eEC m_nGetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel)
+eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel)
 {
   gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
 
