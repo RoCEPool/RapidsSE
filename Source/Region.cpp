@@ -9,7 +9,7 @@ extern void*      maRegion;
 
 extern Arguments gxArguments;
 
-extern void* C_ADDR_POOL;
+//extern void* C_ADDR_POOL;
 
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
