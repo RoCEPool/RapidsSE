@@ -89,88 +89,53 @@ void Region::vCreate(s32& sRegionName, void* aRegionAddr, i8 iRegionSize,
                      i8 iJumboTook, bool bTouch, bool bLock, bool bRestart,
                      bool bDontFree, bool bFreeRB)
 {
-  int iFD;
+  int iRegionFd;
   SysCall oSysCall;
   s32 sSizeMag;
+  bool bResult;
   
+  // verbose
   Magnitudes::vByteMag(iRegionSize, sSizeMag);
-
   if (gxArguments.m_bVerbose)
     vInfo("Creating RapidsSE instance %s; size %s (%lldB)...\n"_Stz,
            sRegionName.aChar(),
            sSizeMag.aChar(),
            iRegionSize);
   
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Region::vCreate A\n"_Stz);
-  
-  // open a new shm region
-  bool bResult = Shm::bCreate(sRegionName,
-                              iRegionSize,
-                              bRestart,
-                              iFD,
-                              oSysCall);
-
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Region::vCreate B\n"_Stz);
-  
-  if ( ! bResult ) {
-    vTrace("RapidsSE::vCreate: failed to create region %s\n"_Stz,
+  // open a new shm region which will contain the activity map
+  bResult = Shm::bOpenCreate(sRegionName,iRegionFd,oSysCall);
+  if (! bResult)
+    vFatal("RapidsSE::vCreate: failed to create region %s\n"_Stz,
            sRegionName.aChar());
-    NEVER_REACH;
-  }
+
+  // extend the shm region
+  bResult = Shm::bExtend(iRegionFd,iRegionSize,oSysCall);
+  if (! bResult)
+    vFatal("RapidsSE::vCreate: failed to extend region %s\n"_Stz,
+           sRegionName.aChar());
   
-  // allocate memory for the shm region
-  gaSeShmRegion = (Header*)Shm::aMap(iFD,
+  // map the shm region into a vm segment within this process address space
+  gaSeShmRegion = (Header*)Shm::aMap(iRegionFd,
                                      aRegionAddr,
                                      iRegionSize,
                                      C_NO_HUGE_PAGES,
                                      oSysCall);
-  
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Region::vCreate C; gaSeShmRegion=%p\n"_Stz,gaSeShmRegion);
-  
-  if (! gaSeShmRegion)  {
-    vTrace("RapidsSE::vCreate failed to map!\n"_Stz);
-    Shm::bClose(iFD,oSysCall);
-    NEVER_REACH;
-  }
-  
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Region::vCreate D\n"_Stz);
-  
-  //vInfo("sleeping... \n"_Stz);
-  //PosixThread::vSleepMilli(180000);
+  if (! gaSeShmRegion)
+    vFatal("RapidsSE::vCreate failed to map region!\n"_Stz);
   
   gpBufferPool = new(gaSeShmRegion) BufferPool(sRegionName, iRegionSize,
                                                iJumboTook, bTouch,
                                                bDontFree, bFreeRB);
 
-  //if (gxArguments.m_bVerbose)
-  //  vTrace("Region::vCreate E\n"_Stz);
   
   if (gxArguments.m_bVerbose)
     vTrace("Shm mapped at %p\n"_Stz,gaSeShmRegion);
   
   // lock the shared memory in
   if (bLock) {
-    
-    if (gpAttachMap->m_bVerbose)
-      vTrace("Shm::bLock\n"_Stz);
-    
-    bResult = Shm::bLock(gaSeShmRegion,
-                         iRegionSize,
-                         oSysCall);
-  
-    if ( ! bResult )  {
+    bResult = Shm::bLock(gaSeShmRegion,iRegionSize,oSysCall);
+    if (! bResult)
       vFatal("RapidsSE::vAttach failed to lock\n"_Stz);
-      bResult = Shm::bUnmap(gaSeShmRegion, iRegionSize, oSysCall);
-      if ( ! bResult )  {
-        vFatal("RapidsSE::vAttach failed to unmap\n"_Stz);
-      }
-      Shm::bClose(iFD,oSysCall);
-      exit(EXIT_FAILURE);
-    }
     
     if (gxArguments.m_bVerbose)
       vTrace("Shm pages locked in memory\n"_Stz);
