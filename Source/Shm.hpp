@@ -12,10 +12,7 @@ namespace System
   class Shm
   {
   public:
-    static bool  bAttach(s32& sName, int& iShmFD, SysCall& SysCall);
     static bool  bClose(int iShmFD, SysCall& oSysCall);
-    static bool  bCreate(s32& sName, i8 iSize, bool bRecreate,
-                         int& iShmFD, SysCall& SysCall);
     static bool  bExtend(int iShmFD, i8 iBytes, SysCall& oSysCall);
     static bool  bLock(void* pAddress, i8 iBytes, SysCall& SysCall);
     static void* aMap(int iFd, void* aAddress, i8 iBytes,

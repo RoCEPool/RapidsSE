@@ -9,27 +9,6 @@
 extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
-/* attach to an existing shared memory sement                                 */
-/*----------------------------------------------------------------------------*/
-bool Shm::bAttach(s32& sRegionName, int& iShmSegFd, SysCall& oSysCall)
-{
-  oSysCall.vClear();
-    
-  // open shared memory region and get a file descriptor
-  iShmSegFd = shm_open(sRegionName.aChar(), O_RDWR, S_IRUSR | S_IWUSR);
-  
-  if (iShmSegFd == -1) {
-    oSysCall.vError(errno);
-    //vWarn("Shm::bAttach: shm_open() error; errno=%d %s\n"_Stz,errno, strerror(errno));
-    return false;
-  }
-  
-  gxResourceTracker.vIncShmOpen();
-
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* close an existing shared memory segment                                    */
 /*----------------------------------------------------------------------------*/
 bool Shm::bClose(int iShmSegFd, SysCall& oSysCall)
@@ -40,58 +19,12 @@ bool Shm::bClose(int iShmSegFd, SysCall& oSysCall)
   
   if (0 != rCode) {
     oSysCall.vError(errno);
-    vWarn("Shm::bClose: munmap() error; errno=%d %s\n"_Stz,errno,strerror(errno));
     return false;
   }
   
   gxResourceTracker.vDecShmOpen();
 
   oSysCall.vSuccess();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create/open a new shared memory region                                     */
-/*----------------------------------------------------------------------------*/
-bool Shm::bCreate(s32& sRegionName, i8 iSize, bool bRecreate,
-                  int& iFD, SysCall& oSysCall)
-{
-  int rCode;
-  
-  oSysCall.vClear();
-  
-  // unlink the shm region (in case created earlier; this needs work)
-  if (bRecreate)
-    rCode = shm_unlink(sRegionName.aChar());
-  // we ignore any error
-  
-  // open shared memory region and get a fd
-  iFD = shm_open(sRegionName.aChar(), O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
-  
-  if (iFD == -1) {
-    oSysCall.vError(errno);
-    vWarn("Shm::bCreate: shm_open() error; errno=%d %s\n"_Stz,errno,strerror(errno));
-    return false;
-  }
-  
-  gxResourceTracker.vIncShmOpen();
-
-  // extend and fill with 0's
-  bool bExtended = bExtend(iFD, iSize, oSysCall);
-  
-  if (! bExtended) {
-    
-    int rCode = shm_unlink(sRegionName.aChar());
-    
-    if (0 != rCode) {
-      oSysCall.vError(errno);
-      vWarn("Shm::bCreate: shm_unlink() error; errno=%d %s\n"_Stz,errno,strerror(errno));
-      return false;
-    }
-    
-    return false;
-  }
   
   return true;
 }
@@ -105,10 +38,7 @@ bool Shm::bExtend(int iShmSegFd, i8 iSize, SysCall& oSysCall)
   int rCode = ftruncate(iShmSegFd, iSize);
   
   if (rCode == -1) {
-    
     oSysCall.vError(errno);
-    vTrace("Shm::bZeroFill: ftruncate() error; errno=%d %s\n"_Stz,errno,strerror(errno));
-    
     return false;
   }
   
@@ -124,8 +54,6 @@ bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
   
   if (mlock(pAddress,iBytes) != 0) {
     SysCall.vError(errno);
-    vWarn("Shm::vLock: mlock() error; errno=%d %s line=%d\n"_Stz,
-          errno,strerror(errno), __LINE__);
     return false;
   }
   
@@ -146,7 +74,6 @@ bool Shm::bOpenCreate(s32& sRegionName, int& iShmSegFd, SysCall& oSysCall)
 
   if (iShmSegFd == -1) {
     oSysCall.vError(errno);
-    //vWarn("Shm::bAttach: shm_open() error; errno=%d %s\n"_Stz,errno, strerror(errno));
     return false;
   }
   
@@ -169,7 +96,6 @@ bool Shm::bOpenExisting(s32& sRegionName, int& iShmSegFd, SysCall& oSysCall)
   
   if (iShmSegFd == -1) {
     oSysCall.vError(errno);
-    //vWarn("Shm::bAttach: shm_open() error; errno=%d %s\n"_Stz,errno, strerror(errno));
     return false;
   }
   
@@ -209,8 +135,6 @@ void* Shm::aMap(int iFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& SysC
   
   if (MAP_FAILED == aRegion) {
     SysCall.vError(errno);
-    vWarn("Shm::aMap: mmap() error; errno=%d %s line=%d\n"_Stz,
-          errno,strerror(errno), __LINE__);
     return nullptr;
   }
   
@@ -251,7 +175,6 @@ bool Shm::bUnmap(void *aAddress, i8 iBytes, SysCall& oSysCall)
   
   if (0 != rCode) {
     oSysCall.vError(errno);
-    vWarn("Shm::bUnmap: munmap() error; errno=%d %s\n"_Stz,errno,strerror(errno));
     return false;
   }
   
@@ -271,7 +194,6 @@ bool Shm::bUnlink(s32& sRegionName, SysCall& oSysCall)
 
   if (0 != rCode) {
     oSysCall.vError(errno);
-    vWarn("Shm::bUnlink: shm_unlink() error; errno=%d %s\n"_Stz,errno,strerror(errno));
     return false;
   }
   

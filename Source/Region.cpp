@@ -21,7 +21,7 @@ bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
   bool bResult;
   
   // open existing shm region
-  bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
+  bResult = bOpenExisting(sRegionName,iFD,oSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttach: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
@@ -54,7 +54,7 @@ bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
   //--------------------------------------------------------------------------
   
   // reopen the existing shm region
-  bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
+  bResult = bOpenExisting(sRegionName,iFD,oSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttach: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
@@ -152,7 +152,7 @@ bool Region::bTest(s32& sRegionName)
   SysCall oSysCall;
   
   // open existing shm region
-  bool bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
+  bool bResult = bOpenExisting(sRegionName,iFD,oSysCall);
   if ( ! bResult )
     return false;
   
@@ -191,7 +191,7 @@ void* Region::aOpen(s32& sRegionName, void* aRegionAddr, int& iFD)
   //  vInfo("Region::pOpen %s\n"_Stz,sRegionName.aChar());
   
   // open shm region
-  bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
+  bResult = bOpenExisting(sRegionName,iFD,oSysCall);
   if ( ! bResult ) {
     vTrace("Region::pOpen: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
