@@ -249,11 +249,11 @@ void RapidsSE::vErrorHandler(Error* pError)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vKillPrev(void)
 {
+  if (! gxArguments.m_bKillPrev)
+    return;
+  
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Kill Previous Occurences\n*\n"_Stz);
-  
-  if ( ! gxArguments.m_bKillPrev)
-    return;
   
   // an assumption is that regions will be /SE_<node>
   
@@ -463,7 +463,8 @@ void RapidsSE::vOpenPool(void)
   
   if (gxArguments.m_bStop) {
     if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vFatal("Error: RapidsSE instance %s was not started\n"_Stz,gxArguments.m_sRegionName.aChar());
+      vFatal("Error: RapidsSE instance %s was not started\n"_Stz,
+             gxArguments.m_sRegionName.aChar());
       exit(EXIT_FAILURE);
       return;
     }

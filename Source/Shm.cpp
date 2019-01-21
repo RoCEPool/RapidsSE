@@ -11,13 +11,13 @@ extern ResourceTracker gxResourceTracker;
 /*----------------------------------------------------------------------------*/
 /* close an existing shared memory segment                                    */
 /*----------------------------------------------------------------------------*/
-bool Shm::bClose(int iShmSegFd, SysCall& oSysCall)
+bool Shm::bClose(int iShmFd, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
-  int rCode = close(iShmSegFd);
+  int iResult = close(iShmFd);
   
-  if (0 != rCode) {
+  if (0 != iResult) {
     oSysCall.vError(errno);
     return false;
   }
@@ -32,12 +32,12 @@ bool Shm::bClose(int iShmSegFd, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* extend newely created shared memory segment to given size                  */
 /*----------------------------------------------------------------------------*/
-bool Shm::bExtend(int iShmSegFd, i8 iSize, SysCall& oSysCall)
+bool Shm::bExtend(int iShmFd, i8 iSize, SysCall& oSysCall)
 {
   // extend segment to given length (will be filled with zero's)
-  int rCode = ftruncate(iShmSegFd, iSize);
+  int iResult = ftruncate(iShmFd, iSize);
   
-  if (rCode == -1) {
+  if (iResult == -1) {
     oSysCall.vError(errno);
     return false;
   }
@@ -48,11 +48,11 @@ bool Shm::bExtend(int iShmSegFd, i8 iSize, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* lock a shm region into memory                                              */
 /*----------------------------------------------------------------------------*/
-bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
+bool Shm::bLock(void* aAddress, i8 iBytes, SysCall& SysCall)
 {
   SysCall.vClear();
   
-  if (mlock(pAddress,iBytes) != 0) {
+  if (mlock(aAddress,iBytes) != 0) {
     SysCall.vError(errno);
     return false;
   }
@@ -63,16 +63,16 @@ bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* create and open a new shared memory segment                                */
 /*----------------------------------------------------------------------------*/
-bool Shm::bOpenCreate(s32& sRegionName, int& iShmSegFd, SysCall& oSysCall)
+bool Shm::bOpenCreate(s32& sShmNm, int& iShmFd, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
   // open shared memory region and get a file descriptor
   int    iFlags = O_CREAT | O_EXCL | O_RDWR;
   mode_t iMode  = S_IRUSR | S_IWUSR;
-  iShmSegFd = shm_open(sRegionName.aChar(),iFlags,iMode);
+  iShmFd = shm_open(sShmNm.aChar(),iFlags,iMode);
 
-  if (iShmSegFd == -1) {
+  if (iShmFd == -1) {
     oSysCall.vError(errno);
     return false;
   }
@@ -85,16 +85,16 @@ bool Shm::bOpenCreate(s32& sRegionName, int& iShmSegFd, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* open an existing shared memory sement                                      */
 /*----------------------------------------------------------------------------*/
-bool Shm::bOpenExisting(s32& sRegionName, int& iShmSegFd, SysCall& oSysCall)
+bool Shm::bOpenExisting(s32& sShmNm, int& iShmFd, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
   // open shared memory region and get a file descriptor
   int    iFlags = O_RDWR;
   mode_t iMode  = S_IRUSR | S_IWUSR;
-  iShmSegFd = shm_open(sRegionName.aChar(), iFlags, iMode);
+  iShmFd = shm_open(sShmNm.aChar(), iFlags, iMode);
   
-  if (iShmSegFd == -1) {
+  if (iShmFd == -1) {
     oSysCall.vError(errno);
     return false;
   }
@@ -107,7 +107,7 @@ bool Shm::bOpenExisting(s32& sRegionName, int& iShmSegFd, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* map address onto a shared memory segment                                   */
 /*----------------------------------------------------------------------------*/
-void* Shm::aMap(int iFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& SysCall)
+void* Shm::aMap(int iShmFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& SysCall)
 {
   SysCall.vClear();
   
@@ -129,7 +129,7 @@ void* Shm::aMap(int iFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& SysC
                        iBytes,   // length of the region
                        iProt,    // region protection
                        iFlags,   // mapping flags
-                       iFd,      // file descriptor
+                       iShmFd,      // file descriptor
                        0         // no offset in file
                        );
   
@@ -146,17 +146,17 @@ void* Shm::aMap(int iFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& SysC
 /*----------------------------------------------------------------------------*/
 /* test for region                                                            */
 /*----------------------------------------------------------------------------*/
-bool Shm::bTest(s32& sRegionName)
+bool Shm::bTest(s32& sShmNm)
 {
-  int iFD;
+  int iShmFd;
   SysCall oSysCall;
   
   // open existing shm region
-  bool bResult = Shm::bOpenExisting(sRegionName,iFD,oSysCall);
+  bool bResult = Shm::bOpenExisting(sShmNm,iShmFd,oSysCall);
   if ( ! bResult )
     return false;
   
-  bResult = Shm::bClose(iFD,oSysCall);
+  bResult = Shm::bClose(iShmFd,oSysCall);
   RASSERT(bResult);
   
   return true;
@@ -169,11 +169,11 @@ bool Shm::bUnmap(void *aAddress, i8 iBytes, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
-  int rCode = munmap(aAddress, // starting address
+  int iResult = munmap(aAddress, // starting address
                      iBytes    // length of the region
                      );
   
-  if (0 != rCode) {
+  if (0 != iResult) {
     oSysCall.vError(errno);
     return false;
   }
@@ -186,13 +186,13 @@ bool Shm::bUnmap(void *aAddress, i8 iBytes, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* unlink an existing memory region                                           */
 /*----------------------------------------------------------------------------*/
-bool Shm::bUnlink(s32& sRegionName, SysCall& oSysCall)
+bool Shm::bUnlink(s32& sShmNm, SysCall& oSysCall)
 {
   oSysCall.vClear();
   
-  int rCode = shm_unlink(sRegionName.aChar());
+  int iResult = shm_unlink(sShmNm.aChar());
 
-  if (0 != rCode) {
+  if (0 != iResult) {
     oSysCall.vError(errno);
     return false;
   }
