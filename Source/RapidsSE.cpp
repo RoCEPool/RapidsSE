@@ -8,12 +8,13 @@
 Arguments  gxArguments;
 ResourceTracker gxResourceTracker;
 
+void*         gaSeShmRegion  = nullptr;
 BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;
 File*         gpTraceFile    = nullptr;
+
 extern pthread_key_t giTLS_ThreadKey;
 
-void*         maRegion       = nullptr;
 bool          gbSHM          = false;
 
 
@@ -72,7 +73,7 @@ void RapidsSE::vMainEntry(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vAttachRegion(void)
 {
-  gpAttachMap = pAdd<AttachMap*>((Object*)maRegion,C_SIZE_POOL_BUFFER);
+  gpAttachMap = pAdd<AttachMap*>((Object*)gaSeShmRegion,C_SIZE_POOL_BUFFER);
   
   // get pointers to global objects from attach map
   gpAttachMap->vGetGlobals();

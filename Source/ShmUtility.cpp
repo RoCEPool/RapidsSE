@@ -9,11 +9,11 @@ bool  mbCreate = false;
 bool  mbAttach = false;
 bool  mbDelete = false;
 
-char* maRegionAddress = nullptr;
+char* gaSeShmRegionAddress = nullptr;
 i8    miRegionSize = C_1GB;
 s32   msRegionName;
 
-extern void* maRegion;
+extern void* gaSeShmRegion;
 
 /*----------------------------------------------------------------------------*/
 /* run shm utility                                                            */
@@ -30,7 +30,7 @@ void ShmUtility::vRun(int argc, Stz* argv[])
   for (i8 i_Arg = 1; i_Arg < argc; i_Arg++) {
     
     if (argv[i_Arg]->bSame("--Address"_Stz)) {
-      maRegionAddress = (char*)argv[++i_Arg]->iToI8();
+      gaSeShmRegionAddress = (char*)argv[++i_Arg]->iToI8();
       continue;
     }
     
@@ -97,21 +97,21 @@ void ShmUtility::vAttach(void)
   }
   
   // allocate an extent of memory
-  maRegion = Shm::aMap(iFD,
-                       maRegionAddress,
+  gaSeShmRegion = Shm::aMap(iFD,
+                       gaSeShmRegionAddress,
                        miRegionSize,
                        C_SHARED_REGION,
                        false,
                        oSysCall);
 
-  if ( ! maRegion )  {
+  if ( ! gaSeShmRegion )  {
     Shm::bClose(iFD,oSysCall);
     vFatal("ShmUtility::vAttach failed to map\n"_Stz);
   }
 
-  memcpy(maRegion,"ABCDEFGHIJKLMNOPQRSTUVWXYZ\0", 27);
+  memcpy(gaSeShmRegion,"ABCDEFGHIJKLMNOPQRSTUVWXYZ\0", 27);
   
-  vTrace("%p %s\n"_Stz, maRegion, maRegion);
+  vTrace("%p %s\n"_Stz, gaSeShmRegion, gaSeShmRegion);
   
   vTrace("Region %s Attached\n"_Stz,msRegionName.aChar());
 }
@@ -139,8 +139,8 @@ void ShmUtility::vCreate(void)
   }
   
   // allocate memory for the shm region
-  maRegion = Shm::aMap(iFD,
-                       maRegionAddress,
+  gaSeShmRegion = Shm::aMap(iFD,
+                       gaSeShmRegionAddress,
                        miRegionSize,
                        true,
                        false,
