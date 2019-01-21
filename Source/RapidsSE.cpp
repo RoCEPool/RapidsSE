@@ -271,7 +271,7 @@ void RapidsSE::vKillPrev(void)
     if ( ! Region::bTest(sRegionName) )
       continue;
     
-    if ( ! (aRegion = Region::aOpen(sRegionName,iFD)) )
+    if ( ! (aRegion = Region::aOpen(sRegionName,gxArguments.m_aRegionAddr,iFD)) )
       continue;
     
     AttachMap* pAttachMap = (AttachMap*)ahAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
@@ -441,6 +441,7 @@ void RapidsSE::vOpenPool(void)
       vInfo("\n*\n* Create Region\n*\n"_Stz);
     
     Region::vCreate(gxArguments.m_sRegionName,
+                    gxArguments.m_aRegionAddr,
                     gxArguments.m_iRegionSize,
                     gxArguments.m_nJumboTook,
                     gxArguments.m_bTouch,
@@ -468,7 +469,7 @@ void RapidsSE::vOpenPool(void)
     }
     if (gxArguments.m_bVerbose)
       vInfo("\n*\n* Attach Region\n*\n"_Stz);
-    bResult = Region::bAttach(gxArguments.m_sRegionName);
+    bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
     ASSERT(bResult);
     vAttachRegion();
     return;
@@ -482,7 +483,7 @@ void RapidsSE::vOpenPool(void)
     }
     if (gxArguments.m_bVerbose)
       vInfo("\n*\n* Attach Region\n*\n"_Stz);
-    bResult = Region::bAttach(gxArguments.m_sRegionName);
+    bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
     if ( ! bResult ) {
       vFatal("Error: Unable to attach to RapidsSE instance %s\n"_Stz,gxArguments.m_sRegionName.aChar());
       exit(EXIT_FAILURE);
@@ -495,7 +496,7 @@ void RapidsSE::vOpenPool(void)
   
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Attach Region\n*\n"_Stz);
-  bResult = Region::bAttach(gxArguments.m_sRegionName);
+  bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
   ASSERT(bResult);
   vAttachRegion();
   //vFatal("Error: RapidsSE missing arguments\n"_Stz);
@@ -507,7 +508,7 @@ void RapidsSE::vOpenPool(void)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE::bOpenPool(s32& sPoolName)
 {
-  bool bResult = Region::bAttach(sPoolName);
+  bool bResult = Region::bAttach(sPoolName,gxArguments.m_aRegionAddr);
   if (!bResult)
     return bResult;
   
@@ -546,7 +547,7 @@ void RapidsSE::vPrintStatus(void)
   if (Region::bTest(gxArguments.m_sRegionName)) {
     
     // attach to the region
-    bool bResult = Region::bAttach(gxArguments.m_sRegionName);
+    bool bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
     ASSERT(bResult);
     
     // get globals

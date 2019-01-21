@@ -14,12 +14,12 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
 /*----------------------------------------------------------------------------*/
-bool Region::bAttach(s32& sRegionName)
+bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
 {
   int iFD;
   SysCall oSysCall;
   bool bResult;
-    
+  
   // open existing shm region
   bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
   if ( ! bResult ) {
@@ -30,7 +30,7 @@ bool Region::bAttach(s32& sRegionName)
   
   // allocate a temporary extent of memory
   gaSeShmRegion = (Header*)Shm::aMap(iFD,
-                                     gxArguments.m_aRegionAddr,
+                                     aRegionAddr,
                                      10_MB,
                                      C_SHARED_REGION,
                                      false,
@@ -64,7 +64,7 @@ bool Region::bAttach(s32& sRegionName)
   
   // map the full extent of memory required
   gaSeShmRegion = (Header*)Shm::aMap(iFD,
-                                     gxArguments.m_aRegionAddr,
+                                     aRegionAddr,
                                      iRegionSize,
                                      C_SHARED_REGION,
                                      false,
@@ -87,8 +87,8 @@ bool Region::bAttach(s32& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
-void Region::vCreate(s32& sRegionName, i8 iRegionSize, i8 iJumboTook,
-                     bool bTouch, bool bLock, bool bRestart,
+void Region::vCreate(s32& sRegionName, void* aRegionAddr, i8 iRegionSize,
+                     i8 iJumboTook, bool bTouch, bool bLock, bool bRestart,
                      bool bDontFree, bool bFreeRB)
 {
   int iFD;
@@ -124,7 +124,7 @@ void Region::vCreate(s32& sRegionName, i8 iRegionSize, i8 iJumboTook,
   
   // allocate memory for the shm region
   gaSeShmRegion = (Header*)Shm::aMap(iFD,
-                                     gxArguments.m_aRegionAddr,
+                                     aRegionAddr,
                                      iRegionSize,
                                      true,
                                      false,
@@ -216,7 +216,7 @@ void Region::vUnlink(s32& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* attempt to open a pool                                                     */
 /*----------------------------------------------------------------------------*/
-void* Region::aOpen(s32& sRegionName, int& iFD)
+void* Region::aOpen(s32& sRegionName, void* aRegionAddr, int& iFD)
 {
   SysCall oSysCall;
   bool bResult;
@@ -234,7 +234,7 @@ void* Region::aOpen(s32& sRegionName, int& iFD)
   
   // allocate a temporary extent of memory
   void* aRegion = Shm::aMap(iFD,
-                            gxArguments.m_aRegionAddr,
+                            aRegionAddr,
                             10_MB,
                             C_SHARED_REGION,
                             false,
@@ -251,14 +251,14 @@ void* Region::aOpen(s32& sRegionName, int& iFD)
 /*----------------------------------------------------------------------------*/
 /* close region                                                               */
 /*----------------------------------------------------------------------------*/
-void Region::vClose(void* aRegion, int iFD)
+void Region::vClose(void* aRegionAddr, int iFD)
 {
   bool bResult;
   SysCall oSysCall;
   
   // close the temporary mapping
   bResult = Shm::bClose(iFD,oSysCall);
-  bResult = Shm::bUnmap(aRegion,10_MB,oSysCall);
+  bResult = Shm::bUnmap(aRegionAddr,10_MB,oSysCall);
 }
 
 /*============================================================================*/
