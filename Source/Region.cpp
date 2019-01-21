@@ -14,15 +14,12 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
 /*----------------------------------------------------------------------------*/
-bool Region::bAttach(s32& sRegionName, bool bWecome)
+bool Region::bAttach(s32& sRegionName)
 {
   int iFD;
   SysCall oSysCall;
   bool bResult;
-  
-  if (bWecome)
-    vTrace("Attaching to SE instance %s\n"_Stz,sRegionName.aChar());
-  
+    
   // open existing shm region
   bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
   if ( ! bResult ) {
@@ -149,7 +146,8 @@ void Region::vCreate(s32& sRegionName, i8 iRegionSize, i8 iJumboTook,
   //PosixThread::vSleepMilli(180000);
   
   gpBufferPool = new(gaSeShmRegion) BufferPool(sRegionName, iRegionSize,
-                                          iJumboTook, bTouch, bDontFree, bFreeRB);
+                                               iJumboTook, bTouch,
+                                               bDontFree, bFreeRB);
 
   //if (gxArguments.m_bVerbose)
   //  vTrace("Region::vCreate E\n"_Stz);

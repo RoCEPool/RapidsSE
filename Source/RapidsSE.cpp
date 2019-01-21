@@ -466,7 +466,9 @@ void RapidsSE::vOpenPool(void)
       exit(EXIT_FAILURE);
       return;
     }
-    bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
+    if (gxArguments.m_bVerbose)
+      vInfo("\n*\n* Attach Region\n*\n"_Stz);
+    bResult = Region::bAttach(gxArguments.m_sRegionName);
     ASSERT(bResult);
     vAttachRegion();
     return;
@@ -478,7 +480,9 @@ void RapidsSE::vOpenPool(void)
       exit(EXIT_FAILURE);
       return;
     }
-    bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
+    if (gxArguments.m_bVerbose)
+      vInfo("\n*\n* Attach Region\n*\n"_Stz);
+    bResult = Region::bAttach(gxArguments.m_sRegionName);
     if ( ! bResult ) {
       vFatal("Error: Unable to attach to RapidsSE instance %s\n"_Stz,gxArguments.m_sRegionName.aChar());
       exit(EXIT_FAILURE);
@@ -489,7 +493,9 @@ void RapidsSE::vOpenPool(void)
     return;
   }
   
-  bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
+  if (gxArguments.m_bVerbose)
+    vInfo("\n*\n* Attach Region\n*\n"_Stz);
+  bResult = Region::bAttach(gxArguments.m_sRegionName);
   ASSERT(bResult);
   vAttachRegion();
   //vFatal("Error: RapidsSE missing arguments\n"_Stz);
@@ -501,7 +507,7 @@ void RapidsSE::vOpenPool(void)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE::bOpenPool(s32& sPoolName)
 {
-  bool bResult = Region::bAttach(sPoolName, gxArguments.m_bWelcome);
+  bool bResult = Region::bAttach(sPoolName);
   if (!bResult)
     return bResult;
   
@@ -540,7 +546,7 @@ void RapidsSE::vPrintStatus(void)
   if (Region::bTest(gxArguments.m_sRegionName)) {
     
     // attach to the region
-    bool bResult = Region::bAttach(gxArguments.m_sRegionName, gxArguments.m_bWelcome);
+    bool bResult = Region::bAttach(gxArguments.m_sRegionName);
     ASSERT(bResult);
     
     // get globals
