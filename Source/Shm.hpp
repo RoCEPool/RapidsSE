@@ -22,6 +22,7 @@ namespace System
                            bool bHugeTlb, SysCall& SysCall);
     static bool  bOpenCreate(s32& sName, int& iShmFD, SysCall& SysCall);
     static bool  bOpenExisting(s32& sName, int& iShmFD, SysCall& SysCall);
+    static bool  bTest(s32& sName);
     static bool  bUnmap(void* aAddress, i8 iBytes, SysCall& oSysCall);
     static bool  bUnlink(s32& sName, SysCall& oSysCall);
   };

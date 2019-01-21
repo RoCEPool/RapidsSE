@@ -220,6 +220,25 @@ void* Shm::aMap(int iFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& SysC
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for region                                                            */
+/*----------------------------------------------------------------------------*/
+bool Shm::bTest(s32& sRegionName)
+{
+  int iFD;
+  SysCall oSysCall;
+  
+  // open existing shm region
+  bool bResult = Shm::bOpenExisting(sRegionName,iFD,oSysCall);
+  if ( ! bResult )
+    return false;
+  
+  bResult = Shm::bClose(iFD,oSysCall);
+  RASSERT(bResult);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* unmap an existing memory region                                            */
 /*----------------------------------------------------------------------------*/
 bool Shm::bUnmap(void *aAddress, i8 iBytes, SysCall& oSysCall)
