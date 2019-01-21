@@ -10,6 +10,8 @@ namespace Measurement
   public:
 
   struct {
+    i8 m_nBeginInsertTable;
+    i8 m_nBeginSubInserter;
     i8 m_nCheckLibraryVersion;
     i8 m_nCopyBuffer;
     i8 m_nEndInsertJobs;

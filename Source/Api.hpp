@@ -14,7 +14,9 @@ enum eAC // api call kind
 {
   /*  0 */ AC_NONE=0,
   
-  /*  1 */ AC_CheckLibraryVersion,
+  /*  1 */ AC_BeginInsertTable,
+  /*  2 */ AC_BeginSubInserter,
+  /*    */ AC_CheckLibraryVersion,
   /*  2 */ AC_CopyBuffer,
   /*  3 */ AC_EndInsertJobs,
   /*  4 */ AC_EndJobs,
@@ -43,7 +45,9 @@ static Stz* aAC[]
 {
   /*  0 */ "NONE"_Stz,
 
-  /*  1 */ "RapidsSE_CheckLibraryVersion"_Stz,
+  /*  1 */ "RapidsSE_BeginInsertTable"_Stz,
+  /*  2 */ "RapidsSE_BeginSubInserter"_Stz,
+  /*    */ "RapidsSE_CheckLibraryVersion"_Stz,
   /*  2 */ "RapidsSE_CopyBuffer"_Stz,
   /*  3 */ "RapidsSE_EndInsertJobs"_Stz,
   /*  4 */ "RapidsSE_EndJobs"_Stz,
@@ -66,6 +70,8 @@ static Stz* aAC[]
   /* 21 */ "RapidsSE_SessionNew"_Stz
   /* 22 */ "ENUMS"_Stz};
 
+extern "C" eEC  RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPtr, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel);
@@ -101,7 +107,7 @@ void vSpawnJobAndWait(Session* pSession, Job* pJob);
 
 void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
@@ -282,6 +288,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
       return EC_VALIDATION_FAILURE; \
     } \
   }
+/*
 #else
 
 #define TRACE_ENTRY_P0()
@@ -302,7 +309,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define VALIDATE_POOL()
 
 #endif
-
+*/
 /*----------------------------------------------------------------------------*/
 /* trace API call entry                                                       */
 /*----------------------------------------------------------------------------*/

@@ -10,6 +10,148 @@ extern AttachMap*   gpAttachMap;
 extern ActivityMap* gpActivityMap;
 
 /*----------------------------------------------------------------------------*/
+/* begin the insert table job                                                 */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPtr, i8 iTraceLevel)
+{
+  gpAttachMap->m_oStatistics.Api.m_nBeginInsertTable++;
+  
+  Stz* aApiCall = "RapidsSE_BeginInsertTable"_Stz;
+  eAC  eApiCall = AC_BeginInsertTable;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+  
+  vApiCall(pSession,AC_BeginInsertTable);                               // API CALL
+  vApiLocation(pSession,100);
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
+    
+    // validate reference pointer
+    VALIDATE_REFPOINTER("a"_Stz, ppJobPtr);
+    
+    // create Job_InsertTable
+    JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
+    ASSERT(pJobClass_InsertTable);
+    Job_InsertTable* pJob_InsertTable =
+    static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
+    
+    // find the table in the session dictionary stack
+    Table* pTable = Table::pFindTable(pSession->pPathStack(), aTableName);
+    
+    // set the table in the InsertTable job
+    pJob_InsertTable->m_pTable = pTable;
+    
+    // return the insertTable job
+    *ppJobPtr = pJob_InsertTable;
+    
+    // push the InsertTable job onto the jobstack
+    pSession->m_pJobStack->vPushPointer(pJob_InsertTable);
+    
+    TRACE_EXIT("ea"_Stz);
+    
+    vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,900);
+    
+    ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,800);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    vApiLocation(pSession,801);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin the subInserter job                                                  */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, i8 iTraceLevel)
+{
+  gpAttachMap->m_oStatistics.Api.m_nBeginSubInserter++;
+  
+  Stz* aApiCall = "RapidsSE_BeginSubInserter"_Stz;
+  eAC  eApiCall = AC_BeginSubInserter;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+  
+  vApiCall(pSession,AC_BeginInsertTable);                               // API CALL
+  vApiLocation(pSession,100);
+  
+  eEC eResult;
+  
+  try {
+    
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    // validate the session
+    VALIDATE_SESSION("a"_Stz);
+    
+    // validate the parameter
+    VALIDATE_PARAM("a"_Stz, pJobPtr);
+    
+    // get the insertTable job
+    Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJobPtr);
+    
+    // create Job_SubInserter
+    JobClass* pJobClass_SubInserter = JobClass::pFind(CN_JOB_SUBINSERTER);
+    ASSERT(pJobClass_SubInserter);
+    Job_SubInserter* pJob_SubInserter =
+    static_cast<Job_SubInserter*>(pJobClass_SubInserter->pPreJob(pSession));
+    
+    // push the InsertTable job onto the jobstack
+    pSession->m_pJobStack->vPushPointer(pJob_SubInserter);
+    
+    // set the insertTable in the subInserter
+    pJob_SubInserter->m_pJob_InsertTable = pJob_InsertTable;
+    
+    // set the table pointer (THIS CAN GO ????)
+    pJob_SubInserter->m_pTable = pJob_InsertTable->m_pTable;
+    
+    TRACE_EXIT("ea"_Stz);
+    
+    vApiReturn(pSession);                                          // API RETURN
+    vApiLocation(pSession,900);
+    
+    ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+    
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    eEC eError = pError->eErrorCode();
+    vApiError(pSession,eError);                                     // API ERROR
+    vApiLocation(pSession,800);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    vApiLocation(pSession,801);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* check the library version against version passed                           */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
@@ -1737,6 +1879,14 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait)
   i8 iPrev = 0;
   Statistics* pStats = &gpAttachMap->m_oStatistics;
   
+  if (pStats->Api.m_nBeginInsertTable) {
+    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
+    s.vSprintCat("beginInsertTable %lld "_Stz,pStats->Api.m_nBeginInsertTable);
+  }
+  if (pStats->Api.m_nBeginSubInserter) {
+    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
+    s.vSprintCat("beginSubInserter %lld "_Stz,pStats->Api.m_nBeginSubInserter);
+  }
   if (pStats->Api.m_nCheckLibraryVersion) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("checkVersion %lld "_Stz,pStats->Api.m_nCheckLibraryVersion);
