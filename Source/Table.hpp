@@ -47,7 +47,6 @@ namespace DBobjects
     void  operator delete(void*);
     
     Table(void);
-    Table(Stz* aTableName);
     ~Table(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

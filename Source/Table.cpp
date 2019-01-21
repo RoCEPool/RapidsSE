@@ -97,21 +97,6 @@ Table::Table(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Table::Table(Stz* pTableName)
-: Object(CN_TABLE)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
-  gpAttachMap->m_oStatistics.Table.m_nCreates++;
-  
-  m_sTableName = pTableName;
-  
-  _class_(CN_TABLE);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Table::~Table(void) noexcept(false)

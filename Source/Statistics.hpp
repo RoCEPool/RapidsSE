@@ -59,7 +59,6 @@ namespace Measurement
     i8 m_nAppendBuffers;
     i8 m_nAppendRows;
     i8 m_nBuffersPurged;
-
   } IndexTree;
   
   struct {

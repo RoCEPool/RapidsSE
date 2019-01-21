@@ -547,16 +547,6 @@ void Thread::vThreadState(eTC eThreadState)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the task in the thread                                                 */
-/*----------------------------------------------------------------------------*/
-void Thread::vTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_pTask = pTask;
-}
-
-/*----------------------------------------------------------------------------*/
 /* call the assocated task                                                    */
 /*----------------------------------------------------------------------------*/
 void Thread::vTaskCall(void)
