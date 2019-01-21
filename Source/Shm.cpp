@@ -6,9 +6,6 @@
 
 #include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
-extern Arguments gxArguments;
-
 extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
@@ -131,8 +128,6 @@ bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
 {
   SysCall.vClear();
   
-  if (gpAttachMap->m_bVerbose)
-    vTrace("Shm::vLock\n"_Stz);
   
   if (mlock(pAddress,iBytes) != 0) {
     SysCall.vError(errno);

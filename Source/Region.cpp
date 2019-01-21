@@ -157,6 +157,10 @@ void Region::vCreate(s32& sRegionName, void* aRegionAddr, i8 iRegionSize,
   
   // lock the shared memory in
   if (bLock) {
+    
+    if (gpAttachMap->m_bVerbose)
+      vTrace("Shm::bLock\n"_Stz);
+    
     bResult = Shm::bLock(gaSeShmRegion,
                          iRegionSize,
                          oSysCall);
