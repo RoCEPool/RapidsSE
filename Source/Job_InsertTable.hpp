@@ -11,6 +11,7 @@ namespace Jobs
   class Job_InsertTable : public Job
   {
   public:
+    Table*           m_pTable;                           // table
     Job_SubInserter* m_pJobSubInserter;                  // insert row job
     
     // must be last

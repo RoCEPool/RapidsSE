@@ -51,7 +51,7 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vFinalize(eCN eClass, Object* pObject);
-    static Table* pFindTable(DicStack* pDicStack, s32& sTableNm);
+    static Table* pFindTable(DicStack* pDicStack, Stz* aTableNm);
     static void  vMonitorPortrait(s48K& sPortrait);
     
     void vAddIndex(Index* pIndex);

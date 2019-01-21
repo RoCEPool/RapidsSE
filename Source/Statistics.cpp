@@ -44,7 +44,9 @@ Statistics::Statistics(void)
 : Object(CN_STATISTICS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STATISTICS,_FOOTER_);
-  
+
+//  Api.m_nBeginInsertTable = 1;
+//  Api.m_nBeginSubInserter = 1;
 //  Api.m_nCheckLibraryVersion = 1;
 //  Api.m_nCopyBuffer = 1;
 //  Api.m_nEndInsertJobs = 1;

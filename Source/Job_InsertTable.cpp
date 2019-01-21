@@ -113,6 +113,7 @@ Job_InsertTable::Job_InsertTable(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_INSERTTABLE,_FOOTER_);
   
+  m_pTable = nullptr;
   m_pJobSubInserter = nullptr;
   
   _checkInitialised_(CN_JOB_INSERTTABLE);

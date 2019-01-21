@@ -139,15 +139,15 @@ void Table::vFinalize(eCN eClass, Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* find table                                                                 */
 /*----------------------------------------------------------------------------*/
-Table* Table::pFindTable(DicStack* pDicStack, s32& sTableNm)
+Table* Table::pFindTable(DicStack* pDicStack, Stz* aTableNm)
 {
   Dic* pDic = pDicStack->pTop();
   
-  Word* pTableDicWord = pDic->pFindWord(sTableNm);
+  Word* pTableDicWord = pDic->pFindWord(aTableNm);
   
   Dic* pTableDic = _pDic(pTableDicWord->aWspArea());
 
-  Word* pTableWord = pTableDic->pFindWord(sTableNm);
+  Word* pTableWord = pTableDic->pFindWord(aTableNm);
   
   Table* pTable = _pTable(pTableWord->aWspArea());
   

@@ -115,15 +115,6 @@ Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
   m_oFormatters.m_cEnclosedBy_Leading = '\'';
   m_oFormatters.m_cEnclosedBy_Trailing = '\'';
   
-  // create Job_InsertTable
-  JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
-  ASSERT(pJobClass_InsertTable);
-  m_pJob_InsertTable =
-  static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
-  
-  // set insertRowJob in the insertTable job
-  m_pJob_InsertTable->m_pJobSubInserter = this;
-  
   m_pRecordBuffer = nullptr;
   
   m_ziRecordBuffers.vCheckInit();
