@@ -128,8 +128,8 @@ void ShmUtility::vCreate(void)
   // open a new shm region
   bool bResult = Shm::bCreate(msRegionName,
                               miRegionSize,
-                              iFD,
                               bRestart,
+                              iFD,
                               oSysCall);
   
   if ( ! bResult ) {

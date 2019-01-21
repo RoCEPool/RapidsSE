@@ -9,7 +9,7 @@
 extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
-/* attach/open to an existing shared memory region                            */
+/* attach to an existing shared memory region                                 */
 /*----------------------------------------------------------------------------*/
 bool Shm::bAttach(s32& sRegionName, int& iFD, SysCall& oSysCall)
 {
@@ -54,8 +54,8 @@ bool Shm::bClose(int iFD, SysCall& oSysCall)
 /*----------------------------------------------------------------------------*/
 /* create/open a new shared memory region                                     */
 /*----------------------------------------------------------------------------*/
-bool Shm::bCreate(s32& sRegionName, i8 iSize, int& iFD,
-                    bool bRecreate, SysCall& oSysCall)
+bool Shm::bCreate(s32& sRegionName, i8 iSize, bool bRecreate,
+                  int& iFD, SysCall& oSysCall)
 {
   int rCode;
   
@@ -122,7 +122,7 @@ bool Shm::bCreate(s32& sRegionName, i8 iSize, int& iFD,
 }
 
 /*----------------------------------------------------------------------------*/
-/* map a new an anonymous region of memory (private or shared)                */
+/* lock a shm region into memory                                              */
 /*----------------------------------------------------------------------------*/
 bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
 {
@@ -131,7 +131,8 @@ bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
   
   if (mlock(pAddress,iBytes) != 0) {
     SysCall.vError(errno);
-    vWarn("Shm::vLock: mlock() error; errno=%d %s line=%d\n"_Stz,errno,strerror(errno), __LINE__);
+    vWarn("Shm::vLock: mlock() error; errno=%d %s line=%d\n"_Stz,
+          errno,strerror(errno), __LINE__);
     return false;
   }
   
@@ -139,7 +140,7 @@ bool Shm::bLock(void* pAddress, i8 iBytes, SysCall& SysCall)
 }
 
 /*----------------------------------------------------------------------------*/
-/* map a new an anonymous region of memory (private or shared)                */
+/* map a new region of memory (private or shared)                             */
 /*----------------------------------------------------------------------------*/
 void* Shm::aMap(int iFd, void* aAddress, i8 iBytes, bool bShared,
                 bool bHugeTlb, SysCall& SysCall)

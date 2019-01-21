@@ -109,8 +109,8 @@ void Region::vCreate(s32& sRegionName, void* aRegionAddr, i8 iRegionSize,
   // open a new shm region
   bool bResult = Shm::bCreate(sRegionName,
                               iRegionSize,
-                              iFD,
                               bRestart,
+                              iFD,
                               oSysCall);
 
   //if (gxArguments.m_bVerbose)

@@ -138,8 +138,8 @@ bool ActivityMap::bCreateNewShm(void)
   // create a new shm region
   bResult  = Shm::bCreate(sRegionName,
                           sizeof(ActivityMap),
-                          iFD,
                           false,
+                          iFD,
                           oSysCall);
   if ( ! bResult ) {
     vTrace("ActivityMap::bCreateNewShm: failed to create region %s\n"_Stz,
