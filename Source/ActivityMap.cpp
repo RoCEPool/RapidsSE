@@ -126,15 +126,13 @@ bool ActivityMap::bCreateNewShm(void)
   int iFD;
   SysCall oSysCall;
   s32 sRegionName;
+  bool bResult;
   
   sRegionName = *C_ACTIVITY_REGION;
   
-  // unlink previous  // open existing shm region
-  bool bResult = Shm::bAttach(sRegionName,iFD,oSysCall);
-  if ( bResult ) {
-    Shm::bUnlink(sRegionName,oSysCall);
-  }
-  
+  // unlink any previous segment
+  IGNORE_RETURN( Shm::bUnlink(sRegionName,oSysCall) );
+
   // create a new shm region
   bResult  = Shm::bCreate(sRegionName,
                           sizeof(ActivityMap),

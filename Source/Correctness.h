@@ -33,6 +33,8 @@ typedef String_t<C_17KB> s17KB; // note this is 17KB
 typedef String_t<C_48K>  s48K;  // note this is 48K not 48KB
 typedef String_t<C_1M>   s1M;   // note this is 1M not 1MB
 
+#define IGNORE_RETURN(call) call
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
