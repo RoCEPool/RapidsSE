@@ -123,19 +123,20 @@ void ShmUtility::vCreate(void)
   int iFD;
   SysCall oSysCall;
   bool bRestart = false;
+  bool bResult;
   
-  // open a new shm region
-  bool bResult = Shm::bCreate(msRegionName,
-                              miRegionSize,
-                              bRestart,
-                              iFD,
-                              oSysCall);
-  
-  if ( ! bResult ) {
+  // open a new shm region which will contain the activity map
+  bResult = Shm::bOpenCreate(msRegionName,iFD,oSysCall);
+  if (! bResult)
     vFatal("ShmUtility::vCreate: failed to create region %s\n"_Stz,
            msRegionName.aChar());
-    NEVER_REACH;
-  }
+  
+  // extend the shm region
+  bResult = Shm::bExtend(iFD,miRegionSize,oSysCall);
+  if (! bResult)
+    vFatal("ShmUtility::vCreate: failed to extend region %s\n"_Stz,
+           msRegionName.aChar());
+
   
   // allocate memory for the shm region
   gaSeShmRegion = (Header*)Shm::aMap(iFD,
