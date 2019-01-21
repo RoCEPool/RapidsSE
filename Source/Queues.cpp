@@ -819,7 +819,7 @@ Task* Queues::pPopReadySendQueue(Thread* pCallingThread)
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("pPopReadySendQueue()"_Stz);
   
-  // return the task popped from the slot queue
+  // return the task popped from the send queue
   return pTask;
 }
 

@@ -427,7 +427,7 @@ void Thread::vLastRRqueue(i8 iLastRRqueue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* atetmpt to get a task to run by peeking at the queues                      */
+/* attempt to get a task to run by peeking at the queues                      */
 /*---------------------------------------------------------------------------*/
 bool Thread::bQueuePeek(void)
 {
