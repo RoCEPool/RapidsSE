@@ -8,7 +8,7 @@
 Arguments  gxArguments;
 ResourceTracker gxResourceTracker;
 
-void*         gaSeShmRegion  = nullptr;
+Header*       gaSeShmRegion  = nullptr;
 BufferPool*   gpBufferPool   = nullptr;
 AttachMap *   gpAttachMap    = nullptr;
 File*         gpTraceFile    = nullptr;

@@ -5,7 +5,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern void*      gaSeShmRegion;
+extern Header*    gaSeShmRegion;
 
 extern Arguments gxArguments;
 
@@ -32,13 +32,13 @@ bool Region::bAttach(s32& sRegionName, bool bWecome)
   }
   
   // allocate a temporary extent of memory
-  gaSeShmRegion = Shm::aMap(iFD,
-                       gxArguments.m_aRegionAddr,
-                       10_MB,
-                       C_SHARED_REGION,
-                       false,
-                       oSysCall);
-  if ( ! gaSeShmRegion )  {
+  gaSeShmRegion = (Header*)Shm::aMap(iFD,
+                                     gxArguments.m_aRegionAddr,
+                                     10_MB,
+                                     C_SHARED_REGION,
+                                     false,
+                                     oSysCall);
+  if (! gaSeShmRegion)  {
     vTrace("RapidsSE::vAttach failed to map\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     return false;
@@ -65,14 +65,14 @@ bool Region::bAttach(s32& sRegionName, bool bWecome)
     return false;
   }
   
-  // allocate the full extent of memory required
-  gaSeShmRegion = Shm::aMap(iFD,
-                       gxArguments.m_aRegionAddr,
-                       iRegionSize,
-                       C_SHARED_REGION,
-                       false,
-                       oSysCall);
-  if ( ! gaSeShmRegion )  {
+  // map the full extent of memory required
+  gaSeShmRegion = (Header*)Shm::aMap(iFD,
+                                     gxArguments.m_aRegionAddr,
+                                     iRegionSize,
+                                     C_SHARED_REGION,
+                                     false,
+                                     oSysCall);
+  if (! gaSeShmRegion)  {
     vTrace("RapidsSE::vAttach failed to map\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     return false;
@@ -126,17 +126,17 @@ void Region::vCreate(s32& sRegionName, i8 iRegionSize, i8 iJumboTook,
   }
   
   // allocate memory for the shm region
-  gaSeShmRegion = Shm::aMap(iFD,
-                       gxArguments.m_aRegionAddr,
-                       iRegionSize,
-                       true,
-                       false,
-                       oSysCall);
+  gaSeShmRegion = (Header*)Shm::aMap(iFD,
+                                     gxArguments.m_aRegionAddr,
+                                     iRegionSize,
+                                     true,
+                                     false,
+                                     oSysCall);
   
   //if (gxArguments.m_bVerbose)
   //  vTrace("Region::vCreate C; gaSeShmRegion=%p\n"_Stz,gaSeShmRegion);
   
-  if ( ! gaSeShmRegion )  {
+  if (! gaSeShmRegion)  {
     vTrace("RapidsSE::vCreate failed to map!\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     NEVER_REACH;

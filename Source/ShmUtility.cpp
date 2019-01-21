@@ -13,7 +13,7 @@ char* gaSeShmRegionAddress = nullptr;
 i8    miRegionSize = C_1GB;
 s32   msRegionName;
 
-extern void* gaSeShmRegion;
+extern Header* gaSeShmRegion;
 
 /*----------------------------------------------------------------------------*/
 /* run shm utility                                                            */
@@ -97,21 +97,21 @@ void ShmUtility::vAttach(void)
   }
   
   // allocate an extent of memory
-  gaSeShmRegion = Shm::aMap(iFD,
-                       gaSeShmRegionAddress,
-                       miRegionSize,
-                       C_SHARED_REGION,
-                       false,
-                       oSysCall);
+  gaSeShmRegion = (Header*)Shm::aMap(iFD,
+                                     gaSeShmRegionAddress,
+                                     miRegionSize,
+                                     C_SHARED_REGION,
+                                     false,
+                                     oSysCall);
 
-  if ( ! gaSeShmRegion )  {
+  if (! gaSeShmRegion)  {
     Shm::bClose(iFD,oSysCall);
     vFatal("ShmUtility::vAttach failed to map\n"_Stz);
   }
 
-  memcpy(gaSeShmRegion,"ABCDEFGHIJKLMNOPQRSTUVWXYZ\0", 27);
+  //memcpy(gaSeShmRegion,"ABCDEFGHIJKLMNOPQRSTUVWXYZ\0", 27);
   
-  vTrace("%p %s\n"_Stz, gaSeShmRegion, gaSeShmRegion);
+  //vTrace("%p %s\n"_Stz, gaSeShmRegion, gaSeShmRegion);
   
   vTrace("Region %s Attached\n"_Stz,msRegionName.aChar());
 }
@@ -139,12 +139,14 @@ void ShmUtility::vCreate(void)
   }
   
   // allocate memory for the shm region
-  gaSeShmRegion = Shm::aMap(iFD,
-                       gaSeShmRegionAddress,
-                       miRegionSize,
-                       true,
-                       false,
-                       oSysCall);
+  gaSeShmRegion = (Header*)Shm::aMap(iFD,
+                                     gaSeShmRegionAddress,
+                                     miRegionSize,
+                                     true,
+                                     false,
+                                     oSysCall);
+  gaSeShmRegion->vSetMagic();
+  gaSeShmRegion->vSetClass(CN_NONE);
 
   vTrace("Region %s Created\n"_Stz,msRegionName.aChar());
 }
