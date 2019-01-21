@@ -32,8 +32,7 @@ bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
   gaSeShmRegion = (Header*)Shm::aMap(iFD,
                                      aRegionAddr,
                                      10_MB,
-                                     C_SHARED_REGION,
-                                     false,
+                                     C_NO_HUGE_PAGES,
                                      oSysCall);
   if (! gaSeShmRegion)  {
     vTrace("RapidsSE::vAttach failed to map\n"_Stz);
@@ -66,8 +65,7 @@ bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
   gaSeShmRegion = (Header*)Shm::aMap(iFD,
                                      aRegionAddr,
                                      iRegionSize,
-                                     C_SHARED_REGION,
-                                     false,
+                                     C_NO_HUGE_PAGES,
                                      oSysCall);
   if (! gaSeShmRegion)  {
     vTrace("RapidsSE::vAttach failed to map\n"_Stz);
@@ -126,8 +124,7 @@ void Region::vCreate(s32& sRegionName, void* aRegionAddr, i8 iRegionSize,
   gaSeShmRegion = (Header*)Shm::aMap(iFD,
                                      aRegionAddr,
                                      iRegionSize,
-                                     true,
-                                     false,
+                                     C_NO_HUGE_PAGES,
                                      oSysCall);
   
   //if (gxArguments.m_bVerbose)
@@ -240,8 +237,7 @@ void* Region::aOpen(s32& sRegionName, void* aRegionAddr, int& iFD)
   void* aRegion = Shm::aMap(iFD,
                             aRegionAddr,
                             10_MB,
-                            C_SHARED_REGION,
-                            false,
+                            C_NO_HUGE_PAGES,
                             oSysCall);
   if ( ! aRegion )  {
     vTrace("Region::pOpen failed to map\n"_Stz);

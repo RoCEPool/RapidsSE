@@ -151,8 +151,7 @@ bool ActivityMap::bCreateNewShm(void)
   void* aAddr = Shm::aMap(iFD,
                           nullptr,
                           sizeof(ActivityMap),
-                          true,
-                          false,
+                          C_NO_HUGE_PAGES,
                           oSysCall);
   if ( ! aAddr )  {
     vTrace("ActivityMap::bCreateNewShm: failed to map!\n"_Stz);
@@ -191,8 +190,7 @@ bool ActivityMap::bOpenExistingShm(void)
   void* aAddr = Shm::aMap(iFD,
                           nullptr,
                           sizeof(ActivityMap),
-                          true,
-                          false,
+                          C_NO_HUGE_PAGES,
                           oSysCall);
   if ( ! aAddr )  {
     vTrace("ActivityMap::bOpenExistingShm: failed to map!\n"_Stz);

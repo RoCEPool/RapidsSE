@@ -100,8 +100,7 @@ void ShmUtility::vAttach(void)
   gaSeShmRegion = (Header*)Shm::aMap(iFD,
                                      gaSeShmRegionAddress,
                                      miRegionSize,
-                                     C_SHARED_REGION,
-                                     false,
+                                     C_NO_HUGE_PAGES,
                                      oSysCall);
 
   if (! gaSeShmRegion)  {
@@ -142,8 +141,7 @@ void ShmUtility::vCreate(void)
   gaSeShmRegion = (Header*)Shm::aMap(iFD,
                                      gaSeShmRegionAddress,
                                      miRegionSize,
-                                     true,
-                                     false,
+                                     C_NO_HUGE_PAGES,
                                      oSysCall);
   gaSeShmRegion->vSetMagic();
   gaSeShmRegion->vSetClass(CN_NONE);
