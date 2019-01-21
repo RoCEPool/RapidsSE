@@ -364,6 +364,10 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
+  Index::vMonitorPortrait(sPortrait);
+  sRapidsPortrait.vConcat(sPortrait.aStz());
+  
+  sPortrait = ""_Stz;
   gpAttachMap->m_pApiState->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
 }

@@ -6,6 +6,8 @@
 #include "DBobjects.h"
 #include "StorageEngine.h"
 
+extern AttachMap* gpAttachMap;
+
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -22,26 +24,7 @@ Index* DBobjects::_pIndex(void* pAddr)
   return pIndex;
 }
 
-/*----------------------------------------------------------------------------*/
-/* dump data                                                                  */
-/*----------------------------------------------------------------------------*/
-void Index::vDump(eCN eClass, Object* pObject, Stz* aTab)
-{
-}
 
-/*----------------------------------------------------------------------------*/
-/* finalize                                                                   */
-/*----------------------------------------------------------------------------*/
-void Index::vFinalize(eCN eClass, Object* pObject)
-{
-  ASSERT(eClass == CN_INDEX);
-  ASSERT(pObject->eClass() == CN_INDEX);
-  
-  Index* pIndex = reinterpret_cast<Index*>(pObject);
-  ASSERT(pIndex->bWordBody());
-  
-  pIndex->vTidyUp();
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -80,6 +63,8 @@ Index::Index(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
+  gpAttachMap->m_oStatistics.Index.m_nCreates++;
+  
   Word* pWord = Word::pToWord(this);
   
   m_iIndexNo   = -1;
@@ -108,7 +93,47 @@ Index::~Index(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
+  gpAttachMap->m_oStatistics.Index.m_nDrops++;
+  
   vTidyUp();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump data                                                                  */
+/*----------------------------------------------------------------------------*/
+void Index::vDump(eCN eClass, Object* pObject, Stz* aTab)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* finalize                                                                   */
+/*----------------------------------------------------------------------------*/
+void Index::vFinalize(eCN eClass, Object* pObject)
+{
+  ASSERT(eClass == CN_INDEX);
+  ASSERT(pObject->eClass() == CN_INDEX);
+  
+  Index* pIndex = reinterpret_cast<Index*>(pObject);
+  ASSERT(pIndex->bWordBody());
+  
+  pIndex->vTidyUp();
+}
+
+/*----------------------------------------------------------------------------*/
+/* monitor portrait                                                           */
+/*----------------------------------------------------------------------------*/
+void Index::vMonitorPortrait(s48K& sPortrait)
+{
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  
+  sPortrait.vSprint("Index: creates %lld drops %lld\n"_Stz,
+                    pStats->Index.m_nCreates,
+                    pStats->Index.m_nDrops
+                    );
 }
 
 /*----------------------------------------------------------------------------*/

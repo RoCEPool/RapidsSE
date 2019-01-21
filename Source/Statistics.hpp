@@ -51,6 +51,11 @@ namespace Measurement
   } File;
 
   struct {
+    i8 m_nCreates;
+    i8 m_nDrops;
+  } Index;
+  
+  struct {
     i8 m_iaCopy[CN_ENUMS];
     i8 m_iaMove[CN_ENUMS];
     i8 m_iaScribble[CN_ENUMS];
