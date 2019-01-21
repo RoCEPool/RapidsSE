@@ -33,11 +33,12 @@ namespace DBobjects
     void* operator new(size_t, IndexTree* pIndexTree);
     void  operator delete(void*);
     
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void vFinalize(eCN eClass, Object* pObject);
-    
     IndexTree(Index* pIndex, i8 iPartitionNo);
     ~IndexTree(void) noexcept(false);
+  
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static void vFinalize(eCN eClass, Object* pObject);
+    static void vMonitorPortrait(s48K& sPortrait);
   
     Stz*         pAnalyze(void);
     

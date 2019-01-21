@@ -56,6 +56,13 @@ namespace Measurement
   } Index;
   
   struct {
+    i8 m_nAppendBuffers;
+    i8 m_nAppendRows;
+    i8 m_nBuffersPurged;
+
+  } IndexTree;
+  
+  struct {
     i8 m_iaCopy[CN_ENUMS];
     i8 m_iaMove[CN_ENUMS];
     i8 m_iaScribble[CN_ENUMS];
