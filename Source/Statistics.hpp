@@ -84,7 +84,7 @@ namespace Measurement
     i8 m_nTimeOuts;
     i8 m_nUnblocks;
     i8 m_nWaits;
-  } Semaphore;
+  } Mutex;
   
   struct {
     i8 m_nAccepts;

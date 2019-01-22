@@ -85,10 +85,10 @@ namespace Threads
     
     Thread* pFindIdleThread(void);
 
-    bool bIsReadyQueue(i8 i_RRqueue);
-    bool bIsReadySendQueue(i8 i_RRqueue);
-    bool bIsReadySlotQueue(i8 i_RRqueue);
-    bool bIsSleepingQueue(i8 i_RRqueue);
+    bool bIsReadyQueue(i8 i_QueueRR);
+    bool bIsReadySendQueue(i8 i_QueueRR);
+    bool bIsReadySlotQueue(i8 i_QueueRR);
+    bool bIsSleepingQueue(i8 i_QueueRR);
   
     void vMonitorPortrait(s48K& sPortrait);
     void vMonitorThread(s48K& sPortrait);
@@ -124,8 +124,8 @@ namespace Threads
     i8 nTasksSleeping(void);
     i8 nTasksWaiting(void);
   
-    i8 i_ToReadySendQueue(i8 i_RRqueue);
-    i8 i_ToReadySlotQueue(i8 i_RRqueue);
+    i8 i_ToReadySendQueue(i8 i_QueueRR);
+    i8 i_ToReadySlotQueue(i8 i_QueueRR);
   
     Footer* aFooter(void);
   };

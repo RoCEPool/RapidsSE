@@ -115,8 +115,8 @@ void Queues::vThreadsReport()
            aTC[pThread->m_eThreadState],
            pThread->m_pPosixThread->m_iOpSysThreadId,
            pThread->m_pPosixThread->m_iPosixThreadId,
-           pThread->m_iLastRRqueue,
-           pThread->m_iStartRRqueue,
+           pThread->m_iLastQueueRR,
+           pThread->m_iStartQueueRR,
            
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : ""
            );
@@ -535,22 +535,22 @@ Thread* Queues::pFindIdleThread(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* is iRRqueue refering to the ready queue ?                                  */
+/* is iQueueRR refering to the ready queue ?                                  */
 /*----------------------------------------------------------------------------*/
-bool Queues::bIsReadyQueue(i8 i_RRqueue)
+bool Queues::bIsReadyQueue(i8 i_QueueRR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  if (i_RRqueue == QR_READY_QUEUE)
+  if (i_QueueRR == QR_READY_QUEUE)
     return true;
   
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is iRRqueue refering to a ready send queue ?                               */
+/* is iQueueRR refering to a ready send queue ?                               */
 /*----------------------------------------------------------------------------*/
-bool Queues::bIsReadySendQueue(i8 i_RRqueue)
+bool Queues::bIsReadySendQueue(i8 i_QueueRR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
 
@@ -561,41 +561,41 @@ bool Queues::bIsReadySendQueue(i8 i_RRqueue)
 
       As an example, let's say nSlots = 2, nNodes = 3
 
-      .: an iRRqueue of 2 .. 4 refers to a send queue
+      .: an iQueueRR of 2 .. 4 refers to a send queue
 
       which rebased (by subtracting nSlots) is 0 .. 2
    
    */
   
-  if (i_RRqueue >= gxArguments.m_nSlots &&
-      i_RRqueue <  gxArguments.m_nSlots + gxArguments.m_nNodes)
+  if (i_QueueRR >= gxArguments.m_nSlots &&
+      i_QueueRR <  gxArguments.m_nSlots + gxArguments.m_nNodes)
     return true;
   
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is iRRqueue refering to a ready slot queue ?                               */
+/* is iQueueRR refering to a ready slot queue ?                               */
 /*----------------------------------------------------------------------------*/
-bool Queues::bIsReadySlotQueue(i8 i_RRqueue)
+bool Queues::bIsReadySlotQueue(i8 i_QueueRR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  if (i_RRqueue >= QR_READY_QUEUE + 1 &&
-      i_RRqueue <  gxArguments.m_nSlots)
+  if (i_QueueRR >= QR_READY_QUEUE + 1 &&
+      i_QueueRR <  gxArguments.m_nSlots)
     return true;
   
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* is iRRqueue refering to the sleeping queue ?                               */
+/* is iQueueRR refering to the sleeping queue ?                               */
 /*----------------------------------------------------------------------------*/
-bool Queues::bIsSleepingQueue(i8 i_RRqueue)
+bool Queues::bIsSleepingQueue(i8 i_QueueRR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  if (i_RRqueue == QR_SLEEPING_QUEUE)
+  if (i_QueueRR == QR_SLEEPING_QUEUE)
     return true;
   
   return false;
@@ -691,28 +691,28 @@ bool Queues::bPopQueuedTask(Task** ppPoppedTask, Thread* pCallingThread)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inspect the queues
     
-    if (pQueues->bIsSleepingQueue(pCallingThread->m_iLastRRqueue)) {
+    if (pQueues->bIsSleepingQueue(pCallingThread->m_iLastQueueRR)) {
       if ( ! (pPoppedTask = pPopSleepingQueue(pCallingThread)) )
         continue;
       *ppPoppedTask = pPoppedTask;
       return true;
     }
     
-    if (pQueues->bIsReadyQueue(pCallingThread->m_iLastRRqueue)) {
+    if (pQueues->bIsReadyQueue(pCallingThread->m_iLastQueueRR)) {
       if ( ! (pPoppedTask = pPopReadyQueue(pCallingThread)) )
         continue;
       *ppPoppedTask = pPoppedTask;
       return true;
     }
     
-    if (pQueues->bIsReadySlotQueue(pCallingThread->m_iLastRRqueue)) {
+    if (pQueues->bIsReadySlotQueue(pCallingThread->m_iLastQueueRR)) {
       if ( ! (pPoppedTask = pPopReadySlotQueue(pCallingThread)) )
         continue;
       *ppPoppedTask = pPoppedTask;
       return true;
     }
     
-    if (pQueues->bIsReadySendQueue(pCallingThread->m_iLastRRqueue)) {
+    if (pQueues->bIsReadySendQueue(pCallingThread->m_iLastQueueRR)) {
       if ( ! (pPoppedTask = pPopReadySendQueue(pCallingThread)) )
         continue;
       *ppPoppedTask = pPoppedTask;
@@ -783,7 +783,7 @@ Task* Queues::pPopReadySendQueue(Thread* pCallingThread)
   
   Task* pTask;
   
-  i8 i_Queue = i_ToReadySendQueue(pCallingThread->m_iLastRRqueue);
+  i8 i_Queue = i_ToReadySendQueue(pCallingThread->m_iLastQueueRR);
   
   TaskList* pReadySendQueue = m_pReadySendQueues[i_Queue];
   
@@ -832,7 +832,7 @@ Task* Queues::pPopReadySlotQueue(Thread* pCallingThread)
   
   Task* pTask;
   
-  i8 i_Queue = i_ToReadySlotQueue(pCallingThread->m_iLastRRqueue);
+  i8 i_Queue = i_ToReadySlotQueue(pCallingThread->m_iLastQueueRR);
   
   TaskList* pReadySlotQueue = m_pReadySlotQueues[i_Queue];
   
@@ -1334,9 +1334,9 @@ i8 Queues::nTasksWaiting(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert iRRqueue to a ready send queue subscript                           */
+/* convert iQueueRR to a ready send queue subscript                           */
 /*----------------------------------------------------------------------------*/
-i8 Queues::i_ToReadySendQueue(i8 i_RRqueue)
+i8 Queues::i_ToReadySendQueue(i8 i_QueueRR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
@@ -1347,13 +1347,13 @@ i8 Queues::i_ToReadySendQueue(i8 i_RRqueue)
 
       As an example, let's say nSlots = 2, nNodes = 3
 
-      .: an iRRqueue of 2 .. 4 refers to a send queue
+      .: an iQueueRR of 2 .. 4 refers to a send queue
 
       which rebased (by subtracting nSlots) is 0 .. 2
    
    */
   
-  i8 i_ReadySendQueue = i_RRqueue - gxArguments.m_nSlots;
+  i8 i_ReadySendQueue = i_QueueRR - gxArguments.m_nSlots;
   
   RASSERT(i_ReadySendQueue >= 0 and i_ReadySendQueue < gxArguments.m_nNodes);
   
@@ -1361,13 +1361,13 @@ i8 Queues::i_ToReadySendQueue(i8 i_RRqueue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert iRRqueue to a ready slot queue subscript                           */
+/* convert iQueueRR to a ready slot queue subscript                           */
 /*----------------------------------------------------------------------------*/
-i8 Queues::i_ToReadySlotQueue(i8 i_RRqueue)
+i8 Queues::i_ToReadySlotQueue(i8 i_QueueRR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  i8 i_ReadySlotQueue = i_RRqueue;
+  i8 i_ReadySlotQueue = i_QueueRR;
   
   RASSERT(i_ReadySlotQueue >= 0 and i_ReadySlotQueue < gxArguments.m_nSlots);
   

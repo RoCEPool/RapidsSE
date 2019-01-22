@@ -475,7 +475,7 @@ i8 giClassSize[]
   
   /*    */ sizeof(SchemaTest),         // CN_SCHEMATEST
   /*113 */ sizeof(SelCursor),          // CN_SELCURSOR
-  /*114 */ sizeof(Semaphore),          // CN_SEMAPHORE
+  /*114 */ sizeof(Mutex),              // CN_SEMAPHORE
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
   /*    */ sizeof(Session),            // CN_SESSION
   /*116 */ sizeof(Since),              // CN_SINCE

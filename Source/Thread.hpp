@@ -75,15 +75,15 @@ namespace Threads
     Lock         m_oLock;        // thread lock
     eTC          m_eThreadState; // thread state
     PosixThread* m_pPosixThread; // its posix structure
-    Semaphore*   m_pSemaphore;   // this threads semaphore
+    Mutex*       m_pMutex;       // this threads mutex
     Task*        m_pTask;        // task current being executed
                                  //   note that while task is being exected
                                  //   its not in task set
   
-    i8           m_iLastRRqueue; // last round robin queue this thread
+    i8           m_iLastQueueRR; // last round robin queue this thread
                                  // had popped a task from
   
-    i8           m_iStartRRqueue; // last RR queue we started with
+    i8           m_iStartQueueRR; // last RR queue we started with
   
     eCN          m_eDedicated;    // thread is dedicated to a job?
 
@@ -113,8 +113,8 @@ namespace Threads
     bool bGrabLock(void);
     bool bIsIdle(void);
     bool bIsTLSThread(void);
-    i8   iLastRRqueue(void);
-    void vLastRRqueue(i8 iLastRRqueue);
+    i8   iLastQueueRR(void);
+    void vLastQueueRR(i8 iLastQueueRR);
     void vLoop(void);
     void vReExecuteTask(Task* pTask);
     bool bRRnext(void);

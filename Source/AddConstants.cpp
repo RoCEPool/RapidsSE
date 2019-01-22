@@ -523,7 +523,7 @@ void Axioms::vAddConstants(void)
   /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));
 
   /*    */ vAddConstant("SIZEOF_SELCURSOR"_Stz,    sizeof(SelCursor));
-  /*    */ vAddConstant("SIZEOF_SEMAPHORE"_Stz,    sizeof(Semaphore));
+  /*    */ vAddConstant("SIZEOF_SEMAPHORE"_Stz,    sizeof(Mutex));
   /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
   /* 47 */ vAddConstant("SIZEOF_SINCE"_Stz,        sizeof(Since));
   /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipListNL));

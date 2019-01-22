@@ -71,14 +71,14 @@ Thread::Thread(void)
   m_oLock.vInitLock(LK_THREAD);
   m_eThreadState = TC_NONE;
   m_pPosixThread = new PosixThread;
-  m_pSemaphore   = new Semaphore;
+  m_pMutex   = new Mutex;
 
   m_pTask       = nullptr;
 
   Thread* pThread = this;
   
-  m_iLastRRqueue  = QR_SLEEPING_QUEUE - 1;
-  m_iStartRRqueue = QR_NONE;
+  m_iLastQueueRR  = QR_SLEEPING_QUEUE - 1;
+  m_iStartQueueRR = QR_NONE;
   
   m_eDedicated = CN_NONE;
   
@@ -95,7 +95,7 @@ Thread::~Thread(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   delete m_pPosixThread;
-  delete m_pSemaphore;
+  delete m_pMutex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -336,9 +336,9 @@ bool Thread::bGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool b = m_pSemaphore->boLockMutexLock();
+  bool b = m_pMutex->boLockMutexLock();
 
-  ASSERT( ! b || m_pSemaphore->bMutexIsLocked() );
+  ASSERT( ! b || m_pMutex->bMutexIsLocked() );
   
   return b;
 }
@@ -357,7 +357,7 @@ void Thread::vHandlerTimedWait(void)
   ASSERT(! m_pTask);
   
   // this thread's mutex should be locked
-  ASSERT(m_pSemaphore->bMutexIsLocked());
+  ASSERT(m_pMutex->bMutexIsLocked());
   
   m_eThreadState = TC_IDLE;
   
@@ -370,7 +370,7 @@ void Thread::vHandlerTimedWait(void)
   // under mutex lock
   
   // this thread's mutex should be locked
-  ASSERT(m_pSemaphore->bMutexIsLocked());
+  ASSERT(m_pMutex->bMutexIsLocked());
   
   // will have a task
   //ASSERT(*m_pTask);
@@ -409,21 +409,21 @@ bool Thread::bIsTLSThread(void)
 /*----------------------------------------------------------------------------*/
 /* get last round robin queue                                                 */
 /*----------------------------------------------------------------------------*/
-i8 Thread::iLastRRqueue(void)
+i8 Thread::iLastQueueRR(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return m_iLastRRqueue;
+  return m_iLastQueueRR;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set last round robin queue                                                 */
 /*----------------------------------------------------------------------------*/
-void Thread::vLastRRqueue(i8 iLastRRqueue)
+void Thread::vLastQueueRR(i8 iLastQueueRR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_iLastRRqueue = iLastRRqueue;
+  m_iLastQueueRR = iLastQueueRR;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -475,16 +475,16 @@ bool Thread::bRRnext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_iLastRRqueue++;
+  m_iLastQueueRR++;
   
-  if (m_iLastRRqueue > gpAttachMap->m_pQueues->i_QueueLast())
-    m_iLastRRqueue = gpAttachMap->m_pQueues->i_QueueFirst();
+  if (m_iLastQueueRR > gpAttachMap->m_pQueues->i_QueueLast())
+    m_iLastQueueRR = gpAttachMap->m_pQueues->i_QueueFirst();
   
-  if (m_iLastRRqueue == m_iStartRRqueue)
+  if (m_iLastQueueRR == m_iStartQueueRR)
     return false; // end of round robin sequence
   else {
-    if (m_iLastRRqueue == gpAttachMap->m_pQueues->i_QueueFirst())
-      m_iStartRRqueue = gpAttachMap->m_pQueues->i_QueueFirst();
+    if (m_iLastQueueRR == gpAttachMap->m_pQueues->i_QueueFirst())
+      m_iStartQueueRR = gpAttachMap->m_pQueues->i_QueueFirst();
     return true;  // have advanced to next queue
   }
 }
@@ -496,7 +496,7 @@ void Thread::vRRstart(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
  
-  m_iStartRRqueue = m_iLastRRqueue - 1;
+  m_iStartQueueRR = m_iLastQueueRR - 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -602,7 +602,7 @@ void Thread::vSignalThread(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   ASSERT(bMutexIsLocked());
-  m_pSemaphore->vSignalThread();
+  m_pMutex->vSignalThread();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -612,7 +612,7 @@ void Thread::vCondBroadcast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pSemaphore->vCondBroadcast();
+  m_pMutex->vCondBroadcast();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -622,7 +622,7 @@ void Thread::vCondSignal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pSemaphore->vCondSignal();
+  m_pMutex->vCondSignal();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -632,7 +632,7 @@ void Thread::vCondWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pSemaphore->vCondWait_Mutex();
+  m_pMutex->vCondWait_Mutex();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -642,7 +642,7 @@ void Thread::vCondTimedWait(i8 iMicroSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pSemaphore->vCondTimedWait(iMicroSeconds);
+  m_pMutex->vCondTimedWait(iMicroSeconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -652,7 +652,7 @@ bool Thread::bMutexIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool b = m_pSemaphore->bMutexIsLocked();
+  bool b = m_pMutex->bMutexIsLocked();
   
   return b;
 }
@@ -664,9 +664,9 @@ void Thread::voLockMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pSemaphore->voLockMutexLock();
+  m_pMutex->voLockMutexLock();
   
-  ASSERT(m_pSemaphore->bMutexIsLocked());
+  ASSERT(m_pMutex->bMutexIsLocked());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -676,9 +676,9 @@ bool Thread::boLockMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool b = m_pSemaphore->boLockMutexLock();
+  bool b = m_pMutex->boLockMutexLock();
   
-  ASSERT( ! b || m_pSemaphore->bMutexIsLocked() );
+  ASSERT( ! b || m_pMutex->bMutexIsLocked() );
   
   return b;
 }
@@ -690,9 +690,9 @@ void Thread::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  ASSERT(m_pSemaphore->bMutexIsLocked());
+  ASSERT(m_pMutex->bMutexIsLocked());
   
-  m_pSemaphore->vMutexUnlock();
+  m_pMutex->vMutexUnlock();
 }
 
 /*----------------------------------------------------------------------------*/

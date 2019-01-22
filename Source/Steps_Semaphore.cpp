@@ -25,9 +25,9 @@ ENTRY("vSemaphoreInit"_Stz);
   if ( ! mpTask->m_pDataStack->bPop(pPtrSemaphore) )
     THROW_INVALID_DSTACK("Semaphore.init"_Stz);
   
-  Semaphore* pSemaphore = _pSemaphore(pPtrSemaphore);
+  Mutex* pSemaphore = _pMutex(pPtrSemaphore);
   
-  new(pSemaphore) Semaphore;
+  new(pSemaphore) Mutex;
   
   EXIT();
 }
