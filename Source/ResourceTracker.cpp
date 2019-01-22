@@ -19,6 +19,7 @@ ResourceTracker::ResourceTracker(void)
   m_ziDirOpen.vCheckInit();
   m_ziFileOpen.vCheckInit();
   m_ziMallocAmt.vCheckInit();
+  m_ziMutexOpen.vCheckInit();
   m_ziShmOpen.vCheckInit();
   m_ziSocketOpen.vCheckInit();
   m_ziThreadOpen.vCheckInit();
@@ -73,6 +74,15 @@ void ResourceTracker::vDecFileOpen(void)
 /*----------------------------------------------------------------------------*/
 /* decrement                                                                  */
 /*----------------------------------------------------------------------------*/
+void ResourceTracker::vDecMutexOpen(void)
+{
+  i8 iMutexOpen = --m_ziMutexOpen;
+  RASSERT(iMutexOpen >= 0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement                                                                  */
+/*----------------------------------------------------------------------------*/
 void ResourceTracker::vDecShmOpen(void)
 {
   i8 iShmOpen = --m_ziShmOpen;
@@ -113,6 +123,14 @@ void ResourceTracker::vIncFileOpen(void)
 {
   i8 iFileOpen = ++m_ziFileOpen;
   RASSERT(! gxArguments.m_nLimitFile || iFileOpen <= gxArguments.m_nLimitFile);
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment                                                                  */
+/*----------------------------------------------------------------------------*/
+void ResourceTracker::vIncMutexOpen(void)
+{
+  ++m_ziMutexOpen;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,6 +193,16 @@ i8 ResourceTracker::nMallocAmt(void)
 /*----------------------------------------------------------------------------*/
 /* get                                                                        */
 /*----------------------------------------------------------------------------*/
+i8 ResourceTracker::nMutexOpen(void)
+{
+  i8 iMutexOpen = *m_ziMutexOpen;
+  
+  return iMutexOpen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get                                                                        */
+/*----------------------------------------------------------------------------*/
 i8 ResourceTracker::nShmOpen(void)
 {
   i8 iShmOpen = *m_ziShmOpen;
@@ -212,11 +240,12 @@ void ResourceTracker::vMonitorPortrait(s48K& sPortrait)
   s = ""_Stz;
 
   sPortrait.vSprintCat("Resources: "_Stz);
-  sPortrait.vSprintCat("dir %lld file %lld malloc %lld "
+  sPortrait.vSprintCat("dir %lld file %lld malloc %lldB mutex %lld "
                        "shm %lld socket %lld thread %lld\n"_Stz,
                        nDirOpen(),
                        nFileOpen(),
                        nMallocAmt(),
+                       nMutexOpen(),
                        nShmOpen(),
                        nSocketOpen(),
                        nThreadOpen());
@@ -233,8 +262,10 @@ void ResourceTracker::vReport(void)
          nDirOpen(),gxArguments.m_nLimitDir);
   vTrace("  file %lld (limit %lld)\n"_Stz,
          nFileOpen(),gxArguments.m_nLimitFile);
-  vTrace("  malloc %lld (limit %lld)\n"_Stz,
+  vTrace("  malloc %lldB (limit %lldB)\n"_Stz,
          nMallocAmt(),gxArguments.m_nLimitMalloc);
+  vTrace("  mutex %lld\n"_Stz,
+         nMutexOpen());
   vTrace("  shm %lld (limit %lld)\n"_Stz,
          nShmOpen(),gxArguments.m_nLimitShm);
   vTrace("  socket %lld (limit %lld)\n"_Stz,

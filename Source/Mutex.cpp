@@ -7,6 +7,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
+extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -86,6 +87,9 @@ Mutex::Mutex()
   MemLib::vZero(&m_xCond,sizeof(m_xCond),CN_MUTEX);
   pthread_cond_init(&m_xCond, &m_xCondAttr);
   
+  gxResourceTracker.vIncMutexOpen();
+  gpAttachMap->m_oStatistics.Mutex.m_nInits++;
+
   _checkInitialised_(CN_MUTEX);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
@@ -101,6 +105,9 @@ Mutex::~Mutex(void) noexcept(false)
   
   pthread_cond_destroy(&m_xCond);
   pthread_condattr_destroy(&m_xCondAttr);
+  
+  gxResourceTracker.vDecMutexOpen();
+  gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,10 +120,12 @@ Mutex::~Mutex(void) noexcept(false)
 void Mutex::vMonitorPortrait(s48K& sPortrait)
 {
   Statistics* pStats = &gpAttachMap->m_oStatistics;
-  sPortrait.vSprint("Mutex: broadcast %lld signals %lld "
-                                "waits %lld timedwaits %lld "
-                                "unblocks %lld timeouts %lld\n"_Stz,
+  sPortrait.vSprint("Mutex: broadcast %lld destroys %lld inits %lld "
+                    "signals %lld waits %lld timedwaits %lld "
+                    "unblocks %lld timeouts %lld\n"_Stz,
                     pStats->Mutex.m_nBroadcasts,
+                    pStats->Mutex.m_nDestroys,
+                    pStats->Mutex.m_nInits,
                     pStats->Mutex.m_nSignals,
                     pStats->Mutex.m_nWaits,
                     pStats->Mutex.m_nTimedWaits,

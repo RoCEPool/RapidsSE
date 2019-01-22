@@ -79,6 +79,8 @@ namespace Measurement
     
   struct {
     i8 m_nBroadcasts;
+    i8 m_nDestroys;
+    i8 m_nInits;
     i8 m_nSignals;
     i8 m_nTimedWaits;
     i8 m_nTimeOuts;
