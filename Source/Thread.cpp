@@ -108,7 +108,7 @@ void* Thread::aEntryPoint(void* pArg)
   pThread->m_aStackBase = PosixThread::aStackBase();
   pThread->m_iStackSize = PosixThread::iStackSize();
 
-  pThread->vThreadState(TC_IDLE);
+  pThread->m_eThreadState = TC_IDLE;
   
   gpAttachMap->m_pQueues->vAddThread(pThread);
   
@@ -160,7 +160,7 @@ void* Thread::aEntryPointDummy(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  pThread->vThreadState(TC_IDLE);
+  pThread->m_eThreadState = TC_IDLE;
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::pDummyEntryPoint %p %lld\n"_Stz,
@@ -218,11 +218,11 @@ void Thread::vLoop(void)
       // wait upto 5ms to be given a signal
       //vHandlerTimedWait();
       m_eThreadState = TC_IDLE;
-      vCondWait_Timed(5000); // while waiting the mutex is dropped
+      m_pMutex->vCondWait_Timed(5000); // while waiting the mutex is dropped
       m_eThreadState = TC_RUNNING;
 
       // attempt again if no task
-      if ( ! m_pTask)
+      if (! m_pTask)
         continue;
     }
     
@@ -379,11 +379,11 @@ bool Thread::bRRnext(void)
   
   if (m_iLastQueueRR == m_iStartQueueRR)
     return false; // end of round robin sequence
-  else {
-    if (m_iLastQueueRR == gpAttachMap->m_pQueues->i_QueueFirst())
-      m_iStartQueueRR = gpAttachMap->m_pQueues->i_QueueFirst();
-    return true;  // have advanced to next queue
-  }
+  
+  if (m_iLastQueueRR == gpAttachMap->m_pQueues->i_QueueFirst())
+    m_iStartQueueRR = gpAttachMap->m_pQueues->i_QueueFirst();
+  
+  return true;  // have advanced to next queue
 }
 
 /*----------------------------------------------------------------------------*/
@@ -438,16 +438,6 @@ eTC Thread::eThreadState(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   return m_eThreadState;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set the thread state                                                       */
-/*----------------------------------------------------------------------------*/
-void Thread::vThreadState(eTC eThreadState)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_eThreadState = eThreadState;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -509,50 +499,6 @@ bool Thread::bGrabIfIdle(void)
   return false;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/*-- Mutex -------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* condition broadcast                                                        */
-/*----------------------------------------------------------------------------*/
-void Thread::vCondBroadcast(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_pMutex->vCondBroadcast();
-}
-
-/*----------------------------------------------------------------------------*/
-/* condition signal                                                           */
-/*----------------------------------------------------------------------------*/
-void Thread::vCondSignal(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_pMutex->vCondSignal();
-}
-
-/*----------------------------------------------------------------------------*/
-/* condition wait (thread to wait will be calling thread)                     */
-/*----------------------------------------------------------------------------*/
-void Thread::vCondWait(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_pMutex->vCondWait();
-}
-
-/*----------------------------------------------------------------------------*/
-/* this thread waits for signal (should be calling thread)                    */
-/*----------------------------------------------------------------------------*/
-void Thread::vCondWait_Timed(i8 iMicroSeconds)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_pMutex->vCondWait_Timed(iMicroSeconds);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

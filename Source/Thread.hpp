@@ -71,7 +71,6 @@ namespace Threads
     void vSpawnDummyThread(void);
     i8   iThreadNo(void);
     eTC  eThreadState(void);
-    void vThreadState(eTC eThreadState);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -83,10 +82,6 @@ namespace Threads
     bool  bGrabIfIdle(void);
   
   private:
-    void  vCondBroadcast(void);
-    void  vCondSignal(void);
-    void  vCondWait(void);
-    void  vCondWait_Timed(i8 iNanoSeconds);
 
     Footer* aFooter(void);
   };
