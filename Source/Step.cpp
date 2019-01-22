@@ -140,7 +140,6 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Session();
   Step::vAddSteps_SelCursor();
-  Step::vAddSteps_Semaphore();
   Step::vAddSteps_Shell();
   Step::vAddSteps_Slots();
   Step::vAddSteps_Socket();

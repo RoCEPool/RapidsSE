@@ -871,9 +871,6 @@
   static void vSelCursorTableFetch(Tasks::MP_Task mpTask);
   static void vSelCursorTableStore(Tasks::MP_Task mpTask);
 
-  // semaphore
-  static void vSemaphoreInit(Tasks::MP_Task mpTask);
-
   // shell
   static void vShellExecute(Tasks::MP_Task mpTask);
 
