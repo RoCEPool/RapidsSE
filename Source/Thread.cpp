@@ -206,8 +206,8 @@ void Thread::vLoop(void)
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
   
-  vMutexLock();
-  
+  m_pMutex->vMutexLock();
+
   ++gpAttachMap->m_ziThreads;
   
   for (;;) {
@@ -494,18 +494,18 @@ bool Thread::bGrabIfIdle(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   // attempt to lock threads mutex
-  if (! bMutexLock())
+  if (! m_pMutex->bMutexLock())
     return false;
   
-  // if this thread idle return with mutex locked
+  // if this thread is idle return with mutex locked
   if (TC_IDLE == m_eThreadState) {
     m_eThreadState = TC_RUNNING;
     return true;
   }
   
   // thread is not idle, so unlock mutex
-  vMutexUnlock();
-  
+  m_pMutex->vMutexUnlock();
+
   return false;
 }
 
@@ -552,43 +552,6 @@ void Thread::vCondWait_Timed(i8 iMicroSeconds)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pMutex->vCondWait_Timed(iMicroSeconds);
-}
-
-/*----------------------------------------------------------------------------*/
-/* lock a threads mutex (blocking)                                            */
-/*----------------------------------------------------------------------------*/
-void Thread::vMutexLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  m_pMutex->vMutexLock();
-  ASSERT(m_pMutex->bMutexIsLocked());
-}
-
-/*----------------------------------------------------------------------------*/
-/* try and lock a threads mutex (non-blocking)                                */
-/*----------------------------------------------------------------------------*/
-bool Thread::bMutexLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  bool b = m_pMutex->bMutexLock();
-  
-  ASSERT( ! b || m_pMutex->bMutexIsLocked() );
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* unlock a threads mutex                                                     */
-/*----------------------------------------------------------------------------*/
-void Thread::vMutexUnlock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  ASSERT(m_pMutex->bMutexIsLocked());
-  
-  m_pMutex->vMutexUnlock();
 }
 
 /*----------------------------------------------------------------------------*/
