@@ -68,7 +68,6 @@ Thread::Thread(void)
   m_aStackBase   = nullptr;
   m_iStackSize   = 0;
   
-  m_oLock.vInitLock(LK_THREAD);
   m_eThreadState = TC_NONE;
   m_pPosixThread = new PosixThread;
   m_pMutex   = new Mutex;

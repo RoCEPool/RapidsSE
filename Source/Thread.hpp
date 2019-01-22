@@ -31,7 +31,6 @@ namespace Threads
     void*        m_aStackBase;   // stack base address
     i8           m_iStackSize;   // stack size
   
-    Lock         m_oLock;        // thread lock
     eTC          m_eThreadState; // thread state
     PosixThread* m_pPosixThread; // its posix structure
     Mutex*       m_pMutex;       // this threads mutex
