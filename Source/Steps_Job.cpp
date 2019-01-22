@@ -1415,7 +1415,7 @@ void Step::vJobSignalConnector(MP_Task mpTask)
   RASSERT( _bIsValidJob(pJob->eClass()) );
 
   // trash the cond variable
-  //MemLib::vSet(&pJob->m_xThreadCond, 0xEB, sizeof(pthread_cond_t),CN_SEMAPHORE);
+  //MemLib::vSet(&pJob->m_xThreadCond, 0xEB, sizeof(pthread_cond_t),CN_MUTEX);
 
   rCode = pthread_cond_signal(&pJob->m_xThreadCond);
   if (0 != rCode)

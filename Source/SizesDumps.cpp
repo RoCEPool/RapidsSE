@@ -184,7 +184,8 @@ pDUMPFUN *gpDump[]
   
   /* 73 */ &Heap::vDump,            // CN_MEDIUMPERSISTENT
   /* 74 */ &Heap::vDump,            // CN_MEDIUMTRANSIENT
-  
+  /*114 */ &Dump::vUndefined,       // CN_MUTEX
+
   /* 75 */ &Node::vDump,            // CN_NODE
   /*    */ &Dump::vUndefined,       // CN_NOW
 
@@ -219,7 +220,6 @@ pDUMPFUN *gpDump[]
   
   /*    */ &Dump::vUndefined,       // CN_SCHEMATEST
   /*113 */ &Dump::vUndefined,       // CN_SELCURSOR
-  /*114 */ &Dump::vUndefined,       // CN_SEMAPHORE
   /*115 */ &SePrompt::vDump,        // CN_SEPROMPT
   /*    */ &Session::vDump,         // CN_SESSION
   /*116 */ &Dump::vUndefined,       // CN_SINCE
@@ -441,7 +441,8 @@ i8 giClassSize[]
   
   /* 73 */ sizeof(Heap), // correct    // CN_MEDIUMPERSISTENT
   /* 74 */ sizeof(Heap), // correct    // CN_MEDIUMTRANSIENT
-  
+  /*114 */ sizeof(Mutex),              // CN_MUTEX
+
   /* 75 */ sizeof(Node),               // CN_NODE
   /*    */ sizeof(Now),                // CN_NOW
 
@@ -475,7 +476,6 @@ i8 giClassSize[]
   
   /*    */ sizeof(SchemaTest),         // CN_SCHEMATEST
   /*113 */ sizeof(SelCursor),          // CN_SELCURSOR
-  /*114 */ sizeof(Mutex),              // CN_SEMAPHORE
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
   /*    */ sizeof(Session),            // CN_SESSION
   /*116 */ sizeof(Since),              // CN_SINCE
@@ -697,7 +697,8 @@ eHT geWhichHeap[]
   
   /* 73 */ HT_INVALID,           // CN_MEDIUMPERSISTENT
   /* 74 */ HT_INVALID,           // CN_MEDIUMTRANSIENT
-  
+  /*114 */ HT_TRANSIENT_SMALL,   // CN_MUTEX
+
   /* 75 */ HT_TRANSIENT_SMALL,   // CN_NODE
   /*    */ HT_TRANSIENT_SMALL,   // CN_NOW
 
@@ -731,7 +732,6 @@ eHT geWhichHeap[]
   
   /*107 */ HT_TRANSIENT_LARGE,   // CN_SCHEMATEST
   /*113 */ HT_TRANSIENT_SMALL,   // CN_SELCURSOR
-  /*114 */ HT_TRANSIENT_SMALL,   // CN_SEMAPHORE
   /*115 */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_SESSION
   /*116 */ HT_INVALID,           // CN_SINCE

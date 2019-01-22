@@ -181,7 +181,8 @@ enum eCN : u2 // Class Number
   
   /* 150 0x96      232B Heap:I */ CN_MEDIUMPERSISTENT,
   /* 151 0x97      232B Heap:I */ CN_MEDIUMTRANSIENT,
-  
+  /* 180 0xB4      160B Heap:S */ CN_MUTEX,
+
   /* 152 0x98      168B Heap:S */ CN_NODE,
   /* 153 0x99       88B Heap:S */ CN_NOW,
   
@@ -215,7 +216,6 @@ enum eCN : u2 // Class Number
   
   /* 178 0xB2    50208B Heap:L */ CN_SCHEMATEST,
   /* 179 0xB3       56B Heap:S */ CN_SELCURSOR,
-  /* 180 0xB4      160B Heap:S */ CN_SEMAPHORE,
   /* 181 0xB5       72B Heap:L */ CN_SEPROMPT,
   /* 182 0xB6    48288B Heap:M */ CN_SESSION,
   /* 183 0xB7       80B Heap:I */ CN_SINCE,
@@ -433,7 +433,8 @@ static Stz* aCN[]
   
   /* 150 0x96 */ "MEDIUMPERSISTENT"_Stz,    // CN_MEDIUMPERSISTENT
   /* 151 0x97 */ "MEDIUMTRANSIENT"_Stz,     // CN_MEDIUMTRANSIENT
-  
+  /* 180 0xB4 */ "MUTEX"_Stz,               // CN_MUTEX
+
   /* 152 0x98 */ "NODE"_Stz,                // CN_NODE
   /* 153 0x99 */ "NOW"_Stz,                 // CN_NOW
   
@@ -467,7 +468,6 @@ static Stz* aCN[]
   
   /* 178 0xB2 */ "SCHEMATEST"_Stz,          // CN_SCHEMATEST
   /* 179 0xB3 */ "SELCURSOR"_Stz,           // CN_SELCURSOR
-  /* 180 0xB4 */ "SEMAPHORE"_Stz,           // CN_SEMAPHORE
   /* 181 0xB5 */ "SEPROMPT"_Stz,            // CN_SEPROMPT
   /* 182 0xB6 */ "SESSION"_Stz,             // CN_SESSION
   /* 183 0xB7 */ "SINCE"_Stz,               // CN_SINCE

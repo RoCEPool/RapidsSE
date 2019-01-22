@@ -180,7 +180,8 @@ pFINALIZE *gpFinalize[]
   
   /* 73 */ &Finalize::vUndefined,         // CN_MEDIUMPERSISTENT
   /* 74 */ &Finalize::vUndefined,         // CN_MEDIUMTRANSIENT
-  
+  /*114 */ &Finalize::vUndefined,         // CN_MUTEX
+
   /* 75 */ &Finalize::vUndefined,         // CN_NODE
   /*    */ &Finalize::vUndefined,         // CN_NOW
 
@@ -214,7 +215,6 @@ pFINALIZE *gpFinalize[]
   
   /*    */ &Finalize::vUndefined,         // CN_SCHEMATEST
   /*113 */ &SelCursor::vFinalize,         // CN_SELCURSOR
-  /*114 */ &Finalize::vUndefined,         // CN_SEMAPHORE
   /*115 */ &Finalize::vUndefined,         // CN_SEPROMPT
   /*    */ &Finalize::vUndefined,         // CN_SESSION
   /*116 */ &Finalize::vUndefined,         // CN_SINCE

@@ -161,7 +161,7 @@ void Job::vInit(void)
   m_eState = JS_RUNNING;
   
   // initialise mutex attribute
-  MemLib::vZero(&m_xThreadMutexAttr,sizeof(m_xThreadMutexAttr),CN_SEMAPHORE);
+  MemLib::vZero(&m_xThreadMutexAttr,sizeof(m_xThreadMutexAttr),CN_MUTEX);
   i8 iResult = pthread_mutexattr_init(&m_xThreadMutexAttr);
   ASSERT( ! iResult);
   
@@ -170,19 +170,19 @@ void Job::vInit(void)
   ASSERT( ! iResult);
   
   // initialize the mutex
-  MemLib::vZero(&m_xThreadMutex,sizeof(m_xThreadMutex),CN_SEMAPHORE);
+  MemLib::vZero(&m_xThreadMutex,sizeof(m_xThreadMutex),CN_MUTEX);
   pthread_mutex_init(&m_xThreadMutex, &m_xThreadMutexAttr);
   
   
   // initialise condition attribute
-  MemLib::vZero(&m_xThreadCondAttr,sizeof(m_xThreadCondAttr),CN_SEMAPHORE);
+  MemLib::vZero(&m_xThreadCondAttr,sizeof(m_xThreadCondAttr),CN_MUTEX);
   pthread_condattr_init(&m_xThreadCondAttr);
   
   // set condition attribute to be shared
   pthread_condattr_setpshared(&m_xThreadCondAttr, PTHREAD_PROCESS_SHARED);
   
   // initialize the condition variable
-  MemLib::vZero(&m_xThreadCond,sizeof(m_xThreadCond),CN_SEMAPHORE);
+  MemLib::vZero(&m_xThreadCond,sizeof(m_xThreadCond),CN_MUTEX);
   pthread_cond_init(&m_xThreadCond, &m_xThreadCondAttr);
   
   

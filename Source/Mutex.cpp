@@ -21,7 +21,7 @@ Mutex* System::_pMutex(void* aAddr)
 {
   Mutex* pMutex = reinterpret_cast<Mutex*>(aAddr);
   
-  RASSERT_TYPE(pMutex,CN_SEMAPHORE);
+  RASSERT_TYPE(pMutex,CN_MUTEX);
   
   return pMutex;
 }
@@ -31,7 +31,7 @@ Mutex* System::_pMutex(void* aAddr)
 /*----------------------------------------------------------------------------*/
 void* Mutex::operator new(size_t)
 {
-  void* pMutex = HeapMem::pAllocate(CN_SEMAPHORE);
+  void* pMutex = HeapMem::pAllocate(CN_MUTEX);
   
   return pMutex;
 }
@@ -58,14 +58,14 @@ void Mutex::operator delete(void* pMutexAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Mutex::Mutex()
-: Object(CN_SEMAPHORE)
+: Object(CN_MUTEX)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   m_bLocked = false;
 
   // initialise attribute to mutex
-  MemLib::vZero(&m_xMutexAttr,sizeof(m_xMutexAttr),CN_SEMAPHORE);
+  MemLib::vZero(&m_xMutexAttr,sizeof(m_xMutexAttr),CN_MUTEX);
   i8 iResult = pthread_mutexattr_init(&m_xMutexAttr);
   ASSERT( ! iResult);
   
@@ -74,23 +74,23 @@ Mutex::Mutex()
   ASSERT( ! iResult);
 
   // initialize the mutex
-  MemLib::vZero(&m_xMutex,sizeof(m_xMutex),CN_SEMAPHORE);
+  MemLib::vZero(&m_xMutex,sizeof(m_xMutex),CN_MUTEX);
   pthread_mutex_init(&m_xMutex, &m_xMutexAttr);
 
   // initialise attribute to condition
-  MemLib::vZero(&m_xCondAttr,sizeof(m_xCondAttr),CN_SEMAPHORE);
+  MemLib::vZero(&m_xCondAttr,sizeof(m_xCondAttr),CN_MUTEX);
   pthread_condattr_init(&m_xCondAttr);
   
   // set attribute to be shared
   pthread_condattr_setpshared(&m_xCondAttr, PTHREAD_PROCESS_SHARED);
   
   // initialize the mutex
-  MemLib::vZero(&m_xCond,sizeof(m_xCond),CN_SEMAPHORE);
+  MemLib::vZero(&m_xCond,sizeof(m_xCond),CN_MUTEX);
   pthread_cond_init(&m_xCond, &m_xCondAttr);
   
-  _checkInitialised_(CN_SEMAPHORE);
+  _checkInitialised_(CN_MUTEX);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,7 +136,7 @@ void Mutex::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void Mutex::vCondBroadcast(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   i8 rCode = pthread_cond_broadcast(&m_xCond);
   
@@ -153,7 +153,7 @@ void Mutex::vCondBroadcast(void)
 /*----------------------------------------------------------------------------*/
 void Mutex::vCondSignal(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   //
   // **calling thread must have the mutex**
@@ -178,7 +178,7 @@ void Mutex::vCondSignal(void)
 /*----------------------------------------------------------------------------*/
 void Mutex::vCondWait_Mutex(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   //
   // Calling thread must have the mutex.  Mutex will be unlocked and the
@@ -215,7 +215,7 @@ void Mutex::vCondWait_Mutex(void)
 /*----------------------------------------------------------------------------*/
 void Mutex::vCondTimedWait(i8 iMicroSeconds)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   // the mutex should be locked by the calling thread
   RASSERT(m_bLocked);
@@ -260,7 +260,7 @@ void Mutex::vCondTimedWait(i8 iMicroSeconds)
 /*----------------------------------------------------------------------------*/
 bool Mutex::bMutexIsLocked(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   // this is a non-blocking call
   i8 rCode = pthread_mutex_trylock(&m_xMutex);
@@ -279,7 +279,7 @@ bool Mutex::bMutexIsLocked(void)
 /*----------------------------------------------------------------------------*/
 bool Mutex::boLockMutexLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   // the calling thread cannot already have the mutex
   
@@ -307,7 +307,7 @@ bool Mutex::boLockMutexLock(void)
 /*----------------------------------------------------------------------------*/
 void Mutex::voLockMutexLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   
   // the calling thread cannot already have the mutex
@@ -332,7 +332,7 @@ void Mutex::voLockMutexLock(void)
 /*----------------------------------------------------------------------------*/
 void Mutex::vMutexUnlock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   // the mutex should be locked by the calling thread
   RASSERT(m_bLocked);
@@ -358,7 +358,7 @@ void Mutex::vMutexUnlock(void)
 /*----------------------------------------------------------------------------*/
 void Mutex::vSignalThread(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   ASSERT(bMutexIsLocked());
   
@@ -371,7 +371,7 @@ void Mutex::vSignalThread(void)
 /*----------------------------------------------------------------------------*/
 void Mutex::vSignalThread_NL(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   vCondSignal();
 }
@@ -385,7 +385,7 @@ void Mutex::vSignalThread_NL(void)
 /*----------------------------------------------------------------------------*/
 Footer* Mutex::aFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEMAPHORE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX);
   
   return &m_xFooter;
 }

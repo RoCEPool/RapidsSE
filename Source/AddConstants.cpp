@@ -274,12 +274,12 @@ void Axioms::vAddConstants(void)
   
   /*    */ vAddConstant("CN_MEDIUMPERSISTENT"_Stz, CN_MEDIUMPERSISTENT);
   /*    */ vAddConstant("CN_MEDIUMTRANSIENT"_Stz,  CN_MEDIUMTRANSIENT);
-  
+  /* 60 */ vAddConstant("CN_MUTEX"_Stz,    CN_MUTEX);
+
   /* 38 */ vAddConstant("CN_NODE"_Stz,         CN_NODE);
   /*    */ vAddConstant("CN_NOW"_Stz,          CN_NOW);
 
   /* 40 */ vAddConstant("CN_PARSER"_Stz,       CN_PARSER);
-  /* 41 */ vAddConstant("CN_TABLEPTN"_Stz,     CN_TABLEPTN);
   /*    */ vAddConstant("CN_PLAN"_Stz,         CN_PLAN);
   
   /* 45 */ vAddConstant("CN_QUEUE"_Stz,        CN_QUEUE);
@@ -293,7 +293,6 @@ void Axioms::vAddConstants(void)
   
   /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
   /*    */ vAddConstant("CN_SELCURSOR"_Stz,    CN_SELCURSOR);
-  /* 60 */ vAddConstant("CN_SEMAPHORE"_Stz,    CN_SEMAPHORE);
   /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
   /* 61 */ vAddConstant("CN_SINCE"_Stz,        CN_SINCE);
   /* 63 */ vAddConstant("CN_SKIPLIST"_Stz,     CN_SKIPLIST);
@@ -310,6 +309,7 @@ void Axioms::vAddConstants(void)
   /* 70 */ vAddConstant("CN_SYSCALL"_Stz,      CN_SYSCALL);
 
   /* 71 */ vAddConstant("CN_TABLE"_Stz,        CN_TABLE);
+  /* 41 */ vAddConstant("CN_TABLEPTN"_Stz,     CN_TABLEPTN);
   /* 72 */ vAddConstant("CN_TASK"_Stz,         CN_TASK);
   /*    */ vAddConstant("CN_TASKLIST"_Stz,     CN_TASKLIST);
   /*    */ vAddConstant("CN_TASKQUEUE"_Stz,    CN_TASKQUEUE);
@@ -508,6 +508,7 @@ void Axioms::vAddConstants(void)
 
   /* 24 */ vAddConstant("SIZEOF_LOCK"_Stz,         sizeof(Lock));
   /* 25 */ vAddConstant("SIZEOF_MEDIUMHEAP"_Stz,   sizeof(Heap));
+  /*    */ vAddConstant("SIZEOF_MUTEX"_Stz,        sizeof(Mutex));
   /* 26 */ vAddConstant("SIZEOF_NODE"_Stz,         sizeof(Node));
 
   /* 28 */ vAddConstant("SIZEOF_PARSER"_Stz,       sizeof(Parser));
@@ -523,7 +524,6 @@ void Axioms::vAddConstants(void)
   /* 43 */ vAddConstant("SIZEOF_SESSION"_Stz,      sizeof(Session));
 
   /*    */ vAddConstant("SIZEOF_SELCURSOR"_Stz,    sizeof(SelCursor));
-  /*    */ vAddConstant("SIZEOF_SEMAPHORE"_Stz,    sizeof(Mutex));
   /* 46 */ vAddConstant("SIZEOF_SEPROMPT"_Stz,     sizeof(SePrompt));
   /* 47 */ vAddConstant("SIZEOF_SINCE"_Stz,        sizeof(Since));
   /* 49 */ vAddConstant("SIZEOF_SKIPLIST"_Stz,     sizeof(SkipListNL));
