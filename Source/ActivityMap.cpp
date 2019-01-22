@@ -87,6 +87,7 @@ ActivityMap::ActivityMap(void)
   iResult = pthread_mutex_init(&m_xMutex,&m_xMutexAttr);
   ASSERT( ! iResult);
   
+  m_oLock.vInitLock(LK_ACTIVITY_MAP);
   m_i_Mark = 0;
   m_nMarks = gxArguments.m_nActivityMarks;
   
@@ -524,6 +525,8 @@ void ActivityMap::vLockMutex(void)
   i8 rCode = pthread_mutex_lock(&m_xMutex);
   if (0 != rCode)
     vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+  
+  vGrabLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -536,6 +539,32 @@ void ActivityMap::vUnlockMutex(void)
   i8 rCode = pthread_mutex_unlock(&m_xMutex);
   if (0 != rCode)
     vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+
+  vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* drop lock on ActivityMap                                                   */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vDropLock(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+
+  m_oLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock on ActivityMap                                                   */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vGrabLock(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  
+  m_oLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/

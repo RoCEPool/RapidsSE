@@ -14,8 +14,10 @@ namespace Measurement
     pthread_mutex_t     m_xMutex;     // mutex variable
     pthread_mutexattr_t m_xMutexAttr; // mutex shared attribute
   
-    i8 m_i_Mark;  // current mark subscript
-    i8 m_nMarks;  // number of marks in array
+    Lock m_oLock;
+    i8   m_i_Mark;  // current mark subscript
+    i8   m_nMarks;  // number of available marks in array
+  
     ActivityMark m_xActivity[C_ACTIVITY_MARKS];
   
     // must be last
@@ -52,7 +54,11 @@ namespace Measurement
 
     void vLockMutex(void);
     void vUnlockMutex(void);
-  
+
+  private:
+    void vDropLock(void);
+    void vGrabLock(void);
+
     ActivityMark* aNewActivityMark(void);
   
     Footer* aFooter(void);
