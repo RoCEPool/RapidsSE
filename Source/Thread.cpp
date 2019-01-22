@@ -369,26 +369,6 @@ bool Thread::bIsIdle(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get last round robin queue                                                 */
-/*----------------------------------------------------------------------------*/
-i8 Thread::iLastQueueRR(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  return m_iLastQueueRR;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set last round robin queue                                                 */
-/*----------------------------------------------------------------------------*/
-void Thread::vLastQueueRR(i8 iLastQueueRR)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_iLastQueueRR = iLastQueueRR;
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to get a task to run by peeking at the queues                      */
 /*---------------------------------------------------------------------------*/
 bool Thread::bQueuePeek(void)
