@@ -17,6 +17,7 @@ namespace StorageEngine
     i8            m_iRegionSize;
     i8            m_iJumboSize;
     i8            m_nSubIngesters;
+    i8            m_nSubInserters;
     i8            m_nSubLoaders;
         
     i8            m_iEpoch;

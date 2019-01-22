@@ -51,9 +51,10 @@
 
   ""   // intialize the string
   grid::slots 0 do
+    I 0 != if "\n" str.cat then
     I grid::toPartition
     I grid::toPartition grid::toNode grid::toNode grid::node node.name
-    "row: ( %v, %v )\n" str.format str.cat
+    "row: ( %v, %v )" str.format str.cat
   loop
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

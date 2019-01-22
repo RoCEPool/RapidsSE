@@ -120,6 +120,8 @@ Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
   m_ziRecordBuffers.vCheckInit();
   m_ziCopiedBuffers.vCheckInit();
   
+  m_pJob_InsertTable = nullptr;
+  
   _checkInitialised_(CN_JOB_SUBINSERTER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
@@ -256,15 +258,15 @@ Job* Jobs::pJob_SubInserter_pre(Interface::Session* pSession)
 {
   Job_SubInserter* pJob_SubInserter = new Job_SubInserter(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
-  
-  bool bResult = pJob_SubInserter->bPopulateJob(pTokenVec);
-  
-  if ( !bResult) {
-    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_SubInserter->m_bHasError = true;
-    pJob_SubInserter->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
-  }
+//  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+//  
+//  bool bResult = pJob_SubInserter->bPopulateJob(pTokenVec);
+//  
+//  if ( !bResult) {
+//    i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+//    pJob_SubInserter->m_bHasError = true;
+//    pJob_SubInserter->m_xNode[iNode].m_eErrorCode = EC_INVALID_COMMAND;
+//  }
   
   return pJob_SubInserter;
 }

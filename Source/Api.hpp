@@ -70,10 +70,11 @@ static Stz* aAC[]
   /* 21 */ "RapidsSE_SessionNew"_Stz
   /* 22 */ "ENUMS"_Stz};
 
-extern "C" eEC  RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPtr, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPtr, i8 iSubInserters, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, void** ppJobPtr, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_EndInsertJobs(Session* pSession, void* pJobPtr, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_EndInsertTable(Session* pSession, void* pJobPtr, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_EndSubInserter(Session* pSession, void* pJobPtr, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand, Stz* sCatalogName, Stz* sSchemaName,
                                         void** ppJob, i8 iTraceLevel);
@@ -107,7 +108,7 @@ void vSpawnJobAndWait(Session* pSession, Job* pJob);
 
 void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
@@ -288,7 +289,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
       return EC_VALIDATION_FAILURE; \
     } \
   }
-/*
+
 #else
 
 #define TRACE_ENTRY_P0()
@@ -309,7 +310,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define VALIDATE_POOL()
 
 #endif
-*/
+
 /*----------------------------------------------------------------------------*/
 /* trace API call entry                                                       */
 /*----------------------------------------------------------------------------*/

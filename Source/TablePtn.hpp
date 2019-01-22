@@ -21,7 +21,8 @@ namespace DBobjects
     i8 m_nWriteBehindBuffers;    // buffers to be written
     i8 m_nBuffersWritten;        // buffers written so far
     
-    i8 m_nSubLoadersDone;        // number of subloeader which have completed
+    i8 m_nSubLoadersDone;        // number of subloader which have completed
+    i8 m_nSubInsertersDone;      // number of subInserters which have completed
     i8 m_iParentJobId;           // parent jobid
     
     IndexTreeVec* m_pIndexTreeVec; // vector of index trees
@@ -41,7 +42,8 @@ namespace DBobjects
     TablePtn(void);
     ~TablePtn(void) noexcept(false);
   
-    void vAddWriteBehindBuffers(i8 nBuffersLoadable);
+    void vAddLoadWriteBehindBuffers(i8 nBuffersLoadable);
+    void vAddInsertWriteBehindBuffers(i8 nBuffersInsertable);
     void vAddIndex(IndexTree* pIndexTree);
     bool bAllBuffersWritten(eDS eDataSource);
     void vWriteBehindBuffers(i8 nWriteBehindBuffers);
