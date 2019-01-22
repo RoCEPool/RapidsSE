@@ -64,7 +64,8 @@ namespace StorageEngine
     bool m_bProgress;   // print initialisation progress
     bool m_bReload;     // relaod from checkpoint files
     bool m_bRestart;    // restart if system already started
-    i8   m_nSubIngesters; // number of subloaders
+    i8   m_nSubIngesters; // number of subIngesterss
+    i8   m_nSubInserters; // number of subInsertes
     i8   m_nSubLoaders;   // number of subloaders
     i8   m_iThisNode;     // this node no in the m_xNode list              //! FIX
     i8   m_nThreads;      // number of general threads

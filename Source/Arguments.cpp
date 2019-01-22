@@ -82,7 +82,8 @@ Arguments::Arguments(void)
   m_bReload      = false;
   m_bRestart     = true;
   m_nSubIngesters = 4;
-  m_nSubLoaders  = 4;
+  m_nSubLoaders   = 4;
+  m_nSubInserters = 1;
   m_iThisNode    = -1;
   m_nThreads     = 12;
   m_nDummyThreads = 0;
@@ -286,6 +287,18 @@ bool Arguments::bParse(int argc, Stz* argv[])
       m_nSubIngesters = argv[++i_Arg]->iToI8();
       if (m_nThreads > C_THREADS) {
         vError("Maximum number of subIngesters allowed is %lld\n"_Stz,
+               C_THREADS);
+        return false;
+      }
+      
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (argv[i_Arg]->bSame("--subInserters"_Stz)) {
+      m_nSubInserters = argv[++i_Arg]->iToI8();
+      if (m_nThreads > C_THREADS) {
+        vError("Maximum number of subInserters allowed is %lld\n"_Stz,
                C_THREADS);
         return false;
       }

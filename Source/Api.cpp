@@ -788,8 +788,6 @@ eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 
   // validate the reference pointer
   VALIDATE_REFPOINTER("c"_Stz, ppRow);
   
-  vTrace("Requesting row %lld\n"_Stz, iRow);
-  
   i8 i_Node;
   i8 iMaxRowNo = 0;
   for (i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
@@ -828,7 +826,7 @@ eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 
   
   // return the row
   *ppRow = pSession->m_sResponse.aChar();
-  vTrace("Returning row %lld %s\n"_Stz, iRow, pSession->m_sResponse.aChar());
+  //vTrace("Returning row %lld %s\n"_Stz, iRow, pSession->m_sResponse.aChar());
   
   // delete the token vector
   pTknVec->vSetAllTokens();
