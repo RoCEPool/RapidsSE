@@ -132,7 +132,6 @@ namespace Threads
     void  vCondWait(void);
     void  vCondWait_Timed(i8 iNanoSeconds);
     void  vHandlerTimedWait(void);
-    bool  bMutexIsLocked(void);
     bool  bMutexLock(void);
     void  vMutexLock(void);
     void  vMutexUnlock(void);

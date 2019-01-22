@@ -307,7 +307,7 @@ void Thread::vExecuteTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  ASSERT(bMutexIsLocked());
+  ASSERT(m_pMutex->bMutexLock());
   
   // task should be ready
   RASSERT(TS_READY == pTask->eState());
@@ -601,9 +601,8 @@ void Thread::vSignalThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  ASSERT(bMutexIsLocked());
-  //m_pMutex->vSignalThread();
-  
+  ASSERT(m_pMutex->bMutexLock());
+
   m_pMutex->vCondSignal();
   m_pMutex->vMutexUnlock();
 }
@@ -646,18 +645,6 @@ void Thread::vCondWait_Timed(i8 iMicroSeconds)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pMutex->vCondWait_Timed(iMicroSeconds);
-}
-
-/*----------------------------------------------------------------------------*/
-/* test if a threads mutex is locked (non-blocking)                           */
-/*----------------------------------------------------------------------------*/
-bool Thread::bMutexIsLocked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  bool b = m_pMutex->bMutexIsLocked();
-  
-  return b;
 }
 
 /*----------------------------------------------------------------------------*/
