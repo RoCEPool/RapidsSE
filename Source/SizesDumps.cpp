@@ -244,7 +244,7 @@ pDUMPFUN *gpDump[]
   /*    */ &Dump::vUndefined,       // CN_TASKLIST
   /*134 */ &Dump::vUndefined,       // CN_TASKQUEUE
   /*137 */ &Dump::vUndefined,       // CN_THREAD
-  /*    */ &Dump::vUndefined,       // CN_THREADVECTOR
+  /*    */ &Dump::vUndefined,       // CN_THREADVEC
   /*141 */ &Dump::vUndefined,       // CN_TIME
   /*142 */ &Dump::vInvalid,         // CN_TIMER
   /*143 */ &Token::vDump,           // CN_TOKEN
@@ -500,7 +500,7 @@ i8 giClassSize[]
   /*    */ sizeof(TaskList),           // CN_TASKLIST
   /*134 */ sizeof(TaskQueue),          // CN_TASKQUEUE
   /*137 */ sizeof(Thread),             // CN_THREAD
-  /*    */ sizeof(ThreadVector),       // CN_THREADVECTOR
+  /*    */ sizeof(ThreadVec),       // CN_THREADVEC
   /*141 */ sizeof(Time),               // CN_TIME
   /*142 */ sizeof(Timer),              // CN_TIMER
   /*143 */ sizeof(Token),              // CN_TOKEN
@@ -756,7 +756,7 @@ eHT geWhichHeap[]
   /*    */ HT_TRANSIENT_SMALL,   // CN_TASKLIST
   /*134 */ HT_TRANSIENT_SMALL,   // CN_TASKQUEUE
   /*137 */ HT_TRANSIENT_SMALL,   // CN_THREAD
-  /*    */ HT_TRANSIENT_MEDIUM,  // CN_THREADVECTOR
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_THREADVEC
   /*141 */ HT_INVALID,           // CN_TIME
   /*142 */ HT_TRANSIENT_SMALL,   // CN_TIMER
   /*143 */ HT_TRANSIENT_SMALL,   // CN_TOKEN

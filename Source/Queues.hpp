@@ -12,7 +12,7 @@ namespace Threads
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // threads
 
-    ThreadVector* m_pThreadVector; // vector of threads in the system
+    ThreadVec* m_pThreadVec; // vector of threads in the system
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // tasks

@@ -240,7 +240,7 @@ pFINALIZE *gpFinalize[]
   /*134 */ &Finalize::vUndefined,         // CN_TASKLIST
   /*    */ &Finalize::vUndefined,         // CN_TASKQUEUE
   /*137 */ &Finalize::vUndefined,         // CN_THREAD
-  /*    */ &Finalize::vUndefined,         // CN_THREADVECTOR
+  /*    */ &Finalize::vUndefined,         // CN_THREADVEC
   /*141 */ &Finalize::vUndefined,         // CN_TIME
   /*142 */ &Finalize::vUndefined,         // CN_TIMER
   /*143 */ &Finalize::vUndefined,         // CN_TOKEN

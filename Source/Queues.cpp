@@ -51,7 +51,7 @@ Queues::Queues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
-  m_pThreadVector  = new ThreadVector;
+  m_pThreadVec  = new ThreadVec;
   m_ziQueueOrder   = 0;
   
   m_pSleepingQueue = new TaskQueue(QK_SLEEPING_QUEUE,
@@ -98,12 +98,12 @@ void Queues::vThreadsReport()
 {
   Queues* pQueues = gpAttachMap->m_pQueues;
   
-  pQueues->m_pThreadVector->vGrabLock();
+  pQueues->m_pThreadVec->vGrabLock();
 
-  i8 nThreads = pQueues->m_pThreadVector->nItems();
+  i8 nThreads = pQueues->m_pThreadVec->nItems();
   for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
     
-    Thread* pThread = pQueues->m_pThreadVector->pGet(i_Thread);
+    Thread* pThread = pQueues->m_pThreadVec->pGet(i_Thread);
     
     vTrace("  Thread %2lld %p base %llx size %lld %7s os id %lld posix id %llx rr : last %2lld start %2lld %s\n"_Stz,
            pThread->m_iThreadNo,
@@ -122,7 +122,7 @@ void Queues::vThreadsReport()
            );
   }
   
-  pQueues->m_pThreadVector->vDropLock();
+  pQueues->m_pThreadVec->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,9 +138,9 @@ void Queues::vAddThread(Thread* pThread)
   
   RASSERT(TC_IDLE == pThread->eThreadState());
   
-  m_pThreadVector->vGrabLock();
-  m_pThreadVector->vAdd(pThread);
-  m_pThreadVector->vDropLock();
+  m_pThreadVec->vGrabLock();
+  m_pThreadVec->vAdd(pThread);
+  m_pThreadVec->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -501,12 +501,12 @@ Thread* Queues::pFindIdleThread(void)
   if ( ! Pthread::bIsJavaThread() )
     pThisThread = Thread::pThisTLSThread();
   
-  m_pThreadVector->vGrabLock();
+  m_pThreadVec->vGrabLock();
 
-  i8 nThreads = m_pThreadVector->nItems();
+  i8 nThreads = m_pThreadVec->nItems();
   for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
 
-    Thread* pThread = m_pThreadVector->pGet(i_Thread);
+    Thread* pThread = m_pThreadVec->pGet(i_Thread);
     
     // skip this thread
     if (pThread == pThisThread)
@@ -514,12 +514,12 @@ Thread* Queues::pFindIdleThread(void)
 
     // attempt to grab this thread as an idle thread
     if (pThread->bGrabIfIdle()) {
-      m_pThreadVector->vDropLock();
+      m_pThreadVec->vDropLock();
       return pThread;
     }
   }
   
-  m_pThreadVector->vDropLock();
+  m_pThreadVec->vDropLock();
   return nullptr;
 }
 
@@ -629,12 +629,12 @@ void Queues::vMonitorThread(s48K& sPortrait)
   i8 nRunning = 0;
   i8 nDedicated = 0;
   
-  m_pThreadVector->vGrabLock();
+  m_pThreadVec->vGrabLock();
   
-  i8 nThreads = m_pThreadVector->nItems();
+  i8 nThreads = m_pThreadVec->nItems();
   for (i8 i_Thread = 0; i_Thread < nThreads; i_Thread++) {
     
-    Thread* pThread = m_pThreadVector->pGet(i_Thread);
+    Thread* pThread = m_pThreadVec->pGet(i_Thread);
     
     if (TC_IDLE == pThread->eThreadState())
       nIdle++;
@@ -646,7 +646,7 @@ void Queues::vMonitorThread(s48K& sPortrait)
       nDedicated++;
   }
   
-  m_pThreadVector->vDropLock();
+  m_pThreadVec->vDropLock();
   
   sPortrait.vSprint("Threads: running %lld (dedicated %lld) idle %lld\n"_Stz,
                     nThreads,
@@ -962,9 +962,9 @@ void Queues::vRemoveThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  m_pThreadVector->vGrabLock();
-  m_pThreadVector->vRemove(pThread);
-  m_pThreadVector->vDropLock();
+  m_pThreadVec->vGrabLock();
+  m_pThreadVec->vRemove(pThread);
+  m_pThreadVec->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

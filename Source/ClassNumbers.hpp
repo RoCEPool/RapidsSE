@@ -241,7 +241,7 @@ enum eCN : u2 // Class Number
   /* 201 0xC9      184B Heap:S */ CN_TASKLIST,
   /* 202 0xCA      160B Heap:S */ CN_TASKQUEUE,
   /* 203 0xCB      224B Heap:S */ CN_THREAD,
-  /* 204 0xCC     2208B Heap:M */ CN_THREADVECTOR,
+  /* 204 0xCC     2208B Heap:M */ CN_THREADVEC,
   /* 205 0xCD       24B Heap:I */ CN_TIME,
   /* 206 0xCE       32B Heap:S */ CN_TIMER,
   /* 207 0xCF      296B Heap:S */ CN_TOKEN,
@@ -493,7 +493,7 @@ static Stz* aCN[]
   /* 201 0xC9 */ "TASKLIST"_Stz,            // CN_TASKLIST
   /* 202 0xCA */ "TASKQUEUE"_Stz,           // CN_TASKQUEUE
   /* 203 0xCB */ "THREAD"_Stz,              // CN_THREAD
-  /* 204 0xCC */ "THREADVECTOR"_Stz,        // CN_THREADVECTOR
+  /* 204 0xCC */ "THREADVECTOR"_Stz,        // CN_THREADVEC
   /* 205 0xCD */ "TIME"_Stz,                // CN_TIME
   /* 206 0xCE */ "TIMER"_Stz,               // CN_TIMER
   /* 207 0xCF */ "TOKEN"_Stz,               // CN_TOKEN
