@@ -32,7 +32,6 @@
   " --partitionsPerNode " str.cat args.partitionsPerNode >str str.cat
   " --name  " str.cat nodeName str.cat
   " --subLoaders " str.cat args.subLoaders >str str.cat
-  " --subInserters " str.cat args.subInserters >str str.cat
 
   //" --partitionsPerNode " str.cat grid::slots >str str.cat
 

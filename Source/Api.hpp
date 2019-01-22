@@ -70,7 +70,7 @@ static Stz* aAC[]
   /* 21 */ "RapidsSE_SessionNew"_Stz
   /* 22 */ "ENUMS"_Stz};
 
-extern "C" eEC  RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPtr, i8* piSubInserters, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPtr, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, void** ppJobPtr, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_EndInsertTable(Session* pSession, void* pJobPtr, i8 iTraceLevel);
