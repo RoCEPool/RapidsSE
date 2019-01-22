@@ -69,18 +69,15 @@ Thread::Thread(void)
   m_iStackSize   = 0;
   
   m_eThreadState = TC_NONE;
+  m_pTask        = nullptr;
+  m_eDedicated   = CN_NONE;
+
   m_pPosixThread = new PosixThread;
-  m_pMutex   = new Mutex;
-
-  m_pTask       = nullptr;
-
-  Thread* pThread = this;
+  m_pMutex       = new Mutex;
   
   m_iLastQueueRR  = QR_SLEEPING_QUEUE - 1;
   m_iStartQueueRR = QR_NONE;
-  
-  m_eDedicated = CN_NONE;
-  
+    
   _checkInitialised_(CN_THREAD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);

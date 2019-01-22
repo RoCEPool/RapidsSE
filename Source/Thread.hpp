@@ -32,19 +32,16 @@ namespace Threads
     i8           m_iStackSize;   // stack size
   
     eTC          m_eThreadState; // thread state
+    Task*        m_pTask;        // task current being executed
+    eCN          m_eDedicated;   // thread is dedicated to one specific job?
+
     PosixThread* m_pPosixThread; // its posix structure
     Mutex*       m_pMutex;       // this threads mutex
-    Task*        m_pTask;        // task current being executed
-                                 //   note that while task is being exected
-                                 //   its not in task set
   
-    i8           m_iLastQueueRR; // last round robin queue this thread
-                                 // had popped a task from
-  
+    i8           m_iLastQueueRR;  // last round robin queue this thread
+                                  // had popped a task from
     i8           m_iStartQueueRR; // last RR queue we started with
   
-    eCN          m_eDedicated;    // thread is dedicated to a job?
-
     // must be last
     Footer m_xFooter;
     
