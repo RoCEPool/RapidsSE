@@ -60,7 +60,6 @@ bool Jobs::_bIsValidJob(Base::eCN eClass)
 Job::Job(eCN eClassNo)
 : Object(eClassNo)
 {
-  vTrace("::Job: %p\n"_Stz,this);
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   vInit();
@@ -77,7 +76,6 @@ Job::Job(eCN eClassNo)
 Job::Job(eCN eClassNo, Session* pSession)
 : Object(eClassNo), JobDicPath(pSession)
 {
-  vTrace("::Job: %p\n"_Stz,this);
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
@@ -96,8 +94,6 @@ Job::Job(eCN eClassNo, Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job::~Job(void) noexcept(false)
 {
-  vTrace("::~Job: %p\n"_Stz,this);
-  
   _precondition_(_ADDRESS_,_MAGIC_);
   
   pthread_mutex_destroy(&m_xThreadMutex);

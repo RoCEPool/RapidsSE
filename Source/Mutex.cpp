@@ -61,8 +61,6 @@ Mutex::Mutex()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
-  vTrace("::Mutex: %p\n"_Stz,this);
-  
   m_bLocked = false;
 
   // initialise attribute to mutex
@@ -102,8 +100,6 @@ Mutex::Mutex()
 /*----------------------------------------------------------------------------*/
 Mutex::~Mutex(void) noexcept(false)
 {
-  vTrace("::~Mutex: %p\n"_Stz,this);
-  
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
   
