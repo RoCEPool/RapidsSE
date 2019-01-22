@@ -12,7 +12,7 @@ extern ActivityMap* gpActivityMap;
 /*----------------------------------------------------------------------------*/
 /* begin the insert table job                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPtr, i8 iTraceLevel)
+eEC RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPtr, i8* piSubInserters, i8 iTraceLevel)
 {
   gpAttachMap->m_oStatistics.Api.m_nBeginInsertTable++;
   
@@ -48,6 +48,9 @@ eEC RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPt
     
     // return the insertTable job
     *ppJobPtr = pJob_InsertTable;
+    
+    // alos return no of subinserters
+    *piSubInserters = gpAttachMap->m_nSubInserters;
     
     // push the InsertTable job onto the jobstack
     pSession->m_pJobStack->vPushPointer(pJob_InsertTable);
