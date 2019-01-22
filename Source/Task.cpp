@@ -928,7 +928,7 @@ i8 Task::iWakeupInUsec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  i8 iInUsec = m_oWakeupTime.iDeltaNowMicroseconds();
+  i8 iInUsec = m_oWakeupTime.iDeltaTillThenMicroseconds();
   
   return iInUsec;
 }

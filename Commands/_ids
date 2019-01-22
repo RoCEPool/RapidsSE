@@ -6,7 +6,7 @@ am "Running script: _ids";
 
 print "";
 print "---------------------------------------------------------------------";
-print "starting the cluster...";
+print "starting cluster...";
 print "---------------------------------------------------------------------";
 startCluster;
 
@@ -18,14 +18,14 @@ _sensorEvents;
 
 print "";
 print "---------------------------------------------------------------------";
-print "removing the pipe...";
+print "removing pipes...";
 print "---------------------------------------------------------------------";
 rmpipe "/tmp/sensorEvents.rowAgg";
 rmpipe "/tmp/sensorEvents.pipe";
 
 print "";
 print "---------------------------------------------------------------------";
-print "making the pipe...";
+print "making pipes...";
 print "---------------------------------------------------------------------";
 mkpipe "/tmp/sensorEvents.rowAgg";
 mkpipe "/tmp/sensorEvents.pipe";
@@ -35,7 +35,7 @@ print "---------------------------------------------------------------------";
 print "ingesting sensorEvents table...";
 print "---------------------------------------------------------------------";
 
-nowait monitor 10;
+//nowait monitor 10;
 
 nowait purge sensorEvents 30;
 

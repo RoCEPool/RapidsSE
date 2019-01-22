@@ -25,7 +25,8 @@ namespace System
     static void vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& SysCall);
   
     void  vAdd(i8 iMicroseconds);
-    i8    iDeltaNowMicroseconds(void);
+    i8    iDeltaTillThenMicroseconds(void);
+    i8    iDeltaFromThenSeconds(void);
     void  vGet(i8& iSeconds, i8& iMicroseconds);
     i8    iGetAsMicroseconds(void);
     Stz*  sFormatted(void);

@@ -21,8 +21,15 @@ namespace Jobs
     RowAgg* m_pRowAgg_10s; // row aggregator for 10 sec
     RowAgg* m_pRowAgg_1m;  // row aggregator for 1 min
     RowAgg* m_pRowAgg_3m;  // row aggregator for 3 min
-    RowAgg* m_pRowAgg_10m; // row aggregator for 10 min
+    RowAgg* m_pRowAgg_15m; // row aggregator for 15 min
   
+    Since   m_oBegan;      // when the report job began
+  
+    i8      m_iLast_10s;
+    i8      m_iLast_1m;
+    i8      m_iLast_3m;
+    i8      m_iLast_15m;
+
     // must be last
     Footer m_xFooter;
   
@@ -42,6 +49,7 @@ namespace Jobs
     bool bBegin(void);
     bool bTake(void);
     void vEnd(void);
+    void vPrint(Stz* aLabel, RowAgg* pRowAgg);
 
   public:
     Footer* aFooter(void);

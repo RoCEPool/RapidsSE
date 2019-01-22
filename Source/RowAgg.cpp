@@ -89,6 +89,12 @@ void RowAgg::vAdd(RowAgg* pAggArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
   
+  if (! m_pTable) {
+    m_pTable     = pAggArg->m_pTable;
+    m_pKeyColumn = pAggArg->m_pKeyColumn;
+    m_pAggColVec = pAggArg->m_pAggColVec;
+  }
+  
   m_nRows += pAggArg->m_nRows;
   
   i8 nAggColumns = m_pAggColVec->nItems();
@@ -106,7 +112,7 @@ void RowAgg::vAdd(RowAgg* pAggArg)
     }
     
     m_iaSumVal[i_AggCol] += pAggArg->m_iaSumVal[i_AggCol];
-    m_iaAvgVal[i_AggCol] += m_iaSumVal[i_AggCol] / m_nRows;
+    m_iaAvgVal[i_AggCol] = m_iaSumVal[i_AggCol] / m_nRows;
   }
 }
 
@@ -215,14 +221,14 @@ void RowAgg::vPrintOut(File& oOutputFile)
 //  char* z = sDateTime.aChar();
 //  oDateTime.vAppendLocal(&z);
 
-  vTrace("%s\n"_Stz,m_oSince.sFormatted());
+  vTrace("  %lld rows\n"_Stz,m_nRows);
   for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
     
     Column* pAggColumn = m_pAggColVec->pGet(i_AggCol);
-    vTrace("AggCol %s: min: %lld %lld; max: %lld %lld; avg: %lld\n"_Stz,
+    vTrace("  %18s: min: %4lld (key=%4lld); max: %4lld (key=%4lld); avg: %6lld\n"_Stz,
            pAggColumn->sColumnName().aChar(),
-           m_iaMinKey[i_AggCol], m_iaMinVal[i_AggCol],
-           m_iaMaxKey[i_AggCol], m_iaMaxVal[i_AggCol],
+           m_iaMinVal[i_AggCol], m_iaMinKey[i_AggCol],
+           m_iaMaxVal[i_AggCol], m_iaMaxKey[i_AggCol],
            m_iaAvgVal[i_AggCol]
            );
   }

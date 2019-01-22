@@ -91,7 +91,7 @@ void Since::vAdd(i8 iMicroseconds)
 /*----------------------------------------------------------------------------*/
 /* get delta between now and this since                                       */
 /*----------------------------------------------------------------------------*/
-i8 Since::iDeltaNowMicroseconds(void)
+i8 Since::iDeltaTillThenMicroseconds(void)
 {
   i8 iThisSinceUs = iGetAsMicroseconds();
   
@@ -109,11 +109,31 @@ i8 Since::iDeltaNowMicroseconds(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get delta between now and this since                                       */
+/*----------------------------------------------------------------------------*/
+i8 Since::iDeltaFromThenSeconds(void)
+{
+  i8 iBegan = iSeconds();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  Since oNow;
+  oNow.vNow();
+  
+  i8 iNowSeconds = oNow.iSeconds();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 iDeltaSeconds = iNowSeconds - iBegan;
+  
+  return iDeltaSeconds;
+}
+
+/*----------------------------------------------------------------------------*/
 /* formatted                                                                  */
 /*----------------------------------------------------------------------------*/
 Stz* Since::sFormatted(void)
 {
-  _precondition_(_MAGIC_,CN_NOW,_FOOTER_);
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   
   Time oDateTime;
   oDateTime.vSetLocal(this);
