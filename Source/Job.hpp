@@ -121,7 +121,7 @@ namespace Jobs
   
     eJS m_eState; // cond wait state
   
-    //Mutex* m_pMutex;
+    Mutex* m_pMutex; 
  private:
     pthread_mutex_t     m_xThreadMutex;     // connector thread mutex variable
     pthread_mutexattr_t m_xThreadMutexAttr; // connector thread mutex shared attribute

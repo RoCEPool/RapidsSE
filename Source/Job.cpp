@@ -60,6 +60,7 @@ bool Jobs::_bIsValidJob(Base::eCN eClass)
 Job::Job(eCN eClassNo)
 : Object(eClassNo)
 {
+  vTrace("::Job: %p\n"_Stz,this);
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   vInit();
@@ -76,6 +77,7 @@ Job::Job(eCN eClassNo)
 Job::Job(eCN eClassNo, Session* pSession)
 : Object(eClassNo), JobDicPath(pSession)
 {
+  vTrace("::Job: %p\n"_Stz,this);
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   //vTrace("%s: CREATING JOB %p %s\n"_Stz,
@@ -104,7 +106,7 @@ Job::~Job(void) noexcept(false)
   pthread_cond_destroy(&m_xThreadCond);
   pthread_condattr_destroy(&m_xThreadCondAttr);
   
-  //delete m_pMutex;
+  delete m_pMutex;
   
   if (m_bMark)
     ActivityMap::vMark(m_iJobId,"~Job %s"_Stz,aCN[eClass()]);
@@ -346,6 +348,11 @@ void Job::vInit(void)
   
   m_eState = JS_RUNNING;
   
+  if (CN_JOB_NODEINFO == eClass())
+    m_pMutex = nullptr;
+  else
+    m_pMutex = new Mutex;
+
   // initialise mutex attribute
   MemLib::vZero(&m_xThreadMutexAttr,sizeof(m_xThreadMutexAttr),CN_MUTEX);
   i8 iResult = pthread_mutexattr_init(&m_xThreadMutexAttr);
@@ -394,7 +401,7 @@ void Jobs::vJob_recv(Job* pJob)
 {
   pJob->m_pExecutingTask = nullptr;
   pJob->m_eJobList = JL_NONE;
-  //pJob->m_pMutex = nullptr;
+  pJob->m_pMutex = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
