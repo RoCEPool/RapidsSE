@@ -324,7 +324,7 @@ bool Job_Ingest::bChunk(void)
   if (nIngestChunks() > 32) {
     m_nWaits++;
     while (nIngestChunks() > 32)
-      PosixThread::vSleepMilli(1);
+      Pthread::vSleepMilli(1);
   }
   
   m_pQuantaChunk->m_iChunkNo = ++m_nChunksSoFar;

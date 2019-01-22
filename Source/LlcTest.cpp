@@ -15,11 +15,11 @@ void LlcTest::vTest(MP_Task mpTask)
 {
 #ifdef __APPLE__
   
-  PosixThread* pPosixThread = mpTask->pThread()->m_pPosixThread;
+  Pthread* pPthread = mpTask->pThread()->m_pPthread;
   
-  pPosixThread->vEnableRealtime_2();
+  pPthread->vEnableRealtime_2();
   
-  pPosixThread->iGetInfo();
+  pPthread->iGetInfo();
   
   // create an identity array
   for (i8 i_Element = 0; i_Element < C_ELEMENTS; i_Element++)

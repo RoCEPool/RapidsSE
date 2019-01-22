@@ -201,8 +201,7 @@ pDUMPFUN *gpDump[]
   /* 87 */ &Dump::vUndefined,       // CN_PLANNER
   /* 89 */ &Dump::vUndefined,       // CN_PREDICATE
   /* 90 */ &Dump::vUndefined,       // CN_PREDVEC
-  /* 91 */ &Dump::vUndefined,       // CN_POSIXTHREAD
-
+  /* 91 */ &Dump::vUndefined,       // CN_PTHREAD
   /* 94 */ &Dump::vDummy,           // CN_PTNCOLVEC
   
   /* 95 */ &Queue::vDump,           // CN_QUEUE
@@ -456,9 +455,9 @@ i8 giClassSize[]
   /*    */ sizeof(Pipe),               // CN_PIPE
   /* 86 */ sizeof(Plan),               // CN_PLAN
   /* 87 */ sizeof(Planner),            // CN_PLANNER
-  /* 89 */ sizeof(PosixThread),        // CN_POSIXTHREAD
   /* 90 */ sizeof(Predicate),          // CN_PREDICATE
   /* 91 */ sizeof(PredicateVec),       // CN_PREDICATEVEC
+  /* 89 */ sizeof(Pthread),            // CN_PTHREAD
   /* 94 */ sizeof(PtnColVec),          // CN_PTNCOLVEC
   
   /* 95 */ sizeof(Queue),              // CN_QUEUE
@@ -714,7 +713,7 @@ eHT geWhichHeap[]
   /* 87 */ HT_TRANSIENT_MEDIUM,  // CN_PLANNER
   /* 89 */ HT_TRANSIENT_SMALL,   // CN_PREDICATE
   /* 90 */ HT_TRANSIENT_MEDIUM,  // CN_PREDICATEVEC
-  /* 91 */ HT_TRANSIENT_SMALL,   // CN_POSIXTHREAD
+  /* 91 */ HT_TRANSIENT_SMALL,   // CN_PTHREAD
   /* 94 */ HT_TRANSIENT_MEDIUM,  // CN_PTNCOLVEC
 
   /* 95 */ HT_TRANSIENT_SMALL,   // CN_QUEUE

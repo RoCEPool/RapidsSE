@@ -72,7 +72,7 @@ Thread::Thread(void)
   m_pTask        = nullptr;
   m_eDedicated   = CN_NONE;
 
-  m_pPosixThread = new PosixThread;
+  m_pPthread = new Pthread;
   m_pMutex       = new Mutex;
   
   m_iLastQueueRR  = QR_SLEEPING_QUEUE - 1;
@@ -90,7 +90,7 @@ Thread::~Thread(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  delete m_pPosixThread;
+  delete m_pPthread;
   delete m_pMutex;
 }
 
@@ -105,8 +105,8 @@ void* Thread::aEntryPoint(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  pThread->m_aStackBase = PosixThread::aStackBase();
-  pThread->m_iStackSize = PosixThread::iStackSize();
+  pThread->m_aStackBase = Pthread::aStackBase();
+  pThread->m_iStackSize = Pthread::iStackSize();
 
   pThread->m_eThreadState = TC_IDLE;
   
@@ -169,7 +169,7 @@ void* Thread::aEntryPointDummy(void* pArg)
   while (true) {
     
     // sleep for a bit to generate a context switch
-    PosixThread::vSleepMicro(gxArguments.m_nDummySleep);
+    Pthread::vSleepMicro(gxArguments.m_nDummySleep);
     
     // burn some cpu
     i8 iSum = 0;
@@ -187,7 +187,7 @@ void* Thread::aEntryPointDummy(void* pArg)
 /*----------------------------------------------------------------------------*/
 Thread* Thread::pThisTLSThread(void)
 {
-  Thread *pThread = static_cast<Thread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
+  Thread *pThread = static_cast<Thread*>(Pthread::pTlsGet(giTLS_ThreadKey));
   
   return pThread;
 }
@@ -203,8 +203,8 @@ void Thread::vLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  PosixThread::vTlsSet(giTLS_ThreadKey,this);
-  ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
+  Pthread::vTlsSet(giTLS_ThreadKey,this);
+  ASSERT(Pthread::pTlsGet(giTLS_ThreadKey) == this);
   
   m_pMutex->vMutexLock();
 
@@ -250,7 +250,7 @@ void Thread::vBind(i8 iCore)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPosixThread->bBindThread(iCore);
+  bool bResult = m_pPthread->bBindThread(iCore);
   ASSERT(bResult);
 }
 
@@ -277,7 +277,7 @@ i8 Thread::iCpu(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  return m_pPosixThread->iThreadCpu();
+  return m_pPthread->iThreadCpu();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -285,10 +285,10 @@ i8 Thread::iCpu(void)
 /*----------------------------------------------------------------------------*/
 void Thread::vContentDump(void) const
 {
-  vTrace("Thread %p: OpSysThreadId %lld PosixThreadId %llx\n"_Stz,
+  vTrace("Thread %p: OpSysThreadId %lld PthreadId %llx\n"_Stz,
          this,
-         m_pPosixThread->m_iOpSysThreadId,
-         m_pPosixThread->m_iPosixThreadId);
+         m_pPthread->m_iOpSysThreadId,
+         m_pPthread->m_iPthreadId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -401,7 +401,7 @@ void Thread::vSpawnPthread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPosixThread->bSpawnThread(Thread::aEntryPoint,this);
+  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPoint,this);
   
   ASSERT(bResult);
 }
@@ -413,7 +413,7 @@ void Thread::vSpawnPthread_Dummy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool bResult = m_pPosixThread->bSpawnThread(Thread::aEntryPointDummy,this);
+  bool bResult = m_pPthread->bSpawnThread(Thread::aEntryPointDummy,this);
   
   ASSERT(bResult);
 }
@@ -448,8 +448,8 @@ void Thread::vTaskCall(void)
   m_eThreadState = TC_RUNNING;
   ASSERT(m_pTask);
   
-  PosixThread::vTlsSet(giTLS_TaskKey,m_pTask);
-  ASSERT(PosixThread::pTlsGet(giTLS_TaskKey));
+  Pthread::vTlsSet(giTLS_TaskKey,m_pTask);
+  ASSERT(Pthread::pTlsGet(giTLS_TaskKey));
   
   RASSERT(TS_READY == m_pTask->eState() || TS_YIELDED == m_pTask->eState());
   m_pTask->vState(TS_EXECUTING);

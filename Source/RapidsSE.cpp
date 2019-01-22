@@ -353,7 +353,7 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
-  PosixThread::vMonitorPortrait(sPortrait);
+  Pthread::vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
@@ -702,7 +702,7 @@ void RapidsSE::vSpawnJobStart(void)
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Start System Tasks\n*\n"_Stz);
   
-  PosixThread::vTlsSet(giTLS_ThreadKey,(void*)-1);
+  Pthread::vTlsSet(giTLS_ThreadKey,(void*)-1);
   
   JobClass* pJobClass_Start = JobClass::pFind(CN_JOB_START);
   
@@ -795,7 +795,7 @@ void RapidsSE::vStartSystem(void)
   }
 
   while (*gpAttachMap->m_ziThreads != gxArguments.m_nThreads)
-    PosixThread::vSleepMilli(10);
+    Pthread::vSleepMilli(10);
   
   vSpawnJobStart();
   
@@ -841,7 +841,7 @@ void RapidsSE::vWaitStop(void)
   
   // this primary thread waits for flag indicationg systems is to stop
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )
-    PosixThread::vSleepMilli(10);
+    Pthread::vSleepMilli(10);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -196,9 +196,9 @@ enum eCN : u2 // Class Number
   /* 160 0xA0      320B Heap:S */ CN_PIPE,
   /* 161 0xA1    48376B Heap:M */ CN_PLAN,
   /* 162 0xA2     3112B Heap:M */ CN_PLANNER,
-  /* 163 0xA3       32B Heap:S */ CN_POSIXTHREAD,
   /* 164 0xA4       48B Heap:M */ CN_PREDICATE,
   /* 165 0xA5      184B Heap:S */ CN_PREDICATEVEC,
+  /* 163 0xA3       32B Heap:S */ CN_PTHREAD,
   /* 166 0xA6     8216B Heap:M */ CN_PTNCOLVEC,
   
   /* 167 0xA7      168B Heap:S */ CN_QUEUE,
@@ -448,9 +448,9 @@ static Stz* aCN[]
   /* 160 0xA0 */ "PIPE"_Stz,                // CN_PIPE
   /* 161 0xA1 */ "PLAN"_Stz,                // CN_PLAN
   /* 162 0xA2 */ "PLANNER"_Stz,             // CN_PLANNER
-  /* 163 0xA3 */ "POSIXTHREAD"_Stz,         // CN_POSIXTHREAD
   /* 164 0xA4 */ "PREDICATE"_Stz,           // CN_PREDICATE
   /* 165 0xA5 */ "PREDICATEVEC"_Stz,        // CN_PREDICATEVEC
+  /* 163 0xA3 */ "POSIXTHREAD"_Stz,         // CN_PTHREAD
   /* 166 0xA6 */ "PTNCOLVEC"_Stz,           // CN_PTNCOLVEC
   
   /* 167 0xA7 */ "QUEUE"_Stz,               // CN_QUEUE

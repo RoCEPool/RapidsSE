@@ -190,7 +190,7 @@ bool Job_SubPurger::bChunk(void)
   }
   
 //  if (! bPurged) {
-//    PosixThread::vSleepMilli(10);
+//    Pthread::vSleepMilli(10);
 //    return true;
 //  }
 

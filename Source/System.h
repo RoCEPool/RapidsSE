@@ -29,7 +29,7 @@ using namespace System;
 #include "Mutex.hpp"
 #include "OpSys.hpp"
 #include "Pipe.hpp"
-#include "PosixThread.hpp"
+#include "Pthread.hpp"
 #include "Process.hpp"
 #include "Random.hpp"
 #include "Shell.hpp"

@@ -15,7 +15,7 @@
   s256 sFile((Stz*)__FILE__); \
   s256 sException; \
   sException.vSprint(p1); \
-  Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
+  Task* pTask = reinterpret_cast<Task*>(Pthread::pTlsGet(giTLS_TaskKey)); \
   pTask->vException(sFile,sException); \
   Debugging::vThrowTrap(); \
   throw (i8)__LINE__; \
@@ -26,7 +26,7 @@
   s256 sFile((Stz*)__FILE__); \
   s256 sException; \
   sException.vSprint(p1,p2); \
-  Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
+  Task* pTask = reinterpret_cast<Task*>(Pthread::pTlsGet(giTLS_TaskKey)); \
   pTask->vException(sFile,sException); \
   Debugging::vThrowTrap(); \
   throw (i8)__LINE__; \

@@ -12,11 +12,11 @@ pthread_key_t giTLS_TaskKey   = -1;
 /*----------------------------------------------------------------------------*/
 void TlsKeys::vInit(void)
 {
-  bool b = PosixThread::bTlsCreate(&giTLS_ThreadKey);
+  bool b = Pthread::bTlsCreate(&giTLS_ThreadKey);
   ASSERT(b);
   
   //ASSERT(!b);
-  b = PosixThread::bTlsCreate(&giTLS_TaskKey);
+  b = Pthread::bTlsCreate(&giTLS_TaskKey);
   ASSERT(b);
 }
 

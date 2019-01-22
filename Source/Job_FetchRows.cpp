@@ -419,7 +419,7 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
     
     // attempt to pop buffer off the buffer queue
 //    if ( ! pJob_FetchRows->m_pBufferQueue->bPop(&xVariable) ) {
-//      PosixThread::vSleepMilli(1);
+//      Pthread::vSleepMilli(1);
 //      continue;
 //    }
 //    PtrVal* aPtrVal = xVariable.aNestedPtrVal();
@@ -427,7 +427,7 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
     
     pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
     if (! pFetchBuffer) {
-      PosixThread::vSleepMilli(1);
+      Pthread::vSleepMilli(1);
       continue;
     }
     

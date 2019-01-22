@@ -628,7 +628,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
 //    GenVar xVariable;
 //    while (!pJob_FetchRows->m_pBufferQueue->bPop(&xVariable)) {
 //      //vTrace("SLEEPING\n"_Stz);
-//      PosixThread::vSleepMilli(1);
+//      Pthread::vSleepMilli(1);
 //    }
 //
 //    //vTrace("Buffers remaining %lld\n"_Stz, pJob_FetchRows->m_pBufferQueue->iCount());
@@ -649,7 +649,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
       if (pFetchBuffer)
         break;
       //vTrace("SLEEPING\n"_Stz);
-      PosixThread::vSleepMilli(1);
+      Pthread::vSleepMilli(1);
     }
     pJob_FetchRows->m_pFetchBuffer = pFetchBuffer;
     
@@ -1701,7 +1701,7 @@ void vDeleteJobs(Session* pSession)
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 //        GenVar xVariable;
 //        while (!pJob_FetchRows->m_pBufferQueue->bPop(&xVariable)) {
-//          PosixThread::vSleepMilli(1);
+//          Pthread::vSleepMilli(1);
 //          vApiLocation(pSession,400);
 //          continue;
 //        }
@@ -1716,7 +1716,7 @@ void vDeleteJobs(Session* pSession)
           pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
           if (pFetchBuffer)
             break;
-          PosixThread::vSleepMilli(1);
+          Pthread::vSleepMilli(1);
           vApiLocation(pSession,400);
           continue;
         }

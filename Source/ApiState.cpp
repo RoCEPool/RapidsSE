@@ -133,8 +133,8 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   SessionState* aState = &m_xSessionState[i_Session];
 
   aState->m_eApiCall   = eApiCall;
-  aState->m_aStackBase = PosixThread::aStackBase();
-  aState->m_aStackPtr  = PosixThread::aStackPointer();
+  aState->m_aStackBase = Pthread::aStackBase();
+  aState->m_aStackPtr  = Pthread::aStackPointer();
   aState->m_iLocation  = 0;
   aState->m_eJobClass  = CN_NONE;
   aState->m_eError     = EC_NONE;

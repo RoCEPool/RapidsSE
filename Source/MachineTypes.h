@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-
 namespace Base
 {
   typedef char               i1;  // 1 byte signed integer
@@ -29,7 +28,12 @@ namespace Base
 
   typedef long long          w4;  // 4 byte word
   typedef long long          w8;  // 8 byte word
-  
+
+  typedef unsigned char      y1;  // 1 byte
+  typedef unsigned short     y2;  // 2 byte
+  typedef unsigned int       y4;  // 4 byte
+  typedef unsigned long long y8;  // 8 byte
+
   const u8 C_BITS_PER_WORD = 64;
   const u8 C_ALL_BITS_ON   = 0XFFFFFFFFFFFFFFFFLL;
 }

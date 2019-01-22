@@ -21,7 +21,7 @@ void Step::vHandlerServiceSleepQueue(MP_Task mpTask)
 {
   ENTRY("vHandlerServiceSleepQueue"_Stz);
   
-  PosixThread::vSleepSec(1);
+  Pthread::vSleepSec(1);
   
   EXIT();
 }

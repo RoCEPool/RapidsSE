@@ -42,7 +42,7 @@ void vTest2(void)
   Since oEnd;
   
   oStart.vNow();
-  PosixThread::vSleepMilli(3500);
+  Pthread::vSleepMilli(3500);
   oEnd.vNow();
   
   //Ivl wDiff = oEnd.wSubtract(oStart);
@@ -144,9 +144,9 @@ void vTest5(void)
 void vTest6(void)
 {
 //  printf("Stack base %llx size %lld pointer %llx\n",
-//         PosixThread::aStackBase(),
-//         PosixThread::iStackSize(),
-//         PosixThread::aStackPointer());
+//         Pthread::aStackBase(),
+//         Pthread::iStackSize(),
+//         Pthread::aStackPointer());
 }
 
 /*----------------------------------------------------------------------------*/

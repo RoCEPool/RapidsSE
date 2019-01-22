@@ -160,7 +160,7 @@ void Step::vThreadDisableRealtime(MP_Task mpTask)
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPosixThread->vDisableRealtime();
+  pThread->m_pPthread->vDisableRealtime();
   
   EXIT();
 }
@@ -195,7 +195,7 @@ void Step::vThreadEnableRealtime(MP_Task mpTask)
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPosixThread->vEnableRealtime();
+  pThread->m_pPthread->vEnableRealtime();
   
   EXIT();
 }
@@ -216,7 +216,7 @@ ENTRY("vThreadId"_Stz);
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  mpTask->m_pDataStack->vPushI8(pThread->m_pPosixThread->m_iOpSysThreadId);
+  mpTask->m_pDataStack->vPushI8(pThread->m_pPthread->m_iOpSysThreadId);
   
   EXIT();
 }
@@ -273,7 +273,7 @@ ENTRY("vThreadSleep_s"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPosixThread->vSleepSec(nSeconds);
+  pThread->m_pPthread->vSleepSec(nSeconds);
   
   EXIT();
 }
@@ -292,7 +292,7 @@ ENTRY("vThreadSleep_ms"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPosixThread->vSleepMilli(nMilliseconds);
+  pThread->m_pPthread->vSleepMilli(nMilliseconds);
   
   EXIT();
 }
@@ -311,7 +311,7 @@ ENTRY("vThreadSleep_us"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPosixThread->vSleepMicro(nMicroseconds);
+  pThread->m_pPthread->vSleepMicro(nMicroseconds);
   
   EXIT();
 }
@@ -330,7 +330,7 @@ ENTRY("vThreadSleep_ns"_Stz);
   
   Thread* pThread = Thread::pThisTLSThread();
   
-  pThread->m_pPosixThread->vSleepNano(nNanoseconds);
+  pThread->m_pPthread->vSleepNano(nNanoseconds);
   
   EXIT();
 }

@@ -840,7 +840,7 @@ void Parser::vReadLineStdin(void)
   m_pRawChar = m_sRawLine.aChar();
   
   if (gpAttachMap->m_bTracepoint)
-    PosixThread::vSleepMilli(300);
+    Pthread::vSleepMilli(300);
   
   bool bLowMem = gpBufferPool->bLowMemory();
   

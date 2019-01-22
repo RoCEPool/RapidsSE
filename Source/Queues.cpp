@@ -113,8 +113,8 @@ void Queues::vThreadsReport()
            pThread->m_iStackSize,
            
            aTC[pThread->m_eThreadState],
-           pThread->m_pPosixThread->m_iOpSysThreadId,
-           pThread->m_pPosixThread->m_iPosixThreadId,
+           pThread->m_pPthread->m_iOpSysThreadId,
+           pThread->m_pPthread->m_iPthreadId,
            pThread->m_iLastQueueRR,
            pThread->m_iStartQueueRR,
            
@@ -498,7 +498,7 @@ Thread* Queues::pFindIdleThread(void)
   
   Thread* pThisThread = nullptr;
   
-  if ( ! PosixThread::bIsJavaThread() )
+  if ( ! Pthread::bIsJavaThread() )
     pThisThread = Thread::pThisTLSThread();
   
   m_pThreadVector->vGrabLock();

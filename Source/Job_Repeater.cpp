@@ -294,7 +294,7 @@ bool Job_Repeater::bChunk(void)
 //    i8 nBytesPerDay = m_pByteRate->nBytesPerDay();
 //    if (nBytesPerDay <= iThreshold)
 //      break;
-//    PosixThread::vSleepMicro(500);
+//    Pthread::vSleepMicro(500);
 //  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
