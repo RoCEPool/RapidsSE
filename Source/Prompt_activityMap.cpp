@@ -24,7 +24,7 @@ PromptNote mPromptNote_activityMap (
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_activityMap(SePrompt* pPrompt)
 {
-  ActivityMap::vDump();
+  ActivityMap::vWriteCsv();
   
   return true;
 }

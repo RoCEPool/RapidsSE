@@ -24,7 +24,7 @@ void Step::vActivityMapDump(MP_Task mpTask)
 {
   ENTRY("vActivityMapDump"_Stz);
   
-  ActivityMap::vDump();
+  ActivityMap::vWriteCsv();
   
   EXIT();
 }

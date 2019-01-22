@@ -73,27 +73,13 @@ ActivityMap::ActivityMap(void)
   if (0 != gpAttachMap->m_pGrid->m_iThisNode || PosixThread::bIsJavaThread() )
     return;
   
-  // initialise mutex attribute
-  MemLib::vZero(&m_xMutexAttr,sizeof(m_xMutexAttr),CN_SEMAPHORE);
-  i8 iResult = pthread_mutexattr_init(&m_xMutexAttr);
-  ASSERT( ! iResult);
-  
-  // set mutex attribute to be shared
-  iResult = pthread_mutexattr_setpshared(&m_xMutexAttr,PTHREAD_PROCESS_SHARED);
-  ASSERT( ! iResult);
-  
-  // initialize the mutex
-  MemLib::vZero(&m_xMutex,sizeof(m_xMutex),CN_SEMAPHORE);
-  iResult = pthread_mutex_init(&m_xMutex,&m_xMutexAttr);
-  ASSERT( ! iResult);
-  
   m_oLock.vInitLock(LK_ACTIVITY_MAP);
   m_i_Mark = 0;
   m_nMarks = gxArguments.m_nActivityMarks;
   
   for (i8 i_Mark = 0; i_Mark < m_nMarks; i_Mark++) {
-    ActivityMark* aActivityMark = &m_xActivity[i_Mark];
-    aActivityMark->vInit();
+    ActivityMark* pActivityMark = &m_oaMark[i_Mark];
+    pActivityMark->vInit();
   }
   
   _checkInitialised_(CN_ACTIVITYMAP);
@@ -245,9 +231,9 @@ void ActivityMap::vMonitorPortrait(s48K& sPortrait)
     return;
   }
   
-  gpAttachMap->m_aActivityMap->vLockMutex();
+  gpAttachMap->m_aActivityMap->vGrabLock();
   i8 iPercentFull = gpAttachMap->m_aActivityMap->iPercentFull_NL();
-  gpAttachMap->m_aActivityMap->vUnlockMutex();
+  gpAttachMap->m_aActivityMap->vDropLock();
   
   i8 iMapSize = iSize();
   s32 sShmMag;
@@ -277,7 +263,6 @@ void ActivityMap::vOpenByApi(void)
   
   Now oNow;
   ActivityMap::vMark(0,"Time is: "_Stz,oNow.sFormatted());
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,15 +304,6 @@ void ActivityMap::vOpenBySE(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump ActivityMap                                                           */
-/*----------------------------------------------------------------------------*/
-void ActivityMap::vDump(void)
-{
-  if (gpActivityMap)
-    gpActivityMap->vDumpMap();
-}
-
-/*----------------------------------------------------------------------------*/
 /* compute the size of ActivityMap given gpAttachMap->m_nActivityMarks        */
 /*----------------------------------------------------------------------------*/
 i8 ActivityMap::iSize(void)
@@ -339,124 +315,63 @@ i8 ActivityMap::iSize(void)
   return iMapSize;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* -- Public -----------------------------------------------------------------*/
+/* write ActivityMap to csv file                                              */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* write an ActivityMark                                                      */
-/*----------------------------------------------------------------------------*/
-void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
+void ActivityMap::vWriteCsv(void)
 {
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
-
-  char aMark[1024];
-  
-  vsnprintf(aMark,sizeof(aMark)-1,aFormat->aChar(),xArgs);
-
-  ActivityMark* aActivityMark = aNewActivityMark();
-  
-  if (! aActivityMark)
+  if (! gpActivityMap)
     return;
   
-  aActivityMark->vWrite(iJobId,aMark);
+  gpActivityMap->vWriteToFile();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get a new mark in ActivityMap                                              */
+/*----------------------------------------------------------------------------*/
+ActivityMark* ActivityMap::pNewActivityMark(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  
+  // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
+  vGrabLock();
+  
+  ActivityMark* pActivityMark = &m_oaMark[m_i_Mark % m_nMarks];
+  
+  pActivityMark->m_iMark = m_i_Mark;
+  
+  m_i_Mark++;
+  
+  vDropLock();
+  // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
+
+  return pActivityMark;
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump ActivityMap to a csv file in /tmp                                     */
+/* drop lock on ActivityMap                                                   */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vDumpMap(void)
+void ActivityMap::vDropLock(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
 
-  i8 iTotalDelta = 0;
-  
-  File* pActivityFile = new File();
-  
-  s256 sAmPath = gxArguments.m_sAmPath;
-  
-  bool bOpened = pActivityFile->bOpenWrite(sAmPath);
-  
-  if (! bOpened) {
-    vTrace("Unable to open activity file: %s\n"_Stz,sAmPath.aChar());
-    return;
-  }
-
-  vLockMutex();
-  
-  i8 i_MinMark;
-  i8 i_MaxMark;
-  
-  vFindRange(i_MinMark,i_MaxMark);
-  
-  ActivityMark* aActivityMark = &m_xActivity[i_MinMark % m_nMarks];
-  aActivityMark->vDump(pActivityFile,
-                       0,nullptr,iTotalDelta);
-  
-  for (i8 i_Mark = i_MinMark + 1; i_Mark <= i_MaxMark; i_Mark++) {
-    
-    aActivityMark = &m_xActivity[i_Mark % m_nMarks];
-    
-    if (-1 == aActivityMark->m_iMark)
-      break;
-    
-    aActivityMark->vDump(pActivityFile,
-                         i_Mark,
-                         &m_xActivity[(i_Mark - 1) % m_nMarks],
-                         iTotalDelta);
-  }
-  
-  vUnlockMutex();
-  
-  pActivityFile->vClose();
-  
-  vTrace("ActivityMap dumped : %s\n"_Stz,sAmPath.aChar());
-  
-  delete pActivityFile;
+  m_oLock.vDropWrite();
 }
-/*----------------------------------------------------------------------------*/
-//void ActivityMap::vDumpMap(void)
-//{
-//  i8 iTotalDelta = 0;
-//
-//  File* pActivityFile = new File();
-//
-//  s256 sAmPath = gxArguments.m_sAmPath;
-//
-//  bool bOpened = pActivityFile->bOpenWrite(sAmPath);
-//
-//  if (! bOpened) {
-//    vTrace("Unable to open activity file: %s\n"_Stz,sAmPath.aChar());
-//    return;
-//  }
-//
-//  vLockMutex();
-//
-//  ActivityMark* aActivityMark = &m_xActivity[0];
-//  aActivityMark->vDump(pActivityFile,
-//                       0,nullptr,iTotalDelta);
-//
-//  for (i8 i_Mark = 1; i_Mark < m_nMarks; i_Mark++) {
-//    aActivityMark = &m_xActivity[i_Mark];
-//    aActivityMark->vDump(pActivityFile,
-//                         i_Mark,&m_xActivity[i_Mark - 1],iTotalDelta);
-//  }
-//
-//  vUnlockMutex();
-//
-//  pActivityFile->vClose();
-//
-//  vTrace("ActivityMap dumped : %s\n"_Stz,sAmPath.aChar());
-//}
 
 /*----------------------------------------------------------------------------*/
 /* find active range                                                          */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vFindRange(i8& i_MinMark, i8& i_MaxMark)
+void ActivityMap::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
-
+  
+  RASSERT(m_oLock.bIsLocked());
+  
   // should be a quicker way to do this
   
   i_MinMark = C_I8_MAX;
@@ -464,15 +379,25 @@ void ActivityMap::vFindRange(i8& i_MinMark, i8& i_MaxMark)
   
   for (i8 i_Mark = 0; i_Mark < m_nMarks; i_Mark++) {
     
-    if (-1 == m_xActivity[i_Mark].m_iMark)
+    if (-1 == m_oaMark[i_Mark].m_iMark)
       return;
-          
-    if (m_xActivity[i_Mark].m_iMark < i_MinMark)
-      i_MinMark = m_xActivity[i_Mark].m_iMark;
     
-    if (m_xActivity[i_Mark].m_iMark > i_MaxMark)
-      i_MaxMark = m_xActivity[i_Mark].m_iMark;
+    if (m_oaMark[i_Mark].m_iMark < i_MinMark)
+      i_MinMark = m_oaMark[i_Mark].m_iMark;
+    
+    if (m_oaMark[i_Mark].m_iMark > i_MaxMark)
+      i_MaxMark = m_oaMark[i_Mark].m_iMark;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock on ActivityMap                                                   */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vGrabLock(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  
+  m_oLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -481,13 +406,15 @@ void ActivityMap::vFindRange(i8& i_MinMark, i8& i_MaxMark)
 i8 ActivityMap::iPercentFull_NL(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
-
+  
+  RASSERT(m_oLock.bIsLocked());
+  
   i8 nMarksInUse = 0;
   i8 iPercent = 0;
   
   i8 i_MinMark;
   i8 i_MaxMark;
-  vFindRange(i_MinMark,i_MaxMark);
+  vFindRange_NL(i_MinMark,i_MaxMark);
   
   if (i_MinMark < i_MaxMark) {
     //
@@ -516,75 +443,76 @@ i8 ActivityMap::iPercentFull_NL(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grab ActivityMap mutex                                                     */
+/* write an ActivityMark                                                      */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vLockMutex(void)
+void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
-
-  i8 rCode = pthread_mutex_lock(&m_xMutex);
-  if (0 != rCode)
-    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
+  char aMark[1024];
+  
+  vsnprintf(aMark,sizeof(aMark)-1,aFormat->aChar(),xArgs);
+  
+  ActivityMark* pActivityMark = pNewActivityMark();
+  
+  if (! pActivityMark)
+    return;
+  
+  pActivityMark->vWrite(iJobId,aMark);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write ActivityMap to a csv file                                            */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vWriteToFile(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  
+  i8 iTotalDelta = 0;
+  
+  File* pActivityFile = new File();
+  
+  s256 sAmPath = gxArguments.m_sAmPath;
+  
+  bool bOpened = pActivityFile->bOpenWrite(sAmPath);
+  if (! bOpened) {
+    vTrace("Unable to open activity file: %s\n"_Stz,sAmPath.aChar());
+    return;
+  }
+  
+  // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop ActivityMap mutex                                                     */
-/*----------------------------------------------------------------------------*/
-void ActivityMap::vUnlockMutex(void)
-{
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
-
-  i8 rCode = pthread_mutex_unlock(&m_xMutex);
-  if (0 != rCode)
-    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
-
+  
+  i8 i_MinMark;
+  i8 i_MaxMark;
+  
+  vFindRange_NL(i_MinMark,i_MaxMark);
+  
+  ActivityMark* pActivityMark = &m_oaMark[i_MinMark % m_nMarks];
+  pActivityMark->vDump(pActivityFile,
+                       0,nullptr,iTotalDelta);
+  
+  for (i8 i_Mark = i_MinMark + 1; i_Mark <= i_MaxMark; i_Mark++) {
+    
+    pActivityMark = &m_oaMark[i_Mark % m_nMarks];
+    
+    if (-1 == pActivityMark->m_iMark)
+      break;
+    
+    pActivityMark->vDump(pActivityFile,
+                         i_Mark,
+                         &m_oaMark[(i_Mark - 1) % m_nMarks],
+                         iTotalDelta);
+  }
+  
   vDropLock();
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* drop lock on ActivityMap                                                   */
-/*----------------------------------------------------------------------------*/
-void ActivityMap::vDropLock(void)
-{
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
-
-  m_oLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grab lock on ActivityMap                                                   */
-/*----------------------------------------------------------------------------*/
-void ActivityMap::vGrabLock(void)
-{
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
   
-  m_oLock.vGrabWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a new ActivityMap mark                                                 */
-/*----------------------------------------------------------------------------*/
-ActivityMark* ActivityMap::aNewActivityMark(void)
-{
-  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
-
-  vLockMutex();
+  pActivityFile->vClose();
   
-  ActivityMark* aActivityMark = &m_xActivity[m_i_Mark % m_nMarks];
+  vTrace("ActivityMap written to: %s\n"_Stz,sAmPath.aChar());
   
-  aActivityMark->m_iMark = m_i_Mark;
-  
-  m_i_Mark++;
-  
-  vUnlockMutex();
-  
-  return aActivityMark;
+  delete pActivityFile;
 }
 
 /*----------------------------------------------------------------------------*/
