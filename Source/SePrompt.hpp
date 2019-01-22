@@ -60,7 +60,9 @@ namespace Prompt
     bool bFindJobClass(void);
     void vFreeSpace(void);
     void vGetCommand(void);
-    void vLockMutex(void);
+    void vJobLockMutex(void);
+    void vJobUnlockMutex(void);
+    void vJobWaitCond(void);
     bool bMarkAll(void);
     void vMarkAll(bool bMarkAll);
     void vMarkCommand(void);
@@ -74,9 +76,7 @@ namespace Prompt
     void vSetJob(void);
     void vSpawnJob(void);
     TokenVec* pTknVec(void);
-    void vUnlockMutex(void);
     void vUnknownCommand(void);
-    void vWaitCond(void);
 
   private:
 

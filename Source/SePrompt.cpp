@@ -142,26 +142,19 @@ void SePrompt::vPromptLoop(void)
     
     vSetJob();
         
-    vLockMutex();
+    vJobLockMutex();
     
     vSpawnJob();
     
-    // sleep before executing wait so that system call to spawn
-    // other se nodes completes. Else it interferes with the wait
-//    if (m_pJob->eClass() == CN_JOB_STARTCLUSTER) {
-//      // loop till the se nodes have been spawned i.e till start node is set
-//      while (gpAttachMap->m_pGrid->m_iStartNode == -1);
-//    }
-    
     if (bNoWait()) {
-      vUnlockMutex();
+      vJobUnlockMutex();
       m_bNoWait = false;
       continue;
     }
     
-    vWaitCond();
+    vJobWaitCond();
 
-    vUnlockMutex();
+    vJobUnlockMutex();
     
     vPostJob();
     
@@ -396,9 +389,9 @@ void SePrompt::vGetCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* lock mutex                                                                 */
+/* lock job's mutex                                                           */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vLockMutex(void)
+void SePrompt::vJobLockMutex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -410,6 +403,38 @@ void SePrompt::vLockMutex(void)
 //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
   m_pJob->m_eState = JS_LOCKED;
+}
+
+/*----------------------------------------------------------------------------*/
+/* unlock job's mutex                                                         */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vJobUnlockMutex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // have to be locked, waiting or signalled
+  RASSERT(JS_RUNNING != m_pJob->m_eState);
+  
+  m_pJob->vMutexUnlock();
+  
+  m_pJob->m_eState = JS_RUNNING;
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait on job's condition variable                                           */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vJobWaitCond(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  RASSERT(JS_LOCKED == m_pJob->m_eState);
+  m_pJob->m_eState = JS_WAITING;
+  
+  do {
+    
+    m_pJob->vMutexWait();
+    
+  } while (m_pJob->m_eState != JS_SIGNALLED);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -602,47 +627,6 @@ void SePrompt::vUnknownCommand(void)
   
   vTrace("error: Unknown command '%s'\n"_Stz,
          pTkn->aText());
-}
-
-/*----------------------------------------------------------------------------*/
-/* unlock mutex                                                               */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vUnlockMutex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // have to be locked, waiting or signalled
-  RASSERT(JS_RUNNING != m_pJob->m_eState);
- 
-  m_pJob->vMutexUnlock();
-//  i8 rCode = pthread_mutex_unlock(&m_pJob->m_xThreadMutex);
-//   if (0 != rCode)
-//    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
-
-  m_pJob->m_eState = JS_RUNNING;
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait condition variable                                                    */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vWaitCond(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
-  i8 rCode;
-  
-  RASSERT(JS_LOCKED == m_pJob->m_eState);
-  m_pJob->m_eState = JS_WAITING;
-  
-  do {
-
-    m_pJob->vMutexWait();
-//    rCode = pthread_cond_wait(&m_pJob->m_xThreadCond,
-//                              &m_pJob->m_xThreadMutex);
-//    if (0 != rCode)
-//      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-    
-  } while (m_pJob->m_eState != JS_SIGNALLED);
 }
 
 /*----------------------------------------------------------------------------*/
