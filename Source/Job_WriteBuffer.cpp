@@ -206,7 +206,7 @@ bool Job_WriteBuffer::bInsertRows(void)
 //    pJob_LoadTable->m_xNode[iThisNode].m_ziRowsProcessed += m_nRows;
     
     if (C_UNKNOWN != m_nWriteBehindBuffers)
-      pPartition->vAddLoadWriteBehindBuffers(m_nWriteBehindBuffers);
+      pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -215,7 +215,7 @@ bool Job_WriteBuffer::bInsertRows(void)
     // does this job have information about the number of buffers to be written
     // from a subloader for this partition?
     if (C_UNKNOWN != m_nWriteBehindBuffers) {
-      pPartition->vAddInsertWriteBehindBuffers(m_nWriteBehindBuffers);
+      pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
       //vTrace("Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld\n"_Stz,
       //       m_iPartitionId, iSlot, m_nWriteBehindBuffers);
       
@@ -298,7 +298,7 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
   // does this job have information about the number of buffers loadable
   // from a subloader for this partition?
   if (C_UNKNOWN != m_nWriteBehindBuffers)
-    pPartition->vAddLoadWriteBehindBuffers(m_nWriteBehindBuffers);
+    pPartition->vAddWriteBehindBuffers(m_nWriteBehindBuffers);
   
   // have all buffers been loaded?
   bool bAllBuffersWritten = pPartition->bAllBuffersWritten(DS_LOAD);

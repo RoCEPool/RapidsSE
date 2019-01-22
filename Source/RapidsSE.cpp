@@ -773,7 +773,6 @@ void RapidsSE::vStartSystem(void)
                               gxArguments.m_iRegionSize,
                               gxArguments.m_iJumboSize,
                               gxArguments.m_nSubIngesters,
-                              gxArguments.m_nSubInserters,
                               gxArguments.m_nSubLoaders);
   
   // get the trace file
