@@ -127,6 +127,14 @@ namespace Threads
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+ 
+    bool  bQueuePeek(void);
+
+    void  vTaskCall(void);
+  
+    bool  bGrabIfIdle(void);
+  
+  private:
     void  vCondBroadcast(void);
     void  vCondSignal(void);
     void  vCondWait(void);
@@ -136,11 +144,7 @@ namespace Threads
     void  vMutexLock(void);
     void  vMutexUnlock(void);
     void  vSignalThread(void);
- 
-    bool  bQueuePeek(void);
 
-    void  vTaskCall(void);
-  
     Footer* aFooter(void);
   };
   

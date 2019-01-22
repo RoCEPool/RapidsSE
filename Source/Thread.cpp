@@ -589,6 +589,29 @@ void Thread::vTaskCall(void)
   // ...
 }
 
+/*----------------------------------------------------------------------------*/
+/* attempt to grab this thread as an idle thread                             */
+/*----------------------------------------------------------------------------*/
+bool Thread::bGrabIfIdle(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
+  // attempt to lock threads mutex
+  if (! bMutexLock())
+    return false;
+  
+  // if this thread idle return with mutex locked
+  if (bIsIdle()) {
+    m_eThreadState = TC_RUNNING;
+    return true;
+  }
+  
+  // thread is not idle, so unlock mutex
+  vMutexUnlock();
+  
+  return false;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Mutex -------------------------------------------------------------------*/
@@ -655,7 +678,6 @@ void Thread::vMutexLock(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_pMutex->vMutexLock();
-  
   ASSERT(m_pMutex->bMutexIsLocked());
 }
 
