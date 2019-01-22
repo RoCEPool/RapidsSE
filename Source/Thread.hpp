@@ -6,47 +6,6 @@
 
 namespace Threads
 {
-    
-  enum eTH // thread
-  {
-  /*  0 */ TH_NONE=0,
-  /*  1 */ TH_ANSWER,
-  /*  2 */ TH_COORDINATOR,
-  /*  3 */ TH_COORDINATOR_PROXY,
-  /*  4 */ TH_GENERAL,
-  /*  5 */ TH_LISTER,
-  /*  6 */ TH_MONITOR,
-  /*  7 */ TH_QUERY,
-  /*  8 */ TH_PARTICIPANT,
-  /*  9 */ TH_PARTICIPANT_PROXY,
-  /* 10 */ TH_RECLAIM,
-  /* 11 */ TH_REQUEST,
-  /* 12 */ TH_SCANOP,
-  /* 13 */ TH_SINKOP,
-  /* 14 */ TH_WRITEOP,
-  /* 15 */ TH_ENUMS
-  };
-  
-  static Stz* aTH[]
-  {
-  /*  0 */ "NONE"_Stz,
-  /*  1 */ "ANSWER"_Stz,
-  /*  2 */ "COORDINATOR"_Stz,
-  /*  3 */ "COORDINATOR_PROXY"_Stz,
-  /*  4 */ "GENERAL"_Stz,
-  /*  5 */ "LISTER"_Stz,
-  /*  6 */ "MONITOR"_Stz,
-  /*  7 */ "QUERY"_Stz,
-  /*  8 */ "PARTICIPANT"_Stz,
-  /*  9 */ "PARTICIPANT_PROXY"_Stz,
-  /* 10 */ "RECLAIM"_Stz,
-  /* 11 */ "REQUEST"_Stz,
-  /* 12 */ "SCANOP"_Stz,
-  /* 13 */ "SINKOP"_Stz,
-  /* 14 */ "WRITEOP"_Stz,
-  /* 15 */ "ENUMS"_Stz
-  };
-  
   enum eTC // thread condition/state
   {
     /*  0 */ TC_NONE=0,

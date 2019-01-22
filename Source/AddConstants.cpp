@@ -464,24 +464,7 @@ void Axioms::vAddConstants(void)
   /*  2 */ vAddConstant("TN_INTEGER"_Stz, TN_INTEGER);
   /*  3 */ vAddConstant("TN_STRING"_Stz,  TN_STRING);
   /*  4 */ vAddConstant("TN_ENUMS"_Stz,   TN_ENUMS);
-  
-  /*  0 */ vAddConstant("TH_NONE"_Stz,                TH_NONE);
-  /*  1 */ vAddConstant("TH_ANSWER"_Stz,              TH_ANSWER);
-  /*  2 */ vAddConstant("TH_COORDINATOR"_Stz,         TH_COORDINATOR);
-  /*  3 */ vAddConstant("TH_COORDINATOR_PROXY"_Stz,   TH_COORDINATOR_PROXY);
-  /*  4 */ vAddConstant("TH_GENERAL"_Stz,             TH_GENERAL);
-  /*  5 */ vAddConstant("TH_LISTER"_Stz,              TH_LISTER);
-  /*  6 */ vAddConstant("TH_MONITOR"_Stz,             TH_MONITOR);
-  /*  7 */ vAddConstant("TH_QUERY"_Stz,               TH_QUERY);
-  /*  8 */ vAddConstant("TH_PARTICIPANT"_Stz,         TH_PARTICIPANT);
-  /*  9 */ vAddConstant("TH_PARTICIPANT_PROXY"_Stz,   TH_PARTICIPANT_PROXY);
-  /* 10 */ vAddConstant("TH_RECLAIM"_Stz,             TH_RECLAIM);
-  /* 11 */ vAddConstant("TH_REQUEST"_Stz,             TH_REQUEST);
-  /* 12 */ vAddConstant("TH_SCANOP"_Stz,              TH_SCANOP);
-  /* 13 */ vAddConstant("TH_SINKOP"_Stz,              TH_SINKOP);
-  /* 14 */ vAddConstant("TH_WRITEOP"_Stz,             TH_WRITEOP);
-  /* 15 */ vAddConstant("TH_ENUMS"_Stz,               TH_ENUMS); 
-  
+    
   // SIZEOF_ : C++ class sizes
   /*  1 */ vAddConstant("SIZEOF_INTVAL"_Stz, sizeof(IntVal));
   /*  2 */ vAddConstant("SIZEOF_IPVAL"_Stz,  sizeof(FipVal));
