@@ -171,10 +171,12 @@ void Job::vMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 rCode = pthread_mutex_lock(&m_xThreadMutex);
+  m_pMutex->vMutexLock();
   
-  if (0 != rCode)
-    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+//  i8 rCode = pthread_mutex_lock(&m_xThreadMutex);
+//
+//  if (0 != rCode)
+//    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -184,10 +186,12 @@ void Job::vMutexSignal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 rCode = pthread_cond_signal(&m_xThreadCond);
-  
-  if (0 != rCode)
-    vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
+  m_pMutex->vCondSignal();
+
+//  i8 rCode = pthread_cond_signal(&m_xThreadCond);
+//  
+//  if (0 != rCode)
+//    vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,11 +200,13 @@ void Job::vMutexSignal(void)
 void Job::vMutexUnlock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 rCode = pthread_mutex_unlock(&m_xThreadMutex);
-  
-  if (0 != rCode)
-    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+
+  m_pMutex->vMutexUnlock();
+
+//  i8 rCode = pthread_mutex_unlock(&m_xThreadMutex);
+//
+//  if (0 != rCode)
+//    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -209,11 +215,13 @@ void Job::vMutexUnlock(void)
 void Job::vMutexWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
+ 
+  m_pMutex->vCondWait();
   
-  i8 rCode = pthread_cond_wait(&m_xThreadCond,&m_xThreadMutex);
-  
-  if (0 != rCode)
-    vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+//  i8 rCode = pthread_cond_wait(&m_xThreadCond,&m_xThreadMutex);
+//
+//  if (0 != rCode)
+//    vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/
