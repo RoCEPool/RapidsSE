@@ -66,27 +66,31 @@ Mutex::Mutex()
   // initialise attribute to mutex
   MemLib::vZero(&m_xMutexAttr,sizeof(m_xMutexAttr),CN_MUTEX);
   i8 iResult = pthread_mutexattr_init(&m_xMutexAttr);
-  ASSERT( ! iResult);
+  RASSERT(! iResult);
   
   // set attribute to be shared
   iResult = pthread_mutexattr_setpshared(&m_xMutexAttr,PTHREAD_PROCESS_SHARED);
-  ASSERT( ! iResult);
+  RASSERT(! iResult);
 
   // initialize the mutex
   MemLib::vZero(&m_xMutex,sizeof(m_xMutex),CN_MUTEX);
-  pthread_mutex_init(&m_xMutex, &m_xMutexAttr);
+  iResult = pthread_mutex_init(&m_xMutex, &m_xMutexAttr);
+  RASSERT(! iResult);
 
   // initialise attribute to condition
   MemLib::vZero(&m_xCondAttr,sizeof(m_xCondAttr),CN_MUTEX);
-  pthread_condattr_init(&m_xCondAttr);
-  
+  iResult = pthread_condattr_init(&m_xCondAttr);
+  RASSERT(! iResult);
+
   // set attribute to be shared
-  pthread_condattr_setpshared(&m_xCondAttr, PTHREAD_PROCESS_SHARED);
-  
+  iResult = pthread_condattr_setpshared(&m_xCondAttr, PTHREAD_PROCESS_SHARED);
+  RASSERT(! iResult);
+
   // initialize the mutex
   MemLib::vZero(&m_xCond,sizeof(m_xCond),CN_MUTEX);
-  pthread_cond_init(&m_xCond, &m_xCondAttr);
-  
+  iResult = pthread_cond_init(&m_xCond, &m_xCondAttr);
+  RASSERT(! iResult);
+
   gxResourceTracker.vIncMutexOpen();
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
 
@@ -102,13 +106,18 @@ Mutex::~Mutex(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
+  i8 iResult;
   
-  pthread_mutex_destroy(&m_xMutex);
-  pthread_mutexattr_destroy(&m_xMutexAttr);
-  
-  pthread_cond_destroy(&m_xCond);
-  pthread_condattr_destroy(&m_xCondAttr);
-  
+  iResult = pthread_mutex_destroy(&m_xMutex);
+  RASSERT(! iResult);
+  iResult = pthread_mutexattr_destroy(&m_xMutexAttr);
+  RASSERT(! iResult);
+
+  iResult = pthread_cond_destroy(&m_xCond);
+  RASSERT(! iResult);
+  iResult = pthread_condattr_destroy(&m_xCondAttr);
+  RASSERT(! iResult);
+
   gxResourceTracker.vDecMutexOpen();
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
 }
