@@ -1071,7 +1071,6 @@ void Queues::vScheduleReadyTask(Task* pTask)
   Thread* pIdleThread = pFindIdleThread();
 
   if (pIdleThread) {
-    ASSERT(pIdleThread->bMutexIsLocked());
     pIdleThread->vExecuteTask(pTask);
   }
   else {
@@ -1097,7 +1096,6 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
   Thread* pIdleThread = pFindIdleThread();
   
   if (pIdleThread) {
-    ASSERT(pIdleThread->bMutexIsLocked());
     pIdleThread->vExecuteTask(pTask);
   }
   else

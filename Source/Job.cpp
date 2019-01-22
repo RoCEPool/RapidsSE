@@ -94,6 +94,8 @@ Job::Job(eCN eClassNo, Session* pSession)
 /*----------------------------------------------------------------------------*/
 Job::~Job(void) noexcept(false)
 {
+  vTrace("::~Job: %p\n"_Stz,this);
+  
   _precondition_(_ADDRESS_,_MAGIC_);
   
   pthread_mutex_destroy(&m_xThreadMutex);
@@ -101,6 +103,8 @@ Job::~Job(void) noexcept(false)
   
   pthread_cond_destroy(&m_xThreadCond);
   pthread_condattr_destroy(&m_xThreadCondAttr);
+  
+  //delete m_pMutex;
   
   if (m_bMark)
     ActivityMap::vMark(m_iJobId,"~Job %s"_Stz,aCN[eClass()]);
@@ -367,6 +371,7 @@ void Job::vInit(void)
   MemLib::vZero(&m_xThreadCond,sizeof(m_xThreadCond),CN_MUTEX);
   pthread_cond_init(&m_xThreadCond, &m_xThreadCondAttr);
   
+  //m_pMutex  = new Mutex;
   
   m_bNoWait = false;
 }
@@ -389,6 +394,7 @@ void Jobs::vJob_recv(Job* pJob)
 {
   pJob->m_pExecutingTask = nullptr;
   pJob->m_eJobList = JL_NONE;
+  //pJob->m_pMutex = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

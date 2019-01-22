@@ -297,9 +297,7 @@ void Thread::vContentDump(void) const
 void Thread::vExecuteTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  ASSERT(m_pMutex->bMutexLock());
-  
+    
   // task should be ready
   RASSERT(TS_READY == pTask->eState());
   //pTask->vState(TS_EXECUTING);
@@ -318,7 +316,6 @@ void Thread::vExecuteTask(Task* pTask)
   
   // signal the thread
   //vSignalThread();
-  ASSERT(m_pMutex->bMutexLock());
   
   m_pMutex->vCondSignal();
   m_pMutex->vMutexUnlock();
