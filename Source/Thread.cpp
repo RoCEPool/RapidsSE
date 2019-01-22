@@ -602,7 +602,10 @@ void Thread::vSignalThread(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   ASSERT(bMutexIsLocked());
-  m_pMutex->vSignalThread();
+  //m_pMutex->vSignalThread();
+  
+  m_pMutex->vCondSignal();
+  m_pMutex->vMutexUnlock();
 }
 
 /*----------------------------------------------------------------------------*/

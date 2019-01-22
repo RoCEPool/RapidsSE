@@ -36,8 +36,6 @@ namespace System
     void vMutexLock(void);
     void vMutexUnlock(void);
   
-    void vSignalThread(void);
-  
     Footer* aFooter(void);
   };
   
