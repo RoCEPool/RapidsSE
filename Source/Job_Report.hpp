@@ -18,6 +18,11 @@ namespace Jobs
   
     RowAgg* m_pRowAgg;   // row aggregator
   
+    RowAgg* m_pRowAgg_10s; // row aggregator for 10 sec
+    RowAgg* m_pRowAgg_1m;  // row aggregator for 1 min
+    RowAgg* m_pRowAgg_3m;  // row aggregator for 3 min
+    RowAgg* m_pRowAgg_10m; // row aggregator for 10 min
+  
     // must be last
     Footer m_xFooter;
   

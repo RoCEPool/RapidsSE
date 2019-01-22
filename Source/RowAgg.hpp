@@ -39,9 +39,11 @@ namespace DBobjects
     RowAgg(void);
     ~RowAgg(void) noexcept(false);
   
+    void vAdd(RowAgg* pAggArg);
     void vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer);
     void vPrintOut(File& oOutputFile);
     void vReadIn(File& oInFile);
+    void vReset(void);
     void vTable(Table* pTable);
     void vWriteOut(File& oOutputFile);
 
@@ -50,7 +52,6 @@ namespace DBobjects
   
     void vDiscoverColumns(void);
   
-    void vReset(void);
   };
   
   RowAgg* _pRowAgg(void* aAddr);

@@ -83,6 +83,34 @@ RowAgg::~RowAgg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add an aggregate to this aggrow                                            */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vAdd(RowAgg* pAggArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  m_nRows += pAggArg->m_nRows;
+  
+  i8 nAggColumns = m_pAggColVec->nItems();
+  
+  for (i8 i_AggCol = 0; i_AggCol < nAggColumns; i_AggCol++) {
+
+    if (pAggArg->m_iaMinVal[i_AggCol] < m_iaMinVal[i_AggCol]) {
+      m_iaMinVal[i_AggCol] = pAggArg->m_iaMinVal[i_AggCol];
+      m_iaMinKey[i_AggCol] = pAggArg->m_iaMinKey[i_AggCol];
+    }
+
+    if (pAggArg->m_iaMaxVal[i_AggCol] > m_iaMaxVal[i_AggCol]) {
+      m_iaMaxVal[i_AggCol] = pAggArg->m_iaMaxVal[i_AggCol];
+      m_iaMaxKey[i_AggCol] = pAggArg->m_iaMaxKey[i_AggCol];
+    }
+    
+    m_iaSumVal[i_AggCol] += pAggArg->m_iaSumVal[i_AggCol];
+    m_iaAvgVal[i_AggCol] += m_iaSumVal[i_AggCol] / m_nRows;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* aggregate an entry buffer                                                  */
 /*----------------------------------------------------------------------------*/
 void RowAgg::vAggregate(i8 i_Slot, EntryBuffer* pEntryBuffer)
@@ -215,7 +243,31 @@ void RowAgg::vReadIn(File& oInFile)
 }
 
 /*----------------------------------------------------------------------------*/
-/* aggregate an entry buffer                                                  */
+/* reset the aggregation                                                      */
+/*----------------------------------------------------------------------------*/
+void RowAgg::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
+  
+  m_oSince.vSet(0,0);
+  
+  m_nRows = 0;
+  
+  for (i8 i_Col = 0; i_Col < C_MAX_COLAGG; i_Col++) {
+    
+    m_iaMinKey[i_Col] = -1;
+    m_iaMinVal[i_Col] = C_I8_MAX;
+    
+    m_iaSumVal[i_Col] = 0;
+    m_iaAvgVal[i_Col] = 0;
+    
+    m_iaMaxKey[i_Col] = -1;
+    m_iaMaxVal[i_Col] = C_I8_MIN;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table to be aggregated                                                 */
 /*----------------------------------------------------------------------------*/
 void RowAgg::vTable(Table* pTable)
 {
@@ -277,31 +329,6 @@ void RowAgg::vDiscoverColumns(void)
 //           pColumn->sColumnName().aChar(),
 //           aCT[pColumn->eColumnType()]);
 //  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset the aggregation                                                      */
-/*----------------------------------------------------------------------------*/
-void RowAgg::vReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWAGG,_FOOTER_);
-  
-  m_oSince.vSet(0,0);
-  
-  m_nRows = 0;
-  
-  for (i8 i_Col = 0; i_Col < C_MAX_COLAGG; i_Col++) {
-    
-    m_iaMinKey[i_Col] = -1;
-    m_iaMinVal[i_Col] = C_I8_MAX;
-    
-    m_iaSumVal[i_Col] = 0;
-    m_iaAvgVal[i_Col] = 0;
-    
-    m_iaMaxKey[i_Col] = -1;
-    m_iaMaxVal[i_Col] = C_I8_MIN;
-  }
-  
 }
 
 

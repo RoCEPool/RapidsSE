@@ -264,8 +264,12 @@ bool Job_Report::bBegin(void)
     m_oOutFile.vUseStdout();
   }
   
-  m_pRowAgg = new RowAgg;
-  
+  m_pRowAgg     = new RowAgg;
+  m_pRowAgg_10s = new RowAgg;
+  m_pRowAgg_1m  = new RowAgg;
+  m_pRowAgg_3m  = new RowAgg;
+  m_pRowAgg_10m = new RowAgg;
+
   vTrace("Reporting from %s to %s\n"_Stz,m_sFilePath.aStz(),m_sOutputPath.aStz());
 
   return true;
@@ -295,6 +299,12 @@ void Job_Report::vEnd(void)
   
   m_oInFile.vClose();
   m_oOutFile.vClose();
+  
+  delete m_pRowAgg;
+  delete m_pRowAgg_10s;
+  delete m_pRowAgg_1m;
+  delete m_pRowAgg_3m;
+  delete m_pRowAgg_10m;
 }
 
 /*============================================================================*/
