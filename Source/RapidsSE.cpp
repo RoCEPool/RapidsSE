@@ -785,13 +785,13 @@ void RapidsSE::vStartSystem(void)
   // spawn general threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nThreads; iThreads++) {
     Thread* pThread = new Thread;
-    pThread->vSpawnThread();
+    pThread->vSpawnPthread();
   }
   
   // spawn dummy threads
   for (i8 iThreads = 0; iThreads < gxArguments.m_nDummyThreads; iThreads++) {
     Thread* pThread = new Thread;
-    pThread->vSpawnDummyThread();
+    pThread->vSpawnPthread_Dummy();
   }
 
   while (*gpAttachMap->m_ziThreads != gxArguments.m_nThreads)

@@ -216,7 +216,6 @@ void Thread::vLoop(void)
     if (! m_pTask && ! bQueuePeek()) {
       
       // wait upto 5ms to be given a signal
-      //vHandlerTimedWait();
       m_eThreadState = TC_IDLE;
       m_pMutex->vCondWait_Timed(5000); // while waiting the mutex is dropped
       m_eThreadState = TC_RUNNING;
@@ -226,16 +225,13 @@ void Thread::vLoop(void)
         continue;
     }
     
-    // will have a task
-    ASSERT(m_pTask);
-    
     // call the task
+    ASSERT(m_pTask);
     vTaskCall();
     
+    // handle thread level event
     if (m_pTask->pJob() && m_pTask->pJob()->m_bMark)
       m_pTask->vWriteMark("Return from task call:"_Stz);
-    
-    // handle thread level event
     Handlers::vThreadLoop(&m_pTask);
   }
   
@@ -397,9 +393,9 @@ void Thread::vRRstart(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn the os/posix thread associated with this thread                      */
+/* spawn the os/posix pthread associated with this thread                     */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawnThread(void)
+void Thread::vSpawnPthread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -409,9 +405,9 @@ void Thread::vSpawnThread(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn a dummy thread                                                       */
+/* spawn the os/posix pthread associated with this dummy thread               */
 /*----------------------------------------------------------------------------*/
-void Thread::vSpawnDummyThread(void)
+void Thread::vSpawnPthread_Dummy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   

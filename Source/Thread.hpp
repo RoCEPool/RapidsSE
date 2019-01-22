@@ -67,11 +67,11 @@ namespace Threads
     void vReExecuteTask(Task* pTask);
     bool bRRnext(void);
     void vRRstart(void);
-    void vSpawnThread(void);
-    void vSpawnDummyThread(void);
+    void vSpawnPthread(void);
+    void vSpawnPthread_Dummy(void);
     i8   iThreadNo(void);
     eTC  eThreadState(void);
-    
+  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
  
