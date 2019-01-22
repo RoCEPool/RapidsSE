@@ -185,7 +185,8 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
   }
  
   if (eDataSource == DS_INSERT) {
-    if (m_nBuffersWritten == m_nWriteBehindBuffers) {
+    if (m_nSubLoadersDone  == nSubLoadersInGrid &&
+        m_nBuffersWritten == m_nWriteBehindBuffers) {
       bAllDone = true;
     }
   }
