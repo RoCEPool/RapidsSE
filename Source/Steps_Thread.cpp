@@ -87,7 +87,7 @@ void Step::vThreadCondWait(MP_Task mpTask)
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pMutex->vCondWait_Mutex();
+  pThread->m_pMutex->vCondWait();
   
   EXIT();
 }
@@ -235,7 +235,7 @@ ENTRY("vThreadoLockMutexLock"_Stz);
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
   
-  pThread->m_pMutex->voLockMutexLock();
+  pThread->m_pMutex->vMutexLock();
 
   EXIT();
 }

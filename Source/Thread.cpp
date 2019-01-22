@@ -210,7 +210,7 @@ void Thread::vLoop(void)
   PosixThread::vTlsSet(giTLS_ThreadKey,this);
   ASSERT(PosixThread::pTlsGet(giTLS_ThreadKey) == this);
   
-  voLockMutexLock();
+  vMutexLock();
   
   ++gpAttachMap->m_ziThreads;
   
@@ -336,7 +336,7 @@ bool Thread::bGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool b = m_pMutex->boLockMutexLock();
+  bool b = m_pMutex->bMutexLock();
 
   ASSERT( ! b || m_pMutex->bMutexIsLocked() );
   
@@ -364,7 +364,7 @@ void Thread::vHandlerTimedWait(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait 5ms
   
-  vCondTimedWait(5000); // while waiting the mutex is dropped
+  vCondWait_Timed(5000); // while waiting the mutex is dropped
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // under mutex lock
@@ -632,17 +632,17 @@ void Thread::vCondWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pMutex->vCondWait_Mutex();
+  m_pMutex->vCondWait();
 }
 
 /*----------------------------------------------------------------------------*/
 /* this thread waits for signal (should be calling thread)                    */
 /*----------------------------------------------------------------------------*/
-void Thread::vCondTimedWait(i8 iMicroSeconds)
+void Thread::vCondWait_Timed(i8 iMicroSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pMutex->vCondTimedWait(iMicroSeconds);
+  m_pMutex->vCondWait_Timed(iMicroSeconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -660,11 +660,11 @@ bool Thread::bMutexIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* lock a threads mutex (blocking)                                            */
 /*----------------------------------------------------------------------------*/
-void Thread::voLockMutexLock(void)
+void Thread::vMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_pMutex->voLockMutexLock();
+  m_pMutex->vMutexLock();
   
   ASSERT(m_pMutex->bMutexIsLocked());
 }
@@ -672,11 +672,11 @@ void Thread::voLockMutexLock(void)
 /*----------------------------------------------------------------------------*/
 /* try and lock a threads mutex (non-blocking)                                */
 /*----------------------------------------------------------------------------*/
-bool Thread::boLockMutexLock(void)
+bool Thread::bMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  bool b = m_pMutex->boLockMutexLock();
+  bool b = m_pMutex->bMutexLock();
   
   ASSERT( ! b || m_pMutex->bMutexIsLocked() );
   

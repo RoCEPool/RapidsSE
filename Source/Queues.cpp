@@ -513,7 +513,7 @@ Thread* Queues::pFindIdleThread(void)
       continue;
     
     // attempt to grab threads mutex
-    if (! pThread->boLockMutexLock())
+    if (! pThread->bMutexLock())
       continue;
     
     ASSERT(pThread->bMutexIsLocked());

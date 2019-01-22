@@ -61,7 +61,7 @@ void Step::vTaskAck(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.acks! -- store value into given tasks m_xAcksRemaining                */
+/* task.acks! -- store value into given tasks m_oAcksRemaining                */
 /*----------------------------------------------------------------------------*/
 void Step::vTaskAcksStore(MP_Task mpTask)
 {

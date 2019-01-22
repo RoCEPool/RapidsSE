@@ -29,15 +29,14 @@ namespace System
   
     void vCondBroadcast(void);
     void vCondSignal(void);
-    void vCondWait_Mutex(void);
-    void vCondTimedWait(i8 iMicroSeconds);
+    void vCondWait(void);
+    void vCondWait_Timed(i8 iMicroSeconds);
     bool bMutexIsLocked(void);
-    bool boLockMutexLock(void);
-    void voLockMutexLock(void);
+    bool bMutexLock(void);
+    void vMutexLock(void);
     void vMutexUnlock(void);
   
     void vSignalThread(void);
-    void vSignalThread_NL(void);
   
     Footer* aFooter(void);
   };

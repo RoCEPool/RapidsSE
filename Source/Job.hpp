@@ -115,7 +115,7 @@ namespace Jobs
     Tasks::Task* m_pOriginatingTask; // originating task of the request
   
     i8  m_iParticipantNode;    // participant node no
-    Decider m_xAcksRemaining;  // acks remaining
+    Decider m_oAcksRemaining;  // acks remaining
   
     EntryBuffer* m_pCurrentBuffer; // entry buffer
   
@@ -140,15 +140,14 @@ namespace Jobs
     eJT  eJobTrace(void);
     void vJobTrace(eJT eJobTrace);
     i8   iOriginatorNode(void);
+    void vMutexLock(void);
+    void vMutexSignal(void);
+    void vMutexUnlock(void);
+    void vMutexWait(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     void vReport(void);
     void vSeed(eSS eSeed);
-
-  void vMutexLock(void);
-  void vMutexSignal(void);
-  void vMutexUnlock(void);
-  void vMutexWait(void);
 
   protected:
     void vShow(s48K& s);

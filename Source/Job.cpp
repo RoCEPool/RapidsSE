@@ -163,6 +163,58 @@ void Job::vJobTrace(eJT eJobTrace)
 }
 
 /*----------------------------------------------------------------------------*/
+/* lock the mutex                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 rCode = pthread_mutex_lock(&m_xThreadMutex);
+  
+  if (0 != rCode)
+    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* signal the mutex condition variable                                        */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexSignal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 rCode = pthread_cond_signal(&m_xThreadCond);
+  
+  if (0 != rCode)
+    vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* unlock the mutex                                                           */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexUnlock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 rCode = pthread_mutex_unlock(&m_xThreadMutex);
+  
+  if (0 != rCode)
+    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* wait for mutex condition variable to be signalled                          */
+/*----------------------------------------------------------------------------*/
+void Job::vMutexWait(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 rCode = pthread_cond_wait(&m_xThreadCond,&m_xThreadMutex);
+  
+  if (0 != rCode)
+    vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the originator node no of this job from the job id                     */
 /*----------------------------------------------------------------------------*/
 i8 Job::iOriginatorNode(void)
@@ -220,7 +272,7 @@ void Job::vReport(void)
   vTrace("Job %llx id %lls ackRemaining %lld\n"_Stz,
          this,
          m_iJobId,
-         m_xAcksRemaining.iPrintOnlyValue());
+         m_oAcksRemaining.iPrintOnlyValue());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -239,58 +291,6 @@ void Job::vSeed(eSS eSeed)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* lock the mutex                                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vMutexLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 rCode = pthread_mutex_lock(&m_xThreadMutex);
-  
-  if (0 != rCode)
-    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* signal the mutex condition variable                                        */
-/*----------------------------------------------------------------------------*/
-void Job::vMutexSignal(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 rCode = pthread_cond_signal(&m_xThreadCond);
-  
-  if (0 != rCode)
-    vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* unlock the mutex                                                           */
-/*----------------------------------------------------------------------------*/
-void Job::vMutexUnlock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 rCode = pthread_mutex_unlock(&m_xThreadMutex);
-  
-  if (0 != rCode)
-    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait for mutex condition variable to be signalled                          */
-/*----------------------------------------------------------------------------*/
-void Job::vMutexWait(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 rCode = pthread_cond_wait(&m_xThreadCond,&m_xThreadMutex);
-  
-  if (0 != rCode)
-    vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -337,7 +337,7 @@ void Job::vInit(void)
   m_pOriginatingTask  = nullptr;
   
   m_iParticipantNode  = C_UNKNOWN;
-  m_xAcksRemaining.vCheckInit();
+  m_oAcksRemaining.vCheckInit();
   m_pCurrentBuffer = nullptr;
   
   m_eState = JS_RUNNING;

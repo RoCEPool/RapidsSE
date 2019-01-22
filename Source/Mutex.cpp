@@ -1,12 +1,10 @@
 /*============================================================================*/
-/* Mutex.hpp -- Pthread Mutex (& cond variable                                */
+/* Mutex.hpp -- Pthread Mutex (& cond variable)                               */
 /*============================================================================*/
 
 #include "System.h"
 
 #include "StorageEngine.h"
-
-extern pthread_key_t giTLS_ThreadKey;
 
 extern AttachMap* gpAttachMap;
 
@@ -176,7 +174,7 @@ void Mutex::vCondSignal(void)
 /*----------------------------------------------------------------------------*/
 /* this thread waits for signal (blocking call)                               */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondWait_Mutex(void)
+void Mutex::vCondWait(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -213,7 +211,7 @@ void Mutex::vCondWait_Mutex(void)
 /*----------------------------------------------------------------------------*/
 /* this thread waits for signal (time limited blocking call)                  */
 /*----------------------------------------------------------------------------*/
-void Mutex::vCondTimedWait(i8 iMicroSeconds)
+void Mutex::vCondWait_Timed(i8 iMicroSeconds)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -277,7 +275,7 @@ bool Mutex::bMutexIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* try and lock a threads mutex (non-blocking)                                */
 /*----------------------------------------------------------------------------*/
-bool Mutex::boLockMutexLock(void)
+bool Mutex::bMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -305,7 +303,7 @@ bool Mutex::boLockMutexLock(void)
 /*----------------------------------------------------------------------------*/
 /* lock a threads mutex (blocking)                                            */
 /*----------------------------------------------------------------------------*/
-void Mutex::voLockMutexLock(void)
+void Mutex::vMutexLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
   
@@ -364,16 +362,6 @@ void Mutex::vSignalThread(void)
   
   vCondSignal();
   vMutexUnlock();
-}
-
-/*----------------------------------------------------------------------------*/
-/* signal a thread (non-locking; should not be calling thread)                */
-/*----------------------------------------------------------------------------*/
-void Mutex::vSignalThread_NL(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_MUTEX,_FOOTER_);
-  
-  vCondSignal();
 }
 
 /*----------------------------------------------------------------------------*/
