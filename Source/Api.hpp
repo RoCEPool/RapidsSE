@@ -16,29 +16,29 @@ enum eAC // api call kind
   
   /*  1 */ AC_BeginInsertTable,
   /*  2 */ AC_BeginSubInserter,
-  /*    */ AC_CheckLibraryVersion,
-  /*  2 */ AC_CopyBuffer,
-  /*  3 */ AC_EndInsertJobs,
-  /*  4 */ AC_EndJobs,
-  /*  5 */ AC_ExecCmdStr,
-  /*  6 */ AC_ExecuteCommand,
-  /*  7 */ AC_FetchNextBuffer,
-  /*  8 */ AC_GetRecordBuffer,
-  /*  9 */ AC_GetErrorMessage,
-  /* 10 */ AC_GetRow,
-  /* 11 */ AC_GetRowCount,
-  /* 12 */ AC_GetRowCountTableColumn,
-  /* 13 */ AC_GetRowTableColumn,
-  /* 14 */ AC_InsertRow,
-  /* 15 */ AC_InsertRows,
-  /* 16 */ AC_LoadResult,
-  /* 17 */ AC_PoolOpen,
-  /* 18 */ AC_ScanNextRow,
-  /* 19 */ AC_SessionDelete,
-  /* 20 */ AC_SessionInvalid,
-  /* 21 */ AC_SessionNew,
+  /*  3 */ AC_CheckLibraryVersion,
+  /*  4 */ AC_CopyBuffer,
+  /*  5 */ AC_EndInsertTable,
+  /*  6 */ AC_EndJobs,
+  /*  7 */ AC_EndSubInserter,
+  /*  8 */ AC_ExecCmdStr,
+  /*  9 */ AC_ExecuteCommand,
+  /* 10 */ AC_FetchNextBuffer,
+  /* 11 */ AC_GetRecordBuffer,
+  /* 12 */ AC_GetErrorMessage,
+  /* 13 */ AC_GetRow,
+  /* 14 */ AC_GetRowCount,
+  /* 15 */ AC_GetRowCountTableColumn,
+  /* 16 */ AC_GetRowTableColumn,
+  /* 17 */ AC_InsertRow,
+  /* 18 */ AC_LoadResult,
+  /* 19 */ AC_PoolOpen,
+  /* 20 */ AC_ScanNextRow,
+  /* 21 */ AC_SessionDelete,
+  /* 22 */ AC_SessionInvalid,
+  /* 23 */ AC_SessionNew,
   
-  /* 22 */ AC_ENUMS
+  /* 24 */ AC_ENUMS
 };
 
 static Stz* aAC[]
@@ -47,32 +47,33 @@ static Stz* aAC[]
 
   /*  1 */ "RapidsSE_BeginInsertTable"_Stz,
   /*  2 */ "RapidsSE_BeginSubInserter"_Stz,
-  /*    */ "RapidsSE_CheckLibraryVersion"_Stz,
-  /*  2 */ "RapidsSE_CopyBuffer"_Stz,
-  /*  3 */ "RapidsSE_EndInsertJobs"_Stz,
-  /*  4 */ "RapidsSE_EndJobs"_Stz,
-  /*  5 */ "RapidsSE_ExecCmdStr"_Stz,
-  /*  6 */ "RapidsSE_ExecuteCommand"_Stz,
-  /*  7 */ "RapidsSE_FetchNextBuffer"_Stz,
-  /*  8 */ "RapidsSE_GetRecordBuffer"_Stz,
-  /*  9 */ "RapidsSE_GetErrorMessage"_Stz,
-  /* 10 */ "RapidsSE_GetRow"_Stz,
-  /* 11 */ "RapidsSE_GetRowCount"_Stz,
-  /* 12 */ "RapidsSE_GetRowCountTableColumn"_Stz,
-  /* 13 */ "RapidsSE_GetRowTableColumn"_Stz,
-  /* 14 */ "RapidsSE_InsertRow"_Stz,
-  /* 15 */ "RapidsSE_InsertRows"_Stz,
-  /* 16 */ "RapidsSE_LoadResult"_Stz,
-  /* 17 */ "RapidsSE_PoolOpen"_Stz,
-  /* 18 */ "RapidsSE_ScanNextRow"_Stz,
-  /* 19 */ "RapidsSE_SessionDelete"_Stz,
-  /* 20 */ "RapidsSE_SessionInvalid"_Stz,
-  /* 21 */ "RapidsSE_SessionNew"_Stz
-  /* 22 */ "ENUMS"_Stz};
+  /*  3 */ "RapidsSE_CheckLibraryVersion"_Stz,
+  /*  4 */ "RapidsSE_CopyBuffer"_Stz,
+  /*  5 */ "RapidsSE_EndInsertTable"_Stz,
+  /*  6 */ "RapidsSE_EndJobs"_Stz,
+  /*  7 */ "RapidsSE_EndSubInserter"_Stz,
+  /*  8 */ "RapidsSE_ExecCmdStr"_Stz,
+  /*  9 */ "RapidsSE_ExecuteCommand"_Stz,
+  /* 10 */ "RapidsSE_FetchNextBuffer"_Stz,
+  /* 11 */ "RapidsSE_GetRecordBuffer"_Stz,
+  /* 12 */ "RapidsSE_GetErrorMessage"_Stz,
+  /* 13 */ "RapidsSE_GetRow"_Stz,
+  /* 14 */ "RapidsSE_GetRowCount"_Stz,
+  /* 15 */ "RapidsSE_GetRowCountTableColumn"_Stz,
+  /* 16 */ "RapidsSE_GetRowTableColumn"_Stz,
+  /* 17 */ "RapidsSE_InsertRow"_Stz,
+  /* 18 */ "RapidsSE_LoadResult"_Stz,
+  /* 19 */ "RapidsSE_PoolOpen"_Stz,
+  /* 20 */ "RapidsSE_ScanNextRow"_Stz,
+  /* 21 */ "RapidsSE_SessionDelete"_Stz,
+  /* 22 */ "RapidsSE_SessionInvalid"_Stz,
+  /* 23 */ "RapidsSE_SessionNew"_Stz
+  /* 24 */ "ENUMS"_Stz};
 
 extern "C" eEC  RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPtr, i8 iSubInserters, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, void** ppJobPtr, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_CopyBuffer(Session* pSession, void* pJob, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_EndInsertTable(Session* pSession, void* pJobPtr, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_EndSubInserter(Session* pSession, void* pJobPtr, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel);
@@ -85,9 +86,7 @@ extern "C" eEC  RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void*
 extern "C" eEC  RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8* pRowCount, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_CopyBuffer(Session* pSession, void* pJob, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_InsertRow(Session* pSession, Stz* pTable, Stz* sRow, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_InsertRows(Session* pSession, void* pJob, Stz* sRow, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInvalidRows, i8* piSkippedRows, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
 extern "C" eEC  RapidsSE_ScanNextRow(Session* pSession, void* pJob, void** ppEntryBuffer, void** ppEntry, void** ppRow, i8* piExepectedRows, i8 iTraceLevel);

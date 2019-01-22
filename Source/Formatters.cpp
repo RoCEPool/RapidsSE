@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Formatters.hpp -- set of formatting characters                             */
+/* Formatters.cpp -- set of formatting characters                             */
 /*============================================================================*/
 
 #include "DBobjects.h"
