@@ -404,9 +404,10 @@ void SePrompt::vLockMutex(void)
   
   RASSERT(JS_RUNNING == m_pJob->m_eState);
   
-  i8 rCode = pthread_mutex_lock(&m_pJob->m_xThreadMutex);
-  if (0 != rCode)
-    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+  m_pJob->vMutexLock();
+//  i8 rCode = pthread_mutex_lock(&m_pJob->m_xThreadMutex);
+//  if (0 != rCode)
+//    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
   m_pJob->m_eState = JS_LOCKED;
 }
@@ -612,10 +613,11 @@ void SePrompt::vUnlockMutex(void)
   
   // have to be locked, waiting or signalled
   RASSERT(JS_RUNNING != m_pJob->m_eState);
-  
-  i8 rCode = pthread_mutex_unlock(&m_pJob->m_xThreadMutex);
-   if (0 != rCode)
-    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+ 
+  m_pJob->vMutexUnlock();
+//  i8 rCode = pthread_mutex_unlock(&m_pJob->m_xThreadMutex);
+//   if (0 != rCode)
+//    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 
   m_pJob->m_eState = JS_RUNNING;
 }
@@ -633,11 +635,12 @@ void SePrompt::vWaitCond(void)
   m_pJob->m_eState = JS_WAITING;
   
   do {
-    
-    rCode = pthread_cond_wait(&m_pJob->m_xThreadCond,
-                              &m_pJob->m_xThreadMutex);
-    if (0 != rCode)
-      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+
+    m_pJob->vMutexWait();
+//    rCode = pthread_cond_wait(&m_pJob->m_xThreadCond,
+//                              &m_pJob->m_xThreadMutex);
+//    if (0 != rCode)
+//      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
     
   } while (m_pJob->m_eState != JS_SIGNALLED);
 }

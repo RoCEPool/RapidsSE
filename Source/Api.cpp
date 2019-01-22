@@ -1807,9 +1807,10 @@ void vSpawnJobAndWait(Session* pSession, Job* pJob)
   i8 iJobSeq = pJob->m_iJobSeq;
   
   // lock this job's mutex
-  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
-  if (0 != rCode)
-    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+  pJob->vMutexLock();
+//  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
+//  if (0 != rCode)
+//    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
   vApiLocation(pSession,106);
   
@@ -1838,14 +1839,15 @@ void vSpawnJobAndWait(Session* pSession, Job* pJob)
     //    vTrace("ThreadMutex:\n"_Stz);
     //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
     
-    rCode = pthread_cond_wait(&pJob->m_xThreadCond,
-                              &pJob->m_xThreadMutex);
-    
+    pJob->vMutexWait();
+//    rCode = pthread_cond_wait(&pJob->m_xThreadCond,
+//                              &pJob->m_xThreadMutex);
+//    if (0 != rCode)
+//      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+
     RASSERT( _bIsValidJob(pJob->eClass()) );
     RASSERT( iJobSeq == pJob->m_iJobSeq );
     
-    if (0 != rCode)
-      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
     
   } while (pJob->m_eState != JS_SIGNALLED);
   
@@ -1860,9 +1862,10 @@ void vSpawnJobAndWait(Session* pSession, Job* pJob)
   pJob->m_eState = JS_RUNNING;
   
   // unlock this job's mutex
-  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
-  if (0 != rCode)
-    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+  pJob->vMutexUnlock();
+//  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
+//  if (0 != rCode)
+//    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*----------------------------------------------------------------------------*/

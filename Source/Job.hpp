@@ -120,6 +120,8 @@ namespace Jobs
     EntryBuffer* m_pCurrentBuffer; // entry buffer
   
     eJS m_eState; // cond wait state
+  
+  private:
     pthread_mutex_t     m_xThreadMutex;     // connector thread mutex variable
     pthread_mutexattr_t m_xThreadMutexAttr; // connector thread mutex shared attribute
     pthread_cond_t      m_xThreadCond;      // connector thread condition variable
@@ -133,22 +135,27 @@ namespace Jobs
     static i8 iOriginatorNode(i8 iJobId);
     
     Stz* sJobSeed(void);
-    void vSeed(eSS eSeed);
     i8   iJobId(void);
     void vJobId(i8 iJobId);
+    eJT  eJobTrace(void);
+    void vJobTrace(eJT eJobTrace);
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 iNode);
     void vReport(void);
+    void vSeed(eSS eSeed);
 
-    eJT  eJobTrace(void);
-    void vJobTrace(eJT eJobTrace);
-  
+  void vMutexLock(void);
+  void vMutexSignal(void);
+  void vMutexUnlock(void);
+  void vMutexWait(void);
+
   protected:
     void vShow(s48K& s);
   
   private:
     void vInit(void);
+  
   };
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -156,6 +163,7 @@ namespace Jobs
   Job* _pJob(i8 iAddr);
   bool _bIsValidJob(eCN eClass);
 
+  ////////////////////////////////////////////////////////////////////////////////
   void vJob_recv(Job* pJob);
   void vJob_send(Job* pJob);
 }
