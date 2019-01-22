@@ -216,8 +216,11 @@ void Thread::vLoop(void)
     if (! m_pTask && ! bQueuePeek()) {
       
       // wait upto 5ms to be given a signal
-      vHandlerTimedWait();
-      
+      //vHandlerTimedWait();
+      m_eThreadState = TC_IDLE;
+      vCondWait_Timed(5000); // while waiting the mutex is dropped
+      m_eThreadState = TC_RUNNING;
+
       // attempt again if no task
       if ( ! m_pTask)
         continue;
@@ -313,43 +316,11 @@ void Thread::vExecuteTask(Task* pTask)
   //m_eThreadState = TC_RUNNING;
   
   // signal the thread
-  vSignalThread();
-}
-
-/*----------------------------------------------------------------------------*/
-/* this thread waits till its given a task by a handler or wait time over     */
-/*----------------------------------------------------------------------------*/
-void Thread::vHandlerTimedWait(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  //vSignalThread();
+  ASSERT(m_pMutex->bMutexLock());
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // under mutex lock
-  
-  // will not have a task
-  ASSERT(! m_pTask);
-  
-  // this thread's mutex should be locked
-  ASSERT(m_pMutex->bMutexIsLocked());
-  
-  m_eThreadState = TC_IDLE;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait 5ms
-  
-  vCondWait_Timed(5000); // while waiting the mutex is dropped
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // under mutex lock
-  
-  // this thread's mutex should be locked
-  ASSERT(m_pMutex->bMutexIsLocked());
-  
-  // will have a task
-  //ASSERT(*m_pTask);
-  
-  if (m_pTask)
-    m_eThreadState = TC_RUNNING;
+  m_pMutex->vCondSignal();
+  m_pMutex->vMutexUnlock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -542,19 +513,6 @@ bool Thread::bGrabIfIdle(void)
 /*----------------------------------------------------------------------------*/
 /*-- Mutex -------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* signal a thread (should not be calling thread)                             */
-/*----------------------------------------------------------------------------*/
-void Thread::vSignalThread(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  ASSERT(m_pMutex->bMutexLock());
-
-  m_pMutex->vCondSignal();
-  m_pMutex->vMutexUnlock();
-}
 
 /*----------------------------------------------------------------------------*/
 /* condition broadcast                                                        */

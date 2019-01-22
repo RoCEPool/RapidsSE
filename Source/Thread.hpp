@@ -87,11 +87,9 @@ namespace Threads
     void  vCondSignal(void);
     void  vCondWait(void);
     void  vCondWait_Timed(i8 iNanoSeconds);
-    void  vHandlerTimedWait(void);
     bool  bMutexLock(void);
     void  vMutexLock(void);
     void  vMutexUnlock(void);
-    void  vSignalThread(void);
 
     Footer* aFooter(void);
   };
