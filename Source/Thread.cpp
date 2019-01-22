@@ -226,13 +226,18 @@ void Thread::vLoop(void)
     }
     
     // call the task
-    ASSERT(m_pTask);
     vTaskCall();
-    
-    // handle thread level event
     if (m_pTask->pJob() && m_pTask->pJob()->m_bMark)
       m_pTask->vWriteMark("Return from task call:"_Stz);
+
+    // handle thread level event
     Handlers::vThreadLoop(&m_pTask);
+    
+    // this read may be continuing to execute:
+    //   - a task which slept but its wakeup time
+    //     had arrived before it was queue, or
+    //   - a task which had yielded but there were
+    //     no alternative tasks ready to be run
   }
   
   NEVER_REACH;
