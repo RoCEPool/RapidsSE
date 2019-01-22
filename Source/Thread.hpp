@@ -66,12 +66,9 @@ namespace Threads
     void vBindCore(void);
     i8   iCpu(void);
     void vContentDump(void) const;
-    void vDropLock(void);
     void vExecuteTask(Task* pTask);
     void vGeneralThread(bool bGeneralThread);
-    bool bGrabLock(void);
     bool bIsIdle(void);
-    bool bIsTLSThread(void);
     i8   iLastQueueRR(void);
     void vLastQueueRR(i8 iLastQueueRR);
     void vLoop(void);

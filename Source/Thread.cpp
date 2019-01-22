@@ -292,15 +292,6 @@ void Thread::vContentDump(void) const
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop the write lock on this thread                                         */
-/*----------------------------------------------------------------------------*/
-void Thread::vDropLock(void)
-{
-  ASSERT(m_oLock.bIsLocked());
-  m_oLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* signal thread to execute given task                                        */
 /*----------------------------------------------------------------------------*/
 void Thread::vExecuteTask(Task* pTask)
@@ -327,20 +318,6 @@ void Thread::vExecuteTask(Task* pTask)
   
   // signal the thread
   vSignalThread();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grab a write lock on this thread                                           */
-/*----------------------------------------------------------------------------*/
-bool Thread::bGrabLock(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  bool b = m_pMutex->bMutexLock();
-
-  ASSERT( ! b || m_pMutex->bMutexIsLocked() );
-  
-  return b;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -386,21 +363,6 @@ bool Thread::bIsIdle(void)
 {
   
   if (TC_IDLE == m_eThreadState)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is this thread the tsl thread ?                                            */
-/*----------------------------------------------------------------------------*/
-bool Thread::bIsTLSThread(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
-  
-  Thread* pTLSThread = pThisTLSThread();
-  
-  if (this == pThisTLSThread())
     return true;
   else
     return false;
