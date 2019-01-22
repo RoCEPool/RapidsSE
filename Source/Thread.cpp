@@ -357,18 +357,6 @@ void Thread::vHandlerTimedWait(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is thread idle?                                                            */
-/*----------------------------------------------------------------------------*/
-bool Thread::bIsIdle(void)
-{
-  
-  if (TC_IDLE == m_eThreadState)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to get a task to run by peeking at the queues                      */
 /*---------------------------------------------------------------------------*/
 bool Thread::bQueuePeek(void)
@@ -543,7 +531,7 @@ bool Thread::bGrabIfIdle(void)
     return false;
   
   // if this thread idle return with mutex locked
-  if (bIsIdle()) {
+  if (TC_IDLE == m_eThreadState) {
     m_eThreadState = TC_RUNNING;
     return true;
   }

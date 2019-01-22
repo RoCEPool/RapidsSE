@@ -517,20 +517,6 @@ Thread* Queues::pFindIdleThread(void)
       m_pThreadVector->vDropLock();
       return pThread;
     }
-    
-//    // attempt to grab threads mutex
-//    if (! pThread->bMutexLock())
-//      continue;
-//
-//    ASSERT(pThread->bMutexIsLocked());
-//
-//    if (pThread->bIsIdle()) {
-//      pThread->m_eThreadState = TC_RUNNING;
-//      m_pThreadVector->vDropLock();
-//      return pThread;
-//    }
-//
-//    pThread->vMutexUnlock();
   }
   
   m_pThreadVector->vDropLock();

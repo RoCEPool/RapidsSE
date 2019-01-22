@@ -67,7 +67,6 @@ namespace Threads
     i8   iCpu(void);
     void vContentDump(void) const;
     void vExecuteTask(Task* pTask);
-    bool bIsIdle(void);
     void vLoop(void);
     void vReExecuteTask(Task* pTask);
     bool bRRnext(void);
