@@ -232,7 +232,7 @@ i8 TaskList::nTasks(void)
 /*----------------------------------------------------------------------------*/
 void TaskList::vContentDump(void)
 {
-  //vDump(CN_TASKLIST, this, aSingleTab());
+  //vDump(CN_TASKLIST, this, Stz::aTab(1));
   
   ASSERT(m_oLock.bIsLocked());
 

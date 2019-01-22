@@ -19,7 +19,6 @@ using namespace Debugging;
 #include "Debug.hpp"
 #include "Error.hpp"
 #include "Report.hpp"
-#include "Tabs.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

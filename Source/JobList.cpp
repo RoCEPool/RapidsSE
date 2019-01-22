@@ -268,7 +268,7 @@ i8 JobList::nJobs(void)
 /*----------------------------------------------------------------------------*/
 void JobList::vContentDump(void)
 {
-  Stz* aTab = aSingleTab();
+  Stz* aTab = Stz::aTab(1);
   
   vDump(CN_JOBLIST, this, aTab);
 }

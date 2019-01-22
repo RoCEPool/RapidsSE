@@ -76,12 +76,12 @@ void Step::vBpEpochDump(MP_Task mpTask)
   i8 iSnapshotObjects[CN_ENUMS];
   
   vTrace("\n"_Stz);
-  vTrace("%sWords created since last epoch:\n"_Stz,aSingleTab());
+  vTrace("%sWords created since last epoch:\n"_Stz,Stz::aTab(1));
   
   pBPA->vWordList(gpAttachMap->m_iEpoch);
   pBPA->vObjectSnapshot(&iSnapshotObjects[0]);
   
-  vTrace("\n%sObjects created since last epoch:\n\n"_Stz,aSingleTab());
+  vTrace("\n%sObjects created since last epoch:\n\n"_Stz,Stz::aTab(1));
   
   for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
     
@@ -91,7 +91,7 @@ void Step::vBpEpochDump(MP_Task mpTask)
       continue;
     
     vTrace("%s  %12s (eCN %3lld) %-6lld \n"_Stz,
-           aSingleTab(),
+           Stz::aTab(1),
            aCN[eClass],
            eClass,
            iSnapshotObjects[eClass] - giCountObjects[eClass]

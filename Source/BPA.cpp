@@ -47,9 +47,9 @@ void BPA::vBufferDump(Buffer* pBuffer)
   
   pDUMPFUN* pDumpFun = gpDump[eClass];
   
-  vTrace("%s%p %-12s: "_Stz,aDoubleTab(),pBuffer,aCN[eClass]);
+  vTrace("%s%p %-12s: "_Stz,Stz::aTab(2),pBuffer,aCN[eClass]);
 
-  (pDumpFun)(pBuffer->eClass(), pBuffer, aSingleTab());
+  (pDumpFun)(pBuffer->eClass(), pBuffer, Stz::aTab(1));
   
 //  if (pBuffer->eClass() == CN_MEDIUMHEAP ||
 //      pBuffer->eClass() == SN_SMALLTRANSIENT ) {
@@ -68,7 +68,7 @@ void BPA::vHeapDump(Heap* pHeap)
   
   vTrace("\n"_Stz);
   vTrace("%sObjects in %s Heap:\n"_Stz,
-         aSingleTab(),
+         Stz::aTab(1),
          pHeap->eClass() == CN_SMALLTRANSIENT ? "Small Transient"_Stz :
          pHeap->eClass() == CN_MEDIUMTRANSIENT ? "Medium Transient"_Stz :
          pHeap->eClass() == CN_LARGETRANSIENT ? "Large Transient"_Stz :
@@ -102,9 +102,9 @@ void BPA::vHeapDump(Heap* pHeap)
       
       pDUMPFUN* pDumpFun = gpDump[eClass];
       
-      vTrace("%s%p %-12s: "_Stz,aDoubleTab(),pHeap,aCN[eClass]);
+      vTrace("%s%p %-12s: "_Stz,Stz::aTab(2),pHeap,aCN[eClass]);
 
-      (pDumpFun)(eClass, (Object*)aChunk, aDoubleTab());
+      (pDumpFun)(eClass, (Object*)aChunk, Stz::aTab(2));
     }
   }
   
@@ -122,7 +122,7 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
   
   vTrace("\n"_Stz);
   vTrace("%sWords in %s Heap:\n"_Stz,
-         aDoubleTab(),
+         Stz::aTab(2),
          pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small"_Stz : "Medium"_Stz);
   
   pHeap->vGrabLock();
@@ -154,9 +154,9 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
       
       pDUMPFUN* pDumpFun = gpDump[eClass];
       
-      vTrace("%s%p %-12s: "_Stz,aDoubleTab(),pHeap,aCN[eClass]);
+      vTrace("%s%p %-12s: "_Stz,Stz::aTab(2),pHeap,aCN[eClass]);
       
-      (pDumpFun)(eClass, (Object*)aChunk, aDoubleTab());
+      (pDumpFun)(eClass, (Object*)aChunk, Stz::aTab(2));
     }
   }
   
@@ -171,7 +171,7 @@ void BPA::vObjectList(void)
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   vTrace("\n"_Stz);
-  vTrace("%sObjects in Buffer Pool:\n"_Stz,aSingleTab());
+  vTrace("%sObjects in Buffer Pool:\n"_Stz,Stz::aTab(1));
   
   Buffer* pSmallTransient  = nullptr;
   Buffer* pMediumTransient = nullptr;

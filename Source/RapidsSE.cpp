@@ -79,7 +79,7 @@ void RapidsSE::vAttachRegion(void)
   gpAttachMap->vGetGlobals();
   
   if (gpAttachMap->m_bVerbose)
-    AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, aSingleTab());
+    AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, Stz::aTab(1));
 }
 
 /*----------------------------------------------------------------------------*/

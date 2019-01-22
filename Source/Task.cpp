@@ -296,7 +296,7 @@ void Task::vContentDump(void)
   _poolAddress_(this);
   
   vTrace("%sTask %p: %16s state %8s txId %lld\n"_Stz,
-         aDoubleTab(),
+         Stz::aTab(2),
          this,
          aJobName(),
          aTS[m_eState]->aChar()
