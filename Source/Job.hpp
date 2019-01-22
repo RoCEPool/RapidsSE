@@ -119,15 +119,9 @@ namespace Jobs
   
     EntryBuffer* m_pCurrentBuffer; // entry buffer
   
-    eJS m_eState; // cond wait state
+    eJS m_eState; // job state
   
-    Mutex* m_pMutex; 
- private:
-    pthread_mutex_t     m_xThreadMutex;     // connector thread mutex variable
-    pthread_mutexattr_t m_xThreadMutexAttr; // connector thread mutex shared attribute
-    pthread_cond_t      m_xThreadCond;      // connector thread condition variable
-    pthread_condattr_t  m_xThreadCondAttr;  // connector thread condition shared attribute
-
+    Mutex* m_pMutex;
   
   public:
     Job(eCN eClassNo);

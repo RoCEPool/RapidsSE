@@ -96,12 +96,6 @@ Job::~Job(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  pthread_mutex_destroy(&m_xThreadMutex);
-  pthread_mutexattr_destroy(&m_xThreadMutexAttr);
-  
-  pthread_cond_destroy(&m_xThreadCond);
-  pthread_condattr_destroy(&m_xThreadCondAttr);
-  
   delete m_pMutex;
   
   if (m_bMark)
@@ -189,7 +183,7 @@ void Job::vMutexSignal(void)
   m_pMutex->vCondSignal();
 
 //  i8 rCode = pthread_cond_signal(&m_xThreadCond);
-//  
+//
 //  if (0 != rCode)
 //    vWarn("pthread_cond_signal() error; rCode=%lld\n"_Stz,rCode);
 }
@@ -356,33 +350,6 @@ void Job::vInit(void)
     m_pMutex = nullptr;
   else
     m_pMutex = new Mutex;
-
-  // initialise mutex attribute
-  MemLib::vZero(&m_xThreadMutexAttr,sizeof(m_xThreadMutexAttr),CN_MUTEX);
-  i8 iResult = pthread_mutexattr_init(&m_xThreadMutexAttr);
-  ASSERT( ! iResult);
-  
-  // set mutex attribute to be shared
-  iResult = pthread_mutexattr_setpshared(&m_xThreadMutexAttr,PTHREAD_PROCESS_SHARED);
-  ASSERT( ! iResult);
-  
-  // initialize the mutex
-  MemLib::vZero(&m_xThreadMutex,sizeof(m_xThreadMutex),CN_MUTEX);
-  pthread_mutex_init(&m_xThreadMutex, &m_xThreadMutexAttr);
-  
-  
-  // initialise condition attribute
-  MemLib::vZero(&m_xThreadCondAttr,sizeof(m_xThreadCondAttr),CN_MUTEX);
-  pthread_condattr_init(&m_xThreadCondAttr);
-  
-  // set condition attribute to be shared
-  pthread_condattr_setpshared(&m_xThreadCondAttr, PTHREAD_PROCESS_SHARED);
-  
-  // initialize the condition variable
-  MemLib::vZero(&m_xThreadCond,sizeof(m_xThreadCond),CN_MUTEX);
-  pthread_cond_init(&m_xThreadCond, &m_xThreadCondAttr);
-  
-  //m_pMutex  = new Mutex;
   
   m_bNoWait = false;
 }
