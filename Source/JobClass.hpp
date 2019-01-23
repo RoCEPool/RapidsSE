@@ -27,13 +27,13 @@ namespace Jobs
       bool m_bBuffer;    // buffer attached?
       eJT  m_eTrace;     // job trace?
   
-      Job* (*m_fPre)(Interface::Session* pSession);
-      void (*m_fPost)(Interface::Session* pSession, Job* pJob);
-      Job* (*m_fNew)(Job* pArg);
-      void (*m_fDelete)(Interface::Session* pSession, Job* pJob);
-      void (*m_fSend)(Job* pJob);
-      void (*m_fRecv)(Job* pJob);
-      void (*m_fShow)(Job* pJob);
+      Job* (*m_fpPre)(Interface::Session* pSession);
+      void (*m_fpPost)(Interface::Session* pSession, Job* pJob);
+      Job* (*m_fpNew)(Job* pArg);
+      void (*m_fpDelete)(Interface::Session* pSession, Job* pJob);
+      void (*m_fpSend)(Job* pJob);
+      void (*m_fpRecv)(Job* pJob);
+      void (*m_fpShow)(Job* pJob);
   
       bool m_bEnabled;  // is this job enabled?
   

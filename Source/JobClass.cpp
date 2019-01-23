@@ -32,7 +32,7 @@ JobClass* Jobs::_pJobClass(void* aAddr)
 /*----------------------------------------------------------------------------*/
 Job* JobClass::pNewJob(Job* pArg)
 {
-  Job* pNewJob = (*m_fNew)(pArg);
+  Job* pNewJob = (*m_fpNew)(pArg);
   
   pNewJob->m_pJobClass = this;
   pNewJob->m_eJobTrace = m_eTrace;
@@ -45,7 +45,7 @@ Job* JobClass::pNewJob(Job* pArg)
 /*----------------------------------------------------------------------------*/
 void JobClass::vDeleteJob(Interface::Session* pSession, Job* pJob)
 {
-  (*m_fDelete)(pSession, pJob);
+  (*m_fpDelete)(pSession, pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +53,7 @@ void JobClass::vDeleteJob(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 void JobClass::vPostJob(Interface::Session* pSession, Job* pJob)
 {
-  (*m_fPost)(pSession, pJob);
+  (*m_fpPost)(pSession, pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@ void JobClass::vPostJob(Interface::Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 Job* JobClass::pPreJob(Interface::Session* pSession)
 {
-  Job* pJob = (*m_fPre)(pSession);
+  Job* pJob = (*m_fpPre)(pSession);
   
   pJob->m_pJobClass = this;
   pJob->m_eJobTrace = m_eTrace;
@@ -90,8 +90,8 @@ Stz* JobClass::sSeed(eSS eSeed)
 /*----------------------------------------------------------------------------*/
 void JobClass::vSendJob(Job* pJob)
 {
-  if (m_fSend)
-    (*m_fSend)(pJob);
+  if (m_fpSend)
+    (*m_fpSend)(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,8 +99,8 @@ void JobClass::vSendJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void JobClass::vRecvJob(Job* pJob)
 {
-  if (m_fRecv)
-    (*m_fRecv)(pJob);
+  if (m_fpRecv)
+    (*m_fpRecv)(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,7 +108,7 @@ void JobClass::vRecvJob(Job* pJob)
 /*----------------------------------------------------------------------------*/
 void JobClass::vShowJob(Job* pJob)
 {
-  (*m_fShow)(pJob);
+  (*m_fpShow)(pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,13 +118,13 @@ void JobClass::vJobCat(void)
 {
   s32 sFunctions(""_Stz);
   
-  sFunctions.vConcat(m_fPre ?    "p"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fPost ?   "P"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fNew ?    "n"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fDelete ? "d"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fSend ?   "s"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fRecv ?   "r"_Stz : " "_Stz);
-  sFunctions.vConcat(m_fShow ?   "."_Stz : " "_Stz);
+  sFunctions.vConcat(m_fpPre    ? "p"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fpPost   ? "P"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fpNew    ? "n"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fpDelete ? "d"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fpSend   ? "s"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fpRecv   ? "r"_Stz : " "_Stz);
+  sFunctions.vConcat(m_fpShow   ? "."_Stz : " "_Stz);
   
   s32 sSeedRun(m_aSeedRun ? m_aSeedRun : "-"_Stz);
   sSeedRun.vConcat(m_bSeedsSpawned[SS_SEED_RUN] ? "+"_Stz : " "_Stz);

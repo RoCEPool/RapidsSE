@@ -345,6 +345,7 @@ void Job::vInit(void)
   m_pCurrentBuffer = nullptr;
   
   m_eState = JS_RUNNING;
+  m_bWasReceived = false;
   
   if (CN_JOB_NODEINFO == eClass())
     m_pMutex = nullptr;
@@ -371,8 +372,9 @@ void Jobs::vJob_send(Job* pJob)
 void Jobs::vJob_recv(Job* pJob)
 {
   pJob->m_pExecutingTask = nullptr;
-  pJob->m_eJobList = JL_NONE;
-  pJob->m_pMutex = nullptr;
+  pJob->m_eJobList       = JL_NONE;
+  pJob->m_pMutex         = nullptr;
+  pJob->m_bWasReceived   = true;
 }
 
 /*----------------------------------------------------------------------------*/

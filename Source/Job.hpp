@@ -120,6 +120,7 @@ namespace Jobs
     EntryBuffer* m_pCurrentBuffer; // entry buffer
   
     eJS m_eState; // job state
+    bool m_bWasReceived; // job was received over a socket
   
     Mutex* m_pMutex;
   

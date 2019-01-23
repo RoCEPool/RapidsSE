@@ -991,10 +991,10 @@ void Step::vJobPostRecv(MP_Task mpTask)
   
   pJob->m_pJobClass = pJobClass;
 
-  ASSERT(pJobClass->m_fRecv == vJob_recv);
+  ASSERT(pJobClass->m_fpRecv == vJob_recv);
   
-  if (pJobClass->m_fRecv)
-    (*pJobClass->m_fRecv)(pJob);
+  if (pJobClass->m_fpRecv)
+    (*pJobClass->m_fpRecv)(pJob);
 
   EXIT();
 }
@@ -1013,8 +1013,8 @@ void Step::vJobPreSend(MP_Task mpTask)
   
   JobClass* pJobClass = pJob->m_pJobClass;
   
-  if (pJobClass->m_fSend)
-    (*pJobClass->m_fSend)(pJob);
+  if (pJobClass->m_fpSend)
+    (*pJobClass->m_fpSend)(pJob);
   
   EXIT();
 }
