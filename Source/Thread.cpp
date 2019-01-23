@@ -68,7 +68,7 @@ Thread::Thread(void)
   m_aStackBase   = nullptr;
   m_iStackSize   = 0;
   
-  m_eThreadState = TC_NONE;
+  m_eThreadState = TD_NONE;
   m_pTask        = nullptr;
   m_eDedicated   = CN_NONE;
 
@@ -108,7 +108,7 @@ void* Thread::aEntryPoint(void* pArg)
   pThread->m_aStackBase = Pthread::aStackBase();
   pThread->m_iStackSize = Pthread::iStackSize();
 
-  pThread->m_eThreadState = TC_IDLE;
+  pThread->m_eThreadState = TD_IDLE;
   
   gpAttachMap->m_pQueues->vAddThread(pThread);
   
@@ -160,7 +160,7 @@ void* Thread::aEntryPointDummy(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  pThread->m_eThreadState = TC_IDLE;
+  pThread->m_eThreadState = TD_IDLE;
   
   if (gpAttachMap->m_bVerbose)
     vTrace("Thread::pDummyEntryPoint %p %lld\n"_Stz,
@@ -216,9 +216,9 @@ void Thread::vLoop(void)
     if (! m_pTask && ! bQueuePeek()) {
       
       // wait upto 5ms to be given a signal
-      m_eThreadState = TC_IDLE;
+      m_eThreadState = TD_IDLE;
       m_pMutex->vCondWait_Timed(5000); // while waiting the mutex is dropped
-      m_eThreadState = TC_RUNNING;
+      m_eThreadState = TD_RUNNING;
 
       // attempt again if no task
       if (! m_pTask)
@@ -303,8 +303,8 @@ void Thread::vExecuteTask(Task* pTask)
   //pTask->vState(TS_EXECUTING);
   
   // thread should be idle
-  //RASSERT(TC_IDLE == m_eThreadState);
-  RASSERT(TC_RUNNING == m_eThreadState);
+  //RASSERT(TD_IDLE == m_eThreadState);
+  RASSERT(TD_RUNNING == m_eThreadState);
   
   // thread should have no task
   RASSERT(! m_pTask);
@@ -312,7 +312,7 @@ void Thread::vExecuteTask(Task* pTask)
   // set task to be executed
   m_pTask = pTask;
   
-  //m_eThreadState = TC_RUNNING;
+  //m_eThreadState = TD_RUNNING;
   
   // signal the thread
   //vSignalThread();
@@ -354,7 +354,7 @@ void Thread::vReExecuteTask(Task* pTask)
   //pTask->vState(TS_EXECUTING);
   
   // thread should be idle
-  RASSERT(TC_RUNNING == m_eThreadState);
+  RASSERT(TD_RUNNING == m_eThreadState);
   
   // thread should have no task
   RASSERT(! m_pTask);
@@ -431,7 +431,7 @@ i8 Thread::iThreadNo(void)
 /*----------------------------------------------------------------------------*/
 /* get thread state                                                           */
 /*----------------------------------------------------------------------------*/
-eTC Thread::eThreadState(void)
+eTD Thread::eThreadState(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -445,7 +445,7 @@ void Thread::vTaskCall(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  m_eThreadState = TC_RUNNING;
+  m_eThreadState = TD_RUNNING;
   ASSERT(m_pTask);
   
   Pthread::vTlsSet(giTLS_TaskKey,m_pTask);
@@ -486,8 +486,8 @@ bool Thread::bGrabIfIdle(void)
     return false;
   
   // if this thread is idle return with mutex locked
-  if (TC_IDLE == m_eThreadState) {
-    m_eThreadState = TC_RUNNING;
+  if (TD_IDLE == m_eThreadState) {
+    m_eThreadState = TD_RUNNING;
     return true;
   }
   

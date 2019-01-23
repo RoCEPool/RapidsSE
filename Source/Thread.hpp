@@ -6,12 +6,12 @@
 
 namespace Threads
 {
-  enum eTC // thread condition/state
+  enum eTD // thread state
   {
-    /*  0 */ TC_NONE=0,
-    /*  1 */ TC_IDLE,
-    /*  2 */ TC_RUNNING,
-    /*  3 */ TC_ENUMS,
+    /*  0 */ TD_NONE=0,
+    /*  1 */ TD_IDLE,
+    /*  2 */ TD_RUNNING,
+    /*  3 */ TD_ENUMS,
   };
   
   static Stz* aTC[]
@@ -31,7 +31,7 @@ namespace Threads
     void*        m_aStackBase;   // stack base address
     i8           m_iStackSize;   // stack size
   
-    eTC          m_eThreadState; // thread state
+    eTD          m_eThreadState; // thread state
     Task*        m_pTask;        // task current being executed
     eCN          m_eDedicated;   // thread is dedicated to one specific job?
 
@@ -70,7 +70,7 @@ namespace Threads
     void vSpawnPthread(void);
     void vSpawnPthread_Dummy(void);
     i8   iThreadNo(void);
-    eTC  eThreadState(void);
+    eTD  eThreadState(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

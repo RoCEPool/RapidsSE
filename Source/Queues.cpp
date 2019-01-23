@@ -136,7 +136,7 @@ void Queues::vAddThread(Thread* pThread)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TC_IDLE == pThread->eThreadState());
+  RASSERT(TD_IDLE == pThread->eThreadState());
   
   m_pThreadVec->vGrabLock();
   m_pThreadVec->vAdd(pThread);
@@ -636,10 +636,10 @@ void Queues::vMonitorThread(s48K& sPortrait)
     
     Thread* pThread = m_pThreadVec->pGet(i_Thread);
     
-    if (TC_IDLE == pThread->eThreadState())
+    if (TD_IDLE == pThread->eThreadState())
       nIdle++;
     else
-      if (TC_RUNNING == pThread->eThreadState())
+      if (TD_RUNNING == pThread->eThreadState())
         nRunning++;
 
     if (CN_NONE != pThread->m_eDedicated)
