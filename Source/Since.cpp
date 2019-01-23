@@ -48,7 +48,7 @@ void Since::vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& oSysCall)
   
   if (rCode) {
     oSysCall.vError(errno);
-    vError("gettimeofday() error; errno=%d"_Stz,errno);
+    vWarn("gettimeofday() error; errno=%d"_Stz,errno);
     return;
   }
   
@@ -294,7 +294,7 @@ void Since::vToTime(Time* pTime)
   struct tm* aCalendarDateTime_UTC = gmtime(&iSecondsSincePosixEpoch);
 
   if ( ! aCalendarDateTime_UTC )
-    vError("gmtime() error; errno=%d"_Stz,errno);
+    vWarn("gmtime() error; errno=%d"_Stz,errno);
   
   pTime->m_iYearDelta = aCalendarDateTime_UTC->tm_year;
   pTime->m_iMonth     = aCalendarDateTime_UTC->tm_mon + 1;

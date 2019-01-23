@@ -267,7 +267,7 @@ JobClass* JobClass::pFind(Stz* aCommand1, Stz* aCommand2)
 /*----------------------------------------------------------------------------*/
 /* trace the job for the given class                                          */
 /*----------------------------------------------------------------------------*/
-void JobClass::vTraceJobs(eCN eClass)
+void JobClass::vTraceJob(eCN eClass)
 {
   JobClass* pJobClass = nullptr;
   

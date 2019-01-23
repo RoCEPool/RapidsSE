@@ -226,7 +226,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
       iNode++;
       
       if (m_nNodes > C_MAX_NODES) {
-        vError("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
+        vWarn("Maximum number of nodes allowed in the cluster is %lld\n"_Stz,C_MAX_NODES);
         return false;
       }
       continue;
@@ -237,7 +237,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     if (argv[i_Arg]->bSame("--partitionsPerNode"_Stz)) {
       m_nSlots = argv[++i_Arg]->iToI8();
       if (m_nSlots > C_SLOTS_PER_NODE) {
-        vError("Maximum number of partitions allowed per node is %lld\n"_Stz,
+        vWarn("Maximum number of partitions allowed per node is %lld\n"_Stz,
           C_SLOTS_PER_NODE);
         return false;
       }
@@ -249,7 +249,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     if (argv[i_Arg]->bSame("--threads"_Stz)) {
       m_nThreads = argv[++i_Arg]->iToI8();
       if (m_nThreads > C_THREADS) {
-        vError("Maximum number of thread allowed is %lld\n"_Stz,
+        vWarn("Maximum number of thread allowed is %lld\n"_Stz,
                C_THREADS);
         return false;
       }
@@ -285,7 +285,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     if (argv[i_Arg]->bSame("--subIngesters"_Stz)) {
       m_nSubIngesters = argv[++i_Arg]->iToI8();
       if (m_nThreads > C_THREADS) {
-        vError("Maximum number of subIngesters allowed is %lld\n"_Stz,
+        vWarn("Maximum number of subIngesters allowed is %lld\n"_Stz,
                C_THREADS);
         return false;
       }
@@ -297,7 +297,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     if (argv[i_Arg]->bSame("--subloaders"_Stz)) {
       m_nSubLoaders = argv[++i_Arg]->iToI8();
       if (m_nThreads > C_THREADS) {
-        vError("Maximum number of subloaders allowed is %lld\n"_Stz,
+        vWarn("Maximum number of subloaders allowed is %lld\n"_Stz,
                C_THREADS);
         return false;
       }
@@ -333,17 +333,17 @@ bool Arguments::bParse(int argc, Stz* argv[])
     if (argv[i_Arg]->bSame("--prompt"_Stz)) {
 
       if (m_bStop) {
-        vError("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       
       if (m_bStatus) {
-        vError("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
 
       if (m_bScript) {
-        vError("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       
@@ -356,16 +356,16 @@ bool Arguments::bParse(int argc, Stz* argv[])
       
       bool bResult = Magnitudes::bToBytes((Stz*)argv[++i_Arg], m_iRegionSize);
       if (!bResult) {
-        vError("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
+        vWarn("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       
       i8 iTotalMemory = MemLib::iGetTotalMemory();
       if (m_iRegionSize > DIV(C_MEMORY_PERCENT * iTotalMemory, 100)) {
-        vError("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
+        vWarn("Invalid size argument: --size %s\n"_Stz,argv[i_Arg]);
         s32 sMag;
         Magnitudes::vByteMag(iTotalMemory,sMag);
-        vError("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
+        vWarn("Cannot set size > %lld%% of memory on this node (node has only %s of memory)\n"_Stz,
                C_MEMORY_PERCENT,
                sMag.aChar());
         return false;
@@ -378,7 +378,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
       Magnitudes::vByteMag(m_iRegionSize, sSize);
       
       if (m_iRegionSize < C_MIN_REGION) {
-        vError("Insufficient region size: %s. At least %s is required\n"_Stz,
+        vWarn("Insufficient region size: %s. At least %s is required\n"_Stz,
                sSize.aStz(),
                sMinSize.aStz());
         return false;
@@ -393,11 +393,11 @@ bool Arguments::bParse(int argc, Stz* argv[])
     if (argv[i_Arg]->bSame("--start"_Stz)) {
 
       if (m_bStop) {
-        vError("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       if (m_bStatus) {
-        vError("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
 
@@ -408,15 +408,15 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--status"_Stz)) {
       if (m_bStop) {
-        vError("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       if (m_bStart) {
-        vError("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       if (m_bPrompt) {
-        vError("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
 
@@ -428,15 +428,15 @@ bool Arguments::bParse(int argc, Stz* argv[])
     if (argv[i_Arg]->bSame("--stop"_Stz)) {
 
       if (m_bStart) {
-        vError("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --start with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       if (m_bStatus) {
-        vError("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       if (m_bPrompt) {
-        vError("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --prompt with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
 
@@ -455,15 +455,15 @@ bool Arguments::bParse(int argc, Stz* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--script"_Stz)) {
       if (m_bStop) {
-        vError("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --stop with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       if (m_bStatus) {
-        vError("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --status with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       if (m_bPrompt) {
-        vError("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg]);
+        vWarn("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
       m_bScript = true;
@@ -635,7 +635,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
       continue;
     }
     
-    vError("Unrecognized command argument: %s\n"_Stz,argv[i_Arg]);
+    vWarn("Unrecognized command argument: %s\n"_Stz,argv[i_Arg]);
     return false;
   }
 
@@ -651,7 +651,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     // there should be at aleast 2 nodes ina cluster
     // if (m_nNodes < 2) {
-    //   vError("Minimum two nodes should be there in a cluster\n"_Stz);
+    //   vWarn("Minimum two nodes should be there in a cluster\n"_Stz);
     //   return false;
     // }
     
@@ -666,7 +666,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     }
     
     if ( ! bFound ) {
-      vError("Add argument --name with name of this node from the --node definitions\n"_Stz);
+      vWarn("Add argument --name with name of this node from the --node definitions\n"_Stz);
       return false;
     }
     
@@ -677,7 +677,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
     // m_xNodes[0].m_sIPAddress = ""_Stz;
     // m_xNodes[0].m_iPortNo =  -1;
     if ( m_bStart ) {
-      vError("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_sNodeName.aChar());
+      vWarn("Add argument '--node name ip-address port' for this node %s definition\n"_Stz, m_sNodeName.aChar());
       return false;
     }
   }
@@ -688,7 +688,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
   }
   else {
     if (m_bStart && m_nNodes > 1) {
-      vError("--region not allowed with --start in a cluster\n"_Stz);
+      vWarn("--region not allowed with --start in a cluster\n"_Stz);
       return false;
     }
   }

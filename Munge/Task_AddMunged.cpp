@@ -12181,7 +12181,7 @@ void Task::vAddMunged(MP_Task mpTask)
     "/*----------------------------------------------------------------------------*/\n"
     ": task::wait  ( -- )\n"
     "\n"
-    "  //TS_WAITING task::this task.state!\n"
+    "  //TK_WAITING task::this task.state!\n"
     "  task::this task.wait\n"
     " ;\n"
     "\n"

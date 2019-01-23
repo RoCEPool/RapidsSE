@@ -245,7 +245,7 @@ void TaskList::vContentDump(void)
     vTrace("Task %p %s %s order %lld\n"_Stz,
            pTask,
            aCN[pTask->pJob()->eClass()],
-           aTS[pTask->eState()],
+           aTK[pTask->eState()],
            pTask->iQueueOrder()
            );
 

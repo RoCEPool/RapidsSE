@@ -114,7 +114,7 @@ void RapidsSE::vCallImmmediate(Task* pImmediateTask)
 {
   pImmediateTask->vSeedJob();
   
-  pImmediateTask->vState(TS_EXECUTING);
+  pImmediateTask->vState(TK_EXECUTING);
   
   pImmediateTask->vTaskLoop();
 }
@@ -169,12 +169,13 @@ void RapidsSE::vCheckPort(void)
   
   if ( ! bResult ) {
     if (oSysCall.iError() == EADDRINUSE) {
-      vError("Address in use (port: %lld). CHECK IF ANOTHER INSTANCE OF RAPIDSSE IS RUNNING!\n"_Stz,
+      vTrace("Address in use (port: %lld). "
+             "CHECK IF ANOTHER INSTANCE OF RAPIDSSE IS RUNNING!\n"_Stz,
              iPort);
       
     }
     else {
-      vError("Unable to listen for connections (port: %lld): Errno %d!\n"_Stz,
+      vTrace("Unable to listen for connections (port: %lld): Errno %d!\n"_Stz,
              iPort, oSysCall.iError());
     }
     //RapidsSE::vStopSystem();
@@ -236,7 +237,7 @@ void RapidsSE::vErrorHandler(Error* pError)
   ps = StrLib::sLast(pError->aFileName()->aChar());
   StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
   StrLib::vCopy(wFileName,ps+1);
-  vError("%s: line %lld in %s\n"_Stz,
+  vTrace("%s: line %lld in %s\n"_Stz,
          pError->aErrorMsg(),
          pError->iLineNo(),
          wFileName);
@@ -300,6 +301,13 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
 {
   s48K sPortrait;
   
+  Now oNow;
+  
+  sRapidsPortrait.vSprint("\nSystem Monitor %s\n"_Stz,
+                          oNow.sFormatted());
+  sRapidsPortrait.vConcat("------------------------------------------------------\n"_Stz);
+
+
   sPortrait = ""_Stz;
   vMonitorProfile(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
@@ -375,6 +383,7 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
   sPortrait = ""_Stz;
   gpAttachMap->m_pApiState->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -632,9 +641,7 @@ void RapidsSE::vRunCmdLine(void)
     else if (gxArguments.m_bUnlink)  vUnlinkSystem();
     else if (gxArguments.m_bScript)  { ASSERT(gpBufferPool); vCallPrompt(); }
     else {
-      vError("Unknown command line argument\n"_Stz);
-      vFatal("RapidsSE exits\n"_Stz);
-      exit(EXIT_FAILURE);
+      vFatal("Unknown command line argument\n"_Stz);
     }
     
   }

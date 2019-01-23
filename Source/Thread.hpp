@@ -3,18 +3,17 @@
 /*============================================================================*/
 #pragma once
 
-
 namespace Threads
 {
-  enum eTC // thread condition/state
+  enum eTD // thread state
   {
-    /*  0 */ TC_NONE=0,
-    /*  1 */ TC_IDLE,
-    /*  2 */ TC_RUNNING,
-    /*  3 */ TC_ENUMS,
+    /*  0 */ TD_NONE=0,
+    /*  1 */ TD_IDLE,
+    /*  2 */ TD_RUNNING,
+    /*  3 */ TD_ENUMS,
   };
   
-  static Stz* aTC[]
+  static Stz* aTD[]
   {
     /*  0 */ "NONE"_Stz,
     /*  1 */ "IDLE"_Stz,
@@ -27,20 +26,20 @@ namespace Threads
   private:
 
   public:
-    i8           m_iThreadNo;    // our thread no
-    void*        m_aStackBase;   // stack base address
-    i8           m_iStackSize;   // stack size
+    i8       m_iThreadNo;     // our thread no
+    void*    m_aStackBase;    // stack base address
+    i8       m_iStackSize;    // stack size
   
-    eTC          m_eThreadState; // thread state
-    Task*        m_pTask;        // task current being executed
-    eCN          m_eDedicated;   // thread is dedicated to one specific job?
+    eTD      m_eThreadState;  // thread state
+    Task*    m_pTask;         // task current being executed
+    eCN      m_eDedicated;    // thread is dedicated to one specific job?
 
-    Pthread* m_pPthread; // its posix structure
-    Mutex*       m_pMutex;       // this threads mutex
+    Pthread* m_pPthread;      // its posix structure
+    Mutex*   m_pMutex;        // this threads mutex
   
-    i8           m_iLastQueueRR;  // last round robin queue this thread
-                                  // had popped a task from
-    i8           m_iStartQueueRR; // last RR queue we started with
+    i8       m_iLastQueueRR;  // last round robin queue this thread
+                              // had popped a task from
+    i8       m_iStartQueueRR; // last RR queue we started with
   
     // must be last
     Footer m_xFooter;
@@ -70,7 +69,7 @@ namespace Threads
     void vSpawnPthread(void);
     void vSpawnPthread_Dummy(void);
     i8   iThreadNo(void);
-    eTC  eThreadState(void);
+    eTD  eThreadState(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

@@ -1,184 +1,100 @@
-/*===========================================================================*/
-/* Report.cpp - message reporter                                             */
-/*===========================================================================*/
+/*============================================================================*/
+/* Report.cpp - message reporter                                              */
+/*============================================================================*/
 
 #include "Debugging.h"
-
 #include "StorageEngine.h"
 
 extern File*       gpTraceFile;
 extern BufferPool* gpBufferPool;
 extern AttachMap*  gpAttachMap;
 
-char gxTraceWorkspace[C_1MB] = {'\0'};
-  
-bool mbReportTimestamp = true;
 
-/*---------------------------------------------------------------------------*/
-/* set reporting behavior                                                    */
-/*---------------------------------------------------------------------------*/
-void Debugging::vReportOption(i8 iTrace)
+/*----------------------------------------------------------------------------*/
+/* report a non-recoverable fatal message                                     */
+/*----------------------------------------------------------------------------*/
+__attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
 {
-  if (C_REPORT_TIMESTAMP == iTrace)
-    mbReportTimestamp = true;
-
-  if (C_REPORT_NO_TIMESTAMP == iTrace)
-    mbReportTimestamp = false;
-}
+  vStackDump();
   
-/*---------------------------------------------------------------------------*/
-/* report an information message                                             */
-/*---------------------------------------------------------------------------*/
+  va_list xArgs;
+  
+  va_start(xArgs,aFormat);
+  vPrint(aFormat,xArgs);
+  va_end(xArgs);
+  
+  exit(EXIT_FAILURE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* report an information message                                              */
+/*----------------------------------------------------------------------------*/
 void Debugging::vInfo(Stz* aFormat, ...)
 {
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  
-  vPrint(C_REPORT_INFO,aFormat,xArgs);
-  
+  vPrint(aFormat,xArgs);
   va_end(xArgs);
 }
 
-/*---------------------------------------------------------------------------*/
-/* vPrint:write to stdout                                                    */
-/*---------------------------------------------------------------------------*/
-void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
-{
-  static Lock oLock(LK_TRACE);
-  
-  bool bLock = (gpAttachMap ? true : false);
-  
-  if (bLock)
-    oLock.vGrabWrite();
-  
-  i8 iLen = 0;
-  char* s = gxTraceWorkspace;
-  *s = '\0';
-  
-  assert(iLevel != 0);
-  vsnprintf(s,sizeof(gxTraceWorkspace)-iLen-3,aFormat->aChar(),xArgs);
-  
-  //if (StrLib::bContains(gaReportBuffer,"serverThread"))
-  //  i8 iDebug = 1;
-
-  bool bLowMem = gpBufferPool ? gpBufferPool->bLowMemory() : false;
-  
-  // print to file
-  fprintf(stdout,"%s%s",
-          bLowMem ? "LOW-MEMORY! " : "",
-          gxTraceWorkspace);
-  fflush(stdout);
-  
-  if (gpTraceFile) {
-    gpTraceFile->vPrint("%s%s"_Stz,
-                        bLowMem ? "LOW-MEMORY! " : "",
-                        gxTraceWorkspace);
-    gpTraceFile->vFlush();
-  }
-
-  if (bLock)
-    oLock.vDropWrite();
-}
-
-/*---------------------------------------------------------------------------*/
-/* report a trace message                                                    */
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* report a trace message                                                     */
+/*----------------------------------------------------------------------------*/
 void Debugging::vTrace(Stz* aFormat, ...)
 {
   va_list xArgs;
-  
+
   va_start(xArgs,aFormat);
-  
-  vPrint(C_REPORT_TRACE,aFormat,xArgs);
-  
+  vPrint(aFormat,xArgs);
   va_end(xArgs);
 }
 
-/*---------------------------------------------------------------------------*/
-/* report a warning message                                                  */
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* report a warning message                                                   */
+/*----------------------------------------------------------------------------*/
 void Debugging::vWarn(Stz* aFormat, ...)
 {
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  
-  vReport(C_REPORT_WARNING,aFormat,xArgs);
-  
+  vPrint(aFormat,xArgs);
   va_end(xArgs);
 }
 
-/*---------------------------------------------------------------------------*/
-/* report a recoverable error message                                        */
-/*---------------------------------------------------------------------------*/
-void Debugging::vError(Stz* aFormat, ...)
-{
-  va_list xArgs;
-  
-  va_start(xArgs,aFormat);
-  
-  vReport(C_REPORT_ERROR,aFormat,xArgs);
-  
-  va_end(xArgs);
-}
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-/*---------------------------------------------------------------------------*/
-/* vFatal: report a non-recoverable fatal message                            */
-/*---------------------------------------------------------------------------*/
-__attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
+/*----------------------------------------------------------------------------*/
+/* write to trace file etc                                                    */
+/*----------------------------------------------------------------------------*/
+void Debugging::vPrint(Stz* aFormat, va_list xArgs)
 {
-  vStackDump();
-
-  va_list xArgs;
+  static Lock oLock(LK_TRACE);
+  static char caFormatted[C_1MB] = {'\0'};
   
-  va_start(xArgs,aFormat);
+  bool bUseLock = (gpAttachMap ? true : false);
+  bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
-  vReport(C_REPORT_FATAL,aFormat,xArgs);
+  if (bUseLock)
+    oLock.vGrabWrite();
   
-  va_end(xArgs);
-  exit(EXIT_FAILURE);
-}
-
-/*---------------------------------------------------------------------------*/
-/* vReport: common reporter                                                  */
-/*---------------------------------------------------------------------------*/
-void Debugging::vReport(i8 iLevel, Stz* aFormat, va_list xArgs)
-{
-  i8 iLen = 0;
-  char* s = gxTraceWorkspace;
-  *s = '\0';
+  // produce formatted line
+  vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->aChar(),xArgs);
   
-  time_t tNow = time(0);
-  char* sTime = ctime(&tNow);
-  sTime[ strlen(sTime) - 1 ] = '\0';
-  
-  assert(iLevel != 0);
-  vsnprintf(s,sizeof(gxTraceWorkspace)-iLen-3,aFormat->aChar(),xArgs);
-  
-  // print to file
-  fprintf(stderr,"%s: %s", sTime, gxTraceWorkspace);
-  fflush(stderr);
+  // print formatted line
+  fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caFormatted);
+  fflush(stdout);
   
   if (gpTraceFile) {
-    gpTraceFile->vPrint("%s: %s"_Stz, sTime, gxTraceWorkspace);
+    gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caFormatted);
     gpTraceFile->vFlush();
   }
+  
+  if (bUseLock)
+    oLock.vDropWrite();
 }
 
-/*---------------------------------------------------------------------------*/
-/* dump ascii string                                                         */
-/*---------------------------------------------------------------------------*/
-void Debugging::vDumpAscii(Stz* aText, i8 nBytes)
-{
-  vInfo(">>>"_Stz);
-  while (nBytes--) {
-    vInfo("%c"_Stz,*aText->aChar());
-    aText++;
-  }
-  vInfo("<<<\n"_Stz);
-}
-
-/*===========================================================================*/
-/* end of file                                                               */
-/*===========================================================================*/
+/*============================================================================*/
+/* end of file                                                                */
+/*============================================================================*/

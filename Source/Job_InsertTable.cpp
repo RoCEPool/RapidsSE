@@ -186,7 +186,7 @@ Job* Jobs::pJob_InsertTable_pre(Interface::Session* pSession)
   Job_InsertTable* pJob_InsertTable = new Job_InsertTable(pSession);
   
   // get a jobId for the insertTable job
-  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iGetJobId();
+  i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
   pJob_InsertTable->m_iJobId = iJobId;
   
   return pJob_InsertTable;

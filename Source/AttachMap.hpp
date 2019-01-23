@@ -38,7 +38,8 @@ namespace StorageEngine
     Word*         m_pTenants;
   
     Atomic        m_ziThreads;
-  
+    Atomic        m_ziMonitorTake;
+
     Queues*       m_pQueues;
     JobList*      m_pOriginatingJobs;
     JobList*      m_pParticipatingJobs;
@@ -58,6 +59,8 @@ namespace StorageEngine
     i8            m_iStop;
     
     LockTracker   m_oLockTracker;
+  
+    ResourceTracker m_oResourceTracker;
     
     Lock          m_oDdlLock;
     Lock          m_oDicLock;

@@ -35,6 +35,7 @@ namespace Base
   
   public:
     static void* pAddBytes(void* aAddress, i8 iBytes);
+    static void  vAsciiDump(Stz* aText, i8 nBytes);
     static void  vCheckInitialised(void* aAddress, eCN eClass);
     static void  vCheckInitialised(void* aAddress, i8 nBytes);
     static void  vCopy(void* pDst, const void* pSrc, i8 nBytes, eCN eClassNo);

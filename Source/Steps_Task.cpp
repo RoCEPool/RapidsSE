@@ -397,7 +397,7 @@ void Step::vTaskSend(MP_Task mpTask)
 {
   ENTRY("vTaskSend"_Stz);
   
-  mpTask->vState(TS_SEND);
+  mpTask->vState(TK_SEND);
   
   EXIT();
 }
@@ -458,7 +458,7 @@ void Step::vTaskSleepUs(MP_Task mpTask)
     THROW_INVALID_DSTACK("task.sleepUs"_Stz);
   
   mpTask->vSleepUs(nMicroSeconds);
-  mpTask->vState(TS_SLEEPING);
+  mpTask->vState(TK_SLEEPING);
   
   EXIT();
 }
@@ -475,7 +475,7 @@ ENTRY("vTaskStateFetch"_Stz);
     THROW_INVALID_DSTACK("task.state@"_Stz);
   Task* pThatTask = _pTask(pTaskObject);
   
-  eTS eState = pThatTask->m_eState;
+  eTK eState = pThatTask->m_eState;
   
   mpTask->m_pDataStack->vPushI8((i8)eState);
   
@@ -500,11 +500,11 @@ ENTRY("vTaskStateStore"_Stz);
     THROW_INVALID_DSTACK("task.state!"_Stz);
   
   // a task being set to waiting state must be locked
-  if (TS_WAITING == iState) {
+  if (TK_WAITING == iState) {
     //RASSERT(pThatTask->bIsLocked());
   }
   
-  pThatTask->m_eState = (eTS)iState;
+  pThatTask->m_eState = (eTK)iState;
   
   EXIT();
 }
@@ -549,7 +549,7 @@ void Step::vTaskWait(MP_Task mpTask)
 {
   ENTRY("vTaskWait"_Stz);
   
-  mpTask->vState(TS_WAITING);
+  mpTask->vState(TK_WAITING);
 
   EXIT();
 }
@@ -561,7 +561,7 @@ void Step::vTaskYield(MP_Task mpTask)
 {
   ENTRY("vTaskYield"_Stz);
   
-  mpTask->vState(TS_YIELDED);
+  mpTask->vState(TK_YIELDED);
   
   EXIT();
 }

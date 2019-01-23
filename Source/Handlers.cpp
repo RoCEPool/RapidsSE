@@ -98,16 +98,16 @@ void Handlers::vThreadLoop(Task** ppTask)
   // now add the task to another appropriate queue depending on its state
   switch (pTask->eState()) {
       
-    case TS_EXITED:   pQueues->vScheduleExitedTask(pTask);    break;
-    case TS_SEND:     pQueues->vScheduleSendTask(pTask);      break;
-    case TS_SLEEPING: pQueues->vScheduleSleepingTask(pTask);  break;
-    case TS_WAITING:  pQueues->vScheduleWaitingTask(pTask);   break;
-    case TS_YIELDED:  pQueues->vScheduleYieldedTask(pTask);   break;
+    case TK_EXITED:   pQueues->vScheduleExitedTask(pTask);    break;
+    case TK_SEND:     pQueues->vScheduleSendTask(pTask);      break;
+    case TK_SLEEPING: pQueues->vScheduleSleepingTask(pTask);  break;
+    case TK_WAITING:  pQueues->vScheduleWaitingTask(pTask);   break;
+    case TK_YIELDED:  pQueues->vScheduleYieldedTask(pTask);   break;
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // should never come to thread handler for these states
 
-    case TS_EXECUTING: ASSERT(0);
+    case TK_EXECUTING: ASSERT(0);
       
     default:
       break;

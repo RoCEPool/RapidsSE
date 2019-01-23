@@ -44,7 +44,7 @@ void JobList::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobList::JobList(cmpFun fCompare, eJL eJobsList)
+JobList::JobList(CompareFp fpCompare, eJL eJobsList)
 : Object(CN_JOBLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
@@ -52,7 +52,7 @@ JobList::JobList(cmpFun fCompare, eJL eJobsList)
   m_eJobsList = eJobsList;
   m_oLock.vInitLock(LK_JOBS);
   m_iNextJobId = gpAttachMap->m_pGrid->iThisNode() << 48;
-  m_pJobsSkipList = new SkipListNL(C_UNQIUE_KEY, fCompare);
+  m_pJobsSkipList = new SkipListNL(C_UNQIUE_KEY, fpCompare);
   
   _checkInitialised_(CN_JOBLIST);
   
@@ -146,23 +146,6 @@ Job* JobList::pFindJob(Job* pJob__Find)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next job id                                                            */
-/*----------------------------------------------------------------------------*/
-i8 JobList::iGetJobId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  vGrabLock();
-  
-  // generate next jobId
-  i8 iJobId = m_iNextJobId++;
-  
-  vDropLock();
-  
-  return iJobId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void JobList::vGrabLock(void)
@@ -193,42 +176,19 @@ bool JobList::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next job id                                                            */
+/* generate next job id                                                       */
 /*----------------------------------------------------------------------------*/
 i8 JobList::iNextJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  ASSERT(bIsLocked());
+  vGrabLock();
   
-  // generate next jobId
   i8 iJobId = m_iNextJobId++;
   
+  vDropLock();
+  
   return iJobId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop a job from the jobs skip list                                          */
-/*----------------------------------------------------------------------------*/
-Job* JobList::pPopJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  NEVER_REACH;
-  
-  bool bRemoved;
-  Job* pJob = nullptr;
-  
-  ASSERT(m_oLock.bIsLocked());
-  
-  SkipNode* pNode = m_pJobsSkipList->pFirst(0);
-  if (pNode) {
-    pJob = _pJob(pNode->m_pObject);
-    bRemoved = m_pJobsSkipList->bRemove(pJob);
-    RASSERT(bRemoved);
-  }
-  
-  return pJob;
 }
 
 /*----------------------------------------------------------------------------*/

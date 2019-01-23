@@ -145,7 +145,7 @@ void Step::vJobAddOriginator(MP_Task mpTask)
   
   // does the job have an id ?
   if (C_UNKNOWN == pJob->m_iJobId) {
-    i8 iJobId = gpAttachMap->m_pOriginatingJobs->iGetJobId();
+    i8 iJobId = gpAttachMap->m_pOriginatingJobs->iNextJobId();
     pJob->m_iJobId = iJobId;
   }
   

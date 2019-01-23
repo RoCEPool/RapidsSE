@@ -269,22 +269,24 @@ bool Job_Monitor::bTake(void)
   
   //vTrace("Monitor...\n"_Stz);
   
-  s48K sPortrait;
+//  s48K sPortrait;
+//  s48K sRapidsPortrait;
+//
+//  Now oNow;
+//
+//  //sPortrait = "\n"_Stz;
+//
+//  //sPortrait.vConcat("----------------------------------------------------\n"_Stz);
+//  sPortrait.vSprint("\nSystem Monitor %lld %s\n"_Stz,
+//                    m_iTakeNo,oNow.sFormatted());
+//  sPortrait.vConcat("------------------------------------------------------\n"_Stz);
+//
+//  RapidsSE::vMonitorPortrait(sRapidsPortrait);
+//  sPortrait.vConcat(sRapidsPortrait);
+  
   s48K sRapidsPortrait;
-  
-  Now oNow;
-
-  //sPortrait = "\n"_Stz;
-  
-  //sPortrait.vConcat("----------------------------------------------------\n"_Stz);
-  sPortrait.vSprint("\nSystem Monitor %lld %s\n"_Stz,
-                    m_iTakeNo,oNow.sFormatted());
-  sPortrait.vConcat("------------------------------------------------------\n"_Stz);
-
   RapidsSE::vMonitorPortrait(sRapidsPortrait);
-  sPortrait.vConcat(sRapidsPortrait);
-  
-  m_pOutFile->vPrint("%s\n"_Stz,sPortrait.aStz());
+  m_pOutFile->vPrint("%s\n"_Stz,sRapidsPortrait.aStz());
   
   m_iTakeNo++;
   

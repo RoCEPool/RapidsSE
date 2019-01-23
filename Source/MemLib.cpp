@@ -24,6 +24,19 @@ void* MemLib::pAddBytes(void* aAddress, i8 iBytes)
   return pNew;
 }
 
+/*---------------------------------------------------------------------------*/
+/* dump ascii string                                                         */
+/*---------------------------------------------------------------------------*/
+void MemLib::vAsciiDump(Stz* aText, i8 nBytes)
+{
+  vTrace(">>>"_Stz);
+  while (nBytes--) {
+    vTrace("%c"_Stz,*aText->aChar());
+    aText++;
+  }
+  vTrace("<<<\n"_Stz);
+}
+
 /*----------------------------------------------------------------------------*/
 /* check memory has been intialised                                           */
 /*----------------------------------------------------------------------------*/

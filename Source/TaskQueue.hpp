@@ -25,7 +25,7 @@ namespace Tasks
     void* operator new(size_t, TaskQueue* pTaskQueue);
     void  operator delete(void*);
     
-    TaskQueue(eQK eKind, bool bUniqueKey, cmpFun fCompare);
+    TaskQueue(eQK eKind, bool bUniqueKey, CompareFp fpCompare);
     ~TaskQueue(void) noexcept(false);
     
     void  vAddTask(Task* pTask);
