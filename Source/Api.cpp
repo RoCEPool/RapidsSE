@@ -49,9 +49,9 @@ eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -98,9 +98,9 @@ eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    //vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
   
 }
@@ -126,9 +126,9 @@ bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -178,9 +178,9 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -232,11 +232,9 @@ eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    vApiLocation(pSession,801);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -325,11 +323,9 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    vApiLocation(pSession,802);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -358,11 +354,9 @@ eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession,
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    vApiLocation(pSession,802);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -439,11 +433,9 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    vApiLocation(pSession,902);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -477,10 +469,9 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    //vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
   
 }
@@ -537,11 +528,9 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    vApiLocation(pSession,801);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -604,11 +593,9 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    vApiLocation(pSession,801);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -665,11 +652,9 @@ eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    vApiLocation(pSession,801);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-   return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -706,11 +691,9 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    vApiLocation(pSession,801);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -810,11 +793,9 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    vApiLocation(pSession,802);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -1045,11 +1026,9 @@ eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob,
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    vApiLocation(pSession,801);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
@@ -1147,11 +1126,9 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
     return eErrorCode;
   }
   catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    vApiError(pSession,EC_SE_UNKNOWN_ERROR);
-    vApiLocation(pSession,802);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
+    Error* pError = nullptr;
+    API_ERROR(pError);
+    return eErrorCode;
   }
 }
 
