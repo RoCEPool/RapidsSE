@@ -20,9 +20,9 @@ extern ActivityMap* gpActivityMap;
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
 {
-  API_ENTRY(AC_CheckLibraryVersion);
-  
   Session* pSession = nullptr;
+  
+  API_ENTRY(AC_CheckLibraryVersion);
   
   try {
     TRACE_ENTRY_P1(sVersion);
@@ -63,9 +63,9 @@ eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 {
-  API_ENTRY(AC_PoolOpen);
-  
   Session* pSession = nullptr;
+  
+  API_ENTRY(AC_PoolOpen);
   
   try {
     // trace entry
@@ -117,9 +117,9 @@ eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
 {
-  API_ENTRY(AC_SessionInvalid);
-  
   Session* pSession = nullptr;
+  
+  API_ENTRY(AC_SessionInvalid);
   
   try {
     // trace entry
@@ -160,9 +160,9 @@ bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession, Stz* sCatalog, Stz* sSchema, i8 iPartition)
 {
-  API_ENTRY(AC_SessionNew);
-  
   Session* pSession = nullptr;
+  
+  API_ENTRY(AC_SessionNew);
   
   try {
     
