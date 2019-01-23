@@ -6,7 +6,6 @@
 
 #include "StorageEngine.h"
 
-extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

@@ -6,8 +6,6 @@
 
 extern AttachMap* gpAttachMap;
 
-extern ResourceTracker gxResourceTracker;
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
@@ -651,11 +649,11 @@ void BPA::vResourceSummary(void)
   vTrace("\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
   vTrace(" Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Stz,
-         gxResourceTracker.nDirOpen(),
-         gxResourceTracker.nFileOpen(),
-         gxResourceTracker.nShmOpen(),
-         gxResourceTracker.nSocketOpen(),
-         gxResourceTracker.nThreadOpen());
+         gpAttachMap->m_oResourceTracker.nDirOpen(),
+         gpAttachMap->m_oResourceTracker.nFileOpen(),
+         gpAttachMap->m_oResourceTracker.nShmOpen(),
+         gpAttachMap->m_oResourceTracker.nSocketOpen(),
+         gpAttachMap->m_oResourceTracker.nThreadOpen());
   vTrace("****************************************************************\n"_Stz);
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);

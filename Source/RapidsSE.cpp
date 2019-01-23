@@ -6,7 +6,6 @@
 #include "ShmUtility.hpp"
 
 Arguments  gxArguments;
-ResourceTracker gxResourceTracker;
 
 Header*       gaSeShmRegion  = nullptr;
 BufferPool*   gpBufferPool   = nullptr;
@@ -329,7 +328,7 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
-  gxResourceTracker.vMonitorPortrait(sPortrait);
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;

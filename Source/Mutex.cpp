@@ -7,7 +7,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern ResourceTracker gxResourceTracker;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -91,7 +90,7 @@ Mutex::Mutex()
   iResult = pthread_cond_init(&m_xCond, &m_xCondAttr);
   RASSERT(! iResult);
 
-  gxResourceTracker.vIncMutexOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncMutexOpen();
   gpAttachMap->m_oStatistics.Mutex.m_nInits++;
 
   _checkInitialised_(CN_MUTEX);
@@ -118,7 +117,7 @@ Mutex::~Mutex(void) noexcept(false)
   iResult = pthread_condattr_destroy(&m_xCondAttr);
   RASSERT(! iResult);
 
-  gxResourceTracker.vDecMutexOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecMutexOpen();
   gpAttachMap->m_oStatistics.Mutex.m_nDestroys++;
 }
 

@@ -3,10 +3,13 @@
 /*============================================================================*/
 
 #include "System.h"
-
 #include "StorageEngine.h"
 
-extern ResourceTracker gxResourceTracker;
+extern AttachMap* gpAttachMap;
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -178,7 +181,7 @@ void Dir::vClose(void)
     return;
   }
 
-  gxResourceTracker.vDecDirOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecDirOpen();
 
   m_aDir = nullptr;
   
@@ -251,7 +254,7 @@ bool Dir::bOpen(Stz* aDirPath)
     return false;
   }
 
-  gxResourceTracker.vIncDirOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncDirOpen();
 
   ASSERT(bIsOpen());
   return true;
