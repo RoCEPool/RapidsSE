@@ -83,6 +83,8 @@ void JobList::vAddJob(Job* pJob)
   //vTrace("inserting job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
   
   ASSERT(JL_NONE == pJob->m_eJobList);
+  ASSERT( (JL_ORIGINATING   == m_eJobsList && ! pJob->m_bWasReceived) ||
+          (JL_PARTICIPATING == m_eJobsList &&   pJob->m_bWasReceived) );
   pJob->m_eJobList = m_eJobsList;
   
   m_pJobsSkipList->bInsert(pJob);
