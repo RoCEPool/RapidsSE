@@ -13,26 +13,26 @@ JobClass xJobClass_SubInserter =
 {
   "Job_SubInserter"_Stz,    // name of the job class
   CN_JOB_SUBINSERTER,       // class enum
-  JK_LOCAL,               // job kind
-  "insert rows into tableNm"_Stz, // comment about the job
-  "insert"_Stz,           // the prompt command
-  "rows"_Stz,             // the second word
-  nullptr,                // the _run task seed
+  JK_LOCAL,                 // job kind
+  "insert into table"_Stz,  // comment about the job
+  "insert"_Stz,             // the prompt command
+  "rows"_Stz,               // the second word
+  nullptr,                  // the _run task seed
   "SubInserter_req"_Stz,    // the _req task seed
-  nullptr,                // the _rcv task seed
-  nullptr,                // the _exe task seed
-  nullptr,                // the _end task seed
-  nullptr,                // the _can task seed
-  true,                   // check resources?
-  false,                  // detached job?
-  false,                  // buffer attached?
-  JT_NONE,                // job trace
-  pJob_SubInserter_pre,    // prompt pre-process function
+  nullptr,                  // the _rcv task seed
+  nullptr,                  // the _exe task seed
+  nullptr,                  // the _end task seed
+  nullptr,                  // the _can task seed
+  true,                     // check resources?
+  false,                    // detached job?
+  false,                    // buffer attached?
+  JT_NONE,                  // job trace
+  pJob_SubInserter_pre,     // prompt pre-process function
   vJob_SubInserter_post,    // prompt post-process function
   pJob_SubInserter_new,     // job new function
   vJob_SubInserter_delete,  // job delete function
-  nullptr,                // job pre-send function
-  nullptr,                // job post-receive function
+  nullptr,                  // job pre-send function
+  nullptr,                  // job post-receive function
   vJob_SubInserter_show,    // job show function
   
   // help and example

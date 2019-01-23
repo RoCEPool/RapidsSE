@@ -24,6 +24,7 @@ namespace Jobs
   /*  6 */ JK_LOCAL,     // job is run on the local node
   /*  7 */ JK_SYSTEM,    // system job (such as socket receiver)
   /*  8 */ JK_THREAD,    // job is run by calling thread
+  /*  9 */ JK_OTHER,     // any other
   };
   
   static Stz* aJK[]
@@ -37,6 +38,7 @@ namespace Jobs
   /*  6 */ "LOCAL"_Stz,
   /*  7 */ "SYSTEM"_Stz,
   /*  8 */ "THREAD"_Stz,
+  /*  9 */ "OTHER"_Stz,
   };
   
   enum eJS // job state
