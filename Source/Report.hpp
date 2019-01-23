@@ -22,7 +22,6 @@ namespace Debugging
   void  vError(Stz* aFormat,...);
   void  vFatal(Stz* aFormat,...);
   
-  void  vDumpAscii(Stz* aText, i8 nBytes);
   
   void  vPrint(i8 iLevel, Stz* aFormat, va_list xArgs);
   void  vReport(i8 iLevel, Stz* aFormat, va_list xArgs);
