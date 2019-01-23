@@ -1,6 +1,6 @@
-/*===========================================================================*/
-/* Report.cpp - message reporter                                             */
-/*===========================================================================*/
+/*============================================================================*/
+/* Report.cpp - message reporter                                              */
+/*============================================================================*/
 
 #include "Debugging.h"
 #include "StorageEngine.h"
@@ -10,61 +10,13 @@ extern BufferPool* gpBufferPool;
 extern AttachMap*  gpAttachMap;
 
 
-/*---------------------------------------------------------------------------*/
-/* report an information message                                             */
-/*---------------------------------------------------------------------------*/
-void Debugging::vInfo(Stz* aFormat, ...)
-{
-  va_list xArgs;
-  
-  va_start(xArgs,aFormat);
-  vPrint(aFormat,xArgs);
-  va_end(xArgs);
-}
-
-/*---------------------------------------------------------------------------*/
-/* report a trace message                                                    */
-/*---------------------------------------------------------------------------*/
-void Debugging::vTrace(Stz* aFormat, ...)
-{
-  va_list xArgs;
-
-  va_start(xArgs,aFormat);
-  vPrint(aFormat,xArgs);
-  va_end(xArgs);
-}
-
-/*---------------------------------------------------------------------------*/
-/* report a warning message                                                  */
-/*---------------------------------------------------------------------------*/
-void Debugging::vWarn(Stz* aFormat, ...)
-{
-  va_list xArgs;
-  
-  va_start(xArgs,aFormat);
-  vPrint(aFormat,xArgs);
-  va_end(xArgs);
-}
-
-/*---------------------------------------------------------------------------*/
-/* report a recoverable error message                                        */
-/*---------------------------------------------------------------------------*/
-void Debugging::vError(Stz* aFormat, ...)
-{
-  va_list xArgs;
-  
-  va_start(xArgs,aFormat);
-  vPrint(aFormat,xArgs);
-  va_end(xArgs);
-}
-
-/*---------------------------------------------------------------------------*/
-/* vFatal: report a non-recoverable fatal message                            */
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* report a non-recoverable fatal message                                     */
+/*----------------------------------------------------------------------------*/
 __attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
 {
   vStackDump();
-
+  
   va_list xArgs;
   
   va_start(xArgs,aFormat);
@@ -74,21 +26,57 @@ __attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
   exit(EXIT_FAILURE);
 }
 
-/*---------------------------------------------------------------------------*/
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* report an information message                                              */
+/*----------------------------------------------------------------------------*/
+void Debugging::vInfo(Stz* aFormat, ...)
+{
+  va_list xArgs;
+  
+  va_start(xArgs,aFormat);
+  vPrint(aFormat,xArgs);
+  va_end(xArgs);
+}
 
-/*---------------------------------------------------------------------------*/
-/* write to trace file etc                                                   */
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* report a trace message                                                     */
+/*----------------------------------------------------------------------------*/
+void Debugging::vTrace(Stz* aFormat, ...)
+{
+  va_list xArgs;
+
+  va_start(xArgs,aFormat);
+  vPrint(aFormat,xArgs);
+  va_end(xArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/* report a warning message                                                   */
+/*----------------------------------------------------------------------------*/
+void Debugging::vWarn(Stz* aFormat, ...)
+{
+  va_list xArgs;
+  
+  va_start(xArgs,aFormat);
+  vPrint(aFormat,xArgs);
+  va_end(xArgs);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* write to trace file etc                                                    */
+/*----------------------------------------------------------------------------*/
 void Debugging::vPrint(Stz* aFormat, va_list xArgs)
 {
   static Lock oLock(LK_TRACE);
   static char caFormatted[C_1MB] = {'\0'};
   
-  bool bLock   = (gpAttachMap ? true : false);
-  bool bLowMem = gpBufferPool ? gpBufferPool->bLowMemory() : false;
+  bool bUseLock = (gpAttachMap ? true : false);
+  bool bLowMem  = gpBufferPool ? gpBufferPool->bLowMemory() : false;
   
-  if (bLock)
+  if (bUseLock)
     oLock.vGrabWrite();
   
   // produce formatted line
@@ -103,10 +91,10 @@ void Debugging::vPrint(Stz* aFormat, va_list xArgs)
     gpTraceFile->vFlush();
   }
   
-  if (bLock)
+  if (bUseLock)
     oLock.vDropWrite();
 }
 
-/*===========================================================================*/
-/* end of file                                                               */
-/*===========================================================================*/
+/*============================================================================*/
+/* end of file                                                                */
+/*============================================================================*/

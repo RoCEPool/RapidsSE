@@ -221,7 +221,7 @@ void Time::vSetLocal(Since* pSincePosixEpoch)
   struct tm* aCalendarDateTime_Local = localtime(&iSecondsSincePosixEpoch);
 
   if ( ! aCalendarDateTime_Local )
-    vError("localtime_r() error; errno=%d"_Stz,errno);
+    vWarn("localtime_r() error; errno=%d"_Stz,errno);
   
   m_iYearDelta = aCalendarDateTime_Local->tm_year;
   m_iMonth     = aCalendarDateTime_Local->tm_mon + 1;
@@ -245,7 +245,7 @@ void Time::vSetUTC(Since* pSincePosixEpoch)
   struct tm* aCalendarDateTime_UTC = gmtime(&iSecondsSincePosixEpoch);
 
   if ( ! aCalendarDateTime_UTC )
-    vError("gmtime() error; errno=%d"_Stz,errno);
+    vWarn("gmtime() error; errno=%d"_Stz,errno);
   
   m_iYearDelta = aCalendarDateTime_UTC->tm_year;
   m_iMonth     = aCalendarDateTime_UTC->tm_mon + 1;
@@ -270,7 +270,7 @@ void Time::vSetNowLocal(void)
   struct tm* aCalendarDateTime_Local = localtime(&iSecondsSincePosixEpoch);
   
   if ( ! aCalendarDateTime_Local )
-    vError("localtime() error; errno=%d"_Stz,errno);
+    vWarn("localtime() error; errno=%d"_Stz,errno);
   
   m_iYearDelta = aCalendarDateTime_Local->tm_year;
   m_iMonth     = aCalendarDateTime_Local->tm_mon + 1;
@@ -295,7 +295,7 @@ void Time::vSetNowUTC(void)
   struct tm* aCalendarDateTime_UTC = gmtime(&iSecondsSincePosixEpoch);
   
   if ( ! aCalendarDateTime_UTC )
-    vError("gmtime() error; errno=%d"_Stz,errno);
+    vWarn("gmtime() error; errno=%d"_Stz,errno);
   
   m_iYearDelta = aCalendarDateTime_UTC->tm_year;
   m_iMonth     = aCalendarDateTime_UTC->tm_mon + 1;

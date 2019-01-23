@@ -120,7 +120,7 @@ bool Dir::bExists(Stz* aDirPath)
   if (iResult && ENOENT == errno)
     return false;
     
-  vError("Dir::bExists: stat(%s) error; errno=%d"_Stz,aDirPath->aChar(),errno);
+  vWarn("Dir::bExists: stat(%s) error; errno=%d"_Stz,aDirPath->aChar(),errno);
   
   return false;
 }

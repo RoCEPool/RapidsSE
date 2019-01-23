@@ -1601,8 +1601,8 @@ bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession)
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
     if (pSession)
-      vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
-    vError("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+      vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
     return false;
   }
   

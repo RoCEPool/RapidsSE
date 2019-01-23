@@ -176,7 +176,7 @@ void Task::vTaskLoop(void)
       else {
         StrLib::vCopy(wFileName, m_sFile.aChar());
       }
-      vError("[%s] %s : line %lld in %s\n"_Stz,
+      vTrace("[%s] %s : line %lld in %s\n"_Stz,
              aJobName(),
              m_sException.aChar(),
              iException,
@@ -192,7 +192,7 @@ void Task::vTaskLoop(void)
       ps = StrLib::sLast(pError->aFileName()->aChar());
       StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
       StrLib::vCopy(wFileName,ps+1);
-      vError("[%s] %s: line %lld in %s\n"_Stz,
+      vTrace("[%s] %s: line %lld in %s\n"_Stz,
              aJobName(),
              pError->aErrorMsg(),
              pError->iLineNo(),
