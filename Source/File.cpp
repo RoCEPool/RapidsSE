@@ -8,8 +8,6 @@
 
 extern AttachMap* gpAttachMap;
 
-extern ResourceTracker gxResourceTracker;
-
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -228,7 +226,7 @@ void File::vClose(void)
     return;
   }
   
-  gxResourceTracker.vDecFileOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecFileOpen();
   
   m_aFile = nullptr;
 
@@ -399,7 +397,7 @@ bool File::bOpenMode(Stz* aFilePath, Stz* aOpenMode)
     return false;
   }
   
-  gxResourceTracker.vIncFileOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncFileOpen();
 
   return true;
 }

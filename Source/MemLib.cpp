@@ -8,7 +8,6 @@
 #include "Debugging.h"
 
 extern AttachMap* gpAttachMap;
-extern ResourceTracker gxResourceTracker;
 
 extern i8 giClassSize[];
 
@@ -100,7 +99,7 @@ void MemLib::vFreeBlock(void* aBlock, i8 nBytes)
 {
   free(aBlock);
   
-  gxResourceTracker.vSubMallocAmt(nBytes);
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vSubMallocAmt(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,7 +206,7 @@ void* MemLib::aMallocBlock(i8 nBytes)
 {
   void* aBlock = (void*)malloc(nBytes);
   
-  gxResourceTracker.vAddMallocAmt(nBytes);
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vAddMallocAmt(nBytes);
   
   return aBlock;
 }

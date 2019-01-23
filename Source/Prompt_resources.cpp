@@ -3,6 +3,9 @@
 /*============================================================================*/
 
 #include "Prompt.h"
+#include "StorageEngine.h"
+
+extern AttachMap* gpAttachMap;
 
 PromptNote mPromptNote_resources (
   "Prompt_resources"_Stz,// name of the prompt function
@@ -16,14 +19,12 @@ PromptNote mPromptNote_resources (
   "fun help"_Stz         // help
 );
 
-extern ResourceTracker gxResourceTracker;
-
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_resources(SePrompt* pPrompt)
 {
-  gxResourceTracker.vReport();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vReport();
   
   return true;
 }

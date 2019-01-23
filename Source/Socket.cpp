@@ -3,14 +3,13 @@
 /*============================================================================*/
 
 #include "System.h"
-
 #include "StorageEngine.h"
-
 
 extern AttachMap* gpAttachMap;
 
-extern ResourceTracker gxResourceTracker;
-
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -255,7 +254,7 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
     return false;
   }
   
-  gxResourceTracker.vIncSocketOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncSocketOpen();
 
   SysCall.vSuccess();
   return true;
@@ -286,7 +285,7 @@ bool Socket::bClose(SysCall& SysCall)
   
   m_iSocketId = -1;
   
-  gxResourceTracker.vDecSocketOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecSocketOpen();
 
   SysCall.vSuccess();
   return true;
@@ -349,7 +348,7 @@ bool Socket::bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall)
     return false;
   }
   
-  gxResourceTracker.vIncSocketOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncSocketOpen();
 
   SysCall.vSuccess();
   return true;
@@ -407,7 +406,7 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
     return false;
   }
   
-  gxResourceTracker.vIncSocketOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncSocketOpen();
 
   SysCall.vSuccess();
   return true;

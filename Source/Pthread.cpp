@@ -12,7 +12,6 @@
 #endif
 
 extern AttachMap* gpAttachMap;
-extern ResourceTracker gxResourceTracker;
 
 extern pthread_key_t giTLS_TaskKey;
 extern pthread_key_t giTLS_ThreadKey;
@@ -406,7 +405,7 @@ bool Pthread::bSpawnThread(void* pFun(void*), void* pArg)
     return false;
   }
   
-  gxResourceTracker.vIncThreadOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncThreadOpen();
 
   // this is important otherwise resources are not released
   pthread_detach(m_iPthreadId);
@@ -461,7 +460,7 @@ void Pthread::vThreadExit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-  gxResourceTracker.vDecThreadOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecThreadOpen();
 }
         
 /*----------------------------------------------------------------------------*/

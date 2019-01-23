@@ -3,10 +3,13 @@
 /*============================================================================*/
 
 #include "System.h"
-
 #include "StorageEngine.h"
 
-extern ResourceTracker gxResourceTracker;
+extern AttachMap* gpAttachMap;
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* close an existing shared memory segment                                    */
@@ -22,7 +25,7 @@ bool Shm::bClose(int iShmFd, SysCall& oSysCall)
     return false;
   }
   
-  gxResourceTracker.vDecShmOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vDecShmOpen();
 
   oSysCall.vSuccess();
   
@@ -77,7 +80,7 @@ bool Shm::bOpenCreate(s32& sShmNm, int& iShmFd, SysCall& oSysCall)
     return false;
   }
   
-  gxResourceTracker.vIncShmOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncShmOpen();
   
   return true;
 }
@@ -99,7 +102,7 @@ bool Shm::bOpenExisting(s32& sShmNm, int& iShmFd, SysCall& oSysCall)
     return false;
   }
   
-  gxResourceTracker.vIncShmOpen();
+  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vIncShmOpen();
   
   return true;
 }
