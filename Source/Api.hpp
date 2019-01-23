@@ -155,6 +155,9 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
   if (pSession) { \
     vApiCall(pSession,eApiCall); \
     vApiLocation(pSession,100); \
+    if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
+      vTrace(">%s: %p(%lld)\n"_Stz,  \
+             aApiCall, pSession , pSession ? pSession->iPartition() : -1); \
   }
 // didnt use braces { }, as that would hide the variables
 
@@ -180,7 +183,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define TRACE_ENTRY_P0() \
 {  \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-    vTrace("<%s: %p(%lld)\n"_Stz,  \
+    vTrace(">%s: %p(%lld)\n"_Stz,  \
       aApiCall, pSession , pSession ? pSession->iPartition() : -1); \
 }
 

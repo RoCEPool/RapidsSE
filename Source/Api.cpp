@@ -25,6 +25,7 @@ eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
   API_ENTRY(AC_CheckLibraryVersion);
   
   try {
+    
     TRACE_ENTRY_P1(sVersion);
     
     // validate the parameter
@@ -68,6 +69,7 @@ eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
   API_ENTRY(AC_PoolOpen);
   
   try {
+    
     // trace entry
     TRACE_ENTRY_P1(sRegion);
     
@@ -122,8 +124,6 @@ bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
   API_ENTRY(AC_SessionInvalid);
   
   try {
-    // trace entry
-    TRACE_ENTRY_P0();
     
     if (iError == EC_INVALID_INTERFACE) {
       // trace exit
@@ -166,8 +166,6 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
   API_ENTRY(AC_SessionNew);
   
   try {
-    
-    TRACE_ENTRY_P0();
     
     // trace entry
     TRACE_ENTRY_P2(sCatalog, sSchema);
@@ -228,9 +226,6 @@ eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
   API_ENTRY(AC_BeginInsertTable);
   
   try {
-    
-    // trace entry
-    TRACE_ENTRY_P0();
     
     // validate the session
     VALIDATE_SESSION("a"_Stz);
@@ -293,9 +288,6 @@ eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
 eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
 {
   API_ENTRY(AC_EndJobs);
-  
-  // trace entry
-  TRACE_ENTRY_P0();
   
   // validate the session
   VALIDATE_SESSION("a"_Stz);
@@ -412,8 +404,6 @@ eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession,
   API_ENTRY(AC_GetErrorMessage);
   
   try {
-    // trace entry
-    TRACE_ENTRY_P0();
     
     // validate the session
     VALIDATE_SESSION("a"_Stz);
@@ -461,9 +451,6 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
   API_ENTRY(AC_InsertRow);
   
   try {
-    
-    // trace entry
-    TRACE_ENTRY_P0();
     
     //TRACE_ROW();
     
@@ -557,8 +544,6 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
   API_ENTRY(AC_SessionDelete);
   
   try {
-    // trace entry
-    TRACE_ENTRY_P0();
     
     // validate the session
     VALIDATE_SESSION("a"_Stz);
@@ -612,9 +597,6 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
   API_ENTRY(AC_BeginSubInserter);
   
   try {
-    
-    // trace entry
-    TRACE_ENTRY_P0();
     
     // validate the session
     VALIDATE_SESSION("a"_Stz);
@@ -683,9 +665,6 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
   API_ENTRY(AC_CopyBuffer);
   
   try {
-    
-    // trace entry
-    TRACE_ENTRY_P0();
     
     //TRACE_ROW();
     
@@ -766,9 +745,6 @@ eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
   
   try {
     
-    // trace entry
-    TRACE_ENTRY_P0();
-    
     // validate the session
     VALIDATE_SESSION("a"_Stz);
     
@@ -842,9 +818,6 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
   
   try {
     
-    // trace entry
-    TRACE_ENTRY_P0();
-    
     // validate the session
     VALIDATE_SESSION("a"_Stz);
     
@@ -900,9 +873,6 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
   API_ENTRY(AC_FetchNextBuffer);
   
   try {
-           
-    // trace entry
-    TRACE_ENTRY_P0();
     
     // validate the session
     VALIDATE_SESSION("a"_Stz);
@@ -1019,9 +989,6 @@ eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob,
 {
   API_ENTRY(AC_GetRecordBuffer);
   
-  // trace entry
-  TRACE_ENTRY_P0();
-  
   // validate session
   VALIDATE_SESSION("a"_Stz);
   
@@ -1056,9 +1023,6 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
 {
   API_ENTRY(AC_GetRow);
   
-  // trace entry
-  TRACE_ENTRY_P0();
-
   // validate session
   VALIDATE_SESSION("a"_Stz);
   
@@ -1132,9 +1096,6 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
 {
   API_ENTRY(AC_GetRowCount);
   
-  // trace entry
-  TRACE_ENTRY_P0();
-  
   // validate session
   VALIDATE_SESSION("a"_Stz);
   
@@ -1172,9 +1133,6 @@ eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob,
 {
   API_ENTRY(AC_GetRowCountTableColumn);
   
-  // trace entry
-  TRACE_ENTRY_P0();
-  
   // validate session
   VALIDATE_SESSION("a"_Stz);
   
@@ -1209,9 +1167,6 @@ eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
                                i8 iRow, void** aaRow)
 {
   API_ENTRY(AC_GetRowTableColumn);
-  
-  // trace entry
-  TRACE_ENTRY_P0();
   
   // validate session
   VALIDATE_SESSION("a"_Stz);
@@ -1261,8 +1216,6 @@ eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob,
   API_ENTRY(AC_LoadResult);
   
   try {
-    // trace entry
-    TRACE_ENTRY_P0();
     
     // validate the session
     VALIDATE_SESSION("a"_Stz);
@@ -1329,11 +1282,8 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
                          i8* piExpectedRows)
 {
   API_ENTRY(AC_ScanNextRow);
-    
+  
   try {
-    
-    // trace entry
-    TRACE_ENTRY_P0();
     
     // validate the session
     VALIDATE_SESSION("a"_Stz);
