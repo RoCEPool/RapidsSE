@@ -146,23 +146,6 @@ Job* JobList::pFindJob(Job* pJob__Find)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next job id                                                            */
-/*----------------------------------------------------------------------------*/
-i8 JobList::iGetJobId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  vGrabLock();
-  
-  // generate next jobId
-  i8 iJobId = m_iNextJobId++;
-  
-  vDropLock();
-  
-  return iJobId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* grab lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void JobList::vGrabLock(void)
@@ -193,16 +176,17 @@ bool JobList::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next job id                                                            */
+/* generate next job id                                                       */
 /*----------------------------------------------------------------------------*/
 i8 JobList::iNextJobId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  ASSERT(bIsLocked());
+  vGrabLock();
   
-  // generate next jobId
   i8 iJobId = m_iNextJobId++;
+  
+  vDropLock();
   
   return iJobId;
 }
