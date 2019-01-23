@@ -9,6 +9,227 @@ extern BufferPool*  gpBufferPool;
 extern AttachMap*   gpAttachMap;
 extern ActivityMap* gpActivityMap;
 
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* check the library version against given version                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_CheckLibraryVersion(Stz* sVersion, i8 iTrace)
+{
+  //gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
+  
+  Stz* aApiCall = "RapidsSE_CheckLibraryVersion"_Stz;
+  eAC  eApiCall = AC_CheckLibraryVersion;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+  
+  Session* pSession = nullptr;
+  
+  try {
+    TRACE_ENTRY_P1(sVersion);
+    
+    // validate the parameter
+    VALIDATE_PARAM("a"_Stz, sVersion);
+    
+    if ( ! sVersion->bEqual((Stz*)RAPIDSSE_VERSION_STRING)) {
+      
+      vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match RapidsSE (%s)"_Stz,
+             sVersion, RAPIDSSE_VERSION_STRING);
+      
+      TRACE_ERROR("b"_Stz, EC_VERSION_MISMATCH);
+      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+      return EC_VERSION_MISMATCH;
+    }
+    
+    TRACE_EXIT("ea"_Stz);
+    
+    ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+    return EC_NONE;
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* open the shared memory buffer pool                                         */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_PoolOpen(Stz* sRegion, void** aaAttachMap, i8 iTrace)
+{
+  Stz* aApiCall = "RapidsSE_PoolOpen"_Stz;
+  // API ???
+  Session* pSession = nullptr;
+  
+  try {
+    // trace entry
+    TRACE_ENTRY_P1(sRegion);
+    
+    // open the pool
+    s32 sPoolName;
+    
+    sPoolName = (Stz*)sRegion;
+    bool bResult = RapidsSE::bOpenPool(sPoolName);
+    
+    if (!bResult) {
+      TRACE_ERROR("a"_Stz, EC_INVALID_INSTANCE);
+      return EC_INVALID_INSTANCE;
+    }
+    
+    VALIDATE_POOL();
+    
+    *aaAttachMap = gpAttachMap;
+    
+    ActivityMap::vOpenByApi();
+    
+    // trace exit
+    TRACE_EXIT("ea"_Stz);
+    
+    if (gpAttachMap)
+      gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;
+    
+    //vApiReturn(pSession);                                          // API RETURN
+    return EC_NONE;
+    
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    eEC eError = pError->eErrorCode();
+    //vApiError(pSession,eError);                                     // API ERROR
+    return eError;
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    //vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
+    return EC_SE_UNKNOWN_ERROR;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* create a new se session                                                    */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_SessionNew(void** aaSession, Stz* sCatalog, Stz* sSchema, i8 iPartition, i8 iTrace)
+{
+  gpAttachMap->m_oStatistics.Api.m_nSessionNew++;
+  
+  Stz* aApiCall = "RapidsSE_SessionNew"_Stz;
+  eAC  eApiCall = AC_SessionNew;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+  // API ???
+  Session* pSession = nullptr;
+  
+  try {
+    
+    TRACE_ENTRY_P0();
+    
+    // trace entry
+    TRACE_ENTRY_P2(sCatalog, sSchema);
+    //TRACE_ENTRY_P2(sCatalog, sSchema);
+    
+    // valide reference pointer
+    VALIDATE_REFPOINTER("a"_Stz, aaSession);
+    
+    VALIDATE_POOL();
+    
+    Session* pSession = new Session(iPartition);
+    
+    eEC eError = pSession->eInit(sCatalog, sSchema);
+    
+    if (eError != EC_NONE) {
+      TRACE_EXIT("ea"_Stz);
+      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+      return eError;
+    }
+    
+    // validate the session just created
+    VALIDATE_SESSION("b"_Stz);
+    
+    // return the newly created session
+    *aaSession = pSession;
+    
+    // trace exit
+    TRACE_EXIT("eb"_Stz);
+    
+    ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+    return EC_NONE;
+    
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the error an EC_INVALID_SessionE ?                                      */
+/*----------------------------------------------------------------------------*/
+bool RapidsSE_SessionInvalid(int iError, i8 iTrace)
+{
+  gpAttachMap->m_oStatistics.Api.m_nSessionInvalid++;
+  
+  Stz* aApiCall = "RapidsSE_SessionInvalid"_Stz;
+  eAC  eApiCall = AC_SessionInvalid;
+  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
+  // API ???
+  Session* pSession = nullptr;
+  
+  try {
+    // trace entry
+    TRACE_ENTRY_P0();
+    
+    if (iError == EC_INVALID_INTERFACE) {
+      // trace exit
+      TRACE_EXIT("ea"_Stz);
+      
+      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+      return true;
+    }
+    else {
+      // trace exit
+      TRACE_EXIT("eb"_Stz);
+      
+      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+      return false;
+    }
+    
+  }
+  catch (Error* pError) {
+    RapidsSE::vErrorHandler(pError);
+    TRACE_ERROR("!", pError->eErrorCode());
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return pError->eErrorCode();
+  }
+  catch (...) {
+    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
+    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    return EC_SE_UNKNOWN_ERROR;
+  }
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
 /* begin the insert table job                                                 */
 /*----------------------------------------------------------------------------*/
@@ -157,53 +378,6 @@ eEC RapidsSE_BeginSubInserter(Session* pSession, void* aJob, void** aaJob, i8 iT
     TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
     vApiLocation(pSession,801);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* check the library version against version passed                           */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_CheckLibraryVersion(Stz* sVersion, i8 iTrace)
-{
-  //gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
-  
-  Stz* aApiCall = "RapidsSE_CheckLibraryVersion"_Stz;
-  eAC  eApiCall = AC_CheckLibraryVersion;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-
-  Session* pSession = nullptr;
-  
-  try {
-    TRACE_ENTRY_P1(sVersion);
-    
-    // validate the parameter
-    VALIDATE_PARAM("a"_Stz, sVersion);
-    
-    if ( ! sVersion->bEqual((Stz*)RAPIDSSE_VERSION_STRING)) {
-      
-      vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match RapidsSE (%s)"_Stz,
-          sVersion, RAPIDSSE_VERSION_STRING);
-      
-      TRACE_ERROR("b"_Stz, EC_VERSION_MISMATCH);
-      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
-      return EC_VERSION_MISMATCH;
-    }
-    
-    TRACE_EXIT("ea"_Stz);
-    
-    ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
-    return EC_NONE;
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
     ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
     return EC_SE_UNKNOWN_ERROR;
   }
@@ -1207,61 +1381,6 @@ eEC RapidsSE_LoadResult(Session* pSession, void* aJob, i8* pValidRows, i8* pInva
 }
 
 /*----------------------------------------------------------------------------*/
-/* open the shared memory buffer pool                                         */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_PoolOpen(Stz* sRegion, void** aaAttachMap, i8 iTrace)
-{
-  Stz* aApiCall = "RapidsSE_PoolOpen"_Stz;
-                                                                      // API ???
-  Session* pSession = nullptr;
-  
-  try {
-    // trace entry
-    TRACE_ENTRY_P1(sRegion);
-    
-    // open the pool
-    s32 sPoolName;
-    
-    sPoolName = (Stz*)sRegion;
-    bool bResult = RapidsSE::bOpenPool(sPoolName);
-    
-    if (!bResult) {
-      TRACE_ERROR("a"_Stz, EC_INVALID_INSTANCE);
-      return EC_INVALID_INSTANCE;
-    }
-    
-    VALIDATE_POOL();
-    
-    *aaAttachMap = gpAttachMap;
-    
-    ActivityMap::vOpenByApi();
-    
-    // trace exit
-    TRACE_EXIT("ea"_Stz);
-    
-    if (gpAttachMap)
-      gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;
-    
-    //vApiReturn(pSession);                                          // API RETURN
-    return EC_NONE;
-    
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    eEC eError = pError->eErrorCode();
-    //vApiError(pSession,eError);                                     // API ERROR
-    return eError;
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    //vApiError(pSession,EC_SE_UNKNOWN_ERROR);                        // API ERROR
-    return EC_SE_UNKNOWN_ERROR;
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_ScanNextRow(Session* pSession, void* aJob, void** aaEntryBuffer, void** aaEntry, void** aaRow, i8* piExpectedRows, i8 iTrace)
@@ -1435,114 +1554,6 @@ eEC RapidsSE_SessionDelete(Session* pSession, i8 iTrace)
     return EC_SE_UNKNOWN_ERROR;
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* is the error an EC_INVALID_SessionE ?                                      */
-/*----------------------------------------------------------------------------*/
-bool RapidsSE_SessionInvalid(int iError, i8 iTrace)
-{
-  gpAttachMap->m_oStatistics.Api.m_nSessionInvalid++;
-
-  Stz* aApiCall = "RapidsSE_SessionInvalid"_Stz;
-  eAC  eApiCall = AC_SessionInvalid;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-                                                                      // API ???
-  Session* pSession = nullptr;
-  
-  try {
-    // trace entry
-    TRACE_ENTRY_P0();
-    
-    if (iError == EC_INVALID_INTERFACE) {
-      // trace exit
-      TRACE_EXIT("ea"_Stz);
-
-      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
-      return true;
-    }
-    else {
-      // trace exit
-      TRACE_EXIT("eb"_Stz);
-
-      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
-      return false;
-    }
-    
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new se session                                                    */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_SessionNew(void** aaSession, Stz* sCatalog, Stz* sSchema, i8 iPartition, i8 iTrace)
-{
-  gpAttachMap->m_oStatistics.Api.m_nSessionNew++;
-
-  Stz* aApiCall = "RapidsSE_SessionNew"_Stz;
-  eAC  eApiCall = AC_SessionNew;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-                                                                      // API ???
-  Session* pSession = nullptr;
-  
-  try {
-    
-    TRACE_ENTRY_P0();
-    
-    // trace entry
-    TRACE_ENTRY_P2(sCatalog, sSchema);
-    //TRACE_ENTRY_P2(sCatalog, sSchema);
-    
-    // valide reference pointer
-    VALIDATE_REFPOINTER("a"_Stz, aaSession);
-    
-    VALIDATE_POOL();
-    
-    Session* pSession = new Session(iPartition);
-    
-    eEC eError = pSession->eInit(sCatalog, sSchema);
-    
-    if (eError != EC_NONE) {
-      TRACE_EXIT("ea"_Stz);
-      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
-      return eError;
-    }
-    
-    // validate the session just created
-    VALIDATE_SESSION("b"_Stz);
-    
-    // return the newly created session
-    *aaSession = pSession;
-    
-    // trace exit
-    TRACE_EXIT("eb"_Stz);
-
-    ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
-    return EC_NONE;
-    
-  }
-  catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return pError->eErrorCode();
-  }
-  catch (...) {
-    TRACE_ERROR("?", EC_SE_UNKNOWN_ERROR);
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
-    return EC_SE_UNKNOWN_ERROR;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
