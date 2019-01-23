@@ -222,6 +222,57 @@ void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* write an Activity mark for api entry                                       */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vMarkApiEntry(i8 eApiCall, i8 iJobId)
+{
+  if ( ! gpActivityMap )
+    return;
+  
+  if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
+      ! gpAttachMap->m_bMarkApiAll )
+    return;
+  
+  Stz* zApiName = aAC[eApiCall];
+  
+  gpActivityMap->vWriteMark(iJobId,">Api %s"_Stz,zApiName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write an Activity mark for api error                                       */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
+{
+  if ( ! gpActivityMap )
+    return;
+  
+  if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
+      ! gpAttachMap->m_bMarkApiAll )
+    return;
+  
+  Stz* zApiName = aAC[eApiCall];
+  
+  gpActivityMap->vWriteMark(iJobId,"!Api %s Error %lld"_Stz,zApiName,iError);
+}
+
+/*----------------------------------------------------------------------------*/
+/* write an Activity mark for api exit                                        */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vMarkApiExit(i8 eApiCall, i8 iJobId)
+{
+  if ( ! gpActivityMap )
+    return;
+  
+  if ( ! gpAttachMap->m_bMarkApi[eApiCall] &&
+      ! gpAttachMap->m_bMarkApiAll )
+    return;
+  
+  Stz* zApiName = aAC[eApiCall];
+  
+  gpActivityMap->vWriteMark(iJobId,"<Api %s"_Stz,zApiName);
+}
+
+/*----------------------------------------------------------------------------*/
 /* monitor profile                                                            */
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMonitorPortrait(s48K& sPortrait)
@@ -440,6 +491,20 @@ i8 ActivityMap::iPercentFull_NL(void)
   iPercent = (nMarksInUse * 100) / m_nMarks;
   
   return iPercent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* write an ActivityMark                                                      */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, ...)
+{
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+  
+  va_list xArgs;
+  
+  va_start(xArgs,aFormat);
+  vWriteMark(iJobId,aFormat,xArgs);
+  va_end(xArgs);
 }
 
 /*----------------------------------------------------------------------------*/

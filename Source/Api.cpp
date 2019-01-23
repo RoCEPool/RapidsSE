@@ -20,7 +20,7 @@ extern ActivityMap* gpActivityMap;
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
 {
-  //gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
+  API_ENTRY(AC_CheckLibraryVersion);
   
   Stz* aApiCall = "RapidsSE_CheckLibraryVersion"_Stz;
   eAC  eApiCall = AC_CheckLibraryVersion;
@@ -67,6 +67,8 @@ eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 {
+  API_ENTRY(AC_PoolOpen);
+  
   Stz* aApiCall = "RapidsSE_PoolOpen"_Stz;
   // API ???
   Session* pSession = nullptr;
@@ -121,6 +123,8 @@ eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
 {
+  API_ENTRY(AC_SessionInvalid);
+  
   gpAttachMap->m_oStatistics.Api.m_nSessionInvalid++;
   
   Stz* aApiCall = "RapidsSE_SessionInvalid"_Stz;
@@ -168,6 +172,8 @@ bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession, Stz* sCatalog, Stz* sSchema, i8 iPartition)
 {
+  API_ENTRY(AC_SessionNew);
+  
   gpAttachMap->m_oStatistics.Api.m_nSessionNew++;
   
   Stz* aApiCall = "RapidsSE_SessionNew"_Stz;
@@ -236,6 +242,8 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession, Stz* sCatalog, Stz* sSchema
 eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession, Stz* sTable, void** aaJob,
                               i8 nSubInserters)
 {
+  API_ENTRY(AC_BeginInsertTable);
+  
   gpAttachMap->m_oStatistics.Api.m_nBeginInsertTable++;
   
   Stz* aApiCall = "RapidsSE_BeginInsertTable"_Stz;
@@ -310,6 +318,8 @@ eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession, Stz* sTable, void** 
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
 {
+  API_ENTRY(AC_EndJobs);
+  
   gpAttachMap->m_oStatistics.Api.m_nEndJobs++;
   
   Stz* aApiCall = "RapidsSE_EndJobs"_Stz;
@@ -345,6 +355,8 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession, Stz* sCommand,
                             Stz* sCatalog, Stz* sSchema,
                             void** aaJob)
 {
+  API_ENTRY(AC_ExecuteCommand);
+  
   gpAttachMap->m_oStatistics.Api.m_nExecuteCommand++;
   
   Stz* aApiCall = "RapidsSE_ExecuteCommand"_Stz;
@@ -440,6 +452,8 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession, Stz* sCommand,
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession, int iErrorCode, void** aaError)
 {
+  API_ENTRY(AC_GetErrorMessage);
+  
   gpAttachMap->m_oStatistics.Api.m_nGetErrorMessage++;
   
   Stz* aApiCall = "RapidsSE_GetErrorMessage"_Stz;
@@ -495,6 +509,8 @@ eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession, int iErrorCode, void*
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession, Stz* sTableName, Stz* sRecord)
 {
+  API_ENTRY(AC_InsertRow);
+  
   gpAttachMap->m_oStatistics.Api.m_nInsertRow++;
   
   Stz* aApiCall = "RapidsSE_InsertRow"_Stz;
@@ -598,6 +614,8 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession, Stz* sTableName, Stz* sReco
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
 {
+  API_ENTRY(AC_SessionDelete);
+  
   gpAttachMap->m_oStatistics.Api.m_nSessionDelete++;
   
   Stz* aApiCall = "RapidsSE_SessionDelete"_Stz;
@@ -659,6 +677,8 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob, void** aaJob)
 {
+  API_ENTRY(AC_BeginSubInserter);
+  
   gpAttachMap->m_oStatistics.Api.m_nBeginSubInserter++;
   
   Stz* aApiCall = "RapidsSE_BeginSubInserter"_Stz;
@@ -737,6 +757,8 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob, void** a
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 {
+  API_ENTRY(AC_CopyBuffer);
+  
   gpAttachMap->m_oStatistics.Api.m_nCopyBuffer++;
   
   Stz* aApiCall = "RapidsSE_CopyBuffer"_Stz;
@@ -826,6 +848,8 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
 {
+  API_ENTRY(AC_EndInsertTable);
+  
   gpAttachMap->m_oStatistics.Api.m_nEndInsertJobs++;
 
   Stz* aApiCall = "RapidsSE_EndInsertJobs"_Stz;
@@ -909,6 +933,8 @@ eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 {
+  API_ENTRY(AC_EndSubInserter);
+  
   gpAttachMap->m_oStatistics.Api.m_nEndInsertJobs++;
   
   Stz* aApiCall = "RapidsSE_EndSubInserter"_Stz;
@@ -974,6 +1000,8 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob, void** aaFetchBuffer, i8* piExpectedRows)
 {
+  API_ENTRY(AC_FetchNextBuffer);
+  
   gpAttachMap->m_oStatistics.Api.m_nFetchNextBuffer++;
 
   Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
@@ -1100,6 +1128,8 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob, void** aa
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob, void** aaBuffer)
 {
+  API_ENTRY(AC_GetRecordBuffer);
+  
   gpAttachMap->m_oStatistics.Api.m_nGetRecordBuffer++;
 
   Stz* aApiCall = "RapidsSE_GetRecordBuffer"_Stz;
@@ -1143,6 +1173,8 @@ eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob, void** aa
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob, i8 iRow, void** aaRow)
 {
+  API_ENTRY(AC_GetRow);
+  
   gpAttachMap->m_oStatistics.Api.m_nGetRow++;
 
   Stz* aApiCall = "RapidsSE_GetRow"_Stz;
@@ -1225,6 +1257,8 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob, i8 iRow, void** aa
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob, i8 *aRowCount)
 {
+  API_ENTRY(AC_GetRowCount);
+  
   gpAttachMap->m_oStatistics.Api.m_nGetRowCount++;
 
   Stz* aApiCall = "RapidsSE_GetRowCount"_Stz;
@@ -1271,6 +1305,8 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob, i8 *aRowCount
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob, i8 *aRowCount)
 {
+  API_ENTRY(AC_GetRowCountTableColumn);
+  
   gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
 
   Stz* aApiCall = "RapidsSE_GetRowCountTableColumn"_Stz;
@@ -1315,6 +1351,8 @@ eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob, i8
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob, i8 iRow, void** aaRow)
 {
+  API_ENTRY(AC_GetRowTableColumn);
+  
   gpAttachMap->m_oStatistics.Api.m_nGetRowTableColumn++;
 
   Stz* aApiCall = "RapidsSE_GetRowTableColumn"_Stz;
@@ -1371,6 +1409,8 @@ eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob, i8 iRow
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob, i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows)
 {
+  API_ENTRY(AC_LoadResult);
+  
   gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
 
   Stz* aApiCall = "RapidsSE_LoadResult"_Stz;
@@ -1446,6 +1486,8 @@ eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob, i8* pValidRows
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob, void** aaEntryBuffer, void** aaEntry, void** aaRow, i8* piExpectedRows)
 {
+  API_ENTRY(AC_ScanNextRow);
+  
   gpAttachMap->m_oStatistics.Api.m_nScanNextRow++;
 
   Stz* aApiCall = "RapidsSE_ScanNextRow"_Stz;
@@ -1830,6 +1872,43 @@ void vSpawnJobAndWait(Session* pSession, Job* pJob)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* monitor portrait                                                           */
+/*----------------------------------------------------------------------------*/
+void vApiStatistics(eAC eApiCall)
+{
+  if (! gpAttachMap)
+    return;
+  
+  switch (eApiCall) {
+    case AC_BeginInsertTable:    gpAttachMap->m_oStatistics.Api.m_nBeginInsertTable++;     break;
+    case AC_BeginSubInserter:    gpAttachMap->m_oStatistics.Api.m_nBeginSubInserter++;     break;
+    case AC_CheckLibraryVersion: gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;  break;
+    case AC_CopyBuffer:          gpAttachMap->m_oStatistics.Api.m_nCopyBuffer++;           break;
+    case AC_EndInsertTable:      gpAttachMap->m_oStatistics.Api.m_nEndInsertJobs++;        break;
+    case AC_EndJobs:             gpAttachMap->m_oStatistics.Api.m_nEndJobs++;              break;
+    case AC_EndSubInserter:      gpAttachMap->m_oStatistics.Api.m_nEndSubInserter++;       break;
+    case AC_ExecCmdStr:          gpAttachMap->m_oStatistics.Api.m_nExecCmdStr++;           break;
+    case AC_ExecuteCommand:      gpAttachMap->m_oStatistics.Api.m_nExecuteCommand++;       break;
+    case AC_FetchNextBuffer:     gpAttachMap->m_oStatistics.Api.m_nFetchNextBuffer++;      break;
+    case AC_GetRecordBuffer:     gpAttachMap->m_oStatistics.Api.m_nGetRecordBuffer++;      break;
+    case AC_GetErrorMessage:     gpAttachMap->m_oStatistics.Api.m_nGetErrorMessage++;      break;
+    case AC_GetRow:              gpAttachMap->m_oStatistics.Api.m_nGetRow++;               break;
+    case AC_GetRowCount:         gpAttachMap->m_oStatistics.Api.m_nGetRowCount++;          break;
+    case AC_GetRowCountTableColumn: gpAttachMap->m_oStatistics.Api.m_nGetRowCountTableColumn++;  break;
+    case AC_GetRowTableColumn:   gpAttachMap->m_oStatistics.Api.m_nGetRowTableColumn++;    break;
+    case AC_InsertRow:           gpAttachMap->m_oStatistics.Api.m_nInsertRow++;            break;
+    case AC_LoadResult:          gpAttachMap->m_oStatistics.Api.m_nLoadResult++;           break;
+    case AC_PoolOpen:            gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;             break;
+    case AC_ScanNextRow:         gpAttachMap->m_oStatistics.Api.m_nScanNextRow++;          break;
+    case AC_SessionDelete:       gpAttachMap->m_oStatistics.Api.m_nSessionDelete++;        break;
+    case AC_SessionInvalid:      gpAttachMap->m_oStatistics.Api.m_nSessionInvalid++;       break;
+    case AC_SessionNew:          gpAttachMap->m_oStatistics.Api.m_nSessionNew++;           break;
+    default:
+      NEVER_REACH;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* monitor portrait                                                           */

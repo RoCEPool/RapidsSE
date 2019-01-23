@@ -16,6 +16,7 @@ namespace Measurement
     i8 m_nCopyBuffer;
     i8 m_nEndInsertJobs;
     i8 m_nEndJobs;
+    i8 m_nEndSubInserter;
     i8 m_nExecCmdStr;
     i8 m_nExecuteCommand;
     i8 m_nFetchNextBuffer;

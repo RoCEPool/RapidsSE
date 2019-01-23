@@ -35,6 +35,9 @@ namespace Measurement
   public:
     static void vMark(i8 iJobId, Stz* aFormat, ...);
     static void vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...);
+    static void vMarkApiEntry(i8 eApiCall, i8 iJobId=-1);
+    static void vMarkApiError(i8 eApiCall, i8 iError, i8 iJobId=-1);
+    static void vMarkApiExit(i8 eApiCall, i8 iJobId=-1);
     static void vMonitorPortrait(s48K& sPortrait);
     static void vOpenByApi(void);
     static void vOpenBySE(void);
@@ -50,6 +53,7 @@ namespace Measurement
     void vFindRange_NL(i8& i_MinMark, i8& i_MaxMark);
     void vGrabLock(void);
     i8   iPercentFull_NL(void);
+    void vWriteMark(i8 iJobId, Stz* aFormat, ...);
     void vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs);
     void vWriteToFile(void);
 

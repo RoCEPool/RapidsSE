@@ -136,30 +136,58 @@ void vApiReturn(Session* pSession);
 void vDeleteJobs(Session* pSession);
 void vSpawnJobAndWait(Session* pSession, Job* aJob);
 
+void vApiStatistics(eAC eApiCall);
 void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 
 
 #ifdef _DEBUG
 
+
+/*----------------------------------------------------------------------------*/
+/* enter API function                                                         */
+/*----------------------------------------------------------------------------*/
+#define API_ENTRY(__eApiCall) \
+{  \
+  eAC _eApiCall = __eApiCall; \
+  ActivityMap::vMarkApiEntry(_eApiCall); \
+  vApiStatistics(_eApiCall); \
+}
+
+/*----------------------------------------------------------------------------*/
+/* error in API function                                                      */
+/*----------------------------------------------------------------------------*/
+#define API_ERROR() \
+{  \
+  ActivityMap::vMarkApiError(_eApiCall); \
+}
+
+/*----------------------------------------------------------------------------*/
+/* exit API function                                                          */
+/*----------------------------------------------------------------------------*/
+#define API_EXIT() \
+{  \
+  ActivityMap::vMarkApiEntry(_eApiCall); \
+}
+
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P0() \
-  {  \
-    if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-      vTrace("<%s: %p(%lld)\n"_Stz,  \
-        aApiCall, pSession , pSession ? pSession->iPartition() : -1); \
-  }
+{  \
+  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
+    vTrace("<%s: %p(%lld)\n"_Stz,  \
+      aApiCall, pSession , pSession ? pSession->iPartition() : -1); \
+}
 
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P1(p1) \
-  {  \
-    if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-      vTrace("<%s: %p(%lld) %s\n"_Stz,  \
-        aApiCall, pSession, pSession ? pSession->iPartition() : -1, p1); \
-  }
+{  \
+  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
+    vTrace("<%s: %p(%lld) %s\n"_Stz,  \
+      aApiCall, pSession, pSession ? pSession->iPartition() : -1, p1); \
+}
 
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
@@ -207,121 +235,124 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /* trace API error                                                            */
 /*----------------------------------------------------------------------------*/
 #define TRACE_ERROR(aMarker, eErrorCode) \
-  {  \
-    if ( (iTrace & TL_ERROR) == TL_ERROR) \
-      vTrace(">%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
-        aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1, aEC[eErrorCode], (i8)eErrorCode); \
-  }
+{  \
+  if ( (iTrace & TL_ERROR) == TL_ERROR) \
+    vTrace(">%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
+      aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1, aEC[eErrorCode], (i8)eErrorCode); \
+}
 
 /*----------------------------------------------------------------------------*/
 /* trace API exit                                                             */
 /*----------------------------------------------------------------------------*/
 #define TRACE_EXIT(aMarker) \
-  {  \
-    if ( (iTrace & TL_EXIT) == TL_EXIT) \
-      vTrace(">%s(%s): %p(%lld)\n"_Stz,  \
-        aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1); \
-  }
+{  \
+  if ( (iTrace & TL_EXIT) == TL_EXIT) \
+    vTrace(">%s(%s): %p(%lld)\n"_Stz,  \
+      aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1); \
+}
 
 /*----------------------------------------------------------------------------*/
 /* validate job                                                               */
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_JOB(aMarker) \
-  {  \
-    if ( ! aJob ) { \
-      TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-      return EC_VALIDATION_FAILURE; \
-    } \
-  }
+{  \
+  if ( ! aJob ) { \
+    TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
+    return EC_VALIDATION_FAILURE; \
+  } \
+}
 
 /*----------------------------------------------------------------------------*/
 /* validate index                                                             */
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_INDEX(aMarker) \
-  {  \
-    if ( ! pSession->pCurrentIndex() ) { \
-      TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-      return EC_VALIDATION_FAILURE; \
-    } \
-  }
+{  \
+  if ( ! pSession->pCurrentIndex() ) { \
+    TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
+    return EC_VALIDATION_FAILURE; \
+  } \
+}
 
 /*----------------------------------------------------------------------------*/
 /* validate no index                                                          */
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_NOINDEX(aMarker) \
-  {  \
-    if ( pSession->pCurrentIndex() ) { \
-      TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-      return EC_VALIDATION_FAILURE; \
-    } \
-  }
-
+{  \
+  if ( pSession->pCurrentIndex() ) { \
+    TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
+    return EC_VALIDATION_FAILURE; \
+  } \
+}
 
 /*----------------------------------------------------------------------------*/
 /* validate a parameter                                                       */
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_PARAM(aMarker, pParameter) \
-  {  \
-    if ( ! pParameter ) { \
-      TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
-      return EC_INVALID_PARAMETER; \
-     } \
-  }
+{  \
+  if ( ! pParameter ) { \
+    TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
+    return EC_INVALID_PARAMETER; \
+   } \
+}
 
 /*----------------------------------------------------------------------------*/
 /* validate reference pointer                                                 */
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_REFPOINTER(aMarker, pRefPointer) \
-  { \
-    if ( ! pRefPointer) { \
-      TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
-      return EC_INVALID_PARAMETER; \
-    } \
-  }
+{ \
+  if ( ! pRefPointer) { \
+    TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
+    return EC_INVALID_PARAMETER; \
+  } \
+}
 
 /*----------------------------------------------------------------------------*/
 /* validate SE session                                                        */
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_SESSION(aMarker) \
-  { \
-    eEC eResult = eValidateSession(iTrace, pSession, aMarker); \
-    if (eResult != EC_NONE) { \
-        TRACE_ERROR(aMarker, EC_INVALID_INTERFACE); \
-        return eResult; \
-     } \
-  }
+{ \
+  eEC eResult = eValidateSession(iTrace, pSession, aMarker); \
+  if (eResult != EC_NONE) { \
+      TRACE_ERROR(aMarker, EC_INVALID_INTERFACE); \
+      return eResult; \
+   } \
+}
 
 /*----------------------------------------------------------------------------*/
 /* check result of a request that was sent                                    */
 /*----------------------------------------------------------------------------*/
 #define CHECK_RESULT(aMarker) \
-  { \
-    if (EC_NONE != eResult) { \
-      TRACE_ERROR(aMarker,eResult); \
-      return eResult; \
-    } \
-  }
+{ \
+  if (EC_NONE != eResult) { \
+    TRACE_ERROR(aMarker,eResult); \
+    return eResult; \
+  } \
+}
 
 /*----------------------------------------------------------------------------*/
 /* verify buffer pool boundaries                                              */
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_POOL() \
-  {  \
-    bool bPoolValid; \
-    if ( (iTrace & TL_POOL) == TL_POOL) { \
-      bPoolValid = gpBufferPool->bVerifyBoundaries(true); \
-    } \
-    else { \
-      bPoolValid = gpBufferPool->bVerifyBoundaries(false); \
-    } \
-    if ( ! bPoolValid )  { \
-      vTrace("Pool base and limit are not valid!!!"    \
-             "JAVA MAY HAVE RE_MAPPED MEMORY SEGMENTS!!!\n"_Stz);  \
-      return EC_VALIDATION_FAILURE; \
-    } \
-  }
+{  \
+  bool bPoolValid; \
+  if ( (iTrace & TL_POOL) == TL_POOL) { \
+    bPoolValid = gpBufferPool->bVerifyBoundaries(true); \
+  } \
+  else { \
+    bPoolValid = gpBufferPool->bVerifyBoundaries(false); \
+  } \
+  if ( ! bPoolValid )  { \
+    vTrace("Pool base and limit are not valid!!!"    \
+           "JAVA MAY HAVE RE_MAPPED MEMORY SEGMENTS!!!\n"_Stz);  \
+    return EC_VALIDATION_FAILURE; \
+  } \
+}
 
 #else
+
+#define API_ENTRY(__eApiCall)
+#define API_ERROR()
+#define API_EXIT()
 
 #define TRACE_ENTRY_P0()
 #define TRACE_ENTRY_P1(p1)
