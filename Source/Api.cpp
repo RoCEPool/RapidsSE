@@ -45,9 +45,7 @@ eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
     return EC_NONE;
   }
   catch (Error* pError) {
-    RapidsSE::vErrorHandler(pError);
-    TRACE_ERROR("!", pError->eErrorCode());
-    ActivityMap::vMarkApi(eApiCall,0,"!Api %s"_Stz,aApiCall);
+    API_ERROR(pError);
     return pError->eErrorCode();
   }
   catch (...) {

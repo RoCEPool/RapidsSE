@@ -167,16 +167,24 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
     \
     if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
       vTrace(">%s: %p(%lld)\n"_Stz,  \
-             aApiCall, pSession , pSession ? pSession->iPartition() : -1); \
+             aApiCall, pSession , \
+             pSession ? pSession->iPartition() : -1); \
   }
 // didnt use braces { }, as that would hide the variables
 
 /*----------------------------------------------------------------------------*/
 /* error in API function                                                      */
 /*----------------------------------------------------------------------------*/
-#define API_ERROR() \
+#define API_ERROR(pError) \
 {  \
-  ActivityMap::vMarkApiError(_eApiCall); \
+  RapidsSE::vErrorHandler(pError); \
+  eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
+  if ( (iTrace & TL_ERROR) == TL_ERROR) \
+    vTrace("!%s: %p(%lld) %s(%lld)\n"_Stz,  \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1, \
+           aEC[eErrorCode],(i8)eErrorCode); \
+  ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
 }
 
 /*----------------------------------------------------------------------------*/
@@ -186,7 +194,8 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 {  \
   if ( (iTrace & TL_EXIT) == TL_EXIT) \
     vTrace(">%s: %p(%lld)\n"_Stz,  \
-           aApiCall, pSession, pSession ? pSession->iPartition() : -1); \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1); \
   \
   if (pSession) { \
     vApiReturn(pSession); \
