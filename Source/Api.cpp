@@ -22,10 +22,6 @@ eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
 {
   API_ENTRY(AC_CheckLibraryVersion);
   
-  Stz* aApiCall = "RapidsSE_CheckLibraryVersion"_Stz;
-  eAC  eApiCall = AC_CheckLibraryVersion;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-  
   Session* pSession = nullptr;
   
   try {
@@ -69,8 +65,6 @@ eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 {
   API_ENTRY(AC_PoolOpen);
   
-  Stz* aApiCall = "RapidsSE_PoolOpen"_Stz;
-  // API ???
   Session* pSession = nullptr;
   
   try {
@@ -125,10 +119,6 @@ bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
 {
   API_ENTRY(AC_SessionInvalid);
   
-  Stz* aApiCall = "RapidsSE_SessionInvalid"_Stz;
-  eAC  eApiCall = AC_SessionInvalid;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-  // API ???
   Session* pSession = nullptr;
   
   try {
@@ -172,10 +162,6 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession, Stz* sCatalog, Stz* sSchema
 {
   API_ENTRY(AC_SessionNew);
   
-  Stz* aApiCall = "RapidsSE_SessionNew"_Stz;
-  eAC  eApiCall = AC_SessionNew;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-  // API ???
   Session* pSession = nullptr;
   
   try {
@@ -239,10 +225,6 @@ eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession, Stz* sTable, void** 
                               i8 nSubInserters)
 {
   API_ENTRY(AC_BeginInsertTable);
-  
-  Stz* aApiCall = "RapidsSE_BeginInsertTable"_Stz;
-  eAC  eApiCall = AC_BeginInsertTable;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
   
   vApiCall(pSession,AC_BeginInsertTable);
   vApiLocation(pSession,100);
@@ -314,10 +296,6 @@ eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
 {
   API_ENTRY(AC_EndJobs);
   
-  Stz* aApiCall = "RapidsSE_EndJobs"_Stz;
-  eAC  eApiCall = AC_EndJobs;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-  
   vApiCall(pSession,AC_EndJobs);
   vApiLocation(pSession,100);
   
@@ -348,10 +326,6 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession, Stz* sCommand,
                             void** aaJob)
 {
   API_ENTRY(AC_ExecuteCommand);
-  
-  Stz* aApiCall = "RapidsSE_ExecuteCommand"_Stz;
-  eAC  eApiCall = AC_ExecuteCommand;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
   
   vApiCall(pSession,AC_ExecuteCommand);
   vApiLocation(pSession,100);
@@ -444,10 +418,6 @@ eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession, int iErrorCode, void*
 {
   API_ENTRY(AC_GetErrorMessage);
   
-  Stz* aApiCall = "RapidsSE_GetErrorMessage"_Stz;
-  eAC  eApiCall = AC_GetErrorMessage;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-  
   vApiCall(pSession,AC_GetErrorMessage);
   vApiLocation(pSession,100);
   
@@ -498,10 +468,6 @@ eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession, int iErrorCode, void*
 eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession, Stz* sTableName, Stz* sRecord)
 {
   API_ENTRY(AC_InsertRow);
-  
-  Stz* aApiCall = "RapidsSE_InsertRow"_Stz;
-  eAC  eApiCall = AC_InsertRow;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
   
   vApiCall(pSession,AC_InsertRow);
   vApiLocation(pSession,100);
@@ -602,10 +568,6 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
 {
   API_ENTRY(AC_SessionDelete);
   
-  Stz* aApiCall = "RapidsSE_SessionDelete"_Stz;
-  eAC  eApiCall = AC_SessionDelete;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-  
   vApiCall(pSession,AC_SessionDelete);
   vApiLocation(pSession,100);
   
@@ -662,10 +624,6 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
 eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob, void** aaJob)
 {
   API_ENTRY(AC_BeginSubInserter);
-  
-  Stz* aApiCall = "RapidsSE_BeginSubInserter"_Stz;
-  eAC  eApiCall = AC_BeginSubInserter;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
   
   vApiCall(pSession,AC_BeginSubInserter);
   vApiLocation(pSession,100);
@@ -740,10 +698,6 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob, void** a
 eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 {
   API_ENTRY(AC_CopyBuffer);
-  
-  Stz* aApiCall = "RapidsSE_CopyBuffer"_Stz;
-  eAC  eApiCall = AC_CopyBuffer;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
   
   vApiCall(pSession,AC_CopyBuffer);
   vApiLocation(pSession,100);
@@ -830,10 +784,6 @@ eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
 {
   API_ENTRY(AC_EndInsertTable);
   
-  Stz* aApiCall = "RapidsSE_EndInsertJobs"_Stz;
-  eAC  eApiCall = AC_EndInsertTable;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-  
   vApiCall(pSession,AC_EndInsertTable);
   vApiLocation(pSession,100);
   
@@ -913,10 +863,6 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 {
   API_ENTRY(AC_EndSubInserter);
   
-  Stz* aApiCall = "RapidsSE_EndSubInserter"_Stz;
-  eAC  eApiCall = AC_EndSubInserter;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-  
   vApiCall(pSession,AC_EndSubInserter);
   vApiLocation(pSession,100);
   
@@ -978,10 +924,6 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob, void** aa
 {
   API_ENTRY(AC_FetchNextBuffer);
   
-  Stz* aApiCall = "RapidsSE_FetchNextBuffer"_Stz;
-  eAC  eApiCall = AC_FetchNextBuffer;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-
   vApiCall(pSession,AC_FetchNextBuffer);
   vApiLocation(pSession,100);
   
@@ -1104,10 +1046,6 @@ eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob, void** aa
 {
   API_ENTRY(AC_GetRecordBuffer);
   
-  Stz* aApiCall = "RapidsSE_GetRecordBuffer"_Stz;
-  eAC  eApiCall = AC_GetRecordBuffer;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-  
   vApiCall(pSession,AC_GetRecordBuffer);
   vApiLocation(pSession,100);
   
@@ -1147,10 +1085,6 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob, i8 iRow, void** aa
 {
   API_ENTRY(AC_GetRow);
   
-  Stz* aApiCall = "RapidsSE_GetRow"_Stz;
-  eAC  eApiCall = AC_GetRow;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-
   vApiCall(pSession,AC_GetRow);
   vApiLocation(pSession,100);
   
@@ -1229,10 +1163,6 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob, i8 *aRowCount
 {
   API_ENTRY(AC_GetRowCount);
   
-  Stz* aApiCall = "RapidsSE_GetRowCount"_Stz;
-  eAC  eApiCall = AC_GetRowCount;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-
   vApiCall(pSession,AC_GetRowCount);
   vApiLocation(pSession,100);
   
@@ -1275,10 +1205,6 @@ eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob, i8
 {
   API_ENTRY(AC_GetRowCountTableColumn);
   
-  Stz* aApiCall = "RapidsSE_GetRowCountTableColumn"_Stz;
-  eAC  eApiCall = AC_GetRowCountTableColumn;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-
   vApiCall(pSession,AC_GetRowCountTableColumn);
   vApiLocation(pSession,100);
   
@@ -1319,10 +1245,6 @@ eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob, i8 iRow
 {
   API_ENTRY(AC_GetRowTableColumn);
   
-  Stz* aApiCall = "RapidsSE_GetRowTableColumn"_Stz;
-  eAC  eApiCall = AC_GetRowTableColumn;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-
   vApiCall(pSession,AC_GetRowTableColumn);
   vApiLocation(pSession,100);
   
@@ -1375,10 +1297,6 @@ eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob, i8* pValidRows
 {
   API_ENTRY(AC_LoadResult);
   
-  Stz* aApiCall = "RapidsSE_LoadResult"_Stz;
-  eAC  eApiCall = AC_LoadResult;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
-
   vApiCall(pSession,AC_LoadResult);
   vApiLocation(pSession,100);
   
@@ -1449,10 +1367,6 @@ eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob, i8* pValidRows
 eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob, void** aaEntryBuffer, void** aaEntry, void** aaRow, i8* piExpectedRows)
 {
   API_ENTRY(AC_ScanNextRow);
-  
-  Stz* aApiCall = "RapidsSE_ScanNextRow"_Stz;
-  eAC  eApiCall = AC_ScanNextRow;
-  ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
   
   vApiCall(pSession,AC_ScanNextRow);
   vApiLocation(pSession,100);

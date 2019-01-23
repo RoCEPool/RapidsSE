@@ -146,13 +146,13 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* enter API function                                                         */
 /*----------------------------------------------------------------------------*/
-#define API_ENTRY(__eApiCall) \
-{  \
-  eAC _eApiCall = __eApiCall; \
-  Stz* aApiCall = aAC[_eApiCall]; \
-  ActivityMap::vMarkApiEntry(_eApiCall); \
-  vApiStatistics(_eApiCall); \
-}
+#define API_ENTRY(_eApiCall) \
+\
+  eAC  eApiCall = _eApiCall; \
+  Stz* aApiCall = aAC[eApiCall]; \
+  ActivityMap::vMarkApiEntry(eApiCall); \
+  vApiStatistics(eApiCall);
+// didnt use braces { }, as that would hide the variables
 
 /*----------------------------------------------------------------------------*/
 /* error in API function                                                      */
