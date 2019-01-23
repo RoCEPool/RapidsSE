@@ -301,6 +301,13 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
 {
   s48K sPortrait;
   
+  Now oNow;
+  
+  sRapidsPortrait.vSprint("\nSystem Monitor %s\n"_Stz,
+                          oNow.sFormatted());
+  sRapidsPortrait.vConcat("------------------------------------------------------\n"_Stz);
+
+
   sPortrait = ""_Stz;
   vMonitorProfile(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
@@ -376,6 +383,7 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
   sPortrait = ""_Stz;
   gpAttachMap->m_pApiState->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
+  
 }
 
 /*----------------------------------------------------------------------------*/
