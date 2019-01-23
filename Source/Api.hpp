@@ -72,11 +72,16 @@ static Stz* aAC[]
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// rapidse level calls
-extern "C" eEC  RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion);
-extern "C" eEC  RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap);
-extern "C" bool RapidsSE_SessionInvalid(i8 iTrace, int eError);
-extern "C" eEC  RapidsSE_SessionNew(i8 iTrace, void** aaSession, Stz* sCatalog, Stz* sSchema, i8 iPartition);
+// RapidSE level calls
+extern "C" eEC  RapidsSE_CheckLibraryVersion(i8 iTrace,
+                                             Stz* sVersion);
+extern "C" eEC  RapidsSE_PoolOpen           (i8 iTrace,
+                                             Stz* sRegion, void** aaAttachMap);
+extern "C" bool RapidsSE_SessionInvalid     (i8 iTrace,
+                                             int eError);
+extern "C" eEC  RapidsSE_SessionNew         (i8 iTrace,
+                                             void** aaSession,
+                                             Stz* sCatalog, Stz* sSchema, i8 iPartition);
 
 ////////////////////////////////////////////////////////////////////////////////
 
