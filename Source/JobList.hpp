@@ -8,9 +8,10 @@ namespace Jobs
   class JobList : public Object
   {
   private:
-    eJL       m_eJobsList;       // which job list
-    Lock      m_oLock;           // lock
-    i8        m_iNextJobId;      // next job id
+    eJL  m_eJobsList;  // which job list
+    Lock m_oLock;      // lock
+    i8   m_iNextJobId; // next job id
+  
     SkipListNL* m_pJobsSkipList; // skip list of jobs (ordered by job id)
   
     // must be last
@@ -33,7 +34,6 @@ namespace Jobs
     bool   bGrabLock(void);
     bool   bIsLocked(void);
     i8     iNextJobId(void);
-    Job*   pPopJob(void);
     bool   bRemoveJob(Job* pJob);
     i8     nJobs(void);
     

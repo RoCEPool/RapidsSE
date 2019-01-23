@@ -208,30 +208,6 @@ i8 JobList::iNextJobId(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop a job from the jobs skip list                                          */
-/*----------------------------------------------------------------------------*/
-Job* JobList::pPopJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
-  
-  NEVER_REACH;
-  
-  bool bRemoved;
-  Job* pJob = nullptr;
-  
-  ASSERT(m_oLock.bIsLocked());
-  
-  SkipNode* pNode = m_pJobsSkipList->pFirst(0);
-  if (pNode) {
-    pJob = _pJob(pNode->m_pObject);
-    bRemoved = m_pJobsSkipList->bRemove(pJob);
-    RASSERT(bRemoved);
-  }
-  
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove a job from jobs skip list                                           */
 /*----------------------------------------------------------------------------*/
 bool JobList::bRemoveJob(Job* pJob)
