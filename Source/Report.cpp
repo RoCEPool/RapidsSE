@@ -10,22 +10,7 @@ extern File*       gpTraceFile;
 extern BufferPool* gpBufferPool;
 extern AttachMap*  gpAttachMap;
 
-char gxTraceWorkspace[C_1MB] = {'\0'};
-  
-bool mbReportTimestamp = true;
 
-/*---------------------------------------------------------------------------*/
-/* set reporting behavior                                                    */
-/*---------------------------------------------------------------------------*/
-void Debugging::vReportOption(i8 iTrace)
-{
-  if (C_REPORT_TIMESTAMP == iTrace)
-    mbReportTimestamp = true;
-
-  if (C_REPORT_NO_TIMESTAMP == iTrace)
-    mbReportTimestamp = false;
-}
-  
 /*---------------------------------------------------------------------------*/
 /* report an information message                                             */
 /*---------------------------------------------------------------------------*/
@@ -34,51 +19,8 @@ void Debugging::vInfo(Stz* aFormat, ...)
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  
   vPrint(C_REPORT_INFO,aFormat,xArgs);
-  
   va_end(xArgs);
-}
-
-/*---------------------------------------------------------------------------*/
-/* vPrint:write to stdout                                                    */
-/*---------------------------------------------------------------------------*/
-void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
-{
-  static Lock oLock(LK_TRACE);
-  
-  bool bLock = (gpAttachMap ? true : false);
-  
-  if (bLock)
-    oLock.vGrabWrite();
-  
-  i8 iLen = 0;
-  char* s = gxTraceWorkspace;
-  *s = '\0';
-  
-  assert(iLevel != 0);
-  vsnprintf(s,sizeof(gxTraceWorkspace)-iLen-3,aFormat->aChar(),xArgs);
-  
-  //if (StrLib::bContains(gaReportBuffer,"serverThread"))
-  //  i8 iDebug = 1;
-
-  bool bLowMem = gpBufferPool ? gpBufferPool->bLowMemory() : false;
-  
-  // print to file
-  fprintf(stdout,"%s%s",
-          bLowMem ? "LOW-MEMORY! " : "",
-          gxTraceWorkspace);
-  fflush(stdout);
-  
-  if (gpTraceFile) {
-    gpTraceFile->vPrint("%s%s"_Stz,
-                        bLowMem ? "LOW-MEMORY! " : "",
-                        gxTraceWorkspace);
-    gpTraceFile->vFlush();
-  }
-
-  if (bLock)
-    oLock.vDropWrite();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -87,11 +29,9 @@ void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
 void Debugging::vTrace(Stz* aFormat, ...)
 {
   va_list xArgs;
-  
+
   va_start(xArgs,aFormat);
-  
   vPrint(C_REPORT_TRACE,aFormat,xArgs);
-  
   va_end(xArgs);
 }
 
@@ -103,9 +43,7 @@ void Debugging::vWarn(Stz* aFormat, ...)
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  
   vPrint(C_REPORT_WARNING,aFormat,xArgs);
-  
   va_end(xArgs);
 }
 
@@ -117,9 +55,7 @@ void Debugging::vError(Stz* aFormat, ...)
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  
   vPrint(C_REPORT_ERROR,aFormat,xArgs);
-  
   va_end(xArgs);
 }
 
@@ -133,11 +69,47 @@ __attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
   va_list xArgs;
   
   va_start(xArgs,aFormat);
-  
   vPrint(C_REPORT_FATAL,aFormat,xArgs);
-  
   va_end(xArgs);
+  
   exit(EXIT_FAILURE);
+}
+
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+
+/*---------------------------------------------------------------------------*/
+/* write to trace file etc                                                   */
+/*---------------------------------------------------------------------------*/
+void Debugging::vPrint(i8 iLevel, Stz* aFormat, va_list xArgs)
+{
+  static Lock oLock(LK_TRACE);
+  static char caPrintLine[C_1MB] = {'\0'};
+  
+  bool bLock   = (gpAttachMap ? true : false);
+  bool bLowMem = gpBufferPool ? gpBufferPool->bLowMemory() : false;
+  
+  if (bLock)
+    oLock.vGrabWrite();
+  
+  i8 iLen = 0;
+  char* s = caPrintLine;
+  *s = '\0';
+  
+  assert(iLevel != 0);
+  vsnprintf(s,sizeof(caPrintLine)-iLen-3,aFormat->aChar(),xArgs);
+  
+  // print to file
+  fprintf(stdout,"%s%s",bLowMem ? "LOW-MEMORY! " : "",caPrintLine);
+  fflush(stdout);
+  
+  if (gpTraceFile) {
+    gpTraceFile->vPrint("%s%s"_Stz,bLowMem ? "LOW-MEMORY! " : "",caPrintLine);
+    gpTraceFile->vFlush();
+  }
+  
+  if (bLock)
+    oLock.vDropWrite();
 }
 
 /*===========================================================================*/
