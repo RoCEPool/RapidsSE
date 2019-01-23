@@ -15,7 +15,7 @@ extern ActivityMap* gpActivityMap;
 /*----------------------------------------------------------------------------*/
 /* check the library version against given version                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_CheckLibraryVersion(Stz* sVersion, i8 iTrace)
+eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
 {
   //gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
   
@@ -62,7 +62,7 @@ eEC RapidsSE_CheckLibraryVersion(Stz* sVersion, i8 iTrace)
 /*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_PoolOpen(Stz* sRegion, void** aaAttachMap, i8 iTrace)
+eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 {
   Stz* aApiCall = "RapidsSE_PoolOpen"_Stz;
   // API ???
@@ -117,7 +117,7 @@ eEC RapidsSE_PoolOpen(Stz* sRegion, void** aaAttachMap, i8 iTrace)
 /*----------------------------------------------------------------------------*/
 /* create a new se session                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SessionNew(void** aaSession, Stz* sCatalog, Stz* sSchema, i8 iPartition, i8 iTrace)
+eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession, Stz* sCatalog, Stz* sSchema, i8 iPartition)
 {
   gpAttachMap->m_oStatistics.Api.m_nSessionNew++;
   
@@ -179,7 +179,7 @@ eEC RapidsSE_SessionNew(void** aaSession, Stz* sCatalog, Stz* sSchema, i8 iParti
 /*----------------------------------------------------------------------------*/
 /* is the error an EC_INVALID_SessionE ?                                      */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_SessionInvalid(int iError, i8 iTrace)
+bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
 {
   gpAttachMap->m_oStatistics.Api.m_nSessionInvalid++;
   
@@ -232,8 +232,8 @@ bool RapidsSE_SessionInvalid(int iError, i8 iTrace)
 /*----------------------------------------------------------------------------*/
 /* begin the insert table job                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_BeginInsertTable(Session* pSession, Stz* sTable, void** aaJob,
-                              i8 nSubInserters, i8 iTrace)
+eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession, Stz* sTable, void** aaJob,
+                              i8 nSubInserters)
 {
   gpAttachMap->m_oStatistics.Api.m_nBeginInsertTable++;
   
@@ -307,7 +307,7 @@ eEC RapidsSE_BeginInsertTable(Session* pSession, Stz* sTable, void** aaJob,
 /*----------------------------------------------------------------------------*/
 /* begin the subInserter job                                                  */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_BeginSubInserter(Session* pSession, void* aJob, void** aaJob, i8 iTrace)
+eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob, void** aaJob)
 {
   gpAttachMap->m_oStatistics.Api.m_nBeginSubInserter++;
   
@@ -385,7 +385,7 @@ eEC RapidsSE_BeginSubInserter(Session* pSession, void* aJob, void** aaJob, i8 iT
 /*----------------------------------------------------------------------------*/
 /* insert the record buffer into a table                                      */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_CopyBuffer(Session* pSession, void* aJob, i8 iTrace)
+eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 {
   gpAttachMap->m_oStatistics.Api.m_nCopyBuffer++;
   
@@ -474,7 +474,7 @@ eEC RapidsSE_CopyBuffer(Session* pSession, void* aJob, i8 iTrace)
 /*----------------------------------------------------------------------------*/
 /* end insert and all session jobs                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndInsertTable(Session* pSession, void* aJob, i8 iTrace)
+eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
 {
   gpAttachMap->m_oStatistics.Api.m_nEndInsertJobs++;
 
@@ -557,7 +557,7 @@ eEC RapidsSE_EndInsertTable(Session* pSession, void* aJob, i8 iTrace)
 /*----------------------------------------------------------------------------*/
 /* end insert and all session jobs                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndSubInserter(Session* pSession, void* aJob, i8 iTrace)
+eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 {
   gpAttachMap->m_oStatistics.Api.m_nEndInsertJobs++;
   
@@ -622,7 +622,7 @@ eEC RapidsSE_EndSubInserter(Session* pSession, void* aJob, i8 iTrace)
 /*----------------------------------------------------------------------------*/
 /* end all jobs of this session                                               */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndJobs(Session* pSession, i8 iTrace)
+eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
 {
   gpAttachMap->m_oStatistics.Api.m_nEndJobs++;
 
@@ -655,9 +655,9 @@ eEC RapidsSE_EndJobs(Session* pSession, i8 iTrace)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* sCommand,
+eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession, Stz* sCommand,
                             Stz* sCatalog, Stz* sSchema,
-                            void** aaJob, i8 iTrace)
+                            void** aaJob)
 {
   gpAttachMap->m_oStatistics.Api.m_nExecuteCommand++;
 
@@ -752,7 +752,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* sCommand,
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_FetchNextBuffer(Session* pSession, void* aJob, void** aaFetchBuffer, i8* piExpectedRows, i8 iTrace)
+eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob, void** aaFetchBuffer, i8* piExpectedRows)
 {
   gpAttachMap->m_oStatistics.Api.m_nFetchNextBuffer++;
 
@@ -878,7 +878,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* aJob, void** aaFetchBuffer
 /*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** aaError, i8 iTrace)
+eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession, int iErrorCode, void** aaError)
 {
   gpAttachMap->m_oStatistics.Api.m_nGetErrorMessage++;
 
@@ -933,7 +933,7 @@ eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** aaError, 
 /*----------------------------------------------------------------------------*/
 /* get record buffer from the job                                             */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRecordBuffer(Session* pSession, void* aJob, void** aaBuffer, i8 iTrace)
+eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob, void** aaBuffer)
 {
   gpAttachMap->m_oStatistics.Api.m_nGetRecordBuffer++;
 
@@ -976,7 +976,7 @@ eEC RapidsSE_GetRecordBuffer(Session* pSession, void* aJob, void** aaBuffer, i8 
 /*----------------------------------------------------------------------------*/
 /* get row                                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRow(Session* pSession, void* aJob, i8 iRow, void** aaRow, i8 iTrace)
+eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob, i8 iRow, void** aaRow)
 {
   gpAttachMap->m_oStatistics.Api.m_nGetRow++;
 
@@ -1058,7 +1058,7 @@ eEC RapidsSE_GetRow(Session* pSession, void* aJob, i8 iRow, void** aaRow, i8 iTr
 /*----------------------------------------------------------------------------*/
 /* get row count                                                              */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowCount(Session* pSession, void* aJob, i8 *aRowCount, i8 iTrace)
+eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob, i8 *aRowCount)
 {
   gpAttachMap->m_oStatistics.Api.m_nGetRowCount++;
 
@@ -1104,7 +1104,7 @@ eEC RapidsSE_GetRowCount(Session* pSession, void* aJob, i8 *aRowCount, i8 iTrace
 /*----------------------------------------------------------------------------*/
 /* get row count table column                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* aJob, i8 *aRowCount, i8 iTrace)
+eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob, i8 *aRowCount)
 {
   gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
 
@@ -1148,7 +1148,7 @@ eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* aJob, i8 *aRowCount
 /*----------------------------------------------------------------------------*/
 /* get row table column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowTableColumn(Session* pSession, void* aJob, i8 iRow, void** aaRow, i8 iTrace)
+eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob, i8 iRow, void** aaRow)
 {
   gpAttachMap->m_oStatistics.Api.m_nGetRowTableColumn++;
 
@@ -1204,7 +1204,7 @@ eEC RapidsSE_GetRowTableColumn(Session* pSession, void* aJob, i8 iRow, void** aa
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRow(Session* pSession, Stz* sTableName, Stz* sRecord, i8 iTrace)
+eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession, Stz* sTableName, Stz* sRecord)
 {
   gpAttachMap->m_oStatistics.Api.m_nInsertRow++;
 
@@ -1307,7 +1307,7 @@ eEC RapidsSE_InsertRow(Session* pSession, Stz* sTableName, Stz* sRecord, i8 iTra
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_LoadResult(Session* pSession, void* aJob, i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows, i8 iTrace)
+eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob, i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows)
 {
   gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
 
@@ -1382,7 +1382,7 @@ eEC RapidsSE_LoadResult(Session* pSession, void* aJob, i8* pValidRows, i8* pInva
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ScanNextRow(Session* pSession, void* aJob, void** aaEntryBuffer, void** aaEntry, void** aaRow, i8* piExpectedRows, i8 iTrace)
+eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob, void** aaEntryBuffer, void** aaEntry, void** aaRow, i8* piExpectedRows)
 {
   gpAttachMap->m_oStatistics.Api.m_nScanNextRow++;
 
@@ -1502,7 +1502,7 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* aJob, void** aaEntryBuffer, vo
 /*----------------------------------------------------------------------------*/
 /* delete an se session                                                       */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SessionDelete(Session* pSession, i8 iTrace)
+eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
 {
   gpAttachMap->m_oStatistics.Api.m_nSessionDelete++;
 

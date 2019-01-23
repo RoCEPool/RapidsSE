@@ -70,30 +70,54 @@ static Stz* aAC[]
   /* 23 */ "RapidsSE_SessionNew"_Stz
   /* 24 */ "ENUMS"_Stz};
 
-extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* sVersion, i8 iTrace);
-extern "C" eEC  RapidsSE_PoolOpen(Stz* sRegion, void** aaAttachMap, i8 iTrace);
-extern "C" bool RapidsSE_SessionInvalid(int eError, i8 iTrace);
-extern "C" eEC  RapidsSE_SessionNew(void** aaSession, Stz* sCatalog, Stz* sSchema, i8 iPartition, i8 iTrace);
+////////////////////////////////////////////////////////////////////////////////
 
-extern "C" eEC  RapidsSE_BeginInsertTable(Session* pSession, Stz* sTable, void** aaJob, i8 nSubInserters, i8 iTrace);
-extern "C" eEC  RapidsSE_BeginSubInserter(Session* pSession, void* aJob, void** aaJob, i8 iTrace);
-extern "C" eEC  RapidsSE_CopyBuffer(Session* pSession, void* aJob, i8 iTrace);
-extern "C" eEC  RapidsSE_EndInsertTable(Session* pSession, void* aJob, i8 iTrace);
-extern "C" eEC  RapidsSE_EndSubInserter(Session* pSession, void* aJob, i8 iTrace);
-extern "C" eEC  RapidsSE_EndJobs(Session* pSession, i8 iTrace);
-extern "C" eEC  RapidsSE_ExecuteCommand(Session* pSession, Stz* sCommand, Stz* sCatalog, Stz* sSchema,
-                                        void** aaJob, i8 iTrace);
-extern "C" eEC  RapidsSE_FetchNextBuffer(Session* pSession, void* aJob, void** aaFetchBuffer, i8* aiExepectedRows, i8 iTrace);
-extern "C" eEC  RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** aaError, i8 iTrace);
-extern "C" eEC  RapidsSE_GetRecordBuffer(Session* pSession, void* aJob, void** aaBuffer, i8 iTrace);
-extern "C" eEC  RapidsSE_GetRow(Session* pSession, void* aJob, i8 iRow, void** aaRow, i8 iTrace);
-extern "C" eEC  RapidsSE_GetRowCount(Session* pSession, void* aJob, i8 *aRowCount, i8 iTrace);
-extern "C" eEC  RapidsSE_GetRowTableColumn(Session* pSession, void* aJob, i8 iRow, void** aaRow, i8 iTrace);
-extern "C" eEC  RapidsSE_GetRowCountTableColumn(Session* pSession, void* aJob, i8* aRowCount, i8 iTrace);
-extern "C" eEC  RapidsSE_InsertRow(Session* pSession, Stz* pTable, Stz* sRecord, i8 iTrace);
-extern "C" eEC  RapidsSE_LoadResult(Session* pSession, void* aJob, i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows, i8 iTrace);
-extern "C" eEC  RapidsSE_ScanNextRow(Session* pSession, void* aJob, void** aaEntryBuffer, void** aaEntry, void** aaRow, i8* aiExepectedRows, i8 iTrace);
-extern "C" eEC  RapidsSE_SessionDelete(Session* pSession, i8 iTrace);
+// rapidse level calls
+extern "C" eEC  RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion);
+extern "C" eEC  RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap);
+extern "C" bool RapidsSE_SessionInvalid(i8 iTrace, int eError);
+extern "C" eEC  RapidsSE_SessionNew(i8 iTrace, void** aaSession, Stz* sCatalog, Stz* sSchema, i8 iPartition);
+
+////////////////////////////////////////////////////////////////////////////////
+
+// session level calls
+extern "C" eEC  RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
+                                          Stz* sTable, void** aaJob, i8 nSubInserters);
+extern "C" eEC  RapidsSE_EndJobs         (i8 iTrace, Session* pSession);
+extern "C" eEC  RapidsSE_ExecuteCommand  (i8 iTrace, Session* pSession,
+                                          Stz* sCommand, Stz* sCatalog, Stz* sSchema,
+                                          void** aaJob);
+extern "C" eEC  RapidsSE_GetErrorMessage (i8 iTrace, Session* pSession,
+                                          int iErrorCode, void** aaError);
+extern "C" eEC  RapidsSE_InsertRow       (i8 iTrace, Session* pSession,
+                                          Stz* pTable, Stz* sRecord);
+extern "C" eEC  RapidsSE_SessionDelete   (i8 iTrace, Session* pSession);
+
+////////////////////////////////////////////////////////////////////////////////
+
+// job level calls
+extern "C" eEC  RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
+                                          void** aaJob);
+extern "C" eEC  RapidsSE_CopyBuffer      (i8 iTrace, Session* pSession, void* aJob);
+extern "C" eEC  RapidsSE_EndInsertTable  (i8 iTrace, Session* pSession, void* aJob);
+extern "C" eEC  RapidsSE_EndSubInserter  (i8 iTrace, Session* pSession, void* aJob);
+extern "C" eEC  RapidsSE_FetchNextBuffer (i8 iTrace, Session* pSession, void* aJob,
+                                          void** aaFetchBuffer, i8* aiExepectedRows);
+extern "C" eEC  RapidsSE_GetRecordBuffer (i8 iTrace, Session* pSession, void* aJob,
+                                          void** aaBuffer);
+extern "C" eEC  RapidsSE_GetRow          (i8 iTrace, Session* pSession, void* aJob,
+                                          i8 iRow, void** aaRow);
+extern "C" eEC  RapidsSE_GetRowCount     (i8 iTrace, Session* pSession, void* aJob,
+                                          i8 *aRowCount);
+extern "C" eEC  RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
+                                           i8 iRow, void** aaRow);
+extern "C" eEC  RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob,
+                                                i8* aRowCount);
+extern "C" eEC  RapidsSE_LoadResult      (i8 iTrace, Session* pSession, void* aJob,
+                                          i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows);
+extern "C" eEC  RapidsSE_ScanNextRow     (i8 iTrace, Session* pSession, void* aJob,
+                                          void** aaEntryBuffer, void** aaEntry,
+                                          void** aaRow, i8* aiExepectedRows);
 
 
 Job* RapidsSE_pExecCmdStr(Stz* sCommand, Session* pSession, bool bPostJob, bool bFromPrompt);
@@ -255,7 +279,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_SESSION(aMarker) \
   { \
-    eEC eResult = eValidateSession(pSession, aMarker, iTrace); \
+    eEC eResult = eValidateSession(iTrace, pSession, aMarker); \
     if (eResult != EC_NONE) { \
         TRACE_ERROR(aMarker, EC_INVALID_INTERFACE); \
         return eResult; \
@@ -364,7 +388,7 @@ inline void vTraceError(i8 iTrace, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* validate the SE session                                                    */
 /*----------------------------------------------------------------------------*/
-inline eEC eValidateSession(Session* pSession, Stz* aApiCall, i8 iTrace)
+inline eEC eValidateSession(i8 iTrace, Session* pSession, Stz* aApiCall)
 {
   
   // pSession cannot be null
