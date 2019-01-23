@@ -176,16 +176,19 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /* error in API function                                                      */
 /*----------------------------------------------------------------------------*/
 #define API_ERROR(pError) \
-{  \
-  RapidsSE::vErrorHandler(pError); \
+  \
   eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
+  \
+  RapidsSE::vErrorHandler(pError); \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace("!%s: %p(%lld) %s(%lld)\n"_Stz,  \
            aApiCall, pSession, \
            pSession ? pSession->iPartition() : -1, \
            aEC[eErrorCode],(i8)eErrorCode); \
-  ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
-}
+  vApiError(pSession,eErrorCode); \
+  vApiLocation(pSession,800); \
+  ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode);
+// didnt use braces { }, as that would hide the variables
 
 /*----------------------------------------------------------------------------*/
 /* exit API function                                                          */
