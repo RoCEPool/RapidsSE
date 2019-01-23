@@ -51,9 +51,9 @@
 
   // we wait till the parent job can be found in the participant job skip list
   // there is a possiblity that the buffer arrives on a node before the parent job
-  pJob_WriteBuffer Job_WriteBuffer.isLoading if
+  //pJob_WriteBuffer Job_WriteBuffer.isLoading if
     pJob_WriteBuffer iParentJobId job::waitParticipant to pJob_Parent
-  then
+  //then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -74,9 +74,9 @@
 
     // we wait till the parent job can be found in the participant job skip list
     // there is a possiblity that the buffer arrives on a node before the parent job
-    pJob_WriteBuffer Job_WriteBuffer.isInserting if
-      pJob_WriteBuffer iParentJobId job::waitParticipant to pJob_Parent
-    then
+    //pJob_WriteBuffer Job_WriteBuffer.isInserting if
+    //  pJob_WriteBuffer iParentJobId job::waitParticipant to pJob_Parent
+    //then
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // first check if the job is executing SS_SEED_EXE
