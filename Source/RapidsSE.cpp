@@ -114,7 +114,7 @@ void RapidsSE::vCallImmmediate(Task* pImmediateTask)
 {
   pImmediateTask->vSeedJob();
   
-  pImmediateTask->vState(TS_EXECUTING);
+  pImmediateTask->vState(TK_EXECUTING);
   
   pImmediateTask->vTaskLoop();
 }

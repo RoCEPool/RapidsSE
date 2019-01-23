@@ -112,7 +112,7 @@ void Queues::vThreadsReport()
            pThread->m_aStackBase,
            pThread->m_iStackSize,
            
-           aTC[pThread->m_eThreadState],
+           aTD[pThread->m_eThreadState],
            pThread->m_pPthread->m_iOpSysThreadId,
            pThread->m_pPthread->m_iPthreadId,
            pThread->m_iLastQueueRR,
@@ -237,7 +237,7 @@ void Queues::vAddToExecutingSet_NL(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_EXECUTING == pTask->eState());
+  RASSERT(TK_EXECUTING == pTask->eState());
   
   pTask->vQueue(QR_EXECUTING_QUEUE);
   pTask->vQueueOrder(++m_ziQueueOrder);
@@ -256,7 +256,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_READY == pTask->eState());
+  RASSERT(TK_READY == pTask->eState());
   RASSERT( ! pTask->bIsPartitioned());
   
   pTask->vQueue(QR_READY_QUEUE);
@@ -279,7 +279,7 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   // NOTE: Task has a m_iPartition... not being set
   // this needs to set for partition tasks
   
-  RASSERT(TS_READY == pTask->eState());
+  RASSERT(TK_READY == pTask->eState());
   RASSERT(pTask->bIsPartitioned());
   
   // get slot no of the task
@@ -302,7 +302,7 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_SEND == pTask->eState());
+  RASSERT(TK_SEND == pTask->eState());
   RASSERT(pTask->pSendNode()->iNodeNo() != -1);
   
   // get send node from the task
@@ -325,7 +325,7 @@ void Queues::vAddToSleepingQueue_NL(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_SLEEPING == pTask->eState());
+  RASSERT(TK_SLEEPING == pTask->eState());
   
   pTask->vQueue(QR_SLEEPING_QUEUE);
   
@@ -348,7 +348,7 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
     
   // task must be in the waiting state
-  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(TK_WAITING == pTask->eState());
   
   // task must be locked
   RASSERT(pTask->bIsLocked());
@@ -1021,9 +1021,9 @@ void Queues::vScheduleAckedTask(Task* pTask)
 
   pTask->vGrabLock();
 
-  // having got the lock, the task should be TS_WAITING and QR_WAITING_QUEUE
+  // having got the lock, the task should be TK_WAITING and QR_WAITING_QUEUE
 
-  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(TK_WAITING == pTask->eState());
   RASSERT(QR_WAITING_QUEUE == pTask->eQueue());
   
   pTask->vDropLock();
@@ -1032,7 +1032,7 @@ void Queues::vScheduleAckedTask(Task* pTask)
 
   RASSERT(QR_NONE == pTask->eQueue());
   
-  pTask->vState(TS_READY);
+  pTask->vState(TK_READY);
   
   if (pTask->bIsNonPartitioned())
     vScheduleReadyTask(pTask);
@@ -1047,7 +1047,7 @@ void Queues::vScheduleExitedTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
 
-  RASSERT(TS_EXITED == pTask->eState());
+  RASSERT(TK_EXITED == pTask->eState());
   
   ASSERT(! pTask->bWordBody());
   
@@ -1063,7 +1063,7 @@ void Queues::vScheduleReadyTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_READY == pTask->eState());
+  RASSERT(TK_READY == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vScheduleReadyTask()"_Stz);
@@ -1088,7 +1088,7 @@ void Queues::vScheduleReadySlotTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_READY == pTask->eState());
+  RASSERT(TK_READY == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vScheduleReadySlotTask()"_Stz);
@@ -1109,7 +1109,7 @@ void Queues::vScheduleSendTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_SEND == pTask->eState());
+  RASSERT(TK_SEND == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vScheduleSendTask()"_Stz);
@@ -1125,7 +1125,7 @@ void Queues::vScheduleSleepingTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_SLEEPING == pTask->eState());
+  RASSERT(TK_SLEEPING == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vScheduleSleepingTask()"_Stz);
@@ -1155,7 +1155,7 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
   
   RASSERT(QR_NONE == pTask->eQueue());
   
-  pTask->vState(TS_READY);
+  pTask->vState(TK_READY);
   
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vScheduleSpawnedTask()"_Stz);
@@ -1175,7 +1175,7 @@ void Queues::vScheduleWaitingTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  RASSERT(TS_WAITING == pTask->eState());
+  RASSERT(TK_WAITING == pTask->eState());
   
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vScheduleWaitingTask()"_Stz);
@@ -1200,7 +1200,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   
   if (pTask->bIsNonPartitioned()) {
     
-    // - A general thread has executed a task which retured TS_YIELDED.
+    // - A general thread has executed a task which retured TK_YIELDED.
     //   If the ready queue is empty then this general thread can
     //     continue to execute the yield task.
     //   Otherwise we add the task to the ready queue
@@ -1212,7 +1212,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
       pCallingThread->vReExecuteTask(pTask);
     }
     else {
-      pTask->vState(TS_READY);
+      pTask->vState(TK_READY);
       vAddToReadyQueue_NL(pTask);
       m_pReadyQueue->vDropLock();
     }
@@ -1224,7 +1224,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   // partitioned task yield
   
 
-  // - A general thread has executed a partition task which retured TS_YIELDED.
+  // - A general thread has executed a partition task which retured TK_YIELDED.
   //   If the ready queue and ready slot queue is empty then this general thread can
   //     continue to execute the yield task.
   //   Otherwise we add the task to the ready slot queue
@@ -1251,7 +1251,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
       return;
     }
     
-    pTask->vState(TS_READY);
+    pTask->vState(TK_READY);
     vAddToReadySlotQueue_NL(pTask);
     m_pReadySlotQueues[i_Slot]->vDropLock();
     return;
@@ -1260,7 +1260,7 @@ void Queues::vScheduleYieldedTask(Task* pTask)
   
   // just add task to ready slot queue
   m_pReadySlotQueues[i_Slot]->vGrabLock();
-  pTask->vState(TS_READY);
+  pTask->vState(TK_READY);
   vAddToReadySlotQueue_NL(pTask);
   m_pReadySlotQueues[i_Slot]->vDropLock();
   

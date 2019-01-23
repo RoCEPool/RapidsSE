@@ -3,7 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-
 namespace Threads
 {
   enum eTD // thread state
@@ -14,7 +13,7 @@ namespace Threads
     /*  3 */ TD_ENUMS,
   };
   
-  static Stz* aTC[]
+  static Stz* aTD[]
   {
     /*  0 */ "NONE"_Stz,
     /*  1 */ "IDLE"_Stz,
@@ -27,20 +26,20 @@ namespace Threads
   private:
 
   public:
-    i8           m_iThreadNo;    // our thread no
-    void*        m_aStackBase;   // stack base address
-    i8           m_iStackSize;   // stack size
+    i8       m_iThreadNo;     // our thread no
+    void*    m_aStackBase;    // stack base address
+    i8       m_iStackSize;    // stack size
   
-    eTD          m_eThreadState; // thread state
-    Task*        m_pTask;        // task current being executed
-    eCN          m_eDedicated;   // thread is dedicated to one specific job?
+    eTD      m_eThreadState;  // thread state
+    Task*    m_pTask;         // task current being executed
+    eCN      m_eDedicated;    // thread is dedicated to one specific job?
 
-    Pthread* m_pPthread; // its posix structure
-    Mutex*       m_pMutex;       // this threads mutex
+    Pthread* m_pPthread;      // its posix structure
+    Mutex*   m_pMutex;        // this threads mutex
   
-    i8           m_iLastQueueRR;  // last round robin queue this thread
-                                  // had popped a task from
-    i8           m_iStartQueueRR; // last RR queue we started with
+    i8       m_iLastQueueRR;  // last round robin queue this thread
+                              // had popped a task from
+    i8       m_iStartQueueRR; // last RR queue we started with
   
     // must be last
     Footer m_xFooter;

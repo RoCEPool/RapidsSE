@@ -17,7 +17,7 @@
 /*----------------------------------------------------------------------------*/
 : task::wait  ( -- )
 
-  //TS_WAITING task::this task.state!
+  //TK_WAITING task::this task.state!
   task::this task.wait
 ;
 
