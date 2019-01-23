@@ -185,7 +185,7 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
       ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
       return eError;
     }
-        
+    
     // return the newly created session
     *aaSession = pSession;
     
@@ -293,6 +293,7 @@ eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
   vApiLocation(pSession,900);
   
   ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+  
   return EC_NONE;
 }
 

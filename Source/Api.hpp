@@ -147,7 +147,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /* enter API function                                                         */
 /*----------------------------------------------------------------------------*/
 #define API_ENTRY(_eApiCall) \
-\
+  \
   eAC  eApiCall = _eApiCall; \
   Stz* aApiCall = aAC[eApiCall]; \
   \
@@ -183,7 +183,11 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define API_EXIT() \
 {  \
-  ActivityMap::vMarkApiEntry(_eApiCall); \
+  if (pSession) { \
+    vApiReturn(pSession); \
+    vApiLocation(pSession,900); \
+  } \
+  ActivityMap::vMarkApiExit(eApiCall); \
 }
 
 /*----------------------------------------------------------------------------*/
