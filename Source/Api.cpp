@@ -12,8 +12,8 @@ extern ActivityMap* gpActivityMap;
 /*----------------------------------------------------------------------------*/
 /* begin the insert table job                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPtr,
-                              i8 iSubInserters, i8 iTraceLevel)
+eEC RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableNm, void** aaJob,
+                              i8 iSubInserters, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nBeginInsertTable++;
   
@@ -33,7 +33,7 @@ eEC RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPt
     VALIDATE_SESSION("a"_Stz);
     
     // validate reference pointer
-    VALIDATE_REFPOINTER("a"_Stz, ppJobPtr);
+    VALIDATE_REFPOINTER("a"_Stz, aaJob);
     
     // create Job_InsertTable
     JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
@@ -42,13 +42,13 @@ eEC RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPt
     static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
     
     // find the table in the session dictionary stack
-    Table* pTable = Table::pFindTable(pSession->pPathStack(), aTableName);
+    Table* pTable = Table::pFindTable(pSession->pPathStack(), aTableNm);
     
     // set the table in the InsertTable job
     pJob_InsertTable->m_pTable = pTable;
     
     // return the insertTable job
-    *ppJobPtr = pJob_InsertTable;
+    *aaJob = pJob_InsertTable;
     
     // set subInserters in the TblPtb
     gpAttachMap->m_nSubInserters = iSubInserters;
@@ -87,7 +87,7 @@ eEC RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPt
 /*----------------------------------------------------------------------------*/
 /* begin the subInserter job                                                  */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, void** ppJobPtr, i8 iTraceLevel)
+eEC RapidsSE_BeginSubInserter(Session* pSession, void* aJob, void** aaJob, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nBeginSubInserter++;
   
@@ -95,7 +95,7 @@ eEC RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, void** ppJobPtr,
   eAC  eApiCall = AC_BeginSubInserter;
   ActivityMap::vMarkApi(eApiCall,0,">Api %s"_Stz,aApiCall);
   
-  vApiCall(pSession,AC_BeginInsertTable);                               // API CALL
+  vApiCall(pSession,AC_BeginSubInserter);                               // API CALL
   vApiLocation(pSession,100);
   
   try {
@@ -107,13 +107,13 @@ eEC RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, void** ppJobPtr,
     VALIDATE_SESSION("a"_Stz);
     
     // validate the parameter
-    VALIDATE_PARAM("a"_Stz, pJobPtr);
+    VALIDATE_PARAM("a"_Stz, aJob);
     
     // validate reference pointer
-    VALIDATE_REFPOINTER("a"_Stz, ppJobPtr);
+    VALIDATE_REFPOINTER("a"_Stz, aaJob);
     
     // get the insertTable job
-    Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJobPtr);
+    Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(aJob);
     
     // create Job_SubInserter
     JobClass* pJobClass_SubInserter = JobClass::pFind(CN_JOB_SUBINSERTER);
@@ -133,7 +133,7 @@ eEC RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, void** ppJobPtr,
     pJob_SubInserter->m_pTable = pJob_InsertTable->m_pTable;
     
     // return the sub_inserter job
-    *ppJobPtr = pJob_SubInserter;
+    *aaJob = pJob_SubInserter;
     
     TRACE_EXIT("ea"_Stz);
     
@@ -165,7 +165,7 @@ eEC RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, void** ppJobPtr,
 /*----------------------------------------------------------------------------*/
 /* check the library version against version passed                           */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
+eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTrace)
 {
   //gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
   
@@ -212,7 +212,7 @@ eEC RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* insert the record buffer into a table                                      */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_CopyBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
+eEC RapidsSE_CopyBuffer(Session* pSession, void* aJob, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nCopyBuffer++;
   
@@ -237,7 +237,7 @@ eEC RapidsSE_CopyBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     VALIDATE_JOB("b"_Stz);
     
     // get the insertRow job
-    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
+    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
     
     // get the record buffer
     RecordBuffer* pRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
@@ -301,7 +301,7 @@ eEC RapidsSE_CopyBuffer(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* end insert and all session jobs                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndInsertTable(Session* pSession, void* pJobPtr, i8 iTraceLevel)
+eEC RapidsSE_EndInsertTable(Session* pSession, void* aJob, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nEndInsertJobs++;
 
@@ -324,7 +324,7 @@ eEC RapidsSE_EndInsertTable(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     VALIDATE_JOB("b"_Stz);
     
     // get the insertTable job
-    Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(pJobPtr);
+    Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(aJob);
     
     //vApiJob(pSession,pJob_InsertTable);
     vApiLocation(pSession,105);
@@ -384,7 +384,7 @@ eEC RapidsSE_EndInsertTable(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* end insert and all session jobs                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndSubInserter(Session* pSession, void* pJobPtr, i8 iTraceLevel)
+eEC RapidsSE_EndSubInserter(Session* pSession, void* aJob, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nEndInsertJobs++;
   
@@ -407,7 +407,7 @@ eEC RapidsSE_EndSubInserter(Session* pSession, void* pJobPtr, i8 iTraceLevel)
     VALIDATE_JOB("b"_Stz);
     
     // get the insertRows job
-    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
+    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
     
     // wait for all record buffers to be copied across
     while (*pJob_SubInserter->m_ziRecordBuffers != *pJob_SubInserter->m_ziCopiedBuffers) {
@@ -449,7 +449,7 @@ eEC RapidsSE_EndSubInserter(Session* pSession, void* pJobPtr, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* end all jobs of this session                                               */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
+eEC RapidsSE_EndJobs(Session* pSession, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nEndJobs++;
 
@@ -483,8 +483,8 @@ eEC RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel)
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
-                            Stz* sCatalogName, Stz* sSchemaName,
-                            void** ppJob, i8 iTraceLevel)
+                            Stz* sCatalogNm, Stz* sSchemaNm,
+                            void** ppJob, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nExecuteCommand++;
 
@@ -505,7 +505,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
     VALIDATE_SESSION("a"_Stz);
     
     // set the catalog and schema in the session
-    eEC eError = pSession->eInit(sCatalogName, sSchemaName);
+    eEC eError = pSession->eInit(sCatalogNm, sSchemaNm);
 
     if (eError != EC_NONE) {
       TRACE_EXIT("ea"_Stz);
@@ -579,7 +579,7 @@ eEC RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand,
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuffer, i8* piExpectedRows, i8 iTraceLevel)
+eEC RapidsSE_FetchNextBuffer(Session* pSession, void* aJob, void** ppFetchBuffer, i8* piExpectedRows, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nFetchNextBuffer++;
 
@@ -604,7 +604,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
     // validate the reference pointer
     VALIDATE_REFPOINTER("c"_Stz, ppFetchBuffer);
     
-    Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+    Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(aJob);
     
     // if we had an entry buffer delete it
     pJob_FetchRows->vDeleteBuffer();
@@ -665,12 +665,12 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
     if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
       pJob_FetchRows->m_nLastBuffersScanned++;
 //      vTrace("FNB: LAST %p %s m_nLastBuffersScanned: %lld %lld\n"_Stz, pJob_FetchRows->m_pFetchBuffer,
-//             pJob_FetchRows->m_pTable->aTableName(),
+//             pJob_FetchRows->m_pTable->aTableNm(),
 //             pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
     }
     
 //    vTrace("FNB: NOT LAST %p %s m_nLastBuffersScanned: %lld %lld\n"_Stz,pJob_FetchRows->m_pFetchBuffer,
-//           pJob_FetchRows->m_pTable->aTableName(),
+//           pJob_FetchRows->m_pTable->aTableNm(),
 //           pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
     
     // return the fetched buffer
@@ -705,7 +705,7 @@ eEC RapidsSE_FetchNextBuffer(Session* pSession, void* pJobPtr, void** ppFetchBuf
 /*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, i8 iTraceLevel)
+eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nGetErrorMessage++;
 
@@ -760,7 +760,7 @@ eEC RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, 
 /*----------------------------------------------------------------------------*/
 /* get record buffer from the job                                             */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRecordBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, i8 iTraceLevel)
+eEC RapidsSE_GetRecordBuffer(Session* pSession, void* aJob, void** ppBuffer, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nGetRecordBuffer++;
 
@@ -783,7 +783,7 @@ eEC RapidsSE_GetRecordBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, 
   // validate the reference pointer
   VALIDATE_REFPOINTER("c"_Stz, ppBuffer);
   
-  Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(pJobPtr);
+  Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
   
   RASSERT( ! pJob_SubInserter->m_pRecordBuffer );
   pJob_SubInserter->m_pRecordBuffer = new RecordBuffer();
@@ -803,7 +803,7 @@ eEC RapidsSE_GetRecordBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, 
 /*----------------------------------------------------------------------------*/
 /* get row                                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
+eEC RapidsSE_GetRow(Session* pSession, void* aJob, i8 iRow, void** ppRow, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nGetRow++;
 
@@ -821,7 +821,7 @@ eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 
   VALIDATE_SESSION("a"_Stz);
   
   // get the jobptr
-  Job* pJob = (Job*)pJobPtr;
+  Job* pJob = (Job*)aJob;
   
   // validate the job
   VALIDATE_JOB("b"_Stz);
@@ -885,7 +885,7 @@ eEC RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 
 /*----------------------------------------------------------------------------*/
 /* get row count                                                              */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel)
+eEC RapidsSE_GetRowCount(Session* pSession, void* aJob, i8 *pRowCount, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nGetRowCount++;
 
@@ -902,7 +902,7 @@ eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTr
   // validate session
   VALIDATE_SESSION("a"_Stz);
   
-  Job* pJob = (Job*)pJobPtr;
+  Job* pJob = (Job*)aJob;
   
   // validate the job
   VALIDATE_JOB("b"_Stz);
@@ -931,7 +931,7 @@ eEC RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTr
 /*----------------------------------------------------------------------------*/
 /* get row count table column                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel)
+eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* aJob, i8 *pRowCount, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
 
@@ -954,7 +954,7 @@ eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCo
   // validate the pointer
   VALIDATE_PARAM("c"_Stz, pRowCount);
   
-  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
   Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_sResponse.aChar());
   ColumnVec* pColumnVec = pTable->pColumnVec();
   pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_ziRowsProcessed =  pColumnVec->nItems() - 1;
@@ -975,7 +975,7 @@ eEC RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8 *pRowCo
 /*----------------------------------------------------------------------------*/
 /* get row table column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel)
+eEC RapidsSE_GetRowTableColumn(Session* pSession, void* aJob, i8 iRow, void** ppRow, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nGetRowTableColumn++;
 
@@ -998,7 +998,7 @@ eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void**
   // validate the reference pointer
   VALIDATE_REFPOINTER("c"_Stz, ppRow);
   
-  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(pJobPtr);
+  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
   
   Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_sResponse.aChar());
   ColumnVec* pColumnVec = pTable->pColumnVec();
@@ -1031,7 +1031,7 @@ eEC RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void**
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRow(Session* pSession, Stz* sTableName, Stz* sRecord, i8 iTraceLevel)
+eEC RapidsSE_InsertRow(Session* pSession, Stz* sTableName, Stz* sRecord, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nInsertRow++;
 
@@ -1134,7 +1134,7 @@ eEC RapidsSE_InsertRow(Session* pSession, Stz* sTableName, Stz* sRecord, i8 iTra
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows, i8 iTraceLevel)
+eEC RapidsSE_LoadResult(Session* pSession, void* aJob, i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;
 
@@ -1159,7 +1159,7 @@ eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pI
     VALIDATE_REFPOINTER("b"_Stz, pValidRows);
     VALIDATE_REFPOINTER("b"_Stz, pInvalidRows);
     
-    Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(pJobPtr);
+    Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(aJob);
 //    vTrace("L %lld IN %lld\n"_Stz,
 //           pJob_LoadTable->m_iValidRows,
 //           pJob_LoadTable->m_iInvalidRows);
@@ -1209,7 +1209,7 @@ eEC RapidsSE_LoadResult(Session* pSession, void* pJobPtr, i8* pValidRows, i8* pI
 /*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
+eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTrace)
 {
   Stz* aApiCall = "RapidsSE_PoolOpen"_Stz;
                                                                       // API ???
@@ -1264,7 +1264,7 @@ eEC RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer, void** ppEntry, void** ppRow, i8* piExpectedRows, i8 iTraceLevel)
+eEC RapidsSE_ScanNextRow(Session* pSession, void* aJob, void** aaEntryBuffer, void** ppEntry, void** ppRow, i8* piExpectedRows, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nScanNextRow++;
 
@@ -1289,7 +1289,7 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
     // validate the reference pointer
     VALIDATE_REFPOINTER("c"_Stz, ppRow);
     
-    Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(pJobPtr);
+    Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(aJob);
     
     // get the table
     Table* pTable = pJob_SelectTable->m_pTable;
@@ -1300,7 +1300,7 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
     EntryBuffer* pEntryBuffer = nullptr;
     
     // do we have a buffer ?
-    if ( ! *ppEntryBuffer) {
+    if ( ! *aaEntryBuffer) {
       // get first entry buffer
       TablePtn* pPartition = pTable->pPartition(pJob_SelectTable->m_iPartition);
       Index* pIndex = pTable->pHiddenIndex();
@@ -1313,7 +1313,7 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
       } else {
         aEntry = pEntryBuffer->aFirstEntry();
         *ppEntry = aEntry;
-        *ppEntryBuffer = pEntryBuffer;
+        *aaEntryBuffer = pEntryBuffer;
         *ppRow = aEntry->aRow();
       }
       
@@ -1323,7 +1323,7 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // we have a buffer
-    pEntryBuffer = *((EntryBuffer**)(ppEntryBuffer));
+    pEntryBuffer = *((EntryBuffer**)(aaEntryBuffer));
     
     // we should have an entry
     aEntry = *((Entry**)(ppEntry));
@@ -1348,7 +1348,7 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
     
     if (aEntry) {
       TRACE_EXIT("eb"_Stz);
-      *ppEntryBuffer = pEntryBuffer;
+      *aaEntryBuffer = pEntryBuffer;
       *ppEntry = aEntry;
       *ppRow = aEntry->aRow();
       //vTrace("Returning rowEntry %p\n"_Stz, aEntry);
@@ -1384,7 +1384,7 @@ eEC RapidsSE_ScanNextRow(Session* pSession, void* pJobPtr, void** ppEntryBuffer,
 /*----------------------------------------------------------------------------*/
 /* delete an se session                                                       */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
+eEC RapidsSE_SessionDelete(Session* pSession, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nSessionDelete++;
 
@@ -1440,7 +1440,7 @@ eEC RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* is the error an EC_INVALID_SessionE ?                                      */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_SessionInvalid(int iError, i8 iTraceLevel)
+bool RapidsSE_SessionInvalid(int iError, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nSessionInvalid++;
 
@@ -1486,7 +1486,7 @@ bool RapidsSE_SessionInvalid(int iError, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 /* create a new se session                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel)
+eEC RapidsSE_SessionNew(void** aaSession, Stz* sCatalogNm, Stz* sSchemaNm, i8 iPartition, i8 iTrace)
 {
   gpAttachMap->m_oStatistics.Api.m_nSessionNew++;
 
@@ -1501,17 +1501,17 @@ eEC RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i
     TRACE_ENTRY_P0();
     
     // trace entry
-    TRACE_ENTRY_P2(sCatalogName, sSchemaName);
-    //TRACE_ENTRY_P2(sCatalogName, sSchemaName);
+    TRACE_ENTRY_P2(sCatalogNm, sSchemaNm);
+    //TRACE_ENTRY_P2(sCatalogNm, sSchemaNm);
     
     // valide reference pointer
-    VALIDATE_REFPOINTER("a"_Stz, ppSession);
+    VALIDATE_REFPOINTER("a"_Stz, aaSession);
     
     VALIDATE_POOL();
     
     Session* pSession = new Session(iPartition);
     
-    eEC eError = pSession->eInit(sCatalogName, sSchemaName);
+    eEC eError = pSession->eInit(sCatalogNm, sSchemaNm);
     
     if (eError != EC_NONE) {
       TRACE_EXIT("ea"_Stz);
@@ -1523,7 +1523,7 @@ eEC RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i
     VALIDATE_SESSION("b"_Stz);
     
     // return the newly created session
-    *ppSession = pSession;
+    *aaSession = pSession;
     
     // trace exit
     TRACE_EXIT("eb"_Stz);
@@ -1671,21 +1671,21 @@ void vDeleteJobs(Session* pSession)
 
   while (pJobStack->bPop(pJobObject)) {
     
-    Job* pJobPtr = (Job*)pJobObject;
+    Job* aJob = (Job*)pJobObject;
     
     // find the job class on this node
-    eCN eClass = pJobPtr->eClass();
+    eCN eClass = aJob->eClass();
     JobClass* pJobClass = JobClass::pFind(eClass);
     
     vApiLocation(pSession,200);
     
-    //vTrace("API deleting job %p jobId %lld %s\n"_Stz, pJobPtr, pJobPtr->m_iJobId, aCN[eClass]);
+    //vTrace("API deleting job %p jobId %lld %s\n"_Stz, aJob, aJob->m_iJobId, aCN[eClass]);
     
     // If we come across a JOB_FETCHROWS then we need to empty its queues
     if (eClass == CN_JOB_FETCHROWS) {
-      Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(pJobPtr);
+      Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(aJob);
   
-      //vTrace("%s m_nLastBuffersScanned: %lld %lld\n"_Stz,pJob_FetchRows->m_pTable->aTableName(),
+      //vTrace("%s m_nLastBuffersScanned: %lld %lld\n"_Stz,pJob_FetchRows->m_pTable->aTableNm(),
       //       pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
       
       // if we had an entry buffer delete it
@@ -1725,7 +1725,7 @@ void vDeleteJobs(Session* pSession)
         
         if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
           pJob_FetchRows->m_nLastBuffersScanned++;
-          //vTrace("%s m_nLastBuffersScanned: %lld %lld\n"_Stz, pJob_FetchRows->m_pTable->aTableName(),
+          //vTrace("%s m_nLastBuffersScanned: %lld %lld\n"_Stz, pJob_FetchRows->m_pTable->aTableNm(),
           //       pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
         }
         
@@ -1736,8 +1736,8 @@ void vDeleteJobs(Session* pSession)
     vApiLocation(pSession,600);
     
     // delete the job
-    //vTrace("Deleting job %p %s\n"_Stz, pJobPtr, aCN[pJobPtr->eClass()]);
-    pJobClass->vDeleteJob(pSession,pJobPtr);
+    //vTrace("Deleting job %p %s\n"_Stz, aJob, aCN[aJob->eClass()]);
+    pJobClass->vDeleteJob(pSession,aJob);
     
     pSession->m_nJobDelete++;
   }

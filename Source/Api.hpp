@@ -70,29 +70,29 @@ static Stz* aAC[]
   /* 23 */ "RapidsSE_SessionNew"_Stz
   /* 24 */ "ENUMS"_Stz};
 
-extern "C" eEC  RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableName, void** ppJobPtr, i8 iSubInserters, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_BeginSubInserter(Session* pSession, void* pJobPtr, void** ppJobPtr, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_CopyBuffer(Session* pSession, void* pJob, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_EndInsertTable(Session* pSession, void* pJobPtr, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_EndSubInserter(Session* pSession, void* pJobPtr, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_EndJobs(Session* pSession, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand, Stz* sCatalogName, Stz* sSchemaName,
-                                        void** ppJob, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_FetchNextBuffer(Session* pSession, void* pJob, void** ppFetchBuffer, i8* piExepectedRows, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_GetRecordBuffer(Session* pSession, void* pJobPtr, void** ppBuffer, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_GetRow(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_GetRowCount(Session* pSession, void* pJobPtr, i8 *pRowCount, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_GetRowTableColumn(Session* pSession, void* pJobPtr, i8 iRow, void** ppRow, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_GetRowCountTableColumn(Session* pSession, void* pJobPtr, i8* pRowCount, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_InsertRow(Session* pSession, Stz* pTable, Stz* sRow, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInvalidRows, i8* piSkippedRows, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_ScanNextRow(Session* pSession, void* pJob, void** ppEntryBuffer, void** ppEntry, void** ppRow, i8* piExepectedRows, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_SessionDelete(Session* pSession, i8 iTraceLevel);
-extern "C" bool RapidsSE_SessionInvalid(int eError, i8 iTraceLevel);
-extern "C" eEC  RapidsSE_SessionNew(void** ppSession, Stz* sCatalogName, Stz* sSchemaName, i8 iPartition, i8 iTraceLevel);
+extern "C" eEC  RapidsSE_BeginInsertTable(Session* pSession, Stz* aTableNm, void** aaJob, i8 iSubInserters, i8 iTrace);
+extern "C" eEC  RapidsSE_BeginSubInserter(Session* pSession, void* aJob, void** aaJob, i8 iTrace);
+extern "C" eEC  RapidsSE_CheckLibraryVersion(Stz* pVersion, i8 iTrace);
+extern "C" eEC  RapidsSE_CopyBuffer(Session* pSession, void* pJob, i8 iTrace);
+extern "C" eEC  RapidsSE_EndInsertTable(Session* pSession, void* aJob, i8 iTrace);
+extern "C" eEC  RapidsSE_EndSubInserter(Session* pSession, void* aJob, i8 iTrace);
+extern "C" eEC  RapidsSE_EndJobs(Session* pSession, i8 iTrace);
+extern "C" eEC  RapidsSE_ExecuteCommand(Session* pSession, Stz* aCommand, Stz* sCatalogNm, Stz* sSchemaNm,
+                                        void** ppJob, i8 iTrace);
+extern "C" eEC  RapidsSE_FetchNextBuffer(Session* pSession, void* pJob, void** ppFetchBuffer, i8* piExepectedRows, i8 iTrace);
+extern "C" eEC  RapidsSE_GetErrorMessage(Session* pSession, int iErrorCode, void** ppError, i8 iTrace);
+extern "C" eEC  RapidsSE_GetRecordBuffer(Session* pSession, void* aJob, void** ppBuffer, i8 iTrace);
+extern "C" eEC  RapidsSE_GetRow(Session* pSession, void* aJob, i8 iRow, void** ppRow, i8 iTrace);
+extern "C" eEC  RapidsSE_GetRowCount(Session* pSession, void* aJob, i8 *pRowCount, i8 iTrace);
+extern "C" eEC  RapidsSE_GetRowTableColumn(Session* pSession, void* aJob, i8 iRow, void** ppRow, i8 iTrace);
+extern "C" eEC  RapidsSE_GetRowCountTableColumn(Session* pSession, void* aJob, i8* pRowCount, i8 iTrace);
+extern "C" eEC  RapidsSE_InsertRow(Session* pSession, Stz* pTable, Stz* sRow, i8 iTrace);
+extern "C" eEC  RapidsSE_LoadResult(Session* pSession, void* pJob, i8* pValidRows, i8* pInvalidRows, i8* piSkippedRows, i8 iTrace);
+extern "C" eEC  RapidsSE_PoolOpen(Stz* pInstanceName, void** ppInstance, i8 iTrace);
+extern "C" eEC  RapidsSE_ScanNextRow(Session* pSession, void* pJob, void** ppEntryBuffer, void** ppEntry, void** ppRow, i8* piExepectedRows, i8 iTrace);
+extern "C" eEC  RapidsSE_SessionDelete(Session* pSession, i8 iTrace);
+extern "C" bool RapidsSE_SessionInvalid(int eError, i8 iTrace);
+extern "C" eEC  RapidsSE_SessionNew(void** aaSession, Stz* sCatalogNm, Stz* sSchemaNm, i8 iPartition, i8 iTrace);
 
 Job* RapidsSE_pExecCmdStr(Stz* aCommand, Session* pSession, bool bPostJob, bool bFromPrompt);
 bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession);
@@ -107,6 +107,7 @@ void vSpawnJobAndWait(Session* pSession, Job* pJob);
 
 void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 
+
 #ifdef _DEBUG
 
 /*----------------------------------------------------------------------------*/
@@ -114,7 +115,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P0() \
   {  \
-    if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
+    if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
       vTrace("<%s: %p(%lld)\n"_Stz,  \
         aApiCall, pSession , pSession ? pSession->iPartition() : -1); \
   }
@@ -124,7 +125,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P1(p1) \
   {  \
-    if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
+    if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
       vTrace("<%s: %p(%lld) %s\n"_Stz,  \
         aApiCall, pSession, pSession ? pSession->iPartition() : -1, p1); \
   }
@@ -134,7 +135,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P2(p1, p2) \
 {  \
-  if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
+  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s %s\n"_Stz,  \
       aApiCall, pSession, pSession ? pSession->iPartition() : -1, \
         p1 ? p1 : "null"_Stz , p2 ? p2 : "null"_Stz); \
@@ -145,7 +146,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P3(p1, p2, p3) \
 {  \
-  if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
+  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s %s %s\n"_Stz,  \
       aApiCall, pSession, pSession ? pSession->iPartition() : -1, \
         p1 ? p1 : "null"_Stz, p2 ? p2 : "null"_Stz , p3 ? p3 : "null"_Stz); \
@@ -156,7 +157,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define TRACE_ENTRY_P4(p1, p2, p3, p4) \
 {  \
-  if ( (iTraceLevel & TL_ENTRY) == TL_ENTRY) \
+  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s %s %s %s\n"_Stz,  \
       aApiCall, pSession, pSession ? pSession->iPartition() : -1, p1, p2, p3, p4); \
 }
@@ -166,7 +167,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define TRACE_INSERT(aMarker, sRow) \
 {  \
-  if ( (iTraceLevel & TL_INSERT) == TL_INSERT) \
+  if ( (iTrace & TL_INSERT) == TL_INSERT) \
     vTrace("%s(%s): %p(%lld) inserting row %s\n"_Stz,  \
       aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1, sRow); \
 }
@@ -176,7 +177,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define TRACE_ERROR(aMarker, eErrorCode) \
   {  \
-    if ( (iTraceLevel & TL_ERROR) == TL_ERROR) \
+    if ( (iTrace & TL_ERROR) == TL_ERROR) \
       vTrace(">%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
         aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1, aEC[eErrorCode], (i8)eErrorCode); \
   }
@@ -186,7 +187,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define TRACE_EXIT(aMarker) \
   {  \
-    if ( (iTraceLevel & TL_EXIT) == TL_EXIT) \
+    if ( (iTrace & TL_EXIT) == TL_EXIT) \
       vTrace(">%s(%s): %p(%lld)\n"_Stz,  \
         aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1); \
   }
@@ -196,7 +197,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_JOB(aMarker) \
   {  \
-    if ( ! pJobPtr ) { \
+    if ( ! aJob ) { \
       TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
       return EC_VALIDATION_FAILURE; \
     } \
@@ -252,7 +253,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_SESSION(aMarker) \
   { \
-    eEC eResult = eValidateSession(pSession, aMarker, iTraceLevel); \
+    eEC eResult = eValidateSession(pSession, aMarker, iTrace); \
     if (eResult != EC_NONE) { \
         TRACE_ERROR(aMarker, EC_INVALID_INTERFACE); \
         return eResult; \
@@ -276,7 +277,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define VALIDATE_POOL() \
   {  \
     bool bPoolValid; \
-    if ( (iTraceLevel & TL_POOL) == TL_POOL) { \
+    if ( (iTrace & TL_POOL) == TL_POOL) { \
       bPoolValid = gpBufferPool->bVerifyBoundaries(true); \
     } \
     else { \
@@ -313,10 +314,10 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* trace API call entry                                                       */
 /*----------------------------------------------------------------------------*/
-inline void vTraceEntry(i8 iTraceLevel, Stz* aFormat, ...)
+inline void vTraceEntry(i8 iTrace, Stz* aFormat, ...)
 {
   // trace entry ?
-  if ( (iTraceLevel & TL_ENTRY) != TL_ENTRY)
+  if ( (iTrace & TL_ENTRY) != TL_ENTRY)
     return;
   
   va_list xArgs;
@@ -329,10 +330,10 @@ inline void vTraceEntry(i8 iTraceLevel, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* trace API call exit                                                        */
 /*----------------------------------------------------------------------------*/
-inline void vTraceExit(i8 iTraceLevel, Stz* aFormat, ...)
+inline void vTraceExit(i8 iTrace, Stz* aFormat, ...)
 {
   // trace entry ?
-  if ( (iTraceLevel & TL_EXIT) != TL_EXIT)
+  if ( (iTrace & TL_EXIT) != TL_EXIT)
     return;
   
   va_list xArgs;
@@ -345,10 +346,10 @@ inline void vTraceExit(i8 iTraceLevel, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* trace API error                                                            */
 /*----------------------------------------------------------------------------*/
-inline void vTraceError(i8 iTraceLevel, Stz* aFormat, ...)
+inline void vTraceError(i8 iTrace, Stz* aFormat, ...)
 {
   // trace entry ?
-  if ( (iTraceLevel & TL_ERROR) != TL_ERROR)
+  if ( (iTrace & TL_ERROR) != TL_ERROR)
     return;
   
   va_list xArgs;
@@ -361,7 +362,7 @@ inline void vTraceError(i8 iTraceLevel, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* validate the SE session                                                    */
 /*----------------------------------------------------------------------------*/
-inline eEC eValidateSession(Session* pSession, Stz* aApiCall, i8 iTraceLevel)
+inline eEC eValidateSession(Session* pSession, Stz* aApiCall, i8 iTrace)
 {
   
   // pSession cannot be null
