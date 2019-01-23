@@ -205,6 +205,13 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
     // compute the total number of subInserters in the grid
     i8 nSubInsertersInGrid = gpAttachMap->m_nSubInserters;
     
+    vTrace("SubInserters %lld SubInsertersDone %lld m_nBuffersWritten %lld m_nWriteBehindBuffers %lld\n"_Stz,
+           gpAttachMap->m_nSubInserters,
+           m_nSubInsertersDone,
+           m_nBuffersWritten,
+           m_nWriteBehindBuffers
+           );
+    
     if (m_nSubInsertersDone  == nSubInsertersInGrid &&
         m_nBuffersWritten == m_nWriteBehindBuffers) {
       bAllDone = true;

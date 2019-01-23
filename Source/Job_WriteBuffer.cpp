@@ -216,8 +216,8 @@ bool Job_WriteBuffer::bInsertRows(void)
     // from a subloader for this partition?
     if (C_UNKNOWN != m_nWriteBehindBuffers) {
       pPartition->vAddInsertWriteBehindBuffers(m_nWriteBehindBuffers);
-      //vTrace("Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld\n"_Stz,
-      //       m_iPartitionId, iSlot, m_nWriteBehindBuffers);
+      vTrace("Setting m_nWriteBehindBuffers in partition %lld slot %lld to %lld\n"_Stz,
+             m_iPartitionId, iSlot, m_nWriteBehindBuffers);
       
     }
     
