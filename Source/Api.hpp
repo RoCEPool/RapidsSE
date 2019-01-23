@@ -151,7 +151,11 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
   eAC  eApiCall = _eApiCall; \
   Stz* aApiCall = aAC[eApiCall]; \
   ActivityMap::vMarkApiEntry(eApiCall); \
-  vApiStatistics(eApiCall);
+  vApiStatistics(eApiCall);\
+  if (pSession) { \
+    vApiCall(pSession,eApiCall); \
+    vApiLocation(pSession,100); \
+  }
 // didnt use braces { }, as that would hide the variables
 
 /*----------------------------------------------------------------------------*/

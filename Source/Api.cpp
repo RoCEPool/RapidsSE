@@ -158,7 +158,8 @@ bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
 /*----------------------------------------------------------------------------*/
 /* create a new se session                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession, Stz* sCatalog, Stz* sSchema, i8 iPartition)
+eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
+                        Stz* sCatalog, Stz* sSchema, i8 iPartition)
 {
   Session* pSession = nullptr;
   
@@ -221,13 +222,10 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession, Stz* sCatalog, Stz* sSchema
 /*----------------------------------------------------------------------------*/
 /* begin the insert table job                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession, Stz* sTable, void** aaJob,
-                              i8 nSubInserters)
+eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
+                              Stz* sTable, void** aaJob, i8 nSubInserters)
 {
   API_ENTRY(AC_BeginInsertTable);
-  
-  vApiCall(pSession,AC_BeginInsertTable);
-  vApiLocation(pSession,100);
   
   try {
     
@@ -296,9 +294,6 @@ eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
 {
   API_ENTRY(AC_EndJobs);
   
-  vApiCall(pSession,AC_EndJobs);
-  vApiLocation(pSession,100);
-  
   // trace entry
   TRACE_ENTRY_P0();
   
@@ -321,14 +316,11 @@ eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession, Stz* sCommand,
-                            Stz* sCatalog, Stz* sSchema,
+eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
+                            Stz* sCommand, Stz* sCatalog, Stz* sSchema,
                             void** aaJob)
 {
   API_ENTRY(AC_ExecuteCommand);
-  
-  vApiCall(pSession,AC_ExecuteCommand);
-  vApiLocation(pSession,100);
   
   try {
     // trace entry
@@ -414,12 +406,10 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession, Stz* sCommand,
 /*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession, int iErrorCode, void** aaError)
+eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession,
+                             int iErrorCode, void** aaError)
 {
   API_ENTRY(AC_GetErrorMessage);
-  
-  vApiCall(pSession,AC_GetErrorMessage);
-  vApiLocation(pSession,100);
   
   try {
     // trace entry
@@ -465,12 +455,10 @@ eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession, int iErrorCode, void*
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession, Stz* sTableName, Stz* sRecord)
+eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
+                       Stz* sTableName, Stz* sRecord)
 {
   API_ENTRY(AC_InsertRow);
-  
-  vApiCall(pSession,AC_InsertRow);
-  vApiLocation(pSession,100);
   
   try {
     
@@ -568,9 +556,6 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
 {
   API_ENTRY(AC_SessionDelete);
   
-  vApiCall(pSession,AC_SessionDelete);
-  vApiLocation(pSession,100);
-  
   try {
     // trace entry
     TRACE_ENTRY_P0();
@@ -621,12 +606,10 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* begin the subInserter job                                                  */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob, void** aaJob)
+eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
+                              void** aaJob)
 {
   API_ENTRY(AC_BeginSubInserter);
-  
-  vApiCall(pSession,AC_BeginSubInserter);
-  vApiLocation(pSession,100);
   
   try {
     
@@ -698,9 +681,6 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob, void** a
 eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 {
   API_ENTRY(AC_CopyBuffer);
-  
-  vApiCall(pSession,AC_CopyBuffer);
-  vApiLocation(pSession,100);
   
   try {
     
@@ -784,9 +764,6 @@ eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
 {
   API_ENTRY(AC_EndInsertTable);
   
-  vApiCall(pSession,AC_EndInsertTable);
-  vApiLocation(pSession,100);
-  
   try {
     
     // trace entry
@@ -863,9 +840,6 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 {
   API_ENTRY(AC_EndSubInserter);
   
-  vApiCall(pSession,AC_EndSubInserter);
-  vApiLocation(pSession,100);
-  
   try {
     
     // trace entry
@@ -920,12 +894,10 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob, void** aaFetchBuffer, i8* piExpectedRows)
+eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
+                             void** aaFetchBuffer, i8* piExpectedRows)
 {
   API_ENTRY(AC_FetchNextBuffer);
-  
-  vApiCall(pSession,AC_FetchNextBuffer);
-  vApiLocation(pSession,100);
   
   try {
            
@@ -1042,12 +1014,10 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob, void** aa
 /*----------------------------------------------------------------------------*/
 /* get record buffer from the job                                             */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob, void** aaBuffer)
+eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob,
+                             void** aaBuffer)
 {
   API_ENTRY(AC_GetRecordBuffer);
-  
-  vApiCall(pSession,AC_GetRecordBuffer);
-  vApiLocation(pSession,100);
   
   // trace entry
   TRACE_ENTRY_P0();
@@ -1081,12 +1051,10 @@ eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob, void** aa
 /*----------------------------------------------------------------------------*/
 /* get row                                                                    */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob, i8 iRow, void** aaRow)
+eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
+                    i8 iRow, void** aaRow)
 {
   API_ENTRY(AC_GetRow);
-  
-  vApiCall(pSession,AC_GetRow);
-  vApiLocation(pSession,100);
   
   // trace entry
   TRACE_ENTRY_P0();
@@ -1159,12 +1127,10 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob, i8 iRow, void** aa
 /*----------------------------------------------------------------------------*/
 /* get row count                                                              */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob, i8 *aRowCount)
+eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
+                         i8 *aRowCount)
 {
   API_ENTRY(AC_GetRowCount);
-  
-  vApiCall(pSession,AC_GetRowCount);
-  vApiLocation(pSession,100);
   
   // trace entry
   TRACE_ENTRY_P0();
@@ -1201,12 +1167,10 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob, i8 *aRowCount
 /*----------------------------------------------------------------------------*/
 /* get row count table column                                                 */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob, i8 *aRowCount)
+eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob,
+                                    i8 *aRowCount)
 {
   API_ENTRY(AC_GetRowCountTableColumn);
-  
-  vApiCall(pSession,AC_GetRowCountTableColumn);
-  vApiLocation(pSession,100);
   
   // trace entry
   TRACE_ENTRY_P0();
@@ -1241,12 +1205,10 @@ eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob, i8
 /*----------------------------------------------------------------------------*/
 /* get row table column                                                       */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob, i8 iRow, void** aaRow)
+eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
+                               i8 iRow, void** aaRow)
 {
   API_ENTRY(AC_GetRowTableColumn);
-  
-  vApiCall(pSession,AC_GetRowTableColumn);
-  vApiLocation(pSession,100);
   
   // trace entry
   TRACE_ENTRY_P0();
@@ -1293,12 +1255,10 @@ eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob, i8 iRow
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob, i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows)
+eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob,
+                        i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows)
 {
   API_ENTRY(AC_LoadResult);
-  
-  vApiCall(pSession,AC_LoadResult);
-  vApiLocation(pSession,100);
   
   try {
     // trace entry
@@ -1364,13 +1324,12 @@ eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob, i8* pValidRows
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob, void** aaEntryBuffer, void** aaEntry, void** aaRow, i8* piExpectedRows)
+eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
+                         void** aaEntryBuffer, void** aaEntry, void** aaRow,
+                         i8* piExpectedRows)
 {
   API_ENTRY(AC_ScanNextRow);
-  
-  vApiCall(pSession,AC_ScanNextRow);
-  vApiLocation(pSession,100);
-  
+    
   try {
     
     // trace entry
