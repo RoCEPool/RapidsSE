@@ -323,7 +323,7 @@ inline void vTraceEntry(i8 iTraceLevel, Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_INFO,aFormat,xArgs);
+  Debugging::vPrint(C_REPORT_INFO,aFormat,xArgs);
   
   va_end(xArgs);
 }
@@ -341,7 +341,7 @@ inline void vTraceExit(i8 iTraceLevel, Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_INFO,aFormat,xArgs);
+  Debugging::vPrint(C_REPORT_INFO,aFormat,xArgs);
   
   va_end(xArgs);
 }
@@ -359,7 +359,7 @@ inline void vTraceError(i8 iTraceLevel, Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_INFO,aFormat,xArgs);
+  Debugging::vPrint(C_REPORT_INFO,aFormat,xArgs);
   
   va_end(xArgs);
 }

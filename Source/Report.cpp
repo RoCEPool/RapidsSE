@@ -104,7 +104,7 @@ void Debugging::vWarn(Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_WARNING,aFormat,xArgs);
+  vPrint(C_REPORT_WARNING,aFormat,xArgs);
   
   va_end(xArgs);
 }
@@ -118,7 +118,7 @@ void Debugging::vError(Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_ERROR,aFormat,xArgs);
+  vPrint(C_REPORT_ERROR,aFormat,xArgs);
   
   va_end(xArgs);
 }
@@ -134,36 +134,10 @@ __attribute__((noreturn)) void Debugging::vFatal(Stz* aFormat, ...)
   
   va_start(xArgs,aFormat);
   
-  vReport(C_REPORT_FATAL,aFormat,xArgs);
+  vPrint(C_REPORT_FATAL,aFormat,xArgs);
   
   va_end(xArgs);
   exit(EXIT_FAILURE);
-}
-
-/*---------------------------------------------------------------------------*/
-/* vReport: common reporter                                                  */
-/*---------------------------------------------------------------------------*/
-void Debugging::vReport(i8 iLevel, Stz* aFormat, va_list xArgs)
-{
-  i8 iLen = 0;
-  char* s = gxTraceWorkspace;
-  *s = '\0';
-  
-  time_t tNow = time(0);
-  char* sTime = ctime(&tNow);
-  sTime[ strlen(sTime) - 1 ] = '\0';
-  
-  assert(iLevel != 0);
-  vsnprintf(s,sizeof(gxTraceWorkspace)-iLen-3,aFormat->aChar(),xArgs);
-  
-  // print to file
-  fprintf(stderr,"%s: %s", sTime, gxTraceWorkspace);
-  fflush(stderr);
-  
-  if (gpTraceFile) {
-    gpTraceFile->vPrint("%s: %s"_Stz, sTime, gxTraceWorkspace);
-    gpTraceFile->vFlush();
-  }
 }
 
 /*===========================================================================*/
