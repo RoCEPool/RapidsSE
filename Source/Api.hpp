@@ -149,6 +149,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define API_ENTRY(__eApiCall) \
 {  \
   eAC _eApiCall = __eApiCall; \
+  Stz* aApiCall = aAC[_eApiCall]; \
   ActivityMap::vMarkApiEntry(_eApiCall); \
   vApiStatistics(_eApiCall); \
 }
