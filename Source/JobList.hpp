@@ -22,7 +22,7 @@ namespace Jobs
     void* operator new(size_t, JobList* pJobs);
     void  operator delete(void*);
     
-    JobList(cmpFun fCompare, eJL eJobsList);
+    JobList(CompareFp fpCompare, eJL eJobsList);
     ~JobList(void) noexcept(false);
     
     void   vAddJob(Job* pJob);

@@ -5,7 +5,7 @@
 
 namespace Structures
 {
-  typedef bool (*cmpFun)(void* pSearchEntry, void* pListEntry, bool& bMatch);
+  typedef bool (*CompareFp)(void* pSearchEntry, void* pListEntry, bool& bMatch);
   
   static const bool C_UNQIUE_KEY     = true;
   static const bool C_NON_UNQIUE_KEY = false;
@@ -15,7 +15,7 @@ namespace Structures
   public:
     SkipNode* m_pHead;      // head node of the list
     bool      m_bUniqueKey; // is the key unique ?
-    cmpFun    m_fCompare;   // compare function
+    CompareFp m_fpCompare;  // compare function
     i8        m_nObjects;   // number of objects in the list
     i8        m_iHeight;    // current max level in the list
   
@@ -29,7 +29,7 @@ namespace Structures
     void* operator new(size_t, SkipListNL* pSkipList);
     void  operator delete(void*);
     
-    SkipListNL(bool bUniqueKey, cmpFun fCompare, bool bSlabAllocator=false);
+    SkipListNL(bool bUniqueKey, CompareFp fpCompare, bool bSlabAllocator=false);
    ~SkipListNL(void) noexcept(false);
     
     void  vCheck(void);

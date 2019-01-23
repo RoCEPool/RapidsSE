@@ -44,7 +44,7 @@ void JobList::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-JobList::JobList(cmpFun fCompare, eJL eJobsList)
+JobList::JobList(CompareFp fpCompare, eJL eJobsList)
 : Object(CN_JOBLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
@@ -52,7 +52,7 @@ JobList::JobList(cmpFun fCompare, eJL eJobsList)
   m_eJobsList = eJobsList;
   m_oLock.vInitLock(LK_JOBS);
   m_iNextJobId = gpAttachMap->m_pGrid->iThisNode() << 48;
-  m_pJobsSkipList = new SkipListNL(C_UNQIUE_KEY, fCompare);
+  m_pJobsSkipList = new SkipListNL(C_UNQIUE_KEY, fpCompare);
   
   _checkInitialised_(CN_JOBLIST);
   

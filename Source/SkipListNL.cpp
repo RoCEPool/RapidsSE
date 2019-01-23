@@ -51,7 +51,7 @@ void SkipListNL::operator delete(void* pSkipListAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SkipListNL::SkipListNL(bool bUniqueKey, cmpFun fCompare, bool bSlabAllocator)
+SkipListNL::SkipListNL(bool bUniqueKey, CompareFp fpCompare, bool bSlabAllocator)
 : Object(CN_SKIPLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -60,7 +60,7 @@ SkipListNL::SkipListNL(bool bUniqueKey, cmpFun fCompare, bool bSlabAllocator)
   
   m_pHead      = new(C_SKIPLIST_LEVELS,m_pSlabAllocator) SkipNode(nullptr);
   m_bUniqueKey = bUniqueKey;
-  m_fCompare   = fCompare;
+  m_fpCompare  = fpCompare;
   m_nObjects   = 0;
   m_iHeight    = 0;
   
@@ -378,7 +378,7 @@ SkipNode* SkipListNL::pPosition(void* pObjectInsert, bool& bEqualTo, SkipNode** 
       //RJH vTrace("Object:%p\n"_Stz,pNextNode->m_pObject);
       
       // compare the inserting object with next object
-      bool bGreaterEqual = m_fCompare(pObjectInsert, pNextNode->m_pObject, bEqualTo);
+      bool bGreaterEqual = m_fpCompare(pObjectInsert, pNextNode->m_pObject, bEqualTo);
       
       if (bGreaterEqual) {
         // pObjectInsert is >= pObjectNext
