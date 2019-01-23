@@ -10,7 +10,6 @@ extern AttachMap*   gpAttachMap;
 extern ActivityMap* gpActivityMap;
 
 
-
 ////////////////////////////////////////////////////////////////////////////////
 //                            RapidsSE level calls                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -23,13 +22,9 @@ eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
   Session* pSession = nullptr;
   
   API_ENTRY(AC_CheckLibraryVersion);
-  
+  API_PARAM_P1(sVersion);
+
   try {
-    
-    TRACE_ENTRY_P1(sVersion);
-    
-    // validate the parameter
-    VALIDATE_PARAM("a"_Stz, sVersion);
     
     if ( ! sVersion->bEqual((Stz*)RAPIDSSE_VERSION_STRING)) {
       
@@ -63,11 +58,9 @@ eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
   Session* pSession = nullptr;
   
   API_ENTRY(AC_PoolOpen);
-  
+  API_PARAM_P1(sRegion);
+
   try {
-    
-    // trace entry
-    TRACE_ENTRY_P1(sRegion);
     
     // open the pool
     s32 sPoolName;
@@ -142,12 +135,9 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
   Session* pSession = nullptr;
   
   API_ENTRY(AC_SessionNew);
-  
+  API_PARAM_P2(sCatalog, sSchema);
+
   try {
-    
-    // trace entry
-    TRACE_ENTRY_P2(sCatalog, sSchema);
-    //TRACE_ENTRY_P2(sCatalog, sSchema);
     
     // valide reference pointer
     VALIDATE_REFPOINTER("a"_Stz, aaSession);
@@ -263,10 +253,9 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
                             void** aaJob)
 {
   API_ENTRY(AC_ExecuteCommand);
-  
+  API_PARAM_P1(sCommand);
+
   try {
-    // trace entry
-    TRACE_ENTRY_P1(sCommand);
     
     vApiLocation(pSession,200);
     
@@ -370,8 +359,6 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
   
   try {
     
-    //TRACE_ROW();
-    
     // validate parameter
     VALIDATE_PARAM("b"_Stz, sRecord);
     
@@ -457,8 +444,7 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
     // delete the session
     RapidsSE::vDeleteSession(pSession);
     
-    // set session to nullptr so trace knows not to look at it
-    
+    // set session to nullptr so macro knows not to look at it
     pSession = nullptr;
     
     API_EXIT();

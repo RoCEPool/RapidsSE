@@ -211,17 +211,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
 /*----------------------------------------------------------------------------*/
-#define TRACE_ENTRY_P0() \
-{  \
-  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-    vTrace(">%s: %p(%lld)\n"_Stz,  \
-      aApiCall, pSession , pSession ? pSession->iPartition() : -1); \
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace API entry                                                            */
-/*----------------------------------------------------------------------------*/
-#define TRACE_ENTRY_P1(p1) \
+#define API_PARAM_P1(p1) \
 {  \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s\n"_Stz,  \
@@ -231,7 +221,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
 /*----------------------------------------------------------------------------*/
-#define TRACE_ENTRY_P2(p1, p2) \
+#define API_PARAM_P2(p1, p2) \
 {  \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s %s\n"_Stz,  \
@@ -242,7 +232,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
 /*----------------------------------------------------------------------------*/
-#define TRACE_ENTRY_P3(p1, p2, p3) \
+#define API_PARAM_P3(p1, p2, p3) \
 {  \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s %s %s\n"_Stz,  \
@@ -253,7 +243,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* trace API entry                                                            */
 /*----------------------------------------------------------------------------*/
-#define TRACE_ENTRY_P4(p1, p2, p3, p4) \
+#define API_PARAM_P4(p1, p2, p3, p4) \
 {  \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("<%s: %p(%lld) %s %s %s %s\n"_Stz,  \
@@ -393,11 +383,10 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define API_ERROR()
 #define API_EXIT()
 
-#define TRACE_ENTRY_P0()
-#define TRACE_ENTRY_P1(p1)
-#define TRACE_ENTRY_P2(p1, p2)
-#define TRACE_ENTRY_P3(p1, p2, p3)
-#define TRACE_ENTRY_P4(p1, p2, p3, p4)
+#define API_PARAM_P1(p1)
+#define API_PARAM_P2(p1, p2)
+#define API_PARAM_P3(p1, p2, p3)
+#define API_PARAM_P4(p1, p2, p3, p4)
 #define TRACE_INSERT(aMarker, sRecord)
 #define TRACE_ERROR(aMarker, eErrorCode)
 #define TRACE_EXIT(aMarker)
