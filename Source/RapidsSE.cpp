@@ -233,14 +233,19 @@ void RapidsSE::vErrorHandler(Error* pError)
   
   const char* ps;
   
-  ps = StrLib::sLast(pError->aFileName()->aChar());
-  StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
-  StrLib::vCopy(wFileName,ps+1);
-  vTrace("%s: line %lld in %s\n"_Stz,
-         pError->aErrorMsg(),
-         pError->iLineNo(),
-         wFileName);
-  
+  if (pError) {
+    ps = StrLib::sLast(pError->aFileName()->aChar());
+    StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
+    StrLib::vCopy(wFileName,ps+1);
+    vTrace("%s: line %lld in %s\n"_Stz,
+           pError->aErrorMsg(),
+           pError->iLineNo(),
+           wFileName);
+  }
+  else {
+    vTrace("RapidsSE::vErrorHandler: Unknown error\n"_Stz);
+  }
+           
   Debugging::vStackDump();
 }
 

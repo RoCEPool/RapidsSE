@@ -164,6 +164,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
     \
     vApiCall(pSession,eApiCall); \
     vApiLocation(pSession,100); \
+    \
     if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
       vTrace(">%s: %p(%lld)\n"_Stz,  \
              aApiCall, pSession , pSession ? pSession->iPartition() : -1); \
@@ -183,10 +184,15 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 #define API_EXIT() \
 {  \
+  if ( (iTrace & TL_EXIT) == TL_EXIT) \
+    vTrace(">%s: %p(%lld)\n"_Stz,  \
+           aApiCall, pSession, pSession ? pSession->iPartition() : -1); \
+  \
   if (pSession) { \
     vApiReturn(pSession); \
     vApiLocation(pSession,900); \
   } \
+  \
   ActivityMap::vMarkApiExit(eApiCall); \
 }
 
