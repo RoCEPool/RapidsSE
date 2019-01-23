@@ -150,9 +150,18 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 \
   eAC  eApiCall = _eApiCall; \
   Stz* aApiCall = aAC[eApiCall]; \
+  \
   ActivityMap::vMarkApiEntry(eApiCall); \
   vApiStatistics(eApiCall);\
+  \
   if (pSession) { \
+    \
+    eEC eResult = eValidateSession(iTrace,pSession,"entry"_Stz); \
+    if (eResult != EC_NONE) { \
+      TRACE_ERROR("entry", EC_INVALID_INTERFACE); \
+      return eResult; \
+    } \
+    \
     vApiCall(pSession,eApiCall); \
     vApiLocation(pSession,100); \
     if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
