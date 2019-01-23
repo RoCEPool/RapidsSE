@@ -72,12 +72,13 @@
   // ack the load table task if all buffers have been loaded
   bAllLoaded if
 
+"t1" .
     // we wait till the parent job can be found in the participant job skip list
     // there is a possiblity that the buffer arrives on a node before the parent job
     pJob_WriteBuffer Job_WriteBuffer.isInserting if
       pJob_WriteBuffer iParentJobId job::waitParticipant to pJob_Parent
     then
-
+"t2" .
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // first check if the job is executing SS_SEED_EXE
     // then get the task that is executing it
@@ -86,7 +87,7 @@
     not while
       1 thread.sleep_ms
     repeat
-
+"t3" .
     pJob_Parent job.executingTask@ locals| pTask_Parent |
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -96,12 +97,12 @@
     not while
        1 thread.sleep_ms
     repeat
-
+"t4" .
     "WriteBuffer.insert acking parentJob(endInsert/loadTable):" .verbose
     pTask_Parent task.grabLock
     pTask_Parent task.dropLock
     pTask_Parent task.ack
-
+"t5" .
   then
 
 ;
