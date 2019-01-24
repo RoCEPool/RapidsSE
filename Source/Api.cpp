@@ -1017,8 +1017,6 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
 Job* pAPI_ExecCmdStr(Stz* sCommand, Session* pSession,
                           bool bPostJob, bool bFromPrompt)
 {
-  gpAttachMap->m_oStatistics.Api.m_nExecCmdStr++;
-  
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
   vApiLocation(pSession,101);
@@ -1286,29 +1284,28 @@ void vApiStatistics(eAC eApiCall)
     return;
   
   switch (eApiCall) {
-    case AC_BeginInsert:         gpAttachMap->m_oStatistics.Api.m_nBeginInsertTable++;     break;
+    case AC_BeginInsert:         gpAttachMap->m_oStatistics.Api.m_nBeginInsert++;         break;
     case AC_BeginSubInserter:    gpAttachMap->m_oStatistics.Api.m_nBeginSubInserter++;     break;
-    case AC_CheckVersion:        gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;  break;
+    case AC_CheckVersion:        gpAttachMap->m_oStatistics.Api.m_nCheckVersion++;         break;
     case AC_CopyBuffer:          gpAttachMap->m_oStatistics.Api.m_nCopyBuffer++;           break;
-    case AC_EndInsert:           gpAttachMap->m_oStatistics.Api.m_nEndInsertJobs++;        break;
+    case AC_EndInsert:           gpAttachMap->m_oStatistics.Api.m_nEndInsert++;            break;
     case AC_EndJobs:             gpAttachMap->m_oStatistics.Api.m_nEndJobs++;              break;
     case AC_EndSubInserter:      gpAttachMap->m_oStatistics.Api.m_nEndSubInserter++;       break;
-    //case AC_ExecCmdStr:          gpAttachMap->m_oStatistics.Api.m_nExecCmdStr++;           break;
     case AC_ExecuteCommand:      gpAttachMap->m_oStatistics.Api.m_nExecuteCommand++;       break;
     case AC_FetchNextBuffer:     gpAttachMap->m_oStatistics.Api.m_nFetchNextBuffer++;      break;
     case AC_GetRecordBuffer:     gpAttachMap->m_oStatistics.Api.m_nGetRecordBuffer++;      break;
-    case AC_TranslateError:      gpAttachMap->m_oStatistics.Api.m_nGetErrorMessage++;      break;
+    case AC_TranslateError:      gpAttachMap->m_oStatistics.Api.m_nTranslateError++;       break;
     case AC_GetRow:              gpAttachMap->m_oStatistics.Api.m_nGetRow++;               break;
     case AC_GetRowCount:         gpAttachMap->m_oStatistics.Api.m_nGetRowCount++;          break;
-    case AC_GetTableColumnRowCount: gpAttachMap->m_oStatistics.Api.m_nGetRowCountTableColumn++;  break;
-    case AC_GetTableColumnRow:   gpAttachMap->m_oStatistics.Api.m_nGetRowTableColumn++;    break;
+    case AC_GetTableColumnRowCount: gpAttachMap->m_oStatistics.Api.m_nGetTableColumnRowCount++;  break;
+    case AC_GetTableColumnRow:   gpAttachMap->m_oStatistics.Api.m_nGetTableColumnRow++;    break;
     case AC_InsertRow:           gpAttachMap->m_oStatistics.Api.m_nInsertRow++;            break;
-    case AC_GetLoadResult:       gpAttachMap->m_oStatistics.Api.m_nLoadResult++;           break;
+    case AC_GetLoadResult:       gpAttachMap->m_oStatistics.Api.m_nGetLoadResult++;        break;
     case AC_OpenPool:            gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;             break;
     case AC_ScanNextRow:         gpAttachMap->m_oStatistics.Api.m_nScanNextRow++;          break;
-    case AC_DeleteSession:       gpAttachMap->m_oStatistics.Api.m_nSessionDelete++;        break;
-    case AC_IsInvalidSession:    gpAttachMap->m_oStatistics.Api.m_nSessionInvalid++;       break;
-    case AC_NewSession:          gpAttachMap->m_oStatistics.Api.m_nSessionNew++;           break;
+    case AC_DeleteSession:       gpAttachMap->m_oStatistics.Api.m_nDeleteSession++;        break;
+    case AC_IsInvalidSession:    gpAttachMap->m_oStatistics.Api.m_nIsInvalidSession++;     break;
+    case AC_NewSession:          gpAttachMap->m_oStatistics.Api.m_nNewSession++;           break;
     default:
       NEVER_REACH;
   }
@@ -1325,33 +1322,29 @@ void vAPI_MonitorPortrait(s48K& sPortrait)
   i8 iPrev = 0;
   Statistics* pStats = &gpAttachMap->m_oStatistics;
   
-  if (pStats->Api.m_nBeginInsertTable) {
+  if (pStats->Api.m_nBeginInsert) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("beginInsertTable %lld "_Stz,pStats->Api.m_nBeginInsertTable);
+    s.vSprintCat("beginInsertTable %lld "_Stz,pStats->Api.m_nBeginInsert);
   }
   if (pStats->Api.m_nBeginSubInserter) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("beginSubInserter %lld "_Stz,pStats->Api.m_nBeginSubInserter);
   }
-  if (pStats->Api.m_nCheckLibraryVersion) {
+  if (pStats->Api.m_nCheckVersion) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("checkVersion %lld "_Stz,pStats->Api.m_nCheckLibraryVersion);
+    s.vSprintCat("checkVersion %lld "_Stz,pStats->Api.m_nCheckVersion);
   }
   if (pStats->Api.m_nCopyBuffer) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("copyBuffer %lld "_Stz,pStats->Api.m_nCopyBuffer);
   }
-  if (pStats->Api.m_nEndInsertJobs) {
+  if (pStats->Api.m_nEndInsert) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("endInsertJobs %lld "_Stz,pStats->Api.m_nEndInsertJobs);
+    s.vSprintCat("endInsertJobs %lld "_Stz,pStats->Api.m_nEndInsert);
   }
   if (pStats->Api.m_nEndJobs) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("endJobs %lld "_Stz,pStats->Api.m_nEndJobs);
-  }
-  if (pStats->Api.m_nExecCmdStr) {
-    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("execCmdStr %lld "_Stz,pStats->Api.m_nExecCmdStr);
   }
   if (pStats->Api.m_nExecuteCommand) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
@@ -1365,9 +1358,9 @@ void vAPI_MonitorPortrait(s48K& sPortrait)
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("getRecordBuffer %lld "_Stz,pStats->Api.m_nGetRecordBuffer);
   }
-  if (pStats->Api.m_nGetErrorMessage) {
+  if (pStats->Api.m_nTranslateError) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("getErrorMessage %lld "_Stz,pStats->Api.m_nGetErrorMessage);
+    s.vSprintCat("translareError %lld "_Stz,pStats->Api.m_nTranslateError);
   }
   if (pStats->Api.m_nGetRow) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
@@ -1377,25 +1370,21 @@ void vAPI_MonitorPortrait(s48K& sPortrait)
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("getRowCount %lld "_Stz,pStats->Api.m_nGetRowCount);
   }
-  if (pStats->Api.m_nGetRowCountTableColumn) {
+  if (pStats->Api.m_nGetTableColumnRowCount) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("GetRowCountTableColumn %lld "_Stz,pStats->Api.m_nGetRowCountTableColumn);
+    s.vSprintCat("GetTableColumnRowCount %lld "_Stz,pStats->Api.m_nGetTableColumnRowCount);
   }
-  if (pStats->Api.m_nGetRowTableColumn) {
+  if (pStats->Api.m_nGetTableColumnRow) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("getRowTableColumn %lld "_Stz,pStats->Api.m_nGetRowTableColumn);
+    s.vSprintCat("getTableColumnRow %lld "_Stz,pStats->Api.m_nGetTableColumnRow);
   }
   if (pStats->Api.m_nInsertRow) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("insertRow %lld "_Stz,pStats->Api.m_nInsertRow);
   }
-  if (pStats->Api.m_nInsertRows) {
+  if (pStats->Api.m_nGetLoadResult) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("insertRows %lld "_Stz,pStats->Api.m_nInsertRows);
-  }
-  if (pStats->Api.m_nLoadResult) {
-    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("loadResult %lld "_Stz,pStats->Api.m_nLoadResult);
+    s.vSprintCat("getLoadResult %lld "_Stz,pStats->Api.m_nGetLoadResult);
   }
   if (pStats->Api.m_nPoolOpen) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
@@ -1405,17 +1394,17 @@ void vAPI_MonitorPortrait(s48K& sPortrait)
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("scanNextRow %lld "_Stz,pStats->Api.m_nScanNextRow);
   }
-  if (pStats->Api.m_nSessionDelete) {
+  if (pStats->Api.m_nDeleteSession) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("sessionDelete %lld "_Stz,pStats->Api.m_nSessionDelete);
+    s.vSprintCat("deleteSession %lld "_Stz,pStats->Api.m_nDeleteSession);
   }
-  if (pStats->Api.m_nSessionInvalid) {
+  if (pStats->Api.m_nIsInvalidSession) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("sessionInvalid %lld "_Stz,pStats->Api.m_nSessionInvalid);
+    s.vSprintCat("isInvalidSession %lld "_Stz,pStats->Api.m_nIsInvalidSession);
   }
-  if (pStats->Api.m_nSessionNew) {
+  if (pStats->Api.m_nNewSession) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("sessionNew %lld "_Stz,pStats->Api.m_nSessionNew);
+    s.vSprintCat("newSession %lld "_Stz,pStats->Api.m_nNewSession);
   }
   
   if (nCats) {

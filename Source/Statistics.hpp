@@ -10,30 +10,28 @@ namespace Measurement
   public:
 
   struct {
-    i8 m_nBeginInsertTable;
+    i8 m_nBeginInsert;
     i8 m_nBeginSubInserter;
-    i8 m_nCheckLibraryVersion;
+    i8 m_nCheckVersion;
     i8 m_nCopyBuffer;
-    i8 m_nEndInsertJobs;
+    i8 m_nDeleteSession;
+    i8 m_nEndInsert;
     i8 m_nEndJobs;
     i8 m_nEndSubInserter;
-    i8 m_nExecCmdStr;
     i8 m_nExecuteCommand;
     i8 m_nFetchNextBuffer;
+    i8 m_nGetLoadResult;
     i8 m_nGetRecordBuffer;
-    i8 m_nGetErrorMessage;
     i8 m_nGetRow;
     i8 m_nGetRowCount;
-    i8 m_nGetRowCountTableColumn;
-    i8 m_nGetRowTableColumn;
+    i8 m_nGetTableColumnRow;
+    i8 m_nGetTableColumnRowCount;
     i8 m_nInsertRow;
-    i8 m_nInsertRows;
-    i8 m_nLoadResult;
+    i8 m_nIsInvalidSession;
+    i8 m_nNewSession;
     i8 m_nPoolOpen;
     i8 m_nScanNextRow;
-    i8 m_nSessionDelete;
-    i8 m_nSessionInvalid;
-    i8 m_nSessionNew;
+    i8 m_nTranslateError;
   } Api;
   
   struct {
