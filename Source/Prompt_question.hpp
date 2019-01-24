@@ -1,15 +1,12 @@
 /*============================================================================*/
-/* Prompt_help.hpp -- print command help                                      */
+/* Prompt_question.hpp -- help (? form)                                       */
 /*============================================================================*/
 #pragma once
 
 namespace Prompt
 {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  bool bPrompt_help(SePrompt* pPrompt);
-  
-  bool bPrompt_helpJob(SePrompt* pPrompt);
-  bool bPrompt_helpJobs(SePrompt* pPrompt);
+  bool bPrompt_question(SePrompt* pPrompt);
 }
 
 /*============================================================================*/
