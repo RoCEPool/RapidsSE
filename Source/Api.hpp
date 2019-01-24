@@ -148,6 +148,7 @@ namespace Interface
    static void vMonitorPortrait(s48K& sPortrait);
    static bool bSpawnJob(Session* pSession, Job* aJob, eSS eSeed);
    static void vSpawnJobAndWait(Session* pSession, Job* aJob);
+   static eEC  eValidateSession(i8 iTrace, Session* pSession, Stz* aApiCall);
   };
 }
 
@@ -187,10 +188,10 @@ namespace Interface
   \
   if (pSession) { \
     \
-    eEC eResult = eValidateSession(iTrace,pSession,"entry"_Stz); \
-    if (eResult != EC_NONE) { \
+    eEC eError = Api::eValidateSession(iTrace,pSession,"entry"_Stz); \
+    if (eError != EC_NONE) { \
       TRACE_ERROR("entry", EC_INVALID_INTERFACE); \
-      return eResult; \
+      return eError; \
     } \
     \
     vApiCall(pSession,eApiCall); \
@@ -394,33 +395,6 @@ namespace Interface
 
 #endif
 
-
-/*----------------------------------------------------------------------------*/
-/* validate the SE session                                                    */
-/*----------------------------------------------------------------------------*/
-inline eEC eValidateSession(i8 iTrace, Session* pSession, Stz* aApiCall)
-{
-  
-  // pSession cannot be null
-  if (pSession == nullptr) {
-    TRACE_ERROR("va", EC_INVALID_INTERFACE);
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // pSession should be a pool address
-  if (!gpBufferPool->bValidAddress(pSession)) {
-    TRACE_ERROR("vb", EC_INVALID_INTERFACE);
-    return EC_INVALID_INTERFACE;
-  }
-  
-  // pSession should be an SESSION class
-  if (pSession->eClass() != CN_SESSION) {
-    TRACE_ERROR("vc", EC_INVALID_INTERFACE);
-    return EC_INVALID_INTERFACE;
-  }
-  
-  return EC_NONE;
-}
 
 /*============================================================================*/
 /* end                                                                        */
