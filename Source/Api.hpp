@@ -169,7 +169,10 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
       vTrace(">%s: %p(%lld)\n"_Stz,  \
              aApiCall, pSession , \
              pSession ? pSession->iPartition() : -1); \
-  }
+  } \
+  if (pJob) { \
+  } \
+
 // didnt use braces { }, as that would hide the variables
 
 /*----------------------------------------------------------------------------*/
@@ -281,17 +284,6 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate job                                                               */
-/*----------------------------------------------------------------------------*/
-#define VALIDATE_JOB(aMarker) \
-{  \
-  if ( ! aJob ) { \
-    TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-    return EC_VALIDATION_FAILURE; \
-  } \
-}
-
-/*----------------------------------------------------------------------------*/
 /* validate index                                                             */
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_INDEX(aMarker) \
@@ -390,7 +382,6 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define TRACE_INSERT(aMarker, sRecord)
 #define TRACE_ERROR(aMarker, eErrorCode)
 #define TRACE_EXIT(aMarker)
-#define VALIDATE_JOB(aMarker)
 #define VALIDATE_INDEX(aMarker)
 #define VALIDATE_NOINDEX(aMarker)
 #define VALIDATE_PARAM(aMarker, pParameter)
