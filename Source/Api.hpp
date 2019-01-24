@@ -394,53 +394,6 @@ namespace Interface
 
 #endif
 
-/*----------------------------------------------------------------------------*/
-/* trace API call entry                                                       */
-/*----------------------------------------------------------------------------*/
-inline void vTraceEntry(i8 iTrace, Stz* aFormat, ...)
-{
-  // trace entry ?
-  if ( (iTrace & TL_ENTRY) != TL_ENTRY)
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,aFormat);
-  Debugging::vPrint(aFormat,xArgs);
-  va_end(xArgs);
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace API call exit                                                        */
-/*----------------------------------------------------------------------------*/
-inline void vTraceExit(i8 iTrace, Stz* aFormat, ...)
-{
-  // trace entry ?
-  if ( (iTrace & TL_EXIT) != TL_EXIT)
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,aFormat);
-  Debugging::vPrint(aFormat,xArgs);
-  va_end(xArgs);
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace API error                                                            */
-/*----------------------------------------------------------------------------*/
-inline void vTraceError(i8 iTrace, Stz* aFormat, ...)
-{
-  // trace entry ?
-  if ( (iTrace & TL_ERROR) != TL_ERROR)
-    return;
-  
-  va_list xArgs;
-  
-  va_start(xArgs,aFormat);
-  Debugging::vPrint(aFormat,xArgs);
-  va_end(xArgs);
-}
 
 /*----------------------------------------------------------------------------*/
 /* validate the SE session                                                    */
