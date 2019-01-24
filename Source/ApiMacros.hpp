@@ -12,6 +12,10 @@
 #define TL_POOL   C_BIT_4 // 16
 
 
+////////////////////////////////////////////////////////////////////////////////
+//                                 The Level Macros                           //
+////////////////////////////////////////////////////////////////////////////////
+
 #define API_SYSTEM_LEVEL() \
   Session* pSession = nullptr; \
   Job* pJob = nullptr;
@@ -25,20 +29,25 @@
 #define API_LOC(iLocation) \
   ApiState::vMarkLocation(pSession,iLocation);
 
+
+////////////////////////////////////////////////////////////////////////////////
+//                         Debug Version of the Macros                        //
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifdef _DEBUG
 
 /*----------------------------------------------------------------------------*/
-/* begin API function                                                         */
+/* begin an API function                                                      */
 /*----------------------------------------------------------------------------*/
 #define API_BEGIN() \
   if (pSession) \
     ApiState::vMarkLocation(pSession,200);
 
 /*----------------------------------------------------------------------------*/
-/* enter API function                                                         */
+/* enter an API function                                                      */
 /*----------------------------------------------------------------------------*/
+// not using braces { }, as that would hide the variables
+
 #define API_ENTRY(_eApiCall) \
   \
   eAC  eApiCall = _eApiCall; \
@@ -66,10 +75,9 @@
   if (pJob) { \
   } \
 
-// didnt use braces { }, as that would hide the variables
 
 /*----------------------------------------------------------------------------*/
-/* error in API function                                                      */
+/* return error code from an API function                                     */
 /*----------------------------------------------------------------------------*/
 #define API_RETURN_EC(eErrorCode) \
 { \
@@ -85,8 +93,10 @@
 }
 
 /*----------------------------------------------------------------------------*/
-/* error in API function                                                      */
+/* vatch an error in an API function                                          */
 /*----------------------------------------------------------------------------*/
+// not using braces { }, as that would hide the variables
+
 #define API_CATCH(pError) \
   \
   eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
@@ -102,10 +112,8 @@
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
   return eErrorCode;
 
-// didnt use braces { }, as that would hide the variables
-
 /*----------------------------------------------------------------------------*/
-/* exit API function                                                          */
+/* API function is exiting prior to API_RETURN                                */
 /*----------------------------------------------------------------------------*/
 #define API_EXITING() \
 {  \
@@ -123,7 +131,7 @@
 }
 
 /*----------------------------------------------------------------------------*/
-/* exit API function                                                          */
+/* API function is returning                                                  */
 /*----------------------------------------------------------------------------*/
 #define API_RETURN() \
 {  \
@@ -142,7 +150,7 @@
 }
 
 /*----------------------------------------------------------------------------*/
-/* trace API entry                                                            */
+/* trace API parameter                                                        */
 /*----------------------------------------------------------------------------*/
 #define API_PARAM_P1(p1) \
 {  \
@@ -152,7 +160,7 @@
 }
 
 /*----------------------------------------------------------------------------*/
-/* trace API entry                                                            */
+/* trace API parameters                                                       */
 /*----------------------------------------------------------------------------*/
 #define API_PARAM_P2(p1, p2) \
 {  \
@@ -163,7 +171,7 @@
 }
 
 /*----------------------------------------------------------------------------*/
-/* trace API entry                                                            */
+/* trace API parameters                                                       */
 /*----------------------------------------------------------------------------*/
 #define API_PARAM_P3(p1, p2, p3) \
 {  \
@@ -174,7 +182,7 @@
 }
 
 /*----------------------------------------------------------------------------*/
-/* trace API entry                                                            */
+/* trace API parameters                                                       */
 /*----------------------------------------------------------------------------*/
 #define API_PARAM_P4(p1, p2, p3, p4) \
 {  \
@@ -184,7 +192,7 @@
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate reference pointer                                                 */
+/* validate not null argument                                                 */
 /*----------------------------------------------------------------------------*/
 #define API_NOTNULL(p1) \
 { \
@@ -206,7 +214,6 @@
            (i8)eErrorCode); \
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* verify buffer pool boundaries                                              */
 /*----------------------------------------------------------------------------*/
@@ -226,6 +233,11 @@
   } \
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+//                         Release Version of the Macros                      //
+////////////////////////////////////////////////////////////////////////////////
+
 #else
 
 #define API_CATCH(pError) \
@@ -236,7 +248,7 @@
   return eErrorCode;
 
 #define API_BEGIN()
-#define API_ENTRY(__eApiCall)
+#define API_ENTRY(eApiCall)
 #define API_RETURN_EC(eErrorCode) return eErrorCode
 #define API_ERROR()
 #define API_EXIT()
@@ -254,7 +266,6 @@
 #define VALIDATE_POOL()
 
 #endif
-
 
 /*============================================================================*/
 /* end                                                                        */
