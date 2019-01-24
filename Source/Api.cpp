@@ -259,7 +259,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     API_LOC(310);
 
     // execute the command
-    Job* pJob = Api::pExecCmdStr(sCommand, pSession, false, false);
+    Job* pJob = Api::pExecCmdStr(pSession, sCommand, false, false);
     API_LOC(320);
 
     vApiJob(pSession,pJob);
@@ -495,7 +495,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn the job
     //vTrace("Spawning copyBuffer job\n"_Stz);
-    IGNORE_RETURN(Api::bSpawnJob(pJob_CopyBuffer, SS_SEED_REQ, pSession));
+    IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_CopyBuffer,SS_SEED_REQ));
     API_LOC(390);
   }
   catch (Error* pError) { API_CATCH(pError); }
@@ -1148,7 +1148,7 @@ void Api::vDeleteJobs(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-Job* Api::pExecCmdStr(Stz* sCommand, Session* pSession,
+Job* Api::pExecCmdStr(Session* pSession, Stz* sCommand,
                       bool bPostJob, bool bFromPrompt)
 {
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
@@ -1326,7 +1326,7 @@ void Api::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool Api::bSpawnJob(Job* pJob, eSS eSeed, Session* pSession)
+bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
 {
   //----------------------------------------------------------------------------
   // Before appending request for se, ensure that se is running
@@ -1373,7 +1373,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
   pJob->m_eState = JS_LOCKED;
   
   // spawn the insertTable job
-  IGNORE_RETURN(Api::bSpawnJob(pJob, SS_SEED_REQ, pSession));
+  IGNORE_RETURN(Api::bSpawnJob(pSession,pJob,SS_SEED_REQ));
   vApiLocation(pSession,107);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

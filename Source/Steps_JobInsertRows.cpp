@@ -109,7 +109,7 @@ void Step::vJob_InsertRowSpawnJobWriteRow(MP_Task mpTask)
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   // spawn a writeRow job
-  IGNORE_RETURN(Api::bSpawnJob(pJob_WriteRow,SS_SEED_RUN,pJob_InsertRow->m_pSession));
+  IGNORE_RETURN(Api::bSpawnJob(pJob_InsertRow->m_pSession,pJob_WriteRow,SS_SEED_RUN));
   
   EXIT();
 }

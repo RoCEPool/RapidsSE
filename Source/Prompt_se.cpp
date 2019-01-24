@@ -73,7 +73,7 @@ bool Prompt::bPrompt_se(SePrompt* pPrompt)
   vTrace("SE:: %s\n"_Stz,sCommand.aStz());
   
   // call se to execute command
-  Job* pJob = Api::pExecCmdStr(sCommand.aStz(),pPrompt->pSession(),true,true);
+  Job* pJob = Api::pExecCmdStr(pPrompt->pSession(),sCommand,true,true);
   
   if (pJob) {
     delete pJob;

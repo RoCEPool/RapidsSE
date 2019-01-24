@@ -65,7 +65,7 @@ void Step::vJob_PublishSpawnSub(MP_Task mpTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  IGNORE_RETURN(Api::bSpawnJob(pJob_SubPublish,SS_SEED_RUN,nullptr));
+  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_SubPublish,SS_SEED_RUN));
   
   EXIT();
 }

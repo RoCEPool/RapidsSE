@@ -46,7 +46,7 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  IGNORE_RETURN(Api::bSpawnJob(pJob_SubPurger,SS_SEED_RUN,nullptr));
+  IGNORE_RETURN(Api::bSpawnJob(nullptr,pJob_SubPurger,SS_SEED_RUN));
 
   EXIT();
 }
