@@ -72,7 +72,7 @@ static Stz* aAC[]
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// RapidSE level calls
+// System Level Calls
 extern "C" eEC  RapidsSE_CheckLibraryVersion(i8 iTrace,
                                              Stz* sVersion);
 extern "C" eEC  RapidsSE_PoolOpen           (i8 iTrace,
@@ -85,7 +85,7 @@ extern "C" eEC  RapidsSE_SessionNew         (i8 iTrace,
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// session level calls
+// Session Level Calls
 extern "C" eEC  RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
                                           Stz* sTable, void** aaJob, i8 nSubInserters);
 extern "C" eEC  RapidsSE_EndJobs         (i8 iTrace, Session* pSession);
@@ -100,7 +100,7 @@ extern "C" eEC  RapidsSE_SessionDelete   (i8 iTrace, Session* pSession);
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// job level calls
+// Job Level Calls
 extern "C" eEC  RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
                                           void** aaJob);
 extern "C" eEC  RapidsSE_CopyBuffer      (i8 iTrace, Session* pSession, void* aJob);

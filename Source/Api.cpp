@@ -11,7 +11,7 @@ extern ActivityMap* gpActivityMap;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//                            RapidsSE level calls                            //
+//                            System Level Calls                            //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -20,6 +20,7 @@ extern ActivityMap* gpActivityMap;
 eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
 {
   Session* pSession = nullptr;
+  Job* pJob = nullptr;
   
   API_ENTRY(AC_CheckLibraryVersion);
   API_PARAM_P1(sVersion);
@@ -56,7 +57,8 @@ eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
 eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 {
   Session* pSession = nullptr;
-  
+  Job* pJob = nullptr;
+
   API_ENTRY(AC_PoolOpen);
   API_PARAM_P1(sRegion);
 
@@ -103,7 +105,8 @@ eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
 {
   Session* pSession = nullptr;
-  
+  Job* pJob = nullptr;
+
   API_ENTRY(AC_SessionInvalid);
   
   try {
@@ -125,7 +128,6 @@ bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
   }
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* create a new se session                                                    */
 /*----------------------------------------------------------------------------*/
@@ -133,7 +135,8 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
                         Stz* sCatalog, Stz* sSchema, i8 iPartition)
 {
   Session* pSession = nullptr;
-  
+  Job* pJob = nullptr;
+
   API_ENTRY(AC_SessionNew);
   API_PARAM_P2(sCatalog, sSchema);
 
@@ -176,7 +179,7 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//                             Session level calls                            //
+//                             Session Level Calls                            //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -185,6 +188,8 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
 eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
                               Stz* sTable, void** aaJob, i8 nSubInserters)
 {
+  Job* pJob = nullptr;
+  
   API_ENTRY(AC_BeginInsertTable);
   
   try {
@@ -196,7 +201,7 @@ eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
     JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
     ASSERT(pJobClass_InsertTable);
     Job_InsertTable* pJob_InsertTable =
-    static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
+      static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
     
     // find the table in the session dictionary stack
     Table* pTable = Table::pFindTable(pSession->pPathStack(), sTable);
@@ -233,6 +238,8 @@ eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
 {
+  Job* pJob = nullptr;
+  
   API_ENTRY(AC_EndJobs);
   
   // delete the jobs from the sessions jobStack
@@ -252,6 +259,8 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
                             Stz* sCommand, Stz* sCatalog, Stz* sSchema,
                             void** aaJob)
 {
+  Job* pJob = nullptr;
+  
   API_ENTRY(AC_ExecuteCommand);
   API_PARAM_P1(sCommand);
 
@@ -275,7 +284,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     Job* pJob = RapidsSE_pExecCmdStr(sCommand, pSession, false, false);
     vApiLocation(pSession,220);
     
-    vApiJob(pSession,pJob);                                             // API JOB
+    vApiJob(pSession,pJob);
     
     // check if job had an error
     if (pJob->m_bHasError) {
@@ -324,6 +333,8 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
 eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession,
                              int iErrorCode, void** aaError)
 {
+  Job* pJob = nullptr;
+  
   API_ENTRY(AC_GetErrorMessage);
   
   try {
@@ -355,6 +366,8 @@ eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession,
 eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
                        Stz* sTableName, Stz* sRecord)
 {
+  Job* pJob = nullptr;
+  
   API_ENTRY(AC_InsertRow);
   
   try {
@@ -431,6 +444,8 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
 {
+  Job* pJob = nullptr;
+  
   API_ENTRY(AC_SessionDelete);
   
   try {
@@ -464,7 +479,7 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//                               Job level calls                              //
+//                               Job Level Calls                              //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -473,6 +488,8 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
 eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
                               void** aaJob)
 {
+  Job* pJob = _pJob(aJob);
+
   API_ENTRY(AC_BeginSubInserter);
   
   try {
@@ -525,6 +542,8 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 {
+  Job* pJob = _pJob(aJob);
+
   API_ENTRY(AC_CopyBuffer);
   
   try {
@@ -590,6 +609,8 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
 {
+  Job* pJob = _pJob(aJob);
+
   API_ENTRY(AC_EndInsertTable);
   
   try {
@@ -649,6 +670,8 @@ eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 {
+  Job* pJob = _pJob(aJob);
+
   API_ENTRY(AC_EndSubInserter);
   
   try {
@@ -689,6 +712,8 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
                              void** aaFetchBuffer, i8* piExpectedRows)
 {
+  Job* pJob = _pJob(aJob);
+
   API_ENTRY(AC_FetchNextBuffer);
   
   try {
@@ -791,6 +816,8 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
 eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob,
                              void** aaBuffer)
 {
+  Job* pJob = _pJob(aJob);
+
   API_ENTRY(AC_GetRecordBuffer);
   
   // validate the job
@@ -816,11 +843,10 @@ eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob,
 eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
                     i8 iRow, void** aaRow)
 {
+  Job* pJob = _pJob(aJob);
+  
   API_ENTRY(AC_GetRow);
-  
-  // get the jobptr
-  Job* pJob = (Job*)aJob;
-  
+    
   // validate the job
   VALIDATE_JOB("b"_Stz);
  
@@ -880,9 +906,9 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
 eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
                          i8 *aRowCount)
 {
-  API_ENTRY(AC_GetRowCount);
+  Job* pJob = _pJob(aJob);
   
-  Job* pJob = (Job*)aJob;
+  API_ENTRY(AC_GetRowCount);
   
   // validate the job
   VALIDATE_JOB("b"_Stz);
@@ -908,6 +934,8 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
 eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob,
                                     i8 *aRowCount)
 {
+  Job* pJob = _pJob(aJob);
+  
   API_ENTRY(AC_GetRowCountTableColumn);
   
   // validate the job
@@ -934,6 +962,8 @@ eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob,
 eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
                                i8 iRow, void** aaRow)
 {
+  Job* pJob = _pJob(aJob);
+  
   API_ENTRY(AC_GetRowTableColumn);
   
   // validate the job
@@ -972,6 +1002,8 @@ eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
 eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob,
                         i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows)
 {
+  Job* pJob = _pJob(aJob);
+  
   API_ENTRY(AC_LoadResult);
   
   try {
@@ -1025,6 +1057,8 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
                          void** aaEntryBuffer, void** aaEntry, void** aaRow,
                          i8* piExpectedRows)
 {
+  Job* pJob = _pJob(aJob);
+  
   API_ENTRY(AC_ScanNextRow);
   
   try {
