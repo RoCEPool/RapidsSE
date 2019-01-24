@@ -11,7 +11,7 @@ extern ActivityMap* gpActivityMap;
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//                            System Level Calls                            //
+//                             System Level Calls                             //
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -31,8 +31,7 @@ eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
       vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match RapidsSE (%s)"_Stz,
              sVersion, RAPIDSSE_VERSION_STRING);
       
-      TRACE_ERROR("b"_Stz, EC_VERSION_MISMATCH);
-      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+      API_ECODE(EC_VERSION_MISMATCH)
       return EC_VERSION_MISMATCH;
     }
     
@@ -60,8 +59,8 @@ eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
     sPoolName = (Stz*)sRegion;
     bool bResult = RapidsSE::bOpenPool(sPoolName);
     
-    if (!bResult) {
-      TRACE_ERROR("a"_Stz, EC_INVALID_INSTANCE);
+    if (! bResult) {
+      API_ECODE(EC_INVALID_INSTANCE)
       return EC_INVALID_INSTANCE;
     }
     
@@ -231,17 +230,13 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     if (pJob->m_bHasError) {
       for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
         eEC eError = pJob->m_xNode[i_Node].m_eErrorCode;
-        if ( eError != EC_NONE) {
-          //vTrace("ERROR*** (NODE%lld): %s\n"_Stz, i_Node, aEC[pJob->m_xNode[i_Node].m_eErrorCode]);
-          TRACE_ERROR("eb"_Stz, eError);
-          vApiError(pSession,pJob->m_xNode[i_Node].m_eErrorCode);
-          vApiLocation(pSession,812);
+        if (eError != EC_NONE) {
           pSession->m_pJobStack->vPushPointer(pJob);
-          ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+          API_ECODE(eError);
           return eError;
         }
       }
-      ASSERT(0);
+      NEVER_REACH;
     }
     
     vApiLocation(pSession,230);
@@ -437,7 +432,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     //pJob_SubInserter->m_pRecordBuffer->vShow();
     
     if (! pRecordBuffer) {
-      TRACE_EXIT("ea"_Stz);
+      API_EXITING();
       return EC_NONE;
     }
     
@@ -561,13 +556,11 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
     
     // are we done ?
     if (pJob_FetchRows->m_nLastBuffersScanned == pJob_FetchRows->m_nLastBuffers) {
+      
       *aaFetchBuffer = nullptr;
   
       // trace exit
-      TRACE_EXIT("ea"_Stz);
-      vApiReturn(pSession);
-      vApiLocation(pSession,910);
-      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+      API_EXITING();
       return EC_NONE;
     }
     

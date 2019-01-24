@@ -221,7 +221,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
   \
   if (pSession) { \
     vApiReturn(pSession); \
-    vApiLocation(pSession,999); \
+    vApiLocation(pSession,990); \
   } \
   \
   ActivityMap::vMarkApiExit(eApiCall); \
@@ -341,15 +341,27 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 
 #else
 
+#define API_CATCH(pError) \
+  \
+  eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
+  \
+  RapidsSE::vErrorHandler(pError); \
+  return eErrorCode;
+
 #define API_ENTRY(__eApiCall)
+#define API_ECODE(eErrorCode)
 #define API_ERROR()
 #define API_EXIT()
+#define API_EXITING()
 #define API_NOTNULL(aMarker, pRefPointer)
 
 #define API_PARAM_P1(p1)
 #define API_PARAM_P2(p1, p2)
 #define API_PARAM_P3(p1, p2, p3)
 #define API_PARAM_P4(p1, p2, p3, p4)
+
+#define API_RETURN() return EC_NONE;
+
 #define TRACE_ERROR(aMarker, eErrorCode)
 #define TRACE_EXIT(aMarker)
 #define VALIDATE_NOINDEX(aMarker)
