@@ -55,9 +55,14 @@ Tokeniser::Tokeniser(void)
   m_sToken  = ""_Stz;
   m_eToken  = TN_NONE;
   
-  m_sPrompt.vSprint("[N%lld %lld] se %s%c"_Stz,
+  
+  i8 i_Node = gxArguments.m_iThisNode;
+  Node* pNode = gpAttachMap->m_pGrid->pThisNode();
+  
+  m_sPrompt.vSprint("[N%lld %s %lld] se %s%c"_Stz,
                     
-                    gxArguments.m_iThisNode,
+                    i_Node,
+                    pNode->aNodeName(),
                     Process::iGetPid(),
                     
                     RAPIDSSE_VERSION_STRING,
