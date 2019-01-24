@@ -20,7 +20,7 @@ extern ActivityMap* gpActivityMap;
 eEC RapidsSE_CheckVersion(i8 iTrace, Stz* sVersion)
 {
   API_SYSTEM_LEVEL();
-  API_ENTRY(AC_CheckLibraryVersion);
+  API_ENTRY(AC_CheckVersion);
   API_PARAM_P1(sVersion);
   API_BEGIN();
   
@@ -48,7 +48,7 @@ eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
   Session* pSession = *ppSession;
   
   API_SESSION_LEVEL();
-  API_ENTRY(AC_SessionDelete);
+  API_ENTRY(AC_DeleteSession);
   API_BEGIN();
   
   try {
@@ -78,10 +78,13 @@ eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
 /*----------------------------------------------------------------------------*/
 /* is the error an EC_INVALID_INTERFACE ?                                     */
 /*----------------------------------------------------------------------------*/
+//
+// can this be: RapidsSE_IsInvalidInterface
+//
 bool RapidsSE_IsInvalidSession(i8 iTrace, int iError)
 {
   API_SYSTEM_LEVEL();
-  API_ENTRY(AC_SessionInvalid);
+  API_ENTRY(AC_IsInvalidSession);
   API_BEGIN();
   
   API_EXITING();
@@ -95,10 +98,11 @@ bool RapidsSE_IsInvalidSession(i8 iTrace, int iError)
 /* create a new se session                                                    */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_NewSession(i8 iTrace,
-                        Stz* sCatalog, Stz* sSchema, i8 iPartition, void** aaSession)
+                        Stz* sCatalog, Stz* sSchema, i8 iPartition,
+                        void** aaSession)
 {
   API_SYSTEM_LEVEL();
-  API_ENTRY(AC_SessionNew);
+  API_ENTRY(AC_NewSession);
   API_PARAM_P2(sCatalog, sSchema);
   API_NOTNULL(aaSession);
   API_BEGIN();
@@ -129,7 +133,7 @@ eEC RapidsSE_NewSession(i8 iTrace,
 eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 {
   API_SYSTEM_LEVEL();
-  API_ENTRY(AC_PoolOpen);
+  API_ENTRY(AC_OpenPool);
   API_PARAM_P1(sRegion);
   API_BEGIN();
   
@@ -167,10 +171,10 @@ eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 /* begin the insert table job                                                 */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
-                              Stz* sTable, i8 nSubInserters, void** aaJob)
+                         Stz* sTable, i8 nSubInserters, void** aaJob)
 {
   API_SESSION_LEVEL();
-  API_ENTRY(AC_BeginInsertTable);
+  API_ENTRY(AC_BeginInsert);
   API_NOTNULL(aaJob);
   API_BEGIN();
   
@@ -357,13 +361,13 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get last error                                                             */
+/* translate error code                                                       */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_TranslateError(i8 iTrace, Session* pSession,
                             int iErrorCode, void** aaError)
 {
   API_SESSION_LEVEL();
-  API_ENTRY(AC_GetErrorMessage);
+  API_ENTRY(AC_TranslateError);
   API_NOTNULL(aaError);
   API_BEGIN();
   
@@ -506,7 +510,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_EndInsertTable);
+  API_ENTRY(AC_EndInsert);
   API_BEGIN();
   
   try {
@@ -543,7 +547,7 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end insert and all session jobs                                            */
+/* end subinserter and all session jobs                                       */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 {
@@ -678,7 +682,7 @@ eEC RapidsSE_GetLoadResult(i8 iTrace, Session* pSession, void* aJob,
                            i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_LoadResult);
+  API_ENTRY(AC_GetLoadResult);
   API_NOTNULL(aiValidRows);
   API_NOTNULL(aiInvalidRows);
   API_BEGIN();
@@ -827,13 +831,59 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
 }
 
 /*----------------------------------------------------------------------------*/
+/* get row table column                                                       */
+/*----------------------------------------------------------------------------*/
+//
+// should this be: RapidsSE_GetColumnRecord ?
+//
+eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
+                               i8 i_Col, void** aaRow)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_GetTableColumnRow);
+  API_NOTNULL(aaRow);
+  API_BEGIN();
+  
+  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
+  API_LOC(310);
+  
+  i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+  Table* pTable =
+  (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[iNode].m_sResponse.aChar());
+  API_LOC(320);
+  
+  ColumnVec* pColumnVec = pTable->pColumnVec();
+  Column* pColumn = pColumnVec->pGet(i_Col);
+  API_LOC(330);
+  
+  sprintf(pSession->m_sResponse.aChar(),"%lld,%s,%s,%lld,%lld,%s,%s",
+          pColumn->iColumnNo(),
+          pColumn->sColumnName().aChar(),
+          aCT[pColumn->eColumnType()]->aChar(),
+          pColumn->iColumnLength(),
+          pColumn->iColumnScale(),
+          pColumn->bIsNullable() ? "true" : "false",
+          pColumn->bIsPartitionKey() ? "true": "false"
+          );
+  API_LOC(340);
+  
+  *aaRow = pSession->m_sResponse.aChar();
+  API_LOC(350);
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get row count table column                                                 */
 /*----------------------------------------------------------------------------*/
+//
+// should this be: RapidsSE_GetColumnCount ?
+//
 eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
                                     i8 *aiRowCount)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_GetRowCountTableColumn);
+  API_ENTRY(AC_GetTableColumnRowCount);
   API_NOTNULL(aiRowCount);
   API_BEGIN();
   
@@ -856,46 +906,6 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
 
   //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
   
-  API_RETURN();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get row table column                                                       */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
-                               i8 i_Col, void** aaRow)
-{
-  API_JOB_LEVEL();
-  API_ENTRY(AC_GetRowTableColumn);
-  API_NOTNULL(aaRow);
-  API_BEGIN();
-  
-  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
-  API_LOC(310);
-
-  i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
-  Table* pTable =
-    (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[iNode].m_sResponse.aChar());
-  API_LOC(320);
-
-  ColumnVec* pColumnVec = pTable->pColumnVec();
-  Column* pColumn = pColumnVec->pGet(i_Col);
-  API_LOC(330);
-  
-  sprintf(pSession->m_sResponse.aChar(),"%lld,%s,%s,%lld,%lld,%s,%s",
-           pColumn->iColumnNo(),
-           pColumn->sColumnName().aChar(),
-           aCT[pColumn->eColumnType()]->aChar(),
-           pColumn->iColumnLength(),
-           pColumn->iColumnScale(),
-           pColumn->bIsNullable() ? "true" : "false",
-           pColumn->bIsPartitionKey() ? "true": "false"
-  );
-  API_LOC(340);
-
-  *aaRow = pSession->m_sResponse.aChar();
-  API_LOC(350);
-
   API_RETURN();
 }
 
@@ -1276,29 +1286,29 @@ void vApiStatistics(eAC eApiCall)
     return;
   
   switch (eApiCall) {
-    case AC_BeginInsertTable:    gpAttachMap->m_oStatistics.Api.m_nBeginInsertTable++;     break;
+    case AC_BeginInsert:         gpAttachMap->m_oStatistics.Api.m_nBeginInsertTable++;     break;
     case AC_BeginSubInserter:    gpAttachMap->m_oStatistics.Api.m_nBeginSubInserter++;     break;
-    case AC_CheckLibraryVersion: gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;  break;
+    case AC_CheckVersion:        gpAttachMap->m_oStatistics.Api.m_nCheckLibraryVersion++;  break;
     case AC_CopyBuffer:          gpAttachMap->m_oStatistics.Api.m_nCopyBuffer++;           break;
-    case AC_EndInsertTable:      gpAttachMap->m_oStatistics.Api.m_nEndInsertJobs++;        break;
+    case AC_EndInsert:           gpAttachMap->m_oStatistics.Api.m_nEndInsertJobs++;        break;
     case AC_EndJobs:             gpAttachMap->m_oStatistics.Api.m_nEndJobs++;              break;
     case AC_EndSubInserter:      gpAttachMap->m_oStatistics.Api.m_nEndSubInserter++;       break;
     case AC_ExecCmdStr:          gpAttachMap->m_oStatistics.Api.m_nExecCmdStr++;           break;
     case AC_ExecuteCommand:      gpAttachMap->m_oStatistics.Api.m_nExecuteCommand++;       break;
     case AC_FetchNextBuffer:     gpAttachMap->m_oStatistics.Api.m_nFetchNextBuffer++;      break;
     case AC_GetRecordBuffer:     gpAttachMap->m_oStatistics.Api.m_nGetRecordBuffer++;      break;
-    case AC_GetErrorMessage:     gpAttachMap->m_oStatistics.Api.m_nGetErrorMessage++;      break;
+    case AC_TranslateError:      gpAttachMap->m_oStatistics.Api.m_nGetErrorMessage++;      break;
     case AC_GetRow:              gpAttachMap->m_oStatistics.Api.m_nGetRow++;               break;
     case AC_GetRowCount:         gpAttachMap->m_oStatistics.Api.m_nGetRowCount++;          break;
-    case AC_GetRowCountTableColumn: gpAttachMap->m_oStatistics.Api.m_nGetRowCountTableColumn++;  break;
-    case AC_GetRowTableColumn:   gpAttachMap->m_oStatistics.Api.m_nGetRowTableColumn++;    break;
+    case AC_GetTableColumnRowCount: gpAttachMap->m_oStatistics.Api.m_nGetRowCountTableColumn++;  break;
+    case AC_GetTableColumnRow:   gpAttachMap->m_oStatistics.Api.m_nGetRowTableColumn++;    break;
     case AC_InsertRow:           gpAttachMap->m_oStatistics.Api.m_nInsertRow++;            break;
-    case AC_LoadResult:          gpAttachMap->m_oStatistics.Api.m_nLoadResult++;           break;
-    case AC_PoolOpen:            gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;             break;
+    case AC_GetLoadResult:       gpAttachMap->m_oStatistics.Api.m_nLoadResult++;           break;
+    case AC_OpenPool:            gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;             break;
     case AC_ScanNextRow:         gpAttachMap->m_oStatistics.Api.m_nScanNextRow++;          break;
-    case AC_SessionDelete:       gpAttachMap->m_oStatistics.Api.m_nSessionDelete++;        break;
-    case AC_SessionInvalid:      gpAttachMap->m_oStatistics.Api.m_nSessionInvalid++;       break;
-    case AC_SessionNew:          gpAttachMap->m_oStatistics.Api.m_nSessionNew++;           break;
+    case AC_DeleteSession:       gpAttachMap->m_oStatistics.Api.m_nSessionDelete++;        break;
+    case AC_IsInvalidSession:    gpAttachMap->m_oStatistics.Api.m_nSessionInvalid++;       break;
+    case AC_NewSession:          gpAttachMap->m_oStatistics.Api.m_nSessionNew++;           break;
     default:
       NEVER_REACH;
   }
