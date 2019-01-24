@@ -310,10 +310,12 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* validate reference pointer                                                 */
 /*----------------------------------------------------------------------------*/
-#define API_NOTNULL(aMarker, pRefPointer) \
+#define API_NOTNULL(aMarker, p1) \
 { \
-  if ( ! pRefPointer) { \
-    TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
+  if (! p1) { \
+    s32 sVarName; \
+    sVarName = (Stz*)#p1; \
+    TRACE_ERROR((char*)#p1, EC_INVALID_PARAMETER); \
     return EC_INVALID_PARAMETER; \
   } \
 }
@@ -325,7 +327,9 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 {  \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace(">%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
-      aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1, aEC[eErrorCode], (i8)eErrorCode); \
+           aApiCall, aMarker, pSession, \
+           pSession ? pSession->iPartition() : -1, aEC[eErrorCode], \
+           (i8)eErrorCode); \
 }
 
 
