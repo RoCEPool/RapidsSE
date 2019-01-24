@@ -21,6 +21,8 @@ using namespace Interface;
 
 #include "CommandProcessor.hpp"
 #include "Session.hpp"
+#include "ApiMacros.hpp"
+
 #include "Api.hpp"
 #include "ApiState.hpp"
 
