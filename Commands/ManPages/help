@@ -1,0 +1,234 @@
+.\"---------------------------------------------------------------------------------------
+.\" Manpage for RapidsSE
+.\"---------------------------------------------------------------------------------------
+.TH man 7 "7 Jan 2019" "4.1" "RapidsSE man page"
+.SH DESCRIPTION
+The set of RapidsSE commands and prompt functions.
+.SH COMMANDS
+analyze index  \- x
+.br 
+analyse table  \- x
+.br 
+cat            \- x
+.br 
+cf             \- x
+.br 
+compact        \- x
+.br 
+create catalog \- x
+.br 
+create index   \- x
+.br 
+create schema  \- x
+.br 
+create table   \- x
+.br 
+create tenant  \- x
+.br 
+drop catalog   \- x
+.br 
+drop index     \- x
+.br 
+drop schema    \- x
+.br 
+drop table     \- x
+.br 
+drop tenant    \- x
+.br 
+dump index     \- x
+.br 
+export         \- x
+.br 
+generate       \- x
+.br 
+ingest         \- x
+.br 
+insert         \- x
+.br 
+lf             \- x
+.br 
+lscat          \- x
+.br 
+lscol          \- x
+.br 
+lsidxcol       \- x
+.br 
+lsidx          \- x
+.br 
+lspartcol      \- x
+.br 
+lspart         \- x
+.br 
+lssch          \- x
+.br 
+lstbl          \- x
+.br 
+ld             \- x
+.br 
+monitor        \- x
+.br 
+nethog         \- x
+.br 
+periodic       \- x
+.br 
+ping           \- x
+.br 
+publish        \- x
+.br 
+purge          \- x
+.br 
+pwf            \- x
+.br 
+repeater       \- x
+.br 
+report         \- x
+.br 
+sanity         \- x
+.br 
+select         \- x
+.br 
+showCluster    \- x
+.br 
+sink           \- x
+.br 
+szidx          \- x
+.br 
+sz             \- x
+.br 
+space          \- x
+.br 
+startCluster   \- x
+.br 
+status         \- x
+.br 
+tableSizes     \- x
+.br 
+tr             \- x
+.br 
+use            \- x
+.br 
+vfyidx         \- x
+.br 
+visidx         \- x
+.br 
+waitCuster     \- x
+.br 
+.SH PROMPT FUNCTIONS
+activityMap  - x 
+.br 
+am           \- x
+.br 
+apiState     \- x
+.br 
+args         \- x
+.br 
+attachMap    \- x
+.br 
+bp           \- x
+.br 
+bye          \- x
+.br 
+cd           \- x
+.br 
+classes      \- x
+.br 
+config       \- x
+.br 
+constants    \- x
+.br 
+date         \- x
+.br 
+errno        \- x
+.br 
+executing    \- x
+.br 
+file         \- x
+.br 
+giveMem      \- x
+.br 
+hashDefs     \- x
+.br 
+heapMem      \- x
+.br 
+help         \- x
+.br 
+hexDump      \- x
+.br 
+hw           \- x
+.br 
+indexEntries \- x
+.br 
+job          \- x
+.br 
+jobCat       \- x
+.br 
+locks        \- x
+.br 
+ls           \- x
+.br 
+markApi      \- x
+.br 
+markJob      \- x
+.br 
+masks        \- x
+.br 
+memory       \- x
+.br 
+mkpipe       \- x
+.br 
+mon          \- x
+.br 
+numbers      \- x
+.br 
+olist        \- x
+.br 
+opsys        \- x
+.br 
+plist        \- x
+.br 
+pmc          \- x
+.br 
+pwd          \- x
+.br 
+print        \- x
+.br 
+rassert      \- x
+.br 
+ready        \- x
+.br 
+resources    \- x
+.br 
+rmpipe       \- x
+.br 
+se           \- x
+.br 
+sizes        \- x
+.br 
+sleep        \- x
+.br 
+sleepers     \- x
+.br 
+socket       \- x
+.br 
+ssn          \- x
+.br 
+st           \- x
+.br 
+takemMem     \- x
+.br 
+taskQueues   \- x
+.br 
+threads      \- x
+.br 
+timerEnd     \- x
+.br 
+timerStart   \- x
+.br 
+version      \- x
+.br 
+waiting      \- x
+.br 
+$            \- x
+.\"---------------------------------------------------------------------------------------
+.\" end
+.\"---------------------------------------------------------------------------------------
