@@ -290,6 +290,9 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void ApiState::vSetLocation(Session* pSession, i8 iLocation)
 {
+  if (! pSession)
+    return;
+  
   i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
   

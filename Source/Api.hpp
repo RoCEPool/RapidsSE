@@ -140,8 +140,20 @@ void vApiStatistics(eAC eApiCall);
 void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 
 
-#ifdef _DEBUG
+#define API_SYSTEM_LEVEL() \
+  Session* pSession = nullptr; \
+  Job* pJob = nullptr;
 
+#define API_SESSION_LEVEL() \
+  Job* pJob = nullptr;
+
+#define API_JOB_LEVEL() \
+  Job* pJob = _pJob(aJob);
+
+#define API_LOC(iLocation) \
+  vApiLocation(pSession,iLocation);
+
+#ifdef _DEBUG
 
 /*----------------------------------------------------------------------------*/
 /* begin API function                                                         */
@@ -194,7 +206,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
   vApiError(pSession,eErrorCode); \
   vApiLocation(pSession,880); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
-  return eErrorCode;
+  return eErrorCode; \
 }
 
 /*----------------------------------------------------------------------------*/
@@ -314,16 +326,6 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace(">%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
       aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1, aEC[eErrorCode], (i8)eErrorCode); \
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace API exit                                                             */
-/*----------------------------------------------------------------------------*/
-#define TRACE_EXIT(aMarker) \
-{  \
-  if ( (iTrace & TL_EXIT) == TL_EXIT) \
-    vTrace(">%s(%s): %p(%lld)\n"_Stz,  \
-      aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1); \
 }
 
 
