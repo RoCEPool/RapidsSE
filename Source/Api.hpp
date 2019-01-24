@@ -178,6 +178,21 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* error in API function                                                      */
 /*----------------------------------------------------------------------------*/
+#define API_ECODE(eErrorCode) \
+  \
+  if ( (iTrace & TL_ERROR) == TL_ERROR) \
+    vTrace("!%s: %p(%lld) %s(%lld)\n"_Stz,  \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1, \
+           aEC[eErrorCode],(i8)eErrorCode); \
+  vApiError(pSession,eErrorCode); \
+  vApiLocation(pSession,880); \
+  ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode);
+// didnt use braces { }, as that would hide the variables
+
+/*----------------------------------------------------------------------------*/
+/* error in API function                                                      */
+/*----------------------------------------------------------------------------*/
 #define API_ERROR(pError) \
   \
   eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
@@ -189,7 +204,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
            pSession ? pSession->iPartition() : -1, \
            aEC[eErrorCode],(i8)eErrorCode); \
   vApiError(pSession,eErrorCode); \
-  vApiLocation(pSession,800); \
+  vApiLocation(pSession,888); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode);
 // didnt use braces { }, as that would hide the variables
 
@@ -205,7 +220,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
   \
   if (pSession) { \
     vApiReturn(pSession); \
-    vApiLocation(pSession,900); \
+    vApiLocation(pSession,999); \
   } \
   \
   ActivityMap::vMarkApiExit(eApiCall); \

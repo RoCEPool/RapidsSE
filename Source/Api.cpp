@@ -143,11 +143,9 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
     
     pSession = new Session(iPartition);
     
-    eEC eError = pSession->eInit(sCatalog, sSchema);
-    
+    eEC eError = pSession->eInit(sCatalog,sSchema);
     if (eError != EC_NONE) {
-      TRACE_EXIT("ea"_Stz);
-      ActivityMap::vMarkApi(eApiCall,0,"<Api %s"_Stz,aApiCall);
+      API_ECODE(eError);
       return eError;
     }
     
@@ -157,7 +155,6 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
 
     API_EXIT();
     return EC_NONE;
-    
   }
   catch (Error* pError) {
     API_ERROR(pError);
@@ -614,8 +611,6 @@ eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
     
     // delete all jobs in the ssession
     vDeleteJobs(pSession);
-    
-    TRACE_EXIT("ea"_Stz);
     
     API_EXIT();
     return EC_NONE;
