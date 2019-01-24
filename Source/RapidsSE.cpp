@@ -806,7 +806,7 @@ void RapidsSE::vStartSystem(void)
   }
 
   while (*gpAttachMap->m_ziThreads != gxArguments.m_nThreads)
-    Pthread::vSleepMilli(10);
+    Pthread::vSleepMilli(10,CN_NONE);
   
   vSpawnJobStart();
   
@@ -852,7 +852,7 @@ void RapidsSE::vWaitStop(void)
   
   // this primary thread waits for flag indicationg systems is to stop
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )
-    Pthread::vSleepMilli(10);
+    Pthread::vSleepMilli(10,CN_NONE);
 }
 
 /*----------------------------------------------------------------------------*/

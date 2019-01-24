@@ -42,7 +42,7 @@ void vTest2(void)
   Since oEnd;
   
   oStart.vNow();
-  Pthread::vSleepMilli(3500);
+  Pthread::vSleepMilli(3500,CN_NONE);
   oEnd.vNow();
   
   //Ivl wDiff = oEnd.wSubtract(oStart);

@@ -122,6 +122,8 @@ namespace Measurement
   } Task;
   
   struct {
+    i8 m_iaSleeps[CN_ENUMS];
+    i8 m_iaDuration[CN_ENUMS];
     i8 m_nSleeps;
   } Thread;
   
