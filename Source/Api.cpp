@@ -1293,7 +1293,7 @@ void vApiStatistics(eAC eApiCall)
     case AC_EndInsert:           gpAttachMap->m_oStatistics.Api.m_nEndInsertJobs++;        break;
     case AC_EndJobs:             gpAttachMap->m_oStatistics.Api.m_nEndJobs++;              break;
     case AC_EndSubInserter:      gpAttachMap->m_oStatistics.Api.m_nEndSubInserter++;       break;
-    case AC_ExecCmdStr:          gpAttachMap->m_oStatistics.Api.m_nExecCmdStr++;           break;
+    //case AC_ExecCmdStr:          gpAttachMap->m_oStatistics.Api.m_nExecCmdStr++;           break;
     case AC_ExecuteCommand:      gpAttachMap->m_oStatistics.Api.m_nExecuteCommand++;       break;
     case AC_FetchNextBuffer:     gpAttachMap->m_oStatistics.Api.m_nFetchNextBuffer++;      break;
     case AC_GetRecordBuffer:     gpAttachMap->m_oStatistics.Api.m_nGetRecordBuffer++;      break;
