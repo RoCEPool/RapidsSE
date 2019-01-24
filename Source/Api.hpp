@@ -142,12 +142,12 @@ namespace Interface
   {
   public:
    static void vDeleteJobs(Session* pSession);
-   static Job* pExecCmdStr(Session* pSession, Stz* sCommand, bool bPostJob, bool bFromPrompt);
+   static Job* pExecuteCommand(Session* pSession, Stz* sCommand,
+                               bool bPostJob, bool bFromPrompt);
    static void vIncStatistics(eAC eApiCall);
    static void vMonitorPortrait(s48K& sPortrait);
    static bool bSpawnJob(Session* pSession, Job* aJob, eSS eSeed);
    static void vSpawnJobAndWait(Session* pSession, Job* aJob);
-
   };
 }
 

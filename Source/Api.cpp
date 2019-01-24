@@ -259,7 +259,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     API_LOC(310);
 
     // execute the command
-    Job* pJob = Api::pExecCmdStr(pSession, sCommand, false, false);
+    Job* pJob = Api::pExecuteCommand(pSession, sCommand, false, false);
     API_LOC(320);
 
     vApiJob(pSession,pJob);
@@ -1148,8 +1148,8 @@ void Api::vDeleteJobs(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-Job* Api::pExecCmdStr(Session* pSession, Stz* sCommand,
-                      bool bPostJob, bool bFromPrompt)
+Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
+                          bool bPostJob, bool bFromPrompt)
 {
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
