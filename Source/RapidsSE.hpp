@@ -4,8 +4,9 @@
 #pragma once
 
 ////////////////////////////////////////////////////////////////////////////////
+//                             System Level Calls                             //
+////////////////////////////////////////////////////////////////////////////////
 
-// System Level Calls
 extern "C" eEC  RapidsSE_CheckVersion     (i8 iTrace,
                                            Stz* sVersion);
 extern "C" eEC  RapidsSE_DeleteSession    (i8 iTrace,
@@ -19,8 +20,9 @@ extern "C" eEC  RapidsSE_OpenPool         (i8 iTrace,
                                            Stz* sRegion, void** aaAttachMap);
 
 ////////////////////////////////////////////////////////////////////////////////
+//                             Session Level Calls                            //
+////////////////////////////////////////////////////////////////////////////////
 
-// Session Level Calls
 extern "C" eEC  RapidsSE_BeginInsert     (i8 iTrace, Session* pSession,
                                           Stz* sTable, i8 nSubInserters, void** aaJob);
 extern "C" eEC  RapidsSE_EndJobs         (i8 iTrace, Session* pSession);
@@ -33,8 +35,9 @@ extern "C" eEC  RapidsSE_TranslateError  (i8 iTrace, Session* pSession,
                                           int iErrorCode, void** aaError);
 
 ////////////////////////////////////////////////////////////////////////////////
+//                               Job Level Calls                              //
+////////////////////////////////////////////////////////////////////////////////
 
-// Job Level Calls
 extern "C" eEC  RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
                                           void** aaJob);
 extern "C" eEC  RapidsSE_CopyBuffer      (i8 iTrace, Session* pSession, void* aJob);
@@ -57,8 +60,6 @@ extern "C" eEC  RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, vo
 extern "C" eEC  RapidsSE_ScanNextRow     (i8 iTrace, Session* pSession, void* aJob,
                                           void** aaEntryBuffer, i8* aiExpectedRows,
                                           void** aaEntry, void** aaRow);
-
-
 
 /*============================================================================*/
 /* end                                                                        */

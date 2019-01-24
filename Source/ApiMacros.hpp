@@ -5,11 +5,11 @@
 
 
 // API trace levels
-#define TL_ENTRY  1
-#define TL_ERROR  2
-#define TL_EXIT   4
-#define TL_INSERT 8
-#define TL_POOL   16
+#define TL_ENTRY  C_BIT_0 // 1
+#define TL_ERROR  C_BIT_1 // 2
+#define TL_EXIT   C_BIT_2 // 4
+#define TL_INSERT C_BIT_3 // 8
+#define TL_POOL   C_BIT_4 // 16
 
 
 #define API_SYSTEM_LEVEL() \

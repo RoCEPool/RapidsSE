@@ -13,6 +13,16 @@ const u1 C_6_BITS = 63;
 const u1 C_7_BITS = 127;
 const u1 C_8_BITS = 255;
 
+const u8 C_BIT_0  = 1;
+const u8 C_BIT_1  = 2;
+const u8 C_BIT_2  = 4;
+const u8 C_BIT_3  = 8;
+const u8 C_BIT_4  = 16;
+const u8 C_BIT_5  = 32;
+const u8 C_BIT_6  = 64;
+const u8 C_BIT_7  = 128;
+
+
 /*----------------------------------------------------------------------------*/
 
 namespace Base
