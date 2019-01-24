@@ -193,17 +193,21 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
     // compute the total number of subloaders in the grid
     i8 nSubLoadersInGrid = gpAttachMap->m_nSubLoaders;
     
-    if (m_nSubLoadersDone  == nSubLoadersInGrid &&
-        m_nBuffersWritten  == m_nWriteBehindBuffers) {
+    if (nSubLoadersInGrid) {
       
-      bAllDone = true;
+      if (m_nSubLoadersDone  == nSubLoadersInGrid &&
+          m_nBuffersWritten  == m_nWriteBehindBuffers) {
+        bAllDone = true;
+      }
+    }
+    else {
+      if (m_nBuffersWritten  == m_nWriteBehindBuffers) {
+        bAllDone = true;
+      }
     }
   }
  
   if (eDataSource == DS_INSERT) {
-    
-    // compute the total number of subInserters in the grid
-    i8 nSubInsertersInGrid = gpAttachMap->m_nSubInserters;
     
 //    vTrace("SubInserters %lld SubInsertersDone %lld m_nBuffersWritten %lld m_nWriteBehindBuffers %lld\n"_Stz,
 //           gpAttachMap->m_nSubInserters,
@@ -212,9 +216,20 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 //           m_nWriteBehindBuffers
 //           );
     
-    if (m_nSubInsertersDone  == nSubInsertersInGrid &&
-        m_nBuffersWritten == m_nWriteBehindBuffers) {
-      bAllDone = true;
+    // compute the total number of subInserters in the grid
+    i8 nSubInsertersInGrid = gpAttachMap->m_nSubInserters;
+    
+    if (nSubInsertersInGrid) {
+      
+      if (m_nSubInsertersDone  == nSubInsertersInGrid &&
+          m_nBuffersWritten == m_nWriteBehindBuffers) {
+        bAllDone = true;
+      }
+    }
+    else {
+      if (m_nBuffersWritten == m_nWriteBehindBuffers) {
+        bAllDone = true;
+      }
     }
   }
   

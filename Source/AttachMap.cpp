@@ -190,7 +190,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName,
   m_iRegionSize   = iRegionSize;
   m_iJumboSize    = iJumboSize;
   m_nSubIngesters = nSubIngesters;
-  m_nSubInserters = -1;
+  m_nSubInserters = 0;
   m_nSubLoaders   = nSubLoaders;
 
   m_pBufferPool = gpBufferPool;
