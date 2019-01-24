@@ -194,7 +194,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
   vApiError(pSession,eErrorCode); \
   vApiLocation(pSession,880); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
-  return eErrorCode;
+  return eErrorCode; \
 }
 
 /*----------------------------------------------------------------------------*/
