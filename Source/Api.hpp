@@ -389,8 +389,6 @@ namespace Interface
 #define API_RETURN() return EC_NONE;
 
 #define TRACE_ERROR(aMarker, eErrorCode)
-#define TRACE_EXIT(aMarker)
-#define VALIDATE_NOINDEX(aMarker)
 #define VALIDATE_POOL()
 
 #endif
