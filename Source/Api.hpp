@@ -159,7 +159,8 @@ void vAPI_MonitorPortrait(s48K& sPortrait);
 /* begin API function                                                         */
 /*----------------------------------------------------------------------------*/
 #define API_BEGIN() \
-  vApiLocation(pSession,200);
+  if (pSession) \
+    vApiLocation(pSession,200);
 
 /*----------------------------------------------------------------------------*/
 /* enter API function                                                         */
