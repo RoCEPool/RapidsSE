@@ -39,15 +39,8 @@ eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,17 +79,10 @@ eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
     return EC_NONE;
     
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
+
 /*----------------------------------------------------------------------------*/
 /* is the error an EC_INVALID_INTERFACE ?                                     */
 /*----------------------------------------------------------------------------*/
@@ -114,15 +100,8 @@ bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
     else
       return false;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -156,15 +135,8 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 
@@ -209,15 +181,8 @@ eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -298,15 +263,8 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -328,15 +286,8 @@ eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession,
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -397,15 +348,8 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -433,16 +377,8 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 
@@ -489,15 +425,8 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -550,15 +479,8 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     return EC_NONE;
     
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -601,15 +523,8 @@ eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -638,15 +553,8 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -736,15 +644,8 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -940,15 +841,8 @@ eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob,
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1036,15 +930,8 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
     API_EXIT();
     return EC_NONE;
   }
-  catch (Error* pError) {
-    API_ERROR(pError);
-    return eErrorCode;
-  }
-  catch (...) {
-    Error* pError = nullptr;
-    API_ERROR(pError);
-    return eErrorCode;
-  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 }
 
 /*----------------------------------------------------------------------------*/

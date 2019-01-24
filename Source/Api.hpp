@@ -193,7 +193,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* error in API function                                                      */
 /*----------------------------------------------------------------------------*/
-#define API_ERROR(pError) \
+#define API_CATCH(pError) \
   \
   eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
   \
@@ -205,7 +205,8 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
            aEC[eErrorCode],(i8)eErrorCode); \
   vApiError(pSession,eErrorCode); \
   vApiLocation(pSession,888); \
-  ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode);
+  ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
+  return eErrorCode;
 // didnt use braces { }, as that would hide the variables
 
 /*----------------------------------------------------------------------------*/
