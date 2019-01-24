@@ -319,7 +319,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* validate reference pointer                                                 */
 /*----------------------------------------------------------------------------*/
-#define VALIDATE_REFPOINTER(aMarker, pRefPointer) \
+#define API_NOTNULL(aMarker, pRefPointer) \
 { \
   if ( ! pRefPointer) { \
     TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
@@ -385,7 +385,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define VALIDATE_INDEX(aMarker)
 #define VALIDATE_NOINDEX(aMarker)
 #define VALIDATE_PARAM(aMarker, pParameter)
-#define VALIDATE_REFPOINTER(aMarker, pRefPointer)
+#define API_NOTNULL(aMarker, pRefPointer)
 #define VALIDATE_SESSION(aMarker)
 #define CHECK_RESULT(aMarker)
 #define VALIDATE_POOL()

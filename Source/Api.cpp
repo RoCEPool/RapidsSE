@@ -98,7 +98,7 @@ eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
   
 }
 /*----------------------------------------------------------------------------*/
-/* is the error an EC_INVALID_SessionE ?                                      */
+/* is the error an EC_INVALID_INTERFACE ?                                     */
 /*----------------------------------------------------------------------------*/
 bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
 {
@@ -135,11 +135,9 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
   Job* pJob = nullptr;
   API_ENTRY(AC_SessionNew);
   API_PARAM_P2(sCatalog, sSchema);
+  API_NOTNULL("a"_Stz, aaSession);
 
   try {
-    
-    // valide reference pointer
-    VALIDATE_REFPOINTER("a"_Stz, aaSession);
     
     VALIDATE_POOL();
     
@@ -155,8 +153,7 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
     
     // return the newly created session
     *aaSession = pSession;
-    
-    vApiCall(pSession,eApiCall);
+    pSession = nullptr;
 
     API_EXIT();
     return EC_NONE;
@@ -186,11 +183,9 @@ eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
 {
   Job* pJob = nullptr;
   API_ENTRY(AC_BeginInsertTable);
-  
+  API_NOTNULL("a"_Stz, aaJob);
+
   try {
-    
-    // validate reference pointer
-    VALIDATE_REFPOINTER("a"_Stz, aaJob);
     
     // create Job_InsertTable
     JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
@@ -328,11 +323,9 @@ eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession,
 {
   Job* pJob = nullptr;
   API_ENTRY(AC_GetErrorMessage);
-  
+  API_NOTNULL("b"_Stz, aaError);
+
   try {
-    
-    // validate the reference pointer
-    VALIDATE_REFPOINTER("b"_Stz, aaError);
     
     // get the error message
     pSession->m_sResponse = aEC[(eEC)iErrorCode];
@@ -480,14 +473,13 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
 {
   Job* pJob = _pJob(aJob);
   API_ENTRY(AC_BeginSubInserter);
-  
+  API_NOTNULL("a"_Stz, aaJob);
+
   try {
     
     // validate the parameter
     VALIDATE_PARAM("a"_Stz, aJob);
     
-    // validate reference pointer
-    VALIDATE_REFPOINTER("a"_Stz, aaJob);
     
     // get the insertTable job
     Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(aJob);
@@ -689,11 +681,10 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
 {
   Job* pJob = _pJob(aJob);
   API_ENTRY(AC_FetchNextBuffer);
-  
+  API_NOTNULL("c"_Stz, aaFetchBuffer);
+
   try {
     
-    // validate the reference pointer
-    VALIDATE_REFPOINTER("c"_Stz, aaFetchBuffer);
     
     Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(aJob);
     
@@ -789,10 +780,8 @@ eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob,
 {
   Job* pJob = _pJob(aJob);
   API_ENTRY(AC_GetRecordBuffer);
-  
-  // validate the reference pointer
-  VALIDATE_REFPOINTER("c"_Stz, aaBuffer);
-  
+  API_NOTNULL("c"_Stz, aaBuffer);
+ 
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
   
   RASSERT( ! pJob_SubInserter->m_pRecordBuffer );
@@ -814,7 +803,7 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   API_ENTRY(AC_GetRow);
   
   // validate the reference pointer
-  VALIDATE_REFPOINTER("c"_Stz, aaRow);
+  API_NOTNULL("c"_Stz, aaRow);
   
   i8 i_Node;
   i8 iMaxRowNo = 0;
@@ -919,9 +908,7 @@ eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
 {
   Job* pJob = _pJob(aJob);
   API_ENTRY(AC_GetRowTableColumn);
-  
-  // validate the reference pointer
-  VALIDATE_REFPOINTER("c"_Stz, aaRow);
+  API_NOTNULL("c"_Stz, aaRow);
   
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
   
@@ -951,16 +938,14 @@ eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob,
-                        i8* pValidRows, i8* pInvalidRows, i8* pSkippedRows)
+                        i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows)
 {
   Job* pJob = _pJob(aJob);
   API_ENTRY(AC_LoadResult);
-  
+  API_NOTNULL("b"_Stz, aiValidRows);
+  API_NOTNULL("b"_Stz, aiInvalidRows);
+
   try {
-    
-    // validate the reference pointers
-    VALIDATE_REFPOINTER("b"_Stz, pValidRows);
-    VALIDATE_REFPOINTER("b"_Stz, pInvalidRows);
     
     Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(aJob);
 //    vTrace("L %lld IN %lld\n"_Stz,
@@ -979,9 +964,9 @@ eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob,
       iRowsSkipped   += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsSkipped;
     }
     
-    *pValidRows   = iRowsProcessed;
-    *pInvalidRows = iRowsInvalid;
-    *pSkippedRows = iRowsSkipped;
+    *aiValidRows   = iRowsProcessed;
+    *aiInvalidRows = iRowsInvalid;
+    *aiSkippedRows = iRowsSkipped;
     
     API_EXIT();
     return EC_NONE;
@@ -1010,7 +995,7 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
   try {
     
     // validate the reference pointer
-    VALIDATE_REFPOINTER("c"_Stz, aaRow);
+    API_NOTNULL("c"_Stz, aaRow);
     
     Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(aJob);
     
