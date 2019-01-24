@@ -124,20 +124,32 @@ extern "C" eEC  RapidsSE_ScanNextRow     (i8 iTrace, Session* pSession, void* aJ
                                           void** aaEntryBuffer, i8* aiExpectedRows,
                                           void** aaEntry, void** aaRow);
 
+////////////////////////////////////////////////////////////////////////////////
 
-Job* pAPI_ExecCmdStr(Stz* sCommand, Session* pSession, bool bPostJob, bool bFromPrompt);
-bool bAPI_SpawnJob(Job* aJob, eSS eSeed, Session* pSession);
 
 void vApiCall(Session* pSession, eAC eApiCall);
 void vApiError(Session* pSession, eEC eError);
 void vApiJob(Session* pSession, Job* aJob);
 void vApiLocation(Session* pSession, i8 iLocation);
 void vApiReturn(Session* pSession);
-void vDeleteJobs(Session* pSession);
-void vSpawnJobAndWait(Session* pSession, Job* aJob);
 
-void vApiStatistics(eAC eApiCall);
-void vAPI_MonitorPortrait(s48K& sPortrait);
+
+////////////////////////////////////////////////////////////////////////////////
+
+namespace Interface
+{
+  class Api
+  {
+  public:
+   static void vDeleteJobs(Session* pSession);
+   static Job* pExecCmdStr(Stz* sCommand, Session* pSession, bool bPostJob, bool bFromPrompt);
+   static void vIncStatistics(eAC eApiCall);
+   static void vMonitorPortrait(s48K& sPortrait);
+   static bool bSpawnJob(Job* aJob, eSS eSeed, Session* pSession);
+   static void vSpawnJobAndWait(Session* pSession, Job* aJob);
+
+  };
+}
 
 
 #define API_SYSTEM_LEVEL() \
@@ -171,7 +183,7 @@ void vAPI_MonitorPortrait(s48K& sPortrait);
   Stz* aApiCall = aAC[eApiCall]; \
   \
   ActivityMap::vMarkApiEntry(eApiCall); \
-  vApiStatistics(eApiCall);\
+  Api::vIncStatistics(eApiCall);\
   \
   if (pSession) { \
     \

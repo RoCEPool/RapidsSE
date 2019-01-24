@@ -54,7 +54,7 @@ eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
   try {
     
     // delete jobs from the job stack of the session
-    vDeleteJobs(pSession);
+    Api::vDeleteJobs(pSession);
     API_LOC(310);
     
     // delete the session
@@ -228,7 +228,7 @@ eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
   API_BEGIN();
   
   // delete the jobs from the sessions jobStack
-  vDeleteJobs(pSession);
+  Api::vDeleteJobs(pSession);
   API_LOC(310);
 
   // mark session as exiting (any fetches still running will stop)
@@ -259,7 +259,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     API_LOC(310);
 
     // execute the command
-    Job* pJob = pAPI_ExecCmdStr(sCommand, pSession, false, false);
+    Job* pJob = Api::pExecCmdStr(sCommand, pSession, false, false);
     API_LOC(320);
 
     vApiJob(pSession,pJob);
@@ -338,7 +338,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn and wait for the job
-    vSpawnJobAndWait(pSession, pJob_InsertRow);
+    Api::vSpawnJobAndWait(pSession, pJob_InsertRow);
     API_LOC(380);
     
     // check if job had an error
@@ -495,7 +495,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn the job
     //vTrace("Spawning copyBuffer job\n"_Stz);
-    bAPI_SpawnJob(pJob_CopyBuffer, SS_SEED_REQ, pSession);
+    IGNORE_RETURN(Api::bSpawnJob(pJob_CopyBuffer, SS_SEED_REQ, pSession));
     API_LOC(390);
   }
   catch (Error* pError) { API_CATCH(pError); }
@@ -521,7 +521,7 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn and wait for job
-    vSpawnJobAndWait(pSession, pJob_InsertTable);
+    Api::vSpawnJobAndWait(pSession, pJob_InsertTable);
     API_LOC(320);
 
     // check if job had an error
@@ -537,7 +537,7 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
     API_LOC(330);
 
     // delete all jobs in the ssession
-    vDeleteJobs(pSession);
+    Api::vDeleteJobs(pSession);
     API_LOC(340);
   }
   catch (Error* pError) { API_CATCH(pError); }
@@ -572,7 +572,7 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
     API_LOC(330);
 
     // delete all jobs in the ssession
-    vDeleteJobs(pSession);
+    Api::vDeleteJobs(pSession);
     API_LOC(340);
   }
   catch (Error* pError) { API_CATCH(pError); }
@@ -1012,72 +1012,6 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* execute command                                                            */
-/*----------------------------------------------------------------------------*/
-Job* pAPI_ExecCmdStr(Stz* sCommand, Session* pSession,
-                          bool bPostJob, bool bFromPrompt)
-{
-  CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
-  
-  vApiLocation(pSession,101);
-  
-  pCommandProcessor->vTokenise(sCommand);
-  
-  bool bFound = pCommandProcessor->bFindJobClass();
-  if (! bFound) {
-    return nullptr;
-  }
-  
-  pCommandProcessor->vPreJob(pSession);
-  
-  Job* pJob = pCommandProcessor->pJob();
-  if (!pJob) {
-    return nullptr;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // spawn and wait for job
-  vSpawnJobAndWait(pSession, pJob);
-  
-  // run post ?
-  if (bPostJob)
-    pCommandProcessor->vPostJob(pSession);
-  
-  return pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* spawn job                                                                  */
-/*----------------------------------------------------------------------------*/
-bool bAPI_SpawnJob(Job* pJob, eSS eSeed, Session* pSession)
-{
-  //----------------------------------------------------------------------------
-  // Before appending request for se, ensure that se is running
-  // get the se pid from the attachmap
-  i8 iPid = gpAttachMap->m_iPid;
-  if (!Process::bTestPid(iPid)) {
-    // SE is not running anymore!
-    if (pSession)
-      vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
-    vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
-    return false;
-  }
-  
-  //----------------------------------------------------------------------------
-  
-  Task* pNewTask = new Task(pJob);
-  
-  // form the word to execute for the request
-  pJob->vSeed(eSeed);
-  
-  pNewTask->vSession(pSession);
-  
-  Handlers::vSpawnedTask(pNewTask);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1122,13 +1056,21 @@ void vApiReturn(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                                Interface::Api                              //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
 /* delete jobs                                                                */
 /*----------------------------------------------------------------------------*/
-void vDeleteJobs(Session* pSession)
+void Api::vDeleteJobs(Session* pSession)
 {
   Stack* pJobStack = pSession->m_pJobStack;
   Object* pJobObject;
-
+  
   while (pJobStack->bPop(pJobObject)) {
     
     Job* aJob = (Job*)pJobObject;
@@ -1144,7 +1086,7 @@ void vDeleteJobs(Session* pSession)
     // If we come across a JOB_FETCHROWS then we need to empty its queues
     if (eClass == CN_JOB_FETCHROWS) {
       Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(aJob);
-  
+      
       //vTrace("%s m_nLastBuffersScanned: %lld %lld\n"_Stz,pJob_FetchRows->m_pTable->sTable(),
       //       pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
       
@@ -1156,17 +1098,17 @@ void vDeleteJobs(Session* pSession)
         vApiLocation(pSession,300);
         
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-//        GenVar xVariable;
-//        while (!pJob_FetchRows->m_pBufferQueue->bPop(&xVariable)) {
-//          Pthread::vSleepMilli(1);
-//          vApiLocation(pSession,400);
-//          continue;
-//        }
+        //        GenVar xVariable;
+        //        while (!pJob_FetchRows->m_pBufferQueue->bPop(&xVariable)) {
+        //          Pthread::vSleepMilli(1);
+        //          vApiLocation(pSession,400);
+        //          continue;
+        //        }
         
-//        vApiLocation(pSession,500);
-//
-//        PtrVal* aPtrVal = xVariable.aNestedPtrVal();
-//        pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(aPtrVal->pObj());
+        //        vApiLocation(pSession,500);
+        //
+        //        PtrVal* aPtrVal = xVariable.aNestedPtrVal();
+        //        pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(aPtrVal->pObj());
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
         FetchBuffer* pFetchBuffer;
         for (;;) {
@@ -1178,10 +1120,10 @@ void vDeleteJobs(Session* pSession)
           continue;
         }
         vApiLocation(pSession,500);
-
+        
         pJob_FetchRows->m_pFetchBuffer = pFetchBuffer;
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
+        
         
         if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
           pJob_FetchRows->m_nLastBuffersScanned++;
@@ -1204,87 +1146,50 @@ void vDeleteJobs(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Spawn amd wait for job to complete                                         */
+/* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-void vSpawnJobAndWait(Session* pSession, Job* pJob)
+Job* Api::pExecCmdStr(Stz* sCommand, Session* pSession,
+                      bool bPostJob, bool bFromPrompt)
 {
-  i8 iJobSeq = pJob->m_iJobSeq;
+  CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
-  // lock this job's mutex
-  pJob->vMutexLock();
-//  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
-//  if (0 != rCode)
-//    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+  vApiLocation(pSession,101);
   
-  vApiLocation(pSession,106);
+  pCommandProcessor->vTokenise(sCommand);
   
-  // set the job state to be locked
-  pJob->m_eState = JS_LOCKED;
+  bool bFound = pCommandProcessor->bFindJobClass();
+  if (! bFound) {
+    return nullptr;
+  }
   
-  // spawn the insertTable job
-  bAPI_SpawnJob(pJob, SS_SEED_REQ, pSession);
-  vApiLocation(pSession,107);
+  pCommandProcessor->vPreJob(pSession);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // wait for condition & state
-  
-  // set the job state to be waiting
-  pJob->m_eState = JS_WAITING;
-  
-  // wait till signalled
-  do {
-    
-    RASSERT( _bIsValidJob(pJob->eClass()) );
-    RASSERT( iJobSeq == pJob->m_iJobSeq );
-    
-    //    vTrace("ThreadCond:\n"_Stz);
-    //    MemLib::vHexDump(&pJob->m_xThreadCond,  sizeof(pthread_cond_t));
-    //
-    //    vTrace("ThreadMutex:\n"_Stz);
-    //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
-    
-    pJob->vMutexWait();
-//    rCode = pthread_cond_wait(&pJob->m_xThreadCond,
-//                              &pJob->m_xThreadMutex);
-//    if (0 != rCode)
-//      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
-
-    RASSERT( _bIsValidJob(pJob->eClass()) );
-    RASSERT( iJobSeq == pJob->m_iJobSeq );
-    
-    
-  } while (pJob->m_eState != JS_SIGNALLED);
-  
-  RASSERT( _bIsValidJob(pJob->eClass()) );
-  RASSERT( iJobSeq == pJob->m_iJobSeq );
-  
-  vApiLocation(pSession,108);
+  Job* pJob = pCommandProcessor->pJob();
+  if (!pJob) {
+    return nullptr;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // spawn and wait for job
+  Api::vSpawnJobAndWait(pSession, pJob);
   
-  // set the job state back to running
-  pJob->m_eState = JS_RUNNING;
+  // run post ?
+  if (bPostJob)
+    pCommandProcessor->vPostJob(pSession);
   
-  // unlock this job's mutex
-  pJob->vMutexUnlock();
-//  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
-//  if (0 != rCode)
-//    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
+  return pJob;
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* monitor portrait                                                           */
 /*----------------------------------------------------------------------------*/
-void vApiStatistics(eAC eApiCall)
+void Api::vIncStatistics(eAC eApiCall)
 {
   if (! gpAttachMap)
     return;
   
   switch (eApiCall) {
-    case AC_BeginInsert:         gpAttachMap->m_oStatistics.Api.m_nBeginInsert++;         break;
+    case AC_BeginInsert:         gpAttachMap->m_oStatistics.Api.m_nBeginInsert++;          break;
     case AC_BeginSubInserter:    gpAttachMap->m_oStatistics.Api.m_nBeginSubInserter++;     break;
     case AC_CheckVersion:        gpAttachMap->m_oStatistics.Api.m_nCheckVersion++;         break;
     case AC_CopyBuffer:          gpAttachMap->m_oStatistics.Api.m_nCopyBuffer++;           break;
@@ -1314,7 +1219,7 @@ void vApiStatistics(eAC eApiCall)
 /*----------------------------------------------------------------------------*/
 /* monitor portrait                                                           */
 /*----------------------------------------------------------------------------*/
-void vAPI_MonitorPortrait(s48K& sPortrait)
+void Api::vMonitorPortrait(s48K& sPortrait)
 {
   s48K s;
   i8 nCats = 0;
@@ -1416,6 +1321,106 @@ void vAPI_MonitorPortrait(s48K& sPortrait)
     sPortrait.vConcat(s);
     sPortrait.vConcat("\n"_Stz);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* spawn job                                                                  */
+/*----------------------------------------------------------------------------*/
+bool Api::bSpawnJob(Job* pJob, eSS eSeed, Session* pSession)
+{
+  //----------------------------------------------------------------------------
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = gpAttachMap->m_iPid;
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    if (pSession)
+      vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    vWarn("Cannot find pid %lld\n"_Stz, gpAttachMap->m_iPid);
+    return false;
+  }
+  
+  //----------------------------------------------------------------------------
+  
+  Task* pNewTask = new Task(pJob);
+  
+  // form the word to execute for the request
+  pJob->vSeed(eSeed);
+  
+  pNewTask->vSession(pSession);
+  
+  Handlers::vSpawnedTask(pNewTask);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Spawn amd wait for job to complete                                         */
+/*----------------------------------------------------------------------------*/
+void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
+{
+  i8 iJobSeq = pJob->m_iJobSeq;
+  
+  // lock this job's mutex
+  pJob->vMutexLock();
+  //  i8 rCode = pthread_mutex_lock(&pJob->m_xThreadMutex);
+  //  if (0 != rCode)
+  //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
+  
+  vApiLocation(pSession,106);
+  
+  // set the job state to be locked
+  pJob->m_eState = JS_LOCKED;
+  
+  // spawn the insertTable job
+  IGNORE_RETURN(Api::bSpawnJob(pJob, SS_SEED_REQ, pSession));
+  vApiLocation(pSession,107);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // wait for condition & state
+  
+  // set the job state to be waiting
+  pJob->m_eState = JS_WAITING;
+  
+  // wait till signalled
+  do {
+    
+    RASSERT( _bIsValidJob(pJob->eClass()) );
+    RASSERT( iJobSeq == pJob->m_iJobSeq );
+    
+    //    vTrace("ThreadCond:\n"_Stz);
+    //    MemLib::vHexDump(&pJob->m_xThreadCond,  sizeof(pthread_cond_t));
+    //
+    //    vTrace("ThreadMutex:\n"_Stz);
+    //    MemLib::vHexDump(&pJob->m_xThreadMutex, sizeof(pthread_mutex_t));
+    
+    pJob->vMutexWait();
+    //    rCode = pthread_cond_wait(&pJob->m_xThreadCond,
+    //                              &pJob->m_xThreadMutex);
+    //    if (0 != rCode)
+    //      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
+    
+    RASSERT( _bIsValidJob(pJob->eClass()) );
+    RASSERT( iJobSeq == pJob->m_iJobSeq );
+    
+    
+  } while (pJob->m_eState != JS_SIGNALLED);
+  
+  RASSERT( _bIsValidJob(pJob->eClass()) );
+  RASSERT( iJobSeq == pJob->m_iJobSeq );
+  
+  vApiLocation(pSession,108);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // set the job state back to running
+  pJob->m_eState = JS_RUNNING;
+  
+  // unlock this job's mutex
+  pJob->vMutexUnlock();
+  //  rCode = pthread_mutex_unlock(&pJob->m_xThreadMutex);
+  //  if (0 != rCode)
+  //    vWarn("pthread_mutex_unlock() error; rCode=%lld\n"_Stz,rCode);
 }
 
 /*============================================================================*/

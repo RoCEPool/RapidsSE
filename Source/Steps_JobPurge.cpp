@@ -45,8 +45,8 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
   pJob_SubPurger->m_iSlot = iSlot;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  bAPI_SpawnJob(pJob_SubPurger,SS_SEED_RUN,nullptr);
+
+  IGNORE_RETURN(Api::bSpawnJob(pJob_SubPurger,SS_SEED_RUN,nullptr));
 
   EXIT();
 }

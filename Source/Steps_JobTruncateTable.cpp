@@ -83,8 +83,7 @@ void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  
-  bAPI_SpawnJob(pJob_SubTruncate,SS_SEED_RUN,nullptr);
+  IGNORE_RETURN(Api::bSpawnJob(pJob_SubTruncate,SS_SEED_RUN,nullptr));
   
   EXIT();
 }

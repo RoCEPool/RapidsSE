@@ -364,7 +364,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the write buffer job
   
-  bAPI_SpawnJob(pJob_WriteBuffer,SS_SEED_RUN,pSession);
+  IGNORE_RETURN(Api::bSpawnJob(pJob_WriteBuffer,SS_SEED_RUN,pSession));
 }
 
 /*----------------------------------------------------------------------------*/

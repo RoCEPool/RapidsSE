@@ -354,7 +354,7 @@ bool CommandProcessor::bSpawnJob(Session* pSession)
   //! make this part of verbose??
   //m_pCommandProcessor->m_pCompiler->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
   
-  bool bResult = bAPI_SpawnJob(m_pJob,SS_SEED_REQ,pSession);
+  bool bResult = Api::bSpawnJob(m_pJob,SS_SEED_REQ,pSession);
   
   if (pTknVec()->bDetachedRequest())
     return bResult;

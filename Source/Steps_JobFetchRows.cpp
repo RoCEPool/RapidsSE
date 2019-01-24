@@ -132,7 +132,7 @@ void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bAPI_SpawnJob(pJob_SubFetch,SS_SEED_RUN,pSession);
+  IGNORE_RETURN(Api::bSpawnJob(pJob_SubFetch,SS_SEED_RUN,pSession));
 
   EXIT();
 }

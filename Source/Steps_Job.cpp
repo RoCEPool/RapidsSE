@@ -1451,7 +1451,7 @@ void Step::vJobSpawn(MP_Task mpTask)
     THROW_INVALID_DSTACK("job.spawn"_Stz);
   Job* pJob = _pJob(pJobPtr);
   
-  bAPI_SpawnJob(pJob,(eSS)i_Seed,nullptr);
+  IGNORE_RETURN(Api::bSpawnJob(pJob,(eSS)i_Seed,nullptr));
   
   EXIT();
 }

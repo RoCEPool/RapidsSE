@@ -48,7 +48,7 @@ void Step::vJob_SubLoaderSpawn(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  bAPI_SpawnJob(pJob_SubLoader,SS_SEED_RUN,pSession);
+  IGNORE_RETURN(Api::bSpawnJob(pJob_SubLoader,SS_SEED_RUN,pSession));
   
   EXIT();
 }
