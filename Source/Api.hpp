@@ -113,7 +113,7 @@ extern "C" eEC  RapidsSE_GetRecordBuffer (i8 iTrace, Session* pSession, void* aJ
 extern "C" eEC  RapidsSE_GetRow          (i8 iTrace, Session* pSession, void* aJob,
                                           i8 iRow, void** aaRow);
 extern "C" eEC  RapidsSE_GetRowCount     (i8 iTrace, Session* pSession, void* aJob,
-                                          i8 *aRowCount);
+                                          i8 *aiRowCount);
 extern "C" eEC  RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
                                            i8 iRow, void** aaRow);
 extern "C" eEC  RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob,
@@ -122,7 +122,7 @@ extern "C" eEC  RapidsSE_LoadResult      (i8 iTrace, Session* pSession, void* aJ
                                           i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows);
 extern "C" eEC  RapidsSE_ScanNextRow     (i8 iTrace, Session* pSession, void* aJob,
                                           void** aaEntryBuffer, void** aaEntry,
-                                          void** aaRow, i8* aiExepectedRows);
+                                          void** aaRow, i8* aiExpectedRows);
 
 
 Job* RapidsSE_pExecCmdStr(Stz* sCommand, Session* pSession, bool bPostJob, bool bFromPrompt);
