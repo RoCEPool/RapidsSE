@@ -567,7 +567,7 @@ bool Pthread::bIsJavaThread(void)
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of microseconds                                     */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSleepMicro(i8 nMicroSeconds)
+void Pthread::vSleepMicro(i8 nMicroSeconds, eCN eCallingClass)
 {
   struct timespec xReq;
   struct timespec xRem;
@@ -581,8 +581,11 @@ void Pthread::vSleepMicro(i8 nMicroSeconds)
     xReq.tv_sec  = 0;
   }
   
-  gpAttachMap->m_oStatistics.Thread.m_nSleeps++;
-  
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  pStats->Thread.m_nSleeps++;
+  pStats->Thread.m_iaSleeps[eCallingClass]++;
+  pStats->Thread.m_iaDuration[eCallingClass] += nMicroSeconds * C_1K;
+
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
@@ -593,7 +596,7 @@ void Pthread::vSleepMicro(i8 nMicroSeconds)
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of milliseconds                                     */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSleepMilli(i8 nMilliSeconds)
+void Pthread::vSleepMilli(i8 nMilliSeconds, eCN eCallingClass)
 {
   struct timespec xReq;
   struct timespec xRem;
@@ -607,8 +610,11 @@ void Pthread::vSleepMilli(i8 nMilliSeconds)
     xReq.tv_sec  = 0;
   }
   
-  gpAttachMap->m_oStatistics.Thread.m_nSleeps++;
-  
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  pStats->Thread.m_nSleeps++;
+  pStats->Thread.m_iaSleeps[eCallingClass]++;
+  pStats->Thread.m_iaDuration[eCallingClass] += nMilliSeconds * C_1M;
+
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
@@ -619,7 +625,7 @@ void Pthread::vSleepMilli(i8 nMilliSeconds)
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of nanoseconds                                      */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSleepNano(i8 nNanoSeconds)
+void Pthread::vSleepNano(i8 nNanoSeconds, eCN eCallingClass)
 {
   struct timespec xReq;
   struct timespec xRem;
@@ -633,8 +639,11 @@ void Pthread::vSleepNano(i8 nNanoSeconds)
     xReq.tv_sec  = 0;
   }
   
-  gpAttachMap->m_oStatistics.Thread.m_nSleeps++;
-  
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  pStats->Thread.m_nSleeps++;
+  pStats->Thread.m_iaSleeps[eCallingClass]++;
+  pStats->Thread.m_iaDuration[eCallingClass] += nNanoSeconds;
+
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
@@ -645,11 +654,37 @@ void Pthread::vSleepNano(i8 nNanoSeconds)
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of seconds                                          */
 /*----------------------------------------------------------------------------*/
-void Pthread::vSleepSec(i8 nSeconds)
+void Pthread::vSleepSec(i8 nSeconds, eCN eCallingClass)
 {
-  gpAttachMap->m_oStatistics.Thread.m_nSleeps++;
-  
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  pStats->Thread.m_nSleeps++;
+  pStats->Thread.m_iaSleeps[eCallingClass]++;
+  pStats->Thread.m_iaDuration[eCallingClass] += nSeconds * C_1G;
+
   sleep((unsigned)nSeconds);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sleeper statistics                                                         */
+/*----------------------------------------------------------------------------*/
+void Pthread::vSleepers(void)
+{
+  s32 sUnitMag;
+  s32 sTimeMag;
+
+  Statistics* pStats = &gpAttachMap->m_oStatistics;
+  
+  Magnitudes::vUnitMag(pStats->Thread.m_nSleeps,sUnitMag);
+  vTrace("Pthread::vSleep() total %s\n"_Stz,sUnitMag.aStz());
+  
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (pStats->Thread.m_iaSleeps[i_Class]) {
+      Magnitudes::vUnitMag(pStats->Thread.m_iaSleeps[i_Class],   sUnitMag);
+      Magnitudes::vTimeMag(pStats->Thread.m_iaDuration[i_Class], sTimeMag);
+      vTrace("  %s: %s times for duration of %s\n"_Stz,
+             aCN[i_Class],sUnitMag.aStz(),sTimeMag.aStz());
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/

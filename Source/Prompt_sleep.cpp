@@ -27,7 +27,7 @@ bool Prompt::bPrompt_sleep(SePrompt* pPrompt)
   
   i8 nSeconds = (*pTokenVec)[1]->iToI8();
   
-  Pthread::vSleepSec(nSeconds);
+  Pthread::vSleepSec(nSeconds,CN_SEPROMPT);
 
   return true;
 }

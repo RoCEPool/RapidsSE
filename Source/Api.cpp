@@ -665,7 +665,7 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
       if (pFetchBuffer)
         break;
       //vTrace("SLEEPING\n"_Stz);
-      Pthread::vSleepMilli(1);
+      Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
     }
     pJob_FetchRows->m_pFetchBuffer = pFetchBuffer;
     API_LOC(340);
@@ -1210,7 +1210,7 @@ void vDeleteJobs(Session* pSession)
           pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
           if (pFetchBuffer)
             break;
-          Pthread::vSleepMilli(1);
+          Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
           vApiLocation(pSession,400);
           continue;
         }

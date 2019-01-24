@@ -86,6 +86,7 @@ using namespace Prompt;
 #include "Prompt_shell.hpp"
 #include "Prompt_sizes.hpp"
 #include "Prompt_sleep.hpp"
+#include "Prompt_sleepers.hpp"
 #include "Prompt_sleeping.hpp"
 #include "Prompt_socket.hpp"
 #include "Prompt_ssn.hpp"

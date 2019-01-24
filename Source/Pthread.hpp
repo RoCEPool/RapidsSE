@@ -43,10 +43,11 @@ namespace System
     static bool  bIsCppThread(void);
     static bool  bIsJavaThread(void);
   
-    static void  vSleepMicro(i8 nMicroSeconds);
-    static void  vSleepMilli(i8 nMilliSeconds);
-    static void  vSleepNano(i8 nNanoSeconds);
-    static void  vSleepSec(i8 nSeconds);
+    static void  vSleepMicro(i8 nMicroSeconds, eCN eCallingClass);
+    static void  vSleepMilli(i8 nMilliSeconds, eCN eCallingClass);
+    static void  vSleepNano(i8 nNanoSeconds, eCN eCallingClass);
+    static void  vSleepSec(i8 nSeconds, eCN eCallingClass);
+    static void  vSleepers(void);
     static void* aStackBase(void);
     static void* aStackPointer(void);
     static i8    iStackSize(void);

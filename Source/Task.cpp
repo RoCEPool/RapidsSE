@@ -852,7 +852,7 @@ void Task::vTracePoint(Stz* aMark)
 {
   if (gxArguments.m_nNodes > 1) {
     i8 iPause = Random::iInteger(999,99999);
-    Pthread::vSleepMicro(iPause);
+    Pthread::vSleepMicro(iPause,CN_TASK);
   }
   
   s256 sRoutine;

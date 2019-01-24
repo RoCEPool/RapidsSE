@@ -427,7 +427,7 @@ void Jobs::vJob_FetchRows_post(Interface::Session* pSession, Job* pJob)
     
     pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
     if (! pFetchBuffer) {
-      Pthread::vSleepMilli(1);
+      Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
       continue;
     }
     
