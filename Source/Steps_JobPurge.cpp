@@ -46,7 +46,7 @@ void Step::vJob_PurgeSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RapidsSE_bSpawnJob(pJob_SubPurger,SS_SEED_RUN,nullptr);
+  bAPI_SpawnJob(pJob_SubPurger,SS_SEED_RUN,nullptr);
 
   EXIT();
 }

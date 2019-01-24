@@ -114,7 +114,7 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
   API_SYSTEM_LEVEL();
   API_ENTRY(AC_SessionNew);
   API_PARAM_P2(sCatalog, sSchema);
-  API_NOTNULL("a"_Stz, aaSession);
+  API_NOTNULL(aaSession);
   API_BEGIN();
   
   try {
@@ -155,7 +155,7 @@ eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
 {
   API_SESSION_LEVEL();
   API_ENTRY(AC_BeginInsertTable);
-  API_NOTNULL("a"_Stz, aaJob);
+  API_NOTNULL(aaJob);
   API_BEGIN();
   
   try {
@@ -243,7 +243,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     API_LOC(310);
 
     // execute the command
-    Job* pJob = RapidsSE_pExecCmdStr(sCommand, pSession, false, false);
+    Job* pJob = pAPI_ExecCmdStr(sCommand, pSession, false, false);
     API_LOC(320);
 
     vApiJob(pSession,pJob);
@@ -280,16 +280,14 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
 //
-// can we call this: RapidsSE_TranslateMessage
-//
-// can void** aaError be char** aaError ?
+// can we call this: RapidsSE_TranslateError
 //
 eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession,
                              int iErrorCode, void** aaError)
 {
   API_SESSION_LEVEL();
   API_ENTRY(AC_GetErrorMessage);
-  API_NOTNULL("b"_Stz, aaError);
+  API_NOTNULL(aaError);
   API_BEGIN();
   
   try {
@@ -315,7 +313,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
 {
   API_SESSION_LEVEL();
   API_ENTRY(AC_InsertRow);
-  API_NOTNULL("b"_Stz, sRecord);
+  API_NOTNULL(sRecord);
   API_BEGIN();
   
   try {
@@ -423,8 +421,8 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_BeginSubInserter);
-  API_NOTNULL("a"_Stz, aJob);
-  API_NOTNULL("a"_Stz, aaJob);
+  API_NOTNULL(aJob);
+  API_NOTNULL(aaJob);
   API_BEGIN();
   
   try {
@@ -519,7 +517,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn the job
     //vTrace("Spawning copyBuffer job\n"_Stz);
-    RapidsSE_bSpawnJob(pJob_CopyBuffer, SS_SEED_REQ, pSession);
+    bAPI_SpawnJob(pJob_CopyBuffer, SS_SEED_REQ, pSession);
     API_LOC(390);
   }
   catch (Error* pError) { API_CATCH(pError); }
@@ -611,12 +609,15 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
+//
+// this will go
+//
 eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
                              void** aaFetchBuffer, i8* aiExpectedRows)
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_FetchNextBuffer);
-  API_NOTNULL("c"_Stz, aaFetchBuffer);
+  API_NOTNULL(aaFetchBuffer);
   API_BEGIN();
   
   try {
@@ -707,7 +708,7 @@ eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob,
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_GetRecordBuffer);
-  API_NOTNULL("c"_Stz, aaRecordBuffer);
+  API_NOTNULL(aaRecordBuffer);
   API_BEGIN();
   
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
@@ -731,7 +732,7 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_GetRow);
-  API_NOTNULL("c"_Stz, aaRow);
+  API_NOTNULL(aaRow);
   API_BEGIN();
   
   i8 i_Node;
@@ -795,7 +796,7 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_GetRowCount);
-  API_NOTNULL("c"_Stz, aiRowCount);
+  API_NOTNULL(aiRowCount);
   API_BEGIN();
   
   i8 iRowsProcessed= 0;
@@ -821,7 +822,7 @@ eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob,
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_GetRowCountTableColumn);
-  API_NOTNULL("c"_Stz, aiRowCount);
+  API_NOTNULL(aiRowCount);
   API_BEGIN();
   
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
@@ -859,7 +860,7 @@ eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_GetRowTableColumn);
-  API_NOTNULL("c"_Stz, aaRow);
+  API_NOTNULL(aaRow);
   API_BEGIN();
   
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
@@ -902,8 +903,8 @@ eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob,
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_LoadResult);
-  API_NOTNULL("b"_Stz, aiValidRows);
-  API_NOTNULL("b"_Stz, aiInvalidRows);
+  API_NOTNULL(aiValidRows);
+  API_NOTNULL(aiInvalidRows);
   API_BEGIN();
   
   try {
@@ -955,7 +956,7 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_ScanNextRow);
-  API_NOTNULL("c"_Stz, aaRow);
+  API_NOTNULL(aaRow);
   API_BEGIN();
   
   try {
@@ -1048,7 +1049,7 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-Job* RapidsSE_pExecCmdStr(Stz* sCommand, Session* pSession,
+Job* pAPI_ExecCmdStr(Stz* sCommand, Session* pSession,
                           bool bPostJob, bool bFromPrompt)
 {
   gpAttachMap->m_oStatistics.Api.m_nExecCmdStr++;
@@ -1085,7 +1086,7 @@ Job* RapidsSE_pExecCmdStr(Stz* sCommand, Session* pSession,
 /*----------------------------------------------------------------------------*/
 /* spawn job                                                                  */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_bSpawnJob(Job* pJob, eSS eSeed, Session* pSession)
+bool bAPI_SpawnJob(Job* pJob, eSS eSeed, Session* pSession)
 {
   //----------------------------------------------------------------------------
   // Before appending request for se, ensure that se is running
@@ -1258,7 +1259,7 @@ void vSpawnJobAndWait(Session* pSession, Job* pJob)
   pJob->m_eState = JS_LOCKED;
   
   // spawn the insertTable job
-  RapidsSE_bSpawnJob(pJob, SS_SEED_REQ, pSession);
+  bAPI_SpawnJob(pJob, SS_SEED_REQ, pSession);
   vApiLocation(pSession,107);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1351,7 +1352,7 @@ void vApiStatistics(eAC eApiCall)
 /*----------------------------------------------------------------------------*/
 /* monitor portrait                                                           */
 /*----------------------------------------------------------------------------*/
-void RapidsSE_vMonitorPortrait(s48K& sPortrait)
+void vAPI_MonitorPortrait(s48K& sPortrait)
 {
   s48K s;
   i8 nCats = 0;

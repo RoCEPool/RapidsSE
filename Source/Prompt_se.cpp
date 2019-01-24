@@ -73,7 +73,7 @@ bool Prompt::bPrompt_se(SePrompt* pPrompt)
   vTrace("SE:: %s\n"_Stz,sCommand.aStz());
   
   // call se to execute command
-  Job* pJob = RapidsSE_pExecCmdStr(sCommand.aStz(),pPrompt->pSession(),true,true);
+  Job* pJob = pAPI_ExecCmdStr(sCommand.aStz(),pPrompt->pSession(),true,true);
   
   if (pJob) {
     delete pJob;

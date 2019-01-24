@@ -125,8 +125,8 @@ extern "C" eEC  RapidsSE_ScanNextRow     (i8 iTrace, Session* pSession, void* aJ
                                           void** aaRow, i8* aiExpectedRows);
 
 
-Job* RapidsSE_pExecCmdStr(Stz* sCommand, Session* pSession, bool bPostJob, bool bFromPrompt);
-bool RapidsSE_bSpawnJob(Job* aJob, eSS eSeed, Session* pSession);
+Job* pAPI_ExecCmdStr(Stz* sCommand, Session* pSession, bool bPostJob, bool bFromPrompt);
+bool bAPI_SpawnJob(Job* aJob, eSS eSeed, Session* pSession);
 
 void vApiCall(Session* pSession, eAC eApiCall);
 void vApiError(Session* pSession, eEC eError);
@@ -137,7 +137,7 @@ void vDeleteJobs(Session* pSession);
 void vSpawnJobAndWait(Session* pSession, Job* aJob);
 
 void vApiStatistics(eAC eApiCall);
-void RapidsSE_vMonitorPortrait(s48K& sPortrait);
+void vAPI_MonitorPortrait(s48K& sPortrait);
 
 
 #define API_SYSTEM_LEVEL() \
@@ -310,11 +310,9 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* validate reference pointer                                                 */
 /*----------------------------------------------------------------------------*/
-#define API_NOTNULL(aMarker, p1) \
+#define API_NOTNULL(p1) \
 { \
   if (! p1) { \
-    s32 sVarName; \
-    sVarName = (Stz*)#p1; \
     TRACE_ERROR((char*)#p1, EC_INVALID_PARAMETER); \
     return EC_INVALID_PARAMETER; \
   } \
@@ -367,7 +365,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define API_ERROR()
 #define API_EXIT()
 #define API_EXITING()
-#define API_NOTNULL(aMarker, pRefPointer)
+#define API_NOTNULL(p1)
 
 #define API_PARAM_P1(p1)
 #define API_PARAM_P2(p1, p2)

@@ -109,7 +109,7 @@ void Step::vJob_InsertRowSpawnJobWriteRow(MP_Task mpTask)
   Job_WriteRow* pJob_WriteRow = _pJob_WriteRow(pJobPtr);
   
   // spawn a writeRow job
-  RapidsSE_bSpawnJob(pJob_WriteRow,SS_SEED_RUN,pJob_InsertRow->m_pSession);
+  bAPI_SpawnJob(pJob_WriteRow,SS_SEED_RUN,pJob_InsertRow->m_pSession);
   
   EXIT();
 }

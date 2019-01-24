@@ -191,7 +191,7 @@ Job* Jobs::pJob_NetHog_pre(Interface::Session* pSession)
     pJob_NetHog->m_iHogNo  = i_Hog;
     pJob_NetHog->m_bNoWait = true;
     
-    bool bResult = RapidsSE_bSpawnJob(pJob_NetHog,SS_SEED_RCV,pSession);
+    bool bResult = bAPI_SpawnJob(pJob_NetHog,SS_SEED_RCV,pSession);
     RASSERT_WARN(bResult);
   }
   

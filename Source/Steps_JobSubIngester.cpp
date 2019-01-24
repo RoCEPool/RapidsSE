@@ -48,7 +48,7 @@ void Step::vJob_SubIngesterSpawn(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RapidsSE_bSpawnJob(pJob_SubIngester,SS_SEED_RUN,pSession);
+  bAPI_SpawnJob(pJob_SubIngester,SS_SEED_RUN,pSession);
   
   EXIT();
 }

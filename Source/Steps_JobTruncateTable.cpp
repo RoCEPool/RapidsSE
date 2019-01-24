@@ -84,7 +84,7 @@ void Step::vJob_TruncateTableSpawnSub(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   
-  RapidsSE_bSpawnJob(pJob_SubTruncate,SS_SEED_RUN,nullptr);
+  bAPI_SpawnJob(pJob_SubTruncate,SS_SEED_RUN,nullptr);
   
   EXIT();
 }

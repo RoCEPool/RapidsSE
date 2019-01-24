@@ -364,7 +364,7 @@ void Job_WriteBuffer::vSpawnJobWriteBuffer(Session* pSession,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn the write buffer job
   
-  RapidsSE_bSpawnJob(pJob_WriteBuffer,SS_SEED_RUN,pSession);
+  bAPI_SpawnJob(pJob_WriteBuffer,SS_SEED_RUN,pSession);
 }
 
 /*----------------------------------------------------------------------------*/

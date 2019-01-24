@@ -65,7 +65,7 @@ void Step::vJob_PublishSpawnSub(MP_Task mpTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  RapidsSE_bSpawnJob(pJob_SubPublish,SS_SEED_RUN,nullptr);
+  bAPI_SpawnJob(pJob_SubPublish,SS_SEED_RUN,nullptr);
   
   EXIT();
 }

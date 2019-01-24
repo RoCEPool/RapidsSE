@@ -369,7 +369,7 @@ void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;
-  RapidsSE_vMonitorPortrait(sPortrait);
+  vAPI_MonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
   sPortrait = ""_Stz;

@@ -132,7 +132,7 @@ void Step::vJob_FetchRowsSpawnSub(MP_Task mpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  RapidsSE_bSpawnJob(pJob_SubFetch,SS_SEED_RUN,pSession);
+  bAPI_SpawnJob(pJob_SubFetch,SS_SEED_RUN,pSession);
 
   EXIT();
 }
