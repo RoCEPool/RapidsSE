@@ -70,10 +70,13 @@ ActivityMap::ActivityMap(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
 
+  m_oLock.vInitLock(LK_ACTIVITY_MAP);
+  
   if (0 != gpAttachMap->m_pGrid->m_iThisNode || Pthread::bIsJavaThread() )
     return;
   
   m_oLock.vInitLock(LK_ACTIVITY_MAP);
+  
   m_i_Mark = 0;
   m_nMarks = gxArguments.m_nActivityMarks;
   
@@ -306,10 +309,11 @@ void ActivityMap::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vOpenByApi(void)
 {
-  if (! gpAttachMap->m_aActivityMap)
+  if (gpActivityMap)
     return;
   
   new ActivityMap;
+  
   ActivityMap::vMark(0,"Opened by API"_Stz);
   
   Now oNow;
