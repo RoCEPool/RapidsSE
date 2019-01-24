@@ -352,13 +352,14 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
 {
+  Session* pSession = *ppSession;
+  
   API_SESSION_LEVEL();
   API_ENTRY(AC_SessionDelete);
   API_BEGIN();
   
   try {
     
-    Session* pSession = *ppSession;
     // delete jobs from the job stack of the session
     vDeleteJobs(pSession);
     API_LOC(310);
@@ -372,6 +373,7 @@ eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
     
     // retrun back null session
     *ppSession = nullptr;
+    
     API_LOC(330);
    }
   catch (Error* pError) { API_CATCH(pError); }

@@ -73,15 +73,15 @@ static Stz* aAC[]
 ////////////////////////////////////////////////////////////////////////////////
 
 // System Level Calls
-extern "C" eEC  RapidsSE_CheckVersion(i8 iTrace,
-                                             Stz* sVersion);
-extern "C" eEC  RapidsSE_OpenPool           (i8 iTrace,
-                                             Stz* sRegion, void** aaAttachMap);
-extern "C" bool RapidsSE_IsInvalidSession   (i8 iTrace,
-                                             int eError);
-extern "C" eEC  RapidsSE_NewSession         (i8 iTrace,
-                                             Stz* sCatalog, Stz* sSchema, i8 iPartition,
-                                             void** aaSession);
+extern "C" eEC  RapidsSE_CheckVersion     (i8 iTrace,
+                                           Stz* sVersion);
+extern "C" eEC  RapidsSE_OpenPool         (i8 iTrace,
+                                           Stz* sRegion, void** aaAttachMap);
+extern "C" bool RapidsSE_IsInvalidSession (i8 iTrace,
+                                           int eError);
+extern "C" eEC  RapidsSE_NewSession       (i8 iTrace,
+                                           Stz* sCatalog, Stz* sSchema, i8 iPartition,
+                                           void** aaSession);
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -118,7 +118,7 @@ extern "C" eEC  RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* a
                                            i8 iCol, void** aaRow);
 extern "C" eEC  RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
                                                 i8* aRowCount);
-extern "C" eEC  RapidsSE_GetLoadResult      (i8 iTrace, Session* pSession, void* aJob,
+extern "C" eEC  RapidsSE_GetLoadResult   (i8 iTrace, Session* pSession, void* aJob,
                                           i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows);
 extern "C" eEC  RapidsSE_ScanNextRow     (i8 iTrace, Session* pSession, void* aJob,
                                           void** aaEntryBuffer, i8* aiExpectedRows,
