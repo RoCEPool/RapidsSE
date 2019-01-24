@@ -1288,24 +1288,24 @@ void vApiStatistics(eAC eApiCall)
     case AC_BeginSubInserter:    gpAttachMap->m_oStatistics.Api.m_nBeginSubInserter++;     break;
     case AC_CheckVersion:        gpAttachMap->m_oStatistics.Api.m_nCheckVersion++;         break;
     case AC_CopyBuffer:          gpAttachMap->m_oStatistics.Api.m_nCopyBuffer++;           break;
+    case AC_DeleteSession:       gpAttachMap->m_oStatistics.Api.m_nDeleteSession++;        break;
     case AC_EndInsert:           gpAttachMap->m_oStatistics.Api.m_nEndInsert++;            break;
     case AC_EndJobs:             gpAttachMap->m_oStatistics.Api.m_nEndJobs++;              break;
     case AC_EndSubInserter:      gpAttachMap->m_oStatistics.Api.m_nEndSubInserter++;       break;
     case AC_ExecuteCommand:      gpAttachMap->m_oStatistics.Api.m_nExecuteCommand++;       break;
     case AC_FetchNextBuffer:     gpAttachMap->m_oStatistics.Api.m_nFetchNextBuffer++;      break;
+    case AC_GetLoadResult:       gpAttachMap->m_oStatistics.Api.m_nGetLoadResult++;        break;
     case AC_GetRecordBuffer:     gpAttachMap->m_oStatistics.Api.m_nGetRecordBuffer++;      break;
-    case AC_TranslateError:      gpAttachMap->m_oStatistics.Api.m_nTranslateError++;       break;
     case AC_GetRow:              gpAttachMap->m_oStatistics.Api.m_nGetRow++;               break;
     case AC_GetRowCount:         gpAttachMap->m_oStatistics.Api.m_nGetRowCount++;          break;
-    case AC_GetTableColumnRowCount: gpAttachMap->m_oStatistics.Api.m_nGetTableColumnRowCount++;  break;
     case AC_GetTableColumnRow:   gpAttachMap->m_oStatistics.Api.m_nGetTableColumnRow++;    break;
+    case AC_GetTableColumnRowCount: gpAttachMap->m_oStatistics.Api.m_nGetTableColumnRowCount++;  break;
     case AC_InsertRow:           gpAttachMap->m_oStatistics.Api.m_nInsertRow++;            break;
-    case AC_GetLoadResult:       gpAttachMap->m_oStatistics.Api.m_nGetLoadResult++;        break;
-    case AC_OpenPool:            gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;             break;
-    case AC_ScanNextRow:         gpAttachMap->m_oStatistics.Api.m_nScanNextRow++;          break;
-    case AC_DeleteSession:       gpAttachMap->m_oStatistics.Api.m_nDeleteSession++;        break;
     case AC_IsInvalidSession:    gpAttachMap->m_oStatistics.Api.m_nIsInvalidSession++;     break;
     case AC_NewSession:          gpAttachMap->m_oStatistics.Api.m_nNewSession++;           break;
+    case AC_OpenPool:            gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;             break;
+    case AC_ScanNextRow:         gpAttachMap->m_oStatistics.Api.m_nScanNextRow++;          break;
+    case AC_TranslateError:      gpAttachMap->m_oStatistics.Api.m_nTranslateError++;       break;
     default:
       NEVER_REACH;
   }
@@ -1338,13 +1338,21 @@ void vAPI_MonitorPortrait(s48K& sPortrait)
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("copyBuffer %lld "_Stz,pStats->Api.m_nCopyBuffer);
   }
+  if (pStats->Api.m_nDeleteSession) {
+    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
+    s.vSprintCat("deleteSession %lld "_Stz,pStats->Api.m_nDeleteSession);
+  }
   if (pStats->Api.m_nEndInsert) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("endInsertJobs %lld "_Stz,pStats->Api.m_nEndInsert);
+    s.vSprintCat("endInsert %lld "_Stz,pStats->Api.m_nEndInsert);
   }
   if (pStats->Api.m_nEndJobs) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("endJobs %lld "_Stz,pStats->Api.m_nEndJobs);
+  }
+  if (pStats->Api.m_nEndSubInserter) {
+    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
+    s.vSprintCat("endSubInserter %lld "_Stz,pStats->Api.m_nEndSubInserter);
   }
   if (pStats->Api.m_nExecuteCommand) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
@@ -1354,13 +1362,13 @@ void vAPI_MonitorPortrait(s48K& sPortrait)
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("fetchNextBuffer %lld "_Stz,pStats->Api.m_nFetchNextBuffer);
   }
+  if (pStats->Api.m_nGetLoadResult) {
+    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
+    s.vSprintCat("getLoadResult %lld "_Stz,pStats->Api.m_nGetLoadResult);
+  }
   if (pStats->Api.m_nGetRecordBuffer) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("getRecordBuffer %lld "_Stz,pStats->Api.m_nGetRecordBuffer);
-  }
-  if (pStats->Api.m_nTranslateError) {
-    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("translareError %lld "_Stz,pStats->Api.m_nTranslateError);
   }
   if (pStats->Api.m_nGetRow) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
@@ -1370,33 +1378,17 @@ void vAPI_MonitorPortrait(s48K& sPortrait)
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("getRowCount %lld "_Stz,pStats->Api.m_nGetRowCount);
   }
-  if (pStats->Api.m_nGetTableColumnRowCount) {
-    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("GetTableColumnRowCount %lld "_Stz,pStats->Api.m_nGetTableColumnRowCount);
-  }
   if (pStats->Api.m_nGetTableColumnRow) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("getTableColumnRow %lld "_Stz,pStats->Api.m_nGetTableColumnRow);
   }
+  if (pStats->Api.m_nGetTableColumnRowCount) {
+    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
+    s.vSprintCat("GetTableColumnRowCount %lld "_Stz,pStats->Api.m_nGetTableColumnRowCount);
+  }
   if (pStats->Api.m_nInsertRow) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("insertRow %lld "_Stz,pStats->Api.m_nInsertRow);
-  }
-  if (pStats->Api.m_nGetLoadResult) {
-    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("getLoadResult %lld "_Stz,pStats->Api.m_nGetLoadResult);
-  }
-  if (pStats->Api.m_nPoolOpen) {
-    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("poolOpen %lld "_Stz,pStats->Api.m_nPoolOpen);
-  }
-  if (pStats->Api.m_nScanNextRow) {
-    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("scanNextRow %lld "_Stz,pStats->Api.m_nScanNextRow);
-  }
-  if (pStats->Api.m_nDeleteSession) {
-    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("deleteSession %lld "_Stz,pStats->Api.m_nDeleteSession);
   }
   if (pStats->Api.m_nIsInvalidSession) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
@@ -1406,7 +1398,19 @@ void vAPI_MonitorPortrait(s48K& sPortrait)
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("newSession %lld "_Stz,pStats->Api.m_nNewSession);
   }
-  
+  if (pStats->Api.m_nPoolOpen) {
+    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
+    s.vSprintCat("poolOpen %lld "_Stz,pStats->Api.m_nPoolOpen);
+  }
+  if (pStats->Api.m_nScanNextRow) {
+    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
+    s.vSprintCat("scanNextRow %lld "_Stz,pStats->Api.m_nScanNextRow);
+  }
+  if (pStats->Api.m_nTranslateError) {
+    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
+    s.vSprintCat("translareError %lld "_Stz,pStats->Api.m_nTranslateError);
+  }
+
   if (nCats) {
     sPortrait.vCopy("Api: "_Stz);
     sPortrait.vConcat(s);

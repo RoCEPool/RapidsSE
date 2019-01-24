@@ -592,7 +592,7 @@ void RapidsSE::vPrintWelcome(void)
   aRelDbg = "release"_Stz;
 #endif
 
-  gxArguments.m_sWelcome.vSprint("RapidsSE v%s (%s %s -- %s) pid %lld"_Stz,
+  gxArguments.m_sWelcome.vSprint("RapidsSE v%s (Compiled %s %s -- %s) pid %lld"_Stz,
         RAPIDSSE_VERSION_STRING,
         __DATE__,
         __TIME__,
