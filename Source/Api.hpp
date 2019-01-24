@@ -144,6 +144,12 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 
 
 /*----------------------------------------------------------------------------*/
+/* begin API function                                                         */
+/*----------------------------------------------------------------------------*/
+#define API_BEGIN() \
+  vApiLocation(pSession,200);
+
+/*----------------------------------------------------------------------------*/
 /* enter API function                                                         */
 /*----------------------------------------------------------------------------*/
 #define API_ENTRY(_eApiCall) \
@@ -178,8 +184,8 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 /*----------------------------------------------------------------------------*/
 /* error in API function                                                      */
 /*----------------------------------------------------------------------------*/
-#define API_ECODE(eErrorCode) \
-  \
+#define API_RETURN_EC(eErrorCode) \
+{ \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace("!%s: %p(%lld) %s(%lld)\n"_Stz,  \
            aApiCall, pSession, \
@@ -187,8 +193,9 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
            aEC[eErrorCode],(i8)eErrorCode); \
   vApiError(pSession,eErrorCode); \
   vApiLocation(pSession,880); \
-  ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode);
-// didnt use braces { }, as that would hide the variables
+  ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
+  return eErrorCode;
+}
 
 /*----------------------------------------------------------------------------*/
 /* error in API function                                                      */
@@ -348,8 +355,9 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
   RapidsSE::vErrorHandler(pError); \
   return eErrorCode;
 
+#define API_BEGIN()
 #define API_ENTRY(__eApiCall)
-#define API_ECODE(eErrorCode)
+#define API_RETURN_EC(eErrorCode) return eErrorCode
 #define API_ERROR()
 #define API_EXIT()
 #define API_EXITING()
