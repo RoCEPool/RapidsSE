@@ -25,6 +25,7 @@ using namespace Interface;
 
 #include "Api.hpp"
 #include "ApiState.hpp"
+#include "RapidsSE.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

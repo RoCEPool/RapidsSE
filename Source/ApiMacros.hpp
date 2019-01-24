@@ -4,6 +4,13 @@
 #pragma once
 
 
+// API trace levels
+#define TL_ENTRY  1
+#define TL_ERROR  2
+#define TL_EXIT   4
+#define TL_INSERT 8
+#define TL_POOL   16
+
 
 #define API_SYSTEM_LEVEL() \
   Session* pSession = nullptr; \
@@ -17,6 +24,8 @@
 
 #define API_LOC(iLocation) \
   ApiState::vMarkLocation(pSession,iLocation);
+
+////////////////////////////////////////////////////////////////////////////////
 
 #ifdef _DEBUG
 
@@ -92,6 +101,7 @@
   ApiState::vMarkLocation(pSession,888); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
   return eErrorCode;
+
 // didnt use braces { }, as that would hide the variables
 
 /*----------------------------------------------------------------------------*/
