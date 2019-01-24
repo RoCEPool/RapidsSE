@@ -279,7 +279,7 @@ print "-----------------------------------------------------------------------";
 /*
 NEW:
 
-RapidsSE v0.3.1 (Feb 16 2018 08:23:18 -- release) pid 17550
+Engine v0.3.1 (Feb 16 2018 08:23:18 -- release) pid 17550
 Args:
 --name NODE1
 --region /SE_NODE1
@@ -399,7 +399,7 @@ duration 4188ms
 [N0 17550] se 0.3.1r>
 
 
-RapidsSE v0.3.1 (Feb 16 2018 08:23:18 -- release) pid 17559
+Engine v0.3.1 (Feb 16 2018 08:23:18 -- release) pid 17559
 Args:
 --name NODE1
 --region /SE_NODE1
@@ -527,7 +527,7 @@ duration 1398ms
 
 
 JAN 24:
-RapidsSE v0.3.1 (Feb 16 2018 07:42:38 -- release) pid 11854
+Engine v0.3.1 (Feb 16 2018 07:42:38 -- release) pid 11854
 Args:
 --name NODE1
 --region /SE_NODE1
@@ -641,7 +641,7 @@ duration 60539ms
 fetch lineitem l_shipdate '2000-06-02 00:00:00' <=
 
 
-RapidsSE v0.3.1 (Feb 16 2018 07:42:38 -- release) pid 11884
+Engine v0.3.1 (Feb 16 2018 07:42:38 -- release) pid 11884
 Args:
 --name NODE1
 --region /SE_NODE1
@@ -770,7 +770,7 @@ duration 412960ms
 
 
 /*March 25: NO LAZY CHAIN
- RapidsSE v0.4.1 (Mar 26 2018 06:44:49 -- release) pid 6919
+ Engine v0.4.1 (Mar 26 2018 06:44:49 -- release) pid 6919
  Args:
  --name NODE1
  --region /SE_NODE1
@@ -902,7 +902,7 @@ duration 412960ms
  
  
  WITH LAZY CHAIN
- RapidsSE v0.4.1 (Mar 26 2018 10:53:00 -- release) pid 8589
+ Engine v0.4.1 (Mar 26 2018 10:53:00 -- release) pid 8589
  Args:
  --name NODE1
  --region /SE_NODE1
@@ -1130,7 +1130,7 @@ duration 412960ms
  [N0 8589] se 0.4.1r> Program ended with exit code: 9
  
  
- RapidsSE v0.4.1 (Mar 26 2018 10:53:00 -- release) pid 8652
+ Engine v0.4.1 (Mar 26 2018 10:53:00 -- release) pid 8652
  Args:
  --name NODE1
  --region /SE_NODE1

@@ -82,7 +82,7 @@
   \
   eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
   \
-  RapidsSE::vErrorHandler(pError); \
+  Engine::vErrorHandler(pError); \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace("!%s: %p(%lld) %s(%lld)\n"_Stz,  \
            aApiCall, pSession, \
@@ -222,7 +222,7 @@
   \
   eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
   \
-  RapidsSE::vErrorHandler(pError); \
+  Engine::vErrorHandler(pError); \
   return eErrorCode;
 
 #define API_BEGIN()

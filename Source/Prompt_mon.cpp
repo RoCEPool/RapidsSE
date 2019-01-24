@@ -26,7 +26,7 @@ bool Prompt::bPrompt_mon(SePrompt* pPrompt)
 {
   s48K sPortrait;
   
-  RapidsSE::vMonitorPortrait(sPortrait);
+  Engine::vMonitorPortrait(sPortrait);
   
   vTrace("%s\n"_Stz,sPortrait.aStz());
   

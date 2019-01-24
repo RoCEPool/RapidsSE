@@ -25,7 +25,7 @@ using namespace StorageEngine;
 #include "SizesDumps.hpp"
 #include "Finalizers.hpp"
 
-#include "RapidsSE.hpp"
+#include "Engine.hpp"
 
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, Stz*);
 extern pDUMPFUN *gpDump[];

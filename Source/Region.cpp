@@ -23,7 +23,7 @@ bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
   // open existing shm region
   bResult = Shm::bOpenExisting(sRegionName,iFD,oSysCall);
   if ( ! bResult ) {
-    vTrace("RapidsSE::vAttach: failed to open region: %s\n"_Stz,
+    vTrace("Engine::vAttach: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
     return false;
   }
@@ -35,7 +35,7 @@ bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
                                      C_NO_HUGE_PAGES,
                                      oSysCall);
   if (! gaSeShmRegion)  {
-    vTrace("RapidsSE::vAttach failed to map\n"_Stz);
+    vTrace("Engine::vAttach failed to map\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     return false;
   }
@@ -56,7 +56,7 @@ bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
   // reopen the existing shm region
   bResult = Shm::bOpenExisting(sRegionName,iFD,oSysCall);
   if ( ! bResult ) {
-    vTrace("RapidsSE::vAttach: failed to open region: %s\n"_Stz,
+    vTrace("Engine::vAttach: failed to open region: %s\n"_Stz,
            sRegionName.aChar());
     return false;
   }
@@ -68,7 +68,7 @@ bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
                                      C_NO_HUGE_PAGES,
                                      oSysCall);
   if (! gaSeShmRegion)  {
-    vTrace("RapidsSE::vAttach failed to map\n"_Stz);
+    vTrace("Engine::vAttach failed to map\n"_Stz);
     Shm::bClose(iFD,oSysCall);
     return false;
   }
@@ -97,7 +97,7 @@ void Region::vCreate(s32& sRegionName, void* aRegionAddr, i8 iRegionSize,
   // verbose
   Magnitudes::vByteMag(iRegionSize, sSizeMag);
   if (gxArguments.m_bVerbose)
-    vInfo("Creating RapidsSE instance %s; size %s (%lldB)...\n"_Stz,
+    vInfo("Creating Engine instance %s; size %s (%lldB)...\n"_Stz,
            sRegionName.aChar(),
            sSizeMag.aChar(),
            iRegionSize);
@@ -105,13 +105,13 @@ void Region::vCreate(s32& sRegionName, void* aRegionAddr, i8 iRegionSize,
   // open a new shm region which will contain the activity map
   bResult = Shm::bOpenCreate(sRegionName,iRegionFd,oSysCall);
   if (! bResult)
-    vFatal("RapidsSE::vCreate: failed to create region %s\n"_Stz,
+    vFatal("Engine::vCreate: failed to create region %s\n"_Stz,
            sRegionName.aChar());
 
   // extend the shm region
   bResult = Shm::bExtend(iRegionFd,iRegionSize,oSysCall);
   if (! bResult)
-    vFatal("RapidsSE::vCreate: failed to extend region %s\n"_Stz,
+    vFatal("Engine::vCreate: failed to extend region %s\n"_Stz,
            sRegionName.aChar());
   
   // map the shm region into a vm segment within this process address space
@@ -121,7 +121,7 @@ void Region::vCreate(s32& sRegionName, void* aRegionAddr, i8 iRegionSize,
                                      C_NO_HUGE_PAGES,
                                      oSysCall);
   if (! gaSeShmRegion)
-    vFatal("RapidsSE::vCreate failed to map region!\n"_Stz);
+    vFatal("Engine::vCreate failed to map region!\n"_Stz);
   
   gpBufferPool = new(gaSeShmRegion) BufferPool(sRegionName, iRegionSize,
                                                iJumboTook, bTouch,
@@ -135,7 +135,7 @@ void Region::vCreate(s32& sRegionName, void* aRegionAddr, i8 iRegionSize,
   if (bLock) {
     bResult = Shm::bLock(gaSeShmRegion,iRegionSize,oSysCall);
     if (! bResult)
-      vFatal("RapidsSE::vAttach failed to lock\n"_Stz);
+      vFatal("Engine::vAttach failed to lock\n"_Stz);
     
     if (gxArguments.m_bVerbose)
       vTrace("Shm pages locked in memory\n"_Stz);

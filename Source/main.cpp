@@ -16,11 +16,11 @@ int main(int argc, const char* argv[])
     exit(EXIT_FAILURE);
   
   // potentially run utilities
-  if (RapidsSE::bRunUtilities(argc,(Stz**)argv))
+  if (Engine::bRunUtilities(argc,(Stz**)argv))
     exit(EXIT_SUCCESS);
   
   // execute
-  RapidsSE::vMainEntry();
+  Engine::vMainEntry();
 
   return EXIT_SUCCESS;
 }

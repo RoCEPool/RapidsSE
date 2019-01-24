@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Api.cpp - RapidsSE Api funcstions                                          */
+/* Api.cpp - Engine Api funcstions                                          */
 /*============================================================================*/
 
 #include "Interface.h"
@@ -28,7 +28,7 @@ eEC RapidsSE_CheckVersion(i8 iTrace, Stz* sVersion)
     
     if ( ! sVersion->bEqual((Stz*)RAPIDSSE_VERSION_STRING)) {
       
-      vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match RapidsSE (%s)"_Stz,
+      vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match Engine (%s)"_Stz,
              sVersion, RAPIDSSE_VERSION_STRING);
       
       API_RETURN_EC(EC_VERSION_MISMATCH);
@@ -58,7 +58,7 @@ eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
     API_LOC(310);
     
     // delete the session
-    RapidsSE::vDeleteSession(pSession);
+    Engine::vDeleteSession(pSession);
     API_LOC(320);
     
     // set session to nullptr so macro knows not to look at it
@@ -143,7 +143,7 @@ eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
     s32 sPoolName;
     sPoolName = (Stz*)sRegion;
     
-    bool bResult = RapidsSE::bOpenPool(sPoolName);
+    bool bResult = Engine::bOpenPool(sPoolName);
     if (! bResult)
       API_RETURN_EC(EC_INVALID_INSTANCE);
     

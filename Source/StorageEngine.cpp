@@ -177,7 +177,7 @@ void StorageEngine::vSetSignalHandlers(void)
     vInfo("\n*\n* Set Signal Handlers\n*\n"_Stz);
   
   // Segmentation Violation
-  signal(SIGSEGV, RapidsSE::vSignalHandler);
+  signal(SIGSEGV, Engine::vSignalHandler);
 }
 
 /*============================================================================*/
