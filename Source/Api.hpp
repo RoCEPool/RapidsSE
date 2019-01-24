@@ -265,16 +265,6 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 }
 
 /*----------------------------------------------------------------------------*/
-/* trace API insert                                                           */
-/*----------------------------------------------------------------------------*/
-#define TRACE_INSERT(aMarker, sRecord) \
-{  \
-  if ( (iTrace & TL_INSERT) == TL_INSERT) \
-    vTrace("%s(%s): %p(%lld) inserting row %s\n"_Stz,  \
-      aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1, sRecord); \
-}
-
-/*----------------------------------------------------------------------------*/
 /* trace API error                                                            */
 /*----------------------------------------------------------------------------*/
 #define TRACE_ERROR(aMarker, eErrorCode) \
@@ -294,27 +284,6 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
       aApiCall, aMarker, pSession, pSession ? pSession->iPartition() : -1); \
 }
 
-/*----------------------------------------------------------------------------*/
-/* validate index                                                             */
-/*----------------------------------------------------------------------------*/
-#define VALIDATE_INDEX(aMarker) \
-{  \
-  if ( ! pSession->pCurrentIndex() ) { \
-    TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-    return EC_VALIDATION_FAILURE; \
-  } \
-}
-
-/*----------------------------------------------------------------------------*/
-/* validate no index                                                          */
-/*----------------------------------------------------------------------------*/
-#define VALIDATE_NOINDEX(aMarker) \
-{  \
-  if ( pSession->pCurrentIndex() ) { \
-    TRACE_ERROR(aMarker, EC_VALIDATION_FAILURE); \
-    return EC_VALIDATION_FAILURE; \
-  } \
-}
 
 /*----------------------------------------------------------------------------*/
 /* verify buffer pool boundaries                                              */
@@ -346,10 +315,8 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define API_PARAM_P2(p1, p2)
 #define API_PARAM_P3(p1, p2, p3)
 #define API_PARAM_P4(p1, p2, p3, p4)
-#define TRACE_INSERT(aMarker, sRecord)
 #define TRACE_ERROR(aMarker, eErrorCode)
 #define TRACE_EXIT(aMarker)
-#define VALIDATE_INDEX(aMarker)
 #define VALIDATE_NOINDEX(aMarker)
 #define VALIDATE_POOL()
 
