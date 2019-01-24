@@ -254,6 +254,17 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate reference pointer                                                 */
+/*----------------------------------------------------------------------------*/
+#define API_NOTNULL(aMarker, pRefPointer) \
+{ \
+  if ( ! pRefPointer) { \
+    TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
+    return EC_INVALID_PARAMETER; \
+  } \
+}
+
+/*----------------------------------------------------------------------------*/
 /* trace API insert                                                           */
 /*----------------------------------------------------------------------------*/
 #define TRACE_INSERT(aMarker, sRecord) \
@@ -306,51 +317,6 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate a parameter                                                       */
-/*----------------------------------------------------------------------------*/
-#define VALIDATE_PARAM(aMarker, pParameter) \
-{  \
-  if ( ! pParameter ) { \
-    TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
-    return EC_INVALID_PARAMETER; \
-   } \
-}
-
-/*----------------------------------------------------------------------------*/
-/* validate reference pointer                                                 */
-/*----------------------------------------------------------------------------*/
-#define API_NOTNULL(aMarker, pRefPointer) \
-{ \
-  if ( ! pRefPointer) { \
-    TRACE_ERROR(aMarker, EC_INVALID_PARAMETER); \
-    return EC_INVALID_PARAMETER; \
-  } \
-}
-
-/*----------------------------------------------------------------------------*/
-/* validate SE session                                                        */
-/*----------------------------------------------------------------------------*/
-#define VALIDATE_SESSION(aMarker) \
-{ \
-  eEC eResult = eValidateSession(iTrace, pSession, aMarker); \
-  if (eResult != EC_NONE) { \
-      TRACE_ERROR(aMarker, EC_INVALID_INTERFACE); \
-      return eResult; \
-   } \
-}
-
-/*----------------------------------------------------------------------------*/
-/* check result of a request that was sent                                    */
-/*----------------------------------------------------------------------------*/
-#define CHECK_RESULT(aMarker) \
-{ \
-  if (EC_NONE != eResult) { \
-    TRACE_ERROR(aMarker,eResult); \
-    return eResult; \
-  } \
-}
-
-/*----------------------------------------------------------------------------*/
 /* verify buffer pool boundaries                                              */
 /*----------------------------------------------------------------------------*/
 #define VALIDATE_POOL() \
@@ -374,6 +340,7 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define API_ENTRY(__eApiCall)
 #define API_ERROR()
 #define API_EXIT()
+#define API_NOTNULL(aMarker, pRefPointer)
 
 #define API_PARAM_P1(p1)
 #define API_PARAM_P2(p1, p2)
@@ -384,10 +351,6 @@ void RapidsSE_vMonitorPortrait(s48K& sPortrait);
 #define TRACE_EXIT(aMarker)
 #define VALIDATE_INDEX(aMarker)
 #define VALIDATE_NOINDEX(aMarker)
-#define VALIDATE_PARAM(aMarker, pParameter)
-#define API_NOTNULL(aMarker, pRefPointer)
-#define VALIDATE_SESSION(aMarker)
-#define CHECK_RESULT(aMarker)
 #define VALIDATE_POOL()
 
 #endif

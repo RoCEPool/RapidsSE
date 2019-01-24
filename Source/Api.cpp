@@ -353,11 +353,9 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
 {
   Job* pJob = nullptr;
   API_ENTRY(AC_InsertRow);
-  
+  API_NOTNULL("b"_Stz, sRecord);
+
   try {
-    
-    // validate parameter
-    VALIDATE_PARAM("b"_Stz, sRecord);
     
     // create Job_InsertTable
     JobClass* pJobClass_InsertRow = JobClass::pFind(CN_JOB_INSERTROW);
@@ -473,13 +471,10 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
 {
   Job* pJob = _pJob(aJob);
   API_ENTRY(AC_BeginSubInserter);
+  API_NOTNULL("a"_Stz, aJob);
   API_NOTNULL("a"_Stz, aaJob);
-
+  
   try {
-    
-    // validate the parameter
-    VALIDATE_PARAM("a"_Stz, aJob);
-    
     
     // get the insertTable job
     Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(aJob);
@@ -685,7 +680,6 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
 
   try {
     
-    
     Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(aJob);
     
     // if we had an entry buffer delete it
@@ -784,7 +778,7 @@ eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob,
  
   Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
   
-  RASSERT( ! pJob_SubInserter->m_pRecordBuffer );
+  RASSERT(! pJob_SubInserter->m_pRecordBuffer);
   pJob_SubInserter->m_pRecordBuffer = new RecordBuffer();
   
   *aaBuffer = pJob_SubInserter->m_pRecordBuffer;
@@ -801,8 +795,6 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
 {
   Job* pJob = _pJob(aJob);
   API_ENTRY(AC_GetRow);
-  
-  // validate the reference pointer
   API_NOTNULL("c"_Stz, aaRow);
   
   i8 i_Node;
@@ -860,9 +852,7 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
 {
   Job* pJob = _pJob(aJob);
   API_ENTRY(AC_GetRowCount);
-  
-  // validate the pointer
-  VALIDATE_PARAM("c"_Stz, aRowCount);
+  API_NOTNULL("c"_Stz, aRowCount);
   
   i8 iRowsProcessed= 0;
   for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
@@ -884,9 +874,7 @@ eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob,
 {
   Job* pJob = _pJob(aJob);
   API_ENTRY(AC_GetRowCountTableColumn);
-  
-  // validate the pointer
-  VALIDATE_PARAM("c"_Stz, aRowCount);
+  API_NOTNULL("c"_Stz, aRowCount);
   
   Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
   Table* pTable = (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[gpAttachMap->m_pGrid->m_iThisNode].m_sResponse.aChar());
@@ -991,11 +979,9 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
 {
   Job* pJob = _pJob(aJob);
   API_ENTRY(AC_ScanNextRow);
-  
+  API_NOTNULL("c"_Stz, aaRow);
+
   try {
-    
-    // validate the reference pointer
-    API_NOTNULL("c"_Stz, aaRow);
     
     Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(aJob);
     
