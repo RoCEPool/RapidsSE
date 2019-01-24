@@ -1,880 +1,1010 @@
 /*============================================================================*/
-/* RapidsSE.cpp -- Rapids Storage Engine                                      */
+/* RapidsSE.cpp -- RapidsSE External Api                                      */
 /*============================================================================*/
 
+#include "Interface.h"
 #include "StorageEngine.h"
-#include "ShmUtility.hpp"
 
-Arguments  gxArguments;
+extern BufferPool*  gpBufferPool;
+extern AttachMap*   gpAttachMap;
+extern ActivityMap* gpActivityMap;
 
-Header*       gaSeShmRegion  = nullptr;
-BufferPool*   gpBufferPool   = nullptr;
-AttachMap *   gpAttachMap    = nullptr;
-File*         gpTraceFile    = nullptr;
 
-extern pthread_key_t giTLS_ThreadKey;
-
-bool          gbSHM          = false;
-
+////////////////////////////////////////////////////////////////////////////////
+//                             System Level Calls                             //
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* main entry                                                                 */
+/* check the library version against given version                            */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vMainEntry(void)
+eEC RapidsSE_CheckVersion(i8 iTrace, Stz* sVersion)
 {
-  //OpSys::vGetInfo();
-  // OpSys::vTraceInfo();
+  API_SYSTEM_LEVEL();
+  API_ENTRY(AC_CheckVersion);
+  API_PARAM_P1(sVersion);
+  API_BEGIN();
   
-  vPrintWelcome();
-  
-  vSetSignalHandlers();
-  
-  // init the tls keys
-  TlsKeys::vInit();
-  
-  HwCounters::bInit();
-  
-  StorageEngine::vCheckAllAssumptions();
-
-  vSanityCheck();
-  
-  vWriteRegionName();
-  
-  vChangeDirectory();
-  
-  vKillPrev();
-  
-  vOpenPool();
-
-  vOpenTraceFile();
-  
-  if (gxArguments.m_bStart)
-    vSetGlobals();
-
-  vCheckPort();
-  
-  //gpAttachMap->vPrintAttachMap();
-  
-  vRunCmdLine();
-  
-  vClosePool();
-  
-  vPrintExit();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/* attach to an existing shm region                                           */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vAttachRegion(void)
-{
-  gpAttachMap = pAdd<AttachMap*>((Object*)gaSeShmRegion,C_SIZE_POOL_BUFFER);
-  
-  // get pointers to global objects from attach map
-  gpAttachMap->vGetGlobals();
-  
-  if (gpAttachMap->m_bVerbose)
-    AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, Stz::aTab(1));
-}
-
-/*----------------------------------------------------------------------------*/
-/* call the boot task to compile the main dictionary                          */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vCallBoot(void)
-{
-  JobClass* pJobClass_Boot = JobClass::pFind(CN_JOB_BOOT);
-  
-  Job_Boot* pJob_Boot
-  = static_cast<Job_Boot*>(pJobClass_Boot->pNewJob(nullptr));
-  
-  pJob_Boot->vSeed(SS_SEED_RUN);
-  
-  Task* pBootTask = new Task(pJob_Boot);
-  pBootTask->vNewStacks();
-  
-  pBootTask->vAddBaseWords();
-  
-  if (gpAttachMap->m_bVerbose)
-    vTrace("[[mainThread]] Compiling dictionaries...\n"_Stz);
-  
-  vCallImmmediate(pBootTask);
-  
-  vDeleteImmmediate(&pBootTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* run task immediately                                                       */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vCallImmmediate(Task* pImmediateTask)
-{
-  pImmediateTask->vSeedJob();
-  
-  pImmediateTask->vState(TK_EXECUTING);
-  
-  pImmediateTask->vTaskLoop();
-}
-
-/*----------------------------------------------------------------------------*/
-/* call the prompt task                                                       */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vCallPrompt(void)
-{
-  SePrompt* pSePrompt = new SePrompt;
-  
-  pSePrompt->vPromptLoop();
-  
-  delete pSePrompt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* change current directory                                                   */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vChangeDirectory(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Change Working Directory\n*\n"_Stz);
-  
-  // change working directory to commands dir
-  bool bResult = Dir::bChangeCurrent(gxArguments.m_sCommandsDir);
-
-  s256 sCurrent;
-  if (Dir::bGetCurrent(sCurrent) && gxArguments.m_bVerbose)
-    vInfo("CURRENT WORKING DIRECTORY: %s\n"_Stz,sCurrent.aStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* check and see if the port has other listeneters                            */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vCheckPort(void)
-{
-  SysCall oSysCall;
-  Socket* pSocket;
-  i8      iPort;
-  
-  // nothing to check if not starting SE
-  if ( ! gxArguments.m_bStart)
-    return;
-  
-  iPort = gxArguments.m_xNodes[gxArguments.m_iThisNode].m_iPortNo;
-  if (gxArguments.m_bVerbose)
-    vInfo("Looking for listeners on port %lld\n"_Stz, iPort);
-  
-  pSocket = new Socket;
-  bool bResult = pSocket->bCreateServer((int)iPort, oSysCall);
-  
-  if ( ! bResult ) {
-    if (oSysCall.iError() == EADDRINUSE) {
-      vTrace("Address in use (port: %lld). "
-             "CHECK IF ANOTHER INSTANCE OF RAPIDSSE IS RUNNING!\n"_Stz,
-             iPort);
+  try {
+    
+    if ( ! sVersion->bEqual((Stz*)RAPIDSSE_VERSION_STRING)) {
       
+      vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match Engine (%s)"_Stz,
+             sVersion, RAPIDSSE_VERSION_STRING);
+      
+      API_RETURN_EC(EC_VERSION_MISMATCH);
     }
-    else {
-      vTrace("Unable to listen for connections (port: %lld): Errno %d!\n"_Stz,
-             iPort, oSysCall.iError());
-    }
-    //RapidsSE::vStopSystem();
-    exit(EXIT_FAILURE);
   }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
   
-  pSocket->bClose(oSysCall);
-}
-
-/*----------------------------------------------------------------------------*/
-/* close the shm region                                                       */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vClosePool(void)
-{
-  //delete gpBufferPool;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create new shm region                                                      */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vCreateAttachMap(void)
-{
-  // create the attach map (which records global pointers)
-  new AttachMap;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete task immediate                                                      */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vDeleteImmmediate(Task** ppTask)
-{
-  Task* pTask = *ppTask;
-  *ppTask = nullptr;
-
-  Job* pJob = pTask->pJob();
-  pTask->vJob(nullptr);
-  delete pJob;
-  
-  delete pTask;
+  API_RETURN();
 }
 
 /*----------------------------------------------------------------------------*/
 /* delete an se session                                                       */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vDeleteSession(Session* pSession)
+eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
 {
-  delete pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* error handler                                                              */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vErrorHandler(Error* pError)
-{
-  char wFileName[256];
+  Session* pSession = *ppSession;
   
-  const char* ps;
-  
-  if (pError) {
-    ps = StrLib::sLast(pError->aFileName()->aChar());
-    StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
-    StrLib::vCopy(wFileName,ps+1);
-    vTrace("%s: line %lld in %s\n"_Stz,
-           pError->aErrorMsg(),
-           pError->iLineNo(),
-           wFileName);
-  }
-  else {
-    vTrace("RapidsSE::vErrorHandler: Unknown error\n"_Stz);
-  }
-           
-  Debugging::vStackDump();
-}
-
-/*----------------------------------------------------------------------------*/
-/* kill previous node instances                                               */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vKillPrev(void)
-{
-  if (! gxArguments.m_bKillPrev)
-    return;
-  
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Kill Previous Occurences\n*\n"_Stz);
-  
-  // an assumption is that regions will be /SE_<node>
-  
-  void* aRegion;
-  s32 sRegionName;
-  int iFD;
-  bool b;
-  
-  for (i8 i_Index=0; i_Index < gxArguments.m_nNodes; i_Index++) {
-    
-    sRegionName.vSprint("%s_%s"_Stz,
-                        gxArguments.m_sRegionPrefix.aChar(),
-                        gxArguments.m_xNodes[i_Index].m_sNodeName.aChar());
-    
-    if ( ! Region::bTest(sRegionName) )
-      continue;
-    
-    if ( ! (aRegion = Region::aOpen(sRegionName,gxArguments.m_aRegionAddr,iFD)) )
-      continue;
-    
-    AttachMap* pAttachMap = (AttachMap*)ahAdd<AttachMap*>((Object*)aRegion,C_SIZE_POOL_BUFFER);
-    
-    if (pAttachMap->m_iPid &&
-        pAttachMap->m_iPid != Process::iGetPid() &&
-        Process::bTestPid(pAttachMap->m_iPid)) {
-      
-      b = Process::bKillPid(pAttachMap->m_iPid);
-      if ( b )
-        vTrace("vKillPrev: process %lld killed\n"_Stz,pAttachMap->m_iPid);
-      else
-        vTrace("vKillPrev: process %lld not killed\n"_Stz,pAttachMap->m_iPid);
-    }
-    
-    Region::vClose(aRegion,iFD);
-    
-    Region::vUnlink(sRegionName);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get monitor portrait of system                                             */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vMonitorPortrait(s48K& sRapidsPortrait)
-{
-  s48K sPortrait;
-  
-  Now oNow;
-  
-  sRapidsPortrait.vSprint("\nSystem Monitor %s\n"_Stz,
-                          oNow.sFormatted());
-  sRapidsPortrait.vConcat("------------------------------------------------------\n"_Stz);
-
-
-  sPortrait = ""_Stz;
-  vMonitorProfile(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  gpAttachMap->m_pQueues->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  gpAttachMap->m_oLockTracker.vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  gpAttachMap->m_pBufferPool->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  gpAttachMap->m_xHeapMem.vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  if (gpAttachMap) gpAttachMap->m_oResourceTracker.vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  gpAttachMap->m_pQueues->vMonitorThread(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  File::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  Socket::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  Statistics::vMemoryPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  ActivityMap::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  Mutex::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  Task::vMonitorProfile_stats(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  Pthread::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  Api::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  Table::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  Index::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  IndexTree::vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-  sPortrait = ""_Stz;
-  gpAttachMap->m_pApiState->vMonitorPortrait(sPortrait);
-  sRapidsPortrait.vConcat(sPortrait.aStz());
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* get monitor portrait profile of system                                     */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vMonitorProfile(s48K& sPortrait)
-{
-  Since oSince;
-  oSince.vNow();
-  
-  i8 iUpTime = oSince.iSeconds() - gpAttachMap->m_oSince.iSeconds();
-  
-  s32 sRegionMag;
-  Magnitudes::vByteMag(gpAttachMap->m_iRegionSize,sRegionMag);
-
-  i8 iPercentFree =gpAttachMap->m_pBufferPool->iFreePercent();
-  
-  sPortrait.vSprint("Profile (%s): node %s region %s free %lld%% uptime %llds \n"_Stz,
-#ifdef _DEBUG
-                    "debug"_Stz,
-#else
-                    "release"_Stz,
-#endif
-
-                    gpAttachMap->m_pGrid->pGetNode(gxArguments.m_iThisNode)->aNodeName(),
-                    sRegionMag.aStz(),
-                    iPercentFree,
-                    iUpTime
-                    );
-}
-
-/*----------------------------------------------------------------------------*/
-/* create or open the ActivityMap                                             */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vOpenActivityMap(void)
-{
-  ActivityMap::vOpenBySE();
-}
-
-/*----------------------------------------------------------------------------*/
-/* attach or create the shm region                                            */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vOpenPool(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Pool Open\n*\n"_Stz);
-  
-  bool bResult;
-  
-  if (gxArguments.m_bUnlink) {
-    //vUnlink();
-    return;
-  }
-  
-  if (gxArguments.m_bStart) {
-    
-    if (! gxArguments.m_bRestart && Region::bTest(gxArguments.m_sRegionName)) {
-      vFatal("Error: RapidsSE instance %s already started\n"_Stz,gxArguments.m_sRegionName.aChar());
-      exit(EXIT_FAILURE);
-      return;
-    }
-    
-    if (gxArguments.m_bVerbose)
-      vInfo("\n*\n* Create Region\n*\n"_Stz);
-    
-    Region::vCreate(gxArguments.m_sRegionName,
-                    gxArguments.m_aRegionAddr,
-                    gxArguments.m_iRegionSize,
-                    gxArguments.m_nJumboTook,
-                    gxArguments.m_bTouch,
-                    gxArguments.m_bLock,
-                    gxArguments.m_bRestart,
-                    gxArguments.m_bDontFree,
-                    gxArguments.m_bFreeRB);
-    
-    if (gxArguments.m_bVerbose)
-      vInfo("\n*\n* Create AttachMap\n*\n"_Stz);
-    vCreateAttachMap();
-    
-    return;
-  }
-  
-  if (gxArguments.m_bStatus) {
-    return;
-  }
-  
-  if (gxArguments.m_bStop) {
-    if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vFatal("Error: RapidsSE instance %s was not started\n"_Stz,
-             gxArguments.m_sRegionName.aChar());
-      exit(EXIT_FAILURE);
-      return;
-    }
-    if (gxArguments.m_bVerbose)
-      vInfo("\n*\n* Attach Region\n*\n"_Stz);
-    bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
-    ASSERT(bResult);
-    vAttachRegion();
-    return;
-  }
-  
-  if (gxArguments.m_bPrompt || gxArguments.m_bScript) {
-    if (! Region::bTest(gxArguments.m_sRegionName)) {
-      vFatal("Error: RapidsSE instance %s was not started\n"_Stz,gxArguments.m_sRegionName.aChar());
-      exit(EXIT_FAILURE);
-      return;
-    }
-    if (gxArguments.m_bVerbose)
-      vInfo("\n*\n* Attach Region\n*\n"_Stz);
-    bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
-    if ( ! bResult ) {
-      vFatal("Error: Unable to attach to RapidsSE instance %s\n"_Stz,gxArguments.m_sRegionName.aChar());
-      exit(EXIT_FAILURE);
-      return;
-      
-    }
-    vAttachRegion();
-    return;
-  }
-  
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Attach Region\n*\n"_Stz);
-  bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
-  ASSERT(bResult);
-  vAttachRegion();
-  //vFatal("Error: RapidsSE missing arguments\n"_Stz);
-  //exit(EXIT_FAILURE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attach or create the shm region                                            */
-/*----------------------------------------------------------------------------*/
-bool RapidsSE::bOpenPool(s32& sPoolName)
-{
-  bool bResult = Region::bAttach(sPoolName,gxArguments.m_aRegionAddr);
-  if (!bResult)
-    return bResult;
-  
-  vAttachRegion();
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* open trace file                                                            */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vOpenTraceFile(void)
-{
-  gpTraceFile = new File;
-  
-  bool bOpened = gpTraceFile->bOpenWrite("/tmp/se_trace.txt"_Stz);
-  RASSERT(bOpened);
-  
-  if (gxArguments.m_bVerbose)
-    vInfo("** trace file opened: /tmp/se_trace.txt\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print exit                                                                 */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vPrintExit(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("RapidsSE exits\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* print status of the system                                                 */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vPrintStatus(void)
-{
-  if (Region::bTest(gxArguments.m_sRegionName)) {
-    
-    // attach to the region
-    bool bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
-    ASSERT(bResult);
-    
-    // get globals
-    vAttachRegion();
-    
-    // check if the Pid in the shm is still alive
-    if ( Process::bTestPid(gpAttachMap->m_iPid) ) {
-      vTrace("RapidsSE instance %s running\n"_Stz,
-             gxArguments.m_sRegionName.aChar());
-      return;
-    }
-  }
-  
-  vTrace("RapidsSE instance %s not running\n"_Stz,
-         gxArguments.m_sRegionName.aChar());
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* print welcome                                                              */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vPrintWelcome(void)
-{
-  Stz* aRelDbg;
-#ifdef _DEBUG
-  aRelDbg = "debug"_Stz;
-#else
-  aRelDbg = "release"_Stz;
-#endif
-
-  gxArguments.m_sWelcome.vSprint("RapidsSE v%s (Compiled %s %s -- %s) pid %lld"_Stz,
-        RAPIDSSE_VERSION_STRING,
-        __DATE__,
-        __TIME__,
-        aRelDbg,
-        Process::iGetPid()
-        );
-
-  if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus)
-    vInfo("%s\n"_Stz,gxArguments.m_sWelcome.aStz());
-  
-  if (gxArguments.m_bVerbose) {
-#ifdef MUNGE
-    vTrace("  Compiled with MUNGE\n\n"_Stz);
-#else
-    vTrace("  Not compiled with MUNGE\n\n"_Stz);
-#endif
-  }
-  
-  // print startup information
-  if (gxArguments.m_bWelcome && gxArguments.m_bStart)
-    gxArguments.vPrintStartupInfo();
-}
-
-/*----------------------------------------------------------------------------*/
-/* run command line                                                           */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vRunCmdLine(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Execute Command Line\n*\n"_Stz);
+  API_SESSION_LEVEL();
+  API_ENTRY(AC_DeleteSession);
+  API_BEGIN();
   
   try {
     
-    if (gxArguments.m_bStart) {
-      
-      vStartSystem();
-      
-      if (gxArguments.m_bPrompt)
-        vCallPrompt();
-      else
-        vWaitStop();
-    }
+    // delete jobs from the job stack of the session
+    Api::vDeleteJobs(pSession);
+    API_LOC(310);
     
-    else if (gxArguments.m_bPrompt) {
-      vOpenActivityMap();
-      vCallPrompt();
-    }
-    else if (gxArguments.m_bStatus)  vPrintStatus();
-    else if (gxArguments.m_bStop)    vStopSystem();
-    else if (gxArguments.m_bUnlink)  vUnlinkSystem();
-    else if (gxArguments.m_bScript)  { ASSERT(gpBufferPool); vCallPrompt(); }
-    else {
-      vFatal("Unknown command line argument\n"_Stz);
-    }
+    // delete the session
+    Engine::vDeleteSession(pSession);
+    API_LOC(320);
     
+    // set session to nullptr so macro knows not to look at it
+    pSession = nullptr;
+    
+    // retrun back null session
+    *ppSession = nullptr;
+    
+    API_LOC(330);
   }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
   
-  catch (Error* pError) {
-    vErrorHandler(pError);
-  }
+  API_RETURN();
 }
 
 /*----------------------------------------------------------------------------*/
-/* run utilities                                                              */
+/* is the error an EC_INVALID_INTERFACE ?                                     */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE::bRunUtilities(int argc, Stz* argv[])
+//
+// can this be: RapidsSE_IsInvalidInterface
+//
+bool RapidsSE_IsInvalidSession(i8 iTrace, int iError)
 {
-  // potentially run the shm utility
-  if (gbSHM) {
-    ShmUtility::vRun(argc,(Stz**)argv);
+  API_SYSTEM_LEVEL();
+  API_ENTRY(AC_IsInvalidSession);
+  API_BEGIN();
+  
+  API_EXITING();
+  if (iError == EC_INVALID_INTERFACE)
     return true;
-  }
-
-  return false;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* startup sanity checking                                                    */
+/* create a new se session                                                    */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vSanityCheck(void)
+eEC RapidsSE_NewSession(i8 iTrace,
+                        Stz* sCatalog, Stz* sSchema, i8 iPartition,
+                        void** aaSession)
 {
-  gxArguments.vSanityCheck();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set globals                                                                */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vSetGlobals(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Set Globals From Arguments\n*\n"_Stz);
+  API_SYSTEM_LEVEL();
+  API_ENTRY(AC_NewSession);
+  API_PARAM_P2(sCatalog, sSchema);
+  API_NOTNULL(aaSession);
+  API_BEGIN();
   
-  // set globals from gxArguments
-  gpAttachMap->m_bVerbose      = gxArguments.m_bVerbose;
-  gpAttachMap->m_bTracepoint   = gxArguments.m_bTracepoint;
-  gpAttachMap->m_bProgress     = gxArguments.m_bProgress;
-  gpAttachMap->m_bMetadata     = gxArguments.m_bMetadata;
-  gpAttachMap->m_nIndexEntries = gxArguments.m_nEntries;
-}
-
-/*----------------------------------------------------------------------------*/
-/* signal handler                                                             */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vSignalHandler(int iSignal)
-{
-  // print out all the frames to stderr
-  vFatal("Error: signal %d:\n"_Stz, iSignal);
-  
-  Debugging::vStackDump();
-  exit(1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* start the system tasks                                                     */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vSpawnJobStart(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Start System Tasks\n*\n"_Stz);
-  
-  Pthread::vTlsSet(giTLS_ThreadKey,(void*)-1);
-  
-  JobClass* pJobClass_Start = JobClass::pFind(CN_JOB_START);
-  
-  Job_Start* pJob_Start
-  = static_cast<Job_Start*>(pJobClass_Start->pNewJob(nullptr));
-  
-  pJob_Start->vSeed(SS_SEED_RUN);
-  
-  Task* pStartTask = new Task(pJob_Start);
-  
-  Handlers::vSpawnedTask(pStartTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* start a new system                                                         */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vStartSystem(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* System Init\n*\n"_Stz);
-  
-  ASSERT( ! gpAttachMap->m_oRootDic.bHasWords() );
+  try {
     
-  gpAttachMap->m_pQueues = new Queues;
+    VALIDATE_POOL();
     
-  gpAttachMap->m_oDdlLock.vInitLock(LK_DDL);
-  gpAttachMap->m_oDicLock.vInitLock(LK_DIC);
-  
-  //--------------------------------------------------------------------------
-  
-  gpAttachMap->m_pGrid = new Grid(gxArguments.m_nNodes, gxArguments.m_nSlots);
-  
-  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    Node* pNode = new Node(i_Node,
-                           gxArguments.m_xNodes[i_Node].m_sNodeName,
-                           gxArguments.m_xNodes[i_Node].m_sIPAddress,
-                           gxArguments.m_xNodes[i_Node].m_iPortNo);
-    ASSERT(CN_NODE == pNode->eClass());
-    gpAttachMap->m_pGrid->vAddNode(pNode);
+    pSession = new Session(iPartition);
+    
+    eEC eError = pSession->eInit(sCatalog,sSchema);
+    if (eError != EC_NONE)
+      API_RETURN_EC(eError);
+    
+    // return the newly created session
+    *aaSession = pSession;
+    pSession = nullptr;
   }
-  
-  Node* pThisNode = gpAttachMap->m_pGrid->pFindNode(gxArguments.m_sNodeName);
-  if ( ! pThisNode ) {
-    THROW("Cannot fine Node %s in the cluster"_Stz,
-          gxArguments.m_sNodeName.aChar());
-  }
-  
-  i8 iNodeNo = pThisNode->iNodeNo();
-  
-  gpAttachMap->m_pGrid->vThisNode(iNodeNo);
-  
-  //--------------------------------------------------------------------------
-  
-  vOpenActivityMap();
-  
-  Step::vAddSteps();
-  
-  Axioms::vAddConstants();
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
 
-  vCallBoot();
-  
-  //--------------------------------------------------------------------------
-  
-  gpAttachMap->m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
-  gpAttachMap->m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
-  
-  gpAttachMap->vRecordGlobals(gxArguments.m_sRegionName,
-                              gxArguments.m_iRegionSize,
-                              gxArguments.m_iJumboSize,
-                              gxArguments.m_nSubIngesters,
-                              gxArguments.m_nSubLoaders);
-  
-  // get the trace file
-  //Word* pTraceFileWord = gpAttachMap->m_oRootDic.pFindWord("trace_file"_Stz);
-  //gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->aBodyArea());
-  
-  //if (gpAttachMap->m_bVerbose)
-  //  vTrace("Shm region initialised at: %s\n"_Stz,gpAttachMap->m_sUTC.aChar());
-  
-  // spawn general threads
-  for (i8 iThreads = 0; iThreads < gxArguments.m_nThreads; iThreads++) {
-    Thread* pThread = new Thread;
-    pThread->vSpawnPthread();
-  }
-  
-  // spawn dummy threads
-  for (i8 iThreads = 0; iThreads < gxArguments.m_nDummyThreads; iThreads++) {
-    Thread* pThread = new Thread;
-    pThread->vSpawnPthread_Dummy();
-  }
-
-  while (*gpAttachMap->m_ziThreads != gxArguments.m_nThreads)
-    Pthread::vSleepMilli(10,CN_NONE);
-  
-  vSpawnJobStart();
-  
-  if (gxArguments.m_bVerbose) {
-    vInfo("RapidsSE instance %s started\n"_Stz,gxArguments.m_sRegionName.aChar());
-    gpAttachMap->m_pGrid->vDumpPartitioning();
-  }
-  
+  API_RETURN();
 }
 
 /*----------------------------------------------------------------------------*/
-/* stop the system                                                            */
+/* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vStopSystem(void)
+eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 {
-  ASSERT(gpBufferPool);
+  API_SYSTEM_LEVEL();
+  API_ENTRY(AC_OpenPool);
+  API_PARAM_P1(sRegion);
+  API_BEGIN();
   
-  Region::vUnlink(gxArguments.m_sRegionName);
-  
-  gpAttachMap->m_iStop = 1;
-  
-  vTrace("RapidsSE instance %s stopped\n"_Stz,
-         gxArguments.m_sRegionName.aChar());
-  
-  // the system is now stopped
-}
-
-/*----------------------------------------------------------------------------*/
-/* unlink the system                                                          */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vUnlinkSystem(void)
-{
-  Region::vUnlink(gxArguments.m_sRegionName);
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait for quit or stop                                                      */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vWaitStop(void)
-{
-  if (gpAttachMap->m_bVerbose)
-    vTrace("[[mainThread]] Waiting on stop %s\n"_Stz,"..."_Stz);
-  
-  // this primary thread waits for flag indicationg systems is to stop
-  while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )
-    Pthread::vSleepMilli(10,CN_NONE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* write region name                                                          */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vWriteRegionName(void)
-{
-  if (gxArguments.m_bVerbose)
-    vInfo("\n*\n* Write Region Name\n*\n"_Stz);
-  
-  // write the regionName into a se.region file
-  // used by shell script to start se prompt
-  if (gxArguments.m_bStart) {
-    File oFile;
-    bool b = oFile.bOpenMode("./se.region"_Stz,C_OPEN_READ_WRITE_CREATE);
-    ASSERT(b);
-    oFile.vPrint("%s\n"_Stz,gxArguments.m_sRegionName.aChar());
-    oFile.vClose();
+  try {
+    
+    // open the pool
+    s32 sPoolName;
+    sPoolName = (Stz*)sRegion;
+    
+    bool bResult = Engine::bOpenPool(sPoolName);
+    if (! bResult)
+      API_RETURN_EC(EC_INVALID_INSTANCE);
+    
+    VALIDATE_POOL();
+    
+    *aaAttachMap = gpAttachMap;
+    
+    ActivityMap::vOpenByApi();
+    
+    if (gpAttachMap)
+      gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;
   }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
   
-  if (gxArguments.m_bVerbose)
-    vInfo("REGION NAME: %s\n"_Stz,gxArguments.m_sRegionName.aChar());
+  API_RETURN();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                             Session Level Calls                            //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* begin the insert table job                                                 */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
+                         Stz* sTable, i8 nSubInserters, void** aaJob)
+{
+  API_SESSION_LEVEL();
+  API_ENTRY(AC_BeginInsert);
+  API_NOTNULL(aaJob);
+  API_BEGIN();
+  
+  try {
+ 
+    // create Job_InsertTable
+    JobClass* pJobClass_InsertTable = JobClass::pFind(CN_JOB_INSERTTABLE);
+    ASSERT(pJobClass_InsertTable);
+    API_LOC(310);
+    
+    Job_InsertTable* pJob_InsertTable =
+      static_cast<Job_InsertTable*>(pJobClass_InsertTable->pPreJob(pSession));
+    API_LOC(320);
+
+    // find the table in the session dictionary stack
+    Table* pTable = Table::pFindTable(pSession->pPathStack(), sTable);
+    API_LOC(330);
+
+    // set the table in the InsertTable job
+    pJob_InsertTable->m_pTable = pTable;
+    API_LOC(340);
+
+    // return the insertTable job
+    *aaJob = pJob_InsertTable;
+    API_LOC(350);
+
+    // set subInserters in the TblPtb
+    gpAttachMap->m_nSubInserters = nSubInserters;
+    API_LOC(360);
+
+    // push the InsertTable job onto the jobstack
+    pSession->m_pJobStack->vPushPointer(pJob_InsertTable);
+    API_LOC(370);
+
+    vApiJob(pSession,pJob_InsertTable);
+    API_LOC(380);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* end all jobs of this session                                               */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
+{
+  API_SESSION_LEVEL();
+  API_ENTRY(AC_EndJobs);
+  API_BEGIN();
+  
+  // delete the jobs from the sessions jobStack
+  Api::vDeleteJobs(pSession);
+  API_LOC(310);
+
+  // mark session as exiting (any fetches still running will stop)
+  pSession->m_bSessionExiting = true;
+  API_LOC(320);
+
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
+                            Stz* sCatalog, Stz* sSchema, Stz* sCommand,
+                            void** aaJob)
+{
+  API_SESSION_LEVEL();
+  API_ENTRY(AC_ExecuteCommand);
+  API_PARAM_P1(sCommand);
+  API_BEGIN();
+  
+  try {
+    
+    // set the catalog and schema in the session
+    eEC eError = pSession->eInit(sCatalog, sSchema);
+    if (eError != EC_NONE)
+      API_RETURN_EC(eError);
+    API_LOC(310);
+
+    // execute the command
+    Job* pJob = Api::pExecuteCommand(pSession, sCommand, false, false);
+    API_LOC(320);
+
+    vApiJob(pSession,pJob);
+    API_LOC(330);
+
+    // check if job had an error
+    if (pJob->m_bHasError) {
+      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+        eEC eError = pJob->m_xNode[i_Node].m_eErrorCode;
+        if (eError != EC_NONE) {
+          pSession->m_pJobStack->vPushPointer(pJob);
+          API_RETURN_EC(eError);
+        }
+      }
+      NEVER_REACH;
+    }
+    API_LOC(340);
+
+    // return job in aaJob
+    *aaJob = pJob;
+    API_LOC(350);
+
+    // push the job on the sessions job stack
+    pSession->m_pJobStack->vPushPointer(pJob);
+    API_LOC(360);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert the given row into a table                                          */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
+                       Stz* sTableName, Stz* sRecord)
+{
+  API_SESSION_LEVEL();
+  API_ENTRY(AC_InsertRow);
+  API_NOTNULL(sRecord);
+  API_BEGIN();
+  
+  try {
+    
+    // create Job_InsertTable
+    JobClass* pJobClass_InsertRow = JobClass::pFind(CN_JOB_INSERTROW);
+    ASSERT(pJobClass_InsertRow);
+    API_LOC(310);
+    
+    Job_InsertRow* pJob_InsertRow =
+    static_cast<Job_InsertRow*>(pJobClass_InsertRow->pPreJob(pSession));
+    API_LOC(320);
+    
+    // push the InsertTable job onto the jobstack
+    pSession->m_pJobStack->vPushPointer(pJob_InsertRow);
+    API_LOC(330);
+    
+    vApiJob(pSession,pJob_InsertRow);
+    API_LOC(340);
+    
+    // get the length of the record
+    i8 iRawDataLength = StrLib::iSize(sRecord->aChar());
+    API_LOC(350);
+    
+    // check length of record
+    if (iRawDataLength > C_MAX_RECORD)
+      API_RETURN_EC(EC_MAX_ROW_LENGTH);
+    API_LOC(360);
+    
+    // set the row in the insertRow job
+    pJob_InsertRow->m_sObjectName = sTableName;
+    pJob_InsertRow->m_aRawData = sRecord;
+    pJob_InsertRow->m_nRawDataBytes = iRawDataLength;
+    API_LOC(370);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // spawn and wait for the job
+    Api::vSpawnJobAndWait(pSession, pJob_InsertRow);
+    API_LOC(380);
+    
+    // check if job had an error
+    if (pJob_InsertRow->m_bHasError) {
+      
+      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+        
+        eEC eError = pJob_InsertRow->m_xNode[i_Node].m_eErrorCode;
+        if (eError != EC_NONE)
+          API_RETURN_EC(eError);
+      }
+      NEVER_REACH;
+    }
+    API_LOC(390);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* translate error code                                                       */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_TranslateError(i8 iTrace, Session* pSession,
+                            int iErrorCode, void** aaError)
+{
+  API_SESSION_LEVEL();
+  API_ENTRY(AC_TranslateError);
+  API_NOTNULL(aaError);
+  API_BEGIN();
+  
+  try {
+    
+    // get the error message
+    pSession->m_sResponse = aEC[(eEC)iErrorCode];
+    API_LOC(310);
+
+    *aaError = pSession->m_sResponse.aChar();
+    API_LOC(320);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+//                               Job Level Calls                              //
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* begin the subInserter job                                                  */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
+                              void** aaJob)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_BeginSubInserter);
+  API_NOTNULL(aJob);
+  API_NOTNULL(aaJob);
+  API_BEGIN();
+  
+  try {
+    
+    // get the insertTable job
+    Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(aJob);
+    API_LOC(310);
+
+    // create Job_SubInserter
+    JobClass* pJobClass_SubInserter = JobClass::pFind(CN_JOB_SUBINSERTER);
+    ASSERT(pJobClass_SubInserter);
+    API_LOC(320);
+
+    Job_SubInserter* pJob_SubInserter =
+    static_cast<Job_SubInserter*>(pJobClass_SubInserter->pPreJob(pSession));
+    API_LOC(330);
+
+    // push the InsertTable job onto the jobstack
+    pSession->m_pJobStack->vPushPointer(pJob_SubInserter);
+    vApiJob(pSession,pJob_SubInserter);
+    API_LOC(340);
+
+    // set the insertTable in the subInserter
+    pJob_SubInserter->m_pJob_InsertTable = pJob_InsertTable;
+    pJob_SubInserter->m_pParentJob = pJob_InsertTable;
+    API_LOC(350);
+
+    // set the table pointer (THIS CAN GO ????)
+    pJob_SubInserter->m_pTable = pJob_InsertTable->m_pTable;
+    API_LOC(360);
+
+    // return the sub_inserter job
+    *aaJob = pJob_SubInserter;
+    API_LOC(370);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert the record buffer into a table                                      */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_CopyBuffer);
+  API_BEGIN();
+  
+  try {
+    
+    // get the insertRow job
+    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
+    API_LOC(310);
+
+    // get the record buffer
+    RecordBuffer* pRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
+    API_LOC(320);
+
+    //pJob_SubInserter->m_pRecordBuffer->vShow();
+    
+    if (! pRecordBuffer)
+      API_RETURN();
+    API_LOC(330);
+
+    // create Job_CopyBuffer
+    JobClass* pJobClass_CopyBuffer = JobClass::pFind(CN_JOB_COPYBUFFER);
+    ASSERT(pJobClass_CopyBuffer);
+    API_LOC(340);
+
+    Job_CopyBuffer* pJob_CopyBuffer =
+    static_cast<Job_CopyBuffer*>(pJobClass_CopyBuffer->pPreJob(pSession));
+    API_LOC(350);
+
+    // set the pJob_SubInserter in the pJob_CopyBuffer
+    pJob_CopyBuffer->m_pJob_SubInserter = pJob_SubInserter;
+    API_LOC(360);
+
+    // move the recordBuffer from the subInsert into CopyBuffer
+    pJob_CopyBuffer->m_pRecordBuffer = pRecordBuffer;
+    API_LOC(370);
+    
+    ++pJob_SubInserter->m_ziRecordBuffers;
+    pJob_SubInserter->m_pRecordBuffer = nullptr;
+    API_LOC(380);
+
+    // push the InsertTable job onto the jobstack
+    //pSession->m_pJobStack->vPushPointer(pJob_CopyBuffer);
+    //vApiJob(pSession,pJob_CopyBuffer);
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // spawn the job
+    //vTrace("Spawning copyBuffer job\n"_Stz);
+    IGNORE_RETURN(Api::bSpawnJob(pSession,pJob_CopyBuffer,SS_SEED_REQ));
+    API_LOC(390);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* end insert and all session jobs                                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_EndInsert);
+  API_BEGIN();
+  
+  try {
+    
+    // get the insertTable job
+    Job_InsertTable* pJob_InsertTable = _pJob_InsertTable(aJob);
+    API_LOC(310);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // spawn and wait for job
+    Api::vSpawnJobAndWait(pSession, pJob_InsertTable);
+    API_LOC(320);
+
+    // check if job had an error
+    if (pJob_InsertTable->m_bHasError) {
+      
+      for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+        eEC eError = pJob_InsertTable->m_xNode[i_Node].m_eErrorCode;
+        if (eError != EC_NONE)
+          API_RETURN_EC(eError);
+      }
+      NEVER_REACH;
+    }
+    API_LOC(330);
+
+    // delete all jobs in the ssession
+    Api::vDeleteJobs(pSession);
+    API_LOC(340);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* end subinserter and all session jobs                                       */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_EndSubInserter);
+  API_BEGIN();
+  
+  try {
+    
+    // get the insertRows job
+    Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
+    API_LOC(310);
+
+    // wait for all record buffers to be copied across
+    while (*pJob_SubInserter->m_ziRecordBuffers !=
+           *pJob_SubInserter->m_ziCopiedBuffers) {
+      //vTrace("Waiting %lld %lld\n"_Stz, *pJob_SubInserter->m_ziRecordBuffers, *pJob_SubInserter->m_ziCopiedBuffers);
+    }
+    API_LOC(320);
+
+    pJob_SubInserter->vEnd();
+    API_LOC(330);
+
+    // delete all jobs in the ssession
+    Api::vDeleteJobs(pSession);
+    API_LOC(340);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch next buffer                                                          */
+/*----------------------------------------------------------------------------*/
+//
+// this will go
+//
+eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
+                             void** aaFetchBuffer, i8* aiExpectedRows)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_FetchNextBuffer);
+  API_NOTNULL(aaFetchBuffer);
+  API_BEGIN();
+  
+  try {
+    
+    Job_FetchRows* pJob_FetchRows = _pJob_FetchRows(aJob);
+    API_LOC(310);
+
+    // if we had an entry buffer delete it
+    pJob_FetchRows->vDeleteBuffer();
+    API_LOC(320);
+
+    // are we done ?
+    if (pJob_FetchRows->m_nLastBuffersScanned ==
+        pJob_FetchRows->m_nLastBuffers) {
+      *aaFetchBuffer = nullptr;
+      API_RETURN();
+    }
+    API_LOC(330);
+
+    
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    
+//    // pop an entryBuffer off the queue
+//    GenVar xVariable;
+//    while (!pJob_FetchRows->m_pBufferQueue->bPop(&xVariable)) {
+//      //vTrace("SLEEPING\n"_Stz);
+//      Pthread::vSleepMilli(1);
+//    }
+//
+//    //vTrace("Buffers remaining %lld\n"_Stz, pJob_FetchRows->m_pBufferQueue->iCount());
+//
+//    *piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
+//
+//    // get entry buffer
+//    PtrVal* aPtrVal = xVariable.aNestedPtrVal();
+//    pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(aPtrVal->pObj());
+//    //vTrace("Expected rows per buffer %lld %lld\n"_Stz, rowsPerBuffer, pJob_FetchRows->m_pFetchBuffer->nFetchedRows());
+//    //vTrace("Got buffer %p %lld\n"_Stz, pJob_FetchRows->m_pFetchBuffer, pJob_FetchRows->m_iPartition);
+    
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+    FetchBuffer* pFetchBuffer;
+    for (;;) {
+      pFetchBuffer = _pFetchBuffer(pJob_FetchRows->m_pBufferQueue->pPop());
+      if (pFetchBuffer)
+        break;
+      //vTrace("SLEEPING\n"_Stz);
+      Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
+    }
+    pJob_FetchRows->m_pFetchBuffer = pFetchBuffer;
+    API_LOC(340);
+
+    *aiExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount()
+                           * C_ROWS_PER_BUFFER);
+    API_LOC(350);
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+    // is it a last buffer ?
+    if (pJob_FetchRows->m_pFetchBuffer->bIsLast()) {
+      pJob_FetchRows->m_nLastBuffersScanned++;
+      API_LOC(360);
+      
+//      vTrace("FNB: LAST %p %s m_nLastBuffersScanned: %lld %lld\n"_Stz, pJob_FetchRows->m_pFetchBuffer,
+//             pJob_FetchRows->m_pTable->sTable(),
+//             pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
+    }
+    
+//    vTrace("FNB: NOT LAST %p %s m_nLastBuffersScanned: %lld %lld\n"_Stz,pJob_FetchRows->m_pFetchBuffer,
+//           pJob_FetchRows->m_pTable->sTable(),
+//           pJob_FetchRows->m_nLastBuffersScanned, pJob_FetchRows->m_nLastBuffers );
+    
+    // return the fetched buffer
+    *aaFetchBuffer = pJob_FetchRows->m_pFetchBuffer;
+    API_LOC(370);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get load result                                                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetLoadResult(i8 iTrace, Session* pSession, void* aJob,
+                           i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_GetLoadResult);
+  API_NOTNULL(aiValidRows);
+  API_NOTNULL(aiInvalidRows);
+  API_BEGIN();
+  
+  try {
+    
+    Job_LoadTable* pJob_LoadTable = _pJob_LoadTable(aJob);
+    API_LOC(310);
+    //    vTrace("L %lld IN %lld\n"_Stz,
+    //           pJob_LoadTable->m_iValidRows,
+    //           pJob_LoadTable->m_iInvalidRows);
+    
+    i8 iRowsProcessed = 0;
+    i8 iRowsInvalid   = 0;
+    i8 iRowsSkipped   = 0;
+    for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+      
+      //vTrace("%s"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
+      iRowsProcessed += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsProcessed;
+      iRowsInvalid   += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsInvalid;
+      iRowsSkipped   += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsSkipped;
+    }
+    API_LOC(320);
+    
+    *aiValidRows   = iRowsProcessed;
+    *aiInvalidRows = iRowsInvalid;
+    *aiSkippedRows = iRowsSkipped;
+    API_LOC(330);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get record buffer from the job                                             */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob,
+                             void** aaRecordBuffer)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_GetRecordBuffer);
+  API_NOTNULL(aaRecordBuffer);
+  API_BEGIN();
+  
+  Job_SubInserter* pJob_SubInserter = _pJob_SubInserter(aJob);
+  API_LOC(310);
+
+  RASSERT(! pJob_SubInserter->m_pRecordBuffer);
+  pJob_SubInserter->m_pRecordBuffer = new RecordBuffer();
+  API_LOC(320);
+
+  *aaRecordBuffer = pJob_SubInserter->m_pRecordBuffer;
+  API_LOC(330);
+
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row                                                                    */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
+                    i8 iRow, void** aaRow)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_GetRow);
+  API_NOTNULL(aaRow);
+  API_BEGIN();
+  
+  i8 i_Node;
+  i8 iMaxRowNo = 0;
+  for (i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
+    iMaxRowNo = *pJob->m_xNode[i_Node].m_ziRowsProcessed;
+    if (iRow < iMaxRowNo)
+      break;
+    iRow -= iMaxRowNo;
+  }
+  API_LOC(310);
+
+  // tokenize the response
+  TokenVec* pTknVec = Tokeniser::pTokenise(pJob->m_xNode[i_Node].m_sResponse);
+  API_LOC(320);
+
+  i8 iRows = 0;
+  i8 iToken = 0;
+  API_LOC(330);
+
+  while (true) {
+    RASSERT(pTknVec->pGet(iToken++)->aText()->bSame("row:"_Stz));
+    
+    RASSERT(pTknVec->pGet(iToken++)->aText()->bSame("("_Stz));
+    
+    if (iRows == iRow)
+      break;
+    
+    while ( ! pTknVec->pGet(iToken)->aText()->bSame(")"_Stz)) {
+      iToken++;
+    }
+  
+    RASSERT(pTknVec->pGet(iToken++)->aText()->bSame(")"_Stz));
+    iRows++;
+  }
+  API_LOC(340);
+
+  pSession->m_sResponse.vCopy(""_Stz);
+  while ( ! pTknVec->pGet(iToken)->aText()->bSame(")"_Stz)) {
+    pSession->m_sResponse.vConcat(pTknVec->pGet(iToken++)->aText());
+  }
+  API_LOC(350);
+
+  // return the row
+  *aaRow = pSession->m_sResponse.aChar();
+  API_LOC(360);
+
+  // delete the token vector
+  pTknVec->vSetAllTokens();
+  delete pTknVec;
+  API_LOC(370);
+
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row count                                                              */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
+                         i8 *aiRowCount)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_GetRowCount);
+  API_NOTNULL(aiRowCount);
+  API_BEGIN();
+  
+  i8 iRowsProcessed= 0;
+  for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++)
+    iRowsProcessed += *pJob->m_xNode[i_Node].m_ziRowsProcessed;
+  API_LOC(310);
+
+  *aiRowCount = iRowsProcessed;
+  API_LOC(320);
+
+  //vTrace("RowCount = %lld\n"_Stz, *aRowCount);
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row table column                                                       */
+/*----------------------------------------------------------------------------*/
+//
+// should this be: RapidsSE_GetColumnRecord ?
+//
+eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
+                               i8 i_Col, void** aaRow)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_GetTableColumnRow);
+  API_NOTNULL(aaRow);
+  API_BEGIN();
+  
+  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
+  API_LOC(310);
+  
+  i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+  Table* pTable =
+  (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[iNode].m_sResponse.aChar());
+  API_LOC(320);
+  
+  ColumnVec* pColumnVec = pTable->pColumnVec();
+  Column* pColumn = pColumnVec->pGet(i_Col);
+  API_LOC(330);
+  
+  sprintf(pSession->m_sResponse.aChar(),"%lld,%s,%s,%lld,%lld,%s,%s",
+          pColumn->iColumnNo(),
+          pColumn->sColumnName().aChar(),
+          aCT[pColumn->eColumnType()]->aChar(),
+          pColumn->iColumnLength(),
+          pColumn->iColumnScale(),
+          pColumn->bIsNullable() ? "true" : "false",
+          pColumn->bIsPartitionKey() ? "true": "false"
+          );
+  API_LOC(340);
+  
+  *aaRow = pSession->m_sResponse.aChar();
+  API_LOC(350);
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row count table column                                                 */
+/*----------------------------------------------------------------------------*/
+//
+// should this be: RapidsSE_GetColumnCount ?
+//
+eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
+                                    i8 *aiRowCount)
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_GetTableColumnRowCount);
+  API_NOTNULL(aiRowCount);
+  API_BEGIN();
+  
+  Job_ListColumns* pJob_ListColumns = _pJob_ListColumns(aJob);
+  API_LOC(310);
+
+  i8 iNode = gpAttachMap->m_pGrid->m_iThisNode;
+  Table* pTable =
+    (Table*)StrLib::iToI8(pJob_ListColumns->m_xNode[iNode].m_sResponse.aChar());
+  API_LOC(320);
+
+  ColumnVec* pColumnVec = pTable->pColumnVec();
+  API_LOC(330);
+
+  pJob_ListColumns->m_xNode[iNode].m_ziRowsProcessed = pColumnVec->nItems() - 1;
+  API_LOC(340);
+
+  *aiRowCount = *(pJob_ListColumns->m_xNode[iNode].m_ziRowsProcessed);
+  API_LOC(350);
+
+  //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch next buffer                                                          */
+/*----------------------------------------------------------------------------*/
+//
+// can this be: RapidsSE_NextRow
+//
+eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
+                         void** aaEntryBuffer, i8* aiExpectedRows,
+                         void** aaEntry, void** aaRow
+                         )
+{
+  API_JOB_LEVEL();
+  API_ENTRY(AC_ScanNextRow);
+  API_NOTNULL(aaRow);
+  API_BEGIN();
+  
+  try {
+    
+    Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(aJob);
+    API_LOC(310);
+
+    // get the table
+    Table* pTable = pJob_SelectTable->m_pTable;
+    API_LOC(320);
+
+    //*piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
+    
+    Entry* aEntry = nullptr;
+    EntryBuffer* pEntryBuffer = nullptr;
+    API_LOC(330);
+
+    // do we have a buffer ?
+    if (! *aaEntryBuffer) {
+      // get first entry buffer
+      TablePtn* pPartition = pTable->pPartition(pJob_SelectTable->m_iPartition);
+      Index* pIndex = pTable->pHiddenIndex();
+      IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
+      pEntryBuffer = pIndexTree->pFirstL0Buffer();
+      vTrace("Got first buffer %p\n"_Stz, pEntryBuffer);
+      if ( ! pEntryBuffer) {
+        *aaRow = nullptr;
+        
+      } else {
+        aEntry = pEntryBuffer->aFirstEntry();
+        *aaEntry = aEntry;
+        *aaEntryBuffer = pEntryBuffer;
+        *aaRow = aEntry->aRow();
+      }
+      
+      API_RETURN();
+    }
+    API_LOC(340);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // we have a buffer
+    pEntryBuffer = *((EntryBuffer**)(aaEntryBuffer));
+    API_LOC(350);
+
+    // we should have an entry
+    aEntry = *((Entry**)(aaEntry));
+    RASSERT(aEntry);
+    API_LOC(360);
+
+    // get the next entry
+    aEntry = pEntryBuffer->aNextEntry(aEntry, 0);
+    API_LOC(370);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // did we find an entry ?
+    if ( ! aEntry ) {
+      vTrace("didn't get next entry\n"_Stz);
+      // get next buffer from the current indexBuffer
+      pEntryBuffer = pEntryBuffer->pNextBuffer();
+      
+      if ( pEntryBuffer ) {
+        vTrace("got next buffer %p\n"_Stz, pEntryBuffer);
+        aEntry = pEntryBuffer->aFirstEntry();
+
+      }
+    }
+    API_LOC(380);
+
+    if (aEntry) {
+      *aaEntryBuffer = pEntryBuffer;
+      *aaEntry = aEntry;
+      *aaRow = aEntry->aRow();
+      //vTrace("Returning rowEntry %p\n"_Stz, aEntry);
+    } else {
+      *aaRow = nullptr;
+    }
+    API_LOC(390);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
 }
 
 /*============================================================================*/
