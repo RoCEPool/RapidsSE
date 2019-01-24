@@ -48,11 +48,11 @@ SePrompt::SePrompt(void)
   
   m_bContinue = true;
 
-  eEC eResult = RapidsSE_SessionNew(0,
-                                    (void**)&m_pSession,
+  eEC eResult = RapidsSE_NewSession(0,
                                   "rapidsse"_Stz,
                                   "public"_Stz,
-                                  iPartition);
+                                  iPartition,
+                                  (void**)&m_pSession);
 
   ASSERT(EC_NONE == eResult);
 
@@ -75,7 +75,7 @@ SePrompt::~SePrompt(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  RapidsSE_SessionDelete(0,m_pSession);
+  RapidsSE_DeleteSession(0,&m_pSession);
 }
 
 /*----------------------------------------------------------------------------*/

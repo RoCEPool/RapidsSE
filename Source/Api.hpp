@@ -73,30 +73,30 @@ static Stz* aAC[]
 ////////////////////////////////////////////////////////////////////////////////
 
 // System Level Calls
-extern "C" eEC  RapidsSE_CheckLibraryVersion(i8 iTrace,
+extern "C" eEC  RapidsSE_CheckVersion(i8 iTrace,
                                              Stz* sVersion);
-extern "C" eEC  RapidsSE_PoolOpen           (i8 iTrace,
+extern "C" eEC  RapidsSE_OpenPool           (i8 iTrace,
                                              Stz* sRegion, void** aaAttachMap);
-extern "C" bool RapidsSE_SessionInvalid     (i8 iTrace,
+extern "C" bool RapidsSE_IsInvalidSession   (i8 iTrace,
                                              int eError);
-extern "C" eEC  RapidsSE_SessionNew         (i8 iTrace,
-                                             void** aaSession,
-                                             Stz* sCatalog, Stz* sSchema, i8 iPartition);
+extern "C" eEC  RapidsSE_NewSession         (i8 iTrace,
+                                             Stz* sCatalog, Stz* sSchema, i8 iPartition,
+                                             void** aaSession);
 
 ////////////////////////////////////////////////////////////////////////////////
 
 // Session Level Calls
-extern "C" eEC  RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
-                                          Stz* sTable, void** aaJob, i8 nSubInserters);
+extern "C" eEC  RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
+                                          Stz* sTable, i8 nSubInserters, void** aaJob);
 extern "C" eEC  RapidsSE_EndJobs         (i8 iTrace, Session* pSession);
 extern "C" eEC  RapidsSE_ExecuteCommand  (i8 iTrace, Session* pSession,
-                                          Stz* sCommand, Stz* sCatalog, Stz* sSchema,
+                                          Stz* sCatalog, Stz* sSchema, Stz* sCommand,
                                           void** aaJob);
-extern "C" eEC  RapidsSE_GetErrorMessage (i8 iTrace, Session* pSession,
+extern "C" eEC  RapidsSE_TranslateError  (i8 iTrace, Session* pSession,
                                           int iErrorCode, void** aaError);
 extern "C" eEC  RapidsSE_InsertRow       (i8 iTrace, Session* pSession,
                                           Stz* pTable, Stz* sRecord);
-extern "C" eEC  RapidsSE_SessionDelete   (i8 iTrace, Session* pSession);
+extern "C" eEC  RapidsSE_DeleteSession   (i8 iTrace, Session** ppSession);
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -104,7 +104,7 @@ extern "C" eEC  RapidsSE_SessionDelete   (i8 iTrace, Session* pSession);
 extern "C" eEC  RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
                                           void** aaJob);
 extern "C" eEC  RapidsSE_CopyBuffer      (i8 iTrace, Session* pSession, void* aJob);
-extern "C" eEC  RapidsSE_EndInsertTable  (i8 iTrace, Session* pSession, void* aJob);
+extern "C" eEC  RapidsSE_EndInsert       (i8 iTrace, Session* pSession, void* aJob);
 extern "C" eEC  RapidsSE_EndSubInserter  (i8 iTrace, Session* pSession, void* aJob);
 extern "C" eEC  RapidsSE_FetchNextBuffer (i8 iTrace, Session* pSession, void* aJob,
                                           void** aaFetchBuffer, i8* aiExepectedRows);
@@ -114,15 +114,15 @@ extern "C" eEC  RapidsSE_GetRow          (i8 iTrace, Session* pSession, void* aJ
                                           i8 iRow, void** aaRow);
 extern "C" eEC  RapidsSE_GetRowCount     (i8 iTrace, Session* pSession, void* aJob,
                                           i8 *aiRowCount);
-extern "C" eEC  RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
-                                           i8 iRow, void** aaRow);
-extern "C" eEC  RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob,
+extern "C" eEC  RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
+                                           i8 iCol, void** aaRow);
+extern "C" eEC  RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
                                                 i8* aRowCount);
-extern "C" eEC  RapidsSE_LoadResult      (i8 iTrace, Session* pSession, void* aJob,
+extern "C" eEC  RapidsSE_GetLoadResult      (i8 iTrace, Session* pSession, void* aJob,
                                           i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows);
 extern "C" eEC  RapidsSE_ScanNextRow     (i8 iTrace, Session* pSession, void* aJob,
-                                          void** aaEntryBuffer, void** aaEntry,
-                                          void** aaRow, i8* aiExpectedRows);
+                                          void** aaEntryBuffer, i8* aiExpectedRows,
+                                          void** aaEntry, void** aaRow);
 
 
 Job* pAPI_ExecCmdStr(Stz* sCommand, Session* pSession, bool bPostJob, bool bFromPrompt);

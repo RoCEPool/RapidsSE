@@ -17,10 +17,7 @@ extern ActivityMap* gpActivityMap;
 /*----------------------------------------------------------------------------*/
 /* check the library version against given version                            */
 /*----------------------------------------------------------------------------*/
-//
-// can we call this: RapidsSE_CheckVersion
-//
-eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
+eEC RapidsSE_CheckVersion(i8 iTrace, Stz* sVersion)
 {
   API_SYSTEM_LEVEL();
   API_ENTRY(AC_CheckLibraryVersion);
@@ -46,10 +43,7 @@ eEC RapidsSE_CheckLibraryVersion(i8 iTrace, Stz* sVersion)
 /*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
-//
-// can we call this: RapidsSE_OpenPool
-//
-eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
+eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 {
   API_SYSTEM_LEVEL();
   API_ENTRY(AC_PoolOpen);
@@ -84,10 +78,7 @@ eEC RapidsSE_PoolOpen(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 /*----------------------------------------------------------------------------*/
 /* is the error an EC_INVALID_INTERFACE ?                                     */
 /*----------------------------------------------------------------------------*/
-//
-// can we call this: RapidsSE_IsInvalidInterface
-//
-bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
+bool RapidsSE_IsInvalidSession(i8 iTrace, int iError)
 {
   API_SYSTEM_LEVEL();
   API_ENTRY(AC_SessionInvalid);
@@ -103,13 +94,8 @@ bool RapidsSE_SessionInvalid(i8 iTrace, int iError)
 /*----------------------------------------------------------------------------*/
 /* create a new se session                                                    */
 /*----------------------------------------------------------------------------*/
-//
-// can we call this: RapidsSE_NewSession
-//
-// can we put aaSession last?  Its an out parameter
-//
-eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
-                        Stz* sCatalog, Stz* sSchema, i8 iPartition)
+eEC RapidsSE_NewSession(i8 iTrace,
+                        Stz* sCatalog, Stz* sSchema, i8 iPartition, void** aaSession)
 {
   API_SYSTEM_LEVEL();
   API_ENTRY(AC_SessionNew);
@@ -145,13 +131,8 @@ eEC RapidsSE_SessionNew(i8 iTrace, void** aaSession,
 /*----------------------------------------------------------------------------*/
 /* begin the insert table job                                                 */
 /*----------------------------------------------------------------------------*/
-//
-// can we call this: RapidsSE_BeginInsert
-//
-// can we put aaJob last?
-//
-eEC RapidsSE_BeginInsertTable(i8 iTrace, Session* pSession,
-                              Stz* sTable, void** aaJob, i8 nSubInserters)
+eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
+                              Stz* sTable, i8 nSubInserters, void** aaJob)
 {
   API_SESSION_LEVEL();
   API_ENTRY(AC_BeginInsertTable);
@@ -221,12 +202,8 @@ eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-//
-// can we put sCommand after sSchema?
-// this would make it like: RapidsSE_SessionNew
-//
 eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
-                            Stz* sCommand, Stz* sCatalog, Stz* sSchema,
+                            Stz* sCatalog, Stz* sSchema, Stz* sCommand,
                             void** aaJob)
 {
   API_SESSION_LEVEL();
@@ -279,10 +256,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
 /*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
-//
-// can we call this: RapidsSE_TranslateError
-//
-eEC RapidsSE_GetErrorMessage(i8 iTrace, Session* pSession,
+eEC RapidsSE_TranslateError(i8 iTrace, Session* pSession,
                              int iErrorCode, void** aaError)
 {
   API_SESSION_LEVEL();
@@ -376,13 +350,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
 /*----------------------------------------------------------------------------*/
 /* delete an se session                                                       */
 /*----------------------------------------------------------------------------*/
-//
-// can we call this: RapidsSE_DeleteSession
-//
-// should Session* be a Session** and well null it on behalf of caller?
-//   e.g. *aaSession = nullptr;
-//
-eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
+eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
 {
   API_SESSION_LEVEL();
   API_ENTRY(AC_SessionDelete);
@@ -390,6 +358,7 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
   
   try {
     
+    Session* pSession = *ppSession;
     // delete jobs from the job stack of the session
     vDeleteJobs(pSession);
     API_LOC(310);
@@ -400,6 +369,9 @@ eEC RapidsSE_SessionDelete(i8 iTrace, Session* pSession)
 
     // set session to nullptr so macro knows not to look at it
     pSession = nullptr;
+    
+    // retrun back null session
+    *ppSession = nullptr;
     API_LOC(330);
    }
   catch (Error* pError) { API_CATCH(pError); }
@@ -529,10 +501,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 /*----------------------------------------------------------------------------*/
 /* end insert and all session jobs                                            */
 /*----------------------------------------------------------------------------*/
-//
-// can we call this: RapidsSE_EndInsert
-//
-eEC RapidsSE_EndInsertTable(i8 iTrace, Session* pSession, void* aJob)
+eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_EndInsertTable);
@@ -814,10 +783,7 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
 /*----------------------------------------------------------------------------*/
 /* get row count table column                                                 */
 /*----------------------------------------------------------------------------*/
-//
-// can we call this: RapidsSE_GetTableColumnRowCount
-//
-eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob,
+eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
                                     i8 *aiRowCount)
 {
   API_JOB_LEVEL();
@@ -850,13 +816,8 @@ eEC RapidsSE_GetRowCountTableColumn(i8 iTrace, Session* pSession, void* aJob,
 /*----------------------------------------------------------------------------*/
 /* get row table column                                                       */
 /*----------------------------------------------------------------------------*/
-//
-// can we call this: RapidsSE_GetTableColumnRow
-//
-// should the iRow parameter actually be i_Col?
-//
-eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
-                               i8 iRow, void** aaRow)
+eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
+                               i8 iCol, void** aaRow)
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_GetRowTableColumn);
@@ -872,7 +833,7 @@ eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
   API_LOC(320);
 
   ColumnVec* pColumnVec = pTable->pColumnVec();
-  Column* pColumn = pColumnVec->pGet(iRow);
+  Column* pColumn = pColumnVec->pGet(iCol);
   API_LOC(330);
   
   sprintf(pSession->m_sResponse.aChar(),"%lld,%s,%s,%lld,%lld,%s,%s",
@@ -895,10 +856,7 @@ eEC RapidsSE_GetRowTableColumn(i8 iTrace, Session* pSession, void* aJob,
 /*----------------------------------------------------------------------------*/
 /* get load result                                                            */
 /*----------------------------------------------------------------------------*/
-//
-// can we call this: RapidsSE_GetLoadResult
-//
-eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob,
+eEC RapidsSE_GetLoadResult(i8 iTrace, Session* pSession, void* aJob,
                         i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows)
 {
   API_JOB_LEVEL();
@@ -941,18 +899,10 @@ eEC RapidsSE_LoadResult(i8 iTrace, Session* pSession, void* aJob,
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-//
-// can we change the order of parameters to be:
-//
-//  eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
-//                           void** aaEntryBuffer, i8* piExpectedRows,
-//                           void** aaEntry, void** aaRow)
-//
-// that makes it more like: RapidsSE_FetchNextBuffer
-//
 eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
-                         void** aaEntryBuffer, void** aaEntry, void** aaRow,
-                         i8* piExpectedRows)
+                         void** aaEntryBuffer, i8* piExpectedRows,
+                         void** aaEntry, void** aaRow
+                         )
 {
   API_JOB_LEVEL();
   API_ENTRY(AC_ScanNextRow);
