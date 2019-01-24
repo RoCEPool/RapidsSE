@@ -124,15 +124,6 @@ extern "C" eEC  RapidsSE_ScanNextRow     (i8 iTrace, Session* pSession, void* aJ
                                           void** aaEntryBuffer, i8* aiExpectedRows,
                                           void** aaEntry, void** aaRow);
 
-////////////////////////////////////////////////////////////////////////////////
-
-
-void vApiCall(Session* pSession, eAC eApiCall);
-void vApiError(Session* pSession, eEC eError);
-void vApiJob(Session* pSession, Job* aJob);
-void vApiLocation(Session* pSession, i8 iLocation);
-void vApiReturn(Session* pSession);
-
 
 ////////////////////////////////////////////////////////////////////////////////
 

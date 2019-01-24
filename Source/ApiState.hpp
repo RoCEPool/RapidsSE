@@ -46,6 +46,12 @@ namespace Interface
     ApiState(void);
     ~ApiState(void) noexcept(false);
   
+    static void vMarkCall(Session* pSession, eAC eApiCall);
+    static void vMarkError(Session* pSession, eEC eError);
+    static void vMarkJob(Session* pSession, Job* aJob);
+    static void vMarkLocation(Session* pSession, i8 iLocation);
+    static void vMarkReturn(Session* pSession);
+  
     i8   iAllocState(Session* pSession);
     void vApiCall(Session* pSession, eAC eApiCall);
     void vApiError(Session* pSession, eEC eError);

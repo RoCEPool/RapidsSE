@@ -16,7 +16,7 @@
   Job* pJob = _pJob(aJob);
 
 #define API_LOC(iLocation) \
-  vApiLocation(pSession,iLocation);
+  ApiState::vMarkLocation(pSession,iLocation);
 
 #ifdef _DEBUG
 
@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 #define API_BEGIN() \
   if (pSession) \
-    vApiLocation(pSession,200);
+    ApiState::vMarkLocation(pSession,200);
 
 /*----------------------------------------------------------------------------*/
 /* enter API function                                                         */
@@ -46,8 +46,8 @@
       return eError; \
     } \
     \
-    vApiCall(pSession,eApiCall); \
-    vApiLocation(pSession,100); \
+    ApiState::vMarkCall(pSession,eApiCall); \
+    ApiState::vMarkLocation(pSession,100); \
     \
     if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
       vTrace(">%s: %p(%lld)\n"_Stz,  \
@@ -69,8 +69,8 @@
            aApiCall, pSession, \
            pSession ? pSession->iPartition() : -1, \
            aEC[eErrorCode],(i8)eErrorCode); \
-  vApiError(pSession,eErrorCode); \
-  vApiLocation(pSession,880); \
+  ApiState::vMarkError(pSession,eErrorCode); \
+  ApiState::vMarkLocation(pSession,880); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
   return eErrorCode; \
 }
@@ -88,8 +88,8 @@
            aApiCall, pSession, \
            pSession ? pSession->iPartition() : -1, \
            aEC[eErrorCode],(i8)eErrorCode); \
-  vApiError(pSession,eErrorCode); \
-  vApiLocation(pSession,888); \
+  ApiState::vMarkError(pSession,eErrorCode); \
+  ApiState::vMarkLocation(pSession,888); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
   return eErrorCode;
 // didnt use braces { }, as that would hide the variables
@@ -105,8 +105,8 @@
            pSession ? pSession->iPartition() : -1); \
   \
   if (pSession) { \
-    vApiReturn(pSession); \
-    vApiLocation(pSession,990); \
+    ApiState::vMarkReturn(pSession); \
+    ApiState::vMarkLocation(pSession,990); \
   } \
   \
   ActivityMap::vMarkApiExit(eApiCall); \
@@ -123,8 +123,8 @@
            pSession ? pSession->iPartition() : -1); \
   \
   if (pSession) { \
-    vApiReturn(pSession); \
-    vApiLocation(pSession,999); \
+    ApiState::vMarkReturn(pSession); \
+    ApiState::vMarkLocation(pSession,999); \
   } \
   \
   ActivityMap::vMarkApiExit(eApiCall); \

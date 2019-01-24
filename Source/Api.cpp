@@ -11,58 +11,6 @@ extern ActivityMap* gpActivityMap;
 
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* mark call of an api                                                        */
-/*----------------------------------------------------------------------------*/
-void vApiCall(Session* pSession, eAC eApiCall)
-{
-  gpAttachMap->m_pApiState->vApiCall(pSession,eApiCall);
-}
-
-/*----------------------------------------------------------------------------*/
-/* mark error of an api                                                       */
-/*----------------------------------------------------------------------------*/
-void vApiError(Session* pSession, eEC eError)
-{
-  gpAttachMap->m_pApiState->vApiError(pSession,eError);
-}
-
-/*----------------------------------------------------------------------------*/
-/* mark job of an api                                                         */
-/*----------------------------------------------------------------------------*/
-void vApiJob(Session* pSession, Job* pJob)
-{
-  gpAttachMap->m_pApiState->vApiJob(pSession,pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* mark location of an api                                                    */
-/*----------------------------------------------------------------------------*/
-void vApiLocation(Session* pSession, i8 iLocation)
-{
-  gpAttachMap->m_pApiState->vSetLocation(pSession,iLocation);
-}
-
-/*----------------------------------------------------------------------------*/
-/* mark return of an api                                                      */
-/*----------------------------------------------------------------------------*/
-void vApiReturn(Session* pSession)
-{
-  gpAttachMap->m_pApiState->vApiReturn(pSession);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-////////////////////////////////////////////////////////////////////////////////
-//                                Interface::Api                              //
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
 /* delete jobs                                                                */
 /*----------------------------------------------------------------------------*/
 void Api::vDeleteJobs(Session* pSession)
@@ -78,7 +26,7 @@ void Api::vDeleteJobs(Session* pSession)
     eCN eClass = aJob->eClass();
     JobClass* pJobClass = JobClass::pFind(eClass);
     
-    vApiLocation(pSession,200);
+    ApiState::vMarkLocation(pSession,200);
     
     //vTrace("API deleting job %p jobId %lld %s\n"_Stz, aJob, aJob->m_iJobId, aCN[eClass]);
     
@@ -94,17 +42,17 @@ void Api::vDeleteJobs(Session* pSession)
       
       while (pJob_FetchRows->m_nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers) {
         // pop an entryBuffer off the queue
-        vApiLocation(pSession,300);
+        ApiState::vMarkLocation(pSession,300);
         
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
         //        GenVar xVariable;
         //        while (!pJob_FetchRows->m_pBufferQueue->bPop(&xVariable)) {
         //          Pthread::vSleepMilli(1);
-        //          vApiLocation(pSession,400);
+        //          ApiState::vMarkLocation(pSession,400);
         //          continue;
         //        }
         
-        //        vApiLocation(pSession,500);
+        //        ApiState::vMarkLocation(pSession,500);
         //
         //        PtrVal* aPtrVal = xVariable.aNestedPtrVal();
         //        pJob_FetchRows->m_pFetchBuffer = (FetchBuffer*)(aPtrVal->pObj());
@@ -115,10 +63,10 @@ void Api::vDeleteJobs(Session* pSession)
           if (pFetchBuffer)
             break;
           Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
-          vApiLocation(pSession,400);
+          ApiState::vMarkLocation(pSession,400);
           continue;
         }
-        vApiLocation(pSession,500);
+        ApiState::vMarkLocation(pSession,500);
         
         pJob_FetchRows->m_pFetchBuffer = pFetchBuffer;
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -134,7 +82,7 @@ void Api::vDeleteJobs(Session* pSession)
         pJob_FetchRows->vDeleteBuffer();
       }
     }
-    vApiLocation(pSession,600);
+    ApiState::vMarkLocation(pSession,600);
     
     // delete the job
     //vTrace("Deleting job %p %s\n"_Stz, aJob, aCN[aJob->eClass()]);
@@ -152,7 +100,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
 {
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
-  vApiLocation(pSession,101);
+  ApiState::vMarkLocation(pSession,101);
   
   pCommandProcessor->vTokenise(sCommand);
   
@@ -366,14 +314,14 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
   //  if (0 != rCode)
   //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
-  vApiLocation(pSession,106);
+  ApiState::vMarkLocation(pSession,106);
   
   // set the job state to be locked
   pJob->m_eState = JS_LOCKED;
   
   // spawn the insertTable job
   IGNORE_RETURN(Api::bSpawnJob(pSession,pJob,SS_SEED_REQ));
-  vApiLocation(pSession,107);
+  ApiState::vMarkLocation(pSession,107);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for condition & state
@@ -408,7 +356,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
   RASSERT( _bIsValidJob(pJob->eClass()) );
   RASSERT( iJobSeq == pJob->m_iJobSeq );
   
-  vApiLocation(pSession,108);
+  ApiState::vMarkLocation(pSession,108);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

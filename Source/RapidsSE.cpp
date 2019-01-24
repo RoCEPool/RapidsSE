@@ -209,7 +209,7 @@ eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
     pSession->m_pJobStack->vPushPointer(pJob_InsertTable);
     API_LOC(370);
 
-    vApiJob(pSession,pJob_InsertTable);
+    ApiState::vMarkJob(pSession,pJob_InsertTable);
     API_LOC(380);
   }
   catch (Error* pError) { API_CATCH(pError); }
@@ -262,7 +262,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     Job* pJob = Api::pExecuteCommand(pSession, sCommand, false, false);
     API_LOC(320);
 
-    vApiJob(pSession,pJob);
+    ApiState::vMarkJob(pSession,pJob);
     API_LOC(330);
 
     // check if job had an error
@@ -318,7 +318,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     pSession->m_pJobStack->vPushPointer(pJob_InsertRow);
     API_LOC(330);
     
-    vApiJob(pSession,pJob_InsertRow);
+    ApiState::vMarkJob(pSession,pJob_InsertRow);
     API_LOC(340);
     
     // get the length of the record
@@ -420,7 +420,7 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
 
     // push the InsertTable job onto the jobstack
     pSession->m_pJobStack->vPushPointer(pJob_SubInserter);
-    vApiJob(pSession,pJob_SubInserter);
+    ApiState::vMarkJob(pSession,pJob_SubInserter);
     API_LOC(340);
 
     // set the insertTable in the subInserter
@@ -490,7 +490,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 
     // push the InsertTable job onto the jobstack
     //pSession->m_pJobStack->vPushPointer(pJob_CopyBuffer);
-    //vApiJob(pSession,pJob_CopyBuffer);
+    //ApiState::vMarkJob(pSession,pJob_CopyBuffer);
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // spawn the job
