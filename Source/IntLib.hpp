@@ -17,6 +17,7 @@ namespace Base
   public:
     static i8 iDecile(i8 iValue, i8 iMax);
     static i8 iIntToVlq(i8 iInt, byte yVlqVec[16]);
+    static i8 iPercent(i8 iNumerator, i8 iDenominator);
     static i8 iVlqToInt(byte yVlqVec[16]);
   
     static char* sAsText(i8 iValue);

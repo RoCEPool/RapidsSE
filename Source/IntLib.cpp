@@ -147,6 +147,16 @@ i8 IntLib::iIntToVlq(i8 iInt, byte yVlqVec[16])
 */
 
 /*----------------------------------------------------------------------------*/
+/* return the decile of value given its maximum                               */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iPercent(i8 iNumerator, i8 iDenominator)
+{
+  i8 iPercent = DIV(iNumerator * 100, iDenominator);
+  
+  return iPercent;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert vlq (varying length quantity) to i8                                */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iVlqToInt(byte yVlqVec[])
