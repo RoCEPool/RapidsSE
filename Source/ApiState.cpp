@@ -427,29 +427,34 @@ void ApiState::vDump(void)
       else
         nBytes = nSub(aSessionState->m_aStackPtr,aSessionState->m_aStackBase);
 
-      vTrace("  %lld: session %p, apiFun %s, base %llx, ptr %llx (%lldB), apiLoc %lld, job %s jobLoc %lld\n"
-             "     apiError %s, %s, %s, senLoc %lld, time %lldus total %lldus\n"
-             "     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
+      vTrace("  %lld: session %p base %llx ptr %llx (%lldB)\n"
+             "     apiFun %s apiLoc %lld job %s jobLoc %lld senLoc %lld \n"
+             "     %s %s apiError %s time %lldus\n"
+             "     #calls %lld, #errors %lld, #jobNew %lld #jobDelete %lld total %lldus\n"_Stz,
+             
              i_Session,
              pSession,
-             aAC[aSessionState->m_eApiFun],
              aSessionState->m_aStackBase,
              aSessionState->m_aStackPtr,
              nBytes,
-
+             
+             aAC[aSessionState->m_eApiFun],
              aSessionState->m_iApiLoc,
              aCN[aSessionState->m_eJobClass],
              aSessionState->m_iJobLoc,
-             aEC[aSessionState->m_eApiError],
+             aSessionState->m_iSenLoc,
+
              aSessionState->m_bRunning ? "running" : "completed",
              aSessionState->m_bSignalled ? "signalled" : "not signalled",
-             aSessionState->m_iSenLoc,
+             aEC[aSessionState->m_eApiError],
              aSessionState->m_oTimer.iMicroseconds(),
-             aSessionState->m_iTotalMsec,
+             
              pSession->m_nApiCalls,
              pSession->m_nApiErrors,
              pSession->m_nJobNew,
-             pSession->m_nJobDelete);
+             pSession->m_nJobDelete,
+             aSessionState->m_iTotalMsec
+             );
     }
 //    else {
 //      vTrace("  %lld: nextfree %lld\n"_Stz,
