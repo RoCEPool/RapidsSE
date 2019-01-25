@@ -1,0 +1,52 @@
+/*============================================================================*/
+/* _vol -- 10TB Volume Test                                                   */
+/*============================================================================*/
+
+am "Running script: _ids";
+
+print "";
+print "---------------------------------------------------------------------";
+print "starting cluster...";
+print "---------------------------------------------------------------------";
+startCluster;
+
+print "";
+print "---------------------------------------------------------------------";
+print "creating sensorEvents table...";
+print "---------------------------------------------------------------------";
+_sensorEvents;
+
+print "";
+print "---------------------------------------------------------------------";
+print "removing pipes...";
+print "---------------------------------------------------------------------";
+rmpipe "/tmp/sensorEvents.rowAgg";
+rmpipe "/tmp/sensorEvents.pipe";
+
+print "";
+print "---------------------------------------------------------------------";
+print "making pipes...";
+print "---------------------------------------------------------------------";
+mkpipe "/tmp/sensorEvents.rowAgg";
+mkpipe "/tmp/sensorEvents.pipe";
+
+print "";
+print "---------------------------------------------------------------------";
+print "ingesting sensorEvents table...";
+print "---------------------------------------------------------------------";
+
+nowait monitor 10;
+
+nowait purge sensorEvents 30;
+
+nowait publish sensorEvents "/tmp/sensorEvents.rowAgg" ;
+
+nowait report sensorEvents "/tmp/sensorEvents.rowAgg" ;
+
+nowait repeater "/rapids/sensorEvents.csv" "/tmp/sensorEvents.pipe" ;
+
+nowait ingest sensorEvents "/tmp/sensorEvents.pipe" stats ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
