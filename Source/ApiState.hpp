@@ -12,17 +12,16 @@ namespace Interface
     eAC   m_eApiFun;     // current / last api function called
     i8    m_iApiLoc;     // last reported location in api function
     eEC   m_eApiError;   // last error code in api function
+    bool  m_bRunning;    // api call still running?
+    bool  m_bSignalled;  // calling thread has been signalled?
 
     void* m_aStackBase;  // stack base of thread which made api call
     void* m_aStackPtr;   // stack addr of thread which made api call
 
     eCN   m_eJobClass;   // current / last job
     i8    m_iJobLoc;     // last reported location in job
-    
-    bool  m_bRunning;    // call still running
-    bool  m_bSignalled;  // calling thread has been signalled?
-    i8    m_iPosition;   // last reported position in SEN
-    
+    i8    m_iSenLoc;     // last reported location in SEN
+
     Timer m_oTimer;      // call timer
     i8    m_iTotalMsec;  // total time in us
     
@@ -63,7 +62,7 @@ namespace Interface
     void vFreeState(i8 i_State);
     void vMonitorPortrait(s48K& sPortrait);
     void vApiLoc(Session* pSession, i8 iApiLoc);
-    void vSetPosition(Session* pSession, i8 iPosition);
+    void vSenLoc(Session* pSession, i8 iPosition);
     void vSetSignalled(Job* pJob);
 
     void vDump(void);

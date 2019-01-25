@@ -97,7 +97,7 @@ void Step::vApiStateSetPosition(MP_Task mpTask)
   
   Session* pSession = mpTask->m_pSession;
   
-  gpAttachMap->m_pApiState->vSetPosition(pSession,iPosition);
+  gpAttachMap->m_pApiState->vSenLoc(pSession,iPosition);
   
   EXIT();
 }

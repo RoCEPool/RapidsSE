@@ -64,16 +64,16 @@ ApiState::ApiState(void)
     aState->m_eApiFun   = AC_NONE;
     aState->m_iApiLoc   = 0;
     aState->m_eApiError = EC_NONE;
+    aState->m_bRunning   = false;
+    aState->m_bSignalled = false;
 
     aState->m_aStackBase = nullptr;
     aState->m_aStackPtr  = nullptr;
     
     aState->m_eJobClass  = CN_NONE;
     aState->m_iJobLoc    = 0;
+    aState->m_iSenLoc    = 0;
     
-    aState->m_bRunning   = false;
-    aState->m_bSignalled = false;
-    aState->m_iPosition  = 0;
     aState->m_oTimer.vInit();
     aState->m_iTotalMsec = 0;
 
@@ -176,6 +176,8 @@ i8 ApiState::iAllocState(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiCall(Session* pSession, eAC eApiCall)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
   i8 i_Session = pSession->m_iApiState;
   
   SessionState* aState = &m_xSessionState[i_Session];
@@ -183,14 +185,15 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   aState->m_eApiFun    = eApiCall;
   aState->m_iApiLoc    = 0;
   aState->m_eApiError  = EC_NONE;
+  aState->m_bRunning   = true;
+  aState->m_bSignalled = false;
 
   aState->m_aStackBase = Pthread::aStackBase();
   aState->m_aStackPtr  = Pthread::aStackPointer();
 
   aState->m_eJobClass  = CN_NONE;
-  aState->m_bRunning   = true;
-  aState->m_bSignalled = false;
-  aState->m_iPosition  = 0;
+  aState->m_iJobLoc  = 0;
+  aState->m_iSenLoc  = 0;
   
   aState->m_oTimer.vStart();
   
@@ -202,6 +205,8 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiError(Session* pSession, eEC eError)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
   i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
 
@@ -209,7 +214,6 @@ void ApiState::vApiError(Session* pSession, eEC eError)
   aState->m_eApiError = eError;
   
   aState->m_oTimer.vUpdate();
-  
   aState->m_iTotalMsec += aState->m_oTimer.iMicroseconds();
 
   pSession->m_nApiErrors++;
@@ -220,6 +224,8 @@ void ApiState::vApiError(Session* pSession, eEC eError)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiJob(Session* pSession, Job* pJob)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
   i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
 
@@ -236,6 +242,8 @@ void ApiState::vApiJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiReturn(Session* pSession)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
   i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
 
@@ -273,16 +281,15 @@ void ApiState::vFreeState(i8 i_Session)
   aState->m_eApiFun    = AC_NONE;
   aState->m_iApiLoc    = 0;
   aState->m_eApiError  = EC_NONE;
+  aState->m_bRunning   = false;
+  aState->m_bSignalled = false;
 
   aState->m_aStackBase = nullptr;
   aState->m_aStackPtr  = nullptr;
   
   aState->m_eJobClass  = CN_NONE;
   aState->m_iJobLoc    = 0;
-
-  aState->m_bRunning   = false;
-  aState->m_bSignalled = false;
-  aState->m_iPosition  = 0;
+  aState->m_iSenLoc    = 0;
 
   aState->m_oTimer.vReset();
   aState->m_iTotalMsec = 0;
@@ -331,7 +338,7 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
 
                          aSessionState->m_iApiLoc,
                          aSessionState->m_iJobLoc,
-                         aSessionState->m_iPosition
+                         aSessionState->m_iSenLoc
 
                          );
   }
@@ -345,6 +352,8 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiLoc(Session* pSession, i8 iLocation)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
   if (! pSession)
     return;
   
@@ -355,14 +364,16 @@ void ApiState::vApiLoc(Session* pSession, i8 iLocation)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set last position                                                          */
+/* set last SEN location                                                      */
 /*----------------------------------------------------------------------------*/
-void ApiState::vSetPosition(Session* pSession, i8 iPosition)
+void ApiState::vSenLoc(Session* pSession, i8 iSenLoc)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
   i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
   
-  aState->m_iPosition = iPosition;
+  aState->m_iSenLoc = iSenLoc;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -370,6 +381,8 @@ void ApiState::vSetPosition(Session* pSession, i8 iPosition)
 /*----------------------------------------------------------------------------*/
 void ApiState::vSetSignalled(Job* pJob)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+
   Session* pSession = pJob->m_pSession;
   
   i8 i_Session = pSession->m_iApiState;
@@ -415,7 +428,7 @@ void ApiState::vDump(void)
         nBytes = nSub(aSessionState->m_aStackPtr,aSessionState->m_aStackBase);
 
       vTrace("  %lld: session %p, apiFun %s, base %llx, ptr %llx (%lldB), apiLoc %lld, job %s jobLoc %lld\n"
-             "     apiError %s, %s, %s, pos %lld, time %lldus total %lldus\n"
+             "     apiError %s, %s, %s, senLoc %lld, time %lldus total %lldus\n"
              "     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
              i_Session,
              pSession,
@@ -430,7 +443,7 @@ void ApiState::vDump(void)
              aEC[aSessionState->m_eApiError],
              aSessionState->m_bRunning ? "running" : "completed",
              aSessionState->m_bSignalled ? "signalled" : "not signalled",
-             aSessionState->m_iPosition,
+             aSessionState->m_iSenLoc,
              aSessionState->m_oTimer.iMicroseconds(),
              aSessionState->m_iTotalMsec,
              pSession->m_nApiCalls,
