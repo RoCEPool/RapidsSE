@@ -30,7 +30,7 @@ void Api::vDeleteJobs(Session* pSession)
     eCN eClass = aJob->eClass();
     JobClass* pJobClass = JobClass::pFind(eClass);
     
-    ApiState::vMarkLocation(pSession,200);
+    ApiState::vMarkApiLoc(pSession,200);
     
     //vTrace("API deleting job %p jobId %lld %s\n"_Stz, aJob, aJob->m_iJobId, aCN[eClass]);
     
@@ -46,7 +46,7 @@ void Api::vDeleteJobs(Session* pSession)
       
       while (pJob_FetchRows->m_nLastBuffersScanned != pJob_FetchRows->m_nLastBuffers) {
         // pop an entryBuffer off the queue
-        ApiState::vMarkLocation(pSession,300);
+        ApiState::vMarkApiLoc(pSession,300);
         
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
         //        GenVar xVariable;
@@ -67,10 +67,10 @@ void Api::vDeleteJobs(Session* pSession)
           if (pFetchBuffer)
             break;
           Pthread::vSleepMilli(1,CN_JOB_FETCHROWS);
-          ApiState::vMarkLocation(pSession,400);
+          ApiState::vMarkApiLoc(pSession,400);
           continue;
         }
-        ApiState::vMarkLocation(pSession,500);
+        ApiState::vMarkApiLoc(pSession,500);
         
         pJob_FetchRows->m_pFetchBuffer = pFetchBuffer;
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -86,7 +86,7 @@ void Api::vDeleteJobs(Session* pSession)
         pJob_FetchRows->vDeleteBuffer();
       }
     }
-    ApiState::vMarkLocation(pSession,600);
+    ApiState::vMarkApiLoc(pSession,600);
     
     // delete the job
     //vTrace("Deleting job %p %s\n"_Stz, aJob, aCN[aJob->eClass()]);
@@ -104,7 +104,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
 {
   CommandProcessor* pCommandProcessor = pSession->m_pCommandProcessor;
   
-  ApiState::vMarkLocation(pSession,101);
+  ApiState::vMarkApiLoc(pSession,101);
   
   pCommandProcessor->vTokenise(sCommand);
   
@@ -318,14 +318,14 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
   //  if (0 != rCode)
   //    vWarn("pthread_mutex_lock() error; rCode=%lld\n"_Stz,rCode);
   
-  ApiState::vMarkLocation(pSession,106);
+  ApiState::vMarkApiLoc(pSession,106);
   
   // set the job state to be locked
   pJob->m_eState = JS_LOCKED;
   
   // spawn the insertTable job
   IGNORE_RETURN(Api::bSpawnJob(pSession,pJob,SS_SEED_REQ));
-  ApiState::vMarkLocation(pSession,107);
+  ApiState::vMarkApiLoc(pSession,107);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait for condition & state
@@ -360,7 +360,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
   RASSERT( _bIsValidJob(pJob->eClass()) );
   RASSERT( iJobSeq == pJob->m_iJobSeq );
   
-  ApiState::vMarkLocation(pSession,108);
+  ApiState::vMarkApiLoc(pSession,108);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

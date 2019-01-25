@@ -13,7 +13,7 @@ namespace Interface
     void*    m_aStackBase; // stack base of thread which made api call
     void*    m_aStackPtr;  // stack addr of thread which made api call
 
-    i8       m_iLocation;  // last reported location in api call
+    i8       m_iApiLoc;    // last reported location in api call
     eCN      m_eJobClass;  // current / last job
     i8       m_iJobSeq;    // job seq
     eEC      m_eError;     // last error code
@@ -46,10 +46,10 @@ namespace Interface
     ApiState(void);
     ~ApiState(void) noexcept(false);
   
+    static void vMarkApiLoc(Session* pSession, i8 iApiLoc);
     static void vMarkCall(Session* pSession, eAC eApiCall);
     static void vMarkError(Session* pSession, eEC eError);
     static void vMarkJob(Session* pSession, Job* aJob);
-    static void vMarkLocation(Session* pSession, i8 iLocation);
     static void vMarkReturn(Session* pSession);
   
     i8   iAllocState(Session* pSession);
@@ -59,7 +59,7 @@ namespace Interface
     void vApiReturn(Session* pSession);
     void vFreeState(i8 i_State);
     void vMonitorPortrait(s48K& sPortrait);
-    void vSetLocation(Session* pSession, i8 iLocation);
+    void vApiLoc(Session* pSession, i8 iApiLoc);
     void vSetPosition(Session* pSession, i8 iPosition);
     void vSetSignalled(Job* pJob);
 

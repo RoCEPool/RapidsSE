@@ -27,7 +27,7 @@
   Job* pJob = _pJob(aJob);
 
 #define API_LOC(iLocation) \
-  ApiState::vMarkLocation(pSession,iLocation);
+  ApiState::vMarkApiLoc(pSession,iLocation);
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +41,7 @@
 /*----------------------------------------------------------------------------*/
 #define API_BEGIN() \
   if (pSession) \
-    ApiState::vMarkLocation(pSession,200);
+    ApiState::vMarkApiLoc(pSession,200);
 
 /*----------------------------------------------------------------------------*/
 /* enter an API function                                                      */
@@ -64,7 +64,7 @@
     } \
     \
     ApiState::vMarkCall(pSession,eApiCall); \
-    ApiState::vMarkLocation(pSession,100); \
+    ApiState::vMarkApiLoc(pSession,100); \
     \
     if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
       vTrace(">%s: %p(%lld)\n"_Stz,  \
@@ -91,7 +91,7 @@
            pSession ? pSession->iPartition() : -1, \
            aEC[eErrorCode],(i8)eErrorCode); \
   ApiState::vMarkError(pSession,eErrorCode); \
-  ApiState::vMarkLocation(pSession,888); \
+  ApiState::vMarkApiLoc(pSession,888); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
   return eErrorCode;
 
@@ -107,7 +107,7 @@
   \
   if (pSession) { \
     ApiState::vMarkReturn(pSession); \
-    ApiState::vMarkLocation(pSession,990); \
+    ApiState::vMarkApiLoc(pSession,990); \
   } \
   \
   ActivityMap::vMarkApiExit(eApiCall); \
@@ -125,7 +125,7 @@
   \
   if (pSession) { \
     ApiState::vMarkReturn(pSession); \
-    ApiState::vMarkLocation(pSession,999); \
+    ApiState::vMarkApiLoc(pSession,999); \
   } \
   \
   ActivityMap::vMarkApiExit(eApiCall); \
@@ -137,15 +137,15 @@
 /*----------------------------------------------------------------------------*/
 #define API_RETURN_EC(eErrorCode) \
 { \
-if ( (iTrace & TL_ERROR) == TL_ERROR) \
-vTrace("<!%s: %p(%lld) %s(%lld)\n"_Stz,  \
-aApiCall, pSession, \
-pSession ? pSession->iPartition() : -1, \
-aEC[eErrorCode],(i8)eErrorCode); \
-ApiState::vMarkError(pSession,eErrorCode); \
-ApiState::vMarkLocation(pSession,880); \
-ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
-return eErrorCode; \
+  if ( (iTrace & TL_ERROR) == TL_ERROR) \
+    vTrace("<!%s: %p(%lld) %s(%lld)\n"_Stz,  \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1, \
+          aEC[eErrorCode],(i8)eErrorCode); \
+  ApiState::vMarkError(pSession,eErrorCode); \
+  ApiState::vMarkApiLoc(pSession,880); \
+  ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
+  return eErrorCode; \
 }
 
 /*----------------------------------------------------------------------------*/
@@ -251,6 +251,8 @@ return eErrorCode; \
   Engine::vErrorHandler(pError); \
   return eErrorCode;
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 #define API_BEGIN()
 #define API_ENTRY(eApiCall)
 #define API_ERROR()

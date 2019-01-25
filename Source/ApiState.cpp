@@ -64,7 +64,7 @@ ApiState::ApiState(void)
     aState->m_eApiCall   = AC_NONE;
     aState->m_aStackBase = nullptr;
     aState->m_aStackPtr  = nullptr;
-    aState->m_iLocation  = 0;
+    aState->m_iApiLoc    = 0;
     aState->m_eJobClass  = CN_NONE;
     aState->m_iJobSeq    = 0;
     aState->m_eError     = EC_NONE;
@@ -124,9 +124,9 @@ void ApiState::vMarkJob(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* mark location of an api                                                    */
 /*----------------------------------------------------------------------------*/
-void ApiState::vMarkLocation(Session* pSession, i8 iLocation)
+void ApiState::vMarkApiLoc(Session* pSession, i8 iApiLoc)
 {
-  gpAttachMap->m_pApiState->vSetLocation(pSession,iLocation);
+  gpAttachMap->m_pApiState->vApiLoc(pSession,iApiLoc);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,7 +180,7 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   aState->m_eApiCall   = eApiCall;
   aState->m_aStackBase = Pthread::aStackBase();
   aState->m_aStackPtr  = Pthread::aStackPointer();
-  aState->m_iLocation  = 0;
+  aState->m_iApiLoc    = 0;
   aState->m_eJobClass  = CN_NONE;
   aState->m_eError     = EC_NONE;
   aState->m_bRunning   = true;
@@ -267,7 +267,7 @@ void ApiState::vFreeState(i8 i_Session)
   aState->m_eApiCall   = AC_NONE;
   aState->m_aStackBase = nullptr;
   aState->m_aStackPtr  = nullptr;
-  aState->m_iLocation  = 0;
+  aState->m_iApiLoc    = 0;
   aState->m_eJobClass  = CN_NONE;
   aState->m_eError     = EC_NONE;
   aState->m_bRunning   = false;
@@ -319,7 +319,7 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
                          aAC[aSessionState->m_eApiCall],
                          aSessionState->m_bRunning ? "running" : "completed",
 
-                         aSessionState->m_iLocation,
+                         aSessionState->m_iApiLoc,
                          aSessionState->m_iJobSeq,
                          aSessionState->m_iPosition
 
@@ -331,9 +331,9 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set last location                                                          */
+/* set last API location                                                      */
 /*----------------------------------------------------------------------------*/
-void ApiState::vSetLocation(Session* pSession, i8 iLocation)
+void ApiState::vApiLoc(Session* pSession, i8 iLocation)
 {
   if (! pSession)
     return;
@@ -341,7 +341,7 @@ void ApiState::vSetLocation(Session* pSession, i8 iLocation)
   i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
   
-  aState->m_iLocation = iLocation;
+  aState->m_iApiLoc = iLocation;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -404,7 +404,7 @@ void ApiState::vDump(void)
       else
         nBytes = nSub(aSessionState->m_aStackPtr,aSessionState->m_aStackBase);
 
-      vTrace("  %lld: session %p, call %s, base %llx, ptr %llx (%lldB), loc %lld, job %s seq %lld\n"
+      vTrace("  %lld: session %p, call %s, base %llx, ptr %llx (%lldB), apiLoc %lld, job %s seq %lld\n"
              "     error %s, %s, %s, pos %lld, time %lldus total %lldus\n"
              "     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
              i_Session,
@@ -414,7 +414,7 @@ void ApiState::vDump(void)
              aSessionState->m_aStackPtr,
              nBytes,
 
-             aSessionState->m_iLocation,
+             aSessionState->m_iApiLoc,
              aCN[aSessionState->m_eJobClass],
              aSessionState->m_iJobSeq,
              aEC[aSessionState->m_eError],
