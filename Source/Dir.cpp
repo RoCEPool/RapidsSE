@@ -86,7 +86,7 @@ bool Dir::bChangeCurrent(Stz* aDirPath)
   i8 iResult = chdir(aDirPath->aChar());
   
   if (iResult) {
-    vWarn("chdir() error; errno=%d\n"_Stz,errno);
+    vWarn("chdir(%s) error; errno=%d\n"_Stz,aDirPath->aChar(),errno);
     return false;
   }
   

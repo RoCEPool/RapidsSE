@@ -7,7 +7,8 @@
 /*----------------------------------------------------------------------------*/
 /* path for SE                                                                */
 /*----------------------------------------------------------------------------*/
-"../OS\\ X/Build/Products/Debug/SE" constant SE_PATH
+//"../OS\\ X/Build/Products/Debug/SE" constant SE_PATH
+"../OS\\ X/Build/Products/Release/SE" constant SE_PATH
 
 /*----------------------------------------------------------------------------*/
 /* form the shell command for spawning a node                                 */
@@ -25,8 +26,8 @@
   SE_PATH str.cat
   " --start " str.cat
   " --size " str.cat args.regionSize >str str.cat
-  " --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
-  //" --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
+  //" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
+  " --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
   clusterString str.cat
   " --regionPrefix " str.cat args.regionPrefix str.cat
   " --partitionsPerNode " str.cat args.partitionsPerNode >str str.cat
