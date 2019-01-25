@@ -62,7 +62,8 @@ ApiState::ApiState(void)
     aState->m_pSession   = nullptr;
     
     aState->m_eApiFun   = AC_NONE;
-    aState->m_iApiLoc    = 0;
+    aState->m_iApiLoc   = 0;
+    aState->m_eApiError = EC_NONE;
 
     aState->m_aStackBase = nullptr;
     aState->m_aStackPtr  = nullptr;
@@ -70,7 +71,6 @@ ApiState::ApiState(void)
     aState->m_eJobClass  = CN_NONE;
     aState->m_iJobLoc    = 0;
     
-    aState->m_eError     = EC_NONE;
     aState->m_bRunning   = false;
     aState->m_bSignalled = false;
     aState->m_iPosition  = 0;
@@ -180,12 +180,14 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   
   SessionState* aState = &m_xSessionState[i_Session];
 
-  aState->m_eApiFun   = eApiCall;
+  aState->m_eApiFun    = eApiCall;
+  aState->m_iApiLoc    = 0;
+  aState->m_eApiError  = EC_NONE;
+
   aState->m_aStackBase = Pthread::aStackBase();
   aState->m_aStackPtr  = Pthread::aStackPointer();
-  aState->m_iApiLoc    = 0;
+
   aState->m_eJobClass  = CN_NONE;
-  aState->m_eError     = EC_NONE;
   aState->m_bRunning   = true;
   aState->m_bSignalled = false;
   aState->m_iPosition  = 0;
@@ -203,8 +205,8 @@ void ApiState::vApiError(Session* pSession, eEC eError)
   i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
 
-  aState->m_bRunning = false;
-  aState->m_eError   = eError;
+  aState->m_bRunning  = false;
+  aState->m_eApiError = eError;
   
   aState->m_oTimer.vUpdate();
   
@@ -249,7 +251,7 @@ void ApiState::vApiReturn(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* feee an api state entry                                                    */
+/* free an api state entry                                                    */
 /*----------------------------------------------------------------------------*/
 void ApiState::vFreeState(i8 i_Session)
 {
@@ -265,14 +267,19 @@ void ApiState::vFreeState(i8 i_Session)
   }
   
   m_oLock.vGrabWrite();
-  aState->m_pSession = nullptr;
   
-  aState->m_eApiFun   = AC_NONE;
+  aState->m_pSession   = nullptr;
+  
+  aState->m_eApiFun    = AC_NONE;
+  aState->m_iApiLoc    = 0;
+  aState->m_eApiError  = EC_NONE;
+
   aState->m_aStackBase = nullptr;
   aState->m_aStackPtr  = nullptr;
-  aState->m_iApiLoc    = 0;
+  
   aState->m_eJobClass  = CN_NONE;
-  aState->m_eError     = EC_NONE;
+  aState->m_iJobLoc    = 0;
+
   aState->m_bRunning   = false;
   aState->m_bSignalled = false;
   aState->m_iPosition  = 0;
@@ -408,7 +415,7 @@ void ApiState::vDump(void)
         nBytes = nSub(aSessionState->m_aStackPtr,aSessionState->m_aStackBase);
 
       vTrace("  %lld: session %p, apiFun %s, base %llx, ptr %llx (%lldB), apiLoc %lld, job %s jobLoc %lld\n"
-             "     error %s, %s, %s, pos %lld, time %lldus total %lldus\n"
+             "     apiError %s, %s, %s, pos %lld, time %lldus total %lldus\n"
              "     #calls %lld, #errors %lld, #jobNew %lld, #jobDelete %lld\n"_Stz,
              i_Session,
              pSession,
@@ -420,7 +427,7 @@ void ApiState::vDump(void)
              aSessionState->m_iApiLoc,
              aCN[aSessionState->m_eJobClass],
              aSessionState->m_iJobLoc,
-             aEC[aSessionState->m_eError],
+             aEC[aSessionState->m_eApiError],
              aSessionState->m_bRunning ? "running" : "completed",
              aSessionState->m_bSignalled ? "signalled" : "not signalled",
              aSessionState->m_iPosition,
