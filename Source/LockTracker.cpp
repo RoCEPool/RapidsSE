@@ -69,20 +69,26 @@ void LockTracker::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void LockTracker::vReport(void)
 {
-  vTrace("  Lock       Lock Name   ReadGrab  Collision  WriteGrab  Collision\n"_Stz);
+  vTrace("  Lock       Lock Name"
+         "   ReadGrab  Collision  %%"
+         "  WriteGrab  Collision  %%\n"_Stz);
   
-  for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++) {
+  for (i8 i_Lock = 1; i_Lock < LK_ENUMS; i_Lock++) {
     
-    vTrace("  %4lld %15s %10lld %10lld %10lld %10lld\n"_Stz,
+    vTrace("  %4lld %15s "
+           "%10lld %10lld %2lld "
+           "%10lld %10lld %2lld\n"_Stz,
            
            i_Lock,
            aLK[i_Lock],
            
            *m_ziReadGrabs[i_Lock],
            *m_ziReadCollisions[i_Lock],
+           IntLib::iPercent(*m_ziReadCollisions[i_Lock],*m_ziReadGrabs[i_Lock]),
            
            *m_ziWriteGrabs[i_Lock],
-           *m_ziWriteCollisions[i_Lock]
+           *m_ziWriteCollisions[i_Lock],
+           IntLib::iPercent(*m_ziWriteCollisions[i_Lock],*m_ziWriteGrabs[i_Lock])
            );
 
   }
