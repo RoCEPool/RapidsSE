@@ -23,6 +23,14 @@ bool Prompt::bPrompt_help(SePrompt* pPrompt)
 {
   vTrace("Help\n"_Stz);
   
+  SysCall oSysCall;
+  
+  s256 sCommand;
+  
+  sCommand.vSprint("man ./ManPages/HelpText"_Stz);
+
+  IGNORE_RETURN(Shell::iExecute(sCommand,oSysCall));
+  
   return true;
 }
 
