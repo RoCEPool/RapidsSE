@@ -102,6 +102,12 @@ namespace System
     Lock(eLK eLockKind);
     ~Lock(void) noexcept(false);
   
+    static u8 iLockDropRead(u8*);
+    static u8 iLockGrabRead(u8*);
+    static u8 iLockDropWrite(u8*);
+    static u8 iLockGrabWrite(u8*);
+    static u8 iLockIsLocked(u8*);
+
     void vInitLock(eLK eLockKind);
   
     bool bIsLocked(void);

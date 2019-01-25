@@ -9,6 +9,10 @@
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 Lock* System::_pLock(void* aAddr)
@@ -92,7 +96,137 @@ Lock::~Lock(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* drop read lock                                                             */
+/*----------------------------------------------------------------------------*/
+u8 Lock::iLockDropRead(u8* pWord)
+{
+#if defined(__APPLE__) || defined(__LINUX__)
+  //u8 uResult = iDropRead(pWord);
+  
+  bool b;
+  
+  do {
+    u8 uCurrent = *pWord;
+    
+    // must have a read lock
+    assert(uCurrent && uCurrent != C_WRITELOCK);
+    
+    u8 uRemoveReadLock = uCurrent - 1;
+    
+    b = Atomic::bTestAndSet(pWord,uCurrent,uRemoveReadLock);
+    
+  } while ( ! b );
+  
+  u8 uResult = 1;
+  
+#else
+  u8 uResult = iDropRead(pWord);
+#endif
+  
+  return uResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab read lock                                                             */
+/*----------------------------------------------------------------------------*/
+u8 Lock::iLockGrabRead(u8* pWord)
+{
+#if defined(__APPLE__) || defined(__LINUX__)
+  
+  //u8 uResult = iGrabRead(pWord);
+  
+  u8 uCurrent = *pWord;
+  if (uCurrent >= C_WRITELOCK)
+    return 0;
+  
+  u8 uAddReadLock = uCurrent + 1;
+  
+  bool b = Atomic::bTestAndSet(pWord,uCurrent,uAddReadLock);
+  
+  u8 uResult = b ? 1 : 0;
+  
+#else
+  u8 uResult = iGrabRead(pWord);
+#endif
+  
+  return uResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop write lock                                                            */
+/*----------------------------------------------------------------------------*/
+u8 Lock::iLockDropWrite(u8* pWord)
+{
+#if defined(__APPLE__) || defined(__LINUX__)
+  //u8 uResult = iDropWrite(pWord);
+  
+  u8 uCurrent = *pWord;
+  
+  assert (uCurrent == C_WRITELOCK);
+  
+  bool b = Atomic::bTestAndSet(pWord,uCurrent,0);
+  
+  u8 uResult = 1;
+#else
+  u8 uResult = iDropWrite(pWord);
+#endif
+  
+  return uResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab write lock                                                            */
+/*----------------------------------------------------------------------------*/
+u8 Lock::iLockGrabWrite(u8* pWord)
+{
+#if defined(__APPLE__) || defined(__LINUX__)
+  //u8 uResult = iGrabWrite(pWord);
+  
+  u8 uCurrent = *pWord;
+  
+  if (uCurrent >= C_WRITELOCK)
+    return 0;
+  
+  u8 uAddWriteLock = uCurrent + C_WRITELOCK;
+  
+  bool b = Atomic::bTestAndSet(pWord,uCurrent,uAddWriteLock);
+  if ( ! b )
+    return 0;
+  
+  uCurrent = C_WRITELOCK;
+  
+  while (! Atomic::bTestAndSet(pWord,uCurrent,uCurrent))
+    {;}
+  
+  u8 uResult = 1;
+  
+#else
+  u8 uResult = iGrabWrite(pWord);
+#endif
+  
+  return uResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is lock actually locked                                                    */
+/*----------------------------------------------------------------------------*/
+u8 Lock::iLockIsLocked(u8* pWord)
+{
+#if defined(__APPLE__) || defined(__LINUX__)
+  u8 uResult = *pWord ? 1 : 0;
+#else
+  u8 uResult = iIsLocked(pWord);
+#endif
+  
+  return uResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -114,7 +248,7 @@ bool Lock::bIsLocked(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return Synch::iLockIsLocked(&m_uLockWord);
+  return Lock::iLockIsLocked(&m_uLockWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,7 +277,7 @@ bool Lock::bGrabRead(void)
   ++m_ziReadGrabs;
   ++gpAttachMap->m_oLockTracker.m_ziReadGrabs[m_eLockKind];
   
-  i8 rCode = Synch::iLockGrabRead(&m_uLockWord);
+  i8 rCode = Lock::iLockGrabRead(&m_uLockWord);
   if (rCode) {
     vCheckRead();
     return true;
@@ -167,7 +301,7 @@ void Lock::vGrabRead(void)
   ++m_ziReadGrabs;
   ++gpAttachMap->m_oLockTracker.m_ziReadGrabs[m_eLockKind];
   
-  i8 rCode = Synch::iLockGrabRead(&m_uLockWord);
+  i8 rCode = Lock::iLockGrabRead(&m_uLockWord);
   if (rCode) {
     vCheckRead();
     return;
@@ -190,7 +324,7 @@ void Lock::vGrabRead(void)
              m_uLockWord);
     }
     
-    rCode = Synch::iLockGrabRead(&m_uLockWord);
+    rCode = Lock::iLockGrabRead(&m_uLockWord);
   } while ( ! rCode );
   
   if (bReported) {
@@ -220,7 +354,7 @@ void Lock::vDropRead(void)
   
   vCheckRead();
   
-  i8 rCode = Synch::iLockDropRead(&m_uLockWord);
+  i8 rCode = Lock::iLockDropRead(&m_uLockWord);
   ASSERT(rCode); // logic check
   
   // m_iValue could be any value
@@ -261,7 +395,7 @@ bool Lock::bGrabWrite(void)
   ++m_ziWriteGrabs;
   ++gpAttachMap->m_oLockTracker.m_ziWriteGrabs[m_eLockKind];
 
-  i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
+  i8 rCode = Lock::iLockGrabWrite(&m_uLockWord);
   if (rCode) {
     vCheckWrite();
     return true;
@@ -289,7 +423,7 @@ void Lock::vGrabWrite(void)
   ++m_ziWriteGrabs;
   ++gpAttachMap->m_oLockTracker.m_ziWriteGrabs[m_eLockKind];
   
-  i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
+  i8 rCode = Lock::iLockGrabWrite(&m_uLockWord);
   if (rCode) {
     vCheckWrite();
     return;
@@ -316,7 +450,7 @@ void Lock::vGrabWrite(void)
       //       m_uLockWord);
     }
     
-    rCode = Synch::iLockGrabWrite(&m_uLockWord);
+    rCode = Lock::iLockGrabWrite(&m_uLockWord);
   } while ( ! rCode );
   
   if (bReported) {
@@ -350,7 +484,7 @@ void Lock::vDropWrite(void)
   
   vCheckWrite();
   
-  i8 rCode = Synch::iLockDropWrite(&m_uLockWord);
+  i8 rCode = Lock::iLockDropWrite(&m_uLockWord);
   ASSERT(rCode); // logic check
   
   //m_uLockWord = 0;
