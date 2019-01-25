@@ -324,7 +324,7 @@ void Job::vShow(s48K& s)
 void Job::vInit(void)
 {
   m_iJobId   = C_UNKNOWN;
-  m_iJobSeq  = ++gzJobSeq;
+  m_iJobLoc  = ++gzJobSeq;
   m_iSession = C_UNKNOWN;
   m_eJobList = JL_NONE;
   

@@ -103,7 +103,7 @@ namespace Jobs
   {
   public:
     i8  m_iJobId;           // job id
-    i8  m_iJobSeq;          // sequence number
+    i8  m_iJobLoc;          // sequence number
     i8  m_iSession;         // which session
     eJL m_eJobList;         // which job list is job currently in?
   

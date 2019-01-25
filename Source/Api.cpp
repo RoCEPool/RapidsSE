@@ -310,7 +310,7 @@ bool Api::bSpawnJob(Session* pSession, Job* pJob, eSS eSeed)
 /*----------------------------------------------------------------------------*/
 void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
 {
-  i8 iJobSeq = pJob->m_iJobSeq;
+  i8 iJobSeq = pJob->m_iJobLoc;
   
   // lock this job's mutex
   pJob->vMutexLock();
@@ -337,7 +337,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
   do {
     
     RASSERT( _bIsValidJob(pJob->eClass()) );
-    RASSERT( iJobSeq == pJob->m_iJobSeq );
+    RASSERT( iJobSeq == pJob->m_iJobLoc );
     
     //    vTrace("ThreadCond:\n"_Stz);
     //    MemLib::vHexDump(&pJob->m_xThreadCond,  sizeof(pthread_cond_t));
@@ -352,13 +352,13 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
     //      vWarn("pthread_cond_wait() error; rCode=%lld\n"_Stz,rCode);
     
     RASSERT( _bIsValidJob(pJob->eClass()) );
-    RASSERT( iJobSeq == pJob->m_iJobSeq );
+    RASSERT( iJobSeq == pJob->m_iJobLoc );
     
     
   } while (pJob->m_eState != JS_SIGNALLED);
   
   RASSERT( _bIsValidJob(pJob->eClass()) );
-  RASSERT( iJobSeq == pJob->m_iJobSeq );
+  RASSERT( iJobSeq == pJob->m_iJobLoc );
   
   ApiState::vMarkApiLoc(pSession,108);
   

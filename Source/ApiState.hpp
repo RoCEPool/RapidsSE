@@ -9,20 +9,21 @@ namespace Interface
     
     Session* m_pSession;
     
-    eAC   m_eApiCall;    // current / last api call
-    i8    m_iApiLoc;     // last reported location in api call
+    eAC   m_eApiFun;     // current / last api function called
+    i8    m_iApiLoc;     // last reported location in api function
     
     void* m_aStackBase;  // stack base of thread which made api call
     void* m_aStackPtr;   // stack addr of thread which made api call
 
     eCN   m_eJobClass;   // current / last job
-    i8    m_iJobSeq;     // job seq
+    i8    m_iJobLoc;     // last reported location in job
+    
     eEC   m_eError;      // last error code
     bool  m_bRunning;    // call still running
     bool  m_bSignalled;  // calling thread has been signalled?
     i8    m_iPosition;   // last reported position in SEN
     Timer m_oTimer;      // call timer
-    i8    m_iTotalMsec; // total time in us
+    i8    m_iTotalMsec;  // total time in us
     
     i8    m_iNextFree;
   };
