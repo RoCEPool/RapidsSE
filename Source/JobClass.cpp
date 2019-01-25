@@ -65,6 +65,7 @@ Job* JobClass::pPreJob(Interface::Session* pSession)
   
   pJob->m_pJobClass = this;
   pJob->m_eJobTrace = m_eTrace;
+  pJob->m_iSession  = pSession ? pSession->m_iApiState : -1;
   
   return pJob;
 }

@@ -5,9 +5,8 @@
 #include "Jobs.h"
 #include "StorageEngine.h"
 
-Atomic gzJobSeq;
-
 extern AttachMap* gpAttachMap;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -324,7 +323,7 @@ void Job::vShow(s48K& s)
 void Job::vInit(void)
 {
   m_iJobId   = C_UNKNOWN;
-  m_iJobLoc  = ++gzJobSeq;
+  m_iJobLoc  = 0;
   m_iSession = C_UNKNOWN;
   m_eJobList = JL_NONE;
   
