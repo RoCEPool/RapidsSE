@@ -40,6 +40,7 @@
   static void vApiStateIncEnded(Tasks::MP_Task mpTask);
   static void vApiStateIncExecuted(Tasks::MP_Task mpTask);
   static void vApiStateSetPosition(Tasks::MP_Task mpTask);
+  static void vApiStateTraceSession(Tasks::MP_Task mpTask);
 
   // args
   static void vArgsOscillate(Tasks::MP_Task mpTask);

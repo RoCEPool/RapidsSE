@@ -420,63 +420,10 @@ void ApiState::vDump(void)
   vTrace("ApiState %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
 
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
-    
     SessionState* aState = &m_xSessionState[i_Session];
-    
-    if (aState->m_pSession) {
-      
-      Session* pSession = aState->m_pSession;
-      
-      if (aState->m_bRunning)
-        aState->m_oTimer.vUpdate();
-      
-      i8 nBytes;
-      
-      if (aState->m_aStackBase >= aState->m_aStackPtr)
-        nBytes = nSub(aState->m_aStackBase,aState->m_aStackPtr);
-      else
-        nBytes = nSub(aState->m_aStackPtr,aState->m_aStackBase);
-
-      vTrace("  %lld: session %p base %llx ptr %llx (%lldB)\n"
-             "     apiFun %s apiLoc %lld job %s jobLoc %lld senLoc %lld \n"
-             "     %s %s apiError %s time %lldus\n"
-             "     dist2PC: begun %lld executed %lld cancelled %lld ended %lld\n"
-             "     #calls %lld, #errors %lld, #jobNew %lld #jobDelete %lld total %lldus\n"_Stz,
-             
-             i_Session,
-             pSession,
-             aState->m_aStackBase,
-             aState->m_aStackPtr,
-             nBytes,
-             
-             aAC[aState->m_eApiFun],
-             aState->m_iApiLoc,
-             aCN[aState->m_eJobClass],
-             aState->m_iJobLoc,
-             aState->m_iSenLoc,
-
-             aState->m_bRunning   ? "running"   : "completed",
-             aState->m_bSignalled ? "signalled" : "not signalled",
-             aEC[aState->m_eApiError],
-             aState->m_oTimer.iMicroseconds(),
-             
-             aState->m_nBegun,
-             aState->m_nExecuted,
-             aState->m_nCancelled,
-             aState->m_nEnded,
-
-             pSession->m_nApiCalls,
-             pSession->m_nApiErrors,
-             pSession->m_nJobNew,
-             pSession->m_nJobDelete,
-             aState->m_iTotalMsec
-             );
-    }
-//    else {
-//      vTrace("  %lld: nextfree %lld\n"_Stz,
-//             i_Session,
-//             aState->m_iNextFree);
-//    }
+    Session* pSession = aState->m_pSession;
+    if (pSession)
+     vTraceSession(i_Session);
   }
   
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
@@ -485,68 +432,120 @@ void ApiState::vDump(void)
   m_oLock.vDropRead();
 }
 
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void ApiState::vTraceSession(i8 i_Session)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
+    return;
+
+  SessionState* aState = &m_xSessionState[i_Session];
+
+  if (aState->m_bRunning)
+    aState->m_oTimer.vUpdate();
+
+  i8 nBytes;
+  if (aState->m_aStackBase >= aState->m_aStackPtr)
+    nBytes = nSub(aState->m_aStackBase,aState->m_aStackPtr);
+  else
+    nBytes = nSub(aState->m_aStackPtr,aState->m_aStackBase);
+
+  vTrace("  %lld: session %p base %llx ptr %llx (%lldB)\n"
+         "     apiFun %s apiLoc %lld job %s jobLoc %lld senLoc %lld \n"
+         "     %s %s apiError %s time %lldus\n"
+         "     dist2PC: begun %lld executed %lld cancelled %lld ended %lld\n"
+         "     #calls %lld, #errors %lld, #jobNew %lld #jobDelete %lld total %lldus\n"_Stz,
+         
+         i_Session,
+         aState->m_pSession,
+         aState->m_aStackBase,
+         aState->m_aStackPtr,
+         nBytes,
+         
+         aAC[aState->m_eApiFun],
+         aState->m_iApiLoc,
+         aCN[aState->m_eJobClass],
+         aState->m_iJobLoc,
+         aState->m_iSenLoc,
+         
+         aState->m_bRunning   ? "running"   : "completed",
+         aState->m_bSignalled ? "signalled" : "not signalled",
+         aEC[aState->m_eApiError],
+         aState->m_oTimer.iMicroseconds(),
+         
+         aState->m_nBegun,
+         aState->m_nExecuted,
+         aState->m_nCancelled,
+         aState->m_nEnded,
+         
+         aState->m_pSession->m_nApiCalls,
+         aState->m_pSession->m_nApiErrors,
+         aState->m_pSession->m_nJobNew,
+         aState->m_pSession->m_nJobDelete,
+         aState->m_iTotalMsec
+       );
+}
 
 /*----------------------------------------------------------------------------*/
 /* increment number of __begun received                                       */
 /*----------------------------------------------------------------------------*/
-void ApiState::vIncBegun(Session* pSession)
+void ApiState::vIncBegun(i8 i_Session)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  if (! pSession)
+  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
     return;
   
-  i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
-  
+    
   aState->m_nBegun++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* increment number of __cancelled received                                   */
 /*----------------------------------------------------------------------------*/
-void ApiState::vIncCancelled(Session* pSession)
+void ApiState::vIncCancelled(i8 i_Session)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  if (! pSession)
+  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
     return;
   
-  i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
-  
+
   aState->m_nCancelled++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* increment number of __ended received                                       */
 /*----------------------------------------------------------------------------*/
-void ApiState::vIncEnded(Session* pSession)
+void ApiState::vIncEnded(i8 i_Session)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  if (! pSession)
+  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
     return;
   
-  i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
-  
+
   aState->m_nEnded++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* increment number of executed received                                      */
 /*----------------------------------------------------------------------------*/
-void ApiState::vIncExecuted(Session* pSession)
+void ApiState::vIncExecuted(i8 i_Session)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  if (! pSession)
+  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
     return;
   
-  i8 i_Session = pSession->m_iApiState;
   SessionState* aState = &m_xSessionState[i_Session];
-  
+
   aState->m_nExecuted++;
 }
 

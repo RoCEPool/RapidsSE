@@ -16,18 +16,25 @@ void Step::vAddSteps_ApiState(void)
   vAddStep("apiState::incEnded"_Stz,     &Step::vApiStateIncEnded);
   vAddStep("apiState::incExecuted"_Stz,  &Step::vApiStateIncExecuted);
   vAddStep("apiState::setPosition"_Stz,  &Step::vApiStateSetPosition);
+  vAddStep("apiState::traceSession"_Stz, &Step::vApiStateTraceSession);
 }
 
 /*----------------------------------------------------------------------------*/
-/* apiState::incBegun -- increment the number of __begun received             */
+/* c -- increment the number of __begun received             */
 /*----------------------------------------------------------------------------*/
 void Step::vApiStateIncBegun(MP_Task mpTask)
 {
   ENTRY("vApiIncBegun"_Stz);
   
-  Session* pSession = mpTask->m_pSession;
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
   
-  gpAttachMap->m_pApiState->vIncBegun(pSession);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 i_Session = pJob->m_iSession;
+  
+  gpAttachMap->m_pApiState->vIncBegun(i_Session);
   
   EXIT();
 }
@@ -39,9 +46,15 @@ void Step::vApiStateIncCancelled(MP_Task mpTask)
 {
   ENTRY("vApiIncBegun"_Stz);
   
-  Session* pSession = mpTask->m_pSession;
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
   
-  gpAttachMap->m_pApiState->vIncCancelled(pSession);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 i_Session = pJob->m_iSession;
+
+  gpAttachMap->m_pApiState->vIncCancelled(i_Session);
   
   EXIT();
 }
@@ -53,9 +66,15 @@ void Step::vApiStateIncEnded(MP_Task mpTask)
 {
   ENTRY("vApiIncBegun"_Stz);
   
-  Session* pSession = mpTask->m_pSession;
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
   
-  gpAttachMap->m_pApiState->vIncEnded(pSession);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 i_Session = pJob->m_iSession;
+
+  gpAttachMap->m_pApiState->vIncEnded(i_Session);
   
   EXIT();
 }
@@ -67,9 +86,15 @@ void Step::vApiStateIncExecuted(MP_Task mpTask)
 {
   ENTRY("vApiIncExecuted"_Stz);
   
-  Session* pSession = mpTask->m_pSession;
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("apiState::incBegun"_Stz);
   
-  gpAttachMap->m_pApiState->vIncEnded(pSession);
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 i_Session = pJob->m_iSession;
+
+  gpAttachMap->m_pApiState->vIncEnded(i_Session);
   
   EXIT();
 }
@@ -88,6 +113,26 @@ void Step::vApiStateSetPosition(MP_Task mpTask)
   Session* pSession = mpTask->m_pSession;
   
   gpAttachMap->m_pApiState->vSenLoc(pSession,iPosition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* apiState::traceSession -- trace the api state for this session             */
+/*----------------------------------------------------------------------------*/
+void Step::vApiStateTraceSession(MP_Task mpTask)
+{
+  ENTRY("vApiStateTraceSession"_Stz);
+  
+  Object* pJobPtr;
+  if ( ! mpTask->m_pDataStack->bPop(pJobPtr) )
+    THROW_INVALID_DSTACK("apiState::traceSession"_Stz);
+  
+  Job* pJob = _pJob(pJobPtr);
+  
+  i8 i_Session = pJob->m_iSession;
+  
+  gpAttachMap->m_pApiState->vTraceSession(i_Session);
   
   EXIT();
 }

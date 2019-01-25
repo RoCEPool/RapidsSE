@@ -7,7 +7,7 @@ namespace Interface
 {
   struct SessionState {
     
-    Session* m_pSession;
+    Session* m_pSession; // will always be set unless state is free
     
     eAC   m_eApiFun;     // current / last api function called
     i8    m_iApiLoc;     // last reported location in api function
@@ -70,13 +70,14 @@ namespace Interface
     void vSenLoc(Session* pSession, i8 iPosition);
     void vSetSignalled(Job* pJob);
   
-    void vIncBegun(Session* pSession);
-    void vIncCancelled(Session* pSession);
-    void vIncExecuted(Session* pSession);
-    void vIncEnded(Session* pSession);
+    void vIncBegun(i8 i_Session);
+    void vIncCancelled(i8 i_Session);
+    void vIncExecuted(i8 i_Session);
+    void vIncEnded(i8 i_Session);
 
     void vDump(void);
-  
+    void vTraceSession(i8 i_Session);
+
     Footer* aFooter(void);
   };
   

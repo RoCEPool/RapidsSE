@@ -80,7 +80,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the context of this __begun job
 
-  // find the distributed job in the originator jobs
+  // find the originating job
   iJobId job::findOriginator to pJobOriginator
 
   // get the participant node from where this job__begun started
@@ -98,7 +98,8 @@
   // process the fact that a __begun job as been received on originating node
 
   // increment the number of __begun jobs received in api state
-  ApiState::incBegun
+  pJobOriginator ApiState::incBegun
+  pJobOriginator ApiState::traceSession
 
   // decrement the acks remaining in the originating job
   pJobOriginator job.decAcksRemaining to bAmDecider
