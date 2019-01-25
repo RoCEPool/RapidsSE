@@ -52,7 +52,10 @@ using namespace DBobjects;
 
 //------------------------------------------------------------------------------
 
+#include "RelationalOps.h"
+
 #include "Column.hpp"
+
 
 typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 

@@ -44,8 +44,6 @@ using namespace System;
 
 #include "Now.hpp"
 
-#include "RelationalOps.h"
-
 
 /*============================================================================*/
 /* end                                                                        */
