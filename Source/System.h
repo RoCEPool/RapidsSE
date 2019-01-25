@@ -40,7 +40,6 @@ using namespace System;
 #include "Tsc.hpp"
 
 #include "Time_se.hpp"
-#include "Timer.hpp"
 
 #include "Now.hpp"
 
