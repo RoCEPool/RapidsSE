@@ -67,23 +67,29 @@
   0 locals| pJobOriginator |
   0 0 0 0 locals| bAmDecider error iParticipantNode |
 
-  // ": Job__Cancelled_rcv" .
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the context of this __cancelled job
 
-  // find the job in the originator jobs
+  // find the originating job
   iJobId job::findOriginator to pJobOriginator
+
+  // get the participant node from where this job__begun started
+  pJob__Cancelled job.participant@ to iParticipantNode
 
   // get the error code from job__executed
   pJob__Cancelled jobCancelled.error@ to error
 
-  // get the participant nodewhere job__begun started
-  pJob__Cancelled job.participant@ to iParticipantNode
-
-  // set the error code in pJob
+  // set the error code in pJobOriginator
   error iParticipantNode pJobOriginator job.error!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process __begun job on this originating node
 
-  // decrement the acks remaining
+  // increment the number of __cancelled jobs received in api state
+  pJobOriginator ApiState::incCancelled
+  pJobOriginator ApiState::traceSession
+
+  // decrement the acks remaining in the originating job
   pJobOriginator job.decAcksRemaining to bAmDecider
 
   // if there are acks remaining just exit
@@ -94,18 +100,15 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // this job is the decider
+  // all job__cancelled's have been received, so this job is the decider
 
-  //"received Job_Cancelled from all nodes" .
-
-  // remove the job from the originator jobs
+  // remove the originating job from the originator jobs
   pJobOriginator job.removeOriginator
 
   // notify the originating task
   pJobOriginator job.originatingTask@ task.ack
 
-  //"All Done" .
-
+  // delete this completed __cancelled job
   delete_completed_job
 
   <DONE_RCV>

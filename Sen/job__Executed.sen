@@ -80,10 +80,13 @@
   0 locals| pJobOriginator  |
   0 0 0 0 locals| iParticipantNode error bAmDecider |
 
-  // find the job in the originator jobs
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the context of this __executed job
+
+  // find the originating job
   iJobId job::findOriginator to pJobOriginator
 
-  // get the participant nodewhere Job__Executed started
+  // get the participant node from where this job__begun started
   pJob__Executed job.participant@ to iParticipantNode
 
   // get the error code from job__executed
@@ -112,6 +115,11 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process __executed job on this originating node
+
+  // increment the number of __executed jobs received in api state
+  pJobOriginator ApiState::incExecuted
+  pJobOriginator ApiState::traceSession
 
   // decrement the acks remaining
   pJobOriginator job.decAcksRemaining to bAmDecider
@@ -124,12 +132,12 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // this job is the decider
+  // all __executed jobs have been received, so this job is the decider
 
-  //"received Job__Executed from all nodes" .
-
+  // send a job__end to all participants
   pJobOriginator Job__End::distribute
 
+  // delete this completed __executed job
   delete_completed_job
 
   <DONE_RCV>

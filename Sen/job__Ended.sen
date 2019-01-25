@@ -53,15 +53,23 @@
   job::this locals| pJob__Ended |
   pJob__Ended job.id@ locals| iJobId |
 
-  0 0 locals| pJob bAmDecider |
-
-  // find the job in the originator jobs
-  iJobId job::findOriginator to pJob
+  0 0 locals| pJobOriginator bAmDecider |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the context of this __ended job
+
+  // find the originating job
+  iJobId job::findOriginator to pJobOriginator
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process __ended job on this originating node
+
+  // increment the number of __ended jobs received in api state
+  pJobOriginator ApiState::incEnded
+  pJobOriginator ApiState::traceSession
 
   // decrement the acks remaining
-  pJob job.decAcksRemaining to bAmDecider
+  pJobOriginator job.decAcksRemaining to bAmDecider
 
   // if there are acks remaining just exit
   bAmDecider not if
@@ -71,18 +79,15 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // this job is the decider
-
-  //"received Job__Ended from all nodes" .
+  // all __ended jobs have been received, so this job is the decider
 
   // remove the job from the originator jobs
-  pJob job.removeOriginator
+  pJobOriginator job.removeOriginator
 
   // notify the originating task
-  pJob job.originatingTask@ task.ack
+  pJobOriginator job.originatingTask@ task.ack
 
-  //"All Done" .
-
+  // delete this completed __ended job
   delete_completed_job
 
   <DONE_RCV>

@@ -95,7 +95,7 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // process the fact that a __begun job as been received on originating node
+  // process __begun job on this originating node
 
   // increment the number of __begun jobs received in api state
   pJobOriginator ApiState::incBegun
@@ -104,7 +104,7 @@
   // decrement the acks remaining in the originating job
   pJobOriginator job.decAcksRemaining to bAmDecider
 
-  // test for all acks received all
+  // if there are acks remaining just exit
   bAmDecider not if
     delete_completed_job
     <DONE_RCV>
@@ -129,7 +129,7 @@
   // distribute Job__Execute to all participants
   pJobOriginator Job__Execute::distribute
 
-  // delete this completed job
+  // delete this completed __begun job
   delete_completed_job
 
   <DONE_RCV>

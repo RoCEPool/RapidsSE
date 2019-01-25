@@ -94,7 +94,7 @@ void Step::vApiStateIncExecuted(MP_Task mpTask)
   
   i8 i_Session = pJob->m_iSession;
 
-  gpAttachMap->m_pApiState->vIncEnded(i_Session);
+  gpAttachMap->m_pApiState->vIncExecuted(i_Session);
   
   EXIT();
 }
