@@ -23,6 +23,7 @@ using namespace Measurement;
 #include "ByteRate.hpp"
 
 #include "LockTracker.hpp"
+#include "Now.hpp"
 
 #include "PerformanceEntry.hpp"
 #include "PerformanceBuffer.hpp"
