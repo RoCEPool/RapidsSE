@@ -59,11 +59,17 @@ Tokeniser::Tokeniser(void)
   i8 i_Node = gxArguments.m_iThisNode;
   Node* pNode = gpAttachMap->m_pGrid->pThisNode();
   
-  m_sPrompt.vSprint("[N%lld %s %lld] se %s%c"_Stz,
+  m_sPrompt.vSprint("[N%lld %s %lld%s%s] se %s%c"_Stz,
                     
                     i_Node,
                     pNode->aNodeName(),
                     Process::iGetPid(),
+                    gxArguments.m_bActivityMap? " AM" : "",
+#ifdef __ENTRY_EXIT
+                    " EE",
+#else
+                    "",
+#endif
                     
                     RAPIDSSE_VERSION_STRING,
 #ifdef _DEBUG

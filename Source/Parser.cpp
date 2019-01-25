@@ -851,7 +851,7 @@ void Parser::vReadLineStdin(void)
           bLowMem                    ? " *LOWMEM* "    : "",
 #ifdef __ENTRY_EXIT
           (gpAttachMap->m_pStepTiming ?
-           " *STEPTIMING*" : " __ENTRY_EXIT")
+           " *STEPTIMING*" : "")
 #else
           ""
 #endif
