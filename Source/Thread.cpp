@@ -174,7 +174,7 @@ void* Thread::aEntryPointDummy(void* pArg)
     // burn some cpu
     i8 iSum = 0;
     for (i8 i_Loop = 0; i_Loop < gxArguments.m_nDummyLoop; i_Loop++)
-      iSum += Synch::iRdTscp();
+      iSum += Tsc::iRdTscp();
   }
   
   //delete pThread;

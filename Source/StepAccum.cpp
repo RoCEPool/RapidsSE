@@ -39,7 +39,7 @@ StepAccum::~StepAccum(void) noexcept(false)
 void StepAccum::vEnter(i8& nEnterCycles, i8& nEnterMisses)
 {
 #ifdef __APPLE__
-  nEnterCycles = Synch::iTicks();
+  nEnterCycles = Tsc::iTicks();
   nEnterMisses = 0; //iPmc_GetLlcMisses();
 #else
   nEnterCycles = 0;
@@ -53,7 +53,7 @@ void StepAccum::vEnter(i8& nEnterCycles, i8& nEnterMisses)
 void StepAccum::vExit(i8 nEnterCycles, i8 nEnterMisses)
 {
   #ifdef __APPLE__
-  i8 nExitCycles = Synch::iTicks();
+  i8 nExitCycles = Tsc::iTicks();
   i8 nDiffCycles = nExitCycles - nEnterCycles;
 
   i8 nExitMisses = 0; //iPmc_GetLlcMisses();
@@ -80,7 +80,7 @@ void StepAccum::vPrint(File& oFile)
   if (0 == m_nInvoked)
     return;
   
-  i8 nCyclesPerGigaNanosecond = Synch::iTickFrequency();
+  i8 nCyclesPerGigaNanosecond = Tsc::iTickFrequency();
   i8 nCyclesPerNanosecond = DIV(nCyclesPerGigaNanosecond,C_1G);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

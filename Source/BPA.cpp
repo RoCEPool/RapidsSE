@@ -702,7 +702,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   File* pFile = new File();
   pFile->bOpenWrite(sFilePath);
   
-  i8 iStart  = Synch::iTicks();
+  i8 iStart  = Tsc::iTicks();
   bn nBuffer;
   
   bn nBufferCount = gpBufferPool->m_nBuffers - 1;
@@ -717,10 +717,10 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   }
   ASSERT(*nBufferCount + 1 == *nBuffer);
   
-  i8 iUpdate = Synch::iTicks();
+  i8 iUpdate = Tsc::iTicks();
   
   i8 iTicks = (iUpdate - iStart);
-  i8 iTicksPerSecond = Synch::iTickFrequency();
+  i8 iTicksPerSecond = Tsc::iTickFrequency();
   
   i8 iMilli = iTicks * C_1K / iTicksPerSecond;
   

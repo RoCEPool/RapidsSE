@@ -13,12 +13,7 @@ namespace System
     static u8   uAtomicInc(i8* pWord);
     
     static bool bTestAndSet(u8* pWord, u8 uIf, u8 uThen);
-    
-    static i8   iTicks(void);
-    static i8   iToMicroseconds(i8 iTickDelta);
-    static i8   iTickFrequency(void);
-    static i8   iRdTscp(void);
-    
+        
     static u8   iLockDropRead(u8*);
     static u8   iLockGrabRead(u8*);
     static u8   iLockDropWrite(u8*);

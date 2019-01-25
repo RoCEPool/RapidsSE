@@ -38,6 +38,8 @@ using namespace System;
 #include "Since.hpp"
 #include "Socket.hpp"
 #include "Synch.hpp"
+#include "Tsc.hpp"
+
 #include "Time_se.hpp"
 #include "Timer.hpp"
 

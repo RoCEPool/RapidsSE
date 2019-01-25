@@ -101,7 +101,7 @@ void ActivityMark::vWrite(i8 iJobId, char* aMark)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
   
-  m_iTick = Synch::iTicks();
+  m_iTick = Tsc::iTicks();
   
   StrLib::vCopyLen(m_aNode,
                    gpAttachMap->m_pGrid->m_pThisNode->aNodeName()->aChar(),
