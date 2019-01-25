@@ -98,6 +98,7 @@ void Queues::vThreadsReport()
 {
   i8 iUser;
   i8 iSystem;
+  i8 iUse;
   i8 iSleep;
   
   Queues* pQueues = gpAttachMap->m_pQueues;
@@ -109,11 +110,11 @@ void Queues::vThreadsReport()
     
     Thread* pThread = pQueues->m_pThreadVec->pGet(i_Thread);
     
-    pThread->m_pPthread->bGetCpu(iUser,iSystem,iSleep);
+    pThread->m_pPthread->bGetCpu(iUser,iSystem,iUse,iSleep);
     
     vTrace("  Thread %2lld %p"
            " base %llx size %lld"
-           " user %lld system %lld sleep %lld"
+           " user %lld system %lld use %lld sleep %lld"
            " %7s %s\n"_Stz,
            pThread->m_iThreadNo,
            pThread,
@@ -123,6 +124,7 @@ void Queues::vThreadsReport()
            
            iUser,
            iSystem,
+           iUse,
            iSleep,
            
            aTD[pThread->m_eThreadState],

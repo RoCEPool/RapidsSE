@@ -302,7 +302,7 @@ void Pthread::vEnableRealtime_2(void)
 /*----------------------------------------------------------------------------*/
 /* get cpu and sleep info                                                     */
 /*----------------------------------------------------------------------------*/
-bool Pthread::bGetCpu(i8& iUser, i8& iSystem, i8& iSleep)
+bool Pthread::bGetCpu(i8& iUser, i8& iSystem, i8& iUsage, i8& iSleep)
 {
   thread_port_t uThreadPort = pthread_mach_thread_np(m_iPthreadId);  
   thread_extended_info_data_t xInfoExtended;
@@ -317,6 +317,7 @@ bool Pthread::bGetCpu(i8& iUser, i8& iSystem, i8& iSleep)
   
   iUser   = xInfoExtended.pth_user_time;
   iSystem = xInfoExtended.pth_system_time;
+  iUsage  = xInfoExtended.pth_cpu_usage;
   iSleep  = xInfoExtended.pth_sleep_time;
   
   return true;

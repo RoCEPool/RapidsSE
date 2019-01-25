@@ -28,7 +28,7 @@ namespace System
     void vDisableRealtime(void);
     void vEnableRealtime(void);
     void vEnableRealtime_2(void);
-    bool bGetCpu(i8& iUser, i8& iSystem, i8& iSleep);
+    bool bGetCpu(i8& iUser, i8& iSystem, i8& iUsage, i8& iSleep);
     i8   iGetInfo(void);
     void vGetPolicy(void);
     void vSetOSThreadId(void);
