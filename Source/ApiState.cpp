@@ -72,7 +72,7 @@ ApiState::ApiState(void)
     aState->m_bSignalled = false;
     aState->m_iPosition  = 0;
     aState->m_oTimer.vInit();
-    aState->m_iTotalMicroSecs = 0;
+    aState->m_iTotalMsec = 0;
 
     aState->m_iNextFree = i_Session + 1;
   }
@@ -205,7 +205,7 @@ void ApiState::vApiError(Session* pSession, eEC eError)
   
   aState->m_oTimer.vUpdate();
   
-  aState->m_iTotalMicroSecs += aState->m_oTimer.iMicroseconds();
+  aState->m_iTotalMsec += aState->m_oTimer.iMicroseconds();
 
   pSession->m_nApiErrors++;
 }
@@ -236,7 +236,7 @@ void ApiState::vApiReturn(Session* pSession)
 
   aState->m_bRunning = false;
   aState->m_oTimer.vUpdate();
-  aState->m_iTotalMicroSecs += aState->m_oTimer.iMicroseconds();
+  aState->m_iTotalMsec += aState->m_oTimer.iMicroseconds();
 
 //  if (xState[i_Session].m_eApiCall == AC_FetchNextBuffer)
 //    vTrace("Timer start: %lld; Timer update: %lld Time: %lldus\n"_Stz,
@@ -275,7 +275,7 @@ void ApiState::vFreeState(i8 i_Session)
   aState->m_iPosition  = 0;
 
   aState->m_oTimer.vReset();
-  aState->m_iTotalMicroSecs = 0;
+  aState->m_iTotalMsec = 0;
 
   aState->m_iNextFree = m_iFirstFree;
 
@@ -422,7 +422,7 @@ void ApiState::vDump(void)
              aSessionState->m_bSignalled ? "signalled" : "not signalled",
              aSessionState->m_iPosition,
              aSessionState->m_oTimer.iMicroseconds(),
-             aSessionState->m_iTotalMicroSecs,
+             aSessionState->m_iTotalMsec,
              pSession->m_nApiCalls,
              pSession->m_nApiErrors,
              pSession->m_nJobNew,
