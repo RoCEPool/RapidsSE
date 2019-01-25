@@ -750,7 +750,9 @@ void Arguments::vPrintStartupInfo(void)
   vTrace("  --address %p\n"_Stz,m_aRegionAddr);
 #endif
   
-  vTrace("  --size %lld\n"_Stz,m_iRegionSize);
+  s32 sSizeMag;
+  Magnitudes::vByteMag(m_iRegionSize,sSizeMag);
+  vTrace("  --size %s\n"_Stz,sSizeMag.aChar());
   
   for (i8 i_Index = 0; i_Index < m_nNodes; i_Index++) {
     vTrace("  --node %s %s %lld\n"_Stz,

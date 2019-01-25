@@ -7,7 +7,7 @@
 PromptNote mPromptNote_help (
   "Prompt_help"_Stz, // name of the prompt function
   "comment"_Stz,     // comment about the functopm
-  "help"_Stz,        // the prompt command
+  "man"_Stz,         // the prompt command
   nullptr,           // the second word
   bPrompt_help,      // prompt function
   true,              // enabled

@@ -120,10 +120,10 @@ void SePrompt::vPromptLoop(void)
 
     vMarkCommand();
     
-    if (bExecuteFunction())
+    if (bExecuteFile())
       continue;
     
-    if (bExecuteFile())
+    if (bExecuteFunction())
       continue;
     
     if (! bFindJobClass()) {
