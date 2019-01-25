@@ -25,6 +25,11 @@ namespace Interface
     Timer m_oTimer;      // call timer
     i8    m_iTotalMsec;  // total time in us
     
+    i8    m_nBegun;      // number of __beguns received
+    i8    m_nExecuted;   // number of __executed received
+    i8    m_nCancelled;  // number of __cancelled received
+    i8    m_nEnded;      // number of __ended received
+    
     i8    m_iNextFree;
   };
   

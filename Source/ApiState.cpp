@@ -61,9 +61,9 @@ ApiState::ApiState(void)
     
     aState->m_pSession   = nullptr;
     
-    aState->m_eApiFun   = AC_NONE;
-    aState->m_iApiLoc   = 0;
-    aState->m_eApiError = EC_NONE;
+    aState->m_eApiFun    = AC_NONE;
+    aState->m_iApiLoc    = 0;
+    aState->m_eApiError  = EC_NONE;
     aState->m_bRunning   = false;
     aState->m_bSignalled = false;
 
@@ -76,6 +76,11 @@ ApiState::ApiState(void)
     
     aState->m_oTimer.vInit();
     aState->m_iTotalMsec = 0;
+    
+    aState->m_nBegun     = 0;
+    aState->m_nExecuted  = 0;
+    aState->m_nCancelled = 0;
+    aState->m_nEnded     = 0;
 
     aState->m_iNextFree = i_Session + 1;
   }
@@ -294,6 +299,11 @@ void ApiState::vFreeState(i8 i_Session)
   aState->m_oTimer.vReset();
   aState->m_iTotalMsec = 0;
 
+  aState->m_nBegun     = 0;
+  aState->m_nExecuted  = 0;
+  aState->m_nCancelled = 0;
+  aState->m_nEnded     = 0;
+
   aState->m_iNextFree = m_iFirstFree;
 
   m_iFirstFree = i_Session;
@@ -411,49 +421,55 @@ void ApiState::vDump(void)
 
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
-    SessionState* aSessionState = &m_xSessionState[i_Session];
+    SessionState* aState = &m_xSessionState[i_Session];
     
-    if (aSessionState->m_pSession) {
+    if (aState->m_pSession) {
       
-      Session* pSession = aSessionState->m_pSession;
+      Session* pSession = aState->m_pSession;
       
-      if (aSessionState->m_bRunning)
-        aSessionState->m_oTimer.vUpdate();
+      if (aState->m_bRunning)
+        aState->m_oTimer.vUpdate();
       
       i8 nBytes;
       
-      if (aSessionState->m_aStackBase >= aSessionState->m_aStackPtr)
-        nBytes = nSub(aSessionState->m_aStackBase,aSessionState->m_aStackPtr);
+      if (aState->m_aStackBase >= aState->m_aStackPtr)
+        nBytes = nSub(aState->m_aStackBase,aState->m_aStackPtr);
       else
-        nBytes = nSub(aSessionState->m_aStackPtr,aSessionState->m_aStackBase);
+        nBytes = nSub(aState->m_aStackPtr,aState->m_aStackBase);
 
       vTrace("  %lld: session %p base %llx ptr %llx (%lldB)\n"
              "     apiFun %s apiLoc %lld job %s jobLoc %lld senLoc %lld \n"
              "     %s %s apiError %s time %lldus\n"
+             "     dist2PC: begun %lld executed %lld cancelled %lld ended %lld\n"
              "     #calls %lld, #errors %lld, #jobNew %lld #jobDelete %lld total %lldus\n"_Stz,
              
              i_Session,
              pSession,
-             aSessionState->m_aStackBase,
-             aSessionState->m_aStackPtr,
+             aState->m_aStackBase,
+             aState->m_aStackPtr,
              nBytes,
              
-             aAC[aSessionState->m_eApiFun],
-             aSessionState->m_iApiLoc,
-             aCN[aSessionState->m_eJobClass],
-             aSessionState->m_iJobLoc,
-             aSessionState->m_iSenLoc,
+             aAC[aState->m_eApiFun],
+             aState->m_iApiLoc,
+             aCN[aState->m_eJobClass],
+             aState->m_iJobLoc,
+             aState->m_iSenLoc,
 
-             aSessionState->m_bRunning ? "running" : "completed",
-             aSessionState->m_bSignalled ? "signalled" : "not signalled",
-             aEC[aSessionState->m_eApiError],
-             aSessionState->m_oTimer.iMicroseconds(),
+             aState->m_bRunning   ? "running"   : "completed",
+             aState->m_bSignalled ? "signalled" : "not signalled",
+             aEC[aState->m_eApiError],
+             aState->m_oTimer.iMicroseconds(),
              
+             aState->m_nBegun,
+             aState->m_nExecuted,
+             aState->m_nCancelled,
+             aState->m_nEnded,
+
              pSession->m_nApiCalls,
              pSession->m_nApiErrors,
              pSession->m_nJobNew,
              pSession->m_nJobDelete,
-             aSessionState->m_iTotalMsec
+             aState->m_iTotalMsec
              );
     }
 //    else {
