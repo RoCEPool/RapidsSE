@@ -71,18 +71,22 @@
   //
 
   job::this locals| pJob__Begun |
+
   pJob__Begun job.id@ locals| iJobId |
 
   0 locals| pJobOriginator  |
   0 0 0 0 locals| bAmDecider error iParticipantNode |
 
-  // find the job in the originator jobs
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get the context of this __begun job
+
+  // find the distributed job in the originator jobs
   iJobId job::findOriginator to pJobOriginator
 
-  // get the participant nodewhere job__begun started
+  // get the participant node from where this job__begun started
   pJob__Begun job.participant@ to iParticipantNode
 
-  // get the error code from job__executed
+  // get the error code from job__begun
   pJob__Begun jobBegun.error@ to error
 
   error EC_NONE != if
@@ -91,8 +95,12 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // process the fact that a __begun job as been received on originating node
 
-  // decrement the acks remaining
+  // increment the number of __begun jobs received in api state
+  ApiState::incBegun
+
+  // decrement the acks remaining in the originating job
   pJobOriginator job.decAcksRemaining to bAmDecider
 
   // test for all acks received all
@@ -103,12 +111,7 @@
   then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // this job is the decider
-
-  //"received job__begun from all nodes" .
-
-  // received job__begun from all nodes
-  // this is the decider job.
+  // all job__begun's have been received, so this job is the decider
 
   // check if any node returned an error
   grid::nodes 0 do
@@ -125,6 +128,7 @@
   // distribute Job__Execute to all participants
   pJobOriginator Job__Execute::distribute
 
+  // delete this completed job
   delete_completed_job
 
   <DONE_RCV>
