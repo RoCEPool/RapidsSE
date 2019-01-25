@@ -96,6 +96,10 @@ Queues::~Queues(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Queues::vThreadsReport()
 {
+  i8 iUser;
+  i8 iSystem;
+  i8 iSleep;
+  
   Queues* pQueues = gpAttachMap->m_pQueues;
   
   pQueues->m_pThreadVec->vGrabLock();
@@ -105,19 +109,23 @@ void Queues::vThreadsReport()
     
     Thread* pThread = pQueues->m_pThreadVec->pGet(i_Thread);
     
-    vTrace("  Thread %2lld %p base %llx size %lld %7s os id %lld posix id %llx rr : last %2lld start %2lld %s\n"_Stz,
+    pThread->m_pPthread->bGetCpu(iUser,iSystem,iSleep);
+    
+    vTrace("  Thread %2lld %p"
+           " base %llx size %lld"
+           " user %lld system %lld sleep %lld"
+           " %7s %s\n"_Stz,
            pThread->m_iThreadNo,
            pThread,
            
            pThread->m_aStackBase,
            pThread->m_iStackSize,
            
-           aTD[pThread->m_eThreadState],
-           pThread->m_pPthread->m_iOpSysThreadId,
-           pThread->m_pPthread->m_iPthreadId,
-           pThread->m_iLastQueueRR,
-           pThread->m_iStartQueueRR,
+           iUser,
+           iSystem,
+           iSleep,
            
+           aTD[pThread->m_eThreadState],
            pThread->m_eDedicated ? aCN[pThread->m_eDedicated]->aChar() : ""
            );
   }

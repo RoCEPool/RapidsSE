@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Pthread - a posix thread                                               */
+/* Pthread - a posix thread                                                   */
 /*============================================================================*/
 
 #include "System.h"
@@ -299,6 +299,28 @@ void Pthread::vEnableRealtime_2(void)
 #endif
 }
 
+/*----------------------------------------------------------------------------*/
+/* get cpu and sleep info                                                     */
+/*----------------------------------------------------------------------------*/
+bool Pthread::bGetCpu(i8& iUser, i8& iSystem, i8& iSleep)
+{
+  thread_port_t uThreadPort = pthread_mach_thread_np(m_iPthreadId);  
+  thread_extended_info_data_t xInfoExtended;
+  mach_msg_type_number_t iCount = THREAD_EXTENDED_INFO_COUNT;
+
+  int iResult = thread_info(uThreadPort,
+                            THREAD_EXTENDED_INFO,
+                            (thread_info_t)&xInfoExtended,
+                            &iCount);
+  if (iResult != KERN_SUCCESS)
+    return false;
+  
+  iUser   = xInfoExtended.pth_user_time;
+  iSystem = xInfoExtended.pth_system_time;
+  iSleep  = xInfoExtended.pth_sleep_time;
+  
+  return true;
+}
 /*----------------------------------------------------------------------------*/
 /* get current thread info                                                    */
 /*----------------------------------------------------------------------------*/

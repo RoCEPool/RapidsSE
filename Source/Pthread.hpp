@@ -28,6 +28,7 @@ namespace System
     void vDisableRealtime(void);
     void vEnableRealtime(void);
     void vEnableRealtime_2(void);
+    bool bGetCpu(i8& iUser, i8& iSystem, i8& iSleep);
     i8   iGetInfo(void);
     void vGetPolicy(void);
     void vSetOSThreadId(void);
@@ -37,7 +38,8 @@ namespace System
     i8   iThreadPriority(void);
     void vThreadBoost(i8 nPoints);
     void vThreadPriority(i8 iPriority);
-    
+  
+  
     //---------------------------------------------------------------------------
   
     static bool  bIsCppThread(void);
