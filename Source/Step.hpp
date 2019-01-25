@@ -24,6 +24,7 @@ namespace Steps
     static void vAddSteps_AccessPath(void);
     static void vAddSteps_ActivityMap(void);
     static void vAddSteps_Address(void);
+    static void vAddSteps_ApiState(void);
     static void vAddSteps_Args(void);
     static void vAddSteps_Assert(void);
     static void vAddSteps_Astack(void);

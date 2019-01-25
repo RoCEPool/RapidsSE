@@ -485,6 +485,72 @@ void ApiState::vDump(void)
   m_oLock.vDropRead();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* increment number of __begun received                                       */
+/*----------------------------------------------------------------------------*/
+void ApiState::vIncBegun(Session* pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  if (! pSession)
+    return;
+  
+  i8 i_Session = pSession->m_iApiState;
+  SessionState* aState = &m_xSessionState[i_Session];
+  
+  aState->m_nBegun++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of __cancelled received                                   */
+/*----------------------------------------------------------------------------*/
+void ApiState::vIncCancelled(Session* pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  if (! pSession)
+    return;
+  
+  i8 i_Session = pSession->m_iApiState;
+  SessionState* aState = &m_xSessionState[i_Session];
+  
+  aState->m_nCancelled++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of __ended received                                       */
+/*----------------------------------------------------------------------------*/
+void ApiState::vIncEnded(Session* pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  if (! pSession)
+    return;
+  
+  i8 i_Session = pSession->m_iApiState;
+  SessionState* aState = &m_xSessionState[i_Session];
+  
+  aState->m_nEnded++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of executed received                                      */
+/*----------------------------------------------------------------------------*/
+void ApiState::vIncExecuted(Session* pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  if (! pSession)
+    return;
+  
+  i8 i_Session = pSession->m_iApiState;
+  SessionState* aState = &m_xSessionState[i_Session];
+  
+  aState->m_nExecuted++;
+}
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

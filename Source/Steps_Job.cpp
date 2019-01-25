@@ -12,8 +12,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
-  vAddStep("apiState::setPosition"_Stz,&Step::vApiStateSetPosition);
-  
   vAddStep("job::findOriginator"_Stz,  &Step::vJobFindOriginator);
   vAddStep("job::findParticipant"_Stz, &Step::vJobFindParticipant);
   
@@ -83,31 +81,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.entryBuffer@"_Stz,     &Step::vJobEntryBufferFetch);
   vAddStep("job.entryBuffer!"_Stz,     &Step::vJobEntryBufferStore);
 }
-
-/*----------------------------------------------------------------------------*/
-/* apiState::setPosition -- set last reported position                        */
-/*----------------------------------------------------------------------------*/
-void Step::vApiStateSetPosition(MP_Task mpTask)
-{
-  ENTRY("vApiStateSetPosition"_Stz);
-  
-  i8 iPosition;
-  if ( ! mpTask->m_pDataStack->bPop(iPosition) )
-    THROW_INVALID_DSTACK("apiState::setPosition"_Stz);
-  
-  Session* pSession = mpTask->m_pSession;
-  
-  gpAttachMap->m_pApiState->vSenLoc(pSession,iPosition);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-
 
 
 /*----------------------------------------------------------------------------*/

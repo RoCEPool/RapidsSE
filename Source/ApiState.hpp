@@ -25,11 +25,11 @@ namespace Interface
     Timer m_oTimer;      // call timer
     i8    m_iTotalMsec;  // total time in us
     
-    i8    m_nBegun;      // number of __beguns received
-    i8    m_nExecuted;   // number of __executed received
+    i8    m_nBegun;      // number of __begun received
     i8    m_nCancelled;  // number of __cancelled received
     i8    m_nEnded;      // number of __ended received
-    
+    i8    m_nExecuted;   // number of __executed received
+
     i8    m_iNextFree;
   };
   
@@ -69,6 +69,11 @@ namespace Interface
     void vApiLoc(Session* pSession, i8 iApiLoc);
     void vSenLoc(Session* pSession, i8 iPosition);
     void vSetSignalled(Job* pJob);
+  
+    void vIncBegun(Session* pSession);
+    void vIncCancelled(Session* pSession);
+    void vIncExecuted(Session* pSession);
+    void vIncEnded(Session* pSession);
 
     void vDump(void);
   

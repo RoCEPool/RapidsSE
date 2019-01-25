@@ -35,6 +35,10 @@
   static void vAddressStore(Tasks::MP_Task mpTask);
 
   // apiState
+  static void vApiStateIncBegun(Tasks::MP_Task mpTask);
+  static void vApiStateIncCancelled(Tasks::MP_Task mpTask);
+  static void vApiStateIncEnded(Tasks::MP_Task mpTask);
+  static void vApiStateIncExecuted(Tasks::MP_Task mpTask);
   static void vApiStateSetPosition(Tasks::MP_Task mpTask);
 
   // args
