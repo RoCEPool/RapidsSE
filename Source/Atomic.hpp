@@ -19,7 +19,13 @@ namespace System
     
     Atomic(void);
     ~Atomic(void) noexcept(false);
-    
+  
+    static u8 uAtomicAdd(i8* pWord, i8 iValue);
+    static u8 uAtomicDec(i8* pWord);
+    static u8 uAtomicInc(i8* pWord);
+  
+    static bool bTestAndSet(u8* pWord, u8 uIf, u8 uThen);
+
     void vCheckInit(void);
     
     i8   iAdd(i8 iValue); // add

@@ -69,7 +69,7 @@ bool Decider::bDecAndDecide(void)
     vTrace("m_nAcksRemaining is %lld\n"_Stz, m_nAcksRemaining);
   
   RASSERT(m_nAcksRemaining > 0);
-  i8 iNewValueWas = Synch::uAtomicDec(&m_nAcksRemaining);
+  i8 iNewValueWas = Atomic::uAtomicDec(&m_nAcksRemaining);
   RASSERT(iNewValueWas >= 0);
   
   bool bIsDecider = iNewValueWas ? false : true;
