@@ -43,6 +43,8 @@ static Stz* aJL[]
 
 //------------------------------------------------------------------------------
 
+#include "Decider.hpp"
+
 #include "JobDicPath.hpp"
 #include "JobFilePath.hpp"
 #include "JobObjectName.hpp"
