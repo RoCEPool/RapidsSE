@@ -58,10 +58,12 @@ Tokeniser::Tokeniser(void)
   
   i8 i_Node = gxArguments.m_iThisNode;
   Node* pNode = gpAttachMap->m_pGrid->pThisNode();
+  i8 nNodes =gpAttachMap->m_pGrid->nNodes();
   
-  m_sPrompt.vSprint("[N%lld %s %lld%s%s] se %s%c"_Stz,
+  m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s] se %s%c"_Stz,
                     
                     i_Node,
+                    nNodes,
                     pNode->aNodeName(),
                     Process::iGetPid(),
                     gxArguments.m_bActivityMap? " AM" : "",
