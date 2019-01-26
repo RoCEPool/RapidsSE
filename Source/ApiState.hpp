@@ -30,13 +30,10 @@ namespace Interface
     static void vMarkError(Session* pSession, eEC eError);
     static void vMarkJob(Session* pSession, Job* aJob);
     static void vMarkReturn(Session* pSession);
-  
+    static void vMarkSenLoc(Session* pSession, i8 iSenLoc);
+    static void vMarkSignalled(Session* pSession);
+
     SessionState* pAllocState(Session* pSession);
-    void vApiCall(Session* pSession, eAC eApiCall);
-    void vApiError(Session* pSession, eEC eError);
-    void vApiJob(Session* pSession, Job* pJob);
-    void vApiLoc(Session* pSession, i8 iApiLoc);
-    void vApiReturn(Session* pSession);
     void vDump(void);
     void vFreeState(i8 i_State);
     SessionState* pGetState(i8 i_State);
@@ -45,8 +42,15 @@ namespace Interface
     void vIncExecuted(Session* pSession);
     void vIncEnded(Session* pSession);
     void vMonitorPortrait(s48K& sPortrait);
-    void vSenLoc(Session* pSession, i8 iPosition);
-    void vSetSignalled(Job* pJob);
+
+  private:
+    void vApiCall(Session* pSession, eAC eApiCall);
+    void vApiError(Session* pSession, eEC eError);
+    void vApiJob(Session* pSession, Job* pJob);
+    void vApiLoc(Session* pSession, i8 iApiLoc);
+    void vApiReturn(Session* pSession);
+    void vSenLoc(Session* pSession, i8 iSenLoc);
+    void vSignalled(Session* pSession);
 
     Footer* aFooter(void);
   };

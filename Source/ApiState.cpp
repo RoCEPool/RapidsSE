@@ -81,6 +81,14 @@ ApiState::~ApiState(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* mark location of an api                                                    */
+/*----------------------------------------------------------------------------*/
+void ApiState::vMarkApiLoc(Session* pSession, i8 iApiLoc)
+{
+  gpAttachMap->m_pApiState->vApiLoc(pSession,iApiLoc);
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark call of an api                                                        */
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkCall(Session* pSession, eAC eApiCall)
@@ -105,19 +113,27 @@ void ApiState::vMarkJob(Session* pSession, Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
-/* mark location of an api                                                    */
-/*----------------------------------------------------------------------------*/
-void ApiState::vMarkApiLoc(Session* pSession, i8 iApiLoc)
-{
-  gpAttachMap->m_pApiState->vApiLoc(pSession,iApiLoc);
-}
-
-/*----------------------------------------------------------------------------*/
 /* mark return of an api                                                      */
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkReturn(Session* pSession)
 {
   gpAttachMap->m_pApiState->vApiReturn(pSession);
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark sen location of an api                                                */
+/*----------------------------------------------------------------------------*/
+void ApiState::vMarkSenLoc(Session* pSession, i8 iSenLoc)
+{
+  gpAttachMap->m_pApiState->vApiLoc(pSession,iSenLoc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* mark that job has had its mutex signalled                                  */
+/*----------------------------------------------------------------------------*/
+void ApiState::vMarkSignalled(Session* pSession)
+{
+  gpAttachMap->m_pApiState->vSignalled(pSession);
 }
 
 
@@ -407,18 +423,13 @@ void ApiState::vSenLoc(Session* pSession, i8 iSenLoc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set signalled                                                              */
+/* set that job has had its mutex signalled                                   */
 /*----------------------------------------------------------------------------*/
-void ApiState::vSetSignalled(Job* pJob)
+void ApiState::vSignalled(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-
-  Session* pSession = pJob->m_pSession;
   
   SessionState* pState = pSession->m_pSessionState;
-
-  RASSERT( (-1 == pJob->m_i_State) ||
-          (pJob->m_iJobLoc == pState->m_iJobLoc) );
 
   pState->m_bSignalled = true;
 }
