@@ -36,7 +36,7 @@ void Step::vApiStateIncBegun(MP_Task mpTask)
   SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
   Session* pSession = pState->m_pSession;
   
-  gpAttachMap->m_pApiState->vIncBegun(pSession);
+  ApiState::vMarkIncBegun(pSession);
   
   EXIT();
 }
@@ -58,7 +58,7 @@ void Step::vApiStateIncCancelled(MP_Task mpTask)
   SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
   Session* pSession = pState->m_pSession;
 
-  gpAttachMap->m_pApiState->vIncCancelled(pSession);
+  ApiState::vMarkIncCancelled(pSession);
   
   EXIT();
 }
@@ -80,7 +80,7 @@ void Step::vApiStateIncEnded(MP_Task mpTask)
   SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
   Session* pSession = pState->m_pSession;
 
-  gpAttachMap->m_pApiState->vIncEnded(pSession);
+  ApiState::vMarkIncEnded(pSession);
   
   EXIT();
 }
@@ -102,7 +102,7 @@ void Step::vApiStateIncExecuted(MP_Task mpTask)
   SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
   Session* pSession = pState->m_pSession;
 
-  gpAttachMap->m_pApiState->vIncExecuted(pSession);
+  ApiState::vMarkIncExecuted(pSession);
   
   EXIT();
 }
