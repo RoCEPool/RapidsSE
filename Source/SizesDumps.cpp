@@ -221,6 +221,7 @@ pDUMPFUN *gpDump[]
   /*113 */ &Dump::vUndefined,       // CN_SELCURSOR
   /*115 */ &SePrompt::vDump,        // CN_SEPROMPT
   /*    */ &Session::vDump,         // CN_SESSION
+  /*116 */ &Dump::vUndefined,       // CN_SESSIONSTATE
   /*116 */ &Dump::vUndefined,       // CN_SINCE
   /*118 */ &Dump::vUndefined,       // CN_SKIPLIST
   /*119 */ &Dump::vUndefined,       // CN_SKIPNODE
@@ -477,6 +478,7 @@ i8 giClassSize[]
   /*113 */ sizeof(SelCursor),          // CN_SELCURSOR
   /*115 */ sizeof(SePrompt),           // CN_SEPROMPT
   /*    */ sizeof(Session),            // CN_SESSION
+  /*    */ 0,                          // CN_SESSIONSTATE
   /*116 */ sizeof(Since),              // CN_SINCE
   /*118 */ sizeof(SkipListNL),         // CN_SKIPLIST
   /*119 */ sizeof(SkipNode),           // CN_SKIPNODE
@@ -733,6 +735,7 @@ eHT geWhichHeap[]
   /*113 */ HT_TRANSIENT_SMALL,   // CN_SELCURSOR
   /*115 */ HT_TRANSIENT_LARGE,   // CN_SEPROMPT
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_SESSION
+  /*    */ HT_TRANSIENT_SMALL,   // CN_SESSIONSTATE
   /*116 */ HT_INVALID,           // CN_SINCE
   /*118 */ HT_TRANSIENT_SMALL,   // CN_SKIPLIST
   /*119 */ HT_TRANSIENT_SMALL,   // CN_SKIPNODE

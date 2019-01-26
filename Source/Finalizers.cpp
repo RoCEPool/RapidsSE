@@ -217,6 +217,7 @@ pFINALIZE *gpFinalize[]
   /*113 */ &SelCursor::vFinalize,         // CN_SELCURSOR
   /*115 */ &Finalize::vUndefined,         // CN_SEPROMPT
   /*    */ &Finalize::vUndefined,         // CN_SESSION
+  /*    */ &Finalize::vUndefined,         // CN_SESSIONSTATE
   /*116 */ &Finalize::vUndefined,         // CN_SINCE
   /*118 */ &Finalize::vUndefined,         // CN_SKIPLIST
   /*119 */ &Finalize::vUndefined,         // CN_SKIPNODE

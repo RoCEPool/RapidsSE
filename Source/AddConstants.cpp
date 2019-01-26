@@ -292,6 +292,7 @@ void Axioms::vAddConstants(void)
   /* 51 */ vAddConstant("CN_ROWCURSOR"_Stz,    CN_ROWCURSOR);
   
   /* 57 */ vAddConstant("CN_SESSION"_Stz,      CN_SESSION);
+  /* 57 */ vAddConstant("CN_SESSIONSTATE"_Stz, CN_SESSIONSTATE);
   /*    */ vAddConstant("CN_SELCURSOR"_Stz,    CN_SELCURSOR);
   /* 60 */ vAddConstant("CN_SEPROMPT"_Stz,     CN_SEPROMPT);
   /* 61 */ vAddConstant("CN_SINCE"_Stz,        CN_SINCE);
