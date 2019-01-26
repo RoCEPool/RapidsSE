@@ -27,6 +27,7 @@ using namespace Forth;
 //-----------------------------------------------------------------------------
 
 #include "Cell.hpp"
+#include "Compiler.hpp"
 #include "Dic.hpp"
 #include "DicPath.hpp"
 #include "DicStack.hpp"

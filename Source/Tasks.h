@@ -47,7 +47,6 @@ using namespace Tasks;
 
 //------------------------------------------------------------------------------
 
-#include "Compiler.hpp"
 
 #include "Task.hpp"
 #include "TaskMacros.hpp"
