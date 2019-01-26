@@ -5,8 +5,9 @@
 
 namespace Interface
 {
-  struct SessionState {
-    
+  class SessionState : public Object
+  {
+  public:
     Session* m_pSession; // will always be set unless state is free
     
     eAC   m_eApiFun;     // current / last api function called
@@ -31,8 +32,21 @@ namespace Interface
     i8    m_nExecuted;   // number of __executed received
 
     i8    m_iNextFree;
+  
+    // must be last
+    Footer m_xFooter;
+  
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+  
+    SessionState(void);
+    ~SessionState(void) noexcept(false);
+  
+    Footer* aFooter(void);
   };
   
+  SessionState* _pSessionState(void* aAddr);
 }
 
 /*============================================================================*/

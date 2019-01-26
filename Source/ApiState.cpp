@@ -59,28 +59,28 @@ ApiState::ApiState(void)
     
     SessionState* aState = &m_xSessionState[i_Session];
     
-    aState->m_pSession   = nullptr;
-    
-    aState->m_eApiFun    = AC_NONE;
-    aState->m_iApiLoc    = 0;
-    aState->m_eApiError  = EC_NONE;
-    aState->m_bRunning   = false;
-    aState->m_bSignalled = false;
-
-    aState->m_aStackBase = nullptr;
-    aState->m_aStackPtr  = nullptr;
-    
-    aState->m_eJobClass  = CN_NONE;
-    aState->m_iJobLoc    = 0;
-    aState->m_iSenLoc    = 0;
-    
-    aState->m_oTimer.vInit();
-    aState->m_iTotalMsec = 0;
-    
-    aState->m_nBegun     = 0;
-    aState->m_nExecuted  = 0;
-    aState->m_nCancelled = 0;
-    aState->m_nEnded     = 0;
+//    aState->m_pSession   = nullptr;
+//    
+//    aState->m_eApiFun    = AC_NONE;
+//    aState->m_iApiLoc    = 0;
+//    aState->m_eApiError  = EC_NONE;
+//    aState->m_bRunning   = false;
+//    aState->m_bSignalled = false;
+//
+//    aState->m_aStackBase = nullptr;
+//    aState->m_aStackPtr  = nullptr;
+//    
+//    aState->m_eJobClass  = CN_NONE;
+//    aState->m_iJobLoc    = 0;
+//    aState->m_iSenLoc    = 0;
+//    
+//    aState->m_oTimer.vInit();
+//    aState->m_iTotalMsec = 0;
+//    
+//    aState->m_nBegun     = 0;
+//    aState->m_nExecuted  = 0;
+//    aState->m_nCancelled = 0;
+//    aState->m_nEnded     = 0;
 
     aState->m_iNextFree = i_Session + 1;
   }
