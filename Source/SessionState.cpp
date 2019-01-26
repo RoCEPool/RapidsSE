@@ -67,7 +67,51 @@ SessionState::~SessionState(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* increment number of __begun received                                       */
+/*----------------------------------------------------------------------------*/
+void SessionState::vIncBegun(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
+  
+  m_nBegun++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of __cancelled received                                   */
+/*----------------------------------------------------------------------------*/
+void SessionState::vIncCancelled(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
+  
+  m_nCancelled++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of __ended received                                       */
+/*----------------------------------------------------------------------------*/
+void SessionState::vIncEnded(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
+  
+  m_nEnded++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of executed received                                      */
+/*----------------------------------------------------------------------------*/
+void SessionState::vIncExecuted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
+  
+  m_nExecuted++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* initialise                                                                 */
 /*----------------------------------------------------------------------------*/
 void SessionState::vInit(void)
 {
@@ -106,7 +150,7 @@ void SessionState::vInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump                                                                       */
+/* trace                                                                      */
 /*----------------------------------------------------------------------------*/
 void SessionState::vTraceState(void)
 {

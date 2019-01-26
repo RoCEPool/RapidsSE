@@ -20,7 +20,7 @@ void Step::vAddSteps_ApiState(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* c -- increment the number of __begun received             */
+/* c -- increment the number of __begun received                              */
 /*----------------------------------------------------------------------------*/
 void Step::vApiStateIncBegun(MP_Task mpTask)
 {
