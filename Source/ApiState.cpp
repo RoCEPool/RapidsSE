@@ -145,6 +145,14 @@ void ApiState::vMarkJob(Session* pSession, Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* mark job location of an api                                                */
+/*----------------------------------------------------------------------------*/
+void ApiState::vMarkJobLoc(Session* pSession, i8 iJobLoc)
+{
+  gpAttachMap->m_pApiState->vJobLoc(pSession,iJobLoc);
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark return of an api                                                      */
 /*----------------------------------------------------------------------------*/
 void ApiState::vMarkReturn(Session* pSession)
@@ -446,6 +454,18 @@ void ApiState::vIncExecuted(Session* pSession)
   SessionState* pState = pSession->m_pSessionState;
 
   pState->m_nExecuted++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set last job location                                                      */
+/*----------------------------------------------------------------------------*/
+void ApiState::vJobLoc(Session* pSession, i8 iJobLoc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  SessionState* pState = pSession->m_pSessionState;
+  
+  pState->m_iJobLoc = iJobLoc;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -33,6 +33,7 @@ namespace Interface
     static void vMarkIncEnded(Session* pSession);
     static void vMarkIncExecuted(Session* pSession);
     static void vMarkJob(Session* pSession, Job* aJob);
+    static void vMarkJobLoc(Session* pSession, i8 iJobLoc);
     static void vMarkReturn(Session* pSession);
     static void vMarkSenLoc(Session* pSession, i8 iSenLoc);
     static void vMarkSignalled(Session* pSession);
@@ -53,6 +54,7 @@ namespace Interface
     void vIncCancelled(Session* pSession);
     void vIncExecuted(Session* pSession);
     void vIncEnded(Session* pSession);
+    void vJobLoc(Session* pSession, i8 iJobLoc);
     void vSenLoc(Session* pSession, i8 iSenLoc);
     void vSignalled(Session* pSession);
 
