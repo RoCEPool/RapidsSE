@@ -11,7 +11,7 @@
 
   >>am <SEED_REQ>
 
-  100 apiState::setPosition
+  100 apiState::senLoc
 
   0 0 locals| sTableNm  iPartition |
   0 0 0 locals| pJob_SelectTable pTask pTable |
@@ -57,7 +57,7 @@
 
   pJob_SelectTable job.notice
 
-  900 apiState::setPosition
+  900 apiState::senLoc
 
   <<am <DONE_REQ>
 ;

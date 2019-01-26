@@ -15,7 +15,7 @@ void Step::vAddSteps_ApiState(void)
   vAddStep("apiState::incCancelled"_Stz, &Step::vApiStateIncCancelled);
   vAddStep("apiState::incEnded"_Stz,     &Step::vApiStateIncEnded);
   vAddStep("apiState::incExecuted"_Stz,  &Step::vApiStateIncExecuted);
-  vAddStep("apiState::setPosition"_Stz,  &Step::vApiStateSetPosition);
+  vAddStep("apiState::senLoc"_Stz,       &Step::vApiStateSenLoc);
   vAddStep("apiState::traceSession"_Stz, &Step::vApiStateTraceSession);
 }
 
@@ -108,15 +108,15 @@ void Step::vApiStateIncExecuted(MP_Task mpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* apiState::setPosition -- set last reported position                        */
+/* apiState::senLoc -- set last reported sen location                         */
 /*----------------------------------------------------------------------------*/
-void Step::vApiStateSetPosition(MP_Task mpTask)
+void Step::vApiStateSenLoc(MP_Task mpTask)
 {
-  ENTRY("vApiStateSetPosition"_Stz);
+  ENTRY("vApiStateSenLoc"_Stz);
   
   i8 iPosition;
   if ( ! mpTask->m_pDataStack->bPop(iPosition) )
-    THROW_INVALID_DSTACK("apiState::setPosition"_Stz);
+    THROW_INVALID_DSTACK("apiState::senLoc"_Stz);
   
   Session* pSession = mpTask->m_pSession;
   

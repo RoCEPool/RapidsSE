@@ -12,7 +12,7 @@
   >>am <SEED_REQ>
   //">>pwf_req" activityMap::mark
 
-  100 apiState::setPosition
+  100 apiState::senLoc
 
   0 0 0 0 locals| pJob_Pwf pTask |
 
@@ -57,7 +57,7 @@
   grid::thisNode@ pJob_Pwf job.response!
   1 grid::thisNode@ pJob_Pwf job.rowsProcessed!
 
-  900 apiState::setPosition
+  900 apiState::senLoc
 
   //"<<pwf_req" activityMap::mark
     <<am <DONE_REQ>

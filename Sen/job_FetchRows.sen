@@ -105,7 +105,7 @@
 
   >>am <SEED_REQ>
 
-  100 apiState::setPosition
+  100 apiState::senLoc
 
   0 0 0 locals| iPhrases sTableNm sWhere |
   0 0 0 0 locals| pJob_FetchRows pTask pPlanner pTable |
@@ -157,7 +157,7 @@
   // get the where clause from the job
   pJob_FetchRows job_fetchRows.where@ to sWhere
 
-  400 apiState::setPosition
+  400 apiState::senLoc
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the plan for the fetch
@@ -188,7 +188,7 @@
 
   pJob_FetchRows job.notice
 
-  900 apiState::setPosition
+  900 apiState::senLoc
 
   <<am <DONE_REQ>
 ;
