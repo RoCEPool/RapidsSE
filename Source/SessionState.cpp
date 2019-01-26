@@ -74,6 +74,7 @@ void SessionState::vInit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE);
  
   m_pSession   = nullptr;
+  m_i_State    = -1;
   
   m_eApiFun    = AC_NONE;
   m_iApiLoc    = 0;
@@ -96,6 +97,11 @@ void SessionState::vInit(void)
   m_nCancelled = 0;
   m_nEnded     = 0;
   
+  m_nApiCalls  = 0;
+  m_nApiErrors = 0;
+  m_nJobNew    = 0;
+  m_nJobDelete = 0;
+
   m_iNextFree  = -1;
 }
 

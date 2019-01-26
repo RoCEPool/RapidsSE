@@ -92,10 +92,6 @@ Session::Session(i8 iPartition)
   m_pJobStack       = new Stack;
 
   m_iApiState       = gpAttachMap->m_pApiState->iAllocState(this);
-  m_nApiCalls       = 0;
-  m_nApiErrors      = 0;
-  m_nJobNew         = 0;
-  m_nJobDelete      = 0;
 
   m_pPerformanceTrace = nullptr;
   

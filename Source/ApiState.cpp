@@ -56,32 +56,7 @@ ApiState::ApiState(void)
   m_iFirstFree = 0;
 
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
-    
     SessionState* aState = &m_xSessionState[i_Session];
-    
-//    aState->m_pSession   = nullptr;
-//    
-//    aState->m_eApiFun    = AC_NONE;
-//    aState->m_iApiLoc    = 0;
-//    aState->m_eApiError  = EC_NONE;
-//    aState->m_bRunning   = false;
-//    aState->m_bSignalled = false;
-//
-//    aState->m_aStackBase = nullptr;
-//    aState->m_aStackPtr  = nullptr;
-//    
-//    aState->m_eJobClass  = CN_NONE;
-//    aState->m_iJobLoc    = 0;
-//    aState->m_iSenLoc    = 0;
-//    
-//    aState->m_oTimer.vInit();
-//    aState->m_iTotalMsec = 0;
-//    
-//    aState->m_nBegun     = 0;
-//    aState->m_nExecuted  = 0;
-//    aState->m_nCancelled = 0;
-//    aState->m_nEnded     = 0;
-
     aState->m_iNextFree = i_Session + 1;
   }
   m_xSessionState[C_MAX_SESSIONS - 1].m_iNextFree = -1;
@@ -161,19 +136,20 @@ i8 ApiState::iAllocState(Session* pSession)
   
   RASSERT(-1 != m_iFirstFree);
   
-  i8 i_Session = m_iFirstFree;
-  SessionState* aState = &m_xSessionState[i_Session];
+  i8 i_State = m_iFirstFree;
+  SessionState* aState = &m_xSessionState[i_State];
 
   m_iFirstFree = aState->m_iNextFree;
   
   aState->m_iNextFree = -1;
   aState->m_pSession  = pSession;
+  aState->m_i_State   = i_State;
 
   m_nSessionsSoFar++;
   
   m_oLock.vDropWrite();
 
-  return i_Session;
+  return i_State;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,7 +178,7 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   
   aState->m_oTimer.vStart();
   
-  pSession->m_nApiCalls++;
+  aState->m_nApiCalls++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,7 +197,7 @@ void ApiState::vApiError(Session* pSession, eEC eError)
   aState->m_oTimer.vUpdate();
   aState->m_iTotalMsec += aState->m_oTimer.iMicroseconds();
 
-  pSession->m_nApiErrors++;
+  aState->m_nApiErrors++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,7 +213,7 @@ void ApiState::vApiJob(Session* pSession, Job* pJob)
   aState->m_eJobClass = pJob->eClass();
   aState->m_iJobLoc   = pJob->m_iJobLoc;
 
-  pSession->m_nJobNew++;
+  aState->m_nJobNew++;
   
   pJob->m_iSession = i_Session;
 }
@@ -271,41 +247,10 @@ void ApiState::vFreeState(i8 i_Session)
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
   SessionState* aState = &m_xSessionState[i_Session];
-
-  if (aState->m_pSession->m_nJobNew != aState->m_pSession->m_nJobDelete) {
-    vTrace("**************************************************\n"_Stz);
-    vTrace("Session being deleted has not deleted all its jobs\n"_Stz);
-    vDump();
-    vTrace("**************************************************\n"_Stz);
-  }
   
   m_oLock.vGrabWrite();
   
-  aState->m_pSession   = nullptr;
-  
-  aState->m_eApiFun    = AC_NONE;
-  aState->m_iApiLoc    = 0;
-  aState->m_eApiError  = EC_NONE;
-  aState->m_bRunning   = false;
-  aState->m_bSignalled = false;
-
-  aState->m_aStackBase = nullptr;
-  aState->m_aStackPtr  = nullptr;
-  
-  aState->m_eJobClass  = CN_NONE;
-  aState->m_iJobLoc    = 0;
-  aState->m_iSenLoc    = 0;
-
-  aState->m_oTimer.vReset();
-  aState->m_iTotalMsec = 0;
-
-  aState->m_nBegun     = 0;
-  aState->m_nExecuted  = 0;
-  aState->m_nCancelled = 0;
-  aState->m_nEnded     = 0;
-
-  aState->m_iNextFree = m_iFirstFree;
-
+  aState->vInit();
   m_iFirstFree = i_Session;
   
   m_oLock.vDropWrite();
@@ -341,7 +286,7 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
                         
                          i_Session,
                          
-                         pSession->m_nApiCalls,
+                         aSessionState->m_nApiCalls,
                          aCN[aSessionState->m_eJobClass],
                          aAC[aSessionState->m_eApiFun],
                          aSessionState->m_bRunning ? "running" : "completed",
@@ -481,10 +426,10 @@ void ApiState::vTraceSession(i8 i_Session)
          aState->m_nCancelled,
          aState->m_nEnded,
          
-         aState->m_pSession->m_nApiCalls,
-         aState->m_pSession->m_nApiErrors,
-         aState->m_pSession->m_nJobNew,
-         aState->m_pSession->m_nJobDelete,
+         aState->m_nApiCalls,
+         aState->m_nApiErrors,
+         aState->m_nJobNew,
+         aState->m_nJobDelete,
          aState->m_iTotalMsec
        );
 }

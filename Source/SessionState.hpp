@@ -9,7 +9,8 @@ namespace Interface
   {
   public:
     Session* m_pSession; // will always be set unless state is free
-    
+    i8    m_i_State;     // session state index
+  
     eAC   m_eApiFun;     // current / last api function called
     i8    m_iApiLoc;     // last reported location in api function
     eEC   m_eApiError;   // last error code in api function
@@ -30,6 +31,11 @@ namespace Interface
     i8    m_nCancelled;  // number of __cancelled received
     i8    m_nEnded;      // number of __ended received
     i8    m_nExecuted;   // number of __executed received
+  
+    i8    m_nApiCalls;   // number of api calls so far
+    i8    m_nApiErrors;  // number of api call in error so far
+    i8    m_nJobNew;     // number of jobs new'ed so far
+    i8    m_nJobDelete;  // number of jobs deleted so far
 
     i8    m_iNextFree;
   

@@ -22,10 +22,6 @@ namespace Interface
     Stack*   m_pJobStack;        // stack of jobs
   
     i8       m_iApiState;        // api state entry
-    i8       m_nApiCalls;        // number of api calls so far
-    i8       m_nApiErrors;       // number of api call in error so far
-    i8       m_nJobNew;          // number of jobs new'ed so far
-    i8       m_nJobDelete;       // number of jobs deleted so far
 
     PerformanceTrace* m_pPerformanceTrace;  // performance Trace
     CommandProcessor* m_pCommandProcessor;  // command processor

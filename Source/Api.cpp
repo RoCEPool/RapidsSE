@@ -21,7 +21,10 @@ void Api::vDeleteJobs(Session* pSession)
 {
   Stack* pJobStack = pSession->m_pJobStack;
   Object* pJobObject;
-  
+
+  SessionState* pState =
+    &gpAttachMap->m_pApiState->m_xSessionState[pSession->m_iApiState];
+
   while (pJobStack->bPop(pJobObject)) {
     
     Job* aJob = (Job*)pJobObject;
@@ -92,7 +95,7 @@ void Api::vDeleteJobs(Session* pSession)
     //vTrace("Deleting job %p %s\n"_Stz, aJob, aCN[aJob->eClass()]);
     pJobClass->vDeleteJob(pSession,aJob);
     
-    pSession->m_nJobDelete++;
+    pState->m_nJobDelete++;
   }
 }
 
