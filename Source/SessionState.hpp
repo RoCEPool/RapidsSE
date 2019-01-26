@@ -15,15 +15,16 @@ namespace Interface
     eAC   m_eApiFun;     // current / last api function called
     i8    m_iApiLoc;     // last reported location in api function
     eEC   m_eApiError;   // last error code in api function
+    eCN   m_eJobClass;   // current / last job
+    i8    m_iJobLoc;     // last reported location in job
+    i8    m_iSenLoc;     // last reported location in SEN
+
     bool  m_bRunning;    // api call still running?
     bool  m_bSignalled;  // calling thread has been signalled?
 
     void* m_aStackBase;  // stack base of thread which made api call
     void* m_aStackPtr;   // stack addr of thread which made api call
 
-    eCN   m_eJobClass;   // current / last job
-    i8    m_iJobLoc;     // last reported location in job
-    i8    m_iSenLoc;     // last reported location in SEN
 
     Timer m_oTimer;      // call timer
     i8    m_iTotalMsec;  // total time in us
