@@ -323,7 +323,6 @@ void Job::vShow(s48K& s)
 void Job::vInit(void)
 {
   m_iJobId   = C_UNKNOWN;
-  m_iJobLoc  = 0;
   m_i_State  = C_UNKNOWN;
   m_eJobList = JL_NONE;
   

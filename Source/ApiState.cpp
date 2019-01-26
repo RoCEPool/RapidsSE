@@ -366,7 +366,6 @@ void ApiState::vApiJob(Session* pSession, Job* pJob)
   SessionState* pState = pSession->m_pSessionState;
 
   pState->m_eJobClass = pJob->eClass();
-  pState->m_iJobLoc   = pJob->m_iJobLoc;
 
   pState->m_nJobNew++;
   
