@@ -28,7 +28,7 @@ namespace Correctness
 /*----------------------------------------------------------------------------*/
 /* macro for standard aFooter() function                                      */
 /*----------------------------------------------------------------------------*/
-#define _aFooter_(CLASSNM) \
+#define __aFooterFunction(CLASSNM) \
   Footer* CLASSNM::aFooter(void) \
   { \
     _precondition_(_MAGIC_); \
