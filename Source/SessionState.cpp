@@ -51,6 +51,28 @@ SessionState::SessionState(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
   
+  vInit();
+  
+  _checkInitialised_(CN_SESSIONSTATE);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+SessionState::~SessionState(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+void SessionState::vInit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE);
+ 
   m_pSession   = nullptr;
   
   m_eApiFun    = AC_NONE;
@@ -77,13 +99,6 @@ SessionState::SessionState(void)
   m_iNextFree  = -1;
 }
 
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-SessionState::~SessionState(void) noexcept(false)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

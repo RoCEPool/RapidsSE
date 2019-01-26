@@ -43,6 +43,8 @@ namespace Interface
     SessionState(void);
     ~SessionState(void) noexcept(false);
   
+    void vInit(void);
+  
     Footer* aFooter(void);
   };
   
