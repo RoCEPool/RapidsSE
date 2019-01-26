@@ -589,7 +589,10 @@ void SePrompt::vSpawnJob(void)
   
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
-  pCommandProcessor->bSpawnJob(m_pSession);
+  pCommandProcessor->pTknVec()->vSetTokens();
+  
+  bool bSpawned = Api::bSpawnJob(m_pSession,m_pJob,SS_SEED_REQ);
+  RASSERT(bSpawned);
 }
 
 /*----------------------------------------------------------------------------*/

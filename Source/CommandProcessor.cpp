@@ -339,32 +339,6 @@ void CommandProcessor::vPreJob(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
-/* spawn job in SE                                                            */
-/*----------------------------------------------------------------------------*/
-bool CommandProcessor::bSpawnJob(Session* pSession)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  Timer oTimer;
-  
-  oTimer.vStart();
-  
-  pTknVec()->vSetTokens();
-  
-  //! make this part of verbose??
-  //m_pCommandProcessor->m_pCompiler->m_pTokeniser->vDumpTokens("Command : "_Stz,m_xTokenVec,C_TOKENS);
-  
-  bool bResult = Api::bSpawnJob(pSession,m_pJob,SS_SEED_REQ);
-  
-  if (pTknVec()->bDetachedRequest())
-    return bResult;
-  
-  oTimer.vUpdate();
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
 /* test for command file                                                      */
 /*----------------------------------------------------------------------------*/
 bool CommandProcessor::bTestFile(Stz* aFileName)
