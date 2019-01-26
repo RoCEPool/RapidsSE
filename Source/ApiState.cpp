@@ -56,10 +56,10 @@ ApiState::ApiState(void)
   m_iFirstFree = 0;
 
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
-    SessionState* aState = &m_xSessionState[i_Session];
+    SessionState* aState = &m_oSessionState[i_Session];
     aState->m_iNextFree = i_Session + 1;
   }
-  m_xSessionState[C_MAX_SESSIONS - 1].m_iNextFree = -1;
+  m_oSessionState[C_MAX_SESSIONS - 1].m_iNextFree = -1;
   
   m_iFirstFree = 0;
 
@@ -137,7 +137,7 @@ i8 ApiState::iAllocState(Session* pSession)
   RASSERT(-1 != m_iFirstFree);
   
   i8 i_State = m_iFirstFree;
-  SessionState* aState = &m_xSessionState[i_State];
+  SessionState* aState = &m_oSessionState[i_State];
 
   m_iFirstFree = aState->m_iNextFree;
   
@@ -161,7 +161,7 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
   
   i8 i_Session = pSession->m_iApiState;
   
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
 
   aState->m_eApiFun    = eApiCall;
   aState->m_iApiLoc    = 0;
@@ -189,7 +189,7 @@ void ApiState::vApiError(Session* pSession, eEC eError)
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
   i8 i_Session = pSession->m_iApiState;
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
 
   aState->m_bRunning  = false;
   aState->m_eApiError = eError;
@@ -208,7 +208,7 @@ void ApiState::vApiJob(Session* pSession, Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
   i8 i_Session = pSession->m_iApiState;
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
 
   aState->m_eJobClass = pJob->eClass();
   aState->m_iJobLoc   = pJob->m_iJobLoc;
@@ -226,7 +226,7 @@ void ApiState::vApiReturn(Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
   i8 i_Session = pSession->m_iApiState;
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
 
   aState->m_bRunning = false;
   aState->m_oTimer.vUpdate();
@@ -246,7 +246,7 @@ void ApiState::vFreeState(i8 i_Session)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
   
   m_oLock.vGrabWrite();
   
@@ -272,7 +272,7 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
   
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
-    SessionState* aSessionState = &m_xSessionState[i_Session];
+    SessionState* aSessionState = &m_oSessionState[i_Session];
     if (! aSessionState->m_pSession)
       continue;
 
@@ -313,7 +313,7 @@ void ApiState::vApiLoc(Session* pSession, i8 iLocation)
     return;
   
   i8 i_Session = pSession->m_iApiState;
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
   
   aState->m_iApiLoc = iLocation;
 }
@@ -326,7 +326,7 @@ void ApiState::vSenLoc(Session* pSession, i8 iSenLoc)
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
   i8 i_Session = pSession->m_iApiState;
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
   
   aState->m_iSenLoc = iSenLoc;
 }
@@ -345,7 +345,7 @@ void ApiState::vSetSignalled(Job* pJob)
   RASSERT( (-1 == pJob->m_iSession) ||
           (pJob->m_iSession == i_Session) );
   
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
 
   RASSERT( (-1 == pJob->m_iSession) ||
           (pJob->m_iJobLoc == aState->m_iJobLoc) );
@@ -365,7 +365,7 @@ void ApiState::vDump(void)
   vTrace("ApiState %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
 
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
-    SessionState* aState = &m_xSessionState[i_Session];
+    SessionState* aState = &m_oSessionState[i_Session];
     Session* pSession = aState->m_pSession;
     if (pSession)
      aState->vTraceState();
@@ -387,7 +387,7 @@ void ApiState::vIncBegun(i8 i_Session)
   if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
     return;
   
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
     
   aState->m_nBegun++;
 }
@@ -402,7 +402,7 @@ void ApiState::vIncCancelled(i8 i_Session)
   if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
     return;
   
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
 
   aState->m_nCancelled++;
 }
@@ -417,7 +417,7 @@ void ApiState::vIncEnded(i8 i_Session)
   if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
     return;
   
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
 
   aState->m_nEnded++;
 }
@@ -432,7 +432,7 @@ void ApiState::vIncExecuted(i8 i_Session)
   if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
     return;
   
-  SessionState* aState = &m_xSessionState[i_Session];
+  SessionState* aState = &m_oSessionState[i_Session];
 
   aState->m_nExecuted++;
 }

@@ -13,7 +13,7 @@ namespace Interface
     i8   m_nSessionsSoFar;
     i8   m_iFirstFree;
   
-    SessionState m_xSessionState[C_MAX_SESSIONS];
+    SessionState m_oSessionState[C_MAX_SESSIONS];
   
     Footer m_xFooter;
     
