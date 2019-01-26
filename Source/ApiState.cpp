@@ -215,6 +215,21 @@ void ApiState::vApiJob(Session* pSession, Job* pJob)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set last API location                                                      */
+/*----------------------------------------------------------------------------*/
+void ApiState::vApiLoc(Session* pSession, i8 iLocation)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  if (! pSession)
+    return;
+  
+  SessionState* aState = pSession->m_pSessionState;
+  
+  aState->m_iApiLoc = iLocation;
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark return of an api                                                      */
 /*----------------------------------------------------------------------------*/
 void ApiState::vApiReturn(Session* pSession)
@@ -235,6 +250,30 @@ void ApiState::vApiReturn(Session* pSession)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void ApiState::vDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  m_oLock.vGrabRead();
+  
+  vTrace("ApiState %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
+  
+  for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
+    SessionState* aState = &m_oSessionState[i_Session];
+    Session* pSession = aState->m_pSession;
+    if (pSession)
+      aState->vTraceState();
+  }
+  
+  vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
+  vTrace("  DdlLock %llx\n"_Stz,gpAttachMap->m_oDdlLock.uLockWord());
+  
+  m_oLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
 /* free an api state entry                                                    */
 /*----------------------------------------------------------------------------*/
 void ApiState::vFreeState(i8 i_Session)
@@ -249,6 +288,78 @@ void ApiState::vFreeState(i8 i_Session)
   m_iFirstFree = i_Session;
   
   m_oLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an api state entry                                                     */
+/*----------------------------------------------------------------------------*/
+SessionState* ApiState::pGetState(i8 i_State)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  SessionState* aState = &m_oSessionState[i_State];
+  
+  return aState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of __begun received                                       */
+/*----------------------------------------------------------------------------*/
+void ApiState::vIncBegun(i8 i_Session)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
+    return;
+  
+  SessionState* aState = &m_oSessionState[i_Session];
+  
+  aState->m_nBegun++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of __cancelled received                                   */
+/*----------------------------------------------------------------------------*/
+void ApiState::vIncCancelled(i8 i_Session)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
+    return;
+  
+  SessionState* aState = &m_oSessionState[i_Session];
+  
+  aState->m_nCancelled++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of __ended received                                       */
+/*----------------------------------------------------------------------------*/
+void ApiState::vIncEnded(i8 i_Session)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
+    return;
+  
+  SessionState* aState = &m_oSessionState[i_Session];
+  
+  aState->m_nEnded++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of executed received                                      */
+/*----------------------------------------------------------------------------*/
+void ApiState::vIncExecuted(i8 i_Session)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
+    return;
+  
+  SessionState* aState = &m_oSessionState[i_Session];
+  
+  aState->m_nExecuted++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,21 +407,6 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set last API location                                                      */
-/*----------------------------------------------------------------------------*/
-void ApiState::vApiLoc(Session* pSession, i8 iLocation)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  if (! pSession)
-    return;
-  
-  SessionState* aState = pSession->m_pSessionState;
-
-  aState->m_iApiLoc = iLocation;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set last SEN location                                                      */
 /*----------------------------------------------------------------------------*/
 void ApiState::vSenLoc(Session* pSession, i8 iSenLoc)
@@ -337,90 +433,6 @@ void ApiState::vSetSignalled(Job* pJob)
           (pJob->m_iJobLoc == aState->m_iJobLoc) );
 
   aState->m_bSignalled = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void ApiState::vDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  m_oLock.vGrabRead();
-
-  vTrace("ApiState %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
-
-  for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
-    SessionState* aState = &m_oSessionState[i_Session];
-    Session* pSession = aState->m_pSession;
-    if (pSession)
-     aState->vTraceState();
-  }
-  
-  vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
-  vTrace("  DdlLock %llx\n"_Stz,gpAttachMap->m_oDdlLock.uLockWord());
-
-  m_oLock.vDropRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* increment number of __begun received                                       */
-/*----------------------------------------------------------------------------*/
-void ApiState::vIncBegun(i8 i_Session)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
-    return;
-  
-  SessionState* aState = &m_oSessionState[i_Session];
-    
-  aState->m_nBegun++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* increment number of __cancelled received                                   */
-/*----------------------------------------------------------------------------*/
-void ApiState::vIncCancelled(i8 i_Session)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
-    return;
-  
-  SessionState* aState = &m_oSessionState[i_Session];
-
-  aState->m_nCancelled++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* increment number of __ended received                                       */
-/*----------------------------------------------------------------------------*/
-void ApiState::vIncEnded(i8 i_Session)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
-    return;
-  
-  SessionState* aState = &m_oSessionState[i_Session];
-
-  aState->m_nEnded++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* increment number of executed received                                      */
-/*----------------------------------------------------------------------------*/
-void ApiState::vIncExecuted(i8 i_Session)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
-    return;
-  
-  SessionState* aState = &m_oSessionState[i_Session];
-
-  aState->m_nExecuted++;
 }
 
 

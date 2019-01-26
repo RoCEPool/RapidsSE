@@ -35,19 +35,18 @@ namespace Interface
     void vApiCall(Session* pSession, eAC eApiCall);
     void vApiError(Session* pSession, eEC eError);
     void vApiJob(Session* pSession, Job* pJob);
-    void vApiReturn(Session* pSession);
-    void vFreeState(i8 i_State);
-    void vMonitorPortrait(s48K& sPortrait);
     void vApiLoc(Session* pSession, i8 iApiLoc);
-    void vSenLoc(Session* pSession, i8 iPosition);
-    void vSetSignalled(Job* pJob);
-  
+    void vApiReturn(Session* pSession);
+    void vDump(void);
+    void vFreeState(i8 i_State);
+    SessionState* pGetState(i8 i_State);
     void vIncBegun(i8 i_Session);
     void vIncCancelled(i8 i_Session);
     void vIncExecuted(i8 i_Session);
     void vIncEnded(i8 i_Session);
-
-    void vDump(void);
+    void vMonitorPortrait(s48K& sPortrait);
+    void vSenLoc(Session* pSession, i8 iPosition);
+    void vSetSignalled(Job* pJob);
 
     Footer* aFooter(void);
   };

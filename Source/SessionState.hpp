@@ -8,8 +8,9 @@ namespace Interface
   class SessionState : public Object
   {
   public:
-    Session* m_pSession; // will always be set unless state is free
     i8    m_i_State;     // session state index
+  
+    Session* m_pSession; // will always be set unless state is free
   
     eAC   m_eApiFun;     // current / last api function called
     i8    m_iApiLoc;     // last reported location in api function
