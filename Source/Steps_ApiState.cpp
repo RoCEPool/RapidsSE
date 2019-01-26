@@ -131,8 +131,9 @@ void Step::vApiStateTraceSession(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   i8 i_Session = pJob->m_iSession;
+  SessionState* pState = &gpAttachMap->m_pApiState->m_xSessionState[i_Session];
   
-  gpAttachMap->m_pApiState->vTraceSession(i_Session);
+  pState->vTraceState();
   
   EXIT();
 }

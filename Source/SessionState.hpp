@@ -50,6 +50,7 @@ namespace Interface
     ~SessionState(void) noexcept(false);
   
     void vInit(void);
+    void vTraceState(void);
   
     Footer* aFooter(void);
   };

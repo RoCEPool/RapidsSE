@@ -368,70 +368,13 @@ void ApiState::vDump(void)
     SessionState* aState = &m_xSessionState[i_Session];
     Session* pSession = aState->m_pSession;
     if (pSession)
-     vTraceSession(i_Session);
+     aState->vTraceState();
   }
   
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
   vTrace("  DdlLock %llx\n"_Stz,gpAttachMap->m_oDdlLock.uLockWord());
 
   m_oLock.vDropRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void ApiState::vTraceSession(i8 i_Session)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-  
-  if (i_Session < 0 || i_Session >= C_MAX_SESSIONS)
-    return;
-
-  SessionState* aState = &m_xSessionState[i_Session];
-
-  if (aState->m_bRunning)
-    aState->m_oTimer.vUpdate();
-
-  i8 nBytes;
-  if (aState->m_aStackBase >= aState->m_aStackPtr)
-    nBytes = nSub(aState->m_aStackBase,aState->m_aStackPtr);
-  else
-    nBytes = nSub(aState->m_aStackPtr,aState->m_aStackBase);
-
-  vTrace("  %lld: session %p base %llx ptr %llx (%lldB)\n"
-         "     apiFun %s apiLoc %lld job %s jobLoc %lld senLoc %lld \n"
-         "     %s %s apiError %s time %lldus\n"
-         "     dist2PC: begun %lld executed %lld cancelled %lld ended %lld\n"
-         "     #calls %lld, #errors %lld, #jobNew %lld #jobDelete %lld total %lldus\n"_Stz,
-         
-         i_Session,
-         aState->m_pSession,
-         aState->m_aStackBase,
-         aState->m_aStackPtr,
-         nBytes,
-         
-         aAC[aState->m_eApiFun],
-         aState->m_iApiLoc,
-         aCN[aState->m_eJobClass],
-         aState->m_iJobLoc,
-         aState->m_iSenLoc,
-         
-         aState->m_bRunning   ? "running"   : "completed",
-         aState->m_bSignalled ? "signalled" : "not signalled",
-         aEC[aState->m_eApiError],
-         aState->m_oTimer.iMicroseconds(),
-         
-         aState->m_nBegun,
-         aState->m_nExecuted,
-         aState->m_nCancelled,
-         aState->m_nEnded,
-         
-         aState->m_nApiCalls,
-         aState->m_nApiErrors,
-         aState->m_nJobNew,
-         aState->m_nJobDelete,
-         aState->m_iTotalMsec
-       );
 }
 
 /*----------------------------------------------------------------------------*/

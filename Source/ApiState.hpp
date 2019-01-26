@@ -48,7 +48,6 @@ namespace Interface
     void vIncEnded(i8 i_Session);
 
     void vDump(void);
-    void vTraceSession(i8 i_Session);
 
     Footer* aFooter(void);
   };
