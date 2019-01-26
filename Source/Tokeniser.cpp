@@ -58,7 +58,8 @@ Tokeniser::Tokeniser(void)
   
   i8 i_Node = gxArguments.m_iThisNode;
   Node* pNode = gpAttachMap->m_pGrid->pThisNode();
-  i8 nNodes =gpAttachMap->m_pGrid->nNodes();
+  i8 nNodes = gpAttachMap->m_pGrid->nNodes();
+  //bool bHasStarted = gpAttachMap->m_pGrid->m_bHasStarted;
   
   m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s] se %s%c"_Stz,
                     

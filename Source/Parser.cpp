@@ -842,19 +842,21 @@ void Parser::vReadLineStdin(void)
   if (gpAttachMap->m_bTracepoint)
     Pthread::vSleepMilli(300,CN_PARSER);
   
+  bool bHasStarted = gpAttachMap->m_pGrid->m_bHasStarted;
+
   bool bLowMem = gpBufferPool->bLowMemory();
   
   if ( ! gxArguments.m_bScript ) {
-    vInfo("%s%s%s%s> "_Stz,
+    vInfo("%s%s%s%s %s> "_Stz,
           m_sPrompt.aChar(),
           gpAttachMap->m_bBootError  ? " *BOOTERROR* " : "",
           bLowMem                    ? " *LOWMEM* "    : "",
 #ifdef __ENTRY_EXIT
-          (gpAttachMap->m_pStepTiming ?
-           " *STEPTIMING*" : "")
+          gpAttachMap->m_pStepTiming ? " *STEPTIMING*" : "",
 #else
-          ""
+          "",
 #endif
+          bHasStarted ? "has" : "not"
 
           );
     fflush(stdin);
