@@ -324,7 +324,7 @@ void Job::vInit(void)
 {
   m_iJobId   = C_UNKNOWN;
   m_iJobLoc  = 0;
-  m_iSession = C_UNKNOWN;
+  m_i_State  = C_UNKNOWN;
   m_eJobList = JL_NONE;
   
   m_pJobClass = nullptr;

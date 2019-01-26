@@ -104,7 +104,7 @@ namespace Jobs
   public:
     i8  m_iJobId;           // job id
     i8  m_iJobLoc;          // sequence number
-    i8  m_iSession;         // which session
+    i8  m_i_State;          // which session state
     eJL m_eJobList;         // which job list is job currently in?
   
     JobClass* m_pJobClass;  // job class

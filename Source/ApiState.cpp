@@ -211,7 +211,7 @@ void ApiState::vApiJob(Session* pSession, Job* pJob)
 
   aState->m_nJobNew++;
   
-  pJob->m_iSession = aState->m_i_State;
+  pJob->m_i_State = aState->m_i_State;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,7 +429,7 @@ void ApiState::vSetSignalled(Job* pJob)
   
   SessionState* aState = pSession->m_pSessionState;
 
-  RASSERT( (-1 == pJob->m_iSession) ||
+  RASSERT( (-1 == pJob->m_i_State) ||
           (pJob->m_iJobLoc == aState->m_iJobLoc) );
 
   aState->m_bSignalled = true;

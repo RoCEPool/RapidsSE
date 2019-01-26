@@ -50,11 +50,6 @@ namespace Interface
     SessionState(void);
     ~SessionState(void) noexcept(false);
   
-    void vIncBegun(void);
-    void vIncCancelled(void);
-    void vIncExecuted(void);
-    void vIncEnded(void);
-
     void vInit(void);
     void vTraceState(void);
   
