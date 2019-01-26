@@ -31,7 +31,7 @@ namespace Interface
     static void vMarkJob(Session* pSession, Job* aJob);
     static void vMarkReturn(Session* pSession);
   
-    i8   iAllocState(Session* pSession);
+    SessionState* pAllocState(Session* pSession);
     void vApiCall(Session* pSession, eAC eApiCall);
     void vApiError(Session* pSession, eEC eError);
     void vApiJob(Session* pSession, Job* pJob);

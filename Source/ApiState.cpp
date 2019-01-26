@@ -128,28 +128,28 @@ void ApiState::vMarkReturn(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* allocate an api state entry                                                */
 /*----------------------------------------------------------------------------*/
-i8 ApiState::iAllocState(Session* pSession)
+SessionState* ApiState::pAllocState(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
-
+  
   m_oLock.vGrabWrite();
   
   RASSERT(-1 != m_iFirstFree);
   
   i8 i_State = m_iFirstFree;
   SessionState* aState = &m_oSessionState[i_State];
-
+  
   m_iFirstFree = aState->m_iNextFree;
   
   aState->m_iNextFree = -1;
   aState->m_pSession  = pSession;
   aState->m_i_State   = i_State;
-
+  
   m_nSessionsSoFar++;
   
   m_oLock.vDropWrite();
-
-  return i_State;
+  
+  return aState;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,9 +159,7 @@ void ApiState::vApiCall(Session* pSession, eAC eApiCall)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  i8 i_Session = pSession->m_iApiState;
-  
-  SessionState* aState = &m_oSessionState[i_Session];
+  SessionState* aState = pSession->m_pSessionState;
 
   aState->m_eApiFun    = eApiCall;
   aState->m_iApiLoc    = 0;
@@ -188,8 +186,7 @@ void ApiState::vApiError(Session* pSession, eEC eError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  i8 i_Session = pSession->m_iApiState;
-  SessionState* aState = &m_oSessionState[i_Session];
+  SessionState* aState = pSession->m_pSessionState;
 
   aState->m_bRunning  = false;
   aState->m_eApiError = eError;
@@ -207,15 +204,14 @@ void ApiState::vApiJob(Session* pSession, Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  i8 i_Session = pSession->m_iApiState;
-  SessionState* aState = &m_oSessionState[i_Session];
+  SessionState* aState = pSession->m_pSessionState;
 
   aState->m_eJobClass = pJob->eClass();
   aState->m_iJobLoc   = pJob->m_iJobLoc;
 
   aState->m_nJobNew++;
   
-  pJob->m_iSession = i_Session;
+  pJob->m_iSession = aState->m_i_State;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,8 +221,7 @@ void ApiState::vApiReturn(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  i8 i_Session = pSession->m_iApiState;
-  SessionState* aState = &m_oSessionState[i_Session];
+  SessionState* aState = pSession->m_pSessionState;
 
   aState->m_bRunning = false;
   aState->m_oTimer.vUpdate();
@@ -276,8 +271,6 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
     if (! aSessionState->m_pSession)
       continue;
 
-    Session* pSession = aSessionState->m_pSession;
-
     if (aSessionState->m_bRunning)
       aSessionState->m_oTimer.vUpdate();
 
@@ -312,9 +305,8 @@ void ApiState::vApiLoc(Session* pSession, i8 iLocation)
   if (! pSession)
     return;
   
-  i8 i_Session = pSession->m_iApiState;
-  SessionState* aState = &m_oSessionState[i_Session];
-  
+  SessionState* aState = pSession->m_pSessionState;
+
   aState->m_iApiLoc = iLocation;
 }
 
@@ -325,9 +317,8 @@ void ApiState::vSenLoc(Session* pSession, i8 iSenLoc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  i8 i_Session = pSession->m_iApiState;
-  SessionState* aState = &m_oSessionState[i_Session];
-  
+  SessionState* aState = pSession->m_pSessionState;
+
   aState->m_iSenLoc = iSenLoc;
 }
 
@@ -340,12 +331,7 @@ void ApiState::vSetSignalled(Job* pJob)
 
   Session* pSession = pJob->m_pSession;
   
-  i8 i_Session = pSession->m_iApiState;
-  
-  RASSERT( (-1 == pJob->m_iSession) ||
-          (pJob->m_iSession == i_Session) );
-  
-  SessionState* aState = &m_oSessionState[i_Session];
+  SessionState* aState = pSession->m_pSessionState;
 
   RASSERT( (-1 == pJob->m_iSession) ||
           (pJob->m_iJobLoc == aState->m_iJobLoc) );

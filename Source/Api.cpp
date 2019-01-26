@@ -22,8 +22,7 @@ void Api::vDeleteJobs(Session* pSession)
   Stack* pJobStack = pSession->m_pJobStack;
   Object* pJobObject;
 
-  SessionState* pState =
-    &gpAttachMap->m_pApiState->m_oSessionState[pSession->m_iApiState];
+  SessionState* pState = pSession->m_pSessionState;
 
   while (pJobStack->bPop(pJobObject)) {
     

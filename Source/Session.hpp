@@ -9,6 +9,9 @@ namespace Interface
 {
   static const i8 C_MAX_SESSIONS = 1024;
   
+  class SessionState;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class Session : public Object
   {
   public:
@@ -20,9 +23,8 @@ namespace Interface
     Tx*      m_pTx;              // current transaction
     bool     m_bSessionExiting;  // is session exiting ?
     Stack*   m_pJobStack;        // stack of jobs
-  
-    i8       m_iApiState;        // api state entry
-
+    
+    SessionState*     m_pSessionState;      // session state
     PerformanceTrace* m_pPerformanceTrace;  // performance Trace
     CommandProcessor* m_pCommandProcessor;  // command processor
 
