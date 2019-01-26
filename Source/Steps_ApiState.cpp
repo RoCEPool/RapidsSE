@@ -33,8 +33,10 @@ void Step::vApiStateIncBegun(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   i8 i_State = pJob->m_i_State;
+  SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
+  Session* pSession = pState->m_pSession;
   
-  gpAttachMap->m_pApiState->vIncBegun(i_State);
+  gpAttachMap->m_pApiState->vIncBegun(pSession);
   
   EXIT();
 }
@@ -53,8 +55,10 @@ void Step::vApiStateIncCancelled(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   i8 i_State = pJob->m_i_State;
+  SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
+  Session* pSession = pState->m_pSession;
 
-  gpAttachMap->m_pApiState->vIncCancelled(i_State);
+  gpAttachMap->m_pApiState->vIncCancelled(pSession);
   
   EXIT();
 }
@@ -73,8 +77,10 @@ void Step::vApiStateIncEnded(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   i8 i_State = pJob->m_i_State;
+  SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
+  Session* pSession = pState->m_pSession;
 
-  gpAttachMap->m_pApiState->vIncEnded(i_State);
+  gpAttachMap->m_pApiState->vIncEnded(pSession);
   
   EXIT();
 }
@@ -93,8 +99,10 @@ void Step::vApiStateIncExecuted(MP_Task mpTask)
   Job* pJob = _pJob(pJobPtr);
   
   i8 i_State = pJob->m_i_State;
+  SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
+  Session* pSession = pState->m_pSession;
 
-  gpAttachMap->m_pApiState->vIncExecuted(i_State);
+  gpAttachMap->m_pApiState->vIncExecuted(pSession);
   
   EXIT();
 }

@@ -40,10 +40,10 @@ namespace Interface
     void vDump(void);
     void vFreeState(i8 i_State);
     SessionState* pGetState(i8 i_State);
-    void vIncBegun(i8 i_Session);
-    void vIncCancelled(i8 i_Session);
-    void vIncExecuted(i8 i_Session);
-    void vIncEnded(i8 i_Session);
+    void vIncBegun(Session* pSession);
+    void vIncCancelled(Session* pSession);
+    void vIncExecuted(Session* pSession);
+    void vIncEnded(Session* pSession);
     void vMonitorPortrait(s48K& sPortrait);
     void vSenLoc(Session* pSession, i8 iPosition);
     void vSetSignalled(Job* pJob);
