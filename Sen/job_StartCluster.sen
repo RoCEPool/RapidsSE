@@ -84,28 +84,32 @@
   tp: startCluster_req
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the task
-  task::this to pTask
+  // get task and job
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get the job from the task
+  task::this to pTask
   pTask task.job@ to pJob
 
-  //"grid::spawnNodes..." .
-  grid::spawnNodes
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // has cluster already been started?
 
-  //"grid::setStartNode..." .
-  grid::setStartNode
-
-  //"spawn_Connector..." .
-  spawn_Connector
+  grid::started@ if
+                                             //! how do we set an error message?
+    <DONE_REQ>
+    exit
+  then
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // wait till all nodes connected
+
+  grid::spawnNodes
+  grid::setStartNode
+  spawn_Connector
+
   grid::wait
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the job
+  // distribute the start cluster job
+
   pJob job.distribute
 
   <<am <DONE_REQ>

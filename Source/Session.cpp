@@ -108,13 +108,12 @@ Session::~Session(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
-  delete m_pCommandProcessor;
-
-  gpAttachMap->m_pApiState->vFreeState(m_pSessionState->m_i_State);
+  gpAttachMap->m_pApiState->vFreeState(this);
   
   RASSERT(0 == m_pJobStack->nValues());
-  
   delete m_pJobStack;
+  
+  delete m_pCommandProcessor;
 }
 
 /*----------------------------------------------------------------------------*/

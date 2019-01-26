@@ -39,7 +39,7 @@ namespace Interface
   
     SessionState* pAllocState(Session* pSession);
     void vDump(void);
-    void vFreeState(i8 i_State);
+    void vFreeState(Session* pSession);
     SessionState* pGetState(i8 i_State);
     void vMonitorPortrait(s48K& sPortrait);
 

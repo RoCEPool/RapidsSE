@@ -227,16 +227,17 @@ void ApiState::vDump(void)
 /*----------------------------------------------------------------------------*/
 /* free an api state entry                                                    */
 /*----------------------------------------------------------------------------*/
-void ApiState::vFreeState(i8 i_Session)
+void ApiState::vFreeState(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  SessionState* pState = &m_oSessionState[i_Session];
+  SessionState* pState = pSession->m_pSessionState;
+  i8 i_FreedState = pState->m_i_State;
   
   m_oLock.vGrabWrite();
   
   pState->vInit();
-  m_iFirstFree = i_Session;
+  m_iFirstFree = i_FreedState;
   
   m_oLock.vDropWrite();
 }
