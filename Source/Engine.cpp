@@ -406,20 +406,23 @@ void Engine::vMonitorProfile(s48K& sPortrait)
   i8 iPercentFree = gpAttachMap->m_pBufferPool->iFreePercent();
   Stz* aNodeName  = gpAttachMap->m_pGrid->pGetNode(gxArguments.m_iThisNode)->aNodeName();
   bool bStarted   = gpAttachMap->m_pGrid->bHasStarted();
+  bool bDdlLocked = gpAttachMap->m_oDdlLock.bIsWriteLocked();
   
-  sPortrait.vSprint("Node %s region %s free %lld%% cluster %s uptime %llds (%s)\n"_Stz,
+  sPortrait.vSprint("Node %s region %s free %lld%% uptime %llds (%s)\n"
+                    "     cluster %s ddl %s \n"_Stz,
 
                     aNodeName,
                     sRegionMag.aStz(),
                     iPercentFree,
-                    bStarted ? "started" : "not-started",
                     iUpTime,
-                    
 #ifdef _DEBUG
-                    "debug"_Stz
+                    "debug"_Stz,
 #else
-                    "release"_Stz
+                    "release"_Stz,
 #endif
+
+                    bStarted   ? "started" : "not-started",
+                    bDdlLocked ? "locked"  : "not-locked"
                     );
 }
 
