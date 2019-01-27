@@ -82,7 +82,6 @@ namespace System
   {
   private:
     u8     m_uLockWord;        // lock word
-  
     eLK    m_eLockKind;        // lock kind
   
     Atomic m_ziReadGrabs;       // number of read grabs
@@ -109,20 +108,21 @@ namespace System
     static u8 iLockIsLocked(u8*);
 
     void vInitLock(eLK eLockKind);
-  
     bool bIsLocked(void);
     u8   uLockWord(void);
+  
+    void vAssertRead(void);
+    void vDropRead(void);
     bool bGrabRead(void);
     void vGrabRead(void);
-    void vCheckRead(void);
-    void vDropRead(void);
     i8   iReadGrabs(void);
     i8   iReadCollisions(void);
     
+    void vAssertWrite(void);
+    void vDropWrite(void);
     bool bGrabWrite(void);
     void vGrabWrite(void);
-    void vCheckWrite(void);
-    void vDropWrite(void);
+    bool bIsWriteLocked(void);
     i8   iWriteGrabs(void);
     i8   iWriteCollisions(void);
     

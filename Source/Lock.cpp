@@ -50,7 +50,6 @@ Lock::Lock(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   m_uLockWord = 0;
-  
   m_eLockKind = LK_NONE;
 
   m_ziReadGrabs.vCheckInit();
@@ -73,7 +72,6 @@ Lock::Lock(eLK eLockKind)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   m_uLockWord = 0;
-  
   m_eLockKind = eLockKind;
   
   m_ziReadGrabs.vCheckInit();
@@ -212,7 +210,7 @@ u8 Lock::iLockGrabWrite(u8* pWord)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is lock actually locked                                                    */
+/* is the lock currentl locked?                                               */
 /*----------------------------------------------------------------------------*/
 u8 Lock::iLockIsLocked(u8* pWord)
 {
@@ -242,7 +240,7 @@ void Lock::vInitLock(eLK eLockKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bIsLocked: is write locked                                                 */
+/* is the lock locked?                                                        */
 /*----------------------------------------------------------------------------*/
 bool Lock::bIsLocked(void)
 {
@@ -252,7 +250,7 @@ bool Lock::bIsLocked(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* uLockWord: is write locked                                                 */
+/* get the value of the lock word                                             */
 /*----------------------------------------------------------------------------*/
 u8 Lock::uLockWord(void)
 {
@@ -261,12 +259,38 @@ u8 Lock::uLockWord(void)
   return m_uLockWord;
 }
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+
+////////////////////////////////////////////////////////////////////////////////
+//                                Read Locking                                //
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* try and grab read lock                                                     */
+/* check for read lock                                                        */
+/*----------------------------------------------------------------------------*/
+void Lock::vAssertRead(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  ASSERT(m_uLockWord > 0 && m_uLockWord != C_WRITELOCK); // logic check
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop read lock                                                             */
+/*----------------------------------------------------------------------------*/
+void Lock::vDropRead(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  vAssertRead();
+  
+  i8 iResult = Lock::iLockDropRead(&m_uLockWord);
+  ASSERT(iResult); // logic check
+  
+  // m_iValue could be any value
+}
+
+/*----------------------------------------------------------------------------*/
+/* try and grab a read lock                                                   */
 /*----------------------------------------------------------------------------*/
 bool Lock::bGrabRead(void)
 {
@@ -277,9 +301,9 @@ bool Lock::bGrabRead(void)
   ++m_ziReadGrabs;
   ++gpAttachMap->m_oLockTracker.m_ziReadGrabs[m_eLockKind];
   
-  i8 rCode = Lock::iLockGrabRead(&m_uLockWord);
-  if (rCode) {
-    vCheckRead();
+  i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
+  if (iResult) {
+    vAssertRead();
     return true;
   }
   
@@ -290,7 +314,7 @@ bool Lock::bGrabRead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vGrabRead: grab read lock                                                  */
+/* grab a read lock (may block)                                               */
 /*----------------------------------------------------------------------------*/
 void Lock::vGrabRead(void)
 {
@@ -301,9 +325,9 @@ void Lock::vGrabRead(void)
   ++m_ziReadGrabs;
   ++gpAttachMap->m_oLockTracker.m_ziReadGrabs[m_eLockKind];
   
-  i8 rCode = Lock::iLockGrabRead(&m_uLockWord);
-  if (rCode) {
-    vCheckRead();
+  i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
+  if (iResult) {
+    vAssertRead();
     return;
   }
   
@@ -324,40 +348,15 @@ void Lock::vGrabRead(void)
              m_uLockWord);
     }
     
-    rCode = Lock::iLockGrabRead(&m_uLockWord);
-  } while ( ! rCode );
+    iResult = Lock::iLockGrabRead(&m_uLockWord);
+  } while ( ! iResult );
   
   if (bReported) {
     vWarn("Lock::vGrabRead -- Able to grab read lock %p %p\n"_Stz,
            this, m_uLockWord);
   }
   
-  vCheckRead();
-}
-
-/*----------------------------------------------------------------------------*/
-/* check for read lock                                                        */
-/*----------------------------------------------------------------------------*/
-void Lock::vCheckRead(void)
-{
-  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  ASSERT(m_uLockWord > 0 && m_uLockWord != C_WRITELOCK); // logic check
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop read lock                                                             */
-/*----------------------------------------------------------------------------*/
-void Lock::vDropRead(void)
-{
-  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  vCheckRead();
-  
-  i8 rCode = Lock::iLockDropRead(&m_uLockWord);
-  ASSERT(rCode); // logic check
-  
-  // m_iValue could be any value
+  vAssertRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -380,9 +379,37 @@ i8 Lock::iReadCollisions(void)
   return *m_ziReadCollisions;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//                                Write Locking                               //
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
+/* check for write lock                                                       */
 /*----------------------------------------------------------------------------*/
+void Lock::vAssertWrite(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  ASSERT(m_uLockWord >= C_WRITELOCK); // logic check
+}
+
 /*----------------------------------------------------------------------------*/
+/* drop write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void Lock::vDropWrite(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  vAssertWrite();
+  
+  i8 iResult = Lock::iLockDropWrite(&m_uLockWord);
+  ASSERT(iResult); // logic check
+  
+  //m_uLockWord = 0;
+  
+  // m_iValue could be any value
+}
+
 /*----------------------------------------------------------------------------*/
 /* try and grab write lock                                                    */
 /*----------------------------------------------------------------------------*/
@@ -395,9 +422,9 @@ bool Lock::bGrabWrite(void)
   ++m_ziWriteGrabs;
   ++gpAttachMap->m_oLockTracker.m_ziWriteGrabs[m_eLockKind];
 
-  i8 rCode = Lock::iLockGrabWrite(&m_uLockWord);
-  if (rCode) {
-    vCheckWrite();
+  i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
+  if (iResult) {
+    vAssertWrite();
     return true;
   }
   
@@ -423,9 +450,9 @@ void Lock::vGrabWrite(void)
   ++m_ziWriteGrabs;
   ++gpAttachMap->m_oLockTracker.m_ziWriteGrabs[m_eLockKind];
   
-  i8 rCode = Lock::iLockGrabWrite(&m_uLockWord);
-  if (rCode) {
-    vCheckWrite();
+  i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
+  if (iResult) {
+    vAssertWrite();
     return;
   }
   
@@ -450,8 +477,8 @@ void Lock::vGrabWrite(void)
       //       m_uLockWord);
     }
     
-    rCode = Lock::iLockGrabWrite(&m_uLockWord);
-  } while ( ! rCode );
+    iResult = Lock::iLockGrabWrite(&m_uLockWord);
+  } while ( ! iResult );
   
   if (bReported) {
     ActivityMap::vMark(0,"Lock::vGrabWrite -- Able to grab write lock %p %p\n"_Stz,
@@ -462,34 +489,19 @@ void Lock::vGrabWrite(void)
     //       this, m_uLockWord);
   }
 
-  vCheckWrite();
+  vAssertWrite();
 }
 
 /*----------------------------------------------------------------------------*/
-/* check for write lock                                                       */
+/* is write locked?                                                           */
 /*----------------------------------------------------------------------------*/
-void Lock::vCheckWrite(void)
+bool Lock::bIsWriteLocked(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  ASSERT(m_uLockWord >= C_WRITELOCK); // logic check
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop write lock                                                            */
-/*----------------------------------------------------------------------------*/
-void Lock::vDropWrite(void)
-{
-  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  bool bWriteLocked = (m_uLockWord >= C_WRITELOCK ? true : false);
   
-  vCheckWrite();
-  
-  i8 rCode = Lock::iLockDropWrite(&m_uLockWord);
-  ASSERT(rCode); // logic check
-  
-  //m_uLockWord = 0;
-  
-  // m_iValue could be any value
+  return bWriteLocked;
 }
 
 /*----------------------------------------------------------------------------*/
