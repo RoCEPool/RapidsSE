@@ -19,7 +19,6 @@ using namespace Interface;
 
 //-----------------------------------------------------------------------------
 
-#include "CommandProcessor.hpp"
 #include "Session.hpp"
 #include "ApiMacros.hpp"
 

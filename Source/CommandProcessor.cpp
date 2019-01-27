@@ -2,7 +2,7 @@
 /* CommandProcessor.cpp - Command Processor                                   */
 /*============================================================================*/
 
-#include "Interface.h"
+#include "Parsing.h"
 #include "StorageEngine.h"
 
 extern Arguments   gxArguments;
@@ -15,7 +15,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-CommandProcessor* Interface::_pCommandProcessor(void* aAddr)
+CommandProcessor* Parsing::_pCommandProcessor(void* aAddr)
 {
   CommandProcessor* pCommandProcessor = reinterpret_cast<CommandProcessor*>(aAddr);
   

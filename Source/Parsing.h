@@ -24,6 +24,7 @@ using namespace Parsing;
 #include "Token.hpp"
 #include "TokenVec.hpp"
 #include "Tokeniser.hpp"
+#include "CommandProcessor.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

@@ -3,15 +3,15 @@
 /*============================================================================*/
 #pragma once
 
-#include "Interface.h"
+#include "Parsing.h"
 
-namespace Interface
+namespace Parsing
 {
   class CommandProcessor : public Object
   {
   private:
     Tokeniser* m_pTokeniser; // input stream tokeniser
-    
+  
     // must be last
     Footer m_xFooter;
 
