@@ -159,19 +159,6 @@ bool CommandProcessor::bBlankLine(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete a job                                                               */
-/*----------------------------------------------------------------------------*/
-void CommandProcessor::vDeleteJob(Session* pSession)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  // call the job delete function
-  m_pJobClass->vDeleteJob(pSession,m_pJob);
-  
-  m_pJob = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to find job class for command                                      */
 /*----------------------------------------------------------------------------*/
 bool CommandProcessor::bFindJobClass(void)
@@ -305,6 +292,16 @@ Job* CommandProcessor::pJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   return m_pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set job                                                                    */
+/*----------------------------------------------------------------------------*/
+void CommandProcessor::vJob(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
+  
+  m_pJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -313,8 +313,10 @@ void SePrompt::vDeleteJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  JobClass* pJobClass = pCommandProcessor->pJobClass();
   
-  pCommandProcessor->vDeleteJob(m_pSession);
+  // call the job delete function
+  pJobClass->vDeleteJob(m_pSession,m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
