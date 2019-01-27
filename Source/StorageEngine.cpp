@@ -27,7 +27,7 @@ void StorageEngine::vCheckAllAssumptions(void)
   Pool::vCheckAssumptions();
   Structures::vCheckAssumptions();
   Measurement::vCheckAssumptions();
-  Parsing::vCheckAssumptions();
+  Commands::vCheckAssumptions();
   Transactions::vCheckAssumptions();
   Forth::vCheckAssumptions();
   DBobjects::vCheckAssumptions();

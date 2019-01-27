@@ -2,7 +2,7 @@
 /* Tokeniser.cpp -- Tokeniser : divide input stream into tokens               */
 /*============================================================================*/
 
-#include "Parsing.h"
+#include "Commands.h"
 #include "StorageEngine.h"
 
 extern Arguments   gxArguments;
@@ -11,7 +11,7 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Tokeniser* Parsing::_pTokeniser(void* aAddr)
+Tokeniser* Commands::_pTokeniser(void* aAddr)
 {
   Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(aAddr);
   

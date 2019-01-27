@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Parsing
+namespace Commands
 {
   class Tokeniser : public Object
   {

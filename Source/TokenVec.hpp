@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Parsing
+namespace Commands
 {
   class TokenVec : public VectorNL_t<CN_TOKENVEC,Token,CN_TOKEN,C_TOKENS,u8>
   {

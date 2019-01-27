@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Parsing
+namespace Commands
 {
   const char C_END_OF_LINE = '\n';
   
@@ -62,12 +62,12 @@ namespace Parsing
     void vUseString(s48K& sString);
     void vUseEnd(void);
 
-    // Parsing Stack
+    // Commands Stack
     Parser* pNext(void);
     void    vNext(Parser* pNext);
     i8      iDepth(void);
     
-    // Parsing
+    // Commands
     char cGet(bool bStripComments);
     void vUnget(char c);
     bool bEOF(void);
