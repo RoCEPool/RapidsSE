@@ -201,7 +201,7 @@ Job* Jobs::pJob_VerifyIndex_pre(Interface::Session* pSession)
 {
   Job_VerifyIndex* pJob_VerifyIndex = new Job_VerifyIndex(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_VerifyIndex->bPopulateJob(pTokenVec);
   

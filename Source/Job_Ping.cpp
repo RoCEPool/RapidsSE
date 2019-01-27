@@ -196,7 +196,7 @@ Job* Jobs::pJob_Ping_pre(Interface::Session* pSession)
 {
   Job_Ping* pJob_Ping = new Job_Ping(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_Ping->bPopulateJob(pTokenVec);
   

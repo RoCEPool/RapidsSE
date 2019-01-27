@@ -205,7 +205,7 @@ Job* Jobs::pJob_SelectTable_pre(Interface::Session* pSession)
 {
   Job_SelectTable* pJob_SelectTable = new Job_SelectTable(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_SelectTable->bPopulateJob(pTokenVec);
   

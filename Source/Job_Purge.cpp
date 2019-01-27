@@ -177,7 +177,7 @@ Job* Jobs::pJob_Purge_pre(Interface::Session* pSession)
 
   Job_Purge* pJob_Purge = new Job_Purge(pSession);
 
-  TokenVec* pTknVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
 
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();

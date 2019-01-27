@@ -201,7 +201,7 @@ Job* Jobs::pJob_DropSchema_pre(Interface::Session* pSession)
 {
   Job_DropSchema* pJob_DropSchema = new Job_DropSchema(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_DropSchema->bPopulateJob(pTokenVec);
   

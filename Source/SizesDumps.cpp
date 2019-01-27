@@ -44,8 +44,8 @@ pDUMPFUN *gpDump[]
   /* 30 */ &Dump::vDummy,           // CN_CARRYOVER
   /* 31 */ &Dump::vDummy,           // CN_COLUMN
   /* 32 */ &Dump::vDummy,           // CN_COLUMNVEC
+  /*    */ &Dump::vDummy,           // CN_COMMAND
   /*    */ &Dump::vDummy,           // CN_COMPILER
-  /*    */ &Dump::vDummy,           // CN_COMMANDPROCESSOR
 
   /*    */ &Dump::vDummy,           // CN_DECIDER
   /* 33 */ &Dic::vDump,             // CN_DIC
@@ -301,8 +301,8 @@ i8 giClassSize[]
   /* 30 */ sizeof(CarryOver),          // CN_CARRYOVER
   /* 31 */ sizeof(Column),             // CN_COLUMN
   /* 32 */ sizeof(ColumnVec),          // CN_COLUMNVEC
+  /* 32 */ sizeof(Command),            // CN_COMMAND
   /* 32 */ sizeof(Compiler),           // CN_COMPILER
-  /* 32 */ sizeof(CommandProcessor),   // CN_COMMANDPROCESSOR
   
   /*    */ sizeof(Decider),            // CN_DECIDER
   /* 33 */ sizeof(Dic),                // CN_DIC
@@ -558,8 +558,8 @@ eHT geWhichHeap[]
   /* 30 */ HT_INVALID,           // CN_CARRYOVER
   /* 31 */ HT_TRANSIENT_SMALL,   // CN_COLUMN
   /* 32 */ HT_TRANSIENT_MEDIUM,  // CN_COLUMNVEC
+  /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMMAND
   /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMPILER
-  /*    */ HT_TRANSIENT_MEDIUM,  // CN_COMMANDPROCESSOR
 
   /*    */ HT_TRANSIENT_SMALL,   // CN_DECIDER
   /* 33 */ HT_TRANSIENT_MEDIUM,  // CN_DIC

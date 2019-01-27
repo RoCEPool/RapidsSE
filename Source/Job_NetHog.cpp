@@ -176,7 +176,7 @@ Job* Jobs::pJob_NetHog_pre(Interface::Session* pSession)
 {
   Job_NetHog* pJob_NetHog = new Job_NetHog(pSession);
   
-  TokenVec* pTknVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
   
   Token* pHogCount = pTknVec->pGet(1);
   i8 nHogs = pHogCount->iToI8();

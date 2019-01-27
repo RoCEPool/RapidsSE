@@ -11,7 +11,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Session(void)
 {
-  vAddStep("session.commandProcessor"_Stz, &Step::vSessionCommandProcessor);
+  vAddStep("session.commandProcessor"_Stz, &Step::vSessionCommand);
   vAddStep("session.dicStack"_Stz,         &Step::vSessionDicStack);
   vAddStep("session.dump"_Stz,             &Step::vSessionDump);
   vAddStep("session.isExiting"_Stz,        &Step::vSessionIsExiting);
@@ -24,7 +24,7 @@ void Step::vAddSteps_Session(void)
 /*----------------------------------------------------------------------------*/
 /* session.commandProcessor -- get session command processor                  */
 /*----------------------------------------------------------------------------*/
-void Step::vSessionCommandProcessor(MP_Task mpTask)
+void Step::vSessionCommand(MP_Task mpTask)
 {
   ENTRY("vSessionDicStack"_Stz);
   
@@ -35,7 +35,7 @@ void Step::vSessionCommandProcessor(MP_Task mpTask)
   Session* pSession = _pSession(pPtrSession);
   ASSERT(CN_SESSION == pSession->eClass());
   
-  mpTask->m_pDataStack->vPushPointer(pSession->m_pCommandProcessor);
+  mpTask->m_pDataStack->vPushPointer(pSession->m_pCommand);
   
   EXIT();
 }

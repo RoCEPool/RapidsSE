@@ -205,7 +205,7 @@ Job* Jobs::pJob_AnalyzeIndex_pre(Interface::Session* pSession)
 {
   Job_AnalyzeIndex* pJob_AnalyzeIndex = new Job_AnalyzeIndex(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_AnalyzeIndex->bPopulateJob(pTokenVec);
   

@@ -200,7 +200,7 @@ Job* Jobs::pJob_ListPartColumns_pre(Interface::Session* pSession)
 {
   Job_ListPartColumns* pJob_ListPartColumns = new Job_ListPartColumns(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_ListPartColumns->bPopulateJob(pTokenVec);
   

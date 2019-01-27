@@ -200,7 +200,7 @@ Job* Jobs::pJob_DropCatalog_pre(Interface::Session* pSession)
 {
   Job_DropCatalog* pJob_DropCatalog = new Job_DropCatalog(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_DropCatalog->bPopulateJob(pTokenVec);
   

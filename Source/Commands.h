@@ -24,7 +24,7 @@ using namespace Commands;
 #include "Token.hpp"
 #include "TokenVec.hpp"
 #include "Tokeniser.hpp"
-#include "CommandProcessor.hpp"
+#include "Command.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

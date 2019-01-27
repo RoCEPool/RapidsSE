@@ -181,9 +181,9 @@ bool SePrompt::bBlankLine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  Command* pCommand = this->pCommand();
   
-  bool bBlankLine = pCommandProcessor->bBlankLine();
+  bool bBlankLine = pCommand->bBlankLine();
 
   return bBlankLine;
 }
@@ -263,11 +263,11 @@ void SePrompt::vCheckNoWait(void)
 /*----------------------------------------------------------------------------*/
 /* get command processor                                                      */
 /*----------------------------------------------------------------------------*/
-CommandProcessor* SePrompt::pCommandProcessor(void)
+Command* SePrompt::pCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSession->m_pCommandProcessor;
+  return m_pSession->m_pCommand;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -297,7 +297,7 @@ void SePrompt::vCutToken(i8 i_Tkn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  TokenVec* pTknVec = m_pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTknVec = m_pSession->m_pCommand->pTknVec();
   
   //pTknVec->vPrint();
   
@@ -313,8 +313,8 @@ void SePrompt::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  //CommandProcessor* pCommandProcessor = this->pCommandProcessor();
-  //JobClass* pJobClass = pCommandProcessor->pJobClass();
+  //Command* pCommand = this->pCommand();
+  //JobClass* pJobClass = pCommand->pJobClass();
   
   // call the job delete function
   m_pJobClass->vDeleteJob(m_pSession,m_pJob);
@@ -327,9 +327,9 @@ bool SePrompt::bExecuteFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  Command* pCommand = this->pCommand();
   
-  bool bExecuteFile = pCommandProcessor->bExecuteFile();
+  bool bExecuteFile = pCommand->bExecuteFile();
   
   return bExecuteFile;
 }
@@ -390,9 +390,9 @@ void SePrompt::vGetCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  Command* pCommand = this->pCommand();
   
-  pCommandProcessor->vGetCommand();
+  pCommand->vGetCommand();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -522,11 +522,11 @@ void SePrompt::vPostJob(void)
 
   RASSERT(JS_RUNNING == m_pJob->m_eState);
   
-  //CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  //Command* pCommand = this->pCommand();
   
-  //pCommandProcessor->vPostJob(m_pSession);
+  //pCommand->vPostJob(m_pSession);
  
-  //JobClass* pJobClass = pCommandProcessor->pJobClass();
+  //JobClass* pJobClass = pCommand->pJobClass();
 
   m_pJobClass->vPostJob(m_pSession,m_pJob);
 }
@@ -538,11 +538,11 @@ void SePrompt::vPreJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  //Command* pCommand = this->pCommand();
 
-  //JobClass* pJobClass = pCommandProcessor->pJobClass();
+  //JobClass* pJobClass = pCommand->pJobClass();
 
-  //pCommandProcessor->vPreJob(m_pSession);
+  //pCommand->vPreJob(m_pSession);
   
   m_pJob = m_pJobClass->pPreJob(m_pSession);
 }
@@ -600,9 +600,9 @@ void SePrompt::vSpawnJob(void)
   if (m_bNoWait)
     m_pJob->m_bNoWait = true;
   
-  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  Command* pCommand = this->pCommand();
   
-  pCommandProcessor->pTknVec()->vSetTokens();
+  pCommand->pTknVec()->vSetTokens();
   
   bool bSpawned = Api::bSpawnJob(m_pSession,m_pJob,SS_SEED_REQ);
   RASSERT(bSpawned);
@@ -615,7 +615,7 @@ TokenVec* SePrompt::pTknVec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  return m_pSession->m_pCommandProcessor->pTknVec();
+  return m_pSession->m_pCommand->pTknVec();
 }
 
 /*----------------------------------------------------------------------------*/

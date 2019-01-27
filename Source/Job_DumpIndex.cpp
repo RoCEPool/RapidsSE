@@ -201,7 +201,7 @@ Job* Jobs::pJob_DumpIndex_pre(Interface::Session* pSession)
 {
   Job_DumpIndex* pJob_DumpIndex = new Job_DumpIndex(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_DumpIndex->bPopulateJob(pTokenVec);
   

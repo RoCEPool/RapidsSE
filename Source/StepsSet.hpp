@@ -125,15 +125,15 @@
   static void vColumnTypeFetch(Tasks::MP_Task mpTask);
 
   // command processor
-  static void vCommandProcessorBlankLine(Tasks::MP_Task mpTask);
-  static void vCommandProcessorDeleteJob(Tasks::MP_Task mpTask);
-  static void vCommandProcessorExecuteFile(Tasks::MP_Task mpTask);
-  static void vCommandProcessorFindJobClass(Tasks::MP_Task mpTask);
-  static void vCommandProcessorGetCommand(Tasks::MP_Task mpTask);
-  static void vCommandProcessorJobClass(Tasks::MP_Task mpTask);
-  static void vCommandProcessorPostJob(Tasks::MP_Task mpTask);
-  static void vCommandProcessorPreJob(Tasks::MP_Task mpTask);
-  static void vCommandProcessorSpawnJob(Tasks::MP_Task mpTask);
+  static void vCommandBlankLine(Tasks::MP_Task mpTask);
+  static void vCommandDeleteJob(Tasks::MP_Task mpTask);
+  static void vCommandExecuteFile(Tasks::MP_Task mpTask);
+  static void vCommandFindJobClass(Tasks::MP_Task mpTask);
+  static void vCommandGetCommand(Tasks::MP_Task mpTask);
+  static void vCommandJobClass(Tasks::MP_Task mpTask);
+  static void vCommandPostJob(Tasks::MP_Task mpTask);
+  static void vCommandPreJob(Tasks::MP_Task mpTask);
+  static void vCommandSpawnJob(Tasks::MP_Task mpTask);
 
   // comment
   static void vComment(Tasks::MP_Task mpTask);
@@ -853,7 +853,7 @@
   static void vRstack9(Tasks::MP_Task mpTask);
 
   // session
-  static void vSessionCommandProcessor(Tasks::MP_Task mpTask);
+  static void vSessionCommand(Tasks::MP_Task mpTask);
   static void vSessionDicStack(Tasks::MP_Task mpTask);
   static void vSessionDump(Tasks::MP_Task mpTask);
   static void vSessionIsExiting(Tasks::MP_Task mpTask);

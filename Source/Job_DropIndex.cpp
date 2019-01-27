@@ -209,7 +209,7 @@ Job* Jobs::pJob_DropIndex_pre(Interface::Session* pSession)
 {
   Job_DropIndex* pJob_DropIndex = new Job_DropIndex(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_DropIndex->bPopulateJob(pTokenVec);
   

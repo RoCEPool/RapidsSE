@@ -51,7 +51,7 @@ namespace Prompt
     void vCheckTimed(void);
     void vCheckTraced(void);
     void vCheckNoWait(void);
-    CommandProcessor* pCommandProcessor(void);
+    Command* pCommand(void);
     bool bContinue(void);
     void vContinue(bool bContinue);
     void vCutToken(i8 i_Tkn);

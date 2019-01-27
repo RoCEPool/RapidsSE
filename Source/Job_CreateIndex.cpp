@@ -342,7 +342,7 @@ Job* Jobs::pJob_CreateIndex_pre(Interface::Session* pSession)
 {
   Job_CreateIndex* pJob_CreateIndex = new Job_CreateIndex(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_CreateIndex->bPopulateJob(pTokenVec);
   

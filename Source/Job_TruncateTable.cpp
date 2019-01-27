@@ -197,7 +197,7 @@ Job* Jobs::pJob_TruncateTable_pre(Interface::Session* pSession)
 {
   Job_TruncateTable* pJob_TruncateTable = new Job_TruncateTable(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_TruncateTable->bPopulateJob(pTokenVec);
   

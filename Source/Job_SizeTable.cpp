@@ -196,7 +196,7 @@ Job* Jobs::pJob_SizeTable_pre(Interface::Session* pSession)
 {
   Job_SizeTable* pJob_SizeTable = new Job_SizeTable(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_SizeTable->bPopulateJob(pTokenVec);
   

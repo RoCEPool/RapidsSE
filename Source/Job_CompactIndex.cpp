@@ -201,7 +201,7 @@ Job* Jobs::pJob_CompactIndex_pre(Interface::Session* pSession)
 {
   Job_CompactIndex* pJob_CompactIndex = new Job_CompactIndex(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_CompactIndex->bPopulateJob(pTokenVec);
   

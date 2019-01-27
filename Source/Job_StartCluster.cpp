@@ -194,7 +194,7 @@ Job* Jobs::pJob_StartCluster_pre(Interface::Session* pSession)
 {
   Job_StartCluster* pJob_StartCluster = new Job_StartCluster(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_StartCluster->bPopulateJob(pTokenVec);
   

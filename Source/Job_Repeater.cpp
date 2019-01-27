@@ -185,7 +185,7 @@ Job* Jobs::pJob_Repeater_pre(Interface::Session* pSession)
 
   Job_Repeater* pJob_Repeater = new Job_Repeater(pSession);
 
-  TokenVec* pTknVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
 
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();

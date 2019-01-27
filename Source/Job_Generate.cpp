@@ -276,7 +276,7 @@ Job* Jobs::pJob_Generate_pre(Interface::Session* pSession)
 
   Job_Generate* pJob_Generate = new Job_Generate(pSession);
 
-  TokenVec* pTknVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
 
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();

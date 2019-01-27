@@ -180,7 +180,7 @@ Job* Jobs::pJob_Sink_pre(Interface::Session* pSession)
 
   Job_Sink* pJob_Sink = new Job_Sink(pSession);
 
-  TokenVec* pTknVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
 
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();

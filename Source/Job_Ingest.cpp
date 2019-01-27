@@ -187,7 +187,7 @@ Job* Jobs::pJob_Ingest_pre(Interface::Session* pSession)
 
   Job_Ingest* pJob_Ingest = new Job_Ingest(pSession);
 
-  TokenVec* pTknVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTknVec = pSession->m_pCommand->pTknVec();
 
   // get no of tokens in token vector
   nTokens = pTknVec->nTokens();

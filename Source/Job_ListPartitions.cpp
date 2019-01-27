@@ -196,7 +196,7 @@ Job* Jobs::pJob_ListPartitions_pre(Interface::Session* pSession)
 {
   Job_ListPartitions* pJob_ListPartitions = new Job_ListPartitions(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_ListPartitions->bPopulateJob(pTokenVec);
   

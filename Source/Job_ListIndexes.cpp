@@ -200,7 +200,7 @@ Job* Jobs::pJob_ListIndexes_pre(Interface::Session* pSession)
 {
   Job_ListIndexes* pJob_ListIndexes = new Job_ListIndexes(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_ListIndexes->bPopulateJob(pTokenVec);
   

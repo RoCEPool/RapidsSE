@@ -44,8 +44,8 @@ enum eCN : u2 // Class Number
   /*  22 0x16       40B Heap:I */ CN_CARRYOVER,
   /*  23 0x17      120B Heap:S */ CN_COLUMN,
   /*  24 0x18     8216B Heap:M */ CN_COLUMNVEC,
+  /*  26 0x1A       40B Heap:M */ CN_COMMAND,
   /*  25 0x19       64B Heap:M */ CN_COMPILER,
-  /*  26 0x1A       40B Heap:M */ CN_COMMANDPROCESSOR,
   
   /*  27 0x1B       24B Heap:S */ CN_DECIDER,
   /*  28 0x1C      248B Heap:M */ CN_DIC,
@@ -297,8 +297,8 @@ static Stz* aCN[]
   /*  22 0x16 */ "CARRYOVER"_Stz,           // CN_CARRYOVER
   /*  23 0x17 */ "COLUMN"_Stz,              // CN_COLUMN
   /*  24 0x18 */ "COLUMNVEC"_Stz,           // CN_COLUMNVEC
+  /*  26 0x1A */ "COMMAND"_Stz,             // CN_COMMAND
   /*  25 0x19 */ "COMPILER"_Stz,            // CN_COMPILER
-  /*  26 0x1A */ "COMMANDPROCESSOR"_Stz,    // CN_COMMANDPROCESSOR
   
   /*  27 0x1B */ "DECIDER"_Stz,             // CN_DECIDER
   /*  28 0x1C */ "DIC"_Stz,                 // CN_DIC

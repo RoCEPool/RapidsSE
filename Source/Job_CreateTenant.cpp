@@ -198,7 +198,7 @@ Job* Jobs::pJob_CreateTenant_pre(Interface::Session* pSession)
 {
   Job_CreateTenant* pJob_CreateTenant = new Job_CreateTenant(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_CreateTenant->bPopulateJob(pTokenVec);
   

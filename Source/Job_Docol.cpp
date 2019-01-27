@@ -199,7 +199,7 @@ Job* Jobs::pJob_Docol_pre(Interface::Session* pSession)
 {
   Job_Docol* pJob_Docol = new Job_Docol(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_Docol->bPopulateJob(pTokenVec);
   

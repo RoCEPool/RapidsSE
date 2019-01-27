@@ -26,7 +26,7 @@ namespace Interface
     
     SessionState*     m_pSessionState;      // session state
     PerformanceTrace* m_pPerformanceTrace;  // performance Trace
-    CommandProcessor* m_pCommandProcessor;  // command processor
+    Command* m_pCommand;  // command processor
 
     // must be last
     Footer m_xFooter;

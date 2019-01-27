@@ -376,7 +376,7 @@ Job* Jobs::pJob_FetchRows_pre(Interface::Session* pSession)
 {
   Job_FetchRows* pJob_FetchRows = new Job_FetchRows(pSession);
   
-  TokenVec* pTokenVec = pSession->m_pCommandProcessor->pTknVec();
+  TokenVec* pTokenVec = pSession->m_pCommand->pTknVec();
   
   bool bResult = pJob_FetchRows->bPopulateJob(pTokenVec);
   
