@@ -631,7 +631,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
   Stz* pKey;
   char* aCursor = aByteSequence();
   
-  char aLiteral[64];
+  char caLiteral[64];
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -640,8 +640,8 @@ void Key::vShow(IdxColVec* pIdxColVec)
     char* aDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
     
     eDM eDatum = pColumn->eDatumType();
-    DtmLib::vSprintVLQ(eDatum,(Stz*)aLiteral,(Stz*)aDatum,pColumn);
-    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,aLiteral);
+    DtmLib::vSprintVLQ(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
+    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,caLiteral);
   }
   
   //vTrace("%s)\n"_Stz, sKeyString.aStz());
@@ -654,7 +654,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
   Stz* pKey;
   char* aCursor = aByteSequence();
   
-  char aLiteral[64];
+  char caLiteral[64];
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -663,8 +663,8 @@ void Key::vShow(IdxColVec* pIdxColVec)
     char* aDatum = this->aEachDatum(pColumn,nBytes,&aCursor);
   
     eDM eDatum = pColumn->eDatumType();
-    DtmLib::vSprint(eDatum,(Stz*)aLiteral,(Stz*)aDatum,pColumn);
-    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,aLiteral);
+    DtmLib::vSprint(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
+    vTrace("Elm %lld:(size %lld value:%s) "_Stz,i_Column,nBytes,caLiteral);
   }
 
   //vTrace("%s)\n"_Stz, sKeyString.aStz());
@@ -682,7 +682,7 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
 
   sVar = ""_Stz;
   
-  char aLiteral[64];
+  char caLiteral[64];
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -698,8 +698,8 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
     if (DM_VCH == eDatum)
       aDatum = *((char**)aDatum);
     
-    DtmLib::vSprintVLQ(eDatum,(Stz*)aLiteral,(Stz*)aDatum,pColumn);
-    sVar.vConcat((Stz*)aLiteral);
+    DtmLib::vSprintVLQ(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
+    sVar.vConcat((Stz*)caLiteral);
   }
   
 }
@@ -711,7 +711,7 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
   
   sVar = ""_Stz;
   
-  char aLiteral[64];
+  char caLiteral[64];
   
   for (i8 i_Column = 0; i_Column < pIdxColVec->nItems(); i_Column++) {
     
@@ -727,8 +727,8 @@ void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
     if (DM_VCH == eDatum)
       aDatum = *((char**)aDatum);
     
-    DtmLib::vSprint(eDatum,(Stz*)aLiteral,(Stz*)aDatum,pColumn);
-    sVar.vConcat((Stz*)aLiteral);
+    DtmLib::vSprint(eDatum,(Stz*)caLiteral,(Stz*)aDatum,pColumn);
+    sVar.vConcat((Stz*)caLiteral);
   }
   
 }

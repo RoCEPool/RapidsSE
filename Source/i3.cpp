@@ -352,10 +352,10 @@ i8 i3i8::iToI8(i3* pI3)
 {
   i3i8 xI3I8;
   
-  xI3I8.m_cValue[3] = 0;
-  xI3I8.m_cValue[2] = pI3->m_cValue[2];
-  xI3I8.m_cValue[1] = pI3->m_cValue[1];
-  xI3I8.m_cValue[0] = pI3->m_cValue[0];
+  xI3I8.m_caValue[3] = 0;
+  xI3I8.m_caValue[2] = pI3->m_caValue[2];
+  xI3I8.m_caValue[1] = pI3->m_caValue[1];
+  xI3I8.m_caValue[0] = pI3->m_caValue[0];
   
   i8 iValue = xI3I8.m_iValue;
   
@@ -371,9 +371,9 @@ void i3i8::vToI3(i3* pI3, i8 iArg)
 
   xI3I8.m_iValue = static_cast<unsigned int>(iArg);
   
-  pI3->m_cValue[2] = xI3I8.m_cValue[2];
-  pI3->m_cValue[1] = xI3I8.m_cValue[1];
-  pI3->m_cValue[0] = xI3I8.m_cValue[0];
+  pI3->m_caValue[2] = xI3I8.m_caValue[2];
+  pI3->m_caValue[1] = xI3I8.m_caValue[1];
+  pI3->m_caValue[0] = xI3I8.m_caValue[0];
 }
 
 /*============================================================================*/

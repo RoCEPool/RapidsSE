@@ -334,51 +334,51 @@ void Column::vSet(Stz* aDefinition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
   
   bool b;
-  char aBuffer[128];
+  char caWord[128];
   
   char* aCursor = (char*)aDefinition;
-  b = StrLib::bExtractWord(&aCursor,aBuffer);
+  b = StrLib::bExtractWord(&aCursor,caWord);
   
   //vTrace("Type: %s\n"_Stz,aBuffer);
   
-  if (StrLib::bSame(aBuffer,"boolean")) {
+  if (StrLib::bSame(caWord,"boolean")) {
     m_eColumnType = CT_BOOLEAN;
     m_eDatumType = DM_BOL;
   }
-  else if (StrLib::bSame(aBuffer,"char")) {
+  else if (StrLib::bSame(caWord,"char")) {
     m_eColumnType = CT_CHAR;
     m_eDatumType = DM_VCH;
     m_iColumnLength = C_64K;
   }
-  else if (StrLib::bSame(aBuffer,"date")) {
+  else if (StrLib::bSame(caWord,"date")) {
     m_eColumnType = CT_DATE;
     m_eDatumType = DM_DTE;
   }
-  else if (StrLib::bSame(aBuffer,"decimal")) {
+  else if (StrLib::bSame(caWord,"decimal")) {
     m_eColumnType = CT_DECIMAL;
     m_eDatumType = DM_BCD;
     m_iColumnLength = C_MAX_PRECISION_BCD;
     m_iColumnScale = 0;
   }
-  else if (StrLib::bSame(aBuffer,"float")) {
+  else if (StrLib::bSame(caWord,"float")) {
     m_eColumnType = CT_FLOAT;
     m_eDatumType = DM_FLT;
     m_iColumnLength = C_MAX_PRECISION_FLT;
   }
-  else if (StrLib::bSame(aBuffer,"integer")) {
+  else if (StrLib::bSame(caWord,"integer")) {
     m_eColumnType = CT_INTEGER;
     m_eDatumType = DM_INT;
     m_iColumnLength = C_MAX_PRECISION_INT;
   }
-  else if (StrLib::bSame(aBuffer,"interval")) {
+  else if (StrLib::bSame(caWord,"interval")) {
     m_eColumnType = CT_INTERVAL;
     m_eDatumType = DM_IVL;
   }
-  else if (StrLib::bSame(aBuffer,"time")) {
+  else if (StrLib::bSame(caWord,"time")) {
     m_eColumnType = CT_TIME;
     m_eDatumType = DM_TME;
   }
-  else if (StrLib::bSame(aBuffer,"timestamp")) {
+  else if (StrLib::bSame(caWord,"timestamp")) {
     m_eColumnType = CT_TIMESTAMP;
     m_eDatumType = DM_TSP;
   }
@@ -387,7 +387,7 @@ void Column::vSet(Stz* aDefinition)
 //    m_eDatumType    = DM_VBN;
 //    m_iColumnLength = C_64K;
 //  }
-  else if (StrLib::bSame(aBuffer,"varchar")) {
+  else if (StrLib::bSame(caWord,"varchar")) {
     m_eColumnType = CT_VARCHAR;
     m_eDatumType = DM_VCH;
     m_iColumnLength = C_MAX_SIZE_VCH;

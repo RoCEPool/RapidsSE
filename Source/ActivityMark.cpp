@@ -89,9 +89,9 @@ void ActivityMark::vInit(void)
   
   m_iMark    = -1;
   m_iTick    = -1;
-  m_aNode[0] = '\0';
+  m_caNode[0] = '\0';
   m_iJobId   = -1;
-  m_aMark[0] = '\0';
+  m_caMark[0] = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,17 +103,17 @@ void ActivityMark::vWrite(i8 iJobId, char* aMark)
   
   m_iTick = Tsc::iTicks();
   
-  StrLib::vCopyLen(m_aNode,
+  StrLib::vCopyLen(m_caNode,
                    gpAttachMap->m_pGrid->m_pThisNode->aNodeName()->aChar(),
-                   sizeof(m_aNode) - 1);
-  m_aNode[sizeof(m_aNode) - 1] = '\0';
+                   sizeof(m_caNode) - 1);
+  m_caNode[sizeof(m_caNode) - 1] = '\0';
   
   m_iJobId = iJobId;
 
-  StrLib::vCopyLen(m_aMark,
+  StrLib::vCopyLen(m_caMark,
                    aMark,
-                   sizeof(m_aMark) - 1);
-  m_aMark[sizeof(m_aMark) - 1] = '\0';
+                   sizeof(m_caMark) - 1);
+  m_caMark[sizeof(m_caMark) - 1] = '\0';
   
   _postcondition_(_MAGIC_,CN_ACTIVITYMARK,_FOOTER_);
 }
@@ -133,7 +133,7 @@ void ActivityMark::vDump(File* pFile,
   
   iTotalDelta += iDeltaUs;
   
-  if (StrLib::bSame(m_aMark,"delta reset"))
+  if (StrLib::bSame(m_caMark,"delta reset"))
     iTotalDelta = 0;
   
   pFile->vPrint("%lld,%lld,%lld,%lld,%s,%lld,%s\n"_Stz,
@@ -142,9 +142,9 @@ void ActivityMark::vDump(File* pFile,
                 iDeltaUs,
                 iTotalDelta,
                 
-                m_aNode,
+                m_caNode,
                 m_iJobId,
-                m_aMark);
+                m_caMark);
   
 }
 

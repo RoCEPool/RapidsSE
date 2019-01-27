@@ -229,18 +229,18 @@ void Engine::vDeleteSession(Session* pSession)
 /*----------------------------------------------------------------------------*/
 void Engine::vErrorHandler(Error* pError)
 {
-  char wFileName[256];
+  char caFileName[256];
   
   const char* ps;
   
   if (pError) {
     ps = StrLib::sLast(pError->aFileName()->aChar());
     StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
-    StrLib::vCopy(wFileName,ps+1);
+    StrLib::vCopy(caFileName,ps+1);
     vTrace("%s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),
            pError->iLineNo(),
-           wFileName);
+           caFileName);
   }
   else {
     vTrace("Engine::vErrorHandler: Unknown error\n"_Stz);

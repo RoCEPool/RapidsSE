@@ -12,7 +12,7 @@ void vTest1(void)
 {
   File oFile;
   i8 iChunk = C_32KB;
-  char buffer[iChunk];
+  char caChunk[iChunk];
   Timer oTimer;
   
   vTrace("Reading lineitem.tbl in chunks of %lld\n"_Stz, iChunk);
@@ -20,10 +20,10 @@ void vTest1(void)
   ASSERT(b);
   
   oTimer.vStart();
-  i8 nBytesRead = oFile.nReadBytes(buffer,iChunk);
+  i8 nBytesRead = oFile.nReadBytes(caChunk,iChunk);
   
   while (nBytesRead) {
-    nBytesRead = oFile.nReadBytes(buffer,iChunk);
+    nBytesRead = oFile.nReadBytes(caChunk,iChunk);
   }
   oTimer.vUpdate();
   vTrace("duration %lldms\n"_Stz,oTimer.iMilliseconds());

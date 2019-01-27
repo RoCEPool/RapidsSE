@@ -8,7 +8,7 @@ namespace Base
   class i3
   {
   public:
-    unsigned char m_cValue[3];
+    unsigned char m_caValue[3];
   
   public:
     i3(void);
@@ -57,7 +57,7 @@ namespace Base
   public:
     union {
       unsigned int  m_iValue;
-      unsigned char m_cValue[4];
+      unsigned char m_caValue[4];
     };
   
     static i8 iToI8(i3* pI3);

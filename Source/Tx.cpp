@@ -330,13 +330,13 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
   Tx* pTx = _pTx(pObject);
   
   // get string of the distributed members of this transaction
-  char cMembers[C_64KB] = "";
+  char caMembers[C_64KB] = "";
   if (pTx->bLocalTx()) {
-    StrLib::vConcat(cMembers,"{");
+    StrLib::vConcat(caMembers,"{");
     for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
       if (pTx->bDistMember(i_Node))
-        StrLib::vSprintCat(cMembers," %lld",i_Node);
-    StrLib::vConcat(cMembers," }");
+        StrLib::vSprintCat(caMembers," %lld",i_Node);
+    StrLib::vConcat(caMembers," }");
   }
   
   vTrace("tx: %lld.%lld-%lld.%lld phase %s counter %lld %s\n"_Stz,
@@ -344,7 +344,7 @@ void Tx::vDump(eCN eClass, Object* pObject, Stz* aTab)
          pTx->iDistTxNode(), pTx->iDistTxNo(),  
          pTP[pTx->m_ePhase],
          pTx->iCounterGet(),
-         cMembers);
+         caMembers);
 }
 
 /*----------------------------------------------------------------------------*/

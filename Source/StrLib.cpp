@@ -357,8 +357,8 @@ i8 StrLib::iDigitToI8(const char cDigit)
 /*----------------------------------------------------------------------------*/
 void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
 {
-  char w[C_STRING_ARRAY];
-  char *z = w;
+  char caString[C_STRING_ARRAY];
+  char *z = caString;
   
   for (int i = 0; i < nMax && i < C_16KB - 1; i++)
   {
@@ -391,7 +391,7 @@ void StrLib::vDump(const char* s, i8 nMax, const char* pSuffix)
   
   *z = '\0';
   
-  printf("%s",w);
+  printf("%s",caString);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1889,13 +1889,13 @@ bool StrLib::bFind(char** ps, const char* sArg, i8 iLenArg)
 /*----------------------------------------------------------------------------*/
 void StrLib::vFormatFraction(char* sDst, u8 uFraction, i8 iDigits)
 {
-  char sFormat[16];
+  char caFormat[16];
   
   // create the format
-  sprintf(sFormat,"%%0%lldlld",iDigits);
+  sprintf(caFormat,"%%0%lldlld",iDigits);
   
   // sprint the number as an integer
-  sprintf(sDst,sFormat,uFraction);
+  sprintf(sDst,caFormat,uFraction);
   
   // strip off trailing zero's
   char *z = sDst;
@@ -2574,11 +2574,11 @@ char* StrLib::wToPointer(void* pArg, char* wArg)
 /*----------------------------------------------------------------------------*/
 char* StrLib::wToString(d8 d, char* w)
 {
-  char xWsp[32];
+  char caFloat[32];
   
-  snprintf(xWsp,sizeof(xWsp),"%g",d);
+  snprintf(caFloat,sizeof(caFloat),"%g",d);
   
-  vAppendString(&w,xWsp);
+  vAppendString(&w,caFloat);
   
   return w;
 }

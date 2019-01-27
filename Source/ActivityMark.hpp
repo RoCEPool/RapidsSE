@@ -10,11 +10,11 @@ namespace Measurement
   friend class ActivityMap;
   
   private:
-    i8   m_iMark;      // mark no
-    i8   m_iTick;      // tick of mark
-    char m_aNode[32];  // which node
-    i8   m_iJobId;     // which job
-    char m_aMark[128]; // comment
+    i8   m_iMark;       // mark no
+    i8   m_iTick;       // tick of mark
+    char m_caNode[32];  // which node
+    i8   m_iJobId;      // which job
+    char m_caMark[128]; // comment
   
     // must be last
     Footer m_xFooter;

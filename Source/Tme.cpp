@@ -329,14 +329,14 @@ void Tme::vSprint(Stz* aDst, Stz* aSrc)
   }
   
   if (uMicro) {
-    char sFraction[16];
-    StrLib::vFormatFraction(sFraction,uMicro,6);
+    char caFraction[16];
+    StrLib::vFormatFraction(caFraction,uMicro,6);
     
     StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%s%c"_Stz,
                     aTme->x.m_uHour,
                     aTme->x.m_uMinute,
                     aTme->x.m_uSecond,
-                    sFraction,
+                    caFraction,
                     '\0');
     return;
   }
@@ -363,14 +363,14 @@ void Tme::vSprintEscaped(Stz* aDst, Stz* aSrc)
   }
   
   if (uMicro) {
-    char sFraction[16];
-    StrLib::vFormatFraction(sFraction,uMicro,6);
+    char caFraction[16];
+    StrLib::vFormatFraction(caFraction,uMicro,6);
     
     StrLib::vSprint(aDst,"%02lld:%02lld:%02lld.%s%c"_Stz,
                     aTme->x.m_uHour,
                     aTme->x.m_uMinute,
                     aTme->x.m_uSecond,
-                    sFraction,
+                    caFraction,
                     '\0');
     return;
   }

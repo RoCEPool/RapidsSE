@@ -243,11 +243,11 @@ void Step::vFlowThrow(MP_Task mpTask)
 {
   ENTRY("vFlowThrow"_Stz);
   
-  char wBuffer[256];
+  char caException[256];
   
-  StrLib::vSprint(wBuffer,"THROW TEST"_Stz);
+  StrLib::vSprint(caException,"THROW TEST"_Stz);
   
-  throw wBuffer;
+  throw caException;
   
   EXIT();
 }

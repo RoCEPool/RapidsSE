@@ -190,9 +190,9 @@ namespace Debugging
   {
   private:
     eEC   m_eErrorCode;
-    char  m_cFileName[256];
+    char  m_caFileName[256];
     i8    m_iLineNo;
-    char  m_cErrorMsg[256];
+    char  m_caErrorMsg[256];
   
   public:
     Error(eEC eErrorCode, Stz* aFileName, i8 iLineNo);

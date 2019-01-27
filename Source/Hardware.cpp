@@ -39,23 +39,23 @@ i8 Hardware::iClockFrequency(void)
   
 #else
   const i8 C_BUFSIZ=512;
-  char buf[C_BUFSIZ];
+  char caBuf[C_BUFSIZ];
   double dFreq;
   i8 iFreq = 0;
   
   // open the /Proc/cpuinfo file
   FILE* aFile = fopen("/proc/cpuinfo", "r");
-  if ( !aFile ) {
+  if (! aFile) {
     vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d"_Stz, errno);
     return 0;
   }
   
   // look for cpu MHz
-  while (fgets(buf, C_BUFSIZ, aFile) != NULL) {
-    if (strstr(buf, "cpu MHz") == NULL)
+  while (fgets(caBuf, C_BUFSIZ, aFile) != NULL) {
+    if (strstr(caBuf, "cpu MHz") == NULL)
       continue;
     
-    char* p = strchr(buf,':');
+    char* p = strchr(caBuf,':');
     if (p == NULL)
       continue;
     p++;

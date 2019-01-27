@@ -13,7 +13,7 @@ namespace Correctness
   protected:
     union {
       u4   m_uMagic;
-      char m_sMagic[4];
+      char m_caMagic[4];
     };
     eCN  m_eClass;
     bool m_bWordBody;

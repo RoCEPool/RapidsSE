@@ -125,21 +125,21 @@ void* Thread::aEntryPoint(void* pArg)
   
   catch (Error* pError) {
     
-    char wFileName[256];
+    char caFileName[256];
     const char* ps;
     
     ps = StrLib::sLast(pError->aFileName()->aChar());
     bool bBackSlash = StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
     if (bBackSlash) {
-      StrLib::vCopy(wFileName,ps+1);
+      StrLib::vCopy(caFileName,ps+1);
     }
     else {
-      StrLib::vCopy(wFileName, pError->aFileName()->aChar());
+      StrLib::vCopy(caFileName, pError->aFileName()->aChar());
     }
     vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n"_Stz,
            pError->aErrorMsg(),
            pError->iLineNo(),
-           wFileName);
+           caFileName);
   }
   
   if (gpAttachMap->m_bVerbose)

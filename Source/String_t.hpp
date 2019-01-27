@@ -9,7 +9,7 @@ namespace Correctness
   class String_t : public Object
   {
   private:
-    char m_cArea[SIZE]; // Stz byte area
+    char m_caArea[SIZE]; // Stz byte area
     
     // must be last
     Footer m_xFooter;
@@ -65,9 +65,9 @@ String_t<SIZE>::String_t(void)
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
 #ifdef __DEBUG_CHECKS
-  MemLib::vZero(m_cArea,SIZE,CN_STRING_T);
+  MemLib::vZero(m_caArea,SIZE,CN_STRING_T);
 #else
-  m_cArea[0] = '\0';
+  m_caArea[0] = '\0';
 #endif
 
   _checkInitialisedSize_(SIZE);
@@ -82,7 +82,7 @@ String_t<SIZE>::String_t(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  StrLib::vCopyLen(m_cArea,aArg->aChar(),SIZE-1);
+  StrLib::vCopyLen(m_caArea,aArg->aChar(),SIZE-1);
   
   _checkInitialisedSize_(SIZE);
 }
@@ -108,7 +108,7 @@ String_t<SIZE>::operator Stz*(void)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  return (Stz*)m_cArea;
+  return (Stz*)m_caArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -119,7 +119,7 @@ void String_t<SIZE>::operator =(i8 iArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  StrLib::wToString(iArg,m_cArea);
+  StrLib::wToString(iArg,m_caArea);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +130,7 @@ void String_t<SIZE>::operator =(Stz* aArg)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-  StrLib::vCopyLen(m_cArea,aArg->aChar(),SIZE-1);
+  StrLib::vCopyLen(m_caArea,aArg->aChar(),SIZE-1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,7 +147,7 @@ void String_t<SIZE>::vAppend(const char cChar)
   
   // limit???
   
-  StrLib::vConcat(m_cArea,cChar);
+  StrLib::vConcat(m_caArea,cChar);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -209,14 +209,14 @@ void String_t<SIZE>::vCatSprint(Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get m_cArea                                                                */
+/* get m_caArea                                                                */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 char* String_t<SIZE>::aChar(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  return (char*)m_cArea;
+  return (char*)m_caArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,7 +227,7 @@ void String_t<SIZE>::vConcat(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vConcat(m_cArea,aStr->aChar());
+  StrLib::vConcat(m_caArea,aStr->aChar());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -238,7 +238,7 @@ void String_t<SIZE>::vConcat(Stz* aStr)
 template <int SIZE>
 bool String_t<SIZE>::bContains(Stz* aArg)
 {
-  return StrLib::bContains(m_cArea,aArg->aChar());
+  return StrLib::bContains(m_caArea,aArg->aChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,7 +249,7 @@ void String_t<SIZE>::vCopy(Stz* aStr)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyLen(m_cArea,aStr->aChar(),SIZE-1);
+  StrLib::vCopyLen(m_caArea,aStr->aChar(),SIZE-1);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -262,7 +262,7 @@ void String_t<SIZE>::vCopyTill(Stz* aSrc, char cTill)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  StrLib::vCopyTill(m_cArea,aSrc->aChar(),cTill);
+  StrLib::vCopyTill(m_caArea,aSrc->aChar(),cTill);
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -275,7 +275,7 @@ bool String_t<SIZE>::bEqual(Stz* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bEqualTo(m_cArea,(const char*)aArg);
+  bool b = StrLib::bEqualTo(m_caArea,(const char*)aArg);
   
   return b;
 }
@@ -288,7 +288,7 @@ bool String_t<SIZE>::bIsNumeric(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bIsNumeric(m_cArea);
+  bool b = StrLib::bIsNumeric(m_caArea);
   
   return b;
 }
@@ -310,7 +310,7 @@ i8 String_t<SIZE>::iLength(void)
 template <int SIZE>
 void String_t<SIZE>::vMaxValue(void)
 {
-  StrLib::vCopy(m_cArea,"Z");
+  StrLib::vCopy(m_caArea,"Z");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -319,7 +319,7 @@ void String_t<SIZE>::vMaxValue(void)
 template <int SIZE>
 void String_t<SIZE>::vMidValue(void)
 {
-  StrLib::vCopy(m_cArea,"M");
+  StrLib::vCopy(m_caArea,"M");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -328,7 +328,7 @@ void String_t<SIZE>::vMidValue(void)
 template <int SIZE>
 void String_t<SIZE>::vMinValue(void)
 {
-  StrLib::vCopy(m_cArea,"A");
+  StrLib::vCopy(m_caArea,"A");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -347,7 +347,7 @@ bool String_t<SIZE>::bSame(Stz* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bSame(m_cArea,(const char*)aArg);
+  bool b = StrLib::bSame(m_caArea,(const char*)aArg);
   
   return b;
 }
@@ -379,14 +379,14 @@ void String_t<SIZE>::vSprintCat(Stz* aFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get m_cArea                                                                */
+/* get m_caArea                                                                */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 Stz* String_t<SIZE>::aStz(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return (Stz*)m_cArea;
+  return (Stz*)m_caArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -395,7 +395,7 @@ Stz* String_t<SIZE>::aStz(void)
 template <int SIZE>
 i8 String_t<SIZE>::iToI8(void)
 {
-  i8 i = StrLib::iToI8(m_cArea);
+  i8 i = StrLib::iToI8(m_caArea);
   
   return i;
 }
@@ -406,7 +406,7 @@ i8 String_t<SIZE>::iToI8(void)
 template <int SIZE>
 void String_t<SIZE>::vToLower(void)
 {
-  StrLib::vToLower(m_cArea);
+  StrLib::vToLower(m_caArea);
 }
 
 /*----------------------------------------------------------------------------*/

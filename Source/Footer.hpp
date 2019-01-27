@@ -12,7 +12,7 @@ namespace Correctness
   private:
   union {
     u8   m_uFooter;
-    char m_cFooter[8];
+    char m_caFooter[8];
   };
   
   public:

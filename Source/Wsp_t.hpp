@@ -15,8 +15,8 @@ namespace Correctness
   class Wsp_t
   {
   private:
-    char m_cArea[LENGTH]; // fixed byte area
-    i8   m_nAreaUsed;     // bytes used in the area (must be after m_cArea)
+    char m_caArea[LENGTH]; // fixed byte area
+    i8   m_nAreaUsed;      // bytes used in the area (must be after m_caArea)
   
   public:
     Wsp_t(void);
@@ -93,7 +93,7 @@ void Wsp_t<LENGTH>::vAppend(void* aSrc, i8 nBytes, eCN eClassNo)
 template<int LENGTH>
 char* Wsp_t<LENGTH>::aArea(void)
 {
-  char* aArea = m_cArea;
+  char* aArea = m_caArea;
   
   return aArea;
 }
@@ -155,7 +155,7 @@ i8 Wsp_t<LENGTH>::nSize(void)
 template<int LENGTH>
 Stz* Wsp_t<LENGTH>::aStz(void)
 {
-  char* aArea = m_cArea;
+  char* aArea = m_caArea;
   
  return reinterpret_cast<Stz*>(aArea);
 }

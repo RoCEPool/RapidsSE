@@ -10,10 +10,10 @@ namespace DBobjects
   class RecordBuffer : public Object
   {
   protected:
-    i8   m_nRecords;                            // number of records in this buffer
-    i8   m_nUsedBytes;                          // used bytes
-    i8   m_nFreeBytes;                          // free space
-    char m_cArea[C_SIZE_LARGE_OBJECT - C_1KB];  // record area
+    i8   m_nRecords;                             // number of records in this buffer
+    i8   m_nUsedBytes;                           // used bytes
+    i8   m_nFreeBytes;                           // free space
+    char m_caArea[C_SIZE_LARGE_OBJECT - C_1KB];  // record area
 
     // must be last
     Footer m_xFooter;

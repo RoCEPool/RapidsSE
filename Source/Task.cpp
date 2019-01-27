@@ -163,7 +163,7 @@ void Task::vTaskLoop(void)
     }
     
     catch (i8 iException) {
-      char wFileName[256];
+      char caFileName[256];
       
       const char* ps;
       
@@ -171,32 +171,32 @@ void Task::vTaskLoop(void)
       StrLib::bBackward(&ps,m_sFile.aChar(),'/');
       bool bBackSlash = StrLib::bBackward(&ps,m_sFile.aChar(),'/');
       if (bBackSlash) {
-        StrLib::vCopy(wFileName,ps+1);
+        StrLib::vCopy(caFileName,ps+1);
       }
       else {
-        StrLib::vCopy(wFileName, m_sFile.aChar());
+        StrLib::vCopy(caFileName, m_sFile.aChar());
       }
       vTrace("[%s] %s : line %lld in %s\n"_Stz,
              aJobName(),
              m_sException.aChar(),
              iException,
-             wFileName);
+             caFileName);
       vRetry();
     }
     
     catch (Error* pError) {
-      char wFileName[256];
+      char caFileName[256];
       
       const char* ps;
       
       ps = StrLib::sLast(pError->aFileName()->aChar());
       StrLib::bBackward(&ps,(char*)pError->aFileName(),'/');
-      StrLib::vCopy(wFileName,ps+1);
+      StrLib::vCopy(caFileName,ps+1);
       vTrace("[%s] %s: line %lld in %s\n"_Stz,
              aJobName(),
              pError->aErrorMsg(),
              pError->iLineNo(),
-             wFileName);
+             caFileName);
       vRetry();
     }
     
@@ -1099,10 +1099,10 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       i8 iValue;
       m_pDataStack->bPop(iValue);
       
-      char aValue[32];
-      StrLib::wToString(iValue,aValue);
+      char caValue[32];
+      StrLib::wToString(iValue,caValue);
       
-      for (char* pv = aValue; *pv; )
+      for (char* pv = caValue; *pv; )
         *ps++ = *pv++;
       
       pf++;
@@ -1118,10 +1118,10 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       Object* pValue;
       m_pDataStack->bPop(pValue);
       
-      char aValue[32];
-      StrLib::wToPointer(pValue,aValue);
+      char caValue[32];
+      StrLib::wToPointer(pValue,caValue);
       
-      for (char* pv = aValue; *pv; )
+      for (char* pv = caValue; *pv; )
         *ps++ = *pv++;
       
       pf++;

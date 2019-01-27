@@ -43,7 +43,7 @@ i8 OpSys::iSchedulerPeriod_us(void)
   
 #else
   const i8 C_BUFSIZ=512;
-  char buf[C_BUFSIZ];
+  char caBuf[C_BUFSIZ];
   double dFreq;
   i8 iFreq = 0;
   
@@ -55,11 +55,11 @@ i8 OpSys::iSchedulerPeriod_us(void)
   }
   
   // look for cpu MHz
-  while (fgets(buf, C_BUFSIZ, aFile) != NULL) {
-    if (strstr(buf, "cpu MHz") == NULL)
+  while (fgets(caBuf, C_BUFSIZ, aFile) != NULL) {
+    if (strstr(caBuf, "cpu MHz") == NULL)
       continue;
     
-    char* p = strchr(buf,':');
+    char* p = strchr(caBuf,':');
     if (p == NULL)
       continue;
     p++;

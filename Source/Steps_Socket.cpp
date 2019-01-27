@@ -261,11 +261,11 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receiver the object header
   
-  char xObjectHeader[sizeof(Object)+C_1K];
+  char caObjectHeader[sizeof(Object)+C_1K];
   i8 nObjectBytes = sizeof(Object);
   SysCall oSysCall;
 
-  bool bResult = pSocket->bRecvBytes(xObjectHeader,nObjectBytes, oSysCall);
+  bool bResult = pSocket->bRecvBytes(caObjectHeader,nObjectBytes, oSysCall);
   if (! bResult) {
     mpTask->m_pDataStack->vPushBool(false);
     EXIT();
@@ -275,7 +275,7 @@ void Step::vSocketRecvObject(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the details about the received object
   
-  Object* pObject = reinterpret_cast<Object*>(&xObjectHeader);
+  Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
 
@@ -375,11 +375,11 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // receiver the object header
   
-  char xObjectHeader[sizeof(Object)+C_1K];
+  char caObjectHeader[sizeof(Object)+C_1K];
   i8 nObjectBytes = sizeof(Object);
   SysCall oSysCall;
   
-  bool bResult = pSocket->bRecvBytes(xObjectHeader,nObjectBytes, oSysCall);
+  bool bResult = pSocket->bRecvBytes(caObjectHeader,nObjectBytes, oSysCall);
   if (! bResult) {
     mpTask->m_pDataStack->vPushBool(false);
     EXIT();
@@ -389,7 +389,7 @@ void Step::vSocketRecvObject_LowMem(MP_Task mpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the details about the received object
   
-  Object* pObject = reinterpret_cast<Object*>(&xObjectHeader);
+  Object* pObject = reinterpret_cast<Object*>(&caObjectHeader);
   eCN eClass = pObject->eClass();
   i8 nObjectSize = giClassSize[eClass];
   

@@ -372,8 +372,8 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
   }
   
   if (uMicro) {
-    char sFraction[16];
-    StrLib::vFormatFraction(sFraction,uMicro,6);
+    char caFraction[16];
+    StrLib::vFormatFraction(caFraction,uMicro,6);
     
     StrLib::vSprint(aDst,"TIMESTAMP '%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s'%c"_Stz,
                          (i8)aTsp->x.m_uYear,
@@ -382,7 +382,7 @@ void Tsp::vSprint(Stz* aDst, Stz* aSrc)
                          (i8)aTsp->x.m_uHour,
                          (i8)aTsp->x.m_uMinute,
                          (i8)aTsp->x.m_uSecond,
-                         sFraction,
+                         caFraction,
                          '\0');
     return;
   }
@@ -412,8 +412,8 @@ void Tsp::vSprintEscaped(Stz* aDst, Stz* aSrc)
   }
   
   if (uMicro) {
-    char sFraction[16];
-    StrLib::vFormatFraction(sFraction,uMicro,6);
+    char caFraction[16];
+    StrLib::vFormatFraction(caFraction,uMicro,6);
 
     StrLib::vSprint(aDst,"%02lld-%02lld-%02lld %02lld:%02lld:%02lld.%s%c"_Stz,
                          (i8)aTsp->x.m_uYear,
@@ -422,7 +422,7 @@ void Tsp::vSprintEscaped(Stz* aDst, Stz* aSrc)
                          (i8)aTsp->x.m_uHour,
                          (i8)aTsp->x.m_uMinute,
                          (i8)aTsp->x.m_uSecond,
-                         sFraction,
+                         caFraction,
                          '\0');
     return;
   }

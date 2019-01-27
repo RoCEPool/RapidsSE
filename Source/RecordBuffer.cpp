@@ -109,7 +109,7 @@ char* RecordBuffer::aFirstRecord(void)
   if (m_nUsedBytes == 0)
     return nullptr;
   
-  char* aFirst = &m_cArea[0];
+  char* aFirst = &m_caArea[0];
   
   return aFirst;
 }
@@ -124,7 +124,7 @@ void RecordBuffer::vInit(void)
   m_nRecords   = 0;
   m_nUsedBytes = 0;
   m_nFreeBytes = C_SIZE_LARGE_OBJECT - C_1KB;
-  //m_cArea
+  //m_caArea
   
   //_checkInitialised_(CN_RECORDBUFFER);
 }
@@ -142,7 +142,7 @@ char* RecordBuffer::aNextRecord(char* aCurrentRecord)
   
   RASSERT(C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes == m_nUsedBytes);
   
-  if ((char*)aNext >= (char*)&m_cArea[m_nUsedBytes])
+  if ((char*)aNext >= (char*)&m_caArea[m_nUsedBytes])
     return nullptr;
   
   return aNext;
@@ -209,7 +209,7 @@ char* RecordBuffer::aAllotSpace(i8 nBytes)
   
   RASSERT(C_SIZE_LARGE_OBJECT - C_1KB - m_nFreeBytes == m_nUsedBytes);
   
-  char* aRecord = &m_cArea[m_nUsedBytes];
+  char* aRecord = &m_caArea[m_nUsedBytes];
   
   m_nRecords++;
   m_nFreeBytes -= nBytes;

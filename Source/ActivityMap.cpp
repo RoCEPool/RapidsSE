@@ -518,16 +518,16 @@ void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
-  char aMark[1024];
+  char caMark[1024];
   
-  vsnprintf(aMark,sizeof(aMark)-1,aFormat->aChar(),xArgs);
+  vsnprintf(caMark,sizeof(caMark)-1,aFormat->aChar(),xArgs);
   
   ActivityMark* pActivityMark = pNewActivityMark();
   
   if (! pActivityMark)
     return;
   
-  pActivityMark->vWrite(iJobId,aMark);
+  pActivityMark->vWrite(iJobId,caMark);
 }
 
 /*----------------------------------------------------------------------------*/
