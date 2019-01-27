@@ -19,8 +19,6 @@ PromptNote mPromptNote_giveMem (
   "fun help"_Stz        // help
 );
 
-extern Buffer* gpTakenBuffers;
-
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
@@ -35,6 +33,8 @@ bool Prompt::bPrompt_giveMem(SePrompt* pPrompt)
     
     gpBufferPool->vFree(pBuffer);
   }
+  
+  gpAttachMap->m_iTakenBytes = 0;
   
   return true;
 }

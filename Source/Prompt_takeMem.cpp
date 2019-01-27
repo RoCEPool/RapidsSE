@@ -44,6 +44,8 @@ bool Prompt::bPrompt_takeMem(SePrompt* pPrompt)
     
     Buffer** ppNextBuffer = (Buffer**)gpAttachMap->m_pTakenBuffers->aDataArea();
     *ppNextBuffer = p2ndBuffer;
+    
+    gpAttachMap->m_iTakenBytes += C_SIZE_POOL_BUFFER;
   }
   
   return true;

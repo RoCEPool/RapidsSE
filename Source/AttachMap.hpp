@@ -25,6 +25,7 @@ namespace StorageEngine
   
     BufferPool*   m_pBufferPool;
     Buffer*       m_pTakenBuffers;
+    i8            m_iTakenBytes;
 
     CarryOver*    m_pCarryOver;
   
