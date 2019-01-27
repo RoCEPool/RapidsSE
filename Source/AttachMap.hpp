@@ -24,7 +24,8 @@ namespace StorageEngine
     bool          m_bBootError;
   
     BufferPool*   m_pBufferPool;
-  
+    Buffer*       m_pTakenBuffers;
+
     CarryOver*    m_pCarryOver;
   
     HeapMem       m_xHeapMem;

@@ -3,6 +3,9 @@
 /*============================================================================*/
 
 #include "Prompt.h"
+#include "StorageEngine.h"
+
+extern AttachMap*   gpAttachMap;
 
 PromptNote mPromptNote_takeMem (
   "Prompt_takeMem"_Stz, // name of the prompt function
@@ -15,8 +18,6 @@ PromptNote mPromptNote_takeMem (
   true,                 // visible
   "fun help"_Stz        // help
 );
-
-Buffer* gpTakenBuffers = nullptr;
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
@@ -38,10 +39,10 @@ bool Prompt::bPrompt_takeMem(SePrompt* pPrompt)
   
   while (gpBufferPool->nFreeCount() >= C_LOW_BUFFERS + nSpare) {
 
-    Buffer* p2ndBuffer  = gpTakenBuffers;
-    gpTakenBuffers = gpBufferPool->pAllocOtherBuffer();
+    Buffer* p2ndBuffer  = gpAttachMap->m_pTakenBuffers;
+    gpAttachMap->m_pTakenBuffers = gpBufferPool->pAllocOtherBuffer();
     
-    Buffer** ppNextBuffer = (Buffer**)gpTakenBuffers->aDataArea();
+    Buffer** ppNextBuffer = (Buffer**)gpAttachMap->m_pTakenBuffers->aDataArea();
     *ppNextBuffer = p2ndBuffer;
   }
   
