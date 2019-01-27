@@ -114,11 +114,10 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
   if (! bFound) {
     return nullptr;
   }
-  
-  pCommandProcessor->vPreJob(pSession);
-  
-  Job* pJob = pCommandProcessor->pJob();
-  if (!pJob) {
+  JobClass* pJobClass = pCommandProcessor->pJobClass();
+    
+  Job* pJob = pJobClass->pPreJob(pSession);
+  if (! pJob) {
     return nullptr;
   }
   
@@ -128,7 +127,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
   
   // run post ?
   if (bPostJob)
-    pCommandProcessor->vPostJob(pSession);
+    pJobClass->vPostJob(pSession,pJob);
   
   return pJob;
 }
