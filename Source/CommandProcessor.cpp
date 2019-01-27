@@ -159,21 +159,6 @@ bool CommandProcessor::bBlankLine(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt to find job class for command                                      */
-/*----------------------------------------------------------------------------*/
-bool CommandProcessor::bFindJobClass(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  Stz* aCommand1 = pTkn(0)->aText();
-  Stz* aCommand2 = pTkn(1)->aText();
-  
-  m_pJobClass = JobClass::pFind(aCommand1, aCommand2);
-  
-  return m_pJobClass ? true : false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
 void CommandProcessor::vGetCommand(void)
@@ -302,16 +287,6 @@ void CommandProcessor::vJob(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
   
   m_pJob = pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get job class                                                              */
-/*----------------------------------------------------------------------------*/
-JobClass* CommandProcessor::pJobClass(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  return m_pJobClass;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -108,14 +108,20 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
   
   ApiState::vMarkApiLoc(pSession,101);
   
-  pCommandProcessor->vTokenise(sCommand);
+//  bool bFound = pCommandProcessor->bFindJobClass();
+//  if (! bFound) {
+//    return nullptr;
+//  }
+//  JobClass* pJobClass = pCommandProcessor->pJobClass();
   
-  bool bFound = pCommandProcessor->bFindJobClass();
-  if (! bFound) {
+  pCommandProcessor->vTokenise(sCommand);
+  Stz* aCommand1 = pCommandProcessor->pTkn(0)->aText();
+  Stz* aCommand2 = pCommandProcessor->pTkn(1)->aText();
+  
+  JobClass* pJobClass = JobClass::pFind(aCommand1, aCommand2);
+  if (! pJobClass)
     return nullptr;
-  }
-  JobClass* pJobClass = pCommandProcessor->pJobClass();
-    
+  
   Job* pJob = pJobClass->pPreJob(pSession);
   if (! pJob) {
     return nullptr;
@@ -123,6 +129,7 @@ Job* Api::pExecuteCommand(Session* pSession, Stz* sCommand,
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // spawn and wait for job
+  
   Api::vSpawnJobAndWait(pSession, pJob);
   
   // run post ?

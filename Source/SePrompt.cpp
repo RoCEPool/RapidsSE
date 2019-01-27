@@ -313,11 +313,11 @@ void SePrompt::vDeleteJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
-  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
-  JobClass* pJobClass = pCommandProcessor->pJobClass();
+  //CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  //JobClass* pJobClass = pCommandProcessor->pJobClass();
   
   // call the job delete function
-  pJobClass->vDeleteJob(m_pSession,m_pJob);
+  m_pJobClass->vDeleteJob(m_pSession,m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -359,11 +359,15 @@ bool SePrompt::bFindJobClass(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  Stz* aCommand1 = pTkn(0)->aText();
+  Stz* aCommand2 = pTkn(1)->aText();
   
-  bool bFindJobClass = pCommandProcessor->bFindJobClass();
+  m_pJobClass = JobClass::pFind(aCommand1, aCommand2);
+
+  if (! m_pJobClass)
+    return false;
   
-  return bFindJobClass;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -518,13 +522,13 @@ void SePrompt::vPostJob(void)
 
   RASSERT(JS_RUNNING == m_pJob->m_eState);
   
-  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  //CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
   //pCommandProcessor->vPostJob(m_pSession);
  
-  JobClass* pJobClass = pCommandProcessor->pJobClass();
+  //JobClass* pJobClass = pCommandProcessor->pJobClass();
 
-  pJobClass->vPostJob(m_pSession,m_pJob);
+  m_pJobClass->vPostJob(m_pSession,m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -534,13 +538,13 @@ void SePrompt::vPreJob(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+  //CommandProcessor* pCommandProcessor = this->pCommandProcessor();
 
-  JobClass* pJobClass = pCommandProcessor->pJobClass();
+  //JobClass* pJobClass = pCommandProcessor->pJobClass();
 
   //pCommandProcessor->vPreJob(m_pSession);
   
-  m_pJob = pJobClass->pPreJob(m_pSession);
+  m_pJob = m_pJobClass->pPreJob(m_pSession);
 }
 
 /*----------------------------------------------------------------------------*/

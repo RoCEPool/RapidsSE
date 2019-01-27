@@ -35,13 +35,11 @@ namespace Interface
     bool bTokenCheck(i8 nTokens);
 
     bool bBlankLine(void);
-    bool bFindJobClass(void);
     void vGetCommand(void);
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
     Job* pJob(void);
     void vJob(Job* pJob);
-    JobClass* pJobClass(void);
     bool bTestFile(Stz* aPath);
 
     Token* pTkn(i8 i_Token);
