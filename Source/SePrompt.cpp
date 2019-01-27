@@ -519,7 +519,11 @@ void SePrompt::vPostJob(void)
   
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
   
-  pCommandProcessor->vPostJob(m_pSession);
+  //pCommandProcessor->vPostJob(m_pSession);
+ 
+  JobClass* pJobClass = pCommandProcessor->pJobClass();
+
+  pJobClass->vPostJob(m_pSession,m_pJob);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -530,10 +534,12 @@ void SePrompt::vPreJob(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   CommandProcessor* pCommandProcessor = this->pCommandProcessor();
+
+  JobClass* pJobClass = pCommandProcessor->pJobClass();
+
+  //pCommandProcessor->vPreJob(m_pSession);
   
-  pCommandProcessor->vPreJob(m_pSession);
-  
-  m_pJob = pCommandProcessor->pJob();
+  m_pJob = pJobClass->pPreJob(m_pSession);
 }
 
 /*----------------------------------------------------------------------------*/

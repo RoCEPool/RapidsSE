@@ -42,8 +42,6 @@ namespace Interface
     Job* pJob(void);
     void vJob(Job* pJob);
     JobClass* pJobClass(void);
-    void vPostJob(Session* pSession);
-    void vPreJob(Session* pSession);
     bool bTestFile(Stz* aPath);
 
     Token* pTkn(i8 i_Token);

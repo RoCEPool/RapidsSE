@@ -315,27 +315,6 @@ JobClass* CommandProcessor::pJobClass(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end a job                                                                  */
-/*----------------------------------------------------------------------------*/
-void CommandProcessor::vPostJob(Session* pSession)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  // call the job post function
-  m_pJobClass->vPostJob(pSession,m_pJob);
-}
-
-/*----------------------------------------------------------------------------*/
-/* potentially execute a job                                                  */
-/*----------------------------------------------------------------------------*/
-void CommandProcessor::vPreJob(Session* pSession)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  m_pJob = m_pJobClass->pPreJob(pSession);
-}
-
-/*----------------------------------------------------------------------------*/
 /* test for command file                                                      */
 /*----------------------------------------------------------------------------*/
 bool CommandProcessor::bTestFile(Stz* aFileName)
