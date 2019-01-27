@@ -403,19 +403,23 @@ void Engine::vMonitorProfile(s48K& sPortrait)
   s32 sRegionMag;
   Magnitudes::vByteMag(gpAttachMap->m_iRegionSize,sRegionMag);
 
-  i8 iPercentFree =gpAttachMap->m_pBufferPool->iFreePercent();
+  i8 iPercentFree = gpAttachMap->m_pBufferPool->iFreePercent();
+  Stz* aNodeName  = gpAttachMap->m_pGrid->pGetNode(gxArguments.m_iThisNode)->aNodeName();
+  bool bStarted   = gpAttachMap->m_pGrid->bHasStarted();
   
-  sPortrait.vSprint("Profile (%s): node %s region %s free %lld%% uptime %llds \n"_Stz,
-#ifdef _DEBUG
-                    "debug"_Stz,
-#else
-                    "release"_Stz,
-#endif
+  sPortrait.vSprint("Node %s region %s free %lld%% cluster %s uptime %llds (%s)\n"_Stz,
 
-                    gpAttachMap->m_pGrid->pGetNode(gxArguments.m_iThisNode)->aNodeName(),
+                    aNodeName,
                     sRegionMag.aStz(),
                     iPercentFree,
-                    iUpTime
+                    bStarted ? "started" : "not-started",
+                    iUpTime,
+                    
+#ifdef _DEBUG
+                    "debug"_Stz
+#else
+                    "release"_Stz
+#endif
                     );
 }
 
