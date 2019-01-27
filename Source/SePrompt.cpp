@@ -56,6 +56,7 @@ SePrompt::SePrompt(void)
 
   ASSERT(EC_NONE == eResult);
 
+  m_pJobClass = nullptr;
   m_pJob = nullptr;
 
   // m_oTimer

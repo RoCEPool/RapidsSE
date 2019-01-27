@@ -28,7 +28,8 @@ namespace Prompt
     bool     m_bNoWait;    // dont wait for command
     bool     m_bMarked;    // mark the job
 
-    Job*     m_pJob;       // job
+    JobClass* m_pJobClass; // job class
+    Job*      m_pJob;      // job
   
     // must be last
     Footer m_xFooter;
