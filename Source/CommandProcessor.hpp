@@ -11,8 +11,6 @@ namespace Interface
   {
   private:
     Tokeniser* m_pTokeniser; // input stream tokeniser
-    JobClass*  m_pJobClass;  // job class
-    Job*       m_pJob;       // job
     
     // must be last
     Footer m_xFooter;
@@ -38,8 +36,6 @@ namespace Interface
     void vGetCommand(void);
     void vGetCommandArgument(void);
     void vGetCommandInput(void);
-    Job* pJob(void);
-    void vJob(Job* pJob);
     bool bTestFile(Stz* aPath);
 
     Token* pTkn(i8 i_Token);

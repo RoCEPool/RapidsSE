@@ -9,6 +9,10 @@ extern Arguments   gxArguments;
 extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 CommandProcessor* Interface::_pCommandProcessor(void* aAddr)
@@ -60,10 +64,7 @@ CommandProcessor::CommandProcessor(void)
   m_pTokeniser->vLineMode(true);
   m_pTokeniser->vNormal(true);
 
-  
-  m_pJobClass = nullptr;
-  m_pJob = nullptr;
-  
+    
   _checkInitialised_(CN_COMMANDPROCESSOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
@@ -79,6 +80,10 @@ CommandProcessor::~CommandProcessor(void) noexcept(false)
   delete m_pTokeniser;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* potentially execute a command file                                         */
@@ -267,26 +272,6 @@ void CommandProcessor::vGetCommandInput(void)
     break;
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* get job                                                                    */
-/*----------------------------------------------------------------------------*/
-Job* CommandProcessor::pJob(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  return m_pJob;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set job                                                                    */
-/*----------------------------------------------------------------------------*/
-void CommandProcessor::vJob(Job* pJob)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_COMMANDPROCESSOR,_FOOTER_);
-  
-  m_pJob = pJob;
 }
 
 /*----------------------------------------------------------------------------*/
