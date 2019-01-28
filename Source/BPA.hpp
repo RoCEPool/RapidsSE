@@ -12,6 +12,8 @@ namespace Pool
   public:
     
     static void vBufferDump(Buffer* pBuffer);
+    static void vEpochDump(void);
+    static void vEpochTake(void);
     static void vHeapDump(Heap* pBuffer);
     static void vHeapDump(Heap* pBuffer, i8 iEpoch);
     static void vObjectList(void);
