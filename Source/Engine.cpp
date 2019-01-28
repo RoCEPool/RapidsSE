@@ -389,6 +389,12 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   gpAttachMap->m_pApiState->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
+  if (1 == *gpAttachMap->m_ziMonitorTake)
+    BPA::vEpochTake();
+  else {
+    BPA::vEpochDump(sRapidsPortrait);
+    BPA::vEpochTake();
+  }
 }
 
 /*----------------------------------------------------------------------------*/

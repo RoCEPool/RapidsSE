@@ -267,15 +267,11 @@ bool Job_Monitor::bTake(void)
   
   s48K sRapidsPortrait;
   Engine::vMonitorPortrait(sRapidsPortrait);
+  
   m_pOutFile->vPrint("%s\n"_Stz,sRapidsPortrait.aStz());
-  
-  if (1 == *gpAttachMap->m_ziMonitorTake)
-    BPA::vEpochTake();
-  else {
-    BPA::vEpochDump();
-    BPA::vEpochTake();
-  }
-  
+
+  ActivityMap::vMarkString(-1,sRapidsPortrait);
+
   return true;
 }
 

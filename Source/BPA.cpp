@@ -32,18 +32,19 @@ void BPA::vBufferDump(Buffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 /* dump all objects in given heap                                             */
 /*----------------------------------------------------------------------------*/
-void BPA::vEpochDump(void)
+void BPA::vEpochDump(s48K& sPortrait)
 {
   i8 iSnapshotObjects[CN_ENUMS];
   
-  vTrace("\n"_Stz);
-  vTrace("%sWords created since last epoch:\n"_Stz,Stz::aTab(1));
+  //vTrace("\n"_Stz);
+  //vTrace("%sWords created since last epoch:\n"_Stz,Stz::aTab(1));
   
   BPA::vWordList(gpAttachMap->m_iEpoch);
+  
   BPA::vObjectSnapshot(&iSnapshotObjects[0]);
   
-  vTrace("\n%sObjects created since last epoch:\n\n"_Stz,Stz::aTab(1));
-  
+  sPortrait.vSprintCat("Objects created since last epoch:\n"_Stz);
+
   for (i8 i_Object = 0 ; i_Object < CN_ENUMS; i_Object++) {
     
     eCN eClass = (eCN)i_Object;
@@ -51,12 +52,13 @@ void BPA::vEpochDump(void)
     if (iSnapshotObjects[eClass] == gpAttachMap->m_nObjectsInPool[eClass])
       continue;
     
-    vTrace("%s  %12s (eCN %3lld) %-6lld \n"_Stz,
-           Stz::aTab(1),
-           aCN[eClass],
-           eClass,
-           iSnapshotObjects[eClass] - gpAttachMap->m_nObjectsInPool[eClass]
-           );
+    sPortrait.vSprintCat(
+      "%s  %12s (eCN %3lld) %-6lld \n"_Stz,
+      Stz::aTab(1),
+      aCN[eClass],
+      eClass,
+      iSnapshotObjects[eClass] - gpAttachMap->m_nObjectsInPool[eClass]
+      );
   }
 
 }

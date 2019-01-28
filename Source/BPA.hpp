@@ -12,13 +12,14 @@ namespace Pool
   public:
     
     static void vBufferDump(Buffer* pBuffer);
-    static void vEpochDump(void);
+    static void vEpochDump(s48K& sPortrait);
     static void vEpochTake(void);
     static void vHeapDump(Heap* pBuffer);
     static void vHeapDump(Heap* pBuffer, i8 iEpoch);
     static void vObjectList(void);
     static void vObjectSummary(void);
     static void vObjectSnapshot(i8* pCountObjects);
+    static void vMonitorPortrait(s48K& sPortrait);
     static void vPoolAnalyze(void);
     static void vPoolDump(void);
     static i8   iPoolFree(void);

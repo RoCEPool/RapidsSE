@@ -62,7 +62,11 @@ void Step::vBpEpochDump(MP_Task mpTask)
 {
   ENTRY("vBpEpochDump"_Stz);
   
-  BPA::vEpochDump();
+  s48K sPortrait;
+  
+  BPA::vEpochDump(sPortrait);
+  
+  vTrace("%s\n"_Stz,sPortrait.aStz());
 
   EXIT();
 }
