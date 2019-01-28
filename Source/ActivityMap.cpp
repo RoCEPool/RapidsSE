@@ -276,6 +276,30 @@ void ActivityMap::vMarkApiExit(i8 eApiCall, i8 iJobId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* write a multi-line string                                                  */
+/*----------------------------------------------------------------------------*/
+void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
+{
+  if ( ! gpActivityMap )
+    return;
+  
+  s4K sLine;
+  char* aCharAdr = sString.aChar();
+
+  // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
+  gpActivityMap->vGrabLock();
+  
+  while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
+    ActivityMark* pActivityMark = gpActivityMap->pNewActivityMark_NL();
+    pActivityMark->vWrite(iJobId,sLine.aChar());
+  }
+  
+  gpActivityMap->vDropLock();
+  // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* monitor profile                                                            */
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMonitorPortrait(s48K& sPortrait)
@@ -397,7 +421,7 @@ ActivityMark* ActivityMap::pNewActivityMark(void)
   vGrabLock();
   
   ActivityMark* pActivityMark = pNewActivityMark_NL();
-    
+  
   vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
 

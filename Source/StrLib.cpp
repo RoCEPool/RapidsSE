@@ -436,6 +436,36 @@ char* StrLib::sDupeStripped(const char* s)
 /*----------------------------------------------------------------------------*/
 /* bEnds: test if string ends with given char                                 */
 /*----------------------------------------------------------------------------*/
+bool StrLib::bEachLine(char** aacInputChar, char* acLineChar)
+{
+  char* acInputChar = *aacInputChar;
+  
+  while (*acInputChar) {
+    
+    if ('\n' == *acInputChar) {
+      *acLineChar++ = '\0';
+      break;
+    }
+    
+    if ('\0' == *acInputChar) {
+      if (acInputChar == *aacInputChar)
+        return false;
+      else {
+        *acLineChar++ = '\0';
+        break;
+      }
+    }
+    
+    *acLineChar++ = *acInputChar++;
+  }
+  
+  *aacInputChar = acInputChar;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bEnds: test if string ends with given char                                 */
+/*----------------------------------------------------------------------------*/
 bool StrLib::bEnds(const char* s, const char c)
 {
   const char* z = sLast(s);

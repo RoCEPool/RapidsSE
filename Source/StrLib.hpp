@@ -73,7 +73,8 @@ namespace Base
     static void  vDump(const char* s, i8 nMax, const char* pSuffix);
     static char* sDupe(const char* s);
     static char* sDupeStripped(const char* s);
-    
+  
+    static bool  bEachLine(char** ps, char* caLine);
     static bool  bEnds(const char* sArg, const char cEnd);
     static bool  bEnds(const char* sArg, const char* sEnd);
     static void  vEscape(const char* sArg, char* sEscaped);
