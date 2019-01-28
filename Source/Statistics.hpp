@@ -8,6 +8,8 @@ namespace Measurement
   class Statistics : public Object
   {
   public:
+  
+  i8 m_nMonitorTake;
 
   struct {
     i8 m_nBeginInsert;

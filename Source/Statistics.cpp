@@ -45,30 +45,6 @@ Statistics::Statistics(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STATISTICS,_FOOTER_);
 
-//  Api.m_nBeginInsertTable = 1;
-//  Api.m_nBeginSubInserter = 1;
-//  Api.m_nCheckLibraryVersion = 1;
-//  Api.m_nCopyBuffer = 1;
-//  Api.m_nEndInsertJobs = 1;
-//  Api.m_nEndJobs = 1;
-//  Api.m_nExecCmdStr = 1;
-//  Api.m_nExecuteCommand = 1;
-//  Api.m_nFetchNextBuffer = 1;
-//  Api.m_nGetRecordBuffer = 1;
-//  Api.m_nGetErrorMessage = 1;
-//  Api.m_nGetRow = 1;
-//  Api.m_nGetRowCount = 1;
-//  Api.m_nGetRowCountTableColumn = 1;
-//  Api.m_nGetRowTableColumn = 1;
-//  Api.m_nInsertRow = 1;
-//  Api.m_nInsertRows = 1;
-//  Api.m_nLoadResult = 1;
-//  Api.m_nPoolOpen = 1;
-//  Api.m_nScanNextRow = 1;
-//  Api.m_nSessionDelete = 1;
-//  Api.m_nSessionInvalid = 1;
-//  Api.m_nSessionNew = 1;
-
   _checkInitialised_(CN_STATISTICS);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STATISTICS,_FOOTER_);

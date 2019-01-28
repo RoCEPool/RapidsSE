@@ -307,7 +307,8 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   
   Now oNow;
   
-  sRapidsPortrait.vSprint("\nSystem Monitor %s\n"_Stz,
+  sRapidsPortrait.vSprint("\nSystem Monitor #%lld %s\n"_Stz,
+                          gpAttachMap->m_oStatistics.m_nMonitorTake++,
                           oNow.sFormatted());
   sRapidsPortrait.vConcat("------------------------------------------------------\n"_Stz);
 
