@@ -26,6 +26,7 @@ namespace StorageEngine
     BufferPool*   m_pBufferPool;
     Buffer*       m_pTakenBuffers;
     i8            m_nTakenBytes;
+    i8            m_nObjectsInPool[CN_ENUMS];
 
     CarryOver*    m_pCarryOver;
   

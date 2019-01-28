@@ -4,8 +4,8 @@
 
 #include "StorageEngine.h"
 
-extern AttachMap* gpAttachMap;
-extern BufferPool*     gpBufferPool;
+extern AttachMap*   gpAttachMap;
+extern BufferPool*  gpBufferPool;
 
 i8 giCountObjects[CN_ENUMS];
 

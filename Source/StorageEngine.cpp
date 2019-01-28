@@ -49,6 +49,9 @@ void StorageEngine::vCheckAllAssumptions(void)
 /*----------------------------------------------------------------------------*/
 void StorageEngine::vCheckAssumptions(void)
 {
+  
+  ASSERT(sizeof(AttachMap) < C_SIZE_POOL_BUFFER);
+  
   // No of entries in eCN , aCN and gpDump should match
   i8 iEntriesECN = CN_ENUMS;
   i8 iEntriesPCN = 0;
