@@ -436,14 +436,15 @@ char* StrLib::sDupeStripped(const char* s)
 /*----------------------------------------------------------------------------*/
 /* bEnds: test if string ends with given char                                 */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bEachLine(char** aacInputChar, char* acLineChar)
+bool StrLib::bEachLine(char** aacInputChar, char* acOutputChar)
 {
   char* acInputChar = *aacInputChar;
   
-  while (*acInputChar) {
+  for (;;) {
     
     if ('\n' == *acInputChar) {
-      *acLineChar++ = '\0';
+      *acOutputChar++ = '\0';
+      acInputChar++;
       break;
     }
     
@@ -451,12 +452,12 @@ bool StrLib::bEachLine(char** aacInputChar, char* acLineChar)
       if (acInputChar == *aacInputChar)
         return false;
       else {
-        *acLineChar++ = '\0';
+        *acOutputChar++ = '\0';
         break;
       }
     }
     
-    *acLineChar++ = *acInputChar++;
+    *acOutputChar++ = *acInputChar++;
   }
   
   *aacInputChar = acInputChar;

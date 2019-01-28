@@ -290,6 +290,7 @@ void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
   gpActivityMap->vGrabLock();
   
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
+    //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
     ActivityMark* pActivityMark = gpActivityMap->pNewActivityMark_NL();
     pActivityMark->vWrite(iJobId,sLine.aChar());
   }
