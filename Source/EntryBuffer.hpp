@@ -21,7 +21,7 @@ namespace DBobjects
 
   protected:
   
-    Lock  m_oLock;       // lock
+    Lock  m_okLock;       // lock
     bool  m_bIsLast;     // is this the last buffer in sequence
   
     EntryBuffer* m_pHigherBuffer; // higher level buffer that has entries

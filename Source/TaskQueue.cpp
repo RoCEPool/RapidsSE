@@ -55,7 +55,7 @@ TaskQueue::TaskQueue(eQK eKind, bool bUniqueKey, CompareFp fpCompare)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
   m_eKind = eKind;
-  m_oLock.vInitLock(LK_TASK_QUEUE);
+  m_okLock.vInitLock(LK_TASK_QUEUE);
   m_pTaskSkipList = new SkipListNL(bUniqueKey, fpCompare);
   
   _checkInitialised_(CN_TASKQUEUE);
@@ -82,7 +82,7 @@ void TaskQueue::vAddTask(Task* pTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
 
   bool bInserted = m_pTaskSkipList->bInsert(pTask);
   ASSERT(bInserted);
@@ -95,7 +95,7 @@ void TaskQueue::vAssertItems(i8 nItems)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
   ASSERT(nItems == m_pTaskSkipList->nObjects());
   
@@ -129,7 +129,7 @@ void TaskQueue::vDropLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,7 +139,7 @@ void TaskQueue::vGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +149,7 @@ bool TaskQueue::bGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  return m_oLock.bGrabWrite();
+  return m_okLock.bGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +159,7 @@ bool TaskQueue::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKQUEUE,_FOOTER_);
   
-  return m_oLock.bIsLocked();
+  return m_okLock.bIsLocked();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,7 +171,7 @@ Task* TaskQueue::pPeekTask(void)
   
   Task* pTask = nullptr;
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
   SkipNode* pNode = m_pTaskSkipList->pFirst(0);
   if (pNode)
@@ -193,7 +193,7 @@ Task* TaskQueue::pPopTask(void)
   bool bRemoved;
   Task* pTask = nullptr;
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
   SkipNode* pNode = m_pTaskSkipList->pFirst(0);
   if (pNode) {
@@ -286,7 +286,7 @@ void TaskQueue::vRemoveTask(Task* pTask)
   
   bool bRemoved;
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
   bRemoved = m_pTaskSkipList->bRemove(pTask);
 }

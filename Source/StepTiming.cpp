@@ -41,7 +41,7 @@ StepTiming::StepTiming(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPTIMING,_FOOTER_);
   
-  m_oLock.vInitLock(LK_STEP_ARRAY);
+  m_okLock.vInitLock(LK_STEP_ARRAY);
   m_iNext = 0;
   //m_xStepAccum[]
   
@@ -76,7 +76,7 @@ void StepTiming::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 StepAccum* StepTiming::pAllocAccum(Stz* aStepNm)
 {
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
 
   i8 iAccum = m_iNext++;
    
@@ -92,7 +92,7 @@ StepAccum* StepTiming::pAllocAccum(Stz* aStepNm)
 /*----------------------------------------------------------------------------*/
 void StepTiming::vDropWrite(void)
 {
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +100,7 @@ void StepTiming::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 void StepTiming::vGrabWrite(void)
 {
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,12 +108,12 @@ void StepTiming::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 void StepTiming::vReset(void)
 {
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
     m_xStepAccum[i_Step].vReset();
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,13 +135,13 @@ void StepTiming::vWrite(void)
     return;
   }
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   oFile.vPrint("Step, Invoked, Step Total, Per Invoke\n"_Stz);
   for (i8 i_Step = 0; i_Step < m_iNext; i_Step++)
     m_xStepAccum[i_Step].vPrint(oFile);
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
   
   vTrace("Written: %s\n"_Stz,oFile.sFilePath().aStz());
   

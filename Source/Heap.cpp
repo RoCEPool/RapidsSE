@@ -48,7 +48,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_iObjectSize  = iObjectSize;
-  m_oLock.vInitLock(LK_HEAP);
+  m_okLock.vInitLock(LK_HEAP);
   m_iAllocCount  = 0;
   m_iBufferCount = 0;
   m_pFirstBuffer = nullptr;
@@ -160,7 +160,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   //vVerify();
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
 
   // check for free chunks in the heap and extend if none
   if (! m_pFreeHead ) {
@@ -168,7 +168,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       // error: we have run out of space
       vTrace("RUNNING OUT OF MEMORY!!!\n"_Stz);
       vWarn("Heap::pAllocObject: unable to extend heap\n"_Stz);
-      m_oLock.vDropWrite();
+      m_okLock.vDropWrite();
       return nullptr;
     }
   }
@@ -177,7 +177,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   m_iAllocCount++;
 
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
   
 #ifdef __DEBUG_CHECKS
   MemLib::vScribble(pObject,m_iObjectSize,eAllocClass);
@@ -214,7 +214,7 @@ void Heap::vAnalyse(i8 iCounts[])
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
     iCounts[i_Index] = 0;
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   HeapBuffer* pHeapBuffer = m_pFirstBuffer;
   while (pHeapBuffer) {
@@ -222,7 +222,7 @@ void Heap::vAnalyse(i8 iCounts[])
     pHeapBuffer = pHeapBuffer->pNextBuffer();
   }
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,8 +242,8 @@ void Heap::vDropLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(m_oLock.bIsLocked());
-  m_oLock.vDropWrite();
+  ASSERT(m_okLock.bIsLocked());
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,7 +253,7 @@ HeapBuffer* Heap::pFirstBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
   return m_pFirstBuffer;
 }
@@ -285,13 +285,13 @@ void Heap::vFreeObject(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   vPushFree(reinterpret_cast<FreeChunk*>(pObject),pObject->eClass());
   
   m_iAllocCount--;
 
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
   
   //vVerify();
 }
@@ -303,8 +303,8 @@ void Heap::vGrabLock()
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(!m_oLock.bIsLocked());
-  m_oLock.vGrabWrite();
+  ASSERT(!m_okLock.bIsLocked());
+  m_okLock.vGrabWrite();
   
 }
 
@@ -324,7 +324,7 @@ HeapBuffer* Heap::pNextBuffer(HeapBuffer* pBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
   return pBuffer->pNextBuffer();
 }
@@ -468,7 +468,7 @@ void Heap::vVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   HeapBuffer* pHeapBuffer = m_pFirstBuffer;
   while (pHeapBuffer) {
@@ -476,7 +476,7 @@ void Heap::vVerify(void)
     pHeapBuffer = pHeapBuffer->pNextBuffer();
   }
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

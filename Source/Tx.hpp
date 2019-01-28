@@ -34,7 +34,7 @@ namespace Transactions
   class Tx : public Object
   {
   private:
-    Lock   m_oLock;      // lock
+    Lock   m_okLock;      // lock
     i8     m_iLocalTxId; // local transaction id
     i8     m_iDistTxId;  // distributed transaction id
     eTP    m_ePhase;     // phase (executing, committing, ...)

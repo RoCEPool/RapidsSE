@@ -12,7 +12,7 @@ namespace Jobs
   public:
     Table*  m_pTable;  // table being purged
   
-    Lock    m_oLock;   // lock on output pipe (subpublish contention)
+    Lock    m_okLock;   // lock on output pipe (subpublish contention)
   
     // must be last
     Footer m_xFooter;

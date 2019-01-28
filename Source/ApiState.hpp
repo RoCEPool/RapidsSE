@@ -9,7 +9,7 @@ namespace Interface
   {
   public:
   
-    Lock m_oLock;
+    Lock m_okLock;
     i8   m_nSessionsSoFar;
     i8   m_iFirstFree;
   

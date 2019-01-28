@@ -15,7 +15,7 @@ namespace Forth
     bool   m_bFrozen;      // no more words can be added?
     Atomic m_ixRefCount;   // reference count
 
-    Lock   m_oLock;        // lock over:
+    Lock   m_okLock;        // lock over:
     Word*  m_pLastWord;    //   last word in dictionary
     i8     m_nWords;       //   number of words in dictionary
     

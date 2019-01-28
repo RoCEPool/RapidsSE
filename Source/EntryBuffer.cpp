@@ -68,7 +68,7 @@ EntryBuffer::EntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_oLock.vInitLock(LK_ENTRYBUFFER);
+  m_okLock.vInitLock(LK_ENTRYBUFFER);
   
   m_bIsLast       = false;
   
@@ -202,7 +202,7 @@ void EntryBuffer::vDropWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -212,7 +212,7 @@ void EntryBuffer::vGrabWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/

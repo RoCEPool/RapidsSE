@@ -49,9 +49,9 @@ void Step::vDstackTransfer(MP_Task mpTask)
   if ( ! mpTask->m_pDataStack->bPop(iVal) )
   THROW_INVALID_DSTACK(">DStack"_Stz);
   
-  pThatTask->m_oLock.vGrabWrite();
+  pThatTask->m_okLock.vGrabWrite();
   pThatTask->m_pDataStack->vPushI8(iVal);
-  pThatTask->m_oLock.vDropWrite();
+  pThatTask->m_okLock.vDropWrite();
   
   EXIT();
 }

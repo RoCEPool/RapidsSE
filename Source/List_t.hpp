@@ -9,7 +9,7 @@ namespace Structures
   class List_t
   {
   protected:
-    Lock    m_oLock;   // lock
+    Lock    m_okLock;   // lock
     i8      m_nCount;  // number of objects
     OBJECT* m_pHead;   // head node
     OBJECT* m_pTail;   // tail node
@@ -61,7 +61,7 @@ void* List_t<OBJECT>::operator new(size_t)
 template <class OBJECT>
 List_t<OBJECT>::List_t(void)
 {
-  m_oLock.vInitLock(LK_LIST);
+  m_okLock.vInitLock(LK_LIST);
   m_nCount = 0;
   m_pHead  = nullptr;
   m_pTail  = nullptr;
@@ -80,7 +80,7 @@ void List_t<OBJECT>::vAppend(OBJECT* mpNode)
   ASSERT(NULL == mpNode->pPrevNode());
   ASSERT(NULL == mpNode->pNextNode());
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   if (m_pTail)
     m_pTail->vNextNode(mpNode);
@@ -95,7 +95,7 @@ void List_t<OBJECT>::vAppend(OBJECT* mpNode)
   
   m_nCount++;
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,11 +113,11 @@ i8 List_t<OBJECT>::iCount(void)
 template <class OBJECT>
 OBJECT* List_t<OBJECT>::npPop(void)
 {
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   if ( ! m_pHead ) {
     ASSERT( ! m_nCount );
-    m_oLock.vDropWrite();
+    m_okLock.vDropWrite();
     return nullptr;
   }
 
@@ -138,7 +138,7 @@ OBJECT* List_t<OBJECT>::npPop(void)
     ASSERT(!m_pHead);
     ASSERT(!m_pTail)
   }
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
   
   pNode->vPrevNode(nullptr);
   pNode->vNextNode(nullptr);
@@ -157,7 +157,7 @@ void List_t<OBJECT>::vPush(OBJECT* mpNode)
   ASSERT(NULL == mpNode->pPrevNode());
   ASSERT(NULL == mpNode->pNextNode());
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   mpNode->vPrevNode(nullptr);
   mpNode->vNextNode(m_pHead);
@@ -173,7 +173,7 @@ void List_t<OBJECT>::vPush(OBJECT* mpNode)
   ASSERT(m_pHead);
   ASSERT(m_pTail)
 
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -182,7 +182,7 @@ void List_t<OBJECT>::vPush(OBJECT* mpNode)
 template <class OBJECT>
 void List_t<OBJECT>::vRemove(OBJECT* pNode)
 {
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   OBJECT* pPrev = pNode->pPrevNode();
   OBJECT* pNext = pNode->pNextNode();
@@ -201,7 +201,7 @@ void List_t<OBJECT>::vRemove(OBJECT* pNode)
   
   m_nCount--;
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
   
   pNode->vPrevNode(nullptr);
   pNode->vNextNode(nullptr);
@@ -213,7 +213,7 @@ void List_t<OBJECT>::vRemove(OBJECT* pNode)
 template <class OBJECT>
 void List_t<OBJECT>::vReadLock(void)
 {
-  m_oLock.vGrabRead();
+  m_okLock.vGrabRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,7 +222,7 @@ void List_t<OBJECT>::vReadLock(void)
 template <class OBJECT>
 void List_t<OBJECT>::vReadUnlock(void)
 {
-  m_oLock.vDropRead();
+  m_okLock.vDropRead();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -67,7 +67,7 @@ Task::Task(Job* pJob)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_oLock.vInitLock(LK_TASK);
+  m_okLock.vInitLock(LK_TASK);
   
   m_pJob         = pJob;
   
@@ -310,7 +310,7 @@ void Task::vDropLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -331,7 +331,7 @@ void Task::vGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,7 +341,7 @@ bool Task::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  bool b = m_oLock.bIsLocked();
+  bool b = m_okLock.bIsLocked();
   
   return b;
 }

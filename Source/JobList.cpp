@@ -50,7 +50,7 @@ JobList::JobList(CompareFp fpCompare, eJL eJobsList)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
   m_eJobsList = eJobsList;
-  m_oLock.vInitLock(LK_JOBS);
+  m_okLock.vInitLock(LK_JOBS);
   m_iNextJobId = gpAttachMap->m_pGrid->iThisNode() << 48;
   m_pJobsSkipList = new SkipListNL(C_UNQIUE_KEY, fpCompare);
   
@@ -97,7 +97,7 @@ void JobList::vDropLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,7 +138,7 @@ Job* JobList::pFindJob(Job* pJob__Find)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
   Job* pJobFound = reinterpret_cast<Job*>(m_pJobsSkipList->pFind((void*)pJob__Find));
   
@@ -152,7 +152,7 @@ void JobList::vGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -162,7 +162,7 @@ bool JobList::bGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  return m_oLock.bGrabWrite();
+  return m_okLock.bGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -172,7 +172,7 @@ bool JobList::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBLIST,_FOOTER_);
   
-  return m_oLock.bIsLocked();
+  return m_okLock.bIsLocked();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,7 +200,7 @@ bool JobList::bRemoveJob(Job* pJob)
   
   bool bRemoved;
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
   //vTrace("removing job %p %s %lld\n"_Stz, pJob, aCN[pJob->eClass()], pJob->iJobId());
   

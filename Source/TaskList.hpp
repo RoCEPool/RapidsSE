@@ -14,7 +14,7 @@ namespace Tasks
   {
   private:
    eQK  m_eKind;
-   Lock m_oLock;
+   Lock m_okLock;
   
     // must be last
     Footer m_xFooter;

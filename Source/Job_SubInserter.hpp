@@ -14,7 +14,7 @@ namespace Jobs
   public:
     Job_InsertTable* m_pJob_InsertTable;      // insert table job
     RecordBuffer*    m_pRecordBuffer;         // record buffer
-    Lock             m_oLock;                 // lock
+    Lock             m_okLock;                 // lock
     Atomic           m_ixRecordBuffers;       // record buffers to copy
     Atomic           m_ixCopiedBuffers;       // copied record buffers
     

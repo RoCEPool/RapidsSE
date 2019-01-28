@@ -111,7 +111,7 @@ Job_Publish::Job_Publish(Interface::Session* pSession)
 
   m_pTable = nullptr;
   
-  m_oLock.vInitLock(LK_PIPE);
+  m_okLock.vInitLock(LK_PIPE);
   
   _checkInitialised_(CN_JOB_PUBLISH);
   

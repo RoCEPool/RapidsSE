@@ -14,7 +14,7 @@ namespace Tasks
   {
   private:
     eQK         m_eKind;
-    Lock        m_oLock;
+    Lock        m_okLock;
     SkipListNL* m_pTaskSkipList; // skip list of tasks (ordered by (wakeup time))
     
     // must be last

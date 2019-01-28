@@ -9,7 +9,7 @@ namespace Transactions
   {
   private:
     
-    Lock      m_oLock;        // lock for the set
+    Lock      m_okLock;        // lock for the set
     i8        m_iNodeNo;      // this node no
     i8        m_iNextTxId;    // next tx id
     SkipListNL* m_pLocalTxList; // skip list of tx's by local tx id

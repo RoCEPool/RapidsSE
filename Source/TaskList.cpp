@@ -55,7 +55,7 @@ TaskList::TaskList(eQK eKind)
   
   m_eKind = eKind;
   
-  m_oLock.vInitLock(LK_TASK_QUEUE);
+  m_okLock.vInitLock(LK_TASK_QUEUE);
   
   _checkInitialised_(CN_TASKLIST);
 
@@ -87,7 +87,7 @@ void TaskList::vDropLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -97,7 +97,7 @@ void TaskList::vGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,7 +107,7 @@ bool TaskList::bGrabLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  return m_oLock.bGrabWrite();
+  return m_okLock.bGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ bool TaskList::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  return m_oLock.bIsLocked();
+  return m_okLock.bIsLocked();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,7 +128,7 @@ Task* TaskList::pPeekTask(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
  
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
   Task* pTask = ListNL_t<Task>::pHead();
 
@@ -142,7 +142,7 @@ Task* TaskList::pPopTask(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
   Task* pTask = ListNL_t<Task>::pPop();
 
@@ -234,7 +234,7 @@ void TaskList::vContentDump(void)
 {
   //vDump(CN_TASKLIST, this, Stz::aTab(1));
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
 
   vTrace("ITEMS %lld\n"_Stz,ListNL_t<Task>::nObjects());
   

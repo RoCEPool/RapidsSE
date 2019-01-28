@@ -51,7 +51,7 @@ ApiState::ApiState(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  m_oLock.vInitLock(LK_API_STATE);
+  m_okLock.vInitLock(LK_API_STATE);
   m_nSessionsSoFar = 0;
   m_iFirstFree = 0;
 
@@ -188,7 +188,7 @@ SessionState* ApiState::pAllocState(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   RASSERT(-1 != m_iFirstFree);
   
@@ -203,7 +203,7 @@ SessionState* ApiState::pAllocState(Session* pSession)
   
   m_nSessionsSoFar++;
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
   
   return pState;
 }
@@ -215,7 +215,7 @@ void ApiState::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
-  m_oLock.vGrabRead();
+  m_okLock.vGrabRead();
   
   vTrace("ApiState %p SessionsSoFar %lld:\n"_Stz,this,m_nSessionsSoFar);
   
@@ -227,9 +227,9 @@ void ApiState::vDump(void)
   }
   
   vTrace("  firstFree %lld\n"_Stz,m_iFirstFree);
-  vTrace("  DdlLock %llx\n"_Stz,gpAttachMap->m_oDdlLock.uLockWord());
+  vTrace("  DdlLock %llx\n"_Stz,gpAttachMap->m_okDdlLock.uLockWord());
   
-  m_oLock.vDropRead();
+  m_okLock.vDropRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,12 +242,12 @@ void ApiState::vFreeState(Session* pSession)
   SessionState* pState = pSession->m_pSessionState;
   i8 i_FreedState = pState->m_i_State;
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   pState->vInit();
   m_iFirstFree = i_FreedState;
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -274,7 +274,7 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
   sPortrait = ""_Stz;
   sPortrait.vConcat("ApiState:\n"_Stz);
   
-  m_oLock.vGrabRead();
+  m_okLock.vGrabRead();
   
   for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
     
@@ -302,7 +302,7 @@ void ApiState::vMonitorPortrait(s48K& sPortrait)
                          );
   }
   
-  m_oLock.vDropRead();
+  m_okLock.vDropRead();
   
 }
 

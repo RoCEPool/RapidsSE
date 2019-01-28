@@ -13,7 +13,7 @@ namespace DBobjects
   class TablePtn : public Object
   {
   private:
-    Lock m_oLock; // lock on the partition
+    Lock m_okLock; // lock on the partition
   
     i8 m_iPartitionId; // partition number
     bool m_bLowMemLoad;          // was low memory detected during this load

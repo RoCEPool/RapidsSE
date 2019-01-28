@@ -107,7 +107,7 @@ Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
-  m_oLock.vInitLock(LK_SUBINSERTER);
+  m_okLock.vInitLock(LK_SUBINSERTER);
   
   // set the enclosined_by to be a '
   m_oFormatters.m_bDefault = false;
@@ -175,7 +175,7 @@ void Job_SubInserter::vDropWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,7 +195,7 @@ void Job_SubInserter::vGrabWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_SUBINSERTER,_FOOTER_);
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -98,7 +98,7 @@ TablePtn::TablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  m_oLock.vInitLock(LK_PARTITION);
+  m_okLock.vInitLock(LK_PARTITION);
   m_iPartitionId = -1;
   
   m_nSubLoadersDone  = 0;
@@ -177,7 +177,7 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  ASSERT(m_oLock.bIsLocked());
+  ASSERT(m_okLock.bIsLocked());
   
 //  vTrace("m_nSubLoadersDone %lld nSubLoadersInGrid %lld\n"
 //         "m_nWriteBehindBuffers %lld m_nBuffersWritten %lld\n"_Stz,
@@ -299,8 +299,8 @@ void TablePtn::vDropRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  ASSERT(m_oLock.bIsLocked());
-  m_oLock.vDropRead();
+  ASSERT(m_okLock.bIsLocked());
+  m_okLock.vDropRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -310,8 +310,8 @@ void TablePtn::vDropWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  ASSERT(m_oLock.bIsLocked());
-  m_oLock.vDropWrite();
+  ASSERT(m_okLock.bIsLocked());
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,7 +341,7 @@ bool TablePtn::bGrabRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
 
-  return m_oLock.bGrabRead();
+  return m_okLock.bGrabRead();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,7 +351,7 @@ bool TablePtn::bGrabWrite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  return m_oLock.bGrabWrite();
+  return m_okLock.bGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -415,7 +415,7 @@ bool TablePtn::bIsLocked(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLEPTN,_FOOTER_);
   
-  return m_oLock.bIsLocked();
+  return m_okLock.bIsLocked();
 }
 
 /*----------------------------------------------------------------------------*/

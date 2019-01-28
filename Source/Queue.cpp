@@ -53,7 +53,7 @@ Queue::Queue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  m_oLock.vInitLock(LK_QUEUE);
+  m_okLock.vInitLock(LK_QUEUE);
   
   m_iCount = 0;
   m_pTopBuffer = nullptr;
@@ -85,7 +85,7 @@ void Queue::vAppend(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   if ( ! m_pEndBuffer ) {
     ASSERT(0 == m_iCount);
@@ -104,7 +104,7 @@ void Queue::vAppend(Object* pObject)
   
   m_iCount++;
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,7 +114,7 @@ void Queue::vAppend(Object* pObject)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
 //
-//  m_oLock.vGrabWrite();
+//  m_okLock.vGrabWrite();
 //
 //  if ( ! m_pEndBuffer ) {
 //    ASSERT(0 == m_iCount);
@@ -133,7 +133,7 @@ void Queue::vAppend(Object* pObject)
 //
 //  m_iCount++;
 //
-//  m_oLock.vDropWrite();
+//  m_okLock.vDropWrite();
 //
 //  return true;
 //}
@@ -184,11 +184,11 @@ void Queue::vDump(eCN eClass, Object* pObject, Stz* aTab)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
 //
-//  m_oLock.vGrabWrite();
+//  m_okLock.vGrabWrite();
 //
 //  if ( ! m_pTopBuffer ) {
 //    ASSERT( ! m_iCount );
-//    m_oLock.vDropWrite();
+//    m_okLock.vDropWrite();
 //    return false;
 //  }
 //
@@ -205,7 +205,7 @@ void Queue::vDump(eCN eClass, Object* pObject, Stz* aTab)
 //
 //  ASSERT(m_iCount >= 0);
 //
-//  m_oLock.vDropWrite();
+//  m_okLock.vDropWrite();
 //
 //  return bPopped;
 //}
@@ -219,12 +219,12 @@ Object* Queue::pPop(void)
   
   Forth::GenVar xValWrk;
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
   
   // are there queue buffers?
   if (! m_pTopBuffer) {
     ASSERT(! m_iCount);
-    m_oLock.vDropWrite();
+    m_okLock.vDropWrite();
     return nullptr;
   }
   
@@ -245,7 +245,7 @@ Object* Queue::pPop(void)
     m_iCount--;
   ASSERT(m_iCount >= 0);
   
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
   
   return pObject;
 }

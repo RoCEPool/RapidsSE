@@ -189,9 +189,9 @@ bool Job_SubPublish::bChunk(void)
   m_pRowAgg->vAggregate(m_iSlot, m_pEntryBuffer);
   
   //vTrace("publish writing %p\n"_Stz,m_pEntryBuffer);
-  m_pJob_Publish->m_oLock.vGrabWrite();
+  m_pJob_Publish->m_okLock.vGrabWrite();
   m_pRowAgg->vWriteOut(m_oOutputFile);
-  m_pJob_Publish->m_oLock.vDropWrite();
+  m_pJob_Publish->m_okLock.vDropWrite();
   //vTrace("publish written %p\n"_Stz,m_pEntryBuffer);
 
   return true;

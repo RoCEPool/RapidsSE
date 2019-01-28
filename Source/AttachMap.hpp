@@ -65,8 +65,8 @@ namespace StorageEngine
   
     ResourceTracker m_oResourceTracker;
     
-    Lock          m_oDdlLock;
-    Lock          m_oDicLock;
+    Lock          m_okDdlLock;
+    Lock          m_okDicLock;
        
     Atomic        m_ixPlanId;
     

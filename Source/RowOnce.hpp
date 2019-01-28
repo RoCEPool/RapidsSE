@@ -9,7 +9,7 @@ namespace DBobjects
   {
   private:
   
-    Lock      m_oLock;
+    Lock      m_okLock;
     SkipListNL* m_pSkipList; // skip list of seen rowids (ordered by rowid)
   
     // must be last

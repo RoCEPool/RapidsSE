@@ -10,7 +10,7 @@ namespace Structures
   class Queue : public Object
   {
   private:
-    Lock     m_oLock;
+    Lock     m_okLock;
     i8       m_iCount;
     QueueBuffer* m_pTopBuffer;
     QueueBuffer* m_pEndBuffer;

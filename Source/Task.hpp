@@ -67,7 +67,7 @@ namespace Tasks
     eTK     m_eState;       // state (running, sleeping, ...)
     eQR     m_eQueue;       // which queue the task is in
     i8      m_iQueueOrder;  // queue ordering number
-    Lock    m_oLock;        // lock for this task
+    Lock    m_okLock;        // lock for this task
     Decider m_oAcksRemaining; // number of acks still waiting for
     Since   m_oWakeupTime;  // wakeup time
 

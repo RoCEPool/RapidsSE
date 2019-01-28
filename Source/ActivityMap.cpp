@@ -70,12 +70,12 @@ ActivityMap::ActivityMap(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
 
-  m_oLock.vInitLock(LK_ACTIVITY_MAP);
+  m_okLock.vInitLock(LK_ACTIVITY_MAP);
   
   if (0 != gpAttachMap->m_pGrid->m_iThisNode || Pthread::bIsJavaThread() )
     return;
   
-  m_oLock.vInitLock(LK_ACTIVITY_MAP);
+  m_okLock.vInitLock(LK_ACTIVITY_MAP);
   
   m_i_Mark = 0;
   m_nMarks = gxArguments.m_nActivityMarks;
@@ -436,7 +436,7 @@ ActivityMark* ActivityMap::pNewActivityMark_NL(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
 
-  m_oLock.vAssertWrite();
+  m_okLock.vAssertWrite();
   
   ActivityMark* pActivityMark = &m_oaMark[m_i_Mark % m_nMarks];
   
@@ -454,7 +454,7 @@ void ActivityMap::vDropLock(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
 
-  m_oLock.vDropWrite();
+  m_okLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -464,7 +464,7 @@ void ActivityMap::vFindRange_NL(i8& i_MinMark, i8& i_MaxMark)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
-  RASSERT(m_oLock.bIsLocked());
+  RASSERT(m_okLock.bIsLocked());
   
   // should be a quicker way to do this
   
@@ -491,7 +491,7 @@ void ActivityMap::vGrabLock(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
-  m_oLock.vGrabWrite();
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -501,7 +501,7 @@ i8 ActivityMap::iPercentFull_NL(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
-  RASSERT(m_oLock.bIsLocked());
+  RASSERT(m_okLock.bIsLocked());
   
   i8 nMarksInUse = 0;
   i8 iPercent = 0;

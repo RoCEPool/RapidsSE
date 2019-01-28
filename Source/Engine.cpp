@@ -413,7 +413,7 @@ void Engine::vMonitorProfile(s48K& sPortrait)
   i8 iPercentFree = gpAttachMap->m_pBufferPool->iFreePercent();
   Stz* aNodeName  = gpAttachMap->m_pGrid->pGetNode(gxArguments.m_iThisNode)->aNodeName();
   bool bStarted   = gpAttachMap->m_pGrid->bHasStarted();
-  bool bDdlLocked = gpAttachMap->m_oDdlLock.bIsWriteLocked();
+  bool bDdlLocked = gpAttachMap->m_okDdlLock.bIsWriteLocked();
   
   sPortrait.vSprint("Node %s region %s free %lld%% uptime %llds (%s)\n"
                     "     cluster %s ddl %s \n"_Stz,
@@ -753,8 +753,8 @@ void Engine::vStartSystem(void)
     
   gpAttachMap->m_pQueues = new Queues;
     
-  gpAttachMap->m_oDdlLock.vInitLock(LK_DDL);
-  gpAttachMap->m_oDicLock.vInitLock(LK_DIC);
+  gpAttachMap->m_okDdlLock.vInitLock(LK_DDL);
+  gpAttachMap->m_okDicLock.vInitLock(LK_DIC);
   
   //--------------------------------------------------------------------------
   
