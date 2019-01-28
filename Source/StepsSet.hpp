@@ -106,7 +106,6 @@
   static void vFreePercent(Tasks::MP_Task mpTask);
   static void vFreeSpace(Tasks::MP_Task mpTask);
   static void vInUseSpace(Tasks::MP_Task mpTask);
-  static void vSnapshot(Tasks::MP_Task mpTask);
   static void vTotalSpace(Tasks::MP_Task mpTask);
 
   // cast

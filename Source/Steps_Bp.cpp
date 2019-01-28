@@ -12,24 +12,23 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Bp(void)
 {
-  vAddStep("bp::analyze"_Stz,     &Step::vBpAnalyze);
-  vAddStep("bp::dump"_Stz,        &Step::vBpDump);
-  vAddStep("bp::freeBuffers"_Stz, &Step::vFreeBuffers);
-  vAddStep("bp::freePercent"_Stz, &Step::vFreePercent);
-  vAddStep("bp::freeSpace"_Stz,   &Step::vFreeSpace);
-  vAddStep("bp::inUseSpace"_Stz,  &Step::vInUseSpace);
-  vAddStep("bp::readBufferPool"_Stz,&Step::vBpReadBufferPool);
-  vAddStep("bp::snapshot"_Stz,    &Step::vSnapshot);
-  vAddStep("bp::totalSpace"_Stz,  &Step::vTotalSpace);
+  vAddStep("bp::analyze"_Stz,        &Step::vBpAnalyze);
+  vAddStep("bp::dump"_Stz,           &Step::vBpDump);
+  vAddStep("bp::freeBuffers"_Stz,    &Step::vFreeBuffers);
+  vAddStep("bp::freePercent"_Stz,    &Step::vFreePercent);
+  vAddStep("bp::freeSpace"_Stz,      &Step::vFreeSpace);
+  vAddStep("bp::inUseSpace"_Stz,     &Step::vInUseSpace);
+  vAddStep("bp::readBufferPool"_Stz ,&Step::vBpReadBufferPool);
+  vAddStep("bp::totalSpace"_Stz,     &Step::vTotalSpace);
   vAddStep("bp::writeBufferPool"_Stz,&Step::vBpWriteBufferPool);
 
-  vAddStep("bpa"_Stz,             &Step::vBpAnalyze);
-  vAddStep("bpd"_Stz,             &Step::vBpDump);
-  vAddStep("bpr"_Stz,             &Step::vBpReadBufferPool);
-  vAddStep("bpw"_Stz,             &Step::vBpWriteBufferPool);
+  vAddStep("bpa"_Stz,                &Step::vBpAnalyze);
+  vAddStep("bpd"_Stz,                &Step::vBpDump);
+  vAddStep("bpr"_Stz,                &Step::vBpReadBufferPool);
+  vAddStep("bpw"_Stz,                &Step::vBpWriteBufferPool);
  
-  vAddStep("epochDump"_Stz,       &Step::vBpEpochDump);
-  vAddStep("epochTake"_Stz,       &Step::vBpEpochTake);
+  vAddStep("epochDump"_Stz,          &Step::vBpEpochDump);
+  vAddStep("epochTake"_Stz,          &Step::vBpEpochTake);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,46 +159,6 @@ void Step::vInUseSpace(MP_Task mpTask)
                      - BPA::iPoolFree();
   
   mpTask->m_pDataStack->vPushI8(iInUseSpace);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* bp::snapshot -- push snapshot of buffer pool onto stack                    */
-/*----------------------------------------------------------------------------*/
-void Step::vSnapshot(MP_Task mpTask)
-{
-  ENTRY("vSnapshot"_Stz);
-  
-  i8 iCountObjects[CN_ENUMS];
-  for (i8 index = 0; index < CN_ENUMS; index++)
-    iCountObjects[index] = 0;
-  
-  bn nBuffer = 0;
-  bn nBufferCount = gpBufferPool->nBufferCount() - 1;
-  
-  for (bn nBuffer = gpBufferPool->nBufferFirst();
-       nBuffer <= nBufferCount;
-       nBuffer++) {
-    
-    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
-    iCountObjects[pBuffer->eClass()]++;
-  }
-  
-  gpAttachMap->m_xHeapMem.Transient.m_pSmall->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeapMem.Transient.m_pMedium->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeapMem.Transient.m_pLarge->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeapMem.Transient.m_pJumbo->vAnalyse(iCountObjects);
-
-  gpAttachMap->m_xHeapMem.Persistent.m_pSmall->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeapMem.Persistent.m_pMedium->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeapMem.Persistent.m_pLarge->vAnalyse(iCountObjects);
-  gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->vAnalyse(iCountObjects);
-  
-  for (i8 index = 0; index < CN_ENUMS; index++)
-    mpTask->m_pDataStack->vPushI8(iCountObjects[index]);
-  
-  mpTask->m_pDataStack->vPushI8(CN_ENUMS);
   
   EXIT();
 }
