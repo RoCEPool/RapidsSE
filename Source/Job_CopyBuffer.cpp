@@ -198,7 +198,7 @@ void Job_CopyBuffer::vCopy(void)
     m_pJob_SubInserter->vDropWrite();
   }
   
-  ++m_pJob_SubInserter->m_ziCopiedBuffers;
+  ++m_pJob_SubInserter->m_ixCopiedBuffers;
   
 }
 

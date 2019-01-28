@@ -52,11 +52,11 @@ Lock::Lock(void)
   m_uLockWord = 0;
   m_eLockKind = LK_NONE;
 
-  m_ziReadGrabs.vCheckInit();
-  m_ziReadCollisions.vCheckInit();
+  m_ixReadGrabs.vCheckInit();
+  m_ixReadCollisions.vCheckInit();
   
-  m_ziWriteGrabs.vCheckInit();
-  m_ziWriteCollisions.vCheckInit();
+  m_ixWriteGrabs.vCheckInit();
+  m_ixWriteCollisions.vCheckInit();
   
   _checkInitialised_(CN_LOCK);
   
@@ -74,11 +74,11 @@ Lock::Lock(eLK eLockKind)
   m_uLockWord = 0;
   m_eLockKind = eLockKind;
   
-  m_ziReadGrabs.vCheckInit();
-  m_ziReadCollisions.vCheckInit();
+  m_ixReadGrabs.vCheckInit();
+  m_ixReadCollisions.vCheckInit();
   
-  m_ziWriteGrabs.vCheckInit();
-  m_ziWriteCollisions.vCheckInit();
+  m_ixWriteGrabs.vCheckInit();
+  m_ixWriteCollisions.vCheckInit();
   
   _checkInitialised_(CN_LOCK);
   
@@ -298,8 +298,8 @@ bool Lock::bGrabRead(void)
   
   ASSERT(m_eLockKind);
   
-  ++m_ziReadGrabs;
-  ++gpAttachMap->m_oLockTracker.m_ziReadGrabs[m_eLockKind];
+  ++m_ixReadGrabs;
+  ++gpAttachMap->m_oLockTracker.m_ixReadGrabs[m_eLockKind];
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
   if (iResult) {
@@ -307,8 +307,8 @@ bool Lock::bGrabRead(void)
     return true;
   }
   
-  ++m_ziReadCollisions;
-  ++gpAttachMap->m_oLockTracker.m_ziReadCollisions[m_eLockKind];
+  ++m_ixReadCollisions;
+  ++gpAttachMap->m_oLockTracker.m_ixReadCollisions[m_eLockKind];
   
   return false;
 }
@@ -322,8 +322,8 @@ void Lock::vGrabRead(void)
   
   ASSERT(m_eLockKind);
   
-  ++m_ziReadGrabs;
-  ++gpAttachMap->m_oLockTracker.m_ziReadGrabs[m_eLockKind];
+  ++m_ixReadGrabs;
+  ++gpAttachMap->m_oLockTracker.m_ixReadGrabs[m_eLockKind];
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
   if (iResult) {
@@ -331,8 +331,8 @@ void Lock::vGrabRead(void)
     return;
   }
   
-  ++m_ziReadCollisions;
-  ++gpAttachMap->m_oLockTracker.m_ziReadCollisions[m_eLockKind];
+  ++m_ixReadCollisions;
+  ++gpAttachMap->m_oLockTracker.m_ixReadCollisions[m_eLockKind];
   
   Timer oTimer;
   oTimer.vStart();
@@ -366,7 +366,7 @@ i8 Lock::iReadGrabs(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return *m_ziReadGrabs;
+  return *m_ixReadGrabs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -376,7 +376,7 @@ i8 Lock::iReadCollisions(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return *m_ziReadCollisions;
+  return *m_ixReadCollisions;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -419,8 +419,8 @@ bool Lock::bGrabWrite(void)
   
   ASSERT(m_eLockKind);
 
-  ++m_ziWriteGrabs;
-  ++gpAttachMap->m_oLockTracker.m_ziWriteGrabs[m_eLockKind];
+  ++m_ixWriteGrabs;
+  ++gpAttachMap->m_oLockTracker.m_ixWriteGrabs[m_eLockKind];
 
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
   if (iResult) {
@@ -428,8 +428,8 @@ bool Lock::bGrabWrite(void)
     return true;
   }
   
-  ++m_ziWriteCollisions;
-  ++gpAttachMap->m_oLockTracker.m_ziWriteCollisions[m_eLockKind];
+  ++m_ixWriteCollisions;
+  ++gpAttachMap->m_oLockTracker.m_ixWriteCollisions[m_eLockKind];
   
   return false;
 }
@@ -447,8 +447,8 @@ void Lock::vGrabWrite(void)
 //         this,
 //         m_aName ? m_aName : "<noName>"_Stz);
 
-  ++m_ziWriteGrabs;
-  ++gpAttachMap->m_oLockTracker.m_ziWriteGrabs[m_eLockKind];
+  ++m_ixWriteGrabs;
+  ++gpAttachMap->m_oLockTracker.m_ixWriteGrabs[m_eLockKind];
   
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
   if (iResult) {
@@ -456,8 +456,8 @@ void Lock::vGrabWrite(void)
     return;
   }
   
-  ++m_ziWriteCollisions;
-  ++gpAttachMap->m_oLockTracker.m_ziWriteCollisions[m_eLockKind];
+  ++m_ixWriteCollisions;
+  ++gpAttachMap->m_oLockTracker.m_ixWriteCollisions[m_eLockKind];
   
   Timer oTimer;
   oTimer.vStart();
@@ -511,7 +511,7 @@ i8 Lock::iWriteGrabs(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return *m_ziWriteGrabs;
+  return *m_ixWriteGrabs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -521,7 +521,7 @@ i8 Lock::iWriteCollisions(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return *m_ziWriteCollisions;
+  return *m_ixWriteCollisions;
 }
 
 /*----------------------------------------------------------------------------*/

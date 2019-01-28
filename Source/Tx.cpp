@@ -58,7 +58,7 @@ Tx::Tx(bool bAddToSet)
   m_iLocalTxId = -1;
   m_iDistTxId  = -1;
   m_ePhase     = TP_EXECUTING;
-  m_ziCounter   = gxArguments.m_nSlots;
+  m_ixCounter   = gxArguments.m_nSlots;
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_xNode[i_Node].m_bDistMember = false;
@@ -82,7 +82,7 @@ Tx::Tx(i8 iDistTxId)
   m_iLocalTxId = -1;
   m_iDistTxId  = iDistTxId;
   m_ePhase     = TP_EXECUTING;
-  m_ziCounter   = gxArguments.m_nSlots;
+  m_ixCounter   = gxArguments.m_nSlots;
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_xNode[i_Node].m_bDistMember = false;
@@ -169,7 +169,7 @@ i8 Tx::iCounterDec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
-  i8 iCounter = --m_ziCounter;
+  i8 iCounter = --m_ixCounter;
   
   return iCounter;
 }
@@ -181,7 +181,7 @@ i8 Tx::iCounterGet(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
-  return *m_ziCounter;
+  return *m_ixCounter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,7 +191,7 @@ void Tx::vCounterSet(i8 iCounter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
-  m_ziCounter = iCounter;
+  m_ixCounter = iCounter;
 }
 
 /*----------------------------------------------------------------------------*/

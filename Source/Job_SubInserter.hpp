@@ -15,8 +15,8 @@ namespace Jobs
     Job_InsertTable* m_pJob_InsertTable;      // insert table job
     RecordBuffer*    m_pRecordBuffer;         // record buffer
     Lock             m_oLock;                 // lock
-    Atomic           m_ziRecordBuffers;       // record buffers to copy
-    Atomic           m_ziCopiedBuffers;       // copied record buffers
+    Atomic           m_ixRecordBuffers;       // record buffers to copy
+    Atomic           m_ixCopiedBuffers;       // copied record buffers
     
     // must be last
     Footer m_xFooter;

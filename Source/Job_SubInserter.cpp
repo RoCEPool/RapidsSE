@@ -117,8 +117,8 @@ Job_SubInserter::Job_SubInserter(Interface::Session* pSession)
   
   m_pRecordBuffer = nullptr;
   
-  m_ziRecordBuffers.vCheckInit();
-  m_ziCopiedBuffers.vCheckInit();
+  m_ixRecordBuffers.vCheckInit();
+  m_ixCopiedBuffers.vCheckInit();
   
   m_pJob_InsertTable = nullptr;
   

@@ -16,13 +16,13 @@ ResourceTracker::ResourceTracker(void)
 {
   _precondition_(_MAGIC_,CN_RESOURCETRACKER,_FOOTER_);
  
-  m_ziDirOpen.vCheckInit();
-  m_ziFileOpen.vCheckInit();
-  m_ziMallocAmt.vCheckInit();
-  m_ziMutexOpen.vCheckInit();
-  m_ziShmOpen.vCheckInit();
-  m_ziSocketOpen.vCheckInit();
-  m_ziThreadOpen.vCheckInit();
+  m_ixDirOpen.vCheckInit();
+  m_ixFileOpen.vCheckInit();
+  m_ixMallocAmt.vCheckInit();
+  m_ixMutexOpen.vCheckInit();
+  m_ixShmOpen.vCheckInit();
+  m_ixSocketOpen.vCheckInit();
+  m_ixThreadOpen.vCheckInit();
 
   _checkInitialised_(CN_RESOURCETRACKER);
 }
@@ -40,7 +40,7 @@ ResourceTracker::~ResourceTracker(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vAddMallocAmt(i8 nBytes)
 {
-  i8 iMallocAmt = m_ziMallocAmt.iAdd(nBytes);
+  i8 iMallocAmt = m_ixMallocAmt.iAdd(nBytes);
   RASSERT(! gxArguments.m_nLimitMalloc || iMallocAmt <= gxArguments.m_nLimitMalloc);
 }
 
@@ -49,7 +49,7 @@ void ResourceTracker::vAddMallocAmt(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vSubMallocAmt(i8 nBytes)
 {
-  i8 iMallocAmt = m_ziMallocAmt.iAdd( - nBytes);
+  i8 iMallocAmt = m_ixMallocAmt.iAdd( - nBytes);
   RASSERT(iMallocAmt >= 0);
 }
 
@@ -58,7 +58,7 @@ void ResourceTracker::vSubMallocAmt(i8 nBytes)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vDecDirOpen(void)
 {
-  i8 iDirOpen = --m_ziDirOpen;
+  i8 iDirOpen = --m_ixDirOpen;
   RASSERT(iDirOpen >= 0);
 }
 
@@ -67,7 +67,7 @@ void ResourceTracker::vDecDirOpen(void)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vDecFileOpen(void)
 {
-  i8 iFileOpen = --m_ziFileOpen;
+  i8 iFileOpen = --m_ixFileOpen;
   RASSERT(iFileOpen >= 0);
 }
 
@@ -76,7 +76,7 @@ void ResourceTracker::vDecFileOpen(void)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vDecMutexOpen(void)
 {
-  i8 iMutexOpen = --m_ziMutexOpen;
+  i8 iMutexOpen = --m_ixMutexOpen;
   RASSERT(iMutexOpen >= 0);
 }
 
@@ -85,7 +85,7 @@ void ResourceTracker::vDecMutexOpen(void)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vDecShmOpen(void)
 {
-  i8 iShmOpen = --m_ziShmOpen;
+  i8 iShmOpen = --m_ixShmOpen;
   RASSERT(iShmOpen >= 0);
 }
 
@@ -94,7 +94,7 @@ void ResourceTracker::vDecShmOpen(void)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vDecSocketOpen(void)
 {
-  i8 iSocketOpen = --m_ziSocketOpen;
+  i8 iSocketOpen = --m_ixSocketOpen;
   RASSERT(iSocketOpen >= 0);
 }
 
@@ -103,7 +103,7 @@ void ResourceTracker::vDecSocketOpen(void)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vDecThreadOpen(void)
 {
-  i8 iThreadOpen = --m_ziThreadOpen;
+  i8 iThreadOpen = --m_ixThreadOpen;
   RASSERT(iThreadOpen >= 0);
 }
 
@@ -112,7 +112,7 @@ void ResourceTracker::vDecThreadOpen(void)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vIncDirOpen(void)
 {
-  i8 iDirOpen = ++m_ziDirOpen;
+  i8 iDirOpen = ++m_ixDirOpen;
   RASSERT(! gxArguments.m_nLimitDir || iDirOpen <= gxArguments.m_nLimitDir);
 }
 
@@ -121,7 +121,7 @@ void ResourceTracker::vIncDirOpen(void)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vIncFileOpen(void)
 {
-  i8 iFileOpen = ++m_ziFileOpen;
+  i8 iFileOpen = ++m_ixFileOpen;
   RASSERT(! gxArguments.m_nLimitFile || iFileOpen <= gxArguments.m_nLimitFile);
 }
 
@@ -130,7 +130,7 @@ void ResourceTracker::vIncFileOpen(void)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vIncMutexOpen(void)
 {
-  ++m_ziMutexOpen;
+  ++m_ixMutexOpen;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,7 +138,7 @@ void ResourceTracker::vIncMutexOpen(void)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vIncShmOpen(void)
 {
-  i8 iShmOpen = ++m_ziShmOpen;
+  i8 iShmOpen = ++m_ixShmOpen;
   RASSERT(! gxArguments.m_nLimitShm || iShmOpen <= gxArguments.m_nLimitShm);
 }
 
@@ -147,7 +147,7 @@ void ResourceTracker::vIncShmOpen(void)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vIncSocketOpen(void)
 {
-  i8 iSocketOpen = ++m_ziSocketOpen;
+  i8 iSocketOpen = ++m_ixSocketOpen;
   RASSERT(! gxArguments.m_nLimitSocket || iSocketOpen <= gxArguments.m_nLimitSocket);
 }
 
@@ -156,7 +156,7 @@ void ResourceTracker::vIncSocketOpen(void)
 /*----------------------------------------------------------------------------*/
 void ResourceTracker::vIncThreadOpen(void)
 {
-  i8 iThreadOpen = ++m_ziThreadOpen;
+  i8 iThreadOpen = ++m_ixThreadOpen;
   RASSERT(! gxArguments.m_nLimitThread || iThreadOpen <= gxArguments.m_nLimitThread);
 }
 
@@ -165,7 +165,7 @@ void ResourceTracker::vIncThreadOpen(void)
 /*----------------------------------------------------------------------------*/
 i8 ResourceTracker::nDirOpen(void)
 {
-  i8 iDirOpen = *m_ziDirOpen;
+  i8 iDirOpen = *m_ixDirOpen;
   
   return iDirOpen;
 }
@@ -175,7 +175,7 @@ i8 ResourceTracker::nDirOpen(void)
 /*----------------------------------------------------------------------------*/
 i8 ResourceTracker::nFileOpen(void)
 {
-  i8 iFileOpen = *m_ziFileOpen;
+  i8 iFileOpen = *m_ixFileOpen;
   
   return iFileOpen;
 }
@@ -185,7 +185,7 @@ i8 ResourceTracker::nFileOpen(void)
 /*----------------------------------------------------------------------------*/
 i8 ResourceTracker::nMallocAmt(void)
 {
-  i8 iMallocAmt = *m_ziMallocAmt;
+  i8 iMallocAmt = *m_ixMallocAmt;
   
   return iMallocAmt;
 }
@@ -195,7 +195,7 @@ i8 ResourceTracker::nMallocAmt(void)
 /*----------------------------------------------------------------------------*/
 i8 ResourceTracker::nMutexOpen(void)
 {
-  i8 iMutexOpen = *m_ziMutexOpen;
+  i8 iMutexOpen = *m_ixMutexOpen;
   
   return iMutexOpen;
 }
@@ -205,7 +205,7 @@ i8 ResourceTracker::nMutexOpen(void)
 /*----------------------------------------------------------------------------*/
 i8 ResourceTracker::nShmOpen(void)
 {
-  i8 iShmOpen = *m_ziShmOpen;
+  i8 iShmOpen = *m_ixShmOpen;
   
   return iShmOpen;
 }
@@ -215,7 +215,7 @@ i8 ResourceTracker::nShmOpen(void)
 /*----------------------------------------------------------------------------*/
 i8 ResourceTracker::nSocketOpen(void)
 {
-  i8 iSocketOpen = *m_ziSocketOpen;
+  i8 iSocketOpen = *m_ixSocketOpen;
   
   return iSocketOpen;
 }
@@ -225,7 +225,7 @@ i8 ResourceTracker::nSocketOpen(void)
 /*----------------------------------------------------------------------------*/
 i8 ResourceTracker::nThreadOpen(void)
 {
-  i8 iThreadOpen = *m_ziThreadOpen;
+  i8 iThreadOpen = *m_ixThreadOpen;
   
   return iThreadOpen;
 }

@@ -15,11 +15,11 @@ void LockTracker::vList(File& oFile)
     oFile.vPrint("%lld, %s, %lld, %lld, %lld, %lld, %lld\n"_Stz,
                  i_Lock,
                  aLK[i_Lock],
-                 *m_ziWorkUnits[i_Lock],
-                 *m_ziReadGrabs[i_Lock],
-                 *m_ziReadCollisions[i_Lock],
-                 *m_ziWriteGrabs[i_Lock],
-                 *m_ziWriteCollisions[i_Lock]
+                 *m_ixWorkUnits[i_Lock],
+                 *m_ixReadGrabs[i_Lock],
+                 *m_ixReadCollisions[i_Lock],
+                 *m_ixWriteGrabs[i_Lock],
+                 *m_ixWriteCollisions[i_Lock]
                  );
                  
 }
@@ -34,24 +34,24 @@ void LockTracker::vMonitorPortrait(s48K& sPortrait)
   
   for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++) {
 
-    if (*m_ziReadCollisions[i_Lock]) {
+    if (*m_ixReadCollisions[i_Lock]) {
       if (nSoFar)
         s.vAppend(' ');
       s.vCatSprint("%s rc%lld"_Stz,
                    aLK[i_Lock],
-                   *m_ziReadCollisions[i_Lock]);
-      if (*m_ziWriteCollisions[i_Lock])
+                   *m_ixReadCollisions[i_Lock]);
+      if (*m_ixWriteCollisions[i_Lock])
         s.vCatSprint(" wc%lld"_Stz,
-                     *m_ziReadCollisions[i_Lock]);
+                     *m_ixReadCollisions[i_Lock]);
       nSoFar++;
     }
     else
-    if (*m_ziWriteCollisions[i_Lock])  {
+    if (*m_ixWriteCollisions[i_Lock])  {
       if (nSoFar)
         s.vAppend(' ');
       s.vCatSprint("%s wc%lld"_Stz,
                    aLK[i_Lock],
-                   *m_ziWriteCollisions[i_Lock]);
+                   *m_ixWriteCollisions[i_Lock]);
       nSoFar++;
     }
   }
@@ -82,13 +82,13 @@ void LockTracker::vReport(void)
            i_Lock,
            aLK[i_Lock],
            
-           *m_ziReadGrabs[i_Lock],
-           *m_ziReadCollisions[i_Lock],
-           IntLib::iPercent(*m_ziReadCollisions[i_Lock],*m_ziReadGrabs[i_Lock]),
+           *m_ixReadGrabs[i_Lock],
+           *m_ixReadCollisions[i_Lock],
+           IntLib::iPercent(*m_ixReadCollisions[i_Lock],*m_ixReadGrabs[i_Lock]),
            
-           *m_ziWriteGrabs[i_Lock],
-           *m_ziWriteCollisions[i_Lock],
-           IntLib::iPercent(*m_ziWriteCollisions[i_Lock],*m_ziWriteGrabs[i_Lock])
+           *m_ixWriteGrabs[i_Lock],
+           *m_ixWriteCollisions[i_Lock],
+           IntLib::iPercent(*m_ixWriteCollisions[i_Lock],*m_ixWriteGrabs[i_Lock])
            );
 
   }
@@ -100,11 +100,11 @@ void LockTracker::vReport(void)
 void LockTracker::vReset(void)
 {
   for (i8 i_Lock = 0; i_Lock < LK_ENUMS; i_Lock++) {
-    m_ziWorkUnits[i_Lock] = 0;
-    m_ziReadGrabs[i_Lock] = 0;
-    m_ziReadCollisions[i_Lock] = 0;
-    m_ziWriteGrabs[i_Lock] = 0;
-    m_ziWriteCollisions[i_Lock] = 0;
+    m_ixWorkUnits[i_Lock] = 0;
+    m_ixReadGrabs[i_Lock] = 0;
+    m_ixReadCollisions[i_Lock] = 0;
+    m_ixWriteGrabs[i_Lock] = 0;
+    m_ixWriteCollisions[i_Lock] = 0;
   }
 }
 

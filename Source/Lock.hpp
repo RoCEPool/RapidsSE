@@ -84,11 +84,11 @@ namespace System
     u8     m_uLockWord;        // lock word
     eLK    m_eLockKind;        // lock kind
   
-    Atomic m_ziReadGrabs;       // number of read grabs
-    Atomic m_ziReadCollisions;  // number of read collisions
+    Atomic m_ixReadGrabs;       // number of read grabs
+    Atomic m_ixReadCollisions;  // number of read collisions
     
-    Atomic m_ziWriteGrabs;      // number of write grabs
-    Atomic m_ziWriteCollisions; // number of write collisions
+    Atomic m_ixWriteGrabs;      // number of write grabs
+    Atomic m_ixWriteCollisions; // number of write collisions
     
     // must be last
     Footer m_xFooter;

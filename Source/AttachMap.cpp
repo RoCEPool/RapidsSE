@@ -231,7 +231,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName,
   //m_oDicLock.vInitLock(LK_DIC);
     
   // initialize the plan number
-  m_ziPlanId = m_pGrid->iThisNode() << 48;
+  m_ixPlanId = m_pGrid->iThisNode() << 48;
     
   m_bMarkApiAll = false;
   m_bMarkJobAll = false;

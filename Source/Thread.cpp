@@ -62,9 +62,9 @@ Thread::Thread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  static Atomic zThreadNo;
+  static Atomic ixThreadNo;
   
-  m_iThreadNo    = ++zThreadNo;
+  m_iThreadNo    = ++ixThreadNo;
   m_aStackBase   = nullptr;
   m_iStackSize   = 0;
   
@@ -208,7 +208,7 @@ void Thread::vLoop(void)
   
   m_pMutex->vMutexLock();
 
-  ++gpAttachMap->m_ziThreads;
+  ++gpAttachMap->m_ixThreads;
   
   for (;;) {
     

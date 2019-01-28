@@ -203,7 +203,7 @@ bool Job_WriteBuffer::bInsertRows(void)
 //
 //    // add the number of rows into rows processed
 //    i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
-//    pJob_LoadTable->m_xNode[iThisNode].m_ziRowsProcessed += m_nRows;
+//    pJob_LoadTable->m_xNode[iThisNode].m_ixRowsProcessed += m_nRows;
     
     if (C_UNKNOWN != m_nWriteBehindBuffers)
       pPartition->vAddLoadWriteBehindBuffers(m_nWriteBehindBuffers);
@@ -284,11 +284,11 @@ bool Job_WriteBuffer::bInsertRows_LowMem(void)
 
     // add the number of rows into rows skipped
     i8 iThisNode = gpAttachMap->m_pGrid->m_iThisNode;
-    pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped += m_nRows;
+    pJob_LoadTable->m_xNode[iThisNode].m_ixRowsSkipped += m_nRows;
   
     if (gpAttachMap->m_bVerbose)
       vTrace("m_iRowsSkipped %lld m_nRows %lld\n"_Stz,
-             *pJob_LoadTable->m_xNode[iThisNode].m_ziRowsSkipped,
+             *pJob_LoadTable->m_xNode[iThisNode].m_ixRowsSkipped,
              m_nRows);
   }
   

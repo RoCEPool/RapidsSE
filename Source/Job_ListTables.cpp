@@ -231,7 +231,7 @@ void Jobs::vJob_ListTables_post(Interface::Session* pSession, Job* pJob)
     i8 iRowsProcessed = 0;
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       vTrace("%s"_Stz, pJob_ListTables->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_ListTables->m_xNode[i_Node].m_ziRowsProcessed;
+      iRowsProcessed += *pJob_ListTables->m_xNode[i_Node].m_ixRowsProcessed;
     }
     vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);
   }

@@ -14,9 +14,9 @@ namespace Jobs
 
     struct {
       s4K  m_sResponse;         // response string
-      Atomic m_ziRowsProcessed; // rows processed
-      Atomic m_ziRowsInvalid;   // invalid rows detected
-      Atomic m_ziRowsSkipped;   // rows skipped
+      Atomic m_ixRowsProcessed; // rows processed
+      Atomic m_ixRowsInvalid;   // invalid rows detected
+      Atomic m_ixRowsSkipped;   // rows skipped
       eEC  m_eErrorCode;        // error code
     } m_xNode[C_MAX_NODES];
   

@@ -230,7 +230,7 @@ void Jobs::vJob_ListCatalogs_post(Interface::Session* pSession, Job* pJob)
     
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       vTrace("%s"_Stz, pJob_ListCatalogs->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_ListCatalogs->m_xNode[i_Node].m_ziRowsProcessed;
+      iRowsProcessed += *pJob_ListCatalogs->m_xNode[i_Node].m_ixRowsProcessed;
     }
     if (gpAttachMap->m_bMetadata) {
       vTrace("success: %lld rows affected\n"_Stz, iRowsProcessed);

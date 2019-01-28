@@ -36,9 +36,9 @@ JobResult::JobResult(void)
   
   for (i8 i_Node = 0;i_Node < C_MAX_NODES; i_Node++) {
     m_xNode[i_Node].m_sResponse      = ""_Stz;
-    m_xNode[i_Node].m_ziRowsProcessed = 0;
-    m_xNode[i_Node].m_ziRowsInvalid   = 0;
-    m_xNode[i_Node].m_ziRowsSkipped   = 0;
+    m_xNode[i_Node].m_ixRowsProcessed = 0;
+    m_xNode[i_Node].m_ixRowsInvalid   = 0;
+    m_xNode[i_Node].m_ixRowsSkipped   = 0;
     m_xNode[i_Node].m_eErrorCode     = EC_NONE;
   }
 }

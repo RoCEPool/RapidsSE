@@ -73,7 +73,7 @@ Table::Table(void)
 
   m_xSlots.vTable(this);
   
-  m_ziIndexNo.vCheckInit();
+  m_ixIndexNo.vCheckInit();
   m_pHiddenIndex = nullptr;
   
   m_pIdxVec = new IdxVec;
@@ -87,7 +87,7 @@ Table::Table(void)
   m_pColumnVec->vAdd(pColumn);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
-    m_ziSubLoaders[i_Slot] = 0;
+    m_ixSubLoaders[i_Slot] = 0;
   
   m_bIsLoading = false;
   
@@ -180,7 +180,7 @@ void Table::vAddIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   // set the index no in the index
-  pIndex->vIndexNo(++m_ziIndexNo);
+  pIndex->vIndexNo(++m_ixIndexNo);
   
   // add index to table
   m_pIdxVec->vAdd(pIndex);
@@ -809,7 +809,7 @@ void Table::vSubLoaders(i8 iSubLoaders)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
-    m_ziSubLoaders[i_Slot] = iSubLoaders;
+    m_ixSubLoaders[i_Slot] = iSubLoaders;
   
 }
 

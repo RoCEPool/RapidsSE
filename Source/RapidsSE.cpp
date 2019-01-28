@@ -484,7 +484,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
     pJob_CopyBuffer->m_pRecordBuffer = pRecordBuffer;
     API_LOC(370);
     
-    ++pJob_SubInserter->m_ziRecordBuffers;
+    ++pJob_SubInserter->m_ixRecordBuffers;
     pJob_SubInserter->m_pRecordBuffer = nullptr;
     API_LOC(380);
 
@@ -562,9 +562,9 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
     API_LOC(310);
 
     // wait for all record buffers to be copied across
-    while (*pJob_SubInserter->m_ziRecordBuffers !=
-           *pJob_SubInserter->m_ziCopiedBuffers) {
-      //vTrace("Waiting %lld %lld\n"_Stz, *pJob_SubInserter->m_ziRecordBuffers, *pJob_SubInserter->m_ziCopiedBuffers);
+    while (*pJob_SubInserter->m_ixRecordBuffers !=
+           *pJob_SubInserter->m_ixCopiedBuffers) {
+      //vTrace("Waiting %lld %lld\n"_Stz, *pJob_SubInserter->m_ixRecordBuffers, *pJob_SubInserter->m_ixCopiedBuffers);
     }
     API_LOC(320);
 
@@ -701,9 +701,9 @@ eEC RapidsSE_GetLoadResult(i8 iTrace, Session* pSession, void* aJob,
     for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
       
       //vTrace("%s"_Stz, pJob_LoadTable->m_xNode[i_Node].m_sResponse.aChar());
-      iRowsProcessed += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsProcessed;
-      iRowsInvalid   += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsInvalid;
-      iRowsSkipped   += *pJob_LoadTable->m_xNode[i_Node].m_ziRowsSkipped;
+      iRowsProcessed += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsProcessed;
+      iRowsInvalid   += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsInvalid;
+      iRowsSkipped   += *pJob_LoadTable->m_xNode[i_Node].m_ixRowsSkipped;
     }
     API_LOC(320);
     
@@ -756,7 +756,7 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
   i8 i_Node;
   i8 iMaxRowNo = 0;
   for (i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
-    iMaxRowNo = *pJob->m_xNode[i_Node].m_ziRowsProcessed;
+    iMaxRowNo = *pJob->m_xNode[i_Node].m_ixRowsProcessed;
     if (iRow < iMaxRowNo)
       break;
     iRow -= iMaxRowNo;
@@ -819,7 +819,7 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
   
   i8 iRowsProcessed= 0;
   for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++)
-    iRowsProcessed += *pJob->m_xNode[i_Node].m_ziRowsProcessed;
+    iRowsProcessed += *pJob->m_xNode[i_Node].m_ixRowsProcessed;
   API_LOC(310);
 
   *aiRowCount = iRowsProcessed;
@@ -898,10 +898,10 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
   ColumnVec* pColumnVec = pTable->pColumnVec();
   API_LOC(330);
 
-  pJob_ListColumns->m_xNode[iNode].m_ziRowsProcessed = pColumnVec->nItems() - 1;
+  pJob_ListColumns->m_xNode[iNode].m_ixRowsProcessed = pColumnVec->nItems() - 1;
   API_LOC(340);
 
-  *aiRowCount = *(pJob_ListColumns->m_xNode[iNode].m_ziRowsProcessed);
+  *aiRowCount = *(pJob_ListColumns->m_xNode[iNode].m_ixRowsProcessed);
   API_LOC(350);
 
   //vTrace("RowCount = %lld\n"_Stz, pJob->m_xNode[gpAttachMap->m_pGrid->iThisNode()].m_iRowsProcessed);

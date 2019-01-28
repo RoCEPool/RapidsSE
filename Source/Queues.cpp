@@ -52,7 +52,7 @@ Queues::Queues(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES,_FOOTER_);
   
   m_pThreadVec  = new ThreadVec;
-  m_ziQueueOrder   = 0;
+  m_ixQueueOrder   = 0;
   
   m_pSleepingQueue = new TaskQueue(QK_SLEEPING_QUEUE,
                                    C_NON_UNQIUE_KEY,
@@ -250,7 +250,7 @@ void Queues::vAddToExecutingSet_NL(Task* pTask)
   RASSERT(TK_EXECUTING == pTask->eState());
   
   pTask->vQueue(QR_EXECUTING_QUEUE);
-  pTask->vQueueOrder(++m_ziQueueOrder);
+  pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vAddToExecutingSet()"_Stz);
@@ -270,7 +270,7 @@ void Queues::vAddToReadyQueue_NL(Task* pTask)
   RASSERT( ! pTask->bIsPartitioned());
   
   pTask->vQueue(QR_READY_QUEUE);
-  pTask->vQueueOrder(++m_ziQueueOrder);
+  pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vAddToReadyQueue()"_Stz);
@@ -296,7 +296,7 @@ void Queues::vAddToReadySlotQueue_NL(Task* pTask)
   i8 iSlot = TablePtn::iPartitionToSlot(pTask->iPartition());
   
   pTask->vQueue((eQR)iSlot);
-  pTask->vQueueOrder(++m_ziQueueOrder);
+  pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vAddToReadySlotQueue()"_Stz);
@@ -319,7 +319,7 @@ void Queues::vAddToSendQueue_NL(Task* pTask)
   i8 iSendNode = pTask->pSendNode()->iNodeNo();
   
   pTask->vQueue((eQR)(C_SLOTS_PER_NODE + iSendNode));
-  pTask->vQueueOrder(++m_ziQueueOrder);
+  pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vAddToSendQueue()"_Stz);
@@ -368,7 +368,7 @@ void Queues::vAddToWaitingSet_NL(Task* pTask)
   
   // mark task as being in the waiting queue
   pTask->vQueue(QR_WAITING_QUEUE);
-  pTask->vQueueOrder(++m_ziQueueOrder);
+  pTask->vQueueOrder(++m_ixQueueOrder);
   
   if (pTask->pJob()->m_bMark)
     pTask->vWriteMark("vAddToWaitingSet()"_Stz);

@@ -29,13 +29,13 @@ namespace DBobjects
     eTT    m_eTableType;   // table type
     Dic    m_xSubDic;      // sub dictionary for this table
     Slots  m_xSlots;       // slots
-    Atomic m_ziIndexNo;    // index no
+    Atomic m_ixIndexNo;    // index no
     Index* m_pHiddenIndex; // hidden index
     
     IdxVec*    m_pIdxVec;    // index vector
     ColumnVec* m_pColumnVec; // column vector
 
-    Atomic     m_ziSubLoaders[C_SLOTS_PER_NODE];  // subloader*slot count
+    Atomic     m_ixSubLoaders[C_SLOTS_PER_NODE];  // subloader*slot count
     bool       m_bIsLoading;   // data is loading
     
     // must be last

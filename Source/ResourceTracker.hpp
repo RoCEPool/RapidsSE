@@ -9,13 +9,13 @@ namespace Measurement
   {
   public:
   
-    Atomic m_ziDirOpen;
-    Atomic m_ziFileOpen;
-    Atomic m_ziMallocAmt;
-    Atomic m_ziMutexOpen;
-    Atomic m_ziShmOpen;
-    Atomic m_ziSocketOpen;
-    Atomic m_ziThreadOpen;
+    Atomic m_ixDirOpen;
+    Atomic m_ixFileOpen;
+    Atomic m_ixMallocAmt;
+    Atomic m_ixMutexOpen;
+    Atomic m_ixShmOpen;
+    Atomic m_ixSocketOpen;
+    Atomic m_ixThreadOpen;
 
     // must be last
     Footer m_xFooter;

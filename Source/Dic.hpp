@@ -13,7 +13,7 @@ namespace Forth
     s32    m_sName;        // name of this dictionary
     Word*  m_pDicKind;     // kind of dictionary
     bool   m_bFrozen;      // no more words can be added?
-    Atomic m_ziRefCount;   // reference count
+    Atomic m_ixRefCount;   // reference count
 
     Lock   m_oLock;        // lock over:
     Word*  m_pLastWord;    //   last word in dictionary

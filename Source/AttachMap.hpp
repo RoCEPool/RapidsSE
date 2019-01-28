@@ -40,8 +40,8 @@ namespace StorageEngine
     Word*         m_pWord;
     Word*         m_pTenants;
   
-    Atomic        m_ziThreads;
-    Atomic        m_ziMonitorTake;
+    Atomic        m_ixThreads;
+    Atomic        m_ixMonitorTake;
 
     Queues*       m_pQueues;
     JobList*      m_pOriginatingJobs;
@@ -68,7 +68,7 @@ namespace StorageEngine
     Lock          m_oDdlLock;
     Lock          m_oDicLock;
        
-    Atomic        m_ziPlanId;
+    Atomic        m_ixPlanId;
     
     Formatters    m_oFormatters; // record formatters
   

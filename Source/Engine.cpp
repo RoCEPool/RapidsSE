@@ -389,7 +389,7 @@ void Engine::vMonitorPortrait(s48K& sRapidsPortrait)
   gpAttachMap->m_pApiState->vMonitorPortrait(sPortrait);
   sRapidsPortrait.vConcat(sPortrait.aStz());
   
-  if (1 == *gpAttachMap->m_ziMonitorTake)
+  if (1 == *gpAttachMap->m_ixMonitorTake)
     BPA::vEpochTake();
   else {
     BPA::vEpochDump(sRapidsPortrait);
@@ -819,7 +819,7 @@ void Engine::vStartSystem(void)
     pThread->vSpawnPthread_Dummy();
   }
 
-  while (*gpAttachMap->m_ziThreads != gxArguments.m_nThreads)
+  while (*gpAttachMap->m_ixThreads != gxArguments.m_nThreads)
     Pthread::vSleepMilli(10,CN_NONE);
   
   vSpawnJobStart();

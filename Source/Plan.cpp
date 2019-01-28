@@ -81,7 +81,7 @@ void Plan::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
-  m_iPlanId = ++gpAttachMap->m_ziPlanId;
+  m_iPlanId = ++gpAttachMap->m_ixPlanId;
   
   //m_sName
   //m_xDic

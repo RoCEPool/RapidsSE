@@ -228,7 +228,7 @@ bool Job_SubLoader::bChunk(void)
     eEC eError = eProcessRecord(aRecord, nRecordBytes);
     
     if (EC_NONE == eError) {
-      m_xNode[i_Node].m_ziRowsProcessed.iInc();
+      m_xNode[i_Node].m_ixRowsProcessed.iInc();
       continue;
     }
     
@@ -236,12 +236,12 @@ bool Job_SubLoader::bChunk(void)
       continue;
 
     if (EC_INVALID_VALUE == eError) {
-      m_xNode[i_Node].m_ziRowsInvalid.iInc();
+      m_xNode[i_Node].m_ixRowsInvalid.iInc();
       continue;
     }
     
     if (EC_MAX_ROW_LENGTH == eError) {
-      m_xNode[i_Node].m_ziRowsInvalid.iInc();
+      m_xNode[i_Node].m_ixRowsInvalid.iInc();
       continue;
     }
     
@@ -265,12 +265,12 @@ void Job_SubLoader::vEnd(void)
   i8 i_Node = gpAttachMap->m_pGrid->m_iThisNode;
   
   // add invalid rows into parent load table job
-  i8 iRowsInvalid = *m_xNode[i_Node].m_ziRowsInvalid;
-  m_pJob_LoadTable->m_xNode[i_Node].m_ziRowsInvalid += iRowsInvalid;
+  i8 iRowsInvalid = *m_xNode[i_Node].m_ixRowsInvalid;
+  m_pJob_LoadTable->m_xNode[i_Node].m_ixRowsInvalid += iRowsInvalid;
   
   // add processed rows into parent load table job
-  i8 iRowsProcessed = *m_xNode[i_Node].m_ziRowsProcessed;
-  m_pJob_LoadTable->m_xNode[i_Node].m_ziRowsProcessed += iRowsProcessed;
+  i8 iRowsProcessed = *m_xNode[i_Node].m_ixRowsProcessed;
+  m_pJob_LoadTable->m_xNode[i_Node].m_ixRowsProcessed += iRowsProcessed;
   
   // close the file being loaded
   m_pLoadChunk->vCloseFile();
