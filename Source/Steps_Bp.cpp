@@ -7,8 +7,6 @@
 extern AttachMap*   gpAttachMap;
 extern BufferPool*  gpBufferPool;
 
-i8 giCountObjects[CN_ENUMS];
-
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -87,14 +85,14 @@ void Step::vBpEpochDump(MP_Task mpTask)
     
     eCN eClass = (eCN)i_Object;
     
-    if (iSnapshotObjects[eClass] == giCountObjects[eClass])
+    if (iSnapshotObjects[eClass] == gpAttachMap->m_nObjectsInPool[eClass])
       continue;
     
     vTrace("%s  %12s (eCN %3lld) %-6lld \n"_Stz,
            Stz::aTab(1),
            aCN[eClass],
            eClass,
-           iSnapshotObjects[eClass] - giCountObjects[eClass]
+           iSnapshotObjects[eClass] - gpAttachMap->m_nObjectsInPool[eClass]
            );
     int iDebug = 1;
   }
@@ -113,7 +111,7 @@ void Step::vBpEpochTake(MP_Task mpTask)
   gpAttachMap->m_iEpoch++;
   BPA* pBPA = new BPA;
   
-  pBPA->vObjectSnapshot(&giCountObjects[0]);
+  pBPA->vObjectSnapshot(&gpAttachMap->m_nObjectsInPool[0]);
   
   delete pBPA;
   
