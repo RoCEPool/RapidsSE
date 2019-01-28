@@ -39,11 +39,7 @@ void Step::vBpAnalyze(MP_Task mpTask)
 {
   ENTRY("vBpa"_Stz);
   
-  BPA* pBPA = new BPA;
-  
-  pBPA->vPoolAnalyze();
-  
-  delete pBPA;
+  BPA::vPoolAnalyze();
   
   EXIT();
 }
@@ -55,11 +51,8 @@ void Step::vBpDump(MP_Task mpTask)
 {
   ENTRY("vBpDump"_Stz);
   
-  BPA* pBPA = new BPA;
+  BPA::vPoolDump();
   
-  pBPA->vPoolDump();
-  
-  delete pBPA;
   
   EXIT();
 }
@@ -70,14 +63,13 @@ void Step::vBpEpochDump(MP_Task mpTask)
 {
   ENTRY("vBpEpochDump"_Stz);
   
-  BPA* pBPA = new BPA;
   i8 iSnapshotObjects[CN_ENUMS];
   
   vTrace("\n"_Stz);
   vTrace("%sWords created since last epoch:\n"_Stz,Stz::aTab(1));
   
-  pBPA->vWordList(gpAttachMap->m_iEpoch);
-  pBPA->vObjectSnapshot(&iSnapshotObjects[0]);
+  BPA::vWordList(gpAttachMap->m_iEpoch);
+  BPA::vObjectSnapshot(&iSnapshotObjects[0]);
   
   vTrace("\n%sObjects created since last epoch:\n\n"_Stz,Stz::aTab(1));
   
@@ -109,11 +101,8 @@ void Step::vBpEpochTake(MP_Task mpTask)
   
   // increment the epoch
   gpAttachMap->m_iEpoch++;
-  BPA* pBPA = new BPA;
   
-  pBPA->vObjectSnapshot(&gpAttachMap->m_nObjectsInPool[0]);
-  
-  delete pBPA;
+  BPA::vObjectSnapshot(&gpAttachMap->m_nObjectsInPool[0]);
   
   EXIT();
 }
@@ -125,11 +114,7 @@ void Step::vBpReadBufferPool(MP_Task mpTask)
 {
   ENTRY("vBpReadBufferPool"_Stz);
   
-  BPA* pBPA = new BPA;
-  
-  pBPA->vReadBuffers("/tmp/buffers.dmp"_Stz);
-  
-  delete pBPA;
+  BPA::vReadBuffers("/tmp/buffers.dmp"_Stz);
   
   EXIT();
 }
@@ -141,13 +126,7 @@ void Step::vBpWriteBufferPool(MP_Task mpTask)
 {
   ENTRY("vBpWriteBufferPool"_Stz);
   
-  BPA* pBPA = new BPA;
-  
-  //pBPA->vWriteBuffers("/tmp/buffers.dmp"_Stz);
-
-  pBPA->vWritePersistentHeapMem("/tmp/persistentHeapMem.dmp"_Stz);
-
-  delete pBPA;
+  BPA::vWritePersistentHeapMem("/tmp/persistentHeapMem.dmp"_Stz);
   
   EXIT();
 }
