@@ -6,37 +6,11 @@
 
 extern AttachMap* gpAttachMap;
 
-/*============================================================================*/
-/* end                                                                        */
-/*============================================================================*/
-
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-BPA::BPA(void)
-: Object(CN_BPA)
-{
-  _magic_();
-  
-  _checkInitialised_(CN_BPA);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-BPA::~BPA(void) noexcept(false)
-{
-  _magic_();
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the buffer                                                            */
+/* dump given buffer                                                          */
 /*----------------------------------------------------------------------------*/
 void BPA::vBufferDump(Buffer* pBuffer)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
- 
   eCN eClass = pBuffer->eClass();
   
   // dont dump FreeBuffer's
@@ -60,8 +34,6 @@ void BPA::vBufferDump(Buffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 void BPA::vHeapDump(Heap* pHeap)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   HeapBuffer* pHeapBuffer;
   
   vTrace("\n"_Stz);
@@ -114,8 +86,6 @@ void BPA::vHeapDump(Heap* pHeap)
 /*----------------------------------------------------------------------------*/
 void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   HeapBuffer* pHeapBuffer;
   
   vTrace("\n"_Stz);
@@ -166,8 +136,6 @@ void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
 /*----------------------------------------------------------------------------*/
 void BPA::vObjectList(void)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   vTrace("\n"_Stz);
   vTrace("%sObjects in Buffer Pool:\n"_Stz,Stz::aTab(1));
   
@@ -238,8 +206,6 @@ void BPA::vObjectList(void)
   
   if (pJumboPersistent)
     vHeapDump(reinterpret_cast<Heap*>(pJumboPersistent));
-  
-  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -247,8 +213,6 @@ void BPA::vObjectList(void)
 /*----------------------------------------------------------------------------*/
 void BPA::vObjectSummary(void)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   i8 iCountObjects[CN_ENUMS];
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
     iCountObjects[i_Index] = 0;
@@ -369,8 +333,6 @@ void BPA::vObjectSummary(void)
     
     vTrace("  %12s %-6lld \n"_Stz, aCN[eClass], iCountObjects[eClass]);
   }
-  
-  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -378,8 +340,6 @@ void BPA::vObjectSummary(void)
 /*----------------------------------------------------------------------------*/
 void BPA::vObjectSnapshot(i8* pCountObjects)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   i8 iCountObjects[CN_ENUMS];
   
   for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++)
@@ -451,8 +411,6 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
 
     pCountObjects[eClass] += iCountObjects[eClass];
   }
-  
-  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -460,8 +418,6 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
 /*----------------------------------------------------------------------------*/
 void BPA::vPoolAnalyze(void)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   // increment the epoch
   gpAttachMap->m_iEpoch++;
   
@@ -475,8 +431,6 @@ void BPA::vPoolAnalyze(void)
   vResourceSummary();
   
   vTrace("\n"_Stz);
-  
-  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -484,8 +438,6 @@ void BPA::vPoolAnalyze(void)
 /*----------------------------------------------------------------------------*/
 void BPA::vPoolDump(void)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   // increment the epoch
   gpAttachMap->m_iEpoch++;
   
@@ -500,8 +452,6 @@ void BPA::vPoolDump(void)
   vResourceSummary();
   
   vTrace("\n"_Stz);
-  
-  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -541,8 +491,6 @@ i8 BPA::iPoolFree(void)
 /*----------------------------------------------------------------------------*/
 void BPA::vReadBuffers(Stz* sFilePath)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   File* pFile = new File();
   pFile->bOpenRead(sFilePath);
   
@@ -555,8 +503,6 @@ void BPA::vReadBuffers(Stz* sFilePath)
     
     vBufferDump(pBuffer);
   }
-  
-  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -564,8 +510,6 @@ void BPA::vReadBuffers(Stz* sFilePath)
 /*----------------------------------------------------------------------------*/
 void BPA::vRegionSummary()
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   // get magnitudes of the various buffer pools
   s32 sMagSmall;  Magnitudes::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
   s32 sMagMedium; Magnitudes::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
@@ -635,8 +579,6 @@ void BPA::vRegionSummary()
          gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iBufferCount(),
          gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iAllocCount(),
          gpAttachMap->m_xHeapMem.Persistent.m_pJumbo->iFreeCount());
-  
-  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -644,8 +586,6 @@ void BPA::vRegionSummary()
 /*----------------------------------------------------------------------------*/
 void BPA::vResourceSummary(void)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   vTrace("\n"_Stz);
   vTrace("****************************************************************\n"_Stz);
   vTrace(" Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n"_Stz,
@@ -655,8 +595,6 @@ void BPA::vResourceSummary(void)
          gpAttachMap->m_oResourceTracker.nSocketOpen(),
          gpAttachMap->m_oResourceTracker.nThreadOpen());
   vTrace("****************************************************************\n"_Stz);
-  
-  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -664,8 +602,6 @@ void BPA::vResourceSummary(void)
 /*----------------------------------------------------------------------------*/
 void BPA::vWordList(i8 iEpoch)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   Buffer* pMediumTransient = nullptr;
   Buffer* pSmallTransient  = nullptr;
   
@@ -688,8 +624,6 @@ void BPA::vWordList(i8 iEpoch)
   
   if (pSmallTransient)
     vHeapDump(reinterpret_cast<Heap*>(pSmallTransient), iEpoch);
-  
-  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -697,8 +631,6 @@ void BPA::vWordList(i8 iEpoch)
 /*----------------------------------------------------------------------------*/
 void BPA::vWriteBuffers(Stz* sFilePath)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   File* pFile = new File();
   pFile->bOpenWrite(sFilePath);
   
@@ -725,8 +657,6 @@ void BPA::vWriteBuffers(Stz* sFilePath)
   i8 iMilli = iTicks * C_1K / iTicksPerSecond;
   
   vTrace("Writing %lld buffers took %lld ms\n"_Stz, *nBufferCount, iMilli);
-         
-  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -734,8 +664,6 @@ void BPA::vWriteBuffers(Stz* sFilePath)
 /*----------------------------------------------------------------------------*/
 void BPA::vWriteHeap(Heap* pHeap, File* pFile)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   Timer oTimer;
   oTimer.vStart();
   
@@ -763,8 +691,6 @@ void BPA::vWriteHeap(Heap* pHeap, File* pFile)
 /*----------------------------------------------------------------------------*/
 void BPA::vWritePersistentHeapMem(Stz* sFilePath)
 {
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
   File* pFile = new File();
   pFile->bOpenWrite(sFilePath);
   
@@ -779,21 +705,6 @@ void BPA::vWritePersistentHeapMem(Stz* sFilePath)
 
   pFile->vClose();
   delete pFile;
-  
-  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* BPA::aFooter(void)
-{
-  _precondition_(_MAGIC_,CN_BPA);
-  return &m_xFooter;
 }
 
 /*============================================================================*/

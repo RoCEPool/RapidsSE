@@ -7,37 +7,26 @@ namespace Pool
 {
   class Heap;
   
-  class BPA : public Object
+  class BPA
   {
-  private:
-    
-    // must be last
-    Footer m_xFooter;
-
   public:
     
-    BPA(void);
-    ~BPA(void) noexcept(false);
-    
-    static i8 iPoolFree(void);
-    
-    void vBufferDump(Buffer* pBuffer);
-    void vHeapDump(Heap* pBuffer);
-    void vHeapDump(Heap* pBuffer, i8 iEpoch);
-    void vObjectList(void);
-    void vObjectSummary(void);
-    void vObjectSnapshot(i8* pCountObjects);
-    void vPoolAnalyze(void);
-    void vPoolDump(void);    
-    void vReadBuffers(Stz* sFilePath);
-    void vRegionSummary(void);
-    void vResourceSummary(void);
-    void vWordList(i8 iEpoch);
-    void vWriteBuffers(Stz* sFilePath);
-    void vWriteHeap(Heap* pHeap, File* pFile);
-    void vWritePersistentHeapMem(Stz* sFilePath);
-  
-    Footer* aFooter(void);
+    static void vBufferDump(Buffer* pBuffer);
+    static void vHeapDump(Heap* pBuffer);
+    static void vHeapDump(Heap* pBuffer, i8 iEpoch);
+    static void vObjectList(void);
+    static void vObjectSummary(void);
+    static void vObjectSnapshot(i8* pCountObjects);
+    static void vPoolAnalyze(void);
+    static void vPoolDump(void);
+    static i8   iPoolFree(void);
+    static void vReadBuffers(Stz* sFilePath);
+    static void vRegionSummary(void);
+    static void vResourceSummary(void);
+    static void vWordList(i8 iEpoch);
+    static void vWriteBuffers(Stz* sFilePath);
+    static void vWriteHeap(Heap* pHeap, File* pFile);
+    static void vWritePersistentHeapMem(Stz* sFilePath);
   };
 };
 
