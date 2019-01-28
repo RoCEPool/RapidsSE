@@ -84,9 +84,24 @@ Pthread::~Pthread(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Pthread::vMonitorPortrait(s48K& sPortrait)
 {
+  s32 sUnitMag;
+  s32 sTimeMag;
+
   Statistics* pStats = &gpAttachMap->m_oStatistics;
-  sPortrait.vSprint("Pthread: sleeps %lld\n"_Stz,
+  
+  sPortrait.vSprint("Pthread: sleeps %lld"_Stz,
                     pStats->Thread.m_nSleeps);
+  
+  for (i8 i_Class = 0; i_Class < CN_ENUMS; i_Class++) {
+    if (pStats->Thread.m_iaSleeps[i_Class]) {
+      Magnitudes::vUnitMag(pStats->Thread.m_iaSleeps[i_Class],   sUnitMag);
+      Magnitudes::vTimeMag(pStats->Thread.m_iaDuration[i_Class], sTimeMag);
+      sPortrait.vSprintCat(" %s %s/%s"_Stz,
+             aCN[i_Class],sUnitMag.aStz(),sTimeMag.aStz());
+    }
+  }
+  sPortrait.vSprintCat("\n"_Stz);
+
 }
 
 /*----------------------------------------------------------------------------*/
