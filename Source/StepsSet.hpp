@@ -102,11 +102,11 @@
   static void vBpEpochTake(Tasks::MP_Task mpTask);
   static void vBpReadBufferPool(Tasks::MP_Task mpTask);
   static void vBpWriteBufferPool(Tasks::MP_Task mpTask);
-  static void vFreeBuffers(Tasks::MP_Task mpTask);
-  static void vFreePercent(Tasks::MP_Task mpTask);
-  static void vFreeSpace(Tasks::MP_Task mpTask);
-  static void vInUseSpace(Tasks::MP_Task mpTask);
-  static void vTotalSpace(Tasks::MP_Task mpTask);
+  static void vBpFreeBuffers(Tasks::MP_Task mpTask);
+  static void vBpFreePercent(Tasks::MP_Task mpTask);
+  static void vBpFreeSpace(Tasks::MP_Task mpTask);
+  static void vBpInUseSpace(Tasks::MP_Task mpTask);
+  static void vBpTotalSpace(Tasks::MP_Task mpTask);
 
   // cast
   static void vCastInt(Tasks::MP_Task mpTask);
