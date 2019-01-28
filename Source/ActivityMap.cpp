@@ -396,15 +396,29 @@ ActivityMark* ActivityMap::pNewActivityMark(void)
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   
+  ActivityMark* pActivityMark = pNewActivityMark_NL();
+    
+  vDropLock();
+  // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
+
+  return pActivityMark;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a new mark in ActivityMap (non-locking)                                */
+/*----------------------------------------------------------------------------*/
+ActivityMark* ActivityMap::pNewActivityMark_NL(void)
+{
+  _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
+
+  m_oLock.vAssertWrite();
+  
   ActivityMark* pActivityMark = &m_oaMark[m_i_Mark % m_nMarks];
   
   pActivityMark->m_iMark = m_i_Mark;
   
   m_i_Mark++;
   
-  vDropLock();
-  // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
-
   return pActivityMark;
 }
 

@@ -38,6 +38,7 @@ namespace Measurement
     static void vMarkApiEntry(i8 eApiCall, i8 iJobId=-1);
     static void vMarkApiError(i8 eApiCall, i8 iError, i8 iJobId=-1);
     static void vMarkApiExit(i8 eApiCall, i8 iJobId=-1);
+    static void vMarkString(s48K& sString);
     static void vMonitorPortrait(s48K& sPortrait);
     static void vOpenByApi(void);
     static void vOpenBySE(void);
@@ -49,6 +50,7 @@ namespace Measurement
 
   private:
     ActivityMark* pNewActivityMark(void);
+    ActivityMark* pNewActivityMark_NL(void);
     void vDropLock(void);
     void vFindRange_NL(i8& i_MinMark, i8& i_MaxMark);
     void vGrabLock(void);
