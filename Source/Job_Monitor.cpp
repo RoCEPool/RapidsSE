@@ -111,8 +111,6 @@ Job_Monitor::Job_Monitor(Interface::Session* pSession)
   m_bNamedFile = false;
   m_pOutFile   = nullptr;
   
-  m_iTakeNo    = 0;
-  
   _checkInitialised_(CN_JOB_MONITOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOB_MONITOR,_FOOTER_);
@@ -267,28 +265,16 @@ bool Job_Monitor::bTake(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB_MONITOR,_FOOTER_);
   
-  //vTrace("Monitor...\n"_Stz);
-  
-//  s48K sPortrait;
-//  s48K sRapidsPortrait;
-//
-//  Now oNow;
-//
-//  //sPortrait = "\n"_Stz;
-//
-//  //sPortrait.vConcat("----------------------------------------------------\n"_Stz);
-//  sPortrait.vSprint("\nSystem Monitor %lld %s\n"_Stz,
-//                    m_iTakeNo,oNow.sFormatted());
-//  sPortrait.vConcat("------------------------------------------------------\n"_Stz);
-//
-//  Engine::vMonitorPortrait(sRapidsPortrait);
-//  sPortrait.vConcat(sRapidsPortrait);
-  
   s48K sRapidsPortrait;
   Engine::vMonitorPortrait(sRapidsPortrait);
   m_pOutFile->vPrint("%s\n"_Stz,sRapidsPortrait.aStz());
   
-  m_iTakeNo++;
+  if (1 == *gpAttachMap->m_ziMonitorTake)
+    BPA::vEpochTake();
+  else {
+    BPA::vEpochDump();
+    BPA::vEpochTake();
+  }
   
   return true;
 }
