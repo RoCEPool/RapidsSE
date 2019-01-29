@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace Commands      { class Command; class Parser; class Tokeniser; }
+namespace Commands      { class Command; class Parser; }
 namespace Measurement   { class ActivityMap; class ResourceTracker; }
 namespace Pool          { class BufferPool; class Region; }
 namespace Prompt        { class SePrompt; }
@@ -29,7 +29,6 @@ namespace StorageEngine
     friend class         Steps::Step;
     friend class         Tasks::Task;
     friend class       Threads::Thread;
-    friend class      Commands::Tokeniser;
     friend class  Transactions::Tx;
 
   private:

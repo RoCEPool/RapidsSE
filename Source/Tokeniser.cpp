@@ -5,7 +5,6 @@
 #include "Commands.h"
 #include "StorageEngine.h"
 
-extern Arguments   gxArguments;
 extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
@@ -56,9 +55,9 @@ Tokeniser::Tokeniser(void)
   m_eToken  = TN_NONE;
   
   
-  i8 i_Node = gxArguments.m_iThisNode;
-  Node* pNode = gpAttachMap->m_pGrid->pThisNode();
   i8 nNodes = gpAttachMap->m_pGrid->nNodes();
+  Node* pNode = gpAttachMap->m_pGrid->pThisNode();
+  i8  i_Node = pNode->iNodeNo();
   //bool bHasStarted = gpAttachMap->m_pGrid->m_bHasStarted;
   
   m_sPrompt.vSprint("[N%lld/%lld %s %lld%s%s] se %s%c"_Stz,
@@ -67,7 +66,7 @@ Tokeniser::Tokeniser(void)
                     nNodes,
                     pNode->aNodeName(),
                     Process::iGetPid(),
-                    gxArguments.m_bActivityMap? " AM" : "",
+                    gpAttachMap->Arg.m_bActivityMap? " AM" : "",
 #ifdef __ENTRY_EXIT
                     " EE",
 #else
