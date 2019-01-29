@@ -48,6 +48,16 @@ void* ActivityMap::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* ActivityMap::operator new(size_t, ActivityMap* pActivityMap)
+{
+  RASSERT(! gpActivityMap);
+  
+  return pActivityMap;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void ActivityMap::operator delete(void* aAddress)

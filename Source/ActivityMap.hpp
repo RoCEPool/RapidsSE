@@ -23,6 +23,7 @@ namespace Measurement
 
   public:
     void* operator new(size_t);
+    void* operator new(size_t, ActivityMap* pActivityMap);
     void  operator delete(void*);
 
     ActivityMap(void);
