@@ -136,6 +136,56 @@ void Arguments::vEnvironmentVariables(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add arguments as forth constants                                           */
+/*----------------------------------------------------------------------------*/
+void Arguments::vAddConstants(void)
+{
+  // Arguments
+  vAddConstant("args.bindThreads"_Stz,       m_bBindThreads);
+  vAddConstant("args.config"_Stz,            m_bConfig);
+  vAddConstant("args.developer"_Stz,         m_bDeveloper);
+  vAddConstant("args.dontFree"_Stz,          m_bDontFree);
+  vAddConstant("args.freeRB"_Stz,            m_bFreeRB);
+  vAddConstant("args.help"_Stz,              m_bHelp);
+  vAddConstant("args.hugePages"_Stz,         m_bHugePages);
+  vAddConstant("args.jumboBuffers"_Stz,      m_nJumboBuffers);
+  vAddConstant("args.jumboSize"_Stz,         m_iJumboSize);
+  vAddConstant("args.jumboTook"_Stz,         m_nJumboTook);
+  vAddConstant("args.killPrev"_Stz,          m_bKillPrev);
+  vAddConstant("args.lock"_Stz,              m_bLock);
+  vAddConstant("args.metadata"_Stz,          m_bMetadata);
+  vAddConstant("args.munged"_Stz,            m_bMunged);
+  vAddConstant("args.nodeName"_Stz,          m_sNodeName);
+  vAddConstant("args.nodes"_Stz,             m_nNodes);
+  vAddConstant("args.partitionsPerNode"_Stz, m_nSlots);
+  vAddConstant("args.periodicSleep"_Stz,     m_nPeriodicSleep);
+  vAddConstant("args.progress"_Stz,          m_bProgress);
+  vAddConstant("args.prompt"_Stz,            m_bPrompt);
+  vAddConstant("args.regionPrefix"_Stz,      m_sRegionPrefix);
+  vAddConstant("args.regionName"_Stz,        m_sRegionName);
+  vAddConstant("args.regionSize"_Stz,        m_iRegionSize
+                                               - m_iJumboSize);
+  vAddConstant("args.reload"_Stz,            m_bReload);
+  vAddConstant("args.restart"_Stz,           m_bRestart);
+  vAddConstant("args.senDir"_Stz,            m_sSenDir);
+  vAddConstant("args.slots"_Stz,             m_nSlots);
+  vAddConstant("args.start"_Stz,             m_bStart);
+  vAddConstant("args.status"_Stz,            m_bStatus);
+  vAddConstant("args.stop"_Stz,              m_bStop);
+  vAddConstant("args.subIngesters"_Stz,      m_nSubIngesters);
+  vAddConstant("args.subLoaders"_Stz,        m_nSubLoaders);
+  vAddConstant("args.threads"_Stz,           m_nThreads);
+  vAddConstant("args.touch"_Stz,             m_bTouch);
+  vAddConstant("args.tracepoint"_Stz,        m_bTracepoint);
+  vAddConstant("args.tracing"_Stz,           m_bTracing);
+  vAddConstant("args.unlink"_Stz,            m_bUnlink);
+  vAddConstant("args.verbose"_Stz,           m_bVerbose);
+  vAddConstant("args.welcome"_Stz,           m_bWelcome);
+  vAddConstant("args.activityMap"_Stz,       m_bActivityMap);
+  vAddConstant("args.amPath"_Stz,            m_sAmPath);
+}
+
+/*----------------------------------------------------------------------------*/
 /* mark the arguments                                                         */
 /*----------------------------------------------------------------------------*/
 void Arguments::vMark(void)

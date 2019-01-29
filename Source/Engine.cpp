@@ -806,6 +806,8 @@ void Engine::vStartSystem(void)
   
   Step::vAddSteps();
   
+  gxArguments.vAddConstants();
+  
   Axioms::vAddConstants();
 
   vCallBoot();

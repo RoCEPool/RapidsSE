@@ -57,50 +57,6 @@ void Axioms::vAddConstants(void)
   vAddConstant("smallbuffersize"_Stz,  C_SIZE_SMALL_OBJECT);
   vAddConstant("magic"_Stz,            C_MAGIC);
   
-  // Arguments
-  vAddConstant("args.bindThreads"_Stz,       gxArguments.m_bBindThreads);
-  vAddConstant("args.config"_Stz,            gxArguments.m_bConfig);
-  vAddConstant("args.developer"_Stz,         gxArguments.m_bDeveloper);
-  vAddConstant("args.dontFree"_Stz,          gxArguments.m_bDontFree);
-  vAddConstant("args.freeRB"_Stz,            gxArguments.m_bFreeRB);
-  vAddConstant("args.help"_Stz,              gxArguments.m_bHelp);
-  vAddConstant("args.hugePages"_Stz,         gxArguments.m_bHugePages);
-  vAddConstant("args.jumboBuffers"_Stz,      gxArguments.m_nJumboBuffers);
-  vAddConstant("args.jumboSize"_Stz,         gxArguments.m_iJumboSize);
-  vAddConstant("args.jumboTook"_Stz,         gxArguments.m_nJumboTook);
-  vAddConstant("args.killPrev"_Stz,          gxArguments.m_bKillPrev);
-  vAddConstant("args.lock"_Stz,              gxArguments.m_bLock);
-  vAddConstant("args.metadata"_Stz,          gxArguments.m_bMetadata);
-  vAddConstant("args.munged"_Stz,            gxArguments.m_bMunged);
-  vAddConstant("args.nodeName"_Stz,          gxArguments.m_sNodeName);
-  vAddConstant("args.nodes"_Stz,             gxArguments.m_nNodes);
-  vAddConstant("args.partitionsPerNode"_Stz, gxArguments.m_nSlots);
-  vAddConstant("args.periodicSleep"_Stz,     gxArguments.m_nPeriodicSleep);
-  vAddConstant("args.progress"_Stz,          gxArguments.m_bProgress);
-  vAddConstant("args.prompt"_Stz,            gxArguments.m_bPrompt);
-  vAddConstant("args.regionPrefix"_Stz,      gxArguments.m_sRegionPrefix);
-  vAddConstant("args.regionName"_Stz,        gxArguments.m_sRegionName);
-  vAddConstant("args.regionSize"_Stz,        gxArguments.m_iRegionSize
-                                               - gxArguments.m_iJumboSize);
-  vAddConstant("args.reload"_Stz,            gxArguments.m_bReload);
-  vAddConstant("args.restart"_Stz,           gxArguments.m_bRestart);
-  vAddConstant("args.senDir"_Stz,            gxArguments.m_sSenDir);
-  vAddConstant("args.slots"_Stz,             gxArguments.m_nSlots);
-  vAddConstant("args.start"_Stz,             gxArguments.m_bStart);
-  vAddConstant("args.status"_Stz,            gxArguments.m_bStatus);
-  vAddConstant("args.stop"_Stz,              gxArguments.m_bStop);
-  vAddConstant("args.subIngesters"_Stz,      gxArguments.m_nSubIngesters);
-  vAddConstant("args.subLoaders"_Stz,        gxArguments.m_nSubLoaders);
-  vAddConstant("args.threads"_Stz,           gxArguments.m_nThreads);
-  vAddConstant("args.touch"_Stz,             gxArguments.m_bTouch);
-  vAddConstant("args.tracepoint"_Stz,        gxArguments.m_bTracepoint);
-  vAddConstant("args.tracing"_Stz,           gxArguments.m_bTracing);
-  vAddConstant("args.unlink"_Stz,            gxArguments.m_bUnlink);
-  vAddConstant("args.verbose"_Stz,           gxArguments.m_bVerbose);
-  vAddConstant("args.welcome"_Stz,           gxArguments.m_bWelcome);
-  vAddConstant("args.activityMap"_Stz,       gxArguments.m_bActivityMap);
-  vAddConstant("args.amPath"_Stz,            gxArguments.m_sAmPath);
-
   // true / flase
   vAddConstant("true"_Stz,    (i8)1);
   vAddConstant("false"_Stz,   (i8)0);

@@ -7,6 +7,9 @@ namespace StorageEngine
 {
   class Arguments : public Object
   {
+  //friend class Axioms;
+  //friend class Engine;
+
   public:
   
     // welcome
@@ -94,6 +97,7 @@ namespace StorageEngine
     
     static void vMark(void);
   
+    void vAddConstants(void);
     void vEnvironmentVariables(void);
     bool bParse(int argc, Stz* argv[]);
     void vPrint(void);
