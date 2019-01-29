@@ -22,7 +22,6 @@ namespace Measurement
     Footer m_xFooter;
 
   public:
-    void* operator new(size_t);
     void* operator new(size_t, ActivityMap* pActivityMap);
     void  operator delete(void*);
 
@@ -30,11 +29,9 @@ namespace Measurement
     ~ActivityMap(void) noexcept(false);
 
   private:
-    static bool bOpenCreate(void);
-    static bool bOpenExisting(void);
 
-    static ActivityMap* pOpenCreate(void);
-    static ActivityMap* pOpenExisting(void);
+    static ActivityMap* pAttachCreate(void);
+    static ActivityMap* pAttachExisting(void);
 
   public:
     static void vMark(i8 iJobId, Stz* aFormat, ...);
@@ -53,8 +50,8 @@ namespace Measurement
   
 
   private:
-    ActivityMark* pNewActivityMark(void);
-    ActivityMark* pNewActivityMark_NL(void);
+    ActivityMark* pNewMark(void);
+    ActivityMark* pNewMark_NL(void);
     void vDropLock(void);
     void vFindRange_NL(i8& i_MinMark, i8& i_MaxMark);
     void vGrabLock(void);

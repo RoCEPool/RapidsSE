@@ -18,38 +18,6 @@ ActivityMap* gpActivityMap = nullptr;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* ActivityMap::operator new(size_t)
-{
-  RASSERT(! gpActivityMap);
-  
-  bool bResult;
-  if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart) {
-    bResult = ActivityMap::bOpenCreate();
-    RASSERT(bResult);
-    if (gpAttachMap->m_bVerbose)
-      vTrace("ActivityMap %s : "
-             "created new map (size %lldB, max %lld marks)\n\n"_Stz,
-             C_ACTIVITY_REGION,
-             sizeof(ActivityMap),
-             C_ACTIVITY_MARKS);
-  }
-  else {
-    bResult = ActivityMap::bOpenExisting();
-    RASSERT(bResult);
-    if (gpAttachMap->m_bVerbose)
-      vTrace("ActivityMap %s : "
-             "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
-             C_ACTIVITY_REGION,
-             sizeof(ActivityMap),
-             C_ACTIVITY_MARKS);
-  }
-  
-  return gpActivityMap;
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator new                                                               */
-/*----------------------------------------------------------------------------*/
 void* ActivityMap::operator new(size_t, ActivityMap* pActivityMap)
 {
   RASSERT(! gpActivityMap);
@@ -62,14 +30,6 @@ void* ActivityMap::operator new(size_t, ActivityMap* pActivityMap)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::operator delete(void* aAddress)
 {
-  ActivityMap* aActivity = static_cast<ActivityMap*>(aAddress);
-  
-  if (0 == gpAttachMap->m_pGrid->m_iThisNode) {
-    //aActivity->bCloseShm();
-  }
-  else {
-    //aActivity->bCloseShm();
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,11 +39,9 @@ ActivityMap::ActivityMap(void)
 : Object(CN_ACTIVITYMAP)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
-
-  m_okLock.vInitLock(LK_ACTIVITY_MAP);
   
   if (0 != gpAttachMap->m_pGrid->m_iThisNode || Pthread::bIsJavaThread() )
-    return;
+    RASSERT(0);
   
   m_okLock.vInitLock(LK_ACTIVITY_MAP);
   
@@ -115,86 +73,7 @@ ActivityMap::~ActivityMap(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* create a new ActivityMap shared memory segment                             */
 /*----------------------------------------------------------------------------*/
-bool ActivityMap::bOpenCreate(void)
-{
-  int iRegionFd;
-  SysCall oSysCall;
-  s32 sRegionName;
-  bool bResult;
-  
-  sRegionName = *C_ACTIVITY_REGION;
-  
-  // unlink the name of any previous segment
-  IGNORE_RETURN( Shm::bUnlink(sRegionName,oSysCall) );
-  
-  // open a new shm region which will contain the activity map
-  bResult = Shm::bOpenCreate(sRegionName,iRegionFd,oSysCall);
-  if (! bResult)
-    vFatal("ActivityMap::bOpenCreate: failed to create region %s\n"_Stz,
-           sRegionName.aChar());
-  
-  // extend the shm region
-  bResult = Shm::bExtend(iRegionFd,sizeof(ActivityMap),oSysCall);
-  if (! bResult)
-    vFatal("ActivityMap::bOpenCreate: failed to extend region %s\n"_Stz,
-           sRegionName.aChar());
-  
-  // map the shm region into a vm segment within this process address space
-  void* aSegment = Shm::aMap(iRegionFd,
-                             nullptr,
-                             sizeof(ActivityMap),
-                             C_NO_HUGE_PAGES,
-                             oSysCall);
-  if (! aSegment)
-    vFatal("ActivityMap::bOpenCreate: failed to map region!\n"_Stz);
-  
-  gpActivityMap = static_cast<ActivityMap*>(aSegment);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attach to existing shm region containing the ActivityMap                   */
-/*----------------------------------------------------------------------------*/
-bool ActivityMap::bOpenExisting(void)
-{
-  int iFD;
-  SysCall oSysCall;
-  s32 sRegionName;
-  
-  sRegionName = *C_ACTIVITY_REGION;
-  
-  // open existing shm region
-  bool bResult = Shm::bOpenExisting(sRegionName,iFD,oSysCall);
-  if (! bResult) {
-    vTrace("ActivityMap::bOpenExisting: failed to open region: %s\n"_Stz,
-           sRegionName.aChar());
-    return false;
-  }
-
-  // map the shm region into a vm segment within this process address space
-  void* aSegment = Shm::aMap(iFD,
-                             nullptr,
-                             sizeof(ActivityMap),
-                             C_NO_HUGE_PAGES,
-                             oSysCall);
-  if (! aSegment)  {
-    vTrace("ActivityMap::bOpenExisting: failed to map\n"_Stz);
-    Shm::bClose(iFD,oSysCall);
-    NEVER_REACH;
-  }
-  
-  gpActivityMap = static_cast<ActivityMap*>(aSegment);
-  
-  return true;
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/* create a new ActivityMap shared memory segment                             */
-/*----------------------------------------------------------------------------*/
-ActivityMap* ActivityMap::pOpenCreate(void)
+ActivityMap* ActivityMap::pAttachCreate(void)
 {
   int iRegionFd;
   SysCall oSysCall;
@@ -235,7 +114,7 @@ ActivityMap* ActivityMap::pOpenCreate(void)
 /*----------------------------------------------------------------------------*/
 /* attach to existing shm region containing the ActivityMap                   */
 /*----------------------------------------------------------------------------*/
-ActivityMap* ActivityMap::pOpenExisting(void)
+ActivityMap* ActivityMap::pAttachExisting(void)
 {
   int iFD;
   SysCall oSysCall;
@@ -375,7 +254,7 @@ void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
   
   while (StrLib::bEachLine(&aCharAdr,sLine.aChar())) {
     //vTrace("Line: ]]%s[[\n"_Stz,sLine.aChar());
-    ActivityMark* pActivityMark = gpActivityMap->pNewActivityMark_NL();
+    ActivityMark* pActivityMark = gpActivityMap->pNewMark_NL();
     pActivityMark->vWrite(iJobId,sLine.aChar());
   }
   
@@ -423,7 +302,7 @@ void ActivityMap::vOpenByApi(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ActivityMap* pActivityMap = ActivityMap::pOpenExisting();
+  ActivityMap* pActivityMap = ActivityMap::pAttachExisting();
   if (gpAttachMap->m_bVerbose)
     vTrace("ActivityMap %s : "
            "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
@@ -454,7 +333,7 @@ void ActivityMap::vOpenBySE(void)
   ActivityMap* pActivityMap = nullptr;
   
   if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart) {
-    pActivityMap = ActivityMap::pOpenCreate();
+    pActivityMap = ActivityMap::pAttachCreate();
     if (gpAttachMap->m_bVerbose)
       vTrace("ActivityMap %s : "
              "created new map (size %lldB, max %lld marks)\n\n"_Stz,
@@ -464,7 +343,7 @@ void ActivityMap::vOpenBySE(void)
     gpActivityMap = new(pActivityMap) ActivityMap;
 
   } else {
-    pActivityMap = ActivityMap::pOpenExisting();
+    pActivityMap = ActivityMap::pAttachExisting();
     if (gpAttachMap->m_bVerbose)
       vTrace("ActivityMap %s : "
              "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
@@ -528,14 +407,14 @@ void ActivityMap::vWriteCsv(void)
 /*----------------------------------------------------------------------------*/
 /* get a new mark in ActivityMap                                              */
 /*----------------------------------------------------------------------------*/
-ActivityMark* ActivityMap::pNewActivityMark(void)
+ActivityMark* ActivityMap::pNewMark(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
   // ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼
   vGrabLock();
   
-  ActivityMark* pActivityMark = pNewActivityMark_NL();
+  ActivityMark* pActivityMark = pNewMark_NL();
   
   vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
@@ -546,7 +425,7 @@ ActivityMark* ActivityMap::pNewActivityMark(void)
 /*----------------------------------------------------------------------------*/
 /* get a new mark in ActivityMap (non-locking)                                */
 /*----------------------------------------------------------------------------*/
-ActivityMark* ActivityMap::pNewActivityMark_NL(void)
+ActivityMark* ActivityMap::pNewMark_NL(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
 
@@ -675,7 +554,7 @@ void ActivityMap::vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs)
   
   vsnprintf(caMark,sizeof(caMark)-1,aFormat->aChar(),xArgs);
   
-  ActivityMark* pActivityMark = pNewActivityMark();
+  ActivityMark* pActivityMark = pNewMark();
   
   if (! pActivityMark)
     return;
