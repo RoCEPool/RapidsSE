@@ -14,7 +14,7 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
 /*----------------------------------------------------------------------------*/
-bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
+bool Region::bAttach(s32& sRegionName, bool bVerbose, void* aRegionAddr)
 {
   int iFD;
   SysCall oSysCall;
@@ -76,7 +76,7 @@ bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
   // overlay buffer pool onto 1st buffer (buffer #0)
   gpBufferPool = reinterpret_cast<BufferPool*>(gaSeShmRegion);
   
-  if (gxArguments.m_bVerbose)
+  if (bVerbose)
     vTrace("Shm mapped at %p\n"_Stz,gaSeShmRegion);
   
   return true;
@@ -85,7 +85,8 @@ bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
 /*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
-void Region::vCreate(s32& sRegionName, void* aRegionAddr,
+void Region::vCreate(s32& sRegionName, bool bVerbose,
+                     void* aRegionAddr,
                      i8 iRegionSize, i8 iJumboTook,
                      bool bTouch, bool bProgress,
                      bool bLock, bool bRestart,
@@ -98,7 +99,7 @@ void Region::vCreate(s32& sRegionName, void* aRegionAddr,
   
   // verbose
   Magnitudes::vByteMag(iRegionSize, sSizeMag);
-  if (gxArguments.m_bVerbose)
+  if (bVerbose)
     vInfo("Creating Engine instance %s; size %s (%lldB)...\n"_Stz,
            sRegionName.aChar(),
            sSizeMag.aChar(),
@@ -130,7 +131,7 @@ void Region::vCreate(s32& sRegionName, void* aRegionAddr,
                                                bDontFree, bFreeRB);
 
   
-  if (gxArguments.m_bVerbose)
+  if (bVerbose)
     vTrace("Shm mapped at %p\n"_Stz,gaSeShmRegion);
   
   // lock the shared memory in
@@ -139,7 +140,7 @@ void Region::vCreate(s32& sRegionName, void* aRegionAddr,
     if (! bResult)
       vFatal("Engine::vAttach failed to lock\n"_Stz);
     
-    if (gxArguments.m_bVerbose)
+    if (bVerbose)
       vTrace("Shm pages locked in memory\n"_Stz);
   }
   
@@ -170,13 +171,8 @@ void Region::vUnlink(s32& sRegionName)
 {
   SysCall oSysCall;
   
-  if (Shm::bUnlink(sRegionName,oSysCall)) {
-    if (gxArguments.m_bVerbose)
-      vTrace("Region %s succesfully unlinked\n"_Stz,sRegionName.aChar());
-  }
-  else {
+  if (! Shm::bUnlink(sRegionName,oSysCall))
     vTrace("Region %s not unlinked\n"_Stz,sRegionName.aChar());
-  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

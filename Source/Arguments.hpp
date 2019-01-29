@@ -4,7 +4,6 @@
 #pragma once
 
 namespace Commands      { class Command; class Parser; }
-namespace Pool          { class Region; }
 namespace Prompt        { class SePrompt; }
 namespace StorageEngine { class Engine; }
 namespace Threads       { class Thread; }
@@ -16,7 +15,6 @@ namespace StorageEngine
     friend class      Commands::Command;
     friend class StorageEngine::Engine;
     friend class      Commands::Parser;
-    friend class          Pool::Region;
     friend class        Prompt::SePrompt;
     friend class       Threads::Thread;
 
@@ -54,9 +52,13 @@ namespace StorageEngine
     bool m_bUnlink;     // unlink shm region only
 
     // options
+    bool m_bActivityMap; // use activity map
     bool m_bConfig;     // print configuration information
     bool m_bDeveloper;  // user is a developer
     bool m_bDontFree;   // dont actually free objects back to heap
+    i8   m_nDummyThreads; // number of dummy threads
+    i8   m_nDummySleep;   // sleep period for dummy threads
+    i8   m_nDummyLoop;    // loop count for dummy threads
     i8   m_nEntries;    // no of entries per buffer
     bool m_bFreeRB;     // but free RowBuffers back to heap
     bool m_bLock;       // lock shared memory pages in memory
@@ -64,6 +66,7 @@ namespace StorageEngine
     bool m_bKillPrev;   // kill previous se's (temporary)
     bool m_bMetadata;   // print metadata information
     bool m_bMunged;     // load munged words
+    i8   m_nPeriodicSleep; // sleep period for periodic job
     bool m_bProgress;   // print initialisation progress
     bool m_bReload;     // relaod from checkpoint files
     bool m_bRestart;    // restart if system already started
@@ -71,16 +74,11 @@ namespace StorageEngine
     i8   m_nSubLoaders;   // number of subloaders
     i8   m_iThisNode;     // this node no in the m_xNode list              //! FIX
     i8   m_nThreads;      // number of general threads
-    i8   m_nDummyThreads; // number of dummy threads
-    i8   m_nDummySleep;   // sleep period for dummy threads
-    i8   m_nDummyLoop;    // loop count for dummy threads
-    i8   m_nPeriodicSleep; // sleep period for periodic job
-    bool m_bTouch;         // touch all shm pages during region create
+     bool m_bTouch;         // touch all shm pages during region create
     bool m_bTracepoint;    // print tracepoint
     bool m_bTracing;       // tracing
     bool m_bVerbose;       // print extra stuff
     bool m_bWelcome;       // print banner
-    bool m_bActivityMap;   // use activity map
 
     // working
     i8   m_nJumboTook;  // number of pool buffers taken by jumbo buffers

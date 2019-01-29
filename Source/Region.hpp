@@ -8,8 +8,10 @@ namespace Pool
   class Region
   {
   public:
-    static bool bAttach(s32& sRegionName, void *aRegionAddr);
-    static void vCreate(s32& sRegionName, void *aRegionAddr, i8 iRegionSize,
+    static bool bAttach(s32& sRegionName, bool bVerbose,
+                        void *aRegionAddr);
+    static void vCreate(s32& sRegionName, bool bVerbose,
+                        void *aRegionAddr, i8 iRegionSize,
                         i8 iJumboTook, bool bTouch, bool bProgress,
                         bool bLock, bool bRestart,
                         bool bDontFree, bool bFreeRB);

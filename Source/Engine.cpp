@@ -493,6 +493,7 @@ void Engine::vOpenPool(void)
       vInfo("\n*\n* Create Region\n*\n"_Stz);
     
     Region::vCreate(gxArguments.m_sRegionName,
+                    gxArguments.m_bVerbose,
                     gxArguments.m_aRegionAddr,
                     gxArguments.m_iRegionSize,
                     gxArguments.m_nJumboTook,
@@ -523,7 +524,9 @@ void Engine::vOpenPool(void)
     }
     if (gxArguments.m_bVerbose)
       vInfo("\n*\n* Attach Region\n*\n"_Stz);
-    bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
+    bResult = Region::bAttach(gxArguments.m_sRegionName,
+                              gxArguments.m_bVerbose,
+                              gxArguments.m_aRegionAddr);
     ASSERT(bResult);
     vAttachRegion();
     return;
@@ -537,7 +540,9 @@ void Engine::vOpenPool(void)
     }
     if (gxArguments.m_bVerbose)
       vInfo("\n*\n* Attach Region\n*\n"_Stz);
-    bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
+    bResult = Region::bAttach(gxArguments.m_sRegionName,
+                              gxArguments.m_bVerbose,
+                              gxArguments.m_aRegionAddr);
     if ( ! bResult ) {
       vFatal("Error: Unable to attach to Engine instance %s\n"_Stz,gxArguments.m_sRegionName.aChar());
       exit(EXIT_FAILURE);
@@ -550,7 +555,9 @@ void Engine::vOpenPool(void)
   
   if (gxArguments.m_bVerbose)
     vInfo("\n*\n* Attach Region\n*\n"_Stz);
-  bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
+  bResult = Region::bAttach(gxArguments.m_sRegionName,
+                            gxArguments.m_bVerbose,
+                            gxArguments.m_aRegionAddr);
   ASSERT(bResult);
   vAttachRegion();
   //vFatal("Error: Engine missing arguments\n"_Stz);
@@ -562,7 +569,9 @@ void Engine::vOpenPool(void)
 /*----------------------------------------------------------------------------*/
 bool Engine::bOpenPool(s32& sPoolName)
 {
-  bool bResult = Region::bAttach(sPoolName,gxArguments.m_aRegionAddr);
+  bool bResult = Region::bAttach(sPoolName,
+                                 gxArguments.m_bVerbose,
+                                 gxArguments.m_aRegionAddr);
   if (!bResult)
     return bResult;
   
@@ -601,7 +610,9 @@ void Engine::vPrintStatus(void)
   if (Region::bTest(gxArguments.m_sRegionName)) {
     
     // attach to the region
-    bool bResult = Region::bAttach(gxArguments.m_sRegionName,gxArguments.m_aRegionAddr);
+    bool bResult = Region::bAttach(gxArguments.m_sRegionName,
+                                   gxArguments.m_bVerbose,
+                                   gxArguments.m_aRegionAddr);
     ASSERT(bResult);
     
     // get globals
