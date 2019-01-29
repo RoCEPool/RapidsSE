@@ -559,13 +559,13 @@ bool Queues::bIsReadySendQueue(i8 i_QueueRR)
   /*
    
       The send queues are logically after the slot queues, and
-      the slot queues are 0 .. nSlots - 1
+      the slot queues are 0 .. nSlotsPerNode - 1
 
-      As an example, let's say nSlots = 2, nNodes = 3
+      As an example, let's say nSlotsPerNode = 2, nNodes = 3
 
       .: an iQueueRR of 2 .. 4 refers to a send queue
 
-      which rebased (by subtracting nSlots) is 0 .. 2
+      which rebased (by subtracting nSlotsPerNode) is 0 .. 2
    
    */
   
@@ -955,7 +955,7 @@ i8 Queues::i_QueueLast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  i8 i_Last = gpAttachMap->m_pGrid->m_nSlots
+  i8 i_Last = gpAttachMap->m_pGrid->m_nSlotsPerNode
                + gpAttachMap->m_pGrid->m_nNodes
                - 1;
   
@@ -1171,7 +1171,7 @@ void Queues::vScheduleSpawnedTask(Task* pTask)
     pTask->vWriteMark("vScheduleSpawnedTask()"_Stz);
   
   eQR eQueue = pTask->eWhichQueue();
-  RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlots);
+  RASSERT(eQueue >= QR_READY_QUEUE  || eQueue < gpAttachMap->m_pGrid->m_nSlotsPerNode);
   
   //vTrace("Spawned Task %p\n"_Stz,pTask);
   
@@ -1343,13 +1343,13 @@ i8 Queues::i_ToReadySendQueue(i8 i_QueueRR)
   /*
    
       The send queues are logically after the slot queues, and
-      the slot queues are 0 .. nSlots - 1
+      the slot queues are 0 .. nSlotsPerNode - 1
 
-      As an example, let's say nSlots = 2, nNodes = 3
+      As an example, let's say nSlotsPerNode = 2, nNodes = 3
 
       .: an iQueueRR of 2 .. 4 refers to a send queue
 
-      which rebased (by subtracting nSlots) is 0 .. 2
+      which rebased (by subtracting nSlotsPerNode) is 0 .. 2
    
    */
   

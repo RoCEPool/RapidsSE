@@ -142,11 +142,11 @@ void AttachMap::vPrintAttachMap(void)
   if (gpAttachMap->m_pGrid->m_bHasStarted)
     vInfo("Start node       : %lld \n"_Stz, gpAttachMap->m_pGrid->m_iStartNode);
   
-  vInfo("Slots per node   : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nSlots);
+  vInfo("Slots per node   : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nSlotsPerNode);
   vInfo("Total Partitions : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nPartitions);
 
   vInfo("Partitions on this node : %lld \n"_Stz, gpAttachMap->m_pGrid->m_nPartitions);
-  for (i8 iIndex = 0; iIndex < gpAttachMap->m_pGrid->m_nSlots; iIndex++)
+  for (i8 iIndex = 0; iIndex < gpAttachMap->m_pGrid->m_nSlotsPerNode; iIndex++)
     vInfo("Slot#%lld      : partition %lld \n"_Stz, iIndex, gpAttachMap->m_pGrid->m_iPartition[iIndex]);
   
   vInfo("\n"_Stz);
@@ -261,7 +261,7 @@ void AttachMap::vPrintStartupInfo(void)
   vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->aNodeName()->aChar());
   vTrace("  --region %s\n"_Stz,Arg.m_sRegionName.aChar());
   vTrace("  --size %lld\n"_Stz,Arg.m_iRegionSize);
-  vTrace("  --partitionsPerNode %lld\n"_Stz,m_pGrid->m_nSlots);
+  vTrace("  --partitionsPerNode %lld\n"_Stz,m_pGrid->m_nSlotsPerNode);
 
 }
 

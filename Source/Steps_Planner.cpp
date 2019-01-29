@@ -291,9 +291,9 @@ void Step::vPlannerParseWhere(MP_Task mpTask)
 //  
 //  i8 nPhrases = pPlanner->nPhrases();
 //  if (nPhrases)
-//    nLastBuffers = pPlanner->nPhrases() * gxArguments.m_nSlots;
+//    nLastBuffers = pPlanner->nPhrases() * gxArguments.m_nSlotsPerNode;
 //  else
-//    nLastBuffers = gxArguments.m_nSlots;
+//    nLastBuffers = gxArguments.m_nSlotsPerNode;
 //  
 //  mpTask->m_pSession->vLastBuffers(nLastBuffers);
   

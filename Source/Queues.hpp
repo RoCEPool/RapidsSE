@@ -30,11 +30,11 @@ namespace Threads
   
     TaskList* m_pReadySlotQueues[C_SLOTS_PER_NODE];
     // QR_READY_QUEUE + 1 ..       // tasks queued for partitioned execution
-    //   gxArguments.m_nSlots - 1  // (ordered by arrival)
+    //   gxArguments.m_nSlotsPerNode - 1  // (ordered by arrival)
   
     TaskList* m_pReadySendQueues[C_MAX_NODES];
-    // gxArguments.m_nSlots ..     // set of tasks queued for socket sending
-    //   gxArguments.m_nSlots +    // (ordered by arrival)
+    // gxArguments.m_nSlotsPerNode ..     // set of tasks queued for socket sending
+    //   gxArguments.m_nSlotsPerNode +    // (ordered by arrival)
     //   gxArguments.m_nNodes - 1
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

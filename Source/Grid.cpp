@@ -45,12 +45,12 @@ void Grid::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Grid::Grid(i8 nNodes, i8 nSlots)
+Grid::Grid(i8 nNodes, i8 nSlotsPerNode)
 : Object(CN_GRID)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  vInit(nNodes, nSlots);
+  vInit(nNodes, nSlotsPerNode);
   
   _checkInitialised_(CN_GRID);
   
@@ -68,7 +68,7 @@ Grid::~Grid(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void Grid::vInit(i8 nNodes, i8 nSlots)
+void Grid::vInit(i8 nNodes, i8 nSlotsPerNode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
@@ -77,8 +77,8 @@ void Grid::vInit(i8 nNodes, i8 nSlots)
   m_pThisNode   = nullptr;
   m_iStartNode  = C_UNKNOWN;
   m_bHasStarted = false;
-  m_nSlots      = nSlots;
-  m_nPartitions = m_nSlots * m_nNodes;
+  m_nSlotsPerNode      = nSlotsPerNode;
+  m_nPartitions = m_nSlotsPerNode * m_nNodes;
     
   // initialize the partition array
   for (i8 i_Partition = 0; i_Partition < C_SLOTS_PER_NODE; i_Partition++) {
@@ -195,11 +195,11 @@ i8 Grid::nNodes(void)
 /*----------------------------------------------------------------------------*/
 /* get number of partition slots per node in the grid                         */
 /*----------------------------------------------------------------------------*/
-i8 Grid::nSlots(void)
+i8 Grid::nSlotsPerNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  return m_nSlots;
+  return m_nSlotsPerNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -233,7 +233,7 @@ void Grid::vThisNode(i8 iNode)
   m_pThisNode = pGetNode(iNode);
   
   // now initialize the array of partition numbers on this node
-  for (i8 i_Slot = 0; i_Slot < m_nSlots; i_Slot++) {
+  for (i8 i_Slot = 0; i_Slot < m_nSlotsPerNode; i_Slot++) {
     m_iPartition[i_Slot] = TablePtn::iSlotToPartition(i_Slot);
   }
 

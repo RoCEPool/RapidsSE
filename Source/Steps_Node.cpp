@@ -142,7 +142,7 @@ void Step::vNodePartitions(MP_Task mpTask)
 {
   ENTRY("vNodePartitions"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(gpAttachMap->m_pGrid->m_nSlots);
+  mpTask->m_pDataStack->vPushI8(gpAttachMap->m_pGrid->m_nSlotsPerNode);
   
   EXIT();
 }

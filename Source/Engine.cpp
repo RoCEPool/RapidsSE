@@ -756,7 +756,7 @@ void Engine::vStartSystem(void)
                                 gxArguments.m_iJumboSize,
 
                                 gxArguments.m_nNodes,
-                                gxArguments.m_nSlots,
+                                gxArguments.m_nSlotsPerNode,
 
                                 gxArguments.m_nSubIngesters,
                                 gxArguments.m_nSubLoaders,
@@ -772,7 +772,7 @@ void Engine::vStartSystem(void)
   
   //--------------------------------------------------------------------------
   
-  gpAttachMap->m_pGrid = new Grid(gxArguments.m_nNodes, gxArguments.m_nSlots);
+  gpAttachMap->m_pGrid = new Grid(gxArguments.m_nNodes, gxArguments.m_nSlotsPerNode);
   
   for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
     Node* pNode = new Node(i_Node,

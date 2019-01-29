@@ -37,7 +37,7 @@ bool Prompt::bPrompt_config(SePrompt* pPrompt)
          sShmSize.aChar(),
          sFreeSpace.aChar(),
          gxArguments.m_nNodes,
-         gxArguments.m_nSlots,
+         gxArguments.m_nSlotsPerNode,
          gxArguments.m_nThreads,
          gxArguments.m_nSubIngesters,
          gxArguments.m_nSubLoaders,

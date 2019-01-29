@@ -43,7 +43,7 @@ Arguments::Arguments(void)
 #else
   m_sSenDir       = "../Sen/"_Stz;
 #endif
-  m_nSlots        = 4;
+  m_nSlotsPerNode        = 4;
 
   // node configuration
   m_nNodes = 0;
@@ -132,7 +132,7 @@ void Arguments::vEnvironmentVariables(void)
 
   sVarName = "SE_PARTITIONS"_Stz;
   if (Env::bGet(sVarName,sPartitions))
-    m_nSlots = sPartitions.iToI8();
+    m_nSlotsPerNode = sPartitions.iToI8();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,7 +157,7 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.munged"_Stz,            m_bMunged);
   vAddConstant("args.nodeName"_Stz,          m_sNodeName);
   vAddConstant("args.nodes"_Stz,             m_nNodes);
-  vAddConstant("args.partitionsPerNode"_Stz, m_nSlots);
+  vAddConstant("args.partitionsPerNode"_Stz, m_nSlotsPerNode);
   vAddConstant("args.periodicSleep"_Stz,     m_nPeriodicSleep);
   vAddConstant("args.progress"_Stz,          m_bProgress);
   vAddConstant("args.prompt"_Stz,            m_bPrompt);
@@ -168,7 +168,7 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.reload"_Stz,            m_bReload);
   vAddConstant("args.restart"_Stz,           m_bRestart);
   vAddConstant("args.senDir"_Stz,            m_sSenDir);
-  vAddConstant("args.slots"_Stz,             m_nSlots);
+  vAddConstant("args.slots"_Stz,             m_nSlotsPerNode);
   vAddConstant("args.start"_Stz,             m_bStart);
   vAddConstant("args.status"_Stz,            m_bStatus);
   vAddConstant("args.stop"_Stz,              m_bStop);
@@ -285,8 +285,8 @@ bool Arguments::bParse(int argc, Stz* argv[])
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (argv[i_Arg]->bSame("--partitionsPerNode"_Stz)) {
-      m_nSlots = argv[++i_Arg]->iToI8();
-      if (m_nSlots > C_SLOTS_PER_NODE) {
+      m_nSlotsPerNode = argv[++i_Arg]->iToI8();
+      if (m_nSlotsPerNode > C_SLOTS_PER_NODE) {
         vWarn("Maximum number of partitions allowed per node is %lld\n"_Stz,
           C_SLOTS_PER_NODE);
         return false;
@@ -811,7 +811,7 @@ void Arguments::vPrintStartupInfo(void)
       m_xNodes[i_Index].m_iPortNo);
   }
   
-  vTrace("  --partitionsPerNode %lld\n"_Stz,m_nSlots);
+  vTrace("  --partitionsPerNode %lld\n"_Stz,m_nSlotsPerNode);
   vTrace("  --threads %lld\n"_Stz,m_nThreads);
 
   if (m_bBindThreads)

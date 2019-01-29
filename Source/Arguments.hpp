@@ -43,7 +43,7 @@ namespace StorageEngine
     s32   m_sRegionPrefix; // prefix of the shared memory region name
     i8    m_iRegionSize;   // size of region in bytes
     s256  m_sSenDir;       // sen dir
-    i8    m_nSlots;        // partitions per node
+    i8    m_nSlotsPerNode;        // partitions per node
     
     // node configuration
     i8    m_nNodes;

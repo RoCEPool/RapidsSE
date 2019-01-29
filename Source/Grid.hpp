@@ -13,7 +13,7 @@ namespace Grids
     Node*  m_pThisNode;  // this node pointer
     i8     m_iStartNode; // node that started the cluster
     bool   m_bHasStarted;// has the cluster started ?
-    i8     m_nSlots;     // no of partition slots on each node
+    i8     m_nSlotsPerNode;     // no of partition slots on each node
     i8     m_nPartitions;  // total no of partitions in the grid
     
     // NOT HAPPY WITH NAME - alka
@@ -28,7 +28,7 @@ namespace Grids
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Grid(i8 nNodes, i8 nSlots);
+    Grid(i8 nNodes, i8 nSlotsPerNode);
     ~Grid(void) noexcept(false);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
@@ -39,9 +39,9 @@ namespace Grids
     bool bHasStarted(void);
     Node* pFindNode(Stz* pName);
     Node* pGetNode(i8 i_Node);
-    void vInit(i8 nNodes, i8 nSlots);
+    void vInit(i8 nNodes, i8 nSlotsPerNode);
     i8   nNodes(void);
-    i8   nSlots(void);
+    i8   nSlotsPerNode(void);
     void vStartNode(i8 iStartNode);
     i8   iStartNode(void);
     i8   iThisNode(void);

@@ -81,7 +81,7 @@ Slots::Slots(void)
   m_pTablePtnVec = new TablePtnVec;
   
   // initialize the partitionId's in the slots
-  for (i8 i_Slot = 0; i_Slot < gpAttachMap->m_pGrid->nSlots(); i_Slot++) {
+  for (i8 i_Slot = 0; i_Slot < gpAttachMap->m_pGrid->nSlotsPerNode(); i_Slot++) {
     
     TablePtn* pPartition = new TablePtn;
     m_pTablePtnVec->vAdd(pPartition);
@@ -175,7 +175,7 @@ bool Slots::bPopulateIndex(i8 iIndexNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
-  for (i8 i_Partn = 0; i_Partn < gpAttachMap->m_pGrid->nSlots(); i_Partn++) {
+  for (i8 i_Partn = 0; i_Partn < gpAttachMap->m_pGrid->nSlotsPerNode(); i_Partn++) {
     bool bPopulated = m_pTablePtnVec->pGet(i_Partn)->bPopulateIndex(iIndexNo);
     
     if (! bPopulated)
@@ -270,7 +270,7 @@ void Slots::vTidyUp(void)
   i8 nItems = pIndexTreeVec->nItems();
   
   // run the finalize for the partitions
-  for (i8 i_Slot = 0; i_Slot < gpAttachMap->m_pGrid->nSlots(); i_Slot++) {
+  for (i8 i_Slot = 0; i_Slot < gpAttachMap->m_pGrid->nSlotsPerNode(); i_Slot++) {
     //m_pTablePtnVec->pGet(i_Slot)->vTidyUp();
     delete m_pTablePtnVec->pGet(i_Slot);
   }
@@ -294,7 +294,7 @@ void Slots::vTidyUpIndex(i8 iIndexNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   // run the finalize for the partitions
-  for (i8 i_Slot = 0; i_Slot < gpAttachMap->m_pGrid->nSlots(); i_Slot++) {
+  for (i8 i_Slot = 0; i_Slot < gpAttachMap->m_pGrid->nSlotsPerNode(); i_Slot++) {
     m_pTablePtnVec->pGet(i_Slot)->vTidyUpIndex(iIndexNo);
   }
 }
@@ -307,7 +307,7 @@ void Slots::vTruncate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
 
   i8 i_Partn;
-  for (i_Partn = 0; i_Partn < gpAttachMap->m_pGrid->nSlots(); i_Partn++)
+  for (i_Partn = 0; i_Partn < gpAttachMap->m_pGrid->nSlotsPerNode(); i_Partn++)
     m_pTablePtnVec->pGet(i_Partn)->pHiddenIndexTree()->vTruncate();
 }
 

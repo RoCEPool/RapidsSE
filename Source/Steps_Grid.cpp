@@ -98,7 +98,7 @@ void Step::vGridShow(MP_Task mpTask)
   
   vTrace("Grid::\n"_Stz);
   vTrace("  %lld nodes\n"_Stz,gpAttachMap->m_pGrid->m_nNodes);
-  vTrace("  %lld slots per node\n"_Stz,gpAttachMap->m_pGrid->m_nSlots);
+  vTrace("  %lld slots per node\n"_Stz,gpAttachMap->m_pGrid->m_nSlotsPerNode);
   vTrace("  %lld total partitions\n"_Stz,gpAttachMap->m_pGrid->m_nPartitions);
   
   for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
@@ -126,7 +126,7 @@ void Step::vGridSlots(MP_Task mpTask)
 {
   ENTRY("vGridNode"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(gpAttachMap->m_pGrid->m_nSlots);
+  mpTask->m_pDataStack->vPushI8(gpAttachMap->m_pGrid->m_nSlotsPerNode);
   
   EXIT();
 }
