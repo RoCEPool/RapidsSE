@@ -12,6 +12,10 @@ namespace StorageEngine
     Since         m_oSince;
     Time          m_oTime;
     s32           m_sUTC;
+  
+    struct {
+      bool        m_bActivityMap;
+    } Args;
     
     s32           m_sRegionName;
     i8            m_iRegionSize;
@@ -91,9 +95,9 @@ namespace StorageEngine
     
     void vGetGlobals(void);
     void vPrintAttachMap(void);
-    void vRecordGlobals(Stz* sRegionName,
-                        i8 iRegionSize, i8 iJumboSize,
-                        i8 nSubIngesters, i8 nSubLoaders);
+    void vRecordArguments(Stz* sRegionName, i8 iRegionSize, i8 iJumboSize,
+                          i8   nSubIngesters, i8 nSubLoaders,
+                          bool bActivityMap);
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     

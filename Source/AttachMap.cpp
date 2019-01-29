@@ -176,9 +176,9 @@ void AttachMap::vPrintAttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed globals                                              */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordGlobals(Stz* aRegionName,
-                               i8 iRegionSize, i8 iJumboSize,
-                               i8 nSubIngesters, i8 nSubLoaders)
+void AttachMap::vRecordArguments(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize,
+                                 i8 nSubIngesters, i8 nSubLoaders,
+                                 bool bActivityMap)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
@@ -189,6 +189,8 @@ void AttachMap::vRecordGlobals(Stz* aRegionName,
   m_oSince.vNow();
   m_oTime.vSetUTC(&m_oSince);
   m_oTime.vUTC(m_sUTC);
+  
+  Args.m_bActivityMap = bActivityMap;
   
   m_sRegionName   = aRegionName;
   m_iRegionSize   = iRegionSize;
