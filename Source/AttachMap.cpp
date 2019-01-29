@@ -213,12 +213,8 @@ void AttachMap::vRecordArguments(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize
   ASSERT(m_xHeapMem.Persistent.m_pLarge);
   ASSERT(m_xHeapMem.Persistent.m_pSmall);
   
-  m_pApiState = new ApiState;
   
-  // create the tx sets
-  m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());
-  
-  ASSERT(m_pGrid);
+  //ASSERT(m_pGrid);
     
   //ASSERT(m_pWord);
 
@@ -233,8 +229,6 @@ void AttachMap::vRecordArguments(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize
   m_iQuit       = 0;
   
       
-  // initialize the plan number
-  m_ixPlanId = m_pGrid->iThisNode() << 48;
     
   m_bMarkApiAll = false;
   m_bMarkJobAll = false;

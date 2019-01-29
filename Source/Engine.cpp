@@ -751,6 +751,15 @@ void Engine::vStartSystem(void)
   
   ASSERT( ! gpAttachMap->m_oRootDic.bHasWords() );
     
+  gpAttachMap->vRecordArguments(gxArguments.m_sRegionName,
+                                gxArguments.m_iRegionSize,
+                                gxArguments.m_iJumboSize,
+                                gxArguments.m_nSubIngesters,
+                                gxArguments.m_nSubLoaders,
+                                gxArguments.m_bActivityMap);
+  
+  //--------------------------------------------------------------------------
+  
   gpAttachMap->m_pQueues = new Queues;
     
   gpAttachMap->m_okDdlLock.vInitLock(LK_DDL);
@@ -770,26 +779,26 @@ void Engine::vStartSystem(void)
   }
   
   Node* pThisNode = gpAttachMap->m_pGrid->pFindNode(gxArguments.m_sNodeName);
-  if ( ! pThisNode ) {
-    THROW("Cannot fine Node %s in the cluster"_Stz,
+  if (! pThisNode)
+    vFatal("Cannot fine Node %s in the cluster"_Stz,
           gxArguments.m_sNodeName.aChar());
-  }
+  
+  gpAttachMap->m_pApiState = new ApiState;
+  
+  // create the tx sets
+  gpAttachMap->m_pTxSet = new TxSet(gpAttachMap->m_pGrid->iThisNode());
   
   i8 iNodeNo = pThisNode->iNodeNo();
   
   gpAttachMap->m_pGrid->vThisNode(iNodeNo);
   
+  // initialize the plan number
+  gpAttachMap->m_ixPlanId = gpAttachMap->m_pGrid->iThisNode() << 48;
+
   //--------------------------------------------------------------------------
-  
+
   gpAttachMap->m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
   gpAttachMap->m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
-  
-  gpAttachMap->vRecordArguments(gxArguments.m_sRegionName,
-                                gxArguments.m_iRegionSize,
-                                gxArguments.m_iJumboSize,
-                                gxArguments.m_nSubIngesters,
-                                gxArguments.m_nSubLoaders,
-                                gxArguments.m_bActivityMap);
   
   //--------------------------------------------------------------------------
 
