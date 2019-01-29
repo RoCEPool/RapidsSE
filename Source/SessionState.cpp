@@ -51,7 +51,36 @@ SessionState::SessionState(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
   
-  vInit();
+  m_pSession   = nullptr;
+  m_i_State    = -1;
+  
+  m_eApiFun    = AC_NONE;
+  m_iApiLoc    = 0;
+  m_eApiError  = EC_NONE;
+  m_bRunning   = false;
+  m_bSignalled = false;
+  
+  m_aStackBase = nullptr;
+  m_aStackPtr  = nullptr;
+  
+  m_eJobClass  = CN_NONE;
+  m_iJobLoc    = 0;
+  m_iSenLoc    = 0;
+  
+  m_oTimer.vInit();
+  m_iTotalMsec = 0;
+  
+  m_nBegun     = 0;
+  m_nExecuted  = 0;
+  m_nCancelled = 0;
+  m_nEnded     = 0;
+  
+  m_nApiCalls  = 0;
+  m_nApiErrors = 0;
+  m_nJobNew    = 0;
+  m_nJobDelete = 0;
+  
+  m_iNextFree  = -1;
   
   _checkInitialised_(CN_SESSIONSTATE);
   
@@ -74,12 +103,11 @@ SessionState::~SessionState(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* initialise                                                                 */
 /*----------------------------------------------------------------------------*/
-void SessionState::vInit(void)
+void SessionState::vReInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
  
   m_pSession   = nullptr;
-  m_i_State    = -1;
   
   m_eApiFun    = AC_NONE;
   m_iApiLoc    = 0;

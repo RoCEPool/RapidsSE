@@ -51,7 +51,7 @@ namespace Interface
     SessionState(void);
     ~SessionState(void) noexcept(false);
   
-    void vInit(void);
+    void vReInit(void);
     void vTraceState(void);
   
     Footer* aFooter(void);

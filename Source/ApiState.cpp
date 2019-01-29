@@ -200,6 +200,7 @@ SessionState* ApiState::pAllocState(Session* pSession)
   pState->m_iNextFree = -1;
   pState->m_pSession  = pSession;
   pState->m_i_State   = i_State;
+  RASSERT(i_State >= 0 && i_State < 10);
   
   m_nSessionsSoFar++;
   
@@ -241,10 +242,11 @@ void ApiState::vFreeState(Session* pSession)
   
   SessionState* pState = pSession->m_pSessionState;
   i8 i_FreedState = pState->m_i_State;
+  RASSERT(i_FreedState >= 0 && i_FreedState < 10);
   
   m_okLock.vGrabWrite();
   
-  pState->vInit();
+  pState->vReInit();
   m_iFirstFree = i_FreedState;
   
   m_okLock.vDropWrite();
@@ -256,6 +258,8 @@ void ApiState::vFreeState(Session* pSession)
 SessionState* ApiState::pGetState(i8 i_State)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
+  
+  RASSERT(i_State >= 0 && i_State < 10);
   
   SessionState* pState = &m_oSessionState[i_State];
   
@@ -370,6 +374,7 @@ void ApiState::vApiJob(Session* pSession, Job* pJob)
   pState->m_nJobNew++;
   
   pJob->m_i_State = pState->m_i_State;
+  RASSERT(pJob->m_i_State >= 0 && pJob->m_i_State < 10);
 }
 
 /*----------------------------------------------------------------------------*/

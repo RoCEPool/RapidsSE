@@ -67,6 +67,7 @@ Job* JobClass::pPreJob(Interface::Session* pSession)
   pJob->m_pJobClass = this;
   pJob->m_eJobTrace = m_eTrace;
   pJob->m_i_State   = pSession ? pSession->m_pSessionState->m_i_State : -1;
+  RASSERT(pJob->m_i_State >= 0 && pJob->m_i_State < 10);
   
   return pJob;
 }
