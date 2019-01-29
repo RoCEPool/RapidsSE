@@ -11,7 +11,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Node(void)
 {
-  vAddStep("node.init"_Stz,        &Step::vNodeInit);
   vAddStep("node.IP"_Stz,          &Step::vNodeIP);
   vAddStep("node.name"_Stz,        &Step::vNodeName);
   vAddStep("node.no"_Stz,          &Step::vNodeNo);
@@ -23,26 +22,6 @@ void Step::vAddSteps_Node(void)
   vAddStep("node.sendSocket@"_Stz, &Step::vNodeSendSocketFetch);
   vAddStep("node.size"_Stz,        &Step::vNodeSize);
   vAddStep("node.status"_Stz,      &Step::vNodeStatus);
-}
-
-/*----------------------------------------------------------------------------*/
-/* node.init -- initialise a node (of a grid)                                 */
-/*----------------------------------------------------------------------------*/
-void Step::vNodeInit(MP_Task mpTask)
-{
-ENTRY("vNodeInit"_Stz);
-  
-  Object* pPtrNode;
-  
-  if ( ! mpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("node.init"_Stz);
-  
-  Node* pNode = _pNode(pPtrNode);
-  ASSERT(CN_NODE == pNode->eClass());
-  
-  new(pNode) Node;
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
