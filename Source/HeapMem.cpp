@@ -7,7 +7,9 @@
 
 extern AttachMap*  gpAttachMap;
 
+extern i8  giClassSize[];
 extern eHT geWhichHeap[];
+
 bool gbAddrAllocated = false;
 
 /*----------------------------------------------------------------------------*/

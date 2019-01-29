@@ -33,8 +33,6 @@ extern pDUMPFUN *gpDump[];
 typedef void (pFINALIZE(eCN eClass, Object* pObject));
 extern pFINALIZE *gpFinalize[];
 
-extern i8 giClassSize[];
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

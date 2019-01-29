@@ -6,6 +6,7 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
+extern i8 giClassSize[];
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */

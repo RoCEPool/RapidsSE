@@ -21,6 +21,7 @@ extern Arguments   gxArguments;
 extern AttachMap*  gpAttachMap;
 
 extern eHT geWhichHeap[];
+extern i8  giClassSize[];
 
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */

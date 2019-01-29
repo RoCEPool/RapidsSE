@@ -6,6 +6,7 @@
 
 extern Arguments gxArguments;
 extern eHT geWhichHeap[];
+extern i8 giClassSize[];
 
 /*----------------------------------------------------------------------------*/
 /* check assumptions                                                          */
