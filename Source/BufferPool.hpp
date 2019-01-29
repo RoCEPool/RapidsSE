@@ -43,7 +43,8 @@ namespace Pool
     void  operator delete(void* pRegion);
     
     BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
-               bool bTouch, bool bDontFree, bool bFreeRB);
+               bool bTouch, bool bProgress,
+               bool bDontFree, bool bFreeRB);
     ~BufferPool(void) noexcept(false);
   
     static void vReport(void);
@@ -67,7 +68,7 @@ namespace Pool
     bool bFreeRB(void);
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);
-    void vInitialise(bool bTouch);
+    void vInitialise(bool bTouch, bool bProgress);
     bool bLowMemory(void);
     void vMonitorPortrait(s48K& sPortrait);
     Buffer* pNextJumbo(Buffer* pPrev);

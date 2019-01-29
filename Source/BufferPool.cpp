@@ -33,7 +33,8 @@ void BufferPool::operator delete(void*)
 /* constructor (new region)                                                   */
 /*----------------------------------------------------------------------------*/
 BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
-                       bool bTouch, bool bDontFree, bool bFreeRB)
+                       bool bTouch, bool bProgress,
+                       bool bDontFree, bool bFreeRB)
 : Object(CN_BUFFERPOOL)
 {
   gpBufferPool = this;
@@ -59,7 +60,7 @@ BufferPool::BufferPool(Stz* aRegionName, i8 iRegionSize, i8 iJumboTook,
   m_ixHeapBuffers.vCheckInit();
   m_ixOtherBuffers.vCheckInit();
 
-  vInitialise(bTouch);
+  vInitialise(bTouch,bProgress);
   
   _checkInitialised_(CN_BUFFERPOOL);
   
@@ -375,7 +376,7 @@ bool BufferPool::bHasDataSpace(void)
 /*----------------------------------------------------------------------------*/
 /* initialise all buffers in the pool                                         */
 /*----------------------------------------------------------------------------*/
-void BufferPool::vInitialise(bool bTouch)
+void BufferPool::vInitialise(bool bTouch, bool bProgress)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
@@ -398,7 +399,7 @@ void BufferPool::vInitialise(bool bTouch)
   bn nBuffer = nBufferFirst();
   while (bn::nNil() != nBuffer) {
     
-    if (gxArguments.m_bProgress) {
+    if (bProgress) {
       iBufferMod = *nBuffer % 1000;
       if (! iBufferMod) {
         fflush(stdout);
@@ -435,7 +436,7 @@ void BufferPool::vInitialise(bool bTouch)
   pLastBuffer->vNextFree(bn::nNil());
 
   
-  if (gxArguments.m_bProgress)
+  if (bProgress)
     vInfo("\n"_Stz);
   
   //vDump();

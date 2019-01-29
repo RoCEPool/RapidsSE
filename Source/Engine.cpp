@@ -497,6 +497,7 @@ void Engine::vOpenPool(void)
                     gxArguments.m_iRegionSize,
                     gxArguments.m_nJumboTook,
                     gxArguments.m_bTouch,
+                    gxArguments.m_bProgress,
                     gxArguments.m_bLock,
                     gxArguments.m_bRestart,
                     gxArguments.m_bDontFree,
