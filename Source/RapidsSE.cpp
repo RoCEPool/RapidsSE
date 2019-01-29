@@ -59,7 +59,7 @@ eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
     
     // delete the session
     Engine::vDeleteSession(pSession);
-    API_LOC(320);
+    //API_LOC(320);
     
     // set session to nullptr so macro knows not to look at it
     pSession = nullptr;
@@ -67,7 +67,7 @@ eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
     // retrun back null session
     *ppSession = nullptr;
     
-    API_LOC(330);
+    //API_LOC(330);
   }
   catch (Error* pError) { API_CATCH(pError); }
   catch (...) { Error* pError = nullptr; API_CATCH(pError); }
@@ -166,6 +166,33 @@ eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 ////////////////////////////////////////////////////////////////////////////////
 //                             Session Level Calls                            //
 ////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* begin the insert table job                                                 */
+/*----------------------------------------------------------------------------*/
+eEC  RapidsSE_BeginFetch(i8 iTrace, Session* pSession,
+                         Stz* aTable, void** aaTable)
+{
+  API_SESSION_LEVEL();
+  API_ENTRY(AC_BeginFetch);
+  API_PARAM_P1(aTable);
+  API_NOTNULL(aaTable);
+  API_BEGIN();
+  
+  try {
+    
+    // find the table in the session dictionary stack
+    Table* pTable = Table::pFindTable(pSession->pPathStack(), aTable);
+    API_LOC(310);
+    
+    *aaTable = pTable;
+    API_LOC(320);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
 
 /*----------------------------------------------------------------------------*/
 /* begin the insert table job                                                 */
@@ -912,28 +939,24 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
 /*----------------------------------------------------------------------------*/
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
-//
-// can this be: RapidsSE_NextRow
-//
-eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
-                         void** aaEntryBuffer, i8* aiExpectedRows,
-                         void** aaEntry, void** aaRow
-                         )
+eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
+                     i8* aiExpectedRows,
+                     void** aaEntryBuffer,
+                     void** aaEntry, void** aaRow
+                     )
 {
-  API_JOB_LEVEL();
-  API_ENTRY(AC_ScanNextRow);
+  API_SESSION_LEVEL();
+  API_ENTRY(AC_NextRow);
   API_NOTNULL(aaRow);
   API_BEGIN();
   
   try {
-    
-    Job_SelectTable* pJob_SelectTable = _pJob_SelectTable(aJob);
-    API_LOC(310);
 
     // get the table
-    Table* pTable = pJob_SelectTable->m_pTable;
+    Table* pTable = _pTable(aTable);
+    RASSERT(pTable->eClass() == CN_TABLE);
     API_LOC(320);
-
+    
     //*piExpectedRows = (i8)(pJob_FetchRows->m_pBufferQueue->iCount() * C_ROWS_PER_BUFFER);
     
     Entry* aEntry = nullptr;
@@ -943,19 +966,22 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
     // do we have a buffer ?
     if (! *aaEntryBuffer) {
       // get first entry buffer
-      TablePtn* pPartition = pTable->pPartition(pJob_SelectTable->m_iPartition);
+      TablePtn* pPartition = pTable->pPartition(iPartition);
       Index* pIndex = pTable->pHiddenIndex();
       IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
       pEntryBuffer = pIndexTree->pFirstL0Buffer();
-      vTrace("Got first buffer %p\n"_Stz, pEntryBuffer);
+      //vTrace("Got first buffer %p\n"_Stz, pEntryBuffer);
       if ( ! pEntryBuffer) {
         *aaRow = nullptr;
         
       } else {
         aEntry = pEntryBuffer->aFirstEntry();
         *aaEntry = aEntry;
+        RASSERT(aEntry != nullptr);
+        RASSERT(aEntry->eClass() == CN_ENTRY);
         *aaEntryBuffer = pEntryBuffer;
         *aaRow = aEntry->aRow();
+        //vTrace("returning %p %p\n"_Stz, *aaEntryBuffer, *aaEntry);
       }
       
       API_RETURN();
@@ -965,11 +991,14 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // we have a buffer
     pEntryBuffer = *((EntryBuffer**)(aaEntryBuffer));
+    RASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
     API_LOC(350);
 
     // we should have an entry
     aEntry = *((Entry**)(aaEntry));
-    RASSERT(aEntry);
+    RASSERT(aEntry != nullptr);
+    //vTrace("got %p %p\n"_Stz, pEntryBuffer, aEntry);
+    RASSERT(aEntry->eClass() == CN_ENTRY);
     API_LOC(360);
 
     // get the next entry
@@ -979,12 +1008,12 @@ eEC RapidsSE_ScanNextRow(i8 iTrace, Session* pSession, void* aJob,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // did we find an entry ?
     if ( ! aEntry ) {
-      vTrace("didn't get next entry\n"_Stz);
+      //vTrace("didn't get next entry\n"_Stz);
       // get next buffer from the current indexBuffer
       pEntryBuffer = pEntryBuffer->pNextBuffer();
       
       if ( pEntryBuffer ) {
-        vTrace("got next buffer %p\n"_Stz, pEntryBuffer);
+        //vTrace("got next buffer %p\n"_Stz, pEntryBuffer);
         aEntry = pEntryBuffer->aFirstEntry();
 
       }

@@ -7,6 +7,7 @@ enum eAC // api call kind
 {
   /*  0 */ AC_NONE=0,
   
+  /*    */ AC_BeginFetch,
   /*  1 */ AC_BeginInsert,
   /*  2 */ AC_BeginSubInserter,
   /*  3 */ AC_CheckVersion,
@@ -24,11 +25,11 @@ enum eAC // api call kind
   /* 15 */ AC_GetTableColumnRow,
   /* 16 */ AC_GetTableColumnRowCount,
   /* 17 */ AC_InsertRow,
-  /* 18 */ AC_IsInvalidSession,
+  /* 18 */ AC_IsInvalidSession,  
   /* 19 */ AC_NewSession,
+  /*    */ AC_NextRow,
   /* 20 */ AC_OpenPool,
-  /* 21 */ AC_ScanNextRow,
-  /* 22 */ AC_TranslateError,
+  /*    */ AC_TranslateError,
 
   /* 23 */ AC_ENUMS
 };
@@ -37,6 +38,7 @@ static Stz* aAC[]
 {
   /*  0 */ "NONE"_Stz,
 
+  /*    */ "RapidsSE_BeginFetch"_Stz,
   /*  1 */ "RapidsSE_BeginInsert"_Stz,
   /*  2 */ "RapidsSE_BeginSubInserter"_Stz,
   /*  3 */ "RapidsSE_CheckVersion"_Stz,
@@ -56,9 +58,10 @@ static Stz* aAC[]
   /* 17 */ "RapidsSE_InsertRow"_Stz,
   /* 18 */ "RapidsSE_IsInvalidSession"_Stz,
   /* 19 */ "RapidsSE_NewSession"_Stz,
+  /*    */ "RapidsSE_NextRow"_Stz,
   /* 20 */ "RapidsSE_OpenPool"_Stz,
-  /* 21 */ "RapidsSE_ScanNextRow"_Stz,
-  /* 22 */ "RapidsSE_TranslateError"_Stz,
+ 
+  /*    */ "RapidsSE_TranslateError"_Stz,
 
   /* 23 */ "ENUMS"_Stz};
 

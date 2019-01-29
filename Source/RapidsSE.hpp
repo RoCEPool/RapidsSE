@@ -22,7 +22,8 @@ extern "C" eEC  RapidsSE_OpenPool         (i8 iTrace,
 ////////////////////////////////////////////////////////////////////////////////
 //                             Session Level Calls                            //
 ////////////////////////////////////////////////////////////////////////////////
-
+extern "C" eEC  RapidsSE_BeginFetch      (i8 iTrace, Session* pSession,
+                                          Stz* aTable, void** aaTable);
 extern "C" eEC  RapidsSE_BeginInsert     (i8 iTrace, Session* pSession,
                                           Stz* sTable, i8 nSubInserters, void** aaJob);
 extern "C" eEC  RapidsSE_EndJobs         (i8 iTrace, Session* pSession);
@@ -31,6 +32,9 @@ extern "C" eEC  RapidsSE_ExecuteCommand  (i8 iTrace, Session* pSession,
                                           void** aaJob);
 extern "C" eEC  RapidsSE_InsertRow       (i8 iTrace, Session* pSession,
                                           Stz* pTable, Stz* sRecord);
+extern "C" eEC  RapidsSE_NextRow         (i8 iTrace, Session* pSession, void* aTable,
+                                          i8 iPartition, i8* aiExpectedRows, void** aaEntryBuffer,
+                                          void** aaEntry, void** aaRow);
 extern "C" eEC  RapidsSE_TranslateError  (i8 iTrace, Session* pSession,
                                           int iErrorCode, void** aaError);
 
@@ -57,9 +61,6 @@ extern "C" eEC  RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* a
                                            i8 i_Col, void** aaRow);
 extern "C" eEC  RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
                                                 i8* aRowCount);
-extern "C" eEC  RapidsSE_ScanNextRow     (i8 iTrace, Session* pSession, void* aJob,
-                                          void** aaEntryBuffer, i8* aiExpectedRows,
-                                          void** aaEntry, void** aaRow);
 
 /*============================================================================*/
 /* end                                                                        */

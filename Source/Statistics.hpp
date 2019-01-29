@@ -12,6 +12,7 @@ namespace Measurement
   i8 m_nMonitorTake;
 
   struct {
+    i8 m_nBeginFetch;
     i8 m_nBeginInsert;
     i8 m_nBeginSubInserter;
     i8 m_nCheckVersion;
@@ -31,8 +32,8 @@ namespace Measurement
     i8 m_nInsertRow;
     i8 m_nIsInvalidSession;
     i8 m_nNewSession;
+    i8 m_nNextRow;
     i8 m_nPoolOpen;
-    i8 m_nScanNextRow;
     i8 m_nTranslateError;
   } Api;
   

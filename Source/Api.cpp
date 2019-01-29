@@ -148,6 +148,7 @@ void Api::vIncStatistics(eAC eApiCall)
     return;
   
   switch (eApiCall) {
+    case AC_BeginFetch:          gpAttachMap->m_oStatistics.Api.m_nBeginFetch++;          break;
     case AC_BeginInsert:         gpAttachMap->m_oStatistics.Api.m_nBeginInsert++;          break;
     case AC_BeginSubInserter:    gpAttachMap->m_oStatistics.Api.m_nBeginSubInserter++;     break;
     case AC_CheckVersion:        gpAttachMap->m_oStatistics.Api.m_nCheckVersion++;         break;
@@ -167,8 +168,8 @@ void Api::vIncStatistics(eAC eApiCall)
     case AC_InsertRow:           gpAttachMap->m_oStatistics.Api.m_nInsertRow++;            break;
     case AC_IsInvalidSession:    gpAttachMap->m_oStatistics.Api.m_nIsInvalidSession++;     break;
     case AC_NewSession:          gpAttachMap->m_oStatistics.Api.m_nNewSession++;           break;
+    case AC_NextRow:             gpAttachMap->m_oStatistics.Api.m_nNextRow++;              break;
     case AC_OpenPool:            gpAttachMap->m_oStatistics.Api.m_nPoolOpen++;             break;
-    case AC_ScanNextRow:         gpAttachMap->m_oStatistics.Api.m_nScanNextRow++;          break;
     case AC_TranslateError:      gpAttachMap->m_oStatistics.Api.m_nTranslateError++;       break;
     default:
       NEVER_REACH;
@@ -186,9 +187,13 @@ void Api::vMonitorPortrait(s48K& sPortrait)
   i8 iPrev = 0;
   Statistics* pStats = &gpAttachMap->m_oStatistics;
   
+  if (pStats->Api.m_nBeginFetch) {
+    if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
+    s.vSprintCat("beginFetch %lld "_Stz,pStats->Api.m_nBeginFetch);
+  }
   if (pStats->Api.m_nBeginInsert) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("beginInsertTable %lld "_Stz,pStats->Api.m_nBeginInsert);
+    s.vSprintCat("beginInsert %lld "_Stz,pStats->Api.m_nBeginInsert);
   }
   if (pStats->Api.m_nBeginSubInserter) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
@@ -266,9 +271,9 @@ void Api::vMonitorPortrait(s48K& sPortrait)
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
     s.vSprintCat("poolOpen %lld "_Stz,pStats->Api.m_nPoolOpen);
   }
-  if (pStats->Api.m_nScanNextRow) {
+  if (pStats->Api.m_nNextRow) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
-    s.vSprintCat("scanNextRow %lld "_Stz,pStats->Api.m_nScanNextRow);
+    s.vSprintCat("nextRow %lld "_Stz,pStats->Api.m_nNextRow);
   }
   if (pStats->Api.m_nTranslateError) {
     if (nCats++ && s.bBreak(nBreak,iPrev)) s.vConcat("\n     "_Stz);
