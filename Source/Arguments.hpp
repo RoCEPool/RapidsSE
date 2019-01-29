@@ -9,7 +9,6 @@ namespace Pool          { class BufferPool; class Region; }
 namespace Prompt        { class SePrompt; }
 namespace StorageEngine { class Engine; }
 namespace Steps         { class Step; }
-namespace Tasks         { class Task; }
 namespace Threads       { class Thread; }
 
 namespace StorageEngine
@@ -25,14 +24,10 @@ namespace StorageEngine
     friend class   Measurement::ResourceTracker;
     friend class        Prompt::SePrompt;
     friend class         Steps::Step;
- //   friend class         Tasks::Task;
     friend class       Threads::Thread;
 
   private:
-  
-    // welcome
-    s256  m_sWelcome;      // the welcome text
-  
+   
     // configuration
     s256  m_sCommandsDir;  // commands dir
     i8    m_nJumboBuffers; // number of jumbo buffers

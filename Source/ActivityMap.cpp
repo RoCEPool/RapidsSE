@@ -46,7 +46,7 @@ ActivityMap::ActivityMap(void)
   m_okLock.vInitLock(LK_ACTIVITY_MAP);
   
   m_i_Mark = 0;
-  m_nMarks = gxArguments.m_nActivityMarks;
+  m_nMarks = C_ACTIVITY_MARKS;
   
   for (i8 i_Mark = 0; i_Mark < m_nMarks; i_Mark++) {
     ActivityMark* pActivityMark = &m_oaMark[i_Mark];
@@ -362,7 +362,9 @@ void ActivityMap::vOpenBySE(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  ActivityMap::vMark(0,gxArguments.m_sWelcome);
+  s256 sWelcome;
+  Engine::vGetWelcome(sWelcome);
+  ActivityMap::vMark(0,sWelcome);
   
   Now oNow;
   ActivityMap::vMark(0,"Time is: %s"_Stz,oNow.sFormatted());

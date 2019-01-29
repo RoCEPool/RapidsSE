@@ -250,6 +250,27 @@ void Engine::vErrorHandler(Error* pError)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print welcome                                                              */
+/*----------------------------------------------------------------------------*/
+void Engine::vGetWelcome(s256& sWelcome)
+{
+  Stz* aRelDbg;
+#ifdef _DEBUG
+  aRelDbg = "debug"_Stz;
+#else
+  aRelDbg = "release"_Stz;
+#endif
+  
+  sWelcome.vSprint("RapidsSE v%s (Compiled %s %s -- %s) pid %lld"_Stz,
+                     RAPIDSSE_VERSION_STRING,
+                     __DATE__,
+                     __TIME__,
+                     aRelDbg,
+                     Process::iGetPid()
+                     );
+}
+
+/*----------------------------------------------------------------------------*/
 /* kill previous node instances                                               */
 /*----------------------------------------------------------------------------*/
 void Engine::vKillPrev(void)
@@ -599,23 +620,12 @@ void Engine::vPrintStatus(void)
 /*----------------------------------------------------------------------------*/
 void Engine::vPrintWelcome(void)
 {
-  Stz* aRelDbg;
-#ifdef _DEBUG
-  aRelDbg = "debug"_Stz;
-#else
-  aRelDbg = "release"_Stz;
-#endif
-
-  gxArguments.m_sWelcome.vSprint("RapidsSE v%s (Compiled %s %s -- %s) pid %lld"_Stz,
-        RAPIDSSE_VERSION_STRING,
-        __DATE__,
-        __TIME__,
-        aRelDbg,
-        Process::iGetPid()
-        );
-
+  s256 sWelcome;
+  
+  vGetWelcome(sWelcome);
+  
   if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus)
-    vInfo("%s\n"_Stz,gxArguments.m_sWelcome.aStz());
+    vInfo("%s\n"_Stz,sWelcome.aStz());
   
   if (gxArguments.m_bVerbose) {
 #ifdef MUNGE
