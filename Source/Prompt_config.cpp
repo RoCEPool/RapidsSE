@@ -31,6 +31,7 @@ bool Prompt::bPrompt_config(SePrompt* pPrompt)
   s32 sFreeSpace;
   Magnitudes::vByteMag(gpBufferPool->iFreeSpace(), sFreeSpace);
   
+  /*
   vTrace("  Node %s Shm %s Free %s Nodes %lld Slots %lld Threads %lld SubIngesters %lld SubLoaders %lld : %s\n"_Stz,
          gxArguments.m_sNodeName.aChar(),
          sShmSize.aChar(),
@@ -44,6 +45,7 @@ bool Prompt::bPrompt_config(SePrompt* pPrompt)
                                             : "cluster not started"
          );
   
+  */
   
   return true;
 }
