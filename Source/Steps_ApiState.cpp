@@ -151,7 +151,7 @@ void Step::vApiStateTraceSession(MP_Task mpTask)
   
   SessionState* pState = gpAttachMap->m_pApiState->pGetState(i_State);
   
-  pState->vTraceState();
+  //pState->vTraceState();
   
   EXIT();
 }
