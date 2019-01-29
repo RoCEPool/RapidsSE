@@ -4,11 +4,10 @@
 #pragma once
 
 namespace Commands      { class Command; class Parser; }
-namespace Measurement   { class ActivityMap; class ResourceTracker; }
+namespace Measurement   { class ActivityMap; }
 namespace Pool          { class BufferPool; class Region; }
 namespace Prompt        { class SePrompt; }
 namespace StorageEngine { class Engine; }
-namespace Steps         { class Step; }
 namespace Threads       { class Thread; }
 
 namespace StorageEngine
@@ -21,9 +20,7 @@ namespace StorageEngine
     friend class StorageEngine::Engine;
     friend class      Commands::Parser;
     friend class          Pool::Region;
-    friend class   Measurement::ResourceTracker;
     friend class        Prompt::SePrompt;
-    //friend class         Steps::Step;
     friend class       Threads::Thread;
 
   private:
@@ -37,7 +34,7 @@ namespace StorageEngine
     s32   m_sRegionPrefix; // prefix of the shared memory region name
     i8    m_iRegionSize;   // size of region in bytes
     s256  m_sSenDir;       // sen dir
-    i8    m_nSlotsPerNode;        // partitions per node
+    i8    m_nSlotsPerNode; // partition slots per node
     
     // node configuration
     i8    m_nNodes;
@@ -66,12 +63,6 @@ namespace StorageEngine
     bool m_bDontFree;   // dont actually free objects back to heap
     i8   m_nEntries;    // no of entries per buffer
     bool m_bFreeRB;     // but free RowBuffers back to heap
-    i8   m_nLimitDir;   // limit of open dir's
-    i8   m_nLimitFile;  // limit of open file's
-    i8   m_nLimitMalloc;// limit of malloc amout
-    i8   m_nLimitThread;// limit of open threads's
-    i8   m_nLimitShm;   // limit of open shm's
-    i8   m_nLimitSocket;// limit of open socket's
     bool m_bLock;       // lock shared memory pages in memory
     bool m_bHugePages;  // to use huge pages
     bool m_bKillPrev;   // kill previous se's (temporary)

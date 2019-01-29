@@ -41,7 +41,7 @@ ResourceTracker::~ResourceTracker(void) noexcept(false)
 void ResourceTracker::vAddMallocAmt(i8 nBytes)
 {
   i8 iMallocAmt = m_ixMallocAmt.iAdd(nBytes);
-  RASSERT(! gxArguments.m_nLimitMalloc || iMallocAmt <= gxArguments.m_nLimitMalloc);
+  RASSERT(iMallocAmt >= 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +113,7 @@ void ResourceTracker::vDecThreadOpen(void)
 void ResourceTracker::vIncDirOpen(void)
 {
   i8 iDirOpen = ++m_ixDirOpen;
-  RASSERT(! gxArguments.m_nLimitDir || iDirOpen <= gxArguments.m_nLimitDir);
+  RASSERT(iDirOpen > 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,7 +122,7 @@ void ResourceTracker::vIncDirOpen(void)
 void ResourceTracker::vIncFileOpen(void)
 {
   i8 iFileOpen = ++m_ixFileOpen;
-  RASSERT(! gxArguments.m_nLimitFile || iFileOpen <= gxArguments.m_nLimitFile);
+  RASSERT(iFileOpen > 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -139,7 +139,7 @@ void ResourceTracker::vIncMutexOpen(void)
 void ResourceTracker::vIncShmOpen(void)
 {
   i8 iShmOpen = ++m_ixShmOpen;
-  RASSERT(! gxArguments.m_nLimitShm || iShmOpen <= gxArguments.m_nLimitShm);
+  RASSERT(iShmOpen > 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +148,7 @@ void ResourceTracker::vIncShmOpen(void)
 void ResourceTracker::vIncSocketOpen(void)
 {
   i8 iSocketOpen = ++m_ixSocketOpen;
-  RASSERT(! gxArguments.m_nLimitSocket || iSocketOpen <= gxArguments.m_nLimitSocket);
+  RASSERT(iSocketOpen > 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,7 +157,7 @@ void ResourceTracker::vIncSocketOpen(void)
 void ResourceTracker::vIncThreadOpen(void)
 {
   i8 iThreadOpen = ++m_ixThreadOpen;
-  RASSERT(! gxArguments.m_nLimitThread || iThreadOpen <= gxArguments.m_nLimitThread);
+  RASSERT(iThreadOpen > 0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -258,20 +258,13 @@ void ResourceTracker::vReport(void)
 {
   vTrace("Resources:\n"_Stz);
 
-  vTrace("  dir %lld (limit %lld)\n"_Stz,
-         nDirOpen(),gxArguments.m_nLimitDir);
-  vTrace("  file %lld (limit %lld)\n"_Stz,
-         nFileOpen(),gxArguments.m_nLimitFile);
-  vTrace("  malloc %lldB (limit %lldB)\n"_Stz,
-         nMallocAmt(),gxArguments.m_nLimitMalloc);
-  vTrace("  mutex %lld\n"_Stz,
-         nMutexOpen());
-  vTrace("  shm %lld (limit %lld)\n"_Stz,
-         nShmOpen(),gxArguments.m_nLimitShm);
-  vTrace("  socket %lld (limit %lld)\n"_Stz,
-         nSocketOpen(),gxArguments.m_nLimitSocket);
-  vTrace("  thread %lld (limit %lld)\n"_Stz,
-         nThreadOpen(),gxArguments.m_nLimitThread);
+  vTrace("  dir %lld\n"_Stz,     nDirOpen());
+  vTrace("  file %lld\n"_Stz,    nFileOpen());
+  vTrace("  malloc %lldB\n"_Stz, nMallocAmt());
+  vTrace("  mutex %lld\n"_Stz,   nMutexOpen());
+  vTrace("  shm %lld\n"_Stz,     nShmOpen());
+  vTrace("  socket %lld\n"_Stz,  nSocketOpen());
+  vTrace("  thread %lld\n"_Stz,  nThreadOpen());
 }
 
 

@@ -64,12 +64,6 @@ Arguments::Arguments(void)
   m_bDontFree    = false;
   m_nEntries     = 0;
   m_bFreeRB      = false;
-  m_nLimitDir    = 0;
-  m_nLimitFile   = 0;
-  m_nLimitMalloc = 0;
-  m_nLimitThread = 0;
-  m_nLimitShm    = 0;
-  m_nLimitSocket = 0;
   m_bLock        = false;
   m_bHugePages   = false;
   m_bKillPrev    = false;
@@ -530,36 +524,6 @@ bool Arguments::bParse(int argc, Stz* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         
-    if (argv[i_Arg]->bSame("--limitDir"_Stz)) {
-      m_nLimitDir = argv[++i_Arg]->iToI8();
-      continue;
-    }
-    
-    if (argv[i_Arg]->bSame("--limitFile"_Stz)) {
-      m_nLimitFile = argv[++i_Arg]->iToI8();
-      continue;
-    }
-    
-    if (argv[i_Arg]->bSame("--limitMalloc"_Stz)) {
-      m_nLimitMalloc = argv[++i_Arg]->iToI8();
-      continue;
-    }
-    
-    if (argv[i_Arg]->bSame("--limitThread"_Stz)) {
-      m_nLimitThread = argv[++i_Arg]->iToI8();
-      continue;
-    }
-    
-    if (argv[i_Arg]->bSame("--limitShm"_Stz)) {
-      m_nLimitShm = argv[++i_Arg]->iToI8();
-      continue;
-    }
-    
-    if (argv[i_Arg]->bSame("--limitSocket"_Stz)) {
-      m_nLimitSocket = argv[++i_Arg]->iToI8();
-      continue;
-    }
-    
     // lock shared memory pages in memory
     if (argv[i_Arg]->bSame("--lock"_Stz)) {
       m_bLock = true;
