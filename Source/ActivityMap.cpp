@@ -31,7 +31,7 @@ void* ActivityMap::operator new(size_t)
              "created new map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
              sizeof(ActivityMap),
-             gpAttachMap->m_nActivityMarks);
+             C_ACTIVITY_MARKS);
   }
   else {
     bResult = ActivityMap::bAttachExisting();
@@ -41,7 +41,7 @@ void* ActivityMap::operator new(size_t)
              "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
              C_ACTIVITY_REGION,
              sizeof(ActivityMap),
-             gpAttachMap->m_nActivityMarks);
+             C_ACTIVITY_MARKS);
   }
   
   return gpActivityMap;
@@ -175,10 +175,7 @@ bool ActivityMap::bCreateNew(void)
     vFatal("ActivityMap::bCreateNewShm: failed to map region!\n"_Stz);
   
   gpActivityMap = static_cast<ActivityMap*>(aSegment);
-  
-  gpAttachMap->m_aActivityMap   = gpActivityMap;
-  gpAttachMap->m_nActivityMarks = gxArguments.m_nActivityMarks;
-  
+    
   return true;
 }
 
@@ -305,26 +302,26 @@ void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMonitorPortrait(s48K& sPortrait)
 {
-  if (! gpAttachMap->m_aActivityMap) {
+  if (! gpActivityMap) {
     sPortrait.vSprint("ActivityMap: no activity map\n"_Stz);
     return;
   }
   
-  gpAttachMap->m_aActivityMap->vGrabLock();
-  i8 iPercentFull = gpAttachMap->m_aActivityMap->iPercentFull_NL();
-  gpAttachMap->m_aActivityMap->vDropLock();
+  gpActivityMap->vGrabLock();
+  i8 iPercentFull = gpActivityMap->iPercentFull_NL();
+  gpActivityMap->vDropLock();
   
   i8 iMapSize = iSize();
   s32 sShmMag;
   Magnitudes::vByteMag(iMapSize, sShmMag);
   
   s32 sArrayMag;
-  Magnitudes::vUnitMag(gpAttachMap->m_aActivityMap->m_nMarks, sArrayMag);
+  Magnitudes::vUnitMag(gpActivityMap->m_nMarks, sArrayMag);
 
   sPortrait.vSprint("ActivityMap: shm %s array %s marks %lld; %lld%% full;\n"_Stz,
                     sShmMag.aStz(),
                     sArrayMag.aStz(),
-                    gpAttachMap->m_aActivityMap->m_i_Mark,
+                    gpActivityMap->m_i_Mark,
                     iPercentFull
                      );
 }
@@ -390,7 +387,7 @@ i8 ActivityMap::iSize(void)
 {
   i8 iMapSize = sizeof(ActivityMap)
                   - sizeof(ActivityMark)
-                  + sizeof(ActivityMark) * gpAttachMap->m_nActivityMarks;
+                  + sizeof(ActivityMark) * C_ACTIVITY_MARKS;
   
   return iMapSize;
 }

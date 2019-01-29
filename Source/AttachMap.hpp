@@ -72,9 +72,6 @@ namespace StorageEngine
     
     Formatters    m_oFormatters; // record formatters
   
-    ActivityMap*  m_aActivityMap;   // there is an activity map
-    i8            m_nActivityMarks; // number of activity marks
-
     bool          m_bMarkApiAll;
     bool          m_bMarkApi[AC_ENUMS];
     bool          m_bMarkJobAll;

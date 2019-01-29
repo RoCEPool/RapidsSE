@@ -226,10 +226,7 @@ void AttachMap::vRecordGlobals(Stz* aRegionName,
   m_iStop       = 0;
   m_iQuit       = 0;
   
-  
-  //m_okDdlLock.vInitLock(LK_DDL);
-  //m_okDicLock.vInitLock(LK_DIC);
-    
+      
   // initialize the plan number
   m_ixPlanId = m_pGrid->iThisNode() << 48;
     
