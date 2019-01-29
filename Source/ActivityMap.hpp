@@ -6,7 +6,7 @@
 namespace Measurement
 {
   static const i8    C_ACTIVITY_MARKS  = C_1M * 10;
-  static const char* C_ACTIVITY_REGION = "/SE_ActivityMap";
+  static const char* C_ACTIVITY_REGION = "/tmp/SE_ActivityMap.csv";
 
   class ActivityMap : public Object
   {
@@ -29,9 +29,9 @@ namespace Measurement
     ~ActivityMap(void) noexcept(false);
 
   private:
-    static bool bAttachExisting(void);
-    static bool bCreateNew(void);
-  
+    static bool bOpenCreate(void);
+    static bool bOpenExisting(void);
+
   public:
     static void vMark(i8 iJobId, Stz* aFormat, ...);
     static void vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...);
