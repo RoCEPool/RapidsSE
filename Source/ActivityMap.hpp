@@ -42,7 +42,7 @@ namespace Measurement
     static void vMarkString(i8 iJobId, s48K& sString);
     static void vMonitorPortrait(s48K& sPortrait);
     static void vOpenByApi(void);
-    static void vOpenBySE(void);
+    static void vOpenBySE(bool bStarting);
     static i8   iSize(void);
     static void vWriteCsv();
 

@@ -459,7 +459,11 @@ void Engine::vMonitorProfile(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void Engine::vOpenActivityMap(void)
 {
-  ActivityMap::vOpenBySE();
+  bool bStarting = false;
+  if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart)
+    bStarting = true;
+  
+  ActivityMap::vOpenBySE(bStarting);
 }
 
 /*----------------------------------------------------------------------------*/

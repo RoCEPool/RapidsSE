@@ -326,7 +326,7 @@ void ActivityMap::vOpenByApi(void)
 /*----------------------------------------------------------------------------*/
 /* create or open ActivityMap (called by SE)                                  */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vOpenBySE(void)
+void ActivityMap::vOpenBySE(bool bStarting)
 {
   if (! gpAttachMap->Arg.m_bActivityMap)
     return;
@@ -338,7 +338,7 @@ void ActivityMap::vOpenBySE(void)
   
   ActivityMap* pActivityMap = nullptr;
   
-  if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart) {
+  if (bStarting) {
     pActivityMap = ActivityMap::pAttachCreate();
     if (gpAttachMap->m_bVerbose)
       vTrace("ActivityMap %s : "

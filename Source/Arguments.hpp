@@ -4,7 +4,6 @@
 #pragma once
 
 namespace Commands      { class Command; class Parser; }
-namespace Measurement   { class ActivityMap; }
 namespace Pool          { class BufferPool; class Region; }
 namespace Prompt        { class SePrompt; }
 namespace StorageEngine { class Engine; }
@@ -14,7 +13,6 @@ namespace StorageEngine
 {
   class Arguments : public Object
   {
-    friend class   Measurement::ActivityMap;
     friend class          Pool::BufferPool;
     friend class      Commands::Command;
     friend class StorageEngine::Engine;
