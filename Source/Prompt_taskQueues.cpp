@@ -17,7 +17,6 @@ PromptNote mPromptNote_taskQueues (
   "fun help"_Stz        // help
 );
 
-extern Arguments   gxArguments;
 extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/

@@ -17,7 +17,6 @@ PromptNote mPromptNote_masks (
   "fun help"_Stz        // help
 );
 
-extern Arguments   gxArguments;
 extern AttachMap*  gpAttachMap;
 
 /*----------------------------------------------------------------------------*/

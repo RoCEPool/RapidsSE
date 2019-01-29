@@ -7,7 +7,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* add initial set of words in main dictionary                                */

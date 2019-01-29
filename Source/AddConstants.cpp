@@ -5,7 +5,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* add constant to main dictionary                                            */

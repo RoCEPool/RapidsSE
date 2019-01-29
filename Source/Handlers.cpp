@@ -7,7 +7,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* ack task handler                                                           */

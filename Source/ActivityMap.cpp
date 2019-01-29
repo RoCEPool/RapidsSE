@@ -5,7 +5,6 @@
 #include "Measurement.h"
 #include "StorageEngine.h"
 
-extern Arguments  gxArguments;
 extern AttachMap* gpAttachMap;
 
 ActivityMap* gpActivityMap = nullptr;

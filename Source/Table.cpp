@@ -8,7 +8,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

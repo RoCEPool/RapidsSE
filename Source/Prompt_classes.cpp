@@ -17,7 +17,6 @@ PromptNote mPromptNote_classes (
   "fun help"_Stz        // help
 );
 
-extern Arguments   gxArguments;
 extern AttachMap*  gpAttachMap;
 
 extern eHT geWhichHeap[];

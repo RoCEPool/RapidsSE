@@ -5,7 +5,6 @@
 #include "Utilities.h"
 #include "StorageEngine.h"
 
-extern Arguments  gxArguments;
 extern AttachMap* gpAttachMap;
 
 /*============================================================================*/
