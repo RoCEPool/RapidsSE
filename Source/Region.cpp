@@ -44,7 +44,7 @@ bool Region::bAttach(s32& sRegionName, void* aRegionAddr)
   gpAttachMap = pAdd<AttachMap*>((Object*)gaSeShmRegion,C_SIZE_POOL_BUFFER);
   
   // get the actual size
-  i8 iRegionSize = gpAttachMap->m_iRegionSize;
+  i8 iRegionSize = gpAttachMap->Arg.m_iRegionSize;
   gpAttachMap = nullptr;
   
   // close the temporary mapping

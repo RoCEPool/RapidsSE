@@ -15,15 +15,15 @@ namespace StorageEngine
   
     struct {
       bool        m_bActivityMap;
-    } Args;
+      i8          m_iJumboSize;
+      s32         m_sRegionName;
+      i8          m_iRegionSize;
+      i8          m_nSubIngesters;
+      i8          m_nSubInserters;
+      i8          m_nSubLoaders;
+   } Arg;
     
-    s32           m_sRegionName;
-    i8            m_iRegionSize;
-    i8            m_iJumboSize;
-    i8            m_nSubIngesters;
-    i8            m_nSubInserters;
-    i8            m_nSubLoaders;
-        
+  
     i8            m_iEpoch;
     bool          m_bBootError;
   

@@ -26,7 +26,7 @@ extern AttachMap*  gpAttachMap;
 bool Prompt::bPrompt_config(SePrompt* pPrompt)
 {
   s32 sShmSize;
-  Magnitudes::vByteMag(gpAttachMap->m_iRegionSize, sShmSize);
+  Magnitudes::vByteMag(gpAttachMap->Arg.m_iRegionSize, sShmSize);
   
   s32 sFreeSpace;
   Magnitudes::vByteMag(gpBufferPool->iFreeSpace(), sFreeSpace);

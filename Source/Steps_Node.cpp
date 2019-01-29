@@ -253,7 +253,7 @@ void Step::vNodeSize(MP_Task mpTask)
 {
   ENTRY("vNodeSize"_Stz);
   
-  mpTask->m_pDataStack->vPushI8(gpAttachMap->m_iRegionSize);
+  mpTask->m_pDataStack->vPushI8(gpAttachMap->Arg.m_iRegionSize);
   
   EXIT();
 }

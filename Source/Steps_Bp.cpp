@@ -157,8 +157,8 @@ void Step::vBpInUseSpace(MP_Task mpTask)
 {
   ENTRY("vBpInUseSpace"_Stz);
   
-  i8 iInUseSpace = gpAttachMap->m_iRegionSize
-                     - gpAttachMap->m_iJumboSize
+  i8 iInUseSpace = gpAttachMap->Arg.m_iRegionSize
+                     - gpAttachMap->Arg.m_iJumboSize
                      - gpBufferPool->iFreeSpace()
                      - BPA::iPoolFree();
   
@@ -174,7 +174,8 @@ void Step::vBpTotalSpace(MP_Task mpTask)
 {
   ENTRY("vBpTotalSpace"_Stz);
   
-  i8 iTotalSpace = gpAttachMap->m_iRegionSize - gpAttachMap->m_iJumboSize;
+  i8 iTotalSpace = gpAttachMap->Arg.m_iRegionSize
+                     - gpAttachMap->Arg.m_iJumboSize;
   
   mpTask->m_pDataStack->vPushI8(iTotalSpace);
   

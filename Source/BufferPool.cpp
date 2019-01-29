@@ -86,8 +86,8 @@ BufferPool::~BufferPool(void) noexcept(false)
 void BufferPool::vReport(void)
 {
   // get magnitudes of the various buffer pools
-  s32 sRegionSize;
-  Magnitudes::vByteMag(gpAttachMap->m_iRegionSize, sRegionSize);
+  s32 sRegionMag;
+  Magnitudes::vByteMag(gpAttachMap->Arg.m_iRegionSize, sRegionMag);
   
   i8  iSum = C_SIZE_POOL_BUFFER
              +
@@ -100,7 +100,7 @@ void BufferPool::vReport(void)
 
   vTrace("  BP %p size %s buffers %lld alloc %lld free %lld (sum=%s)\n"_Stz,
          gpBufferPool,
-         sRegionSize.aChar(),
+         sRegionMag.aChar(),
          gpBufferPool->m_nBuffers,
          gpBufferPool->m_nAllocCount,
          gpBufferPool->m_nFreeCount,
@@ -264,7 +264,7 @@ bool BufferPool::bDetachPool(void)
   
   bool bResult = Shm::bClose(m_iShmFD,oSysCall);
   
-  bResult = Shm::bUnmap(m_pBase,gpAttachMap->m_iRegionSize,oSysCall);
+  bResult = Shm::bUnmap(m_pBase,gpAttachMap->Arg.m_iRegionSize,oSysCall);
   
   return bResult;
 }
@@ -331,7 +331,7 @@ i8 BufferPool::iFreePercent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  i8 iFreePercent = DIV(iFreeSpace() * 100,gpAttachMap->m_iRegionSize);
+  i8 iFreePercent = DIV(iFreeSpace() * 100,gpAttachMap->Arg.m_iRegionSize);
   
   return iFreePercent;
 }
@@ -500,7 +500,7 @@ void BufferPool::vPoolDump(void)
   
   vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"_Stz
          "InUse %lld FreeCount %lld FreeHead %lld\n"_Stz,
-         gpAttachMap->m_iRegionSize,
+         gpAttachMap->Arg.m_iRegionSize,
          C_SIZE_POOL_BUFFER,
          m_nBuffers,
          m_pBase,

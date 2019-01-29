@@ -109,11 +109,11 @@ void AttachMap::vPrintAttachMap(void)
   vInfo("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
   vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_sUTC.aStz());
   
-  vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->m_sRegionName.aStz());
-  vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->m_iRegionSize);
-  vInfo("JumboSize    : %lld \n"_Stz,   gpAttachMap->m_iJumboSize);
-  vInfo("SubIngesters : %lld \n"_Stz,   gpAttachMap->m_nSubIngesters);
-  vInfo("SubLoaders   : %lld \n"_Stz,   gpAttachMap->m_nSubLoaders);
+  vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->Arg.m_sRegionName.aStz());
+  vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->Arg.m_iRegionSize);
+  vInfo("JumboSize    : %lld \n"_Stz,   gpAttachMap->Arg.m_iJumboSize);
+  vInfo("SubIngesters : %lld \n"_Stz,   gpAttachMap->Arg.m_nSubIngesters);
+  vInfo("SubLoaders   : %lld \n"_Stz,   gpAttachMap->Arg.m_nSubLoaders);
 
   vInfo("\n"_Stz);
   vInfo("Epoch          : %lld \n"_Stz, gpAttachMap->m_iEpoch);
@@ -190,14 +190,14 @@ void AttachMap::vRecordArguments(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize
   m_oTime.vSetUTC(&m_oSince);
   m_oTime.vUTC(m_sUTC);
   
-  Args.m_bActivityMap = bActivityMap;
+  Arg.m_bActivityMap = bActivityMap;
   
-  m_sRegionName   = aRegionName;
-  m_iRegionSize   = iRegionSize;
-  m_iJumboSize    = iJumboSize;
-  m_nSubIngesters = nSubIngesters;
-  m_nSubInserters = 0;
-  m_nSubLoaders   = nSubLoaders;
+  Arg.m_sRegionName   = aRegionName;
+  Arg.m_iRegionSize   = iRegionSize;
+  Arg.m_iJumboSize    = iJumboSize;
+  Arg.m_nSubIngesters = nSubIngesters;
+  Arg.m_nSubInserters = 0;
+  Arg.m_nSubLoaders   = nSubLoaders;
 
   m_pBufferPool = gpBufferPool;
   
@@ -250,7 +250,7 @@ void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)
   vTrace("pid %lld utc %s regionSize %lld\n"_Stz,
          pAttachMap->m_iPid,
          pAttachMap->m_sUTC.aChar(),
-         pAttachMap->m_iRegionSize);
+         pAttachMap->Arg.m_iRegionSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -263,8 +263,8 @@ void AttachMap::vPrintStartupInfo(void)
   vTrace("Args:\n"_Stz);
   
   vTrace("  --name %s\n"_Stz,m_pGrid->pThisNode()->aNodeName()->aChar());
-  vTrace("  --region %s\n"_Stz,m_sRegionName.aChar());
-  vTrace("  --size %lld\n"_Stz,m_iRegionSize);
+  vTrace("  --region %s\n"_Stz,Arg.m_sRegionName.aChar());
+  vTrace("  --size %lld\n"_Stz,Arg.m_iRegionSize);
   vTrace("  --partitionsPerNode %lld\n"_Stz,m_pGrid->m_nSlots);
 
 }

@@ -191,7 +191,7 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
   if (eDataSource == DS_LOAD) {
     
     // compute the total number of subloaders in the grid
-    i8 nSubLoadersInGrid = gpAttachMap->m_nSubLoaders;
+    i8 nSubLoadersInGrid = gpAttachMap->Arg.m_nSubLoaders;
     
     if (nSubLoadersInGrid) {
       
@@ -217,7 +217,7 @@ bool TablePtn::bAllBuffersWritten(eDS eDataSource)
 //           );
     
     // compute the total number of subInserters in the grid
-    i8 nSubInsertersInGrid = gpAttachMap->m_nSubInserters;
+    i8 nSubInsertersInGrid = gpAttachMap->Arg.m_nSubInserters;
     
     if (nSubInsertersInGrid) {
       

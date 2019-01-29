@@ -562,9 +562,9 @@ void BPA::vRegionSummary()
   
   vTrace("\n"_Stz);
   vTrace("  Region %s %p size %lldB epoch %lld\n"_Stz,
-         gpAttachMap->m_sRegionName.aChar(),
+         gpAttachMap->Arg.m_sRegionName.aChar(),
          gpBufferPool,
-         gpAttachMap->m_iRegionSize,
+         gpAttachMap->Arg.m_iRegionSize,
          gpAttachMap->m_iEpoch);
   
   vTrace("\n"_Stz);
