@@ -220,7 +220,7 @@ void AttachMap::vRecordArguments(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize
   
   ASSERT(m_pGrid);
     
-  ASSERT(m_pWord);
+  //ASSERT(m_pWord);
 
 
   //ASSERT(m_pStepTiming);

@@ -781,6 +781,18 @@ void Engine::vStartSystem(void)
   
   //--------------------------------------------------------------------------
   
+  gpAttachMap->m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
+  gpAttachMap->m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
+  
+  gpAttachMap->vRecordArguments(gxArguments.m_sRegionName,
+                                gxArguments.m_iRegionSize,
+                                gxArguments.m_iJumboSize,
+                                gxArguments.m_nSubIngesters,
+                                gxArguments.m_nSubLoaders,
+                                gxArguments.m_bActivityMap);
+  
+  //--------------------------------------------------------------------------
+
   vOpenActivityMap();
   
   Step::vAddSteps();
@@ -791,15 +803,6 @@ void Engine::vStartSystem(void)
   
   //--------------------------------------------------------------------------
   
-  gpAttachMap->m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
-  gpAttachMap->m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
-  
-  gpAttachMap->vRecordArguments(gxArguments.m_sRegionName,
-                                gxArguments.m_iRegionSize,
-                                gxArguments.m_iJumboSize,
-                                gxArguments.m_nSubIngesters,
-                                gxArguments.m_nSubLoaders,
-                                gxArguments.m_bActivityMap);
   
   // get the trace file
   //Word* pTraceFileWord = gpAttachMap->m_oRootDic.pFindWord("trace_file"_Stz);

@@ -297,6 +297,9 @@ void ActivityMap::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vOpenByApi(void)
 {
+  if (! gpAttachMap->Arg.m_bActivityMap)
+    return;
+  
   if (gpActivityMap)
     return;
   
@@ -325,8 +328,11 @@ void ActivityMap::vOpenByApi(void)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vOpenBySE(void)
 {
-  if (! gxArguments.m_bActivityMap)
+  if (! gpAttachMap->Arg.m_bActivityMap)
     return;
+  
+  if (gpActivityMap)
+    vFatal("ActivityMap::vOpenBySE() -- activity map already opened\n"_Stz);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
