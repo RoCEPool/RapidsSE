@@ -11,7 +11,6 @@ namespace StorageEngine { class Engine; }
 namespace Steps         { class Step; }
 namespace Tasks         { class Task; }
 namespace Threads       { class Thread; class Queues; }
-namespace Transactions  { class Tx; }
 
 namespace StorageEngine
 {
@@ -29,7 +28,6 @@ namespace StorageEngine
     friend class         Steps::Step;
     friend class         Tasks::Task;
     friend class       Threads::Thread;
-    friend class  Transactions::Tx;
 
   private:
   

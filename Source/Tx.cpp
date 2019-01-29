@@ -5,7 +5,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -58,7 +57,7 @@ Tx::Tx(bool bAddToSet)
   m_iLocalTxId = -1;
   m_iDistTxId  = -1;
   m_ePhase     = TP_EXECUTING;
-  m_ixCounter   = gxArguments.m_nSlots;
+  m_ixCounter  = gpAttachMap->m_pGrid->m_nSlots;
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_xNode[i_Node].m_bDistMember = false;
@@ -82,8 +81,8 @@ Tx::Tx(i8 iDistTxId)
   m_iLocalTxId = -1;
   m_iDistTxId  = iDistTxId;
   m_ePhase     = TP_EXECUTING;
-  m_ixCounter   = gxArguments.m_nSlots;
-  
+  m_ixCounter  = gpAttachMap->m_pGrid->m_nSlots;
+
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_xNode[i_Node].m_bDistMember = false;
   
