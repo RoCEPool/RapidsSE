@@ -62,12 +62,12 @@ Queues::Queues(void)
   
   for (i8 i_Slot = 0; i_Slot < C_SLOTS_PER_NODE; i_Slot++)
     m_pReadySlotQueues[i_Slot] = nullptr;
-  for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++)
+  for (i8 i_Slot = 0; i_Slot < gpAttachMap->Arg.m_nSlotsPerNode; i_Slot++)
     m_pReadySlotQueues[i_Slot] = new TaskList(QK_READY_SLOT_QUEUE);
   
   for (i8 i_Node = 0; i_Node < C_MAX_NODES; i_Node++)
     m_pReadySendQueues[i_Node] = nullptr;
-  for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++)
+  for (i8 i_Node = 0; i_Node < gpAttachMap->Arg.m_nNodes; i_Node++)
     m_pReadySendQueues[i_Node] = new TaskList(QK_READY_SEND_QUEUE);
   
   m_pExecutingSet  = new TaskList(QK_EXECUTING_SET);
@@ -427,7 +427,7 @@ void Queues::vDumpReadySendQueues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  for (i8 i_Node = 0; i_Node < gxArguments.m_nNodes; i_Node++ ) {
+  for (i8 i_Node = 0; i_Node < gpAttachMap->Arg.m_nNodes; i_Node++ ) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("Ready Send Queue: %p\n"_Stz, m_pReadySendQueues[i_Node]);
     vTrace("------------------------------------\n"_Stz);
@@ -447,7 +447,7 @@ void Queues::vDumpReadySlotQueues(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
-  for (i8 i_Slot = 0; i_Slot < gxArguments.m_nSlots; i_Slot++ ) {
+  for (i8 i_Slot = 0; i_Slot < gpAttachMap->Arg.m_nSlotsPerNode; i_Slot++ ) {
     vTrace("------------------------------------\n"_Stz);
     vTrace("Ready Slot Queue: %p\n"_Stz, m_pReadySlotQueues[i_Slot]);
     vTrace("------------------------------------\n"_Stz);
@@ -569,8 +569,8 @@ bool Queues::bIsReadySendQueue(i8 i_QueueRR)
    
    */
   
-  if (i_QueueRR >= gxArguments.m_nSlots &&
-      i_QueueRR <  gxArguments.m_nSlots + gxArguments.m_nNodes)
+  if (i_QueueRR >= gpAttachMap->Arg.m_nSlotsPerNode &&
+      i_QueueRR <  gpAttachMap->Arg.m_nSlotsPerNode + gpAttachMap->Arg.m_nNodes)
     return true;
   
   return false;
@@ -584,7 +584,7 @@ bool Queues::bIsReadySlotQueue(i8 i_QueueRR)
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUES);
   
   if (i_QueueRR >= QR_READY_QUEUE + 1 &&
-      i_QueueRR <  gxArguments.m_nSlots)
+      i_QueueRR <  gpAttachMap->Arg.m_nSlotsPerNode)
     return true;
   
   return false;
@@ -1353,9 +1353,10 @@ i8 Queues::i_ToReadySendQueue(i8 i_QueueRR)
    
    */
   
-  i8 i_ReadySendQueue = i_QueueRR - gxArguments.m_nSlots;
+  i8 i_ReadySendQueue = i_QueueRR - gpAttachMap->Arg.m_nSlotsPerNode;
   
-  RASSERT(i_ReadySendQueue >= 0 and i_ReadySendQueue < gxArguments.m_nNodes);
+  RASSERT(i_ReadySendQueue >= 0 &&
+          i_ReadySendQueue < gpAttachMap->Arg.m_nSlotsPerNode);
   
   return i_ReadySendQueue;
 }
@@ -1369,7 +1370,8 @@ i8 Queues::i_ToReadySlotQueue(i8 i_QueueRR)
   
   i8 i_ReadySlotQueue = i_QueueRR;
   
-  RASSERT(i_ReadySlotQueue >= 0 and i_ReadySlotQueue < gxArguments.m_nSlots);
+  RASSERT(i_ReadySlotQueue >= 0 &&
+          gpAttachMap->Arg.m_nSlotsPerNode);
   
   return i_ReadySlotQueue;
 }

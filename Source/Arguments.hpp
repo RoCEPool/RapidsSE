@@ -21,7 +21,7 @@ namespace StorageEngine
     friend class      Commands::Command;
     friend class StorageEngine::Engine;
     friend class      Commands::Parser;
-    friend class       Threads::Queues;
+    //friend class       Threads::Queues;
     friend class          Pool::Region;
     friend class   Measurement::ResourceTracker;
     friend class        Prompt::SePrompt;

@@ -174,27 +174,29 @@ void AttachMap::vPrintAttachMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* record all the needed globals                                              */
+/* record all the needed arguments                                            */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vRecordArguments(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize,
-                                 i8 nSubIngesters, i8 nSubLoaders,
+                                 i8   nNodes, i8 nSlotsPerNode,
+                                 i8   nSubIngesters, i8 nSubLoaders,
                                  bool bActivityMap)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
   if (m_bVerbose)
-    vTrace("[[mainThread]] Recording globals...\n"_Stz);
+    vTrace("[[mainThread]] Recording arguments...\n"_Stz);
   
   m_iPid = Process::iGetPid();
   m_oSince.vNow();
   m_oTime.vSetUTC(&m_oSince);
   m_oTime.vUTC(m_sUTC);
   
-  Arg.m_bActivityMap = bActivityMap;
-  
+  Arg.m_bActivityMap  = bActivityMap;
+  Arg.m_iJumboSize    = iJumboSize;
+  Arg.m_nNodes        = nNodes;
   Arg.m_sRegionName   = aRegionName;
   Arg.m_iRegionSize   = iRegionSize;
-  Arg.m_iJumboSize    = iJumboSize;
+  Arg.m_nSlotsPerNode = nSlotsPerNode;
   Arg.m_nSubIngesters = nSubIngesters;
   Arg.m_nSubInserters = 0;
   Arg.m_nSubLoaders   = nSubLoaders;

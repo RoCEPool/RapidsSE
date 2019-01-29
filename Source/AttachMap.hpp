@@ -16,8 +16,10 @@ namespace StorageEngine
     struct {
       bool        m_bActivityMap;
       i8          m_iJumboSize;
+      i8          m_nNodes;
       s32         m_sRegionName;
       i8          m_iRegionSize;
+      i8          m_nSlotsPerNode;
       i8          m_nSubIngesters;
       i8          m_nSubInserters;
       i8          m_nSubLoaders;
@@ -83,6 +85,7 @@ namespace StorageEngine
     void vGetGlobals(void);
     void vPrintAttachMap(void);
     void vRecordArguments(Stz* sRegionName, i8 iRegionSize, i8 iJumboSize,
+                          i8   nNodes, i8 nSlotsPerNode,
                           i8   nSubIngesters, i8 nSubLoaders,
                           bool bActivityMap);
     

@@ -754,8 +754,13 @@ void Engine::vStartSystem(void)
   gpAttachMap->vRecordArguments(gxArguments.m_sRegionName,
                                 gxArguments.m_iRegionSize,
                                 gxArguments.m_iJumboSize,
+
+                                gxArguments.m_nNodes,
+                                gxArguments.m_nSlots,
+
                                 gxArguments.m_nSubIngesters,
                                 gxArguments.m_nSubLoaders,
+                                
                                 gxArguments.m_bActivityMap);
   
   //--------------------------------------------------------------------------
