@@ -80,7 +80,7 @@ SessionState::SessionState(void)
   m_nJobNew    = 0;
   m_nJobDelete = 0;
   
-  m_iNextFree  = -1;
+  m_i_NextFree  = -1;
   
   _checkInitialised_(CN_SESSIONSTATE);
   
@@ -101,12 +101,26 @@ SessionState::~SessionState(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* initialise                                                                 */
+/* alloc the session state                                                    */
 /*----------------------------------------------------------------------------*/
-void SessionState::vReInit(void)
+void SessionState::vAllocState(Session* pSession)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
+  
+  m_pSession   = pSession;
+  m_i_NextFree = -1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free the session state                                                     */
+/*----------------------------------------------------------------------------*/
+void SessionState::vFreeState(i8 i_NextFree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSIONSTATE,_FOOTER_);
  
+  RASSERT(m_i_State >= 0 && m_i_State < C_MAX_SESSIONS);
+  m_i_NextFree = i_NextFree;
+  
   m_pSession   = nullptr;
   
   m_eApiFun    = AC_NONE;
@@ -135,7 +149,6 @@ void SessionState::vReInit(void)
   m_nJobNew    = 0;
   m_nJobDelete = 0;
 
-  m_iNextFree  = -1;
 }
 
 /*----------------------------------------------------------------------------*/

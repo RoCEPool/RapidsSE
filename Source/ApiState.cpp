@@ -55,11 +55,12 @@ ApiState::ApiState(void)
   m_nSessionsSoFar = 0;
   m_iFirstFree = 0;
 
-  for (i8 i_Session = 0; i_Session < C_MAX_SESSIONS; i_Session++) {
-    SessionState* pState = &m_oSessionState[i_Session];
-    pState->m_iNextFree = i_Session + 1;
+  for (i8 i_State = 0; i_State < C_MAX_SESSIONS; i_State++) {
+    SessionState* pState = &m_oSessionState[i_State];
+    pState->m_i_State = i_State;
+    pState->m_i_NextFree = i_State + 1;
   }
-  m_oSessionState[C_MAX_SESSIONS - 1].m_iNextFree = -1;
+  m_oSessionState[C_MAX_SESSIONS - 1].m_i_NextFree = -1;
   
   m_iFirstFree = 0;
 
@@ -195,11 +196,10 @@ SessionState* ApiState::pAllocState(Session* pSession)
   i8 i_State = m_iFirstFree;
   SessionState* pState = &m_oSessionState[i_State];
   
-  m_iFirstFree = pState->m_iNextFree;
+  m_iFirstFree = pState->m_i_NextFree;
+    
+  pState->vAllocState(pSession);
   
-  pState->m_iNextFree = -1;
-  pState->m_pSession  = pSession;
-  pState->m_i_State   = i_State;
   RASSERT(i_State >= 0 && i_State < 10);
   
   m_nSessionsSoFar++;
@@ -241,12 +241,14 @@ void ApiState::vFreeState(Session* pSession)
   _precondition_(_ADDRESS_,_MAGIC_,CN_APISTATE,_FOOTER_);
   
   SessionState* pState = pSession->m_pSessionState;
+  
   i8 i_FreedState = pState->m_i_State;
   RASSERT(i_FreedState >= 0 && i_FreedState < 10);
   
   m_okLock.vGrabWrite();
   
-  pState->vReInit();
+  pState->vFreeState(m_iFirstFree);
+  
   m_iFirstFree = i_FreedState;
   
   m_okLock.vDropWrite();

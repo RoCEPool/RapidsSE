@@ -9,7 +9,8 @@ namespace Interface
   {
   public:
     i8    m_i_State;     // session state index
-  
+    i8    m_i_NextFree;  // next state in free chain
+
     Session* m_pSession; // will always be set unless state is free
   
     eAC   m_eApiFun;     // current / last api function called
@@ -39,7 +40,6 @@ namespace Interface
     i8    m_nJobNew;     // number of jobs new'ed so far
     i8    m_nJobDelete;  // number of jobs deleted so far
 
-    i8    m_iNextFree;
   
     // must be last
     Footer m_xFooter;
@@ -51,7 +51,8 @@ namespace Interface
     SessionState(void);
     ~SessionState(void) noexcept(false);
   
-    void vReInit(void);
+    void vAllocState(Session* pSession);
+    void vFreeState(i8 i_NextFree);
     void vTraceState(void);
   
     Footer* aFooter(void);
