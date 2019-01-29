@@ -43,10 +43,6 @@
   args.metadata    if " --metadata "    str.cat then
   args.activityMap if " --activityMap " str.cat then
 
-  args.activityMap if " --amPath " str.cat
-                      args.amPath  str.cat
-                   then
-
   " &" str.cat
 ;
 

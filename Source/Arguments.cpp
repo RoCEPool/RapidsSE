@@ -86,8 +86,6 @@ Arguments::Arguments(void)
   m_bVerbose     = false;
   m_bWelcome     = true;
   m_bActivityMap = false;
-  m_sAmPath      = "/tmp/SE_ActivityMap.csv"_Stz;
-  m_nActivityMarks = C_ACTIVITY_MARKS;
 
   _checkInitialised_(CN_ARGUMENTS);
   
@@ -173,7 +171,6 @@ void Arguments::vAddConstants(void)
   vAddConstant("args.verbose"_Stz,           m_bVerbose);
   vAddConstant("args.welcome"_Stz,           m_bWelcome);
   vAddConstant("args.activityMap"_Stz,       m_bActivityMap);
-  vAddConstant("args.amPath"_Stz,            m_sAmPath);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -633,19 +630,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
       m_bActivityMap = false;
       continue;
     }
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--AmPath"_Stz)) {
-      m_sAmPath = (Stz*)argv[++i_Arg];
-      continue;
-    }
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (argv[i_Arg]->bSame("--activityMarks"_Stz)) {
-      m_nActivityMarks = argv[++i_Arg]->iToI8();
-      continue;
-    }
-    
+            
     vWarn("Unrecognized command argument: %s\n"_Stz,argv[i_Arg]);
     return false;
   }

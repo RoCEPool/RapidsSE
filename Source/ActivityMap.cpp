@@ -399,7 +399,7 @@ i8 ActivityMap::iSize(void)
 /*----------------------------------------------------------------------------*/
 /* write ActivityMap to csv file                                              */
 /*----------------------------------------------------------------------------*/
-void ActivityMap::vWriteCsv(void)
+void ActivityMap::vWriteCsv()
 {
   if (! gpActivityMap)
     return;
@@ -577,11 +577,12 @@ void ActivityMap::vWriteToFile(void)
 {
   _precondition_(_MAGIC_,CN_ACTIVITYMAP,_FOOTER_);
   
+  s256 sAmPath;
+  sAmPath = "/tmp/ActivityMap.csv"_Stz;
+  
   i8 iTotalDelta = 0;
   
   File* pActivityFile = new File();
-  
-  s256 sAmPath = gxArguments.m_sAmPath;
   
   bool bOpened = pActivityFile->bOpenWrite(sAmPath);
   if (! bOpened) {

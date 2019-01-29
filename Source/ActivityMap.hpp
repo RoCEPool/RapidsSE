@@ -44,7 +44,7 @@ namespace Measurement
     static void vOpenByApi(void);
     static void vOpenBySE(void);
     static i8   iSize(void);
-    static void vWriteCsv(void);
+    static void vWriteCsv();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
