@@ -23,11 +23,11 @@ namespace StorageEngine
     friend class          Pool::Region;
     friend class   Measurement::ResourceTracker;
     friend class        Prompt::SePrompt;
-    friend class         Steps::Step;
+    //friend class         Steps::Step;
     friend class       Threads::Thread;
 
   private:
-   
+  
     // configuration
     s256  m_sCommandsDir;  // commands dir
     i8    m_nJumboBuffers; // number of jumbo buffers

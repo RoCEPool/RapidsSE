@@ -698,7 +698,6 @@
   static void vNodeInit(Tasks::MP_Task mpTask);
   static void vNodeIP(Tasks::MP_Task mpTask);
   static void vNodeName(Tasks::MP_Task mpTask);
-  static void vNodeNew(Tasks::MP_Task mpTask);
   static void vNodeNo(Tasks::MP_Task mpTask);
   static void vNodePartitions(Tasks::MP_Task mpTask);
   static void vNodePort(Tasks::MP_Task mpTask);

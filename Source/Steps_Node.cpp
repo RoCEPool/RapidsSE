@@ -4,7 +4,6 @@
 
 #include "StorageEngine.h"
 
-extern Arguments  gxArguments;
 extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
@@ -12,8 +11,6 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Node(void)
 {
-  vAddStep("node::new"_Stz,        &Step::vNodeNew);
-  
   vAddStep("node.init"_Stz,        &Step::vNodeInit);
   vAddStep("node.IP"_Stz,          &Step::vNodeIP);
   vAddStep("node.name"_Stz,        &Step::vNodeName);
@@ -66,29 +63,6 @@ void Step::vNodeIP(MP_Task mpTask)
   s256 sIP;
   sIP = pNode->aNodeIP();
   mpTask->m_pDataStack->vPushS256(sIP);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* node::new -- new a node (of a grid)                                         */
-/*----------------------------------------------------------------------------*/
-void Step::vNodeNew(MP_Task mpTask)
-{
-ENTRY("vNodeNew"_Stz);
-  
-  i8 iNodeNo;
-  
-  if ( ! mpTask->m_pDataStack->bPop(iNodeNo) )
-    THROW_INVALID_DSTACK("node::new"_Stz);
-  
-  Node* pNode = new Node(iNodeNo,
-                         gxArguments.m_xNodes[iNodeNo].m_sNodeName,
-                         gxArguments.m_xNodes[iNodeNo].m_sIPAddress,
-                         gxArguments.m_xNodes[iNodeNo].m_iPortNo);
-  ASSERT(CN_NODE == pNode->eClass());
-
-  mpTask->m_pDataStack->vPushPointer(pNode);
   
   EXIT();
 }
@@ -269,14 +243,14 @@ void Step::vNodeStatus(MP_Task mpTask)
   
   Grid* pGrid = gpAttachMap->m_pGrid;
   
-  if (Region::bTest(gxArguments.m_sRegionName))
+  if (Region::bTest(gpAttachMap->Arg.m_sRegionName))
     s.vSprint("row: ('%s', '%s', 'running')"_Stz,
             pGrid->pThisNode()->aNodeName(),
-            gxArguments.m_sRegionName.aChar());
+            gpAttachMap->Arg.m_sRegionName.aChar());
   else
     s.vSprint("row: ('%s', '%s', 'not running')"_Stz,
             pGrid->pThisNode()->aNodeName(),
-            gxArguments.m_sRegionName.aChar());
+            gpAttachMap->Arg.m_sRegionName.aChar());
   
   mpTask->m_pDataStack->vPushS256(s);
   
