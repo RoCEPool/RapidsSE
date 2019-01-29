@@ -22,67 +22,54 @@ namespace StorageEngine
       i8          m_nSubInserters;
       i8          m_nSubLoaders;
    } Arg;
-    
   
-    i8            m_iEpoch;
-    bool          m_bBootError;
-  
-    BufferPool*   m_pBufferPool;
-    Buffer*       m_pTakenBuffers;
-    i8            m_nTakenBytes;
-    i8            m_nObjectsInPool[CN_ENUMS];
-
-    CarryOver*    m_pCarryOver;
-  
-    HeapMem       m_xHeapMem;
-  
-    Dic           m_oRootDic;   // the root dictionary
-    TxSet*        m_pTxSet;
-    Grid*         m_pGrid;
     ApiState*     m_pApiState;
-    
-    Word*         m_pWord;
-    Word*         m_pTenants;
-  
-    Atomic        m_ixThreads;
-    Atomic        m_ixMonitorTake;
-
-    Queues*       m_pQueues;
-    JobList*      m_pOriginatingJobs;
-    JobList*      m_pParticipatingJobs;
-  
-    StepTiming*   m_pStepTiming;
-    
-    bool          m_bVerbose;
-    bool          m_bTracepoint;
-    bool          m_bProgress;
-    bool          m_bMetadata;
-   
-    i8            m_nIndexEntries;  // no of entries per buffer
-    i8            m_nIndexLevels;   // no of levels per index buffer entry
-    i8            m_nIndexOffsets;  // no of offsets per index buffer entry
-        
-    i8            m_iQuit;
-    i8            m_iStop;
-    
-    LockTracker   m_oLockTracker;
-  
-    ResourceTracker m_oResourceTracker;
-    
+    bool          m_bBootError;
+    BufferPool*   m_pBufferPool;
+    CarryOver*    m_pCarryOver;
     Lock          m_okDdlLock;
     Lock          m_okDicLock;
-       
-    Atomic        m_ixPlanId;
-    
-    Formatters    m_oFormatters; // record formatters
-  
+    Grid*         m_pGrid;
+    i8            m_iEpoch;
+    HeapMem       m_xHeapMem;
+    Formatters    m_oFormatters;
+    LockTracker   m_oLockTracker;
     bool          m_bMarkApiAll;
     bool          m_bMarkApi[AC_ENUMS];
     bool          m_bMarkJobAll;
     bool          m_bMarkJob[CN_ENUMS];
-
+    Atomic        m_ixMonitorTake;
+    i8            m_nObjectsInPool[CN_ENUMS];
+    JobList*      m_pOriginatingJobs;
+    JobList*      m_pParticipatingJobs;
+    Atomic        m_ixPlanId;
+    Queues*       m_pQueues;
+    i8            m_iQuit;
+    ResourceTracker m_oResourceTracker;
+    Dic           m_oRootDic;
     Statistics    m_oStatistics;
-    
+    StepTiming*   m_pStepTiming;
+    i8            m_iStop;
+    Buffer*       m_pTakenBuffers;
+    i8            m_nTakenBytes;
+    Word*         m_pTenants;
+    Atomic        m_ixThreads;
+    TxSet*        m_pTxSet;
+    Word*         m_pWord;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // these should be in Args
+  bool          m_bVerbose;
+  bool          m_bTracepoint;
+  bool          m_bProgress;
+  bool          m_bMetadata;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // remove?
+  i8            m_nIndexEntries;  // no of entries per buffer
+  i8            m_nIndexLevels;   // no of levels per index buffer entry
+  i8            m_nIndexOffsets;  // no of offsets per index buffer entry
+  
     // must be last
     Footer m_xFooter;
     
