@@ -7,7 +7,6 @@
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
-extern Arguments  gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -850,7 +849,7 @@ void Task::vThread(Threads::Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(Stz* aMark)
 {
-  if (gxArguments.m_nNodes > 1) {
+  if (gpAttachMap->Arg.m_nNodes > 1) {
     i8 iPause = Random::iInteger(999,99999);
     Pthread::vSleepMicro(iPause,CN_TASK);
   }

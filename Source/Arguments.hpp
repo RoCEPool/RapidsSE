@@ -10,7 +10,7 @@ namespace Prompt        { class SePrompt; }
 namespace StorageEngine { class Engine; }
 namespace Steps         { class Step; }
 namespace Tasks         { class Task; }
-namespace Threads       { class Thread; class Queues; }
+namespace Threads       { class Thread; }
 
 namespace StorageEngine
 {
@@ -21,12 +21,11 @@ namespace StorageEngine
     friend class      Commands::Command;
     friend class StorageEngine::Engine;
     friend class      Commands::Parser;
-    //friend class       Threads::Queues;
     friend class          Pool::Region;
     friend class   Measurement::ResourceTracker;
     friend class        Prompt::SePrompt;
     friend class         Steps::Step;
-    friend class         Tasks::Task;
+ //   friend class         Tasks::Task;
     friend class       Threads::Thread;
 
   private:
