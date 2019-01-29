@@ -421,7 +421,19 @@ void ActivityMap::vOpenByApi(void)
   if (gpActivityMap)
     return;
   
-  new ActivityMap;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  ActivityMap* pActivityMap = ActivityMap::pOpenExisting();
+  if (gpAttachMap->m_bVerbose)
+    vTrace("ActivityMap %s : "
+           "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
+           C_ACTIVITY_REGION,
+           sizeof(ActivityMap),
+           C_ACTIVITY_MARKS);
+  
+  gpActivityMap = pActivityMap;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ActivityMap::vMark(0,"Opened by API"_Stz);
   
@@ -437,19 +449,39 @@ void ActivityMap::vOpenBySE(void)
   if (! gxArguments.m_bActivityMap)
     return;
   
-  new ActivityMap;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  ActivityMap* pActivityMap = nullptr;
+  
+  if (0 == gpAttachMap->m_pGrid->m_iThisNode && gxArguments.m_bStart) {
+    pActivityMap = ActivityMap::pOpenCreate();
+    if (gpAttachMap->m_bVerbose)
+      vTrace("ActivityMap %s : "
+             "created new map (size %lldB, max %lld marks)\n\n"_Stz,
+             C_ACTIVITY_REGION,
+             sizeof(ActivityMap),
+             C_ACTIVITY_MARKS);
+    gpActivityMap = new(pActivityMap) ActivityMap;
+
+  } else {
+    pActivityMap = ActivityMap::pOpenExisting();
+    if (gpAttachMap->m_bVerbose)
+      vTrace("ActivityMap %s : "
+             "attached to existing map (size %lldB, max %lld marks)\n\n"_Stz,
+             C_ACTIVITY_REGION,
+             sizeof(ActivityMap),
+             C_ACTIVITY_MARKS);
+    
+    gpActivityMap = pActivityMap;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   ActivityMap::vMark(0,gxArguments.m_sWelcome);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   Now oNow;
   ActivityMap::vMark(0,"Time is: %s"_Stz,oNow.sFormatted());
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
   s32 sMem;
   Magnitudes::vByteMag(Hardware::iPhysicalMemory(),sMem);
   
@@ -461,8 +493,6 @@ void ActivityMap::vOpenBySE(void)
                      sMem.aStz(),
                      sClock.aStz()
                      );
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Arguments::vMark();
 }
