@@ -57,7 +57,6 @@ namespace StorageEngine
     bool m_bUnlink;     // unlink shm region only
 
     // options
-    bool m_bBindThreads;// bind threads to cores
     bool m_bConfig;     // print configuration information
     bool m_bDeveloper;  // user is a developer
     bool m_bDontFree;   // dont actually free objects back to heap

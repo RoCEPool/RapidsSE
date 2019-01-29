@@ -116,8 +116,7 @@ void* Thread::aEntryPoint(void* pArg)
     vTrace("Thread::aEntryPoint %p %lld\n"_Stz,
            pThread,pThread->iThreadNo());
   
-  if (gxArguments.m_bBindThreads)
-    pThread->vBindCore();
+  //pThread->vBindCore();
     
   try {
     pThread->vLoop();
