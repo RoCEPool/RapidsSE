@@ -3,8 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+#define RAPIDSSE_VERSION_STRING "0.4.1"
+
 #define WITH_ACTIVITY_MAP
 #define WITH_ENTRY_EXIT
+//#define WITH_MUNGED
 
 /*============================================================================*/
 /* end                                                                        */

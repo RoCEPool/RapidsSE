@@ -114,8 +114,8 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  MP_CHECK\n"_Stz);
 #endif
   
-#ifdef MUNGED
-  vTrace("  MUNGED\n"_Stz);
+#ifdef WITH_MUNGED
+  vTrace("  WITH_MUNGED\n"_Stz);
 #endif
     
 #ifdef STRING_LENGTH_TEST

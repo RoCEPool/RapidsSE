@@ -2,8 +2,6 @@
 /* Task_boot.cpp - parts of task which boot the system                        */
 /*============================================================================*/
 
-//#define MUNGED
-
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
@@ -19,7 +17,7 @@ void Task::vAddBaseWords(void)
 
   MP_Task mpTask(this);
   
-#ifdef MUNGED
+#ifdef WITH_MUNGED
   vAddMunged(mpTask);
 #endif
 }

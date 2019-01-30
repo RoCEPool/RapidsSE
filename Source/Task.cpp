@@ -2,8 +2,6 @@
 /* Task.cpp - task                                                            */
 /*============================================================================*/
 
-//#define MUNGED
-
 #include "StorageEngine.h"
 
 extern AttachMap* gpAttachMap;
