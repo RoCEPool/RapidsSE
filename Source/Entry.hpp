@@ -35,12 +35,12 @@ namespace DBobjects
     Id  m_xId;        // id
   //i8  m_iTxId;      // transaction id
   //char  m_nOffsets;   // no of offsets for this entry (0..3)
-#ifdef _DEBUG
+#ifdef WITH_DEBUG
     i8  m_iIntKey;    // key debug hack
 #endif
   
   public:
-#ifdef _DEBUG
+#ifdef WITH_DEBUG
     i8  m_iEntryNo;   // verify of entry order
 #endif
     // ..embedded object..

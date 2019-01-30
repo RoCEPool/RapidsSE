@@ -1089,7 +1089,7 @@ Entry* EntryBuffer::aNextEntry(Entry* aCurrent, i8 i_Offset)
   //RASSERT( ! m_aLazyChain );
   //#endif
   
-#ifdef _DEBUG
+#ifdef WITH_DEBUG
   aCurrent->vAssertEntry();
 #endif
   
@@ -3771,7 +3771,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
 /*----------------------------------------------------------------------------*/
 /* check prior vec ordering                                                   */
 /*----------------------------------------------------------------------------*/
-#ifdef _DEBUG
+#ifdef WITH_DEBUG
 
 bool EntryBuffer::bCheckPriorVec(Entry* aPriorVec[])
 {
@@ -3815,7 +3815,7 @@ bool EntryBuffer::bCheckPriorVec(Entry* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* number entries                                                             */
 /*----------------------------------------------------------------------------*/
-#ifdef _DEBUG
+#ifdef WITH_DEBUG
 void EntryBuffer::vNumberEntries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -3969,7 +3969,7 @@ bool EntryBuffer::bVerifyL0Hidden(void)
   if (! bValid)
     return false;
   
-#ifdef _DEBUG
+#ifdef WITH_DEBUG
   bValid = bVerifySkipListLevels();
   if (! bValid)
     return false;
@@ -4075,7 +4075,7 @@ bool EntryBuffer::bVerifyLnAny(void)
   if (! bValid)
     return false;
   
-#ifdef _DEBUG
+#ifdef WITH_DEBUG
   bValid = bVerifySkipListLevels();
   if (! bValid)
     return false;
@@ -4642,7 +4642,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
     }
   }
   
-#ifdef _DEBUG
+#ifdef WITH_DEBUG
   if (! bVerifySkipListLevels())
     return false;
 #endif
@@ -4653,7 +4653,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
 /*----------------------------------------------------------------------------*/
 /* verify the skip list levels                                                */
 /*----------------------------------------------------------------------------*/
-#ifdef _DEBUG
+#ifdef WITH_DEBUG
 
 bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
 {

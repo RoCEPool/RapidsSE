@@ -24,18 +24,8 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 {
-  vTrace("\n"_Stz);
-
 #ifdef __APPLE__
   vTrace("  __APPLE__\n"_Stz);
-#endif
-  
-#ifdef _DEBUG
-  vTrace("  _DEBUG\n"_Stz);
-#endif
-  
-#ifdef __DEBUG
-  vTrace("  __DEBUG\n"_Stz);
 #endif
   
 #ifdef WITH_ACTIVITY_MAP
@@ -56,6 +46,10 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   
 #ifdef WITH_CORECTNESS_ALGEBRA
   vTrace("  WITH_CORECTNESS_ALGEBRA\n"_Stz);
+#endif
+  
+#ifdef WITH_DEBUG
+  vTrace("  WITH_DEBUG\n"_Stz);
 #endif
   
 #ifdef WITH_ENTRY_EXIT
@@ -86,8 +80,6 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  WITH_VLQ\n"_Stz);
 #endif
   
-  vTrace("\n"_Stz);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 #ifdef EB_LAZY_CHAIN

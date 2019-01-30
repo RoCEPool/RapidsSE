@@ -255,7 +255,7 @@ void Engine::vErrorHandler(Error* pError)
 void Engine::vGetWelcome(s256& sWelcome)
 {
   Stz* aRelDbg;
-#ifdef _DEBUG
+#ifdef WITH_DEBUG
   aRelDbg = "debug"_Stz;
 #else
   aRelDbg = "release"_Stz;
@@ -443,7 +443,7 @@ void Engine::vMonitorProfile(s48K& sPortrait)
                     sRegionMag.aStz(),
                     iPercentFree,
                     iUpTime,
-#ifdef _DEBUG
+#ifdef WITH_DEBUG
                     "debug"_Stz,
 #else
                     "release"_Stz,
