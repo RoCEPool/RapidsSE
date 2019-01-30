@@ -109,8 +109,6 @@ void Step::vFlowJumpBegin_(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 /* jumpFalse -- jump on false to location                                     */
 /*----------------------------------------------------------------------------*/
-#define JUMP_FALSE
-#ifdef JUMP_FALSE
 void Step::vFlowJumpFalse(MP_Task mpTask)
 {
   ENTRY("vJumpFalse"_Stz);
@@ -151,29 +149,6 @@ void Step::vFlowJumpFalse(MP_Task mpTask)
   
   EXIT();
 }
-
-#else //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-void Step::vFlowJumpFalse(MP_Task mpTask)
-{
-  ENTRY("vJumpFalse"_Stz);
-  
-  i8 iVal;
-  if ( ! mpTask->m_pDataStack->bPopAsInt_Quick(iVal) )
-    THROW_INVALID_DSTACK("jumpFalse"_Stz);
-  
-  // n.b. the IP points to the jump arg
-  
-  if (iVal)
-    // do not jump, skip over argument
-    mpTask->FIP.m_aCell++;
-  else
-    // jump to location
-    mpTask->FIP.m_aCell = mpTask->FIP.m_aCell->m_aJumpTo;
-  
-  EXIT();
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* jumpTrue -- jump on true to location                                       */
