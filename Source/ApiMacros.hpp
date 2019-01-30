@@ -36,15 +36,9 @@
 /*----------------------------------------------------------------------------*/
 /* begin an API function                                                      */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG_VERSION
 #define API_BEGIN() \
   if (pSession) \
     ApiState::vMarkApiLoc(pSession,200);
-
-#else
-#define API_BEGIN()
-
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* catch an error in an API function                                          */
@@ -57,11 +51,7 @@
   eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
   \
   Engine::vErrorHandler(pError); \
-  if ( (iTrace & TL_ERROR) == TL_ERROR) \
-    vTrace("<!%s: %p(%lld) %s(%lld)\n"_Stz,  \
-            aApiCall, pSession, \
-            pSession ? pSession->iPartition() : -1, \
-            aEC[eErrorCode],(i8)eErrorCode); \
+  API_TRACE_ERROR("catch"_Stz,eErrorCode); \
   ApiState::vMarkError(pSession,eErrorCode); \
   ApiState::vMarkApiLoc(pSession,888); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
@@ -83,7 +73,7 @@
 // not using braces { }, as that would hide the variables
 
 #ifdef WITH_DEBUG_VERSION
-#define API_ENTRY(_eApiCall) \
+#define API_ENTER(_eApiCall) \
   \
   eAC  eApiCall = _eApiCall; \
   Stz* aApiCall = aAC[eApiCall]; \
@@ -94,21 +84,17 @@
   if (pSession) { \
     \
     eEC eError = Api::eValidateSession(iTrace,pSession,"entry"_Stz); \
-    if (eError != EC_NONE) { \
-      API_RETURN_EC(EC_INVALID_INTERFACE); \
-    } \
+    if (eError != EC_NONE) \
+      API_RETURN_ERROR(EC_INVALID_INTERFACE); \
     \
     ApiState::vMarkCall(pSession,eApiCall); \
     ApiState::vMarkApiLoc(pSession,100); \
     \
-    if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-      vTrace(">%s: %p(%lld)\n"_Stz,  \
-             aApiCall, pSession , \
-             pSession ? pSession->iPartition() : -1); \
+    API_TRACE("enter"_Stz); \
   }
 
 #else
-#define API_ENTRY(eApiCall)
+#define API_ENTER(eApiCall)
 
 #endif
 
@@ -118,10 +104,7 @@
 #ifdef WITH_DEBUG_VERSION
 #define API_EXITING() \
 { \
-  if ( (iTrace & TL_EXIT) == TL_EXIT) \
-    vTrace("<%s: %p(%lld)\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1); \
+  API_TRACE("exiting"_Stz); \
   \
   if (pSession) { \
     ApiState::vMarkReturn(pSession); \
@@ -153,17 +136,16 @@
 
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
 /* trace API parameter                                                        */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_DEBUG_VERSION
 #define API_PARAM(p1) \
-{ \
-  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-    vTrace("%s: %p(%lld) %s\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1, p1); \
-}
+  API_TRACE_PARAM("param"_Stz,(p1? "null"_Stz : p1));
+
 #else
 #define API_PARAM(p1)
 
@@ -175,10 +157,7 @@
 #ifdef WITH_DEBUG_VERSION
 #define API_RETURN() \
 { \
-  if ( (iTrace & TL_EXIT) == TL_EXIT) \
-    vTrace("<%s: %p(%lld)\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1); \
+  API_TRACE("return"_Stz); \
   \
   if (pSession) { \
     ApiState::vMarkReturn(pSession); \
@@ -198,13 +177,9 @@
 /* return error code from an API function                                     */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_DEBUG_VERSION
-#define API_RETURN_EC(eErrorCode) \
+#define API_RETURN_ERROR(eErrorCode) \
 { \
-  if ( (iTrace & TL_ERROR) == TL_ERROR) \
-    vTrace("<!%s: %p(%lld) %s(%lld)\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1, \
-           aEC[eErrorCode],(i8)eErrorCode); \
+  API_TRACE_ERROR("return error"_Stz,eErrorCode); \
   ApiState::vMarkError(pSession,eErrorCode); \
   ApiState::vMarkApiLoc(pSession,880); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
@@ -212,7 +187,24 @@
 }
 
 #else
-#define API_RETURN_EC(eErrorCode) return eErrorCode
+#define API_RETURN_ERROR(eErrorCode) \
+  return eErrorCode
+
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* trace API                                                                  */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
+#define API_TRACE(aMarker) \
+{ \
+  if ( (iTrace & TL_ERROR) == TL_ERROR) \
+    vTrace("!%s(%s): %p(%lld)\n"_Stz,  \
+           aApiCall, aMarker, \
+           pSession, pSession ? pSession->iPartition() : -1); \
+}
+#else
+#define API_TRACE(aMarker)
 
 #endif
 
@@ -224,9 +216,26 @@
 { \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
-           aApiCall, aMarker, pSession, \
-           pSession ? pSession->iPartition() : -1, \
+           aApiCall, aMarker, \
+           pSession, pSession ? pSession->iPartition() : -1, \
            aEC[eErrorCode], (i8)eErrorCode); \
+}
+#else
+#define API_TRACE_ERROR(aMarker, eErrorCode)
+
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* trace API param                                                            */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
+#define API_TRACE_PARAM(aMarker, sParam) \
+{ \
+if ( (iTrace & TL_ERROR) == TL_ERROR) \
+  vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
+         aApiCall, aMarker, \
+         pSession, pSession ? pSession->iPartition() : -1, \
+         sParam ? sParam : "<null>"_Stz); \
 }
 #else
 #define API_TRACE_ERROR(aMarker, eErrorCode)

@@ -20,7 +20,7 @@ extern ActivityMap* gpActivityMap;
 eEC RapidsSE_CheckVersion(i8 iTrace, Stz* sVersion)
 {
   API_SYSTEM_LEVEL();
-  API_ENTRY(AC_CheckVersion);
+  API_ENTER(AC_CheckVersion);
   API_PARAM(sVersion);
   API_BEGIN();
   
@@ -31,7 +31,7 @@ eEC RapidsSE_CheckVersion(i8 iTrace, Stz* sVersion)
       vTrace(">RapidsSE_CheckLibraryVersion: RDP (%s) does not match Engine (%s)"_Stz,
              sVersion, RAPIDSSE_VERSION_STRING);
       
-      API_RETURN_EC(EC_VERSION_MISMATCH);
+      API_RETURN_ERROR(EC_VERSION_MISMATCH);
     }
   }
   catch (Error* pError) { API_CATCH(pError); }
@@ -48,7 +48,7 @@ eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
   Session* pSession = *ppSession;
   
   API_SESSION_LEVEL();
-  API_ENTRY(AC_DeleteSession);
+  API_ENTER(AC_DeleteSession);
   API_BEGIN();
   
   try {
@@ -84,7 +84,7 @@ eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
 bool RapidsSE_IsInvalidSession(i8 iTrace, int iError)
 {
   API_SYSTEM_LEVEL();
-  API_ENTRY(AC_IsInvalidSession);
+  API_ENTER(AC_IsInvalidSession);
   API_BEGIN();
   
   API_EXITING();
@@ -102,7 +102,7 @@ eEC RapidsSE_NewSession(i8 iTrace,
                         void** aaSession)
 {
   API_SYSTEM_LEVEL();
-  API_ENTRY(AC_NewSession);
+  API_ENTER(AC_NewSession);
   API_PARAM(sCatalog);
   API_PARAM(sSchema);
   API_NOTNULL(aaSession);
@@ -116,7 +116,7 @@ eEC RapidsSE_NewSession(i8 iTrace,
     
     eEC eError = pSession->eInit(sCatalog,sSchema);
     if (eError != EC_NONE)
-      API_RETURN_EC(eError);
+      API_RETURN_ERROR(eError);
     
     // return the newly created session
     *aaSession = pSession;
@@ -134,7 +134,7 @@ eEC RapidsSE_NewSession(i8 iTrace,
 eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 {
   API_SYSTEM_LEVEL();
-  API_ENTRY(AC_OpenPool);
+  API_ENTER(AC_OpenPool);
   API_PARAM(sRegion);
   API_BEGIN();
   
@@ -146,7 +146,7 @@ eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
     
     bool bResult = Engine::bOpenPool(sPoolName);
     if (! bResult)
-      API_RETURN_EC(EC_INVALID_INSTANCE);
+      API_RETURN_ERROR(EC_INVALID_INSTANCE);
     
     API_VALIDATE_POOL();
     
@@ -175,7 +175,7 @@ eEC  RapidsSE_BeginFetch(i8 iTrace, Session* pSession,
                          Stz* aTable, void** aaTable)
 {
   API_SESSION_LEVEL();
-  API_ENTRY(AC_BeginFetch);
+  API_ENTER(AC_BeginFetch);
   API_PARAM(aTable);
   API_NOTNULL(aaTable);
   API_BEGIN();
@@ -202,7 +202,7 @@ eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
                          Stz* sTable, i8 nSubInserters, void** aaJob)
 {
   API_SESSION_LEVEL();
-  API_ENTRY(AC_BeginInsert);
+  API_ENTER(AC_BeginInsert);
   API_NOTNULL(aaJob);
   API_BEGIN();
   
@@ -252,7 +252,7 @@ eEC RapidsSE_BeginInsert(i8 iTrace, Session* pSession,
 eEC RapidsSE_EndJobs(i8 iTrace, Session* pSession)
 {
   API_SESSION_LEVEL();
-  API_ENTRY(AC_EndJobs);
+  API_ENTER(AC_EndJobs);
   API_BEGIN();
   
   // delete the jobs from the sessions jobStack
@@ -274,7 +274,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
                             void** aaJob)
 {
   API_SESSION_LEVEL();
-  API_ENTRY(AC_ExecuteCommand);
+  API_ENTER(AC_ExecuteCommand);
   API_PARAM(sCommand);
   API_BEGIN();
   
@@ -283,7 +283,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
     // set the catalog and schema in the session
     eEC eError = pSession->eInit(sCatalog, sSchema);
     if (eError != EC_NONE)
-      API_RETURN_EC(eError);
+      API_RETURN_ERROR(eError);
     API_LOC(310);
 
     // execute the command
@@ -299,7 +299,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
         eEC eError = pJob->m_xNode[i_Node].m_eErrorCode;
         if (eError != EC_NONE) {
           pSession->m_pJobStack->vPushPointer(pJob);
-          API_RETURN_EC(eError);
+          API_RETURN_ERROR(eError);
         }
       }
       NEVER_REACH;
@@ -327,7 +327,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
                        Stz* sTableName, Stz* sRecord)
 {
   API_SESSION_LEVEL();
-  API_ENTRY(AC_InsertRow);
+  API_ENTER(AC_InsertRow);
   API_NOTNULL(sRecord);
   API_BEGIN();
   
@@ -355,7 +355,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
     
     // check length of record
     if (iRawDataLength > C_MAX_RECORD)
-      API_RETURN_EC(EC_MAX_ROW_LENGTH);
+      API_RETURN_ERROR(EC_MAX_ROW_LENGTH);
     API_LOC(360);
     
     // set the row in the insertRow job
@@ -376,7 +376,7 @@ eEC RapidsSE_InsertRow(i8 iTrace, Session* pSession,
         
         eEC eError = pJob_InsertRow->m_xNode[i_Node].m_eErrorCode;
         if (eError != EC_NONE)
-          API_RETURN_EC(eError);
+          API_RETURN_ERROR(eError);
       }
       NEVER_REACH;
     }
@@ -395,7 +395,7 @@ eEC RapidsSE_TranslateError(i8 iTrace, Session* pSession,
                             int iErrorCode, void** aaError)
 {
   API_SESSION_LEVEL();
-  API_ENTRY(AC_TranslateError);
+  API_ENTER(AC_TranslateError);
   API_NOTNULL(aaError);
   API_BEGIN();
   
@@ -426,7 +426,7 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
                               void** aaJob)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_BeginSubInserter);
+  API_ENTER(AC_BeginSubInserter);
   API_NOTNULL(aJob);
   API_NOTNULL(aaJob);
   API_BEGIN();
@@ -476,7 +476,7 @@ eEC RapidsSE_BeginSubInserter(i8 iTrace, Session* pSession, void* aJob,
 eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_CopyBuffer);
+  API_ENTER(AC_CopyBuffer);
   API_BEGIN();
   
   try {
@@ -538,7 +538,7 @@ eEC RapidsSE_CopyBuffer(i8 iTrace, Session* pSession, void* aJob)
 eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_EndInsert);
+  API_ENTER(AC_EndInsert);
   API_BEGIN();
   
   try {
@@ -558,7 +558,7 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
       for (i8 i_Node = 0; i_Node < gpAttachMap->m_pGrid->m_nNodes; i_Node++) {
         eEC eError = pJob_InsertTable->m_xNode[i_Node].m_eErrorCode;
         if (eError != EC_NONE)
-          API_RETURN_EC(eError);
+          API_RETURN_ERROR(eError);
       }
       NEVER_REACH;
     }
@@ -580,7 +580,7 @@ eEC RapidsSE_EndInsert(i8 iTrace, Session* pSession, void* aJob)
 eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_EndSubInserter);
+  API_ENTER(AC_EndSubInserter);
   API_BEGIN();
   
   try {
@@ -619,7 +619,7 @@ eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
                              void** aaFetchBuffer, i8* aiExpectedRows)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_FetchNextBuffer);
+  API_ENTER(AC_FetchNextBuffer);
   API_NOTNULL(aaFetchBuffer);
   API_BEGIN();
   
@@ -710,7 +710,7 @@ eEC RapidsSE_GetLoadResult(i8 iTrace, Session* pSession, void* aJob,
                            i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_GetLoadResult);
+  API_ENTER(AC_GetLoadResult);
   API_NOTNULL(aiValidRows);
   API_NOTNULL(aiInvalidRows);
   API_BEGIN();
@@ -753,7 +753,7 @@ eEC RapidsSE_GetRecordBuffer(i8 iTrace, Session* pSession, void* aJob,
                              void** aaRecordBuffer)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_GetRecordBuffer);
+  API_ENTER(AC_GetRecordBuffer);
   API_NOTNULL(aaRecordBuffer);
   API_BEGIN();
   
@@ -777,7 +777,7 @@ eEC RapidsSE_GetRow(i8 iTrace, Session* pSession, void* aJob,
                     i8 iRow, void** aaRow)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_GetRow);
+  API_ENTER(AC_GetRow);
   API_NOTNULL(aaRow);
   API_BEGIN();
   
@@ -841,7 +841,7 @@ eEC RapidsSE_GetRowCount(i8 iTrace, Session* pSession, void* aJob,
                          i8 *aiRowCount)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_GetRowCount);
+  API_ENTER(AC_GetRowCount);
   API_NOTNULL(aiRowCount);
   API_BEGIN();
   
@@ -868,7 +868,7 @@ eEC RapidsSE_GetTableColumnRow(i8 iTrace, Session* pSession, void* aJob,
                                i8 i_Col, void** aaRow)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_GetTableColumnRow);
+  API_ENTER(AC_GetTableColumnRow);
   API_NOTNULL(aaRow);
   API_BEGIN();
   
@@ -911,7 +911,7 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
                                     i8 *aiRowCount)
 {
   API_JOB_LEVEL();
-  API_ENTRY(AC_GetTableColumnRowCount);
+  API_ENTER(AC_GetTableColumnRowCount);
   API_NOTNULL(aiRowCount);
   API_BEGIN();
   
@@ -947,7 +947,7 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
                      )
 {
   API_SESSION_LEVEL();
-  API_ENTRY(AC_NextRow);
+  API_ENTER(AC_NextRow);
   API_NOTNULL(aaRow);
   API_BEGIN();
   
