@@ -25,7 +25,7 @@ Arguments::Arguments(void)
   m_iJumboSize    = m_nJumboTook * C_SIZE_POOL_BUFFER;
   
   // configuration
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   m_sCommandsDir  = "../../../../Commands"_Stz;
 #else
   m_sCommandsDir  = "../../Commands"_Stz;
@@ -35,7 +35,7 @@ Arguments::Arguments(void)
   m_sRegionName   = ""_Stz;
   m_sRegionPrefix = "/SE"_Stz;
   m_iRegionSize   = (4 * 1_GB) + m_iJumboSize;
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   m_sSenDir       = "../Sen/"_Stz;
 #else
   m_sSenDir       = "../Sen/"_Stz;

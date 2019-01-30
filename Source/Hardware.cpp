@@ -12,7 +12,7 @@
 i8 Hardware::iClockFrequency(void)
 {
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
 
   struct clockinfo clockrate;
   
@@ -94,7 +94,7 @@ i8 Hardware::iCoreCount(void)
 i8 Hardware::iCpuCount(void)
 {
  
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   i8     iCount = 0;
   size_t len = sizeof(iCount);

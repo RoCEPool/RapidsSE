@@ -12,9 +12,9 @@ extern AttachMap* gpAttachMap;
 
 bool mbCheckPriorVec = false;
 
-#define IT_COPYLEFTV3
+#define USE_IT_COPYLEFTV3
 
-#define IT_COMPACT_P1_TRACE 10
+#define USE_IT_COMPACT_TRACE 10
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -247,7 +247,7 @@ void IndexTree::vCompact(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the number of L1 buffers 
   
-#ifdef IT_COMPACT_P1_TRACE
+#ifdef USE_IT_COMPACT_TRACE
   EntryBuffer* pL1First = pFirstL1Buffer();
   i8 nP1Buffers = pL1First ? pL1First->iLengthList() : 0;
 #endif
@@ -261,8 +261,8 @@ void IndexTree::vCompact(void)
     
     iL1BufferNo++;
     
-#ifdef IT_COMPACT_P1_TRACE
-     if (0 == iL1BufferNo % IT_COMPACT_P1_TRACE)
+#ifdef USE_IT_COMPACT_TRACE
+     if (0 == iL1BufferNo % USE_IT_COMPACT_TRACE)
       vTrace("Compaction Progress: Partition %lld: L1 Buffer %lld of %lld\n"_Stz,
              m_iPartitionNo,iL1BufferNo,nP1Buffers);
 #endif
@@ -306,7 +306,7 @@ void IndexTree::vCompact(void)
       //vTrace("Sublist: %lld\n"_Stz,--iSubListLength);
       
       // copy contents of right L0 leftwards
-#ifdef IT_COPYLEFTV3
+#ifdef USE_IT_COPYLEFTV3
       vCopyLeftV3(&pLeftL0,pRightL0);
 #else
       vCopyLeftV2(&pLeftL0,pRightL0);
@@ -316,7 +316,7 @@ void IndexTree::vCompact(void)
       delete pRightL0;
       
     }
-#ifdef IT_COPYLEFTV3
+#ifdef USE_IT_COPYLEFTV3
     // build the skip list for dangling left L0
     pLeftL0->vBuildSkipListSorted();
 #endif

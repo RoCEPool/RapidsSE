@@ -42,7 +42,7 @@
 #include <execinfo.h>
 #include <signal.h>
 
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   #include "mach/thread_act.h"
   #include <libkern/OSAtomic.h>
   #include "mach/vm_map.h"

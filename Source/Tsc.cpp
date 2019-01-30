@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 i8 Tsc::iTicks(void)
 {
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   struct timespec tp;
   int iResult = clock_gettime(CLOCK_MONOTONIC_RAW_APPROX,&tp);
   //int iResult = clock_gettime(CLOCK_REALTIME,&tp);
@@ -19,7 +19,7 @@ i8 Tsc::iTicks(void)
   i8 iTicks = tp.tv_sec * C_1G;
   iTicks += tp.tv_nsec;
   
-#elif __LINUX__
+#elif WITH_LINUX
   struct timeval iTimeval;
   
   if (gettimeofday(&iTimeval, NULL) < 0) {
@@ -39,7 +39,7 @@ i8 Tsc::iTicks(void)
 /*----------------------------------------------------------------------------*/
 i8 Tsc::iTickFrequency(void)
 {
-#if defined(__APPLE__) || defined(__LINUX__)
+#if defined(WITH_APPLE) || defined(WITH_LINUX)
   i8 iFrequency = C_1G;
 #else
   i8 iFrequency = System::iClockFrequency();
@@ -83,7 +83,7 @@ i8 Tsc::iRdTscp(void)
        a ring transition or access to a platform resource.
   */
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   i8 iTscp = iRdtscp();
   return iTscp;

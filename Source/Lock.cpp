@@ -102,7 +102,7 @@ Lock::~Lock(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 u8 Lock::iLockDropRead(u8* pWord)
 {
-#if defined(__APPLE__) || defined(__LINUX__)
+#if defined(WITH_APPLE) || defined(WITH_LINUX)
   //u8 uResult = iDropRead(pWord);
   
   bool b;
@@ -133,7 +133,7 @@ u8 Lock::iLockDropRead(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Lock::iLockGrabRead(u8* pWord)
 {
-#if defined(__APPLE__) || defined(__LINUX__)
+#if defined(WITH_APPLE) || defined(WITH_LINUX)
   
   //u8 uResult = iGrabRead(pWord);
   
@@ -159,7 +159,7 @@ u8 Lock::iLockGrabRead(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Lock::iLockDropWrite(u8* pWord)
 {
-#if defined(__APPLE__) || defined(__LINUX__)
+#if defined(WITH_APPLE) || defined(WITH_LINUX)
   //u8 uResult = iDropWrite(pWord);
   
   u8 uCurrent = *pWord;
@@ -181,7 +181,7 @@ u8 Lock::iLockDropWrite(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Lock::iLockGrabWrite(u8* pWord)
 {
-#if defined(__APPLE__) || defined(__LINUX__)
+#if defined(WITH_APPLE) || defined(WITH_LINUX)
   //u8 uResult = iGrabWrite(pWord);
   
   u8 uCurrent = *pWord;
@@ -214,7 +214,7 @@ u8 Lock::iLockGrabWrite(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Lock::iLockIsLocked(u8* pWord)
 {
-#if defined(__APPLE__) || defined(__LINUX__)
+#if defined(WITH_APPLE) || defined(WITH_LINUX)
   u8 uResult = *pWord ? 1 : 0;
 #else
   u8 uResult = iIsLocked(pWord);

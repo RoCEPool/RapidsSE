@@ -113,7 +113,7 @@ namespace DBobjects
   
   Table* _pTable(void* aAddr);
   
-//#ifdef __APPLE__
+//#ifdef WITH_APPLE
 //  int iQsort_complex(void* aIndexTree, const void* aArg1, const void* aArg2);
 //#else
 //  int iQsort_complex(const void* aArg1, const void* aArg2, void* aIndexTree);

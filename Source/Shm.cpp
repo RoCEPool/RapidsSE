@@ -118,7 +118,7 @@ void* Shm::aMap(int iShmFd, void* aAddress, i8 iBytes, bool bHugeTlb, SysCall& S
   
   int iProt = PROT_READ | PROT_WRITE;
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE | MAP_ANONYMOUS)
                | (aAddress ? MAP_FIXED  : 0);
 #else

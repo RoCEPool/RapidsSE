@@ -52,6 +52,8 @@ using namespace DBobjects;
 
 //------------------------------------------------------------------------------
 
+#define USE_VLQ_DATUMS          // use vlq code for int and bcd datums
+
 #include "RelationalOps.h"
 
 #include "Column.hpp"

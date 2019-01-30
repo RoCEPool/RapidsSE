@@ -88,7 +88,7 @@ bool Entry::bValidEntry(void)
     return false;
   }
   
-#ifdef LW_FOOOTER
+#ifdef USE_LW_FOOOTER
   if (! aFooter()->bValidFooter()) {
     vTrace("Not valid footer\n"_Stz);
     return false;
@@ -241,7 +241,7 @@ Row* Entry::aRow(void)
 /*----------------------------------------------------------------------------*/
 char* Entry::aRowData(void)                   //! this function just seems wrong
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
   i8 nOffsetBytes = RightVec::nBytesRequired(nOffsets());
 
@@ -294,7 +294,7 @@ Entry* Entry::aDataEntry(void)
 /*----------------------------------------------------------------------------*/
 char* Entry::aEmbeddedObject(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
   char* aEmbObj = aAdd<char*>(this,sizeof(Entry));
   
@@ -310,7 +310,7 @@ char* Entry::aEmbeddedObject(void)
 /*----------------------------------------------------------------------------*/
 i8 Entry::nOffsets(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
   return m_xId.nOffsets();
 }
@@ -471,7 +471,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
 /*----------------------------------------------------------------------------*/
 void Entry::vContentDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
     
   vTrace("Entry %p: ThisBytes %lld %p (%lld bytes) \n"_Stz,
          this,
@@ -520,7 +520,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case DM_BCD: {
-#ifdef WITH_VLQ_DATUMS
+#ifdef USE_VLQ_DATUMS
         i8 iInt = IntLib::iVlqToInt((byte*)pDst);
         Bcd xBcd = *((Bcd*)&iInt);
         xVariable = xBcd;
@@ -539,7 +539,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case DM_INT: {
-#ifdef WITH_VLQ_DATUMS
+#ifdef USE_VLQ_DATUMS
         i8 iInt = IntLib::iVlqToInt((byte*)pDst);
         Int xInt = *((Int*)&iInt);
         xVariable = xInt.iAsI8();
@@ -601,7 +601,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
   w8 wColumnWord;
   
@@ -677,7 +677,7 @@ void Entry::vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
   w8 wColumnWord;
   
@@ -755,7 +755,7 @@ char* Entry::pExtractSortKey(char* aElement, IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 i8 Entry::iTxId(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
   //return m_iTxId;
   
@@ -767,7 +767,7 @@ i8 Entry::iTxId(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vTxId(i8 iTxId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
   //m_iTxId = iTxId;
 }
@@ -781,7 +781,7 @@ void Entry::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 bn Entry::nBufferNo(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK(); 
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
   bn nBufferNo = m_xId.iBuffer();
   

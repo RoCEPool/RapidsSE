@@ -191,7 +191,7 @@ void Task::vAddRoutines(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Temporary ifdef till we get sen files embedded in the executable
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   sDefinition =
   ": boot_run"
   "  \"boot_run\" .verbose"

@@ -623,7 +623,7 @@ bool Key::bJuxtaAfter(Key* aSearchKey, IdxColVec* pIdxColVec, i8 nSearchKeyCols,
 /*----------------------------------------------------------------------------*/
 /* show the contents of this key                                              */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_VLQ_DATUMS
+#ifdef USE_VLQ_DATUMS
 void Key::vShow(IdxColVec* pIdxColVec)
 {
   i8 nBytes;
@@ -674,7 +674,7 @@ void Key::vShow(IdxColVec* pIdxColVec)
 /*----------------------------------------------------------------------------*/
 /* sprint sort key into given string variable                                 */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_VLQ_DATUMS
+#ifdef USE_VLQ_DATUMS
 void Key::vSprintSortKey(s48K& sVar, IdxColVec* pIdxColVec)
 {
   i8 nBytes;

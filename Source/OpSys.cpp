@@ -25,7 +25,7 @@ void OpSys::vGetInfo(void)
 i8 OpSys::iSchedulerPeriod_us(void)
 {
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   struct clockinfo xKernelClockRate;
   

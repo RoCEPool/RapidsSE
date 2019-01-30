@@ -13,7 +13,7 @@ i8 xArray[C_ELEMENTS];
 /*----------------------------------------------------------------------------*/
 void LlcTest::vTest(MP_Task mpTask)
 {
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   Pthread* pPthread = mpTask->pThread()->m_pPthread;
   
@@ -92,7 +92,7 @@ void LlcTest::vTest(MP_Task mpTask)
 /*----------------------------------------------------------------------------*/
 void LlcTest::vAnIteration(i8 iIteration, i8 nStepLength, i8 nMissRatio)
 {
-#ifdef __APPLE__
+#ifdef WITH_APPLE
 
   i8 nMissBoundary = nStepLength * nMissRatio;
   

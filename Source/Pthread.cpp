@@ -6,7 +6,7 @@
 
 #include "StorageEngine.h"
 
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   #include <mach/mach_time.h>
   #include <mach/thread_policy.h>
 #endif
@@ -126,7 +126,7 @@ bool Pthread::bBindThread(i8 i_Core)
 //    return false;
 //  }
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   int iReturn = 0;
   thread_affinity_policy_data_t xPolicy = { (int)i_Core };
   thread_port_t uMachThread = pthread_mach_thread_np(m_iPthreadId);
@@ -183,7 +183,7 @@ void Pthread::vDisableRealtime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   thread_port_t uThreadPort = pthread_mach_thread_np(pthread_self());
 
@@ -212,7 +212,7 @@ void Pthread::vEnableRealtime(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -258,7 +258,7 @@ void Pthread::vEnableRealtime_2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   i8 iReturn = 0;
   
@@ -344,7 +344,7 @@ i8 Pthread::iGetInfo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   i8 iReturn = 0;
   
@@ -380,7 +380,7 @@ void Pthread::vGetPolicy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
 
   i8 iReturn = 0;
 
@@ -410,7 +410,7 @@ void Pthread::vSetOSThreadId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   i8 iOpSysThreadId = syscall(SYS_thread_selfid);
 #else
   i8 iOpSysThreadId = syscall(SYS_gettid);
@@ -458,7 +458,7 @@ i8 Pthread::iThreadCpu(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   vWarn("Get thread Cpu affinity not implemented!\n"_Stz);
   return 0;
@@ -508,7 +508,7 @@ i8 Pthread::iThreadPriority(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   int iPolicy;
   struct sched_param xSched;
@@ -532,7 +532,7 @@ void Pthread::vThreadBoost(i8 nPoints)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   int iPolicy;
   struct sched_param xSched;
@@ -558,7 +558,7 @@ void Pthread::vThreadPriority(i8 iPriority)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTHREAD,_FOOTER_);
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   int iPolicy;
   struct sched_param xSched;
   
@@ -734,11 +734,11 @@ void* Pthread::aStackBase(void)
   
   pthread_t tThread = pthread_self();
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   aAddress = pthread_get_stackaddr_np(tThread);
   
-#elif __LINUX__
+#elif WITH_LINUX
   
   size_t iStackSize;
   pthread_attr_t attr;
@@ -777,11 +777,11 @@ i8 Pthread::iStackSize(void)
   pthread_t tThread = pthread_self();
   i8 iSize;
   
-#ifdef __APPLE__
+#ifdef WITH_APPLE
   
   iSize = pthread_get_stacksize_np(tThread);
   
-#elif __LINUX__
+#elif WITH_LINUX
   
   pthread_attr_t attr;
   void* aAddress;

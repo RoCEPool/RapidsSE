@@ -24,12 +24,12 @@ extern AttachMap*  gpAttachMap;
 /*----------------------------------------------------------------------------*/
 bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 {
-#ifdef __APPLE__
-  vTrace("  __APPLE__\n"_Stz);
+#ifdef WITH_APPLE
+  vTrace("  WITH_APPLE\n"_Stz);
 #endif
   
-#ifdef __LINUX__
-  vTrace("  __LINUX__\n"_Stz);
+#ifdef WITH_LINUX
+  vTrace("  WITH_LINUX\n"_Stz);
 #endif
 
 #ifdef WITH_ACTIVITY_MAP
@@ -71,11 +71,7 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 #ifdef WITH_PREPOST_CHECKING
   vTrace("  WITH_PREPOST_CHECKING\n"_Stz);
 #endif
-  
-#ifdef WITH_VLQ_DATUMS
-  vTrace("  WITH_VLQ_DATUMS\n"_Stz);
-#endif
-  
+    
   vTrace("\n"_Stz);
 
   return true;

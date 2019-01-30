@@ -16,7 +16,7 @@ using namespace Assembler;
 
 //-----------------------------------------------------------------------------
 
-#if !( (defined(__APPLE__) || defined(__LINUX__)) )
+#if !( (defined(WITH_APPLE) || defined(WITH_LINUX)) )
   #include "Asm.h"
 #endif
 
