@@ -3,6 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+#define USE_EB_LAZY_CHAIN
+#define USE_EB_SPLIT2
+#define USE_EB_SINGLE_COLIDX
+//#define USE_EB_WATCH
+
 namespace DBobjects
 {
   class Index;
@@ -32,9 +37,9 @@ namespace DBobjects
     i4*     m_iaEntryOffsets;    // array of row entry offsets
     i4      m_i_FreeOffsetChain; // head of free entry offset chain
   
-    Entry*  m_aHeadEntry;  // head entry
-    Entry*  m_aLastEntry;  // last entry in buffer
-    Entry*   m_aLazyChain; // first lazy entry
+    Entry*  m_aHeadEntry;  // head entry (first entry in buffer)
+    Entry*  m_aLastEntry;  // last entry (would append to this)
+    Entry*  m_aLazyChain;  // first lazy entry
   
     FreeEntry* m_aFreeEntryList; // head of free entry list
   
