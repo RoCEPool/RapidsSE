@@ -276,7 +276,7 @@ void ActivityMap::vMonitorPortrait(s48K& sPortrait)
   i8 iPercentFull = gpActivityMap->iPercentFull_NL();
   gpActivityMap->vDropLock();
   
-  i8 iMapSize = iSize();
+  i8 iMapSize = gpActivityMap->iSize();
   s32 sShmMag;
   Magnitudes::vByteMag(iMapSize, sShmMag);
   
@@ -381,18 +381,6 @@ void ActivityMap::vOpenBySE(bool bStarting)
                      );
   
   Arguments::vMark();
-}
-
-/*----------------------------------------------------------------------------*/
-/* compute the size of ActivityMap given gpAttachMap->m_nActivityMarks        */
-/*----------------------------------------------------------------------------*/
-i8 ActivityMap::iSize(void)
-{
-  i8 iMapSize = sizeof(ActivityMap)
-                  - sizeof(ActivityMark)
-                  + sizeof(ActivityMark) * C_ACTIVITY_MARKS;
-  
-  return iMapSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -534,6 +522,18 @@ i8 ActivityMap::iPercentFull_NL(void)
   iPercent = (nMarksInUse * 100) / m_nMarks;
   
   return iPercent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute the size of ActivityMap given gpAttachMap->m_nActivityMarks        */
+/*----------------------------------------------------------------------------*/
+i8 ActivityMap::iSize(void)
+{
+  i8 iMapSize = sizeof(ActivityMap)
+  - sizeof(ActivityMark)
+  + sizeof(ActivityMark) * C_ACTIVITY_MARKS;
+  
+  return iMapSize;
 }
 
 /*----------------------------------------------------------------------------*/

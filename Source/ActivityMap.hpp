@@ -43,7 +43,6 @@ namespace Measurement
     static void vMonitorPortrait(s48K& sPortrait);
     static void vOpenByApi(void);
     static void vOpenBySE(bool bStarting);
-    static i8   iSize(void);
     static void vWriteCsv();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -56,6 +55,7 @@ namespace Measurement
     void vFindRange_NL(i8& i_MinMark, i8& i_MaxMark);
     void vGrabLock(void);
     i8   iPercentFull_NL(void);
+    i8   iSize(void);
     void vWriteMark(i8 iJobId, Stz* aFormat, ...);
     void vWriteMark(i8 iJobId, Stz* aFormat, va_list xArgs);
     void vWriteToFile(void);
