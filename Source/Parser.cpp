@@ -846,7 +846,7 @@ void Parser::vReadLineStdin(void)
 
   bool bLowMem = gpBufferPool->bLowMemory();
   
-  if ( ! gxArguments.m_bScript ) {
+  if ( ! gxArguments.m_bSethScript ) {
     vInfo("%s%s%s%s %s> "_Stz,
           m_sPrompt.aChar(),
           gpAttachMap->m_bBootError  ? " *BOOTERROR* " : "",

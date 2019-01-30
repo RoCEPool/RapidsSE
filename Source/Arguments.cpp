@@ -51,7 +51,7 @@ Arguments::Arguments(void)
   m_bCommand    = false;
   m_bHelp   = false;
   m_bPrompt = false;
-  m_bScript = false;
+  m_bSethScript = false;
   m_bStart  = false;
   m_bStatus = false;
   m_bStop   = false;
@@ -378,7 +378,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
         return false;
       }
 
-      if (m_bScript) {
+      if (m_bSethScript) {
         vWarn("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
@@ -502,7 +502,7 @@ bool Arguments::bParse(int argc, Stz* argv[])
         vWarn("Incorrect argument: --script with %s\n"_Stz,argv[i_Arg]);
         return false;
       }
-      m_bScript = true;
+      m_bSethScript = true;
       m_bWelcome = false;
       continue;
     }
@@ -737,7 +737,7 @@ void Arguments::vPrintStartupInfo(void)
   if (m_bHelp)     vTrace("  --help\n"_Stz);
   if (m_bProgress) vTrace("  --progress\n"_Stz);
   if (m_bPrompt)   vTrace("  --seprompt\n"_Stz);
-  if (m_bScript)   vTrace("  --script\n"_Stz);
+  if (m_bSethScript)   vTrace("  --script\n"_Stz);
   if (m_bStart)    vTrace("  --start\n"_Stz);
   if (m_bStatus)   vTrace("  --status\n"_Stz);
   if (m_bStop)     vTrace("  --stop\n"_Stz);
