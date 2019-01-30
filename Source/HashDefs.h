@@ -6,15 +6,6 @@
 
 #define _VLQ
 
-#define REPORT_INFO
-#define REPORT_TRACE
-#define REPORT_WARNING
-#define REPORT_ERROR
-#define REPORT_FATAL
-
-
-#define VERBOSE_TRACE
-
 #define DIV(a,b) (b ? (a / b) : 0)    // checked divide
 #define MAX(a,b) (((a)>(b))?(a):(b))  // which is smaller
 #define MIN(a,b) (((a)<(b))?(a):(b))  // which is bigger

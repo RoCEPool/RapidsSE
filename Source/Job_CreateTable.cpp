@@ -670,8 +670,8 @@ void Jobs::vJob_CreateTable_delete(Interface::Session* pSession, Job* pJob)
 {
   Job_CreateTable* pJob_CreateTable = _pJob_CreateTable(pJob);
   
-#ifdef JOB_TRACE
-  if ( JOB_TRACE )
+#ifdef WITH_JOB_TRACE
+  if ( WITH_JOB_TRACE )
     vTrace("vJob_CreateTable_delete: %llx %s id %lld\n"_Stz,
            pJob_CreateTable,
            aCN[pJob->eClass()],

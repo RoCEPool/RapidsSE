@@ -5,7 +5,6 @@
 
 namespace Commands      { class Command; class Parser; }
 namespace StorageEngine { class Engine; }
-namespace Threads       { class Thread; }
 
 namespace StorageEngine
 {

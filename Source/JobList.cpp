@@ -114,7 +114,7 @@ Job* JobList::pFindJob(i8 iJobId)
   Job* pJobFound = pFindJob(pJob__Find);
   vDropLock();
   
-  if (JOB_TRACE || ! pJobFound) {
+  if (WITH_JOB_TRACE || ! pJobFound) {
     
     vTrace("------------------------------------\n"_Stz);
     vTrace("Looking for JobId %lld in %s\n"_Stz,iJobId,aJL[m_eJobsList]);

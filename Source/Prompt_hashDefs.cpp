@@ -94,16 +94,16 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  IT_COPYLEFTV3\n"_Stz);
 #endif
   
-#ifdef JOB_TRACE
-  vTrace("  JOB_TRACE %lld\n"_Stz,(i8)JOB_TRACE);
+#ifdef WITH_JOB_TRACE
+  vTrace("  WITH_JOB_TRACE %lld\n"_Stz,(i8)WITH_JOB_TRACE);
 #endif
   
 #ifdef JUMP_FALSE
   vTrace("  JUMP_FALSE\n"_Stz);
 #endif
   
-#ifdef LW_FOOTER
-  vTrace("  LW_FOOTER\n"_Stz);
+#ifdef WITH_LW_FOOTER
+  vTrace("  WITH_LW_FOOTER\n"_Stz);
 #endif
   
 #ifdef MB_WATCH

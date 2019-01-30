@@ -7,12 +7,11 @@
 #pragma pack(1)
 
 
-//#define LW_FOOTER
 
-#ifdef LW_FOOTER
-  #define LW_FOOTER_CHECK() aFooter()->vAssertFooter();
+#ifdef WITH_LW_FOOTER
+  #define WITH_LW_FOOTER_CHECK() aFooter()->vAssertFooter();
 #else
-  #define LW_FOOTER_CHECK()
+  #define WITH_LW_FOOTER_CHECK()
 #endif
 
 namespace DBobjects
@@ -143,7 +142,7 @@ namespace DBobjects
   /*--------------------------------------------------------------------------*/
   inline Key* Entry::aKey(void)
   {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
+    _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); WITH_LW_FOOTER_CHECK();
     
     Key* aKey = reinterpret_cast<Key*>(aEmbeddedObject());
     
