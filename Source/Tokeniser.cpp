@@ -67,12 +67,12 @@ Tokeniser::Tokeniser(void)
                     pNode->aNodeName(),
                     Process::iGetPid(),
 #ifdef WITH_ACTIVITY_MAP
-                    gpAttachMap->Arg.m_bActivityMap? " AM" : "",
+                    gpAttachMap->Arg.m_bActivityMap? " AM+" : "AM",
 #else
                     "",
 #endif
 #ifdef WITH_ENTRY_EXIT
-                    " EE",
+                    " EE+",
 #else
                     "",
 #endif
