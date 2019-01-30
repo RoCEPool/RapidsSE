@@ -14,7 +14,6 @@ namespace StorageEngine
     friend class      Commands::Command;
     friend class StorageEngine::Engine;
     friend class      Commands::Parser;
-    friend class       Threads::Thread;
 
   private:
   
