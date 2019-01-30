@@ -7,7 +7,6 @@
 
 #define WITH_ACTIVITY_MAP        // ActivityMap functions compiled in
 #define WITH_ENTRY_EXIT          // ENTRY() & EXIT() macros compiled in
-//#define WITH_LW_FOOTER
 //#define WITH_MUNGED_SEN          // using munged sen
 #define WITH_TRACE_API           // code for tracing api's compiled in
 #define WITH_VLQ_DATUMS          // using vlq for int and bcd datums
