@@ -25,21 +25,21 @@ namespace DBobjects
   friend class IndexTree;
 
   protected:
-    Lock    m_okLock;       // lock
+    Lock   m_okLock;       // lock
   
-    Index*  m_pIndex;       // index this buffer belongs to
-    i2      m_iPartitionNo; // partition no this buffer belongs to
-    i2      m_iBufferLevel; // index buffer level
-    i8      m_iBufferNo;    // this EntryBuffer's buffer number
-    Since   m_oWhenNewed;   // when was this buffer created?
-    bool    m_bIsLast;      // is this the last buffer in sequence
+    Index* m_pIndex;       // index this buffer belongs to
+    i2     m_iPartitionNo; // partition no this buffer belongs to
+    i2     m_iBufferLevel; // index buffer level
+    i8     m_iBufferNo;    // this EntryBuffer's buffer number
+    Since  m_oWhenNewed;   // when was this buffer created?
+    bool   m_bIsLast;      // is this the last buffer in sequence
 
-    i4*     m_iaEntryOffsets;    // array of row entry offsets
-    i4      m_i_FreeOffsetChain; // head of free entry offset chain
+    i4*    m_iaEntryOffsets;    // array of row entry offsets
+    i4     m_i_FreeOffsetChain; // head of free entry offset chain
   
-    Entry*  m_aHeadEntry;  // head entry (first entry in buffer)
-    Entry*  m_aLastEntry;  // last entry (would append to this)
-    Entry*  m_aLazyChain;  // first lazy entry
+    Entry* m_aHeadEntry; // head entry (not the first logical entry in buffer)
+    Entry* m_aLastEntry; // last entry (would append to this)
+    Entry* m_aLazyChain; // first lazy entry
   
     FreeEntry* m_aFreeEntryList; // head of free entry list
   
@@ -54,31 +54,46 @@ namespace DBobjects
     EntryBuffer(void);
     ~EntryBuffer(void) noexcept(false);
 
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
+
+    i8      iAgeInSeconds(void);
+    void    vBufferLevel(i8 iBufferLevel);
+    i8      iBufferLevel(void);
+    void    vDropWrite(void);
+    void    vGrabWrite(void);
+    void    vIndex(Index* pIndex);
+    Index*  pIndex(void);
+    void    vIsLast(bool bIsLast);
+    bool    bIsLast(void);
+    void    vPartitionNo(i8 iPartitionNo);
+    i8      iPartitionNo(void);
+  
+    EntryBuffer* pHigherBuffer(void);
+    void         vHigherBuffer(EntryBuffer* pHigherLevel);
+    EntryBuffer* pNextBuffer(void);
+    void         vNextBuffer(EntryBuffer* pNextBuffer);
+    EntryBuffer* pPrevBuffer(void);
+    void         vPrevBuffer(EntryBuffer* pPrevBuffer);
+
+  private:
+    Entry* aAllotEntry(i8 nBytes);
+    NEO*   aAllotNEO(i8 nBytes);
+    bool   bHasSpace(i8 nBytes);
+
+  
+  
+  
+  
+    ////////////////////////////////////////////////////////////////////////////
+  
+  
+  public:
     void vAssertEntryBuffer(void);
     bool bValidEntryBuffer(void);
-  
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // simple member functions
   
-    i8           iAgeInSeconds(void);
-    void         vBufferLevel(i8 iBufferLevel);
-    i8           iBufferLevel(void);
-    void         vDropWrite(void);
-    void         vGrabWrite(void);
-    EntryBuffer* pHigherBuffer(void);
-    void         vHigherBuffer(EntryBuffer* pHigherLevel);
-    void         vIndex(Index* pIndex);
-    Index*       pIndex(void);
-    void         vIsLast(bool bIsLast);
-    bool         bIsLast(void);
-    EntryBuffer* pNextBuffer(void);
-    void         vNextBuffer(EntryBuffer* pNextBuffer);
-    void         vPartitionNo(i8 iPartitionNo);
-    i8           iPartitionNo(void);
-    EntryBuffer* pPrevBuffer(void);
-    void         vPrevBuffer(EntryBuffer* pPrevBuffer);
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
@@ -94,7 +109,6 @@ namespace DBobjects
     EntryBuffer* pFirstChildBuffer(void);
     Entry*       aFirstEntry(void);
     Entry*       aGetEntryRowNo(i8 i_RowNo);
-    bool         bHasSpace(i8 nBytes);
     Entry*       aInsertKeyAbs(KeyWrk& xKeyWrk);
     Entry*       aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** aaPriorEntry);
     static Entry* aInsertKeyTree(KeyWrk& xKeyWrk,
@@ -125,8 +139,6 @@ namespace DBobjects
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
     
-    Entry*       aAllotEntry(i8 nBytes);
-    NEO*         aAllotNEO(i8 nBytes);
     void         vAddFreeList(Entry* aEntry);
     void         vBuildOffsetL0(void);
     void         vBuildSkipList(void);
