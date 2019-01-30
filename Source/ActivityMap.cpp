@@ -529,9 +529,7 @@ i8 ActivityMap::iPercentFull_NL(void)
 /*----------------------------------------------------------------------------*/
 i8 ActivityMap::iSize(void)
 {
-  i8 iMapSize = sizeof(ActivityMap)
-  - sizeof(ActivityMark)
-  + sizeof(ActivityMark) * C_ACTIVITY_MARKS;
+  i8 iMapSize = sizeof(ActivityMap);
   
   return iMapSize;
 }
