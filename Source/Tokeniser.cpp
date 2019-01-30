@@ -66,7 +66,11 @@ Tokeniser::Tokeniser(void)
                     nNodes,
                     pNode->aNodeName(),
                     Process::iGetPid(),
+#ifdef WITH_ACTIVITY_MAP
                     gpAttachMap->Arg.m_bActivityMap? " AM" : "",
+#else
+                    "",
+#endif
 #ifdef WITH_ENTRY_EXIT
                     " EE",
 #else

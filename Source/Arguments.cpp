@@ -614,17 +614,28 @@ bool Arguments::bParse(int argc, Stz* argv[])
       m_bDeveloper = true;
       continue;
     }
-    
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#ifdef WITH_ACTIVITY_MAP
     if (argv[i_Arg]->bSame("--activityMap"_Stz)) {
       m_bActivityMap = true;
       continue;
     }
-    
+#else
+    if (argv[i_Arg]->bSame("--activityMap"_Stz)) {
+      vWarn("arg --activityMap ignored; not compiled WITH_ACTIVITY_MAP"_Stz);
+      continue;
+    }
+#endif
+
     if (argv[i_Arg]->bSame("--noActivityMap"_Stz)) {
       m_bActivityMap = false;
       continue;
     }
-            
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
     vWarn("Unrecognized command argument: %s\n"_Stz,argv[i_Arg]);
     return false;
   }
