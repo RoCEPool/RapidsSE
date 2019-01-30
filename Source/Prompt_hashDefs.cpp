@@ -70,8 +70,8 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  _DEBUG\n"_Stz);
 #endif
   
-#ifdef _VLQ
-  vTrace("  _VLQ\n"_Stz);
+#ifdef WITH_VLQ
+  vTrace("  WITH_VLQ\n"_Stz);
 #endif
   
 #ifdef EB_LAZY_CHAIN

@@ -12,7 +12,7 @@
 //#define WITH_MB_WATCH
 //#define WITH_MUNGED
 #define WITH_SETH
-
+#define WITH_VLQ
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // debug behaviours

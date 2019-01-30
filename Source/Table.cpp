@@ -702,7 +702,7 @@ i8 Table::iRowPartition(Stz* pRow)
     Row* aRow = (Row*)pRow;
     char* sCursor = aRow->aColumnDatum(iColumnNo);
     
-#ifdef _VLQ
+#ifdef WITH_VLQ
     if (pColumn->eDatumType() == DM_INT ||
         pColumn->eDatumType() == DM_BCD) {
       i8 iValue = IntLib::iVlqToInt((byte*)sCursor);
