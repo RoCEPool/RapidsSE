@@ -21,16 +21,14 @@ namespace DBobjects
 
   protected:
   
-    Lock  m_okLock;       // lock
-    bool  m_bIsLast;     // is this the last buffer in sequence
-  
-  
+    Lock    m_okLock;         // lock
+    bool    m_bIsLast;        // is this the last buffer in sequence
     Index*  m_pIndex;       // index this buffer belongs to
     i2      m_nPartitionNo; // partition no this buffer belongs to
     i8      m_iBufferNo;    // this EntryBuffer's buffer number 
     i2      m_iBufferLevel; // index buffer level
   
-    i4*     m_aEntryOffsets;    // array of row entry offsets
+    i4*     m_aEntryOffsets;     // array of row entry offsets
     i4      m_i_FreeOffsetChain; // head of free entry offset chain
   
     Entry*     m_aHeadEntry;  // head entry

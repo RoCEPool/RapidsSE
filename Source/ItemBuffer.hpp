@@ -10,12 +10,12 @@ namespace Structures
     static const i8 C_WSP_ITEMBUFFER = C_SIZE_LARGE_OBJECT - C_1KB;
   
   protected:
-    i8 m_nItems; // number of items in this buffer
-
-  ItemBuffer* m_pHigherBuffer; // higher level buffer that has entries
-                                // that point to this buffer
-  ItemBuffer* m_pNextBuffer;   // next buffer
-  ItemBuffer* m_pPrevBuffer;   // prev buffer
+    i8 m_nItems;                 // number of items in this buffer
+  
+    ItemBuffer* m_pNextBuffer;   // next buffer
+    ItemBuffer* m_pPrevBuffer;   // prev buffer
+    ItemBuffer* m_pHigherBuffer; // higher level buffer that has entries
+                                 // that point to this buffer
 
     Wsp_t<C_WSP_ITEMBUFFER> m_xWsp;
   
@@ -35,11 +35,9 @@ namespace Structures
     Item*  aNextItem(Item* aCurrentItem);
     void   vResetUsed(void);
     void   vResetUsed(Item* aUptil);
+    void   vSetWilderness(void);
     i4     iToOffset(Item* aItem);
     i8     nUsedBytes(void);
-  
-  //private:
-    void   vSetWilderness(void);
   };
   
   ItemBuffer* _pItemBuffer(void* aAddr);
