@@ -7,9 +7,11 @@
 
 #define WITH_ACTIVITY_MAP
 #define WITH_ENTRY_EXIT
+#define JOB_TRACE false
 //#define WITH_MUNGED
+#define WITH_SETH
 
-// toggle behaviors on or off
+// toggle debug/release behaviors on or off
 #ifdef _DEBUG
 #define __ADDRESS_CHECK   // check that address is in pool
 #define __ASSERT_CHECKS   // Assert() macro

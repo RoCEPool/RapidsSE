@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#define JOB_TRACE false
-
 namespace Jobs
 {
   struct JobClass; // forward definition
