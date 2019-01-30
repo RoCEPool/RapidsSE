@@ -153,6 +153,7 @@ ActivityMap* ActivityMap::pAttachExisting(void)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMark(i8 iJobId, Stz* aFormat, ...)
 {
+#ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
     return;
   
@@ -163,6 +164,7 @@ void ActivityMap::vMark(i8 iJobId, Stz* aFormat, ...)
   gpActivityMap->vWriteMark(iJobId,aFormat,xArgs);
 
   va_end(xArgs);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -170,6 +172,7 @@ void ActivityMap::vMark(i8 iJobId, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 {
+#ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
     return;
   
@@ -184,6 +187,7 @@ void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
   gpActivityMap->vWriteMark(iJobId,aFormat,xArgs);
   
   va_end(xArgs);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,6 +195,7 @@ void ActivityMap::vMarkApi(i8 eApiCall, i8 iJobId, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 {
+#ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
     return;
   
@@ -201,6 +206,7 @@ void ActivityMap::vMarkApiEntry(i8 eApiCall, i8 iJobId)
   Stz* zApiName = aAC[eApiCall];
   
   gpActivityMap->vWriteMark(iJobId,">Api %s"_Stz,zApiName);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,6 +214,7 @@ void ActivityMap::vMarkApiEntry(i8 eApiCall, i8 iJobId)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 {
+#ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
     return;
   
@@ -218,6 +225,7 @@ void ActivityMap::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
   Stz* zApiName = aAC[eApiCall];
   
   gpActivityMap->vWriteMark(iJobId,"!Api %s Error %lld"_Stz,zApiName,iError);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -225,6 +233,7 @@ void ActivityMap::vMarkApiError(i8 eApiCall, i8 iJobId, i8 iError)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMarkApiExit(i8 eApiCall, i8 iJobId)
 {
+#ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
     return;
   
@@ -235,6 +244,7 @@ void ActivityMap::vMarkApiExit(i8 eApiCall, i8 iJobId)
   Stz* zApiName = aAC[eApiCall];
   
   gpActivityMap->vWriteMark(iJobId,"<Api %s"_Stz,zApiName);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,6 +252,7 @@ void ActivityMap::vMarkApiExit(i8 eApiCall, i8 iJobId)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
 {
+#ifdef WITH_ACTIVITY_MAP
   if ( ! gpActivityMap )
     return;
   
@@ -260,6 +271,7 @@ void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
   gpActivityMap->vDropLock();
   // ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲
 
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,8 +279,9 @@ void ActivityMap::vMarkString(i8 iJobId, s48K& sString)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vMonitorPortrait(s48K& sPortrait)
 {
+#ifdef WITH_ACTIVITY_MAP
   if (! gpActivityMap) {
-    sPortrait.vSprint("ActivityMap: no activity map\n"_Stz);
+    sPortrait.vSprint("ActivityMap: activity map not configured\n"_Stz);
     return;
   }
   
@@ -289,6 +302,9 @@ void ActivityMap::vMonitorPortrait(s48K& sPortrait)
                     gpActivityMap->m_i_Mark,
                     iPercentFull
                      );
+#else
+  sPortrait.vSprint("ActivityMap: not compiled WITH_ACTIVITY_MAP\n"_Stz);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,6 +312,7 @@ void ActivityMap::vMonitorPortrait(s48K& sPortrait)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vOpenByApi(void)
 {
+#ifdef WITH_ACTIVITY_MAP
   if (! gpAttachMap->Arg.m_bActivityMap)
     return;
   
@@ -320,6 +337,7 @@ void ActivityMap::vOpenByApi(void)
   
   Now oNow;
   ActivityMap::vMark(0,"Time is: "_Stz,oNow.sFormatted());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -327,6 +345,7 @@ void ActivityMap::vOpenByApi(void)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vOpenBySE(bool bStarting)
 {
+#ifdef WITH_ACTIVITY_MAP
   if (! gpAttachMap->Arg.m_bActivityMap)
     return;
   
@@ -381,6 +400,7 @@ void ActivityMap::vOpenBySE(bool bStarting)
                      );
   
   Arguments::vMark();
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -388,10 +408,12 @@ void ActivityMap::vOpenBySE(bool bStarting)
 /*----------------------------------------------------------------------------*/
 void ActivityMap::vWriteCsv()
 {
+#ifdef WITH_ACTIVITY_MAP
   if (! gpActivityMap)
     return;
   
   gpActivityMap->vWriteToFile();
+#endif
 }
 
 
