@@ -5,10 +5,6 @@
 
 namespace System
 {
-#ifdef __APPLE__  
-  #define SYSCTL_CORE_COUNT   "machdep.cpu.core_count"
-#endif 
-  
   class Hardware
   {    
   public:

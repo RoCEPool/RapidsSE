@@ -99,7 +99,7 @@ i8 Hardware::iCpuCount(void)
   i8     iCount = 0;
   size_t len = sizeof(iCount);
   
-  i8 iReturn = sysctlbyname(SYSCTL_CORE_COUNT, &iCount, &len, 0, 0);
+  i8 iReturn = sysctlbyname("machdep.cpu.core_count", &iCount, &len, 0, 0);
   if (iReturn) {
     vWarn("Error while getting cpu count %lld\n"_Stz, iReturn);
     return 0;

@@ -1,4 +1,4 @@
-#defines
+# defines
 SE_PATH=~/master/rapidsse/Linux
 BASIC_DUMMY_THREADS=200
 SETH_PATH=~/master/rapidsse/Seth
