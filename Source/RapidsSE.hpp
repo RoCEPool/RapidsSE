@@ -51,6 +51,9 @@ extern "C" eEC  RapidsSE_FetchNextBuffer (i8 iTrace, Session* pSession, void* aJ
                                           void** aaFetchBuffer, i8* aiExepectedRows);
 extern "C" eEC  RapidsSE_GetLoadResult   (i8 iTrace, Session* pSession, void* aJob,
                                           i8* aiValidRows, i8* aiInvalidRows, i8* aiSkippedRows);
+extern "C" eEC  RapidsSE_GetFirstBuffer  (i8 iTrace, Session* pSession, void* aTable,
+                                          i8 iPartition, void** aaEntryBuffer, i8* aiBufferNo, i8* aiRowCount);
+extern "C" eEC  RapidsSE_GetNextBuffer   (i8 iTrace, Session* pSession, void** aaEntryBuffer, i8* aiBufferNo, i8* aiRowCount);
 extern "C" eEC  RapidsSE_GetRecordBuffer (i8 iTrace, Session* pSession, void* aJob,
                                           void** aaBuffer);
 extern "C" eEC  RapidsSE_GetRow          (i8 iTrace, Session* pSession, void* aJob,

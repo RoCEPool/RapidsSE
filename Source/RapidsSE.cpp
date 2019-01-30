@@ -107,14 +107,15 @@ eEC RapidsSE_NewSession(i8 iTrace,
   API_PARAM(sSchema);
   API_NOTNULL(aaSession);
   API_BEGIN();
-  
   try {
     
     API_VALIDATE_POOL();
-    
+   
     pSession = new Session(iPartition);
     
     eEC eError = pSession->eInit(sCatalog,sSchema);
+
+    
     if (eError != EC_NONE)
       API_RETURN_ERROR(eError);
     
@@ -613,7 +614,7 @@ eEC RapidsSE_EndSubInserter(i8 iTrace, Session* pSession, void* aJob)
 /* fetch next buffer                                                          */
 /*----------------------------------------------------------------------------*/
 //
-// this will go
+// THIS SHOULD GO
 //
 eEC RapidsSE_FetchNextBuffer(i8 iTrace, Session* pSession, void* aJob,
                              void** aaFetchBuffer, i8* aiExpectedRows)
@@ -938,8 +939,11 @@ eEC RapidsSE_GetTableColumnRowCount(i8 iTrace, Session* pSession, void* aJob,
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch next buffer                                                          */
+/* fetch next row                                                             */
 /*----------------------------------------------------------------------------*/
+//
+// THIS SHOULD GO
+//
 eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
                      i8* aiExpectedRows,
                      void** aaEntryBuffer,
@@ -948,6 +952,9 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
 {
   API_SESSION_LEVEL();
   API_ENTER(AC_NextRow);
+  API_NOTNULL(aiExpectedRows);
+  API_NOTNULL(aaEntryBuffer);
+  API_NOTNULL(aaEntry);
   API_NOTNULL(aaRow);
   API_BEGIN();
   
@@ -1030,6 +1037,102 @@ eEC RapidsSE_NextRow(i8 iTrace, Session* pSession, void* aTable, i8 iPartition,
       *aaRow = nullptr;
     }
     API_LOC(390);
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get first buffer                                                           */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
+                            i8 iPartition, void** aaEntryBuffer, i8* aiBufferNo, i8* aiRowCount
+                           )
+{
+  API_SESSION_LEVEL();
+  API_ENTER(AC_GetFirstBuffer);
+  API_NOTNULL(aaEntryBuffer);
+  API_NOTNULL(aiBufferNo);
+  API_NOTNULL(aiRowCount);
+  API_BEGIN();
+  
+  try {
+    
+    // get the table
+    Table* pTable = _pTable(aTable);
+    RASSERT(pTable->eClass() == CN_TABLE);
+    API_LOC(320);
+    
+    // get first entry buffer
+    TablePtn* pPartition = pTable->pPartition(iPartition);
+    Index* pIndex = pTable->pHiddenIndex();
+    IndexTree* pIndexTree = pPartition->pIndexTree(pIndex->iIndexNo());
+    API_LOC(330);
+    
+    EntryBuffer* pEntryBuffer = pIndexTree->pFirstL0Buffer();
+    API_LOC(340);
+    
+    // return the first buffer
+    *aaEntryBuffer = pEntryBuffer;
+    
+    // return no of rows
+    if (pEntryBuffer) {
+      //vTrace("Returning buffer %p %lld %lld \n"_Stz, pEntryBuffer, *pEntryBuffer->nBufferNo(), pEntryBuffer->nItems());
+      *aiRowCount = pEntryBuffer->nItems();
+      *aiBufferNo = *pEntryBuffer->nBufferNo();
+    }
+    else {
+      *aiRowCount = 0;
+      *aiBufferNo = -1;
+    }
+    
+    API_RETURN();
+  }
+  catch (Error* pError) { API_CATCH(pError); }
+  catch (...) { Error* pError = nullptr; API_CATCH(pError); }
+  
+  API_RETURN();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetNextBuffer(i8 iTrace, Session* pSession, void** aaEntryBuffer, i8* aiBufferNo, i8* aiRowCount)
+{
+  API_SESSION_LEVEL();
+  API_ENTER(AC_GetNextBuffer);
+  API_NOTNULL(aaEntryBuffer);
+  API_NOTNULL(aiBufferNo);
+  API_NOTNULL(aiRowCount);
+  API_BEGIN();
+  
+  try {
+    
+    //vTrace("last buffer %p\n"_Stz, *aaEntryBuffer);
+    EntryBuffer* pEntryBuffer = _pEntryBuffer(*aaEntryBuffer);
+    API_LOC(320);
+    
+    EntryBuffer* pNextBuffer = pEntryBuffer->pNextBuffer();
+    API_LOC(330);
+    
+    // return the next buffer back
+    *aaEntryBuffer = pNextBuffer;
+    
+    // return no of rows
+    // return no of rows
+    if (pNextBuffer) {
+      //vTrace("Returning buffer %p %lld %lld \n"_Stz, pNextBuffer, *pNextBuffer->nBufferNo(), pNextBuffer->nItems());
+      *aiRowCount = pNextBuffer->nItems();
+      *aiBufferNo = *pNextBuffer->nBufferNo();
+    }
+    else {
+      *aiRowCount = 0;
+      *aiBufferNo = -1;
+    }
+    
+    API_RETURN();
   }
   catch (Error* pError) { API_CATCH(pError); }
   catch (...) { Error* pError = nullptr; API_CATCH(pError); }

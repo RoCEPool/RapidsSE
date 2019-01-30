@@ -216,7 +216,7 @@ const u8 API_TL_POOL   = C_BIT_4; // 16
 #define TRACE_API_PARAM(aMarker, sParam) \
 { \
   if ( (iTrace & API_TL_ERROR) == API_TL_ERROR) \
-    vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
+    vTrace("!%s(%s): %p(%lld) %s\n"_Stz,  \
            aAC[eApiCall], aMarker, \
            pSession, pSession ? pSession->iPartition() : -1, \
            sParam ? sParam : "<null>"_Stz); \
