@@ -1090,7 +1090,7 @@ Entry* EntryBuffer::aNextEntry(Entry* aCurrent, i8 i_Offset)
   //RASSERT( ! m_aLazyChain );
   //#endif
   
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
   aCurrent->vAssertEntry();
 #endif
   
@@ -3772,7 +3772,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
 /*----------------------------------------------------------------------------*/
 /* check prior vec ordering                                                   */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
 
 bool EntryBuffer::bCheckPriorVec(Entry* aPriorVec[])
 {
@@ -3816,7 +3816,7 @@ bool EntryBuffer::bCheckPriorVec(Entry* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* number entries                                                             */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
 void EntryBuffer::vNumberEntries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
@@ -3970,7 +3970,7 @@ bool EntryBuffer::bVerifyL0Hidden(void)
   if (! bValid)
     return false;
   
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
   bValid = bVerifySkipListLevels();
   if (! bValid)
     return false;
@@ -4076,7 +4076,7 @@ bool EntryBuffer::bVerifyLnAny(void)
   if (! bValid)
     return false;
   
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
   bValid = bVerifySkipListLevels();
   if (! bValid)
     return false;
@@ -4643,7 +4643,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
     }
   }
   
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
   if (! bVerifySkipListLevels())
     return false;
 #endif
@@ -4654,7 +4654,7 @@ bool EntryBuffer::bVerifySkipListEntry(bool bShowKeys)
 /*----------------------------------------------------------------------------*/
 /* verify the skip list levels                                                */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
 
 bool EntryBuffer::bVerifySkipListLevels(bool bShowKeys)
 {

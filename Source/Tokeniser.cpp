@@ -83,7 +83,7 @@ Tokeniser::Tokeniser(void)
 #endif
 
                     RAPIDSSE_VERSION_STRING,
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
                     'd'
 #else
                     'r'

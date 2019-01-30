@@ -42,10 +42,10 @@ void Axioms::vAddConstants(void)
   if (gpAttachMap->m_bVerbose)
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
   
-#ifdef WITH_DEBUG
-  vAddConstant("WITH_DEBUG"_Stz,1);
+#ifdef WITH_DEBUG_VERSION
+  vAddConstant("WITH_DEBUG_VERSION"_Stz,1);
 #else
-  vAddConstant("WITH_DEBUG"_Stz,(i8)0);
+  vAddConstant("WITH_DEBUG_VERSION"_Stz,(i8)0);
 #endif
   
   vAddConstant("version"_Stz,          (Stz*)RAPIDSSE_VERSION_STRING);

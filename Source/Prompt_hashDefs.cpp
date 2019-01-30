@@ -28,6 +28,10 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  __APPLE__\n"_Stz);
 #endif
   
+#ifdef __LINUX__
+  vTrace("  __LINUX__\n"_Stz);
+#endif
+
 #ifdef WITH_ACTIVITY_MAP
   vTrace("  WITH_ACTIVITY_MAP\n"_Stz);
 #endif
@@ -36,8 +40,8 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  WITH_ADDRESS_CHECKING\n"_Stz);
 #endif
   
-#ifdef WITH_API_TRACE
-  vTrace("  WITH_API_TRACE\n"_Stz);
+#ifdef WITH_TRACE_API
+  vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
   
 #ifdef WITH_ASSERT_MACRO
@@ -48,8 +52,8 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  WITH_CORECTNESS_ALGEBRA\n"_Stz);
 #endif
   
-#ifdef WITH_DEBUG
-  vTrace("  WITH_DEBUG\n"_Stz);
+#ifdef WITH_DEBUG_VERSION
+  vTrace("  WITH_DEBUG_VERSION\n"_Stz);
 #endif
   
 #ifdef WITH_ENTRY_EXIT
@@ -70,16 +74,6 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   
 #ifdef WITH_VLQ_DATUMS
   vTrace("  WITH_VLQ_DATUMS\n"_Stz);
-#endif
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-#ifdef IT_COMPACT_P1_TRACE
-  vTrace("  IT_COMPACT_P1_TRACE\n"_Stz);
-#endif
-  
-#ifdef IT_COPYLEFTV3
-  vTrace("  IT_COPYLEFTV3\n"_Stz);
 #endif
   
   vTrace("\n"_Stz);

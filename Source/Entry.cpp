@@ -42,7 +42,7 @@ Entry::Entry(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
   //m_iTxId    = -1;
   m_xId.vOffsets(nOffsets);
   
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
   m_iEntryNo = -1;
 #endif
   
@@ -356,7 +356,7 @@ void Entry::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
   if (nDataSize)
     MemLib::vCopy(aEntryData,aData,nDataSize,eClass());
 
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
   m_iIntKey = aKey()->iGetInt();
 #endif
   
