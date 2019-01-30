@@ -31,23 +31,27 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//                         Debug Version of the Macros                        //
 ////////////////////////////////////////////////////////////////////////////////
-
-#ifdef WITH_DEBUG_VERSION
 
 /*----------------------------------------------------------------------------*/
 /* begin an API function                                                      */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
 #define API_BEGIN() \
   if (pSession) \
     ApiState::vMarkApiLoc(pSession,200);
+
+#else
+#define API_BEGIN()
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* catch an error in an API function                                          */
 /*----------------------------------------------------------------------------*/
 // not using braces { }, as that would hide the variables
 
+#ifdef WITH_DEBUG_VERSION
 #define API_CATCH(pError) \
   \
   eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
@@ -63,11 +67,22 @@
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
   return eErrorCode;
 
+#else
+#define API_CATCH(pError) \
+  \
+  eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
+  \
+  Engine::vErrorHandler(pError); \
+  return eErrorCode;
+
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* enter an API function                                                      */
 /*----------------------------------------------------------------------------*/
 // not using braces { }, as that would hide the variables
 
+#ifdef WITH_DEBUG_VERSION
 #define API_ENTRY(_eApiCall) \
   \
   eAC  eApiCall = _eApiCall; \
@@ -92,9 +107,15 @@
              pSession ? pSession->iPartition() : -1); \
   }
 
+#else
+#define API_ENTRY(eApiCall)
+
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* API function is exiting prior to API_RETURN                                */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
 #define API_EXITING() \
 { \
   if ( (iTrace & TL_EXIT) == TL_EXIT) \
@@ -110,9 +131,15 @@
   ActivityMap::vMarkApiExit(eApiCall); \
 }
 
+#else
+#define API_EXITING()
+
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* validate not null argument                                                 */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
 #define API_NOTNULL(p1) \
 { \
   if (! p1) { \
@@ -121,9 +148,84 @@
   } \
 }
 
+#else
+#define API_NOTNULL(p1)
+
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* trace API parameter                                                        */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
+#define API_PARAM_P1(p1) \
+{ \
+  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
+    vTrace("%s: %p(%lld) %s\n"_Stz,  \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1, p1); \
+}
+#else
+#define API_PARAM_P1(p1)
+
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* trace API parameters                                                       */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
+#define API_PARAM_P2(p1, p2) \
+{ \
+  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
+    vTrace("%s: %p(%lld) %s %s\n"_Stz,  \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1, \
+           p1 ? p1 : "null"_Stz , p2 ? p2 : "null"_Stz); \
+}
+
+#else
+#define API_PARAM_P2(p1, p2)
+
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* trace API parameters                                                       */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
+#define API_PARAM_P3(p1, p2, p3) \
+{ \
+  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
+    vTrace("%s: %p(%lld) %s %s %s\n"_Stz,  \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1, \
+           p1 ? p1 : "null"_Stz, p2 ? p2 : "null"_Stz , p3 ? p3 : "null"_Stz); \
+}
+
+#else
+#define API_PARAM_P3(p1, p2, p3)
+
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* trace API parameters                                                       */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
+#define API_PARAM_P4(p1, p2, p3, p4) \
+{ \
+  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
+    vTrace("%s: %p(%lld) %s %s %s %s\n"_Stz,  \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1, p1, p2, p3, p4); \
+}
+
+#else
+#define API_PARAM_P4(p1, p2, p3, p4)
+
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* API function is returning                                                  */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
 #define API_RETURN() \
 { \
   if ( (iTrace & TL_EXIT) == TL_EXIT) \
@@ -140,9 +242,15 @@
   return EC_NONE; \
 }
 
+#else
+#define API_RETURN() return EC_NONE;
+
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* return error code from an API function                                     */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
 #define API_RETURN_EC(eErrorCode) \
 { \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
@@ -156,55 +264,15 @@
   return eErrorCode; \
 }
 
-/*----------------------------------------------------------------------------*/
-/* trace API parameter                                                        */
-/*----------------------------------------------------------------------------*/
-#define API_PARAM_P1(p1) \
-{ \
-  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-    vTrace("%s: %p(%lld) %s\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1, p1); \
-}
+#else
+#define API_RETURN_EC(eErrorCode) return eErrorCode
 
-/*----------------------------------------------------------------------------*/
-/* trace API parameters                                                       */
-/*----------------------------------------------------------------------------*/
-#define API_PARAM_P2(p1, p2) \
-{ \
-  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-    vTrace("%s: %p(%lld) %s %s\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1, \
-           p1 ? p1 : "null"_Stz , p2 ? p2 : "null"_Stz); \
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace API parameters                                                       */
-/*----------------------------------------------------------------------------*/
-#define API_PARAM_P3(p1, p2, p3) \
-{ \
-  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-    vTrace("%s: %p(%lld) %s %s %s\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1, \
-           p1 ? p1 : "null"_Stz, p2 ? p2 : "null"_Stz , p3 ? p3 : "null"_Stz); \
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace API parameters                                                       */
-/*----------------------------------------------------------------------------*/
-#define API_PARAM_P4(p1, p2, p3, p4) \
-{ \
-  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-    vTrace("%s: %p(%lld) %s %s %s %s\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1, p1, p2, p3, p4); \
-}
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* trace API error                                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
 #define API_TRACE_ERROR(aMarker, eErrorCode) \
 { \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
@@ -213,10 +281,15 @@
            pSession ? pSession->iPartition() : -1, aEC[eErrorCode], \
            (i8)eErrorCode); \
 }
+#else
+#define API_TRACE_ERROR(aMarker, eErrorCode)
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* verify buffer pool boundaries                                              */
 /*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG_VERSION
 #define API_VALIDATE_POOL() \
 { \
   bool bPoolValid; \
@@ -233,40 +306,7 @@
   } \
 }
 
-
-////////////////////////////////////////////////////////////////////////////////
-//                         Release Version of the Macros                      //
-////////////////////////////////////////////////////////////////////////////////
-
 #else
-
-/*----------------------------------------------------------------------------*/
-/* catch an error in an API function                                          */
-/*----------------------------------------------------------------------------*/
-// not using braces { }, as that would hide the variables
-
-#define API_CATCH(pError) \
-  \
-  eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
-  \
-  Engine::vErrorHandler(pError); \
-  return eErrorCode;
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-#define API_BEGIN()
-#define API_ENTRY(eApiCall)
-#define API_ERROR()
-#define API_EXIT()
-#define API_EXITING()
-#define API_NOTNULL(p1)
-#define API_PARAM_P1(p1)
-#define API_PARAM_P2(p1, p2)
-#define API_PARAM_P3(p1, p2, p3)
-#define API_PARAM_P4(p1, p2, p3, p4)
-#define API_RETURN() return EC_NONE;
-#define API_RETURN_EC(eErrorCode) return eErrorCode
-#define API_TRACE_ERROR(aMarker, eErrorCode)
 #define API_VALIDATE_POOL()
 
 #endif
