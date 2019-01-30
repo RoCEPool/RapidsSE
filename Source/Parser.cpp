@@ -851,7 +851,7 @@ void Parser::vReadLineStdin(void)
           m_sPrompt.aChar(),
           gpAttachMap->m_bBootError  ? " *BOOTERROR* " : "",
           bLowMem                    ? " *LOWMEM* "    : "",
-#ifdef __ENTRY_EXIT
+#ifdef WITH_ENTRY_EXIT
           gpAttachMap->m_pStepTiming ? " *STEPTIMING*" : "",
 #else
           "",

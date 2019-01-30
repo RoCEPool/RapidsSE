@@ -50,8 +50,8 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  __DEBUG_CHECKS\n"_Stz);
 #endif
   
-#ifdef __ENTRY_EXIT
-  vTrace("  __ENTRY_EXIT\n"_Stz);
+#ifdef WITH_ENTRY_EXIT
+  vTrace("  WITH_ENTRY_EXIT\n"_Stz);
 #endif
   
 #ifdef __FOOTER_CHECK

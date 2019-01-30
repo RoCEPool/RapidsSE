@@ -12,19 +12,6 @@
 #define REPORT_ERROR
 #define REPORT_FATAL
 
-// toggle behaviors on or off
-#ifdef _DEBUG
-  #define __ADDRESS_CHECK   // check that address is in pool
-  #define __ASSERT_CHECKS   // assert macro
-  #define __CLASS_CHECK     // known class
-  #define __DEBUG_CHECKS    // _pre_(), _post_(), _checkInitialised_()
-  #define __ENTRY_EXIT      // entry exit macros
-  #define __FOOTER_CHECK    // footer marker check
-  #define __MEMORY_ZERO     // initialise wsp etc to all 0's
-  #define __MAGIC_CHECK     // magic marker check in header
-#else
-  #define __ENTRY_EXIT      // entry exit macros
-#endif
 
 #define VERBOSE_TRACE
 
