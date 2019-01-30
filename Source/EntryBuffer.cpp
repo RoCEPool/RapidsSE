@@ -10,9 +10,10 @@ extern AttachMap* gpAttachMap;
 
 bool mbWatch = false;
 
-#define EB_LAZY_CHAIN
-#define EB_SPLIT2
-#define EB_SINGLE_COLIDX
+#define USE_EB_LAZY_CHAIN
+#define USE_EB_SPLIT2
+#define USE_EB_SINGLE_COLIDX
+//#define USE_EB_WATCH
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -671,7 +672,7 @@ bool EntryBuffer::bDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -738,7 +739,7 @@ EntryBuffer* EntryBuffer::pFirstChildBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
   
   //if (m_aLazyChain)
@@ -758,7 +759,7 @@ Entry* EntryBuffer::aFirstEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
   
   //if (m_aLazyChain)
@@ -777,7 +778,7 @@ Entry* EntryBuffer::aGetEntryRowNo(i8 i_RowNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -835,7 +836,7 @@ Entry* EntryBuffer::aInsertKeyAbs(KeyWrk& xKeyWrk)
   
   Entry* aKeyEntry;
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (! m_iBufferLevel) {
       aKeyEntry = aInsertKeyAbsLazy(xKeyWrk);
@@ -961,7 +962,7 @@ Entry* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   
   EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
   
-#ifdef WITH_MB_WATCH
+#ifdef USE_EB_WATCH
   static i8 nInserts = 0;
   nInserts++;
   
@@ -1002,7 +1003,7 @@ Entry* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
     pPositionedBuffer->aInsertKeyUpwards(xKeyWrk,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_MB_WATCH
+#ifdef USE_EB_WATCH
   if (mbWatch) {
     IdxColVec* pIdxColVec = pRootKeyBuffer->pIndex()->pIdxColVec();
     vTrace("\n[ ] pInsertKeyTree: "_Stz);
@@ -1022,7 +1023,7 @@ Entry* EntryBuffer::aLastEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
   
   //if (m_aLazyChain)
@@ -1085,7 +1086,7 @@ Entry* EntryBuffer::aNextEntry(Entry* aCurrent, i8 i_Offset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  //#ifdef EB_LAZY_CHAIN
+  //#ifdef USE_EB_LAZY_CHAIN
   //RASSERT( ! m_aLazyChain );
   //#endif
   
@@ -1117,7 +1118,7 @@ EntryBuffer* EntryBuffer::pPositionLevel(Key* aGivenKey, i8 nKeyCols,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
   
   //if (m_aLazyChain)
@@ -1155,7 +1156,7 @@ Entry* EntryBuffer::aPositionQuery(Key* aGivenKey, eRO eRelnOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
   
   //if (m_aLazyChain)
@@ -1188,7 +1189,7 @@ Entry* EntryBuffer::aPositionQuery(Key* aGivenKey,i8 nKeyCols, eJC eJuxtaCompare
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
   
   //if (m_aLazyChain)
@@ -1833,7 +1834,7 @@ void EntryBuffer::vCompact(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   //RASSERT( ! m_aLazyChain );
   
   if (m_aLazyChain)
@@ -1975,7 +1976,7 @@ void EntryBuffer::vCompactLeft(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   //RASSERT( ! m_aLazyChain );
   
   if (m_aLazyChain)
@@ -2055,7 +2056,7 @@ void EntryBuffer::vCompactLeft2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT(! m_aLazyChain);
 #endif
 
@@ -2156,12 +2157,12 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_MB_WATCH
+#ifdef USE_EB_WATCH
   if (mbWatch) {
     EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -2223,7 +2224,7 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -2326,7 +2327,7 @@ Entry* EntryBuffer::aGetEntrySplit(i8 iSplitEntryNo,Entry** aaPriorEntry)
   
   ASSERT(m_aHeadEntry);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -2411,7 +2412,7 @@ void EntryBuffer::vHandleLeftInsert(Entry* aInsertedKeyEntry,
     return;
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_MB_WATCH
+#ifdef USE_EB_WATCH
   if (mbWatch) {
     EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -2680,7 +2681,7 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_MB_WATCH
+#ifdef USE_EB_WATCH
   if (mbWatch) {
     EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -2706,7 +2707,7 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // handle the insert of a left most key
  
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   if (m_iBufferLevel)
     vHandleFirstInsert(pInsertedKeyEntry,pOriginalFirstEntry,ppRootKeyBuffer);
 #else
@@ -2725,7 +2726,7 @@ Entry* EntryBuffer::aInsertKeyBuffer(KeyWrk& xKeyWrk,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_MB_WATCH
+#ifdef USE_EB_WATCH
   if (mbWatch) {
     EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -2738,7 +2739,7 @@ Entry* EntryBuffer::aInsertKeyBuffer(KeyWrk& xKeyWrk,
   
   Entry* aInsertedKeyEntry;
 
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   if (m_pIndex->pTable()->bIsLoading()) {
     if (m_iBufferLevel) {
       Entry* aOriginalFirstEntry = aFirstEntry();
@@ -2772,7 +2773,7 @@ Entry* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef WITH_MB_WATCH
+#ifdef USE_EB_WATCH
   if (mbWatch) {
     EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -2946,7 +2947,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // split the left buffer to yield a right buffer
 
-#ifdef EB_SPLIT2
+#ifdef USE_EB_SPLIT2
   EntryBuffer* pRightBuffer = pLeftBuffer->pSplit2();
 #else
   EntryBuffer* pRightBuffer = pLeftBuffer->pSplit();
@@ -3117,7 +3118,7 @@ EntryBuffer* EntryBuffer::pPositionPriorBuffer(Key* aFindKey)
       break;
     }
     else {
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
       RASSERT( ! m_aLazyChain );
 #endif
     }
@@ -3147,7 +3148,7 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -3175,7 +3176,7 @@ Entry* EntryBuffer::pPositionPriorEntry(Key* aFindKey)
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-#ifdef EB_SINGLE_COLIDX
+#ifdef USE_EB_SINGLE_COLIDX
       if (m_pIndex->bSingleColumn()) {
         bKeyIsGreaterEqual = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
         //RASSERT(bKeyIsGreaterEqual == aNextKey->bGreaterEqual(aFindKey,pIdxColVec));
@@ -3208,7 +3209,7 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* aPriorVec[],
   
   //ASSERT(0 == m_iBufferLevel);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -3243,7 +3244,7 @@ void EntryBuffer::vPositionPriorVecEntry(Key* aFindKey, Entry* aPriorVec[],
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-#ifdef EB_SINGLE_COLIDX
+#ifdef USE_EB_SINGLE_COLIDX
       if (m_pIndex->bSingleColumn()) {
         bIsJuxta = aNextKey->bGreaterEqualSingle(aFindKey,m_pIndex);
 //        if (bIsJuxta != aNextKey->bGreaterEqual(aFindKey,pIdxColVec)) {
@@ -3283,7 +3284,7 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* aPriorVec[],
   
   ASSERT(0 != m_iBufferLevel);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -3313,7 +3314,7 @@ void EntryBuffer::vPositionPriorVecBuffer(Key* aFindKey, Entry* aPriorVec[],
       //aNextKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       //aFindKey->vShow(pIdxColVec); vTrace("\n"_Stz);
       
-#ifdef EB_SINGLE_COLIDX
+#ifdef USE_EB_SINGLE_COLIDX
       if (m_pIndex->bSingleColumn()) {
         bNextKeyIsGreater = aNextKey->bGreaterThanSingle(aFindKey,m_pIndex);
         RASSERT(bNextKeyIsGreater == aNextKey->bGreaterThan(aFindKey,pIdxColVec));
@@ -3352,7 +3353,7 @@ void EntryBuffer::vPositionPriorVecBuffer2(Key* aFindKey, Entry* aPriorVec[],
   
   ASSERT(0 != m_iBufferLevel);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -3412,7 +3413,7 @@ void EntryBuffer::vPositionPriorVecBuffer3(Key* aFindKey, Entry* aPriorVec[],
   
   ASSERT(0 != m_iBufferLevel);
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -3477,7 +3478,7 @@ EntryBuffer* EntryBuffer::pSplit(void)
 
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   
@@ -3625,7 +3626,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
   
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
   
-#ifdef EB_LAZY_CHAIN
+#ifdef USE_EB_LAZY_CHAIN
   RASSERT( ! m_aLazyChain );
 #endif
   

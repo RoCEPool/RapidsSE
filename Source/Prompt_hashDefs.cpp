@@ -59,11 +59,7 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 #ifdef WITH_LW_FOOTER
   vTrace("  WITH_LW_FOOTER\n"_Stz);
 #endif
-  
-#ifdef WITH_MB_WATCH
-  vTrace("  WITH_MB_WATCH\n"_Stz);
-#endif
-  
+    
 #ifdef WITH_MUNGED_SEN
   vTrace("  WITH_MUNGED_SEN\n"_Stz);
 #endif
@@ -77,19 +73,7 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-#ifdef EB_LAZY_CHAIN
-  vTrace("  EB_LAZY_CHAIN\n"_Stz);
-#endif
-  
-#ifdef EB_SINGLE_COLIDX
-  vTrace("  EB_SINGLE_COLIDX\n"_Stz);
-#endif
-  
-#ifdef EB_SPLIT2
-  vTrace("  EB_SPLIT2\n"_Stz);
-#endif
-  
+    
 #ifdef IT_COMPACT_P1_TRACE
   vTrace("  IT_COMPACT_P1_TRACE\n"_Stz);
 #endif
