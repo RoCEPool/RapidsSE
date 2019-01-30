@@ -123,7 +123,7 @@ void Engine::vCallImmmediate(Task* pImmediateTask)
 /*----------------------------------------------------------------------------*/
 void Engine::vCallPrompt(void)
 {
-  SePrompt* pSePrompt = new SePrompt;
+  SePrompt* pSePrompt = new SePrompt(gxArguments.m_bCommand);
   
   pSePrompt->vPromptLoop();
   

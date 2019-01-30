@@ -39,7 +39,7 @@ void SePrompt::operator delete(void* pSePromptAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SePrompt::SePrompt(void)
+SePrompt::SePrompt(bool bOneCommand)
 : Object(CN_SEPROMPT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -65,6 +65,8 @@ SePrompt::SePrompt(void)
   m_bTraced  = false;
   m_bNoWait  = false;
   m_bMarked  = false;
+  
+  m_bOneCommand = bOneCommand;
 
   _checkInitialised_(CN_SEPROMPT);
 }
@@ -163,7 +165,7 @@ void SePrompt::vPromptLoop(void)
     
     vFreeSpace();
 
-    if (gxArguments.m_bCommand)
+    if (m_bOneCommand)
       break;
     
   } // while

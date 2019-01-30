@@ -4,7 +4,6 @@
 #pragma once
 
 namespace Commands      { class Command; class Parser; }
-namespace Prompt        { class SePrompt; }
 namespace StorageEngine { class Engine; }
 namespace Threads       { class Thread; }
 
@@ -15,7 +14,6 @@ namespace StorageEngine
     friend class      Commands::Command;
     friend class StorageEngine::Engine;
     friend class      Commands::Parser;
-    friend class        Prompt::SePrompt;
     friend class       Threads::Thread;
 
   private:
@@ -36,7 +34,7 @@ namespace StorageEngine
     struct {
       s32 m_sNodeName;     // name of node
       s32 m_sIPAddress;    // ip address of node
-      i8   m_iPortNo;      // port number
+      i8  m_iPortNo;       // port number
     } m_xNodes[C_MAX_NODES];
   
     s256 m_sCommand;    // command to run

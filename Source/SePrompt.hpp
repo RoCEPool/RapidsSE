@@ -31,6 +31,8 @@ namespace Prompt
     JobClass* m_pJobClass; // job class
     Job*      m_pJob;      // job
   
+    bool     m_bOneCommand; // run one command only
+  
     // must be last
     Footer m_xFooter;
   
@@ -38,7 +40,7 @@ namespace Prompt
     void* operator new(size_t);
     void  operator delete(void*);
 
-    SePrompt(void);
+    SePrompt(bool bOneCommand);
     ~SePrompt(void) noexcept(false);
   
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
