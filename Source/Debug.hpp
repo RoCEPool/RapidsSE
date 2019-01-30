@@ -69,16 +69,7 @@ namespace Debugging
       Debugging::vAssertWarn(); \
     } \
   }
-  
-  /*--------------------------------------------------------------------------*/
-  /* initialise memory to zero                                                */
-  /*--------------------------------------------------------------------------*/
-  #ifdef WITH_MEMORY_ZERO
-    #define _memzero_(pAddr,nBytes)  MemLib::vZero(pAddr,nBytes);
-  #else
-    #define _memzero_(pAddr,nBytes)
-  #endif
-  
+    
   /*--------------------------------------------------------------------------*/
   /* check the object is within the pool                                      */
   /*--------------------------------------------------------------------------*/

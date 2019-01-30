@@ -34,7 +34,7 @@ Local::Local(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCAL,_FOOTER_);
   
-  _memZero_(m_xWsp.aArea(),C_WSP_LOCAL,CN_LOCAL);
+  MemLib::vZero(m_xWsp.aArea(),C_WSP_LOCAL,CN_LOCAL);
   
  _checkInitialised_(CN_LOCAL);
   

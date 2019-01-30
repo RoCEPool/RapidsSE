@@ -56,13 +56,6 @@ namespace Base
     template <class T>
     static void vPrintColor(Stz* pFmt, const T& Value, Stz* pColour);
   };
-  
-#ifdef WITH_MEMORY_ZERO
-  #define _memZero_(aDst,nBytes,eClassNo)\
-            MemLib::vZero(aDst,nBytes,eClassNo);
-#else
-  #define _memZero_(aDst,nBytes,eClassNo)
-#endif
 }
 
 /*============================================================================*/
