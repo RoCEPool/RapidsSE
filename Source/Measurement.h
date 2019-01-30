@@ -25,10 +25,6 @@ using namespace Measurement;
 #include "LockTracker.hpp"
 #include "Now.hpp"
 
-#include "PerformanceEntry.hpp"
-#include "PerformanceBuffer.hpp"
-#include "PerformanceTrace.hpp"
-
 #include "ResourceTracker.hpp"
 
 #include "Statistics.hpp"

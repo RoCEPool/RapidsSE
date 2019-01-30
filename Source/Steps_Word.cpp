@@ -658,10 +658,13 @@ void Step::vTick(MP_Task mpTask)
   //    throw (i8)__LINE__;
   //  }
   
-  Word* pWord = mpTask->m_oDicStack.pFindWord(mpTask->m_pCompiler->m_pTokeniser->sToken());
+  s32 sWordNm;
+  sWordNm = mpTask->m_pCompiler->m_pTokeniser->sToken();
   
-  if ( ! pWord )
-    THROW("No word: %s "_Stz,mpTask->m_pCompiler->m_pTokeniser->sToken().aChar());
+  Word* pWord = mpTask->m_oDicStack.pFindWord(sWordNm);
+  
+  if (! pWord)
+    vFatal("No word: %s "_Stz,sWordNm.aChar());
   
   if (mpTask->m_pCompiler->m_bCompiling) {
     Word* pCurrentWord = mpTask->m_pCompiler->m_pCurrentWord;

@@ -91,10 +91,8 @@ Session::Session(i8 iPartition)
   m_bSessionExiting = false;
   m_pJobStack       = new Stack;
 
-
-  m_pSessionState     = gpAttachMap->m_pApiState->pAllocState(this);
-  m_pPerformanceTrace = nullptr;
-  m_pCommand = new Command;
+  m_pSessionState   = gpAttachMap->m_pApiState->pAllocState(this);
+  m_pCommand        = new Command;
 
   _checkInitialised_(CN_SESSION);
   
@@ -268,26 +266,6 @@ DicStack* Session::pPathStack(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return &m_oDicStack;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get performance trace                                                      */
-/*----------------------------------------------------------------------------*/
-PerformanceTrace* Session::pPerformanceTrace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  return m_pPerformanceTrace;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set performance trace                                                      */
-/*----------------------------------------------------------------------------*/
-void Session::vPerformanceTrace(PerformanceTrace* pPerformanceTrace)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-  
-  m_pPerformanceTrace = pPerformanceTrace;
 }
 
 /*----------------------------------------------------------------------------*/

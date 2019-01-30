@@ -31,7 +31,6 @@ namespace Base
     static const u1 C_ASCII_MIN = 32;
     static const u1 C_ASCII_MAX = 127;
     static const i8 C_SIZEOF_WORD = static_cast<i8>(sizeof(i8));
-    
   
   public:
     static void* pAddBytes(void* aAddress, i8 iBytes);
@@ -52,6 +51,7 @@ namespace Base
     static void  vZero(void* pDst, i8 iBytes, eCN eClassNo);
   
     static void  vMemoryMap(void);
+  
   private:
     template <class T>
     static void vPrintColor(Stz* pFmt, const T& Value, Stz* pColour);

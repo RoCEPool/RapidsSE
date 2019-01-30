@@ -479,41 +479,6 @@ i8 Task::iPartition(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* trace performance point                                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vPerformancePoint(Stz* aWordName, Stz* aPointNote)
-{
-  if ( ! m_pSession ) {
-    vWarn("No session for Performance Point: %s %s\n"_Stz,aWordName,aPointNote);
-    return;
-  }
-  
-  PerformanceTrace* pPerformanceTrace = m_pSession->pPerformanceTrace();
-  
-  if ( ! pPerformanceTrace ) {
-    pPerformanceTrace = new PerformanceTrace;
-    m_pSession->vPerformanceTrace(pPerformanceTrace);
-  }
-  
-  pPerformanceTrace->vAdd(aWordName,aPointNote);
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace performance print                                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vPerformancePrint(void)
-{
-  PerformanceTrace* pPerformanceTrace = m_pSession->pPerformanceTrace();
-  if ( ! pPerformanceTrace )
-    return;
-  
-  pPerformanceTrace->vPrint();
-  
-  pPerformanceTrace->vReset();
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* trace performance print                                                    */
 /*----------------------------------------------------------------------------*/
 s256& Task::sPortrait(void)

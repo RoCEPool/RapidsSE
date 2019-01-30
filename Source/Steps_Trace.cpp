@@ -15,9 +15,6 @@ void Step::vAddSteps_Trace(void)
   vAddStep("traceOn"_Stz,          &Step::vTraceOn);
   vAddStep("tracePoint"_Stz,       &Step::vTracePoint);
   vAddStep("trace!"_Stz,           &Step::vTraceSet);
-
-  vAddStep("performancePoint"_Stz, &Step::vPerformancePoint);
-  vAddStep("performancePrint"_Stz, &Step::vPerformancePrint);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,39 +72,6 @@ void Step::vTraceSet(MP_Task mpTask)
     THROW_INVALID_DSTACK("trace!"_Stz);
   
   mpTask->m_iTracing = iTrace;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* performance point                                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vPerformancePoint(MP_Task mpTask)
-{
-  ENTRY("vPerformancePoint"_Stz);
-  
-  s256 sWordName;
-  if ( ! mpTask->m_pDataStack->bPop(sWordName) )
-    THROW_INVALID_DSTACK("performancePoint"_Stz);
-  
-  s256 sPointNote;
-  if ( ! mpTask->m_pDataStack->bPop(sPointNote) )
-    THROW_INVALID_DSTACK("performancePoint"_Stz);
-    
-  //if (gpAttachMap->m_bPerformancepoint)
-    mpTask->vPerformancePoint(sWordName,sPointNote);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* performance print                                                          */
-/*----------------------------------------------------------------------------*/
-void Step::vPerformancePrint(MP_Task mpTask)
-{
-  ENTRY("vPerformancePrint"_Stz);
-  
-  mpTask->vPerformancePrint();
   
   EXIT();
 }

@@ -1047,9 +1047,6 @@
   static void vTracePoint(Tasks::MP_Task mpTask);
   static void vTraceSet(Tasks::MP_Task mpTask);
 
-  static void vPerformancePoint(Tasks::MP_Task mpTask);  //! wrong place
-  static void vPerformancePrint(Tasks::MP_Task mpTask);  //! wrong place
-
   // tx
   static void vTxBegin(Tasks::MP_Task mpTask);
   static void vTxCommit(Tasks::MP_Task mpTask);

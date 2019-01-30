@@ -190,9 +190,6 @@ enum eCN : u2 // Class Number
   
   /* 155 0x9B    48752B Heap:M */ CN_PARSER,
   /* 156 0x9C     1048B Heap:M */ CN_PATHVEC,
-  /* 157 0x9D  1043504B Heap:L */ CN_PERFORMANCEBUFFER,
-  /* 158 0x9E      128B Heap:I */ CN_PERFORMANCEENTRY,
-  /* 159 0x9F       64B Heap:S */ CN_PERFORMANCETRACE,
   /* 160 0xA0      320B Heap:S */ CN_PIPE,
   /* 161 0xA1    48376B Heap:M */ CN_PLAN,
   /* 162 0xA2     3112B Heap:M */ CN_PLANNER,
@@ -443,9 +440,6 @@ static Stz* aCN[]
   
   /* 155 0x9B */ "PARSER"_Stz,              // CN_PARSER
   /* 156 0x9C */ "PATHVEC"_Stz,             // CN_PATHVEC
-  /* 157 0x9D */ "PERFORMANCEBUFFER"_Stz,   // CN_PERFORMANCEBUFFER
-  /* 158 0x9E */ "PERFORMANCEENTRY"_Stz,    // CN_PERFORMANCEENTRY
-  /* 159 0x9F */ "PERFORMANCETRACE"_Stz,    // CN_PERFORMANCETRACE
   /* 160 0xA0 */ "PIPE"_Stz,                // CN_PIPE
   /* 161 0xA1 */ "PLAN"_Stz,                // CN_PLAN
   /* 162 0xA2 */ "PLANNER"_Stz,             // CN_PLANNER

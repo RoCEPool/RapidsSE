@@ -134,8 +134,6 @@ namespace Tasks
     void vMonitorPortrait(s48K& sPortrait);
     void vNewStacks(void);
     i8   iPartition(void);
-    void vPerformancePoint(Stz* aWordName, Stz* aPointNote);
-    void vPerformancePrint(void);
     s256& sPortrait(void);
     eQR  eQueue(void);
     void vQueue(eQR eQueue);

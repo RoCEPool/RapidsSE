@@ -25,8 +25,7 @@ namespace Interface
     Stack*   m_pJobStack;        // stack of jobs
     
     SessionState*     m_pSessionState;      // session state
-    PerformanceTrace* m_pPerformanceTrace;  // performance Trace
-    Command* m_pCommand;  // command processor
+     Command* m_pCommand;  // command processor
 
     // must be last
     Footer m_xFooter;
@@ -47,10 +46,7 @@ namespace Interface
     eEC       eInit(Stz* pCatalogName, Stz* pSchemaName);
     i8        iPartition(void);
     DicStack* pPathStack(void);
-    
-    PerformanceTrace* pPerformanceTrace(void);
-    void vPerformanceTrace(PerformanceTrace* pPerformanceTrace);
-  
+      
     void      vReport(void);
     
     i8        iSlot(void);
