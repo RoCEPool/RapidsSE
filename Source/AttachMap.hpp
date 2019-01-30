@@ -15,9 +15,9 @@ namespace StorageEngine
   
     struct {
       bool m_bActivityMap;
-      i8   m_nDummyThreads; // number of dummy threads
-      i8   m_nDummySleep;   // sleep period for dummy threads
       i8   m_nDummyLoop;    // loop count for dummy threads
+      i8   m_nDummySleep;   // sleep period for dummy threads
+      i8   m_nDummyThreads; // number of dummy threads
       i8   m_iJumboSize;
       i8   m_nNodes;
       s32  m_sRegionName;
@@ -90,13 +90,17 @@ namespace StorageEngine
     void vPrintAttachMap(void);
     void vRecordArguments(
                           bool bActivityMap,
+                          i8   nDummyLoop,
+                          i8   nDummySleep,
+                          i8   nDummyThreads,
                           i8   iJumboSize,
                           i8   nNodes,
                           Stz* sRegionName,
                           i8   iRegionSize,
                           i8   nSlotsPerNode,
                           i8   nSubIngesters,
-                          i8   nSubLoaders
+                          i8   nSubLoaders,
+                          i8   nThreads
                           );
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);

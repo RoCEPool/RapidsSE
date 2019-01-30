@@ -778,13 +778,17 @@ void Engine::vStartSystem(void)
   ASSERT( ! gpAttachMap->m_oRootDic.bHasWords() );
     
   gpAttachMap->vRecordArguments(gxArguments.m_bActivityMap,
+                                gxArguments.m_nDummyLoop,
+                                gxArguments.m_nDummySleep,
+                                gxArguments.m_nDummyThreads,
                                 gxArguments.m_iJumboSize,
                                 gxArguments.m_nNodes,
                                 gxArguments.m_sRegionName,
                                 gxArguments.m_iRegionSize,
                                 gxArguments.m_nSlotsPerNode,
                                 gxArguments.m_nSubIngesters,
-                                gxArguments.m_nSubLoaders
+                                gxArguments.m_nSubLoaders,
+                                gxArguments.m_nThreads
                                 );
   
   //----------------------------------------------------------------------------

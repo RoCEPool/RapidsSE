@@ -177,13 +177,17 @@ void AttachMap::vPrintAttachMap(void)
 /* record all the needed arguments                                            */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vRecordArguments(bool bActivityMap,
+                                 i8   nDummyLoop,
+                                 i8   nDummySleep,
+                                 i8   nDummyThreads,
                                  i8   iJumboSize,
                                  i8   nNodes,
                                  Stz* aRegionName,
                                  i8   iRegionSize,
                                  i8   nSlotsPerNode,
                                  i8   nSubIngesters,
-                                 i8   nSubLoaders
+                                 i8   nSubLoaders,
+                                 i8   nThreads
                                  )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
@@ -197,6 +201,9 @@ void AttachMap::vRecordArguments(bool bActivityMap,
   m_oTime.vUTC(m_sUTC);
   
   Arg.m_bActivityMap  = bActivityMap;
+  Arg.m_nDummyLoop    = nDummyLoop;
+  Arg.m_nDummySleep   = nDummySleep;
+  Arg.m_nDummyThreads = nDummyThreads;
   Arg.m_iJumboSize    = iJumboSize;
   Arg.m_nNodes        = nNodes;
   Arg.m_sRegionName   = aRegionName;
@@ -205,6 +212,7 @@ void AttachMap::vRecordArguments(bool bActivityMap,
   Arg.m_nSubIngesters = nSubIngesters;
   Arg.m_nSubInserters = 0;
   Arg.m_nSubLoaders   = nSubLoaders;
+  Arg.m_nThreads      = nThreads;
 
   m_pBufferPool = gpBufferPool;
   
