@@ -6,7 +6,6 @@
 //#pragma GCC diagnostic warning "-Wunused-parameter"
 //#pragma GCC diagnostic warning "-Wunused-variable"
 
-#include "HashDefs.h"
 #include "MachineTypes.h"
 #include "SystemIncludes.h"
 #include "CompiledWith.h"

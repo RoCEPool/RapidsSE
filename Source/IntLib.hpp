@@ -1,8 +1,13 @@
 /*============================================================================*/
 /* IntLib.hpp -- integer utility                                              */
 /*============================================================================*/
-
 #pragma once
+
+#define DIV(a,b) (b ? (a / b) : 0)    // checked divide
+#define MAX(a,b) (((a)>(b))?(a):(b))  // which is smaller
+#define MIN(a,b) (((a)<(b))?(a):(b))  // which is bigger
+#define MOD(a,b) (b ? (a % b) : 0)    // checked modulo
+#define NIL(a,b) (a ? a : b)          // null replacement
 
 namespace Base
 {

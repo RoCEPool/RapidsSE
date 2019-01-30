@@ -1,8 +1,18 @@
 /*============================================================================*/
 /* BitLib.hpp -- bit utility                                                  */
 /*============================================================================*/
-
 #pragma once
+
+#define BITWISE_AND(a,b) ((a) & (b))  // bitwise and
+#define BITWISE_NOT(a)   (~ ((u8)a) ) // bitwise not
+#define BITWISE_OR(a,b)  ((a) | (b))  // bitwise or
+#define BITWISE_XOR(a,b) ((a) ^ (b))  // bitwise xor
+
+#define BITWISE_SHIFT_LEFT(word,nbits)  ((word) << nBits) // bitwise shift left
+#define BITWISE_SHIFT_RIGHT(word,nbits) ((word) >> nBits) // bitwise shift right
+
+const u8 C_BITS_PER_WORD = 64;
+const u8 C_ALL_BITS_ON   = 0XFFFFFFFFFFFFFFFFLL;
 
 const u1 C_1_BIT  = 1;
 const u1 C_2_BITS = 3;
