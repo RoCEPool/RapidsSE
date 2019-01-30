@@ -9,6 +9,7 @@
 #include "HashDefs.h"
 #include "MachineTypes.h"
 #include "SystemIncludes.h"
+#include "CompiledWith.h"
 
 //-----------------------------------------------------------------------------
 
