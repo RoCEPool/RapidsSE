@@ -3,12 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#ifdef STRING_LENGTH_TEST
-  #define STRLEN_TEST() ASSERT(nAreaSize() == StrLib::iLength(aStz() + 1));
-#else
-  #define STRLEN_TEST() ;
-#endif
-
 namespace Values
 {
   class StrVal : public Value
