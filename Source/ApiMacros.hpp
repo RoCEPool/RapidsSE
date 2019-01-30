@@ -35,7 +35,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* begin an API function                                                      */
+/* mark the location at the beginning an API function                         */
 /*----------------------------------------------------------------------------*/
 #define API_BEGIN() \
   if (pSession) \
@@ -49,10 +49,13 @@
   eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
   \
   Engine::vErrorHandler(pError); \
-  TRACE_API_ERROR("catch"_Stz,eErrorCode); \
+  \
   ApiState::vMarkError(pSession,eErrorCode); \
   ApiState::vMarkApiLoc(pSession,888); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
+  \
+  TRACE_API_ERROR("catch"_Stz,eErrorCode); \
+  \
   return eErrorCode; \
 }
 
@@ -63,19 +66,19 @@
 #define API_ENTER(_eApiCall) \
   \
   eAC  eApiCall = _eApiCall; \
-  Stz* aApiCall = aAC[eApiCall]; \
   \
   ActivityMap::vMarkApiEntry(eApiCall); \
   Api::vIncStatistics(eApiCall);\
   \
   if (pSession) { \
-    eEC eError = Api::eValidateSession(iTrace,pSession,"entry"_Stz); \
+    eEC eError = Api::eValidateSession(iTrace,pSession,eApiCall); \
     if (eError != EC_NONE) \
       API_RETURN_ERROR(EC_INVALID_INTERFACE); \
     \
     ApiState::vMarkCall(pSession,eApiCall); \
     ApiState::vMarkApiLoc(pSession,100); \
   } \
+  \
   TRACE_API("enter"_Stz);
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +126,7 @@
 #endif
 
 /*----------------------------------------------------------------------------*/
-/* API function is returning                                                  */
+/* normal return from API function (no error)                                 */
 /*----------------------------------------------------------------------------*/
 #define API_RETURN() \
 { \
@@ -140,7 +143,7 @@
 }
 
 /*----------------------------------------------------------------------------*/
-/* return error code from an API function                                     */
+/* return from an API function with an error code                             */
 /*----------------------------------------------------------------------------*/
 #define API_RETURN_ERROR(eErrorCode) \
 { \
@@ -156,30 +159,17 @@
 /*----------------------------------------------------------------------------*/
 /* verify buffer pool boundaries                                              */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_TRACE_API
 #define API_VALIDATE_POOL() \
 { \
-  bool bPoolValid = gpBufferPool->bVerifyBoundaries(true); \
+  bool bPoolValid = gpBufferPool->bVerifyBoundaries(); \
   if (! bPoolValid)  { \
-    vTrace("Pool base and limit are not valid!!!"    \
-           "JAVA MAY HAVE RE_MAPPED MEMORY SEGMENTS!!!\n"_Stz);  \
+    vTrace("Pool base %p and limit %p are not valid\n"    \
+           "JAVA MAY HAVE RE_MAPPED MEMORY SEGMENTS!!!\n"_Stz, \
+           gpBufferPool->pBase(), gpBufferPool->pLimit() );  \
     return EC_VALIDATION_FAILURE; \
   } \
 }
 
-#else
-#define API_VALIDATE_POOL() \
-{ \
-  bool bPoolValid = gpBufferPool->bVerifyBoundaries(false); \
-  \
-  if (! bPoolValid)  { \
-    vTrace("Pool base and limit are not valid!!!"    \
-           "JAVA MAY HAVE RE_MAPPED MEMORY SEGMENTS!!!\n"_Stz);  \
-    return EC_VALIDATION_FAILURE; \
-  } \
-}
-
-#endif
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -194,7 +184,7 @@
 { \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace("!%s(%s): %p(%lld)\n"_Stz,  \
-           aApiCall, aMarker, \
+           aAC[eApiCall], aMarker, \
            pSession, pSession ? pSession->iPartition() : -1); \
 }
 
@@ -210,7 +200,7 @@
 { \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
-           aApiCall, aMarker, \
+           aAC[eApiCall], aMarker, \
            pSession, pSession ? pSession->iPartition() : -1, \
            aEC[eErrorCode], (i8)eErrorCode); \
 }
@@ -227,7 +217,7 @@
 { \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
-           aApiCall, aMarker, \
+           aAC[eApiCall], aMarker, \
            pSession, pSession ? pSession->iPartition() : -1, \
            sParam ? sParam : "<null>"_Stz); \
 }

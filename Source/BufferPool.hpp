@@ -53,6 +53,7 @@ namespace Pool
     i8      nAllocCount(void);
     Buffer* pAllocHeapBuffer(void);
     Buffer* pAllocOtherBuffer(void);
+    Buffer* pBase(void);
     i8   nBufferCount(void);
     bn   nBufferFirst(void);
     bn   nBufferLast(void);
@@ -69,6 +70,7 @@ namespace Pool
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);
     void vInitialise(bool bTouch, bool bProgress);
+    Buffer* pLimit(void);
     bool bLowMemory(void);
     void vMonitorPortrait(s48K& sPortrait);
     Buffer* pNextJumbo(Buffer* pPrev);
@@ -77,7 +79,7 @@ namespace Pool
     FreeBuffer* pToFreeBuffer(bn nBuffer);
     FreeBuffer* pToFreeBuffer(Buffer* pBuffer);
     bool bValidAddress(const void* aAddress);
-    bool bVerifyBoundaries(bool bTrace);
+    bool bVerifyBoundaries(void);
     void vVerifyPool(void);
   
   private:

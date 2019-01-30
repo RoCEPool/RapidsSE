@@ -385,7 +385,7 @@ void Api::vSpawnJobAndWait(Session* pSession, Job* pJob)
 /*----------------------------------------------------------------------------*/
 /* validate the SE session                                                    */
 /*----------------------------------------------------------------------------*/
-eEC Api::eValidateSession(i8 iTrace, Session* pSession, Stz* aApiCall)
+eEC Api::eValidateSession(i8 iTrace, Session* pSession, eAC eApiCall)
 {
   
   // pSession cannot be null

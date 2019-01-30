@@ -165,6 +165,16 @@ Buffer* BufferPool::pAllocOtherBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get base address                                                           */
+/*----------------------------------------------------------------------------*/
+Buffer* BufferPool::pBase(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  return m_pBase;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of buffers in pool                                              */
 /*----------------------------------------------------------------------------*/
 i8 BufferPool::nBufferCount(void)
@@ -442,6 +452,16 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get limit address                                                          */
+/*----------------------------------------------------------------------------*/
+Buffer* BufferPool::pLimit(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  return m_pLimit;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for low memory condition                                              */
 /*----------------------------------------------------------------------------*/
 bool BufferPool::bLowMemory(void)
@@ -581,11 +601,8 @@ bool BufferPool::bValidAddress(const void* aAddress)
 /*----------------------------------------------------------------------------*/
 /* assert buffer pool is valid                                                */
 /*----------------------------------------------------------------------------*/
-bool BufferPool::bVerifyBoundaries(bool bTrace)
+bool BufferPool::bVerifyBoundaries(void)
 {
-  if (bTrace)
-    vTrace("Base=%p Limit=%p\n"_Stz, m_pBase, m_pLimit);
-  
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   if ( ! m_pLimit )

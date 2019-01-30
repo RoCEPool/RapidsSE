@@ -772,11 +772,12 @@ void Arguments::vPrintStartupInfo(void)
     vTrace("  --periodicSleep %lld\n"_Stz,m_nPeriodicSleep);
   }
   
+  if (m_bMetadata) vTrace("  --metadata\n"_Stz);
+
 #ifdef WITH_DEBUG_VERSION
   vTrace("  --commands %s\n"_Stz,m_sCommandsDir.aChar());
   vTrace("  --sen %s\n"_Stz,m_sSenDir.aChar());
   if (m_bMunged) vTrace("  --munged\n"_Stz);
-  if (m_bMetadata) vTrace("  --metadata\n"_Stz);
 #endif
 }
 
