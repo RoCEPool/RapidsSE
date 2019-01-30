@@ -21,7 +21,7 @@ eEC RapidsSE_CheckVersion(i8 iTrace, Stz* sVersion)
 {
   API_SYSTEM_LEVEL();
   API_ENTRY(AC_CheckVersion);
-  API_PARAM_P1(sVersion);
+  API_PARAM(sVersion);
   API_BEGIN();
   
   try {
@@ -103,7 +103,8 @@ eEC RapidsSE_NewSession(i8 iTrace,
 {
   API_SYSTEM_LEVEL();
   API_ENTRY(AC_NewSession);
-  API_PARAM_P2(sCatalog, sSchema);
+  API_PARAM(sCatalog);
+  API_PARAM(sSchema);
   API_NOTNULL(aaSession);
   API_BEGIN();
   
@@ -134,7 +135,7 @@ eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
 {
   API_SYSTEM_LEVEL();
   API_ENTRY(AC_OpenPool);
-  API_PARAM_P1(sRegion);
+  API_PARAM(sRegion);
   API_BEGIN();
   
   try {
@@ -175,7 +176,7 @@ eEC  RapidsSE_BeginFetch(i8 iTrace, Session* pSession,
 {
   API_SESSION_LEVEL();
   API_ENTRY(AC_BeginFetch);
-  API_PARAM_P1(aTable);
+  API_PARAM(aTable);
   API_NOTNULL(aaTable);
   API_BEGIN();
   
@@ -274,7 +275,7 @@ eEC RapidsSE_ExecuteCommand(i8 iTrace, Session* pSession,
 {
   API_SESSION_LEVEL();
   API_ENTRY(AC_ExecuteCommand);
-  API_PARAM_P1(sCommand);
+  API_PARAM(sCommand);
   API_BEGIN();
   
   try {

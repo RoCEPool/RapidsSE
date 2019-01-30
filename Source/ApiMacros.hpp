@@ -157,7 +157,7 @@
 /* trace API parameter                                                        */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_DEBUG_VERSION
-#define API_PARAM_P1(p1) \
+#define API_PARAM(p1) \
 { \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("%s: %p(%lld) %s\n"_Stz,  \
@@ -165,60 +165,7 @@
            pSession ? pSession->iPartition() : -1, p1); \
 }
 #else
-#define API_PARAM_P1(p1)
-
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* trace API parameters                                                       */
-/*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG_VERSION
-#define API_PARAM_P2(p1, p2) \
-{ \
-  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-    vTrace("%s: %p(%lld) %s %s\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1, \
-           p1 ? p1 : "null"_Stz , p2 ? p2 : "null"_Stz); \
-}
-
-#else
-#define API_PARAM_P2(p1, p2)
-
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* trace API parameters                                                       */
-/*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG_VERSION
-#define API_PARAM_P3(p1, p2, p3) \
-{ \
-  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-    vTrace("%s: %p(%lld) %s %s %s\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1, \
-           p1 ? p1 : "null"_Stz, p2 ? p2 : "null"_Stz , p3 ? p3 : "null"_Stz); \
-}
-
-#else
-#define API_PARAM_P3(p1, p2, p3)
-
-#endif
-
-/*----------------------------------------------------------------------------*/
-/* trace API parameters                                                       */
-/*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG_VERSION
-#define API_PARAM_P4(p1, p2, p3, p4) \
-{ \
-  if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
-    vTrace("%s: %p(%lld) %s %s %s %s\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1, p1, p2, p3, p4); \
-}
-
-#else
-#define API_PARAM_P4(p1, p2, p3, p4)
+#define API_PARAM(p1)
 
 #endif
 
@@ -278,8 +225,8 @@
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
            aApiCall, aMarker, pSession, \
-           pSession ? pSession->iPartition() : -1, aEC[eErrorCode], \
-           (i8)eErrorCode); \
+           pSession ? pSession->iPartition() : -1, \
+           aEC[eErrorCode], (i8)eErrorCode); \
 }
 #else
 #define API_TRACE_ERROR(aMarker, eErrorCode)
