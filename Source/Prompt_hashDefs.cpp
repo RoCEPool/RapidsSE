@@ -55,7 +55,7 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
 #endif
   
 #ifdef WITH_JOB_TRACE
-  vTrace("  WITH_JOB_TRACE %lld\n"_Stz,(i8)WITH_JOB_TRACE);
+  vTrace("  WITH_JOB_TRACE\n"_Stz);
 #endif
   
 #ifdef WITH_LW_FOOTER
