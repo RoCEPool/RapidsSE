@@ -64,8 +64,8 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  WITH_MB_WATCH\n"_Stz);
 #endif
   
-#ifdef WITH_MUNGED
-  vTrace("  WITH_MUNGED\n"_Stz);
+#ifdef WITH_MUNGED_SEN
+  vTrace("  WITH_MUNGED_SEN\n"_Stz);
 #endif
   
 #ifdef WITH_PREPOST_CHECKING

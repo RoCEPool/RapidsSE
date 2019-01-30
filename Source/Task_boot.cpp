@@ -17,7 +17,7 @@ void Task::vAddBaseWords(void)
 
   MP_Task mpTask(this);
   
-#ifdef WITH_MUNGED
+#ifdef WITH_MUNGED_SEN
   vAddMunged(mpTask);
 #endif
 }
