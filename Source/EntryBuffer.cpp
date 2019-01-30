@@ -9,7 +9,6 @@
 extern AttachMap* gpAttachMap;
 
 bool mbWatch = false;
-//#define MB_WATCH
 
 #define EB_LAZY_CHAIN
 #define EB_SPLIT2
@@ -962,7 +961,7 @@ Entry* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
   
   EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
   
-#ifdef MB_WATCH
+#ifdef WITH_MB_WATCH
   static i8 nInserts = 0;
   nInserts++;
   
@@ -1003,7 +1002,7 @@ Entry* EntryBuffer::aInsertKeyTree(KeyWrk& xKeyWrk,
     pPositionedBuffer->aInsertKeyUpwards(xKeyWrk,ppRootKeyBuffer);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef MB_WATCH
+#ifdef WITH_MB_WATCH
   if (mbWatch) {
     IdxColVec* pIdxColVec = pRootKeyBuffer->pIndex()->pIdxColVec();
     vTrace("\n[ ] pInsertKeyTree: "_Stz);
@@ -2162,7 +2161,7 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef MB_WATCH
+#ifdef WITH_MB_WATCH
   if (mbWatch) {
     EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -2412,7 +2411,7 @@ void EntryBuffer::vHandleLeftInsert(Entry* aInsertedKeyEntry,
     return;
  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef MB_WATCH
+#ifdef WITH_MB_WATCH
   if (mbWatch) {
     EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -2681,7 +2680,7 @@ Entry* EntryBuffer::pInsertKeyBuffer(KeyWrk& xKeyWrk,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef MB_WATCH
+#ifdef WITH_MB_WATCH
   if (mbWatch) {
     EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -2726,7 +2725,7 @@ Entry* EntryBuffer::aInsertKeyBuffer(KeyWrk& xKeyWrk,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef MB_WATCH
+#ifdef WITH_MB_WATCH
   if (mbWatch) {
     EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -2773,7 +2772,7 @@ Entry* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#ifdef MB_WATCH
+#ifdef WITH_MB_WATCH
   if (mbWatch) {
     EntryBuffer* pRootKeyBuffer = *ppRootKeyBuffer;
     IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();

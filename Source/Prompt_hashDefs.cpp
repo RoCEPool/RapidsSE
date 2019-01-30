@@ -106,8 +106,8 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  WITH_LW_FOOTER\n"_Stz);
 #endif
   
-#ifdef MB_WATCH
-  vTrace("  MB_WATCH\n"_Stz);
+#ifdef WITH_MB_WATCH
+  vTrace("  WITH_MB_WATCH\n"_Stz);
 #endif
   
 #ifdef MP_CHECK
