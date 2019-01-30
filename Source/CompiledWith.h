@@ -8,7 +8,6 @@
 #define WITH_ACTIVITY_MAP
 #define WITH_ENTRY_EXIT
 //#define WITH_LW_FOOTER
-//#define WITH_JOB_TRACE
 //#define WITH_MB_WATCH
 //#define WITH_MUNGED
 #define WITH_SETH
