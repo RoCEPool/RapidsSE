@@ -222,7 +222,7 @@ EntryBuffer* EntryBuffer::pHigherBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return m_pHigherBuffer;
+  return _pEntryBuffer(m_pHigherBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -292,7 +292,7 @@ EntryBuffer* EntryBuffer::pNextBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  return m_pNextBuffer;
+  return _pEntryBuffer(m_pNextBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -332,7 +332,7 @@ EntryBuffer* EntryBuffer::pPrevBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return m_pPrevBuffer;
+  return _pEntryBuffer(m_pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2210,9 +2210,11 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
   //RASSERT(aDeleteEntryKey->bEqualTo(aDeleteKey,pIdxColVec));
   
   Entry* aFirstEntry = this->aFirstEntry();
-  if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer)
-    m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
-
+  if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer) {
+    EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
+    pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
+  }
+  
   vDeleteEntry(&aEntryToBeDeleted);
 }
 
@@ -2252,8 +2254,10 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
   RASSERT(pToBuffer == aEntryToBeDeleted->pReferencedEntryBuffer());
   
   Entry* aFirstEntry = this->aFirstEntry();
-  if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer)
-    m_pHigherBuffer->vDeleteUpwards(aDeleteKey,this,ppRootKeyBuffer);
+  if (aEntryToBeDeleted == aFirstEntry && m_pHigherBuffer) {
+    EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
+    pHigherBuffer->vDeleteUpwards(aDeleteKey,this,ppRootKeyBuffer);
+  }
   
   vDeleteEntry(&aEntryToBeDeleted);
 }
@@ -2430,7 +2434,8 @@ void EntryBuffer::vHandleLeftInsert(Entry* aInsertedKeyEntry,
   
   if (aOriginalFirstEntry) {
     Key* aDeleteKey = aOriginalFirstEntry->aKey();
-    m_pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
+    EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
+    pHigherBuffer->vDeleteUpwards(aDeleteKey,ppRootKeyBuffer);
     //(*ppRootKeyBuffer)->vShowTree();
   }
   
@@ -2451,7 +2456,8 @@ void EntryBuffer::vHandleLeftInsert(Entry* aInsertedKeyEntry,
   xKeyWrkIns.vKeySize(iInsertKeyLen);
   xKeyWrkIns.vOffsets(nInsertOffsets);
   
-  m_pHigherBuffer->aInsertKeyBuffer(xKeyWrkIns,ppRootKeyBuffer);
+  EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
+  pHigherBuffer->aInsertKeyBuffer(xKeyWrkIns,ppRootKeyBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3026,11 +3032,13 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
   pNewBuffer->vBufferLevel(m_iBufferLevel);
   pNewBuffer->vPartitionNo(m_nPartitionNo);
   
-  pNewBuffer->vHigherBuffer(m_pHigherBuffer);
+  pNewBuffer->vHigherBuffer(_pEntryBuffer(m_pHigherBuffer));
   pNewBuffer->vPrevBuffer(this);
-  pNewBuffer->vNextBuffer(m_pNextBuffer);
-  if (m_pNextBuffer)
-    m_pNextBuffer->vPrevBuffer(pNewBuffer);
+  pNewBuffer->vNextBuffer(_pEntryBuffer(m_pNextBuffer));
+  if (m_pNextBuffer) {
+    EntryBuffer* pNextBuffer = _pEntryBuffer(m_pNextBuffer);
+    pNextBuffer->vPrevBuffer(pNewBuffer);
+  }
   
   m_pNextBuffer = pNewBuffer;
   
@@ -4480,11 +4488,12 @@ bool EntryBuffer::bVerifyNextPrev(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pPrevBuffer) {
-    if (m_pPrevBuffer->pNextBuffer() != this) {
+    EntryBuffer* pPrevBuffer = _pEntryBuffer(m_pPrevBuffer);
+    if (pPrevBuffer->pNextBuffer() != this) {
       vVerifyFault();
       return false;
     }
-    if (m_pPrevBuffer->iBufferLevel() != m_iBufferLevel) {
+    if (pPrevBuffer->iBufferLevel() != m_iBufferLevel) {
       vVerifyFault();
       return false;
     }
@@ -4493,11 +4502,12 @@ bool EntryBuffer::bVerifyNextPrev(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pNextBuffer) {
-    if (m_pNextBuffer->pPrevBuffer() != this) {
+    EntryBuffer* pNextBuffer = _pEntryBuffer(m_pNextBuffer);
+    if (pNextBuffer->pPrevBuffer() != this) {
       vVerifyFault();
       return false;
     }
-    if (m_pNextBuffer->iBufferLevel() != m_iBufferLevel) {
+    if (pNextBuffer->iBufferLevel() != m_iBufferLevel) {
       vVerifyFault();
       return false;
     }
@@ -4506,7 +4516,8 @@ bool EntryBuffer::bVerifyNextPrev(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (m_pHigherBuffer) {
-    if (m_pHigherBuffer->iBufferLevel() != m_iBufferLevel + 1) {
+    EntryBuffer* pHigherBuffer = _pEntryBuffer(m_pHigherBuffer);
+    if (pHigherBuffer->iBufferLevel() != m_iBufferLevel + 1) {
       vVerifyFault();
       return false;
     }

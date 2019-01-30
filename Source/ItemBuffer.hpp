@@ -12,6 +12,11 @@ namespace Structures
   protected:
     i8 m_nItems; // number of items in this buffer
 
+  ItemBuffer* m_pHigherBuffer; // higher level buffer that has entries
+                                // that point to this buffer
+  ItemBuffer* m_pNextBuffer;   // next buffer
+  ItemBuffer* m_pPrevBuffer;   // prev buffer
+
     Wsp_t<C_WSP_ITEMBUFFER> m_xWsp;
   
   public:

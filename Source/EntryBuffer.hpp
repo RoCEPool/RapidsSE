@@ -24,10 +24,6 @@ namespace DBobjects
     Lock  m_okLock;       // lock
     bool  m_bIsLast;     // is this the last buffer in sequence
   
-    EntryBuffer* m_pHigherBuffer; // higher level buffer that has entries
-                                  // that point to this buffer
-    EntryBuffer* m_pNextBuffer;   // next buffer
-    EntryBuffer* m_pPrevBuffer;   // prev buffer
   
     Index*  m_pIndex;       // index this buffer belongs to
     i2      m_nPartitionNo; // partition no this buffer belongs to
