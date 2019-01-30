@@ -7,8 +7,6 @@
 extern AttachMap* gpAttachMap;
 extern Header*    gaSeShmRegion;
 
-extern Arguments gxArguments;
-
 //extern void* C_ADDR_POOL;
 
 /*----------------------------------------------------------------------------*/

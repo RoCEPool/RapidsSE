@@ -8,7 +8,6 @@
 
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
-extern Arguments   gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
