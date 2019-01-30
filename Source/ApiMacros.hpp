@@ -51,7 +51,7 @@
   eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
   \
   Engine::vErrorHandler(pError); \
-  API_TRACE_ERROR("catch"_Stz,eErrorCode); \
+  TRACE_API_ERROR("catch"_Stz,eErrorCode); \
   ApiState::vMarkError(pSession,eErrorCode); \
   ApiState::vMarkApiLoc(pSession,888); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
@@ -90,7 +90,7 @@
     ApiState::vMarkCall(pSession,eApiCall); \
     ApiState::vMarkApiLoc(pSession,100); \
     \
-    API_TRACE("enter"_Stz); \
+    TRACE_API("enter"_Stz); \
   }
 
 #else
@@ -104,7 +104,7 @@
 #ifdef WITH_DEBUG_VERSION
 #define API_EXITING() \
 { \
-  API_TRACE("exiting"_Stz); \
+  TRACE_API("exiting"_Stz); \
   \
   if (pSession) { \
     ApiState::vMarkReturn(pSession); \
@@ -126,7 +126,7 @@
 #define API_NOTNULL(p1) \
 { \
   if (! p1) { \
-    API_TRACE_ERROR((char*)#p1, EC_INVALID_PARAMETER); \
+    TRACE_API_ERROR((char*)#p1, EC_INVALID_PARAMETER); \
     return EC_INVALID_PARAMETER; \
   } \
 }
@@ -136,15 +136,12 @@
 
 #endif
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
 /*----------------------------------------------------------------------------*/
 /* trace API parameter                                                        */
 /*----------------------------------------------------------------------------*/
 #ifdef WITH_DEBUG_VERSION
 #define API_PARAM(p1) \
-  API_TRACE_PARAM("param"_Stz,(p1? "null"_Stz : p1));
+  TRACE_API_PARAM("param"_Stz,(p1? "null"_Stz : p1));
 
 #else
 #define API_PARAM(p1)
@@ -157,7 +154,7 @@
 #ifdef WITH_DEBUG_VERSION
 #define API_RETURN() \
 { \
-  API_TRACE("return"_Stz); \
+  TRACE_API("return"_Stz); \
   \
   if (pSession) { \
     ApiState::vMarkReturn(pSession); \
@@ -179,7 +176,7 @@
 #ifdef WITH_DEBUG_VERSION
 #define API_RETURN_ERROR(eErrorCode) \
 { \
-  API_TRACE_ERROR("return error"_Stz,eErrorCode); \
+  TRACE_API_ERROR("return error"_Stz,eErrorCode); \
   ApiState::vMarkError(pSession,eErrorCode); \
   ApiState::vMarkApiLoc(pSession,880); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
@@ -192,27 +189,30 @@
 
 #endif
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
 /* trace API                                                                  */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG_VERSION
-#define API_TRACE(aMarker) \
+#ifdef WITH_TRACE_API
+#define TRACE_API(aMarker) \
 { \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace("!%s(%s): %p(%lld)\n"_Stz,  \
            aApiCall, aMarker, \
            pSession, pSession ? pSession->iPartition() : -1); \
 }
-#else
-#define API_TRACE(aMarker)
 
+#else
+#define TRACE_API(aMarker)
 #endif
 
 /*----------------------------------------------------------------------------*/
 /* trace API error                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG_VERSION
-#define API_TRACE_ERROR(aMarker, eErrorCode) \
+#ifdef WITH_TRACE_API
+#define TRACE_API_ERROR(aMarker, eErrorCode) \
 { \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
@@ -220,16 +220,16 @@
            pSession, pSession ? pSession->iPartition() : -1, \
            aEC[eErrorCode], (i8)eErrorCode); \
 }
-#else
-#define API_TRACE_ERROR(aMarker, eErrorCode)
 
+#else
+#define TRACE_API_ERROR(aMarker, eErrorCode)
 #endif
 
 /*----------------------------------------------------------------------------*/
 /* trace API param                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG_VERSION
-#define API_TRACE_PARAM(aMarker, sParam) \
+#ifdef WITH_TRACE_API
+#define TRACE_API_PARAM(aMarker, sParam) \
 { \
 if ( (iTrace & TL_ERROR) == TL_ERROR) \
   vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
@@ -237,25 +237,19 @@ if ( (iTrace & TL_ERROR) == TL_ERROR) \
          pSession, pSession ? pSession->iPartition() : -1, \
          sParam ? sParam : "<null>"_Stz); \
 }
-#else
-#define API_TRACE_ERROR(aMarker, eErrorCode)
 
+#else
+#define TRACE_API_ERROR(aMarker, eErrorCode)
 #endif
 
 /*----------------------------------------------------------------------------*/
 /* verify buffer pool boundaries                                              */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_DEBUG_VERSION
+#ifdef WITH_TRACE_API
 #define API_VALIDATE_POOL() \
 { \
-  bool bPoolValid; \
-  if ( (iTrace & TL_POOL) == TL_POOL) { \
-    bPoolValid = gpBufferPool->bVerifyBoundaries(true); \
-  } \
-  else { \
-    bPoolValid = gpBufferPool->bVerifyBoundaries(false); \
-  } \
-  if ( ! bPoolValid )  { \
+  bool bPoolValid = gpBufferPool->bVerifyBoundaries(true); \
+  if (! bPoolValid)  { \
     vTrace("Pool base and limit are not valid!!!"    \
            "JAVA MAY HAVE RE_MAPPED MEMORY SEGMENTS!!!\n"_Stz);  \
     return EC_VALIDATION_FAILURE; \
@@ -263,7 +257,16 @@ if ( (iTrace & TL_ERROR) == TL_ERROR) \
 }
 
 #else
-#define API_VALIDATE_POOL()
+#define API_VALIDATE_POOL() \
+{ \
+  bool bPoolValid = gpBufferPool->bVerifyBoundaries(false); \
+  \
+  if (! bPoolValid)  { \
+    vTrace("Pool base and limit are not valid!!!"    \
+           "JAVA MAY HAVE RE_MAPPED MEMORY SEGMENTS!!!\n"_Stz);  \
+    return EC_VALIDATION_FAILURE; \
+  } \
+}
 
 #endif
 
