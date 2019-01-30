@@ -96,7 +96,7 @@
 /* API function is exiting prior to API_RETURN                                */
 /*----------------------------------------------------------------------------*/
 #define API_EXITING() \
-{  \
+{ \
   if ( (iTrace & TL_EXIT) == TL_EXIT) \
     vTrace("<%s: %p(%lld)\n"_Stz,  \
            aApiCall, pSession, \
@@ -111,10 +111,21 @@
 }
 
 /*----------------------------------------------------------------------------*/
+/* validate not null argument                                                 */
+/*----------------------------------------------------------------------------*/
+#define API_NOTNULL(p1) \
+{ \
+  if (! p1) { \
+    API_TRACE_ERROR((char*)#p1, EC_INVALID_PARAMETER); \
+    return EC_INVALID_PARAMETER; \
+  } \
+}
+
+/*----------------------------------------------------------------------------*/
 /* API function is returning                                                  */
 /*----------------------------------------------------------------------------*/
 #define API_RETURN() \
-{  \
+{ \
   if ( (iTrace & TL_EXIT) == TL_EXIT) \
     vTrace("<%s: %p(%lld)\n"_Stz,  \
            aApiCall, pSession, \
@@ -149,7 +160,7 @@
 /* trace API parameter                                                        */
 /*----------------------------------------------------------------------------*/
 #define API_PARAM_P1(p1) \
-{  \
+{ \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("%s: %p(%lld) %s\n"_Stz,  \
            aApiCall, pSession, \
@@ -160,7 +171,7 @@
 /* trace API parameters                                                       */
 /*----------------------------------------------------------------------------*/
 #define API_PARAM_P2(p1, p2) \
-{  \
+{ \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("%s: %p(%lld) %s %s\n"_Stz,  \
            aApiCall, pSession, \
@@ -172,7 +183,7 @@
 /* trace API parameters                                                       */
 /*----------------------------------------------------------------------------*/
 #define API_PARAM_P3(p1, p2, p3) \
-{  \
+{ \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("%s: %p(%lld) %s %s %s\n"_Stz,  \
            aApiCall, pSession, \
@@ -184,7 +195,7 @@
 /* trace API parameters                                                       */
 /*----------------------------------------------------------------------------*/
 #define API_PARAM_P4(p1, p2, p3, p4) \
-{  \
+{ \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("%s: %p(%lld) %s %s %s %s\n"_Stz,  \
            aApiCall, pSession, \
@@ -192,21 +203,10 @@
 }
 
 /*----------------------------------------------------------------------------*/
-/* validate not null argument                                                 */
-/*----------------------------------------------------------------------------*/
-#define API_NOTNULL(p1) \
-{ \
-  if (! p1) { \
-    TRACE_ERROR((char*)#p1, EC_INVALID_PARAMETER); \
-    return EC_INVALID_PARAMETER; \
-  } \
-}
-
-/*----------------------------------------------------------------------------*/
 /* trace API error                                                            */
 /*----------------------------------------------------------------------------*/
-#define TRACE_ERROR(aMarker, eErrorCode) \
-{  \
+#define API_TRACE_ERROR(aMarker, eErrorCode) \
+{ \
   if ( (iTrace & TL_ERROR) == TL_ERROR) \
     vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
            aApiCall, aMarker, pSession, \
@@ -217,8 +217,8 @@
 /*----------------------------------------------------------------------------*/
 /* verify buffer pool boundaries                                              */
 /*----------------------------------------------------------------------------*/
-#define VALIDATE_POOL() \
-{  \
+#define API_VALIDATE_POOL() \
+{ \
   bool bPoolValid; \
   if ( (iTrace & TL_POOL) == TL_POOL) { \
     bPoolValid = gpBufferPool->bVerifyBoundaries(true); \
@@ -266,8 +266,8 @@
 #define API_PARAM_P4(p1, p2, p3, p4)
 #define API_RETURN() return EC_NONE;
 #define API_RETURN_EC(eErrorCode) return eErrorCode
-#define TRACE_ERROR(aMarker, eErrorCode)
-#define VALIDATE_POOL()
+#define API_TRACE_ERROR(aMarker, eErrorCode)
+#define API_VALIDATE_POOL()
 
 #endif
 

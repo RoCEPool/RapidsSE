@@ -109,7 +109,7 @@ eEC RapidsSE_NewSession(i8 iTrace,
   
   try {
     
-    VALIDATE_POOL();
+    API_VALIDATE_POOL();
     
     pSession = new Session(iPartition);
     
@@ -147,7 +147,7 @@ eEC RapidsSE_OpenPool(i8 iTrace, Stz* sRegion, void** aaAttachMap)
     if (! bResult)
       API_RETURN_EC(EC_INVALID_INSTANCE);
     
-    VALIDATE_POOL();
+    API_VALIDATE_POOL();
     
     *aaAttachMap = gpAttachMap;
     

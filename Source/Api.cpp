@@ -390,19 +390,19 @@ eEC Api::eValidateSession(i8 iTrace, Session* pSession, Stz* aApiCall)
   
   // pSession cannot be null
   if (pSession == nullptr) {
-    TRACE_ERROR("eValidateSession(a)", EC_INVALID_INTERFACE);
+    API_TRACE_ERROR("eValidateSession(a)", EC_INVALID_INTERFACE);
     return EC_INVALID_INTERFACE;
   }
   
   // pSession should be a pool address
   if (!gpBufferPool->bValidAddress(pSession)) {
-    TRACE_ERROR("eValidateSession(b)", EC_INVALID_INTERFACE);
+    API_TRACE_ERROR("eValidateSession(b)", EC_INVALID_INTERFACE);
     return EC_INVALID_INTERFACE;
   }
   
   // pSession should be an SESSION class
   if (pSession->eClass() != CN_SESSION) {
-    TRACE_ERROR("eValidateSession(c)", EC_INVALID_INTERFACE);
+    API_TRACE_ERROR("eValidateSession(c)", EC_INVALID_INTERFACE);
     return EC_INVALID_INTERFACE;
   }
   
