@@ -44,6 +44,26 @@
     ApiState::vMarkApiLoc(pSession,200);
 
 /*----------------------------------------------------------------------------*/
+/* catch an error in an API function                                          */
+/*----------------------------------------------------------------------------*/
+// not using braces { }, as that would hide the variables
+
+#define API_CATCH(pError) \
+  \
+  eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
+  \
+  Engine::vErrorHandler(pError); \
+  if ( (iTrace & TL_ERROR) == TL_ERROR) \
+    vTrace("<!%s: %p(%lld) %s(%lld)\n"_Stz,  \
+            aApiCall, pSession, \
+            pSession ? pSession->iPartition() : -1, \
+            aEC[eErrorCode],(i8)eErrorCode); \
+  ApiState::vMarkError(pSession,eErrorCode); \
+  ApiState::vMarkApiLoc(pSession,888); \
+  ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
+  return eErrorCode;
+
+/*----------------------------------------------------------------------------*/
 /* enter an API function                                                      */
 /*----------------------------------------------------------------------------*/
 // not using braces { }, as that would hide the variables
@@ -70,30 +90,7 @@
       vTrace(">%s: %p(%lld)\n"_Stz,  \
              aApiCall, pSession , \
              pSession ? pSession->iPartition() : -1); \
-  } \
-  if (pJob) { \
-  } \
-
-
-/*----------------------------------------------------------------------------*/
-/* catch an error in an API function                                          */
-/*----------------------------------------------------------------------------*/
-// not using braces { }, as that would hide the variables
-
-#define API_CATCH(pError) \
-  \
-  eEC eErrorCode = pError ? pError->eErrorCode() : EC_SE_UNKNOWN_ERROR; \
-  \
-  Engine::vErrorHandler(pError); \
-  if ( (iTrace & TL_ERROR) == TL_ERROR) \
-    vTrace("<!%s: %p(%lld) %s(%lld)\n"_Stz,  \
-           aApiCall, pSession, \
-           pSession ? pSession->iPartition() : -1, \
-           aEC[eErrorCode],(i8)eErrorCode); \
-  ApiState::vMarkError(pSession,eErrorCode); \
-  ApiState::vMarkApiLoc(pSession,888); \
-  ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
-  return eErrorCode;
+  }
 
 /*----------------------------------------------------------------------------*/
 /* API function is exiting prior to API_RETURN                                */
@@ -141,7 +138,7 @@
     vTrace("<!%s: %p(%lld) %s(%lld)\n"_Stz,  \
            aApiCall, pSession, \
            pSession ? pSession->iPartition() : -1, \
-          aEC[eErrorCode],(i8)eErrorCode); \
+           aEC[eErrorCode],(i8)eErrorCode); \
   ApiState::vMarkError(pSession,eErrorCode); \
   ApiState::vMarkApiLoc(pSession,880); \
   ActivityMap::vMarkApiError(eApiCall,(i8)eErrorCode); \
@@ -155,7 +152,8 @@
 {  \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("%s: %p(%lld) %s\n"_Stz,  \
-      aApiCall, pSession, pSession ? pSession->iPartition() : -1, p1); \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1, p1); \
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,8 +163,9 @@
 {  \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("%s: %p(%lld) %s %s\n"_Stz,  \
-      aApiCall, pSession, pSession ? pSession->iPartition() : -1, \
-        p1 ? p1 : "null"_Stz , p2 ? p2 : "null"_Stz); \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1, \
+           p1 ? p1 : "null"_Stz , p2 ? p2 : "null"_Stz); \
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,8 +175,9 @@
 {  \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("%s: %p(%lld) %s %s %s\n"_Stz,  \
-      aApiCall, pSession, pSession ? pSession->iPartition() : -1, \
-        p1 ? p1 : "null"_Stz, p2 ? p2 : "null"_Stz , p3 ? p3 : "null"_Stz); \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1, \
+           p1 ? p1 : "null"_Stz, p2 ? p2 : "null"_Stz , p3 ? p3 : "null"_Stz); \
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,7 +187,8 @@
 {  \
   if ( (iTrace & TL_ENTRY) == TL_ENTRY) \
     vTrace("%s: %p(%lld) %s %s %s %s\n"_Stz,  \
-      aApiCall, pSession, pSession ? pSession->iPartition() : -1, p1, p2, p3, p4); \
+           aApiCall, pSession, \
+           pSession ? pSession->iPartition() : -1, p1, p2, p3, p4); \
 }
 
 /*----------------------------------------------------------------------------*/
