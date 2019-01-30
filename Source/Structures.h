@@ -18,9 +18,6 @@ using namespace Structures;
 
 #include "ArrayNL_t.hpp"
 
-#include "Item.hpp"
-#include "ItemBuffer.hpp"
-
 #include "ListNode_t.hpp"
 #include "List_t.hpp"
 #include "ListNL_t.hpp"
@@ -33,7 +30,6 @@ using namespace Structures;
 
 #include "VectorNL_t.hpp"
 
-#include "Wilderness.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

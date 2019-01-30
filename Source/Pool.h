@@ -29,7 +29,7 @@ static const i8 C_SIZE_JUMBO_OBJECT     = C_SIZE_POOL_BUFFER * C_JUMBO_RATIO;
 static const i8 C_LOW_BUFFERS           = 128;
 
 #include "bn.hpp"
-#include "Buffer.hpp"
+#include "PoolBuffer.hpp"
 #include "FreeBuffer.hpp"
 #include "BufferPool.hpp"
 #include "BPA.hpp"
