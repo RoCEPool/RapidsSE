@@ -5,11 +5,11 @@
 
 
 // API trace levels
-#define TL_ENTRY  C_BIT_0 // 1
-#define TL_ERROR  C_BIT_1 // 2
-#define TL_EXIT   C_BIT_2 // 4
-#define TL_INSERT C_BIT_3 // 8
-#define TL_POOL   C_BIT_4 // 16
+const u8 API_TL_ENTRY  = C_BIT_0; // 1
+const u8 API_TL_ERROR  = C_BIT_1; // 2
+const u8 API_TL_EXIT   = C_BIT_2; // 4
+const u8 API_TL_INSERT = C_BIT_3; // 8
+const u8 API_TL_POOL   = C_BIT_4; // 16
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -182,7 +182,7 @@
 #ifdef WITH_TRACE_API
 #define TRACE_API(aMarker) \
 { \
-  if ( (iTrace & TL_ERROR) == TL_ERROR) \
+  if ( (iTrace & API_TL_ERROR) == API_TL_ERROR) \
     vTrace("!%s(%s): %p(%lld)\n"_Stz,  \
            aAC[eApiCall], aMarker, \
            pSession, pSession ? pSession->iPartition() : -1); \
@@ -198,7 +198,7 @@
 #ifdef WITH_TRACE_API
 #define TRACE_API_ERROR(aMarker, eErrorCode) \
 { \
-  if ( (iTrace & TL_ERROR) == TL_ERROR) \
+  if ( (iTrace & API_TL_ERROR) == API_TL_ERROR) \
     vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
            aAC[eApiCall], aMarker, \
            pSession, pSession ? pSession->iPartition() : -1, \
@@ -215,7 +215,7 @@
 #ifdef WITH_TRACE_API
 #define TRACE_API_PARAM(aMarker, sParam) \
 { \
-  if ( (iTrace & TL_ERROR) == TL_ERROR) \
+  if ( (iTrace & API_TL_ERROR) == API_TL_ERROR) \
     vTrace("!%s(%s): %p(%lld) %s(%lld)\n"_Stz,  \
            aAC[eApiCall], aMarker, \
            pSession, pSession ? pSession->iPartition() : -1, \
