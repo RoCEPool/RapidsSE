@@ -777,26 +777,23 @@ void Engine::vStartSystem(void)
   
   ASSERT( ! gpAttachMap->m_oRootDic.bHasWords() );
     
-  gpAttachMap->vRecordArguments(gxArguments.m_sRegionName,
-                                gxArguments.m_iRegionSize,
+  gpAttachMap->vRecordArguments(gxArguments.m_bActivityMap,
                                 gxArguments.m_iJumboSize,
-
                                 gxArguments.m_nNodes,
+                                gxArguments.m_sRegionName,
+                                gxArguments.m_iRegionSize,
                                 gxArguments.m_nSlotsPerNode,
-
                                 gxArguments.m_nSubIngesters,
-                                gxArguments.m_nSubLoaders,
-                                
-                                gxArguments.m_bActivityMap);
+                                gxArguments.m_nSubLoaders
+                                );
   
-  //--------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
+  // move
   
   gpAttachMap->m_pQueues = new Queues;
     
   gpAttachMap->m_okDdlLock.vInitLock(LK_DDL);
   gpAttachMap->m_okDicLock.vInitLock(LK_DIC);
-  
-  //--------------------------------------------------------------------------
   
   gpAttachMap->m_pGrid = new Grid(gxArguments.m_nNodes, gxArguments.m_nSlotsPerNode);
   
@@ -826,12 +823,10 @@ void Engine::vStartSystem(void)
   // initialize the plan number
   gpAttachMap->m_ixPlanId = gpAttachMap->m_pGrid->iThisNode() << 48;
 
-  //--------------------------------------------------------------------------
-
   gpAttachMap->m_pOriginatingJobs   = new JobList(bJobCompare,JL_ORIGINATING);
   gpAttachMap->m_pParticipatingJobs = new JobList(bJobCompare,JL_PARTICIPATING);
   
-  //--------------------------------------------------------------------------
+  //----------------------------------------------------------------------------
 
   vOpenActivityMap();
   

@@ -176,10 +176,15 @@ void AttachMap::vPrintAttachMap(void)
 /*----------------------------------------------------------------------------*/
 /* record all the needed arguments                                            */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vRecordArguments(Stz* aRegionName, i8 iRegionSize, i8 iJumboSize,
-                                 i8   nNodes, i8 nSlotsPerNode,
-                                 i8   nSubIngesters, i8 nSubLoaders,
-                                 bool bActivityMap)
+void AttachMap::vRecordArguments(bool bActivityMap,
+                                 i8   iJumboSize,
+                                 i8   nNodes,
+                                 Stz* aRegionName,
+                                 i8   iRegionSize,
+                                 i8   nSlotsPerNode,
+                                 i8   nSubIngesters,
+                                 i8   nSubLoaders
+                                 )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 

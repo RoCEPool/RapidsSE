@@ -8,21 +8,25 @@ namespace StorageEngine
   class AttachMap : public Buffer
   {
   public:
-    i8            m_iPid;
-    Since         m_oSince;
-    Time          m_oTime;
-    s32           m_sUTC;
+    i8    m_iPid;
+    Since m_oSince;
+    Time  m_oTime;
+    s32   m_sUTC;
   
     struct {
-      bool        m_bActivityMap;
-      i8          m_iJumboSize;
-      i8          m_nNodes;
-      s32         m_sRegionName;
-      i8          m_iRegionSize;
-      i8          m_nSlotsPerNode;
-      i8          m_nSubIngesters;
-      i8          m_nSubInserters;
-      i8          m_nSubLoaders;
+      bool m_bActivityMap;
+      i8   m_nDummyThreads; // number of dummy threads
+      i8   m_nDummySleep;   // sleep period for dummy threads
+      i8   m_nDummyLoop;    // loop count for dummy threads
+      i8   m_iJumboSize;
+      i8   m_nNodes;
+      s32  m_sRegionName;
+      i8   m_iRegionSize;
+      i8   m_nSlotsPerNode;
+      i8   m_nSubIngesters;
+      i8   m_nSubInserters;
+      i8   m_nSubLoaders;
+      i8   m_nThreads;      // number of general threads
    } Arg;
   
     ApiState*     m_pApiState;
@@ -84,10 +88,16 @@ namespace StorageEngine
     
     void vGetGlobals(void);
     void vPrintAttachMap(void);
-    void vRecordArguments(Stz* sRegionName, i8 iRegionSize, i8 iJumboSize,
-                          i8   nNodes, i8 nSlotsPerNode,
-                          i8   nSubIngesters, i8 nSubLoaders,
-                          bool bActivityMap);
+    void vRecordArguments(
+                          bool bActivityMap,
+                          i8   iJumboSize,
+                          i8   nNodes,
+                          Stz* sRegionName,
+                          i8   iRegionSize,
+                          i8   nSlotsPerNode,
+                          i8   nSubIngesters,
+                          i8   nSubLoaders
+                          );
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
