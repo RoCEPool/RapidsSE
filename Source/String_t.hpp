@@ -64,7 +64,7 @@ String_t<SIZE>::String_t(void)
 {
   _precondition_(_MAGIC_,CN_STRING_T,_FOOTER_);
   
-#ifdef __DEBUG_CHECKS
+#ifdef WITH_DEBUG_CHECKS
   MemLib::vZero(m_caArea,SIZE,CN_STRING_T);
 #else
   m_caArea[0] = '\0';

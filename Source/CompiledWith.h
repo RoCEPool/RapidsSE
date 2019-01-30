@@ -13,13 +13,13 @@
 
 // toggle debug/release behaviors on or off
 #ifdef _DEBUG
-#define __ADDRESS_CHECK   // check that address is in pool
-#define __ASSERT_CHECKS   // Assert() macro
-#define __CLASS_CHECK     // known class
-#define __DEBUG_CHECKS    // _pre_(), _post_(), _checkInitialised_()
-#define __FOOTER_CHECK    // footer marker check
-#define __MEMORY_ZERO     // initialise wsp etc to all 0's
-#define __MAGIC_CHECK     // magic marker check in header
+#define WITH_ADDRESS_CHECK   // check that address is in pool
+#define WITH_ASSERT_CHECKS   // Assert() macro
+#define WITH_CLASS_CHECK     // known class
+#define WITH_DEBUG_CHECKS    // _pre_(), _post_(), _checkInitialised_()
+#define WITH_FOOTER_CHECK    // footer marker check
+#define WITH_MAGIC_CHECK     // magic marker check in header
+#define WITH_MEMORY_ZERO     // initialise wsp etc to all 0's
 #else
 #endif
 

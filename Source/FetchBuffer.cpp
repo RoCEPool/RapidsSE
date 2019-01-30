@@ -59,7 +59,7 @@ FetchBuffer::FetchBuffer(Table* pTable, i8 iPartition)
   m_nFetchedRows = 0;
   m_pTable       = pTable;
   
-#ifdef __DEBUG_CHECKS
+#ifdef WITH_DEBUG_CHECKS
   m_xWsp.vZero(CN_FETCHBUFFER);
 #endif
   

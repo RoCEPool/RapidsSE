@@ -30,40 +30,40 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  __APPLE__\n"_Stz);
 #endif
   
-#ifdef __ADDRESS_CHECK
-  vTrace("  __ADDRESS_CHECK\n"_Stz);
+#ifdef WITH_ADDRESS_CHECK
+  vTrace("  WITH_ADDRESS_CHECK\n"_Stz);
 #endif
   
-#ifdef __ASSERT_CHECKS
-  vTrace("  __ASSERT_CHECKS\n"_Stz);
+#ifdef WITH_ASSERT_CHECKS
+  vTrace("  WITH_ASSERT_CHECKS\n"_Stz);
 #endif
   
-#ifdef __CLASS_CHECK
-  vTrace("  __CLASS_CHECK\n"_Stz);
+#ifdef WITH_CLASS_CHECK
+  vTrace("  WITH_CLASS_CHECK\n"_Stz);
 #endif
   
 #ifdef __DEBUG
   vTrace("  __DEBUG\n"_Stz);
 #endif
   
-#ifdef __DEBUG_CHECKS
-  vTrace("  __DEBUG_CHECKS\n"_Stz);
+#ifdef WITH_DEBUG_CHECKS
+  vTrace("  WITH_DEBUG_CHECKS\n"_Stz);
 #endif
   
 #ifdef WITH_ENTRY_EXIT
   vTrace("  WITH_ENTRY_EXIT\n"_Stz);
 #endif
   
-#ifdef __FOOTER_CHECK
-  vTrace("  __FOOTER_CHECK\n"_Stz);
+#ifdef WITH_FOOTER_CHECK
+  vTrace("  WITH_FOOTER_CHECK\n"_Stz);
 #endif
   
-#ifdef __MAGIC_CHECK
-  vTrace("  __MAGIC_CHECK\n"_Stz);
+#ifdef WITH_MAGIC_CHECK
+  vTrace("  WITH_MAGIC_CHECK\n"_Stz);
 #endif
   
-#ifdef __MEMORY_ZERO
-  vTrace("  __MEMORY_ZERO\n"_Stz);
+#ifdef WITH_MEMORY_ZERO
+  vTrace("  WITH_MEMORY_ZERO\n"_Stz);
 #endif
   
 #ifdef _DEBUG

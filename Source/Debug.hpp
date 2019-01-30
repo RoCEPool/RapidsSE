@@ -19,7 +19,7 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* check the object is within the pool                                      */
   /*--------------------------------------------------------------------------*/
-  #ifdef __ADDRESS_CHECK
+  #ifdef WITH_ADDRESS_CHECK
     #define _poolAddress_(pArg) Base::vCheckAddress(pArg)
   #else
     #define _poolAddress_(pArg)
@@ -28,7 +28,7 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* our ASSERT macros                                                        */
   /*--------------------------------------------------------------------------*/
-  #ifdef __ASSERT_CHECKS
+  #ifdef WITH_ASSERT_CHECKS
     #define ASSERT(condition) \
     { \
       if ( !(condition) ) { \
@@ -73,7 +73,7 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* initialise memory to zero                                                */
   /*--------------------------------------------------------------------------*/
-  #ifdef __MEMORY_ZERO
+  #ifdef WITH_MEMORY_ZERO
     #define _memzero_(pAddr,nBytes)  MemLib::vZero(pAddr,nBytes);
   #else
     #define _memzero_(pAddr,nBytes)

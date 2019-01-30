@@ -29,7 +29,7 @@ ItemBuffer::ItemBuffer(eCN eClassNo)
   m_nItems = 0;
   //m_xWsp
   
-#ifdef __DEBUG_CHECKS
+#ifdef WITH_DEBUG_CHECKS
   m_xWsp.vZero(eClassNo);
 #endif
   

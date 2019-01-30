@@ -37,7 +37,7 @@ KeyWrk::KeyWrk(void)
   
   _checkInitialisedSize_(sizeof(KeyWrk));
   
-//#ifdef __DEBUG_CHECKS
+//#ifdef WITH_DEBUG_CHECKS
   //m_xWsp.vFill(0,CN_KEYWRK);                                       ALKA!!!
 //#endif
   
