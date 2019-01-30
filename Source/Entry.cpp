@@ -520,7 +520,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case DM_BCD: {
-#ifdef WITH_VLQ
+#ifdef WITH_VLQ_DATUMS
         i8 iInt = IntLib::iVlqToInt((byte*)pDst);
         Bcd xBcd = *((Bcd*)&iInt);
         xVariable = xBcd;
@@ -539,7 +539,7 @@ void Entry::vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec)
       }
         
       case DM_INT: {
-#ifdef WITH_VLQ
+#ifdef WITH_VLQ_DATUMS
         i8 iInt = IntLib::iVlqToInt((byte*)pDst);
         Int xInt = *((Int*)&iInt);
         xVariable = xInt.iAsI8();

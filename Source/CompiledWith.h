@@ -13,7 +13,7 @@
 //#define WITH_MUNGED
 #define WITH_SETH
 #define WITH_TRACE_API
-#define WITH_VLQ
+#define WITH_VLQ_DATUMS
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // debug behaviours

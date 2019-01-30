@@ -76,8 +76,8 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  WITH_PREPOST_CHECKING\n"_Stz);
 #endif
   
-#ifdef WITH_VLQ
-  vTrace("  WITH_VLQ\n"_Stz);
+#ifdef WITH_VLQ_DATUMS
+  vTrace("  WITH_VLQ_DATUMS\n"_Stz);
 #endif
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
