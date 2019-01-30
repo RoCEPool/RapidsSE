@@ -20,24 +20,23 @@ namespace DBobjects
   friend class IndexTree;
 
   protected:
+    Lock    m_okLock;       // lock
   
-    Lock    m_okLock;         // lock
-    bool    m_bIsLast;        // is this the last buffer in sequence
     Index*  m_pIndex;       // index this buffer belongs to
-    i2      m_nPartitionNo; // partition no this buffer belongs to
-    i8      m_iBufferNo;    // this EntryBuffer's buffer number 
+    i2      m_iPartitionNo; // partition no this buffer belongs to
     i2      m_iBufferLevel; // index buffer level
-  
-    i4*     m_aEntryOffsets;     // array of row entry offsets
+    i8      m_iBufferNo;    // this EntryBuffer's buffer number
+    Since   m_oWhenNewed;   // when was this buffer created?
+    bool    m_bIsLast;      // is this the last buffer in sequence
+
+    i4*     m_iaEntryOffsets;    // array of row entry offsets
     i4      m_i_FreeOffsetChain; // head of free entry offset chain
   
-    Entry*     m_aHeadEntry;  // head entry
-    Entry*     m_aLastEntry;  // last entry in buffer
-    FreeEntry* m_aFreeEntryList;  // head of free entry list
+    Entry*  m_aHeadEntry;  // head entry
+    Entry*  m_aLastEntry;  // last entry in buffer
+    Entry*   m_aLazyChain; // first lazy entry
   
-    Entry*     m_aLazyChain;  // first lazy entry
-  
-    Since      m_oWhenNewed;  // when was this buffer created?
+    FreeEntry* m_aFreeEntryList; // head of free entry list
   
     // must be last
     Footer m_xFooter;
@@ -71,8 +70,8 @@ namespace DBobjects
     bool         bIsLast(void);
     EntryBuffer* pNextBuffer(void);
     void         vNextBuffer(EntryBuffer* pNextBuffer);
-    void         vPartitionNo(i8 nPartitionNo);
-    i8           nPartitionNo(void);
+    void         vPartitionNo(i8 iPartitionNo);
+    i8           iPartitionNo(void);
     EntryBuffer* pPrevBuffer(void);
     void         vPrevBuffer(EntryBuffer* pPrevBuffer);
  

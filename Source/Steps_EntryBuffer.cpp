@@ -275,7 +275,7 @@ void Step::vEntryBufferPartitionFetch(MP_Task mpTask)
   
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
-  mpTask->m_pDataStack->vPushI8(pIndexBuffer->nPartitionNo());
+  mpTask->m_pDataStack->vPushI8(pIndexBuffer->iPartitionNo());
   
   EXIT();
 }

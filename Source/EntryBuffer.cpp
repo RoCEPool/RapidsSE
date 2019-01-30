@@ -77,11 +77,11 @@ EntryBuffer::EntryBuffer(void)
   m_pPrevBuffer   = nullptr;
 
   m_pIndex        = nullptr;
-  m_nPartitionNo  = -1;
+  m_iPartitionNo  = -1;
   m_iBufferNo     = *nBufferNo();
   m_iBufferLevel  = 0;
   
-  m_aEntryOffsets = nullptr;
+  m_iaEntryOffsets = nullptr;
   m_i_FreeOffsetChain = C_ENTRY_NONE;
   
   m_aHeadEntry  = nullptr;
@@ -247,7 +247,7 @@ void EntryBuffer::vIndex(Index* pIndex)
   if (! m_pIndex->bIsHidden())
     return;
   
-  m_aEntryOffsets  =
+  m_iaEntryOffsets  =
     reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_L0));
   
   m_i_FreeOffsetChain = C_ENTRY_NONE;
@@ -308,21 +308,21 @@ void EntryBuffer::vNextBuffer(EntryBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 /* set partition no                                                           */
 /*----------------------------------------------------------------------------*/
-void EntryBuffer::vPartitionNo(i8 nPartitionNo)
+void EntryBuffer::vPartitionNo(i8 iPartitionNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  m_nPartitionNo = nPartitionNo;
+  m_iPartitionNo = iPartitionNo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get partition no                                                           */
 /*----------------------------------------------------------------------------*/
-i8 EntryBuffer::nPartitionNo(void)
+i8 EntryBuffer::iPartitionNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  return m_nPartitionNo;
+  return m_iPartitionNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -371,7 +371,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
       if (bDetailed)
         sAnalysis.vCatSprint("row: (%s, %lld, %5lld, 'L%lld', %lld )\n"_Stz,
                              gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
-                             pNextBuffer->m_nPartitionNo,
+                             pNextBuffer->m_iPartitionNo,
                              iBuffers,
                              pNextBuffer->m_iBufferLevel,
                              pNextBuffer->m_nItems);
@@ -388,7 +388,7 @@ void EntryBuffer::vAnalyze(s48K& sAnalysis, bool bDetailed,
   if (bDetailed)
     sAnalysis.vCatSprint(" row: (%s, %lld, %5lld,' L%lld', %lld)\n"_Stz,
                          gpAttachMap->m_pGrid->pThisNode()->aNodeName(),
-                         m_nPartitionNo,
+                         m_iPartitionNo,
                          iBuffers,
                          m_iBufferLevel,
                          m_nItems);
@@ -486,7 +486,7 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   
   i4 iEntryOffset = iToOffset(aRowEntry);
   RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
-  m_aEntryOffsets[i_RowNo] = iEntryOffset;
+  m_iaEntryOffsets[i_RowNo] = iEntryOffset;
   
   if (m_aLastEntry)
     m_aLastEntry->vNEO(0,iEntryOffset);
@@ -788,7 +788,7 @@ Entry* EntryBuffer::aGetEntryRowNo(i8 i_RowNo)
     return nullptr;
   
   RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
-  i4 iOffset = m_aEntryOffsets[i_RowNo];
+  i4 iOffset = m_iaEntryOffsets[i_RowNo];
   
   char* aAddress = aAdd<char*>(aDataArea(), iOffset);
   
@@ -1260,7 +1260,7 @@ void EntryBuffer::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  RASSERT(nullptr == m_aEntryOffsets);
+  RASSERT(nullptr == m_iaEntryOffsets);
   RASSERT(! m_pIndex->bIsHidden());
   RASSERT(1 == m_iBufferLevel);
   
@@ -1297,9 +1297,9 @@ void EntryBuffer::vRestore(void)
   // get this buffer address
   Buffer* pThisBuffer = pBitAnd<Buffer*>(this,C_OBJECT_TO_BUFFER_MASK);
   
-  // calculate offset for m_aEntryOffsets and set it
-  u8 uOffset = nSub(m_aEntryOffsets, pOriginalBuffer);
-  m_aEntryOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
+  // calculate offset for m_iaEntryOffsets and set it
+  u8 uOffset = nSub(m_iaEntryOffsets, pOriginalBuffer);
+  m_iaEntryOffsets = aBitOr<i4*>(pThisBuffer,uOffset);
   
   // calculate offset for m_aHeadEntry and set it
   uOffset = nSub(m_aHeadEntry, pOriginalBuffer);
@@ -1373,10 +1373,10 @@ void EntryBuffer::vShow(Entry* aMarkEntry)
          m_pHigherBuffer,sHigherBuffer.aStz(),m_pPrevBuffer,m_pNextBuffer);
 
   vTrace("  index: %s partition: %lld level: %lld\n"_Stz,
-         m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_nPartitionNo,m_iBufferLevel);
+         m_pIndex ? m_pIndex->aIndexName() : "NULL"_Stz,m_iPartitionNo,m_iBufferLevel);
   
   vTrace("  entryOffset: %p freeOffsetHead: %lld\n"_Stz,
-         m_aEntryOffsets,m_i_FreeOffsetChain);
+         m_iaEntryOffsets,m_i_FreeOffsetChain);
 
   vTrace("  headEntry: %p[%d,%d,%d] lastEntry: %p firstFree: %p\n"_Stz,
          m_aHeadEntry,m_aHeadEntry ? m_aHeadEntry->iNEO(0) : 0,
@@ -2368,7 +2368,7 @@ i4 EntryBuffer::iGetFreeRowEntry(void)
   i4 i_FreeEntry = m_i_FreeOffsetChain;
   
   RASSERT(i_FreeEntry < C_ENTRIES_L0);
-  m_i_FreeOffsetChain = - m_aEntryOffsets[i_FreeEntry];
+  m_i_FreeOffsetChain = - m_iaEntryOffsets[i_FreeEntry];
   
   return i_FreeEntry;
 }
@@ -2541,11 +2541,11 @@ void EntryBuffer::vInitFreeChain(void)
   // L0 free chain
   for (i4 i_RowNo = 0; i_RowNo < (L_ENTRIES_0 - 1); i_RowNo++) {
     RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
-    m_aEntryOffsets[i_RowNo] = - (i_RowNo+1);
+    m_iaEntryOffsets[i_RowNo] = - (i_RowNo+1);
   }
   
   RASSERT((L_ENTRIES_0 - 1) >= 0 && (L_ENTRIES_0 - 1) < C_ENTRIES_L0);
-  m_aEntryOffsets[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
+  m_iaEntryOffsets[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
   
   m_i_FreeOffsetChain = 0;
 }
@@ -2903,7 +2903,7 @@ EntryBuffer* EntryBuffer::pNewHigherBuffer(void)
   
   pNewBuffer->vIndex(m_pIndex);
   pNewBuffer->vBufferLevel(m_iBufferLevel+1);
-  pNewBuffer->vPartitionNo(m_nPartitionNo);
+  pNewBuffer->vPartitionNo(m_iPartitionNo);
   
   vHigherBuffer(pNewBuffer);
   
@@ -3030,7 +3030,7 @@ EntryBuffer* EntryBuffer::pNewNextBuffer(void)
   
   pNewBuffer->vIndex(m_pIndex);
   pNewBuffer->vBufferLevel(m_iBufferLevel);
-  pNewBuffer->vPartitionNo(m_nPartitionNo);
+  pNewBuffer->vPartitionNo(m_iPartitionNo);
   
   pNewBuffer->vHigherBuffer(_pEntryBuffer(m_pHigherBuffer));
   pNewBuffer->vPrevBuffer(this);
@@ -4217,7 +4217,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
   for (i8 i_RowNo = 0; i_RowNo < gpAttachMap->m_nIndexEntries; i_RowNo++) {
 
     RASSERT(i_RowNo < C_ENTRIES_L0);
-    i8 i_RowEntryOffset = m_aEntryOffsets[i_RowNo];
+    i8 i_RowEntryOffset = m_iaEntryOffsets[i_RowNo];
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // validate free offset element
@@ -4229,7 +4229,7 @@ bool EntryBuffer::bVerifyEntryOffset(void)
         continue;
       
       // get the next offset in free chain
-      i8 i_NextRowEntryOffset = m_aEntryOffsets[ - i_RowEntryOffset ];
+      i8 i_NextRowEntryOffset = m_iaEntryOffsets[ - i_RowEntryOffset ];
       
       // next offset should be free (or end of free chain)
       if (i_NextRowEntryOffset >= 0) {
