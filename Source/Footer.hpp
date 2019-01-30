@@ -38,9 +38,9 @@ namespace Correctness
 /*--------------------------------------------------------------------------*/
 /* check the object has a footer marker as its last word                    */
 /*--------------------------------------------------------------------------*/
-#ifdef WITH_FOOTER_CHECK
-  #define _footer_() aFooter()->vAssertFooter();
-  #define _hazard_() aHazard()->vAssertFooter();
+#ifdef WITH_CORECTNESS_ALGEBRA
+  #define _footer_()    aFooter()->vAssertFooter();
+  #define _hazard_()    aHazard()->vAssertFooter();
   #define _setFooter_() aFooter()->vSetFooter();
 #else
   #define _footer_()

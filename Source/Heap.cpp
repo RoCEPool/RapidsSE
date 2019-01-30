@@ -179,7 +179,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 
   m_okLock.vDropWrite();
   
-#ifdef WITH_DEBUG_CHECKS
+#ifdef WITH_PREPOST_CHECKING
   MemLib::vScribble(pObject,m_iObjectSize,eAllocClass);
 #endif
   
@@ -432,7 +432,7 @@ void Heap::vPushFree(FreeChunk* aFreeChunk, eCN eWasClass)
   aFreeChunk->vSetClass(CN_FREECHUNK);
   aFreeChunk->vNextFree(m_pFreeHead);
   
-#ifdef WITH_DEBUG_CHECKS
+#ifdef WITH_PREPOST_CHECKING
   i8 nBytes = m_iObjectSize - sizeof(FreeChunk);
   void* aAddress = aAdd<void*>(aFreeChunk,sizeof(FreeChunk));
   MemLib::vScribble(aAddress,nBytes,CN_FREECHUNK);

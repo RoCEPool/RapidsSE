@@ -75,8 +75,6 @@ List_t<OBJECT>::List_t(void)
 template <class OBJECT>
 void List_t<OBJECT>::vAppend(OBJECT* mpNode)
 {
-  _mp_(mpNode);
-  
   ASSERT(NULL == mpNode->pPrevNode());
   ASSERT(NULL == mpNode->pNextNode());
   
@@ -152,8 +150,6 @@ OBJECT* List_t<OBJECT>::npPop(void)
 template <class OBJECT>
 void List_t<OBJECT>::vPush(OBJECT* mpNode)
 {
-  _mp_(mpNode);
-  
   ASSERT(NULL == mpNode->pPrevNode());
   ASSERT(NULL == mpNode->pNextNode());
   

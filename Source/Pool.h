@@ -51,7 +51,7 @@ extern BufferPool* gpBufferPool;
 template <class OBJECT>
 static OBJECT pPoolCheck(void* aAddress)
 {
-#ifdef WITH_ADDRESS_CHECK
+#ifdef WITH_ADDRESS_CHECKING
   if (aAddress)
     gpBufferPool->vCheckAddress(aAddress);
 #endif

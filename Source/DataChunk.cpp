@@ -40,7 +40,7 @@ DataChunk::DataChunk(eCN eClassNo)
   m_aLastDataByte   = nullptr;
   m_nUnprocessedBytes = 0;
   
-#ifdef WITH_DEBUG_CHECKS
+#ifdef WITH_PREPOST_CHECKING
   m_xWsp.vFill(0xEF,eClassNo);
 #endif
   

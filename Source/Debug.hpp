@@ -19,7 +19,7 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* check the object is within the pool                                      */
   /*--------------------------------------------------------------------------*/
-  #ifdef WITH_ADDRESS_CHECK
+  #ifdef WITH_ADDRESS_CHECKING
     #define _poolAddress_(pArg) Base::vCheckAddress(pArg)
   #else
     #define _poolAddress_(pArg)
@@ -28,7 +28,7 @@ namespace Debugging
   /*--------------------------------------------------------------------------*/
   /* our ASSERT macros                                                        */
   /*--------------------------------------------------------------------------*/
-  #ifdef WITH_ASSERT_CHECKS
+  #ifdef WITH_ASSERT_MACRO
     #define ASSERT(condition) \
     { \
       if ( !(condition) ) { \
@@ -69,16 +69,7 @@ namespace Debugging
       Debugging::vAssertWarn(); \
     } \
   }
-    
-  /*--------------------------------------------------------------------------*/
-  /* check the object is within the pool                                      */
-  /*--------------------------------------------------------------------------*/
-  #ifdef MP_CHECK
-    #define _mp_(pArg) ASSERT(pArg)
-  #else
-    #define _mp_(pArg)
-  #endif
-    
+        
   /*--------------------------------------------------------------------------*/
   /* NEVER_REACH macro (point in code which should never be reached           */
   /*--------------------------------------------------------------------------*/

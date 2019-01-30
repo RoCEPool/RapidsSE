@@ -44,7 +44,7 @@ namespace Correctness
   GET_MACRO(__VA_ARGS__, _precondition4_, _precondition3_, \
                          _precondition2_, _precondition1_)(__VA_ARGS__)
 
-#ifdef WITH_DEBUG_CHECKS
+#ifdef WITH_PREPOST_CHECKING
 
   #define _checkCondition_(checkValue)       \
     if (typeid(checkValue) == typeid(int)) { \
@@ -120,7 +120,7 @@ namespace Correctness
 /*--------------------------------------------------------------------------*/
 /* check the object has a magic marker as its first word                    */
 /*--------------------------------------------------------------------------*/
-#ifdef WITH_MAGIC_CHECK
+#ifdef WITH_CORECTNESS_ALGEBRA
 #define _magic_() ASSERT(bValidMagic());
 #else
 #define _magic_()
@@ -135,7 +135,7 @@ namespace Correctness
 /*--------------------------------------------------------------------------*/
 /* check the object is of a known class                                     */
 /*--------------------------------------------------------------------------*/
-#ifdef WITH_CLASS_CHECK
+#ifdef WITH_CORECTNESS_ALGEBRA
 #define _class_(arg) ASSERT(eClass() == arg);
 #define _class2_(arg1,arg2) ASSERT(eClass() == arg1 || eClass() == arg2);
 #define _class3_(arg1,arg2,arg3) \
