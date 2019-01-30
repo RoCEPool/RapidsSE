@@ -6,6 +6,7 @@
 #define RAPIDSSE_VERSION_STRING "0.4.1"
 
 #define WITH_ACTIVITY_MAP
+#define WITH_API_TRACE
 #define WITH_ENTRY_EXIT
 //#define WITH_LW_FOOTER
 //#define WITH_JOB_TRACE

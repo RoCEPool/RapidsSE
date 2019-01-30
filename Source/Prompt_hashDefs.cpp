@@ -38,8 +38,16 @@ bool Prompt::bPrompt_hashDefs(SePrompt* pPrompt)
   vTrace("  __DEBUG\n"_Stz);
 #endif
   
+#ifdef WITH_ACTIVITY_MAP
+  vTrace("  WITH_ACTIVITY_MAP\n"_Stz);
+#endif
+  
 #ifdef WITH_ADDRESS_CHECKING
   vTrace("  WITH_ADDRESS_CHECKING\n"_Stz);
+#endif
+  
+#ifdef WITH_API_TRACE
+  vTrace("  WITH_API_TRACE\n"_Stz);
 #endif
   
 #ifdef WITH_ASSERT_MACRO
