@@ -54,7 +54,7 @@ namespace DBobjects
     ~EntryBuffer(void) noexcept(false);
 
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static EntryBuffer* pReferencedEntryBuffer(Id& xId);
+    static EntryBuffer* pRefdEntryBuffer(Id& xId);
 
     i8      iAgeInSeconds(void);
     void    vBufferLevel(i8 iBufferLevel);

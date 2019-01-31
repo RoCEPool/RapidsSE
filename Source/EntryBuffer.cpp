@@ -121,7 +121,7 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-EntryBuffer* EntryBuffer::pReferencedEntryBuffer(Id& xId)
+EntryBuffer* EntryBuffer::pRefdEntryBuffer(Id& xId)
 {
   bn nBufferNo = xId.iBuffer();
   

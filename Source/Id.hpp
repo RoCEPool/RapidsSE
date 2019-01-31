@@ -41,10 +41,7 @@ namespace DBobjects
     void  vId(Id& xId);
     
     Entry*  aRow(void);
-  
-    EntryBuffer* pReferencedEntryBuffer(void);
-  
-  
+    
     // offsets
     i8   nOffsets(void);
     void vOffsets(i8 nOffsets);

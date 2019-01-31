@@ -153,25 +153,6 @@ Entry* Id::aRow(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the entry buffer that this id references                               */
-/*----------------------------------------------------------------------------*/
-EntryBuffer* Id::pReferencedEntryBuffer(void)
-{  
-  bn nBufferNo = m_uBuffer;
-  
-  HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
-  
-  EntryBuffer* pEntryBuffer =
-    reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
-  
-  ASSERT(pEntryBuffer);
-  ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
-  
-  return pEntryBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of offsets                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Id::nOffsets(void)

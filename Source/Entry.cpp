@@ -205,8 +205,9 @@ EntryBuffer* Entry::pReferencedEntryBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
-  EntryBuffer* pEntryBuffer = m_xId.pReferencedEntryBuffer();
-  
+  //EntryBuffer* pEntryBuffer = m_xId.pReferencedEntryBuffer();
+  EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(m_xId);
+
   return pEntryBuffer;
 }
 

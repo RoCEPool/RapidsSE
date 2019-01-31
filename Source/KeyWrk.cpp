@@ -256,8 +256,9 @@ EntryBuffer* KeyWrk::pReferencedEntryBuffer(void)
 {
   _precondition_(_MAGIC_,CN_KEYWRK,_FOOTER_);
   
-  EntryBuffer* pEntryBuffer = xId().pReferencedEntryBuffer();
-  
+  //EntryBuffer* pEntryBuffer = xId().pReferencedEntryBuffer();
+  EntryBuffer* pEntryBuffer = EntryBuffer::pRefdEntryBuffer(xId());
+
   return pEntryBuffer;
 }
 
