@@ -14,7 +14,7 @@ extern AttachMap* gpAttachMap;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntWrk::EntWrk(eCN eClassNo)
-: Item(eClassNo,sizeof(EntWrk))
+: Object(eClassNo)
 {
   _precondition_(_MAGIC_);
 
