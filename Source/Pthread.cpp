@@ -319,6 +319,9 @@ void Pthread::vEnableRealtime_2(void)
 /*----------------------------------------------------------------------------*/
 bool Pthread::bGetCpu(i8& iUser, i8& iSystem, i8& iUsage, i8& iSleep)
 {
+  
+#ifdef WITH_APPLE
+  
   thread_port_t uThreadPort = pthread_mach_thread_np(m_iPthreadId);  
   thread_extended_info_data_t xInfoExtended;
   mach_msg_type_number_t iCount = THREAD_EXTENDED_INFO_COUNT;
@@ -335,8 +338,13 @@ bool Pthread::bGetCpu(i8& iUser, i8& iSystem, i8& iUsage, i8& iSleep)
   iUsage  = xInfoExtended.pth_cpu_usage;
   iSleep  = xInfoExtended.pth_sleep_time;
   
+#else
+  
+#endif
+  
   return true;
 }
+
 /*----------------------------------------------------------------------------*/
 /* get current thread info                                                    */
 /*----------------------------------------------------------------------------*/
@@ -368,6 +376,7 @@ i8 Pthread::iGetInfo(void)
   return BasicInfo.policy;
 
 #else
+  return 0;
   
 #endif
   
