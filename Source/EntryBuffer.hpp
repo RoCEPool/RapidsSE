@@ -4,7 +4,6 @@
 #pragma once
 
 #define USE_EB_LAZY_CHAIN
-#define USE_EB_SPLIT2
 #define USE_EB_SINGLE_COLIDX
 //#define USE_EB_WATCH
 
@@ -200,7 +199,6 @@ namespace DBobjects
                                           EntryBuffer* pToBuffer);
     void         vPositionPriorVecBuffer3(Key* aFindKey, Entry** aaPriorVec,
                                           EntryBuffer* pToBuffer);
-    EntryBuffer* pSplit(void);
     EntryBuffer* pSplit2(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
