@@ -780,7 +780,7 @@ void EntryBuffer::vRestore(void)
   // calculate offset for m_aFreeEntryList and set it
   if (m_aFreeEntryList) {
     uOffset = nSub(m_aFreeEntryList, pOriginalBuffer);
-    m_aFreeEntryList = pBitOr<FreeEntry*>(pThisBuffer,uOffset);
+    m_aFreeEntryList = pBitOr<FreeItem*>(pThisBuffer,uOffset);
   }
   
   // calculate offset for m_aLazyChain and set it
@@ -1129,10 +1129,10 @@ void EntryBuffer::vAddFreeList(Entry* aEntry)
    i8 nSizeNEO   = aEntry->iNEOsize();
    i8 nSizeFree  = nSizeEntry + nSizeNEO;
    
-   FreeEntry* aFreeEntry = new(aEntry) FreeEntry(nSizeFree);
+   FreeItem* aFreeEntry = new(aEntry) FreeItem(nSizeFree);
    */
   
-  FreeEntry* aFreeEntry = aMakeFreeEntry(aEntry);
+  FreeItem* aFreeEntry = aMakeFreeEntry(aEntry);
   
   //  if (! bQuickVerify(aEntry)) {
   //    vDumpPriorVec(xPriorVec);
@@ -1219,7 +1219,7 @@ void EntryBuffer::vCompact(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  FreeEntry* aFreeEntry;
+  FreeItem* aFreeEntry;
   Entry*     aMoveEntry;
   Entry*     xPriorVec[gpAttachMap->m_nIndexOffsets];
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
@@ -1253,7 +1253,7 @@ void EntryBuffer::vCompact(void)
       eCN eClass = aScanItem->eClass();
       
       if (CN_FREEENTRY == eClass) {
-        aFreeEntry = _aFreeEntry(aScanItem);
+        aFreeEntry = _aFreeItem(aScanItem);
         break;
       }
     }
@@ -1313,8 +1313,8 @@ void EntryBuffer::vCompact(void)
     //vGiveSpace(nReclaimedBytes);
     
     // convert the moved entry to a free entry
-    FreeEntry* aOpenedFreeEntry = aAdd<FreeEntry*>(aFreeEntry,nCopyBytes);
-    new(aOpenedFreeEntry) FreeEntry(nReclaimedBytes);
+    FreeItem* aOpenedFreeEntry = aAdd<FreeItem*>(aFreeEntry,nCopyBytes);
+    new(aOpenedFreeEntry) FreeItem(nReclaimedBytes);
     
     Entry* aCheckEntry = reinterpret_cast<Entry*>(aFreeEntry);
     
@@ -1585,7 +1585,7 @@ void EntryBuffer::vDumpPriorVec(Entry* aPriorVec[])
 /*----------------------------------------------------------------------------*/
 /* get first free entry                                                       */
 /*----------------------------------------------------------------------------*/
-FreeEntry* EntryBuffer::aFirstFree(void)
+FreeItem* EntryBuffer::aFirstFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2151,7 +2151,7 @@ void EntryBuffer::vLazyBuild(void)
 /*----------------------------------------------------------------------------*/
 /* convert given entry into free entry                                        */
 /*----------------------------------------------------------------------------*/
-FreeEntry* EntryBuffer::aMakeFreeEntry(Entry* aEntry)
+FreeItem* EntryBuffer::aMakeFreeEntry(Entry* aEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
@@ -2159,7 +2159,7 @@ FreeEntry* EntryBuffer::aMakeFreeEntry(Entry* aEntry)
   i8 nSizeNEO   = aEntry->iNEOsize();
   i8 nSizeFree  = nSizeEntry + nSizeNEO;
   
-  FreeEntry* aFreeEntry = new(aEntry) FreeEntry(nSizeFree);
+  FreeItem* aFreeEntry = new(aEntry) FreeItem(nSizeFree);
   
   return aFreeEntry;
 }
@@ -2335,7 +2335,7 @@ Item* EntryBuffer::aNextItem(Item* aCurrent)
     }
       
     case CN_FREEENTRY: {
-      FreeEntry* aFreeEntryCurr = static_cast<FreeEntry*>(aCurrent);
+      FreeItem* aFreeEntryCurr = static_cast<FreeItem*>(aCurrent);
       aItemNext = reinterpret_cast<Item*>(aFreeEntryCurr->aAddressAfter());
       break;
     }
@@ -2815,7 +2815,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
     //.pNewRightBuffer->vShow();
     
     // make the moved entry in the left buffer to be a free entry
-    FreeEntry* aFreeEntry = aMakeFreeEntry(aCopyEntry);
+    FreeItem* aFreeEntry = aMakeFreeEntry(aCopyEntry);
     
     // these can be commented
     ASSERT(! m_iBufferLevel ||
@@ -3430,7 +3430,7 @@ bool EntryBuffer::bVerifyFreeList(void)
    of FreeEntry's.  No other class is permited.
    */
   
-  for (FreeEntry* aFreeEntry = aFirstFree();
+  for (FreeItem* aFreeEntry = aFirstFree();
        aFreeEntry != nullptr;
        aFreeEntry = aFreeEntry->aNextFree()) {
     
@@ -3453,7 +3453,7 @@ bool EntryBuffer::bVerifyItems(void)
   /*
    The items in and entry buffer are some sequence of:
    
-   {[Entry]|[FreeEntry]...}[Wilderness]
+   {[Entry]|[FreeItem]...}[Wilderness]
    
    The number of Entries must match the number of items in the buffer
    */
@@ -3482,7 +3482,7 @@ bool EntryBuffer::bVerifyItems(void)
       }
         
       case CN_FREEENTRY: {
-        FreeEntry* aFreeEntry = _aFreeEntry(aItem);
+        FreeItem* aFreeEntry = _aFreeItem(aItem);
         if (! aFreeEntry->bValidFreeEntry()) {
           vShow();
           vVerifyFault();

@@ -40,7 +40,7 @@ namespace DBobjects
     Entry* m_aLastEntry; // last entry (would append to this)
     Entry* m_aLazyChain; // first lazy entry
   
-    FreeEntry* m_aFreeEntryList; // head of free entry list
+    FreeItem* m_aFreeEntryList; // head of free entry list
   
     // must be last
     Footer m_xFooter;
@@ -156,7 +156,7 @@ namespace DBobjects
     void         vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
                                 EntryBuffer** ppRootKeyBuffer);
     void         vDumpPriorVec(Entry* aPriorVec[]);
-    FreeEntry*   aFirstFree(void);
+    FreeItem*   aFirstFree(void);
     Item*        aFirstItem(void);
     Entry*       aGetEntryOffset(i8 iOffset);
     Entry*       aGetEntrySplit(i8 iSplitEntryNo, Entry** aaPriorEntry);
@@ -180,7 +180,7 @@ namespace DBobjects
                                    EntryBuffer** ppRootKeyBuffer);
     void         vItemCountRestore(void);
     bool         bKeyBeforeBuffer(Key* aKey);
-    FreeEntry*   aMakeFreeEntry(Entry* aEntry);
+    FreeItem*   aMakeFreeEntry(Entry* aEntry);
     EntryBuffer* pNewHigherBuffer(void);
     EntryBuffer* pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
                                   EntryBuffer** ppRootKeyBuffer);

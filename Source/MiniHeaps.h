@@ -18,7 +18,7 @@ using namespace MiniHeaps;
 
 #include "Item.hpp"
 
-#include "FreeEntry.hpp"
+#include "FreeItem.hpp"
 #include "Wilderness.hpp"
 
 #include "ItemHeap.hpp"
