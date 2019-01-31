@@ -1338,7 +1338,7 @@ void EntryBuffer::vCompact(void)
   
   ASSERT(CN_FREEENTRY == aScanItem->eClass());
   
-  vResetUsed(aScanItem);
+  vSetUsed(aScanItem);
   
   vSetWilderness();
   
@@ -1391,7 +1391,7 @@ void EntryBuffer::vCompactLeft2(void)
   Item* aThisWilderness = aAdd<Item*>(m_aHeadEntry,
                                       m_aHeadEntry->nSizeEntry() +
                                       m_aHeadEntry->iNEOsize());
-  vResetUsed(aThisWilderness);
+  vSetUsed(aThisWilderness);
   vSetWilderness();
   vItems(0);
   

@@ -32,9 +32,9 @@ namespace DBobjects
     void   vGiveSpace(i8 nBytes);
     i8     nItems(void);
     void   vItems(i8 nItems);
-    Item*  aNextItem(Item* aCurrentItem);
+    Item*  aNextItem(Item* aItem);
     void   vResetUsed(void);
-    void   vResetUsed(Item* aUptil);
+    void   vSetUsed(Item* aUptil);
     void   vSetWilderness(void);
     i4     iToOffset(Item* aItem);
     i8     nUsedBytes(void);

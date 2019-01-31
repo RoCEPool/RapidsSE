@@ -165,13 +165,13 @@ void ItemBuffer::vItems(i8 nItems)
 /*----------------------------------------------------------------------------*/
 /* get next item                                                              */
 /*----------------------------------------------------------------------------*/
-Item* ItemBuffer::aNextItem(Item* aCurrentItem)
+Item* ItemBuffer::aNextItem(Item* aItem)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 nBytes = aCurrentItem->nSizeItem();
+  i8 nBytes = aItem->nSizeItem();
   
-  Item* aNext = aAdd<Item*>(aCurrentItem,nBytes);
+  Item* aNext = aAdd<Item*>(aItem,nBytes);
   
   if ((char*)aNext >= (char*)m_xWsp.aLatter())
     return nullptr;
@@ -194,7 +194,7 @@ void ItemBuffer::vResetUsed(void)
 /*----------------------------------------------------------------------------*/
 /* reset used space                                                           */
 /*----------------------------------------------------------------------------*/
-void ItemBuffer::vResetUsed(Item* aUptil)
+void ItemBuffer::vSetUsed(Item* aUptil)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
