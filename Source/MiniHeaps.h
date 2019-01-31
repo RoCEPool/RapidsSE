@@ -16,6 +16,7 @@ using namespace MiniHeaps;
 
 //------------------------------------------------------------------------------
 
+#include "Id.hpp"
 #include "Item.hpp"
 
 #include "FreeItem.hpp"
