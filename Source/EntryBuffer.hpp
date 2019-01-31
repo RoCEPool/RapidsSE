@@ -150,7 +150,6 @@ namespace DBobjects
     void         vBuildOffsetL0(void);
     void         vBuildSkipList(void);
     void         vCompact(void);
-    void         vCompactLeft(void);
     void         vCompactLeft2(void);
     void         vCutEntry(Entry* aEntry, Entry* aPriorVec[]);
     void         vDeleteUpwards(Key* aDeleteKey,
