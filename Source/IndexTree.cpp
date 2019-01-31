@@ -203,7 +203,6 @@ Entry* IndexTree::pAppendRow(i8 iTxId, Stz* aRow, i8 iRowLength)
   
   RowWrk xRowWrk;
   
-  xRowWrk.vTxId(iTxId);
   xRowWrk.vEmbedded((char*)aRow);
   xRowWrk.vRowSize(iRowLength);
   //xRowWrk.vShow(m_pIndex->pTable()->pColumnVec());
@@ -349,7 +348,6 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
   
   Entry* aFirstL0_Key = pFirstL0->aFirstEntry();
   
-  i8 iTxId = aFirstL0_Key->iTxId();
   Id xId = aFirstL0_Key->xId();
   Key* aKey = aFirstL0_Key->aKey();
   i8 nKeySize = aKey->nKeySize(pIdxColVec);
@@ -360,7 +358,6 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
   
   KeyWrk xL1_FirstKey;
   
-  xL1_FirstKey.vTxId(iTxId);
   xL1_FirstKey.vId(xId);
   xL1_FirstKey.vEmbedded((char*)aKey);
   xL1_FirstKey.vKeySize(nKeySize);
@@ -419,7 +416,6 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the elements of the right key
     
-    i8 iTxId = aRightL0_Key->iTxId();
     Id xId = aRightL0_Key->xId();
     Key* aKey = aRightL0_Key->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
@@ -428,7 +424,6 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
     
-    xLeftKeyWrk.vTxId(iTxId);
     xLeftKeyWrk.vId(xId);
     xLeftKeyWrk.vEmbedded((char*)aKey);
     xLeftKeyWrk.vKeySize(nKeySize);
@@ -551,7 +546,6 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the elements of the right key
     
-    i8 iTxId = aRightL0_Key->iTxId();
     Id xId = aRightL0_Key->xId();
     Key* aKey = aRightL0_Key->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
@@ -560,7 +554,6 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // form the working version of the left key
     
-    xLeftKeyWrk.vTxId(iTxId);
     xLeftKeyWrk.vId(xId);
     xLeftKeyWrk.vEmbedded((char*)aKey);
     xLeftKeyWrk.vKeySize(nKeySize);
@@ -896,7 +889,6 @@ bool IndexTree::bInsertEntry(Entry* aRow)
   KeyWrk xKeyWrk;
   aRow->vExtractIndexKey(xKeyWrk, m_pIndex->pIdxColVec());
   
-  xKeyWrk.vTxId(0);
   xKeyWrk.vId(aRow->xId());
   
   //if (2947 == nInserts) {

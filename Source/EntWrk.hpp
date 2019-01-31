@@ -14,7 +14,6 @@ namespace DBobjects
   
   private:
     Id    m_xId;       // id of row, or referenced entry in another buffer
-    i8    m_iTxId;     // transaction id
     i8    m_nOffsets;  // number of offsets (0..3)
   
     char* m_aEmbedded; // address of embedded object. this may be different
@@ -43,8 +42,6 @@ namespace DBobjects
     void   vRandomOffsets(void);
     void   vReset(void);
     void   vTake(i8 iSize);
-    i8     iTxId(void);
-    void   vTxId(i8 iTxId);
 
     Footer* aFooter(void);
   

@@ -127,16 +127,9 @@ eEC JobWriteBehind::eInsertRow(Stz* aRow, i8 nRowBytes)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the entry buffer for the partition
     EntryBuffer* pEntryBuffer = m_pEntryBuffer[iPartition];
-    
-    // get the tx id
-    //Session* pSession = m_pLoadTable->pSession();
-    //Tx* pTx = pSession->pTx();
-    //i8 iDistTxId = pTx->iDistTxId();
-    i8 iDistTxId = 0;
-    
+        
     RowWrk xRowWrk;
     
-    xRowWrk.vTxId(iDistTxId);
     xRowWrk.vEmbedded(aRow->aChar());
     xRowWrk.vRowSize(nRowBytes);
     

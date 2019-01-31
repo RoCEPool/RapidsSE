@@ -33,8 +33,7 @@ namespace DBobjects
   class Entry : public Item
   {
   protected:
-  //i8  m_iTxId;      // transaction id
-  //char  m_nOffsets;   // no of offsets for this entry (0..3)
+
 #ifdef WITH_DEBUG_VERSION
     i8  m_iIntKey;    // key debug hack
 #endif
@@ -106,8 +105,6 @@ namespace DBobjects
     void vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
     void vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
     char* pExtractSortKey(char *aElement, IdxColVec* pIdxColVec);
-    i8   iTxId(void);
-    void vTxId(i8 iTxId);
   
     NEO* aNEO(void);
     i4   iNEO(i8 i_Offset);

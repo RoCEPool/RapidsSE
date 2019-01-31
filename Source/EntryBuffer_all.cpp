@@ -1316,13 +1316,11 @@ void EntryBuffer::vCompactLeft2(void)
        aThisEntry != nullptr;
        aThisEntry = pThisBuffer->aNextEntry(aThisEntry, 0)) {
     
-    i8 iTxId = aThisEntry->iTxId();
     Id xId = aThisEntry->xId();
     Key* aKey = aThisEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nOffsets = aThisEntry->nOffsets();
     
-    xKeyWrk.vTxId(iTxId);
     xKeyWrk.vId(xId);
     xKeyWrk.vEmbedded((char*)aKey);
     xKeyWrk.vKeySize(nKeySize);
@@ -1352,13 +1350,11 @@ void EntryBuffer::vCompactLeft2(void)
        aTempEntry != nullptr;
        aTempEntry = pTempBuffer->aNextEntry(aTempEntry, 0)) {
     
-    i8 iTxId = aTempEntry->iTxId();
     Id xId = aTempEntry->xId();
     Key* aKey = aTempEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nOffsets = aTempEntry->nOffsets();
     
-    xKeyWrk.vTxId(iTxId);
     xKeyWrk.vId(xId);
     xKeyWrk.vEmbedded((char*)aKey);
     xKeyWrk.vKeySize(nKeySize);
@@ -1689,10 +1685,8 @@ void EntryBuffer::vHandleLeftInsert(Entry* aInsertedKeyEntry,
   i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
   i8 nInsertOffsets = aInsertedKeyEntry->nOffsets();
   
-  i8 iTxId = aInsertedKeyEntry->iTxId();
   
   KeyWrk xKeyWrkIns;
-  xKeyWrkIns.vTxId(iTxId);
   xKeyWrkIns.vId(xInsertId);
   xKeyWrkIns.vEmbedded((char*)aInsertKey);
   xKeyWrkIns.vKeySize(iInsertKeyLen);
@@ -2182,14 +2176,12 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
     Entry* aFirstKeyLeft  = pLeftBuffer->aFirstEntry();
     
     Id xIdLeft(*pLeftBuffer->nBufferNo(),0);
-    i8 iTxIdLeft = aFirstKeyLeft->iTxId();
     Key* aKeyLeft = aFirstKeyLeft->aKey();
     i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
     i8 nOffsetsLeft = aFirstKeyLeft->nOffsets();
     
     
     KeyWrk xKeyWrkLeft;
-    xKeyWrkLeft.vTxId(iTxIdLeft);
     xKeyWrkLeft.vId(xIdLeft);
     xKeyWrkLeft.vEmbedded((char*)aKeyLeft);
     xKeyWrkLeft.vKeySize(iKeyLenLeft);
@@ -2206,14 +2198,12 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   Entry* aFirstKeyRight = pRightBuffer->aFirstEntry();
   
   Id xIdRight(*pRightBuffer->nBufferNo(),0);
-  i8 iTxIdRight = aFirstKeyRight->iTxId();
   Key* aKeyRight = aFirstKeyRight->aKey();
   i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
   i8 nOffsetsRight = aFirstKeyRight->nOffsets();
   
   
   KeyWrk xKeyWrkRight;
-  xKeyWrkRight.vTxId(iTxIdRight);
   xKeyWrkRight.vId(xIdRight);
   xKeyWrkRight.vEmbedded((char*)aKeyRight);
   xKeyWrkRight.vKeySize(iKeyLenRight);
@@ -2745,13 +2735,11 @@ EntryBuffer* EntryBuffer::pSplit2(void)
     
     aNextEntry = this->aNextEntry(aCopyEntry,0);
     
-    i8 iTxId = aCopyEntry->iTxId();
     Id xId = aCopyEntry->xId();
     Key* aKey = aCopyEntry->aKey();
     i8 nKeySize = aKey->nKeySize(pIdxColVec);
     i8 nOffsets = aCopyEntry->nOffsets();
     
-    xKeyWrk.vTxId(iTxId);
     xKeyWrk.vId(xId);
     xKeyWrk.vEmbedded((char*)aKey);
     xKeyWrk.vKeySize(nKeySize);
