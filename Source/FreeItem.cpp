@@ -35,9 +35,9 @@ void* FreeItem::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* FreeItem::operator new(size_t, Entry* aEntry)
+void* FreeItem::operator new(size_t, Item* aItem)
 {
-  return reinterpret_cast<FreeItem*>(aEntry);
+  return reinterpret_cast<FreeItem*>(aItem);
 }
 
 /*----------------------------------------------------------------------------*/

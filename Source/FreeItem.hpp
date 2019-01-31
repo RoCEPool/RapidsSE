@@ -3,11 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
-{
-  class Entry;
-}
-
 namespace MiniHeaps
 {
   class FreeItem : public Item
@@ -18,7 +13,7 @@ namespace MiniHeaps
 
   public:
     void* operator new(size_t);
-    void* operator new(size_t, DBobjects::Entry*);
+    void* operator new(size_t, Item*);
     void* operator new(size_t, FreeItem*);
   
     FreeItem(i8 nSizeItem);
