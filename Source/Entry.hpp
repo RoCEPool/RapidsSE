@@ -60,8 +60,6 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry proper
-    Id&  xId(void);
-    void vId(Id xId);
     i8   iRow(void);
     EntryBuffer* pReferencedEntryBuffer(void);
     i8   iBufferNo(void);

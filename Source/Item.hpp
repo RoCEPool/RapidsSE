@@ -19,6 +19,8 @@ namespace MiniHeaps
     ~Item(void) noexcept(false);
   
     bn   nBufferNo(void);
+    Id&  xId(void);
+    void vId(Id xId);
     i8   nOffsets(void);
     void vOffsets(i8 nOffsets);
     i8   nSizeItem(void);
