@@ -8,6 +8,7 @@ namespace MiniHeaps
   class Item : public Header
   {
   protected:
+    Id  m_xId;       // item id
     i4  m_nSizeItem; // size of this item
 
   public:

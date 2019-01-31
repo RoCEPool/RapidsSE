@@ -33,7 +33,6 @@ namespace DBobjects
   class Entry : public Item
   {
   protected:
-    Id  m_xId;        // id
   //i8  m_iTxId;      // transaction id
   //char  m_nOffsets;   // no of offsets for this entry (0..3)
 #ifdef WITH_DEBUG_VERSION
