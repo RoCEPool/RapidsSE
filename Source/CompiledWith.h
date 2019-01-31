@@ -7,7 +7,6 @@
 
 #define WITH_ACTIVITY_MAP        // code for ActivityMap compiled in
 #define WITH_ENTRY_EXIT          // code for ENTRY() & EXIT() macros compiled in
-//#define WITH_MUNGED_SEN          // use munged sen
 #define WITH_TRACE_API           // code for tracing api's compiled in
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -37,6 +36,7 @@
 
 #ifdef __LINUX__
 #define WITH_LINUX
+#define WITH_MUNGED_SEN  // use munged sen
 #endif
 
 /*============================================================================*/
