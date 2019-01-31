@@ -1079,7 +1079,7 @@ eEC RapidsSE_GetFirstBuffer(i8 iTrace, Session* pSession, void* aTable,
     if (pEntryBuffer) {
       //vTrace("Returning buffer %p %lld %lld \n"_Stz, pEntryBuffer, *pEntryBuffer->nBufferNo(), pEntryBuffer->nItems());
       *aiRowCount = pEntryBuffer->nItems();
-      *aiBufferNo = *pEntryBuffer->nBufferNo();
+      *aiBufferNo = *pEntryBuffer->nPoolBufferNo();
     }
     else {
       *aiRowCount = 0;
@@ -1123,7 +1123,7 @@ eEC RapidsSE_GetNextBuffer(i8 iTrace, Session* pSession, void** aaEntryBuffer, i
     if (pNextBuffer) {
       //vTrace("Returning buffer %p %lld %lld \n"_Stz, pNextBuffer, *pNextBuffer->nBufferNo(), pNextBuffer->nItems());
       *aiRowCount = pNextBuffer->nItems();
-      *aiBufferNo = *pNextBuffer->nBufferNo();
+      *aiBufferNo = *pNextBuffer->nPoolBufferNo();
     }
     else {
       *aiRowCount = 0;

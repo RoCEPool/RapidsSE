@@ -32,10 +32,13 @@ namespace DBobjects
     Since  m_oWhenNewed;   // when was this buffer created?
     bool   m_bIsLast;      // is this the last buffer in sequence
 
+    ////////////////////////////////////////////////////////////////////////////
+    // only used in row entry buffers
     i4*    m_iaEntryOffsets;    // array of row entry offsets
-                                //   for the hidden index (ie. row buffers only)
     i4     m_i_FreeOffsetChain; // head of free entry offset chain
   
+    ////////////////////////////////////////////////////////////////////////////
+    // only used in index entry buffers
     Entry* m_aHeadEntry; // head entry (not the first logical entry in buffer)
     Entry* m_aLastEntry; // last entry (would append to this)
     Entry* m_aLazyChain; // first lazy entry

@@ -217,7 +217,7 @@ void Step::vEntryBufferNextBuffer(MP_Task mpTask)
   EntryBuffer* pIndexBuffer = _pEntryBuffer(pPtrIndexBuffer);
   
   if (pIndexBuffer->pNextBuffer()) {
-    bn nBuffer = pIndexBuffer->pNextBuffer()->nBufferNo();
+    bn nBuffer = pIndexBuffer->pNextBuffer()->nPoolBufferNo();
   }
   
   mpTask->m_pDataStack->vPushPointer(pIndexBuffer->pNextBuffer());

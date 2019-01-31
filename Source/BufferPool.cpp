@@ -313,7 +313,7 @@ void BufferPool::vFree(PoolBuffer* pBuffer)
   // free buffer by pushing onto free chain
   pFreeBuffer->vSetClass(CN_FREEBUFFER);
   pFreeBuffer->vNextFree(m_nFreeHead);
-  m_nFreeHead = pBuffer->nBufferNo();
+  m_nFreeHead = pBuffer->nPoolBufferNo();
   
   // adjust counts
   m_nFreeCount++;
@@ -425,7 +425,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
       pFreeBuffer->vZeroData();
     
     pFreeBuffer->vSetFooter();
-    pFreeBuffer->vBufferNo(nBuffer);
+    pFreeBuffer->vPoolBufferNo(nBuffer);
     nBuffer = nBufferNext(nBuffer);
     pFreeBuffer->vNextFree(nBuffer);
     
@@ -441,7 +441,7 @@ void BufferPool::vInitialise(bool bTouch, bool bProgress)
     pLastBuffer->vZeroData();
 
   pLastBuffer->vSetFooter();
-  pLastBuffer->vBufferNo(nBufferLast());
+  pLastBuffer->vPoolBufferNo(nBufferLast());
   pLastBuffer->vNextFree(bn::nNil());
 
   
@@ -541,7 +541,7 @@ void BufferPool::vPoolDump(void)
     FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
     vTrace("%p: BufferNo %lld NextFree %lld\n"_Stz,
            pFreeBuffer,
-           *pFreeBuffer->nBufferNo(),
+           *pFreeBuffer->nPoolBufferNo(),
            *pFreeBuffer->nNextFree());
     //nBuffer = pToFreeBuffer((nBuffer);
     nBuffer = pFreeBuffer->nNextFree();

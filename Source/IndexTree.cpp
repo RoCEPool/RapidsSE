@@ -353,7 +353,7 @@ void IndexTree::vCopyReInitL1(EntryBuffer* pL1, EntryBuffer* pFirstL0)
   i8 nKeySize = aKey->nKeySize(pIdxColVec);
   i8 nOffsets = aFirstL0_Key->nOffsets();
   
-  i8 iFirstL0_BufferNo = pFirstL0->iBufferNo();
+  i8 iFirstL0_BufferNo = pFirstL0->iPoolBufferNo();
   xId.vBuffer(iFirstL0_BufferNo);
   
   KeyWrk xL1_FirstKey;
@@ -478,7 +478,7 @@ void IndexTree::vCopyLeftV3(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     
     if (1 == pLeftL0->nItems()) {
       
-      i8 iLeftL0BufferNo = pLeftL0->iBufferNo();
+      i8 iLeftL0BufferNo = pLeftL0->iPoolBufferNo();
       xId.vBuffer(iLeftL0BufferNo);
       xLeftKeyWrk.vId(xId);
       
@@ -603,7 +603,7 @@ void IndexTree::vCopyLeftV2(EntryBuffer** ppLeftL0, EntryBuffer* pRightL0)
     
     if (1 == pLeftL0->nItems()) {
       
-      i8 iLeftL0BufferNo = pLeftL0->iBufferNo();
+      i8 iLeftL0BufferNo = pLeftL0->iPoolBufferNo();
       xId.vBuffer(iLeftL0BufferNo);
       xLeftKeyWrk.vId(xId);
       

@@ -230,7 +230,7 @@ bool EntryBuffer::bDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer)
     return false;
   
   //vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
-  //       *nBufferNo(),
+  //       *nPoolBufferNo(),
   //       pEntryToBeDeleted->aKey()->iGetInt());
   
   Key* aDeleteEntryKey = aEntryToBeDeleted->aKey();
@@ -790,14 +790,14 @@ void EntryBuffer::vRestore(void)
   }
   
   // get the buffer no
-  bn nBuffer = nBufferNo();
+  bn nBuffer = nPoolBufferNo();
   
   // now restore the row id's to point to this buffer no
   for (Entry* aEntry = aFirstEntry();
        aEntry != nullptr;
        aEntry = aNextEntry(aEntry, 0)) {
     
-    Id xId(*nBuffer, aEntry->iRow());
+    Id xId(*nBuffer, aEntry->iItemNo());
     aEntry->vId(xId);
   }
   
@@ -833,7 +833,7 @@ void EntryBuffer::vShow(Entry* aMarkEntry)
          "--------------------------------------------------\n"_Stz);
   
   vTrace("EntryBuffer: %p (buffer %lld): items: %lld used: %lld freespace %lld\n"_Stz,
-         this,*nBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
+         this,*nPoolBufferNo(),nItems(),nUsedBytes(),nFreeBytes());
   
   vTrace("  higherBuffer %p (L%s) prevBuffer %p nextBuffer %p\n"_Stz,
          m_pHigherBuffer,sHigherBuffer.aStz(),m_pPrevBuffer,m_pNextBuffer);
@@ -882,8 +882,8 @@ void EntryBuffer::vShowShort(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   vTrace("[t%lld h%lld: "_Stz,
-         *nBufferNo(),
-         pHigherBuffer() ? *pHigherBuffer()->nBufferNo() : 0);
+         *nPoolBufferNo(),
+         pHigherBuffer() ? *pHigherBuffer()->nPoolBufferNo() : 0);
   
   i8 iOffset = aHeadEntry()->iNEO(0);
   while (iOffset > -1) {
@@ -893,9 +893,9 @@ void EntryBuffer::vShowShort(void)
     i8 iVal = aKey->iGetInt();
     
     if (m_iBufferLevel)
-      vTrace("%lld(%lld)"_Stz,iVal,*aEntry->pReferencedEntryBuffer()->nBufferNo());
+      vTrace("%lld(%lld)"_Stz,iVal,*aEntry->pReferencedEntryBuffer()->nPoolBufferNo());
     else
-      vTrace("%lld|%lld|"_Stz,iVal,*aEntry->pReferencedEntryBuffer()->nBufferNo());
+      vTrace("%lld|%lld|"_Stz,iVal,*aEntry->pReferencedEntryBuffer()->nPoolBufferNo());
     
     iOffset = aEntry->iNEO(0);
     if (iOffset > -1)
@@ -927,7 +927,7 @@ void EntryBuffer::vShowSubList(void)
     if (pL0 != pThisL0)
       vTrace(","_Stz);
     
-    vTrace("%lld"_Stz,pL0->iBufferNo());
+    vTrace("%lld"_Stz,pL0->iPoolBufferNo());
   }
   
   if (pL0)
@@ -1423,7 +1423,7 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey,
     return;
   
   //  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
-  //         *nBufferNo(),
+  //         *nPoolBufferNo(),
   //         pEntryToBeDeleted->aKey()->iGetInt());
   
   Key* aDeleteEntryKey = aEntryToBeDeleted->aKey();
@@ -1481,7 +1481,7 @@ void EntryBuffer::vDeleteUpwards(Key* aDeleteKey, EntryBuffer* pToBuffer,
     return;
   
   //  vTrace("[%lld] pDeleteEntry key %lld\n"_Stz,
-  //         *nBufferNo(),
+  //         *nPoolBufferNo(),
   //         pEntryToBeDeleted->aKey()->iGetInt());
   
   Key* aDeleteEntryKey = aEntryToBeDeleted->aKey();
@@ -1681,7 +1681,7 @@ void EntryBuffer::vHandleLeftInsert(Entry* aInsertedKeyEntry,
   
   Key* aInsertKey = aInsertedKeyEntry->aKey();
   IdxColVec* pIdxColVec = m_pIndex->pIdxColVec();
-  Id xInsertId(*nBufferNo(),0);
+  Id xInsertId(*nPoolBufferNo(),0);
   i8 iInsertKeyLen = aInsertKey->nKeySize(pIdxColVec);
   i8 nInsertOffsets = aInsertedKeyEntry->nOffsets();
   
@@ -1731,7 +1731,7 @@ void EntryBuffer::vHeadEntryNew(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  xHeadWrk.xId().vBuffer(*nBufferNo());
+  xHeadWrk.xId().vBuffer(*nPoolBufferNo());
   
   m_aHeadEntry = reinterpret_cast<Entry*>(aAllotSpace(nEntryBytes));
   ASSERT(m_aHeadEntry);
@@ -2175,7 +2175,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   if ( ! pHigherBuffer->nItems() ) {
     Entry* aFirstKeyLeft  = pLeftBuffer->aFirstEntry();
     
-    Id xIdLeft(*pLeftBuffer->nBufferNo(),0);
+    Id xIdLeft(*pLeftBuffer->nPoolBufferNo(),0);
     Key* aKeyLeft = aFirstKeyLeft->aKey();
     i8 iKeyLenLeft = aKeyLeft->nKeySize(m_pIndex->pIdxColVec());
     i8 nOffsetsLeft = aFirstKeyLeft->nOffsets();
@@ -2197,7 +2197,7 @@ EntryBuffer* EntryBuffer::pNewInsertBuffer(Key* aInsKey, i8 nEntryPlusOffsets,
   
   Entry* aFirstKeyRight = pRightBuffer->aFirstEntry();
   
-  Id xIdRight(*pRightBuffer->nBufferNo(),0);
+  Id xIdRight(*pRightBuffer->nPoolBufferNo(),0);
   Key* aKeyRight = aFirstKeyRight->aKey();
   i8 iKeyLenRight = aKeyRight->nKeySize(m_pIndex->pIdxColVec());
   i8 nOffsetsRight = aFirstKeyRight->nOffsets();
@@ -3633,7 +3633,7 @@ bool EntryBuffer::bVerifyRowRefs(void)
     }
     
     // get the row entry from referenced entry buffer
-    i8 i_Row = aEntry->iRow();
+    i8 i_Row = aEntry->iItemNo();
     Entry* aRowEntry = pEntryBuffer->aGetEntryRowNo(i_Row);
     
     // validate the row entry                                          //# more?

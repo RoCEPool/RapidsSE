@@ -56,7 +56,7 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the rowId
   
-  bn nBufferNo = this->nBufferNo();
+  bn nBufferNo = this->nPoolBufferNo();
   
   i8 i_RowNo = iGetFreeRowEntry(); //nItems();
   if (C_ENTRY_NONE == i_RowNo) {

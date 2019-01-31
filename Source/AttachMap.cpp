@@ -54,7 +54,7 @@ AttachMap::AttachMap(void)
   gpAttachMap = this;
   
   // the attach map must always be the first buffer in the buffer pool
-  ASSERT(nBufferNo() == 1_bn);
+  ASSERT(nPoolBufferNo() == 1_bn);
   
   m_oRootDic.vName("<root>"_Stz);
   

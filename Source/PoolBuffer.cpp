@@ -89,26 +89,6 @@ PoolBuffer* PoolBuffer::pGetPoolBuffer(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get buffer number                                                          */
-/*----------------------------------------------------------------------------*/
-bn PoolBuffer::nBufferNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_nBufferNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set buffer number                                                          */
-/*----------------------------------------------------------------------------*/
-void PoolBuffer::vBufferNo(bn nBufferNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  m_nBufferNo = nBufferNo;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get address of data area in buffer                                         */
 /*----------------------------------------------------------------------------*/
 void* PoolBuffer::aDataArea(void)
@@ -155,6 +135,26 @@ void PoolBuffer::vOverflowBuffer(bn nOverflowBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_nOverflowBuffer = nOverflowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get buffer number                                                          */
+/*----------------------------------------------------------------------------*/
+bn PoolBuffer::nPoolBufferNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_nBufferNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set buffer number                                                          */
+/*----------------------------------------------------------------------------*/
+void PoolBuffer::vPoolBufferNo(bn nBufferNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  m_nBufferNo = nBufferNo;
 }
 
 /*----------------------------------------------------------------------------*/

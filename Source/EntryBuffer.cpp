@@ -74,7 +74,7 @@ EntryBuffer::EntryBuffer(void)
 
   m_pIndex        = nullptr;
   m_iPartitionNo  = -1;
-  m_iBufferNo     = *nBufferNo();
+  m_iBufferNo     = *nPoolBufferNo();
   m_iBufferLevel  = 0;
   
   m_iaEntryOffsets = nullptr;

@@ -60,7 +60,6 @@ namespace DBobjects
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // entry proper
-    i8   iRow(void);
     EntryBuffer* pReferencedEntryBuffer(void);
     i8   iBufferNo(void);
     i8   nSizeEntry(void);

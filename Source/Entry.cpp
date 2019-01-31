@@ -170,16 +170,6 @@ i8 Entry::iBufferNo(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* get row number                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Entry::iRow(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
-  
-  return m_xId.iItem();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get the entry buffer that this entry references                            */
 /*----------------------------------------------------------------------------*/
 EntryBuffer* Entry::pReferencedEntryBuffer(void)

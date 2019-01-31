@@ -17,8 +17,8 @@ namespace Correctness
   public:
     Object(eCN eClass);
   
-    i8  iBufferNo(void);
-    Pool::bn nBufferNo(void);
+    i8  iPoolBufferNo(void);
+    Pool::bn nPoolBufferNo(void);
   
     bool bWordBody(void);
     void vWordBody(bool bIsWordBody);

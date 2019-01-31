@@ -35,7 +35,7 @@ CarryOver::CarryOver(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARRYOVER);
   
   // carry over must always be the second buffer in the buffer pool
-  ASSERT(nBufferNo() == 2_bn);
+  ASSERT(nPoolBufferNo() == 2_bn);
     
   _checkInitialised_(CN_CARRYOVER);
   
