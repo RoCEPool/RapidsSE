@@ -39,9 +39,7 @@ namespace DBobjects
     void  vRow(i8 iRow);
 
     void  vId(Id& xId);
-    
-    Entry*  aRow(void);
-    
+        
     // offsets
     i8   nOffsets(void);
     void vOffsets(i8 nOffsets);

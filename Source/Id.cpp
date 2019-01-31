@@ -135,24 +135,6 @@ void Id::vId(Id& xId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get row from buffer                                                        */
-/*----------------------------------------------------------------------------*/
-Entry* Id::aRow(void)
-{
-  EntryBuffer* pRowBuffer =
-    reinterpret_cast<EntryBuffer*>(gpBufferPool->pToPoolBuffer(m_uBuffer));
-  
-  Entry* aRow = pRowBuffer->aFirstEntry();
-  u8 uRowNo = 0;
-  while (m_uRow != uRowNo) {
-    aRow = pRowBuffer->aNextEntry(aRow, 0);
-    uRowNo++;
-  }
-  ASSERT(aRow);
-  return aRow;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of offsets                                                      */
 /*----------------------------------------------------------------------------*/
 i8 Id::nOffsets(void)
