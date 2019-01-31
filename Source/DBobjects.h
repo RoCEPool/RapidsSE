@@ -61,9 +61,6 @@ using namespace DBobjects;
 
 typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 
-#include "Item.hpp"
-#include "ItemBuffer.hpp"
-#include "Wilderness.hpp"
 
 
 #include "Id.hpp"
@@ -80,7 +77,6 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "EntryV2.hpp"
 #include "EntryBuffer.hpp"
 #include "IndexTree.hpp"
-#include "FreeEntry.hpp"
 
 #include "RecordBuffer.hpp"
 

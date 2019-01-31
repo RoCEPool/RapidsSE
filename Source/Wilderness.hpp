@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace MiniHeaps
 {
   class Wilderness : public Item
   {

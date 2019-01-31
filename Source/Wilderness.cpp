@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Wilderness* DBobjects::_aWilderness(void* aAddr)
+Wilderness* MiniHeaps::_aWilderness(void* aAddr)
 {
   Wilderness* aWilderness = reinterpret_cast<Wilderness*>(aAddr);
   

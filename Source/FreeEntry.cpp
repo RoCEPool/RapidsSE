@@ -2,7 +2,7 @@
 /* FreeEntry.cpp -- free entry in buffer                                      */
 /*============================================================================*/
 
-#include "DBobjects.h"
+#include "MiniHeaps.h"
 
 #include "StorageEngine.h"
 
@@ -15,7 +15,7 @@ extern AttachMap* gpAttachMap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-FreeEntry* DBobjects::_aFreeEntry(void* aAddr)
+FreeEntry* MiniHeaps::_aFreeEntry(void* aAddr)
 {
   FreeEntry* aFreeEntry = reinterpret_cast<FreeEntry*>(aAddr);
   

@@ -11,7 +11,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-ItemBuffer* DBobjects::_pItemBuffer(void* aAddr)
+ItemBuffer* MiniHeaps::_pItemBuffer(void* aAddr)
 {
   ItemBuffer* pBufferAbstract = reinterpret_cast<ItemBuffer*>(aAddr);
   

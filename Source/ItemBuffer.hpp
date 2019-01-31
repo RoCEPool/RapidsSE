@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-namespace DBobjects
+namespace MiniHeaps
 {
   class ItemBuffer : public Object
   {

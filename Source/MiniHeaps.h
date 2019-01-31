@@ -16,7 +16,12 @@ using namespace MiniHeaps;
 
 //------------------------------------------------------------------------------
 
-//#include "ItemBuffer.hpp"
+#include "Item.hpp"
+
+#include "FreeEntry.hpp"
+#include "Wilderness.hpp"
+
+#include "ItemBuffer.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
