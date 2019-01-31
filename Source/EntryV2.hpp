@@ -3,43 +3,23 @@
 /*============================================================================*/
 #pragma once
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// there must be a
 #pragma pack(push)
 #pragma pack(1)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
-//#define USE_LW_FOOTER
-
-#ifdef USE_LW_FOOTER
-  #define LW_FOOTER_CHECK() aFooter()->vAssertFooter();
-#else
-  #define LW_FOOTER_CHECK()
-#endif
 
 namespace DBobjects
 {
-  class EntryBuffer;
-  class EntWrk;
-  class Index;
-  
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   class EntryV2 : public Header
   {
   protected:
-    i4  m_nSizeItem; // size of this item
-
-    Id  m_xId;        // id
-  //i8  m_iTxId;      // transaction id
-  //char  m_nOffsets;   // no of offsets for this entry (0..3)
-#ifdef WITH_DEBUG_VERSION
-    i8  m_iIntKey;    // key debug hack
-#endif
-  
-  public:
-#ifdef WITH_DEBUG_VERSION
-    i8  m_iEntryNo;   // verify of entry order
-#endif
-    // ..embedded object..
+    Id   m_xId;       // id
+    u2   m_nBytes;    // number of bytes that follow
+    byte m_aBytes[1]; // array of bytes
+    // .. bytes ..
+    // .. [NEO] ..    // next entry offset(s)
 
   public:
     void* operator new(size_t);
@@ -48,75 +28,10 @@ namespace DBobjects
     EntryV2(eCN eClassNo, i8 nThisBytes, i8 uOffsets);
     ~EntryV2(void) noexcept(false);
   
-    void vAssertEntry(void);
-    bool bValidEntry(void);
-  
-    static i8 nBytesRequired(EntWrkV2& xEntWrk);
-    static i8 nBytesRequired(i8 nEmbeddedBytes);
-    static i8 nBytesRequired(i8 nEmbeddedBytes, i8 nOffsets);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // entry proper
-    Id&  xId(void);
-    void vId(Id xId);
-    i8   iRow(void);
-    EntryBuffer* pReferencedEntryBuffer(void);
-    i8   iBufferNo(void);
-    i8   nSizeEntry(void);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // data area
-    Row*  aRow(void);
-    char* aRowData(void);
-    i8    nRowSize(void);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // data entry
-    EntryV2* aDataEntry(void);
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // embedded object area
-    char* aEmbeddedObject(void);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // offsets
-    i8   nOffsets(void);
-    void vOffsets(i8 nOffsets);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // index
-  
-    void vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize);
-    void vSetEntry(RowWrk& xRowWrk);
-  
-    void vShow(i8 iBase, Index* pIndex, bool bShowKey);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // row
-    void vContentDump(void);
-    void vExtractIndexKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
-    void vExtractSortKey(KeyWrk& xKeyWrk, IdxColVec* pIdxColVec);
-    char* pExtractSortKey(char *aElement, IdxColVec* pIdxColVec);
-    i8   iTxId(void);
-    void vTxId(i8 iTxId);
-  
-    NEO* aNEO(void);
-    i4   iNEO(i8 i_Offset);
-    void vNEO(i8 i_Offset, i4 iNEO);
-    void vNEOdump(void);
-    i8   iNEOsize(void);
-  
-    char* aAddressAfter(void);
-  
-    Footer* aFooter(void);
-  
-  private:
-    bn     nBufferNo(void);
+    byte* aBytes(void);
+    i8    nBytes(void);
+    i8    iSize(void);
   };
-  
-  //EntryV2* _pEntry(void* aAddr);
   
   /*--------------------------------------------------------------------------*/
   /* safe cast                                                                */
@@ -129,10 +44,12 @@ namespace DBobjects
     
     return aEntry;
   }
-  
-
 }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// matches pragma push() at beginning of file.  Do not remove
 #pragma pack(pop)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /*============================================================================*/
 /* end                                                                        */

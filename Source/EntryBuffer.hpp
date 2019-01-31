@@ -4,7 +4,6 @@
 #pragma once
 
 #define USE_EB_LAZY_CHAIN
-#define USE_EB_SPLIT2
 #define USE_EB_SINGLE_COLIDX
 //#define USE_EB_WATCH
 
@@ -60,6 +59,7 @@ namespace DBobjects
     i8      iAgeInSeconds(void);
     void    vBufferLevel(i8 iBufferLevel);
     i8      iBufferLevel(void);
+    i8      iDecile(void);
     void    vDropWrite(void);
     void    vGrabWrite(void);
     void    vIndex(Index* pIndex);
@@ -68,7 +68,12 @@ namespace DBobjects
     bool    bIsLast(void);
     void    vPartitionNo(i8 iPartitionNo);
     i8      iPartitionNo(void);
+    Since&  oWhenNewed(void);
+
+    ////////////////////////////////////////////////////////////////////////////
+    // buffer functions
   
+    void         vBufferCount(i8& nBufferCount);
     EntryBuffer* pHigherBuffer(void);
     void         vHigherBuffer(EntryBuffer* pHigherLevel);
     EntryBuffer* pNextBuffer(void);
@@ -76,13 +81,23 @@ namespace DBobjects
     EntryBuffer* pPrevBuffer(void);
     void         vPrevBuffer(EntryBuffer* pPrevBuffer);
 
+    ////////////////////////////////////////////////////////////////////////////
+    // entry functions
+  
+    Entry* aFirstEntry(void);
+    Entry* aLastEntry(void);
+
+    ////////////////////////////////////////////////////////////////////////////
+    // row functions
+  
+    Entry* aAppendRow(RowWrk& xRowWrk);
+  
   private:
     Entry* aAllotEntry(i8 nBytes);
     NEO*   aAllotNEO(i8 nBytes);
     bool   bHasSpace(i8 nBytes);
+    void   vInitFreeChain(void);
 
-  
-  
   
   
     ////////////////////////////////////////////////////////////////////////////
@@ -92,29 +107,21 @@ namespace DBobjects
     void vAssertEntryBuffer(void);
     bool bValidEntryBuffer(void);
   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // simple member functions
-  
  
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // complex functions
   
     void         vAnalyze(s48K& sAnalysis, bool bDetailed, i8& iBuffers, i8& iEntries);
-    Entry*       aAppendRow(RowWrk& xRowWrk);
-    void         vBufferCount(i8& nBufferCount);
     void         vBuildSkipListSorted(void);
-    i8           iDecile(void);
     void         vDeleteEntry(Entry** aaEntry);
     bool         bDeleteKey(Key* aDeleteKey, EntryBuffer* pToBuffer);
     void         vDump(void);
     EntryBuffer* pFirstChildBuffer(void);
-    Entry*       aFirstEntry(void);
     Entry*       aGetEntryRowNo(i8 i_RowNo);
     Entry*       aInsertKeyAbs(KeyWrk& xKeyWrk);
     Entry*       aInsertKeyAbsL0(KeyWrk& xKeyWrk, Entry** aaPriorEntry);
     static Entry* aInsertKeyTree(KeyWrk& xKeyWrk,
                                  EntryBuffer** ppRootKeyBuffer);
-    Entry*       aLastEntry(void);
     void         vLazyBuild(void);
     i8           iLengthList(void);
     i8           iLengthSubList(void);
@@ -135,7 +142,6 @@ namespace DBobjects
     void         vTruncate(void);
     EntryBuffer* pUnlinkSubList(void);
     bool         bVerify(void);
-    Since&       oWhenNewed(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private:
@@ -166,7 +172,6 @@ namespace DBobjects
     Entry*       aHeadEntry(void);
     void         vHeadEntryNew(void);
     void         vHeadEntryRestore(void);
-    void         vInitFreeChain(void);
     EntryBuffer* pInsertableBuffer(KeyWrk& xKeyWrk,
                                    EntryBuffer** ppRootKeyBuffer);
     Entry*       aInsertKeyAbsLazy(KeyWrk& xKeyWrk);
@@ -194,7 +199,6 @@ namespace DBobjects
                                           EntryBuffer* pToBuffer);
     void         vPositionPriorVecBuffer3(Key* aFindKey, Entry** aaPriorVec,
                                           EntryBuffer* pToBuffer);
-    EntryBuffer* pSplit(void);
     EntryBuffer* pSplit2(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
