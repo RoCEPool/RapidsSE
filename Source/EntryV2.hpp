@@ -23,9 +23,11 @@ namespace DBobjects
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  class EntryV2 : public Item
+  class EntryV2 : public Header
   {
   protected:
+    i4  m_nSizeItem; // size of this item
+
     Id  m_xId;        // id
   //i8  m_iTxId;      // transaction id
   //char  m_nOffsets;   // no of offsets for this entry (0..3)
@@ -82,14 +84,11 @@ namespace DBobjects
     void vOffsets(i8 nOffsets);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // key
-    Key* aKey(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // index
   
     void vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize);
-    void vSetEntry(KeyWrk& xKeyWrk);
     void vSetEntry(RowWrk& xRowWrk);
   
     void vShow(i8 iBase, Index* pIndex, bool bShowKey);
@@ -131,17 +130,6 @@ namespace DBobjects
     return aEntry;
   }
   
-  /*--------------------------------------------------------------------------*/
-  /* get Key                                                                  */
-  /*--------------------------------------------------------------------------*/
-  inline Key* EntryV2::aKey(void)
-  {
-    _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
-    
-    Key* aKey = reinterpret_cast<Key*>(aEmbeddedObject());
-    
-    return aKey;
-  }
 
 }
 #pragma pack(pop)

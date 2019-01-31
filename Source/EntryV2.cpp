@@ -34,7 +34,7 @@ void* EntryV2::operator new(size_t, EntryV2* aEntry)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntryV2::EntryV2(eCN eClassNo, i8 nThisBytes, i8 nOffsets)
-: Item(eClassNo, nThisBytes)
+: Header(eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
@@ -217,7 +217,7 @@ i8 EntryV2::nSizeEntry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
-  return nSizeItem();
+  return m_nSizeItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,7 +260,7 @@ i8 EntryV2::nRowSize(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
   //i8 nOffsetBytes = RightVec::nBytesRequired(m_nOffsets);
-  i8 iRowSize = nSizeItem() - (sizeof(EntryV2) + sizeof(Footer));
+  i8 iRowSize = m_nSizeItem - (sizeof(EntryV2) + sizeof(Footer));
   
   return iRowSize;
 }
@@ -279,8 +279,8 @@ EntryV2* EntryV2::aDataEntry(void)
   // get the referenced entry buffer of this entries Id
   EntryBuffer* pEntryBuffer = pReferencedEntryBuffer();
   
-  // get the row entry
-  EntryV2* aRowEntry = nullptr; //RAY pEntryBuffer->aGetEntryRowNo(m_xId.iRow());
+  // get the row entry                                             //! NOT RIGHT
+  EntryV2* aRowEntry = (EntryV2*)pEntryBuffer->aGetEntryRowNo(m_xId.iRow());
   
   return aRowEntry;
 }
@@ -341,7 +341,7 @@ void EntryV2::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
-  ASSERT(nSizeItem());
+  ASSERT(m_nSizeItem);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set id, transaction and offsets
@@ -356,35 +356,6 @@ void EntryV2::vSetEntry(i8 xTxId, Id xId, i8 nOffsets, Stz* aData, i8 nDataSize)
   if (nDataSize)
     MemLib::vCopy(aEntryData,aData,nDataSize,eClass());
 
-#ifdef WITH_DEBUG_VERSION
-  m_iIntKey = aKey()->iGetInt();
-#endif
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set entry using given key working entry                                    */
-/*----------------------------------------------------------------------------*/
-void EntryV2::vSetEntry(KeyWrk& xKeyWrk)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // set id, transaction and offsets
-  
-  m_xId = xKeyWrk.xId();
-  //m_iTxId = xKeyWrk.iTxId();
-  vOffsets(xKeyWrk.nOffsets());
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // copy key into this entry
-  
-  Key* aSrcKey = xKeyWrk.aKey();
-  Key* aDstKey = this->aKey();
-  i8 nKeySize = xKeyWrk.nKeySize();
-  
-  MemLib::vCopy(aDstKey,aSrcKey,nKeySize,CN_ENTRY);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
 }
@@ -422,8 +393,6 @@ void EntryV2::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
-  Key* aKey = this->aKey();
-  
   vTrace("%lld: EntryV2: %p Size: %llu Offsets: %llu "_Stz,
          iOffset,
          this,
@@ -440,9 +409,6 @@ void EntryV2::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
   //       Tx::iTxNode(m_iTxId),
   //       Tx::iTxNo(m_iTxId)
   //       );
-  
-  if (bShowKey && ! pIndex->bIsHidden())
-    aKey->vShow(pIndex->pIdxColVec());
   
   if (pIndex->bIsHidden()) {
     //char* pRow = aRowData();
@@ -476,7 +442,7 @@ void EntryV2::vContentDump(void)
   vTrace("EntryV2 %p: ThisBytes %lld %p (%lld bytes) \n"_Stz,
          this,
          //m_iTxId,
-         nSizeItem(),
+         m_nSizeItem,
          aRowData(),
          nRowSize()
          );
@@ -799,7 +765,7 @@ NEO* EntryV2::aNEO(void)
   
   //NEO* aNEO = pAdd<NEO*>(aFooter,sizeof(Footer));
   
-  NEO* aNEO = aAdd<NEO*>(this, nSizeItem());
+  NEO* aNEO = aAdd<NEO*>(this, m_nSizeItem);
   
   return aNEO;
 }
@@ -817,7 +783,7 @@ i4 EntryV2::iNEO(i8 iOffset)
   
   //i4 iNEO = aNEO->m_iOffset[iOffset];
   
-  i4 iNEO = *(aAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset));
+  i4 iNEO = *(aAdd<i4*>(this, m_nSizeItem + sizeof(i4) * iOffset));
   
   return iNEO;
 }
@@ -835,7 +801,7 @@ void EntryV2::vNEO(i8 iOffset, i4 iNEO)
   
   //aNEO->m_iOffset[iOffset] = iNEO;
   
-  *(aAdd<i4*>(this, nSizeItem() + sizeof(i4) * iOffset)) = iNEO;
+  *(aAdd<i4*>(this, m_nSizeItem + sizeof(i4) * iOffset)) = iNEO;
   
 }
 
@@ -898,7 +864,7 @@ Footer* EntryV2::aFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 iFooterOffset = nSizeItem() - sizeof(Footer);
+  i8 iFooterOffset = m_nSizeItem - sizeof(Footer);
   
   Footer* aFooter = pAdd<Footer*>(this,iFooterOffset);
   
