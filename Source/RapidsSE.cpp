@@ -78,9 +78,6 @@ eEC RapidsSE_DeleteSession(i8 iTrace, Session** ppSession)
 /*----------------------------------------------------------------------------*/
 /* is the error an EC_INVALID_INTERFACE ?                                     */
 /*----------------------------------------------------------------------------*/
-//
-// can this be: RapidsSE_IsInvalidInterface
-//
 bool RapidsSE_IsInvalidSession(i8 iTrace, int iError)
 {
   API_SYSTEM_LEVEL();
