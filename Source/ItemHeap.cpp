@@ -38,7 +38,7 @@ ItemHeap::ItemHeap(eCN eClassNo)
   m_aFreeItemChain  = nullptr;
 
   m_iPartitionNo  = -1;
-  m_iBufferLevel  = 0;
+  m_iLevelNo  = 0;
   m_iBufferNo     = *nPoolBufferNo();
   
   m_oWhenNewed.vNow();
@@ -294,19 +294,21 @@ i8 ItemHeap::iAgeInSeconds(void)
 /*----------------------------------------------------------------------------*/
 /* set buffer level                                                           */
 /*----------------------------------------------------------------------------*/
-void ItemHeap::vBufferLevel(i8 iBufferLevel)
+void ItemHeap::vLevelNo(i8 iLevelNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  m_iBufferLevel = iBufferLevel;
+  
+  m_iLevelNo = iLevelNo;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the buffer level                                                       */
 /*----------------------------------------------------------------------------*/
-i8 ItemHeap::iBufferLevel(void)
+i8 ItemHeap::iLevelNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  return m_iBufferLevel;
+  
+  return m_iLevelNo;
 }
 
 /*----------------------------------------------------------------------------*/

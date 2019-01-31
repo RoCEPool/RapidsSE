@@ -23,7 +23,7 @@ Entry* EntryBuffer::aAppendRow(RowWrk& xRowWrk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
-  ASSERT(iBufferLevel() == 0);
+  ASSERT(iLevelNo() == 0);
   
   Entry* aRowEntry;
   
