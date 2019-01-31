@@ -9,8 +9,7 @@ namespace MiniHeaps
   {
   protected:
     FreeItem* m_aNextFree;  // next free
-    FreeItem* m_aPrevFree;  // previous free
-
+ 
   public:
     void* operator new(size_t);
     void* operator new(size_t, Item*);
@@ -27,8 +26,6 @@ namespace MiniHeaps
     FreeItem* aNextFree(void);
     void      vNextFree(FreeItem* aNextFree);
   
-    FreeItem* aPrevFree(void);
-    void      vPrevFree(FreeItem* aPrevFree);
   
     char* aAddressAfter(void);
   

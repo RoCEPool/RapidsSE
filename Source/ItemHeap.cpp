@@ -144,10 +144,8 @@ void ItemHeap::vFreeItem(Item* aItem)
   
   FreeItem* aFreeItem = FreeItem::aMorphFreeItem(aItem);
   
-  if (m_aFreeEntryList) {
-    m_aFreeEntryList->vPrevFree(aFreeItem);
+  if (m_aFreeEntryList)
     aFreeItem->vNextFree(m_aFreeEntryList);
-  }
   
   m_aFreeEntryList = aFreeItem;
   

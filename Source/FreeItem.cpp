@@ -57,7 +57,6 @@ FreeItem::FreeItem(i8 nSizeItem)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY);
   
   m_aNextFree = nullptr;
-  m_aPrevFree = nullptr;
   
   aFooter()->vSetFooter();
   
@@ -145,26 +144,6 @@ void FreeItem::vNextFree(FreeItem* aNextFree)
   _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
   
   m_aNextFree = aNextFree;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get prev free entry                                                        */
-/*----------------------------------------------------------------------------*/
-FreeItem* FreeItem::aPrevFree(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
-  
-  return m_aPrevFree;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set prev free entry                                                        */
-/*----------------------------------------------------------------------------*/
-void FreeItem::vPrevFree(FreeItem* aPrevFree)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEENTRY,_FOOTER_);
-  
-  m_aPrevFree = aPrevFree;
 }
 
 /*----------------------------------------------------------------------------*/

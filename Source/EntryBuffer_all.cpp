@@ -200,7 +200,7 @@ void EntryBuffer::vDeleteEntry(Entry** aaEntry)
   
   vCutEntry(aEntry,xPriorVec);
   
-  vAddFreeList(aEntry);
+  vFreeItem(aEntry);
   
   // entry no longer exists, set the pointer to be null
   *aaEntry = nullptr;
@@ -1113,45 +1113,6 @@ bool EntryBuffer::bVerify(void)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add given entry to free list                                               */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vAddFreeList(Entry* aEntry)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add entry to head of free entry list
-  
-  /*
-   i8 nSizeEntry = aEntry->nSizeEntry();
-   i8 nSizeNEO   = aEntry->iNEOsize();
-   i8 nSizeFree  = nSizeEntry + nSizeNEO;
-   
-   FreeItem* aFreeEntry = new(aEntry) FreeItem(nSizeFree);
-   */
-  
-  FreeItem* aFreeEntry = aMakeFreeEntry(aEntry);
-  
-  //  if (! bQuickVerify(aEntry)) {
-  //    vDumpPriorVec(xPriorVec);
-  //    vQuickVerify();
-  //  }
-  
-  if (m_aFreeEntryList) {
-    m_aFreeEntryList->vPrevFree(aFreeEntry);
-    aFreeEntry->vNextFree(m_aFreeEntryList);
-  }
-  
-  m_aFreeEntryList = aFreeEntry;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // decement the number of items in buffer
-  vDecItems();
-  
-  //vQuickVerify();
-}
 
 /*----------------------------------------------------------------------------*/
 /* build L0 of the skip list from the lazy chain                              */
