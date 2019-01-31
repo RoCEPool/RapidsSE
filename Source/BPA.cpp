@@ -198,7 +198,7 @@ void BPA::vObjectList(void)
        nBuffer <= nBufferCount;
        nBuffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(nBuffer);
     
     if (CN_SMALLTRANSIENT == pBuffer->eClass())
       pSmallTransient = pBuffer;
@@ -268,7 +268,7 @@ void BPA::vObjectSummary(void)
        nBuffer <= nBufferCount;
        nBuffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(nBuffer);
     iCountObjects[pBuffer->eClass()]++;
   }
   
@@ -398,7 +398,7 @@ void BPA::vObjectSnapshot(i8* pCountObjects)
        nBuffer <= nBufferCount;
        nBuffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(nBuffer);
     
     eCN eClass = pBuffer->eClass();
     
@@ -654,7 +654,7 @@ void BPA::vWordList(i8 iEpoch)
        nBuffer <= nBufferCount;
        nBuffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(nBuffer);
     
     if (CN_MEDIUMTRANSIENT == pBuffer->eClass())
     pMediumTransient = pBuffer;
@@ -686,7 +686,7 @@ void BPA::vWriteBuffers(Stz* sFilePath)
        nBuffer <= nBufferCount;
        nBuffer++) {
     
-    PoolBuffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    PoolBuffer* pBuffer = gpBufferPool->pToPoolBuffer(nBuffer);
     bool bResult = pFile->bWriteBytes((void*)pBuffer,C_SIZE_POOL_BUFFER);
     ASSERT(bResult);
     

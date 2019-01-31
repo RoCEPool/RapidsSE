@@ -550,9 +550,9 @@ void BufferPool::vPoolDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* transalate buffer number to allocated buffer                               */
+/* translate buffer number to allocated buffer                                */
 /*----------------------------------------------------------------------------*/
-PoolBuffer* BufferPool::pToBuffer(bn nBuffer)
+PoolBuffer* BufferPool::pToPoolBuffer(bn nBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
@@ -570,7 +570,8 @@ FreeBuffer* BufferPool::pToFreeBuffer(bn nBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  FreeBuffer* pBufferFree = static_cast<FreeBuffer*>(pToBuffer(nBuffer));
+  FreeBuffer* pBufferFree =
+    static_cast<FreeBuffer*>(pToPoolBuffer(nBuffer));
   
   return pPoolCheck<FreeBuffer*>(pBufferFree);
 }

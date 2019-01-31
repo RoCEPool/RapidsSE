@@ -979,7 +979,7 @@ void EntryBuffer::vShowTree(bool bDumpBuffer)
   bn nBuffer = xId.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
   
   EntryBuffer* pChildBuffer =
   reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
@@ -2080,7 +2080,7 @@ Entry* EntryBuffer::aInsertKeyUpwards(KeyWrk& xKeyWrk,
     i8 nBuffer = xId.iBuffer();
     
     HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
     
     EntryBuffer* pChildBuffer =
     reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
@@ -2823,7 +2823,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
     
     i8 nBuffer = xId.iBuffer();
     HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
     
     EntryBuffer* pChildBuffer =
     reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
@@ -2871,7 +2871,7 @@ EntryBuffer* EntryBuffer::pSplit2(void)
       i8 nBuffer = xId.iBuffer();
       
       HeapBuffer* pHeapBuffer =
-      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBuffer));
+      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBuffer));
       
       EntryBuffer* pChildBuffer =
       reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());

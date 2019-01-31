@@ -139,7 +139,8 @@ void Id::vId(Id& xId)
 /*----------------------------------------------------------------------------*/
 Entry* Id::aRow(void)
 {
-  EntryBuffer* pRowBuffer = reinterpret_cast<EntryBuffer*>(gpBufferPool->pToBuffer(m_uBuffer));
+  EntryBuffer* pRowBuffer =
+    reinterpret_cast<EntryBuffer*>(gpBufferPool->pToPoolBuffer(m_uBuffer));
   
   Entry* aRow = pRowBuffer->aFirstEntry();
   u8 uRowNo = 0;
@@ -159,7 +160,7 @@ EntryBuffer* Id::pReferencedEntryBuffer(void)
   bn nBufferNo = m_uBuffer;
   
   HeapBuffer* pHeapBuffer =
-    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToBuffer(nBufferNo));
+    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
   
   EntryBuffer* pEntryBuffer =
     reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
