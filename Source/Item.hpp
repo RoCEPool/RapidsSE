@@ -18,6 +18,8 @@ namespace MiniHeaps
     Item(eCN eClassNo, i8 nSizeItem);
     ~Item(void) noexcept(false);
   
+    bn nBufferNo(void);
+
     i8 nSizeItem(void);
   
     char* aAddressAfter(void);

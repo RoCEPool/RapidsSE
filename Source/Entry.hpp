@@ -116,8 +116,6 @@ namespace DBobjects
   
     Footer* aFooter(void);
   
-  private:
-    bn     nBufferNo(void);
   };
   
   //Entry* _pEntry(void* aAddr);
