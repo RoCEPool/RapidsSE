@@ -18,8 +18,10 @@ namespace MiniHeaps
     Item(eCN eClassNo, i8 nSizeItem);
     ~Item(void) noexcept(false);
   
-    bn nBufferNo(void);
-    i8 nSizeItem(void);
+    bn   nBufferNo(void);
+    i8   nOffsets(void);
+    void vOffsets(i8 nOffsets);
+    i8   nSizeItem(void);
   };
   
   /*--------------------------------------------------------------------------*/

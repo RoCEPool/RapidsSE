@@ -82,11 +82,6 @@ namespace DBobjects
     char* aEmbeddedObject(void);
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // offsets
-    i8   nOffsets(void);
-    void vOffsets(i8 nOffsets);
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // key
     Key* aKey(void);
   
