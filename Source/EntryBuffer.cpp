@@ -118,6 +118,26 @@ void EntryBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
   pEntryBuffer->vShow();
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the entry buffer that given id references                              */
+/*----------------------------------------------------------------------------*/
+EntryBuffer* EntryBuffer::pReferencedEntryBuffer(Id& xId)
+{
+  bn nBufferNo = xId.iBuffer();
+  
+  HeapBuffer* pHeapBuffer =
+    reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(nBufferNo));
+  
+  EntryBuffer* pEntryBuffer =
+  reinterpret_cast<EntryBuffer*>(pHeapBuffer->aFirstChunk());
+  
+  ASSERT(pEntryBuffer);
+  ASSERT(pEntryBuffer->eClass() == CN_ENTRYBUFFER);
+  
+  return pEntryBuffer;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
