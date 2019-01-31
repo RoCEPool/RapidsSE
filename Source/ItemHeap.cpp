@@ -133,6 +133,30 @@ i8 ItemHeap::nFreeBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add given entry to free chain                                              */
+/*----------------------------------------------------------------------------*/
+void ItemHeap::vFreeItem(Item* aItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add item to head of free chain
+  
+  FreeItem* aFreeItem = FreeItem::aMorphFreeItem(aItem);
+  
+  if (m_aFreeEntryList) {
+    m_aFreeEntryList->vPrevFree(aFreeItem);
+    aFreeItem->vNextFree(m_aFreeEntryList);
+  }
+  
+  m_aFreeEntryList = aFreeItem;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // decement the number of items in buffer
+  vDecItems();
+}
+
+/*----------------------------------------------------------------------------*/
 /* give space back to this buffer                                             */
 /*----------------------------------------------------------------------------*/
 void ItemHeap::vGiveSpace(i8 nBytes)

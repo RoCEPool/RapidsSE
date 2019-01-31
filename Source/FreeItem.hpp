@@ -19,6 +19,8 @@ namespace MiniHeaps
     FreeItem(i8 nSizeItem);
     ~FreeItem(void) noexcept(false);
   
+    static FreeItem* aMorphFreeItem(Item* aItem);
+
     void vAssertFreeEntry(void);
     bool bValidFreeEntry(void);
   

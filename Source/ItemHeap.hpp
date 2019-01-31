@@ -17,6 +17,8 @@ namespace MiniHeaps
     ItemHeap* m_pHigherBuffer; // higher level buffer that has entries
                                // that point to this buffer
 
+    FreeItem* m_aFreeEntryList; // head of free entry list
+
     Wsp_t<C_WSP_ITEMHEAP> m_xWsp;
   
   public:
@@ -28,7 +30,8 @@ namespace MiniHeaps
     char*  aDataArea(void);
     void   vDecItems(void);
     Item*  aFirstItem(void);
-    i8     nFreeBytes(void);
+    i8     nFreeBytes(void); //-> nAvailBytes()
+    void   vFreeItem(Item* aItem);
     void   vGiveSpace(i8 nBytes);
     i8     nItems(void);
     void   vItems(i8 nItems);

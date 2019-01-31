@@ -40,7 +40,6 @@ namespace DBobjects
     Entry* m_aLastEntry; // last entry (would append to this)
     Entry* m_aLazyChain; // first lazy entry
   
-    FreeItem* m_aFreeEntryList; // head of free entry list
   
     // must be last
     Footer m_xFooter;
