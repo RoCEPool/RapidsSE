@@ -201,6 +201,8 @@ void ItemBuffer::vSetUsed(Item* aUptil)
   i8 nUsedBytes = nSub(aUptil,aDataArea());
   
   m_xWsp.vUsed(nUsedBytes);
+  
+  vSetWilderness();
 }
 
 /*----------------------------------------------------------------------------*/

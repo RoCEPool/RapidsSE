@@ -35,9 +35,11 @@ namespace DBobjects
     Item*  aNextItem(Item* aItem);
     void   vResetUsed(void);
     void   vSetUsed(Item* aUptil);
-    void   vSetWilderness(void);
     i4     iToOffset(Item* aItem);
     i8     nUsedBytes(void);
+  
+  private:
+    void   vSetWilderness(void);
   };
   
   ItemBuffer* _pItemBuffer(void* aAddr);

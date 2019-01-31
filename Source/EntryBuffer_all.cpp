@@ -1340,8 +1340,6 @@ void EntryBuffer::vCompact(void)
   
   vSetUsed(aScanItem);
   
-  vSetWilderness();
-  
   //vShow();
 }
 
@@ -1391,8 +1389,9 @@ void EntryBuffer::vCompactLeft2(void)
   Item* aThisWilderness = aAdd<Item*>(m_aHeadEntry,
                                       m_aHeadEntry->nSizeEntry() +
                                       m_aHeadEntry->iNEOsize());
+  
   vSetUsed(aThisWilderness);
-  vSetWilderness();
+  
   vItems(0);
   
   for (i8 i_Offset = 0; i_Offset < gpAttachMap->m_nIndexOffsets; i_Offset++)
