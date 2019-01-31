@@ -80,6 +80,7 @@ namespace DBobjects
     void         vNextBuffer(EntryBuffer* pNextBuffer);
     EntryBuffer* pPrevBuffer(void);
     void         vPrevBuffer(EntryBuffer* pPrevBuffer);
+    void         vTruncate(void);
 
     ////////////////////////////////////////////////////////////////////////////
     // entry functions
@@ -139,7 +140,6 @@ namespace DBobjects
     void         vShowSubList(void);
     void         vShowTree(bool bDumpBuffer=false);
     void         vSpliceAfter(EntryBuffer* pSplicedBuffer);
-    void         vTruncate(void);
     EntryBuffer* pUnlinkSubList(void);
     bool         bVerify(void);
   

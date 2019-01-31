@@ -388,6 +388,54 @@ void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
   m_pPrevBuffer = pPrevBuffer;
 }
 
+/*----------------------------------------------------------------------------*/
+/* truncate this buffer by removing all entries                               */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vTruncate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  EntryBuffer* pNextBuffer;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // hidden index buffers are just one level
+  
+  if (m_pIndex->bIsHidden()) {
+    ASSERT(m_iBufferLevel == 0);
+    pNextBuffer = this->pNextBuffer();
+    
+    while (pNextBuffer) {
+      ASSERT(pNextBuffer->iBufferLevel() == 0);
+      
+      EntryBuffer* pThisBuffer = pNextBuffer;
+      pNextBuffer = pNextBuffer->pNextBuffer();
+      delete pThisBuffer;
+    }
+    delete this;
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // other index
+  if (m_iBufferLevel != 0) {
+    
+    // recursively delete the lower level buffers
+    for (Entry* aEntry = aFirstEntry();
+         aEntry != nullptr;
+         aEntry = aNextEntry(aEntry, 0)) {
+      
+      // get the index buffer from the entry
+      pNextBuffer = aEntry->pReferencedEntryBuffer();
+      
+      ASSERT(pNextBuffer);
+      ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
+      pNextBuffer->vTruncate();
+    }
+  }
+  
+  delete this;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                             entry functions                                //
 ////////////////////////////////////////////////////////////////////////////////
