@@ -68,6 +68,7 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 
 #include "Id.hpp"
 #include "EntWrk.hpp"
+#include "EntWrkV2.hpp"
 #include "KeyWrk.hpp"
 #include "RightVec.hpp"
 #include "Key.hpp"
@@ -76,6 +77,7 @@ typedef ArrayNL_t<CN_ROWAGG,eRO,1024> RelOpAry;
 #include "RowWrk.hpp"
 
 #include "Entry.hpp"
+#include "EntryV2.hpp"
 #include "EntryBuffer.hpp"
 #include "IndexTree.hpp"
 #include "FreeEntry.hpp"

@@ -193,7 +193,7 @@ void EntryBuffer::vIndex(Index* pIndex)
     return;
   
   m_iaEntryOffsets  =
-  reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_L0));
+    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_L0));
   
   m_i_FreeOffsetChain = C_ENTRY_NONE;
   

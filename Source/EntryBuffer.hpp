@@ -35,6 +35,7 @@ namespace DBobjects
     bool   m_bIsLast;      // is this the last buffer in sequence
 
     i4*    m_iaEntryOffsets;    // array of row entry offsets
+                                //   for the hidden index (ie. row buffers only)
     i4     m_i_FreeOffsetChain; // head of free entry offset chain
   
     Entry* m_aHeadEntry; // head entry (not the first logical entry in buffer)
