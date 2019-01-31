@@ -11,7 +11,7 @@ extern "C" eEC  RapidsSE_CheckVersion     (i8 iTrace,
                                            Stz* sVersion);
 extern "C" eEC  RapidsSE_DeleteSession    (i8 iTrace,
                                            Session** ppSession);
-extern "C" bool RapidsSE_IsInvalidSession (i8 iTrace,
+extern "C" int  RapidsSE_IsInvalidSession (i8 iTrace,
                                            int eError);
 extern "C" eEC  RapidsSE_NewSession       (i8 iTrace,
                                            Stz* sCatalog, Stz* sSchema, i8 iPartition,
