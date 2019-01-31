@@ -16,7 +16,7 @@
       "clientPort"          : 5334,     
       "seEnabled"           : true,
       "clusterPort"         : 4334,
-      "seArgs"              : " --activityMap --partitionsPerNode 1 --size 12gb --regionPrefix /SE --port 5444",
+      "seArgs"              : " --partitionsPerNode 1 --size 12gb --regionPrefix /SE --port 5444",
       "name"                : "node1",
       "role"                : "DQC",
       "installationDir"     : "/home/alka/master/current",
