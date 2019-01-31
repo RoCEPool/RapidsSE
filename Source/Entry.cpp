@@ -195,7 +195,7 @@ i8 Entry::iRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY); LW_FOOTER_CHECK();
   
-  return m_xId.iRow();
+  return m_xId.iItem();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -281,7 +281,7 @@ Entry* Entry::aDataEntry(void)
   EntryBuffer* pEntryBuffer = pReferencedEntryBuffer();
   
   // get the row entry
-  Entry* aRowEntry = pEntryBuffer->aGetEntryRowNo(m_xId.iRow());
+  Entry* aRowEntry = pEntryBuffer->aGetEntryRowNo(m_xId.iItem());
   
   return aRowEntry;
 }
@@ -434,7 +434,7 @@ void Entry::vShow(i8 iOffset, Index* pIndex, bool bShowKey)
   
   vTrace("Id: %3lli.%03lli "_Stz,
          m_xId.iBuffer(),
-         m_xId.iRow()
+         m_xId.iItem()
          );
   
   //vTrace("Tx: %lld.%03lld "_Stz,

@@ -19,7 +19,7 @@ EntWrkV2::EntWrkV2(eCN eClassNo)
   _precondition_(_MAGIC_);
 
   // check initialisation of rowid
-  ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iRow());
+  ASSERT(0 == m_xId.iBuffer() && 0 == m_xId.iItem());
   
   m_nOffsets = -1;
   
