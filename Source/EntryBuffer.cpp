@@ -161,6 +161,23 @@ i8 EntryBuffer::iBufferLevel(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get decile full of the buffer                                              */
+/*----------------------------------------------------------------------------*/
+i8 EntryBuffer::iDecile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  i8 iDecile;
+  
+  if (gpAttachMap->m_nIndexEntries == 0)
+    iDecile = IntLib::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
+  else
+    iDecile = IntLib::iDecile(m_nItems, gpAttachMap->m_nIndexEntries);
+  
+  return iDecile;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
 /*----------------------------------------------------------------------------*/
 void EntryBuffer::vDropWrite(void)
@@ -191,11 +208,6 @@ void EntryBuffer::vIndex(Index* pIndex)
   
   if (! m_pIndex->bIsHidden())
     return;
-  
-  m_iaEntryOffsets  =
-    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_L0));
-  
-  m_i_FreeOffsetChain = C_ENTRY_NONE;
   
   vInitFreeChain();
 }
@@ -250,8 +262,71 @@ i8 EntryBuffer::iPartitionNo(void)
   return m_iPartitionNo;
 }
 
+/*----------------------------------------------------------------------------*/
+/* when was this buffer newed?                                                */
+/*----------------------------------------------------------------------------*/
+Since& EntryBuffer::oWhenNewed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  return m_oWhenNewed;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
+//                             buffer functions                               //
 ////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* return number of index buffers under this buffer                           */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vBufferCount(i8& nBuffers)
+{
+  EntryBuffer* pNextBuffer = nullptr;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // hidden index ?
+  
+  if (m_pIndex->bIsHidden()) {
+    ASSERT(m_iBufferLevel == 0);
+    pNextBuffer = this->pNextBuffer();
+    nBuffers++;
+    
+    while (pNextBuffer) {
+      ASSERT(pNextBuffer->iBufferLevel() == 0);
+      
+      //EntryBuffer* pThisBuffer = pNextBuffer;
+      pNextBuffer = pNextBuffer->pNextBuffer();
+      nBuffers++;
+    }
+    
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // other index
+  
+  // count this buffer
+  nBuffers++;
+  
+  // recursively count the lower level buffers
+  if (! m_iBufferLevel)
+    return;
+    
+  for (Entry* aEntry = aFirstEntry();
+       aEntry != nullptr;
+       aEntry = aNextEntry(aEntry, 0)) {
+    
+    // get the index buffer from the entry
+    pNextBuffer = aEntry->pReferencedEntryBuffer();
+    
+    ASSERT(pNextBuffer);
+    ASSERT(pNextBuffer->eClass() == CN_ENTRYBUFFER);
+    
+    pNextBuffer->vBufferCount(nBuffers);
+    
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the higher level index buffer                                          */
@@ -312,6 +387,57 @@ void EntryBuffer::vPrevBuffer(EntryBuffer* pPrevBuffer)
   
   m_pPrevBuffer = pPrevBuffer;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//                             entry functions                                //
+////////////////////////////////////////////////////////////////////////////////
+
+
+/*----------------------------------------------------------------------------*/
+/* get first entry                                                            */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::aFirstEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef USE_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+  
+  //if (m_aLazyChain)
+  //  vBuildSkipList();
+#endif
+  
+  Entry* aFirst = aNextEntry(m_aHeadEntry,0);
+  
+  return aFirst;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last entry                                                             */
+/*----------------------------------------------------------------------------*/
+Entry* EntryBuffer::aLastEntry(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+#ifdef USE_EB_LAZY_CHAIN
+  RASSERT( ! m_aLazyChain );
+  
+  //if (m_aLazyChain)
+  //  vBuildSkipList();
+#endif
+  
+  Entry* aLast = m_aHeadEntry;
+  
+  for (;;) {
+    Entry* aNext = aNextEntry(aLast,0);
+    if (! aNext)
+      break;
+    aLast = aNext;
+  }
+  
+  return aLast;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -378,6 +504,33 @@ bool EntryBuffer::bHasSpace(i8 nBytes)
     else
       return true;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* set up the initial entry offset free chain                                 */
+/*----------------------------------------------------------------------------*/
+void EntryBuffer::vInitFreeChain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
+  
+  m_iaEntryOffsets  =
+    reinterpret_cast<i4*>(aAllotSpace(sizeof(i4) * C_ENTRIES_L0));
+  
+  m_i_FreeOffsetChain = C_ENTRY_NONE;
+  
+  i8 L_ENTRIES_0 = gpAttachMap->m_nIndexEntries ?
+    gpAttachMap->m_nIndexEntries : C_ENTRIES_L0;
+  
+  // L0 free chain
+  for (i4 i_RowNo = 0; i_RowNo < (L_ENTRIES_0 - 1); i_RowNo++) {
+    RASSERT(i_RowNo >= 0 && i_RowNo < C_ENTRIES_L0);
+    m_iaEntryOffsets[i_RowNo] = - (i_RowNo+1);
+  }
+  
+  RASSERT((L_ENTRIES_0 - 1) >= 0 && (L_ENTRIES_0 - 1) < C_ENTRIES_L0);
+  m_iaEntryOffsets[L_ENTRIES_0 - 1] = - C_ENTRY_NONE;
+  
+  m_i_FreeOffsetChain = 0;
 }
 
 
