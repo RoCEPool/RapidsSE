@@ -19,6 +19,12 @@ namespace MiniHeaps
 
     FreeItem* m_aFreeItemChain; // head of free item chain
 
+  i2     m_iPartitionNo; // partition no this buffer belongs to
+  i2     m_iBufferLevel; // index buffer level
+  i8     m_iBufferNo;    // this EntryBuffer's buffer number
+  Since  m_oWhenNewed;   // when was this buffer created?
+  bool   m_bIsLast;      // is this the last buffer in sequence
+
     Wsp_t<C_WSP_ITEMHEAP> m_xWsp;
   
   public:
@@ -41,6 +47,16 @@ namespace MiniHeaps
     i4     iToOffset(Item* aItem);
     i8     nUsedBytes(void);
   
+  i8      iAgeInSeconds(void);
+  void    vBufferLevel(i8 iBufferLevel);
+  i8      iBufferLevel(void);
+  i8      iDecile(void);
+  void    vIsLast(bool bIsLast);
+  bool    bIsLast(void);
+  void    vPartitionNo(i8 iPartitionNo);
+  i8      iPartitionNo(void);
+  Since&  oWhenNewed(void);
+
   private:
     void   vSetWilderness(void);
   };

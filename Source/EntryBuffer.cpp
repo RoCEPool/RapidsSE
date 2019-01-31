@@ -66,27 +66,15 @@ EntryBuffer::EntryBuffer(void)
   
   m_okLock.vInitLock(LK_ENTRYBUFFER);
   
-  m_bIsLast       = false;
-  
-  m_pHigherBuffer = nullptr;
-  m_pNextBuffer   = nullptr;
-  m_pPrevBuffer   = nullptr;
-
   m_pIndex        = nullptr;
-  m_iPartitionNo  = -1;
-  m_iBufferNo     = *nPoolBufferNo();
-  m_iBufferLevel  = 0;
   
   m_iaEntryOffsets = nullptr;
   m_i_FreeOffsetChain = C_ENTRY_NONE;
   
   m_aHeadEntry  = nullptr;
   m_aLastEntry  = nullptr;
-  m_aFreeItemChain  = nullptr;
   
   m_aLazyChain  = nullptr;
-  
-  m_oWhenNewed.vNow();
   
   vHeadEntryNew();
   
@@ -143,59 +131,8 @@ EntryBuffer* EntryBuffer::pRefdEntryBuffer(Id& xId)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get age of buffer in seconds                                               */
-/*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iAgeInSeconds(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  Since oSince;
-  oSince.vNow();
-  
-  Ivl wDiff;
-  
-  wDiff = oSince.wSubtract(m_oWhenNewed);
-  
-  i8 iAge = wDiff.iSecond();
-  
-  return iAge;
-}
 
-/*----------------------------------------------------------------------------*/
-/* set buffer level                                                           */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vBufferLevel(i8 iBufferLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_iBufferLevel = iBufferLevel;
-}
 
-/*----------------------------------------------------------------------------*/
-/* get the buffer level                                                       */
-/*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iBufferLevel(void)
-{
-  return m_iBufferLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get decile full of the buffer                                              */
-/*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iDecile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  i8 iDecile;
-  
-  if (gpAttachMap->m_nIndexEntries == 0)
-    iDecile = IntLib::iDecile(m_xWsp.nUsed(), C_SIZE_POOL_BUFFER);
-  else
-    iDecile = IntLib::iDecile(m_nItems, gpAttachMap->m_nIndexEntries);
-  
-  return iDecile;
-}
 
 /*----------------------------------------------------------------------------*/
 /* drop lock for write                                                        */
@@ -240,56 +177,6 @@ Index* EntryBuffer::pIndex(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
   
   return m_pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set buffer is last                                                         */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vIsLast(bool bIsLast)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_bIsLast = bIsLast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get if buffer is last                                                      */
-/*----------------------------------------------------------------------------*/
-bool EntryBuffer::bIsLast(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_bIsLast;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set partition no                                                           */
-/*----------------------------------------------------------------------------*/
-void EntryBuffer::vPartitionNo(i8 iPartitionNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  m_iPartitionNo = iPartitionNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get partition no                                                           */
-/*----------------------------------------------------------------------------*/
-i8 EntryBuffer::iPartitionNo(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_iPartitionNo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* when was this buffer newed?                                                */
-/*----------------------------------------------------------------------------*/
-Since& EntryBuffer::oWhenNewed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRYBUFFER,_FOOTER_);
-  
-  return m_oWhenNewed;
 }
 
 

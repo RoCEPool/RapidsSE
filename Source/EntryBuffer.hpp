@@ -26,11 +26,6 @@ namespace DBobjects
     Lock   m_okLock;       // lock
   
     Index* m_pIndex;       // index this buffer belongs to
-    i2     m_iPartitionNo; // partition no this buffer belongs to
-    i2     m_iBufferLevel; // index buffer level
-    i8     m_iBufferNo;    // this EntryBuffer's buffer number
-    Since  m_oWhenNewed;   // when was this buffer created?
-    bool   m_bIsLast;      // is this the last buffer in sequence
 
     ////////////////////////////////////////////////////////////////////////////
     // only used in row entry buffers
@@ -57,19 +52,12 @@ namespace DBobjects
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static EntryBuffer* pRefdEntryBuffer(Id& xId);
 
-    i8      iAgeInSeconds(void);
-    void    vBufferLevel(i8 iBufferLevel);
-    i8      iBufferLevel(void);
-    i8      iDecile(void);
+  
     void    vDropWrite(void);
     void    vGrabWrite(void);
     void    vIndex(Index* pIndex);
     Index*  pIndex(void);
-    void    vIsLast(bool bIsLast);
-    bool    bIsLast(void);
-    void    vPartitionNo(i8 iPartitionNo);
-    i8      iPartitionNo(void);
-    Since&  oWhenNewed(void);
+
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
